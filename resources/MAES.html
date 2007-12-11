@@ -1,0 +1,28 @@
+<html>
+<head>
+<title>Model Assisted Evolution Strategy - MAES</title>
+</head>
+<body>
+ 
+<h1 align="center">Model Assisted Evolution Strategy - MAES</h1>
+<center>
+</center><br>
+In the pre-selection concept lambdaPlus>lambda
+individuals are generated from mu parents.
+All lambdaPlus individuals are evaluated by a
+surrogate model of the fitness landscape and the estimated
+fitness values are used to pre-select the lambda
+best individuals, which will be evaluated with
+the real fitness function.
+The model is trained at the beginning with a randomly created
+initial population and is updated after each generation
+step with lambda new fitness cases.
+The idea behind this approach is that only the
+most promising individuals with a good fitness prediction
+are evaluated with the true fitness function.
+
+Every generation a new offspring lambda is evaluated with the real fitness function,
+the model is updated with this information of \lambda fitness cases.
+
+</body>
+</html>

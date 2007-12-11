@@ -1,0 +1,64 @@
+package javaeva.server.go.operators.selection.replacement;
+
+import javaeva.server.go.individuals.AbstractEAIndividual;
+import javaeva.server.go.operators.distancemetric.PhenotypeMetric;
+import javaeva.server.go.populations.Population;
+
+/** The deterministic crowiding method replaces the most similar parent if better
+ * Created by IntelliJ IDEA.
+ * User: streiche
+ * Date: 19.07.2005
+ * Time: 14:46:14
+ * To change this template use File | Settings | File Templates.
+ */
+public class ReplaceDeterministicCrowding implements InterfaceReplacement, java.io.Serializable {
+
+    PhenotypeMetric metric = new PhenotypeMetric();
+
+    /** The ever present clone method
+     */
+    public Object clone() {
+        return new ReplaceRandom();
+    }
+
+    /** This method will insert the given individual into the population
+     * by replacing a individual either from the population or the given
+     * subset
+     * @param indy      The individual to insert
+     * @param pop       The population
+     * @param sub       The subset
+     */
+    public void insertIndividual(AbstractEAIndividual indy, Population pop, Population sub) {
+        int index = 0;
+
+        double distance = Double.POSITIVE_INFINITY, tmpD;
+
+        for (int i = 0; i < sub.size(); i++) {
+            tmpD = this.metric.distance(indy, (AbstractEAIndividual)sub.get(i));
+            if (tmpD < distance) {
+                index       = i;
+                distance    = tmpD;
+            }
+        }
+        if (indy.isDominatingDebConstraints((AbstractEAIndividual)sub.get(index))) {
+            if (pop.remove((AbstractEAIndividual)sub.get(index))) {
+                pop.addIndividual(indy);
+            }
+        }
+    }
+    /**********************************************************************************************************************
+     * These are for GUI
+     */
+    /** This method returns a global info string
+     * @return description
+     */
+    public String globalInfo() {
+        return "This method replaces the most similar parent if better.";
+    }
+    /** This method will return a naming String
+     * @return The name of the algorithm
+     */
+    public String getName() {
+        return "Deterministic Crowding";
+    }
+}

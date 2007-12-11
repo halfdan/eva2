@@ -1,0 +1,290 @@
+package javaeva.tools;
+
+import java.util.Arrays;
+import wsi.ra.math.interpolation.BasicDataSet;
+import wsi.ra.math.interpolation.InterpolationException;
+import wsi.ra.math.interpolation.SplineInterpolation;
+
+// created at June 27 2006
+
+/**
+ * @author Andreas Dr&auml;ger
+ */
+public class Mathematics {
+
+  public static void main(String args[]) {
+    int i = 0;
+    double y[] = new double[args.length];
+    for (; i < args.length; i++)
+      y[i] = Double.parseDouble(args[i]);
+    System.out.println(median(y) / 1000);
+  }
+
+  /**
+   * Computes the median of a given double vector.
+   *
+   * @param x
+   *                a vector of doubles
+   * @return the median
+   */
+  public static double median(double[] x) {
+    if (x.length == 1) return x[0];
+    Arrays.sort(x);
+    if (x.length % 2 == 0) return x[(x.length + 1) / 2];
+    return (x[x.length / 2] + x[x.length / 2 + 1]) / 2;
+  }
+
+  /**
+   * This method gives a linear interpolation of the function values of the
+   * given argument/function value pairs.
+   *
+   * @param x
+   *                The argument at the point with unknown function value
+   * @param x0
+   *                The argument at the last position with a function value
+   * @param x1
+   *                The argument at the next known fuction value
+   * @param f0
+   *                The function value at the position x0
+   * @param f1
+   *                The function value at the position x1
+   * @return The function value at position x given by linear interpolation.
+   */
+  public static double linearInterpolation(double x, double x0, double x1,
+      double f0, double f1) {
+    if (x1 == x0) return f0;
+    return lerp(f0, f1, (x - x0) / (x1 - x0));
+  }
+
+  /**
+   * Computes a hyperbolic interpolation of the two point (x0,f0) and (x1,f1).
+   *
+   * @param x
+   * @param x0
+   * @param x1
+   * @param f0
+   * @param f1
+   * @return
+   */
+  public static double hyperbolicInterpolation(double x, double x0, double x1,
+      double f0, double f1) {
+    if (x1 == 0) return lerp(f0, f1, (x - x0) / (-x0));
+    double l = lerp(x0 / x1, 1, x);
+    if (l == 0) return linearInterpolation(x, x0, x1, f0, f1);
+    return lerp(f0, f1, x / l);
+  }
+
+//<<<<<<< .working
+//	/**
+//	 * Computes a spline interpolation of the two point (x0,f0) and (x1,f1).
+//	 * 
+//	 * @param x
+//	 * @param x0
+//	 * @param x1
+//	 * @param f0
+//	 * @param f1
+//	 * @return If an error with the spline occurs, a linear interpolation will be
+//	 *         returned.
+//	 */
+///*	public static double splineInterpolation(double x, double x0, double x1,
+//			double f0, double f1) {
+//		try {
+//			double[] t = { x0, x1 }, f = { f0, f1 };
+//			SplineInterpolation spline = new SplineInterpolation(new BasicDataSet(t,
+//					f, 1));
+//			return spline.getY(x);
+//		} catch (InterpolationException e) {
+//			e.printStackTrace();
+//		}
+//		return linearInterpolation(x, x0, x1, f0, f1);
+//	}*/
+//=======
+  /**
+   * Computes a spline interpolation of the two point (x0,f0) and (x1,f1).
+   *
+   * @param x
+   * @param x0
+   * @param x1
+   * @param f0
+   * @param f1
+   * @return If an error with the spline occurs, a linear interpolation will be
+   *         returned.
+   */
+  public static double splineInterpolation(double x, double x0, double x1,
+      double f0, double f1) {
+    try {
+      double[] t = {x0, x1}, f = {f0, f1};
+      SplineInterpolation spline = new SplineInterpolation(new BasicDataSet(t,
+          f, 1));
+      return spline.getY(x);
+    } catch (InterpolationException e) {
+      e.printStackTrace();
+    }
+    return linearInterpolation(x, x0, x1, f0, f1);
+  }
+//>>>>>>> .merge-right.r288
+
+  /**
+   * @param f0
+   * @param f1
+   * @param t
+   * @return
+   */
+  private static double lerp(double f0, double f1, double t) {
+    return f0 + (f1 - f0) * t;
+  }
+
+  /**
+   * Computes the root-Distance function. For example root = 2 gives the
+   * Euclidian Distance.
+   *
+   * @param x
+   *                a vector
+   * @param y
+   *                another vector
+   * @param root
+   *                what kind of distance funktion
+   * @return the distance of x and y
+   * @throws Exception
+   *                 if x and y have different dimensions an exception is
+   *                 thrown.
+   */
+  public static double dist(double[] x, double[] y, int root) throws Exception {
+    if (x.length != y.length)
+      throw new Exception("The vecotors x and y must have the same dimension");
+    if (root == 0) throw new Exception("There is no 0-root!");
+    double d = 0;
+    for (int i = 0; i < x.length; i++)
+      d += Math.pow(Math.abs(x[i] - y[i]), root);
+    return Math.pow(d, (double) 1 / root);
+  }
+
+  /**
+   * Computes the relative distance of vector x to vector y. Therefore the
+   * difference of x[i] and y[i] is divided by y[i] for every i. If y[i] is
+   * zero, the default value def is used instead. The sum of these differences
+   * gives the distance function.
+   *
+   * @param x
+   *                A vector
+   * @param y
+   *                The reference vector
+   * @param def
+   *                The default value to be use to avoid division by zero.
+   * @return The relative distance of x to y.
+   * @throws Exception
+   */
+  public static double relDist(double[] x, double[] y, double def)
+      throws Exception {
+    if (x.length != y.length)
+      throw new Exception("The vectors x and y must have the same dimension");
+    double d = 0;
+    for (int i = 0; i < x.length; i++)
+      if (y[i] != 0)
+        d += Math.pow(((x[i] - y[i]) / y[i]), 2);
+      else d += def;
+    return d;
+  }
+
+  /**
+   * This computes the determinant of the given matrix
+   *
+   * @param matrix
+   * @return The determinant or null if there is no determinant (if the matrix
+   *         is not square).
+   */
+  public static double determinant(double[][] matrix) {
+    if (matrix == null) return 0;
+    if (matrix.length != matrix[0].length) return 0;
+    if (matrix.length == 1) return matrix[0][0];
+    if (matrix.length == 2)
+      return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0];
+    if (matrix.length == 3)
+      return matrix[0][0] * matrix[1][1] * matrix[2][2] + matrix[0][1]
+          * matrix[1][2] * matrix[2][0] + matrix[0][2] * matrix[1][0]
+          * matrix[2][1] - matrix[2][0] * matrix[1][1] * matrix[0][2]
+          - matrix[2][1] * matrix[1][2] * matrix[0][0] - matrix[2][2]
+          * matrix[1][0] * matrix[0][1];
+
+    double det = 0;
+    for (int k = 0; k < matrix.length; k++) {
+      if (matrix[0][k] != 0) det += matrix[0][k] * adjoint(matrix, 0, k);
+    }
+    return det;
+  }
+
+  /**
+   * This computes the submatrix of the given matrix as a result by scraching
+   * out the row k and the column l.
+   *
+   * @param a
+   * @param k
+   * @param l
+   * @return
+   */
+  public static double[][] submatrix(double[][] a, int k, int l) {
+    double b[][] = new double[a.length - 1][a[0].length - 1];
+    int i, j, m = 0, n = 0;
+
+    for (i = 0; i < a.length; i++) {
+      if (i == k) continue;
+      for (j = 0; j < a[0].length; j++) {
+        if (j == l) continue;
+        b[m][n++] = a[i][j];
+      }
+      m++;
+      n = 0;
+    }
+
+    return b;
+  }
+
+  /**
+   * Computes the adjoint of the matrix element at the position (k, l).
+   *
+   * @param a
+   * @param k
+   * @param l
+   * @return
+   */
+  public static double adjoint(double[][] a, int k, int l) {
+    return Math.pow(-1, k + l + 2) * determinant(submatrix(a, k, l));
+  }
+
+  /**
+   * Computes the full adjoint matrix.
+   *
+   * @param a
+   * @return
+   */
+  public static double[][] adjoint(double[][] a) {
+    if (a == null) return null;
+    if (a.length != a[0].length) return null;
+    double[][] b = new double[a.length][a.length];
+    for (int i = 0; i < a.length; i++)
+      for (int j = 0; j < a.length; j++)
+        b[i][j] = adjoint(a, i, j);
+    return b;
+  }
+
+  /**
+   * Computes the inverse of the given matrix or returns null if there is no
+   * inverse (if the determinant is 0).
+   *
+   * @param a
+   * @return
+   */
+  public static double[][] inverse(double[][] a) {
+    if (a == null) return null;
+    if (a.length != a[0].length) return null;
+    double det = determinant(a);
+
+    if (det == 0) return null;
+    double[][] b = adjoint(a);
+    for (int i = 0; i < a.length; i++)
+      for (int j = 0; j < a.length; j++)
+        b[i][j] /= det;
+    return b;
+  }
+
+}
