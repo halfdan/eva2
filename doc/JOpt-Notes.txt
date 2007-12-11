@@ -1,0 +1,65 @@
+RMI-Probleme:
+
+- Bei Naming.(re)bind und Naming.lookup muss wahrscheinlich bei Client und Server der gleiche String
+(Name des Servers) verwendet werden. Im Code steht da mehrmals "attention" und die Art, wie der String
+erzeugt wird, ist nicht wirklich klar.
+
+- Per RMI wird in der GUI beim GO-Modul der Optimizer nicht angezeigt. Das liegt daran, daß 
+ein RMI-Proxy immer nur die Methoden eines Interfaces zur Verfügung stellt. Das unterliegende
+InterfaceGOParameters hat aber keine setOptimizer-Methode, was auch sinnvoll ist, da die
+meisten Module für genau einen Optimizer zuständig sind (DEParameters, GAParameters etc.)
+
+Lösung 1: Dem Interface die Setter-Methode wieder geben und für die spezifischen Module deaktivieren.
+Dabei gibts dann das Problem, daß per RMI nur der Interface-Teil einzelner Module gesehen wird, d.h.
+die spezifischen Parameter zB für HC- oder DE-Modul können garnicht angezeigt werden.
+
+Lösung 2: Dem PSP mitteilen, dass es den Setter bei Proxies von "woanders" holen soll. Wird wohl schwer.
+
+- RMI scheint jetzt zu funktionieren. Ein Problem lag in der StatisticsWithGUI, wo serverseitig 
+irgendwo ein isVaid() von Graph aufgerufen wurde, das kein Proxy war. Wird stattdessen auf GraphWindow
+zugegriffen, das ein Proxy ist, funktioniert es. 
+
+- Die Unterscheidung, ob eine lokale Instanz oder eine RMI-Verbindung verwendet wird, fällt 
+jetzt in EvAComAdapter. Dort wird die RMI Registry jetzt auch nebenläufig erzeugt, das kann
+noch für Ärger sorgen, wenn kein Netz vorhanden ist. Jedenfalls wird im EvAComAdapter beim 
+Zugriff auf Module überprüft, ob lokal oder remote gearbeitet wird, das passiert insbesondere
+in getModuleAdapter und getModuleNameList. Die Entscheidung letztlich wird aber in EvAClient 
+getroffen, wo setRunLocally des EvAComAdapters aufgerufen wird.
+
+- Die setConnection/hasConnection Properties von ModuleAdapter haben jetzt den Sinn bekommen,
+zwischen lokalem und remote-Adapter zu unterscheiden.
+
+ToDo:
+- Kommandozeilen-Argumente für den Client?
+- Kontroll-Events (start/stop) werden über RMI nicht wieder an den GUI-Client geliefert, 
+	das sollte noch eingeführt werden.
+- Beim server-wechsel bleibt das alte Plot-Fenster stehen, müsste auch besser gehn.
+- die Ressourcen zwischen den Paketen aufräumen
+- Die cloneInPlace: noch überall cloneEAObjects aufrufen?
+- Lokal läuft es jetzt auch ohne Netz. Die Entscheidung, wann wo ein Proxy nötig ist,
+sollte aber unbedingt durchsichtiger fallen. Man suche nach Stellen, die Proxies erzeugen!
+Vielleicht eine public static boolean im EvAClient??
+- Das Auflösen des Hostnames ("myHostName", "myHostAddress") nur einmal bzw. nur da machen wo
+es wirklich nötig ist!
+- die doofen Exception in thread "AWT-EventQueue-0" java.lang.NullPointerException
+	at javaeva.gui.DPointSetMultiIcon.paint(DPointSetMultiIcon.java:353)
+	endlich killen.
+- ZB ESIndividual: Bei hohen Dimensionen kann es schlecht sein, in jedem Ind. nochmal
+die Range mitzuführen, da sie häufig für alle gleich ist. Dann verschlingt sie unnötig Speicher.
+- MOCCOStandalone: ist an sich schön, evtl. nochmal reparieren.
+- die Mutationsoperatoren sollten jetzt CloneableInPlace implementieren!
+- always override hashCode when you override equals!
+	--> developer.java.sun.com/developer/Books/effectiveava/
+- History und Archive: Kommentar bzw. Schalter!
+- Graph/Plot aufräumen: Graph scheint nur ein "Label" zu sein, über das auf ein GraphPointSet innerhalb
+	eines FunctionArea elements zugegriffen wird. Eher chaotisch also.
+
+Done:
+- ConvergenceTerminator betrachtet jetzt nicht nur die 0.te fitness sondern den ganzen Vektor
+- die Progress-Bar von der GOStandaloneVersion übernehmen
+- im ComAdapter das ServerListFile im Konstruktor übergeben? Bzw. direkt die Properties?
+
+Bugs:
+- JOpt bug in wsi.ra.chart2d.ScaledBorder Zeile 460 - Endlosschleife!
+- cloneInPlace bei Individuen wird die Object-Daten aus AbstractEAIndividual idR nicht kopieren!
+- da nicht alle Klassen "hashCode" ableiten, kann es bei Verwendung von HashMaps o.ä. zu Problemen kommen
