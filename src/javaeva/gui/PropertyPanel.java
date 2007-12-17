@@ -48,8 +48,10 @@ public class PropertyPanel extends JPanel {
 	    int y = getLocationOnScreen().y;
 	    m_PropertyDialog = new PropertyDialog(m_PropertyEditor, EVAHELP.cutClassName(m_PropertyEditor.getClass().getName()) , x, y);
 	  }
-	  else
+	  else {
+		  m_PropertyDialog.updateFrameTitle(m_PropertyEditor);
 	    m_PropertyDialog.setVisible(true);
+	  }
 	}
       }
     });

@@ -172,7 +172,7 @@ public class PopulationBasedIncrementalLearning implements InterfaceOptimizer, j
      * @return description
      */
     public String globalInfo() {
-        return "The Population based incremental learing is based on a statistical distribution of bit positions.";
+        return "The Population based incremental learning is based on a statistical distribution of bit positions. Please note: This optimizer requires a binary genotype!";
     }
     /** This method will return a naming String
      * @return The name of the algorithm

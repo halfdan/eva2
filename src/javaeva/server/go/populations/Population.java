@@ -204,7 +204,6 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
         double  curBestFitness  = Double.POSITIVE_INFINITY;
 
         for (int i = 0; i < super.size(); i++) {
-            //System.out.println("Fitness " + i + " " + ((AbstractEAIndividual)super.get(i)).getFitness(0));
             if ((!((AbstractEAIndividual)super.get(i)).violatesConstraint()) && (((AbstractEAIndividual)super.get(i)).getFitness(0) < curBestFitness)) {
                 result          = i;
                 curBestFitness  = ((AbstractEAIndividual)super.get(i)).getFitness(0);
@@ -405,7 +404,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      * @return description
      */
     public String globalInfo() {
-        return "A population stores all current soultions and is used to determine the optimizing progress.";
+        return "A population stores the individuals of a generation.";
     }
 
     /** This method allows you to set the population size

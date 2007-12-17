@@ -113,7 +113,7 @@ public class PBILParameters  implements InterfaceGOParameters, Serializable {
      * @return description
      */
     public String globalInfo() {
-        return "Please note: This optimizer requires a BitSet as genotype!!";
+    	return ((PopulationBasedIncrementalLearning)this.m_Optimizer).globalInfo();
     }
 
     /** This methods allow you to set and get the Seed for the Random Number Generator.

@@ -721,7 +721,7 @@ public class GenericObjectEditor implements PropertyEditor {
 	 * appear possible given that the initialization string isn't supposed to
 	 * contain multiple statements.
 	 *
-	 * @return the java source code initialisation string
+	 * @return the java source code initialization string
 	 */
 	public String getJavaInitializationString() {
 		return "new " + m_Object.getClass().getName() + "()";

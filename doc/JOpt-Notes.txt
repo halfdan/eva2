@@ -30,6 +30,7 @@ getroffen, wo setRunLocally des EvAComAdapters aufgerufen wird.
 zwischen lokalem und remote-Adapter zu unterscheiden.
 
 ToDo:
+- Population -> getBest... die multi-objective methoden nutzen!
 - Kommandozeilen-Argumente für den Client?
 - Kontroll-Events (start/stop) werden über RMI nicht wieder an den GUI-Client geliefert, 
 	das sollte noch eingeführt werden.
@@ -55,6 +56,7 @@ die Range mitzuführen, da sie häufig für alle gleich ist. Dann verschlingt si
 	eines FunctionArea elements zugegriffen wird. Eher chaotisch also.
 
 Done:
+- Wenigstens beim Neuladen eines Objekt-Fensters dessen Titel dem Objekt anpassen (PropertyDialog)
 - ConvergenceTerminator betrachtet jetzt nicht nur die 0.te fitness sondern den ganzen Vektor
 - die Progress-Bar von der GOStandaloneVersion übernehmen
 - im ComAdapter das ServerListFile im Konstruktor übergeben? Bzw. direkt die Properties?

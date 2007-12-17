@@ -34,8 +34,8 @@ public class PropertyDialog extends JEFrame {
   /**
    *
    */
-  public PropertyDialog (PropertyEditor Editor,String Title, int x, int y) {
-    super(EVAHELP.cutClassName (Editor.getValue().getClass().getName())); // that was the long class name !!
+  public PropertyDialog (PropertyEditor editor,String Title, int x, int y) {
+    super(getFrameNameFromEditor(editor)); // that was the long class name !!
     BasicResourceLoader  loader  = BasicResourceLoader.instance();
     byte[] bytes   = loader.getBytesFromResourceLocation(EvAClient.iconLocation);
     try {
@@ -50,13 +50,27 @@ public class PropertyDialog extends JEFrame {
       }
     });
     getContentPane().setLayout(new BorderLayout());
-    m_Editor = Editor;
-    m_EditorComponent = Editor.getCustomEditor();
+    m_Editor = editor;
+    m_EditorComponent = editor.getCustomEditor();
     getContentPane().add(m_EditorComponent, BorderLayout.CENTER);
     pack();
     setLocation(x, y);
     setVisible(true);
   }
+  
+  protected static String getFrameNameFromEditor(PropertyEditor editor) {
+	  return EVAHELP.cutClassName(editor.getValue().getClass().getName());
+  }
+  
+  /**
+   * Update the name of the dialogue from an editor instance.
+   * 
+   * @param editor
+   */
+  public void updateFrameTitle(PropertyEditor editor) {
+	  setTitle(getFrameNameFromEditor(editor));
+  }
+  
   /**
    *
    */

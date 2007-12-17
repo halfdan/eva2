@@ -344,7 +344,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
 				xx.start();
 			}
 		};
-		m_actKillAllHosts = new ExtAction("Kill &all server", "Kill all server",
+		m_actKillAllHosts = new ExtAction("Kill &all servers", "Kill all servers",
 				KeyStroke.getKeyStroke(KeyEvent.VK_K, Event.CTRL_MASK)) {
 			public void actionPerformed(ActionEvent e) {
 				logMessage(e.getActionCommand());
