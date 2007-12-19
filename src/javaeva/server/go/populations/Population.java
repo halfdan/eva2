@@ -28,7 +28,8 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     protected int           m_Size          = 50;
     protected Population    m_Archive       = null;
 
-    public ArrayList        m_History       = new ArrayList();
+    boolean useHistory						= false;
+    public ArrayList<AbstractEAIndividual>  m_History       = new ArrayList<AbstractEAIndividual>();
 
     public Population() {
     }
@@ -84,6 +85,16 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
         }
     }
 
+    /**
+     * Activate or deactivate the history tracking, which stores the best individual in every
+     * generation in the incrGeneration() method.
+     * 
+     * @param useHist
+     */
+    public void setUseHistory(boolean useHist) {
+    	useHistory = useHist;
+    }
+    
     /** This method will allow cou to increment the current number of function calls.
      */
     public void incrFunctionCalls() {
@@ -117,7 +128,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      * Stagnation measured etc. pp.
      */
     public void incrGeneration() {
-        if (this.size() >= 1) this.m_History.add(this.getBestEAIndividual());
+        if (useHistory && (this.size() >= 1)) this.m_History.add(this.getBestEAIndividual());
         for (int i=0; i<size(); i++) ((AbstractEAIndividual)get(i)).incrAge(); 
         this.m_Generation++;
     }
@@ -241,8 +252,8 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      * 
      */
     public Object[] getBestNIndividuals(int n) {
-    	LinkedList indList = new LinkedList();
-    	PriorityQueue queue = new PriorityQueue(n);
+    	LinkedList<AbstractEAIndividual> indList = new LinkedList<AbstractEAIndividual>();
+    	PriorityQueue<Double> queue = new PriorityQueue<Double>(n);
     	AbstractEAIndividual indy;
         double  curNBestFitness  = Double.POSITIVE_INFINITY;
 
@@ -253,7 +264,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
                 	indList.removeLast();
                 	queue.remove();
                 }
-                indList.addFirst(super.get(i));
+                indList.addFirst((AbstractEAIndividual)super.get(i));
                 // use negative fitness, because queue orders the smallest to top.
                 queue.add(new Double(- indy.getFitness(0)));
                 if (indList.size() == n) curNBestFitness  = - ((Double)queue.peek()).doubleValue();
