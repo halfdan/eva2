@@ -2,7 +2,6 @@ package javaeva.server.go.strategies;
 
 import javaeva.gui.GenericObjectEditor;
 import javaeva.server.go.individuals.AbstractEAIndividual;
-import javaeva.server.go.individuals.ESIndividualDoubleData;
 import javaeva.server.go.individuals.InterfaceDataTypeDouble;
 import javaeva.server.go.individuals.InterfaceESIndividual;
 import javaeva.server.go.populations.Population;
