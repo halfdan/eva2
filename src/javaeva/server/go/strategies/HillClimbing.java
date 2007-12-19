@@ -22,9 +22,9 @@ import javaeva.server.go.problems.InterfaceOptimizationProblem;
 public class HillClimbing implements InterfaceOptimizer, java.io.Serializable {
     // These variables are necessary for the simple testcase
     private InterfaceOptimizationProblem            m_Problem           = new B1Problem();
-    private int             m_MultiRuns             = 100;
-    private int             m_FitnessCalls          = 100;
-    private int             m_FitnessCallsNeeded    = 0;
+//    private int             m_MultiRuns             = 100;
+//    private int             m_FitnessCalls          = 100;
+//    private int             m_FitnessCallsNeeded    = 0;
     GAIndividualBinaryData  m_Best, m_Test;
 
     // These variables are necessary for the more complex LectureGUI enviroment
@@ -114,43 +114,43 @@ public class HillClimbing implements InterfaceOptimizer, java.io.Serializable {
         return this.m_Problem;
     }
 
-    /** This method will init the HillClimber
-     */
-    public void defaultInit() {
-        this.m_FitnessCallsNeeded = 0;
-        this.m_Best = new GAIndividualBinaryData();
-        this.m_Best.defaultInit();
-    }
+//    /** This method will init the HillClimber
+//     */
+//    public void defaultInit() {
+//        this.m_FitnessCallsNeeded = 0;
+//        this.m_Best = new GAIndividualBinaryData();
+//        this.m_Best.defaultInit();
+//    }
+//
+//    /** This method will optimize
+//     */
+//    public void defaultOptimize() {
+//        for (int i = 0; i < m_FitnessCalls; i++) {
+//            this.m_Test = (GAIndividualBinaryData)((this.m_Best).clone());
+//            this.m_Test.defaultMutate();
+//            if (this.m_Test.defaultEvaulateAsMiniBits() < this.m_Best.defaultEvaulateAsMiniBits()) this.m_Best = this.m_Test;
+//            this.m_FitnessCallsNeeded = i;
+//            if (this.m_Best.defaultEvaulateAsMiniBits() == 0) i = this.m_FitnessCalls +1;
+//        }
+//    }
 
-    /** This method will optimize
-     */
-    public void defaultOptimize() {
-        for (int i = 0; i < m_FitnessCalls; i++) {
-            this.m_Test = (GAIndividualBinaryData)((this.m_Best).clone());
-            this.m_Test.defaultMutate();
-            if (this.m_Test.defaultEvaulateAsMiniBits() < this.m_Best.defaultEvaulateAsMiniBits()) this.m_Best = this.m_Test;
-            this.m_FitnessCallsNeeded = i;
-            if (this.m_Best.defaultEvaulateAsMiniBits() == 0) i = this.m_FitnessCalls +1;
-        }
-    }
-
-    /** This main method will start a simple hillclimber.
-     * No arguments necessary.
-     * @param args
-     */
-    public static void main(String[] args) {
-        HillClimbing program = new HillClimbing();
-        int TmpMeanCalls = 0, TmpMeanFitness = 0;
-        for (int i = 0; i < program.m_MultiRuns; i++) {
-            program.defaultInit();
-            program.defaultOptimize();
-            TmpMeanCalls += program.m_FitnessCallsNeeded;
-            TmpMeanFitness += program.m_Best.defaultEvaulateAsMiniBits();
-        }
-        TmpMeanCalls = TmpMeanCalls/program.m_MultiRuns;
-        TmpMeanFitness = TmpMeanFitness/program.m_MultiRuns;
-        System.out.println("("+program.m_MultiRuns+"/"+program.m_FitnessCalls+") Mean Fitness : " + TmpMeanFitness + " Mean Calls needed: " + TmpMeanCalls);
-    }
+//    /** This main method will start a simple hillclimber.
+//     * No arguments necessary.
+//     * @param args
+//     */
+//    public static void main(String[] args) {
+//        HillClimbing program = new HillClimbing();
+//        int TmpMeanCalls = 0, TmpMeanFitness = 0;
+//        for (int i = 0; i < program.m_MultiRuns; i++) {
+//            program.defaultInit();
+//            program.defaultOptimize();
+//            TmpMeanCalls += program.m_FitnessCallsNeeded;
+//            TmpMeanFitness += program.m_Best.defaultEvaulateAsMiniBits();
+//        }
+//        TmpMeanCalls = TmpMeanCalls/program.m_MultiRuns;
+//        TmpMeanFitness = TmpMeanFitness/program.m_MultiRuns;
+//        System.out.println("("+program.m_MultiRuns+"/"+program.m_FitnessCalls+") Mean Fitness : " + TmpMeanFitness + " Mean Calls needed: " + TmpMeanCalls);
+//    }
 
     /** This method allows you to add the LectureGUI as listener to the Optimizer
      * @param ea
