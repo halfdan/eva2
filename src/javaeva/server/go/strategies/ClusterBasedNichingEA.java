@@ -93,9 +93,11 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
     public void init() {
         this.m_Optimizer.addPopulationChangedEventListener(this);
         this.m_Undifferentiated = new Population();
+        this.m_Undifferentiated.setUseHistory(true);
         this.m_Undifferentiated.setPopulationSize(this.m_PopulationSize);
         this.m_Species = new ArrayList<Population>();
         this.m_Problem.initPopulation(this.m_Undifferentiated);
+        this.getPopulation().setUseHistory(true);
         this.evaluatePopulation(this.m_Undifferentiated);
         this.firePropertyChangedEvent("FirstGenerationPerformed");
     }
@@ -106,6 +108,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
      */
     public void initByPopulation(Population pop, boolean reset) {
         this.m_Optimizer.addPopulationChangedEventListener(this);
+        pop.setUseHistory(true);
         this.m_Undifferentiated = (Population)pop.clone();
         if (reset) this.m_Undifferentiated.init();
         this.m_Undifferentiated.setPopulationSize(this.m_PopulationSize);
@@ -241,6 +244,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
      */
     private Population initializeIndividuals(int n) {
         Population result = new Population();
+        result.setUseHistory(true);
         result.setPopulationSize(n);
         //@todo: crossover between species is to be impelemented
         this.m_Problem.initPopulation(result);
@@ -374,6 +378,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
                 ClusterResult   = this.m_CAForSpeciesDifferentation.cluster(this.m_Undifferentiated);
                 this.m_Undifferentiated = ClusterResult[0];
                 for (int j = 1; j < ClusterResult.length; j++) {
+                	ClusterResult[j].setUseHistory(true);
                     ClusterResult[j].m_History = new ArrayList();
                     newSpecies.add(ClusterResult[j]);
                 }
@@ -382,9 +387,11 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
                         // only active populations are clustered
                         ClusterResult = this.m_CAForSpeciesDifferentation.cluster((Population)this.m_Species.get(i));
                         this.m_Undifferentiated.addPopulation(ClusterResult[0]);
+                        ClusterResult[0].setUseHistory(true);
                         this.m_Undifferentiated.setPopulationSize(this.m_Undifferentiated.getPopulationSize() + ClusterResult[0].size());
                         for (int j = 1; j < ClusterResult.length; j++) {
                             ClusterResult[j].setPopulationSize(ClusterResult[j].size());
+                        	ClusterResult[j].setUseHistory(true);
                             if (ClusterResult.length > 2) ClusterResult[j].m_History = new ArrayList();
                             newSpecies.add(ClusterResult[j]);
                         }
@@ -486,6 +493,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
         // output the result
         if (this.m_Debug) System.out.println("-Number of species: " + this.m_Species.size());
         this.m_Population = new Population();
+        m_Population.setUseHistory(true);
         this.m_Population = (Population)this.m_Undifferentiated.clone();
         if (this.m_Debug) System.out.println("initing with " + this.m_Undifferentiated.size());
         for (int i = 0; i < this.m_Species.size(); i++) {
