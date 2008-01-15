@@ -16,7 +16,7 @@ import java.util.jar.JarInputStream;
 /**
  * Allow for java to list Classes that exist in one package and can be instantiated from
  * the classpath, either directly or through a jar on the classpath.
- * So far, jars which are located <i>whithin</i> another jar will not be searched.
+ * So far, jars which are located <i>within</i> another jar will not be searched.
  * 
  * @author mkron
  *
@@ -44,26 +44,30 @@ public class ReflectPackage {
 		try {
 			// Get a File object for the package
 			File directory = null;
+			String dir = null;
 			try {
 				ClassLoader cld = ClassLoader.getSystemClassLoader();
 				if (cld == null) {
 					throw new ClassNotFoundException("Can't get class loader.");
 				}
-				String dir = path + "/" + pckgname.replace(".","/");
+				dir = path + "/" + pckgname.replace(".","/");
 
-				if (TRACE) System.out.println(path);
+				if (TRACE) System.out.println(".. opening " + path);
 
 				directory = new File(dir);
 
 			} catch (NullPointerException x) {
-				if (TRACE) System.err.println(directory.getPath()+ " not found in " + path);
+				if (TRACE) {
+					System.err.println(directory.getPath()+ " not found in " + path);
+					System.err.println("directory " + (directory.exists() ? "exists" : "doesnt exist"));
+				}
 				return set;
 			}
 			if (directory.exists()) {
 				// Get the list of the files contained in the package
 				getClassesFromDirFltr(set, directory, pckgname, includeSubs, reqSuperCls);
 			} else {
-				if (TRACE) System.err.println(directory.getPath()+ " not found in " + path);
+				if (TRACE) System.err.println(directory.getPath() + " doesnt exist in " + path + ", dir was " + dir);
 			}
 		} catch(ClassNotFoundException e) {
 			System.err.println(e.getMessage());

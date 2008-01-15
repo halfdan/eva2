@@ -196,14 +196,16 @@ public class GAIndividualIntegerData extends AbstractEAIndividual implements Int
      */
     public void SetIntegerDataLamarkian(int[] doubleData) {
         this.SetIntegerData(doubleData);
-        int[] locus = new int[2];
-        locus[0] = 0;
-        locus[1] = 0;
-        for (int i = 0; i < doubleData.length; i++) {
-            locus[0] += locus[1];
-            locus[1] = this.m_CodingLenghts[i];
-            this.m_IntegerCoding.codeValue(doubleData[i], this.m_Range[i], this.m_Genotype, locus);
-       }
+        if (doubleData != null) {
+	        int[] locus = new int[2];
+	        locus[0] = 0;
+	        locus[1] = 0;
+	        for (int i = 0; i < doubleData.length; i++) {
+	            locus[0] += locus[1];
+	            locus[1] = this.m_CodingLenghts[i];
+	            this.m_IntegerCoding.codeValue(doubleData[i], this.m_Range[i], this.m_Genotype, locus);
+	        }
+        }
     }
 
 /************************************************************************************

@@ -58,9 +58,10 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
     private int                             m_PopulationSize                = 50;
 
     private boolean                         m_Debug     = true;
-    private int                             m_ShowCycle = 2;
-    private TopoPlot                        m_Topology;
+    private int                             m_ShowCycle = 10;
+    transient private TopoPlot              m_Topology;
     private int                 			haltingWindow         			 = 15;
+    private double							muLambdaRatio					 = 0.5;
 
 
     public ClusterBasedNichingEA() {
@@ -284,6 +285,23 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
         return true;
     }
 
+    private Population optimizeSpecies(Population species) {
+    	m_Optimizer.setPopulation(species);
+    	if (m_Optimizer instanceof EvolutionStrategies) {
+    		EvolutionStrategies es = (EvolutionStrategies)m_Optimizer;
+    		int mu = (int)(muLambdaRatio*species.size());
+    		if (mu < 1) mu = 1;
+    		else if (mu >= species.size()) {
+    			if (m_Debug) System.err.println("warning, muLambdaRatio produced mu >= lambda.. reducing to mu=lambda-1");
+    			mu = species.size() - 1;
+    		}
+    		es.setMyu(mu);
+    		es.setLambda(species.size());
+    	}
+    	this.m_Optimizer.optimize();
+    	return m_Optimizer.getPopulation();
+    }
+    
     public void optimize() {
     	// plot the populations
     	if (this.m_ShowCycle > 0) {
@@ -304,9 +322,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
         this.m_Undifferentiated.setPopulationSize(this.m_Undifferentiated.size());
         if (isActive(m_Undifferentiated)) {
             this.capMutationRate(this.m_Undifferentiated, 0); // MK TODO this sets mutation rate to 0! why?
-            this.m_Optimizer.setPopulation(this.m_Undifferentiated);
-            this.m_Optimizer.optimize();
-            this.m_Undifferentiated = this.m_Optimizer.getPopulation();
+            m_Undifferentiated = optimizeSpecies(m_Undifferentiated);
         } else {
             this.m_Undifferentiated.incrGeneration();
         }
@@ -352,13 +368,15 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
                 } else {
                 	// actually optimize D_i
                     this.capMutationRate(curSpecies, 0.05);
-                    this.m_Optimizer.setPopulation(curSpecies);
-                    this.m_Optimizer.optimize();
-                    this.m_Species.set(i, this.m_Optimizer.getPopulation());
+                    //this.m_Optimizer.setPopulation(curSpecies);
+                    //this.m_Optimizer.optimize();
+                    //this.m_Species.set(i, this.m_Optimizer.getPopulation());
+                    this.m_Species.set(i, optimizeSpecies(curSpecies));
                     curSpecies = ((Population)this.m_Species.get(i)); // reset to expected population, just to be sure
                 }
             } else {
                 // a single individual species, this element is inactive
+            	if (m_Debug) System.out.println("inactive species not optimized");
             }
             // This is necessary to keep track to the function calls needed
             this.m_Undifferentiated.SetFunctionCalls(this.m_Undifferentiated.getFunctionCalls() + curSpecies.getFunctionCalls());
@@ -492,9 +510,8 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
         }
         // output the result
         if (this.m_Debug) System.out.println("-Number of species: " + this.m_Species.size());
-        this.m_Population = new Population();
-        m_Population.setUseHistory(true);
         this.m_Population = (Population)this.m_Undifferentiated.clone();
+        m_Population.setUseHistory(true);
         if (this.m_Debug) System.out.println("initing with " + this.m_Undifferentiated.size());
         for (int i = 0; i < this.m_Species.size(); i++) {
             if (this.m_Debug) System.out.println("Adding deme " + i + " with size " + ((Population)this.m_Species.get(i)).size());
@@ -596,7 +613,8 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
      * @return The population of current solutions to a given problem.
      */
     public Population getPopulation() {
-        this.m_Population = (Population)this.m_Undifferentiated.clone();
+        this.m_Population = (Population)m_Undifferentiated.clone();
+//        m_Population.addPopulation(this.m_Undifferentiated);
         for (int i = 0; i < this.m_Species.size(); i++) this.m_Population.addPopulation((Population)this.m_Species.get(i));
         return this.m_Population;
     }
@@ -669,12 +687,16 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
     }
     public void setOptimizer(InterfaceOptimizer b){
         this.m_Optimizer = b;
+    	if (b instanceof EvolutionStrategies) {
+    		EvolutionStrategies es = (EvolutionStrategies)b;
+    		setMuLambdaRatio(es.getMyu()/(double)es.getLambda());
+    	}
     }
     public String optimizerTipText() {
         return "Choose a population based optimizing technique to use.";
     }
 
-    /** The cluster algorithm on which the species differentation is based
+    /** The cluster algorithm on which the species differentiation is based
      * @return The current clustering method
      */
     public InterfaceClustering getDifferentationCA() {
@@ -737,4 +759,23 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
     public String populationSizeTipText() {
         return "Determines the size of the initial population.";
     }
+
+//	/**
+//	 * @return the muLambdaRatio
+//	 */
+//	public double getMuLambdaRatio() {
+//		return muLambdaRatio;
+//	}
+
+	/**
+	 * This is now set if an ES is set as optimizer.
+	 * @param muLambdaRatio the muLambdaRatio to set
+	 */
+	public void setMuLambdaRatio(double muLambdaRatio) {
+		this.muLambdaRatio = muLambdaRatio;
+	}
+	
+//	public String muLambdaRatioTipText() {
+//		return "ratio between mu and lambda for a CBN-ES"; 
+//	}
 }

@@ -21,8 +21,7 @@ public class FM0Problem extends F1Problem implements Interface2DBorderProblem, I
     protected InterfaceDistanceMetric   m_Metric = new PhenotypeMetricDoubleData();
     protected double                    m_GlobalOpt = 0;
     protected Population                m_Optima;
-    protected double                    m_XEpsilon = 0.05;
-    protected double                    m_YEpsilon = 0.05;
+    protected double                    m_Epsilon = 0.05;
     protected boolean                   m_UseXCrit = true;
     protected boolean                   m_UseYCrit = true;
     protected double[][]                m_Range;
@@ -64,12 +63,9 @@ public class FM0Problem extends F1Problem implements Interface2DBorderProblem, I
         this.m_UseTestConstraint = b.m_UseTestConstraint;        
         //FM0Problem
         this.m_GlobalOpt        = b.m_GlobalOpt;
-        this.m_XEpsilon         = b.m_XEpsilon;
-        this.m_YEpsilon         = b.m_YEpsilon;
+        this.m_Epsilon         = b.m_Epsilon;
         this.m_UseXCrit         = b.m_UseXCrit;
         this.m_UseYCrit         = b.m_UseYCrit;
-        this.m_XEpsilon            = b.m_XEpsilon;
-        this.m_YEpsilon          = b.m_YEpsilon;
         this.m_UseXCrit          = b.m_UseXCrit;
         if (b.m_Metric != null)
             this.m_Metric           = (InterfaceDistanceMetric)((InterfaceDistanceMetric)b.m_Metric).clone();
@@ -187,15 +183,21 @@ public class FM0Problem extends F1Problem implements Interface2DBorderProblem, I
      * @param y
      */
     protected void add2DOptimum(double x, double y) {
-        InterfaceDataTypeDouble tmpIndy;
-        double[]                point;
-
-        tmpIndy = (InterfaceDataTypeDouble)((AbstractEAIndividual)this.m_Template).clone();
-        point = new double[2];
+        double[] point = new double[2];
         point[0] = x;
         point[1] = y;
+        addOptimum(point);
+    }
+    
+    /** This method allows you to add a 2d optima to the list of optima
+     * @param x
+     * @param y
+     */
+    protected void addOptimum(double[] point) {
+        InterfaceDataTypeDouble tmpIndy;
+        tmpIndy = (InterfaceDataTypeDouble)((AbstractEAIndividual)this.m_Template).clone();
         tmpIndy.SetDoubleDataLamarkian(point);
-        ((AbstractEAIndividual)tmpIndy).SetFitness(0, this.doEvaluationUnNormalized(point)[0]);
+        ((AbstractEAIndividual)tmpIndy).SetFitness(this.doEvaluationUnNormalized(point));
         this.m_GlobalOpt = Math.max(this.m_GlobalOpt, ((AbstractEAIndividual)tmpIndy).getFitness(0));
         this.m_Optima.add(tmpIndy);
     }
@@ -244,7 +246,7 @@ public class FM0Problem extends F1Problem implements Interface2DBorderProblem, I
             for (int j = 0; j < this.m_Optima.size(); j++) {
                 opt = (AbstractEAIndividual) this.m_Optima.get(j);
                 if (!found[j]) {
-                    if (this.m_Metric.distance(posOpt, opt) < this.m_XEpsilon) found[j] = true;
+                    if (this.m_Metric.distance(posOpt, opt) < this.m_Epsilon) found[j] = true;
                 }
             }
         }
@@ -271,7 +273,7 @@ public class FM0Problem extends F1Problem implements Interface2DBorderProblem, I
             for (int j = 0; j < this.m_Optima.size(); j++) {
                 if (!found[j]) {
                     opt = (AbstractEAIndividual) this.m_Optima.get(j);
-                    if (this.m_Metric.distance(posOpt, opt) < this.m_XEpsilon) {
+                    if (this.m_Metric.distance(posOpt, opt) < this.m_Epsilon) {
                         found[j] = true;
                         result += this.m_GlobalOpt - posOpt.getFitness(0);
                         //System.out.println("Found Optimum " + j + ".: " + (this.m_GlobalOpt - posOpt.getFitness(0)));
@@ -324,4 +326,22 @@ public class FM0Problem extends F1Problem implements Interface2DBorderProblem, I
         range[1] = 5;
         return range;
     }
+
+	/**
+	 * @return the m_Epsilon
+	 */
+	public double getEpsilon() {
+		return m_Epsilon;
+	}
+
+	/**
+	 * @param epsilon the m_Epsilon to set
+	 */
+	public void setEpsilon(double epsilon) {
+		m_Epsilon = epsilon;
+	}
+	
+	public String epsilonTipText() {
+		return "Epsilon criterion indicating whether an optimum was found";
+	}
 }

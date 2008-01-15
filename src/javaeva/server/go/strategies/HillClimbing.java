@@ -83,7 +83,7 @@ public class HillClimbing implements InterfaceOptimizer, java.io.Serializable {
             if (((AbstractEAIndividual)original.get(i)).isDominatingDebConstraints(((AbstractEAIndividual)this.m_Population.get(i)))) {
                 this.m_Population.remove(i);
                 this.m_Population.add(i, original.get(i));
-            }
+            } // else: mutation improved the individual
         }
         this.m_Population.incrGeneration();
 //        for (int i = 0; i < this.m_Population.size(); i++) {

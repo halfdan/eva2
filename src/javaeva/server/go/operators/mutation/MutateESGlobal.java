@@ -25,11 +25,12 @@ public class MutateESGlobal implements InterfaceMutation, java.io.Serializable {
     protected SelectedTag m_CrossoverType;
 
     public MutateESGlobal() {
-        Tag[] tag = new Tag[3];
-        tag[0] = new Tag(0, "None");
-        tag[1] = new Tag(1, "Intermediate");
-        tag[2] = new Tag(2, "Discrete");
-        this.m_CrossoverType = new SelectedTag(0, tag);
+        initTags();
+    }
+
+    public MutateESGlobal(double mutationStepSize) {
+        initTags();
+        setMutationStepSize(mutationStepSize);
     }
     
     public MutateESGlobal(MutateESGlobal mutator) {
@@ -39,6 +40,14 @@ public class MutateESGlobal implements InterfaceMutation, java.io.Serializable {
         this.m_CrossoverType        = (SelectedTag)mutator.m_CrossoverType.clone();
     }
 
+    protected void initTags() {
+        Tag[] tag = new Tag[3];
+        tag[0] = new Tag(0, "None");
+        tag[1] = new Tag(1, "Intermediate");
+        tag[2] = new Tag(2, "Discrete");
+        this.m_CrossoverType = new SelectedTag(0, tag);
+    }
+    
     /** This method will enable you to clone a given mutation operator
      * @return The clone
      */
