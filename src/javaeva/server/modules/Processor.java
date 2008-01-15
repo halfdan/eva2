@@ -16,6 +16,7 @@ import javaeva.server.go.PopulationInterface;
 import javaeva.server.go.individuals.AbstractEAIndividual;
 import javaeva.server.go.operators.terminators.EvaluationTerminator;
 import javaeva.server.go.populations.Population;
+import javaeva.server.go.problems.InterfaceMultimodalProblem;
 import javaeva.server.go.strategies.InterfaceOptimizer;
 import javaeva.server.go.tools.RandomNumberGenerator;
 import javaeva.server.stat.Statistics;
@@ -208,7 +209,11 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
 //        		m_Statistics.createNextGenerationPerformed((PopulationInterface)this.m_ModulParameter.getOptimizer().getPopulation());
 //            	m_ListenerModule.updateProgress(getStatusPercent(m_ModulParameter.getOptimizer().getPopulation(), runCounter, m_Statistics.getStatisticsParameter().getMultiRuns()));
 //        	} // end of while (m_doOpt==true)
-
+        	if (m_ModulParameter.getProblem() instanceof InterfaceMultimodalProblem) {
+        		//	TODO improve this?
+        		InterfaceMultimodalProblem mmProb = (InterfaceMultimodalProblem)m_ModulParameter.getProblem();
+        		System.out.println("no optima found: " + mmProb.getNumberOfFoundOptima(m_ModulParameter.getOptimizer().getPopulation()));
+        	}
         	m_Statistics.stopOptPerformed(isOptRunning()); // stop is "normal" if opt wasnt set false by the user
         }
         setOptRunning(false); // normal finish
