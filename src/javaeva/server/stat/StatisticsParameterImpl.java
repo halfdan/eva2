@@ -270,6 +270,10 @@ public class StatisticsParameterImpl implements StatisticsParameter, Serializabl
     return "File name for the result file, if 'none' no output file will be created.";
   }
 
+  public String convergenceRateThresholdTipText() {
+	  return "Provided the optimal fitness is at zero, give the threshold below which it is considered as 'reached'";
+  }
+  
   /**
    *
    * @param x

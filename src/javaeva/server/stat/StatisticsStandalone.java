@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 
+import wsi.ra.tool.StatisticUtils;
+
 import javaeva.server.go.IndividualInterface;
 import javaeva.server.go.PopulationInterface;
 
@@ -211,7 +213,7 @@ public class StatisticsStandalone implements Statistics, Serializable {
 
 		  m_OptRunsPerformed++;
 		  if (m_BestIndividual != null) {
-			  if (m_BestIndividual.getFitness()[0] < this.m_StatisticsParameter.getConvergenceRateThreshold())
+			  if (StatisticUtils.norm(m_BestIndividual.getFitness()) < this.m_StatisticsParameter.getConvergenceRateThreshold())
 				  m_NumberOfConvergence++;
 		  }
 

@@ -25,7 +25,7 @@ import javaeva.tools.SelectedTag;
 //import javax.vecmath.GMatrix;
 
 /** 
- * This implements particel swarm optimization by Kennedy and Eberhardt.
+ * This implements particle swarm optimization by Kennedy and Eberhardt.
  * Works fine but is limited to real-valued genotypes and the original
  * version ignored range constraints on the decision variables. I've
  * implemented 'brakes' before an individual is updated it is checked

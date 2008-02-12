@@ -57,7 +57,7 @@ public class FitnessValueTerminator implements TerminatorInterface,
    *
    */
   public String toString() {
-    String ret = "\r\nFitnessValueTerminator m_FitnessValue ="+m_FitnessValue;
+    String ret = "FitnessValueTerminator,m_FitnessValue="+m_FitnessValue;
     return ret;
   }
   /**

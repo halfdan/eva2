@@ -320,6 +320,22 @@ public class StatisticUtils
     }
     return sum;
   }
+  
+  /**
+   * Computes the 2-norm of an array of doubles.
+   *
+   * @param doubles the array of double
+   * @return the 2-norm of the elements
+   */
+  public static double norm(double[] doubles) {
+
+    double sqSum = 0;
+
+    for (int i = 0; i < doubles.length; i++) {
+    	sqSum += doubles[i]*doubles[i];
+    }
+    return Math.sqrt(sqSum);
+  }
 
   /**
    * Computes the sum of the elements of an array of integers.

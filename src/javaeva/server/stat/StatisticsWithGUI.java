@@ -32,6 +32,7 @@ import javaeva.tools.EVAERROR;
 import wsi.ra.jproxy.MainAdapterClient;
 import wsi.ra.jproxy.RMIProxyLocal;
 import wsi.ra.jproxy.RMIProxyRemote;
+import wsi.ra.tool.StatisticUtils;
 
 /*==========================================================================*
  * CLASS DECLARATION
@@ -76,6 +77,7 @@ public class StatisticsWithGUI implements Serializable, Statistics {
 //	private String m_FileName = "";
 //	private static boolean m_useMedian = false;
 	private double[] m_SpecificData;
+	private int m_ConvergenceCnt;
 	/**
 	 *
 	 */
@@ -112,6 +114,7 @@ public class StatisticsWithGUI implements Serializable, Statistics {
 					m_MainAdapterClient);
 		}
 		m_OptRunsPerformed = 0;
+		m_ConvergenceCnt = 0;
 		if (TRACE)
 			System.out.println("Constructor RMIStatistics --> end");
 	}
@@ -122,6 +125,7 @@ public class StatisticsWithGUI implements Serializable, Statistics {
 	public synchronized void startOptPerformed(String InfoString, int runnumber) {
 		if (runnumber == 0) {
 			m_OptRunsPerformed = 0;
+			m_ConvergenceCnt = 0;
 			m_firstPlot = true;
 			m_StatisticsParameter.saveInstance();
 		}
@@ -187,6 +191,12 @@ public class StatisticsWithGUI implements Serializable, Statistics {
 			for (int i = 0; i < m_BestFitness.length; i++)
 				s = s + " f[" + i + "]=" + m_BestFitness[i];
 		}
+		
+		if (m_BestIndividual != null) {
+			if (StatisticUtils.norm(m_BestIndividual.getFitness()) < this.m_StatisticsParameter.getConvergenceRateThreshold()) {
+				m_ConvergenceCnt++;
+			}
+		}
 
 		printToTextListener(" Best solution fitness: " + s);
 		if (m_OptRunsPerformed <= m_StatisticsParameter.getMultiRuns()) {
@@ -219,7 +229,9 @@ public class StatisticsWithGUI implements Serializable, Statistics {
 			}
 		}
 		if (m_OptRunsPerformed == m_StatisticsParameter.getMultiRuns()) {
+			printToTextListener("*******\n Reached target " + m_ConvergenceCnt + " times with threshold " + m_StatisticsParameter.getConvergenceRateThreshold() + ", rate " + m_ConvergenceCnt/(double)m_StatisticsParameter.getMultiRuns());
 			m_OptRunsPerformed = 0;
+			m_ConvergenceCnt = 0;
 			if (TRACE)
 				System.out.println("stopOptPerformed");
 			if (TRACE)

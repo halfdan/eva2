@@ -52,7 +52,7 @@ public class GenerationTerminator implements  TerminatorInterface,
    *
    */
   public String toString() {
-    String ret = "\r\nGenerations calls="+m_Generations;
+    String ret = "Generations calls="+m_Generations;
     return ret;
   }
   /**

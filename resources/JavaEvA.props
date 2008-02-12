@@ -5,15 +5,14 @@
 DefaultModule = Genetic_Optimization
 
 ## Uncomment this to show all loadable modules. Most are redundant, though.
-ShowModules
+# ShowModules
 
 ServerList = localhost,134.2.172.14,ranode22
+
+#################### Internals: Do not alter!
 
 # base class for modules. Do not alter!
 ModulePackage = javaeva.server.modules
 
 # filter class for modules. Do not alter!
 ModuleFilterClass = javaeva.server.modules.AbstractModuleAdapter
-
-###################### The GO part ######################################
-# there are no further props necessary

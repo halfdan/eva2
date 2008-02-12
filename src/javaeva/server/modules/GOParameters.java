@@ -102,13 +102,13 @@ public class GOParameters implements InterfaceGOParameters, Serializable {
         if (this.m_Optimizer != null) this.m_Optimizer.addPopulationChangedEventListener(this.m_Listener);
     }
 
-    /**
-     *
-     */
-    public String toString() {
-        String ret = "";//"\r\nGO-Parameter:"+this.m_Problem.getStringRepresentationForProblem()+"\n"+this.m_Optimizer.getStringRepresentation();
-        return ret;
-    }
+//    /**
+//     *
+//     */
+//    public String toString() {
+//        String ret = "";//"\r\nGO-Parameter:"+this.m_Problem.getStringRepresentationForProblem()+"\n"+this.m_Optimizer.getStringRepresentation();
+//        return ret;
+//    }
 
     /** This method returns a global info string
      * @return description
