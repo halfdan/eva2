@@ -846,26 +846,26 @@ public class GenericObjectEditor implements PropertyEditor {
 	/**
 	 *
 	 */
-	public static void main(String [] args) {
-		try {
-			PropertyEditorManager.registerEditor(SelectedTag.class,TagEditor.class);
-			PropertyEditorManager.registerEditor(double[].class,GenericArrayEditor.class);
-			GenericObjectEditor editor = new GenericObjectEditor();
-			editor.setClassType(StatisticsParameter.class);
-			editor.setValue(new StatisticsParameterImpl());
-			PropertyDialog pd = new PropertyDialog(editor,EVAHELP.cutClassName(editor.getClass().getName()),110, 120);
-			pd.addWindowListener(new WindowAdapter() {
-				public void windowClosing(WindowEvent e) {
-					PropertyEditor pe = ((PropertyDialog)e.getSource()).getEditor();
-					Object c = (Object)pe.getValue();
-					String options = "";
-					if (TRACE) System.out.println(c.getClass().getName() + " " + options);
-					System.exit(0);
-				}
-			});
-		} catch (Exception ex) {
-			ex.printStackTrace();
-			System.out.println(ex.getMessage());
-		}
-	}
+//	public static void main(String [] args) {
+//		try {
+//			PropertyEditorManager.registerEditor(SelectedTag.class,TagEditor.class);
+//			PropertyEditorManager.registerEditor(double[].class,GenericArrayEditor.class);
+//			GenericObjectEditor editor = new GenericObjectEditor();
+//			editor.setClassType(StatisticsParameter.class);
+//			editor.setValue(new StatisticsParameterImpl());
+//			PropertyDialog pd = new PropertyDialog(editor,EVAHELP.cutClassName(editor.getClass().getName()),110, 120);
+//			pd.addWindowListener(new WindowAdapter() {
+//				public void windowClosing(WindowEvent e) {
+//					PropertyEditor pe = ((PropertyDialog)e.getSource()).getEditor();
+//					Object c = (Object)pe.getValue();
+//					String options = "";
+//					if (TRACE) System.out.println(c.getClass().getName() + " " + options);
+//					System.exit(0);
+//				}
+//			});
+//		} catch (Exception ex) {
+//			ex.printStackTrace();
+//			System.out.println(ex.getMessage());
+//		}
+//	}
 }

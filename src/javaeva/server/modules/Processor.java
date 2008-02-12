@@ -8,7 +8,7 @@ import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import javaeva.gui.BeanTest;
+import javaeva.gui.BeanInspector;
 import javaeva.server.go.InterfaceGOParameters;
 import javaeva.server.go.InterfacePopulationChangedEventListener;
 import javaeva.server.go.InterfaceProcessor;
@@ -179,9 +179,9 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
         	m_Statistics.printToTextListener("****** Multirun "+runCounter);
         	m_Statistics.startOptPerformed(Info,runCounter);
         	m_Statistics.printToTextListener("Module parameters:");
-        	m_Statistics.printToTextListener(BeanTest.toString(m_ModulParameter));
+        	m_Statistics.printToTextListener(BeanInspector.toString(m_ModulParameter));
         	m_Statistics.printToTextListener("Statistics parameters:");
-        	m_Statistics.printToTextListener(BeanTest.toString(m_Statistics.getStatisticsParameter()));
+        	m_Statistics.printToTextListener(BeanInspector.toString(m_Statistics.getStatisticsParameter()));
         	
         	this.m_ModulParameter.getOptimizer().SetProblem(this.m_ModulParameter.getProblem());
         	if (this.m_createInitialPopulations) this.m_ModulParameter.getOptimizer().init();
@@ -245,15 +245,15 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
                 
     	if (this.m_OutputFile != null) {
 	        // data to be stored in file
-	        double tmpd = 0;
+//	        double tmpd = 0;
 	        StringBuffer  tmpLine = new StringBuffer("");
 	        tmpLine.append(population.getFunctionCalls());
 	        tmpLine.append("\t");
 	        tmpLine.append(population.getBestEAIndividual().getFitness(0));
 	        tmpLine.append("\t");
-	        for (int i = 0; i < population.size(); i++) tmpd += ((AbstractEAIndividual)population.get(i)).getFitness(0)/(double)population.size();
-	        tmpLine.append("\t");
-	        tmpLine.append(tmpd);
+	        double[] fit = population.getMeanFitness();
+	        //for (int i = 0; i < population.size(); i++) tmpd += ((AbstractEAIndividual)population.get(i)).getFitness(0)/(double)population.size();
+	        tmpLine.append(BeanInspector.toString(fit));
 	        tmpLine.append("\t");
 	        tmpLine.append(population.getWorstEAIndividual().getFitness(0));
 	        tmpLine.append("\t");
@@ -267,13 +267,14 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
      * @param line      The line that is to be added to the file
      */
     private void writeToFile(String line) {
-        String write = line + "\n";
+        //String write = line + "\n";
         if (this.m_OutputFile == null) return;
         try {
-            this.m_OutputFile.write(write, 0, write.length());
+            this.m_OutputFile.write(line, 0, line.length());
+            this.m_OutputFile.write('\n');
             this.m_OutputFile.flush();
         } catch (IOException e) {
-            System.out.println("Problems writing to output file!");
+            System.err.println("Problems writing to output file!");
         }
     }
     

@@ -150,4 +150,26 @@ public class SelectedTag implements java.io.Serializable {
 			return false;
 		}
 	}
+	
+	public String toString() {
+		return m_Tags[m_Selected].getString();
+//		Character selSign = '*';
+//		Character separator = '|';
+//		StringBuffer sbuf;
+//		if (m_Selected != 0) sbuf = new StringBuffer(m_Tags[0].getString());
+//		else {
+//			sbuf = new StringBuffer(selSign.toString());
+//			sbuf.append(m_Tags[0].getString());
+//			sbuf.append(selSign);
+//		}
+//		for (int i=1; i<m_Tags.length; i++) {
+//			sbuf.append(separator);
+//			if (m_Selected == i) {
+//				sbuf.append(selSign);
+//				sbuf.append(m_Tags[i].getString());
+//				sbuf.append(selSign);
+//			} else sbuf.append(m_Tags[i].getString());
+//		}
+//		return sbuf.toString();
+	}
 }

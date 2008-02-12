@@ -9,6 +9,7 @@ import javaeva.server.go.individuals.InterfaceDataTypeProgram;
 import javaeva.server.go.individuals.codings.gp.InterfaceProgram;
 import javaeva.server.go.operators.moso.MOSONoConvert;
 import javaeva.server.go.populations.Population;
+import javaeva.server.go.strategies.InterfaceOptimizer;
 
 
 import javax.swing.*;
@@ -332,6 +333,14 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
         } else {
             return false;
         }
+    }
+    
+    /**
+     * TODO
+     * @param opt
+     */
+    public void informAboutOptimizer(InterfaceOptimizer opt) {
+    	
     }
 
 /**********************************************************************************************************************

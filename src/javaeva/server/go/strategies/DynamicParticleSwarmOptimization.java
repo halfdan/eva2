@@ -5,6 +5,9 @@ import javaeva.server.go.individuals.AbstractEAIndividual;
 import javaeva.server.go.individuals.InterfaceDataTypeDouble;
 import javaeva.server.go.individuals.InterfaceESIndividual;
 import javaeva.server.go.populations.Population;
+import javaeva.server.go.problems.AbstractOptimizationProblem;
+import javaeva.server.go.problems.InterfaceOptimizationProblem;
+import javaeva.server.go.tools.AbstractObjectEditor;
 import javaeva.server.go.tools.RandomNumberGenerator;
 import javaeva.tools.SelectedTag;
 
@@ -436,6 +439,14 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
     	if (doSpeedAdaptation) setSpeedLimit(2*getInitialVelocity());
     }
 
+	
+    public void SetProblem (InterfaceOptimizationProblem problem) {
+    	super.SetProblem(problem);
+    	if (problem instanceof AbstractOptimizationProblem) {
+    		((AbstractOptimizationProblem)problem).informAboutOptimizer(this);
+    	}
+    }
+    
     /** This method will return a string describing all properties of the optimizer
      * and the applied methods.
      * @return A descriptive string

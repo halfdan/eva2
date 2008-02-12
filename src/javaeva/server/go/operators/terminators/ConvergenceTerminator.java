@@ -15,6 +15,7 @@ package javaeva.server.go.operators.terminators;
  *==========================================================================*/
 import java.io.Serializable;
 
+import javaeva.gui.BeanInspector;
 import javaeva.server.go.PopulationInterface;
 import javaeva.server.go.TerminatorInterface;
 import javaeva.server.go.operators.distancemetric.PhenotypeMetric;
@@ -111,10 +112,9 @@ Serializable {
 	/**
 	 *
 	 */
-	public String toString() {
-		String ret = "\r\nConvergenceTerminator";
-		return ret;
-	}
+//	public String toString() {
+//		return BeanTest.toString(this);
+//	}
 
 	/**
 	 *
@@ -131,7 +131,7 @@ Serializable {
 	}
 
 	public String fitnessPerCentTipText() {
-		return "Terminate if the population has not improved by the given percentage for n generations";
+		return "Terminate if the fitness has not improved by this percentage for a whole stagnation time period";
 	}
 	
 	/**

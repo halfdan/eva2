@@ -59,7 +59,7 @@ public class EvaluationTerminator implements TerminatorInterface,
    *
    */
   public String toString() {
-    String ret = "\r\nEvaluationTerminator fitness calls="+m_FitnessCalls;
+    String ret = "EvaluationTerminator,calls="+m_FitnessCalls;
     return ret;
   }
   /**
