@@ -1,0 +1,1124 @@
+#LyX 1.4.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 245
+\begin_document
+\begin_header
+\textclass article
+\language english
+\inputencoding auto
+\fontscheme default
+\graphics default
+\paperfontsize default
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+JavaEvA 2 Short Documentation
+\end_layout
+
+\begin_layout Standard
+\begin_inset LatexCommand \tableofcontents{}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\newpage
+
+\end_layout
+
+\begin_layout Section
+Introduction
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+\noun on
+JavaEvA 2
+\emph default
+\noun default
+ (a 
+\bar under
+Java
+\bar default
+ implementation of 
+\bar under
+Ev
+\bar default
+olutionary 
+\bar under
+A
+\bar default
+lgorithms, revised version 2) is an extensive heuristic optimization framework
+ with emphasis on Evolutionary Algorithms.
+ It is a revised version of the 
+\noun on
+JavaEvA
+\noun default
+ (!!! cite TechRep) optimization toolbox, which has been developed as a
+ resumption of the former 
+\noun on
+EvA
+\noun default
+ software package (!!! Wakunda97EvA,Wakunda01Parallele ).
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+JavaEvA 2
+\noun default
+ tries to integrate several, preferably population based optimization methods,
+ such as Evolution Strategies, Genetic Algorithms, Differential Evolution,
+ Particle Swarm Optimization, as well as classical techniques such as the
+ multi-start Hill-Climber or Simulated Annealing.
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+JavaEvA 2
+\noun default
+ aims at two groups of users.
+ First, the standard user who does not know much about the theory of Evolutionar
+y Algorithms, but wants to use Evolutionary Algorithms to solve his application
+ problem.
+ Second, the experienced programmer who wants to investigate the performance
+ of different optimization algorithms or wants to compare the effect of
+ alternative mutation or crossover operators.
+ The latter usually knows more about Evolutionary Algorithms or Optimization
+ Algorithms and is able to extend 
+\noun on
+JavaEvA 2
+\noun default
+ by adding more specialized optimization strategies or solution representations.
+\end_layout
+
+\begin_layout Section
+Quick Start
+\end_layout
+
+\begin_layout Subsection
+Quickly Running 
+\noun on
+JavaEvA
+\end_layout
+
+\begin_layout Standard
+To quickly test
+\noun on
+ JavaEvA 2
+\noun default
+, we recommend you download the jar-package JE2Base.jar and start the GUI.
+ To do this under GNU/Linux, you can just type:
+\end_layout
+
+\begin_layout Quotation
+$ java -cp JE2Base.jar javaeva.client.EvAClient
+\end_layout
+
+\begin_layout Standard
+For technical reasons, we do not recommend using the java option 
+\emph on
+-jar
+\emph default
+ with 
+\noun on
+JavaEvA 2
+\noun default
+.
+\end_layout
+
+\begin_layout Standard
+If you want to work on the source code or use the API directly, extract
+ and compile the source code.
+ It is also vital to copy the resource folder to the location where the
+ compiled class files are located.
+ You can then again start the GUI or optimize on the console, refering to
+ Sec.~!!!.
+\end_layout
+
+\begin_layout Subsection
+Quickly Using the GUI
+\end_layout
+
+\begin_layout Standard
+From the GUI, also called the 
+\noun on
+JavaEvA
+\noun default
+ workbench, all important components of an optimization run can be accessed
+ and configured.
+ To change the optimization method, for example, click on the white field
+ next to 
+\begin_inset Quotes eld
+\end_inset
+
+optimizer
+\begin_inset Quotes erd
+\end_inset
+
+ and select the desired algorithm from the drop-down menu.
+ Basically, you thereby select a Java class and create an instance, whose
+ public properties are displayed in the window immediately with their standard
+ values.
+ For your optimization run, you may configure the parameter values directly
+ through the input fields.
+ A short description will be displayed by tip-text over the name of the
+ parameter.
+ We will now shortly summarize the components of the workbench.
+\end_layout
+
+\begin_layout Subsubsection
+The Workbench Window
+\end_layout
+
+\begin_layout Itemize
+Optimization parameters
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+The Optimizer.
+ Selects the main optimization method.
+ You can choose between classical as well as evolutionary and swarm-based
+ optimization methods.
+ For quick optimization, just use the standard values of the parameters
+ and try several different optimizers.
+\end_layout
+
+\begin_layout Itemize
+The Problem.
+ The instance of the target function to be optimized is specified here.
+ You can select from the benchmark problems delivered with the package or
+ inherit from the problem class yourself (!!! see...)
+\end_layout
+
+\begin_layout Itemize
+The Random Seed.
+ As most algorithms in 
+\noun on
+JavaEvA 2
+\noun default
+ incorporate stochastic components, the random seed is essential to the
+ outcome of a run.
+ For replicable results, set a seed value > 0.
+ To receive statistically relevant results, test several times with a seed
+ of 0, which means that the system time is used for each new run, or use
+ the multi-run option.
+\end_layout
+
+\begin_layout Itemize
+The Termination Criterion.
+ Set the criterion by which to stop an optimization run.
+ E.g., stop after 
+\emph on
+n
+\emph default
+ fitness evaluations.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Statistics
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+The Convergence Rate Threshold.
+ Provided the target value is zero, convergence is assumed if a value smaller
+ than this threshold is reached.
+ For multi-runs, the number of hits is counted using this criterion.
+\end_layout
+
+\begin_layout Itemize
+The Number of Multi-runs.
+ To achieve statistically meaningful results on how well a certain optimizer
+ works on a given problem, set this number to do several runs in a row.
+ The plot will be averaged, while all data can be collected in an output
+ file or text window.
+\end_layout
+
+\begin_layout Itemize
+The Fitness to Plot.
+ Define which fitness values to plot to the graph window after every generation.
+ Select 
+\begin_inset Quotes eld
+\end_inset
+
+best
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+worst
+\begin_inset Quotes erd
+\end_inset
+
+ or both.
+\end_layout
+
+\begin_layout Itemize
+The Result File Name.
+ To collect optimization data, set this String to a desired file name.
+ Optimization results will be written to the indicated file in the working
+ directory.
+\end_layout
+
+\begin_layout Itemize
+Show Text Output.
+ If activated, the optimization data will also be shown in a graphical text
+ window for immediate viewing.
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+Finally, there are three buttons on top.
+ The 
+\begin_inset Quotes eld
+\end_inset
+
+Start Optimization
+\begin_inset Quotes erd
+\end_inset
+
+ button, as expected, starts an optimization run using the parameters given,
+ or multiple runs sequentially if multiRuns is set higher than one.
+ During optimization, the 
+\begin_inset Quotes eld
+\end_inset
+
+Stop
+\begin_inset Quotes erd
+\end_inset
+
+ button can cancel the run.
+\end_layout
+
+\begin_layout Subsubsection
+The Plot Window
+\end_layout
+
+\begin_layout Standard
+During the optimization run, the progress of the solution is plottet to
+ a graph in a separate window.
+ Usually, the fitness of the best individual of every generation is drawn
+ in Y-direction along the number of function calls in X-direction.
+ Be aware that for multi-objective problems, only the first fitness dimension
+ is shown.
+ The 2-dimensional multi-objective problem classes have, however, a pareto-front
+ viewer which displays the population with in the two fitness dimensions
+ sequentially.
+ For higher fitness dimensions it is more practical to use external tools
+ for visualization.
+ 
+\end_layout
+
+\begin_layout Itemize
+The 
+\begin_inset Quotes eld
+\end_inset
+
+Clear
+\begin_inset Quotes erd
+\end_inset
+
+ button removes all graphs from the plot window.
+\end_layout
+
+\begin_layout Itemize
+The 
+\begin_inset Quotes eld
+\end_inset
+
+Log/Lin
+\begin_inset Quotes erd
+\end_inset
+
+ button switches between linear and log-scaled view.
+ Most benchmark problems in 
+\noun on
+JavaEvA
+\noun default
+ are implemented with the minimum fitness at zero, so that the log-scale
+ view allows to compare and analyze convergence behaviour in detail.
+ This may not always be possible in advance, and especially if the target
+ fitness may become negative, log-scale view is of course impossible.
+\end_layout
+
+\begin_layout Itemize
+The 
+\begin_inset Quotes eld
+\end_inset
+
+Dump
+\begin_inset Quotes erd
+\end_inset
+
+ button exports the contained data to standard output.
+ For each graph, a column is created in the same order they were generated.
+\end_layout
+
+\begin_layout Itemize
+The 
+\begin_inset Quotes eld
+\end_inset
+
+Export...
+\begin_inset Quotes erd
+\end_inset
+
+ button creates the same output as 
+\begin_inset Quotes eld
+\end_inset
+
+Dump
+\begin_inset Quotes erd
+\end_inset
+
+ but saves it to a file.
+\end_layout
+
+\begin_layout Itemize
+The 
+\begin_inset Quotes eld
+\end_inset
+
+Save as JPG...
+\begin_inset Quotes erd
+\end_inset
+
+ creates a JPEG image of the plot window and saves it to a file.
+\end_layout
+
+\begin_layout Subsubsection
+Basic Optimization using 
+\noun on
+JavaEvA 2
+\end_layout
+
+\begin_layout Standard
+To get a grip on JavaEvA 2 and what optimization means, it is best to do
+ some runs on the implemented standard benchmarks.
+ To do that, start the GUI, select a benchmark problem, e.g.
+ the F1-Problem, consisting in a simple hyper-parabola.
+ Then choose an optimizer, such as Evolution Strategies with standard parameters
+ and hit the 
+\begin_inset Quotes eld
+\end_inset
+
+Start Optimization
+\begin_inset Quotes erd
+\end_inset
+
+ button on the top of the window.
+\end_layout
+
+\begin_layout Standard
+If you play around with some settings, e.g.
+ try different values for 
+\begin_inset Formula $\mu$
+\end_inset
+
+ and 
+\begin_inset Formula $\lambda$
+\end_inset
+
+ or activate the plusStrategy checkbox, you will notice changing performance
+ of the ES.
+ On problems with in discrete space, such as the B1-benchmark problem, for
+ example, a Genetic Algorithm is often superior to an Evolution Strategy.
+ You can try this if you clear the plot window, select the B1-problem and
+ run the ES a few times.
+ Now, switch to the Genetic Algorithm and run the optimization a few more
+ times.
+\end_layout
+
+\begin_layout Standard
+Notice, however, that by changing from F1-problem to the B1-problem, the
+ internal representation of individuals may change.
+ As B1 is a typical binary problem, it uses GAIndividuals by default, which
+ are based on binary vectors, while F1 uses double vectors.
+ Be aware, that not all optimizers in JavaEvA are built to work on all types
+ of indviduals.
+\end_layout
+
+\begin_layout Section
+External Interfaces
+\end_layout
+
+\begin_layout Subsection
+Optimizing through an external command
+\end_layout
+
+\begin_layout Standard
+MICHAELS DOKU HIER!!!
+\end_layout
+
+\begin_layout Subsection
+Optimization from Matlab
+\end_layout
+
+\begin_layout Subsubsection
+Quick Howto
+\begin_inset LatexCommand \label{sub:JEInterface-Quick-Intro}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+To tackle optimization problems already existing in Matlab, we provide a
+ simple Matlab interface comprising in a Matlab class definition.
+ If you have an existing Matlab function you want to optimize with some
+ standard algorithms implemented in 
+\noun on
+JavaEvA 2
+\noun default
+, you can do this now directly from yout Matlab console.
+ To do so, follow these steps:
+\end_layout
+
+\begin_layout Itemize
+Download the JE2Base.jar and add it to the Matlab classpath, e.g.
+ by typing 
+\begin_inset Quotes eld
+\end_inset
+
+javaaddpath /home/username/JE2Base.jar
+\begin_inset Quotes erd
+\end_inset
+
+ in the Matlab console.
+\end_layout
+
+\begin_layout Itemize
+Download the Matlab JEInterface code and extract it to your Matlab working
+ directory within its own class directory 
+\begin_inset Quotes eld
+\end_inset
+
+@JEInterface
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Define the range of your search space using a 
+\begin_inset Formula $2\times d$
+\end_inset
+
+ matrix consisting of the lower and upper bounds of the allowed space, e.g.
+ type 
+\begin_inset Quotes eld
+\end_inset
+
+R=[[-5 -5 -5];[5 5 5]]
+\begin_inset Quotes erd
+\end_inset
+
+ to define a 3-dimensional search space with bounds -5/5 in every dimension.
+\end_layout
+
+\begin_layout Itemize
+For a target function 
+\emph on
+fun
+\emph default
+ to be minimized, create a JEInterface in Matlab by typing, for example:
+ 
+\begin_inset Quotes eld
+\end_inset
+
+JI=JEInterface('JI', @fun, R)
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+To view the possible optimization strategies, type 
+\begin_inset Quotes eld
+\end_inset
+
+showOptimizers(JI)
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+You can now select an optimizer and use its ID to start the optimization,
+ e.g.
+ 
+\begin_inset Quotes eld
+\end_inset
+
+JI=optimize(JI,1)
+\begin_inset Quotes erd
+\end_inset
+
+ for a standard ES.
+\end_layout
+
+\begin_layout Itemize
+Wait for the optimization to finish and type 
+\begin_inset Quotes eld
+\end_inset
+
+getResult(JI)
+\begin_inset Quotes erd
+\end_inset
+
+ to get the solution found.
+\end_layout
+
+\begin_layout Subsubsection
+Details on JEInterface
+\end_layout
+
+\begin_layout Standard
+As Matlab is single-threaded and Java needs to call it back to calculate
+ function values, the optimize-command starts a new Java thread and returns
+ directly to Matlab.
+ This means, the optimization works asynchronously: the optimization result
+ will be written to the JEInterface instance and is not a direct output
+ of the optimize call.
+ There will be a text notice in the Matlab console as soon as the optimization
+ finished.
+ Notice that in Matlab object oriented style, you cannot modify an object
+ O simply by calling the mutator, e.g.
+ setParameter(O, p1, val1), but you have to reassign O for every mutating
+ call, as in: O=setParameter(O, p1, val1).
+\end_layout
+
+\begin_layout Standard
+This is why the JEInterface method isFinished, which checks for the state
+ of a JEInterface object, only works correctly if you started the optimization
+ as described in Section 
+\begin_inset LatexCommand \ref{sub:JEInterface-Quick-Intro}
+
+\end_inset
+
+.
+ The following list gives an overview over the methods in the interface,
+ each having at least a parameter JI, the JEInterface object to work on:
+\end_layout
+
+\begin_layout List
+\labelwidthstring 00.00.0000
+JEInterface(interfaceName,fhandle,range[,optset,fargs]): JEInterface constructor
+: 
+\emph on
+interfaceName
+\emph default
+: the name bound to the JEInterface in Matlab as char.
+ 
+\emph on
+fhandle
+\emph default
+: handle of the target function.
+ 
+\emph on
+range
+\emph default
+: a 2
+\begin_inset Formula $\times$
+\end_inset
+
+dim array defining the solution subspace with lower and upper bounds.
+ 
+\emph on
+optset
+\emph default
+: an (optional) optimset structure of which MaxFunCalls, TolX and TolFun
+ are used as termination criteria.
+ 
+\emph on
+fargs
+\emph default
+: (optional) additional static parameters to the target function as single
+ list.
+ Returns the new JEInterface instance.
+\end_layout
+
+\begin_layout List
+\labelwidthstring 00.00.0000
+showOptimizers(JI): Print a list of optimization strategies accessible through
+ JEInterface and their IDs 
+\end_layout
+
+\begin_layout List
+\labelwidthstring 00.00.0000
+optimize(JI,optType[,resultFilePrefix])
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\noun off
+\color none
+: 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\noun default
+\color default
+Start the optimization using the strategy indicated by the ID 
+\emph on
+optType
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\noun off
+\color none
+.
+ Optionally write verbose results to an output file with prefix 
+\family default
+\series default
+\shape default
+\size default
+\emph on
+\bar default
+\noun default
+\color default
+resultFilePrefix
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\noun off
+\color none
+ in the working directory.
+ 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\noun default
+\color default
+Returns the modified JEInterface instance.
+\end_layout
+
+\begin_layout List
+\labelwidthstring 00.00.0000
+isFinished(JI): Check whether an optimization process is currently running
+ (return value 0).
+ Returns 1 before and after any optimization.
+\end_layout
+
+\begin_layout List
+\labelwidthstring 00.00.0000
+getResult(JI): When an optimization was finished, return the final solution.
+\end_layout
+
+\begin_layout List
+\labelwidthstring 00.00.0000
+getMessage(int): Return a text message describing the termination state
+ of the optimization, e.g.
+ the number of function calls performed.
+\end_layout
+
+\begin_layout List
+\labelwidthstring 00.00.0000
+stopOptimize(int): Cancel a running optimization process.
+ An intermediate result will be written back to the interface from JavaEvA.
+\end_layout
+
+\begin_layout List
+\labelwidthstring 00.00.0000
+getOptions(JI): Get the current optimset structure of the JEInterface instance.
+\end_layout
+
+\begin_layout List
+\labelwidthstring 00.00.0000
+getOpt(JI,optName): Get the value of a specific option 
+\emph on
+optName
+\emph default
+ from the optimset structure of the JEInterface instance.
+\end_layout
+
+\begin_layout List
+\labelwidthstring 00.00.0000
+setOpt(JI,optName,optVal): Set a specific option 
+\emph on
+optName
+\emph default
+ of the optimset structure in JI to the value 
+\emph on
+optVal
+\emph default
+.
+ Returns the modified JEInterface instance.
+\end_layout
+
+\begin_layout List
+\labelwidthstring 00.00.0000
+setOptions(JI,optset): Set a whole new optimset structure 
+\emph on
+optset
+\emph default
+.
+ Returns the modified JEInterface instance.
+\end_layout
+
+\begin_layout List
+\labelwidthstring 00.00.0000
+setResultJE: Write-back method required internally by JavaEvA 2.
+ Calling it by hand may interfere with optimization.
+\end_layout
+
+\begin_layout List
+\labelwidthstring 00.00.0000
+evaluateJE: Evaluation method required internally by JavaEvA 2.
+ Calling it by hand may interfere with optimization.
+\end_layout
+
+\begin_layout Standard
+The methods are listed in about the order a user might require them in.
+ The constructor as well as all mutating methods return a JEInterface object
+ which is to be assigned to a variable, preferably the same as the one assigned
+ on construction.
+ This is because only the constructor will also copy the referenced Java
+ instance.
+ Notice that the last two methods, setResultJE and evaluateJE, are used
+ internally by the Java part of the interface and should not be called by
+ hand.
+ To find out more about the optimization strategies you can access through
+ JEInterface, use the showOptimizers method and take a look at the EA references
+, e.g.
+ the TecReport on JavaEvA (!!!).
+ 
+\end_layout
+
+\begin_layout Paragraph*
+Termination criteria
+\end_layout
+
+\begin_layout Standard
+Vital for the usage in Matlab are the termination criteria of the optimization
+ run.
+ We tried to translate in analogy to the Matlab function 
+\emph on
+fminsearch
+\emph default
+ using the builtin 
+\emph on
+optimset
+\emph default
+ structure, using the three parameters described in the list below.
+ To find out more about 
+\emph on
+optimset
+\emph default
+, check the Matlab documentation.
+\end_layout
+
+\begin_layout List
+\labelwidthstring 00.00.0000
+
+\emph on
+MaxFunEvals
+\emph default
+: Maximum number of function evaluations allowed.
+\end_layout
+
+\begin_layout List
+\labelwidthstring 00.00.0000
+
+\emph on
+TolX
+\emph default
+: Convergence tolerance in solution space, measured absolutely.
+ This means that the run is seen as converged, if the best individual (the
+ best parameter set) doesn't change more than the given threshold for a
+ certain time.
+\end_layout
+
+\begin_layout List
+\labelwidthstring 00.00.0000
+
+\emph on
+TolFun
+\emph default
+: Convergence tolerance in fitness space, measured absolutely.
+ This means that the run is seen as converged, if the best fitness found
+ doesn't change more than this threshold for a certain time.
+\end_layout
+
+\begin_layout Standard
+The default values for 
+\emph on
+TolX
+\emph default
+ and 
+\emph on
+TolFun
+\emph default
+ are the same as in Matlab (
+\begin_inset Formula $10^{-4}$
+\end_inset
+
+), while the default value for 
+\emph on
+MaxFunEvals
+\emph default
+ is usually 
+\begin_inset Formula $10^{4}$
+\end_inset
+
+.
+ You can check the options by calling 
+\emph on
+getOptions
+\emph default
+ for a JEInterface instance.
+ In analogy to 
+\emph on
+fminsearch
+\emph default
+, the three criteria will be logically combined as in 
+\begin_inset Formula $(MaxFunEvals\; OR\;(TolX\; AND\; TolFun))$
+\end_inset
+
+, meaning that reaching MaxFunEvals is a hard stopping criterium, while
+ TolX/TolFun must be both fulfilled to stop the run, if 
+\emph on
+MaxFunEvals
+\emph default
+ has not been reached.
+ To change options on an existing object JI, call for example 
+\begin_inset Quotes eld
+\end_inset
+
+JI=setOptions(JI, 'TolFun', 1e-7)
+\begin_inset Quotes erd
+\end_inset
+
+ to set the TolFun convergence threshold to 
+\begin_inset Formula $10^{-7}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+Adding Your Own Problem Class
+\end_layout
+
+\begin_layout Standard
+It is easy to optimize your own Java-coded problem in 
+\noun on
+JavaEvA 2
+\noun default
+ and optimize it using the GUI.
+ The two preconditions for the 
+\begin_inset Quotes eld
+\end_inset
+
+quick
+\begin_inset Quotes erd
+\end_inset
+
+ way are only the following:
+\end_layout
+
+\begin_layout Itemize
+A possible solution to your problem can be coded as a double vector or a
+ BitSet.
+\end_layout
+
+\begin_layout Itemize
+You can implement the target function such that it produces a double valued
+ fitness vector from the double vector or BitSet.
+\end_layout
+
+\begin_layout Standard
+If these simple conditions are met, you have the advantage of being able
+ to use the full 
+\begin_inset Quotes eld
+\end_inset
+
+Java
+\begin_inset Quotes erd
+\end_inset
+
+-power to implement a target function and optimize it in 
+\noun on
+JavaEvA 2
+\noun default
+.
+ Just follow these steps:
+\end_layout
+
+\begin_layout Itemize
+Create an empty class (Let's say, 
+\begin_inset Quotes eld
+\end_inset
+
+ExampleProblem
+\begin_inset Quotes erd
+\end_inset
+
+) and assign it the package 
+\begin_inset Quotes eld
+\end_inset
+
+simpleproblems
+\begin_inset Quotes erd
+\end_inset
+
+.
+ Put it in a directory called 
+\begin_inset Quotes eld
+\end_inset
+
+simpleproblems
+\begin_inset Quotes erd
+\end_inset
+
+ within your working directory.
+\end_layout
+
+\begin_layout Itemize
+Have the class inherit from SimpleDoubleProblem or SimpleBinaryProblem,
+ depending on which datatype you want to use.
+ Both base types can be used directly from the 
+\noun on
+JavaEvA 2
+\noun default
+ jar-file, which needs to be on the classpath.
+\end_layout
+
+\begin_layout Itemize
+Implement the method 
+\begin_inset Quotes eld
+\end_inset
+
+public int getProblemDimension()
+\begin_inset Quotes erd
+\end_inset
+
+ whithin your ExampleProblem, which returns the number of dimensions of
+ the solution space, i.e.
+ the length of the x vector or size of the BitSet, respectively.
+\end_layout
+
+\begin_layout Itemize
+Implement the method 
+\begin_inset Quotes eld
+\end_inset
+
+public double[] eval(double[] x)
+\begin_inset Quotes erd
+\end_inset
+
+ or 
+\begin_inset Quotes eld
+\end_inset
+
+public double[] eval(BitSet bs)
+\begin_inset Quotes erd
+\end_inset
+
+ , respectively, whithin your ExampleProblem, where the fitness of a possible
+ solution is calculated.
+\end_layout
+
+\begin_layout Itemize
+Start the 
+\noun on
+JavaEvA 2
+\noun default
+ GUI.
+ From the problem list, select the 
+\begin_inset Quotes eld
+\end_inset
+
+SimpleProblemWrapper
+\begin_inset Quotes erd
+\end_inset
+
+ class as optimization problem.
+ The wrapper class allows you to select your ExampleProblem as target function.
+ If you implemented a double valued problem, you may also set a default
+ range parameter, defining the positive and negative bound of the solution
+ space allowed.
+ Now select your prefered optimization method and start the optimization.
+ 
+\end_layout
+
+\begin_layout Section
+Optimization Context
+\end_layout
+
+\begin_layout Section
+Architecture
+\end_layout
+
+\begin_layout Subsection
+The JE2 Modules
+\end_layout
+
+\begin_layout Subsection
+The Concepts
+\end_layout
+
+\begin_layout Subsection
+The GUI Workbench
+\end_layout
+
+\begin_layout Subsection
+The Configuration File
+\end_layout
+
+\begin_layout Section
+Advanced Use Cases
+\end_layout
+
+\begin_layout Standard
+
+\end_layout
+
+\end_body
+\end_document
