@@ -442,12 +442,13 @@ public class GenericObjectEditor implements PropertyEditor {
 //						setObject(dummy);
 //					} else {
 					if (TRACE) System.out.println(className);
-					Object n = (Object)Class.forName(className, true, ClassLoader.getSystemClassLoader()).newInstance();
+					Object n = (Object)Class.forName(className, true, this.getClass().getClassLoader()).newInstance();
 					n = (Object)Class.forName(className).newInstance();
 					setObject(n);
 //					}
 				} catch (Exception ex) {
-					System.out.println("Exeption in itemStateChanged "+ex.getMessage());
+					System.err.println("Exeption in itemStateChanged "+ex.getMessage());
+					System.err.println("Classpath is " + System.getProperty("java.class.path"));
 					ex.printStackTrace();
 					m_ObjectChooser.hidePopup();
 					m_ObjectChooser.setSelectedIndex(0);

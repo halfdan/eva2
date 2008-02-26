@@ -12,7 +12,7 @@ package javaeva.server.go;
 /*==========================================================================*
  * IMPORTS
  *==========================================================================*/
-import javaeva.server.stat.Statistics;
+import javaeva.server.stat.InterfaceStatistics;
 /*==========================================================================*
  * INTERFACE DECLARATION
  *==========================================================================*/
@@ -20,5 +20,5 @@ import javaeva.server.stat.Statistics;
  *
  */
 public interface SelectionInterface {
-  public void addListener(Statistics e);
+  public void addListener(InterfaceStatistics e);
 }

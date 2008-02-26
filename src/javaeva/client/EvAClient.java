@@ -23,7 +23,11 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.Serializable;
+import java.net.URL;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 
 import javaeva.gui.ExtAction;
 import javaeva.gui.JEFrame;
@@ -35,6 +39,7 @@ import javaeva.server.EvAServer;
 import javaeva.server.modules.ModuleAdapter;
 import javaeva.tools.EVAERROR;
 import javaeva.tools.EVAHELP;
+import javaeva.tools.ReflectPackage;
 import javaeva.tools.Serializer;
 
 import javax.swing.ButtonGroup;
@@ -229,7 +234,11 @@ public class EvAClient implements RemoteStateListener, Serializable {
 		m_Frame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				System.out.println("Closing JavaEvA Client. Bye!");
-				System.exit(1);
+				m_Frame.dispose();
+				Set<String> keys = System.getenv().keySet();
+				if (keys.contains("MATLAB")) {
+					System.out.println("Seems like Ive been started from Matlab: not killing JVM");
+				} else System.exit(1); 
 			}
 		});
 
@@ -241,6 +250,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
 //		m_mnuModule.setText("Select module");
 //		m_mnuModule.repaint();
 		
+		m_LogPanel.logMessage("Working directory is: " + System.getProperty("user.dir"));
 		m_LogPanel.logMessage("Class path is: " + System.getProperty("java.class.path","."));
 
 		if (!(m_Frame.isVisible())) {
@@ -271,7 +281,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
 	}
 
 	/**
-	 * The one and only main of the client programm.
+	 * The one and only main of the client program.
 	 *
 	 * @param args command line parameters
 	 */
@@ -280,6 +290,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
 			System.out.println(EVAHELP.getSystemPropertyString());
 		}
 		EvAClient Client = new EvAClient((args.length == 1) ? args[0] : null);
+
 	}
 
 //	/**
@@ -563,11 +574,24 @@ public class EvAClient implements RemoteStateListener, Serializable {
 			e.printStackTrace();
 			EVAERROR.EXIT("Error while m_ComAdapter.GetModuleAdapter Host: " + e.getMessage());
 		}
-		if (newModuleAdapter == null) showLoadModules = true;
+		if (newModuleAdapter == null) {
+			URL baseDir = this.getClass().getClassLoader().getResource("");
+			String cp = System.getProperty("java.class.path",".");
+			if (!cp.contains(baseDir.getPath())) {
+				System.err.println("classpath does not contain base directory!");
+				System.err.println("adding base dir and trying again...");
+				System.setProperty("java.class.path", cp + System.getProperty("path.separator") + baseDir.getPath());
+				ReflectPackage.resetDynCP();
+				m_ComAdapter.updateLocalMainAdapter();
+				loadSpecificModule(selectedModule); // warning! end recursive call! handle with care!
+				return;
+			}
+			showLoadModules = true;
+		}
 		else {
 			newModuleAdapter.setConnection(!localMode);
 			if (m_ComAdapter.isRunLocally()) {
-				// TODO in rmi-mode this doesnt work yet!
+				// TODO in rmi-mode this doesnt work yet! meaning e.g. that theres no content in the info log
 				newModuleAdapter.addRemoteStateListener((RemoteStateListener)this);
 			}
 			try {
@@ -693,12 +717,12 @@ public class EvAClient implements RemoteStateListener, Serializable {
 	}
 
 	public void performedRestart(String infoString) {
-		logMessage("Restarted " + infoString);
+		logMessage("Restarted processing " + infoString);
 		startTime = System.currentTimeMillis();
 	}
 
 	public void performedStart(String infoString) {
-		logMessage("Started " + infoString);
+		logMessage("Started processing " + infoString);
 		startTime = System.currentTimeMillis();
 	}
 
@@ -713,7 +737,8 @@ public class EvAClient implements RemoteStateListener, Serializable {
      * SwingUtilities.invokeLater().  In this case we're just
      * changing the progress bars value.
      */
-	public void updateProgress(final int percent) {
+	public void updateProgress(final int percent, String msg) {
+		if (msg != null) logMessage(msg);
         if (this.m_ProgressBar != null) {
             Runnable doSetProgressBarValue = new Runnable() {
                 public void run() {
@@ -723,4 +748,10 @@ public class EvAClient implements RemoteStateListener, Serializable {
             SwingUtilities.invokeLater(doSetProgressBarValue);
         }
     }
+	
+//	
+//	public void test(Object o) {
+//		System.out.println("hello from EvAClient.test!");
+//		System.out.println("object gives " + o);
+//	}
 }

@@ -186,7 +186,7 @@ public class CrossoverESSPX implements InterfaceCrossover, java.io.Serializable 
         F1Problem               prob        = new F1Problem();
         int                     n           = 2;
 
-        RandomNumberGenerator.setseed(1);
+        RandomNumberGenerator.setRandomSeed(1);
         // init individual
         indy1 = new ESIndividualDoubleData();
         double[][] range = new double[n][2];

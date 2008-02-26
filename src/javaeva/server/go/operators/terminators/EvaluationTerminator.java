@@ -15,14 +15,14 @@ package javaeva.server.go.operators.terminators;
 import java.io.Serializable;
 
 import javaeva.server.go.PopulationInterface;
-import javaeva.server.go.TerminatorInterface;
+import javaeva.server.go.InterfaceTerminator;
 /*==========================================================================*
 * CLASS DECLARATION
 *==========================================================================*/
 /**
  *
  */
-public class EvaluationTerminator implements TerminatorInterface,
+public class EvaluationTerminator implements InterfaceTerminator,
                                               Serializable {
   /**
    * Number of fitness calls on the problem which is optimized.
@@ -49,11 +49,16 @@ public class EvaluationTerminator implements TerminatorInterface,
   /**
    *
    */
-  public boolean isTerminated(PopulationInterface Pop) {
+  public boolean isTerminated(PopulationInterface pop) {
     //System.out.println("m_FitnessCalls="+m_FitnessCalls);
-    if (m_FitnessCalls>Pop.getFunctionCalls())
+    if (m_FitnessCalls>pop.getFunctionCalls())
       return false;
     return true;
+  }
+  
+  public String terminatedBecause(PopulationInterface pop) {
+	  if (isTerminated(pop)) return m_FitnessCalls + " fitness calls were reached.";
+	  else return "Not yet terminated.";
   }
   /**
    *

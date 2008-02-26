@@ -12,20 +12,24 @@ package javaeva.server.stat;
 /*==========================================================================*
  * IMPORTS
  *==========================================================================*/
+import javaeva.server.go.IndividualInterface;
 import javaeva.server.go.PopulationInterface;
+import javaeva.server.go.problems.InterfaceAdditionalPopulationInformer;
 /*==========================================================================*
 * INTERFACE DECLARATION
 *==========================================================================*/
 /**
  *
  */
-public interface Statistics {
+public interface InterfaceStatistics {
   public void startOptPerformed(String InfoString,int runnumber); // called from processor
   public void stopOptPerformed(boolean normal); // called from processor
+  public void addTextListener(InterfaceTextListener listener);
+  public boolean removeTextListener(InterfaceTextListener listener);
   public void printToTextListener(String s);
-  public void createNextGenerationPerformed(PopulationInterface Pop);
+  public void createNextGenerationPerformed(PopulationInterface Pop, InterfaceAdditionalPopulationInformer informer);
   public void createNextGenerationPerformed(double[] bestfit,double[] worstfit,int calls);
   public StatisticsParameter getStatisticsParameter(); // called from moduleadapter
-  public Object getBestSolution(); // returns the best overall solution
+  public IndividualInterface getBestSolution(); // returns the best overall solution
   public double[] getBestFitness(); // returns the best overall fitness
 }

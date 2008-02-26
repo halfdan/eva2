@@ -185,7 +185,7 @@ public class JModuleGeneralPanel implements RemoteStateListener, Serializable  {
 	public void performedRestart(String infoString) {
 	}
 	
-	public void updateProgress(final int percent) {
+	public void updateProgress(final int percent, String msg) {
 	}
 	
 	/**

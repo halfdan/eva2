@@ -415,7 +415,7 @@ public class FLensProblem extends AbstractOptimizationProblem implements Interfa
 		GOStandaloneVersion  program = new GOStandaloneVersion();
         GOParameters GO = program.getGOParameters();
         GO.setProblem(f);
-		RandomNumberGenerator.setseed(1);
+		RandomNumberGenerator.setRandomSeed(1);
 		program.initFrame();
 		program.setShow(true);
     }

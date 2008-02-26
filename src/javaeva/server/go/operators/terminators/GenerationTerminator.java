@@ -14,15 +14,16 @@ package javaeva.server.go.operators.terminators;
  *==========================================================================*/
 import java.io.Serializable;
 
+import javaeva.gui.BeanInspector;
 import javaeva.server.go.PopulationInterface;
-import javaeva.server.go.TerminatorInterface;
+import javaeva.server.go.InterfaceTerminator;
 /*==========================================================================*
 * CLASS DECLARATION
 *==========================================================================*/
 /**
  *
  */
-public class GenerationTerminator implements  TerminatorInterface,
+public class GenerationTerminator implements  InterfaceTerminator,
                                               Serializable {
   /**
    * Number of fitnness calls on the problem which is optimized
@@ -48,6 +49,12 @@ public class GenerationTerminator implements  TerminatorInterface,
       return true;
     return false;
   }
+  
+	public String terminatedBecause(PopulationInterface pop) {
+		if (isTerminated(pop)) {
+			return m_Generations + " generations reached.";		
+		} else return "Not yet terminated.";
+	}
   /**
    *
    */

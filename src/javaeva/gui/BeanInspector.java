@@ -127,25 +127,25 @@ public class BeanInspector {
 	 */
 	public static String toString(Object Target) {
 		String ret = "";
+		if (Target == null) return "null";
 		// try the object itself
 		if (Target instanceof String) return (String)Target; // directly return a string object
-		
 		Class<? extends Object> type = Target.getClass();
 		
 		if (type.isArray()) { // handle the array case
-			StringBuffer sbuf = new StringBuffer("[");
+			StringBuffer sbuf = new StringBuffer("[ ");
 			int len = Array.getLength(Target);
 			for (int i=0; i<len; i++) {
 				sbuf.append(toString(Array.get(Target, i)));
-				if (i<len-1) sbuf.append(";");
+				if (i<len-1) sbuf.append("; ");
 			}
-			sbuf.append("]");
+			sbuf.append(" ]");
 			return sbuf.toString();
 		}
 
 		Method[] methods = Target.getClass().getDeclaredMethods();
 		for (int ii = 0; ii < methods.length; ii++) { // check if the object has its own toString method, in this case use it
-			if (methods[ii].getName().equals("toString") && (methods[ii].getParameterTypes().length == 0)) {
+			if ((methods[ii].getName().equals("toString") /*|| (methods[ii].getName().equals("getStringRepresentation"))*/) && (methods[ii].getParameterTypes().length == 0)) {
 				Object[] args = new Object[0];
 				//args[0] = Target;
 				try {
@@ -274,5 +274,27 @@ public class BeanInspector {
 			}
 		}
 	}
+	
+    
+    public static Object callIfAvailable(Object obj, String mName, Object[] args) {
+    	Method meth = hasMethod(obj, mName);
+    	if (meth != null) {
+    		try {
+    			return meth.invoke(obj, args);
+    		} catch(Exception e) {
+    			System.err.println("Error on calling method "+mName + " on " + obj.getClass().getName());
+    			return null;
+    		}
+    	} else return null;
+    }
+    
+    public static Method hasMethod(Object obj, String mName) {
+    	Class cls = obj.getClass();
+    	Method[] meths = cls.getMethods();
+    	for (Method method : meths) {
+			if (method.getName().equals(mName)) return method;
+		}
+    	return null;
+    }
 }
 

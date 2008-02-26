@@ -1,8 +1,9 @@
 package javaeva.server.modules;
 
+import javaeva.gui.BeanInspector;
 import javaeva.server.go.InterfaceGOParameters;
 import javaeva.server.go.InterfacePopulationChangedEventListener;
-import javaeva.server.go.TerminatorInterface;
+import javaeva.server.go.InterfaceTerminator;
 import javaeva.server.go.operators.terminators.EvaluationTerminator;
 import javaeva.server.go.problems.B1Problem;
 import javaeva.server.go.problems.InterfaceOptimizationProblem;
@@ -34,8 +35,8 @@ public class GOParameters implements InterfaceGOParameters, Serializable {
     private InterfaceOptimizer              m_Optimizer         = new GeneticAlgorithm();
     private InterfaceOptimizationProblem    m_Problem           = new B1Problem();
     //private int                             m_FunctionCalls     = 1000;
-    private TerminatorInterface             m_Terminator        = new EvaluationTerminator();
-    private String                          m_OutputFileName    = "none";
+    private InterfaceTerminator             m_Terminator        = new EvaluationTerminator();
+//    private String                          m_OutputFileName    = "none";
     transient private InterfacePopulationChangedEventListener m_Listener;
 
     /**
@@ -47,6 +48,22 @@ public class GOParameters implements InterfaceGOParameters, Serializable {
         if (TRACE) System.out.println("GOParameters getInstance 2");
         if (Instance == null) Instance = new GOParameters();
         return Instance;
+    }
+    
+    public String toString() {
+    	StringBuffer sb = new StringBuffer(m_Name);
+    	sb.append("\n");
+    	sb.append("seed=");
+    	sb.append(m_Seed);
+    	sb.append("\nProblem: ");
+    	sb.append(BeanInspector.toString(m_Problem));
+    	sb.append("\nOptimizer: ");
+    	sb.append(BeanInspector.toString(m_Optimizer));
+    	sb.append("\nTerminator: ");
+    	sb.append(BeanInspector.toString(m_Terminator));
+    	sb.append("\n");
+//    	sb.append(m_N)
+    	return sb.toString();
     }
 
     /**
@@ -134,10 +151,10 @@ public class GOParameters implements InterfaceGOParameters, Serializable {
      * evolutionary algorithm.
      * @param term  The new terminator
      */
-    public void setTerminator(TerminatorInterface term) {
+    public void setTerminator(InterfaceTerminator term) {
         this.m_Terminator = term;
     }
-    public TerminatorInterface getTerminator() {
+    public InterfaceTerminator getTerminator() {
         return this.m_Terminator;
     }
     public String terminatorTipText() {
@@ -179,16 +196,16 @@ public class GOParameters implements InterfaceGOParameters, Serializable {
         return "Choose the problem that is to optimize and the EA individual parameters.";
     }
 
-    /** This method will set the output filename
-     * @param name
-     */
-    public void setOutputFileName (String name) {
-        this.m_OutputFileName = name;
-    }
-    public String getOutputFileName () {
-        return this.m_OutputFileName;
-    }
-    public String outputFileNameTipText() {
-        return "Set the name for the output file, if 'none' no output file will be created.";
-    }
+//    /** This method will set the output filename
+//     * @param name
+//     */
+//    public void setOutputFileName (String name) {
+//        this.m_OutputFileName = name;
+//    }
+//    public String getOutputFileName () {
+//        return this.m_OutputFileName;
+//    }
+//    public String outputFileNameTipText() {
+//        return "Set the name for the output file, if 'none' no output file will be created.";
+//    }
 }

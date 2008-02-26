@@ -1,5 +1,10 @@
 RMI-Probleme:
 
+- Funny Bug: when starting JavaEvA from Matlab and reading jar packages, the conversion
+//					dynCP = valids.toArray(dynCP);
+from nonempty ArrayList<String> valids to String[] dynCP causes Matlab to crash reproducibly, and 
+without Exception. A conversion afoot works fine, though. This cost me about an hour to find out.
+
 - Bei Naming.(re)bind und Naming.lookup muss wahrscheinlich bei Client und Server der gleiche String
 (Name des Servers) verwendet werden. Im Code steht da mehrmals "attention" und die Art, wie der String
 erzeugt wird, ist nicht wirklich klar.
@@ -30,6 +35,8 @@ getroffen, wo setRunLocally des EvAComAdapters aufgerufen wird.
 zwischen lokalem und remote-Adapter zu unterscheiden.
 
 ToDo:
+- "Show Solution" from GOStandalone into Client?
+- MatlabProblem will not compile without Matlab. Keep it in JE2Base anyway?
 - Population -> getBest... die multi-objective methoden nutzen!
 - Kommandozeilen-Argumente für den Client?
 - Kontroll-Events (start/stop) werden über RMI nicht wieder an den GUI-Client geliefert, 
@@ -55,11 +62,23 @@ die Range mitzuführen, da sie häufig für alle gleich ist. Dann verschlingt si
 - Graph/Plot aufräumen: Graph scheint nur ein "Label" zu sein, über das auf ein GraphPointSet innerhalb
 	eines FunctionArea elements zugegriffen wird. Eher chaotisch also.
 
-Done:
-- Wenigstens beim Neuladen eines Objekt-Fensters dessen Titel dem Objekt anpassen (PropertyDialog)
-- ConvergenceTerminator betrachtet jetzt nicht nur die 0.te fitness sondern den ganzen Vektor
-- die Progress-Bar von der GOStandaloneVersion übernehmen
-- im ComAdapter das ServerListFile im Konstruktor übergeben? Bzw. direkt die Properties?
+Main changelog:
+25.2.08 (mkron)
+- Renamed some Interfaces
+- Split up the statistics classes to inherit from an AbstractStatistics class to remove redundancy and
+	produce homogenous ouput.
+- Moved the data output stream to the statistics class completely. The Processor still triggers most of it, however.
+- Added a simpleproblems package for quick (and not so dirty) starting with user problem integration.
+- Introduced AbstractDoubleProblem and AbstractBinaryProblem as additional abstraction layer in Problem hierarchy.
+- Added a Lyx document "JavaEvA 2 Short Introduction"
+- Added MatlabProblem, a Matlab interface class. It will compile only with the Matlab jar on the classpath,
+	this will be a ToDo
+- Added a PhenotypeConvergeneTerminator: terminates on converged phenotype (using PhenotypeMetric)
+Before 02.08 (mkron)
+- On reloading an Object, the GUI window title is now updated (PropertyDialog)
+- ConvergenceTerminator allows for multi-objective fitness
+- Taken over nice the Progress-Bar of GOStandaloneVersion
+- No more ServerListFile in the ComAdapter constructor
 
 Bugs:
 - JOpt bug in wsi.ra.chart2d.ScaledBorder Zeile 460 - Endlosschleife!

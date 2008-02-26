@@ -84,7 +84,7 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
     transient private int                             currentProgress;
     transient private String                          m_ExperimentName;
     transient private String                          m_OutputPath = "";
-//    transient private String                          m_OutputFileName    = "none";
+    transient private String                          m_OutputFileName    = "none";
 //    transient private GOStandaloneVersion             m_yself;
 
     // these parameters are for the continue option
@@ -112,7 +112,7 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
         this.m_GO               = GOParameters.getInstance();
         this.m_ExperimentName   = this.m_GO.getOptimizer().getName()+"-"+this.m_PerformedRuns.size();
         this.m_GO.addPopulationChangedEventListener(this);
-        RandomNumberGenerator.setseed(m_GO.getSeed());
+        RandomNumberGenerator.setRandomSeed(m_GO.getSeed());
     }
 
     /** This method allows you to get the current GO parameters
@@ -300,7 +300,7 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
         this.m_MultiRuns            = 10;
         int experimentType          = 0;
         this.m_ExperimentName       = "InferringGRN";
-        this.m_GO.setOutputFileName("Result");
+        this.m_OutputFileName = "Result";
         this.m_OutputPath           = "results/";
         // These are some tmp Variables
         InterfaceDataTypeDouble  tmpIndy = new ESIndividualDoubleData();
@@ -309,7 +309,7 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
         switch (experimentType) {
             case 0 : {
                 // use the Struture Skeletalizing with GA
-                this.m_GO.setOutputFileName("Prim4_StructSkelGATESTIT");
+                this.m_OutputFileName = "Prim4_StructSkelGATESTIT";
                 GeneticAlgorithm ga     = new GeneticAlgorithm();
                 SelectTournament tour   = new SelectTournament();
                 tour.setTournamentSize(10);
@@ -331,7 +331,7 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
             }
             case 1 : {
                 // use the simple ES Local
-                this.m_GO.setOutputFileName("X360_StandardES");
+            	this.m_OutputFileName = "X360_StandardES";
                 EvolutionStrategies es = new EvolutionStrategies();
                 this.m_GO.setOptimizer(es);
                 this.m_GO.getOptimizer().getPopulation().setPopulationSize(50);
@@ -369,13 +369,13 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
         	this.m_GO.saveInstance();
             if (this.show) this.m_StatusField.setText("Optimizing...");
 
-            RandomNumberGenerator.setseed(m_GO.getSeed());
+            RandomNumberGenerator.setRandomSeed(m_GO.getSeed());
             // opening output file...
-            if (!this.m_GO.getOutputFileName().equalsIgnoreCase("none")) {
+            if (!this.m_OutputFileName.equalsIgnoreCase("none")) {
                 String name = "";
                 SimpleDateFormat formatter = new SimpleDateFormat("E'_'yyyy.MM.dd'_'HH.mm.ss");
                 String m_StartDate = formatter.format(new Date());
-                name = this.m_OutputPath + this.m_GO.getOutputFileName() +"_"+this.m_ExperimentName+"_"+m_StartDate+".dat";
+                name = this.m_OutputPath + this.m_OutputFileName +"_"+this.m_ExperimentName+"_"+m_StartDate+".dat";
                 try {
                     this.m_OutputFile = new BufferedWriter(new OutputStreamWriter (new FileOutputStream (name)));
                 } catch (FileNotFoundException e) {
@@ -540,7 +540,7 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
             app.setShow(false);
         } else {
             GOStandaloneVersion  program = new GOStandaloneVersion();
-            RandomNumberGenerator.setseed(1);
+            RandomNumberGenerator.setRandomSeed(1);
             program.initFrame();
             program.setShow(true);
         }
@@ -668,18 +668,18 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
         return "Set the name of the experiment as it will occur in the legend.";
     }
 
-//    /** This method will set the output filename
-//     * @param name
-//     */
-//    public void setOutputFileName (String name) {
-//        this.m_GO.setOutputFileName(name);
-//    }
-//    public String getOutputFileName () {
-//        return this.m_GO.getOutputFileName();
-//    }
-//    public String outputFileNameTipText() {
-//        return "Set the name for the output file, if 'none' no output file will be created.";
-//    }
+    /** This method will set the output filename
+     * @param name
+     */
+    public void setOutputFileName (String name) {
+        this.m_OutputFileName = name;
+    }
+    public String getOutputFileName () {
+        return this.m_OutputFileName;
+    }
+    public String outputFileNameTipText() {
+        return "Set the name for the output file, if 'none' no output file will be created.";
+    }
 
     /** This method will set the output filename
      * @param name

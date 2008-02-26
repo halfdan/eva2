@@ -1,6 +1,6 @@
 package javaeva.server.go.mocco;
 
-import javaeva.server.go.TerminatorInterface;
+import javaeva.server.go.InterfaceTerminator;
 import javaeva.server.go.individuals.AbstractEAIndividual;
 import javaeva.server.go.operators.archiving.ArchivingAllDominating;
 import javaeva.server.go.operators.terminators.EvaluationTerminator;
@@ -31,7 +31,7 @@ public class MOCCOState {
     public transient boolean                        isVisible           = false;
     public InterfaceOptimizer                       m_Optimizer         = new MultiObjectiveEA();
     public InterfaceOptimizer                       m_BackupOptimizer;
-    public TerminatorInterface                      m_Terminator        = new EvaluationTerminator();
+    public InterfaceTerminator                      m_Terminator        = new EvaluationTerminator();
     public InterfaceOptimizationProblem             m_OriginalProblem   = null;
     public InterfaceOptimizationProblem             m_CurrentProblem;
     public InterfaceOptimizationProblem             m_BackupProblem;

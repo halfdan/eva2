@@ -1,5 +1,6 @@
 package javaeva.server.go.individuals;
 
+import javaeva.server.go.IndividualInterface;
 import javaeva.server.go.operators.crossover.CrossoverESDefault;
 import javaeva.server.go.operators.mutation.InterfaceMutation;
 import javaeva.server.go.operators.mutation.MutateESGlobal;
@@ -286,22 +287,6 @@ public class ESIndividualIntegerData extends AbstractEAIndividual implements Int
         if (this.m_Genotype[mutationIndex] < this.m_Range[mutationIndex][0]) this.m_Genotype[mutationIndex] = this.m_Range[mutationIndex][0];
         if (this.m_Genotype[mutationIndex] > this.m_Range[mutationIndex][1]) this.m_Genotype[mutationIndex] = this.m_Range[mutationIndex][1];
     }
-
-//    /** This method will set the range of the double attributes. If range.length
-//     * does not equal doubledata.length only range[i] will be used to set all
-//     * ranges.
-//     * @param range     The new range for the double data.
-//     */
-//    public void SetDoubleRange(double[][] range) {
-//        if (range.length != this.m_Range.length) {
-//            System.out.println("Warning: Trying to set a range of length " + range.length + " to a vector of length "
-//                    + this.m_Range.length + "!\n Use method setDoubleDataLength first!");
-//        }
-//        for (int i = 0; ((i < this.m_Range.length) && (i < range.length)); i++) {
-//            this.m_Range[i][0] = (int)range[i][0];
-//            this.m_Range[i][1] = (int)range[i][1];
-//        }
-//    }
 
     /** This method will return the range for all double attributes.
      * @return The range array.

@@ -1,7 +1,7 @@
 package javaeva.server.go.mocco;
 
 import javaeva.server.go.MOCCOStandalone;
-import javaeva.server.go.TerminatorInterface;
+import javaeva.server.go.InterfaceTerminator;
 import javaeva.server.go.populations.Population;
 import javaeva.server.go.strategies.GeneticAlgorithm;
 import javaeva.server.go.strategies.InterfaceOptimizer;
@@ -108,9 +108,9 @@ public class MOCCOParameterizeMO extends MOCCOPhase implements InterfaceProcessE
         try {
             editor.m_Value      = this.m_Mocco.m_State.m_Terminator;
             editor.m_Editor     = PropertyEditorProvider.findEditor(editor.m_Value.getClass());
-            if (editor.m_Editor == null) editor.m_Editor = PropertyEditorProvider.findEditor(TerminatorInterface.class);
+            if (editor.m_Editor == null) editor.m_Editor = PropertyEditorProvider.findEditor(InterfaceTerminator.class);
             if (editor.m_Editor instanceof GenericObjectEditor)
-                ((GenericObjectEditor) editor.m_Editor).setClassType(TerminatorInterface.class);
+                ((GenericObjectEditor) editor.m_Editor).setClassType(InterfaceTerminator.class);
             editor.m_Editor.setValue(editor.m_Value);
             this.findViewFor(editor);
             if (editor.m_View != null) editor.m_View.repaint();

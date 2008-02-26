@@ -23,5 +23,5 @@ public interface RemoteStateListener {
   public void performedStop();
   public void performedStart(String infoString);
   public void performedRestart(String infoString);
-  public void updateProgress(final int percent);
+  public void updateProgress(final int percent, String msg);
 }

@@ -5,7 +5,7 @@ import java.beans.PropertyDescriptor;
 import java.beans.PropertyEditor;
 import java.beans.PropertyEditorManager;
 
-import javaeva.server.go.TerminatorInterface;
+import javaeva.server.go.InterfaceTerminator;
 import javaeva.server.go.individuals.codings.gp.GPArea;
 import javaeva.tools.SelectedTag;
 
@@ -136,7 +136,7 @@ public class PropertyEditorProvider {
     public static void installEditors() {
         PropertyEditorManager.registerEditor(SelectedTag.class, TagEditor.class);
         PropertyEditorManager.registerEditor(double[].class, GenericArrayEditor.class);
-        PropertyEditorManager.registerEditor(TerminatorInterface[].class, GenericArrayEditor.class);
+        PropertyEditorManager.registerEditor(InterfaceTerminator[].class, GenericArrayEditor.class);
         
         PropertyEditorManager.registerEditor(Double.class, DoubleEditor.class);
         PropertyEditorManager.registerEditor(Integer.class, IntEditor.class);

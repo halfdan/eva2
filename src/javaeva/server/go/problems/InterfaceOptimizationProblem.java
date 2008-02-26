@@ -4,7 +4,7 @@ import javaeva.server.go.individuals.AbstractEAIndividual;
 import javaeva.server.go.populations.Population;
 import javaeva.server.go.strategies.InterfaceOptimizer;
 
-import javaeva.server.stat.Statistics;
+import javaeva.server.stat.InterfaceStatistics;
 
 import javax.swing.*;
 
@@ -15,7 +15,7 @@ import javax.swing.*;
  * Time: 09:52:52
  * To change this template use Options | File Templates.
  */
-public interface InterfaceOptimizationProblem {
+public interface InterfaceOptimizationProblem extends InterfaceAdditionalPopulationInformer {
 
     /** This method returns a deep clone of the problem.
      * @return  the clone
@@ -92,15 +92,4 @@ public interface InterfaceOptimizationProblem {
      */
     public Double getDoublePlotValue(Population pop);
 
-    /** This method returns the header for the additional data that is to be written into a file
-     * @param pop   The population that is to be refined.
-     * @return String
-     */
-    public String getAdditionalFileStringHeader(Population pop);
-
-    /** This method returns the additional data that is to be written into a file
-     * @param pop   The population that is to be refined.
-     * @return String
-     */
-    public String getAdditionalFileStringValue(Population pop);
 }

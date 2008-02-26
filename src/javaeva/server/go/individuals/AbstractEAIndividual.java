@@ -1,6 +1,8 @@
 package javaeva.server.go.individuals;
 
+import javaeva.gui.BeanInspector;
 import javaeva.server.go.IndividualInterface;
+import javaeva.server.go.individuals.codings.gp.InterfaceProgram;
 import javaeva.server.go.operators.constraint.InterfaceConstraint;
 import javaeva.server.go.operators.crossover.CrossoverGADefault;
 import javaeva.server.go.operators.crossover.InterfaceCrossover;
@@ -13,6 +15,7 @@ import javaeva.server.go.problems.InterfaceOptimizationProblem;
 import javaeva.server.go.tools.GONamingBox;
 
 import java.util.ArrayList;
+import java.util.BitSet;
 
 /** This is the abstract EA individual implementing the most important methods giving
  * access to mutation and crossover rates and operators, fitness values and selection
@@ -631,16 +634,89 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      * @return A descriptive string
      */
     public abstract String getStringRepresentation();
+    
+    /** 
+     * This method creates a default String representation for a number Individual interfaces
+     * with genotype and fitness representation.
+     * 
+     * @param individual    The individual that is to be shown.
+     * @return The description.
+     */
+    public static String getDefaultStringRepresentation(AbstractEAIndividual individual) {
+        StringBuffer sb = new StringBuffer(getDefaultDataString(individual));
 
+        sb.append("Fitness         :");
+        sb.append(BeanInspector.toString(individual.getFitness()));
+        return sb.toString();
+    }
+    
+    /**
+     * This method creates a default String representation for a number Individual interfaces
+     * containing the genotype.
+     * 
+     * @param individual
+     * @return
+     */
+    public static String getDefaultDataString(IndividualInterface individual) {
+        StringBuffer sb = new StringBuffer("");
+        char left = '[';
+        char right = ']';
+        if (individual instanceof InterfaceDataTypeBinary) {
+            sb.append(left);
+            BitSet b = ((InterfaceDataTypeBinary)individual).getBinaryData();
+            for (int i = 0; i < ((InterfaceDataTypeBinary)individual).size(); i++) {
+                if (b.get(i)) sb.append("1");
+                else sb.append("0");
+            }
+            sb.append(right);
+        } else if (individual instanceof InterfaceDataTypeInteger) {
+            sb.append(left);
+            int[] b = ((InterfaceDataTypeInteger)individual).getIntegerData();
+            for (int i = 0; i < b.length; i++) {
+                sb.append(b[i]);
+                if ((i+1) < b.length) sb.append("; ");
+            }
+            sb.append(right);
+        } else if (individual instanceof InterfaceDataTypeDouble) {
+            sb.append(left);
+            double[] b = ((InterfaceDataTypeDouble)individual).getDoubleData();
+            for (int i = 0; i < b.length; i++) {
+                sb.append(b[i]);
+                if ((i+1) < b.length) sb.append("; ");
+            }
+            sb.append(right);
+        } else if (individual instanceof InterfaceDataTypePermutation) {
+            sb.append(left);
+            int[] b = ((InterfaceDataTypePermutation)individual).getPermutationData()[0];
+            for (int i = 0; i < b.length; i++) {
+                sb.append(b[i]);
+                if ((i+1) < b.length) sb.append("; ");
+            }
+            sb.append(right);
+        } else if (individual instanceof InterfaceDataTypeProgram) {
+            sb.append(left);
+            InterfaceProgram[] b = ((InterfaceDataTypeProgram)individual).getProgramData();
+            for (int i = 0; i < b.length; i++) {
+                sb.append(b[i].getStringRepresentation());
+                if ((i+1) < b.length) sb.append("; ");
+            }
+            sb.append(right);
+        } else {
+        	System.err.println("error in AbstractEAIndividual::getDefaultDataString: type " + individual.getClass() + " not implemented");
+        }
+        return sb.toString();
+    }
+
+    public String toString() {
+    	return getDefaultStringRepresentation(this);
+    }
+    
 /**********************************************************************************************************************
  * Implementing the Individual Interface
  */
     public IndividualInterface getClone() {
         return (IndividualInterface)this.clone();
     }
-    //public double[] getFitness();
-    //public void SetFitness (double[] fit);
-
 
     /** This method is used to get the basic data type of an individual double[].
      * @deprecated Since not all EAIndividuals provide double as basic data type
@@ -652,21 +728,13 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
         if (this instanceof InterfaceDataTypeDouble) return ((InterfaceDataTypeDouble)this).getDoubleData();
         else return this.getFitness();
     }
-//    /**
-//     *
-//     */
-//    public boolean isDominant(IndividualInterface Ind) {
-//        if (Ind == null) return true;
-//        if (this.getFitness()[0] < Ind.getFitness()[0]) return true;
-//        else return false;
-//    }
-    /**
-     *
-     */
-    public boolean isBetter(IndividualInterface Ind) {
-        if (Ind == null) return true;
-        if (this.getFitness()[0] < Ind.getFitness()[0]) return true;
-        else return false;
+    
+    public boolean isDominant(double[] otherFitness) {
+    	return isDominatingFitness(m_Fitness, otherFitness);
+    }
+    
+    public boolean isDominant(IndividualInterface indy) {
+    	return isDominatingDebConstraints((AbstractEAIndividual)indy);
     }
 }
   

@@ -6,7 +6,6 @@ import java.util.ArrayList;
 public class RandomNumberGenerator extends Random {
   private static Random random;
   private static long randomSeed;
-  //private static int counter =0;
   /**
    *
    */
@@ -16,23 +15,11 @@ public class RandomNumberGenerator extends Random {
     //System.out.println("randomSeed ="+ randomSeed);
     random=new Random(randomSeed);
   }
+
   /**
    *
    */
-  public static void setseed(long x) {
-    //System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!seeeeed"+x+"counter"+counter);
-    //counter=0;
-    randomSeed=x;
-    if (x==0)
-      randomSeed=System.currentTimeMillis();
-//    if (x==999) // ??? removed (MK)
-//      return;
-    random=new Random(randomSeed);
-  }
-  /**
-   *
-   */
-  public static void setRandomseed() {
+  public static void setRandomSeed() {
     //counter++;
     randomSeed=System.currentTimeMillis();
     random=new Random(randomSeed);
@@ -50,7 +37,8 @@ public class RandomNumberGenerator extends Random {
   public static void setRandomSeed(long new_seed){
      //counter++;
     randomSeed=new_seed;
-    random.setSeed(randomSeed);
+    if (randomSeed == 0) setRandomSeed();
+    else random.setSeed(randomSeed);
   }
   /**
    *
@@ -281,6 +269,18 @@ public class RandomNumberGenerator extends Random {
 		  x[j] = center[j]+radius*r*x[j]/xLen;
 	  }
 	  return x;
+  }
+  
+  /**
+   * Adds Gaussian noise to a double vector
+   * @param v 	the double vector
+   * @param dev	the Gaussian deviation
+   */
+  public static void addNoise(double[] v, double dev) {
+	  for (int i=0; i<v.length; i++) {
+		  // add noise to the value
+		  v[i] += gaussianDouble(dev);
+	  }
   }
 }
 

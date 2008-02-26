@@ -468,64 +468,66 @@ public class GraphPointSet {
     m_Stroke = stroke;
     //setStroke(new BasicStroke( m_Stroke ));
   }
-  /**
-   *
-   */
-  public SerPointSet getSerPointSet () {
-    SerPointSet ret= new SerPointSet(this);
-    return ret;
-  }
-  /**
-  *
-  */
-  class SerPointSet implements Serializable {
-    private String m_InfoString;
-    private int m_GraphLabel;
-    private Color m_Color;
-    private float m_Stroke;
-    private PointSet m_PointSet_1;
-    private PointSet m_PointSet_2;
-    private PointSet m_PointSet_3;
-    private PointSet m_ConnectedPointSet;
-    private PointSet m_VarPointSetPlus;
-    private PointSet m_VarPointSetMinus;
-    private boolean m_isStatisticeGraph;
-    private boolean m_showVarianz;
-    /**
-     *
-     */
-    public SerPointSet (GraphPointSet Source) {
-      m_InfoString = Source.m_InfoString;
-      m_GraphLabel = Source.m_GraphLabel;
-      m_Color = Source.m_Color;
-      m_Stroke = Source.m_Stroke;
-      m_isStatisticeGraph = Source.m_isStatisticsGraph;
-
-      // save the connected points
-      m_ConnectedPointSet = new PointSet(Source.getConnectedPointSet());
-//      m_PointSet_1 = new PointSet (Source.m_PointSet_1);
-//      m_PointSet_2 = new PointSet (Source.m_PointSet_2);
-//      m_PointSet_3 = new PointSet (Source.m_PointSet_3);
-    }
-    /**
-     *
-     */
-    public GraphPointSet getGraphPointSet () {
-      GraphPointSet ret = new GraphPointSet(10,m_GraphLabel);
-      ret.setInfoString(this.m_InfoString,this.m_Stroke);
-      ret.setColor(this.m_Color);
-      ret.m_Color = m_Color;
-      ret.m_Stroke = m_Stroke;
-      ret.m_isStatisticsGraph = m_isStatisticeGraph;
-        //@todo why doesn't that work!?
-//      ret.m_ConnectedPointSet = (DPointSetMultiIcon)m_ConnectedPointSet;
-//      ret.m_PointSet_1 = m_PointSet_1.getDPointSet();
-//      ret.m_PointSet_2 = m_PointSet_2.getDPointSet();
-//      ret.m_PointSet_3 = m_PointSet_3.getDPointSet();
-      ret.m_ConnectedPointSet.setConnected(true);
-      return ret;
-    }
-  }
+//  /**
+//   *
+//   */
+//  public SerPointSet getSerPointSet () {
+//    SerPointSet ret= new SerPointSet(this);
+//    return ret;
+//  }
+//  
+//  /**
+//  *
+//  */
+//  class SerPointSet implements Serializable {
+//    private String m_InfoString;
+//    private int m_GraphLabel;
+//    private Color m_Color;
+//    private float m_Stroke;
+////    private PointSet m_PointSet_1;
+////    private PointSet m_PointSet_2;
+////    private PointSet m_PointSet_3;
+//    private PointSet m_ConnectedPointSet;
+////    private PointSet m_VarPointSetPlus;
+////    private PointSet m_VarPointSetMinus;
+//    private boolean m_isStatisticeGraph;
+////    private boolean m_showVarianz;
+//    /**
+//     *
+//     */
+//    public SerPointSet (GraphPointSet Source) {
+//      m_InfoString = Source.m_InfoString;
+//      m_GraphLabel = Source.m_GraphLabel;
+//      m_Color = Source.m_Color;
+//      m_Stroke = Source.m_Stroke;
+//      m_isStatisticeGraph = Source.m_isStatisticsGraph;
+//
+//      // save the connected points
+//      m_ConnectedPointSet = new PointSet(Source.getConnectedPointSet());
+////      m_PointSet_1 = new PointSet (Source.m_PointSet_1);
+////      m_PointSet_2 = new PointSet (Source.m_PointSet_2);
+////      m_PointSet_3 = new PointSet (Source.m_PointSet_3);
+//    }
+//    /**
+//     *
+//     */
+//    public GraphPointSet getGraphPointSet () {
+//      GraphPointSet ret = new GraphPointSet(10,m_GraphLabel);
+//      ret.setInfoString(this.m_InfoString,this.m_Stroke);
+//      ret.setColor(this.m_Color);
+//      ret.m_Color = m_Color;
+//      ret.m_Stroke = m_Stroke;
+//      ret.m_isStatisticsGraph = m_isStatisticeGraph;
+//        //@todo why doesn't that work!?
+////      ret.m_ConnectedPointSet = (DPointSetMultiIcon)m_ConnectedPointSet;
+////      ret.m_PointSet_1 = m_PointSet_1.getDPointSet();
+////      ret.m_PointSet_2 = m_PointSet_2.getDPointSet();
+////      ret.m_PointSet_3 = m_PointSet_3.getDPointSet();
+//      ret.m_ConnectedPointSet.setConnected(true);
+//      return ret;
+//    }
+//  }
+  
   /**
    *
    */
@@ -562,18 +564,19 @@ public class GraphPointSet {
     public int getSize() {
       return m_X.length;
     }
-    /**
-     *
-     */
-    public DPointSet printPoints() {
-     for (int i = 0; i < m_ConnectedPointSet.getSize();i++) {
-        DPoint p = m_ConnectedPointSet.getDPoint(i);
-        double x = p.x;
-        double y = p.y;
-        //System.out.println("point "+i+ " x= "+x+"y= "+y);
-      }
-      return m_ConnectedPointSet.getDPointSet();
-    }
+    
+//    /**
+//     *
+//     */
+//    public DPointSet printPoints() {
+//     for (int i = 0; i < m_ConnectedPointSet.getSize();i++) {
+//        DPoint p = m_ConnectedPointSet.getDPoint(i);
+//        double x = p.x;
+//        double y = p.y;
+//        //System.out.println("point "+i+ " x= "+x+"y= "+y);
+//      }
+//      return m_ConnectedPointSet.getDPointSet();
+//    }
 
   }
 }

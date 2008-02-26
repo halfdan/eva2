@@ -1,5 +1,6 @@
 package javaeva.server.go.operators.distancemetric;
 
+import javaeva.gui.BeanInspector;
 import javaeva.server.go.individuals.AbstractEAIndividual;
 import javaeva.server.go.individuals.InterfaceDataTypeBinary;
 import javaeva.server.go.individuals.InterfaceDataTypeDouble;
@@ -20,7 +21,8 @@ import java.util.BitSet;
  * To change this template use File | Settings | File Templates.
  */
 public class PhenotypeMetric implements InterfaceDistanceMetric, java.io.Serializable {
-
+	private static PhenotypeMetric pMetric = null;
+	
     public PhenotypeMetric() {
     }
 
@@ -31,11 +33,11 @@ public class PhenotypeMetric implements InterfaceDistanceMetric, java.io.Seriali
         return (Object) new PhenotypeMetric(this);
     }
 
-    private int Minimum (int a, int b, int c) {
+    private static int min(int a, int b, int c) {
         return Math.min(Math.min(a, b), c);
     }
 
-    private int computeLevenshteinDistance (String s, String t) {
+    private static int computeLevenshteinDistance (String s, String t) {
         int     d[][]; // matrix
         int     n; // length of s
         int     m; // length of t
@@ -69,7 +71,7 @@ public class PhenotypeMetric implements InterfaceDistanceMetric, java.io.Seriali
                     cost = 1;
                 }
                 // Step 6
-                d[i][j] = Minimum (d[i-1][j]+1, d[i][j-1]+1, d[i-1][j-1] + cost);
+                d[i][j] = min(d[i-1][j]+1, d[i][j-1]+1, d[i-1][j-1] + cost);
             }
         }
         // Step 7
@@ -107,33 +109,34 @@ public class PhenotypeMetric implements InterfaceDistanceMetric, java.io.Seriali
             d2 = ((InterfaceDataTypeInteger) indy2).getIntegerData();
             r2 = ((InterfaceDataTypeInteger) indy2).getIntRange();
             for (int i = 0; (i < d1.length) && (i < d2.length); i++) {
-                tmpResult += Math.abs(d1[i] - d2[i])/((double)(r1[i][1]-r1[i][0]));
+                tmpResult += Math.pow(((d1[i] - r1[i][0])/((double)(r1[i][1]-r1[i][0]))) - ( (d2[i] - r2[i][0])/((double)(r2[i][1]-r2[i][0]))), 2);
+                //tmpResult += Math.abs(d1[i] - d2[i])/((double)(r1[i][1]-r1[i][0]));
             }
             result += Math.sqrt(tmpResult);
         }
         if ((indy1 instanceof InterfaceDataTypeDouble) && (indy2 instanceof InterfaceDataTypeDouble)) {
-            double[]    dIndy1, dIndy2;
-            double[][]  range1, range2;
+            double[]    d1, d2;
+            double[][]  r1, r2;
             double      tmpResult = 0;
-            dIndy1 = ((InterfaceDataTypeDouble) indy1).getDoubleData();
-            range1 = ((InterfaceDataTypeDouble) indy1).getDoubleRange();
-            dIndy2 = ((InterfaceDataTypeDouble) indy2).getDoubleData();
-            range2 = ((InterfaceDataTypeDouble) indy2).getDoubleRange();
-            for (int i = 0; (i < dIndy1.length) && (i < dIndy2.length); i++) {
-                tmpResult += Math.pow(((dIndy1[i] - range1[i][0])/(range1[i][1] - range1[i][0])) - ((dIndy2[i] - range2[i][0])/(range2[i][1] - range2[i][0])), 2);
+            d1 = ((InterfaceDataTypeDouble) indy1).getDoubleData();
+            r1 = ((InterfaceDataTypeDouble) indy1).getDoubleRange();
+            d2 = ((InterfaceDataTypeDouble) indy2).getDoubleData();
+            r2 = ((InterfaceDataTypeDouble) indy2).getDoubleRange();
+            for (int i = 0; (i < d1.length) && (i < d2.length); i++) {
+                tmpResult += Math.pow(((d1[i] - r1[i][0])/(r1[i][1] - r1[i][0])) - ((d2[i] - r2[i][0])/(r2[i][1] - r2[i][0])), 2);
             }
             result += Math.sqrt(tmpResult);
         }
         if ((indy1 instanceof InterfaceDataTypePermutation) && (indy2 instanceof InterfaceDataTypePermutation)) {
             int[]    dIndy1, dIndy2;
             String   s1 = "", s2 = "";
-            double  tmpResult = 0;
+//            double  tmpResult = 0;
             for (int p = 0; p < ((InterfaceDataTypePermutation) indy1).getPermutationData().length; p++) {
               dIndy1 = ((InterfaceDataTypePermutation) indy1).getPermutationData()[p];
               dIndy2 = ((InterfaceDataTypePermutation) indy2).getPermutationData()[p];
               for (int i = 0; i < dIndy1.length; i++) s1 += dIndy1[i];
               for (int i = 0; i < dIndy2.length; i++) s2 += dIndy2[i];
-              result += this.computeLevenshteinDistance(s1, s2)/((double)Math.max(s1.length(), s2.length()));
+              result += PhenotypeMetric.computeLevenshteinDistance(s1, s2)/((double)Math.max(s1.length(), s2.length()));
             }
         }
         if ((indy1 instanceof InterfaceDataTypeProgram) && (indy2 instanceof InterfaceDataTypeProgram)) {
@@ -143,13 +146,22 @@ public class PhenotypeMetric implements InterfaceDistanceMetric, java.io.Seriali
             for (int i = 0; i < l1; i++) {
                 s1 = ((InterfaceDataTypeProgram)indy1).getProgramData()[i].getStringRepresentation();
                 s2 = ((InterfaceDataTypeProgram)indy2).getProgramData()[i].getStringRepresentation();
-                result += this.computeLevenshteinDistance(s1, s2)/((double)Math.max(s1.length(), s2.length()));
+                result += PhenotypeMetric.computeLevenshteinDistance(s1, s2)/((double)Math.max(s1.length(), s2.length()));
             }
         }
-
         return result;
-
-
+    }
+    
+    /** This method allows you to compute the distance between two individuals.
+     * Depending on the metric this method may reject some types of individuals.
+     * The default return value would be 1.0.
+     * @param indy1     The first individual.
+     * @param indy2     The second individual.
+     * @return double
+     */
+    public static double dist(AbstractEAIndividual indy1, AbstractEAIndividual indy2) {
+    	if (pMetric == null) pMetric = new PhenotypeMetric();
+    	return pMetric.distance(indy1, indy2);
     }
     
     public static double euclidianDistance(double[] v1, double[] v2) {
@@ -160,6 +172,40 @@ public class PhenotypeMetric implements InterfaceDistanceMetric, java.io.Seriali
         return Math.sqrt(result);
     }
     
+    public static double norm(AbstractEAIndividual indy) {
+        double      result = 0;
+        if (indy instanceof InterfaceDataTypeBinary) {
+        	BitSet bs = (BitSet)((InterfaceDataTypeBinary)indy).getBinaryData();
+        	for (int i = 0; (i < ((InterfaceDataTypeBinary)indy).size()) ; i++) {
+                if (bs.get(i)) result += 1;
+            }
+        	result = result/((InterfaceDataTypeBinary)indy).size();
+        	return result;
+        }
+        if (indy instanceof InterfaceDataTypeInteger) {
+            int[]   d1 = ((InterfaceDataTypeInteger) indy).getIntegerData();
+            for (int i = 0; i < d1.length; i++) {
+				result += d1[i];
+			}
+            return result/d1.length;
+        }
+        if (indy instanceof InterfaceDataTypeDouble) {
+        	result = norm(((InterfaceDataTypeDouble) indy).getDoubleData());
+        	return result;
+        }
+        if (indy instanceof InterfaceDataTypePermutation) {
+        	// TODO hard to find a norm for permutations. As we use the levenshtein distance metric,
+        	// the normed distance to the empty permutaton is always one... 
+            return 1;
+        }
+        if (indy instanceof InterfaceDataTypeProgram) {
+        	// TODO same as for permutations
+            return 1;
+        }
+        System.err.println("error: unknown individual interface in PhenotypeMetric::norm " + BeanInspector.toString(indy));
+        return 0;
+    }
+     
     public static double norm(double[] v1) {
         double      result = 0;
         for (int i = 0; i < v1.length; i++) {

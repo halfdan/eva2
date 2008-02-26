@@ -152,7 +152,7 @@ public class FM0Problem extends F1Problem implements Interface2DBorderProblem, I
      */
     public String getAdditionalFileStringValue(Population pop) {
         String result = "";
-        result += this.getSolutionDataFor(pop.getBestEAIndividual()) +"\t";
+        result += AbstractEAIndividual.getDefaultDataString(pop.getBestEAIndividual()) +"\t";
         result += this.getNumberOfFoundOptima(pop)+"\t";
         result += this.getMaximumPeakRatio(pop);
         return result;

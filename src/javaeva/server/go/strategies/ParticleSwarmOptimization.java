@@ -1465,12 +1465,14 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 		result += this.m_Population.getStringRepresentation();
 		return result;
 	}
+	
 	/** This method allows you to set an identifier for the algorithm
 	 * @param name      The indenifier
 	 */
 	public void SetIdentifier(String name) {
 		this.m_Identifier = name;
 	}
+	
 	public String getIdentifier() {
 		return this.m_Identifier;
 	}
@@ -1566,7 +1568,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 	 *
 	 * @param tau2	the 
 	 */
-	public void setWithConstriction(double tau1, double tau2) {
+	protected void setWithConstriction(double tau1, double tau2) {
 		double pSum = tau1+tau2;
 		if (pSum <= 4) {
 			System.err.println("error, invalid tauSum value in PSO::setWithConstriction");
@@ -1619,6 +1621,31 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 		return "Acceleration for the social model.";
 	}
 
+	/**
+	 * Set the phi1 / phi2 parameter values (and in the constriction variant, adapt constriction factor).
+	 *   
+	 * @param phi1
+	 * @param phi2
+	 */
+	public void setPhiValues(double phi1, double phi2) {
+		m_Phi1 = phi1;
+		m_Phi2 = phi2;
+		if (algType.isSelectedString("Constriction")) setWithConstriction(phi1, phi2);
+	}
+	
+	/**
+	 * Directly set all parameter values phi1, phi2 and inertness/constriction factor.
+	 *  
+	 * @param phi1
+	 * @param phi2
+	 * @param inertness
+	 */
+	public void setParameterValues(double phi1, double phi2, double inertness) {
+		m_Phi1 = phi1;
+		m_Phi2 = phi2;
+		setInertnessOrChi(inertness);
+	}
+	
 	/** This method allows you to choose the topology type.
 	 * @param s  The type.
 	 */

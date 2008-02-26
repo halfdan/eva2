@@ -1,20 +1,22 @@
 package javaeva.server.go.problems;
 
+import java.awt.BorderLayout;
+import java.util.BitSet;
+
+import javaeva.server.go.PopulationInterface;
 import javaeva.server.go.individuals.AbstractEAIndividual;
 import javaeva.server.go.individuals.InterfaceDataTypeBinary;
 import javaeva.server.go.individuals.InterfaceDataTypeDouble;
 import javaeva.server.go.individuals.InterfaceDataTypeInteger;
 import javaeva.server.go.individuals.InterfaceDataTypePermutation;
-import javaeva.server.go.individuals.InterfaceDataTypeProgram;
-import javaeva.server.go.individuals.codings.gp.InterfaceProgram;
 import javaeva.server.go.operators.moso.MOSONoConvert;
 import javaeva.server.go.populations.Population;
 import javaeva.server.go.strategies.InterfaceOptimizer;
 
-
-import javax.swing.*;
-import java.util.BitSet;
-import java.awt.*;
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 /**
  * Created by IntelliJ IDEA.
@@ -156,120 +158,20 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
     /******************** Some output methods *******************************************/
 
     /** This method allows you to output a string that describes a found solution
-     * in a way that is most suiteable for a given problem.
+     * in a way that is most suitable for a given problem.
      * @param individual    The individual that is to be shown.
      * @return The description.
      */
     public String getSolutionRepresentationFor(AbstractEAIndividual individual) {
-        StringBuffer sb = new StringBuffer("Individual:\n");
-        if (individual instanceof InterfaceDataTypeBinary) {
-            sb.append("Binary data     : {");
-            BitSet b = ((InterfaceDataTypeBinary)individual).getBinaryData();
-            for (int i = 0; i < b.length(); i++) {
-                if (b.get(i)) sb.append("1");
-                else sb.append("0");
-            }
-            sb.append("}\n");
-        }
-        if (individual instanceof InterfaceDataTypeInteger) {
-            sb.append("Integer data    : {");
-            int[] b = ((InterfaceDataTypeInteger)individual).getIntegerData();
-            for (int i = 0; i < b.length; i++) {
-                sb.append(b[i]);
-                if ((i+1) < b.length) sb.append("; ");
-            }
-            sb.append("}\n");
-        }
-        if (individual instanceof InterfaceDataTypeDouble) {
-            sb.append("Double data     : {");
-            double[] b = ((InterfaceDataTypeDouble)individual).getDoubleData();
-            for (int i = 0; i < b.length; i++) {
-                sb.append(b[i]);
-                if ((i+1) < b.length) sb.append("; ");
-            }
-            sb.append("}\n");
-        }
-        if (individual instanceof InterfaceDataTypePermutation) {
-            sb.append("Permutation data: {");
-            int[] b = ((InterfaceDataTypePermutation)individual).getPermutationData()[0];
-            for (int i = 0; i < b.length; i++) {
-                sb.append(b[i]);
-                if ((i+1) < b.length) sb.append("; ");
-            }
-            sb.append("}\n");
-        }
-        if (individual instanceof InterfaceDataTypeProgram) {
-            sb.append("Program data    : ");
-            InterfaceProgram[] b = ((InterfaceDataTypeProgram)individual).getProgramData();
-            for (int i = 0; i < b.length; i++) {
-                sb.append(b[i].getStringRepresentation());
-                if ((i+1) < b.length) sb.append("; ");
-            }
-            sb.append("}");
-        }
-        double[]    fitness = individual.getFitness();
-        sb.append("Fitness         : {");
-        for (int i = 0; i < fitness.length; i++) {
-            sb.append(fitness[i]);
-            if ((i+1) < fitness.length) sb.append("; ");
-        }
-        sb.append("}\n");
-        return sb.toString();
+    	return AbstractEAIndividual.getDefaultStringRepresentation(individual);
     }
 
     /** This method returns a single line representation of the solution
      * @param individual  The individual
      * @return The string
      */
-    public String getSolutionDataFor(AbstractEAIndividual individual) {
-        StringBuffer sb = new StringBuffer("");
-        if (individual instanceof InterfaceDataTypeBinary) {
-            sb.append("{");
-            BitSet b = ((InterfaceDataTypeBinary)individual).getBinaryData();
-            for (int i = 0; i < b.length(); i++) {
-                if (b.get(i)) sb.append("1");
-                else sb.append("0");
-            }
-            sb.append("}");
-        }
-        if (individual instanceof InterfaceDataTypeInteger) {
-            sb.append("{");
-            int[] b = ((InterfaceDataTypeInteger)individual).getIntegerData();
-            for (int i = 0; i < b.length; i++) {
-                sb.append(b[i]);
-                if ((i+1) < b.length) sb.append("; ");
-            }
-            sb.append("}");
-        }
-        if (individual instanceof InterfaceDataTypeDouble) {
-            sb.append("{");
-            double[] b = ((InterfaceDataTypeDouble)individual).getDoubleData();
-            for (int i = 0; i < b.length; i++) {
-                sb.append(b[i]);
-                if ((i+1) < b.length) sb.append("; ");
-            }
-            sb.append("}");
-        }
-        if (individual instanceof InterfaceDataTypePermutation) {
-            sb.append("{");
-            int[] b = ((InterfaceDataTypePermutation)individual).getPermutationData()[0];
-            for (int i = 0; i < b.length; i++) {
-                sb.append(b[i]);
-                if ((i+1) < b.length) sb.append("; ");
-            }
-            sb.append("}");
-        }
-        if (individual instanceof InterfaceDataTypeProgram) {
-            sb.append("{");
-            InterfaceProgram[] b = ((InterfaceDataTypeProgram)individual).getProgramData();
-            for (int i = 0; i < b.length; i++) {
-                sb.append(b[i].getStringRepresentation());
-                if ((i+1) < b.length) sb.append("; ");
-            }
-            sb.append("}");
-        }
-        return sb.toString();
-    }
+//    public String getSolutionDataFor(IndividualInterface individual) {
+//    }
 
     /** This method returns a string describing the optimization problem.
      * @return The description.
@@ -292,7 +194,7 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
      * @param pop   The population that is to be refined.
      * @return String
      */
-    public String getAdditionalFileStringHeader(Population pop) {
+    public String getAdditionalFileStringHeader(PopulationInterface pop) {
         return "Solution";
     }
 
@@ -300,8 +202,8 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
      * @param pop   The population that is to be refined.
      * @return String
      */
-    public String getAdditionalFileStringValue(Population pop) {
-        return this.getSolutionDataFor(pop.getBestEAIndividual());
+    public String getAdditionalFileStringValue(PopulationInterface pop) {
+        return AbstractEAIndividual.getDefaultDataString(pop.getBestIndividual());
     }
 
     /** This method allows you to request a graphical represenation for a given
