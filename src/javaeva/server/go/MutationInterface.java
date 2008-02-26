@@ -12,7 +12,7 @@ package javaeva.server.go;
 /*==========================================================================*
  * IMPORTS
  *==========================================================================*/
-import javaeva.server.stat.Statistics;
+import javaeva.server.stat.InterfaceStatistics;
 /*==========================================================================*
  * INTERFACE DECLARATION
  *==========================================================================*/
@@ -20,5 +20,5 @@ import javaeva.server.stat.Statistics;
  *
  */
 public interface MutationInterface {
-  public void addStatisticsListner(Statistics e);
+  public void addStatisticsListner(InterfaceStatistics e);
 }

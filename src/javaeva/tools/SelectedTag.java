@@ -68,15 +68,21 @@ public class SelectedTag implements java.io.Serializable {
 	//~ Methods ////////////////////////////////////////////////////////////////
 
 
-	/** This gives me the chance to set the selected tag index from a java program
+	/** 
+	 * Set the selected tag by index.
+	 * 
 	 * @param i     The new selected tag index
 	 */
 	public void setSelectedTag(int i) {
 		if ((i >= 0) && (i < this.m_Tags.length)) this.m_Selected = i;
 	}
 	
-	/** This gives me the chance to set the selected tag index from a java program
-	 * @param i     The new selected tag index
+	/**
+	 * Set the selected tag by String tag name. If the given name doesnt exist, nothing
+	 * will change and an error message will be printed to System.err. This should of course
+	 * be avoided. 
+	 *  
+	 * @param str    The new selected tag name
 	 */
 	public void setSelectedTag(String str) {
 		for (int i=0; i<m_Tags.length; i++) {

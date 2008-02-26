@@ -57,7 +57,7 @@ public class GenericModuleAdapter extends AbstractModuleAdapter implements Seria
         JModuleGeneralPanel ButtonPanel      = new JModuleGeneralPanel(m_RemoteThis,((Processor)m_Processor).isOptRunning());
         ButtonPanel.setHelperFilename(helperFilename);
         GUIContainer.add(ButtonPanel);
-        InterfaceGOParameters Para = ((Processor)m_Processor).getModuleParameter();
+        InterfaceGOParameters Para = ((Processor)m_Processor).getGOParams();
         if (TRACE) System.out.println("parameters are of type "+Para.getClass());
         // TODO do we really need proxies here?
         if (m_RMI && !Proxy.isProxyClass(Para.getClass())) GUIContainer.add(new JParaPanel( RMIProxyLocal.newInstance(Para), Para.getName()));

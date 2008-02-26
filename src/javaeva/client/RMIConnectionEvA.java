@@ -1,6 +1,5 @@
 package javaeva.client;
 
-import java.lang.reflect.InvocationHandler;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 

@@ -74,10 +74,10 @@ abstract public class AbstractModuleAdapter implements ModuleAdapter, Serializab
   /**
    * From the interface RemoteStateListener. Added this method to make progress bar possible.
    */
-  public void updateProgress(final int percent) {
+  public void updateProgress(final int percent, String msg) {
 	  if (TRACE) System.out.println("AbstractModuleAdapter::updateProgress");
 	  for (RemoteStateListener listener : m_RemoteStateListeners) {
-		  listener.updateProgress(percent);
+		  listener.updateProgress(percent, msg);
 	  }
   }
   

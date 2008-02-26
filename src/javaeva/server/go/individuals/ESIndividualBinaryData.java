@@ -1,14 +1,14 @@
 package javaeva.server.go.individuals;
 
+import java.util.BitSet;
+
+import javaeva.server.go.IndividualInterface;
 import javaeva.server.go.operators.crossover.CrossoverESDefault;
 import javaeva.server.go.operators.mutation.InterfaceMutation;
 import javaeva.server.go.operators.mutation.MutateESGlobal;
 import javaeva.server.go.populations.Population;
 import javaeva.server.go.problems.InterfaceOptimizationProblem;
 import javaeva.server.go.tools.RandomNumberGenerator;
-
-import java.util.BitSet;
-import java.util.Arrays;
 
 /** This individual uses a real-valued genotype to code for binary values, either
  * by using a threshold value of by interpreting the double value as probability.
@@ -248,6 +248,7 @@ public class ESIndividualBinaryData extends AbstractEAIndividual implements Inte
 /************************************************************************************
  * InterfaceESIndividual methods
  */
+    
     /** This method will allow the user to read the ES 'genotype'
      * @return BitSet
      */

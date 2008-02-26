@@ -1,5 +1,6 @@
 package javaeva.server.go.individuals;
 
+import javaeva.server.go.IndividualInterface;
 import javaeva.server.go.operators.crossover.CrossoverESDefault;
 import javaeva.server.go.operators.mutation.InterfaceMutation;
 import javaeva.server.go.operators.mutation.MutateESGlobal;
@@ -384,7 +385,7 @@ public class ESIndividualPermutationData extends AbstractEAIndividual implements
         }
         return res;
     }
-
+    
 /**********************************************************************************************************************
  * These are for GUI
  */

@@ -15,21 +15,19 @@ import java.util.BitSet;
  * Time: 13:05:33
  * To change this template use Options | File Templates.
  */
-public class B1Problem extends AbstractOptimizationProblem implements java.io.Serializable {
-
+public class B1Problem extends AbstractProblemBinary implements java.io.Serializable {
     public int          m_ProblemDimension  = 30;
 
     public B1Problem() {
-        this.m_Template         = new GAIndividualBinaryData();
+    	super();
     }
-
+    
     public B1Problem(B1Problem b) {
         //AbstractOptimizationProblem
         if (b.m_Template != null)
             this.m_Template         = (AbstractEAIndividual)((AbstractEAIndividual)b.m_Template).clone();
         //AbstractBinaryOptimizationProblem
         this.m_ProblemDimension = b.m_ProblemDimension;
-        // BLOTZ
     }
 
     /** This method returns a deep clone of the problem.
@@ -37,12 +35,6 @@ public class B1Problem extends AbstractOptimizationProblem implements java.io.Se
      */
     public Object clone() {
         return (Object) new B1Problem(this);
-    }
-
-    /** This method inits the Problem to log multiruns
-     */
-    public void initProblem() {
-        // nothing to init here
     }
 
     /** This method inits a given population
@@ -64,34 +56,17 @@ public class B1Problem extends AbstractOptimizationProblem implements java.io.Se
         population.init();
     }
 
-    /** This method evaluate a single individual and sets the fitness values
-     * @param individual    The individual that is to be evalutated
-     */
-    public void evaluate(AbstractEAIndividual individual) {
-        BitSet          tmpBitSet;
-        double[]        result;
-        InterfaceDataTypeBinary    tmpIndy;
-
-        // collect the data
-        tmpIndy     = (InterfaceDataTypeBinary) individual;
-        tmpBitSet   = tmpIndy.getBinaryData();
-        // evalutate the fitness
-        result = this.evaluate(tmpBitSet, tmpIndy.size());
-        // set the fitness
-        individual.SetFitness(result);
-    }
-
     /** This is a simple method that evaluates a given Individual. The fitness
      * values of the individual will be set inside this method.
      * @param b         The BitSet that is to be evaluated.
      * @param l         The length of the BitSet.
      * @return          Double[]
      */
-    public double[] evaluate(BitSet b, int l) {
+    public double[] eval(BitSet b) {
         double[]                result = new double[1];
         int                     fitness = 0;
 
-        for (int i = 0; i < l; i++) if (b.get(i)) fitness++;
+        for (int i = 0; i < getProblemDimension(); i++) if (b.get(i)) fitness++;
         result[0] = fitness;
         return result;
     }
@@ -143,12 +118,13 @@ public class B1Problem extends AbstractOptimizationProblem implements java.io.Se
         return "The task in this problem is to maximize the number of false bits in a BitSet.";
     }
 
-    /** This method allows you to set the number of mulitruns that are to be performed,
-     * necessary for stochastic optimizers to ensure reliable results.
-     * @param multiruns The number of multiruns that are to be performed
+    /** 
+     * Set the problem dimension.
+	 *
+     * @param dim The problem dimension.
      */
-    public void setProblemDimension(int multiruns) {
-        this.m_ProblemDimension = multiruns;
+    public void setProblemDimension(int dim) {
+        this.m_ProblemDimension = dim;
     }
     public int getProblemDimension() {
         return this.m_ProblemDimension;

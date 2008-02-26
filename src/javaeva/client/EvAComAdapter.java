@@ -74,6 +74,10 @@ public class EvAComAdapter extends ComAdapter {
 		return newModuleAdapter;
 	}
 	
+	public void updateLocalMainAdapter() {
+		localMainAdapter = new EvAMainAdapterImpl();
+	}
+	
 	private EvAMainAdapter getLocalMainAdapter() { 
 		if (localMainAdapter == null) localMainAdapter = new EvAMainAdapterImpl();
 		return localMainAdapter;

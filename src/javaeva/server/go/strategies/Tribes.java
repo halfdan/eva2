@@ -624,11 +624,14 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
 	 * of the indiviuals in the beginning of the run, the indiviudals will be discarded.
 	 */
 	public void setPopulation(Population pop) {
+		if (pop == null) return;
 		population = pop;
 		if (population.get(0) instanceof InterfaceESIndividual) {
 			range = ((InterfaceESIndividual)population.get(0)).getDoubleRange();
 			setDimension(range.length);
-		} else System.err.println("warning, population of non InterfaceESIndividuals. TRIBES couldnt correctly init the problem range.");
+		} else {
+			System.err.println("warning, TRIBES requires InterfaceESIndidivual instead of " + population.get(0).getClass() + ". Couldnt correctly init the problem range.");
+		}
 	}
 
 	private void setDimension(int length) {

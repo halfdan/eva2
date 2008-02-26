@@ -196,7 +196,7 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem {
      * @return description
      */
     public String globalInfo() {
-        return "Sphere model.";
+        return "Use an external command as target function.";
     }
 
 

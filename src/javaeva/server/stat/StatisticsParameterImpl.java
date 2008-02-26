@@ -14,6 +14,8 @@ package javaeva.server.stat;
  * IMPORTS
  *==========================================================================*/
 import java.io.Serializable;
+import java.util.ArrayList;
+
 import javaeva.tools.Serializer;
 import javaeva.tools.Tag;
 import javaeva.tools.SelectedTag;
@@ -43,6 +45,7 @@ public class StatisticsParameterImpl implements StatisticsParameter, Serializabl
   protected String m_InfoString = "";
   private boolean m_useStatPlot = true;
   private double m_ConvergenceRateThreshold=0.001;
+  private boolean showTextOutput = true;
   /**
    *
    */
@@ -70,6 +73,28 @@ public class StatisticsParameterImpl implements StatisticsParameter, Serializabl
     return ret;
   }
 
+  /**
+   * Return a list of String arrays describing the selected plot options, e.g. {"Best"} or {"Best", "Worst"}.
+   * For now, only one array is returned.
+   * 
+   * @return a list of String arrays describing the selected plot options
+   */
+  public ArrayList<String[]> getPlotDescriptions() {
+	  ArrayList<String[]> desc = new ArrayList<String[]>();
+	  switch (getPlotFitness().getSelectedTagID()) {
+	  case StatisticsParameterImpl.PLOT_BEST_AND_WORST:
+		  desc.add(new String[] {"Best", "Worst"});
+		  break;
+	  case StatisticsParameterImpl.PLOT_BEST:
+		  desc.add(new String[] {"Best"});
+		  break;
+	  case StatisticsParameterImpl.PLOT_WORST:
+		  desc.add(new String[] {"Worst"});
+		  break;
+	  }
+	  return desc;
+  }
+  
   /**
    *
    */
@@ -111,28 +136,6 @@ public class StatisticsParameterImpl implements StatisticsParameter, Serializabl
   /**
    *
    */
-  public void setTextoutput(int i) {
-    if (i >= 0)
-      m_Textoutput = i;
-  }
-
-  /**
-   *
-   */
-  public int GetTextoutput() {
-    return m_Textoutput;
-  }
-
-  /**
-   *
-   */
-  public String textoutputTipText() {
-    return "Describes how often information is printed in the textoutput frame. textoutput=1 -> there is a output every generation. textoutput<0 -> there is no text output";
-  }
-
-  /**
-   *
-   */
   public void setPlotoutput(int i) {
     m_Plotoutput = i;
   }
@@ -144,12 +147,12 @@ public class StatisticsParameterImpl implements StatisticsParameter, Serializabl
     return m_Plotoutput;
   }
 
-  /**
-   *
-   */
-  public String plotFrequencyTipText() {
-    return "Frequency how often the fitness plot gets an update. plotoutput=1 -> there is a output every generation. plotoutput<0 -> there is no plot output";
-  }
+//  /**
+//   *
+//   */
+//  public String plotFrequencyTipText() {
+//    return "Frequency how often the fitness plot gets an update. plotoutput=1 -> there is a output every generation. plotoutput<0 -> there is no plot output";
+//  }
 
   /**
    *
@@ -267,7 +270,7 @@ public class StatisticsParameterImpl implements StatisticsParameter, Serializabl
    *
    */
   public String resultFileNameTipText() {
-    return "File name for the result file, if 'none' no output file will be created.";
+    return "File name for the result file. If empty or 'none', no output file will be created.";
   }
 
   public String convergenceRateThresholdTipText() {
@@ -284,9 +287,27 @@ public class StatisticsParameterImpl implements StatisticsParameter, Serializabl
 
   /**
    *
-   * @param x
    */
   public double getConvergenceRateThreshold() {
     return m_ConvergenceRateThreshold;
   }
+  
+	/**
+	 * @return the showOutputData
+	 */
+	public boolean isShowTextOutput() {
+		return showTextOutput;
+	}
+
+	/**
+	 * 
+	 * @param showOutputData the showOutputData to set
+	 */
+	public void setShowTextOutput(boolean bShow) {
+		this.showTextOutput = bShow;
+	}
+	
+	public String showTextOutputTipText() {
+		return "Indicates whether further text output should be printed";
+	}
 }

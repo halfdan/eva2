@@ -1,5 +1,6 @@
 package javaeva.server.go.individuals;
 
+import javaeva.server.go.IndividualInterface;
 import javaeva.server.go.operators.crossover.CrossoverESDefault;
 import javaeva.server.go.operators.mutation.InterfaceMutation;
 import javaeva.server.go.operators.mutation.MutateESGlobal;
@@ -265,7 +266,7 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
         	strB.append(this.m_SelectionProbability[i]);
         	strB.append(";");
         }
-        strB.append("})\n Value: [");
+        strB.append("}) Value: [");
         for (int i = 0; i < this.m_Genotype.length; i++) {
         	strB.append(this.m_Genotype[i]);
         	strB.append("; ");
@@ -318,6 +319,7 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
             this.m_Genotype[i] = RandomNumberGenerator.randomDouble(this.m_Range[i][0], this.m_Range[i][1]);
         }
     }
+    
 /**********************************************************************************************************************
  * These are for GUI
  */
@@ -336,11 +338,11 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
         return "This is a ES individual suited to optimize double values.";
     }
     
-    public String toString() {
-    	String str = "Ind " + m_Genotype[0];
-    	for (int i=1; i<this.m_Genotype.length; i++) str += "/" + m_Genotype[i];
-    	str += "~" + m_Fitness[0];
-    	for (int i=1; i<this.m_Fitness.length; i++) str += "/" + m_Fitness[i];
-    	return str;
-    }
+//    public String toString() {
+//    	String str = "Ind " + m_Genotype[0];
+//    	for (int i=1; i<this.m_Genotype.length; i++) str += "/" + m_Genotype[i];
+//    	str += "~" + m_Fitness[0];
+//    	for (int i=1; i<this.m_Fitness.length; i++) str += "/" + m_Fitness[i];
+//    	return str;
+//    }
 }

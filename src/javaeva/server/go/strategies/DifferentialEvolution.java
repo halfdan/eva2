@@ -26,8 +26,7 @@ import javaeva.tools.Tag;
 public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serializable {
 
     private Population                      m_Population        = new Population();
-    private Population						children			= null;
-    private AbstractOptimizationProblem    m_Problem           = new F1Problem();
+    private AbstractOptimizationProblem		m_Problem           = new F1Problem();
     private SelectedTag                     m_DEType;
     private double                          m_F                 = 0.8;
     private double                          m_k                 = 0.6;
@@ -43,12 +42,9 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
      *
      */
     public DifferentialEvolution() {
-        Tag[] tag = new Tag[4];
-        tag[0] = new Tag(0, "DE1 - DE/rand/1");
-        tag[1] = new Tag(1, "DE2 - DE/current-to-best/1");
-        tag[2] = new Tag(2, "DE/best/2");
-        tag[3] = new Tag(3, "Trigonometric DE");
-        this.m_DEType = new SelectedTag(1, tag);
+    	String[] deTypes = new String[] {"DE1 - DE/rand/1", "DE2 - DE/current-to-best/1", "DE/best/2", "Trigonometric DE"};
+    	// sets DE2 as default
+        m_DEType = new SelectedTag(1, deTypes);
     }
 
     /**
@@ -74,7 +70,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
 
     public void init() {
         this.m_Problem.initPopulation(this.m_Population);
-        children = new Population(m_Population.size());
+//        children = new Population(m_Population.size());
         this.evaluatePopulation(this.m_Population);
         this.firePropertyChangedEvent("NextGenerationPerformed");
     }
@@ -86,7 +82,8 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
     public void initByPopulation(Population pop, boolean reset) {
         this.m_Population = (Population)pop.clone();
         if (reset) this.m_Population.init();
-        else children = new Population(m_Population.size());
+//        if (reset) this.m_Population.init();
+//        else children = new Population(m_Population.size());
         this.evaluatePopulation(this.m_Population);
         this.firePropertyChangedEvent("NextGenerationPerformed");
     }
@@ -496,12 +493,12 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
     /** Probability of alteration through DE (something like a discrete uniform crossover is performed here)
      * @param k
      */
-    public void setk (double k) {
+    public void setK(double k) {
         if (k < 0) k = 0;
         if (k > 1) k = 1;        
         this.m_k = k;
     }
-    public double getk() {
+    public double getK() {
         return this.m_k;
     }
     public String kTipText() {

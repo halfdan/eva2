@@ -1,4 +1,7 @@
 package javaeva.gui;
+
+import javaeva.server.stat.InterfaceTextListener;
+
 /*
  * Title:        JavaEvA
  * Description:
@@ -18,6 +21,6 @@ package javaeva.gui;
 /**
  *
  */
-public interface JTextoutputFrameInterface {
-  public void print (String Text);
+public interface JTextoutputFrameInterface extends InterfaceTextListener {
+  public void setShow(boolean bShow);
 }

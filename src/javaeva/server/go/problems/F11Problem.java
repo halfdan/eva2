@@ -19,7 +19,7 @@ public class F11Problem extends F1Problem implements java.io.Serializable {
     public F11Problem() {
         this.m_ProblemDimension = 10;
         this.m_Template         = new ESIndividualDoubleData();
-        this.defaultRange 		= 600;
+        this.m_DefaultRange 		= 600;
     }
     
     public F11Problem(F11Problem b) {

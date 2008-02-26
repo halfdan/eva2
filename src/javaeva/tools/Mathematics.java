@@ -122,7 +122,6 @@ public class Mathematics {
     }
     return linearInterpolation(x, x0, x1, f0, f1);
   }
-//>>>>>>> .merge-right.r288
 
   /**
    * @param f0

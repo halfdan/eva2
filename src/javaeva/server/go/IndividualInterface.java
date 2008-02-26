@@ -23,4 +23,6 @@ public interface IndividualInterface {
   public double[] getFitness();
   public void SetFitness (double[] fit);
   public double[] getDoubleArray();
+  public boolean isDominant(double[] otherFitness);
+  public boolean isDominant(IndividualInterface other);
 }

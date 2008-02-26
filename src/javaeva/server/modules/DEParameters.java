@@ -2,7 +2,7 @@ package javaeva.server.modules;
 
 import javaeva.server.go.InterfaceGOParameters;
 import javaeva.server.go.InterfacePopulationChangedEventListener;
-import javaeva.server.go.TerminatorInterface;
+import javaeva.server.go.InterfaceTerminator;
 import javaeva.server.go.operators.selection.InterfaceSelection;
 import javaeva.server.go.operators.terminators.EvaluationTerminator;
 import javaeva.server.go.populations.Population;
@@ -34,8 +34,8 @@ public class DEParameters implements InterfaceGOParameters, Serializable {
     private InterfaceOptimizer              m_Optimizer         = new DifferentialEvolution();
     private InterfaceOptimizationProblem    m_Problem           = new F1Problem();
     //private int                             m_FunctionCalls     = 1000;
-    private TerminatorInterface             m_Terminator        = new EvaluationTerminator();
-    private String                          m_OutputFileName    = "none";
+    private InterfaceTerminator             m_Terminator        = new EvaluationTerminator();
+//    private String                          m_OutputFileName    = "none";
     transient private InterfacePopulationChangedEventListener m_Listener;
 
     /**
@@ -145,10 +145,10 @@ public class DEParameters implements InterfaceGOParameters, Serializable {
      * evolutionary algorithm.
      * @param term  The new terminator
      */
-    public void setTerminator(TerminatorInterface term) {
+    public void setTerminator(InterfaceTerminator term) {
         this.m_Terminator = term;
     }
-    public TerminatorInterface getTerminator() {
+    public InterfaceTerminator getTerminator() {
         return this.m_Terminator;
     }
     public String terminatorTipText() {
@@ -172,15 +172,15 @@ public class DEParameters implements InterfaceGOParameters, Serializable {
     /** This method will set the output filename
      * @param name
      */
-    public void setOutputFileName (String name) {
-        this.m_OutputFileName = name;
-    }
-    public String getOutputFileName () {
-        return this.m_OutputFileName;
-    }
-    public String outputFileNameTipText() {
-        return "Set the name for the output file, if 'none' no output file will be created.";
-    }
+//    public void setOutputFileName (String name) {
+//        this.m_OutputFileName = name;
+//    }
+//    public String getOutputFileName () {
+//        return this.m_OutputFileName;
+//    }
+//    public String outputFileNameTipText() {
+//        return "Set the name for the output file, if 'none' no output file will be created.";
+//    }
 
     /** Assuming that all optimizer will store thier data in a population
      * we will allow acess to this population to query to current state
@@ -213,11 +213,11 @@ public class DEParameters implements InterfaceGOParameters, Serializable {
     /** This method will set the crossover probability
      * @param k
      */
-    public void setk (double k) {
-        ((DifferentialEvolution)this.m_Optimizer).setk(k);
+    public void setK(double k) {
+        ((DifferentialEvolution)this.m_Optimizer).setK(k);
     }
-    public double getk() {
-        return ((DifferentialEvolution)this.m_Optimizer).getk();
+    public double getK() {
+        return ((DifferentialEvolution)this.m_Optimizer).getK();
     }
     public String kTipText() {
         return "Probability of alteration through DE1.";

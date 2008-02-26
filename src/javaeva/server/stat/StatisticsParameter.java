@@ -12,7 +12,8 @@ package javaeva.server.stat;
 /*==========================================================================*
  * IMPORTS
  *==========================================================================*/
-import javaeva.tools.Tag;
+import java.util.List;
+
 import javaeva.tools.SelectedTag;
 /*==========================================================================*
 * INTERFACE DECLARATION
@@ -24,23 +25,34 @@ public interface StatisticsParameter {
   public String getName();
   public void saveInstance();
   public String globalInfo();
-  public void setTextoutput(int i);
+//  public void setTextoutput(int i);
   public void setPlotoutput(int i);
   public int GetPlotoutput();
-  public int GetTextoutput();
-  public String textoutputTipText();
-  public String plotFrequencyTipText();
+//  public int GetTextoutput();
+//  public String textoutputTipText();
+//  public String plotFrequencyTipText();
   public void setMultiRuns(int x);
   public int getMultiRuns();
   public String multiRunsTipText();
+
   public String GetInfoString();
   public void setInfoString(String s);
-  public void setResultFileName(String x);
+  
   public boolean GetuseStatPlot();
   public void setuseStatPlot(boolean x);
+  
+  public List<String[]> getPlotDescriptions();
+
   public SelectedTag getPlotFitness();
   public void setPlotFitness(SelectedTag newMethod);
+
   public String getResultFileName();
+  public void setResultFileName(String x);
+  
   public void setConvergenceRateThreshold(double x);
   public double getConvergenceRateThreshold();
+  
+  public boolean isShowTextOutput();
+  public void setShowTextOutput(boolean bShow);
+//  public String showTextOutputTipText();
 }

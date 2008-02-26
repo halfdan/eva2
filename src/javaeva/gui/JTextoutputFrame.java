@@ -40,12 +40,14 @@ public class JTextoutputFrame implements JTextoutputFrameInterface,
   protected String m_Name ="undefined";
   private transient JTextArea m_TextArea;
   private boolean m_firstprint = true;
+  private final JFrame frame;
   /**
    *
    */
   public JTextoutputFrame(String Title) {
     if (TRACE) System.out.println("JTextoutputFrame Constructor");
     m_Name = Title;
+    frame = new JEFrame(m_Name);
   }
   /**
    *
@@ -59,6 +61,19 @@ public class JTextoutputFrame implements JTextoutputFrameInterface,
     m_TextArea.append (Text+"\n");
     m_TextArea.repaint();
   }
+  
+  public void setShow(boolean bShow) {
+	if (frame.isVisible() != bShow) {
+		if (frame.isVisible()) {
+			frame.dispose();
+			m_TextArea.setText(null);
+		} else {
+			if (m_firstprint) createFrame();
+			else frame.setVisible(true);
+		}
+	}
+  }
+  
   /**
    *
    */
@@ -70,13 +85,13 @@ public class JTextoutputFrame implements JTextoutputFrameInterface,
     m_TextArea.setWrapStyleWord(true);
     m_TextArea.setEditable(false);
     m_TextArea.setCaretPosition(0);
-    final JFrame frame = new JEFrame(m_Name);
+
     BasicResourceLoader  loader  = BasicResourceLoader.instance();
     byte[] bytes   = loader.getBytesFromResourceLocation(EvAClient.iconLocation);
     try {
         frame.setIconImage(Toolkit.getDefaultToolkit().createImage(bytes));
       } catch (java.lang.NullPointerException e) {
-        System.out.println("Could not find JavaEvA icon, please move rescoure folder to working directory!");
+        System.out.println("Could not find JavaEvA icon, please move resource folder to working directory!");
       } 
     frame.addWindowListener(new WindowAdapter() {
       public void windowClosing(WindowEvent e) {

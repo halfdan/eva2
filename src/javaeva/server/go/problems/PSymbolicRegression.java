@@ -23,7 +23,7 @@ import javaeva.server.go.problems.regression.RFKoza_GPI_10_2;
 import javaeva.server.go.strategies.InterfaceOptimizer;
 import javaeva.server.go.tools.RandomNumberGenerator;
 
-import javaeva.server.stat.Statistics;
+import javaeva.server.stat.InterfaceStatistics;
 import javaeva.gui.Plot;
 import javaeva.gui.JEFrame;
 

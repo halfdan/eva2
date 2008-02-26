@@ -37,8 +37,8 @@ public interface InterfaceGOParameters {
      * evolutionary algorithm.
      * @param term  The new terminator
      */
-    public void setTerminator(TerminatorInterface term);
-    public TerminatorInterface getTerminator();
+    public void setTerminator(InterfaceTerminator term);
+    public InterfaceTerminator getTerminator();
     public String terminatorTipText();
 
     /** This method allows you to set the current optimizing algorithm
@@ -57,8 +57,9 @@ public interface InterfaceGOParameters {
 
     /** This method will set the output filename
      * @param name
+     * TODO invalidate these!
      */
-    public void setOutputFileName (String name);
-    public String getOutputFileName ();
-    public String outputFileNameTipText();
+//    public void setOutputFileName (String name);
+//    public String getOutputFileName ();
+//    public String outputFileNameTipText();
 }
