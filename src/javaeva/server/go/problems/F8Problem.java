@@ -75,7 +75,7 @@ public class F8Problem extends F1Problem implements java.io.Serializable {
      * @param x     The n-dimensional input vector
      * @return  The m-dimensional output vector.
      */
-    public double[] doEvaluation(double[] x) {
+    public double[] eval(double[] x) {
         double[]        result = new double[1];
         double          sum1 = 0, sum2 = 0, exp1, exp2;
 

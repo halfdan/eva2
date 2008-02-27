@@ -48,7 +48,7 @@ public class F13Problem extends F1Problem {
      * @param x     The n-dimensional input vector
      * @return  The m-dimensional output vector.
      */
-    public double[] doEvaluation(double[] x) {
+    public double[] eval(double[] x) {
         double[] result = new double[1];
         result[0] = 0;
         

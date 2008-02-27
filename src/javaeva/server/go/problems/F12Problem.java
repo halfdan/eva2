@@ -70,7 +70,7 @@ public class F12Problem extends F1Problem implements java.io.Serializable {
      * @param x     The n-dimensional input vector
      * @return  The m-dimensional output vector.
      */
-    public double[] doEvaluation(double[] x) {
+    public double[] eval(double[] x) {
         double[] result = new double[1];
         double tmp = -5;
         result[0]     = 0;

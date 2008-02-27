@@ -59,7 +59,7 @@ public class F6Problem extends F1Problem implements java.io.Serializable {
      * @param x     The n-dimensional input vector
      * @return  The m-dimensional output vector.
      */
-    public double[] doEvaluation(double[] x) {
+    public double[] eval(double[] x) {
     	
     	if (doRotation) {
 	    	Matrix resVec = rotation.times(new Matrix(x, x.length));

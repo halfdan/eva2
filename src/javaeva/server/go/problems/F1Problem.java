@@ -1,11 +1,9 @@
 package javaeva.server.go.problems;
 
 import javaeva.server.go.individuals.AbstractEAIndividual;
-import javaeva.server.go.individuals.ESIndividualDoubleData;
 import javaeva.server.go.individuals.InterfaceDataTypeDouble;
 import javaeva.server.go.populations.Population;
 import javaeva.server.go.strategies.InterfaceOptimizer;
-import javaeva.server.go.tools.RandomNumberGenerator;
 
 /**
  * Created by IntelliJ IDEA.
@@ -27,9 +25,7 @@ public class F1Problem extends AbstractProblemDouble implements Interface2DBorde
     protected boolean                   m_UseTestConstraint = false;
 
     public F1Problem() {
-        this.m_Template         = new ESIndividualDoubleData();
-        ((ESIndividualDoubleData)this.m_Template).setDoubleDataLength(m_ProblemDimension);
-        ((ESIndividualDoubleData)this.m_Template).SetDoubleRange(makeRange());
+    	super();
     }
     
     public F1Problem(F1Problem b) {
@@ -64,62 +60,26 @@ public class F1Problem extends AbstractProblemDouble implements Interface2DBorde
      * @param population    The populations that is to be inited
      */
     public void initPopulation(Population population) {
-        AbstractEAIndividual tmpIndy;
+        super.initPopulation(population);
 
-        this.m_OverallBest = null;
-
-        population.clear();
-
-        ((InterfaceDataTypeDouble)this.m_Template).setDoubleDataLength(this.m_ProblemDimension);
-        ((InterfaceDataTypeDouble)this.m_Template).SetDoubleRange(makeRange());
-
-        for (int i = 0; i < population.getPopulationSize(); i++) {
-            tmpIndy = (AbstractEAIndividual)((AbstractEAIndividual)this.m_Template).clone();
-            tmpIndy.init(this);
-            population.add(tmpIndy);
-        }
-        // population init must be last
-        // it set's fitcalls and generation to zero
-        population.init();
-    }
-    
-    protected double[][] getDoubleRange() {
-    	return ((InterfaceDataTypeDouble)this.m_Template).getDoubleRange();                             
     }
 
-    /** This method evaluate a single individual and sets the fitness values
-     * @param individual    The individual that is to be evalutated
-     */
-    public void evaluate(AbstractEAIndividual individual) {
-        double[]        x;
-        double[]        fitness;
-
-        // retrieve the individual data
-        x = new double[((InterfaceDataTypeDouble) individual).getDoubleData().length];
-        System.arraycopy(((InterfaceDataTypeDouble) individual).getDoubleData(), 0, x, 0, x.length);
-
+	protected double[] getEvalArray(AbstractEAIndividual individual){
+		double[] x = super.getEvalArray(individual);
         // add an offset in solution space
         for (int i = 0; i < x.length; i++) x[i] = x[i] - this.m_XOffSet;
-        
-        // evaluate the vector
-        fitness = this.eval(x);
-        
-        // add noise to the fitness
-        if (m_Noise != 0) RandomNumberGenerator.addNoise(fitness, m_Noise);
-        
-        // add an offset in fitness space
-        for (int i = 0; i < fitness.length; i++) fitness[i] += this.m_YOffSet;
-        
-        // finally set the fitness
-        individual.SetFitness(fitness);
-        
+        return x;
+	}
+     
+	protected void setEvalFitness(AbstractEAIndividual individual, double[] x, double[] fit) {
+		super.setEvalFitness(individual, x, fit);
         if (this.m_UseTestConstraint) {
             if (x[0] < 1) individual.addConstraintViolation(1-x[0]);
         }
         if ((this.m_OverallBest == null) || (this.m_OverallBest.getFitness(0) > individual.getFitness(0))) {
             this.m_OverallBest = (AbstractEAIndividual)individual.clone();
-        }
-    }
+        }	
+	}
 
     /** Ths method allows you to evaluate a simple bit string to determine the fitness
      * @param x     The n-dimensional input vector
@@ -228,6 +188,6 @@ public class F1Problem extends AbstractProblemDouble implements Interface2DBorde
 	}
 	
 	public double[][] get2DBorder() {
-		return getDoubleRange();
+    	return ((InterfaceDataTypeDouble)this.m_Template).getDoubleRange();                             
 	}
 }
