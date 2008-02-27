@@ -43,7 +43,7 @@ public class F14Problem extends F1Problem implements java.io.Serializable {
      * @param x     The n-dimensional input vector
      * @return  The m-dimensional output vector.
      */
-    public double[] doEvaluation(double[] x) {
+    public double[] eval(double[] x) {
         double[] result = new double[1];
         double x0 = x[0]-2;
         double x1 = x[1]-2;

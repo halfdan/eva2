@@ -35,19 +35,28 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
 		}
 	}
 	
+	protected double[] getEvalArray(AbstractEAIndividual individual){
+		double[] x = new double[((InterfaceDataTypeDouble) individual).getDoubleData().length];
+        System.arraycopy(((InterfaceDataTypeDouble) individual).getDoubleData(), 0, x, 0, x.length);
+        return x;
+	}
+	
 	@Override
 	public void evaluate(AbstractEAIndividual individual) {
         double[]        x;
         double[]        fitness;
 
-        x = new double[((InterfaceDataTypeDouble) individual).getDoubleData().length];
-        System.arraycopy(((InterfaceDataTypeDouble) individual).getDoubleData(), 0, x, 0, x.length);
+        x = getEvalArray(individual);
         // evaluate the vector
         fitness = this.eval(x);
         // if indicated, add Gaussian noise
         if (m_Noise != 0) RandomNumberGenerator.addNoise(fitness, m_Noise); 
-        // set the fitness 
-        individual.SetFitness(fitness);
+        // set the fitness
+        setEvalFitness(individual, x, fitness);
+	}
+	
+	protected void setEvalFitness(AbstractEAIndividual individual, double[] x, double[] fit) {
+		individual.SetFitness(fit);
 	}
 	
 	/**
@@ -63,9 +72,8 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
 	public void initPopulation(Population population) {
         AbstractEAIndividual tmpIndy;
         population.clear();
-        ((InterfaceDataTypeDouble)this.m_Template).setDoubleDataLength(this.getProblemDimension());
-        ((InterfaceDataTypeDouble)this.m_Template).SetDoubleRange(makeRange());
-
+        initTemplate();
+        
         for (int i = 0; i < population.getPopulationSize(); i++) {
             tmpIndy = (AbstractEAIndividual)((AbstractEAIndividual)this.m_Template).clone();
             tmpIndy.init(this);
