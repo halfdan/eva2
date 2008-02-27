@@ -583,7 +583,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
 				System.setProperty("java.class.path", cp + System.getProperty("path.separator") + baseDir.getPath());
 				ReflectPackage.resetDynCP();
 				m_ComAdapter.updateLocalMainAdapter();
-				loadSpecificModule(selectedModule); // warning! end recursive call! handle with care!
+				loadSpecificModule(selectedModule); // end recursive call! handle with care!
 				return;
 			}
 			showLoadModules = true;

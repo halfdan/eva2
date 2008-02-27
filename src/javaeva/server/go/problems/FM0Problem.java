@@ -122,9 +122,9 @@ public class FM0Problem extends F1Problem implements Interface2DBorderProblem, I
      * @param x     The n-dimensional input vector
      * @return  The m-dimensional output vector.
      */
-    public double[] doEvaluation(double[] x) {
+    public double[] eval(double[] x) {
         double[] result = new double[1];
-        result[0]   = this.m_GlobalOpt - doEvaluationUnNormalized(x)[0];
+        result[0]   = this.m_GlobalOpt - evalUnnormalized(x)[0];
         return result;
     }
 
@@ -132,7 +132,7 @@ public class FM0Problem extends F1Problem implements Interface2DBorderProblem, I
      * @param x     The n-dimensional input vector
      * @return  The m-dimensional output vector.
      */
-    public double[] doEvaluationUnNormalized(double[] x) {
+    public double[] evalUnnormalized(double[] x) {
         double[] result = new double[1];
         result[0]   = Math.sin(2*x[0] - 0.5*Math.PI) + 1 + 2*Math.cos(x[1]) + 0.5*x[0];
         return result;
@@ -197,7 +197,7 @@ public class FM0Problem extends F1Problem implements Interface2DBorderProblem, I
         InterfaceDataTypeDouble tmpIndy;
         tmpIndy = (InterfaceDataTypeDouble)((AbstractEAIndividual)this.m_Template).clone();
         tmpIndy.SetDoubleDataLamarkian(point);
-        ((AbstractEAIndividual)tmpIndy).SetFitness(this.doEvaluationUnNormalized(point));
+        ((AbstractEAIndividual)tmpIndy).SetFitness(this.evalUnnormalized(point));
         this.m_GlobalOpt = Math.max(this.m_GlobalOpt, ((AbstractEAIndividual)tmpIndy).getFitness(0));
         this.m_Optima.add(tmpIndy);
     }
@@ -315,7 +315,7 @@ public class FM0Problem extends F1Problem implements Interface2DBorderProblem, I
      * @return double
      */
     public double functionValue(double[] point) {
-        return doEvaluationUnNormalized(point)[0];
+        return evalUnnormalized(point)[0];
     }
     /** This method returns this min and may fitness occuring
      * @return double[]
