@@ -1,6 +1,5 @@
 package javaeva.server.go.problems;
 
-import javaeva.server.go.individuals.AbstractEAIndividual;
 import javaeva.server.go.individuals.ESIndividualDoubleData;
 import javaeva.server.go.strategies.ParticleSwarmOptimization;
 import wsi.ra.math.Jama.Matrix;
@@ -12,7 +11,7 @@ import wsi.ra.math.Jama.Matrix;
  * Time: 13:09:36
  * To change this template use File | Settings | File Templates.
  */
-public class F6Problem extends F1Problem implements java.io.Serializable {
+public class F6Problem extends F1Problem implements InterfaceMultimodalProblem, java.io.Serializable {
 
 	private boolean 		doRotation = false;
     private double          m_A     = 10;
@@ -23,17 +22,8 @@ public class F6Problem extends F1Problem implements java.io.Serializable {
         this.m_Template         = new ESIndividualDoubleData();
     }
     public F6Problem(F6Problem b) {
-        //AbstractOptimizationProblem
-        if (b.m_Template != null)
-            this.m_Template         = (AbstractEAIndividual)((AbstractEAIndividual)b.m_Template).clone();
-        //F1Problem
-        if (b.m_OverallBest != null)
-            this.m_OverallBest      = (AbstractEAIndividual)((AbstractEAIndividual)b.m_OverallBest).clone();
-        this.m_ProblemDimension = b.m_ProblemDimension;
-        this.m_Noise            = b.m_Noise;
-        this.m_XOffSet          = b.m_XOffSet;
-        this.m_YOffSet          = b.m_YOffSet;
-        this.m_UseTestConstraint = b.m_UseTestConstraint;
+        super(b);       
+        doRotation 				= b.doRotation;
         this.m_A                = b.m_A;
         this.m_Omega            = b.m_Omega;
     }

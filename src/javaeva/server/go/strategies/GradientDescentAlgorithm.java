@@ -256,6 +256,10 @@ public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Ser
   public Population getPopulation() {
     return this.m_Population;
   }
+  
+  public Population getAllSolutions() {
+  	return getPopulation();
+  }
 
   public void setPopulation(Population pop) {
     Hashtable newindyhash = new Hashtable();

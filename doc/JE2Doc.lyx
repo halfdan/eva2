@@ -561,6 +561,8 @@ JI=JEInterface('JI', @fun, R)
 \end_inset
 
 .
+ Notice that fun must be accessible from your working directory, it should
+ not be placed in @JEInterface.
 \end_layout
 
 \begin_layout Itemize
@@ -635,8 +637,8 @@ This is why the JEInterface method isFinished, which checks for the state
 
 \begin_layout List
 \labelwidthstring 00.00.0000
-JEInterface(interfaceName,fhandle,range[,optset,fargs]): JEInterface constructor
-: 
+JI=JEInterface(interfaceName,fhandle,range[,optset,fargs]): JEInterface
+ constructor: 
 \emph on
 interfaceName
 \emph default
@@ -678,7 +680,7 @@ showOptimizers(JI): Print a list of optimization strategies accessible through
 
 \begin_layout List
 \labelwidthstring 00.00.0000
-optimize(JI,optType[,resultFilePrefix])
+JI=optimize(JI,optType[,resultFilePrefix])
 \family roman
 \series medium
 \shape up
@@ -695,7 +697,6 @@ optimize(JI,optType[,resultFilePrefix])
 \emph default
 \bar default
 \noun default
-\color default
 Start the optimization using the strategy indicated by the ID 
 \emph on
 optType
@@ -706,7 +707,6 @@ optType
 \emph off
 \bar no
 \noun off
-\color none
 .
  Optionally write verbose results to an output file with prefix 
 \family default
@@ -716,7 +716,6 @@ optType
 \emph on
 \bar default
 \noun default
-\color default
 resultFilePrefix
 \family roman
 \series medium
@@ -725,7 +724,6 @@ resultFilePrefix
 \emph off
 \bar no
 \noun off
-\color none
  in the working directory.
  
 \family default
@@ -735,7 +733,6 @@ resultFilePrefix
 \emph default
 \bar default
 \noun default
-\color default
 Returns the modified JEInterface instance.
 \end_layout
 
@@ -748,19 +745,26 @@ isFinished(JI): Check whether an optimization process is currently running
 
 \begin_layout List
 \labelwidthstring 00.00.0000
-getResult(JI): When an optimization was finished, return the final solution.
+getProgress(JI): During optimization, return the number of fitness calls
+ performed so far.
 \end_layout
 
 \begin_layout List
 \labelwidthstring 00.00.0000
-getMessage(int): Return a text message describing the termination state
- of the optimization, e.g.
+getResult(JI): When an optimization was finished, return the final solution.
+ During optimization, return the current best solution.
+\end_layout
+
+\begin_layout List
+\labelwidthstring 00.00.0000
+getMessage(JI): Return a text message describing the termination state of
+ the optimization, e.g.
  the number of function calls performed.
 \end_layout
 
 \begin_layout List
 \labelwidthstring 00.00.0000
-stopOptimize(int): Cancel a running optimization process.
+JI=stopOptimize(JI): Cancel a running optimization process.
  An intermediate result will be written back to the interface from JavaEvA.
 \end_layout
 
@@ -780,7 +784,7 @@ optName
 
 \begin_layout List
 \labelwidthstring 00.00.0000
-setOpt(JI,optName,optVal): Set a specific option 
+JI=setOpt(JI,optName,optVal): Set a specific option 
 \emph on
 optName
 \emph default
@@ -794,7 +798,7 @@ optVal
 
 \begin_layout List
 \labelwidthstring 00.00.0000
-setOptions(JI,optset): Set a whole new optimset structure 
+JI=setOptions(JI,optset): Set a whole new optimset structure 
 \emph on
 optset
 \emph default
@@ -819,11 +823,15 @@ The methods are listed in about the order a user might require them in.
  The constructor as well as all mutating methods return a JEInterface object
  which is to be assigned to a variable, preferably the same as the one assigned
  on construction.
- This is because only the constructor will also copy the referenced Java
- instance.
- Notice that the last two methods, setResultJE and evaluateJE, are used
- internally by the Java part of the interface and should not be called by
- hand.
+ This is a drawback of the Matlab object concept: mutators are actually
+ also constructors and copy the whole Matlab object, but they do not copy
+ the referenced Java instance.
+ 
+\end_layout
+
+\begin_layout Standard
+Notice that the last two methods, setResultJE and evaluateJE, are used internall
+y by the Java part of the interface and should not be called by hand.
  To find out more about the optimization strategies you can access through
  JEInterface, use the showOptimizers method and take a look at the EA references
 , e.g.
@@ -838,15 +846,15 @@ Termination criteria
 \begin_layout Standard
 Vital for the usage in Matlab are the termination criteria of the optimization
  run.
- We tried to translate in analogy to the Matlab function 
-\emph on
-fminsearch
-\emph default
- using the builtin 
+ We adopt the builtin 
 \emph on
 optimset
 \emph default
- structure, using the three parameters described in the list below.
+ structure in analogy to the Matlab function 
+\emph on
+fminsearch,
+\emph default
+ using the three parameters described in the list below.
  To find out more about 
 \emph on
 optimset
@@ -887,7 +895,8 @@ TolFun
 \end_layout
 
 \begin_layout Standard
-The default values for 
+If no optimset struct is given to the constructor, the default values for
+ 
 \emph on
 TolX
 \emph default
@@ -922,7 +931,15 @@ fminsearch
 \end_inset
 
 , meaning that reaching MaxFunEvals is a hard stopping criterium, while
- TolX/TolFun must be both fulfilled to stop the run, if 
+ 
+\emph on
+TolX
+\emph default
+/
+\emph on
+TolFun
+\emph default
+ must be both fulfilled to stop the run, if 
 \emph on
 MaxFunEvals
 \emph default
@@ -931,7 +948,7 @@ MaxFunEvals
 \begin_inset Quotes eld
 \end_inset
 
-JI=setOptions(JI, 'TolFun', 1e-7)
+JI=setOpt(JI, 'TolFun', 1e-7)
 \begin_inset Quotes erd
 \end_inset
 
@@ -940,6 +957,27 @@ JI=setOptions(JI, 'TolFun', 1e-7)
 \end_inset
 
 .
+ If you don't want to regard convergence and just have the optimization
+ perform a certain number of evaluations, set 
+\emph on
+TolX
+\emph default
+ and 
+\emph on
+TolFun
+\emph default
+ to zero, e.g.
+ by typing 
+\begin_inset Quotes eld
+\end_inset
+
+JI=setOptions(JI, optimset(getOptions(JI), 'TolX', 0, 'TolFun', 0))
+\begin_inset Quotes erd
+\end_inset
+
+.
+ Be aware that at least one termination criterion must be defined through
+ the options, or the optimization will not start.
 \end_layout
 
 \begin_layout Section

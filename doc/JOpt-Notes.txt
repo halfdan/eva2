@@ -35,6 +35,7 @@ getroffen, wo setRunLocally des EvAComAdapters aufgerufen wird.
 zwischen lokalem und remote-Adapter zu unterscheiden.
 
 ToDo:
+- possible problem with new interfaces in RMI mode?
 - "Show Solution" from GOStandalone into Client?
 - MatlabProblem will not compile without Matlab. Keep it in JE2Base anyway?
 - Population -> getBest... die multi-objective methoden nutzen!
@@ -63,6 +64,20 @@ die Range mitzuführen, da sie häufig für alle gleich ist. Dann verschlingt si
 	eines FunctionArea elements zugegriffen wird. Eher chaotisch also.
 
 Main changelog:
+11.3.08
+- Finally fixed problem with logarithmic view and values <= 0.
+- Added PostProcessing parameters to GOParameters, also some data output.
+- Removed some redundant code by introducing AbstractGOParameters.
+- A Population may now notify a listener if a number of evaluations has been performed, allows for adaptive population sizes.
+- ClusteringHillClimbing: a multi-start hill climber which regularly reduces clusters of similar individuals to representatives,
+	thereby getting more effective, if the clustering sigma paramter is sensible.
+- Introduced InterfaceMultiModalProblemKnown to tag functions with known multiple optima. The old InterfaceMultiModalProblem
+	remains as tag for problems which may have multiple optima which are unknown.
+- Removed some overhead in modules.XXParameters, as well as in the FnProblems and FM?Problems.
+- Cleaned up FM5-FM8 which should now be consistent and not baustellen any more.
+- Strategies now have a method getAllSolutions, mostly the same as getPopulation, but allowing for returning more than 
+	just the last population, e.g. an archive of earlier solutions (e.g. good for CBN)
+- CBN can now also be used with PSO. Seems not to work so well, however, as PSO tends to break the species spacial distribution.
 25.2.08 (mkron)
 - Renamed some Interfaces
 - Split up the statistics classes to inherit from an AbstractStatistics class to remove redundancy and

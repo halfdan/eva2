@@ -5,18 +5,21 @@ import javaeva.server.go.IndividualInterface;
 import javaeva.server.go.InterfaceTerminator;
 import javaeva.server.go.individuals.AbstractEAIndividual;
 import javaeva.server.go.individuals.InterfaceESIndividual;
+import javaeva.server.go.operators.cluster.ClusteringDensityBased;
 import javaeva.server.go.operators.crossover.CrossoverESDefault;
 import javaeva.server.go.operators.mutation.MutateESCovarianceMartixAdaption;
-import javaeva.server.go.operators.mutation.MutateESDefault;
 import javaeva.server.go.operators.mutation.MutateESGlobal;
 import javaeva.server.go.operators.terminators.CombinedTerminator;
 import javaeva.server.go.operators.terminators.EvaluationTerminator;
 import javaeva.server.go.populations.Population;
 import javaeva.server.go.problems.AbstractOptimizationProblem;
+import javaeva.server.go.strategies.ClusterBasedNichingEA;
 import javaeva.server.go.strategies.DifferentialEvolution;
 import javaeva.server.go.strategies.EvolutionStrategies;
 import javaeva.server.go.strategies.GeneticAlgorithm;
+import javaeva.server.go.strategies.HillClimbing;
 import javaeva.server.go.strategies.InterfaceOptimizer;
+import javaeva.server.go.strategies.MonteCarloSearch;
 import javaeva.server.go.strategies.ParticleSwarmOptimization;
 import javaeva.server.go.strategies.Tribes;
 import javaeva.server.modules.GOParameters;
@@ -37,6 +40,9 @@ public class OptimizerFactory {
 	public final static int PSO 	= 4;
 	public final static int DE 		= 5;
 	public final static int TRIBES	= 6;
+	public final static int RANDOM = 7;
+	public final static int HILLCL = 8;
+	public final static int CBN_ES = 9;
 	
 	public final static int defaultFitCalls = 10000;
 	public final static int randSeed = 0;
@@ -47,7 +53,7 @@ public class OptimizerFactory {
 	 * @return a String listing the accessible optimizers
 	 */
 	public static String showOptimizers() {
-		return "1: Standard ES; 2: CMA-ES; 3: GA; 4: PSO; 5: DE; 6: Tribes";
+		return "1: Standard ES; 2: CMA-ES; 3: GA; 4: PSO; 5: DE; 6: Tribes; 7: Random (Monte Carlo); 8: HillClimbing; 9: Cluster-based niching ES";
 	}
 	
 	/**
@@ -84,22 +90,45 @@ public class OptimizerFactory {
 	}
 	
 	public static OptimizerRunnable getOptRunnable(final int optType, AbstractOptimizationProblem problem, String outputFilePrefix) {
+		return getOptRunnable(optType, problem, defaultFitCalls, outputFilePrefix);
+	}
+	
+	public static OptimizerRunnable getOptRunnable(final int optType, AbstractOptimizationProblem problem, int fitCalls, String outputFilePrefix) {
+		OptimizerRunnable opt = null;
 		switch (optType) {
 		case STD_ES:
-			return new OptimizerRunnable(standardES(problem), outputFilePrefix);
+			opt = new OptimizerRunnable(standardES(problem), outputFilePrefix); 
+			break;
 		case CMA_ES:
-			return new OptimizerRunnable(cmaES(problem), outputFilePrefix);
+			opt = new OptimizerRunnable(cmaES(problem), outputFilePrefix); 
+			break;
 		case STD_GA:
-			return new OptimizerRunnable(standardGA(problem), outputFilePrefix);
+			opt = new OptimizerRunnable(standardGA(problem), outputFilePrefix); 
+			break;
 		case PSO:
-			return new OptimizerRunnable(standardPSO(problem), outputFilePrefix);
+			opt = new OptimizerRunnable(standardPSO(problem), outputFilePrefix); 
+			break;
 		case DE:
-			return new OptimizerRunnable(standardDE(problem), outputFilePrefix);
+			opt = new OptimizerRunnable(standardDE(problem), outputFilePrefix); 
+			break;
 		case TRIBES:
-			return new OptimizerRunnable(tribes(problem), outputFilePrefix);
+			opt = new OptimizerRunnable(tribes(problem), outputFilePrefix); 
+			break;
+		case RANDOM:
+			opt = new OptimizerRunnable(monteCarlo(problem), outputFilePrefix); 
+			break;
+		case HILLCL:
+			opt = new OptimizerRunnable(hillClimbing(problem), outputFilePrefix); 
+			break;
+		case CBN_ES:
+			opt = new OptimizerRunnable(cbnES(problem), outputFilePrefix); 
+			break;
+		default:
+			System.err.println("Error: optimizer type " + optType + " is unknown!");
+			return null;
 		}
-		System.err.println("Error: optimizer type " + optType + " is unknown!");
-		return null;
+		if (fitCalls != defaultFitCalls) opt.getGOParams().setTerminator(new EvaluationTerminator(fitCalls));
+		return opt;
 	}
 	
 	public static InterfaceTerminator defaultTerminator() {
@@ -167,6 +196,7 @@ public class OptimizerFactory {
 		es.setLambda(50);
 		es.setPlusStrategy(false);
 		
+		// TODO improve this by adding getEAIndividual to AbstractEAIndividual? 
 		Object maybeTemplate = BeanInspector.callIfAvailable(problem, "getEAIndividual", null);
 		if ((maybeTemplate != null) && (maybeTemplate instanceof InterfaceESIndividual)) {
 			// Set CMA operator for mutation
@@ -226,5 +256,41 @@ public class OptimizerFactory {
 		pop.setPopulationSize(1); // only for init
 		problem.initPopulation(pop);
 		return makeParams(tr, pop, problem, randSeed, defaultTerminator());
+	}
+	
+	public static GOParameters hillClimbing(AbstractOptimizationProblem problem) {
+		HillClimbing hc = new HillClimbing();
+		hc.SetProblem(problem);
+		Population pop = new Population();
+		pop.setPopulationSize(50);
+		problem.initPopulation(pop);
+		return makeParams(hc, pop, problem, randSeed, defaultTerminator());
+	}
+	
+	public static GOParameters monteCarlo(AbstractOptimizationProblem problem) {
+		MonteCarloSearch mc = new MonteCarloSearch();
+		Population pop = new Population();
+		pop.setPopulationSize(50);
+		problem.initPopulation(pop);
+		return makeParams(mc, pop, problem, randSeed, defaultTerminator());
+	}
+	
+	public static GOParameters cbnES(AbstractOptimizationProblem problem) {
+		ClusterBasedNichingEA cbn = new ClusterBasedNichingEA();
+		EvolutionStrategies es = new EvolutionStrategies();
+		es.setMyu(15);
+		es.setLambda(50);
+		es.setPlusStrategy(false);
+		cbn.setOptimizer(es);
+		ClusteringDensityBased clustering = new ClusteringDensityBased(0.1);
+	    cbn.setConvergenceCA((ClusteringDensityBased)clustering.clone());
+	    cbn.setDifferentationCA(clustering);
+	    cbn.setShowCycle(10); // dont do graphical output
+	    
+		Population pop = new Population();
+		pop.setPopulationSize(100);
+		problem.initPopulation(pop);
+		
+		return makeParams(cbn, pop, problem, randSeed, defaultTerminator());
 	}
 }

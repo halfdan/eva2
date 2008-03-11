@@ -1,20 +1,15 @@
 package javaeva.server.go.operators.cluster;
 
+import javaeva.gui.Chart2DDPointIconCircle;
+import javaeva.gui.Chart2DDPointIconText;
+import javaeva.gui.GraphPointSet;
+import javaeva.gui.Plot;
 import javaeva.server.go.individuals.AbstractEAIndividual;
 import javaeva.server.go.individuals.ESIndividualDoubleData;
 import javaeva.server.go.individuals.InterfaceDataTypeDouble;
-import javaeva.server.go.operators.distancemetric.InterfaceDistanceMetric;
-import javaeva.server.go.operators.distancemetric.PhenotypeMetricDoubleData;
 import javaeva.server.go.populations.Population;
 import javaeva.server.go.problems.F1Problem;
 import javaeva.server.go.tools.RandomNumberGenerator;
-import javaeva.gui.Plot;
-import javaeva.gui.GraphPointSet;
-import javaeva.gui.Chart2DDPointIconText;
-import javaeva.gui.Chart2DDPointIconCircle;
-
-import java.util.ArrayList;
-
 import wsi.ra.chart2d.DPoint;
 
 /** The k-mean clustering algorithms. I guess it is not a hierachical
@@ -217,7 +212,10 @@ public class ClusteringKMeans implements InterfaceClustering, java.io.Serializab
         double[][]      data    = this.extractClusterDataFrom(pop);
         int             clusterAssigned;
 
-        for (int i = 0; i < result.length; i++) result[i] = new Population();
+        for (int i = 0; i < result.length; i++) {
+        	result[i] = new Population();
+        	result[i].setSameParams(pop);
+        }
         // let's assign the elements of the population to a c
         for (int i = 0; i < data.length; i++) {
             // find the closest c

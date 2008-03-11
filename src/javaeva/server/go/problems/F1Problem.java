@@ -18,7 +18,7 @@ public class F1Problem extends AbstractProblemDouble implements Interface2DBorde
 	 * 
 	 */
 	private static final long serialVersionUID = 4870484001737601464L;
-	protected AbstractEAIndividual      m_OverallBest       = null;
+//	protected AbstractEAIndividual      m_OverallBest       = null;
     protected int                       m_ProblemDimension  = 10;
     protected double                    m_XOffSet           = 0.0;
     protected double                    m_YOffSet           = 0.0;
@@ -33,8 +33,8 @@ public class F1Problem extends AbstractProblemDouble implements Interface2DBorde
         if (b.m_Template != null)
             this.m_Template         = (AbstractEAIndividual)((AbstractEAIndividual)b.m_Template).clone();
         //F1Problem
-        if (b.m_OverallBest != null)
-            this.m_OverallBest      = (AbstractEAIndividual)((AbstractEAIndividual)b.m_OverallBest).clone();
+//        if (b.m_OverallBest != null)
+//            this.m_OverallBest      = (AbstractEAIndividual)((AbstractEAIndividual)b.m_OverallBest).clone();
         this.m_ProblemDimension = b.m_ProblemDimension;
         this.m_Noise            	= b.m_Noise;
         this.m_DefaultRange		= b.m_DefaultRange;
@@ -53,7 +53,7 @@ public class F1Problem extends AbstractProblemDouble implements Interface2DBorde
     /** This method inits the Problem to log multiruns
      */
     public void initProblem() {
-        this.m_OverallBest = null;
+//        this.m_OverallBest = null;
     }
 
     /** This method inits a given population
@@ -76,9 +76,9 @@ public class F1Problem extends AbstractProblemDouble implements Interface2DBorde
         if (this.m_UseTestConstraint) {
             if (x[0] < 1) individual.addConstraintViolation(1-x[0]);
         }
-        if ((this.m_OverallBest == null) || (this.m_OverallBest.getFitness(0) > individual.getFitness(0))) {
-            this.m_OverallBest = (AbstractEAIndividual)individual.clone();
-        }	
+//        if ((this.m_OverallBest == null) || (this.m_OverallBest.getFitness(0) > individual.getFitness(0))) {
+//            this.m_OverallBest = (AbstractEAIndividual)individual.clone();
+//        }	
 	}
 
     /** Ths method allows you to evaluate a simple bit string to determine the fitness

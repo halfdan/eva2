@@ -1,6 +1,9 @@
 package javaeva.server.go.strategies;
 
+import java.util.List;
+
 import javaeva.server.go.InterfacePopulationChangedEventListener;
+import javaeva.server.go.individuals.AbstractEAIndividual;
 import javaeva.server.go.populations.Population;
 import javaeva.server.go.problems.InterfaceOptimizationProblem;
 
@@ -49,16 +52,24 @@ public interface InterfaceOptimizer {
      */
     public void optimize();
 
-    /** Assuming that all optimizer will store thier data in a population
-     * we will allow acess to this population to query to current state
+    /** Assuming that all optimizer will store their data in a population
+     * we will allow access to this population to query to current state
      * of the optimizer.
      * @return The population of current solutions to a given problem.
      */
     public Population getPopulation();
     public void setPopulation(Population pop);
-
-    /** This method allows you to set an identifier for the algorithm
-     * @param name      The indenifier
+    
+    /**
+     * Return all found solutions (local optima) if they are not contained in the last population.
+     * 
+     * @return A population of found solutions or null if they are contained in the population.
+     */
+    public Population getAllSolutions();
+    
+    /** 
+     * This method allows you to set an identifier for the algorithm
+     * @param name      The identifier
      */
      public void SetIdentifier(String name);
      public String getIdentifier();

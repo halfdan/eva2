@@ -476,6 +476,10 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
     public String populationTipText() {
         return "Edit the properties of the population used.";
     }
+    
+    public Population getAllSolutions() {
+    	return getPopulation();
+    }
 
     /** F is a real and constant factor which controls the amplification of the differential variation
      * @param f

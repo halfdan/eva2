@@ -199,4 +199,8 @@ public class MonteCarloSearch implements InterfaceOptimizer, java.io.Serializabl
     public String populationTipText() {
         return "Change the number of best individuals stored.";
     }
+    
+    public Population getAllSolutions() {
+    	return getPopulation();
+    }
 }

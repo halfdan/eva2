@@ -110,10 +110,6 @@ public class StatisticsStandalone extends AbstractStatistics implements Interfac
 			((ArrayList[]) m_Result.get(i))[optRunsPerformed] = new ArrayList<double[]>();
 	}
 
-
-	/**
-	 *
-	 */
 	public void startOptPerformed(String infoString, int runNumber) {
 		super.startOptPerformed(infoString, runNumber);
 		if (runNumber == 0) {
@@ -127,9 +123,6 @@ public class StatisticsStandalone extends AbstractStatistics implements Interfac
 		m_InfoString = infoString;
 	}
 	
-	/**
-	 *
-	 */
 	public void stopOptPerformed(boolean normal) {
 		super.stopOptPerformed(normal);
 

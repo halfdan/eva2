@@ -1,5 +1,8 @@
 package javaeva.server.go.strategies;
 
+import java.util.Iterator;
+import java.util.List;
+
 import javaeva.gui.GenericObjectEditor;
 import javaeva.server.go.InterfacePopulationChangedEventListener;
 import javaeva.server.go.individuals.AbstractEAIndividual;
@@ -652,8 +655,36 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
 	public Population getPopulation() {
 		return population;
 	}
-
-	/** This method allows you to add the LectureGUI as listener to the Optimizer
+	
+	/**
+	 * Return a Population of TribesExplorers (AbstractEAIndividuals) of which some where 
+	 * memory particles, thus the returned population is larger than the current population.
+	 * 
+	 * @return a population of possible solutions. 
+	 */
+    public Population getAllSolutions() {
+    	// return population and memories?
+    	Population all = (Population)population.clone();
+    	List<TribesPosition> mems = swarm.collectMem();
+    	for (Iterator<TribesPosition> iterator = mems.iterator(); iterator.hasNext();) {
+			TribesPosition tp = iterator.next();
+			all.add(positionToExplorer(tp));
+		}
+    	//all.addPopulation(pop);
+    	return all;
+    }
+    
+    protected TribesExplorer positionToExplorer(TribesPosition pos) {
+    	TribesExplorer tmp = (TribesExplorer)population.get(0);
+    	if (tmp == null) System.err.println("Error in Tribes::positionToExplorer!");
+    	TribesExplorer indy = tmp.clone();
+    	indy.clearPosVel();
+    	indy.SetDoubleDataLamarkian(pos.getPos());
+    	indy.SetFitness(pos.getFitness());
+    	return indy;
+    }
+	
+    /** This method allows you to add the LectureGUI as listener to the Optimizer
 	 * @param ea
 	 */
 	public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {

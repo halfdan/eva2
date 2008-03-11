@@ -213,6 +213,15 @@ public class DPointSet extends DComponent
   public Stroke getStroke(){
     return stroke;
   }
+  
+  /**
+   * Return the minimum y value in the point set.
+   *  
+   * @return the minimum y value in the point set
+   */
+  public double getMinYVal() {
+	  return y.getMinImageValue();
+  }
 
   public void setConnected( boolean aFlag ){
     boolean changed = !( aFlag == connected );
@@ -274,7 +283,7 @@ public class DPointSet extends DComponent
 //    if( size != y.getSize() ) throw
 //      new ArrayStoreException(
 //        "The number of x-values is not equal to the number of y-values.\n"
-//        +"The size of the DPointSet isn´t clear."
+//        +"The size of the DPointSet isnï¿½t clear."
 //      );
 //    return size;
 //  }

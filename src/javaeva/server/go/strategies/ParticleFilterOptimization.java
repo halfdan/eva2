@@ -257,7 +257,10 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
     public String populationTipText() {
         return "Edit the properties of the population used.";
     }
-
+    
+    public Population getAllSolutions() {
+    	return getPopulation();
+    }
     /** This method will set the selection method that is to be used
      * @param selection
      */

@@ -229,7 +229,10 @@ public class ThresholdAlgorithm implements InterfaceOptimizer, java.io.Serializa
     public String populationTipText() {
         return "Change the number of best individuals stored (MS-TA).";
     }
-
+    
+    public Population getAllSolutions() {
+    	return getPopulation();
+    }
     /** Set the initial threshold
      * @return The initial temperature.
      */

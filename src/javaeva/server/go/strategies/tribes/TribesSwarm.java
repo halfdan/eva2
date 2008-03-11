@@ -1,5 +1,8 @@
 package javaeva.server.go.strategies.tribes;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javaeva.server.go.populations.Population;
 import javaeva.server.go.problems.InterfaceOptimizationProblem;
 import javaeva.server.go.strategies.Tribes;
@@ -195,6 +198,21 @@ public class TribesSwarm implements java.io.Serializable{
         return found;
     }
 
+    /**
+     * Returns al memory particles as double vectors.
+     * @return
+     */
+    public List<TribesPosition> collectMem() {
+    	ArrayList<TribesPosition> bestList = new ArrayList<TribesPosition>();
+    	
+	    for (int n = 0; n < tribeNb; n++) {
+	        for (int m = 0; m < tribes[n].memoryNb; m++) {
+	        	bestList.add(tribes[n].memory[m].getPos());
+	        }
+	    }
+	    return bestList;
+    }
+    
     /**
      * This searches for the best memory, and also sets the bestMem member of the swarm.
      *

@@ -2,7 +2,7 @@ package javaeva.server.go.operators.fitnessmodifier;
 
 import javaeva.server.go.individuals.AbstractEAIndividual;
 import javaeva.server.go.operators.distancemetric.InterfaceDistanceMetric;
-import javaeva.server.go.operators.distancemetric.PhenotypeMetricDoubleData;
+import javaeva.server.go.operators.distancemetric.PhenotypeMetric;
 import javaeva.server.go.populations.Population;
 
 /** The fitness modifier are defunct and are to be moved to
@@ -16,7 +16,7 @@ import javaeva.server.go.populations.Population;
 public class FitnessSharing implements java.io.Serializable, InterfaceFitnessModifier {
 
     private double                      m_SharingDistance = 0.05;
-    private InterfaceDistanceMetric     m_Metric = new PhenotypeMetricDoubleData();
+    private InterfaceDistanceMetric     m_Metric = new PhenotypeMetric();
 
     /** This method allows you to modify the fitness of the individuals
      * of a population. Note that by altering the fitness you may require

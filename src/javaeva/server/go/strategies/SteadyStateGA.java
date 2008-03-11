@@ -190,7 +190,10 @@ public class SteadyStateGA implements InterfaceOptimizer, java.io.Serializable {
     public String populationTipText() {
         return "Edit the properties of the population used.";
     }
-
+    
+    public Population getAllSolutions() {
+    	return getPopulation();
+    }
     /** This method will set the parent selection method that is to be used
      * @param selection
      */

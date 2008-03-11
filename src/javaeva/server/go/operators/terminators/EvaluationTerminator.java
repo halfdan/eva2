@@ -40,8 +40,10 @@ public class EvaluationTerminator implements InterfaceTerminator,
   public String globalInfo() {
     return "Terminates after the given number of fitness calls.";
   }
+  
   /**
-   *
+   * Construct Terminator with a maximum number of fitness calls.
+   * @param maximum number of fitness calls
    */
   public EvaluationTerminator(int x) {
     m_FitnessCalls = x;

@@ -237,7 +237,10 @@ public class SimulatedAnnealing implements InterfaceOptimizer, java.io.Serializa
     public String populationTipText() {
         return "Change the number of best individuals stored (MS-SA)).";
     }
-
+    
+    public Population getAllSolutions() {
+    	return getPopulation();
+    }
     /** Set the initial temperature
      * @return The initial temperature.
      */

@@ -1,6 +1,5 @@
 package javaeva.server.go.problems;
 
-import javaeva.server.go.individuals.AbstractEAIndividual;
 import javaeva.server.go.individuals.ESIndividualDoubleData;
 
 /**
@@ -19,17 +18,8 @@ public class F14Problem extends F1Problem implements java.io.Serializable {
     }
     
     public F14Problem(F14Problem b) {
-        //AbstractOptimizationProblem
-        if (b.m_Template != null)
-            this.m_Template         = (AbstractEAIndividual)((AbstractEAIndividual)b.m_Template).clone();
-        //F1Problem
-        if (b.m_OverallBest != null)
-            this.m_OverallBest      = (AbstractEAIndividual)((AbstractEAIndividual)b.m_OverallBest).clone();
-        this.m_ProblemDimension = b.m_ProblemDimension;
-        this.m_Noise            = b.m_Noise;
-        this.m_XOffSet          = b.m_XOffSet;
-        this.m_YOffSet          = b.m_YOffSet;
-        this.m_UseTestConstraint = b.m_UseTestConstraint;        
+        super(b);
+        rotation = b.rotation;
     }
 
     /** This method returns a deep clone of the problem.

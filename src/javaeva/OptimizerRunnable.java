@@ -25,9 +25,15 @@ import javaeva.server.stat.StatisticsStandalone;
 public class OptimizerRunnable implements Runnable {
 	Processor proc;
 	boolean isFinished = false;
+	boolean doRestart = false; // indicate whether start or restart should be done --> whether pop will be reinitialized.
 	
 	public OptimizerRunnable(GOParameters params, String outputFilePrefix) {
+		this(params, outputFilePrefix, false);
+	}
+		
+	public OptimizerRunnable(GOParameters params, String outputFilePrefix, boolean restart) {
 		proc = new Processor(new StatisticsStandalone(outputFilePrefix), null, params);
+		doRestart = restart;
 	}
 	
 	public InterfaceGOParameters getGOParams() {
@@ -37,7 +43,9 @@ public class OptimizerRunnable implements Runnable {
 	public void run() {
 		isFinished = false;
 		try {
-			proc.startOpt();
+			proc.setSaveParams(false);
+			if (doRestart) proc.restartOpt();
+			else proc.startOpt();
 			proc.runOptOnce();
 		} catch(Exception e) {
 			proc.getStatistics().printToTextListener("Exception in OptimizeThread::run: " + e.getMessage() + "\n");
@@ -62,12 +70,15 @@ public class OptimizerRunnable implements Runnable {
 	public IndividualInterface getSolution() {
 		return proc.getStatistics().getBestSolution();
 	}
-	
+
+	public int getProgress() {
+		return proc.getGOParams().getOptimizer().getPopulation().getFunctionCalls();
+	}
+
 	public String terminatedBecause() {
 		if (isFinished) {
 			InterfaceTerminator term = proc.getGOParams().getTerminator();
-			if (term instanceof CombinedTerminator) return ((CombinedTerminator)term).terminatedBecause(proc.getGOParams().getOptimizer().getPopulation());
-			else return "Terminated because " + BeanInspector.toString(term) + " terminated;";
+			return term.terminatedBecause(proc.getGOParams().getOptimizer().getPopulation());
 		} else return "Not yet terminated";
 	}
 	

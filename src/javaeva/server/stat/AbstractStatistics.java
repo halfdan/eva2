@@ -14,7 +14,7 @@ import javaeva.server.go.individuals.AbstractEAIndividual;
 import javaeva.server.go.problems.InterfaceAdditionalPopulationInformer;
 import wsi.ra.tool.StatisticUtils;
 
-public abstract class AbstractStatistics implements InterfaceStatistics {
+public abstract class AbstractStatistics implements InterfaceTextListener, InterfaceStatistics {
 	private PrintWriter resultOut;
 	public final static boolean TRACE = false;
 	protected StatisticsParameter m_StatisticsParameter;
@@ -133,6 +133,16 @@ public abstract class AbstractStatistics implements InterfaceStatistics {
 		}
 	}
 	
+	////////////// InterfaceTextListener
+	public void print(String str) {
+		printToTextListener(str);
+	}
+	////////////// InterfaceTextListener
+	public void println(String str) {
+		printToTextListener(str);
+		printToTextListener("\n");
+	}
+	
 	public StatisticsParameter getStatisticsParameter() {
 		return m_StatisticsParameter;
 	}
@@ -218,6 +228,14 @@ public abstract class AbstractStatistics implements InterfaceStatistics {
 			if (doTextOutput()) printToTextListener(getOutputHeader(informer, pop)+'\n');
 			firstPlot = false;
 		}
+//		System.out.println("pop fcalls: " +  pop.getFunctionCalls());
+//		if ((pop.getFunctionCalls() % 100) != 0 ) {
+//			System.err.println("error: pop fcalls: " +  pop.getFunctionCalls());
+//			double [] bla= new double[1];
+//			bla[10]=0;
+//			//TODO
+//
+//		}
 		if (pop.getSpecificData() != null) {
 			plotSpecificData(pop, informer);
 			return;
