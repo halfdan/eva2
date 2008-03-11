@@ -102,7 +102,7 @@ public class BasicResourceLoader implements ResourceLoader
      * @param  resourceFile  Description of the Parameter
      * @return               Description of the Return Value
      */
-    public static List readLines(String resourceFile)
+    public static List<String> readLines(String resourceFile)
     {
         return readLines(resourceFile, false);
     }
@@ -114,7 +114,7 @@ public class BasicResourceLoader implements ResourceLoader
      * @param  ignoreComments  Description of the Parameter
      * @return                 Description of the Return Value
      */
-    public static List readLines(String resourceFile,
+    public static List<String> readLines(String resourceFile,
         boolean ignoreCommentedLines)
     {
     	return readLines(resourceFile, new String[] {"#"}, 0, -1);
@@ -129,7 +129,7 @@ public class BasicResourceLoader implements ResourceLoader
      * @param lCnt			number of lines to read, if <= 0, all lines are read
      * @return                 Description of the Return Value
      */
-    public static List readLines(String resourceFile,
+    public static List<String> readLines(String resourceFile,
         String[] ignorePrefix, int lOffset, int lCnt)
     {
         if (resourceFile == null)
