@@ -239,7 +239,7 @@ public class CHCAdaptiveSearchAlgorithm implements InterfaceOptimizer, java.io.S
      */
     public String getStringRepresentation() {
         String result = "";
-        result += "Genetic Algorithm:\n";
+        result += "CHC Adaptive Search Algorithm:\n";
         result += "Optimization Problem: ";
         result += this.m_Problem.getStringRepresentationForProblem(this) +"\n";
         result += this.m_Population.getStringRepresentation();
@@ -292,6 +292,10 @@ public class CHCAdaptiveSearchAlgorithm implements InterfaceOptimizer, java.io.S
     }
     public String populationTipText() {
         return "Edit the properties of the population used.";
+    }
+    
+    public Population getAllSolutions() {
+    	return getPopulation();
     }
 
 //    /** This method will set the normation method that is to be used.

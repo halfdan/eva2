@@ -1,5 +1,7 @@
 package javaeva.server.go;
 
+import javaeva.gui.GenericObjectEditor;
+import javaeva.server.go.operators.postprocess.InterfacePostProcessParams;
 import javaeva.server.go.problems.InterfaceOptimizationProblem;
 import javaeva.server.go.strategies.InterfaceOptimizer;
 
@@ -62,4 +64,20 @@ public interface InterfaceGOParameters {
 //    public void setOutputFileName (String name);
 //    public String getOutputFileName ();
 //    public String outputFileNameTipText();
+    
+    public InterfacePostProcessParams getPostProcessParams();
+    public void setPostProcessParams(InterfacePostProcessParams ppp);
+    public String postProcessParamsTipText();
+    public void setDoPostProcessing(boolean doPP);
+//    public int getPostProcessSteps();
+//    public void setPostProcessSteps(int ppSteps);
+//    public String postProcessStepsTipText();
+//    
+//    public boolean isPostProcess();
+//	public void setPostProcess(boolean postProcess);
+//	public String postProcessTipText();
+//	
+//	public double getPostProcessClusterSigma();
+//	public void setPostProcessClusterSigma(double postProcessClusterSigma);
+//	public String postProcessClusterSigmaTipText();
 }

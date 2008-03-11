@@ -79,7 +79,7 @@ public class Graph implements Serializable {
    * Add a graph to this graph object. Uses "force" for mismatching point counts, but returns false
    * if force was used and points possibly have been lost.
    *
-   * @return true if the graph could be added direcly or false if the graph was added by force losing some data points
+   * @return true if the graph could be added directly or false if the graph was added by force losing some data points
    * @see PlotInterface.addGraph
    */
   public boolean addGraph(Graph x) {

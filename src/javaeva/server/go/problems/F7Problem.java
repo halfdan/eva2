@@ -30,19 +30,10 @@ public class F7Problem extends F1Problem implements java.io.Serializable {
         this.m_Template         = new ESIndividualDoubleData();
     }
     public F7Problem(F7Problem b) {
-        //AbstractOptimizationProblem
-        if (b.m_Template != null)
-            this.m_Template         = (AbstractEAIndividual)((AbstractEAIndividual)b.m_Template).clone();
-        //F1Problem
-        if (b.m_OverallBest != null)
-            this.m_OverallBest      = (AbstractEAIndividual)((AbstractEAIndividual)b.m_OverallBest).clone();
-        this.m_ProblemDimension = b.m_ProblemDimension;
-        this.m_Noise            = b.m_Noise;
-        this.m_XOffSet          = b.m_XOffSet;
-        this.m_YOffSet          = b.m_YOffSet;
-        this.m_UseTestConstraint = b.m_UseTestConstraint;
+        super(b);
+        this.m_Change			= b.m_Change;
         this.m_t                = b.m_t;
-        this.m_TimeIntervalType    = (SelectedTag)b.m_TimeIntervalType;
+        this.m_TimeIntervalType = (SelectedTag)b.m_TimeIntervalType.clone();
     }
 
     /** This method returns a deep clone of the problem.
@@ -58,7 +49,8 @@ public class F7Problem extends F1Problem implements java.io.Serializable {
      */
     public void evaluate(Population population) {
         AbstractEAIndividual    tmpIndy;
-
+        
+        evaluatePopulationStart(population);
         for (int i = 0; i < population.size(); i++) {
             tmpIndy = (AbstractEAIndividual) population.get(i);
             tmpIndy.resetConstraintViolation();
@@ -70,6 +62,7 @@ public class F7Problem extends F1Problem implements java.io.Serializable {
             this.evaluate(tmpIndy);
             population.incrFunctionCalls();
         }
+        evaluatePopulationEnd(population);
     }
 
     /** This method evaluate a single individual and sets the fitness values
@@ -94,9 +87,9 @@ public class F7Problem extends F1Problem implements java.io.Serializable {
         if (this.m_UseTestConstraint) {
             if (x[0] < 1) individual.addConstraintViolation(1-x[0]);
         }
-        if ((this.m_OverallBest == null) || (this.m_OverallBest.getFitness(0) > individual.getFitness(0))) {
-            this.m_OverallBest = (AbstractEAIndividual)individual.clone();
-        }
+//        if ((this.m_OverallBest == null) || (this.m_OverallBest.getFitness(0) > individual.getFitness(0))) {
+//            this.m_OverallBest = (AbstractEAIndividual)individual.clone();
+//        }
     }
 
     /** Ths method allows you to evaluate a double[] to determine the fitness

@@ -268,18 +268,33 @@ public class FunctionArea extends DArea implements Serializable {
 	 /**
 	  *
 	  */
-	 public void setConnectedPoint(double x, double y, int GraphLabel) {
-		 if (m_log == true && y <= 0.0) {
-			 y = 1;
-//			 y = Double.MIN_VALUE;
-			 if (notifyNegLog) {
-				 System.err.println("Warning: trying to plot value (" + x + "/" + y + ") with y < 0 in logarithmic mode! Setting y to " + y);
-				 notifyNegLog = false;
-			 }
+	 public void setConnectedPoint(double x, double y, int graphLabel) {
+		 if (!checkLogValidYValue(x, y, graphLabel)) {
+			 if (m_log) toggleLog();
 		 }
-		 getGraphPointSet(GraphLabel).addDPoint(x, y);
+//		 if (y <= 0.0) {
+////			 y = Double.MIN_VALUE;
+//			 if (notifyNegLog) {
+//				 System.err.println("Warning: trying to plot value (" + x + "/" + y + ") with y <= 0 in logarithmic mode! Setting y to " + 1e-30);
+//				 notifyNegLog = false;
+//			 }
+//			 y = 1e-30;
+//		 }
+		 getGraphPointSet(graphLabel).addDPoint(x, y);
 
 	 }
+//	 public void setConnectedPoint(double x, double y, int GraphLabel) {
+//		 if (m_log == true && y <= 0.0) {
+////			 y = Double.MIN_VALUE;
+//			 if (notifyNegLog) {
+//				 System.err.println("Warning: trying to plot value (" + x + "/" + y + ") with y <= 0 in logarithmic mode! Setting y to " + 1e-30);
+//				 notifyNegLog = false;
+//			 }
+//			 y = 1e-30;
+//		 }
+//		 getGraphPointSet(GraphLabel).addDPoint(x, y);
+//
+//	 }
 
 	 public void addGraphPointSet(GraphPointSet d) {
 		 this.m_PointSetContainer.add(d);
@@ -297,9 +312,9 @@ public class FunctionArea extends DArea implements Serializable {
 	 /**
 	  *
 	  */
-	 public void clearGraph(int GraphLabel) {
-		 getGraphPointSet(GraphLabel).removeAllPoints();
-		 m_PointSetContainer.remove(getGraphPointSet(GraphLabel));
+	 public void clearGraph(int graphLabel) {
+		 getGraphPointSet(graphLabel).removeAllPoints();
+		 m_PointSetContainer.remove(getGraphPointSet(graphLabel));
 		 repaint();
 		 notifyNegLog = true;
 	 }
@@ -403,18 +418,35 @@ public class FunctionArea extends DArea implements Serializable {
 	  *
 	  */
 	 public void setUnconnectedPoint(double x, double y, int GraphLabel) {
-		 if (m_log == true && y <= 0.0) {
-			 if (notifyNegLog) {
-				 System.err.println("Warning: trying to plot value (" + x + "/" + y + ") with y < 0 in logarithmic mode! Setting y to " + y );
-				 notifyNegLog = false;
-			 }
-			 y = 1;
+		 if (!checkLogValidYValue(x, y, GraphLabel)) {
+			 if (m_log) toggleLog();
 		 }
 		 this.getGraphPointSet(GraphLabel).addDPoint(x, y);
 		 this.getGraphPointSet(GraphLabel).setConnectedMode(false);
 		 repaint();
 	 }
+	 
+	 protected boolean checkLoggable() {
+		 double minY = Double.MAX_VALUE;
+		 for (int i = 0; i < m_PointSetContainer.size(); i++) {
+			 DPointSet pSet = (m_PointSetContainer.get(i).getConnectedPointSet());
+			 if (pSet.getSize() > 0) minY = Math.min(minY, pSet.getMinYVal());
+		 }
+//		 if (TRACE) System.out.println("min is " + minY);
+		 return (minY > 0);
+	 }
 
+	 protected boolean checkLogValidYValue(double x, double y, int graphLabel) {
+		 if (y <= 0.0) {
+			 if (m_log && notifyNegLog) {
+				 System.err.println("Warning: trying to plot value (" + x + "/" + y + ") with y <= 0 in logarithmic mode!" );
+				 notifyNegLog = false;
+			 }
+			 return false;
+		 }
+		 return true;
+	 }
+	 
 	 Color[] Colors = new Color[] {Color.black, Color.red, Color.blue, Color.green,Color.magenta, Color.orange, Color.pink, Color.yellow};
 
 	 public void setGraphColor(int GraphLabel,int colorindex) {
@@ -467,6 +499,10 @@ public class FunctionArea extends DArea implements Serializable {
 	  */
 	 public void toggleLog() {
 		 //System.out.println("ToggleLog log was: "+m_log);
+		 if (!m_log && !checkLoggable()) {
+			 System.err.println("Cant toggle log with values <= 0!");
+			 return;
+		 }
 		 if (m_log == false) {
 			 setMinRectangle(0.001, 0.001, 1, 1);
 			 //setVisibleRectangle(  0.001, 0.001, 100000, 1000 );

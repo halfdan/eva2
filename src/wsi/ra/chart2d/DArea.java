@@ -12,19 +12,23 @@
 
 package wsi.ra.chart2d;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.print.PageFormat;
+import java.awt.print.Printable;
+
+import javax.swing.JComponent;
+import javax.swing.border.Border;
+
+import wsi.ra.print.PagePrinter;
+
 /*==========================================================================*
  * IMPORTS
  *==========================================================================*/
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import javax.swing.*;
-import javax.swing.border.Border;
-import java.util.Vector;
-
-// zum Drucken:
-import java.awt.print.*;
-import wsi.ra.print.PagePrinter;
 
 /*==========================================================================*
  * CLASS DECLARATION
@@ -37,7 +41,7 @@ import wsi.ra.print.PagePrinter;
  */
 public class DArea extends JComponent implements DParent, Printable
 {
-  private static final boolean under_construction = false;
+  private static final boolean TRACE = false;
 
   /**
    * the default minimal rectangle which is shown
@@ -157,7 +161,7 @@ public class DArea extends JComponent implements DParent, Printable
    * @param rect the visible <code>DRectangle</code> in DArea coordinates
    */
   public void setVisibleRectangle( DRectangle rect ){
-    if( under_construction )System.out.println("DArea.setVisibleRectangle(DRectangle)");
+    if( TRACE )System.out.println("DArea.setVisibleRectangle(DRectangle)");
     if( rect.isEmpty() ) throw
       new IllegalArgumentException(
         "You shopuld never try to set an empty rectangle\n"
@@ -380,7 +384,7 @@ public class DArea extends JComponent implements DParent, Printable
    * @param g the java.awt.Graphics object
    */
   public void paint( Graphics g ){
-    if( under_construction ) System.out.println("DArea.paint(Graphics)");
+    if( TRACE ) System.out.println("DArea.paint(Graphics)");
     if( auto_focus )  {
       container.restore();
       visible_rect = (DRectangle)container.getRectangle().clone();
@@ -400,7 +404,7 @@ public class DArea extends JComponent implements DParent, Printable
    * @param r the rectangle to repaint
    */
   public void repaint( DRectangle r ){
-    if( under_construction ) System.out.println("DArea.repaint(DRectangle)"+r);
+    if( TRACE ) System.out.println("DArea.repaint(DRectangle)"+r);
     if( r == null ) throw
       new IllegalArgumentException("Cannot repaint a null DRectangle");
     if( r.isAll() || auto_focus ) repaint();
@@ -471,7 +475,7 @@ public class DArea extends JComponent implements DParent, Printable
    * @param aFlag visible or not
    */
   public void setGridVisible( boolean aFlag ){
-    if( under_construction ) System.out.println("DArea.setGridVisisble: "+aFlag);
+    if( TRACE ) System.out.println("DArea.setGridVisisble: "+aFlag);
     grid.rectangle = getDRectangle();
     grid.setVisible( aFlag );
   }
@@ -572,7 +576,7 @@ public class DArea extends JComponent implements DParent, Printable
    * @return int @see java.awt.print.Printable
    */
   public int print( Graphics g, PageFormat pf, int pi ){
-    if( under_construction ) System.out.println("DArea.print(...)");
+    if( TRACE ) System.out.println("DArea.print(...)");
     if( pi > 0 ) return Printable.NO_SUCH_PAGE;
 
     Border sb = getBorder();
@@ -644,7 +648,7 @@ public class DArea extends JComponent implements DParent, Printable
 
   public void restoreBorder(){
     dborder = container.getDBorder();
-    if( under_construction ) System.out.println("DArea.restoreBorder -> "+dborder);
+    if( TRACE ) System.out.println("DArea.restoreBorder -> "+dborder);
   }
 
   /**
@@ -653,7 +657,7 @@ public class DArea extends JComponent implements DParent, Printable
    * <code>ScaledBorder</code> or not and on the auto_grid option
    */
   private void paintGrid( DMeasures m ){
-    if( under_construction ) System.out.println("DArea.paintGrid(DMeasures)");
+    if( TRACE ) System.out.println("DArea.paintGrid(DMeasures)");
     grid.rectangle = getDRectangle();
     if( auto_grid ){
       Border b = getBorder();
@@ -679,7 +683,7 @@ public class DArea extends JComponent implements DParent, Printable
    * @param m the measures of the area
    */
   private void paintGrid(ScaledBorder sb, DMeasures m){
-    if( under_construction ) System.out.println("DArea.paintGrid(ScaledBorder, DMeasures)");
+    if( TRACE ) System.out.println("DArea.paintGrid(ScaledBorder, DMeasures)");
     Dimension d = getSize();
     FontMetrics fm = m.getGraphics().getFontMetrics();
     grid.hor_dist = sb.getSrcdX(fm, d);

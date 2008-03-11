@@ -5,23 +5,27 @@ import javaeva.server.go.InterfaceGOParameters;
 import javaeva.server.go.InterfacePopulationChangedEventListener;
 import javaeva.server.go.InterfaceProcessor;
 import javaeva.server.go.PopulationInterface;
+import javaeva.server.go.operators.postprocess.PostProcess;
 import javaeva.server.go.operators.terminators.EvaluationTerminator;
 import javaeva.server.go.populations.Population;
-import javaeva.server.go.problems.InterfaceMultimodalProblem;
+import javaeva.server.go.problems.AbstractOptimizationProblem;
 import javaeva.server.go.tools.RandomNumberGenerator;
 import javaeva.server.stat.InterfaceStatistics;
+import javaeva.server.stat.InterfaceTextListener;
 import wsi.ra.jproxy.RemoteStateListener;
 
 public class Processor extends Thread implements InterfaceProcessor, InterfacePopulationChangedEventListener {
 
-    public static final boolean     TRACE=false;
+    private static final boolean    TRACE=false;
     private volatile boolean      	m_optRunning;
-    public volatile boolean         m_doRunScript;
-    public InterfaceStatistics               m_Statistics;
-    public InterfaceGOParameters    goParams;
-    public boolean                  m_createInitialPopulations=true;
+//    private volatile boolean         m_doRunScript;
+    private InterfaceStatistics     m_Statistics;
+    private InterfaceGOParameters   goParams;
+    private boolean                 m_createInitialPopulations=true;
+    private boolean					saveParams = true;
     private RemoteStateListener		m_ListenerModule;
     private boolean 				wasRestarted = false;
+//    private int 					postProcessSteps = 0;
     private int 					runCounter = 0;	
 
 //    transient private String				m_OutputPath = "";
@@ -53,6 +57,15 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
     
     protected void setOptRunning(boolean bRun) {
     	m_optRunning = bRun;
+    }
+    
+    /**
+     * If set to true, before every run the parameters will be stored to a file.
+     * 
+     * @param doSave
+     */
+    public void setSaveParams(boolean doSave) {
+    	saveParams = doSave;
     }
 
 //    public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
@@ -94,16 +107,16 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
     public void stopOpt() { // this means user break
         if (TRACE) System.out.println("called StopOpt");
         setOptRunning(false);
-        m_doRunScript = false;
+//        m_doRunScript = false;
         if (TRACE) System.out.println("m_doRunScript = false ");
     }
 
-    /**
-     *
-     */
-    public void runScript() {
-        m_doRunScript = true;
-    }
+//    /**
+//     *
+//     */
+//    public void runScript() {
+//        m_doRunScript = true;
+//    }
 
     /**
      *
@@ -124,12 +137,11 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
     	try {
     		while (isOptRunning()) {
     			setPriority(3);
-    			goParams.saveInstance();
+    			if (saveParams) goParams.saveInstance();
     			optimize("Run");
     			setPriority(1);
     		}
     	} catch (Exception e) {
-    		// TODO Das hier so machen, daß trotz Exception eine neue optimierung ohne Neustart möglich ist!
     		System.err.println("Caught exception in Processor: "+e.getMessage());
     		e.printStackTrace();
         	//m_Statistics.stopOptPerformed(false);
@@ -202,12 +214,19 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
         	} while (isOptRunning() && !this.goParams.getTerminator().isTerminated(this.goParams.getOptimizer().getPopulation()));
         	runCounter++;
 
-        	if (goParams.getProblem() instanceof InterfaceMultimodalProblem) {
-        		//	TODO improve this?
-        		InterfaceMultimodalProblem mmProb = (InterfaceMultimodalProblem)goParams.getProblem();
-        		System.out.println("no optima found: " + mmProb.getNumberOfFoundOptima(goParams.getOptimizer().getPopulation()));
-        	}
+        	//////////////// Default stats
         	m_Statistics.stopOptPerformed(isOptRunning()); // stop is "normal" if opt wasnt set false by the user
+        	//////////////// PP
+        	PostProcess.postProcess(goParams.getPostProcessParams(), goParams.getOptimizer().getAllSolutions(), (AbstractOptimizationProblem)goParams.getProblem(), (InterfaceTextListener)m_Statistics);
+        	// moved to PostProcess
+//        	if ((goParams.getProblem() instanceof InterfaceMultimodalProblem)) {
+//        		InterfaceMultimodalProblem mmProb = (InterfaceMultimodalProblem)goParams.getProblem();
+//        		PostProcessInterim.outputResult((AbstractOptimizationProblem)mmProb, goParams.getOptimizer().getAllSolutions(), 0.01, System.out, 0, 2000, 20, goParams.getPostProcessSteps());
+////        		PostProcessInterim.postProcess(mmProb, goParams.getOptimizer().getPopulation(), 0.01, System.out, 0, 2000, 20);
+//            	if ((goParams.getProblem() instanceof InterfaceMultimodalProblemKnown)) {
+//            		PostProcessInterim.outputResultKnown((InterfaceMultimodalProblemKnown)goParams.getProblem(), goParams.getOptimizer().getAllSolutions(), 0.01, System.out, 0., 2000., 20);
+//            	}
+//        	}
         }
         setOptRunning(false); // normal finish
         if (m_ListenerModule!=null) m_ListenerModule.performedStop(); // is only needed in client server mode

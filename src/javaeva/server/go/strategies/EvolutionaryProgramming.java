@@ -198,6 +198,10 @@ public class EvolutionaryProgramming implements InterfaceOptimizer, java.io.Seri
     public String populationTipText() {
         return "Edit the properties of the population used.";
     }
+    
+    public Population getAllSolutions() {
+    	return getPopulation();
+    }
     /** Choose a method for selecting the reduced population.
      * @param selection
      */

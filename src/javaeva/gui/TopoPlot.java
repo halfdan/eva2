@@ -90,7 +90,8 @@ public class TopoPlot extends Plot {
         ry = problem.get2DBorder()[1][0]+y*rh;
         pos[0] = rx; pos[1] = ry;
         DRectangle rect = new DRectangle(rx,ry,rw,rh);
-        Color color = new Color(colorBar.getRGB((float)(problem.functionValue(pos)/fitRange))); // Color color = new Color(255,(int)(problem.doEvaluation(pos)[0]/fitRange*255),(int)(problem.doEvaluation(pos)[0]/fitRange*255));
+        Color color = new Color(colorBar.getRGB((float)((problem.functionValue(pos)-min)/fitRange))); // Color color = new Color(255,(int)(problem.doEvaluation(pos)[0]/fitRange*255),(int)(problem.doEvaluation(pos)[0]/fitRange*255));
+//        Color color = new Color(colorBar.getRGB((float)(problem.functionValue(pos)/fitRange))); // Color color = new Color(255,(int)(problem.doEvaluation(pos)[0]/fitRange*255),(int)(problem.doEvaluation(pos)[0]/fitRange*255));
         rect.setColor(color);
         rect.setFillColor(color);
         m_PlotArea.addDElement(rect);

@@ -9,23 +9,13 @@ import javaeva.server.go.populations.Population;
  * Schwefels sine root function (1981) with a minimum at 420.9687^n of value 0.
  * Function f(x) = (418.9829 * n) - sum_n(x_i * sin(sqrt(abs(x_i)))) + (418.9829 * n);
  */
-public class F13Problem extends F1Problem {
+public class F13Problem extends F1Problem implements InterfaceMultimodalProblem {
 
     public F13Problem() {
         this.m_Template         = new ESIndividualDoubleData();
     }
     public F13Problem(F13Problem b) {
-        //AbstractOptimizationProblem
-        if (b.m_Template != null)
-            this.m_Template         = (AbstractEAIndividual)((AbstractEAIndividual)b.m_Template).clone();
-        //F1Problem
-        if (b.m_OverallBest != null)
-            this.m_OverallBest      = (AbstractEAIndividual)((AbstractEAIndividual)b.m_OverallBest).clone();
-        this.m_ProblemDimension = b.m_ProblemDimension;
-        this.m_Noise            = b.m_Noise;
-        this.m_XOffSet          = b.m_XOffSet;
-        this.m_YOffSet          = b.m_YOffSet;
-        this.m_UseTestConstraint = b.m_UseTestConstraint;
+    	super(b);
     }
 
     /** This method returns a deep clone of the problem.

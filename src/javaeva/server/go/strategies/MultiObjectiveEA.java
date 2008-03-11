@@ -226,6 +226,10 @@ public class MultiObjectiveEA implements InterfaceOptimizer, java.io.Serializabl
     public String populationTipText() {
         return "Edit the properties of the Population used.";
     }
+    
+    public Population getAllSolutions() {
+    	return getPopulation();
+    }
 
     /** This method allows you to set/get the optimizing technique to use.
      * @return The current optimizing method

@@ -12,9 +12,13 @@ package javaeva.gui;
 /*==========================================================================*
  * IMPORTS
  *==========================================================================*/
-import java.beans.*;
+import java.beans.BeanInfo;
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
+import java.util.List;
 
 /*
  *  ==========================================================================*
@@ -143,6 +147,19 @@ public class BeanInspector {
 			return sbuf.toString();
 		}
 
+		if (Target instanceof List) { // handle the list case
+			StringBuffer sbuf = new StringBuffer("[ ");
+			List lst = (List)Target;
+			for (Object o : lst) {
+				sbuf.append(o.toString());
+				sbuf.append("; ");
+			}
+			sbuf.setCharAt(sbuf.length()-2, ' ');
+			sbuf.setCharAt(sbuf.length()-1, ']');
+			return sbuf.toString();
+		}
+
+		
 		Method[] methods = Target.getClass().getDeclaredMethods();
 		for (int ii = 0; ii < methods.length; ii++) { // check if the object has its own toString method, in this case use it
 			if ((methods[ii].getName().equals("toString") /*|| (methods[ii].getName().equals("getStringRepresentation"))*/) && (methods[ii].getParameterTypes().length == 0)) {

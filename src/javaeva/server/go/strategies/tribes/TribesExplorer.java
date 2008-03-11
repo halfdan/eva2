@@ -121,6 +121,13 @@ public class TribesExplorer extends AbstractEAIndividual implements InterfaceDat
     	return new TribesExplorer(this);
     }
     
+    /**
+     * Resets all positions and velocity.
+     */
+    public void clearPosVel() {
+    	initPositions(position.getMaxDimension());
+    }
+    
 //
 //    public int generateExplorer(TribesParam pb,
 //    		TribesSwarm swarm, TribesPosition center, double radius,

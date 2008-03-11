@@ -2,7 +2,7 @@ package javaeva.server.go.operators.selection.probability;
 
 import javaeva.server.go.individuals.AbstractEAIndividual;
 import javaeva.server.go.operators.distancemetric.InterfaceDistanceMetric;
-import javaeva.server.go.operators.distancemetric.PhenotypeMetricDoubleData;
+import javaeva.server.go.operators.distancemetric.PhenotypeMetric;
 import javaeva.server.go.populations.Population;
 
 /** Here we have the infamous fitness sharing method.
@@ -15,7 +15,7 @@ import javaeva.server.go.populations.Population;
 public class SelProbFitnessSharing extends AbstractSelProb implements java.io.Serializable {
 
     private InterfaceSelectionProbability   m_BasicNormationMethod  = new SelProbStandard();
-    private InterfaceDistanceMetric         m_DistanceMetric        = new PhenotypeMetricDoubleData();
+    private InterfaceDistanceMetric         m_DistanceMetric        = new PhenotypeMetric();
     private double                          m_SharingDistance       = 0.1;
 
     public SelProbFitnessSharing() {

@@ -11,23 +11,13 @@ import javaeva.server.go.strategies.InterfaceOptimizer;
  * Time: 19:03:09
  * To change this template use File | Settings | File Templates.
  */
-public class F2Problem extends F1Problem implements java.io.Serializable {
+public class F2Problem extends F1Problem implements InterfaceMultimodalProblem, java.io.Serializable {
 
     public F2Problem() {
         this.m_Template         = new ESIndividualDoubleData();
     }
     public F2Problem(F2Problem b) {
-        //AbstractOptimizationProblem
-        if (b.m_Template != null)
-            this.m_Template         = (AbstractEAIndividual)((AbstractEAIndividual)b.m_Template).clone();
-        //F1Problem
-        if (b.m_OverallBest != null)
-            this.m_OverallBest      = (AbstractEAIndividual)((AbstractEAIndividual)b.m_OverallBest).clone();
-        this.m_ProblemDimension = b.m_ProblemDimension;
-        this.m_Noise            = b.m_Noise;
-        this.m_XOffSet          = b.m_XOffSet;
-        this.m_YOffSet          = b.m_YOffSet;
-        this.m_UseTestConstraint = b.m_UseTestConstraint;        
+        super(b);     
     }
 
     /** This method returns a deep clone of the problem.

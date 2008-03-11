@@ -2,7 +2,7 @@ package javaeva.server.go.strategies;
 
 import javaeva.server.go.InterfacePopulationChangedEventListener;
 import javaeva.server.go.individuals.AbstractEAIndividual;
-import javaeva.server.go.individuals.GAIndividualBinaryData;
+import javaeva.server.go.operators.mutation.InterfaceMutation;
 import javaeva.server.go.populations.Population;
 import javaeva.server.go.problems.B1Problem;
 import javaeva.server.go.problems.InterfaceOptimizationProblem;
@@ -22,10 +22,11 @@ import javaeva.server.go.problems.InterfaceOptimizationProblem;
 public class HillClimbing implements InterfaceOptimizer, java.io.Serializable {
     // These variables are necessary for the simple testcase
     private InterfaceOptimizationProblem            m_Problem           = new B1Problem();
+    private InterfaceMutation 						mutator = null;
 //    private int             m_MultiRuns             = 100;
 //    private int             m_FitnessCalls          = 100;
 //    private int             m_FitnessCallsNeeded    = 0;
-    GAIndividualBinaryData  m_Best, m_Test;
+//    GAIndividualBinaryData  m_Best, m_Test;
 
     // These variables are necessary for the more complex LectureGUI enviroment
     transient private String                m_Identifier = "";
@@ -70,12 +71,15 @@ public class HillClimbing implements InterfaceOptimizer, java.io.Serializable {
     public void optimize() {
         AbstractEAIndividual   indy;
         Population original = (Population)this.m_Population.clone();
-
+        double tmpD;
+        InterfaceMutation tmpMut;
+        
         for (int i = 0; i < this.m_Population.size(); i++) {
             indy = ((AbstractEAIndividual) this.m_Population.get(i));
-            double tmpD = indy.getMutationProbability();
+            tmpD = indy.getMutationProbability();
             indy.setMutationProbability(1.0);
-            indy.mutate();
+            if (mutator == null) indy.mutate();
+            else mutator.mutate(indy);
             indy.setMutationProbability(tmpD);            
         }
         this.m_Problem.evaluate(this.m_Population);
@@ -103,7 +107,20 @@ public class HillClimbing implements InterfaceOptimizer, java.io.Serializable {
         this.firePropertyChangedEvent("NextGenerationPerformed");
     }
 
-
+    public InterfaceMutation getMutationOperator() {
+    	return mutator;
+    }
+    
+    /**
+     * Allows to set a desired mutator by hand, which is used instead of the one in the individuals.
+     * Set it to null to use the one in the individuals, which is the default.
+     * 
+     * @param mute
+     */
+    public void SetMutationOperator(InterfaceMutation mute) {
+    	mutator = mute;
+    }
+    
     /** This method will set the problem that is to be optimized
      * @param problem
      */
@@ -200,7 +217,7 @@ public class HillClimbing implements InterfaceOptimizer, java.io.Serializable {
      * @return description
      */
     public String globalInfo() {
-        return "The Hill CLimber uses the default EA mutation and init operators. If the population size is bigger than one a multi-start Hill Climber is performed.";
+        return "The Hill Climber uses the default EA mutation and initializing operators. If the population size is bigger than one a multi-start Hill Climber is performed.";
     }
     /** This method will return a naming String
      * @return The name of the algorithm
@@ -208,16 +225,15 @@ public class HillClimbing implements InterfaceOptimizer, java.io.Serializable {
     public String getName() {
         return "MS-HC";
     }
-    /** Assuming that all optimizer will store thier data in a population
-     * we will allow acess to this population to query to current state
-     * of the optimizer.
-     * @return The population of current solutions to a given problem.
-     */
     public Population getPopulation() {
         return this.m_Population;
     }
     public void setPopulation(Population pop){
         this.m_Population = pop;
+    }
+    
+    public Population getAllSolutions() {
+    	return getPopulation();
     }
     public String populationTipText() {
         return "Change the number of best individuals stored (MS-HC).";

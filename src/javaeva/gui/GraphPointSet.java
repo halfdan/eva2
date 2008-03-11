@@ -105,25 +105,31 @@ public class GraphPointSet {
 //      else
 //    if (GraphLabel == 10) m_Color = (Color.black);
     
-    int k = GraphLabel%10;
-    switch(k) {
-    case 0: m_Color = Color.black; break;
-    case 1: m_Color = Color.red; break;
-    case 2: m_Color = Color.blue; break;
-    case 3: m_Color = Color.pink; break;
-    case 4: m_Color = Color.orange; break;
-    case 5: m_Color = Color.gray; break;
-    case 6: m_Color = Color.green; break;
-    case 7: m_Color = Color.magenta; break;
-    case 8: m_Color = Color.cyan; break;
-    case 9: m_Color = Color.darkGray; break;
-    }
-
+    m_Color=labelToColor(GraphLabel);
+    
     m_ConnectedPointSet.setColor(m_Color);
 //    m_PointSet_1.setColor(m_Color);
 //    m_PointSet_2.setColor(m_Color);
 //    m_PointSet_3.setColor(m_Color);
     initGraph(Area);
+  }
+  
+  private Color labelToColor(int label) {
+	  Color c = Color.black;
+	  int k = label%10;
+	  switch(k) {
+	  case 0: c = Color.black; break;
+	  case 1: c = Color.red; break;
+	  case 2: c = Color.blue; break;
+	  case 3: c = Color.pink; break;
+	  case 4: c = Color.orange; break;
+	  case 5: c = Color.gray; break;
+	  case 6: c = Color.green; break;
+	  case 7: c = Color.magenta; break;
+	  case 8: c = Color.cyan; break;
+	  case 9: c = Color.darkGray; break;
+	  }
+	  return c;
   }
    /**
    *
@@ -158,40 +164,11 @@ public class GraphPointSet {
 
     m_ConnectedPointSet.setConnected(true);
     m_Color = Color.black;
-    //    int colors = 5;
-//    int b = GraphLabel*(int)(255/10)%255;
-//    int r = (GraphLabel-colors)*(int)(255/10)%255;
-//    int g = (GraphLabel-2*colors)*(int)(255/10)%255;
-//    if (r<0) r = 0;
-//    if (g<0) g = 0;
-//    m_Color = new Color(r,g,b);
 
-    if (GraphLabel == 0) m_Color = (Color.black);
-      else
-    if (GraphLabel == 1) m_Color = (Color.red);
-      else
-    if (GraphLabel == 2) m_Color = (Color.blue);
-      else
-    if (GraphLabel == 3) m_Color = (Color.red);
-      else
-    if (GraphLabel == 4) m_Color = (Color.black);
-      else
-    if (GraphLabel == 5) m_Color = (Color.red);
-      else
-    if (GraphLabel == 6) m_Color = (Color.blue);
-      else
-    if (GraphLabel == 7) m_Color = (Color.red);
-      else
-    if (GraphLabel == 8) m_Color = (Color.blue);
-      else
-    if (GraphLabel == 9) m_Color = (Color.red);
-      else
-    if (GraphLabel == 10) m_Color = (Color.black);
+    m_Color = labelToColor(GraphLabel);
 
     m_ConnectedPointSet.setColor(m_Color);
-//    m_PointSet_1.setColor(m_Color);
-//    m_PointSet_2.setColor(m_Color);
-//    m_PointSet_3.setColor(m_Color);
+
   }
  /**
    *

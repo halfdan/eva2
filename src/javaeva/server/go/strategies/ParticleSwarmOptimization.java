@@ -7,6 +7,7 @@ import wsi.ra.chart2d.DPoint;
 import wsi.ra.chart2d.DPointSet;
 import wsi.ra.math.Jama.Matrix;
 
+import javaeva.gui.BeanInspector;
 import javaeva.gui.GenericObjectEditor;
 import javaeva.gui.TopoPlot;
 import javaeva.server.go.InterfacePopulationChangedEventListener;
@@ -97,6 +98,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 	private int		emaPeriods		= 0;
 
 	// for debugging only
+	transient private static boolean TRACE = false; 
 	transient protected boolean               m_Show = false;
 	transient protected javaeva.gui.Plot      m_Plot;
 
@@ -124,7 +126,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 		this.m_SpeedLimit                   = a.m_SpeedLimit;
 		this.m_Phi1                         = a.m_Phi1;
 		this.m_Phi2                         = a.m_Phi2;
-		this.m_InertnessOrChi                    = a.m_InertnessOrChi;
+		this.m_InertnessOrChi               = a.m_InertnessOrChi;
 		this.m_TopologyRange                = a.m_TopologyRange;
 		//this.setCheckSpeedLimit(a.isCheckSpeedLimit());
 	}
@@ -430,6 +432,9 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 			neighbourPos = ((InterfaceESIndividual)neighbourIndy).getDGenotype();
 		}
 		
+		if (neighbourFit == null || attractorFit == null) {
+			System.err.println("error!");
+		}
 //		if (fit[0] >= tmpFit[0]) { // now multi-obj.
 		if (AbstractEAIndividual.isDominatingFitness(neighbourFit, attractorFit)) { // if the remembered fitness dominates the given one, overwrite the given one
 			// replace best fitness and position with current best
@@ -1250,6 +1255,15 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 	 *
 	 */
 	protected void startOptimize() {
+		if (TRACE) {
+			for (int i=0; i<m_Population.size(); i++) {
+				AbstractEAIndividual indy = m_Population.getEAIndividual(i);
+				System.out.println(BeanInspector.toString(indy.getData(partTypeKey)));
+				System.out.println(BeanInspector.toString(indy.getData(partBestPosKey)));
+				System.out.println(BeanInspector.toString(indy.getData(partBestFitKey)));
+				System.out.println(BeanInspector.toString(indy.getData(partVelKey)));
+			}
+		}
 		if (this.m_Show) this.show();
 		sortedPop = null;// to make sure that the last sorted version is not reused
 	}
@@ -1509,11 +1523,23 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 	}
 	public void setPopulation(Population pop){
 		this.m_Population = pop;
+		for (int i=0; i<pop.size(); i++) {
+			AbstractEAIndividual indy = pop.getEAIndividual(i);
+			if (indy.getData(partTypeKey) == null) {
+				initIndividualDefaults(indy);
+				initIndividualMemory(indy);
+				indy.SetData(indexKey, i);
+				if (TRACE) System.err.println("init indy " + i + " " + AbstractEAIndividual.getDefaultDataString(indy));
+			}
+		}
 	}
 	public String populationTipText() {
 		return "Edit the properties of the population used.";
 	}
-
+    
+    public Population getAllSolutions() {
+    	return getPopulation();
+    }
 	/** This method will set the initial velocity
 	 * @param f
 	 */

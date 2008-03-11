@@ -186,7 +186,8 @@ public class StatisticsParameterImpl implements StatisticsParameter, Serializabl
    *
    */
   public void setResultFileName(String x) {
-    m_ResultFileName = x;
+	  if (x==null) m_ResultFileName = "";
+	  else m_ResultFileName = x;
   }
 
   /**

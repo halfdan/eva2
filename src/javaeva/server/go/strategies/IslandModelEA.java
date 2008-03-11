@@ -517,6 +517,10 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
     public String populationTipText() {
         return "(Defunct)";
     }
+    
+    public Population getAllSolutions() {
+    	return getPopulation();
+    }
 
     /** This method allows you to set the number of processors in local mode
      * @param n     Number of processors.

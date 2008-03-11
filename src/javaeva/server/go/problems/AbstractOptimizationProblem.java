@@ -83,77 +83,9 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
     }
     
     /** This method evaluate a single individual and sets the fitness values
-     * @param individual    The individual that is to be evalutated
+     * @param individual    The individual that is to be evaluated
      */
     public abstract void evaluate(AbstractEAIndividual individual);
-
-    /** This method should be used to calculate the distance between two
-     * individuals. Per default i implemented a phenotypic distance metric.
-     * @param indy1     The first individual.
-     * @param indy2     The second individual.
-     * @return The distance.
-     */
-    public double distanceBetween(AbstractEAIndividual indy1, AbstractEAIndividual indy2) {
-        double result = 1;
-        if ((indy1 instanceof InterfaceDataTypeBinary) && (indy2 instanceof InterfaceDataTypeBinary)) {
-            BitSet  b1, b2;
-            b1      = ((InterfaceDataTypeBinary)indy1).getBinaryData();
-            b2      = ((InterfaceDataTypeBinary)indy2).getBinaryData();
-            if (b1.length() != b2.length()) return Math.max(b1.length(), b2.length());
-            result  = b1.length();
-            for (int i = 0; i < b1.length(); i++) {
-                if (b1.get(i) == b2.get(i)) result--;
-            }
-            result = result/((double)b1.length());
-        }
-        if ((indy1 instanceof InterfaceDataTypeInteger) && (indy2 instanceof InterfaceDataTypeInteger)) {
-            int[]   b1, b2;
-            int[][] range;
-            int     max = 0;
-            b1      = ((InterfaceDataTypeInteger)indy1).getIntegerData();
-            b2      = ((InterfaceDataTypeInteger)indy2).getIntegerData();
-            if (b1.length != b2.length) return Math.max(b1.length, b2.length);
-            range   = ((InterfaceDataTypeInteger)indy2).getIntRange();
-            result  = 0;
-            for (int i = 0; i < b1.length; i++) {
-                result += Math.abs(b1[i]-b2[i]);
-                max    += range[i][1]-range[i][0];
-            }
-            result = result/((double)max);
-        }
-        if ((indy1 instanceof InterfaceDataTypeDouble) && (indy2 instanceof InterfaceDataTypeDouble)) {
-            double[]   b1, b2;
-            double[][] range;
-            double     max = 0;
-            b1      = ((InterfaceDataTypeDouble)indy1).getDoubleData();
-            b2      = ((InterfaceDataTypeDouble)indy2).getDoubleData();
-            if (b1.length != b2.length) return Math.max(b1.length, b2.length);
-            result  = 0;
-            range   = ((InterfaceDataTypeDouble)indy1).getDoubleRange();
-            for (int i = 0; i < (Math.min(b1.length, b2.length)); i++) {
-                result += Math.abs(b1[i]-b2[i]);
-                max    += range[i][1]-range[i][0];
-            }
-            result = result/max;
-        }
-        if ((indy1 instanceof InterfaceDataTypePermutation) && (indy2 instanceof InterfaceDataTypePermutation)) {
-            int[]   b1, b2;
-            b1      = ((InterfaceDataTypePermutation)indy1).getPermutationData()[0];
-            b2      = ((InterfaceDataTypePermutation)indy2).getPermutationData()[0];
-            if (b1.length != b2.length) return Math.max(b1.length, b2.length);
-            result  = b1.length;
-            int     tmp;
-            for (int i = 0; i < b1.length; i++) {
-                tmp = b1.length;
-                for (int j = 0; j < b1.length; j++) {
-                    if (b1[j] != b2[(j+i)%b1.length]) tmp++;
-                }
-                result = Math.min(result, tmp);
-            }
-            result = result/((double)b1.length);
-        }
-        return result;
-    }
 
     /******************** Some output methods *******************************************/
 
@@ -238,7 +170,8 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
     }
     
     /**
-     * TODO
+     * For some evaluation cases it may be necessary to inform the problem class about the optimizer in use.
+     *  
      * @param opt
      */
     public void informAboutOptimizer(InterfaceOptimizer opt) {

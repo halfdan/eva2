@@ -233,6 +233,10 @@ public class FloodAlgorithm implements InterfaceOptimizer, java.io.Serializable 
         return "Change the number of best individuals stored (MS-FA).";
     }
 
+    
+    public Population getAllSolutions() {
+    	return getPopulation();
+    }
     /** This methods allow you to set/get the temperatur of the flood
      * algorithm procedure
      * @return The initial flood level.

@@ -1,16 +1,18 @@
 package javaeva.server.go.populations;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.PriorityQueue;
+
 import javaeva.server.go.IndividualInterface;
+import javaeva.server.go.InterfacePopulationChangedEventListener;
 import javaeva.server.go.PopulationInterface;
 import javaeva.server.go.individuals.AbstractEAIndividual;
+import javaeva.server.go.individuals.AbstractEAIndividualComparator;
 import javaeva.server.go.individuals.GAIndividualBinaryData;
 import javaeva.server.go.operators.distancemetric.PhenotypeMetric;
 import javaeva.server.go.tools.RandomNumberGenerator;
-
-
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.PriorityQueue;
 
 /** This is a basic implementation for a EA Population.
  * Copyright:       Copyright (c) 2003
@@ -27,7 +29,11 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     protected int           m_FunctionCalls = 0;
     protected int           m_Size          = 50;
     protected Population    m_Archive       = null;
-
+    transient protected InterfacePopulationChangedEventListener	m_Listener = null;
+    protected int 			notifyEvalInterval	= 0;
+    
+    public static String funCallIntervalReached = "FunCallIntervalReached";
+    
     boolean useHistory						= false;
     public ArrayList<AbstractEAIndividual>  m_History       = new ArrayList<AbstractEAIndividual>();
 
@@ -39,15 +45,26 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     }
 
     public Population(Population population) {
-        this.m_Generation       = population.m_Generation;
-        this.m_FunctionCalls    = population.m_FunctionCalls;
-        this.m_Size             = population.m_Size;
+        setSameParams(population);
         for (int i = 0; i < population.size(); i++) {
             if (population.get(i) != null)
                 this.add((((AbstractEAIndividual)population.get(i))).clone());
         }
         if (population.m_Archive != null) this.m_Archive = (Population)population.m_Archive.clone();
         if (population.m_History != null) this.m_History = (ArrayList)population.m_History.clone();
+    }
+    
+    /**
+     * Takes over all scalar parameters of the given population.
+     * @param population
+     */
+    public void setSameParams(Population population) {
+        this.m_Generation       = population.m_Generation;
+        this.m_FunctionCalls    = population.m_FunctionCalls;
+        this.m_Size             = population.m_Size;
+        this.useHistory 		= population.useHistory;
+        this.notifyEvalInterval = population.notifyEvalInterval;
+        this.m_Listener			= population.m_Listener;
     }
 
     public Object clone() {
@@ -99,14 +116,41 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      */
     public void incrFunctionCalls() {
         this.m_FunctionCalls++;
+        if (doEvalNotify()) {
+//    		System.out.println("checking funcall event...");
+        	if ((m_FunctionCalls % notifyEvalInterval) == 0) firePropertyChangedEvent(funCallIntervalReached);
+        }
     }
-    /** This method will allow cou to increment the current number of function calls.
+    /** 
+     * This method will allow you to increment the current number of function calls by a number > 1.
+     * Notice that it might slightly disturb notification if a notifyEvalInterval is set. 
+     * 
      * @param d     The number of function calls to increment.
      */
     public void incrFunctionCallsby(int d) {
-        this.m_FunctionCalls += d;
+    	if (doEvalNotify()) {
+    		System.out.println("checking funcall event...");
+    		int nextStep = ((m_FunctionCalls/notifyEvalInterval)+1) * notifyEvalInterval; // next interval boundary
+    		if (nextStep <= (m_FunctionCalls+d)) {
+    			// 	the notify interval will be stepped over or hit
+    			int toHit = (nextStep - m_FunctionCalls);
+    			this.m_FunctionCalls += toHit; // little cheat, notify may be after some more evals
+    			firePropertyChangedEvent(funCallIntervalReached);
+    			this.m_FunctionCalls += (d-toHit);
+    		}
+    	} else this.m_FunctionCalls += d;
     }
-
+    
+    /** Something has changed
+     */
+    protected void firePropertyChangedEvent(String name) {
+        if (this.m_Listener != null) this.m_Listener.registerPopulationStateChanged(this, name);
+    }
+    
+    private boolean doEvalNotify() {
+    	return ((this.m_Listener != null) && (notifyEvalInterval > 0));
+    }
+    
     /** This method return the current number of function calls performed.
      * @return The number of function calls performed.
      */
@@ -131,6 +175,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
         if (useHistory && (this.size() >= 1)) this.m_History.add(this.getBestEAIndividual());
         for (int i=0; i<size(); i++) ((AbstractEAIndividual)get(i)).incrAge(); 
         this.m_Generation++;
+        firePropertyChangedEvent("NextGenerationPerformed");
     }
 
     /** This method returns the current generation.
@@ -145,6 +190,13 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      */
     public void setGenerationTo(int gen) {
         this.m_Generation = gen;
+    }
+    
+    /** This method allows you to add the LectureGUI as listener to the Optimizer
+     * @param ea
+     */
+    public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
+        this.m_Listener = ea;
     }
     
     /** This method allows you to add a complete population to the current population.
@@ -245,34 +297,92 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
         return result;
     }
 
+    /** 
+     * This method returns the n current best individuals from the population, where
+     * the sorting criterion is delivered by an AbstractEAIndividualComparator.
+     * There are less than n individuals returned if the population is smaller than n.
+     * If n is <= 0, then all individuals are returned and effectively just sorted
+     * by fitness.
+     * 
+     * @param n	number of individuals to look out for
+     * @return The m best individuals, where m <= n
+     * 
+     */
+    public List<AbstractEAIndividual> getBestNIndividuals(int n) {
+    	LinkedList<AbstractEAIndividual> indList = new LinkedList<AbstractEAIndividual>();
+    	PriorityQueue<AbstractEAIndividual> queue = new PriorityQueue<AbstractEAIndividual>(super.size(), new AbstractEAIndividualComparator());
+
+        for (int i = 0; i < super.size(); i++) {
+        	queue.add(getEAIndividual(i));
+        }
+        if (n <= 0) n = queue.size();
+        for (int i = 0; i<n ; i++) {
+        	if (queue.size() == 0) break;
+        	indList.add(queue.poll());
+        }
+    	return indList;
+    }
+    
+    /** This method returns n random best individuals from the population.
+     * 
+     * @param n	number of individuals to look out for
+     * @return The n best individuals
+     * 
+     */
+    public List<AbstractEAIndividual> getRandNIndividuals(int n) {
+    	return getRandNIndividualsExcept(n, new Population());	
+    }
+    
     /** This method returns the n current best individuals from the population in an object array.
      * 
      * @param n	number of individuals to look out for
      * @return The n best individuals
      * 
      */
-    public Object[] getBestNIndividuals(int n) {
-    	LinkedList<AbstractEAIndividual> indList = new LinkedList<AbstractEAIndividual>();
-    	PriorityQueue<Double> queue = new PriorityQueue<Double>(n);
-    	AbstractEAIndividual indy;
-        double  curNBestFitness  = Double.POSITIVE_INFINITY;
-
-        for (int i = 0; i < super.size(); i++) {
-        	indy = (AbstractEAIndividual)super.get(i);
-            if ((!indy.violatesConstraint()) && (indy.getFitness(0) < curNBestFitness)) {
-                if (indList.size() >= n) {
-                	indList.removeLast();
-                	queue.remove();
-                }
-                indList.addFirst((AbstractEAIndividual)super.get(i));
-                // use negative fitness, because queue orders the smallest to top.
-                queue.add(new Double(- indy.getFitness(0)));
-                if (indList.size() == n) curNBestFitness  = - ((Double)queue.peek()).doubleValue();
-            }
-        }
-        return indList.toArray();
+    public Population getRandNIndividualsExcept(int n, Population exclude) {
+    	return moveNInds(n, filter(exclude), new Population());
     }
 
+    /**
+     * Moves n random individuals from src Population to dst Population and returns dst Population.
+     * 
+     * @param n
+     * @param from
+     * @param to
+     * @return
+     */
+    public static Population moveNInds(int n, Population src, Population dst) {
+    	if ((n == 0) || (src.size() == 0))  return dst;
+    	else { // Ingenious superior Scheme tail recursive style!
+    		moveRandIndFromTo(src, dst);
+    		return moveNInds(n-1, src, dst);
+    	}
+	}
+    
+    /**
+     * Move one random individual from src to dst population.
+     * @param from
+     * @param to
+     */
+    public static void moveRandIndFromTo(Population src, Population dst) {
+    	int k = RandomNumberGenerator.randomInt(src.size());
+    	dst.add(src.remove(k));
+    }
+    
+    /**
+     * Returns a subset of this population which does not contain the individuals
+     * in the given exclude list as shallow copies.
+     * @param exclude
+     * @return
+     */
+    public Population filter(Population exclude) {
+    	if (exclude.size() == 0) return this;
+    	Population pop = new Population();
+    	for (Object o : this) {
+			if (!exclude.contains(o)) pop.add(o);
+		}
+    	return pop;
+    }
     
     /** This method returns the currently worst individual from the population
      * @return The best individual
@@ -560,4 +670,13 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     public int getGenerations() {
         return this.m_Generation;
     }
+
+	/**
+	 * Fire an event every n function calls, the event sends the public String funCallIntervalReached.
+	 * 
+	 * @param notifyEvalInterval the notifyEvalInterval to set
+	 */
+	public void setNotifyEvalInterval(int notifyEvalInterval) {
+		this.notifyEvalInterval = notifyEvalInterval;
+	}
 }

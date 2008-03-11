@@ -14,12 +14,12 @@ import javaeva.server.go.problems.FM0Problem;
 import javaeva.server.go.problems.InterfaceOptimizationProblem;
 import javaeva.gui.PropertyDoubleArray;
 
-/** The winged MOEA was a nice idea, which didn't really worked out.
+/** The winged MOEA was a nice idea, which didn't really work out.
  * Here a standard MOEA is assisted by n additional local searchers, each
  * optimizing just one objective. The idea was that these local optimizers
  * would span the search space and would allow the MOEA to converge faster.
  * But in the end the performance of this algorithm strongly depends on the
- * optimizaiton problem. 
+ * optimization problem. 
  * Created by IntelliJ IDEA.
  * User: streiche
  * Date: 16.02.2005
@@ -271,8 +271,8 @@ public class WingedMultiObjectiveEA implements InterfaceOptimizer, java.io.Seria
         return "EMO-LS";
     }
 
-    /** Assuming that all optimizer will store thier data in a population
-     * we will allow acess to this population to query to current state
+    /** Assuming that all optimizer will store their data in a population
+     * we will allow access to this population to query to current state
      * of the optimizer.
      * @return The population of current solutions to a given problem.
      */
@@ -285,7 +285,10 @@ public class WingedMultiObjectiveEA implements InterfaceOptimizer, java.io.Seria
     public String populationTipText() {
         return "(Defunct)";
     }
-
+    
+    public Population getAllSolutions() {
+    	return getPopulation();
+    }
     /** This method allows you to set/get the optimizing technique to use.
      * @return The current optimizing method
      */

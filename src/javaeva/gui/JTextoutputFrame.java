@@ -52,14 +52,18 @@ public class JTextoutputFrame implements JTextoutputFrameInterface,
   /**
    *
    */
-  public void print (String Text) {
+  public void print(String Text) {
     //System.out.println("Print:"+Text);
     if (m_firstprint==true) {
       m_firstprint = false;
       createFrame();
     }
-    m_TextArea.append (Text+"\n");
+    m_TextArea.append(Text);
     m_TextArea.repaint();
+  }
+  
+  public void println(String txt) {
+	  print(txt+'\n');
   }
   
   public void setShow(boolean bShow) {

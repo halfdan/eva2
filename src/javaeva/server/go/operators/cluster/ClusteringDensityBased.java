@@ -1,12 +1,11 @@
 package javaeva.server.go.operators.cluster;
 
-import javaeva.server.go.individuals.AbstractEAIndividual;
-import javaeva.server.go.individuals.InterfaceDataTypeDouble;
-import javaeva.server.go.operators.distancemetric.InterfaceDistanceMetric;
-import javaeva.server.go.operators.distancemetric.PhenotypeMetricDoubleData;
-import javaeva.server.go.populations.Population;
-
 import java.util.ArrayList;
+
+import javaeva.server.go.individuals.AbstractEAIndividual;
+import javaeva.server.go.operators.distancemetric.InterfaceDistanceMetric;
+import javaeva.server.go.operators.distancemetric.PhenotypeMetric;
+import javaeva.server.go.populations.Population;
 
 /** The DBSCAN method. As far as I recall this is an hierachical
  * clustering method like the single-link method.
@@ -18,7 +17,7 @@ import java.util.ArrayList;
  */
 public class ClusteringDensityBased implements InterfaceClustering, java.io.Serializable {
 
-    private InterfaceDistanceMetric     m_Metric            = new PhenotypeMetricDoubleData();
+    private InterfaceDistanceMetric     m_Metric            = new PhenotypeMetric();
     private double                      m_ClusterDistance   = 0.1;
     private int                         m_MinimumGroupSize  = 3;
     private boolean[][]                 ConnectionMatrix;
@@ -26,9 +25,16 @@ public class ClusteringDensityBased implements InterfaceClustering, java.io.Seri
     private boolean                     m_TestConvergingSpeciesOnBestOnly = true;
 
     public ClusteringDensityBased() {
-
     }
-
+    
+    /**
+     * Directly set the minimum cluster distance sigma.
+     * @param sigma the minimum cluster distance
+     */
+    public ClusteringDensityBased(double sigma) {
+    	m_ClusterDistance = sigma;
+    }
+    
     public ClusteringDensityBased(ClusteringDensityBased a) {
         if (a.m_Metric != null) this.m_Metric           = (InterfaceDistanceMetric)a.m_Metric.clone();
         this.m_TestConvergingSpeciesOnBestOnly  = a.m_TestConvergingSpeciesOnBestOnly;
@@ -62,7 +68,7 @@ public class ClusteringDensityBased implements InterfaceClustering, java.io.Seri
 
     /** This method allows you to search for clusters in a given population. The method
      * returns Number of populations. The first population contains all individuals that
-     * could not be asociated with any cluster and may be empty.
+     * could not be associated with any cluster and may be empty.
      * All other populations group individuals into clusters.
      * @param pop       The population of individuals that is to be clustered.
      * @return Population[]
@@ -83,7 +89,7 @@ public class ClusteringDensityBased implements InterfaceClustering, java.io.Seri
         for (int i = 0; i < pop.size(); i++) {
             tmpIndy1 = (AbstractEAIndividual)pop.get(i);
             ConnectionMatrix[i][i] = true;
-            for (int j = i; j < pop.size(); j++) {
+            for (int j = i+1; j < pop.size(); j++) {
                 tmpIndy2 = (AbstractEAIndividual)pop.get(j);
                 if (this.m_Metric.distance(tmpIndy1, tmpIndy2) < this.m_ClusterDistance) {
                     ConnectionMatrix[i][j] = true;

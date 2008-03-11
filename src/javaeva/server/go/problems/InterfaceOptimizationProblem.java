@@ -50,13 +50,14 @@ public interface InterfaceOptimizationProblem extends InterfaceAdditionalPopulat
      */
     public void evaluate(AbstractEAIndividual individual);
 
-    /** This method should be used to calculate the distance between two
-     * individuals
-     * @param indy1     The first individual.
-     * @param indy2     The second individual.
-     * @return The distance.
-     */
-    public double distanceBetween(AbstractEAIndividual indy1, AbstractEAIndividual indy2);
+//	DEPRECATED, use PhenotypeMetric    
+//** This method should be used to calculate the distance between two
+//     * individuals
+//     * @param indy1     The first individual.
+//     * @param indy2     The second individual.
+//     * @return The distance.
+//     */
+//    public double distanceBetween(AbstractEAIndividual indy1, AbstractEAIndividual indy2);
 
     /******************** Some output methods *******************************************/
 

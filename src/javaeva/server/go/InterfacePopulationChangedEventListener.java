@@ -1,6 +1,5 @@
 package javaeva.server.go;
 
-import javaeva.server.go.populations.Population;
 
 /**
  * Created by IntelliJ IDEA.

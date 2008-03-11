@@ -19,17 +19,7 @@ public class F5Problem extends F1Problem implements java.io.Serializable {
         this.m_Template         = new ESIndividualDoubleData();
     }
     public F5Problem(F5Problem b) {
-        //AbstractOptimizationProblem
-        if (b.m_Template != null)
-            this.m_Template         = (AbstractEAIndividual)((AbstractEAIndividual)b.m_Template).clone();
-        //F1Problem
-        if (b.m_OverallBest != null)
-            this.m_OverallBest      = (AbstractEAIndividual)((AbstractEAIndividual)b.m_OverallBest).clone();
-        this.m_ProblemDimension = b.m_ProblemDimension;
-        this.m_Noise            = b.m_Noise;
-        this.m_XOffSet          = b.m_XOffSet;
-        this.m_YOffSet          = b.m_YOffSet;
-        this.m_UseTestConstraint = b.m_UseTestConstraint;        
+        super(b);             
     }
 
     /** This method inits a given population
@@ -38,7 +28,7 @@ public class F5Problem extends F1Problem implements java.io.Serializable {
     public void initPopulation(Population population) {
         AbstractEAIndividual tmpIndy;
 
-        this.m_OverallBest = null;
+//        this.m_OverallBest = null;
 
         population.clear();
 

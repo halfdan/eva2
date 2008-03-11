@@ -195,7 +195,10 @@ public class PopulationBasedIncrementalLearning implements InterfaceOptimizer, j
     public String populationTipText() {
         return "Edit the properties of the PBIL population used.";
     }
-
+    
+    public Population getAllSolutions() {
+    	return getPopulation();
+    }
 //    /** This method will set the normation method that is to be used.
 //     * @param normation
 //     */

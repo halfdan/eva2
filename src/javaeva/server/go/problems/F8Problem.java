@@ -4,7 +4,6 @@ import javaeva.server.go.individuals.AbstractEAIndividual;
 import javaeva.server.go.individuals.ESIndividualDoubleData;
 import javaeva.server.go.individuals.InterfaceDataTypeDouble;
 import javaeva.server.go.populations.Population;
-import javaeva.server.go.tools.RandomNumberGenerator;
 
 /**
  * Created by IntelliJ IDEA.
@@ -13,7 +12,7 @@ import javaeva.server.go.tools.RandomNumberGenerator;
  * Time: 19:40:28
  * To change this template use File | Settings | File Templates.
  */
-public class F8Problem extends F1Problem implements java.io.Serializable {
+public class F8Problem extends F1Problem implements InterfaceMultimodalProblem, java.io.Serializable {
 
     private double      a = 20;
     private double      b = 0.2;
@@ -23,17 +22,10 @@ public class F8Problem extends F1Problem implements java.io.Serializable {
         this.m_Template         = new ESIndividualDoubleData();
     }
     public F8Problem(F8Problem b) {
-        //AbstractOptimizationProblem
-        if (b.m_Template != null)
-            this.m_Template         = (AbstractEAIndividual)((AbstractEAIndividual)b.m_Template).clone();
-        //F1Problem
-        if (b.m_OverallBest != null)
-            this.m_OverallBest      = (AbstractEAIndividual)((AbstractEAIndividual)b.m_OverallBest).clone();
-        this.m_ProblemDimension = b.m_ProblemDimension;
-        this.m_Noise            = b.m_Noise;
-        this.m_XOffSet          = b.m_XOffSet;
-        this.m_YOffSet          = b.m_YOffSet;
-        this.m_UseTestConstraint = b.m_UseTestConstraint;        
+        super(b);
+        this.a = b.a;
+        this.b = b.b;
+        this.c = b.c;
     }
 
     /** This method returns a deep clone of the problem.
@@ -49,7 +41,7 @@ public class F8Problem extends F1Problem implements java.io.Serializable {
     public void initPopulation(Population population) {
         AbstractEAIndividual tmpIndy;
 
-        this.m_OverallBest = null;
+//        this.m_OverallBest = null;
 
         population.clear();
 
