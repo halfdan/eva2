@@ -56,22 +56,15 @@ public class FM0Problem extends AbstractProblemDouble implements Interface2DBord
         //AbstractOptimizationProblem
         if (b.m_Template != null)
             this.m_Template         = (AbstractEAIndividual)((AbstractEAIndividual)b.m_Template).clone();
-        //F1Problem
-//        if (b.m_OverallBest != null)
-//            this.m_OverallBest      = (AbstractEAIndividual)((AbstractEAIndividual)b.m_OverallBest).clone();
-        this.m_ProblemDimension = b.m_ProblemDimension;
+        
+        // AbstractProblemDouble
         this.m_Noise            = b.m_Noise;
-//        this.m_XOffSet          = b.m_XOffSet;
-//        this.m_YOffSet          = b.m_YOffSet;
-//        this.m_UseTestConstraint = b.m_UseTestConstraint;        
-        //FM0Problem
+        this.m_DefaultRange		= b.m_DefaultRange;
+
+        // myself
+        this.m_ProblemDimension = b.m_ProblemDimension;
         this.m_GlobalOpt        = b.m_GlobalOpt;
         this.m_Epsilon         = b.m_Epsilon;
-//        this.m_UseXCrit         = b.m_UseXCrit;
-//        this.m_UseYCrit         = b.m_UseYCrit;
-//        this.m_UseXCrit          = b.m_UseXCrit;
-//        if (m_Metric != null)
-//            this.m_Metric           = (InterfaceDistanceMetric)((InterfaceDistanceMetric)b.m_Metric).clone();
         if (b.m_Optima != null)
             this.m_Optima           = (Population)((Population)b.m_Optima).clone();
         if (b.m_Extrema != null) {
@@ -102,8 +95,6 @@ public class FM0Problem extends AbstractProblemDouble implements Interface2DBord
      */
     public void initPopulation(Population population) {
         AbstractEAIndividual tmpIndy;
-
-//        this.m_OverallBest = null;
 
         population.clear();
 
