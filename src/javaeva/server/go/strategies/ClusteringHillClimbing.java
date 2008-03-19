@@ -12,21 +12,40 @@ import javaeva.server.go.problems.F1Problem;
 import javaeva.server.go.problems.InterfaceOptimizationProblem;
 import javaeva.tools.Pair;
 
+/**
+ * The clustering hill climber is similar to a multi-start hill climber. In addition so optimizing
+ * a set of individuals in parallel using a (1+1) strategy, the population is clustered in regular
+ * intervals. If several individuals have gathered together in the sense that they are interpreted
+ * as a cluster, only a subset of representatives of the cluster is taken over to the next HC step
+ * while the rest is discarded. This means that the population size may be reduced.
+ * 
+ * As soon as the improvement by HC lies below a threshold, the mutation step size is decreased.
+ * If the step size is decreased below a certain threshold, the current population is stored to 
+ * an archive and reinitialized. Thus, the number of optima that may be found and returned by
+ * getAllSolutions is higher than the population size.
+ * 
+ * @author mkron
+ *
+ */
 public class ClusteringHillClimbing implements InterfacePopulationChangedEventListener, InterfaceOptimizer, Serializable {
     transient private InterfacePopulationChangedEventListener   m_Listener;
+    public static final boolean TRACE = false;
+    
     transient private String 				m_Identifier = "";
     private Population						m_Population = new Population();
     private transient Population			archive = new Population();
     private InterfaceOptimizationProblem	m_Problem	= new F1Problem();
     private int								hcEvalCycle	= 1000;
-    private int								initialPopSize = 200;
+    private int								initialPopSize = 100;
    	private int								loopCnt = 0;
 //   	private int								baseEvalCnt = 0;
    	private int								notifyGuiEvery		= 50;
-   	private double							sigma 				= 0.01;
+   	private double							sigmaClust 			= 0.01;
    	private double							minImprovement 		= 0.000001;
-   	private double 							reinitForStepSize 	= 0.000001;
+   	private double 							stepSizeThreshold 	= 0.000001;
    	private double							initialStepSize 	= 0.1;
+   	// reduce the step size when there is hardy improvement. 
+   	private double							reduceFactor		= 0.2;
    	private MutateESFixedStepSize				mutator = new MutateESFixedStepSize(0.1);
 
 	public ClusteringHillClimbing() {
@@ -37,8 +56,16 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
 		hideHideable();
 		m_Population = (Population)other.m_Population.clone();
 		m_Problem = (InterfaceOptimizationProblem)other.m_Problem.clone();
+		
 		hcEvalCycle = other.hcEvalCycle;
 		initialPopSize = other.initialPopSize;
+		notifyGuiEvery = other.notifyGuiEvery;
+		sigmaClust = other.sigmaClust;
+		minImprovement = other.minImprovement;
+		stepSizeThreshold = other.stepSizeThreshold;
+		initialStepSize = other.initialStepSize;
+		reduceFactor = other.reduceFactor;
+		mutator = (MutateESFixedStepSize)other.mutator.clone();
 		loopCnt = 0;		
 	}
 	
@@ -81,7 +108,7 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
        	hideHideable();
        	m_Population.setPopulationSize(initialPopSize);
         this.m_Problem.initPopulation(this.m_Population);
-        m_Population.addPopulationChangedEventListener(null);
+        m_Population.addPopulationChangedEventListener(null); // noone will be notified directly on pop changes
         this.m_Problem.evaluate(this.m_Population);
         this.firePropertyChangedEvent("NextGenerationPerformed");
     }
@@ -111,16 +138,16 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
 		loopCnt++;
 		m_Population.addPopulationChangedEventListener(this);
 		m_Population.setNotifyEvalInterval(notifyGuiEvery);
-		Pair<Population, Double> popD = PostProcess.clusterHC(m_Population, (AbstractOptimizationProblem)m_Problem, sigma, hcEvalCycle - (m_Population.getFunctionCalls() % hcEvalCycle), 0.5, mutator);
+		Pair<Population, Double> popD = PostProcess.clusterHC(m_Population, (AbstractOptimizationProblem)m_Problem, sigmaClust, hcEvalCycle - (m_Population.getFunctionCalls() % hcEvalCycle), 0.5, mutator);
 		improvement = popD.tail();
+		m_Population = popD.head();
 
 		popD.head().setGenerationTo(m_Population.getGeneration()+1);
-		m_Population = popD.head();
 		
 		if (improvement < minImprovement) {
-			System.out.println("improvement below " + minImprovement);
-			if (mutator.getSigma() < reinitForStepSize) { // reinit!
-				System.out.println("REINIT!!");
+			if (TRACE) System.out.println("improvement below " + minImprovement);
+			if (mutator.getSigma() < stepSizeThreshold) { // reinit!
+				if (TRACE) System.out.println("REINIT!!");
 		        // store results
 				mutator.setSigma(initialStepSize);
 				archive.SetFunctionCalls(m_Population.getFunctionCalls());
@@ -139,12 +166,12 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
 				m_Population.incrFunctionCallsby(tmpPop.size());
 		
 			} else  {  // decrease step size
-				mutator.setSigma(mutator.getSigma()/2);
-				System.out.println("halfed sigma to " + mutator.getSigma());
+				mutator.setSigma(mutator.getSigma()*reduceFactor);
+				if (TRACE) System.out.println("mutation stepsize reduced to " + mutator.getSigma());
 			}
 		}
 //		System.out.println("funcalls: " + evalCnt);
-//        this.firePropertyChangedEvent("NextGenerationPerformed");
+        this.firePropertyChangedEvent("NextGenerationPerformed");
 
 	}
 
@@ -219,6 +246,10 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
 	public void setHcEvalCycle(int hcEvalCycle) {
 		this.hcEvalCycle = hcEvalCycle;
 	}
+	
+	public String hcEvalCycleTipText() {
+		return "The number of evaluations between two clustering/adaption steps.";
+	}
 
 	/**
 	 * @return the initialPopSize
@@ -234,21 +265,25 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
 		this.initialPopSize = initialPopSize;
 	}
 
+	public String initialPopSizeTipText() {
+		return "Population size at the start and at reinitialization times.";
+	}
+	
 	/**
 	 * @return the sigma
 	 */
-	public double getSigma() {
-		return sigma;
+	public double getSigmaClust() {
+		return sigmaClust;
 	}
 
 	/**
 	 * @param sigma the sigma to set
 	 */
-	public void setSigma(double sigma) {
-		this.sigma = sigma;
+	public void setSigmaClust(double sigma) {
+		this.sigmaClust = sigma;
 	}
 	
-	public String sigmaTipText() {
+	public String sigmaClustTipText() {
 		return "Defines the sigma distance parameter for density based clustering.";
 	}
 
@@ -266,6 +301,10 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
 		this.notifyGuiEvery = notifyGuiEvery;
 	}
 
+	public String notifyGuiEveryTipText() {
+		return "How often to notify the GUI to plot the fitness etc.";
+	}
+	
 	/**
 	 * @return the minImprovement
 	 */
@@ -280,32 +319,44 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
 		this.minImprovement = minImprovement;
 	}
 
+	public String minImprovementTipText() {
+		return "Improvement threshold below which the mutation step size is reduced or the population reinitialized.";
+	}
+	
 	/**
 	 * @return the reinitForStepSize
 	 */
-	public double getReinitForStepSize() {
-		return reinitForStepSize;
+	public double getStepSizeThreshold() {
+		return stepSizeThreshold;
 	}
 
 	/**
 	 * @param reinitForStepSize the reinitForStepSize to set
 	 */
-	public void setReinitForStepSize(double reinitForStepSize) {
-		this.reinitForStepSize = reinitForStepSize;
+	public void setStepSizeThreshold(double reinitForStepSize) {
+		this.stepSizeThreshold = reinitForStepSize;
 	}
 
+	public String stepSizeThresholdTipText() {
+		return "Threshold for the mutation step size below which the population is seen as converged and reinitialized.";
+	}
+	
 	/**
 	 * @return the initialStepSize
 	 */
-	public double getInitialStepSize() {
+	public double getStepSizeInitial() {
 		return initialStepSize;
 	}
 
 	/**
 	 * @param initialStepSize the initialStepSize to set
 	 */
-	public void setInitialStepSize(double initialStepSize) {
+	public void setStepSizeInitial(double initialStepSize) {
 		this.initialStepSize = initialStepSize;
+	}
+	
+	public String stepSizeInitialTipText() {
+		return "Initial mutation step size, relative to the problem range.";
 	}
 
 //	/**

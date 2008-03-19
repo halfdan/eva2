@@ -48,10 +48,10 @@ Serializable {
 		pMetric = new PhenotypeMetric();
 	}
 
-	public FitnessConvergenceTerminator(double thresh, int stagnTime, boolean bFitCallBased, boolean bAbsolute) {
+	public FitnessConvergenceTerminator(double thresh, int stagnPeriod, boolean bFitCallBased, boolean bAbsolute) {
 		pMetric = new PhenotypeMetric();
 		convThresh = thresh;
-		this.m_stagTime = stagnTime;
+		this.m_stagTime = stagnPeriod;
 		if (bFitCallBased) stagnationMeasure.setSelectedTag("Fitness calls");
 		else stagnationMeasure.setSelectedTag("Generations");
 		if (bAbsolute) convergenceCondition.setSelectedTag("Absolute");

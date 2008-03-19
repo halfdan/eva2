@@ -49,7 +49,7 @@ public class F3Problem extends F1Problem implements java.io.Serializable {
         result += "This problem is discontinuos.\n";
         result += "Parameters:\n";
         result += "Dimension   : " + this.m_ProblemDimension +"\n";
-        result += "Noise level : " + this.m_Noise + "\n";
+        result += "Noise level : " + this.getNoise() + "\n";
         result += "Solution representation:\n";
         //result += this.m_Template.getSolutionRepresentationFor();
         return result;

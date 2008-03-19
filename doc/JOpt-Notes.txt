@@ -35,6 +35,7 @@ getroffen, wo setRunLocally des EvAComAdapters aufgerufen wird.
 zwischen lokalem und remote-Adapter zu unterscheiden.
 
 ToDo:
+- PostProcess: adaptive step-size for HC post-process might be better. 
 - possible problem with new interfaces in RMI mode?
 - "Show Solution" from GOStandalone into Client?
 - MatlabProblem will not compile without Matlab. Keep it in JE2Base anyway?

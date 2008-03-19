@@ -79,7 +79,7 @@ public class F7Problem extends F1Problem implements java.io.Serializable {
         fitness = this.eval(x);
         for (int i = 0; i < fitness.length; i++) {
             // add noise to the fitness
-            fitness[i] += RandomNumberGenerator.gaussianDouble(this.m_Noise);
+            fitness[i] += RandomNumberGenerator.gaussianDouble(this.getNoise());
             fitness[i] += this.m_YOffSet;
             // set the fitness of the individual
             individual.SetFitness(i, fitness[i]);
@@ -120,7 +120,7 @@ public class F7Problem extends F1Problem implements java.io.Serializable {
         result += "F7 Sphere Model, changing Environemt:\n";
         result += "Parameters:\n";
         result += "Dimension   : " + this.m_ProblemDimension +"\n";
-        result += "Noise level : " + this.m_Noise + "\n";
+        result += "Noise level : " + this.getNoise() + "\n";
         result += "Solution representation:\n";
         //result += this.m_Template.getSolutionRepresentationFor();
         return result;

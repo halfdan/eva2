@@ -25,9 +25,14 @@ public class PostProcessParams implements InterfacePostProcessParams, Serializab
 	}
 	
 	public PostProcessParams(int steps, double clusterSigma) {
+		this(steps, clusterSigma, 10);
+	}
+	
+	public PostProcessParams(int steps, double clusterSigma, int nBest) {
 		postProcessSteps = steps;
 		postProcess = true;
 		postProcessClusterSigma = clusterSigma;
+		printNBest = nBest;
 	}
 	
 	public void hideHideable() {
@@ -65,7 +70,7 @@ public class PostProcessParams implements InterfacePostProcessParams, Serializab
 		this.postProcessClusterSigma = postProcessClusterSigma;
 	}
 	public String postProcessClusterSigmaTipText() {
-		return "Set the sigma parameter for clustering during post processing. Set to zero for no clustering.";
+		return "Set the sigma parameter for clustering during post processing; set to 0 for no clustering.";
 	}
 	
 	public String postProcessStepsTipText() {
@@ -85,7 +90,7 @@ public class PostProcessParams implements InterfacePostProcessParams, Serializab
 		printNBest = nBest;
 	}
 	public String printNBestTipText() {
-		return "Print as many solutions at max. Set to -1 to print all";  
+		return "Print as many solutions at max; set to -1 to print all";  
 	}
 	//////////////////////// GUI
 	

@@ -2,12 +2,17 @@
 \lyxformat 245
 \begin_document
 \begin_header
-\textclass article
+\textclass amsbook
+\begin_preamble
+\usepackage{listings}
+\usepackage{url}
+\end_preamble
 \language english
 \inputencoding auto
 \fontscheme default
 \graphics default
 \paperfontsize default
+\spacing single
 \papersize default
 \use_geometry false
 \use_amsmath 1
@@ -30,6 +35,34 @@
 
 \begin_layout Title
 JavaEvA 2 Short Documentation
+\end_layout
+
+\begin_layout Author
+Marcel Kronfeld
+\end_layout
+
+\begin_layout Address
+Dept.
+ of Computer Architecture, 
+\end_layout
+
+\begin_layout Address
+Prof.
+ Dr.
+ Andreas Zell, 
+\end_layout
+
+\begin_layout Address
+University of Tübingen
+\end_layout
+
+\begin_layout Thanks
+Props to all former and current developers of JavaEvA: Jürgen Wakunda, Holger
+ Ulmer, Felix Streichert, and Hannes Planatscher.
+\end_layout
+
+\begin_layout URL
+http://www.ra.cs.uni-tuebingen.de/software/JavaEvA
 \end_layout
 
 \begin_layout Standard
@@ -69,18 +102,32 @@ olutionary
 \bar under
 A
 \bar default
-lgorithms, revised version 2) is an extensive heuristic optimization framework
- with emphasis on Evolutionary Algorithms.
+lgorithms, revised version 
+\bar under
+2
+\bar default
+) is a comprehensive heuristic optimization framework with emphasis on Evolution
+ary Algorithms.
  It is a revised version of the 
 \noun on
 JavaEvA
 \noun default
- (!!! cite TechRep) optimization toolbox, which has been developed as a
- resumption of the former 
+ 
+\begin_inset LatexCommand \cite{JOptDocumentation}
+
+\end_inset
+
+ optimization toolbox, which has been developed as a resumption of the former
+ 
 \noun on
 EvA
 \noun default
- software package (!!! Wakunda97EvA,Wakunda01Parallele ).
+ software package 
+\begin_inset LatexCommand \cite{Wakunda97EvA}
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
@@ -88,10 +135,10 @@ EvA
 \noun on
 JavaEvA 2
 \noun default
- tries to integrate several, preferably population based optimization methods,
- such as Evolution Strategies, Genetic Algorithms, Differential Evolution,
- Particle Swarm Optimization, as well as classical techniques such as the
- multi-start Hill-Climber or Simulated Annealing.
+ integrates several derivation free optimization methods, preferably population
+ based, such as Evolution Strategies, Genetic Algorithms, Differential Evolution
+, Particle Swarm Optimization, as well as classical techniques such as multi-sta
+rt Hill-Climbing or Simulated Annealing.
 \end_layout
 
 \begin_layout Standard
@@ -105,43 +152,35 @@ y Algorithms, but wants to use Evolutionary Algorithms to solve his application
  problem.
  Second, the experienced programmer who wants to investigate the performance
  of different optimization algorithms or wants to compare the effect of
- alternative mutation or crossover operators.
- The latter usually knows more about Evolutionary Algorithms or Optimization
- Algorithms and is able to extend 
+ alternative or specialized evolutionary or heuristic operators.
+ The latter usually knows more about Evolutionary Algorithms or heuristic
+ optimization and is able to extend 
 \noun on
 JavaEvA 2
 \noun default
- by adding more specialized optimization strategies or solution representations.
+ by adding specific optimization strategies or solution representations.
 \end_layout
 
-\begin_layout Section
-Quick Start
-\end_layout
+\begin_layout Standard
+This document is, as the title says, not an extensive manual on the 
+\noun on
+JavaEvA 2
+\noun default
+ framework, but instead a short introduction hoping to ease access to 
+\noun on
+JavaEvA 2.
 
-\begin_layout Subsection
-Quickly Running 
+\noun default
+ Thus, the document is mainly oriented by use-cases and tries to deliver
+ knowledge on a top-down basis, with most important things first and details
+ where required.
+ Still, as 
 \noun on
 JavaEvA
-\end_layout
-
-\begin_layout Standard
-To quickly test
-\noun on
- JavaEvA 2
 \noun default
-, we recommend you download the jar-package JE2Base.jar and start the GUI.
- To do this under GNU/Linux, you can just type:
-\end_layout
-
-\begin_layout Quotation
-$ java -cp JE2Base.jar javaeva.client.EvAClient
-\end_layout
-
-\begin_layout Standard
-For technical reasons, we do not recommend using the java option 
-\emph on
--jar
-\emph default
+ just as heuristic optimization itself can become tricky sometimes, it is
+ not always possible to explain things without cross-references.
+ We hope that this document will, anyways, be a valuable helper in working
  with 
 \noun on
 JavaEvA 2
@@ -150,16 +189,229 @@ JavaEvA 2
 \end_layout
 
 \begin_layout Standard
-If you want to work on the source code or use the API directly, extract
- and compile the source code.
- It is also vital to copy the resource folder to the location where the
- compiled class files are located.
- You can then again start the GUI or optimize on the console, refering to
- Sec.~!!!.
+Main topics will be, of course, a Quick Start guide (Sec.
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+
+\begin_inset LatexCommand \ref{sec:Quick-Start}
+
+\end_inset
+
+), a guide to the GUI (Sec.
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+
+\begin_inset LatexCommand \ref{sub:Quickly-Using-GUI}
+
+\end_inset
+
+) and basics on the Java programming interface (Sec.
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+
+\begin_inset LatexCommand \ref{sec:Using-the-API}
+
+\end_inset
+
+), but also some words on how to use JavaEvA 2 with external programs such
+ as Matlab (Sec.
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+
+\begin_inset LatexCommand \ref{sec:External-Interfaces}
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+
+\newpage
+
+\end_layout
+
+\begin_layout Section
+Quick Start
+\begin_inset LatexCommand \label{sec:Quick-Start}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The following sections give a short introduction in the main aspects of
+ using
+\noun on
+ JavaEvA
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+2
+\noun default
+, explaining the possibilities given in the GUI windows.
+ Even if you want to just use the API without the GUI, we recommend to try
+ some optimization runs through the GUI, as it may help to learn about the
+ abstraction concepts used in the Java framework.
 \end_layout
 
 \begin_layout Subsection
-Quickly Using the GUI
+Running 
+\noun on
+JavaEvA
+\noun default
+
+\begin_inset LatexCommand \label{sub:Quickly-Running-JavaEvA}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+To quickly test
+\noun on
+ JavaEvA
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+2
+\noun default
+, we recommend you download the jar-package JE2Base.jar and start the GUI.
+ The 
+\noun on
+JavaEvA
+\noun default
+ homepage can be found under 
+\begin_inset LatexCommand \cite{JE2HomePage}
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+To start under GNU/Linux, you can just type:
+\end_layout
+
+\begin_layout Quotation
+
+\family typewriter
+$ java -cp JE2Base.jar javaeva.client.EvAClient
+\end_layout
+
+\begin_layout Standard
+In the same or a similar way, you can start it on all other platforms that
+ support Java
+\noun on
+.
+
+\noun default
+ For technical reasons, we discourage using the Java option 
+\emph on
+-jar
+\emph default
+ with 
+\noun on
+JavaEvA
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+2
+\noun default
+.
+\end_layout
+
+\begin_layout Standard
+If you want to work on the source code directly, note that it is also vital
+ to copy the resource folder to the location where the compiled class files
+ are located.
+ You can then again start the GUI or optimize through the API (Sec.
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+
+\begin_inset LatexCommand \ref{sec:Using-the-API}
+
+\end_inset
+
+).
+ However we advise to at least learn to know the GUI before digging in the
+ source code.
+\end_layout
+
+\begin_layout Standard
+
+\end_layout
+
+\begin_layout Subsection
+Using the GUI
+\begin_inset LatexCommand \label{sub:Quickly-Using-GUI}
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -191,6 +443,11 @@ optimizer
 
 \begin_layout Subsubsection
 The Workbench Window
+\begin_inset LatexCommand \label{sub:The-Workbench-Window}
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Itemize
@@ -208,17 +465,52 @@ The Optimizer.
 \end_layout
 
 \begin_layout Itemize
+Post-processing parameters.
+ In some cases, post processing of the results is desirable, e.g.
+ if you want to improve the single found solution by small hill-climbing
+ steps, or if you want to retrieve more than one solution from a clustering
+ optimization approach.
+\end_layout
+
+\begin_layout Itemize
 The Problem.
  The instance of the target function to be optimized is specified here.
  You can select from the benchmark problems delivered with the package or
- inherit from the problem class yourself (!!! see...)
+ inherit from the problem class yourself (Sec.
+\begin_inset ERT
+status open
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+
+\begin_inset LatexCommand \ref{sec:Using-the-API}
+
+\end_inset
+
+).
 \end_layout
 
 \begin_layout Itemize
 The Random Seed.
  As most algorithms in 
 \noun on
-JavaEvA 2
+JavaEvA
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+2
 \noun default
  incorporate stochastic components, the random seed is essential to the
  outcome of a run.
@@ -248,7 +540,7 @@ Statistics
 The Convergence Rate Threshold.
  Provided the target value is zero, convergence is assumed if a value smaller
  than this threshold is reached.
- For multi-runs, the number of hits is counted using this criterion.
+ For multi-run experiments, the number of hits is counted using this criterion.
 \end_layout
 
 \begin_layout Itemize
@@ -415,18 +707,153 @@ Save as JPG...
 \end_layout
 
 \begin_layout Subsubsection
-Basic Optimization using 
-\noun on
-JavaEvA 2
+Some Words on the Words
 \end_layout
 
 \begin_layout Standard
-To get a grip on JavaEvA 2 and what optimization means, it is best to do
- some runs on the implemented standard benchmarks.
- To do that, start the GUI, select a benchmark problem, e.g.
- the F1-Problem, consisting in a simple hyper-parabola.
+As 
+\noun on
+JavaEvA
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+2
+\noun default
+ is mainly about Evolutionary and Heuristic Optimization, some of the terms
+ and notions are borrowed from the area and used in this document.
+ As they may not be familiar to all who want to use the framework, we give
+ a short summary here.
+\end_layout
+
+\begin_layout Standard
+We aim at optimizing a target function without knowing much about it, and
+ find a certain position in the search space which minimizes the target
+ function, the 
+\emph on
+solution
+\emph default
+.
+ During search, we use a specific search strategy, the 
+\emph on
+optimizer
+\emph default
+, which usually looks at several positions in parallel.
+ Those are all 
+\emph on
+potential solutions
+\emph default
+, because we don't know the real one yet.
+ For the potential solutions we evaluate the target function.
+ The value received is often called 
+\emph on
+fitness
+\emph default
+ in analogy to Darwin's Theory of Evolution, where 
+\begin_inset Quotes eld
+\end_inset
+
+the fitter ones survive
+\begin_inset Quotes erd
+\end_inset
+
+.
+ For the same reason, potential solutions are sometimes called 
+\emph on
+individuals
+\emph default
+, and the set of potential solutions stored by the optimizer at a time may
+ be called 
+\emph on
+the
+\emph default
+ 
+\emph on
+population
+\emph default
+.
+ Many of the implemented optimization strategies employ operators in analogy
+ to natural 
+\emph on
+mutation
+\emph default
+, 
+\emph on
+crossover
+\emph default
+ and 
+\emph on
+selection
+\emph default
+.
+ 
+\end_layout
+
+\begin_layout Standard
+There is nothing mystical about that, and of course the analogy is often
+ exaggerated.
+ Evolutionary Optimization is an algorithmic tool that serves mostly technical
+ purposes.
+ That it works is by no means a sign that we fully understand Natural Evolution
+ or can even proof anything about it.
+ This said, however, we should also note that noone today should really
+ doubt that evolution works.
+\end_layout
+
+\begin_layout Standard
+This document will not explain in detail how the implemented optimizers
+ work, as there is enough literature out there handling these topics.
+ For an introduction, we recommend CI-intro?? 
+\begin_inset LatexCommand \cite{Engelbrecht07CI}
+
+\end_inset
+
+, !!!, !!!.
+\end_layout
+
+\begin_layout Subsubsection
+Basic Optimization using 
+\noun on
+JavaEvA 2
+\noun default
+
+\begin_inset LatexCommand \label{sub:Basic-Optimization-GUI}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+To get a grip on 
+\noun on
+JavaEvA
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+2
+\noun default
+ and what optimization means, it is best to run some experiments on the
+ implemented standard benchmarks.
+ To do that, start the GUI and select a benchmark problem, e.g.
+ the F1-Problem consisting in a simple hyper-parabola.
+ Leave the post-processing deactivated.
  Then choose an optimizer, such as Evolution Strategies with standard parameters
- and hit the 
+, set the termination criterion to EvaluationTerminator with 10,000 fitness
+ calls and hit the 
 \begin_inset Quotes eld
 \end_inset
 
@@ -434,12 +861,16 @@ Start Optimization
 \begin_inset Quotes erd
 \end_inset
 
- button on the top of the window.
+ button at the top of the window.
+ Two additional windows will now open up: the plot window with a fitness
+ graph, and a text box displaying the optimization progess in textual form.
+ The final result will be printed into the text box at the end of the run,
+ as well.
 \end_layout
 
 \begin_layout Standard
-If you play around with some settings, e.g.
- try different values for 
+If you play around with some optimizer settings, e.g.
+ you try different values for 
 \begin_inset Formula $\mu$
 \end_inset
 
@@ -458,28 +889,328 @@ If you play around with some settings, e.g.
 \end_layout
 
 \begin_layout Standard
-Notice, however, that by changing from F1-problem to the B1-problem, the
- internal representation of individuals may change.
+Notice, however, that by changing from the F1-problem to the B1-problem,
+ the internal representation of individuals may change.
  As B1 is a typical binary problem, it uses GAIndividuals by default, which
  are based on binary vectors, while F1 uses double vectors.
- Be aware, that not all optimizers in JavaEvA are built to work on all types
- of indviduals.
+ Be aware, that not all optimizers in 
+\noun on
+JavaEvA
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+2
+\noun default
+ are built to work on all types of indviduals.
+\end_layout
+
+\begin_layout Subsubsection
+Post-Processing
+\begin_inset LatexCommand \label{sub:Post-Processing}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+To see how post processing works, you can select the 
+\emph on
+FM0Problem
+\emph default
+ from the problem list, which is a simple target function with a global
+ and a local optimum.
+ Select the 
+\emph on
+ClusterBasedNiching
+\emph default
+ algorithm as the optimizer.
+ Now click on the 
+\emph on
+postProcessingParams
+\emph default
+ and activate them.
+ For a clustering distance of 
+\begin_inset Formula $\sigma=0.1$
+\end_inset
+
+ and 
+\begin_inset Formula $\approx5000$
+\end_inset
+
+ hill-climbing steps, the optimizer should print out just a few solutions
+ in the text box, the first of which hopefully are the optima near (1.7/0)
+ and (-1.44/0).
+\end_layout
+
+\begin_layout Standard
+Post-processing serves mainly two purposes: filter redundant solutions and
+ refine the search results.
+ Redundant solutions occur naturally in population-based heuristics.
+ The optimizer handles several potential solutions in parallel, and it is
+ hoped that they all converge on the global optimum during the run.
+ Or for multi-modal problems which have several local optima, it can be
+ desirable to have parts of the population converge in different areas of
+ the solution space.
+ Still, in the end, one usually wants to retrieve THE solution set or a
+ refined global optimum.
+ For this purpose, we employ a clustering approach which takes the whole
+ solution set and merges similar solutions to an associated subset.
+ For each of these bulks, only the best individual is returned in the filtered
+ solution set.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename /afs/cs.uni-tuebingen.de/home/mkron/workspace/JE2Base/doc/cluster-graph.eps
+	lyxscale 50
+	width 80col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Caption
+Two examples for density based clustering, from 
+\begin_inset LatexCommand \cite{streichertClustering03}
+
+\end_inset
+
+.
+\begin_inset LatexCommand \label{fig:Density-based-clustering.}
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Of course the size of this filtered set depends on the degree of convergence
+ in the original set and on the clustering criterion.
+ We employ density based clustering 
+\begin_inset LatexCommand \cite{ester96density}
+
+\end_inset
+
+, which associates any two individuals which have a distance of less than
+ the clustering parameter 
+\begin_inset Formula $\sigma$
+\end_inset
+
+ (Fig.
+\begin_inset ERT
+status open
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+
+\begin_inset LatexCommand \ref{fig:Density-based-clustering.}
+
+\end_inset
+
+).
+ This is an intuitive approach that does not require a predefined number
+ of clusters, such as k-means, for example.
+ By defining 
+\begin_inset Formula $\sigma$
+\end_inset
+
+, you thus define the resolution you grant your solution set.
+\end_layout
+
+\begin_layout Standard
+As the solution set always contains the last state of the heuristic optimization
+, one may hope that it is converged.
+ But of course often it is not fully converged, or maybe the strategy even
+ rediversifies the population from time to time, meaning that some part
+ of the set it is converged while other individuals are freshly initialized
+ and thus by no means optimal.
+ So after filtering out redundancy, you might also want to refine the returned
+ set a little.
+ This can be done directly by a Hill Climber (HC) in the post-processing
+ step by setting 
+\emph on
+postProcessSteps
+\emph default
+ to the number of evaluation calls you want to invest in the refinement.
+\begin_inset Note Comment
+status open
+
+\begin_layout Standard
+Question here: wft is a hill climber?
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+If you set 
+\begin_inset Formula $sigma$
+\end_inset
+
+ for clustering and performed hill climbing, then there will be another
+ clustering step right after the HC process, to remove redundancy that emerged
+ by the additional HC optimization.
+\end_layout
+
+\begin_layout Subsection
+Additional Packages
+\end_layout
+
+\begin_layout Standard
+To add additional packages to use them with the 
+\noun on
+JavaEvA
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+2
+\noun default
+ base package, you can just add them to the class path.
+ E.g.
+ to use the additional JE2Probs package containing a larger set of benchmark
+ problems, place them both in your working directory and type (GNU/Linux):
+\end_layout
+
+\begin_layout Quotation
+
+\family typewriter
+$ java -cp JE2Base.jar:JE2Probs.jar javaeva.client.EvAClient
+\end_layout
+
+\begin_layout Standard
+You should now be able to select from a larger set of optimization problems
+ in the GUI.
+ Note that different platforms use different characters as path separators
+ (':' in GNU/Linux).
+ To add your own classes to the 
+\noun on
+JavaEvA
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+2
+\noun default
+ framework (see Sec.
+\begin_inset ERT
+status open
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+
+\begin_inset LatexCommand \ref{sec:Quickly-Adding-Your-Problem}
+
+\end_inset
+
+), you need to add your local development path to the classpath, for example:
+\end_layout
+
+\begin_layout Quotation
+
+\family typewriter
+$ java -cp JE2Base.jar:JE2Probs.jar:/home/username/workspace javaeva.client.EvAClien
+t
+\end_layout
+
+\begin_layout Standard
+Note that 
+\noun on
+JavaEvA
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+2
+\noun default
+ will search all classpath entries for compatible classes, so you should
+ only add those packages which are really required.
+\end_layout
+
+\begin_layout Standard
+
 \end_layout
 
 \begin_layout Section
 External Interfaces
-\end_layout
+\begin_inset LatexCommand \label{sec:External-Interfaces}
 
-\begin_layout Subsection
-Optimizing through an external command
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-MICHAELS DOKU HIER!!!
+\begin_inset Note Comment
+status open
+
+\begin_layout Standard
+Optimizing through an external command: Michaels Teil
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
 Optimization from Matlab
+\begin_inset LatexCommand \label{sub:Optimization-from-Matlab}
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsubsection
@@ -497,22 +1228,29 @@ To tackle optimization problems already existing in Matlab, we provide a
  If you have an existing Matlab function you want to optimize with some
  standard algorithms implemented in 
 \noun on
-JavaEvA 2
+JavaEvA
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+2
 \noun default
-, you can do this now directly from yout Matlab console.
+, you can do this now directly from your Matlab console.
  To do so, follow these steps:
 \end_layout
 
 \begin_layout Itemize
 Download the JE2Base.jar and add it to the Matlab classpath, e.g.
  by typing 
-\begin_inset Quotes eld
-\end_inset
-
+\family typewriter
 javaaddpath /home/username/JE2Base.jar
-\begin_inset Quotes erd
-\end_inset
-
+\family default
  in the Matlab console.
 \end_layout
 
@@ -539,7 +1277,11 @@ Define the range of your search space using a
 \begin_inset Quotes eld
 \end_inset
 
-R=[[-5 -5 -5];[5 5 5]]
+
+\begin_inset Formula $R=[[-5\;-5\;-5];[5\;5\;5]]$
+\end_inset
+
+
 \begin_inset Quotes erd
 \end_inset
 
@@ -553,27 +1295,23 @@ fun
 \emph default
  to be minimized, create a JEInterface in Matlab by typing, for example:
  
-\begin_inset Quotes eld
-\end_inset
-
+\family typewriter
 JI=JEInterface('JI', @fun, R)
-\begin_inset Quotes erd
-\end_inset
-
+\family default
 .
- Notice that fun must be accessible from your working directory, it should
- not be placed in @JEInterface.
+ Notice that 
+\emph on
+fun
+\emph default
+ must be accessible from your working directory, it should not be placed
+ in the @JEInterface directory.
 \end_layout
 
 \begin_layout Itemize
 To view the possible optimization strategies, type 
-\begin_inset Quotes eld
-\end_inset
-
+\family typewriter
 showOptimizers(JI)
-\begin_inset Quotes erd
-\end_inset
-
+\family default
 .
 \end_layout
 
@@ -581,25 +1319,17 @@ showOptimizers(JI)
 You can now select an optimizer and use its ID to start the optimization,
  e.g.
  
-\begin_inset Quotes eld
-\end_inset
-
+\family typewriter
 JI=optimize(JI,1)
-\begin_inset Quotes erd
-\end_inset
-
+\family default
  for a standard ES.
 \end_layout
 
 \begin_layout Itemize
 Wait for the optimization to finish and type 
-\begin_inset Quotes eld
-\end_inset
-
+\family typewriter
 getResult(JI)
-\begin_inset Quotes erd
-\end_inset
-
+\family default
  to get the solution found.
 \end_layout
 
@@ -611,34 +1341,110 @@ Details on JEInterface
 As Matlab is single-threaded and Java needs to call it back to calculate
  function values, the optimize-command starts a new Java thread and returns
  directly to Matlab.
- This means, the optimization works asynchronously: the optimization result
- will be written to the JEInterface instance and is not a direct output
- of the optimize call.
+ This means that the optimization works asynchronously: the result will
+ be written to the JEInterface instance and is not a direct output value
+ of the 
+\family typewriter
+optimize
+\family default
+ call.
  There will be a text notice in the Matlab console as soon as the optimization
- finished.
+ has finished.
  Notice that in Matlab object oriented style, you cannot modify an object
- O simply by calling the mutator, e.g.
- setParameter(O, p1, val1), but you have to reassign O for every mutating
- call, as in: O=setParameter(O, p1, val1).
+ 
+\family typewriter
+O
+\family default
+ simply by calling the mutator, e.g.
+ 
+\family typewriter
+setParameter(Obj, p1, val1)
+\family default
+, but you have to reassign 
+\family typewriter
+Obj
+\family default
+ for every mutating call, as in: 
+\family typewriter
+Obj=setParameter(Obj, p1, val1)
+\family default
+.
 \end_layout
 
 \begin_layout Standard
-This is why the JEInterface method isFinished, which checks for the state
- of a JEInterface object, only works correctly if you started the optimization
- as described in Section 
+Because of that, the JEInterface method 
+\family typewriter
+isFinished
+\family default
+, which checks the state of a JEInterface object, (i.e., optimization finished
+ or not), only works correctly if you started the optimization as described
+ in Section 
 \begin_inset LatexCommand \ref{sub:JEInterface-Quick-Intro}
 
 \end_inset
 
 .
- The following list gives an overview over the methods in the interface,
- each having at least a parameter JI, the JEInterface object to work on:
+ After optimization, you may retrieve the result by calling 
+\family typewriter
+getResult
+\family default
+ on the interface instance.
+ Or, in case you want to retrieve multiple solutions to the target function,
+ you may start a post processing step and retrieve a list of solutions using
+ 
+\family typewriter
+getMultipleSolutions
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+Some optimizer allow the solutions to get worse during the optimization
+ run.
+ This allows them to overcome local optima and increases the chance to find
+ a global one.
+ But on the other hand it means that the result of the last optimizer iteration
+ is not necessarily the best solution found during the whole run.
+ Therefore, 
+\noun on
+JavaEvA
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+2
+\noun default
+ saves the best solution found external to the optimizer, which is what
+ is returned by the 
+\family typewriter
+getResult
+\family default
+ method.
+ 
+\end_layout
+
+\begin_layout Standard
+For further details, check the method overview in the list below.
+ Each interface method has at least a parameter 
+\family typewriter
+JI
+\family default
+, designating the JEInterface object to work on.
 \end_layout
 
 \begin_layout List
 \labelwidthstring 00.00.0000
-JI=JEInterface(interfaceName,fhandle,range[,optset,fargs]): JEInterface
- constructor: 
+
+\family typewriter
+JI=JEInterface(interfaceName,fhandle,range[,optset,fargs])
+\family default
+: JEInterface constructor: 
 \emph on
 interfaceName
 \emph default
@@ -674,12 +1480,18 @@ fargs
 
 \begin_layout List
 \labelwidthstring 00.00.0000
-showOptimizers(JI): Print a list of optimization strategies accessible through
- JEInterface and their IDs 
+
+\family typewriter
+showOptimizers(JI)
+\family default
+: Print a list of optimization strategies accessible through JEInterface
+ and their IDs 
 \end_layout
 
 \begin_layout List
 \labelwidthstring 00.00.0000
+
+\family typewriter
 JI=optimize(JI,optType[,resultFilePrefix])
 \family roman
 \series medium
@@ -738,44 +1550,154 @@ Returns the modified JEInterface instance.
 
 \begin_layout List
 \labelwidthstring 00.00.0000
-isFinished(JI): Check whether an optimization process is currently running
- (return value 0).
- Returns 1 before and after any optimization.
+
+\family typewriter
+isFinished(JI)
+\family default
+: Check whether an optimization process is currently running (return value
+ 0).
+ Returns 1 before and after an optimization run.
 \end_layout
 
 \begin_layout List
 \labelwidthstring 00.00.0000
-getProgress(JI): During optimization, return the number of fitness calls
- performed so far.
+
+\family typewriter
+getProgress(JI)
+\family default
+: During optimization, return the number of fitness calls performed until
+ now.
 \end_layout
 
 \begin_layout List
 \labelwidthstring 00.00.0000
-getResult(JI): When an optimization was finished, return the final solution.
- During optimization, return the current best solution.
+
+\family typewriter
+[sol,fit]=getResult(JI)
+\family default
+: When an optimization was finished, return the final solution and its fitness.
+ During optimization, return the current best solution and its fitness.
 \end_layout
 
 \begin_layout List
 \labelwidthstring 00.00.0000
-getMessage(JI): Return a text message describing the termination state of
- the optimization, e.g.
+
+\family typewriter
+getMessage(JI)
+\family default
+: Return a text message describing the termination state of the optimization,
+ e.g.
  the number of function calls performed.
 \end_layout
 
 \begin_layout List
 \labelwidthstring 00.00.0000
-JI=stopOptimize(JI): Cancel a running optimization process.
- An intermediate result will be written back to the interface from JavaEvA.
+
+\family typewriter
+JI=stopOptimize(JI)
+\family default
+: Cancel a running optimization process.
+ An intermediate result will be written back to the interface instance from
+ 
+\noun on
+JavaEvA
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+2
+\noun default
+.
 \end_layout
 
 \begin_layout List
 \labelwidthstring 00.00.0000
-getOptions(JI): Get the current optimset structure of the JEInterface instance.
+
+\family typewriter
+JI=postProcess(JI,steps,sigmaClust[,nBest]):
+\family default
+ Do post-processing of the last optimization results and export the solution
+ set to the interface instance (cf.
+ Sec.
+\begin_inset ERT
+status open
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+
+\begin_inset LatexCommand \ref{sub:Post-Processing}
+
+\end_inset
+
+).
+ If 
+\emph on
+sigmaClust
+\emph default
+ > 0 a clustering step is performed (density based clustering), so that
+ any solutions in a distance below 
+\emph on
+sigmaClust
+\emph default
+ are associated.
+ Notice that 
+\emph on
+sigmaClust
+\emph default
+ is treated relative to the problem range.
+ If 
+\emph on
+steps
+\emph default
+ > 0, then a hill climbing step is performed after clustering for the given
+ number of evaluations.
+ If 
+\emph on
+nBest
+\emph default
+ is given, it defines the maximal number of solutions to be exported to
+ the interface instance.
+ Post processing can be stopped by JI=stopOptimize(JI) just as the optimization
+ itself.
 \end_layout
 
 \begin_layout List
 \labelwidthstring 00.00.0000
-getOpt(JI,optName): Get the value of a specific option 
+
+\family typewriter
+[sols,fits]=getMultipleResults(JI)
+\family default
+: If a post processing step has been performed, this method retrieves the
+ solution set in a matrix and calculates the corresponding fitness values.
+\end_layout
+
+\begin_layout List
+\labelwidthstring 00.00.0000
+
+\family typewriter
+getOptions(JI)
+\family default
+: Get the current optimset structure of the JEInterface instance.
+\end_layout
+
+\begin_layout List
+\labelwidthstring 00.00.0000
+
+\family typewriter
+getOpt(JI,optName)
+\family default
+: Get the value of a specific option 
 \emph on
 optName
 \emph default
@@ -784,7 +1706,11 @@ optName
 
 \begin_layout List
 \labelwidthstring 00.00.0000
-JI=setOpt(JI,optName,optVal): Set a specific option 
+
+\family typewriter
+JI=setOpt(JI,optName,optVal)
+\family default
+: Set a specific option 
 \emph on
 optName
 \emph default
@@ -798,7 +1724,11 @@ optVal
 
 \begin_layout List
 \labelwidthstring 00.00.0000
-JI=setOptions(JI,optset): Set a whole new optimset structure 
+
+\family typewriter
+JI=setOptions(JI,optset)
+\family default
+: Set a whole new optimset structure 
 \emph on
 optset
 \emph default
@@ -808,13 +1738,76 @@ optset
 
 \begin_layout List
 \labelwidthstring 00.00.0000
-setResultJE: Write-back method required internally by JavaEvA 2.
+
+\family typewriter
+setResultJE
+\family default
+: Write-back method required internally by 
+\noun on
+JavaEvA
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+2
+\noun default
+.
  Calling it by hand may interfere with optimization.
 \end_layout
 
 \begin_layout List
 \labelwidthstring 00.00.0000
-evaluateJE: Evaluation method required internally by JavaEvA 2.
+
+\family typewriter
+setResultArrayJE
+\family default
+: Write-back method required internally by 
+\noun on
+JavaEvA
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+2
+\noun default
+.
+ Calling it by hand may interfere with optimization.
+\end_layout
+
+\begin_layout List
+\labelwidthstring 00.00.0000
+
+\family typewriter
+evaluateJE
+\family default
+: Evaluation method required internally by 
+\noun on
+JavaEvA
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+2.
+
+\noun default
  Calling it by hand may interfere with optimization.
 \end_layout
 
@@ -830,16 +1823,26 @@ The methods are listed in about the order a user might require them in.
 \end_layout
 
 \begin_layout Standard
-Notice that the last two methods, setResultJE and evaluateJE, are used internall
-y by the Java part of the interface and should not be called by hand.
+Notice that the last three methods, setResultJE, setResultArrayJE and evaluateJE
+, are used internally by the Java part of the interface and should not be
+ called by hand.
  To find out more about the optimization strategies you can access through
  JEInterface, use the showOptimizers method and take a look at the EA references
 , e.g.
- the TecReport on JavaEvA (!!!).
+ the Technical Report on 
+\noun on
+JavaEvA
+\noun default
+ 
+\begin_inset LatexCommand \cite{JOptDocumentation}
+
+\end_inset
+
+.
  
 \end_layout
 
-\begin_layout Paragraph*
+\begin_layout Subsubsection
 Termination criteria
 \end_layout
 
@@ -945,13 +1948,9 @@ MaxFunEvals
 \emph default
  has not been reached.
  To change options on an existing object JI, call for example 
-\begin_inset Quotes eld
-\end_inset
-
+\family typewriter
 JI=setOpt(JI, 'TolFun', 1e-7)
-\begin_inset Quotes erd
-\end_inset
-
+\family default
  to set the TolFun convergence threshold to 
 \begin_inset Formula $10^{-7}$
 \end_inset
@@ -968,42 +1967,50 @@ TolFun
 \emph default
  to zero, e.g.
  by typing 
-\begin_inset Quotes eld
-\end_inset
-
+\family typewriter
 JI=setOptions(JI, optimset(getOptions(JI), 'TolX', 0, 'TolFun', 0))
-\begin_inset Quotes erd
-\end_inset
-
+\family default
 .
  Be aware that at least one termination criterion must be defined through
  the options, or the optimization will not start.
 \end_layout
 
+\begin_layout Standard
+
+\end_layout
+
 \begin_layout Section
-Adding Your Own Problem Class
+Quickly Adding Your Own Problem Class
+\begin_inset LatexCommand \label{sec:Quickly-Adding-Your-Problem}
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-It is easy to optimize your own Java-coded problem in 
+It is easy to integrate your own Java-coded problem in 
 \noun on
-JavaEvA 2
+JavaEvA
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+2
 \noun default
  and optimize it using the GUI.
- The two preconditions for the 
-\begin_inset Quotes eld
-\end_inset
-
-quick
-\begin_inset Quotes erd
-\end_inset
-
- way are only the following:
+ Preconditions for the quick way are only the two following:
 \end_layout
 
 \begin_layout Itemize
-A possible solution to your problem can be coded as a double vector or a
- BitSet.
+A potential solution to your problem can be coded as a double vector or
+ a BitSet.
 \end_layout
 
 \begin_layout Itemize
@@ -1017,41 +2024,44 @@ If these simple conditions are met, you have the advantage of being able
 \begin_inset Quotes eld
 \end_inset
 
-Java
+Java-Power
 \begin_inset Quotes erd
 \end_inset
 
--power to implement a target function and optimize it in 
+ to implement a target function and optimize it in 
 \noun on
-JavaEvA 2
+JavaEvA
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+2
 \noun default
 .
  Just follow these steps:
 \end_layout
 
 \begin_layout Itemize
-Create an empty class (Let's say, 
-\begin_inset Quotes eld
-\end_inset
-
+Create an empty class (let's say, 
+\family typewriter
 ExampleProblem
-\begin_inset Quotes erd
-\end_inset
-
-) and assign it the package 
-\begin_inset Quotes eld
-\end_inset
-
-simpleproblems
-\begin_inset Quotes erd
-\end_inset
-
+\family default
+) and assign it to the package 
+\family typewriter
+simpleprobs
+\family default
 .
  Put it in a directory called 
 \begin_inset Quotes eld
 \end_inset
 
-simpleproblems
+simpleprobs
 \begin_inset Quotes erd
 \end_inset
 
@@ -1059,71 +2069,2979 @@ simpleproblems
 \end_layout
 
 \begin_layout Itemize
-Have the class inherit from SimpleDoubleProblem or SimpleBinaryProblem,
- depending on which datatype you want to use.
+Have the class inherit from 
+\family typewriter
+simpleprobs.SimpleDoubleProblem
+\family default
+ or 
+\family typewriter
+simpleprobs.SimpleBinaryProblem
+\family default
+, depending on which datatype you want to use.
  Both base types can be used directly from the 
 \noun on
-JavaEvA 2
+JavaEvA
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+2
 \noun default
- jar-file, which needs to be on the classpath.
+ jar-file (which of course needs to be on the java classpath).
 \end_layout
 
 \begin_layout Itemize
 Implement the method 
-\begin_inset Quotes eld
-\end_inset
-
-public int getProblemDimension()
-\begin_inset Quotes erd
-\end_inset
-
+\family typewriter
+public int getProblemDimension() {...}
+\family default
  whithin your ExampleProblem, which returns the number of dimensions of
  the solution space, i.e.
- the length of the x vector or size of the BitSet, respectively.
+ the length of the 
+\emph on
+x
+\emph default
+ vector or size of the 
+\family typewriter
+BitSet
+\family default
+, respectively.
+ The problem dimension may be a variable defined in your class, but it must
+ not change during an optimization run.
 \end_layout
 
 \begin_layout Itemize
 Implement the method 
-\begin_inset Quotes eld
-\end_inset
-
+\family typewriter
 public double[] eval(double[] x)
-\begin_inset Quotes erd
-\end_inset
-
+\family default
  or 
-\begin_inset Quotes eld
-\end_inset
-
+\family typewriter
 public double[] eval(BitSet bs)
-\begin_inset Quotes erd
-\end_inset
-
- , respectively, whithin your ExampleProblem, where the fitness of a possible
+\family default
+ , respectively, whithin your ExampleProblem, where the fitness of a potential
  solution is calculated.
 \end_layout
 
 \begin_layout Itemize
 Start the 
 \noun on
-JavaEvA 2
+JavaEvA
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+2
 \noun default
  GUI.
- From the problem list, select the 
-\begin_inset Quotes eld
-\end_inset
-
+ 
+\emph on
+Make sure that your working directory is in the Java classpath
+\emph default
+! From the problem list, select the 
+\emph on
 SimpleProblemWrapper
-\begin_inset Quotes erd
-\end_inset
-
+\emph default
  class as optimization problem.
  The wrapper class allows you to select your ExampleProblem as target function.
  If you implemented a double valued problem, you may also set a default
  range parameter, defining the positive and negative bound of the solution
  space allowed.
  Now select your prefered optimization method and start the optimization.
+\end_layout
+
+\begin_layout Section
+Using the JavaEvA 2 API
+\begin_inset LatexCommand \label{sec:Using-the-API}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This chapter describes how to incorporate 
+\noun on
+JavaEvA
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+2
+\noun default
+ into existing projects through the Java API.
+\end_layout
+
+\begin_layout Subsection
+Accessing Standard Optimizers
+\begin_inset LatexCommand \label{sub:Accessing-Standard-Optimizers}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+A standard optimizer can be defined as a more or less popular optimization
+ algorithm with operators and parameters predefined in a general way so
+ that a user may use it out-of-the-box and expect good optimization results
+ in general.
+ Of course, every expert may have his own notion on what parameters are
+ preferable in general.
+ Therefore we give two usage examples using the API.
+ In any case, a necessary step is to extend a 
+\noun on
+JavaEvA
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+2
+\noun default
+ base class constituting the target function.
+ You may, again, use the simpleprobs package described in 
+\begin_inset LatexCommand \ref{sec:Quickly-Adding-Your-Problem}
+
+\end_inset
+
+.
+ However, this makes it necessary to use the wrapper class SimpleProblemWrapper,
+ which is great for direct GUI usage but may make programming a bit more
+ complicated.
+ We therefore recommend here to go one step higher in hierarchy and extend
+ AbstractProblemDouble or AbstractProblemBinary.
+\end_layout
+
+\begin_layout Subsubsection
+The Abstract Problem Classes
+\begin_inset LatexCommand \label{sub:The-Abstract-Problem-classes}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The problem class subtree encapsulates properties of target functions that
+ can be directly optimized by the 
+\noun on
+JavaEvA
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+2
+\noun default
+ framework and starts at the 
+\family typewriter
+AbstractOptimizationProblem
+\family default
+ class.
+ The basic properties of the problem class are functional: (i) the problem
+ is itself initialized, (ii) the problem knows how to initialize a set of
+ potential solutions, and (iii) the problem evaluates a set of potential
+ solutions.
+ To implement your own target function in 
+\noun on
+JavaEvA
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+2
+\noun default
+, we recommend inheriting from 
+\family typewriter
+AbstractProblemDouble
+\family default
+ or 
+\family typewriter
+AbstractProblemBinary
+\family default
+, depending on your preferred data prepresentation.
+ Integer and program-data-based problems are currently not covered by this
+ document.
+\end_layout
+
+\begin_layout Paragraph*
+The class AbstractProblemDouble
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+AbstractProblemDouble
+\family default
+ class in the package 
+\family typewriter
+javaeva.server.go.problems
+\family default
+ encapsulates methods useful to implement double valued target functions.
+ Let's assume you want to implement a function 
+\begin_inset Formula $f_{target}(x)=y$
+\end_inset
+
+ with 
+\begin_inset Formula $f_{target}:\; R^{n}\rightarrow R^{m}$
+\end_inset
+
+.
+ Important for double-valued problems is the range of the solution space,
+ defining in any dimension the minimum and maximum value allowed.
+ By setting the defaultRange member variable (method 
+\family typewriter
+setDefaultRange
+\family default
+) in your constructor, you can easily define a symmetric range 
+\begin_inset Formula $[-dR,\; dR]^{n}$
+\end_inset
+
+.
+ If you need a different range definition, you may overload the methods
  
+\family typewriter
+getRangeLowerBound(int dim)
+\family default
+ and 
+\family typewriter
+getRangeUpperBound(int dim)
+\family default
+ which are to return the upper or lower range limit for a given dimension.
+\begin_inset Note Comment
+status open
+
+\begin_layout Standard
+template? noise?
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We will now give short comments on further important member functions:
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+public Object clone()
+\family default
+: Object copy operator.
+ We recommend implementing a copy constructor 
+\family typewriter
+public YourProblem(YourProblem o)
+\family default
+ and refering to it from within the 
+\family typewriter
+clone()
+\family default
+ method.
+ You may call 
+\family typewriter
+cloneObjects
+\family default
+ from AbstractProblemDouble to copy the super members.
+ Make sure that the copy constructor copies all necessary member variables
+ you added to your class.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+public void evaluate(AbstractEAIndividual individual)
+\family default
+: Main evaluation method.
+ We recommend not to override it.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+public abstract double[] eval(double[] x)
+\family default
+: Essential evaluation method.
+ Override it to implement the desired target function 
+\begin_inset Formula $f_{target}(x)$
+\end_inset
+
+.
+ Make sure that the delivered solution vector is always of the same dimensionali
+ty 
+\begin_inset Formula $m$
+\end_inset
+
+.
+ Even if your problem is only one-dimensional, return an array of length
+ 1 with the single fitness value as only field.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+public abstract int getProblemDimension()
+\family default
+: Return the problem dimension in solution space.
+ Make sure it is constantly 
+\begin_inset Formula $n$
+\end_inset
+
+ during optimization.
+ If you implement a corresponding method public void setProblemDimension(int
+ n) and define your class within the same package, you may change the dimension
+ from the GUI.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+public void initProblem()
+\family default
+: Called before optimization in general.
+ If you define member variables of your class which are not constant, we
+ recommend setting them to initial values in this function.
+ If you override, make sure you call the super-method from within your version.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+public void initPopulation(Population population)
+\family default
+: This method is called before optimization with a certain population.
+ It initializes the population to the problem specific range using the individua
+l template and calls a Population method to initialize the individuals randomly
+ in that range.
+ If you want to alter the way the individuals are initialized, we recommend
+ overriding this method.
+ Call the super-method from your implementation and make changes to the
+ individuals afterwards.
+\end_layout
+
+\begin_layout Standard
+For an example on how to extend AbstractProblemDouble you can look at the
+ 
+\family typewriter
+F1Problem
+\family default
+ class which implements a simple parabola function.
+ The additional member variable 
+\emph on
+noise
+\emph default
+ describes 
+\end_layout
+
+\begin_layout Paragraph*
+The class AbstractProblemBinary
+\end_layout
+
+\begin_layout Standard
+The binary variant is widely analogous to 
+\family typewriter
+AbstractProblemDouble
+\family default
+.
+ The main differences are that there is no range definition (the range is
+ always 
+\begin_inset Formula $0^{n}-1^{n}$
+\end_inset
+
+) and that the template is of a different type, namely 
+\family typewriter
+GAIndividualBinaryData
+\family default
+, and delivers a Java 
+\family typewriter
+BitSet
+\family default
+ as data representation instead of a double vector.
+ The 
+\family typewriter
+eval
+\family default
+ function signature changes accordingly, and to implement a target function
+ 
+\begin_inset Formula $g_{target}(x)=y$
+\end_inset
+
+ with 
+\begin_inset Formula $g_{target}:\;\{0,1\}^{n}\rightarrow R^{m}$
+\end_inset
+
+, you need to work on a 
+\family typewriter
+BitSet
+\family default
+
+\begin_inset Foot
+status collapsed
+
+\begin_layout Standard
+Concerning 
+\family typewriter
+BitSet
+\family default
+: it may be valuable to note that when looping over a 
+\family typewriter
+BitSet
+\family default
+, it is preferable to use the self defined problem dimension as index limit
+ instead of 
+\family typewriter
+size()
+\family default
+ or 
+\family typewriter
+length()
+\family default
+ methods of 
+\family typewriter
+BitSet
+\family default
+.
+\end_layout
+
+\end_inset
+
+ object.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+public abstract double[] eval(BitSet bs)
+\family default
+: Essential evaluation method.
+ Override it to implement the desired target function 
+\begin_inset Formula $g_{target}(b)$
+\end_inset
+
+.
+ Make sure that the delivered solution vector is always of the same dimensionali
+ty 
+\begin_inset Formula $m$
+\end_inset
+
+.
+ Even if your problem is only one-dimensional, return an array of length
+ 1 with the single fitness value as only field.
+\end_layout
+
+\begin_layout Standard
+For an example on how to implement binary functions, look at the 
+\family typewriter
+B1Problem
+\family default
+ class which realizes a simple minimize bits problem.
+\end_layout
+
+\begin_layout Subsubsection
+The OptimizerFactory
+\begin_inset LatexCommand \label{sub:The-OptimizerFactory}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+To access default optimization algorithms easily, we have defined an 
+\family typewriter
+OptimizerFactory
+\family default
+ class.
+ It allows to specify an optimization algorithm by an ID number and mainly
+ takes a problem class and an optional output file as input.
+ For example, if you have a double-valued problem class and just want to
+ retrieve one solution, use the 
+\family typewriter
+optimizeToDouble(final int optType, AbstractOptimizationProblem problem,
+ String outputFilePrefix)
+\family default
+ method, which returns the solution as a double vector.
+ 
+\end_layout
+
+\begin_layout Standard
+Table 
+\begin_inset LatexCommand \ref{tab:Overview-OptimizerFactory}
+
+\end_inset
+
+ gives an overview over the currently accessible optimization strategies.
+ You may use 
+\family typewriter
+showOptimizers()
+\family default
+ to get a String with a summary of the implemented algorithms with ID associatio
+ns.
+ A short example is shown in Listing 
+\begin_inset LatexCommand \ref{alg:OptFact-Usage-example}
+
+\end_inset
+
+.
+ The PSO with 
+\begin_inset Formula $50,000$
+\end_inset
+
+ evaluations should find a solution very close to zero, e.g.
+ below 
+\begin_inset Formula $(10^{-30})_{n}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float algorithm
+wide false
+sideways false
+status open
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Standard
+
+
+\backslash
+lstset{language=java, basicstyle=
+\backslash
+tiny, numbers=left, stepnumber=1, numbersep=5pt}
+\end_layout
+
+\begin_layout Standard
+
+
+\backslash
+begin{lstlisting}
+\end_layout
+
+\begin_layout Standard
+
+import javaeva.OptimizerFactory;
+\end_layout
+
+\begin_layout Standard
+
+import javaeva.server.go.problems.F1Problem;
+\end_layout
+
+\begin_layout Standard
+
+\end_layout
+
+\begin_layout Standard
+
+public class TestingF1PSO {
+\end_layout
+
+\begin_layout Standard
+
+  public static void main(String[] args) {
+\end_layout
+
+\begin_layout Standard
+
+    F1Problem f1 = new F1Problem(); 
+\end_layout
+
+\begin_layout Standard
+
+    double[] sol;
+\end_layout
+
+\begin_layout Standard
+
+    OptimizerFactory.setEvaluationTerminator(50000);
+\end_layout
+
+\begin_layout Standard
+
+    sol = OptimizerFactory.optimizeToDouble(OptimizerFactory.PSO, f1, null);
+\end_layout
+
+\begin_layout Standard
+
+    System.out.println("Found solution: ");
+\end_layout
+
+\begin_layout Standard
+
+    for (int i=0; i<f1.getProblemDimension(); i++) System.out.print(sol[i]
+ + " ");
+\end_layout
+
+\begin_layout Standard
+
+    System.out.println();
+\end_layout
+
+\begin_layout Standard
+
+  };
+\end_layout
+
+\begin_layout Standard
+
+}
+\end_layout
+
+\begin_layout Standard
+
+
+\backslash
+end{lstlisting}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+%
+\backslash
+begin{algorithmic}  
+\backslash
+IF {$i
+\backslash
+geq maxval$}          
+\backslash
+STATE $i
+\backslash
+gets 0$ 
+\backslash
+ELSE         
+\backslash
+IF {$i+k
+\backslash
+leq maxval$}                 
+\end_layout
+
+\begin_layout Standard
+
+%
+\backslash
+STATE $i
+\backslash
+gets i+k$          
+\backslash
+ENDIF 
+\backslash
+ENDIF  
+\backslash
+end{algorithmic}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Caption
+Simple OptimizerFactory usage example.
+\begin_inset LatexCommand \label{alg:OptFact-Usage-example}
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="11" columns="2">
+<features>
+<column alignment="center" valignment="top" leftline="true" width="0">
+<column alignment="center" valignment="top" leftline="true" rightline="true" width="0">
+<row topline="true" bottomline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+ID
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Short Description
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+STD_ES
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+A standard (15,50)-Evolution Strategy.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+CMA_ES
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+(15,50)-Evolution Strategy with Covariance Matrix Adaptation.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+STD_GA
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Standard Genetic Algorithm with elitism
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+PSO
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Particle Swarm Optimization with constriction.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+DE
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Differential Evolution
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+TRIBES
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Tribes: an adaptive PSO
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+RANDOM
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Random search (Monte-Carlo)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+HILLCL
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Multi-start hill climbing
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+CL_HILLCL
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Clustering multi-start hill climbing
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true" bottomline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+CBN_ES
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Clustering-based Niching ES
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Caption
+Overview over algorithms accessible through OptimizerFactory.
+\begin_inset LatexCommand \label{tab:Overview-OptimizerFactory}
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Termination Criteria
+\begin_inset LatexCommand \label{sub:Termination-Criteria}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+To configure the termination criteria of an optimization process started
+ through the OptimizerFactory, use the setTerminator family.
+ The default terminator stops at a maximal number of fitness evaluations,
+ e.g.
+ 
+\begin_inset Formula $10,000$
+\end_inset
+
+.
+ To change the number of evaluations performed to, for example, 
+\begin_inset Formula $50,000$
+\end_inset
+
+, call 
+\family typewriter
+OptimizerFactory.setEvaluationTerminator(50000) 
+\family default
+before starting the optimization, as in Alg.
+\begin_inset ERT
+status open
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+
+\begin_inset LatexCommand \ref{alg:OptFact-Usage-example}
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+For more flexible termination criteria, there are several Terminator parameter
+ classes you can use and set them directly using 
+\family typewriter
+OptimizerFactory.setTerminator(term)
+\family default
+.
+ Available are the following variants:
+\end_layout
+
+\begin_layout List
+\labelwidthstring 00.00.0000
+EvaluationTerminator: Construct with a maximal number of evaluations.
+ Constructor parameters:
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\noun off
+\color none
+ 
+\end_layout
+
+\begin_deeper
+\begin_layout List
+\labelwidthstring 00.00.0000
+
+\family typewriter
+maxEval
+\family default
+: integer number of evaluations to be performed at maximum.
+\end_layout
+
+\end_deeper
+\begin_layout List
+\labelwidthstring 00.00.0000
+GenerationTerminator: Terminate after a given number of generations.
+ As not all algorithms use constant population sizes, we suggest to use
+ EvaluationTerminator preferably.
+ Constructor parameters:
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\noun off
+\color none
+ 
+\end_layout
+
+\begin_deeper
+\begin_layout List
+\labelwidthstring 00.00.0000
+
+\family typewriter
+gens
+\family default
+: integer number of generations to be performed at maximum.
+\end_layout
+
+\end_deeper
+\begin_layout List
+\labelwidthstring 00.00.0000
+FitnessValueTerminator: A minimum fitness value (vector) must be reached
+ to terminate.
+ Construct with a double array representing the target fitness value.
+ Constructor parameters:
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\noun off
+\color none
+ 
+\end_layout
+
+\begin_deeper
+\begin_layout List
+\labelwidthstring 00.00.0000
+
+\family typewriter
+v
+\family default
+: double array fitness vector to be reached.
+\end_layout
+
+\end_deeper
+\begin_layout List
+\labelwidthstring 00.00.0000
+FitnessConvergenceTerminator: Terminate as soon as there is hardly any improveme
+nt in fitness for a certain period of time (
+\emph on
+stagnation
+\emph default
+ 
+\emph on
+period
+\emph default
+), defined by a number of evaluations or generations.
+ 
+\begin_inset Quotes eld
+\end_inset
+
+Hardly any improvement
+\begin_inset Quotes erd
+\end_inset
+
+ is defined by a threshold 
+\emph on
+th
+\emph default
+, which can be set as absolute or relative threshold.
+ In the absolute case, termination occurs if the best fitness changes less
+ than 
+\emph on
+th
+\emph default
+ for a stagnation period 
+\emph on
+p
+\emph default
+, meaning 
+\begin_inset Formula $|f(x_{t-i}^{*})-f(x_{t-p}^{*})|<th\;\;\forall\,0\leq i\leq p-1$
+\end_inset
+
+.
+ In the relative case, termination occurs if the fitness changes less than
+ a certain percentage for a stagnation period, meaning 
+\begin_inset Formula $|f(x_{t-i}^{*})-f(x_{t-p}^{*})|<|f(x_{t-p}^{*})|\cdot th\;\;\forall\,0\leq i\leq p-1$
+\end_inset
+
+.
+ 
+\begin_inset Formula $f(x)$
+\end_inset
+
+ stands for the fitness at position 
+\begin_inset Formula $x$
+\end_inset
+
+, while 
+\begin_inset Formula $x_{t}^{*}$
+\end_inset
+
+ is the best solution found in iteration 
+\begin_inset Formula $t$
+\end_inset
+
+.
+ Constructor parameters:
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\noun off
+\color none
+ 
+\end_layout
+
+\begin_deeper
+\begin_layout List
+\labelwidthstring 00.00.0000
+
+\family typewriter
+thresh
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\noun off
+\color none
+: double valued fitness threshold 
+\family default
+\series default
+\shape default
+\size default
+\emph on
+\bar default
+\noun default
+th.
+\end_layout
+
+\begin_layout List
+\labelwidthstring 00.00.0000
+
+\family typewriter
+stagnPeriod
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\noun off
+\color none
+: integer length of the stagnation period.
+\end_layout
+
+\begin_layout List
+\labelwidthstring 00.00.0000
+
+\family typewriter
+bFitCallBased
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\noun off
+\color none
+: boolean flag indicating evaluation-based or generation-based stagnation
+ period.
+\end_layout
+
+\begin_layout List
+\labelwidthstring 00.00.0000
+
+\family typewriter
+bAbsolute
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\noun off
+\color none
+: boolean flag  indicating absolute or relative 
+\family default
+\series default
+\shape default
+\size default
+\emph on
+\bar default
+\noun default
+th.
+\end_layout
+
+\end_deeper
+\begin_layout List
+\labelwidthstring 00.00.0000
+PhenotypeConvergenceTerminator: In analogy to the FitnessConvergenceTerminator,
+ terminate as soon as there is hardly any change in the best phenotype,
+ meaning that 
+\begin_inset Formula $|x_{t-i}^{*}-x_{t-p}^{*}|<th\;\;\forall\,0\leq i\leq p-1$
+\end_inset
+
+ for the absolute case and 
+\begin_inset Formula $|x_{t-i}^{*}-x_{t-p}^{*}|<|x_{t-p}^{*}|\cdot th\;\;\forall\,0\leq i\leq p-1$
+\end_inset
+
+ in the relative case.
+ Constructor parameters:
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\noun off
+\color none
+ 
+\end_layout
+
+\begin_deeper
+\begin_layout List
+\labelwidthstring 00.00.0000
+
+\family typewriter
+thresh
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\noun off
+\color none
+: double valued phenotype norm threshold 
+\family default
+\series default
+\shape default
+\size default
+\emph on
+\bar default
+\noun default
+th.
+\end_layout
+
+\begin_layout List
+\labelwidthstring 00.00.0000
+
+\family typewriter
+stagnPeriod
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\noun off
+\color none
+: integer length of the stagnation period.
+\end_layout
+
+\begin_layout List
+\labelwidthstring 00.00.0000
+
+\family typewriter
+bFitCallBased
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\noun off
+\color none
+: boolean flag indicating evaluation-based or generation-based stagnation
+ period.
+\end_layout
+
+\begin_layout List
+\labelwidthstring 00.00.0000
+
+\family typewriter
+bAbsolute
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\noun off
+\color none
+: boolean flag  indicating absolute or relative 
+\family default
+\series default
+\shape default
+\size default
+\emph on
+\bar default
+\noun default
+th.
+\end_layout
+
+\end_deeper
+\begin_layout List
+\labelwidthstring 00.00.0000
+CombinedTerminator: To do termination right, one might want to combine several
+ criteria in a boolean way, i.e.
+ terminate if 
+\begin_inset Formula $20,000$
+\end_inset
+
+ evaluations have been performed OR the best fitness doesn't change for
+ 
+\begin_inset Formula $1,000$
+\end_inset
+
+ evaluations.
+ To allow for this, we provide the CombinedTerminator class which just takes
+ to terminator instances and combines them logically.
+ Thus, terminators can be nested as required.
+ Constructor parameters:
+\end_layout
+
+\begin_deeper
+\begin_layout List
+\labelwidthstring 00.00.0000
+
+\family typewriter
+t1
+\family default
+: First terminator to combine.
+\end_layout
+
+\begin_layout List
+\labelwidthstring 00.00.0000
+
+\family typewriter
+t2
+\family default
+: Second terminator to combine.
+\end_layout
+
+\begin_layout List
+\labelwidthstring 00.00.0000
+
+\family typewriter
+bAnd
+\family default
+: Boolean flag indicating whether to use conjunctive (AND, for bAnd == true)
+ or disjunctive (OR, for bAnd == false) combination.
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+Notes on terminators: 
+\end_layout
+
+\begin_layout Itemize
+Note that the termination criterion is always checked after one iteration,
+ i.e.
+ one generation.
+ This means that, if the number of evaluations is not a multiple of the
+ population size or the population size is variable, the maximum number
+ of evaluations may be slightly exceeded.
+ The same holds for the stagnation time in convergence terminators.
+\end_layout
+
+\begin_layout Itemize
+Concerning convergence terminators: Note that for flat plateaus in fitness
+ space, the fitness may hardly change while there is still progress in the
+ solution space.
+ On the other hand, note that highly nonlinear problems may hardly change
+ in phenotype but still change considerably in fitness.
+ When using convergence terminators, we suggest to set the stagnation period
+ sufficiently high.
+\end_layout
+
+\begin_layout Standard
+For a usage example that creates and sets a terminator which stops if either
+ 
+\begin_inset Formula $20,000$
+\end_inset
+
+ evaluations have been performed or both best fitness and phenotype converged
+ for 1000 evaluations, see Listing
+\begin_inset ERT
+status open
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+
+\begin_inset LatexCommand \ref{alg:Comb-terminator}
+
+\end_inset
+
+.
+ After a combined termination, one might want to know why actually the run
+ stopped.
+ The method 
+\family typewriter
+terminatedBecause()
+\family default
+ implemented in 
+\family typewriter
+OptimizerFactory
+\family default
+ as well as any terminator object will return a String describing the exact
+ reason, while the method 
+\family typewriter
+lastEvalsPerformed()
+\family default
+ informs on how many evaluations were required.
+ The PSO in the given example should require about 
+\begin_inset Formula $5000-7000$
+\end_inset
+
+ evaluations to meet the two convergence criteria.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float algorithm
+wide false
+sideways false
+status open
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Standard
+
+
+\backslash
+lstset{language=java, basicstyle=
+\backslash
+tiny, numbers=left, stepnumber=1, numbersep=5pt}
+\end_layout
+
+\begin_layout Standard
+
+
+\backslash
+begin{lstlisting}
+\end_layout
+
+\begin_layout Standard
+
+import javaeva.OptimizerFactory;
+\end_layout
+
+\begin_layout Standard
+
+import javaeva.server.go.problems.F1Problem;
+\end_layout
+
+\begin_layout Standard
+
+import javaeva.server.go.operators.terminators.*;
+\end_layout
+
+\begin_layout Standard
+
+\end_layout
+
+\begin_layout Standard
+
+public class TestingTerminators {
+\end_layout
+
+\begin_layout Standard
+
+  public static void main(String[] args) {
+\end_layout
+
+\begin_layout Standard
+
+    F1Problem f1 = new F1Problem(); 
+\end_layout
+
+\begin_layout Standard
+
+    double[] sol;
+\end_layout
+
+\begin_layout Standard
+
+    // A combined terminator for fitness and phenotype convergence
+\end_layout
+
+\begin_layout Standard
+
+    CombinedTerminator convT = new CombinedTerminator(
+\end_layout
+
+\begin_layout Standard
+
+            // fitness-based stagnation period, absolute threshold
+\end_layout
+
+\begin_layout Standard
+
+            new FitnessConvergenceTerminator(0.0001, 1000, true, true),
+\end_layout
+
+\begin_layout Standard
+
+            new PhenotypeConvergenceTerminator(0.0001, 1000, true, true),
+\end_layout
+
+\begin_layout Standard
+
+            true); // AND
+\end_layout
+
+\begin_layout Standard
+
+    // Adding an evaluation terminator with OR to the convergence criterion
+\end_layout
+
+\begin_layout Standard
+
+    OptimizerFactory.setTerminator(new CombinedTerminator(
+\end_layout
+
+\begin_layout Standard
+
+              new EvaluationTerminator(20000),
+\end_layout
+
+\begin_layout Standard
+
+              convT,
+\end_layout
+
+\begin_layout Standard
+
+              false)); // OR
+\end_layout
+
+\begin_layout Standard
+
+    sol = OptimizerFactory.optimizeToDouble(OptimizerFactory.PSO, f1, null);
+\end_layout
+
+\begin_layout Standard
+
+    System.out.println(OptimizerFactory.terminatedBecause());
+\end_layout
+
+\begin_layout Standard
+
+    System.out.println(OptimizerFactory.lastEvalsPerformed() 
+\end_layout
+
+\begin_layout Standard
+
+                             + " evals performed, found solution: "
+\end_layout
+
+\begin_layout Standard
+
+                             + OptimizerFactory.terminatedBecause()
+\end_layout
+
+\begin_layout Standard
+
+                             + " Found solution: ");
+\end_layout
+
+\begin_layout Standard
+
+    for (int i=0; i<f1.getProblemDimension(); i++) System.out.print(sol[i]
+ + " ");
+\end_layout
+
+\begin_layout Standard
+
+    System.out.println();
+\end_layout
+
+\begin_layout Standard
+
+  };
+\end_layout
+
+\begin_layout Standard
+
+}
+\end_layout
+
+\begin_layout Standard
+
+
+\backslash
+end{lstlisting}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Caption
+Terminator combination example.
+\begin_inset LatexCommand \label{alg:Comb-terminator}
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Customizing the Optimization
+\end_layout
+
+\begin_layout Standard
+Beyond standard optimizers, you may wish to customize optimization parameters
+ manually or iterate over different settings in a loop.
+ To do this, you need to access the optimization parameter structure 
+\family typewriter
+GOParameters
+\family default
+ and alter its values before starting optimization.
+ A 
+\family typewriter
+GOParameters
+\family default
+ instance contains all settings required for an optimization run: target
+ function, optimizer, random seed, post-processing options and termination
+ criterion; basically all that is also set through the workbench window
+ of the GUI (Sec.
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+
+\begin_inset LatexCommand \ref{sub:The-Workbench-Window}
+
+\end_inset
+
+).
+ To alter specific settings, it is sufficient to alter a 
+\family typewriter
+GOParameters
+\family default
+ instance generated by the 
+\family typewriter
+OptimizerFactory
+\family default
+ and then start the optimization using this altered parameter instance.
+\end_layout
+
+\begin_layout Subsubsection
+Accessing Parameters
+\end_layout
+
+\begin_layout Standard
+Look at Listing 
+\begin_inset LatexCommand \ref{alg:Customizing-optimization.}
+
+\end_inset
+
+ for an example on how to customize optimization parameters.
+ To find out about which operators are implemented and usable, it is again
+ easiest to check out in the GUI, where there are also short descriptions
+ available.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float algorithm
+wide false
+sideways false
+status collapsed
+
+\begin_layout Standard
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+lstset{language=java, basicstyle=
+\backslash
+tiny, numbers=left, stepnumber=1, numbersep=5pt}
+\end_layout
+
+\begin_layout Standard
+
+
+\backslash
+begin{lstlisting}
+\end_layout
+
+\begin_layout Standard
+
+import java.util.BitSet;
+\end_layout
+
+\begin_layout Standard
+
+import javaeva.server.go.operators.selection.SelectXProbRouletteWheel;
+\end_layout
+
+\begin_layout Standard
+
+import javaeva.server.go.operators.terminators.EvaluationTerminator;
+\end_layout
+
+\begin_layout Standard
+
+import javaeva.server.go.populations.Population;
+\end_layout
+
+\begin_layout Standard
+
+import javaeva.server.go.problems.B1Problem;
+\end_layout
+
+\begin_layout Standard
+
+import javaeva.server.go.strategies.GeneticAlgorithm;
+\end_layout
+
+\begin_layout Standard
+
+import javaeva.server.modules.GOParameters;
+\end_layout
+
+\begin_layout Standard
+
+\end_layout
+
+\begin_layout Standard
+
+public class TestingGAB1 {
+\end_layout
+
+\begin_layout Standard
+
+  public static void main(String[] args) {
+\end_layout
+
+\begin_layout Standard
+
+    B1Problem b1 = new B1Problem();
+\end_layout
+
+\begin_layout Standard
+
+    BitSet sol;
+\end_layout
+
+\begin_layout Standard
+
+    // default go-parameter instance with a GA
+\end_layout
+
+\begin_layout Standard
+
+    GOParameters gaParams = OptimizerFactory.standardGA(b1);            
+    
+\end_layout
+
+\begin_layout Standard
+
+    // add an evaluation terminator
+\end_layout
+
+\begin_layout Standard
+
+    gaParams.setTerminator(new EvaluationTerminator(1000));
+\end_layout
+
+\begin_layout Standard
+
+    // set a specific random seed
+\end_layout
+
+\begin_layout Standard
+
+    gaParams.setSeed(2342);
+\end_layout
+
+\begin_layout Standard
+
+\end_layout
+
+\begin_layout Standard
+
+    // access the GA
+\end_layout
+
+\begin_layout Standard
+
+    GeneticAlgorithm ga = (GeneticAlgorithm)gaParams.getOptimizer();
+\end_layout
+
+\begin_layout Standard
+
+    // set no elitism
+\end_layout
+
+\begin_layout Standard
+
+    ga.setElitism(false);
+\end_layout
+
+\begin_layout Standard
+
+    // set roulette wheel selection
+\end_layout
+
+\begin_layout Standard
+
+    ga.setParentSelection(new SelectXProbRouletteWheel());
+\end_layout
+
+\begin_layout Standard
+
+    // set population size 150
+\end_layout
+
+\begin_layout Standard
+
+    ga.setPopulation(new Population(150));
+\end_layout
+
+\begin_layout Standard
+
+\end_layout
+
+\begin_layout Standard
+
+    // run optimization and print intermediate results to a file with given
+ prefix
+\end_layout
+
+\begin_layout Standard
+
+    sol = OptimizerFactory.optimizeToBinary(gaParams, "ga-opt-results");
+\end_layout
+
+\begin_layout Standard
+
+    System.out.println("Found solution: ");
+\end_layout
+
+\begin_layout Standard
+
+    for (int i=0; i<b1.getProblemDimension(); i++) System.out.print(sol.get(i)+"
+ ");
+\end_layout
+
+\begin_layout Standard
+
+    System.out.println();
+\end_layout
+
+\begin_layout Standard
+
+  };
+\end_layout
+
+\begin_layout Standard
+
+}
+\end_layout
+
+\begin_layout Standard
+
+\end_layout
+
+\begin_layout Standard
+
+\end_layout
+
+\begin_layout Standard
+
+\end_layout
+
+\begin_layout Standard
+
+
+\backslash
+end{lstlisting}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Caption
+Customized optimization example.
+\begin_inset LatexCommand \label{alg:Customizing-optimization.}
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Note that in example 
+\begin_inset LatexCommand \ref{alg:Customizing-optimization.}
+
+\end_inset
+
+, there will actually be 1050 evaluations performed, which is the first
+ multiple of the population size of 150 that exceeds the maximum evaluation
+ limit of 1000 set.
+ To change the population size before a run, simply set a new population
+ of the target size.
+ Any population will be initialized to contain the given number of individuals
+ by the problem class, usually in a random distribution over the problem
+ range.
+\end_layout
+
+\begin_layout Subsubsection
+Setting Evolutionary Operators
+\begin_inset LatexCommand \label{sub:Setting-Evolutionary-Operators}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float algorithm
+wide false
+sideways false
+status open
+
+\begin_layout Standard
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+lstset{language=java, basicstyle=
+\backslash
+tiny, numbers=left, stepnumber=1, numbersep=5pt}
+\end_layout
+
+\begin_layout Standard
+
+
+\backslash
+begin{lstlisting}
+\end_layout
+
+\begin_layout Standard
+
+import javaeva.OptimizerFactory;
+\end_layout
+
+\begin_layout Standard
+
+import javaeva.server.go.individuals.AbstractEAIndividual; 
+\end_layout
+
+\begin_layout Standard
+
+import javaeva.server.go.operators.crossover.CrossoverESDefault; 
+\end_layout
+
+\begin_layout Standard
+
+import javaeva.server.go.operators.mutation.MutateESCovarianceMartixAdaption;
+ 
+\end_layout
+
+\begin_layout Standard
+
+import javaeva.server.go.operators.terminators.EvaluationTerminator; 
+\end_layout
+
+\begin_layout Standard
+
+import javaeva.server.go.problems.FM0Problem; 
+\end_layout
+
+\begin_layout Standard
+
+import javaeva.server.go.strategies.EvolutionStrategies; 
+\end_layout
+
+\begin_layout Standard
+
+import javaeva.server.modules.GOParameters;
+\end_layout
+
+\begin_layout Standard
+
+\end_layout
+
+\begin_layout Standard
+
+public class TestingPlusCMAES {
+\end_layout
+
+\begin_layout Standard
+
+  public static void main(String[] args) {
+\end_layout
+
+\begin_layout Standard
+
+    // a simple bimodal target function, two optima
+\end_layout
+
+\begin_layout Standard
+
+    FM0Problem fm0 = new FM0Problem();              
+\end_layout
+
+\begin_layout Standard
+
+    AbstractEAIndividual bestIndy;          
+\end_layout
+
+\begin_layout Standard
+
+    // create standard ES parameters                
+\end_layout
+
+\begin_layout Standard
+
+    GOParameters esParams = OptimizerFactory.standardES(fm0);           
+    
+\end_layout
+
+\begin_layout Standard
+
+    esParams.setTerminator(new EvaluationTerminator(2000));             
+    
+\end_layout
+
+\begin_layout Standard
+
+    // set a random seed based on system time               
+\end_layout
+
+\begin_layout Standard
+
+    esParams.setSeed(0);
+\end_layout
+
+\begin_layout Standard
+
+                
+\end_layout
+
+\begin_layout Standard
+
+    // set evolutionary operators and probabilities                 
+\end_layout
+
+\begin_layout Standard
+
+    AbstractEAIndividual.setOperators(                              
+\end_layout
+
+\begin_layout Standard
+
+                     fm0.getIndividualTemplate(),                       
+     
+\end_layout
+
+\begin_layout Standard
+
+                     new MutateESCovarianceMartixAdaption(), 0.9,       
+                     
+\end_layout
+
+\begin_layout Standard
+
+                     new CrossoverESDefault(), 0.1);         
+\end_layout
+
+\begin_layout Standard
+
+                
+\end_layout
+
+\begin_layout Standard
+
+    // access the ES                
+\end_layout
+
+\begin_layout Standard
+
+    EvolutionStrategies es = (EvolutionStrategies)esParams.getOptimizer();
+          
+\end_layout
+
+\begin_layout Standard
+
+    // set a (1+5) selection strategy               
+\end_layout
+
+\begin_layout Standard
+
+    es.setMu(1);            
+\end_layout
+
+\begin_layout Standard
+
+    es.setLambda(5);                
+\end_layout
+
+\begin_layout Standard
+
+    es.setPlusStrategy(true);       
+\end_layout
+
+\begin_layout Standard
+
+                
+\end_layout
+
+\begin_layout Standard
+
+    // run optimization and retrieve winner individual              
+\end_layout
+
+\begin_layout Standard
+
+    bestIndy = (AbstractEAIndividual)OptimizerFactory.optimizeToInd(esParams,
+ null);    
+\end_layout
+
+\begin_layout Standard
+
+    System.out.println("Found solution: " 
+\end_layout
+
+\begin_layout Standard
+
+                     + AbstractEAIndividual.getDefaultDataString(bestIndy));
+\end_layout
+
+\begin_layout Standard
+
+  };
+\end_layout
+
+\begin_layout Standard
+
+}
+\end_layout
+
+\begin_layout Standard
+
+\end_layout
+
+\begin_layout Standard
+
+\end_layout
+
+\begin_layout Standard
+
+
+\backslash
+end{lstlisting}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Caption
+Setting up a (1+5) CMA-ES.
+\begin_inset LatexCommand \label{alg:(1+5)-CMA-ES.}
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In Listing
+\begin_inset ERT
+status open
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+
+\begin_inset LatexCommand \ref{alg:(1+5)-CMA-ES.}
+
+\end_inset
+
+, a (1+5) CMA-ES is configured and run on a simple bimodal target function
+ with the global optimum near (1.7/0) and a local one near (-1.44/0).
+ The (1+5)-CMA-ES is powerful and will find the global optimum most of the
+ time.
+ Sometimes, however, due to its relatively high selection pressure and elitistic
+ strategy, it will converge in the local optimum, depending on the random
+ initialization.
+\end_layout
+
+\begin_layout Standard
+Lines 20-23 of Listing
+\begin_inset ERT
+status open
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+
+\begin_inset LatexCommand \ref{alg:(1+5)-CMA-ES.}
+
+\end_inset
+
+ show how to access evolutionary operators directly.
+ What happens here is that the template individual delivered with the problem
+ class (because the problem defines the representation) is modified to use
+ the given mutation and crossover operator and probabilities.
+ Typical for ES, mutation probability 
+\begin_inset Formula $p_{m}$
+\end_inset
+
+is relatively high, while the crossover probability 
+\begin_inset Formula $p_{C}$
+\end_inset
+
+ is rather low.
+ One could also use 
+\family typewriter
+fm0.getIndividualTemplate().setMutationOperator(...)
+\family default
+ etc.
+ to set the operators and probabilities one by one just as through the GUI.
+ Notice that not all implemented heuristics make use of individual evolutionary
+ operators.
+ Several come with their own operator definitions, such as DE and PSO, for
+ example.
+ The Hill Climbers, on the other hand, do use individual mutation but override
+ individual probabilities to 
+\begin_inset Formula $p_{m}=1$
+\end_inset
+
+ and 
+\begin_inset Formula $p_{c}=0$
+\end_inset
+
+ by definition.
+\end_layout
+
+\begin_layout Subsubsection
+A Multi-Modal Example with Post-Processing
+\end_layout
+
+\begin_layout Standard
+When looking at the last example in 
+\begin_inset LatexCommand \ref{sub:Setting-Evolutionary-Operators}
+
+\end_inset
+
+ working on a bimodal function, one might ask how to retrieve more than
+ just one optimum of the target function.
+ In 
+\noun on
+JavaEvA
+\begin_inset ERT
+status open
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+2
+\noun default
+ there are some optimizers implemented which are specialized on this task.
+ Listing
+\begin_inset ERT
+status open
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+
+\begin_inset LatexCommand \ref{alg:CBN-pp}
+
+\end_inset
+
+ shows an example using the clustering-based niching EA (CBN-EA) 
+\begin_inset LatexCommand \cite{streichertClustering03}
+
+\end_inset
+
+ and post-processing to identify both optima of the target function.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float algorithm
+wide false
+sideways false
+status open
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Standard
+
+
+\backslash
+lstset{language=java, basicstyle=
+\backslash
+tiny, numbers=left, stepnumber=1, numbersep=5pt}
+\end_layout
+
+\begin_layout Standard
+
+
+\backslash
+begin{lstlisting}
+\end_layout
+
+\begin_layout Standard
+
+\end_layout
+
+\begin_layout Standard
+
+import java.util.Vector;
+\end_layout
+
+\begin_layout Standard
+
+import javaeva.OptimizerFactory;
+\end_layout
+
+\begin_layout Standard
+
+import javaeva.server.go.individuals.AbstractEAIndividual; 
+\end_layout
+
+\begin_layout Standard
+
+import javaeva.server.go.operators.postprocess.PostProcessParams; 
+\end_layout
+
+\begin_layout Standard
+
+import javaeva.server.go.operators.terminators.EvaluationTerminator; 
+\end_layout
+
+\begin_layout Standard
+
+import javaeva.server.go.problems.FM0Problem; 
+\end_layout
+
+\begin_layout Standard
+
+import javaeva.server.modules.GOParameters;
+\end_layout
+
+\begin_layout Standard
+
+\end_layout
+
+\begin_layout Standard
+
+public class TestingCBNPostProc {
+\end_layout
+
+\begin_layout Standard
+
+  public static void main(String[] args) {
+\end_layout
+
+\begin_layout Standard
+
+    FM0Problem fm0 = new FM0Problem();              
+\end_layout
+
+\begin_layout Standard
+
+    AbstractEAIndividual best;              
+\end_layout
+
+\begin_layout Standard
+
+    Vector<AbstractEAIndividual> ppSols;
+\end_layout
+
+\begin_layout Standard
+
+                
+\end_layout
+
+\begin_layout Standard
+
+    GOParameters esParams = OptimizerFactory.cbnES(fm0);            
+\end_layout
+
+\begin_layout Standard
+
+    esParams.setTerminator(new EvaluationTerminator(2000));             
+    
+\end_layout
+
+\begin_layout Standard
+
+    esParams.setSeed(0);
+\end_layout
+
+\begin_layout Standard
+
+                
+\end_layout
+
+\begin_layout Standard
+
+    best = (AbstractEAIndividual)OptimizerFactory.optimizeToInd(esParams,
+ null);
+\end_layout
+
+\begin_layout Standard
+
+                
+\end_layout
+
+\begin_layout Standard
+
+    System.out.println("Found solution: "                           
+\end_layout
+
+\begin_layout Standard
+
+                + AbstractEAIndividual.getDefaultDataString(best));     
+\end_layout
+
+\begin_layout Standard
+
+                
+\end_layout
+
+\begin_layout Standard
+
+    // post-process with clustering only            
+\end_layout
+
+\begin_layout Standard
+
+    ppSols = OptimizerFactory.postProcessIndVec(new PostProcessParams(0,
+ 0.1, 5));          
+\end_layout
+
+\begin_layout Standard
+
+    System.out.println("After clustering: ");               
+\end_layout
+
+\begin_layout Standard
+
+    for (AbstractEAIndividual indy : ppSols) {                      
+\end_layout
+
+\begin_layout Standard
+
+      System.out.println(AbstractEAIndividual.getDefaultDataString(indy));
+            
+\end_layout
+
+\begin_layout Standard
+
+    }       
+\end_layout
+
+\begin_layout Standard
+
+                
+\end_layout
+
+\begin_layout Standard
+
+    // post-process with clustering and hill climbing               
+\end_layout
+
+\begin_layout Standard
+
+    ppSols = OptimizerFactory.postProcessIndVec(new PostProcessParams(1000,
+ 0.1, 5));               
+\end_layout
+
+\begin_layout Standard
+
+    System.out.println("After clustering / HC: ");          
+\end_layout
+
+\begin_layout Standard
+
+    for (AbstractEAIndividual indy : ppSols) {                      
+\end_layout
+
+\begin_layout Standard
+
+      System.out.println(AbstractEAIndividual.getDefaultDataString(indy));
+            
+\end_layout
+
+\begin_layout Standard
+
+    }
+\end_layout
+
+\begin_layout Standard
+
+  };
+\end_layout
+
+\begin_layout Standard
+
+}
+\end_layout
+
+\begin_layout Standard
+
+\end_layout
+
+\begin_layout Standard
+
+\end_layout
+
+\begin_layout Standard
+
+
+\backslash
+end{lstlisting}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Caption
+Solving a bimodal function with CBN and post-processing.
+\begin_inset LatexCommand \label{alg:CBN-pp}
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Notice that there are two post-processing cycles are performed (lines 26
+ and 33).
+ Any repeated post-processing iterations performed on the OptimizerFactory
+ use the same initial state.
+ This means that if there is no new optimization cycle, any new post-processing
+ will work on the same set of solutions, namely the result population of
+ the last optimization.
+\end_layout
+
+\begin_layout Standard
+This is useful, for example, to search for optima using different resolutions
+ iteratively.
+ In our example, we however just demonstrate the different results without
+ (line 26) and with clustering (line 33).
+ If you run the example a few times, it will happen quite often that after
+ the first post-processing with clustering only, more than the two optima
+ are returned, while after the second step with hill-climbing, this will
+ happen rather seldomly.
+ All in all, CBN locates the two optima in most of the cases and post-processing
+ helps to identify the real hot spot.
+ In Fig.
+\begin_inset ERT
+status open
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+
+\begin_inset LatexCommand \ref{fig:Exemplary-states-of-CBN}
+
+\end_inset
+
+, two graphs show the target function and the states of an exemplary CBN-run
+ after 500 (left) and 1500 evaluations (right).
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename /afs/cs.uni-tuebingen.de/home/mkron/workspace/JE2Base/doc/fm0-cbn-500.jpg
+	lyxscale 70
+	width 49col%
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename /afs/cs.uni-tuebingen.de/home/mkron/workspace/JE2Base/doc/fm0-cbn-1500.jpg
+	lyxscale 70
+	width 49col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Caption
+Exemplary states of CBN on the simple bimodal FM0Problem.
+\begin_inset LatexCommand \label{fig:Exemplary-states-of-CBN}
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The FM0Problem is of course very simple, 2-dimensional and having only two
+ optima in the defined range.
+ For harder problems, a few thousand evaluations will not suffice, and for
+ highly multi-modal target functions, e.g.
+ if there are thousands or tens of thousands of local optima, things get
+ really tough.
+ The current implementation of CBN is able to find more optima than the
+ population size defined, because it is able to reinitialize a converged
+ cluster during a run, saving a representative to an archive.
+ But for problems such as Ackley !!!, with a lot of deceptive optima, it
+ might also be a good strategy to try to find the global optimum first,
+ and, as it won't be found in most of the runs, look at the results of the
+ single-run solution set.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Comment
+status collapsed
+
+\begin_layout Section
+General Hints on Optimization with 
+\noun on
+JavaEvA 2
+\end_layout
+
+\begin_layout Standard
+As you have come so far, you have hopefully learned a few things about the
+ concepts of 
+\noun on
+JavaEvA
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+2 
+\noun default
+and got an idea on how optimization in the framework can be done.
+ Now we want to give a few more practical hints on what to do with an unknown,
+ probably difficult function.
+ Let's suppose you have a mathematical or algorithmic problem which is infeasibl
+e to solve by means of mathematical analysis, gradients are not computable
+ in a simple way, and you haven't found a specialized algorithm or heuristic
+ in literature that solves it to the quality you need, or you have found
+ one but you don't understand it and can't download it anywhere.
+ All in all, you have a tough problem, 
+\noun on
+MyToughProblem
+\noun default
+, and you want to optimize it.
+\end_layout
+
+\begin_layout Standard
+Let's also suppose you can implement 
+\noun on
+MyToughProblem
+\noun default
+ in Java (Sec.
+\begin_inset ERT
+status open
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+
+\begin_inset LatexCommand \ref{sec:Quickly-Adding-Your-Problem}
+
+\end_inset
+
+) or make it accessible for
+\noun on
+ JavaEvA
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+2
+\noun default
+ through an external interface (Sec.
+\begin_inset ERT
+status open
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+
+\begin_inset LatexCommand \ref{sec:External-Interfaces}
+
+\end_inset
+
+).
+ 
+\end_layout
+
+\begin_layout Standard
+You might now be tempted to ask: 
+\begin_inset Quotes eld
+\end_inset
+
+Exactly which optimizer do I need to run with which parameters to solve
+ 
+\noun on
+MyToughProblem
+\noun default
+ once and for all times?
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+And as you might have feared, this is a question which we cannot answer,
+ and maybe noone else can.
+ But we will at least try to come a bit closer to an answer here.
+ There are several choices you have to make before optimization, one of
+ the earliest concern implementation: which representation to use? E.g.
+ in Sec.
+\begin_inset ERT
+status open
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+
+\begin_inset LatexCommand \ref{sub:Accessing-Standard-Optimizers}
+
+\end_inset
+
+, we said a few things about double-valued and binary representation, and
+ many problems are natural to the one or the other implementation.
+ Combinatorical problems, for example, can be much easier projected to a
+ binary vector than to a double-valued one.
+ Continuous functions are a typical case for a real valued representation.
+\end_layout
+
+\begin_layout Itemize
+which representation? 
+\end_layout
+
+\begin_layout Itemize
+how many optima? 
+\end_layout
+
+\begin_layout Itemize
+what range? 
+\end_layout
+
+\begin_layout Itemize
+will specialized operators help?
+\end_layout
+
+\begin_layout Itemize
+what about constraints?
+\end_layout
+
+\begin_layout Itemize
+what about multi objectives?
+\end_layout
+
+\begin_layout Standard
+read the examples given in Sec.
+\begin_inset ERT
+status open
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+
+\begin_inset LatexCommand \ref{sec:Using-the-API}
+
+\end_inset
+
+, you might So, for an unknown function
+\end_layout
+
+\begin_layout Standard
+However, if you are dealing with an unknown function and you reckon that
+ it has quite a lot of optima, 
+\end_layout
+
+\begin_layout Itemize
+Which options can be changed at all for optimizer X? -> anhang with GOParameter
+ classes? Some optimizers have no specialized GOParameters.
+ Access optimizer directly.
 \end_layout
 
 \begin_layout Section
@@ -1154,7 +5072,16 @@ The Configuration File
 Advanced Use Cases
 \end_layout
 
+\end_inset
+
+
+\end_layout
+
 \begin_layout Standard
+\begin_inset LatexCommand \bibtex[plain]{/afs/cs.uni-tuebingen.de/home/mkron/workspace/JE2Base/doc/JE2DocCitations}
+
+\end_inset
+
 
 \end_layout
 

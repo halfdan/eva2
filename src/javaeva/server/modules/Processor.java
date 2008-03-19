@@ -6,6 +6,7 @@ import javaeva.server.go.InterfacePopulationChangedEventListener;
 import javaeva.server.go.InterfaceProcessor;
 import javaeva.server.go.PopulationInterface;
 import javaeva.server.go.operators.postprocess.PostProcess;
+import javaeva.server.go.operators.postprocess.PostProcessParams;
 import javaeva.server.go.operators.terminators.EvaluationTerminator;
 import javaeva.server.go.populations.Population;
 import javaeva.server.go.problems.AbstractOptimizationProblem;
@@ -27,6 +28,7 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
     private boolean 				wasRestarted = false;
 //    private int 					postProcessSteps = 0;
     private int 					runCounter = 0;	
+    private Population				resPop = null;
 
 //    transient private String				m_OutputPath = "";
 //    transient private BufferedWriter		m_OutputFile = null;
@@ -68,11 +70,6 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
     	saveParams = doSave;
     }
 
-//    public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
-//    	listener = ea;
-////    	hier weiter! TODO
-//    }
-    
     /**
      *
      */
@@ -83,6 +80,7 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
             System.err.println("ERROR: Processor is already running !!");
             return;
         }
+        resPop = null;
         wasRestarted = false;
         setOptRunning(true);
     }
@@ -107,16 +105,8 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
     public void stopOpt() { // this means user break
         if (TRACE) System.out.println("called StopOpt");
         setOptRunning(false);
-//        m_doRunScript = false;
         if (TRACE) System.out.println("m_doRunScript = false ");
     }
-
-//    /**
-//     *
-//     */
-//    public void runScript() {
-//        m_doRunScript = true;
-//    }
 
     /**
      *
@@ -133,12 +123,12 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
     	}
     }
     
-    public void runOptOnce() {
+    public Population runOptOnce() {
     	try {
     		while (isOptRunning()) {
     			setPriority(3);
     			if (saveParams) goParams.saveInstance();
-    			optimize("Run");
+    			resPop = optimize("Run");
     			setPriority(1);
     		}
     	} catch (Exception e) {
@@ -149,12 +139,16 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
         	if (m_ListenerModule!=null) m_ListenerModule.performedStop(); // is only needed in client server mode
         	if (m_ListenerModule!=null) m_ListenerModule.updateProgress(0, "Error in optimization: " + e.getMessage());    		
     	}
+    	return resPop;
     }
 
     /**
-     *
+     * Main optimization loop.
+     * Return a population containing the solutions of the last run if there were multiple.
      */
-    public void optimize(String infoString) {
+    public Population optimize(String infoString) {
+    	Population resPop = null;
+    	
     	if (!isOptRunning()) {
     		System.err.println("warning, this shouldnt happen in processor! Was startOpt called?");
     		setOptRunning(true);
@@ -217,7 +211,8 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
         	//////////////// Default stats
         	m_Statistics.stopOptPerformed(isOptRunning()); // stop is "normal" if opt wasnt set false by the user
         	//////////////// PP
-        	PostProcess.postProcess(goParams.getPostProcessParams(), goParams.getOptimizer().getAllSolutions(), (AbstractOptimizationProblem)goParams.getProblem(), (InterfaceTextListener)m_Statistics);
+        	performNewPostProcessing((PostProcessParams)goParams.getPostProcessParams(), (InterfaceTextListener)m_Statistics);
+
         	// moved to PostProcess
 //        	if ((goParams.getProblem() instanceof InterfaceMultimodalProblem)) {
 //        		InterfaceMultimodalProblem mmProb = (InterfaceMultimodalProblem)goParams.getProblem();
@@ -231,6 +226,7 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
         setOptRunning(false); // normal finish
         if (m_ListenerModule!=null) m_ListenerModule.performedStop(); // is only needed in client server mode
         if (m_ListenerModule!=null) m_ListenerModule.updateProgress(0, null);
+        return resPop;
     }
     
     private int getStatusPercent(Population pop, int currentRun, int multiRuns) {
@@ -303,18 +299,48 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
     	return sb.toString();
     }
     
-    /** This method return the Statistics object.
+    /** 
+     * This method return the Statistics object.
      */
     public InterfaceStatistics getStatistics() {
         return m_Statistics;
     }
 
-    /** These methods allow you to get and set the Modul Parameters.
+    /** 
+     * These methods allow you to get and set the Module Parameters.
      */
     public InterfaceGOParameters getGOParams() {
         return goParams;
     }
     public void setGOParams(InterfaceGOParameters x) {
         goParams= x;
+    }
+    
+    /** 
+     * Return the last solution population or null if there is none available.
+     * 
+     * @return the last solution population or null
+     */
+    public Population getResultPopulation() {
+    	return resPop;
+    }
+    
+    /**
+     * Perform a post processing step with given parameters, based on all solutions found by the optimizer.
+     * Use getResultPopulation() to retrieve results.
+     * 
+     * @param ppp
+     * @param listener
+     */
+    public void performNewPostProcessing(PostProcessParams ppp, InterfaceTextListener listener) {
+    	ppp.hideHideable(); // a bit mean: as we may have several instances of ppp in different states, make sure Bean-"hidden" state is consistent for output.
+    	if (listener != null) listener.println("Starting post processing... " + BeanInspector.toString(ppp));
+    	resPop = goParams.getOptimizer().getAllSolutions();
+    	if (resPop.getFunctionCalls() != goParams.getOptimizer().getPopulation().getFunctionCalls()) {
+//    		System.err.println("bad case in Processor::performNewPostProcessing ");
+    		resPop.SetFunctionCalls(goParams.getOptimizer().getPopulation().getFunctionCalls());
+    	}
+    	if (!resPop.contains(m_Statistics.getBestSolution())) resPop.add(m_Statistics.getBestSolution()); // this is a minor cheat but guarantees that the best solution ever found is contained in the final results
+    	resPop = PostProcess.postProcess(ppp, resPop, (AbstractOptimizationProblem)goParams.getProblem(), listener);
     }
 }

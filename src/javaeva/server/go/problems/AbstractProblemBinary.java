@@ -19,16 +19,8 @@ public abstract class AbstractProblemBinary extends AbstractOptimizationProblem 
         ((InterfaceDataTypeBinary)this.m_Template).setBinaryDataLength(this.getProblemDimension());
 	}
 	
-	@Override
-	public Object clone() {
-		try {
-			AbstractProblemBinary prob = this.getClass().newInstance();
-			prob.m_Template = (AbstractEAIndividual)m_Template.clone();
-			return prob;
-		} catch(Exception e) {
-			System.err.println("Error: couldnt instantiate "+this.getClass().getName());
-			return null;
-		}
+	public void cloneObjects(AbstractProblemBinary o) {
+		if (o.m_Template != null) m_Template = (AbstractEAIndividual)o.m_Template.clone();
 	}
 	
 	@Override
@@ -44,12 +36,19 @@ public abstract class AbstractProblemBinary extends AbstractOptimizationProblem 
 	}
 	
 	/**
-	 * Evaluate a double vector 
-	 * @param x
+	 * Evaluate a BitSet representing a possible solution. This is the target
+	 * function implementation.
+	 *  
+	 * @param x a BitSet representing a possible
 	 * @return
 	 */
 	public abstract double[] eval(BitSet bs);
 	
+	/**
+	 * Get the problem dimension.
+	 * 
+	 * @return the problem dimension
+	 */
 	public abstract int getProblemDimension();
 	
 	@Override
@@ -82,7 +81,7 @@ public abstract class AbstractProblemBinary extends AbstractOptimizationProblem 
      * @return The name.
      */
     public String getName() {
-    	return "SimpleProblemBinary";
+    	return "AbstractProblemBinary";
     }
 
     /** This method returns a global info string

@@ -19,7 +19,7 @@ public class PhenotypeConvergenceTerminator extends FitnessConvergenceTerminator
 		super(thresh, stagnTime, bFitCallBased, bAbsolute);
 	}
 	/**
-	 * Return true if |oldPhen - curPhen| < |oldPhen| * thresh% (relative case)
+	 * Return true if |oldPhen - curPhen| < |oldPhen| * thresh (relative case)
 	 * and if |oldFit - curFit| < thresh (absolute case).
 	 * 
 	 * @param curFit

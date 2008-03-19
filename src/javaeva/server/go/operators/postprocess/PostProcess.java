@@ -1,8 +1,6 @@
 package javaeva.server.go.operators.postprocess;
 
-import java.io.PrintStream;
 import java.util.Collection;
-import java.util.List;
 
 import javaeva.OptimizerFactory;
 import javaeva.OptimizerRunnable;
@@ -19,7 +17,6 @@ import javaeva.server.go.operators.terminators.EvaluationTerminator;
 import javaeva.server.go.populations.Population;
 import javaeva.server.go.problems.AbstractOptimizationProblem;
 import javaeva.server.go.problems.FM0Problem;
-import javaeva.server.go.problems.InterfaceMultimodalProblem;
 import javaeva.server.go.problems.InterfaceMultimodalProblemKnown;
 import javaeva.server.go.strategies.HillClimbing;
 import javaeva.server.stat.InterfaceTextListener;
@@ -36,6 +33,8 @@ public class PostProcess {
 	private static final boolean TRACE = false;
 	// the default mutation step size for HC post processing
 	private static double defaultMutationStepSize = 0.01;
+	// used for hill climbing post processing and only alive during that period
+	private static OptimizerRunnable hcRunnable = null;
 	
 	public static final int BEST_ONLY = 1;
 	public static final int BEST_RAND = 2;
@@ -108,11 +107,13 @@ public class PostProcess {
     	for (int i=0; i<optsFound.length; i++) {
 			if (optsFound[i] != null) result.add(optsFound[i]);
 		}
+    	result.setPopulationSize(result.size());
     	return result;
     }
 
     /**
-     * Calls clusterBest with a ClusteringDensitiyBased clustering object with the given sigma.
+     * Calls clusterBest with a ClusteringDensitiyBased clustering object with the given sigma and a 
+     * minimum group size of 2.
      * @see clusterBest(Population pop, InterfaceClustering clustering, double returnQuota, int lonerMode, int takeOverMode)
      * @param pop
      * @param sigmaCluster
@@ -122,7 +123,7 @@ public class PostProcess {
      * @return
      */
     public static Population clusterBest(Population pop, double sigmaCluster, double returnQuota, int lonerMode, int takeOverMode) {
-    	return clusterBest(pop, new ClusteringDensityBased(sigmaCluster), returnQuota, lonerMode, takeOverMode);
+    	return clusterBest(pop, new ClusteringDensityBased(sigmaCluster, 2), returnQuota, lonerMode, takeOverMode);
     }
     
     /**
@@ -348,10 +349,19 @@ public class PostProcess {
 		}
 		hc.setPopulation(pop);
 //		hc.initByPopulation(pop, false);
-		OptimizerRunnable runnable = new OptimizerRunnable(OptimizerFactory.makeParams(hc, pop, problem, 0, term), null, true);
-		runnable.getGOParams().setDoPostProcessing(false);
-		runnable.run();
-		
+		hcRunnable = new OptimizerRunnable(OptimizerFactory.makeParams(hc, pop, problem, 0, term), null, true);
+		hcRunnable.getGOParams().setDoPostProcessing(false);
+		hcRunnable.run();
+		hcRunnable = null;
+	}
+	
+	/**
+	 * Stop the hill-climbing post processing if its currently running.
+	 */
+	public static void stopHC() {
+		if (hcRunnable != null) synchronized (hcRunnable) {
+			if (hcRunnable != null) hcRunnable.stopOpt();
+		}
 	}
 	
 	public static void main(String[] args) {
@@ -399,12 +409,12 @@ public class PostProcess {
 	 * @return a pair of the optimized population and the improvement in the mean fitness (not normed) achieved by the HC run
 	 */
 	public static Pair<Population, Double> clusterHC(Population pop, AbstractOptimizationProblem problem, double sigmaCluster, int funCalls, double keepClusterRatio, InterfaceMutation mute) {
-		Population clust = (Population)clusterBest(pop, new ClusteringDensityBased(sigmaCluster), keepClusterRatio, KEEP_LONERS, BEST_RAND).clone();
+		Population clust = (Population)clusterBest(pop, new ClusteringDensityBased(sigmaCluster, 2), keepClusterRatio, KEEP_LONERS, BEST_RAND).clone();
 //		System.out.println("keeping " + clust.size() + " for hc....");
 		double[] meanFit = clust.getMeanFitness();
 		processWithHC(clust, problem, new EvaluationTerminator(pop.getFunctionCalls()+funCalls), mute);
 		double improvement = PhenotypeMetric.euclidianDistance(meanFit, clust.getMeanFitness());
-		System.out.println("improvement by " + improvement);
+		if (TRACE) System.out.println("improvement by " + improvement);
 		return new Pair<Population, Double>(clust, improvement);
 	}
 	
@@ -457,15 +467,18 @@ public class PostProcess {
 //	}
 	
 	/**
-	 * Do some data output for multimodal problems with known optima.
+	 * Do some data output for multimodal problems with known optima. The listener may be null, but then the method is
+	 * not really doing much at this state.
 	 */
 	public static void procMultiModalKnown(Population solutions, InterfaceMultimodalProblemKnown mmkProb, InterfaceTextListener listener) {
 //		Population found = getFoundOptima(solutions, mmkProb.getRealOptima(), mmkProb.getEpsilon(), true);
-		listener.println("default epsilon is " + mmkProb.getEpsilon());
-		listener.println("max peak ratio is " + mmkProb.getMaximumPeakRatio(getFoundOptima(solutions, mmkProb.getRealOptima(), mmkProb.getEpsilon(), true)));
+		if (listener != null) {
+			listener.println("default epsilon is " + mmkProb.getEpsilon());
+			listener.println("max peak ratio is " + mmkProb.getMaximumPeakRatio(getFoundOptima(solutions, mmkProb.getRealOptima(), mmkProb.getEpsilon(), true)));
+		}
 		for (double epsilon=0.1; epsilon > 0.00000001; epsilon/=10.) {
 		//	out.println("no optima found: " + ((InterfaceMultimodalProblemKnown)mmProb).getNumberOfFoundOptima(pop));
-			listener.println("found " + getFoundOptima(solutions, mmkProb.getRealOptima(), epsilon, true).size() + " for epsilon = " + epsilon);
+			if (listener != null) listener.println("found " + getFoundOptima(solutions, mmkProb.getRealOptima(), epsilon, true).size() + " for epsilon = " + epsilon);
 		}
 	}
 	
@@ -478,38 +491,50 @@ public class PostProcess {
 	 * @param solutions
 	 * @param problem
 	 * @param listener
+	 * @return the clustered, post-processed population
 	 */
-	public static void postProcess(InterfacePostProcessParams params, Population solutions, AbstractOptimizationProblem problem, InterfaceTextListener listener) {
+	public static Population postProcess(InterfacePostProcessParams params, Population solutions, AbstractOptimizationProblem problem, InterfaceTextListener listener) {
 		if (params.isDoPostProcessing()) {
 			Population outputPop;
 			if (params.getPostProcessClusterSigma() > 0) {
 				outputPop = (Population)PostProcess.clusterBest(solutions, params.getPostProcessClusterSigma(), 0, PostProcess.KEEP_LONERS, PostProcess.BEST_ONLY).clone();
 				if (outputPop.size() < solutions.size()) {
-					listener.println("Clustering reduced population size from " + solutions.size() + " to " + outputPop.size());
-				} else listener.println("Clustering yielded no size reduction.");
+					if (listener != null) listener.println("Initial clustering reduced population size from " + solutions.size() + " to " + outputPop.size());
+				} else if (listener != null) listener.println("Initial clustering yielded no size reduction.");
 			} else outputPop = solutions;
+			
 			if (params.getPostProcessSteps() > 0) {
 				processWithHC(outputPop, problem, params.getPostProcessSteps());
-				listener.println("HC post processing done.");
+				if (listener != null) listener.println("HC post processing done.");
+				// some individuals may have now converged again
+				if (params.getPostProcessClusterSigma() > 0) {
+					// so if wished, cluster again.
+					outputPop = (Population)PostProcess.clusterBest(outputPop, params.getPostProcessClusterSigma(), 0, PostProcess.KEEP_LONERS, PostProcess.BEST_ONLY).clone();
+					if (outputPop.size() < solutions.size()) {
+						if (listener != null) listener.println("Second clustering reduced population size from " + solutions.size() + " to " + outputPop.size());
+					} else if (listener != null) listener.println("Second clustering yielded no size reduction.");
+				}
 			}
+			
 			double upBnd = PhenotypeMetric.norm(outputPop.getWorstEAIndividual().getFitness())*1.1;
 			upBnd = Math.pow(10,Math.floor(Math.log10(upBnd)+1));
 			double lowBnd = 0;
 			int[] sols = PostProcess.createFitNormHistogram(outputPop, lowBnd, upBnd, 20);
 //			PostProcessInterim.outputResult((AbstractOptimizationProblem)goParams.getProblem(), outputPop, 0.01, System.out, 0, 2000, 20, goParams.getPostProcessSteps());
-			listener.println("measures: " + BeanInspector.toString(outputPop.getPopulationMeasures()));
-			listener.println("solution histogram in [" + lowBnd + "," + upBnd + "]: " + BeanInspector.toString(sols));
+			if (listener != null) listener.println("measures: " + BeanInspector.toString(outputPop.getPopulationMeasures()));
+			if (listener != null) listener.println("solution histogram in [" + lowBnd + "," + upBnd + "]: " + BeanInspector.toString(sols));
 			
 			//////////// multimodal data output?
 			if (problem instanceof InterfaceMultimodalProblemKnown) procMultiModalKnown(outputPop, (InterfaceMultimodalProblemKnown)problem, listener);
 			
+			Population resPop = outputPop.getBestNIndividuals(params.getPrintNBest()); // n individuals are returned and sorted, all of them if n<=0
+			if (listener != null) listener.println("Best after post process:" + ((outputPop.size()>resPop.size()) ? ( "(first " + resPop.size() + " of " + outputPop.size() + ")") : ""));
 			//////////// output some individual data
-			List<AbstractEAIndividual> bestList = outputPop.getBestNIndividuals(params.getPrintNBest()); // n individuals are returned and sorted, all of them if n<=0
-			listener.println("Best after post process:" + ((outputPop.size()>bestList.size()) ? ( "(first " + bestList.size() + " of " + outputPop.size() + ")") : ""));
-			for (AbstractEAIndividual indy : bestList) {
-				listener.println(AbstractEAIndividual.getDefaultStringRepresentation(indy));
+			if (listener != null) for (int i=0; i<resPop.size(); i++) {
+				listener.println(AbstractEAIndividual.getDefaultStringRepresentation(resPop.getEAIndividual(i)));
 			}
-		}
+			return resPop;
+		} else return solutions;
 	}
 }
 
