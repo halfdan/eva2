@@ -225,7 +225,7 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
 		double x[] = new double[getProblemDimension()];
 		for (int i=0; i<point.length; i++) x[i]=point[i];
 		for (int i=point.length; i<x.length; i++) x[i] = 0;
-		return Math.sqrt(eval(x)[0]);
+		return eval(x)[0];
 	}
     /**********************************************************************************************************************
      * These are for GUI
