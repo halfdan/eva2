@@ -1,11 +1,9 @@
 package javaeva.server.go.operators.terminators;
 
-import java.beans.BeanInfo;
 import java.io.Serializable;
 
-import javaeva.gui.BeanInspector;
-import javaeva.server.go.PopulationInterface;
 import javaeva.server.go.InterfaceTerminator;
+import javaeva.server.go.PopulationInterface;
 import javaeva.tools.SelectedTag;
 
 public class CombinedTerminator implements InterfaceTerminator, Serializable {

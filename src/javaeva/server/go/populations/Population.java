@@ -40,8 +40,15 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     public Population() {
     }
     
+    /**
+     * Constructor setting initial capacity and population size to the given
+     * integer value.
+     * 
+     * @param initialCapacity initial capacity and population size of the instance
+     */
     public Population(int initialCapacity) {
     	super(initialCapacity);
+    	setPopulationSize(initialCapacity);
     }
 
     public Population(Population population) {
@@ -308,19 +315,20 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      * @return The m best individuals, where m <= n
      * 
      */
-    public List<AbstractEAIndividual> getBestNIndividuals(int n) {
-    	LinkedList<AbstractEAIndividual> indList = new LinkedList<AbstractEAIndividual>();
+    public Population getBestNIndividuals(int n) {
+    	if (n <= 0) n = super.size();
+    	Population result = new Population(n);
     	PriorityQueue<AbstractEAIndividual> queue = new PriorityQueue<AbstractEAIndividual>(super.size(), new AbstractEAIndividualComparator());
 
         for (int i = 0; i < super.size(); i++) {
         	queue.add(getEAIndividual(i));
         }
-        if (n <= 0) n = queue.size();
         for (int i = 0; i<n ; i++) {
         	if (queue.size() == 0) break;
-        	indList.add(queue.poll());
+        	result.add(queue.poll());
         }
-    	return indList;
+        result.setPopulationSize(result.size());
+    	return result;
     }
     
     /** This method returns n random best individuals from the population.

@@ -1,19 +1,28 @@
 package javaeva;
 
+import java.util.BitSet;
+import java.util.Vector;
+
 import javaeva.gui.BeanInspector;
 import javaeva.server.go.IndividualInterface;
 import javaeva.server.go.InterfaceTerminator;
 import javaeva.server.go.individuals.AbstractEAIndividual;
+import javaeva.server.go.individuals.InterfaceDataTypeBinary;
+import javaeva.server.go.individuals.InterfaceDataTypeDouble;
 import javaeva.server.go.individuals.InterfaceESIndividual;
 import javaeva.server.go.operators.cluster.ClusteringDensityBased;
 import javaeva.server.go.operators.crossover.CrossoverESDefault;
 import javaeva.server.go.operators.mutation.MutateESCovarianceMartixAdaption;
 import javaeva.server.go.operators.mutation.MutateESGlobal;
+import javaeva.server.go.operators.postprocess.InterfacePostProcessParams;
+import javaeva.server.go.operators.postprocess.PostProcessParams;
 import javaeva.server.go.operators.terminators.CombinedTerminator;
 import javaeva.server.go.operators.terminators.EvaluationTerminator;
+import javaeva.server.go.operators.terminators.FitnessConvergenceTerminator;
 import javaeva.server.go.populations.Population;
 import javaeva.server.go.problems.AbstractOptimizationProblem;
 import javaeva.server.go.strategies.ClusterBasedNichingEA;
+import javaeva.server.go.strategies.ClusteringHillClimbing;
 import javaeva.server.go.strategies.DifferentialEvolution;
 import javaeva.server.go.strategies.EvolutionStrategies;
 import javaeva.server.go.strategies.GeneticAlgorithm;
@@ -43,9 +52,12 @@ public class OptimizerFactory {
 	public final static int RANDOM = 7;
 	public final static int HILLCL = 8;
 	public final static int CBN_ES = 9;
+	public final static int CL_HILLCL = 10;
 	
 	public final static int defaultFitCalls = 10000;
 	public final static int randSeed = 0;
+	
+	private static OptimizerRunnable lastRunnable = null;
 	
 	/**
 	 * Return a simple String showing the accessible optimizers. For external access."
@@ -53,7 +65,8 @@ public class OptimizerFactory {
 	 * @return a String listing the accessible optimizers
 	 */
 	public static String showOptimizers() {
-		return "1: Standard ES; 2: CMA-ES; 3: GA; 4: PSO; 5: DE; 6: Tribes; 7: Random (Monte Carlo); 8: HillClimbing; 9: Cluster-based niching ES";
+		return "1: Standard ES \n2: CMA-ES \n3: GA \n4: PSO \n5: DE \n6: Tribes \n7: Random (Monte Carlo) " +
+				"\n8: Hill-Climbing \n9: Cluster-based niching ES \n10: Clustering Hill-Climbing";
 	}
 	
 	/**
@@ -81,14 +94,195 @@ public class OptimizerFactory {
 	}
 	
 	// TODO hier weiter kommentieren
-	public static IndividualInterface optimize(final int optType, AbstractOptimizationProblem problem, String outputFilePrefix) {
-		OptimizerRunnable runnable = getOptRunnable(optType, problem, outputFilePrefix);
+	public static OptimizerRunnable optimize(final int optType, AbstractOptimizationProblem problem, String outputFilePrefix) {
+		return optimize(getOptRunnable(optType, problem, outputFilePrefix));
+	}
+	
+	public static OptimizerRunnable optimize(OptimizerRunnable runnable) {
 		if (runnable != null) {
 			new Thread(runnable).run();
-			return runnable.getSolution();
+			lastRunnable = runnable;
+			return runnable;
 		} else return null;
 	}
 	
+	public static String terminatedBecause() {
+		if (lastRunnable != null) return lastRunnable.terminatedBecause();
+		else return null;
+	}
+	
+	public static int lastEvalsPerformed() {
+		if (lastRunnable != null) return lastRunnable.getProgress();
+		else return -1;
+	}
+	
+///////////////////////////////  Optimize a given parameter instance 
+	public static BitSet optimizeToBinary(GOParameters params, String outputFilePrefix) {
+		OptimizerRunnable runnable = optimize(new OptimizerRunnable(params, outputFilePrefix));
+		return runnable.getBinarySolution();
+	}
+	
+	public static double[] optimizeToDouble(GOParameters params, String outputFilePrefix) {
+		OptimizerRunnable runnable = optimize(new OptimizerRunnable(params, outputFilePrefix));
+		return runnable.getDoubleSolution();
+	}
+	
+	public static IndividualInterface optimizeToInd(GOParameters params, String outputFilePrefix) {
+		OptimizerRunnable runnable = optimize(new OptimizerRunnable(params, outputFilePrefix));
+		return runnable.getResult();
+	}
+	
+	public static Population optimizeToPop(GOParameters params, String outputFilePrefix) {
+		OptimizerRunnable runnable = optimize(new OptimizerRunnable(params, outputFilePrefix));
+		return runnable.getSolutionSet();
+	}
+	
+///////////////////////////////  Optimize a given runnable 
+	public static BitSet optimizeToBinary(OptimizerRunnable runnable) {
+		optimize(runnable);
+		if (runnable != null) return runnable.getBinarySolution();
+		else return null;
+	}
+	
+	public static double[] optimizeToDouble(OptimizerRunnable runnable) {
+		optimize(runnable);
+		if (runnable != null) return runnable.getDoubleSolution();
+		else return null;
+	}
+	
+	public static IndividualInterface optimizeToInd(OptimizerRunnable runnable) {
+		optimize(runnable);
+		if (runnable != null) return runnable.getResult();
+		else return null;
+	}
+	
+	public static Population optimizeToPop(OptimizerRunnable runnable) {
+		optimize(runnable);
+		if (runnable != null) return runnable.getSolutionSet();
+		else return null;
+	}
+	
+/////////////////////////////// Optimize using a default strategy	
+	public static BitSet optimizeToBinary(final int optType, AbstractOptimizationProblem problem, String outputFilePrefix) {
+		OptimizerRunnable runnable = optimize(optType, problem, outputFilePrefix);
+		if (runnable != null) return runnable.getBinarySolution();
+		else return null;
+	}
+	
+	public static double[] optimizeToDouble(final int optType, AbstractOptimizationProblem problem, String outputFilePrefix) {
+		OptimizerRunnable runnable = optimize(optType, problem, outputFilePrefix);
+		if (runnable != null) return runnable.getDoubleSolution();
+		else return null;
+	}
+	
+	public static IndividualInterface optimizeToInd(final int optType, AbstractOptimizationProblem problem, String outputFilePrefix) {
+		OptimizerRunnable runnable = optimize(optType, problem, outputFilePrefix);
+		if (runnable != null) return runnable.getResult();
+		else return null;
+	}
+	
+	public static Population optimizeToPop(final int optType, AbstractOptimizationProblem problem, String outputFilePrefix) {
+		OptimizerRunnable runnable = optimize(optType, problem, outputFilePrefix);
+		if (runnable != null) return runnable.getSolutionSet();
+		else return null;
+	}
+	
+///////////////////////////// post processing
+	public static Vector<AbstractEAIndividual> postProcessIndVec(OptimizerRunnable runnable, int steps, double sigma, int nBest) {
+		return postProcessIndVec(runnable, new PostProcessParams(steps, sigma, nBest));
+	}
+	
+	public static Vector<AbstractEAIndividual> postProcessIndVec(int steps, double sigma, int nBest) {
+		return (lastRunnable != null) ? postProcessIndVec(lastRunnable, new PostProcessParams(steps, sigma, nBest)) : null;
+	}
+	
+	public static Vector<AbstractEAIndividual> postProcessIndVec(InterfacePostProcessParams ppp) {
+		return (lastRunnable != null) ? postProcessIndVec(lastRunnable, ppp) : null;
+	}
+	
+	public static Vector<AbstractEAIndividual> postProcessIndVec(OptimizerRunnable runnable, InterfacePostProcessParams ppp) {
+		Population resPop = postProcess(runnable, ppp);
+		Vector<AbstractEAIndividual> ret = new Vector<AbstractEAIndividual>(resPop.size());
+		for (Object o : resPop) {
+			if (o instanceof AbstractEAIndividual) {
+				AbstractEAIndividual indy = (AbstractEAIndividual)o;
+				ret.add(indy);
+			}
+		}
+		return ret;
+	}
+	
+	public static Vector<BitSet> postProcessBinVec(InterfacePostProcessParams ppp) {
+		return (lastRunnable != null) ? postProcessBinVec(lastRunnable, ppp) : null;
+	}
+	
+	public static Vector<BitSet> postProcessBinVec(OptimizerRunnable runnable, InterfacePostProcessParams ppp) {
+		Population resPop = postProcess(runnable, ppp);
+		Vector<BitSet> ret = new Vector<BitSet>(resPop.size());
+		for (Object o : resPop) {
+			if (o instanceof InterfaceDataTypeBinary) {
+				InterfaceDataTypeBinary indy = (InterfaceDataTypeBinary)o;
+				ret.add(indy.getBinaryData());
+			}
+		}
+		return ret;
+	}
+
+	public static Vector<BitSet> postProcessBinVec(int steps, double sigma, int nBest) {
+		return (lastRunnable != null) ? postProcessBinVec(lastRunnable, new PostProcessParams(steps, sigma, nBest)) : null;
+	}
+
+	public static Vector<BitSet> postProcessBinVec(OptimizerRunnable runnable, int steps, double sigma, int nBest) {
+		return postProcessBinVec(runnable, new PostProcessParams(steps, sigma, nBest));
+	}
+
+	public static Vector<double[]> postProcessDblVec(InterfacePostProcessParams ppp) {
+		if (lastRunnable != null) return postProcessDblVec(lastRunnable, ppp);
+		else return null;
+	}
+	
+	public static Vector<double[]> postProcessDblVec(OptimizerRunnable runnable, InterfacePostProcessParams ppp) {
+		Population resPop = postProcess(runnable, ppp);
+		Vector<double[]> ret = new Vector<double[]>(resPop.size());
+		for (Object o : resPop) {
+			if (o instanceof InterfaceDataTypeDouble) {
+				InterfaceDataTypeDouble indy = (InterfaceDataTypeDouble)o;
+				ret.add(indy.getDoubleData());
+			}
+		}
+		return ret;
+	}
+	
+	public static Vector<double[]> postProcessDblVec(int steps, double sigma, int nBest) {
+		return (lastRunnable == null) ? null : postProcessDblVec(lastRunnable, new PostProcessParams(steps, sigma, nBest));
+	}
+	
+	public static Vector<double[]> postProcessDblVec(OptimizerRunnable runnable, int steps, double sigma, int nBest) {
+		return postProcessDblVec(runnable, new PostProcessParams(steps, sigma, nBest));
+	}
+	
+	public static Population postProcess(int steps, double sigma, int nBest) {
+		return (lastRunnable == null) ? null : postProcess(lastRunnable, new PostProcessParams(steps, sigma, nBest));
+	}
+	
+	public static Population postProcess(OptimizerRunnable runnable, int steps, double sigma, int nBest) {
+		PostProcessParams ppp = new PostProcessParams(steps, sigma, nBest);
+		return postProcess(runnable, ppp);
+	}
+	
+	public static Population postProcess(InterfacePostProcessParams ppp) {
+		return (lastRunnable == null) ? null : postProcess(lastRunnable, ppp);
+	}
+	
+	public static Population postProcess(OptimizerRunnable runnable, InterfacePostProcessParams ppp) {
+		runnable.setDoRestart(true);
+		runnable.setDoPostProcessOnly(true);
+		runnable.setPostProcessingParams(ppp);
+		runnable.run(); // this run will not set the lastRunnable - postProcessing starts always anew 
+		return runnable.getSolutionSet();
+	}
+	
+///////////////////////////// constructing a default OptimizerRunnable
 	public static OptimizerRunnable getOptRunnable(final int optType, AbstractOptimizationProblem problem, String outputFilePrefix) {
 		return getOptRunnable(optType, problem, defaultFitCalls, outputFilePrefix);
 	}
@@ -123,6 +317,9 @@ public class OptimizerFactory {
 		case CBN_ES:
 			opt = new OptimizerRunnable(cbnES(problem), outputFilePrefix); 
 			break;
+		case CL_HILLCL:
+			opt = new OptimizerRunnable(clusteringHillClimbing(problem), outputFilePrefix);
+			break;
 		default:
 			System.err.println("Error: optimizer type " + optType + " is unknown!");
 			return null;
@@ -131,9 +328,18 @@ public class OptimizerFactory {
 		return opt;
 	}
 	
+///////////////////////////// Termination criteria
 	public static InterfaceTerminator defaultTerminator() {
 		if (term == null) term = new EvaluationTerminator(defaultFitCalls);
 		return term;
+	}
+
+	public static void setEvaluationTerminator(int maxEvals) {
+		setTerminator(new EvaluationTerminator(maxEvals));
+	}
+	
+	public static void setFitnessConvergenceTerminator(double fitThresh) {
+		setTerminator(new FitnessConvergenceTerminator(fitThresh, 100, true, true));
 	}
 	
 	public static void setTerminator(InterfaceTerminator term) {
@@ -156,6 +362,7 @@ public class OptimizerFactory {
 		else setTerminator(new CombinedTerminator(OptimizerFactory.term, newTerm, bAnd));
 	}
 	
+///////////////////////// Creating default strategies
 	public static GOParameters makeParams(InterfaceOptimizer opt, Population pop, AbstractOptimizationProblem problem, long seed, InterfaceTerminator term) {
 		GOParameters params = new GOParameters();
 		params.setProblem(problem);
@@ -169,14 +376,14 @@ public class OptimizerFactory {
 	
 	public static GOParameters standardES(AbstractOptimizationProblem problem) {
 		EvolutionStrategies es = new EvolutionStrategies();
-		es.setMyu(15);
+		es.setMu(15);
 		es.setLambda(50);
 		es.setPlusStrategy(false);
 		
-		Object maybeTemplate = BeanInspector.callIfAvailable(problem, "getEAIndividual", null);
-		if ((maybeTemplate != null) && (maybeTemplate instanceof InterfaceESIndividual)) {
+		AbstractEAIndividual indy = problem.getIndividualTemplate();
+		
+		if ((indy != null) && (indy instanceof InterfaceESIndividual)) {
 			// Set CMA operator for mutation
-			AbstractEAIndividual indy = (AbstractEAIndividual)maybeTemplate;
 			indy.setMutationOperator(new MutateESGlobal());
 			indy.setCrossoverOperator(new CrossoverESDefault());
 		} else {
@@ -192,7 +399,7 @@ public class OptimizerFactory {
 	
 	public static GOParameters cmaES(AbstractOptimizationProblem problem) {
 		EvolutionStrategies es = new EvolutionStrategies();
-		es.setMyu(15);
+		es.setMu(15);
 		es.setLambda(50);
 		es.setPlusStrategy(false);
 		
@@ -278,19 +485,35 @@ public class OptimizerFactory {
 	public static GOParameters cbnES(AbstractOptimizationProblem problem) {
 		ClusterBasedNichingEA cbn = new ClusterBasedNichingEA();
 		EvolutionStrategies es = new EvolutionStrategies();
-		es.setMyu(15);
+		es.setMu(15);
 		es.setLambda(50);
 		es.setPlusStrategy(false);
 		cbn.setOptimizer(es);
 		ClusteringDensityBased clustering = new ClusteringDensityBased(0.1);
 	    cbn.setConvergenceCA((ClusteringDensityBased)clustering.clone());
 	    cbn.setDifferentationCA(clustering);
-	    cbn.setShowCycle(10); // dont do graphical output
+	    cbn.setShowCycle(0); // dont do graphical output
 	    
 		Population pop = new Population();
 		pop.setPopulationSize(100);
 		problem.initPopulation(pop);
 		
 		return makeParams(cbn, pop, problem, randSeed, defaultTerminator());
+	}
+	
+	public static GOParameters clusteringHillClimbing(AbstractOptimizationProblem problem) {
+		ClusteringHillClimbing chc = new ClusteringHillClimbing();
+		chc.SetProblem(problem);
+		Population pop = new Population();
+		pop.setPopulationSize(100);
+		problem.initPopulation(pop);
+		chc.setHcEvalCycle(1000);
+		chc.setInitialPopSize(100);
+		chc.setStepSizeInitial(0.05);
+		chc.setMinImprovement(0.000001);
+		chc.setNotifyGuiEvery(0);
+		chc.setStepSizeThreshold(0.000001);
+		chc.setSigmaClust(0.05);
+		return makeParams(chc, pop, problem, randSeed, defaultTerminator());
 	}
 }

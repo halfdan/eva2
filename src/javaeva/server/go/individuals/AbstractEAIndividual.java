@@ -658,6 +658,17 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      * @return
      */
     public static String getDefaultDataString(IndividualInterface individual) {
+    	return getDefaultDataString(individual, "; ");
+    }
+    
+    /**
+     * This method creates a default String representation for a number Individual interfaces
+     * containing the genotype.
+     * 
+     * @param individual
+     * @return
+     */
+    public static String getDefaultDataString(IndividualInterface individual, String separator) {
         StringBuffer sb = new StringBuffer("");
         char left = '[';
         char right = ']';
@@ -672,25 +683,25 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
             int[] b = ((InterfaceDataTypeInteger)individual).getIntegerData();
             for (int i = 0; i < b.length; i++) {
                 sb.append(b[i]);
-                if ((i+1) < b.length) sb.append("; ");
+                if ((i+1) < b.length) sb.append(separator);
             }
         } else if (individual instanceof InterfaceDataTypeDouble) {
             double[] b = ((InterfaceDataTypeDouble)individual).getDoubleData();
             for (int i = 0; i < b.length; i++) {
                 sb.append(b[i]);
-                if ((i+1) < b.length) sb.append("; ");
+                if ((i+1) < b.length) sb.append(separator);
             }
         } else if (individual instanceof InterfaceDataTypePermutation) {
             int[] b = ((InterfaceDataTypePermutation)individual).getPermutationData()[0];
             for (int i = 0; i < b.length; i++) {
                 sb.append(b[i]);
-                if ((i+1) < b.length) sb.append("; ");
+                if ((i+1) < b.length) sb.append(separator);
             }
         } else if (individual instanceof InterfaceDataTypeProgram) {
             InterfaceProgram[] b = ((InterfaceDataTypeProgram)individual).getProgramData();
             for (int i = 0; i < b.length; i++) {
                 sb.append(b[i].getStringRepresentation());
-                if ((i+1) < b.length) sb.append("; ");
+                if ((i+1) < b.length) sb.append(separator);
             }
         } else {
         	System.err.println("error in AbstractEAIndividual::getDefaultDataString: type " + individual.getClass() + " not implemented");

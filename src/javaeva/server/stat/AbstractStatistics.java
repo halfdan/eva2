@@ -228,14 +228,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 			if (doTextOutput()) printToTextListener(getOutputHeader(informer, pop)+'\n');
 			firstPlot = false;
 		}
-//		System.out.println("pop fcalls: " +  pop.getFunctionCalls());
-//		if ((pop.getFunctionCalls() % 100) != 0 ) {
-//			System.err.println("error: pop fcalls: " +  pop.getFunctionCalls());
-//			double [] bla= new double[1];
-//			bla[10]=0;
-//			//TODO
-//
-//		}
+
 		if (pop.getSpecificData() != null) {
 			plotSpecificData(pop, informer);
 			return;

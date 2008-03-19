@@ -1,15 +1,13 @@
 package javaeva.server.go.operators.mutation;
 
+import java.util.ArrayList;
+
 import javaeva.server.go.individuals.AbstractEAIndividual;
-import javaeva.server.go.individuals.InterfaceDataTypeDouble;
 import javaeva.server.go.individuals.InterfaceESIndividual;
 import javaeva.server.go.populations.Population;
 import javaeva.server.go.problems.InterfaceOptimizationProblem;
 import javaeva.server.go.tools.RandomNumberGenerator;
-import javaeva.tools.Tag;
 import javaeva.tools.SelectedTag;
-
-import java.util.ArrayList;
 
 /**
  * Created by IntelliJ IDEA.
@@ -41,11 +39,7 @@ public class MutateESGlobal implements InterfaceMutation, java.io.Serializable {
     }
 
     protected void initTags() {
-        Tag[] tag = new Tag[3];
-        tag[0] = new Tag(0, "None");
-        tag[1] = new Tag(1, "Intermediate");
-        tag[2] = new Tag(2, "Discrete");
-        this.m_CrossoverType = new SelectedTag(0, tag);
+        this.m_CrossoverType = new SelectedTag(new String[]{"None", "Intermediate", "Discrete"});
     }
     
     /** This method will enable you to clone a given mutation operator
@@ -105,7 +99,7 @@ public class MutateESGlobal implements InterfaceMutation, java.io.Serializable {
      * @param partners  The original partners
      */
     public void crossoverOnStrategyParameters(AbstractEAIndividual indy1, Population partners) {
-        ArrayList tmpList = new ArrayList();
+        ArrayList<Double> tmpList = new ArrayList<Double>();
         if (indy1.getMutationOperator() instanceof MutateESGlobal) tmpList.add(new Double(((MutateESGlobal)indy1.getMutationOperator()).m_MutationStepSize));
         for (int i = 0; i < partners.size(); i++) {
             if (((AbstractEAIndividual)partners.get(i)).getMutationOperator() instanceof MutateESGlobal) tmpList.add(new Double(((MutateESGlobal)((AbstractEAIndividual)partners.get(i)).getMutationOperator()).m_MutationStepSize));

@@ -19,7 +19,7 @@ public class F11Problem extends F1Problem implements InterfaceMultimodalProblem,
     public F11Problem() {
         this.m_ProblemDimension = 10;
         this.m_Template         = new ESIndividualDoubleData();
-        this.m_DefaultRange 		= 600;
+        setDefaultRange(600);
     }
     
     public F11Problem(F11Problem b) {
@@ -46,7 +46,7 @@ public class F11Problem extends F1Problem implements InterfaceMultimodalProblem,
             result[0]  += Math.pow(x[i], 2);
             tmpProd *= Math.cos((x[i])/Math.sqrt(i+1));
         }
-        result[0] = ((1./this.m_D) * result[0] - tmpProd + 1);
+        result[0] = ((result[0]/this.m_D) - tmpProd + 1);
         return result;
     }
 
@@ -59,7 +59,7 @@ public class F11Problem extends F1Problem implements InterfaceMultimodalProblem,
         result += "F11 Griewank Function:\n";
         result += "Parameters:\n";
         result += "Dimension   : " + this.m_ProblemDimension +"\n";
-        result += "Noise level : " + this.m_Noise + "\n";
+        result += "Noise level : " + this.getNoise() + "\n";
 //        result += "Solution representation:\n";
         //result += this.m_Template.getSolutionRepresentationFor();
         return result;

@@ -13,7 +13,7 @@ import javaeva.server.go.strategies.InterfaceOptimizer;
 
 public abstract class AbstractGOParameters implements InterfaceGOParameters, Serializable {
 	public static boolean   TRACE   = false;
-	protected long            m_Seed  = (long)100.0;
+	protected long            m_Seed  = (long)0.0;
 
 	// Opt. Algorithms and Parameters
 	protected InterfaceOptimizer              m_Optimizer;

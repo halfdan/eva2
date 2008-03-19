@@ -26,21 +26,16 @@ public class F1Problem extends AbstractProblemDouble implements Interface2DBorde
 
     public F1Problem() {
     	super();
+    	setDefaultRange(10);
     }
     
     public F1Problem(F1Problem b) {
-        //AbstractOptimizationProblem
-        if (b.m_Template != null)
-            this.m_Template         = (AbstractEAIndividual)((AbstractEAIndividual)b.m_Template).clone();
-        //F1Problem
-//        if (b.m_OverallBest != null)
-//            this.m_OverallBest      = (AbstractEAIndividual)((AbstractEAIndividual)b.m_OverallBest).clone();
-        this.m_ProblemDimension = b.m_ProblemDimension;
-        this.m_Noise            	= b.m_Noise;
-        this.m_DefaultRange		= b.m_DefaultRange;
-        this.m_XOffSet          = b.m_XOffSet;
-        this.m_YOffSet          = b.m_YOffSet;
-        this.m_UseTestConstraint = b.m_UseTestConstraint;
+    	super();
+    	super.cloneObjects(b);
+    	this.m_ProblemDimension = b.m_ProblemDimension;
+    	this.m_XOffSet          = b.m_XOffSet;
+    	this.m_YOffSet          = b.m_YOffSet;
+    	this.m_UseTestConstraint = b.m_UseTestConstraint;
     }
 
     /** This method returns a deep clone of the problem.
@@ -105,7 +100,7 @@ public class F1Problem extends AbstractProblemDouble implements Interface2DBorde
         sb.append("Dimension   : "); 
         sb.append(this.m_ProblemDimension);
         sb.append("\nNoise level : ");
-        sb.append(this.m_Noise);
+        sb.append(this.getNoise());
 //        sb.append("\nSolution representation:\n");
 //		  sb.append(this.m_Template.getSolutionRepresentationFor());
         return sb.toString();
@@ -179,15 +174,4 @@ public class F1Problem extends AbstractProblemDouble implements Interface2DBorde
     public String useTestConstraintTipText() {
         return "Just a simple test constraint of x[0] >= 1.";
     }
-    
-	public double functionValue(double[] point) {
-		double x[] = new double[m_ProblemDimension];
-		for (int i=0; i<point.length; i++) x[i]=point[i];
-		for (int i=point.length; i<m_ProblemDimension; i++) x[i] = 0;
-		return Math.sqrt(eval(x)[0]);
-	}
-	
-	public double[][] get2DBorder() {
-    	return ((InterfaceDataTypeDouble)this.m_Template).getDoubleRange();                             
-	}
 }

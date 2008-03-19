@@ -29,7 +29,7 @@ import javaeva.server.go.problems.InterfaceOptimizationProblem;
 public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializable {
 
     //private double                          m_MyuRatio                  = 6;
-    private int                             m_Myu                       = 5;
+    private int                             m_Mu                       = 5;
     private int                             m_Lambda                    = 20;
     private int                             m_InitialPopulationSize     = 0;
     private boolean                         m_UsePlusStrategy           = false;
@@ -49,7 +49,7 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
     }
     
     public EvolutionStrategies(int mu, int lambda, boolean usePlus) {
-    	setMyu(mu);
+    	setMu(mu);
     	setLambda(lambda);
     	setPlusStrategy(usePlus);
         this.m_Population.setPopulationSize(this.m_Lambda);
@@ -58,7 +58,7 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
     public EvolutionStrategies(EvolutionStrategies a) {
         this.m_Population                   = (Population)a.m_Population.clone();
         this.m_Problem                      = (InterfaceOptimizationProblem)a.m_Problem.clone();
-        this.m_Myu                          = a.m_Myu;
+        this.m_Mu                          = a.m_Mu;
         this.m_Lambda                       = a.m_Lambda;
         this.m_InitialPopulationSize        = a.m_InitialPopulationSize;
         this.m_UsePlusStrategy              = a.m_UsePlusStrategy;
@@ -183,7 +183,7 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
        //System.out.println("optimize");
         // first perform the environment selection to select myu parents
         this.m_EnvironmentSelection.prepareSelection(this.m_Population);
-        parents = this.m_EnvironmentSelection.selectFrom(this.m_Population, this.m_Myu);
+        parents = this.m_EnvironmentSelection.selectFrom(this.m_Population, this.m_Mu);
         this.m_Population.clear();
         this.m_Population.addPopulation(parents);
         // now generate the lambda offsprings
@@ -296,7 +296,7 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
      * @param plus     True if plus, false if comma strategy
      */
     public void setGenerationStrategy(int myu, int lambda, boolean plus) {
-        this.m_Myu              = myu;
+        this.m_Mu              = myu;
         this.m_Lambda           = lambda;
         this.m_UsePlusStrategy  = plus;
         this.checkPopulationConstraints();
@@ -307,8 +307,8 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
      * accordingly.
      */
     private void checkPopulationConstraints() {
-        if (this.m_Lambda < this.m_Myu) this.m_Lambda = this.m_Myu;
-        if (this.m_UsePlusStrategy) this.m_Population.setPopulationSize(this.m_Myu + this.m_Lambda);
+        if (this.m_Lambda < this.m_Mu) this.m_Lambda = this.m_Mu;
+        if (this.m_UsePlusStrategy) this.m_Population.setPopulationSize(this.m_Mu + this.m_Lambda);
         else this.m_Population.setPopulationSize(this.m_Lambda);
     }
 
@@ -341,7 +341,7 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
      * @return The name of the algorithm
      */
     public String getName() {
-        return "("+getMyu()+(getPlusStrategy() ? "+" : ",")+getLambda()+")-ES";
+        return "("+getMu()+(getPlusStrategy() ? "+" : ",")+getLambda()+")-ES";
     }
 
     /** Assuming that all optimizer will store thier data in a population
@@ -473,14 +473,14 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
     /** This method allows you to set parent population size myu
      * @param myu   The parent population size.
      */
-    public void setMyu(int myu) {
-        this.m_Myu = myu;
+    public void setMu(int mu) {
+        this.m_Mu = mu;
         this.checkPopulationConstraints();
     }
-    public int getMyu() {
-        return this.m_Myu;
+    public int getMu() {
+        return this.m_Mu;
     }
-    public String myuTipText() {
+    public String muTipText() {
         return "This is the parent population size.";
     }
 

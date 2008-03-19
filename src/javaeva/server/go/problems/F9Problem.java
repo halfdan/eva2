@@ -48,7 +48,7 @@ public class F9Problem extends F1Problem implements java.io.Serializable {
         result += "F9 Weighted Sphere Model:\n";
         result += "Parameters:\n";
         result += "Dimension   : " + this.m_ProblemDimension +"\n";
-        result += "Noise level : " + this.m_Noise + "\n";
+        result += "Noise level : " + this.getNoise() + "\n";
         result += "Solution representation:\n";
         //result += this.m_Template.getSolutionRepresentationFor();
         return result;

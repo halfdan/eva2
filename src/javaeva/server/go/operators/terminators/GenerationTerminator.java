@@ -26,7 +26,7 @@ import javaeva.server.go.InterfaceTerminator;
 public class GenerationTerminator implements  InterfaceTerminator,
                                               Serializable {
   /**
-   * Number of fitnness calls on the problem which is optimized
+   * Number of fitness calls on the problem which is optimized
    */
   protected int m_Generations = 100;
    public void init(){}
@@ -40,6 +40,12 @@ public class GenerationTerminator implements  InterfaceTerminator,
    *
    */
   public GenerationTerminator() {
+  }
+  /**
+   *
+   */
+  public GenerationTerminator(int gens) {
+	  m_Generations = gens;
   }
   /**
    *

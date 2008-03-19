@@ -313,7 +313,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
     			if (TRACE) System.err.println("warning, muLambdaRatio produced mu >= lambda.. reducing to mu=lambda-1");
     			mu = species.size() - 1;
     		}
-    		es.setMyu(mu);
+    		es.setMu(mu);
     		es.setLambda(species.size());
     	}
     	if (TRACE) {
@@ -384,12 +384,12 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
                     	m_Species.remove(i);  //REMOVES the converged Species
                     	reinitCount = curSpecies.size();	// add all as new
                     } else {
-                        // now reset the converged species to inactivity size = 1
-                      curSpecies.setPopulationSize(1);
-//                      m_Undifferentiated.incrFunctionCallsby(1); // TODO not so good
-                      curSpecies.clear();
-                      curSpecies.add(best);
-                      reinitCount = curSpecies.size()-1;    // add all but one as new             	
+                    	// now reset the converged species to inactivity size = 1
+                    	reinitCount = curSpecies.size()-1;    // add all but one as new             	
+                    	curSpecies.setPopulationSize(1);
+//                  	m_Undifferentiated.incrFunctionCallsby(1); // TODO not so good
+                    	curSpecies.clear();
+                    	curSpecies.add(best);
                     }
                     // reinit the surplus individuals and add these new individuals to undifferentiated
                     m_Undifferentiated.addPopulation(this.initializeIndividuals(reinitCount));
@@ -427,8 +427,8 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
     		m_Undifferentiated.incrFunctionCallsby(m_Undifferentiated.size());
     	}
         if (this.m_Undifferentiated.getFunctionCalls() % this.m_PopulationSize != 0) {
-        	if (true) System.out.println("### mismatching number of funcalls, inactive species? Correcting by " + (m_PopulationSize - (m_Undifferentiated.getFunctionCalls() % m_PopulationSize)));
-        	if (true) System.out.println("### undiff " + ((isActive(m_Undifferentiated)) ? "active!" : "inactive!"));
+        	if (TRACE) System.out.println("### mismatching number of funcalls, inactive species? Correcting by " + (m_PopulationSize - (m_Undifferentiated.getFunctionCalls() % m_PopulationSize)));
+        	if (TRACE) System.out.println("### undiff " + ((isActive(m_Undifferentiated)) ? "active!" : "inactive!"));
         	m_Undifferentiated.incrFunctionCallsby(m_PopulationSize - (m_Undifferentiated.getFunctionCalls() % m_PopulationSize));
         } else if (TRACE) System.out.println("### undiff active: " + isActive(m_Undifferentiated));        
         
@@ -438,7 +438,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
             
             if (this.m_UseSpeciesDifferentation) {
                 // species differentation phase
-                if (TRACE) System.out.println("-Sepecies Differentation:");
+                if (TRACE) System.out.println("-Species Differentation:");
                 Population[]    ClusterResult;
                 ArrayList<Population>       newSpecies = new ArrayList<Population>();
                 //cluster the undifferentiated population
@@ -755,7 +755,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
         this.m_Optimizer = b;
     	if (b instanceof EvolutionStrategies) {
     		EvolutionStrategies es = (EvolutionStrategies)b;
-    		setMuLambdaRatio(es.getMyu()/(double)es.getLambda());
+    		setMuLambdaRatio(es.getMu()/(double)es.getLambda());
     	}
     }
     public String optimizerTipText() {

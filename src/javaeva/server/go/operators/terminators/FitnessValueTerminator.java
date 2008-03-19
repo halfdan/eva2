@@ -43,8 +43,8 @@ Serializable {
 	/**
 	 *
 	 */
-	public FitnessValueTerminator( double[] x) {
-		m_FitnessValue = (double[])x.clone();
+	public FitnessValueTerminator( double[] v) {
+		m_FitnessValue = (double[])v.clone();
 	}
 	/**
 	 *

@@ -23,10 +23,8 @@ public class B1Problem extends AbstractProblemBinary implements java.io.Serializ
     }
     
     public B1Problem(B1Problem b) {
-        //AbstractOptimizationProblem
-        if (b.m_Template != null)
-            this.m_Template         = (AbstractEAIndividual)((AbstractEAIndividual)b.m_Template).clone();
-        //AbstractBinaryOptimizationProblem
+        super.cloneObjects(b);
+        
         this.m_ProblemDimension = b.m_ProblemDimension;
     }
 
