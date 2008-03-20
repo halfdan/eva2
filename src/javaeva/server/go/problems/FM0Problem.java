@@ -1,14 +1,9 @@
 package javaeva.server.go.problems;
 
 import java.io.Serializable;
-import java.util.List;
 
-import javaeva.server.go.PopulationInterface;
-import javaeva.server.go.individuals.AbstractEAIndividual;
 import javaeva.server.go.individuals.ESIndividualDoubleData;
-import javaeva.server.go.individuals.InterfaceDataTypeDouble;
-import javaeva.server.go.operators.postprocess.PostProcess;
-import javaeva.server.go.populations.Population;
+import javaeva.server.go.strategies.InterfaceOptimizer;
 
 /**
  * Created by IntelliJ IDEA.
@@ -17,7 +12,7 @@ import javaeva.server.go.populations.Population;
  * Time: 11:10:43
  * To change this template use Options | File Templates.
  */
-public class FM0Problem extends AbstractMultiModalProblemKnown implements Interface2DBorderProblem, InterfaceMultimodalProblemKnown, Serializable {
+public class FM0Problem extends AbstractMultiModalProblemKnown implements InterfaceOptimizationProblem, Interface2DBorderProblem, InterfaceMultimodalProblemKnown, Serializable {
  
 	public FM0Problem() {
         this.m_ProblemDimension = 2;
@@ -62,22 +57,6 @@ public class FM0Problem extends AbstractMultiModalProblemKnown implements Interf
         return result;
     }
 
-    /** This method returns a string describing the optimization problem.
-     * @return The description.
-     */
-    public String getStringRepresentation() {
-        String result = "";
-
-        result += "M0 function:\n";
-        result += "This problem has one global and one local optimum.\n";
-        result += "Parameters:\n";
-        result += "Dimension   : " + this.m_ProblemDimension +"\n";
-        result += "Noise level : " + this.getNoise() + "\n";
-        result += "Solution representation:\n";
-        //result += this.m_Template.getSolutionRepresentationFor();
-        return result;
-    }
-
     /** This method will prepare the problem to return a list of all optima
      * if possible and to return quality measures like NumberOfOptimaFound and
      * the MaximumPeakRatio. This method should be called by the user.
@@ -107,6 +86,6 @@ public class FM0Problem extends AbstractMultiModalProblemKnown implements Interf
      * @return description
      */
     public String globalInfo() {
-        return "M0(x) = sin(2*x - 0.5*PI) + 1 + 2*cos(y) + 0.5*x is to be maximized.";
+        return "M0(x) = sin(2*x - 0.5*PI) + 1 + 2*cos(y) + 0.5*x is to be maximized, two optima.";
     }
 }

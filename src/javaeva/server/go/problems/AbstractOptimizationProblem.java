@@ -105,12 +105,12 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
 //    public String getSolutionDataFor(IndividualInterface individual) {
 //    }
 
-    /** This method returns a string describing the optimization problem.
-     * @return The description.
-     */
-    public String getStringRepresentation() {
-        return "AbstractOptimizationProblem: programmer failed to give further details";
-    }
+//    /** This method returns a string describing the optimization problem.
+//     * @return The description.
+//     */
+//    public String getStringRepresentationF() {
+//        return "AbstractOptimizationProblem: programmer failed to give further details";
+//    }
 
     /** This method returns a double value that will be displayed in a fitness
      * plot. A fitness that is to be minimized with a global min of zero

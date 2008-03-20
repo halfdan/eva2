@@ -237,9 +237,7 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
      * @return The description.
      */
     public String getStringRepresentationForProblem(InterfaceOptimizer opt) {
-        String result = "";
-
-        result += "Symbolic Regression Problem:\n";
+        String result = "Symbolic Regression Problem";
         return result;
     }
 

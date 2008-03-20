@@ -15,6 +15,9 @@ public class CombinedTerminator implements InterfaceTerminator, Serializable {
 	private InterfaceTerminator t2 = new EvaluationTerminator();
 	private SelectedTag andOrTag = new SelectedTag("OR", "AND");
 	
+	public static final boolean AND = true;
+	public static final boolean OR = false;
+	
 	/**
 	 *
 	 */
