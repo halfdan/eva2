@@ -2,25 +2,25 @@ package javaeva.server.go.problems;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import javaeva.gui.BeanInspector;
 import javaeva.server.go.individuals.AbstractEAIndividual;
 import javaeva.server.go.individuals.ESIndividualDoubleData;
 import javaeva.server.go.individuals.InterfaceDataTypeDouble;
 import javaeva.server.go.populations.Population;
 import javaeva.server.go.strategies.InterfaceOptimizer;
-import javaeva.server.go.tools.RandomNumberGenerator;
 
-public class ExternalRuntimeProblem extends AbstractOptimizationProblem {
+public class ExternalRuntimeProblem extends AbstractOptimizationProblem implements Interface2DBorderProblem {
 
 	protected AbstractEAIndividual      m_OverallBest       = null;
     protected int                       m_ProblemDimension  = 10;
-    protected boolean                   m_UseTestConstraint = false;
+//    protected boolean                   m_UseTestConstraint = false;
     protected String					m_Command			= "";
-    protected double					defaultRange		= 1;
+    protected double					m_upperBound		= 10;
+    protected double					m_lowerBound		= 0;
 
 
     public ExternalRuntimeProblem() {
@@ -36,7 +36,11 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem {
         if (b.m_OverallBest != null)
             this.m_OverallBest      = (AbstractEAIndividual)((AbstractEAIndividual)b.m_OverallBest).clone();
         this.m_ProblemDimension = b.m_ProblemDimension;
-        this.m_UseTestConstraint = b.m_UseTestConstraint;
+//        this.m_UseTestConstraint = b.m_UseTestConstraint;
+        m_Command = b.m_Command;
+        m_lowerBound = b.m_lowerBound;
+        m_upperBound = b.m_upperBound;
+        
     }
 
     /** This method returns a deep clone of the problem.
@@ -85,30 +89,15 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem {
     }
     
     protected double getRangeLowerBound(int dim) {
-    	return -defaultRange;
+    	return m_lowerBound;
     }
     
     protected double getRangeUpperBound(int dim) {
-    	return defaultRange;
+    	return m_upperBound;
     }
     
     protected double[][] getDoubleRange() {
     	return ((InterfaceDataTypeDouble)this.m_Template).getDoubleRange();                             
-    }
-
-    /** This method evaluates a given population and set the fitness values
-     * accordingly
-     * @param population    The population that is to be evaluated.
-     */
-    public void evaluate(Population population) {
-        AbstractEAIndividual    tmpIndy;
-        //System.out.println("Population size: " + population.size());
-        for (int i = 0; i < population.size(); i++) {
-            tmpIndy = (AbstractEAIndividual) population.get(i);
-            tmpIndy.resetConstraintViolation();
-            this.evaluate(tmpIndy);
-            population.incrFunctionCalls();
-        }
     }
 
     /** This method evaluate a single individual and sets the fitness values
@@ -116,14 +105,28 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem {
      */
     public void evaluate(AbstractEAIndividual individual) {
         double[]        x;
-        double[]        fitness;
+//        double[]        fitness;
 
         x = new double[((InterfaceDataTypeDouble) individual).getDoubleData().length];
         System.arraycopy(((InterfaceDataTypeDouble) individual).getDoubleData(), 0, x, 0, x.length);
 
      //TODO call external runtime
-        Process process;
+        double[] fit = eval(x);
+        individual.SetFitness(fit);
+		        
+//        if (this.m_UseTestConstraint) {
+//            if (x[0] < 1) individual.addConstraintViolation(1-x[0]);
+//        }
+        if ((this.m_OverallBest == null) || (this.m_OverallBest.getFitness(0) > individual.getFitness(0))) {
+            this.m_OverallBest = (AbstractEAIndividual)individual.clone();
+        }
+    }
+    
+	protected double[] eval(double[] x) {
+		Process process;
         ProcessBuilder pb;
+        
+        ArrayList<Double> fitList = new ArrayList<Double>();
 		try {
 			List<String> parameters=new ArrayList<String>();
 			parameters.add(this.m_Command);
@@ -132,40 +135,32 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem {
 			}
 			pb = new ProcessBuilder(parameters);
 			process=pb.start();
-			InputStream is = process.getInputStream();
-			InputStreamReader isr = new InputStreamReader(is);
-			BufferedReader br = new BufferedReader(isr);
+			BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
 			String line;
-			int count=0;
 			while ((line = br.readLine()) != null) {
-				individual.SetFitness(count,new Double(line));
-				count++;
+				line = line.trim();
+				if (line.contains(" ")) {
+					String[] parts = line.split(" ");
+					for (String str : parts) {
+						fitList.add(new Double(str));
+					}
+				} else {
+					fitList.add(new Double(line)); 
+				}
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			System.err.println("IO Error in ExternalRuntimeProblem!");
+			e.printStackTrace();
+		} catch (NumberFormatException e) {
+			System.err.println("Error: " + m_Command + " delivered malformatted output for " + BeanInspector.toString(x));
 			e.printStackTrace();
 		}
-        
-        if (this.m_UseTestConstraint) {
-            if (x[0] < 1) individual.addConstraintViolation(1-x[0]);
-        }
-        if ((this.m_OverallBest == null) || (this.m_OverallBest.getFitness(0) > individual.getFitness(0))) {
-            this.m_OverallBest = (AbstractEAIndividual)individual.clone();
-        }
-    }
-
-    /** Ths method allows you to evaluate a simple bit string to determine the fitness
-     * @param x     The n-dimensional input vector
-     * @return  The m-dimensional output vector.
-     */
-    public double[] doEvaluation(double[] x) {
-        double[] result = new double[1];
-        result[0]     = 0;
-        for (int i = 0; i < x.length; i++) {
-            result[0]  += Math.pow(x[i], 2);
-        }
-        return result;
-    }
+		double[] fit = new double[fitList.size()];
+		for (int i=0; i<fit.length; i++) {
+			fit[i] = fitList.get(i);
+		}
+		return fit;
+	}
 
     /** This method returns a string describing the optimization problem.
      * @param opt       The Optimizer that is used or had been used.
@@ -226,18 +221,18 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem {
         return "Command";
     }
     
-    /** This method allows you to toggle the application of a simple test constraint.
-     * @param b     The mode for the test constraint
-     */
-    public void setUseTestConstraint(boolean b) {
-        this.m_UseTestConstraint = b;
-    }
-    public boolean getUseTestConstraint() {
-        return this.m_UseTestConstraint;
-    }
-    public String useTestConstraintTipText() {
-        return "Just a simple test constraint of x[0] >= 1.";
-    }
+//    /** This method allows you to toggle the application of a simple test constraint.
+//     * @param b     The mode for the test constraint
+//     */
+//    public void setUseTestConstraint(boolean b) {
+//        this.m_UseTestConstraint = b;
+//    }
+//    public boolean getUseTestConstraint() {
+//        return this.m_UseTestConstraint;
+//    }
+//    public String useTestConstraintTipText() {
+//        return "Just a simple test constraint of x[0] >= 1.";
+//    }
 
     /** This method allows you to choose the EA individual
      * @param indy The EAIndividual type
@@ -252,36 +247,43 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem {
 		double x[] = new double[m_ProblemDimension];
 		for (int i=0; i<point.length; i++) x[i]=point[i];
 		for (int i=point.length; i<m_ProblemDimension; i++) x[i] = 0;
-		return Math.sqrt(doEvaluation(x)[0]);
+		return eval(x)[0];
 	}
 	public double[][] get2DBorder() {
 		return getDoubleRange();
 	}
 	
 	/**
-	 * A (symmetric) absolute range limit.
-	 * 
-	 * @return value of the absolute range limit
+	 * @return the m_upperBound
 	 */
-	public double getDefaultRange() {
-		return defaultRange;
+	public double getRangeUpperBound() {
+		return m_upperBound;
 	}
-	
 	/**
-	 * Set a (symmetric) absolute range limit.
-	 * 
-	 * @param defaultRange
+	 * @param bound the m_upperBound to set
 	 */
-	public void setDefaultRange(double defaultRange) {
-		this.defaultRange = defaultRange;
-		if (((InterfaceDataTypeDouble)this.m_Template).getDoubleData().length != m_ProblemDimension) {
-			((InterfaceDataTypeDouble)this.m_Template).setDoubleDataLength(m_ProblemDimension);
-		}
-		((InterfaceDataTypeDouble)this.m_Template).SetDoubleRange(makeRange());
+	public void setRangeUpperBound(double bound) {
+		m_upperBound = bound;
 	}
 	
-	public String defaultRangeTipText() {
-		return "Absolute limit for the symmetric range in any dimension (not used for all f-problems)";
+	public String rangeUpperBoundTipText() {
+		return "Upper bound of the search space in any dimension.";
+	}
+	/**
+	 * @return the m_lowerBound
+	 */
+	public double getRangeLowerBound() {
+		return m_lowerBound;
+	}
+	/**
+	 * @param bound the m_lowerBound to set
+	 */
+	public void setRangeLowerBound(double bound) {
+		m_lowerBound = bound;
+	}	
+	
+	public String rangeLowerBoundTipText() {
+		return "Lower bound of the search space in any dimension.";
 	}
 
 }

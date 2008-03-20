@@ -21,11 +21,11 @@
 \paperorientation portrait
 \secnumdepth 3
 \tocdepth 3
-\paragraph_separation indent
+\paragraph_separation skip
 \defskip medskip
 \quotes_language english
 \papercolumns 1
-\papersides 1
+\papersides 2
 \paperpagestyle default
 \tracking_changes false
 \output_changes false
@@ -344,6 +344,7 @@ To start under GNU/Linux, you can just type:
 \begin_layout Quotation
 
 \family typewriter
+\size small
 $ java -cp JE2Base.jar javaeva.client.EvAClient
 \end_layout
 
@@ -438,7 +439,65 @@ optimizer
  through the input fields.
  A short description will be displayed by tip-text over the name of the
  parameter.
- We will now shortly summarize the components of the workbench.
+ We will now shortly summarize the components of the workbench (Fig.
+\begin_inset ERT
+status open
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+
+\begin_inset LatexCommand \ref{fig:Screenshot-workbench}
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename /afs/cs.uni-tuebingen.de/home/mkron/workspace/JE2Base/doc/pics/screenshot-workbench.jpg
+	lyxscale 60
+	width 48text%
+
+\end_inset
+
+\InsetSpace ~
+\InsetSpace ~
+
+\begin_inset Graphics
+	filename /afs/cs.uni-tuebingen.de/home/mkron/workspace/JE2Base/doc/pics/screenshot-workbench-stats.jpg
+	lyxscale 60
+	width 48text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Caption
+Screenshots of the workbench window, with optimization (left) and statistics
+ (right) parameters.
+\begin_inset LatexCommand \label{fig:Screenshots-workbench}
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsubsection
@@ -450,13 +509,16 @@ The Workbench Window
 
 \end_layout
 
-\begin_layout Itemize
+\begin_layout Paragraph
 Optimization parameters
 \end_layout
 
-\begin_deeper
-\begin_layout Itemize
+\begin_layout Standard
+
+\shape italic
 The Optimizer.
+
+\shape default
  Selects the main optimization method.
  You can choose between classical as well as evolutionary and swarm-based
  optimization methods.
@@ -464,17 +526,25 @@ The Optimizer.
  and try several different optimizers.
 \end_layout
 
-\begin_layout Itemize
-Post-processing parameters.
+\begin_layout Standard
+
+\shape italic
+Post-processing parameters
+\shape default
+.
  In some cases, post processing of the results is desirable, e.g.
  if you want to improve the single found solution by small hill-climbing
  steps, or if you want to retrieve more than one solution from a clustering
  optimization approach.
 \end_layout
 
-\begin_layout Itemize
+\begin_layout Standard
+
+\shape italic
 The Problem.
- The instance of the target function to be optimized is specified here.
+ 
+\shape default
+The instance of the target function to be optimized is specified here.
  You can select from the benchmark problems delivered with the package or
  inherit from the problem class yourself (Sec.
 \begin_inset ERT
@@ -495,8 +565,12 @@ status open
 ).
 \end_layout
 
-\begin_layout Itemize
+\begin_layout Standard
+
+\shape italic
 The Random Seed.
+
+\shape default
  As most algorithms in 
 \noun on
 JavaEvA
@@ -520,9 +594,13 @@ status collapsed
  the multi-run option.
 \end_layout
 
-\begin_layout Itemize
+\begin_layout Standard
+
+\shape italic
 The Termination Criterion.
- Set the criterion by which to stop an optimization run.
+ 
+\shape default
+Set the criterion by which to stop an optimization run.
  E.g., stop after 
 \emph on
 n
@@ -530,30 +608,40 @@ n
  fitness evaluations.
 \end_layout
 
-\end_deeper
-\begin_layout Itemize
+\begin_layout Paragraph
 Statistics
 \end_layout
 
-\begin_deeper
-\begin_layout Itemize
-The Convergence Rate Threshold.
+\begin_layout Standard
+
+\shape italic
+The Convergence Rate Threshold
+\shape default
+.
  Provided the target value is zero, convergence is assumed if a value smaller
  than this threshold is reached.
  For multi-run experiments, the number of hits is counted using this criterion.
 \end_layout
 
-\begin_layout Itemize
-The Number of Multi-runs.
+\begin_layout Standard
+
+\shape italic
+The Number of Multi-runs
+\shape default
+.
  To achieve statistically meaningful results on how well a certain optimizer
  works on a given problem, set this number to do several runs in a row.
  The plot will be averaged, while all data can be collected in an output
  file or text window.
 \end_layout
 
-\begin_layout Itemize
+\begin_layout Standard
+
+\shape italic
 The Fitness to Plot.
- Define which fitness values to plot to the graph window after every generation.
+ 
+\shape default
+Define which fitness values to plot to the graph window after every generation.
  Select 
 \begin_inset Quotes eld
 \end_inset
@@ -573,20 +661,28 @@ worst
  or both.
 \end_layout
 
-\begin_layout Itemize
+\begin_layout Standard
+
+\shape italic
 The Result File Name.
- To collect optimization data, set this String to a desired file name.
+ 
+\shape default
+If you want to collect optimization data, set this String to a desired file
+ name.
  Optimization results will be written to the indicated file in the working
  directory.
 \end_layout
 
-\begin_layout Itemize
+\begin_layout Standard
+
+\shape italic
 Show Text Output.
- If activated, the optimization data will also be shown in a graphical text
+ 
+\shape default
+If activated, the optimization data will also be shown in a graphical text
  window for immediate viewing.
 \end_layout
 
-\end_deeper
 \begin_layout Standard
 Finally, there are three buttons on top.
  The 
@@ -615,95 +711,141 @@ The Plot Window
 \end_layout
 
 \begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename /afs/cs.uni-tuebingen.de/home/mkron/workspace/JE2Base/doc/pics/screenshot-plot-window.jpg
+	lyxscale 60
+	width 55text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Caption
+The plot window, comparing a simple (5,20)-ES and PSO on Rastrigin's after
+ 10 runs each.
+\begin_inset LatexCommand \label{fig:The-plot-window}
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 During the optimization run, the progress of the solution is plottet to
- a graph in a separate window.
+ a graph in a separate window (Fig.
+\begin_inset ERT
+status open
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+
+\begin_inset LatexCommand \ref{fig:The-plot-window}
+
+\end_inset
+
+).
  Usually, the fitness of the best individual of every generation is drawn
  in Y-direction along the number of function calls in X-direction.
  Be aware that for multi-objective problems, only the first fitness dimension
  is shown.
  The 2-dimensional multi-objective problem classes have, however, a pareto-front
- viewer which displays the population with in the two fitness dimensions
- sequentially.
+ viewer which displays the population in the two fitness dimensions sequentially.
  For higher fitness dimensions it is more practical to use external tools
  for visualization.
+ Figure
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+
+\begin_inset LatexCommand \ref{fig:The-plot-window}
+
+\end_inset
+
+, by the way, shows the fitness progress averaged over 10 runs of a (5,20)-ES
+ and a PSO strategy on Rastrigin's Problem: PSO converges slower, but finds
+ better results on the long run, while ES settles earlier on higher plateaus.
  
 \end_layout
 
-\begin_layout Itemize
-The 
-\begin_inset Quotes eld
-\end_inset
-
-Clear
-\begin_inset Quotes erd
-\end_inset
-
- button removes all graphs from the plot window.
+\begin_layout Standard
+The visible buttons have the following functions:
 \end_layout
 
 \begin_layout Itemize
-The 
-\begin_inset Quotes eld
-\end_inset
 
+\emph on
+Clear
+\emph default
+: Remove all graphs from the plot window.
+\end_layout
+
+\begin_layout Itemize
+
+\shape italic
 Log/Lin
-\begin_inset Quotes erd
-\end_inset
-
- button switches between linear and log-scaled view.
+\shape default
+: Switch between linear and log-scaled view.
  Most benchmark problems in 
 \noun on
 JavaEvA
 \noun default
  are implemented with the minimum fitness at zero, so that the log-scale
  view allows to compare and analyze convergence behaviour in detail.
- This may not always be possible in advance, and especially if the target
- fitness may become negative, log-scale view is of course impossible.
+ Of course, if the target fitness may become zero or negative, log-scale
+ view is impossible.
 \end_layout
 
 \begin_layout Itemize
-The 
-\begin_inset Quotes eld
-\end_inset
 
+\shape italic
 Dump
-\begin_inset Quotes erd
-\end_inset
-
- button exports the contained data to standard output.
+\shape default
+: Export the contained data to standard output.
  For each graph, a column is created in the same order they were generated.
 \end_layout
 
 \begin_layout Itemize
-The 
-\begin_inset Quotes eld
-\end_inset
 
-Export...
-\begin_inset Quotes erd
-\end_inset
-
- button creates the same output as 
-\begin_inset Quotes eld
-\end_inset
-
+\shape italic
+Export
+\shape default
+: Create the same output as 
+\shape italic
 Dump
-\begin_inset Quotes erd
-\end_inset
-
- but saves it to a file.
+\shape default
+ and save it to a file.
 \end_layout
 
 \begin_layout Itemize
-The 
-\begin_inset Quotes eld
-\end_inset
 
-Save as JPG...
-\begin_inset Quotes erd
-\end_inset
-
- creates a JPEG image of the plot window and saves it to a file.
+\shape italic
+Save as JPG
+\shape default
+: Create a JPEG image of the plot window and saves it to a file.
 \end_layout
 
 \begin_layout Subsubsection
@@ -809,12 +951,23 @@ There is nothing mystical about that, and of course the analogy is often
 \begin_layout Standard
 This document will not explain in detail how the implemented optimizers
  work, as there is enough literature out there handling these topics.
- For an introduction, we recommend CI-intro?? 
-\begin_inset LatexCommand \cite{Engelbrecht07CI}
+ Look at the suggestions in Sec.
+\begin_inset ERT
+status open
+
+\begin_layout Standard
+
+~
+\end_layout
 
 \end_inset
 
-, !!!, !!!.
+
+\begin_inset LatexCommand \ref{sec:Further-Reading}
+
+\end_inset
+
+ for further reading.
 \end_layout
 
 \begin_layout Subsubsection
@@ -976,7 +1129,7 @@ status open
 
 \begin_layout Standard
 \begin_inset Graphics
-	filename /afs/cs.uni-tuebingen.de/home/mkron/workspace/JE2Base/doc/cluster-graph.eps
+	filename /afs/cs.uni-tuebingen.de/home/mkron/workspace/JE2Base/doc/pics/cluster-graph.eps
 	lyxscale 50
 	width 80col%
 
@@ -1109,6 +1262,7 @@ status collapsed
 \begin_layout Quotation
 
 \family typewriter
+\size small
 $ java -cp JE2Base.jar:JE2Probs.jar javaeva.client.EvAClient
 \end_layout
 
@@ -1154,8 +1308,17 @@ status open
 \begin_layout Quotation
 
 \family typewriter
-$ java -cp JE2Base.jar:JE2Probs.jar:/home/username/workspace javaeva.client.EvAClien
-t
+\size small
+$ java -cp JE2Base.jar:JE2Probs.jar:/home/username/workspace 
+\backslash
+
+\end_layout
+
+\begin_layout Quotation
+
+\family typewriter
+\size small
+javaeva.client.EvAClient
 \end_layout
 
 \begin_layout Standard
@@ -1191,17 +1354,168 @@ External Interfaces
 
 \end_layout
 
+\begin_layout Subsection
+Optimizing Through an External Command
+\begin_inset LatexCommand \label{sub:Optimizing-external-cmd}
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Standard
-\begin_inset Note Comment
+\begin_inset Float figure
+wide false
+sideways false
 status open
 
 \begin_layout Standard
-Optimizing through an external command: Michaels Teil
+\begin_inset Graphics
+	filename /afs/cs.uni-tuebingen.de/home/mkron/workspace/JE2Base/doc/pics/screenshot-ExtRun.jpg
+	width 40col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Caption
+Screenshot of an external runtime problem configuration.
+\begin_inset LatexCommand \label{fig:Screenshot-external-runtime}
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+For easy optimization using a runnable program, we provide the 
+\family typewriter
+ExternalRuntimeProblem
+\family default
+ class.
+ So if you have a runnable function implementation called 
+\begin_inset Quotes eld
+\end_inset
+
+testEval
+\begin_inset Quotes erd
+\end_inset
+
+ (or 
+\begin_inset Quotes eld
+\end_inset
+
+testEval.exe
+\begin_inset Quotes erd
+\end_inset
+
+), that takes a series of double valued arguments and produces a result
+ value as output (on 
+\shape italic
+stdout
+\shape default
+), you can select 
+\family typewriter
+ExternalRuntimeProblem
+\family default
+ in the GUI, enter the path and program name into the command field, adapt
+ boundaries and the problem dimension and just start optimization.
+ For a programm called 
+\shape italic
+testEval
+\shape default
+ with a two-dimensional solution space, which you want to optimize within
+ 
+\begin_inset Formula $[-5,10]^{2}$
+\end_inset
+
+, the configuration can be seen in Fig.
+\begin_inset ERT
+status open
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+
+\begin_inset LatexCommand \ref{fig:Screenshot-external-runtime}
+
+\end_inset
+
+.
+ In the example, 
+\shape italic
+testEval
+\shape default
+ may be called and, in the single objective case, should produce output
+ as in:
+\end_layout
+
+\begin_layout Quotation
+\align left
+
+\family typewriter
+$ /home/mkron/testEval 7.1642923 -4.2346211
+\end_layout
+
+\begin_layout Quotation
+\align left
+
+\family typewriter
+28.1371802
+\end_layout
+
+\begin_layout Quotation
+\align left
+
+\family typewriter
+$ _
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+JavaEvA
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+2
+\noun default
+ starts a system process to run the external programm and converts input/output
+ using Strings, which is of course rather slow.
+ Still, it may sometimes outweigh the costs of reimplementing it anew in
+ Java, or come in handy if you just want to test what 
+\noun on
+JavaEvA
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+2
+\noun default
+ might do for you.
 \end_layout
 
 \begin_layout Subsection
@@ -1975,10 +2289,6 @@ JI=setOptions(JI, optimset(getOptions(JI), 'TolX', 0, 'TolFun', 0))
  the options, or the optimization will not start.
 \end_layout
 
-\begin_layout Standard
-
-\end_layout
-
 \begin_layout Section
 Quickly Adding Your Own Problem Class
 \begin_inset LatexCommand \label{sec:Quickly-Adding-Your-Problem}
@@ -2075,7 +2385,46 @@ simpleprobs.SimpleDoubleProblem
 \family default
  or 
 \family typewriter
-simpleprobs.SimpleBinaryProblem
+simple
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+-
+\end_layout
+
+\end_inset
+
+probs.Simple
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+-
+\end_layout
+
+\end_inset
+
+Binary
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+-
+\end_layout
+
+\end_inset
+
+Problem
 \family default
 , depending on which datatype you want to use.
  Both base types can be used directly from the 
@@ -3109,7 +3458,11 @@ OptimizerFactory.setTerminator(term)
 
 \begin_layout List
 \labelwidthstring 00.00.0000
-EvaluationTerminator: Construct with a maximal number of evaluations.
+
+\emph on
+EvaluationTerminator
+\emph default
+: Construct with a maximal number of evaluations.
  Constructor parameters:
 \family roman
 \series medium
@@ -3135,7 +3488,11 @@ maxEval
 \end_deeper
 \begin_layout List
 \labelwidthstring 00.00.0000
-GenerationTerminator: Terminate after a given number of generations.
+
+\emph on
+GenerationTerminator
+\emph default
+: Terminate after a given number of generations.
  As not all algorithms use constant population sizes, we suggest to use
  EvaluationTerminator preferably.
  Constructor parameters:
@@ -3163,8 +3520,11 @@ gens
 \end_deeper
 \begin_layout List
 \labelwidthstring 00.00.0000
-FitnessValueTerminator: A minimum fitness value (vector) must be reached
- to terminate.
+
+\emph on
+FitnessValueTerminator
+\emph default
+: A minimum fitness value (vector) must be reached to terminate.
  Construct with a double array representing the target fitness value.
  Constructor parameters:
 \family roman
@@ -3191,8 +3551,12 @@ v
 \end_deeper
 \begin_layout List
 \labelwidthstring 00.00.0000
-FitnessConvergenceTerminator: Terminate as soon as there is hardly any improveme
-nt in fitness for a certain period of time (
+
+\emph on
+FitnessConvergenceTerminator
+\emph default
+: Terminate as soon as there is hardly any improvement in fitness for a
+ certain period of time (
 \emph on
 stagnation
 \emph default
@@ -3348,8 +3712,15 @@ th.
 \end_deeper
 \begin_layout List
 \labelwidthstring 00.00.0000
-PhenotypeConvergenceTerminator: In analogy to the FitnessConvergenceTerminator,
- terminate as soon as there is hardly any change in the best phenotype,
+
+\emph on
+PhenotypeConvergenceTerminator
+\emph default
+: In analogy to the 
+\family typewriter
+FitnessConvergenceTerminator
+\family default
+, terminate as soon as there is hardly any change in the best phenotype,
  meaning that 
 \begin_inset Formula $|x_{t-i}^{*}-x_{t-p}^{*}|<th\;\;\forall\,0\leq i\leq p-1$
 \end_inset
@@ -3456,8 +3827,12 @@ th.
 \end_deeper
 \begin_layout List
 \labelwidthstring 00.00.0000
-CombinedTerminator: To do termination right, one might want to combine several
- criteria in a boolean way, i.e.
+
+\emph on
+CombinedTerminator
+\emph default
+: For effective optimization, one might want to combine several criteria
+ in a boolean way, i.e.
  terminate if 
 \begin_inset Formula $20,000$
 \end_inset
@@ -3468,8 +3843,11 @@ CombinedTerminator: To do termination right, one might want to combine several
 \end_inset
 
  evaluations.
- To allow for this, we provide the CombinedTerminator class which just takes
- to terminator instances and combines them logically.
+ To allow for this, we provide the 
+\family typewriter
+CombinedTerminator
+\family default
+ class which just takes to terminator instances and combines them logically.
  Thus, terminators can be nested as required.
  Constructor parameters:
 \end_layout
@@ -3667,7 +4045,7 @@ public class TestingTerminators {
 
 \begin_layout Standard
 
-            true); // AND
+            CombinedTerminator.AND);
 \end_layout
 
 \begin_layout Standard
@@ -3692,7 +4070,7 @@ public class TestingTerminators {
 
 \begin_layout Standard
 
-              false)); // OR
+              CombinedTerminator.OR));
 \end_layout
 
 \begin_layout Standard
@@ -4772,7 +5150,7 @@ This is useful, for example, to search for optima using different resolutions
  helps to identify the real hot spot.
  In Fig.
 \begin_inset ERT
-status open
+status collapsed
 
 \begin_layout Standard
 
@@ -4798,7 +5176,7 @@ status open
 
 \begin_layout Standard
 \begin_inset Graphics
-	filename /afs/cs.uni-tuebingen.de/home/mkron/workspace/JE2Base/doc/fm0-cbn-500.jpg
+	filename /afs/cs.uni-tuebingen.de/home/mkron/workspace/JE2Base/doc/pics/fm0-cbn-500.jpg
 	lyxscale 70
 	width 49col%
 
@@ -4806,7 +5184,7 @@ status open
 
 
 \begin_inset Graphics
-	filename /afs/cs.uni-tuebingen.de/home/mkron/workspace/JE2Base/doc/fm0-cbn-1500.jpg
+	filename /afs/cs.uni-tuebingen.de/home/mkron/workspace/JE2Base/doc/pics/fm0-cbn-1500.jpg
 	lyxscale 70
 	width 49col%
 
@@ -4839,10 +5217,65 @@ The FM0Problem is of course very simple, 2-dimensional and having only two
  The current implementation of CBN is able to find more optima than the
  population size defined, because it is able to reinitialize a converged
  cluster during a run, saving a representative to an archive.
- But for problems such as Ackley !!!, with a lot of deceptive optima, it
- might also be a good strategy to try to find the global optimum first,
- and, as it won't be found in most of the runs, look at the results of the
- single-run solution set.
+ But for problems with a lot of deceptive optima, it might also be a good
+ strategy to try to find the global optimum first, and, as it won't be found
+ in most of the runs, look at the results of the single-run solution set.
+\end_layout
+
+\begin_layout Section
+Further Reading
+\begin_inset LatexCommand \label{sec:Further-Reading}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+As noted before, this introduction does not cover algorithmic basics.
+ We recommend the introduction of Engelbrecht 
+\begin_inset LatexCommand \cite{Engelbrecht07CI}
+
+\end_inset
+
+ for newer strategies (DE, PSO) and Bäck et al.
+ 
+\begin_inset LatexCommand \cite{Baeck99EC1}
+
+\end_inset
+
+ for classical Evolutionary Algorithms.
+ To go into details of 
+\noun on
+JavaEvA
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+2
+\noun default
+, a look on the technical report of 2005 
+\begin_inset LatexCommand \cite{JOptDocumentation}
+
+\end_inset
+
+, though slightly outdated, will still be helpful, as well as the thesis
+ of Felix Streichert 
+\begin_inset LatexCommand \cite{Streichert07}
+
+\end_inset
+
+, one of the main authors of 
+\noun on
+JavaEvA
+\noun default
+.
 \end_layout
 
 \begin_layout Standard
