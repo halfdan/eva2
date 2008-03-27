@@ -215,8 +215,8 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
         for (int i = 0; i < m_Properties.length; i++) {
             // For each property do this
             // Don't display hidden or expert properties.
-            //if (m_Properties[i].isHidden() || m_Properties[i].isExpert()) continue;
-        	// we now display hidden properties (MK)
+            // if (m_Properties[i].isHidden() || m_Properties[i].isExpert()) continue;
+        	// we now look at hidden properties, they can be shown or hidden dynamically (MK)
             String  name    = m_Properties[i].getDisplayName();
             if (TRACE) System.out.println("PSP looking at "+ name);
 

@@ -179,12 +179,12 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
     }
 
     /**
-     * This allows "anyone" to access the problem template and set operators etc.
+     * This allows "anyone" to access the problem's individual template and set operators etc.
      * Subclasses may have a method getEAIndividual additionally with a more
      * specific interface signature, which makes sense for the GUI which decides
      * on what classes to present to the user based on the interface signature. 
      * 
-     * @return
+     * @return the problem's individual template
      */
     public AbstractEAIndividual getIndividualTemplate() {
     	return m_Template;

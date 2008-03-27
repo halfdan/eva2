@@ -15,6 +15,7 @@ import javaeva.server.go.operators.postprocess.PostProcessParams;
 import javaeva.server.go.populations.Population;
 import javaeva.server.modules.GOParameters;
 import javaeva.server.modules.Processor;
+import javaeva.server.stat.AbstractStatistics;
 import javaeva.server.stat.InterfaceTextListener;
 import javaeva.server.stat.StatisticsStandalone;
 
@@ -37,6 +38,7 @@ public class OptimizerRunnable implements Runnable {
 		
 	public OptimizerRunnable(GOParameters params, String outputFilePrefix, boolean restart) {
 		proc = new Processor(new StatisticsStandalone(outputFilePrefix), null, params);
+		((AbstractStatistics)proc.getStatistics()).setSaveParams(false);
 		doRestart = restart;
 	}
 	
@@ -45,7 +47,9 @@ public class OptimizerRunnable implements Runnable {
 	}
 	
 	public void setTextListener(InterfaceTextListener lsnr) {
+		proc.getStatistics().removeTextListener(listener);
 		this.listener = lsnr;
+		if (listener != null) proc.getStatistics().addTextListener(listener);
 	}
 	
 	public void setDoRestart(boolean restart) {
