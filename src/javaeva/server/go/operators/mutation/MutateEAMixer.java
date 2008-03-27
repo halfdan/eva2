@@ -1,14 +1,12 @@
 package javaeva.server.go.operators.mutation;
 
+import java.util.ArrayList;
+
+import javaeva.gui.GenericObjectEditor;
 import javaeva.server.go.individuals.AbstractEAIndividual;
 import javaeva.server.go.populations.Population;
 import javaeva.server.go.problems.InterfaceOptimizationProblem;
 import javaeva.server.go.tools.RandomNumberGenerator;
-import javaeva.client.EvAClient;
-import javaeva.tools.CompileAndLoad;
-
-import java.util.Vector;
-import java.util.StringTokenizer;
 
 /**
  * Created by IntelliJ IDEA.
@@ -26,9 +24,10 @@ public class MutateEAMixer implements InterfaceMutation, java.io.Serializable  {
 
     public MutateEAMixer() {
         InterfaceMutation[] tmpList;
-        Vector mutators = this.getClassesFromProperties("javaeva.server.oa.go.Operators.Mutation.MutateEAMixer", "javaeva.server.oa.go.Operators.Mutation.InterfaceMutation");
+        ArrayList<String> mutators = GenericObjectEditor.getClassesFromProperties("javaeva.server.go.operators.mutation.InterfaceMutation");
         tmpList = new InterfaceMutation[mutators.size()];
          for (int i = 0; i < mutators.size(); i++) {
+        	 if (((String)mutators.get(i)).equals(this.getClass().getName())) continue;
             try {
                 tmpList[i] = (InterfaceMutation)Class.forName((String)mutators.get(i)).newInstance();
             } catch (java.lang.ClassNotFoundException e) {
@@ -55,30 +54,30 @@ public class MutateEAMixer implements InterfaceMutation, java.io.Serializable  {
         this.m_Tau1             = mutator.m_Tau1;
         this.m_LowerLimitChance = mutator.m_LowerLimitChance;
     }
-
-    private Vector getClassesFromProperties(String mySelf, String myInterface) {
-        Vector classes = new Vector();
-        String typeOptions = EvAClient.getProperty(myInterface);
-        if (typeOptions == null) {
-            System.out.println("Warning: No configuration property found in: "  +EvAClient.EVA_PROPERTY_FILE + " "+"for javaeva.server.oa.go.Operators.Mutation.InterfaceMutation");
-        } else {
-            StringTokenizer st = new StringTokenizer(typeOptions, ", ");
-            while (st.hasMoreTokens()) {
-                String current = st.nextToken().trim();
-                if (!current.equalsIgnoreCase(mySelf)) {
-                    try {
-                    	Class c = Class.forName(current);
-                    	classes.addElement(current);
-                    } catch (Exception ex) {
-                        System.out.println("Couldn't load class with name: " + current);
-                        System.out.println("ex:"+ex.getMessage());
-                        ex.printStackTrace();
-                    }
-                }
-            }
-        }
-        return classes;
-    }
+//
+//    private Vector getClassesFromProperties(String mySelf, String myInterface) {
+//        Vector classes = new Vector();
+//        String typeOptions = EvAClient.getProperty(myInterface);
+//        if (typeOptions == null) {
+//            System.out.println("Warning: No configuration property found in: "  +EvAClient.EVA_PROPERTY_FILE + " "+"for javaeva.server.oa.go.Operators.Mutation.InterfaceMutation");
+//        } else {
+//            StringTokenizer st = new StringTokenizer(typeOptions, ", ");
+//            while (st.hasMoreTokens()) {
+//                String current = st.nextToken().trim();
+//                if (!current.equalsIgnoreCase(mySelf)) {
+//                    try {
+//                    	Class c = Class.forName(current);
+//                    	classes.addElement(current);
+//                    } catch (Exception ex) {
+//                        System.out.println("Couldn't load class with name: " + current);
+//                        System.out.println("ex:"+ex.getMessage());
+//                        ex.printStackTrace();
+//                    }
+//                }
+//            }
+//        }
+//        return classes;
+//    }
 
 
     /** This method will enable you to clone a given mutation operator
