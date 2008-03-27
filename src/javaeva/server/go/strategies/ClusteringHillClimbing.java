@@ -230,9 +230,13 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
 	public void freeWilly() {}
 
 	public String getName() {
-		return "Cluster-HC";
+		return "Clustering-HC";
 	}
 
+	public String globalInfo() {
+		return "Similar to multi-start HC, but clusters the population during optimization to remove redundant individuals for efficiency.";
+	}
+	
 	/**
 	 * @return the hcEvalCycle
 	 */
