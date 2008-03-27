@@ -3,15 +3,23 @@
 <title>Statistics Parameter Panel</title>
 </head>
 <body>
- 
 <h1 align="center">Statistics Parameter Panel</h1>
 <center>
 </center><br>
-Here you can edit the :
+Statistical options are:
 <ul>
-  <li>Number of statistical independent runs.</li>
-  <li>Name of result file.</li>
-  <li>Plot fitness of best, worse or both individuals.</li>
+  <li>Convergence rate threshold. Provided the target value is zero, 
+  convergence is assumed if a value smaller than this threshold is reached. 
+  For multi-run experiments, the number of hits is counted using this criterion.</li>
+  <li>Number of multi-runs. To achieve statistically meaningful results on how well
+  a certain optimizer works on a given problem, set this number to do several runs in a row. 
+  The plot will be averaged, while all data can be collected in an output file or text window.</li>
+  <li>The fitness to plot. Define which fitness values to plot to the graph window after every 
+  generation. Select "best", "worst" or both.</li>
+  <li>Result file name. If you want to collect optimization data, set this String to a desired file name.
+   Optimization results will be written to the indicated file in the working directory.</li>
+  <li>Show text output. If activated, the optimization data will also be shown in a graphical text 
+  window for immediate viewing.</li>
 </ul>
 </body>
 </html>

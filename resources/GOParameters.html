@@ -8,12 +8,12 @@
 The GO parameter class is used to change main GO optimization settings. You may:
 <ul>
   <li>Choose the optimizer. Check the optimizer object for further parameters and information.</li>
-  <li>Choose an output file name. If "none" is used, no output file will be written.</li>
+  <li>Set post-processing parameters or leave it turned off.</li>
   <li>Select the problem to be optimized. Check the problem instance for further parameters and information. </li>
-  <li>Set a random seed. For the same seed, an optimization run should yield the same results. Set the seed to zero to use a dynamic seed for each run (using system time).</li>
+  <li>Set a random seed. For the same positive seed, an optimization run should yield the same results. Set the seed to zero to use a dynamic seed for each run (using system time).</li>
   <li>Define the termination criterion. Usually a maximum number of fitness evaluations is set, but 
   	it is also possible to choose a maximum number of generations, an absolute fitness value to be reached, a
-  	convergence criterion measured in fitness change over time, or a combination of those.</li>  
+  	convergence criterion or a combination of those.</li>  
 </ul>
 <b>Note:</b> <br>
 The evolutionary operators used by a strategy are tightly connected to the representation used.
