@@ -1,14 +1,12 @@
 package javaeva.server.go.operators.crossover;
 
+import java.util.ArrayList;
+
+import javaeva.gui.GenericObjectEditor;
 import javaeva.server.go.individuals.AbstractEAIndividual;
 import javaeva.server.go.populations.Population;
 import javaeva.server.go.problems.InterfaceOptimizationProblem;
 import javaeva.server.go.tools.RandomNumberGenerator;
-import javaeva.client.EvAClient;
-import javaeva.tools.CompileAndLoad;
-
-import java.util.Vector;
-import java.util.StringTokenizer;
 
 /**
  * Created by IntelliJ IDEA.
@@ -26,9 +24,10 @@ public class CrossoverEAMixer implements InterfaceCrossover, java.io.Serializabl
 
     public CrossoverEAMixer() {
         InterfaceCrossover[] tmpList;
-        Vector crossers = this.getClassesFromProperties("javaeva.server.oa.go.Operators.Crossover.CrossoverEAMixer", "javaeva.server.oa.go.Operators.Crossover.InterfaceCrossover");
+        ArrayList<String> crossers = GenericObjectEditor.getClassesFromProperties("javaeva.server.go.operators.crossover.InterfaceCrossover");
         tmpList = new InterfaceCrossover[crossers.size()];
          for (int i = 0; i < crossers.size(); i++) {
+        	 if (((String)crossers.get(i)).equals(this.getClass().getName())) continue;
             try {
                 tmpList[i] = (InterfaceCrossover)Class.forName((String)crossers.get(i)).newInstance();
             } catch (java.lang.ClassNotFoundException e) {
@@ -55,30 +54,30 @@ public class CrossoverEAMixer implements InterfaceCrossover, java.io.Serializabl
         this.m_Tau1             = mutator.m_Tau1;
         this.m_LowerLimitChance = mutator.m_LowerLimitChance;
     }
-
-    private Vector getClassesFromProperties(String mySelf, String myInterface) {
-        Vector classes = new Vector();
-        String typeOptions = EvAClient.getProperty(myInterface);
-        if (typeOptions == null) {
-            System.out.println("Warning: No configuration property found in: "  +EvAClient.EVA_PROPERTY_FILE + " "+"for javaeva.server.oa.go.Operators.Mutation.InterfaceMutation");
-        } else {
-            StringTokenizer st = new StringTokenizer(typeOptions, ", ");
-            while (st.hasMoreTokens()) {
-                String current = st.nextToken().trim();
-                if (!current.equalsIgnoreCase(mySelf)) {
-                    try {
-                    	Class c = Class.forName(current);
-                    	classes.addElement(current);
-                    } catch (Exception ex) {
-                        System.out.println("Couldn't load class with name: " + current);
-                        System.out.println("ex:"+ex.getMessage());
-                        ex.printStackTrace();
-                    }
-                }
-            }
-        }
-        return classes;
-    }
+//
+//    private Vector getClassesFromProperties(String mySelf, String myInterface) {
+//        Vector classes = new Vector();
+//        String typeOptions = EvAClient.getProperty(myInterface);
+//        if (typeOptions == null) {
+//            System.out.println("Warning: No configuration property found in: "  +EvAClient.EVA_PROPERTY_FILE + " "+"for javaeva.server.oa.go.Operators.Mutation.InterfaceMutation");
+//        } else {
+//            StringTokenizer st = new StringTokenizer(typeOptions, ", ");
+//            while (st.hasMoreTokens()) {
+//                String current = st.nextToken().trim();
+//                if (!current.equalsIgnoreCase(mySelf)) {
+//                    try {
+//                    	Class c = Class.forName(current);
+//                    	classes.addElement(current);
+//                    } catch (Exception ex) {
+//                        System.out.println("Couldn't load class with name: " + current);
+//                        System.out.println("ex:"+ex.getMessage());
+//                        ex.printStackTrace();
+//                    }
+//                }
+//            }
+//        }
+//        return classes;
+//    }
 
 
     /** This method will enable you to clone a given mutation operator
@@ -166,7 +165,7 @@ public class CrossoverEAMixer implements InterfaceCrossover, java.io.Serializabl
      * @return description
      */
     public String globalInfo() {
-        return "This mmeta-mutation operator allows you to combine multiple alternative mutation operators.";
+        return "This meta-mutation operator allows you to combine multiple alternative mutation operators.";
     }
 
     /** Choose the set of crossers.
