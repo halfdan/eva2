@@ -3,7 +3,6 @@ package javaeva;
 import java.util.BitSet;
 import java.util.Vector;
 
-import javaeva.gui.BeanInspector;
 import javaeva.server.go.IndividualInterface;
 import javaeva.server.go.InterfacePopulationChangedEventListener;
 import javaeva.server.go.InterfaceTerminator;
@@ -41,7 +40,6 @@ import javaeva.server.go.strategies.ParticleSwarmOptimization;
 import javaeva.server.go.strategies.SimulatedAnnealing;
 import javaeva.server.go.strategies.Tribes;
 import javaeva.server.modules.GOParameters;
-import javaeva.tools.SelectedTag;
 
 /**
  * <p>
@@ -73,48 +71,19 @@ public class OptimizerFactory {
 	private static InterfaceTerminator	term	         = null;
 
 	public final static int	           STD_ES	         = 1;
-
 	public final static int	           CMA_ES	         = 2;
-
 	public final static int	           STD_GA	         = 3;
-
 	public final static int	           PSO	           = 4;
-
 	public final static int	           DE	             = 5;
-
 	public final static int	           TRIBES	         = 6;
-
 	public final static int	           RANDOM	         = 7;
-
 	public final static int	           HILLCL	         = 8;
-
 	public final static int	           CBN_ES	         = 9;
-
 	public final static int	           CL_HILLCL	     = 10;
 
 	public final static int	           defaultFitCalls	= 10000;
-
 	public final static int	           randSeed	       = 0;
-
 	private static OptimizerRunnable	 lastRunnable	   = null;
-
-	/**
-	 * The topologies for the PSO algorithm. Contains
-	 * <ul>
-	 * <li>Linear</li>
-	 * <li>Grid</li>
-	 * <li>Star</li>
-	 * <li>Multi-Swarm</li>
-	 * <li>Tree</li>
-	 * <li>HPSO</li>
-	 * <li>Random
-	 * </ul>
-	 */
-	public static SelectedTag	         topology	       = new SelectedTag(
-	                                                       "Linear", "Grid",
-	                                                       "Star", "Multi-Swarm",
-	                                                       "Tree", "HPSO",
-	                                                       "Random");
 
 	/**
 	 * Add an InterfaceTerminator to any new optimizer in a boolean combination.
@@ -174,27 +143,24 @@ public class OptimizerFactory {
 		es.setMu(15);
 		es.setLambda(50);
 		es.setPlusStrategy(false);
-
-		// TODO improve this by adding getEAIndividual to AbstractEAIndividual?
-		Object maybeTemplate = BeanInspector.callIfAvailable(problem,
-		    "getEAIndividual", null);
-		if ((maybeTemplate != null)
-		    && (maybeTemplate instanceof InterfaceESIndividual)) {
+		
+		// TODO improve this by adding getEAIndividual to AbstractEAIndividual? 
+		AbstractEAIndividual indyTemplate  = problem.getIndividualTemplate();
+		if ((indyTemplate != null) && (indyTemplate instanceof InterfaceESIndividual)) {
 			// Set CMA operator for mutation
-			AbstractEAIndividual indy = (AbstractEAIndividual) maybeTemplate;
+			AbstractEAIndividual indy = (AbstractEAIndividual)indyTemplate;
 			MutateESCovarianceMartixAdaption cmaMut = new MutateESCovarianceMartixAdaption();
 			cmaMut.setCheckConstraints(true);
 			indy.setMutationOperator(cmaMut);
 			indy.setCrossoverOperator(new CrossoverESDefault());
 		} else {
-			System.err
-			    .println("Error, CMA-ES is implemented for ES individuals only (requires double data types)");
+			System.err.println("Error, CMA-ES is implemented for ES individuals only (requires double data types)");
 			return null;
 		}
-
+		
 		Population pop = new Population();
 		pop.setPopulationSize(es.getLambda());
-
+		
 		return makeParams(es, pop, problem, randSeed, defaultTerminator());
 	}
 
@@ -442,8 +408,7 @@ public class OptimizerFactory {
 		pso.setPhi1(phi1);
 		pso.setPhi2(phi2);
 		pso.setSpeedLimit(k);
-		topology.setSelectedTag(selectedTopology);
-		pso.setTopology(topology);
+		pso.getTopology().setSelectedTag(selectedTopology);
 		pso.addPopulationChangedEventListener(listener);
 		pso.init();
 
@@ -508,48 +473,44 @@ public class OptimizerFactory {
 	public static int getDefaultFitCalls() {
 		return defaultFitCalls;
 	}
+	
+///////////////////////////// constructing a default OptimizerRunnable
 
-	public static OptimizerRunnable getOptRunnable(final int optType,
-	    AbstractOptimizationProblem problem, int fitCalls, String outputFilePrefix) {
-		OptimizerRunnable opt = null;
+	public static GOParameters getParams(final int optType, AbstractOptimizationProblem problem) {
 		switch (optType) {
 		case STD_ES:
-			opt = new OptimizerRunnable(standardES(problem), outputFilePrefix);
-			break;
+			return standardES(problem); 
 		case CMA_ES:
-			opt = new OptimizerRunnable(cmaES(problem), outputFilePrefix);
-			break;
+			return cmaES(problem); 
 		case STD_GA:
-			opt = new OptimizerRunnable(standardGA(problem), outputFilePrefix);
-			break;
+			return standardGA(problem); 
 		case PSO:
-			opt = new OptimizerRunnable(standardPSO(problem), outputFilePrefix);
-			break;
+			return standardPSO(problem);
 		case DE:
-			opt = new OptimizerRunnable(standardDE(problem), outputFilePrefix);
-			break;
+			return standardDE(problem); 
 		case TRIBES:
-			opt = new OptimizerRunnable(tribes(problem), outputFilePrefix);
-			break;
+			return tribes(problem); 
 		case RANDOM:
-			opt = new OptimizerRunnable(monteCarlo(problem), outputFilePrefix);
-			break;
+			return monteCarlo(problem); 
 		case HILLCL:
-			opt = new OptimizerRunnable(hillClimbing(problem), outputFilePrefix);
-			break;
+			return hillClimbing(problem); 
 		case CBN_ES:
-			opt = new OptimizerRunnable(cbnES(problem), outputFilePrefix);
-			break;
+			return cbnES(problem); 
 		case CL_HILLCL:
-			opt = new OptimizerRunnable(clusteringHillClimbing(problem),
-			    outputFilePrefix);
-			break;
+			return clusteringHillClimbing(problem);
 		default:
 			System.err.println("Error: optimizer type " + optType + " is unknown!");
 			return null;
 		}
-		if (fitCalls != defaultFitCalls)
-		  opt.getGOParams().setTerminator(new EvaluationTerminator(fitCalls));
+	}
+	
+	public static OptimizerRunnable getOptRunnable(final int optType, AbstractOptimizationProblem problem, int fitCalls, String outputFilePrefix) {
+		OptimizerRunnable opt = null;
+		GOParameters params = getParams(optType, problem);
+		if (params != null) {
+			opt = new OptimizerRunnable(params, outputFilePrefix);
+			if (fitCalls != defaultFitCalls) opt.getGOParams().setTerminator(new EvaluationTerminator(fitCalls));
+		}
 		return opt;
 	}
 

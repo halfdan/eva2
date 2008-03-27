@@ -333,14 +333,16 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
      * @param listener
      */
     public void performNewPostProcessing(PostProcessParams ppp, InterfaceTextListener listener) {
-    	ppp.hideHideable(); // a bit mean: as we may have several instances of ppp in different states, make sure Bean-"hidden" state is consistent for output.
-    	if (listener != null) listener.println("Starting post processing... " + BeanInspector.toString(ppp));
-    	resPop = goParams.getOptimizer().getAllSolutions();
-    	if (resPop.getFunctionCalls() != goParams.getOptimizer().getPopulation().getFunctionCalls()) {
-//    		System.err.println("bad case in Processor::performNewPostProcessing ");
-    		resPop.SetFunctionCalls(goParams.getOptimizer().getPopulation().getFunctionCalls());
+    	if (ppp.isDoPostProcessing()) {
+	    	ppp.hideHideable(); // a bit mean: as we may have several instances of ppp in different states, make sure Bean-"hidden" state is consistent for output.
+	    	if (listener != null) listener.println("Post processing params: " + BeanInspector.toString(ppp));
+	    	resPop = goParams.getOptimizer().getAllSolutions();
+	    	if (resPop.getFunctionCalls() != goParams.getOptimizer().getPopulation().getFunctionCalls()) {
+	//    		System.err.println("bad case in Processor::performNewPostProcessing ");
+	    		resPop.SetFunctionCalls(goParams.getOptimizer().getPopulation().getFunctionCalls());
+	    	}
+	    	if (!resPop.contains(m_Statistics.getBestSolution())) resPop.add(m_Statistics.getBestSolution()); // this is a minor cheat but guarantees that the best solution ever found is contained in the final results
+	    	resPop = PostProcess.postProcess(ppp, resPop, (AbstractOptimizationProblem)goParams.getProblem(), listener);
     	}
-    	if (!resPop.contains(m_Statistics.getBestSolution())) resPop.add(m_Statistics.getBestSolution()); // this is a minor cheat but guarantees that the best solution ever found is contained in the final results
-    	resPop = PostProcess.postProcess(ppp, resPop, (AbstractOptimizationProblem)goParams.getProblem(), listener);
     }
 }

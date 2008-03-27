@@ -18,7 +18,11 @@ import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
+
+import javaeva.tools.SelectedTag;
+import javaeva.tools.Tag;
 
 /*
  *  ==========================================================================*
@@ -30,24 +34,27 @@ public class BeanInspector {
 
 //	public static int  step = 0;
 //	public static String check(String s) {
-//
-//		s=s.replace('$','_');
-//		s=s.replace(';','_');
-////		String ret = null;
-////		try {
-////		RE r = new RE("\\[");
-////		ret = r.subst(s,"");
-////		//ret.substring();
-////		//ret
-////		} catch (Exception e) {e.getMessage();};
-////		System.out.println("s="+s+"  ret"+ret);
-//		if (s.equals("[D")) return "Double_Array";
-//		if (s.startsWith("[D")) return s.substring(2);
-//		if (s.startsWith("[L")) return s.substring(2);
-//
-//		return s;
+
+//	s=s.replace('$','_');
+//	s=s.replace(';','_');
+////	String ret = null;
+////	try {
+////	RE r = new RE("\\[");
+////	ret = r.subst(s,"");
+////	//ret.substring();
+////	//ret
+////	} catch (Exception e) {e.getMessage();};
+////	System.out.println("s="+s+"  ret"+ret);
+//	if (s.equals("[D")) return "Double_Array";
+//	if (s.startsWith("[D")) return s.substring(2);
+//	if (s.startsWith("[L")) return s.substring(2);
+
+//	return s;
 //	}
 
+	/**
+	 * Check for equality based on bean properties of two target objects.
+	 */
 	public static boolean equalProperties(Object Target_1, Object Target_2) {
 		if (Target_1 == null || Target_2 == null) {
 			System.out.println("");
@@ -135,7 +142,7 @@ public class BeanInspector {
 		// try the object itself
 		if (Target instanceof String) return (String)Target; // directly return a string object
 		Class<? extends Object> type = Target.getClass();
-		
+
 		if (type.isArray()) { // handle the array case
 			StringBuffer sbuf = new StringBuffer("[ ");
 			int len = Array.getLength(Target);
@@ -149,7 +156,7 @@ public class BeanInspector {
 
 		if (Target instanceof List) { // handle the list case
 			StringBuffer sbuf = new StringBuffer("[ ");
-			List lst = (List)Target;
+			List<?> lst = (List<?>)Target;
 			for (Object o : lst) {
 				sbuf.append(o.toString());
 				sbuf.append("; ");
@@ -159,7 +166,7 @@ public class BeanInspector {
 			return sbuf.toString();
 		}
 
-		
+
 		Method[] methods = Target.getClass().getDeclaredMethods();
 		for (int ii = 0; ii < methods.length; ii++) { // check if the object has its own toString method, in this case use it
 			if ((methods[ii].getName().equals("toString") /*|| (methods[ii].getName().equals("getStringRepresentation"))*/) && (methods[ii].getParameterTypes().length == 0)) {
@@ -291,27 +298,341 @@ public class BeanInspector {
 			}
 		}
 	}
-	
-    
-    public static Object callIfAvailable(Object obj, String mName, Object[] args) {
-    	Method meth = hasMethod(obj, mName);
-    	if (meth != null) {
-    		try {
-    			return meth.invoke(obj, args);
-    		} catch(Exception e) {
-    			System.err.println("Error on calling method "+mName + " on " + obj.getClass().getName());
-    			return null;
-    		}
-    	} else return null;
-    }
-    
-    public static Method hasMethod(Object obj, String mName) {
-    	Class cls = obj.getClass();
-    	Method[] meths = cls.getMethods();
-    	for (Method method : meths) {
+
+	/**
+	 * Call a method by a given name with given arguments, if the method is available.
+	 * Returns the return values of the call or null if it isnt found.
+	 * This of course means that the caller is unable to distinguish between "method not found"
+	 * and "method found and it returned null".
+	 * 
+	 * @param obj
+	 * @param mName
+	 * @param args
+	 * @return the return value of the called method or null
+	 */
+	public static Object callIfAvailable(Object obj, String mName, Object[] args) {
+		Method meth = hasMethod(obj, mName);
+		if (meth != null) {
+			try {
+				return meth.invoke(obj, args);
+			} catch(Exception e) {
+				System.err.println("Error on calling method "+mName + " on " + obj.getClass().getName());
+				return null;
+			}
+		} else return null;
+	}
+
+	/**
+	 * Check whether an object has a method by the given name. Return
+	 * it if found, or null if not.
+	 *  
+	 * @param obj
+	 * @param mName the method name
+	 * @return the method or null if it isn't found
+	 */
+	public static Method hasMethod(Object obj, String mName) {
+		Class<?> cls = obj.getClass();
+		Method[] meths = cls.getMethods();
+		for (Method method : meths) {
 			if (method.getName().equals(mName)) return method;
 		}
-    	return null;
-    }
-}
+		return null;
+	}
+	
+	/**
+	 * Just concatenates getClassDescription(obj) and getMemberDescriptions(obj, withValues).
+	 * 
+	 * @param obj	target object
+	 * @param withValues	if true, member values are displayed as well 
+	 * @return an info string about class and members of the given object
+	 */
+	public static String getDescription(Object obj, boolean withValues) {
+		StringBuffer sbuf = new StringBuffer(getClassDescription(obj));
+		sbuf.append("\n"); 
+		String[] mems = getMemberDescriptions(obj, withValues);
+		for (String str : mems) {
+			sbuf.append(str);
+		}
+		return sbuf.toString();
+	}
+	
+	/**
+	 * Check for info methods on the object to be provided by the developer
+	 * and return their text as String.
+	 * 
+	 * @param obj
+	 * @return String information about the object's class
+	 */
+	public static String getClassDescription(Object obj) {
+		StringBuffer infoBf = new StringBuffer("Type: ");
+		infoBf.append(obj.getClass().getName());
+		infoBf.append("\t");
+		
+		Object          args[]  = { };
+		Object ret; 
+		
+		for (String meth : new String[]{"getName", "globalInfo"}) {
+			ret = callIfAvailable(obj, meth, args);
+			if (ret != null) {
+				infoBf.append("\t");
+				infoBf.append((String)ret);
+			}
+		}
+		
+		return infoBf.toString();
+	}
 
+	/**
+	 * Return an info string on the members of the object class, containing name, type, optional
+	 * value and tool tip text if available. The type is accompagnied by a tag "common" or "restricted",
+	 * indicating whether the member property is normal or hidden, meaning it may have effect depending
+	 * on settings of other members only, for instance.
+	 * 
+	 * @param obj	target object
+	 * @param withValues	if true, member values are displayed as well 
+	 * @return an info string about class and members of the given object
+	 */
+	public static String[] getMemberDescriptions(Object obj, boolean withValues) {
+		BeanInfo bi;    
+		try {
+			bi      = Introspector.getBeanInfo(obj.getClass());
+		} catch(IntrospectionException e) {
+			e.printStackTrace();
+			return null;
+		}
+		PropertyDescriptor[] 	m_Properties = bi.getPropertyDescriptors();
+		ArrayList<String> 				memberInfoList  = new ArrayList<String>();
+		
+		for (int i = 0; i < m_Properties.length; i++) {
+			if (m_Properties[i].isExpert()) continue;
+			
+			String  name    = m_Properties[i].getDisplayName();
+			if (TRACE) System.out.println("PSP looking at "+ name);
+
+			Method  getter  = m_Properties[i].getReadMethod();
+			Method  setter  = m_Properties[i].getWriteMethod();
+			// Only display read/write properties.
+			if (getter == null || setter == null) continue;
+			
+			try {
+				Object          args[]  = { };
+				Object          value   = getter.invoke(obj, args);
+
+				// Don't try to set null values:
+				if (value == null) {
+					// If it's a user-defined property we give a warning.
+					String getterClass = m_Properties[i].getReadMethod().getDeclaringClass().getName();
+					if (getterClass.indexOf("java.") != 0) System.err.println("Warning: Property \"" + name+ "\" has null initial value.  Skipping.");
+					continue;
+				}
+
+				StringBuffer memberInfoBf = new StringBuffer("Member:\t");
+				memberInfoBf.append(name);
+				
+				memberInfoBf.append("\tType: ");
+				
+				if (m_Properties[i].isHidden()) {
+					memberInfoBf.append("restricted, ");
+				} else {
+					memberInfoBf.append("common, ");
+				}
+				String typeName = value.getClass().getName();
+				if (value instanceof SelectedTag) {
+					Tag[] tags = ((SelectedTag)value).getTags();
+					memberInfoBf.append("String in {");
+					for (int k=0; k<tags.length; k++) {
+						memberInfoBf.append(tags[k].getString());
+						if (k+1<tags.length) memberInfoBf.append(", ");
+					}
+					memberInfoBf.append("}");
+				} else memberInfoBf.append(typeName);
+				
+				if (withValues) {
+					memberInfoBf.append('\t');
+					memberInfoBf.append("Value: \t");
+					memberInfoBf.append(toString(value));
+				}
+				
+				// now look for a TipText method for this property
+				Method tipTextMethod = hasMethod(obj, name + "TipText");
+				if (tipTextMethod == null) {
+					memberInfoBf.append("\tNo further hint.");
+				} else {
+					memberInfoBf.append("\tHint: ");
+					memberInfoBf.append(toString(tipTextMethod.invoke(obj, args)));
+				}
+				
+				memberInfoBf.append('\n');
+				memberInfoList.add(memberInfoBf.toString());
+			} catch (Exception ex) {
+				System.err.println("Skipping property "+name+" ; exception: " + ex.getMessage());
+				ex.printStackTrace();
+			} // end try
+		}	// end for
+		return memberInfoList.toArray(new String[1]);
+	}
+	
+	/**
+	 * Take an object of primitive type (like int, Integer etc) and convert it to double.
+	 * 
+	 * @param val
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
+	public static double toDouble(Object val) throws IllegalArgumentException {
+		if (val instanceof Integer) return ((Integer)val).doubleValue();
+		else if (val instanceof Double) return ((Double)val).doubleValue();
+		else if (val instanceof Boolean) return (((Boolean)val) ? 1. : 0.); 
+		else if (val instanceof Character) return ((Character)val).charValue(); 
+		else if (val instanceof Byte) return ((Byte)val).doubleValue(); 
+		else if (val instanceof Short) return ((Short)val).doubleValue(); 
+		else if (val instanceof Long) return ((Long)val).doubleValue(); 
+		else if (val instanceof Float) return ((Float)val).doubleValue(); 
+		else if (val instanceof Void) return 0;
+		throw new IllegalArgumentException("Illegal type, cant convert " + val.getClass() + " to double.");
+	}
+	
+	/**
+	 * Take a String and convert it to a destined data type using the appropriate function.
+	 * 
+	 * @param str
+	 * @param destType
+	 * @return
+	 */
+	public static Object stringToPrimitive(String str, Class<?> destType) throws NumberFormatException {
+		if ((destType == Integer.class) || (destType == int.class)) return Integer.valueOf(str);
+		else if ((destType == Double.class) || (destType == double.class)) return Double.valueOf(str);
+		else if ((destType == Boolean.class) || (destType == boolean.class)) return Boolean.valueOf(str); 
+		else if ((destType == Byte.class) || (destType == byte.class)) return Byte.valueOf(str);
+		else if ((destType == Short.class) || (destType == short.class)) return Short.valueOf(str);
+		else if ((destType == Long.class) || (destType == long.class)) return Long.valueOf(str);
+		else if ((destType == Float.class) || (destType == float.class)) return Float.valueOf(str);
+		else if ((destType == Character.class) || (destType == char.class)) return str.charAt(0);
+		else {
+			// if (destType == Void.class)
+			System.err.println("warning, value interpreted as void type");
+			return 0;
+		}
+	}
+	
+	/**
+	 * Take a double value and convert it to a primitive object.
+	 * 
+	 * @param d
+	 * @param destType
+	 * @return
+	 */
+	public static Object doubleToPrimitive(Double d, Class<?> destType) {
+		if ((destType == Double.class) || (destType == double.class)) return d;
+		if ((destType == Integer.class) || (destType == int.class)) return new Integer(d.intValue());
+		else if ((destType == Boolean.class) || (destType == boolean.class)) return new Boolean(d != 0); 
+		else if ((destType == Byte.class) || (destType == byte.class)) return new Byte(d.byteValue());
+		else if ((destType == Short.class) || (destType == short.class)) return new Short(d.shortValue());
+		else if ((destType == Long.class) || (destType == long.class)) return new Long(d.longValue());
+		else if ((destType == Float.class) || (destType == float.class)) return new Float(d.floatValue());
+		else { // this makes hardly sense...
+			System.err.println("warning: converting from double to character or void...");
+			if ((destType == Character.class) || (destType == char.class)) return new Character(d.toString().charAt(0));
+			else //if (destType == Void.class) return 0;
+				return 0;
+		}
+	}
+	
+	/**
+	 * Checks whether a type belongs to primitive (int, long, double, char etc.) or the Java encapsulations (Integer, Long etc.)
+	 * 
+	 * @param cls
+	 * @return
+	 */
+	public static boolean isJavaPrimitive(Class<?> cls) {
+		if (cls.isPrimitive()) return true;
+		if ((cls == Double.class) || (cls == Integer.class) || (cls == Boolean.class) 
+				|| (cls == Byte.class) || (cls == Short.class) || (cls == Long.class) || (cls == Float.class)) return true;
+		return false;
+	}
+	
+	/**
+	 * Try to convert an object to a destination type, especially for primitive types (int, double etc.
+	 * but also Integer, Double etc.).
+	 *  
+	 * @param destType
+	 * @param value
+	 * @return
+	 */
+	public static Object decodeType(Class<?> destType, Object value) {
+		if (destType.isAssignableFrom(value.getClass())) {
+			// value is already of destType or assignable (subclass), so just return it
+			return value;
+		}
+		if (destType == String.class || destType == SelectedTag.class) {
+			if (value.getClass() == String.class) return value;
+			else return value.toString();
+		} else if (isJavaPrimitive(destType)) {
+			try {
+				if (value.getClass() == String.class) return stringToPrimitive((String)value, destType);
+				else {
+					return doubleToPrimitive(toDouble(value), destType);
+				}
+			} catch(Exception e) {
+				System.err.println("Error in converting type of " + value + " to " + destType.getName() + ": " + e.getMessage());
+				return null;
+			}
+		}
+		System.err.println("Error: unknown type, skipping decode " + value.getClass().getName() + " to " +  destType.getName());
+		return value;
+	}
+
+	/**
+	 * Try to set an object member to a given value.
+	 * Returns true if successful, else false. The types are adapted as generally as possible,
+	 * converting using the decodeType() method.
+	 * 
+	 * @param obj
+	 * @param mem
+	 * @param val
+	 * @return true if successful, else false
+	 */
+	public static boolean setMem(Object obj, String mem, Object val) {
+		BeanInfo bi;    
+		try {
+			bi      = Introspector.getBeanInfo(obj.getClass());
+		} catch(IntrospectionException e) {
+			e.printStackTrace();
+			return false;
+		}
+		PropertyDescriptor[] 	m_Properties = bi.getPropertyDescriptors();
+//		Method getter = null;
+		Method setter = null;
+		Class<?> type = null;
+//		System.err.println("looking at " + toString(obj));
+		for (int i = 0; i < m_Properties.length; i++) {
+			if (m_Properties[i].getDisplayName().equals(mem)) {
+//				System.err.println("looking at " + m_Properties[i].getDisplayName());
+//				getter  = m_Properties[i].getReadMethod();
+				setter  = m_Properties[i].getWriteMethod();
+				type 	= m_Properties[i].getPropertyType();
+				break;
+			}
+		}
+		if (setter != null) {
+			try {
+//				System.out.println("setting value...");
+				Object[] args = new Object[]{ decodeType(type, val) };
+				if (args[0] != null) {
+					setter.invoke(obj, args);
+					return true;
+				} else  {
+					System.err.println("no value to set");
+					return false;
+				}
+			} catch (Exception e) {
+				System.err.println("Exception in invoking setter: "+e.getMessage());
+//				e.printStackTrace(); 
+				return false;
+			} 
+		} else {
+			System.err.println("Setter method for " + mem + " not found!");
+			return false;
+		}
+	}
+}

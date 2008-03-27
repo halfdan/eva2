@@ -137,7 +137,7 @@ public class StatisticsStandalone extends AbstractStatistics implements Interfac
 			//System.out.println("m_FitnessMeanofALL  "+m_FitnessMeanofALL);
 			m_FitnessMedianofALL = getMedian(m_BestFitnessAtEnd);
 
-			finalizeOutput();
+//			finalizeOutput();
 		}
 	}
 

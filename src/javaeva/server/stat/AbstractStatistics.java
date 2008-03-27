@@ -21,6 +21,8 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 	protected String startDate;
 	protected long startTime;
 	
+
+	private boolean saveParams = true;
 	private boolean firstPlot = true;
 	protected int functionCalls;
 	protected int functionCallSum;
@@ -45,7 +47,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 	}
 	
 	public void addTextListener(InterfaceTextListener listener) {
-		textListeners.add(listener);
+		if (!textListeners.contains(listener)) textListeners.add(listener);
 	}
 	
 	public boolean removeTextListener(InterfaceTextListener listener) {
@@ -73,6 +75,15 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 		} else resultOut = null;
 	}
 	
+	/**
+	 * If set to true, before every run the parameters will be stored to a file.
+	 * 
+	 * @param doSave
+	 */
+	public void setSaveParams(boolean doSave) {
+		saveParams = doSave;
+	}
+
 	public void startOptPerformed(String infoString, int runNumber) {
 		if (TRACE) System.out.println("AbstractStatistics.startOptPerformed " + runNumber);
 		if (runNumber == 0) {
@@ -80,7 +91,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 			firstPlot = true;
 			optRunsPerformed = 0;
 			convergenceCnt = 0;
-			m_StatisticsParameter.saveInstance();
+			if (saveParams) m_StatisticsParameter.saveInstance();
 			initOutput();
 			bestCurrentIndividual = null;
 			bestIndivdualAllover = null;

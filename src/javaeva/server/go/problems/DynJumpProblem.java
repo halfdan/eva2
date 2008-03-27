@@ -169,7 +169,7 @@ public class DynJumpProblem extends AbstractDynTransProblem {
 		return "DynJumpProblem";
 	}
     public String globalInfo() {
-    	return "A real valued problem jumping"; 
+    	return "A real valued problem jumping dynamically."; 
     }
     
 	public String severityTipText() {
@@ -182,10 +182,10 @@ public class DynJumpProblem extends AbstractDynTransProblem {
 		this.lambda = lambda;
 	}
 	public String lambdaTipText() {
-		return "direction of movement: [0,1] 0 = random, 1 = depending";
+		return "direction of movement: [0,1] 0 = random, 1 = dependent";
 	}
 	/**************************************************************************
-	 * These are for debugging and determing the output file
+	 * These are for debugging and determining the output file
 	 * 
 	 */
 	

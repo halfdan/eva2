@@ -488,53 +488,55 @@ public class PostProcess {
 	 * a list of solutions after post processing.
 	 * 
 	 * @param params
-	 * @param solutions
+	 * @param inputPop
 	 * @param problem
 	 * @param listener
 	 * @return the clustered, post-processed population
 	 */
-	public static Population postProcess(InterfacePostProcessParams params, Population solutions, AbstractOptimizationProblem problem, InterfaceTextListener listener) {
+	public static Population postProcess(InterfacePostProcessParams params, Population inputPop, AbstractOptimizationProblem problem, InterfaceTextListener listener) {
 		if (params.isDoPostProcessing()) {
-			Population outputPop;
+			Population clusteredPop, outputPop;
 			if (params.getPostProcessClusterSigma() > 0) {
-				outputPop = (Population)PostProcess.clusterBest(solutions, params.getPostProcessClusterSigma(), 0, PostProcess.KEEP_LONERS, PostProcess.BEST_ONLY).clone();
-				if (outputPop.size() < solutions.size()) {
-					if (listener != null) listener.println("Initial clustering reduced population size from " + solutions.size() + " to " + outputPop.size());
+				clusteredPop = (Population)PostProcess.clusterBest(inputPop, params.getPostProcessClusterSigma(), 0, PostProcess.KEEP_LONERS, PostProcess.BEST_ONLY).clone();
+				if (clusteredPop.size() < inputPop.size()) {
+					if (listener != null) listener.println("Initial clustering reduced population size from " + inputPop.size() + " to " + clusteredPop.size());
 				} else if (listener != null) listener.println("Initial clustering yielded no size reduction.");
-			} else outputPop = solutions;
+			} else clusteredPop = inputPop;
 			
 			if (params.getPostProcessSteps() > 0) {
-				processWithHC(outputPop, problem, params.getPostProcessSteps());
-				if (listener != null) listener.println("HC post processing done.");
+				processWithHC(clusteredPop, problem, params.getPostProcessSteps());
+				if (listener != null) listener.println("HC post processing: " + params.getPostProcessSteps() + " steps done.");
 				// some individuals may have now converged again
 				if (params.getPostProcessClusterSigma() > 0) {
 					// so if wished, cluster again.
-					outputPop = (Population)PostProcess.clusterBest(outputPop, params.getPostProcessClusterSigma(), 0, PostProcess.KEEP_LONERS, PostProcess.BEST_ONLY).clone();
-					if (outputPop.size() < solutions.size()) {
-						if (listener != null) listener.println("Second clustering reduced population size from " + solutions.size() + " to " + outputPop.size());
+					outputPop = (Population)PostProcess.clusterBest(clusteredPop, params.getPostProcessClusterSigma(), 0, PostProcess.KEEP_LONERS, PostProcess.BEST_ONLY).clone();
+					if (outputPop.size() < clusteredPop.size()) {
+						if (listener != null) listener.println("Second clustering reduced population size from " + clusteredPop.size() + " to " + outputPop.size());
 					} else if (listener != null) listener.println("Second clustering yielded no size reduction.");
-				}
-			}
+				} else outputPop = clusteredPop;
+			} else outputPop = clusteredPop;
 			
 			double upBnd = PhenotypeMetric.norm(outputPop.getWorstEAIndividual().getFitness())*1.1;
 			upBnd = Math.pow(10,Math.floor(Math.log10(upBnd)+1));
 			double lowBnd = 0;
 			int[] sols = PostProcess.createFitNormHistogram(outputPop, lowBnd, upBnd, 20);
 //			PostProcessInterim.outputResult((AbstractOptimizationProblem)goParams.getProblem(), outputPop, 0.01, System.out, 0, 2000, 20, goParams.getPostProcessSteps());
-			if (listener != null) listener.println("measures: " + BeanInspector.toString(outputPop.getPopulationMeasures()));
-			if (listener != null) listener.println("solution histogram in [" + lowBnd + "," + upBnd + "]: " + BeanInspector.toString(sols));
+			if (outputPop.size()>1) {
+				if (listener != null) listener.println("measures: " + BeanInspector.toString(outputPop.getPopulationMeasures()));
+				if (listener != null) listener.println("solution histogram in [" + lowBnd + "," + upBnd + "]: " + BeanInspector.toString(sols));
+			}
 			
 			//////////// multimodal data output?
 			if (problem instanceof InterfaceMultimodalProblemKnown) procMultiModalKnown(outputPop, (InterfaceMultimodalProblemKnown)problem, listener);
 			
-			Population resPop = outputPop.getBestNIndividuals(params.getPrintNBest()); // n individuals are returned and sorted, all of them if n<=0
-			if (listener != null) listener.println("Best after post process:" + ((outputPop.size()>resPop.size()) ? ( "(first " + resPop.size() + " of " + outputPop.size() + ")") : ""));
+			Population nBestPop = outputPop.getBestNIndividuals(params.getPrintNBest()); // n individuals are returned and sorted, all of them if n<=0
+			if (listener != null) listener.println("Best after post process:" + ((outputPop.size()>nBestPop.size()) ? ( "(first " + nBestPop.size() + " of " + outputPop.size() + ")") : ""));
 			//////////// output some individual data
-			if (listener != null) for (int i=0; i<resPop.size(); i++) {
-				listener.println(AbstractEAIndividual.getDefaultStringRepresentation(resPop.getEAIndividual(i)));
+			if (listener != null) for (int i=0; i<nBestPop.size(); i++) {
+				listener.println(AbstractEAIndividual.getDefaultStringRepresentation(nBestPop.getEAIndividual(i)));
 			}
-			return resPop;
-		} else return solutions;
+			return nBestPop;
+		} else return inputPop;
 	}
 }
 
