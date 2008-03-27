@@ -1734,7 +1734,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 		return this.m_CheckConstraints;
 	}
 	public String checkConstraintsTipText() {
-		return "Toggle constraints check (if true velocity is reduced by "+this.m_ReduceSpeed+" until constraints satisfied).";
+		return "Toggle constraints check (whether particles are allowed to leave the range).";
 	}
 
 	/**
