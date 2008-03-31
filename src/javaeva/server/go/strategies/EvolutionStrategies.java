@@ -39,7 +39,9 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
     private InterfaceSelection              m_PartnerSelection          = new SelectRandom();
     private InterfaceSelection              m_EnvironmentSelection      = new SelectBestIndividuals();
     private int                             m_NumberOfPartners          = 1;
+    private int								origPopSize					= -1; // especially for CBN
     private double[]                        m_FitnessOfParents          = null;
+    private boolean							forceOrigPopSize			= true;// especially for CBN
 
     transient private String                m_Identifier = "";
     transient private InterfacePopulationChangedEventListener m_Listener;
@@ -75,14 +77,14 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
     public void init() {
         // @todo In case of CBN-ES i need to read the population size!?
         // @todo but how!? I guess this will never do...
-        int orgPopSize = this.m_Population.getPopulationSize();
-        if (this.m_InitialPopulationSize > orgPopSize) {
-            this.m_Population.setPopulationSize(this.m_InitialPopulationSize);
-        }
+//        int orgPopSize = this.m_Population.getPopulationSize();
+//        if (this.m_InitialPopulationSize > orgPopSize) {
+//            this.m_Population.setPopulationSize(this.m_InitialPopulationSize);
+//        }
         //System.out.println("init");
         this.m_Problem.initPopulation(this.m_Population);
         this.evaluatePopulation(this.m_Population);
-        this.m_Population.setPopulationSize(orgPopSize);
+//        this.m_Population.setPopulationSize(orgPopSize);
         this.firePropertyChangedEvent("NextGenerationPerformed");
 //        int myu         = this.m_Population.getPopulationSize();
 //        int initPopSize = 0;
@@ -101,6 +103,8 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
      * @param reset     If true the population is reset.
      */
     public void initByPopulation(Population pop, boolean reset) {
+    	origPopSize = pop.getPopulationSize();
+//    	System.out.println("ES: orig popsize is " + origPopSize);
         this.m_Population = (Population)pop.clone();
         if (reset) this.m_Population.init();
         this.evaluatePopulation(this.m_Population);
@@ -181,11 +185,14 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
 ////            System.out.println("Population Strategy: ("+ this.m_Myu+","+this.m_Lambda+")");
 //        }
        //System.out.println("optimize");
+        
         // first perform the environment selection to select myu parents
         this.m_EnvironmentSelection.prepareSelection(this.m_Population);
         parents = this.m_EnvironmentSelection.selectFrom(this.m_Population, this.m_Mu);
         this.m_Population.clear();
         this.m_Population.addPopulation(parents);
+        
+        
         // now generate the lambda offsprings
         this.m_FitnessOfParents = null;
         nextGeneration = this.generateChildren();
@@ -199,7 +206,21 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
             this.applySuccessRule((rate/((double)this.m_FitnessOfParents.length)), this.m_Population, nextGeneration);
         }
         if (this.m_UsePlusStrategy) nextGeneration.addPopulation(this.m_Population);
-        this.m_Population = nextGeneration;
+        
+        if (forceOrigPopSize && (origPopSize > 0) && (origPopSize < nextGeneration.size())) {
+        	// this is especially for CBN: 
+        	this.m_EnvironmentSelection.prepareSelection(nextGeneration);
+        	Population tmpPop = (Population)nextGeneration.clone();
+            nextGeneration.clear();
+            nextGeneration.addPopulation(this.m_EnvironmentSelection.selectFrom(tmpPop, origPopSize));
+//            System.out.println("ES post selection! " + origPopSize + " from " + tmpPop.size());
+            m_Population = nextGeneration;
+        } else {
+        	if ((origPopSize > 0) && (origPopSize != nextGeneration.size())) {
+        		System.err.println("Warning in ES! orig: " + origPopSize + " / " + nextGeneration.size());
+        	}
+        	this.m_Population = nextGeneration;
+        }
         //System.out.println("Population size: " + this.m_Population.size());
         //System.out.println("-- Best Fitness " + this.m_Population.getBestFitness()[0]);
         
@@ -208,7 +229,7 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
 
     /** This method is just a shortcut to set the mutation step size for
      * all individuals of these two populations for the 1/5 Success rule.
-     * This is only necessary because i decieded to make the variable
+     * This is only necessary because i decided to make the variable
      * non static
      * @param successRate   The success rate
      * @param oldPop        The old population
@@ -353,6 +374,8 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
         return this.m_Population;
     }
     public void setPopulation(Population pop){
+    	origPopSize = pop.size();
+//    	System.out.println("ES: orig popsize is " + origPopSize);
         this.m_Population = pop;
     }
     public String populationTipText() {

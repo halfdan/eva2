@@ -321,14 +321,16 @@ public class PostProcess {
 	 * @param maxSteps
 	 * @param fixedStepSize
 	 */
-	public static void processWithHC(Population pop, AbstractOptimizationProblem problem, int maxSteps, double fixedStepSize) {
+	public static int processWithHC(Population pop, AbstractOptimizationProblem problem, int maxSteps, double fixedStepSize) {
 //		pop.SetFunctionCalls(0); // or else optimization wont restart on an "old" population
 //		pop.setGenerationTo(0);
+		int stepsBef = pop.getFunctionCalls();
 		processWithHC(pop, problem, new EvaluationTerminator(pop.getFunctionCalls()+maxSteps), new MutateESFixedStepSize(fixedStepSize));
+		return pop.getFunctionCalls()-stepsBef;
 	}
 	
-	public static void processWithHC(Population pop, AbstractOptimizationProblem problem, int maxSteps) {
-		processWithHC(pop, problem, maxSteps, defaultMutationStepSize);
+	public static int processWithHC(Population pop, AbstractOptimizationProblem problem, int maxSteps) {
+		return processWithHC(pop, problem, maxSteps, defaultMutationStepSize);
 	}
 	/**
 	 * Optimize a population with a default hill-climbing heuristic with a given termination criterion and mutation operator.
@@ -504,8 +506,8 @@ public class PostProcess {
 			} else clusteredPop = inputPop;
 			
 			if (params.getPostProcessSteps() > 0) {
-				processWithHC(clusteredPop, problem, params.getPostProcessSteps());
-				if (listener != null) listener.println("HC post processing: " + params.getPostProcessSteps() + " steps done.");
+				int stepsDone = processWithHC(clusteredPop, problem, params.getPostProcessSteps());
+				if (listener != null) listener.println("HC post processing: " + stepsDone + " steps done.");
 				// some individuals may have now converged again
 				if (params.getPostProcessClusterSigma() > 0) {
 					// so if wished, cluster again.
