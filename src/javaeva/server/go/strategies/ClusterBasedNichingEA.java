@@ -307,22 +307,30 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
 //    	m_Optimizer.initByPopulation(species, false);
     	if (m_Optimizer instanceof EvolutionStrategies) {
     		EvolutionStrategies es = (EvolutionStrategies)m_Optimizer;
-    		int mu = (int)(muLambdaRatio*species.size());
-    		if (mu < 1) mu = 1;
-    		else if (mu >= species.size()) {
+    		int mu = Math.max(1,(int)(muLambdaRatio*species.size()));
+    		if (mu >= species.size()) {
     			if (TRACE) System.err.println("warning, muLambdaRatio produced mu >= lambda.. reducing to mu=lambda-1");
     			mu = species.size() - 1;
     		}
     		es.setMu(mu);
     		es.setLambda(species.size());
+    		if (TRACE) System.out.println("mu: "+es.getMu() + " / lambda: " + es.getLambda());
     	}
     	if (TRACE) {
-    		System.out.println("spec size: " +  species.size() + ", says its " + species.getPopulationSize());
+    		System.out.println("Bef: spec size: " + species.size() + ", says its " + species.getPopulationSize());
     		System.out.println("Best bef: " + BeanInspector.toString(m_Optimizer.getPopulation().getBestFitness()));
     	}
     	this.m_Optimizer.optimize();
-		if (TRACE) System.out.println("Best aft: " + BeanInspector.toString(m_Optimizer.getPopulation().getBestFitness()));
-    	return m_Optimizer.getPopulation();
+    	Population retPop =  m_Optimizer.getPopulation();
+		if (TRACE) {
+			System.out.println("Aft: spec size: " + retPop.size() + ", says its " + retPop.getPopulationSize());
+			System.out.println("Best aft: " + BeanInspector.toString(retPop.getBestFitness()));
+		}
+    	if (retPop.size() != retPop.getPopulationSize()) {
+    		if (TRACE) System.out.println("correcting popsize after opt: " + retPop.getPopulationSize() + " to " + retPop.size());
+    		retPop.setPopulationSize(retPop.size());
+    	}
+    	return retPop;
     }
     
     public void optimize() {
