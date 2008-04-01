@@ -2736,7 +2736,7 @@ JI=setOptions(JI, optimset(getOptions(JI), 'TolX', 0, 'TolFun', 0))
 \end_layout
 
 \begin_layout Section
-Quickly Adding Your Own Problem Class
+Quickly Adding a Problem Class
 \begin_inset LatexCommand \label{sec:Quickly-Adding-Your-Problem}
 
 \end_inset
