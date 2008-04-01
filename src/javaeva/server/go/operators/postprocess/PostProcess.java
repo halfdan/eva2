@@ -354,6 +354,7 @@ public class PostProcess {
 		hcRunnable = new OptimizerRunnable(OptimizerFactory.makeParams(hc, pop, problem, 0, term), null, true);
 		hcRunnable.getGOParams().setDoPostProcessing(false);
 		hcRunnable.run();
+		hcRunnable.getGOParams().setDoPostProcessing(true);
 		hcRunnable = null;
 	}
 	

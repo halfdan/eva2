@@ -36,9 +36,9 @@ public class JModuleGeneralPanel implements RemoteStateListener, Serializable  {
 	public static boolean TRACE = false;
 	private String m_Name ="undefined";
 	private ModuleAdapter m_Adapter;
-	private boolean m_State;
+	private boolean m_StateRunning;
 	private JButton m_RunButton;
-//	private JButton m_RestartButton;
+	private JButton m_PPButton;
 	private JButton m_actStop;
 //	private JButton m_actExitMod;
 	private JButton m_JHelpButton;
@@ -50,7 +50,7 @@ public class JModuleGeneralPanel implements RemoteStateListener, Serializable  {
 	 */
 	public JModuleGeneralPanel(ModuleAdapter Adapter, boolean state) {
 		m_Name = "GENERAL";
-		m_State = state;
+		m_StateRunning = state;
 		if (TRACE) System.out.println("Constructor JModuleGeneralPanel:");
 		m_Adapter = Adapter;
 	}
@@ -76,7 +76,7 @@ public class JModuleGeneralPanel implements RemoteStateListener, Serializable  {
 		}
 
 		//////////////////////////////////////////////////////////////
-		m_RunButton= new JButton("Start Optimization");
+		m_RunButton= new JButton("Start");
 		m_RunButton.setToolTipText("Start the current optimization run.");
 		//System.out.println("Start tm_RunButton.addActionListener Run Opt pressed ====================!!!!!!!!!!!!!!!!!!");
 		m_RunButton.addActionListener(new ActionListener() {
@@ -96,34 +96,11 @@ public class JModuleGeneralPanel implements RemoteStateListener, Serializable  {
 		}
 		);
 
-		if (m_State == false )
-			m_RunButton.setEnabled(true);
-		else
-			m_RunButton.setEnabled(false);
+		m_RunButton.setEnabled(!m_StateRunning); // enabled if not running
+		
 		m_Panel.add(m_RunButton);
 //		m_Panel.setBorder(BorderFactory.createTitledBorder("general action buttons"));
-//		//////////////////////////////////////////////////////////////
-//		m_RestartButton= new JButton("Restart Optimization");
-//		m_RestartButton.setToolTipText("Restart the current optimization run.");
-//		m_RestartButton.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e){
-//				try {
-//					m_Adapter.restartOpt();
-//					m_actStop.setEnabled(true);
-//					m_RunButton.setEnabled(false);
-//					m_RestartButton.setEnabled(false);
-//				} catch (Exception ee) {
-//					ee.printStackTrace();
-//					System.out.println("Error in run: " +ee +" : " + ee.getMessage() );
-//				}
-//			}
-//		}
-//		);
-//		if (m_State == false )
-//			m_RestartButton.setEnabled(false);
-//		else
-//			m_RestartButton.setEnabled(false);
-//		m_Panel.add(m_RestartButton);
+
 		//////////////////////////////////////////////////////////////
 		m_actStop= new JButton("Stop");
 		m_actStop.setToolTipText("Stop the current optimization run.");
@@ -139,7 +116,28 @@ public class JModuleGeneralPanel implements RemoteStateListener, Serializable  {
 //			m_RestartButton.setEnabled(false);
 //		else
 //			m_RestartButton.setEnabled(true);
+		m_actStop.setEnabled(m_StateRunning);
 		m_Panel.add(m_actStop);
+//		//////////////////////////////////////////////////////////////
+		m_PPButton= new JButton("Post Process");
+		m_PPButton.setToolTipText("Start post processing according to available parameters.");
+		m_PPButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e){
+				try {
+					m_Adapter.startPostProcessing();
+//					m_actStop.setEnabled(true);
+//					m_RunButton.setEnabled(false);
+				} catch (Exception ee) {
+					ee.printStackTrace();
+					System.out.println("Error in run: " +ee +" : " + ee.getMessage() );
+				}
+			}
+		}
+		);
+		m_PPButton.setEnabled(m_StateRunning && m_Adapter.hasPostProcessing());
+		m_Panel.add(m_PPButton);
+		
+		///////////////////////////////////////////////////////////////
 		if (m_HelperFileName.equals("")== false) {
 			m_JHelpButton= new JButton("Description");
 			m_JHelpButton.setToolTipText("Description of the current optimization algorithm.");
@@ -172,7 +170,7 @@ public class JModuleGeneralPanel implements RemoteStateListener, Serializable  {
 	public void performedStop() {
 		if (TRACE) System.out.println("JModuleGeneralPanel.stopOptPerformed");
 		m_RunButton.setEnabled(true);
-//		m_RestartButton.setEnabled(true);
+		m_PPButton.setEnabled(true);
 		m_RunButton.repaint();
 		m_actStop.setEnabled(false);
 		m_Panel.repaint();

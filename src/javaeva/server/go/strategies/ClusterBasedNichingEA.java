@@ -61,7 +61,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
     private boolean							m_UseArchive					= true;
     private boolean                         m_UseSpeciesDifferentation      = true;
     private boolean                         m_UseSpeciesConvergence         = true;
-    private boolean                         m_UseHaltingWindow              = true;
+//    private boolean                         m_UseHaltingWindow              = true;
     private int                             m_PopulationSize                = 50;
     private int								convergedCnt					= 0;
 
@@ -91,8 +91,9 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
         this.m_UseClearing                  = a.m_UseClearing;
         this.m_UseSpeciesDifferentation     = a.m_UseSpeciesDifferentation;
         this.m_UseSpeciesConvergence        = a.m_UseSpeciesConvergence;
-        this.m_UseHaltingWindow             = a.m_UseHaltingWindow;
+//        this.m_UseHaltingWindow             = a.m_UseHaltingWindow;
         this.m_PopulationSize               = a.m_PopulationSize;
+        this.haltingWindow					= a.haltingWindow;
     }
 
     public Object clone() {
@@ -270,7 +271,9 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
     }
 
     /** 
-     * This method checks whether a species is converged. 
+     * This method checks whether a species is converged, i.e. the best fitness has not improved
+     * for a number of generations.
+     *  
      * @param pop   The species to test
      * @return True if converged.
      */
@@ -374,7 +377,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
             curSpecies.SetFunctionCalls(0);
             curSpecies.setPopulationSize(curSpecies.size());
             if (isActive(curSpecies)) {
-                if ((this.m_UseHaltingWindow) && (this.testSpeciesForConvergence(curSpecies))) {
+                if ((haltingWindow > 0) && (this.testSpeciesForConvergence(curSpecies))) {
 ///////////////////////////////////////////// Halting Window /////////////////////////////////////////////////
 //                    if (this.m_Debug) {
 //                        System.out.println("Undiff.Size: " + this.m_Undifferentiated.size() +"/"+this.m_Undifferentiated.getPopulationSize());
@@ -726,15 +729,15 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
 //        return "Clearing removes all but the best individuals from an identified species.";
 //    }
 
-    /** This method allows you to toggle the use of the halting window.
-     * @return The current status of this flag
-     */
-    public boolean getUseHaltingWindow() {
-        return this.m_UseHaltingWindow;
-    }
-    public void setUseHaltingWindow(boolean b){
-        this.m_UseHaltingWindow = b;
-    }
+//    /** This method allows you to toggle the use of the halting window.
+//     * @return The current status of this flag
+//     */
+//    public boolean getUseHaltingWindow() {
+//        return this.m_UseHaltingWindow;
+//    }
+//    public void setUseHaltingWindow(boolean b){
+//        this.m_UseHaltingWindow = b;
+//    }
     public String useHaltingWindowTipText() {
         return "With a halting window converged species are frozen.";
     }
@@ -803,7 +806,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
     	return m_UseArchive;
     }
     public String useArchiveTipText() {
-    	return "Toggle usage of an archive where converged species are savend and the individuals reinitialized.";
+    	return "Toggle usage of an archive where converged species are saved and the individuals reinitialized.";
     }
     
     /** Determines how often species differentation/convergence is performed.
@@ -858,8 +861,22 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
 	public void setMuLambdaRatio(double muLambdaRatio) {
 		this.muLambdaRatio = muLambdaRatio;
 	}
-	
-//	public String muLambdaRatioTipText() {
-//		return "ratio between mu and lambda for a CBN-ES"; 
-//	}
+
+	/**
+	 * @return the haltingWindow
+	 */
+	public int getHaltingWindow() {
+		return haltingWindow;
+	}
+
+	/**
+	 * @param haltingWindow the haltingWindow to set
+	 */
+	public void setHaltingWindow(int haltingWindow) {
+		this.haltingWindow = haltingWindow;
+	}
+
+	public String haltingWindowTipText() {
+		return "Lenght of the halting window defining when a cluster is seen as converged and frozen; set to zero to disable.";
+	}
 }

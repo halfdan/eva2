@@ -17,9 +17,10 @@ public class F8Problem extends F1Problem implements InterfaceMultimodalProblem, 
     private double      a = 20;
     private double      b = 0.2;
     private double      c = 2*Math.PI;
+    final static double f8Range = 32768;
 
     public F8Problem() {
-        this.m_Template         = new ESIndividualDoubleData();
+        setDefaultRange(f8Range);
     }
     public F8Problem(F8Problem b) {
         super(b);
@@ -33,34 +34,6 @@ public class F8Problem extends F1Problem implements InterfaceMultimodalProblem, 
      */
     public Object clone() {
         return (Object) new F8Problem(this);
-    }
-
-    /** This method inits a given population
-     * @param population    The populations that is to be inited
-     */
-    public void initPopulation(Population population) {
-        AbstractEAIndividual tmpIndy;
-
-//        this.m_OverallBest = null;
-
-        population.clear();
-
-        ((InterfaceDataTypeDouble)this.m_Template).setDoubleDataLength(this.m_ProblemDimension);
-        double[][] range = new double[this.m_ProblemDimension][2];
-        for (int i = 0; i < range.length; i++) {
-            range[i][0] = -32.768;
-            range[i][1] = 32.768;
-        }
-        ((InterfaceDataTypeDouble)this.m_Template).SetDoubleRange(range);
-
-        for (int i = 0; i < population.getPopulationSize(); i++) {
-            tmpIndy = (AbstractEAIndividual)((AbstractEAIndividual)this.m_Template).clone();
-            tmpIndy.init(this);
-            population.add(tmpIndy);
-        }
-        // population init must be last
-        // it set's fitcalls and generation to zero
-        population.init();
     }
 
     /** Ths method allows you to evaluate a double[] to determine the fitness

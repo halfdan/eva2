@@ -61,7 +61,7 @@ public class OptimizerRunnable implements Runnable {
 		try {
 			proc.setSaveParams(false);
 			if (postProcessOnly) {
-				proc.performNewPostProcessing((PostProcessParams)proc.getGOParams().getPostProcessParams(), listener);
+				proc.performPostProcessing((PostProcessParams)proc.getGOParams().getPostProcessParams(), listener);
 			} else {
 				if (doRestart) proc.restartOpt();
 				else proc.startOpt();
