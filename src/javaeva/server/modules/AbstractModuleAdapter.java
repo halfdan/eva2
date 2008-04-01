@@ -19,6 +19,8 @@ import java.util.Vector;
 import javaeva.gui.JTabbedModuleFrame;
 import javaeva.gui.LogPanel;
 import javaeva.server.go.InterfaceProcessor;
+import javaeva.server.go.operators.postprocess.PostProcessParams;
+import javaeva.server.stat.InterfaceTextListener;
 
 import wsi.ra.jproxy.MainAdapterClient;
 import wsi.ra.jproxy.RemoteStateListener;
@@ -108,6 +110,15 @@ abstract public class AbstractModuleAdapter implements ModuleAdapter, Serializab
     if (TRACE) System.out.println("Module AbstractModuleAdapter on EvA-Server StopOpt called:" );
     m_Processor.stopOpt();	// This means user break
   }
+  
+  public boolean hasPostProcessing() {
+	  return (m_Processor instanceof Processor);
+  }
+  
+  public void startPostProcessing() {
+	  if (hasPostProcessing()) ((Processor)m_Processor).performPostProcessing();
+  }
+  
   /**
    *
    */

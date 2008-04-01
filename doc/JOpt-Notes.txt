@@ -35,17 +35,17 @@ getroffen, wo setRunLocally des EvAComAdapters aufgerufen wird.
 zwischen lokalem und remote-Adapter zu unterscheiden.
 
 ToDo:
+- load modules: textlistener window seems not to be forwarded correctly 
 - plot->save as jpg: add other formats like png?
+- PostProcess: the pp-button should be deactivated if other modules are loaded
 - PostProcess: adaptive step-size for HC post-process might be better. 
 - possible problem with new interfaces in RMI mode?
 - "Show Solution" from GOStandalone into Client?
-- MatlabProblem will not compile without Matlab. Keep it in JE2Base anyway?
 - Population -> getBest... die multi-objective methoden nutzen!
 - Kommandozeilen-Argumente für den Client?
 - Kontroll-Events (start/stop) werden über RMI nicht wieder an den GUI-Client geliefert, 
 	das sollte noch eingeführt werden.
 - Beim server-wechsel bleibt das alte Plot-Fenster stehen, müsste auch besser gehn.
-- die Ressourcen zwischen den Paketen aufräumen
 - Die cloneInPlace: noch überall cloneEAObjects aufrufen?
 - Lokal läuft es jetzt auch ohne Netz. Die Entscheidung, wann wo ein Proxy nötig ist,
 sollte aber unbedingt durchsichtiger fallen. Man suche nach Stellen, die Proxies erzeugen!
@@ -66,7 +66,8 @@ die Range mitzuführen, da sie häufig für alle gleich ist. Dann verschlingt si
 	eines FunctionArea elements zugegriffen wird. Eher chaotisch also.
 
 Main changelog:
-11.3.08
+- CBN now also works with (m+n)-ES, not only (m,n)-ES
+11.3.08 (mkron)
 - Finally fixed problem with logarithmic view and values <= 0.
 - Added PostProcessing parameters to GOParameters, also some data output.
 - Removed some redundant code by introducing AbstractGOParameters.

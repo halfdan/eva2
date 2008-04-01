@@ -1,8 +1,6 @@
 package javaeva.server.go.problems;
 
-import javaeva.server.go.individuals.AbstractEAIndividual;
 import javaeva.server.go.individuals.ESIndividualDoubleData;
-import javaeva.server.go.strategies.InterfaceOptimizer;
 
 /**
  * Created by IntelliJ IDEA.

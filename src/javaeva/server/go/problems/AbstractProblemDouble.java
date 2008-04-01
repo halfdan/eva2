@@ -203,10 +203,7 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
 	 */
 	public void setDefaultRange(double defaultRange) {
 		this.m_DefaultRange = defaultRange;
-		if (((InterfaceDataTypeDouble)this.m_Template).getDoubleData().length != getProblemDimension()) {
-			((InterfaceDataTypeDouble)this.m_Template).setDoubleDataLength(getProblemDimension());
-		}
-		((InterfaceDataTypeDouble)this.m_Template).SetDoubleRange(makeRange());
+		initTemplate();
 	}
 	public String defaultRangeTipText() {
 		return "Absolute limit for the symmetric range in any dimension";

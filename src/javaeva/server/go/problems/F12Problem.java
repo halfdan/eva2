@@ -13,9 +13,10 @@ import javaeva.server.go.populations.Population;
  * To change this template use File | Settings | File Templates.
  */
 public class F12Problem extends F1Problem implements java.io.Serializable {
+	private final static double f12range = 5.;
 
     public F12Problem() {
-        this.m_Template         = new ESIndividualDoubleData();
+        setDefaultRange(f12range);
     }
     public F12Problem(F12Problem b) {
         super(b);
@@ -26,34 +27,6 @@ public class F12Problem extends F1Problem implements java.io.Serializable {
      */
     public Object clone() {
         return (Object) new F12Problem(this);
-    }
-
-    /** This method inits a given population
-     * @param population    The populations that is to be inited
-     */
-    public void initPopulation(Population population) {
-        AbstractEAIndividual tmpIndy;
-
-//        this.m_OverallBest = null;
-
-        population.clear();
-
-        ((InterfaceDataTypeDouble)this.m_Template).setDoubleDataLength(this.m_ProblemDimension);
-        double[][] range = new double[this.m_ProblemDimension][2];
-        for (int i = 0; i < range.length; i++) {
-            range[i][0] = -5.0;
-            range[i][1] = 5.0;
-        }
-        ((InterfaceDataTypeDouble)this.m_Template).SetDoubleRange(range);
-
-        for (int i = 0; i < population.getPopulationSize(); i++) {
-            tmpIndy = (AbstractEAIndividual)((AbstractEAIndividual)this.m_Template).clone();
-            tmpIndy.init(this);
-            population.add(tmpIndy);
-        }
-        // population init must be last
-        // it set's fitcalls and generation to zero
-        population.init();
     }
 
     /** Ths method allows you to evaluate a double[] to determine the fitness
