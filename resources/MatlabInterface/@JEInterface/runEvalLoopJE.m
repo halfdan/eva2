@@ -9,6 +9,7 @@ function int=runEvalLoopJE(int, optOrPostProc, optType, outputFilePrefix, steps,
 % when optimizing. nBest may be -1 to show all.
 
 global stopOptimization
+global JEMediator
 
 if ~isempty(int.mediator)
     int.mediator.quit
@@ -18,6 +19,7 @@ end
 % set up a mediator and inform JE
 int.mediator = javaeva.server.go.problems.MatlabEvalMediator;
 int.mp.setMediator(int.mediator);
+JEMediator=int.mediator;
 
 % start the JE thread
 if (optOrPostProc == 1)
@@ -34,7 +36,7 @@ end
 % stopOptimization is empty. if it is then it is not the toolbox calling
 % and we create an own button to stop it.
 if isempty(stopOptimization),
-    % create a cancel button box (only in the case that
+    % create a cancel button box (case without SBtoolbox)
     h=figure('Position',[100 600 250 80], 'MenuBar', 'none', 'Name', 'JavaEvA optimization running...', 'NumberTitle','off');
     uicontrol(h,'Style', 'pushbutton', 'String', 'Cancel', 'Position', [25 25 60 30], 'Callback', 'global stopOptimization; stopOptimization=1;');
     uicontrol(h,'Style', 'text', 'String', stopText, 'Position', [100 25 120 30]);
@@ -51,22 +53,33 @@ end
 stopOnce=1;
 
 % repeat the mediator thread and eval call until finished
-while (~int.mediator.isFinished())
-    int.mediator.run;
-    if (~int.mediator.isFinished())
-        x = int.mediator.getQuestion();
-        if (isempty(int.args))
-            res = feval(int.f, x);
-        else
-            res = feval(int.f, x, int.args);
+try
+    while (~int.mediator.isFinished())
+        int.mediator.run;
+        if (~int.mediator.isFinished())
+            x = int.mediator.getQuestion();
+            if (isempty(int.args))
+                res = feval(int.f, x);
+            else
+                res = feval(int.f, x, int.args);
+            end
+            int.mediator.setAnswer(res);
+            drawnow;
+            if ((stopOptimization==1) && (stopOnce==1))
+                disp('User interrupt requested ...');
+                stopOptimize(int);
+                stopOnce=0;
+            end
         end
-        int.mediator.setAnswer(res);
-        drawnow;
-        if ((stopOptimization==1) && (stopOnce==1))
-            disp('User interrupt requested ...');
-            stopOptimize(int);
-            stopOnce=0;
-        end
+    end
+    clear global JEMediator;
+catch
+    disp('Error in evaluate!');
+    %int.mediator.quit; % just in case
+    %int.mediator='';
+    if (nontoolboxopt == 1)
+        if (ishandle(h)) , close(h); end
+        clear global stopOptimization
     end
 end
 
@@ -81,6 +94,6 @@ int.mediator='';
 % and not from the toolboxes parameter estimation function (which has an
 % own stop button). we decide this by checking nontoolboxopt
 if nontoolboxopt == 1,
-    close(h);
+    if (ishandle(h)) , close(h); end
     clear global stopOptimization
 end

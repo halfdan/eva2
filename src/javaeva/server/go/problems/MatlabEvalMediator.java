@@ -1,5 +1,7 @@
 package javaeva.server.go.problems;
 
+import javaeva.gui.BeanInspector;
+
 /**
  * This implements a thread acting as a mediator between JavaEvA and Matlab. Thanks to the idea 
  * of Henning Schmidt!
@@ -26,7 +28,7 @@ public class MatlabEvalMediator implements Runnable {
 	volatile boolean fin = false;
 	volatile double[] question = null;
 	volatile double[] answer = null;
-	volatile boolean quit = false;
+	boolean quit = false;
 	volatile double[] optSolution = null;
 	volatile double[][] optSolSet = null;
 //	MatlabProblem mp = null;
@@ -44,17 +46,16 @@ public class MatlabEvalMediator implements Runnable {
 		question = x;
 		requesting = true;
 //		int k=0;
-//		mp.log("Requesting eval for " + BeanInspector.toString(x) + ", req state is " + requesting + "\n"); 
+//		System.out.println("Requesting eval for " + BeanInspector.toString(x) + ", req state is " + requesting + "\n"); 
 		while (requesting && !quit) {
 			// 	wait for matlab to answer the question
 			if (sleepTime > 0) try { Thread.sleep(sleepTime); } catch(Exception e) {};
-//			k++;
-//			if (k>100) {
+//			if ((k%100)==0) {
 //				System.out.println("waiting for matlab to answer...");
-//				k=0;
 //			}
+//			k++;
 		}
-//		mp.log("Requesting done \n");
+//		System.out.println("Requesting done \n");
 		// matlab is finished, answer is here
 		return getAnswer(); // return to JE with answer
 	}
@@ -67,13 +68,12 @@ public class MatlabEvalMediator implements Runnable {
 		while (!requesting && !isFinished() && !quit) {
 			// wait for JE to pose a question or finish all
 			if (sleepTime > 0) try { Thread.sleep(sleepTime); } catch(Exception e) {};
-//			k++;
-//			if (k>100) {
+//			if ((k%100)==0) {
 //				System.out.println("waiting for JE to ask...");
-//				k=0;
 //			}
+//			k++;
 		}
-//		mp.log("-- Request arrived in MP thread\n");
+//		System.out.println("-- Request arrived in MP thread\n");
 		// requesting is true, now finish and let Matlab work
 	}
 
@@ -81,6 +81,7 @@ public class MatlabEvalMediator implements Runnable {
 	 * Cancel waiting in any case.
 	 */
 	public void quit() {
+//		System.out.println("IN QUIT!");
 		quit = true;
 	}
 	
