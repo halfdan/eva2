@@ -1,10 +1,23 @@
-function v = getResult(int)
-% Returns the optimization solution if the run has been finished, or an
-% intermediate solution if the run has not finished yet or an empty array
+function [sol, fit] = getResult(int)
+% Returns the optimization solution and its fitness if the run has been finished, or an
+% intermediate solution and ints fitness if the run has not finished yet or an empty array
 % if there is no intermediate solution yet.
+%       [sol, fit] = getResult(int)
 
 if (isFinished(int)) 
-    v = int.result;
+    sol = int.result;
 else
-    v = int.mp.getIntermediateResult();
+    sol = int.mp.getIntermediateResult();
 end
+
+if (isempty(sol)) 
+    fit = NaN;
+else
+    if (isempty(int.args))
+        fit = feval(int.f, sol);
+    else
+        fit = feval(int.f, sol, int.args);
+    end
+end
+%disp('Fitness: ');
+%disp(y);

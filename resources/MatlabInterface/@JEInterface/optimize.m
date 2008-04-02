@@ -1,18 +1,18 @@
 function retInt = optimize(int, optType, varargin)
 % Start a JavaEvA optimization run.
 %       optimize(interface, optType, [, outputFilePrefix ] )
-% where
+%       where
 %       interface: instance of JEInterface
 %       optType: integer indicating the type of the optimization strategy
 %       to use.
 %       resultFilePrefix: (optional) char prefix for an optional verbose
 %           output file
 
-if (int.finished == 0) 
+if (int.finished == 0)
     error('please wait for the current run to finish');
 end
 if ((nargin == 2) || (nargin == 3))
-    if (nargin == 3) 
+    if (nargin == 3)
         outputFilePrefix = varargin{1};
     else
         outputFilePrefix = 'none';
@@ -27,27 +27,60 @@ if ((nargin == 2) || (nargin == 3))
     xTol = int.opts.TolX;
     maxEvals = int.opts.MaxFunEvals;
     fTol = int.opts.TolFun;
-    % construct Terminators
+
     import javaeva.server.go.operators.terminators.PhenotypeConvergenceTerminator;
-    import javaeva.server.go.operators.terminators.FitnessConvergenceTerminator;    
+    import javaeva.server.go.operators.terminators.FitnessConvergenceTerminator;
     import javaeva.server.go.operators.terminators.CombinedTerminator;
     import javaeva.server.go.operators.terminators.EvaluationTerminator;
+    import javaeva.OptimizerFactory;
 
     % set some default values if theyre not given
-    if (isempty(int.opts.TolX)) ; xTol = 1e-4; end
-    if (isempty(int.opts.TolFun)) ; fTol = 1e-4; end
     % fminsearch, for example, always uses TolX and TolFun with default
     % values of 1e-4 in . Thats what we do as well
-    convTerm = CombinedTerminator(FitnessConvergenceTerminator(fTol, int32(5), 0, 1), PhenotypeConvergenceTerminator(xTol, 5, 0, 1), 1);
-
-    % if MaxFunEvals is defined additionally, combine an
-    % EvaluationTerminator in disjunction, as Matlab does.
-    if (~isempty(maxEvals))
-        javaeva.OptimizerFactory.setTerminator(convTerm);
-        javaeva.OptimizerFactory.addTerminator(EvaluationTerminator(maxEvals), 0);
+    if (isempty(int.opts.TolX)) ; xTol = 1e-4; end
+    if (isempty(int.opts.TolFun)) ; fTol = 1e-4; end
+    % construct Terminators
+    if ((xTol > 0) && (fTol > 0))
+        % both criteria are given, use combination
+        convTerm = CombinedTerminator(FitnessConvergenceTerminator(fTol, 100, 1, 1), PhenotypeConvergenceTerminator(xTol, 100, 1, 1), 1);
+    else if (xTol > 0)  % only phenotye convergence
+            convTerm = PhenotypeConvergenceTerminator(xTol, 100, 1, 1);
+        else if (fTol > 0 )             % only fitness covnergence
+                convTerm = FitnessConvergenceTerminator(fTol, 100, 1, 1);
+            else
+                convTerm = 'undef'; % signal that there is no terminator yet
+            end
+        end
     end
-    
-    int.mp.optimize(optType, outputFilePrefix);
+
+    if (ischar(convTerm)) % if no convergence terminator is defined so far, use fitness calls
+        if (isempty(maxEvals))
+            error('Error: no termination criterion defined! Please check options.');
+            % int.opts.MaxFunEvals = OptimizerFactory.getDefaultFitCalls;
+            % maxEvals = OptimizerFactory.getDefaultFitCalls;
+        end
+        convTerm = EvaluationTerminator(maxEvals);
+        javaeva.OptimizerFactory.setTerminator(convTerm);
+    else % there is a convergence terminator
+        javaeva.OptimizerFactory.setTerminator(convTerm); % so set it
+        if (~isempty(maxEvals))
+            % if TolX/TolFun plus MaxFunEvals is defined additionally, combine an
+            % EvaluationTerminator in disjunction, as Matlab does.
+            javaeva.OptimizerFactory.addTerminator(EvaluationTerminator(maxEvals), 0);
+        end
+    end
+
+    % set display
+    if (strcmp(int.opts.Display,'off') || isempty(int.opts.Display))
+        int.mp.setStatsOutput(0);
+    elseif (strcmp(int.opts.Display, 'iter'))
+        int.mp.setStatsOutput(1);
+    else
+        error('invalid Display option, only off/iter are recognized');
+    end
+
+    int=runEvalLoopJE(int, 1, optType, outputFilePrefix, -1, -1, -1);
+  
 else
     error('Wrong number of arguments!')
 end

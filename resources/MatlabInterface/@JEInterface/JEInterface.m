@@ -17,6 +17,7 @@ int.args = [];
 int.opts = optimset('MaxFunEvals', javaeva.OptimizerFactory.getDefaultFitCalls, 'TolX', 1e-4, 'TolFun', 1e-4);
 int.finished = 1;
 int.result = [];
+int.resultArr = [];
 int.callback='';
 int.f = '';
 int.dim = 0;
@@ -24,6 +25,9 @@ int.range = [];
 int.mp = [];
 int.msg = '';
 int.funCalls = 0;
+int.mediator = '';
+int.optParams = [];
+int.optParamValues = [];
 
 if (isa(interfaceName, 'char'));
     int.callback = interfaceName;
@@ -35,6 +39,7 @@ if (isa(fhandle, 'function_handle'))
 else
     error('Wrong second argument type, expected function_handle');
 end
+
 if (isa(range, 'double') && (size(range,1) == 2))
     int.dim=length(range);
     int.range=transpose(range);
@@ -49,8 +54,9 @@ switch nargin
     case {4,5}
         if (isa(varargin{1}, 'struct'))
             int.opts = varargin{1};
-            if (isempty(int.opts.TolX)) ; int.opts.TolX = 1e-4; end
-            if (isempty(int.opts.TolFun)) ; int.opts.TolFun = 1e-4; end
+            % DONT set default values if user leaves them blank
+%            if (isempty(int.opts.TolX)) ; int.opts.TolX = 1e-4; end
+%            if (isempty(int.opts.TolFun)) ; int.opts.TolFun = 1e-4; end
         else
             error('Wrong fifth argument type, expected optimset struct');
         end

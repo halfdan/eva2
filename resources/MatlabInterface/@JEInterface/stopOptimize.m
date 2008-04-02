@@ -1,4 +1,9 @@
 function int = stopOptimize(int)
 % Stop a running optimization
 
-int.mp.stopOptimize
+%disp('in Stop!');
+int.mp.stopOptimize;
+%if (~isempty(int.mediator))
+%    int.mediator.quit; % just in case
+%    int.mediator='';
+%end
