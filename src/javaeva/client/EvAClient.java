@@ -571,6 +571,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
 			URL baseDir = this.getClass().getClassLoader().getResource("");
 			String cp = System.getProperty("java.class.path",".");
 			if (!cp.contains(baseDir.getPath())) {
+				// this was added due to matlab not adding base dir to base path...
 				System.err.println("classpath does not contain base directory!");
 				System.err.println("adding base dir and trying again...");
 				System.setProperty("java.class.path", cp + System.getProperty("path.separator") + baseDir.getPath());
