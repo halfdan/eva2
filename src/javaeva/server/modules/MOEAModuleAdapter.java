@@ -2,7 +2,7 @@ package javaeva.server.modules;
 
 import javaeva.server.go.InterfaceGOParameters;
 import javaeva.server.stat.StatisticsWithGUI;
-import javaeva.server.stat.StatisticsParameter;
+import javaeva.server.stat.InterfaceStatisticsParameter;
 import javaeva.server.EvAServer;
 import javaeva.gui.JTabbedModuleFrame;
 import javaeva.gui.JModuleGeneralPanel;

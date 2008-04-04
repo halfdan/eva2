@@ -47,7 +47,7 @@ public class PBILPopulation extends Population implements Cloneable, java.io.Ser
         this.m_Generation       = 0;
         this.m_FunctionCalls    = 0;
         if (!(this.get(0) instanceof InterfaceGAIndividual)) {
-            System.out.println("Members of the population are not instance of InterfaceGAIndividual!");
+            System.err.println("Members of the population are not instance of InterfaceGAIndividual!");
             return;
         }
         this.m_ProbabilityVector = new double[((InterfaceGAIndividual)this.get(0)).getGenotypeLength()];
@@ -63,9 +63,9 @@ public class PBILPopulation extends Population implements Cloneable, java.io.Ser
     public void learnFrom (Population examples, double learnRate) {
         InterfaceGAIndividual tmpIndy;
         BitSet      tmpBitSet;
-
+        
         for (int i = 0; i < examples.size(); i++) {
-            tmpIndy = (InterfaceGAIndividual)((AbstractEAIndividual)examples.get(i)).clone();
+            tmpIndy = (InterfaceGAIndividual)(examples.getEAIndividual(i)).clone();
             tmpBitSet = tmpIndy.getBGenotype();
             for (int j = 0; j < this.m_ProbabilityVector.length; j++) {
                 this.m_ProbabilityVector[j] = this.m_ProbabilityVector[j] * (1.0 - learnRate);

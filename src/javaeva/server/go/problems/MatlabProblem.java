@@ -35,6 +35,7 @@ public class MatlabProblem extends AbstractProblemDouble implements InterfaceTex
 	boolean 							forwardStatisticsOutput	= false;
 	private MatlabEvalMediator 			handler = null;
 	
+	public static boolean hideFromGOE = true; 
 	
 	private F1Problem f1 = new F1Problem(); // TODO
 	

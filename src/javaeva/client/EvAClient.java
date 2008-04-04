@@ -16,6 +16,7 @@ package javaeva.client;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Event;
+import java.awt.Frame;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,8 +25,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.Serializable;
 import java.net.URL;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
@@ -77,12 +76,14 @@ public class EvAClient implements RemoteStateListener, Serializable {
 	public static final String EVA_PROPERTY_FILE = "resources/JavaEvA.props";
 	private static Properties EVA_PROPERTIES;
 	public static final String iconLocation = "resources/images/JavaEvAIcon_3.gif";
-
+	private static final String splashLocation = "resources/images/JavaEvA2SplashScreen.png";
+//	private static final String splashLocation = "resources/images/JavaEvA2SplashScreen.jpg";
+	final int splashScreenTime = 1500;
+	
 	public static boolean TRACE = false;
-	private static String m_ProductName = "JavaEvA";
+	private static String m_ProductName = "JavaEvA 2";
 //	private int PREFERRED_WIDTH = 680;
 //	private int PREFERRED_HEIGHT = 550;
-	private JWindow m_splashScreen;
 	public JEFrame m_Frame;
 
 	private EvAComAdapter m_ComAdapter;
@@ -158,31 +159,28 @@ public class EvAClient implements RemoteStateListener, Serializable {
 	 * Works as client for the JavaEva server.
 	 *
 	 */
-	public EvAClient(String hostName) {
-		createSplashScreen();
+	public EvAClient(final String hostName) {
+		final SplashScreen fSplashScreen = new SplashScreen(splashLocation);
+
+	    fSplashScreen.splash();
+	    
 		currentModule = null;
 		
 		m_ComAdapter = EvAComAdapter.getInstance();
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				if (m_splashScreen != null) m_splashScreen.setVisible(true);
-			}
-		});
-
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				//init();
+		
+		SwingUtilities.invokeLater( new Runnable() {
+			public void run(){
+				long startTime = System.currentTimeMillis();
+				init(hostName); // this takes a bit
+				long wait = System.currentTimeMillis() - startTime;
 				try {
-					Thread.sleep(6000);
-				} catch (Exception e) {
-					System.out.println("error" + e.getMessage());
-				}
-				if (m_splashScreen != null) m_splashScreen.setVisible(false);
-				m_splashScreen = null;
-			}
+					// if splashScreenTime has not passed, sleep some more 
+					if (wait < splashScreenTime) Thread.sleep(splashScreenTime - wait);
+				} catch (Exception e) {}
+				// close splash screen
+				fSplashScreen.dispose();
+		      }			
 		});
-		init(hostName);
-
 	}
 
 	/**
@@ -258,27 +256,27 @@ public class EvAClient implements RemoteStateListener, Serializable {
 			m_Frame.setVisible(true);
 		}
 	}
-
-	/**
-	 *  Create the JavaEvA splash screen.
-	 */
-	public void createSplashScreen() {
-		BasicResourceLoader loader = BasicResourceLoader.instance();
-		byte[] bytes = loader.getBytesFromResourceLocation("resources/images/JavaEvaSplashScreen.png");
-		try {
-			ImageIcon ii = new ImageIcon(Toolkit.getDefaultToolkit().createImage(bytes));
-			JLabel splashLabel = new JLabel(ii);
-			m_splashScreen = new JWindow();
-			m_splashScreen.getContentPane().add(splashLabel);
-			m_splashScreen.pack();
-			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-			//splashScreen.setSize(screenSize);
-			m_splashScreen.setLocation(screenSize.width / 2 - m_splashScreen.getSize().width / 2, screenSize.height / 2 - m_splashScreen.getSize().height / 2);
-		} catch (java.lang.NullPointerException e) {
-			System.err.println("Could not find JavaEvA splash screen, please move rescoure folder to working directory!");
-		}
-
-	}
+//
+//	/**
+//	 *  Create the JavaEvA splash screen.
+//	 */
+//	public void createSplashScreen() {
+//		BasicResourceLoader loader = BasicResourceLoader.instance();
+//		byte[] bytes = loader.getBytesFromResourceLocation("resources/images/JavaEvA2SplashScreen.jpg");
+//		try {
+//			ImageIcon ii = new ImageIcon(Toolkit.getDefaultToolkit().createImage(bytes));
+//			JLabel splashLabel = new JLabel(ii);
+//			m_splashScreen = new JWindow();
+//			m_splashScreen.getContentPane().add(splashLabel);
+//			m_splashScreen.pack();
+//			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+//			//splashScreen.setSize(screenSize);
+//			m_splashScreen.setLocation(screenSize.width / 2 - m_splashScreen.getSize().width / 2, screenSize.height / 2 - m_splashScreen.getSize().height / 2);
+//		} catch (java.lang.NullPointerException e) {
+//			System.err.println("Could not find JavaEvA splash screen, please move rescoure folder to working directory!");
+//		}
+//
+//	}
 
 	/**
 	 * The one and only main of the client program.
@@ -415,7 +413,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
 					try {
 						UIManager.setLookAndFeel(e.getActionCommand());
 						SwingUtilities.updateComponentTreeUI(m_Frame);
-						// hier noch reinhacken dass alle frame geupdated werden.
+						// TODO hier noch reinhacken dass alle frame geupdated werden.
 						m_Frame.pack();
 //						m_Frame.setSize(new Dimension(900, 700));
 //						m_Frame.setVisible(true);
@@ -431,7 +429,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
 			try {
 				UIManager.setLookAndFeel(LAF);
 				SwingUtilities.updateComponentTreeUI(m_Frame);
-				m_Frame.pack();
+//				m_Frame.pack();
 //				m_Frame.setSize(new Dimension(900, 700));
 //				m_Frame.setVisible(true);
 			} catch (ClassNotFoundException exc) {} catch (InstantiationException exc) {} catch (UnsupportedLookAndFeelException exc) {} catch (
@@ -461,15 +459,10 @@ public class EvAClient implements RemoteStateListener, Serializable {
 					);
 					m_mnuWindow.add(act);
 				}
-
 			}
-
 			public void menuCanceled(MenuEvent e) {
-
 			}
-
 			public void menuDeselected(MenuEvent e) {
-
 			}
 		}
 		);
@@ -677,8 +670,8 @@ public class EvAClient implements RemoteStateListener, Serializable {
 		JOptionPane.showMessageDialog
 		(m_Frame,
 				m_ProductName +
-				"\n University of Tuebingen\n Computer Architecture\n Holger Ulmer & Felix Streichert & Hannes Planatscher \n Prof. Dr. Andreas Zell \n (c) 2007 \n Version " +
-				EvAServer.Version + " \n http://www-ra.informatik.uni-tuebingen.de/software/JavaEvA/", "JavaEvA Information", 1);
+				"\n University of Tuebingen\n Computer Architecture\n H. Ulmer & F. Streichert & H. Planatscher & M. de Paly & M. Kronfeld\n Prof. Dr. Andreas Zell \n (c) 2008 \n Version " +
+				EvAServer.Version + " \n http://www.ra.cs.uni-tuebingen.de/software/JavaEvA", "JavaEvA Information", 1);
 	}
 	
 	private void showNoHostFoundDialog() {
@@ -754,4 +747,39 @@ public class EvAClient implements RemoteStateListener, Serializable {
 //		System.out.println("hello from EvAClient.test!");
 //		System.out.println("object gives " + o);
 //	}
+}
+
+final class SplashScreen extends Frame {
+	private static final long serialVersionUID = 1281793825850423095L;
+	String imgLocation;
+
+	public SplashScreen(String imgLoc) {
+		imgLocation = imgLoc;
+	}
+
+	/**
+	 * Show the splash screen to the end user.
+	 *
+	 * <P>Once this method returns, the splash screen is realized, which means 
+	 * that almost all work on the splash screen should proceed through the event 
+	 * dispatch thread. In particular, any call to <code>dispose</code> for the 
+	 * splash screen must be performed in the event dispatch thread.
+	 */
+	public void splash(){
+		JWindow splashWindow = new JWindow(this);
+		BasicResourceLoader loader = BasicResourceLoader.instance();
+		byte[] bytes = loader.getBytesFromResourceLocation(imgLocation);
+		try {
+			ImageIcon ii = new ImageIcon(Toolkit.getDefaultToolkit().createImage(bytes));
+			JLabel splashLabel = new JLabel(ii);
+			splashWindow.add(splashLabel);
+			splashWindow.pack();
+			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+			splashWindow.setLocation(screenSize.width / 2 - splashWindow.getSize().width / 2, screenSize.height / 2 - splashWindow.getSize().height / 2);
+			splashWindow.setVisible(true);
+		} catch (java.lang.NullPointerException e) {
+			System.err.println("Could not find JavaEvA splash screen, please move rescoure folder to working directory!");
+		}
+	}
+
 }

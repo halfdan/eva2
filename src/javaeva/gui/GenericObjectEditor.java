@@ -11,45 +11,53 @@ package javaeva.gui;
  */
 
 
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.GridLayout;
+import java.awt.Rectangle;
+import java.awt.Window;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.MethodDescriptor;
-import java.beans.PropertyDescriptor;
-
-import java.awt.*;
-import java.awt.event.*;
-import java.beans.PropertyEditor;
-import java.beans.PropertyChangeSupport;
-import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeEvent;
-import java.beans.PropertyEditorManager;
-import java.io.File;
-import java.io.ObjectInputStream;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import java.beans.PropertyDescriptor;
+import java.beans.PropertyEditor;
 import java.io.BufferedInputStream;
-import java.io.ObjectOutputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.BufferedOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Proxy;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.border.LineBorder;
-
-import wsi.ra.jproxy.RMIProxyLocal;
-
-//import wsi.ra.tool.DummyCategory;
+import java.util.ArrayList;
+import java.util.StringTokenizer;
+import java.util.Vector;
 
 import javaeva.client.EvAClient;
-import javaeva.tools.CompileAndLoad;
 import javaeva.tools.EVAHELP;
 import javaeva.tools.ReflectPackage;
-import javaeva.tools.Tag;
-import javaeva.tools.SelectedTag;
-import javaeva.tools.Serializer;
-import javaeva.server.stat.StatisticsParameter;
-import javaeva.server.stat.StatisticsParameterImpl;
+
+import javax.swing.BorderFactory;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+
+import wsi.ra.jproxy.RMIProxyLocal;
 
 
 /*==========================================================================*
@@ -61,7 +69,7 @@ public class GenericObjectEditor implements PropertyEditor {
 	private Object m_Object;
 	private Object m_Backup;
 	private PropertyChangeSupport m_Support = new PropertyChangeSupport(this);
-	private Class m_ClassType;
+	private Class<?> m_ClassType;
 	private GOEPanel m_EditorComponent;
 	private boolean m_Enabled = true;
 	/**
@@ -501,7 +509,7 @@ public class GenericObjectEditor implements PropertyEditor {
 			System.err.println("warning: " + className + " is not a package!");
 		} else {		
 			String pckg = className.substring(0, className.lastIndexOf('.'));
-			Class[] clsArr; 
+			Class<?>[] clsArr; 
 			try {
 				clsArr = ReflectPackage.getAssignableClassesInPackage(pckg, Class.forName(className), true, true);
 			} catch (ClassNotFoundException e) {
@@ -513,11 +521,20 @@ public class GenericObjectEditor implements PropertyEditor {
 						+EvAClient.EVA_PROPERTY_FILE + " "+"for "+className);
 				classes.add(className);
 			} else {
-				for (Class class1 : clsArr) {
+				for (Class<?> class1 : clsArr) {
 					int m = class1.getModifiers();
+					try {
+						// a field allowing a class to indicate it doesnt want to be displayed
+						Field f = class1.getDeclaredField("hideFromGOE");
+						if (f.getBoolean(class1) == true) {
+							if (TRACE) System.out.println("Class " + class1 + " wants to be hidden from GOE, skipping...");
+							continue;
+						}
+					} catch (Exception e) {}
+//					if (f)
 					if (!Modifier.isAbstract(m) && !class1.isInterface()) {	// dont take abstract classes or interfaces
 						try {
-							Class[] params = new Class[0];
+							Class<?>[] params = new Class[0];
 							class1.getConstructor(params);
 							classes.add(class1.getName());
 						} catch (NoSuchMethodException e) {
@@ -543,7 +560,7 @@ public class GenericObjectEditor implements PropertyEditor {
 	 * @param hide	desired value to set, true for hidden, false for visible 
 	 * @return false, if an error occurs, else true
 	 */
-	public static boolean setExpertProperty(Class cls, String property, boolean expertValue) {
+	public static boolean setExpertProperty(Class<?> cls, String property, boolean expertValue) {
 		try {
 			BeanInfo    bi      = Introspector.getBeanInfo(cls);
 			PropertyDescriptor[] props = bi.getPropertyDescriptors();
@@ -572,16 +589,20 @@ public class GenericObjectEditor implements PropertyEditor {
 	 * @param hide	desired value to set, true for hidden, false for visible 
 	 * @return false, if an error occurs, else true
 	 */
-	public static boolean setHideProperty(Class cls, String property, boolean hide) {
+	public static boolean setHideProperty(Class<?> cls, String property, boolean hide) {
 		try {
 			BeanInfo    bi      = Introspector.getBeanInfo(cls);
 			PropertyDescriptor[] props = bi.getPropertyDescriptors();
 			for (int i=0; i<props.length; i++) {
 				if ((props[i].getName().equals(property))) { 
-					if (hide != props[i].isHidden()) props[i].setHidden(hide);
+					if (hide != props[i].isHidden()) {
+						props[i].setHidden(hide);
+					}
+					return true;
 				}
 			}
-			return true;
+			System.err.println("Error: property " + property + " not found!");
+			return false;
 		} catch (Exception e) {
 			System.err.println("exception in setHideProperty: " + e.getMessage());
 			return false;
@@ -596,7 +617,7 @@ public class GenericObjectEditor implements PropertyEditor {
 	 * @param show
 	 * @return
 	 */
-	public static boolean setShowProperty(Class cls, String property, boolean show) {
+	public static boolean setShowProperty(Class<?> cls, String property, boolean show) {
 		return GenericObjectEditor.setHideProperty(cls, property, !show);
 	}
 	
@@ -617,7 +638,7 @@ public class GenericObjectEditor implements PropertyEditor {
 	 *
 	 * @param type a value of type 'Class'
 	 */
-	public void setClassType(Class type) {
+	public void setClassType(Class<?> type) {
 		if (TRACE) System.out.println("GOE setClassType("+ (type == null? "<null>" : type.getName()) + ")");
 		m_ClassType = type;
 		if (m_EditorComponent != null)

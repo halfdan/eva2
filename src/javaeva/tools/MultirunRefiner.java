@@ -26,17 +26,36 @@ import java.io.*;
 public class MultirunRefiner {
     private JFrame              m_Frame;
     private JPanel              myPanel, myJButtonJPanel;
-    private JButton             refineJButton, confidenceJButton, exitJButton;
+    private JButton             refineJButton, exitJButton;
+//    private JButton				confidenceJButton;
     private JTextArea           m_InputText, m_OutputText;
     private JScrollPane         m_SP1, m_SP2;
     private JMenuBar            m_MenuBar;
     private JMenu               m_FileJMenu;
     private JMenuItem           m_LoadExpItem, m_SaveExpItem;
-    private JMenuItem           m_ExitItem;    /** Creates a new instance of MultirunRefiner */
+    private JMenuItem           m_ExitItem; 
+    
+    /** Creates a new instance of MultirunRefiner */
     public MultirunRefiner() {
 
     }
+    
+    public MultirunRefiner(File f) {
+    	starter();
+    	if (!readFile(f)) System.err.println("Error, couldnt open file " + f);
+    }
+    
+    public MultirunRefiner(String fileName) {
+    	starter();
+    	File f=new File(fileName);
+    	if (!readFile(f)) System.err.println("Error, couldnt open file " + f);
+    }
 
+    public MultirunRefiner(String text, int numRuns) {
+    	starter();
+    	m_InputText.setText(text);
+    }
+    
     public void starter() {
         this.m_Frame = new JFrame("MultirunRefiner\u2122");
 
@@ -96,15 +115,15 @@ public class MultirunRefiner {
         refineJButton = new JButton("Refine Multiruns");
         refineJButton.addMouseListener (new java.awt.event.MouseAdapter () {
             public void mouseClicked (java.awt.event.MouseEvent evt) {
-                refine();
+                m_OutputText.setText(refineToText(refine(m_InputText.getText())));
             }
         });
-        confidenceJButton = new JButton("Create Matlab/Confidence");
-        confidenceJButton.addMouseListener (new java.awt.event.MouseAdapter () {
-            public void mouseClicked (java.awt.event.MouseEvent evt) {
-                compute();
-            }
-        });
+//        confidenceJButton = new JButton("Create Matlab/Confidence");
+//        confidenceJButton.addMouseListener (new java.awt.event.MouseAdapter () {
+//            public void mouseClicked (java.awt.event.MouseEvent evt) {
+//                compute();
+//            }
+//        });
         exitJButton = new JButton("EXIT");
         exitJButton.addMouseListener (new java.awt.event.MouseAdapter () {
             public void mouseClicked (java.awt.event.MouseEvent evt) {
@@ -112,7 +131,7 @@ public class MultirunRefiner {
             }
         });
         this.myJButtonJPanel.add(refineJButton);
-        this.myJButtonJPanel.add(confidenceJButton);
+//        this.myJButtonJPanel.add(confidenceJButton);
         this.myJButtonJPanel.add(exitJButton);
 
         m_Frame.validate();
@@ -128,22 +147,26 @@ public class MultirunRefiner {
         fc.setFileFilter(new TXTFileFilter());
         int returnVal = fc.showDialog(this.m_Frame, "Load Multirun.TXT");
         if (returnVal == 0) {
-            BufferedReader      dis;
-            String              tmp, result="";
-            try {
-                this.clearInputText();
-                FileReader fileStream = new FileReader(fc.getSelectedFile());
-                this.m_InputText.read( fileStream, fc.getSelectedFile());
-            } catch (FileNotFoundException e) {
-                System.out.println("FILE " + fc.getSelectedFile() + " NOT FOUND!");
-            } catch (java.lang.NullPointerException npe) {
-            } catch (IOException e) {
-            }
-            //this.m_InputText.setText(fc.getSelectedFile().getName());
+           	readFile(fc.getSelectedFile());
             this.m_Frame.validate();
         }
     }
 
+    protected boolean readFile(File f) {
+        FileReader fileStream;
+        clearInputText();
+		try {
+			fileStream = new FileReader(f);
+			this.m_InputText.read( fileStream, f);
+			return true;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			clearInputText();
+			return false;
+		} 	
+    }
+    
     public void clearInputText() {
         this.m_InputText.setText("");
     }
@@ -174,73 +197,127 @@ public class MultirunRefiner {
         }
     }
 
+    protected static boolean hasNextLine(String txt) {
+    	return (txt != null && (txt.length() > 0));
+    }
+    
+    protected static String readLine(BufferedReader br) {
+    	String line;
+    	try {
+    		line = br.readLine();
+    	} catch (IOException e) {
+    		e.printStackTrace();
+    		return null;
+    	}
+    	return line;
+    }
+    
     /** This method will refine multiple run into on mean element
      */
-    public void refine() {
+    public static ArrayList<double[]> refine(String text) {
         double[]    tmp;
         double[]    mean = new double[3];
-        int         begin, end, numExp = 0;
-        ArrayList   result = new ArrayList(), tmpA;
+        int         numExp = 0, iteration = 0, lineCnt = 0;
+        ArrayList<double[]>   result = new ArrayList<double[]>();
+        String line;
+        String runHeader = "Fit.-calls 	 Best 	 Mean 	 Worst 	 Solution";
+        String runFinalizer = " Best solution: ";
+        boolean readRun = false;
+        
+        BufferedReader br = new BufferedReader(new StringReader(text));
+        
+        while ((line = readLine(br)) != null) {
+//        	Pair<String, String> p = popNextLine(text);
+        	lineCnt++;
+//        	line = p.car();
+//        	text = p.cdr();
 
-        this.clearOutputText();
-        for (int  i = 0; i < this.m_InputText.getLineCount(); i++) {
-            try {
-                begin = this.m_InputText.getLineStartOffset(i);
-                end = this.m_InputText.getLineEndOffset(i);
-                tmp = this.parseStringForDouble(this.m_InputText.getText(begin, end-begin));
-                if (tmp.length > 3) {
-                    if (((int)(tmp[0])) == 1) numExp++;
-                    if (result.size()-1 < ((int)(tmp[0]))) result.add(((int)(tmp[0])), new double[3]);
-                    mean = ((double[])(result.get(((int)(tmp[0])))));
-                    mean[0] += tmp[1];
-                    mean[1] += tmp[2];
-                    mean[2] += tmp[3];
-                }
-            } catch (javax.swing.text.BadLocationException ble){}
+        	if (line.startsWith(runHeader)) {
+        		numExp++;
+        		readRun = true;
+        		iteration = 0;
+        		System.out.println("Experiment starts at line " + lineCnt);
+        		continue;
+        	} else if (line.startsWith(runFinalizer)) {
+        		System.out.println("Experiment ends at line " + lineCnt);
+        		readRun = false;
+        		continue;
+        	}
+        	if (readRun) {
+        		tmp = parseStringForDouble(line);
+        		if (tmp.length > 3) {
+        			if (numExp==1) {
+        				mean = new double[3];
+        				result.add(iteration, mean);
+        			} else mean = result.get(iteration);
+        			mean[0] += tmp[1];
+        			mean[1] += tmp[2];
+        			mean[2] += tmp[3];
+        		} else System.err.println("Error in MultiRunRefiner!");
+        		iteration++;
+        	}
         }
-        System.out.println(this.m_InputText.getLineCount() + " lines parsed. " + numExp + " experiments with " + result.size() + " events each.");
-        this.addOutputText("Event\tBest\tMean\tWorst\n");
+        System.out.println(lineCnt + " lines parsed. " + numExp + " experiments with " + result.size() + " events each.");
+
         for(int i = 0; i < result.size(); i++) {
             mean = ((double[])(result.get(i)));
-            this.addOutputText(i+"\t"+mean[0]/numExp+"\t"+mean[1]/numExp+"\t"+mean[2]/numExp+"\n");
+            for (int k=0; k<mean.length; k++) mean[k]/=numExp;
         }
+        return result;
     }
 
-    public void compute() {
-        double[]    tmp;
-        double[]    mean = new double[3];
-        int         begin, end, numExp = 0;
-        ArrayList   result = new ArrayList(), tmpA;
-
-        this.clearOutputText();
-        for (int  i = 0; i < this.m_InputText.getLineCount(); i++) {
-            try {
-                begin = this.m_InputText.getLineStartOffset(i);
-                end = this.m_InputText.getLineEndOffset(i);
-                tmp = this.parseStringForDouble(this.m_InputText.getText(begin, end-begin));
-                if (tmp.length > 3) {
-                    if (((int)(tmp[0])) == 1) numExp++;
-                    if (result.size()-1 < ((int)(tmp[0]))) result.add(((int)(tmp[0])), new double[3]);
-                    mean = ((double[])(result.get(((int)(tmp[0])))));
-                    mean[0] += tmp[1];
-                    mean[1] += tmp[2];
-                    mean[2] += tmp[3];
-                }
-            } catch (javax.swing.text.BadLocationException ble){}
-        }
-        System.out.println(this.m_InputText.getLineCount() + " lines parsed. " + numExp + " experiments with " + result.size() + " events each.");
-        this.addOutputText("Event\tBest\tMean\tWorst\n");
+    /** This method will refine multiple run into on mean element
+     */
+    public static String refineToText(ArrayList<double[]> result) {
+    	double[] mean;
+    	StringBuffer sbuf = new StringBuffer("Event\tBest\tMean\tWorst\n");
+    	
         for(int i = 0; i < result.size(); i++) {
             mean = ((double[])(result.get(i)));
-            this.addOutputText(i+"\t"+mean[0]/numExp+"\t"+mean[1]/numExp+"\t"+mean[2]/numExp+"\n");
+            sbuf.append(i+"\t"+mean[0]+"\t"+mean[1]+"\t"+mean[2]+"\n");
         }
+        return sbuf.toString();
     }
+    
+    public static String refineToText(String input) {
+    	return refineToText(refine(input));
+    }
+    
+//    public void compute() {
+//        double[]    tmp;
+//        double[]    mean = new double[3];
+//        int         begin, end, numExp = 0;
+//        ArrayList   result = new ArrayList(), tmpA;
+//
+//        this.clearOutputText();
+//        for (int  i = 0; i < this.m_InputText.getLineCount(); i++) {
+//            try {
+//                begin = this.m_InputText.getLineStartOffset(i);
+//                end = this.m_InputText.getLineEndOffset(i);
+//                tmp = this.parseStringForDouble(this.m_InputText.getText(begin, end-begin));
+//                if (tmp.length > 3) {
+//                    if (((int)(tmp[0])) == 1) numExp++;
+//                    if (result.size()-1 < ((int)(tmp[0]))) result.add(((int)(tmp[0])), new double[3]);
+//                    mean = ((double[])(result.get(((int)(tmp[0])))));
+//                    mean[0] += tmp[1];
+//                    mean[1] += tmp[2];
+//                    mean[2] += tmp[3];
+//                }
+//            } catch (javax.swing.text.BadLocationException ble){}
+//        }
+//        System.out.println(this.m_InputText.getLineCount() + " lines parsed. " + numExp + " experiments with " + result.size() + " events each.");
+//        this.addOutputText("Event\tBest\tMean\tWorst\n");
+//        for(int i = 0; i < result.size(); i++) {
+//            mean = ((double[])(result.get(i)));
+//            this.addOutputText(i+"\t"+mean[0]/numExp+"\t"+mean[1]/numExp+"\t"+mean[2]/numExp+"\n");
+//        }
+//    }
 
     /** A simple method to read doubles from a string.
      * @param String    The string to be searched.
      * @return          The array of doubles found.
      */
-    private double[] parseStringForDouble (String searchme) {
+    public static double[] parseStringForDouble (String searchme) {
         double []       output;
         Vector          tmpOutput;
         int             positionInString = 0, from, to, i, tmp;

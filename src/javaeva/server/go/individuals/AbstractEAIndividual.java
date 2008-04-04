@@ -139,9 +139,11 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      * @return boolean if equal fitness true else false.
      */
     public boolean equalFitness(AbstractEAIndividual indy) {
-        if (this.m_Fitness.length != indy.m_Fitness.length) return false;
-        for (int i = 0; i < this.m_Fitness.length; i++) {
-            if (this.m_Fitness[i] != indy.m_Fitness[i]) return false;
+    	double[] myF = getFitness();
+    	double[] oF = indy.getFitness();
+        if (myF.length != oF.length) return false;
+        for (int i = 0; i < oF.length; i++) {
+            if (myF[i] != oF[i]) return false;
         }
         return true;
     }
@@ -374,7 +376,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
     public boolean isDominating(AbstractEAIndividual indy) {
         if (this.m_AreaConst4ParallelViolated) return false;
         if (indy.m_AreaConst4ParallelViolated) return true;
-        return isDominatingFitness(m_Fitness, indy.getFitness());
+        return isDominatingFitness(getFitness(), indy.getFitness());
 //        for (int i = 0; (i < this.m_Fitness.length) && (i < tmpFitness.length); i++) {
 //            if (this.m_Fitness[i] <= tmpFitness[i]) result &= true;
 //            else result &= false;
@@ -433,7 +435,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
             if (this.m_ConstraintViolation > indy.m_ConstraintViolation) return false;
             else return true;
         }
-        return isDominatingFitness(m_Fitness, tmpFitness);
+        return isDominatingFitness(getFitness(), tmpFitness);
 //        for (int i = 0; (i < this.m_Fitness.length) && (i < tmpFitness.length); i++) {
 //            if (this.m_Fitness[i] <= tmpFitness[i]) result &= true;
 //            else result &= false;
@@ -451,7 +453,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
     	// TODO: should this method really be called "..Equal"?
         if (this.m_AreaConst4ParallelViolated) return false;
         if (indy.m_AreaConst4ParallelViolated) return true;
-        return isDominatingFitnessNotEqual(m_Fitness, indy.getFitness());
+        return isDominatingFitnessNotEqual(getFitness(), indy.getFitness());
     }
 
     /** This method will allow you to compare two individuals regarding the dominance.
@@ -475,7 +477,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
 //            if (this.m_Fitness[i] < tmpFitness[i]) result &= true;
 //            else result &= false;
 //        }
-        return isDominatingFitnessNotEqual(m_Fitness, indy.getFitness());
+        return isDominatingFitnessNotEqual(getFitness(), indy.getFitness());
     }
 
     /** This method can be used to read the current selection probability of the individual.

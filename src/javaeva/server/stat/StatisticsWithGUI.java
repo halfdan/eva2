@@ -82,11 +82,11 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
 
 		
 		if ((Client == null) || Client.getHostName().equals(m_MyHostName)) {
-			m_StatisticsParameter = StatisticsParameterImpl.getInstance();
+			m_StatsParams = StatsParameter.getInstance();
 			m_ProxyPrinter = new JTextoutputFrame("TextOutput of " + m_MyHostName);
 		} else { // we use RMI
-			m_StatisticsParameter = (StatisticsParameter) RMIProxyLocal.newInstance(
-					StatisticsParameterImpl.getInstance());
+			m_StatsParams = (InterfaceStatisticsParameter)RMIProxyLocal.newInstance(
+					StatsParameter.getInstance());
 			m_ProxyPrinter = (JTextoutputFrameInterface) RMIProxyRemote.newInstance(new
 					JTextoutputFrame("TextOutput " + m_MyHostName),
 					m_MainAdapterClient);
@@ -98,21 +98,21 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
 	/**
 	 *
 	 */
-	public synchronized void startOptPerformed(String infoString, int runNumber) {
-		super.startOptPerformed(infoString, runNumber);
+	public synchronized void startOptPerformed(String infoString, int runNumber, Object goParams) {
+		super.startOptPerformed(infoString, runNumber, goParams);
 
 		m_GraphInfoString = infoString;
 
 //		m_TextCounter = m_StatisticsParameter.GetTextoutput();
-		m_PlotCounter = m_StatisticsParameter.GetPlotoutput();
+		m_PlotCounter = m_StatsParams.GetPlotoutput();
 	}
 
 	public void stopOptPerformed(boolean normal) {
 		super.stopOptPerformed(normal);
 
-		if (optRunsPerformed > m_StatisticsParameter.getMultiRuns()) System.err.println("error: this shouldnt happen (StatisticsWithGUI::stopOptPerformed)");
+		if (optRunsPerformed > m_StatsParams.getMultiRuns()) System.err.println("error: this shouldnt happen (StatisticsWithGUI::stopOptPerformed)");
 		// unite the graphs only if the break was "normal"
-		if (normal && (m_StatisticsParameter.getMultiRuns() > 1) && (m_StatGraph != null)) {
+		if (normal && (m_StatsParams.getMultiRuns() > 1) && (m_StatGraph != null)) {
 			// unite the point sets for a multirun
 			for (int i = 0; i < m_FitnessGraph.length; i++) {
 				for (int j = 0; j < m_FitnessGraph[i].length; j++) {
@@ -120,8 +120,8 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
 						m_StatGraph[i][j].addGraph(m_FitnessGraph[i][j]);
 						m_StatGraph[i][j].setInfoString(
 								(m_FitnessGraph[i][j].getInfo().length() > 0 ? (m_FitnessGraph[i][j].getInfo() + "_") : "" )
-								+ (m_StatisticsParameter.GetInfoString().length() > 0 ? (m_StatisticsParameter.GetInfoString() + "_") : "" )
-								 + m_StatisticsParameter.GetInfoString()
+								+ (m_StatsParams.GetInfoString().length() > 0 ? (m_StatsParams.GetInfoString() + "_") : "" )
+								 + m_StatsParams.GetInfoString()
 								+ "Mean_of_" + optRunsPerformed + " ",
 								(float) 2.0);
 						m_FitnessGraph[i][j].clear();
@@ -140,7 +140,7 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
 	protected void initPlots(List<String[]> description) {
 		if (TRACE) System.out.println("initPlots");
 
-		if (m_ProxyPrinter != null) m_ProxyPrinter.setShow(m_StatisticsParameter.isShowTextOutput());
+		if (m_ProxyPrinter != null) m_ProxyPrinter.setShow((m_StatsParams).isShowTextOutput());
 		
 		m_FitnessFrame = new GraphWindow[description.size()];
 		for (int i = 0; i < m_FitnessFrame.length; i++) {
@@ -158,14 +158,14 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
 				// this is where the column string for ascii export is created!
 				m_FitnessGraph[i][j] =
 					m_FitnessFrame[i].getNewGraph(d[j] + "_" +
-							m_StatisticsParameter.GetInfoString() +
+							m_StatsParams.GetInfoString() +
 							m_GraphInfoString);
 				m_FitnessGraph[i][j].jump();
 			}
 		}
-		if (m_StatisticsParameter.getMultiRuns() > 1 &&
-				m_StatisticsParameter.GetuseStatPlot() == true) {
-			String Info = m_StatisticsParameter.GetInfoString();
+		if (m_StatsParams.getMultiRuns() > 1 &&
+				m_StatsParams.GetuseStatPlot() == true) {
+			String Info = m_StatsParams.GetInfoString();
 			m_StatGraph = new Graph[description.size()][];
 			for (int i = 0; i < m_StatGraph.length; i++) {
 				m_StatGraph[i] = new Graph[((String[]) description.get(i)).length];
@@ -201,20 +201,20 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
 		// Plots
 		m_PlotCounter--;
 		
-		int fitnessplot_setting =  m_StatisticsParameter.getPlotFitness().getSelectedTag().getID();
+		int fitnessplot_setting =  m_StatsParams.getPlotFitness().getSelectedTag().getID();
 		
 		if (m_PlotCounter == 0) {
-			m_PlotCounter = m_StatisticsParameter.GetPlotoutput();
-			boolean doPlotBest = (fitnessplot_setting == StatisticsParameterImpl.PLOT_BEST)
-					|| (fitnessplot_setting == StatisticsParameterImpl.PLOT_BEST_AND_WORST);
-			boolean doPlotWorst = (fitnessplot_setting == StatisticsParameterImpl.PLOT_WORST)
-					|| (fitnessplot_setting == StatisticsParameterImpl.PLOT_BEST_AND_WORST);
+			m_PlotCounter = m_StatsParams.GetPlotoutput();
+			boolean doPlotBest = (fitnessplot_setting == StatsParameter.PLOT_BEST)
+					|| (fitnessplot_setting == StatsParameter.PLOT_BEST_AND_WORST);
+			boolean doPlotWorst = (fitnessplot_setting == StatsParameter.PLOT_WORST)
+					|| (fitnessplot_setting == StatsParameter.PLOT_BEST_AND_WORST);
 			if (doPlotBest) {
 				plotFitnessPoint(0, 0, functionCalls, currentBestFit[0]);
 			}
 			if (doPlotWorst) {
 				// schlechteste Fitness plotten
-				m_PlotCounter = m_StatisticsParameter.GetPlotoutput();
+				m_PlotCounter = m_StatsParams.GetPlotoutput();
 				if (currentWorstFit == null) {
 					System.err.println("m_WorstFitness==null in plotStatisticsPerformed");
 					return;
@@ -261,7 +261,7 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
 
 		m_PlotCounter--;
 		if (m_PlotCounter == 0) {
-			m_PlotCounter = m_StatisticsParameter.GetPlotoutput();
+			m_PlotCounter = m_StatsParams.GetPlotoutput();
 			int index = 0;
 			for (int i = 0; i < m_FitnessGraph.length; i++) {
 				for (int j = 0; j < m_FitnessGraph[i].length; j++) {

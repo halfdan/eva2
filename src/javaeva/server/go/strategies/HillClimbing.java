@@ -1,5 +1,6 @@
 package javaeva.server.go.strategies;
 
+import javaeva.gui.BeanInspector;
 import javaeva.server.go.InterfacePopulationChangedEventListener;
 import javaeva.server.go.individuals.AbstractEAIndividual;
 import javaeva.server.go.operators.mutation.InterfaceMutation;
@@ -87,7 +88,9 @@ public class HillClimbing implements InterfaceOptimizer, java.io.Serializable {
             if (((AbstractEAIndividual)original.get(i)).isDominatingDebConstraints(((AbstractEAIndividual)this.m_Population.get(i)))) {
                 this.m_Population.remove(i);
                 this.m_Population.add(i, original.get(i));
-            } // else: mutation improved the individual
+            } else {
+            	// else: mutation improved the individual
+            }
         }
         this.m_Population.incrGeneration();
 //        for (int i = 0; i < this.m_Population.size(); i++) {

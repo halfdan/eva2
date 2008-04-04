@@ -17,6 +17,7 @@ public class XThread extends Thread implements Serializable {
   private static XThread[] m_Instances;
   private static int m_MAXinstances = 10;
   private static int m_index = 0;
+  public static boolean TRACE = false;
 
   public static void init(int x) {
     m_MAXinstances = x;
@@ -47,7 +48,7 @@ public class XThread extends Thread implements Serializable {
    *
    */
   public static XThread getXThread(Object x, Method m, Object[] Para, int MAXinstances) {
-System.out.println("getXThread2 CALLLED");
+	  if (TRACE) System.out.println("getXThread2 CALLLED");
     //System.out.println("waiting "+m_instances+ " on "+x.hashCode()+ " m "+m.getName()+" m_MAXinstances " +MAXinstances);
     XThread ret = null;
     if (m_Instances == null)
@@ -83,7 +84,7 @@ System.out.println("getXThread2 CALLLED");
         Thread.sleep(w);
         w = 2 * w; //System.out.println(""+i);
       } catch (Exception e) {
-        System.out.println("Error in sleep of XThread");
+        System.err.println("Error in sleep of XThread");
       }
 
     } // end of while true
@@ -112,7 +113,7 @@ System.out.println("getXThread2 CALLLED");
    *
    */
   public static XThread getXThread(Object x, String m, Object[] Para, int MAXinstances) {
-    System.out.println("getXThread1 CALLLED");
+	  if (TRACE) System.out.println("getXThread1 CALLLED");
 //    while (m_instances >= MAXinstances) {
 //      //System.out.println("waiting "+m_instances);
 //      //pleasewait();
@@ -161,7 +162,7 @@ System.out.println("getXThread2 CALLLED");
          Thread.sleep(w);
          w = 2 * w; //System.out.println(""+i);
        } catch (Exception e) {
-         System.out.println("Error in sleep of XThread");
+         System.err.println("Error in sleep of XThread");
        }
 
      } // end of while true
@@ -185,14 +186,14 @@ System.out.println("getXThread2 CALLLED");
 
   private void removemyself() {
     for (int i = 0; i < m_Instances.length; i++) {
-      System.out.println("TRYING TO REMOVE");
+    	if (TRACE) System.out.println("TRYING TO REMOVE");
       if (this.m_Instances[i] == this) {
         this.m_Instances[i] = null;
-        System.out.println("REMOVED");
+        System.out.println("REMOVED THREAD");
         return;
       }
     }
-    System.out.println("DANGER!!!!!!!!! XTHREAD ->NOT<- REMOVED");
+    System.err.println("DANGER!!!!!!!!! XTHREAD ->NOT<- REMOVED");
   }
   /**
    *
@@ -235,7 +236,7 @@ System.out.println("getXThread2 CALLLED");
     if (m_Method != null) {
       //setPriority(Thread.MAX_PRIORITY);
       try {
-        System.out.println("XTHREAD calling m_Method"+m_Method.getName());
+        System.out.println("XTHREAD calling m_Method "+m_Method.getName());
         //System.out.print("--->");
         //this.setPriority(Thread.MAX_PRIORITY);
         m_Method.invoke(m_Object, m_Para);

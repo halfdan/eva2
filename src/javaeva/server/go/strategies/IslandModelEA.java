@@ -26,6 +26,12 @@ import wsi.ra.jproxy.RMIServer;
  * island-model has been implemented too to allow fast and reliabel computation.
  * This is still usefull, since it is less prone to premature convergence and also
  * an heterogenuous island model can be used.
+ * 
+ * A population of the same size is sent to all nodes and evaluated there independently 
+ * for a cycle (more precisely: for MigrationRate generations) after which a communication
+ * step is performed according to the migration model. Only after migration is a main
+ * cycle complete, the statistics updated etc.
+ *  
  * Created by IntelliJ IDEA.
  * User: streiche
  * Date: 12.09.2004
@@ -91,7 +97,7 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
         this.m_Optimizer.SetProblem(this.m_Problem);
         InterfacePopulationChangedEventListener myLocal = null;
         if (this.m_Parallelize) {
-            // this is running on remote maschines
+            // this is running on remote machines
             if (this.m_LocalServer == null) this.m_LocalServer = RMIServer.getInstance();
             try {
                 myLocal = (InterfacePopulationChangedEventListener) RMIProxyLocal.newInstance(this);

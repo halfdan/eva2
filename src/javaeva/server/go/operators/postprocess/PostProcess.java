@@ -15,6 +15,7 @@ import javaeva.server.go.operators.mutation.InterfaceMutation;
 import javaeva.server.go.operators.mutation.MutateESFixedStepSize;
 import javaeva.server.go.operators.terminators.EvaluationTerminator;
 import javaeva.server.go.populations.Population;
+import javaeva.server.go.problems.AbstractMultiModalProblemKnown;
 import javaeva.server.go.problems.AbstractOptimizationProblem;
 import javaeva.server.go.problems.FM0Problem;
 import javaeva.server.go.problems.InterfaceMultimodalProblemKnown;
@@ -476,12 +477,13 @@ public class PostProcess {
 	public static void procMultiModalKnown(Population solutions, InterfaceMultimodalProblemKnown mmkProb, InterfaceTextListener listener) {
 //		Population found = getFoundOptima(solutions, mmkProb.getRealOptima(), mmkProb.getEpsilon(), true);
 		if (listener != null) {
+			listener.println("number of known optima is " + mmkProb.getRealOptima().size());
 			listener.println("default epsilon is " + mmkProb.getEpsilon());
 			listener.println("max peak ratio is " + mmkProb.getMaximumPeakRatio(getFoundOptima(solutions, mmkProb.getRealOptima(), mmkProb.getEpsilon(), true)));
 		}
 		for (double epsilon=0.1; epsilon > 0.00000001; epsilon/=10.) {
 		//	out.println("no optima found: " + ((InterfaceMultimodalProblemKnown)mmProb).getNumberOfFoundOptima(pop));
-			if (listener != null) listener.println("found " + getFoundOptima(solutions, mmkProb.getRealOptima(), epsilon, true).size() + " for epsilon = " + epsilon);
+			if (listener != null) listener.println("found " + getFoundOptima(solutions, mmkProb.getRealOptima(), epsilon, true).size() + " for epsilon = " + epsilon + ", maxPeakRatio: " + ((AbstractMultiModalProblemKnown)mmkProb).getMaximumPeakRatio(solutions, epsilon));
 		}
 	}
 	

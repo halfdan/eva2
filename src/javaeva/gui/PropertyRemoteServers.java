@@ -1,17 +1,10 @@
 package javaeva.gui;
 
 //import javaeva.tools.ServerStarter;
-import javaeva.server.go.strategies.GeneticAlgorithm;
-import javaeva.server.go.strategies.InterfaceOptimizer;
-import javaeva.server.EvAMainAdapterImpl;
-import javaeva.server.EvAMainAdapter;
-
-import java.util.ArrayList;
 import java.rmi.Naming;
+import java.util.ArrayList;
 
-import wsi.ra.jproxy.RMIProxyRemoteThread;
 import wsi.ra.jproxy.RMIInvocationHandler;
-import wsi.ra.jproxy.RMIServer;
 
 /**
  * Created by IntelliJ IDEA.
@@ -41,18 +34,17 @@ class ServerNode implements java.io.Serializable {
 public class PropertyRemoteServers implements java.io.Serializable {
 
     private ServerNode[]        m_AvailableNodes;
-    private String              m_ClassToStart  = "wsi.ra.jproxy.RMIServer";
+//    private String              m_ClassToStart  = "wsi.ra.jproxy.RMIServer";
     private transient String    m_password      = "";
-    private String              m_Login         = "streiche";
-    private boolean             m_DeployJar     = true;
-    private String              m_JarToDeploy   = "JOpt.jar";
+    private String              m_Login         = "";
+//    private boolean             m_DeployJar     = true;
+//    private String              m_JarToDeploy   = "JOpt.jar";
 
     public PropertyRemoteServers() {
         this.m_AvailableNodes = new ServerNode[0];
-        this.addServerNode("raold1.informatik.uni-tuebingen.de", 2);
-        this.addServerNode("raold2.informatik.uni-tuebingen.de", 2);
-        this.setLogin("streiche");
-        this.setPassword("Kuskus");
+        this.addServerNode("exampleNode.uni-tuebingen.de", 2);
+        this.setLogin("username");
+        this.setPassword("");
     }
 
     public PropertyRemoteServers(PropertyRemoteServers e) {

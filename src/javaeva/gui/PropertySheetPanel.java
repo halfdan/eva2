@@ -12,15 +12,40 @@ package javaeva.gui;
 /*==========================================================================*
  * IMPORTS
  *==========================================================================*/
-import java.util.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.beans.*;
-import java.lang.reflect.*;
-import javax.swing.*;
-import sun.beans.editors.*;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.beans.BeanInfo;
+import java.beans.Beans;
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.MethodDescriptor;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import java.beans.PropertyDescriptor;
+import java.beans.PropertyEditor;
+import java.beans.PropertyVetoException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 import javaeva.tools.EVAHELP;
-import javaeva.tools.SelectedTag;
+import javaeva.tools.StringTools;
+
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
 /*==========================================================================*
 * CLASS DECLARATION
 *==========================================================================*/
@@ -53,6 +78,8 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
     private JButton                 m_HelpBut;
     /** A count of the number of properties we have an editor for */
     private int                     m_NumEditable = 0;
+    /** How long should a tip text line be (translated to HTML) */
+    private int 					tipTextLineLen = 50;
     /** A support object for handling property change listeners */
     private PropertyChangeSupport   m_support = new PropertyChangeSupport(this);
     /** set true to use the GOE by default if no other editor is registered **/
@@ -249,34 +276,8 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
 	                continue;
 	            }
                 editor.setValue(value);
-
-                // now look for a TipText method for this property
-                String tipName = name + "TipText";
-	            for (int j = 0; j < m_Methods.length; j++) {
-	                String  mname   = m_Methods[j].getDisplayName();
-	                Method  meth    = m_Methods[j].getMethod();
-	                if (mname.equals(tipName)) {
-	                    if (meth.getReturnType().equals(String.class)) {
-	                        try {
-		                        String  tempTip = (String)(meth.invoke(m_Target, args));
-		                        int     ci      = tempTip.indexOf('.');
-		                        if (ci < 0) m_TipTexts[i] = tempTip;
-		                        else        m_TipTexts[i] = tempTip.substring(0, ci);
-//                                if (m_HelpText != null) {
-//                                    if (firstTip) {
-//                                        m_HelpText.append("OPTIONS\n");
-//                                        firstTip = false;
-//                                    }
-//                                    m_HelpText.append(name).append(" -- ");
-//                                    m_HelpText.append(tempTip).append("\n\n");
-//                                    //jt.setText(m_HelpText.toString());
-//                                }
-	                        } catch (Exception ex) {
-	                        }
-	                        break;
-	                    }
-	                }
-	            } // end searching for (int j = 0; j < m_Methods.length; j++) {
+                
+                m_TipTexts[i] = getToolTipText(name, m_Methods, m_Target, tipTextLineLen);
 
                 // Now figure out how to display it...
                 if (editor instanceof sun.beans.editors.BoolEditor) {
@@ -445,7 +446,7 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
         validate();
         setVisible(true);
     }
-    
+   
     /**
      * Get the html help file name.
      * 
@@ -713,8 +714,8 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
      * @param target    The target object
      * @return String for the tooltip.
      */
-    private String getToolTipText(String name, MethodDescriptor[] methods, Object target) {
-        String result   = "No tooltip available.";
+    private String getToolTipText(String name, MethodDescriptor[] methods, Object target, int toHTMLLen) {
+        String result   = "";
         String tipName  = name + "TipText";
 	    for (int j = 0; j < methods.length; j++) {
 	        String mname    = methods[j].getDisplayName();
@@ -729,12 +730,14 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
 		                else        result = tempTip.substring(0, ci);
 	                } catch (Exception ex) {
                     }
-	                return result;
+	                break;
 	            }
 	        }
 	    } // end for looking for tiptext
-        return result;
+	    if (toHTMLLen > 0) return StringTools.toHTML(result, toHTMLLen);
+	    else return result;
     }
+
 }
 
 

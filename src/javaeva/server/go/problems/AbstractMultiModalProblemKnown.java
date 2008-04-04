@@ -229,8 +229,12 @@ public abstract class AbstractMultiModalProblemKnown extends AbstractProblemDoub
 	 * @return double
 	 */
 	public double getMaximumPeakRatio(Population pop) {
+		return getMaximumPeakRatio(pop, m_Epsilon);
+	}
+	
+	public double getMaximumPeakRatio(Population pop, double epsilon) {
 		double                  optimaInvertedSum = 0, foundInvertedSum = 0;
-		AbstractEAIndividual[] optsFound = PostProcess.getFoundOptimaArray(pop, m_Optima, m_Epsilon, true);
+		AbstractEAIndividual[] optsFound = PostProcess.getFoundOptimaArray(pop, m_Optima, epsilon, true);
 
 		for (int i=0; i<m_Optima.size(); i++) {
 			// sum up known optimal fitness values
