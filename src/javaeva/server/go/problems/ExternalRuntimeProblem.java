@@ -1,10 +1,18 @@
 package javaeva.server.go.problems;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.File;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.Reader;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
+
+
 
 import javaeva.gui.BeanInspector;
 import javaeva.server.go.individuals.AbstractEAIndividual;
@@ -19,9 +27,34 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem implemen
     protected int                       m_ProblemDimension  = 10;
 //    protected boolean                   m_UseTestConstraint = false;
     protected String					m_Command			= "";
+    protected String					m_WorkingDir		= "";
     protected double					m_upperBound		= 10;
     protected double					m_lowerBound		= 0;
 
+    // Private Subclass to redirect Streams within an extra Thread to avoid dead
+	// locks
+	private static class MonitorInputStreamThread extends Thread {
+		private Reader reader;
+		private Writer writer;
+
+		public MonitorInputStreamThread(InputStream in) {
+			reader = new InputStreamReader(new BufferedInputStream(in));
+			writer = new OutputStreamWriter(System.err);
+			setDaemon(true);
+		}
+
+		public void run() {
+			try {
+				int c;
+				while ((c = reader.read()) != -1) {
+					writer.write(c);
+					writer.flush();
+				}
+			} catch (IOException ioe) {
+				ioe.printStackTrace(System.err);
+			}
+		}
+	}
 
     public ExternalRuntimeProblem() {
         this.m_Template         = new ESIndividualDoubleData();
@@ -134,8 +167,11 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem implemen
 				parameters.add(new String(""+x[i]));
 			}
 			pb = new ProcessBuilder(parameters);
+			pb.directory(new File(this.m_WorkingDir));
 			process=pb.start();
 			BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            Thread thread = new MonitorInputStreamThread(process.getErrorStream());//grab the Error Stream
+            thread.start();
 			String line;
 			while ((line = br.readLine()) != null) {
 				line = line.trim();
@@ -219,6 +255,19 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem implemen
     }
     public String commandTipText() {
         return "Command";
+    }
+    
+    /** Working dir of the external runtime
+     * @param t working directory
+     */
+    public void setWorkingDirectory(String t) {
+        this.m_WorkingDir = t;
+    }
+    public String getWorkingDirectory() {
+        return this.m_WorkingDir;
+    }
+    public String workingDirectoryTipText() {
+        return "Working directory";
     }
     
 //    /** This method allows you to toggle the application of a simple test constraint.
