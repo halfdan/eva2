@@ -112,7 +112,12 @@ public class EvAComAdapter extends ComAdapter {
 	}
 		
 	protected MainAdapter getMainAdapter(RMIInvocationHandler invocHandler) throws RemoteException {
-		return (EvAMainAdapter) invocHandler.getWrapper();
+		try {
+			return (EvAMainAdapter) invocHandler.getWrapper();
+		} catch (ClassCastException e) {
+			System.err.println("Warning: cannot cast to EvAMainAdapter in EvAComAdapter.. trying MainAdapter...");
+		}
+		return (MainAdapter) invocHandler.getWrapper();
 	}
 
 	protected void logInfo(String msg) {

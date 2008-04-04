@@ -23,8 +23,6 @@ import java.lang.reflect.Method;
 public class RMIProxyRemoteThread implements InvocationHandler,
                                              Serializable {
   private static ComAdapter m_Adapter;
-  private Object m_Object;
-  private String m_ObjectName;
   private RMIThreadInvocationHandler m_RMIThreadHandler;
   /**
    *
@@ -44,19 +42,25 @@ public class RMIProxyRemoteThread implements InvocationHandler,
       c.getClass().getInterfaces(),
       new RMIProxyRemoteThread(c,host));
   }
+  
+  private static void maybeLoadAdapter() {
+	  if (m_Adapter==null) 
+		  m_Adapter = ComAdapter.getInstance();
+  }
+  
   /**
    *
    * @param c
    * @return
    */
   public static String[] getServerList() {
-    if (m_Adapter==null) m_Adapter = ComAdapter.getInstance();
+	  maybeLoadAdapter();
       m_Adapter.evalAvailableHostNameList();
     return m_Adapter.getAvailableHostNameList();
 
   }
   public static void setServerList(String[] servers ) {
-    if (m_Adapter==null) m_Adapter = ComAdapter.getInstance();
+	  maybeLoadAdapter();
 
     m_Adapter.setServerList(servers);
      m_Adapter.evalAvailableHostNameList();
@@ -82,15 +86,15 @@ public class RMIProxyRemoteThread implements InvocationHandler,
    *
    */
   private RMIProxyRemoteThread (Object c, String host) {
-    m_ObjectName = c.getClass().getName();
-    if (m_Adapter==null) m_Adapter = ComAdapter.getInstance();
+//    m_ObjectName = c.getClass().getName();
+    maybeLoadAdapter();
     m_RMIThreadHandler = m_Adapter.getRMIThreadHandler(c,host);
   }
   /**
    *
    */
   private RMIProxyRemoteThread (Object c, MainAdapterClient Client) {
-    m_ObjectName = c.getClass().getName();
+//    m_ObjectName = c.getClass().getName();
     try {
       m_RMIThreadHandler = Client.getRMIThreadHandler(c);
     } catch (Exception e) {
@@ -102,8 +106,8 @@ public class RMIProxyRemoteThread implements InvocationHandler,
    *
    */
   private RMIProxyRemoteThread (Object c) {
-    m_ObjectName = c.getClass().getName();
-    if (m_Adapter==null) m_Adapter = ComAdapter.getInstance();
+//    m_ObjectName = c.getClass().getName();
+    maybeLoadAdapter();
     m_RMIThreadHandler = m_Adapter.getRMIThreadHandler(c);
   }
   /**
