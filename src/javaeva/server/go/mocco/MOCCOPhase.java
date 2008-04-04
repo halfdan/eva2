@@ -1,24 +1,21 @@
 package javaeva.server.go.mocco;
 
-import javaeva.server.go.MOCCOStandalone;
-import javaeva.server.go.problems.InterfaceMultiObjectiveDeNovoProblem;
-import javaeva.server.go.problems.InterfaceOptimizationObjective;
-import javaeva.server.go.tools.GeneralGOEProperty;
-import javaeva.client.EvAClient;
-import javaeva.tools.CompileAndLoad;
-import javaeva.tools.ReflectPackage;
-import javaeva.gui.PropertyBoolSelector;
-import javaeva.gui.PropertyText;
-import javaeva.gui.PropertyPanel;
-import javaeva.gui.PropertyValueSelector;
-
-import javax.swing.*;
-import java.awt.event.ActionListener;
+import java.awt.BorderLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
-import java.awt.*;
-import java.util.Vector;
-import java.util.StringTokenizer;
-import java.util.ArrayList;
+import java.awt.event.ActionListener;
+
+import javaeva.gui.PropertyBoolSelector;
+import javaeva.gui.PropertyPanel;
+import javaeva.gui.PropertyText;
+import javaeva.gui.PropertyValueSelector;
+import javaeva.server.go.MOCCOStandalone;
+import javaeva.server.go.tools.GeneralGOEProperty;
+
+import javax.swing.BorderFactory;
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
 
 /**
  * Created by IntelliJ IDEA.

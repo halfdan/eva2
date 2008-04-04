@@ -54,10 +54,22 @@ public class TribesPosition implements java.io.Serializable {
     	return x;
     }
 
+    /**
+     * This one makes a deep copy.
+     * @param vals
+     */
     public void setDoubleArray(double[] vals) {
     	x = vals.clone();
     }
 
+    /**
+     * This one makes a shallow copy.
+     * @param fit
+     */
+    public void setFitness(double[] fit) {
+    	fitness = fit;
+    }
+    
     public int getMaxDimension() {
     	return x.length;
     }

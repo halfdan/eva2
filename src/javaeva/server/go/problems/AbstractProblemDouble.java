@@ -20,10 +20,10 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
 //	}
 	
 	protected void initTemplate() {
-		this.m_Template         = new ESIndividualDoubleData();
+		if (m_Template == null) m_Template         = new ESIndividualDoubleData();
 		if (getProblemDimension() > 0) { // avoid evil case setting dim to 0 during object init
-			((ESIndividualDoubleData)this.m_Template).setDoubleDataLength(getProblemDimension());
-			((ESIndividualDoubleData)this.m_Template).SetDoubleRange(makeRange());
+			((InterfaceDataTypeDouble)this.m_Template).setDoubleDataLength(getProblemDimension());
+			((InterfaceDataTypeDouble)this.m_Template).SetDoubleRange(makeRange());
 		}
 	}
 	

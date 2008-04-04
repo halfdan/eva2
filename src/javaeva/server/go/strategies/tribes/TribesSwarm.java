@@ -105,11 +105,11 @@ public class TribesSwarm implements java.io.Serializable{
             // swarmInitOption -> param option Options: 0 - random, 1 - on the bounds, 2 - sunny spell, 3 - around a center
             // rangeInitType -> initType: for options 0,1: 1 means use initRange, 0 use default range
             explorer[n] = generateExplorer(null, -1, swarmInitOption, -1, rangeInitType, prob, false);
-
+            masterTribe.incEvalCnt();
             // Note : le contact sera dÃ©fini durant la gÃ©nÃ©ration de la tribu
 
         }
-        masterTribe.incEvalCnt(initNb);
+//        masterTribe.incEvalCnt(initNb);
         addTribe(initNb, explorer);
     }
 
@@ -141,8 +141,8 @@ public class TribesSwarm implements java.io.Serializable{
             updateQueen(range, prob); // this costs an evaluation
 //            evals++;
 
-            if (queen.position.firstIsBetter(queen.position.fitness,
-                                          bestMem.getPos().fitness)) {
+            if (queen.position.firstIsBetter(queen.position.getFitness(),
+                                          bestMem.getPos().getFitness())) {
 
                 int[] worst = findWorst();
 
@@ -176,14 +176,14 @@ public class TribesSwarm implements java.io.Serializable{
         int[] found = new int[2];
         found[0] = 0;
         found[1] = 0;
-        double[] f = tribes[found[0]].memory[found[1]].getPos().fitness;
+        double[] f = tribes[found[0]].memory[found[1]].getPos().getFitness();
         double[] f2;
 
         for (n = 0; n < tribeNb; n++) {
             for (m = 0; m < tribes[n].memoryNb; m++) {
 //                System.arraycopy(tribes[n].memory[m].position.fitness, 0, f2,
 //                                 0, fitnessSize);
-            	f2 = tribes[n].memory[m].getPos().fitness;
+            	f2 = tribes[n].memory[m].getPos().getFitness();
             	// this is not XOR! (for multi-objective fitness, betterThan is not symmetrical)
                 if ((switchBest && tribes[n].memory[m].getPos().firstIsBetter(f2, f)) 
                 	|| (!switchBest && tribes[n].memory[m].getPos().firstIsBetter(f, f2))) {

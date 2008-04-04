@@ -13,6 +13,7 @@ package javaeva.server.stat;
  * IMPORTS
  *==========================================================================*/
 import javaeva.server.go.IndividualInterface;
+import javaeva.server.go.InterfaceGOParameters;
 import javaeva.server.go.PopulationInterface;
 import javaeva.server.go.problems.InterfaceAdditionalPopulationInformer;
 /*==========================================================================*
@@ -25,7 +26,7 @@ public interface InterfaceStatistics {
 	/**
 	 * Initialize statistics computations.
 	 */
-	public void startOptPerformed(String InfoString,int runnumber); // called from processor
+	public void startOptPerformed(String InfoString,int runnumber, Object params); // called from processor
 	/**
 	 * Finalize statistics computations.
 	 */
@@ -35,7 +36,7 @@ public interface InterfaceStatistics {
 	public void printToTextListener(String s);
 	public void createNextGenerationPerformed(PopulationInterface Pop, InterfaceAdditionalPopulationInformer informer);
 	public void createNextGenerationPerformed(double[] bestfit,double[] worstfit,int calls);
-	public StatisticsParameter getStatisticsParameter(); // called from moduleadapter
+	public InterfaceStatisticsParameter getStatisticsParameter(); // called from moduleadapter
 	public IndividualInterface getBestSolution(); // returns the best overall solution
 	public double[] getBestFitness(); // returns the best overall fitness
 }

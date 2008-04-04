@@ -21,6 +21,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import javaeva.server.go.populations.Population;
 import javaeva.tools.SelectedTag;
 import javaeva.tools.Tag;
 
@@ -132,6 +133,9 @@ public class BeanInspector {
 
 	/**
 	 * Collect the accessible properties of an object and their values in a string.
+	 * Special cases: Arrays and Lists are concatenations of their elements, Population is excepted from lists.
+	 * If the object has its own toString method, this one is preferred. Hidden or expert properties are not
+	 * shown.
 	 * 
 	 * @param  Target  Description of the Parameter
 	 * @return         Description of the Return Value
@@ -154,7 +158,7 @@ public class BeanInspector {
 			return sbuf.toString();
 		}
 
-		if (Target instanceof List) { // handle the list case
+		if (Target instanceof List && !(Target instanceof Population)) { // handle the list case
 			StringBuffer sbuf = new StringBuffer("[ ");
 			List<?> lst = (List<?>)Target;
 			for (Object o : lst) {

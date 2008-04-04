@@ -723,16 +723,13 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
 	public String globalInfo() {
 		return "TRIBES: a parameter free PSO implementation by Maurice Clerc.";
 	}
-	
-	public void incEvalCnt(int k) {
-		population.incrFunctionCallsby(k);
-		if (notifyAfter(population.getFunctionCalls())) {
-			firePropertyChangedEvent("NextGenerationPerformed");
-		}
-	}
 
 	public void incEvalCnt() {
-		incEvalCnt(1);
+		population.incrFunctionCalls();
+		if (notifyAfter(population.getFunctionCalls())) {
+//			System.out.println("Notifying after " + population.getFunctionCalls());
+			firePropertyChangedEvent("NextGenerationPerformed");
+		}
 	}
 
 	public double getObjectiveFirstDim() {

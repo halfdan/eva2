@@ -65,7 +65,7 @@ public class TribesMemory implements java.io.Serializable {
          si la valeur de la position a diminuÃ©
          */
 
-        if (position.firstIsBetter(position.fitness,positionPrev.fitness)) {
+        if (position.firstIsBetter(position.getFitness(),positionPrev.getFitness())) {
            return 1;
         }
         return 0;

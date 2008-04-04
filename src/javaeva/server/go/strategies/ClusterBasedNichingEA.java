@@ -832,7 +832,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
         this.m_ShowCycle = b;
     }
     public String showCycleTipText() {
-        return "Determines how often show is performed.";
+        return "Determines how often show is performed (generations); set to zero to deactivate.";
     }
     /** Determines the size of the initial population.
      * @return This number gives initial population size.

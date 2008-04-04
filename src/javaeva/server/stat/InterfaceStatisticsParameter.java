@@ -21,7 +21,7 @@ import javaeva.tools.SelectedTag;
 /**
  *
  */
-public interface StatisticsParameter {
+public interface InterfaceStatisticsParameter {
   public String getName();
   public void saveInstance();
   public String globalInfo();
@@ -47,12 +47,23 @@ public interface StatisticsParameter {
   public void setPlotFitness(SelectedTag newMethod);
 
   public String getResultFileName();
-  public void setResultFileName(String x);
+  public void SetResultFileName(String x);
   
   public void setConvergenceRateThreshold(double x);
   public double getConvergenceRateThreshold();
-  
+
+  public void SetShowTextOutput(boolean show);
   public boolean isShowTextOutput();
-  public void setShowTextOutput(boolean bShow);
-//  public String showTextOutputTipText();
+  
+  public boolean isOutputAdditionalInfo();
+  public void setOutputAdditionalInfo(boolean bShowAdd);
+  
+  public void setOutputVerbosity(SelectedTag sTag);
+  public SelectedTag getOutputVerbosity();
+  
+  public int getOutputVerbosityK();
+  public void setOutputVerbosityK(int k);
+  
+  public void setOutputTo(SelectedTag sTag);
+  public SelectedTag getOutputTo();
 }

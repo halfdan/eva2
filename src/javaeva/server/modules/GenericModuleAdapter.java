@@ -2,7 +2,7 @@ package javaeva.server.modules;
 
 import javaeva.server.go.InterfaceGOParameters;
 import javaeva.server.stat.StatisticsWithGUI;
-import javaeva.server.stat.StatisticsParameter;
+import javaeva.server.stat.InterfaceStatisticsParameter;
 import javaeva.server.EvAServer;
 import javaeva.gui.GenericObjectEditor;
 import javaeva.gui.JTabbedModuleFrame;
@@ -53,7 +53,7 @@ public class GenericModuleAdapter extends AbstractModuleAdapter implements Seria
     public JTabbedModuleFrame getModuleFrame() {
         if (TRACE) System.out.println("GenericModulAdapter.getModuleFrame");
         ArrayList<Object> GUIContainer    = new ArrayList<Object>();
-        StatisticsParameter Stat             = ((StatisticsWithGUI)m_StatisticsModul).getStatisticsParameter();
+        InterfaceStatisticsParameter Stat             = ((StatisticsWithGUI)m_StatisticsModul).getStatisticsParameter();
         JModuleGeneralPanel ButtonPanel      = new JModuleGeneralPanel(m_RemoteThis,((Processor)m_Processor).isOptRunning());
         ButtonPanel.setHelperFilename(helperFilename);
         GUIContainer.add(ButtonPanel);

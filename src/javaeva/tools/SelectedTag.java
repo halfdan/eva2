@@ -121,6 +121,13 @@ public class SelectedTag implements java.io.Serializable {
 	public String getSelectedString() {
 		return m_Tags[m_Selected].getString();
 	}
+	
+	public int getTagIDByString(String str) {
+		for (int i=0; i<m_Tags.length; i++) {
+			if (m_Tags[i].equals(str)) return m_Tags[i].getID();
+		} 
+		return -1;
+	}
 	/**
 	 * Returns true if the given String is equivalent to the currently selected Tags string component,
 	 * else false. 

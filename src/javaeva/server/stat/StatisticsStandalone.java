@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javaeva.server.go.InterfaceGOParameters;
 import javaeva.server.go.PopulationInterface;
 import javaeva.server.go.problems.InterfaceAdditionalPopulationInformer;
 
@@ -54,9 +55,9 @@ public class StatisticsStandalone extends AbstractStatistics implements Interfac
 	/**
 	 *
 	 */
-	public StatisticsStandalone(StatisticsParameter statParams) {
+	public StatisticsStandalone(InterfaceStatisticsParameter statParams) {
 		super();
-		m_StatisticsParameter = statParams;
+		m_StatsParams = statParams;
 		try {
 			m_MyHostName = InetAddress.getLocalHost().getHostName();
 		} catch (Exception e) {
@@ -68,15 +69,15 @@ public class StatisticsStandalone extends AbstractStatistics implements Interfac
 	 *
 	 */
 	public StatisticsStandalone(String resultFileName) {
-		this(new StatisticsParameterImpl());
-		m_StatisticsParameter.setResultFileName(resultFileName);
+		this(new StatsParameter());
+		m_StatsParams.SetResultFileName(resultFileName);
 	}
 
 	/**
 	 *
 	 */
 	public StatisticsStandalone() {
-		this(new StatisticsParameterImpl());
+		this(new StatsParameter());
 	}
 	
 	protected void initPlots(List<String[]> description) {
@@ -103,19 +104,19 @@ public class StatisticsStandalone extends AbstractStatistics implements Interfac
 	 */
 	private void initContainer(String[] description) {
 		for (int i = 0; i < description.length; i++) {
-			m_Result.add(new ArrayList[m_StatisticsParameter.getMultiRuns()]);
+			m_Result.add(new ArrayList[m_StatsParams.getMultiRuns()]);
 			m_ResultString.add(description[i]);
 		}
 		for (int i = 0; i < m_Result.size(); i++)
 			((ArrayList[]) m_Result.get(i))[optRunsPerformed] = new ArrayList<double[]>();
 	}
 
-	public void startOptPerformed(String infoString, int runNumber) {
-		super.startOptPerformed(infoString, runNumber);
+	public void startOptPerformed(String infoString, int runNumber, Object params) {
+		super.startOptPerformed(infoString, runNumber, params);
 		if (runNumber == 0) {
 			m_Result = new ArrayList<ArrayList<double[]>[]>();
 			m_ResultString = new ArrayList<String>();
-			m_BestFitnessAtEnd = new double[this.m_StatisticsParameter.getMultiRuns()];
+			m_BestFitnessAtEnd = new double[this.m_StatsParams.getMultiRuns()];
 		} else {
 			for (int i = 0; i < m_Result.size(); i++)
 				((ArrayList[]) m_Result.get(i))[optRunsPerformed] = new ArrayList<ArrayList<double[]>[]>();
@@ -132,7 +133,7 @@ public class StatisticsStandalone extends AbstractStatistics implements Interfac
 		}
 
 		//System.out.println("stopOptPerformed :"+m_OptRunsPerformed);
-		if (optRunsPerformed == m_StatisticsParameter.getMultiRuns()) {
+		if (optRunsPerformed == m_StatsParams.getMultiRuns()) {
 			m_FitnessMeanofALL = m_SumOfBestFit / ((double) optRunsPerformed);
 			//System.out.println("m_FitnessMeanofALL  "+m_FitnessMeanofALL);
 			m_FitnessMedianofALL = getMedian(m_BestFitnessAtEnd);

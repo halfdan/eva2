@@ -2,10 +2,12 @@ package javaeva.server.go.strategies;
 
 import javaeva.server.go.InterfacePopulationChangedEventListener;
 import javaeva.server.go.individuals.AbstractEAIndividual;
+import javaeva.server.go.individuals.InterfaceGAIndividual;
 import javaeva.server.go.operators.selection.InterfaceSelection;
 import javaeva.server.go.operators.selection.SelectBestIndividuals;
 import javaeva.server.go.populations.PBILPopulation;
 import javaeva.server.go.populations.Population;
+import javaeva.server.go.problems.AbstractOptimizationProblem;
 import javaeva.server.go.problems.B1Problem;
 import javaeva.server.go.problems.InterfaceOptimizationProblem;
 
@@ -64,6 +66,9 @@ public class PopulationBasedIncrementalLearning implements InterfaceOptimizer, j
      * @param reset     If true the population is reset.
      */
     public void initByPopulation(Population pop, boolean reset) {
+        if (!(pop.getEAIndividual(0) instanceof InterfaceGAIndividual)) {
+        	System.err.println("Error: PBIL only works with GAIndividuals!");
+        }
         this.m_Population = new PBILPopulation();
         if (reset) this.m_Population.init();
         this.m_Population.addPopulation((Population)pop.clone());
@@ -120,6 +125,11 @@ public class PopulationBasedIncrementalLearning implements InterfaceOptimizer, j
      */
     public void SetProblem (InterfaceOptimizationProblem problem) {
         this.m_Problem = problem;
+        if (m_Problem instanceof AbstractOptimizationProblem) {
+        	if (!(((AbstractOptimizationProblem)m_Problem).getIndividualTemplate() instanceof InterfaceGAIndividual)) { 
+        		System.err.println("Error: PBIL only works with GAIndividuals!");
+        	}
+        }
     }
     public InterfaceOptimizationProblem getProblem () {
         return this.m_Problem;

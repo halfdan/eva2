@@ -2,12 +2,13 @@ package javaeva.server.go.strategies.tribes;
 
 import javaeva.server.go.individuals.AbstractEAIndividual;
 import javaeva.server.go.individuals.InterfaceDataTypeDouble;
+import javaeva.server.go.individuals.InterfaceESIndividual;
 import javaeva.server.go.populations.Population;
 import javaeva.server.go.problems.InterfaceOptimizationProblem;
 import javaeva.server.go.strategies.Tribes;
 import javaeva.server.go.tools.RandomNumberGenerator;
 
-public class TribesExplorer extends AbstractEAIndividual implements InterfaceDataTypeDouble {
+public class TribesExplorer extends AbstractEAIndividual implements InterfaceESIndividual, InterfaceDataTypeDouble {
     /**
 	 * 
 	 */
@@ -82,11 +83,11 @@ public class TribesExplorer extends AbstractEAIndividual implements InterfaceDat
 //    }
     
     public double[] getFitness() {
-    	return position.fitness;
+    	return position.getFitness();
     }
     
     public double getFitness(int index) {
-    	return position.fitness[index];
+    	return position.getFitness()[index];
     }
     
     /**
@@ -95,6 +96,7 @@ public class TribesExplorer extends AbstractEAIndividual implements InterfaceDat
      */
     public void SetFitness(double[] fitness) {
     	position.fitness = fitness;
+    	super.SetFitness(fitness);
     	fitness[0] -= objectiveValueFirstDim;
     	position.setTotalError();
     }
@@ -104,6 +106,7 @@ public class TribesExplorer extends AbstractEAIndividual implements InterfaceDat
      * by reducing the fitness (in the first dimension).
      */
     public void SetFitness(int index, double fitness) {
+    	super.SetFitness(index, fitness);
     	if (index > position.fitness.length) {
     		double[] newFit = new double[index+1];
     		System.arraycopy(position.fitness, 0, newFit, 0, position.fitness.length);
@@ -440,11 +443,11 @@ public class TribesExplorer extends AbstractEAIndividual implements InterfaceDat
 //                                             pb.fitnessSize, eval);
             } else { // Artificial fitness by using penalties
                 for (n = 0; n < position.fitness.length; n++) {
-                    position.fitness[n] = swarm.tribes[fromTribe].memory[
+                	SetFitness(n, swarm.tribes[fromTribe].memory[
                                           contact].
                                           getPos().
                                           fitness[n] +
-                                          keepInPenalty(range, position);
+                                          keepInPenalty(range, position));
                 }
                 // position.totalError(position.fitness); // MK: this wont actually do anything
             }
@@ -1015,5 +1018,21 @@ v[d] = cmin * v[d];
 
 	public int size() {
 		return position.x.length;
+	}
+
+	public void SetDGenotype(double[] b) {
+		position.setDoubleArray(b);
+	}
+
+	public void defaultInit() {
+		System.err.println("defaultInit not available for TribesExplorer!");
+	}
+
+	public void defaultMutate() {
+		System.err.println("defaultMutate not available for TribesExplorer!");
+	}
+
+	public double[] getDGenotype() {
+		return position.getDoubleArray().clone();
 	}
 }

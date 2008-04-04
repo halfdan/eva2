@@ -8,6 +8,7 @@ import javaeva.server.go.PopulationInterface;
 import javaeva.server.go.operators.postprocess.PostProcess;
 import javaeva.server.go.operators.postprocess.PostProcessParams;
 import javaeva.server.go.operators.terminators.EvaluationTerminator;
+import javaeva.server.go.operators.terminators.GenerationTerminator;
 import javaeva.server.go.populations.Population;
 import javaeva.server.go.problems.AbstractOptimizationProblem;
 import javaeva.server.go.tools.RandomNumberGenerator;
@@ -29,7 +30,7 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
 //    private volatile boolean         m_doRunScript;
     private InterfaceStatistics     m_Statistics;
     private InterfaceGOParameters   goParams;
-    private boolean                 m_createInitialPopulations=true;
+    private boolean                 m_createInitialPopulations = true;
     private boolean					saveParams = true;
     private RemoteStateListener		m_ListenerModule;
     private boolean 				wasRestarted = false;
@@ -167,38 +168,13 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
         	if (wasRestarted) m_ListenerModule.performedRestart(getInfoString());
         	else m_ListenerModule.performedStart(getInfoString());
         }
-
-//        if (this.show) this.m_StatusField.setText("Optimizing...");
-
-        // opening output file...
-//        String name = this.m_ModulParameter.getOutputFileName();
-//        if (!name.equalsIgnoreCase("none") && !name.equals("")) {
-//            SimpleDateFormat formatter = new SimpleDateFormat("E'_'yyyy.MM.dd'_'HH.mm.ss");
-//            String m_StartDate = formatter.format(new Date());
-//            name = this.m_OutputPath + name +"_"+this.m_ModulParameter.getOptimizer().getName()+"_"+m_StartDate+".dat";
-//            try {
-//                this.m_OutputFile = new BufferedWriter(new OutputStreamWriter (new FileOutputStream (name)));
-//            } catch (FileNotFoundException e) {
-//                System.err.println("Could not open output file! Filename: " + name);
-//            }
-//        	//this.writeToFile(" FitnessCalls\t Best\t Mean\t Worst \t" + this.m_ModulParameter.getProblem().getAdditionalFileStringHeader(this.m_ModulParameter.getOptimizer().getPopulation()));
-//        } else {
-//            this.m_OutputFile = null;
-//        }
-        
+       
     	goParams.getOptimizer().addPopulationChangedEventListener(this);
 
         runCounter = 0;
 
         while (isOptRunning() && (runCounter<m_Statistics.getStatisticsParameter().getMultiRuns())) {
-//        for (int runCounter = 0; runCounter<m_Statistics.getStatisticsParameter().getMultiRuns(); runCounter++) {
-        	m_Statistics.startOptPerformed(getInfoString(),runCounter);
-        	m_Statistics.printToTextListener("\n****** Multirun "+runCounter);
-        	//m_Statistics.startOptPerformed(infoString,runCounter);
-        	m_Statistics.printToTextListener("\nModule parameters: ");
-        	m_Statistics.printToTextListener(BeanInspector.toString(goParams));
-        	m_Statistics.printToTextListener("\nStatistics parameters: ");
-        	m_Statistics.printToTextListener(BeanInspector.toString(m_Statistics.getStatisticsParameter()) + '\n');
+        	m_Statistics.startOptPerformed(getInfoString(),runCounter, goParams);
 
         	this.goParams.getProblem().initProblem();
         	this.goParams.getOptimizer().SetProblem(this.goParams.getProblem());
@@ -210,8 +186,8 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
         	
         	do {	// main loop
         		this.goParams.getOptimizer().optimize();
-//        		m_Statistics.createNextGenerationPerformed((PopulationInterface)this.m_ModulParameter.getOptimizer().getPopulation());
-//            	m_ListenerModule.updateProgress(getStatusPercent(m_ModulParameter.getOptimizer().getPopulation(), runCounter, m_Statistics.getStatisticsParameter().getMultiRuns()));     		
+        		// registerPopulationStateChanged *SHOULD* be fired by the optimizer or resp. the population
+        		// as we are event listener
         	} while (isOptRunning() && !this.goParams.getTerminator().isTerminated(this.goParams.getOptimizer().getPopulation()));
         	runCounter++;
 
@@ -230,46 +206,46 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
         return resultPop;
     }
     
+    /**
+     * Calculate the percentage of current (multi-)run already performed, based on evaluations/generations 
+     * for the EvaluationTerminator/GenerationTerminator or multi-runs only.
+     * 
+     * @param pop
+     * @param currentRun
+     * @param multiRuns
+     * @return the percentage of current (multi-)run already performed
+     */
     private int getStatusPercent(Population pop, int currentRun, int multiRuns) {
-	    double x = 100/multiRuns;
+	    double percentPerRun = 100/multiRuns;
 	    int curProgress;
 	    if (this.goParams.getTerminator() instanceof EvaluationTerminator) {
-	        double y = x/(double)((EvaluationTerminator)this.goParams.getTerminator()).getFitnessCalls();
-	        curProgress = (int)(currentRun * x + pop.getFunctionCalls()*y);
-	    } else {
-	    	curProgress = (int)(currentRun * x);
-	    }
+	        double curRunPerf = pop.getFunctionCalls()*percentPerRun/(double)((EvaluationTerminator)this.goParams.getTerminator()).getFitnessCalls();
+	        curProgress = (int)(currentRun * percentPerRun + curRunPerf);
+	    } else if (this.goParams.getTerminator() instanceof GenerationTerminator) {
+	        double curRunPerf = pop.getGeneration()*percentPerRun/(double)((GenerationTerminator)this.goParams.getTerminator()).getGenerations();
+	        curProgress = (int)(currentRun * percentPerRun + curRunPerf);
+	    } else curProgress = (int)(currentRun * percentPerRun);
 	    return curProgress;
     }
     
-    /** This method allows an optimizer to register a change in the optimizer.
+    /** 
+     * This method allows an optimizer to register a change in the optimizer.
+     * Send some information to the statistics module and update the progress.
      * @param source        The source of the event.
      * @param name          Could be used to indicate the nature of the event.
      */
     public void registerPopulationStateChanged(Object source, String name) {
-//        Population population = ((InterfaceOptimizer)source).getPopulation();
-
-		m_Statistics.createNextGenerationPerformed((PopulationInterface)this.goParams.getOptimizer().getPopulation(), this.goParams.getProblem());
-		if (m_ListenerModule != null) m_ListenerModule.updateProgress(getStatusPercent(goParams.getOptimizer().getPopulation(), runCounter, m_Statistics.getStatisticsParameter().getMultiRuns()), null);     		
-                
-//    	if (this.m_OutputFile != null) {
-//	        // data to be stored in file
-////	        double tmpd = 0;
-//	        StringBuffer  tmpLine = new StringBuffer("");
-//	        tmpLine.append(population.getFunctionCalls());
-//	        tmpLine.append("\t");
-//	        tmpLine.append(BeanInspector.toString(population.getBestEAIndividual().getFitness()));
-//	        tmpLine.append("\t");
-//	        double[] fit = population.getMeanFitness();
-//	        //for (int i = 0; i < population.size(); i++) tmpd += ((AbstractEAIndividual)population.get(i)).getFitness(0)/(double)population.size();
-//	        tmpLine.append(BeanInspector.toString(fit));
-//	        tmpLine.append("\t");
-//	        tmpLine.append(BeanInspector.toString(population.getWorstEAIndividual().getFitness()));
-//	        tmpLine.append("\t");
-//	        //tmpLine.append(population.getBestEAIndividual().getStringRepresentation());
-//	        tmpLine.append(this.m_ModulParameter.getProblem().getAdditionalFileStringValue(population));
-//	        //this.writeToFile(tmpLine.toString());
-//    	}
+		m_Statistics.createNextGenerationPerformed(
+				(PopulationInterface)this.goParams.getOptimizer().getPopulation(), 
+				this.goParams.getProblem());
+		if (m_ListenerModule != null) {
+			m_ListenerModule.updateProgress(
+					getStatusPercent(
+							goParams.getOptimizer().getPopulation(), 
+							runCounter,
+							m_Statistics.getStatisticsParameter().getMultiRuns()), 
+							null);
+		}
     }
     
     /** This method writes Data to file.

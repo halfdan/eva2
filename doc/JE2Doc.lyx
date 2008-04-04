@@ -129,7 +129,22 @@ Introduction
 
 \emph on
 \noun on
-JavaEvA 2
+JavaEvA
+\emph default
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+
+\emph on
+2
 \emph default
 \noun default
  (a 
@@ -175,7 +190,18 @@ EvA
 \begin_layout Standard
 
 \noun on
-JavaEvA 2
+JavaEvA
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+2
 \noun default
  integrates several derivation free optimization methods, preferably population
  based, such as Evolution Strategies, Genetic Algorithms, Differential Evolution
@@ -186,16 +212,27 @@ rt Hill Climbing or Simulated Annealing.
 \begin_layout Standard
 
 \noun on
-JavaEvA 2
+JavaEvA
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+2
 \noun default
  aims at two groups of users.
- Firstly, the standard user who does not know much about the theory of Evolution
-ary Algorithms, but wants to use Evolutionary Algorithms to solve an application
+ Firstly, the end user who does not know much about the theory of Evolutionary
+ Algorithms, but wants to use Evolutionary Algorithms to solve an application
  problem.
- Secondly, the experienced programmer who wants to investigate the performance
+ Secondly, the scientific user who wants to investigate the performance
  of different optimization algorithms or wants to compare the effect of
  alternative or specialized evolutionary or heuristic operators.
- The latter usually knows more about Evolutionary Algorithms or heuristic
+ The latter usually knows more about evolutionary algorithms or heuristic
  optimization and is able to extend 
 \noun on
 JavaEvA 2
@@ -213,25 +250,36 @@ JavaEvA 2
 JavaEvA 2.
 
 \noun default
- Thus, the document is mainly oriented by use-cases and tries to deliver
+ Thus, the document is mainly sketched along use-cases and tries to deliver
  knowledge on a top-down basis, with most important things first and details
  where required.
  Still, as 
 \noun on
 JavaEvA
 \noun default
- just as heuristic optimization itself can become tricky sometimes, it is
- not always possible to explain things without cross-references.
+, just as mostly any larger software package, can become tricky sometimes,
+ it is not always possible to explain things without cross-references.
  We hope that this document will, anyways, be a valuable helper in working
  with 
 \noun on
-JavaEvA 2
+JavaEvA
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+2
 \noun default
 .
 \end_layout
 
 \begin_layout Standard
-Main topics will be, of course, a Quick Start guide (Sec.
+This document contains, of course, a Quick Start guide (Sec.
 \begin_inset ERT
 status collapsed
 
@@ -247,7 +295,7 @@ status collapsed
 
 \end_inset
 
-), a guide to the GUI (Sec.
+) also explaining the graphical user interface (GUI, Sec.
 \begin_inset ERT
 status collapsed
 
@@ -263,24 +311,8 @@ status collapsed
 
 \end_inset
 
-) and basics on the Java programming interface (Sec.
-\begin_inset ERT
-status collapsed
-
-\begin_layout Standard
-
-~
-\end_layout
-
-\end_inset
-
-
-\begin_inset LatexCommand \ref{sec:Using-the-API}
-
-\end_inset
-
-), but also some words on how to use JavaEvA 2 with external programs such
- as Matlab (Sec.
+).
+ Sec.
 \begin_inset ERT
 status collapsed
 
@@ -296,7 +328,75 @@ status collapsed
 
 \end_inset
 
-).
+ contains hints on how to use 
+\noun on
+JavaEvA
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+2
+\noun default
+ with external programs, e.g.
+ MATLAB.
+ We provide a quick-and-simple way to add an application problem implementation
+ in Sec.
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+
+\begin_inset LatexCommand \ref{sec:Quickly-Adding-Your-Problem}
+
+\end_inset
+
+ and describe more details of the API in Sec.
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+
+\begin_inset LatexCommand \ref{sec:Using-the-API}
+
+\end_inset
+
+ to access further options and functionality.
+ Finally, we propose some literature sources for readings on Evolutionary
+ and Heuristic Optimization in Sec.
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+
+\begin_inset LatexCommand \ref{sec:Further-Reading}
+
+\end_inset
+
+ for the interested users.
 \end_layout
 
 \begin_layout Standard
@@ -536,6 +636,128 @@ status collapsed
  in the source code.
 \end_layout
 
+\begin_layout Subsection
+Some Words on the Words
+\end_layout
+
+\begin_layout Standard
+As 
+\noun on
+JavaEvA
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+2
+\noun default
+ is mainly about Evolutionary and Heuristic Optimization, some of the terms
+ and notions are borrowed from the area and used in this document.
+ As they may not be familiar to all who want to use the framework, we give
+ a short summary here.
+\end_layout
+
+\begin_layout Standard
+We aim at optimizing a target function without knowing much about it, and
+ find a certain position in the search space which minimizes the function,
+ called the 
+\emph on
+solution
+\emph default
+.
+ During search, we use a specific search strategy, the 
+\emph on
+optimizer
+\emph default
+, which usually looks at several positions in parallel.
+ Those are all 
+\emph on
+potential solutions
+\emph default
+, because we don't know the real one yet.
+ For the potential solutions we evaluate the target function.
+ The value received is often called 
+\emph on
+fitness
+\emph default
+ in analogy to Darwin's Theory of Evolution, where 
+\begin_inset Quotes eld
+\end_inset
+
+the fitter ones survive
+\begin_inset Quotes erd
+\end_inset
+
+.
+ For the same reason, potential solutions are sometimes called 
+\emph on
+individuals
+\emph default
+, and the set of potential solutions stored by the optimizer at a time may
+ be called 
+\emph on
+the
+\emph default
+ 
+\emph on
+population
+\emph default
+.
+ Many of the implemented optimization strategies employ operators in analogy
+ to natural 
+\emph on
+mutation
+\emph default
+, 
+\emph on
+crossover
+\emph default
+ and 
+\emph on
+selection
+\emph default
+.
+ 
+\end_layout
+
+\begin_layout Standard
+There is nothing mystical about that, and of course the analogy is often
+ exaggerated.
+ Evolutionary Optimization is an algorithmic tool that serves mostly technical
+ purposes.
+ That it works in a computer is by no means a sign that we fully understand
+ natural evolution or can proof anything about it.
+ This said, of course, we would never doubt that natural evolution in fact
+ works.
+\end_layout
+
+\begin_layout Standard
+This document will not explain in detail how the implemented optimizers
+ work, as there is enough literature out there handling these topics.
+ We refer to Sec.
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+
+\begin_inset LatexCommand \ref{sec:Further-Reading}
+
+\end_inset
+
+ for suggestions on further reading.
+\end_layout
+
 \begin_layout Standard
 
 \end_layout
@@ -604,7 +826,7 @@ status open
 
 \begin_layout Standard
 \begin_inset Graphics
-	filename /afs/cs.uni-tuebingen.de/home/mkron/workspace/JE2Base/doc/pics/screenshot-workbench.jpg
+	filename pics/screenshot-workbench.jpg
 	lyxscale 60
 	width 48text%
 
@@ -614,7 +836,7 @@ status open
 \InsetSpace ~
 
 \begin_inset Graphics
-	filename /afs/cs.uni-tuebingen.de/home/mkron/workspace/JE2Base/doc/pics/screenshot-workbench-stats.jpg
+	filename pics/screenshot-workbench-stats.jpg
 	lyxscale 60
 	width 48text%
 
@@ -1019,7 +1241,7 @@ status open
 
 \begin_layout Standard
 \begin_inset Graphics
-	filename /afs/cs.uni-tuebingen.de/home/mkron/workspace/JE2Base/doc/pics/screenshot-plot-window.jpg
+	filename pics/screenshot-plot-window.jpg
 	lyxscale 60
 	width 55text%
 
@@ -1184,128 +1406,6 @@ JPG
 \end_layout
 
 \begin_layout Subsubsection
-Some Words on the Words
-\end_layout
-
-\begin_layout Standard
-As 
-\noun on
-JavaEvA
-\begin_inset ERT
-status collapsed
-
-\begin_layout Standard
-
-~
-\end_layout
-
-\end_inset
-
-2
-\noun default
- is mainly about Evolutionary and Heuristic Optimization, some of the terms
- and notions are borrowed from the area and used in this document.
- As they may not be familiar to all who want to use the framework, we give
- a short summary here.
-\end_layout
-
-\begin_layout Standard
-We aim at optimizing a target function without knowing much about it, and
- find a certain position in the search space which minimizes the function,
- called the 
-\emph on
-solution
-\emph default
-.
- During search, we use a specific search strategy, the 
-\emph on
-optimizer
-\emph default
-, which usually looks at several positions in parallel.
- Those are all 
-\emph on
-potential solutions
-\emph default
-, because we don't know the real one yet.
- For the potential solutions we evaluate the target function.
- The value received is often called 
-\emph on
-fitness
-\emph default
- in analogy to Darwin's Theory of Evolution, where 
-\begin_inset Quotes eld
-\end_inset
-
-the fitter ones survive
-\begin_inset Quotes erd
-\end_inset
-
-.
- For the same reason, potential solutions are sometimes called 
-\emph on
-individuals
-\emph default
-, and the set of potential solutions stored by the optimizer at a time may
- be called 
-\emph on
-the
-\emph default
- 
-\emph on
-population
-\emph default
-.
- Many of the implemented optimization strategies employ operators in analogy
- to natural 
-\emph on
-mutation
-\emph default
-, 
-\emph on
-crossover
-\emph default
- and 
-\emph on
-selection
-\emph default
-.
- 
-\end_layout
-
-\begin_layout Standard
-There is nothing mystical about that, and of course the analogy is often
- exaggerated.
- Evolutionary Optimization is an algorithmic tool that serves mostly technical
- purposes.
- That it works is by no means a sign that we fully understand natural evolution
- or can even proof anything about it.
- This said, however, we should also note that noone today should really
- doubt that evolution works.
-\end_layout
-
-\begin_layout Standard
-This document will not explain in detail how the implemented optimizers
- work, as there is enough literature out there handling these topics.
- We refer to Sec.
-\begin_inset ERT
-status collapsed
-
-\begin_layout Standard
-
-~
-\end_layout
-
-\end_inset
-
-
-\begin_inset LatexCommand \ref{sec:Further-Reading}
-
-\end_inset
-
- for suggestions on further reading.
-\end_layout
-
-\begin_layout Subsubsection
 Basic Optimization using 
 \noun on
 JavaEvA 2
@@ -1467,7 +1567,7 @@ status open
 
 \begin_layout Standard
 \begin_inset Graphics
-	filename /afs/cs.uni-tuebingen.de/home/mkron/workspace/JE2Base/doc/pics/cluster-graph.eps
+	filename pics/cluster-graph.eps
 	lyxscale 50
 	width 80col%
 
@@ -1648,7 +1748,7 @@ status open
 
 \family typewriter
 \size small
-$ java -cp JE2Base.jar:JE2Probs.jar:/home/username/workspace 
+$ java -cp JE2Base.jar:JE2Probs.jar:/home/username/workspace/OwnClassDir 
 \backslash
 
 \end_layout
@@ -1710,7 +1810,7 @@ status open
 
 \begin_layout Standard
 \begin_inset Graphics
-	filename /afs/cs.uni-tuebingen.de/home/mkron/workspace/JE2Base/doc/pics/screenshot-ExtRun.jpg
+	filename pics/screenshot-ExtRun.jpg
 	width 40col%
 
 \end_inset
@@ -1845,9 +1945,10 @@ status collapsed
 2
 \noun default
  starts a system process to run the external program and converts input/output
- using String objects, which is of course rather slow.
- Still, it may sometimes outweigh the costs of reimplementing it anew in
- Java, or come in handy if you just want to test what 
+ using String objects, which is by itself rather slow.
+ Still, it may outweigh the costs of reimplementing it anew and can even
+ be negligible if the runtime of the calculation is of higher order of magnitude.
+ It may also just come in handy if you want to try what 
 \noun on
 JavaEvA
 \begin_inset ERT
@@ -2030,15 +2131,14 @@ Details on JEInterface
 \end_layout
 
 \begin_layout Standard
-As Matlab is single-threaded and Java needs to call it back to calculate
- function values, the 
+The main 
 \family typewriter
 optimize
 \family default
- command starts a new Java thread and returns directly to Matlab.
- This means that the optimization works asynchronously: the result will
- be written to the JEInterface instance and is not a direct output value
- of the 
+ command starts actually two new Java threads handling Java callbacks to
+ Matlab within the single Matlab thread.
+ The result of the optimization will be written back to the JEInterface
+ instance and is not a direct output value of the 
 \family typewriter
 optimize
 \family default
@@ -2059,21 +2159,6 @@ setParameter(Obj, p1, val1)
 Obj=setParameter(Obj, p1, val1)
 \family default
 .
-\end_layout
-
-\begin_layout Standard
-Because of that, the JEInterface method 
-\family typewriter
-isFinished
-\family default
-, which checks the state of a JEInterface object, (i.e., optimization finished
- or not), only works correctly if you start the optimization with assignment
- (as described in Section 
-\begin_inset LatexCommand \ref{sub:JEInterface-Quick-Intro}
-
-\end_inset
-
-).
  After optimization, you may retrieve the result by calling 
 \family typewriter
 getResult
@@ -2117,6 +2202,32 @@ getResult
 \family default
  method.
  
+\end_layout
+
+\begin_layout Standard
+Most optimization strategies have specific parameters influencing their
+ performance.
+ The 
+\family typewriter
+optimize
+\family default
+-call gives access to standard parameter settings.
+ To modify specific parameters, use the 
+\family typewriter
+getDesc
+\family default
+-method to list available parameters of an optimizer.
+ You may then use the method 
+\family typewriter
+optimizeWith
+\family default
+ and deliver specific parameters in name/value pairs to configure a specific
+ run, where the names must correspond to a member variable of the optimizer
+ as listed by 
+\family typewriter
+getDesc
+\family default
+ and the value object must of course be of the correct type.
 \end_layout
 
 \begin_layout Standard
@@ -2253,25 +2364,8 @@ resultFilePrefix
 \bar default
 \noun default
 Returns the modified JEInterface instance.
-\end_layout
-
-\begin_layout Description
-
-\family typewriter
-isFinished(JI)
-\family default
- Check whether an optimization process is currently running (return value
- 0).
- Returns 1 before and after an optimization run.
-\end_layout
-
-\begin_layout Description
-
-\family typewriter
-getProgress(JI)
-\family default
- During optimization, return the number of fitness calls performed until
- now.
+ The method also opens a message box with a cancel button to stop the optimizati
+on.
 \end_layout
 
 \begin_layout Description
@@ -2291,31 +2385,6 @@ getMessage(JI)
  Return a text message describing the termination state of the optimization,
  e.g.
  the number of function calls performed.
-\end_layout
-
-\begin_layout Description
-
-\family typewriter
-JI=stopOptimize(JI)
-\family default
- Stop a running optimization process.
- An intermediate result will be written back to the interface instance from
- 
-\noun on
-JavaEvA
-\begin_inset ERT
-status collapsed
-
-\begin_layout Standard
-
-~
-\end_layout
-
-\end_inset
-
-2
-\noun default
-.
 \end_layout
 
 \begin_layout Description
@@ -2458,9 +2527,62 @@ optset
 \begin_layout Description
 
 \family typewriter
+getDesc(JI,optType) 
+\family default
+Show information about an optimizer class together with the parameters that
+ can be modified.
+ The available settings are analogous to the optimizer options presented
+ by the Java GUI.
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
+optimizeWith(JI,optType[,outputFilePrefix][,memName,memVal]*) 
+\family default
+Optimize using an optimizer by ID and specific settings for this optimizer.
+ The settings given must conform to the options shown by 
+\family typewriter
+getDesc(JI,optType)
+\family default
+.
+ The available settings are analogous to the optimizer options presented
+ by the Java GUI.
+
+\color none
+ The method also opens a message box with a cancel button to stop the optimizati
+on.
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
+JI=stopOptimize(JI[,'kill'])
+\family default
+ Stop a running optimization process, which is usually done by the cancel
+ button.
+ In case brute force was used (STRG-C), this method may be used with the
+ 
+\family typewriter
+'kill'
+\family default
+ argument to try to clean up Java threads still running as 
+\begin_inset Quotes eld
+\end_inset
+
+zombies
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
 setResultJE
 \family default
- Write-back method required internally by 
+ (Internal) Write-back method required internally by 
 \noun on
 JavaEvA
 \begin_inset ERT
@@ -2484,7 +2606,7 @@ status collapsed
 \family typewriter
 setResultArrayJE
 \family default
- Write-back method required internally by 
+ (Internal) Write-back method required internally by 
 \noun on
 JavaEvA
 \begin_inset ERT
@@ -2506,25 +2628,18 @@ status collapsed
 \begin_layout Description
 
 \family typewriter
-evaluateJE
+getProgress(JI)
 \family default
- Evaluation method required internally by 
-\noun on
-JavaEvA
-\begin_inset ERT
-status collapsed
-
-\begin_layout Standard
-
-~
+ (Internal) During optimization, return the number of fitness calls performed
+ until now.
 \end_layout
 
-\end_inset
+\begin_layout Description
 
-2.
-
-\noun default
- Calling it by hand may interfere with optimization.
+\family typewriter
+runEvalLoopJE
+\family default
+ (Internal) Start a JavaEvA run, optimization or post processing.
 \end_layout
 
 \begin_layout Standard
@@ -2914,27 +3029,30 @@ BitSet
 \begin_layout Itemize
 Implement the method 
 \family typewriter
-public double[] eval(double[] x)
+public double[]
 \family default
- or 
+ 
 \family typewriter
-public double[] eval(
-\begin_inset ERT
-status open
-
-\begin_layout Standard
-
-
-\backslash
--
-\end_layout
-
-\end_inset
-
-BitSet bs)
+eval(double[] x)
 \family default
- , respectively, whithin your ExampleProblem, where the fitness of a potential
- solution is calculated.
+ for double coded problems or 
+\family typewriter
+public
+\family default
+ 
+\family typewriter
+double[]
+\family default
+ 
+\family typewriter
+eval(BitSet
+\family default
+ 
+\family typewriter
+bs)
+\family default
+ for binary coded problems, whithin your ExampleProblem, where the fitness
+ of a potential solution is calculated.
 \end_layout
 
 \begin_layout Itemize
@@ -6047,7 +6165,7 @@ status open
 
 \begin_layout Standard
 \begin_inset Graphics
-	filename /afs/cs.uni-tuebingen.de/home/mkron/workspace/JE2Base/doc/pics/fm0-cbn-500.jpg
+	filename pics/fm0-cbn-500.jpg
 	lyxscale 70
 	width 49col%
 
@@ -6055,7 +6173,7 @@ status open
 
 
 \begin_inset Graphics
-	filename /afs/cs.uni-tuebingen.de/home/mkron/workspace/JE2Base/doc/pics/fm0-cbn-1500.jpg
+	filename pics/fm0-cbn-1500.jpg
 	lyxscale 70
 	width 49col%
 
