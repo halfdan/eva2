@@ -16,6 +16,7 @@ if (nargin > 1) && (ischar(varargin{1}) && (strcmp(varargin{1},'kill')==1))
         JEMediator.quit; % just in case
         JEMediator='';
         clear global JEMediator;
+        clear global stopOptimization;
     else 
         disp('no mediator to kill');
     end

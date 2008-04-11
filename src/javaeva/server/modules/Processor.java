@@ -14,6 +14,7 @@ import javaeva.server.go.problems.AbstractOptimizationProblem;
 import javaeva.server.go.tools.RandomNumberGenerator;
 import javaeva.server.stat.InterfaceStatistics;
 import javaeva.server.stat.InterfaceTextListener;
+import javaeva.server.stat.StatisticsWithGUI;
 import wsi.ra.jproxy.RemoteStateListener;
 
 /**
@@ -144,8 +145,12 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
     		e.printStackTrace();
         	//m_Statistics.stopOptPerformed(false);
         	setOptRunning(false); // normal finish
-        	if (m_ListenerModule!=null) m_ListenerModule.performedStop(); // is only needed in client server mode
-        	if (m_ListenerModule!=null) m_ListenerModule.updateProgress(0, "Error in optimization: " + e.getMessage());    		
+        	if (m_ListenerModule!=null) {
+        		m_ListenerModule.performedStop(); // is only needed in client server mode
+        		String errMsg = e.getMessage();
+        		if ((errMsg == null) || (errMsg.length() == 0)) errMsg="check console output for error messages.";
+            	m_ListenerModule.updateProgress(0, "Error in optimization: " + errMsg);    		
+        	}
     	}
     	return resPop;
     }
@@ -266,7 +271,7 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
     public String getInfoString() {
     	//StringBuffer sb = new StringBuffer("processing ");
     	StringBuffer sb = new StringBuffer(this.goParams.getProblem().getName());
-    	sb.append("/");
+    	sb.append("+");
     	sb.append(this.goParams.getOptimizer().getName());
     	// commented out because the number of multi-runs can be changed after start
     	// so it might create misinformation (would still be the user's fault, though) 
@@ -315,7 +320,11 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
      */
     public Population performPostProcessing(PostProcessParams ppp, InterfaceTextListener listener) {
     	if (ppp.isDoPostProcessing()) {
-	    	if (listener != null) listener.println("Post processing params: " + BeanInspector.toString(ppp));
+	    	if (listener != null) {
+	    		listener.println("Post processing params: " + BeanInspector.toString(ppp));
+	    		// if textwindow was closed, check if it should be reopened for pp
+	    		if (m_Statistics instanceof StatisticsWithGUI) ((StatisticsWithGUI)m_Statistics).maybeShowProxyPrinter();
+	    	}
 	    	Population resultPop = goParams.getOptimizer().getAllSolutions();
 	    	if (resultPop.getFunctionCalls() != goParams.getOptimizer().getPopulation().getFunctionCalls()) {
 	//    		System.err.println("bad case in Processor::performNewPostProcessing ");

@@ -18,8 +18,8 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 	private PrintWriter resultOut;
 	public final static boolean TRACE = false;
 	protected InterfaceStatisticsParameter m_StatsParams;
-	protected String startDate;
-	protected long startTime;
+//	protected String startDate;
+//	protected long startTime;
 	
 	/**
 	 * Keep track of all intermediate fitness values, best, avg. and worst, averaging over all runs
@@ -70,20 +70,22 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 		return textListeners.remove(listener);
 	}
 	
-	protected void initOutput() {
-		SimpleDateFormat formatter = new SimpleDateFormat(
-		"E'_'yyyy.MM.dd'_at_'hh.mm.ss");
-		startDate = formatter.format(new Date());
-		startTime = System.currentTimeMillis();
+	/**
+	 * Collect start date and time of the run and if indicated, open a file output stream.
+	 *  
+	 * @param infoString
+	 */
+	protected void initOutput(String infoString) {
+		SimpleDateFormat formatter = new SimpleDateFormat("E'_'yyyy.MM.dd'_at_'hh.mm.ss");
+		String startDate = formatter.format(new Date());
 		// open the result file:
-		String resFName = m_StatsParams.getResultFileName();
 		if ((m_StatsParams.getOutputTo().getSelectedTagID()!=1) // not "text only" 
 				&& (m_StatsParams.getOutputVerbosity().getSelectedTagID() > StatsParameter.VERBOSITY_NONE)) { // verbosity accordingly high
 			//!resFName.equalsIgnoreCase("none") && !resFName.equals("")) {
-			String name = resFName + "_" + startDate + ".txt";
-			if (TRACE) System.out.println("FileName =" + name);
+			String fname = makeOutputFileName(m_StatsParams.getResultFilePrefix(), infoString, startDate);
+			if (TRACE) System.out.println("FileName =" + fname);
 			try {
-				resultOut = new PrintWriter(new FileOutputStream(name));
+				resultOut = new PrintWriter(new FileOutputStream(fname));
 			} catch (Exception e) {
 				e.printStackTrace();
 				System.out.println("Error: " + e);
@@ -93,6 +95,9 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 		} else resultOut = null;
 	}
 	
+	private String makeOutputFileName(String prefix, String infoString, String startDate) {
+		return (prefix + "_" + infoString).replace(' ', '_') + "_" + startDate + ".txt";
+	}
 	/**
 	 * If set to true, before every run the parameters will be stored to a file at the start
 	 * of each run. Default is true.
@@ -111,7 +116,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 			optRunsPerformed = 0;
 			convergenceCnt = 0;
 			if (saveParams) m_StatsParams.saveInstance();
-			initOutput();
+			initOutput(infoString);
 			bestCurrentIndividual = null;
 			bestIndivdualAllover = null;
 			if (refineMultiRuns) meanCollection = new ArrayList<double[][]>();

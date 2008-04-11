@@ -41,7 +41,7 @@ public class StatsParameter implements InterfaceStatisticsParameter, Serializabl
   public final static int VERBOSITY_FINAL = 1;
   public final static int VERBOSITY_KTH_IT = 2;
   public final static int VERBOSITY_ALL = 3;
-  SelectedTag outputVerbosity = new SelectedTag("No output", "Results", "K-th iteration", "All iterations");
+  SelectedTag outputVerbosity = new SelectedTag("No output", "Final results", "K-th iterations", "All iterations");
   SelectedTag outputTo = new SelectedTag("File (current dir.)", "Text-window", "Both file and text-window");
   private int verboK = 10;
 
@@ -125,6 +125,7 @@ public class StatsParameter implements InterfaceStatisticsParameter, Serializabl
     m_PlotFitness = Source.m_PlotFitness;
     m_MultiRuns = Source.m_MultiRuns;
     m_ResultFilePrefix = Source.m_ResultFilePrefix;
+    verboK = Source.verboK;
   }
 
   /**
@@ -268,7 +269,7 @@ public class StatsParameter implements InterfaceStatisticsParameter, Serializabl
   /**
    *
    */
-  public void SetResultFileName(String x) {
+  public void SetResultFilePrefix(String x) {
 	  if (x==null) m_ResultFilePrefix = "";
 	  else m_ResultFilePrefix = x;
   }
@@ -276,7 +277,7 @@ public class StatsParameter implements InterfaceStatisticsParameter, Serializabl
   /**
    *
    */
-  public String getResultFileName() {
+  public String getResultFilePrefix() {
 	  return m_ResultFilePrefix;
   }
   

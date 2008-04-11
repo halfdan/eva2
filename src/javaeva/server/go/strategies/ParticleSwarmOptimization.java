@@ -56,8 +56,8 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 	protected int                             m_TopologyRange     = 2;
 	protected double                          m_InitialVelocity   = 0.2;
 	protected double                          m_SpeedLimit        = 0.1;
-	protected double                          m_Phi1              = 2.8;
-	protected double                          m_Phi2              = 1.3;
+	protected double                          m_Phi1              = 2.05;
+	protected double                          m_Phi2              = 2.05;
 	// for multi-swarm topology: radius of the swarm relative to the range
 	protected double						  	m_swarmRadius		  = 0.2;
 	// for multi-swarm: maximum sub swarm size. zero means unlimited
@@ -105,7 +105,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 
 	public ParticleSwarmOptimization() {
 		this.m_Topology = new SelectedTag( "Linear", "Grid", "Star", "Multi-Swarm", "Tree", "HPSO", "Random" );
-		m_Topology.setSelectedTag(2);
+		m_Topology.setSelectedTag(1);
 
 		algType = new SelectedTag("Inertness", "Constriction");
 		algType.setSelectedTag(1);
@@ -1680,7 +1680,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 		setGOEShowProperties(getClass());
 	}
 	
-	public void setGOEShowProperties(Class cls) {
+	public void setGOEShowProperties(Class<?> cls) {
 		GenericObjectEditor.setShowProperty(cls, "topologyRange", (m_Topology.getSelectedTag().getID() < 2) || (m_Topology.getSelectedTag().getID() == 6));
 		GenericObjectEditor.setShowProperty(cls, "subSwarmRadius", (m_Topology.getSelectedTag().getID() == 3));
 		GenericObjectEditor.setShowProperty(cls, "subSwarmSize", (m_Topology.getSelectedTag().getID() == 3));
@@ -1821,17 +1821,18 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 		return treeStruct;
 	}
 
-	public void setTreeStruct(int treeStruct) {
+	public void SetTreeStruct(int treeStruct) {
 		this.treeStruct = treeStruct;
 	}
-
-	public boolean isUseAlternative() {
-		return useAlternative;
-	}
-
-	public void setUseAlternative(boolean useAlternative) {
-		this.useAlternative = useAlternative;
-	}
+	
+// This was for testing rotation operators 
+//	public boolean isUseAlternative() {
+//		return useAlternative;
+//	}
+//
+//	public void setUseAlternative(boolean useAlternative) {
+//		this.useAlternative = useAlternative;
+//	}
 
 	public int getTreeBranchDegree() {
 		return treeBranchDeg;

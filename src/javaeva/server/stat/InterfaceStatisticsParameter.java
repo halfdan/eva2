@@ -46,8 +46,8 @@ public interface InterfaceStatisticsParameter {
   public SelectedTag getPlotFitness();
   public void setPlotFitness(SelectedTag newMethod);
 
-  public String getResultFileName();
-  public void SetResultFileName(String x);
+  public String getResultFilePrefix();
+  public void SetResultFilePrefix(String x);
   
   public void setConvergenceRateThreshold(double x);
   public double getConvergenceRateThreshold();
