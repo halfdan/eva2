@@ -22,6 +22,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import wsi.ra.jproxy.RMIProxyLocal;
@@ -86,6 +87,7 @@ public class JModuleGeneralPanel implements RemoteStateListener, Serializable  {
 					m_Adapter.startOpt();
 					m_actStop.setEnabled(true);
 					m_RunButton.setEnabled(false);
+					m_PPButton.setEnabled(false);
 //					m_RestartButton.setEnabled(false);
 					m_JHelpButton.setEnabled(true);
 				} catch (Exception ee) {
@@ -124,7 +126,7 @@ public class JModuleGeneralPanel implements RemoteStateListener, Serializable  {
 		m_PPButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e){
 				try {
-					m_Adapter.startPostProcessing();
+					if (!m_Adapter.startPostProcessing()) JOptionPane.showMessageDialog(null, "Post processing seems deactivated! Check the settings.", "Warning", JOptionPane.WARNING_MESSAGE);
 //					m_actStop.setEnabled(true);
 //					m_RunButton.setEnabled(false);
 				} catch (Exception ee) {

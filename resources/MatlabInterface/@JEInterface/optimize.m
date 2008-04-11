@@ -1,18 +1,18 @@
 function retInt = optimize(int, optType, varargin)
 % Start a JavaEvA optimization run.
 %       optimize(interface, optType, [, outputFilePrefix ] )
-%       where
+% where
 %       interface: instance of JEInterface
 %       optType: integer indicating the type of the optimization strategy
 %       to use.
 %       resultFilePrefix: (optional) char prefix for an optional verbose
 %           output file
 
-if (int.finished == 0)
+if (int.finished == 0) 
     error('please wait for the current run to finish');
 end
 if ((nargin == 2) || (nargin == 3))
-    if (nargin == 3)
+    if (nargin == 3) 
         outputFilePrefix = varargin{1};
     else
         outputFilePrefix = 'none';
@@ -27,9 +27,9 @@ if ((nargin == 2) || (nargin == 3))
     xTol = int.opts.TolX;
     maxEvals = int.opts.MaxFunEvals;
     fTol = int.opts.TolFun;
-
+    
     import javaeva.server.go.operators.terminators.PhenotypeConvergenceTerminator;
-    import javaeva.server.go.operators.terminators.FitnessConvergenceTerminator;
+    import javaeva.server.go.operators.terminators.FitnessConvergenceTerminator;    
     import javaeva.server.go.operators.terminators.CombinedTerminator;
     import javaeva.server.go.operators.terminators.EvaluationTerminator;
     import javaeva.OptimizerFactory;
@@ -39,6 +39,7 @@ if ((nargin == 2) || (nargin == 3))
     % values of 1e-4 in . Thats what we do as well
     if (isempty(int.opts.TolX)) ; xTol = 1e-4; end
     if (isempty(int.opts.TolFun)) ; fTol = 1e-4; end
+
     % construct Terminators
     if ((xTol > 0) && (fTol > 0))
         % both criteria are given, use combination
@@ -48,12 +49,12 @@ if ((nargin == 2) || (nargin == 3))
         else if (fTol > 0 )             % only fitness covnergence
                 convTerm = FitnessConvergenceTerminator(fTol, 100, 1, 1);
             else
-                convTerm = 'undef'; % signal that there is no terminator yet
+               convTerm = 'undef'; % signal that there is no terminator yet
             end
         end
     end
 
-    if (ischar(convTerm)) % if no convergence terminator is defined so far, use fitness calls
+    if (ischar(convTerm)) % if no convergence terminator is defined so far, use fitness calls 
         if (isempty(maxEvals))
             error('Error: no termination criterion defined! Please check options.');
             % int.opts.MaxFunEvals = OptimizerFactory.getDefaultFitCalls;
@@ -61,9 +62,9 @@ if ((nargin == 2) || (nargin == 3))
         end
         convTerm = EvaluationTerminator(maxEvals);
         javaeva.OptimizerFactory.setTerminator(convTerm);
-    else % there is a convergence terminator
+    else % there is a convergence terminator              
         javaeva.OptimizerFactory.setTerminator(convTerm); % so set it
-        if (~isempty(maxEvals))
+        if (~isempty(maxEvals) && (maxEvals > 0))
             % if TolX/TolFun plus MaxFunEvals is defined additionally, combine an
             % EvaluationTerminator in disjunction, as Matlab does.
             javaeva.OptimizerFactory.addTerminator(EvaluationTerminator(maxEvals), 0);
@@ -73,14 +74,21 @@ if ((nargin == 2) || (nargin == 3))
     % set display
     if (strcmp(int.opts.Display,'off') || isempty(int.opts.Display))
         int.mp.setStatsOutput(0);
-    elseif (strcmp(int.opts.Display, 'iter'))
+    elseif (strcmp(int.opts.Display, 'final'))
         int.mp.setStatsOutput(1);
+    elseif (strcmp(int.opts.Display, 'notify')) 
+        % 'notify' is not the perfect notion for "show every k-th
+        % iteration", but optimset wont allow changing names.
+        int.mp.setStatsOutput(2);       
+    elseif (strcmp(int.opts.Display, 'iter'))
+        % this should rather be 2 in JE slang, but in matlab slang its more like 3
+        int.mp.setStatsOutput(3);    
     else
-        error('invalid Display option, only off/iter are recognized');
+        error('invalid Display option, only off/final/notify/iter are recognized');
     end
-
+    
     int=runEvalLoopJE(int, 1, optType, outputFilePrefix, -1, -1, -1);
-  
+    
 else
     error('Wrong number of arguments!')
 end

@@ -12,6 +12,18 @@ function int = JEInterface(interfaceName, fhandle, range, varargin)
 %       JavaEvA default values.
 %   defaultArgs: (optional) additional constant argument to the target
 %       function, empty by default.
+% Recognized options are:
+%   TolX: convergence criterion in the solution space
+%   TolFun: convergence criterion in the target space
+%   MaxFunEvals: maximum number of function evaluations
+%   Display: 'off'/'final'/'notify'/'iter', where 'notify' corresponds to
+%       displaying every k-th iteration, which k=10 as default.
+% The termination criterion of a run is a combination of the TolX, TolFun and
+% MaxFunEvals criteria. The run terminates if MaxFunEvals has been reached
+% or the best solution changes both in domain and codomain less than TolX 
+% and TolFun for a certain time, e.g. 100 evaluations.
+% To ignore a criterion, set it to 0. E.g. to perform 10^5 evaluations in
+% any case, set TolX=TolFun=0 and MaxFunEvals=10^5.
 
 int.args = [];
 int.opts = optimset('MaxFunEvals', javaeva.OptimizerFactory.getDefaultFitCalls, 'TolX', 1e-4, 'TolFun', 1e-4);

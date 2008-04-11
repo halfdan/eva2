@@ -9,9 +9,10 @@ import javaeva.server.go.individuals.ESIndividualDoubleData;
  * Time: 19:15:03
  * To change this template use File | Settings | File Templates.
  */
-public class F14Problem extends F1Problem implements java.io.Serializable {
+public class F14Problem extends F1Problem implements InterfaceMultimodalProblem, java.io.Serializable {
 	double rotation = 0.;
-
+	double rotationDX = 2;
+	
 	public F14Problem() {
         this.m_Template         = new ESIndividualDoubleData();
         this.m_ProblemDimension = 2;
@@ -35,8 +36,8 @@ public class F14Problem extends F1Problem implements java.io.Serializable {
      */
     public double[] eval(double[] x) {
         double[] result = new double[1];
-        double x0 = x[0]-2;
-        double x1 = x[1]-2;
+        double x0 = x[0]-rotationDX;
+        double x1 = x[1]-rotationDX;
         if (rotation != 0.) {
 			double cosw = Math.cos(rotation);
 			double sinw = Math.sin(rotation);
@@ -59,6 +60,10 @@ public class F14Problem extends F1Problem implements java.io.Serializable {
 	public void setRotation(double rotation) {
 		this.rotation = 2 * Math.PI * rotation / 360.0;
 	}
+	
+	public String rotationTipText() {
+		return "The rotation angle in degrees.";
+	}
     
     /** This method returns a string describing the optimization problem.
      * @return The description.
@@ -67,7 +72,7 @@ public class F14Problem extends F1Problem implements java.io.Serializable {
         String result = "";
 
         result += "F14 function:\n";
-        result += "Several local minima in a straight line\n";
+        result += "Several local minima in linear order which may be rotated.\n";
         //result += this.m_Template.getSolutionRepresentationFor();
         return result;
     }
@@ -80,13 +85,13 @@ public class F14Problem extends F1Problem implements java.io.Serializable {
      * @return The name.
      */
     public String getName() {
-        return "F14 Problem";
+        return "F14-Problem";
     }
 
     /** This method returns a global info string
      * @return description
      */
     public String globalInfo() {
-        return "F14 function.";
+        return "F14 function: numerous optima in linear order which may be rotated.";
     }
 }

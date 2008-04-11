@@ -100,7 +100,6 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
 	 */
 	public synchronized void startOptPerformed(String infoString, int runNumber, Object goParams) {
 		super.startOptPerformed(infoString, runNumber, goParams);
-
 		m_GraphInfoString = infoString;
 
 //		m_TextCounter = m_StatisticsParameter.GetTextoutput();
@@ -136,11 +135,15 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
 //			m_ConvergenceCnt = 0;
 //		}
 	}
-
+	
+	public void maybeShowProxyPrinter() {
+		if (m_ProxyPrinter != null) m_ProxyPrinter.setShow((m_StatsParams).isShowTextOutput());
+	}
+	
 	protected void initPlots(List<String[]> description) {
 		if (TRACE) System.out.println("initPlots");
 
-		if (m_ProxyPrinter != null) m_ProxyPrinter.setShow((m_StatsParams).isShowTextOutput());
+		maybeShowProxyPrinter();
 		
 		m_FitnessFrame = new GraphWindow[description.size()];
 		for (int i = 0; i < m_FitnessFrame.length; i++) {

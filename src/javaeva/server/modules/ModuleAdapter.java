@@ -29,8 +29,16 @@ public interface ModuleAdapter extends RemoteStateListener {
   public void restartOpt();
   public void stopOpt();
   public void runScript();
+  /**
+   * Return true if post processing is available in principle, else false.
+   * @return true if post processing is available in principle, else false
+   */
   public boolean hasPostProcessing();
-  public void startPostProcessing();
+  /**
+   * Return true if post processing was performed, else false.
+   * @return true if post processing was performed, else false
+   */
+  public boolean startPostProcessing();
   public void addRemoteStateListener(RemoteStateListener x);
   public String getAdapterName();
   public void setConnection(boolean flag);

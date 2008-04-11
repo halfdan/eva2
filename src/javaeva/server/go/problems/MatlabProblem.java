@@ -32,7 +32,7 @@ public class MatlabProblem extends AbstractProblemDouble implements InterfaceTex
 	transient PrintStream 				dos = null;
 	protected double[][] 				range = null;
 	private static final String			defTestOut = "matlabproblem-testout.dat";
-	boolean 							forwardStatisticsOutput	= false;
+	int 								verbosityLevel	= 0;
 	private MatlabEvalMediator 			handler = null;
 	
 	public static boolean hideFromGOE = true; 
@@ -133,8 +133,11 @@ public class MatlabProblem extends AbstractProblemDouble implements InterfaceTex
 //		this.jmInterface = jmInterface;
 //	}
 	
-	public void setStatsOutput(boolean forwardStats) {
-		forwardStatisticsOutput = forwardStats;
+	public void setStatsOutput(int verboLevel) {
+		if ((verboLevel >= 0) && (verboLevel <= 3)) {
+			verbosityLevel = verboLevel;
+		}
+		else System.err.println("Error, invalid verbosity level for statistics output!");
 	}
 
 	public String jmiInterfaceNameTipText() {
@@ -225,6 +228,8 @@ public class MatlabProblem extends AbstractProblemDouble implements InterfaceTex
 			runnable = OptimizerFactory.getOptRunnable(optType, (AbstractOptimizationProblem)this, outputFilePrefix);
 //			runnable.getGOParams().setPostProcessParams(new PostProcessParams(0, 0.01, 5));
 			runnable.setTextListener(this);
+			runnable.setVerbosityLevel(verbosityLevel);
+			
 			if ((specParams != null) && (specParams.length > 0)) {
 				if ((specValues == null) || (specValues.length != specParams.length)) {
 					System.err.println("mismatching value list for parameter arguments: " + specValues);
@@ -388,7 +393,7 @@ public class MatlabProblem extends AbstractProblemDouble implements InterfaceTex
 	}
 
 	public void print(String str) {
-		if (forwardStatisticsOutput) {
+		if (verbosityLevel > 0) {
 			// matlab displays sysout output in the command window, so we simply use this channel
 			System.out.print(str);
 		}

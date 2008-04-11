@@ -17,7 +17,7 @@
 \inputencoding auto
 \fontscheme default
 \graphics default
-\paperfontsize default
+\paperfontsize 11
 \spacing single
 \papersize default
 \use_geometry false
@@ -797,9 +797,14 @@ optimizer
  values.
  For your optimization run, you may configure the parameter values directly
  through the input fields.
- A short description will be displayed by tip-text over the name of each
+ A short description will be displayed by tip-text above the name of each
  parameter.
- We will now shortly summarize the components of the workbench (Fig.
+ The 
+\noun on
+JavaEvA
+\noun default
+ GUI has two main tabs: the optimization parameter tab and the statistics
+ tab (Fig.
 \begin_inset ERT
 status open
 
@@ -815,7 +820,7 @@ status open
 
 \end_inset
 
-).
+), the components of which will be summarized in the following.
 \end_layout
 
 \begin_layout Standard
@@ -826,9 +831,9 @@ status open
 
 \begin_layout Standard
 \begin_inset Graphics
-	filename pics/screenshot-workbench.jpg
+	filename /afs/cs.uni-tuebingen.de/home/mkron/workspace/JE2Base/doc/pics/screenshot-workb2.gif
 	lyxscale 60
-	width 48text%
+	width 45text%
 
 \end_inset
 
@@ -836,9 +841,9 @@ status open
 \InsetSpace ~
 
 \begin_inset Graphics
-	filename pics/screenshot-workbench-stats.jpg
+	filename /afs/cs.uni-tuebingen.de/home/mkron/workspace/JE2Base/doc/pics/screenshot-workb-stats2.gif
 	lyxscale 60
-	width 48text%
+	width 45text%
 
 \end_inset
 
@@ -1066,6 +1071,167 @@ Multi-runs
 \end_layout
 
 \begin_layout Description
+Additional
+\shape italic
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+
+\shape default
+Information
+\shape italic
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+
+\shape default
+Output In addition to typical data output such as best and average fitness
+ at a time, some problems may be requested to display additional information
+ in textual form, usually a representation of the best individual.
+\end_layout
+
+\begin_layout Description
+
+\shape italic
+Output
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+To 
+\shape default
+Textual information can be shown in a text box, or redirected to a file,
+ or both.
+ The output file will be stored to the current directory with a descriptive
+ name containing the timestamp of the start of the run.
+\end_layout
+
+\begin_layout Description
+Output
+\shape italic
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+
+\shape default
+Verbosity Select the verbosity of the textual output, possible settings
+ are 
+\begin_inset Quotes eld
+\end_inset
+
+no output
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+final results
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+k-th iterations
+\begin_inset Quotes erd
+\end_inset
+
+ and 
+\begin_inset Quotes eld
+\end_inset
+
+all iterations
+\begin_inset Quotes erd
+\end_inset
+
+.
+ An iteration is usually a generational cycle, meaning that for 
+\begin_inset Quotes eld
+\end_inset
+
+all iterations
+\begin_inset Quotes erd
+\end_inset
+
+, intermediate data is printed after each generation.
+\end_layout
+
+\begin_layout Description
+Verbosity
+\shape italic
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+
+\shape default
+Parameter
+\shape italic
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+
+\shape default
+k Define the interval parameter for the 
+\begin_inset Quotes eld
+\end_inset
+
+k-th iterations
+\begin_inset Quotes erd
+\end_inset
+
+ setting of the output verbosity, by which intermediate data is printed.
+\end_layout
+
+\begin_layout Description
 
 \shape italic
 Fitness
@@ -1111,70 +1277,6 @@ worst
 \end_inset
 
  or both.
-\end_layout
-
-\begin_layout Description
-
-\shape italic
-Result
-\begin_inset ERT
-status collapsed
-
-\begin_layout Standard
-
-~
-\end_layout
-
-\end_inset
-
-File
-\begin_inset ERT
-status collapsed
-
-\begin_layout Standard
-
-~
-\end_layout
-
-\end_inset
-
-Name 
-\shape default
-If you want to collect optimization data, set this string to a desired file
- name.
- Optimization results will be written to the indicated file in the working
- directory.
-\end_layout
-
-\begin_layout Description
-
-\shape italic
-Show
-\begin_inset ERT
-status collapsed
-
-\begin_layout Standard
-
-~
-\end_layout
-
-\end_inset
-
-Text
-\begin_inset ERT
-status collapsed
-
-\begin_layout Standard
-
-~
-\end_layout
-
-\end_inset
-
-Output 
-\shape default
-If activated, the optimization data will also be shown in a graphical text
- window for immediate inspection.
 \end_layout
 
 \begin_layout Standard
@@ -1748,7 +1850,7 @@ status open
 
 \family typewriter
 \size small
-$ java -cp JE2Base.jar:JE2Probs.jar:/home/username/workspace/OwnClassDir 
+$ java -cp JE2Base.jar:JE2Probs.jar:/home/username/OwnClassDir 
 \backslash
 
 \end_layout
@@ -2746,15 +2848,44 @@ Display Triggers online output during an optimization process on the Matlab
 \family typewriter
 off
 \family default
+'/'
+\family typewriter
+final
+\family default
+'/'
+\family typewriter
+notify
+\family default
 ' and '
 \family typewriter
 iter
 \family default
-', where for '
+'.
+ Due to the optimset restrictions, '
+\family typewriter
+notify
+\family default
+' corresponds to 
+\begin_inset Quotes eld
+\end_inset
+
+show every k-th iteration
+\begin_inset Quotes erd
+\end_inset
+
+ while '
 \family typewriter
 iter
 \family default
-' an output line is written for every generational step.
+' corresponds to 
+\begin_inset Quotes eld
+\end_inset
+
+show all iterations
+\begin_inset Quotes erd
+\end_inset
+
+ compared to the GUI options.
  The default is '
 \family typewriter
 off
@@ -2944,7 +3075,7 @@ Have the class inherit from
 \family typewriter
 simpleprobs.SimpleDoubleProblem
 \family default
- or 
+ or, depending on which datatype you want to use, from 
 \family typewriter
 simple
 \begin_inset ERT
@@ -2987,7 +3118,7 @@ status collapsed
 
 Problem
 \family default
-, depending on which datatype you want to use.
+.
  Both base types can be used directly from the 
 \noun on
 JavaEvA
@@ -4397,7 +4528,111 @@ To configure the termination criteria of an optimization process started
 
 , call 
 \family typewriter
-OptimizerFactory.setEvaluationTerminator(50000) 
+Optim
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+-
+\end_layout
+
+\end_inset
+
+izer
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+-
+\end_layout
+
+\end_inset
+
+Fac
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+-
+\end_layout
+
+\end_inset
+
+tory.set
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+-
+\end_layout
+
+\end_inset
+
+Evaluation
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+-
+\end_layout
+
+\end_inset
+
+Ter
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+-
+\end_layout
+
+\end_inset
+
+mi
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+-
+\end_layout
+
+\end_inset
+
+na
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+-
+\end_layout
+
+\end_inset
+
+tor(50000) 
 \family default
 before starting the optimization, as in Alg.
 \begin_inset ERT
@@ -4422,7 +4657,98 @@ status open
 For more flexible termination criteria, there are several Terminator parameter
  classes you can use and set them directly using 
 \family typewriter
-OptimizerFactory.setTerminator(term)
+Optim
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+-
+\end_layout
+
+\end_inset
+
+izer
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+-
+\end_layout
+
+\end_inset
+
+Fac
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+-
+\end_layout
+
+\end_inset
+
+tory.set
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+-
+\end_layout
+
+\end_inset
+
+Ter
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+-
+\end_layout
+
+\end_inset
+
+mi
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+-
+\end_layout
+
+\end_inset
+
+na
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+-
+\end_layout
+
+\end_inset
+
+tor(term)
 \family default
 .
  Available are the following variants:
@@ -5778,7 +6104,59 @@ status open
  is rather low.
  One could also use 
 \family typewriter
-fm0.getIndividualTemplate().setMutationOperator(...)
+fm0.get
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+-
+\end_layout
+
+\end_inset
+
+Individual
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+-
+\end_layout
+
+\end_inset
+
+Template().set
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+-
+\end_layout
+
+\end_inset
+
+Mutation
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+-
+\end_layout
+
+\end_inset
+
+Operator(...)
 \family default
  etc.
  to set the operators and probabilities one by one just as through the GUI.

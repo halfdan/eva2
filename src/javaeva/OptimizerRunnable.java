@@ -142,4 +142,14 @@ public class OptimizerRunnable implements Runnable {
 			return ((InterfaceDataTypeInteger)indy).getIntegerData();
 		} else return null;
 	}
+	
+	/**
+	 * Set the verbosity level in the statistics module to the given value. See StatsParameter.
+	 * @param vLev
+	 */
+	public void setVerbosityLevel(int vLev) {
+		if (vLev >= 0 && vLev < proc.getStatistics().getStatisticsParameter().getOutputVerbosity().getTags().length) {
+			proc.getStatistics().getStatisticsParameter().getOutputVerbosity().setSelectedTag(vLev);
+		} else System.err.println("Invalid verbosity leveln in OptimizerRunnable.setVerbosityLevel!");
+	}
 }

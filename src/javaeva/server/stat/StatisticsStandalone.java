@@ -70,7 +70,7 @@ public class StatisticsStandalone extends AbstractStatistics implements Interfac
 	 */
 	public StatisticsStandalone(String resultFileName) {
 		this(new StatsParameter());
-		m_StatsParams.SetResultFileName(resultFileName);
+		m_StatsParams.SetResultFilePrefix(resultFileName);
 	}
 
 	/**

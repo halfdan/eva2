@@ -19,9 +19,6 @@ import java.util.Vector;
 import javaeva.gui.JTabbedModuleFrame;
 import javaeva.gui.LogPanel;
 import javaeva.server.go.InterfaceProcessor;
-import javaeva.server.go.operators.postprocess.PostProcessParams;
-import javaeva.server.stat.InterfaceTextListener;
-
 import wsi.ra.jproxy.MainAdapterClient;
 import wsi.ra.jproxy.RemoteStateListener;
 /*==========================================================================*
@@ -112,11 +109,14 @@ abstract public class AbstractModuleAdapter implements ModuleAdapter, Serializab
   }
   
   public boolean hasPostProcessing() {
-	  return (m_Processor instanceof Processor);
+	  return ((m_Processor instanceof Processor) && ((Processor)m_Processor).getGOParams().getPostProcessParams().isDoPostProcessing());
   }
   
-  public void startPostProcessing() {
-	  if (hasPostProcessing()) ((Processor)m_Processor).performPostProcessing();
+  public boolean startPostProcessing() {
+	  if (hasPostProcessing() && ((Processor)m_Processor).getGOParams().getPostProcessParams().isDoPostProcessing()) {
+		  ((Processor)m_Processor).performPostProcessing();
+		  return true;
+	  } else return false;
   }
   
   /**
