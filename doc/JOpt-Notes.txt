@@ -35,14 +35,20 @@ getroffen, wo setRunLocally des EvAComAdapters aufgerufen wird.
 zwischen lokalem und remote-Adapter zu unterscheiden.
 
 ToDo:
-- load modules: textlistener window seems not to be forwarded correctly 
+Features:
+- new Interface "ProblemOptimumKnown" for (unimodal) problems with known opt. position
+	--> useable for a new performance measure "distance to optimum" in plot!
 - plot->save as jpg: add other formats like png?
-- PostProcess: the pp-button should be deactivated if other modules are loaded
+- load modules: textlistener window seems not to be forwarded correctly
 - PostProcess: adaptive step-size for HC post-process might be better. 
-- possible problem with new interfaces in RMI mode?
 - "Show Solution" from GOStandalone into Client?
-- Population -> getBest... die multi-objective methoden nutzen!
 - Kommandozeilen-Argumente für den Client?
+- MOCCOStandalone: actually nice, repair maybe...
+
+Bugs: 
+- Population -> getBest... use multi-objective methods!
+- PostProcess: the pp-button should be deactivated if other modules are loaded
+- possible problem with new interfaces in RMI mode?
 - Kontroll-Events (start/stop) werden über RMI nicht wieder an den GUI-Client geliefert, 
 	das sollte noch eingeführt werden.
 - Beim server-wechsel bleibt das alte Plot-Fenster stehen, müsste auch besser gehn.
@@ -57,7 +63,6 @@ es wirklich nötig ist!
 	endlich killen.
 - ZB ESIndividual: Bei hohen Dimensionen kann es schlecht sein, in jedem Ind. nochmal
 die Range mitzuführen, da sie häufig für alle gleich ist. Dann verschlingt sie unnötig Speicher.
-- MOCCOStandalone: ist an sich schön, evtl. nochmal reparieren.
 - die Mutationsoperatoren sollten jetzt CloneableInPlace implementieren!
 - always override hashCode when you override equals!
 	--> developer.java.sun.com/developer/Books/effectiveava/
