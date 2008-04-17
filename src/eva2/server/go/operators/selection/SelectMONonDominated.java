@@ -2,7 +2,7 @@ package eva2.server.go.operators.selection;
 
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.populations.Population;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 /** This multi-objective selection method preferrs non-dominated
  * individuals over dominated ones. Actually, this fails in case
@@ -47,7 +47,7 @@ public class SelectMONonDominated implements InterfaceSelection, java.io.Seriali
      */
     public Population selectFrom(Population population, int size) {
         Population              result = new Population();
-        int                     index = RandomNumberGenerator.randomInt(0, population.size()-1);
+        int                     index = RNG.randomInt(0, population.size()-1);
 
         if (this.m_ObeyDebsConstViolationPrinciple) {
             boolean feasible = false;

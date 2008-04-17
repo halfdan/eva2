@@ -7,7 +7,7 @@ import eva2.server.go.operators.crossover.CrossoverOBGAPMX;
 import eva2.server.go.operators.mutation.InterfaceMutation;
 import eva2.server.go.operators.mutation.MutateOBGAFlip;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 /** This individual uses a permutation based genotype to code for
  * permutations.
@@ -170,8 +170,8 @@ public class OBGAIndividualPermutationData extends AbstractEAIndividual implemen
     int[][] permmatrix = this.getPermutationData();
     for (int i = 0; i < permmatrix.length; i++) {
       int[] perm = permmatrix[i];
-      int p1 = RandomNumberGenerator.randomInt(0,perm.length-1);
-      int p2 = RandomNumberGenerator.randomInt(0,perm.length-1);
+      int p1 = RNG.randomInt(0,perm.length-1);
+      int p2 = RNG.randomInt(0,perm.length-1);
       int temp = perm[p1];
       perm[p1] = perm[p2];
       perm[p2] = temp;
@@ -192,7 +192,7 @@ public class OBGAIndividualPermutationData extends AbstractEAIndividual implemen
       }
       int i = 0;
       while (!pot.isEmpty()) {
-        perm[p][i] = ((Integer) (pot.remove(RandomNumberGenerator.randomInt(0, pot.size() - 1)))).intValue();
+        perm[p][i] = ((Integer) (pot.remove(RNG.randomInt(0, pot.size() - 1)))).intValue();
         i++;
       }
     }

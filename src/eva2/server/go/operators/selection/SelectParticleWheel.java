@@ -5,7 +5,7 @@ import eva2.server.go.operators.selection.probability.InterfaceSelectionProbabil
 import eva2.server.go.operators.selection.probability.SelProbBoltzman;
 import eva2.server.go.operators.selection.probability.SelProbStandard;
 import eva2.server.go.populations.Population;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 
 /** This method implements the roulette wheel selection for
@@ -57,7 +57,7 @@ public class SelectParticleWheel implements InterfaceSelection, java.io.Serializ
         
         // use a fixed segment roulette wheel selection
         double segment = 1./(size+1);
-        double selPoint = RandomNumberGenerator.randomDouble(0., segment);
+        double selPoint = RNG.randomDouble(0., segment);
         
         int selIndex = 0;
         double selFitSum = ((AbstractEAIndividual)population.getIndividual(selIndex)).getSelectionProbability(0);

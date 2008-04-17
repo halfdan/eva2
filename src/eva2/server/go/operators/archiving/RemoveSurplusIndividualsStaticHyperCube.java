@@ -2,7 +2,7 @@ package eva2.server.go.operators.archiving;
 
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.populations.Population;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 /** This class removes surplus individuals based on bounding
  * hybercube, which can be calculated in objective or decision
@@ -59,7 +59,7 @@ public class RemoveSurplusIndividualsStaticHyperCube extends RemoveSurplusIndivi
                     indexSmallHyperCube = i;
                 } else {
                     // if they are equal give them a fair chance to exchange between them
-                    if ((tmpS == smallestHyperCube) && (RandomNumberGenerator.flipCoin(0.5))) {
+                    if ((tmpS == smallestHyperCube) && (RNG.flipCoin(0.5))) {
                         smallestHyperCube   = tmpS;
                         indexSmallHyperCube = i;
                     }

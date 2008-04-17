@@ -1,7 +1,7 @@
 package eva2.server.go.operators.archiving;
 
 import eva2.server.go.populations.Population;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 /** This information retrieval method simply add the retrieved solutions
  * to the current population.
@@ -34,7 +34,7 @@ public class InformationRetrievalReplacing implements InterfaceInformationRetrie
 
         tmp.addPopulation(archive);
         while (tmp.size() < archive.getPopulationSize()) {
-            tmp.add(pop.get(RandomNumberGenerator.randomInt(0,pop.size()-1)));
+            tmp.add(pop.get(RNG.randomInt(0,pop.size()-1)));
         }
 
         pop.clear();

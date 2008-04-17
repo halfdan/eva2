@@ -6,7 +6,7 @@ import java.util.List;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.server.go.strategies.Tribes;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 
 public class TribesSwarm implements java.io.Serializable{
@@ -358,7 +358,7 @@ public class TribesSwarm implements java.io.Serializable{
 
         int gOption;
         int gMin;
-        int gMode = RandomNumberGenerator.randomInt(2); // Random choice; 
+        int gMode = RNG.randomInt(2); // Random choice; 
         /* gMode:
         0 = according to gener
         1 = first particle (center) in the biggest not yet searched area
@@ -617,7 +617,7 @@ public class TribesSwarm implements java.io.Serializable{
     		if (Tribes.TRACE) System.out.println("+ around center ");
     		if (radius < 0) {
     			// Choose at random a memory
-    			m = RandomNumberGenerator.randomInt(this.tribes[fromTribe].memoryNb);
+    			m = RNG.randomInt(this.tribes[fromTribe].memoryNb);
 
     			// Compute the distance to the "center" = radius
     			rho = center.distanceTo(this.tribes[fromTribe].memory[m].getPos());
@@ -626,10 +626,10 @@ public class TribesSwarm implements java.io.Serializable{
     		}
 
     		// Define a random point in the hypersphere (center, rho)
-    		expl.position.setDoubleArray(RandomNumberGenerator.randHypersphere(center.getDoubleArray(), rho, 1.5));
+    		expl.position.setDoubleArray(RNG.randHypersphere(center.getDoubleArray(), rho, 1.5));
 
     		// Define another random point
-    		rand_i = RandomNumberGenerator.randHypersphere(center.getDoubleArray(), rho, 1.5);
+    		rand_i = RNG.randHypersphere(center.getDoubleArray(), rho, 1.5);
 
     		// Derive a random velocity
     		for (d = 0; d < D; d++) {
@@ -649,7 +649,7 @@ public class TribesSwarm implements java.io.Serializable{
     		expl.position = expl.position.maxIsolated((initRange == null) ? range : initRange, this);
 
     		// At this point, fitness[0] contains the "isolation" value
-    		rand_i = RandomNumberGenerator.randHypersphere(expl.position.getDoubleArray(), expl.position.fitness[0], 1.5);
+    		rand_i = RNG.randHypersphere(expl.position.getDoubleArray(), expl.position.fitness[0], 1.5);
     		for (d = 0; d < D; d++) {
     			expl.velocity.x[d] = rand_i[d] - expl.position.x[d];
     		}
@@ -679,14 +679,14 @@ public class TribesSwarm implements java.io.Serializable{
 	    		/* On the boundary of the search space
 	              For some dimensions, set the coordinate to the min or the max
 	    		 */
-	    		dmax = RandomNumberGenerator.randomInt(D); // For a random number of dimensions
+	    		dmax = RNG.randomInt(D); // For a random number of dimensions
 	    		//    dmax=D-1; // For all dimensions
 	    		for (dmod = 0; dmod <= dmax; dmod++) {
 	    			//   m = Tribes.generator.nextInt(2);
 	    			//  if(m==0) continue; // With a probability of 1/2
 
-	    			d = RandomNumberGenerator.randomInt(D); // 0,1, ... D-1
-	    			m = RandomNumberGenerator.randomInt(2); // 0 or 1
+	    			d = RNG.randomInt(D); // 0,1, ... D-1
+	    			m = RNG.randomInt(2); // 0 or 1
 	    			if ((initRange == null) || (initType == 0)) {
 	    				expl.position.x[d] = range[d][m];
 	    			} else {

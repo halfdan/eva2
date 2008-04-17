@@ -20,7 +20,7 @@ import eva2.server.go.problems.B1Problem;
 import eva2.server.go.problems.Interface2DBorderProblem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.server.go.problems.TF1Problem;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 import wsi.ra.chart2d.DPoint;
 import wsi.ra.chart2d.DPointIcon;
@@ -267,7 +267,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
         //@todo: crossover between species is to be impelemented
         this.m_Problem.initPopulation(result);
         this.m_Problem.evaluate(result);
-        this.capMutationRate(result, RandomNumberGenerator.randomDouble(0.001, 0.1));
+        this.capMutationRate(result, RNG.randomDouble(0.001, 0.1));
         return result;
     }
 

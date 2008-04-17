@@ -431,7 +431,8 @@ public class BeanInspector {
 					continue;
 				}
 
-				StringBuffer memberInfoBf = new StringBuffer("Member:\t");
+				StringBuffer memberInfoBf = new StringBuffer(40);
+				memberInfoBf.append("Member:\t");
 				memberInfoBf.append(name);
 				
 				memberInfoBf.append("\tType: ");
@@ -530,7 +531,7 @@ public class BeanInspector {
 	public static Object doubleToPrimitive(Double d, Class<?> destType) {
 		if ((destType == Double.class) || (destType == double.class)) return d;
 		if ((destType == Integer.class) || (destType == int.class)) return new Integer(d.intValue());
-		else if ((destType == Boolean.class) || (destType == boolean.class)) return new Boolean(d != 0); 
+		else if ((destType == Boolean.class) || (destType == boolean.class)) return (d!=0) ? Boolean.TRUE : Boolean.FALSE; 
 		else if ((destType == Byte.class) || (destType == byte.class)) return new Byte(d.byteValue());
 		else if ((destType == Short.class) || (destType == short.class)) return new Short(d.shortValue());
 		else if ((destType == Long.class) || (destType == long.class)) return new Long(d.longValue());

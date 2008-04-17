@@ -8,7 +8,7 @@ import eva2.server.go.IndividualInterface;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.ESIndividualDoubleData;
 import eva2.server.go.populations.Population;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 import wsi.ra.chart2d.DPoint;
 import wsi.ra.chart2d.DPointIcon;

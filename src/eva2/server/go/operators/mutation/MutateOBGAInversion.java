@@ -5,7 +5,7 @@ import eva2.server.go.individuals.InterfaceDataTypePermutation;
 import eva2.server.go.individuals.InterfaceOBGAIndividual;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 
 /**
@@ -52,8 +52,8 @@ public class MutateOBGAInversion implements java.io.Serializable, InterfaceMutat
     int[][] permnew = (int[][]) ((InterfaceOBGAIndividual) individual). getOBGenotype().clone();
     int[][] perm = ((InterfaceDataTypePermutation) individual).getPermutationData();
     for (int p = 0; p < perm.length; p++) {
-      int p1 = RandomNumberGenerator.randomInt(0, perm[p].length - 1);
-      int p2 = RandomNumberGenerator.randomInt(p1, perm[p].length - 1);
+      int p1 = RNG.randomInt(0, perm[p].length - 1);
+      int p2 = RNG.randomInt(p1, perm[p].length - 1);
       for (int i = 0; i <= (p2-p1); i++) {
         permnew[p][p1+i] = perm[p][p2-i];
       }

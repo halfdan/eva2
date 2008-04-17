@@ -8,7 +8,7 @@ import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceGIIndividual;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 /**
  * Created by IntelliJ IDEA.
@@ -52,7 +52,7 @@ public class CrossoverGINPointVL implements InterfaceCrossover, java.io.Serializ
         //for (int i = 0; i < result.length; i++) System.out.println("Before Crossover: " +result[i].getSolutionRepresentationFor());
         if ((indy1 instanceof InterfaceGIIndividual) && (partners.get(0) instanceof InterfaceGIIndividual)) {
             int[]       length          =  new int[partners.size()+1];
-            int         mixer           = RandomNumberGenerator.randomInt(0, partners.size());
+            int         mixer           = RNG.randomInt(0, partners.size());
             int[][]     crossoverPoints = new int[length.length][this.m_NumberOfCrossovers];
             int[][]     parents         = new int[partners.size()+1][];
             int[][]     offsprings      = new int[partners.size()+1][];
@@ -131,7 +131,7 @@ public class CrossoverGINPointVL implements InterfaceCrossover, java.io.Serializ
         BitSet bitset = new BitSet(length);
 
         while (bitset.cardinality() < this.m_NumberOfCrossovers) {
-            bitset.set(RandomNumberGenerator.randomInt(1, length-2));
+            bitset.set(RNG.randomInt(1, length-2));
         }
         int index = 0;
         for (int i = 0; i < length; i++) {

@@ -8,7 +8,7 @@ import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceESIndividual;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 /**
  * Created by IntelliJ IDEA.
@@ -71,7 +71,7 @@ public class CrossoverESFlat implements InterfaceCrossover, java.io.Serializable
 
             for (int i = 0; i < children.length; i++) {
                 for(int j = 0; j < children[i].length; j++) {
-                    children[i][j] = RandomNumberGenerator.randomDouble(extremeValues[j][0], extremeValues[j][1]);
+                    children[i][j] = RNG.randomDouble(extremeValues[j][0], extremeValues[j][1]);
                 }
             }
             // write the result back

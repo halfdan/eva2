@@ -2,7 +2,7 @@ package eva2.server.go.operators.selection;
 
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.populations.Population;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 /** Simple method to selecet all.
  * In case of multiple fitness values the selection

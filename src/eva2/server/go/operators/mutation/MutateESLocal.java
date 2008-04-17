@@ -8,7 +8,7 @@ import eva2.server.go.individuals.InterfaceDataTypeDouble;
 import eva2.server.go.individuals.InterfaceESIndividual;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 import eva2.tools.SelectedTag;
 import eva2.tools.Tag;
 
@@ -99,12 +99,12 @@ public class MutateESLocal implements InterfaceMutation, java.io.Serializable {
         if (individual instanceof InterfaceESIndividual) {
             double[]    x       = ((InterfaceESIndividual)individual).getDGenotype();
             double[][]  range   = ((InterfaceESIndividual)individual).getDoubleRange();
-            double      tmpR    = RandomNumberGenerator.gaussianDouble(1);
+            double      tmpR    = RNG.gaussianDouble(1);
 
             for (int i = 0; i < x.length; i++) {
-                this.m_Sigmas[i] = this.m_Sigmas[i] * Math.exp(this.m_Tau1 * tmpR + this.m_Tau2 * RandomNumberGenerator.gaussianDouble(1));
+                this.m_Sigmas[i] = this.m_Sigmas[i] * Math.exp(this.m_Tau1 * tmpR + this.m_Tau2 * RNG.gaussianDouble(1));
                 if (this.m_Sigmas[i] < this.m_LowerLimitStepSize) this.m_Sigmas[i] = this.m_LowerLimitStepSize;
-                x[i] += ((range[i][1] -range[i][0])/2)*RandomNumberGenerator.gaussianDouble(this.m_Sigmas[i]);
+                x[i] += ((range[i][1] -range[i][0])/2)*RNG.gaussianDouble(this.m_Sigmas[i]);
                 if (range[i][0] > x[i]) x[i] = range[i][0];
                 if (range[i][1] < x[i]) x[i] = range[i][1];
             }
@@ -151,10 +151,10 @@ public class MutateESLocal implements InterfaceMutation, java.io.Serializable {
                 break;
             }
             case 2 : {
-                int rn = RandomNumberGenerator.randomInt(0, listA.length-1);
+                int rn = RNG.randomInt(0, listA.length-1);
                 this.m_MutationStepSize = listA[rn];
                 for (int i = 0; i < this.m_Sigmas.length; i++) {
-                    rn = RandomNumberGenerator.randomInt(0, listA.length-1);
+                    rn = RNG.randomInt(0, listA.length-1);
                     this.m_Sigmas[i] = listB[rn][i];
                 }
                 break;

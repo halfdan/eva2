@@ -4,7 +4,7 @@ import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceESIndividual;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 /**
  * Created by IntelliJ IDEA.
@@ -49,7 +49,7 @@ public class CrossoverESUniformDiscrete implements InterfaceCrossover, java.io.S
 
         if ((indy1 instanceof InterfaceESIndividual) && (partners.get(0) instanceof InterfaceESIndividual)) {
             int         length          =  ((InterfaceESIndividual)result[0]).getDGenotype().length;
-            int         mixer           = RandomNumberGenerator.randomInt(0, partners.size());
+            int         mixer           = RNG.randomInt(0, partners.size());
 
             parents     = new double[partners.size()+1][];
             children    = new double[partners.size()+1][];
@@ -61,7 +61,7 @@ public class CrossoverESUniformDiscrete implements InterfaceCrossover, java.io.S
             }
 
             for (int i = 0; i < length; i++) {
-                mixer = RandomNumberGenerator.randomInt(0, children.length-1);
+                mixer = RNG.randomInt(0, children.length-1);
                 for (int j = 0; j < children.length; j++) {
                         children[j][i] = parents[(j + mixer) % parents.length][i];
                 }

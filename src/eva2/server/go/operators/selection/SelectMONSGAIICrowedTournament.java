@@ -3,7 +3,7 @@ package eva2.server.go.operators.selection;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.operators.archiving.ArchivingNSGAII;
 import eva2.server.go.populations.Population;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 /** The infamous NSGA-II selection scheme for multi-objective
  * optimization based on Pareto ranks and hybergrids.
@@ -73,7 +73,7 @@ public class SelectMONSGAIICrowedTournament implements InterfaceSelection, java.
 
         try {
             for (int i = 0; i < this.m_TournamentSize; i++) {
-                tmpIndy = (AbstractEAIndividual) population.get(RandomNumberGenerator.randomInt(0, population.size()-1));
+                tmpIndy = (AbstractEAIndividual) population.get(RNG.randomInt(0, population.size()-1));
                 tmpL = ((Integer)tmpIndy.getData("ParetoLevel")).intValue();
                 if (tmpL < smallestLevel) smallestLevel = tmpL;
                 if (tmpIndy.getConstraintViolation() > 0) infeasiblePop.add(tmpIndy);

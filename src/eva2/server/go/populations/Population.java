@@ -12,7 +12,7 @@ import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.AbstractEAIndividualComparator;
 import eva2.server.go.individuals.GAIndividualBinaryData;
 import eva2.server.go.operators.distancemetric.PhenotypeMetric;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 
 /** This is a basic implementation for a EA Population.
@@ -323,7 +323,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
         		// not all violate, maybe all are NaN!
         		// so just select a random one
         		System.err.println("Population reports: All individuals seem to have NaN or infinite fitness!");
-        		result = RandomNumberGenerator.randomInt(size());
+        		result = RNG.randomInt(size());
         	}
         }
         return result;
@@ -409,7 +409,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      * @param to
      */
     public static void moveRandIndFromTo(Population src, Population dst) {
-    	int k = RandomNumberGenerator.randomInt(src.size());
+    	int k = RNG.randomInt(src.size());
     	dst.add(src.remove(k));
     }
     
@@ -456,7 +456,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      */
     public void removeNIndividuals(int n) {
         for (int i = 0; i < n; i++) {
-            this.remove(RandomNumberGenerator.randomInt(0, this.size()-1));
+            this.remove(RNG.randomInt(0, this.size()-1));
         }
     }
 
@@ -606,11 +606,11 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
 //        int rand;
 //        if (this.size() != 0) {
 //            while (this.size() < size) {
-//                rand = RandomNumberGenerator.randomInt(0, this.size()-1);
+//                rand = RNG.randomInt(0, this.size()-1);
 //                this.add(((AbstractEAIndividual)this.get(rand)).clone());
 //            }
 //            while (this.size() > size) {
-//                rand = RandomNumberGenerator.randomInt(0, this.size()-1);
+//                rand = RNG.randomInt(0, this.size()-1);
 //                this.remove(rand);
 //            }
 //        }

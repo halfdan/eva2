@@ -10,7 +10,7 @@ import eva2.server.go.operators.crossover.CrossoverGPDefault;
 import eva2.server.go.operators.mutation.InterfaceMutation;
 import eva2.server.go.operators.mutation.MutateGPDefault;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 import eva2.tools.EVAERROR;
 import eva2.tools.EVAHELP;
 
@@ -270,7 +270,7 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
         ArrayList allNodes = new ArrayList();
         for (int i = 0; i < this.m_Genotype.length; i++) {
             this.m_Genotype[i].addNodesTo(allNodes);
-            AbstractGPNode nodeToMutate = (AbstractGPNode) allNodes.get(RandomNumberGenerator.randomInt(0, allNodes.size()-1));
+            AbstractGPNode nodeToMutate = (AbstractGPNode) allNodes.get(RNG.randomInt(0, allNodes.size()-1));
             if (nodeToMutate.getParent() == null) {
                 this.defaultInit();
             } else {
@@ -292,8 +292,8 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
             } else {
                 this.m_Genotype[i] = (AbstractGPNode)(this.m_Area[i].getRandomNonTerminal()).clone();
                 this.m_Genotype[i].setDepth(0);
-                int targetDepth = RandomNumberGenerator.randomInt(1, this.m_InitDepth);
-                if (RandomNumberGenerator.flipCoin(this.m_InitFullGrowRatio))
+                int targetDepth = RNG.randomInt(1, this.m_InitDepth);
+                if (RNG.flipCoin(this.m_InitFullGrowRatio))
                     this.m_Genotype[i].initFull(this.m_Area[i], targetDepth);
                 else
                     this.m_Genotype[i].initGrow(this.m_Area[i], targetDepth);

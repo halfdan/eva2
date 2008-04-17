@@ -10,7 +10,7 @@ import eva2.server.go.individuals.InterfaceESIndividual;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.F1Problem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 /**
  * Created by IntelliJ IDEA.
@@ -83,13 +83,13 @@ public class CrossoverESUNDX implements InterfaceCrossover, java.io.Serializable
                 // then the given coordinates
                 for (int j = 0; j < givenCoordinates.size(); j++) {
                     tmpD = (double[])givenCoordinates.get(j);
-                    w = RandomNumberGenerator.gaussianDouble(this.m_Zeta);
+                    w = RNG.gaussianDouble(this.m_Zeta);
                     children[i] = this.addVector(children[i], this.scalarMultVector(w, tmpD));
                 }
                 // now the missing stuff
                 for (int j = 0; j < missingCorrdinates.size(); j++) {
                     tmpD = (double[])missingCorrdinates.get(j);
-                    w = RandomNumberGenerator.gaussianDouble(this.m_Eta);
+                    w = RNG.gaussianDouble(this.m_Eta);
                     children[i] = this.addVector(children[i], this.scalarMultVector(w, tmpD));
                 }
             }
@@ -162,7 +162,7 @@ public class CrossoverESUNDX implements InterfaceCrossover, java.io.Serializable
     private double[] randomVector(int n) {
         double[] result = new double[n];
         for (int i = 0; i < result.length; i++) {
-            result[i] = RandomNumberGenerator.gaussianDouble(1);
+            result[i] = RNG.gaussianDouble(1);
         }
         return this.getNormalizedVector(result);
     }
@@ -287,7 +287,7 @@ public class CrossoverESUNDX implements InterfaceCrossover, java.io.Serializable
         F1Problem               prob        = new F1Problem();
         int                     n           = 2;
 
-        RandomNumberGenerator.setRandomSeed(1);
+        RNG.setRandomSeed(1);
         // init individual
         indy1 = new ESIndividualDoubleData();
         double[][] range = new double[n][2];

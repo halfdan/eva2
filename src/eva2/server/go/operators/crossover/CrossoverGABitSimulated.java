@@ -7,7 +7,7 @@ import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceGAIndividual;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 /**
  * Created by IntelliJ IDEA.
@@ -64,7 +64,7 @@ public class CrossoverGABitSimulated implements InterfaceCrossover, java.io.Seri
                 for (int j = 0; j < tmpBitSet[0].length; j++) if (tmpBitSet[0][j].get(i)) current++;
                 current = current/(double)(tmpBitSet[0].length);
                 for (int j = 0; j < tmpBitSet[0].length; j++) {
-                    if (RandomNumberGenerator.flipCoin(current)) tmpBitSet[1][j].set(i);
+                    if (RNG.flipCoin(current)) tmpBitSet[1][j].set(i);
                     else tmpBitSet[1][j].clear(i);
                 }
             }

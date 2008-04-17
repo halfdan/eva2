@@ -2,7 +2,7 @@ package eva2.server.go.operators.selection;
 
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.populations.Population;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 /** Tournament selection within a given tournament group size,
  * also scaling invariant.
@@ -66,19 +66,19 @@ public class SelectTournament implements InterfaceSelection, java.io.Serializabl
 
         try {
             critSize = ((AbstractEAIndividual)population.get(0)).getFitness().length;
-            currentCriteria = RandomNumberGenerator.randomInt(0, critSize-1);
+            currentCriteria = RNG.randomInt(0, critSize-1);
             if (this.m_ObeyDebsConstViolationPrinciple) {
                 Population tournamentGroup = new Population();
                 for (int i = 0; i < this.m_TournamentSize; i++) {
-                    tournamentGroup.add(population.get(RandomNumberGenerator.randomInt(0, population.size()-1)));
+                    tournamentGroup.add(population.get(RNG.randomInt(0, population.size()-1)));
                 }
                 SelectBestIndividuals best = new SelectBestIndividuals();
                 best.setObeyDebsConstViolationPrinciple(true);
                 result = (AbstractEAIndividual)best.selectFrom(tournamentGroup, 1).get(0);
             } else {
-                result = (AbstractEAIndividual) population.get(RandomNumberGenerator.randomInt(0, population.size()-1));
+                result = (AbstractEAIndividual) population.get(RNG.randomInt(0, population.size()-1));
                 for (int i = 1; i < this.m_TournamentSize; i++) {
-                    tmpIndy = (AbstractEAIndividual) population.get(RandomNumberGenerator.randomInt(0, population.size()-1));
+                    tmpIndy = (AbstractEAIndividual) population.get(RNG.randomInt(0, population.size()-1));
                     if (tmpIndy.getFitness(currentCriteria) < result.getFitness(currentCriteria)) result = tmpIndy;
                 }
             }

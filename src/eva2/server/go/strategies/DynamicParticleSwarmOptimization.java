@@ -8,7 +8,7 @@ import eva2.server.go.populations.Population;
 import eva2.server.go.problems.AbstractOptimizationProblem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.server.go.tools.AbstractObjectEditor;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 import eva2.tools.SelectedTag;
 
 /** 
@@ -177,7 +177,7 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
 		double normfact = 0.;
 		double[] rand = new double[vlen];
 		for (int i=0; i<rand.length; i++) {
-			rand[i] = RandomNumberGenerator.gaussianDouble(1);
+			rand[i] = RNG.gaussianDouble(1);
 			normfact += (rand[i]*rand[i]);
 		}
 		normfact = Math.sqrt(normfact); // for normalization
@@ -185,7 +185,7 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
 		// normalize and scale with range 
 		for (int i=0; i<rand.length; i++) {
 			// leaving out the sqrt(rand) part would result in a point on the sphere (muller, marsaglia)
-			rand[i] = rand[i] / normfact * Math.sqrt(RandomNumberGenerator.randomDouble()) * r * (range[i][1]-range[i][0]);
+			rand[i] = rand[i] / normfact * Math.sqrt(RNG.randomDouble()) * r * (range[i][1]-range[i][0]);
 		}
 		return rand;
 	}
@@ -201,7 +201,7 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
 	protected double[] getNormalRandVect(int vlen, double[][] range, double stddev) {
 		double[] rand = new double[vlen];
 		for (int i=0; i<rand.length; i++) {
-			rand[i] = RandomNumberGenerator.gaussianDouble(stddev * (range[i][1]-range[i][0]));
+			rand[i] = RNG.gaussianDouble(stddev * (range[i][1]-range[i][0]));
 		}
 		return rand;
 	}
@@ -259,9 +259,9 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
 			/* old ways
 			    curVelocity[i]  = this.m_Inertness * velocity[i];
 
-                curVelocity[i]  += (this.m_Phi1 * getSpeedLimit(index) * (range[i][1] - range[i][0]) * RandomNumberGenerator.randomDouble(-1., 1.));
+                curVelocity[i]  += (this.m_Phi1 * getSpeedLimit(index) * (range[i][1] - range[i][0]) * RNG.randomDouble(-1., 1.));
                 // the component from the social model
-                curVelocity[i]  += this.m_Phi2*RandomNumberGenerator.randomDouble(0,1)*(localBestPos[i]-curPosition[i]);
+                curVelocity[i]  += this.m_Phi2*RNG.randomDouble(0,1)*(localBestPos[i]-curPosition[i]);
  
 			*/
 	        for (int i = 0; i < lastVelocity.length; i++) {
@@ -270,8 +270,8 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
 			    if (algType.getSelectedTag().getID()==1) chi=m_InertnessOrChi;
 			    else chi = 1.;
 			    // random perturbation
-	            //curVelocity[i]  += (this.phi0 * chi * RandomNumberGenerator.randomDouble(-1., 1.) * (range[i][1] - range[i][0]));
-	            curVelocity[i]  += (this.phi0 * chi * getSpeedLimit(index) * RandomNumberGenerator.randomDouble(-1., 1.) * (range[i][1] - range[i][0]));
+	            //curVelocity[i]  += (this.phi0 * chi * RNG.randomDouble(-1., 1.) * (range[i][1] - range[i][0]));
+	            curVelocity[i]  += (this.phi0 * chi * getSpeedLimit(index) * RNG.randomDouble(-1., 1.) * (range[i][1] - range[i][0]));
 	            // a problem specific attractor
             	curVelocity[i]  += getProblemSpecificAttraction(i, chi); 
 	            // the component from the social model
@@ -286,7 +286,7 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
 //			// TODO test this!
 //			//hier weiter
 //			double[] att = ((DynLocalizationProblem)m_Problem).getProblemSpecificAttractor();
-//			return (this.phi3 * chi * RandomNumberGenerator.randomDouble(0, 1.))*att[i];
+//			return (this.phi3 * chi * RNG.randomDouble(0, 1.))*att[i];
 //		} else 
 			return 0;
 	}
@@ -299,9 +299,9 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
 	 * @return a double value
 	 */
 	protected double getIndySocialModifier(int index, double chiVal) {
-		return (this.m_Phi2 * chiVal * RandomNumberGenerator.randomDouble(0,1));
-//		if (index < 50) return (this.m_Phi2 * chi * RandomNumberGenerator.randomDouble(0,1));
-//		else return (this.m_Phi2 * chi * (-1.) * RandomNumberGenerator.randomDouble(0,1));
+		return (this.m_Phi2 * chiVal * RNG.randomDouble(0,1));
+//		if (index < 50) return (this.m_Phi2 * chi * RNG.randomDouble(0,1));
+//		else return (this.m_Phi2 * chi * (-1.) * RNG.randomDouble(0,1));
 	}
 	
     /**
@@ -323,7 +323,7 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
     protected void startOptimize() {
     	super.startOptimize();
     	if (detectAnchor >= 0) {	// set the new detection anchor individual
-    		detectAnchor = RandomNumberGenerator.randomInt(0, m_Population.size()-1);
+    		detectAnchor = RNG.randomInt(0, m_Population.size()-1);
     		if (detectFit == null) detectFit = (m_Population.getIndividual(detectAnchor).getFitness()).clone();
     		else System.arraycopy(m_Population.getIndividual(detectAnchor).getFitness(), 0, detectFit, 0, detectFit.length);
     	}

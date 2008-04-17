@@ -7,7 +7,7 @@ import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceGAIndividual;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 /**
  * Created by IntelliJ IDEA. User: streiche Date: 03.04.2003 Time: 10:34:17 To
@@ -57,7 +57,7 @@ public class CrossoverGADefault implements InterfaceCrossover,
 		if ((indy1 instanceof InterfaceGAIndividual)
 		    && (partners.get(0) instanceof InterfaceGAIndividual)) {
 			// Currently we will only handle two parents
-			int crossoverpoint = RandomNumberGenerator.randomInt(0,
+			int crossoverpoint = RNG.randomInt(0,
 			    ((InterfaceGAIndividual) indy1).getGenotypeLength() - 1);
 			boolean tmpValue;
 			BitSet[] tmpBitSets = new BitSet[2];

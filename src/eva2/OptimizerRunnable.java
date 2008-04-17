@@ -27,11 +27,11 @@ import eva2.server.stat.StatisticsStandalone;
  *
  */
 public class OptimizerRunnable implements Runnable {
-	Processor proc;
-	boolean isFinished = false;
-	boolean doRestart = false; // indicate whether start or restart should be done --> whether pop will be reinitialized.
-	boolean postProcessOnly = false;
-	InterfaceTextListener listener = null;
+	private Processor proc;
+	private boolean isFinished = false;
+	private boolean doRestart = false; // indicate whether start or restart should be done --> whether pop will be reinitialized.
+	private boolean postProcessOnly = false;
+	private InterfaceTextListener listener = null;
 	
 	public OptimizerRunnable(GOParameters params, String outputFilePrefix) {
 		this(params, outputFilePrefix, false);

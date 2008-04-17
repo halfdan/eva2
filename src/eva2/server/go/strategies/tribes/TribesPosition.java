@@ -3,7 +3,7 @@ package eva2.server.go.strategies.tribes;
 import java.util.Arrays;
 
 import eva2.server.go.strategies.Tribes;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 
 public class TribesPosition implements java.io.Serializable {
@@ -700,12 +700,12 @@ public class TribesPosition implements java.io.Serializable {
             swarm.tribes[0].explorer[n] = explorer;
 
             for (d = 0; d < D; d++) {
-                r = RandomNumberGenerator.randomDouble();
+                r = RNG.randomDouble();
 
                 swarm.tribes[0].explorer[n].position.x[d] = range[d][0] +
                         (range[d][1] - range[d][0]) * r;
 
-                r = RandomNumberGenerator.randomDouble();
+                r = RNG.randomDouble();
                 swarm.tribes[0].explorer[n].velocity.x[d] = (1 - 2 * r) *
                 (range[d][1] - range[d][0]) /
                         2;
@@ -743,10 +743,10 @@ public class TribesPosition implements java.io.Serializable {
                     maxIsoLink[n][n] = 1;
                 }
                 for (n = 0; n < swarm.size; n++) {
-//                    m = RandomNumberGenerator.randomInt(0,neighbourhoodSize-1);
+//                    m = RNG.randomInt(0,neighbourhoodSize-1);
 //                    maxIsoLink[n][m] = 1;
                 	for (int k=0; k < neighbourhoodSize; k++) {
-	                    m = RandomNumberGenerator.randomInt(swarm.size);
+	                    m = RNG.randomInt(swarm.size);
 	                    maxIsoLink[n][m] = 1;
                 	}
                 }
@@ -768,8 +768,8 @@ public class TribesPosition implements java.io.Serializable {
 
                 // Move
                 for (d = 0; d < D; d++) {
-                    r1 = RandomNumberGenerator.randomDouble();
-                    r2 = RandomNumberGenerator.randomDouble();
+                    r1 = RNG.randomDouble();
+                    r2 = RNG.randomDouble();
                     xd = swarm.tribes[0].explorer[m].position.x[d];
 
                     swarm.tribes[0].explorer[m].velocity.x[d] = c1 *

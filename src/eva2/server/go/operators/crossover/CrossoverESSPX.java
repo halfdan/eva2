@@ -10,7 +10,7 @@ import eva2.server.go.individuals.InterfaceESIndividual;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.F1Problem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 /**
  * Created by IntelliJ IDEA.
@@ -89,7 +89,7 @@ public class CrossoverESSPX implements InterfaceCrossover, java.io.Serializable 
                 C = new double[Y.length][];
                 C[0] = this.nullVector(parents[0].length);
                 for (int j = 1; j < Y.length; j++) {
-                    r       = Math.pow(RandomNumberGenerator.randomDouble(0, 1), 1/((double)j));
+                    r       = Math.pow(RNG.randomDouble(0, 1), 1/((double)j));
                     C[j]    = this.addVector(Y[j-1], C[j-1]);
                     C[j]    = this.subVector(C[j], Y[j]);
                     C[j]    = this.scalarMultVector(r, C[j]);
@@ -187,7 +187,7 @@ public class CrossoverESSPX implements InterfaceCrossover, java.io.Serializable 
         F1Problem               prob        = new F1Problem();
         int                     n           = 2;
 
-        RandomNumberGenerator.setRandomSeed(1);
+        RNG.setRandomSeed(1);
         // init individual
         indy1 = new ESIndividualDoubleData();
         double[][] range = new double[n][2];

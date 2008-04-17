@@ -3,7 +3,7 @@ package eva2.server.go.operators.classification;
 import javax.swing.*;
 
 import eva2.gui.Chart2DDPointIconCross;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 import wsi.ra.chart2d.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -124,7 +124,7 @@ public class ClassificationSelfOrganizingMaps implements java.io.Serializable, I
         for (int i = 0; i < this.m_SOM.length; i++) {
             for (int j = 0; j < this.m_SOM[0].length; j++) {
                 for (int k = 0; k < this.m_SOM[0][0].length; k++) {
-                    this.m_SOM[i][j][k] = 0*RandomNumberGenerator.randomDouble(
+                    this.m_SOM[i][j][k] = 0*RNG.randomDouble(
                         (this.m_Range[k][0] - this.m_Range[k][2])/(1+this.m_Range[k][3]),
                         (this.m_Range[k][1] - this.m_Range[k][2])/(1+this.m_Range[k][3]));
                 }
@@ -155,7 +155,7 @@ public class ClassificationSelfOrganizingMaps implements java.io.Serializable, I
         int[]   winner;
         for (int t = 0; t < this.m_TrainingCycles; t++) {
             // train the full set
-            order = RandomNumberGenerator.randomPermutation(space.length);
+            order = RNG.randomPermutation(space.length);
             for (int i = 0; i < order.length; i++) {
                 winner = this.findWinningNeuron(space[order[i]]);
                 // now i got the winning neuron *puh*
@@ -453,11 +453,11 @@ public class ClassificationSelfOrganizingMaps implements java.io.Serializable, I
         double[][]  data = new double[num*2][2];
         int[]       type = new int[num*2];
         for (int i = 0; i < num; i++) {
-            data[i][0]  = -0.8 + RandomNumberGenerator.gaussianDouble(0.3);
-            data[i][1]  = -0.5 + RandomNumberGenerator.gaussianDouble(0.1);
+            data[i][0]  = -0.8 + RNG.gaussianDouble(0.3);
+            data[i][1]  = -0.5 + RNG.gaussianDouble(0.1);
             type[i]     = 0;
-            data[i+num][0] =  0.1 + RandomNumberGenerator.gaussianDouble(0.1);
-            data[i+num][1] =  0.2 + RandomNumberGenerator.gaussianDouble(0.1);
+            data[i+num][0] =  0.1 + RNG.gaussianDouble(0.1);
+            data[i+num][1] =  0.2 + RNG.gaussianDouble(0.1);
             type[i+num]  = 1;
         }
         som.init(data, type);

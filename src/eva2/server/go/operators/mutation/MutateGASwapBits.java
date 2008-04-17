@@ -7,7 +7,7 @@ import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceGAIndividual;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 /**
  * Created by IntelliJ IDEA.
@@ -73,8 +73,8 @@ public class MutateGASwapBits implements InterfaceMutation, java.io.Serializable
 			int[][]   mutationIndices = new int[this.m_NumberOfMutations][2];
             boolean tmpBit;
 			for (int i = 0; i < mutationIndices.length; i++) {
-                mutationIndices[i][0] = RandomNumberGenerator.randomInt(0, ((InterfaceGAIndividual)individual).getGenotypeLength());;
-                mutationIndices[i][1] = RandomNumberGenerator.randomInt(0, ((InterfaceGAIndividual)individual).getGenotypeLength());;
+                mutationIndices[i][0] = RNG.randomInt(0, ((InterfaceGAIndividual)individual).getGenotypeLength());;
+                mutationIndices[i][1] = RNG.randomInt(0, ((InterfaceGAIndividual)individual).getGenotypeLength());;
             }
 			// double instances of mutationIndices could be checked here... *sigh*
 			for (int i = 0; i < mutationIndices.length; i++) {

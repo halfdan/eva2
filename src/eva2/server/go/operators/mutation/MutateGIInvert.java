@@ -4,7 +4,7 @@ import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceGIIndividual;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 /**
  * Created by IntelliJ IDEA.
@@ -61,9 +61,9 @@ public class MutateGIInvert implements InterfaceMutation, java.io.Serializable {
             int[]       x = ((InterfaceGIIndividual)individual).getIGenotype();
             int         range, center, index = 0;
             //this.pintInt("Before ", x);
-            range = RandomNumberGenerator.randomInt(1, this.m_MaxLengthOfInvert);
+            range = RNG.randomInt(1, this.m_MaxLengthOfInvert);
             if (2*range >= x.length) return;
-            center = RandomNumberGenerator.randomInt(0+range, x.length-1-range);
+            center = RNG.randomInt(0+range, x.length-1-range);
             //System.out.println("Range: " + range + " Center: " + center);
             int[] tmp = new int[x.length];
             System.arraycopy(x, 0, tmp, 0, x.length);

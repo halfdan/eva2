@@ -103,7 +103,7 @@ public class MatlabProblem extends AbstractProblemDouble implements InterfaceTex
 
 		log("range is " + BeanInspector.toString(range)+ "\n");
 		log("template len: " + ((ESIndividualDoubleData)m_Template).getDGenotype().length + "\n");
-		try {
+//		try {
 //			if (matlab == null)
 //				matlab = new Matlab();//this command links to the current matlab session
 //			try {
@@ -111,10 +111,10 @@ public class MatlabProblem extends AbstractProblemDouble implements InterfaceTex
 //			} catch (Exception e) {
 //				e.printStackTrace();
 //			}
-		} catch (Error e) {
-			log("Error: " + e.toString());
-			System.err.println("Error: could not create MatlabProblem instance. MatlabProblem can only be used from Matlab.");
-		}
+//		} catch (Error e) {
+//			log("Error: " + e.toString());
+//			System.err.println("Error: could not create MatlabProblem instance. MatlabProblem can only be used from Matlab.");
+//		}
 		
 //		this.jmInterface = nameJEInterface;
 //		mtCmd = new String("evaluateJE("+jmInterface+")");
@@ -180,7 +180,7 @@ public class MatlabProblem extends AbstractProblemDouble implements InterfaceTex
 //
 //	public double[] getNewDoubleArray() {
 //		currArray = new double[problemDimension];
-//		for (int i=0; i<problemDimension; i++) currArray[i] = RandomNumberGenerator.gaussianDouble(1);
+//		for (int i=0; i<problemDimension; i++) currArray[i] = RNG.gaussianDouble(1);
 //		return currArray;
 //	}
 

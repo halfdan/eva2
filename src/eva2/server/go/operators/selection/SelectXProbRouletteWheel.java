@@ -4,7 +4,7 @@ import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.operators.selection.probability.InterfaceSelectionProbability;
 import eva2.server.go.operators.selection.probability.SelProbStandard;
 import eva2.server.go.populations.Population;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 
 class treeElement implements java.io.Serializable {
@@ -147,8 +147,8 @@ public class SelectXProbRouletteWheel implements InterfaceSelection, java.io.Ser
         int                     currentCriteria = 0, critSize;
 
         critSize = ((AbstractEAIndividual)population.get(0)).getSelectionProbability().length;
-        currentCriteria = RandomNumberGenerator.randomInt(0, critSize-1);
-        double d = RandomNumberGenerator.randomDouble();
+        currentCriteria = RNG.randomInt(0, critSize-1);
+        double d = RNG.randomDouble();
         int index = this.m_TreeRoot[currentCriteria].getIndexFor(d);
         //System.out.println("Looking for: " + d + " found " +index);
         return ((AbstractEAIndividual)(population.get(index)));
@@ -159,11 +159,11 @@ public class SelectXProbRouletteWheel implements InterfaceSelection, java.io.Ser
         int                     currentCriteria = 0, critSize;
 
         critSize = ((AbstractEAIndividual)population.get(0)).getSelectionProbability().length;
-        currentCriteria = RandomNumberGenerator.randomInt(0, critSize-1);
+        currentCriteria = RNG.randomInt(0, critSize-1);
         String logger = "";
         while (sum > 0) {
             sum = 0;
-            random = RandomNumberGenerator.randomDouble();
+            random = RNG.randomDouble();
             for (int i = 0; i < population.size(); i++) {
                 tmpD = ((AbstractEAIndividual)(population.get(i))).getSelectionProbability(currentCriteria);
                 logger += tmpD + "; ";

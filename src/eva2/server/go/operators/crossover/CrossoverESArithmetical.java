@@ -4,7 +4,7 @@ import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceESIndividual;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 /**
  * Created by IntelliJ IDEA.
@@ -61,7 +61,7 @@ public class CrossoverESArithmetical implements InterfaceCrossover, java.io.Seri
             for (int i = 0; i < children.length; i++) {
                 sum = 0;
                 for (int j = 0; j < alpha.length; j++) {
-                    alpha[j] = RandomNumberGenerator.randomDouble(0,1);
+                    alpha[j] = RNG.randomDouble(0,1);
                     sum += alpha[j];
                 }
                 for (int j = 0; j <alpha.length; j++) alpha[j] = alpha[j]/sum;

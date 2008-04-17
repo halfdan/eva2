@@ -6,6 +6,7 @@ import java.util.BitSet;
 import java.util.LinkedList;
 import java.util.List;
 
+import wsi.ra.math.RNG;
 import eva2.gui.BeanInspector;
 import eva2.server.go.IndividualInterface;
 import eva2.server.go.individuals.codings.gp.InterfaceProgram;
@@ -16,8 +17,6 @@ import eva2.server.go.operators.mutation.InterfaceMutation;
 import eva2.server.go.operators.mutation.NoMutation;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import eva2.server.go.tools.GONamingBox;
-import eva2.server.go.tools.RandomNumberGenerator;
 
 /** This is the abstract EA individual implementing the most important methods giving
  * access to mutation and crossover rates and operators, fitness values and selection
@@ -243,7 +242,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
     /** This method will mutate the individual randomly
      */
     public void mutate() {
-        if (RandomNumberGenerator.flipCoin(this.m_MutationProbability)) this.m_MutationOperator.mutate(this);
+        if (RNG.flipCoin(this.m_MutationProbability)) this.m_MutationOperator.mutate(this);
     }
 
 	/** 
@@ -257,7 +256,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
 	 */
 	public AbstractEAIndividual[] mateWith(Population partners) {
 	    AbstractEAIndividual[] result;
-	    if (RandomNumberGenerator.flipCoin(this.m_CrossoverProbability)) {
+	    if (RNG.flipCoin(this.m_CrossoverProbability)) {
 	        result = this.m_CrossoverOperator.mate(this, partners);
 	        if (logParentLen > 0) {
 	        	for (int i = 0; i < result.length; i++) {

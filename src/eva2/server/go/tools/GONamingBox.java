@@ -1,5 +1,7 @@
 package eva2.server.go.tools;
 
+import wsi.ra.math.RNG;
+
 /**
  * Created by IntelliJ IDEA.
  * User: streiche
@@ -73,6 +75,6 @@ public class GONamingBox {
                         "Yuriy"};
 
     public static String getRandomName() {
-        return new String(m_Names[RandomNumberGenerator.randomInt(0, m_Names.length-1)]);
+        return new String(m_Names[RNG.randomInt(0, m_Names.length-1)]);
     }
 }

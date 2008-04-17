@@ -18,7 +18,7 @@ import eva2.server.go.operators.moso.InterfaceMOSOConverter;
 import eva2.server.go.operators.paretofrontmetrics.InterfaceParetoFrontMetric;
 import eva2.server.go.populations.Population;
 import eva2.server.go.strategies.InterfaceOptimizer;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 /**
  * Created by IntelliJ IDEA.
@@ -141,7 +141,7 @@ public class TF1Problem extends AbstractMultiObjectiveOptimizationProblem implem
         fitness = this.doEvaluation(x);
         for (int i = 0; i < fitness.length; i++) {
             // add noise to the fitness
-            fitness[i] += RandomNumberGenerator.gaussianDouble(this.m_Noise);
+            fitness[i] += RNG.gaussianDouble(this.m_Noise);
             fitness[i] += this.m_YOffSet;
             // set the fitness of the individual
             individual.SetFitness(i, fitness[i]);

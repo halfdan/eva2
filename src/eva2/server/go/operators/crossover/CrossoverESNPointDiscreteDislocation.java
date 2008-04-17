@@ -4,7 +4,7 @@ import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceESIndividual;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 /**
  * Created by IntelliJ IDEA.
@@ -51,7 +51,7 @@ public class CrossoverESNPointDiscreteDislocation implements InterfaceCrossover,
 
         if ((indy1 instanceof InterfaceESIndividual) && (partners.get(0) instanceof InterfaceESIndividual)) {
             int         length          =  ((InterfaceESIndividual)result[0]).getDGenotype().length;
-            int         mixer           = RandomNumberGenerator.randomInt(0, partners.size());
+            int         mixer           = RNG.randomInt(0, partners.size());
             int[]       crossoverPoints = new int[this.m_NumberOfCrossovers+1];
             parents     = new double[partners.size()+1][];
             children    = new double[partners.size()+1][];
@@ -62,9 +62,9 @@ public class CrossoverESNPointDiscreteDislocation implements InterfaceCrossover,
                 System.arraycopy(((InterfaceESIndividual)result[i]).getDGenotype(), 0, children[i], 0, parents[i].length);
             }
             for (int i = 0; i < crossoverPoints.length; i++) {
-                crossoverPoints[i] = RandomNumberGenerator.randomInt(0, length-1);
+                crossoverPoints[i] = RNG.randomInt(0, length-1);
             }
-            crossoverPoints[RandomNumberGenerator.randomInt(0,this.m_NumberOfCrossovers)] = 0;
+            crossoverPoints[RNG.randomInt(0,this.m_NumberOfCrossovers)] = 0;
             int     parIndex = 0;
             int     chiIndex = 0;
             boolean bol;

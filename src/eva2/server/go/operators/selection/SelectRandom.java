@@ -2,7 +2,7 @@ package eva2.server.go.operators.selection;
 
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.populations.Population;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 
 /** Random selection typically used for ES a mating selection.
@@ -52,7 +52,7 @@ public class SelectRandom implements InterfaceSelection, java.io.Serializable {
         if (this.m_ObeyDebsConstViolationPrinciple) {
             int index = 0, rand;
             while (result.size() < size) {
-                rand = RandomNumberGenerator.randomInt(0, population.size()-1);
+                rand = RNG.randomInt(0, population.size()-1);
                 if (!((AbstractEAIndividual)population.get(rand)).violatesConstraint())
                     result.add(population.get(rand));
                 index++;
@@ -60,14 +60,14 @@ public class SelectRandom implements InterfaceSelection, java.io.Serializable {
                     // darn there seems to be no feasible solution
                     // just select random one instead
                     for (int i = 0; i < size; i++) {
-                        result.add(population.get(RandomNumberGenerator.randomInt(0, population.size()-1)));
+                        result.add(population.get(RNG.randomInt(0, population.size()-1)));
                     }
                 }
             }
 
         } else {
             for (int i = 0; i < size; i++) {
-                result.add(population.get(RandomNumberGenerator.randomInt(0, population.size()-1)));
+                result.add(population.get(RNG.randomInt(0, population.size()-1)));
             }
         }
         return result;

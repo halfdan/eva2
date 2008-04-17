@@ -25,6 +25,8 @@ import javax.swing.JProgressBar;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 
+import wsi.ra.jproxy.ThreadProxy;
+import wsi.ra.math.RNG;
 import eva2.client.EvAClient;
 import eva2.gui.JParaPanel;
 import eva2.server.go.individuals.AbstractEAIndividual;
@@ -42,11 +44,8 @@ import eva2.server.go.problems.F1Problem;
 import eva2.server.go.strategies.EvolutionStrategies;
 import eva2.server.go.strategies.GeneticAlgorithm;
 import eva2.server.go.strategies.InterfaceOptimizer;
-import eva2.server.go.tools.RandomNumberGenerator;
 import eva2.server.modules.GOParameters;
 import eva2.tools.TokenHolder;
-
-import wsi.ra.jproxy.ThreadProxy;
 
 /**
  * Created by IntelliJ IDEA.
@@ -113,7 +112,7 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
         this.m_GO               = GOParameters.getInstance();
         this.m_ExperimentName   = this.m_GO.getOptimizer().getName()+"-"+this.m_PerformedRuns.size();
         this.m_GO.addPopulationChangedEventListener(this);
-        RandomNumberGenerator.setRandomSeed(m_GO.getSeed());
+        RNG.setRandomSeed(m_GO.getSeed());
     }
 
     /** This method allows you to get the current GO parameters
@@ -370,7 +369,7 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
         	this.m_GO.saveInstance();
             if (this.show) this.m_StatusField.setText("Optimizing...");
 
-            RandomNumberGenerator.setRandomSeed(m_GO.getSeed());
+            RNG.setRandomSeed(m_GO.getSeed());
             // opening output file...
             if (!this.m_OutputFileName.equalsIgnoreCase("none")) {
                 String name = "";
@@ -541,7 +540,7 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
             app.setShow(false);
         } else {
             GOStandaloneVersion  program = new GOStandaloneVersion();
-            RandomNumberGenerator.setRandomSeed(1);
+            RNG.setRandomSeed(1);
             program.initFrame();
             program.setShow(true);
         }
@@ -646,10 +645,10 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
      */
     // MK: These methods have nothing to do with the seed parameter from the m_GO object which is actually used, so I comment them out
 //    public void setSeed(long seed) {
-//        RandomNumberGenerator.setseed(seed);
+//        RNG.setseed(seed);
 //    }
 //    public long getSeed() {
-//        return RandomNumberGenerator.getRandomSeed();
+//        return RNG.getRandomSeed();
 //    }
 //    public String seedTipText() {
 //        return "Choose the seed for the random number generator.";

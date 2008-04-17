@@ -6,7 +6,7 @@ import eva2.server.go.individuals.GAIndividualBinaryData;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.B1Problem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 /** Threshold accepting algorithm simliar strategy as the flood
  * algorithm, similar problems.

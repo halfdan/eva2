@@ -6,7 +6,7 @@ import eva2.server.go.individuals.GAIndividualBinaryData;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.B1Problem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 /** Simulated Annealing by Nelder and Mead, a simple yet efficient local search
  * method. But to become less prone to premature convergence the cooling rate
@@ -93,7 +93,7 @@ public class SimulatedAnnealing implements InterfaceOptimizer, java.io.Serializa
             } else {
                 delta = this.calculateDelta(((AbstractEAIndividual)original.get(i)), ((AbstractEAIndividual)this.m_Population.get(i)));
                 //System.out.println("delta: " + delta);
-                if (Math.exp(-delta/this.m_CurrentTemperature) > RandomNumberGenerator.randomInt(0,1)) {
+                if (Math.exp(-delta/this.m_CurrentTemperature) > RNG.randomInt(0,1)) {
                     this.m_Population.remove(i);
                     this.m_Population.add(i, original.get(i));
                 }

@@ -4,7 +4,7 @@ import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceESIndividual;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 /**
  * Created by IntelliJ IDEA.
@@ -74,7 +74,7 @@ public class MutateESDerandomized implements InterfaceMutation, java.io.Serializ
         else this.m_c = 1.0;
         this.m_Z    = new double[this.m_D];
         this.m_Path = new double[this.m_D];
-        for (int i = 0; i < this.m_D; i++) this.m_Z[i] = RandomNumberGenerator.gaussianDouble(1.0);
+        for (int i = 0; i < this.m_D; i++) this.m_Z[i] = RNG.gaussianDouble(1.0);
         evaluateNewObjectX(x, ranges);
     }
 
@@ -88,7 +88,7 @@ public class MutateESDerandomized implements InterfaceMutation, java.io.Serializ
             double[]    x       = ((InterfaceESIndividual)individual).getDGenotype();
             double[][]  ranges  = ((InterfaceESIndividual)individual).getDoubleRange();
             this.adaptStrategy();
-            for (int i = 0; i < m_D; i++) m_Z[i] = RandomNumberGenerator.gaussianDouble(1.0);            
+            for (int i = 0; i < m_D; i++) m_Z[i] = RNG.gaussianDouble(1.0);            
             this.evaluateNewObjectX(x, ranges);
             for (int i = 0; i < x.length; i++) {
                 if (x[i]  < ranges[i][0]) x[i] = ranges[i][0];

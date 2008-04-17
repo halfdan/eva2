@@ -10,7 +10,7 @@ import eva2.server.go.individuals.InterfaceESIndividual;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.F1Problem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 /**
  * Created by IntelliJ IDEA.
@@ -97,12 +97,12 @@ public class CrossoverESPCX implements InterfaceCrossover, java.io.Serializable 
                 // first the parent and the d
                 for (int j = 0; j < parents[i].length; j++) {
                     children[i][j] = parents[i][j];
-                    children[i][j] += RandomNumberGenerator.gaussianDouble(this.m_Zeta)*tmpD[j];
+                    children[i][j] += RNG.gaussianDouble(this.m_Zeta)*tmpD[j];
                 }
                 // then the other parents
                 for (int j = 1; j < subSpace.size(); j++) {
                     tmpD = (double[])subSpace.get(j);
-                    w = RandomNumberGenerator.gaussianDouble(this.m_Zeta);
+                    w = RNG.gaussianDouble(this.m_Zeta);
                     children[i] = this.addVector(children[i], this.scalarMultVector(w, tmpD));
                 }
             }
@@ -162,7 +162,7 @@ public class CrossoverESPCX implements InterfaceCrossover, java.io.Serializable 
     private double[] randomVector(int n) {
         double[] result = new double[n];
         for (int i = 0; i < result.length; i++) {
-            result[i] = RandomNumberGenerator.gaussianDouble(1);
+            result[i] = RNG.gaussianDouble(1);
         }
         return this.getNormalizedVector(result);
     }
@@ -287,7 +287,7 @@ public class CrossoverESPCX implements InterfaceCrossover, java.io.Serializable 
         F1Problem               prob        = new F1Problem();
         int                     n           = 2;
 
-        //RandomNumberGenerator.setseed(1);
+        //RNG.setseed(1);
         // init individual
         indy1 = new ESIndividualDoubleData();
         double[][] range = new double[n][2];

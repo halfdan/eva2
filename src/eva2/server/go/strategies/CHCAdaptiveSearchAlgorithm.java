@@ -13,7 +13,7 @@ import eva2.server.go.populations.PBILPopulation;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.B1Problem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 /** This is an implementation of the CHC Adaptive Search Algorithm by Eselman. It is
  * limited to binary data and is based on massively distruptive crossover. I'm not
@@ -170,7 +170,7 @@ public class CHCAdaptiveSearchAlgorithm implements InterfaceOptimizer, java.io.S
             mutant      = (InterfaceGAIndividual)best.clone();
             tmpBitSet   = mutant.getBGenotype();
             for (int j = 0; j < mutant.getGenotypeLength(); j++) {
-                if (RandomNumberGenerator.flipCoin(this.m_DivergenceRate)) {
+                if (RNG.flipCoin(this.m_DivergenceRate)) {
                     if (tmpBitSet.get(j)) tmpBitSet.clear(j);
                     else tmpBitSet.set(j);
                 }

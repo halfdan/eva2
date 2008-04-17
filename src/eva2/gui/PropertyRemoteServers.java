@@ -121,9 +121,9 @@ public class PropertyRemoteServers implements java.io.Serializable {
      */
     public String[] getServerNodes() {
         String[] result;
-        ArrayList tmpList = new ArrayList();
+        ArrayList<String> tmpList = new ArrayList<String>();
         for (int i = 0; i < this.m_AvailableNodes.length; i++) {
-            for (int j = 0; j < this.m_AvailableNodes[i].m_CPUs; i++) {
+            for (int j = 0; j < this.m_AvailableNodes[i].m_CPUs; j++) {
                 tmpList.add(this.m_AvailableNodes[i].m_ServerName);
             }
         }

@@ -11,7 +11,7 @@ import eva2.server.go.operators.terminators.EvaluationTerminator;
 import eva2.server.go.operators.terminators.GenerationTerminator;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.AbstractOptimizationProblem;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 import eva2.server.stat.InterfaceStatistics;
 import eva2.server.stat.InterfaceTextListener;
 import eva2.server.stat.StatisticsWithGUI;
@@ -169,7 +169,7 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
     		setOptRunning(true);
     	}
 
-    	RandomNumberGenerator.setRandomSeed(goParams.getSeed());
+    	RNG.setRandomSeed(goParams.getSeed());
         
         if (m_ListenerModule!=null) {
         	if (wasRestarted) m_ListenerModule.performedRestart(getInfoString());
