@@ -46,10 +46,9 @@ public class MainAdapterImpl implements MainAdapter {
   public void restartServer() {
     System.out.println("Received message to restartServer !!!!");
     try {
-      String Out ="";
-      String command = "java -cp .:../lib/jdom.jar:../lib/log4j.jar javaeva.server.EvAServer &";
+      String command = "java -cp . eva2.server.EvAServer &";
 
-      System.out.println("Calling the command:"+"java javaeva.server.EvAServer");
+      System.out.println("Calling the command:"+"java eva2.server.EvAServer");
       Process pro =  Runtime.getRuntime().exec(command);
       BufferedReader in = new  BufferedReader ( new InputStreamReader (pro.getInputStream()));
 //      String line = null;

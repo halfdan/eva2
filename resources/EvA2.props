@@ -1,0 +1,18 @@
+# Select a default module. Set empty or comment out to select from all available modules.
+# 
+# possible values are the names of module objects as returned by their getName method (!).
+# DefaultModule = Evolution_Strategy
+DefaultModule = Genetic_Optimization
+
+## Uncomment this to show all loadable modules. Most are redundant, though.
+# ShowModules
+
+ServerList = localhost,134.2.172.14,ranode22
+
+#################### Internals: Do not alter!
+
+# base class for modules. Do not alter!
+ModulePackage = eva2.server.modules
+
+# filter class for modules. Do not alter!
+ModuleFilterClass = eva2.server.modules.AbstractModuleAdapter
