@@ -2,7 +2,7 @@ package eva2.server.go.strategies.tribes;
 
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.server.go.strategies.Tribes;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 
 public class Tribe implements java.io.Serializable {
@@ -136,7 +136,7 @@ public class Tribe implements java.io.Serializable {
 		// Reinitialise explorers
 		for (n = 0; n < explorerNb; n++) {
 			contact = explorer[n].contact; // Keep the same contact
-			option = RandomNumberGenerator.randomInt(3);
+			option = RNG.randomInt(3);
 			TribesSwarm emptySwarm= new TribesSwarm(null, swarm.getRange(), swarm.getInitRange());
 			TribesPosition emptyPos=new TribesPosition(swarm.getProblemDim());
 			explorer[n] = emptySwarm.generateExplorer(emptyPos, -1, option, -1, initType, prob, true);
@@ -210,7 +210,7 @@ public class Tribe implements java.io.Serializable {
 
 		 */
 		if (status == 1) {
-			status = RandomNumberGenerator.randomInt() - 1;
+			status = RNG.randomInt() - 1;
 		}
 	}
 
@@ -255,7 +255,7 @@ public class Tribe implements java.io.Serializable {
 
 		explorer[explorerNb] = explorerNew;
 		// Add a contact at random
-		contact = RandomNumberGenerator.randomInt(0, memoryNb-1);
+		contact = RNG.randomInt(0, memoryNb-1);
 		explorer[explorerNb].contact = contact;
 
 		// Update contact

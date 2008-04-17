@@ -4,7 +4,7 @@ import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceGIIndividual;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 
 /**
@@ -61,10 +61,10 @@ public class MutateGITranslocate implements InterfaceMutation, java.io.Serializa
         if (individual instanceof InterfaceGIIndividual) {
             int[]       x = ((InterfaceGIIndividual)individual).getIGenotype();
             int         from, to, length;
-            length = RandomNumberGenerator.randomInt(1, this.m_MaxLengthOfTranslocate);
+            length = RNG.randomInt(1, this.m_MaxLengthOfTranslocate);
             if (x.length < length+2) return;
-            from = RandomNumberGenerator.randomInt(0, x.length - 1 - length);
-            to = RandomNumberGenerator.randomInt(0, x.length - 1 - length);
+            from = RNG.randomInt(0, x.length - 1 - length);
+            to = RNG.randomInt(0, x.length - 1 - length);
             //this.pintInt("Before ", x);
             int[] tmp = new int[x.length];
             int[] without = new int[x.length - length];

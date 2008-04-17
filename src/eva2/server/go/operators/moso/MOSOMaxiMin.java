@@ -5,7 +5,7 @@ import eva2.gui.Chart2DDPointIconText;
 import eva2.gui.GraphPointSet;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.populations.Population;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 import wsi.ra.chart2d.DPoint;
 
 /**
@@ -109,7 +109,7 @@ public class MOSOMaxiMin implements InterfaceMOSOConverter, java.io.Serializable
         tmpFit          = indy.getFitness();
         indy.SetData("MOFitness", tmpFit);
         System.out.println("The MaxiMin MOSO can not be applied to single individuals! I default to random criteria.");
-        resultFit[0]    = tmpFit[RandomNumberGenerator.randomInt(0, tmpFit.length)];
+        resultFit[0]    = tmpFit[RNG.randomInt(0, tmpFit.length)];
         indy.SetFitness(resultFit);
     }
 

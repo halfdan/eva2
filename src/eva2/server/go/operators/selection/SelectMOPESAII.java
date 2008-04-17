@@ -8,7 +8,7 @@ import java.util.Enumeration;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.operators.archiving.ArchivingPESAII;
 import eva2.server.go.populations.Population;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 /** The multi-objective PESA II selection criteria based on a n-dimensional
  * grid using a squezzing factor. 
@@ -102,13 +102,13 @@ public class SelectMOPESAII implements InterfaceSelection, java.io.Serializable 
        int                      winner, tmp;
 
         try {
-            box1 = (ArrayList)this.m_GridBoxes.get(RandomNumberGenerator.randomInt(0, this.m_GridBoxes.size()-1));
-            box2 = (ArrayList)this.m_GridBoxes.get(RandomNumberGenerator.randomInt(0, this.m_GridBoxes.size()-1));
+            box1 = (ArrayList)this.m_GridBoxes.get(RNG.randomInt(0, this.m_GridBoxes.size()-1));
+            box2 = (ArrayList)this.m_GridBoxes.get(RNG.randomInt(0, this.m_GridBoxes.size()-1));
             if (((Integer)((AbstractEAIndividual)box1.get(0)).getData("SqueezeFactor")).intValue()
                 < ((Integer)((AbstractEAIndividual)box2.get(0)).getData("SqueezeFactor")).intValue()) {
-                resultIndy = (AbstractEAIndividual) (box1.get(RandomNumberGenerator.randomInt(0, box1.size()-1)));
+                resultIndy = (AbstractEAIndividual) (box1.get(RNG.randomInt(0, box1.size()-1)));
             } else {
-                resultIndy = (AbstractEAIndividual) (box2.get(RandomNumberGenerator.randomInt(0, box2.size()-1)));
+                resultIndy = (AbstractEAIndividual) (box2.get(RNG.randomInt(0, box2.size()-1)));
             }
         } catch (java.lang.IndexOutOfBoundsException e) {
             System.out.println("Tournament Selection produced IndexOutOfBoundsException!");

@@ -10,7 +10,7 @@ import eva2.server.go.individuals.codings.gp.AbstractGPNode;
 import eva2.server.go.individuals.codings.gp.GPArea;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 /**
  * Created by IntelliJ IDEA.
@@ -58,7 +58,7 @@ public class MutateGPSingleNode implements InterfaceMutation, java.io.Serializab
             GPArea[]         areas = (GPArea[])((InterfaceGPIndividual)individual).getFunctionArea();
             for (int i = 0; i < programs.length; i++) {
                 programs[i].addNodesTo(allNodes);
-                AbstractGPNode nodeToMutate = (AbstractGPNode) allNodes.get(RandomNumberGenerator.randomInt(0, allNodes.size()-1));
+                AbstractGPNode nodeToMutate = (AbstractGPNode) allNodes.get(RNG.randomInt(0, allNodes.size()-1));
                 int orgArity = nodeToMutate.getArity();
                 AbstractGPNode newNode = (AbstractGPNode)areas[i].getRandomNodeWithArity(orgArity).clone();
 //                System.out.println("OldNode "+ nodeToMutate.getName() + ":"+nodeToMutate.getArity() + " / NewNode "+newNode.getName() + ":"+newNode.getArity());

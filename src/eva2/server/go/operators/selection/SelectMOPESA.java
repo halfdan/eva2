@@ -4,7 +4,7 @@ import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.operators.archiving.ArchivingPESAII;
 import eva2.server.go.operators.moso.MOSOMaxiMin;
 import eva2.server.go.populations.Population;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 /** The multi-objective PESA selection method. 
  * Created by IntelliJ IDEA.
@@ -67,9 +67,9 @@ public class SelectMOPESA implements InterfaceSelection, java.io.Serializable {
        int                      winner, tmp;
 
         try {
-            winner = RandomNumberGenerator.randomInt(0, population.size()-1);
+            winner = RNG.randomInt(0, population.size()-1);
             for (int i = 1; i < this.m_TournamentSize; i++) {
-                tmp = RandomNumberGenerator.randomInt(0, population.size()-1);
+                tmp = RNG.randomInt(0, population.size()-1);
                 if (this.m_Squeeze[tmp] < this.m_Squeeze[winner]) winner = tmp;
             }
             resultIndy = (AbstractEAIndividual) population.get(winner);

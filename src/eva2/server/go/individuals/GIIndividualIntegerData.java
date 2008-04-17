@@ -4,7 +4,7 @@ import eva2.server.go.operators.crossover.CrossoverGIDefault;
 import eva2.server.go.operators.mutation.InterfaceMutation;
 import eva2.server.go.operators.mutation.MutateGIDefault;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 /** This individual uses a integer genotype to code for integer values.
  * Created by IntelliJ IDEA.
@@ -275,15 +275,15 @@ public class GIIndividualIntegerData extends AbstractEAIndividual implements Int
     /** This method performs a simple one point mutation in the genotype
      */
     public void defaultMutate() {
-        int mutationIndex = RandomNumberGenerator.randomInt(0, this.m_Genotype.length-1);
-        this.m_Genotype[mutationIndex] = RandomNumberGenerator.randomInt(this.m_Range[mutationIndex][0], this.m_Range[mutationIndex][1]);
+        int mutationIndex = RNG.randomInt(0, this.m_Genotype.length-1);
+        this.m_Genotype[mutationIndex] = RNG.randomInt(this.m_Range[mutationIndex][0], this.m_Range[mutationIndex][1]);
     }
 
     /** This method initializes the GA genotype randomly
      */
     public void defaultInit() {
         for (int i = 0; i < this.m_Genotype.length; i++) {
-            this.m_Genotype[i] = RandomNumberGenerator.randomInt(this.m_Range[i][0], this.m_Range[i][1]);
+            this.m_Genotype[i] = RNG.randomInt(this.m_Range[i][0], this.m_Range[i][1]);
         }
     }
 

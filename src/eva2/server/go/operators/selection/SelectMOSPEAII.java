@@ -8,7 +8,7 @@ import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.operators.archiving.ArchivingNSGAII;
 import eva2.server.go.operators.archiving.ArchivingSPEAII;
 import eva2.server.go.populations.Population;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 import wsi.ra.chart2d.DPoint;
 
 /** The SPEA II selection criteria using strength and raw fitness to determine

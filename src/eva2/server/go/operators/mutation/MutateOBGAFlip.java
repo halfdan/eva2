@@ -5,7 +5,7 @@ import eva2.server.go.individuals.InterfaceDataTypePermutation;
 import eva2.server.go.individuals.InterfaceOBGAIndividual;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 
 /**
@@ -54,8 +54,8 @@ public class MutateOBGAFlip implements InterfaceMutation, java.io.Serializable {
           getOBGenotype();
       for (int p = 0; p < perm.length; p++) {
         for (int i = 0; i < times; i++) {
-        int p1 = RandomNumberGenerator.randomInt(0, perm[p].length - 1);
-        int p2 = RandomNumberGenerator.randomInt(0, perm[p].length - 1);
+        int p1 = RNG.randomInt(0, perm[p].length - 1);
+        int p2 = RNG.randomInt(0, perm[p].length - 1);
         int temp = perm[p][p1];
         perm[p][p1] = perm[p][p2];
         perm[p][p2] = temp;

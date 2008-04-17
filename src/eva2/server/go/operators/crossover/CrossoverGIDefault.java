@@ -4,7 +4,7 @@ import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceGIIndividual;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 /**
  * Created by IntelliJ IDEA.
@@ -49,8 +49,8 @@ public class CrossoverGIDefault implements InterfaceCrossover, java.io.Serializa
 
         if ((indy1 instanceof InterfaceGIIndividual) && (partners.get(0) instanceof InterfaceGIIndividual)) {
             if (((InterfaceGIIndividual)indy1).getIGenotype().length <= 1) return result;
-            int     crossoverpoint = RandomNumberGenerator.randomInt(0,((InterfaceGIIndividual)indy1).getIGenotype().length-1);
-            boolean switcher = RandomNumberGenerator.randomBoolean();
+            int     crossoverpoint = RNG.randomInt(0,((InterfaceGIIndividual)indy1).getIGenotype().length-1);
+            boolean switcher = RNG.randomBoolean();
             parents     = new int[partners.size()+1][];
             children    = new int[partners.size()+1][];
             for (int i = 0; i < result.length; i++) {

@@ -11,7 +11,7 @@ import eva2.gui.*;
 import eva2.server.go.IndividualInterface;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.populations.Population;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 /** The Pareto envelope sorting algorithm using a hybergrid and
  * the so called squezze factor.
@@ -145,7 +145,7 @@ public class ArchivingPESAII extends AbstractArchiving implements java.io.Serial
                     bigSqueeze = squeezeFactor[i];
                     index = i;
                 }
-                if ((bigSqueeze == squeezeFactor[i]) && RandomNumberGenerator.flipCoin(0.5)) index = i;
+                if ((bigSqueeze == squeezeFactor[i]) && RNG.flipCoin(0.5)) index = i;
             }
             archive.remove(index);
         }

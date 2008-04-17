@@ -5,7 +5,7 @@ import eva2.server.go.individuals.ESIndividualDoubleData;
 import eva2.server.go.individuals.InterfaceDataTypeDouble;
 import eva2.server.go.populations.Population;
 import eva2.server.go.strategies.InterfaceOptimizer;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 import eva2.server.go.problems.Interface2DBorderProblem;
 
 public abstract class AbstractProblemDouble extends AbstractOptimizationProblem implements Interface2DBorderProblem {
@@ -55,7 +55,7 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
         // evaluate the vector
         fitness = this.eval(x);
         // if indicated, add Gaussian noise
-        if (m_Noise != 0) RandomNumberGenerator.addNoise(fitness, m_Noise); 
+        if (m_Noise != 0) RNG.addNoise(fitness, m_Noise); 
         // set the fitness
         setEvalFitness(individual, x, fitness);
 	}

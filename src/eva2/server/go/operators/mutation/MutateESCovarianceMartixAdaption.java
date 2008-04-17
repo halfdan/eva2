@@ -4,7 +4,7 @@ import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceESIndividual;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 import wsi.ra.math.Jama.EigenvalueDecomposition;
 import wsi.ra.math.Jama.Matrix;
 
@@ -183,7 +183,7 @@ public class MutateESCovarianceMartixAdaption implements InterfaceMutation, java
 //        if (Double.isNaN((x[0]))) System.out.println("treffer in cma "+ x[0]);
 //        if (Double.isNaN((m_C.get(0,0)))) System.out.println("treffer in cma");
 //        for (int i=0;i<N;i++)   {   // evaluate new random values
-//            m_Z[i] = RandomNumberGenerator.gaussianDouble(1.0);
+//            m_Z[i] = RNG.gaussianDouble(1.0);
 //        }
 //        m_C = (m_C.plus(m_C.transpose()).times(0.5)); // MAKE C SYMMETRIC
 //        EigenvalueDecomposition helper = new EigenvalueDecomposition(m_C);
@@ -215,7 +215,7 @@ public class MutateESCovarianceMartixAdaption implements InterfaceMutation, java
 //        for (int i = 0; i < N; i++) x[i] = tmpD[i];
         // conservation of mutaion direction:
         double[] old = (double[]) this.m_Z.clone();
-        for (int i = 0; i < this.m_D; i++) this.m_Z[i] = RandomNumberGenerator.gaussianDouble(1.0);
+        for (int i = 0; i < this.m_D; i++) this.m_Z[i] = RNG.gaussianDouble(1.0);
 
         this.m_C = (this.m_C.plus(this.m_C.transpose()).times(0.5)); // MAKE C SYMMETRIC
         this.m_Counter++;
@@ -242,7 +242,7 @@ public class MutateESCovarianceMartixAdaption implements InterfaceMutation, java
                 for (int i = 0; i < m_D; i++) {
                     if (x[i] < range[i][0] || x[i] > range[i][1]) {
                         for (int j = 0; j < this.m_D; j++) x[j] = x[j] - this.m_SigmaGlobal * this.Bz[j];
-                        this.m_Z[i] = RandomNumberGenerator.gaussianDouble(1.0);
+                        this.m_Z[i] = RNG.gaussianDouble(1.0);
                         constraint = false;
                         counter++;
                         break;

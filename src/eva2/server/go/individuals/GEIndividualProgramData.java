@@ -11,7 +11,7 @@ import eva2.server.go.operators.crossover.CrossoverGADefault;
 import eva2.server.go.operators.mutation.InterfaceMutation;
 import eva2.server.go.operators.mutation.MutateGADefault;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 /** This individual uses a binary genotype to code for a tree-based representation
  * using a BNF grammar, see also Grammatical Evolution.
@@ -578,7 +578,7 @@ public class GEIndividualProgramData extends AbstractEAIndividual implements Int
          */
         public void defaultInit() {
             for (int i = 0; i < this.m_GenotypeLengthPerProgram*this.m_Area.length; i++) {
-                if (RandomNumberGenerator.flipCoin(0.5)) this.m_Genotype.set(i);
+                if (RNG.flipCoin(0.5)) this.m_Genotype.set(i);
                 else this.m_Genotype.clear(i);
             }
         }
@@ -586,7 +586,7 @@ public class GEIndividualProgramData extends AbstractEAIndividual implements Int
         /** This method performs a simple one point mutation in the genotype
          */
         public void defaultMutate() {
-            int mutationIndex = RandomNumberGenerator.randomInt(0, this.m_GenotypeLengthPerProgram*this.m_Area.length);
+            int mutationIndex = RNG.randomInt(0, this.m_GenotypeLengthPerProgram*this.m_Area.length);
             //if (mutationIndex > 28) System.out.println("Mutate: " + this.getSolutionRepresentationFor());
             if (this.m_Genotype.get(mutationIndex)) this.m_Genotype.clear(mutationIndex);
             else this.m_Genotype.set(mutationIndex);

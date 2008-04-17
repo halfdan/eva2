@@ -3,7 +3,7 @@ package eva2.server.go.operators.moso;
 import eva2.gui.PropertyDoubleArray;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.populations.Population;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 /**
  * Created by IntelliJ IDEA.
@@ -47,7 +47,7 @@ public class MOSORandomWeight implements InterfaceMOSOConverter, java.io.Seriali
         indy.SetData("MOFitness", tmpFit);
         tmpWeight = new double[tmpFit.length];
         for (int i = 0; i < tmpWeight.length; i++) {
-            tmpWeight[i] = RandomNumberGenerator.randomDouble(0,1);
+            tmpWeight[i] = RNG.randomDouble(0,1);
             sum += tmpWeight[i];
         }
         if (sum <= 0.0000001) {

@@ -12,7 +12,7 @@ import eva2.server.go.operators.mutation.InterfaceMutation;
 import eva2.server.go.operators.mutation.MutateGADefault;
 import eva2.server.go.operators.mutation.MutateGAStandard;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 /** This individual uses a binary genotype to code for double values
  * using two alternative encodings.
@@ -296,7 +296,7 @@ public class GAIndividualDoubleData extends AbstractEAIndividual implements Inte
      */
     public void defaultInit() {
         for (int i = 0; i < this.m_GenotypeLength; i++) {
-            if (RandomNumberGenerator.flipCoin(0.5)) this.m_Genotype.set(i);
+            if (RNG.flipCoin(0.5)) this.m_Genotype.set(i);
             else this.m_Genotype.clear(i);
         }
     }
@@ -304,7 +304,7 @@ public class GAIndividualDoubleData extends AbstractEAIndividual implements Inte
     /** This method performs a simple one point mutation in the genotype
      */
     public void defaultMutate() {
-        int mutationIndex = RandomNumberGenerator.randomInt(0, this.m_GenotypeLength);
+        int mutationIndex = RNG.randomInt(0, this.m_GenotypeLength);
         if (this.m_Genotype.get(mutationIndex)) this.m_Genotype.clear(mutationIndex);
         else this.m_Genotype.set(mutationIndex);
     }

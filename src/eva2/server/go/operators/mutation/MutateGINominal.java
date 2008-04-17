@@ -4,7 +4,7 @@ import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceGIIndividual;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 /**
  * Created by IntelliJ IDEA.
@@ -63,11 +63,11 @@ public class MutateGINominal implements InterfaceMutation, java.io.Serializable 
             int         mutInd = 0;
             for (int k = 0; k < this.m_NumberOfMutations; k++) {
                 try {
-                    mutInd = RandomNumberGenerator.randomInt(0, x.length-1);
+                    mutInd = RNG.randomInt(0, x.length-1);
                 } catch (java.lang.ArithmeticException e) {
                     System.out.println("x.length " + x.length);
                 }
-                x[mutInd] = RandomNumberGenerator.randomInt(range[mutInd][0], range[mutInd][1]);
+                x[mutInd] = RNG.randomInt(range[mutInd][0], range[mutInd][1]);
             }
             ((InterfaceGIIndividual)individual).SetIGenotype(x);
         }

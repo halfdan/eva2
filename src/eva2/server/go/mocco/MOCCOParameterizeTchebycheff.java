@@ -13,7 +13,7 @@ import eva2.server.go.operators.moso.MOSOWeightedLPTchebycheff;
 import eva2.server.go.problems.AbstractMultiObjectiveOptimizationProblem;
 import eva2.server.go.strategies.IslandModelEA;
 import eva2.server.go.tools.GeneralGOEProperty;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -257,7 +257,7 @@ public class MOCCOParameterizeTchebycheff extends MOCCOPhase implements Interfac
                         u = l; l = t;
                     }
 
-                    if (i > 0) tmpD[j] = RandomNumberGenerator.randomDouble(l,u);
+                    if (i > 0) tmpD[j] = RNG.randomDouble(l,u);
                     else tmpD[j] = 1;
                     sum += tmpD[j];
                 }

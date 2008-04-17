@@ -2,7 +2,7 @@ package eva2.server.go.operators.moso;
 
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.populations.Population;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 /**
  * Created by IntelliJ IDEA.
@@ -46,7 +46,7 @@ public class MOSORandomChoice  implements InterfaceMOSOConverter, java.io.Serial
 
         tmpFit          = indy.getFitness();
         indy.SetData("MOFitness", tmpFit);
-        resultFit[0]    = tmpFit[RandomNumberGenerator.randomInt(0, tmpFit.length-1)];
+        resultFit[0]    = tmpFit[RNG.randomInt(0, tmpFit.length-1)];
         indy.SetFitness(resultFit);
     }
 

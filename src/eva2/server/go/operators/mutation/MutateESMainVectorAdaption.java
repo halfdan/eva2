@@ -4,7 +4,7 @@ import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceESIndividual;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 /**
  * Created by IntelliJ IDEA.
@@ -98,8 +98,8 @@ public class MutateESMainVectorAdaption implements InterfaceMutation, java.io.Se
             this.m_main_v[i]    = 0;
         };
         this.xi_dach    = Math.sqrt(this.N - 0.5);
-        for (int i = 0; i < this.N; i++) this.m_Z[i] = RandomNumberGenerator.gaussianDouble(1.0);
-        this.Z1 = RandomNumberGenerator.gaussianDouble(1.0);
+        for (int i = 0; i < this.N; i++) this.m_Z[i] = RNG.gaussianDouble(1.0);
+        this.Z1 = RNG.gaussianDouble(1.0);
         evaluateNewObjectX(x, ranges);
     }
 
@@ -113,8 +113,8 @@ public class MutateESMainVectorAdaption implements InterfaceMutation, java.io.Se
             double[]    x       = ((InterfaceESIndividual)individual).getDGenotype();
             double[][]  ranges  = ((InterfaceESIndividual)individual).getDoubleRange();
             this.adaptStrategy();
-            for (int i = 0; i < N; i++) m_Z[i] = RandomNumberGenerator.gaussianDouble(1.0);
-            Z1 = RandomNumberGenerator.gaussianDouble(1.0);
+            for (int i = 0; i < N; i++) m_Z[i] = RNG.gaussianDouble(1.0);
+            Z1 = RNG.gaussianDouble(1.0);
             evaluateNewObjectX(x, ranges);
 
             ((InterfaceESIndividual)individual).SetDGenotype(x);

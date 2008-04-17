@@ -12,7 +12,7 @@ import eva2.server.go.individuals.InterfaceDataTypeBinary;
 import eva2.server.go.individuals.InterfaceDataTypeDouble;
 import eva2.server.go.populations.Population;
 import eva2.server.go.strategies.InterfaceOptimizer;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 import simpleprobs.InterfaceSimpleProblem;
 import simpleprobs.SimpleF1;
@@ -51,7 +51,7 @@ public class SimpleProblemWrapper extends AbstractOptimizationProblem {
 	        // evaluate the vector
 	        fitness = ((SimpleProblemDouble)simProb).eval(x);
 	        // if indicated, add Gaussian noise
-	        if (m_Noise != 0) RandomNumberGenerator.addNoise(fitness, m_Noise); 
+	        if (m_Noise != 0) RNG.addNoise(fitness, m_Noise); 
 	        // set the fitness 
 	        individual.SetFitness(fitness);
 		} else if (simProb instanceof SimpleProblemBinary) {

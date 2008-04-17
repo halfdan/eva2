@@ -240,7 +240,7 @@ public class OptimizerFactory {
 	    InterfacePopulationChangedEventListener listener) {
 
 		problem.initProblem();
-		// RandomNumberGenerator.setRandomSeed(100);
+		// RNG.setRandomSeed(100);
 
 		AbstractEAIndividual tmpIndi = problem.getIndividualTemplate();
 		tmpIndi.setMutationOperator(mutationoperator);

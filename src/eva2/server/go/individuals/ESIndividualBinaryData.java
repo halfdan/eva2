@@ -2,12 +2,11 @@ package eva2.server.go.individuals;
 
 import java.util.BitSet;
 
-import eva2.server.go.IndividualInterface;
+import wsi.ra.math.RNG;
 import eva2.server.go.operators.crossover.CrossoverESDefault;
 import eva2.server.go.operators.mutation.InterfaceMutation;
 import eva2.server.go.operators.mutation.MutateESGlobal;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import eva2.server.go.tools.RandomNumberGenerator;
 
 
 /** This individual uses a real-valued genotype to code for binary values, either
@@ -127,7 +126,7 @@ public class ESIndividualBinaryData extends AbstractEAIndividual implements Inte
         } else {
             // in this case the value of the genotype is interpreted as a probability
             for (int i = 0; i < this.m_Genotype.length; i++) {
-                if (RandomNumberGenerator.flipCoin(this.m_Genotype[i])) {
+                if (RNG.flipCoin(this.m_Genotype[i])) {
                     this.m_Phenotype.set(i);
                 } else {
                     this.m_Phenotype.clear(i);
@@ -159,8 +158,8 @@ public class ESIndividualBinaryData extends AbstractEAIndividual implements Inte
         this.SetBinaryData(binaryData);
         for (int i = 0; i < this.m_Genotype.length; i++) {
             if (this.m_UseHardSwitch) {
-                if (binaryData.get(i)) this.m_Genotype[i] = RandomNumberGenerator.randomDouble(0.55,1.0);
-                else this.m_Genotype[i] = RandomNumberGenerator.randomDouble(0.0,0.45);
+                if (binaryData.get(i)) this.m_Genotype[i] = RNG.randomDouble(0.55,1.0);
+                else this.m_Genotype[i] = RNG.randomDouble(0.0,0.45);
             } else {
                 if (binaryData.get(i)) this.m_Genotype[i] = 0.9;
                 else this.m_Genotype[i] = 0.1;
@@ -258,8 +257,8 @@ public class ESIndividualBinaryData extends AbstractEAIndividual implements Inte
     /** This method performs a simple one element mutation on the double vector
      */
     public void defaultMutate() {
-        int mutationIndex = RandomNumberGenerator.randomInt(0, this.m_Genotype.length-1);
-        this.m_Genotype[mutationIndex] += ((this.m_Range[mutationIndex][1] - this.m_Range[mutationIndex][0])/2)*RandomNumberGenerator.gaussianDouble(0.05f);
+        int mutationIndex = RNG.randomInt(0, this.m_Genotype.length-1);
+        this.m_Genotype[mutationIndex] += ((this.m_Range[mutationIndex][1] - this.m_Range[mutationIndex][0])/2)*RNG.gaussianDouble(0.05f);
         if (this.m_Genotype[mutationIndex] < this.m_Range[mutationIndex][0]) this.m_Genotype[mutationIndex] = this.m_Range[mutationIndex][0];
         if (this.m_Genotype[mutationIndex] > this.m_Range[mutationIndex][1]) this.m_Genotype[mutationIndex] = this.m_Range[mutationIndex][1];
     }
@@ -268,7 +267,7 @@ public class ESIndividualBinaryData extends AbstractEAIndividual implements Inte
      */
     public void defaultInit() {
         for (int i = 0; i < this.m_Genotype.length; i++) {
-            this.m_Genotype[i] = RandomNumberGenerator.randomDouble(this.m_Range[i][0], this.m_Range[i][1]);
+            this.m_Genotype[i] = RNG.randomDouble(this.m_Range[i][0], this.m_Range[i][1]);
         }
     }
 /**********************************************************************************************************************

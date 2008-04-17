@@ -8,7 +8,7 @@ import eva2.server.go.individuals.InterfaceGPIndividual;
 import eva2.server.go.individuals.codings.gp.AbstractGPNode;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 /**
  * Created by IntelliJ IDEA.
@@ -53,7 +53,7 @@ public class CrossoverGPDefault implements InterfaceCrossover, java.io.Serializa
             for (int t = 0; t < nodes.length; t++) {
                 allNodes = new ArrayList();
                 ((InterfaceGPIndividual)result[0]).getPGenotype()[t].addNodesTo(allNodes);
-                AbstractGPNode oldNode     = (AbstractGPNode) allNodes.get(RandomNumberGenerator.randomInt(0, allNodes.size()-1));
+                AbstractGPNode oldNode     = (AbstractGPNode) allNodes.get(RNG.randomInt(0, allNodes.size()-1));
                 AbstractGPNode newNode, memorizingNode = oldNode, tmpNode;
                 AbstractGPNode oldParent, newParent;
                 oldParent = oldNode.getParent();
@@ -61,7 +61,7 @@ public class CrossoverGPDefault implements InterfaceCrossover, java.io.Serializa
                     // choose Node from i and add it to i-1
                     allNodes = new ArrayList();
                     ((InterfaceGPIndividual)result[i]).getPGenotype()[t].addNodesTo(allNodes);
-                    newNode = (AbstractGPNode) allNodes.get(RandomNumberGenerator.randomInt(0, allNodes.size()-1));
+                    newNode = (AbstractGPNode) allNodes.get(RNG.randomInt(0, allNodes.size()-1));
                     tmpNode = newNode;
                     newParent = tmpNode.getParent();
                     if (oldParent == null) ((InterfaceGPIndividual)result[i-1]).SetPGenotype(newNode, t);

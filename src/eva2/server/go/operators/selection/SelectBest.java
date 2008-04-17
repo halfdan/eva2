@@ -2,7 +2,7 @@ package eva2.server.go.operators.selection;
 
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.populations.Population;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 
 /** Select best individual multiple times if necessary.
@@ -55,7 +55,7 @@ public class SelectBest implements InterfaceSelection, java.io.Serializable {
         result.setPopulationSize(size);
         if (this.m_ObeyDebsConstViolationPrinciple) {
             for (int i = 0; i < size; i++) {
-                currentCriteria     = RandomNumberGenerator.randomInt(0, critSize-1);
+                currentCriteria     = RNG.randomInt(0, critSize-1);
                 currentBestValue    = Double.POSITIVE_INFINITY;
                 tmpIndy = null;
                 for (int j = 0; j < population.size(); j++) {
@@ -78,7 +78,7 @@ public class SelectBest implements InterfaceSelection, java.io.Serializable {
             }
         } else {
             for (int i = 0; i < size; i++) {
-                currentCriteria     = RandomNumberGenerator.randomInt(0, critSize-1);
+                currentCriteria     = RNG.randomInt(0, critSize-1);
                 currentBestValue    = Double.POSITIVE_INFINITY;
                 for (int j = 0; j < population.size(); j++) {
                     if (((AbstractEAIndividual)population.get(j)).getFitness(currentCriteria) < currentBestValue) {

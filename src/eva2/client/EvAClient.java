@@ -78,6 +78,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
 	private static Properties EVA_PROPERTIES;
 	public static final String iconLocation = "resources/images/icon3.gif";
 	private static final String splashLocation = "resources/images/splashScreen2.png";
+	private static final String infoTitle = "EvA2 Information";
 	final int splashScreenTime = 1500;
 	
 	public static boolean TRACE = false;
@@ -510,7 +511,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
 		if (selectedModule == null) { // show a dialog and ask for a module
 			String[] ModuleNameList = m_ComAdapter.getModuleNameList();
 			if (ModuleNameList == null) {
-				JOptionPane.showMessageDialog(m_Frame.getContentPane(), "No modules available on " + m_ComAdapter.getHostName(), "EvA2 Information", 1);
+				JOptionPane.showMessageDialog(m_Frame.getContentPane(), "No modules available on " + m_ComAdapter.getHostName(), infoTitle, 1);
 			} else {
 				String LastModuleName = Serializer.loadString("lastmodule.ser");
 				if (LastModuleName == null) LastModuleName = ModuleNameList[0];
@@ -643,7 +644,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
 	}
 	
 	private void showPleaseWaitDialog() {
-		JOptionPane.showMessageDialog(m_Frame.getContentPane(), "Please wait one moment.", "EvA2 Information", 1);
+		JOptionPane.showMessageDialog(m_Frame.getContentPane(), "Please wait one moment.", infoTitle, 1);
 	}
 	
 	private void showAboutDialog() {
@@ -651,11 +652,11 @@ public class EvAClient implements RemoteStateListener, Serializable {
 		(m_Frame,
 				m_ProductName +
 				"\n University of Tuebingen\n Computer Architecture\n H. Ulmer & F. Streichert & H. Planatscher & M. de Paly & M. Kronfeld\n Prof. Dr. Andreas Zell \n (c) 2008 \n Version " +
-				EvAServer.Version + " \n http://www.ra.cs.uni-tuebingen.de/software/EvA2", "EvA2 Information", 1);
+				EvAServer.Version + " \n http://www.ra.cs.uni-tuebingen.de/software/EvA2", infoTitle, 1);
 	}
 	
 	private void showNoHostFoundDialog() {
-		JOptionPane.showMessageDialog(m_Frame.getContentPane(), "No host with running EVASERVER found. Please start one or \nadd the correct address to the properties list.", "EvA2 Information", 1);
+		JOptionPane.showMessageDialog(m_Frame.getContentPane(), "No host with running EVASERVER found. Please start one or \nadd the correct address to the properties list.", infoTitle, 1);
 	}
 
 	/**

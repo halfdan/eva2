@@ -1,10 +1,10 @@
 package eva2.server.go.operators.crossover;
 
+import wsi.ra.math.RNG;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceESIndividual;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import eva2.server.go.tools.RandomNumberGenerator;
 
 /**
  * Created by IntelliJ IDEA.
@@ -51,7 +51,7 @@ public class CrossoverESNPointDiscrete implements InterfaceCrossover, java.io.Se
 
         if ((indy1 instanceof InterfaceESIndividual) && (partners.get(0) instanceof InterfaceESIndividual)) {
             int         length          =  ((InterfaceESIndividual)result[0]).getDGenotype().length;
-            int         mixer           = RandomNumberGenerator.randomInt(0, partners.size());
+            int         mixer           = RNG.randomInt(0, partners.size());
             int[]       crossoverPoints = new int[this.m_NumberOfCrossovers];
             parents     = new double[partners.size()+1][];
             children    = new double[partners.size()+1][];
@@ -62,7 +62,7 @@ public class CrossoverESNPointDiscrete implements InterfaceCrossover, java.io.Se
                 System.arraycopy(((InterfaceESIndividual)result[i]).getDGenotype(), 0, children[i], 0, parents[i].length);
             }
             for (int i = 0; i < this.m_NumberOfCrossovers; i++) {
-                crossoverPoints[i] = RandomNumberGenerator.randomInt(0, length-1);
+                crossoverPoints[i] = RNG.randomInt(0, length-1);
             }
             for (int i = 0; i < length; i++) {
                 for (int j = 0; j < this.m_NumberOfCrossovers; j++) {

@@ -6,7 +6,7 @@ import eva2.server.go.individuals.InterfaceOBGAIndividual;
 import eva2.server.go.operators.crossover.InterfaceCrossover;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 /**
  * <p>Title: The JavaEvA</p>
@@ -47,8 +47,8 @@ public class CrossoverOBGAPMX implements InterfaceCrossover, java.io.Serializabl
 
         int[] perm1 = (int[])((InterfaceOBGAIndividual) result[0]).getOBGenotype()[i].clone();
         int[] perm2 = (int[])((InterfaceOBGAIndividual) result[1]).getOBGenotype()[i].clone();
-        int begin = RandomNumberGenerator.randomInt(0,perm1.length-2);
-        int end = RandomNumberGenerator.randomInt(begin,perm1.length-1);
+        int begin = RNG.randomInt(0,perm1.length-2);
+        int end = RNG.randomInt(begin,perm1.length-1);
         for (int pos = begin; pos <= end; pos++) {
           int crosspoint = pos;
           int p1inp2 = 0;

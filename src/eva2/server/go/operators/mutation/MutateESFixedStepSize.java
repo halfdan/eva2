@@ -4,7 +4,7 @@ import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceESIndividual;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 /**
  * Created by IntelliJ IDEA.
@@ -65,7 +65,7 @@ public class MutateESFixedStepSize implements InterfaceMutation, java.io.Seriali
             double[]    x       = ((InterfaceESIndividual)individual).getDGenotype();
             double[][]  range   = ((InterfaceESIndividual)individual).getDoubleRange();
             for (int i = 0; i < x.length; i++) {
-                x[i] += ((range[i][1] -range[i][0])/2)*RandomNumberGenerator.gaussianDouble(this.m_Sigma);
+                x[i] += ((range[i][1] -range[i][0])/2)*RNG.gaussianDouble(this.m_Sigma);
                 if (range[i][0] > x[i]) x[i] = range[i][0];
                 if (range[i][1] < x[i]) x[i] = range[i][1];
             }

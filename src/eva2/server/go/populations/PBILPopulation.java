@@ -5,7 +5,7 @@ import java.util.BitSet;
 
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceGAIndividual;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 /** This implementation of Population Based Incremental Learning is only
  * suited for a BitString based genotyp represenation.
@@ -86,7 +86,7 @@ public class PBILPopulation extends Population implements Cloneable, java.io.Ser
             tmpIndy = (InterfaceGAIndividual)((AbstractEAIndividual)template).clone();
             tmpBitSet = tmpIndy.getBGenotype();
             for (int j = 0; j < this.m_ProbabilityVector.length; j++) {
-                if (RandomNumberGenerator.flipCoin(this.m_ProbabilityVector[j])) tmpBitSet.set(j);
+                if (RNG.flipCoin(this.m_ProbabilityVector[j])) tmpBitSet.set(j);
                 else tmpBitSet.clear(j);
             }
             tmpIndy.SetBGenotype(tmpBitSet);
@@ -99,7 +99,7 @@ public class PBILPopulation extends Population implements Cloneable, java.io.Ser
      */
     public void mutateProbabilityVector(double mutationRate, double sigma) {
         for (int j = 0; j < this.m_ProbabilityVector.length; j++) {
-            if (RandomNumberGenerator.flipCoin(mutationRate)) this.m_ProbabilityVector[j] += RandomNumberGenerator.gaussianDouble(sigma);
+            if (RNG.flipCoin(mutationRate)) this.m_ProbabilityVector[j] += RNG.gaussianDouble(sigma);
             if (this.m_ProbabilityVector[j] > 1) this.m_ProbabilityVector[j] = 1;
             if (this.m_ProbabilityVector[j] < 0) this.m_ProbabilityVector[j] = 0;
         }

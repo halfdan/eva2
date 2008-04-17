@@ -136,9 +136,6 @@ public abstract class AbstractDynTransProblem extends AbstractSynchronousOptimiz
 		return problemDimension;
 	}
 
-	protected void changeProblemAt(double problemTime) {
-		super.changeProblemAt(problemTime);
-	} 
 /******************************************************************************
  * These are for the GUI
  */

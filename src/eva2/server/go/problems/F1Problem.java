@@ -52,14 +52,6 @@ public class F1Problem extends AbstractProblemDouble implements Interface2DBorde
 //        this.m_OverallBest = null;
     }
 
-    /** This method inits a given population
-     * @param population    The populations that is to be inited
-     */
-    public void initPopulation(Population population) {
-        super.initPopulation(population);
-
-    }
-
 	protected double[] getEvalArray(AbstractEAIndividual individual){
 		double[] x = super.getEvalArray(individual);
         // add an offset in solution space

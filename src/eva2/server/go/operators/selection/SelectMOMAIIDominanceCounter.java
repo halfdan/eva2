@@ -58,7 +58,9 @@ public class SelectMOMAIIDominanceCounter implements InterfaceSelection, java.io
             tmpObj = tmpIndy1.getData("MOMAII");
             if ((tmpObj != null) && (tmpObj instanceof MOMultipleSolutions)) {
                 malta = (MOMultipleSolutions)tmpObj;
-                for (int j = i+1; j < population.size(); i++) {
+                //for (int j = i+1; j < population.size(); i++) {
+                // MK: Im rather sure the i++ was intended to become a j++
+                for (int j = i+1; j < population.size(); j++) {
                     tmpIndy2 = (AbstractEAIndividual)population.get(j);
                     tmpObj = tmpIndy2.getData("MOMAII");
                     if ((tmpObj != null) && (tmpObj instanceof MOMultipleSolutions)) {

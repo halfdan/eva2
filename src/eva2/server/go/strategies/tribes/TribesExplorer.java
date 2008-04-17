@@ -6,7 +6,7 @@ import eva2.server.go.individuals.InterfaceESIndividual;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.server.go.strategies.Tribes;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 public class TribesExplorer extends AbstractEAIndividual implements InterfaceESIndividual, InterfaceDataTypeDouble {
     /**
@@ -158,7 +158,7 @@ public class TribesExplorer extends AbstractEAIndividual implements InterfaceESI
 //    	case 3: // around a "center"
 //    		if (radius < 0) {
 //    			// Choose at random a memory
-//    			m = RandomNumberGenerator.randomInt(swarm.tribes[fromTribe].memoryNb);
+//    			m = RNG.randomInt(swarm.tribes[fromTribe].memoryNb);
 //
 //    			// Compute the distance to the "center" = radius
 //    			rho = center.distanceTo(swarm.tribes[fromTribe].memory[m].position);
@@ -167,10 +167,10 @@ public class TribesExplorer extends AbstractEAIndividual implements InterfaceESI
 //    		}
 //
 //    		// Define a random point in the hypersphere (center, rho)
-//    		expl.position.setDoubleArray(RandomNumberGenerator.randHypersphere(center.getDoubleArray(), rho, 1.5));
+//    		expl.position.setDoubleArray(RNG.randHypersphere(center.getDoubleArray(), rho, 1.5));
 //
 //    		// Define another random point
-//    		rand_i = RandomNumberGenerator.randHypersphere(center.getDoubleArray(), rho, 1.5);
+//    		rand_i = RNG.randHypersphere(center.getDoubleArray(), rho, 1.5);
 //
 //    		// Derive a random velocity
 //    		for (d = 0; d < D; d++) {
@@ -188,7 +188,7 @@ public class TribesExplorer extends AbstractEAIndividual implements InterfaceESI
 //    		expl.position = expl.position.maxIsolated(pb.H, swarm);
 //
 //    		// At this point, fitness[0] contains the "isolation" value
-//    		rand_i = RandomNumberGenerator.randHypersphere(expl.position.getDoubleArray(), expl.position.fitness[0], 1.5);
+//    		rand_i = RNG.randHypersphere(expl.position.getDoubleArray(), expl.position.fitness[0], 1.5);
 //    		for (d = 0; d < D; d++) {
 //    			expl.velocity.x[d] = rand_i[d] - expl.position.x[d];
 //    		}
@@ -223,14 +223,14 @@ public class TribesExplorer extends AbstractEAIndividual implements InterfaceESI
 //    		/* On the boundary of the search space
 //              For some dimensions, set the coordinate to the min or the max
 //    		 */
-//    		dmax = RandomNumberGenerator.randomInt(D); // For a random number of dimensions
+//    		dmax = RNG.randomInt(D); // For a random number of dimensions
 //    		//    dmax=D-1; // For all dimensions
 //    		for (dmod = 0; dmod <= dmax; dmod++) {
 //    			//   m = Tribes.generator.nextInt(2);
 //    			//  if(m==0) continue; // With a probability of 1/2
 //
-//    			d = RandomNumberGenerator.randomInt(D); // 0,1, ... D-1
-//    			m = RandomNumberGenerator.randomInt(2); // 0 or 1
+//    			d = RNG.randomInt(D); // 0,1, ... D-1
+//    			m = RNG.randomInt(2); // 0 or 1
 //    			if (m == 0) {
 //    				expl.position.x[d] = pb.H.xMin[d];
 //    			} else {
@@ -427,7 +427,7 @@ public class TribesExplorer extends AbstractEAIndividual implements InterfaceESI
         // Check if fitness has to be re-evaluated
         fitnessEval = true;
         if (Tribes.blind > 0 && strategy == 6) {
-            if (RandomNumberGenerator.randomDouble() < Tribes.blind) {
+            if (RNG.randomDouble() < Tribes.blind) {
                 fitnessEval = false;
                 //System.out.print("\n no fitness eval");
             }
@@ -504,24 +504,24 @@ public class TribesExplorer extends AbstractEAIndividual implements InterfaceESI
         switch (status) {
         default:
 
-            //  strategy = RandomNumberGenerator.randomInt(4); // 0 to 3
-            strategy = 1 + RandomNumberGenerator.randomInt(3); // 1 to 3
+            //  strategy = RNG.randomInt(4); // 0 to 3
+            strategy = 1 + RNG.randomInt(3); // 1 to 3
 
         case 1:
-            strategy = 1 + RandomNumberGenerator.randomInt(3);
+            strategy = 1 + RNG.randomInt(3);
             break;
         case 2:
-            strategy = 1 + RandomNumberGenerator.randomInt(3);
+            strategy = 1 + RNG.randomInt(3);
             break;
         case 3:
-            strategy = 1 + RandomNumberGenerator.randomInt(3);
+            strategy = 1 + RNG.randomInt(3);
             break;
 
         case 4:
-            strategy = 1 + RandomNumberGenerator.randomInt(3);
+            strategy = 1 + RNG.randomInt(3);
             break;
         case 5:
-            strategy = 1 + RandomNumberGenerator.randomInt(3);
+            strategy = 1 + RNG.randomInt(3);
             break;
 
         case 6:
@@ -530,18 +530,18 @@ public class TribesExplorer extends AbstractEAIndividual implements InterfaceESI
 
         case 7:
             if (statusTribe == 1) {
-                strategy = RandomNumberGenerator.randomInt(2);
+                strategy = RNG.randomInt(2);
             }
             break;
         case 8:
             if (statusTribe == 1) {
-                strategy = RandomNumberGenerator.randomInt(2);
+                strategy = RNG.randomInt(2);
             }
             break;
 
         case 9:
             if (statusTribe == 1) {
-                strategy = RandomNumberGenerator.randomInt(2);
+                strategy = RNG.randomInt(2);
             } else if (Tribes.blind > 0) {
                 strategy = 6; // Keep moving the same way
             } else {
@@ -586,7 +586,7 @@ public class TribesExplorer extends AbstractEAIndividual implements InterfaceESI
 //        position.Dimension = D;
 //
 //        for (d = 0; d < D; d++) {
-//            r = RandomNumberGenerator.randomDouble();
+//            r = RNG.randomDouble();
 //            position.x[d] = xmin[d] + (xmax[d] - xmin[d]) * r;
 //        }
 //
@@ -602,7 +602,7 @@ public class TribesExplorer extends AbstractEAIndividual implements InterfaceESI
         double r;
 
         for (int i = 0; i < range.length; i++) {
-            r = RandomNumberGenerator.randomDouble();
+            r = RNG.randomDouble();
             position.x[i] = range[i][0] + (range[i][1] - range[i][0]) * r;
         }
 
@@ -736,7 +736,7 @@ public class TribesExplorer extends AbstractEAIndividual implements InterfaceESI
     	switch (strategy) {
     	case 0: // Around the best informant
     		rho = pos1.distanceTo(pos2);
-    		rand_i = RandomNumberGenerator.randHypersphere(pos2.getDoubleArray(), rho, 1.5);
+    		rand_i = RNG.randHypersphere(pos2.getDoubleArray(), rho, 1.5);
 
     		for (d = 0; d < velocity.x.length; d++) {
     			velocity.x[d] = rand_i[d]-pos1.x[d];
@@ -748,7 +748,7 @@ public class TribesExplorer extends AbstractEAIndividual implements InterfaceESI
     		c0 = (pos2.getTotalError() - pos1.getTotalError()) /
     		(pos2.getTotalError() + pos1.getTotalError());
 
-    		lambda = 1 + RandomNumberGenerator.gaussianDouble(c0);
+    		lambda = 1 + RNG.gaussianDouble(c0);
 
 //  		NO BREAK HERE. Continue with case 1
 
@@ -757,8 +757,8 @@ public class TribesExplorer extends AbstractEAIndividual implements InterfaceESI
     		rho2 = rho;
     		rho3 = rho;
 
-    		rand_i = RandomNumberGenerator.randHypersphere(pos2.getDoubleArray(), rho2, 0);
-    		rand_g = RandomNumberGenerator.randHypersphere(pos3.getDoubleArray(), rho3, 0);
+    		rand_i = RNG.randHypersphere(pos2.getDoubleArray(), rho2, 0);
+    		rand_g = RNG.randHypersphere(pos3.getDoubleArray(), rho3, 0);
 
     		c1 = 1 / pos2.getTotalError();
     		c2 = 1 / pos3.getTotalError();
@@ -778,7 +778,7 @@ public class TribesExplorer extends AbstractEAIndividual implements InterfaceESI
     	case 3: //  Independent Gaussians
     		for (d = 0; d < velocity.x.length; d++) {
     			rho2 = Math.abs(pos3.x[d] - pos2.x[d]);
-    			r = RandomNumberGenerator.gaussianDouble(rho2);
+    			r = RNG.gaussianDouble(rho2);
     			velocity.x[d] = pos3.x[d] + r - pos1.x[d];
     		}
 
@@ -804,8 +804,8 @@ public class TribesExplorer extends AbstractEAIndividual implements InterfaceESI
     		c = confCoeff[1];
 
     		for (d = 0; d < velocity.x.length; d++) {
-    			r1 = RandomNumberGenerator.randomDouble(); // Sur [0,1]
-    			r2 = RandomNumberGenerator.randomDouble();
+    			r1 = RNG.randomDouble(); // Sur [0,1]
+    			r2 = RNG.randomDouble();
     			velocity.x[d] = c1 * velocity.x[d] +
     			r1 * c *
     			(pos2.x[d] - pos1.x[d]) +
@@ -816,7 +816,7 @@ public class TribesExplorer extends AbstractEAIndividual implements InterfaceESI
     		break;
 
     	case 6: // Keep moving the same way, with a smaller velocity (quasi-gradient)
-    		r = RandomNumberGenerator.randomDouble() / 2;
+    		r = RNG.randomDouble() / 2;
     		for (d = 0; d < velocity.x.length; d++) {
     			velocity.x[d] = r * velocity.x[d];
     		}
@@ -835,8 +835,8 @@ Like Pivot and hyperspheres, but a velocity component is added
     		rho2 = rho;
     		rho3 = rho;
 
-    		rand_i = RandomNumberGenerator.randHypersphere(pos2.getDoubleArray(), rho2, 0);
-    		rand_g = RandomNumberGenerator.randHypersphere(pos3.getDoubleArray(), rho3, 0);
+    		rand_i = RNG.randHypersphere(pos2.getDoubleArray(), rho2, 0);
+    		rand_g = RNG.randHypersphere(pos3.getDoubleArray(), rho3, 0);
 
     		c2 = 1 / pos2.getTotalError();
     		c3 = 1 / pos3.getTotalError();
@@ -861,8 +861,8 @@ Like Pivot and hyperspheres, but a velocity component is added
     		c = (c1 + 1) * (c1 + 2) / 4;
 
     		for (d = 0; d < velocity.x.length; d++) {
-    			r1 = RandomNumberGenerator.randomDouble(); // Sur [0,1]
-    			r2 = RandomNumberGenerator.randomDouble();
+    			r1 = RNG.randomDouble(); // Sur [0,1]
+    			r2 = RNG.randomDouble();
     			velocity.x[d] = c1 * velocity.x[d] +
     			r1 * c *
     			(pos2.x[d] - pos1.x[d]) +

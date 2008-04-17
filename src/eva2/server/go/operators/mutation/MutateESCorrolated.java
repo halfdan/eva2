@@ -4,7 +4,7 @@ import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceESIndividual;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 /**
  * Created by IntelliJ IDEA.
@@ -97,7 +97,7 @@ public class MutateESCorrolated implements InterfaceMutation, java.io.Serializab
 //            double[]    x       = ((InterfaceESIndividual)individual).getDGenotype();
 //            double[]    xCopy   = ((InterfaceESIndividual)individual).getDGenotype();
 //            double[][]  range   = ((InterfaceESIndividual)individual).getDoubleRange();
-//            double      tmpR    = RandomNumberGenerator.gaussianDouble(1);
+//            double      tmpR    = RNG.gaussianDouble(1);
 //            if (this.m_Sigmas == null) {
 //                // init the Sigmas
 //                this.m_Sigmas = new double[x.length];
@@ -106,7 +106,7 @@ public class MutateESCorrolated implements InterfaceMutation, java.io.Serializab
 //            
 //            //Mutate Sigmas
 //            for (int i = 0; i < x.length; i++) {
-//                this.m_Sigmas[i] = this.m_Sigmas[i] * Math.exp(this.m_Tau1 * tmpR + this.m_Tau2 * RandomNumberGenerator.gaussianDouble(1));
+//                this.m_Sigmas[i] = this.m_Sigmas[i] * Math.exp(this.m_Tau1 * tmpR + this.m_Tau2 * RNG.gaussianDouble(1));
 //                if (this.m_Sigmas[i] < this.m_LowerLimitStepSize) this.m_Sigmas[i] = this.m_LowerLimitStepSize;
 //            }
 //
@@ -118,14 +118,14 @@ public class MutateESCorrolated implements InterfaceMutation, java.io.Serializab
 //
 ////            //Mutate Alphas
 ////            for (int i = 0; i < this.m_Alphas.length; i++) {
-////            	this.m_Alphas[i] = this.m_Alphas[i] + RandomNumberGenerator.gaussianDouble(0.01);
+////            	this.m_Alphas[i] = this.m_Alphas[i] + RNG.gaussianDouble(0.01);
 ////            	if (this.m_Alphas[i] < -m_PI/2) this.m_Alphas[i] = -m_PI/2;
 ////            	if (this.m_Alphas[i] > m_PI/2) this.m_Alphas[i] = m_PI/2;
 ////            }
 //
 //            //Generate mutationvector in unitspace modified by sigmas
 //            for (int i = 0; i < x.length; i++) {
-//            	xCopy[i] = RandomNumberGenerator.gaussianDouble(this.m_Sigmas[i]);            	
+//            	xCopy[i] = RNG.gaussianDouble(this.m_Sigmas[i]);            	
 //            }
 //            
 //            //modify genotype
@@ -156,7 +156,7 @@ public class MutateESCorrolated implements InterfaceMutation, java.io.Serializab
           double[]    x       = ((InterfaceESIndividual)individual).getDGenotype();
           double[]    xCopy		= new double[x.length];
           double[][]  range   = ((InterfaceESIndividual)individual).getDoubleRange();
-          double      tmpR    = RandomNumberGenerator.gaussianDouble(1);
+          double      tmpR    = RNG.gaussianDouble(1);
 
           if (this.m_Sigmas == null) {
               // init the Sigmas
@@ -165,7 +165,7 @@ public class MutateESCorrolated implements InterfaceMutation, java.io.Serializab
           }
           //Mutate Sigmas
           for (int i = 0; i < x.length; i++) {
-            this.m_Sigmas[i] = this.m_Sigmas[i] * Math.exp(this.m_Tau1 * tmpR + this.m_Tau2 * RandomNumberGenerator.gaussianDouble(1));
+            this.m_Sigmas[i] = this.m_Sigmas[i] * Math.exp(this.m_Tau1 * tmpR + this.m_Tau2 * RNG.gaussianDouble(1));
             if (this.m_Sigmas[i] < this.m_LowerLimitStepSize) this.m_Sigmas[i] = this.m_LowerLimitStepSize;
           }
 
@@ -176,14 +176,14 @@ public class MutateESCorrolated implements InterfaceMutation, java.io.Serializab
           }
           //Mutate Alphas
           for (int i = 0; i < this.m_Alphas.length; i++) {
-          	this.m_Alphas[i] = this.m_Alphas[i] + RandomNumberGenerator.gaussianDouble(0.2);
+          	this.m_Alphas[i] = this.m_Alphas[i] + RNG.gaussianDouble(0.2);
           	if (this.m_Alphas[i] < -Math.PI/2) this.m_Alphas[i] = -Math.PI/2;
           	if (this.m_Alphas[i] > Math.PI/2) this.m_Alphas[i] = Math.PI/2;
           }
           
           //Generate mutationvector in unitspace modified by sigmas
           for (int i = 0; i < x.length; i++) {
-        	xCopy[i] = RandomNumberGenerator.gaussianDouble(this.m_Sigmas[i]);            	
+        	xCopy[i] = RNG.gaussianDouble(this.m_Sigmas[i]);            	
           }      
 
           //turn mutationvector with alphas

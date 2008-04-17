@@ -3,7 +3,7 @@ package eva2.server.go.individuals.codings.gp;
 
 import java.util.ArrayList;
 
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 /**  This class gives the area of GPNodes for a GP problem. The area gives
  * the range of possible nodes to select from for a GP.
@@ -114,14 +114,14 @@ public class GPArea implements java.io.Serializable {
             if (((AbstractGPNode)this.m_ReducedList.get(i)).getArity() == targetarity) tmpArray.add(this.m_ReducedList.get(i));
         }
         if (tmpArray.size() == 0) return null;
-        else return (AbstractGPNode)tmpArray.get(RandomNumberGenerator.randomInt(0, tmpArray.size()-1));
+        else return (AbstractGPNode)tmpArray.get(RNG.randomInt(0, tmpArray.size()-1));
     }
 
     /** This method will return a random node.
      */
     public AbstractGPNode getRandomNode() {
         if (this.m_ReducedList.size() == 0) return null;
-        else return (AbstractGPNode)this.m_ReducedList.get(RandomNumberGenerator.randomInt(0, this.m_ReducedList.size()-1));
+        else return (AbstractGPNode)this.m_ReducedList.get(RNG.randomInt(0, this.m_ReducedList.size()-1));
     }
 
     /** This method will return a non terminal
@@ -132,6 +132,6 @@ public class GPArea implements java.io.Serializable {
             if (((AbstractGPNode)this.m_ReducedList.get(i)).getArity() > 0) tmpArray.add(this.m_ReducedList.get(i));
         }
         if (tmpArray.size() == 0) return null;
-        else return (AbstractGPNode)tmpArray.get(RandomNumberGenerator.randomInt(0, tmpArray.size()-1));
+        else return (AbstractGPNode)tmpArray.get(RNG.randomInt(0, tmpArray.size()-1));
     }
 }

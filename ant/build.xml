@@ -1,6 +1,6 @@
 <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
    Filename: $RCSfile$
-   Purpose:  Ant build file for JavaEvA.
+   Purpose:  Ant build file for EvA2.
 
              Ant-Download: http://jakarta.apache.org/ant
              Ant-Manual:   http://jakarta.apache.org/ant/manual/index.html
@@ -11,14 +11,14 @@
 
    Language: XML
    Compiler: Ant
-   Authors:  Holger Ulmer, Felix Streichert, Joerg Wegner
+   Authors:  M.Kronfeld, H.Planatscher, Holger Ulmer, Felix Streichert, Joerg Wegner
    Version:  $Revision: 284 $
              $Date: 2007-11-27 14:37:05 +0100 (Tue, 27 Nov 2007) $
              $Author: mkron $
    Copyright (c) Dept. Computer Architecture, University of Tuebingen, Germany
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
 
-<project name="JavaEvA" default="compile" basedir="..">
+<project name="EvA2" default="compile" basedir="..">
 
 <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         Set properties
@@ -38,17 +38,21 @@
   <property name="check.libraries.ant"            value="ant/check.xml" />
   <property name="windows.libraries"              value="${library.directory}/windows" />
   <property name="unix.libraries"                 value="${library.directory}/linux" />
+  <!--
   <property name="library.SNNS"                   value="SNNS_jkr" />
   <property name="library.JMatLink"               value="JMatLink" />
   <property name="library.WSI.ant"                value="../java" />
   <property name="library.WSI.original"           value="${library.WSI.ant}/dist/wsi.jar" />
   <property name="library.WSI"                    value="lib/wsi2.jar" />
+  -->
 
   <!-- SET THE JAVA BINARY LIBRARIES PROPERTIES -->
   <property name="ant.java.version"               value="1.5" />
 
   <!-- SET CLASSPATH -->
   <path id="project.class.path">
+  	<pathelement location="." />
+  	<!-- shouldnt be required for EvA2
     <pathelement location="${env.JAVA_HOME}/jre/lib/rt.jar" />
     <pathelement location="${env.JAVA_HOME}/lib/dt.jar" />
     <pathelement location="${env.JAVA_HOME}/lib/tools.jar" />
@@ -60,6 +64,7 @@
     <fileset dir="${library.directory}">
       <include name="*.jar" />
     </fileset>
+    -->
   </path>
 
   <!-- SET THE CVS RELEVANT PROPERTIES -->
@@ -89,7 +94,7 @@
       binaryDist - will create a complete binary distribution
       clean      - will clean up files, except the source files and the api
                    documentation
-      run        - will start JavaEvA
+      run        - will start EvA2
 
       use 'ant -projecthelp' for further Main targets
     </echo>
@@ -148,29 +153,15 @@
   </target>
 
   <target name="cleanAll" depends="init, clean">
+  	<!--
     <ant inheritAll="false" antfile="build.xml" dir="${library.WSI.ant}" target="clean">
       <property name="silent" value="true"/>
-    </ant>
+    </ant>-->
   </target>
 <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         Update libraries
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
-  <target name="update.library.WSI" depends="init">
-    <!--<ant inheritAll="false" antfile="build.xml" dir="${library.WSI.ant}" target="compile">
-      <property name="silent" value="true"/>
-    </ant>
-    -->
-    <ant inheritAll="false" antfile="build.xml"
-         dir="${library.WSI.ant}" target="dist4JOpt">
-      <property name="silent" value="true"/>
-    </ant>
-    <delete>
-      <fileset dir="${library.directory}" includes="wsi*jar" />
-    </delete>
-    <copy file="${library.WSI.original}" tofile="${library.WSI}"/>
-  </target>
-
-  <target name="update.libraries" depends="update.library.WSI">
+  <target name="update.libraries">
   </target>
 <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         Compile
@@ -221,67 +212,20 @@
     <copy todir="${build.directory}/resources">
       <fileset dir="${resources.directory}" includes="**/*" />
    </copy>
-<!--
-   <copy todir="${build.directory}/resources/images">
-      <fileset dir="${resources.directory}/images" includes="*gif" />
-   </copy>
-
-   <copy todir="${build.directory}/resources/images">
-      <fileset dir="${resources.directory}/images" includes="*jpg" />
-   </copy>
-
-   <copy todir="${build.directory}/resources/images">
-      <fileset dir="${resources.directory}/images" includes="*png" />
-   </copy>
-   <copy todir="${build.directory}/resources/">
-      <fileset dir="${resources.directory}" includes="*html" />
-   </copy>
-   <copy todir="${build.directory}/resources/ORLibrary">
-      <fileset dir="${resources.directory}/ORLibrary" includes="*txt" />
-   </copy>
-   <copy todir="${build.directory}/resources/Altana">
-      <fileset dir="${resources.directory}/Altana" includes="*dat" />
-   </copy>      
-   <copy todir="${build.directory}/resources/TSP">
-      <fileset dir="${resources.directory}/TSP" includes="*" />
-   </copy>
-   <copy todir="${build.directory}/resources/TSP/euc2d">
-      <fileset dir="${resources.directory}/TSP/euc2d" includes="*tsp" />
-   </copy>
-   <copy todir="${build.directory}/resources/TSP/instances">
-      <fileset dir="${resources.directory}/TSP/instances" includes="*tsp" />
-   </copy>
--->   
   </target>
 
 <!-- =================================================================== -->
 <!-- Jars all classes into one jar file                                  -->
 <!-- =================================================================== -->
 <target name="bundle" depends="compile" description="Compiles the project and puts the whole stuff into a jar-file..">
-   <property name="bin.dist.dir"  value="${binary.distribution.directory}/javaeva-${DSTAMP}" />
+   <property name="bin.dist.dir"  value="${binary.distribution.directory}/eva2-${DSTAMP}" />
     <mkdir dir="${bin.dist.dir}" />
     <mkdir dir="${bin.dist.dir}/${library.directory}" />
-<delete> <fileset dir="${bin.dist.dir}/${library.directory}" includes="*JavaEvA*jar" /> </delete>
-<jar jarfile="${bin.dist.dir}/${library.directory}/JavaEvA.jar"  basedir="${build.directory}">
+<delete> <fileset dir="${bin.dist.dir}/${library.directory}" includes="*EvA*jar" /> </delete>
+<jar jarfile="${bin.dist.dir}/${library.directory}/EvA2Base.jar"  basedir="${build.directory}">
 
-<!-- JKW: That's bad practice, if we have internal dependencies -->
-<!-- JKW: Use a correct shell script or ant task to run application, which -->
-<!-- JKW: resolves the classpath automatically from all libraries in the library directory -->
-<zipgroupfileset dir="${library.directory}">
-	<include name="jdom.jar"/>
-	<include name="activation.jar"/>
-	<include name="imap.jar"/>
-	<include name="joelib.jar"/>
-	<include name="log4j.jar"/>
-	<include name="mail.jar"/>
-	<include name="mailapi.jar"/>
-	<include name="pop3.jar"/>
-	<include name="smtp.jar"/>
-	<include name="xalan2.jar"/>
-	<include name="wsi.jar"/>
-</zipgroupfileset>
 <!--<fileset dir="${classes.dir}" excludes="*test*"/>-->
-<manifest> <attribute name="Main-Class" value="javaeva.client.EvAClient"/> </manifest>
+<manifest> <attribute name="Main-Class" value="eva2.client.EvAClient"/> </manifest>
 </jar>
 </target>
 
@@ -292,13 +236,13 @@
  <!--  ===================================================================
   -->
  <target name="bundlehannes" depends="compile" description="Compiles the project and puts the whole stuff into a jar-file..">
-  <property name="bin.dist.dir" value="${binary.distribution.directory}/javaeva-${DSTAMP}" />
+  <property name="bin.dist.dir" value="${binary.distribution.directory}/eva2-${DSTAMP}" />
   <mkdir dir="${bin.dist.dir}" />
   <mkdir dir="${bin.dist.dir}/${library.directory}" />
  <delete>
-  <fileset dir="${bin.dist.dir}/${library.directory}" includes="*JavaEvA*jar" />
+  <fileset dir="${bin.dist.dir}/${library.directory}" includes="*EvA*jar" />
   </delete>
- <jar jarfile="${bin.dist.dir}/${library.directory}/JavaEvA.jar" basedir="${build.directory}" filesetmanifest="mergewithoutmain">
+ <jar jarfile="${bin.dist.dir}/${library.directory}/EvA2Base.jar" basedir="${build.directory}" filesetmanifest="mergewithoutmain">
  <!--  JKW: That's bad practice, if we have internal dependencies -->
  <!--  JKW: Use a correct shell script or ant task to run application, which  -->
  <!--  JKW: resolves the classpath automatically from all libraries in the library directory  -->
@@ -308,7 +252,7 @@
  <!-- <fileset dir="${classes.dir}" excludes="*test*"/>
   -->
  <manifest>
-  <attribute name="Main-Class" value="javaeva.client.EvAClient" />
+  <attribute name="Main-Class" value="eva2.client.EvAClient" />
   </manifest>
   </jar>
   </target>
@@ -317,16 +261,15 @@
         Binary Distribution
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
 <target name="binaryDist" depends="compile" description="Compiles the project and puts the whole stuff into a jar-file..">
-    <property name="bin.dist.dir"  value="${binary.distribution.directory}/javaeva-${DSTAMP}" />
+    <property name="bin.dist.dir"  value="${binary.distribution.directory}/eva-${DSTAMP}" />
     <mkdir dir="${bin.dist.dir}" />
     <mkdir dir="${bin.dist.dir}/${library.directory}" />
 <delete>
-      <fileset dir="${bin.dist.dir}/${library.directory}" includes="*JavaEvA*jar" />
+      <fileset dir="${bin.dist.dir}/${library.directory}" includes="*EvA*jar" />
 </delete>
 
-<!-- <jar jarfile="${bin.dist.dir}/${library.directory}/JavaEvA.jar" manifest="project/javaeva.man" basedir="${build.directory}" /> -->
-<jar jarfile="${bin.dist.dir}/${library.directory}/JavaEvA.jar"  basedir="${build.directory}" >
-<manifest> <attribute name="Main-Class" value="javaeva.client.EvAClient"/> </manifest>
+<jar jarfile="${bin.dist.dir}/${library.directory}/EvA2Base.jar"  basedir="${build.directory}" >
+<manifest> <attribute name="Main-Class" value="eva2.client.EvAClient"/> </manifest>
 </jar>
     <copy todir="${bin.dist.dir}/${library.directory}">
       <fileset dir="${library.directory}">
@@ -379,17 +322,17 @@
     </copy>
 -->
 
-    <tar tarfile="${distribution.directory}/javaeva-bin-${DSTAMP}.tar">
+    <tar tarfile="${distribution.directory}/eva2-bin-${DSTAMP}.tar">
       <tarfileset dir="${binary.distribution.directory}">
         <include name="**" />
         <exclude name="*.tar*, *.zip" />
       </tarfileset>
     </tar>
-    <gzip zipfile="${distribution.directory}/javaeva-bin-${DSTAMP}.tar.gz"
-        src="${distribution.directory}/javaeva-bin-${DSTAMP}.tar" />
-    <delete file="${distribution.directory}/javaeva-bin-${DSTAMP}.tar" />
+    <gzip zipfile="${distribution.directory}/eva2-bin-${DSTAMP}.tar.gz"
+        src="${distribution.directory}/eva2-bin-${DSTAMP}.tar" />
+    <delete file="${distribution.directory}/eva2-bin-${DSTAMP}.tar" />
 
-    <zip zipfile="${distribution.directory}/javaeva-bin-${DSTAMP}.zip">
+    <zip zipfile="${distribution.directory}/eva2-bin-${DSTAMP}.zip">
       <zipfileset dir="${binary.distribution.directory}">
         <include name="**" />
         <exclude name="*.tar*, *.zip" />
@@ -404,7 +347,7 @@
   <target name="sourceDist" depends="init">
     <fail message="Not properly supported yet!"/>
 
-    <property name="src.dist.dir"  value="${source.distribution.directory}/javaeva-${DSTAMP}" />
+    <property name="src.dist.dir"  value="${source.distribution.directory}/eva2-${DSTAMP}" />
     <mkdir dir="${src.dist.dir}" />
 
     <copy todir="${src.dist.dir}">
@@ -445,13 +388,13 @@
       </fileset>
     </copy>
 
-    <tar tarfile="${distribution.directory}/javaeva-src-${DSTAMP}.tar"
+    <tar tarfile="${distribution.directory}/eva2-src-${DSTAMP}.tar"
          basedir="${source.distribution.directory}" includes="**" excludes="*.tar*, *.zip"/>
-    <gzip zipfile="${distribution.directory}/javaeva-src-${DSTAMP}.tar.gz"
-          src="${distribution.directory}/javaeva-src-${DSTAMP}.tar" />
-    <delete file="${distribution.directory}/javaeva-src-${DSTAMP}.tar" />
+    <gzip zipfile="${distribution.directory}/eva2-src-${DSTAMP}.tar.gz"
+          src="${distribution.directory}/eva2-src-${DSTAMP}.tar" />
+    <delete file="${distribution.directory}/eva2-src-${DSTAMP}.tar" />
 
-    <zip zipfile="${distribution.directory}/javaeva-src-${DSTAMP}.zip">
+    <zip zipfile="${distribution.directory}/eva2-src-${DSTAMP}.zip">
       <zipfileset dir="${source.distribution.directory}">
         <include name="**" />
         <exclude name="*.tar*, *.zip" />
@@ -467,50 +410,50 @@
   </target>
 
 <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        Run JavaEvA
+        Run EvA2
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
 
-  <target name="run" description="Runs JavaEvA.">
-    <java classname="javaeva.client.EvAClient" fork="yes">
+  <target name="run" description="Runs EvA2.">
+    <java classname="eva2.client.EvAClient" fork="yes">
       <jvmarg value="-Xmx512m"/>
       <classpath refid="project.class.path" />
     </java>
   </target>
 
   <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        Run JavaEvA
+        Run EvA2
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
 
   <target name="Altana" description="Runs Altana CombiLib Problem.">
-    <java classname="javaeva.server.oa.go.GOAltana" fork="yes">
+    <java classname="eva2.server.oa.go.GOAltana" fork="yes">
       <jvmarg value="-Xmx512m"/>
       <classpath refid="project.class.path" />
     </java>
   </target>
 
   <target name="Portfolio" description="Runs GOPortfolio.">
-    <java classname="javaeva.server.oa.go.GOPortfolio" fork="yes">
+    <java classname="eva2.server.oa.go.GOPortfolio" fork="yes">
         <jvmarg value="-Xmx512m" />
         <classpath refid="project.class.path" />
     </java>
   </target>
 
   <target name="PortfolioLS" description="Runs GOPortfolioLS.">
-    <java classname="javaeva.server.oa.go.GOPortfolioLS" fork="yes">
+    <java classname="eva2.server.oa.go.GOPortfolioLS" fork="yes">
         <jvmarg value="-Xmx512m" />
         <classpath refid="project.class.path" />
     </java>
   </target>
 
   <target name="PMOEA" description="Runs ParallelMOEAs.">
-    <java classname="javaeva.server.oa.go.GOParallelMOEA" fork="yes">
+    <java classname="eva2.server.oa.go.GOParallelMOEA" fork="yes">
         <jvmarg value="-Xmx512m" />
         <classpath refid="project.class.path" />
     </java>
   </target>
 
   <target name="GridMC" description="Runs a Grid Search for GO.">
-    <java classname="javaeva.server.oa.go.GOGridSearchTwo" fork="yes">
+    <java classname="eva2.server.oa.go.GOGridSearchTwo" fork="yes">
         <jvmarg value="-Xmx512m" />
         <classpath refid="project.class.path" />
     </java>
@@ -518,49 +461,49 @@
 
 
   <target name="GOSSFirst" description="Runs a comparison on system identification.">
-    <java classname="javaeva.server.oa.go.GOSystemComparing" fork="yes">
+    <java classname="eva2.server.oa.go.GOSystemComparing" fork="yes">
         <jvmarg value="-Xmx512m" />
         <classpath refid="project.class.path" />
     </java>
   </target>
 
   <target name="GOSSMSHC" description="Runs a comparison on system identification.">
-    <java classname="javaeva.server.oa.go.GOSystemMSHC" fork="yes">
+    <java classname="eva2.server.oa.go.GOSystemMSHC" fork="yes">
         <jvmarg value="-Xmx512m" />
         <classpath refid="project.class.path" />
     </java>
   </target>
 
   <target name="GOSSESPopSize" description="Runs a comparison on system identification.">
-    <java classname="javaeva.server.oa.go.GOSystemESPopSize" fork="yes">
+    <java classname="eva2.server.oa.go.GOSystemESPopSize" fork="yes">
         <jvmarg value="-Xmx512m" />
         <classpath refid="project.class.path" />
     </java>
   </target>
 
   <target name="GOSSPmPc" description="Runs a comparison on system identification.">
-    <java classname="javaeva.server.oa.go.GOSystemPmPc" fork="yes">
+    <java classname="eva2.server.oa.go.GOSystemPmPc" fork="yes">
         <jvmarg value="-Xmx512m" />
         <classpath refid="project.class.path" />
     </java>
   </target>
 
   <target name="GOSSESMutation" description="Runs a comparison on system identification.">
-    <java classname="javaeva.server.oa.go.GOSystemESMutation" fork="yes">
+    <java classname="eva2.server.oa.go.GOSystemESMutation" fork="yes">
         <jvmarg value="-Xmx512m" />
         <classpath refid="project.class.path" />
     </java>
   </target>
 
   <target name="GOSSGACrossover" description="Runs a comparison on system identification.">
-    <java classname="javaeva.server.oa.go.GOSystemGACrossover" fork="yes">
+    <java classname="eva2.server.oa.go.GOSystemGACrossover" fork="yes">
         <jvmarg value="-Xmx512m" />
         <classpath refid="project.class.path" />
     </java>
   </target>
 
   <target name="GOSSMALSLI" description="Runs a comparison on system identification.">
-    <java classname="javaeva.server.oa.go.GOSystemMA" fork="yes">
+    <java classname="eva2.server.oa.go.GOSystemMA" fork="yes">
         <jvmarg value="-Xmx512m" />
         <classpath refid="project.class.path" />
     </java>
@@ -571,9 +514,9 @@
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
 
   <target name="javadoc" description="Generates the JavaDoc-API Documentation.">
-    <javadoc packagenames="javaeva.*"
-    windowtitle ="JavaEvA API Documentation"
-    doctitle    ="JavaEvA API Documentation"
+    <javadoc packagenames="eva2.*"
+    windowtitle ="EvA2 API Documentation"
+    doctitle    ="EvA2 API Documentation"
     author      ="true"
     version     ="true"
     use         ="true"
@@ -586,23 +529,28 @@
             <doctitle><![CDATA[<h1>Test</h1>]]></doctitle>
 
             <header><![CDATA[<font size="-1"><b><i>
-                             <A HREF="http://www-ra.informatik.uni-tuebingen.de/forschung/"
-                                target="_top">JavaEvA
+                             <A HREF="http://www.ra.cs.uni-tuebingen.de/forschung/"
+                                target="_top">EvA2
                              </A>
                              </b></i></font>]]>
             </header>
 
+    		<!--
             <footer><![CDATA[javaeva<br>
-                             <A HREF="http://www-ra.informatik.uni-tuebingen.de/forschung/"
+                             <A HREF="http://www.ra.cs.uni-tuebingen.de/forschung/"
                                 target="_top">JavaEvA
                              </A><BR>
                              E-Mail:
                              <A HREF="mailto:ulmer@informatik.uni-tuebingen.de">
                                 ulmer@informatik.uni-tuebingen.de
                              </A>]]>
-
             </footer>
-
+            	-->
+        <footer><![CDATA[eva2<br>
+                         <A HREF="http://www.ra.cs.uni-tuebingen.de/forschung/"
+                            target="_top">EvA2
+                         </A>]]>
+        </footer>
             <link offline="true"
                   href="http://java.sun.com/j2se/jdk1.5.0_03/docs/api/"
                   packagelistLoc="${env.JAVA_HOME}/docs/api"

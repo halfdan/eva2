@@ -4,7 +4,7 @@ import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceGIIndividual;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 /**
  * Created by IntelliJ IDEA.
@@ -73,12 +73,12 @@ public class MutateGIInsertDelete implements InterfaceMutation, java.io.Serializ
             int[][]     newRange;
             int         length, position;
             //this.pintInt("Before ", x);
-            length = RandomNumberGenerator.randomInt(1, this.m_MaxLengthOfInsDel);
-            boolean insert = RandomNumberGenerator.flipCoin(0.5);
+            length = RNG.randomInt(1, this.m_MaxLengthOfInsDel);
+            boolean insert = RNG.flipCoin(0.5);
             if ((!insert) && (length >= x.length-1)) insert = true;
             if (insert) {
                 // insert
-                position = RandomNumberGenerator.randomInt(0, x.length-1);
+                position = RNG.randomInt(0, x.length-1);
                 newX        = new int[x.length + length];
                 newRange    = new int[range.length + length][2];
                 for (int i = 0; i < position; i++) {
@@ -86,7 +86,7 @@ public class MutateGIInsertDelete implements InterfaceMutation, java.io.Serializ
                     newRange[i]     = range[i];
                 }
                 for (int i = position; i < position+length; i++) {
-                    newX[i]         = RandomNumberGenerator.randomInt(range[position][0], range[position][1]);
+                    newX[i]         = RNG.randomInt(range[position][0], range[position][1]);
                     newRange[i][0]  = range[position][0];
                     newRange[i][1]  = range[position][1];
                 }
@@ -96,7 +96,7 @@ public class MutateGIInsertDelete implements InterfaceMutation, java.io.Serializ
                 }
             } else {
                 // delete
-                position = RandomNumberGenerator.randomInt(0, x.length-1-length);
+                position = RNG.randomInt(0, x.length-1-length);
                 newX        = new int[x.length - length];
                 newRange    = new int[range.length - length][2];
                 if (newX.length <=1) return;

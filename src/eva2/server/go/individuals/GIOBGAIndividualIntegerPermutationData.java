@@ -6,7 +6,7 @@ import java.util.BitSet;
 import eva2.server.go.operators.mutation.InterfaceMutation;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 /** This individual combines a binary and a real-valued phenotype.
  * Created by IntelliJ IDEA.
@@ -99,8 +99,8 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
     /** This method will mutate the individual randomly
      */
     public void mutate() {
-        if (RandomNumberGenerator.flipCoin(this.m_MutationProbability))((AbstractEAIndividual)this.m_Integer).mutate();
-        if (RandomNumberGenerator.flipCoin(this.m_MutationProbability))((AbstractEAIndividual)this.m_Permutation).mutate();
+        if (RNG.flipCoin(this.m_MutationProbability))((AbstractEAIndividual)this.m_Integer).mutate();
+        if (RNG.flipCoin(this.m_MutationProbability))((AbstractEAIndividual)this.m_Permutation).mutate();
     }
 
     /** This method will mate the Individual with given other individuals
@@ -110,7 +110,7 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
      */
     public AbstractEAIndividual[] mateWith(Population partners) {
         AbstractEAIndividual[] result;
-        if (RandomNumberGenerator.flipCoin(this.m_CrossoverProbability)) {
+        if (RNG.flipCoin(this.m_CrossoverProbability)) {
             AbstractEAIndividual[]  resNum, resBin;
             AbstractEAIndividual    numTmp, binTmp;
             Population              numPop, binPop;

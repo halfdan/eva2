@@ -4,7 +4,7 @@ import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.ESIndividualDoubleData;
 import eva2.server.go.individuals.InterfaceDataTypeDouble;
 import eva2.server.go.populations.Population;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 import eva2.tools.SelectedTag;
 import eva2.tools.Tag;
 
@@ -79,7 +79,7 @@ public class F7Problem extends F1Problem implements java.io.Serializable {
         fitness = this.eval(x);
         for (int i = 0; i < fitness.length; i++) {
             // add noise to the fitness
-            fitness[i] += RandomNumberGenerator.gaussianDouble(this.getNoise());
+            fitness[i] += RNG.gaussianDouble(this.getNoise());
             fitness[i] += this.m_YOffSet;
             // set the fitness of the individual
             individual.SetFitness(i, fitness[i]);
@@ -101,11 +101,11 @@ public class F7Problem extends F1Problem implements java.io.Serializable {
         result[0]     = 0;
         if ((Math.floor(this.m_CurrentTimeStamp / this.m_t)%2) == 0) {
             for (int i = 0; i < x.length-1; i++) {
-                result[0]  += Math.pow(x[i], 2);;
+                result[0]  += Math.pow(x[i], 2);
             }
         } else {
             for (int i = 0; i < x.length-1; i++) {
-                result[0]  += Math.pow(x[i]-this.m_Change, 2);;
+                result[0]  += Math.pow(x[i]-this.m_Change, 2);
             }
         }
         return result;

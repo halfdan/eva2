@@ -3,7 +3,7 @@ package eva2.server.go.individuals.codings.ga;
 
 import java.util.BitSet;
 
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 /** This gives the gray coding for double with a variable number of bits for coding
  * As far as i recall the least significant bit is to the left.
@@ -86,7 +86,7 @@ public class GAGrayCodingDouble implements InterfaceGADoubleCoding, java.io.Seri
         range[0]          = -10;
         range[1]          = 10;
         for (int i = 0; i < 10; i++) {
-            value = RandomNumberGenerator.randomDouble(range[0], range[1]);
+            value = RNG.randomDouble(range[0], range[1]);
             tmp = value;
             System.out.println("Coding Value : " + value);
             t.codeValue(value, range, tmpBitSet, locus);

@@ -9,7 +9,7 @@ import eva2.server.go.individuals.ESIndividualDoubleData;
 import eva2.server.go.individuals.InterfaceDataTypeDouble;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.F1Problem;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 import wsi.ra.chart2d.DPoint;
 
 /** The x-means clustering method should be able to determine a
@@ -285,28 +285,28 @@ public class ClusteringXMeans implements InterfaceClustering, java.io.Serializab
                 x = ((InterfaceDataTypeDouble)pop.get(i)).getDoubleData();
                 switch (i%k) {
                     case 0 : {
-                        x[0] = 0 + RandomNumberGenerator.gaussianDouble(1.2);
-                        x[1] = -1 + RandomNumberGenerator.gaussianDouble(1.5);
+                        x[0] = 0 + RNG.gaussianDouble(1.2);
+                        x[1] = -1 + RNG.gaussianDouble(1.5);
                         break;
                     }
                     case 1 : {
-                        x[0] = 3 + RandomNumberGenerator.gaussianDouble(1.8);
-                        x[1] = 8 + RandomNumberGenerator.gaussianDouble(0.9);
+                        x[0] = 3 + RNG.gaussianDouble(1.8);
+                        x[1] = 8 + RNG.gaussianDouble(0.9);
                         break;
                     }
                     case 2 : {
-                        x[0] = -4 + RandomNumberGenerator.gaussianDouble(1.2);
-                        x[1] = -8 + RandomNumberGenerator.gaussianDouble(1.2);
+                        x[0] = -4 + RNG.gaussianDouble(1.2);
+                        x[1] = -8 + RNG.gaussianDouble(1.2);
                         break;
                     }
                     case 3 : {
-                        x[0] = 7 + RandomNumberGenerator.gaussianDouble(1.1);
-                        x[1] = -5 + RandomNumberGenerator.gaussianDouble(1.0);
+                        x[0] = 7 + RNG.gaussianDouble(1.1);
+                        x[1] = -5 + RNG.gaussianDouble(1.0);
                         break;
                     }
                     default : {
-                        x[0] = -2 + RandomNumberGenerator.gaussianDouble(1.2);
-                        x[1] = 5 + RandomNumberGenerator.gaussianDouble(1.2);
+                        x[0] = -2 + RNG.gaussianDouble(1.2);
+                        x[1] = 5 + RNG.gaussianDouble(1.2);
                     }
                 }
                 if (i == 0) {

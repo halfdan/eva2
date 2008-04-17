@@ -9,7 +9,7 @@ import eva2.server.go.individuals.GAIndividualBinaryData;
 import eva2.server.go.individuals.InterfaceDataTypeBinary;
 import eva2.server.go.populations.Population;
 import eva2.server.go.strategies.InterfaceOptimizer;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 /**
  * Created by IntelliJ IDEA.
@@ -166,12 +166,12 @@ public class BKnapsackProblem extends AbstractOptimizationProblem implements jav
         for (int i = 0; i < population.getPopulationSize(); i++) {
             tmpIndy = (AbstractEAIndividual)((AbstractEAIndividual)this.m_Template).clone();
             tmpIndy.init(this);
-            if (RandomNumberGenerator.flipCoin(this.m_ProblemSpecificInit)) {
+            if (RNG.flipCoin(this.m_ProblemSpecificInit)) {
                 BitSet tmpSet = new BitSet();
                 tmpSet.clear();
 
                 while (evaluate(tmpSet, items.length)[1] > 0) {
-                    tmpSet.set(RandomNumberGenerator.randomInt(0,items.length-1));
+                    tmpSet.set(RNG.randomInt(0,items.length-1));
                 }
                 ((InterfaceDataTypeBinary)tmpIndy).SetBinaryDataLamarkian(tmpSet);
             }
@@ -193,7 +193,7 @@ public class BKnapsackProblem extends AbstractOptimizationProblem implements jav
         tmpIndy     = (InterfaceDataTypeBinary) individual;
         tmpBitSet   = tmpIndy.getBinaryData();
         result = this.evaluate(tmpBitSet, tmpIndy.size());
-        if (RandomNumberGenerator.flipCoin(this.m_LocalSearch)) {
+        if (RNG.flipCoin(this.m_LocalSearch)) {
             // first remove surplus assets
             while (result[1] > 0) {
                 // search for an element to replace
@@ -204,7 +204,7 @@ public class BKnapsackProblem extends AbstractOptimizationProblem implements jav
                             weakest = i;
                         }
                         if ( ((-items[i][1])/((double)items[i][0])) == ((-items[weakest][1])/((double)items[weakest][0])) ) {
-                            if (RandomNumberGenerator.flipCoin(0.5)) weakest = i;
+                            if (RNG.flipCoin(0.5)) weakest = i;
                         }
                     }
                 }
@@ -222,7 +222,7 @@ public class BKnapsackProblem extends AbstractOptimizationProblem implements jav
                             weakest = i;
                         }
                         if ( ((-items[i][1])/((double)items[i][0])) == ((-items[weakest][1])/((double)items[weakest][0])) ) {
-                            if (RandomNumberGenerator.flipCoin(0.5)) weakest = i;
+                            if (RNG.flipCoin(0.5)) weakest = i;
                         }
                     }
                 }

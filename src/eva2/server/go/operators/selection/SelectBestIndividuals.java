@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.populations.Population;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 /** Select the best individuals.
  * In case of multiple fitness values the selection
@@ -64,7 +64,7 @@ public class SelectBestIndividuals implements InterfaceSelection, java.io.Serial
 
         // now get the actual result from the tmp list
         for (int i = 0; i < size; i++) {
-            currentCriteria = RandomNumberGenerator.randomInt(0, critSize-1);
+            currentCriteria = RNG.randomInt(0, critSize-1);
             result.add(bestIndividuals[currentCriteria].get(0));
             bestIndividuals[currentCriteria].remove(0);
         }
@@ -121,7 +121,7 @@ public class SelectBestIndividuals implements InterfaceSelection, java.io.Serial
                     }
                 }
                 if (index >= 0) return pop.get(index);
-                else return pop.get(RandomNumberGenerator.randomInt(0, pop.size()-1));
+                else return pop.get(RNG.randomInt(0, pop.size()-1));
             }
         } else {
             for (int i = 0; i < pop.size(); i++) {
@@ -140,7 +140,7 @@ public class SelectBestIndividuals implements InterfaceSelection, java.io.Serial
                 }
             }
             if (index >= 0) return pop.get(index);
-            else return pop.get(RandomNumberGenerator.randomInt(0, pop.size()-1));
+            else return pop.get(RNG.randomInt(0, pop.size()-1));
         }
     }
 

@@ -6,7 +6,7 @@ import eva2.gui.GenericObjectEditor;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 
 /**
@@ -119,7 +119,7 @@ public class CrossoverEAMixer implements InterfaceCrossover, java.io.Serializabl
         double[]            probs       = this.m_Crossers.getWeights();
         if (this.m_UseSelfAdaption) {
             for (int i = 0; i < probs.length; i++) {
-                probs[i] = probs[i] * Math.exp(this.m_Tau1 * RandomNumberGenerator.gaussianDouble(1));
+                probs[i] = probs[i] * Math.exp(this.m_Tau1 * RNG.gaussianDouble(1));
                 if (probs[i] <= this.m_LowerLimitChance) probs[i] = this.m_LowerLimitChance;
                 if (probs[i] >= 1) probs[i] = 1;
             }
@@ -127,14 +127,14 @@ public class CrossoverEAMixer implements InterfaceCrossover, java.io.Serializabl
         }
 
         InterfaceCrossover[] crossover    = this.m_Crossers.getSelectedCrossers();
-        double pointer                  = RandomNumberGenerator.randomFloat(0, 1);
+        double pointer                  = RNG.randomFloat(0, 1);
         double dum                      = probs[0];
         int index                       = 0;
         while ((pointer > dum) && (index < probs.length-1)) {
             index++;
             dum += probs[index];
         }
-        if (index == probs.length) index = RandomNumberGenerator.randomInt(0, probs.length-1);
+        if (index == probs.length) index = RNG.randomInt(0, probs.length-1);
 //        System.out.println("Using : " + mutators[index].getStringRepresentation());
 //        for (int i = 0; i < probs.length; i++) {
 //            System.out.println(""+mutators[i].getStringRepresentation()+" : "+ probs[i]);

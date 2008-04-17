@@ -10,7 +10,7 @@ import eva2.server.go.individuals.GAIndividualDoubleData;
 import eva2.server.go.individuals.InterfaceDataTypeDouble;
 import eva2.server.go.populations.Population;
 import eva2.server.go.strategies.InterfaceOptimizer;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 import eva2.server.modules.GOParameters;
 
 import java.awt.*;
@@ -280,7 +280,7 @@ public class FLensProblem extends AbstractOptimizationProblem implements Interfa
 		fitness = this.doEvaluation(x);
 		for (int i = 0; i < fitness.length; i++) {
 			// add noise to the fitness
-			fitness[i] += RandomNumberGenerator.gaussianDouble(this.m_Noise);
+			fitness[i] += RNG.gaussianDouble(this.m_Noise);
 			fitness[i] += this.m_YOffSet;
 			// set the fitness of the individual
 			individual.SetFitness(i, fitness[i]);
@@ -423,7 +423,7 @@ public class FLensProblem extends AbstractOptimizationProblem implements Interfa
 		GOStandaloneVersion  program = new GOStandaloneVersion();
         GOParameters GO = program.getGOParameters();
         GO.setProblem(f);
-		RandomNumberGenerator.setRandomSeed(1);
+		RNG.setRandomSeed(1);
 		program.initFrame();
 		program.setShow(true);
     }

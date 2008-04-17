@@ -7,7 +7,7 @@ import eva2.server.go.individuals.InterfaceESIndividual;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.F1Problem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 /**
  * Created by IntelliJ IDEA.
@@ -63,7 +63,7 @@ public class CrossoverESSBX implements InterfaceCrossover, java.io.Serializable 
             }
 
             for (int i = 0; i < children[0].length; i++) {
-                u = RandomNumberGenerator.randomDouble(0,1);
+                u = RNG.randomDouble(0,1);
                 if (u <= 0.5) {
                     beta = Math.pow((2*u), 1/(this.m_Eta + 1));
                 } else {

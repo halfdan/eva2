@@ -9,7 +9,7 @@ import eva2.server.go.individuals.ESIndividualDoubleData;
 import eva2.server.go.individuals.InterfaceDataTypeDouble;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.F1Problem;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 import wsi.ra.chart2d.DPoint;
 
 /** The k-mean clustering algorithms. I guess it is not a hierachical
@@ -65,7 +65,7 @@ public class ClusteringKMeans implements InterfaceClustering, java.io.Serializab
             this.m_C            = new double[this.m_K][];
             // now choose random initial Cs
             for (int i = 0; i < this.m_C.length; i++) {
-                this.m_C[i] = data[RandomNumberGenerator.randomInt(0, data.length-1)];
+                this.m_C[i] = data[RNG.randomInt(0, data.length-1)];
                 //this.m_C[i] = data[i];     // This works!!
                 // we won't check for double instances assuming that double instances
                 // will be ironed out during clustering and to prevent infinite loops

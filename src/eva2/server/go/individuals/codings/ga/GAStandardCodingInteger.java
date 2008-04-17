@@ -3,7 +3,7 @@ package eva2.server.go.individuals.codings.ga;
 
 import java.util.BitSet;
 
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 /** The traditional binary coding for integer number, no variable number of bits here, sorry.
  * Created by IntelliJ IDEA.
@@ -55,7 +55,7 @@ public class GAStandardCodingInteger implements InterfaceGAIntegerCoding, java.i
             //System.out.print("Korregiere: " + tmpV + " > " + u_max);
             if (correction) {
                 // a new value within the bounds is generated
-                tmpV = RandomNumberGenerator.randomInt(u_min, u_max);
+                tmpV = RNG.randomInt(u_min, u_max);
                 //System.out.println("zu: " + tmpV);
                 codeValue((int)tmpV, range, refBitSet, locus);
             } else {

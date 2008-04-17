@@ -6,7 +6,7 @@ import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceESIndividual;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 import eva2.tools.SelectedTag;
 
 
@@ -81,10 +81,10 @@ public class MutateESGlobal implements InterfaceMutation, java.io.Serializable {
         if (individual instanceof InterfaceESIndividual) {
             double[] x = ((InterfaceESIndividual)individual).getDGenotype();
             double[][] range = ((InterfaceESIndividual)individual).getDoubleRange();
-            this.m_MutationStepSize = this.m_MutationStepSize * Math.exp(this.m_Tau1 * RandomNumberGenerator.gaussianDouble(1));
+            this.m_MutationStepSize = this.m_MutationStepSize * Math.exp(this.m_Tau1 * RNG.gaussianDouble(1));
             if (this.m_MutationStepSize < this.m_LowerLimitStepSize) this.m_MutationStepSize = this.m_LowerLimitStepSize;
             for (int i = 0; i < x.length; i++) {
-                x[i] += ((range[i][1] -range[i][0])/2)*RandomNumberGenerator.gaussianDouble(this.m_MutationStepSize);
+                x[i] += ((range[i][1] -range[i][0])/2)*RNG.gaussianDouble(this.m_MutationStepSize);
                 if (range[i][0] > x[i]) x[i] = range[i][0];
                 if (range[i][1] < x[i]) x[i] = range[i][1];
             }
@@ -116,7 +116,7 @@ public class MutateESGlobal implements InterfaceMutation, java.io.Serializable {
                 break;
             }
             case 2 : {
-                this.m_MutationStepSize = list[RandomNumberGenerator.randomInt(0, list.length-1)];
+                this.m_MutationStepSize = list[RNG.randomInt(0, list.length-1)];
                 break;
             }
             default : {

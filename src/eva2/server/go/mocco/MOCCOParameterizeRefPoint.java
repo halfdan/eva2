@@ -13,7 +13,7 @@ import eva2.server.go.operators.moso.MOSOLpMetric;
 import eva2.server.go.problems.AbstractMultiObjectiveOptimizationProblem;
 import eva2.server.go.strategies.IslandModelEA;
 import eva2.server.go.tools.GeneralGOEProperty;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -235,7 +235,7 @@ public class MOCCOParameterizeRefPoint extends MOCCOPhase implements InterfacePr
             for (int i = 0; i < m_Perturbations; i++) {
                 tmpD = new double[m_RefPoint.length];
                 for (int j = 0; j < tmpD.length; j++) {
-                    if (i > 0) tmpD[j] = m_RefPoint[j] + RandomNumberGenerator.gaussianDouble(m_Perturbation);
+                    if (i > 0) tmpD[j] = m_RefPoint[j] + RNG.gaussianDouble(m_Perturbation);
                     else tmpD[j] = m_RefPoint[j];
                 }
                 tmpLPs[i] = (MOSOLpMetric)m_LpMetric.clone();

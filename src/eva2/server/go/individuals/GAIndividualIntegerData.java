@@ -11,7 +11,7 @@ import eva2.server.go.operators.crossover.CrossoverGANPoint;
 import eva2.server.go.operators.mutation.InterfaceMutation;
 import eva2.server.go.operators.mutation.MutateGAStandard;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 /** This individual uses a binary genotype to code for binary values using
  * two alternative encodings.
@@ -313,7 +313,7 @@ public class GAIndividualIntegerData extends AbstractEAIndividual implements Int
         int overallLength = 0;
         for (int i = 0; i < this.m_CodingLenghts.length; i++) overallLength += this.m_CodingLenghts[i];
         for (int i = 0; i < overallLength; i++) {
-            if (RandomNumberGenerator.flipCoin(0.5)) this.m_Genotype.set(i);
+            if (RNG.flipCoin(0.5)) this.m_Genotype.set(i);
             else this.m_Genotype.clear(i);
         }
     }
@@ -323,7 +323,7 @@ public class GAIndividualIntegerData extends AbstractEAIndividual implements Int
     public void defaultMutate() {
         int overallLength = 0;
         for (int i = 0; i < this.m_CodingLenghts.length; i++) overallLength += this.m_CodingLenghts[i];
-        int mutationIndex = RandomNumberGenerator.randomInt(0, overallLength);
+        int mutationIndex = RNG.randomInt(0, overallLength);
         if (this.m_Genotype.get(mutationIndex)) this.m_Genotype.clear(mutationIndex);
         else this.m_Genotype.set(mutationIndex);
     }
@@ -350,7 +350,7 @@ public class GAIndividualIntegerData extends AbstractEAIndividual implements Int
         System.out.println(tmp+"}");
         tmp = "Setting {";
         for (int i = 0; i < data.length; i++) {
-            data[i] = RandomNumberGenerator.randomInt(range[i][0], range[i][1]);
+            data[i] = RNG.randomInt(range[i][0], range[i][1]);
             tmp += data[i] + "; ";
         }
         System.out.println(tmp+"}");

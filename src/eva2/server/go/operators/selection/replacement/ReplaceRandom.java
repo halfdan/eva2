@@ -2,7 +2,7 @@ package eva2.server.go.operators.selection.replacement;
 
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.populations.Population;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 /** Random replacement.
  * Created by IntelliJ IDEA.
@@ -27,7 +27,7 @@ public class ReplaceRandom implements InterfaceReplacement, java.io.Serializable
      * @param sub       The subset
      */
     public void insertIndividual(AbstractEAIndividual indy, Population pop, Population sub) {
-        int rand = RandomNumberGenerator.randomInt(0, pop.size()-1);
+        int rand = RNG.randomInt(0, pop.size()-1);
         pop.remove(rand);
         pop.addIndividual(indy);
     }

@@ -14,7 +14,7 @@ import eva2.server.go.operators.mutation.MutateESDefault;
 import eva2.server.go.operators.mutation.MutateGPDefault;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 /** This individual combines a real-valued phenotype with a tree-based phenotype.
  * Created by IntelliJ IDEA.
@@ -107,8 +107,8 @@ public class GAPIndividualProgramData extends AbstractEAIndividual implements In
     /** This method will mutate the individual randomly
      */
     public void mutate() {
-        if (RandomNumberGenerator.flipCoin(this.m_MutationProbability))((AbstractEAIndividual)this.m_Numbers).mutate();
-        if (RandomNumberGenerator.flipCoin(this.m_MutationProbability))((AbstractEAIndividual)this.m_Program).mutate();
+        if (RNG.flipCoin(this.m_MutationProbability))((AbstractEAIndividual)this.m_Numbers).mutate();
+        if (RNG.flipCoin(this.m_MutationProbability))((AbstractEAIndividual)this.m_Program).mutate();
     }
 
     /** This method will mate the Individual with given other individuals
@@ -118,7 +118,7 @@ public class GAPIndividualProgramData extends AbstractEAIndividual implements In
      */
     public AbstractEAIndividual[] mateWith(Population partners) {
         AbstractEAIndividual[] result;
-        if (RandomNumberGenerator.flipCoin(this.m_CrossoverProbability)) {
+        if (RNG.flipCoin(this.m_CrossoverProbability)) {
             AbstractEAIndividual[]  resNum, resBin;
             AbstractEAIndividual    numTmp, binTmp;
             Population              numPop, binPop;

@@ -16,7 +16,7 @@ import eva2.server.go.populations.Population;
 import eva2.server.go.problems.F1Problem;
 import eva2.server.go.problems.Interface2DBorderProblem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 import eva2.tools.SelectedTag;
 
 import wsi.ra.chart2d.DPoint;
@@ -167,7 +167,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 		// init velocity
 		writeData   = new double[((InterfaceESIndividual)indy).getDGenotype().length];
 		for (int j = 0; j < writeData.length; j++) {
-			writeData[j]    = RandomNumberGenerator.gaussianDouble(1.0);
+			writeData[j]    = RNG.gaussianDouble(1.0);
 			//sum             += (writeData[j])*(writeData[j]);
 		}
 		//sum = Math.sqrt(sum);
@@ -600,7 +600,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 	protected void rotateAllAxes(double[] vect, double alpha, boolean randomize) {
 		for (int i=0; i<vect.length-1; i++) {
 			for (int j=i+1; j<vect.length; j++) {
-				if (randomize) rotate(vect, RandomNumberGenerator.randomDouble(-alpha,alpha), i, j);
+				if (randomize) rotate(vect, RNG.randomDouble(-alpha,alpha), i, j);
 				else rotate(vect, alpha, i, j);
 			}
 		}
@@ -639,8 +639,8 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 //		if (algType.getSelectedTag().getID()==1) chi=m_InertnessOrChi;
 //		else chi = 1.;
 //		
-//		double scaleCog = this.m_Phi1*chi*RandomNumberGenerator.randomDouble(0,1);
-//		double scaleNei = this.m_Phi2*chi*RandomNumberGenerator.randomDouble(0,1);
+//		double scaleCog = this.m_Phi1*chi*RNG.randomDouble(0,1);
+//		double scaleNei = this.m_Phi2*chi*RNG.randomDouble(0,1);
 //		
 //		
 //		for (int i=0; i<lastVelocity.length; i++) {
@@ -655,13 +655,13 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 //			if (algType.getSelectedTag().getID()==1) chi=m_InertnessOrChi;
 //			else chi = 1.;
 //			// the component from the cognition model
-//			//curVelocity[i]  += this.m_Phi1*chi*RandomNumberGenerator.randomDouble(0,1)*(personalBestPos[i]-curPosition[i]);
+//			//curVelocity[i]  += this.m_Phi1*chi*RNG.randomDouble(0,1)*(personalBestPos[i]-curPosition[i]);
 //			double dir,diff;
 //			dir = (personalBestPos[i] < curPosition[i]) ? -1 : 1;
 //			diff = Math.abs((personalBestPos[i]-curPosition[i]));
 //			curVelocity[i]  += this.m_Phi1*chi*.5*dir*Math.max(diff, .1);
 //			// the component from the social model
-//			//curVelocity[i]  += this.m_Phi2*chi*RandomNumberGenerator.randomDouble(0,1)*(neighbourBestPos[i]-curPosition[i]);
+//			//curVelocity[i]  += this.m_Phi2*chi*RNG.randomDouble(0,1)*(neighbourBestPos[i]-curPosition[i]);
 //			dir = (neighbourBestPos[i]< curPosition[i]) ? -1 : 1;
 //			diff = Math.abs((neighbourBestPos[i]-curPosition[i]));
 //			curVelocity[i]  += this.m_Phi2*chi*.5*dir*Math.max(diff, .1);
@@ -693,17 +693,17 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 		double[] accel = new double[curPosition.length];
 		double chi;
 //		double r1, r2;
-//		r1=RandomNumberGenerator.randomDouble(0,1);
-//		r2=RandomNumberGenerator.randomDouble(0,1);
+//		r1=RNG.randomDouble(0,1);
+//		r2=RNG.randomDouble(0,1);
 		for (int i = 0; i < personalBestPos.length; i++) {
 			// the component from the old velocity
 			accel[i]  = 0;
 			if (algType.getSelectedTag().getID()==1) chi = m_InertnessOrChi;
 			else chi = 1.;
 			// the component from the cognition model
-			accel[i]  = this.m_Phi1*chi*RandomNumberGenerator.randomDouble(0,1)*(personalBestPos[i]-curPosition[i]);
+			accel[i]  = this.m_Phi1*chi*RNG.randomDouble(0,1)*(personalBestPos[i]-curPosition[i]);
 			// the component from the social model
-			accel[i]  += this.m_Phi2*chi*RandomNumberGenerator.randomDouble(0,1)*(neighbourBestPos[i]-curPosition[i]);
+			accel[i]  += this.m_Phi2*chi*RNG.randomDouble(0,1)*(neighbourBestPos[i]-curPosition[i]);
 		}
 		return accel;
 	}
@@ -734,11 +734,11 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 			if (algType.getSelectedTag().getID()==1) chi=m_InertnessOrChi;
 			else chi = 1.;
 			// the component from the cognition model
-//			accel[i]  = this.m_Phi1*chi*/*RandomNumberGenerator.randomDouble(0,1)**/cogRand.getElement(i);
-			accel[i]  = this.m_Phi1*chi*/*RandomNumberGenerator.randomDouble(0,1)**/cogRandB.get(i,0);
+//			accel[i]  = this.m_Phi1*chi*/*RNG.randomDouble(0,1)**/cogRand.getElement(i);
+			accel[i]  = this.m_Phi1*chi*/*RNG.randomDouble(0,1)**/cogRandB.get(i,0);
 			// the component from the social model
-//			accel[i]  += this.m_Phi2*chi*/*RandomNumberGenerator.randomDouble(0,1)**/socRand.getElement(i);
-			accel[i]  += this.m_Phi2*chi*/*RandomNumberGenerator.randomDouble(0,1)**/socRandB.get(i,0);
+//			accel[i]  += this.m_Phi2*chi*/*RNG.randomDouble(0,1)**/socRand.getElement(i);
+			accel[i]  += this.m_Phi2*chi*/*RNG.randomDouble(0,1)**/socRandB.get(i,0);
 		}
 		return accel;
 	}
@@ -785,13 +785,13 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 		
 		if (len > 0) {
 			// initialize random vector
-//			randVec.set(0, 0, len/2.+RandomNumberGenerator.gaussianDouble(len/2));
+//			randVec.set(0, 0, len/2.+RNG.gaussianDouble(len/2));
 //			for (int i=1; i<dim; i++) {
-//				randVec.set(i, 0, RandomNumberGenerator.gaussianDouble(len/(scale*2)));
+//				randVec.set(i, 0, RNG.gaussianDouble(len/(scale*2)));
 //			}
-			randVec.set(0, 0, project(0, len, len/2+RandomNumberGenerator.gaussianDouble(len/2)));
+			randVec.set(0, 0, project(0, len, len/2+RNG.gaussianDouble(len/2)));
 			for (int i=1; i<dim; i++) {
-				randVec.set(i, 0, project(-len/2, len/2, RandomNumberGenerator.gaussianDouble(len/(scale*2))));
+				randVec.set(i, 0, project(-len/2, len/2, RNG.gaussianDouble(len/(scale*2))));
 			}
 			Matrix rotation = getRotationMatrix(dir);
 			rotation = rotation.transpose();
@@ -816,10 +816,10 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 //
 //		if (len > 0) {
 //			// initialize random vector
-//			randVec.setElement(0, len/2.+RandomNumberGenerator.gaussianDouble(len/2));
-//			//randVec.setElement(0, RandomNumberGenerator.randomDouble(0, len));
+//			randVec.setElement(0, len/2.+RNG.gaussianDouble(len/2));
+//			//randVec.setElement(0, RNG.randomDouble(0, len));
 //			for (int i=1; i<dim; i++) {
-//				randVec.setElement(i, RandomNumberGenerator.gaussianDouble(len/(scale*2)));
+//				randVec.setElement(i, RNG.gaussianDouble(len/(scale*2)));
 //			}
 //
 //			GMatrix rotation = nrotate(dir);
@@ -1042,7 +1042,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 		case 6: // m_TopologyRange random informants, may be the same several times
 			for (int i=0; i<m_TopologyRange; i++) {
 				// select random informant
-				indy = (AbstractEAIndividual)pop.get(RandomNumberGenerator.randomInt(0, pop.size()-1));
+				indy = (AbstractEAIndividual)pop.get(RNG.randomInt(0, pop.size()-1));
 				// set local values
 				compareAndSetAttractor(localBestFitness, localBestPosition, indy, useHistoric);
 			}
@@ -1185,7 +1185,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 		if (isOutOfRange(pos, range)) {
 			System.err.println("warning, ensureConstraints called with already violating position (PSO)... reinitializing particle.");
 			for (int i=0; i<pos.length; i++) {
-				pos[i]=RandomNumberGenerator.randomDouble(range[i][0],range[i][1]);
+				pos[i]=RNG.randomDouble(range[i][0],range[i][1]);
 				newPos[i] = pos[i] + velocity[i];
 			}
 		} else {

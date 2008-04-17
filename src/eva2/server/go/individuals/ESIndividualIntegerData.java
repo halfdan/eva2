@@ -8,7 +8,7 @@ import eva2.server.go.operators.crossover.CrossoverESDefault;
 import eva2.server.go.operators.mutation.InterfaceMutation;
 import eva2.server.go.operators.mutation.MutateESGlobal;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 /** This individual uses a real-valued genotype to code for integer values.
  * Created by IntelliJ IDEA.
@@ -255,8 +255,8 @@ public class ESIndividualIntegerData extends AbstractEAIndividual implements Int
     /** This method performs a simple one element mutation on the double vector
      */
     public void defaultMutate() {
-        int mutationIndex = RandomNumberGenerator.randomInt(0, this.m_Genotype.length-1);
-        this.m_Genotype[mutationIndex] += ((this.m_Range[mutationIndex][1] - this.m_Range[mutationIndex][0])/2)*RandomNumberGenerator.gaussianDouble(0.05f);
+        int mutationIndex = RNG.randomInt(0, this.m_Genotype.length-1);
+        this.m_Genotype[mutationIndex] += ((this.m_Range[mutationIndex][1] - this.m_Range[mutationIndex][0])/2)*RNG.gaussianDouble(0.05f);
         if (this.m_Genotype[mutationIndex] < this.m_Range[mutationIndex][0]) this.m_Genotype[mutationIndex] = this.m_Range[mutationIndex][0];
         if (this.m_Genotype[mutationIndex] > this.m_Range[mutationIndex][1]) this.m_Genotype[mutationIndex] = this.m_Range[mutationIndex][1];
     }
@@ -277,7 +277,7 @@ public class ESIndividualIntegerData extends AbstractEAIndividual implements Int
      */
     public void defaultInit() {
         for (int i = 0; i < this.m_Genotype.length; i++) {
-            this.m_Genotype[i] = RandomNumberGenerator.randomInt(this.m_Range[i][0], this.m_Range[i][1]);
+            this.m_Genotype[i] = RNG.randomInt(this.m_Range[i][0], this.m_Range[i][1]);
         }
     }
 /**********************************************************************************************************************

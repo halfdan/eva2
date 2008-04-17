@@ -5,7 +5,7 @@ import eva2.server.go.operators.crossover.CrossoverESDefault;
 import eva2.server.go.operators.mutation.InterfaceMutation;
 import eva2.server.go.operators.mutation.MutateESGlobal;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 /** This individual uses a real-valued genotype to code for a permutations,
  * the sorting of the real-valued genotype gives the permutation.
@@ -180,7 +180,7 @@ public class ESIndividualPermutationData extends AbstractEAIndividual implements
               for (int j = 0; j < this.m_Genotype[p].length; j++) {
                 if ((i != j) && (this.m_Genotype[p][i] == this.m_Genotype[p][j])) {
                   notValid = true;
-                  this.m_Genotype[p][j] = RandomNumberGenerator.randomDouble(0, 1);
+                  this.m_Genotype[p][j] = RNG.randomDouble(0, 1);
                 }
               }
             }
@@ -320,8 +320,8 @@ public class ESIndividualPermutationData extends AbstractEAIndividual implements
      */
     public void defaultMutate() {
       for (int i = 0; i < m_Genotype.length; i++) {
-        int mutationIndex = RandomNumberGenerator.randomInt(0, this.m_Genotype[i].length-1);
-        this.m_Genotype[i][mutationIndex] += ((this.m_Range[i][mutationIndex][1] - this.m_Range[i][mutationIndex][0])/2)*RandomNumberGenerator.gaussianDouble(0.05f);
+        int mutationIndex = RNG.randomInt(0, this.m_Genotype[i].length-1);
+        this.m_Genotype[i][mutationIndex] += ((this.m_Range[i][mutationIndex][1] - this.m_Range[i][mutationIndex][0])/2)*RNG.gaussianDouble(0.05f);
         if (this.m_Genotype[i][mutationIndex] < this.m_Range[i][mutationIndex][0]) this.m_Genotype[i][mutationIndex] = this.m_Range[i][mutationIndex][0];
         if (this.m_Genotype[i][mutationIndex] > this.m_Range[i][mutationIndex][1]) this.m_Genotype[i][mutationIndex] = this.m_Range[i][mutationIndex][1];
       }
@@ -333,7 +333,7 @@ public class ESIndividualPermutationData extends AbstractEAIndividual implements
     public void defaultInit() {
         for (int i = 0; i < this.m_Genotype.length; i++) {
           for (int j = 0; j < this.m_Genotype[i].length; j++) {
-            this.m_Genotype[i][j] = RandomNumberGenerator.randomDouble(this.m_Range[i][j][0], this.m_Range[i][j][1]);
+            this.m_Genotype[i][j] = RNG.randomDouble(this.m_Range[i][j][0], this.m_Range[i][j][1]);
           }
         }
     }

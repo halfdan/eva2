@@ -7,7 +7,7 @@ import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceGIIndividual;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 /**
  * Created by IntelliJ IDEA.
@@ -49,7 +49,7 @@ public class CrossoverGIUniform implements InterfaceCrossover, java.io.Serializa
         //for (int i = 0; i < result.length; i++) System.out.println("Before Crossover: " +result[i].getSolutionRepresentationFor());
         if ((indy1 instanceof InterfaceGIIndividual) && (partners.get(0) instanceof InterfaceGIIndividual)) {
             int         length          =  ((InterfaceGIIndividual)indy1).getGenotypeLength();
-            int         mixer           = RandomNumberGenerator.randomInt(0, partners.size());
+            int         mixer           = RNG.randomInt(0, partners.size());
             int[][][]   tmpInts         = new int[2][partners.size()+1][];
 
             tmpInts[0][0]     = ((InterfaceGIIndividual)indy1).getIGenotype();
@@ -62,7 +62,7 @@ public class CrossoverGIUniform implements InterfaceCrossover, java.io.Serializa
             }
 
             for (int i = 0; i < length; i++) {
-                mixer = RandomNumberGenerator.randomInt(0, partners.size());
+                mixer = RNG.randomInt(0, partners.size());
                 for (int j = 0; j < tmpInts[0].length; j++) {
                     if ((tmpInts[0][(j + mixer) % tmpInts[0].length].length > i) &&
                         (tmpInts[1][j].length > i)) {

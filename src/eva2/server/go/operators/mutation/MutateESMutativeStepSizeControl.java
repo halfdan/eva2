@@ -4,7 +4,7 @@ import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceESIndividual;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 
 /**
  * Created by IntelliJ IDEA.
@@ -65,13 +65,13 @@ public class MutateESMutativeStepSizeControl implements InterfaceMutation, java.
         if (individual instanceof InterfaceESIndividual) {
             double[] x = ((InterfaceESIndividual)individual).getDGenotype();
             double[][] range = ((InterfaceESIndividual)individual).getDoubleRange();
-            if (RandomNumberGenerator.flipCoin(0.5))
+            if (RNG.flipCoin(0.5))
                 this.m_MutationStepSize = this.m_MutationStepSize * this.m_Alpha;
             else
                 this.m_MutationStepSize = this.m_MutationStepSize / this.m_Alpha;
             if (this.m_MutationStepSize < this.m_LowerLimitStepSize) this.m_MutationStepSize = this.m_LowerLimitStepSize;
             for (int i = 0; i < x.length; i++) {
-                x[i] += ((range[i][1] -range[i][0])/2)*RandomNumberGenerator.gaussianDouble(this.m_MutationStepSize);
+                x[i] += ((range[i][1] -range[i][0])/2)*RNG.gaussianDouble(this.m_MutationStepSize);
                 if (range[i][0] > x[i]) x[i] = range[i][0];
                 if (range[i][1] < x[i]) x[i] = range[i][1];
             }

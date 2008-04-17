@@ -23,7 +23,7 @@ import eva2.server.go.populations.Population;
 import eva2.server.go.problems.regression.InterfaceRegressionFunction;
 import eva2.server.go.problems.regression.RFKoza_GPI_10_2;
 import eva2.server.go.strategies.InterfaceOptimizer;
-import eva2.server.go.tools.RandomNumberGenerator;
+import wsi.ra.math.RNG;
 import eva2.tools.EVAERROR;
 
 /**
@@ -100,7 +100,7 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
         if (m_TargetFunction == null) m_TargetFunction = new RFKoza_GPI_10_2();
         this.m_OverallBest  = null;
         this.m_C            = new double[this.m_NumberOfConstants];
-        for (int i = 0; i < this.m_C.length; i++) this.m_C[i] = RandomNumberGenerator.randomDouble(-10, 10);
+        for (int i = 0; i < this.m_C.length; i++) this.m_C[i] = RNG.randomDouble(-10, 10);
     }
 
     /** This method compiles the area
@@ -212,7 +212,7 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
 
         fitness = fitness / (double)this.m_NumberOfCheckPoints;
         // add noise to the fitness
-        fitness += RandomNumberGenerator.gaussianDouble(this.m_Noise);
+        fitness += RNG.gaussianDouble(this.m_Noise);
         // set the fitness of the individual
         individual.SetFitness(0, fitness);
         if ((this.m_Plot != null) && (this.m_Plot.getFunctionArea().getContainerSize() ==0)) this.m_OverallBest = null;
