@@ -285,5 +285,237 @@ public class Mathematics {
         b[i][j] /= det;
     return b;
   }
+  
+  /** This method return a vector from a to b
+   * @param a     first vector
+   * @param b     second vectors
+   * @return the vector from a to b
+   */
+  public static double[] getVectorFromTo(double[] a, double[] b) {
+      double[] result = new double[a.length];
+      for (int i = 0; i < result.length; i++) {
+          result[i] = b[i] - a[i];
+      }
+      return result;
+  }
 
+
+  /** This method returns a mean vector from a whole array of vectors.
+   * @param d     d[i] the vectors, d[i][j] the jth coordinate of the ith vector
+   * @return The mean vector.
+   */
+  public static double[] getMeanVector(double[][] d) {
+      double[] result = new double[d[0].length];
+      for (int i = 0; i < d.length; i++) {
+          for (int j = 0; j < d[i].length; j++) {
+              result[j] += d[i][j];
+          }
+      }
+      for (int i = 0; i < result.length; i++) {
+          result[i] = result[i]/((double)d.length);
+      }
+      return result;
+  }
+  
+  /**
+   * Normalize the given vector to a length of 1 returning a deep copy.
+   * @param d
+   * @return
+   */
+  public static double[] getNormalizedVector(double[] d) {
+      double[] result = new double[d.length];
+      System.arraycopy(d, 0, result, 0, d.length);
+      normalizeVector(result);
+      return result;
+  }
+  
+  /**
+   * Normalize the given vector to a length of 1 in place.
+   * @param d
+   * @return
+   */
+  public static void normalizeVector(double[] d) {
+      double sum = 0;
+
+      for (int i = 0; i < d.length; i++) {
+          sum += Math.pow(d[i], 2);
+      }
+      sum = Math.sqrt(sum);
+
+      for (int i = 0; i < d.length; i++) {
+          d[i] = d[i]/sum;
+      }
+  }
+  
+  /**
+   * Subtract vectors returning a new vector c = a - b.
+   * 
+   * @param a
+   * @param b
+   * @return a new vector c = a - b
+   */
+  public static double[] subVector(double[] a, double[] b) {
+      double[] result = new double[a.length];
+      for (int i = 0; i < a.length; i++) {
+          result[i] = a[i] - b[i];
+      }
+      return result;
+  }
+
+  /**
+   * Add vectors returning a new vector c = a + b;
+   * @param a
+   * @param b
+   * @return a new vector c = a + b
+   */
+  public static double[] vvAdd(double[] a, double[] b) {
+      double[] result = new double[a.length];
+      for (int i = 0; i < a.length; i++) {
+          result[i] = a[i] + b[i];
+      }
+      return result;
+  }
+
+  /**
+   * Add vectors in place setting res = v1 + v2.
+   *
+   * @param v1
+   * @param v2
+   * @return vector addition
+   */
+  public static void vvAdd(double[] v1, double[] v2, double[] res) {
+    for (int i = 0; i < v1.length; i++)
+      res[i] = v1[i] + v2[i];
+  }
+  
+  /**
+   * Add each entry of a vector with a scalar in a new vector.
+   * 
+   * @param s
+   * @param v
+   * @return 
+   */
+  public static double[] svAdd (double s, double[] v) {
+	  double[] res = new double[v.length];
+	  for (int i = 0; i < v.length; i++) {
+		  res[i] = v[i] + s;
+	  }
+	  return res;
+  }
+
+  /**
+   * Scalar product of two vectors returning sum_i (a_i * b_i).
+   * 
+   * @param a
+   * @param b
+   * @return
+   */
+  public static double vvMult(double[] a, double[] b) {
+      double result = 0;
+      for (int i = 0; i < a.length; i++) {
+          result += a[i]*b[i];
+      }
+      return result;
+  }
+  
+  /**
+   * Multiplies (scales) every element of the array v with s returning a new vector.
+   *
+   * @param s
+   *                a scalar
+   * @param v
+   *                an array to be multiplied with s.
+   * @return a scaled array.
+   */
+  public static double[] svMult(double s, double[] v) {
+    double[] res = new double[v.length];
+    for (int i = 0; i < v.length; i++) {
+      res[i] = v[i] * s;
+    }
+    return res;
+  }
+  
+  /**
+   * Multiplies (scales) every element of the array v with s in place.
+   *
+   * @param s a scalar
+   * @param v an array to be multiplied with s.
+   * @return a scaled array.
+   */
+  public static void svMult(double s, double[] v, double[] res) {
+    for (int i = 0; i < v.length; i++) {
+      res[i] = v[i] * s;
+    }
+  }
+  
+  /**
+   * Return a new vector which is c = (v_i/s).
+   *
+   * @param s
+   * @param v
+   * @return
+   */
+  public static double[] svDiv(double s, double[] v) {
+    double[] res = new double[v.length];
+    for (int i = 0; i < v.length; i++) {
+      res[i] = v[i] / s;
+    }
+    return res;
+  }
+  
+  /**
+   * Divide by scalar in place, res_i = v_i/s.
+   *
+   * @param s
+   * @param v
+   * @return
+   */
+  public static void svDiv(double s, double[] v, double[] res) {
+    for (int i = 0; i < v.length; i++) {
+      res[i] = v[i] / s;
+    }
+  }
+  
+  /**
+   * Multiply a vector b with scalar a in a new vector c.
+   * 
+   * @param a
+   * @param b
+   * @return
+   */
+  public static double[] scalarMultVector(double a, double[] b) {
+      double[] result = new double[b.length];
+      for (int i = 0; i < b.length; i++) {
+          result[i]= a*b[i];
+      }
+      return result;
+  }
+
+  /** 
+   * Return a vector of given length containing zeroes.
+   * @param n
+   * @return
+   */
+  public static double[] nullVector(int n) {
+      double[] result = new double[n];
+      Arrays.fill(result, 0, result.length-1, 0.);
+      return result;
+  }
+  
+  /**
+   * Returns false if a vector contains NaN, its squared sum is NaN
+   * or the absolute sum is smaller than 10^-18.
+   * @param d
+   * @return
+   */
+  public static boolean isValidVec(double[] d) {
+      double sum = 0;
+      for (int i = 0; i < d.length; i++) {
+          if (Double.isNaN(d[i])) return false;
+          sum += Math.pow(d[i],2);
+      }
+      if (Double.isNaN(sum)) return false;
+      if (Math.abs(sum) < 0.000000000000000001) return false;
+      return true;
+  }
 }

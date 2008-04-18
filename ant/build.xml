@@ -535,17 +535,6 @@
                              </b></i></font>]]>
             </header>
 
-    		<!--
-            <footer><![CDATA[javaeva<br>
-                             <A HREF="http://www.ra.cs.uni-tuebingen.de/forschung/"
-                                target="_top">JavaEvA
-                             </A><BR>
-                             E-Mail:
-                             <A HREF="mailto:ulmer@informatik.uni-tuebingen.de">
-                                ulmer@informatik.uni-tuebingen.de
-                             </A>]]>
-            </footer>
-            	-->
         <footer><![CDATA[eva2<br>
                          <A HREF="http://www.ra.cs.uni-tuebingen.de/forschung/"
                             target="_top">EvA2
@@ -578,92 +567,92 @@
       </taskdef>
 
       <pmd shortFilenames="true" rulesetfiles="rulesets/basic.xml" failonerror="no">
-          <formatter type="summaryhtml" toFile="${build.directory}/pmdReport4JavaEVA-${DSTAMP}_basic.html"/>
+          <formatter type="summaryhtml" toFile="${build.directory}/pmdReport4EvA2-${DSTAMP}_basic.html"/>
           <fileset dir="${source.directory}">
               <include name="**/*.java"/>
           </fileset>
       </pmd>
-     <echo>result written to ${basedir}/${build.directory}/pmdReport4JavaEVA-${DSTAMP}_basic.html</echo>
+     <echo>result written to ${basedir}/${build.directory}/pmdReport4EvA2-${DSTAMP}_basic.html</echo>
 
       <pmd shortFilenames="true" rulesetfiles="rulesets/braces.xml" failonerror="no">
-          <formatter type="summaryhtml" toFile="${build.directory}/pmdReport4JavaEVA-${DSTAMP}_braces.html"/>
+          <formatter type="summaryhtml" toFile="${build.directory}/pmdReport4EvA2-${DSTAMP}_braces.html"/>
           <fileset dir="${source.directory}">
               <include name="**/*.java"/>
           </fileset>
       </pmd>
-     <echo>result written to ${basedir}/${build.directory}/pmdReport4JavaEVA-${DSTAMP}_braces.html</echo>
+     <echo>result written to ${basedir}/${build.directory}/pmdReport4EvA2-${DSTAMP}_braces.html</echo>
 
       <pmd shortFilenames="true" rulesetfiles="rulesets/codesize.xml" failonerror="no">
-          <formatter type="summaryhtml" toFile="${build.directory}/pmdReport4JavaEVA-${DSTAMP}_codesize.html"/>
+          <formatter type="summaryhtml" toFile="${build.directory}/pmdReport4EvA2-${DSTAMP}_codesize.html"/>
           <fileset dir="${source.directory}">
               <include name="**/*.java"/>
           </fileset>
       </pmd>
-     <echo>result written to ${basedir}/${build.directory}/pmdReport4JavaEVA-${DSTAMP}_codesize.html</echo>
+     <echo>result written to ${basedir}/${build.directory}/pmdReport4EvA2-${DSTAMP}_codesize.html</echo>
 
       <pmd shortFilenames="true" rulesetfiles="rulesets/controversial.xml" failonerror="no">
-          <formatter type="summaryhtml" toFile="${build.directory}/pmdReport4JavaEVA-${DSTAMP}_controversial.html"/>
+          <formatter type="summaryhtml" toFile="${build.directory}/pmdReport4EvA2-${DSTAMP}_controversial.html"/>
           <fileset dir="${source.directory}">
               <include name="**/*.java"/>
           </fileset>
       </pmd>
-     <echo>result written to ${basedir}/${build.directory}/pmdReport4JavaEVA-${DSTAMP}_controversial.html</echo>
+     <echo>result written to ${basedir}/${build.directory}/pmdReport4EvA2-${DSTAMP}_controversial.html</echo>
 
       <pmd shortFilenames="true" rulesetfiles="rulesets/coupling.xml" failonerror="no">
-          <formatter type="summaryhtml" toFile="${build.directory}/pmdReport4JavaEVA-${DSTAMP}_coupling.html"/>
+          <formatter type="summaryhtml" toFile="${build.directory}/pmdReport4EvA2-${DSTAMP}_coupling.html"/>
           <fileset dir="${source.directory}">
               <include name="**/*.java"/>
           </fileset>
       </pmd>
-     <echo>result written to ${basedir}/${build.directory}/pmdReport4JavaEVA-${DSTAMP}_coupling.html</echo>
+     <echo>result written to ${basedir}/${build.directory}/pmdReport4EvA2-${DSTAMP}_coupling.html</echo>
 
       <pmd shortFilenames="true" rulesetfiles="rulesets/finalizers.xml" failonerror="no">
-          <formatter type="summaryhtml" toFile="${build.directory}/pmdReport4JavaEVA-${DSTAMP}_finalizers.html"/>
+          <formatter type="summaryhtml" toFile="${build.directory}/pmdReport4EvA2-${DSTAMP}_finalizers.html"/>
           <fileset dir="${source.directory}">
               <include name="**/*.java"/>
           </fileset>
       </pmd>
-     <echo>result written to ${basedir}/${build.directory}/pmdReport4JavaEVA-${DSTAMP}_finalizers.html</echo>
+     <echo>result written to ${basedir}/${build.directory}/pmdReport4EvA2-${DSTAMP}_finalizers.html</echo>
 
       <pmd shortFilenames="true" rulesetfiles="rulesets/imports.xml" failonerror="no">
-          <formatter type="summaryhtml" toFile="${build.directory}/pmdReport4JavaEVA-${DSTAMP}_imports.html"/>
+          <formatter type="summaryhtml" toFile="${build.directory}/pmdReport4EvA2-${DSTAMP}_imports.html"/>
           <fileset dir="${source.directory}">
               <include name="**/*.java"/>
           </fileset>
       </pmd>
-     <echo>result written to ${basedir}/${build.directory}/pmdReport4JavaEVA-${DSTAMP}_imports.html</echo>
+     <echo>result written to ${basedir}/${build.directory}/pmdReport4EvA2-${DSTAMP}_imports.html</echo>
 
       <pmd shortFilenames="true" rulesetfiles="rulesets/naming.xml" failonerror="no">
-          <formatter type="summaryhtml" toFile="${build.directory}/pmdReport4JavaEVA-${DSTAMP}_naming.html"/>
+          <formatter type="summaryhtml" toFile="${build.directory}/pmdReport4EvA2-${DSTAMP}_naming.html"/>
           <fileset dir="${source.directory}">
               <include name="**/*.java"/>
           </fileset>
       </pmd>
-     <echo>result written to ${basedir}/${build.directory}/pmdReport4JavaEVA-${DSTAMP}_naming.html</echo>
+     <echo>result written to ${basedir}/${build.directory}/pmdReport4EvA2-${DSTAMP}_naming.html</echo>
 
       <pmd shortFilenames="true" rulesetfiles="rulesets/strictexception.xml" failonerror="no">
-          <formatter type="summaryhtml" toFile="${build.directory}/pmdReport4JavaEVA-${DSTAMP}_strictexception.html"/>
+          <formatter type="summaryhtml" toFile="${build.directory}/pmdReport4EvA2-${DSTAMP}_strictexception.html"/>
           <fileset dir="${source.directory}">
               <include name="**/*.java"/>
           </fileset>
       </pmd>
-     <echo>result written to ${basedir}/${build.directory}/pmdReport4JavaEVA-${DSTAMP}_strictexception.html</echo>
+     <echo>result written to ${basedir}/${build.directory}/pmdReport4EvA2-${DSTAMP}_strictexception.html</echo>
 
       <pmd shortFilenames="true" rulesetfiles="rulesets/strings.xml" failonerror="no">
-          <formatter type="summaryhtml" toFile="${build.directory}/pmdReport4JavaEVA-${DSTAMP}_strings.html"/>
+          <formatter type="summaryhtml" toFile="${build.directory}/pmdReport4EvA2-${DSTAMP}_strings.html"/>
           <fileset dir="${source.directory}">
               <include name="**/*.java"/>
           </fileset>
       </pmd>
-     <echo>result written to ${basedir}/${build.directory}/pmdReport4JavaEVA-${DSTAMP}_strings.html</echo>
+     <echo>result written to ${basedir}/${build.directory}/pmdReport4EvA2-${DSTAMP}_strings.html</echo>
 
       <pmd shortFilenames="true" rulesetfiles="rulesets/unusedcode.xml" failonerror="no">
-          <formatter type="summaryhtml" toFile="${build.directory}/pmdReport4JavaEVA-${DSTAMP}_unusedcode.html"/>
+          <formatter type="summaryhtml" toFile="${build.directory}/pmdReport4EvA2-${DSTAMP}_unusedcode.html"/>
           <fileset dir="${source.directory}">
               <include name="**/*.java"/>
           </fileset>
       </pmd>
-     <echo>result written to ${basedir}/${build.directory}/pmdReport4JavaEVA-${DSTAMP}_unusedcode.html</echo>
+     <echo>result written to ${basedir}/${build.directory}/pmdReport4EvA2-${DSTAMP}_unusedcode.html</echo>
 
       <!-- check for duplicated code -->
       <echo>WARNING: use environment variable: ANT_OPTS=-Xmx512m or this task will fail.</echo>
@@ -676,12 +665,12 @@
           </fileset>
         </classpath>
       </taskdef>
-      <cpd format="text" minimumTokenCount="200" outputFile="${build.directory}/duplicatedCodeReport4JavaEVA-${DSTAMP}.txt">
+      <cpd format="text" minimumTokenCount="200" outputFile="${build.directory}/duplicatedCodeReport4EvA2-${DSTAMP}.txt">
         <fileset dir="${source.directory}">
             <include name="**/*.java"/>
         </fileset>
       </cpd>
-    <echo>result written to ${basedir}/${build.directory}/duplicatedCodeReport4JavaEVA-${DSTAMP}.txt</echo>
+    <echo>result written to ${basedir}/${build.directory}/duplicatedCodeReport4EvA2-${DSTAMP}.txt</echo>
   </target>
 
 
@@ -712,13 +701,13 @@ Number (CCN)           maintenance
             abortOnFail="false"
             ccnPerFuncMax="30"
             generateReport="true"
-            outputfile="${build.directory}/javancssReport4JavaEVA-${DSTAMP}.txt"
+            outputfile="${build.directory}/javancssReport4EvA2-${DSTAMP}.txt"
             format="text"
             packageMetrics="true"
             classMetrics="false"
             functionMetrics="false"
             />
-    <echo>result written to ${basedir}/${build.directory}/javancssReport4JavaEVA-${DSTAMP}.txt</echo>
+    <echo>result written to ${basedir}/${build.directory}/javancssReport4EvA2-${DSTAMP}.txt</echo>
   </target>
 
   <target name="jalopy" description="SOFTWAREDESIGN: source code formatter using the JOELib convention.">
@@ -825,8 +814,8 @@ Number (CCN)           maintenance
   <target name="findbugs" depends="compile" description="SOFTWAREDESIGN: Run bug detector for JOELib and comfortable GUI to analyze results.">
     <echo>Starts findBugs ...</echo>
     <antcall target="findbugs.calculate"/>
-    <echo>result written to ${basedir}/${build.directory}/javaeva-fb.xml, now you can open this file with the findBugs GUI ...</echo>
-    <echo>open with 'File->LoadBugs' then open '${basedir}/${build.directory}/javaeva-fb.xml'.</echo>
+    <echo>result written to ${basedir}/${build.directory}/EvA2-fb.xml, now you can open this file with the findBugs GUI ...</echo>
+    <echo>open with 'File->LoadBugs' then open '${basedir}/${build.directory}/EvA2-fb.xml'.</echo>
     <antcall target="findbugsGUI"/>
   </target>
 </project>

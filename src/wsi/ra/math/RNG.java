@@ -2,6 +2,8 @@ package wsi.ra.math;
 
 import java.util.Random;
 
+import eva2.tools.Mathematics;
+
 public class RNG extends Random {
   private static Random random;
   private static long randomSeed;
@@ -263,6 +265,21 @@ public class RNG extends Random {
 		  // add noise to the value
 		  v[i] += gaussianDouble(dev);
 	  }
+  }
+  
+  /**
+   * Create a random vector with gaussian random double entries.
+   * 
+   * @param n
+   * @return
+   */
+  public static double[] gaussianVector(int n, double dev) {
+	  double[] result = new double[n];
+	  for (int i = 0; i < result.length; i++) {
+		  result[i] = RNG.gaussianDouble(dev);
+	  }
+	  Mathematics.normalizeVector(result);
+	  return result;
   }
 }
 

@@ -10,6 +10,7 @@ import eva2.server.go.individuals.InterfaceESIndividual;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.F1Problem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
+import eva2.tools.Mathematics;
 import wsi.ra.math.RNG;
 
 /**
@@ -41,7 +42,7 @@ public class CrossoverESUNDX implements InterfaceCrossover, java.io.Serializable
     }
 
     /** This method performs crossover on two individuals. If the individuals do
-     * not implement InterfaceGAIndividual, then nothing will happen.
+     * not implement InterfaceESIndividual, then nothing will happen.
      * @param indy1 The first individual
      * @param partners The second individual
      */
@@ -71,7 +72,7 @@ public class CrossoverESUNDX implements InterfaceCrossover, java.io.Serializable
             for (int i = 1; i < parents.length; i++) {
                 nParents[i-1] = parents[i];
             }
-            double[] g = this.getMeanVector(nParents), tmpD;
+            double[] g = Mathematics.getMeanVector(nParents), tmpD;
             double w, v;
             ArrayList givenCoordinates      = this.getGivenCoordinates(g, nParents);
             ArrayList missingCorrdinates    = this.getMissingCoordinates(g, parents[0], givenCoordinates);
@@ -84,13 +85,13 @@ public class CrossoverESUNDX implements InterfaceCrossover, java.io.Serializable
                 for (int j = 0; j < givenCoordinates.size(); j++) {
                     tmpD = (double[])givenCoordinates.get(j);
                     w = RNG.gaussianDouble(this.m_Zeta);
-                    children[i] = this.addVector(children[i], this.scalarMultVector(w, tmpD));
+                    children[i] = Mathematics.vvAdd(children[i], Mathematics.scalarMultVector(w, tmpD));
                 }
                 // now the missing stuff
                 for (int j = 0; j < missingCorrdinates.size(); j++) {
                     tmpD = (double[])missingCorrdinates.get(j);
                     w = RNG.gaussianDouble(this.m_Eta);
-                    children[i] = this.addVector(children[i], this.scalarMultVector(w, tmpD));
+                    children[i] = Mathematics.vvAdd(children[i], Mathematics.scalarMultVector(w, tmpD));
                 }
             }
 
@@ -109,19 +110,19 @@ public class CrossoverESUNDX implements InterfaceCrossover, java.io.Serializable
         double      tmpD;
 
         for (int i = 0; i < parents.length; i++) {
-            tmpVec = this.subVector(parents[i], mean);
-            if (this.isValidVec(tmpVec)) {
+            tmpVec = Mathematics.subVector(parents[i], mean);
+            if (Mathematics.isValidVec(tmpVec)) {
                 if (result.size() == 0) {
                     result.add(tmpVec);
                 } else {
                     // apply the infamous Gram-Schmidt
                     for (int j = 0; j < result.size(); j++) {
                         toro = (double[]) result.get(j);
-                        tmpD = this.multVector(toro, tmpVec)/this.multVector(toro, toro);
-                        toro = this.scalarMultVector(tmpD, toro);
-                        tmpVec = this.subVector(tmpVec, toro);
+                        tmpD = Mathematics.vvMult(toro, tmpVec)/Mathematics.vvMult(toro, toro);
+                        toro = Mathematics.scalarMultVector(tmpD, toro);
+                        tmpVec = Mathematics.subVector(tmpVec, toro);
                     }
-                    if (this.isValidVec(tmpVec)) result.add(tmpVec);
+                    if (Mathematics.isValidVec(tmpVec)) result.add(tmpVec);
                 }
             }
         }
@@ -138,18 +139,18 @@ public class CrossoverESUNDX implements InterfaceCrossover, java.io.Serializable
         for (int i = 0; i < given.size(); i++) completeList.add(given.get(i));
 
         while (completeList.size() < mean.length) {
-            tmpVec = this.randomVector(mean.length);
-            if (this.isValidVec(tmpVec)) {
+            tmpVec = RNG.gaussianVector(mean.length, 1.);
+            if (Mathematics.isValidVec(tmpVec)) {
                 // apply the infamous Gram-Schmidt
                 for (int j = 0; j < completeList.size(); j++) {
                     toro = (double[]) completeList.get(j);
-                    tmpD = this.multVector(toro, tmpVec)/this.multVector(toro, toro);
-                    toro = this.scalarMultVector(tmpD, toro);
-                    tmpVec = this.subVector(tmpVec, toro);
+                    tmpD = Mathematics.vvMult(toro, tmpVec)/Mathematics.vvMult(toro, toro);
+                    toro = Mathematics.scalarMultVector(tmpD, toro);
+                    tmpVec = Mathematics.subVector(tmpVec, toro);
                 }
-                if (this.isValidVec(tmpVec)) {
-                    tmpVec = this.getNormalizedVector(tmpVec);
-                    tmpVec = this.scalarMultVector(this.multVector(theOther, tmpVec), tmpVec);
+                if (Mathematics.isValidVec(tmpVec)) {
+                    tmpVec = Mathematics.getNormalizedVector(tmpVec);
+                    tmpVec = Mathematics.scalarMultVector(Mathematics.vvMult(theOther, tmpVec), tmpVec);
                     result.add(tmpVec);
                     completeList.add(tmpVec);
                 }
@@ -159,106 +160,7 @@ public class CrossoverESUNDX implements InterfaceCrossover, java.io.Serializable
         return result;
     }
 
-    private double[] randomVector(int n) {
-        double[] result = new double[n];
-        for (int i = 0; i < result.length; i++) {
-            result[i] = RNG.gaussianDouble(1);
-        }
-        return this.getNormalizedVector(result);
-    }
-
-    private double[] subVector(double[] a, double[] b) {
-        double[] result = new double[a.length];
-        for (int i = 0; i < a.length; i++) {
-            result[i] = a[i] - b[i];
-        }
-        return result;
-    }
-
-    private double[] addVector(double[] a, double[] b) {
-        double[] result = new double[a.length];
-        for (int i = 0; i < a.length; i++) {
-            result[i] = a[i] + b[i];
-        }
-        return result;
-    }
-
-    private double multVector(double[] a, double[] b) {
-        double result = 0;
-        for (int i = 0; i < a.length; i++) {
-            result += a[i]*b[i];
-        }
-        return result;
-    }
-
-    private double[] scalarMultVector(double a, double[] b) {
-        double[] result = new double[b.length];
-        for (int i = 0; i < b.length; i++) {
-            result[i]= a*b[i];
-        }
-        return result;
-    }
-
-    private double[] getNormalizedVector(double[] d) {
-        double[] result = new double[d.length];
-        double sum = 0;
-
-        for (int i = 0; i < d.length; i++) {
-            result[i] = d[i];
-            sum += Math.pow(d[i], 2);
-        }
-        sum = Math.sqrt(sum);
-
-        for (int i = 0; i < d.length; i++) {
-            result[i] = result[i]/sum;
-        }
-
-        return result;
-    }
-
-    private boolean isValidVec(double[] d) {
-        double sum = 0;
-        for (int i = 0; i < d.length; i++) {
-            if (Double.isNaN(d[i])) return false;
-            sum += Math.pow(d[i],2);
-        }
-        if (Double.isNaN(sum)) return false;
-        if (Math.abs(sum) < 0.000000000000000001) return false;
-        return true;
-    }
-
-    /** This method return a vector from a to b
-     * @param a     first vector
-     * @param b     second vectors
-     * @return the vector from a to b
-     */
-    private double[] getVectorFromTo(double[] a, double[] b) {
-        double[] result = new double[a.length];
-        for (int i = 0; i < result.length; i++) {
-            result[i] = b[i] - a[i];
-        }
-        return result;
-    }
-
-    /** This method returns a mean vector from a whole number of vectors
-     * @param d     d[i] the vectors, d[i][j] the jth coordinate of the ith vector
-     * @return The mean vector.
-     */
-    private double[] getMeanVector(double[][] d) {
-        double[] result = new double[d[0].length];
-        for (int i = 0; i < d.length; i++) {
-            for (int j = 0; j < d[i].length; j++) {
-                result[j] += d[i][j];
-            }
-        }
-        for (int i = 0; i < result.length; i++) {
-            result[i] = result[i]/((double)d.length);
-        }
-        return result;
-    }
-
-
-    /** This method allows you to evaluate wether two crossover operators
+    /** This method allows you to evaluate whether two crossover operators
      * are actually the same.
      * @param crossover   The other crossover operator
      */

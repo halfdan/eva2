@@ -3,6 +3,7 @@ package eva2.server.go.operators.crossover;
 
 import java.util.ArrayList;
 
+import wsi.ra.math.RNG;
 import eva2.gui.Plot;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.ESIndividualDoubleData;
@@ -10,7 +11,7 @@ import eva2.server.go.individuals.InterfaceESIndividual;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.F1Problem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import wsi.ra.math.RNG;
+import eva2.tools.Mathematics;
 
 /**
  * Created by IntelliJ IDEA.
@@ -67,13 +68,13 @@ public class CrossoverESPCX implements InterfaceCrossover, java.io.Serializable 
                 System.arraycopy(((InterfaceESIndividual)result[i]).getDGenotype(), 0, children[i], 0, parents[i].length);
             }
 
-            double[]    g = this.getMeanVector(parents), tmpD;
+            double[]    g = Mathematics.getMeanVector(parents), tmpD;
             double      w, v;
             ArrayList   subSpace;
             // now determine the offsprings
             for (int i = 0; i < children.length; i++) {
                 // direction vector
-                tmpD = this.getVectorFromTo(g, parents[i]);
+                tmpD = Mathematics.getVectorFromTo(g, parents[i]);
 
                 subSpace = this.getCoordinates(g, i, parents);
 
@@ -103,7 +104,7 @@ public class CrossoverESPCX implements InterfaceCrossover, java.io.Serializable 
                 for (int j = 1; j < subSpace.size(); j++) {
                     tmpD = (double[])subSpace.get(j);
                     w = RNG.gaussianDouble(this.m_Zeta);
-                    children[i] = this.addVector(children[i], this.scalarMultVector(w, tmpD));
+                    children[i] = Mathematics.vvAdd(children[i], Mathematics.scalarMultVector(w, tmpD));
                 }
             }
 
@@ -121,19 +122,19 @@ public class CrossoverESPCX implements InterfaceCrossover, java.io.Serializable 
         double[]    tmpVec, toro;
         double      tmpD;
 
-        tmpVec = this.subVector(parents[index], mean);
+        tmpVec = Mathematics.subVector(parents[index], mean);
         result.add(tmpVec);
 
         for (int i = 0; i < parents.length; i++) {
             if (i != index) {
-                tmpVec = this.subVector(parents[i], mean);
+                tmpVec = Mathematics.subVector(parents[i], mean);
                 if (this.isValidVec(tmpVec)) {
                     // apply the infamous Gram-Schmidt
                     for (int j = 0; j < result.size(); j++) {
                         toro = (double[]) result.get(j);
-                        tmpD = this.multVector(toro, tmpVec)/this.multVector(toro, toro);
-                        toro = this.scalarMultVector(tmpD, toro);
-                        tmpVec = this.subVector(tmpVec, toro);
+                        tmpD = Mathematics.vvMult(toro, tmpVec)/Mathematics.vvMult(toro, toro);
+                        toro = Mathematics.scalarMultVector(tmpD, toro);
+                        tmpVec = Mathematics.subVector(tmpVec, toro);
                     }
                     if (this.isValidVec(tmpVec)) result.add(tmpVec);
                 }
@@ -144,73 +145,16 @@ public class CrossoverESPCX implements InterfaceCrossover, java.io.Serializable 
         double tmpMean;
         for (int i = 1; i < result.size(); i++) {
             toro = (double[]) result.get(i);
-            toro = this.getNormalizedVector(toro);
+            toro = Mathematics.getNormalizedVector(toro);
             tmpMean = 0;
             for (int j = 0; j < parents.length; j++) {
                 if (j != index) {
-                    tmpMean += Math.abs(this.multVector(toro, this.subVector(parents[j], mean)));
+                    tmpMean += Math.abs(Mathematics.vvMult(toro, Mathematics.subVector(parents[j], mean)));
                 }
             }
             tmpMean = tmpMean/((double)(result.size()-1));
-            toro = this.scalarMultVector(tmpMean, toro);
+            toro = Mathematics.scalarMultVector(tmpMean, toro);
             result.set(i, toro);
-        }
-
-        return result;
-    }
-
-    private double[] randomVector(int n) {
-        double[] result = new double[n];
-        for (int i = 0; i < result.length; i++) {
-            result[i] = RNG.gaussianDouble(1);
-        }
-        return this.getNormalizedVector(result);
-    }
-
-    private double[] subVector(double[] a, double[] b) {
-        double[] result = new double[a.length];
-        for (int i = 0; i < a.length; i++) {
-            result[i] = a[i] - b[i];
-        }
-        return result;
-    }
-
-    private double[] addVector(double[] a, double[] b) {
-        double[] result = new double[a.length];
-        for (int i = 0; i < a.length; i++) {
-            result[i] = a[i] + b[i];
-        }
-        return result;
-    }
-
-    private double multVector(double[] a, double[] b) {
-        double result = 0;
-        for (int i = 0; i < a.length; i++) {
-            result += a[i]*b[i];
-        }
-        return result;
-    }
-
-    private double[] scalarMultVector(double a, double[] b) {
-        double[] result = new double[b.length];
-        for (int i = 0; i < b.length; i++) {
-            result[i]= a*b[i];
-        }
-        return result;
-    }
-
-    private double[] getNormalizedVector(double[] d) {
-        double[] result = new double[d.length];
-        double sum = 0;
-
-        for (int i = 0; i < d.length; i++) {
-            result[i] = d[i];
-            sum += Math.pow(d[i], 2);
-        }
-        sum = Math.sqrt(sum);
-
-        for (int i = 0; i < d.length; i++) {
-            result[i] = result[i]/sum;
         }
 
         return result;
@@ -226,37 +170,6 @@ public class CrossoverESPCX implements InterfaceCrossover, java.io.Serializable 
         if (Math.abs(sum) < 0.000000000000000001) return false;
         return true;
     }
-
-    /** This method return a vector from a to b
-     * @param a     first vector
-     * @param b     second vectors
-     * @return the vector from a to b
-     */
-    private double[] getVectorFromTo(double[] a, double[] b) {
-        double[] result = new double[a.length];
-        for (int i = 0; i < result.length; i++) {
-            result[i] = b[i] - a[i];
-        }
-        return result;
-    }
-
-    /** This method returns a mean vector from a whole number of vectors
-     * @param d     d[i] the vectors, d[i][j] the jth coordinate of the ith vector
-     * @return The mean vector.
-     */
-    private double[] getMeanVector(double[][] d) {
-        double[] result = new double[d[0].length];
-        for (int i = 0; i < d.length; i++) {
-            for (int j = 0; j < d[i].length; j++) {
-                result[j] += d[i][j];
-            }
-        }
-        for (int i = 0; i < result.length; i++) {
-            result[i] = result[i]/((double)d.length);
-        }
-        return result;
-    }
-
 
     /** This method allows you to evaluate wether two crossover operators
      * are actually the same.
