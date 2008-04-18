@@ -101,7 +101,7 @@ public class MOXMeansSeparation implements InterfaceMigration, java.io.Serializa
 //            double[]    tmpD = new double[2];
 //            tmpD[0] = 0;
 //            tmpD[1] = 0;
-//            plot = new javaeva.gui.Plot("Debugging Clustering Separation", "Y1", "Y2", tmpD, tmpD);
+//            plot = new eva2.gui.Plot("Debugging Clustering Separation", "Y1", "Y2", tmpD, tmpD);
 //            GraphPointSet           mySet;
 //            DPoint                  myPoint;
 //            Chart2DDPointIconText   tmp;

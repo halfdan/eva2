@@ -9,7 +9,7 @@ import wsi.ra.math.RNG;
 
 
 /**
- * <p>Title: The JavaEvA</p>
+ * <p>Title: EvA2</p>
  *
  * <p>Description: </p>
  *

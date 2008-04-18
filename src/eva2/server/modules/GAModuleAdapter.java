@@ -2,8 +2,8 @@ package eva2.server.modules;
 
 import wsi.ra.jproxy.MainAdapterClient;
 
-/** This the GA modul adapter necessary to access this implementation
- * form the JavaEvA top level.
+/** This the GA module adapter necessary to access this implementation
+ * from the EvA top level.
  * Created by IntelliJ IDEA.
  * User: streiche
  * Date: 08.06.2004

@@ -1,6 +1,5 @@
 package eva2.gui;
 
-//import javaeva.tools.ServerStarter;
 import java.rmi.Naming;
 import java.util.ArrayList;
 

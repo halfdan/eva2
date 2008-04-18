@@ -17,7 +17,7 @@ import eva2.server.go.problems.InterfaceOptimizationProblem;
  * be applied to problems which implement the InterfaceLocalSearchable else the
  * local search will not be activated at all.
  * <p>
- * Title: The JavaEvA
+ * Title: EvA2
  * </p>
  * <p>
  * Description:

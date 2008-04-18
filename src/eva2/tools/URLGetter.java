@@ -3,7 +3,7 @@ import java.net.*;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 /**
- * <p>Title: The JavaEvA</p>
+ * <p>Title: EvA2</p>
  * <p>Description: </p>
  * <p>Copyright: Copyright (c) 2003</p>
  * <p>Company: </p>

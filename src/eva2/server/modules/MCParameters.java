@@ -15,7 +15,7 @@ import eva2.server.go.strategies.InterfaceOptimizer;
 import eva2.server.go.strategies.MonteCarloSearch;
 import eva2.tools.Serializer;
 
-/** The class gives access to all HC parameters for the JavaEvA
+/** The class gives access to all HC parameters for the EvA
  * top level GUI.
  * Created by IntelliJ IDEA.
  * User: streiche

@@ -4,7 +4,7 @@ package eva2.server.go.individuals;
 /** This interface gives access to a permutation phenotype and except 
  * for problemspecific operators should only be used by the
  * optimization problem.
- * <p>Title: The JavaEvA</p>
+ * <p>Title: EvA2</p>
  *
  * <p>Description: </p>
  *

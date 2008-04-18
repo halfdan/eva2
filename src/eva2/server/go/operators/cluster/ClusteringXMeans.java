@@ -246,7 +246,7 @@ public class ClusteringXMeans implements InterfaceClustering, java.io.Serializab
     /** This mehtod allows you to cluster a population using m_C
      * @param pop   The population
      * @param c     The centroids
-     * @return The clusters as populaitons
+     * @return The clusters as populations
      */
     public Population[] cluster(Population pop, double[][] c) {
         Population[]    result  = new Population[c.length];

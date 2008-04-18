@@ -22,10 +22,14 @@ public interface InterfaceClustering {
      */
     public Object clone();
 
-    /** This method allows you to search for clusters in a given population. The method
+    /** 
+     * This method allows you to search for clusters in a given population. The method
      * returns Number of populations. The first population contains all individuals that
      * could not be associated with any cluster and may be empty.
      * All other populations group individuals into clusters.
+     * It should make sure that the returned Population instances are of the same type
+     * as the given one, which may be a subclass of Population.
+     * 
      * @param pop       The population of individuals that is to be clustered.
      * @return Population[]
      */

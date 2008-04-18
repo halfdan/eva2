@@ -85,13 +85,13 @@ public class CrossoverESUNDX implements InterfaceCrossover, java.io.Serializable
                 for (int j = 0; j < givenCoordinates.size(); j++) {
                     tmpD = (double[])givenCoordinates.get(j);
                     w = RNG.gaussianDouble(this.m_Zeta);
-                    children[i] = Mathematics.vvAdd(children[i], Mathematics.scalarMultVector(w, tmpD));
+                    children[i] = Mathematics.vvAdd(children[i], Mathematics.svMult(w, tmpD));
                 }
                 // now the missing stuff
                 for (int j = 0; j < missingCorrdinates.size(); j++) {
                     tmpD = (double[])missingCorrdinates.get(j);
                     w = RNG.gaussianDouble(this.m_Eta);
-                    children[i] = Mathematics.vvAdd(children[i], Mathematics.scalarMultVector(w, tmpD));
+                    children[i] = Mathematics.vvAdd(children[i], Mathematics.svMult(w, tmpD));
                 }
             }
 
@@ -110,7 +110,7 @@ public class CrossoverESUNDX implements InterfaceCrossover, java.io.Serializable
         double      tmpD;
 
         for (int i = 0; i < parents.length; i++) {
-            tmpVec = Mathematics.subVector(parents[i], mean);
+            tmpVec = Mathematics.vvSub(parents[i], mean);
             if (Mathematics.isValidVec(tmpVec)) {
                 if (result.size() == 0) {
                     result.add(tmpVec);
@@ -119,8 +119,8 @@ public class CrossoverESUNDX implements InterfaceCrossover, java.io.Serializable
                     for (int j = 0; j < result.size(); j++) {
                         toro = (double[]) result.get(j);
                         tmpD = Mathematics.vvMult(toro, tmpVec)/Mathematics.vvMult(toro, toro);
-                        toro = Mathematics.scalarMultVector(tmpD, toro);
-                        tmpVec = Mathematics.subVector(tmpVec, toro);
+                        toro = Mathematics.svMult(tmpD, toro);
+                        tmpVec = Mathematics.vvSub(tmpVec, toro);
                     }
                     if (Mathematics.isValidVec(tmpVec)) result.add(tmpVec);
                 }
@@ -145,12 +145,12 @@ public class CrossoverESUNDX implements InterfaceCrossover, java.io.Serializable
                 for (int j = 0; j < completeList.size(); j++) {
                     toro = (double[]) completeList.get(j);
                     tmpD = Mathematics.vvMult(toro, tmpVec)/Mathematics.vvMult(toro, toro);
-                    toro = Mathematics.scalarMultVector(tmpD, toro);
-                    tmpVec = Mathematics.subVector(tmpVec, toro);
+                    toro = Mathematics.svMult(tmpD, toro);
+                    tmpVec = Mathematics.vvSub(tmpVec, toro);
                 }
                 if (Mathematics.isValidVec(tmpVec)) {
-                    tmpVec = Mathematics.getNormalizedVector(tmpVec);
-                    tmpVec = Mathematics.scalarMultVector(Mathematics.vvMult(theOther, tmpVec), tmpVec);
+                    Mathematics.normVect(tmpVec, tmpVec);
+                    tmpVec = Mathematics.svMult(Mathematics.vvMult(theOther, tmpVec), tmpVec);
                     result.add(tmpVec);
                     completeList.add(tmpVec);
                 }

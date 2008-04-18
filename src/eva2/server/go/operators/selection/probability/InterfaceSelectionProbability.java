@@ -21,7 +21,7 @@ public interface InterfaceSelectionProbability {
     public Object clone();
 
     /** This method computes the selection probability for each individual
-     *  in the population. Note: Summed over the complete populaiton the selection
+     *  in the population. Note: Summed over the complete population the selection
      *  probability sums up to one.
      * @param population    The population to compute.
      * @param input         The name of the input.
@@ -29,7 +29,7 @@ public interface InterfaceSelectionProbability {
     public void computeSelectionProbability(Population population, String[] input, boolean obeyConst);
 
     /** This method computes the selection probability for each individual
-     *  in the population. Note: Summed over the complete populaiton the selection
+     *  in the population. Note: Summed over the complete population the selection
      *  probability sums up to one.
      * @param population    The population to compute.
      * @param input         The name of the input.
@@ -37,7 +37,7 @@ public interface InterfaceSelectionProbability {
     public void computeSelectionProbability(Population population, String input, boolean obeyConst);
 
     /** This method computes the selection probability for each individual
-     *  in the population. Note: Summed over the complete populaiton the selection
+     *  in the population. Note: Summed over the complete population the selection
      *  probability sums up to one.
      * @param population    The population to compute.
      * @param data         The input data as double[][].

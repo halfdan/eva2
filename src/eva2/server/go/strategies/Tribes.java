@@ -21,11 +21,11 @@ import eva2.server.go.strategies.tribes.TribesSwarm;
 /**
  * This is the TRIBES algorithm, an adaptive, parameter-less PSO implementation.
  * I (MK) ported M.Clerc's java version 2006-02 21 and added the original notes below.
- * I had to do some modifications for the JavaEvA framework, namely:
+ * I had to do some modifications for the EvA framework, namely:
  * - minor adaptations allover the code to fit into the framework
- * - the objective value parameter must now be set within the GUI for each problem by hand (JavaEvA doesnt assume to know an objective beforehand)
+ * - the objective value parameter must now be set within the GUI for each problem by hand (EvA doesnt assume to know an objective beforehand)
  * - discrete search spaces are not directly supported any more (no "granularity")
- * - the benchmark-collection is gone, it might be included into the JavaEvA benchmark set in the future, though
+ * - the benchmark-collection is gone, it might be included into the EvA benchmark set in the future, though
  * - fixed two bugs (SunnySpell link generation, findWorst method)
  * - fixed bugs in the CEC 2005 benchmarks (see the corresponding class)
  * - I widely kept the original comments, except for places I changed the code so much that they might mislead

@@ -2,7 +2,7 @@ package eva2.tools;
 
 import java.util.HashMap;
 /**
- * Title:        JavaEvA
+ * Title:        EvA2
  * Description:
  * Copyright:    Copyright (c) 2003
  * Company:      University of Tuebingen, Computer Architecture
@@ -29,7 +29,7 @@ public class EVAERROR {
    */
   static public void EXIT(String Message) {
  //   if (MAIL_ON_ERROR)
- //     EVAMail.SendMail("JavaEva EXIT on ERROR !! ",Message,"ulmerh@informatik.uni-tuebingen.de");
+ //     EVAMail.SendMail("EvA EXIT on ERROR !! ",Message,"ulmerh@informatik.uni-tuebingen.de");
     System.err.println("ERROR: "+Message);
     System.out.flush();
     System.err.flush();
@@ -44,7 +44,7 @@ public class EVAERROR {
     System.out.println("Exception: ");
     e.printStackTrace();
 //    if (MAIL_ON_ERROR)
-//      EVAMail.SendMail("JavaEva EXIT on ERROR !! ",Message+e.toString(),"ulmerh@informatik.uni-tuebingen.de");
+//      EVAMail.SendMail("EvA EXIT on ERROR !! ",Message+e.toString(),"ulmerh@informatik.uni-tuebingen.de");
     System.out.flush();
     System.err.flush();
     System.exit(-1);
@@ -54,7 +54,7 @@ public class EVAERROR {
    */
   static public void WARNING(String Message) {
 //     if (MAIL_ON_WARNING)
-//      EVAMail.SendMail("JavaEva EXIT on ERROR !! ",Message,"ulmerh@informatik.uni-tuebingen.de");
+//      EVAMail.SendMail("EvA EXIT on ERROR !! ",Message,"ulmerh@informatik.uni-tuebingen.de");
     System.err.println("WARNING: "+Message);
     System.out.flush();
     System.err.flush();

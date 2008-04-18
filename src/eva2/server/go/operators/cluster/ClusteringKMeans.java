@@ -202,19 +202,24 @@ public class ClusteringKMeans implements InterfaceClustering, java.io.Serializab
         return result;
     }
 
-    /** This mehtod allows you to cluster a population using m_C
+    /** This method allows you to cluster a population using m_C
      * @param pop   The population
      * @param c     The centroids
-     * @return The clusters as populaitons
+     * @return The clusters as populations
      */
     public Population[] cluster(Population pop, double[][] c) {
         Population[]    result  = new Population[c.length];
         double[][]      data    = this.extractClusterDataFrom(pop);
         int             clusterAssigned;
 
-        for (int i = 0; i < result.length; i++) {
-        	result[i] = new Population();
-        	result[i].setSameParams(pop);
+        try {
+        	for (int i = 0; i < result.length; i++) {
+        		result[i] = pop.getClass().newInstance();
+        		result[i].setSameParams(pop);
+        	}
+        } catch(Exception e) {
+        	System.err.println("problems instantiating " + pop.getClass().getName() + " for clustering!");
+        	e.printStackTrace();
         }
         // let's assign the elements of the population to a c
         for (int i = 0; i < data.length; i++) {

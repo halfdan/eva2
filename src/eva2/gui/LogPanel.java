@@ -1,6 +1,6 @@
 package eva2.gui;
 /*
- * Title:        JavaEvA
+ * Title:        EvA2
  * Description:
  * Copyright:    Copyright (c) 2003
  * Company:      University of Tuebingen, Computer Architecture
@@ -112,7 +112,6 @@ public class LogPanel extends JPanel {
       frame.pack();
       frame.setVisible(true);
       panel.logMessage("HI!");
-//      panel.statusMessage("Hi JavaEvA");
       panel.logMessage("Test");
 
     } catch (Exception e) {

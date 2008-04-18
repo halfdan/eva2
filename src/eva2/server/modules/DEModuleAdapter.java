@@ -4,8 +4,8 @@ import eva2.gui.GenericObjectEditor;
 
 import wsi.ra.jproxy.MainAdapterClient;
 
-/** This the DE modul adapter necessary to access this implementation
- * form the JavaEvA top level.
+/** This the DE module adapter necessary to access this implementation
+ * from the EvA top level.
  * Created by IntelliJ IDEA.
  * User: streiche
  * Date: 27.10.2004

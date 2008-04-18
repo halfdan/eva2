@@ -87,7 +87,7 @@ public class ClusteringDensityBased implements InterfaceClustering, java.io.Seri
         ConnectionMatrix    = new boolean[pop.size()][pop.size()];
         Clustered           = new boolean[pop.size()];
         AbstractEAIndividual   tmpIndy1, tmpIndy2;
-        Population              PopulationOfUnclustered = new Population(), Cluster, template;
+        Population              PopulationOfUnclustered, Cluster, template;
         ArrayList<Population>               ClusteredPopulations = new ArrayList<Population>();
 
         template = (Population)pop.clone();

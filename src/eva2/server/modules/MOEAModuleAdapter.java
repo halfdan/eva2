@@ -15,8 +15,8 @@ import eva2.server.stat.StatisticsWithGUI;
 import wsi.ra.jproxy.MainAdapterClient;
 import wsi.ra.jproxy.RMIProxyLocal;
 
-/** This the MOEA modul adapter necessary to access this implementation
- * form the JavaEvA top level.
+/** This the MOEA module adapter necessary to access this implementation
+ * from the EvA top level.
  * Created by IntelliJ IDEA.
  * User: streiche
  * Date: 27.10.2004

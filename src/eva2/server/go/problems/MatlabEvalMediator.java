@@ -3,7 +3,7 @@ package eva2.server.go.problems;
 import eva2.gui.BeanInspector;
 
 /**
- * This implements a thread acting as a mediator between JavaEvA and Matlab. Thanks to the idea 
+ * This implements a thread acting as a mediator between EvA and Matlab. Thanks to the idea 
  * of Henning Schmidt!
  * As Java calling Matlab directly causes problems (due to Matlabs single-threadedness), Matlab
  * now starts a mediator thread which receives the data necessary to perform the evaluation in matlab

@@ -78,7 +78,7 @@ public class CrossoverESPCX implements InterfaceCrossover, java.io.Serializable 
 
                 subSpace = this.getCoordinates(g, i, parents);
 
-//                Plot plot = new javaeva.gui.Plot("SBX Test", "x", "y", true);
+//                Plot plot = new eva2.gui.Plot("SBX Test", "x", "y", true);
 //                plot.setUnconnectedPoint(-2, -2, 0);
 //                plot.setUnconnectedPoint(2, 2, 0);
 //                for (int z = 0; z < parents.length; z++) {
@@ -104,7 +104,7 @@ public class CrossoverESPCX implements InterfaceCrossover, java.io.Serializable 
                 for (int j = 1; j < subSpace.size(); j++) {
                     tmpD = (double[])subSpace.get(j);
                     w = RNG.gaussianDouble(this.m_Zeta);
-                    children[i] = Mathematics.vvAdd(children[i], Mathematics.scalarMultVector(w, tmpD));
+                    children[i] = Mathematics.vvAdd(children[i], Mathematics.svMult(w, tmpD));
                 }
             }
 
@@ -122,19 +122,19 @@ public class CrossoverESPCX implements InterfaceCrossover, java.io.Serializable 
         double[]    tmpVec, toro;
         double      tmpD;
 
-        tmpVec = Mathematics.subVector(parents[index], mean);
+        tmpVec = Mathematics.vvSub(parents[index], mean);
         result.add(tmpVec);
 
         for (int i = 0; i < parents.length; i++) {
             if (i != index) {
-                tmpVec = Mathematics.subVector(parents[i], mean);
+                tmpVec = Mathematics.vvSub(parents[i], mean);
                 if (this.isValidVec(tmpVec)) {
                     // apply the infamous Gram-Schmidt
                     for (int j = 0; j < result.size(); j++) {
                         toro = (double[]) result.get(j);
                         tmpD = Mathematics.vvMult(toro, tmpVec)/Mathematics.vvMult(toro, toro);
-                        toro = Mathematics.scalarMultVector(tmpD, toro);
-                        tmpVec = Mathematics.subVector(tmpVec, toro);
+                        toro = Mathematics.svMult(tmpD, toro);
+                        tmpVec = Mathematics.vvSub(tmpVec, toro);
                     }
                     if (this.isValidVec(tmpVec)) result.add(tmpVec);
                 }
@@ -145,15 +145,15 @@ public class CrossoverESPCX implements InterfaceCrossover, java.io.Serializable 
         double tmpMean;
         for (int i = 1; i < result.size(); i++) {
             toro = (double[]) result.get(i);
-            toro = Mathematics.getNormalizedVector(toro);
+            Mathematics.normVect(toro, toro);
             tmpMean = 0;
             for (int j = 0; j < parents.length; j++) {
                 if (j != index) {
-                    tmpMean += Math.abs(Mathematics.vvMult(toro, Mathematics.subVector(parents[j], mean)));
+                    tmpMean += Math.abs(Mathematics.vvMult(toro, Mathematics.vvSub(parents[j], mean)));
                 }
             }
             tmpMean = tmpMean/((double)(result.size()-1));
-            toro = Mathematics.scalarMultVector(tmpMean, toro);
+            toro = Mathematics.svMult(tmpMean, toro);
             result.set(i, toro);
         }
 

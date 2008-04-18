@@ -2,7 +2,7 @@ package eva2.server.go.problems;
 
 /**
  * An interface refactored from InterfaceMultiModalProblem, having only methods used for
- * plotting nice colored graphs in JavaEvA GUI using the TopoPlot class.
+ * plotting nice colored graphs in GUI using the TopoPlot class.
  * 
  * @author mkron
  */

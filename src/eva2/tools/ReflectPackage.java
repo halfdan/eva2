@@ -326,7 +326,7 @@ public class ReflectPackage {
 //		BasicResourceLoader rld = BasicResourceLoader.instance();
 //		byte[] b = rld.getBytesFromResourceLocation("resources/images/Sub24.gif");
 //		System.out.println((b == null) ? "null" : b.toString());
-//		b = rld.getBytesFromResourceLocation("src/javaeva/client/EvAClient.java");
+//		b = rld.getBytesFromResourceLocation("src/eva2/client/EvAClient.java");
 //		System.out.println((b == null) ? "null" : b.toString());
 
 		HashSet<String> h = new HashSet<String> (20);
@@ -343,9 +343,9 @@ public class ReflectPackage {
 //			System.out.print(i+" " + pathElements[i]);
 //			System.out.println(pathElements[i].endsWith(".jar") ? " is a jar" : " is a path");
 //			if (pathElements[i].endsWith(".jar")) {
-//				ArrayList al = getClassesFromJarFltr(pathElements[i], "javaeva.server.model", false, null);
+//				ArrayList al = getClassesFromJarFltr(pathElements[i], "eva2.server.model", false, null);
 //				for (int k=0; k<al.size(); k++) {
-//					//if (Class.forName("javaeva.server.modules.ModuleAdapter").isAssignableFrom((Class)al.get(i))) 
+//					//if (Class.forName("eva2.server.modules.ModuleAdapter").isAssignableFrom((Class)al.get(i))) 
 //						System.out.println((Class)al.get(k));
 //				}
 //			} else {

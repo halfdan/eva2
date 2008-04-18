@@ -2,8 +2,8 @@ package eva2.server.modules;
 
 import wsi.ra.jproxy.MainAdapterClient;
 
-/** This the HC modul adapter necessary to access this implementation
- * form the JavaEvA top level.
+/** This the HC module adapter necessary to access this implementation
+ * from the EvA top level.
  * Created by IntelliJ IDEA.
  * User: streiche
  * Date: 08.06.2004

@@ -15,7 +15,7 @@ import eva2.server.go.strategies.EvolutionaryProgramming;
 import eva2.server.go.strategies.InterfaceOptimizer;
 import eva2.tools.Serializer;
 
-/** The class gives access to all EP parameters for the JavaEvA
+/** The class gives access to all EP parameters for the EvA
  * top level GUI.
  * Created by IntelliJ IDEA.
  * User: streiche

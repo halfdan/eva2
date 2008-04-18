@@ -3,7 +3,7 @@ package eva2.gui;
 import eva2.server.stat.InterfaceTextListener;
 
 /*
- * Title:        JavaEvA
+ * Title:        EvA2
  * Description:
  * Copyright:    Copyright (c) 2003
  * Company:      University of Tuebingen, Computer Architecture

@@ -54,7 +54,7 @@ import eva2.server.modules.GOParameters;
  * </p>
  * <p>
  * On the other hand this class provides an almost complete list of all
- * currently available optimization procedures in JavaEvA. The arguments passed
+ * currently available optimization procedures in EvA2. The arguments passed
  * to the methods initialize the respective optimization procedure. To perform
  * an optimization one has to do the following: <code>
  * InterfaceOptimizer optimizer = OptimizerFactory.createCertainOptimizer(arguments);

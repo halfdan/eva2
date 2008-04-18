@@ -54,7 +54,7 @@ public abstract class AbstractSynchronousOptimizationProblem extends
     }
     
 	/* (non-Javadoc)
-	 * @see javaeva.server.oa.go.OptimizationProblems.AbstractDynamicOptimizationProblem#changeProblemAt(double)
+	 * @see eva2.server.oa.go.OptimizationProblems.AbstractDynamicOptimizationProblem#changeProblemAt(double)
 	 */
 	@Override
 	protected void changeProblemAt(double problemTime) {
@@ -64,7 +64,7 @@ public abstract class AbstractSynchronousOptimizationProblem extends
 	}
 
 	/* (non-Javadoc)
-	 * @see javaeva.server.oa.go.OptimizationProblems.AbstractDynamicOptimizationProblem#problemToChangeAt(double)
+	 * @see eva2.server.oa.go.OptimizationProblems.AbstractDynamicOptimizationProblem#problemToChangeAt(double)
 	 */
 	@Override
 	protected boolean problemToChangeAt(double problemTime) {
@@ -83,7 +83,7 @@ public abstract class AbstractSynchronousOptimizationProblem extends
 	}
 
 	/* (non-Javadoc)
-	 * @see javaeva.server.oa.go.OptimizationProblems.AbstractDynamicOptimizationProblem#countEvaluation()
+	 * @see eva2.server.oa.go.OptimizationProblems.AbstractDynamicOptimizationProblem#countEvaluation()
 	 */
 	@Override
 	protected void countEvaluation() {
@@ -114,7 +114,7 @@ public abstract class AbstractSynchronousOptimizationProblem extends
 	
 	
 	/* (non-Javadoc)
-	 * @see javaeva.server.oa.go.OptimizationProblems.AbstractDynamicOptimizationProblem#setFrequencyRelative(boolean)
+	 * @see eva2.server.oa.go.OptimizationProblems.AbstractDynamicOptimizationProblem#setFrequencyRelative(boolean)
 	 */
 	@Override
 	public void setFrequencyRelative(boolean frequencyRelative) {

@@ -116,7 +116,7 @@ public class ArchivingSPEAII extends AbstractArchiving implements java.io.Serial
 //            this.tz = true;
 //            this.calculateRawFitness(tmpPop);
 //            this.tz = false;
-//            this.m_Plot = new javaeva.gui.Plot("Debug SPEAII", "Y1", "Y2");
+//            this.m_Plot = new eva2.gui.Plot("Debug SPEAII", "Y1", "Y2");
 //            // plot the population
 //            this.m_Plot.setUnconnectedPoint(0, 0, 11);
 //            this.m_Plot.setUnconnectedPoint(1.2, 2.0, 11);

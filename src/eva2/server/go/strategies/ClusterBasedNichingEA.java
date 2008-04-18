@@ -2,6 +2,10 @@ package eva2.server.go.strategies;
 
 import java.util.ArrayList;
 
+import wsi.ra.chart2d.DPoint;
+import wsi.ra.chart2d.DPointIcon;
+import wsi.ra.chart2d.DPointSet;
+import wsi.ra.math.RNG;
 import eva2.gui.BeanInspector;
 import eva2.gui.Chart2DDPointIconCircle;
 import eva2.gui.Chart2DDPointIconText;
@@ -20,11 +24,6 @@ import eva2.server.go.problems.B1Problem;
 import eva2.server.go.problems.Interface2DBorderProblem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.server.go.problems.TF1Problem;
-import wsi.ra.math.RNG;
-
-import wsi.ra.chart2d.DPoint;
-import wsi.ra.chart2d.DPointIcon;
-import wsi.ra.chart2d.DPointSet;
 
 /** The infamuos clustering based niching EA, still under construction.
  * It should be able to identify and track multiple global/local optima
@@ -44,7 +43,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
 
     private Population                      m_Population                    = new Population();
     private transient Population			m_Archive						= new Population();
-    public ArrayList<Population>			m_Species                       = new ArrayList<Population>();
+    public ArrayList<Population>			m_Species              			= new ArrayList<Population>();
     public Population                       m_Undifferentiated              = new Population();
     private InterfaceOptimizationProblem    m_Problem                       = new B1Problem();
     private InterfaceOptimizer              m_Optimizer                     = new GeneticAlgorithm();
@@ -66,7 +65,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
     private int                             m_PopulationSize                = 50;
     private int								convergedCnt					= 0;
 
-    private static boolean                  TRACE     = false;
+    private static boolean                  TRACE     = true;
     private int                             m_ShowCycle = 100;
     transient private TopoPlot              m_Topology;
     private int                 			haltingWindow         			 = 15;
@@ -416,7 +415,8 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
                 } else {
                 	// actually optimize D_i
                     this.capMutationRate(curSpecies, 0.05);
-                    this.m_Species.set(i, optimizeSpecies(curSpecies));
+                    Population optimizedSpec = optimizeSpecies(curSpecies);
+                    this.m_Species.set(i, optimizedSpec);
                     curSpecies = ((Population)this.m_Species.get(i)); // reset to expected population, just to be sure
                 }
             } else {
@@ -586,6 +586,12 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
             this.m_Population.addPopulation((Population)this.m_Species.get(i));
         }
         if (TRACE) System.out.println("Population size: " + this.m_Population.size());
+        if (TRACE) {
+//        	for (int i=0; i<m_Species.size(); i++) {
+//        		System.out.print("distraction center at " + BeanInspector.toString(m_Species.get(i).getDistractionCenter()));
+//        		System.out.println(", strength " + m_Species.get(i).getDistractionStrength());
+//        	}
+        }
         this.firePropertyChangedEvent("NextGenerationPerformed");
     }
 

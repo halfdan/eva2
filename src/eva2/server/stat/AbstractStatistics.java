@@ -12,8 +12,8 @@ import eva2.server.go.IndividualInterface;
 import eva2.server.go.PopulationInterface;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.problems.InterfaceAdditionalPopulationInformer;
+import eva2.tools.Mathematics;
 
-import wsi.ra.tool.StatisticUtils;
 
 public abstract class AbstractStatistics implements InterfaceTextListener, InterfaceStatistics {
 	private PrintWriter resultOut;
@@ -145,7 +145,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 		functionCallSum += functionCalls;
 		// check for convergence
 		if (bestCurrentIndividual != null) {
-			if (StatisticUtils.norm(bestCurrentIndividual.getFitness()) < this.m_StatsParams.getConvergenceRateThreshold()) {
+			if (Mathematics.norm(bestCurrentIndividual.getFitness()) < this.m_StatsParams.getConvergenceRateThreshold()) {
 				convergenceCnt++;
 			}
 			if (printRunStoppedVerbosity()) printToTextListener(" Best solution: " + BeanInspector.toString(bestCurrentIndividual) + "\n");

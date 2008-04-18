@@ -1,6 +1,6 @@
 package eva2.server;
 /**
- * Title:        javaeva
+ * Title:        EvA2
  * Description:  API for distributed and parallel computing.
  * Copyright:    Copyright (c) 2004
  * Company:      University of Tuebingen

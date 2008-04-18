@@ -145,7 +145,7 @@ public abstract class AbstractDynTransProblem extends AbstractSynchronousOptimiz
 
 	/**
 	 * This is for the Scroll Box:
-	 * in JParaPanel.java package javaeva.gui
+	 * in JParaPanel.java package eva2.gui
 	 * in installActions()
 	 * PropertyEditorManager.registerEditor(AbstractOptimizationProblem.class, GenericObjectEditor.class);
 	 * don't forget the import statement

@@ -1,6 +1,6 @@
 package eva2.gui;
 /*
- * Title:        JavaEvA
+ * Title:        EvA2
  * Description:
  * Copyright:    Copyright (c) 2003
  * Company:      University of Tuebingen, Computer Architecture
@@ -37,9 +37,7 @@ public class BigStringEditor implements PropertyEditor {
     try {
       m_finished=false;
       BigStringEditor editor = new BigStringEditor();
-      //Source so = new Source ("\\javaeva\\server\\problems\\bench\\Problem_f1.java");
-//      Source so = new Source (file);
-//      editor.setValue(so);
+
       PropertyDialog frame = new PropertyDialog(editor,file, 50, 50);
       //frame.setSize(200, 200);
       frame.addWindowListener(new WindowAdapter() {
@@ -189,8 +187,7 @@ public class BigStringEditor implements PropertyEditor {
   public static void main (String[] args) {
     try {
       BigStringEditor editor = new BigStringEditor();
-//      Source so = new Source ("\\javaeva\\server\\problems\\bench\\Problem_f1.java");
-//      editor.setValue(so);
+
       PropertyDialog frame = new PropertyDialog(editor, "test", 50, 50);
       frame.setSize(200, 200);
       frame.addWindowListener(new WindowAdapter() {

@@ -5,8 +5,8 @@
             <version>1</version>
         </compliance>
         <style>
-            <description>Jalopy convention definitions for the JavaEVA project</description>
-            <name>JavaEVA convention</name>
+            <description>Jalopy convention definitions for the EvA project</description>
+            <name>EvA convention</name>
         </style>
     </general>
     <inspector>
@@ -224,7 +224,7 @@
 
         <!-- header should not used, because there are some LGPL sources and other authors -->
         <header>
-            <keys>JavaEVA header</keys>
+            <keys>EvA header</keys>
             <smartMode>5</smartMode>
 			<text>///////////////////////////////////////////////////////////////////////////////
 //  Filename: $RCSfile$

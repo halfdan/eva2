@@ -32,7 +32,7 @@ public class SelProbBoltzman extends AbstractSelProb implements java.io.Serializ
     }
 
     /** This method computes the selection probability for each individual
-     * in the population. Note: Summed over the complete populaiton the selection
+     * in the population. Note: Summed over the complete population the selection
      *  probability sums up to one.
      * @param population    The population to compute.
      * @param data         The input data as double[][].

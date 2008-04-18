@@ -73,7 +73,7 @@ public class MOSOMaxiMin implements InterfaceMOSOConverter, java.io.Serializable
         }
         ////////////////////////////////////////////////////////////////////////////////////
 //        if (false) {
-//            this.m_Plot = new javaeva.gui.Plot("Debug MaxiMin", "Y1", "Y2");
+//            this.m_Plot = new eva2.gui.Plot("Debug MaxiMin", "Y1", "Y2");
 //            this.m_Plot.setUnconnectedPoint(0, 0, 11);
 //            this.m_Plot.setUnconnectedPoint(1.2, 2.0, 11);
 //            double[][] trueFitness, moFitness;

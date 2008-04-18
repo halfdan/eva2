@@ -1,6 +1,6 @@
 package eva2.server;
 /*
- * Title:        JavaEvA
+ * Title:        EvA2
  * Description:
  * Copyright:    Copyright (c) 2003
  * Company:      University of Tuebingen, Computer Architecture

@@ -55,31 +55,6 @@ public class CrossoverEAMixer implements InterfaceCrossover, java.io.Serializabl
         this.m_Tau1             = mutator.m_Tau1;
         this.m_LowerLimitChance = mutator.m_LowerLimitChance;
     }
-//
-//    private Vector getClassesFromProperties(String mySelf, String myInterface) {
-//        Vector classes = new Vector();
-//        String typeOptions = EvAClient.getProperty(myInterface);
-//        if (typeOptions == null) {
-//            System.out.println("Warning: No configuration property found in: "  +EvAClient.EVA_PROPERTY_FILE + " "+"for javaeva.server.oa.go.Operators.Mutation.InterfaceMutation");
-//        } else {
-//            StringTokenizer st = new StringTokenizer(typeOptions, ", ");
-//            while (st.hasMoreTokens()) {
-//                String current = st.nextToken().trim();
-//                if (!current.equalsIgnoreCase(mySelf)) {
-//                    try {
-//                    	Class c = Class.forName(current);
-//                    	classes.addElement(current);
-//                    } catch (Exception ex) {
-//                        System.out.println("Couldn't load class with name: " + current);
-//                        System.out.println("ex:"+ex.getMessage());
-//                        ex.printStackTrace();
-//                    }
-//                }
-//            }
-//        }
-//        return classes;
-//    }
-
 
     /** This method will enable you to clone a given mutation operator
      * @return The clone

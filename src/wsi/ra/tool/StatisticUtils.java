@@ -14,6 +14,7 @@
 
 package wsi.ra.tool;
 
+
 /**
  * Statistic utils.
  */
@@ -178,25 +179,6 @@ public class StatisticUtils
   }
 
   /**
-   * Computes the mean for an array of doubles.
-   *
-   * @param vector the array
-   * @return the mean
-   */
-  public static double mean(double[] vector) {
-
-    double sum = 0;
-
-    if (vector.length == 0) {
-      return 0;
-    }
-    for (int i = 0; i < vector.length; i++) {
-      sum += vector[i];
-    }
-    return sum / (double) vector.length;
-  }
-
-  /**
    * Returns index of minimum element in a given
    * array of integers. First minimum is returned.
    *
@@ -241,43 +223,6 @@ public class StatisticUtils
   }
 
   /**
-   * Normalizes the doubles in the array by their sum.
-   *
-   * @param doubles the array of double
-   * @exception IllegalArgumentException if sum is Zero or NaN
-   */
-  public static void normalize(double[] doubles) {
-
-    double sum = 0;
-    for (int i = 0; i < doubles.length; i++) {
-      sum += doubles[i];
-    }
-    normalize(doubles, sum);
-  }
-
-  /**
-   * Normalizes the doubles in the array using the given value.
-   *
-   * @param doubles the array of double
-   * @param sum the value by which the doubles are to be normalized
-   * @exception IllegalArgumentException if sum is zero or NaN
-   */
-  public static void normalize(double[] doubles, double sum) {
-
-    if (Double.isNaN(sum)) {
-      throw new IllegalArgumentException("Can't normalize array. Sum is NaN.");
-    }
-    if (sum == 0) {
-      // Maybe this should just be a return.
-      throw new IllegalArgumentException("Can't normalize array. Sum is zero.");
-    }
-    for (int i = 0; i < doubles.length; i++) {
-      doubles[i] /= sum;
-    }
-  }
-
-
-  /**
    * Computes the variance for an array of doubles.
    *
    * @param vector the array
@@ -303,54 +248,6 @@ public class StatisticUtils
     } else {
       return result;
     }
-  }
-
-  /**
-   * Computes the sum of the elements of an array of doubles.
-   *
-   * @param doubles the array of double
-   * @return the sum of the elements
-   */
-  public static double sum(double[] doubles) {
-
-    double sum = 0;
-
-    for (int i = 0; i < doubles.length; i++) {
-      sum += doubles[i];
-    }
-    return sum;
-  }
-  
-  /**
-   * Computes the 2-norm of an array of doubles.
-   *
-   * @param doubles the array of double
-   * @return the 2-norm of the elements
-   */
-  public static double norm(double[] doubles) {
-
-    double sqSum = 0;
-
-    for (int i = 0; i < doubles.length; i++) {
-    	sqSum += doubles[i]*doubles[i];
-    }
-    return Math.sqrt(sqSum);
-  }
-
-  /**
-   * Computes the sum of the elements of an array of integers.
-   *
-   * @param ints the array of integers
-   * @return the sum of the elements
-   */
-  public static int sum(int[] ints) {
-
-    int sum = 0;
-
-    for (int i = 0; i < ints.length; i++) {
-      sum += ints[i];
-    }
-    return sum;
   }
 
   /**
