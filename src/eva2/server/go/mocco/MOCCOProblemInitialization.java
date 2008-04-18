@@ -56,7 +56,6 @@ public class MOCCOProblemInitialization extends MOCCOPhase implements InterfaceP
         JComponent  tmpC        = new JPanel();
         tmpC.setLayout(new BorderLayout());
         
-//        this.m_ProblemChooser.setModel(new DefaultComboBoxModel(this.getClassAlternatives4("javaeva.server.oa.go.OptimizationProblems.InterfaceMultiObjectiveDeNovoProblem")));
         Class[] altern = null;
 		try {
 			altern = ReflectPackage.getAssignableClassesInPackage("eva2.server.oa.go.OptimizationProblems", Class.forName("eva2.server.oa.go.OptimizationProblems.InterfaceMultiObjectiveDeNovoProblem"), true, true);

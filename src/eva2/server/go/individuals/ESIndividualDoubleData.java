@@ -62,7 +62,6 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
             this.m_Fitness[i] = individual.m_Fitness[i];
         }
         cloneAEAObjects((AbstractEAIndividual) individual);
-
     }
 
     public Object clone() {

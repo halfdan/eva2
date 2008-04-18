@@ -16,7 +16,7 @@ import eva2.server.go.strategies.MonteCarloSearch;
 import eva2.server.go.strategies.SimulatedAnnealing;
 import eva2.tools.Serializer;
 
-/** The class gives access to all SA parameters for the JavaEvA
+/** The class gives access to all SA parameters for the EvA
  * top level GUI.
  * Created by IntelliJ IDEA.
  * User: streiche

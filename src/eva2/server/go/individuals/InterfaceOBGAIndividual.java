@@ -2,7 +2,7 @@ package eva2.server.go.individuals;
 
 /** This interface gives access to a permutation genotype and should
  * only be used by mutation and crossover operators.
- * <p>Title: The JavaEvA</p>
+ * <p>Title: EvA2</p>
  * <p>Description: </p>
  * <p>Copyright: Copyright (c) 2003</p>
  * <p>Company: </p>

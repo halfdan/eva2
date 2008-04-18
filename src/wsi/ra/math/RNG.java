@@ -268,7 +268,7 @@ public class RNG extends Random {
   }
   
   /**
-   * Create a random vector with gaussian random double entries.
+   * Create a normalized random vector with gaussian random double entries.
    * 
    * @param n
    * @return
@@ -278,7 +278,7 @@ public class RNG extends Random {
 	  for (int i = 0; i < result.length; i++) {
 		  result[i] = RNG.gaussianDouble(dev);
 	  }
-	  Mathematics.normalizeVector(result);
+	  Mathematics.normVect(result, result);
 	  return result;
   }
 }

@@ -12,12 +12,10 @@ import eva2.server.go.problems.InterfaceOptimizationProblem;
 
 
 
-/** A gradient descent algorithm by hannes planatscher don't expect any
+/** 
+ * A gradient descent algorithm by hannes planatscher don't expect any
  * descriptions here... *big sigh*
- * <p>Title: The JavaEvA</p>
- * <p>Description: </p>
- * <p>Copyright: Copyright (c) 2003</p>
- * <p>Company: </p>
+ * 
  * @author not attributable
  * @version 1.0
  */
@@ -68,7 +66,7 @@ public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Ser
 
 
   public Object clone() {
-    /**@todo Implement this javaeva.server.oa.go.Strategies.InterfaceOptimizer method*/
+    /**@todo Implement InterfaceOptimizer method*/
     throw new java.lang.UnsupportedOperationException("Method clone() not yet implemented.");
   }
 

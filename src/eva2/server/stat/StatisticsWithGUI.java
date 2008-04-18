@@ -1,7 +1,7 @@
 package eva2.server.stat;
 
 /*
- * Title:        JavaEvA
+ * Title:        EvA2
  * Description:
  * Copyright:    Copyright (c) 2003
  * Company:      University of Tuebingen, Computer Architecture
@@ -36,7 +36,7 @@ import wsi.ra.jproxy.RMIProxyRemote;
  * CLASS DECLARATION
  *==========================================================================*/
 /**
- * A statistics class to plot fitness curves in JavaEvA client-server mode.
+ * A statistics class to plot fitness curves in client-server mode.
  */
 public class StatisticsWithGUI extends AbstractStatistics implements Serializable, InterfaceStatistics {
 	/**

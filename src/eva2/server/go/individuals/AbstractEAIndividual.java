@@ -17,6 +17,7 @@ import eva2.server.go.operators.mutation.InterfaceMutation;
 import eva2.server.go.operators.mutation.NoMutation;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
+import eva2.tools.EVAERROR;
 
 /** This is the abstract EA individual implementing the most important methods giving
  * access to mutation and crossover rates and operators, fitness values and selection
@@ -823,6 +824,25 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
     public String toString() {
     	return getDefaultStringRepresentation(this);
     }
+    
+	/**
+	 * For any AbstractEAIndividual try to convert its position to double[] and return it.
+	 * 
+	 * @param indy
+	 * @return double valued position of an individual
+	 */
+	public static double[] getDoublePosition(AbstractEAIndividual indy) {
+		if (indy instanceof InterfaceDataTypeDouble) {
+			return ((InterfaceDataTypeDouble)indy).getDoubleData();
+		} else if (indy instanceof InterfaceDataTypeInteger) {
+			int[] intData =  ((InterfaceDataTypeInteger)indy).getIntegerData();
+			double[] pos = new double[intData.length];
+			for (int i=0; i<intData.length; i++) pos[i] = (double)intData[i];
+			return pos;
+		} // TODO some more here?
+		EVAERROR.errorMsgOnce("Unhandled case in AbstractEAIndividual.getPosition()!");
+		return null;
+	}
     
 /**********************************************************************************************************************
  * Implementing the Individual Interface

@@ -100,7 +100,7 @@ public class ArchivingNSGAII extends ArchivingNSGA implements java.io.Serializab
         pop.SetArchive(archive);
     }
 
-    /** This method will dissect a given populaiton into n pareto-fronts
+    /** This method will dissect a given population into n pareto-fronts
      * @param pop   The population to analyse
      * @return Population[] the n pareto-fronts
      */

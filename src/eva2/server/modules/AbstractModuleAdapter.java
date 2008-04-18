@@ -1,6 +1,6 @@
 package eva2.server.modules;
 /*
- * Title:        JavaEvA
+ * Title:        EvA2
  * Description:
  * Copyright:    Copyright (c) 2003
  * Company:      University of Tuebingen, Computer Architecture
@@ -130,14 +130,14 @@ abstract public class AbstractModuleAdapter implements ModuleAdapter, Serializab
    *
    */
   public void addRemoteStateListener(RemoteStateListener x) {
-    if (TRACE) System.out.println("Modul Adapter on Server addRemoteStateListener called:" );
+    if (TRACE) System.out.println("module adapter on Server addRemoteStateListener called:" );
     m_RemoteStateListeners.add(x);
   }
   /**
    *
    */
   public void setConnection (boolean flag)  {
-    if (TRACE) System.out.println("Modul Adapter on Server setConnection "+flag+" called:" );
+    if (TRACE) System.out.println("module adapter on Server setConnection "+flag+" called:" );
     m_Connection = flag;
   }
   
@@ -148,14 +148,14 @@ abstract public class AbstractModuleAdapter implements ModuleAdapter, Serializab
    *
    */
   public void setRemoteThis (ModuleAdapter x) {
-  if (TRACE) System.out.println("Modul Adapter on Server setRemoteThis called:" );
+  if (TRACE) System.out.println("module adapter on Server setRemoteThis called:" );
     m_RemoteThis = x;
   }
   /**
    *
    */
   public String getHostName () {
-    if (TRACE) System.out.println("Modul Adapter on Server getHostName called:"+m_myHostName );
+    if (TRACE) System.out.println("module adapter on Server getHostName called:"+m_myHostName );
     return m_myHostName;
   }
   /**

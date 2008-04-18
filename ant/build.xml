@@ -290,8 +290,8 @@
       <fileset dir=".">
         <include name="run.sh"/>
         <include name="run.bat"/>
-        <include name="run_javaeva.sh"/>
-        <include name="run_javaeva.bat"/>
+        <include name="run_eva.sh"/>
+        <include name="run_eva.bat"/>
         <include name="*.txt"/>
         <include name="*.html"/>
       </fileset>

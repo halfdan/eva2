@@ -14,10 +14,8 @@ import eva2.server.go.populations.Population;
 public class MOSOUtilityFunction implements InterfaceMOSOConverter, java.io.Serializable {
 
     private int                 m_OutputDimension = 2;
-    //private Source              m_Source = new Source ("\\src\\javaeva\\server\\oa\\go\\Operators\\MOSOConverter\\MOSOUtilityFunction.java");
 
     public MOSOUtilityFunction () {
-//        m_Source = new Source ("\\src\\javaeva\\server\\oa\\go\\Operators\\MOSOConverter\\MOSOUtilityFunction.java");
     }
     public MOSOUtilityFunction(MOSOUtilityFunction b) {
         System.out.println("Warning no source!");

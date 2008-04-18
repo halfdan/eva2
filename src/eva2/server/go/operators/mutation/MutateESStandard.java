@@ -15,7 +15,7 @@ import wsi.ra.math.RNG;
  * To change this template use Options | File Templates.
  */
 public class MutateESStandard implements InterfaceMutation, java.io.Serializable  {
-    private double      m_MutationStepSize = 0.1;
+    protected double      m_MutationStepSize = 0.1;
 
     public MutateESStandard() {
     }
@@ -102,13 +102,14 @@ public class MutateESStandard implements InterfaceMutation, java.io.Serializable
      * @return description
      */
     public String globalInfo() {
-        return "The standart mutation alters all elements of the double attributes with a fixed mutation step size.";
+        return "The standard mutation alters all elements of the double attributes with a fixed mutation step size.";
     }
 
     /** This method allows you to set the fixed mutation step size
      * @param step    The new mutation step size
      */
     public void setMutationStepSize(double step) {
+        if (step < 0) step = 0.0000001;
         this.m_MutationStepSize = step;
     }
     public double getMutationStepSize() {

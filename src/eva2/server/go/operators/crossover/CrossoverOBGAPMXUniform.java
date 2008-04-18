@@ -8,7 +8,7 @@ import eva2.server.go.problems.InterfaceOptimizationProblem;
 import wsi.ra.math.RNG;
 
 /**
- * <p>Title: The JavaEvA</p>
+ * <p>Title: EvA2</p>
  * <p>Description: PMX-Crossover as defined in http://www.cs.rit.edu/usr/local/pub/pga/Genetic/Slides_etc/ga_5_og.pdf</p>
  * <p>Copyright: Copyright (c) 2003</p>
  * <p>Company: </p>

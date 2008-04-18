@@ -1,6 +1,6 @@
 package eva2.gui;
 /*
- * Title:        JavaEvA
+ * Title:        EvA2
  * Description:
  * Copyright:    Copyright (c) 2003
  * Company:      University of Tuebingen, Computer Architecture
@@ -16,15 +16,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.*;
 import java.awt.*;
-
-/**
- * Title:        The JavaEvA
- * Description:
- * Copyright:    Copyright (c) 2003
- * Company:
- * @author
- * @version 1.0
- */
 
 public class JEFrame extends JFrame {
 

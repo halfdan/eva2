@@ -80,6 +80,6 @@ public class MutateESDefault implements InterfaceMutation, java.io.Serializable 
      * @return description
      */
     public String globalInfo() {
-        return "The default mutation alters one element of the double attributes.";
+        return "The default mutation just uses the default method implemented in the individual.";
     }
 }

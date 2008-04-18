@@ -23,7 +23,7 @@ public abstract class AbstractSelProb implements InterfaceSelectionProbability, 
     public abstract Object clone();
 
     /** This method computes the selection probability for each individual
-     * in the population. Note: Summed over the complete populaiton the selection
+     * in the population. Note: Summed over the complete population the selection
      *  probability sums up to one.
      * @param population    The population to compute.
      * @param input         The name of the input.
@@ -33,7 +33,7 @@ public abstract class AbstractSelProb implements InterfaceSelectionProbability, 
     }
 
     /** This method computes the selection probability for each individual
-     * in the population. Note: Summed over the complete populaiton the selection
+     * in the population. Note: Summed over the complete population the selection
      *  probability sums up to one.
      * @param population    The population to compute.
      * @param input         The name of the input.

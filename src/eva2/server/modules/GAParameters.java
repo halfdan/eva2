@@ -16,7 +16,7 @@ import eva2.server.go.strategies.HillClimbing;
 import eva2.server.go.strategies.InterfaceOptimizer;
 import eva2.tools.Serializer;
 
-/** The class gives access to all GA parameters for the JavaEvA
+/** The class gives access to all GA parameters for the EvA
  * top level GUI.
  * Created by IntelliJ IDEA.
  * User: streiche

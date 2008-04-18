@@ -1,10 +1,12 @@
 package eva2.server.go.populations;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.PriorityQueue;
+import java.util.Set;
 
+import wsi.ra.math.RNG;
 import eva2.server.go.IndividualInterface;
 import eva2.server.go.InterfacePopulationChangedEventListener;
 import eva2.server.go.PopulationInterface;
@@ -12,7 +14,8 @@ import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.AbstractEAIndividualComparator;
 import eva2.server.go.individuals.GAIndividualBinaryData;
 import eva2.server.go.operators.distancemetric.PhenotypeMetric;
-import wsi.ra.math.RNG;
+import eva2.tools.EVAERROR;
+import eva2.tools.Mathematics;
 
 
 /** This is a basic implementation for a EA Population.
@@ -32,6 +35,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     protected Population    m_Archive       = null;
     transient protected InterfacePopulationChangedEventListener	m_Listener = null;
     protected int 			notifyEvalInterval	= 0;
+    protected HashMap<String, Object>		additionalPopData = null;
     
     public static String funCallIntervalReached = "FunCallIntervalReached";
     
@@ -77,6 +81,13 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
         this.useHistory 		= population.useHistory;
         this.notifyEvalInterval = population.notifyEvalInterval;
         this.m_Listener			= population.m_Listener;
+        if (population.additionalPopData != null) {
+        	additionalPopData = new HashMap<String, Object>();
+        	Set<String> keys = additionalPopData.keySet();
+        	for (String key : keys) {
+        		additionalPopData.put(key, population.additionalPopData.get(key));
+        	}
+        }
     }
 
     public Object clone() {
@@ -736,6 +747,60 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
         
         return res;
     }
+    
+	/**
+	 * Calculate the average position of the population.
+	 * 
+	 * @return the average position of the population
+	 */
+	public double[] getCenter() {
+		if (size()==0) EVAERROR.errorMsgOnce("Invalid pop size in DistractingPopulation:getCenter!");
+		double[] centerPos = AbstractEAIndividual.getDoublePosition(getEAIndividual(0));
+		for (int i=1; i<size(); i++) {
+			Mathematics.vvAdd(centerPos, AbstractEAIndividual.getDoublePosition(getEAIndividual(i)), centerPos);
+		}
+		Mathematics.svDiv(size(), centerPos, centerPos);
+		return centerPos;
+	}
+	
+//	/**
+//	 * Calculate the average position of the population.
+//	 * 
+//	 * @return the average position of the population
+//	 */
+//	public double[] getWeightedCenter(int fitIndex) {
+//		if (size()==0) EVAERROR.errorMsgOnce("Invalid pop size in DistractingPopulation:getCenter!");
+//		double[] centerPos = AbstractEAIndividual.getDoublePosition(getEAIndividual(0));
+//		double[] tmpPos;
+//		double fitSum = getFitSum(fitIndex);
+//		for (int i=1; i<size(); i++) {
+//			tmpPos = AbstractEAIndividual.getDoublePosition(getEAIndividual(i));
+//			tmpPos = Mathematics.svMult(getCenterWeight(getEAIndividual(i), fitIndex, fitSum), tmpPos);
+//			Mathematics.vvAdd(centerPos, tmpPos, centerPos);
+//		}
+//		Mathematics.svDiv(size(), centerPos, centerPos);
+//		return centerPos;
+//	}
+//	
+//	/**
+//	 * Weight the fitness relative to the fitness sum.
+//	 * @param indy
+//	 * @param fitIndex
+//	 * @param fitSum
+//	 * @return
+//	 */
+//	private double getCenterWeight(AbstractEAIndividual indy, int fitIndex, double fitSum) {
+//		double ret = indy.getFitness(fitIndex);
+//		return ret/fitSum;
+//	}
+//	
+//	private double getFitSum(int index) {
+//		double sum = 0;
+//		for (int i=0; i<size(); i++) {
+//			sum += getEAIndividual(i).getFitness(index);
+//		}
+//		return sum;
+//	}
     
     public int getGenerations() {
         return this.m_Generation;

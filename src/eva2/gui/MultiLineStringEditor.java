@@ -6,7 +6,7 @@ import java.awt.event.*;
 
 
 /**
- * <p>Title: The JavaEvA</p>
+ * <p>Title: EvA2</p>
  * <p>Description: </p>
  * <p>Copyright: Copyright (c) 2003</p>
  * <p>Company: </p>

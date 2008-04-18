@@ -164,6 +164,23 @@ public class SelectedTag implements java.io.Serializable {
 		}
 	}
 	
+	/**
+	 * Check if the given object has the same string tags as this one and return true if so, else false.
+	 * @param selT
+	 * @return
+	 */
+	public boolean hasSameTags(SelectedTag selT) {
+		Tag[] oTags = selT.getTags();
+		if (oTags.length != m_Tags.length) {
+			return false;
+		} else {
+			for (int i=0;i<oTags.length; i++) {
+				if (oTags[i].getString().compareTo(m_Tags[i].getString()) != 0) return false;
+			}
+			return true;
+		}
+	}
+	
 	public String toString() {
 		return m_Tags[m_Selected].getString();
 //		Character selSign = '*';

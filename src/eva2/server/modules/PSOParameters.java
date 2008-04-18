@@ -19,7 +19,7 @@ import eva2.server.go.strategies.PopulationBasedIncrementalLearning;
 import eva2.tools.SelectedTag;
 import eva2.tools.Serializer;
 
-/** The class gives access to all PSO parameters for the JavaEvA
+/** The class gives access to all PSO parameters for the EvA
  * top level GUI.
  * Created by IntelliJ IDEA.
  * User: streiche

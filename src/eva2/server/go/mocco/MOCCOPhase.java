@@ -104,7 +104,7 @@ public abstract class MOCCOPhase implements InterfaceProcessElement {
         }
     }
 
-    /** This method makes a helptext element similar to that used in JavaEvA
+    /** This method makes a helptext element similar to that used in EvA
      * @param help  The text to display
      * @return the helptext component
      */
@@ -112,7 +112,7 @@ public abstract class MOCCOPhase implements InterfaceProcessElement {
         return this.makeInformationText("Info", help);
     }
 
-    /** This method makes a helptext element similar to that used in JavaEvA
+    /** This method makes a helptext element similar to that used in EvA
      * @param title  The title of the help text
      * @param help  The text to display
       * @return the helptext component

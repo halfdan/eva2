@@ -72,18 +72,18 @@ public class CrossoverESSPX implements InterfaceCrossover, java.io.Serializable 
 
             // calculate the Y vectors
             for (int i = 0; i < parents.length; i++) {
-                Y[i] = Mathematics.vvAdd(g, Mathematics.scalarMultVector(this.m_Epsilon, Mathematics.subVector(parents[i], g)));
+                Y[i] = Mathematics.vvAdd(g, Mathematics.svMult(this.m_Epsilon, Mathematics.vvSub(parents[i], g)));
             }
 
             // now for each child the C vectors and the result
             for (int i = 0; i < children.length; i++) {
                 C = new double[Y.length][];
-                C[0] = Mathematics.nullVector(parents[0].length);
+                C[0] = Mathematics.zeroes(parents[0].length);
                 for (int j = 1; j < Y.length; j++) {
                     r       = Math.pow(RNG.randomDouble(0, 1), 1/((double)j));
                     C[j]    = Mathematics.vvAdd(Y[j-1], C[j-1]);
-                    C[j]    = Mathematics.subVector(C[j], Y[j]);
-                    C[j]    = Mathematics.scalarMultVector(r, C[j]);
+                    C[j]    = Mathematics.vvSub(C[j], Y[j]);
+                    C[j]    = Mathematics.svMult(r, C[j]);
                     //C[j]    = this.scalarMultVector(r, this.subVector(Y[j-1], this.addVector(Y[j], C[j-1])));
                 }
                 // now the children results from

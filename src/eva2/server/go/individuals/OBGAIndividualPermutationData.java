@@ -11,7 +11,7 @@ import wsi.ra.math.RNG;
 
 /** This individual uses a permutation based genotype to code for
  * permutations.
- * <p>Title: The JavaEvA</p>
+ * <p>Title: EvA2</p>
  * <p>Description: </p>
  * <p>Copyright: Copyright (c) 2003</p>
  * <p>Company: </p>
