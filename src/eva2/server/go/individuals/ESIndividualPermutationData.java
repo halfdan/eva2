@@ -366,7 +366,7 @@ public class ESIndividualPermutationData extends AbstractEAIndividual implements
      * @return The name.
      */
     public String getName() {
-        return "ES indiviudal";
+        return "ES individual";
     }
 
     /** This method returns a global info string

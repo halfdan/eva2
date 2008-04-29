@@ -288,7 +288,7 @@ public class ESIndividualIntegerData extends AbstractEAIndividual implements Int
      * @return The name.
      */
     public String getName() {
-        return "ES indiviudal";
+        return "ES individual";
     }
 
     /** This method returns a global info string

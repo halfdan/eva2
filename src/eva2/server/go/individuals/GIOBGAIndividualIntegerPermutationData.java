@@ -292,7 +292,7 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
      * @return The name.
      */
     public String getName() {
-        return "GA/ES indiviudal";
+        return "GA/ES individual";
     }
 
     /** This method returns a global info string

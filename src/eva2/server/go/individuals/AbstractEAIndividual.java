@@ -839,7 +839,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
 			double[] pos = new double[intData.length];
 			for (int i=0; i<intData.length; i++) pos[i] = (double)intData[i];
 			return pos;
-		} // TODO some more here?
+		} // TODO check some more types here?
 		EVAERROR.errorMsgOnce("Unhandled case in AbstractEAIndividual.getPosition()!");
 		return null;
 	}

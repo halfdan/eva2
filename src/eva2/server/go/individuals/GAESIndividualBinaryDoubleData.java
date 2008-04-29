@@ -293,7 +293,7 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
      * @return The name.
      */
     public String getName() {
-        return "GA/ES indiviudal";
+        return "GA/ES individual";
     }
 
     /** This method returns a global info string
