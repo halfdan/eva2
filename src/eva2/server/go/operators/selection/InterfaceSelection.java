@@ -33,7 +33,7 @@ public interface InterfaceSelection {
      */
     public void prepareSelection(Population population);
 
-    /** This method will select >size< indiviudals from the given
+    /** This method will select >size< individuals from the given
      * Population.
      * @param population    The source population where to select from
      * @param size          The number of Individuals to select
