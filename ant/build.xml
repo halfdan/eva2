@@ -26,6 +26,7 @@
 
   <!-- SET THE DIRECTORY PROPERTIES -->
   <property name="source.directory"               value="src" />
+	  <property name="ant.directory"               value="ant" />
   <property name="build.directory"                value="build" />
   <property name="distribution.directory"         value="dist" />
   <property name="resources.directory"            value="resources" />
@@ -33,6 +34,10 @@
   <property name="binary.distribution.directory"  value="${distribution.directory}/bin-dist" />
   <property name="javadoc.directory"              value="doc/api" />
   <property name="library.directory"              value="lib" />
+  <property name="debug.flag"					  value="true" />
+	  <property name="JE2Probs.directory"			  value="../JE2Probs" />				
+	  <property name="JE2ESModel.directory"			  value="../JE2ESModel" />				
+	  <property name="JE2Research.directory"			  value="../JE2Research" />				
 
   <!-- SET THE BINARY LIBRARIES PROPERTIES -->
   <property name="check.libraries.ant"            value="ant/check.xml" />
@@ -170,13 +175,15 @@
   <target name="compileAll" depends="usage, update.libraries" description="Update libraries and compile the project.">
     <antcall target="compile">
     </antcall>
+    <antcall target="compileProbs">
+    </antcall>
   </target>
 
   <target name="compileInfo" unless="silent">
     <echo message="ANT_HOME is set to = ${env.ANT_HOME}"/>
     <echo message="JAVA_HOME is set to = ${env.JAVA_HOME}"/>
     <echo message="You are using JDK version ${ant.java.version}"/>
-    <echo message="currently JDK version 1.3 is recomended!"/>
+    <echo message="currently JDK version 1.5 is recomended!"/>
     <echo message=""/>
     <echo message="use 'ant compileAll' - to compile all java sources (+ WSI)."/>
     <echo message="use 'ant compile'    - to compile only the java sources (faster)."/>
@@ -184,7 +191,7 @@
 
   <target name="compile" depends="usage, init, check, compileInfo" description="Compiles the project." >
   <!-- COMPILE PROJECT -->
-  <javac destdir="${build.directory}" optimize="on" deprecation="on" nowarn="on">
+  <javac destdir="${build.directory}" optimize="on" deprecation="on" nowarn="on" debug="${debug.flag}" >
      <src path="${source.directory}" />
      <exclude name="ant/**" />
      <exclude name="build/**" />
@@ -212,8 +219,30 @@
     <copy todir="${build.directory}/resources">
       <fileset dir="${resources.directory}" includes="**/*" />
    </copy>
+  	
+    <copy todir="${JE2Probs.directory}/${build.directory}/resources">
+      <fileset dir="${JE2Probs.directory}/${resources.directory}" includes="**/*" />
+   </copy>
+  	
+    <copy todir="${JE2ESModel.directory}/${build.directory}/resources">
+      <fileset dir="${JE2ESModel.directory}/${resources.directory}" includes="**/*" />
+   </copy>
+	
+    <copy todir="${JE2Research.directory}/${build.directory}/resources">
+      <fileset dir="${JE2Research.directory}/${resources.directory}" includes="**/*" />
+   </copy>
   </target>
-
+	
+<!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	        Compile JE2Probs
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+	<target name="compileProbs" depends="usage, init, compileInfo" description="Compiles the Probs project." >
+	  <!-- COMPILE PROBS PROJECT -->
+	  	<ant inheritAll="false" antfile="${ant.directory}/build.xml" dir="${JE2Probs.directory}" target="compile">
+			<property name="silent" value="true"/>
+		</ant>
+	</target>
+	
 <!-- =================================================================== -->
 <!-- Jars all classes into one jar file                                  -->
 <!-- =================================================================== -->
@@ -265,7 +294,7 @@
     <mkdir dir="${bin.dist.dir}" />
     <mkdir dir="${bin.dist.dir}/${library.directory}" />
 <delete>
-      <fileset dir="${bin.dist.dir}/${library.directory}" includes="*EvA*jar" />
+      <fileset dir="${bin.dist.dir}/${library.directory}" includes="*EvA2Base*jar" />
 </delete>
 
 <jar jarfile="${bin.dist.dir}/${library.directory}/EvA2Base.jar"  basedir="${build.directory}" >

@@ -51,7 +51,17 @@ public abstract class AbstractProblemBinary extends AbstractOptimizationProblem 
 	 * @return the problem dimension
 	 */
 	public abstract int getProblemDimension();
-	
+
+	/**
+	 * Initialize a single individual with index k in the
+	 * initPopulation cycle.
+	 * @param k
+	 * @param indy
+	 */
+    protected void initIndy(int k, AbstractEAIndividual indy) {
+    	indy.init(this);
+    }
+
 	@Override
 	public void initPopulation(Population population) {
         AbstractEAIndividual tmpIndy;
@@ -61,7 +71,7 @@ public abstract class AbstractProblemBinary extends AbstractOptimizationProblem 
 
         for (int i = 0; i < population.getPopulationSize(); i++) {
             tmpIndy = (AbstractEAIndividual)((AbstractEAIndividual)this.m_Template).clone();
-            tmpIndy.init(this);
+            initIndy(i, tmpIndy);
             population.add(tmpIndy);
         }
         // population init must be last

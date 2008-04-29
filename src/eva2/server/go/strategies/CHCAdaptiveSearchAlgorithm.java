@@ -7,7 +7,7 @@ import eva2.server.go.InterfacePopulationChangedEventListener;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceGAIndividual;
 import eva2.server.go.operators.selection.InterfaceSelection;
-import eva2.server.go.operators.selection.SelectBest;
+import eva2.server.go.operators.selection.SelectBestSingle;
 import eva2.server.go.operators.selection.SelectRandom;
 import eva2.server.go.populations.PBILPopulation;
 import eva2.server.go.populations.Population;
@@ -38,7 +38,7 @@ public class CHCAdaptiveSearchAlgorithm implements InterfaceOptimizer, java.io.S
     private Population                      m_Population        = new Population();
     private InterfaceOptimizationProblem    m_Problem           = new B1Problem();
     private InterfaceSelection              m_RecombSelectionOperator = new SelectRandom();
-    private InterfaceSelection              m_PopulSelectionOperator = new SelectBest();
+    private InterfaceSelection              m_PopulSelectionOperator = new SelectBestSingle();
 
     transient private String                m_Identifier = "";
     transient private InterfacePopulationChangedEventListener m_Listener;

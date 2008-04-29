@@ -3,14 +3,17 @@ package eva2.tools;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
+
+import wsi.ra.tool.BasicResourceLoader;
 
 //import wsi.ra.tool.BasicResourceLoader;
 
@@ -238,73 +241,116 @@ public class ReflectPackage {
 			classPath = System.getProperty("java.class.path",".");
 			if (useFilteredClassPath) {
 				try {
-					String[] pathElements = getClassPathElements();
-					File f;
-					ArrayList<String> valids = new ArrayList<String>(pathElements.length);
-					for (int i=0; i<pathElements.length; i++) {
-//						System.err.println(pathElements[i]);
-						f = new File(pathElements[i]);
-//						if (f.canRead()) {valids.add(pathElements[i]);}
-						if (f.exists() && f.canRead()) {
-							valids.add(pathElements[i]);
-						}
-					}
-//					dynCP = valids.toArray(dynCP); // this causes Matlab to crash meanly.
-					dynCP = new String[valids.size()];
-					for (int i=0; i<valids.size(); i++) dynCP[i] = valids.get(i);
+					dynCP = getValidCPArray();
 				} catch (Exception e) {
 					System.err.println(e.getMessage());
 				}
 			} else dynCP = getClassPathElements();
 		}
-		
-//		dynCP = System.getProperty("java.class.path",".").split(File.pathSeparator);
+
 		if (TRACE) System.out.println("classpath is " + classPath);
-//		System.err.println("no of path elements is " + dynCP.length);
-//		if (usePathMap) {
-//			System.err.println("Checking for " + pckg);
-//			ArrayList<String> pathes = pathMap.get(pckg);
-//			System.err.println("stored objects: " + ((pathes != null) ? pathes.size() : 0));
-//			if (pathes == null) {
-//				pathes = new ArrayList<String>();
-//				for (int i=0; i<dynCP.length; i++) {
-//					int added = 0;
-//					if (dynCP[i].endsWith(".jar")) {
-//						added = getClassesFromJarFltr(set, dynCP[i], pckg, includeSubs, reqSuperCls);
-//					} else {
-//						added = getClassesFromFilesFltr(set, dynCP[i], pckg, includeSubs, reqSuperCls);
-//					}
-//					if (added > 0) pathes.add(dynCP[i]);
-//				}
-//				pathMap.put(pckg, pathes);
-//			} else {
-//				for (int i=0; i<pathes.size(); i++) {
-//					System.err.println("reusing " + pathes.get(i));
-//					if (pathes.get(i).endsWith(".jar")) getClassesFromJarFltr(set, pathes.get(i), pckg, includeSubs, reqSuperCls);
-//					else getClassesFromFilesFltr(set, pathes.get(i), pckg, includeSubs, reqSuperCls);
-//				}
-//			}
-//		} else {
-			for (int i=0; i<dynCP.length; i++) {
-				if (TRACE) System.out.println("reading element "+dynCP[i]);
-				if (dynCP[i].endsWith(".jar")) {
-					getClassesFromJarFltr(set, dynCP[i], pckg, includeSubs, reqSuperCls);
-				} else {
-					if (TRACE) System.out.println("reading from files: "+dynCP[i]+" "+pckg);
-					getClassesFromFilesFltr(set, dynCP[i], pckg, includeSubs, reqSuperCls);
-				}
+		for (int i=0; i<dynCP.length; i++) {
+			if (TRACE) System.out.println("reading element "+dynCP[i]);
+			if (dynCP[i].endsWith(".jar")) {
+				getClassesFromJarFltr(set, dynCP[i], pckg, includeSubs, reqSuperCls);
+			} else {
+				if (TRACE) System.out.println("reading from files: "+dynCP[i]+" "+pckg);
+				getClassesFromFilesFltr(set, dynCP[i], pckg, includeSubs, reqSuperCls);
 			}
-//		}
+		}
 		Object[] clsArr = set.toArray();
 		if (bSort) {
 			Arrays.sort(clsArr, new ClassComparator());
 		}
-		
+
 		List list;
-		 
-//		#1
 		list = Arrays.asList(clsArr);
 		return (Class[])list.toArray(new Class[list.size()]);
+	}
+
+	/**
+	 * Request a valid absolute resource path from a relative resource path
+	 * by searching the classpath entries. Returns null if the resource is not found.
+	 * @param res
+	 */
+	public static String getResourcePathFromCP(String res) {
+		String[] cpEntries = getClassPathElements();
+		URL url = ClassLoader.getSystemResource(res);
+		if (TRACE) System.out.println(res + ((url == null) ? " not" : " was") + " found by classloader.");
+		if (url != null) return url.getFile();
+		
+		File f;
+		String fNameSep;
+		if (res.startsWith(System.getProperty("file.separator"))) fNameSep = res;
+		else fNameSep = System.getProperty("file.separator")+res;
+
+		for (int i=0; i<cpEntries.length; i++) {
+			if (!cpEntries[i].endsWith(".jar")) { // its a fs directory (hopefully)
+				if (TRACE) System.out.println("reading element "+cpEntries[i]);
+				f = new File(cpEntries[i]+fNameSep);
+				if (TRACE) System.out.println(res + ((!f.exists()) ? " not" : " was") + " found in " + cpEntries[i]);
+				if (f.exists()) return f.getAbsolutePath();
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Request a valid absolute resource path from a relative resource path
+	 * by searching the classpath entries. Returns null if the resource is not found.
+	 * @param res
+	 */
+	public static InputStream getResourceStreamFromCP(String res) {
+		
+		InputStream in = BasicResourceLoader.instance().getStreamFromResourceLocation(res);
+		if (TRACE) System.out.println(res + ((in == null) ? " not" : " was") + " found by classloader.");
+		if (in != null) return in;
+		
+		String[] cpEntries = getClassPathElements();
+		
+		File f;
+		String fNameSep;
+		if (res.startsWith(System.getProperty("file.separator"))) fNameSep = res;
+		else fNameSep = System.getProperty("file.separator")+res;
+
+		for (int i=0; i<cpEntries.length; i++) {
+			if (!cpEntries[i].endsWith(".jar")) { // its a fs directory (hopefully)
+				if (TRACE) System.out.println("reading element "+cpEntries[i]);
+				f = new File(cpEntries[i]+fNameSep);
+				if (TRACE) System.out.println(res + ((!f.exists()) ? " not" : " was") + " found in " + cpEntries[i]);
+				if (f.exists()) {
+					try {
+						return new FileInputStream(f);
+					} catch(Exception e) {
+						System.err.println("error reading file " + f.getAbsolutePath() + ": " + e.getMessage());
+					}
+				}
+			}
+		}
+		return null;
+	}
+	
+	public static ArrayList<String> getValidCPEntries() {
+		String[] pathElements = getClassPathElements();
+		File f;
+		ArrayList<String> valids = new ArrayList<String>(pathElements.length);
+		for (int i=0; i<pathElements.length; i++) {
+//						System.err.println(pathElements[i]);
+			f = new File(pathElements[i]);
+//						if (f.canRead()) {valids.add(pathElements[i]);}
+			if (f.exists() && f.canRead()) {
+				valids.add(pathElements[i]);
+			}
+		}
+		return valids;
+	}
+	
+	public static String[] getValidCPArray() {
+		ArrayList<String> valids = getValidCPEntries();
+//		vp = valids.toArray(dynCP); // this causes Matlab to crash meanly.
+		String[] vp = new String[valids.size()];
+		for (int i=0; i<valids.size(); i++) vp[i] = valids.get(i);
+		return vp;
 	}
 	
 	/**

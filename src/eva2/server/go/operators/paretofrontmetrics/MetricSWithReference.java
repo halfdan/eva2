@@ -20,11 +20,8 @@ import eva2.server.go.tools.FileLoader;
  * To change this template use File | Settings | File Templates.
  */
 public class MetricSWithReference implements InterfaceParetoFrontMetric, java.io.Serializable {
-
     private double[][]          m_ObjectiveSpaceRange;
-    private String              base                    = System.getProperty("user.dir");
-    private String              FS                      = System.getProperty("file.separator");
-    private PropertyFilePath    m_InputFilePath         = new PropertyFilePath(base+FS+"resources"+FS+"MOPReference"+FS+"T1_250.txt");
+    private PropertyFilePath    m_InputFilePath         = PropertyFilePath.getFilePathFromResource("resources/MOPReference/T1_250.txt");
     private String[]            m_Titles;
     private double[][]          m_Reference;
     private double              m_ReferenceSMetric      = -1;
@@ -42,8 +39,6 @@ public class MetricSWithReference implements InterfaceParetoFrontMetric, java.io
             }
         }
         this.m_InputFilePath    = b.m_InputFilePath;
-        this.base               = System.getProperty("user.dir");
-        this.FS                 = System.getProperty("file.separator");
         if (b.m_Titles != null) {
             this.m_Titles = new String[b.m_Titles.length];
             System.arraycopy(b.m_Titles, 0, this.m_Titles, 0, this.m_Titles.length);

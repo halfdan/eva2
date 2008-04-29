@@ -76,7 +76,7 @@ import wsi.ra.tool.BasicResourceLoader;
 public class EvAClient implements RemoteStateListener, Serializable {
 	public static final String EVA_PROPERTY_FILE = "resources/EvA2.props";
 	private static Properties EVA_PROPERTIES;
-	public static final String iconLocation = "resources/images/icon3.gif";
+	public static final String iconLocation = "resources/images/icon4.gif";
 	private static final String splashLocation = "resources/images/splashScreen2.png";
 	private static final String infoTitle = "EvA2 Information";
 	final int splashScreenTime = 1500;
@@ -476,6 +476,10 @@ public class EvAClient implements RemoteStateListener, Serializable {
 		m_barMenu.add(m_mnuWindow);
 		m_barMenu.add(m_mnuAbout);
 
+	}
+	
+	public static String getProductName() {
+		return m_ProductName;
 	}
 	
 	protected void logMessage(String msg) {

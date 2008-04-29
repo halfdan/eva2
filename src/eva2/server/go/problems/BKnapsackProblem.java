@@ -2,14 +2,13 @@ package eva2.server.go.problems;
 
 
 
-import java.util.*;
+import java.util.BitSet;
 
-import eva2.server.go.individuals.AbstractEAIndividual;
-import eva2.server.go.individuals.GAIndividualBinaryData;
-import eva2.server.go.individuals.InterfaceDataTypeBinary;
-import eva2.server.go.populations.Population;
-import eva2.server.go.strategies.InterfaceOptimizer;
 import wsi.ra.math.RNG;
+import eva2.server.go.individuals.AbstractEAIndividual;
+import eva2.server.go.individuals.InterfaceDataTypeBinary;
+import eva2.server.go.strategies.InterfaceOptimizer;
+import eva2.server.go.problems.AbstractProblemBinary;
 
 /**
  * Created by IntelliJ IDEA.
@@ -18,7 +17,7 @@ import wsi.ra.math.RNG;
  * Time: 15:12:46
  * To change this template use Options | File Templates.
  */
-public class BKnapsackProblem extends AbstractOptimizationProblem implements java.io.Serializable {
+public class BKnapsackProblem extends AbstractProblemBinary implements java.io.Serializable {
 
     private int                         m_Limit         = 5000;
     private double                      m_Punish        = 2.0;
@@ -128,12 +127,12 @@ public class BKnapsackProblem extends AbstractOptimizationProblem implements jav
         {392,-386}};
 
     public BKnapsackProblem() {
-        this.m_Template         = new GAIndividualBinaryData();
+        super();
     }
+    
     public BKnapsackProblem(BKnapsackProblem b) {
         //AbstractOptimizationProblem
-        if (b.m_Template != null)
-            this.m_Template         = (AbstractEAIndividual)((AbstractEAIndividual)b.m_Template).clone();
+    	cloneObjects(b);
         // BKnapsackProblem
         this.m_Limit            = b.m_Limit;
         this.m_Punish           = b.m_Punish;
@@ -141,6 +140,10 @@ public class BKnapsackProblem extends AbstractOptimizationProblem implements jav
         this.m_Lamarkism        = b.m_Lamarkism;
     }
 
+    public int getProblemDimension() {
+    	return items.length;
+    }
+    
     /** This method returns a deep clone of the problem.
      * @return  the clone
      */
@@ -154,45 +157,28 @@ public class BKnapsackProblem extends AbstractOptimizationProblem implements jav
         // nothing to init here
     }
 
-    /** This method inits a given population
-     * @param population    The populations that is to be inited
-     */
-    public void initPopulation(Population population) {
-        AbstractEAIndividual tmpIndy;
+    protected void initIndy(int k, AbstractEAIndividual indy) {
+        indy.init(this);
+    	if (RNG.flipCoin(this.m_ProblemSpecificInit)) {
+    		BitSet tmpSet = new BitSet();
+    		tmpSet.clear();
 
-        population.clear();
-
-        ((InterfaceDataTypeBinary)this.m_Template).setBinaryDataLength(items.length);
-        for (int i = 0; i < population.getPopulationSize(); i++) {
-            tmpIndy = (AbstractEAIndividual)((AbstractEAIndividual)this.m_Template).clone();
-            tmpIndy.init(this);
-            if (RNG.flipCoin(this.m_ProblemSpecificInit)) {
-                BitSet tmpSet = new BitSet();
-                tmpSet.clear();
-
-                while (evaluate(tmpSet, items.length)[1] > 0) {
-                    tmpSet.set(RNG.randomInt(0,items.length-1));
-                }
-                ((InterfaceDataTypeBinary)tmpIndy).SetBinaryDataLamarkian(tmpSet);
-            }
-            population.add(tmpIndy);
-        }
-        // population init must be last
-        // it set's fitcalls and generation to zero
-        population.init();
+    		while (eval(tmpSet)[1] > 0) {
+    			tmpSet.set(RNG.randomInt(0,items.length-1));
+    		}
+    		((InterfaceDataTypeBinary)indy).SetBinaryDataLamarkian(tmpSet);
+    	}
     }
-
+    
     /** This method evaluates a single individual and sets the fitness values
      * @param individual    The individual that is to be evalutated
      */
     public void evaluate(AbstractEAIndividual individual) {
         BitSet          tmpBitSet;
         double[]        result;
-        InterfaceDataTypeBinary    tmpIndy;
 
-        tmpIndy     = (InterfaceDataTypeBinary) individual;
-        tmpBitSet   = tmpIndy.getBinaryData();
-        result = this.evaluate(tmpBitSet, tmpIndy.size());
+        tmpBitSet   = ((InterfaceDataTypeBinary) individual).getBinaryData();
+        result = this.eval(tmpBitSet);
         if (RNG.flipCoin(this.m_LocalSearch)) {
             // first remove surplus assets
             while (result[1] > 0) {
@@ -210,7 +196,7 @@ public class BKnapsackProblem extends AbstractOptimizationProblem implements jav
                 }
                 // remove the weakest
                 tmpBitSet.clear(weakest);
-                result = this.evaluate(tmpBitSet, tmpIndy.size());
+                result = this.eval(tmpBitSet);
             }
             // now lets see if we can replace some guy with a more efficient one
             int weakest = tmpBitSet.nextSetBit(0);
@@ -228,7 +214,7 @@ public class BKnapsackProblem extends AbstractOptimizationProblem implements jav
                 }
 
                 tmpBitSet.clear(weakest);
-                result = this.evaluate(tmpBitSet, tmpIndy.size());
+                result = this.eval(tmpBitSet);
                 int weight = 0;
                 for (int i = 0; i < items.length; i++) {
                     if (tmpBitSet.get(i)) weight  += items[i][0];
@@ -244,11 +230,11 @@ public class BKnapsackProblem extends AbstractOptimizationProblem implements jav
                     }
                 }
                 if (stronger >= 0) tmpBitSet.set(stronger);
-                result = this.evaluate(tmpBitSet, tmpIndy.size());
+                result = this.eval(tmpBitSet);
             }
 
             if (this.m_Lamarkism) {
-                tmpIndy.SetBinaryDataLamarkian(tmpBitSet);
+            	((InterfaceDataTypeBinary) individual).SetBinaryDataLamarkian(tmpBitSet);
             }
         }
         result[0] += 5100;
@@ -261,9 +247,11 @@ public class BKnapsackProblem extends AbstractOptimizationProblem implements jav
      * @param l         The length of the BitSet.
      * @return          Double[]
      */
-    public double[] evaluate(BitSet b, int l) {
+    public double[] eval(BitSet b) {
         double[]                result = new double[3];
 
+        int l = items.length; 
+        if (getProblemDimension() != l) System.err.println("Error in BKnapsack!");
         result[0] = 0;
         result[1] = 0; // the weight exceed
         result[2] = 0; // net worth
@@ -292,7 +280,7 @@ public class BKnapsackProblem extends AbstractOptimizationProblem implements jav
 
         tmpIndy     = (InterfaceDataTypeBinary) individual;
         tmpBitSet   = tmpIndy.getBinaryData();
-        report = this.evaluate(tmpBitSet, tmpIndy.size());
+        report = this.eval(tmpBitSet);
         result += individual.getStringRepresentation() + "\n";
         result += "Is worth: " + Math.abs(report[2]) + " and ";
         if (report[1] == 0) result += "does not exceed the weight limit!";

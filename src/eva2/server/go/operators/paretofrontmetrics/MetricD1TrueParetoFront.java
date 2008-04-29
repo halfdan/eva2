@@ -21,9 +21,9 @@ import eva2.server.go.tools.FileLoader;
  */
 public class MetricD1TrueParetoFront implements eva2.server.go.operators.paretofrontmetrics.InterfaceParetoFrontMetric, java.io.Serializable {
 
-    private String              base                    = System.getProperty("user.dir");
-    private String              FS                      = System.getProperty("file.separator");
-    private PropertyFilePath    m_InputFilePath         = new PropertyFilePath(base+FS+"resources"+FS+"MOPReference"+FS+"T1_250.txt");
+//    private String              base                    = System.getProperty("user.dir");
+//    private String              FS                      = System.getProperty("file.separator");
+    private PropertyFilePath    m_InputFilePath         = PropertyFilePath.getFilePathFromResource("resources/MOPReference/T1_250.txt");
     private String[]            m_Titles;
     private double[][]          m_Reference;
 
