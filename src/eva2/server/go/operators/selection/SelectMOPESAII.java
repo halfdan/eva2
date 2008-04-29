@@ -77,7 +77,7 @@ public class SelectMOPESAII implements InterfaceSelection, java.io.Serializable 
         }
     }
 
-    /** This method will select one Indiviudal from the given
+    /** This method will select one Individual from the given
      * Population in respect to the selection propability of the
      * individual.
      * @param population    The source population where to select from

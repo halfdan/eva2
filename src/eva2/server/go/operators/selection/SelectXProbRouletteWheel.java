@@ -86,7 +86,7 @@ public class SelectXProbRouletteWheel implements InterfaceSelection, java.io.Ser
         this.m_TreeRoot = this.buildSelectionTree(population);
     }
 
-    /** This method will select a pool of indiviudals from the given
+    /** This method will select a pool of individuals from the given
      * Population in respect to the selection propability of the
      * individuals.
      * @param population    The source population where to select from
