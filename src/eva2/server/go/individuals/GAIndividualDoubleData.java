@@ -316,7 +316,7 @@ public class GAIndividualDoubleData extends AbstractEAIndividual implements Inte
      * @return The name.
      */
     public String getName() {
-        return "GA indiviudal";
+        return "GA individual";
     }
 
     /** This method returns a global info string

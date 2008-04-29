@@ -296,7 +296,7 @@ public class GIIndividualIntegerData extends AbstractEAIndividual implements Int
      * @return The name.
      */
     public String getName() {
-        return "GI indiviudal";
+        return "GI individual";
     }
 
     /** This method returns a global info string

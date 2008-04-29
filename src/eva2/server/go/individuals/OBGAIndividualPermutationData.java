@@ -266,7 +266,7 @@ public class OBGAIndividualPermutationData extends AbstractEAIndividual implemen
      * @return The name.
      */
     public String getName() {
-        return "OBGA indiviudal";
+        return "OBGA individual";
     }
 
     /** This method returns a global info string

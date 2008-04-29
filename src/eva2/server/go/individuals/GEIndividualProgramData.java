@@ -601,7 +601,7 @@ public class GEIndividualProgramData extends AbstractEAIndividual implements Int
      * @return The name.
      */
     public String getName() {
-        return "GE indiviudal";
+        return "GE individual";
     }
 
     /** This method returns a global info string

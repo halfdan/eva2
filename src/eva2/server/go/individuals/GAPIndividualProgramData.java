@@ -287,7 +287,7 @@ public class GAPIndividualProgramData extends AbstractEAIndividual implements In
      * @return The name.
      */
     public String getName() {
-        return "GAP indiviudal";
+        return "GAP individual";
     }
 
     /** This method will allow you to set the inner constants
