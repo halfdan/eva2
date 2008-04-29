@@ -46,6 +46,7 @@ Features:
 - MOCCOStandalone: actually nice, repair maybe...
 
 Bugs: 
+- PropertyFilePath only works for "real" files, not within the Probs jar. Look atTSPLibTSPInstance.setFile 
 - Population -> getBest... use multi-objective methods!
 - PostProcess: the pp-button should be deactivated if other modules are loaded
 - possible problem with new interfaces in RMI mode?

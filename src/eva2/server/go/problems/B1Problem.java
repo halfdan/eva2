@@ -36,25 +36,6 @@ public class B1Problem extends AbstractProblemBinary implements java.io.Serializ
         return (Object) new B1Problem(this);
     }
 
-    /** This method inits a given population
-     * @param population    The populations that is to be inited
-     */
-    public void initPopulation(Population population) {
-        AbstractEAIndividual tmpIndy;
-
-        population.clear();
-
-        ((InterfaceDataTypeBinary)this.m_Template).setBinaryDataLength(this.m_ProblemDimension);
-        for (int i = 0; i < population.getPopulationSize(); i++) {
-            tmpIndy     = (AbstractEAIndividual)((AbstractEAIndividual)this.m_Template).clone();
-            tmpIndy.init(this);
-            population.add(tmpIndy);
-        }
-        // population init must be last
-        // it set's fitcalls and generation to zero
-        population.init();
-    }
-
     /** This is a simple method that evaluates a given Individual. The fitness
      * values of the individual will be set inside this method.
      * @param b         The BitSet that is to be evaluated.

@@ -10,6 +10,7 @@ import eva2.server.go.problems.AbstractOptimizationProblem;
 import eva2.server.go.problems.F1Problem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import wsi.ra.math.RNG;
+import eva2.tools.EVAERROR;
 import eva2.tools.SelectedTag;
 import eva2.tools.Tag;
 
@@ -241,7 +242,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
                         indy1 = (InterfaceESIndividual)pop.get(RNG.randomInt(0, pop.size()-1));
                         indy2 = (InterfaceESIndividual)pop.get(RNG.randomInt(0, pop.size()-1));
                     } catch (java.lang.ClassCastException e) {
-                        System.out.println("Differential Evolution currently requires InterfaceESIndividual as basic data type!");
+                    	EVAERROR.errorMsgOnce("Differential Evolution currently requires InterfaceESIndividual as basic data type!");
                     }
                     xk = indy1.getDGenotype();
                     xl = indy2.getDGenotype();

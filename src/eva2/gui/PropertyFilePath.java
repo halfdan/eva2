@@ -1,5 +1,7 @@
 package eva2.gui;
 
+import eva2.tools.ReflectPackage;
+
 /**
  * Created by IntelliJ IDEA.
  * User: streiche
@@ -13,14 +15,41 @@ public class PropertyFilePath implements java.io.Serializable {
     public String FilePath = "";
     public String FileExtension = "";
 
-    public PropertyFilePath(String s) {
+    /**
+     * Constructor setting the absolute path. F
+     * 
+     * @param s
+     */
+    private PropertyFilePath(String s) {
         this.setCompleteFilePath(s);
     }
-
+    
     public PropertyFilePath(PropertyFilePath d) {
         this.FileName       = d.FileName;
         this.FilePath       = d.FilePath;
         this.FileExtension  = d.FileExtension;
+    }
+
+    /**
+     * Get an instance by an absolute path.
+     * 
+     * @param path
+     * @return
+     */
+    public static PropertyFilePath getFilePathAbsolute(String path) {
+    	return new PropertyFilePath(path);
+    }
+
+    /**
+     * Get an instance by a relative path.
+     * 
+     * @param relPath
+     * @return
+     */
+    public static PropertyFilePath getFilePathFromResource(String relPath) {
+    	String fName = ReflectPackage.getResourcePathFromCP(relPath);
+    	if (fName == null) return null;
+    	else return new PropertyFilePath(fName);
     }
 
     public Object clone() {

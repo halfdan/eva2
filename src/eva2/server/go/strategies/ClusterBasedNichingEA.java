@@ -19,6 +19,7 @@ import eva2.server.go.operators.cluster.ClusteringDensityBased;
 import eva2.server.go.operators.cluster.InterfaceClustering;
 import eva2.server.go.operators.mutation.InterfaceMutation;
 import eva2.server.go.operators.mutation.MutateESGlobal;
+//import eva2.server.go.populations.Distraction;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.B1Problem;
 import eva2.server.go.problems.Interface2DBorderProblem;
@@ -65,7 +66,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
     private int                             m_PopulationSize                = 50;
     private int								convergedCnt					= 0;
 
-    private static boolean                  TRACE     = true;
+    private static boolean                  TRACE     = false;
     private int                             m_ShowCycle = 100;
     transient private TopoPlot              m_Topology;
     private int                 			haltingWindow         			 = 15;
@@ -586,12 +587,10 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
             this.m_Population.addPopulation((Population)this.m_Species.get(i));
         }
         if (TRACE) System.out.println("Population size: " + this.m_Population.size());
-        if (TRACE) {
-//        	for (int i=0; i<m_Species.size(); i++) {
-//        		System.out.print("distraction center at " + BeanInspector.toString(m_Species.get(i).getDistractionCenter()));
-//        		System.out.println(", strength " + m_Species.get(i).getDistractionStrength());
-//        	}
-        }
+//        if (TRACE) {
+//        	Distraction distr = new Distraction(5., 0, m_Species);
+//        	if (m_Undifferentiated.size()>0) distr.calcDistractionFor(m_Undifferentiated.getBestEAIndividual());
+//        }
         this.firePropertyChangedEvent("NextGenerationPerformed");
     }
 

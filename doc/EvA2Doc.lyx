@@ -40,7 +40,7 @@
 \begin_body
 
 \begin_layout Title
-JavaEvA 2 Short Documentation
+EvA 2 Short Documentation
 \end_layout
 
 \begin_layout Author
@@ -62,17 +62,24 @@ Prof.
 University of Tübingen
 \end_layout
 
-\begin_layout Thanks
-We like to thank all former and current developers of 
-\noun on
-JavaEvA
-\noun default
- (Jürgen Wakunda, Holger Ulmer, Felix Streichert, and Hannes Planatscher)
- and all the students involved in the developement.
+\begin_layout Dedicatory
+\InsetSpace ~
+
+\begin_inset ERT
+status open
+
+\begin_layout Standard
+
+
+\backslash
+
+\backslash
+
 \end_layout
 
-\begin_layout URL
-http://www.ra.cs.uni-tuebingen.de/software/JavaEvA
+\end_inset
+
+URL: http://www.ra.cs.uni-tuebingen.de/software/EvA2
 \end_layout
 
 \begin_layout Standard
@@ -81,6 +88,20 @@ http://www.ra.cs.uni-tuebingen.de/software/JavaEvA
 \end_inset
 
 
+\end_layout
+
+\begin_layout Section*
+Acknowledgements
+\end_layout
+
+\begin_layout Standard
+We like to thank all former and current developers of 
+\noun on
+EvA:
+\noun default
+ Alexander Hasel, Roland Baumann, Karsten Jung, Jürgen Wakunda, Holger Ulmer,
+ Felix Streichert, Christian Spieth, Hannes Planatscher, Michael de Paly,
+ Marcel Kronfeld and all former students involved in the work.
 \end_layout
 
 \begin_layout Standard
@@ -129,7 +150,7 @@ Introduction
 
 \emph on
 \noun on
-JavaEvA
+EvA
 \emph default
 
 \begin_inset ERT
@@ -147,11 +168,7 @@ status collapsed
 2
 \emph default
 \noun default
- (a 
-\bar under
-Java
-\bar default
- implementation of 
+ (an 
 \bar under
 Ev
 \bar default
@@ -159,12 +176,27 @@ olutionary
 \bar under
 A
 \bar default
-lgorithms, revised version 
+lgorithms framework, revised version 
 \bar under
 2
 \bar default
 ) is a comprehensive heuristic optimization framework with emphasis on Evolution
-ary Algorithms.
+ary Algorithms implemented in Java
+\begin_inset Foot
+status open
+
+\begin_layout Standard
+
+\emph on
+Java
+\emph default
+ is a registered trademark of Sun Microsystems, Inc.
+ in the United States and other countries.
+\end_layout
+
+\end_inset
+
+.
  It is a revised version of the 
 \noun on
 JavaEvA
@@ -190,7 +222,7 @@ EvA
 \begin_layout Standard
 
 \noun on
-JavaEvA
+EvA
 \begin_inset ERT
 status collapsed
 
@@ -212,7 +244,7 @@ rt Hill Climbing or Simulated Annealing.
 \begin_layout Standard
 
 \noun on
-JavaEvA
+EvA
 \begin_inset ERT
 status collapsed
 
@@ -226,16 +258,15 @@ status collapsed
 2
 \noun default
  aims at two groups of users.
- Firstly, the end user who does not know much about the theory of Evolutionary
- Algorithms, but wants to use Evolutionary Algorithms to solve an application
- problem.
+ Firstly, the applying user who does not know much about the theory of Evolution
+ary Algorithms, but wants to use them to solve a specific application problem.
  Secondly, the scientific user who wants to investigate the performance
  of different optimization algorithms or wants to compare the effect of
  alternative or specialized evolutionary or heuristic operators.
- The latter usually knows more about evolutionary algorithms or heuristic
- optimization and is able to extend 
+ The latter usually knows more about evolutionary or heuristic optimization
+ and is able to extend 
 \noun on
-JavaEvA 2
+EvA 2
 \noun default
  by adding specific optimization strategies or solution representations.
 \end_layout
@@ -243,26 +274,26 @@ JavaEvA 2
 \begin_layout Standard
 This document is, as the title says, not an extensive manual on the 
 \noun on
-JavaEvA 2
+EvA 2
 \noun default
  framework, but instead a short introduction hoping to ease access to 
 \noun on
-JavaEvA 2.
+EvA 2.
 
 \noun default
  Thus, the document is mainly sketched along use-cases and tries to deliver
  knowledge on a top-down basis, with most important things first and details
  where required.
- Still, as 
+ Still: as 
 \noun on
-JavaEvA
+EvA
 \noun default
 , just as mostly any larger software package, can become tricky sometimes,
  it is not always possible to explain things without cross-references.
  We hope that this document will, anyways, be a valuable helper in working
  with 
 \noun on
-JavaEvA
+EvA
 \begin_inset ERT
 status collapsed
 
@@ -279,7 +310,7 @@ status collapsed
 \end_layout
 
 \begin_layout Standard
-This document contains, of course, a Quick Start guide (Sec.
+The document contains, of course, a Quick Start guide (Sec.
 \begin_inset ERT
 status collapsed
 
@@ -330,7 +361,7 @@ status collapsed
 
  contains hints on how to use 
 \noun on
-JavaEvA
+EvA
 \begin_inset ERT
 status collapsed
 
@@ -344,7 +375,18 @@ status collapsed
 2
 \noun default
  with external programs, e.g.
- MATLAB.
+ MATLAB
+\begin_inset Foot
+status open
+
+\begin_layout Standard
+MATLAB is a registered trademark of The MathWorks, Inc.
+ in the United States and other countries.
+\end_layout
+
+\end_inset
+
+.
  We provide a quick-and-simple way to add an application problem implementation
  in Sec.
 \begin_inset ERT
@@ -418,33 +460,7 @@ Quick Start
 The following sections give a short introduction in the main aspects of
  using
 \noun on
- Ja
-\begin_inset ERT
-status collapsed
-
-\begin_layout Standard
-
-
-\backslash
--
-\end_layout
-
-\end_inset
-
-va
-\begin_inset ERT
-status collapsed
-
-\begin_layout Standard
-
-
-\backslash
--
-\end_layout
-
-\end_inset
-
-EvA
+ EvA
 \begin_inset ERT
 status collapsed
 
@@ -479,9 +495,9 @@ status collapsed
 \begin_layout Subsection
 Running 
 \noun on
-JavaEvA
+EvA
 \noun default
-
+ 2
 \begin_inset LatexCommand \label{sub:Quickly-Running-JavaEvA}
 
 \end_inset
@@ -492,7 +508,7 @@ JavaEvA
 \begin_layout Standard
 To quickly test
 \noun on
- JavaEvA
+ EvA
 \begin_inset ERT
 status collapsed
 
@@ -512,40 +528,27 @@ JE2Base.jar
  and start the GUI.
  The jar-file can be downloaded from the 
 \noun on
-Ja
-\begin_inset ERT
-status collapsed
-
-\begin_layout Standard
-
-
-\backslash
--
-\end_layout
-
-\end_inset
-
-va
-\begin_inset ERT
-status collapsed
-
-\begin_layout Standard
-
-
-\backslash
--
-\end_layout
-
-\end_inset
-
 EvA
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+-
+\end_layout
+
+\end_inset
+
+2
 \noun default
  homepage
 \begin_inset Foot
 status open
 
 \begin_layout Standard
-http://www.ra.cs.uni-tuebingen.de/software/JavaEvA/
+http://www.ra.cs.uni-tuebingen.de/software/EvA2/
 \end_layout
 
 \end_inset
@@ -566,7 +569,7 @@ To start under GNU/Linux, you can just type:
 
 \family typewriter
 \size small
-$ java -cp JE2Base.jar javaeva.client.EvAClient
+$ java -cp JE2Base.jar eva2.client.EvAClient
 \end_layout
 
 \begin_layout Standard
@@ -589,13 +592,13 @@ $
 .
 
 \noun default
- For technical reasons, we discourage using the Java option 
+ The Java option 
 \emph on
 -jar
 \emph default
- with 
+ is also possible with 
 \noun on
-JavaEvA
+EvA
 \begin_inset ERT
 status collapsed
 
@@ -608,12 +611,13 @@ status collapsed
 
 2
 \noun default
-.
+ base, but does not allow adding further jar-packages on the classpath.
+ Therefore, we encourage using the method given above.
 \end_layout
 
 \begin_layout Standard
 If you want to work on the source code directly, note that it is also vital
- to copy the resource folder to the location where the compiled class files
+ to copy the resource folder to the directory where the compiled class files
  are located.
  You can then again start the GUI or optimize through the API (Sec.
 \begin_inset ERT
@@ -643,7 +647,7 @@ Some Words on the Words
 \begin_layout Standard
 As 
 \noun on
-JavaEvA
+EvA
 \begin_inset ERT
 status collapsed
 
@@ -774,7 +778,7 @@ Using the GUI
 \begin_layout Standard
 From the GUI, also called the 
 \noun on
-JavaEvA
+EvA
 \noun default
  workbench, all important components of an optimization run can be accessed
  and configured.
@@ -799,9 +803,26 @@ optimizer
  through the input fields.
  A short description will be displayed by tip-text above the name of each
  parameter.
- The 
+ If you just hit the 
+\begin_inset Quotes eld
+\end_inset
+
+
+\emph on
+Start
+\emph default
+
+\begin_inset Quotes erd
+\end_inset
+
+ button, an optimization will be started using the current settings.
+ 
+\end_layout
+
+\begin_layout Standard
+The 
 \noun on
-JavaEvA
+EvA
 \noun default
  GUI has two main tabs: the optimization parameter tab and the statistics
  tab (Fig.
@@ -956,7 +977,7 @@ Seed
 \shape default
  As most algorithms in 
 \noun on
-JavaEvA
+EvA
 \begin_inset ERT
 status collapsed
 
@@ -1295,7 +1316,7 @@ Description
 
  shows some very general information on the main 
 \noun on
-JavaEvA
+EvA
 \noun default
  module.
  The 
@@ -1304,7 +1325,7 @@ JavaEvA
 
 
 \emph on
-Start Optimization
+Start
 \emph default
 
 \begin_inset Quotes erd
@@ -1436,7 +1457,7 @@ Log/Lin
  Switch between linear and log-scaled view.
  Most benchmark problems in 
 \noun on
-JavaEvA
+EvA
 \noun default
  are implemented with the minimum fitness at zero, so that the log-scale
  view allows to compare and analyze convergence behaviour in detail.
@@ -1510,7 +1531,7 @@ JPG
 \begin_layout Subsubsection
 Basic Optimization using 
 \noun on
-JavaEvA 2
+EvA 2
 \noun default
 
 \begin_inset LatexCommand \label{sub:Basic-Optimization-GUI}
@@ -1523,7 +1544,7 @@ JavaEvA 2
 \begin_layout Standard
 To get a grip on 
 \noun on
-JavaEvA
+EvA
 \begin_inset ERT
 status collapsed
 
@@ -1585,7 +1606,7 @@ Notice, however, that by changing from the F1-problem to the B1-problem,
  are based on binary vectors, while F1 uses double vectors.
  Be aware, that not all optimizers in 
 \noun on
-JavaEvA
+EvA
 \begin_inset ERT
 status collapsed
 
@@ -1781,7 +1802,7 @@ Additional Packages
 \begin_layout Standard
 To add additional packages to use them with the 
 \noun on
-JavaEvA
+EvA
 \begin_inset ERT
 status collapsed
 
@@ -1804,7 +1825,7 @@ status collapsed
 
 \family typewriter
 \size small
-$ java -cp JE2Base.jar:JE2Probs.jar javaeva.client.EvAClient
+$ java -cp JE2Base.jar:JE2Probs.jar eva2.client.EvAClient
 \end_layout
 
 \begin_layout Standard
@@ -1814,7 +1835,7 @@ You should now be able to select from a larger set of optimization problems
  (':' in GNU/Linux).
  To add your own classes to the 
 \noun on
-JavaEvA
+EvA
 \begin_inset ERT
 status collapsed
 
@@ -1859,13 +1880,13 @@ $ java -cp JE2Base.jar:JE2Probs.jar:/home/username/OwnClassDir
 
 \family typewriter
 \size small
-javaeva.client.EvAClient
+eva2.client.EvAClient
 \end_layout
 
 \begin_layout Standard
 Note that 
 \noun on
-JavaEvA
+EvA
 \begin_inset ERT
 status collapsed
 
@@ -2033,7 +2054,7 @@ $ _
 \begin_layout Standard
 
 \noun on
-JavaEvA
+EvA
 \begin_inset ERT
 status collapsed
 
@@ -2052,7 +2073,7 @@ status collapsed
  be negligible if the runtime of the calculation is of higher order of magnitude.
  It may also just come in handy if you want to try what 
 \noun on
-JavaEvA
+EvA
 \begin_inset ERT
 status collapsed
 
@@ -2092,7 +2113,7 @@ To tackle optimization problems already existing in Matlab, we provide a
  If you have an existing Matlab function you want to optimize with some
  standard algorithms implemented in 
 \noun on
-JavaEvA
+EvA
 \begin_inset ERT
 status collapsed
 
@@ -2284,7 +2305,7 @@ Some optimizers allow the solutions to get worse during the optimization
  iteration is not necessarily the best solution found during the whole run.
  Therefore, 
 \noun on
-JavaEvA
+EvA
 \begin_inset ERT
 status collapsed
 
@@ -2686,7 +2707,7 @@ setResultJE
 \family default
  (Internal) Write-back method required internally by 
 \noun on
-JavaEvA
+EvA
 \begin_inset ERT
 status collapsed
 
@@ -2710,7 +2731,7 @@ setResultArrayJE
 \family default
  (Internal) Write-back method required internally by 
 \noun on
-JavaEvA
+EvA
 \begin_inset ERT
 status collapsed
 
@@ -2741,7 +2762,7 @@ getProgress(JI)
 \family typewriter
 runEvalLoopJE
 \family default
- (Internal) Start a JavaEvA run, optimization or post processing.
+ (Internal) Start a EvA run, optimization or post processing.
 \end_layout
 
 \begin_layout Standard
@@ -2993,7 +3014,7 @@ Quickly Adding a Problem Class
 \begin_layout Standard
 It is easy to integrate your own Java-coded problem in 
 \noun on
-JavaEvA
+EvA
 \begin_inset ERT
 status collapsed
 
@@ -3032,7 +3053,7 @@ Java-Power
 
  to implement a target function and optimize it in 
 \noun on
-JavaEvA
+EvA
 \begin_inset ERT
 status collapsed
 
@@ -3121,7 +3142,7 @@ Problem
 .
  Both base types can be used directly from the 
 \noun on
-JavaEvA
+EvA
 \begin_inset ERT
 status collapsed
 
@@ -3189,7 +3210,7 @@ bs)
 \begin_layout Itemize
 Start the 
 \noun on
-JavaEvA
+EvA
 \begin_inset ERT
 status collapsed
 
@@ -3220,7 +3241,7 @@ SimpleProblemWrapper
 \end_layout
 
 \begin_layout Section
-Using the JavaEvA 2 API
+Using the EvA 2 API
 \begin_inset LatexCommand \label{sec:Using-the-API}
 
 \end_inset
@@ -3231,7 +3252,7 @@ Using the JavaEvA 2 API
 \begin_layout Standard
 This chapter describes how to incorporate 
 \noun on
-JavaEvA
+EvA
 \begin_inset ERT
 status collapsed
 
@@ -3266,7 +3287,7 @@ e in general.
  Therefore we give two usage examples using the API.
  In any case, a necessary step is to extend a 
 \noun on
-JavaEvA
+EvA
 \begin_inset ERT
 status collapsed
 
@@ -3317,7 +3338,7 @@ The Abstract Problem Classes
 The problem class subtree encapsulates properties of target functions that
  can be directly optimized by the 
 \noun on
-JavaEvA
+EvA
 \begin_inset ERT
 status collapsed
 
@@ -3354,7 +3375,7 @@ the problem evaluates a set of potential solutions.
 \begin_layout Standard
 To implement your own target function in 
 \noun on
-JavaEvA
+EvA
 \begin_inset ERT
 status collapsed
 
@@ -4107,12 +4128,12 @@ begin{lstlisting}
 
 \begin_layout Standard
 
-import javaeva.OptimizerFactory;
+import eva2.OptimizerFactory;
 \end_layout
 
 \begin_layout Standard
 
-import javaeva.server.go.problems.F1Problem;
+import eva2.server.go.problems.F1Problem;
 \end_layout
 
 \begin_layout Standard
@@ -5282,17 +5303,17 @@ begin{lstlisting}
 
 \begin_layout Standard
 
-import javaeva.OptimizerFactory;
+import eva2.OptimizerFactory;
 \end_layout
 
 \begin_layout Standard
 
-import javaeva.server.go.problems.F1Problem;
+import eva2.server.go.problems.F1Problem;
 \end_layout
 
 \begin_layout Standard
 
-import javaeva.server.go.operators.terminators.*;
+import eva2.server.go.operators.terminators.*;
 \end_layout
 
 \begin_layout Standard
@@ -5547,32 +5568,32 @@ import java.util.BitSet;
 
 \begin_layout Standard
 
-import javaeva.server.go.operators.selection.SelectXProbRouletteWheel;
+import eva2.server.go.operators.selection.SelectXProbRouletteWheel;
 \end_layout
 
 \begin_layout Standard
 
-import javaeva.server.go.operators.terminators.EvaluationTerminator;
+import eva2.server.go.operators.terminators.EvaluationTerminator;
 \end_layout
 
 \begin_layout Standard
 
-import javaeva.server.go.populations.Population;
+import eva2.server.go.populations.Population;
 \end_layout
 
 \begin_layout Standard
 
-import javaeva.server.go.problems.B1Problem;
+import eva2.server.go.problems.B1Problem;
 \end_layout
 
 \begin_layout Standard
 
-import javaeva.server.go.strategies.GeneticAlgorithm;
+import eva2.server.go.strategies.GeneticAlgorithm;
 \end_layout
 
 \begin_layout Standard
 
-import javaeva.server.modules.GOParameters;
+import eva2.server.modules.GOParameters;
 \end_layout
 
 \begin_layout Standard
@@ -5813,43 +5834,42 @@ begin{lstlisting}
 
 \begin_layout Standard
 
-import javaeva.OptimizerFactory;
+import eva2.OptimizerFactory;
 \end_layout
 
 \begin_layout Standard
 
-import javaeva.server.go.individuals.AbstractEAIndividual; 
+import eva2.server.go.individuals.AbstractEAIndividual; 
 \end_layout
 
 \begin_layout Standard
 
-import javaeva.server.go.operators.crossover.CrossoverESDefault; 
+import eva2.server.go.operators.crossover.CrossoverESDefault; 
 \end_layout
 
 \begin_layout Standard
 
-import javaeva.server.go.operators.mutation.MutateESCovarianceMartixAdaption;
- 
+import eva2.server.go.operators.mutation.MutateESCovarianceMartixAdaption; 
 \end_layout
 
 \begin_layout Standard
 
-import javaeva.server.go.operators.terminators.EvaluationTerminator; 
+import eva2.server.go.operators.terminators.EvaluationTerminator; 
 \end_layout
 
 \begin_layout Standard
 
-import javaeva.server.go.problems.FM0Problem; 
+import eva2.server.go.problems.FM0Problem; 
 \end_layout
 
 \begin_layout Standard
 
-import javaeva.server.go.strategies.EvolutionStrategies; 
+import eva2.server.go.strategies.EvolutionStrategies; 
 \end_layout
 
 \begin_layout Standard
 
-import javaeva.server.modules.GOParameters;
+import eva2.server.modules.GOParameters;
 \end_layout
 
 \begin_layout Standard
@@ -6195,7 +6215,7 @@ When looking at the last example in
  just one optimum of the target function.
  In 
 \noun on
-JavaEvA
+EvA
 \begin_inset ERT
 status open
 
@@ -6270,32 +6290,32 @@ import java.util.Vector;
 
 \begin_layout Standard
 
-import javaeva.OptimizerFactory;
+import eva2.OptimizerFactory;
 \end_layout
 
 \begin_layout Standard
 
-import javaeva.server.go.individuals.AbstractEAIndividual; 
+import eva2.server.go.individuals.AbstractEAIndividual; 
 \end_layout
 
 \begin_layout Standard
 
-import javaeva.server.go.operators.postprocess.PostProcessParams; 
+import eva2.server.go.operators.postprocess.PostProcessParams; 
 \end_layout
 
 \begin_layout Standard
 
-import javaeva.server.go.operators.terminators.EvaluationTerminator; 
+import eva2.server.go.operators.terminators.EvaluationTerminator; 
 \end_layout
 
 \begin_layout Standard
 
-import javaeva.server.go.problems.FM0Problem; 
+import eva2.server.go.problems.FM0Problem; 
 \end_layout
 
 \begin_layout Standard
 
-import javaeva.server.modules.GOParameters;
+import eva2.server.modules.GOParameters;
 \end_layout
 
 \begin_layout Standard
@@ -6615,7 +6635,7 @@ As noted before, this introduction does not cover algorithmic basics.
  for classical Evolutionary Algorithms.
  To go into details of 
 \noun on
-JavaEvA
+EvA
 \begin_inset ERT
 status collapsed
 
@@ -6653,14 +6673,14 @@ status collapsed
 \begin_layout Section
 General Hints on Optimization with 
 \noun on
-JavaEvA 2
+EvA 2
 \end_layout
 
 \begin_layout Standard
 As you have come so far, you have hopefully learned a few things about the
  concepts of 
 \noun on
-JavaEvA
+EvA
 \begin_inset ERT
 status collapsed
 
@@ -6711,7 +6731,7 @@ status open
 
 ) or make it accessible for
 \noun on
- JavaEvA
+ EvA
 \begin_inset ERT
 status collapsed
 
@@ -6879,7 +6899,7 @@ Advanced Use Cases
 \end_layout
 
 \begin_layout Standard
-\begin_inset LatexCommand \bibtex[plain]{/afs/cs.uni-tuebingen.de/home/mkron/workspace/JE2Base/doc/JE2DocCitations}
+\begin_inset LatexCommand \bibtex[plain]{/afs/cs.uni-tuebingen.de/home/mkron/workspace/JE2Base/doc/EvA2DocCitations}
 
 \end_inset
 

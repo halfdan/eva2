@@ -195,7 +195,7 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
         		this.goParams.getOptimizer().optimize();
         		// registerPopulationStateChanged *SHOULD* be fired by the optimizer or resp. the population
         		// as we are event listener
-//        		System.out.println(this.goParams.getOptimizer().getPopulation().getIndyList());
+        		//System.out.println(this.goParams.getOptimizer().getPopulation().getIndyList());
         	} while (isOptRunning() && !this.goParams.getTerminator().isTerminated(this.goParams.getOptimizer().getPopulation()));
         	runCounter++;
 

@@ -302,8 +302,7 @@ public class BasicResourceLoader implements ResourceLoader
      * @param  rawResrcLoc  Description of the Parameter
      * @return                   the byte array of file.
      */
-    public byte[] getBytesFromResourceLocation(String rawResrcLoc)
-    {
+    public InputStream getStreamFromResourceLocation(String rawResrcLoc) {
         String resourceLocation = rawResrcLoc.replace('\\', '/');
 
         //System.out.println("Try to get: "+resourceLocation);
@@ -318,14 +317,14 @@ public class BasicResourceLoader implements ResourceLoader
         resourceLocation = resourceLocation.trim();
 
         // is a relative path defined ?
-        // this can only be possible, if this is a file resource loacation
+        // this can only be possible, if this is a file resource location
         if (resourceLocation.startsWith("..") ||
                 resourceLocation.startsWith("/") ||
                 resourceLocation.startsWith("\\") ||
                 ((resourceLocation.length() > 1) &&
                     (resourceLocation.charAt(1) == ':')))
         {
-            return getBytesFromFile(resourceLocation);
+            return getStreamFromFile(resourceLocation);
         }
 
         InputStream in = ClassLoader.getSystemResourceAsStream(resourceLocation);
@@ -346,10 +345,23 @@ public class BasicResourceLoader implements ResourceLoader
         {
             logger.debug("Stream opened for " + resourceLocation);
         }
+        return in;
+    }
+    
+    /**
+     *  Gets the byte data from a file at the given resource location.
+     *
+     * @param  rawResrcLoc  Description of the Parameter
+     * @return                   the byte array of file.
+     */
+    public byte[] getBytesFromResourceLocation(String rawResrcLoc)
+    {
+        InputStream in = getStreamFromResourceLocation(rawResrcLoc);
 
-        byte[] bytes = getBytesFromStream(in);
-
-        return bytes;
+        if (in == null) {
+        	return null;
+        }
+        return getBytesFromStream(in);
     }
 
     /**
@@ -442,7 +454,7 @@ public class BasicResourceLoader implements ResourceLoader
      * @param  fileName  Description of the Parameter
      * @return           the byte array of the file.
      */
-    private byte[] getBytesFromFile(String fileName)
+    private FileInputStream getStreamFromFile(String fileName)
     {
         if (fileName.startsWith("/cygdrive/"))
         {
@@ -462,6 +474,7 @@ public class BasicResourceLoader implements ResourceLoader
         try
         {
             fis = new FileInputStream(file);
+            return fis;
         }
         catch (Exception e)
         {
@@ -470,11 +483,25 @@ public class BasicResourceLoader implements ResourceLoader
             return null;
         }
 
+    }
+    
+    /**
+     *  Gets the byte data from a file.
+     *
+     * @param  fileName  Description of the Parameter
+     * @return           the byte array of the file.
+     */
+    private byte[] getBytesFromFile(String fileName) {
+    	FileInputStream fis = getStreamFromFile(fileName);
+    	if (fis == null) {
+    		System.err.println("couldnt get file input stream!");
+    		return null;
+    	}
         BufferedInputStream bis = new BufferedInputStream(fis);
 
         // only files with <65536 bytes are allowed
         //if( file.length() > 65536 ) System.out.println("Resource files should be smaller than 65536 bytes...");
-        int size = (int) file.length();
+        int size = (int) new File(fileName).length();
         byte[] b = new byte[size];
         int rb = 0;
         int chunk = 0;

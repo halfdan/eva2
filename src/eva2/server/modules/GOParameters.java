@@ -2,11 +2,10 @@ package eva2.server.modules;
 
 import java.io.Serializable;
 
-import eva2.gui.BeanInspector;
 import eva2.server.go.InterfaceGOParameters;
-import eva2.server.go.InterfacePopulationChangedEventListener;
+import eva2.server.go.individuals.GAIndividualDoubleData;
 import eva2.server.go.operators.terminators.EvaluationTerminator;
-import eva2.server.go.problems.B1Problem;
+import eva2.server.go.problems.F1Problem;
 import eva2.server.go.strategies.GeneticAlgorithm;
 import eva2.tools.Serializer;
 
@@ -45,7 +44,8 @@ public class GOParameters extends AbstractGOParameters implements InterfaceGOPar
      *
      */
     public GOParameters() {
-    	super(new GeneticAlgorithm(), new B1Problem(), new EvaluationTerminator(1000));
+    	super(new GeneticAlgorithm(), new F1Problem(), new EvaluationTerminator(1000));
+    	((F1Problem)m_Problem).setEAIndividual(new GAIndividualDoubleData());
     }
 
     /**

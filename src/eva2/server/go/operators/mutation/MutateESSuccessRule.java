@@ -26,6 +26,9 @@ public class MutateESSuccessRule extends MutateESStandard implements InterfaceMu
     protected double        m_SuccessRate         = 0.2;
     protected double        m_Alpha               = 1.2;
 
+    public MutateESSuccessRule() {
+    }
+    
     public MutateESSuccessRule(MutateESSuccessRule mutator) {
         this.m_MutationStepSize     = mutator.m_MutationStepSize;
         this.m_SuccessRate          = mutator.m_SuccessRate;

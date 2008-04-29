@@ -13,7 +13,6 @@ import eva2.gui.BeanInspector;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.ESIndividualDoubleData;
 import eva2.server.go.individuals.InterfaceDataTypeDouble;
-import eva2.server.go.operators.distancemetric.PhenotypeMetric;
 import eva2.server.go.operators.postprocess.InterfacePostProcessParams;
 import eva2.server.go.operators.postprocess.PostProcess;
 import eva2.server.go.operators.postprocess.PostProcessParams;
@@ -38,7 +37,7 @@ public class MatlabProblem extends AbstractProblemDouble implements InterfaceTex
 	
 	public static boolean hideFromGOE = true; 
 	
-	private F1Problem f1 = new F1Problem(); // TODO
+//	private F1Problem f1 = new F1Problem(); // TODO
 	
 //	transient private double[] currArray = null;
 //	private String mtCmd = null;
@@ -194,11 +193,11 @@ public class MatlabProblem extends AbstractProblemDouble implements InterfaceTex
 	public double[] eval(double[] x) {
 		log("evaluating " + BeanInspector.toString(x) + "\n");
 		double[] res = handler.requestEval(this, x);
-		double diff = PhenotypeMetric.euclidianDistance(res, f1.eval(x));
-		log("result: " + BeanInspector.toString(res) + " compared to " + BeanInspector.toString(f1.eval(x)) + "\n");
-		if (diff != 0) {
-			log("!!! diff is " + diff + "\n");
-		}
+//		double diff = PhenotypeMetric.euclidianDistance(res, f1.eval(x));
+//		log("result: " + BeanInspector.toString(res) + " compared to " + BeanInspector.toString(f1.eval(x)) + "\n");
+//		if (diff != 0) {
+//			log("!!! diff is " + diff + "\n");
+//		}
 		return res;
 		
 //		synchronized (this) {

@@ -146,7 +146,7 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
 	public static int[] strategies = new int[10]; // Just for information
 	public static int[] status = new int[9]; // Just for information
 
-	public static boolean testBC = false;  // TODO project to JOpt
+	public static boolean testBC = false;  // TODO project to EvA2
 	public static int adaptOption = 2;
 	public static double blind=0;  // 0.5 //"Blind" move for very good particles, with a probability Tribes.blind
 	public static boolean repel=false; // If 1, use a "repelling" strategy (see moveExplorer() )
@@ -625,7 +625,7 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
 	/**
 	 * As TRIBES manages an own structured set of particles (the list of Tribes containing explorers
 	 * and memories), the setPopulation method is only telling Tribes the range
-	 * of the indiviuals in the beginning of the run, the indiviudals will be discarded.
+	 * of the indiviuals in the beginning of the run, the individuals will be discarded.
 	 */
 	public void setPopulation(Population pop) {
 		if (pop == null) return;
