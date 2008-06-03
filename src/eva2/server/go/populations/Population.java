@@ -581,13 +581,13 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     	return idList;
     }
     
-    public Long[][] getParentalIDList() {
-    	Long[][] idList = new Long[size()][];
-    	for (int i=0; i<idList.length; i++) {
-			idList[i]=getEAIndividual(i).getHeritage();
-		}
-    	return idList;   	
-    }
+//    public Long[][] getParentalIDList() {
+//    	Long[][] idList = new Long[size()][];
+//    	for (int i=0; i<idList.length; i++) {
+//			idList[i]=getEAIndividual(i).getHeritage();
+//		}
+//    	return idList;   	
+//    }
     
     public String getIndyList() {
     	StringBuffer sb = new StringBuffer();

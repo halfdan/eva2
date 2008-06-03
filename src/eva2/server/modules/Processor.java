@@ -16,6 +16,7 @@ import eva2.server.stat.InterfaceStatistics;
 import eva2.server.stat.InterfaceTextListener;
 import eva2.server.stat.StatisticsWithGUI;
 import eva2.tools.EVAERROR;
+import eva2.tools.EVAHELP;
 import wsi.ra.jproxy.RemoteStateListener;
 
 /**
@@ -179,6 +180,7 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
     	goParams.getOptimizer().addPopulationChangedEventListener(this);
 
         runCounter = 0;
+        String popLog = null; //"populationLog.txt";
 
         while (isOptRunning() && (runCounter<m_Statistics.getStatisticsParameter().getMultiRuns())) {
         	m_Statistics.startOptPerformed(getInfoString(),runCounter, goParams);
@@ -190,12 +192,12 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
         	
         	//m_Statistics.createNextGenerationPerformed((PopulationInterface)this.m_ModulParameter.getOptimizer().getPopulation());
         	if (m_ListenerModule!=null) m_ListenerModule.updateProgress(getStatusPercent(goParams.getOptimizer().getPopulation(), runCounter, m_Statistics.getStatisticsParameter().getMultiRuns()), null);
-        	
+        	if (popLog != null) EVAHELP.clearLog(popLog);
         	do {	// main loop
         		this.goParams.getOptimizer().optimize();
         		// registerPopulationStateChanged *SHOULD* be fired by the optimizer or resp. the population
         		// as we are event listener
-        		//System.out.println(this.goParams.getOptimizer().getPopulation().getIndyList());
+        		if (popLog != null) EVAHELP.logString(this.goParams.getOptimizer().getPopulation().getIndyList(), popLog);
         	} while (isOptRunning() && !this.goParams.getTerminator().isTerminated(this.goParams.getOptimizer().getPopulation()));
         	runCounter++;
 
@@ -206,7 +208,16 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
         	if (isOptRunning()) {
         		resultPop = performPostProcessing();
         	} else resultPop = goParams.getOptimizer().getAllSolutions();
-
+/**
+        	if (isOptRunning()) {
+        		resultPop = performPostProcessing();
+        		//System.out.println("calling getall after PP returned " + (resultPop == null ? "null" : resultPop.size()));
+        	}
+        	if (resultPop == null) {
+        		resultPop = goParams.getOptimizer().getAllSolutions();
+        		//System.out.println("calling getall returned " + resultPop.size());
+        	}
+**/
         }
         setOptRunning(false); // normal finish
         if (m_ListenerModule!=null) m_ListenerModule.performedStop(); // is only needed in client server mode
@@ -328,12 +339,15 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
 	    		// if textwindow was closed, check if it should be reopened for pp
 	    		if (m_Statistics instanceof StatisticsWithGUI) ((StatisticsWithGUI)m_Statistics).maybeShowProxyPrinter();
 	    	}
-	    	Population resultPop = goParams.getOptimizer().getAllSolutions();
+	    	Population resultPop = (Population)(goParams.getOptimizer().getAllSolutions()).clone();
 	    	if (resultPop.getFunctionCalls() != goParams.getOptimizer().getPopulation().getFunctionCalls()) {
 	//    		System.err.println("bad case in Processor::performNewPostProcessing ");
 	    		resultPop.SetFunctionCalls(goParams.getOptimizer().getPopulation().getFunctionCalls());
 	    	}
-	    	if (!resultPop.contains(m_Statistics.getBestSolution())) resultPop.add(m_Statistics.getBestSolution()); // this is a minor cheat but guarantees that the best solution ever found is contained in the final results
+	    	if (!resultPop.contains(m_Statistics.getBestSolution())) {
+	    		resultPop.add(m_Statistics.getBestSolution()); // this is a minor cheat but guarantees that the best solution ever found is contained in the final results
+	    		resultPop.setPopulationSize(resultPop.size());
+	    	}
 	    	resultPop = PostProcess.postProcess(ppp, resultPop, (AbstractOptimizationProblem)goParams.getProblem(), listener);
 	    	return resultPop;
     	} else return null;

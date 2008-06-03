@@ -266,7 +266,7 @@ public class BasicResourceLoader implements ResourceLoader
 	 */
 	public static void fillLine(double[][] dest, int lineCnt, String[] entries, int[] cols) {
 		if (((cols == null) && (dest[lineCnt].length != entries.length)) || (cols != null && (dest[lineCnt].length != cols.length))) {
-			System.err.println("error, array dimensions dont match! (SIFTComparisonMatrix");
+			System.err.println("error, array dimensions dont match! (BasicResourceLoader)");
 		}
 		if (cols == null) {
 			for (int i=0; i<entries.length; i++) {

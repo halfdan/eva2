@@ -12,19 +12,21 @@ package eva2.tools;
 /*==========================================================================*
  * IMPORTS
  *==========================================================================*/
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.util.Enumeration;
 import java.util.Properties;
 
-import eva2.client.EvAClient;
-
-
 import wsi.ra.tool.BasicResourceLoader;
+import eva2.client.EvAClient;
 
 
 /**
@@ -108,7 +110,7 @@ public class EVAHELP {
    *
    */
   public static long getTimeStamp() {
-     return System.currentTimeMillis() -m_TimeStamp;
+     return System.currentTimeMillis() - m_TimeStamp;
   }
   /**
    *
@@ -126,15 +128,18 @@ public class EVAHELP {
    *
    */
   public static String getSystemPropertyString() {
-    String ret = "";
+    StringBuffer sBuf = new StringBuffer();
     Properties prop = System.getProperties();
-    Enumeration list = prop.propertyNames();
+    Enumeration<?> list = prop.propertyNames();
     while (list.hasMoreElements()) {
       Object o = list.nextElement();
       //System.out.println("o="+o.toString());
-      ret = ret + o.toString() + " = " +System.getProperty(o.toString()) +"\n";
+      sBuf.append(o.toString());
+      sBuf.append(" = ");
+      sBuf.append(System.getProperty(o.toString()));
+      sBuf.append("\n");
     }
-    return ret;
+    return sBuf.toString();
   }
   /**
    *
@@ -158,5 +163,34 @@ public class EVAHELP {
     freeM = currR.freeMemory();
     freeM = (long)(freeM /1024);
     //System.out.println("after gc:Available memory : "+freeM+" bytes");
+  }
+  
+  /**
+   * Log a String to a log-file indicated by the file name.
+   * If the file exists, the String is appended.
+   * 
+   * @param msg
+   * @param fileName
+   */
+  public static void logString(String msg, String fileName) {
+	  File f = new File(fileName);
+	  try {
+		  BufferedWriter bW = new BufferedWriter(new PrintWriter(new FileOutputStream(f, f.exists())));
+		  bW.write(msg);
+		  bW.close();
+	  } catch (Exception ex) {
+		  System.err.println("couldnt log to destination " + fileName + ": " + ex.getMessage());
+	  }
+  }
+  
+  /**
+   * Deletes the given file in the current directory. If the file does not exist,
+   * nothing happens.
+   * 
+   * @param fileName
+   */
+  public static void clearLog(String fileName) {
+	  File f = new File(fileName);
+	  if (f.exists()) f.delete();
   }
 }

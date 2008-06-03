@@ -83,6 +83,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
 	
 	public static boolean TRACE = false;
 	private static String m_ProductName = "EvA 2";
+	private static String m_ProductLongName = "Evolutionary Algorithms Workbench 2";
 //	private int PREFERRED_WIDTH = 680;
 //	private int PREFERRED_HEIGHT = 550;
 	public JEFrame m_Frame;
@@ -654,9 +655,12 @@ public class EvAClient implements RemoteStateListener, Serializable {
 	private void showAboutDialog() {
 		JOptionPane.showMessageDialog
 		(m_Frame,
-				m_ProductName +
-				"\n University of Tuebingen\n Computer Architecture\n H. Ulmer & F. Streichert & H. Planatscher & M. de Paly & M. Kronfeld\n Prof. Dr. Andreas Zell \n (c) 2008 \n Version " +
-				EvAServer.Version + " \n http://www.ra.cs.uni-tuebingen.de/software/EvA2", infoTitle, 1);
+				m_ProductName + " - " + m_ProductLongName + 
+				"\n University of Tuebingen\n Computer Architecture\n " +
+				"M. Kronfeld, H. Planatscher, M. de Paly, F. Streichert & H. Ulmer\n " +
+//				"H. Ulmer & F. Streichert & H. Planatscher & M. de Paly & M. Kronfeld\n" +
+				"Prof. Dr. Andreas Zell \n (c) 2008 \n Version " + EvAServer.Version + 
+				"\n http://www.ra.cs.uni-tuebingen.de/software/EvA2", infoTitle, 1);
 	}
 	
 	private void showNoHostFoundDialog() {

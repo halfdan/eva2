@@ -50,7 +50,10 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
     private InterfaceOptimizer              m_Optimizer                     = new GeneticAlgorithm();
     private InterfaceClustering             m_CAForSpeciesDifferentation    = new ClusteringDensityBased();
     private InterfaceClustering             m_CAForSpeciesConvergence       = new ClusteringDensityBased();
-
+    //private Distraction						distraction						= null;
+//    private boolean 						useDistraction	= false;
+//    private double 							distrDefaultStrength = 1.;
+    
     transient private String                m_Identifier = "";
     transient private InterfacePopulationChangedEventListener m_Listener;
 
@@ -76,6 +79,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
     public ClusterBasedNichingEA() {
         this.m_CAForSpeciesConvergence = new ClusteringDensityBased();
         ((ClusteringDensityBased)this.m_CAForSpeciesConvergence).setMinimumGroupSize(m_minGroupSize);
+//        if (useDistraction) distraction = new Distraction();
     }
 
     public ClusterBasedNichingEA(ClusterBasedNichingEA a) {    
@@ -337,6 +341,15 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
     		if (TRACE) System.out.println("correcting popsize after opt: " + retPop.getPopulationSize() + " to " + retPop.size());
     		retPop.setPopulationSize(retPop.size());
     	}
+    	
+//    	if (useDistraction) {
+//    		if ((distraction != null) && (!distraction.isEmpty())) {
+//    			System.out.println("Distraction step!!!");
+//    			for (int i=0; i<retPop.size(); i++) {
+//    				distraction.applyDistractionTo(retPop.getEAIndividual(i));
+//    			}
+//    		}
+//    	}
     	return retPop;
     }
     
@@ -394,7 +407,13 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
 
                     int reinitCount = -1;
 
-                    if (m_UseArchive) {
+//                	if (useDistraction) {
+//                		if (distraction == null) distraction = new Distraction(distrDefaultStrength, Distraction.METH_BEST);
+//                		distraction.addDistractorFrom(curSpecies);
+//                		System.out.println("** Adding distractor! " + BeanInspector.toString(distraction.getDistractionCenter(curSpecies, distraction.getDistractionMethod().getSelectedTagID())));
+//                	}
+
+                	if (m_UseArchive) {
                     	m_Archive.add(best);
                     	m_Species.remove(i);  //REMOVES the converged Species
                     	reinitCount = curSpecies.size();	// add all as new
@@ -442,12 +461,12 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
         	m_Undifferentiated.incrFunctionCallsby(m_PopulationSize - (m_Undifferentiated.getFunctionCalls() % m_PopulationSize));
         } else if (TRACE) System.out.println("### undiff active: " + isActive(m_Undifferentiated));        
         
-        // possible species differentation and convergence
+        // possible species differentiation and convergence
         if (this.m_Undifferentiated.getGeneration()%this.m_SpeciesCycle == 0) {
             if (TRACE) System.out.println("Species cycle:");
             
             if (this.m_UseSpeciesDifferentation) {
-///////////////////////////// species differentation phase
+///////////////////////////// species differentiation phase
                 if (TRACE) System.out.println("-Species Differentation:");
                 Population[]    ClusterResult;
                 ArrayList<Population>       newSpecies = new ArrayList<Population>();
@@ -589,7 +608,10 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
         if (TRACE) System.out.println("Population size: " + this.m_Population.size());
 //        if (TRACE) {
 //        	Distraction distr = new Distraction(5., 0, m_Species);
-//        	if (m_Undifferentiated.size()>0) distr.calcDistractionFor(m_Undifferentiated.getBestEAIndividual());
+//        	if (!distr.isEmpty()) {
+//        		double[] distVect = distr.calcDistractionFor(m_Undifferentiated.getBestEAIndividual());
+//        		System.out.println("species distract best towards " + BeanInspector.toString(distVect));
+//        	}
 //        }
         this.firePropertyChangedEvent("NextGenerationPerformed");
     }
@@ -615,16 +637,6 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
     	spec.clear();
     	spec.add(survivor);   	
     }
-//    /**
-//     * Deactivate a given species by removing all but the best individual as representative and
-//     * setting the population size to one.
-//     * 
-//     * @param spec
-//     */
-//    protected void deactivateSpecies(Population spec) {
-////    	deactivate a species keeping a representative
-//    	deactivateSpecies(spec, spec.getBestEAIndividual());
-//    }
     
     /** This method allows an optimizer to register a change in the optimizer.
      * @param source        The source of the event.

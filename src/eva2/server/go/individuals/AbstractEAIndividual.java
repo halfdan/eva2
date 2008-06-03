@@ -3,7 +3,6 @@ package eva2.server.go.individuals;
 
 import java.util.ArrayList;
 import java.util.BitSet;
-import java.util.LinkedList;
 import java.util.List;
 
 import wsi.ra.math.RNG;
@@ -42,8 +41,11 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
     
     private long 							m_ID	= 0;
     private static long						m_IDcounter = 0;
-    private int								logParentLen = 10;
-    private LinkedList<Long[]>				heritage = null;
+//  private int								logParentLen = 10;
+    private boolean 						logParents = true;
+    // heritage is to contain a list of all parents of the individual
+    private Long[]							parentIDs = null;
+    private AbstractEAIndividual[]			parentTree = null;
 
     protected double[]                      m_Fitness               = new double[1];
     private double                          m_ConstraintViolation   = 0;
@@ -114,7 +116,12 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
         m_ConstraintViolation = individual.m_ConstraintViolation;
         m_AreaConst4ParallelViolated = individual.m_AreaConst4ParallelViolated;
         m_Marked            = individual.m_Marked;
-        if (individual.heritage != null) heritage = new LinkedList<Long[]>(individual.heritage);
+        if (individual.parentIDs != null) {
+        	parentIDs = new Long[individual.parentIDs.length];
+        	System.arraycopy(individual.parentIDs, 0, parentIDs, 0, parentIDs.length);
+        	parentTree = new AbstractEAIndividual[individual.parentTree.length];
+        	for (int i=0; i<parentTree.length; i++) parentTree[i] = individual.parentTree[i];
+        }
         System.arraycopy(individual.m_Identifiers,0,m_Identifiers,0,individual.m_Identifiers.length);
         System.arraycopy(individual.m_Objects,0,m_Objects,0,individual.m_Objects.length);
     }
@@ -259,7 +266,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
 	    AbstractEAIndividual[] result;
 	    if (RNG.flipCoin(this.m_CrossoverProbability)) {
 	        result = this.m_CrossoverOperator.mate(this, partners);
-	        if (logParentLen > 0) {
+	        if (logParents) {
 	        	for (int i = 0; i < result.length; i++) {
 	        		result[i].setParents(this, partners);
 	        	}
@@ -271,7 +278,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
 	        for (int i = 0; i < partners.size(); i++) {
 	            result[i+1] = (AbstractEAIndividual) ((AbstractEAIndividual)partners.get(i)).clone();
 	        }
-	        if (logParentLen > 0) {
+	        if (logParents) {
 	        	result[0].setParent(this);
 		        for (int i = 0; i < partners.size(); i++) {
 		            result[i+1].setParent(partners.getEAIndividual(i));
@@ -284,34 +291,78 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
 	    return result;
 	}
 	
-	/**
-	 * Toggle the parent logging mechanism. It keeps track of the ancestor IDs of an individual
-	 * if mutation/crossover are used. Set the desired length of logging history (generations) or
-	 * set it to 0 to deactivate heritage logging.
-	 * 
-	 * @param logPs
-	 */
-	public void setLogHeritagetLen(int logLen) {
-		logParentLen = logLen;
-	}
+//	/**
+//	 * Toggle the parent logging mechanism. It keeps track of the ancestor IDs of an individual
+//	 * if mutation/crossover are used. Set the desired length of logging history (generations) or
+//	 * set it to 0 to deactivate heritage logging.
+//	 * 
+//	 * @param logPs
+//	 */
+//	public void setLogHeritagetLen(int logLen) {
+//		logParentLen = logLen;
+//	}
 	
 	/**
 	 * Add an ancestor generation with multiple parents.
 	 * 
 	 * @param parents
 	 */
-	private void setParents(AbstractEAIndividual parent, Population parents) {
-		if (heritage == null) heritage = new LinkedList<Long[]>();
-		Long[] parentIDs = new Long[1+parents.size()];
+	protected void setParents(AbstractEAIndividual parent, Population parents) {
+		int parentCnt = (parents == null) ? 1 : (1+parents.size());
+		parentIDs = new Long[parentCnt];
+		parentTree = new AbstractEAIndividual[parentCnt];
 		parentIDs[0] = parent.getIndyID();
-		for (int i=0; i<parents.size(); i++) parentIDs[i+1] = parents.getEAIndividual(i).getIndyID();
-		addHeritage(parentIDs);
+		parentTree[0] = (AbstractEAIndividual)parent.clone();
+		if ((parents != null) && (parents.size() > 0)) {
+			for (int i=0; i<parents.size(); i++) {
+				parentIDs[i+1] = parents.getEAIndividual(i).getIndyID();
+				parentTree[i+1] = (AbstractEAIndividual)parents.getEAIndividual(i).clone();
+			}
+		}
+		
+//		addHeritage(parentIDs);
 	}
 	
-	private void addHeritage(Long[] parentIDs) {
-		heritage.add(parentIDs);
-		if (heritage.size() > logParentLen) heritage.remove(0);
+	/**
+	 * Add an ancestor list with multiple parents.
+	 * 
+	 * @param parents
+	 */
+	public void setParents(List<AbstractEAIndividual> parents) {
+		if ((parents == null) || (parents.size() == 0)) {
+			parentIDs = null;
+			parentTree = null;
+		} else  {
+			int parentCnt = parents.size();
+			parentIDs = new Long[parentCnt];
+			parentTree = new AbstractEAIndividual[parentCnt];
+			
+			for (int i=0; i<parentCnt; i++) {
+				parentIDs[i] 	= parents.get(i).getIndyID();
+				parentTree[i] 	= (AbstractEAIndividual)parents.get(i).clone();
+			}
+		}
 	}
+	
+	public String getHeritageTree(int depth) {
+		StringBuffer sb = new StringBuffer();
+		sb.append(getIndyID());
+		sb.append(" ");
+		if ((depth > 0) && (parentTree != null)) {
+			sb.append("[ ");
+			for (int i=0; i<parentTree.length; i++) {
+				sb.append(parentTree[i].getHeritageTree(depth - 1));
+//					if ((i+1) < parentTree.length) sb.append(", ");
+			}
+			sb.append("] ");
+		}
+		return sb.toString();
+	}
+	
+//	private void addHeritage(Long[] parentIDs) {
+//		heritage.add(parentIDs);
+////		if (heritage.size() > logParentLen) heritage.remove(0);
+//	}
 	
 	/**
 	 * Add an ancestor generation with only one parent.
@@ -319,24 +370,22 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
 	 * @param parent
 	 */
 	protected void setParent(AbstractEAIndividual parent) {
-		if (heritage == null) heritage = new LinkedList<Long[]>();
-		Long[] parentID = new Long[1];
-		parentID[0] = parent.getIndyID();
-		addHeritage(parentID);
+		setParents(parent, null);
 	}
 	
-	public List<Long[]> getHeritageList() {
-		return heritage;
+	public Long[] getParentIDs() {
+		return parentIDs;
 	}
 	
-	/**
-	 * Returns the last set of parental IDs or null if none are available.
-	 * @return the last set of parental IDs or null if none are available
-	 */
-	public Long[] getHeritage() {
-		if (heritage != null) return heritage.getLast();
-		else return null;
-	}
+//	/**
+//	 * Returns the last set of parental IDs or null if none are available.
+//	 * 
+//	 * @return the last set of parental IDs or null if none are available
+//	 */
+//	public Long[] getHeritage() {
+//		if (heritage != null) return heritage.getLast();
+//		else return null;
+//	}
 	
     /** This method will allow you to get the current age of an individual
      * Zero means it has not even been evaluated.
@@ -757,7 +806,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
         sb.append(", ID: ");
         sb.append(individual.getIndyID());
         sb.append(", parents: ");
-        sb.append(BeanInspector.toString(individual.getHeritage()));
+        sb.append(BeanInspector.toString(individual.getParentIDs()));
         return sb.toString();
     }
     

@@ -122,10 +122,12 @@ public class MatlabEvalMediator implements Runnable {
 	}
 	
 	void setSolution(double[] sol) {
+		//System.out.println("setting Sol");
 		optSolution = sol;
 	}
 	
 	void setSolutionSet(double[][] solSet) {
+		//System.out.println("setting SolSet " + ((solSet != null) ? solSet.length : 0));
 		optSolSet = solSet;
 	}
 	
@@ -134,6 +136,7 @@ public class MatlabEvalMediator implements Runnable {
 	 * @return
 	 */
 	public double[] getSolution() {
+		//System.out.println("getting Sol");
 		return optSolution;
 	}
 	
@@ -142,6 +145,7 @@ public class MatlabEvalMediator implements Runnable {
 	 * @return
 	 */
 	public double[][] getSolutionSet() {
+		//System.out.println("getting SolSet" + ((optSolSet != null) ? optSolSet.length : 0));
 		return optSolSet;
 	}
 }

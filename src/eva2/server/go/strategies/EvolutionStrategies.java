@@ -1,5 +1,6 @@
 package eva2.server.go.strategies;
 
+import eva2.gui.BeanInspector;
 import eva2.server.go.InterfacePopulationChangedEventListener;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.operators.mutation.MutateESSuccessRule;
@@ -54,7 +55,7 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
     	setMu(mu);
     	setLambda(lambda);
     	setPlusStrategy(usePlus);
-        this.m_Population.setPopulationSize(this.m_Lambda);
+    	this.checkPopulationConstraints();
     }
     
     public EvolutionStrategies(EvolutionStrategies a) {
@@ -76,7 +77,6 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
 
     public void init() {
         // @todo In case of CBN-ES i need to read the population size!?
-        // @todo but how!? I guess this will never do...
 //        int orgPopSize = this.m_Population.getPopulationSize();
 //        if (this.m_InitialPopulationSize > orgPopSize) {
 //            this.m_Population.setPopulationSize(this.m_InitialPopulationSize);
@@ -86,15 +86,6 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
         this.evaluatePopulation(this.m_Population);
 //        this.m_Population.setPopulationSize(orgPopSize);
         this.firePropertyChangedEvent("NextGenerationPerformed");
-//        int myu         = this.m_Population.getPopulationSize();
-//        int initPopSize = 0;
-//        if (this.m_UsePlusStrategy) initPopSize = myu + (this.m_LambdaRatio * myu);
-//        else initPopSize = (this.m_LambdaRatio * myu);
-//        // Init with initPopSize individuals
-//        this.m_Population.setPopulationSize(initPopSize);
-//        this.m_Problem.initPopulation(this.m_Population);
-//        this.evaluatePopulation(this.m_Population);
-//        this.m_Population.setPopulationSize(myu);
     }
 
 
@@ -365,8 +356,9 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
         return "("+getMu()+(getPlusStrategy() ? "+" : ",")+getLambda()+")-ES";
     }
 
-    /** Assuming that all optimizer will store thier data in a population
-     * we will allow acess to this population to query to current state
+    /** 
+     * Assuming that all optimizer will store their data in a population
+     * we will allow access to this population to query to current state
      * of the optimizer.
      * @return The population of current solutions to a given problem.
      */
