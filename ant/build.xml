@@ -374,12 +374,12 @@
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
 
   <target name="sourceDist" depends="init">
-    <fail message="Not properly supported yet!"/>
+  	<!--<fail message="Not properly supported yet!"/>-->
 
     <property name="src.dist.dir"  value="${source.distribution.directory}/eva2-${DSTAMP}" />
     <mkdir dir="${src.dist.dir}" />
 
-    <copy todir="${src.dist.dir}">
+  	<!--<copy todir="${src.dist.dir}">
       <fileset dir=".">
         <include name="build.xml" />
         <include name="build.sh" />
@@ -388,7 +388,7 @@
         <include name="run.bat" />
         <include name="*.txt" />
       </fileset>
-    </copy>
+    </copy>-->
 
     <copy todir="${src.dist.dir}/${source.directory}">
       <fileset dir="${source.directory}">
@@ -397,14 +397,22 @@
       </fileset>
     </copy>
 
+    <copy todir="${src.dist.dir}/${resources.directory}">
+      <fileset dir="${resources.directory}">
+      	<include name="**/**" />
+      </fileset>
+    </copy>
+  	
+    	
     <mkdir dir="${src.dist.dir}/${library.directory}" />
     <copy todir="${src.dist.dir}/${library.directory}">
       <fileset dir="${library.directory}" includes="**jar" />
     </copy>
 
-    <copy todir="${src.dist.dir}/docs/tutorial">
-      <fileset dir="docs/tutorial">
-        <include name="**.tex" />
+  	<!--<copy todir="${src.dist.dir}/doc">
+      <fileset dir="doc">
+      	<include name="**.pdf" />
+      	<include name="**.tex" />
         <include name="**.sh" />
         <include name="**.eps" />
         <include name="**.gif" />
@@ -415,7 +423,7 @@
         <include name="**.htm" />
         <include name="**.html" />
       </fileset>
-    </copy>
+    </copy>-->
 
     <tar tarfile="${distribution.directory}/eva2-src-${DSTAMP}.tar"
          basedir="${source.distribution.directory}" includes="**" excludes="*.tar*, *.zip"/>
