@@ -1,5 +1,5 @@
 function retInt = optimizeWith(int, optType, varargin)
-% Start a JavaEvA optimization run with specific optimizer parameter settings.
+% Start a EvA2 optimization run with specific optimizer parameter settings.
 %       optimize(interface, optType, [, outputFilePrefix ] [, memName, memVal]* )
 % where
 %       interface: instance of JEInterface

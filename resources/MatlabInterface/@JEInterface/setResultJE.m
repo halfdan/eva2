@@ -1,5 +1,5 @@
 function int = setJEResult(int, result)
-% Interface function to be called by JavaEvA 2.
+% Interface function to be called by EvA2.
 
 % Write back the solution and retrieve some additional data.
 

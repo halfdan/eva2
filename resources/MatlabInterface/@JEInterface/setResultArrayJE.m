@@ -1,5 +1,5 @@
 function int = setResultArrayJE(int, arrData)
-% Interface function to be called by JavaEvA 2.
+% Interface function to be called by EvA2.
 
 % Write back a whole solution set
 

@@ -1,6 +1,7 @@
 function [sols, fits] = getMultipleResults(int)
-% Returns a set of optimization solutions if the run has been finished, or
-% a singel intermediate solution if the run has not finished yet or an
+% If a post processing step was performed: return a set of 
+% optimization solutions if the run has been finished, or
+% a single intermediate solution if the run has not finished yet or an
 % empty array if there is no intermediate solution yet.
 
 if (isFinished(int)) 

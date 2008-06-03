@@ -1,5 +1,5 @@
 function int=runEvalLoopJE(int, optOrPostProc, optType, outputFilePrefix, steps, sigmaClust, nBest)
-% Internal method starting a JavaEvA optimization loop.
+% Internal method starting a EvA2 optimization loop.
 % Calling this directly may interfere with optimization.
 
 % This function handles the communciation between JE and Matlab, main
@@ -21,16 +21,16 @@ if ~isempty(int.mediator)
 end
 
 % set up a mediator and inform JE
-int.mediator = javaeva.server.go.problems.MatlabEvalMediator;
+int.mediator = eva2.server.go.problems.MatlabEvalMediator;
 int.mp.setMediator(int.mediator);
 JEMediator=int.mediator;
 
 % start the JE thread
 if (optOrPostProc == 1)
-    stopText='Stop JavaEvA optimization';
+    stopText='Stop EvA2 optimization';
     int.mp.optimize(optType, outputFilePrefix, int.optParams, int.optParamValues);
 else % post processing
-    stopText='Stop JavaEvA post processing';
+    stopText='Stop EvA2 post processing';
     int.mp.requestPostProcessing(steps, sigmaClust, nBest);
 end
 
@@ -44,7 +44,7 @@ if isempty(stopOptimization),
     stopOptimization = 0;
     
     % create a cancel button box (case without SBtoolbox)
-    boxHandle=figure('Position',[100 600 250 80], 'MenuBar', 'none', 'Name', 'JavaEvA optimization running...', 'NumberTitle','off');
+    boxHandle=figure('Position',[100 600 250 80], 'MenuBar', 'none', 'Name', 'EvA2 optimization running...', 'NumberTitle','off');
     uicontrol(boxHandle,'Style', 'pushbutton', 'String', 'Cancel', 'Position', [25 25 60 30], 'Callback', 'global stopOptimization; stopOptimization=1;');
     uicontrol(boxHandle,'Style', 'text', 'String', stopText, 'Position', [100 25 120 30]);
     drawnow;
