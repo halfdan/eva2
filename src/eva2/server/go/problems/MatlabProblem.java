@@ -238,9 +238,18 @@ public class MatlabProblem extends AbstractProblemDouble implements InterfaceTex
 					InterfaceOptimizer opt = runnable.getGOParams().getOptimizer();
 					for (int i=0; i<specParams.length; i++) { // loop over settings
 						log("try setting " + specParams[i] + " to " + specValues[i]);
-						if (!BeanInspector.setMem(opt, (String)specParams[i], specValues[i])) {
+						String paramName = null;
+						try {
+							paramName = (String)specParams[i];
+						} catch (ClassCastException e) {
+							paramName = "" + specParams[i];
+							if (!(specParams[i] instanceof Character)) {
+								System.err.println("Error, parameter "+ specParams[i] + " could not be cast to String, trying " + paramName);
+							}
+						}
+						if ((paramName == null) || (!BeanInspector.setMem(opt, paramName, specValues[i]))) {
 							log("... Fail!\n");
-							System.err.println("Unable to set parameter " + specParams[i] + ", skipping...");
+							System.err.println("Unable to set parameter " + paramName + ", skipping...");
 						} else log("... Ok.\n");
 					}
 					log(BeanInspector.toString(BeanInspector.getMemberDescriptions(opt, true)));
@@ -319,7 +328,6 @@ public class MatlabProblem extends AbstractProblemDouble implements InterfaceTex
 //	
 	void exportResultPopulationToMatlab(Population pop) {
 		double[][] solSet;
-	
 		if ((pop != null) && (pop.size()>0)) {
 			solSet = new double[pop.size()][];
 			for (int i=0; i<pop.size(); i++) {
@@ -454,6 +462,7 @@ class WaitForEvARunnable implements Runnable {
 			mp.exportResultPopulationToMatlab(null);
 		}
 		mp.notifyFinished();
+		mp.log("notified finish...");
 	}
 	
 }

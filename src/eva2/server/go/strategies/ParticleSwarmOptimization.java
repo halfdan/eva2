@@ -17,6 +17,7 @@ import eva2.server.go.problems.F1Problem;
 import eva2.server.go.problems.Interface2DBorderProblem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import wsi.ra.math.RNG;
+import eva2.tools.EVAERROR;
 import eva2.tools.SelectedTag;
 
 import wsi.ra.chart2d.DPoint;
@@ -444,6 +445,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 
 	protected void resetIndividual(AbstractEAIndividual indy) {
 		if (indy instanceof InterfaceESIndividual) {
+			indy.setParents(null);
 			InterfaceESIndividual endy = (InterfaceESIndividual) indy;
 			endy.defaultInit();
 			indy.SetData(partTypeKey, defaultType); // turn into default type
@@ -472,7 +474,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 			default: System.err.println("particle type " + type + " unknown!"); break;
 			}
 		} else {
-			System.err.println("Could not perform PSO update, because individual is not instance of InterfaceESIndividual!");
+			EVAERROR.errorMsgOnce("Could not perform PSO update, because individual is not instance of InterfaceESIndividual!");
 		}
 	}
 	

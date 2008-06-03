@@ -158,7 +158,6 @@ public class OptimizerFactory {
 		es.setLambda(50);
 		es.setPlusStrategy(false);
 
-		// TODO improve this by adding getEAIndividual to AbstractEAIndividual?
 		AbstractEAIndividual indyTemplate = problem.getIndividualTemplate();
 		if ((indyTemplate != null)
 		    && (indyTemplate instanceof InterfaceESIndividual)) {

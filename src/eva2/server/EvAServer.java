@@ -29,8 +29,8 @@ import java.net.InetAddress;
  *
  */
 public class EvAServer {
-  /* Version string of the server application. */
-  public static final String Version = new String ("2.00");
+  /* Main version string of the EvA2 application. Change for minor releases, please.*/
+  public static final String Version = new String ("2.02");
   public static boolean TRACE = false;
   /* MainAdapterImp object. This is need for the first
   connection between the server and the client program.  */
