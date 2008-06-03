@@ -1,5 +1,5 @@
 function retInt = optimize(int, optType, varargin)
-% Start a JavaEvA optimization run.
+% Start a EvA2 optimization run.
 %       optimize(interface, optType, [, outputFilePrefix ] )
 % where
 %       interface: instance of JEInterface
@@ -28,11 +28,11 @@ if ((nargin == 2) || (nargin == 3))
     maxEvals = int.opts.MaxFunEvals;
     fTol = int.opts.TolFun;
     
-    import javaeva.server.go.operators.terminators.PhenotypeConvergenceTerminator;
-    import javaeva.server.go.operators.terminators.FitnessConvergenceTerminator;    
-    import javaeva.server.go.operators.terminators.CombinedTerminator;
-    import javaeva.server.go.operators.terminators.EvaluationTerminator;
-    import javaeva.OptimizerFactory;
+    import eva2.server.go.operators.terminators.PhenotypeConvergenceTerminator;
+    import eva2.server.go.operators.terminators.FitnessConvergenceTerminator;    
+    import eva2.server.go.operators.terminators.CombinedTerminator;
+    import eva2.server.go.operators.terminators.EvaluationTerminator;
+    import eva2.OptimizerFactory;
 
     % set some default values if theyre not given
     % fminsearch, for example, always uses TolX and TolFun with default
@@ -61,13 +61,13 @@ if ((nargin == 2) || (nargin == 3))
             % maxEvals = OptimizerFactory.getDefaultFitCalls;
         end
         convTerm = EvaluationTerminator(maxEvals);
-        javaeva.OptimizerFactory.setTerminator(convTerm);
+        eva2.OptimizerFactory.setTerminator(convTerm);
     else % there is a convergence terminator              
-        javaeva.OptimizerFactory.setTerminator(convTerm); % so set it
+        eva2.OptimizerFactory.setTerminator(convTerm); % so set it
         if (~isempty(maxEvals) && (maxEvals > 0))
             % if TolX/TolFun plus MaxFunEvals is defined additionally, combine an
             % EvaluationTerminator in disjunction, as Matlab does.
-            javaeva.OptimizerFactory.addTerminator(EvaluationTerminator(maxEvals), 0);
+            eva2.OptimizerFactory.addTerminator(EvaluationTerminator(maxEvals), 0);
         end
     end
 

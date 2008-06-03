@@ -1,5 +1,5 @@
 function int = JEInterface(interfaceName, fhandle, range, varargin)
-% JavaEva Interface for Matlab
+% EvA2 Interface for Matlab
 %       JEInterface(interfaceName, fhandle, range [, optset, defaultargs])
 % arguments: 
 %   interfaceName: a JEInterface instance needs to know its own
@@ -9,7 +9,7 @@ function int = JEInterface(interfaceName, fhandle, range, varargin)
 %      upper bounds.
 %   optset: (optional) an optimset struct defining optimization parameters,
 %       especially tolerance and maximum function calls. Defaults to the
-%       JavaEvA default values.
+%       EvA2 default values.
 %   defaultArgs: (optional) additional constant argument to the target
 %       function, empty by default.
 % Recognized options are:
@@ -26,7 +26,7 @@ function int = JEInterface(interfaceName, fhandle, range, varargin)
 % any case, set TolX=TolFun=0 and MaxFunEvals=10^5.
 
 int.args = [];
-int.opts = optimset('MaxFunEvals', javaeva.OptimizerFactory.getDefaultFitCalls, 'TolX', 1e-4, 'TolFun', 1e-4);
+int.opts = optimset('MaxFunEvals', eva2.OptimizerFactory.getDefaultFitCalls, 'TolX', 1e-4, 'TolFun', 1e-4);
 int.finished = 1;
 int.result = [];
 int.resultArr = [];
@@ -80,7 +80,7 @@ switch nargin
 end
 
 % finally create the java object
-int.mp = javaeva.server.go.problems.MatlabProblem(int.callback, int.dim, int.range);
+int.mp = eva2.server.go.problems.MatlabProblem(int.callback, int.dim, int.range);
 
         
 
