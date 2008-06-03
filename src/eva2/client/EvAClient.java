@@ -48,6 +48,7 @@ import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 
 import eva2.gui.ExtAction;
+import eva2.gui.HtmlDemo;
 import eva2.gui.JEFrame;
 import eva2.gui.JEFrameRegister;
 import eva2.gui.JExtMenu;
@@ -75,6 +76,7 @@ import wsi.ra.tool.BasicResourceLoader;
  */
 public class EvAClient implements RemoteStateListener, Serializable {
 	public static final String EVA_PROPERTY_FILE = "resources/EvA2.props";
+	public static final String licenseFile = "lgpl-3.0.txt";
 	private static Properties EVA_PROPERTIES;
 	public static final String iconLocation = "resources/images/icon4.gif";
 	private static final String splashLocation = "resources/images/splashScreen2.png";
@@ -114,6 +116,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
 //	private ArrayList m_ModuleAdapterList = new ArrayList();
 	// About:
 	private ExtAction m_actAbout;
+	private ExtAction m_actLicense;
 
 //	private JPanel m_panelTool;
 //	private FrameCloseListener m_frameCloseListener;
@@ -301,6 +304,13 @@ public class EvAClient implements RemoteStateListener, Serializable {
 				showAboutDialog();
 			}
 		};
+		m_actLicense = new ExtAction("&License...", "View License",
+				KeyStroke.getKeyStroke(KeyEvent.VK_L, Event.CTRL_MASK)) {
+			public void actionPerformed(ActionEvent e) {
+				logMessage(e.getActionCommand());
+				showLicense();
+			}
+		};
 		m_actHost = new ExtAction("&List of all servers", "All servers in list",
 				KeyStroke.getKeyStroke(KeyEvent.VK_A, Event.CTRL_MASK)) {
 			public void actionPerformed(ActionEvent e) {
@@ -461,6 +471,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
 		////////////////////////////////////////////////////////////////
 		m_mnuAbout = new JExtMenu("&About");
 		m_mnuAbout.add(m_actAbout);
+		m_mnuAbout.add(m_actLicense);
 		//////////////////////////////////////////////////////////////
 		// m_barMenu.add(m_Desktop.getWindowMenu());
 		
@@ -662,6 +673,12 @@ public class EvAClient implements RemoteStateListener, Serializable {
 				"Prof. Dr. Andreas Zell \n (c) 2008 \n Version " + EvAServer.Version + 
 				"\n http://www.ra.cs.uni-tuebingen.de/software/EvA2", infoTitle, 1);
 	}
+	
+	private void showLicense() {
+    	HtmlDemo temp = new HtmlDemo(licenseFile);
+        temp.show();
+	}
+	
 	
 	private void showNoHostFoundDialog() {
 		JOptionPane.showMessageDialog(m_Frame.getContentPane(), "No host with running EVASERVER found. Please start one or \nadd the correct address to the properties list.", infoTitle, 1);
