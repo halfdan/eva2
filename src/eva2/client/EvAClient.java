@@ -2,8 +2,8 @@ package eva2.client;
 
 /*
  * Title:        EvA2
- * Description:
- * Copyright:    Copyright (c) 2003
+ * Description: The main client class of the EvA framework.
+ * Copyright:    Copyright (c) 2008
  * Company:      University of Tuebingen, Computer Architecture
  * @author Holger Ulmer, Felix Streichert, Hannes Planatscher
  * @version:  $Revision: 322 $
@@ -28,7 +28,6 @@ import java.net.URL;
 import java.util.Properties;
 import java.util.Set;
 
-
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -47,6 +46,9 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 
+import wsi.ra.jproxy.RemoteStateListener;
+import wsi.ra.tool.BasicResourceLoader;
+import eva2.EvAInfo;
 import eva2.gui.ExtAction;
 import eva2.gui.HtmlDemo;
 import eva2.gui.JEFrame;
@@ -61,37 +63,18 @@ import eva2.tools.EVAHELP;
 import eva2.tools.ReflectPackage;
 import eva2.tools.Serializer;
 
-import wsi.ra.jproxy.RemoteStateListener;
-import wsi.ra.tool.BasicResourceLoader;
-
-/**
-/////////////////////////////////
-// -Xrunhprof:cpu=samples
-/////////////////////////////////////////////////
- /*==========================================================================*
- * CLASS DECLARATION
- *==========================================================================*/
 /**
  *
  */
 public class EvAClient implements RemoteStateListener, Serializable {
-	public static final String EVA_PROPERTY_FILE = "resources/EvA2.props";
-	public static final String licenseFile = "lgpl-3.0.txt";
-	private static Properties EVA_PROPERTIES;
-	public static final String iconLocation = "resources/images/icon4.gif";
-	private static final String splashLocation = "resources/images/splashScreen2.png";
-	private static final String infoTitle = "EvA2 Information";
 	final int splashScreenTime = 1500;
+	private static Properties EVA_PROPERTIES;
 	
 	public static boolean TRACE = false;
-	private static String m_ProductName = "EvA 2";
-	private static String m_ProductLongName = "Evolutionary Algorithms Workbench 2";
-//	private int PREFERRED_WIDTH = 680;
-//	private int PREFERRED_HEIGHT = 550;
+
 	public JEFrame m_Frame;
 
 	private EvAComAdapter m_ComAdapter;
-//	private JExtDesktopPane m_Desktop;
 	private transient JMenuBar 		m_barMenu;
 	private transient JExtMenu 		m_mnuAbout;
 	private transient JExtMenu 		m_mnuSelHosts;
@@ -152,9 +135,9 @@ public class EvAClient implements RemoteStateListener, Serializable {
 	 */
 	static {
 		try {
-			EVA_PROPERTIES = BasicResourceLoader.readProperties(EVA_PROPERTY_FILE);
+			EVA_PROPERTIES = BasicResourceLoader.readProperties(EvAInfo.propertyFile);
 		} catch (Exception ex) {
-			System.err.println("Could not read the configuration file "+ EVA_PROPERTY_FILE);
+			System.err.println("Could not read the configuration file "+ EvAInfo.propertyFile);
 			ex.printStackTrace();
 		}
 	}
@@ -165,7 +148,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
 	 *
 	 */
 	public EvAClient(final String hostName) {
-		final SplashScreen fSplashScreen = new SplashScreen(splashLocation);
+		final SplashScreen fSplashScreen = new SplashScreen(EvAInfo.splashLocation);
 
 	    fSplashScreen.splash();
 	    
@@ -203,13 +186,13 @@ public class EvAClient implements RemoteStateListener, Serializable {
 
 		m_Frame = new JEFrame();
 		BasicResourceLoader loader = BasicResourceLoader.instance();
-		byte[] bytes = loader.getBytesFromResourceLocation(iconLocation);
+		byte[] bytes = loader.getBytesFromResourceLocation(EvAInfo.iconLocation);
 		try {
 			m_Frame.setIconImage(Toolkit.getDefaultToolkit().createImage(bytes));
 		} catch (java.lang.NullPointerException e) {
 			System.out.println("Could not find EvA2 icon, please move resources folder to working directory!");
 		}
-		m_Frame.setTitle("EvA2 workbench");
+		m_Frame.setTitle(EvAInfo.productName + " workbench");
 
 		try {
 			Thread.sleep(200);
@@ -491,7 +474,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
 	}
 	
 	public static String getProductName() {
-		return m_ProductName;
+		return EvAInfo.productName;
 	}
 	
 	protected void logMessage(String msg) {
@@ -527,7 +510,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
 		if (selectedModule == null) { // show a dialog and ask for a module
 			String[] ModuleNameList = m_ComAdapter.getModuleNameList();
 			if (ModuleNameList == null) {
-				JOptionPane.showMessageDialog(m_Frame.getContentPane(), "No modules available on " + m_ComAdapter.getHostName(), infoTitle, 1);
+				JOptionPane.showMessageDialog(m_Frame.getContentPane(), "No modules available on " + m_ComAdapter.getHostName(), EvAInfo.infoTitle, 1);
 			} else {
 				String LastModuleName = Serializer.loadString("lastmodule.ser");
 				if (LastModuleName == null) LastModuleName = ModuleNameList[0];
@@ -660,28 +643,28 @@ public class EvAClient implements RemoteStateListener, Serializable {
 	}
 	
 	private void showPleaseWaitDialog() {
-		JOptionPane.showMessageDialog(m_Frame.getContentPane(), "Please wait one moment.", infoTitle, 1);
+		JOptionPane.showMessageDialog(m_Frame.getContentPane(), "Please wait one moment.", EvAInfo.infoTitle, 1);
 	}
 	
 	private void showAboutDialog() {
 		JOptionPane.showMessageDialog
 		(m_Frame,
-				m_ProductName + " - " + m_ProductLongName + 
+				EvAInfo.productName + " - " + EvAInfo.productLongName + 
 				"\n University of Tuebingen\n Computer Architecture\n " +
 				"M. Kronfeld, H. Planatscher, M. de Paly, F. Streichert & H. Ulmer\n " +
 //				"H. Ulmer & F. Streichert & H. Planatscher & M. de Paly & M. Kronfeld\n" +
-				"Prof. Dr. Andreas Zell \n (c) 2008 \n Version " + EvAServer.Version + 
-				"\n http://www.ra.cs.uni-tuebingen.de/software/EvA2", infoTitle, 1);
+				"Prof. Dr. Andreas Zell \n (c) 2008 \n Version " + EvAInfo.versionNum + 
+				"\n " + EvAInfo.url, EvAInfo.infoTitle, 1);
 	}
 	
 	private void showLicense() {
-    	HtmlDemo temp = new HtmlDemo(licenseFile);
+    	HtmlDemo temp = new HtmlDemo(EvAInfo.licenseFile);
         temp.show();
 	}
 	
 	
 	private void showNoHostFoundDialog() {
-		JOptionPane.showMessageDialog(m_Frame.getContentPane(), "No host with running EVASERVER found. Please start one or \nadd the correct address to the properties list.", infoTitle, 1);
+		JOptionPane.showMessageDialog(m_Frame.getContentPane(), "No host with running EVASERVER found. Please start one or \nadd the correct address to the properties list.", EvAInfo.infoTitle, 1);
 	}
 
 	/**

@@ -3,6 +3,7 @@ package eva2.server.go.strategies;
 import java.util.Vector;
 
 import wsi.ra.math.RNG;
+import eva2.gui.GenericObjectEditor;
 import eva2.server.go.InterfacePopulationChangedEventListener;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceESIndividual;
@@ -13,7 +14,6 @@ import eva2.server.go.problems.AbstractOptimizationProblem;
 import eva2.server.go.problems.F1Problem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.tools.EVAERROR;
-import eva2.tools.Pair;
 import eva2.tools.SelectedTag;
 
 /** Differential evolution implementing DE1 and DE2 following the paper of Storm and
@@ -81,6 +81,10 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
         this.firePropertyChangedEvent("NextGenerationPerformed");
     }
 
+    public void hideHideable() {
+    	setDEType(getDEType());
+    }
+    
     /** This method will init the optimizer with a given population
      * @param pop       The initial population
      * @param reset     If true the population is reset.
@@ -569,7 +573,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
         return this.m_Mt;
     }
     public String mtTipText() {
-        return "In case of trig. mutation DE, the TMO is applied wit probability Mt.";
+        return "In case of trigonometric mutation DE, the TMO is applied with probability Mt.";
     }
 
     /** This method allows you to choose the type of Differential Evolution.
@@ -577,6 +581,8 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
      */
     public void setDEType(SelectedTag s) {
         this.m_DEType = s;
+        // show mt for trig. DE only
+        GenericObjectEditor.setShowProperty(this.getClass(), "mt", s.getSelectedTagID()==3);
     }
     public SelectedTag getDEType() {
         return this.m_DEType;

@@ -117,7 +117,7 @@ public class SelectTournament implements InterfaceSelection, java.io.Serializabl
      */
     public String globalInfo() {
         return "The tournament selection compares the raw fitness of n individuals and takes the best." +
-                "This is a single-objective method, it will select with respect to the first criterium in the multi-objective case.";
+                "This is a single-objective method, it selects with respect to the first criterion in the multi-objective case.";
     }
 
     /** You can choose the tournament size.

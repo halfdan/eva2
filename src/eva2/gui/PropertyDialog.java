@@ -12,18 +12,16 @@ package eva2.gui;
 /*==========================================================================*
  * IMPORTS
  *==========================================================================*/
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Toolkit;
-import java.beans.PropertyEditor;
-import javax.swing.JFrame;
-
-import eva2.client.EvAClient;
-import eva2.tools.EVAHELP;
-
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.BorderLayout;
+import java.beans.PropertyEditor;
+
 import wsi.ra.tool.BasicResourceLoader;
+import eva2.EvAInfo;
+import eva2.tools.EVAHELP;
 /*==========================================================================*
 * CLASS DECLARATION
 *==========================================================================*/
@@ -39,7 +37,7 @@ public class PropertyDialog extends JEFrame {
   public PropertyDialog (PropertyEditor editor,String Title, int x, int y) {
     super(getFrameNameFromEditor(editor)); // that was the long class name !!
     BasicResourceLoader  loader  = BasicResourceLoader.instance();
-    byte[] bytes   = loader.getBytesFromResourceLocation(EvAClient.iconLocation);
+    byte[] bytes   = loader.getBytesFromResourceLocation(EvAInfo.iconLocation);
     try {
         setIconImage(Toolkit.getDefaultToolkit().createImage(bytes));
     } catch (java.lang.NullPointerException e) {

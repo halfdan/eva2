@@ -11,23 +11,9 @@ package eva2.server;
 /*==========================================================================*
  * IMPORTS
  *==========================================================================*/
-import java.net.InetAddress;
-import java.net.MalformedURLException;
-import java.rmi.Naming;
-import java.rmi.RemoteException;
-import java.rmi.registry.Registry;
-
-import eva2.client.EvAComAdapter;
-
 import wsi.ra.jproxy.RMIProxyLocal;
 import wsi.ra.jproxy.RMIServer;
-///////////////////////////////////////////////////////////////
-//-Xrunhprof:cpu=times
-//-Djava.security.policy=server.policy
-///////////////////////////////////////////////////////////////
-/*==========================================================================*
- * CLASS DECLARATION
- *==========================================================================*/
+
 /**
  *
  */

@@ -76,7 +76,7 @@ public class SelectBestIndividuals implements InterfaceSelection, java.io.Serial
      * crit
      * @param pop   The population to select from
      * @param tabu  The individuals that are to be ignored
-     * @param crit  The criterium
+     * @param crit  The criterion
      * @return Object the individual
      */
     private Object getBestIndividualExcept(Population pop, ArrayList tabu, int crit) {

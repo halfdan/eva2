@@ -54,6 +54,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import eva2.EvAInfo;
 import eva2.client.EvAClient;
 import eva2.tools.EVAHELP;
 import eva2.tools.ReflectPackage;
@@ -519,7 +520,7 @@ public class GenericObjectEditor implements PropertyEditor {
 			}
 			if (clsArr == null) {
 				System.out.println("Warning: No configuration property found in: "
-						+EvAClient.EVA_PROPERTY_FILE + " "+"for "+className);
+						+EvAInfo.propertyFile + " "+"for "+className);
 				classes.add(className);
 			} else {
 				for (Class<?> class1 : clsArr) {

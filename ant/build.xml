@@ -35,6 +35,7 @@
   <property name="javadoc.directory"              value="doc/api" />
   <property name="library.directory"              value="lib" />
   <property name="debug.flag"					  value="true" />
+  <property name="jar.name"							value="EvA2Base.jar" />
 	  <property name="JE2Probs.directory"			  value="../JE2Probs" />				
 	  <property name="JE2ESModel.directory"			  value="../JE2ESModel" />				
 	  <property name="JE2Research.directory"			  value="../JE2Research" />				
@@ -292,14 +293,20 @@
 <target name="binaryDist" depends="compile" description="Compiles the project and puts the whole stuff into a jar-file..">
     <property name="bin.dist.dir"  value="${binary.distribution.directory}/eva-${DSTAMP}" />
     <mkdir dir="${bin.dist.dir}" />
-    <mkdir dir="${bin.dist.dir}/${library.directory}" />
 <delete>
-      <fileset dir="${bin.dist.dir}/${library.directory}" includes="*EvA2Base*jar" />
+      <fileset dir="${bin.dist.dir}/" includes="${jar.name}" />
 </delete>
 
-<jar jarfile="${bin.dist.dir}/${library.directory}/EvA2Base.jar"  basedir="${build.directory}" >
+<jar jarfile="${bin.dist.dir}/${jar.name}"  basedir="${build.directory}" >
 <manifest> <attribute name="Main-Class" value="eva2.client.EvAClient"/> </manifest>
 </jar>
+    <copy todir="${distribution.directory}">
+      <fileset dir="${bin.dist.dir}">
+        <include name="${jar.name}" />
+      </fileset>
+    </copy>
+	
+	<!--
     <copy todir="${bin.dist.dir}/${library.directory}">
       <fileset dir="${library.directory}">
         <include name="**/**" />
@@ -307,7 +314,6 @@
       </fileset>
     </copy>
 
-<!--
     <copy todir="${bin.dist.dir}/ant">
       <fileset dir="ant">
         <include name="**/**" />
@@ -426,13 +432,13 @@
     </copy>-->
 
     <tar tarfile="${distribution.directory}/eva2-src-${DSTAMP}.tar"
-         basedir="${source.distribution.directory}" includes="**" excludes="*.tar*, *.zip"/>
+         basedir="${src.dist.dir}" includes="**" excludes="*.tar*, *.zip"/>
     <gzip zipfile="${distribution.directory}/eva2-src-${DSTAMP}.tar.gz"
           src="${distribution.directory}/eva2-src-${DSTAMP}.tar" />
     <delete file="${distribution.directory}/eva2-src-${DSTAMP}.tar" />
 
     <zip zipfile="${distribution.directory}/eva2-src-${DSTAMP}.zip">
-      <zipfileset dir="${source.distribution.directory}">
+      <zipfileset dir="${src.dist.dir}">
         <include name="**" />
         <exclude name="*.tar*, *.zip" />
       </zipfileset>

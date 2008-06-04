@@ -25,7 +25,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.Serializable;
 
-
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
@@ -36,10 +35,8 @@ import javax.swing.JViewport;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import eva2.client.EvAClient;
-import eva2.tools.MultirunRefiner;
-
 import wsi.ra.tool.BasicResourceLoader;
+import eva2.EvAInfo;
 /*==========================================================================*
  * CLASS DECLARATION
  *==========================================================================*/
@@ -107,7 +104,7 @@ Serializable {
 		m_TextArea.setCaretPosition(0);
 
 		BasicResourceLoader  loader  = BasicResourceLoader.instance();
-		byte[] bytes   = loader.getBytesFromResourceLocation(EvAClient.iconLocation);
+		byte[] bytes   = loader.getBytesFromResourceLocation(EvAInfo.iconLocation);
 		try {
 			frame.setIconImage(Toolkit.getDefaultToolkit().createImage(bytes));
 		} catch (java.lang.NullPointerException e) {

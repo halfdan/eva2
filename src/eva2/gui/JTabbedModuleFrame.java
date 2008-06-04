@@ -13,21 +13,24 @@ package eva2.gui;
  * IMPORTS
  *==========================================================================*/
 
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Toolkit;
 import java.io.Serializable;
-import java.awt.*;
-import java.awt.event.*;
-import java.awt.print.* ;
-import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.event.*;
-
-import eva2.client.EvAClient;
-import eva2.gui.JModuleGeneralPanel;
-import eva2.gui.JParaPanel;
-import eva2.server.modules.ModuleAdapter;
-
 import java.util.ArrayList;
+
+import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
 import wsi.ra.tool.BasicResourceLoader;
+import eva2.EvAInfo;
+import eva2.server.modules.ModuleAdapter;
 /*==========================================================================*
  * CLASS DECLARATION
  *==========================================================================*/
@@ -103,7 +106,7 @@ public class JTabbedModuleFrame implements Serializable {
 		m_Frame = new  JEFrame (m_AdapterName+" on "+m_Host);
 
 		BasicResourceLoader  loader  = BasicResourceLoader.instance();
-		byte[] bytes   = loader.getBytesFromResourceLocation(EvAClient.iconLocation);
+		byte[] bytes   = loader.getBytesFromResourceLocation(EvAInfo.iconLocation);
 		try {
 			m_Frame.setIconImage(Toolkit.getDefaultToolkit().createImage(bytes));
 		} catch (java.lang.NullPointerException e) {

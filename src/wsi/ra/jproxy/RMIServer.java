@@ -8,22 +8,13 @@ package wsi.ra.jproxy;
  *            $Date: 2004/04/15 09:12:31 $
  *            $Author: ulmerh $
  */
-/*==========================================================================*
- * IMPORTS
- *==========================================================================*/
+
 import java.net.InetAddress;
 import java.net.MalformedURLException;
-import java.net.UnknownHostException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.Registry;
-///////////////////////////////////////////////////////////////
-// -Xrunhprof:cpu=times
-// -Djava.security.policy=server.policy
-///////////////////////////////////////////////////////////////
-/*==========================================================================*
- * CLASS DECLARATION
- *==========================================================================*/
+
 /**
  *
  */

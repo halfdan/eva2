@@ -22,9 +22,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
-import java.awt.print.PageFormat;
-import java.awt.print.PrinterException;
-import java.awt.print.PrinterJob;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -41,12 +38,13 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import wsi.ra.chart2d.DPointSet;
+import wsi.ra.tool.BasicResourceLoader;
+
 import com.sun.image.codec.jpeg.JPEGCodec;
 import com.sun.image.codec.jpeg.JPEGImageEncoder;
 
-import eva2.client.EvAClient;
-import wsi.ra.chart2d.DPointSet;
-import wsi.ra.tool.BasicResourceLoader;
+import eva2.EvAInfo;
 /*==========================================================================*
  * CLASS DECLARATION
  *==========================================================================*/
@@ -106,7 +104,7 @@ public class Plot implements PlotInterface, Serializable {
 	public void init() {
 		m_Frame = new JEFrame("Plot: "+m_PlotName);
 		BasicResourceLoader  loader  = BasicResourceLoader.instance();
-		byte[] bytes   = loader.getBytesFromResourceLocation(EvAClient.iconLocation);
+		byte[] bytes   = loader.getBytesFromResourceLocation(EvAInfo.iconLocation);
 		try {
 			m_Frame.setIconImage(Toolkit.getDefaultToolkit().createImage(bytes));
 		} catch (java.lang.NullPointerException e) {

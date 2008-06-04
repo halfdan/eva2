@@ -583,8 +583,6 @@ public class BasicResourceLoader implements ResourceLoader
 	 *
 	 */
 	public static Properties readProperties(String resourceName) throws Exception {
-//		if (TRACE)
-//			System.out.println("EvAClient.readProperties of " + resourceName);
 		Properties prop = new Properties();
 		BasicResourceLoader loader = BasicResourceLoader.instance();
 

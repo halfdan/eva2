@@ -18,19 +18,12 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.InetAddress;
 
-///////////////////////////////////////////////////////////////
-// -Xrunhprof:cpu=times
-// -Djava.security.policy=server.policy
-///////////////////////////////////////////////////////////////
-/*==========================================================================*
- * CLASS DECLARATION
- *==========================================================================*/
+import eva2.EvAInfo;
+
 /**
  *
  */
 public class EvAServer {
-  /* Main version string of the EvA2 application. Change for minor releases, please.*/
-  public static final String Version = new String ("2.02");
   public static boolean TRACE = false;
   /* MainAdapterImp object. This is need for the first
   connection between the server and the client program.  */
@@ -48,7 +41,7 @@ public class EvAServer {
 //    m_InsideClient = insideClient;
 //    m_Restart = Restart;
     System.out.println ("*******************************************************************************");
-    System.out.println ("This is EvA Server Version: "+ Version+ " CommVersion: "+Version);
+    System.out.println ("This is EvA Server Version: "+ EvAInfo.versionNum);
     //System.out.println ("Java Version: " + System.getProperty("java.version") );
     System.out.println ("*******************************************************************************");
     m_UserName = System.getProperty("user.name");
