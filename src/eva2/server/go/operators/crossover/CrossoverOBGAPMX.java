@@ -66,8 +66,8 @@ public class CrossoverOBGAPMX implements InterfaceCrossover, java.io.Serializabl
 
       ((InterfaceOBGAIndividual) result[0]).SetOBGenotype(pperm1);
       ((InterfaceOBGAIndividual) result[1]).SetOBGenotype(pperm2);
-      //((InterfaceDataTypePermutation) result[0]).SetPermutationDataLamarkian(pperm1);
-      //((InterfaceDataTypePermutation) result[1]).SetPermutationDataLamarkian(pperm2);
+      //((InterfaceDataTypePermutation) result[0]).SetPermutationDataLamarckian(pperm1);
+      //((InterfaceDataTypePermutation) result[1]).SetPermutationDataLamarckian(pperm2);
     }
     //in case the crossover was successfull lets give the mutation operators a chance to mate the strategy parameters
       for (int i = 0; i < result.length; i++) result[i].getMutationOperator().crossoverOnStrategyParameters(indy1, partners);

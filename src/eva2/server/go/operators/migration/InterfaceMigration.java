@@ -6,8 +6,8 @@ import eva2.server.go.strategies.InterfaceOptimizer;
  * (currently all migration methods are typically fully
  * connected) and give the selection criteria. While
  * SOXMigration stands for uni-criterial migration
- * MOXMigration typically stands for multi-criteria migration.
- * For multi-criteria optimization the migration scheme
+ * MOXMigration typically stands for multi-criterial migration.
+ * For multi-criterial optimization the migration scheme
  * also may give the subdividing scheme.
  * Created by IntelliJ IDEA.
  * User: streiche

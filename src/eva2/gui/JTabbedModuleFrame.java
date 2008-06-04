@@ -107,7 +107,7 @@ public class JTabbedModuleFrame implements Serializable {
 		try {
 			m_Frame.setIconImage(Toolkit.getDefaultToolkit().createImage(bytes));
 		} catch (java.lang.NullPointerException e) {
-			System.out.println("Could not find EvA2 icon, please move resource folder to working directory!");
+			System.out.println("Could not find EvA2 icon, please move resources folder to working directory!");
 		}     
 
 		JPanel m_SuperPanel = createContentPane();

@@ -154,7 +154,7 @@ public class ESIndividualBinaryData extends AbstractEAIndividual implements Inte
      * memetic algorithms.
      * @param binaryData    The new binary data.
      */
-    public void SetBinaryDataLamarkian(BitSet binaryData) {
+    public void SetBinaryDataLamarckian(BitSet binaryData) {
         this.SetBinaryData(binaryData);
         for (int i = 0; i < this.m_Genotype.length; i++) {
             if (this.m_UseHardSwitch) {
@@ -187,7 +187,7 @@ public class ESIndividualBinaryData extends AbstractEAIndividual implements Inte
     public void initByValue(Object obj, InterfaceOptimizationProblem opt) {
         if (obj instanceof BitSet) {
             BitSet  bs = (BitSet) obj;
-            this.SetBinaryDataLamarkian(bs);
+            this.SetBinaryDataLamarckian(bs);
         } else {
             this.defaultInit();
             System.out.println("Initial value for ESIndividualBinaryData is no BitSet!");
@@ -285,7 +285,7 @@ public class ESIndividualBinaryData extends AbstractEAIndividual implements Inte
      * @return description
      */
     public String globalInfo() {
-        return "This is a ES individual adopted to optimize binary values.";
+        return "This is an ES individual adopted to optimize binary values.";
     }
 
     /** This method will toggle between genotyp interpreation as bit probability and

@@ -207,7 +207,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
 		try {
 			m_Frame.setIconImage(Toolkit.getDefaultToolkit().createImage(bytes));
 		} catch (java.lang.NullPointerException e) {
-			System.out.println("Could not find EvA2 icon, please move rescoure folder to working directory!");
+			System.out.println("Could not find EvA2 icon, please move resources folder to working directory!");
 		}
 		m_Frame.setTitle("EvA2 workbench");
 
@@ -426,7 +426,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
 			} catch (ClassNotFoundException exc) {} catch (InstantiationException exc) {} catch (UnsupportedLookAndFeelException exc) {} catch (
 					IllegalAccessException exc) {}
 		}
-		m_mnuModule = new JExtMenu("Select &module");
+		m_mnuModule = new JExtMenu("&Module");
 		m_mnuModule.add(m_actModuleLoad);
 
 		////////////////////////////////////////////////////////////////
@@ -784,7 +784,7 @@ final class SplashScreen extends Frame {
 			splashWindow.setLocation(screenSize.width / 2 - splashWindow.getSize().width / 2, screenSize.height / 2 - splashWindow.getSize().height / 2);
 			splashWindow.setVisible(true);
 		} catch (java.lang.NullPointerException e) {
-			System.err.println("Could not find EvA2 splash screen, please move rescoure folder to working directory!");
+			System.err.println("Could not find EvA2 splash screen, please move resources folder to working directory!");
 		}
 	}
 

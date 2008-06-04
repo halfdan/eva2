@@ -181,7 +181,7 @@ public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Ser
 
         }
 
-        ((InterfaceDataTypeDouble) indy).SetDoubleDataLamarkian(params);
+        ((InterfaceDataTypeDouble) indy).SetDoubleDataLamarckian(params);
 
       }
     }

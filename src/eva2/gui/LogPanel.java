@@ -99,7 +99,7 @@ public class LogPanel extends JPanel {
       try {
           frame.setIconImage(Toolkit.getDefaultToolkit().createImage(bytes));
       } catch (java.lang.NullPointerException e) {
-        System.out.println("Could not find EvA2 icon, please move rescoure folder to working directory!");
+        System.out.println("Could not find EvA2 icon, please move resources folder to working directory!");
       }
       LogPanel panel = new LogPanel();
       frame.getContentPane().add(panel, BorderLayout.CENTER);

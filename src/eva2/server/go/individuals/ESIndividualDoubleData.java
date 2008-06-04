@@ -174,7 +174,7 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
     }
 
     /** This method allows you to set the phenotype double data. To change the genotype,
-     * use SetDoubleDataLamarkian().
+     * use SetDoubleDataLamarckian().
      * @param doubleData    The new double data.
      */
     public void SetDoubleData(double[] doubleData) {
@@ -185,7 +185,7 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
      * memetic algorithms.
      * @param doubleData    The new double data.
      */
-    public void SetDoubleDataLamarkian(double[] doubleData) {
+    public void SetDoubleDataLamarckian(double[] doubleData) {
         this.SetDoubleData(doubleData);
         this.m_Genotype = new double[doubleData.length];
         System.arraycopy(doubleData, 0, this.m_Genotype, 0, doubleData.length);
@@ -212,7 +212,7 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
         if (obj instanceof double[]) {
             double[]  bs = (double[]) obj;
             if (bs.length != this.m_Genotype.length) System.out.println("Init value and requested length doesn't match!");
-            this.SetDoubleDataLamarkian(bs);
+            this.SetDoubleDataLamarckian(bs);
         } else {
             this.defaultInit();
             System.out.println("Initial value for ESIndividualDoubleData is not double[]!");
@@ -307,7 +307,7 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
      * @return description
      */
     public String globalInfo() {
-        return "This is a ES individual suited to optimize double values.";
+        return "This is an ES individual suited to optimize double values.";
     }
     
 //    public String toString() {

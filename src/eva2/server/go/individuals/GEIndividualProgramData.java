@@ -473,7 +473,7 @@ public class GEIndividualProgramData extends AbstractEAIndividual implements Int
      * Warning - this is not implemented, it only sets the phenotype using SetProgramData.
      * @param program    The new program.
      */
-    public void SetProgramDataLamarkian(InterfaceProgram[] program) {
+    public void SetProgramDataLamarckian(InterfaceProgram[] program) {
         this.SetProgramData(program);
         if (program instanceof AbstractGPNode[]) System.err.println("Warning setProgram() for GEIndividualProgramData not implemented!");
     }
@@ -517,7 +517,7 @@ public class GEIndividualProgramData extends AbstractEAIndividual implements Int
      */
     public void initByValue(Object obj, InterfaceOptimizationProblem opt) {
         if (obj instanceof InterfaceProgram) {
-            this.SetProgramDataLamarkian((InterfaceProgram[])obj);
+            this.SetProgramDataLamarckian((InterfaceProgram[])obj);
         } else {
             this.defaultInit();
             System.out.println("Initial value for GPIndividualDoubleData is no InterfaceProgram[]!");

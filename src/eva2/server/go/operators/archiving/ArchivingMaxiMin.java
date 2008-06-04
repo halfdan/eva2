@@ -12,8 +12,8 @@ import eva2.server.go.populations.Population;
 
 import wsi.ra.chart2d.DPointIcon;
 
-/** Another simple archiving strategy not based on dominace but on the MaxiMin
- * criteria. Doesn't work well on non-convex Pareto fronts.
+/** Another simple archiving strategy not based on dominance but on the MaxiMin
+ * criterion. Doesn't work well on non-convex Pareto fronts.
  * Created by IntelliJ IDEA.
  * User: streiche
  * Date: 09.08.2004
@@ -96,7 +96,7 @@ public class ArchivingMaxiMin implements InterfaceArchiving, java.io.Serializabl
     }
 
     /** Since SelectMOMaxiMin relies on a MOSO conversion
-     * a single criteria selection method must be used.
+     * a single criterion selection method must be used.
      * @param pop     The selection method used.
      */
     public void setSelectionMethod(InterfaceSelection pop) {
@@ -196,7 +196,7 @@ public class ArchivingMaxiMin implements InterfaceArchiving, java.io.Serializabl
 //    }
 //
 //    /** Since SelectMOMaxiMin relies on a MOSO conversion
-//     * a single criteria selection method can be used.
+//     * a single criterion selection method can be used.
 //     * @param pop     The selection method used.
 //     */
 //    public void setSelectionMethod(InterfaceSelection pop) {

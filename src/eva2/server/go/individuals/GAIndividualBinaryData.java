@@ -112,7 +112,7 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
     public void initByValue(Object obj, InterfaceOptimizationProblem opt) {
         if (obj instanceof BitSet) {
             BitSet  bs = (BitSet) obj;
-            this.SetBinaryDataLamarkian(bs);
+            this.SetBinaryDataLamarckian(bs);
         } else {
             this.defaultInit();
             System.out.println("Initial value for GAIndividualBinaryData is no BitSet!");
@@ -242,7 +242,7 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
      * memetic algorithms.
      * @param binaryData    The new binary data.
      */
-    public void SetBinaryDataLamarkian(BitSet binaryData) {
+    public void SetBinaryDataLamarckian(BitSet binaryData) {
         this.SetBinaryData(binaryData);
         this.m_Genotype =(BitSet)binaryData.clone();
     }

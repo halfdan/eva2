@@ -94,7 +94,7 @@ public class SelectMOMaxiMin implements InterfaceSelection, java.io.Serializable
     }
 
     /** Since SelectMOMaxiMin relies on a MOSO conversion
-     * a single criteria selection method can be used.
+     * a single criterion selection method can be used.
      * @param pop     The selection method used.
      */
     public void setSelectionMethod(InterfaceSelection pop) {

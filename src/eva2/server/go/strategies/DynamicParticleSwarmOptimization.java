@@ -153,7 +153,7 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
             	}
             }
   
-            if (indy instanceof InterfaceDataTypeDouble) ((InterfaceDataTypeDouble)indy).SetDoubleDataLamarkian(newPos);
+            if (indy instanceof InterfaceDataTypeDouble) ((InterfaceDataTypeDouble)indy).SetDoubleDataLamarckian(newPos);
             else endy.SetDGenotype(newPos); 
             
             resetFitness(indy);

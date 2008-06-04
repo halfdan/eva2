@@ -70,7 +70,7 @@ public class EPParameters extends AbstractGOParameters implements InterfaceGOPar
      * @return description
      */
     public String globalInfo() {
-        return "This is a Evolutionary Programming optimization method, please limit EP to mutation operators only.";
+        return "This is a Evolutionary Programming optimization method, limit EP to mutation operators only.";
     }
 
     public void setOptimizer(InterfaceOptimizer optimizer) {

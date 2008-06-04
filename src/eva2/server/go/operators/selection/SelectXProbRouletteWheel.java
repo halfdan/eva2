@@ -203,7 +203,7 @@ public class SelectXProbRouletteWheel implements InterfaceSelection, java.io.Ser
      */
     public String globalInfo() {
         return "This method chooses individuals similar to the roulette wheel. The chance for each individual to be selected depends on the selection probability." +
-                "This is a single objective selecting method, it will select in respect to a random criteria.";
+                "This is a single objective selecting method, it select with respect to a random criterion.";
     }
 
     /** This method will set the normation method that is to be used.

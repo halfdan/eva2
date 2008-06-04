@@ -53,5 +53,5 @@ public interface InterfaceDataTypeInteger {
      * memetic algorithms.
      * @param intData    The new int data.
      */
-    public void SetIntegerDataLamarkian(int[] intData);
+    public void SetIntegerDataLamarckian(int[] intData);
 }

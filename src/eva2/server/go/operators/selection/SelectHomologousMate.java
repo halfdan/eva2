@@ -80,7 +80,7 @@ public class SelectHomologousMate extends SelectTournament implements java.io.Se
      */
     public String globalInfo() {
         return "This selection will select n mates from all individuals within the mating distance (extends Tournament Selection)." +
-                "This is a single objective selecting method, it will select in respect to a random criteria.";
+                "This is a single objective selecting method, it will select in respect to a random criterion.";
     }
 
     /** This method allows you to set/get the mating radius.

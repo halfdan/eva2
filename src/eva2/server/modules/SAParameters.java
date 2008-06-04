@@ -71,7 +71,7 @@ public class SAParameters extends AbstractGOParameters implements InterfaceGOPar
      * @return description
      */
     public String globalInfo() {
-        return "This is a simple Simulated Annealing Algorithm.";
+        return "This is a simple Simulated Annealing algorithm.";
     }
 
     public void setOptimizer(InterfaceOptimizer optimizer) {

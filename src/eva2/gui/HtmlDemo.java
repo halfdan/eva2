@@ -97,7 +97,7 @@ public class HtmlDemo {
         try {
             frame.setIconImage(Toolkit.getDefaultToolkit().createImage(bytes));
         } catch (java.lang.NullPointerException e) {
-            System.err.println("Could not find EvA2 icon, please move rescoure folder to working directory!");
+            System.err.println("Could not find EvA2 icon, please move resources folder to working directory!");
         } 
         JScrollPane     scroller    = new JScrollPane();
         JViewport       vp          = scroller.getViewport();

@@ -161,7 +161,7 @@ public class SelectBestIndividuals implements InterfaceSelection, java.io.Serial
      */
     public String globalInfo() {
         return "This selection method will select the n-Best individuals." +
-                "This is a single objective selecting method, it will select in respect to a random criteria.";
+                "This is a single objective selecting method, it will select in respect to a random criterion.";
     }
     
     /** This method will return a naming String

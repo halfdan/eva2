@@ -32,7 +32,7 @@ public interface InterfaceMOSOConverter {
     /** This method allows the problem to set the current output size of
      * the optimization problem. Additional weights will be set to a default
      * value of one
-     * @param dim       Outputdimension
+     * @param dim       output dimension
      */
     public void setOutputDimension(int dim);
 

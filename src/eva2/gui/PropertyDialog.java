@@ -43,7 +43,7 @@ public class PropertyDialog extends JEFrame {
     try {
         setIconImage(Toolkit.getDefaultToolkit().createImage(bytes));
     } catch (java.lang.NullPointerException e) {
-        System.out.println("Could not find EvA2 icon, please move rescoure folder to working directory!");
+        System.out.println("Could not find EvA2 icon, please move resources folder to working directory!");
     }
     //System.out.println("PropertyDialog.Constructor  of "+ Title);
     addWindowListener(new WindowAdapter() {
