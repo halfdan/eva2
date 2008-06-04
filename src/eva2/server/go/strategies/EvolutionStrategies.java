@@ -1,6 +1,5 @@
 package eva2.server.go.strategies;
 
-import eva2.gui.BeanInspector;
 import eva2.server.go.InterfacePopulationChangedEventListener;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.operators.mutation.MutateESSuccessRule;

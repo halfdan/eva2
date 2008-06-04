@@ -29,6 +29,7 @@ import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLFrameHyperlinkEvent;
 
 import wsi.ra.tool.BasicResourceLoader;
+import eva2.EvAInfo;
 import eva2.client.EvAClient;
 /**
  *
@@ -93,7 +94,7 @@ public class HtmlDemo {
         }
         JFrame          frame       = new JFrame (m_name);
         BasicResourceLoader  loader      = BasicResourceLoader.instance();
-        byte[]          bytes       = loader.getBytesFromResourceLocation(EvAClient.iconLocation);
+        byte[]          bytes       = loader.getBytesFromResourceLocation(EvAInfo.iconLocation);
         try {
             frame.setIconImage(Toolkit.getDefaultToolkit().createImage(bytes));
         } catch (java.lang.NullPointerException e) {

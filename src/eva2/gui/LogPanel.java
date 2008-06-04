@@ -12,16 +12,25 @@ package eva2.gui;
 /*==========================================================================*
  * IMPORTS
  *==========================================================================*/
+import java.awt.BorderLayout;
+import java.awt.Point;
+import java.awt.Toolkit;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.text.*;
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.event.*;
 
-import eva2.client.EvAClient;
+import javax.swing.BorderFactory;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JViewport;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
-import java.awt.event.*;
 import wsi.ra.tool.BasicResourceLoader;
+import eva2.EvAInfo;
 /*==========================================================================*
 * CLASS DECLARATION
 *==========================================================================*/
@@ -95,7 +104,7 @@ public class LogPanel extends JPanel {
       final JFrame frame = new JFrame("Log_Panel_Test");
       frame.getContentPane().setLayout(new BorderLayout());
       BasicResourceLoader  loader  = BasicResourceLoader.instance();
-      byte[] bytes   = loader.getBytesFromResourceLocation(EvAClient.iconLocation);
+      byte[] bytes   = loader.getBytesFromResourceLocation(EvAInfo.iconLocation);
       try {
           frame.setIconImage(Toolkit.getDefaultToolkit().createImage(bytes));
       } catch (java.lang.NullPointerException e) {

@@ -14,15 +14,18 @@ package eva2.gui;
  *==========================================================================*/
 
 import java.awt.BorderLayout;
-import java.awt.event.*;
 import java.awt.Toolkit;
-import java.beans.*;
-import javax.swing.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.beans.PropertyEditorManager;
+import java.beans.PropertyEditorSupport;
 
-import eva2.client.EvAClient;
+import javax.swing.JFrame;
+
+import wsi.ra.tool.BasicResourceLoader;
+import eva2.EvAInfo;
 import eva2.tools.SelectedTag;
 import eva2.tools.Tag;
-import wsi.ra.tool.BasicResourceLoader;
 /*==========================================================================*
 * CLASS DECLARATION
 *==========================================================================*/
@@ -123,7 +126,7 @@ public class TagEditor extends PropertyEditorSupport {
       PropertyValueSelector ps = new PropertyValueSelector(ce);
       JFrame f = new JFrame();
       BasicResourceLoader  loader  = BasicResourceLoader.instance();
-      byte[] bytes   = loader.getBytesFromResourceLocation(EvAClient.iconLocation);
+      byte[] bytes   = loader.getBytesFromResourceLocation(EvAInfo.iconLocation);
       try {
           f.setIconImage(Toolkit.getDefaultToolkit().createImage(bytes));
       } catch (java.lang.NullPointerException e) {
