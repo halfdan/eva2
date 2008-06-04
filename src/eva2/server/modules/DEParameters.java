@@ -65,7 +65,7 @@ public class DEParameters extends AbstractGOParameters implements InterfaceGOPar
      * @return description
      */
     public String globalInfo() {
-        return "This is a Differential Evolution optimization method, please limit DE to real-valued genotypes.";
+        return "This is a Differential Evolution optimization method, limit DE to real-valued genotypes.";
     }
 
     /** This method allows you to set the current optimizing algorithm

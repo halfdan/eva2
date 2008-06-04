@@ -60,7 +60,7 @@ public class MOCCOChooseMOStrategy extends MOCCOPhase implements InterfaceProces
             tmpB.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(bytes)));
             tmpB.setBackground(Color.WHITE);
         } catch (java.lang.NullPointerException e) {
-            System.out.println("Could not find MOCCO_MOEA icon, please move rescoure folder to working directory!");
+            System.out.println("Could not find MOCCO_MOEA icon, please move resources folder to working directory!");
             tmpB.setText("Multi-Objective EA");
         }
             gbc.gridy     = 0;
@@ -83,7 +83,7 @@ public class MOCCOChooseMOStrategy extends MOCCOPhase implements InterfaceProces
             tmpB.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(bytes)));
             tmpB.setBackground(Color.WHITE);
         } catch (java.lang.NullPointerException e) {
-            System.out.println("Could not find MOCCO_GDF icon, please move rescoure folder to working directory!");
+            System.out.println("Could not find MOCCO_GDF icon, please move resources folder to working directory!");
             tmpB.setText("Geoffrion-Dyer-Feinberg Meth.");
         }
             gbc.gridy     = 1;
@@ -104,7 +104,7 @@ public class MOCCOChooseMOStrategy extends MOCCOPhase implements InterfaceProces
             tmpB.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(bytes)));
             tmpB.setBackground(Color.WHITE);
         } catch (java.lang.NullPointerException e) {
-            System.out.println("Could not find MOCCO_STEP icon, please move rescoure folder to working directory!");
+            System.out.println("Could not find MOCCO_STEP icon, please move resources folder to working directory!");
             tmpB.setText("STEP Method");
         }
             gbc.gridy     = 2;
@@ -126,7 +126,7 @@ public class MOCCOChooseMOStrategy extends MOCCOPhase implements InterfaceProces
             tmpB.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(bytes)));
             tmpB.setBackground(Color.WHITE);
         } catch (java.lang.NullPointerException e) {
-            System.out.println("Could not find MOCCO_REFP icon, please move rescoure folder to working directory!");
+            System.out.println("Could not find MOCCO_REFP icon, please move resources folder to working directory!");
             tmpB.setText("Reference Point Method");
         }
             gbc.gridy     = 3;
@@ -148,7 +148,7 @@ public class MOCCOChooseMOStrategy extends MOCCOPhase implements InterfaceProces
             tmpB.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(bytes)));
             tmpB.setBackground(Color.WHITE);
         } catch (java.lang.NullPointerException e) {
-            System.out.println("Could not find MOCCO_TBCH icon, please move rescoure folder to working directory!");
+            System.out.println("Could not find MOCCO_TBCH icon, please move resources folder to working directory!");
             tmpB.setText("Tchebycheff Method");
         }
             gbc.gridy     = 4;

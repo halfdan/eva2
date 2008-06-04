@@ -59,7 +59,7 @@ public class MOEAParameters extends AbstractGOParameters implements InterfaceGOP
      * @return description
      */
     public String globalInfo() {
-        return "This is a multi-objective evoluationary algorithm, please limit MOEA to multi-objective problems (due to the given framework only the fitness of objective one will be plotted).";
+        return "This is a multi-objective evoluationary algorithm, limit MOEA to multi-objective problems (due to the given framework only the fitness of objective one will be plotted).";
     }
 
     /** Assuming that all optimizer will store thier data in a population

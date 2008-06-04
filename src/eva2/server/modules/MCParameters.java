@@ -65,7 +65,7 @@ public class MCParameters extends AbstractGOParameters implements InterfaceGOPar
      * @return description
      */
     public String globalInfo() {
-        return "This is a simple Monte-Carlo Search, please use big populations sizes for faster drawing.";
+        return "This is a simple Monte-Carlo Search, use big populations sizes for faster drawing.";
     }
 
     public void setOptimizer(InterfaceOptimizer optimizer) {

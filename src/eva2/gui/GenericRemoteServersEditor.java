@@ -96,7 +96,7 @@ public class GenericRemoteServersEditor extends JPanel implements PropertyEditor
             try {
                 tmpB = new JButton("", new ImageIcon(Toolkit.getDefaultToolkit().createImage(bytes)));
             } catch (java.lang.NullPointerException e) {
-                System.out.println("Could not find Add24 icon, please move rescoure folder to working directory!");
+                System.out.println("Could not find Add24 icon, please move resources folder to working directory!");
                 tmpB = new JButton("Add");
             }
             tmpB.addActionListener(addServer);
@@ -111,7 +111,7 @@ public class GenericRemoteServersEditor extends JPanel implements PropertyEditor
             try {
                 tmpB = new JButton("Load", new ImageIcon(Toolkit.getDefaultToolkit().createImage(bytes)));
             } catch (java.lang.NullPointerException e) {
-                System.out.println("Could not find Export24 icon, please move rescoure folder to working directory!");
+                System.out.println("Could not find Export24 icon, please move resources folder to working directory!");
                 tmpB = new JButton("Load");
             }
             tmpB.addActionListener(loadServers);
@@ -125,7 +125,7 @@ public class GenericRemoteServersEditor extends JPanel implements PropertyEditor
             try {
                 tmpB = new JButton("Save", new ImageIcon(Toolkit.getDefaultToolkit().createImage(bytes)));
             } catch (java.lang.NullPointerException e) {
-                System.out.println("Could not find Import24 icon, please move rescoure folder to working directory!");
+                System.out.println("Could not find Import24 icon, please move resources folder to working directory!");
                 tmpB = new JButton("Save");
             }
             tmpB.addActionListener(saveServers);
@@ -139,7 +139,7 @@ public class GenericRemoteServersEditor extends JPanel implements PropertyEditor
             try {
                 tmpB = new JButton("Update Status", new ImageIcon(Toolkit.getDefaultToolkit().createImage(bytes)));
             } catch (java.lang.NullPointerException e) {
-                System.out.println("Could not find Refresh24 icon, please move rescoure folder to working directory!");
+                System.out.println("Could not find Refresh24 icon, please move resources folder to working directory!");
                 tmpB = new JButton("Update Status");
             }
             tmpB.addActionListener(updateServers);
@@ -153,7 +153,7 @@ public class GenericRemoteServersEditor extends JPanel implements PropertyEditor
             try {
                 tmpB = new JButton("Start Server", new ImageIcon(Toolkit.getDefaultToolkit().createImage(bytes)));
             } catch (java.lang.NullPointerException e) {
-                System.out.println("Could not find Play24 icon, please move rescoure folder to working directory!");
+                System.out.println("Could not find Play24 icon, please move resources folder to working directory!");
                 tmpB = new JButton("Start Server");
             }
             tmpB.addActionListener(startServers);
@@ -167,7 +167,7 @@ public class GenericRemoteServersEditor extends JPanel implements PropertyEditor
             try {
                 tmpB = new JButton("Stop Server", new ImageIcon(Toolkit.getDefaultToolkit().createImage(bytes)));
             } catch (java.lang.NullPointerException e) {
-                System.out.println("Could not find Stop24 icon, please move rescoure folder to working directory!");
+                System.out.println("Could not find Stop24 icon, please move resources folder to working directory!");
                 tmpB = new JButton("Stop Server");
             }
             tmpB.addActionListener(killServers);

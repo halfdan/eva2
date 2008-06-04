@@ -186,7 +186,7 @@ public class GAIndividualDoubleData extends AbstractEAIndividual implements Inte
     }
 
     /** This method allows you to set the phenotype data. To change the genotype data, 
-     * use SetDoubleDataLamarkian.
+     * use SetDoubleDataLamarckian.
      * @param doubleData    The new double data.
      */
     public void SetDoubleData(double[] doubleData) {
@@ -197,7 +197,7 @@ public class GAIndividualDoubleData extends AbstractEAIndividual implements Inte
      * memetic algorithms.
      * @param doubleData    The new double data.
      */
-    public void SetDoubleDataLamarkian(double[] doubleData) {
+    public void SetDoubleDataLamarckian(double[] doubleData) {
         this.SetDoubleData(doubleData);
         int[] locus = new int[2];
         for (int i = 0; i < doubleData.length; i++) {
@@ -228,7 +228,7 @@ public class GAIndividualDoubleData extends AbstractEAIndividual implements Inte
         if (obj instanceof double[]) {
             double[]  bs = (double[]) obj;
             if (bs.length != this.m_Range.length) System.out.println("Init value and requested length doesn't match!");
-            this.SetDoubleDataLamarkian(bs);
+            this.SetDoubleDataLamarckian(bs);
         } else {
             this.defaultInit();
             System.out.println("Initial value for GAIndividualDoubleData is not double[]!");

@@ -22,7 +22,7 @@ public class BKnapsackProblem extends AbstractProblemBinary implements java.io.S
     private int                         m_Limit         = 5000;
     private double                      m_Punish        = 2.0;
     private double                      m_LocalSearch   = 0.0;
-    private boolean                     m_Lamarkism     = false;
+    private boolean                     m_Lamarckism     = false;
     private double                      m_ProblemSpecificInit   = 0.0;
     static final int[][] items = {
         {334,-328},
@@ -137,7 +137,7 @@ public class BKnapsackProblem extends AbstractProblemBinary implements java.io.S
         this.m_Limit            = b.m_Limit;
         this.m_Punish           = b.m_Punish;
         this.m_LocalSearch      = b.m_LocalSearch;
-        this.m_Lamarkism        = b.m_Lamarkism;
+        this.m_Lamarckism        = b.m_Lamarckism;
     }
 
     public int getProblemDimension() {
@@ -166,7 +166,7 @@ public class BKnapsackProblem extends AbstractProblemBinary implements java.io.S
     		while (eval(tmpSet)[1] > 0) {
     			tmpSet.set(RNG.randomInt(0,items.length-1));
     		}
-    		((InterfaceDataTypeBinary)indy).SetBinaryDataLamarkian(tmpSet);
+    		((InterfaceDataTypeBinary)indy).SetBinaryDataLamarckian(tmpSet);
     	}
     }
     
@@ -233,8 +233,8 @@ public class BKnapsackProblem extends AbstractProblemBinary implements java.io.S
                 result = this.eval(tmpBitSet);
             }
 
-            if (this.m_Lamarkism) {
-            	((InterfaceDataTypeBinary) individual).SetBinaryDataLamarkian(tmpBitSet);
+            if (this.m_Lamarckism) {
+            	((InterfaceDataTypeBinary) individual).SetBinaryDataLamarckian(tmpBitSet);
             }
         }
         result[0] += 5100;
@@ -334,7 +334,7 @@ public class BKnapsackProblem extends AbstractProblemBinary implements java.io.S
      * @return description
      */
     public String globalInfo() {
-        return "Maximize the value of the Knapsack without exceeding the weight limit of the knapsack.";
+        return "Maximize the value of the knapsack without exceeding the weight limit.";
     }
 
     /** This method allows you to set the number of mulitruns that are to be performed,
@@ -390,16 +390,16 @@ public class BKnapsackProblem extends AbstractProblemBinary implements java.io.S
     public String localSearchTipText() {
         return "Gives the chance of local search.";
     }
-    /** This method allows you to toggle the use of Lamarkism.
-     * @param b toggles lamarkism.
+    /** This method allows you to toggle the use of Lamarckism.
+     * @param b toggles lamarckism.
      */
-    public void setLamarkism(boolean b) {
-        this.m_Lamarkism = b;
+    public void setLamarckism(boolean b) {
+        this.m_Lamarckism = b;
     }
-    public boolean getLamarkism() {
-        return this.m_Lamarkism;
+    public boolean getLamarckism() {
+        return this.m_Lamarckism;
     }
-    public String lamarkismTipText() {
-        return "Lamarkism alters the genotype after the local search.";
+    public String lamarckismTipText() {
+        return "Lamarckism alters the genotype after the local search.";
     }
 }

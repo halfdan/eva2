@@ -110,7 +110,7 @@ public class Plot implements PlotInterface, Serializable {
 		try {
 			m_Frame.setIconImage(Toolkit.getDefaultToolkit().createImage(bytes));
 		} catch (java.lang.NullPointerException e) {
-			System.out.println("Could not find EvA2 icon, please move rescoure folder to working directory!");
+			System.out.println("Could not find EvA2 icon, please move resources folder to working directory!");
 		}
 
 		m_ButtonPanel = new JPanel();

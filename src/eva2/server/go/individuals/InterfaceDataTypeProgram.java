@@ -37,7 +37,7 @@ public interface InterfaceDataTypeProgram {
     /** This method allows you to set the program.
      * @param program    The new program.
      */
-    public void SetProgramDataLamarkian(InterfaceProgram[] program);
+    public void SetProgramDataLamarckian(InterfaceProgram[] program);
     
     /** This method allows you to set the function area
      * @param area  The area contains functions and terminals

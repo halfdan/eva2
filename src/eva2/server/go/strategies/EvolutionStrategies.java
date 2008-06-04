@@ -13,7 +13,7 @@ import eva2.server.go.problems.InterfaceOptimizationProblem;
 
 /** Evolution strategies by Rechenberg and Schwefel, but please remember that
  * this only gives the generation strategy and not the coding. But this is the
- * only stategies that is able to utilize the 1/5 success rule mutation. Unfortunately,
+ * only stategy that is able to utilize the 1/5 success rule mutation. Unfortunately,
  * there is a minor problem with the interpretation of the population size in constrast
  * to the parameters mu and lambda used by Rechenberg and Schwefel. Therefore, i'm
  * afraid that the interpretation of the population size may be subject to future
@@ -347,7 +347,7 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
      * @return description
      */
     public String globalInfo() {
-        return "This is an Evolution Strategy. Note that the population size gives lambda.";
+        return "This is an Evolution Strategy. Note that the population size depends on mu (number of parents) and lambda (number of offspring).";
     }
     /** This method will return a naming String
      * @return The name of the algorithm

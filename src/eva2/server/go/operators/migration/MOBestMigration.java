@@ -6,7 +6,7 @@ import eva2.server.go.operators.selection.SelectMOMaxiMin;
 import eva2.server.go.populations.Population;
 import eva2.server.go.strategies.InterfaceOptimizer;
 
-/** Migration based on a Multi-criteria selection mechanism
+/** Migration based on a Multi-criterial selection mechanism
  * migrating the n best individuals between all populations.
  * Created by IntelliJ IDEA.
  * User: streiche
@@ -36,7 +36,7 @@ public class MOBestMigration implements InterfaceMigration, java.io.Serializable
      * sychronously. Basically it allows migration of individuals
      * between multiple EA islands and since there are so many
      * different possible strategies i've introduced this
-     * interface which is mostlikely subject to numerous changes..
+     * interface which is most likely subject to numerous changes..
      * Note: Since i use the RMIRemoteThreadProxy everything done
      * to the islands will use the serialization method, so if
      * you call getPopulation() on an island it is not a reference

@@ -188,7 +188,7 @@ public class ClusteringDensityBased implements InterfaceClustering, java.io.Seri
      * @return description
      */
     public String globalInfo() {
-        return "A density-based Clustering Algorithm (DBSCAN).";
+        return "A density-based clustering algorithm (DBSCAN).";
     }
     /** This method will return a naming String
      * @return The name of the algorithm

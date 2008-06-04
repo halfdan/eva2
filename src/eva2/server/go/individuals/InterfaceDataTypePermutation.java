@@ -54,7 +54,7 @@ public interface InterfaceDataTypePermutation {
      * memetic algorithms.
      * @param perm     The new permutation data.
      */
-    void SetPermutationDataLamarkian(int[][] perm);
+    void SetPermutationDataLamarckian(int[][] perm);
 
     public void setFirstindex(int[] firstindex);
 }

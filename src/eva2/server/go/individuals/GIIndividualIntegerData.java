@@ -178,7 +178,7 @@ public class GIIndividualIntegerData extends AbstractEAIndividual implements Int
      * memetic algorithms.
      * @param doubleData    The new double data.
      */
-    public void SetIntegerDataLamarkian(int[] doubleData) {
+    public void SetIntegerDataLamarckian(int[] doubleData) {
         this.SetIntegerData(doubleData);
         this.m_Genotype = new int[this.m_Range.length];
         for (int i = 0; i < doubleData.length; i++) {
@@ -207,7 +207,7 @@ public class GIIndividualIntegerData extends AbstractEAIndividual implements Int
         if (obj instanceof int[]) {
             int[]  bs = (int[]) obj;
             if (bs.length != this.m_Range.length) System.out.println("Init value and requested length doesn't match!");
-            this.SetIntegerDataLamarkian(bs);
+            this.SetIntegerDataLamarckian(bs);
         } else {
             this.defaultInit();
             System.out.println("Initial value for GAIndividualDoubleData is not double[]!");

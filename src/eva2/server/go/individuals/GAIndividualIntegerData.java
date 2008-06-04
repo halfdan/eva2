@@ -194,7 +194,7 @@ public class GAIndividualIntegerData extends AbstractEAIndividual implements Int
      * memetic algorithms.
      * @param doubleData    The new double data.
      */
-    public void SetIntegerDataLamarkian(int[] doubleData) {
+    public void SetIntegerDataLamarckian(int[] doubleData) {
         this.SetIntegerData(doubleData);
         if (doubleData != null) {
 	        int[] locus = new int[2];
@@ -229,7 +229,7 @@ public class GAIndividualIntegerData extends AbstractEAIndividual implements Int
         if (obj instanceof int[]) {
             int[]  bs = (int[]) obj;
             if (bs.length != this.m_Range.length) System.out.println("Init value and requested length doesn't match!");
-            this.SetIntegerDataLamarkian(bs);
+            this.SetIntegerDataLamarckian(bs);
         } else {
             this.defaultInit();
             System.out.println("Initial value for GAIndividualDoubleData is not double[]!");
@@ -354,7 +354,7 @@ public class GAIndividualIntegerData extends AbstractEAIndividual implements Int
             tmp += data[i] + "; ";
         }
         System.out.println(tmp+"}");
-        indy.SetIntegerDataLamarkian(data);
+        indy.SetIntegerDataLamarckian(data);
         System.out.println(""+indy.getStringRepresentation());
         data = indy.getIntegerData();
         tmp = "After {";

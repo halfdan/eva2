@@ -961,7 +961,7 @@ v[d] = cmin * v[d];
         if (obj instanceof double[]) {
             double[]  x = (double[]) obj;
             if (x.length != position.x.length) System.err.println("Init value and requested length doesn't match!");
-            this.SetDoubleDataLamarkian(x);
+            this.SetDoubleDataLamarckian(x);
         } else {
             this.init(opt);
             System.err.println("Initial value for ESIndividualDoubleData is not double[]!");
@@ -983,7 +983,7 @@ v[d] = cmin * v[d];
 		position.setDoubleArray(doubleData);
 	}
 
-	public void SetDoubleDataLamarkian(double[] doubleData) {
+	public void SetDoubleDataLamarckian(double[] doubleData) {
 		position.setDoubleArray(doubleData);
 	}
 

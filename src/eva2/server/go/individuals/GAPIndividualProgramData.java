@@ -211,7 +211,7 @@ public class GAPIndividualProgramData extends AbstractEAIndividual implements In
     }
 
     /** This method allows you to set the phenotype data. To change the genotype, use
-     * SetDoubleDataLamarkian().
+     * SetDoubleDataLamarckian().
      * @param doubleData    The new double data.
      */
     public void SetDoubleData(double[] doubleData) {
@@ -222,8 +222,8 @@ public class GAPIndividualProgramData extends AbstractEAIndividual implements In
      * memetic algorithms.
      * @param doubleData    The new double data.
      */
-    public void SetDoubleDataLamarkian(double[] doubleData) {
-        this.m_Numbers.SetDoubleDataLamarkian(doubleData);
+    public void SetDoubleDataLamarckian(double[] doubleData) {
+        this.m_Numbers.SetDoubleDataLamarckian(doubleData);
     }
 
 /************************************************************************************
@@ -261,8 +261,8 @@ public class GAPIndividualProgramData extends AbstractEAIndividual implements In
     /** This method allows you to set the program.
      * @param program    The new program.
      */
-    public void SetProgramDataLamarkian(InterfaceProgram[] program) {
-        this.m_Program.SetProgramDataLamarkian(program);
+    public void SetProgramDataLamarckian(InterfaceProgram[] program) {
+        this.m_Program.SetProgramDataLamarckian(program);
     }
 
     /** This method allows you to set the function area

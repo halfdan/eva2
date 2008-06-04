@@ -45,7 +45,7 @@ public interface InterfaceDataTypeDouble {
     public double[] getDoubleDataWithoutUpdate();
 
     /** This method allows you to set the double data, usually the phenotype data. Consider using
-     * SetDoubleDataLamarkian to set the genotype data.
+     * SetDoubleDataLamarckian to set the genotype data.
      * @param doubleData    The new double data.
      */
     public void SetDoubleData(double[] doubleData);
@@ -54,5 +54,5 @@ public interface InterfaceDataTypeDouble {
      * memetic algorithms.
      * @param doubleData    The new double data.
      */
-    public void SetDoubleDataLamarkian(double[] doubleData);
+    public void SetDoubleDataLamarckian(double[] doubleData);
 }

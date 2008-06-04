@@ -10,8 +10,8 @@ import eva2.server.go.operators.archiving.ArchivingPESAII;
 import eva2.server.go.populations.Population;
 import wsi.ra.math.RNG;
 
-/** The multi-objective PESA II selection criteria based on a n-dimensional
- * grid using a squezzing factor. 
+/** The multi-objective PESA II selection criteria based on an n-dimensional
+ * grid using a squeezing factor. 
  * Created by IntelliJ IDEA.
  * User: streiche
  * Date: 11.08.2004

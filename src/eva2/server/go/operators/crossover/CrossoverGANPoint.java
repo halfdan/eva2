@@ -129,7 +129,7 @@ public class CrossoverGANPoint implements InterfaceCrossover, java.io.Serializab
      * @return description
      */
     public String globalInfo() {
-        return "This is a n-point crossover between m individuals.";
+        return "This is an n-point crossover between m individuals.";
     }
 
     /** This method allows you to set the number of crossovers that occur in the

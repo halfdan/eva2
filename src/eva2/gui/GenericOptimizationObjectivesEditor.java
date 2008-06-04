@@ -156,7 +156,7 @@ public class GenericOptimizationObjectivesEditor extends JPanel implements Prope
             try {
                 this.m_Delete[i] = new JButton("", new ImageIcon(Toolkit.getDefaultToolkit().createImage(bytes)));
             } catch (java.lang.NullPointerException e) {
-                System.out.println("Could not find Sub24 icon, please move rescoure folder to working directory!");
+                System.out.println("Could not find Sub24 icon, please move resources folder to working directory!");
                 this.m_Delete[i] = new JButton("Sub");
             }
             this.m_Delete[i].addActionListener(deleteTarget);

@@ -111,7 +111,7 @@ Serializable {
 		try {
 			frame.setIconImage(Toolkit.getDefaultToolkit().createImage(bytes));
 		} catch (java.lang.NullPointerException e) {
-			System.out.println("Could not find EvA2 icon, please move resource folder to working directory!");
+			System.out.println("Could not find EvA2 icon, please move resources folder to working directory!");
 		} 
 		frame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {

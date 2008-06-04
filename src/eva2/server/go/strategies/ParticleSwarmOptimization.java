@@ -1130,7 +1130,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 		}
 
 		// finally set the new position and the current velocity
-		if (indy instanceof InterfaceDataTypeDouble) ((InterfaceDataTypeDouble)indy).SetDoubleDataLamarkian(newPosition);
+		if (indy instanceof InterfaceDataTypeDouble) ((InterfaceDataTypeDouble)indy).SetDoubleDataLamarckian(newPosition);
 		else {
 			((InterfaceESIndividual) indy).SetDGenotype(newPosition); // WARNING, this does a checkBounds in any case!
 			if (!m_CheckConstraints) System.err.println("warning, checkbounds will be forced by InterfaceESIndividual!");

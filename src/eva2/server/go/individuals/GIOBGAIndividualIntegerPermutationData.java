@@ -228,8 +228,8 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
      * memetic algorithms.
      * @param intData    The new int data.
      */
-    public void SetIntegerDataLamarkian(int[] intData) {
-        this.m_Integer.SetIntegerDataLamarkian(intData);
+    public void SetIntegerDataLamarckian(int[] intData) {
+        this.m_Integer.SetIntegerDataLamarckian(intData);
     }
 
 /**********************************************************************************************************************
@@ -276,8 +276,8 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
      * memetic algorithms.
      * @param perm     The new permutation data.
      */
-    public void SetPermutationDataLamarkian(int[][] perm) {
-        this.SetPermutationDataLamarkian(perm);
+    public void SetPermutationDataLamarckian(int[][] perm) {
+        this.SetPermutationDataLamarckian(perm);
     }
 
     public void setFirstindex(int[] firstindex) {

@@ -43,5 +43,5 @@ public interface InterfaceDataTypeBinary {
      * memetic algorithms.
      * @param binaryData    The new binary data.
      */
-    public void SetBinaryDataLamarkian(BitSet binaryData);
+    public void SetBinaryDataLamarckian(BitSet binaryData);
 }

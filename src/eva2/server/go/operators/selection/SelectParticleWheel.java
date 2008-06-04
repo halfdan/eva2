@@ -122,7 +122,7 @@ public class SelectParticleWheel implements InterfaceSelection, java.io.Serializ
      */
     public String globalInfo() {
         return "This method chooses individuals similar to the static roulette wheel. The chance for each individual to be selected depends on the selection probability. The selection probability is 1 for all Individuals with a fitness that is bigger than the midean fitness." +
-                "This is a single objective selecting method, it will select in respect to a random criteria.";
+                "This is a single objective selecting method, it will select in respect to a random criterion.";
     }
 
     /** Toggel the use of obeying the constraint violation principle

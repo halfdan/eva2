@@ -229,10 +229,10 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
     /** This method allows you to set the double data, this can be used for
      * memetic algorithms.
      * @param doubleData    The new double data.
-     * @see InterfaceDataTypeDouble.SetDoubleDataLamarkian()
+     * @see InterfaceDataTypeDouble.SetDoubleDataLamarckian()
      */
-    public void SetDoubleDataLamarkian(double[] doubleData) {
-        this.m_Numbers.SetDoubleDataLamarkian(doubleData);
+    public void SetDoubleDataLamarckian(double[] doubleData) {
+        this.m_Numbers.SetDoubleDataLamarckian(doubleData);
     }
 
 /**********************************************************************************************************************
@@ -279,10 +279,10 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
     /** This method allows you to set the binary data, this can be used for
      * memetic algorithms.
      * @param binaryData    The new binary data.
-     * @see InterfaceBinaryData.SetBinaryDataLamarkian()
+     * @see InterfaceBinaryData.SetBinaryDataLamarckian()
      */
-    public void SetBinaryDataLamarkian(BitSet binaryData) {
-        this.m_BitSet.SetBinaryDataLamarkian(binaryData);
+    public void SetBinaryDataLamarckian(BitSet binaryData) {
+        this.m_BitSet.SetBinaryDataLamarckian(binaryData);
     }
 
 /**********************************************************************************************************************
