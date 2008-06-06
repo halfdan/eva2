@@ -446,6 +446,7 @@ public class Plot implements PlotInterface, Serializable {
 	 */
 	public void dispose() {
 		m_Frame.dispose();
+		m_Frame = null;
 	}
 
 //	/**
