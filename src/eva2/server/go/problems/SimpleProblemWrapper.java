@@ -1,10 +1,15 @@
 package eva2.server.go.problems;
 
-import java.lang.reflect.Method;
 import java.util.BitSet;
 
+import simpleprobs.InterfaceSimpleProblem;
+import simpleprobs.SimpleF1;
+import simpleprobs.SimpleProblemBinary;
+import simpleprobs.SimpleProblemDouble;
+import wsi.ra.math.RNG;
 import eva2.gui.BeanInspector;
 import eva2.gui.GenericObjectEditor;
+import eva2.gui.Plot;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.ESIndividualDoubleData;
 import eva2.server.go.individuals.GAIndividualBinaryData;
@@ -12,19 +17,16 @@ import eva2.server.go.individuals.InterfaceDataTypeBinary;
 import eva2.server.go.individuals.InterfaceDataTypeDouble;
 import eva2.server.go.populations.Population;
 import eva2.server.go.strategies.InterfaceOptimizer;
-import wsi.ra.math.RNG;
-
-import simpleprobs.InterfaceSimpleProblem;
-import simpleprobs.SimpleF1;
-import simpleprobs.SimpleProblemBinary;
-import simpleprobs.SimpleProblemDouble;
 
 public class SimpleProblemWrapper extends AbstractOptimizationProblem {
-	InterfaceSimpleProblem simProb = new SimpleF1();
+	InterfaceSimpleProblem<?> simProb = new SimpleF1();
 	protected double m_DefaultRange = 10;
 	protected double m_Noise = 0;
+	transient Plot m_plot;
+	String plotFunc = "plotBest";
 	
 	public SimpleProblemWrapper() {
+		m_plot = null;
 		initTemplate();
 	}
 	
@@ -32,7 +34,7 @@ public class SimpleProblemWrapper extends AbstractOptimizationProblem {
 		other.m_DefaultRange = m_DefaultRange;
 		other.m_Noise = m_Noise;
 		// warning! this does no deep copy!
-		other.simProb = simProb;
+		setSimpleProblem(other.simProb);
 	}
 	
 	@Override
@@ -68,6 +70,21 @@ public class SimpleProblemWrapper extends AbstractOptimizationProblem {
 		}
 	}
 
+	public void evaluatePopulationStart(Population population) {
+		if (m_plot != null && (!m_plot.isValid())) {
+			openPlot();
+		}
+	}
+	public void evaluatePopulationEnd(Population population) {
+		super.evaluatePopulationEnd(population);
+		if (m_plot != null) {
+			Object[] args = new Object[2];
+			args[0] = m_plot;
+			args[1] = population.getBestEAIndividual();
+			BeanInspector.callIfAvailable(simProb, plotFunc, args);
+		}
+	}
+	
 	@Override
 	public void initPopulation(Population population) {
         AbstractEAIndividual tmpIndy;
@@ -122,18 +139,34 @@ public class SimpleProblemWrapper extends AbstractOptimizationProblem {
 	/**
 	 * @return the simProb
 	 */
-	public InterfaceSimpleProblem getSimpleProblem() {
+	public InterfaceSimpleProblem<?> getSimpleProblem() {
 		return simProb;
+	}
+	
+	private void openPlot() {
+		m_plot = new Plot("SimpleProblemWrapper", "x", "y", true);
 	}
 
 	/**
 	 * @param simProb the simProb to set
 	 */
-	public void setSimpleProblem(InterfaceSimpleProblem simProb) {
+	public void setSimpleProblem(InterfaceSimpleProblem<?> simProb) {
 		this.simProb = simProb;
 		initTemplate();
 		GenericObjectEditor.setShowProperty(getClass(), "noise", (simProb instanceof SimpleProblemDouble));
 		GenericObjectEditor.setShowProperty(getClass(), "defaultRange", (simProb instanceof SimpleProblemDouble));
+		if (BeanInspector.hasMethod(simProb, plotFunc) != null) {
+			if (m_plot == null) openPlot();
+			else {
+				if (!m_plot.isValid()) {
+					m_plot.dispose();
+					openPlot();
+				} else m_plot.clearAll();
+			}
+		} else if (m_plot != null) {
+			m_plot.dispose();
+			m_plot = null;
+		}
 	}
 
 	/**
