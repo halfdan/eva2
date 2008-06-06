@@ -106,6 +106,7 @@ public class SimpleProblemWrapper extends AbstractOptimizationProblem {
 	@Override
 	public void initProblem() {
 		initTemplate();
+		setSimpleProblem(getSimpleProblem()); // possibly create plot
 	}
 
 	protected void initTemplate() {
