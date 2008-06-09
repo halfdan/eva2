@@ -139,7 +139,13 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
     		EVAERROR.clearMsgCache();
     		while (isOptRunning()) {
     			setPriority(3);
-    			if (saveParams) goParams.saveInstance();
+    			if (saveParams) {
+    				try {
+    					goParams.saveInstance();
+    				} catch(Exception e) {
+    					System.err.println("Error on saveInstance!");
+    				}
+    			}
     			resPop = optimize("Run");
     			setPriority(1);
     		}

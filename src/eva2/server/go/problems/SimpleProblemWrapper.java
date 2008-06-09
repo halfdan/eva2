@@ -221,7 +221,15 @@ public class SimpleProblemWrapper extends AbstractOptimizationProblem {
 	public void hideHideable() {
 		setSimpleProblem(getSimpleProblem());
 	}
+	
+	public void setIndividualTemplate(AbstractEAIndividual indy) {
+		m_Template = indy;
+	}
     
+	public String individualTemplateTipText() {
+		return "Set the individual properties for the optimization";
+	}
+	
 /////////// for GUI
 	
     /** This method returns a string describing the optimization problem.

@@ -148,16 +148,39 @@ public class Mathematics {
 	 *                 if x and y have different dimensions an exception is
 	 *                 thrown.
 	 */
-	public static double dist(double[] x, double[] y, int root) throws Exception {
+	public static double dist(double[] x, double[] y, int root) {
 		if (x.length != y.length)
-			throw new Exception("The vecotors x and y must have the same dimension");
-		if (root == 0) throw new Exception("There is no 0-root!");
+			throw new RuntimeException("The vectors x and y must have the same dimension");
+		if (root == 0) throw new RuntimeException("There is no 0-root!");
 		double d = 0;
 		for (int i = 0; i < x.length; i++)
 			d += Math.pow(Math.abs(x[i] - y[i]), root);
 		return Math.pow(d, (double) 1 / root);
 	}
 
+	/**
+	 * Computes the euclidian distance function.
+	 *
+	 * @param x
+	 *                a vector
+	 * @param y
+	 *                another vector
+	 * @param root
+	 *                what kind of distance funktion
+	 * @return the distance of x and y
+	 * @throws Exception
+	 *                 if x and y have different dimensions an exception is
+	 *                 thrown.
+	 */
+	public static double euclidianDist(double[] x, double[] y)  {
+		if (x.length != y.length)
+			throw new RuntimeException("The vectors x and y must have the same dimension");
+		double d = 0;
+		for (int i = 0; i < x.length; i++)
+			d += Math.pow(Math.abs(x[i] - y[i]), 2);
+		return Math.sqrt(d);
+	}
+	
 	/**
 	 * Computes the relative distance of vector x to vector y. Therefore the
 	 * difference of x[i] and y[i] is divided by y[i] for every i. If y[i] is
