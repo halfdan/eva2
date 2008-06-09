@@ -45,7 +45,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
     private boolean 						logParents = true;
     // heritage is to contain a list of all parents of the individual
     private Long[]							parentIDs = null;
-    private AbstractEAIndividual[]			parentTree = null;
+    transient private AbstractEAIndividual[]			parentTree = null;
 
     protected double[]                      m_Fitness               = new double[1];
     private double                          m_ConstraintViolation   = 0;

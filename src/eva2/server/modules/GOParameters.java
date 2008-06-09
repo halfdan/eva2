@@ -28,7 +28,13 @@ public class GOParameters extends AbstractGOParameters implements InterfaceGOPar
      */
     public static GOParameters getInstance() {
         if (TRACE) System.out.println("GOParameters getInstance 1");
-        GOParameters Instance = (GOParameters) Serializer.loadObject("GOParameters.ser");
+        GOParameters Instance = null;
+        try {
+        	Instance = (GOParameters) Serializer.loadObject("GOParameters.ser");
+        } catch(Exception e) {
+        	System.err.println("Error loading GOParameters!");
+        	Instance = null;
+        }
         if (TRACE) System.out.println("GOParameters getInstance 2");
         if (Instance == null) Instance = new GOParameters();
         return Instance;
