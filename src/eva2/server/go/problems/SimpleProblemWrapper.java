@@ -22,8 +22,11 @@ public class SimpleProblemWrapper extends AbstractOptimizationProblem {
 	InterfaceSimpleProblem<?> simProb = new SimpleF1();
 	protected double m_DefaultRange = 10;
 	protected double m_Noise = 0;
-	transient Plot m_plot;
+	private int repaintMinWait = 20;
+	private int repaintCnt = 0;
+	transient Plot m_plot = null;
 	String plotFunc = "plotBest";
+	transient private boolean resetTemplate = true;
 	
 	public SimpleProblemWrapper() {
 		m_plot = null;
@@ -77,11 +80,15 @@ public class SimpleProblemWrapper extends AbstractOptimizationProblem {
 	}
 	public void evaluatePopulationEnd(Population population) {
 		super.evaluatePopulationEnd(population);
+		repaintCnt += population.size();
 		if (m_plot != null) {
-			Object[] args = new Object[2];
-			args[0] = m_plot;
-			args[1] = population.getBestEAIndividual();
-			BeanInspector.callIfAvailable(simProb, plotFunc, args);
+			if (repaintCnt >= repaintMinWait) { // dont repaint always for small pops
+				Object[] args = new Object[2];
+				args[0] = m_plot;
+				args[1] = population.getBestEAIndividual();
+				BeanInspector.callIfAvailable(simProb, plotFunc, args);
+				repaintCnt = 0;
+			}
 		}
 	}
 	
@@ -110,14 +117,19 @@ public class SimpleProblemWrapper extends AbstractOptimizationProblem {
 	}
 
 	protected void initTemplate() {
-		if (simProb instanceof SimpleProblemDouble) {
-			this.m_Template         = new ESIndividualDoubleData();
-			((ESIndividualDoubleData)this.m_Template).setDoubleDataLength(simProb.getProblemDimension());
-			((ESIndividualDoubleData)this.m_Template).SetDoubleRange(makeRange());
-		} else if (simProb instanceof SimpleProblemBinary) {
-			this.m_Template         = new GAIndividualBinaryData();
-			((InterfaceDataTypeBinary)this.m_Template).setBinaryDataLength(simProb.getProblemDimension());
+		if (resetTemplate) {
+			if (simProb instanceof SimpleProblemDouble) {
+				this.m_Template         = new ESIndividualDoubleData();
+			} else if (simProb instanceof SimpleProblemBinary) {
+				this.m_Template         = new GAIndividualBinaryData();
+			}
 		}
+		if (m_Template instanceof InterfaceDataTypeDouble) {
+			((InterfaceDataTypeDouble)this.m_Template).setDoubleDataLength(simProb.getProblemDimension());
+			((InterfaceDataTypeDouble)this.m_Template).SetDoubleRange(makeRange());
+		} else if (m_Template instanceof InterfaceDataTypeBinary) {
+			((InterfaceDataTypeBinary)this.m_Template).setBinaryDataLength(simProb.getProblemDimension());
+		} else System.err.println("Individual type not valid!");
 	}
 	
     protected double[][] makeRange() {
@@ -223,6 +235,7 @@ public class SimpleProblemWrapper extends AbstractOptimizationProblem {
 	}
 	
 	public void setIndividualTemplate(AbstractEAIndividual indy) {
+		resetTemplate = false;
 		m_Template = indy;
 	}
     
