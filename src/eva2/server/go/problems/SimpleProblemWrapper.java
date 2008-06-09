@@ -25,6 +25,7 @@ public class SimpleProblemWrapper extends AbstractOptimizationProblem {
 	private int repaintMinWait = 20;
 	private int repaintCnt = 0;
 	transient Plot m_plot = null;
+	transient AbstractEAIndividual bestIndy = null;
 	String plotFunc = "plotBest";
 	transient private boolean resetTemplate = true;
 	
@@ -78,15 +79,21 @@ public class SimpleProblemWrapper extends AbstractOptimizationProblem {
 			openPlot();
 		}
 	}
+	
 	public void evaluatePopulationEnd(Population population) {
 		super.evaluatePopulationEnd(population);
 		repaintCnt += population.size();
 		if (m_plot != null) {
 			if (repaintCnt >= repaintMinWait) { // dont repaint always for small pops
-				Object[] args = new Object[2];
-				args[0] = m_plot;
-				args[1] = population.getBestEAIndividual();
-				BeanInspector.callIfAvailable(simProb, plotFunc, args);
+				if ((bestIndy == null) || (population.getBestEAIndividual().isDominant(bestIndy.getFitness()))) {
+					// only paint improvement
+					bestIndy = population.getBestEAIndividual();
+					Object[] args = new Object[2];
+					args[0] = m_plot;
+					args[1] = bestIndy;
+					System.out.println(population.getBestEAIndividual().getStringRepresentation());
+					BeanInspector.callIfAvailable(simProb, plotFunc, args);
+				}
 				repaintCnt = 0;
 			}
 		}
@@ -112,6 +119,7 @@ public class SimpleProblemWrapper extends AbstractOptimizationProblem {
 
 	@Override
 	public void initProblem() {
+		bestIndy = null;
 		initTemplate();
 		setSimpleProblem(getSimpleProblem()); // possibly create plot
 	}
