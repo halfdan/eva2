@@ -212,8 +212,6 @@ public class OptimizerFactory {
 		de.addPopulationChangedEventListener(listener);
 		de.init();
 
-		listener.registerPopulationStateChanged(de.getPopulation(), "");
-
 		return de;
 	}
 
@@ -256,8 +254,6 @@ public class OptimizerFactory {
 		es.SetProblem(problem);
 		es.init();
 
-		listener.registerPopulationStateChanged(es.getPopulation(), "");
-
 		return es;
 	}
 
@@ -295,8 +291,6 @@ public class OptimizerFactory {
 		ga.setPartnerSelection(select);
 		ga.addPopulationChangedEventListener(listener);
 		ga.init();
-
-		listener.registerPopulationStateChanged(ga.getPopulation(), "");
 
 		return ga;
 	}
@@ -355,8 +349,6 @@ public class OptimizerFactory {
 		hc.SetProblem(problem);
 		hc.init();
 
-		listener.registerPopulationStateChanged(hc.getPopulation(), "");
-
 		return hc;
 	}
 
@@ -383,8 +375,6 @@ public class OptimizerFactory {
 		mc.addPopulationChangedEventListener(listener);
 		mc.SetProblem(problem);
 		mc.init();
-
-		listener.registerPopulationStateChanged(mc.getPopulation(), "");
 
 		return mc;
 	}
@@ -426,8 +416,6 @@ public class OptimizerFactory {
 		pso.addPopulationChangedEventListener(listener);
 		pso.init();
 
-		listener.registerPopulationStateChanged(pso.getPopulation(), "");
-
 		return pso;
 	}
 
@@ -466,8 +454,6 @@ public class OptimizerFactory {
 		sa.getPopulation().setPopulationSize(popsize);
 		sa.addPopulationChangedEventListener(listener);
 		sa.init();
-
-		listener.registerPopulationStateChanged(sa.getPopulation(), "");
 
 		return sa;
 	}
