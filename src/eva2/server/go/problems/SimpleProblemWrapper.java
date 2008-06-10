@@ -91,7 +91,7 @@ public class SimpleProblemWrapper extends AbstractOptimizationProblem {
 					Object[] args = new Object[2];
 					args[0] = m_plot;
 					args[1] = bestIndy;
-					System.out.println(population.getBestEAIndividual().getStringRepresentation());
+//					System.out.println(population.getBestEAIndividual().getStringRepresentation());
 					BeanInspector.callIfAvailable(simProb, plotFunc, args);
 				}
 				repaintCnt = 0;
