@@ -1,9 +1,6 @@
 package eva2.server.go.strategies;
 
 
-import java.util.ArrayList;
-
-import eva2.gui.GenericObjectEditor;
 import eva2.gui.Plot;
 import eva2.server.go.InterfacePopulationChangedEventListener;
 import eva2.server.go.individuals.AbstractEAIndividual;
@@ -11,14 +8,15 @@ import eva2.server.go.individuals.InterfaceDataTypeDouble;
 import eva2.server.go.individuals.InterfaceESIndividual;
 import eva2.server.go.operators.mutation.MutateESFixedStepSize;
 import eva2.server.go.operators.selection.InterfaceSelection;
-import eva2.server.go.operators.selection.SelectXProbRouletteWheel;
+import eva2.server.go.operators.selection.SelectParticleWheel;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.F1Problem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 
-/** This is a Particel Filter implemented by Frank Senke, only some documentation
- * here and not throughfully checked, whether this works on arbitrary problem
- * instances.
+/** This is a Particle Filter implemented by Frank Senke, only some documentation
+ * here and not completely checked whether this works on arbitrary problem
+ * instances. MK did some adaptations, this should work on real valued problems now.
+ * 
  * This is a implementation of Genetic Algorithms.
  * Copyright:       Copyright (c) 2003
  * Company:         University of Tuebingen, Computer Architecture
@@ -36,8 +34,7 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
 	private static final long serialVersionUID = 1L;
 	private Population                      m_Population        = new Population();
     private InterfaceOptimizationProblem    m_Problem           = new F1Problem();
-    private InterfaceSelection              m_ParentSelection   = new SelectXProbRouletteWheel();//new SelectParticleWheel();
-    private ArrayList                       tmpA;
+    private InterfaceSelection              m_ParentSelection   = new SelectParticleWheel();
     //private boolean							m_UseElitism		= true;
 
     private String					m_Identifier = "";
@@ -51,8 +48,6 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
     transient Plot myPlot = null;
 
     public ParticleFilterOptimization() {
-        tmpA = new ArrayList(100);
-        for (int i = 0; i < 100; i++) tmpA.add(new EvolutionStrategies());
         if (withShow) setWithShow(true);
     }
 
@@ -165,18 +160,18 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
         
         m_Population = evaluatePopulation(nextGeneration);
         
-        collectStatistics(m_Population);
+//        collectStatistics(m_Population);
         
         this.firePropertyChangedEvent("NextGenerationPerformed");
         
 		if (sleepTime > 0 ) try { Thread.sleep(sleepTime); } catch(Exception e) {}
     }
 
-    protected void collectStatistics(Population population) {
-		// TODO Auto-generated method stub
-		int tMax = 5;
-		
-	}
+//    protected void collectStatistics(Population population) {
+//		// TODO Auto-generated method stub
+//		int tMax = 5;
+//		
+//	}
 
 	/** This method allows you to add the LectureGUI as listener to the Optimizer
      * @param ea
@@ -287,11 +282,6 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
 	 **/
 	public void setWithShow(boolean wShow) {
 		this.withShow = wShow;
-		if (!wShow) {
-			GenericObjectEditor.setHideProperty(this.getClass(), "mutationSigma", true);
-		} else {
-			GenericObjectEditor.setHideProperty(this.getClass(), "mutationSigma", false);
-		}
 		if (!withShow) myPlot = null;
 		else {
 		    double[][] range;
@@ -334,18 +324,8 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
 	public void setMutationSigma(double mutationSigma) {
 		this.mutationSigma = mutationSigma;
 	}
-    
-//    /** This method will set the problem that is to be optimized
-//     * @param elitism
-//     */
-//    public void setElitism (boolean elitism) {
-//        this.m_UseElitism = elitism;
-//    }
-//    public boolean getElitism() {
-//        return this.m_UseElitism;
-//    }
-//    public String elitismTipText() {
-//        return "Enable/disable elitism.";
-//    }
- 
+	
+	public String mutationSigmaTipText() {
+		return "The mutation step for the gaussian motion model";
+	}
 }
