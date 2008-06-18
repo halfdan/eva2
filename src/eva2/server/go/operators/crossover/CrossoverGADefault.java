@@ -10,6 +10,8 @@ import eva2.server.go.problems.InterfaceOptimizationProblem;
 import wsi.ra.math.RNG;
 
 /**
+ * This operator performs one-point crossover.
+ *
  * Created by IntelliJ IDEA. User: streiche Date: 03.04.2003 Time: 10:34:17 To
  * change this template use Options | File Templates.
  */
@@ -89,7 +91,7 @@ public class CrossoverGADefault implements InterfaceCrossover,
 	}
 
 	/**
-	 * This method allows you to evaluate wether two crossover operators are
+	 * This method allows you to evaluate weather two crossover operators are
 	 * actually the same.
 	 *
 	 * @param crossover

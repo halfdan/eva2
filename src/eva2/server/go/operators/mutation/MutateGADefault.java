@@ -7,7 +7,9 @@ import eva2.server.go.problems.InterfaceOptimizationProblem;
 
 
 /**
+ * This operator performs one-point mutation.
  * Created by IntelliJ IDEA.
+ *
  * User: streiche
  * Date: 18.03.2003
  * Time: 12:36:08
@@ -21,7 +23,7 @@ public class MutateGADefault implements InterfaceMutation, java.io.Serializable 
     public Object clone() {
         return new MutateGADefault();
     }
-    
+
     /** This method allows you to evaluate wether two mutation operators
      * are actually the same.
      * @param mutator   The other mutation operator
