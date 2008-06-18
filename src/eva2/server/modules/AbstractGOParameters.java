@@ -21,10 +21,7 @@ public abstract class AbstractGOParameters implements InterfaceGOParameters, Ser
 	protected InterfaceOptimizationProblem    m_Problem ;
 	protected InterfaceTerminator             m_Terminator;
 	protected InterfacePostProcessParams		m_PostProc = new PostProcessParams(false);
-//	protected int								hcPostProcessSteps = 5000;
 	transient protected InterfacePopulationChangedEventListener m_Listener;
-//	private boolean postProcess = false;
-//	protected double postProcessClusterSigma = 0.05;
 
 	protected AbstractGOParameters() {
 	}
@@ -36,10 +33,9 @@ public abstract class AbstractGOParameters implements InterfaceGOParameters, Ser
 		this.m_Optimizer.SetProblem(this.m_Problem);
 		this.m_Seed             = Source.m_Seed;
 		this.m_PostProc			= Source.m_PostProc;
-//		this.hcPostProcessSteps = Source.hcPostProcessSteps;
 	}
 	
-	protected AbstractGOParameters(InterfaceOptimizer opt, InterfaceOptimizationProblem prob, InterfaceTerminator term) {
+	public AbstractGOParameters(InterfaceOptimizer opt, InterfaceOptimizationProblem prob, InterfaceTerminator term) {
 		m_Optimizer = opt;
 		m_Problem = prob;
 		m_Terminator = term;
@@ -47,16 +43,17 @@ public abstract class AbstractGOParameters implements InterfaceGOParameters, Ser
 		opt.SetProblem(prob);
 	}
 
-	/** This method allows you to add the LectureGUI as listener to the Optimizer
+	/** 
+	 * Add a listener to the current optimizer.
+	 * 
 	 * @param ea
 	 */
 	public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
 		this.m_Listener = ea;
 		if (this.m_Optimizer != null) this.m_Optimizer.addPopulationChangedEventListener(this.m_Listener);
 	}
+	
 	public String toString() {
-//		String ret = "\r\nParameters:"+this.m_Problem.getStringRepresentationForProblem(this.m_Optimizer)+"\n"+this.m_Optimizer.getStringRepresentation();
-//		return ret;
 		StringBuffer sb = new StringBuffer(getName());
 		sb.append("\n");
 		sb.append("seed=");
@@ -68,7 +65,6 @@ public abstract class AbstractGOParameters implements InterfaceGOParameters, Ser
 		sb.append("\nTerminator: ");
 		sb.append(BeanInspector.toString(m_Terminator));
 		sb.append("\n");
-//		sb.append(m_N)
 		return sb.toString();
 	}
 
@@ -81,23 +77,13 @@ public abstract class AbstractGOParameters implements InterfaceGOParameters, Ser
 		return this.m_Optimizer;
 	}
 	public String optimizerTipText() {
-		return "Choose an optimizing strategy.";
+		return "Choose an optimization strategy.";
 	}
 
 	public String getName() {
 		return "Optimization parameters";
 	}
 
-//	public String postProcessStepsTipText() {
-//		return "The number of HC post processing steps in fitness evaluations.";
-//	}
-//	public int getPostProcessSteps() {
-//		return hcPostProcessSteps;
-//	}
-//	public void setPostProcessSteps(int ppSteps) {
-//		hcPostProcessSteps = ppSteps;
-//	}
-	
 	/** 
 	 * This method will set the problem that is to be optimized.
 	 * @param problem
@@ -140,39 +126,6 @@ public abstract class AbstractGOParameters implements InterfaceGOParameters, Ser
 		return "Choose a termination criterion.";
 	}
 
-//	/**
-//	 * @return the postProcess
-//	 */
-//	public boolean isPostProcess() {
-//		return postProcess;
-//	}
-//	/**
-//	 * @param postProcess the postProcess to set
-//	 */
-//	public void setPostProcess(boolean postProcess) {
-//		this.postProcess = postProcess;
-//		GenericObjectEditor.setShowProperty(this.getClass(), "postProcessSteps", postProcess);
-//		GenericObjectEditor.setShowProperty(this.getClass(), "postProcessClusterSigma", postProcess);
-//	}
-//	public String postProcessTipText() {
-//		return "Toggle post processing of the solutions.";
-//	}
-//	/**
-//	 * @return the postProcessClusterSigma
-//	 */
-//	public double getPostProcessClusterSigma() {
-//		return postProcessClusterSigma;
-//	}
-//	/**
-//	 * @param postProcessClusterSigma the postProcessClusterSigma to set
-//	 */
-//	public void setPostProcessClusterSigma(double postProcessClusterSigma) {
-//		this.postProcessClusterSigma = postProcessClusterSigma;
-//	}
-//	public String postProcessClusterSigmaTipText() {
-//		return "Set the sigma parameter for clustering during post processing. Set to zero for no clustering.";
-//	}
-	
     public InterfacePostProcessParams getPostProcessParams() {
     	return m_PostProc;
     }
