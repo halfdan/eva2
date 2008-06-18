@@ -42,7 +42,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
     private long 							m_ID	= 0;
     private static long						m_IDcounter = 0;
 //  private int								logParentLen = 10;
-    private boolean 						logParents = true;
+    private boolean 						logParents = false;
     // heritage is to contain a list of all parents of the individual
     private Long[]							parentIDs = null;
     transient private AbstractEAIndividual[]			parentTree = null;
