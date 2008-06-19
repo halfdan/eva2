@@ -191,7 +191,10 @@ public class RNG extends Random {
      return (float)random.nextGaussian()*dev;
   }
   /**
-   *
+   * Return a Gaussian double with mean 0 and deviation dev.
+   * 
+   * @param dev the deviation of the distribution.
+   * @return a Gaussian double with mean 0 and given deviation.
    */
   public static double gaussianDouble(double dev) {
      //counter++;

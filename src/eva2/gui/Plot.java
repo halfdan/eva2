@@ -13,6 +13,7 @@ package eva2.gui;
  * IMPORTS
  *==========================================================================*/
 import java.awt.AWTException;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Rectangle;
 import java.awt.Robot;
@@ -274,6 +275,13 @@ public class Plot implements PlotInterface, Serializable {
 		});
 		m_Frame.pack();
 		m_Frame.setVisible(true);
+	}
+
+	public void setPreferredSize(Dimension prefSize) {
+		if (m_Frame != null) {
+			m_Frame.setPreferredSize(prefSize);
+			m_Frame.pack();
+		}
 	}
 
 	/**

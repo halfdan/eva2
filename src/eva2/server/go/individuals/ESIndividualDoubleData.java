@@ -1,14 +1,11 @@
 package eva2.server.go.individuals;
 
 
-import java.util.Arrays;
-
-import eva2.server.go.IndividualInterface;
+import wsi.ra.math.RNG;
 import eva2.server.go.operators.crossover.CrossoverESDefault;
 import eva2.server.go.operators.mutation.InterfaceMutation;
 import eva2.server.go.operators.mutation.MutateESGlobal;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import wsi.ra.math.RNG;
 
 /** This individual uses a real-valued genotype to code for double values.
  * Created by IntelliJ IDEA.

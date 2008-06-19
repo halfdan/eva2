@@ -87,6 +87,9 @@ private boolean under_construction = false;
    */
   public Point getPoint( double x, double y ){
     DRectangle rect = getSourceOf( getDRectangle() );
+    if (rect == null) {
+    	return null;
+    }
     try{
       if( x_scale != null ) x = x_scale.getSourceOf( x );
       if( y_scale != null ) y = y_scale.getSourceOf( y );
@@ -214,8 +217,11 @@ private boolean under_construction = false;
    */
   DRectangle getSourceOf( DRectangle rect ){
     if( under_construction ) System.out.println("DMeasures.getSourceOf: "+rect);
-    if( !getDRectangle().contains( rect ) ) throw
-      new IllegalArgumentException("The rectangle lies not in the currently painted rectangle");
+    if( !getDRectangle().contains( rect ) ) {
+    	return null;
+    	//throw new IllegalArgumentException("The rectangle lies not in the currently painted rectangle");
+    }
+      
     if( x_scale == null && y_scale == null ) return rect;
     if( rect.isEmpty() ) return (DRectangle)rect.clone();
     DPoint p1 = new DPoint( rect.x, rect.y ),

@@ -588,8 +588,8 @@ public class Mathematics {
 	}
 	
 	/**
-	 * Normalizes the doubles in the array by their sum.
-	 *
+	 * Normalizes the doubles in the array by their sum,
+	 * so that they add up to one.
 	 * @param doubles the array of double
 	 * @exception IllegalArgumentException if sum is Zero or NaN
 	 */
