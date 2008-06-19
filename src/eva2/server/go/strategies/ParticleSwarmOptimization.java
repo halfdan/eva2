@@ -211,8 +211,8 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 				tracedVelocity = new double[((InterfaceESIndividual)population.get(0)).getDGenotype().length];
 				for (int i=0; i<tracedVelocity.length; i++) tracedVelocity[i] = curAvVelAndSpeed[i];
 			} else {
-				if (population.getGenerations() < emaPeriods) {// if less than emaPeriods have passed, use larger alpha
-					addMovingAverage(tracedVelocity, curAvVelAndSpeed, 2./(population.getGenerations()+1));
+				if (population.getGeneration() < emaPeriods) {// if less than emaPeriods have passed, use larger alpha
+					addMovingAverage(tracedVelocity, curAvVelAndSpeed, 2./(population.getGeneration()+1));
 				} else {
 					addMovingAverage(tracedVelocity, curAvVelAndSpeed, 2./(emaPeriods+1));
 				}

@@ -52,7 +52,7 @@ public class GenerationTerminator implements  InterfaceTerminator,
    *
    */
   public boolean isTerminated(PopulationInterface Pop) {
-    if (m_Generations<Pop.getGenerations())
+    if (m_Generations<Pop.getGeneration())
       return true;
     return false;
   }
