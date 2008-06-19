@@ -57,7 +57,11 @@ public class DLine extends DComponent
     if( color != null ) g.setColor( color );
     Point p1 = m.getPoint( start ),
           p2 = m.getPoint( end ) ;
-    g.drawLine( p1.x, p1.y, p2.x, p2.y );
+    if ((p1!=null) && (p2!=null)) {
+    	g.drawLine( p1.x, p1.y, p2.x, p2.y );
+    } else {
+    	System.err.println("Couldnt paint rect!");
+    }
   }
 
   public String toString(){

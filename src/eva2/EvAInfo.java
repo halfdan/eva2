@@ -3,6 +3,7 @@ package eva2;
 /**
  * Main product and version information strings.
  * 
+ * 2.025: FunctionArea may now plot circles easily. The FLensProblemViewer seems to be cured. 
  * 2.024: Cleaned up AbstractGOParams, deactivated parent logging (saving memory)
  * 2.023: Cleaned up the PF strategy
  * 2.022: Some changes to the SimpleProblemWrapper, not of great interest. However,
@@ -14,7 +15,7 @@ package eva2;
 public class EvAInfo {
 	public static final String productName = "EvA 2";
 	public static final String productLongName = "Evolutionary Algorithms Workbench 2";
-	public static final String versionNum = new String ("2.024");
+	public static final String versionNum = new String ("2.025");
 	public static final String url = "http://www.ra.cs.uni-tuebingen.de/software/EvA2";
 
 	public static final String propertyFile = "resources/EvA2.props";

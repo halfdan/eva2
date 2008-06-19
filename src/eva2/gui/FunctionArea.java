@@ -88,7 +88,51 @@ public class FunctionArea extends DArea implements Serializable {
 		 repaint();
 		 notifyNegLog = true;
 	 }
-
+	
+	 /**
+	  * Plot a circle icon to the function area which is annotated with a char and
+	  * a double value.
+	  * 
+	  * @param c
+	  * @param val
+	  * @param position
+	  */
+	 public void drawCircle(double val, double[] position, int graphID) {
+		 drawCircle(""+val, position, graphID);
+	 }
+	 
+	 /**
+	  * Plot a circle icon to the function area which is annotated with a char and
+	  * a double value.
+	  * 
+	  * @param c
+	  * @param val
+	  * @param position
+	  * @param graphID
+	  */
+	 public void drawCircle(char c, double val, double[] position, int graphID) {
+		 drawCircle(c+""+val, position, graphID);
+	 }
+	 
+	 /**
+	  * Plot a circle icon to the function area which is annotated with a char and
+	  * a double value. The color corresponds to the color of the graph with given ID
+	  * 
+	  * @param label
+	  * @param position
+	  * @param graphID
+	  */
+	 public void drawCircle(String label, double[] position, int graphID) {
+		 DPointSet popRep;
+		 popRep = new DPointSet();
+		 popRep.addDPoint(new DPoint(position[0], position[1]));
+		 DPointIcon icon = new Chart2DDPointIconText(label);
+		 ((Chart2DDPointIconText)icon).setIcon(new Chart2DDPointIconCircle());
+		 ((Chart2DDPointIconText)icon).setColor(getGraphPointSet(graphID).getColor());
+		 popRep.setIcon(icon);
+		 addDElement(popRep);
+	 }
+	 
 	 /**
 	  *
 	  */

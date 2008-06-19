@@ -1,31 +1,46 @@
 package eva2.server.go.problems;
 
 
-import javax.swing.*;
+import java.awt.BasicStroke;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.Shape;
+import java.awt.Stroke;
+import java.awt.image.BufferedImage;
 
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+
+import wsi.ra.math.RNG;
 import eva2.server.go.GOStandaloneVersion;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.ESIndividualDoubleData;
-import eva2.server.go.individuals.GAIndividualDoubleData;
 import eva2.server.go.individuals.InterfaceDataTypeDouble;
 import eva2.server.go.populations.Population;
 import eva2.server.go.strategies.InterfaceOptimizer;
-import wsi.ra.math.RNG;
 import eva2.server.modules.GOParameters;
-
-import java.awt.*;
-import java.awt.image.BufferedImage;
 
 class MyLensViewer extends JPanel {
 
-    private double[]                    m_BestVariables;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 7945150208043416139L;
+	private double[]                    m_BestVariables;
     private double                      m_BestFitness;
-    private int                         m_Height, m_Width, m_CenterX, m_CenterY;
+    private int                         m_Height, m_Width;
     FLensProblem                        m_LensProblem;
 
     public MyLensViewer (FLensProblem f) {
         this.m_LensProblem      = f;
-        Dimension d = new Dimension (450, 350);
+        Dimension d = new Dimension (280, 220);
         this.setPreferredSize(d);
         this.setMinimumSize(d);
         resetBest();
@@ -40,12 +55,12 @@ class MyLensViewer extends JPanel {
         Shape               tmpShape;
         BufferedImage       bufferedImage;
         BasicStroke         ds = new BasicStroke();
-        Stroke              dashStroke, lineStroke, pointStroke;
-        int                 currentPos, width, mag = 10;
+        Stroke              dashStroke;
+        int                 mag = 10;
         int                 centerLens, centerScreen, segment;
 
-        lineStroke  = ds;
-        pointStroke = new BasicStroke(ds.getLineWidth(), ds.getEndCap(), ds.getLineJoin(), ds.getMiterLimit() , new float[] {1, 4}, 0);
+//        lineStroke  = ds;
+//        pointStroke = new BasicStroke(ds.getLineWidth(), ds.getEndCap(), ds.getLineJoin(), ds.getMiterLimit() , new float[] {1, 4}, 0);
         dashStroke  = new BasicStroke(ds.getLineWidth(), ds.getEndCap(), ds.getLineJoin(), ds.getMiterLimit() , new float[] {8, 8}, 0);
 
         super.paint(g);
@@ -54,16 +69,24 @@ class MyLensViewer extends JPanel {
             return;
         }
         // Create a buffered image in which to draw
-        try {
-            this.m_Height   = (int)g.getClipBounds().getHeight();
-            this.m_Width    = (int)g.getClipBounds().getWidth();
-            this.m_CenterX  = (int)g.getClipBounds().getCenterX();
-            this.m_CenterY  = (int)g.getClipBounds().getCenterY();
-        } catch (java.lang.NullPointerException npe) {
-            //System.out.println("Try fail...");
-        }
-        if (this.m_Height == 0) this.m_Height = 250;
-        if (this.m_Width == 0) this.m_Width = 350;
+//        try {
+//            this.m_Height   = (int)g.getClipBounds().getHeight();
+//            this.m_Width    = (int)g.getClipBounds().getWidth();
+//            this.m_CenterX  = (int)g.getClipBounds().getCenterX();
+//            this.m_CenterY  = (int)g.getClipBounds().getCenterY();
+//        } catch (java.lang.NullPointerException npe) {
+//            //System.out.println("Try fail...");
+//        }
+        // This might cure the eternal display problems: just ignore clipping and leave it up to swing
+        Dimension winDim = getSize();
+        m_Height = winDim.height;
+        m_Width = winDim.width;
+//        m_CenterX = m_Width/2;
+//        m_CenterY = m_Height/2;
+        
+//        if (this.m_Height == 0) this.m_Height = 250;
+//        if (this.m_Width == 0) this.m_Width = 350;
+//        System.out.println(" h w cx cy "  + m_Height + " " + m_Width + " " + m_CenterX + " " + m_CenterY );
         bufferedImage = new BufferedImage(this.m_Width, this.m_Height, BufferedImage.TYPE_INT_RGB);
         // Create a graphics contents on the buffered image
         Graphics2D g2D = bufferedImage.createGraphics();
@@ -139,6 +162,10 @@ class MyLensViewer extends JPanel {
  */
 public class FLensProblem extends AbstractOptimizationProblem implements InterfaceOptimizationProblem, java.io.Serializable  {
 
+	/**
+	 *  
+	 */
+	private static final long serialVersionUID = 4694920294291719310L;
 	protected AbstractEAIndividual      m_OverallBest       = null;
 	protected int                       m_ProblemDimension  = 10;
 	protected double                    m_Noise             = 0.0;
@@ -244,25 +271,6 @@ public class FLensProblem extends AbstractOptimizationProblem implements Interfa
 		population.init();
 	}
 
-//	/** This method evaluates a given population and set the fitness values
-//	 * accordingly
-//	 * @param population    The population that is to be evaluated.
-//	 */
-//	public void evaluate(Population population) {
-//		evaluatePopulationStart(population);
-//		AbstractEAIndividual    tmpIndy;
-//
-//		for (int i = 0; i < population.size(); i++) {
-//			tmpIndy = (AbstractEAIndividual) population.get(i);
-//            tmpIndy.resetConstraintViolation();
-//			this.evaluate(tmpIndy);
-//			population.incrFunctionCalls();
-//		}
-//		evaluatePopulationEnd(population);
-//		//if (sleepTime > 0 ) try { Thread.sleep(sleepTime); } catch(Exception e) {}
-////        if (this.m_Show) this.updateProblemFrame(population);
-//	}
-	
 	public void evaluatePopulationEnd(Population pop) {
 		if (this.m_Show) this.updateProblemFrame(pop);
 	}

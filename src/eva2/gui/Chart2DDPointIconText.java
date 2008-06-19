@@ -16,6 +16,7 @@ public class Chart2DDPointIconText  implements DPointIcon {
 
     private DPointIcon  m_Icon = new Chart2DDPointIconCross();
     private String      m_Text = " ";
+    private Color		m_Color;
 
     public Chart2DDPointIconText(String s) {
         m_Text = s;
@@ -34,6 +35,7 @@ public class Chart2DDPointIconText  implements DPointIcon {
      */
     public void paint( Graphics g ){
         this.m_Icon.paint(g);
+        g.setColor(m_Color);
         g.drawString(this.m_Text, 4, 4);
     }
 
@@ -45,5 +47,14 @@ public class Chart2DDPointIconText  implements DPointIcon {
      */
     public DBorder getDBorder() {
         return new DBorder(4, 4, 4, 4);
+    }
+    
+    /**
+     * Set the color for the text.
+     * 
+     * @param col
+     */
+    public void setColor(Color  col) {
+    	m_Color = col;
     }
 }

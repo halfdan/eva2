@@ -188,6 +188,7 @@ public class BasicResourceLoader implements ResourceLoader
 	 * @param rawData 	Strings containing an array with double data columns 
 	 * @param colSplit	String regexp for the splitting of a line
 	 * @param selectedCols		indices of the columns to retrieve, null for all.
+	 * @see java.util.regex.Pattern
 	 * @return
 	 */
 	public static double[][] parseDoubleArray(ArrayList<String> rawData, String colSplit, int[] selectedCols) {
@@ -199,7 +200,7 @@ public class BasicResourceLoader implements ResourceLoader
 					entries = rawData.get(i).split(colSplit);
 					if (i == 0) {	// at the first pass
 						dat = new double[rawData.size()][(selectedCols == null) ? entries.length : selectedCols.length];
-					}
+					}  
 					fillLine(dat, i, entries, selectedCols);
 				}
 			} catch (Exception e) {
@@ -270,11 +271,19 @@ public class BasicResourceLoader implements ResourceLoader
 		}
 		if (cols == null) {
 			for (int i=0; i<entries.length; i++) {
-				dest[lineCnt][i] = Double.valueOf(entries[i]);
+				try {
+					dest[lineCnt][i] = Double.valueOf(entries[i]);
+				} catch(NumberFormatException ex) {
+					System.err.println("Invalid Double format in line " + lineCnt + ", data was " + entries[i]);
+				}
 			}
 		} else {
 			for (int i=0; i<cols.length; i++) {
-				dest[lineCnt][i] = Double.valueOf(entries[cols[i]]);
+				try {
+					dest[lineCnt][i] = Double.valueOf(entries[cols[i]]);
+				} catch(NumberFormatException ex) {
+					System.err.println("Invalid Double format in line " + lineCnt + ", data was " + entries[cols[i]]);
+				}
 			}
 		}
 	}

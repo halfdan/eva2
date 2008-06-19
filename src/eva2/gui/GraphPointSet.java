@@ -40,7 +40,7 @@ public class GraphPointSet {
   private Color m_Color;
   private DPointIcon m_Icon;
   private int m_CacheIndex = 0;
-  private int m_CacheSize = 1;
+  private int m_CacheSize = 0;
   private double [] m_cachex;
   private double [] m_cachey;
   /**

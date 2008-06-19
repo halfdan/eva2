@@ -21,9 +21,9 @@ import eva2.tools.EVAERROR;
 /** This is the abstract EA individual implementing the most important methods giving
  * access to mutation and crossover rates and operators, fitness values and selection
  * probabilities. All EA individuals should typically extend this abstract EA individual.
- * In that case the EA individuals only implement the genotpye and phenotype interfaces.
+ * In that case the EA individuals only implement the genotype and phenotype interfaces.
  * The names of the implementation should be build like this:
- * (Genotpye)Individual(Phenotype)
+ * (Genotype)Individual(Phenotype)
  * Thus a binary individual coding double values is named GAIndividualDoubleData and a
  * real-valued individual coding binary values is named ESIndividualBinaryData.
  * Created by IntelliJ IDEA.
@@ -909,6 +909,10 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
     public double[] getDoubleArray() {
         if (this instanceof InterfaceDataTypeDouble) return ((InterfaceDataTypeDouble)this).getDoubleData();
         else return this.getFitness();
+    }
+    
+    public boolean isDominantNotEqual(double[] otherFitness) {
+    	return isDominatingFitnessNotEqual(m_Fitness, otherFitness);
     }
     
     public boolean isDominant(double[] otherFitness) {
