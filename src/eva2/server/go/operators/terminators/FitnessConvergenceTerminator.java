@@ -110,7 +110,7 @@ Serializable {
 		oldFit = Pop.getBestFitness();
 		oldNorm = PhenotypeMetric.norm(oldFit);
 		popFitCalls = Pop.getFunctionCalls();
-		popGens = Pop.getGenerations();
+		popGens = Pop.getGeneration();
 		firstTime = false;		
 	}
 	
@@ -140,7 +140,7 @@ Serializable {
 			return (pop.getFunctionCalls() - popFitCalls) >= m_stagTime;
 		} else {// by generation
 //			System.out.println("stagnationTimeHasPassed returns " + ((pop.getFunctionCalls() - popGens) >= m_stagTime) + " after " + (pop.getFunctionCalls() - popGens));
-			return (pop.getGenerations() - popGens) >= m_stagTime;
+			return (pop.getGeneration() - popGens) >= m_stagTime;
 		}
 	}
 	

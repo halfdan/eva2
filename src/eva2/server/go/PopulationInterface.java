@@ -28,7 +28,7 @@ public interface PopulationInterface {
   public double[] getWorstFitness();
   public double[] getMeanFitness();
   public int getFunctionCalls();
-  public int getGenerations();
+  public int getGeneration();
   /** This method returns problem specific data
    * @return double[]
    */

@@ -801,10 +801,6 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
 //		}
 //		return sum;
 //	}
-    
-    public int getGenerations() {
-        return this.m_Generation;
-    }
 
 	/**
 	 * Fire an event every n function calls, the event sends the public String funCallIntervalReached.
