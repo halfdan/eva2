@@ -829,6 +829,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      * @return
      */
     public static String getDefaultDataString(IndividualInterface individual, String separator) {
+    	if (individual == null) return "null";
         StringBuffer sb = new StringBuffer("");
         char left = '[';
         char right = ']';
