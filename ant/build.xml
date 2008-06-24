@@ -30,15 +30,17 @@
   <property name="build.directory"                value="build" />
   <property name="distribution.directory"         value="dist" />
   <property name="resources.directory"            value="resources" />
+  <property name="web.download.directory"            value="/afs/cs.uni-tuebingen.de/ra/www/software/EvA2/downloads" />
   <property name="source.distribution.directory"  value="${distribution.directory}/src-dist" />
   <property name="binary.distribution.directory"  value="${distribution.directory}/bin-dist" />
   <property name="javadoc.directory"              value="doc/api" />
   <property name="library.directory"              value="lib" />
   <property name="debug.flag"					  value="true" />
-  <property name="jar.name"							value="EvA2Base.jar" />
-	  <property name="JE2Probs.directory"			  value="../JE2Probs" />				
-	  <property name="JE2ESModel.directory"			  value="../JE2ESModel" />				
-	  <property name="JE2Research.directory"			  value="../JE2Research" />				
+	  <property name="jar.name"						value="EvA2Base" />
+	  <property name="srcpack.name"					value="EvA2BaseSrc" />
+	  <property name="JE2Probs.directory"			value="../JE2Probs" />				
+	  <property name="JE2ESModel.directory"			value="../JE2ESModel" />				
+	  <property name="JE2Research.directory"		value="../JE2Research" />				
 
   <!-- SET THE BINARY LIBRARIES PROPERTIES -->
   <property name="check.libraries.ant"            value="ant/check.xml" />
@@ -294,15 +296,15 @@
     <property name="bin.dist.dir"  value="${binary.distribution.directory}/eva-${DSTAMP}" />
     <mkdir dir="${bin.dist.dir}" />
 <delete>
-      <fileset dir="${bin.dist.dir}/" includes="${jar.name}" />
+      <fileset dir="${bin.dist.dir}/" includes="${jar.name}.jar" />
 </delete>
 
-<jar jarfile="${bin.dist.dir}/${jar.name}"  basedir="${build.directory}" >
+<jar jarfile="${bin.dist.dir}/${jar.name}.jar"  basedir="${build.directory}" >
 <manifest> <attribute name="Main-Class" value="eva2.client.EvAClient"/> </manifest>
 </jar>
     <copy todir="${distribution.directory}">
       <fileset dir="${bin.dist.dir}">
-        <include name="${jar.name}" />
+        <include name="${jar.name}.jar" />
       </fileset>
     </copy>
 	
@@ -431,13 +433,13 @@
       </fileset>
     </copy>-->
 
-    <tar tarfile="${distribution.directory}/eva2-src-${DSTAMP}.tar"
+    <tar tarfile="${distribution.directory}/${srcpack.name}.tar"
          basedir="${src.dist.dir}" includes="**" excludes="*.tar*, *.zip"/>
-    <gzip zipfile="${distribution.directory}/eva2-src-${DSTAMP}.tar.gz"
-          src="${distribution.directory}/eva2-src-${DSTAMP}.tar" />
-    <delete file="${distribution.directory}/eva2-src-${DSTAMP}.tar" />
+    <gzip zipfile="${distribution.directory}/${srcpack.name}.tar.gz"
+          src="${distribution.directory}/${srcpack.name}.tar" />
+    <delete file="${distribution.directory}/${srcpack.name}.tar" />
 
-    <zip zipfile="${distribution.directory}/eva2-src-${DSTAMP}.zip">
+    <zip zipfile="${distribution.directory}/${srcpack.name}.zip">
       <zipfileset dir="${src.dist.dir}">
         <include name="**" />
         <exclude name="*.tar*, *.zip" />
@@ -452,6 +454,27 @@
   <target name="dist" depends="binaryDist, sourceDist">
   </target>
 
+<!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	        Generate Distribution
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+
+	<target name="distToWWW" depends="dist">
+		<mkdir dir="${web.download.directory}/old-${DSTAMP}-${TSTAMP}" />
+	    <copy todir="${web.download.directory}/old-${DSTAMP}-${TSTAMP}">
+	      <fileset dir="${web.download.directory}">
+	      	<include name="**Src.tar.gz" />
+	      	<include name="**.jar" />
+	      </fileset>
+	    </copy>
+	    <copy todir="${web.download.directory}">
+	      <fileset dir="${distribution.directory}">
+	      	<include name="**Src.tar.gz" />
+	      	<include name="**.jar" />
+	      </fileset>
+	    </copy>
+	</target>
+
+	
 <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         Run EvA2
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
