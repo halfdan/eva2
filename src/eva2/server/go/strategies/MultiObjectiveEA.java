@@ -7,7 +7,9 @@ import eva2.server.go.operators.archiving.InformationRetrievalInserting;
 import eva2.server.go.operators.archiving.InterfaceArchiving;
 import eva2.server.go.operators.archiving.InterfaceInformationRetrieval;
 import eva2.server.go.operators.selection.SelectMONonDominated;
+import eva2.server.go.populations.InterfaceSolutionSet;
 import eva2.server.go.populations.Population;
+import eva2.server.go.populations.SolutionSet;
 import eva2.server.go.problems.FM0Problem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 
@@ -227,8 +229,8 @@ public class MultiObjectiveEA implements InterfaceOptimizer, java.io.Serializabl
         return "Edit the properties of the Population used.";
     }
     
-    public Population getAllSolutions() {
-    	return getPopulation();
+    public InterfaceSolutionSet getAllSolutions() {
+    	return new SolutionSet(getPopulation());
     }
 
     /** This method allows you to set/get the optimizing technique to use.

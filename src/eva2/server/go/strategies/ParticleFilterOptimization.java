@@ -9,7 +9,9 @@ import eva2.server.go.individuals.InterfaceESIndividual;
 import eva2.server.go.operators.mutation.MutateESFixedStepSize;
 import eva2.server.go.operators.selection.InterfaceSelection;
 import eva2.server.go.operators.selection.SelectParticleWheel;
+import eva2.server.go.populations.InterfaceSolutionSet;
 import eva2.server.go.populations.Population;
+import eva2.server.go.populations.SolutionSet;
 import eva2.server.go.problems.F1Problem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 
@@ -254,8 +256,8 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
         return "Edit the properties of the population used.";
     }
     
-    public Population getAllSolutions() {
-    	return getPopulation();
+    public InterfaceSolutionSet getAllSolutions() {
+    	return new SolutionSet(getPopulation());
     }
     /** This method will set the selection method that is to be used
      * @param selection

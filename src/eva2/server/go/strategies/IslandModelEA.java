@@ -9,7 +9,9 @@ import eva2.server.go.operators.migration.MOBestMigration;
 import eva2.server.go.operators.migration.MOClusteringSeparation;
 import eva2.server.go.operators.migration.MOConeSeparation;
 import eva2.server.go.operators.migration.SOBestMigration;
+import eva2.server.go.populations.InterfaceSolutionSet;
 import eva2.server.go.populations.Population;
+import eva2.server.go.populations.SolutionSet;
 import eva2.server.go.problems.F1Problem;
 import eva2.server.go.problems.F8Problem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
@@ -524,10 +526,9 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
         return "(Defunct)";
     }
     
-    public Population getAllSolutions() {
-    	return getPopulation();
+    public InterfaceSolutionSet getAllSolutions() {
+    	return new SolutionSet(getPopulation());
     }
-
     /** This method allows you to set the number of processors in local mode
      * @param n     Number of processors.
      */

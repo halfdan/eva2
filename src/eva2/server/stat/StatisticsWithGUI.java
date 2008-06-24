@@ -107,8 +107,8 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
 		m_PlotCounter = m_StatsParams.GetPlotoutput();
 	}
 
-	public void stopOptPerformed(boolean normal) {
-		super.stopOptPerformed(normal);
+	public void stopOptPerformed(boolean normal, String stopMessage) {
+		super.stopOptPerformed(normal, stopMessage);
 
 		if (optRunsPerformed > m_StatsParams.getMultiRuns()) System.err.println("error: this shouldnt happen (StatisticsWithGUI::stopOptPerformed)");
 		// unite the graphs only if the break was "normal"

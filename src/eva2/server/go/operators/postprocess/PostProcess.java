@@ -12,7 +12,9 @@ import eva2.server.go.operators.cluster.InterfaceClustering;
 import eva2.server.go.operators.distancemetric.InterfaceDistanceMetric;
 import eva2.server.go.operators.distancemetric.PhenotypeMetric;
 import eva2.server.go.operators.mutation.InterfaceMutation;
+import eva2.server.go.operators.mutation.MutateESCovarianceMartixAdaption;
 import eva2.server.go.operators.mutation.MutateESFixedStepSize;
+import eva2.server.go.operators.mutation.MutateESMutativeStepSizeControl;
 import eva2.server.go.operators.terminators.EvaluationTerminator;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.AbstractMultiModalProblemKnown;
@@ -35,6 +37,8 @@ public class PostProcess {
 	private static final boolean TRACE = false;
 	// the default mutation step size for HC post processing
 	private static double defaultMutationStepSize = 0.01;
+	// lower limit mutation step size for HC post processing
+	private static double minMutationStepSize = 0.0000000000000001;
 	// used for hill climbing post processing and only alive during that period
 	private static OptimizerRunnable hcRunnable = null;
 	
@@ -316,24 +320,38 @@ public class PostProcess {
 	
 	/**
 	 * Optimize a population with a default hill-climbing heuristic for a number of fitness evaluations.
-	 * As mutation operator, a fixed step size ES mutation is used.
+	 * As mutation operator, a mutative step size ES mutation is used, the step size of which is not allowed
+	 * to increase above the initial stepSize. Returns the number of evaluations actually performed, which
+	 * may be slightly above the maxSteps given.
 	 * 
-	 * @param pop
-	 * @param problem
-	 * @param maxSteps
-	 * @param fixedStepSize
+	 * @param pop 	the set of individuals to work on
+	 * @param problem	the optimization problem
+	 * @param maxSteps	the number of evaluations to perform during HC
+	 * @param stepSize	the initial mutation step size
+	 * @param minStepSize the minimal step size allowed for a mutation
+	 * @return the number of evaluations actually performed
 	 */
-	public static int processWithHC(Population pop, AbstractOptimizationProblem problem, int maxSteps, double fixedStepSize) {
+	public static int processWithHC(Population pop, AbstractOptimizationProblem problem, int maxSteps, double stepSize, double minStepSize) {
 //		pop.SetFunctionCalls(0); // or else optimization wont restart on an "old" population
 //		pop.setGenerationTo(0);
 		int stepsBef = pop.getFunctionCalls();
-		processWithHC(pop, problem, new EvaluationTerminator(pop.getFunctionCalls()+maxSteps), new MutateESFixedStepSize(fixedStepSize));
+		processWithHC(pop, problem, new EvaluationTerminator(pop.getFunctionCalls()+maxSteps), new MutateESMutativeStepSizeControl(stepSize, minStepSize, stepSize));
 		return pop.getFunctionCalls()-stepsBef;
 	}
 	
+	/**
+	 * Perform hill climbing with default mutation parameters.
+	 * 
+	 * @see processWithHC(Population pop, AbstractOptimizationProblem problem, int maxSteps, double stepSize, double minStepSize)
+	 * @param pop
+	 * @param problem
+	 * @param maxSteps
+	 * @return	the number of evaluations actually performed
+	 */
 	public static int processWithHC(Population pop, AbstractOptimizationProblem problem, int maxSteps) {
-		return processWithHC(pop, problem, maxSteps, defaultMutationStepSize);
+		return processWithHC(pop, problem, maxSteps, defaultMutationStepSize, minMutationStepSize);
 	}
+	
 	/**
 	 * Optimize a population with a default hill-climbing heuristic with a given termination criterion and mutation operator.
 	 * 
@@ -346,6 +364,7 @@ public class PostProcess {
 		HillClimbing hc = new HillClimbing();
 		// HC depends heavily on the selected mutation operator!
 		hc.SetProblem(problem);
+		mute.init(problem.getIndividualTemplate(), problem);
 		hc.SetMutationOperator(mute);
 		if (pop.size() != pop.getPopulationSize()) {
 			System.err.println(pop.size() + " vs. "+ pop.getPopulationSize());
@@ -480,11 +499,12 @@ public class PostProcess {
 		if (listener != null) {
 			listener.println("number of known optima is " + mmkProb.getRealOptima().size());
 			listener.println("default epsilon is " + mmkProb.getEpsilon());
+			listener.println("optima found with default epsilon: " + getFoundOptima(solutions, mmkProb.getRealOptima(), mmkProb.getEpsilon(), true).size());
 			listener.println("max peak ratio is " + mmkProb.getMaximumPeakRatio(getFoundOptima(solutions, mmkProb.getRealOptima(), mmkProb.getEpsilon(), true)));
-		}
-		for (double epsilon=0.1; epsilon > 0.00000001; epsilon/=10.) {
-		//	out.println("no optima found: " + ((InterfaceMultimodalProblemKnown)mmProb).getNumberOfFoundOptima(pop));
-			if (listener != null) listener.println("found " + getFoundOptima(solutions, mmkProb.getRealOptima(), epsilon, true).size() + " for epsilon = " + epsilon + ", maxPeakRatio: " + ((AbstractMultiModalProblemKnown)mmkProb).getMaximumPeakRatio(solutions, epsilon));
+			for (double epsilon=0.1; epsilon > 0.00000001; epsilon/=10.) {
+				//	out.println("no optima found: " + ((InterfaceMultimodalProblemKnown)mmProb).getNumberOfFoundOptima(pop));
+				listener.println("found " + getFoundOptima(solutions, mmkProb.getRealOptima(), epsilon, true).size() + " for epsilon = " + epsilon + ", maxPeakRatio: " + ((AbstractMultiModalProblemKnown)mmkProb).getMaximumPeakRatio(solutions, epsilon));
+			}
 		}
 	}
 	

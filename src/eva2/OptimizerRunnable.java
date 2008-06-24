@@ -118,7 +118,7 @@ public class OptimizerRunnable implements Runnable {
 				return "Post processing finished";
 			} else {
 				InterfaceTerminator term = proc.getGOParams().getTerminator();
-				return term.terminatedBecause(proc.getGOParams().getOptimizer().getPopulation());
+				return term.lastTerminationMessage();
 			}
 		} else return "Not yet terminated";
 	}

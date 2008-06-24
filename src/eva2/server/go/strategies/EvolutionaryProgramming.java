@@ -5,7 +5,9 @@ import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.GAIndividualBinaryData;
 import eva2.server.go.operators.selection.InterfaceSelection;
 import eva2.server.go.operators.selection.SelectEPTournaments;
+import eva2.server.go.populations.InterfaceSolutionSet;
 import eva2.server.go.populations.Population;
+import eva2.server.go.populations.SolutionSet;
 import eva2.server.go.problems.F1Problem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 
@@ -199,8 +201,8 @@ public class EvolutionaryProgramming implements InterfaceOptimizer, java.io.Seri
         return "Edit the properties of the population used.";
     }
     
-    public Population getAllSolutions() {
-    	return getPopulation();
+    public InterfaceSolutionSet getAllSolutions() {
+    	return new SolutionSet(getPopulation());
     }
     /** Choose a method for selecting the reduced population.
      * @param selection

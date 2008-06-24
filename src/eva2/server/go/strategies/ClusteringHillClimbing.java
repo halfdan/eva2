@@ -6,7 +6,9 @@ import eva2.gui.GenericObjectEditor;
 import eva2.server.go.InterfacePopulationChangedEventListener;
 import eva2.server.go.operators.mutation.MutateESFixedStepSize;
 import eva2.server.go.operators.postprocess.PostProcess;
+import eva2.server.go.populations.InterfaceSolutionSet;
 import eva2.server.go.populations.Population;
+import eva2.server.go.populations.SolutionSet;
 import eva2.server.go.problems.AbstractOptimizationProblem;
 import eva2.server.go.problems.F1Problem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
@@ -207,13 +209,16 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
         return "Change the number of starting individuals stored (Cluster-HC).";
     }
 
-    public Population getAllSolutions() {
+    public InterfaceSolutionSet getAllSolutions() {
     	Population tmp = new Population();
     	tmp.addPopulation(archive);
     	tmp.addPopulation(m_Population);
+    	tmp.SetFunctionCalls(m_Population.getFunctionCalls());
+    	tmp.setGenerationTo(m_Population.getGeneration());
 //    	tmp = PostProcessInterim.clusterBest(tmp, sigma, 0, PostProcessInterim.KEEP_LONERS, PostProcessInterim.BEST_ONLY);
-    	return tmp;
+    	return new SolutionSet(m_Population, tmp);
     }
+    
     /** This method will return a string describing all properties of the optimizer
      * and the applied methods.
      * @return A descriptive string

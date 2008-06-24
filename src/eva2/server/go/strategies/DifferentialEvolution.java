@@ -8,7 +8,9 @@ import eva2.server.go.InterfacePopulationChangedEventListener;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceESIndividual;
 import eva2.server.go.operators.selection.replacement.ReplacementCrowding;
+import eva2.server.go.populations.InterfaceSolutionSet;
 import eva2.server.go.populations.Population;
+import eva2.server.go.populations.SolutionSet;
 import eva2.server.go.problems.AbstractMultiObjectiveOptimizationProblem;
 import eva2.server.go.problems.AbstractOptimizationProblem;
 import eva2.server.go.problems.F1Problem;
@@ -516,8 +518,9 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
         return "Edit the properties of the population used.";
     }
     
-    public Population getAllSolutions() {
-    	return getPopulation();
+    public InterfaceSolutionSet getAllSolutions() {
+    	Population pop = getPopulation();
+    	return new SolutionSet(pop, pop);
     }
 
     /** F is a real and constant factor which controls the amplification of the differential variation

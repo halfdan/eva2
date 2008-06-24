@@ -5,7 +5,9 @@ import java.util.*;
 import eva2.server.go.InterfacePopulationChangedEventListener;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceDataTypeDouble;
+import eva2.server.go.populations.InterfaceSolutionSet;
 import eva2.server.go.populations.Population;
+import eva2.server.go.populations.SolutionSet;
 import eva2.server.go.problems.F1Problem;
 import eva2.server.go.problems.InterfaceFirstOrderDerivableProblem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
@@ -256,8 +258,8 @@ public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Ser
     return this.m_Population;
   }
   
-  public Population getAllSolutions() {
-  	return getPopulation();
+  public InterfaceSolutionSet getAllSolutions() {
+  	return new SolutionSet(getPopulation());
   }
 
   public void setPopulation(Population pop) {

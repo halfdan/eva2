@@ -13,6 +13,7 @@ import eva2.server.go.PopulationInterface;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.AbstractEAIndividualComparator;
 import eva2.server.go.individuals.GAIndividualBinaryData;
+import eva2.server.go.operators.distancemetric.InterfaceDistanceMetric;
 import eva2.server.go.operators.distancemetric.PhenotypeMetric;
 import eva2.tools.EVAERROR;
 import eva2.tools.Mathematics;
@@ -90,6 +91,16 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
         }
     }
 
+    public void addData(String key, Object value) {
+    	if (additionalPopData == null) additionalPopData = new HashMap<String, Object>();
+    	additionalPopData.put(key, value);
+    }
+    
+    public Object getData(String key) {
+    	if (additionalPopData == null) return null;
+    	else return additionalPopData.get(key);
+    }
+    
     public Object clone() {
         return (Object) new Population(this);
     }
@@ -724,8 +735,16 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      * @return the average, minimal and maximal mean distance of individuals in an array of three
      */
     public double[] getPopulationMeasures() {
-    	PhenotypeMetric metric = new PhenotypeMetric();
-    	
+    	return getPopulationMeasures(new PhenotypeMetric());
+    }
+    
+    /**
+     * Returns the average, minimal and maximal individual distance as diversity measure for the population.
+     * This is of course rather expensive computationally. 
+     *
+     * @return the average, minimal and maximal mean distance of individuals in an array of three
+     */
+    public double[] getPopulationMeasures(InterfaceDistanceMetric metric) {
     	double d;
     	double[] res = new double[3];
     	

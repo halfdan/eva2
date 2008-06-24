@@ -17,6 +17,8 @@ import java.io.Serializable;
 import eva2.gui.BeanInspector;
 import eva2.server.go.InterfaceTerminator;
 import eva2.server.go.PopulationInterface;
+import eva2.server.go.populations.InterfaceSolutionSet;
+import eva2.server.go.problems.InterfaceOptimizationProblem;
 
 /*==========================================================================*
  * CLASS DECLARATION
@@ -27,6 +29,7 @@ import eva2.server.go.PopulationInterface;
 public class FitnessValueTerminator implements InterfaceTerminator,
 Serializable {
 	protected double[] m_FitnessValue;
+	private String msg = "";
 	/**
 	 *
 	 */
@@ -34,7 +37,9 @@ Serializable {
 		m_FitnessValue = new double []{0.1};
 	}
 
-	public void init(){}
+	public void init(InterfaceOptimizationProblem prob){
+		msg = "Not terminated.";
+	}
 	/**
 	 *
 	 */
@@ -47,21 +52,22 @@ Serializable {
 	public FitnessValueTerminator( double[] v) {
 		m_FitnessValue = (double[])v.clone();
 	}
-	/**
-	 *
-	 */
+	
+	public boolean isTerminated(InterfaceSolutionSet solSet) {
+		return isTerminated(solSet.getCurrentPopulation());
+	}
+	
 	public boolean isTerminated(PopulationInterface Pop) {
 		double[] fit = Pop.getBestFitness();
 		for (int i = 0; i < fit.length; i++) {
 			if (m_FitnessValue[i]>fit[i]) return false;
 		}
+		msg = "Fitness value below " + BeanInspector.toString(m_FitnessValue);	
 		return true;
 	}
 
-	public String terminatedBecause(PopulationInterface pop) {
-		if (isTerminated(pop)) {
-			return "Fitness value below " + BeanInspector.toString(m_FitnessValue);		
-		} else return "Not yet terminated.";
+	public String lastTerminationMessage() {
+		return msg;
 	}
 
 	/**

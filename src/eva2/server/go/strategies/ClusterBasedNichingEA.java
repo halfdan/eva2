@@ -19,8 +19,9 @@ import eva2.server.go.operators.cluster.ClusteringDensityBased;
 import eva2.server.go.operators.cluster.InterfaceClustering;
 import eva2.server.go.operators.mutation.InterfaceMutation;
 import eva2.server.go.operators.mutation.MutateESGlobal;
-//import eva2.server.go.populations.Distraction;
+import eva2.server.go.populations.InterfaceSolutionSet;
 import eva2.server.go.populations.Population;
+import eva2.server.go.populations.SolutionSet;
 import eva2.server.go.problems.B1Problem;
 import eva2.server.go.problems.Interface2DBorderProblem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
@@ -730,12 +731,12 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
         return "Edit the properties of the population used.";
     }
     
-    public Population getAllSolutions() {
+    public InterfaceSolutionSet getAllSolutions() {
     	// return inactive species
-    	Population pop = (Population)m_Archive.clone();
-    	pop.addPopulation(getPopulation());
-    	pop.setPopulationSize(pop.size());
-    	return pop;
+    	Population sols = (Population)m_Archive.clone();
+    	sols.addPopulation(getPopulation());
+    	sols.setPopulationSize(sols.size());
+    	return new SolutionSet(getPopulation(), sols);
     }
     
     /** This method allows you to set/get the switch that toggles the use

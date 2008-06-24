@@ -64,7 +64,7 @@ public class SigmaSingleMetricGlobalMutation implements InterfaceDistanceMetric,
      * @return description
      */
     public String globalInfo() {
-        return "This is a phenotype based method suited for double data. Metric is computed on a normalized search space.";
+        return "This is an experimental method for individuals using global ES mutation.";
     }
     /** This method will return a naming String
      * @return The name of the algorithm

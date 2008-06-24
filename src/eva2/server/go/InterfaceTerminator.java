@@ -1,26 +1,25 @@
 package eva2.server.go;
-/*
- * Title:        EvA2
- * Description:
- * Copyright:    Copyright (c) 2003
- * Company:      University of Tuebingen, Computer Architecture
- * @author Holger Ulmer, Felix Streichert, Hannes Planatscher
- * @version:  $Revision: 306 $
- *            $Date: 2007-12-04 14:22:52 +0100 (Tue, 04 Dec 2007) $
- *            $Author: mkron $
- */
-/*==========================================================================*
- * IMPORTS
- *==========================================================================*/
-/*==========================================================================*
-* INTERFACE DECLARATION
-*==========================================================================*/
+
+import eva2.server.go.populations.InterfaceSolutionSet;
+import eva2.server.go.problems.InterfaceOptimizationProblem;
+
 /**
+ * Interface for a termination criterion.
+ * 
+ * @author mkron, streiche
  *
  */
 public interface InterfaceTerminator {
-  public boolean isTerminated(PopulationInterface pop);
-  public String toString();
-  public String terminatedBecause(PopulationInterface pop);
-  public void init();
+	/**
+	 * Test a given population for convergence with the criterion defined by the instance.
+	 * 
+	 * @param pop the population to test
+	 * @return	true if the population fulfills the termination criterion, else false
+	 */
+	public boolean isTerminated(PopulationInterface pop);
+	public boolean isTerminated(InterfaceSolutionSet pop);
+
+	public String toString();
+	public String lastTerminationMessage();
+	public void init(InterfaceOptimizationProblem prob);
 }

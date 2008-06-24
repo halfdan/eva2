@@ -5,8 +5,10 @@ import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceGAIndividual;
 import eva2.server.go.operators.selection.InterfaceSelection;
 import eva2.server.go.operators.selection.SelectBestIndividuals;
+import eva2.server.go.populations.InterfaceSolutionSet;
 import eva2.server.go.populations.PBILPopulation;
 import eva2.server.go.populations.Population;
+import eva2.server.go.populations.SolutionSet;
 import eva2.server.go.problems.AbstractOptimizationProblem;
 import eva2.server.go.problems.B1Problem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
@@ -206,8 +208,8 @@ public class PopulationBasedIncrementalLearning implements InterfaceOptimizer, j
         return "Edit the properties of the PBIL population used.";
     }
     
-    public Population getAllSolutions() {
-    	return getPopulation();
+    public InterfaceSolutionSet getAllSolutions() {
+    	return new SolutionSet(getPopulation());
     }
 //    /** This method will set the normation method that is to be used.
 //     * @param normation

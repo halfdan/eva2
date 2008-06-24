@@ -48,7 +48,7 @@ public class ObjectiveSpaceMetric implements InterfaceDistanceMetric, java.io.Se
      * @return description
      */
     public String globalInfo() {
-        return "This is a objective space based metric.";
+        return "The objective space metric calculates euclidian distances on the fitness vectors.";
     }
     /** This method will return a naming String
      * @return The name of the algorithm

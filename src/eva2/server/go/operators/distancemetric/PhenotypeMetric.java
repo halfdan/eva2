@@ -23,6 +23,7 @@ import eva2.server.go.individuals.codings.gp.InterfaceProgram;
  */
 public class PhenotypeMetric implements InterfaceDistanceMetric, java.io.Serializable {
 	private static PhenotypeMetric pMetric = null;
+	private static GenotypeMetricBitSet bitMetric = null;
 	
     public PhenotypeMetric() {
     }
@@ -79,7 +80,8 @@ public class PhenotypeMetric implements InterfaceDistanceMetric, java.io.Seriali
         return d[n][m];
     }
 
-    /** This method allows you to compute the distance between two individuals.
+    /** 
+     * This method allows you to compute the distance between two individuals.
      * Depending on the metric this method may reject some types of individuals.
      * The default return value would be 1.0.
      * @param indy1     The first individual.
@@ -88,18 +90,10 @@ public class PhenotypeMetric implements InterfaceDistanceMetric, java.io.Seriali
      */
     public double distance(AbstractEAIndividual indy1, AbstractEAIndividual indy2) {
         double      result = 0;
+        // results are added up because individuals can implement several data types!
         if ((indy1 instanceof InterfaceDataTypeBinary) && (indy2 instanceof InterfaceDataTypeBinary)) {
-            BitSet  b1, b2;
-            int     l1, l2;
-            double tmpResult = 0;
-            b1 = ((InterfaceDataTypeBinary) indy1).getBinaryData();
-            b2 = ((InterfaceDataTypeBinary) indy2).getBinaryData();
-            l1 = ((InterfaceDataTypeBinary) indy1).size();
-            l2 = ((InterfaceDataTypeBinary) indy2).size();
-            for (int i = 0; (i < l1) && (i < l2); i++) {
-                if (b1.get(i)==b2.get(i)) tmpResult += 1;
-            }
-            result += tmpResult/((double)Math.min(l1,l2));
+            if (bitMetric == null) bitMetric = new GenotypeMetricBitSet();
+            result += bitMetric.distance(indy1, indy2);
         }
         if ((indy1 instanceof InterfaceDataTypeInteger) && (indy2 instanceof InterfaceDataTypeInteger)) {
             int[]   d1,d2;
@@ -222,7 +216,7 @@ public class PhenotypeMetric implements InterfaceDistanceMetric, java.io.Seriali
      * @return description
      */
     public String globalInfo() {
-        return "This is a phenotype based method suited for double data. Metric is computed on a normalized search space.";
+        return "This is a phenotype based metric which can be applied to binary, integer, double, permutation, and program data types. For the latter two, the Levenshtein distance is computed. All distance values are normed.";
     }
     /** This method will return a naming String
      * @return The name of the algorithm
