@@ -50,14 +50,14 @@ public class ESIndividualPermutationData extends AbstractEAIndividual implements
 		for (int i = 0; i < this.m_Genotype.length; i++) {
 			//         if (individual.m_Phenotype != null) {
 
-				this.m_Genotype[i] = new double[individual.m_Genotype[i].length];
-				this.m_Range[i] = new double[individual.m_Genotype[i].length][2];
-				for (int j = 0; j < this.m_Genotype[i].length; j++) {
-					this.m_Genotype[i][j] = individual.m_Genotype[i][j];
-					this.m_Range[i][j][0] = individual.m_Range[i][j][0];
-					this.m_Range[i][j][1] = individual.m_Range[i][j][1];
-					//           }
-		}
+			this.m_Genotype[i] = new double[individual.m_Genotype[i].length];
+			this.m_Range[i] = new double[individual.m_Genotype[i].length][2];
+			for (int j = 0; j < this.m_Genotype[i].length; j++) {
+				this.m_Genotype[i][j] = individual.m_Genotype[i][j];
+				this.m_Range[i][j][0] = individual.m_Range[i][j][0];
+				this.m_Range[i][j][1] = individual.m_Range[i][j][1];
+				//           }
+			}
 		}
 
 		// cloning the members of AbstractEAIndividual

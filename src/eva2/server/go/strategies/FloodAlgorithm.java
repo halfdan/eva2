@@ -3,7 +3,9 @@ package eva2.server.go.strategies;
 import eva2.server.go.InterfacePopulationChangedEventListener;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.GAIndividualBinaryData;
+import eva2.server.go.populations.InterfaceSolutionSet;
 import eva2.server.go.populations.Population;
+import eva2.server.go.populations.SolutionSet;
 import eva2.server.go.problems.B1Problem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 
@@ -234,8 +236,8 @@ public class FloodAlgorithm implements InterfaceOptimizer, java.io.Serializable 
     }
 
     
-    public Population getAllSolutions() {
-    	return getPopulation();
+    public InterfaceSolutionSet getAllSolutions() {
+    	return new SolutionSet(getPopulation());
     }
     /** This methods allow you to set/get the temperatur of the flood
      * algorithm procedure

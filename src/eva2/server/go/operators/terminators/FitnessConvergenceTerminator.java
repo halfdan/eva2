@@ -21,6 +21,8 @@ import eva2.server.go.InterfaceTerminator;
 import eva2.server.go.PopulationInterface;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.operators.distancemetric.PhenotypeMetric;
+import eva2.server.go.populations.InterfaceSolutionSet;
+import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.tools.SelectedTag;
 
 
@@ -43,6 +45,8 @@ Serializable {
 	protected double oldNorm;
 	private SelectedTag stagnationMeasure = new SelectedTag("Fitness calls", "Generations");
 	private SelectedTag convergenceCondition = new SelectedTag("Relative", "Absolute");
+	private String msg="";
+	protected String tagString = "Fitness converged";
 	PhenotypeMetric pMetric = null;
 	
 	public FitnessConvergenceTerminator() {
@@ -66,15 +70,22 @@ Serializable {
 		return "Stop if a fitness convergence criterion has been met.";
 	}
 	
-	public void init() {
+	public void init(InterfaceOptimizationProblem prob) {
 		if (pMetric == null) pMetric = new PhenotypeMetric();
 		firstTime = true;
+		msg = "Not terminated.";
+		tagString = "Fitness converged";
 	}
 
+	public boolean isTerminated(InterfaceSolutionSet solSet) {
+		return isTerminated(solSet.getCurrentPopulation());
+	}
+	
 	public boolean isTerminated(PopulationInterface Pop) {
 		if (!firstTime && isStillConverged(Pop.getBestIndividual())) {
 			if (stagnationTimeHasPassed(Pop)) {
 				// population hasnt improved much for max time, criterion is met
+				msg = getTerminationMessage(tagString);
 				return true;
 			} else {
 				// population hasnt improved much for i<max time, keep running
@@ -88,10 +99,8 @@ Serializable {
 		}
 	}
 	
-	public String terminatedBecause(PopulationInterface pop) {
-		if (isTerminated(pop)) {
-			return getTerminationMessage("Fitness converged");		
-		} else return "Not yet terminated.";
+	public String lastTerminationMessage() {
+		return msg;
 	}
 
 	protected String getTerminationMessage(String prefix) {

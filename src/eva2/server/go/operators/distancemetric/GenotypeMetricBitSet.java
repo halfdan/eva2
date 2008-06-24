@@ -46,9 +46,9 @@ public class GenotypeMetricBitSet implements InterfaceDistanceMetric, java.io.Se
 
         for (int i = 0; i < length; i++) {
             if (dIndy1.get(i) == dIndy2.get(i)) result += 0;
-            else result += 1/(double)length;
+            else result += 1;
         }
-        return result;
+        return result/(double)length;
     }
 /**********************************************************************************************************************
  * These are for GUI
@@ -57,7 +57,7 @@ public class GenotypeMetricBitSet implements InterfaceDistanceMetric, java.io.Se
      * @return description
      */
     public String globalInfo() {
-        return "This is a genotype based distance metric suited for binary data. Metric is computed on a normalized search space.";
+        return "This is a genotype based distance metric suited for binary data. The hamming distance is computed and normalized by chromosome length.";
     }
     /** This method will return a naming String
      * @return The name of the algorithm

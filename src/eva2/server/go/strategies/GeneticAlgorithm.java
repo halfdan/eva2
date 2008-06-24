@@ -5,7 +5,9 @@ import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.GAIndividualBinaryData;
 import eva2.server.go.operators.selection.InterfaceSelection;
 import eva2.server.go.operators.selection.SelectTournament;
+import eva2.server.go.populations.InterfaceSolutionSet;
 import eva2.server.go.populations.Population;
+import eva2.server.go.populations.SolutionSet;
 import eva2.server.go.problems.B1Problem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 
@@ -238,8 +240,8 @@ public class GeneticAlgorithm implements InterfaceOptimizer, java.io.Serializabl
             return "Edit the properties of the population used.";
         }
 
-        public Population getAllSolutions() {
-        	return getPopulation();
+        public InterfaceSolutionSet getAllSolutions() {
+        	return new SolutionSet(getPopulation());
         }
 //    /** This method will set the normation method that is to be used.
 //     * @param normation

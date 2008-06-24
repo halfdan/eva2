@@ -1,9 +1,7 @@
 package eva2.server.go.strategies;
 
-import java.util.List;
-
 import eva2.server.go.InterfacePopulationChangedEventListener;
-import eva2.server.go.individuals.AbstractEAIndividual;
+import eva2.server.go.populations.InterfaceSolutionSet;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 
@@ -62,11 +60,15 @@ public interface InterfaceOptimizer {
     public void setPopulation(Population pop);
     
     /**
-     * Return all found solutions (local optima) if they are not contained in the last population.
+     * Return all found solutions (local optima) if they are not contained in the current population. Be
+     * sure to set the Population properties, especially function calls and generation, with respect
+     * to the ongoing optimization.
+     * May return the same as getPopulation if the optimizer makes no distinction, i.e. does not collect
+     * solutions outside the current population.
      * 
-     * @return A population of found solutions or null if they are contained in the population.
+     * @return A population of found solutions.
      */
-    public Population getAllSolutions();
+    public InterfaceSolutionSet getAllSolutions();
     
     /** 
      * This method allows you to set an identifier for the algorithm

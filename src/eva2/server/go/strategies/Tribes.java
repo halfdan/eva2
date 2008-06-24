@@ -8,7 +8,9 @@ import eva2.server.go.InterfacePopulationChangedEventListener;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceDataTypeDouble;
 import eva2.server.go.individuals.InterfaceESIndividual;
+import eva2.server.go.populations.InterfaceSolutionSet;
 import eva2.server.go.populations.Population;
+import eva2.server.go.populations.SolutionSet;
 import eva2.server.go.problems.AbstractOptimizationProblem;
 import eva2.server.go.problems.InterfaceHasInitRange;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
@@ -658,12 +660,12 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
 	}
 	
 	/**
-	 * Return a Population of TribesExplorers (AbstractEAIndividuals) of which some where 
+	 * Return a SolutionSet of TribesExplorers (AbstractEAIndividuals) of which some where 
 	 * memory particles, thus the returned population is larger than the current population.
 	 * 
 	 * @return a population of possible solutions. 
 	 */
-    public Population getAllSolutions() {
+    public InterfaceSolutionSet getAllSolutions() {
     	// return population and memories?
     	Population all = (Population)population.clone();
     	List<TribesPosition> mems = swarm.collectMem();
@@ -671,8 +673,10 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
 			TribesPosition tp = iterator.next();
 			all.add(positionToExplorer(tp));
 		}
+    	all.SetFunctionCalls(population.getFunctionCalls());
+    	all.setGenerationTo(population.getGeneration());
     	//all.addPopulation(pop);
-    	return all;
+    	return new SolutionSet(population, all);
     }
     
     protected TribesExplorer positionToExplorer(TribesPosition pos) {

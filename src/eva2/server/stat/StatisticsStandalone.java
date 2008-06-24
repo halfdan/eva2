@@ -125,8 +125,8 @@ public class StatisticsStandalone extends AbstractStatistics implements Interfac
 		m_InfoString = infoString;
 	}
 	
-	public void stopOptPerformed(boolean normal) {
-		super.stopOptPerformed(normal);
+	public void stopOptPerformed(boolean normal, String stopMessage) {
+		super.stopOptPerformed(normal, stopMessage);
 
 		if (bestCurrentIndividual != null) {
 			m_SumOfBestFit = m_SumOfBestFit + bestCurrentIndividual.getFitness()[0];

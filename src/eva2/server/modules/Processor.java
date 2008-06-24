@@ -194,7 +194,7 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
         	this.goParams.getProblem().initProblem();
         	this.goParams.getOptimizer().SetProblem(this.goParams.getProblem());
         	if (this.m_createInitialPopulations) this.goParams.getOptimizer().init();
-        	this.goParams.getTerminator().init();
+        	this.goParams.getTerminator().init(this.goParams.getProblem());
         	
         	//m_Statistics.createNextGenerationPerformed((PopulationInterface)this.m_ModulParameter.getOptimizer().getPopulation());
         	if (m_ListenerModule!=null) m_ListenerModule.updateProgress(getStatusPercent(goParams.getOptimizer().getPopulation(), runCounter, m_Statistics.getStatisticsParameter().getMultiRuns()), null);
@@ -204,26 +204,17 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
         		// registerPopulationStateChanged *SHOULD* be fired by the optimizer or resp. the population
         		// as we are event listener
         		if (popLog != null) EVAHELP.logString(this.goParams.getOptimizer().getPopulation().getIndyList(), popLog);
-        	} while (isOptRunning() && !this.goParams.getTerminator().isTerminated(this.goParams.getOptimizer().getPopulation()));
+        	} while (isOptRunning() && !this.goParams.getTerminator().isTerminated(this.goParams.getOptimizer().getAllSolutions()));
         	runCounter++;
 
         	//////////////// Default stats
-        	m_Statistics.stopOptPerformed(isOptRunning()); // stop is "normal" if opt wasnt set false by the user (and thus still true)
+        	m_Statistics.stopOptPerformed(isOptRunning(), goParams.getTerminator().lastTerminationMessage()); // stop is "normal" if opt wasnt set false by the user (and thus still true)
         	
         	//////////////// PP or set results without further PP
         	if (isOptRunning()) {
         		resultPop = performPostProcessing();
-        	} else resultPop = goParams.getOptimizer().getAllSolutions();
-/**
-        	if (isOptRunning()) {
-        		resultPop = performPostProcessing();
-        		//System.out.println("calling getall after PP returned " + (resultPop == null ? "null" : resultPop.size()));
-        	}
-        	if (resultPop == null) {
-        		resultPop = goParams.getOptimizer().getAllSolutions();
-        		//System.out.println("calling getall returned " + resultPop.size());
-        	}
-**/
+        	} else resultPop = goParams.getOptimizer().getAllSolutions().getSolutions();
+
         }
         setOptRunning(false); // normal finish
         if (m_ListenerModule!=null) m_ListenerModule.performedStop(); // is only needed in client server mode
@@ -345,7 +336,7 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
 	    		// if textwindow was closed, check if it should be reopened for pp
 	    		if (m_Statistics instanceof StatisticsWithGUI) ((StatisticsWithGUI)m_Statistics).maybeShowProxyPrinter();
 	    	}
-	    	Population resultPop = (Population)(goParams.getOptimizer().getAllSolutions()).clone();
+	    	Population resultPop = (Population)(goParams.getOptimizer().getAllSolutions().getSolutions().clone());
 	    	if (resultPop.getFunctionCalls() != goParams.getOptimizer().getPopulation().getFunctionCalls()) {
 	//    		System.err.println("bad case in Processor::performNewPostProcessing ");
 	    		resultPop.SetFunctionCalls(goParams.getOptimizer().getPopulation().getFunctionCalls());

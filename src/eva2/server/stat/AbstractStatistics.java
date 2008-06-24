@@ -134,7 +134,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 		functionCalls = 0;
 	}
 	
-	public void stopOptPerformed(boolean normal) {
+	public void stopOptPerformed(boolean normal, String stopMessage) {
 		if (TRACE) System.out.println("AbstractStatistics.stopOptPerformed");
 		if (runIterCnt < meanCollection.size()) {
 			// no good: later run was shorter than the first one. What to do? Discard the longer one:
@@ -143,6 +143,8 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 		}
 		optRunsPerformed++;
 		functionCallSum += functionCalls;
+		if (printRunStoppedVerbosity() && (stopMessage != null)) printToTextListener(" Termination message: " + stopMessage + "\n");
+		if (printRunStoppedVerbosity()) printToTextListener(" Function calls run: " + functionCalls + ", sum: " + functionCallSum + "\n");
 		// check for convergence
 		if (bestCurrentIndividual != null) {
 			if (Mathematics.norm(bestCurrentIndividual.getFitness()) < this.m_StatsParams.getConvergenceRateThreshold()) {

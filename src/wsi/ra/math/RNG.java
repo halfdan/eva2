@@ -1,5 +1,6 @@
 package wsi.ra.math;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import eva2.tools.Mathematics;
@@ -98,6 +99,28 @@ public class RNG extends Random {
         }
         return result;
     }
+    
+    /** This method returns a random permutation of n int values
+     * @param length        The number of int values
+     * @return The permutation [0-length-1]
+     */
+    public static int[] randomPerm(int length) {
+    	ArrayList<Integer> intList = new ArrayList<Integer>(length);
+        int[]       result      = new int[length];
+        for (int i = 0; i < length; i++) {
+            intList.add(new Integer(i));
+        }
+        for (int i = 0; i < length-1; i++) {
+        	int index = randomInt(intList.size());
+            result[i] = intList.get(index);
+            intList.remove(index);
+            
+        }
+        if (intList.size()>1) System.err.println("Error in randomPerm!");
+        result[length-1] = intList.get(0);
+        return result;
+    }
+
   /**
    *
    */

@@ -6,7 +6,9 @@ import eva2.server.go.InterfacePopulationChangedEventListener;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.operators.selection.InterfaceSelection;
 import eva2.server.go.operators.selection.SelectBestIndividuals;
+import eva2.server.go.populations.InterfaceSolutionSet;
 import eva2.server.go.populations.Population;
+import eva2.server.go.populations.SolutionSet;
 import eva2.server.go.problems.F1Problem;
 import eva2.server.go.problems.InterfaceLocalSearchable;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
@@ -364,8 +366,8 @@ public class MemeticAlgorithm implements InterfaceOptimizer,
 		this.subsetsize = subsetsize;
 	}
     
-    public Population getAllSolutions() {
-    	return getPopulation();
+    public InterfaceSolutionSet getAllSolutions() {
+    	return new SolutionSet(getPopulation());
     }
 	public int getSubsetsize() {
 		return subsetsize;

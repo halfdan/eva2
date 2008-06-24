@@ -3,17 +3,18 @@ package eva2.server.go.strategies;
 
 import java.util.BitSet;
 
+import wsi.ra.math.RNG;
 import eva2.server.go.InterfacePopulationChangedEventListener;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceGAIndividual;
 import eva2.server.go.operators.selection.InterfaceSelection;
 import eva2.server.go.operators.selection.SelectBestSingle;
 import eva2.server.go.operators.selection.SelectRandom;
-import eva2.server.go.populations.PBILPopulation;
+import eva2.server.go.populations.InterfaceSolutionSet;
 import eva2.server.go.populations.Population;
+import eva2.server.go.populations.SolutionSet;
 import eva2.server.go.problems.B1Problem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import wsi.ra.math.RNG;
 
 /** This is an implementation of the CHC Adaptive Search Algorithm by Eselman. It is
  * limited to binary data and is based on massively distruptive crossover. I'm not
@@ -295,8 +296,8 @@ public class CHCAdaptiveSearchAlgorithm implements InterfaceOptimizer, java.io.S
         return "Edit the properties of the population used.";
     }
     
-    public Population getAllSolutions() {
-    	return getPopulation();
+    public InterfaceSolutionSet getAllSolutions() {
+    	return new SolutionSet(getPopulation());
     }
 
 //    /** This method will set the normation method that is to be used.
