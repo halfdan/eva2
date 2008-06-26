@@ -48,22 +48,38 @@ public class CombinedTerminator implements InterfaceTerminator, Serializable {
 	}
 
 	public boolean isTerminated(InterfaceSolutionSet solSet) {
-		return isTerminated(solSet.getCurrentPopulation());
+		return isTerm(solSet);
+	}
+
+	public boolean isTerminated(PopulationInterface pop) {
+		return isTerm(pop);
+	}
+
+	private boolean getTermState(InterfaceTerminator term, Object curPopOrSols) {
+		if (curPopOrSols instanceof InterfaceSolutionSet) return term.isTerminated((InterfaceSolutionSet)curPopOrSols);
+		else return term.isTerminated((PopulationInterface)curPopOrSols);
 	}
 	
-	public boolean isTerminated(PopulationInterface pop) {
+	/** 
+	 * As we want to react to both Population and SolutionSet in the according way, this method is an abstraction
+	 * over both and uses getTermState to distinct the dereferenced calls.
+	 * 
+	 * @param curPopOrSols
+	 * @return
+	 */
+	private boolean isTerm(Object curPopOrSols) {
 		boolean ret;
 		if ((t1 == null) && (t2 == null)) {
 			System.err.println("Error: No terminator set in CombinedTerminator");
 			return true; 
 		}
 		if (t1 == null) {
-			ret = t2.isTerminated(pop);
+			ret = getTermState(t2, curPopOrSols);
 			msg = t2.lastTerminationMessage();
 			return ret;
 		}
 		if (t2 == null) {
-			ret = t1.isTerminated(pop);
+			ret = getTermState(t1, curPopOrSols);
 			msg = t1.lastTerminationMessage();
 			return ret;
 		}
@@ -71,16 +87,20 @@ public class CombinedTerminator implements InterfaceTerminator, Serializable {
 		if (andOrTag.isSelectedString("AND")) {
 			// make sure that both terminators are triggered by every call, because some judge
 			// time-dependently and store information on the population.
-			ret = t1.isTerminated(pop);
-			ret = ret && t2.isTerminated(pop); 
+			ret = getTermState(t1, curPopOrSols);
+			ret = ret && getTermState(t2, curPopOrSols); 
 			if (ret) msg = "Terminated because both: " + t1.lastTerminationMessage() + " And " + t2.lastTerminationMessage();
 		} else { // OR
-			// make sure that both terminators are triggered by every call, because some judge
+			// make sure that both terminators are triggered on every call, because some judge
 			// time-dependently and store information on the population.
-			ret = t1.isTerminated(pop);
-			if (ret) msg = t1.lastTerminationMessage();
-			ret = ret || t2.isTerminated(pop);
-			if (ret) msg = t2.lastTerminationMessage();
+			ret = getTermState(t1, curPopOrSols);
+			if (ret) {
+				msg = t1.lastTerminationMessage();
+				getTermState(t2, curPopOrSols); // just so that the second one is triggered, result is ignored.
+			} else {
+				ret = getTermState(t2, curPopOrSols);  // trigger and really look at the result
+				if (ret) msg = t2.lastTerminationMessage();
+			}
 		}
 		return ret;
 	}
