@@ -37,7 +37,7 @@ public class KnownOptimaFoundTerminator implements InterfaceTerminator, Serializ
 	}
 
 	public boolean isTerminated(InterfaceSolutionSet solSet) {
-		return isTerm(solSet.getCurrentPopulation());
+		return isTerm(solSet.getSolutions());
 	}
 	
 	public boolean isTerminated(PopulationInterface pop) {
