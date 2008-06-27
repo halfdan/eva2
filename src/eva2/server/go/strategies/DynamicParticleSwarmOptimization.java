@@ -1,14 +1,14 @@
 package eva2.server.go.strategies;
 
+import wsi.ra.math.RNG;
 import eva2.gui.GenericObjectEditor;
+import eva2.gui.Plot;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceDataTypeDouble;
 import eva2.server.go.individuals.InterfaceESIndividual;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.AbstractOptimizationProblem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import eva2.server.go.tools.AbstractObjectEditor;
-import wsi.ra.math.RNG;
 import eva2.tools.SelectedTag;
 
 /** 
@@ -42,6 +42,9 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
     
 	private double maxSpeedLimit = 0.1;
 	private double minSpeedLimit = .003;
+	
+	private boolean plotBestOnly = false;
+	private transient double[] lastBestPlot = null;
 	
 	/**
 	 * constant indication quantum particles
@@ -158,12 +161,45 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
             
             resetFitness(indy);
             
-            if (this.m_Show) {
-                this.m_Plot.setUnconnectedPoint(position[0], position[1], (Integer)(indy.getData(indexKey)));
+            plotIndy(position, null, (Integer)(indy.getData(indexKey)));
+//            if (this.m_Show) {
+//                this.m_Plot.setUnconnectedPoint(position[0], position[1], (Integer)(indy.getData(indexKey)));
                 //this.m_Plot.setConnectedPoint(curPosition[0] + curVelocity[0], curPosition[1] + curVelocity[1], index+1);
-        }
+//        }
         //System.out.println("quantum particle " + index + " set to " + newPos[0] + "/" + newPos[1]);
     }
+    
+    private void plotBestIndy() {
+    	if (m_Plot != null) {
+    		double[] curPosition = ((InterfaceDataTypeDouble)m_Population.getBestEAIndividual()).getDoubleData();
+    	
+    		if (lastBestPlot != null) this.m_Plot.setConnectedPoint(lastBestPlot[0], lastBestPlot[1], 0);
+    		this.m_Plot.setConnectedPoint(curPosition[0], curPosition[1], 0);
+    		lastBestPlot = curPosition.clone();
+    	}
+    }
+    
+	protected void plotIndy(double[] curPosition, double[] curVelocity, int index) {
+		if (this.m_Show) {
+			if (plotBestOnly) {
+				return;
+//				if (index != ((Integer)(m_Population.getBestEAIndividual().getData(indexKey)))) return;
+//				else {
+//					if (lastBestPlot != null) this.m_Plot.setConnectedPoint(lastBestPlot[0], lastBestPlot[1], index);
+//					this.m_Plot.setConnectedPoint(curPosition[0], curPosition[1], index);
+//					lastBestPlot = curPosition.clone();
+//				}
+			} else {
+				if (curVelocity == null) {
+			
+					this.m_Plot.setUnconnectedPoint(curPosition[0], curPosition[1], index);
+				} else {
+					this.m_Plot.setConnectedPoint(curPosition[0], curPosition[1], index);
+					this.m_Plot.setConnectedPoint(curPosition[0] + curVelocity[0], curPosition[1] + curVelocity[1], index);
+				}
+			}
+		}
+	}
 
     /**
      * Return a uniformly distributed position vector within a sphere of radius r in relation to the given range.
@@ -379,7 +415,10 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
 	protected void evaluatePopulation(Population population) {
     	envHasChanged = false;
         super.evaluatePopulation(population);
+	    if (m_Show && plotBestOnly) plotBestIndy();
+	    
 	    envHasChanged = detectChange(m_Population);
+	    
 //	    if (envHasChanged) {
 //	    	System.out.println("environmental change detected!");
 //	    }
@@ -637,5 +676,23 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
 	
 	public String phi3TipText() {
 		return "Acceleration of the problem specific attractor";
+	}
+	
+	public Plot getPlot() {
+		return m_Plot;
+	}
+
+	/**
+	 * @return the plotBestOnly
+	 */
+	public boolean isPlotBestOnly() {
+		return plotBestOnly;
+	}
+
+	/**
+	 * @param plotBestOnly the plotBestOnly to set
+	 */
+	public void setPlotBestOnly(boolean plotBestOnly) {
+		this.plotBestOnly = plotBestOnly;
 	}
 }

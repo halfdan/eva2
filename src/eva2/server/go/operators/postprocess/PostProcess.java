@@ -12,7 +12,6 @@ import eva2.server.go.operators.cluster.InterfaceClustering;
 import eva2.server.go.operators.distancemetric.InterfaceDistanceMetric;
 import eva2.server.go.operators.distancemetric.PhenotypeMetric;
 import eva2.server.go.operators.mutation.InterfaceMutation;
-import eva2.server.go.operators.mutation.MutateESCovarianceMartixAdaption;
 import eva2.server.go.operators.mutation.MutateESFixedStepSize;
 import eva2.server.go.operators.mutation.MutateESMutativeStepSizeControl;
 import eva2.server.go.operators.terminators.EvaluationTerminator;
@@ -503,7 +502,7 @@ public class PostProcess {
 			listener.println("max peak ratio is " + mmkProb.getMaximumPeakRatio(getFoundOptima(solutions, mmkProb.getRealOptima(), mmkProb.getEpsilon(), true)));
 			for (double epsilon=0.1; epsilon > 0.00000001; epsilon/=10.) {
 				//	out.println("no optima found: " + ((InterfaceMultimodalProblemKnown)mmProb).getNumberOfFoundOptima(pop));
-				listener.println("found " + getFoundOptima(solutions, mmkProb.getRealOptima(), epsilon, true).size() + " for epsilon = " + epsilon + ", maxPeakRatio: " + ((AbstractMultiModalProblemKnown)mmkProb).getMaximumPeakRatio(solutions, epsilon));
+				listener.println("found " + getFoundOptima(solutions, mmkProb.getRealOptima(), epsilon, true).size() + " for epsilon = " + epsilon + ", maxPeakRatio: " + AbstractMultiModalProblemKnown.getMaximumPeakRatio(mmkProb,solutions, epsilon));
 			}
 		}
 	}
