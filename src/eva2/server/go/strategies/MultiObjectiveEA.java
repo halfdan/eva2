@@ -10,10 +10,12 @@ import eva2.server.go.operators.selection.SelectMONonDominated;
 import eva2.server.go.populations.InterfaceSolutionSet;
 import eva2.server.go.populations.Population;
 import eva2.server.go.populations.SolutionSet;
+import eva2.server.go.problems.AbstractOptimizationProblem;
 import eva2.server.go.problems.FM0Problem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 
-/** A generic framework for multi-objecitve optimization, you need
+/** 
+ * A generic framework for multi-objecitve optimization, you need
  * to specify an optimization strategy (like GA), an archiver and
  * an information retrival strategy. With this scheme you can realized:
  *	Vector Evaluated GA
@@ -28,7 +30,7 @@ import eva2.server.go.problems.InterfaceOptimizationProblem;
  * In case you address a multi-objective optimization problem with a single-
  * objective optimizer instead of this MOEA, such an optimizer would randomly
  * toggle between the objective for each selection and thus explore at least
- * the extreme points of the objective space, but more simpler methods like
+ * the extreme points of the objective space, but simpler methods like
  * random search or hill-climbing might even fail on that. 
  * Created by IntelliJ IDEA.
  * User: streiche
@@ -58,6 +60,15 @@ public class MultiObjectiveEA implements InterfaceOptimizer, java.io.Serializabl
         this.m_InformationRetrieval         = (InterfaceInformationRetrieval)a.m_InformationRetrieval.clone();
     }
 
+    public MultiObjectiveEA(InterfaceOptimizer subOpt, InterfaceArchiving archiving, int archiveSize,
+    	    InterfaceInformationRetrieval infoRetrieval, AbstractOptimizationProblem problem) {
+        setOptimizer(subOpt);
+        setArchivingStrategy(archiving);
+        setArchiveSize(archiveSize);
+        setInformationRetrieval(infoRetrieval);
+        SetProblem(problem);
+    }
+    
     public Object clone() {
         return (Object) new MultiObjectiveEA(this);
     }
@@ -230,7 +241,7 @@ public class MultiObjectiveEA implements InterfaceOptimizer, java.io.Serializabl
     }
     
     public InterfaceSolutionSet getAllSolutions() {
-    	return new SolutionSet(getPopulation());
+    	return new SolutionSet(getPopulation(), getPopulation().getArchive());
     }
 
     /** This method allows you to set/get the optimizing technique to use.
