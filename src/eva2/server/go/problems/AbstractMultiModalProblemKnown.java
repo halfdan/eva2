@@ -215,7 +215,11 @@ public abstract class AbstractMultiModalProblemKnown extends AbstractProblemDoub
 	 * @return int
 	 */
 	public int getNumberOfFoundOptima(Population pop) {
-		List<AbstractEAIndividual> sols = PostProcess.getFoundOptima(pop, m_Optima, m_Epsilon, true);
+		return getNoFoundOptimaOf(this, pop);
+	}
+	
+	public static int getNoFoundOptimaOf(InterfaceMultimodalProblemKnown mmProb, Population pop) {
+		List<AbstractEAIndividual> sols = PostProcess.getFoundOptima(pop, mmProb.getRealOptima(), mmProb.getEpsilon(), true);
 		return sols.size();
 	}
 
@@ -231,18 +235,18 @@ public abstract class AbstractMultiModalProblemKnown extends AbstractProblemDoub
 	 * @return double
 	 */
 	public double getMaximumPeakRatio(Population pop) {
-		return getMaximumPeakRatio(pop, m_Epsilon);
+		return getMaximumPeakRatio(this, pop, m_Epsilon);
 	}
 	
-	public double getMaximumPeakRatio(Population pop, double epsilon) {
+	public static double getMaximumPeakRatio(InterfaceMultimodalProblemKnown mmProb, Population pop, double epsilon) {
 		double                  optimaInvertedSum = 0, foundInvertedSum = 0;
-		AbstractEAIndividual[] optsFound = PostProcess.getFoundOptimaArray(pop, m_Optima, epsilon, true);
-
-		for (int i=0; i<m_Optima.size(); i++) {
+		Population realOpts = mmProb.getRealOptima();
+		AbstractEAIndividual[] optsFound = PostProcess.getFoundOptimaArray(pop, realOpts, epsilon, true);
+		for (int i=0; i<realOpts.size(); i++) {
 			// sum up known optimal fitness values
-			optimaInvertedSum += m_Optima.getEAIndividual(i).getFitness(0);
+			optimaInvertedSum += realOpts.getEAIndividual(i).getFitness(0);
 			// sum up best found hits, with inverted fitness
-			if (optsFound[i] != null) foundInvertedSum += m_GlobalOpt - optsFound[i].getFitness(0);
+			if (optsFound[i] != null) foundInvertedSum += realOpts.getBestEAIndividual().getFitness(0) - optsFound[i].getFitness(0);
 		}
 
 		return foundInvertedSum/optimaInvertedSum;

@@ -161,6 +161,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 	
 	protected void finalizeOutput() {
 		if (printFinalVerbosity()) printToTextListener("*******\n Runs performed: " + optRunsPerformed + ", reached target " + convergenceCnt + " times with threshold " + m_StatsParams.getConvergenceRateThreshold() + ", rate " + convergenceCnt/(double)m_StatsParams.getMultiRuns() + '\n');
+		if (printFinalVerbosity()) printToTextListener(" Average function calls: " + (functionCallSum/optRunsPerformed) + "\n");
 		if (printFinalVerbosity() && (bestIndividualAllover != null)) printToTextListener("Best overall individual: " + BeanInspector.toString(bestIndividualAllover) + '\n');
 		if (printFinalVerbosity() && (bestIndividualAllover != null)) printToTextListener("             solution	: " + AbstractEAIndividual.getDefaultDataString(bestIndividualAllover) + '\n');
 		if (printFinalVerbosity() && (bestIndividualAllover != null)) printToTextListener("             fitness	: " + BeanInspector.toString(bestIndividualAllover.getFitness()) + '\n');

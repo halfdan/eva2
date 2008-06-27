@@ -110,7 +110,10 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
 	public void stopOptPerformed(boolean normal, String stopMessage) {
 		super.stopOptPerformed(normal, stopMessage);
 
-		if (optRunsPerformed > m_StatsParams.getMultiRuns()) System.err.println("error: this shouldnt happen (StatisticsWithGUI::stopOptPerformed)");
+		if (optRunsPerformed > m_StatsParams.getMultiRuns()) {
+			// this may happen if the user reduces the multirun parameter during late multiruns
+			System.err.println("error: more runs performed than defined.");
+		}
 		// unite the graphs only if the break was "normal"
 		if (normal && (m_StatsParams.getMultiRuns() > 1) && (m_StatGraph != null)) {
 			// unite the point sets for a multirun
