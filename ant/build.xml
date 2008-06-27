@@ -455,12 +455,13 @@
   </target>
 
 <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	        Generate Distribution
+	        Generate Distribution and put it online. This also replaces the 
+	        Probs and ESModel packages so keep them synchronized.
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
 
-	<target name="distToWWW" depends="dist">
+	<target name="distToWWW" depends="init">
 		<mkdir dir="${web.download.directory}/old-${DSTAMP}-${TSTAMP}" />
-	    <copy todir="${web.download.directory}/old-${DSTAMP}-${TSTAMP}">
+		<copy todir="${web.download.directory}/old-${DSTAMP}-${TSTAMP}">
 	      <fileset dir="${web.download.directory}">
 	      	<include name="**Src.tar.gz" />
 	      	<include name="**.jar" />
@@ -470,6 +471,9 @@
 	      <fileset dir="${distribution.directory}">
 	      	<include name="**Src.tar.gz" />
 	      	<include name="**.jar" />
+	      </fileset>
+	      <fileset dir="${source.directory}/eva2">
+	      	<include name="EvAInfo.java" />
 	      </fileset>
 	    </copy>
 	</target>

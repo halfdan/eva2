@@ -13,6 +13,10 @@ import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceDataTypeBinary;
 import eva2.server.go.individuals.InterfaceDataTypeDouble;
 import eva2.server.go.individuals.InterfaceESIndividual;
+import eva2.server.go.operators.archiving.ArchivingNSGAII;
+import eva2.server.go.operators.archiving.InformationRetrievalInserting;
+import eva2.server.go.operators.archiving.InterfaceArchiving;
+import eva2.server.go.operators.archiving.InterfaceInformationRetrieval;
 import eva2.server.go.operators.cluster.ClusteringDensityBased;
 import eva2.server.go.operators.crossover.CrossoverESDefault;
 import eva2.server.go.operators.crossover.InterfaceCrossover;
@@ -39,6 +43,7 @@ import eva2.server.go.strategies.GradientDescentAlgorithm;
 import eva2.server.go.strategies.HillClimbing;
 import eva2.server.go.strategies.InterfaceOptimizer;
 import eva2.server.go.strategies.MonteCarloSearch;
+import eva2.server.go.strategies.MultiObjectiveEA;
 import eva2.server.go.strategies.ParticleSwarmOptimization;
 import eva2.server.go.strategies.SimulatedAnnealing;
 import eva2.server.go.strategies.Tribes;
@@ -293,6 +298,49 @@ public class OptimizerFactory {
 		ga.init();
 
 		return ga;
+	}
+	
+	/**
+	 * This method creates a multi-objective EA optimizer. Remember to set a multi-objective
+	 * selection method within the specific optimizer. This uses a standard archiving strategy (NSGAII)
+	 * and InformationRetrievalInserting.
+	 *
+	 * @param subOpt	the specific optimizer to use
+	 * @param archiveSize	maximum size of the archive
+	 * @param problem
+	 * @param listener
+	 * @return An optimization algorithm that employs a multi-objective optimizer 
+	 */
+	public static final MultiObjectiveEA createMultiObjectiveEA(
+	    InterfaceOptimizer subOpt, int archiveSize,
+	    AbstractOptimizationProblem problem,
+	    InterfacePopulationChangedEventListener listener) {
+
+		return createMultiObjectiveEA(subOpt, new ArchivingNSGAII(), archiveSize, new InformationRetrievalInserting(), problem, listener);
+	}
+	
+	/**
+	 * This method creates a multi-objective EA optimizer. Remember to set a multi-objective
+	 * selection method within the specific optimizer.
+	 *
+	 * @param subOpt	the specific optimizer to use
+	 * @param archiving	the archiving strategy collecting the pareto front
+	 * @param archiveSize	maximum size of the archive
+	 * @param infoRetrieval	information retrieval strategy
+	 * @param problem
+	 * @param listener
+	 * @return An optimization algorithm that employs a multi-objective optimizer 
+	 */
+	public static final MultiObjectiveEA createMultiObjectiveEA(
+	    InterfaceOptimizer subOpt, InterfaceArchiving archiving, int archiveSize,
+	    InterfaceInformationRetrieval infoRetrieval,
+	    AbstractOptimizationProblem problem,
+	    InterfacePopulationChangedEventListener listener) {
+
+		problem.initProblem();
+		subOpt.SetProblem(problem);
+
+		return new MultiObjectiveEA(subOpt, archiving, archiveSize, infoRetrieval, problem);
 	}
 
 	/**
