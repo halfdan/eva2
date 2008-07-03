@@ -45,7 +45,6 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import eva2.server.go.problems.DiscType;
 import eva2.tools.EVAHELP;
 import eva2.tools.SelectedTag;
 /*==========================================================================*
@@ -428,7 +427,7 @@ implements PropertyEditor {
 			GenericArrayEditor editor = new GenericArrayEditor();
 			
 
-			DiscType[] initial = { new DiscType(3,4.), new DiscType(5, 7.)};
+			int[] initial = { 3,45, 7};
 			editor.setValue(initial);
 			PropertyDialog pd = new PropertyDialog(editor,EVAHELP.cutClassName(editor.getClass().getName())
 					, 100, 100);
