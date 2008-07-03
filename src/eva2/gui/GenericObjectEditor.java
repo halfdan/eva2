@@ -452,8 +452,8 @@ public class GenericObjectEditor implements PropertyEditor {
 //						setObject(dummy);
 //					} else {
 					if (TRACE) System.out.println(className);
-					Object n = (Object)Class.forName(className, true, this.getClass().getClassLoader()).newInstance();
-					n = (Object)Class.forName(className).newInstance();
+//					Object n = (Object)Class.forName(className, true, this.getClass().getClassLoader()).newInstance();
+					Object n = (Object)Class.forName(className).newInstance();
 					setObject(n);
 //					}
 				} catch (Exception ex) {

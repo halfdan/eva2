@@ -2110,6 +2110,23 @@ Quick Howto
 \begin_layout Standard
 To tackle optimization problems already existing in Matlab, we provide a
  simple Matlab interface comprising in a Matlab class definition.
+ The Matlab m-files are located in the EvA
+\noun on
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+
+\noun default
+2 resources folder of the distributed binary jar or can be downloaded from
+ the homepage.
  If you have an existing Matlab function you want to optimize with some
  standard algorithms implemented in 
 \noun on
@@ -2140,8 +2157,8 @@ javaaddpath /home/username/JE2Base.jar
 \end_layout
 
 \begin_layout Enumerate
-Download the Matlab JEInterface code and extract it to your Matlab working
- directory within its own class directory 
+Extract the Matlab JEInterface code to your Matlab working directory within
+ its own class directory 
 \begin_inset Quotes eld
 \end_inset
 
@@ -3155,7 +3172,31 @@ status collapsed
 
 2
 \noun default
- jar-file (which of course needs to be on the java classpath).
+ jar-file (which of course needs to be on the java classpath - in Eclipse,
+ for instance, add the 
+\noun on
+EvA
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+2
+\noun default
+ jar as 
+\begin_inset Quotes eld
+\end_inset
+
+External jar
+\begin_inset Quotes erd
+\end_inset
+
+ to the Java build path through the project settings).
 \end_layout
 
 \begin_layout Itemize
