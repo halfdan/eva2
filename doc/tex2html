@@ -1,0 +1,6 @@
+project="EvA2Doc"
+CUSTOM_ICONS="yes"
+latex2html ${project}.tex -prefix ${project}_ -antialias -local_icons
+dest="/home/mkron/workspace/EvA2web/resources/"
+cp -uvr $project $dest
+cp EvA2Doc.pdf ${dest}/${project}
