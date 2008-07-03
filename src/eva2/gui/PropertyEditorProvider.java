@@ -1,24 +1,24 @@
 package eva2.gui;
 
 import java.awt.Color;
+import java.beans.BeanInfo;
+import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.beans.PropertyEditor;
 import java.beans.PropertyEditorManager;
 
+import sun.beans.editors.BoolEditor;
+import sun.beans.editors.ByteEditor;
+import sun.beans.editors.ColorEditor;
+import sun.beans.editors.DoubleEditor;
+import sun.beans.editors.FloatEditor;
+import sun.beans.editors.IntEditor;
+import sun.beans.editors.LongEditor;
+import sun.beans.editors.ShortEditor;
+import sun.beans.editors.StringEditor;
 import eva2.server.go.InterfaceTerminator;
 import eva2.server.go.individuals.codings.gp.GPArea;
 import eva2.tools.SelectedTag;
-
-
-import sun.beans.editors.DoubleEditor;
-import sun.beans.editors.IntEditor;
-import sun.beans.editors.BoolEditor;
-import sun.beans.editors.ByteEditor;
-import sun.beans.editors.ColorEditor;	
-import sun.beans.editors.ShortEditor;
-import sun.beans.editors.FloatEditor;	
-import sun.beans.editors.LongEditor;
-import sun.beans.editors.StringEditor;
 
 public class PropertyEditorProvider {
     final static boolean TRACE = false;
@@ -26,15 +26,22 @@ public class PropertyEditorProvider {
     // unless you want to register every single possibility.
     public static boolean useDefaultGOE = true; 
     
-    public static PropertyEditor findEditor(Class cls) {
+    /**
+     * Retrieve an editor object for a given class.
+     * This method seems unable to retrieve a primitive editor for obscure reasons.
+     * So better use the one based on PropertyDescriptor if possible.
+     */
+    public static PropertyEditor findEditor(Class<?> cls) {
     	PropertyEditor  editor  = null;
         editor = PropertyEditorManager.findEditor(cls);
 
-		if (TRACE)  System.out.println((editor == null ) ? "No editor from PEM" : ("Found " + editor.getClass()));
+//		if (TRACE)  System.out.println((editor == null ) ? "No editor from PEM" : ("Found " + editor.getClass()));
         if ((editor == null) && useDefaultGOE ) {
-        	editor = new GenericObjectEditor();
-        	if (TRACE) System.out.println("using GOE");
+        	if (cls.isArray()) editor = new GenericArrayEditor();
+        	else editor = new GenericObjectEditor();
+//        	if (TRACE) System.out.println("using GOE/GAE");
         }
+        if (TRACE) System.out.println("# using "+ editor.getClass().getName() + " for " + cls.getName());
         return editor;
     }
     
@@ -111,8 +118,9 @@ public class PropertyEditorProvider {
 	        if (editor == null) editor = PropertyEditorManager.findEditor(type);
 	        if (TRACE)  System.out.println((editor == null ) ? "No editor from PEM by type" : ("Found " + editor.getClass()));
 	        if ((editor == null) && useDefaultGOE ) {
-	        	editor = new GenericObjectEditor();
-	        	if (TRACE) System.out.println("using GOE");
+	        	if (type.isArray()) editor = new GenericArrayEditor();
+	        	else editor = new GenericObjectEditor();
+	        	if (TRACE) System.out.println("using GOE/GAE");
 	        }
 	    }
 	    if (editor == null) {
@@ -128,7 +136,7 @@ public class PropertyEditorProvider {
 //	    	((GenericObjectEditor) editor).getCustomEditor();
 	    	((GenericObjectEditor) editor).setClassType(type);
 	    }
-
+        if (TRACE) System.out.println("+ using "+ editor.getClass().getName() + " for " + value.getClass().getName());
 	    return editor;
     }
     
@@ -136,6 +144,7 @@ public class PropertyEditorProvider {
      */
     public static void installEditors() {
         PropertyEditorManager.registerEditor(SelectedTag.class, TagEditor.class);
+        PropertyEditorManager.registerEditor(int[].class, GenericArrayEditor.class);
         PropertyEditorManager.registerEditor(double[].class, GenericArrayEditor.class);
         PropertyEditorManager.registerEditor(InterfaceTerminator[].class, GenericArrayEditor.class);
         

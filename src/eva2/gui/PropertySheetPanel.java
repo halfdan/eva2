@@ -519,7 +519,9 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
 	                PropertyEditor  tmpEdit     = null;
 	                Object          newValue    = evt.getNewValue();
 	                if (newValue == null) newValue = editor.getValue();
-	                tmpEdit = PropertyEditorProvider.findEditor(newValue.getClass());
+	                // the findEditor method using properties may retrieve a primitive editor, the other one, for obscure reasons, cant.
+	                // so Ill use the mightier first.
+	                tmpEdit = PropertyEditorProvider.findEditor(m_Properties[i], newValue);
 	                if (tmpEdit == null)    tmpEdit = PropertyEditorProvider.findEditor(m_Properties[i].getPropertyType());
 	                if (tmpEdit.getClass() != m_Editors[i].getClass()) {
 	                	value           = newValue;

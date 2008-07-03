@@ -5,6 +5,7 @@ package eva2;
  * 
  * --- Changelog
  * 
+ * 			Repaired the GenericArrayEditor.
  * 2.026: Added DiversityTerminator and KnownOptimaTerminator, slightly changed InterfaceTerminator for these
  * 			and InterfaceStatistics to provide termination message to text window. 
  * 			Killed redundant method getGenerations() in Population. Population.getAllSolutions now returns a 

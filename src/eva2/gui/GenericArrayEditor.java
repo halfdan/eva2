@@ -14,31 +14,40 @@ package eva2.gui;
  *==========================================================================*/
 
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.JPanel;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Insets;
+import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import java.beans.PropertyEditor;
+import java.lang.reflect.Array;
+
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JButton;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.ListCellRenderer;
+import javax.swing.SwingConstants;
+import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import javax.swing.ListCellRenderer;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.SwingConstants;
-import javax.swing.JOptionPane;
-import javax.swing.DefaultListModel;
-import javax.swing.JScrollPane;
-import javax.swing.DefaultListCellRenderer;
-
+import eva2.server.go.problems.DiscType;
 import eva2.tools.EVAHELP;
 import eva2.tools.SelectedTag;
-
-import java.beans.PropertyEditor;
-import java.beans.PropertyChangeSupport;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyEditorManager;
-import java.lang.reflect.Array;
 /*==========================================================================*
  * CLASS DECLARATION
  *==========================================================================*/
@@ -74,6 +83,7 @@ implements PropertyEditor {
 						if (m_ListModel.size() > current) {
 							m_ElementList.setSelectedIndex(current);
 						}
+						m_ElementList.setModel(m_ListModel);
 					}
 					m_Support.firePropertyChange("", null, null);
 				}
@@ -93,6 +103,7 @@ implements PropertyEditor {
 					} else {
 						m_ListModel.addElement(addObj);
 					}
+					m_ElementList.setModel(m_ListModel);
 					m_Support.firePropertyChange("", null, null);
 				} catch (Exception ex) {
 					JOptionPane.showMessageDialog(GenericArrayEditor.this,"Could not create an object copy",null,JOptionPane.ERROR_MESSAGE);
@@ -109,9 +120,9 @@ implements PropertyEditor {
 
 			if (e.getSource() == m_ElementList) {
 				// Enable the delete button
-				//System.out.println("m_ElementList.getSelectedIndex()"+m_ElementList.getSelectedIndex());
 				if (m_ElementList.getSelectedIndex() != -1) {
 					m_DeleteBut.setEnabled(true);
+					m_ElementEditor.setValue(m_ElementList.getSelectedValue());
 				}
 			}
 		}
@@ -360,7 +371,7 @@ implements PropertyEditor {
 		FontMetrics fm = gfx.getFontMetrics();
 		int vpad = (box.height - fm.getAscent()) / 2;
 //		System.out.println(m_ListModel + " --- " + m_ElementClass);
-		String rep = m_ListModel.getSize() + " " + EVAHELP.cutClassName(m_ElementClass.getName());
+		String rep = m_ListModel.getSize() + " of " + EVAHELP.cutClassName(m_ElementClass.getName());
 		gfx.drawString(rep, 2, fm.getHeight() + vpad - 3  );
 	}
 	/**
@@ -412,11 +423,13 @@ implements PropertyEditor {
 	public static void main(String [] args) {
 		try {
 			java.beans.PropertyEditorManager.registerEditor(SelectedTag.class,TagEditor.class);
-			java.beans.PropertyEditorManager.registerEditor(String [].class,GenericArrayEditor.class);
+			java.beans.PropertyEditorManager.registerEditor(int [].class,GenericArrayEditor.class);
 			java.beans.PropertyEditorManager.registerEditor(double [].class,GenericArrayEditor.class);
 			GenericArrayEditor editor = new GenericArrayEditor();
+			
 
-			double [] initial = { 1, 2, 34,656,46	};
+			DiscType[] initial = { new DiscType(3,4.), new DiscType(5, 7.)};
+			editor.setValue(initial);
 			PropertyDialog pd = new PropertyDialog(editor,EVAHELP.cutClassName(editor.getClass().getName())
 					, 100, 100);
 			pd.setSize(200,200);
