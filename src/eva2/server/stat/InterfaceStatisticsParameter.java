@@ -44,8 +44,8 @@ public interface InterfaceStatisticsParameter {
   
   public List<String[]> getPlotDescriptions();
 
-  public SelectedTag getPlotFitness();
-  public void setPlotFitness(SelectedTag newMethod);
+  public SelectedTag getPlotData();
+  public void setPlotData(SelectedTag newMethod);
 
   public String getResultFilePrefix();
   public void SetResultFilePrefix(String x);
