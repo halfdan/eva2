@@ -32,10 +32,12 @@ public class StatsParameter implements InterfaceStatisticsParameter, Serializabl
   public final static int PLOT_BEST = 0;
   public final static int PLOT_WORST = 1;
   public final static int PLOT_BEST_AND_WORST = 2;
+  public final static int PLOT_BEST_AND_MEASURES = 3;
   public final static Tag[] TAGS_PLOT_FITNESS = {
-                                                new Tag(PLOT_BEST, "plot best"),
-                                                new Tag(PLOT_WORST, "plot worst"),
-                                                new Tag(PLOT_BEST_AND_WORST, "both best and worst")
+                                                new Tag(PLOT_BEST, "plot best fitness"),
+                                                new Tag(PLOT_WORST, "plot worst fitness"),
+                                                new Tag(PLOT_BEST_AND_WORST, "both best and worst"),
+                                                new Tag(PLOT_BEST_AND_MEASURES, "both best and population measures")
   };
   
   public final static int VERBOSITY_NONE = 0;
@@ -94,7 +96,7 @@ public class StatsParameter implements InterfaceStatisticsParameter, Serializabl
    */
   public ArrayList<String[]> getPlotDescriptions() {
 	  ArrayList<String[]> desc = new ArrayList<String[]>();
-	  switch (getPlotFitness().getSelectedTagID()) {
+	  switch (getPlotData().getSelectedTagID()) {
 	  case StatsParameter.PLOT_BEST_AND_WORST:
 		  desc.add(new String[] {"Best", "Worst"});
 		  break;
@@ -103,6 +105,9 @@ public class StatsParameter implements InterfaceStatisticsParameter, Serializabl
 		  break;
 	  case StatsParameter.PLOT_WORST:
 		  desc.add(new String[] {"Worst"});
+		  break;
+	  case StatsParameter.PLOT_BEST_AND_MEASURES:
+		  desc.add(new String[] {"Best", "AvgDist", "MaxDist"});
 		  break;
 	  }
 	  return desc;
@@ -241,22 +246,22 @@ public class StatsParameter implements InterfaceStatisticsParameter, Serializabl
   /**
    *
    */
-  public SelectedTag getPlotFitness() {
+  public SelectedTag getPlotData() {
     return new SelectedTag(m_PlotFitness, TAGS_PLOT_FITNESS);
   }
 
   /**
    *
    */
-  public void setPlotFitness(SelectedTag newMethod) {
+  public void setPlotData(SelectedTag newMethod) {
     m_PlotFitness = newMethod.getSelectedTag().getID();
   }
 
   /**
    *
    */
-  public String plotFitnessTipText() {
-    return "The individual of which the fitness is plotted.";
+  public String plotDataTipText() {
+    return "The data to be plotted.";
   }
 
   /**

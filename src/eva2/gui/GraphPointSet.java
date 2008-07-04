@@ -122,13 +122,14 @@ public class GraphPointSet {
 	  case 1: c = Color.red; break;
 	  case 2: c = Color.blue; break;
 	  case 3: c = Color.pink; break;
-	  case 4: c = Color.orange; break;
+	  case 4: c = Color.green; break;
 	  case 5: c = Color.gray; break;
-	  case 6: c = Color.green; break;
-	  case 7: c = Color.magenta; break;
-	  case 8: c = Color.cyan; break;
+	  case 6: c = Color.magenta; break;
+	  case 7: c = Color.cyan; break;
+	  case 8: c = Color.orange; break;
 	  case 9: c = Color.darkGray; break;
 	  }
+	  System.out.println("Selected " + c.toString() + " for " + k);
 	  return c;
   }
    /**

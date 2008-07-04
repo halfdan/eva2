@@ -19,8 +19,6 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 	private PrintWriter resultOut;
 	public final static boolean TRACE = false;
 	protected InterfaceStatisticsParameter m_StatsParams;
-//	protected String startDate;
-//	protected long startTime;
 	
 	/**
 	 * Keep track of all intermediate fitness values, best, avg. and worst, averaging over all runs
@@ -48,6 +46,8 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 	protected double[] currentBestFit;
 	protected double[] meanFitness;
 	protected double[] currentWorstFit;
+	protected double avgPopDist;
+	protected double maxPopDist;
 	protected IndividualInterface bestCurrentIndividual, bestIndividualAllover;
 
 	
@@ -333,6 +333,13 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 		meanFitness = pop.getMeanFitness().clone();
 		currentWorstFit = pop.getWorstIndividual().getFitness().clone();
 		functionCalls = pop.getFunctionCalls();
+		if (m_StatsParams.getPlotData().getSelectedTag().getID() == StatsParameter.PLOT_BEST_AND_MEASURES) {
+			double[] measures = pop.getPopulationMeasures();
+			if (measures != null) {
+				avgPopDist = measures[0];
+				maxPopDist = measures[2];
+			}
+		}
 		
 		if (meanCollection != null) {
 			// Collect average data

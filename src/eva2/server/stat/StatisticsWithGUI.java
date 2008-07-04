@@ -148,14 +148,15 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
 		if (TRACE) System.out.println("initPlots");
 
 		maybeShowProxyPrinter();
+		int graphCount = description.size();
 		
-		m_FitnessFrame = new GraphWindow[description.size()];
+		m_FitnessFrame = new GraphWindow[graphCount];
 		for (int i = 0; i < m_FitnessFrame.length; i++) {
 //			m_FitnessFrame[i] = GraphWindow.getInstance(m_MainAdapterClient, m_GraphInfoString + " " + i + " " + " on " + m_MyHostName + ", VM " + EvAServer.m_NumberOfVM, "function calls", "fitness");
 			m_FitnessFrame[i] = GraphWindow.getInstance(m_MainAdapterClient, "Optimization " + i + " " + " on " + m_MyHostName + ", VM " + EvAServer.m_NumberOfVM, "function calls", "fitness");
 		}
 
-		m_FitnessGraph = new Graph[description.size()][];
+		m_FitnessGraph = new Graph[graphCount][];
 		// contains one graph for every value to be plotted (best / worst / best+worst)
 		// TODO Im really not sure why this is a 2-dimensional array. shouldnt one be enough?
 		for (int i = 0; i < m_FitnessGraph.length; i++) {
@@ -173,7 +174,7 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
 		if (m_StatsParams.getMultiRuns() > 1 &&
 				m_StatsParams.GetuseStatPlot() == true) {
 			String Info = m_StatsParams.GetInfoString();
-			m_StatGraph = new Graph[description.size()][];
+			m_StatGraph = new Graph[graphCount][];
 			for (int i = 0; i < m_StatGraph.length; i++) {
 				m_StatGraph[i] = new Graph[((String[]) description.get(i)).length];
 				for (int j = 0; j < m_StatGraph[i].length; j++) {
@@ -208,14 +209,16 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
 		// Plots
 		m_PlotCounter--;
 		
-		int fitnessplot_setting =  m_StatsParams.getPlotFitness().getSelectedTag().getID();
+		int fitnessplot_setting =  m_StatsParams.getPlotData().getSelectedTag().getID();
 		
 		if (m_PlotCounter == 0) {
 			m_PlotCounter = m_StatsParams.GetPlotoutput();
 			boolean doPlotBest = (fitnessplot_setting == StatsParameter.PLOT_BEST)
-					|| (fitnessplot_setting == StatsParameter.PLOT_BEST_AND_WORST);
+					|| (fitnessplot_setting == StatsParameter.PLOT_BEST_AND_WORST)
+					|| (fitnessplot_setting == StatsParameter.PLOT_BEST_AND_MEASURES);
 			boolean doPlotWorst = (fitnessplot_setting == StatsParameter.PLOT_WORST)
 					|| (fitnessplot_setting == StatsParameter.PLOT_BEST_AND_WORST);
+			boolean doPlotMeasures = (fitnessplot_setting == StatsParameter.PLOT_BEST_AND_MEASURES);
 			if (doPlotBest) {
 				plotFitnessPoint(0, 0, functionCalls, currentBestFit[0]);
 			}
@@ -227,6 +230,10 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
 					return;
 				}
 				plotFitnessPoint(0, (doPlotBest ? 1 : 0) , functionCalls, currentWorstFit[0]);
+			}
+			if (doPlotMeasures) {
+				plotFitnessPoint(0, 1, functionCalls, avgPopDist);
+				plotFitnessPoint(0, 2, functionCalls, maxPopDist);
 			}
 		}
 	}
