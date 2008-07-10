@@ -961,7 +961,7 @@ v[d] = cmin * v[d];
         if (obj instanceof double[]) {
             double[]  x = (double[]) obj;
             if (x.length != position.x.length) System.err.println("Init value and requested length doesn't match!");
-            this.SetDoubleDataLamarckian(x);
+            this.SetDoubleGenotype(x);
         } else {
             this.init(opt);
             System.err.println("Initial value for ESIndividualDoubleData is not double[]!");
@@ -979,11 +979,11 @@ v[d] = cmin * v[d];
 		System.err.println("TRIBES: mutation is not available!");
 	}
 
-	public void SetDoubleData(double[] doubleData) {
+	public void SetDoublePhenotype(double[] doubleData) {
 		position.setDoubleArray(doubleData);
 	}
 
-	public void SetDoubleDataLamarckian(double[] doubleData) {
+	public void SetDoubleGenotype(double[] doubleData) {
 		position.setDoubleArray(doubleData);
 	}
 

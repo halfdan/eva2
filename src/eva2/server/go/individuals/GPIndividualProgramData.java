@@ -155,7 +155,7 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
     /** This method allows you to set the program phenotype.
      * @param program    The new program.
      */
-    public void SetProgramData(InterfaceProgram[] program) {
+    public void SetProgramPhenotype(InterfaceProgram[] program) {
         if (program instanceof AbstractGPNode[]) {
             this.m_Phenotype = new AbstractGPNode[program.length];
             for (int i = 0; i < this.m_Phenotype.length; i++)
@@ -166,8 +166,8 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
     /** This method allows you to set the program genotype.
      * @param program    The new program.
      */
-    public void SetProgramDataLamarckian(InterfaceProgram[] program) {
-        this.SetProgramData(program);
+    public void SetProgramGenotype(InterfaceProgram[] program) {
+        this.SetProgramPhenotype(program);
         if (program instanceof AbstractGPNode[]) {
             this.m_Genotype = new AbstractGPNode[program.length];
             for (int i = 0; i < this.m_Genotype.length; i++)
@@ -210,7 +210,7 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
      */
     public void initByValue(Object obj, InterfaceOptimizationProblem opt) {
         if (obj instanceof InterfaceProgram[]) {
-            this.SetProgramDataLamarckian((InterfaceProgram[])obj);
+            this.SetProgramGenotype((InterfaceProgram[])obj);
         } else {
             this.defaultInit();
             System.out.println("Initial value for GPIndividualDoubleData is no InterfaceProgram[]!");

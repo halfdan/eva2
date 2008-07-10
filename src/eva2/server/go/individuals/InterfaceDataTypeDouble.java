@@ -14,7 +14,7 @@ public interface InterfaceDataTypeDouble {
     /** This method allows you to request a certain amount of double data
      * @param length    The lenght of the double[] that is to be optimized
      */
-    public void setDoubleDataLength (int length);
+    public void setDoubleDataLength(int length);
 
     /** This method returns the length of the double data set
      * @return The number of doubles stored
@@ -48,11 +48,11 @@ public interface InterfaceDataTypeDouble {
      * SetDoubleDataLamarckian to set the genotype data.
      * @param doubleData    The new double data.
      */
-    public void SetDoubleData(double[] doubleData);
+    public void SetDoublePhenotype(double[] doubleData);
 
     /** This method allows you to set the double data, this can be used for
      * memetic algorithms.
      * @param doubleData    The new double data.
      */
-    public void SetDoubleDataLamarckian(double[] doubleData);
+    public void SetDoubleGenotype(double[] doubleData);
 }

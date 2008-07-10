@@ -186,7 +186,7 @@ public class GAIndividualIntegerData extends AbstractEAIndividual implements Int
     /** This method allows you to set the double data.
      * @param doubleData    The new double data.
      */
-    public void SetIntegerData(int[] doubleData) {
+    public void SetIntPhenotype(int[] doubleData) {
         this.m_Phenotype = doubleData;
     }
 
@@ -194,8 +194,8 @@ public class GAIndividualIntegerData extends AbstractEAIndividual implements Int
      * memetic algorithms.
      * @param doubleData    The new double data.
      */
-    public void SetIntegerDataLamarckian(int[] doubleData) {
-        this.SetIntegerData(doubleData);
+    public void SetIntGenotype(int[] doubleData) {
+        this.SetIntPhenotype(doubleData);
         if (doubleData != null) {
 	        int[] locus = new int[2];
 	        locus[0] = 0;
@@ -229,7 +229,7 @@ public class GAIndividualIntegerData extends AbstractEAIndividual implements Int
         if (obj instanceof int[]) {
             int[]  bs = (int[]) obj;
             if (bs.length != this.m_Range.length) System.out.println("Init value and requested length doesn't match!");
-            this.SetIntegerDataLamarckian(bs);
+            this.SetIntGenotype(bs);
         } else {
             this.defaultInit();
             System.out.println("Initial value for GAIndividualDoubleData is not double[]!");
@@ -354,7 +354,7 @@ public class GAIndividualIntegerData extends AbstractEAIndividual implements Int
             tmp += data[i] + "; ";
         }
         System.out.println(tmp+"}");
-        indy.SetIntegerDataLamarckian(data);
+        indy.SetIntGenotype(data);
         System.out.println(""+indy.getStringRepresentation());
         data = indy.getIntegerData();
         tmp = "After {";

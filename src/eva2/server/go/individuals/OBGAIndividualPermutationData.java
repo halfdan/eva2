@@ -104,7 +104,7 @@ public class OBGAIndividualPermutationData extends AbstractEAIndividual implemen
   */
  public void initByValue(Object obj, InterfaceOptimizationProblem opt) {
    if (obj instanceof int[]) {
-    this.SetPermutationDataLamarckian((int[][]) obj);
+    this.SetPermutationGenotype((int[][]) obj);
    } else {
      this.defaultInit();
      System.out.println("Initial value for OBGAIndividualBinaryData is no Permutation!");
@@ -177,7 +177,7 @@ public class OBGAIndividualPermutationData extends AbstractEAIndividual implemen
       perm[p2] = temp;
     }
 
-    this.SetPermutationDataLamarckian(permmatrix);
+    this.SetPermutationGenotype(permmatrix);
   }
 
 /*generates a random permutation */
@@ -196,7 +196,7 @@ public class OBGAIndividualPermutationData extends AbstractEAIndividual implemen
         i++;
       }
     }
-    this.SetPermutationDataLamarckian(perm);
+    this.SetPermutationGenotype(perm);
    // System.out.println(getStringRepresentation());
   }
 
@@ -223,12 +223,12 @@ public class OBGAIndividualPermutationData extends AbstractEAIndividual implemen
        return res;
     }
 
-    public void SetPermutationData(int[][] perm){
+    public void SetPermutationPhenotype(int[][] perm){
         this.m_Phenotype = perm;
     }
 
-    public void SetPermutationDataLamarckian(int[][] perm){
-        this.SetPermutationData(perm);
+    public void SetPermutationGenotype(int[][] perm){
+        this.SetPermutationPhenotype(perm);
         this.m_Genotype = new int[perm.length][];
         for (int i = 0; i < perm.length; i++) {
           this.m_Genotype[i] = new int[perm[i].length];

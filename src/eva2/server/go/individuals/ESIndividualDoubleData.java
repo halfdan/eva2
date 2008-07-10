@@ -174,7 +174,7 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
      * use SetDoubleDataLamarckian().
      * @param doubleData    The new double data.
      */
-    public void SetDoubleData(double[] doubleData) {
+    public void SetDoublePhenotype(double[] doubleData) {
         this.m_Phenotype = doubleData;
     }
 
@@ -182,8 +182,8 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
      * memetic algorithms.
      * @param doubleData    The new double data.
      */
-    public void SetDoubleDataLamarckian(double[] doubleData) {
-        this.SetDoubleData(doubleData);
+    public void SetDoubleGenotype(double[] doubleData) {
+        this.SetDoublePhenotype(doubleData);
         this.m_Genotype = new double[doubleData.length];
         System.arraycopy(doubleData, 0, this.m_Genotype, 0, doubleData.length);
     }
@@ -209,7 +209,7 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
         if (obj instanceof double[]) {
             double[]  bs = (double[]) obj;
             if (bs.length != this.m_Genotype.length) System.out.println("Init value and requested length doesn't match!");
-            this.SetDoubleDataLamarckian(bs);
+            this.SetDoubleGenotype(bs);
         } else {
             this.defaultInit();
             System.out.println("Initial value for ESIndividualDoubleData is not double[]!");

@@ -222,8 +222,8 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
      * @param doubleData    The new double data.
      * @see InterfaceDataTypeDouble.SetDoubleData()
      */
-    public void SetDoubleData(double[] doubleData) {
-        this.m_Numbers.SetDoubleData(doubleData);
+    public void SetDoublePhenotype(double[] doubleData) {
+        this.m_Numbers.SetDoublePhenotype(doubleData);
     }
 
     /** This method allows you to set the double data, this can be used for
@@ -231,8 +231,8 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
      * @param doubleData    The new double data.
      * @see InterfaceDataTypeDouble.SetDoubleDataLamarckian()
      */
-    public void SetDoubleDataLamarckian(double[] doubleData) {
-        this.m_Numbers.SetDoubleDataLamarckian(doubleData);
+    public void SetDoubleGenotype(double[] doubleData) {
+        this.m_Numbers.SetDoubleGenotype(doubleData);
     }
 
 /**********************************************************************************************************************
@@ -272,8 +272,8 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
      * @param binaryData    The new binary data.
      * @see InterfaceDataTypeBinary.SetBinaryData()
      */
-    public void SetBinaryData(BitSet binaryData) {
-        this.m_BitSet.SetBinaryData(binaryData);
+    public void SetBinaryPhenotype(BitSet binaryData) {
+        this.m_BitSet.SetBinaryPhenotype(binaryData);
     }
 
     /** This method allows you to set the binary data, this can be used for
@@ -281,8 +281,8 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
      * @param binaryData    The new binary data.
      * @see InterfaceBinaryData.SetBinaryDataLamarckian()
      */
-    public void SetBinaryDataLamarckian(BitSet binaryData) {
-        this.m_BitSet.SetBinaryDataLamarckian(binaryData);
+    public void SetBinaryGenotype(BitSet binaryData) {
+        this.m_BitSet.SetBinaryGenotype(binaryData);
     }
 
 /**********************************************************************************************************************
