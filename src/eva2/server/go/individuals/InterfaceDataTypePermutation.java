@@ -48,13 +48,13 @@ public interface InterfaceDataTypePermutation {
     /** This method allows you to set the permutation.
      * @param perm   The new permutation data.
      */
-    void SetPermutationData(int[][] perm);
+    void SetPermutationPhenotype(int[][] perm);
 
     /** This method allows you to set the permutation data, this can be used for
      * memetic algorithms.
      * @param perm     The new permutation data.
      */
-    void SetPermutationDataLamarckian(int[][] perm);
+    void SetPermutationGenotype(int[][] perm);
 
     public void setFirstindex(int[] firstindex);
 }

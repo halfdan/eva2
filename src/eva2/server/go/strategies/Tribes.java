@@ -250,7 +250,7 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
 		if (bestMemPos.firstIsBetter(bestMemPos.getFitness(), bestExp.getFitness())) {
 			AbstractEAIndividual indy = (AbstractEAIndividual)bestExp.clone();
 			indy.SetFitness(bestMemPos.getFitness());
-			((InterfaceDataTypeDouble)indy).SetDoubleDataLamarckian(bestMemPos.getPos());
+			((InterfaceDataTypeDouble)indy).SetDoubleGenotype(bestMemPos.getPos());
 			return indy;
 		} else return bestExp;
 	}
@@ -684,7 +684,7 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
     	if (tmp == null) System.err.println("Error in Tribes::positionToExplorer!");
     	TribesExplorer indy = tmp.clone();
     	indy.clearPosVel();
-    	indy.SetDoubleDataLamarckian(pos.getPos());
+    	indy.SetDoubleGenotype(pos.getPos());
     	indy.SetFitness(pos.getFitness());
     	return indy;
     }

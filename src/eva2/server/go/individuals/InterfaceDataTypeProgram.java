@@ -32,12 +32,12 @@ public interface InterfaceDataTypeProgram {
     /** This method allows you to set the program.
      * @param program    The new program.
      */
-    public void SetProgramData(InterfaceProgram[] program);
+    public void SetProgramPhenotype(InterfaceProgram[] program);
 
     /** This method allows you to set the program.
      * @param program    The new program.
      */
-    public void SetProgramDataLamarckian(InterfaceProgram[] program);
+    public void SetProgramGenotype(InterfaceProgram[] program);
     
     /** This method allows you to set the function area
      * @param area  The area contains functions and terminals

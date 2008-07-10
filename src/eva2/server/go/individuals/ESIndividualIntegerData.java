@@ -169,7 +169,7 @@ public class ESIndividualIntegerData extends AbstractEAIndividual implements Int
     /** This method allows you to set the int data.
      * @param intData    The new int data.
      */
-    public void SetIntegerData(int[] intData) {
+    public void SetIntPhenotype(int[] intData) {
         this.m_Phenotype = intData;
     }
 
@@ -177,8 +177,11 @@ public class ESIndividualIntegerData extends AbstractEAIndividual implements Int
      * memetic algorithms.
      * @param intData    The new int data.
      */
-    public void SetIntegerDataLamarckian(int[] intData) {
-        this.SetIntegerData(intData);
+    public void SetIntGenotype(int[] intData) {
+    	for (int i = 0; i < this.m_Genotype.length; i++) {
+    		m_Genotype[i]=(double)intData[i];
+    	}
+    	getIntegerData();
     }
 
 /************************************************************************************
@@ -202,7 +205,7 @@ public class ESIndividualIntegerData extends AbstractEAIndividual implements Int
         if (obj instanceof int[]) {
             int[]  bs = (int[]) obj;
             if (bs.length != this.m_Genotype.length) System.out.println("Init value and requested length doesn't match!");
-            this.SetIntegerDataLamarckian(bs);
+            this.SetIntGenotype(bs);
         } else {
             this.defaultInit();
             System.out.println("Initial value for ESIndividualIntegerData is not int[]!");

@@ -261,15 +261,15 @@ public class StatsParameter implements InterfaceStatisticsParameter, Serializabl
    *
    */
   public String plotDataTipText() {
-    return "The data to be plotted.";
+    return "The data to be plotted: best fitness, worst fitness or average/max distance in population.";
   }
 
-  /**
-   *
-   */
-  public String plotObjectivesTipText() {
-    return "The individual of which the objectives are plotted.";
-  }
+//  /**
+//   *
+//   */
+//  public String plotObjectivesTipText() {
+//    return "The individual of which the objectives are plotted.";
+//  }
 
 
   /**

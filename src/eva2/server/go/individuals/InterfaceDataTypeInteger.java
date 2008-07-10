@@ -47,11 +47,11 @@ public interface InterfaceDataTypeInteger {
     /** This method allows you to set the int data.
      * @param intData    The new int data.
      */
-    public void SetIntegerData(int[] intData);
+    public void SetIntPhenotype(int[] intData);
 
     /** This method allows you to set the int data, this can be used for
      * memetic algorithms.
      * @param intData    The new int data.
      */
-    public void SetIntegerDataLamarckian(int[] intData);
+    public void SetIntGenotype(int[] intData);
 }

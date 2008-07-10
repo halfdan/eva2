@@ -175,7 +175,7 @@ public abstract class AbstractMultiModalProblemKnown extends AbstractProblemDoub
 	protected void addOptimum(double[] point) {
 		InterfaceDataTypeDouble tmpIndy;
 		tmpIndy = (InterfaceDataTypeDouble)((AbstractEAIndividual)this.m_Template).clone();
-		tmpIndy.SetDoubleDataLamarckian(point);
+		tmpIndy.SetDoubleGenotype(point);
 		((AbstractEAIndividual)tmpIndy).SetFitness(evalUnnormalized(point));
 		if (((AbstractEAIndividual)tmpIndy).getFitness(0)>=m_GlobalOpt) {
 			m_GlobalOpt = ((AbstractEAIndividual)tmpIndy).getFitness(0);

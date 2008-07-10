@@ -129,7 +129,6 @@ public class GraphPointSet {
 	  case 8: c = Color.orange; break;
 	  case 9: c = Color.darkGray; break;
 	  }
-	  System.out.println("Selected " + c.toString() + " for " + k);
 	  return c;
   }
    /**

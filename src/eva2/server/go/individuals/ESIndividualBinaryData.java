@@ -147,15 +147,15 @@ public class ESIndividualBinaryData extends AbstractEAIndividual implements Inte
     /** This method allows you to set the binary data.
      * @param binaryData    The new binary data.
      */
-    public void SetBinaryData(BitSet binaryData) {
+    public void SetBinaryPhenotype(BitSet binaryData) {
         this.m_Phenotype = binaryData;
     }
     /** This method allows you to set the binary data, this can be used for
      * memetic algorithms.
      * @param binaryData    The new binary data.
      */
-    public void SetBinaryDataLamarckian(BitSet binaryData) {
-        this.SetBinaryData(binaryData);
+    public void SetBinaryGenotype(BitSet binaryData) {
+        this.SetBinaryPhenotype(binaryData);
         for (int i = 0; i < this.m_Genotype.length; i++) {
             if (this.m_UseHardSwitch) {
                 if (binaryData.get(i)) this.m_Genotype[i] = RNG.randomDouble(0.55,1.0);
@@ -187,7 +187,7 @@ public class ESIndividualBinaryData extends AbstractEAIndividual implements Inte
     public void initByValue(Object obj, InterfaceOptimizationProblem opt) {
         if (obj instanceof BitSet) {
             BitSet  bs = (BitSet) obj;
-            this.SetBinaryDataLamarckian(bs);
+            this.SetBinaryGenotype(bs);
         } else {
             this.defaultInit();
             System.out.println("Initial value for ESIndividualBinaryData is no BitSet!");

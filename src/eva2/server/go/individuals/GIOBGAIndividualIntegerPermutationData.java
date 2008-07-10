@@ -220,16 +220,16 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
     /** This method allows you to set the int data.
      * @param intData    The new int data.
      */
-    public void SetIntegerData(int[] intData) {
-        this.m_Integer.SetIntegerData(intData);
+    public void SetIntPhenotype(int[] intData) {
+        this.m_Integer.SetIntPhenotype(intData);
     }
 
     /** This method allows you to set the int data, this can be used for
      * memetic algorithms.
      * @param intData    The new int data.
      */
-    public void SetIntegerDataLamarckian(int[] intData) {
-        this.m_Integer.SetIntegerDataLamarckian(intData);
+    public void SetIntGenotype(int[] intData) {
+        this.m_Integer.SetIntGenotype(intData);
     }
 
 /**********************************************************************************************************************
@@ -268,16 +268,16 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
     /** This method allows you to set the permutation.
      * @param perm   The new permutation data.
      */
-    public void SetPermutationData(int[][] perm) {
-        this.SetPermutationData(perm);
+    public void SetPermutationPhenotype(int[][] perm) {
+        this.SetPermutationPhenotype(perm);
     }
 
     /** This method allows you to set the permutation data, this can be used for
      * memetic algorithms.
      * @param perm     The new permutation data.
      */
-    public void SetPermutationDataLamarckian(int[][] perm) {
-        this.SetPermutationDataLamarckian(perm);
+    public void SetPermutationGenotype(int[][] perm) {
+        this.SetPermutationGenotype(perm);
     }
 
     public void setFirstindex(int[] firstindex) {

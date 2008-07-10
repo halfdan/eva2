@@ -16,7 +16,7 @@ public interface InterfaceDataTypeBinary {
     /** This method allows you to request a certain amount of binary data
      * @param length    The lenght of the BitSet that is to be optimized
      */
-    public void setBinaryDataLength (int length);
+    public void setBinaryDataLength(int length);
 
     /** This method returns the length of the binary data set
      * @return The number of bits stored
@@ -37,11 +37,11 @@ public interface InterfaceDataTypeBinary {
     /** This method allows you to set the binary data.
      * @param binaryData    The new binary data.
      */
-    public void SetBinaryData(BitSet binaryData);
+    public void SetBinaryPhenotype(BitSet binaryData);
 
     /** This method allows you to set the binary data, this can be used for
      * memetic algorithms.
      * @param binaryData    The new binary data.
      */
-    public void SetBinaryDataLamarckian(BitSet binaryData);
+    public void SetBinaryGenotype(BitSet binaryData);
 }

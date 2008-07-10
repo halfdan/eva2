@@ -133,7 +133,7 @@ public class ESIndividualPermutationData extends AbstractEAIndividual implements
 		return res;
 	}
 
-	public void SetPermutationData(int[][] perm){
+	public void SetPermutationPhenotype(int[][] perm){
 		this.m_Phenotype = perm;
 		this.m_Range        = new double[perm.length][][];
 		for (int i = 0; i < perm.length; i++) {
@@ -146,8 +146,8 @@ public class ESIndividualPermutationData extends AbstractEAIndividual implements
 
 	}
 
-	public void SetPermutationDataLamarckian(int[][] perm){
-		this.SetPermutationData(perm);
+	public void SetPermutationGenotype(int[][] perm){
+		this.SetPermutationPhenotype(perm);
 
 		this.m_Genotype     = new double[perm.length][];
 		this.m_Range        = new double[perm.length][][];
@@ -231,7 +231,7 @@ public class ESIndividualPermutationData extends AbstractEAIndividual implements
 		if (obj instanceof int[][]) {
 			int[][]  bs = (int[][]) obj;
 			if (bs.length != this.m_Genotype.length) System.out.println("Init value and requested length doesn't match!");
-			this.SetPermutationDataLamarckian(bs);
+			this.SetPermutationGenotype(bs);
 		} else {
 			this.defaultInit();
 			System.out.println("Initial value for ESIndividualPermutationData is not int[]!");
