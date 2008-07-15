@@ -122,6 +122,7 @@ public class SimpleProblemWrapper extends AbstractOptimizationProblem {
 		bestIndy = null;
 		initTemplate();
 		setSimpleProblem(getSimpleProblem()); // possibly create plot
+		BeanInspector.callIfAvailable(simProb, "initProblem", null);	// possibly call initProblem of subproblem  
 	}
 
 	protected void initTemplate() {
