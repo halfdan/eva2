@@ -19,7 +19,6 @@ import eva2.gui.BeanInspector;
 import eva2.server.go.IndividualInterface;
 import eva2.server.go.InterfaceTerminator;
 import eva2.server.go.PopulationInterface;
-import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.operators.distancemetric.PhenotypeMetric;
 import eva2.server.go.populations.InterfaceSolutionSet;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
@@ -48,7 +47,7 @@ Serializable {
 	private String msg="";
 	protected String tagString = "Fitness converged";
 	PhenotypeMetric pMetric = null;
-	
+
 	public FitnessConvergenceTerminator() {
 		pMetric = new PhenotypeMetric();
 	}
@@ -62,14 +61,14 @@ Serializable {
 		if (bAbsolute) convergenceCondition.setSelectedTag("Absolute");
 		else convergenceCondition.setSelectedTag("Relative");
 	}
-	
+
 	/**
 	 *
 	 */
 	public String globalInfo() {
 		return "Stop if a fitness convergence criterion has been met.";
 	}
-	
+
 	public void init(InterfaceOptimizationProblem prob) {
 		if (pMetric == null) pMetric = new PhenotypeMetric();
 		firstTime = true;
@@ -80,7 +79,7 @@ Serializable {
 	public boolean isTerminated(InterfaceSolutionSet solSet) {
 		return isTerminated(solSet.getCurrentPopulation());
 	}
-	
+
 	public boolean isTerminated(PopulationInterface Pop) {
 		if (!firstTime && isStillConverged(Pop.getBestIndividual())) {
 			if (stagnationTimeHasPassed(Pop)) {
@@ -98,7 +97,7 @@ Serializable {
 			return false;
 		}
 	}
-	
+
 	public String lastTerminationMessage() {
 		return msg;
 	}
@@ -114,19 +113,19 @@ Serializable {
 		else sb.append(" function calls.");
 		return sb.toString();
 	}
-	
+
 	protected void saveState(PopulationInterface Pop) {
 		oldFit = Pop.getBestFitness();
 		oldNorm = PhenotypeMetric.norm(oldFit);
 		popFitCalls = Pop.getFunctionCalls();
 		popGens = Pop.getGeneration();
-		firstTime = false;		
+		firstTime = false;
 	}
-	
+
 	/**
 	 * Return true if |oldFit - curFit| < |oldFit| * thresh% (relative case)
 	 * and if |oldFit - curFit| < thresh (absolute case).
-	 * 
+	 *
 	 * @param curFit
 	 * @return
 	 */
@@ -142,7 +141,7 @@ Serializable {
 		if (TRACE) System.out.println("isStillConverged returns " + ret + ", dist " + dist + ", old fit " + BeanInspector.toString(oldFit) + ", curFit " + BeanInspector.toString(curFit));
 		return ret;
 	}
-	
+
 	private boolean stagnationTimeHasPassed(PopulationInterface pop) {
 		if (stagnationMeasure.isSelectedString("Fitness calls")) { // by fitness calls
 //			System.out.println("stagnationTimeHasPassed returns " + ((pop.getFunctionCalls() - popFitCalls) >= m_stagTime) + " after " + (pop.getFunctionCalls() - popFitCalls));
@@ -152,7 +151,7 @@ Serializable {
 			return (pop.getGeneration() - popGens) >= m_stagTime;
 		}
 	}
-	
+
 	/**
 	 *
 	 */
@@ -177,7 +176,7 @@ Serializable {
 	public String convergenceThresholdTipText() {
 		return "Terminate if the fitness has not improved by this percentage / absolute value for a whole stagnation time period";
 	}
-	
+
 	/**
 	 *
 	 */
@@ -191,7 +190,7 @@ Serializable {
 	public int getStagnationTime() {
 		return m_stagTime;
 	}
-	
+
 	public String stagnationTimeTipText() {
 		return "Terminate if the population has not improved for this time";
 	}
@@ -210,7 +209,7 @@ Serializable {
 	public void setStagnationMeasure(SelectedTag stagnationTimeIn) {
 		this.stagnationMeasure = stagnationTimeIn;
 	}
-	
+
 	public String stagnationMeasureTipText() {
 		return "Stagnation time is measured in fitness calls or generations, to be selected here.";
 	}
@@ -228,7 +227,7 @@ Serializable {
 	public void setConvergenceCondition(SelectedTag convergenceCondition) {
 		this.convergenceCondition = convergenceCondition;
 	}
-	
+
 	public String convergenceConditionTipText() {
 		return "Select between absolute and relative convergence condition";
 	}

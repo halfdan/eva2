@@ -109,7 +109,7 @@ public class Plot implements PlotInterface, Serializable {
 		try {
 			m_Frame.setIconImage(Toolkit.getDefaultToolkit().createImage(bytes));
 		} catch (java.lang.NullPointerException e) {
-			System.out.println("Could not find EvA2 icon, please move resources folder to working directory!");
+			System.err.println("Could not find EvA2 icon, please move resources folder to working directory!");
 		}
 
 		m_ButtonPanel = new JPanel();
@@ -142,7 +142,7 @@ public class Plot implements PlotInterface, Serializable {
 				m_PlotArea.exportToAscii();
 			}
 		});
-		
+
 //		JButton PrintButton = new JButton ("Print");
 //		PrintButton.addActionListener(new ActionListener() {
 //			public void actionPerformed(ActionEvent e) {
@@ -212,7 +212,7 @@ public class Plot implements PlotInterface, Serializable {
 //				}
 //			}
 //		});
-		
+
 		// MK: Im not sure whether save/open ever worked...
 //		JButton OpenButton = new JButton ("Open..");
 //		OpenButton.setToolTipText("Load an old plot");
@@ -286,7 +286,7 @@ public class Plot implements PlotInterface, Serializable {
 
 	/**
 	 * Return true if the Plot object is valid.
-	 * 
+	 *
 	 * @return true if the Plot object is valid
 	 */
 	public boolean isValid() {
@@ -381,7 +381,7 @@ public class Plot implements PlotInterface, Serializable {
 	protected void dumpPlot() {
 		m_PlotArea.exportToAscii();
 	}
-	
+
 	/**
 	 *
 	 */
@@ -395,7 +395,7 @@ public class Plot implements PlotInterface, Serializable {
 				returnVal = JOptionPane.showConfirmDialog(m_Frame, "The file "+sFile.getName()+" already exists. Overwrite?");
 				if (returnVal != JOptionPane.YES_OPTION) return;
 			}
-			if (!(m_PlotArea.exportToAscii(sFile))) { 
+			if (!(m_PlotArea.exportToAscii(sFile))) {
 				JOptionPane.showMessageDialog(m_Frame,
 						"Couldn't write to file: "
 						+ sFile.getName(),

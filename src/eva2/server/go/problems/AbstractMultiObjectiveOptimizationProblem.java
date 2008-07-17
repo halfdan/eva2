@@ -34,6 +34,9 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
     public    ArrayList                         m_AreaConst4Parallelization = new ArrayList();
     protected int                               m_OutputDimension   = 2;
 
+    /**
+     * TODO
+     */
     public    double[][]                        m_Border;
     transient protected eva2.gui.Plot        m_Plot;
     transient protected JFrame                  m_Result;
@@ -43,7 +46,7 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
      * @return  the clone
      */
     public abstract Object clone();
-    
+
     /** This method inits the Problem to log multiruns for the s-Metric it
      * is necessary to give the border to get reliable results.
      * also it is necessary to init the local Pareto-Front and the
@@ -95,7 +98,7 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
     public void evaluate(Population population) {
         AbstractEAIndividual    tmpIndy;
         double[]                fitness;
-        
+
         evaluatePopulationStart(population);
 
         // first evaluate the population
@@ -105,7 +108,9 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
             this.evaluate(tmpIndy);
             fitness = tmpIndy.getFitness();
             // check and update border if necessary
-            if (fitness.length != this.m_Border.length) {
+            if (m_Border == null)
+            	this.m_Border = new double[fitness.length][2];
+            else if (fitness.length != this.m_Border.length) {
                 //System.out.println("AbstractMOOptimizationProblem: Warning fitness.length("+fitness.length+") doesn't fit border.length("+this.m_Border.length+")");
                 //System.out.println("Resetting the border!");
                 this.m_Border = new double[fitness.length][2];
@@ -121,7 +126,7 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
             }
             population.incrFunctionCalls();
         }
-        
+
         evaluatePopulationEnd(population); // refactored by MK
     }
 
@@ -154,9 +159,9 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
         // algorithms can be applied more easily
         this.m_MOSOConverter.convertMultiObjective2SingleObjective(population);
 
-        if (this.m_Show) this.drawProblem(population);	
+        if (this.m_Show) this.drawProblem(population);
     }
-    
+
    /** This method will init the problem specific visualisation of the problem
      */
     public void initProblemFrame() {
