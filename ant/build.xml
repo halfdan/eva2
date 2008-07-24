@@ -38,10 +38,16 @@
   <property name="debug.flag"					  value="true" />
 	  <property name="jar.name"						value="EvA2Base" />
 	  <property name="srcpack.name"					value="EvA2BaseSrc" />
-	  <property name="JE2Probs.directory"			value="../JE2Probs" />				
-	  <property name="JE2ESModel.directory"			value="../JE2ESModel" />				
+	
+	<!-- SET THESE PATHES IF YOU WANT TO COMPILE ADDITIONAL EvA2 PACKAGES -->
+	  <property name="JE2Probs.directory"			value="../JE2Probs" />	
+	  <property name="JE2ESModel.directory"			value="../JE2ESModel" />
 	  <property name="JE2Research.directory"		value="../JE2Research" />				
 
+	<available file="${JE2Probs.directory}" property="JE2Probs.available"/>
+	<available file="${JE2ESModel.directory}" property="JE2ESModel.available"/>
+	<available file="${JE2Research.directory}" property="JE2Research.available"/>
+	
   <!-- SET THE BINARY LIBRARIES PROPERTIES -->
   <property name="check.libraries.ant"            value="ant/check.xml" />
   <property name="windows.libraries"              value="${library.directory}/windows" />
@@ -160,12 +166,36 @@
     <delete dir="${distribution.directory}" />
   </target>
 
-  <target name="cleanAll" depends="init, clean">
-  	<!--
-    <ant inheritAll="false" antfile="build.xml" dir="${library.WSI.ant}" target="clean">
-      <property name="silent" value="true"/>
-    </ant>-->
+	<!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+		        Clean JE2Probs
+	+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+		<target name="cleanProbs" depends="usage, init, compileInfo" description="Compiles the Probs project." if="JE2Probs.available">
+		  	<ant inheritAll="false" antfile="${ant.directory}/build.xml" dir="${JE2Probs.directory}" target="clean">
+				<property name="silent" value="true"/>
+			</ant>
+		</target>
+		
+	<!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+		      Clean JE2ESModel
+	+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+		<target name="cleanESModel" depends="usage, init, compileInfo" description="Compiles the ESModel project." if="JE2ESModel.available">
+		  	<ant inheritAll="false" antfile="${ant.directory}/build.xml" dir="${JE2ESModel.directory}" target="clean">
+				<property name="silent" value="true"/>
+			</ant>
+		</target>
+		
+	<!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+		      Clean JE2Research
+	+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+		<target name="cleanResearch" depends="usage, init, compileInfo" description="Compiles the Research project." if="JE2Research.available">
+		 	<ant inheritAll="false" antfile="${ant.directory}/build.xml" dir="${JE2Research.directory}" target="clean">
+				<property name="silent" value="true"/>
+			</ant>
+		</target>
+	
+  <target name="cleanAll" depends="init, clean, cleanProbs, cleanESModel, cleanResearch">
   </target>
+	
 <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         Update libraries
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
@@ -175,21 +205,21 @@
         Compile
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
 
-  <target name="compileAll" depends="usage, update.libraries" description="Update libraries and compile the project.">
-    <antcall target="compile">
-    </antcall>
-    <antcall target="compileProbs">
-    </antcall>
-  </target>
+  <target name="compileAll" depends="compile, compileProbs, compileESModel, compileResearch" description="Update libraries and compile the project.">
+
+   </target>
 
   <target name="compileInfo" unless="silent">
+    <echo message="JE2Base Project"/>
     <echo message="ANT_HOME is set to = ${env.ANT_HOME}"/>
     <echo message="JAVA_HOME is set to = ${env.JAVA_HOME}"/>
-    <echo message="You are using JDK version ${ant.java.version}"/>
-    <echo message="currently JDK version 1.5 is recomended!"/>
+    <echo message="You are using JDK version ${ant.java.version}, currently JDK version 1.5 is recomended!"/>
     <echo message=""/>
     <echo message="use 'ant compileAll' - to compile all java sources (+ WSI)."/>
     <echo message="use 'ant compile'    - to compile only the java sources (faster)."/>
+  	<echo message="JE2Probs available: ${JE2Probs.available}" />
+  	<echo message="JE2ESModel available: ${JE2ESModel.available}" />
+ 	<echo message="JE2Research available: ${JE2Research.available}" />
   </target>
 
   <target name="compile" depends="usage, init, check, compileInfo" description="Compiles the project." >
@@ -222,30 +252,35 @@
     <copy todir="${build.directory}/resources">
       <fileset dir="${resources.directory}" includes="**/*" />
    </copy>
-  	
-    <copy todir="${JE2Probs.directory}/${build.directory}/resources">
-      <fileset dir="${JE2Probs.directory}/${resources.directory}" includes="**/*" />
-   </copy>
-  	
-    <copy todir="${JE2ESModel.directory}/${build.directory}/resources">
-      <fileset dir="${JE2ESModel.directory}/${resources.directory}" includes="**/*" />
-   </copy>
-	
-    <copy todir="${JE2Research.directory}/${build.directory}/resources">
-      <fileset dir="${JE2Research.directory}/${resources.directory}" includes="**/*" />
-   </copy>
-  </target>
+</target>
 	
 <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	        Compile JE2Probs
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
-	<target name="compileProbs" depends="usage, init, compileInfo" description="Compiles the Probs project." >
-	  <!-- COMPILE PROBS PROJECT -->
+	<target name="compileProbs" depends="usage, init, compileInfo" description="Compiles the Probs project." if="JE2Probs.available">
 	  	<ant inheritAll="false" antfile="${ant.directory}/build.xml" dir="${JE2Probs.directory}" target="compile">
 			<property name="silent" value="true"/>
 		</ant>
 	</target>
 	
+<!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	      Compile JE2ESModel
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+	<target name="compileESModel" depends="usage, init, compileInfo" description="Compiles the ESModel project." if="JE2ESModel.available">
+	  	<ant inheritAll="false" antfile="${ant.directory}/build.xml" dir="${JE2ESModel.directory}" target="compile">
+			<property name="silent" value="false"/>
+		</ant>
+	</target>
+	
+<!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	      Compile JE2Research
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+	<target name="compileResearch" depends="usage, init, compileInfo" description="Compiles the Research project." if="JE2Research.available">
+	 	<ant inheritAll="false" antfile="${ant.directory}/build.xml" dir="${JE2Research.directory}" target="compile">
+			<property name="silent" value="false"/>
+		</ant>
+	</target>
+		
 <!-- =================================================================== -->
 <!-- Jars all classes into one jar file                                  -->
 <!-- =================================================================== -->
@@ -486,98 +521,19 @@
   <target name="run" description="Runs EvA2.">
     <java classname="eva2.client.EvAClient" fork="yes">
       <jvmarg value="-Xmx512m"/>
-      <classpath refid="project.class.path" />
+      <classpath>
+      	<pathelement path="${project.class.path}" />
+      	<pathelement path="${build.directory}" />
+      	</classpath>
     </java>
   </target>
 
-  <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        Run EvA2
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
-
-  <target name="Altana" description="Runs Altana CombiLib Problem.">
-    <java classname="eva2.server.oa.go.GOAltana" fork="yes">
-      <jvmarg value="-Xmx512m"/>
-      <classpath refid="project.class.path" />
-    </java>
-  </target>
-
-  <target name="Portfolio" description="Runs GOPortfolio.">
+  <!--<target name="Portfolio" description="Runs GOPortfolio.">
     <java classname="eva2.server.oa.go.GOPortfolio" fork="yes">
         <jvmarg value="-Xmx512m" />
         <classpath refid="project.class.path" />
     </java>
-  </target>
-
-  <target name="PortfolioLS" description="Runs GOPortfolioLS.">
-    <java classname="eva2.server.oa.go.GOPortfolioLS" fork="yes">
-        <jvmarg value="-Xmx512m" />
-        <classpath refid="project.class.path" />
-    </java>
-  </target>
-
-  <target name="PMOEA" description="Runs ParallelMOEAs.">
-    <java classname="eva2.server.oa.go.GOParallelMOEA" fork="yes">
-        <jvmarg value="-Xmx512m" />
-        <classpath refid="project.class.path" />
-    </java>
-  </target>
-
-  <target name="GridMC" description="Runs a Grid Search for GO.">
-    <java classname="eva2.server.oa.go.GOGridSearchTwo" fork="yes">
-        <jvmarg value="-Xmx512m" />
-        <classpath refid="project.class.path" />
-    </java>
-  </target>
-
-
-  <target name="GOSSFirst" description="Runs a comparison on system identification.">
-    <java classname="eva2.server.oa.go.GOSystemComparing" fork="yes">
-        <jvmarg value="-Xmx512m" />
-        <classpath refid="project.class.path" />
-    </java>
-  </target>
-
-  <target name="GOSSMSHC" description="Runs a comparison on system identification.">
-    <java classname="eva2.server.oa.go.GOSystemMSHC" fork="yes">
-        <jvmarg value="-Xmx512m" />
-        <classpath refid="project.class.path" />
-    </java>
-  </target>
-
-  <target name="GOSSESPopSize" description="Runs a comparison on system identification.">
-    <java classname="eva2.server.oa.go.GOSystemESPopSize" fork="yes">
-        <jvmarg value="-Xmx512m" />
-        <classpath refid="project.class.path" />
-    </java>
-  </target>
-
-  <target name="GOSSPmPc" description="Runs a comparison on system identification.">
-    <java classname="eva2.server.oa.go.GOSystemPmPc" fork="yes">
-        <jvmarg value="-Xmx512m" />
-        <classpath refid="project.class.path" />
-    </java>
-  </target>
-
-  <target name="GOSSESMutation" description="Runs a comparison on system identification.">
-    <java classname="eva2.server.oa.go.GOSystemESMutation" fork="yes">
-        <jvmarg value="-Xmx512m" />
-        <classpath refid="project.class.path" />
-    </java>
-  </target>
-
-  <target name="GOSSGACrossover" description="Runs a comparison on system identification.">
-    <java classname="eva2.server.oa.go.GOSystemGACrossover" fork="yes">
-        <jvmarg value="-Xmx512m" />
-        <classpath refid="project.class.path" />
-    </java>
-  </target>
-
-  <target name="GOSSMALSLI" description="Runs a comparison on system identification.">
-    <java classname="eva2.server.oa.go.GOSystemMA" fork="yes">
-        <jvmarg value="-Xmx512m" />
-        <classpath refid="project.class.path" />
-    </java>
-  </target>
+  </target>-->
 
 <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         Javadoc
