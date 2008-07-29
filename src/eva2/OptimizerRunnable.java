@@ -16,6 +16,7 @@ import eva2.server.go.populations.Population;
 import eva2.server.modules.GOParameters;
 import eva2.server.modules.Processor;
 import eva2.server.stat.AbstractStatistics;
+import eva2.server.stat.StatisticsDummy;
 import eva2.server.stat.InterfaceTextListener;
 import eva2.server.stat.StatisticsStandalone;
 
@@ -33,13 +34,42 @@ public class OptimizerRunnable implements Runnable {
 	private boolean postProcessOnly = false;
 	private InterfaceTextListener listener = null;
 	
+	/**
+	 * Construct an OptimizerRunnable with given parameters and a StatisticsStandalone instance without restart,
+	 * meaning that the population will be initialized randomly.
+	 * 
+	 * @param params
+	 * @param outputFilePrefix
+	 */
 	public OptimizerRunnable(GOParameters params, String outputFilePrefix) {
 		this(params, outputFilePrefix, false);
 	}
 		
+	/**
+	 * This constructor assumes that DummyStatistics are enough. This saves time e.g. for small populations.
+	 * If restart is true, the processor will not reinitialize the population allowing search on predefined populations.
+	 * 
+	 * @param params
+	 * @param restart
+	 */
+	public OptimizerRunnable(GOParameters params, boolean restart) {
+		proc = new Processor(new StatisticsDummy(), null, params);
+		if (proc.getStatistics() instanceof AbstractStatistics) ((AbstractStatistics)proc.getStatistics()).setSaveParams(false);
+		doRestart = restart;
+	}
+	
+	/**
+	 * Construct an OptimizerRunnable with given parameters and a StatisticsStandalone instance with optional restart.
+	 * If restart is true, the processor will not reinitialize the population allowing search on predefined populations.
+	 * The outputFilePrefix may be null.
+	 * 
+	 * @param params
+	 * @param outputFilePrefix
+	 * @param restart
+	 */
 	public OptimizerRunnable(GOParameters params, String outputFilePrefix, boolean restart) {
 		proc = new Processor(new StatisticsStandalone(outputFilePrefix), null, params);
-		((AbstractStatistics)proc.getStatistics()).setSaveParams(false);
+		if (proc.getStatistics() instanceof AbstractStatistics) ((AbstractStatistics)proc.getStatistics()).setSaveParams(false);
 		doRestart = restart;
 	}
 	

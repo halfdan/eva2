@@ -1,7 +1,7 @@
 package eva2.server.go.problems;
 
 import eva2.server.go.individuals.ESIndividualDoubleData;
-import eva2.server.go.strategies.ParticleSwarmOptimization;
+import eva2.tools.Mathematics;
 import wsi.ra.math.Jama.Matrix;
 
 /**
@@ -32,10 +32,12 @@ public class F6Problem extends F1Problem implements InterfaceMultimodalProblem, 
      */
     public void initProblem() {
         super.initProblem();
-        rotation = new Matrix(m_ProblemDimension, m_ProblemDimension);
-        Matrix vec = new Matrix(m_ProblemDimension, 1);
-        for (int i=0; i<m_ProblemDimension; i++) vec.set(i,0, i+1);
-        rotation = ParticleSwarmOptimization.getRotationMatrix(vec).transpose();
+        if (doRotation) {
+        	rotation = new Matrix(m_ProblemDimension, m_ProblemDimension);
+        	Matrix vec = new Matrix(m_ProblemDimension, 1);
+        	for (int i=0; i<m_ProblemDimension; i++) vec.set(i,0, i+1);
+        	rotation = Mathematics.getRotationMatrix(vec).transpose();
+        } else rotation = null;
     }
     
     /** This method returns a deep clone of the problem.

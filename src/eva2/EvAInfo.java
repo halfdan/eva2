@@ -4,8 +4,10 @@ package eva2;
  * Main product and version information strings.
  * 
  * --- Changelog
+ * 2.028: Tuned the Population to sort only when necessary on calls to getBestN... Added StatisticsDummy.
+ * 			Slightly tuned SimpleProblemWrapper to call initProblem of simple problems if available.
  * 2.027: Renamed SetData and SetDataLamarckian from individual datatype interfaces to SetGenotype and SetPhenotype.
- * 			Repaired the GenericArrayEditor. Population measures can now be plottet in stats.
+ * 			Repaired the GenericArrayEditor. Population measures can now be plotted in stats.
  * 2.026: Added DiversityTerminator and KnownOptimaTerminator, slightly changed InterfaceTerminator for these
  * 			and InterfaceStatistics to provide termination message to text window. 
  * 			Killed redundant method getGenerations() in Population. Population.getAllSolutions now returns a 
@@ -25,7 +27,7 @@ package eva2;
 public class EvAInfo {
 	public static final String productName = "EvA 2";
 	public static final String productLongName = "Evolutionary Algorithms Workbench 2";
-	public static final String versionNum = new String ("2.027");
+	public static final String versionNum = new String ("2.028");
 	public static final String url = "http://www.ra.cs.uni-tuebingen.de/software/EvA2";
 
 	public static final String propertyFile = "resources/EvA2.props";
