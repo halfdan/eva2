@@ -20,6 +20,7 @@ import eva2.server.go.problems.Interface2DBorderProblem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import wsi.ra.math.RNG;
 import eva2.tools.EVAERROR;
+import eva2.tools.Mathematics;
 import eva2.tools.SelectedTag;
 
 import wsi.ra.chart2d.DPoint;
@@ -797,7 +798,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 			for (int i=1; i<dim; i++) {
 				randVec.set(i, 0, project(-len/2, len/2, RNG.gaussianDouble(len/(scale*2))));
 			}
-			Matrix rotation = getRotationMatrix(dir);
+			Matrix rotation = Mathematics.getRotationMatrix(dir);
 			rotation = rotation.transpose();
 			//printMatrix(rotation);
 			resVec = rotation.times(randVec);
@@ -860,75 +861,6 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 //		vec.setElement(j, val1);
 //	}
 	
-	/**
-	 * Return a matrix A which performs the rotation of vec to (1,0,0,...0) if forward is true, else
-	 * return a matrix B which performs the reverted rotation, where B=A' (transposition).
-	 *   
-	 * @param vec
-	 * @return
-	 */
-	public static Matrix getRotationMatrix(Matrix vec) {
-		Matrix A = Matrix.identity(vec.getRowDimension(), vec.getRowDimension());
-		Matrix tmp = Matrix.identity(vec.getRowDimension(), vec.getRowDimension());
-		Matrix z = (Matrix)vec.clone();
-
-		double w, cosw, sinw;
-
-		z.multi(z.norm2()); // normalize
-
-
-		for (int i=1; i<vec.getRowDimension(); i++) {
-			w = Math.atan2(z.get(i,0), z.get(0,0));// calc angle between the projection of x and x0 in x0-xi-plane
-
-			cosw = Math.cos(w);
-			sinw = Math.sin(w);
-			tmp.set(0, 0, cosw);	// make partial rotation matrix
-			tmp.set(0, i, sinw);
-			tmp.set(i, 0, -sinw);
-			tmp.set(i, i, cosw);
-
-			A = tmp.times(A);			// add to resulting rotation
-			z = tmp.times(z);			// z is now 0 in i-th component
-
-			tmp.set(0, 0, 1); // reset tmp matrix to unity
-			tmp.set(0, i, 0);
-			tmp.set(i, 0, 0);
-			tmp.set(i, i, 1);
-		}
-		return A;
-	}
-
-//	protected GMatrix nrotate(GVector vec) {	
-//		GMatrix A = new GMatrix(vec.getSize(), vec.getSize());
-//		GMatrix tmp = new GMatrix(vec.getSize(), vec.getSize());
-//		GVector z = new GVector(vec);
-//
-//		double w, cosw, sinw;
-//
-//		z.normalize();
-//		
-//		
-//		for (int i=1; i<vec.getSize(); i++) {
-//			w = Math.atan2(z.getElement(i), z.getElement(0));// calc angle between the projection of x and x0 in x0-xi-plane
-//
-//			cosw = Math.cos(w);
-//			sinw = Math.sin(w);
-//			tmp.setElement(0, 0, cosw);	// make partial rotation matrix
-//			tmp.setElement(0, i, sinw);
-//			tmp.setElement(i, 0, -sinw);
-//			tmp.setElement(i, i, cosw);
-//			
-//			A.mul(tmp, A);			// add to resulting rotation
-//			z.mul(tmp, z);			// z is now 0 in i-th component
-//			
-//			tmp.setElement(0, 0, 1); // reset tmp matrix to unity
-//			tmp.setElement(0, i, 0);
-//			tmp.setElement(i, 0, 0);
-//			tmp.setElement(i, i, 1);
-//		}
-//		return A;
-//	}
-
 	/**
 	 * In the topology range for the given index, find the best stored individual and return its position.
 	 *

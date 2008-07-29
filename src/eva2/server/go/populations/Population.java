@@ -34,6 +34,8 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     protected int           m_FunctionCalls = 0;
     protected int           m_Size          = 50;
     protected Population    m_Archive       = null;
+    transient private ArrayList<AbstractEAIndividual> sortedArr = null;
+    private int lastQModCount = -1;
     transient protected InterfacePopulationChangedEventListener	m_Listener = null;
     protected int 			notifyEvalInterval	= 0;
     protected HashMap<String, Object>		additionalPopData = null;
@@ -161,7 +163,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     	useHistory = useHist;
     }
     
-    /** This method will allow cou to increment the current number of function calls.
+    /** This method will allow you to increment the current number of function calls.
      */
     public void incrFunctionCalls() {
         this.m_FunctionCalls++;
@@ -178,17 +180,23 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      */
     public void incrFunctionCallsby(int d) {
     	if (doEvalNotify()) {
-    		System.out.println("checking funcall event...");
-    		int nextStep = ((m_FunctionCalls/notifyEvalInterval)+1) * notifyEvalInterval; // next interval boundary
-    		if (nextStep <= (m_FunctionCalls+d)) {
+//    		System.out.println("checking funcall event...");
+    		int nextStep; // next interval boundary
+    		while ((nextStep = calcNextBoundary()) <= (m_FunctionCalls+d)) {
     			// 	the notify interval will be stepped over or hit
     			int toHit = (nextStep - m_FunctionCalls);
     			this.m_FunctionCalls += toHit; // little cheat, notify may be after some more evals
     			firePropertyChangedEvent(funCallIntervalReached);
-    			this.m_FunctionCalls += (d-toHit);
+    			d = d-toHit;
+//    			this.m_FunctionCalls += (d-toHit);
     		}
+    		if (d>0) this.m_FunctionCalls += d; // add up the rest
     	} else this.m_FunctionCalls += d;
     }
+
+	private int calcNextBoundary() {
+		return ((m_FunctionCalls/notifyEvalInterval)+1) * notifyEvalInterval;
+	}
     
     /** Something has changed
      */
@@ -363,32 +371,69 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     }
 
     /** 
-     * This method returns the n current best individuals from the population, where
+     * This method returns the n currently best individuals from the population, where
      * the sorting criterion is delivered by an AbstractEAIndividualComparator.
      * There are less than n individuals returned if the population is smaller than n.
-     * If n is <= 0, then all individuals are returned and effectively just sorted
-     * by fitness.
+     * The comparator does not check constraints!
      * 
      * @param n	number of individuals to look out for
      * @return The m best individuals, where m <= n
      * 
      */
     public Population getBestNIndividuals(int n) {
-    	if (n <= 0) n = super.size();
+    	return getSortedNIndividuals(n, true);
+    }
+    
+    /** 
+     * This method returns the n current best individuals from the population, where
+     * the sorting criterion is delivered by an AbstractEAIndividualComparator.
+     * There are less than n individuals returned if the population is smaller than n.
+     * The comparator does not check constraints!
+     * 
+     * @param n	number of individuals to look out for
+     * @param bBestOrWorst if true, the best n are returned, else the worst n individuals
+     * @return The m sorted best or worst individuals, where m <= n
+     * 
+     */
+    public Population getSortedNIndividuals(int n, boolean bBestOrWorst) {
+    	if ((n < 0) || (n>super.size())) {
+    		System.err.println("invalid request to getSortedNIndividuals: n="+n + ", size is " + super.size());
+    		n = super.size();
+    	}
+    	int skip = 0;
+    	if (!bBestOrWorst) skip = super.size()-n;
+    	
     	Population result = new Population(n);
-    	PriorityQueue<AbstractEAIndividual> queue = new PriorityQueue<AbstractEAIndividual>(super.size(), new AbstractEAIndividualComparator());
+    	ArrayList<AbstractEAIndividual> sorted = getSorted();
 
-        for (int i = 0; i < super.size(); i++) {
-        	queue.add(getEAIndividual(i));
-        }
-        for (int i = 0; i<n ; i++) {
-        	if (queue.size() == 0) break;
-        	result.add(queue.poll());
+        for (int i = skip; i < skip+n; i++) {
+        	result.add(sorted.get(i));
         }
         result.setPopulationSize(result.size());
     	return result;
     }
     
+    /**
+     * Avoids having to sort again in several calls without modifications in between.
+     * The returned array should not be modified!
+     * 
+     * @return
+     */
+    protected ArrayList<AbstractEAIndividual> getSorted() {
+    	if (sortedArr == null || (super.modCount != lastQModCount)) {
+    		PriorityQueue<AbstractEAIndividual> sQueue = new PriorityQueue<AbstractEAIndividual>(super.size(), new AbstractEAIndividualComparator());
+    		for (int i = 0; i < super.size(); i++) {
+    			sQueue.add(getEAIndividual(i));
+    		}
+    		lastQModCount = super.modCount;
+    		if (sortedArr==null) sortedArr = new ArrayList<AbstractEAIndividual>(this.size());
+    		else sortedArr.clear();
+    		AbstractEAIndividual indy;
+    		while ((indy=sQueue.poll())!=null) sortedArr.add(indy);
+    	}
+    	return sortedArr;
+    }
+    	
     /** This method returns n random best individuals from the population.
      * 
      * @param n	number of individuals to look out for
@@ -660,6 +705,15 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     
     public boolean add(IndividualInterface o) {
     	return addIndividual((IndividualInterface)o);
+    }
+    
+    /**
+	 * ArrayList does not increase the modCount in set. Why???
+     */
+    public Object set(int index, Object element) {
+    	Object prev = super.set(index, element);
+    	modCount++;
+    	return prev;
     }
     
     public boolean addIndividual(IndividualInterface ind) {

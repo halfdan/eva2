@@ -146,7 +146,7 @@ public class RNG extends Random {
     return (hi-lo)*random.nextFloat()+lo;
   }
   /**
-   *
+   * A random double value between 0 and 1.
    */
   public static double randomDouble() {
     return random.nextDouble();

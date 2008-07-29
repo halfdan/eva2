@@ -50,6 +50,7 @@ public class F1Problem extends AbstractProblemDouble implements Interface2DBorde
      */
     public void initProblem() {
 //        this.m_OverallBest = null;
+    	initTemplate();
     }
 
 	protected double[] getEvalArray(AbstractEAIndividual individual){

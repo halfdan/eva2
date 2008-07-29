@@ -22,6 +22,7 @@ import eva2.server.go.problems.FM0Problem;
 import eva2.server.go.problems.InterfaceMultimodalProblemKnown;
 import eva2.server.go.strategies.HillClimbing;
 import eva2.server.stat.InterfaceTextListener;
+import eva2.server.stat.StatsParameter;
 import eva2.tools.Pair;
 
 
@@ -371,8 +372,9 @@ public class PostProcess {
 		}
 		hc.setPopulation(pop);
 //		hc.initByPopulation(pop, false);
-		hcRunnable = new OptimizerRunnable(OptimizerFactory.makeParams(hc, pop, problem, 0, term), null, true);
+		hcRunnable = new OptimizerRunnable(OptimizerFactory.makeParams(hc, pop, problem, 0, term), true);
 		hcRunnable.getGOParams().setDoPostProcessing(false);
+		hcRunnable.setVerbosityLevel(StatsParameter.VERBOSITY_NONE);
 		hcRunnable.run();
 		hcRunnable.getGOParams().setDoPostProcessing(true);
 		hcRunnable = null;
