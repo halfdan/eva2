@@ -20,7 +20,11 @@ import eva2.server.go.problems.InterfaceOptimizationProblem;
  *            $Author: mkron $
  */
 public class MonteCarloSearch implements InterfaceOptimizer, java.io.Serializable {
-    // These variables are necessary for the simple testcase
+    /**
+	 * Generated serial version id.
+	 */
+	private static final long serialVersionUID = -751760624411490405L;
+	// These variables are necessary for the simple testcase
     private InterfaceOptimizationProblem    m_Problem               = new B1Problem();
     private int                             m_MultiRuns             = 100;
     private int                             m_FitnessCalls          = 100;
@@ -60,7 +64,7 @@ public class MonteCarloSearch implements InterfaceOptimizer, java.io.Serializabl
      */
     public void initByPopulation(Population pop, boolean reset) {
         this.m_Population = (Population)pop.clone();
-        if (reset) this.m_Population.init();        
+        if (reset) this.m_Population.init();
         this.m_Problem.evaluate(this.m_Population);
         this.firePropertyChangedEvent("NextGenerationPerformed");
     }
@@ -171,7 +175,7 @@ public class MonteCarloSearch implements InterfaceOptimizer, java.io.Serializabl
      */
     public void freeWilly() {
 
-    }    
+    }
 /**********************************************************************************************************************
  * These are for GUI
  */
@@ -201,7 +205,7 @@ public class MonteCarloSearch implements InterfaceOptimizer, java.io.Serializabl
     public String populationTipText() {
         return "Change the number of best individuals stored.";
     }
-    
+
     public InterfaceSolutionSet getAllSolutions() {
     	return new SolutionSet(getPopulation());
     }
