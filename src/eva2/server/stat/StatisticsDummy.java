@@ -2,6 +2,7 @@ package eva2.server.stat;
 
 import eva2.server.go.IndividualInterface;
 import eva2.server.go.PopulationInterface;
+import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.problems.InterfaceAdditionalPopulationInformer;
 
 /**
@@ -14,13 +15,16 @@ import eva2.server.go.problems.InterfaceAdditionalPopulationInformer;
 public class StatisticsDummy implements InterfaceStatistics, InterfaceTextListener {
 	boolean consoleOut = false;
 	StatsParameter sParams = null;
+	AbstractEAIndividual bestCurrentIndividual, bestIndividualAllover;
 	
 	public StatisticsDummy() {
+		bestIndividualAllover = null;
 		sParams = new StatsParameter();
 		sParams.setOutputVerbosityK(StatsParameter.VERBOSITY_NONE);
 	}
 	
 	public StatisticsDummy(boolean doConsoleOut) {
+		bestIndividualAllover = null;
 		sParams = new StatsParameter();
 		sParams.setOutputVerbosityK(StatsParameter.VERBOSITY_NONE);
 		consoleOut = doConsoleOut;
@@ -30,8 +34,12 @@ public class StatisticsDummy implements InterfaceStatistics, InterfaceTextListen
 		System.err.println("addTextListener not provided!");
 	}
 
-	public void createNextGenerationPerformed(PopulationInterface Pop,
+	public void createNextGenerationPerformed(PopulationInterface pop,
 			InterfaceAdditionalPopulationInformer informer) {
+		bestCurrentIndividual = (AbstractEAIndividual)pop.getBestIndividual();
+		if ((bestIndividualAllover == null) || (AbstractStatistics.secondIsBetter(bestIndividualAllover, bestCurrentIndividual))) {
+			bestIndividualAllover = bestCurrentIndividual;
+		}
 	}
 
 	public void createNextGenerationPerformed(double[] bestfit,
@@ -39,13 +47,12 @@ public class StatisticsDummy implements InterfaceStatistics, InterfaceTextListen
 	}
 
 	public double[] getBestFitness() {
-		System.err.println("getBestFitness not provided!");
-		return null;
+		if (bestIndividualAllover != null) return bestCurrentIndividual.getFitness();
+		else return null;
 	}
 
 	public IndividualInterface getBestSolution() {
-		System.err.println("getBestSolution not provided!");
-		return null;
+		return bestIndividualAllover;
 	}
 
 	public InterfaceStatisticsParameter getStatisticsParameter() {
@@ -62,7 +69,9 @@ public class StatisticsDummy implements InterfaceStatistics, InterfaceTextListen
 	}
 
 	public void startOptPerformed(String InfoString, int runnumber,
-			Object params) {}
+			Object params) {
+		bestIndividualAllover = null;
+	}
 
 	public void stopOptPerformed(boolean normal, String stopMessage) {}
 	

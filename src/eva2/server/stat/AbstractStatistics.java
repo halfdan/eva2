@@ -409,7 +409,14 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 		for (int i=0; i<mean.length; i++) mean[i] += fit[i];
 	}
 	
-	private boolean secondIsBetter(IndividualInterface indy1, IndividualInterface indy2) {
+	/**
+	 * Compare two individual interfaces and return true if the second one is dominant.
+	 * 
+	 * @param indy1
+	 * @param indy2
+	 * @return true if the second individual is dominant, else false
+	 */
+	public static boolean secondIsBetter(IndividualInterface indy1, IndividualInterface indy2) {
 		if (indy1 == null) return true;
 		if (indy2 == null) return false;
 		if (indy1 instanceof AbstractEAIndividual) return ((AbstractEAIndividual)indy2).isDominatingDebConstraints((AbstractEAIndividual)indy1);
