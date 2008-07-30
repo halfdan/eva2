@@ -315,37 +315,72 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
         return domSet;
 	}
 
+	private boolean compareFit(boolean bChooseBetter, double[] fit1, double[] fit2) {
+		if (bChooseBetter) return AbstractEAIndividual.isDominatingFitness(fit1, fit2);
+		else return AbstractEAIndividual.isDominatingFitness(fit2, fit1);
+	}
+	
 	/** 
 	 * This method will return the index of the current best individual from the
-     * population, yet only the first single criterion is regarded.
+     * population.
+     * 
+     * @see getIndexOfBestOrWorstIndividual()
      * @return The index of the best individual.
      */
     public int getIndexOfBestIndividual() {
+    	return getIndexOfBestOrWorstIndividual(true, true);
+    }
+	
+	/** 
+	 * This method will return the index of the current best individual from the
+     * population.
+     * 
+     * @see getIndexOfBestOrWorstIndividual()
+     * @return The index of the best individual.
+     */
+    public int getIndexOfWorstIndividual() {
+    	return getIndexOfBestOrWorstIndividual(false, false);
+    }
+    
+	/** 
+	 * This method will return the index of the current best (worst) individual from the
+     * population. If indicated, only those are regarded which do not violate the constraints.
+     * If all violate the constraints, the smallest (largest) violation is selected.
+     * Comparisons are done multicriterial, but note that for incomparable sets (pareto fronts)
+     * this selection will not be fair (always the lowest index of incomparable sets will be returned).
+     * 
+     * @param bBest if true, smallest fitness (regarded best) index is returned, else the highest one
+     * @param indicate whether constraints should be regarded
+     * @return The index of the best (worst) individual.
+     */
+    public int getIndexOfBestOrWorstIndividual(boolean bBest, boolean checkConstraints) {
         int     result          = -1;
-        double  curBestFitness  = Double.POSITIVE_INFINITY;
+        double[]  curSelFitness = null;
         boolean allViolate = true;
 
         for (int i = 0; i < super.size(); i++) {
-            if (!((AbstractEAIndividual)super.get(i)).violatesConstraint()) {
+            if (!checkConstraints || !(getEAIndividual(i).violatesConstraint())) {
             	allViolate = false;
-            	if (getEAIndividual(i).getFitness(0) < curBestFitness) {
+            	if ((result<0) || (compareFit(bBest, getEAIndividual(i).getFitness(), curSelFitness))) {
+            		// fit i is better than remembered
             		result          = i;
-            		curBestFitness  = getEAIndividual(i).getFitness(0);
+            		curSelFitness  = getEAIndividual(i).getFitness(); // remember fit i
             	}
             }
         }
         if (result < 0) {
-        	if (allViolate) {
-        		// to avoid problems with NaN or infinite fitness value, preselect a random ind.
-        		// TODO: use multi-objective comparison?
-        		result          = 0;
-        		curBestFitness  = getEAIndividual(0).getConstraintViolation();
+        	if (checkConstraints && allViolate) {
         		// darn all seem to violate the constraint
         		// so lets search for the guy who is close to feasible
+        		
+        		// to avoid problems with NaN or infinite fitness value, preselect an ind.
+        		result          = 0;
+        		double minViol = getEAIndividual(0).getConstraintViolation();
         		for (int i = 1; i < super.size(); i++) {
-        			if (getEAIndividual(i).getConstraintViolation() < curBestFitness) {
+        			if ((bBest && getEAIndividual(i).getConstraintViolation() < minViol) ||
+            			(!bBest && (getEAIndividual(i).getConstraintViolation() > minViol))) {
         				result          = i;
-        				curBestFitness  = ((AbstractEAIndividual)super.get(i)).getConstraintViolation();
+        				minViol  = ((AbstractEAIndividual)super.get(i)).getConstraintViolation();
         			}
         		}
         		System.err.println("Population reports: All individuals violate the constraints, choosing smallest constraint violation.");
@@ -364,17 +399,19 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      */
     public AbstractEAIndividual getBestEAIndividual() {
         int best = this.getIndexOfBestIndividual();
-        if (best == -1) best = 0;
+        if (best == -1) System.err.println("This shouldnt happen!");;
         AbstractEAIndividual result = (AbstractEAIndividual)this.get(best);
         if (result == null) System.err.println("Serious Problem! Population Size: " + this.size());
         return result;
     }
 
     /** 
-     * This method returns the n currently best individuals from the population, where
+     * This method returns the n current best individuals from the population, where
      * the sorting criterion is delivered by an AbstractEAIndividualComparator.
      * There are less than n individuals returned if the population is smaller than n.
-     * The comparator does not check constraints!
+     * If n is <= 0, then all individuals are returned and effectively just sorted
+     * by fitness.
+     * This does not check constraints!
      * 
      * @param n	number of individuals to look out for
      * @return The m best individuals, where m <= n
@@ -388,7 +425,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      * This method returns the n current best individuals from the population, where
      * the sorting criterion is delivered by an AbstractEAIndividualComparator.
      * There are less than n individuals returned if the population is smaller than n.
-     * The comparator does not check constraints!
+     * This does not check constraints!
      * 
      * @param n	number of individuals to look out for
      * @param bBestOrWorst if true, the best n are returned, else the worst n individuals
@@ -495,29 +532,17 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     	return pop;
     }
     
-    /** This method returns the currently worst individual from the population
+    /** 
+     * This method returns the currently worst individual from the population
      * @return The best individual
      */
     public AbstractEAIndividual getWorstEAIndividual() {
-        AbstractEAIndividual result = null;
-        double curBestFitness = Double.NEGATIVE_INFINITY;
-
-        for (int i = 0; i < super.size(); i++) {
-            //System.out.println("Fitness " + i + " " + ((AbstractEAIndividual)super.get(i)).getFitness(0));
-            if (((AbstractEAIndividual)super.get(i)).getFitness(0) > curBestFitness) {
-                result = (AbstractEAIndividual)super.get(i);
-                curBestFitness = result.getFitness(0);
-            }
-        }
-        if (result == null) {
-            result = ((AbstractEAIndividual)super.get(0));
-            if (result == null) System.out.println("Serious Problem! Population Size: " + this.size());
-        }
-        return result;
+    	return getEAIndividual(getIndexOfWorstIndividual());
     }
 
-    /** This method will remove N individuals from the population
-     * Note: the current strategy will be ro remove N individuals
+    /** 
+     * This method will remove N individuals from the population
+     * Note: the current strategy will be remove N individuals
      * at random but later a special heuristic could be introduced.
      * @param n     The number of individuals for be removed
      */
@@ -629,6 +654,10 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
         return strB.toString();
     }
 
+    /**
+     * Return a list of individual IDs from the population.
+     * @return
+     */
     public Long[] getIDList() {
     	Long[] idList = new Long[size()];
     	for (int i=0; i<idList.length; i++) {
@@ -645,6 +674,9 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
 //    	return idList;   	
 //    }
     
+    /**
+     * Get a string containing representations of all individuals contained.
+     */
     public String getIndyList() {
     	StringBuffer sb = new StringBuffer();
     	for (int i=0; i<size(); i++) {
