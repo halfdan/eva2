@@ -107,7 +107,7 @@ public class SteadyStateGA implements InterfaceOptimizer, java.io.Serializable {
 
         public void optimize() {
             for (int i = 0; i < this.m_Population.size(); i++) this.generateChildren();
-            this.m_Population.incrFunctionCallsby(this.m_Population.size());
+            this.m_Population.incrFunctionCallsBy(this.m_Population.size());
             this.m_Population.incrGeneration();
             this.firePropertyChangedEvent("NextGenerationPerformed");
         }

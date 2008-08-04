@@ -17,12 +17,13 @@ import eva2.server.go.operators.distancemetric.InterfaceDistanceMetric;
 import eva2.server.go.operators.distancemetric.PhenotypeMetric;
 import eva2.tools.EVAERROR;
 import eva2.tools.Mathematics;
+import eva2.tools.Pair;
 
 
 /** This is a basic implementation for a EA Population.
  * Copyright:       Copyright (c) 2003
  * Company:         University of Tuebingen, Computer Architecture
- * @author          Felix Streichert
+ * @author          Felix Streichert, Marcel Kronfeld
  * @version:  $Revision: 307 $
  *            $Date: 2007-12-04 14:31:47 +0100 (Tue, 04 Dec 2007) $
  *            $Author: mkron $
@@ -34,9 +35,11 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     protected int           m_FunctionCalls = 0;
     protected int           m_Size          = 50;
     protected Population    m_Archive       = null;
+
     transient private ArrayList<AbstractEAIndividual> sortedArr = null;
-    private int lastQModCount = -1;
     transient protected InterfacePopulationChangedEventListener	m_Listener = null;
+
+    // the evaluation interval at which listeners are notified
     protected int 			notifyEvalInterval	= 0;
     protected HashMap<String, Object>		additionalPopData = null;
     
@@ -44,6 +47,13 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     
     boolean useHistory						= false;
     public ArrayList<AbstractEAIndividual>  m_History       = new ArrayList<AbstractEAIndividual>();
+
+    // remember when the last sorted queue was prepared
+    private int lastQModCount = -1;
+    // remember when the last evaluation was performed
+	private Pair<Integer,Integer> evaluationTimeHashes = null;
+    // remember when the last evaluation was performed
+	private int evaluationTimeModCount = -1;
 
     public Population() {
     }
@@ -129,6 +139,8 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
         this.m_History = new ArrayList();
         this.m_Generation       = 0;
         this.m_FunctionCalls    = 0;
+    	evaluationTimeHashes = null;
+    	evaluationTimeModCount = -1;
         if (this.m_Archive != null) {
             this.m_Archive.clear();
             this.m_Archive.init();
@@ -178,7 +190,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      * 
      * @param d     The number of function calls to increment.
      */
-    public void incrFunctionCallsby(int d) {
+    public void incrFunctionCallsBy(int d) {
     	if (doEvalNotify()) {
 //    		System.out.println("checking funcall event...");
     		int nextStep; // next interval boundary
@@ -271,7 +283,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     }
     
     /**
-     * Resets the fitness to the maximum possible value for the given individual.
+     * Resets the fitnes to the maximum possible value for the given individual.
      *
      * @param indy	an individual whose fitness will be reset
      */
@@ -914,5 +926,40 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
 	 */
 	public void setNotifyEvalInterval(int notifyEvalInterval) {
 		this.notifyEvalInterval = notifyEvalInterval;
+	}
+
+	/**
+	 * Check whether the population at the current state has been marked as
+	 * evaluated. This allows to avoid double evaluations. 
+	 * 
+	 * @return true if the population has been marked as evaluated in its current state, else false 
+	 */
+	public boolean isEvaluated() {
+		Pair<Integer,Integer> hashes = getIndyHashSums();
+		
+		if (evaluationTimeHashes == null) return false;
+		else return (hashes.head()==evaluationTimeHashes.head() && (hashes.tail() == evaluationTimeHashes.tail()) && (evaluationTimeModCount == modCount));
+	}
+
+	/**
+	 * Mark the population at the current state as evaluated. Changes to the modCount or hashes of individuals
+	 * will invalidate the mark.
+	 *  
+	 * @see  isEvaluated()
+	 */
+	public void setEvaluated() {
+		evaluationTimeModCount = modCount;
+		evaluationTimeHashes = getIndyHashSums();
+	}
+	
+	private Pair<Integer,Integer> getIndyHashSums() {
+		int hashSum = 0, hashSumAbs = 0;
+		int hash;
+		for (int i=0; i<size(); i++) {
+			hash = get(i).hashCode();
+			hashSum += hash;
+			hashSumAbs += Math.abs(hash);
+		}
+		return new Pair(hashSum, hashSumAbs);
 	}
 }

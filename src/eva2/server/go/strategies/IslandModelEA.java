@@ -133,7 +133,7 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
         for (int i = 0; i < this.m_Islands.length; i++) {
             pop = (Population)this.m_Islands[i].getPopulation().clone();
             this.m_Population.addPopulation(pop);
-            this.m_Population.incrFunctionCallsby(pop.getFunctionCalls());
+            this.m_Population.incrFunctionCallsBy(pop.getFunctionCalls());
         }
         this.firePropertyChangedEvent("NextGenerationPerformed", this.m_Optimizer.getPopulation());
     }
@@ -192,7 +192,7 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
         for (int i = 0; i < this.m_Islands.length; i++) {
             pop = (Population)this.m_Islands[i].getPopulation().clone();
             this.m_Population.addPopulation(pop);
-            this.m_Population.incrFunctionCallsby(pop.getFunctionCalls());
+            this.m_Population.incrFunctionCallsBy(pop.getFunctionCalls());
         }
         this.firePropertyChangedEvent("NextGenerationPerformed", this.m_Optimizer.getPopulation());
     }
@@ -246,7 +246,7 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
         for (int i = 0; i < this.m_Islands.length; i++) {
             pop = (Population)this.m_Islands[i].getPopulation().clone();
             this.m_Population.addPopulation(pop);
-            this.m_Population.incrFunctionCallsby(pop.getFunctionCalls());
+            this.m_Population.incrFunctionCallsBy(pop.getFunctionCalls());
         }
 //        System.out.println("Fitnesscalls :" + this.m_Population.getFunctionCalls());
         this.firePropertyChangedEvent("NextGenerationPerformed", this.m_Optimizer.getPopulation());

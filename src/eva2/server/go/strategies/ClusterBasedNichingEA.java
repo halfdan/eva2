@@ -425,7 +425,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
                     }
                     // reinit the surplus individuals and add these new individuals to undifferentiated
                     m_Undifferentiated.addPopulation(this.initializeIndividuals(reinitCount));
-                    m_Undifferentiated.incrFunctionCallsby(reinitCount);
+                    m_Undifferentiated.incrFunctionCallsBy(reinitCount);
                     m_Undifferentiated.setPopulationSize(this.m_Undifferentiated.getPopulationSize()+reinitCount);
 //                    if (this.m_Debug) {
 //                        System.out.println("Undiff.Size: " + this.m_Undifferentiated.size() +"/"+this.m_Undifferentiated.getPopulationSize());
@@ -454,12 +454,12 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
         //////////////////////
     	if (!isActive(m_Undifferentiated)) {
     		if (TRACE) System.out.println("Inactive Undiff-pop, adding " + m_Undifferentiated.size() + " fun calls...");
-    		m_Undifferentiated.incrFunctionCallsby(m_Undifferentiated.size());
+    		m_Undifferentiated.incrFunctionCallsBy(m_Undifferentiated.size());
     	}
         if (this.m_Undifferentiated.getFunctionCalls() % this.m_PopulationSize != 0) {
         	if (TRACE) System.out.println("### mismatching number of funcalls, inactive species? Correcting by " + (m_PopulationSize - (m_Undifferentiated.getFunctionCalls() % m_PopulationSize)));
         	if (TRACE) System.out.println("### undiff " + ((isActive(m_Undifferentiated)) ? "active!" : "inactive!"));
-        	m_Undifferentiated.incrFunctionCallsby(m_PopulationSize - (m_Undifferentiated.getFunctionCalls() % m_PopulationSize));
+        	m_Undifferentiated.incrFunctionCallsBy(m_PopulationSize - (m_Undifferentiated.getFunctionCalls() % m_PopulationSize));
         } else if (TRACE) System.out.println("### undiff active: " + isActive(m_Undifferentiated));        
         
         // possible species differentiation and convergence

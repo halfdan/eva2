@@ -162,11 +162,11 @@ public class WingedMultiObjectiveEA implements InterfaceOptimizer, java.io.Seria
         // first collect all the data
         pop = (Population)this.m_MOOptimizer.getPopulation().clone();
         this.m_Population.addPopulation(pop);
-        this.m_Population.incrFunctionCallsby(pop.getFunctionCalls());
+        this.m_Population.incrFunctionCallsBy(pop.getFunctionCalls());
         for (int i = 0; i < this.m_SOOptimizers.length; i++) {
             pop = (Population)this.m_SOOptimizers[i].getPopulation().clone();
             this.m_Population.addPopulation(pop);
-            this.m_Population.incrFunctionCallsby(pop.getFunctionCalls());
+            this.m_Population.incrFunctionCallsBy(pop.getFunctionCalls());
         }
         oldFunctionCalls = this.m_Population.getFunctionCalls();
         this.m_Problem.evaluate(this.m_Population);

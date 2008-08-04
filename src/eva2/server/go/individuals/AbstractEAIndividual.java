@@ -3,6 +3,7 @@ package eva2.server.go.individuals;
 
 import java.util.ArrayList;
 import java.util.BitSet;
+import java.util.HashMap;
 import java.util.List;
 
 import wsi.ra.math.RNG;
@@ -57,8 +58,9 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
     public double                           m_MutationProbability   = 0.2;
     protected InterfaceMutation             m_MutationOperator      = new NoMutation();
     protected InterfaceCrossover            m_CrossoverOperator     = new NoCrossover();
-    protected String[]                      m_Identifiers           = new String[m_ObjectIncrement];
-    protected Object[]                      m_Objects               = new Object[m_ObjectIncrement];
+//    protected String[]                      m_Identifiers           = new String[m_ObjectIncrement];
+//    protected Object[]                      m_Objects               = new Object[m_ObjectIncrement];
+    protected HashMap<String,Object> 		m_dataHash 				= new HashMap<String,Object>();
     
     public AbstractEAIndividual() {
     	m_IDcounter++;
@@ -111,8 +113,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      */
     public void cloneAEAObjects(AbstractEAIndividual individual) {
 //        m_Name              = new String(individual.m_Name);
-        m_Identifiers       = new String[individual.m_Identifiers.length];
-        m_Objects           = new Object[individual.m_Identifiers.length];
+    	m_dataHash			= (HashMap<String,Object>)(individual.m_dataHash.clone());
         m_ConstraintViolation = individual.m_ConstraintViolation;
         m_AreaConst4ParallelViolated = individual.m_AreaConst4ParallelViolated;
         m_Marked            = individual.m_Marked;
@@ -122,8 +123,6 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
         	parentTree = new AbstractEAIndividual[individual.parentTree.length];
         	for (int i=0; i<parentTree.length; i++) parentTree[i] = individual.parentTree[i];
         }
-        System.arraycopy(individual.m_Identifiers,0,m_Identifiers,0,individual.m_Identifiers.length);
-        System.arraycopy(individual.m_Objects,0,m_Objects,0,individual.m_Objects.length);
     }
 
     /** This method allows you to compare two individuals
@@ -199,11 +198,12 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
 //        }
     }
 
-    /** Returns a hash code value for the object. This method is supported for the
+    /** 
+     * Returns a hash code value for the object. This method is supported for the
      * benefit of hashtables such as those provided by java.util.Hashtable
      */
     public int hashCode() {
-        String t = this.getStringRepresentation();
+        String t = AbstractEAIndividual.getDefaultStringRepresentation(this);
         return t.hashCode();
     }
 
@@ -412,8 +412,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
     /** This method allows you to reset the user data
      */
     public void resetUserData() {
-        this.m_Identifiers  = new String[m_ObjectIncrement];
-        this.m_Objects      = new Object[m_ObjectIncrement];
+    	m_dataHash.clear();
     }
 
     /** This method allows you to reset the level of constraint violation for an
@@ -741,28 +740,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      * @param obj       The object that is to be stored.
      */
     public void SetData(String name, Object obj) {
-        for (int i = 0; i < this.m_Identifiers.length; i++) {
-            if (this.m_Identifiers[i] == null) {
-                // Identifier has not been found, but there is empty space to store it
-                this.m_Identifiers[i]   = name;
-                this.m_Objects[i]       = obj;
-                return;
-            }
-            if (this.m_Identifiers[i].equalsIgnoreCase(name)) {
-                this.m_Objects[i] = obj;
-                return;
-            }
-        }
-        // The identifier could not be found and there is not enough space
-        String[] tmpId = new String[this.m_Identifiers.length + this.m_ObjectIncrement];
-        Object[] tmpOb = new Object[this.m_Identifiers.length + this.m_ObjectIncrement];
-        for (int i = 0; i < this.m_Identifiers.length; i++) {
-            tmpId[i] = this.m_Identifiers[i];
-            tmpOb[i] = this.m_Objects[i];
-        }
-        this.m_Identifiers = tmpId;
-        this.m_Objects = tmpOb;
-        this.SetData(name, obj);
+   		m_dataHash.put(name, obj);
     }
 
     /** This method will return a stored object.
@@ -770,19 +748,13 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      * @return Object
      */
     public Object getData(String name) {
-        if (name.equalsIgnoreCase("SelectionProbability")) return this.getSelectionProbability();
-        if (name.equalsIgnoreCase("SelectionProbabilityArray")) return this.getSelectionProbability();
-        if (name.equalsIgnoreCase("Fitness")) return this.getFitness();
-        if (name.equalsIgnoreCase("FitnessArray")) return this.getFitness();
-        for (int i = 0; i < this.m_Identifiers.length; i++) {
-            if (this.m_Identifiers[i] == null) {
-                return null;
-            }
-            if (this.m_Identifiers[i].equalsIgnoreCase(name)) {
-                return this.m_Objects[i];
-            }
-        }
-        return null;
+//        if (name.equalsIgnoreCase("SelectionProbability")) return this.getSelectionProbability();
+//        if (name.equalsIgnoreCase("SelectionProbabilityArray")) return this.getSelectionProbability();
+//        if (name.equalsIgnoreCase("Fitness")) return this.getFitness();
+//        if (name.equalsIgnoreCase("FitnessArray")) return this.getFitness();
+    	Object data = m_dataHash.get(name);
+    	if (data==null) System.err.println("Warning: data key " + name + " unknown!");
+        return data;
     }
 
     /** This method will return a string description of the Individal
@@ -799,6 +771,8 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      * @return The description.
      */
     public static String getDefaultStringRepresentation(AbstractEAIndividual individual) {
+    	// Note that changing this method might change the hashcode of an individual 
+    	// which might interfere with some functionality.
         StringBuffer sb = new StringBuffer(getDefaultDataString(individual));
 
         sb.append(", fitness: ");
@@ -818,6 +792,8 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      * @return
      */
     public static String getDefaultDataString(IndividualInterface individual) {
+    	// Note that changing this method might change the hashcode of an individual 
+    	// which might interfere with some functionality.
     	return getDefaultDataString(individual, "; ");
     }
     
@@ -829,6 +805,8 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      * @return
      */
     public static String getDefaultDataString(IndividualInterface individual, String separator) {
+    	// Note that changing this method might change the hashcode of an individual 
+    	// which might interfere with some functionality.
     	if (individual == null) return "null";
         StringBuffer sb = new StringBuffer("");
         char left = '[';

@@ -166,7 +166,7 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
 				// reset population while keeping function calls etc.
 				m_Population.clear();
 				m_Population.addPopulation(tmpPop);
-				m_Population.incrFunctionCallsby(tmpPop.size());
+				m_Population.incrFunctionCallsBy(tmpPop.size());
 		
 			} else  {  // decrease step size
 				mutator.setSigma(mutator.getSigma()*reduceFactor);
