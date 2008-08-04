@@ -28,6 +28,10 @@ public class GMAKiProblem extends AbstractValineSplineFittingProblem {
 		this.m_ProblemDimension = system.getNumberOfParameters();
 	}
 
+	public String getName() {
+		return "GMAKiProblem";
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * @see eva2.server.go.problems.inference.metabolic.AbstractValineCurveFittingProblem#getParameterRanges()

@@ -22,7 +22,11 @@ public class GMMrProblem extends AbstractValineCurveFittingProblem {
 	public GMMrProblem(GMMrProblem gmmrproblem) {
 		super(gmmrproblem);
 	}
-
+	
+	public String getName() {
+		return "GMMrProblem";
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * @see eva2.server.go.problems.inference.metabolic.AbstractValineCurveFittingProblem#getParameterRanges()
