@@ -16,9 +16,11 @@ import eva2.server.go.populations.Population;
 import eva2.server.modules.GOParameters;
 import eva2.server.modules.Processor;
 import eva2.server.stat.AbstractStatistics;
+import eva2.server.stat.InterfaceStatistics;
 import eva2.server.stat.StatisticsDummy;
 import eva2.server.stat.InterfaceTextListener;
 import eva2.server.stat.StatisticsStandalone;
+import eva2.server.stat.StatsParameter;
 
 
 /**
@@ -75,6 +77,10 @@ public class OptimizerRunnable implements Runnable {
 	
 	public InterfaceGOParameters getGOParams() {
 		return proc.getGOParams();
+	}
+	
+	public InterfaceStatistics getStats() {
+		return proc.getStatistics();
 	}
 	
 	public void setTextListener(InterfaceTextListener lsnr) {
@@ -175,7 +181,9 @@ public class OptimizerRunnable implements Runnable {
 	}
 	
 	/**
-	 * Set the verbosity level in the statistics module to the given value. See StatsParameter.
+	 * Set the verbosity level in the statistics module to the given value.
+	 * 
+	 * @see StatsParameter
 	 * @param vLev
 	 */
 	public void setVerbosityLevel(int vLev) {
@@ -183,4 +191,35 @@ public class OptimizerRunnable implements Runnable {
 			proc.getStatistics().getStatisticsParameter().getOutputVerbosity().setSelectedTag(vLev);
 		} else System.err.println("Invalid verbosity leveln in OptimizerRunnable.setVerbosityLevel!");
 	}
+	
+	/**
+	 * Set the output direction in the statistics module.
+	 * 
+	 * @see StatsParameter
+	 * @param outp
+	 */
+	public void setOutputTo(int outp) {
+		((StatsParameter)proc.getStatistics().getStatisticsParameter()).setOutputTo(outp);
+	}
+	
+	/**
+	 * Set the number of multiruns in the statistics module.
+	 * @param multis
+	 */
+	public void setMultiRuns(int multis) {
+		((AbstractStatistics)proc.getStatistics()).getStatisticsParameter().setMultiRuns(multis);
+	}
+	
+	/**
+	 * Set the additional info output.
+	 * @see StatsParameter
+	 * @param addInfo
+	 */
+	public void setOutputAdditionalInfo(boolean addInfo) {
+		((AbstractStatistics)proc.getStatistics()).getStatisticsParameter().setOutputAdditionalInfo(addInfo);
+	}
+	
+//	public void configureStats(int verbosityLevel, int outputDirection, int multiRuns, boolean additionalInfo) {
+//		asdf
+//	}
 }

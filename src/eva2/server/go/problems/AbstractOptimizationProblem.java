@@ -53,16 +53,21 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
     public void evaluate(Population population) {
         AbstractEAIndividual    tmpIndy;
 
-        // @todo This is the position to implement a granular
-        // @todo paralliziation scheme
-        evaluatePopulationStart(population);
-        for (int i = 0; i < population.size(); i++) {
-            tmpIndy = (AbstractEAIndividual) population.get(i);
-            tmpIndy.resetConstraintViolation();
-            this.evaluate(tmpIndy);
-            population.incrFunctionCalls();
+        if (population.isEvaluated()) {
+        	System.err.println("Population evaluation seems not required!");
+        } else {
+	        // @todo This is the position to implement a granular
+	        // @todo paralliziation scheme
+	        evaluatePopulationStart(population);
+	        for (int i = 0; i < population.size(); i++) {
+	            tmpIndy = (AbstractEAIndividual) population.get(i);
+	            tmpIndy.resetConstraintViolation();
+	            this.evaluate(tmpIndy);
+	            population.incrFunctionCalls();
+	        }
+	        evaluatePopulationEnd(population);
+	        population.setEvaluated();
         }
-        evaluatePopulationEnd(population);
     }
     
     /**

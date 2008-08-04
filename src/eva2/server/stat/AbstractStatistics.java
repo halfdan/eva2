@@ -150,8 +150,9 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 			if (Mathematics.norm(bestCurrentIndividual.getFitness()) < this.m_StatsParams.getConvergenceRateThreshold()) {
 				convergenceCnt++;
 			}
-			if (printRunStoppedVerbosity()) printToTextListener(" Best solution: " + BeanInspector.toString(bestCurrentIndividual) + "\n");
-			if (printRunStoppedVerbosity()) printToTextListener(AbstractEAIndividual.getDefaultDataString(bestCurrentIndividual) + "\n");
+			if (printRunStoppedVerbosity()) printToTextListener(" Run best individual	: " + BeanInspector.toString(bestCurrentIndividual) + "\n");
+			if (printRunStoppedVerbosity()) printToTextListener("	run solution data	: " + AbstractEAIndividual.getDefaultDataString(bestCurrentIndividual) + "\n");
+			if (printRunStoppedVerbosity()) printToTextListener("	run solution fit	: " + BeanInspector.toString(bestCurrentIndividual.getFitness()) + "\n");
 		}
 		if (currentBestFit!= null) {
 			if (printRunStoppedVerbosity()) printToTextListener(" Best Fitness: " + BeanInspector.toString(currentBestFit) + "\n");
@@ -162,9 +163,9 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 	protected void finalizeOutput() {
 		if (printFinalVerbosity()) printToTextListener("*******\n Runs performed: " + optRunsPerformed + ", reached target " + convergenceCnt + " times with threshold " + m_StatsParams.getConvergenceRateThreshold() + ", rate " + convergenceCnt/(double)m_StatsParams.getMultiRuns() + '\n');
 		if (printFinalVerbosity()) printToTextListener(" Average function calls: " + (functionCallSum/optRunsPerformed) + "\n");
-		if (printFinalVerbosity() && (bestIndividualAllover != null)) printToTextListener("Best overall individual: " + BeanInspector.toString(bestIndividualAllover) + '\n');
-		if (printFinalVerbosity() && (bestIndividualAllover != null)) printToTextListener("             solution	: " + AbstractEAIndividual.getDefaultDataString(bestIndividualAllover) + '\n');
-		if (printFinalVerbosity() && (bestIndividualAllover != null)) printToTextListener("             fitness	: " + BeanInspector.toString(bestIndividualAllover.getFitness()) + '\n');
+		if (printFinalVerbosity() && (bestIndividualAllover != null)) printToTextListener(" Overall best individual		: " + BeanInspector.toString(bestIndividualAllover) + '\n');
+		if (printFinalVerbosity() && (bestIndividualAllover != null)) printToTextListener("     overall solution data	: " + AbstractEAIndividual.getDefaultDataString(bestIndividualAllover) + '\n');
+		if (printFinalVerbosity() && (bestIndividualAllover != null)) printToTextListener("     overall solution fit	: " + BeanInspector.toString(bestIndividualAllover.getFitness()) + '\n');
 		if (refineMultiRuns && (optRunsPerformed>1) && (meanCollection != null)) {
 			if (printFinalVerbosity()) printToTextListener("Averaged performance:\n");
 			for (int i=0; i<meanCollection.size(); i++) divideMean(meanCollection.get(i), optRunsPerformed);

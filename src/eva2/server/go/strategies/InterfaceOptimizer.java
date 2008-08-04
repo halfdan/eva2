@@ -63,8 +63,8 @@ public interface InterfaceOptimizer {
      * Return all found solutions (local optima) if they are not contained in the current population. Be
      * sure to set the Population properties, especially function calls and generation, with respect
      * to the ongoing optimization.
-     * May return the same as getPopulation if the optimizer makes no distinction, i.e. does not collect
-     * solutions outside the current population.
+     * May return the the same set as getPopulation if the optimizer makes no distinction, i.e. does 
+     * not collect solutions outside the current population.
      * 
      * @return A population of found solutions.
      */
