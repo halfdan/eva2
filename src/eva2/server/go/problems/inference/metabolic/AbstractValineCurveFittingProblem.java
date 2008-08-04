@@ -8,8 +8,8 @@ import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.ESIndividualDoubleData;
 import eva2.server.go.individuals.InterfaceDataTypeDouble;
 import eva2.server.go.populations.Population;
-import eva2.server.go.problems.inference.des.RKSolver;
 import eva2.server.go.problems.inference.metabolic.odes.AbstractValineSystem;
+import eva2.tools.des.RKSolver;
 
 /**
  * Super class for many simulation problems of the valine and leucine reaction

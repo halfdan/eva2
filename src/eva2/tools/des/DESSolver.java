@@ -6,7 +6,7 @@
  * @version 1.0
  */
 
-package eva2.server.go.problems.inference.des;
+package eva2.tools.des;
 
 import java.io.Serializable;
 

@@ -1,4 +1,4 @@
-package eva2.server.go.problems.inference.des;
+package eva2.tools.des;
 
 import eva2.tools.Mathematics;
 
