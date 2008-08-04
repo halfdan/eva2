@@ -28,6 +28,10 @@ public class CKMMrProblem extends AbstractValineCurveFittingProblem implements
 		super(ckmmrprob);
 	}
 
+	public String getName() {
+		return "CKMMrProblem";
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * @see eva2.server.go.problems.inference.metabolic.AbstractValineCurveFittingProblem#getParameterRanges()

@@ -23,6 +23,10 @@ public class GMMiProblem extends AbstractValineCurveFittingProblem {
 		super(gmmiproblem);
 		this.m_ProblemDimension = system.getNumberOfParameters();
 	}
+	
+	public String getName() {
+		return "GMMiProblem";
+	}
 
 	/*
 	 * (non-Javadoc)

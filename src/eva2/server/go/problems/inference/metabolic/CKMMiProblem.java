@@ -23,6 +23,10 @@ public class CKMMiProblem extends AbstractValineCurveFittingProblem {
 		super(ckmmiProblem);
 	}
 
+	public String getName() {
+		return "CKMMiProblem";
+	}
+	
 	protected double[][] getParameterRanges() {
 		int i;
 		double[][] range = new double[m_ProblemDimension][2];

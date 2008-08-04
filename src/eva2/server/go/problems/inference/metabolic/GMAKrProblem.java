@@ -34,6 +34,10 @@ public class GMAKrProblem extends AbstractValineCurveFittingProblem implements
 		super(gmakrprob);
 	}
 
+	public String getName() {
+		return "GMAKrProblem";
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * @see eva2.server.go.problems.inference.metabolic.AbstractValineCurveFittingProblem#getParameterRanges()
