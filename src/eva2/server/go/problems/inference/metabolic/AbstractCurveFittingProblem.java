@@ -8,8 +8,8 @@ import eva2.server.go.individuals.ESIndividualDoubleData;
 import eva2.server.go.individuals.InterfaceDataTypeDouble;
 import eva2.server.go.problems.AbstractOptimizationProblem;
 import eva2.server.go.problems.InterfaceHasInitRange;
-import eva2.server.go.problems.inference.des.RKSolver;
 import eva2.tools.Mathematics;
+import eva2.tools.des.RKSolver;
 
 /**
  * This class provides a collection of methods to compare two curves one against

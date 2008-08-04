@@ -1,6 +1,6 @@
 package eva2.server.go.problems.inference.metabolic.odes;
 
-import eva2.server.go.problems.inference.des.DESystem;
+import eva2.tools.des.DESystem;
 
 /**
  * This class contains the necessary splines for selected metabolites of the
