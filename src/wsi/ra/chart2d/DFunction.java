@@ -16,9 +16,8 @@ package wsi.ra.chart2d;
  * IMPORTS
  *==========================================================================*/
 
-import java.awt.Point ;
-import java.awt.Color ;
-import java.awt.Graphics ;
+import java.awt.Graphics;
+import java.awt.Point;
 
 /*==========================================================================*
  * ABSTRACT CLASS DECLARATION
@@ -39,7 +38,7 @@ public abstract class DFunction extends DComponent
     Graphics g = m.getGraphics();
     if( color != null ) g.setColor( color );
 
-    DRectangle rect = m.getDRectangle(),
+    SlimRect rect = m.getSlimRectangle(),
                src_rect = m.getSourceOf( rect );
     Point sw = m.getPoint( rect.x, rect.y ),
           ne = m.getPoint( rect.x + rect.width, rect.y + rect.height );

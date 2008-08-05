@@ -265,7 +265,7 @@ public class Plot implements PlotInterface, Serializable {
 		m_ButtonPanel.add(SaveJPGButton);
 		//  getContentPane().smultetLayout( new GridLayout(1, 4) );
 		m_Frame.getContentPane().add(m_ButtonPanel,"South");
-		m_Frame.getContentPane().add(m_PlotArea,"North");
+		m_Frame.getContentPane().add(m_PlotArea,"Center"); // north was not so nice
 		m_Frame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				m_PlotArea.clearAll(); // this was a memory leak

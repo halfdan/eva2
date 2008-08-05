@@ -20,7 +20,7 @@ public class DPointSetMultiIcon extends DComponent
 {
     //~ Instance fields ////////////////////////////////////////////////////////
 
-    protected ArrayList m_IconsMI = new ArrayList();
+    protected ArrayList<DPointIcon> m_IconsMI = new ArrayList<DPointIcon>();
     protected DIntDoubleMap xMI;
     protected DIntDoubleMap yMI;
     protected DPointIcon iconMI = null;
@@ -119,7 +119,7 @@ public class DPointSetMultiIcon extends DComponent
         return new DPointSet(xMI, yMI);
     }
 
-    public ArrayList getIconsMI() {
+    public ArrayList<DPointIcon> getIconsMI() {
         return this.m_IconsMI;
     }
 
@@ -289,17 +289,11 @@ public class DPointSetMultiIcon extends DComponent
                     for (int i = interval[0]; i < interval[1]; i++)
                     {
                         p2 = m.getPoint(xMI.getImage(i), yMI.getImage(i));
-
                         if (p1 != null)
                         {
-                            try
-                            {
-                                g.drawLine(p1.x, p1.y, p2.x, p2.y);
-                            }
-                             catch (java.lang.NullPointerException e)
-                            {
-                                // pff
-                            }
+                        	if (p2!=null) {
+                        		g.drawLine(p1.x, p1.y, p2.x, p2.y);
+                        	}
                         }
 
                         if ((i < this.m_IconsMI.size()) && (this.m_IconsMI.get(i) != null))
@@ -338,6 +332,7 @@ public class DPointSetMultiIcon extends DComponent
                     {
                         p = m.getPoint(xMI.getImage(i), yMI.getImage(i));
 
+                        if (p==null) continue;
                         if (this.m_IconsMI.get(i) != null)
                         {
                             g.setStroke(new BasicStroke());

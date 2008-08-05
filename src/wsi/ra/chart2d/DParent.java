@@ -12,7 +12,6 @@
 
 package wsi.ra.chart2d;
 
-import java.awt.Graphics;
 
 /*==========================================================================*
  * INTERFACE DECLARATION
