@@ -43,7 +43,7 @@ public class DPoint extends DComponent
   public void paint( DMeasures m ){
     Graphics g = m.getGraphics();
     if( color != null ) g.setColor( color );
-    Point dp = m.getPoint( this );
+    Point dp = m.getPoint( this.x, this.y );
     if( label != null ){
       FontMetrics fm = g.getFontMetrics();
       g.drawString( label,

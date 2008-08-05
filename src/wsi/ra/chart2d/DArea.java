@@ -41,7 +41,12 @@ import wsi.ra.print.PagePrinter;
  */
 public class DArea extends JComponent implements DParent, Printable
 {
-  private static final boolean TRACE = false;
+  /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1461387400381365146L;
+
+private static final boolean TRACE = false;
 
   /**
    * the default minimal rectangle which is shown
@@ -125,6 +130,19 @@ public class DArea extends JComponent implements DParent, Printable
   }
 
   /**
+   * returns the currently visible rectangle in DArea coordinates
+   *
+   * @return DRectangle the size and position of the visible area
+   */
+  public SlimRect getSlimRectangle(){
+	  SlimRect srect = new SlimRect(visible_rect.x, visible_rect.y, visible_rect.width, visible_rect.height);
+    if( min_x != null ) srect.x      = Math.max(srect.x,      getMinX()            );
+    if( min_y != null ) srect.y      = Math.max(srect.y,      getMinY()            );
+    if( max_x != null ) srect.width  = Math.min(srect.width,  getMaxX() - getMinX());
+    if( max_y != null ) srect.height = Math.min(srect.height, getMaxY() - getMinY());
+    return srect;
+  }
+  /**
    * switches the auto focus of this DArea on or off
    *
    * @param b on or off
@@ -206,38 +224,38 @@ public class DArea extends JComponent implements DParent, Printable
     return (DRectangle)min_rect.clone();
   }
 
-  /**
-   * method sets the maximal rectangle whioch can be viewed with the
-   * DArea. This method can be used if the area is used with scale functions
-   * which are not invertible on all reals
-   *
-   * @param x the minmal x value
-   * @param y the minmal y value
-   * @param width of the maximal rectangle
-   * @param height of the maximal rectangle
-   */
-  public void setMaxRectangle( double x, double y, double width, double height ){
-    setMaxRectangle( new DRectangle( x, y, width, height ) );
-  }
+//  /**
+//   * method sets the maximal rectangle whioch can be viewed with the
+//   * DArea. This method can be used if the area is used with scale functions
+//   * which are not invertible on all reals
+//   *
+//   * @param x the minmal x value
+//   * @param y the minmal y value
+//   * @param width of the maximal rectangle
+//   * @param height of the maximal rectangle
+//   */
+//  public void setMaxRectangle( double x, double y, double width, double height ){
+//    setMaxRectangle( new DRectangle( x, y, width, height ) );
+//  }
 
 
-  /**
-   * method sets the maximal rectangle whioch can be viewed with the
-   * DArea. This method can be used if the area is used with scale functions
-   * which are not invertible on all reals
-   *
-   * @param the rect maximal rectangle of the DArea
-   * @deprecated see setMinX, setMinY, setMaxX, setMaxY
-   */
-  public void setMaxRectangle( DRectangle rect ){
-    if( !rect.contains( min_rect ) ) throw
-      new IllegalArgumentException("Maximal rectangle does not contain minmal rectangle");
-
-    setMinX( rect.x );
-    setMinY( rect.y );
-    setMaxX( rect.x + rect.width );
-    setMaxY( rect.y + rect.height );
-  }
+//  /**
+//   * method sets the maximal rectangle whioch can be viewed with the
+//   * DArea. This method can be used if the area is used with scale functions
+//   * which are not invertible on all reals
+//   *
+//   * @param the rect maximal rectangle of the DArea
+//   * @deprecated see setMinX, setMinY, setMaxX, setMaxY
+//   */
+//  public void setMaxRectangle( DRectangle rect ){
+//    if( !rect.contains( min_rect ) ) throw
+//      new IllegalArgumentException("Maximal rectangle does not contain minmal rectangle");
+//
+//    setMinX( rect.x );
+//    setMinY( rect.y );
+//    setMaxX( rect.x + rect.width );
+//    setMaxY( rect.y + rect.height );
+//  }
 
   /**
    * method returns the maximal rectangle of the area
@@ -695,30 +713,31 @@ public class DArea extends JComponent implements DParent, Printable
       Graphics g = m.g;
       g.setColor( grid.getColor() );
 
-      DRectangle rect = getDRectangle(),
-                 src_rect = m.getSourceOf( rect );
+      SlimRect rect = getSlimRectangle();
+      SlimRect src_rect = m.getSourceOf( rect );
 
       int x = (int)(src_rect.x / grid.hor_dist),
           y = (int)(src_rect.y / grid.ver_dist);
       if( x * grid.hor_dist < src_rect.x ) x++;
       if( y * grid.ver_dist < src_rect.y ) y++;
 
-      DPoint min = new DPoint( rect.x, rect.y ),
-             max = new DPoint( min.x + rect.width, min.y + rect.height );
+//      DPoint min = new DPoint( rect.x, rect.y ),
+//             max = new DPoint( min.x + rect.width, min.y + rect.height );
+      double minx=rect.x, miny=rect.y, maxx=minx+rect.width, maxy=miny+rect.height;
 
       double pos;
 
       for( ; (pos = x * grid.hor_dist) < src_rect.x + src_rect.width; x++ ){
         if( m.x_scale != null ) pos = m.x_scale.getImageOf( pos );
-        Point p1 = m.getPoint( pos, min.y ),
-              p2 = m.getPoint( pos, max.y );
+        Point p1 = m.getPoint( pos, miny ),
+              p2 = m.getPoint( pos, maxy );
         g.drawLine( p1.x, p1.y, p2.x, p2.y );
       }
 
       for( ; (pos = y * grid.ver_dist) < src_rect.y + src_rect.height; y++ ){
         if( m.y_scale != null ) pos = m.y_scale.getImageOf( pos );
-        Point p1 = m.getPoint( min.x, pos ),
-              p2 = m.getPoint( max.x, pos );
+        Point p1 = m.getPoint( minx, pos ),
+              p2 = m.getPoint( maxx, pos );
         g.drawLine( p1.x, p1.y, p2.x, p2.y );
       }
     }

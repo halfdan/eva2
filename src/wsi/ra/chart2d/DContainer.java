@@ -16,9 +16,8 @@ package wsi.ra.chart2d;
  * IMPORTS
  *==========================================================================*/
 
-import java.util.Vector ;
-import java.awt.Color ;
-import java.awt.Graphics;
+import java.awt.Color;
+import java.util.Vector;
 
 /*==========================================================================*
  * CLASS DECLARATION
@@ -28,14 +27,15 @@ public class DContainer extends DComponent implements DParent{
   /**
    * the elements of the container and their keys ( Strings )
    */
-  protected Vector elements, keys;
+  protected Vector<DElement> elements;
+  protected Vector<String> keys;
 
   public DContainer(){ this(10); }
 
   public DContainer(int initial_capacity){
     super();
-    elements = new Vector(initial_capacity);
-    keys = new Vector(initial_capacity);
+    elements = new Vector<DElement>(initial_capacity);
+    keys = new Vector<String>(initial_capacity);
   }
 
   public void repaint( DRectangle r ){
@@ -155,7 +155,7 @@ public class DContainer extends DComponent implements DParent{
     DElement e;
     for( int i=0; i<elements.size(); i++ ){
       e = (DElement)elements.elementAt(i);
-      if( e.isVisible() && !m.getDRectangle().getIntersection( e.getRectangle() ).isEmpty()){
+      if( e.isVisible() && !m.getSlimRectangle().hasEmptyIntersection(e.getRectangle())){
         m.g.setColor( DEFAULT_COLOR );
         e.paint( m );
       }

@@ -15,6 +15,11 @@ import java.awt.Insets;
 
 public class DBorder extends Insets{
 
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -1324717830324606364L;
+
   public DBorder(){
     this( 0, 0, 0, 0 );
   }

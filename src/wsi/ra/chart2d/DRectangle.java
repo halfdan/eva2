@@ -53,8 +53,7 @@ public class DRectangle extends DComponent
     if( isEmpty() ) return;
     Graphics g = m.getGraphics();
     Color old_color = g.getColor();
-    DRectangle rect = m.getDRectangle();
-    rect = rect.getIntersection( this );
+    SlimRect rect = m.getSlimRectangle().getIntersection(this);
     Point p1 = m.getPoint( rect.x, rect.y ),
           p2 = m.getPoint( rect.x + rect.width, rect.y + rect.height );
     if( fillColor != null ){
@@ -78,15 +77,35 @@ public class DRectangle extends DComponent
     if( p.y > y + height ) return false;
     return true;
   }
+  
+  /**
+   * Faster contains withouth checking for ALL or EMPTY status.
+   * 
+   * @param ox
+   * @param oy
+   * @return
+   */
+  private boolean contains( double ox, double oy ){
+	  if (( ox < x ) || ( oy < y ) || ( ox > x + width ) || ( oy > y + height )) return false;
+	  else return true;
+  }
 
   public boolean contains( DRectangle rect ){
     if( status == ALL || rect.isEmpty() ) return true;
     if( status == EMPTY || rect.isAll() ) return false;
-    if( !contains( new DPoint( rect.x, rect.y ) ) ) return false;
-    if( !contains( new DPoint( rect.x + rect.width, rect.y + rect.height ) ) ) return false;
+    if( !contains(rect.x, rect.y ) ) return false;
+    if( !contains(rect.x + rect.width, rect.y + rect.height ) ) return false;
     return true;
   }
 
+  public boolean contains( double ox, double oy, double width, double heigth){
+	    if( status == ALL) return true;
+	    if( status == EMPTY) return false;
+	    if( !contains(ox, oy ) ) return false;
+	    if( !contains(ox + width, oy + height ) ) return false;
+	    return true;
+   }
+  
   public DRectangle getIntersection( DRectangle r ){
     if( status == ALL ) return (DRectangle)r.clone();
     if( status == EMPTY ) return DRectangle.getEmpty();

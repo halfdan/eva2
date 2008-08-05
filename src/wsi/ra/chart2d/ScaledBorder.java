@@ -88,7 +88,7 @@ public class ScaledBorder implements Border
    * the size of the source rectangle
    * that means before the values are mdified by scale functions
    */
-  DRectangle src_rect;
+  SlimRect src_rect;
 
   /**
    * the minimal increment of the scales
@@ -443,8 +443,7 @@ public class ScaledBorder implements Border
     if( c instanceof DArea ){
       DArea area = (DArea)c;
       DMeasures m = area.getDMeasures();
-      DRectangle rect = m.getSourceOf( area.getDRectangle() );
-      src_rect = (DRectangle)rect.clone();
+      src_rect = m.getSourceOf(area.getSlimRectangle());
       x_scale = area.getDMeasures().x_scale;
       y_scale = area.getDMeasures().y_scale;
     }
