@@ -31,8 +31,8 @@ public class SelectedTag implements java.io.Serializable {
 	 * @param selID
 	 * @param tagStrings
 	 */
-	public SelectedTag(int selID, String[] tagStrings) {
-		init(selID, tagStrings);
+	public SelectedTag(int selID, String ... strings) {
+		init(selID, strings);
 	}
 
 	/**
