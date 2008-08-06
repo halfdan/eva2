@@ -938,7 +938,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
 		Pair<Integer,Integer> hashes = getIndyHashSums();
 		
 		if (evaluationTimeHashes == null) return false;
-		else return (hashes.head()==evaluationTimeHashes.head() && (hashes.tail() == evaluationTimeHashes.tail()) && (evaluationTimeModCount == modCount));
+		else return ((hashes.head().equals(evaluationTimeHashes.head())) && (hashes.tail().equals(evaluationTimeHashes.tail())) && (evaluationTimeModCount == modCount));
 	}
 
 	/**

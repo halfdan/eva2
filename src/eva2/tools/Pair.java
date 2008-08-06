@@ -36,4 +36,8 @@ public class Pair<S, T> implements Serializable {
 	public T tail() {
 		return tail;
 	}
+	
+	public String toString() {
+		return "(" + head.toString() + "," + tail.toString()+")";
+	}
 }

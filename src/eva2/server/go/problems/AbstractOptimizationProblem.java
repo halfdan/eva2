@@ -54,7 +54,7 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
         AbstractEAIndividual    tmpIndy;
 
         if (population.isEvaluated()) {
-        	System.err.println("Population evaluation seems not required!");
+//        	System.err.println("Population evaluation seems not required!");
         } else {
 	        // @todo This is the position to implement a granular
 	        // @todo paralliziation scheme
