@@ -8,7 +8,7 @@ import eva2.server.go.strategies.InterfaceOptimizer;
 import wsi.ra.math.RNG;
 import eva2.server.go.problems.Interface2DBorderProblem;
 
-public abstract class AbstractProblemDouble extends AbstractOptimizationProblem implements Interface2DBorderProblem {
+public abstract class AbstractProblemDouble extends AbstractOptimizationProblem implements InterfaceProblemDouble, Interface2DBorderProblem {
 	private double m_DefaultRange = 10;
 	private double m_Noise = 0;
 	
@@ -107,7 +107,7 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
 	 * 
 	 * @return a range array
 	 */
-    protected double[][] makeRange() {
+    public double[][] makeRange() {
 	    double[][] range = new double[this.getProblemDimension()][2];
 	    for (int i = 0; i < range.length; i++) {
 	        range[i][0] = getRangeLowerBound(i);
@@ -126,7 +126,7 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
      * @return the lower bound of the double range in the given dimension
      */
     protected double getRangeLowerBound(int dim) {
-    	return -m_DefaultRange;
+    	return -getDefaultRange();
     }
     
     /**
@@ -139,7 +139,7 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
      * @return the upper bound of the double range in the given dimension
      */
     protected double getRangeUpperBound(int dim) {
-    	return m_DefaultRange;
+    	return getDefaultRange();
     }
 
 	@Override
@@ -194,7 +194,7 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
 	 * 
 	 * @return value of the absolute range limit
 	 */
-	public double getDefaultRange() {
+	protected double getDefaultRange() {
 		return m_DefaultRange;
 	}
 	/**

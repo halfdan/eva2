@@ -156,11 +156,11 @@ public class MatlabProblem extends AbstractProblemDouble implements InterfaceTex
 		return problemDimension;
 	}
 
-	public String problemDimensionTipTex() {
+	public String problemDimensionTipText() {
 		return "The dimension of the problem.";
 	}
 
-	protected double[][] makeRange() {
+	public double[][] makeRange() {
 		if (range==null) range=super.makeRange();
 		return range;
 	}	

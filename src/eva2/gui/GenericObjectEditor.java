@@ -504,6 +504,16 @@ public class GenericObjectEditor implements PropertyEditor {
 		}
 	}
 	
+	/**
+	 * Return the names of all classes in the same package that are assignable
+	 * from the named class, and that can be loaded through the classpath.
+	 * If a class has a declared field called "hideFromGOE" this method will skip it.
+	 * Abstract classes and interfaces will be skipped as well.
+	 * 
+	 * @see ReflectPackage.getAssignableClassesInPackage
+	 * @param className
+	 * @return
+	 */
 	public static ArrayList<String> getClassesFromClassPath(String className) { 
 		ArrayList<String> classes = new ArrayList<String>();
 		int dotIndex = className.lastIndexOf('.');
@@ -519,7 +529,7 @@ public class GenericObjectEditor implements PropertyEditor {
 				clsArr = null;
 			}
 			if (clsArr == null) {
-				System.out.println("Warning: No configuration property found in: "
+				System.err.println("Warning: No configuration property found in: "
 						+EvAInfo.propertyFile + " "+"for "+className);
 				classes.add(className);
 			} else {

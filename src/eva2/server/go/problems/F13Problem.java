@@ -25,7 +25,7 @@ public class F13Problem extends F1Problem implements InterfaceMultimodalProblem 
         return (Object) new F13Problem(this);
     }
     
-    protected double[][] makeRange() {
+    public double[][] makeRange() {
 	    double[][] range = new double[this.m_ProblemDimension][2];
 	    for (int i = 0; i < range.length; i++) {
 	        range[i][0] = -512.03;

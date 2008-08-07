@@ -5,7 +5,7 @@ package eva2;
  * 
  * --- Changelog
  * 2.029: Tuned the 2d-graphs which now paints quicker and changes size depending on the
- * 			surrounding plot window. 
+ * 			surrounding plot window. Added a preloader-thread to accelerate the GUI at starting time.
  * 2.028: Tuned the Population to sort only when necessary on calls to getBestN... Added StatisticsDummy.
  * 			Slightly tuned SimpleProblemWrapper to call initProblem of simple problems if available.
  * 2.027: Renamed SetData and SetDataLamarckian from individual datatype interfaces to SetGenotype and SetPhenotype.
