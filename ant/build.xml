@@ -264,11 +264,29 @@
 	</target>
 	
 <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	        Dist JE2Probs
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+	<target name="distProbs" depends="compileProbs" description="Compiles the Probs project." if="JE2Probs.available">
+	  	<ant inheritAll="false" antfile="${ant.directory}/build.xml" dir="${JE2Probs.directory}" target="dist">
+			<property name="silent" value="true"/>
+		</ant>
+	</target>
+	
+<!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	      Compile JE2ESModel
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
 	<target name="compileESModel" depends="usage, init, compileInfo" description="Compiles the ESModel project." if="JE2ESModel.available">
 	  	<ant inheritAll="false" antfile="${ant.directory}/build.xml" dir="${JE2ESModel.directory}" target="compile">
 			<property name="silent" value="false"/>
+		</ant>
+	</target>
+
+<!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	        Dist JE2ESModel
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+	<target name="distESModel" depends="compileProbs" description="Compiles the Probs project." if="JE2Probs.available">
+	  	<ant inheritAll="false" antfile="${ant.directory}/build.xml" dir="${JE2ESModel.directory}" target="dist">
+			<property name="silent" value="true"/>
 		</ant>
 	</target>
 	
@@ -486,7 +504,7 @@
         Generate Distribution
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
 
-  <target name="dist" depends="binaryDist, sourceDist">
+  <target name="dist" depends="distESModel, distProbs, binaryDist, sourceDist">
   </target>
 
 <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
