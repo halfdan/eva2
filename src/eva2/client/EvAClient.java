@@ -150,12 +150,16 @@ public class EvAClient implements RemoteStateListener, Serializable {
 	public EvAClient(final String hostName) {
 		final SplashScreen fSplashScreen = new SplashScreen(EvAInfo.splashLocation);
 
-	    fSplashScreen.splash();
+		// preload some classes (into system cache) in a parallel thread
+		preloadClasses();
+
+		// activate the splash screen (show later using SwingUtilities)
+		fSplashScreen.splash();
 	    
 		currentModule = null;
 		
 		m_ComAdapter = EvAComAdapter.getInstance();
-		
+
 		SwingUtilities.invokeLater( new Runnable() {
 			public void run(){
 				long startTime = System.currentTimeMillis();
@@ -170,7 +174,12 @@ public class EvAClient implements RemoteStateListener, Serializable {
 		      }			
 		});
 	}
-
+	
+	private void preloadClasses() {
+		ClassPreloader cp = new ClassPreloader( "eva2.server.go.strategies.InterfaceOptimizer", "eva2.server.go.problems.InterfaceOptimizationProblem", "eva2.server.go.InterfaceTerminator");
+		new Thread(cp).start();
+	}
+	
 	/**
 	 *
 	 */
@@ -660,16 +669,12 @@ public class EvAClient implements RemoteStateListener, Serializable {
 	private void showLicense() {
     	HtmlDemo temp = new HtmlDemo(EvAInfo.licenseFile);
         temp.show();
-	}
-	
+	}	
 	
 	private void showNoHostFoundDialog() {
 		JOptionPane.showMessageDialog(m_Frame.getContentPane(), "No host with running EVASERVER found. Please start one or \nadd the correct address to the properties list.", EvAInfo.infoTitle, 1);
 	}
 
-	/**
-	 *
-	 */
 	private void selectAvailableHostToKill(String[] HostNames) {
 		if (TRACE) System.out.println("SelectAvailableHostToKill");
 		if (HostNames == null || HostNames.length == 0) {
@@ -686,9 +691,6 @@ public class EvAClient implements RemoteStateListener, Serializable {
 //		m_LogPanel.statusMessage("");
 	}
 
-	/**
-	 *
-	 */
 	private void selectAllAvailableHostToKill(String[] HostNames) {
 		System.out.println("SelectAllAvailableHostToKill");
 		if (HostNames == null || HostNames.length == 0) {
@@ -730,12 +732,6 @@ public class EvAClient implements RemoteStateListener, Serializable {
             SwingUtilities.invokeLater(doSetProgressBarValue);
         }
     }
-	
-//	
-//	public void test(Object o) {
-//		System.out.println("hello from EvAClient.test!");
-//		System.out.println("object gives " + o);
-//	}
 }
 
 final class SplashScreen extends Frame {
