@@ -16,7 +16,7 @@ import wsi.ra.math.Jama.Matrix;
  * To change this template use Options | File Templates.
  */
 
-public class MutateESCovarianceMartixAdaption implements InterfaceMutation, java.io.Serializable  {
+public class MutateESCovarianceMatrixAdaption implements InterfaceMutation, java.io.Serializable  {
     
     private int                 m_D;
     private double[]            m_Z;
@@ -27,7 +27,7 @@ public class MutateESCovarianceMartixAdaption implements InterfaceMutation, java
     private double              cov;
     private double              Beta;
     private double[]            s_N;
-    private double[]            s_d_N;
+    private double[]            m_PathS;
     public double[]             Bz;
     private double              xi_dach;
     private Matrix              m_C;
@@ -38,10 +38,10 @@ public class MutateESCovarianceMartixAdaption implements InterfaceMutation, java
     private int                 m_frequency         = 1;
     private double[]            m_Eigenvalues;
 
-    public MutateESCovarianceMartixAdaption() {
+    public MutateESCovarianceMatrixAdaption() {
 
     }
-    public MutateESCovarianceMartixAdaption(MutateESCovarianceMartixAdaption mutator) {
+    public MutateESCovarianceMatrixAdaption(MutateESCovarianceMatrixAdaption mutator) {
         this.m_Counter          = mutator.m_Counter;
         this.m_frequency        = mutator.m_frequency;
         this.m_InitSigmaScalar  = mutator.m_InitSigmaScalar;
@@ -55,7 +55,7 @@ public class MutateESCovarianceMartixAdaption implements InterfaceMutation, java
         this.Beta               = mutator.Beta;
         this.xi_dach            = mutator.xi_dach;
         if (mutator.s_N != null)    this.s_N    = (double[]) mutator.s_N.clone();
-        if (mutator.s_d_N != null)  this.s_d_N  = (double[]) mutator.s_d_N.clone();
+        if (mutator.m_PathS != null)  this.m_PathS  = (double[]) mutator.m_PathS.clone();
         if (mutator.Bz != null)     this.Bz     = (double[]) mutator.Bz.clone();
         if (mutator.m_C != null)    this.m_C    = (Matrix) mutator.m_C.clone();
         if (mutator.B != null)      this.B      = (Matrix) mutator.B.clone();
@@ -67,7 +67,7 @@ public class MutateESCovarianceMartixAdaption implements InterfaceMutation, java
      * @return The clone
      */
     public Object clone() {
-        return new MutateESCovarianceMartixAdaption(this);
+        return new MutateESCovarianceMatrixAdaption(this);
     }
 
     /** This method allows you to evaluate wether two mutation operators
@@ -75,8 +75,8 @@ public class MutateESCovarianceMartixAdaption implements InterfaceMutation, java
      * @param mutator   The other mutation operator
      */
     public boolean equals(Object mutator) {
-        if (mutator instanceof MutateESCovarianceMartixAdaption) {
-            MutateESCovarianceMartixAdaption mut = (MutateESCovarianceMartixAdaption)mutator;
+        if (mutator instanceof MutateESCovarianceMatrixAdaption) {
+            MutateESCovarianceMatrixAdaption mut = (MutateESCovarianceMatrixAdaption)mutator;
             // i assume if the C Matrix is equal then the mutation operators are equal
             try {
                 double[][] c1 = this.m_C.getArray();
@@ -115,11 +115,11 @@ public class MutateESCovarianceMartixAdaption implements InterfaceMutation, java
         this.m_Z            = new double[this.m_D];
         this.s_N            = new double[this.m_D];
         this.Bz             = new double[this.m_D];
-        this.s_d_N          = new double[this.m_D];
+        this.m_PathS          = new double[this.m_D];
         for (int i = 0; i < this.m_D; i++) {
             this.s_N[i]     = 0;
             this.Bz[i]      = 0;
-            this.s_d_N[i]   = 0;
+            this.m_PathS[i]   = 0;
         }
         this.xi_dach = Math.sqrt(this.m_D - 0.5);
         evaluateNewObjectX(x, ranges);
@@ -157,7 +157,7 @@ public class MutateESCovarianceMartixAdaption implements InterfaceMutation, java
     private void adaptStrategy() {
         double  Cij;
         double  Bz_d;
-        double  length = 0.0;
+        double  pathLen = 0.0;
         for (int i = 0; i < this.m_D; i++)
             this.s_N[i] = (1.0 - this.m_c) * this.s_N[i] + this.m_c * this.cu * this.Bz[i];
         // ADAPT COVARIANCE
@@ -171,12 +171,11 @@ public class MutateESCovarianceMartixAdaption implements InterfaceMutation, java
         // ADAPT GLOBAL STEPSIZE
         for (int i = 0; i < this.m_D; i++) {
             Bz_d            = 0.0;
-            for (int j = 0; j < this.m_D; j++)
-                Bz_d = Bz_d + this.B.get(i, j) * this.m_Z[j];
-            this.s_d_N[i]   = (1.0 - this.m_c) * this.s_d_N[i] + this.m_c * this.cu * Bz_d;
-            length          = length + this.s_d_N[i] * this.s_d_N[i];
+            for (int j = 0; j < this.m_D; j++) Bz_d = Bz_d + this.B.get(i, j) * this.m_Z[j];
+            this.m_PathS[i]   = (1.0 - this.m_c) * this.m_PathS[i] + this.m_c * this.cu * Bz_d;
+            pathLen          = pathLen + this.m_PathS[i] * this.m_PathS[i];
         }
-        this.m_SigmaGlobal = this.m_SigmaGlobal * Math.exp(this.Beta * this.m_c * (Math.sqrt(length) - this.xi_dach));;
+        this.m_SigmaGlobal = this.m_SigmaGlobal * Math.exp(this.Beta * this.m_c * (Math.sqrt(pathLen) - this.xi_dach));;
   }
 
     private void evaluateNewObjectX(double[] x,double[][] range) {
@@ -241,6 +240,7 @@ public class MutateESCovarianceMartixAdaption implements InterfaceMutation, java
             if (this.m_CheckConstraints == true) {
                 for (int i = 0; i < m_D; i++) {
                     if (x[i] < range[i][0] || x[i] > range[i][1]) {
+                    	// undo the step and try new Z
                         for (int j = 0; j < this.m_D; j++) x[j] = x[j] - this.m_SigmaGlobal * this.Bz[j];
                         this.m_Z[i] = RNG.gaussianDouble(1.0);
                         constraint = false;
