@@ -9,6 +9,8 @@ import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.Locale;
 
+import eva2.gui.BeanInspector;
+
 import wsi.ra.math.Jama.util.Maths;
 
 
@@ -760,6 +762,15 @@ public class Matrix implements Cloneable, java.io.Serializable {
          }
       }
       return X;
+   }
+   
+   public String toString() {
+	   StringBuffer sb = new StringBuffer();
+	   for (int i=0; i<m; i++) {
+		   sb.append(BeanInspector.toString(A[i]));
+		   sb.append("\n");
+	   }
+	   return sb.toString();
    }
 
    /** Multiply a matrix by a scalar in place, A = s*A

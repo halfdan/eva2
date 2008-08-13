@@ -46,7 +46,12 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
         return x;
 	}
 	
-	@Override
+	/**
+	 * When implementing a double problem, inheriting classes should not override this method (or only
+	 * extend it) and do the fitness calculations in the method eval(double[]).
+	 * 
+	 * @see eval(double[] x)
+	 */
 	public void evaluate(AbstractEAIndividual individual) {
         double[]        x;
         double[]        fitness;
