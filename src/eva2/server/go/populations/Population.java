@@ -436,8 +436,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     /** 
      * This method returns the n current best individuals from the population, where
      * the sorting criterion is delivered by an AbstractEAIndividualComparator.
-     * There are less than n individuals returned if the population is smaller than n.
-     * This does not check constraints!
+     * @see getSortedNIndividuals(int n, boolean bBestOrWorst, Population res)
      * 
      * @param n	number of individuals to look out for
      * @param bBestOrWorst if true, the best n are returned, else the worst n individuals
@@ -445,6 +444,24 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      * 
      */
     public Population getSortedNIndividuals(int n, boolean bBestOrWorst) {
+    	Population result = new Population(n);
+    	getSortedNIndividuals(n, bBestOrWorst, result);
+    	return result;
+    }
+    
+    /** 
+     * This method returns the n current best individuals from the population, where
+     * the sorting criterion is delivered by an AbstractEAIndividualComparator.
+     * There are less than n individuals returned if the population is smaller than n.
+     * This does not check constraints!
+     * 
+     * @param n	number of individuals to look out for
+     * @param bBestOrWorst if true, the best n are returned, else the worst n individuals
+     * @param res	sorted result population, will be cleared
+     * @return The m sorted best or worst individuals, where m <= n
+     * 
+     */
+    public void getSortedNIndividuals(int n, boolean bBestOrWorst, Population res) {
     	if ((n < 0) || (n>super.size())) {
     		System.err.println("invalid request to getSortedNIndividuals: n="+n + ", size is " + super.size());
     		n = super.size();
@@ -452,14 +469,12 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     	int skip = 0;
     	if (!bBestOrWorst) skip = super.size()-n;
     	
-    	Population result = new Population(n);
     	ArrayList<AbstractEAIndividual> sorted = getSorted();
-
+    	res.clear();
         for (int i = skip; i < skip+n; i++) {
-        	result.add(sorted.get(i));
+        	res.add(sorted.get(i));
         }
-        result.setPopulationSize(result.size());
-    	return result;
+        res.setPopulationSize(res.size());
     }
     
     /**

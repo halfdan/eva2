@@ -36,6 +36,9 @@ import wsi.ra.math.Jama.Matrix;
  * whether the new individual would violate range constraints, if so
  * the velocity vector is reduced.
  * 
+ * Possible topologies are: "Linear", "Grid", "Star", "Multi-Swarm", "Tree", "HPSO", "Random"
+ * in that order starting by 0.
+ * 
  * Created by IntelliJ IDEA.
  * User: streiche
  * Date: 28.10.2004
@@ -589,9 +592,6 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 	 */
 	protected boolean isIndividualToUpdate(AbstractEAIndividual indy) {
 		double[] bestFitness    = (double[]) indy.getData(partBestFitKey);
-		// TODO Multi-obj.?
-//		if (bestFitness.length>1) System.err.println("warning, multi-objective fitness disregarded here (PSO)");
-//		return (indy.getFitness()[0] <= bestFitness[0]);
 		return (AbstractEAIndividual.isDominatingFitnessNotEqual(indy.getFitness(), bestFitness));
 	}
 
@@ -609,14 +609,6 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 				else rotate(vect, alpha, i, j);
 			}
 		}
-	}
-	
-	private double vecLen(double[] vec) {
-		double sum = 0.;
-		for (int i=0; i<vec.length; i++) {
-			sum += vec[i]*vec[i];
-		}
-		return Math.sqrt(sum);
 	}
 	
 	/**
@@ -687,12 +679,6 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 		}
 		return curVelocity;
 	}
-	
-	private double getVecNorm(double[] vect) {
-		double res = 0.;
-		for (int i=0; i<vect.length; i++) res += vect[i]*vect[i];
-		return Math.sqrt(res);
-	}
 
 	protected double[] getAcceleration(double[] personalBestPos, double[] neighbourBestPos, double[] curPosition, double[][] range) {
 		double[] accel = new double[curPosition.length];
@@ -719,22 +705,14 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 		
 		Matrix cogVecB = new Matrix(curPosition.length, 1);
 		Matrix socVecB = new Matrix(curPosition.length, 1);
-//		GVector cogVec = new GVector(curPosition.length);
-//		GVector socVec = new GVector(curPosition.length);
 		
 		for (int i = 0; i < personalBestPos.length; i++) {
 			cogVecB.set(i, 0, (personalBestPos[i]-curPosition[i]));
 			socVecB.set(i, 0, (neighbourBestPos[i]-curPosition[i]));
-//			cogVec.setElement(i, (personalBestPos[i]-curPosition[i]));
-//			socVec.setElement(i, (neighbourBestPos[i]-curPosition[i]));
 		}
 		Matrix cogRandB = getOrientedGaussianRandomVectorB(cogVecB, 5);
-//		GVector cogRand = getOrientedGaussianRandomVector(cogVec, 5);
 		Matrix socRandB = getOrientedGaussianRandomVectorB(socVecB, 5);
-//		GVector socRand = getOrientedGaussianRandomVector(socVec, 5);
-		
-		//System.out.println(cogVec.norm() + " " + cogRand.norm() + " / " + socVec.norm() + " " + socRand.norm());
-		
+
 		for (int i = 0; i < curPosition.length; i++) {
 			if (algType.getSelectedTag().getID()==1) chi=m_InertnessOrChi;
 			else chi = 1.;
@@ -811,29 +789,6 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 		else if (val > max) return max;
 		else return val;
 	}
-	
-//	protected GVector getOrientedGaussianRandomVector(GVector dir, double scale) {
-//		double len = dir.norm();
-//		int dim = dir.getSize();
-//
-//		GVector resVec = new GVector(dim);
-//		GVector randVec = new GVector(dim);
-//
-//		if (len > 0) {
-//			// initialize random vector
-//			randVec.setElement(0, len/2.+RNG.gaussianDouble(len/2));
-//			//randVec.setElement(0, RNG.randomDouble(0, len));
-//			for (int i=1; i<dim; i++) {
-//				randVec.setElement(i, RNG.gaussianDouble(len/(scale*2)));
-//			}
-//
-//			GMatrix rotation = nrotate(dir);
-//			rotation.transpose();
-//			printGMatrix(rotation);
-//			resVec.mul(rotation, randVec);
-//		}
-//		return resVec;
-//	}
 
 	protected void printMatrix(Matrix M) {
 		for (int i=0; i<M.getRowDimension(); i++) {
@@ -841,25 +796,6 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 			System.out.println("");
 		}
 	}
-	
-//	private void printGMatrix(GMatrix M) {
-//		for (int i=0; i<M.getNumRow(); i++) {
-//			for (int j=0; j<M.getNumCol(); j++) System.out.print(" " + M.getElement(i, j));
-//			System.out.println("");
-//		}
-//	}
-//	
-//	protected GVector getUnitVec(int dim, int k) {
-//		GVector v = new GVector(dim);
-//		v.setElement(k, 1.);
-//		return v;
-//	}
-	
-//	protected void switchElements(GVector vec, int i, int j) {
-//		double val1 = vec.getElement(i);
-//		vec.setElement(i, vec.getElement(j));
-//		vec.setElement(j, val1);
-//	}
 	
 	/**
 	 * In the topology range for the given index, find the best stored individual and return its position.

@@ -337,13 +337,25 @@ public class Mathematics {
 	 */
 	public static double[] vvSub(double[] a, double[] b) {
 		double[] result = new double[a.length];
-		for (int i = 0; i < a.length; i++) {
-			result[i] = a[i] - b[i];
-		}
+		vvSub(a, b, result);
 		return result;
 	}
 
-	/** This method return a vector from a to b
+	/**
+	 * Subtract vectors returning a new vector c = a - b.
+	 * 
+	 * @param a
+	 * @param b
+	 * @return a new vector c = a - b
+	 */
+	public static void vvSub(double[] a, double[] b, double[] res) {
+		for (int i = 0; i < a.length; i++) {
+			res[i] = a[i] - b[i];
+		}
+	}
+	
+	/** 
+	 * This method return a vector from a to b
 	 * @param a     first vector
 	 * @param b     second vectors
 	 * @return the vector from a to b
@@ -391,6 +403,20 @@ public class Mathematics {
 			res[i] = v[i] + s;
 		}
 		return res;
+	}
+	
+	/**
+	 * Add vectors scaled: res[i] = s*v[i] + w[i]
+	 * 
+	 * @param s
+	 * @param v
+	 * @param w
+	 * @return 
+	 */
+	public static void svvAddScaled(double s, double[] v, double[] w, double[] res) {
+		for (int i = 0; i < v.length; i++) {
+			res[i] = s*v[i] + w[i];
+		}
 	}
 
 	/**
