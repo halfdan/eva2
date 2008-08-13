@@ -22,7 +22,7 @@ import eva2.server.go.operators.crossover.CrossoverESDefault;
 import eva2.server.go.operators.crossover.InterfaceCrossover;
 import eva2.server.go.operators.crossover.NoCrossover;
 import eva2.server.go.operators.mutation.InterfaceMutation;
-import eva2.server.go.operators.mutation.MutateESCovarianceMartixAdaption;
+import eva2.server.go.operators.mutation.MutateESCovarianceMatrixAdaption;
 import eva2.server.go.operators.mutation.MutateESFixedStepSize;
 import eva2.server.go.operators.mutation.MutateESGlobal;
 import eva2.server.go.operators.mutation.NoMutation;
@@ -168,7 +168,7 @@ public class OptimizerFactory {
 				&& (indyTemplate instanceof InterfaceESIndividual)) {
 			// Set CMA operator for mutation
 			AbstractEAIndividual indy = (AbstractEAIndividual) indyTemplate;
-			MutateESCovarianceMartixAdaption cmaMut = new MutateESCovarianceMartixAdaption();
+			MutateESCovarianceMatrixAdaption cmaMut = new MutateESCovarianceMatrixAdaption();
 			cmaMut.setCheckConstraints(true);
 			indy.setMutationOperator(cmaMut);
 			indy.setCrossoverOperator(new CrossoverESDefault());
