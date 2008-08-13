@@ -442,8 +442,10 @@ public class OptimizerFactory {
 		return mc;
 	}
 
+
 	/**
-	 * This method performs a particle swarm optimization.
+	 * This method performs a particle swarm optimization. Standard topologies are
+	 * linear (0), grid (1) and star (2).
 	 *
 	 * @param problem
 	 * @param mut
@@ -453,6 +455,7 @@ public class OptimizerFactory {
 	 * @param k
 	 * @param listener
 	 * @param topology
+	 * @see ParticleSwarmOpimization
 	 * @return An optimization algorithm that performs particle swarm
 	 *         optimization.
 	 */
