@@ -1475,6 +1475,12 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
     public InterfaceSolutionSet getAllSolutions() {
     	return new SolutionSet(getPopulation());
     }
+    
+    public AbstractEAIndividual getBestIndividual() {
+    	return m_BestIndividual;
+    }
+    
+    
 	/** This method will set the initial velocity
 	 * @param f
 	 */
