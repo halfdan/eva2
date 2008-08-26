@@ -38,6 +38,7 @@ public class PropertyEditorProvider {
 //		if (TRACE)  System.out.println((editor == null ) ? "No editor from PEM" : ("Found " + editor.getClass()));
         if ((editor == null) && useDefaultGOE ) {
         	if (cls.isArray()) editor = new GenericArrayEditor();
+        	else if (cls.isEnum()) editor = new EnumEditor();
         	else editor = new GenericObjectEditor();
 //        	if (TRACE) System.out.println("using GOE/GAE");
         }
@@ -119,6 +120,7 @@ public class PropertyEditorProvider {
 	        if (TRACE)  System.out.println((editor == null ) ? "No editor from PEM by type" : ("Found " + editor.getClass()));
 	        if ((editor == null) && useDefaultGOE ) {
 	        	if (type.isArray()) editor = new GenericArrayEditor();
+	        	else if (type.isEnum()) editor = new EnumEditor();
 	        	else editor = new GenericObjectEditor();
 	        	if (TRACE) System.out.println("using GOE/GAE");
 	        }
@@ -144,6 +146,7 @@ public class PropertyEditorProvider {
      */
     public static void installEditors() {
         PropertyEditorManager.registerEditor(SelectedTag.class, TagEditor.class);
+        PropertyEditorManager.registerEditor(Enum.class, EnumEditor.class);
         PropertyEditorManager.registerEditor(int[].class, GenericArrayEditor.class);
         PropertyEditorManager.registerEditor(double[].class, GenericArrayEditor.class);
         PropertyEditorManager.registerEditor(InterfaceTerminator[].class, GenericArrayEditor.class);

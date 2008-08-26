@@ -114,11 +114,11 @@ public class TagEditor extends PropertyEditorSupport {
     try {
       PropertyEditorManager.registerEditor(SelectedTag.class,TagEditor.class);
       Tag [] tags =  {
-	new Tag(1, "First option"),
-	new Tag(2, "Second option"),
-	new Tag(3, "Third option"),
-	new Tag(4, "Fourth option"),
-	new Tag(5, "Fifth option"),
+	new Tag(0, "First option"),
+	new Tag(1, "Second option"),
+	new Tag(2, "Third option"),
+	new Tag(3, "Fourth option"),
+	new Tag(4, "Fifth option"),
       };
       SelectedTag initial = new SelectedTag(1, tags);
       TagEditor ce = new TagEditor();
