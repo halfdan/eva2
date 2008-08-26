@@ -4,6 +4,7 @@ package eva2;
  * Main product and version information strings.
  * 
  * --- Changelog
+ * 2.030: Added an EnumEditor to access enums easily through the GUI.
  * 2.029: Tuned the 2d-graphs which now paints quicker and changes size depending on the
  * 			surrounding plot window. Added a preloader-thread to accelerate the GUI at starting time.
  * 2.028: Tuned the Population to sort only when necessary on calls to getBestN... Added StatisticsDummy.
@@ -29,7 +30,7 @@ package eva2;
 public class EvAInfo {
 	public static final String productName = "EvA 2";
 	public static final String productLongName = "Evolutionary Algorithms Workbench 2";
-	public static final String versionNum = new String ("2.029");
+	public static final String versionNum = new String ("2.030");
 	public static final String url = "http://www.ra.cs.uni-tuebingen.de/software/EvA2";
 
 	public static final String propertyFile = "resources/EvA2.props";
