@@ -75,6 +75,7 @@ public class FunctionArea extends DArea implements Serializable {
 		 setVisibleRectangle(1, 1, 100000, 1000);
 		 setAutoFocus(true);
 		 setMinRectangle(0, 0, 1, 1);
+		 setBackground(new Color(253,253,253)); // not quite white
 		 //setAutoFocus(true);
 		 m_Border = new ScaledBorder();
 		 m_Border.x_label = xname; //"App. " + Name + " func. calls";
