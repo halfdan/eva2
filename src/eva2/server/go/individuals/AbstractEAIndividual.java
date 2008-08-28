@@ -61,6 +61,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
 //    protected String[]                      m_Identifiers           = new String[m_ObjectIncrement];
 //    protected Object[]                      m_Objects               = new Object[m_ObjectIncrement];
     protected HashMap<String,Object> 		m_dataHash 				= new HashMap<String,Object>();
+    protected int 							individualIndex;
     
     public AbstractEAIndividual() {
     	m_IDcounter++;
@@ -70,6 +71,15 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
 
     public long getIndyID() {
     	return m_ID;
+    }
+    
+
+    public int getIndividualIndex() {
+    	return individualIndex;
+    }
+
+    public void setIndividualIndex(int index) {
+    	this.individualIndex = index;
     }
     
     /** This method will enable you to clone a given individual
@@ -117,6 +127,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
         m_ConstraintViolation = individual.m_ConstraintViolation;
         m_AreaConst4ParallelViolated = individual.m_AreaConst4ParallelViolated;
         m_Marked            = individual.m_Marked;
+        individualIndex 	= individual.individualIndex;
         if (individual.parentIDs != null) {
         	parentIDs = new Long[individual.parentIDs.length];
         	System.arraycopy(individual.parentIDs, 0, parentIDs, 0, parentIDs.length);
