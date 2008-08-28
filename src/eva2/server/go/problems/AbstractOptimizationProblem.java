@@ -52,9 +52,9 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
     public void evaluate(Population population) {
         AbstractEAIndividual    tmpIndy;
 
-        if (population.isEvaluated()) {
+//        if (population.isEvaluated()) {
 //        	System.err.println("Population evaluation seems not required!");
-        } else {
+//        } else {
 	        // @todo This is the position to implement a granular
 	        // @todo paralliziation scheme
 	        evaluatePopulationStart(population);
@@ -65,8 +65,8 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
 	            population.incrFunctionCalls();
 	        }
 	        evaluatePopulationEnd(population);
-	        population.setEvaluated();
-        }
+//	        population.setEvaluated();
+//        }
     }
     
     /**
