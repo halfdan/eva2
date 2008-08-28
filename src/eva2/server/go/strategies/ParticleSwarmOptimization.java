@@ -1190,11 +1190,11 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 		}
 	}
 	
-	protected void addSortedIndicesTo(Population pop) {
+	protected void addSortedIndicesTo(Object[] sortedPopulation, Population pop) {
 		int origIndex;
 		for (int i=0; i<pop.size(); i++) {
 			// cross-link the sorted list for faster access
-			origIndex = (Integer)((AbstractEAIndividual)sortedPop[i]).getData(indexKey);
+			origIndex = (Integer)((AbstractEAIndividual)sortedPopulation[i]).getData(indexKey);
 			((AbstractEAIndividual)pop.get(origIndex)).SetData(sortedIndexKey, new Integer(i));
 		}
 	}
@@ -1206,7 +1206,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 			sortedPop = pop.toArray();
 			if ((topoID == 3) || (treeStruct>=2)) Arrays.sort(sortedPop, new AbstractEAIndividualComparator()); 
 			else Arrays.sort(sortedPop, new AbstractEAIndividualComparator(partBestFitKey));
-			addSortedIndicesTo(pop);
+			addSortedIndicesTo(sortedPop, pop);
 		}
 		if (topoID == 3) {
 			// prepare multi swarm topology
