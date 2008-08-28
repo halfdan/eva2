@@ -1,6 +1,7 @@
 package eva2.server.go.populations;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.PriorityQueue;
@@ -234,6 +235,20 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     public void SetFunctionCalls(int d) {
         this.m_FunctionCalls = d;
     }
+    
+    /**
+     * To initialize (or invalidate) all current fitness values, this method sets them
+     * to the given array.
+     * 
+     * @param f
+     */
+    public void setAllFitnessValues(double[] f) {
+    	AbstractEAIndividual indy;
+    	for (int i=0; i<size(); i++) {
+    		indy = getEAIndividual(i);
+    		indy.SetFitness(f.clone());
+    	}
+    }
 
     /** This method allows you to increment the current number of generations.
      * This will be the trigger for the Population, that has moved from t to t+1.
@@ -431,6 +446,20 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      */
     public Population getBestNIndividuals(int n) {
     	return getSortedNIndividuals(n, true);
+    }
+    
+    /** 
+     * This method returns a clone of the population instance with sorted individuals, where
+     * the sorting criterion is delivered by an AbstractEAIndividualComparator.
+     * @see #getSortedNIndividuals(int, boolean, Population)
+     * 
+     * @return a clone of the population instance with sorted individuals, best fitness first
+     */
+    public Population getSortedBestFirst() {
+    	Population result = this.cloneWithoutInds();
+    	getSortedNIndividuals(size(), true, result);
+    	result.setPopulationSize(result.size());
+    	return result;
     }
     
     /** 
@@ -843,7 +872,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     }
     
     /**
-     * Returns the average, minimal and maximal phenotypic individual distance as diversity measure for the populuation.
+     * Returns the average, minimal and maximal phenotypic individual distance as diversity measure for the population.
      *
      * @return the average, minimal and maximal mean distance of individuals in an array of three
      */
@@ -895,44 +924,20 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
 		return centerPos;
 	}
 	
-//	/**
-//	 * Calculate the average position of the population.
-//	 * 
-//	 * @return the average position of the population
-//	 */
-//	public double[] getWeightedCenter(int fitIndex) {
-//		if (size()==0) EVAERROR.errorMsgOnce("Invalid pop size in DistractingPopulation:getCenter!");
-//		double[] centerPos = AbstractEAIndividual.getDoublePosition(getEAIndividual(0));
-//		double[] tmpPos;
-//		double fitSum = getFitSum(fitIndex);
-//		for (int i=1; i<size(); i++) {
-//			tmpPos = AbstractEAIndividual.getDoublePosition(getEAIndividual(i));
-//			tmpPos = Mathematics.svMult(getCenterWeight(getEAIndividual(i), fitIndex, fitSum), tmpPos);
-//			Mathematics.vvAdd(centerPos, tmpPos, centerPos);
-//		}
-//		Mathematics.svDiv(size(), centerPos, centerPos);
-//		return centerPos;
-//	}
-//	
-//	/**
-//	 * Weight the fitness relative to the fitness sum.
-//	 * @param indy
-//	 * @param fitIndex
-//	 * @param fitSum
-//	 * @return
-//	 */
-//	private double getCenterWeight(AbstractEAIndividual indy, int fitIndex, double fitSum) {
-//		double ret = indy.getFitness(fitIndex);
-//		return ret/fitSum;
-//	}
-//	
-//	private double getFitSum(int index) {
-//		double sum = 0;
-//		for (int i=0; i<size(); i++) {
-//			sum += getEAIndividual(i).getFitness(index);
-//		}
-//		return sum;
-//	}
+	/**
+	 * Calculate the weighted center position of the population. Weights must add up to one!
+	 * 
+	 * @return the average position of the population
+	 */
+	public double[] getCenterWeighted(double[] weights) {
+		if (size()==0 || (weights.length > size())) EVAERROR.errorMsgOnce("Invalid pop size in DistractingPopulation:getCenterWeighted!");
+		double[] centerPos = AbstractEAIndividual.getDoublePosition(getEAIndividual(0));
+		Mathematics.svMult(weights[0], centerPos, centerPos);
+		for (int i=1; i<weights.length; i++) {
+			Mathematics.svvAddScaled(weights[i], AbstractEAIndividual.getDoublePosition(getEAIndividual(i)), centerPos, centerPos);
+		}
+		return centerPos;
+	}
 
 	/**
 	 * Fire an event every n function calls, the event sends the public String funCallIntervalReached.
@@ -943,38 +948,39 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
 		this.notifyEvalInterval = notifyEvalInterval;
 	}
 
-	/**
-	 * Check whether the population at the current state has been marked as
-	 * evaluated. This allows to avoid double evaluations. 
-	 * 
-	 * @return true if the population has been marked as evaluated in its current state, else false 
-	 */
-	public boolean isEvaluated() {
-		Pair<Integer,Integer> hashes = getIndyHashSums();
-		
-		if (evaluationTimeHashes == null) return false;
-		else return ((hashes.head().equals(evaluationTimeHashes.head())) && (hashes.tail().equals(evaluationTimeHashes.tail())) && (evaluationTimeModCount == modCount));
-	}
+//	/**
+//	 * Check whether the population at the current state has been marked as
+//	 * evaluated. This allows to avoid double evaluations. 
+//	 * 
+//	 * @return true if the population has been marked as evaluated in its current state, else false 
+//	 */
+//	public boolean isEvaluated() {
+//		if (evaluationTimeModCount != modCount) return false;
+//		Pair<Integer,Integer> hashes = getIndyHashSums();
+//		
+//		if (evaluationTimeHashes == null) return false;
+//		else return ((hashes.head().equals(evaluationTimeHashes.head())) && (hashes.tail().equals(evaluationTimeHashes.tail())) && (evaluationTimeModCount == modCount));
+//	}
 
-	/**
-	 * Mark the population at the current state as evaluated. Changes to the modCount or hashes of individuals
-	 * will invalidate the mark.
-	 *  
-	 * @see  isEvaluated()
-	 */
-	public void setEvaluated() {
-		evaluationTimeModCount = modCount;
-		evaluationTimeHashes = getIndyHashSums();
-	}
+//	/**
+//	 * Mark the population at the current state as evaluated. Changes to the modCount or hashes of individuals
+//	 * will invalidate the mark.
+//	 *  
+//	 * @see  isEvaluated()
+//	 */
+//	public void setEvaluated() {
+//		evaluationTimeModCount = modCount;
+//		evaluationTimeHashes = getIndyHashSums();
+//	}
 	
-	private Pair<Integer,Integer> getIndyHashSums() {
-		int hashSum = 0, hashSumAbs = 0;
-		int hash;
-		for (int i=0; i<size(); i++) {
-			hash = get(i).hashCode();
-			hashSum += hash;
-			hashSumAbs += Math.abs(hash);
-		}
-		return new Pair(hashSum, hashSumAbs);
-	}
+//	private Pair<Integer,Integer> getIndyHashSums() {
+//		int hashSum = 0, hashSumAbs = 0;
+//		int hash;
+//		for (int i=0; i<size(); i++) {
+//			hash = get(i).hashCode();
+//			hashSum += hash;
+//			hashSumAbs += Math.abs(hash);
+//		}
+//		return new Pair(hashSum, hashSumAbs);
+//	}
 }
