@@ -22,9 +22,9 @@ import eva2.tools.EVAERROR;
 /** This is the abstract EA individual implementing the most important methods giving
  * access to mutation and crossover rates and operators, fitness values and selection
  * probabilities. All EA individuals should typically extend this abstract EA individual.
- * In that case the EA individuals only implement the genotype and phenotype interfaces.
+ * In that case the EA individuals only implement the genotpye and phenotype interfaces.
  * The names of the implementation should be build like this:
- * (Genotype)Individual(Phenotype)
+ * (Genotpye)Individual(Phenotype)
  * Thus a binary individual coding double values is named GAIndividualDoubleData and a
  * real-valued individual coding binary values is named ESIndividualBinaryData.
  * Created by IntelliJ IDEA.
@@ -34,9 +34,7 @@ import eva2.tools.EVAERROR;
  * To change this template use Options | File Templates.
  */
 public abstract class AbstractEAIndividual implements IndividualInterface, java.io.Serializable {
-
     public int                              m_FunctionCalls         = 0;        // TODO ist irgendwie eine Kruecke
-    protected int                           m_ObjectIncrement       = 5;
     protected int                           m_Age                   = 0;
 //    protected String                        m_Name                  = GONamingBox.getRandomName();
     
@@ -61,18 +59,19 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
 //    protected String[]                      m_Identifiers           = new String[m_ObjectIncrement];
 //    protected Object[]                      m_Objects               = new Object[m_ObjectIncrement];
     protected HashMap<String,Object> 		m_dataHash 				= new HashMap<String,Object>();
-    protected int 							individualIndex;
+    
+    // introduced for the nichingPSO/ANPSO (M.Aschoff)
+    private int individualIndex;
     
     public AbstractEAIndividual() {
     	m_IDcounter++;
     	m_ID = m_IDcounter;
-//    	System.out.println("my id is " + m_ID);
+//  	System.out.println("my id is " + m_ID);
     }
 
     public long getIndyID() {
     	return m_ID;
     }
-    
 
     public int getIndividualIndex() {
     	return individualIndex;
@@ -127,7 +126,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
         m_ConstraintViolation = individual.m_ConstraintViolation;
         m_AreaConst4ParallelViolated = individual.m_AreaConst4ParallelViolated;
         m_Marked            = individual.m_Marked;
-        individualIndex 	= individual.individualIndex;
+        individualIndex = individual.individualIndex;
         if (individual.parentIDs != null) {
         	parentIDs = new Long[individual.parentIDs.length];
         	System.arraycopy(individual.parentIDs, 0, parentIDs, 0, parentIDs.length);
@@ -747,7 +746,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
 
     /** This method allows you to store an arbitrary value under an arbitrary
      * name.
-     * @param name      The identifing name.
+     * @param name      The identifying name.
      * @param obj       The object that is to be stored.
      */
     public void SetData(String name, Object obj) {
@@ -914,4 +913,3 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
     }
 
 }
-  
