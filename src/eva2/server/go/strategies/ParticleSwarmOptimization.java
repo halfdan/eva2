@@ -370,6 +370,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 				initIndividualDefaults(indy);
 			}
 			indy.SetData(indexKey, i);
+			indy.setIndividualIndex(i);
 		}
 		this.evaluatePopulation(this.m_Population);
 
@@ -1188,6 +1189,15 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 			}
 		}
 	}
+	
+	protected void addSortedIndicesTo(Population pop) {
+		int origIndex;
+		for (int i=0; i<pop.size(); i++) {
+			// cross-link the sorted list for faster access
+			origIndex = (Integer)((AbstractEAIndividual)sortedPop[i]).getData(indexKey);
+			((AbstractEAIndividual)pop.get(origIndex)).SetData(sortedIndexKey, new Integer(i));
+		}
+	}
 
 	protected void updateTopology(Population pop) {
 		int topoID = this.m_Topology.getSelectedTag().getID();
@@ -1196,12 +1206,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 			sortedPop = pop.toArray();
 			if ((topoID == 3) || (treeStruct>=2)) Arrays.sort(sortedPop, new AbstractEAIndividualComparator()); 
 			else Arrays.sort(sortedPop, new AbstractEAIndividualComparator(partBestFitKey));
-			int k, origIndex;
-			for (int i=0; i<pop.size(); i++) {
-				// cross-link the sorted list for faster access
-				origIndex = (Integer)((AbstractEAIndividual)sortedPop[i]).getData(indexKey);
-				((AbstractEAIndividual)pop.get(origIndex)).SetData(sortedIndexKey, new Integer(i));
-			}
+			addSortedIndicesTo(pop);
 		}
 		if (topoID == 3) {
 			// prepare multi swarm topology
@@ -1400,6 +1405,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 				initIndividualDefaults(indy);
 				initIndividualMemory(indy);
 				indy.SetData(indexKey, i);
+				indy.setIndividualIndex(i);
 				if (TRACE) System.err.println("init indy " + i + " " + AbstractEAIndividual.getDefaultDataString(indy));
 			}
 		}

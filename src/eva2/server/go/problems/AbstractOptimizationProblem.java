@@ -1,8 +1,6 @@
 package eva2.server.go.problems;
 
 import java.awt.BorderLayout;
-import java.util.BitSet;
-
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -11,11 +9,12 @@ import javax.swing.JTextArea;
 
 import eva2.server.go.PopulationInterface;
 import eva2.server.go.individuals.AbstractEAIndividual;
-import eva2.server.go.individuals.InterfaceDataTypeBinary;
-import eva2.server.go.individuals.InterfaceDataTypeDouble;
-import eva2.server.go.individuals.InterfaceDataTypeInteger;
-import eva2.server.go.individuals.InterfaceDataTypePermutation;
+import eva2.server.go.operators.distancemetric.InterfaceDistanceMetric;
+import eva2.server.go.operators.distancemetric.PhenotypeMetric;
 import eva2.server.go.operators.moso.MOSONoConvert;
+import eva2.server.go.operators.mutation.InterfaceMutation;
+import eva2.server.go.operators.mutation.MutateESFixedStepSize;
+import eva2.server.go.operators.postprocess.PostProcess;
 import eva2.server.go.populations.Population;
 import eva2.server.go.strategies.InterfaceOptimizer;
 
@@ -194,6 +193,85 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
      */
     public AbstractEAIndividual getIndividualTemplate() {
     	return m_Template;
+    }
+    
+    /**
+     * This method extracts the individuals from a given population that are assumed to correspond to local or global optima.
+     * Similar inidviduals are clustered together with a density based clustering method
+     * @param pop
+     * @param epsilon maximal allowed improvement of an individual before considered premature (given as distance in the search space) 
+     * @param clusterSigma minimum cluster distance
+     * @return 
+     */
+    public Population extractPotentialOptima(Population pop, double epsilon, double clusterSigma) {
+    	Population potOptima = new Population();
+    	for (int i = 0; i < pop.size(); ++i){
+    		AbstractEAIndividual indy = pop.getEAIndividual(i);
+    		if (isPotentialOptimum(indy, epsilon,-1,-1)){ 
+    			potOptima.addIndividual(indy);
+    		}
+    	}
+    	Population clusteredPop = (Population)PostProcess.clusterBest(potOptima, clusterSigma, 0, PostProcess.KEEP_LONERS, PostProcess.BEST_ONLY).clone();
+    	return clusteredPop;
+    }
+   
+  /**
+     * This method estimates if the given individual is within epsilon of an optimum (local or global).
+     * The algorithm tries to improve the given individual locally. 
+     * If it is possible to improve the individual such that its changed position is further than epsilon,
+     * the individual is considered premature. 
+     * If not, the particle is assumed to correspond to a local or global optimum.
+     * 
+     * @param orig individual that is to be tested
+     * @param epsilon maximal allowed improvement before considered premature (given as distance in the search space) 
+     * @param mutationStepSize step size used to mutate the individual in one step 
+     * (if < 0 a default value of 0.0001 is used)
+     * @param numOfFailures number of unsuccessful improvement steps in a row before an individual is considered to be locally unimproveable
+     * (if < 0 a default value of 100*problem dimensions is used ) 
+     * @return estimation if the given individual is within epsilon of an optimum (local or global)
+     */
+    public boolean isPotentialOptimum(AbstractEAIndividual orig, double epsilon, double mutationStepSize, int numOfFailures){
+    	int stepsCounter = 0; // could be used to limit the maximal number of steps overall
+    	
+    	// if not provided reasonable values use defaults:
+    	if (mutationStepSize<0) mutationStepSize = 0.0001; 
+    	if (numOfFailures<0) numOfFailures = 100*AbstractEAIndividual.getDoublePosition(this.m_Template).length; // scales the effort with the number of problem dimensions
+    	
+    	AbstractEAIndividual indy = (AbstractEAIndividual)orig.clone();
+    	this.evaluate(indy); // indy may be evaluated in a normalised way...
+    	
+    	InterfaceDistanceMetric metric = new PhenotypeMetric();
+    	double overallDist = 0;
+    	
+    	InterfaceMutation mutator = new MutateESFixedStepSize(mutationStepSize);
+    	
+    	for (int i = 0; i < numOfFailures; ++i){
+    		// backup
+    		AbstractEAIndividual old = (AbstractEAIndividual)indy.clone();
+    		// mutate
+    		double  tmpD = indy.getMutationProbability();
+    		indy.setMutationProbability(1.0);
+    		mutator.mutate(indy);
+    		++stepsCounter;
+    		indy.setMutationProbability(tmpD); 
+    		// evaluate
+    		this.evaluate(indy);
+    		
+    		if (old.isDominatingDebConstraints(indy)) {// indy could not be improved
+    			indy = (AbstractEAIndividual)old.clone();
+    		} else { // indy could be improved
+    			i = 0; // the given number of unsuccessful improvement steps should occur in a row
+    			overallDist = metric.distance(orig, indy);
+    			//System.out.println(overallDist);
+    		}
+    		if (overallDist > epsilon) {
+    			return false; // dont waste any more evaluations on this candidate
+    		}
+    	}
+        if (overallDist < epsilon) {
+        	return true;
+        }
+        else return false; 
     }
     
 /**********************************************************************************************************************
