@@ -67,10 +67,12 @@ public class SimulatedAnnealing implements InterfaceOptimizer, java.io.Serializa
      */
     public void initByPopulation(Population pop, boolean reset) {
         this.m_Population = (Population)pop.clone();
-        if (reset) this.m_Population.init();
-        this.m_Problem.evaluate(this.m_Population);
         this.m_CurrentTemperature = this.m_InitialTemperature;
-        this.firePropertyChangedEvent("NextGenerationPerformed");
+        if (reset) {
+        	this.m_Population.init();
+            this.m_Problem.evaluate(this.m_Population);
+            this.firePropertyChangedEvent("NextGenerationPerformed");
+        }
     }
 
     /** This method will optimize

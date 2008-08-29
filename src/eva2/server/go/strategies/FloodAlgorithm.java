@@ -67,10 +67,12 @@ public class FloodAlgorithm implements InterfaceOptimizer, java.io.Serializable 
      */
     public void initByPopulation(Population pop, boolean reset) {
         this.m_Population = (Population)pop.clone();
-        if (reset) this.m_Population.init();
-        this.m_Problem.evaluate(this.m_Population);
+        if (reset) {
+        	this.m_Population.init();
+            this.m_Problem.evaluate(this.m_Population);
+            this.firePropertyChangedEvent("NextGenerationPerformed");
+        }
         this.m_CurrentFloodPeak = this.m_InitialFloodPeak;
-        this.firePropertyChangedEvent("NextGenerationPerformed");
     }
 
     /** This method will optimize

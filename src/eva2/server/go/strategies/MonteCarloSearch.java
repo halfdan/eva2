@@ -64,9 +64,11 @@ public class MonteCarloSearch implements InterfaceOptimizer, java.io.Serializabl
      */
     public void initByPopulation(Population pop, boolean reset) {
         this.m_Population = (Population)pop.clone();
-        if (reset) this.m_Population.init();
-        this.m_Problem.evaluate(this.m_Population);
-        this.firePropertyChangedEvent("NextGenerationPerformed");
+        if (reset) {
+        	this.m_Population.init();
+            this.m_Problem.evaluate(this.m_Population);
+            this.firePropertyChangedEvent("NextGenerationPerformed");
+        }
     }
 
     /** This method will optimize

@@ -142,6 +142,7 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
      * @param reset     If true the population is reset.
      */
     public void initByPopulation(Population tpop, boolean reset) {
+    	// TODO this is again evil copy&paste style
         if (this.m_Show) {
             if (this.m_Plot == null) {
                 double[] tmpD = new double[2];
@@ -152,8 +153,10 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
         }
 
         this.m_Population = (Population)tpop.clone();
-        if (reset) this.m_Population.init();
-        this.m_Population.incrGeneration();
+        if (reset) {
+        	this.m_Population.init();
+            this.m_Population.incrGeneration();
+        }
         this.m_Optimizer.init();
         this.m_Optimizer.SetProblem(this.m_Problem);
         InterfacePopulationChangedEventListener myLocal = null;

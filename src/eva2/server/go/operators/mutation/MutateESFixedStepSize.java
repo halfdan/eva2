@@ -14,8 +14,7 @@ import wsi.ra.math.RNG;
  * To change this template use File | Settings | File Templates.
  */
 public class MutateESFixedStepSize implements InterfaceMutation, java.io.Serializable  {
-
-    private double  m_Sigma = 0.005;
+    protected double  m_Sigma = 0.005;
 
     public MutateESFixedStepSize() {
     }

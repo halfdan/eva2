@@ -124,9 +124,11 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
        	loopCnt = 0;
         this.m_Population = (Population)pop.clone();
         m_Population.addPopulationChangedEventListener(null);
-        if (reset) this.m_Population.init();
-        this.m_Problem.evaluate(this.m_Population);
-        this.firePropertyChangedEvent("NextGenerationPerformed");
+        if (reset) {
+        	this.m_Population.init();
+            this.m_Problem.evaluate(this.m_Population);
+            this.firePropertyChangedEvent("NextGenerationPerformed");
+        }
     }
 
     /** Something has changed

@@ -1,7 +1,10 @@
 package eva2.server.go.strategies;
 
+import eva2.gui.BeanInspector;
+import eva2.gui.GenericObjectEditor;
 import eva2.server.go.InterfacePopulationChangedEventListener;
 import eva2.server.go.individuals.AbstractEAIndividual;
+import eva2.server.go.operators.mutation.InterfaceMutationGenerational;
 import eva2.server.go.operators.mutation.MutateESSuccessRule;
 import eva2.server.go.operators.selection.InterfaceSelection;
 import eva2.server.go.operators.selection.SelectBestIndividuals;
@@ -33,7 +36,6 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
     //private double                          m_MyuRatio                  = 6;
     private int                             m_Mu                       = 5;
     private int                             m_Lambda                    = 20;
-    private int                             m_InitialPopulationSize     = 0;
     private boolean                         m_UsePlusStrategy           = false;
     private Population                      m_Population                = new Population();
     private InterfaceOptimizationProblem    m_Problem                   = new B1Problem();
@@ -42,7 +44,7 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
     private InterfaceSelection              m_EnvironmentSelection      = new SelectBestIndividuals();
     private int                             m_NumberOfPartners          = 1;
     private int								origPopSize					= -1; // especially for CBN
-    private double[]                        m_FitnessOfParents          = null;
+//    private double[]                        m_FitnessOfParents          = null;
     private boolean							forceOrigPopSize			= true;// especially for CBN
 
     transient private String                m_Identifier = "";
@@ -64,12 +66,15 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
         this.m_Problem                      = (InterfaceOptimizationProblem)a.m_Problem.clone();
         this.m_Mu                          = a.m_Mu;
         this.m_Lambda                       = a.m_Lambda;
-        this.m_InitialPopulationSize        = a.m_InitialPopulationSize;
         this.m_UsePlusStrategy              = a.m_UsePlusStrategy;
         this.m_NumberOfPartners             = a.m_NumberOfPartners;
         this.m_ParentSelection              = (InterfaceSelection)a.m_ParentSelection.clone();
         this.m_PartnerSelection             = (InterfaceSelection)a.m_PartnerSelection.clone();
         this.m_EnvironmentSelection         = (InterfaceSelection)a.m_EnvironmentSelection.clone();
+    }
+
+    public void hideHideable() {
+    	GenericObjectEditor.setHideProperty(this.getClass(), "population", true);
     }
 
     public Object clone() {
@@ -86,7 +91,7 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
         this.m_Problem.initPopulation(this.m_Population);
         this.evaluatePopulation(this.m_Population);
 //        this.m_Population.setPopulationSize(orgPopSize);
-        this.firePropertyChangedEvent("NextGenerationPerformed");
+//        this.firePropertyChangedEvent("NextGenerationPerformed");// not necessary if incrGeneration is called
     }
 
 
@@ -98,9 +103,11 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
     	origPopSize = pop.getPopulationSize();
 //    	System.out.println("ES: orig popsize is " + origPopSize);
         this.m_Population = (Population)pop.clone();
-        if (reset) this.m_Population.init();
-        this.evaluatePopulation(this.m_Population);
-        this.firePropertyChangedEvent("NextGenerationPerformed");
+        if (reset) {
+        	this.m_Population.init();
+            this.evaluatePopulation(this.m_Population);
+//            this.firePropertyChangedEvent("NextGenerationPerformed"); // not necessary if incrGeneration is called
+        }
     }
 
     /** This method will evaluate the current population using the
@@ -129,94 +136,88 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
     /** This method will generate the offspring population from the
      * given population of evaluated individuals.
      */
-    private Population generateChildren() {
-        Population                  result = this.m_Population.cloneWithoutInds(), parents;
+    protected Population generateEvalChildren(Population fromPopulation) {
+        Population                  result = m_Population.cloneWithoutInds(), parents;
         AbstractEAIndividual[]      offSprings;
         AbstractEAIndividual        tmpIndy;
 
         result.clear();
-        this.m_ParentSelection.prepareSelection(this.m_Population);
-        this.m_PartnerSelection.prepareSelection(this.m_Population);
-        parents     = this.m_ParentSelection.selectFrom(this.m_Population, this.m_Lambda);
+        this.m_ParentSelection.prepareSelection(fromPopulation);
+        this.m_PartnerSelection.prepareSelection(fromPopulation);
+        parents     = this.m_ParentSelection.selectFrom(fromPopulation, this.m_Lambda);
+
         for (int i = 0; i < parents.size(); i++) {
             tmpIndy =  (AbstractEAIndividual)parents.get(i);
-            if (tmpIndy == null) System.out.println("Individual null "+i);
-            if (parents == null) System.out.println("parents null "+i);
-            if (tmpIndy.getMutationOperator() instanceof MutateESSuccessRule) {
-                if (this.m_FitnessOfParents == null) this.m_FitnessOfParents = new double[this.m_Lambda];
-                this.m_FitnessOfParents[i] = tmpIndy.getFitness(0);
-            }
-            offSprings = tmpIndy.mateWith(this.m_PartnerSelection.findPartnerFor(tmpIndy, this.m_Population, this.m_NumberOfPartners));
-//            for (int j = 0; j < offSprings.length; j++) {
-//                offSprings[j].mutate();
-//            }
+            offSprings = tmpIndy.mateWith(this.m_PartnerSelection.findPartnerFor(tmpIndy, fromPopulation, this.m_NumberOfPartners));
             offSprings[0].mutate();
             result.add(i, offSprings[0]);
         }
+        this.evaluatePopulation(result);
+        
+        if (result.getEAIndividual(0).getMutationOperator() instanceof InterfaceMutationGenerational) {
+        	// this seems to be the right moment for the 1/5-success rule
+        	// parents and result have the same size and correspond per individual        	
+        	((InterfaceMutationGenerational)parents.getEAIndividual(0).getMutationOperator()).adaptGenerational(fromPopulation, parents, result, m_UsePlusStrategy);
+        }
+        
         return result;
     }
-
+ 
+    protected Population selectParents() {
+    	this.m_EnvironmentSelection.prepareSelection(this.m_Population);
+    	return this.m_EnvironmentSelection.selectFrom(this.m_Population, this.m_Mu);
+    }
+    
     /** The optimize method will compute a 'improved' and evaluated population
      */
     public void optimize() {
         Population  nextGeneration, parents;
 
-//        // calculate myu and lambda from the current population size and settings
-//        if (this.m_UsePlusStrategy) {
-//            this.m_Myu      = (int)Math.round((this.m_Population.size()/this.m_MyuRatio) - (this.m_Population.size()/Math.pow(this.m_MyuRatio, 2)));
-//            this.m_Myu      = Math.max(1, this.m_Myu);
-//            this.m_Lambda   = this.m_Population.size() - this.m_Myu;
-////            System.out.println("Parameters: (Pop.size:"+this.m_Population.size()+"; MyuRatio:"+this.m_MyuRatio+")");
-////            System.out.println("Population Strategy: ("+ this.m_Myu+"+"+this.m_Lambda+")");
-//        }
-//        else {
-//            this.m_Lambda   = this.m_Population.size();
-//            this.m_Myu      = (int)Math.round(this.m_Population.size()/this.m_MyuRatio);
-//            this.m_Myu      = Math.max(1, this.m_Myu);
-////            System.out.println("Parameters: (Pop.size:"+this.m_Population.size()+"; MyuRatio:"+this.m_MyuRatio+")");
-////            System.out.println("Population Strategy: ("+ this.m_Myu+","+this.m_Lambda+")");
-//        }
        //System.out.println("optimize");
         
         // first perform the environment selection to select myu parents
-        this.m_EnvironmentSelection.prepareSelection(this.m_Population);
-        parents = this.m_EnvironmentSelection.selectFrom(this.m_Population, this.m_Mu);
-        this.m_Population.clear();
-        this.m_Population.addPopulation(parents);
+        parents = selectParents();
         
+//        System.out.println("-- selected avg fit " + BeanInspector.toString(parents.getMeanFitness()) + " from last gen " + BeanInspector.toString(m_Population.getMeanFitness()));
+        
+        // m_Population / parents are of sizes lambda / mu 
+        if (parents.getEAIndividual(0).getMutationOperator() instanceof InterfaceMutationGenerational) {
+        	((InterfaceMutationGenerational)parents.getEAIndividual(0).getMutationOperator()).adaptAfterSelection(getPopulation(), parents);
+        }
         
         // now generate the lambda offsprings
-        this.m_FitnessOfParents = null;
-        nextGeneration = this.generateChildren();
-        this.evaluatePopulation(nextGeneration);
-        if ((this.m_FitnessOfParents != null) && (((AbstractEAIndividual)parents.get(0)).getMutationOperator() instanceof MutateESSuccessRule)) {
-            double              rate = 0;
-
-            for (int i = 0; i < this.m_FitnessOfParents.length; i++) {
-                if (((AbstractEAIndividual)nextGeneration.get(i)).getFitness(0) < this.m_FitnessOfParents[i]) rate++;
-            }
-            this.applySuccessRule((rate/((double)this.m_FitnessOfParents.length)), this.m_Population, nextGeneration);
-        }
-        if (this.m_UsePlusStrategy) nextGeneration.addPopulation(this.m_Population);
+		nextGeneration = this.generateEvalChildren(parents); // create lambda new ones from mu parents
         
-        if (forceOrigPopSize && (origPopSize > 0) && (origPopSize < nextGeneration.size())) {
-        	// this is especially for CBN: 
-        	this.m_EnvironmentSelection.prepareSelection(nextGeneration);
-        	Population tmpPop = (Population)nextGeneration.clone();
-            nextGeneration.clear();
-            nextGeneration.addPopulation(this.m_EnvironmentSelection.selectFrom(tmpPop, origPopSize));
-//            System.out.println("ES post selection! " + origPopSize + " from " + tmpPop.size());
-            m_Population = nextGeneration;
-        } else {
-        	if ((origPopSize > 0) && (origPopSize != nextGeneration.size())) {
-        		System.err.println("Warning in ES! orig: " + origPopSize + " / " + nextGeneration.size());
-        	}
-        	this.m_Population = nextGeneration;
-        }
-        //System.out.println("Population size: " + this.m_Population.size());
-        //System.out.println("-- Best Fitness " + this.m_Population.getBestFitness()[0]);
+        if (this.isPlusStrategy()) nextGeneration.addPopulation(parents);
+       
+        setPop(getReplacePop(nextGeneration));
+//        System.out.println("Population size: " + this.m_Population.size());
+//        System.out.println("-- Best Fitness " + this.m_Population.getBestFitness()[0]);
         
-        this.firePropertyChangedEvent("NextGenerationPerformed");
+        this.firePropertyChangedEvent("NextGenerationPerformed"); // necessary here because evalPop was not called on m_Population
+    }        
+    
+    /**
+     * Usually, this just returns the given population.
+     * However, in case of CBN this method prepares the next generation according to the species size.
+     * 
+     * @param nextGeneration
+     * @return
+     */
+    protected Population getReplacePop(Population nextGeneration) {
+    	if (forceOrigPopSize && (origPopSize > 0) && (origPopSize < nextGeneration.size())) {
+    		// this is especially for CBN: 
+    		this.m_EnvironmentSelection.prepareSelection(nextGeneration);
+    		Population tmpPop = (Population)nextGeneration.clone();
+    		nextGeneration.clear();
+    		nextGeneration.addPopulation(this.m_EnvironmentSelection.selectFrom(tmpPop, origPopSize));
+//  		System.out.println("ES post selection! " + origPopSize + " from " + tmpPop.size());
+    	} else {
+    		if ((origPopSize > 0) && (origPopSize != nextGeneration.size())) {
+    			System.err.println("Warning in ES! orig: " + origPopSize + " / " + nextGeneration.size());
+    		}
+    	}
+    	return nextGeneration;
     }
 
     /** This method is just a shortcut to set the mutation step size for
@@ -227,46 +228,48 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
      * @param oldPop        The old population
      * @param newPop        The new population
      */
-    private void applySuccessRule(double successRate, Population oldPop, Population newPop) {
-        MutateESSuccessRule mutator =  (MutateESSuccessRule)((AbstractEAIndividual)oldPop.get(0)).getMutationOperator();
-        boolean success = (successRate < mutator.getSuccessRate());
-        // this was the old solution when the mutation step size was still static
-//        if (successRate < mutator.getSuccessRate()) {
-//            mutator.decreaseMutationStepSize();
-//        } else {
-//            mutator.increaseMutationStepSize();
+//    private void applySuccessRule(double successRate, Population oldPop, Population newPop) {
+//        MutateESSuccessRule mutator =  (MutateESSuccessRule)((AbstractEAIndividual)oldPop.get(0)).getMutationOperator();
+//        boolean success = (successRate < mutator.getSuccessRate());
+//        // this was the old solution when the mutation step size was still static
+////        if (successRate < mutator.getSuccessRate()) {
+////            mutator.decreaseMutationStepSize();
+////        } else {
+////            mutator.increaseMutationStepSize();
+////        }
+//        if (isPlusStrategy()) for (int i = 0; i < oldPop.size(); i++) { // applied to the old population as well for plus strategy
+//            if (((AbstractEAIndividual)oldPop.get(i)).getMutationOperator() instanceof MutateESSuccessRule) {
+//                mutator =  (MutateESSuccessRule)((AbstractEAIndividual)oldPop.get(i)).getMutationOperator();
+//                if (success) mutator.decreaseMutationStepSize();
+//                else mutator.increaseMutationStepSize();
+//                System.out.println("old pop step size " + mutator.getSigma()+ " (" + mutator+ ")");
+//            }
 //        }
-        for (int i = 0; i < oldPop.size(); i++) {
-            if (((AbstractEAIndividual)oldPop.get(i)).getMutationOperator() instanceof MutateESSuccessRule) {
-                mutator =  (MutateESSuccessRule)((AbstractEAIndividual)oldPop.get(i)).getMutationOperator();
-                if (success) mutator.decreaseMutationStepSize();
-                else mutator.increaseMutationStepSize();
-            }
-        }
-        for (int i = 0; i < newPop.size(); i++) {
-            if (((AbstractEAIndividual)newPop.get(i)).getMutationOperator() instanceof MutateESSuccessRule) {
-                mutator =  (MutateESSuccessRule)((AbstractEAIndividual)newPop.get(i)).getMutationOperator();
-                if (success) mutator.decreaseMutationStepSize();
-                else mutator.increaseMutationStepSize();
-            }
-        }
-        this.m_FitnessOfParents = null;
-    }
+//        for (int i = 0; i < newPop.size(); i++) {
+//            if (((AbstractEAIndividual)newPop.get(i)).getMutationOperator() instanceof MutateESSuccessRule) {
+//                mutator =  (MutateESSuccessRule)((AbstractEAIndividual)newPop.get(i)).getMutationOperator();
+//                if (success) mutator.decreaseMutationStepSize();
+//                else mutator.increaseMutationStepSize();
+//                System.out.println("new pop step size " + mutator.getSigma() + " (" + mutator+ ")");
+//            }
+//        }
+////        this.m_FitnessOfParents = null;
+//    }
 
-    /** This is for debugging only
-     */
-    private String showFitness(Population pop) {
-        String result = "";
-        AbstractEAIndividual indy;
-        double[]    fitness;
-        for (int i = 0; i < pop.size(); i++) {
-            indy = (AbstractEAIndividual)pop.get(i);
-            fitness = indy.getFitness();
-            for (int j = 0; j < fitness.length; j++) result += fitness[j] +"; ";
-            result += "\n";
-        }
-        return result;
-    }
+//    /** This is for debugging only
+//     */
+//    private String showFitness(Population pop) {
+//        String result = "";
+//        AbstractEAIndividual indy;
+//        double[]    fitness;
+//        for (int i = 0; i < pop.size(); i++) {
+//            indy = (AbstractEAIndividual)pop.get(i);
+//            fitness = indy.getFitness();
+//            for (int j = 0; j < fitness.length; j++) result += fitness[j] +"; ";
+//            result += "\n";
+//        }
+//        return result;
+//    }
 
     /** This method allows you to add the LectureGUI as listener to the Optimizer
      * @param ea
@@ -276,7 +279,7 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
     }
     /** Something has changed
      */
-    protected void firePropertyChangedEvent (String name) {
+    protected void firePropertyChangedEvent(String name) {
         if (this.m_Listener != null) this.m_Listener.registerPopulationStateChanged(this, name);
     }
 
@@ -354,7 +357,7 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
      * @return The name of the algorithm
      */
     public String getName() {
-        return "("+getMu()+(getPlusStrategy() ? "+" : ",")+getLambda()+")-ES";
+        return "("+getMu()+(isPlusStrategy() ? "+" : ",")+getLambda()+")-ES";
     }
 
     /** 
@@ -366,6 +369,12 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
     public Population getPopulation() {
         return this.m_Population;
     }
+
+    // for internal usage
+    protected void setPop(Population pop) {
+    	m_Population = pop;
+    }
+    
     public void setPopulation(Population pop){
     	origPopSize = pop.size();
 //    	System.out.println("ES: orig popsize is " + origPopSize);
@@ -437,7 +446,7 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
         this.m_UsePlusStrategy = elitism;
         this.checkPopulationConstraints();
     }
-    public boolean getPlusStrategy() {
+    public boolean isPlusStrategy() {
         return this.m_UsePlusStrategy;
     }
     public String plusStrategyTipText() {
@@ -512,18 +521,5 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
     }
     public String lambdaTipText() {
         return "This is the children population size.";
-    }
-
-    /** Set an initial population size (if smaller lambda this is ignored).
-     * @param l    The inital population size.
-     */
-    public void setInitialPopulationSize(int l) {
-        this.m_InitialPopulationSize = l;
-    }
-    public int getInitialPopulationSize() {
-        return this.m_InitialPopulationSize;
-    }
-    public String initialPopulationSizeTipText() {
-        return "Set an initial population size (if smaller lambda this is ignored).";
     }
 }

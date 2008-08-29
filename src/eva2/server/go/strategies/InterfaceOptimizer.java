@@ -38,9 +38,11 @@ public interface InterfaceOptimizer {
      */
     public void init();
 
-    /** This method will init the optimizer with a given population
+    /** 
+     * This method will init the optimizer with a given population.
+     * 
      * @param pop       The initial population
-     * @param reset     If true the population is reset.
+     * @param reset     If true the population is reinitialized and reevaluated.
      */
     public void initByPopulation(Population pop, boolean reset);
 
@@ -66,7 +68,7 @@ public interface InterfaceOptimizer {
      * May return the the same set as getPopulation if the optimizer makes no distinction, i.e. does 
      * not collect solutions outside the current population.
      * 
-     * @return A population of found solutions.
+     * @return A solution set of the current population and possibly earlier solutions.
      */
     public InterfaceSolutionSet getAllSolutions();
     

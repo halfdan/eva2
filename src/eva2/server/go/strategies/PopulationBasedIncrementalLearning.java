@@ -72,10 +72,12 @@ public class PopulationBasedIncrementalLearning implements InterfaceOptimizer, j
         	System.err.println("Error: PBIL only works with GAIndividuals!");
         }
         this.m_Population = new PBILPopulation();
-        if (reset) this.m_Population.init();
         this.m_Population.addPopulation((Population)pop.clone());
+        if (reset) {
+        	this.m_Population.init();
+            this.evaluatePopulation(this.m_Population);
+        }
         ((PBILPopulation)this.m_Population).buildProbabilityVector();
-        this.evaluatePopulation(this.m_Population);
         this.firePropertyChangedEvent("NextGenerationPerformed");
     }
 

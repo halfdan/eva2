@@ -56,7 +56,7 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
 //        	System.err.println("Population evaluation seems not required!");
 //        } else {
 	        // @todo This is the position to implement a granular
-	        // @todo paralliziation scheme
+	        // @todo paralleliziation scheme
 	        evaluatePopulationStart(population);
 	        for (int i = 0; i < population.size(); i++) {
 	            tmpIndy = (AbstractEAIndividual) population.get(i);

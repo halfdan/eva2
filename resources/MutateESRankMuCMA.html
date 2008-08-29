@@ -1,0 +1,33 @@
+<html>
+<head>
+<title>Covariance Matrix Adaptation with Rank-Mu-Update</title>
+</head>
+<body>
+<h1 align="center">Covariance Matrix Adaptation with rank-mu update after Hansen & Kern 2004</h1>
+
+Implementing CMA ES with rank-mu-update and weighted recombination. This operator won the CEC 2005
+challenge employed with a restart scheme with increasing population size.
+Basically, in each generation the population is resampled around the weighted center of the
+last population using the adapted covariance matrix C. In contrast to earlier CMA versions,
+this implementation only holds one single covariance matrix for the whole population, making
+it much more memory efficient and useful for high dimensional problems as well.
+<br>
+While C is adapted based on a cumulated evolution path, the step size sigma is adapted based
+on path length control.
+Due to the repeated resampling starting from a single "center", the CMA version can 
+be interpreted as a sophisticated local search, if the initial solution set is sampled
+close to an initial guess. In this case, a small initial sigma is favourable.
+<br>
+For multimodal problems, the initial population can be sampled randomly in the search space
+and the initial sigma must be rather high.
+To meet both conditions, the initial sigma may be set to half the average problem range
+or to the average distance in the initial population.
+
+<br>
+<p>
+
+ * N.Hansen & S.Kern 2004: <i>Evaluating the CMA Evolution Strategy on Multimodal Test Functions.</i>
+Parallel Problem Solving from Nature 2004.
+
+</body>
+</html> 

@@ -160,6 +160,7 @@ public class MutateESCovarianceMatrixAdaption implements InterfaceMutation, java
         double  pathLen = 0.0;
         for (int i = 0; i < this.m_D; i++)
             this.s_N[i] = (1.0 - this.m_c) * this.s_N[i] + this.m_c * this.cu * this.Bz[i];
+//        System.out.println("C bef:\n" + m_C.toString());
         // ADAPT COVARIANCE
         for (int i = 0; i <this. m_D; i++) {
             for (int j = i; j < this.m_D; j++) {
@@ -168,6 +169,7 @@ public class MutateESCovarianceMatrixAdaption implements InterfaceMutation, java
                 this.m_C.set(j, i, Cij);
             }
         }
+//        System.out.println("C aft:\n" + m_C.toString());
         // ADAPT GLOBAL STEPSIZE
         for (int i = 0; i < this.m_D; i++) {
             Bz_d            = 0.0;

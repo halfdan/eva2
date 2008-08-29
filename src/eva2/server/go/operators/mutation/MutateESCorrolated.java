@@ -18,8 +18,8 @@ public class MutateESCorrolated implements InterfaceMutation, java.io.Serializab
     protected double        m_Tau1                = 0.15;
     protected double        m_LowerLimitStepSize  = 0.0000005;
 	private static final long serialVersionUID    = 1L;
-	private double[]        m_Sigmas;
-	private double[]		m_Alphas;
+	private double[]        m_Sigmas = null;
+	private double[]		m_Alphas = null;
     protected double        m_Tau2                  = 0.15;
 
     public MutateESCorrolated() {
@@ -56,7 +56,7 @@ public class MutateESCorrolated implements InterfaceMutation, java.io.Serializab
         return new MutateESCorrolated(this);
     }
 
-    /** This method allows you to evaluate wether two mutation operators
+    /** This method allows you to evaluate whether two mutation operators
      * are actually the same.
      * @param mutator   The other mutation operator
      */
@@ -85,7 +85,19 @@ public class MutateESCorrolated implements InterfaceMutation, java.io.Serializab
      * @param opt               The optimization problem.
      */
     public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
-
+        if (individual instanceof InterfaceESIndividual) {
+            double[]    x       = ((InterfaceESIndividual)individual).getDGenotype();
+            if (this.m_Sigmas == null) {
+            	// init the Sigmas
+            	this.m_Sigmas = new double[x.length];
+            	for (int i = 0; i < this.m_Sigmas.length; i++) this.m_Sigmas[i] = this.m_MutationStepSize;
+            }
+            if (this.m_Alphas == null) {
+            	// init the Alphas
+            	this.m_Alphas = new double[(x.length*(x.length-1))/2];
+            	for (int i = 0; i < this.m_Alphas.length; i++) this.m_Alphas[i] = 0.0;
+            }
+        }
     }
 
     /** This method will mutate a given AbstractEAIndividual. If the individual
@@ -158,22 +170,12 @@ public class MutateESCorrolated implements InterfaceMutation, java.io.Serializab
           double[][]  range   = ((InterfaceESIndividual)individual).getDoubleRange();
           double      tmpR    = RNG.gaussianDouble(1);
 
-          if (this.m_Sigmas == null) {
-              // init the Sigmas
-              this.m_Sigmas = new double[x.length];
-              for (int i = 0; i < this.m_Sigmas.length; i++) this.m_Sigmas[i] = this.m_MutationStepSize;
-          }
           //Mutate Sigmas
           for (int i = 0; i < x.length; i++) {
             this.m_Sigmas[i] = this.m_Sigmas[i] * Math.exp(this.m_Tau1 * tmpR + this.m_Tau2 * RNG.gaussianDouble(1));
             if (this.m_Sigmas[i] < this.m_LowerLimitStepSize) this.m_Sigmas[i] = this.m_LowerLimitStepSize;
           }
 
-          if (this.m_Alphas == null) {
-          	// init the Alphas
-          	this.m_Alphas = new double[(x.length*(x.length-1))/2];
-          	for (int i = 0; i < this.m_Alphas.length; i++) this.m_Alphas[i] = 0.0;
-          }
           //Mutate Alphas
           for (int i = 0; i < this.m_Alphas.length; i++) {
           	this.m_Alphas[i] = this.m_Alphas[i] + RNG.gaussianDouble(0.2);
@@ -230,7 +232,7 @@ public class MutateESCorrolated implements InterfaceMutation, java.io.Serializab
 			sum+=j-i; sum--;
 			return this.m_Alphas[sum];
 		}else{
-			System.out.println("Falscher Zugriff auf Alphaliste!");
+			System.err.println("Falscher Zugriff auf Alphaliste!");
 			return 0.0;
 		}
 	}
@@ -240,7 +242,7 @@ public class MutateESCorrolated implements InterfaceMutation, java.io.Serializab
      * @return A descriptive string.
      */
     public String getStringRepresentation() {
-        return "ES local mutation";
+        return "ES local correlated mutation";
     }
 
 /**********************************************************************************************************************
