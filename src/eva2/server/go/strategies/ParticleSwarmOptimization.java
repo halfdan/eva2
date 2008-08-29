@@ -161,6 +161,8 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 		}
 		this.m_Problem.initPopulation(this.m_Population);
 		tracedVelocity = null;
+		// evaluation needs to be done here now, as its omitted if reset is false
+		this.evaluatePopulation(this.m_Population);
 		initByPopulation(m_Population, false);
 	}
 
