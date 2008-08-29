@@ -240,6 +240,11 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
 
 	}
 
+	/**
+	 * As TRIBES manages an own structured set of particles (the list of Tribes containing explorers
+	 * and memories), the setPopulation method is only telling Tribes the range
+	 * of the indiviuals in the beginning of the run, the individuals will be discarded.
+	 */
 	public void initByPopulation(Population pop, boolean reset) {
 		setPopulation(pop);
 	}

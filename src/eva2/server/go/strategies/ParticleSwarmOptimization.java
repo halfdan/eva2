@@ -372,7 +372,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 			indy.SetData(indexKey, i);
 			indy.setIndividualIndex(i);
 		}
-		this.evaluatePopulation(this.m_Population);
+		if (reset) this.evaluatePopulation(this.m_Population);
 
 		for (int i = 0; i < this.m_Population.size(); i++) {
 			indy = (AbstractEAIndividual) this.m_Population.get(i);
@@ -382,7 +382,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 		}
 
 		this.m_BestIndividual = (AbstractEAIndividual)this.m_Population.getBestEAIndividual().clone();
-		this.firePropertyChangedEvent("NextGenerationPerformed");
+		if (reset) this.firePropertyChangedEvent("NextGenerationPerformed");
 		
 		treeLevels = 0;
 		// the HPSO tree will contain layers 0...HPSOLevels, the last one is "incomplete" with only HPSOOrphans number of nodes

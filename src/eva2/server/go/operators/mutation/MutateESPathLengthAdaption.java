@@ -1,36 +1,43 @@
 package eva2.server.go.operators.mutation;
 
+import wsi.ra.math.RNG;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceESIndividual;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import wsi.ra.math.RNG;
+import eva2.tools.Mathematics;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 31.05.2005
- * Time: 14:22:13
- * To change this template use File | Settings | File Templates.
+ * ES mutation with path length control. The step size (single sigma) is
+ * adapted using the evolution path length by adapting the real path length
+ * to the expected path length in for uncorrelated single steps. 
+ * See Hansen&Ostermeier 2001, Eqs. 16,17.
+ * 
  */
-public class MutateESDerandomized implements InterfaceMutation, java.io.Serializable  {
+public class MutateESPathLengthAdaption implements InterfaceMutation, java.io.Serializable  {
 
-  private int           m_D;
-  private double[]      m_Z;
+  private int           m_dim;
+  private double[]      m_randZ;
   private double[]      m_Path;
   private double        m_SigmaGlobal = 1.0;
   private double        m_c;
   private boolean       m_UsePath = true;
+  private double		dampening = 1;
+  private double 		expectedPathLen = -1;
+  private double m_cu;
 
-    public MutateESDerandomized() {
+    public MutateESPathLengthAdaption() {
 
     }
-    public MutateESDerandomized(MutateESDerandomized mutator) {
+    public MutateESPathLengthAdaption(MutateESPathLengthAdaption mutator) {
         this.m_UsePath          = true;
-        this.m_D                = mutator.m_D;
+        this.m_dim                = mutator.m_dim;
         this.m_SigmaGlobal      = mutator.m_SigmaGlobal;
         this.m_c                = mutator.m_c;
-        if (mutator.m_Z != null)    this.m_Z        = (double[]) mutator.m_Z.clone();
+        this.dampening 			= mutator.dampening;
+        this.expectedPathLen 	= mutator.expectedPathLen;
+        this.m_cu				= mutator.m_cu;
+        if (mutator.m_randZ != null)    this.m_randZ        = (double[]) mutator.m_randZ.clone();
         if (mutator.m_Path != null) this.m_Path     = (double[]) mutator.m_Path.clone();
     }
 
@@ -38,7 +45,7 @@ public class MutateESDerandomized implements InterfaceMutation, java.io.Serializ
      * @return The clone
      */
     public Object clone() {
-        return new MutateESDerandomized(this);
+        return new MutateESPathLengthAdaption(this);
     }
 
     /** This method allows you to evaluate wether two mutation operators
@@ -46,14 +53,14 @@ public class MutateESDerandomized implements InterfaceMutation, java.io.Serializ
      * @param mutator   The other mutation operator
      */
     public boolean equals(Object mutator) {
-        if (mutator instanceof MutateESDerandomized) {
-            MutateESDerandomized mut = (MutateESDerandomized)mutator;
+        if (mutator instanceof MutateESPathLengthAdaption) {
+            MutateESPathLengthAdaption mut = (MutateESPathLengthAdaption)mutator;
             // i assume if the C Matrix is equal then the mutation operators are equal
-            if (this.m_D != mut.m_D) return false;
+            if (this.m_dim != mut.m_dim) return false;
             if (this.m_SigmaGlobal != mut.m_SigmaGlobal) return false;
             if (this.m_c != mut.m_c) return false;
-            if ((this.m_Z != null) && (mut.m_Z != null))
-                for (int i = 0; i < this.m_Z.length; i++) if (this.m_Z[i] != mut.m_Z[i]) return false;
+            if ((this.m_randZ != null) && (mut.m_randZ != null))
+                for (int i = 0; i < this.m_randZ.length; i++) if (this.m_randZ[i] != mut.m_randZ[i]) return false;
             if ((this.m_Path != null) && (mut.m_Path != null))
                 for (int i = 0; i < this.m_Path.length; i++) if (this.m_Path[i] != mut.m_Path[i]) return false;
             return true;
@@ -69,13 +76,24 @@ public class MutateESDerandomized implements InterfaceMutation, java.io.Serializ
         if (!(individual instanceof InterfaceESIndividual)) return;
         double[]    x       = ((InterfaceESIndividual)individual).getDGenotype();
         double[][]  ranges  = ((InterfaceESIndividual)individual).getDoubleRange();
-        this.m_D    = x.length;
-        if (this.m_UsePath == true) this.m_c = Math.sqrt(1.0 / (double) this.m_D);
+        this.m_dim    = x.length;
+//        if (this.m_UsePath) this.m_c = Math.sqrt(1.0 / (double) this.m_dim);
+        
+        this.m_randZ    = new double[this.m_dim];
+        this.m_Path = new double[this.m_dim];
+        for (int i = 0; i < this.m_dim; i++) {
+            this.m_randZ[i] = RNG.gaussianDouble(1.0);
+//            this.m_Path[i]=1;
+        }
+
+        if (this.m_UsePath) this.m_c = 4./(m_dim+4);
         else this.m_c = 1.0;
-        this.m_Z    = new double[this.m_D];
-        this.m_Path = new double[this.m_D];
-        for (int i = 0; i < this.m_D; i++) this.m_Z[i] = RNG.gaussianDouble(1.0);
-        evaluateNewObjectX(x, ranges);
+        
+        expectedPathLen = Math.sqrt(m_dim)*(1-(1./(4*m_dim))+(1./(21*m_dim*m_dim)));
+        dampening = (1./m_c)+1;
+        m_cu = Math.sqrt(m_c*(2.0-m_c));
+        
+        mutateX(x, ranges, true);
     }
 
     /** This method will mutate a given AbstractEAIndividual. If the individual
@@ -87,19 +105,30 @@ public class MutateESDerandomized implements InterfaceMutation, java.io.Serializ
         if (individual instanceof InterfaceESIndividual) {
             double[]    x       = ((InterfaceESIndividual)individual).getDGenotype();
             double[][]  ranges  = ((InterfaceESIndividual)individual).getDoubleRange();
-            this.adaptStrategy();
-            for (int i = 0; i < m_D; i++) m_Z[i] = RNG.gaussianDouble(1.0);            
-            this.evaluateNewObjectX(x, ranges);
-            for (int i = 0; i < x.length; i++) {
-                if (x[i]  < ranges[i][0]) x[i] = ranges[i][0];
-                if (x[i]  > ranges[i][1]) x[i] = ranges[i][1];
-            }
+            
+            this.adaptStrategy(); // this updates the path using the old step and adapts sigma
+            
+            this.calculateNewStep();
+            
+            this.mutateX(x, ranges, true); // this performs new mutation
+            
             ((InterfaceESIndividual)individual).SetDGenotype(x);
         }
         //System.out.println("After Mutate:  " +((GAIndividual)individual).getSolutionRepresentationFor());
     }
+    
+	private void checkRange(double[] x, double[][] ranges) {
+		for (int i = 0; i < x.length; i++) {
+		    if (x[i]  < ranges[i][0]) x[i] = ranges[i][0];
+		    if (x[i]  > ranges[i][1]) x[i] = ranges[i][1];
+		}
+	}
 
-    /** This method allows you to perform either crossover on the strategy parameters
+    private void calculateNewStep() {
+   		for (int i = 0; i < m_dim; i++) m_randZ[i] = RNG.gaussianDouble(1.0);            
+	}
+    
+	/** This method allows you to perform either crossover on the strategy parameters
      * or to deal in some other way with the crossover event.
      * @param indy1     The original mother
      * @param partners  The original partners
@@ -109,21 +138,23 @@ public class MutateESDerandomized implements InterfaceMutation, java.io.Serializ
     }
 
     private void adaptStrategy() {
-        double length_of_Z = 0;
-        for (int i = 0; i < m_D; i++) {
-            m_Path [i] = (1.0 -m_c) * m_Path[i] + Math.sqrt(m_c*(2.0-m_c))*m_Z[i];
-            length_of_Z = length_of_Z + m_Path[i] * m_Path[i];
+        // remember the path taken. m_randZ is at this time the last step before selection.
+        for (int i = 0; i < m_dim; i++) {
+			m_Path [i] = (1.0 -m_c) * m_Path[i] + m_cu*m_randZ[i];
         }
-        length_of_Z             = Math.sqrt(length_of_Z);
-        double E_of_length_of_Z = Math.sqrt(((double)m_D)+0.5);
-        double kappa_d          = ((double)m_D)/4.0+1.0;
-        double Exponent         = (length_of_Z - E_of_length_of_Z)/(kappa_d*E_of_length_of_Z);
-        m_SigmaGlobal           = m_SigmaGlobal * Math.exp(Exponent);
+        double pathLen = Mathematics.norm(m_Path);
+        
+//        double expectedPathLen = Math.sqrt(((double)m_dim)+0.5);
+//        double kappa_d          = ((double)m_dim)/4.0+1.0;
+        
+        double exp         = (pathLen - expectedPathLen)/(dampening*expectedPathLen);
+        m_SigmaGlobal           = m_SigmaGlobal * Math.exp(exp);
     }
 
-    private void evaluateNewObjectX(double[] x,double[][] range) {
+    private void mutateX(double[] x,double[][] range, boolean checkRange) {
         for (int i = 0; i < x.length; i++)
-             x[i] = x[i] + m_SigmaGlobal * m_Z[i];
+             x[i] = x[i] + m_SigmaGlobal * m_randZ[i];
+        if (checkRange) checkRange(x, range);
     }
 
     /** This method allows you to get a string representation of the mutation
@@ -131,7 +162,7 @@ public class MutateESDerandomized implements InterfaceMutation, java.io.Serializ
      * @return A descriptive string.
      */
     public String getStringRepresentation() {
-        return "CMA mutation";
+        return "Mutation/Path-Length-Control";
     }
 /**********************************************************************************************************************
  * These are for GUI
@@ -141,27 +172,27 @@ public class MutateESDerandomized implements InterfaceMutation, java.io.Serializ
      * @return The name.
      */
     public String getName() {
-        return "CMA mutation";
+        return "Mutation/Path-Length-Control";
     }
     /** This method returns a global info string
      * @return description
      */
     public String globalInfo() {
-        return "This is the most sophisticated CMA mutation.";
+        return "The single step size is controlled using the evolution path.";
     }
 
-    /** Use only positive numbers this limits the freedom of effect.
-     * @param bit     The new representation for the inner constants.
-      */
-    public void setUsePath(boolean bit) {
-        this.m_UsePath = bit;
-    }
-    public boolean getUsePath() {
-        return this.m_UsePath;
-    }
-    public String usePathTipText() {
-        return "Use path.";
-    }
+//    /** Use only positive numbers this limits the freedom of effect.
+//     * @param bit     The new representation for the inner constants.
+//      */
+//    public void setUsePath(boolean bit) {
+//        this.m_UsePath = bit;
+//    }
+//    public boolean getUsePath() {
+//        return this.m_UsePath;
+//    }
+//    public String usePathTipText() {
+//        return "Use path.";
+//    }
 
     /** This method allows you to set the initial sigma value.
      * @param d     The initial sigma value.
@@ -173,6 +204,6 @@ public class MutateESDerandomized implements InterfaceMutation, java.io.Serializ
         return this.m_SigmaGlobal;
     }
     public String initSigmaGlobalTipText() {
-        return "Set the initial global sigma value.";
+        return "Set the initial global step size.";
     }
 }

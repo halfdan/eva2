@@ -62,9 +62,11 @@ public class SteadyStateGA implements InterfaceOptimizer, java.io.Serializable {
          */
         public void initByPopulation(Population pop, boolean reset) {
             this.m_Population = (Population)pop.clone();
-            if (reset) this.m_Population.init();
-            this.evaluatePopulation(this.m_Population);
-            this.firePropertyChangedEvent("NextGenerationPerformed");
+            if (reset) {
+            	this.m_Population.init();
+                this.evaluatePopulation(this.m_Population);
+                this.firePropertyChangedEvent("NextGenerationPerformed");
+            }
         }
 
         /** This method will evaluate the current population using the

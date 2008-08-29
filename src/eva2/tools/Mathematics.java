@@ -675,4 +675,16 @@ public class Mathematics {
 		}
 		return A;
 	}
+
+	public static double max(double[] vals) {
+		double maxVal = vals[0];
+		for (int i=1; i<vals.length; i++) maxVal = Math.max(maxVal, vals[i]);
+		return maxVal;
+	}
+	
+	public static double min(double[] vals) {
+		double minVal = vals[0];
+		for (int i=1; i<vals.length; i++) minVal = Math.min(minVal, vals[i]);
+		return minVal;
+	}
 }

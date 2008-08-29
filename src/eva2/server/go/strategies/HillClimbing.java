@@ -58,15 +58,13 @@ public class HillClimbing implements InterfaceOptimizer, java.io.Serializable {
         this.firePropertyChangedEvent("NextGenerationPerformed");
     }
 
-    /** This method will init the optimizer with a given population
-     * @param pop       The initial population
-     * @param reset     If true the population is reset.
-     */
     public void initByPopulation(Population pop, boolean reset) {
         this.m_Population = (Population)pop.clone();
-        if (reset) this.m_Population.init();
-        this.m_Problem.evaluate(this.m_Population);
-        this.firePropertyChangedEvent("NextGenerationPerformed");
+        if (reset) {
+        	this.m_Population.init();
+            this.m_Problem.evaluate(this.m_Population);
+            this.firePropertyChangedEvent("NextGenerationPerformed");
+        }
     }
 
     /** This method will optimize

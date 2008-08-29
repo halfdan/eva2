@@ -3,6 +3,7 @@ package eva2.server.go.strategies;
 import eva2.server.go.InterfacePopulationChangedEventListener;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.GAIndividualBinaryData;
+import eva2.server.go.operators.mutation.InterfaceMutationGenerational;
 import eva2.server.go.operators.selection.InterfaceSelection;
 import eva2.server.go.operators.selection.SelectTournament;
 import eva2.server.go.populations.InterfaceSolutionSet;
@@ -66,9 +67,11 @@ public class GeneticAlgorithm implements InterfaceOptimizer, java.io.Serializabl
          */
         public void initByPopulation(Population pop, boolean reset) {
             this.m_Population = (Population)pop.clone();
-            if (reset) this.m_Population.init();
-            this.evaluatePopulation(this.m_Population);
-            this.firePropertyChangedEvent("NextGenerationPerformed");
+            if (reset) {
+            	this.m_Population.init();
+                this.evaluatePopulation(this.m_Population);
+                this.firePropertyChangedEvent("NextGenerationPerformed");
+            }
         }
 
         /** This method will evaluate the current population using the
@@ -110,6 +113,10 @@ public class GeneticAlgorithm implements InterfaceOptimizer, java.io.Serializabl
             parents     = this.m_ParentSelection.selectFrom(this.m_Population, this.m_Population.getPopulationSize());
             //System.out.println("Parents:"+parents.getSolutionRepresentationFor());
 
+            if (parents.getEAIndividual(0).getMutationOperator() instanceof InterfaceMutationGenerational) {
+            	((InterfaceMutationGenerational)parents.getEAIndividual(0).getMutationOperator()).adaptAfterSelection(m_Population, parents);
+            }
+            
             for (int i = 0; i < parents.size(); i++) {
                 tmpIndy =  ((AbstractEAIndividual)parents.get(i));
                 if (tmpIndy == null) System.out.println("Individual null " + i + " Population size: "+ parents.size());
@@ -121,13 +128,18 @@ public class GeneticAlgorithm implements InterfaceOptimizer, java.io.Serializabl
                 }
                 result.add(i, offSprings[0]);
             }
+            this.evaluatePopulation(result);
+            
+            if (parents.getEAIndividual(0).getMutationOperator() instanceof InterfaceMutationGenerational) {
+            	((InterfaceMutationGenerational)parents.getEAIndividual(0).getMutationOperator()).adaptGenerational(m_Population, parents, result, true);
+            }
             return result;
         }
 
         public void optimize() {
             Population nextGeneration;
             nextGeneration = this.generateChildren();
-            this.evaluatePopulation(nextGeneration);
+
             if (this.m_UseElitism) {
             	AbstractEAIndividual elite = this.m_Population.getBestEAIndividual();
                 if (elite != null) {

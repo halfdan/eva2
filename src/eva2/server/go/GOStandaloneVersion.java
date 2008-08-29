@@ -35,8 +35,8 @@ import eva2.server.go.individuals.GAIndividualDoubleData;
 import eva2.server.go.individuals.InterfaceDataTypeDouble;
 import eva2.server.go.operators.crossover.CrossoverGANPoint;
 import eva2.server.go.operators.mutation.InterfaceMutation;
+import eva2.server.go.operators.mutation.MutateESFixedStepSize;
 import eva2.server.go.operators.mutation.MutateESLocal;
-import eva2.server.go.operators.mutation.MutateESStandard;
 import eva2.server.go.operators.selection.SelectTournament;
 import eva2.server.go.operators.terminators.EvaluationTerminator;
 import eva2.server.go.populations.Population;
@@ -304,7 +304,7 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
         this.m_OutputPath           = "results/";
         // These are some tmp Variables
         InterfaceDataTypeDouble  tmpIndy = new ESIndividualDoubleData();
-        InterfaceMutation        tmpMut  = new MutateESStandard();
+        InterfaceMutation        tmpMut  = new MutateESFixedStepSize();
 
         switch (experimentType) {
             case 0 : {

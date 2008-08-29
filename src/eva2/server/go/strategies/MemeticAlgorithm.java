@@ -89,9 +89,11 @@ public class MemeticAlgorithm implements InterfaceOptimizer,
 
 	public void initByPopulation(Population pop, boolean reset) {
 		this.setPopulation((Population) pop.clone());
-		if (reset) this.getPopulation().init();
-		this.m_Problem.evaluate(this.getPopulation());
-		this.firePropertyChangedEvent("NextGenerationPerformed");
+		if (reset) {
+			this.getPopulation().init();
+			this.m_Problem.evaluate(this.getPopulation());
+			this.firePropertyChangedEvent("NextGenerationPerformed");
+		}
 	}
 
 	public void init() {

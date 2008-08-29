@@ -53,9 +53,11 @@ public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Ser
 
   public void initByPopulation(Population pop, boolean reset) {
     this.setPopulation((Population) pop.clone());
-    if (reset) this.getPopulation().init();
-    this.m_Problem.evaluate(this.getPopulation());
-    this.firePropertyChangedEvent("NextGenerationPerformed");
+    if (reset) {
+    	this.getPopulation().init();
+        this.m_Problem.evaluate(this.getPopulation());
+        this.firePropertyChangedEvent("NextGenerationPerformed");
+    }
     //System.out.println("initByPopulation() called");
     indyhash = new Hashtable();
   }

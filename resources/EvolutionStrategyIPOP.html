@@ -1,0 +1,30 @@
+<html>
+<head>
+<title>Increasing Population Size ES - IPOP-ES</title>
+</head>
+<body>
+<h1 align="center">Increasing Population Size ES - IPOP-ES</h1>
+<center>
+</center><br>
+<p>
+This class implements the IPOP (increased population size) restart strategy ES, which increases
+the ES population size (i.e., lambda) after phases of stagnation and then restarts the optimization
+by reinitializing the individuals and operators.<br>
+Stagnation is for this implementation defined by a FitnessConvergenceTerminator instance
+which terminates if the absolute change in fitness is below a threshold (default 10e-12) for a 
+certain number of generations (default: 10+floor(30*n/lambda) for problem dimension n).
+</p>
+<p>
+If the MutateESRankMuCMA mutation operator is employed, additional criteria are used for restarts,
+such as numeric conditions of the covariance matrix.
+Lambda is increased multiplicatively for every restart, and typical initial values are
+mu=5, lambda=10, incFact=2.
+The IPOP-CMA-ES won the CEC 2005 benchmark challenge.
+Refer to Auger&Hansen 05 for more details. 
+ </p>
+<br>
+A.Auger & N.Hansen. <i>A Restart CMA Evolution Strategy With Increasing Population Size</i>. CEC 2005.
+
+
+</body>
+</html>

@@ -941,6 +941,9 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
 
 	/**
 	 * Fire an event every n function calls, the event sends the public String funCallIntervalReached.
+	 * Be aware that if this interval is smaller than the population size, it may happen that a notification
+	 * is fired before all individuals have been evaluated once, meaning that a false zero fitness
+	 * appears at the beginning of the optimization.
 	 * 
 	 * @param notifyEvalInterval the notifyEvalInterval to set
 	 */

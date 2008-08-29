@@ -90,8 +90,10 @@ public class CHCAdaptiveSearchAlgorithm implements InterfaceOptimizer, java.io.S
             System.out.println("Problem does not apply InterfaceGAIndividual, which is the only individual type valid for CHC!");
         }
 
-        this.evaluatePopulation(this.m_Population);
-        this.firePropertyChangedEvent("NextGenerationPerformed");
+        if (reset) {
+        	this.evaluatePopulation(this.m_Population);
+            this.firePropertyChangedEvent("NextGenerationPerformed");
+        }
     }
 
     /** This method will evaluate the current population using the

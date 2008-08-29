@@ -9,9 +9,9 @@ import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.Locale;
 
-import eva2.gui.BeanInspector;
-
 import wsi.ra.math.Jama.util.Maths;
+import eva2.gui.BeanInspector;
+import eva2.tools.Pair;
 
 
 /**
@@ -260,6 +260,17 @@ public class Matrix implements Cloneable, java.io.Serializable {
       return vals;
    }
 
+   /** Copy a column from the matrix.
+   @return     Matrix elements packed in a one-dimensional array by columns.
+   */
+   public double[] getColumn(int k) {
+      double[] vals = new double[m];
+      for (int i = 0; i < m; i++) {
+         vals[i] = A[i][k];
+      }
+      return vals;
+   }
+   
    /** Make a one-dimensional row packed copy of the internal array.
    @return     Matrix elements packed in a one-dimensional array by rows.
    */
@@ -764,6 +775,34 @@ public class Matrix implements Cloneable, java.io.Serializable {
       return X;
    }
    
+   /** Multiply a matrix by a vector, returning A*v.
+    * 
+   @param v    vector
+   @return     result vector
+   */
+   public double[] times (double[] v) {
+	   // m: no rows
+	   double[] result = new double[m];
+	   times(v, result);
+	   return result;
+   }
+   
+   /** Multiply a matrix by a vector in place, result=A*v.
+    * 
+   @param v    vector
+   @param result
+   @return     result vector
+   */
+   public void times (double[] v, double[] result) {
+	   // m: no rows
+	   for (int i = 0; i < m; i++) {
+		   result[i] = 0;
+		   for (int j = 0; j < n; j++) {
+			   result[i] += get(i,j)*v[j];
+		   }
+	   }
+   }
+
    public String toString() {
 	   StringBuffer sb = new StringBuffer();
 	   for (int i=0; i<m; i++) {
@@ -974,6 +1013,25 @@ public class Matrix implements Cloneable, java.io.Serializable {
          }
       }
       return A;
+   }
+
+   /**
+    * Return the minimum and maximum value on the diagonal
+    * as a pair.
+    * 
+    * @return
+    */
+   public Pair<Double,Double> getMinMaxDiag() {
+	   if (m<1 || n<1) return null;
+	   
+	   double v = get(0,0);
+	   Pair<Double,Double> ret = new Pair<Double,Double>(v,v);
+	   for (int i=1; i<Math.min(m,n); i++) {
+		   v = get(i,i);
+		   ret.head = Math.min(ret.head, v);
+		   ret.tail = Math.max(ret.tail, v);
+	   }
+	   return ret;
    }
 
 

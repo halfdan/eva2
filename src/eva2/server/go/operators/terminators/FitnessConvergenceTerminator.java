@@ -62,6 +62,14 @@ Serializable {
 		else convergenceCondition.setSelectedTag("Relative");
 	}
 
+	public FitnessConvergenceTerminator(FitnessConvergenceTerminator other) {
+		pMetric = new PhenotypeMetric();
+		convThresh = other.convThresh;
+		this.m_stagTime = other.m_stagTime;
+		stagnationMeasure.setSelectedTag(other.getStagnationMeasure().getSelectedTagID());
+		convergenceCondition.setSelectedTag(other.getConvergenceCondition().getSelectedTagID());
+	}
+	
 	/**
 	 *
 	 */
