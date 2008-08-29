@@ -36,7 +36,9 @@ public class EvolutionStrategyIPOP extends EvolutionStrategies implements Interf
 	int initialLambda = 10;
 
 	private double stagThreshold = 10e-12;
-	private int stagTime = -1; 
+//	private int stagTime = -1;
+	private int stagTimeArbitrary = 10;
+	private boolean useArbitraryStagTime = false;
 	
 	double incPopSizeFact = 2.;
 	FitnessConvergenceTerminator fitConvTerm = null;
@@ -54,7 +56,7 @@ public class EvolutionStrategyIPOP extends EvolutionStrategies implements Interf
 		initialLambda 	= other.initialLambda;
 		incPopSizeFact 	= other.incPopSizeFact;
 		stagThreshold 	= other.stagThreshold;
-		stagTime 		= other.stagTime;
+//		stagTime 		= other.stagTime;
 		
 		if (other.fitConvTerm != null) fitConvTerm = new FitnessConvergenceTerminator(other.fitConvTerm);
 	}
@@ -63,8 +65,6 @@ public class EvolutionStrategyIPOP extends EvolutionStrategies implements Interf
 		return new EvolutionStrategyIPOP(this);
 	}
 	
-    /** The optimize method will compute a 'improved' and evaluated population
-     */
     public void optimize() {
 //        Population  nextGeneration, parents;
 //
@@ -99,6 +99,7 @@ public class EvolutionStrategyIPOP extends EvolutionStrategies implements Interf
 
     public void hideHideable() {
     	GenericObjectEditor.setHideProperty(this.getClass(), "population", true);
+    	setStagnationTimeUserDef(isStagnationTimeUserDef());
     }
     
 	/**
@@ -107,7 +108,12 @@ public class EvolutionStrategyIPOP extends EvolutionStrategies implements Interf
 	private void boostPopSize() {
 		// increase by at least one
 		int newLambda = Math.max((int)(getLambda()*incPopSizeFact), getLambda() + 1);
-		super.setLambda(newLambda);
+		setLambda(newLambda);
+		// update the stagnation time in the terminator
+		if (!isStagnationTimeUserDef() && (fitConvTerm != null)) {
+			fitConvTerm.setStagnationTime(calcDefaultStagnationTime());
+			fitConvTerm.init(getProblem());
+		}
 		bestList.add(best);
 		best = null;
 		Population newPop = getPopulation().cloneWithoutInds();
@@ -129,6 +135,10 @@ public class EvolutionStrategyIPOP extends EvolutionStrategies implements Interf
     
     public void init() {
 //    	setMu(initialMu);
+    	if (getMu()>initialLambda) {
+    		setMu((initialLambda/2)+1);
+    		System.err.println("Warning, too small initial lambda, adapting mu to " + getMu());
+    	}
     	super.setLambda(initialLambda);
     	getPopulation().setNotifyEvalInterval(initialLambda);
     	super.init();
@@ -136,12 +146,19 @@ public class EvolutionStrategyIPOP extends EvolutionStrategies implements Interf
     	best = getPopulation().getBestEAIndividual();
     	dim = AbstractEAIndividual.getDoublePosition(getPopulation().getEAIndividual(0)).length;
 
-    	stagTime = (int)(10+Math.floor(30*dim/getPopulation().size()));
-    	
-    	fitConvTerm = new FitnessConvergenceTerminator(stagThreshold, stagTime, false, true); // gen. based, absolute
+    	fitConvTerm = new FitnessConvergenceTerminator(stagThreshold, (isStagnationTimeUserDef()) ? stagTimeArbitrary : calcDefaultStagnationTime(), false, true); // gen. based, absolute
     	getPopulation().addPopulationChangedEventListener(this);
     	getPopulation().setNotifyEvalInterval(initialLambda);
     }
+
+    /**
+     * The default stagnation time in generations as suggested by Auger&Hansen 05.
+     * 
+     * @return
+     */
+	private int calcDefaultStagnationTime() {
+		return (int)(10+Math.floor(30*dim/getLambda()));
+	}
     
     /**
      * Test for the IPOP stopping criteria.
@@ -159,6 +176,7 @@ public class EvolutionStrategyIPOP extends EvolutionStrategies implements Interf
 		// or if the range of these values and all fit values of the recent generation is below Tolfun = 10^-12
 		//// interpret it a bit differently using FitnessConvergenceTerminator
 		if (fitConvTerm.isTerminated(new SolutionSet(pop))) {
+//			System.out.println(fitConvTerm.lastTerminationMessage());
 			return true;
 		}
 
@@ -248,4 +266,59 @@ public class EvolutionStrategyIPOP extends EvolutionStrategies implements Interf
     public String incPopSizeFactTipText() {
     	return "Factor by which to increase lambda for each restart event, default is 2.";
     }
+
+	/**
+	 * @return the stagThreshold
+	 */
+	public double getStagThreshold() {
+		return stagThreshold;
+	}
+
+	/**
+	 * @param stagThreshold the stagThreshold to set
+	 */
+	public void setStagThreshold(double stagThreshold) {
+		this.stagThreshold = stagThreshold;
+		if (fitConvTerm != null) fitConvTerm.setConvergenceThreshold(stagThreshold);
+	}
+
+	/**
+	 * @return the stagTime
+	 */
+	public int getStagnationGenerations() {
+		return stagTimeArbitrary;
+	}
+	/**
+	 * @param stagTime the stagTime to set
+	 */
+	public void setStagnationGenerations(int stagTime) {
+		this.stagTimeArbitrary = stagTime;
+		if (isStagnationTimeUserDef()) {
+			if (fitConvTerm != null) fitConvTerm.setStagnationTime(stagTime);
+		}
+	}
+	public String stagnationGenerationsTipText() {
+		return "Set a user defined stagnation time in generations.";
+	}
+	
+	/**
+	 * @return the useArbitraryStagTime
+	 */
+	public boolean isStagnationTimeUserDef() {
+		return useArbitraryStagTime;
+	}
+	/**
+	 * @param useArbitraryStagTime the useArbitraryStagTime to set
+	 */
+	public void setStagnationTimeUserDef(boolean useArbitraryStagTime) {
+		this.useArbitraryStagTime = useArbitraryStagTime;
+    	GenericObjectEditor.setShowProperty(this.getClass(), "stagnationGenerations", useArbitraryStagTime);
+    	if (fitConvTerm != null) {
+    		if (useArbitraryStagTime) fitConvTerm.setStagnationTime(getStagnationGenerations());
+    		else fitConvTerm.setStagnationTime(calcDefaultStagnationTime());
+    	}
+	}
+	public String stagnationTimeUserDefTipText() {
+		return "Set or unset the user defined stagnation time.";
+	}
 }
