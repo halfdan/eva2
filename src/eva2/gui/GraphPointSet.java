@@ -29,6 +29,7 @@ import java.util.Arrays;
 public class GraphPointSet {
   private String m_InfoString = "InfoString";
   private int m_GraphLabel;
+  private int colorOffset = 0;
   private ArrayList m_PointSetContainer = new ArrayList();
   private float m_Stroke = (float) 1.0;
   private boolean m_isStatisticsGraph = false;
@@ -74,49 +75,14 @@ public class GraphPointSet {
     //
     m_ConnectedPointSet.setStroke(new BasicStroke( m_Stroke ));
     m_ConnectedPointSet.setConnected(true);
-   // m_Color = Color.black;
-//    int colors = 5;
-//    int b = GraphLabel*(int)(255/10)%255;
-//    int r = (GraphLabel-colors)*(int)(255/10)%255;
-//    int g = (GraphLabel-2*colors)*(int)(255/10)%255;
-//    if (r<0) r = 0;
-//    if (g<0) g = 0;
-//    m_Color = new Color(r,g,b);
-
-//    if (GraphLabel == 0) m_Color = (Color.black);
-//      else
-//    if (GraphLabel == 1) m_Color = (Color.red);
-//      else
-//    if (GraphLabel == 2) m_Color = (Color.blue);
-//      else
-//    if (GraphLabel == 3) m_Color = (Color.red);
-//      else
-//    if (GraphLabel == 4) m_Color = (Color.black);
-//      else
-//    if (GraphLabel == 5) m_Color = (Color.red);
-//      else
-//    if (GraphLabel == 6) m_Color = (Color.blue);
-//      else
-//    if (GraphLabel == 7) m_Color = (Color.red);
-//      else
-//    if (GraphLabel == 8) m_Color = (Color.blue);
-//      else
-//    if (GraphLabel == 9) m_Color = (Color.red);
-//      else
-//    if (GraphLabel == 10) m_Color = (Color.black);
     
-    m_Color=labelToColor(GraphLabel);
-    
-    m_ConnectedPointSet.setColor(m_Color);
-//    m_PointSet_1.setColor(m_Color);
-//    m_PointSet_2.setColor(m_Color);
-//    m_PointSet_3.setColor(m_Color);
+    setColor(indexToColor(GraphLabel));
     initGraph(Area);
   }
   
-  private Color labelToColor(int label) {
+  private Color indexToColor(int index) {
 	  Color c = Color.black;
-	  int k = label%10;
+	  int k = index%10;
 	  switch(k) {
 	  case 0: c = Color.black; break;
 	  case 1: c = Color.red; break;
@@ -131,6 +97,19 @@ public class GraphPointSet {
 	  }
 	  return c;
   }
+  
+  /**
+   * Increase the color sequentially.
+   */
+  public void incColor() {
+	  colorOffset++;
+	  setColor(indexToColor(m_GraphLabel+colorOffset));
+  }
+  
+  public void setColorByIndex(int i) {
+  	setColor(indexToColor(i));
+  }
+  
    /**
    *
    */
@@ -165,7 +144,7 @@ public class GraphPointSet {
     m_ConnectedPointSet.setConnected(true);
     m_Color = Color.black;
 
-    m_Color = labelToColor(GraphLabel);
+    m_Color = indexToColor(GraphLabel);
 
     m_ConnectedPointSet.setColor(m_Color);
 
@@ -191,11 +170,9 @@ public class GraphPointSet {
   /**
    *
    */
-  public void setColor(Color x)  {
-    m_ConnectedPointSet.setColor(x);
-//    m_PointSet_1.setColor(x);
-//    m_PointSet_2.setColor(x);
-//    m_PointSet_3.setColor(x);
+  public void setColor(Color c)  {
+	  m_Color=c;
+	  m_ConnectedPointSet.setColor(m_Color);
   }
   /**
    *

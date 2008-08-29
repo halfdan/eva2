@@ -369,19 +369,7 @@ public class FunctionArea extends DArea implements Serializable {
 	  *
 	  */
 	 public void changeColorGraph(int GraphLabel) {
-		 Color col = getGraphPointSet(GraphLabel).getColor();
-		 if (col == Color.black)
-			 col = Color.red;
-		 else
-			 if (col == Color.red)
-				 col = Color.blue;
-			 else
-				 if (col == Color.blue)
-					 col = Color.red;
-				 else
-					 if (col == Color.red)
-						 col = Color.black;
-		 getGraphPointSet(GraphLabel).setColor(col);
+		 getGraphPointSet(GraphLabel).incColor();
 		 repaint();
 	 }
 
@@ -493,10 +481,8 @@ public class FunctionArea extends DArea implements Serializable {
 		 return true;
 	 }
 	 
-	 Color[] Colors = new Color[] {Color.black, Color.red, Color.blue, Color.green,Color.magenta, Color.orange, Color.pink, Color.yellow};
-
 	 public void setGraphColor(int GraphLabel,int colorindex) {
-		 this.getGraphPointSet(GraphLabel).setColor(Colors[colorindex%Colors.length]);
+		 this.getGraphPointSet(GraphLabel).setColorByIndex(colorindex);
 	 }
 
 	 /**
