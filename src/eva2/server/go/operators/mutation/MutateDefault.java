@@ -1,24 +1,23 @@
 package eva2.server.go.operators.mutation;
 
+import eva2.server.go.IndividualInterface;
 import eva2.server.go.individuals.AbstractEAIndividual;
-import eva2.server.go.individuals.InterfaceGIIndividual;
+import eva2.server.go.individuals.InterfaceESIndividual;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 
+
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 18.05.2005
- * Time: 17:08:49
- * To change this template use File | Settings | File Templates.
+ * Mutate individuals using the default operator implemented by the individuals themselves.
+ * 
  */
-public class MutateGIDefault implements InterfaceMutation, java.io.Serializable  {
+public class MutateDefault implements InterfaceMutation, java.io.Serializable  {
 
     /** This method will enable you to clone a given mutation operator
      * @return The clone
      */
     public Object clone() {
-        return new MutateGIDefault();
+        return new MutateDefault();
     }
 
     /** This method allows you to evaluate wether two mutation operators
@@ -26,7 +25,7 @@ public class MutateGIDefault implements InterfaceMutation, java.io.Serializable 
      * @param mutator   The other mutation operator
      */
     public boolean equals(Object mutator) {
-        if (mutator instanceof MutateGIDefault) return true;
+        if (mutator instanceof MutateDefault) return true;
         else return false;
     }
 
@@ -38,6 +37,14 @@ public class MutateGIDefault implements InterfaceMutation, java.io.Serializable 
 
     }
 
+    /** This method will mutate a given AbstractEAIndividual. If the individual
+     * doesn't implement InterfaceGAIndividual nothing happens.
+     * @param individual    The individual that is to be mutated
+     */
+    public void mutate(AbstractEAIndividual individual) {
+    	if (individual instanceof IndividualInterface)  ((IndividualInterface)individual).defaultMutate();
+    }
+
     /** This method allows you to perform either crossover on the strategy parameters
      * or to deal in some other way with the crossover event.
      * @param indy1     The original mother
@@ -47,20 +54,12 @@ public class MutateGIDefault implements InterfaceMutation, java.io.Serializable 
         // nothing to do here
     }
 
-    /** This method will mutate a given AbstractEAIndividual. If the individual
-     * doesn't implement InterfaceGAIndividual nothing happens.
-     * @param individual    The individual that is to be mutated
-     */
-    public void mutate(AbstractEAIndividual individual) {
-         if (individual instanceof InterfaceGIIndividual) ((InterfaceGIIndividual)individual).defaultMutate();
-    }
-
     /** This method allows you to get a string representation of the mutation
      * operator
      * @return A descriptive string.
      */
     public String getStringRepresentation() {
-        return "GI default mutation";
+        return "Default mutation";
     }
 
 /**********************************************************************************************************************
@@ -71,12 +70,12 @@ public class MutateGIDefault implements InterfaceMutation, java.io.Serializable 
      * @return The name.
      */
     public String getName() {
-        return "GI default mutation";
+        return "Default mutation";
     }
     /** This method returns a global info string
      * @return description
      */
     public String globalInfo() {
-        return "The default mutation alters one element of the int attributes.";
+        return "The default mutation just uses the default method implemented in the individual.";
     }
 }

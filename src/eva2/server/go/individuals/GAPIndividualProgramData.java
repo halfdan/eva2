@@ -1,20 +1,11 @@
 package eva2.server.go.individuals;
 
 
-import java.util.ArrayList;
-
-import eva2.server.go.individuals.codings.gp.AbstractGPNode;
-import eva2.server.go.individuals.codings.gp.GPArea;
+import wsi.ra.math.RNG;
 import eva2.server.go.individuals.codings.gp.InterfaceProgram;
-import eva2.server.go.operators.crossover.CrossoverESDefault;
-import eva2.server.go.operators.crossover.CrossoverGPDefault;
-import eva2.server.go.operators.crossover.InterfaceCrossover;
 import eva2.server.go.operators.mutation.InterfaceMutation;
-import eva2.server.go.operators.mutation.MutateESDefault;
-import eva2.server.go.operators.mutation.MutateGPDefault;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import wsi.ra.math.RNG;
 
 /** This individual combines a real-valued phenotype with a tree-based phenotype.
  * Created by IntelliJ IDEA.
@@ -82,7 +73,12 @@ public class GAPIndividualProgramData extends AbstractEAIndividual implements In
         ((AbstractEAIndividual)this.m_Numbers).init(opt);
         ((AbstractEAIndividual)this.m_Program).init(opt);
     }
-
+    
+    public void defaultInit() {
+        ((AbstractEAIndividual)this.m_Numbers).defaultInit();
+        ((AbstractEAIndividual)this.m_Program).defaultInit();   	
+    }
+    
     /** This method will init the individual with a given value for the
      * phenotype.
      * @param obj   The initial value for the phenotype
@@ -111,6 +107,11 @@ public class GAPIndividualProgramData extends AbstractEAIndividual implements In
         if (RNG.flipCoin(this.m_MutationProbability))((AbstractEAIndividual)this.m_Program).mutate();
     }
 
+    public void defaultMutate() {
+        ((AbstractEAIndividual)this.m_Numbers).defaultMutate();
+        ((AbstractEAIndividual)this.m_Program).defaultMutate();  	
+    }
+    
     /** This method will mate the Individual with given other individuals
      * of the same type.
      * @param partners  The possible partners

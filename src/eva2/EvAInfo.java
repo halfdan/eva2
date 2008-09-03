@@ -5,11 +5,17 @@ package eva2;
  * 
  * --- Changelog
  * 2.030: Added an EnumEditor to access enums easily through the GUI.
+ * 			IPOP-ES and RankMuCMA mutator have been added lately (wow!).
+ * 			Cleaned up the IndividualInterface and reduced the usage of InterfaceESIndividual. This
+ * 			means that, e.g., that DE and PSO now also work on GAIndividualDoubleData. Because this 
+ * 			requires much time for transcoding, however, this is not useful by itself. Yet it could be
+ * 			interesting for combined individuals composed of two data types. 
+ * 			Cleaned up MutateXXDefault to a single MutateDefault, too.
  * 2.029: Tuned the 2d-graphs which now paints quicker and changes size depending on the
  * 			surrounding plot window. Added a preloader-thread to accelerate the GUI at starting time.
  * 2.028: Tuned the Population to sort only when necessary on calls to getBestN... Added StatisticsDummy.
  * 			Slightly tuned SimpleProblemWrapper to call initProblem of simple problems if available.
- * 2.027: Renamed SetData and SetDataLamarckian from individual datatype interfaces to SetGenotype and SetPhenotype.
+ * 2.027: Renamed SetData and SetDataLamarckian from individual data type interfaces to SetGenotype and SetPhenotype.
  * 			Repaired the GenericArrayEditor. Population measures can now be plotted in stats.
  * 2.026: Added DiversityTerminator and KnownOptimaTerminator, slightly changed InterfaceTerminator for these
  * 			and InterfaceStatistics to provide termination message to text window. 

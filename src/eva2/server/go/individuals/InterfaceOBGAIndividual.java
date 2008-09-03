@@ -27,14 +27,4 @@ public interface InterfaceOBGAIndividual {
    * @param b int[] new genotype
    */
   public void SetOBGenotype(int[][] b);
-
-
-  /**
-   * defaultMutate perfoms a mutation by flipping two elements in the permutation
-   */
-  public void defaultMutate();
-
-    /** This method initializes the program
-     */
-    public void defaultInit();
 }

@@ -33,11 +33,4 @@ public interface InterfaceGPIndividual {
      */
     public Object[] getFunctionArea();
 
-    /** This method performs a simple one element mutation on the program
-     */
-    public void defaultMutate();
-
-    /** This method initializes the program
-     */
-    public void defaultInit();
 }

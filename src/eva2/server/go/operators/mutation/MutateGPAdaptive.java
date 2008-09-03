@@ -1,14 +1,12 @@
 package eva2.server.go.operators.mutation;
 
 
-import java.util.BitSet;
-
+import wsi.ra.math.RNG;
+import eva2.server.go.IndividualInterface;
 import eva2.server.go.individuals.AbstractEAIndividual;
-import eva2.server.go.individuals.InterfaceGAIndividual;
 import eva2.server.go.individuals.InterfaceGPIndividual;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import wsi.ra.math.RNG;
 
 /**
  * Created by IntelliJ IDEA.
@@ -73,7 +71,7 @@ public class MutateGPAdaptive implements InterfaceMutation, java.io.Serializable
             this.m_MutationStep = this.m_MutationStep * Math.exp(this.m_Tau1 * RNG.gaussianDouble(1) + this.m_Tau2 * RNG.gaussianDouble(1));
             if (this.m_MutationStep < this.m_LowerLimitStepSize) this.m_MutationStep = this.m_LowerLimitStepSize;
             if (this.m_MutationStep > 1) this.m_MutationStep = 1;
-            if (RNG.flipCoin(this.m_MutationStep)) ((InterfaceGPIndividual)individual).defaultMutate();
+            if (RNG.flipCoin(this.m_MutationStep)) ((IndividualInterface)individual).defaultMutate();
         }
         //System.out.println("After Mutate:  " +((GAIndividual)individual).getSolutionRepresentationFor());
     }

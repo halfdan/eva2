@@ -275,17 +275,40 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
     /** This method performs a simple one element mutation on the double vector
      */
     public void defaultMutate() {
-        int mutationIndex = RNG.randomInt(0, this.m_Genotype.length-1);
-        this.m_Genotype[mutationIndex] += ((this.m_Range[mutationIndex][1] - this.m_Range[mutationIndex][0])/2)*RNG.gaussianDouble(0.05f);
-        if (this.m_Genotype[mutationIndex] < this.m_Range[mutationIndex][0]) this.m_Genotype[mutationIndex] = this.m_Range[mutationIndex][0];
-        if (this.m_Genotype[mutationIndex] > this.m_Range[mutationIndex][1]) this.m_Genotype[mutationIndex] = this.m_Range[mutationIndex][1];
+    	ESIndividualDoubleData.defaultMutate(this.m_Genotype, this.m_Range);
     }
 
+    /**
+     * Helper method for default ES mutation. A single, uniformly chosen double entry
+     * is mutated with a gaussian value. 
+     * If the range constraint is violated, the value is set on the bound. 
+     * 
+     * @param genotype
+     * @param range
+     */
+    public static void defaultMutate(double[] genotype, double[][] range) {
+        int mutationIndex = RNG.randomInt(0, genotype.length-1);
+        genotype[mutationIndex] += ((range[mutationIndex][1] - range[mutationIndex][0])/2)*RNG.gaussianDouble(0.05f);
+        if (genotype[mutationIndex] < range[mutationIndex][0]) genotype[mutationIndex] = range[mutationIndex][0];
+        if (genotype[mutationIndex] > range[mutationIndex][1]) genotype[mutationIndex] = range[mutationIndex][1];
+    }
+    
     /** This method initializes the double vector
      */
     public void defaultInit() {
-        for (int i = 0; i < this.m_Genotype.length; i++) {
-            this.m_Genotype[i] = RNG.randomDouble(this.m_Range[i][0], this.m_Range[i][1]);
+        ESIndividualDoubleData.defaultInit(m_Genotype, m_Range);
+    }
+    
+    /**
+     * Helper method for initialization. The genotype is distributed uniformly
+     * within the given range.
+     * 
+     * @param genotype
+     * @param range
+     */
+    public static void defaultInit(double[] genotype, double[][] range) {
+        for (int i = 0; i < genotype.length; i++) {
+            genotype[i] = RNG.randomDouble(range[i][0], range[i][1]);
         }
     }
     

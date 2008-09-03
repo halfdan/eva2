@@ -3,6 +3,10 @@ package eva2.server.go.strategies;
 import java.util.Arrays;
 import java.util.Vector;
 
+import wsi.ra.chart2d.DPoint;
+import wsi.ra.chart2d.DPointSet;
+import wsi.ra.math.RNG;
+import wsi.ra.math.Jama.Matrix;
 import eva2.gui.BeanInspector;
 import eva2.gui.GenericObjectEditor;
 import eva2.gui.TopoPlot;
@@ -10,7 +14,6 @@ import eva2.server.go.InterfacePopulationChangedEventListener;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.AbstractEAIndividualComparator;
 import eva2.server.go.individuals.InterfaceDataTypeDouble;
-import eva2.server.go.individuals.InterfaceESIndividual;
 import eva2.server.go.operators.distancemetric.PhenotypeMetric;
 import eva2.server.go.populations.InterfaceSolutionSet;
 import eva2.server.go.populations.Population;
@@ -18,14 +21,9 @@ import eva2.server.go.populations.SolutionSet;
 import eva2.server.go.problems.F1Problem;
 import eva2.server.go.problems.Interface2DBorderProblem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import wsi.ra.math.RNG;
 import eva2.tools.EVAERROR;
 import eva2.tools.Mathematics;
 import eva2.tools.SelectedTag;
-
-import wsi.ra.chart2d.DPoint;
-import wsi.ra.chart2d.DPointSet;
-import wsi.ra.math.Jama.Matrix;
 
 
 /** 
@@ -174,13 +172,13 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 	protected void initIndividualDefaults(AbstractEAIndividual indy) {
 		double[] writeData;
 		// init velocity
-		writeData   = new double[((InterfaceESIndividual)indy).getDGenotype().length];
+		writeData   = new double[((InterfaceDataTypeDouble)indy).getDoubleData().length];
 		for (int j = 0; j < writeData.length; j++) {
 			writeData[j]    = RNG.gaussianDouble(1.0);
 			//sum             += (writeData[j])*(writeData[j]);
 		}
 		//sum = Math.sqrt(sum);
-		double relSpeed = getRelativeSpeed(writeData, ((InterfaceESIndividual)indy).getDoubleRange());
+		double relSpeed = getRelativeSpeed(writeData, ((InterfaceDataTypeDouble)indy).getDoubleRange());
 		for (int j = 0; j < writeData.length; j++) {
 			writeData[j]    = (writeData[j]/relSpeed)*this.m_InitialVelocity;
 		}
@@ -200,7 +198,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 		System.arraycopy(tmpD, 0, writeData, 0, tmpD.length);
 		indy.SetData(partBestFitKey, writeData);
 		// init best position
-		tmpD        = ((InterfaceESIndividual)indy).getDGenotype();
+		tmpD        = ((InterfaceDataTypeDouble)indy).getDoubleData();
 		writeData   = new double[tmpD.length];
 		System.arraycopy(tmpD, 0, writeData, 0, tmpD.length);
 		indy.SetData(partBestPosKey, writeData);
@@ -212,11 +210,11 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 	 * @param population
 	 */
 	protected void traceEMA(Population population) {
-		if (population.get(0) instanceof InterfaceESIndividual) {
+		if (population.get(0) instanceof InterfaceDataTypeDouble) {
 			double[] curAvVelAndSpeed = getPopulationVelSpeed(population, 3);
-			double[][] range = ((InterfaceESIndividual)population.get(0)).getDoubleRange();
+			double[][] range = ((InterfaceDataTypeDouble)population.get(0)).getDoubleRange();
 			if (tracedVelocity == null) {
-				tracedVelocity = new double[((InterfaceESIndividual)population.get(0)).getDGenotype().length];
+				tracedVelocity = new double[((InterfaceDataTypeDouble)population.get(0)).getDoubleData().length];
 				for (int i=0; i<tracedVelocity.length; i++) tracedVelocity[i] = curAvVelAndSpeed[i];
 			} else {
 				if (population.getGeneration() < emaPeriods) {// if less than emaPeriods have passed, use larger alpha
@@ -256,10 +254,10 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 	 */
 	private double[] getPopulationVelSpeed(Population pop, int calcModeSwitch) {
 		AbstractEAIndividual indy = (AbstractEAIndividual)pop.get(0);
-		if (!(indy instanceof InterfaceESIndividual)) System.out.println("error, PSO needs ES individuals!");
+		if (!(indy instanceof InterfaceDataTypeDouble)) System.out.println("error, PSO needs individuals with double data!");
 
 		double[] ret;
-		double[][] range = ((InterfaceESIndividual)indy).getDoubleRange();
+		double[][] range = ((InterfaceDataTypeDouble)indy).getDoubleRange();
 		int retSize = 0;
 		///// warning, this method uses dark magic
 
@@ -368,7 +366,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 //		double                  sum;
 		for (int i = 0; i < this.m_Population.size(); i++) {
 			indy = (AbstractEAIndividual) this.m_Population.get(i);
-			if (indy instanceof InterfaceESIndividual) {
+			if (indy instanceof InterfaceDataTypeDouble) {
 				initIndividualDefaults(indy);
 			}
 			indy.SetData(indexKey, i);
@@ -378,12 +376,13 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 
 		for (int i = 0; i < this.m_Population.size(); i++) {
 			indy = (AbstractEAIndividual) this.m_Population.get(i);
-			if (indy instanceof InterfaceESIndividual) {
+			if (indy instanceof InterfaceDataTypeDouble) {
 				initIndividualMemory(indy);
 			}
 		}
 
 		this.m_BestIndividual = (AbstractEAIndividual)this.m_Population.getBestEAIndividual().clone();
+
 		if (reset) this.firePropertyChangedEvent("NextGenerationPerformed");
 		
 		treeLevels = 0;
@@ -438,7 +437,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 			neighbourPos = (double[])neighbourIndy.getData(partBestPosKey);
 		} else {
 			neighbourFit = neighbourIndy.getFitness();
-			neighbourPos = ((InterfaceESIndividual)neighbourIndy).getDGenotype();
+			neighbourPos = ((InterfaceDataTypeDouble)neighbourIndy).getDoubleData();
 		}
 		
 		if (neighbourFit == null || attractorFit == null) {
@@ -453,15 +452,14 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 	}
 
 	protected void resetIndividual(AbstractEAIndividual indy) {
-		if (indy instanceof InterfaceESIndividual) {
+		if (indy instanceof InterfaceDataTypeDouble) {
 			indy.setParents(null);
-			InterfaceESIndividual endy = (InterfaceESIndividual) indy;
-			endy.defaultInit();
+			indy.defaultInit();
 			indy.SetData(partTypeKey, defaultType); // turn into default type
 			initIndividualDefaults(indy);
 			initIndividualMemory(indy);
-			plotIndy(endy.getDGenotype(), null, (Integer)indy.getData(indexKey));
-		} else System.err.println("error, InterfaceESIndividual required (PSO)");
+			plotIndy(((InterfaceDataTypeDouble)indy).getDoubleData(), null, (Integer)indy.getData(indexKey));
+		} else System.err.println("error, double valued individuals required for PSO");
 	}
 	
 	/** This method will update a given individual
@@ -471,7 +469,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 	 * @param best      The best individual found so far.
 	 */
 	protected void updateIndividual(int index, AbstractEAIndividual indy, Population pop) {
-		if (indy instanceof InterfaceESIndividual) {
+		if (indy instanceof InterfaceDataTypeDouble) {
 			int type=(Integer)indy.getData(partTypeKey);
 			switch (type) {
 			case resetType:
@@ -488,13 +486,13 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 	}
 	
 	protected void defaultIndividualUpdate(int index, AbstractEAIndividual indy, Population pop) {
-		InterfaceESIndividual endy = (InterfaceESIndividual) indy;
+		InterfaceDataTypeDouble endy = (InterfaceDataTypeDouble) indy;
 		
 		indy.SetData(partTypeKey, defaultType);
 		// default update
 		double[] personalBestPos   = (double[]) indy.getData(partBestPosKey);
 		double[] velocity       = (double[]) indy.getData(partVelKey);
-		double[] curPosition    = endy.getDGenotype();
+		double[] curPosition    = endy.getDoubleData();
 		double[][]  range   = endy.getDoubleRange();
 
 		// search for the local best position
@@ -583,7 +581,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 	 */
 	protected void updateIndProps(AbstractEAIndividual indy) {
 		indy.SetData(partBestFitKey, indy.getFitness());
-		indy.SetData(partBestPosKey, ((InterfaceESIndividual)indy).getDGenotype());
+		indy.SetData(partBestPosKey, ((InterfaceDataTypeDouble)indy).getDoubleData());
 	}
 
 	/**
@@ -1005,7 +1003,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 		// finally set the new position and the current velocity
 		if (indy instanceof InterfaceDataTypeDouble) ((InterfaceDataTypeDouble)indy).SetDoubleGenotype(newPosition);
 		else {
-			((InterfaceESIndividual) indy).SetDGenotype(newPosition); // WARNING, this does a checkBounds in any case!
+			((InterfaceDataTypeDouble) indy).SetDoubleGenotype(newPosition); // WARNING, this does a checkBounds in any case!
 			if (!m_CheckConstraints) System.err.println("warning, checkbounds will be forced by InterfaceESIndividual!");
 		}
 

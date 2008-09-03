@@ -7,7 +7,8 @@ import eva2.server.go.operators.mutation.MutateESGlobal;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import wsi.ra.math.RNG;
 
-/** This individual uses a real-valued genotype to code for a permutations,
+/** 
+ * This individual uses a real-valued genotype to code for a permutations,
  * the sorting of the real-valued genotype gives the permutation.
  * Created by IntelliJ IDEA.
  * User: streiche
@@ -316,25 +317,20 @@ public class ESIndividualPermutationData extends AbstractEAIndividual implements
 
 	 }
 
-	 /** This method performs a simple one element mutation on the double vector
+	 /** This method performs a one element mutation on every permutation coded by a double vector.
 	  */
 	 public void defaultMutate() {
 		 for (int i = 0; i < m_Genotype.length; i++) {
-			 int mutationIndex = RNG.randomInt(0, this.m_Genotype[i].length-1);
-			 this.m_Genotype[i][mutationIndex] += ((this.m_Range[i][mutationIndex][1] - this.m_Range[i][mutationIndex][0])/2)*RNG.gaussianDouble(0.05f);
-			 if (this.m_Genotype[i][mutationIndex] < this.m_Range[i][mutationIndex][0]) this.m_Genotype[i][mutationIndex] = this.m_Range[i][mutationIndex][0];
-			 if (this.m_Genotype[i][mutationIndex] > this.m_Range[i][mutationIndex][1]) this.m_Genotype[i][mutationIndex] = this.m_Range[i][mutationIndex][1];
+			 ESIndividualDoubleData.defaultMutate(m_Genotype[i], m_Range[i]);
 		 }
-
 	 }
 
-	 /** This method initializes the double vector
+	 /** 
+	  * This method initializes the double vector
 	  */
 	 public void defaultInit() {
 		 for (int i = 0; i < this.m_Genotype.length; i++) {
-			 for (int j = 0; j < this.m_Genotype[i].length; j++) {
-				 this.m_Genotype[i][j] = RNG.randomDouble(this.m_Range[i][j][0], this.m_Range[i][j][1]);
-			 }
+			 ESIndividualDoubleData.defaultInit(m_Genotype[i], m_Range[i]);
 		 }
 	 }
 

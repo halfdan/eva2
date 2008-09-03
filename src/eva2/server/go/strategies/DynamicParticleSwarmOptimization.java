@@ -132,11 +132,11 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
      * @param best      The best individual found so far.
      */
     private void updateQuantumIndividual(int index, AbstractEAIndividual indy, Population pop) {
-        InterfaceESIndividual endy = (InterfaceESIndividual) indy;
+    	InterfaceDataTypeDouble endy = (InterfaceDataTypeDouble) indy;
         // search for the local best position
         
         double[]       localBestPosition;
-        double[] position   = endy.getDGenotype();
+        double[] position   = endy.getDoubleData();
         
         localBestPosition = findNeighbourhoodOptimum(index, pop);
 
@@ -157,7 +157,7 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
             }
   
             if (indy instanceof InterfaceDataTypeDouble) ((InterfaceDataTypeDouble)indy).SetDoubleGenotype(newPos);
-            else endy.SetDGenotype(newPos); 
+            else endy.SetDoubleGenotype(newPos); 
             
             resetFitness(indy);
             
@@ -392,7 +392,7 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
 	 */
 	protected void updateIndividual(int index, AbstractEAIndividual indy, Population pop) {
 		if (index != detectAnchor) { // only for non anchor individuals (its -1 if other detect strategy is used)
-			if (indy instanceof InterfaceESIndividual) {
+			if (indy instanceof InterfaceDataTypeDouble) {
 				int type=(Integer)indy.getData(partTypeKey);
 				switch (type) {
 				case quantumType:
@@ -424,7 +424,7 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
 //	    }
 
 	    if (doSpeedAdaptation) {
-    		adaptTrackingSpeed(((InterfaceESIndividual)population.get(0)).getDoubleRange());
+    		adaptTrackingSpeed(((InterfaceDataTypeDouble)population.get(0)).getDoubleRange());
     	}
 //        if (m_Problem instanceof DynLocalizationProblem) {
 //        	((DynLocalizationProblem)m_Problem).adaptPSOByPopulation(population, this);

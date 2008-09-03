@@ -11,7 +11,7 @@ import java.util.BitSet;
  * Time: 14:25:24
  * To change this template use Options | File Templates.
  */
-public interface InterfaceGAIndividual {
+public interface InterfaceGAIndividual  {
 
     /** This method will allow the user to read the GA genotype
      * @return BitSet
@@ -33,11 +33,4 @@ public interface InterfaceGAIndividual {
      */
     public int getGenotypeLength();
 
-    /** This method performs a simple one point mutation in the genotype
-     */
-    public void defaultMutate();
-
-    /** This method initializes the GA genotype randomly
-     */
-    public void defaultInit();
 }

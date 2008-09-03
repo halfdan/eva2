@@ -3,16 +3,15 @@ package eva2.server.go.individuals;
 
 import java.util.ArrayList;
 
+import wsi.ra.math.RNG;
 import eva2.server.go.individuals.codings.gp.AbstractGPNode;
 import eva2.server.go.individuals.codings.gp.GPArea;
 import eva2.server.go.individuals.codings.gp.InterfaceProgram;
 import eva2.server.go.operators.crossover.CrossoverGPDefault;
 import eva2.server.go.operators.mutation.InterfaceMutation;
-import eva2.server.go.operators.mutation.MutateGPDefault;
+import eva2.server.go.operators.mutation.MutateDefault;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import wsi.ra.math.RNG;
 import eva2.tools.EVAERROR;
-import eva2.tools.EVAHELP;
 
 /** This individual uses a tree-based genotype to code for program trees.
  * Created by IntelliJ IDEA.
@@ -35,7 +34,7 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
         this.m_Area                 = new GPArea[1];
         m_Area[0] = new GPArea();
         this.m_Genotype             = new AbstractGPNode[1];
-        this.m_MutationOperator     = new MutateGPDefault();
+        this.m_MutationOperator     = new MutateDefault();
         this.m_CrossoverOperator    = new CrossoverGPDefault();
     }
 

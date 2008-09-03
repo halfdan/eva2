@@ -134,8 +134,8 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
     	indy.SetFitness(0, 0);
     	
     	if (this.withShow) {
-    		InterfaceESIndividual endy = (InterfaceESIndividual) indy;
-	        double[] curPosition    = endy.getDGenotype();
+    		InterfaceDataTypeDouble endy = (InterfaceDataTypeDouble) indy;
+	        double[] curPosition    = endy.getDoubleData();
 
 	        myPlot.setUnconnectedPoint(curPosition[0], curPosition[1], indCount);
 	        myPlot.setConnectedPoint(curPosition[0], curPosition[1], indCount);

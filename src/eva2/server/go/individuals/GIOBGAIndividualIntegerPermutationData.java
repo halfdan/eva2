@@ -74,6 +74,11 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
         ((AbstractEAIndividual)this.m_Integer).init(opt);
         ((AbstractEAIndividual)this.m_Permutation).init(opt);
     }
+    
+    public void defaultInit() {
+        ((AbstractEAIndividual)this.m_Integer).defaultInit();
+        ((AbstractEAIndividual)this.m_Permutation).defaultInit();
+    }
 
     /** This method will init the individual with a given value for the
      * phenotype.
@@ -103,6 +108,11 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
         if (RNG.flipCoin(this.m_MutationProbability))((AbstractEAIndividual)this.m_Permutation).mutate();
     }
 
+    public void defaultMutate() {
+        ((AbstractEAIndividual)this.m_Integer).defaultMutate();
+        ((AbstractEAIndividual)this.m_Permutation).defaultMutate();
+    }
+    
     /** This method will mate the Individual with given other individuals
      * of the same type.
      * @param partners  The possible partners

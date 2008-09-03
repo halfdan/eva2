@@ -257,18 +257,13 @@ public class ESIndividualBinaryData extends AbstractEAIndividual implements Inte
     /** This method performs a simple one element mutation on the double vector
      */
     public void defaultMutate() {
-        int mutationIndex = RNG.randomInt(0, this.m_Genotype.length-1);
-        this.m_Genotype[mutationIndex] += ((this.m_Range[mutationIndex][1] - this.m_Range[mutationIndex][0])/2)*RNG.gaussianDouble(0.05f);
-        if (this.m_Genotype[mutationIndex] < this.m_Range[mutationIndex][0]) this.m_Genotype[mutationIndex] = this.m_Range[mutationIndex][0];
-        if (this.m_Genotype[mutationIndex] > this.m_Range[mutationIndex][1]) this.m_Genotype[mutationIndex] = this.m_Range[mutationIndex][1];
+    	ESIndividualDoubleData.defaultMutate(m_Genotype, m_Range);
     }
 
     /** This method initializes the double vector
      */
     public void defaultInit() {
-        for (int i = 0; i < this.m_Genotype.length; i++) {
-            this.m_Genotype[i] = RNG.randomDouble(this.m_Range[i][0], this.m_Range[i][1]);
-        }
+    	ESIndividualDoubleData.defaultInit(m_Genotype, m_Range);
     }
 /**********************************************************************************************************************
  * These are for GUI

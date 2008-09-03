@@ -6,7 +6,7 @@ import wsi.ra.math.RNG;
 import eva2.gui.GenericObjectEditor;
 import eva2.server.go.InterfacePopulationChangedEventListener;
 import eva2.server.go.individuals.AbstractEAIndividual;
-import eva2.server.go.individuals.InterfaceESIndividual;
+import eva2.server.go.individuals.InterfaceDataTypeDouble;
 import eva2.server.go.operators.selection.replacement.ReplacementCrowding;
 import eva2.server.go.populations.InterfaceSolutionSet;
 import eva2.server.go.populations.Population;
@@ -166,11 +166,11 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
      * @param indy  The current individual
      * @return the delta vector
      */
-    private double[] fetchDeltaBest(Population pop, InterfaceESIndividual indy) {
+    private double[] fetchDeltaBest(Population pop, InterfaceDataTypeDouble indy) {
         double[]                x1, result;
         AbstractEAIndividual 	xbIndy;
         
-        x1 = indy.getDGenotype();
+        x1 = indy.getDoubleData();
 		result = new double[x1.length];
         if (m_Problem instanceof AbstractMultiObjectiveOptimizationProblem) {
         	// implements MODE for the multi-objective case: a dominating individual is selected for difference building
@@ -220,21 +220,21 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
     public AbstractEAIndividual generateNewIndividual(Population pop) {
     	int firstParentIndex;
         AbstractEAIndividual        indy;
-        InterfaceESIndividual       esIndy;
+        InterfaceDataTypeDouble       esIndy;
         if (doLogParents) parents = new Vector<AbstractEAIndividual>();
         else parents = null;
         try {
         	// select one random indy as starting individual. its a parent in any case.
         	firstParentIndex = RNG.randomInt(0, pop.size()-1);
             indy = (AbstractEAIndividual)(pop.getEAIndividual(firstParentIndex)).getClone();
-            esIndy = (InterfaceESIndividual)indy;
+            esIndy = (InterfaceDataTypeDouble)indy;
         } catch (java.lang.ClassCastException e) {
             System.err.println("Differential Evolution currently requires InterfaceESIndividual as basic data type!");
             return (AbstractEAIndividual)((AbstractEAIndividual)pop.get(RNG.randomInt(0, pop.size()-1))).getClone();
         }
         double[] nX, vX, oX;
-        oX = esIndy.getDGenotype();
-        vX = esIndy.getDGenotype();
+        oX = esIndy.getDoubleData();
+        vX = esIndy.getDoubleData();
         nX = new double[oX.length];
         switch (this.m_DEType.getSelectedTag().getID()) {
             case 0 : {
@@ -274,11 +274,11 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
                 if (RNG.flipCoin(this.m_Mt)) {
                     double[]    xk, xl;
                     double      p, pj, pk, pl;
-                    InterfaceESIndividual indy1 = null, indy2 = null;
+                    InterfaceDataTypeDouble indy1 = null, indy2 = null;
                     try {
                         // and i got indy!
-                        indy1 = (InterfaceESIndividual)pop.get(RNG.randomInt(0, pop.size()-1));
-                        indy2 = (InterfaceESIndividual)pop.get(RNG.randomInt(0, pop.size()-1));
+                        indy1 = (InterfaceDataTypeDouble)pop.get(RNG.randomInt(0, pop.size()-1));
+                        indy2 = (InterfaceDataTypeDouble)pop.get(RNG.randomInt(0, pop.size()-1));
                         if (parents != null) {
                         	parents.add((AbstractEAIndividual)indy1);
                         	parents.add((AbstractEAIndividual)indy2);
@@ -286,8 +286,8 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
                     } catch (java.lang.ClassCastException e) {
                     	EVAERROR.errorMsgOnce("Differential Evolution currently requires InterfaceESIndividual as basic data type!");
                     }
-                    xk = indy1.getDGenotype();
-                    xl = indy2.getDGenotype();
+                    xk = indy1.getDoubleData();
+                    xl = indy2.getDoubleData();
                     p = Math.abs(((AbstractEAIndividual)esIndy).getFitness(0)) + Math.abs(((AbstractEAIndividual)indy1).getFitness(0)) + Math.abs(((AbstractEAIndividual)indy2).getFitness(0));
                     pj = Math.abs(((AbstractEAIndividual)esIndy).getFitness(0))/p;
                     pk = Math.abs(((AbstractEAIndividual)indy1).getFitness(0))/p;
@@ -316,7 +316,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
             }
         }
         // setting the new genotype and fitness
-        esIndy.SetDGenotype(nX);
+        esIndy.SetDoubleGenotype(nX);
         indy.SetAge(0);
         double[] fit = new double[1];
         fit[0] = 0;
@@ -339,7 +339,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
     
     private double[] getGenotype(AbstractEAIndividual indy) {
 	    try {
-	        return ((InterfaceESIndividual)indy).getDGenotype();
+	        return ((InterfaceDataTypeDouble)indy).getDoubleData();
 	    } catch (java.lang.ClassCastException e) {
 	        EVAERROR.errorMsgOnce("Differential Evolution currently requires InterfaceESIndividual as basic data type!");
 	        return null;
