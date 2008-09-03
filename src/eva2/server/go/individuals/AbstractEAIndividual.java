@@ -22,9 +22,9 @@ import eva2.tools.EVAERROR;
 /** This is the abstract EA individual implementing the most important methods giving
  * access to mutation and crossover rates and operators, fitness values and selection
  * probabilities. All EA individuals should typically extend this abstract EA individual.
- * In that case the EA individuals only implement the genotpye and phenotype interfaces.
- * The names of the implementation should be build like this:
- * (Genotpye)Individual(Phenotype)
+ * In that case the EA individuals only implement the genotype and phenotype interfaces.
+ * The names of the implementation should be built like this:
+ * (Genotype)Individual(Phenotype)
  * Thus a binary individual coding double values is named GAIndividualDoubleData and a
  * real-valued individual coding binary values is named ESIndividualBinaryData.
  * Created by IntelliJ IDEA.
@@ -531,7 +531,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
     }
 
     /** This method will allow you to compare two individuals regarding the dominance.
-     * Note this is dominance! If the individuals are invariant this method will
+     * Note this is dominance! If the individuals are not comparable this method will
      * return false!
      * @param indy      The individual to compare to.
      * @return True if better false else
@@ -583,7 +583,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
     }
     
     /** This method will allow you to compare two individuals regarding the dominance.
-     * Note this is dominance! If the individuals are invariant this method will
+     * Note this is dominance! If the individuals are not comparable this method will
      * return false!
      * @param indy      The individual to compare to.
      * @return True if better false else
@@ -607,7 +607,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
     }
 
     /** This method will allow you to compare two individuals regarding the dominance.
-     * Note this is dominance! If the individuals are invariant this method will
+     * Note this is dominance! If the individuals are not comparable this method will
      * return false!
      * @param indy      The individual to compare to.
      * @return True if better false else
@@ -620,7 +620,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
     }
 
     /** This method will allow you to compare two individuals regarding the dominance.
-     * Note this is dominance! If the individuals are invariant this method will
+     * Note this is dominance! If the individuals are not comparable this method will
      * return false!
      *
      * @param indy      The individual to compare to.
@@ -889,16 +889,16 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
         return (IndividualInterface)this.clone();
     }
 
-    /** This method is used to get the basic data type of an individual double[].
-     * @deprecated Since not all EAIndividuals provide double as basic data type
-     * the fitness can be is returned as default value.
-     * @see #getFitness()
-     * @return double[]
-     */
-    public double[] getDoubleArray() {
-        if (this instanceof InterfaceDataTypeDouble) return ((InterfaceDataTypeDouble)this).getDoubleData();
-        else return this.getFitness();
-    }
+//    /** This method is used to get the basic data type of an individual double[].
+//     * @deprecated Since not all EAIndividuals provide double as basic data type
+//     * the fitness can be is returned as default value.
+//     * @see #getFitness()
+//     * @return double[]
+//     */
+//    public double[] getDoubleArray() {
+//        if (this instanceof InterfaceDataTypeDouble) return ((InterfaceDataTypeDouble)this).getDoubleData();
+//        else return this.getFitness();
+//    }
     
     public boolean isDominantNotEqual(double[] otherFitness) {
     	return isDominatingFitnessNotEqual(m_Fitness, otherFitness);

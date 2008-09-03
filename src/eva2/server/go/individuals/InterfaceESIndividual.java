@@ -33,11 +33,4 @@ public interface InterfaceESIndividual {
      */
     public double[][] getDoubleRange();
 
-    /** This method performs a simple one element mutation on the double vector
-     */
-    public void defaultMutate();
-
-    /** This method initializes the double vector
-     */
-    public void defaultInit();
 }

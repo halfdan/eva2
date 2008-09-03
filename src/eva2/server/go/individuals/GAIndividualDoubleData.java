@@ -3,16 +3,13 @@ package eva2.server.go.individuals;
 
 import java.util.BitSet;
 
+import wsi.ra.math.RNG;
 import eva2.server.go.individuals.codings.ga.GAStandardCodingDouble;
 import eva2.server.go.individuals.codings.ga.InterfaceGADoubleCoding;
-import eva2.server.go.operators.crossover.CrossoverGADefault;
 import eva2.server.go.operators.crossover.CrossoverGANPoint;
-import eva2.server.go.operators.crossover.InterfaceCrossover;
 import eva2.server.go.operators.mutation.InterfaceMutation;
-import eva2.server.go.operators.mutation.MutateGADefault;
 import eva2.server.go.operators.mutation.MutateGAStandard;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import wsi.ra.math.RNG;
 
 /** This individual uses a binary genotype to code for double values
  * using two alternative encodings.

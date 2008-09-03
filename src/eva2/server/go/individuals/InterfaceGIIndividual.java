@@ -1,6 +1,5 @@
 package eva2.server.go.individuals;
 
-import java.util.BitSet;
 
 /** This interface gives access to a integer genotype and should 
  * only be used by mutation and crossover operators.
@@ -48,12 +47,4 @@ public interface InterfaceGIIndividual {
      * @return The length of the genotype.
      */
     public int getGenotypeLength();
-
-    /** This method performs a simple one point mutation in the genotype
-     */
-    public void defaultMutate();
-
-    /** This method initializes the GA genotype randomly
-     */
-    public void defaultInit();
 }

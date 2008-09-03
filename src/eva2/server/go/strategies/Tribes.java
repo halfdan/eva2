@@ -7,7 +7,6 @@ import eva2.gui.GenericObjectEditor;
 import eva2.server.go.InterfacePopulationChangedEventListener;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceDataTypeDouble;
-import eva2.server.go.individuals.InterfaceESIndividual;
 import eva2.server.go.populations.InterfaceSolutionSet;
 import eva2.server.go.populations.Population;
 import eva2.server.go.populations.SolutionSet;
@@ -637,8 +636,8 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
 	public void setPopulation(Population pop) {
 		if (pop == null) return;
 		population = pop;
-		if (population.get(0) instanceof InterfaceESIndividual) {
-			range = ((InterfaceESIndividual)population.get(0)).getDoubleRange();
+		if (population.get(0) instanceof InterfaceDataTypeDouble) {
+			range = ((InterfaceDataTypeDouble)population.get(0)).getDoubleRange();
 			setDimension(range.length);
 		} else {
 			System.err.println("warning, TRIBES requires InterfaceESIndidivual instead of " + population.get(0).getClass() + ". Couldnt correctly init the problem range.");

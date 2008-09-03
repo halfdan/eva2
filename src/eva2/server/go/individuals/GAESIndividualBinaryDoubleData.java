@@ -75,6 +75,11 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
         ((AbstractEAIndividual)this.m_BitSet).init(opt);
     }
 
+    public void defaultInit() {
+        ((AbstractEAIndividual)this.m_Numbers).defaultInit();
+        ((AbstractEAIndividual)this.m_BitSet).defaultInit();   	
+    }
+    
     /** This method will init the individual with a given value for the
      * phenotype.
      * @param obj   The initial value for the phenotype
@@ -103,6 +108,11 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
         if (RNG.flipCoin(this.m_MutationProbability))((AbstractEAIndividual)this.m_BitSet).mutate();
     }
 
+    public void defaultMutate() {
+    	((AbstractEAIndividual)this.m_Numbers).defaultMutate();
+    	((AbstractEAIndividual)this.m_BitSet).defaultMutate();
+    }
+    
     /** This method will mate the Individual with given other individuals
      * of the same type.
      * @param partners  The possible partners

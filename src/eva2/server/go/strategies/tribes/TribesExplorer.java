@@ -8,7 +8,7 @@ import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.server.go.strategies.Tribes;
 import wsi.ra.math.RNG;
 
-public class TribesExplorer extends AbstractEAIndividual implements InterfaceESIndividual, InterfaceDataTypeDouble {
+public class TribesExplorer extends AbstractEAIndividual implements InterfaceDataTypeDouble {
     /**
 	 * 
 	 */
@@ -956,6 +956,17 @@ v[d] = cmin * v[d];
         }
 	}
 
+	public void defaultInit() {
+		// shouldnt be called as we are beyond the EvA framework in this class
+        for (int i = 0; i < this.position.x.length; i++) {
+            this.position.x[0] = 0.;
+        }
+	}
+	
+	public void defaultMutate() {
+		// shouldnt be called as we are beyond the EvA framework in this class
+	}
+	
 	@Override
 	public void initByValue(Object obj, InterfaceOptimizationProblem opt) {
         if (obj instanceof double[]) {
@@ -1020,19 +1031,19 @@ v[d] = cmin * v[d];
 		return position.x.length;
 	}
 
-	public void SetDGenotype(double[] b) {
-		position.setDoubleArray(b);
-	}
-
-	public void defaultInit() {
-		System.err.println("defaultInit not available for TribesExplorer!");
-	}
-
-	public void defaultMutate() {
-		System.err.println("defaultMutate not available for TribesExplorer!");
-	}
-
-	public double[] getDGenotype() {
-		return position.getDoubleArray().clone();
-	}
+//	public void SetDGenotype(double[] b) {
+//		position.setDoubleArray(b);
+//	}
+//
+//	public void defaultInit() {
+//		System.err.println("defaultInit not available for TribesExplorer!");
+//	}
+//
+//	public void defaultMutate() {
+//		System.err.println("defaultMutate not available for TribesExplorer!");
+//	}
+//
+//	public double[] getDGenotype() {
+//		return position.getDoubleArray().clone();
+//	}
 }

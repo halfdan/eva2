@@ -1,17 +1,17 @@
 package eva2.server.go.individuals;
 
 
-import java.util.BitSet;
 import java.util.ArrayList;
+import java.util.BitSet;
 
+import wsi.ra.math.RNG;
 import eva2.server.go.individuals.codings.gp.AbstractGPNode;
 import eva2.server.go.individuals.codings.gp.GPArea;
 import eva2.server.go.individuals.codings.gp.InterfaceProgram;
 import eva2.server.go.operators.crossover.CrossoverGADefault;
 import eva2.server.go.operators.mutation.InterfaceMutation;
-import eva2.server.go.operators.mutation.MutateGADefault;
+import eva2.server.go.operators.mutation.MutateDefault;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import wsi.ra.math.RNG;
 
 /** This individual uses a binary genotype to code for a tree-based representation
  * using a BNF grammar, see also Grammatical Evolution.
@@ -42,7 +42,7 @@ public class GEIndividualProgramData extends AbstractEAIndividual implements Int
         this.m_Area                 = new GPArea[1];
         this.m_GenotypeLengthPerProgram       = 240;
         this.m_Genotype             = new BitSet();
-        this.m_MutationOperator     = new MutateGADefault();
+        this.m_MutationOperator     = new MutateDefault();
         this.m_CrossoverOperator    = new CrossoverGADefault();
         this.m_MutationProbability  = 0.5;
         this.m_CrossoverProbability = 0.5;

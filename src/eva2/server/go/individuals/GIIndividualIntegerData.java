@@ -1,10 +1,10 @@
 package eva2.server.go.individuals;
 
+import wsi.ra.math.RNG;
 import eva2.server.go.operators.crossover.CrossoverGIDefault;
 import eva2.server.go.operators.mutation.InterfaceMutation;
-import eva2.server.go.operators.mutation.MutateGIDefault;
+import eva2.server.go.operators.mutation.MutateDefault;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import wsi.ra.math.RNG;
 
 /** This individual uses a integer genotype to code for integer values.
  * Created by IntelliJ IDEA.
@@ -21,7 +21,7 @@ public class GIIndividualIntegerData extends AbstractEAIndividual implements Int
 
     public GIIndividualIntegerData() {
         this.m_MutationProbability  = 0.1;
-        this.m_MutationOperator     = new MutateGIDefault();
+        this.m_MutationOperator     = new MutateDefault();
         this.m_CrossoverProbability = 0.7;
         this.m_CrossoverOperator    = new CrossoverGIDefault();
         this.m_Range                = new int[10][2];
