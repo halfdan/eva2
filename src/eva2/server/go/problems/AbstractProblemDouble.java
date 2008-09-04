@@ -199,7 +199,7 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
 	 * 
 	 * @return value of the absolute range limit
 	 */
-	protected double getDefaultRange() {
+	public double getDefaultRange() {
 		return m_DefaultRange;
 	}
 	/**
