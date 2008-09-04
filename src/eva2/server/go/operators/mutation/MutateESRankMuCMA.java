@@ -82,7 +82,9 @@ public class MutateESRankMuCMA implements InterfaceMutationGenerational, Seriali
 	 */
 	private double getInitSigma(Population initGen) {
 		switch (initialSig) {
-		case avgInitialDistance: return initGen.getPopulationMeasures()[0];
+		case avgInitialDistance: 
+			// scaled by average range as the measures are normed
+			return initGen.getPopulationMeasures()[0]*getAvgRange();
 		case halfRange: return getAvgRange()/2.;
 		default: return 0.2;
 		}
@@ -181,8 +183,11 @@ public class MutateESRankMuCMA implements InterfaceMutationGenerational, Seriali
 		if (TRACE_2) System.out.println("Aft: C is \n" + mC.toString());
 
         /* update of sigma */
-        sigma *= Math.exp(((psNorm / expRandStepLen) - 1) * getCs()
+		double sigFact = Math.exp(((psNorm / expRandStepLen) - 1) * getCs()
                 / getDamps());
+		if (Double.isInfinite(sigFact)) sigma *= 10.; // in larger search spaces sigma tends to explode after init.  
+		else sigma *= sigFact;
+
         if (Double.isInfinite(sigma) || Double.isNaN(sigma)) {
         	System.err.println("Error, unstable sigma!");
         }

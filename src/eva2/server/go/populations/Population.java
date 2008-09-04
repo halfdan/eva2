@@ -873,7 +873,8 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     
     /**
      * Returns the average, minimal and maximal phenotypic individual distance as diversity measure for the population.
-     *
+     * Distances are thus scaled by the problem range.
+     * 
      * @return the average, minimal and maximal mean distance of individuals in an array of three
      */
     public double[] getPopulationMeasures() {
