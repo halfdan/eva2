@@ -18,6 +18,10 @@ public class SelProbNonLinearRanking extends AbstractSelProb implements java.io.
     public SelProbNonLinearRanking() {
     }
 
+    public SelProbNonLinearRanking(double theC) {
+        this.m_C    = theC;
+    }
+    
     public SelProbNonLinearRanking(SelProbNonLinearRanking a) {
         this.m_C    = a.m_C;
     }
@@ -178,7 +182,7 @@ public class SelProbNonLinearRanking extends AbstractSelProb implements java.io.
         return "Non-Linear Ranking";
     }
 
-    /** This methods allow you to set and get the nappa.
+    /** This methods allow you to set and get the scaling.
      * @param x     Long seed.
      */
     public void setC(double x) {
@@ -190,6 +194,6 @@ public class SelProbNonLinearRanking extends AbstractSelProb implements java.io.
         return m_C;
     }
     public String cTipText() {
-        return "The c should be << 1.";
+        return "The exponential base c is taken to the power of the individual's rank and should be << 1.";
     }
 }

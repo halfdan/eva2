@@ -47,7 +47,7 @@ public class SelProbInvertByMax extends AbstractSelProb {
 			// first check if anyone holds the constraints
 			int k=0;
 			while ((k < population.size()) && !isFeasible) {
-				if (!((AbstractEAIndividual)population.get(k)).violatesConstraint()) isFeasible = true;
+				if (!(population.getEAIndividual(k)).violatesConstraint()) isFeasible = true;
 				k++;
 			}
 		}
@@ -58,7 +58,8 @@ public class SelProbInvertByMax extends AbstractSelProb {
 				sum = 0;
 				// invert fitness
 				for (int i = 0; i < data.length; i++) {
-					result[i] = maxFit - data[i][x];
+					if (population.getEAIndividual(i).violatesConstraint()) result[i]=0;
+					else result[i] = maxFit - data[i][x];
 					sum += result[i];
 				}
 
