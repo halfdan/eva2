@@ -870,9 +870,10 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
     
 	/**
 	 * For any AbstractEAIndividual try to convert its position to double[] and return it.
+	 * Returns null if there is no conversion available.
 	 * 
 	 * @param indy
-	 * @return double valued position of an individual
+	 * @return double valued position of an individual or null
 	 */
 	public static double[] getDoublePosition(AbstractEAIndividual indy) {
 		if (indy instanceof InterfaceDataTypeDouble) {

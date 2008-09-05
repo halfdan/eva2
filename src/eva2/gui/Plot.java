@@ -457,6 +457,17 @@ public class Plot implements PlotInterface, Serializable {
 		m_Frame = null;
 	}
 
+	/**
+	 * Add the corners of the given range as unconnected points.
+	 *  
+	 * @param range
+	 * @param graphLabel
+	 */
+	public void setCornerPoints(double[][] range, int graphLabel) {
+		setUnconnectedPoint(range[0][0], range[1][0], graphLabel);
+		setUnconnectedPoint(range[0][1], range[1][1], graphLabel);
+	}
+
 //	/**
 //	 * Just for testing the Plot class.
 //	 */

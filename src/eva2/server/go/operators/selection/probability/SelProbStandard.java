@@ -40,7 +40,10 @@ public class SelProbStandard extends AbstractSelProb implements java.io.Serializ
             // first check if anyone holds the constraints
             boolean isFeasible = false;
             for (int i = 0; i < population.size(); i++) {
-                if (!((AbstractEAIndividual)population.get(i)).violatesConstraint()) isFeasible = true;
+                if (!((AbstractEAIndividual)population.get(i)).violatesConstraint()) {
+                	isFeasible = true;
+                	break;
+                }
             }
             if (isFeasible) {
                 // at least one is feasible
@@ -53,9 +56,8 @@ public class SelProbStandard extends AbstractSelProb implements java.io.Serializ
                             result[i] = Math.exp(-data[i][x]);
                         else
                             result[i] = 0;
-                    }
-                    for (int i = 0; i < data.length; i++)
                         sum += result[i];
+                    }
                     for (int i = 0; i < population.size(); i++)
                         ((AbstractEAIndividual)population.get(i)).SetSelectionProbability(x, result[i]/sum);
                 }
