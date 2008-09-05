@@ -3,9 +3,9 @@ package eva2.server.go.operators.selection.probability;
 import eva2.server.go.populations.Population;
 
 /** The interface for methods with calculate the selection
- * propability from the fitness values. While the fitness
+ * probability from the fitness values. While the fitness
  * is typically to be minimized the selection probability
- * is within [0,1] summs up to one and is to be maximizes.
+ * is within [0,1] sums up to one and is to be maximizes.
  * Created by IntelliJ IDEA.
  * User: streiche
  * Date: 30.03.2004
@@ -22,7 +22,7 @@ public interface InterfaceSelectionProbability {
 
     /** This method computes the selection probability for each individual
      *  in the population. Note: Summed over the complete population the selection
-     *  probability sums up to one.
+     *  probability gives one.
      * @param population    The population to compute.
      * @param input         The name of the input.
      */
@@ -30,7 +30,7 @@ public interface InterfaceSelectionProbability {
 
     /** This method computes the selection probability for each individual
      *  in the population. Note: Summed over the complete population the selection
-     *  probability sums up to one.
+     *  probability gives one.
      * @param population    The population to compute.
      * @param input         The name of the input.
      */
