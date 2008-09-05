@@ -115,6 +115,13 @@ public class FunctionArea extends DArea implements Serializable {
 		 drawCircle(c+""+val, position, graphID);
 	 }
 	 
+	 public void drawCircle(String label, double xPos, double yPos, int graphID) {
+		 double[] pos = new double[2];
+		 pos[0]=xPos;
+		 pos[1]=yPos;
+		 drawCircle(label, pos, graphID);
+	 }
+	 
 	 /**
 	  * Plot a circle icon to the function area which is annotated with a char and
 	  * a double value. The color corresponds to the color of the graph with given ID

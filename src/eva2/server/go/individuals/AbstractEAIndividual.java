@@ -763,7 +763,12 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
 //        if (name.equalsIgnoreCase("Fitness")) return this.getFitness();
 //        if (name.equalsIgnoreCase("FitnessArray")) return this.getFitness();
     	Object data = m_dataHash.get(name);
-    	if (data==null) System.err.println("Warning: data key " + name + " unknown!");
+    	if (data==null) { // Fitness is actually in use... so lets have a minor special treatment
+    		if (name.compareToIgnoreCase("Fitness")==0) data = getFitness();
+    		else {
+    			EVAERROR.errorMsgOnce("Warning: data key " + name + " unknown (pot. multiple errors)!");
+    		}
+    	}
         return data;
     }
 

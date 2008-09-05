@@ -34,18 +34,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
-
 import java.net.URL;
-
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
+import java.util.Vector;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
 
-import wsi.ra.tool.DummyCategory;
+import eva2.tools.ReflectPackage;
 
 
 /**
@@ -324,7 +323,8 @@ public class BasicResourceLoader implements ResourceLoader
         // some f... special characters at the end which will not be shown
         // at the console output !!!
         resourceLocation = resourceLocation.trim();
-
+        InputStream in = null;
+        
         // is a relative path defined ?
         // this can only be possible, if this is a file resource location
         if (resourceLocation.startsWith("..") ||
@@ -333,29 +333,57 @@ public class BasicResourceLoader implements ResourceLoader
                 ((resourceLocation.length() > 1) &&
                     (resourceLocation.charAt(1) == ':')))
         {
-            return getStreamFromFile(resourceLocation);
+            in = getStreamFromFile(resourceLocation);
+        }
+//        InputStream inTest = getStreamFromFile(resourceLocation);
+        
+        if (in == null) {
+        	in = ClassLoader.getSystemResourceAsStream(resourceLocation);
         }
 
-        InputStream in = ClassLoader.getSystemResourceAsStream(resourceLocation);
-
-        if (in == null)
-        {
+        if (in == null) {
             // try again for web start applications
             in = this.getClass().getClassLoader().getResourceAsStream(
                     resourceLocation);
         }
 
-        if (in == null)
-        {
-            return null;
+        if (in == null) {
+        	// try to search other classpathes...? not really necessary.
+//        	in = getStreamFromClassPath(resourceLocation);
         }
-
+        
         if (logger.isDebugEnabled())
         {
-            logger.debug("Stream opened for " + resourceLocation);
+            if (in == null) logger.debug("Unable to open stream for " + resourceLocation);
+            else logger.debug("Stream opened for " + resourceLocation);
         }
         return in;
     }
+    
+//    public InputStream getStreamFromClassPath(String resourceLocation) {
+//    	String[] dynCP = ReflectPackage.getValidCPArray(); 
+//    	Vector<String> found = new Vector<String>();
+//		for (int i=0; i<dynCP.length; i++) {
+//			System.out.println("reading element "+dynCP[i]);
+//			if (dynCP[i].endsWith(".jar")) {
+//				// those should be found somewhere else
+////				getClassesFromJarFltr(set, dynCP[i], pckg, includeSubs, reqSuperCls);
+//			} else {
+//				String absRes = dynCP[i];
+//				if (!absRes.endsWith("/")) absRes += "/";
+//				absRes += resourceLocation;
+//				System.out.println("reading from files: "+dynCP[i]);
+//				InputStream in = getStreamFromFile(absRes);
+//				if (in != null) found.add(absRes);
+//			}
+//		}
+//		if (found.size() == 0) return null;
+//		if (found.size()>1) {
+//			System.err.println("Warning, more than one instance of " + resourceLocation + " were found, returning first of:");
+//			for (int i=0; i<found.size(); i++) System.err.println(found.get(i));
+//		}
+//		return getStreamFromFile(found.get(0));
+//    }
     
     /**
      *  Gets the byte data from a file at the given resource location.
@@ -487,7 +515,7 @@ public class BasicResourceLoader implements ResourceLoader
         }
         catch (Exception e)
         {
-            logger.error(e.getMessage());
+        	if (logger.isDebugEnabled()) logger.error(e.getMessage());
 
             return null;
         }
