@@ -492,7 +492,8 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      */
     public void getSortedNIndividuals(int n, boolean bBestOrWorst, Population res) {
     	if ((n < 0) || (n>super.size())) {
-    		System.err.println("invalid request to getSortedNIndividuals: n="+n + ", size is " + super.size());
+    		// this may happen, treat it gracefully
+    		//System.err.println("invalid request to getSortedNIndividuals: n="+n + ", size is " + super.size());
     		n = super.size();
     	}
     	int skip = 0;

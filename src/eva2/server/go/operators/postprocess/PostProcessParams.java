@@ -99,4 +99,7 @@ public class PostProcessParams implements InterfacePostProcessParams, Serializab
 		return "PostProcessing " + (postProcess ? (postProcessSteps + "/" + postProcessClusterSigma) : "off");
 	}
 	
+	public String globalInfo() {
+		return "Combined clustering and hill-climbing for post-processing of solutions.";
+	}
 }

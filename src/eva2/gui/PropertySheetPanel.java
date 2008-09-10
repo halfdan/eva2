@@ -155,6 +155,7 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
             String name = m_Methods[i].getDisplayName();
             Method meth = m_Methods[i].getMethod();
             if (name.equals("globalInfo")) {
+            	if (TRACE) System.out.println("found globalInfo method for " + targ.getClass().toString());
 	            if (meth.getReturnType().equals(String.class)) {
 	                try {
 	                    Object  args[]      = { };
