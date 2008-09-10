@@ -1,0 +1,27 @@
+<html>
+<head>
+<title>Post-processing parameters</title>
+</head>
+<body>
+<h1 align="center">Post-processing parameters</h1>
+<center>
+</center>
+<p>
+If post processing is activated, it is performed after every
+optimization run and it may be triggered using the solutions of the last optimization run by
+the "Post process" button.
+Post processing performs an initial clustering of the solutions with the given sigma interval (density-based clustering),
+and on the set of best representative solutions from all clusters it performs a hill-climbing run for refinement.
+After the HC step the set is clustered again to filter out solutions which converged during the HC.
+</p>
+<p>
+The results of the post processing are displayed in the text window (and/or stats output file) and show a coarse
+distribution of the final solutions as well as the explicit vectors of the n best solutions obtained, where n
+is set as printNBest parameter.
+If post-processing is started several times in a row, the initial solution set is the same, namely the one found
+by optimization. Thereby one can guess, e.g., how close the solutions are to each other and how closely they
+have converged during optimization itself.
+</p>
+
+</body>
+</html> 
