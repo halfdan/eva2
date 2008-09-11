@@ -687,4 +687,30 @@ public class Mathematics {
 		for (int i=1; i<vals.length; i++) minVal = Math.min(minVal, vals[i]);
 		return minVal;
 	}
+	
+	/**
+	 * Project the values in x to the range given. The range must be an vector of 2d-arrays
+	 * each of which containing lower and upper bound in the i-th dimension.
+	 * x must not be longer than the available ranges.
+	 * Values exceeding the bounds are set on the bound.
+	 * The number of bound violations is returned.
+	 * 
+	 * @param x
+	 * @param range
+	 * @return
+	 */
+	public static int projectToRange(double[] x, double[][] range) {
+		int viols = 0;
+		if (x.length>range.length) System.err.println("Invalid vector length, x is longer than range! (Mathematics.projectToRange)");
+		for (int i=0; i<x.length; i++) {
+			if (x[i]<range[i][0]) {
+				viols++;
+				x[i]=range[i][0];
+			} else if (x[i]>range[i][1]) {
+				viols++;
+				x[i]=range[i][1];
+			}
+		}
+		return viols;
+	}
 }

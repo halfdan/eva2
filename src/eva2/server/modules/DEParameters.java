@@ -4,17 +4,12 @@ package eva2.server.modules;
 import java.io.Serializable;
 
 import eva2.server.go.InterfaceGOParameters;
-import eva2.server.go.InterfacePopulationChangedEventListener;
-import eva2.server.go.InterfaceTerminator;
-import eva2.server.go.operators.selection.InterfaceSelection;
+import eva2.server.go.enums.DETypeEnum;
 import eva2.server.go.operators.terminators.EvaluationTerminator;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.F1Problem;
-import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.server.go.strategies.DifferentialEvolution;
-import eva2.server.go.strategies.GeneticAlgorithm;
 import eva2.server.go.strategies.InterfaceOptimizer;
-import eva2.tools.SelectedTag;
 import eva2.tools.Serializer;
 
 /** The class gives access to all DE parameters for the EvA
@@ -132,10 +127,10 @@ public class DEParameters extends AbstractGOParameters implements InterfaceGOPar
     /** This method allows you to choose the type of Differential Evolution.
      * @param s  The type.
      */
-    public void setDEType(SelectedTag s) {
+    public void setDEType(DETypeEnum s) {
         ((DifferentialEvolution)this.m_Optimizer).setDEType(s);
     }
-    public SelectedTag getDEType() {
+    public DETypeEnum getDEType() {
         return ((DifferentialEvolution)this.m_Optimizer).getDEType();
     }
     public String dETypeTipText() {

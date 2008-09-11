@@ -753,9 +753,13 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
    		m_dataHash.put(name, obj);
     }
 
-    /** This method will return a stored object.
-     * @param name      The name of the requested Object.
-     * @return Object
+    /** 
+     * This method will return a stored object associated with a key String.
+     * The String "Fitness" is always a valid key connected to the
+     * individual fitness array.
+     * 
+     * @param name      The name of the requested Object
+     * @return Object	The associated object or null if none is found
      */
     public Object getData(String name) {
 //        if (name.equalsIgnoreCase("SelectionProbability")) return this.getSelectionProbability();
@@ -764,12 +768,31 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
 //        if (name.equalsIgnoreCase("FitnessArray")) return this.getFitness();
     	Object data = m_dataHash.get(name);
     	if (data==null) { // Fitness is actually in use... so lets have a minor special treatment
-    		if (name.compareToIgnoreCase("Fitness")==0) data = getFitness();
-    		else {
-    			EVAERROR.errorMsgOnce("Warning: data key " + name + " unknown (pot. multiple errors)!");
-    		}
+//    		try {
+    			if (name.compareToIgnoreCase("Fitness")==0) data = getFitness();
+    			else {
+        			EVAERROR.errorMsgOnce("Warning: data key " + name + " unknown (pot. multiple errors)!");
+//    				throw new RuntimeException(name + ": unknown key!");
+    			}
+//    		} catch(Exception e) {
+//    			e.printStackTrace(System.err);
+//    		}
     	}
         return data;
+    }
+    
+    /** 
+     * Check whether the individual has an object in store which is associated with
+     * the given key String. The String "Fitness" is always a valid key connected to the
+     * individual fitness array.
+     * 
+     * @param key      The name of the requested Object.
+     * @return true if data is associated with the key, else false
+     */
+    public boolean hasData(String key) {
+    	if (m_dataHash.get(key)==null) {
+    		return (key.compareToIgnoreCase("Fitness")==0);
+    	} else return true;
     }
 
     /** This method will return a string description of the Individal
@@ -794,8 +817,10 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
         sb.append(BeanInspector.toString(individual.getFitness()));
         sb.append(", ID: ");
         sb.append(individual.getIndyID());
-        sb.append(", parents: ");
-        sb.append(BeanInspector.toString(individual.getParentIDs()));
+        if (individual.getParentIDs()!=null) {
+        	sb.append(", parents: ");
+            sb.append(BeanInspector.toString(individual.getParentIDs()));
+        }
         return sb.toString();
     }
     

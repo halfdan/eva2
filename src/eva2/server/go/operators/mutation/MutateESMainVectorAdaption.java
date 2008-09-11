@@ -4,6 +4,7 @@ import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceESIndividual;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
+import eva2.tools.Mathematics;
 import wsi.ra.math.RNG;
 
 /**
@@ -182,10 +183,7 @@ public class MutateESMainVectorAdaption implements InterfaceMutation, java.io.Se
             x[i] = x[i] + this.m_SigmaScalar * (this.m_Z[i] + this.Z1 * this.w_v * this.m_main_v[i]);
         }
         if (getCheckConstraints()) { // MK: lets actually do a constraint check
-        	for (int i = 0; i < x.length; i++) {
-        		if (x[i] < range[i][0]) x[i] = range[i][0];
-        		if (x[i] > range[i][1]) x[i] = range[i][1];
-        	}
+        	Mathematics.projectToRange(x, range);
         }
     }
 

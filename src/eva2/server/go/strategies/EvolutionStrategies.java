@@ -45,7 +45,7 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
     private int                             m_NumberOfPartners          = 1;
     private int								origPopSize					= -1; // especially for CBN
 //    private double[]                        m_FitnessOfParents          = null;
-    private boolean							forceOrigPopSize			= true;// especially for CBN
+    private boolean						forceOrigPopSize			= true;// especially for CBN
 
     transient private String                m_Identifier = "";
     transient private InterfacePopulationChangedEventListener m_Listener;
@@ -73,6 +73,14 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
         this.m_EnvironmentSelection         = (InterfaceSelection)a.m_EnvironmentSelection.clone();
     }
 
+    /**
+     * Set to true in CBN, false for any extension which changes the population size during optimization.
+     * @param force
+     */
+    public void setForceOrigPopSize(boolean force) {
+    	forceOrigPopSize = force;
+    }
+    
     public void hideHideable() {
     	GenericObjectEditor.setHideProperty(this.getClass(), "population", true);
     }
@@ -88,6 +96,7 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
 //            this.m_Population.setPopulationSize(this.m_InitialPopulationSize);
 //        }
         //System.out.println("init");
+    	checkPopulationConstraints();
         this.m_Problem.initPopulation(this.m_Population);
         this.evaluatePopulation(this.m_Population);
 //        this.m_Population.setPopulationSize(orgPopSize);
@@ -318,14 +327,19 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
         this.checkPopulationConstraints();
     }
 
-    /** This method will check the population constraints
+    /** 
+     * This method will check the population constraints
      * myu <= lambda and will calculate the population size
      * accordingly.
      */
-    private void checkPopulationConstraints() {
-        if (this.m_Lambda < this.m_Mu) this.m_Lambda = this.m_Mu;
+    protected void checkPopulationConstraints() {
+        if (this.m_Lambda < this.m_Mu) {
+        	System.err.println("Invalid mu/lambda ratio! Setting mu=lambda="+m_Mu);
+        	this.m_Lambda = this.m_Mu;
+        }
         if (this.m_UsePlusStrategy) this.m_Population.setPopulationSize(this.m_Mu + this.m_Lambda);
         else this.m_Population.setPopulationSize(this.m_Lambda);
+        origPopSize=m_Population.getPopulationSize();
     }
 
     /** This method allows you to set an identifier for the algorithm
@@ -377,7 +391,7 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
     
     public void setPopulation(Population pop){
     	origPopSize = pop.size();
-//    	System.out.println("ES: orig popsize is " + origPopSize);
+//    	System.err.println("In ES: orig popsize is " + origPopSize);
         this.m_Population = pop;
     }
     public String populationTipText() {
@@ -444,7 +458,7 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
      */
     public void setPlusStrategy (boolean elitism) {
         this.m_UsePlusStrategy = elitism;
-        this.checkPopulationConstraints();
+//        this.checkPopulationConstraints(); // do this on init only
     }
     public boolean isPlusStrategy() {
         return this.m_UsePlusStrategy;
@@ -500,7 +514,7 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
      */
     public void setMu(int mu) {
         this.m_Mu = mu;
-        this.checkPopulationConstraints();
+//        this.checkPopulationConstraints(); // do this on init only
     }
     public int getMu() {
         return this.m_Mu;
@@ -514,7 +528,7 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
      */
     public void setLambda(int lambda) {
         this.m_Lambda = lambda;
-        this.checkPopulationConstraints();
+//        this.checkPopulationConstraints(); // do this on init only
     }
     public int getLambda() {
         return this.m_Lambda;

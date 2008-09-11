@@ -5,6 +5,7 @@ import java.util.Vector;
 import wsi.ra.math.RNG;
 import eva2.gui.GenericObjectEditor;
 import eva2.server.go.InterfacePopulationChangedEventListener;
+import eva2.server.go.enums.DETypeEnum;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceDataTypeDouble;
 import eva2.server.go.operators.selection.replacement.ReplacementCrowding;
@@ -16,23 +17,21 @@ import eva2.server.go.problems.AbstractOptimizationProblem;
 import eva2.server.go.problems.F1Problem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.tools.EVAERROR;
-import eva2.tools.SelectedTag;
+import eva2.tools.Mathematics;
 
 /** Differential evolution implementing DE1 and DE2 following the paper of Storm and
- * Price and the Trigonometric DE published rectently, which doesn't really work that
- * well. Please note that DE will only work on real-valued genotypes and will ignore
+ * Price and the Trigonometric DE published recently. 
+ * Please note that DE will only work on real-valued genotypes and will ignore
  * all mutation and crossover operators selected.
- * Created by IntelliJ IDEA.
  * User: streiche
  * Date: 25.10.2004
- * Time: 14:06:56
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serializable {
 
     private Population                      m_Population        = new Population();
     private AbstractOptimizationProblem		m_Problem           = new F1Problem();
-    private SelectedTag                     m_DEType;
+    private DETypeEnum                     m_DEType;
     private double                          m_F                 = 0.8;
     private double                          m_k                 = 0.6;
     private double                          m_Lambda            = 0.6;
@@ -44,15 +43,15 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
 
     private String                          m_Identifier = "";
     transient private InterfacePopulationChangedEventListener m_Listener;
+	private boolean 						forceRange 			= true;
 
     /**
      * A constructor.
      *
      */
     public DifferentialEvolution() {
-    	String[] deTypes = new String[] {"DE1 - DE/rand/1", "DE2 - DE/current-to-best/1", "DE/best/2", "Trigonometric DE"};
     	// sets DE2 as default
-        m_DEType = new SelectedTag(1, deTypes);
+        m_DEType = DETypeEnum.DE2_CurrentToBest;
     }
 
     /**
@@ -61,8 +60,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
      * @param a
      */
     public DifferentialEvolution(DifferentialEvolution a) {
-        if (a.m_DEType != null)
-            this.m_DEType = (SelectedTag)a.m_DEType.clone();
+    	this.m_DEType 						= a.m_DEType;
         this.m_Population                   = (Population)a.m_Population.clone();
         this.m_Problem                      = (AbstractOptimizationProblem)a.m_Problem.clone();
         this.m_Identifier                   = a.m_Identifier;
@@ -236,8 +234,8 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
         oX = esIndy.getDoubleData();
         vX = esIndy.getDoubleData();
         nX = new double[oX.length];
-        switch (this.m_DEType.getSelectedTag().getID()) {
-            case 0 : {
+        switch (this.m_DEType) {
+            case DE1_Rand_1: {
                 // this is DE1 or DE/rand/1
                 double[] delta = this.fetchDeltaRandom(pop);
                 if (parents != null) parents.add(pop.getEAIndividual(firstParentIndex));  // Add wherever oX is used directly
@@ -246,7 +244,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
                 }
                 break;
             }
-            case 1 : {
+            case DE2_CurrentToBest : {
                 // this is DE2 or DE/current-to-best/1
                 double[] rndDelta = this.fetchDeltaRandom(pop);
                 double[] bestDelta = this.fetchDeltaBest(pop, esIndy);
@@ -256,7 +254,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
                 }
                 break;
             }
-            case 2: {
+            case DE_Best_2: {
             	// DE/best/2
             	AbstractEAIndividual bestIndy = getBestIndy(pop);
             	oX = getGenotype(bestIndy);
@@ -268,7 +266,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
                 }            	
             	break;
             }
-            case 3 : {
+            case TrigonometricDE : {
                 // this is trigonometric mutation
             	if (parents != null) parents.add(pop.getEAIndividual(firstParentIndex));  // Add wherever oX is used directly
                 if (RNG.flipCoin(this.m_Mt)) {
@@ -316,6 +314,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
             }
         }
         // setting the new genotype and fitness
+        if (forceRange) Mathematics.projectToRange(nX, esIndy.getDoubleRange()); // why did this never happen before?
         esIndy.SetDoubleGenotype(nX);
         indy.SetAge(0);
         double[] fit = new double[1];
@@ -325,14 +324,11 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
         return indy;
     }
 
-
     private AbstractEAIndividual getBestIndy(Population pop) {
-    	double[] xb;
     	return (AbstractEAIndividual)pop.getBestIndividual();
 	}
     
     private AbstractEAIndividual getRandomIndy(Population pop) {
-    	double[] x1;
     	int randIndex = RNG.randomInt(0, pop.size()-1);
     	return pop.getEAIndividual(randIndex);
     }
@@ -584,12 +580,12 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
     /** This method allows you to choose the type of Differential Evolution.
      * @param s  The type.
      */
-    public void setDEType(SelectedTag s) {
+    public void setDEType(DETypeEnum s) {
         this.m_DEType = s;
         // show mt for trig. DE only
-        GenericObjectEditor.setShowProperty(this.getClass(), "mt", s.getSelectedTagID()==3);
+        GenericObjectEditor.setShowProperty(this.getClass(), "mt", s==DETypeEnum.TrigonometricDE);
     }
-    public SelectedTag getDEType() {
+    public DETypeEnum getDEType() {
         return this.m_DEType;
     }
     public String dETypeTipText() {
@@ -612,5 +608,24 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
 	
 	public String maximumAgeTipText() {
 		return "The maximum age of individuals, older ones are discarded. Set to -1 (or 0) to deactivate";
+	}
+
+	/**
+	 * Check whether the problem range will be enforced.
+	 * @return the forceRange
+	 */
+	public boolean isCheckRange() {
+		return forceRange;
+	}
+
+	/**
+	 * @param forceRange the forceRange to set
+	 */
+	public void setCheckRange(boolean forceRange) {
+		this.forceRange = forceRange;
+	}
+	
+	public String checkRangeTipText() {
+		return "Set whether to enforce the problem range."; 
 	}
 }

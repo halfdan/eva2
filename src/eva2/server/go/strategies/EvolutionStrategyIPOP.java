@@ -45,13 +45,21 @@ public class EvolutionStrategyIPOP extends EvolutionStrategies implements Interf
 	LinkedList<AbstractEAIndividual> bestList = null;
 	AbstractEAIndividual best = null;
 	
+	public EvolutionStrategyIPOP(int mu, int lambda, boolean usePlus) {
+		super(mu, lambda, usePlus);
+		setForceOrigPopSize(false);
+		setInitialLambda(lambda);
+	}
+	
 	public EvolutionStrategyIPOP() {
 		super();
+		setForceOrigPopSize(false);
 		setMu(5);
 		setLambda(10);
 	}
 	
 	public EvolutionStrategyIPOP(EvolutionStrategyIPOP other) {
+		super(other);
 		dim 			= other.dim;
 		initialLambda 	= other.initialLambda;
 		incPopSizeFact 	= other.incPopSizeFact;
@@ -109,6 +117,7 @@ public class EvolutionStrategyIPOP extends EvolutionStrategies implements Interf
 		// increase by at least one
 		int newLambda = Math.max((int)(getLambda()*incPopSizeFact), getLambda() + 1);
 		setLambda(newLambda);
+		checkPopulationConstraints();
 		// update the stagnation time in the terminator
 		if (!isStagnationTimeUserDef() && (fitConvTerm != null)) {
 			fitConvTerm.setStagnationTime(calcDefaultStagnationTime());
@@ -136,9 +145,12 @@ public class EvolutionStrategyIPOP extends EvolutionStrategies implements Interf
     public void init() {
 //    	setMu(initialMu);
     	if (getMu()>initialLambda) {
+    		System.err.println("mu is " + getMu() + ", initial lambda was "+initialLambda);
     		setMu((initialLambda/2)+1);
     		System.err.println("Warning, too small initial lambda, adapting mu to " + getMu());
     	}
+    	checkPopulationConstraints();
+		setForceOrigPopSize(false);
     	super.setLambda(initialLambda);
     	getPopulation().setNotifyEvalInterval(initialLambda);
     	super.init();
@@ -233,12 +245,18 @@ public class EvolutionStrategyIPOP extends EvolutionStrategies implements Interf
 		return "An ES with increasing population size.";
 	}
 	
+	protected void checkPopulationConstraints() {
+		if (getLambda()!=initialLambda) setLambda(initialLambda);
+		if (getMu()>getLambda()) System.err.println("Invalid mu/lambda ratio!");
+		super.checkPopulationConstraints();
+	}
+	
 	/** Set an initial population size (if smaller lambda this is ignored).
      * @param l    The inital population size.
      */
 	public void setInitialLambda(int l) {
 		initialLambda = l;
-		if (initialLambda < getMu()) setMu((initialLambda/2)+1);
+//		if (initialLambda < getMu()) setMu((initialLambda/2)+1); // do this on init
 	}
 	
 	public int getInitialLambda() {

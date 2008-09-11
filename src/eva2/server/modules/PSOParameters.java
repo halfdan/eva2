@@ -189,9 +189,6 @@ public class PSOParameters extends AbstractGOParameters implements InterfaceGOPa
     public void setTopology(SelectedTag s) {
         ((ParticleSwarmOptimization)this.m_Optimizer).setTopology(s);
         ((ParticleSwarmOptimization)this.m_Optimizer).setGOEShowProperties(getClass());
-//		GenericObjectEditor.setHideProperty(getClass(), "topologyRange", (s.getSelectedTag().getID() >= 2));
-//		GenericObjectEditor.setHideProperty(getClass(), "subSwarmRadius", (s.getSelectedTag().getID() != 3));
-//		GenericObjectEditor.setHideProperty(getClass(), "subSwarmSize", (s.getSelectedTag().getID() != 3));
     }
     public SelectedTag getTopology() {
         return ((ParticleSwarmOptimization)this.m_Optimizer).getTopology();

@@ -20,7 +20,14 @@ import eva2.server.go.populations.Population;
 import eva2.server.go.strategies.InterfaceOptimizer;
 import eva2.server.stat.InterfaceTextListener;
 
-
+/**
+ * Interface problem class for Matlab(TM). Towards EvA2 this behaves like any other double valued 
+ * problem implementation. However internally, every evaluation "asks" a mediator instance for
+ * the result which waits for Matlab to evaluate the x value. When Matlab is finished, the mediator
+ * returns to the evaluate method and the optimization can continue. 
+ * @author mkron
+ *
+ */
 public class MatlabProblem extends AbstractProblemDouble implements InterfaceTextListener, Serializable {
 	private static final long serialVersionUID = 4913310869887420815L;
 	public static final boolean 		TRACE = false; 
@@ -36,8 +43,6 @@ public class MatlabProblem extends AbstractProblemDouble implements InterfaceTex
 	private MatlabEvalMediator 			handler = null;
 	
 	public static boolean hideFromGOE = true; 
-	
-//	private F1Problem f1 = new F1Problem(); // TODO
 	
 //	transient private double[] currArray = null;
 //	private String mtCmd = null;
@@ -236,6 +241,7 @@ public class MatlabProblem extends AbstractProblemDouble implements InterfaceTex
 				} else {
 					log("setting specific parameters...\n");
 					InterfaceOptimizer opt = runnable.getGOParams().getOptimizer();
+//					log(BeanInspector.toString(BeanInspector.getMemberDescriptions(opt, true)));
 					for (int i=0; i<specParams.length; i++) { // loop over settings
 						log("try setting " + specParams[i] + " to " + specValues[i]);
 						String paramName = null;
@@ -247,7 +253,10 @@ public class MatlabProblem extends AbstractProblemDouble implements InterfaceTex
 								System.err.println("Error, parameter "+ specParams[i] + " could not be cast to String, trying " + paramName);
 							}
 						}
-						if ((paramName == null) || (!BeanInspector.setMem(opt, paramName, specValues[i]))) {
+						Object specVal = null; // avoid giving chars to the converter method here - the ascii value would be assigned instead of the string 
+						if (specValues[i] instanceof Character) specVal = ""+specValues[i];
+						else specVal = specValues[i];
+						if ((paramName == null) || (!BeanInspector.setMem(opt, paramName, specVal))) {
 							log("... Fail!\n");
 							System.err.println("Unable to set parameter " + paramName + ", skipping...");
 						} else log("... Ok.\n");

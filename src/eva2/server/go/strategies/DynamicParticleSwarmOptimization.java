@@ -9,6 +9,7 @@ import eva2.server.go.individuals.InterfaceESIndividual;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.AbstractOptimizationProblem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
+import eva2.tools.Mathematics;
 import eva2.tools.SelectedTag;
 
 /** 
@@ -148,14 +149,11 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
         double[] rand = getNormalRandVect(position.length, range, quantumCloudDia);
         //double[] rand = getUniformRandVect(position.length, range);
             
-            for (int i=0; i<newPos.length; i++) {
-            	newPos[i] += rand[i];
-            	if (m_CheckConstraints) {
-            		if (newPos[i] < range[i][0]) newPos[i] = range[i][0];
-            		else if (newPos[i] > range[i][1]) newPos[i] = range[i][1];
-            	}
-            }
-  
+            Mathematics.vvAdd(newPos, rand, newPos);
+        	if (m_CheckConstraints) {
+        		Mathematics.projectToRange(newPos, range);
+        	}
+        	
             if (indy instanceof InterfaceDataTypeDouble) ((InterfaceDataTypeDouble)indy).SetDoubleGenotype(newPos);
             else endy.SetDoubleGenotype(newPos); 
             

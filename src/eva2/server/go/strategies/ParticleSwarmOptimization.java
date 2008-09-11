@@ -160,6 +160,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 		this.m_Problem.initPopulation(this.m_Population);
 		tracedVelocity = null;
 		// evaluation needs to be done here now, as its omitted if reset is false
+		initDefaults(this.m_Population);
 		this.evaluatePopulation(this.m_Population);
 		initByPopulation(m_Population, false);
 	}
@@ -211,7 +212,10 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 	 */
 	protected void traceEMA(Population population) {
 		if (population.get(0) instanceof InterfaceDataTypeDouble) {
-			double[] curAvVelAndSpeed = getPopulationVelSpeed(population, 3);
+			double[] curAvVelAndSpeed;
+			if (population.getGeneration() == 0) return;
+			
+			curAvVelAndSpeed = getPopulationVelSpeed(population, 3);
 			double[][] range = ((InterfaceDataTypeDouble)population.get(0)).getDoubleRange();
 			if (tracedVelocity == null) {
 				tracedVelocity = new double[((InterfaceDataTypeDouble)population.get(0)).getDoubleData().length];
@@ -362,16 +366,9 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 		if (reset) this.m_Population.init();
 
 		AbstractEAIndividual    indy;
-//		double[]                tmpD, writeData;
-//		double                  sum;
-		for (int i = 0; i < this.m_Population.size(); i++) {
-			indy = (AbstractEAIndividual) this.m_Population.get(i);
-			if (indy instanceof InterfaceDataTypeDouble) {
-				initIndividualDefaults(indy);
-			}
-			indy.SetData(indexKey, i);
-			indy.setIndividualIndex(i);
-		}
+
+		if (!defaultsDone(m_Population.getEAIndividual(0))) initDefaults(m_Population);
+
 		if (reset) this.evaluatePopulation(this.m_Population);
 
 		for (int i = 0; i < this.m_Population.size(); i++) {
@@ -390,6 +387,27 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 		while (getMaxNodes(treeBranchDeg, treeLevels) < pop.size()) treeLevels++;
 		treeOrphans = pop.size()-getMaxNodes(treeBranchDeg, treeLevels-1);
 		treeLastFullLevelNodeCnt = (int)Math.pow(treeBranchDeg, treeLevels-1);
+	}
+
+	private boolean defaultsDone(AbstractEAIndividual individual) {
+		return individual.hasData(indexKey);
+	}
+
+	/**
+	 * Initialize individual defaults for the given population.
+	 * 
+	 * @param pop
+	 */
+	protected void initDefaults(Population pop) {
+		AbstractEAIndividual indy;
+		for (int i = 0; i < pop.size(); i++) {
+			indy = (AbstractEAIndividual) pop.get(i);
+			if (indy instanceof InterfaceDataTypeDouble) {
+				initIndividualDefaults(indy);
+			}
+			indy.SetData(indexKey, i);
+			indy.setIndividualIndex(i);
+		}
 	}
 	
 	/**
@@ -727,7 +745,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 		return accel;
 	}
 	
-	public static void main(String[] args) {
+//	public static void main(String[] args) {
 //		ParticleSwarmOptimization pso = new ParticleSwarmOptimization();
 //		GVector tmp, vec = new GVector(5);
 //		GVector vecSum = new GVector(5);
@@ -750,7 +768,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 //		}
 //		//vecSum.normalize();
 //		//System.out.println(vec.toString() + " -> " + vecSum.toString());
-	}
+//	}
 	
 	/**
 	 * Return a random vector after a gaussian distribution oriented along dir, meaning that
@@ -1120,6 +1138,17 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 		this.firePropertyChangedEvent("NextGenerationPerformed");
 
 		if (sleepTime > 0 ) try { Thread.sleep(sleepTime); } catch(Exception e) {}
+		
+		maybeClearPlot();
+	}
+	
+	protected void maybeClearPlot() {
+		if (((m_Population.getGeneration() % 23) == 0) && isShow() && (m_Plot != null)) {
+			m_Plot.clearAll();
+			InterfaceDataTypeDouble indy = (InterfaceDataTypeDouble)this.m_Population.get(0);
+			double[][] range = indy.getDoubleRange();
+			m_Plot.setCornerPoints(range, 0);
+		}
 	}
 
 	/**
@@ -1312,9 +1341,6 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 		if (this.m_Plot == null) {
 			InterfaceDataTypeDouble indy = (InterfaceDataTypeDouble)this.m_Population.get(0);
 			double[][] range = indy.getDoubleRange();
-			double[] tmpD = new double[2];
-			tmpD[0] = 0;
-			tmpD[1] = 0;
 			this.m_Plot = new eva2.gui.Plot("PSO "+ m_Population.getGeneration(), "x1", "x2", range[0], range[1]);
 //			this.m_Plot.setUnconnectedPoint(range[0][0], range[1][0], 0);
 //			this.m_Plot.setUnconnectedPoint(range[0][1], range[1][1], 0);
@@ -1399,9 +1425,11 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 	}
 	public void setPopulation(Population pop){
 		this.m_Population = pop;
-		for (int i=0; i<pop.size(); i++) {
+		if (pop.size() != pop.getPopulationSize()) { // new particle count!
+			init();
+		} else for (int i=0; i<pop.size(); i++) {
 			AbstractEAIndividual indy = pop.getEAIndividual(i);
-			if (indy.getData(partTypeKey) == null) {
+			if (indy.hasData(partTypeKey)) {
 				initIndividualDefaults(indy);
 				initIndividualMemory(indy);
 				indy.SetData(indexKey, i);

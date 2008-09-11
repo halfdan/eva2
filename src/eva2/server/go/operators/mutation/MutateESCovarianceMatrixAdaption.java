@@ -4,6 +4,7 @@ import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceESIndividual;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
+import eva2.tools.Mathematics;
 import wsi.ra.math.RNG;
 import wsi.ra.math.Jama.EigenvalueDecomposition;
 import wsi.ra.math.Jama.Matrix;
@@ -252,11 +253,8 @@ public class MutateESCovarianceMatrixAdaption implements InterfaceMutation, java
                 }
             }
         }
-        if (this.m_CheckConstraints == true) { // CSpieth
-            for (int i = 0; i < this.m_D; i++) {
-                if (x[i] < range[i][0]) x[i] = range[i][0];
-                if (x[i] > range[i][1]) x[i] = range[i][1];
-            }
+        if (this.m_CheckConstraints) { // CSpieth
+        	Mathematics.projectToRange(x, range);
         }
     }
 

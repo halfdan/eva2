@@ -307,5 +307,37 @@ public class RNG extends Random {
 	  Mathematics.normVect(result, result);
 	  return result;
   }
+  
+  /**
+   * Create a uniform random double vector within the given bounds (inclusive) in every dimension.
+   * 
+   * @param n
+   * @param lower
+   * @param upper
+   * @return
+   */
+  public static double[] randomVector(int n, double lower, double upper) {
+	  double[] result = new double[n];
+	  for (int i = 0; i < result.length; i++) {
+		  result[i] = RNG.randomDouble(lower, upper);
+	  }
+	  return result;
+  }
+  
+  /**
+   * Create a uniform random integer vector within the given bounds (inclusive) in every dimension.
+   * 
+   * @param n
+   * @param lower
+   * @param upper
+   * @return
+   */
+  public static int[] randomVector(int n, int lower, int upper) {
+	  int[] result = new int[n];
+	  for (int i = 0; i < result.length; i++) {
+		  result[i] = RNG.randomInt(lower, upper);
+	  }
+	  return result;
+  }
 }
 
