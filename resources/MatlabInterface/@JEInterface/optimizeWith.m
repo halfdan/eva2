@@ -23,6 +23,9 @@ if (nargin < 2)
     error('invalid number of arguments!');
 end
 
+int.optParams = [];
+int.optParamValues = [];
+
 if (nargin == 2) 
     % standard case, just call optimize
     retInt = optimize(int, optType);
@@ -44,7 +47,8 @@ else
         % load parameter/value pairs into an array
         parNames(i) = cellstr(varargin{nextMem});
         parValues(i) = {varargin{nextMem+1}};
-%        if (~ischar(parArr(i))) 
+
+%        if (~isstr(parNames(i))) 
 %            error('invalid argument, member names must be char');
 %        end
         nextMem = nextMem+2;
@@ -52,6 +56,6 @@ else
     int.optParams = parNames;
     int.optParamValues = parValues;
     retInt = optimize(int, optType, output);
-    int.optParams = [];
-    int.optParamValues = [];
+    retInt.optParams = [];
+    retInt.optParamValues = [];
 end
