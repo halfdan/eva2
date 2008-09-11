@@ -8,6 +8,27 @@ import eva2.server.go.strategies.InterfaceOptimizer;
 import wsi.ra.math.RNG;
 import eva2.server.go.problems.Interface2DBorderProblem;
 
+/**
+ * For a double valued problem, there are two main methods to implement: {@link #getProblemDimension()}
+ * must return the problem dimension, while {@link #eval(double[])} is to evaluate a single double
+ * vector into the result fitness vector. 
+ * 
+ * To define the problem range, you may use the default range parameter resulting in a symmetric
+ * double range [-defaultRange,defaulRange] in all dimensions.
+ * Or you may implement {@link #getRangeLowerBound(int)} and {@link #getRangeUpperBound(int)}
+ * to define an arbitrary problem range. In that case, the default range parameter is not used.
+ * 
+ * Anything you want to do before any optimization is started on the problem should go into
+ * {@link #initProblem()}, but remember to call the super-method in your implementation. The 
+ * individual template will be initialized to an ESIndividualDoubleData by then.
+ * 
+ * For the GUI, it is also convenient to implement the {@link #globalInfo()} and {@link #getName()}
+ * methods to provide some distinctive information for the user.
+ * 
+ * 
+ * @author mkron
+ *
+ */
 public abstract class AbstractProblemDouble extends AbstractOptimizationProblem implements InterfaceProblemDouble, Interface2DBorderProblem {
 	private double m_DefaultRange = 10;
 	private double m_Noise = 0;

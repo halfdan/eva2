@@ -13,13 +13,11 @@ import eva2.server.go.individuals.InterfaceDataTypePermutation;
 import eva2.server.go.individuals.InterfaceDataTypeProgram;
 import eva2.server.go.individuals.codings.gp.InterfaceProgram;
 
-/** A phenotype metric suited for some of the most common
- * data types.
- * Created by IntelliJ IDEA.
+/** 
+ * A phenotype metric suited for the most common data types.
+ * 
  * User: streiche
  * Date: 19.07.2005
- * Time: 14:50:17
- * To change this template use File | Settings | File Templates.
  */
 public class PhenotypeMetric implements InterfaceDistanceMetric, java.io.Serializable {
 	private static PhenotypeMetric pMetric = null;

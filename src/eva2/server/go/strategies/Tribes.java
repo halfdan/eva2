@@ -363,8 +363,7 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
 //			tmpD[0] = 0;
 //			tmpD[1] = 0;
 			this.m_Plot = new eva2.gui.Plot("TRIBES "+ population.getGeneration(), "x1", "x2", range[0], range[1]);
-//			this.m_Plot.setUnconnectedPoint(range[0][0], range[1][0], 0);
-//			this.m_Plot.setUnconnectedPoint(range[0][1], range[1][1], 0);
+//			this.m_Plot.setCornerPoints(range, 0);
 		}
 	}
 

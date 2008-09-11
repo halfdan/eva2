@@ -158,6 +158,10 @@ public class BeanInspector {
 			sbuf.append(" ]");
 			return sbuf.toString();
 		}
+		
+		if (type.isEnum()) {
+			return Target.toString();
+		}
 
 		if (Target instanceof List && !(Target instanceof Population)) { // handle the list case
 			StringBuffer sbuf = new StringBuffer("[ ");
@@ -566,6 +570,7 @@ public class BeanInspector {
 	 * @return
 	 */
 	public static Object decodeType(Class<?> destType, Object value) {
+//		System.err.println("desttype: " + destType.toString() + ", val: " + value.getClass().toString());
 		if (destType.isAssignableFrom(value.getClass())) {
 			// value is already of destType or assignable (subclass), so just return it
 			return value;
@@ -575,8 +580,9 @@ public class BeanInspector {
 			else return value.toString();
 		} else if (isJavaPrimitive(destType)) {
 			try {
-				if (value.getClass() == String.class) return stringToPrimitive((String)value, destType);
-				else {
+				if (value.getClass() == String.class) {
+					return stringToPrimitive((String)value, destType);
+				} else {
 					return doubleToPrimitive(toDouble(value), destType);
 				}
 			} catch(Exception e) {

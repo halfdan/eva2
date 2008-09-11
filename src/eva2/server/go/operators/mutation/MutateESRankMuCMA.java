@@ -7,6 +7,8 @@ import wsi.ra.math.RNG;
 import wsi.ra.math.Jama.EigenvalueDecomposition;
 import wsi.ra.math.Jama.Matrix;
 import eva2.gui.BeanInspector;
+import eva2.gui.GenericObjectEditor;
+import eva2.server.go.enums.ESMutationInitialSigma;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceDataTypeDouble;
 import eva2.server.go.populations.Population;
@@ -17,11 +19,10 @@ import eva2.tools.Pair;
 
 
 /**
- * Implementing CMA ES with rank-mu-update and weighted recombination. This is partly based on the
- * java implementation provided on http://www.bionik.tu-berlin.de/user/niko/cmaes_inmatlab.html.
- * 
- * N.Hansen & S.Kern 2004: Evaluating the CMA Evolution Strategy on Multimodal Test Functions.
- * Parallel Problem Solving from Nature 2004.
+ * Implementing CMA ES with rank-mu-update and weighted recombination. More information can be found here:
+ * - http://www.bionik.tu-berlin.de/user/niko/cmaesintro.html
+ * - N.Hansen & S.Kern 2004: Evaluating the CMA Evolution Strategy on Multimodal Test Functions.
+ *   Parallel Problem Solving from Nature 2004.
  * 
  * @author mkron
  *
@@ -31,7 +32,8 @@ public class MutateESRankMuCMA implements InterfaceMutationGenerational, Seriali
 	private double c_c, expRandStepLen;
 	private double[] z, zCor;
 
-	private InitialSigmaEnum initialSig = InitialSigmaEnum.avgInitialDistance;
+	private ESMutationInitialSigma initializeSig = ESMutationInitialSigma.avgInitialDistance;
+	private double userDefInitSig = 0.2;
 	private static double firstSigma = -1.;
 	private static double sigma;
 	private static double d_sig, c_sig;
@@ -58,7 +60,7 @@ public class MutateESRankMuCMA implements InterfaceMutationGenerational, Seriali
 //		this.d_sig            = mutator.d_sig;
 		this.expRandStepLen     = mutator.expRandStepLen;
 		this.dim			= mutator.dim;
-		this.initialSig = mutator.initialSig;
+		this.initializeSig = mutator.initializeSig;
 
 //		if (mutator.meanX != null)    this.meanX    = (double[]) mutator.meanX.clone();
 //		if (mutator.pathC != null)  this.pathC  = (double[]) mutator.pathC.clone();
@@ -81,11 +83,14 @@ public class MutateESRankMuCMA implements InterfaceMutationGenerational, Seriali
 	 * @return
 	 */
 	private double getInitSigma(Population initGen) {
-		switch (initialSig) {
+		switch (initializeSig) {
 		case avgInitialDistance: 
 			// scaled by average range as the measures are normed
-			return initGen.getPopulationMeasures()[0]*getAvgRange();
+			//return initGen.getPopulationMeasures(null)[0]*getAvgRange();
+			// use euclidian measures without normation and scaling
+			return initGen.getPopulationMeasures(null)[0];
 		case halfRange: return getAvgRange()/2.;
+		case userDefined: return userDefInitSig ;
 		default: return 0.2;
 		}
 	}
@@ -97,7 +102,7 @@ public class MutateESRankMuCMA implements InterfaceMutationGenerational, Seriali
 		mu = selectedP.size();
 		lambda = oldGen.size();
 		if (mu>= lambda) {
-			EVAERROR.errorMsgOnce("Warning: invalid mu/lambda ratio! Setting mu to lambda/2.");
+			EVAERROR.errorMsgOnce("Warning: invalid mu/lambda ratio (" + mu + "/" + lambda + ") ! Setting mu to lambda/2.");
 			mu = lambda/2;
 		}
 		if (!firstAdaptionDone) {
@@ -107,6 +112,7 @@ public class MutateESRankMuCMA implements InterfaceMutationGenerational, Seriali
 //			c_u_sig = Math.sqrt(c_sig * (2.-c_sig));
 			d_sig = c_sig+1+2*Math.max(0, Math.sqrt((muEff-1)/(dim+1)) - 1);
 			sigma = getInitSigma(oldGen);
+//			System.out.println("INitial sigma: "+sigma);
 			firstSigma = sigma;
 			meanX = oldGen.getCenter(); // this might be ok?
 		}
@@ -496,16 +502,16 @@ public class MutateESRankMuCMA implements InterfaceMutationGenerational, Seriali
 
 	private double[] mutate(double[] x, double[][] range, int count) {
 		if (firstAdaptionDone) {
-			double[] artmp = new double[x.length];
+			double[] sampl = new double[x.length]; // generate scaled random vector (D * z)
 			for (int i = 0; i < dim; ++i) {
-				artmp[i] = Math.sqrt(eigenvalues[i]) * RNG.gaussianDouble(1.);
+				sampl[i] = Math.sqrt(eigenvalues[i]) * RNG.gaussianDouble(1.);
 			}
 //			System.out.println("Sampling around " + BeanInspector.toString(meanX));
 			/* add mutation (sigma * B * (D*z)) */
 			for (int i = 0; i < dim; ++i) {
 				double sum = 0.;
 				for (int j = 0; j < dim; ++j)
-					sum += mB.get(i,j) * artmp[j];
+					sum += mB.get(i,j) * sampl[j];
 				x[i] = meanX[i]+getSigma(i)*sum;
 			}
 		} else {
@@ -551,21 +557,26 @@ public class MutateESRankMuCMA implements InterfaceMutationGenerational, Seriali
 		return firstSigma;
 	}
 	
+	public void hideHideable() {
+		this.setInitializeSigma(getInitializeSigma());
+	}
+	
 	/**
 	 * @return the initialSig
 	 */
-	public InitialSigmaEnum getInitialSigma() {
-		return initialSig;
+	public ESMutationInitialSigma getInitializeSigma() {
+		return initializeSig;
 	}
 
 	/**
 	 * @param initialSig the initialSig to set
 	 */
-	public void setInitialSigma(InitialSigmaEnum initialSig) {
-		this.initialSig = initialSig;
+	public void setInitializeSigma(ESMutationInitialSigma initialSig) {
+		this.initializeSig = initialSig;
+		GenericObjectEditor.setHideProperty(this.getClass(), "userDefInitSig", initialSig!=ESMutationInitialSigma.userDefined);
 	}
 
-	public String initialSigmaTipText() {
+	public String initializeSigmaTipText() {
 		return "Method to use for setting the initial step size.";
 	}
 
@@ -646,8 +657,18 @@ public class MutateESRankMuCMA implements InterfaceMutationGenerational, Seriali
 			return true;
 		} else return false;
 	}
-}
 
-enum InitialSigmaEnum  {
-	halfRange, avgInitialDistance;
+	/**
+	 * @return the userDefInitSig
+	 */
+	public double getUserDefInitSig() {
+		return userDefInitSig;
+	}
+
+	/**
+	 * @param userDefInitSig the userDefInitSig to set
+	 */
+	public void setUserDefInitSig(double userDefInitSig) {
+		this.userDefInitSig = userDefInitSig;
+	}
 }

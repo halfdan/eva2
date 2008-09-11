@@ -9,6 +9,7 @@ import java.util.Vector;
 import eva2.server.go.IndividualInterface;
 import eva2.server.go.InterfacePopulationChangedEventListener;
 import eva2.server.go.InterfaceTerminator;
+import eva2.server.go.enums.DETypeEnum;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceDataTypeBinary;
 import eva2.server.go.individuals.InterfaceDataTypeDouble;
@@ -25,10 +26,12 @@ import eva2.server.go.operators.mutation.InterfaceMutation;
 import eva2.server.go.operators.mutation.MutateESCovarianceMatrixAdaption;
 import eva2.server.go.operators.mutation.MutateESFixedStepSize;
 import eva2.server.go.operators.mutation.MutateESGlobal;
+import eva2.server.go.operators.mutation.MutateESRankMuCMA;
 import eva2.server.go.operators.mutation.NoMutation;
 import eva2.server.go.operators.postprocess.InterfacePostProcessParams;
 import eva2.server.go.operators.postprocess.PostProcessParams;
 import eva2.server.go.operators.selection.InterfaceSelection;
+import eva2.server.go.operators.selection.SelectBestIndividuals;
 import eva2.server.go.operators.terminators.CombinedTerminator;
 import eva2.server.go.operators.terminators.EvaluationTerminator;
 import eva2.server.go.operators.terminators.FitnessConvergenceTerminator;
@@ -38,6 +41,7 @@ import eva2.server.go.strategies.ClusterBasedNichingEA;
 import eva2.server.go.strategies.ClusteringHillClimbing;
 import eva2.server.go.strategies.DifferentialEvolution;
 import eva2.server.go.strategies.EvolutionStrategies;
+import eva2.server.go.strategies.EvolutionStrategyIPOP;
 import eva2.server.go.strategies.GeneticAlgorithm;
 import eva2.server.go.strategies.GradientDescentAlgorithm;
 import eva2.server.go.strategies.HillClimbing;
@@ -96,6 +100,8 @@ public class OptimizerFactory {
 	public final static int CBN_ES = 9;
 
 	public final static int CL_HILLCL = 10;
+	
+	public final static int CMA_ES_IPOP = 11;
 
 	public final static int defaultFitCalls = 10000;
 
@@ -119,69 +125,6 @@ public class OptimizerFactory {
 		else
 			setTerminator(new CombinedTerminator(OptimizerFactory.term,
 					newTerm, bAnd));
-	}
-
-	public static final GOParameters cbnES(AbstractOptimizationProblem problem) {
-		ClusterBasedNichingEA cbn = new ClusterBasedNichingEA();
-		EvolutionStrategies es = new EvolutionStrategies();
-		es.setMu(15);
-		es.setLambda(50);
-		es.setPlusStrategy(false);
-		cbn.setOptimizer(es);
-		ClusteringDensityBased clustering = new ClusteringDensityBased(0.1);
-		cbn.setConvergenceCA((ClusteringDensityBased) clustering.clone());
-		cbn.setDifferentationCA(clustering);
-		cbn.setShowCycle(0); // don't do graphical output
-
-		Population pop = new Population();
-		pop.setPopulationSize(100);
-		problem.initPopulation(pop);
-
-		return makeParams(cbn, pop, problem, randSeed, defaultTerminator());
-	}
-
-	public static final GOParameters clusteringHillClimbing(
-			AbstractOptimizationProblem problem) {
-		ClusteringHillClimbing chc = new ClusteringHillClimbing();
-		chc.SetProblem(problem);
-		Population pop = new Population();
-		pop.setPopulationSize(100);
-		problem.initPopulation(pop);
-		chc.setHcEvalCycle(1000);
-		chc.setInitialPopSize(100);
-		chc.setStepSizeInitial(0.05);
-		chc.setMinImprovement(0.000001);
-		chc.setNotifyGuiEvery(0);
-		chc.setStepSizeThreshold(0.000001);
-		chc.setSigmaClust(0.05);
-		return makeParams(chc, pop, problem, randSeed, defaultTerminator());
-	}
-
-	public static final GOParameters cmaES(AbstractOptimizationProblem problem) {
-		EvolutionStrategies es = new EvolutionStrategies();
-		es.setMu(15);
-		es.setLambda(50);
-		es.setPlusStrategy(false);
-
-		AbstractEAIndividual indyTemplate = problem.getIndividualTemplate();
-		if ((indyTemplate != null)
-				&& (indyTemplate instanceof InterfaceESIndividual)) {
-			// Set CMA operator for mutation
-			AbstractEAIndividual indy = (AbstractEAIndividual) indyTemplate;
-			MutateESCovarianceMatrixAdaption cmaMut = new MutateESCovarianceMatrixAdaption();
-			cmaMut.setCheckConstraints(true);
-			indy.setMutationOperator(cmaMut);
-			indy.setCrossoverOperator(new CrossoverESDefault());
-		} else {
-			System.err
-					.println("Error, CMA-ES is implemented for ES individuals only (requires double data types)");
-			return null;
-		}
-
-		Population pop = new Population();
-		pop.setPopulationSize(es.getLambda());
-
-		return makeParams(es, pop, problem, randSeed, defaultTerminator());
 	}
 
 	/**
@@ -211,7 +154,7 @@ public class OptimizerFactory {
 		DifferentialEvolution de = new DifferentialEvolution();
 		de.SetProblem(problem);
 		de.getPopulation().setPopulationSize(popsize);
-		de.getDEType().setSelectedTag(1);
+		de.setDEType(DETypeEnum.DE2_CurrentToBest);
 		de.setF(f);
 		de.setK(CR);
 		de.setLambda(lambda);
@@ -232,38 +175,69 @@ public class OptimizerFactory {
 	 * @param pm
 	 * @param crossoveroperator
 	 * @param pc
-	 * @param selection
+	 * @param selection environmental selection operator
 	 * @param problem
 	 * @param listener
-	 * @return An optimization algorithm that employes an evolution strategy.
+	 * @return An optimization algorithm that employs an evolution strategy.
 	 */
 	public static final EvolutionStrategies createEvolutionStrategy(int mu,
 			int lambda, boolean plus, InterfaceMutation mutationoperator,
 			double pm, InterfaceCrossover crossoveroperator, double pc,
 			InterfaceSelection selection, AbstractOptimizationProblem problem,
 			InterfacePopulationChangedEventListener listener) {
+		return createES(new EvolutionStrategies(mu, lambda, plus), mutationoperator, pm, crossoveroperator, pc, selection, problem, listener);
+	}
+
+	/**
+	 * This method initializes the optimization using an Evolution strategy with
+	 * increasing population size.
+	 *
+	 * @param mu
+	 * @param lambda
+	 * @param plus
+	 *            if true this operator uses elitism otherwise a comma strategy.
+	 * @param mutationoperator
+	 * @param pm
+	 * @param crossoveroperator
+	 * @param pc
+	 * @param incPopSizeFact factor by which to inrease lambda ro restart, default is 2
+	 * @param stagThresh	if the fitness changes below this value during a stagnation phase, a restart is initiated  
+	 * @param problem
+	 * @param listener
+	 * @return An optimization algorithm that employs an IPOP-ES.
+	 */
+	public static final EvolutionStrategyIPOP createEvolutionStrategyIPOP(int mu,
+			int lambda, boolean plus, InterfaceMutation mutationoperator,
+			double pm, InterfaceCrossover crossoveroperator, double pc, double incPopSizeFact, double stagThresh,
+			AbstractOptimizationProblem problem, InterfacePopulationChangedEventListener listener) {
+		EvolutionStrategyIPOP esIPOP = (EvolutionStrategyIPOP)createES(new EvolutionStrategyIPOP(mu, lambda, plus), mutationoperator, pm, crossoveroperator, pc, new SelectBestIndividuals(), problem, listener);
+		esIPOP.setIncPopSizeFact(incPopSizeFact);
+//		esIPOP.setStagnationGenerations(stagTimeGens);
+		esIPOP.setStagThreshold(stagThresh);
+		return esIPOP;
+	}
+
+	private static final EvolutionStrategies createES(EvolutionStrategies theES, InterfaceMutation mutationoperator,
+			double pm, InterfaceCrossover crossoveroperator, double pc,
+			InterfaceSelection selection, AbstractOptimizationProblem problem,
+			InterfacePopulationChangedEventListener listener) {
 
 		problem.initProblem();
-		// RNG.setRandomSeed(100);
 
 		AbstractEAIndividual tmpIndi = problem.getIndividualTemplate();
-		tmpIndi.setMutationOperator(mutationoperator);
-		tmpIndi.setMutationProbability(pm);// */ // 1/tmpIndi.size()
-		tmpIndi.setCrossoverOperator(crossoveroperator);
-		tmpIndi.setCrossoverProbability(pc);// */ // 0.95
+		AbstractEAIndividual.setOperators(tmpIndi, mutationoperator, pm, crossoveroperator, pc);
 
 		EvolutionStrategies es = new EvolutionStrategies();
 		es.addPopulationChangedEventListener(listener);
-		es.setParentSelection(selection);
-		es.setPartnerSelection(selection);
+		//es.setParentSelection(selection);
+		//es.setPartnerSelection(selection);
 		es.setEnvironmentSelection(selection);
-		es.setGenerationStrategy(mu, lambda, plus); // comma strategy
 		es.SetProblem(problem);
 		es.init();
 
-		return es;
+		return theES;
 	}
-
+	
 	/**
 	 * This method performs a Genetic Algorithm.
 	 *
@@ -544,6 +518,13 @@ public class OptimizerFactory {
 
 	// /////////////////////////// constructing a default OptimizerRunnable
 
+	/**
+	 * For an optimizer identifier, return the corresponding default parameter set including
+	 * initialization (thats why the problem is required).
+	 * 
+	 * @param optType	optimizer identifier
+	 * @param problem	corresponding optimization problem
+	 */
 	public static GOParameters getParams(final int optType,
 			AbstractOptimizationProblem problem) {
 		switch (optType) {
@@ -567,6 +548,8 @@ public class OptimizerFactory {
 			return cbnES(problem);
 		case CL_HILLCL:
 			return clusteringHillClimbing(problem);
+		case CMA_ES_IPOP: 
+			return cmaESIPOP(problem);
 		default:
 			System.err.println("Error: optimizer type " + optType
 					+ " is unknown!");
@@ -574,6 +557,27 @@ public class OptimizerFactory {
 		}
 	}
 
+	/**
+	 * Return a simple String showing the accessible optimizers. For external
+	 * access."
+	 *
+	 * @return a String listing the accessible optimizers
+	 */
+	public static String showOptimizers() {
+		return "1: Standard ES \n2: CMA-ES \n3: GA \n4: PSO \n5: DE \n6: Tribes \n7: Random (Monte Carlo) "
+				+ "\n8: Hill-Climbing \n9: Cluster-based niching ES \n10: Clustering Hill-Climbing \n11: IPOP-CMA-ES.";
+	}
+
+	/**
+	 * Produce a runnable optimizer from a strategy identifier, a problem instance and with a given
+	 * number of fitness calls to be performed. Output is written to a file if the prefix String is given.
+	 * 
+	 * @param optType
+	 * @param problem
+	 * @param fitCalls
+	 * @param outputFilePrefix
+	 * @return a runnable optimizer
+	 */
 	public static OptimizerRunnable getOptRunnable(final int optType,
 			AbstractOptimizationProblem problem, int fitCalls,
 			String outputFilePrefix) {
@@ -589,31 +593,86 @@ public class OptimizerFactory {
 	}
 
 	// /////////////////////////// constructing a default OptimizerRunnable
+	/**
+	 * Produce a runnable optimizer from a strategy identifier, a problem instance and with the default
+	 * number of fitness calls to be performed. Output is written to a file if the prefix String is given.
+	 * @see #getOptRunnable(int, AbstractOptimizationProblem, int, String)
+	 * @param optType
+	 * @param problem
+	 * @param outputFilePrefix
+	 * @return a runnable optimizer
+	 */
 	public static OptimizerRunnable getOptRunnable(final int optType,
 			AbstractOptimizationProblem problem, String outputFilePrefix) {
 		return getOptRunnable(optType, problem, defaultFitCalls,
 				outputFilePrefix);
 	}
 
+	/**
+	 * Return the current default terminator.
+	 * 
+	 * @return the current default terminator
+	 */
 	public static InterfaceTerminator getTerminator() {
 		return OptimizerFactory.term;
 	}
 
-	public static final GOParameters hillClimbing(
-			AbstractOptimizationProblem problem) {
-		HillClimbing hc = new HillClimbing();
-		hc.SetProblem(problem);
-		Population pop = new Population();
-		pop.setPopulationSize(50);
-		problem.initPopulation(pop);
-		return makeParams(hc, pop, problem, randSeed, defaultTerminator());
-	}
-
+	/**
+	 * Return the number of evaluations performed during the last run or -1 if unavailable.
+	 * 
+	 * @return the number of evaluations performed during the last run or -1
+	 */
 	public static int lastEvalsPerformed() {
 		return (lastRunnable != null) ? lastRunnable.getProgress() : -1;
 	}
 
 	// /////////////////////// Creating default strategies
+
+	/**
+	 * Use lambda, default random seed and terminator to produce GOParameters.
+	 * 
+	 * @param es
+	 * @param problem
+	 * @return
+	 */
+	public static GOParameters makeESParams(EvolutionStrategies es,
+			AbstractOptimizationProblem problem) {
+		return makeParams(es, es.getLambda(), problem, randSeed, defaultTerminator());
+	}
+
+	/**
+	 * Use default random seed and terminator for a parameter set.
+	 * 
+	 * @see #makeParams(InterfaceOptimizer, int, AbstractOptimizationProblem, long, InterfaceTerminator)
+	 * @param opt
+	 * @param popSize
+	 * @param problem
+	 * @return
+	 */
+	public static GOParameters makeParams(InterfaceOptimizer opt, int popSize, AbstractOptimizationProblem problem) {
+		return makeParams(opt, popSize, problem, randSeed, defaultTerminator());
+	}
+
+	public static GOParameters makeParams(InterfaceOptimizer opt,
+			int popSize, AbstractOptimizationProblem problem, long seed,
+			InterfaceTerminator term) {
+		Population pop = new Population(popSize);
+		problem.initPopulation(pop);
+		return makeParams(opt, pop, problem, seed, term);
+	}
+	
+	/**
+	 * Create a GOParameters instance and prepare it with the given arguments. The result can be
+	 * modified and then used to create an OptimizerRunnable, which of course can simply be run.
+	 * 
+	 * @see OptimizerRunnable
+	 * @param opt
+	 * @param pop
+	 * @param problem
+	 * @param seed
+	 * @param term
+	 * @return
+	 */
 	public static GOParameters makeParams(InterfaceOptimizer opt,
 			Population pop, AbstractOptimizationProblem problem, long seed,
 			InterfaceTerminator term) {
@@ -627,16 +686,6 @@ public class OptimizerFactory {
 		return params;
 	}
 
-	public static final GOParameters monteCarlo(
-			AbstractOptimizationProblem problem) {
-		MonteCarloSearch mc = new MonteCarloSearch();
-		Population pop = new Population();
-		pop.setPopulationSize(50);
-		problem.initPopulation(pop);
-		return makeParams(mc, pop, problem, randSeed, defaultTerminator());
-	}
-
-	// TODO hier weiter kommentieren
 	public static OptimizerRunnable optimize(final int optType,
 			AbstractOptimizationProblem problem, String outputFilePrefix) {
 		return optimize(getOptRunnable(optType, problem, outputFilePrefix));
@@ -849,7 +898,7 @@ public class OptimizerFactory {
 				: null;
 	}
 
-	// /////////////////////////// post processing
+	///////////////////////////// post processing
 	public static Vector<AbstractEAIndividual> postProcessIndVec(
 			OptimizerRunnable runnable, int steps, double sigma, int nBest) {
 		return postProcessIndVec(runnable, new PostProcessParams(steps, sigma,
@@ -869,7 +918,8 @@ public class OptimizerFactory {
 		}
 		return ret;
 	}
-
+	
+	///////////////////////////// termination management
 	public static void setEvaluationTerminator(int maxEvals) {
 		setTerminator(new EvaluationTerminator(maxEvals));
 	}
@@ -883,30 +933,124 @@ public class OptimizerFactory {
 		OptimizerFactory.term = term;
 	}
 
+	public static String terminatedBecause() {
+		return (lastRunnable != null) ? lastRunnable.terminatedBecause() : null;
+	}
+	
+	///////////////////////////// default parameters
 	/**
-	 * Return a simple String showing the accessible optimizers. For external
-	 * access."
-	 *
-	 * @return a String listing the accessible optimizers
+	 * Create a standard multi-start hill-climber parameter set with 50 initial individuals.
+	 * 
+	 * @return	a standard multi-start hill-climber
 	 */
-	public static String showOptimizers() {
-		return "1: Standard ES \n2: CMA-ES \n3: GA \n4: PSO \n5: DE \n6: Tribes \n7: Random (Monte Carlo) "
-				+ "\n8: Hill-Climbing \n9: Cluster-based niching ES \n10: Clustering Hill-Climbing";
+	public static final GOParameters hillClimbing(
+			AbstractOptimizationProblem problem) {
+		return makeParams(new HillClimbing(), 50, problem, randSeed, defaultTerminator());
 	}
 
+	public static final GOParameters monteCarlo(
+			AbstractOptimizationProblem problem) {
+		return makeParams(new MonteCarloSearch(), 50, problem, randSeed, defaultTerminator());
+	}
+	
+	public static final GOParameters cbnES(AbstractOptimizationProblem problem) {
+		ClusterBasedNichingEA cbn = new ClusterBasedNichingEA();
+		EvolutionStrategies es = new EvolutionStrategies();
+		es.setMu(15);
+		es.setLambda(50);
+		es.setPlusStrategy(false);
+		cbn.setOptimizer(es);
+		ClusteringDensityBased clustering = new ClusteringDensityBased(0.1);
+		cbn.setConvergenceCA((ClusteringDensityBased) clustering.clone());
+		cbn.setDifferentationCA(clustering);
+		cbn.setShowCycle(0); // don't do graphical output
+
+		return makeParams(cbn, 100, problem, randSeed, defaultTerminator());
+	}
+
+	public static final GOParameters clusteringHillClimbing(
+			AbstractOptimizationProblem problem) {
+		ClusteringHillClimbing chc = new ClusteringHillClimbing();
+		chc.SetProblem(problem);
+
+		chc.setHcEvalCycle(1000);
+		chc.setInitialPopSize(100);
+		chc.setStepSizeInitial(0.05);
+		chc.setMinImprovement(0.000001);
+		chc.setNotifyGuiEvery(0);
+		chc.setStepSizeThreshold(0.000001);
+		chc.setSigmaClust(0.05);
+		return makeParams(chc, 100, problem, randSeed, defaultTerminator());
+	}
+
+	public static final GOParameters cmaES(AbstractOptimizationProblem problem) {
+		EvolutionStrategies es = new EvolutionStrategies();
+		es.setMu(15);
+		es.setLambda(50);
+		es.setPlusStrategy(false);
+
+		AbstractEAIndividual indyTemplate = problem.getIndividualTemplate();
+		if ((indyTemplate != null)
+				&& (indyTemplate instanceof InterfaceESIndividual)) {
+			// Set CMA operator for mutation
+			AbstractEAIndividual indy = (AbstractEAIndividual) indyTemplate;
+			MutateESCovarianceMatrixAdaption cmaMut = new MutateESCovarianceMatrixAdaption();
+			cmaMut.setCheckConstraints(true);
+			AbstractEAIndividual.setOperators(indy, cmaMut, 1., new CrossoverESDefault(), 0.);
+		} else {
+			System.err
+					.println("Error, CMA-ES is implemented for ES individuals only (requires double data types)");
+			return null;
+		}
+
+		return makeESParams(es, problem);
+	}
+
+	/**
+	 * Create a new IPOP-CMA-ES strategy with Rank-mu-CMA. The population size is set to
+	 * lambda = (int) (4.0 + 3.0 * Math.log(dim)) and mu = Math.floor(lambda/2.), but
+	 * lambda may grow during optimization due to restarts with increased lambda.
+	 * Operator probabilities are set to p_mut = 1 and p_c = 0.
+	 * The given problem must work with an individual template which implements 
+	 * InterfaceDataTypeDouble.
+	 * 
+	 * @param problem the optimization problem
+	 * @return
+	 */
+	public static final GOParameters cmaESIPOP(AbstractOptimizationProblem problem) {
+		EvolutionStrategies es = new EvolutionStrategyIPOP();
+
+		AbstractEAIndividual indyTemplate = problem.getIndividualTemplate();
+		if ((indyTemplate != null) && ((indyTemplate instanceof InterfaceESIndividual) || (indyTemplate instanceof InterfaceDataTypeDouble))) {
+			// set selection strategy
+			int dim;
+			if (indyTemplate instanceof InterfaceESIndividual) dim=((InterfaceESIndividual)indyTemplate).getDGenotype().length;
+			else dim = ((InterfaceDataTypeDouble)indyTemplate).getDoubleData().length;
+			int lambda = (int) (4.0 + 3.0 * Math.log(dim));
+			es.setGenerationStrategy((int)Math.floor(lambda/2.),lambda, false);
+			es.setForceOrigPopSize(false);
+			// Set CMA operator for mutation
+			AbstractEAIndividual indy = (AbstractEAIndividual) indyTemplate;
+			MutateESRankMuCMA cmaMut = new MutateESRankMuCMA();
+			AbstractEAIndividual.setOperators(indy, cmaMut, 1., new CrossoverESDefault(), 0.);
+		} else {
+			System.err
+					.println("Error, CMA-ES is implemented for ES individuals only (requires double data types)");
+			return null;
+		}
+
+		return makeESParams(es, problem);
+	}
+	
 	public static final GOParameters standardDE(
 			AbstractOptimizationProblem problem) {
 		DifferentialEvolution de = new DifferentialEvolution();
-		Population pop = new Population();
-		pop.setPopulationSize(50);
-		de.setPopulation(pop);
-		de.getDEType().setSelectedTag(1); // this sets current-to-best
+		de.setDEType(DETypeEnum.DE2_CurrentToBest); // this sets current-to-best
 		de.setF(0.8);
 		de.setK(0.6);
 		de.setLambda(0.6);
 		de.setMt(0.05);
-
-		return makeParams(de, pop, problem, randSeed, defaultTerminator());
+		return makeParams(de, 50, problem, randSeed, defaultTerminator());
 	}
 
 	public static final GOParameters standardES(
@@ -928,43 +1072,26 @@ public class OptimizerFactory {
 			return null;
 		}
 
-		Population pop = new Population();
-		pop.setPopulationSize(es.getLambda());
-
-		return makeParams(es, pop, problem, randSeed, defaultTerminator());
+		return makeESParams(es, problem);
 	}
 
 	public static final GOParameters standardGA(
 			AbstractOptimizationProblem problem) {
 		GeneticAlgorithm ga = new GeneticAlgorithm();
-		Population pop = new Population();
-		pop.setPopulationSize(100);
-		ga.setPopulation(pop);
 		ga.setElitism(true);
 
-		return makeParams(ga, pop, problem, randSeed, defaultTerminator());
+		return makeParams(ga, 100, problem, randSeed, defaultTerminator());
 	}
 
 	public static final GOParameters standardPSO(
 			AbstractOptimizationProblem problem) {
 		ParticleSwarmOptimization pso = new ParticleSwarmOptimization();
-		Population pop = new Population();
-		pop.setPopulationSize(30);
-		pso.setPopulation(pop);
 		pso.setPhiValues(2.05, 2.05);
 		pso.getTopology().setSelectedTag("Grid");
-		return makeParams(pso, pop, problem, randSeed, defaultTerminator());
-	}
-
-	public static String terminatedBecause() {
-		return (lastRunnable != null) ? lastRunnable.terminatedBecause() : null;
+		return makeParams(pso, 30, problem, randSeed, defaultTerminator());
 	}
 
 	public static final GOParameters tribes(AbstractOptimizationProblem problem) {
-		Tribes tr = new Tribes();
-		Population pop = new Population();
-		pop.setPopulationSize(1); // only for init
-		problem.initPopulation(pop);
-		return makeParams(tr, pop, problem, randSeed, defaultTerminator());
+		return makeParams(new Tribes(), 1, problem, randSeed, defaultTerminator());
 	}
 }

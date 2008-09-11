@@ -4,13 +4,13 @@ package eva2;
  * Main product and version information strings.
  * 
  * --- Changelog
- * 2.030: Added an EnumEditor to access enums easily through the GUI.
+ * 2.030: Added an EnumEditor to access enums easily through the GUI, which will replace SelectedTags sometimes.
  * 			IPOP-ES and RankMuCMA mutator have been added lately (wow!).
  * 			Cleaned up the IndividualInterface and reduced the usage of InterfaceESIndividual. This
  * 			means that, e.g., that DE and PSO now also work on GAIndividualDoubleData. Because this 
  * 			requires much time for transcoding, however, this is not useful by itself. Yet it could be
  * 			interesting for combined individuals composed of two data types. 
- * 			Cleaned up MutateXXDefault to a single MutateDefault, too.
+ * 			Cleaned up MutateXXDefault to a single MutateDefault, too. DE may now do range checking.
  * 2.029: Tuned the 2d-graphs which now paints quicker and changes size depending on the
  * 			surrounding plot window. Added a preloader-thread to accelerate the GUI at starting time.
  * 2.028: Tuned the Population to sort only when necessary on calls to getBestN... Added StatisticsDummy.

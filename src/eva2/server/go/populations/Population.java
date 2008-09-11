@@ -16,6 +16,7 @@ import eva2.server.go.individuals.AbstractEAIndividualComparator;
 import eva2.server.go.individuals.GAIndividualBinaryData;
 import eva2.server.go.operators.distancemetric.InterfaceDistanceMetric;
 import eva2.server.go.operators.distancemetric.PhenotypeMetric;
+import eva2.server.go.operators.selection.probability.AbstractSelProb;
 import eva2.tools.EVAERROR;
 import eva2.tools.Mathematics;
 import eva2.tools.Pair;
@@ -884,6 +885,9 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     
     /**
      * Returns the average, minimal and maximal individual distance as diversity measure for the population.
+     * If the given metric argument is null, the euclidian distance of individual positions is used, which
+     * presumes that {@link AbstractEAIndividual.getDoublePosition(indy)} returns a valid double position for the
+     * individuals of the population.
      * This is of course rather expensive computationally. 
      *
      * @return the average, minimal and maximal mean distance of individuals in an array of three
@@ -898,7 +902,9 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     	
         for (int i = 0; i < this.size(); i++) {
         	for (int j = i+1; j < this.size(); j++) {
-                d = metric.distance((AbstractEAIndividual)this.get(i), (AbstractEAIndividual)this.get(j));
+        		if (metric == null) d = PhenotypeMetric.euclidianDistance(AbstractEAIndividual.getDoublePosition(getEAIndividual(i)), 
+                		AbstractEAIndividual.getDoublePosition(getEAIndividual(j)));
+        		else d = metric.distance((AbstractEAIndividual)this.get(i), (AbstractEAIndividual)this.get(j));
                 meanDist += d;
                 if (d < minDist) minDist = d;
                 if (d > maxDist) maxDist = d;
@@ -942,6 +948,32 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
 	}
 
 	/**
+	 * Return the population center weighted by fitness, using the same scaling as provided
+	 * by a SelectionProbability instance.
+	 * This only works for those individuals that have a position representation, meaning that
+	 * AbstractEAIndidivual.getDoublePosition(individual) returns a valid position.
+	 * If they dont, null is returned.
+	 *
+	 * @see AbstractEAIndidivual.getDoublePosition(individual)
+	 * @param criterion
+	 * @return
+	 */
+	public double[] getCenterWeighted(AbstractSelProb selProb, int criterion, boolean obeyConst) {
+		selProb.computeSelectionProbability(this, "Fitness", obeyConst);
+		double[] mean = AbstractEAIndividual.getDoublePosition(getEAIndividual(0));
+		if (mean != null) {
+			Arrays.fill(mean, 0.);
+			AbstractEAIndividual indy = null;
+			for (int i=0; i<size(); i++) {
+				indy = getEAIndividual(i);
+				double[] pos = AbstractEAIndividual.getDoublePosition(indy);
+				Mathematics.svvAddScaled(indy.getSelectionProbability(criterion), pos, mean, mean);
+			}
+		}
+		return mean;
+	}
+	
+	/**
 	 * Fire an event every n function calls, the event sends the public String funCallIntervalReached.
 	 * Be aware that if this interval is smaller than the population size, it may happen that a notification
 	 * is fired before all individuals have been evaluated once, meaning that a false zero fitness
@@ -951,6 +983,51 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
 	 */
 	public void setNotifyEvalInterval(int notifyEvalInterval) {
 		this.notifyEvalInterval = notifyEvalInterval;
+	}
+
+	/**
+	 * Fit the population to its targeted population size. If it contains too many
+	 * individuals, the last ones are removed. If it contains too few individuals,
+	 * the first ones are cloned in a cycle.
+	 * If the size matches, nothing happens. If there is no individual already contained,
+	 * this method cannot grow, of course.
+	 */
+	public void fitToSize() {
+		if (size() != getPopulationSize()) {
+			while (size() > getPopulationSize()) remove(size()-1);
+			if (size() < getPopulationSize()) {
+				if (size() == 0) System.err.println("Cannot grow empty population!");
+				else {
+					int origSize=size();
+					int k=0;
+					while (size()< getPopulationSize()) {
+						addIndividual((AbstractEAIndividual)getEAIndividual(k%origSize).clone());
+					}
+				}
+			}
+		}
+	}
+
+	/**
+	 * Calculate the fitness sum over all individuals for one criterion.
+	 * 
+	 * @param criterion
+	 * @return the fitness sum over all individuals for one criterio
+	 */
+	public double getFitSum(int criterion) {
+		double fSum = 0.;
+		for (int i=0; i<size(); i++) {
+			fSum += getEAIndividual(i).getFitness(criterion);
+		}
+		return fSum;
+	}
+
+	/**
+	 * Set the desired population size parameter to the actual current size.
+	 * 
+	 */
+	public void synchSize() {
+		setPopulationSize(size());
 	}
 
 //	/**
