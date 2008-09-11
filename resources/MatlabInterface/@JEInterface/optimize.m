@@ -27,7 +27,10 @@ if ((nargin == 2) || (nargin == 3))
     xTol = int.opts.TolX;
     maxEvals = int.opts.MaxFunEvals;
     fTol = int.opts.TolFun;
-    
+    if (ischar(xTol)) ;     xTol    =   str2num(xTol); end;
+    if (ischar(maxEvals)) ; maxEvals=   str2num(maxEvals); end;
+    if (ischar(fTol)) ;     fTol    =   str2num(fTol); end;
+
     import eva2.server.go.operators.terminators.PhenotypeConvergenceTerminator;
     import eva2.server.go.operators.terminators.FitnessConvergenceTerminator;    
     import eva2.server.go.operators.terminators.CombinedTerminator;
@@ -39,15 +42,16 @@ if ((nargin == 2) || (nargin == 3))
     % values of 1e-4 in . Thats what we do as well
     if (isempty(int.opts.TolX)) ; xTol = 1e-4; end
     if (isempty(int.opts.TolFun)) ; fTol = 1e-4; end
-
+    
+    evalsForConv=100;
     % construct Terminators
     if ((xTol > 0) && (fTol > 0))
         % both criteria are given, use combination
-        convTerm = CombinedTerminator(FitnessConvergenceTerminator(fTol, 100, 1, 1), PhenotypeConvergenceTerminator(xTol, 100, 1, 1), 1);
+        convTerm = CombinedTerminator(FitnessConvergenceTerminator(fTol, evalsForConv, 1, 1), PhenotypeConvergenceTerminator(xTol, evalsForConv, 1, 1), 1);
     else if (xTol > 0)  % only phenotye convergence
-            convTerm = PhenotypeConvergenceTerminator(xTol, 100, 1, 1);
+            convTerm = PhenotypeConvergenceTerminator(xTol, evalsForConv, 1, 1);
         else if (fTol > 0 )             % only fitness covnergence
-                convTerm = FitnessConvergenceTerminator(fTol, 100, 1, 1);
+                convTerm = FitnessConvergenceTerminator(fTol, evalsForConv, 1, 1);
             else
                convTerm = 'undef'; % signal that there is no terminator yet
             end
