@@ -41,7 +41,7 @@ public class MOSONoConvert implements InterfaceMOSOConverter, java.io.Serializab
         double[]    tmpFit;
 
         tmpFit          = indy.getFitness();
-        indy.SetData("MOFitness", tmpFit);
+        indy.putData("MOFitness", tmpFit);
 //        resultFit[0]    = tmpFit[RNG.randomInt(0, tmpFit.length)];
 //        indy.SetFitness(resultFit);
     }    

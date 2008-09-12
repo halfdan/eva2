@@ -46,7 +46,7 @@ public class MOSOUtilityFunction implements InterfaceMOSOConverter, java.io.Seri
         double[]    tmpFit;
 
         tmpFit = indy.getFitness();
-        indy.SetData("MOFitness", tmpFit);
+        indy.putData("MOFitness", tmpFit);
         resultFit[0] = 0;
 
         /**********************************************************************************************

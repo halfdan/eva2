@@ -498,19 +498,21 @@ public class MOCCOStandalone implements InterfaceGOStandalone, InterfacePopulati
      * @param name          Could be used to indicate the nature of the event.
      */
     public void registerPopulationStateChanged(Object source, String name) {
-        int currentProgress;
-        if (this.m_State.isVisible) {
-            Population population = ((InterfaceOptimizer)source).getPopulation();
-            double x = 100;
-            if (this.m_State.m_Terminator instanceof EvaluationTerminator) {
-                double y = x/(double)((EvaluationTerminator)this.m_State.m_Terminator).getFitnessCalls();
-                currentProgress = (int)(population.getFunctionCalls()*y);
-            } else {
-                currentProgress = (int)(0);
-            }
-            updateStatus("Optimizing...",currentProgress);
-        } else {
-            // perhaps i could write it to file!?
-        }
+    	int currentProgress;
+    	if (name.equals(Population.nextGenerationPerformed)) {
+    		if (this.m_State.isVisible) {
+    			Population population = ((InterfaceOptimizer)source).getPopulation();
+    			double x = 100;
+    			if (this.m_State.m_Terminator instanceof EvaluationTerminator) {
+    				double y = x/(double)((EvaluationTerminator)this.m_State.m_Terminator).getFitnessCalls();
+    				currentProgress = (int)(population.getFunctionCalls()*y);
+    			} else {
+    				currentProgress = (int)(0);
+    			}
+    			updateStatus("Optimizing...",currentProgress);
+    		} else {
+    			// perhaps i could write it to file!?
+    		}
+    	}
     }
 }

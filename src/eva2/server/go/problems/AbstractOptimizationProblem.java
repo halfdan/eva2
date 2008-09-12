@@ -51,22 +51,14 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
      */
     public void evaluate(Population population) {
         AbstractEAIndividual    tmpIndy;
-
-//        if (population.isEvaluated()) {
-//        	System.err.println("Population evaluation seems not required!");
-//        } else {
-	        // @todo This is the position to implement a granular
-	        // @todo paralleliziation scheme
-	        evaluatePopulationStart(population);
-	        for (int i = 0; i < population.size(); i++) {
-	            tmpIndy = (AbstractEAIndividual) population.get(i);
-	            tmpIndy.resetConstraintViolation();
-	            this.evaluate(tmpIndy);
-	            population.incrFunctionCalls();
-	        }
-	        evaluatePopulationEnd(population);
-//	        population.setEvaluated();
-//        }
+        evaluatePopulationStart(population);
+        for (int i = 0; i < population.size(); i++) {
+        	tmpIndy = (AbstractEAIndividual) population.get(i);
+        	tmpIndy.resetConstraintViolation();
+        	this.evaluate(tmpIndy);
+        	population.incrFunctionCalls();
+        }
+        evaluatePopulationEnd(population);
     }
     
     /**
@@ -103,20 +95,6 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
     	return AbstractEAIndividual.getDefaultStringRepresentation(individual);
     }
 
-    /** This method returns a single line representation of the solution
-     * @param individual  The individual
-     * @return The string
-     */
-//    public String getSolutionDataFor(IndividualInterface individual) {
-//    }
-
-//    /** This method returns a string describing the optimization problem.
-//     * @return The description.
-//     */
-//    public String getStringRepresentationF() {
-//        return "AbstractOptimizationProblem: programmer failed to give further details";
-//    }
-
     /** This method returns a double value that will be displayed in a fitness
      * plot. A fitness that is to be minimized with a global min of zero
      * would be best, since log y can be used. But the value can depend on the problem.
@@ -152,7 +130,9 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
         result.setLayout(new BorderLayout());
         JTextArea   area    = new JTextArea();
         JScrollPane scroll  = new JScrollPane(area);
-        area.setText("Best Solution:\n"+this.getSolutionRepresentationFor(indy));
+        String text = "Best Solution:\n"+this.getSolutionRepresentationFor(indy);
+        area.setLineWrap(true);
+        area.setText(text);
         area.setEditable(false);
         result.add(scroll, BorderLayout.CENTER);
         return result;

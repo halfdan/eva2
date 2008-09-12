@@ -66,7 +66,7 @@ public class MOSOMaxiMin implements InterfaceMOSOConverter, java.io.Serializable
             // write the result to the individuals
             tmpIndy     = (AbstractEAIndividual) pop.get(i);
             tmpFit      = tmpIndy.getFitness();
-            tmpIndy.SetData("MOFitness", tmpFit);
+            tmpIndy.putData("MOFitness", tmpFit);
             resultFit   = new double[1];
             resultFit[0] = result[i];
             tmpIndy.SetFitness(resultFit);
@@ -107,7 +107,7 @@ public class MOSOMaxiMin implements InterfaceMOSOConverter, java.io.Serializable
         double[]    tmpFit;
 
         tmpFit          = indy.getFitness();
-        indy.SetData("MOFitness", tmpFit);
+        indy.putData("MOFitness", tmpFit);
         System.out.println("The MaxiMin MOSO can not be applied to single individuals! I default to random criterion.");
         resultFit[0]    = tmpFit[RNG.randomInt(0, tmpFit.length)];
         indy.SetFitness(resultFit);

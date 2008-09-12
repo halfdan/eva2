@@ -375,7 +375,7 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
 			for (int i = 0; i < this.m_Population.size(); i++) {
 				AbstractEAIndividual indy = (AbstractEAIndividual)m_Population.get(i);
 		    	if (i>=quantumCount) {
-		    		indy.SetData(partTypeKey, quantumType);
+		    		indy.putData(partTypeKey, quantumType);
 		    		quantumCount += 1./quantumRatio;
 		    	}
 			}
@@ -437,8 +437,8 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
 	    // log the best individual of the population
 	    if (envHasChanged || (this.m_Population.getBestEAIndividual().isDominatingDebConstraints(this.m_BestIndividual))) {
 	        this.m_BestIndividual = (AbstractEAIndividual)this.m_Population.getBestEAIndividual().clone();
-	        this.m_BestIndividual.SetData(partBestFitKey, this.m_BestIndividual.getFitness());
-	        this.m_BestIndividual.SetData(partBestPosKey, ((InterfaceDataTypeDouble)this.m_BestIndividual).getDoubleData());
+	        this.m_BestIndividual.putData(partBestFitKey, this.m_BestIndividual.getFitness());
+	        this.m_BestIndividual.putData(partBestPosKey, ((InterfaceDataTypeDouble)this.m_BestIndividual).getDoubleData());
 	        //System.out.println("-- best ind set to " + ((InterfaceDataTypeDouble)this.m_BestIndividual).getDoubleData()[0] + "/" + ((InterfaceDataTypeDouble)this.m_BestIndividual).getDoubleData()[1]);
 	    }
     }

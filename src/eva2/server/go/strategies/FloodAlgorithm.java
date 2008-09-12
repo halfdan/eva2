@@ -59,7 +59,7 @@ public class FloodAlgorithm implements InterfaceOptimizer, java.io.Serializable 
         this.m_Problem.initPopulation(this.m_Population);
         this.m_Problem.evaluate(this.m_Population);
         this.m_CurrentFloodPeak = this.m_InitialFloodPeak;
-        this.firePropertyChangedEvent("NextGenerationPerformed");
+        this.firePropertyChangedEvent(Population.nextGenerationPerformed);
     }
 
     /** This method will init the optimizer with a given population
@@ -70,7 +70,7 @@ public class FloodAlgorithm implements InterfaceOptimizer, java.io.Serializable 
         if (reset) {
         	this.m_Population.init();
             this.m_Problem.evaluate(this.m_Population);
-            this.firePropertyChangedEvent("NextGenerationPerformed");
+            this.firePropertyChangedEvent(Population.nextGenerationPerformed);
         }
         this.m_CurrentFloodPeak = this.m_InitialFloodPeak;
     }
@@ -99,7 +99,7 @@ public class FloodAlgorithm implements InterfaceOptimizer, java.io.Serializable 
         }
         this.m_CurrentFloodPeak = this.m_CurrentFloodPeak - this.m_DrainRate;
         this.m_Population.incrGeneration();
-        this.firePropertyChangedEvent("NextGenerationPerformed");
+        this.firePropertyChangedEvent(Population.nextGenerationPerformed);
     }
 
     /** This method calculates the difference between the fitness values

@@ -21,9 +21,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import eva2.server.go.InterfaceGOParameters;
+import eva2.server.go.individuals.AbstractEAIndividual;
+import eva2.server.go.problems.AbstractOptimizationProblem;
+import eva2.server.go.problems.InterfaceOptimizationProblem;
+import eva2.server.go.strategies.InterfaceOptimizer;
+import eva2.server.modules.AbstractModuleAdapter;
 import eva2.server.modules.ModuleAdapter;
 
 import wsi.ra.jproxy.RMIProxyLocal;
@@ -44,6 +51,7 @@ public class JModuleGeneralPanel implements RemoteStateListener, Serializable  {
 	private JButton m_actStop;
 //	private JButton m_actExitMod;
 	private JButton m_JHelpButton;
+	private JButton m_ShowSolButton;
 	private JPanel m_Panel;
 	private String m_HelperFileName;
 
@@ -90,10 +98,10 @@ public class JModuleGeneralPanel implements RemoteStateListener, Serializable  {
 					m_RunButton.setEnabled(false);
 					m_PPButton.setEnabled(false);
 //					m_RestartButton.setEnabled(false);
-					m_JHelpButton.setEnabled(true);
+//					m_JHelpButton.setEnabled(true);
 				} catch (Exception ee) {
 					ee.printStackTrace();
-					System.out.print ("Error in run: " +ee +" : " + ee.getMessage() );
+					System.err.print ("Error in run: " +ee +" : " + ee.getMessage() );
 				}
 			}
 		}
@@ -111,7 +119,7 @@ public class JModuleGeneralPanel implements RemoteStateListener, Serializable  {
 			public void actionPerformed(ActionEvent e){
 				try {
 					m_Adapter.stopOpt();	// this means user break
-				} catch (Exception ee) { System.out.print ("Error in stop: " + ee.getMessage() ); }
+				} catch (Exception ee) { System.err.print ("Error in stop: " + ee.getMessage() ); }
 			}
 		}
 		);
@@ -132,7 +140,7 @@ public class JModuleGeneralPanel implements RemoteStateListener, Serializable  {
 //					m_RunButton.setEnabled(false);
 				} catch (Exception ee) {
 					ee.printStackTrace();
-					System.out.println("Error in run: " +ee +" : " + ee.getMessage() );
+					System.err.println("Error in run: " +ee +" : " + ee.getMessage() );
 				}
 			}
 		}
@@ -140,8 +148,43 @@ public class JModuleGeneralPanel implements RemoteStateListener, Serializable  {
 		m_PPButton.setEnabled(m_StateRunning && m_Adapter.hasPostProcessing());
 		m_Panel.add(m_PPButton);
 		
+		makeHelpButton();
+		
+		if (m_Adapter instanceof AbstractModuleAdapter && (m_Adapter != null)) {
+		    /** This action listener, called by the "show" button will show the
+		     * currently best solution in a frame.
+		     */
+			m_ShowSolButton = new JButton("Show Solution");
+			m_ShowSolButton.addActionListener(new ActionListener() {
+		        public void actionPerformed(ActionEvent event) {
+					InterfaceGOParameters goParams = ((AbstractModuleAdapter)m_Adapter).getGOParameters();
+					InterfaceOptimizationProblem goProblem = goParams.getProblem();
+					InterfaceOptimizer opt = goParams.getOptimizer();
+					AbstractEAIndividual indy = opt.getPopulation().getBestEAIndividual();
+					if (indy != null) {
+			            JFrame frame = new JFrame();
+			            frame.setTitle("The current best solution for "+goProblem.getName());
+			            frame.setSize(400, 300);
+			            frame.setLocation(450, 250);
+			            frame.getContentPane().add(goProblem.drawIndividual(indy));
+			            frame.validate();
+			            frame.setVisible(true);
+					} else System.out.println("No current solution available.");
+		        }
+			}
+					);
+			m_ShowSolButton.setEnabled(false);
+			m_Panel.add(m_ShowSolButton);
+		}
+		
+//		m_actExitMod = new JButton("Exit Module");
+//		m_actExitMod.setToolTipText("todo !!.");// TODO
+		return m_Panel;
+	}
+	
+	private void makeHelpButton() {
 		///////////////////////////////////////////////////////////////
-		if (m_HelperFileName.equals("")== false) {
+		if (m_HelperFileName!=null && (!m_HelperFileName.equals(""))) {
 			m_JHelpButton= new JButton("Description");
 			m_JHelpButton.setToolTipText("Description of the current optimization algorithm.");
 			m_JHelpButton.addActionListener(new ActionListener() {
@@ -162,11 +205,8 @@ public class JModuleGeneralPanel implements RemoteStateListener, Serializable  {
 			);
 			m_Panel.add(m_JHelpButton);
 		}
-//		m_actExitMod = new JButton("Exit Module");
-//		m_actExitMod.setToolTipText("todo !!.");// TODO
-		return m_Panel;
 	}
-
+    
 	/**
 	 *
 	 */
@@ -180,6 +220,7 @@ public class JModuleGeneralPanel implements RemoteStateListener, Serializable  {
 	}
 
 	public void performedStart(String infoString) {
+		m_ShowSolButton.setEnabled(true);
 	}
 
 
@@ -199,7 +240,22 @@ public class JModuleGeneralPanel implements RemoteStateListener, Serializable  {
 	 *
 	 */
 	public void setHelperFilename (String s) {
-		m_HelperFileName = s;
+		if ((s==null) && (s==m_HelperFileName)) return; // both are null, do nothing
+		if (s!=null) {
+			if (m_HelperFileName != null) {
+				if (!m_HelperFileName.equals(s)) {
+					m_Panel.remove(m_JHelpButton);
+					m_HelperFileName = s;
+					makeHelpButton();					
+				} //else // both are equal, do nothing
+			} else { // only old is null, nothing to be removed
+				m_HelperFileName = s;
+				makeHelpButton();
+			}
+		} else { // s is null, so just remove
+			m_Panel.remove(m_JHelpButton);
+			m_HelperFileName=s;
+		}
 	}
 }
 

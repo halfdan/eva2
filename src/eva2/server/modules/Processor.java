@@ -251,19 +251,21 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
      * @param name          Could be used to indicate the nature of the event.
      */
     public void registerPopulationStateChanged(Object source, String name) {
-		m_Statistics.createNextGenerationPerformed(
-				(PopulationInterface)this.goParams.getOptimizer().getPopulation(), 
-				this.goParams.getProblem());
-		if (m_ListenerModule != null) {
-			m_ListenerModule.updateProgress(
-					getStatusPercent(
-							goParams.getOptimizer().getPopulation(), 
-							runCounter,
-							m_Statistics.getStatisticsParameter().getMultiRuns()), 
-							null);
-		}
+    	if (name.equals(Population.nextGenerationPerformed)) {
+    		m_Statistics.createNextGenerationPerformed(
+    				(PopulationInterface)this.goParams.getOptimizer().getPopulation(), 
+    				this.goParams.getProblem());
+    		if (m_ListenerModule != null) {
+    			m_ListenerModule.updateProgress(
+    					getStatusPercent(
+    							goParams.getOptimizer().getPopulation(), 
+    							runCounter,
+    							m_Statistics.getStatisticsParameter().getMultiRuns()), 
+    							null);
+    		}
+    	}
     }
-    
+
     /** This method writes Data to file.
      * @param line      The line that is to be added to the file
      */

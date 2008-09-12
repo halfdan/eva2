@@ -60,7 +60,7 @@ public class PopulationBasedIncrementalLearning implements InterfaceOptimizer, j
     public void init() {
         this.m_Problem.initPopulation(this.m_Population);
         this.evaluatePopulation(this.m_Population);
-        this.firePropertyChangedEvent("NextGenerationPerformed");
+        this.firePropertyChangedEvent(Population.nextGenerationPerformed);
     }
 
     /** This method will init the optimizer with a given population
@@ -78,7 +78,7 @@ public class PopulationBasedIncrementalLearning implements InterfaceOptimizer, j
             this.evaluatePopulation(this.m_Population);
         }
         ((PBILPopulation)this.m_Population).buildProbabilityVector();
-        this.firePropertyChangedEvent("NextGenerationPerformed");
+        this.firePropertyChangedEvent(Population.nextGenerationPerformed);
     }
 
     /** This method will evaluate the current population using the
@@ -121,7 +121,7 @@ public class PopulationBasedIncrementalLearning implements InterfaceOptimizer, j
         } else {
             this.m_Population = nextGeneration;
         }
-        this.firePropertyChangedEvent("NextGenerationPerformed");
+        this.firePropertyChangedEvent(Population.nextGenerationPerformed);
     }
 
     /** This method will set the problem that is to be optimized

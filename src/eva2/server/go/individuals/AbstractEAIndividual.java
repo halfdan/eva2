@@ -749,7 +749,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      * @param name      The identifying name.
      * @param obj       The object that is to be stored.
      */
-    public void SetData(String name, Object obj) {
+    public void putData(String name, Object obj) {
    		m_dataHash.put(name, obj);
     }
 

@@ -76,7 +76,7 @@ public class MultiObjectiveEA implements InterfaceOptimizer, java.io.Serializabl
     public void init() {
         this.m_Optimizer.init();
         this.m_Archiver.addElementsToArchive(this.m_Optimizer.getPopulation());
-        this.firePropertyChangedEvent("NextGenerationPerformed");
+        this.firePropertyChangedEvent(Population.nextGenerationPerformed);
     }
 
 
@@ -87,7 +87,7 @@ public class MultiObjectiveEA implements InterfaceOptimizer, java.io.Serializabl
     public void initByPopulation(Population pop, boolean reset) {
         this.m_Optimizer.initByPopulation(pop, reset);
         this.m_Archiver.addElementsToArchive(this.m_Optimizer.getPopulation());
-        this.firePropertyChangedEvent("NextGenerationPerformed");
+        this.firePropertyChangedEvent(Population.nextGenerationPerformed);
     }
 
     /** The optimize method will compute a 'improved' and evaluated population
@@ -127,7 +127,7 @@ public class MultiObjectiveEA implements InterfaceOptimizer, java.io.Serializabl
 
         System.gc();
 
-        this.firePropertyChangedEvent("NextGenerationPerformed");
+        this.firePropertyChangedEvent(Population.nextGenerationPerformed);
     }
 
     private double[][] showMay(Population pop) {

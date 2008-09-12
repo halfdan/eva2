@@ -45,7 +45,7 @@ public class MOSORandomChoice  implements InterfaceMOSOConverter, java.io.Serial
         double[]    tmpFit;
 
         tmpFit          = indy.getFitness();
-        indy.SetData("MOFitness", tmpFit);
+        indy.putData("MOFitness", tmpFit);
         resultFit[0]    = tmpFit[RNG.randomInt(0, tmpFit.length-1)];
         indy.SetFitness(resultFit);
     }

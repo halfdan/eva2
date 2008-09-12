@@ -51,7 +51,7 @@ public class MOSODynamicallyWeightedFitness implements InterfaceMOSOConverter, j
         double[]    weights;
 
         tmpFit = indy.getFitness();
-        indy.SetData("MOFitness", tmpFit);
+        indy.putData("MOFitness", tmpFit);
         weights = new double[tmpFit.length];
 
         // calculate the dynamic weights

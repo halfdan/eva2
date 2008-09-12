@@ -92,7 +92,7 @@ public class WingedMultiObjectiveEA implements InterfaceOptimizer, java.io.Seria
             this.m_SOOptimizer.init();
         }
         this.communicate();
-        this.firePropertyChangedEvent("NextGenerationPerformed");
+        this.firePropertyChangedEvent(Population.nextGenerationPerformed);
     }
 
 
@@ -130,7 +130,7 @@ public class WingedMultiObjectiveEA implements InterfaceOptimizer, java.io.Seria
             this.m_SOOptimizer.initByPopulation(pop, reset);
         }
         this.communicate();
-        this.firePropertyChangedEvent("NextGenerationPerformed");
+        this.firePropertyChangedEvent(Population.nextGenerationPerformed);
     }
 
     /** The optimize method will compute a 'improved' and evaluated population
@@ -148,7 +148,7 @@ public class WingedMultiObjectiveEA implements InterfaceOptimizer, java.io.Seria
 
         System.gc();
 
-        this.firePropertyChangedEvent("NextGenerationPerformed");
+        this.firePropertyChangedEvent(Population.nextGenerationPerformed);
     }
 
     /** This method will manage comunication between the
@@ -171,7 +171,7 @@ public class WingedMultiObjectiveEA implements InterfaceOptimizer, java.io.Seria
         oldFunctionCalls = this.m_Population.getFunctionCalls();
         this.m_Problem.evaluate(this.m_Population);
         this.m_Population.SetFunctionCalls(oldFunctionCalls);
-        this.firePropertyChangedEvent("NextGenerationPerformed");
+        this.firePropertyChangedEvent(Population.nextGenerationPerformed);
         double plotValue = (this.m_Problem.getDoublePlotValue(this.m_Population)).doubleValue();
         // now they are synchronized lets migrate
         this.migrate();

@@ -44,7 +44,7 @@ public class MOSORandomWeight implements InterfaceMOSOConverter, java.io.Seriali
         double      sum = 0;
 
         tmpFit = indy.getFitness();
-        indy.SetData("MOFitness", tmpFit);
+        indy.putData("MOFitness", tmpFit);
         tmpWeight = new double[tmpFit.length];
         for (int i = 0; i < tmpWeight.length; i++) {
             tmpWeight[i] = RNG.randomDouble(0,1);

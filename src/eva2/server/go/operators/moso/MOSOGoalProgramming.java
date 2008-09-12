@@ -50,7 +50,7 @@ public class MOSOGoalProgramming implements InterfaceMOSOConverter, java.io.Seri
         double[]    tmpFit;
 
         tmpFit = indy.getFitness();
-        indy.SetData("MOFitness", tmpFit);
+        indy.putData("MOFitness", tmpFit);
         resultFit[0] = 0;
         for (int i = 0; (i < this.m_Goals.m_DoubleArray.length) && (i < tmpFit.length) ; i++)
             resultFit[0] += tmpFit[i]-this.m_Goals.m_DoubleArray[i];

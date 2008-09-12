@@ -614,7 +614,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
 //        		System.out.println("species distract best towards " + BeanInspector.toString(distVect));
 //        	}
 //        }
-        this.firePropertyChangedEvent("NextGenerationPerformed");
+        this.firePropertyChangedEvent(Population.nextGenerationPerformed);
     }
 
     /**

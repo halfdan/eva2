@@ -2,7 +2,9 @@ package eva2.server.go.populations;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Set;
@@ -39,13 +41,16 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     protected Population    m_Archive       = null;
 
     transient private ArrayList<AbstractEAIndividual> sortedArr = null;
-    transient protected InterfacePopulationChangedEventListener	m_Listener = null;
+    transient private ArrayList<InterfacePopulationChangedEventListener> listeners = null;
+//    transient protected InterfacePopulationChangedEventListener	m_Listener = null;
 
     // the evaluation interval at which listeners are notified
     protected int 			notifyEvalInterval	= 0;
     protected HashMap<String, Object>		additionalPopData = null;
     
-    public static String funCallIntervalReached = "FunCallIntervalReached";
+    public static final String funCallIntervalReached = "FunCallIntervalReached";
+    public static final String populationInitialized = "PopulationReinitOccured";
+    public static final String nextGenerationPerformed = "NextGenerationPerformed";
     
     boolean useHistory						= false;
     public ArrayList<AbstractEAIndividual>  m_History       = new ArrayList<AbstractEAIndividual>();
@@ -95,7 +100,9 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
         this.m_Size             = population.m_Size;
         this.useHistory 		= population.useHistory;
         this.notifyEvalInterval = population.notifyEvalInterval;
-        this.m_Listener			= population.m_Listener;
+//        this.m_Listener			= population.m_Listener;
+        if (population.listeners != null) this.listeners			= (ArrayList<InterfacePopulationChangedEventListener>)population.listeners.clone();
+        else listeners = null;
         if (population.additionalPopData != null) {
         	additionalPopData = new HashMap<String, Object>();
         	Set<String> keys = additionalPopData.keySet();
@@ -105,7 +112,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
         }
     }
 
-    public void addData(String key, Object value) {
+    public void putData(String key, Object value) {
     	if (additionalPopData == null) additionalPopData = new HashMap<String, Object>();
     	additionalPopData.put(key, value);
     }
@@ -113,6 +120,11 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     public Object getData(String key) {
     	if (additionalPopData == null) return null;
     	else return additionalPopData.get(key);
+    }
+    
+    public boolean hasData(String key) {
+    	if (additionalPopData != null) return (additionalPopData.get(key)!=null);
+    	else return false;
     }
     
     public Object clone() {
@@ -130,6 +142,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     	Population res = new Population();
     	res.setSameParams(this);
     	res.copyHistAndArchive(this);
+    	if (additionalPopData!=null) res.additionalPopData = (HashMap<String, Object>)(additionalPopData.clone());
     	return res;
     }
 
@@ -147,6 +160,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
             this.m_Archive.clear();
             this.m_Archive.init();
         }
+        firePropertyChangedEvent(Population.populationInitialized);
     }
 
     /** This method inits the population. Function and generation counters
@@ -215,11 +229,16 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     /** Something has changed
      */
     protected void firePropertyChangedEvent(String name) {
-        if (this.m_Listener != null) this.m_Listener.registerPopulationStateChanged(this, name);
+        if (listeners != null) {
+        	for (Iterator iterator = listeners.iterator(); iterator.hasNext();) {
+				InterfacePopulationChangedEventListener listener = (InterfacePopulationChangedEventListener) iterator.next();
+				listener.registerPopulationStateChanged(this, name);
+			}
+        }
     }
     
     private boolean doEvalNotify() {
-    	return ((this.m_Listener != null) && (notifyEvalInterval > 0));
+    	return ((listeners != null) && (listeners.size() > 0) && (notifyEvalInterval > 0));
     }
     
     /** This method return the current number of function calls performed.
@@ -260,7 +279,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
         if (useHistory && (this.size() >= 1)) this.m_History.add(this.getBestEAIndividual());
         for (int i=0; i<size(); i++) ((AbstractEAIndividual)get(i)).incrAge(); 
         this.m_Generation++;
-        firePropertyChangedEvent("NextGenerationPerformed");
+        firePropertyChangedEvent(nextGenerationPerformed);
     }
 
     /** This method returns the current generation.
@@ -281,7 +300,16 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      * @param ea
      */
     public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
-        this.m_Listener = ea;
+    	if (listeners == null) listeners = new ArrayList<InterfacePopulationChangedEventListener>(3);
+    	if (!listeners.contains(ea)) {
+    		listeners.add(ea);
+    	}
+    }
+    
+    public void removePopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
+    	if (listeners != null) {
+    		listeners.remove(ea);
+    	}
     }
     
     /** This method allows you to add a complete population to the current population.
@@ -350,12 +378,13 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
 	
 	/** 
 	 * This method will return the index of the current best individual from the
-     * population.
+     * population. If the population is empty, -1 is returned.
      * 
      * @see getIndexOfBestOrWorstIndividual()
      * @return The index of the best individual.
      */
     public int getIndexOfBestIndividual() {
+    	if (size()<1) return -1;
     	return getIndexOfBestOrWorstIndividual(true, true);
     }
 	
@@ -422,15 +451,23 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
         return result;
     }
 
-    /** This method returns the current best individual from the population
+    /** 
+	 * This method returns the current best individual from the population.
+	 * If the population is empty, null is returned.
+	 *
      * @return The best individual
      */
     public AbstractEAIndividual getBestEAIndividual() {
+    	if (size()<1) return null;
         int best = this.getIndexOfBestIndividual();
-        if (best == -1) System.err.println("This shouldnt happen!");;
-        AbstractEAIndividual result = (AbstractEAIndividual)this.get(best);
-        if (result == null) System.err.println("Serious Problem! Population Size: " + this.size());
-        return result;
+        if (best == -1) {
+        	System.err.println("This shouldnt happen!");
+        	return null;
+        } else {
+        	AbstractEAIndividual result = (AbstractEAIndividual)this.get(best);
+        	if (result == null) System.err.println("Serious Problem! Population Size: " + this.size());
+        	return result;
+        }
     }
 
     /** 
@@ -796,7 +833,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     public boolean add(IndividualInterface o) {
     	return addIndividual((IndividualInterface)o);
     }
-    
+
     /**
 	 * ArrayList does not increase the modCount in set. Why???
      */

@@ -118,7 +118,7 @@ public class ArchivingNSGAII extends ArchivingNSGA implements java.io.Serializab
             tmpNonDom   = new Population();
             for (int i = 0; i < tmpPop.size(); i++) {
                 if (this.isDominant((AbstractEAIndividual) tmpPop.get(i), tmpPop)) {
-                    ((AbstractEAIndividual)tmpPop.get(i)).SetData("ParetoLevel", new Integer(level));
+                    ((AbstractEAIndividual)tmpPop.get(i)).putData("ParetoLevel", new Integer(level));
                     tmpDom.add(tmpPop.get(i));
 
                 } else {
@@ -130,7 +130,7 @@ public class ArchivingNSGAII extends ArchivingNSGA implements java.io.Serializab
                 System.out.println("Problem NSGA II at level " + level + ".");
                 tmpDom.addPopulation(tmpNonDom);
                 for (int i = 0; i < tmpDom.size(); i++)
-                    ((AbstractEAIndividual)tmpDom.get(i)).SetData("ParetoLevel", new Integer(level));
+                    ((AbstractEAIndividual)tmpDom.get(i)).putData("ParetoLevel", new Integer(level));
                 tmpPop.clear();
 //                System.out.println(""+tmpPop.getStringRepresentation());
 //                tmpPop.removeDoubleInstancesUsingFitness();
@@ -158,7 +158,7 @@ public class ArchivingNSGAII extends ArchivingNSGA implements java.io.Serializab
             }
             hyperCube = heidi.calculateHyperCubeVolumes(fitness);
             for (int j = 0; j < fronts[i].size(); j++) {
-                ((AbstractEAIndividual)fronts[i].get(j)).SetData("HyperCube", new Double(hyperCube[j]));
+                ((AbstractEAIndividual)fronts[i].get(j)).putData("HyperCube", new Double(hyperCube[j]));
             }
         }
     }

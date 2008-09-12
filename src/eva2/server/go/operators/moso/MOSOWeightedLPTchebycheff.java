@@ -55,7 +55,7 @@ public class MOSOWeightedLPTchebycheff implements InterfaceMOSOConverter, java.i
         double[]    tmpFit;
 
         tmpFit = indy.getFitness();
-        indy.SetData("MOFitness", tmpFit);
+        indy.putData("MOFitness", tmpFit);
         resultFit[0] = 0;
         for (int i = 0; i < tmpFit.length; i++) {
             if (this.m_WLPT.m_P == 0) {

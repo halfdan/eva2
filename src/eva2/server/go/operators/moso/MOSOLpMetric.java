@@ -52,7 +52,7 @@ public class MOSOLpMetric implements InterfaceMOSOConverter, java.io.Serializabl
         double[]    tmpFit;
 
         tmpFit = indy.getFitness();
-        indy.SetData("MOFitness", tmpFit);
+        indy.putData("MOFitness", tmpFit);
         if (m_P >= 1) {
             // standard Lp Metric
             resultFit[0] = 0;
