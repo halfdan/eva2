@@ -72,7 +72,7 @@ public interface InterfaceOptimizationProblem extends InterfaceAdditionalPopulat
     /** This method allows you to request a graphical represenation for a given
      * individual.
      */
-    public JComponent drawIndividual(AbstractEAIndividual indy);
+    public JComponent drawIndividual(int generation, int funCalls, AbstractEAIndividual indy);
 
     /** This method returns a double value that will be displayed in a fitness
      * plot. A fitness that is to be minimized with a global min of zero

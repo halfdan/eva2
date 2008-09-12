@@ -121,16 +121,35 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
         return AbstractEAIndividual.getDefaultDataString(pop.getBestIndividual());
     }
 
-    /** This method allows you to request a graphical represenation for a given
-     * individual.
-     * @return JComponent
+    /**
+     * Convenience method, draws with undefined generation and function evaluation count.
+     * 
+     * @see #drawIndividual(int, int, AbstractEAIndividual)
+     * @param indy
+     * @return
      */
     public JComponent drawIndividual(AbstractEAIndividual indy) {
+    	return drawIndividual(-1, -1, indy);
+    }
+
+    /** 
+	 * This method allows you to request a graphical represenation for a given individual.
+	 * The additional informations generation and funCalls are shown if they are >= 0.
+     * individual.
+     * @param generation	generation of the individual or -1
+     * @param funCalls	function calls performed or -1
+     * @param indy	the individual to display
+     * @return JComponent
+     */
+    public JComponent drawIndividual(int generation, int funCalls, AbstractEAIndividual indy) {
         JPanel      result  = new JPanel();
         result.setLayout(new BorderLayout());
         JTextArea   area    = new JTextArea();
         JScrollPane scroll  = new JScrollPane(area);
-        String text = "Best Solution:\n"+this.getSolutionRepresentationFor(indy);
+        String text = "Best Solution:\n";
+        if (generation >= 0) text+=" Generation: " + generation + "\n";
+        if (funCalls >= 0) text+=" Evaluations: " + funCalls + "\n";
+        text += this.getSolutionRepresentationFor(indy);
         area.setLineWrap(true);
         area.setText(text);
         area.setEditable(false);

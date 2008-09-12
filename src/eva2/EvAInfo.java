@@ -11,6 +11,8 @@ package eva2;
  * 			requires much time for transcoding, however, this is not useful by itself. Yet it could be
  * 			interesting for combined individuals composed of two data types. 
  * 			Cleaned up MutateXXDefault to a single MutateDefault, too. DE may now do range checking.
+ * 			The "Description" button has made space for a "Show Solution" button. The Rank-Mu-CMA was improved
+ * 			to use a CMAParameterSet which is associated with populations and not static any more.
  * 2.029: Tuned the 2d-graphs which now paints quicker and changes size depending on the
  * 			surrounding plot window. Added a preloader-thread to accelerate the GUI at starting time.
  * 2.028: Tuned the Population to sort only when necessary on calls to getBestN... Added StatisticsDummy.

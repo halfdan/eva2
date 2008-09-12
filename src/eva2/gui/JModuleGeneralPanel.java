@@ -13,28 +13,26 @@ package eva2.gui;
 /*==========================================================================*
  * IMPORTS
  *==========================================================================*/
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.Serializable;
 import java.net.InetAddress;
 
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import wsi.ra.jproxy.RMIProxyLocal;
+import wsi.ra.jproxy.RemoteStateListener;
 import eva2.server.go.InterfaceGOParameters;
 import eva2.server.go.individuals.AbstractEAIndividual;
-import eva2.server.go.problems.AbstractOptimizationProblem;
+import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.server.go.strategies.InterfaceOptimizer;
 import eva2.server.modules.AbstractModuleAdapter;
 import eva2.server.modules.ModuleAdapter;
-
-import wsi.ra.jproxy.RMIProxyLocal;
-import wsi.ra.jproxy.RemoteStateListener;
 /*==========================================================================*
  * CLASS DECLARATION
  *==========================================================================*/
@@ -166,7 +164,8 @@ public class JModuleGeneralPanel implements RemoteStateListener, Serializable  {
 			            frame.setTitle("The current best solution for "+goProblem.getName());
 			            frame.setSize(400, 300);
 			            frame.setLocation(450, 250);
-			            frame.getContentPane().add(goProblem.drawIndividual(indy));
+						Population pop = opt.getPopulation();
+			            frame.getContentPane().add(goProblem.drawIndividual(pop.getGeneration(), pop.getFunctionCalls(), indy));
 			            frame.validate();
 			            frame.setVisible(true);
 					} else System.out.println("No current solution available.");
