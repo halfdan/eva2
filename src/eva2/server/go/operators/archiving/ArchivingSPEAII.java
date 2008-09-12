@@ -512,8 +512,8 @@ public class ArchivingSPEAII extends AbstractArchiving implements java.io.Serial
         for (int i = 0; i < SPEAResult.length; i++) {
             if (1/(2+D[i]) >= 1) System.out.println("d " +1/(2+D[i]));
             SPEAResult[i] = SPEAFitness[i] + (1/(2+D[i]));
-            ((AbstractEAIndividual)pop.get(i)).SetData("RawFit", new Double(SPEAFitness[i]));
-            ((AbstractEAIndividual)pop.get(i)).SetData("SPEAFit", new Double(SPEAResult[i]));
+            ((AbstractEAIndividual)pop.get(i)).putData("RawFit", new Double(SPEAFitness[i]));
+            ((AbstractEAIndividual)pop.get(i)).putData("SPEAFit", new Double(SPEAResult[i]));
         }
 
         if (this.m_Debug && this.m_Plot != null) {

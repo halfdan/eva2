@@ -29,6 +29,6 @@ public class GOModuleAdapter extends GenericModuleAdapter implements ModuleAdapt
    * @param Client	the client instance
    */
   public GOModuleAdapter(String adapterName, MainAdapterClient client) {
-       super (adapterName, "GO.html", client, GOParameters.getInstance(), false);
+       super (adapterName, "", client, GOParameters.getInstance(), false);
    }
 }

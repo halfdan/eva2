@@ -1,13 +1,10 @@
 package eva2.server.go.problems;
 
-
-
 import javax.swing.*;
 
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.populations.Population;
 import eva2.server.go.strategies.InterfaceOptimizer;
-import eva2.server.stat.InterfaceStatistics;
 
 /**
  * Created by IntelliJ IDEA.
@@ -50,15 +47,6 @@ public interface InterfaceOptimizationProblem extends InterfaceAdditionalPopulat
      * @param individual    The individual that is to be evalutated
      */
     public void evaluate(AbstractEAIndividual individual);
-
-//	DEPRECATED, use PhenotypeMetric    
-//** This method should be used to calculate the distance between two
-//     * individuals
-//     * @param indy1     The first individual.
-//     * @param indy2     The second individual.
-//     * @return The distance.
-//     */
-//    public double distanceBetween(AbstractEAIndividual indy1, AbstractEAIndividual indy2);
 
     /******************** Some output methods *******************************************/
 

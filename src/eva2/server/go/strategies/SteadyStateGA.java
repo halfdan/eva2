@@ -54,7 +54,7 @@ public class SteadyStateGA implements InterfaceOptimizer, java.io.Serializable {
         public void init() {
             this.m_Problem.initPopulation(this.m_Population);
             this.evaluatePopulation(this.m_Population);
-            this.firePropertyChangedEvent("NextGenerationPerformed");
+            this.firePropertyChangedEvent(Population.nextGenerationPerformed);
         }
 
         /** This method will init the optimizer with a given population
@@ -65,7 +65,7 @@ public class SteadyStateGA implements InterfaceOptimizer, java.io.Serializable {
             if (reset) {
             	this.m_Population.init();
                 this.evaluatePopulation(this.m_Population);
-                this.firePropertyChangedEvent("NextGenerationPerformed");
+                this.firePropertyChangedEvent(Population.nextGenerationPerformed);
             }
         }
 
@@ -111,7 +111,7 @@ public class SteadyStateGA implements InterfaceOptimizer, java.io.Serializable {
             for (int i = 0; i < this.m_Population.size(); i++) this.generateChildren();
             this.m_Population.incrFunctionCallsBy(this.m_Population.size());
             this.m_Population.incrGeneration();
-            this.firePropertyChangedEvent("NextGenerationPerformed");
+            this.firePropertyChangedEvent(Population.nextGenerationPerformed);
         }
 
         /** This method allows you to add the LectureGUI as listener to the Optimizer

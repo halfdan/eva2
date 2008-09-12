@@ -49,6 +49,7 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
 
     transient private String                m_Identifier = "";
     transient private InterfacePopulationChangedEventListener m_Listener;
+    public static final String esMuParam = "EvolutionStrategyMuParameter";
 
     public EvolutionStrategies() {
         this.m_Population.setPopulationSize(this.m_Lambda);
@@ -97,10 +98,11 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
 //        }
         //System.out.println("init");
     	checkPopulationConstraints();
+    	m_Population.putData(esMuParam, getMu());
         this.m_Problem.initPopulation(this.m_Population);
         this.evaluatePopulation(this.m_Population);
 //        this.m_Population.setPopulationSize(orgPopSize);
-//        this.firePropertyChangedEvent("NextGenerationPerformed");// not necessary if incrGeneration is called
+//        this.firePropertyChangedEvent(Population.nextGenerationPerformed);// not necessary if incrGeneration is called
     }
 
 
@@ -115,7 +117,7 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
         if (reset) {
         	this.m_Population.init();
             this.evaluatePopulation(this.m_Population);
-//            this.firePropertyChangedEvent("NextGenerationPerformed"); // not necessary if incrGeneration is called
+//            this.firePropertyChangedEvent(Population.nextGenerationPerformed); // not necessary if incrGeneration is called
         }
     }
 
@@ -203,7 +205,7 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
 //        System.out.println("Population size: " + this.m_Population.size());
 //        System.out.println("-- Best Fitness " + this.m_Population.getBestFitness()[0]);
         
-        this.firePropertyChangedEvent("NextGenerationPerformed"); // necessary here because evalPop was not called on m_Population
+        this.firePropertyChangedEvent(Population.nextGenerationPerformed); // necessary here because evalPop was not called on m_Population
     }        
     
     /**

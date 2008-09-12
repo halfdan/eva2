@@ -92,7 +92,7 @@ public class MemeticAlgorithm implements InterfaceOptimizer,
 		if (reset) {
 			this.getPopulation().init();
 			this.m_Problem.evaluate(this.getPopulation());
-			this.firePropertyChangedEvent("NextGenerationPerformed");
+			this.firePropertyChangedEvent(Population.nextGenerationPerformed);
 		}
 	}
 
@@ -101,7 +101,7 @@ public class MemeticAlgorithm implements InterfaceOptimizer,
 		this.m_GlobalOptimizer.SetProblem(this.m_Problem);
 		this.m_GlobalOptimizer.init();
 		this.evaluatePopulation(this.m_GlobalOptimizer.getPopulation());
-		this.firePropertyChangedEvent("NextGenerationPerformed");
+		this.firePropertyChangedEvent(Population.nextGenerationPerformed);
 	}
 
 	/**
@@ -192,7 +192,7 @@ public class MemeticAlgorithm implements InterfaceOptimizer,
 		if (TRACE)
 		  System.out.println("function calls"
 		      + this.m_GlobalOptimizer.getPopulation().getFunctionCalls());
-		this.firePropertyChangedEvent("NextGenerationPerformed");
+		this.firePropertyChangedEvent(Population.nextGenerationPerformed);
 	}
 
 	/**

@@ -53,7 +53,7 @@ public class MOSOEpsilonConstraint implements InterfaceMOSOConverter, java.io.Se
         double[]    tmpFit;
 
         tmpFit = indy.getFitness();
-        indy.SetData("MOFitness", tmpFit);
+        indy.putData("MOFitness", tmpFit);
         resultFit[0] = tmpFit[this.m_EpsilonConstraint.m_OptimizeObjective];
         for (int i = 0; i < this.m_EpsilonConstraint.m_TargetValue.length; i++) {
             if (i != this.m_EpsilonConstraint.m_OptimizeObjective) {

@@ -555,41 +555,43 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
      * @param name          Could be used to indicate the nature of the event.
      */
     public void registerPopulationStateChanged(Object source, String name) {
-        Population population = ((InterfaceOptimizer)source).getPopulation();
-        double x = 100/this.m_MultiRuns;
-        if (this.m_GO.getTerminator() instanceof EvaluationTerminator) {
-            double y = x/(double)((EvaluationTerminator)this.m_GO.getTerminator()).getFitnessCalls();
-            currentProgress = (int)(this.currentRun * x + population.getFunctionCalls()*y);
-        } else {
-            currentProgress = (int)(this.currentRun * x);
-        }
-        updateStatus(currentProgress);
+    	if (name.equals(Population.nextGenerationPerformed)) {
+    		Population population = ((InterfaceOptimizer)source).getPopulation();
+    		double x = 100/this.m_MultiRuns;
+    		if (this.m_GO.getTerminator() instanceof EvaluationTerminator) {
+    			double y = x/(double)((EvaluationTerminator)this.m_GO.getTerminator()).getFitnessCalls();
+    			currentProgress = (int)(this.currentRun * x + population.getFunctionCalls()*y);
+    		} else {
+    			currentProgress = (int)(this.currentRun * x);
+    		}
+    		updateStatus(currentProgress);
 
-        // data to be stored in file
-        double tmpd = 0;
-        StringBuffer  tmpLine = new StringBuffer("");
-        tmpLine.append(population.getFunctionCalls());
-        tmpLine.append("\t");
-        tmpLine.append(population.getBestEAIndividual().getFitness(0));
-        tmpLine.append("\t");
-        for (int i = 0; i < population.size(); i++) tmpd += ((AbstractEAIndividual)population.get(i)).getFitness(0)/(double)population.size();
-        tmpLine.append("\t");
-        tmpLine.append(tmpd);
-        tmpLine.append("\t");
-        tmpLine.append(population.getWorstEAIndividual().getFitness(0));
-        //tmpLine.append("\t");
-        //tmpLine.append(this.m_GO.getProblem().getAdditionalFileStringValue(population));
-        this.writeToFile(tmpLine.toString());
+    		// data to be stored in file
+    		double tmpd = 0;
+    		StringBuffer  tmpLine = new StringBuffer("");
+    		tmpLine.append(population.getFunctionCalls());
+    		tmpLine.append("\t");
+    		tmpLine.append(population.getBestEAIndividual().getFitness(0));
+    		tmpLine.append("\t");
+    		for (int i = 0; i < population.size(); i++) tmpd += ((AbstractEAIndividual)population.get(i)).getFitness(0)/(double)population.size();
+    		tmpLine.append("\t");
+    		tmpLine.append(tmpd);
+    		tmpLine.append("\t");
+    		tmpLine.append(population.getWorstEAIndividual().getFitness(0));
+    		//tmpLine.append("\t");
+    		//tmpLine.append(this.m_GO.getProblem().getAdditionalFileStringValue(population));
+    		this.writeToFile(tmpLine.toString());
 
-        Double[] tmpData = new Double[2];
-        tmpData[0] = new Double(population.getFunctionCalls());
-        // instead of adding simply the best fitness value i'll ask the problem what to show
-        tmpData[1] = this.m_GO.getProblem().getDoublePlotValue(population);
-        if (this.m_Plot != null) {
-            if (this.m_ContinueFlag) this.m_Plot.setConnectedPoint(tmpData[0].doubleValue()+this.m_RecentFC, tmpData[1].doubleValue(), 1000+this.currentRun);
-            else this.m_Plot.setConnectedPoint(tmpData[0].doubleValue(), tmpData[1].doubleValue(), 1000+this.currentRun);
-        }
-        this.m_TmpData.add(tmpData);
+    		Double[] tmpData = new Double[2];
+    		tmpData[0] = new Double(population.getFunctionCalls());
+    		// instead of adding simply the best fitness value i'll ask the problem what to show
+    		tmpData[1] = this.m_GO.getProblem().getDoublePlotValue(population);
+    		if (this.m_Plot != null) {
+    			if (this.m_ContinueFlag) this.m_Plot.setConnectedPoint(tmpData[0].doubleValue()+this.m_RecentFC, tmpData[1].doubleValue(), 1000+this.currentRun);
+    			else this.m_Plot.setConnectedPoint(tmpData[0].doubleValue(), tmpData[1].doubleValue(), 1000+this.currentRun);
+    		}
+    		this.m_TmpData.add(tmpData);
+    	}
     }
 
     /** This method writes Data to file.

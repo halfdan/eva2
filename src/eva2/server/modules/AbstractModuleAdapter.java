@@ -16,12 +16,12 @@ import java.io.Serializable;
 import java.net.InetAddress;
 import java.util.Vector;
 
-import eva2.gui.JTabbedModuleFrame;
-import eva2.gui.LogPanel;
-import eva2.server.go.InterfaceProcessor;
-
 import wsi.ra.jproxy.MainAdapterClient;
 import wsi.ra.jproxy.RemoteStateListener;
+import eva2.gui.JTabbedModuleFrame;
+import eva2.gui.LogPanel;
+import eva2.server.go.InterfaceGOParameters;
+import eva2.server.go.InterfaceProcessor;
 /*==========================================================================*
 * ABSTRACT CLASS DECLARATION
 *==========================================================================*/
@@ -118,6 +118,12 @@ abstract public class AbstractModuleAdapter implements ModuleAdapter, Serializab
 		  ((Processor)m_Processor).performPostProcessing();
 		  return true;
 	  } else return false;
+  }
+  
+  public InterfaceGOParameters getGOParameters() {
+	  if ((m_Processor != null) && (m_Processor instanceof Processor)) {
+		  return ((Processor)m_Processor).getGOParams();
+	  } else return null;
   }
   
   /**

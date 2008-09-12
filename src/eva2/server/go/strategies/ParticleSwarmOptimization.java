@@ -183,8 +183,8 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 		for (int j = 0; j < writeData.length; j++) {
 			writeData[j]    = (writeData[j]/relSpeed)*this.m_InitialVelocity;
 		}
-		indy.SetData(partTypeKey, defaultType);
-		indy.SetData(partVelKey, writeData);
+		indy.putData(partTypeKey, defaultType);
+		indy.putData(partVelKey, writeData);
 	}
 
 	/**
@@ -197,12 +197,12 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 		double[] tmpD        = indy.getFitness();
 		double[] writeData   = new double[tmpD.length];
 		System.arraycopy(tmpD, 0, writeData, 0, tmpD.length);
-		indy.SetData(partBestFitKey, writeData);
+		indy.putData(partBestFitKey, writeData);
 		// init best position
 		tmpD        = ((InterfaceDataTypeDouble)indy).getDoubleData();
 		writeData   = new double[tmpD.length];
 		System.arraycopy(tmpD, 0, writeData, 0, tmpD.length);
-		indy.SetData(partBestPosKey, writeData);
+		indy.putData(partBestPosKey, writeData);
 	}
 
 	/**
@@ -380,7 +380,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 
 		this.m_BestIndividual = (AbstractEAIndividual)this.m_Population.getBestEAIndividual().clone();
 
-		if (reset) this.firePropertyChangedEvent("NextGenerationPerformed");
+		if (reset) this.firePropertyChangedEvent(Population.nextGenerationPerformed);
 		
 		treeLevels = 0;
 		// the HPSO tree will contain layers 0...HPSOLevels, the last one is "incomplete" with only HPSOOrphans number of nodes
@@ -405,7 +405,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 			if (indy instanceof InterfaceDataTypeDouble) {
 				initIndividualDefaults(indy);
 			}
-			indy.SetData(indexKey, i);
+			indy.putData(indexKey, i);
 			indy.setIndividualIndex(i);
 		}
 	}
@@ -473,7 +473,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 		if (indy instanceof InterfaceDataTypeDouble) {
 			indy.setParents(null);
 			indy.defaultInit();
-			indy.SetData(partTypeKey, defaultType); // turn into default type
+			indy.putData(partTypeKey, defaultType); // turn into default type
 			initIndividualDefaults(indy);
 			initIndividualMemory(indy);
 			plotIndy(((InterfaceDataTypeDouble)indy).getDoubleData(), null, (Integer)indy.getData(indexKey));
@@ -506,7 +506,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 	protected void defaultIndividualUpdate(int index, AbstractEAIndividual indy, Population pop) {
 		InterfaceDataTypeDouble endy = (InterfaceDataTypeDouble) indy;
 		
-		indy.SetData(partTypeKey, defaultType);
+		indy.putData(partTypeKey, defaultType);
 		// default update
 		double[] personalBestPos   = (double[]) indy.getData(partBestPosKey);
 		double[] velocity       = (double[]) indy.getData(partVelKey);
@@ -598,8 +598,8 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 	 * @param indy	the individual to update
 	 */
 	protected void updateIndProps(AbstractEAIndividual indy) {
-		indy.SetData(partBestFitKey, indy.getFitness());
-		indy.SetData(partBestPosKey, ((InterfaceDataTypeDouble)indy).getDoubleData());
+		indy.putData(partBestFitKey, indy.getFitness());
+		indy.putData(partBestPosKey, ((InterfaceDataTypeDouble)indy).getDoubleData());
 	}
 
 	/**
@@ -1025,7 +1025,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 			if (!m_CheckConstraints) System.err.println("warning, checkbounds will be forced by InterfaceESIndividual!");
 		}
 
-		indy.SetData(partVelKey, curVelocity);
+		indy.putData(partVelKey, curVelocity);
 //		((InterfaceESIndividual) indy).SetDGenotype(newPosition);
 	}
 
@@ -1135,7 +1135,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 
 //		System.out.println(">>> " + m_Population.getBestEAIndividual().getStringRepresentation());
 		
-		this.firePropertyChangedEvent("NextGenerationPerformed");
+		this.firePropertyChangedEvent(Population.nextGenerationPerformed);
 
 		if (sleepTime > 0 ) try { Thread.sleep(sleepTime); } catch(Exception e) {}
 		
@@ -1176,8 +1176,8 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 	protected void logBestIndividual() {
 		if (this.m_Population.getBestEAIndividual().isDominatingDebConstraints(this.m_BestIndividual)) {
 			this.m_BestIndividual = (AbstractEAIndividual)this.m_Population.getBestEAIndividual().clone();
-			this.m_BestIndividual.SetData(partBestFitKey, this.m_BestIndividual.getFitness());
-			this.m_BestIndividual.SetData(partBestPosKey, ((InterfaceDataTypeDouble)this.m_BestIndividual).getDoubleData());
+			this.m_BestIndividual.putData(partBestFitKey, this.m_BestIndividual.getFitness());
+			this.m_BestIndividual.putData(partBestPosKey, ((InterfaceDataTypeDouble)this.m_BestIndividual).getDoubleData());
 //			System.out.println("new best: "+m_BestIndividual.toString());
 		}
 	}
@@ -1224,7 +1224,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 		for (int i=0; i<pop.size(); i++) {
 			// cross-link the sorted list for faster access
 			origIndex = (Integer)((AbstractEAIndividual)sortedPopulation[i]).getData(indexKey);
-			((AbstractEAIndividual)pop.get(origIndex)).SetData(sortedIndexKey, new Integer(i));
+			((AbstractEAIndividual)pop.get(origIndex)).putData(sortedIndexKey, new Integer(i));
 		}
 	}
 
@@ -1260,22 +1260,22 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 						} else {
 							found = true;
 							// assign to leader, update swarm size
-							((AbstractEAIndividual)sortedPop[cur]).SetData(multiSwTypeKey, leaders.get(i));
-							((AbstractEAIndividual)sortedPop[cur]).SetData(multiSwSizeKey, new Integer(-1));
-							leaders.get(i).SetData(multiSwSizeKey, 1+sSize);
+							((AbstractEAIndividual)sortedPop[cur]).putData(multiSwTypeKey, leaders.get(i));
+							((AbstractEAIndividual)sortedPop[cur]).putData(multiSwSizeKey, new Integer(-1));
+							leaders.get(i).putData(multiSwSizeKey, 1+sSize);
 							break;
 						}
 					}
 				}
 				if (!found) { // new leader is found
 					leaders.add(((AbstractEAIndividual)sortedPop[cur]));
-					((AbstractEAIndividual)sortedPop[cur]).SetData(multiSwTypeKey, sortedPop[cur]);
-					((AbstractEAIndividual)sortedPop[cur]).SetData(multiSwSizeKey, new Integer(1));
+					((AbstractEAIndividual)sortedPop[cur]).putData(multiSwTypeKey, sortedPop[cur]);
+					((AbstractEAIndividual)sortedPop[cur]).putData(multiSwSizeKey, new Integer(1));
 				} else if (superfluous) {
 					//System.out.println("reinitializing " + cur);
-					((AbstractEAIndividual)sortedPop[cur]).SetData(partTypeKey, resetType);
-					((AbstractEAIndividual)sortedPop[cur]).SetData(multiSwTypeKey, sortedPop[cur]);
-					((AbstractEAIndividual)sortedPop[cur]).SetData(multiSwSizeKey, new Integer(1));
+					((AbstractEAIndividual)sortedPop[cur]).putData(partTypeKey, resetType);
+					((AbstractEAIndividual)sortedPop[cur]).putData(multiSwTypeKey, sortedPop[cur]);
+					((AbstractEAIndividual)sortedPop[cur]).putData(multiSwSizeKey, new Integer(1));
 				}
 				cur++;
 			}
@@ -1432,7 +1432,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 			if (indy.hasData(partTypeKey)) {
 				initIndividualDefaults(indy);
 				initIndividualMemory(indy);
-				indy.SetData(indexKey, i);
+				indy.putData(indexKey, i);
 				indy.setIndividualIndex(i);
 				if (TRACE) System.err.println("init indy " + i + " " + AbstractEAIndividual.getDefaultDataString(indy));
 			}

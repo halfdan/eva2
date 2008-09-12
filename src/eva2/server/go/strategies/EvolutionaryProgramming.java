@@ -50,7 +50,7 @@ public class EvolutionaryProgramming implements InterfaceOptimizer, java.io.Seri
             this.m_Problem.initPopulation(this.m_Population);
             this.evaluatePopulation(this.m_Population);
             this.m_PopulationSize = this.m_Population.size();
-            this.firePropertyChangedEvent("NextGenerationPerformed");
+            this.firePropertyChangedEvent(Population.nextGenerationPerformed);
         }
 
         /** This method will init the optimizer with a given population
@@ -61,7 +61,7 @@ public class EvolutionaryProgramming implements InterfaceOptimizer, java.io.Seri
             if (reset) {
             	this.m_Population.init();
                 this.evaluatePopulation(this.m_Population);
-                this.firePropertyChangedEvent("NextGenerationPerformed");
+                this.firePropertyChangedEvent(Population.nextGenerationPerformed);
             }
         }
 
@@ -119,7 +119,7 @@ public class EvolutionaryProgramming implements InterfaceOptimizer, java.io.Seri
             nextGeneration.addPopulation(this.m_Population);
             this.m_Population = nextGeneration;
 
-            this.firePropertyChangedEvent("NextGenerationPerformed");
+            this.firePropertyChangedEvent(Population.nextGenerationPerformed);
         }
 
     /** This method allows you to add the LectureGUI as listener to the Optimizer

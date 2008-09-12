@@ -44,7 +44,7 @@ public class RemoveSurplusIndividualsStaticHyperCube extends RemoveSurplusIndivi
         }
         space = this.calculateHyperCubeVolumes(fitness);
         for (int i = 0; i < archive.size(); i++) {
-            ((AbstractEAIndividual)archive.get(i)).SetData("HyperCube", new Double(space[i]));
+            ((AbstractEAIndividual)archive.get(i)).putData("HyperCube", new Double(space[i]));
         }
 
         while(archive.size() > archive.getPopulationSize()) {

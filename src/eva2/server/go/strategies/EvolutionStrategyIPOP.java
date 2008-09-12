@@ -91,7 +91,7 @@ public class EvolutionStrategyIPOP extends EvolutionStrategies implements Interf
 //       
 //        setPop(getReplacePop(nextGeneration));
 //
-//        this.firePropertyChangedEvent("NextGenerationPerformed");
+//        this.firePropertyChangedEvent(Population.nextGenerationPerformed);
     	//////////////////////////
     	super.optimize();
     	
@@ -126,7 +126,7 @@ public class EvolutionStrategyIPOP extends EvolutionStrategies implements Interf
 		bestList.add(best);
 		best = null;
 		Population newPop = getPopulation().cloneWithoutInds();
-		getProblem().initPopulation(newPop);
+		getProblem().initPopulation(newPop); // this is where the reinit event of Pop is called, meaning that the rank-mu-cma matrix is reinitialized as well
 		double[] badFit = getPopulation().getBestFitness().clone();
 		Arrays.fill(badFit, Double.MAX_VALUE);
 		newPop.setAllFitnessValues(badFit);
@@ -137,7 +137,7 @@ public class EvolutionStrategyIPOP extends EvolutionStrategies implements Interf
     
     protected void firePropertyChangedEvent(String name) {
     	if (name.equals(Population.funCallIntervalReached)) {
-    		super.firePropertyChangedEvent("NextGenerationPerformed");
+    		super.firePropertyChangedEvent(Population.nextGenerationPerformed);
     	}
     	else {} // nothing, evt is produced in #registerPopulationStateChanged, dont forward original due to changing pop size
     }
@@ -196,16 +196,16 @@ public class EvolutionStrategyIPOP extends EvolutionStrategies implements Interf
 			// stop if the std dev of the normal distribution is smaller than TolX in all coords 
 			// and sigma p_c is smaller than TolX in all components; TolX = 10^-12 sigma_0
 	
-			if (rcmaMute.testAllDistBelow(10e-12*rcmaMute.getFirstSigma())) return true;
+			if (rcmaMute.testAllDistBelow(pop, 10e-12*rcmaMute.getFirstSigma(pop))) return true;
 			
 			// stop if adding a 0.1 std dev vector in a principal axis dir. of C does not change <x>_w^g
-			if (rcmaMute.testNoChangeAddingDevAxis(0.1, curGen)) return true;
+			if (rcmaMute.testNoChangeAddingDevAxis(pop, 0.1, curGen)) return true;
 			
 			// stop if adding a 0.2 std dev in each coordinate does (not???) change <x>_w^g
-			if (rcmaMute.testNoEffectCoord(0.2)) return true;
+			if (rcmaMute.testNoEffectCoord(pop, 0.2)) return true;
 	
 			// stop if the condition number of C exceeds 10^14
-			if (rcmaMute.testCCondition(10e14)) return true;		
+			if (rcmaMute.testCCondition(pop, 10e14)) return true;		
 		}
 		
 		return false;
@@ -231,7 +231,7 @@ public class EvolutionStrategyIPOP extends EvolutionStrategies implements Interf
 	public void registerPopulationStateChanged(Object source, String name) {
 		if (name.equals(Population.funCallIntervalReached)) {
     		getPopulation().SetFunctionCalls(((Population)source).getFunctionCalls()); // TODO this is ugly
-			super.firePropertyChangedEvent(name);
+			super.firePropertyChangedEvent(Population.nextGenerationPerformed);
 		} else {
 //			System.err.println("Not forwarding event " + name);
 		}

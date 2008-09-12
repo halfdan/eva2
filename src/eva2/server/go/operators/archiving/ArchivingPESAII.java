@@ -249,8 +249,8 @@ public class ArchivingPESAII extends AbstractArchiving implements java.io.Serial
                 for (int j = 0; j < coll.size(); j++) {
                     result[((Integer)coll.get(j)).intValue()] = coll.size();
                     tmpIndy = (AbstractEAIndividual)pop.get(((Integer)coll.get(j)).intValue());
-                    tmpIndy.SetData("SqueezeFactor", new Integer(coll.size()));
-                    tmpIndy.SetData("GridBox", curGrid);
+                    tmpIndy.putData("SqueezeFactor", new Integer(coll.size()));
+                    tmpIndy.putData("GridBox", curGrid);
                 }
             }
         }

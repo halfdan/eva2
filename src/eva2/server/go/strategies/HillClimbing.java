@@ -55,7 +55,7 @@ public class HillClimbing implements InterfaceOptimizer, java.io.Serializable {
     public void init() {
         this.m_Problem.initPopulation(this.m_Population);
         this.m_Problem.evaluate(this.m_Population);
-        this.firePropertyChangedEvent("NextGenerationPerformed");
+        this.firePropertyChangedEvent(Population.nextGenerationPerformed);
     }
 
     public void initByPopulation(Population pop, boolean reset) {
@@ -63,7 +63,7 @@ public class HillClimbing implements InterfaceOptimizer, java.io.Serializable {
         if (reset) {
         	this.m_Population.init();
             this.m_Problem.evaluate(this.m_Population);
-            this.firePropertyChangedEvent("NextGenerationPerformed");
+            this.firePropertyChangedEvent(Population.nextGenerationPerformed);
         }
     }
 
@@ -107,7 +107,7 @@ public class HillClimbing implements InterfaceOptimizer, java.io.Serializable {
 //            }
 //        }
 //        this.m_Population.incrGeneration();
-        this.firePropertyChangedEvent("NextGenerationPerformed");
+        this.firePropertyChangedEvent(Population.nextGenerationPerformed);
     }
 
     public InterfaceMutation getMutationOperator() {

@@ -73,7 +73,7 @@ public class CHCAdaptiveSearchAlgorithm implements InterfaceOptimizer, java.io.S
         }
 
         this.evaluatePopulation(this.m_Population);
-        this.firePropertyChangedEvent("NextGenerationPerformed");
+        this.firePropertyChangedEvent(Population.nextGenerationPerformed);
     }
 
     /** This method will init the optimizer with a given population
@@ -92,7 +92,7 @@ public class CHCAdaptiveSearchAlgorithm implements InterfaceOptimizer, java.io.S
 
         if (reset) {
         	this.evaluatePopulation(this.m_Population);
-            this.firePropertyChangedEvent("NextGenerationPerformed");
+            this.firePropertyChangedEvent(Population.nextGenerationPerformed);
         }
     }
 
@@ -212,7 +212,7 @@ public class CHCAdaptiveSearchAlgorithm implements InterfaceOptimizer, java.io.S
             nextGeneration.addPopulation(tmp);
             this.m_Population = nextGeneration;
         }
-        this.firePropertyChangedEvent("NextGenerationPerformed");
+        this.firePropertyChangedEvent(Population.nextGenerationPerformed);
     }
 
     /** This method allows you to add the LectureGUI as listener to the Optimizer

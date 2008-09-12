@@ -41,7 +41,7 @@ public class MOSOMOGARankBased implements InterfaceMOSOConverter, java.io.Serial
             }
         }
         for (int i = 0; i < pop.size(); i++) {
-            ((AbstractEAIndividual)pop.get(i)).SetData("MOGARank", new Integer(MOGARank[i]));
+            ((AbstractEAIndividual)pop.get(i)).putData("MOGARank", new Integer(MOGARank[i]));
         }
         for (int i = 0; i < pop.size(); i++) {
              this.convertSingleIndividual((AbstractEAIndividual)pop.get(i));
@@ -56,7 +56,7 @@ public class MOSOMOGARankBased implements InterfaceMOSOConverter, java.io.Serial
         double[]    tmpFit;
 
         tmpFit = indy.getFitness();
-        indy.SetData("MOFitness", tmpFit);
+        indy.putData("MOFitness", tmpFit);
         resultFit[0] = ((Integer)indy.getData("MOGARank")).doubleValue();
         indy.SetFitness(resultFit);
     }

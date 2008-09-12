@@ -113,7 +113,7 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
         this.m_Problem.initPopulation(this.m_Population);
         m_Population.addPopulationChangedEventListener(null); // noone will be notified directly on pop changes
         this.m_Problem.evaluate(this.m_Population);
-        this.firePropertyChangedEvent("NextGenerationPerformed");
+        this.firePropertyChangedEvent(Population.nextGenerationPerformed);
     }
 
     /** This method will init the optimizer with a given population
@@ -127,7 +127,7 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
         if (reset) {
         	this.m_Population.init();
             this.m_Problem.evaluate(this.m_Population);
-            this.firePropertyChangedEvent("NextGenerationPerformed");
+            this.firePropertyChangedEvent(Population.nextGenerationPerformed);
         }
     }
 
@@ -176,7 +176,7 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
 			}
 		}
 //		System.out.println("funcalls: " + evalCnt);
-        this.firePropertyChangedEvent("NextGenerationPerformed");
+        this.firePropertyChangedEvent(Population.nextGenerationPerformed);
 
 	}
 
@@ -189,7 +189,7 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
 			// set funcalls to real value
 			m_Population.SetFunctionCalls(((Population)source).getFunctionCalls());
 //			System.out.println("FunCallIntervalReached at " + (((Population)source).getFunctionCalls()));
-			this.firePropertyChangedEvent("NextGenerationPerformed");
+			this.firePropertyChangedEvent(Population.nextGenerationPerformed);
 		} 
 		// do not react to NextGenerationPerformed
 		//else System.err.println("ERROR, event was " + name);

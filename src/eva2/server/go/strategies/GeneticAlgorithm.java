@@ -59,7 +59,7 @@ public class GeneticAlgorithm implements InterfaceOptimizer, java.io.Serializabl
         public void init() {
             this.m_Problem.initPopulation(this.m_Population);
             this.evaluatePopulation(this.m_Population);
-            this.firePropertyChangedEvent("NextGenerationPerformed");
+            this.firePropertyChangedEvent(Population.nextGenerationPerformed);
         }
 
         /** This method will init the optimizer with a given population
@@ -70,7 +70,7 @@ public class GeneticAlgorithm implements InterfaceOptimizer, java.io.Serializabl
             if (reset) {
             	this.m_Population.init();
                 this.evaluatePopulation(this.m_Population);
-                this.firePropertyChangedEvent("NextGenerationPerformed");
+                this.firePropertyChangedEvent(Population.nextGenerationPerformed);
             }
         }
 
@@ -162,7 +162,7 @@ public class GeneticAlgorithm implements InterfaceOptimizer, java.io.Serializabl
 //            }
 //        }
 //        this.m_Population.incrGeneration();
-            this.firePropertyChangedEvent("NextGenerationPerformed");
+            this.firePropertyChangedEvent(Population.nextGenerationPerformed);
         }
 
         /** This method allows you to add the LectureGUI as listener to the Optimizer

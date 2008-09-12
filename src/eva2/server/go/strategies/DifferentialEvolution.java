@@ -78,7 +78,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
         this.m_Problem.initPopulation(this.m_Population);
 //        children = new Population(m_Population.size());
         this.evaluatePopulation(this.m_Population);
-        this.firePropertyChangedEvent("NextGenerationPerformed");
+        this.firePropertyChangedEvent(Population.nextGenerationPerformed);
     }
 
     public void hideHideable() {
@@ -94,7 +94,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
         if (reset) {
         	this.m_Population.init();
             this.evaluatePopulation(this.m_Population);
-            this.firePropertyChangedEvent("NextGenerationPerformed");
+            this.firePropertyChangedEvent(Population.nextGenerationPerformed);
         }
 //        if (reset) this.m_Population.init();
 //        else children = new Population(m_Population.size());
@@ -413,7 +413,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
 //        }
         m_Problem.evaluatePopulationEnd(m_Population);
         this.m_Population.incrGeneration();
-        this.firePropertyChangedEvent("NextGenerationPerformed");
+        this.firePropertyChangedEvent(Population.nextGenerationPerformed);
     }
     
     /**
