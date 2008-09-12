@@ -79,7 +79,7 @@ public class Chart2DDPointIconContent implements InterfaceDPointWithContent, DPo
                 System.gc();
             }
         });
-        newFrame.getContentPane().add(this.m_Problem.drawIndividual(this.m_Indy));
+        newFrame.getContentPane().add(this.m_Problem.drawIndividual(-1, -1, this.m_Indy));
         newFrame.setSize(200, 300);
         newFrame.pack();
         newFrame.validate();

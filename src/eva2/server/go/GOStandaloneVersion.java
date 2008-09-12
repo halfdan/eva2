@@ -282,7 +282,8 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
             frame.setTitle("The current best solution for "+m_GO.getProblem().getName());
             frame.setSize(400, 300);
             frame.setLocation(450, 250);
-            frame.getContentPane().add(m_GO.getProblem().drawIndividual(m_GO.getOptimizer().getPopulation().getBestEAIndividual()));
+            Population pop = m_GO.getOptimizer().getPopulation();
+            frame.getContentPane().add(m_GO.getProblem().drawIndividual(pop.getGeneration(), pop.getFunctionCalls(), pop.getBestEAIndividual()));
             frame.validate();
             frame.setVisible(true);
         }
