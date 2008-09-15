@@ -1429,7 +1429,9 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 			init();
 		} else for (int i=0; i<pop.size(); i++) {
 			AbstractEAIndividual indy = pop.getEAIndividual(i);
-			if (indy.hasData(partTypeKey)) {
+			if (indy==null) {
+				System.err.println("Error in PSO.setPopulation!");
+			} else if (!indy.hasData(partTypeKey)) {
 				initIndividualDefaults(indy);
 				initIndividualMemory(indy);
 				indy.putData(indexKey, i);
