@@ -1,10 +1,10 @@
 package eva2.server.go.problems;
 
+import wsi.ra.math.RNG;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceDataTypeDouble;
 import eva2.server.go.populations.Population;
 import eva2.server.go.strategies.InterfaceOptimizer;
-import eva2.server.go.problems.Interface2DBorderProblem;
 
 /**
  * Created by IntelliJ IDEA.
@@ -45,7 +45,32 @@ public class F1Problem extends AbstractProblemDouble implements Interface2DBorde
     public Object clone() {
         return (Object) new F1Problem(this);
     }
-
+    
+//	@Override
+//	public void initPopulation(Population population) {
+//        AbstractEAIndividual tmpIndy;
+//        population.clear();
+//        initTemplate();
+//        
+//        for (int i = 0; i < population.getPopulationSize(); i++) {
+//            tmpIndy = (AbstractEAIndividual)((AbstractEAIndividual)this.m_Template).clone();
+//            tmpIndy.init(this);
+//            if (tmpIndy instanceof InterfaceDataTypeDouble) {
+//            	double[] v = ((InterfaceDataTypeDouble)tmpIndy).getDoubleData();
+//            	for (int j=0; j<v.length; j++) {
+//            		v[j] = 3; //getDefaultRange() * ((j % 2 == 0) ? 1 : 1);
+//            		v[j]+=RNG.gaussianDouble(.2);
+//            	}
+//            	((InterfaceDataTypeDouble)tmpIndy).SetDoubleGenotype(v);
+//            }
+//            
+//            population.add(tmpIndy);
+//        }
+//        // population init must be last
+//        // it set's fitcalls and generation to zero
+//        population.init();
+//	}
+	
     /** This method inits the Problem to log multiruns
      */
     public void initProblem() {

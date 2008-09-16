@@ -406,7 +406,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 				initIndividualDefaults(indy);
 			}
 			indy.putData(indexKey, i);
-			indy.setIndividualIndex(i);
+			indy.SetIndividualIndex(i);
 		}
 	}
 	
@@ -1435,7 +1435,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 				initIndividualDefaults(indy);
 				initIndividualMemory(indy);
 				indy.putData(indexKey, i);
-				indy.setIndividualIndex(i);
+				indy.SetIndividualIndex(i);
 				if (TRACE) System.err.println("init indy " + i + " " + AbstractEAIndividual.getDefaultDataString(indy));
 			}
 		}

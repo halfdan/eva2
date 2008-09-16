@@ -43,7 +43,7 @@ class CMAParamSet implements InterfacePopulationChangedEventListener, Serializab
 	protected boolean firstAdaptionDone = false;
 	
 	public String toString() {
-		return "d_sig " + d_sig + ", c_sig" + ", sigma " + sigma + ", firstSigma " + firstSigma+ ", firstAdaptionDone " + firstAdaptionDone 
+		return "d_sig " + d_sig + ", c_sig " + c_sig + ", sigma " + sigma + ", firstSigma " + firstSigma+ ", firstAdaptionDone " + firstAdaptionDone 
 			+ ",\n meanX " + Arrays.toString(meanX) + ", pathC " + Arrays.toString(pathC)+ ", pathS " + Arrays.toString(pathS)+ ", eigenvalues " + Arrays.toString(eigenvalues)
 			+ ", weights " + Arrays.toString(weights)+ ",\n mC " + mC.toString() + ",\n mB " + mB.toString();
 	}
@@ -100,6 +100,10 @@ class CMAParamSet implements InterfacePopulationChangedEventListener, Serializab
 		params.d_sig = params.c_sig+1+2*Math.max(0, Math.sqrt((muEff-1)/(dim+1)) - 1);
 		
 		if (initialSigma<0) initialSigma = getAvgRange(params.range);
+		if (initialSigma <= 0) {
+			EVAERROR.errorMsgOnce("warning: initial sigma <= zero! Working with converged population?");
+			initialSigma = 10e-10;
+		}
 		params.sigma = initialSigma;
 //		System.out.println("INitial sigma: "+sigma);
 		params.firstSigma = params.sigma;
@@ -273,7 +277,7 @@ public class MutateESRankMuCMA implements InterfaceMutationGenerational, Seriali
 		mu = selectedP.size();
 		lambda = oldGen.size();
 		if (mu>= lambda) {
-			EVAERROR.errorMsgOnce("Warning: invalid mu/lambda ratio (" + mu + "/" + lambda + ") ! Setting mu to lambda/2.");
+			EVAERROR.errorMsgOnce("Warning: invalid mu/lambda ratio! Setting mu to lambda/2.");
 			mu = lambda/2;
 		}
 		CMAParamSet params;
@@ -282,7 +286,7 @@ public class MutateESRankMuCMA implements InterfaceMutationGenerational, Seriali
 			else params = CMAParamSet.initCMAParams(mu, lambda, oldGen, getInitSigma(oldGen));			
 		} else {
 			if (!oldGen.hasData(cmaParamsKey)) {
-				if (oldGen.getGeneration() > 1) System.err.println("pop had no params at gen " + oldGen.getGeneration());
+				if (oldGen.getGeneration() > 1) EVAERROR.errorMsgOnce("Error: population lost cma parameters. Incompatible optimizer?");
 				params = CMAParamSet.initCMAParams(mu, lambda, oldGen, getInitSigma(oldGen));
 			} else params = (CMAParamSet)oldGen.getData(cmaParamsKey);
 		}
@@ -676,7 +680,7 @@ public class MutateESRankMuCMA implements InterfaceMutationGenerational, Seriali
 				x[i] += RNG.gaussianDouble(getSigma(params, i));
 			}
 		}
-		if (isInRange(x, range)) return x;
+		if (Mathematics.isInRange(x, range)) return x;
 		else {
 			if (count > 5) return repairMutation(x, range); // allow some nice tries before using brute force
 			else return mutate(params, x, range, count+1); // for really bad initial deviations this might be a quasi infinite loop
@@ -694,13 +698,6 @@ public class MutateESRankMuCMA implements InterfaceMutationGenerational, Seriali
 			else if (x[i]>range[i][1]) x[i]=range[i][1];
 		}
 		return x;	
-	}
-	
-	private boolean isInRange(double[] x, double[][] range) {
-		for (int i=0; i<x.length; i++) {
-			if (x[i]<range[i][0] || (x[i]>range[i][1])) return false;
-		}
-		return true;
 	}
 
 	/**

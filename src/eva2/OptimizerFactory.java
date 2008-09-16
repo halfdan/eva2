@@ -10,6 +10,7 @@ import eva2.server.go.IndividualInterface;
 import eva2.server.go.InterfacePopulationChangedEventListener;
 import eva2.server.go.InterfaceTerminator;
 import eva2.server.go.enums.DETypeEnum;
+import eva2.server.go.enums.PostProcessMethod;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceDataTypeBinary;
 import eva2.server.go.individuals.InterfaceDataTypeDouble;
@@ -798,11 +799,13 @@ public class OptimizerFactory {
 		return (runnable != null) ? runnable.getSolutionSet() : null;
 	}
 
-	public static Population postProcess(int steps, double sigma, int nBest) {
-		return (lastRunnable == null) ? null : postProcess(lastRunnable,
-				new PostProcessParams(steps, sigma, nBest));
-	}
+	///////////////////////////// post processing
 
+	public static Population postProcess(PostProcessMethod method, int steps, double sigma, int nBest) {
+		return (lastRunnable == null) ? null : postProcess(lastRunnable,
+				new PostProcessParams(method, steps, sigma, nBest));
+	}
+	
 	public static Population postProcess(InterfacePostProcessParams ppp) {
 		return (lastRunnable == null) ? null : postProcess(lastRunnable, ppp);
 	}
@@ -898,7 +901,6 @@ public class OptimizerFactory {
 				: null;
 	}
 
-	///////////////////////////// post processing
 	public static Vector<AbstractEAIndividual> postProcessIndVec(
 			OptimizerRunnable runnable, int steps, double sigma, int nBest) {
 		return postProcessIndVec(runnable, new PostProcessParams(steps, sigma,

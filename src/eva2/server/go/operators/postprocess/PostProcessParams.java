@@ -3,6 +3,7 @@ package eva2.server.go.operators.postprocess;
 import java.io.Serializable;
 
 import eva2.gui.GenericObjectEditor;
+import eva2.server.go.enums.PostProcessMethod;
 
 
 public class PostProcessParams implements InterfacePostProcessParams, Serializable {
@@ -11,6 +12,7 @@ public class PostProcessParams implements InterfacePostProcessParams, Serializab
 	private boolean 			postProcess = false;
 	protected double 			postProcessClusterSigma = 0.05;
 	protected int				printNBest = 10;
+	protected PostProcessMethod	method = PostProcessMethod.nelderMead;
 	
 	public PostProcessParams() {
 		postProcessSteps = 5000;
@@ -36,6 +38,14 @@ public class PostProcessParams implements InterfacePostProcessParams, Serializab
 		printNBest = nBest;
 	}
 	
+	public PostProcessParams(PostProcessMethod meth, int steps, double clusterSigma, int nBest) {
+		method = meth;
+		postProcessSteps = steps;
+		postProcess = true;
+		postProcessClusterSigma = clusterSigma;
+		printNBest = nBest;
+	}
+	
 	public void hideHideable() {
 		setDoPostProcessing(isDoPostProcessing());
 	}
@@ -54,6 +64,7 @@ public class PostProcessParams implements InterfacePostProcessParams, Serializab
 		GenericObjectEditor.setShowProperty(this.getClass(), "postProcessSteps", postProcess);
 		GenericObjectEditor.setShowProperty(this.getClass(), "postProcessClusterSigma", postProcess);
 		GenericObjectEditor.setShowProperty(this.getClass(), "printNBest", postProcess);
+		GenericObjectEditor.setShowProperty(this.getClass(), "PPMethod", postProcess);
 	}
 	public String doPostProcessingTipText() {
 		return "Toggle post processing of the solutions.";
@@ -101,5 +112,17 @@ public class PostProcessParams implements InterfacePostProcessParams, Serializab
 	
 	public String globalInfo() {
 		return "Combined clustering and hill-climbing for post-processing of solutions.";
+	}
+
+	public PostProcessMethod getPPMethod() {
+		return method;
+	}
+
+	public String PPMethodTipText() {
+		return "The method to use for post-processing.";
+	}
+
+	public void setPPMethod(PostProcessMethod meth) {
+		method=meth;
 	}
 }

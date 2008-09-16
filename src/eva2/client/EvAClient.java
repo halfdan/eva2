@@ -249,9 +249,12 @@ public class EvAClient implements RemoteStateListener, Serializable {
 		m_LogPanel.logMessage("Class path is: " + System.getProperty("java.class.path","."));
 
 		if (!(m_Frame.isVisible())) {
+			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+			m_Frame.setLocation((int)((screenSize.width-m_Frame.getWidth())/2), (int)((screenSize.height-m_Frame.getHeight())/2.5));
 			m_Frame.pack();
 			m_Frame.setVisible(true);
 		}
+		m_LogPanel.logMessage("EvA2 ready"); // if this message is omitted, the stupid scroll pane runs to the end of the last line which is ugly for a long class path
 	}
 
 	/**
@@ -583,6 +586,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
 
 				JPanel moduleContainer = Temp.createContentPane(); // MK the frame is actually painted in here
 				//			m_Frame.setLayout(new BorderLayout());
+				boolean wasVisible = m_Frame.isVisible();
 				m_Frame.setVisible(false);
 				m_Frame.getContentPane().removeAll();
 				
@@ -599,7 +603,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
 				m_Frame.add(infoPanel, BorderLayout.SOUTH);
 
 				m_Frame.pack();
-				m_Frame.setVisible(true);
+				m_Frame.setVisible(wasVisible);
 
 				currentModule = selectedModule;
 				//			m_ModulGUIContainer.add(Temp);

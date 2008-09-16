@@ -12,6 +12,7 @@ import eva2.server.go.operators.selection.SelectParticleWheel;
 import eva2.server.go.populations.InterfaceSolutionSet;
 import eva2.server.go.populations.Population;
 import eva2.server.go.populations.SolutionSet;
+import eva2.server.go.problems.AbstractOptimizationProblem;
 import eva2.server.go.problems.F1Problem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 
@@ -70,13 +71,15 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
 
     public void init() {
         this.m_Problem.initPopulation(this.m_Population);    	
+        //System.out.println("popsize is   " + m_Population.size());
+        //System.out.println("pops targ is " + m_Population.getPopulationSize());
         for (int i=0; i<m_Population.size(); i++) {
         	((AbstractEAIndividual)m_Population.getIndividual(i)).setMutationOperator(new MutateESFixedStepSize(mutationSigma));
         }
 
         setWithShow(withShow);
         this.evaluatePopulation(this.m_Population);  
-        this.firePropertyChangedEvent("NextGenerationPerformed");
+        this.firePropertyChangedEvent(Population.nextGenerationPerformed);
     }
 
     /** This method will init the optimizer with a given population
@@ -88,7 +91,7 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
         if (reset) {
         	this.m_Population.init();
             this.evaluatePopulation(this.m_Population);
-            this.firePropertyChangedEvent("NextGenerationPerformed");
+            this.firePropertyChangedEvent(Population.nextGenerationPerformed);
         }
     }
 
@@ -117,35 +120,41 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
         parents.SetFunctionCalls(pop.getFunctionCalls());
         parents.setGenerationTo(pop.getGeneration());
         
+        if (withShow) drawPop(parents, 3, true);
         return parents;
     }
     
     protected void predict(Population pop) {
     	indCount = 0;
+    	if (withShow) {
+    		drawPop(pop, 0, false);
+    	}
         for (int i = 0; i < pop.getPopulationSize(); i++) {
         	applyMotionModel((AbstractEAIndividual)((AbstractEAIndividual)pop.get(i)), 0.);
         	indCount++;
         }
+        if (withShow) drawPop(pop, 1, false);
     }
 
-    protected void applyMotionModel(AbstractEAIndividual indy, double noise) {
+    private void drawPop(Population pop, int graphLabel, boolean useCircles) {
+    	if (myPlot != null) {
+    		if (graphLabel < 0) graphLabel = indCount;
+    		for (int i=0; i<pop.size(); i++) {
+    			InterfaceDataTypeDouble endy = (InterfaceDataTypeDouble) pop.getEAIndividual(i);
+    			double[] curPosition    = endy.getDoubleData();
+    			
+    			if (useCircles) myPlot.getFunctionArea().drawCircle("", curPosition, graphLabel);
+    			else myPlot.setUnconnectedPoint(curPosition[0], curPosition[1], graphLabel);
+//    			myPlot.setConnectedPoint(curPosition[0], curPosition[1], graphLabel);
+
+    		}
+    	}
+	}
+
+	protected void applyMotionModel(AbstractEAIndividual indy, double noise) {
     	// this currently only performs a mutation
     	indy.mutate();
     	indy.SetFitness(0, 0);
-    	
-    	if (this.withShow) {
-    		InterfaceDataTypeDouble endy = (InterfaceDataTypeDouble) indy;
-	        double[] curPosition    = endy.getDoubleData();
-
-	        myPlot.setUnconnectedPoint(curPosition[0], curPosition[1], indCount);
-	        myPlot.setConnectedPoint(curPosition[0], curPosition[1], indCount);
-  
-//            this.m_Plot.setConnectedPoint(curPosition[0], curPosition[1], index+1);
-//            this.m_Plot.setConnectedPoint(localBestPosition[0], localBestPosition[1], index+1);
-//            this.m_Plot.setConnectedPoint(curPosition[0], curPosition[1], index+1);
-//            this.m_Plot.setConnectedPoint(bestPosition[0], bestPosition[1], index+1);
-//            this.m_Plot.setUnconnectedPoint(curPosition[0], curPosition[1], 100*index+1);
-        }
     }
     
     /**
@@ -159,6 +168,9 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
         // resample using selection
         nextGeneration = resample(m_Population);
 
+		if (sleepTime > 0 ) try { Thread.sleep(sleepTime); } catch(Exception e) {}
+        if (withShow) clearPlot();
+
         // predict step
         predict(nextGeneration);
         
@@ -166,9 +178,8 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
         
 //        collectStatistics(m_Population);
         
-        this.firePropertyChangedEvent("NextGenerationPerformed");
+        this.firePropertyChangedEvent(Population.nextGenerationPerformed);
         
-		if (sleepTime > 0 ) try { Thread.sleep(sleepTime); } catch(Exception e) {}
     }
 
 //    protected void collectStatistics(Population population) {
@@ -194,6 +205,9 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
      */
     public void SetProblem (InterfaceOptimizationProblem problem) {
         this.m_Problem = problem;
+    	if (problem instanceof AbstractOptimizationProblem) {
+    		((AbstractOptimizationProblem)problem).informAboutOptimizer(this);
+    	}
     }
     public InterfaceOptimizationProblem getProblem () {
         return this.m_Problem;
@@ -252,6 +266,7 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
         return this.m_Population;
     }
     public void setPopulation(Population pop){
+//        if (pop.size()!=pop.getPopulationSize()) pop.fitToSize();
         this.m_Population = pop;
     }
     public String populationTipText() {
@@ -281,6 +296,17 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
 		return withShow;
 	}
 
+	protected void clearPlot() {
+		if (myPlot!=null) {
+			myPlot.clearAll();
+		    double[][] range = null;
+			if ((m_Population != null) && (m_Population.size() > 0)) range = ((InterfaceDataTypeDouble)this.m_Population.get(0)).getDoubleRange();
+			if (range != null) {
+				myPlot.setCornerPoints(range, 0);
+			}
+		}
+	}
+	
 	/**
 	 * @param withShow the withShow to set
 	 **/
@@ -297,7 +323,7 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
 				range[0][1] = 0;
 				range[1] = range[0]; // this is evil
 			}
-		    myPlot = new eva2.gui.Plot("PF", "x1", "x2", true);
+		    myPlot = new eva2.gui.Plot("PF", "x1", "x2", range[0], range[1]);
 		}
 	}
 
