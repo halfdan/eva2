@@ -51,7 +51,7 @@ public class GOParameters extends AbstractGOParameters implements InterfaceGOPar
      */
     public GOParameters() {
     	super(new GeneticAlgorithm(), new F1Problem(), new EvaluationTerminator(1000));
-    	((F1Problem)m_Problem).setEAIndividual(new GAIndividualDoubleData());
+//    	((F1Problem)m_Problem).setEAIndividual(new GAIndividualDoubleData());
     }
 
     /**

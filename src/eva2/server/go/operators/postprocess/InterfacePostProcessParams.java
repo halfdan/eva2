@@ -1,5 +1,7 @@
 package eva2.server.go.operators.postprocess;
 
+import eva2.server.go.enums.PostProcessMethod;
+
 /**
  * Parameters for an optional post processing of found solutions. Mainly contains
  * parameters for a hill climbing step, namely the number of evaluations and
@@ -25,4 +27,8 @@ public interface InterfacePostProcessParams {
 	public int getPrintNBest();
 	public void setPrintNBest(int nBest);
 	public String printNBestTipText();
+	
+	public void setPPMethod(PostProcessMethod meth);
+	public PostProcessMethod getPPMethod();
+	public String PPMethodTipText();
 }

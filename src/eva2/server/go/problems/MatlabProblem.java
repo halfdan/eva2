@@ -316,7 +316,7 @@ public class MatlabProblem extends AbstractProblemDouble implements InterfaceTex
 		if (runnable != null) {
 			runnable.stopOpt();
 		}
-		PostProcess.stopHC();
+		PostProcess.stopPP();
 	}
 
 	public String getInfoString() {

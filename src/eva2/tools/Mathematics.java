@@ -689,6 +689,20 @@ public class Mathematics {
 	}
 	
 	/**
+	 * Check whether the given vector lies within the range in every dimension.
+	 * 
+	 * @param x
+	 * @param range
+	 * @return	true if the vector lies within the range, else false
+	 */
+	public static boolean isInRange(double[] x, double[][] range) {
+		for (int i=0; i<x.length; i++) {
+			if (x[i]<range[i][0] || (x[i]>range[i][1])) return false;
+		}
+		return true;
+	}
+	
+	/**
 	 * Project the values in x to the range given. The range must be an vector of 2d-arrays
 	 * each of which containing lower and upper bound in the i-th dimension.
 	 * x must not be longer than the available ranges.

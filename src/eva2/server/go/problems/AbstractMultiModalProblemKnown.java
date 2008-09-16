@@ -12,6 +12,7 @@ import eva2.server.go.operators.postprocess.PostProcess;
 import eva2.server.go.populations.Population;
 
 import eva2.server.go.problems.Interface2DBorderProblem;
+import eva2.tools.EVAERROR;
 
 public abstract class AbstractMultiModalProblemKnown extends AbstractProblemDouble implements Interface2DBorderProblem, InterfaceMultimodalProblemKnown {
 	protected static InterfaceDistanceMetric   m_Metric = new PhenotypeMetric();
@@ -239,17 +240,26 @@ public abstract class AbstractMultiModalProblemKnown extends AbstractProblemDoub
 	}
 	
 	public static double getMaximumPeakRatio(InterfaceMultimodalProblemKnown mmProb, Population pop, double epsilon) {
-		double                  optimaInvertedSum = 0, foundInvertedSum = 0;
-		Population realOpts = mmProb.getRealOptima();
+		double          foundInvertedSum = 0, sumRealMaxima = 0;
+		Population 		realOpts = mmProb.getRealOptima();
+		double 			maxOpt = realOpts.getEAIndividual(0).getFitness(0);
+		sumRealMaxima = maxOpt;
+		for (int i=1; i<realOpts.size(); i++) {
+			// search for the maximum fitness (for the maximization problem)
+			// also sum up the fitness values
+			maxOpt = Math.max(maxOpt, realOpts.getEAIndividual(i).getFitness(0));
+			sumRealMaxima += realOpts.getEAIndividual(i).getFitness(0);
+			if (realOpts.getEAIndividual(i).getFitness(0)<0) EVAERROR.errorMsgOnce("Warning: avoid negative maxima in AbstractMultiModalProblemKnown!");
+		}
 		AbstractEAIndividual[] optsFound = PostProcess.getFoundOptimaArray(pop, realOpts, epsilon, true);
 		for (int i=0; i<realOpts.size(); i++) {
-			// sum up known optimal fitness values
-			optimaInvertedSum += realOpts.getEAIndividual(i).getFitness(0);
-			// sum up best found hits, with inverted fitness
-			if (optsFound[i] != null) foundInvertedSum += realOpts.getBestEAIndividual().getFitness(0) - optsFound[i].getFitness(0);
+			// sum up the found optimal fitness values
+			if (optsFound[i] != null) {
+				foundInvertedSum += (maxOpt - optsFound[i].getFitness(0));
+			}
 		}
-
-		return foundInvertedSum/optimaInvertedSum;
+//		System.out.println("foundSum: " + foundInvertedSum + " realsum: " + sumRealMaxima + " ratio: " + foundInvertedSum/sumRealMaxima);
+		return foundInvertedSum/sumRealMaxima;
 	}
 	
 //	public double getMaximumPeakRatio(Population pop) {

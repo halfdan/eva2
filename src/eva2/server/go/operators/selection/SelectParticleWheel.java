@@ -25,6 +25,7 @@ public class SelectParticleWheel implements InterfaceSelection, java.io.Serializ
 	 */
 	private static final long serialVersionUID = 1L;
     private InterfaceSelectionProbability   m_SelProbCalculator = new SelProbStandard();
+	private boolean selectFixedSteps = false;
 
     public SelectParticleWheel() {
     }
@@ -55,22 +56,8 @@ public class SelectParticleWheel implements InterfaceSelection, java.io.Serializ
         Population result = new Population();
         result.setPopulationSize(size);
         
-        // use a fixed segment roulette wheel selection
-        double segment = 1./(size+1);
-        double selPoint = RNG.randomDouble(0., segment);
-        
-        int selIndex = 0;
-        double selFitSum = ((AbstractEAIndividual)population.getIndividual(selIndex)).getSelectionProbability(0);
-        
-        for (int i=0; i < size; i++) {
-        	while (selFitSum < selPoint) {
-        		selIndex++;
-        		selFitSum += ((AbstractEAIndividual)population.getIndividual(selIndex)).getSelectionProbability(0);
-        	}
-        	result.add(((AbstractEAIndividual)population.get(selIndex)).clone());
-        	((AbstractEAIndividual)result.getIndividual(i)).SetAge(0);
-        	selPoint += segment;
-        }
+        if (selectFixedSteps ) selectFixed(population, size, result);
+        else selectDrawIndependent(population, size, result);
         
 ////	Unfortunately, this was really problem specific (mk)
 //
@@ -95,6 +82,42 @@ public class SelectParticleWheel implements InterfaceSelection, java.io.Serializ
 //        }
        	return result;
     }
+
+	private void selectDrawIndependent(Population population, int size,
+			Population result) {
+		double sum=0, selPoint=0;
+		int selIndex;
+        for (int i=0; i < size; i++) {
+        	selPoint = RNG.randomDouble();
+        	selIndex = 0;
+        	sum = ((AbstractEAIndividual)population.getIndividual(0)).getSelectionProbability(0);
+        	while (selPoint>=sum) {
+        		selIndex++;
+        		sum += ((AbstractEAIndividual)population.getIndividual(selIndex)).getSelectionProbability(0);
+        	}
+        	result.add(((AbstractEAIndividual)population.get(selIndex)).clone());
+        	((AbstractEAIndividual)result.getIndividual(i)).SetAge(0);
+        }
+	}
+
+	private void selectFixed(Population population, int size, Population result) {
+		// use a fixed segment roulette wheel selection
+        double segment = 1./(size+1);
+        double selPoint = RNG.randomDouble(0., segment);
+        
+        int selIndex = 0;
+        double selFitSum = ((AbstractEAIndividual)population.getIndividual(selIndex)).getSelectionProbability(0);
+        
+        for (int i=0; i < size; i++) {
+        	while (selFitSum < selPoint) {
+        		selIndex++;
+        		selFitSum += ((AbstractEAIndividual)population.getIndividual(selIndex)).getSelectionProbability(0);
+        	}
+        	result.add(((AbstractEAIndividual)population.get(selIndex)).clone());
+        	((AbstractEAIndividual)result.getIndividual(i)).SetAge(0);
+        	selPoint += segment;
+        }
+	}
 
     /** This method allows you to select partners for a given Individual
      * @param dad               The already seleceted parent
@@ -138,4 +161,41 @@ public class SelectParticleWheel implements InterfaceSelection, java.io.Serializ
     public String obeyDebsConstViolationPrincipleToolTip() {
         return "Toggle the use of Deb's coonstraint violation principle(todo).";
     }
+
+	/**
+	 * @return the selectFixedSteps
+	 */
+	public boolean isSelectFixedSteps() {
+		return selectFixedSteps;
+	}
+
+	/**
+	 * @param selectFixedSteps the selectFixedSteps to set
+	 */
+	public void setSelectFixedSteps(boolean selectFixedSteps) {
+		this.selectFixedSteps = selectFixedSteps;
+	}
+	
+	public String selectFixedStepsTipText() {
+		return "Use fixed segment wheel for selection if marked or independent draws if not.";
+	}
+
+	/**
+	 * @return the m_SelProbCalculator
+	 */
+	public InterfaceSelectionProbability getSelProbCalculator() {
+		return m_SelProbCalculator;
+	}
+
+	/**
+	 * @param selProbCalculator the m_SelProbCalculator to set
+	 */
+	public void setSelProbCalculator(
+			InterfaceSelectionProbability selProbCalculator) {
+		m_SelProbCalculator = selProbCalculator;
+	}
+	
+	public String selProbCalculatorTipText() {
+		return "The method for calculating selection probability from the fitness.";
+	}
 }

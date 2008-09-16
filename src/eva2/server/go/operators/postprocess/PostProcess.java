@@ -1,28 +1,44 @@
 package eva2.server.go.operators.postprocess;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import eva2.OptimizerFactory;
 import eva2.OptimizerRunnable;
 import eva2.gui.BeanInspector;
+import eva2.gui.Plot;
+import eva2.gui.TopoPlot;
 import eva2.server.go.InterfaceTerminator;
+import eva2.server.go.enums.ESMutationInitialSigma;
+import eva2.server.go.enums.PostProcessMethod;
 import eva2.server.go.individuals.AbstractEAIndividual;
+import eva2.server.go.individuals.ESIndividualDoubleData;
+import eva2.server.go.individuals.InterfaceDataTypeDouble;
+import eva2.server.go.individuals.InterfaceESIndividual;
 import eva2.server.go.operators.cluster.ClusteringDensityBased;
 import eva2.server.go.operators.cluster.InterfaceClustering;
+import eva2.server.go.operators.crossover.CrossoverESDefault;
 import eva2.server.go.operators.distancemetric.InterfaceDistanceMetric;
 import eva2.server.go.operators.distancemetric.PhenotypeMetric;
 import eva2.server.go.operators.mutation.InterfaceMutation;
 import eva2.server.go.operators.mutation.MutateESFixedStepSize;
 import eva2.server.go.operators.mutation.MutateESMutativeStepSizeControl;
+import eva2.server.go.operators.mutation.MutateESRankMuCMA;
+import eva2.server.go.operators.selection.SelectBestIndividuals;
 import eva2.server.go.operators.terminators.EvaluationTerminator;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.AbstractMultiModalProblemKnown;
 import eva2.server.go.problems.AbstractOptimizationProblem;
 import eva2.server.go.problems.FM0Problem;
+import eva2.server.go.problems.Interface2DBorderProblem;
 import eva2.server.go.problems.InterfaceMultimodalProblemKnown;
+import eva2.server.go.strategies.EvolutionStrategies;
 import eva2.server.go.strategies.HillClimbing;
+import eva2.server.go.strategies.NelderMeadSimplex;
+import eva2.server.modules.GOParameters;
 import eva2.server.stat.InterfaceTextListener;
 import eva2.server.stat.StatsParameter;
+import eva2.tools.Mathematics;
 import eva2.tools.Pair;
 
 
@@ -35,12 +51,14 @@ import eva2.tools.Pair;
 public class PostProcess {
 	protected static InterfaceDistanceMetric metric = new PhenotypeMetric();
 	private static final boolean TRACE = false;
+	private static final boolean DRAW_PPPOP = true;
+	
 	// the default mutation step size for HC post processing
 	private static double defaultMutationStepSize = 0.01;
 	// lower limit mutation step size for HC post processing
 	private static double minMutationStepSize = 0.0000000000000001;
 	// used for hill climbing post processing and only alive during that period
-	private static OptimizerRunnable hcRunnable = null;
+	private static OptimizerRunnable ppRunnable = null;
 	
 	public static final int BEST_ONLY = 1;
 	public static final int BEST_RAND = 2;
@@ -251,9 +269,9 @@ public class PostProcess {
     	double lower = lowerBound;
     	double step = (upperBound - lowerBound) / nBins;
     	for (int i=0; i<nBins; i++) {
-    		if (TRACE) System.out.println("checking between " + lower + " and " + (lower+step));
+//    		if (TRACE) System.out.println("checking between " + lower + " and " + (lower+step));
     		res[i] = filterFitnessIn(pop, lower, lower+step).size();
-    		if (TRACE) System.out.println("found " + res[i]);
+//    		if (TRACE) System.out.println("found " + res[i]);
     		lower += step;
     	}
     	return res;
@@ -372,23 +390,346 @@ public class PostProcess {
 		}
 		hc.setPopulation(pop);
 //		hc.initByPopulation(pop, false);
-		hcRunnable = new OptimizerRunnable(OptimizerFactory.makeParams(hc, pop, problem, 0, term), true);
-		hcRunnable.getGOParams().setDoPostProcessing(false);
-		hcRunnable.setVerbosityLevel(StatsParameter.VERBOSITY_NONE);
-		hcRunnable.run();
-		hcRunnable.getGOParams().setDoPostProcessing(true);
-		hcRunnable = null;
+		ppRunnable = new OptimizerRunnable(OptimizerFactory.makeParams(hc, pop, problem, 0, term), true);
+		
+		runPP();
 	}
 	
 	/**
-	 * Stop the hill-climbing post processing if its currently running.
+	 * Search for a local minimum using nelder mead and return the solution found and the number of steps
+	 * (evaluations) actually performed. This uses the whole population as starting population for nelder mead
+	 * meaning that typically only one best is returned.
+	 * 
+	 * @param pop
+	 * @param problem
+	 * @param term
+	 * @return
 	 */
-	public static void stopHC() {
-		if (hcRunnable != null) synchronized (hcRunnable) {
-			if (hcRunnable != null) hcRunnable.stopOpt();
+	public static int processWithNMS(Population pop, AbstractOptimizationProblem problem, InterfaceTerminator term) {
+		NelderMeadSimplex nms = new NelderMeadSimplex();
+		nms.setProblemAndPopSize(problem);
+		nms.setGenerationCycle(5);
+		nms.initByPopulation(pop, false);
+		int funCallsBefore = pop.getFunctionCalls();
+		pop.SetFunctionCalls(0);
+		
+		ppRunnable = new OptimizerRunnable(OptimizerFactory.makeParams(nms, pop, problem, 0, term), true);
+		// as nms creates a new population and has already evaluated them, send a signal to stats
+		ppRunnable.getStats().createNextGenerationPerformed(nms.getPopulation(), null);
+		
+		runPP();
+
+		int funCallsDone = pop.getFunctionCalls();
+		pop.SetFunctionCalls(funCallsBefore+funCallsDone);
+		
+		return funCallsDone;
+	}
+	
+	/**
+	 * Search for a local minimum using nelder mead and return the solution found and the number of steps
+	 * (evaluations) actually performed. This uses the whole population as starting population for nelder mead
+	 * meaning that typically only one best is returned.
+	 * 
+	 * @param pop
+	 * @param problem
+	 * @param term
+	 * @return
+	 */
+	public static int processWithCMA(Population pop, AbstractOptimizationProblem problem, InterfaceTerminator term) {
+//		GOParameters cmaParams = OptimizerFactory.cmaESIPOP(problem);
+		MutateESRankMuCMA mutator = new MutateESRankMuCMA();
+		mutator.setInitializeSigma(ESMutationInitialSigma.avgInitialDistance);
+//		mutator.
+		EvolutionStrategies es = OptimizerFactory.createEvolutionStrategy(pop.size()/2, pop.size(), false, mutator, 1., new CrossoverESDefault(), 0., 
+				new SelectBestIndividuals(), problem, null);
+		for (int i=0; i<pop.size(); i++) {
+			pop.getEAIndividual(i).initCloneOperators(mutator, 1., new CrossoverESDefault(), 0., problem);
+		}
+		es.initByPopulation(pop, false);
+
+		GOParameters cmaParams = OptimizerFactory.makeParams(es, pop, problem, 0, term);
+		
+		int funCallsBefore = pop.getFunctionCalls();
+		pop.SetFunctionCalls(0);
+		
+		ppRunnable = new OptimizerRunnable(cmaParams, true);
+		ppRunnable.getStats().createNextGenerationPerformed(cmaParams.getOptimizer().getPopulation(), null);
+		
+		runPP();
+		pop.clear();
+		pop.addPopulation(es.getPopulation());
+		
+		int funCallsDone = es.getPopulation().getFunctionCalls();
+		pop.SetFunctionCalls(funCallsBefore+funCallsDone);
+		
+		return funCallsDone;
+	}
+	
+	private static boolean checkRange(AbstractEAIndividual indy) {
+		InterfaceDataTypeDouble idd = (InterfaceDataTypeDouble)indy;
+		return Mathematics.isInRange(idd.getDoubleData(), idd.getDoubleRange());
+	}
+
+	/**
+	 * For a given candidate solution, perform a nelder-mead-simplex refining search by producing a sample
+	 * population around the candidate (with given perturbation ratio relative to the problem range).
+	 * Then, the nelder mead algorithm is started and the best individual returned together with
+	 * the evaluations actually performed.
+	 * 
+	 * @see NelderMeadSimplex.createNMSPopulation(candidate, perturbRatio, range, includeCand)
+	 * 
+	 * @param cand
+	 * @param hcSteps
+	 * @param initPerturbation
+	 * @param prob
+	 * @return
+	 */
+	public static Pair<AbstractEAIndividual, Integer> localSolverNMS(AbstractEAIndividual cand, int hcSteps,
+			double initPerturbation, AbstractOptimizationProblem prob) {
+		
+		Population pop = new Population(1);
+		pop.add(cand);
+		int evalsDone = processSingleCandidates(PostProcessMethod.nelderMead, pop, hcSteps, initPerturbation, prob);
+		
+		return new Pair<AbstractEAIndividual, Integer>(pop.getBestEAIndividual(), evalsDone);	
+		
+//		Population candidates = NelderMeadSimplex.createNMSPopulation(cand, initPerturbation , range, false);
+//		prob.evaluate(candidates);
+////		refSet.incrFunctionCallsby(candidates.size());
+//		int evalsDone = candidates.size();
+//		int hcStepsRest = hcSteps - candidates.size();
+//
+//		candidates.add(cand);
+//		candidates.setPopulationSize(candidates.size());
+//		if (hcStepsRest < 1) {
+//			System.err.println("Error: Less steps than dimensions! " + hcSteps + " vs " + candidates.size());
+//			return new Pair<AbstractEAIndividual, Integer>(candidates.getBestEAIndividual(), evalsDone);
+//		} else {
+////			candidates.setEvaluated(); // they have all been evaluated at this point and no mod. is due
+////			if (!candidates.isEvaluated()) {
+////				System.err.println("this is bad!");
+////			}
+//			InterfaceTerminator term = new EvaluationTerminator(hcStepsRest);
+//	
+//			evalsDone += PostProcess.processWithNMS(candidates, prob, term);
+//			if (Math.abs(evalsDone-hcSteps)>1) {
+//				System.err.println("Error in localSolverNMS " + evalsDone + " / " + hcSteps);
+//			}
+//		}
+//		return new Pair<AbstractEAIndividual, Integer>(candidates.getBestEAIndividual(), evalsDone);		
+	}
+
+	/**
+	 * Create a subpopulation around an indicated individual from the candidate set.
+	 * Depending on the post processing method, this is done slightly differently. For hill-climbing,
+	 * an error message is produced.
+	 */
+	private static Population createLSSupPopulation(PostProcessMethod method, AbstractOptimizationProblem problem, Population candidates, int index, double maxPerturbation, boolean includeCand) {
+		Population subPop = null;
+		switch (method) {
+		case cmaES:
+			subPop = createPopInSubRange(maxPerturbation, problem, candidates.getEAIndividual(index));
+			break;
+		case hillClimber:
+			System.err.println("INVALID in createLSSupPopulation");
+			break;
+		case nelderMead:
+			double[][] range = ((InterfaceDataTypeDouble)candidates.getEAIndividual(index)).getDoubleRange();
+			double perturb = findNMSPerturn(candidates, index, maxPerturbation);
+			if (TRACE) System.out.println("perturb " + index + " is " + perturb);
+			subPop = NelderMeadSimplex.createNMSPopulation(candidates.getEAIndividual(index), perturb, range, false); 
+		}
+		return subPop;
+	}
+	
+	/**
+	 * For each candidate individual, create an own nm-population and optimize it separately.
+	 * The allowed steps must be large enough to perform a Nelder-Mead-Simplex step for all individuals, namely
+	 * for problem dimension n it should be (n+k)*candPopSize for a positive integer k. 
+	 * At the moment, the function calls are distributed evenly between all candidate solutions. This could be
+	 * improved by checking the convergence state in the future.
+	 * 
+	 * @param candidates
+	 * @param steps
+	 * @param maxPerturbation
+	 * @param prob
+	 * @return
+	 */
+	public static int processSingleCandidates(PostProcessMethod method, Population candidates, int steps, double maxPerturbation, AbstractOptimizationProblem prob) {
+		ArrayList<Population> nmPops = new ArrayList<Population>();
+		int stepsPerf = 0;
+		Population subPop;
+		
+		for (int i=0; i<candidates.size(); i++) { // create all subPopulations
+			subPop = createLSSupPopulation(method, prob, candidates, i, maxPerturbation, false);
+			
+			prob.evaluate(subPop);
+			stepsPerf += subPop.size();
+			subPop.add(candidates.getEAIndividual(i));
+			nmPops.add(subPop);
+		}
+		
+		int stepsPerCand = (steps-stepsPerf)/candidates.size();
+		if (TRACE) System.out.println("rest is " + (steps-stepsPerf) + ", thats " + stepsPerCand + " per candidate.");
+		if (stepsPerCand < 1) System.err.println("Too few steps allowed!");
+		else {
+			for (int i=0; i<candidates.size(); i++) { // improve each single sub pop
+				subPop = nmPops.get(i);
+				EvaluationTerminator term = new EvaluationTerminator(stepsPerCand);
+				if (TRACE) System.out.println("*** before " + subPop.getBestEAIndividual().getStringRepresentation());
+				
+				switch (method) {
+				case nelderMead: stepsPerf += PostProcess.processWithNMS(subPop, prob, term); 
+					break;
+				case cmaES: stepsPerf += PostProcess.processWithCMA(subPop, prob, term); 
+					break;
+				}
+				if (checkRange(subPop.getBestEAIndividual())) {
+					// and replace corresponding individual (should usually be better)
+					if (subPop.getBestEAIndividual().isDominant(candidates.getEAIndividual(i))) candidates.set(i, subPop.getBestEAIndividual());
+				} else {
+					// TODO esp. in nelder mead
+					//System.err.println("Warning, individual left the problem range during PP!");				
+				}
+
+				if (TRACE) System.out.println("refined to " + subPop.getBestEAIndividual().getStringRepresentation());
+			}				
+		}
+
+		return stepsPerf;
+	}
+	
+	public static boolean isDoubleCompliant(AbstractEAIndividual indy) {
+		return (indy instanceof InterfaceDataTypeDouble || (indy instanceof InterfaceESIndividual));
+	}
+	
+	public static double[][] getDoubleRange(AbstractEAIndividual indy) {
+		if (indy instanceof InterfaceDataTypeDouble || (indy instanceof InterfaceESIndividual)) {
+			if (indy instanceof InterfaceESIndividual) return ((InterfaceESIndividual)indy).getDoubleRange();
+			else return ((InterfaceDataTypeDouble)indy).getDoubleRange();
+		} else return null;
+	}
+	
+	public static double[] getDoubleData(AbstractEAIndividual indy) {
+		if (indy instanceof InterfaceDataTypeDouble || (indy instanceof InterfaceESIndividual)) {
+			if (indy instanceof InterfaceESIndividual) return ((InterfaceESIndividual)indy).getDGenotype();
+			else return ((InterfaceDataTypeDouble)indy).getDoubleData();
+		} else return null;
+	}
+	
+	public static void setDoubleData(AbstractEAIndividual indy, double[] data) {
+		if (indy instanceof InterfaceDataTypeDouble || (indy instanceof InterfaceESIndividual)) {
+			if (indy instanceof InterfaceESIndividual) ((InterfaceESIndividual)indy).SetDGenotype(data);
+			else ((InterfaceDataTypeDouble)indy).SetDoubleGenotype(data);
 		}
 	}
 	
+	/**
+	 * Create a population of clones of the given individual in a sub range around the individual.
+	 * The given individual must be double compliant. The population size is determined by the range dimension
+	 * using the formula for lambda=4+3*log(dim).
+	 * The individuals are randomly initialized in a box of side length searchBoxLen around indy holding the
+	 * problem constraints, meaning that the box may be smaller at the brim of the problem-defined search range.
+	 * 
+	 * @param searchBoxLen
+	 * @param prob
+	 * @param indy
+	 * @return
+	 */
+	private static Population createPopInSubRange(double searchBoxLen,
+			AbstractOptimizationProblem prob,
+			AbstractEAIndividual indy) {
+		if (isDoubleCompliant(indy)) {
+			double[][] range = getDoubleRange(indy);
+			double[] data = getDoubleData(indy);
+			int lambda= (int) (4.0 + 3.0 * Math.log(range.length));
+			double[][] newRange = new double[2][range.length];
+			for (int dim=0; dim<range.length; dim++) {
+				// create a small range array around the expected local optimum 
+				newRange[dim][0] = Math.max(range[dim][0], data[dim]-(searchBoxLen/2.));
+				newRange[dim][1] = Math.min(range[dim][1], data[dim]+(searchBoxLen/2.));
+			}
+			Population pop = new Population();
+			for (int i=0; i<lambda-1; i++) { // minus one because indy is added later
+				AbstractEAIndividual tmpIndy = (AbstractEAIndividual)indy.clone();
+				data = getDoubleData(tmpIndy);
+				ESIndividualDoubleData.defaultInit(data, newRange);
+				setDoubleData(tmpIndy, data);
+				pop.addIndividual(tmpIndy);
+			}
+			pop.synchSize();
+			return pop;
+		} else {
+			System.err.println("invalid individual type!");
+			return null;
+		}
+	}
+
+	/**
+	 * Just execute the runnable.
+	 */
+	private static void runPP() {
+		ppRunnable.getGOParams().setDoPostProcessing(false);
+		ppRunnable.setVerbosityLevel(StatsParameter.VERBOSITY_NONE);
+		ppRunnable.run();
+		ppRunnable.getGOParams().setDoPostProcessing(true);
+		ppRunnable = null;
+	}
+	
+	/**
+	 * Stop the post processing if its currently running.
+	 */
+	public static void stopPP() {
+		if (ppRunnable != null) synchronized (ppRunnable) {
+			if (ppRunnable != null) ppRunnable.stopOpt();
+		}
+	}
+	
+	/**
+	 * Draw the given population in a (topo)plot. If two populations are given, the first
+	 * is interpreted as "before optimization", the second as "after optimization", and
+	 * thats how they are displayed.
+	 *  
+	 * @param title
+	 * @param plot
+	 * @param popBef
+	 * @param popAft
+	 * @param prob
+	 * @return
+	 */
+	private static TopoPlot draw(String title, TopoPlot plot, Population popBef, Population popAft, AbstractOptimizationProblem prob) {
+		double[][] range = ((InterfaceDataTypeDouble)popBef.getEAIndividual(0)).getDoubleRange();
+		
+		if (plot == null) {
+			plot = new TopoPlot("PostProcessing: " + title, "x", "y",range[0],range[1]);
+		    if (prob instanceof Interface2DBorderProblem) {
+		    	plot.gridx=60;
+		    	plot.gridy=60;
+		    	plot.setTopology((Interface2DBorderProblem)prob);
+		    }
+		}
+		else plot.clearAll();
+		
+        InterfaceDataTypeDouble tmpIndy1;
+        for (int i = 0; i < popBef.size(); i++) {
+            tmpIndy1 = (InterfaceDataTypeDouble)popBef.get(i);
+        	plot.getFunctionArea().drawCircle(popBef.getEAIndividual(i).getFitness(0), tmpIndy1.getDoubleData(), 0);
+        }
+        if (popAft!=null) {
+        	InterfaceDataTypeDouble tmpIndy2;
+        	plot.getFunctionArea().setGraphColor(0, 2);
+            for (int i = 0; i < popAft.size(); i++) {
+                tmpIndy1 = (InterfaceDataTypeDouble)popBef.get(i);
+                tmpIndy2 = (InterfaceDataTypeDouble)popAft.get(i);
+            	plot.getFunctionArea().drawCircle(popAft.getEAIndividual(i).getFitness(0), tmpIndy2.getDoubleData(), 0);
+            	plot.getFunctionArea().setConnectedPoint(tmpIndy1.getDoubleData(), i+1);
+            	plot.getFunctionArea().setConnectedPoint(tmpIndy2.getDoubleData(), i+1);
+            	plot.getFunctionArea().setGraphColor(i+1, 0);
+            }
+        }
+	    return plot;
+    }
+    
 	public static void main(String[] args) {
 		AbstractOptimizationProblem problem = new FM0Problem();
 		InterfaceMultimodalProblemKnown mmp = (InterfaceMultimodalProblemKnown)problem;
@@ -510,7 +851,7 @@ public class PostProcess {
 	}
 	
 	/**
-	 * Universal post processing method, receiving parameter instance for specification.
+	 * General post processing method, receiving parameter instance for specification.
 	 * Optional clustering and HC step, output contains population measures, fitness histogram and
 	 * a list of solutions after post processing.
 	 * 
@@ -522,17 +863,34 @@ public class PostProcess {
 	 */
 	public static Population postProcess(InterfacePostProcessParams params, Population inputPop, AbstractOptimizationProblem problem, InterfaceTextListener listener) {
 		if (params.isDoPostProcessing()) {
-			Population clusteredPop, outputPop;
+			Plot plot;
+			
+			Population clusteredPop, outputPop, stateBeforeLS;
 			if (params.getPostProcessClusterSigma() > 0) {
 				clusteredPop = (Population)PostProcess.clusterBest(inputPop, params.getPostProcessClusterSigma(), 0, PostProcess.KEEP_LONERS, PostProcess.BEST_ONLY).clone();
 				if (clusteredPop.size() < inputPop.size()) {
 					if (listener != null) listener.println("Initial clustering reduced population size from " + inputPop.size() + " to " + clusteredPop.size());
 				} else if (listener != null) listener.println("Initial clustering yielded no size reduction.");
 			} else clusteredPop = inputPop;
-			
+//			if (DRAW_PPPOP) {
+//				plot = draw((params.getPostProcessClusterSigma()>0) ? "After first clustering" : "Initial population", null, clusteredPop, null, problem);
+//			}
+						
+			int stepsDone = 0;
 			if (params.getPostProcessSteps() > 0) {
-				int stepsDone = processWithHC(clusteredPop, problem, params.getPostProcessSteps());
-				if (listener != null) listener.println("HC post processing: " + stepsDone + " steps done.");
+				double stepSize = selectMaxSearchRange(params.getPPMethod(), params.getPostProcessClusterSigma());
+				stateBeforeLS = (Population)clusteredPop.clone();
+				// Actual local search comes here
+				if (params.getPPMethod() == PostProcessMethod.hillClimber){
+					stepsDone = processWithHC(clusteredPop, problem, params.getPostProcessSteps(), stepSize, minMutationStepSize);
+				} else {
+					stepsDone = processSingleCandidates(params.getPPMethod(), clusteredPop, params.getPostProcessSteps(), stepSize, problem);
+				}
+
+				if (listener != null) listener.println("Post processing: " + stepsDone + " steps done.");
+				if (DRAW_PPPOP) {
+					plot = draw("After " + stepsDone + " steps", null, stateBeforeLS, clusteredPop, problem);
+				}
 				// some individuals may have now converged again
 				if (params.getPostProcessClusterSigma() > 0) {
 					// so if wished, cluster again.
@@ -543,6 +901,9 @@ public class PostProcess {
 				} else outputPop = clusteredPop;
 			} else outputPop = clusteredPop;
 			
+			if (DRAW_PPPOP) {
+				plot = draw("After " + stepsDone + " steps" + ((params.getPostProcessClusterSigma()>0) ? " and second clustering" : ""), null, outputPop, null, problem);
+			}
 			double upBnd = PhenotypeMetric.norm(outputPop.getWorstEAIndividual().getFitness())*1.1;
 			upBnd = Math.pow(10,Math.floor(Math.log10(upBnd)+1));
 			double lowBnd = 0;
@@ -564,6 +925,57 @@ public class PostProcess {
 			}
 			return nBestPop;
 		} else return inputPop;
+	}
+
+	/**
+	 * Select a local search range for a given method based on the clustering parameter. 
+	 * If clustering was deactivated (sigma <= 0), then the default mutation step size is used.
+	 * The specific search method may interpret the search range differently.
+	 * 
+	 * @param method
+	 * @param postProcessClusterSigma
+	 * @return
+	 */
+	private static double selectMaxSearchRange(PostProcessMethod method,
+			double postProcessClusterSigma) {
+		double resolution = defaultMutationStepSize*2; // somewhat keep the ratio between mutation and resolution
+		if (postProcessClusterSigma > 0.) resolution = postProcessClusterSigma;
+		switch (method) {
+		case hillClimber:
+			return resolution/2.;
+		case nelderMead:
+			return resolution/3.;
+		default:
+			System.err.println("Invalid method!");
+		case cmaES: 
+			return resolution;
+		}
+	}
+	
+	
+	/**
+	 * Select a perturbation for individual i fitting to the population - avoiding overlap.
+	 * In this case, return the third of the minimum distance to the next neighbor in the population.
+	 * The maxPerturb can be given as upper bound of the perturbation if it is > 0.
+	 * 
+	 * @param candidates	population of solutions to look at
+	 * @param i	index of the individual in the population to look at
+	 * @param maxPerturb optional upper bound of the returned perturbation
+	 * @return
+	 */
+	private static double findNMSPerturn(Population candidates, int i, double maxPerturb) {
+		double minDistNeighbour = Double.MAX_VALUE;
+		AbstractEAIndividual indy = candidates.getEAIndividual(i);
+		for (int k=0; k<candidates.size(); k++) {
+			if (k!=i) {
+				double dist = PhenotypeMetric.euclidianDistance(AbstractEAIndividual.getDoublePosition(indy), AbstractEAIndividual.getDoublePosition(candidates.getEAIndividual(k)));
+				if (dist < minDistNeighbour) {
+					minDistNeighbour = dist;
+				}
+			}
+		}
+		if (maxPerturb>0) return Math.min(maxPerturb, minDistNeighbour/3.);
+		else return minDistNeighbour/3.;
 	}
 }
 

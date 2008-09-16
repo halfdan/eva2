@@ -16,6 +16,7 @@ import eva2.server.go.operators.crossover.NoCrossover;
 import eva2.server.go.operators.mutation.InterfaceMutation;
 import eva2.server.go.operators.mutation.NoMutation;
 import eva2.server.go.populations.Population;
+import eva2.server.go.problems.AbstractOptimizationProblem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.tools.EVAERROR;
 
@@ -61,7 +62,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
     protected HashMap<String,Object> 		m_dataHash 				= new HashMap<String,Object>();
     
     // introduced for the nichingPSO/ANPSO (M.Aschoff)
-    private int individualIndex;
+    private int individualIndex = -1;
     
     public AbstractEAIndividual() {
     	m_IDcounter++;
@@ -77,7 +78,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
     	return individualIndex;
     }
 
-    public void setIndividualIndex(int index) {
+    public void SetIndividualIndex(int index) {
     	this.individualIndex = index;
     }
     
@@ -94,11 +95,29 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      * @param coOp
      * @param pCross
      */
-    public void initOperators(InterfaceMutation mutOp, double pMut, InterfaceCrossover coOp, double pCross) {
+    public void setOperators(InterfaceMutation mutOp, double pMut, InterfaceCrossover coOp, double pCross) {
     	m_MutationProbability = pMut;
     	m_MutationOperator = mutOp;
     	m_CrossoverProbability = pCross;
     	m_CrossoverOperator = coOp;
+    }
+    
+    /**
+     * Clone and init the mutation/crossover operator for the individual 
+	 * and initialize the operators and probabilities to the given values.
+     * 
+     * @param mutOp
+     * @param pMut
+     * @param coOp
+     * @param pCross
+     */
+    public void initCloneOperators(InterfaceMutation mutOp, double pMut, InterfaceCrossover coOp, double pCross, InterfaceOptimizationProblem problem) {
+    	m_MutationProbability = pMut;
+    	m_MutationOperator = (InterfaceMutation)mutOp.clone();
+    	m_MutationOperator.init(this, problem);
+    	m_CrossoverProbability = pCross;
+    	m_CrossoverOperator = (InterfaceCrossover)coOp.clone();
+    	m_CrossoverOperator.init(this, problem);
     }
     
     /**
@@ -112,7 +131,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      * @return the modified AbstractEAIndividual
      */
     public static AbstractEAIndividual setOperators(AbstractEAIndividual indy, InterfaceMutation mutOp, double pMut, InterfaceCrossover coOp, double pCross) {
-    	indy.initOperators(mutOp, pMut, coOp, pCross);
+    	indy.setOperators(mutOp, pMut, coOp, pCross);
     	return indy;
     }
     

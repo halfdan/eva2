@@ -321,6 +321,13 @@ public class FunctionArea extends DArea implements Serializable {
 	 /**
 	  *
 	  */
+	 public void setConnectedPoint(double[] p, int graphLabel) {
+		 setConnectedPoint(p[0], p[1], graphLabel);
+	 }
+	 
+	 /**
+	  *
+	  */
 	 public void setConnectedPoint(double x, double y, int graphLabel) {
 		 if (!checkLogValidYValue(x, y, graphLabel)) {
 			 if (m_log) toggleLog();
@@ -334,8 +341,8 @@ public class FunctionArea extends DArea implements Serializable {
 //			 y = 1e-30;
 //		 }
 		 getGraphPointSet(graphLabel).addDPoint(x, y);
-
 	 }
+	 
 //	 public void setConnectedPoint(double x, double y, int GraphLabel) {
 //		 if (m_log == true && y <= 0.0) {
 ////			 y = Double.MIN_VALUE;
@@ -454,7 +461,10 @@ public class FunctionArea extends DArea implements Serializable {
 		 //addGraphPointSet(NewPointSet); already done within GraphPointSet!!!
 		 return NewPointSet;
 	 }
-
+	 
+	 public void setUnconnectedPoint(double[] p, int GraphLabel) {
+		 setUnconnectedPoint(p[0], p[1], GraphLabel);
+	 }
 	 /**
 	  *
 	  */
