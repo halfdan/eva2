@@ -51,7 +51,6 @@ import eva2.tools.Pair;
 public class PostProcess {
 	protected static InterfaceDistanceMetric metric = new PhenotypeMetric();
 	private static final boolean TRACE = false;
-	private static final boolean DRAW_PPPOP = true;
 	
 	// the default mutation step size for HC post processing
 	private static double defaultMutationStepSize = 0.01;
@@ -888,8 +887,8 @@ public class PostProcess {
 				}
 
 				if (listener != null) listener.println("Post processing: " + stepsDone + " steps done.");
-				if (DRAW_PPPOP) {
-					plot = draw("After " + stepsDone + " steps", null, stateBeforeLS, clusteredPop, problem);
+				if (params.isWithPlot()) {
+					plot = draw("After " + stepsDone + " steps ("+ params.getPPMethod() + ")", null, stateBeforeLS, clusteredPop, problem);
 				}
 				// some individuals may have now converged again
 				if (params.getPostProcessClusterSigma() > 0) {
@@ -901,8 +900,8 @@ public class PostProcess {
 				} else outputPop = clusteredPop;
 			} else outputPop = clusteredPop;
 			
-			if (DRAW_PPPOP) {
-				plot = draw("After " + stepsDone + " steps" + ((params.getPostProcessClusterSigma()>0) ? " and second clustering" : ""), null, outputPop, null, problem);
+			if (params.isWithPlot()) {
+				plot = draw("After " + stepsDone + " steps (" + params.getPPMethod() + ")" + ((params.getPostProcessClusterSigma()>0) ? " and second clustering" : ""), null, outputPop, null, problem);
 			}
 			double upBnd = PhenotypeMetric.norm(outputPop.getWorstEAIndividual().getFitness())*1.1;
 			upBnd = Math.pow(10,Math.floor(Math.log10(upBnd)+1));

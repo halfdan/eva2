@@ -13,6 +13,7 @@ public class PostProcessParams implements InterfacePostProcessParams, Serializab
 	protected double 			postProcessClusterSigma = 0.05;
 	protected int				printNBest = 10;
 	protected PostProcessMethod	method = PostProcessMethod.nelderMead;
+	private boolean 			withPlot = false;
 	
 	public PostProcessParams() {
 		postProcessSteps = 5000;
@@ -65,6 +66,7 @@ public class PostProcessParams implements InterfacePostProcessParams, Serializab
 		GenericObjectEditor.setShowProperty(this.getClass(), "postProcessClusterSigma", postProcess);
 		GenericObjectEditor.setShowProperty(this.getClass(), "printNBest", postProcess);
 		GenericObjectEditor.setShowProperty(this.getClass(), "PPMethod", postProcess);
+		GenericObjectEditor.setShowProperty(this.getClass(), "withPlot", postProcess);
 	}
 	public String doPostProcessingTipText() {
 		return "Toggle post processing of the solutions.";
@@ -124,5 +126,13 @@ public class PostProcessParams implements InterfacePostProcessParams, Serializab
 
 	public void setPPMethod(PostProcessMethod meth) {
 		method=meth;
+	}
+
+	public boolean isWithPlot() {
+		return withPlot;
+	}
+
+	public void setWithPlot(boolean withPlot) {
+		this.withPlot = withPlot;
 	}
 }

@@ -31,4 +31,7 @@ public interface InterfacePostProcessParams {
 	public void setPPMethod(PostProcessMethod meth);
 	public PostProcessMethod getPPMethod();
 	public String PPMethodTipText();
+	
+	public boolean isWithPlot();
+	public void setWithPlot(boolean withPlot);
 }
