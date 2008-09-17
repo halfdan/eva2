@@ -232,7 +232,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
         if (listeners != null) {
         	for (Iterator iterator = listeners.iterator(); iterator.hasNext();) {
 				InterfacePopulationChangedEventListener listener = (InterfacePopulationChangedEventListener) iterator.next();
-				listener.registerPopulationStateChanged(this, name);
+				if (listener!=null) listener.registerPopulationStateChanged(this, name);
 			}
         }
     }
@@ -300,9 +300,11 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      * @param ea
      */
     public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
-    	if (listeners == null) listeners = new ArrayList<InterfacePopulationChangedEventListener>(3);
-    	if (!listeners.contains(ea)) {
-    		listeners.add(ea);
+    	if (ea != null) {
+    		if (listeners == null) listeners = new ArrayList<InterfacePopulationChangedEventListener>(3);
+    		if (!listeners.contains(ea)) {
+    			listeners.add(ea);
+    		}
     	}
     }
     
