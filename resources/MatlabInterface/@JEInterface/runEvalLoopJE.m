@@ -64,10 +64,24 @@ try
         int.mediator.run;
         if (~int.mediator.isFinished())
             x = int.mediator.getQuestion();
-            if (isempty(int.args))
-                res = feval(int.f, x);
-            else
-                res = feval(int.f, x, int.args);
+            if (isempty(int.range))
+                %size(x)
+                x=convertUnsignedJE(int, x);
+                %disp('here B');
+                %x
+            end
+%            size(x)
+            try
+                if (isempty(int.args))
+                    res = feval(int.f, x);
+                else
+                    res = feval(int.f, x, int.args);
+                end
+                %res
+            catch ME
+                disp('function evaluation failed:');
+                disp(ME.message);
+                stopOptimization=1;
             end
             int.mediator.setAnswer(res);
             drawnow;
@@ -79,8 +93,9 @@ try
         end
     end
     clear global JEMediator;
-catch
+catch ME
     disp('Error in evaluate!');
+    disp(ME.message);
     %int.mediator.quit; % just in case
     %int.mediator='';
     

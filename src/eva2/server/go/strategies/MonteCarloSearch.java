@@ -9,9 +9,13 @@ import eva2.server.go.populations.SolutionSet;
 import eva2.server.go.problems.B1Problem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 
-/** The simple random or Monte-Carlo search, simple but useful
+/** 
+ * The simple random or Monte-Carlo search, simple but useful
  * to evaluate the complexity of the search space.
- * This implements a Random Walk Search.
+ * This implements a Random Walk Search using the initialization
+ * method of the problem instance, meaning that the random characteristics
+ * may be problem dependent.
+ * 
  * Copyright:       Copyright (c) 2003
  * Company:         University of Tuebingen, Computer Architecture
  * @author          Felix Streichert
@@ -71,7 +75,9 @@ public class MonteCarloSearch implements InterfaceOptimizer, java.io.Serializabl
         }
     }
 
-    /** This method will optimize
+    /** 
+     * This method will optimize without specific operators, by just calling the problem method
+     * for population initialization.
      */
     public void optimize() {
         Population original = (Population)this.m_Population.clone();
