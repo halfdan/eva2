@@ -135,7 +135,7 @@ public class GAIndividualIntegerData extends AbstractEAIndividual implements Int
         return this.m_Range.length;
     }
 
-    /** This method will set the range of the double attributes. If range.length
+    /** This method will set the range of the integer attributes. If range.length
      * does not equal doubledata.length only range[i] will be used to set all
      * ranges.
      * @param range     The new range for the double data.
@@ -152,6 +152,32 @@ public class GAIndividualIntegerData extends AbstractEAIndividual implements Int
         this.setIntegerDataLength(range.length);
     }
 
+    /**
+     * Set lower and upper integer range in all dimensions.
+     * 
+     * @param lower
+     * @param upper
+     */
+    public void SetIntRange(int lower, int upper) {
+    	for (int i=0; i<m_Range.length; i++) {
+    		SetIntRange(i, lower, upper);
+            m_CodingLenghts[i] = m_IntegerCoding.calculateNecessaryBits(m_Range[i]);
+    	}
+    }
+    
+    /**
+     * Set lower and upper integer range in a specific dimension.
+     * 
+     * @param index
+     * @param lower
+     * @param upper
+     */
+    public void SetIntRange(int index, int lower, int upper) {
+   		m_Range[index][0] = lower;
+   		m_Range[index][1] = upper;
+   		m_CodingLenghts[index] = m_IntegerCoding.calculateNecessaryBits(m_Range[index]);
+    }
+    
     /** This method will return the range for all double attributes.
      * @return The range array.
      */

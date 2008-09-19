@@ -1,5 +1,8 @@
 package eva2.server.go.problems;
 
+import java.lang.reflect.Array;
+import java.util.BitSet;
+
 import eva2.gui.BeanInspector;
 
 /**
@@ -26,11 +29,11 @@ public class MatlabEvalMediator implements Runnable {
 	volatile boolean requesting = false;
 //	final static boolean TRACE = false;
 	volatile boolean fin = false;
-	volatile double[] question = null;
+	volatile Object question = null;
 	volatile double[] answer = null;
 	boolean quit = false;
-	volatile double[] optSolution = null;
-	volatile double[][] optSolSet = null;
+	volatile Object optSolution = null;
+	volatile Object[] optSolSet = null;
 //	MatlabProblem mp = null;
 	// no good: even when waiting for only 1 ms the Matlab execution time increases by a factor of 5-10
 	final static int sleepTime = 0;
@@ -41,9 +44,18 @@ public class MatlabEvalMediator implements Runnable {
 	 * @param x
 	 * @return
 	 */
-	double[] requestEval(MatlabProblem mp, double[] x) {
+	double[] requestEval(MatlabProblem mp, Object x) {
 //		this.mp = mp;
 		question = x;
+//		System.err.println("IN REQUESTEVAL, x is " + BeanInspector.toString(x));
+		if (question.getClass().isArray()) {
+//			System.err.println("array of type ** " + Array.get(question, 0).getClass().toString());
+//		} else if (question instanceof BitSet){
+//			BitSet b = (BitSet)x;
+//			Integer.decode()
+//			
+		} else System.err.println("Error, requesting evaluation for non array!"); 
+		
 		requesting = true;
 //		int k=0;
 //		System.out.println("Requesting eval for " + BeanInspector.toString(x) + ", req state is " + requesting + "\n"); 
@@ -89,7 +101,7 @@ public class MatlabEvalMediator implements Runnable {
 	 * To be called from Matlab.
 	 * @return
 	 */
-	public double[] getQuestion() {
+	public Object getQuestion() {
 //		mp.log("-- Question: " + BeanInspector.toString(question) + "\n");
 		return question;
 	}
@@ -105,6 +117,7 @@ public class MatlabEvalMediator implements Runnable {
 	 */
 	public void setAnswer(double[] y) {
 //		mp.log("-- setAnswer: " + BeanInspector.toString(y) + "\n"); 
+//		System.err.println("answer is " + BeanInspector.toString(y)); 
 		answer = y;
 		requesting = false; // answer is finished, break request loop
 	}
@@ -121,13 +134,18 @@ public class MatlabEvalMediator implements Runnable {
 		return fin;
 	}
 	
-	void setSolution(double[] sol) {
+	void setSolution(Object sol) {
 		//System.out.println("setting Sol");
 		optSolution = sol;
 	}
 	
 	void setSolutionSet(double[][] solSet) {
-		//System.out.println("setting SolSet " + ((solSet != null) ? solSet.length : 0));
+//		System.err.println("setting SolSet " + ((solSet != null) ? solSet.length : 0));
+		optSolSet = solSet;
+	}
+	
+	void setSolutionSet(int[][] solSet) {
+//		System.err.println("setting SolSet " + ((solSet != null) ? solSet.length : 0));
 		optSolSet = solSet;
 	}
 	
@@ -135,17 +153,17 @@ public class MatlabEvalMediator implements Runnable {
 	 * Matlab may retrieve result.
 	 * @return
 	 */
-	public double[] getSolution() {
-		//System.out.println("getting Sol");
+	public Object getSolution() {
+//		System.err.println("getting Sol");
 		return optSolution;
 	}
 	
 	/**
-	 * Matlab may retrieve result.
+	 * Matlab may retrieve result as Object[] containing either double[] or int[].
 	 * @return
 	 */
-	public double[][] getSolutionSet() {
-		//System.out.println("getting SolSet" + ((optSolSet != null) ? optSolSet.length : 0));
+	public Object[] getSolutionSet() {
+//		System.err.println("getting SolSet " + ((optSolSet != null) ? optSolSet.length : 0));
 		return optSolSet;
 	}
 }

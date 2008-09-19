@@ -124,7 +124,7 @@ public class GAStandardCodingInteger implements InterfaceGAIntegerCoding, java.i
      */
     public int calculateNecessaryBits(int[] range) {
         int result = 0;
-        int maxStore = 1 + range[1] -range[0];
+        double maxStore = 1. + range[1] -range[0];
 
         while (Math.pow(2, result) < maxStore) result++;
 

@@ -13,6 +13,10 @@ end
 if (isempty(sol)) 
     fit = NaN;
 else
+    if (isempty(int.range)) 
+        sol=convertUnsignedJE(int, sol);
+    end;
+        
     if (isempty(int.args))
         fit = feval(int.f, sol);
     else

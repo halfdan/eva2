@@ -962,4 +962,34 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
     	return isDominatingDebConstraints((AbstractEAIndividual)indy);
     }
 
+    /**
+     * Return the individual data (phenotype) as BitSet, int[], double[], int[] (coding permutation)
+     * or InterfaceProgram[].
+     * 
+     * @param individual
+     * @return
+     */
+	public static Object getIndyData(AbstractEAIndividual individual) {
+        if (individual instanceof InterfaceDataTypeBinary) {
+            BitSet b = ((InterfaceDataTypeBinary)individual).getBinaryData();
+            return b;
+        } else if (individual instanceof InterfaceDataTypeInteger) {
+            int[] b = ((InterfaceDataTypeInteger)individual).getIntegerData();
+            return b;
+        } else if (individual instanceof InterfaceDataTypeDouble) {
+            double[] b = ((InterfaceDataTypeDouble)individual).getDoubleData();
+            return b;
+        } else if (individual instanceof InterfaceDataTypePermutation) {
+            int[] b = ((InterfaceDataTypePermutation)individual).getPermutationData()[0];
+            return b;
+        } else if (individual instanceof InterfaceDataTypeProgram) {
+            InterfaceProgram[] b = ((InterfaceDataTypeProgram)individual).getProgramData();
+            return b;
+        } else {
+        	System.err.println("error in AbstractEAIndividual::getDefaultDataString: type " + individual.getClass() + " not implemented");
+        	return null;
+        }
+	}
+
 }
+  

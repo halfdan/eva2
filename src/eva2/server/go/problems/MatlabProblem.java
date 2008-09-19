@@ -3,16 +3,16 @@ package eva2.server.go.problems;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
-import java.io.PrintWriter;
 import java.io.Serializable;
-import java.io.StringWriter;
 
 import eva2.OptimizerFactory;
 import eva2.OptimizerRunnable;
 import eva2.gui.BeanInspector;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.ESIndividualDoubleData;
+import eva2.server.go.individuals.GAIndividualIntegerData;
 import eva2.server.go.individuals.InterfaceDataTypeDouble;
+import eva2.server.go.individuals.InterfaceDataTypeInteger;
 import eva2.server.go.operators.postprocess.InterfacePostProcessParams;
 import eva2.server.go.operators.postprocess.PostProcess;
 import eva2.server.go.operators.postprocess.PostProcessParams;
@@ -28,25 +28,24 @@ import eva2.server.stat.InterfaceTextListener;
  * @author mkron
  *
  */
-public class MatlabProblem extends AbstractProblemDouble implements InterfaceTextListener, Serializable {
+public class MatlabProblem extends AbstractOptimizationProblem implements InterfaceTextListener, Serializable {
 	private static final long serialVersionUID = 4913310869887420815L;
-	public static final boolean 		TRACE = false; 
-//	transient protected Matlab			matlab = null;
+	public static final boolean 		TRACE = true; 
 	transient OptimizerRunnable			runnable = null;
 	protected boolean 					allowSingleRunnable = true;	
-//	protected String 					jmInterface;
 	protected int 						problemDimension = 10;
 	transient PrintStream 				dos = null;
-	protected double[][] 				range = null;
+	private double 						range[][] =	null;
 	private static final String			defTestOut = "matlabproblem-testout.dat";
 	int 								verbosityLevel	= 0;
 	private MatlabEvalMediator 			handler = null;
-	
+	private boolean isDouble = true;
+
 	public static boolean hideFromGOE = true; 
-	
+
 //	transient private double[] currArray = null;
 //	private String mtCmd = null;
-	
+
 	public MatlabProblem(MatlabProblem o) {
 //		this.matlab = o.matlab;
 		this.handler = o.handler;
@@ -56,45 +55,72 @@ public class MatlabProblem extends AbstractProblemDouble implements InterfaceTex
 		this.problemDimension = o.problemDimension;
 //		this.res = new ResultArr();
 //		if (o.res != null) if (o.res.get() != null) res.set(o.res.get());
-		this.range = o.makeRange();
+		this.range = o.range;
+		this.isDouble = o.isDouble;
 //		this.mtCmd = o.mtCmd;
 //		currArray = null;
 	}
-	
+
 	public Object clone() {
 		return new MatlabProblem(this);
 	}
-	
-	public MatlabProblem(String nameJEInterface, int dim) {
-		this(nameJEInterface, dim, null);
-		range = super.makeRange();
-	}
-	
-	public MatlabProblem(String nameJEInterface, int dim, double[][] range) {
-		init(nameJEInterface, dim, range, defTestOut);
+
+	public MatlabProblem(int dim) {
+		this(dim, (double[][])null);
 	}
 
-	public MatlabProblem(String nameJEInterface, int dim, double lower, double upper) {
-		this(nameJEInterface, dim, null);
+	public MatlabProblem(int dim, double[][] range) {
+		init(dim, range, defTestOut);
+	}
+
+	public MatlabProblem(int dim, double lower, double upper) {
+		this(dim, null);
 		double[][] range = new double[dim][2];
 		for (int i=0; i<dim; i++) {
 			range[dim][0] = lower;
 			range[dim][1] = upper;
 		}
 	}
-	
+
+	protected void initTemplate() {
+		if (isDouble) {
+			if (m_Template == null) m_Template         = new ESIndividualDoubleData();
+			if (getProblemDimension() > 0) { // avoid evil case setting dim to 0 during object init
+				((InterfaceDataTypeDouble)this.m_Template).setDoubleDataLength(getProblemDimension());
+				((InterfaceDataTypeDouble)this.m_Template).SetDoubleRange(range);
+			}
+		} else {
+			m_Template         = new GAIndividualIntegerData();
+			int intLen = 1+((getProblemDimension()-1)/32);
+			int lastIntCodingBits = getProblemDimension()-((intLen-1)*32);
+			if (lastIntCodingBits > 32) System.err.println("ERROR in MatlabProblem:initTemplate");
+			((GAIndividualIntegerData)m_Template).setIntegerDataLength(intLen);
+			((GAIndividualIntegerData)m_Template).SetIntRange(Integer.MIN_VALUE, Integer.MAX_VALUE);
+			if (lastIntCodingBits < 32) ((GAIndividualIntegerData)m_Template).SetIntRange(intLen-1, 0, (int)Math.pow(2, lastIntCodingBits)-1);
+//			System.err.println("integer length is "+((GAIndividualIntegerData)m_Template).getIntegerData().length);
+//			System.err.println("Range is " + BeanInspector.toString(((GAIndividualIntegerData)m_Template).getIntRange()));
+//			m_Template         = new GAIndividualBinaryData();
+//			((GAIndividualBinaryData)m_Template).setBinaryDataLength(getProblemDimension());
+		}
+	}
+
 	public void setMediator(MatlabEvalMediator h) {
 		handler = h;
 	}
-	
+
 	public void initProblem() {
-		init(/*this.jmInterface*/ null, this.problemDimension, this.range, defTestOut);
+		init(this.problemDimension, range, defTestOut);
 	}
-	
-	private void init(String nameJEInterface, int dim, double[][] rng, String outFile) {
+
+	private void init(int dim, double[][] rng, String outFile) {
 		problemDimension = dim;
-		if ((rng != null) && (dim != rng.length)) throw new ArrayIndexOutOfBoundsException("Mismatching dimension and range!");
+//		if ((rng != null) && (dim != rng.length)) throw new ArrayIndexOutOfBoundsException("Mismatching dimension and range!");
 		range = rng;
+		if (range==null) isDouble = false;
+		else isDouble = true;
+
+//		System.err.println("isDouble: " + isDouble);
+//		System.err.println("range: " + BeanInspector.toString(range));
 		initTemplate();
 //		res = new ResultArr();
 		if ((dos == null) && TRACE) {
@@ -105,39 +131,10 @@ public class MatlabProblem extends AbstractProblemDouble implements InterfaceTex
 			}
 		}
 
-		log("range is " + BeanInspector.toString(range)+ "\n");
-		log("template len: " + ((ESIndividualDoubleData)m_Template).getDGenotype().length + "\n");
-//		try {
-//			if (matlab == null)
-//				matlab = new Matlab();//this command links to the current matlab session
-//			try {
-//				matlab.eval("JE='hello'");
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}
-//		} catch (Error e) {
-//			log("Error: " + e.toString());
-//			System.err.println("Error: could not create MatlabProblem instance. MatlabProblem can only be used from Matlab.");
-//		}
-		
-//		this.jmInterface = nameJEInterface;
-//		mtCmd = new String("evaluateJE("+jmInterface+")");
+//		log("range is " + BeanInspector.toString(range)+ "\n");
+//		log("template len: " + ((ESIndividualDoubleData)m_Template).getDGenotype().length + "\n");
 	}
-	
-//	/**
-//	 * @return the jmInterface
-//	 */
-//	public String getJmInterfaceName() {
-//		return jmInterface;
-//	}
 
-//	/**
-//	 * @param jmInterface the jmInterface to set
-//	 */
-//	public void setJmInterfaceName(String jmInterface) {
-//		this.jmInterface = jmInterface;
-//	}
-	
 	public void setStatsOutput(int verboLevel) {
 		if ((verboLevel >= 0) && (verboLevel <= 3)) {
 			verbosityLevel = verboLevel;
@@ -148,7 +145,7 @@ public class MatlabProblem extends AbstractProblemDouble implements InterfaceTex
 	public String jmiInterfaceNameTipText() {
 		return "Name of the JEInterface instance in Matlab";
 	}
-	
+
 	/**
 	 * @param problemDimension the problemDimension to set
 	 */
@@ -165,27 +162,27 @@ public class MatlabProblem extends AbstractProblemDouble implements InterfaceTex
 		return "The dimension of the problem.";
 	}
 
-	public double[][] makeRange() {
-		if (range==null) range=super.makeRange();
-		return range;
-	}	
+//	public double[][] makeRange() {
+//	if (range==null) range=super.makeRange();
+//	return range;
+//	}	
 
-	protected double getRangeLowerBound(int dim) {
-		return (range==null) ? super.getRangeLowerBound(dim) : range[dim][0];
-	}
+//	protected double getRangeLowerBound(int dim) {
+//	return (range==null) ? super.getRangeLowerBound(dim) : range[dim][0];
+//	}
 
-	protected double getRangeUpperBound(int dim) {
-		return (range==null) ? super.getRangeUpperBound(dim) : range[dim][1];
-	}
+//	protected double getRangeUpperBound(int dim) {
+//	return (range==null) ? super.getRangeUpperBound(dim) : range[dim][1];
+//	}
 
 //	public double[] getCurrentDoubleArray() {
-//		return currArray;
+//	return currArray;
 //	}
-//
+
 //	public double[] getNewDoubleArray() {
-//		currArray = new double[problemDimension];
-//		for (int i=0; i<problemDimension; i++) currArray[i] = RNG.gaussianDouble(1);
-//		return currArray;
+//	currArray = new double[problemDimension];
+//	for (int i=0; i<problemDimension; i++) currArray[i] = RNG.gaussianDouble(1);
+//	return currArray;
 //	}
 
 	public void log(String str) {
@@ -195,36 +192,10 @@ public class MatlabProblem extends AbstractProblemDouble implements InterfaceTex
 		}
 	}
 
-	public double[] eval(double[] x) {
-		log("evaluating " + BeanInspector.toString(x) + "\n");
-		double[] res = handler.requestEval(this, x);
-//		double diff = PhenotypeMetric.euclidianDistance(res, f1.eval(x));
-//		log("result: " + BeanInspector.toString(res) + " compared to " + BeanInspector.toString(f1.eval(x)) + "\n");
-//		if (diff != 0) {
-//			log("!!! diff is " + diff + "\n");
-//		}
-		return res;
-		
-//		synchronized (this) {
-//			try {
-//				res.reset();
-//				currArray = x;
-//				log("evaluating " + BeanInspector.toString(x) + "\n");
-//				matlab.eval(mtCmd, (CompletionObserver)this);
-//				this.wait();
-//			} catch (InterruptedException e) {
-//				log("wait interrupted: " + e.getMessage() + " \n");
-//			}
-//		}
-//		log("wait done, returning " + res.get()[0] + " \n");
-//		return res.get();
-	}
-
-
 	public void optimize(final int optType, String outputFilePrefix) {
 		optimize(optType, outputFilePrefix, null, null);
 	}
-	
+
 	public void optimize(final int optType, String outputFilePrefix, Object[] specParams, Object[] specValues) {
 		if (allowSingleRunnable && (runnable != null) && (!runnable.isFinished())) {
 			System.err.println("Please wait for the current optimization to finish");
@@ -234,7 +205,7 @@ public class MatlabProblem extends AbstractProblemDouble implements InterfaceTex
 //			runnable.getGOParams().setPostProcessParams(new PostProcessParams(0, 0.01, 5));
 			runnable.setTextListener(this);
 			runnable.setVerbosityLevel(verbosityLevel);
-			
+
 			if ((specParams != null) && (specParams.length > 0)) {
 				if ((specValues == null) || (specValues.length != specParams.length)) {
 					System.err.println("mismatching value list for parameter arguments: " + specValues);
@@ -267,7 +238,7 @@ public class MatlabProblem extends AbstractProblemDouble implements InterfaceTex
 			new Thread(new WaitForEvARunnable(runnable, this)).start();
 		}
 	}
-	
+
 	public void startPostProcess(InterfacePostProcessParams ppp) {
 		if (ppp.isDoPostProcessing()) {
 			if (allowSingleRunnable && (runnable != null) && (!runnable.isFinished())) {
@@ -275,17 +246,17 @@ public class MatlabProblem extends AbstractProblemDouble implements InterfaceTex
 			} else {
 				handler.setFinished(false);
 				log("\nstarting post process thread... " + BeanInspector.toString(ppp));
-	//			runnable.setTextListener(this);
+				//			runnable.setTextListener(this);
 				runnable.setDoRestart(true);
 				runnable.setDoPostProcessOnly(true);
 				runnable.setPostProcessingParams(ppp);
-	//			runnable.restartOpt();
-	//			log("\nppp are "  + BeanInspector.toString(runnable.getGOParams().getPostProcessParams()));
+				//			runnable.restartOpt();
+				//			log("\nppp are "  + BeanInspector.toString(runnable.getGOParams().getPostProcessParams()));
 				new Thread(new WaitForEvARunnable(runnable, this)).start();
 			}
 		} else System.err.println("Nothing to be done.");
 	}
-	
+
 	/**
 	 * Request post processing of the last optimization results with given parameters 
 	 * and export the result solution set to matlab.
@@ -298,7 +269,7 @@ public class MatlabProblem extends AbstractProblemDouble implements InterfaceTex
 		PostProcessParams ppp = new PostProcessParams(steps, sigma, nBest);
 		startPostProcess(ppp);
 	}
-	
+
 	/**
 	 * Request post processing of the last optimization results with given parameters 
 	 * and export the result solution set to matlab.
@@ -310,7 +281,7 @@ public class MatlabProblem extends AbstractProblemDouble implements InterfaceTex
 	public void requestPostProcessing(int steps, double sigma) {
 		requestPostProcessing(steps, sigma, -1);
 	}
-	
+
 	public void stopOptimize() {
 		log(">>>>>>>>>> Stop event!\n");
 		if (runnable != null) {
@@ -325,64 +296,46 @@ public class MatlabProblem extends AbstractProblemDouble implements InterfaceTex
 		sb.append(runnable.terminatedBecause());
 		return sb.toString();
 	}
-	
+
 	public int getFunctionCalls() {
 		if (runnable == null) return 0;
 		return runnable.getGOParams().getOptimizer().getPopulation().getFunctionCalls();
 	}
-//	
+
 //	Matlab getMatlab() {
-//		return matlab;
+//	return matlab;
 //	}
-//	
+
 	void exportResultPopulationToMatlab(Population pop) {
-		double[][] solSet;
 		if ((pop != null) && (pop.size()>0)) {
-			solSet = new double[pop.size()][];
-			for (int i=0; i<pop.size(); i++) {
-				solSet[i]=((InterfaceDataTypeDouble)pop.getEAIndividual(i)).getDoubleData();
+			if (isDouble) {
+				double[][] solSet = new double[pop.size()][];
+				for (int i=0; i<pop.size(); i++) {
+					solSet[i]=((InterfaceDataTypeDouble)pop.getEAIndividual(i)).getDoubleData();
+				}
+				handler.setSolutionSet(solSet);
+			} else {
+				int[][] solSet = new int[pop.size()][];
+				for (int i=0; i<pop.size(); i++) {
+					solSet[i]=((InterfaceDataTypeInteger)pop.getEAIndividual(i)).getIntegerData();
+				}
+				handler.setSolutionSet(solSet);
 			}
-			handler.setSolutionSet(solSet);
 		} else {
-			handler.setSolutionSet(null);
+			if (isDouble) handler.setSolutionSet((double[][])null);
+			else handler.setSolutionSet((int[][])null);
 		}
-//		String resStr;
-//		if ((pop == null) || (pop.size() == 0)) resStr = "[]";
-//		else {
-//			StringBuffer sb = new StringBuffer();
-//			sb.append("[");
-//			for (int i=0; i<pop.size(); i++) {
-//				sb.append(AbstractEAIndividual.getDefaultDataString(pop.getEAIndividual(i), " "));
-//				if (i<pop.size()-1) sb.append(";");
-//			}
-//			sb.append("]");
-//			resStr = sb.toString();
-//		}
-//		log("result array was " + resStr + "\n");
-//		try {
-//			String cmd = jmInterface + "= setResultArrayJE(" + jmInterface + ", " + resStr + ")";
-//			log("trying cmd: "+ cmd + "\n");
-//			matlab.eval(cmd);
-//		} catch (Exception e) {
-//			log("Exception when exporting result to Matlab! "+e.getMessage());
-//		}
 	}
-	
-	void exportResultToMatlab(double[] result) {
-		handler.setSolution(result);
-//		String resStr;
-//		if (result == null) resStr = "[]";
-//		else resStr = BeanInspector.toString(result);
-//		log("result was " + resStr + "\n");
-//		try {
-//			String cmd = jmInterface + "= setResultJE(" + jmInterface + ", " + resStr + ")";
-//			log("trying cmd: "+ cmd + "\n");
-//			matlab.eval(cmd);
-//		} catch (Exception e) {
-//			log("Exception when exporting result to Matlab! "+e.getMessage());
-//		}
+
+	void exportResultToMatlab(OptimizerRunnable runnable) {
+		if (isDouble) handler.setSolution(runnable.getDoubleSolution());
+		else handler.setSolution(runnable.getIntegerSolution());
 	}
-	
+
+//	void exportResultToMatlab(double[] result) {
+//		handler.setSolution(result);
+//	}
+
 	/**
 	 * To be called by the executing thread to inform that the thread is finished.
 	 * We 
@@ -390,12 +343,15 @@ public class MatlabProblem extends AbstractProblemDouble implements InterfaceTex
 	void notifyFinished() {
 		handler.setFinished(true);
 	}
-	
-	public double[] getIntermediateResult() {
+
+	public Object getIntermediateResult() {
 		if (runnable == null) return null;
-		else return runnable.getDoubleSolution();
+		else {
+			if (isDouble) return runnable.getDoubleSolution();
+			else return runnable.getIntegerSolution();
+		}
 	}
-	
+
 	/**
 	 * Return the number of function calls performed so far.
 	 * @return
@@ -404,7 +360,7 @@ public class MatlabProblem extends AbstractProblemDouble implements InterfaceTex
 		if (runnable == null) return 0;
 		else return runnable.getProgress();
 	}
-	
+
 	public String globalInfo() {
 		return "Interface problem class for optimization in Matlab, only usable from within Matlab";
 	}
@@ -421,57 +377,43 @@ public class MatlabProblem extends AbstractProblemDouble implements InterfaceTex
 		print(str);
 		print("\n");		
 	}
-}
+	//
+//	public double[] eval(double[] x) {
+//	log("evaluating " + BeanInspector.toString(x) + "\n");
+//	double[] res = handler.requestEval(this, x);
+//	return res;
+//	}
 
-////////////////////////////
-
-class WaitForEvARunnable implements Runnable {
-	OptimizerRunnable runnable;
-	MatlabProblem mp;
-	
-	public WaitForEvARunnable(OptimizerRunnable runnable, MatlabProblem mp) {
-		this.runnable = runnable;
-		this.mp = mp;
+	@Override
+	public void evaluate(AbstractEAIndividual indy) {
+		log("evaluating " + BeanInspector.toString(indy) + "\n");
+		double[] res = handler.requestEval(this, AbstractEAIndividual.getIndyData(indy));
+		indy.SetFitness(res);
+//		System.err.println("evaluated to " + BeanInspector.toString(res));
 	}
-	
-	public void run() {
-		if (runnable != null) {
-			mp.log("\nStarting optimize runnable!\n");
 
-			synchronized (runnable) {
-				try {
-					// whole optimization thread goes in here
-					new Thread(runnable).start();
-					mp.log("Starting optimize thread done!\n");
-					runnable.wait();
-					// wait for the runnable to finish
-					mp.log("After wait!\n");
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-					mp.log("WaitForEvARunnable was interrupted with " + e.getMessage());
-				}
-			}
-			try {
-				mp.log("runnable.getSolution: " + BeanInspector.toString(runnable.getDoubleSolution()));
-				mp.log("\ngetAllSols best: " + AbstractEAIndividual.getDefaultDataString(runnable.getGOParams().getOptimizer().getAllSolutions().getSolutions().getBestEAIndividual()));
-				mp.log("\n");
-				// write results back to matlab
-				mp.exportResultToMatlab(runnable.getDoubleSolution());
-				mp.exportResultPopulationToMatlab(runnable.getSolutionSet());
-				System.out.println("Optimization finished: " + mp.getInfoString());
-			} catch (Exception e) {
-				StringWriter sw = new StringWriter();
-				e.printStackTrace(new PrintWriter(sw));
-				mp.log("error in callback: " + e.getMessage() + " " + sw.toString() + "\n");
-			}
-		} else {
-			System.err.println("Invalid optimization call.");
-			mp.log("invalid call, no optimization started.\n");
-			mp.exportResultToMatlab(null);
-			mp.exportResultPopulationToMatlab(null);
+	@Override
+	public void initPopulation(Population population) {
+		AbstractEAIndividual tmpIndy;
+		population.clear();
+		initTemplate();
+
+		for (int i = 0; i < population.getPopulationSize(); i++) {
+			tmpIndy = (AbstractEAIndividual)((AbstractEAIndividual)this.m_Template).clone();
+			tmpIndy.init(this);
+//			System.err.println("initPopulation: " + AbstractEAIndividual.getDefaultDataString(tmpIndy) + " , " + tmpIndy.getStringRepresentation());
+			population.add(tmpIndy);
 		}
-		mp.notifyFinished();
-		mp.log("notified finish...");
+		// population init must be last
+		// it set's fitcalls and generation to zero
+		population.init();
 	}
-	
+
+	public String getStringRepresentationForProblem(InterfaceOptimizer opt) {
+        StringBuffer sb = new StringBuffer(200);
+        sb.append("A general Matlab problem");
+        sb.append(this.getName());
+        //sb.append("\n");
+        return sb.toString();
+	}
 }

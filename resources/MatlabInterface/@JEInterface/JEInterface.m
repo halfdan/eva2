@@ -6,7 +6,7 @@ function int = JEInterface(interfaceName, fhandle, range, varargin)
 %       name as a String to allow callbacks from Java.
 %   fhandle: a function handle defining the optimization target.
 %   range: a 2 x dim array defining the solution subspace with lower and
-%      upper bounds.
+%      upper bounds - or a scalar defining the bitwidth for binary problems.
 %   optset: (optional) an optimset struct defining optimization parameters,
 %       especially tolerance and maximum function calls. Defaults to the
 %       EvA2 default values.
@@ -24,6 +24,11 @@ function int = JEInterface(interfaceName, fhandle, range, varargin)
 % and TolFun for a certain time, e.g. 100 evaluations.
 % To ignore a criterion, set it to 0. E.g. to perform 10^5 evaluations in
 % any case, set TolX=TolFun=0 and MaxFunEvals=10^5.
+%
+% You may define a 2xdim range with a double valued function handle or for
+% binary problems set a scalar as range defining the number of bits to be
+% used. The values passed to the function handle will then be arrays of 
+% uint32, each of them representing 32 bits.
 
 int.args = [];
 int.opts = optimset('MaxFunEvals', eva2.OptimizerFactory.getDefaultFitCalls, 'TolX', 1e-4, 'TolFun', 1e-4);
@@ -40,6 +45,7 @@ int.funCalls = 0;
 int.mediator = '';
 int.optParams = [];
 int.optParamValues = [];
+int.hexMask=hex2dec('ffffffff');
 
 if (isa(interfaceName, 'char'));
     int.callback = interfaceName;
@@ -56,7 +62,11 @@ if (isa(range, 'double') && (size(range,1) == 2))
     int.dim=length(range);
     int.range=transpose(range);
 else
-    error('Wrong third argument type, expected double array of 2 x dim');
+    %error('Wrong third argument type, expected double array of 2 x dim');
+    if (size(range,1)==size(range,2)==1)
+        int.range=[];
+        int.dim=range;
+    end
 end
 
 int = class(int,'JEInterface');
@@ -80,7 +90,7 @@ switch nargin
 end
 
 % finally create the java object
-int.mp = eva2.server.go.problems.MatlabProblem(int.callback, int.dim, int.range);
+int.mp = eva2.server.go.problems.MatlabProblem(int.dim, int.range);
 
         
 
