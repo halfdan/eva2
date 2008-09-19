@@ -159,10 +159,11 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
 				archive.addPopulation(m_Population);
 				
 				Population tmpPop = new Population();
-				tmpPop.setSameParams(m_Population);
 				tmpPop.addPopulationChangedEventListener(null);
 				tmpPop.setPopulationSize(initialPopSize);
 				this.m_Problem.initPopulation(tmpPop);
+				tmpPop.setSameParams(m_Population);
+				tmpPop.setPopulationSize(initialPopSize);
 				this.m_Problem.evaluate(tmpPop);
 				
 				// reset population while keeping function calls etc.
