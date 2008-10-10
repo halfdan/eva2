@@ -59,7 +59,7 @@ else
 end
 
 if (isa(range, 'double') && (size(range,1) == 2))
-    int.dim=length(range);
+    int.dim=size(range, 2);
     int.range=transpose(range);
 else
     %error('Wrong third argument type, expected double array of 2 x dim');
