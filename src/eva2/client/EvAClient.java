@@ -27,6 +27,7 @@ import java.io.Serializable;
 import java.net.URL;
 import java.util.Properties;
 import java.util.Set;
+import java.util.Vector;
 
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
@@ -119,6 +120,19 @@ public class EvAClient implements RemoteStateListener, Serializable {
 	// remember the module in use
 	private transient String currentModule = null;
 
+	Vector<RemoteStateListener> superListenerList = null;
+	
+	public void addRemoteStateListener(RemoteStateListener l) {
+		if (superListenerList == null) superListenerList = new Vector<RemoteStateListener>();
+		superListenerList.add(l);
+	}
+	
+	public boolean removeRemoteStateListener(RemoteStateListener l) {
+		if (superListenerList != null) { 
+			return superListenerList.remove(l);
+		} else return false;
+	}
+	
 	public static String getProperty(String key) {
 		String myVal = EVA_PROPERTIES.getProperty(key);
 		return myVal;
@@ -733,16 +747,25 @@ public class EvAClient implements RemoteStateListener, Serializable {
 	}
 
 	public void performedRestart(String infoString) {
+		if (superListenerList != null) for (RemoteStateListener l : superListenerList) {
+			l.performedRestart(infoString);
+		}
 		logMessage("Restarted processing " + infoString);
 		startTime = System.currentTimeMillis();
 	}
 
 	public void performedStart(String infoString) {
+		if (superListenerList != null) for (RemoteStateListener l : superListenerList) {
+			l.performedStart(infoString);
+		}
 		logMessage("Started processing " + infoString);
 		startTime = System.currentTimeMillis();
 	}
 
 	public void performedStop() {
+		if (superListenerList != null) for (RemoteStateListener l : superListenerList) {
+			l.performedStop();
+		}
 		long t = (System.currentTimeMillis() - startTime);
 		logMessage(String.format("Stopped after %1$d.%2$tL s", (t / 1000), (t % 1000)));
 	}
@@ -754,6 +777,9 @@ public class EvAClient implements RemoteStateListener, Serializable {
      * changing the progress bars value.
      */
 	public void updateProgress(final int percent, String msg) {
+		if (superListenerList != null) for (RemoteStateListener l : superListenerList) {
+			l.updateProgress(percent, msg);
+		}
 		if (msg != null) logMessage(msg);
         if (this.m_ProgressBar != null) {
             Runnable doSetProgressBarValue = new Runnable() {
