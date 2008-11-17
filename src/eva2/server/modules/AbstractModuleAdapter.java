@@ -126,6 +126,12 @@ abstract public class AbstractModuleAdapter implements ModuleAdapter, Serializab
 	  } else return null;
   }
   
+  public boolean isOptRunning() {
+	  if ((m_Processor != null) && (m_Processor instanceof Processor)) {
+		  return ((Processor)m_Processor).isOptRunning();
+	  } else return false;
+  }
+  
   /**
    *
    */
