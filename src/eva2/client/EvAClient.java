@@ -57,6 +57,8 @@ import eva2.gui.JExtMenu;
 import eva2.gui.JTabbedModuleFrame;
 import eva2.gui.LogPanel;
 import eva2.server.EvAServer;
+import eva2.server.go.InterfaceGOParameters;
+import eva2.server.modules.AbstractModuleAdapter;
 import eva2.server.modules.ModuleAdapter;
 import eva2.tools.EVAERROR;
 import eva2.tools.EVAHELP;
@@ -96,7 +98,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
 	private ExtAction m_actAvailableHost;
 	private ExtAction m_actKillHost;
 	private ExtAction m_actKillAllHosts;
-//	private ArrayList m_ModuleAdapterList = new ArrayList();
+	private ModuleAdapter currentModuleAdapter = null;
 	// About:
 	private ExtAction m_actAbout;
 	private ExtAction m_actLicense;
@@ -547,6 +549,31 @@ public class EvAClient implements RemoteStateListener, Serializable {
 //			m_LogPanel.statusMessage("Selected Module: " + selectedModule);
 		}
 	}
+	
+	/**
+	 * Retrieve the GOParamters of a loaded module. Return null if no module is loaded.
+	 * 
+	 * @return
+	 */
+	public InterfaceGOParameters getGOParameters() {
+		if (currentModuleAdapter != null) {
+			if (currentModuleAdapter instanceof AbstractModuleAdapter) {
+				return ((AbstractModuleAdapter)currentModuleAdapter).getGOParameters();
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Check if there is an optimization currently running. 
+	 * 
+	 * @return
+	 */
+	public boolean isOptRunning() {
+		if (currentModuleAdapter != null && (currentModuleAdapter instanceof AbstractModuleAdapter)) {
+			return ((AbstractModuleAdapter)currentModuleAdapter).isOptRunning();
+		} else return false;
+	}
 
 	private void loadSpecificModule(String selectedModule) {
 		ModuleAdapter newModuleAdapter = null;
@@ -624,6 +651,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
 
 			// ModuladapterListe adden
 //			m_ModuleAdapterList.add(newModuleAdapter);
+			currentModuleAdapter = newModuleAdapter;
 		}
 	}
 
