@@ -18,6 +18,7 @@ import java.awt.Dimension;
 import java.awt.Event;
 import java.awt.Frame;
 import java.awt.Toolkit;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -164,6 +165,15 @@ public class EvAClient implements RemoteStateListener, Serializable {
 	 *
 	 */
 	public EvAClient(final String hostName) {
+		this(hostName, null);
+	}
+
+	/**
+	 * Constructor of GUI of EvA2.
+	 * Works as client for the EvA2 server.
+	 *
+	 */
+	public EvAClient(final String hostName, final Window parent) {
 		final SplashScreen fSplashScreen = new SplashScreen(EvAInfo.splashLocation);
 
 		// preload some classes (into system cache) in a parallel thread
@@ -179,7 +189,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
 		SwingUtilities.invokeLater( new Runnable() {
 			public void run(){
 				long startTime = System.currentTimeMillis();
-				init(hostName); // this takes a bit
+				init(hostName, parent); // this takes a bit
 				long wait = System.currentTimeMillis() - startTime;
 				try {
 					// if splashScreenTime has not passed, sleep some more 
@@ -199,7 +209,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
 	/**
 	 *
 	 */
-	private void init(String hostName) {
+	private void init(String hostName, final Window parent) {
 		//EVA_EDITOR_PROPERTIES
 		useDefaultModule = getProperty("DefaultModule");
 		
@@ -249,7 +259,9 @@ public class EvAClient implements RemoteStateListener, Serializable {
 				Set<String> keys = System.getenv().keySet();
 				if (keys.contains("MATLAB")) {
 					System.out.println("Seems like Ive been started from Matlab: not killing JVM");
-				} else System.exit(1); 
+				} else {
+					if (parent == null) System.exit(1); 
+				}
 			}
 		});
 
@@ -282,7 +294,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
 		if (TRACE) {
 			System.out.println(EVAHELP.getSystemPropertyString());
 		}
-		EvAClient Client = new EvAClient((args.length == 1) ? args[0] : null);
+		EvAClient Client = new EvAClient((args.length == 1) ? args[0] : null, null);
 
 	}
 
