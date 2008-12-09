@@ -5,4 +5,4 @@ function val = getOpt(int, optName)
 %           optName: name of the option to change, e.g. 'MaxFunEvals'
 %           optVal: new value
 
-val = optimget(int.opts, optName);
+val = int.opts.(optName);

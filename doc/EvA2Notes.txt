@@ -46,6 +46,14 @@ Features:
 - MOCCOStandalone: actually nice, repair maybe...
 
 Bugs: 
+- GOE/Properties and JavaBeans: There is an issue if an object propterty change
+triggers other object changes accessible to the
+user. If this happens within the same instance (O.varX is changed and influences O.varY), it is
+fine and displayed by the GOE due to the update event. However if O.varX influences O.U.varY
+(where U has its own parameter panel instance), this
+will not be visible to the user as O does not trigger updates of child panels.
+This is why sometimes the population size is out of sync in some strategy implementations. (mk, 10/08)
+ 
 - PropertyFilePath only works for "real" files, not within the Probs jar. Look atTSPLibTSPInstance.setFile 
 - Population -> getBest... use multi-objective methods!
 - PostProcess: the pp-button should be deactivated if other modules are loaded
@@ -70,6 +78,9 @@ die Range mitzuführen, da sie häufig für alle gleich ist. Dann verschlingt si
 - History und Archive: Kommentar bzw. Schalter!
 - Graph/Plot aufräumen: Graph scheint nur ein "Label" zu sein, über das auf ein GraphPointSet innerhalb
 	eines FunctionArea elements zugegriffen wird. Eher chaotisch also.
+- JOpt bug in wsi.ra.chart2d.ScaledBorder Zeile 460 - Endlosschleife!?
+- cloneInPlace bei Individuen wird die Object-Daten aus AbstractEAIndividual idR nicht kopieren!
+- da nicht alle Klassen "hashCode" ableiten, kann es bei Verwendung von HashMaps o.ä. zu Problemen kommen
 
 Main changelog:
 - CBN now also works with (m+n)-ES, not only (m,n)-ES
@@ -103,8 +114,3 @@ Before 02.08 (mkron)
 - ConvergenceTerminator allows for multi-objective fitness
 - Taken over nice the Progress-Bar of GOStandaloneVersion
 - No more ServerListFile in the ComAdapter constructor
-
-Bugs:
-- JOpt bug in wsi.ra.chart2d.ScaledBorder Zeile 460 - Endlosschleife!
-- cloneInPlace bei Individuen wird die Object-Daten aus AbstractEAIndividual idR nicht kopieren!
-- da nicht alle Klassen "hashCode" ableiten, kann es bei Verwendung von HashMaps o.ä. zu Problemen kommen

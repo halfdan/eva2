@@ -523,7 +523,7 @@ status collapsed
 \noun default
 , we recommend you download the jar-package 
 \emph on
-JE2Base.jar
+EvA2Base.jar
 \emph default
  and start the GUI.
  The jar-file can be downloaded from the 
@@ -569,7 +569,7 @@ To start under GNU/Linux, you can just type:
 
 \family typewriter
 \size small
-$ java -cp JE2Base.jar eva2.client.EvAClient
+$ java -cp EvA2Base.jar eva2.client.EvAClient
 \end_layout
 
 \begin_layout Standard
@@ -1591,7 +1591,7 @@ If you play around with some optimizer settings, e.g.
 
  or activate the plusStrategy checkbox, you will notice changing performance
  of the ES.
- On problems with in discrete space, such as the B1-benchmark problem, for
+ On problems within discrete space, such as the B1-benchmark problem, for
  example, a Genetic Algorithm is often superior to an Evolution Strategy.
  You can try this if you clear the plot window, select the B1-problem and
  run the ES a few times.
@@ -1816,16 +1816,23 @@ status collapsed
 2
 \noun default
  base package, you can just add them to the class path.
- For instance, to use the additional JE2Probs package containing a larger
- set of benchmark problems, place them both in your working directory and
- type (GNU/Linux):
+ For instance, to use the additional 
+\begin_inset Quotes eld
+\end_inset
+
+Probs
+\begin_inset Quotes erd
+\end_inset
+
+ package containing a larger set of benchmark problems, place them both
+ in your working directory and type (GNU/Linux):
 \end_layout
 
 \begin_layout Quotation
 
 \family typewriter
 \size small
-$ java -cp JE2Base.jar:JE2Probs.jar eva2.client.EvAClient
+$ java -cp EvA2Base.jar:EvA2Probs.jar eva2.client.EvAClient
 \end_layout
 
 \begin_layout Standard
@@ -1871,7 +1878,7 @@ status open
 
 \family typewriter
 \size small
-$ java -cp JE2Base.jar:JE2Probs.jar:/home/username/OwnClassDir 
+$ java -cp EvA2Base.jar:EvA2Probs.jar:/home/username/OwnClassDir 
 \backslash
 
 \end_layout
@@ -2148,10 +2155,10 @@ status collapsed
 \end_layout
 
 \begin_layout Enumerate
-Download the JE2Base.jar and add it to the Matlab classpath, e.g.
+Download the EvA2Base.jar and add it to the Matlab classpath, e.g.
  by typing 
 \family typewriter
-javaaddpath /home/username/JE2Base.jar
+javaaddpath '/home/username/EvA2Base.jar'
 \family default
  in the Matlab console.
 \end_layout
@@ -2179,7 +2186,22 @@ Define the range of your search space using a
 \family typewriter
 R=[[-5 -5 -5];[5 5 5]]
 \family default
- to define a 3-dimensional search space with bounds -5/5 in every dimension.
+ to define a 3-dimensional real valued search space with bounds -5/5 in
+ every dimension.
+ If R is scalar and integer, a binary genotype will be assumed with R bits,
+ delivered as a vector of 
+\emph on
+uint32
+\emph default
+'s which can be accessed, e.g., by the Matlab 
+\emph on
+bitget
+\emph default
+ function within the target 
+\family typewriter
+fun
+\family default
+.
 \end_layout
 
 \begin_layout Enumerate
@@ -2190,7 +2212,7 @@ fun
  to be minimized, create a JEInterface in Matlab by typing, for example:
  
 \family typewriter
-JI=JEInterface('JI', @fun, R)
+JI=JEInterface(@fun, R)
 \family default
 .
  Notice that 
@@ -2292,11 +2314,11 @@ Obj
  cannot be modified simply by calling the mutator, e.g.
  
 \family typewriter
-setParameter(Obj, p1, val1)
+setOpt(Obj, p1, val1)
 \family default
 , but must be reassigned for every mutating call, as in: 
 \family typewriter
-Obj=setParameter(Obj, p1, val1)
+Obj=setOpt(Obj, p1, val1)
 \family default
 .
  After optimization, you may retrieve the result by calling 
@@ -2383,14 +2405,9 @@ JI
 \begin_layout Description
 
 \family typewriter
-JI=JEInterface(interfaceName,fhandle,range[,optset,fargs])
+JI=JEInterface(fhandle,range[,fargs[,optionName,optionValue]*])
 \family default
  JEInterface constructor: 
-\emph on
-interfaceName
-\emph default
-: the name bound to the JEInterface in Matlab as char.
- 
 \emph on
 fhandle
 \emph default
@@ -2406,13 +2423,16 @@ range
 dim array defining the solution subspace with lower and upper bounds.
  
 \emph on
-optset
+fargs
 \emph default
-: an (optional) 
+: (optional) additional static parameters to the target function as single
+ list.
+ Returns the new JEInterface instance.
+ 
 \emph on
-optimset
+optionName,optionValue
 \emph default
- structure of which 
+: optional name-value pairs defining 
 \emph on
 MaxFunCalls
 \emph default
@@ -2424,18 +2444,13 @@ TolX
 \emph on
 TolFun
 \emph default
- are used as termination criteria, while 
+ similar to the Matlab optimset structure.
+ The 
 \emph on
 Display
 \emph default
- may trigger verbose output.
+ option may trigger verbose output.
  
-\emph on
-fargs
-\emph default
-: (optional) additional static parameters to the target function as single
- list.
- Returns the new JEInterface instance.
 \end_layout
 
 \begin_layout Description
@@ -2597,6 +2612,21 @@ JI=stopOptimize(JI)
 \begin_layout Description
 
 \family typewriter
+makeOptions(JI[,optName,optVal]*)
+\family default
+ Produce an options structure with given settings.
+ Notice that you need to use setOptions with the returned structure to apply
+ the options for a given JI instance, as in: 
+\family typewriter
+JI=setOptions(JI,makeOptions(JI,'TolX',1e-8))
+\family default
+.
+ 
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
 getOptions(JI)
 \family default
  Get the current 
@@ -2697,6 +2727,31 @@ on.
 \begin_layout Description
 
 \family typewriter
+testEvalFunc(JI)
+\family default
+ Test the function handle for some basic conformations with expected output.
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
+setVerbose(JI,swtch[,fname])
+\family default
+ Activate debug output if 
+\emph on
+swtch
+\emph default
+ is 1, else deactivate it.
+ If 
+\emph on
+fname
+\emph default
+ is given, thats the filename the debug information is written to.
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
 JI=stopOptimize(JI[,'kill'])
 \family default
  Stop a running optimization process, which is usually done by the cancel
@@ -2790,11 +2845,7 @@ The methods are listed in about the order a user might require them in.
  This is a drawback of the Matlab object concept: mutators are actually
  also constructors and copy the whole Matlab object, but they do not copy
  the referenced Java instance.
- 
-\end_layout
-
-\begin_layout Standard
-Notice that the last three methods, 
+ Notice that the last three methods, 
 \family typewriter
 setResultJE
 \family default
@@ -2827,6 +2878,325 @@ JavaEvA
  
 \end_layout
 
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="8" columns="3">
+<features>
+<column alignment="center" valignment="top" leftline="true" width="0">
+<column alignment="center" valignment="top" leftline="true" width="0">
+<column alignment="center" valignment="top" leftline="true" rightline="true" width="0">
+<row topline="true" bottomline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size footnotesize
+Option name
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size footnotesize
+Values
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size footnotesize
+Description
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size footnotesize
+Display
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size footnotesize
+'off' | 'iter' | 'final' | 'notify'
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size footnotesize
+Output verbosity to Matlab console.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size footnotesize
+MaxFunEvals
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size footnotesize
+positive integer
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size footnotesize
+Maximum number of evaluations to be performed.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size footnotesize
+MaxIter
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size footnotesize
+--
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size footnotesize
+\emph on
+Unused
+\emph default
+.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size footnotesize
+TolFun
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size footnotesize
+real
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size footnotesize
+Absolute convergence bound in function codomain.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size footnotesize
+TolFunEvals
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size footnotesize
+positive integer
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size footnotesize
+No.
+ of evaluations of the TolFun convergence criterion.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size footnotesize
+TolX
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size footnotesize
+real
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size footnotesize
+Absolute convergence bound in function domain.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row bottomline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size footnotesize
+TolXEvals
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size footnotesize
+positive integer
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size footnotesize
+No.
+ of evaluations of the TolX convergence criterion.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Caption
+JEInterface optimization options overview.
+\begin_inset LatexCommand \label{tab:JEInterface-optimization-options.}
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Subsubsection
 Optimization Options
 \end_layout
@@ -2834,72 +3204,43 @@ Optimization Options
 \begin_layout Standard
 Vital for the usage in Matlab are the termination criteria of the optimization
  run.
- We adopt the builtin 
+ We adopt some parameters from the builtin 
 \emph on
 optimset
 \emph default
  structure in analogy to the Matlab function 
 \emph on
-fminsearch,
+fminsearch
 \emph default
- using the three parameters described in the list below.
+.
  To find out more about 
 \emph on
 optimset
 \emph default
 , check the Matlab documentation.
+ The JEInterface options provided are listed in Tab.
+\begin_inset ERT
+status open
+
+\begin_layout Standard
+
+~
 \end_layout
 
-\begin_layout Description
+\end_inset
 
-\emph on
-MaxFunEvals
-\emph default
- Maximum number of function evaluations allowed.
-\end_layout
 
-\begin_layout Description
+\begin_inset LatexCommand \ref{tab:JEInterface-optimization-options.}
 
-\emph on
-TolX
-\emph default
- Convergence tolerance in solution space, measured absolutely.
- This means that the run is seen as converged, if the best individual (the
- best parameter set) does not change more than the given threshold for a
- certain time.
-\end_layout
+\end_inset
 
-\begin_layout Description
-
-\emph on
-TolFun
-\emph default
- Convergence tolerance in fitness space, measured absolutely.
- This means that the run is seen as converged, if the best fitness found
- does not change more than this threshold for a certain time.
-\end_layout
-
-\begin_layout Description
-Display Triggers online output during an optimization process on the Matlab
- console.
- Allowed values are '
+.
+ Display triggers output to the Matlab console during an optimization process.
+ While 
 \family typewriter
-off
+'final'
 \family default
-'/'
-\family typewriter
-final
-\family default
-'/'
-\family typewriter
-notify
-\family default
-' and '
-\family typewriter
-iter
-\family default
-'.
- Due to the optimset restrictions, '
+ only shows final optimization results, '
 \family typewriter
 notify
 \family default
@@ -2929,14 +3270,21 @@ show all iterations
 off
 \family default
 '.
+ An optimization run terminates if MaxFunEvals has been reached or the best
+ solution changes both in domain and codomain less than TolX and TolFun
+ for a certain number of evaluations, which may be set using TolXEvals and
+ TolFunEvals, respectively.
+ If TolX is positive, the run is seen as converged, if the best individual
+ (the best parameter set) does not change more than the threshold defined
+ by TolX for a number of TolFunEvals evaluations.
+ Convergence in the fitness domain is defined in the same way using TolFun
+ and TolFunEvals.
+ 
 \end_layout
 
 \begin_layout Standard
-If no 
-\emph on
-optimset
-\emph default
- struct is given to the constructor, the default values for 
+If no options are defined through the constructor, the default values for
+ 
 \emph on
 TolX
 \emph default
@@ -3012,11 +3360,373 @@ TolFun
  to zero, e.g.
  by typing 
 \family typewriter
-JI=setOptions(JI, optimset(getOptions(JI), 'TolX', 0, 'TolFun', 0))
+JI=setOptions(JI, makeOptions(JI, 'TolX', 0, 'TolFun', 0))
 \family default
 .
+ To perform not more than 
+\begin_inset Formula $10^{5}$
+\end_inset
+
+ and stop earlier if the best solution's fitness has not changed by more
+ than 0.1 for 1000 evaluations, set MaxFunEvals=
+\begin_inset Formula $10^{5}$
+\end_inset
+
+, TolX=0, TolFun=0.1 and TolFunEvals=1000.
  Be aware that at least one termination criterion must be defined through
  the options, or the optimization will not start.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Usage Example
+\end_layout
+
+\begin_layout Standard
+Listing
+\begin_inset ERT
+status open
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+
+\begin_inset LatexCommand \ref{alg:Example-m-function}
+
+\end_inset
+
+ shows an exemplary m-File that could be used as target function in an optimizat
+ion through Matlab.
+ Notice that the paramter 
+\emph on
+y
+\emph default
+ might be used in any other way or not used at all.
+ 
+\noun on
+EvA2
+\noun default
+ will not introspect the contents of 
+\emph on
+y
+\emph default
+, but just hand it over to every call to the target function where it may
+ be assumed static.
+ So to optimize the Himmelblau function using Particle Swarm Optimization,
+ proceed in the Matlab console as shown in Listing
+\begin_inset ERT
+status open
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+
+\begin_inset LatexCommand \ref{alg:Optimization-from-Matlab.}
+
+\end_inset
+
+.
+ For a binary optimization, you might set 
+\family typewriter
+R=50
+\family default
+, for example, the target function will then receive 2 uint32's of which
+ 50 bits are to be used in the target function.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float algorithm
+wide false
+sideways false
+status open
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Standard
+
+
+\backslash
+lstset{language=java, basicstyle=
+\backslash
+tiny, numbers=left, stepnumber=1, numbersep=5pt}
+\end_layout
+
+\begin_layout Standard
+
+
+\backslash
+begin{lstlisting}
+\end_layout
+
+\begin_layout Standard
+
+function z = exampleFun(x, y)
+\end_layout
+
+\begin_layout Standard
+
+switch y     
+\end_layout
+
+\begin_layout Standard
+
+  case 1  % modulated parabola   
+\end_layout
+
+\begin_layout Standard
+
+    z(1)=sum(x.*x)+cos(x(1))*sin(x(2)); % modulated sphere
+\end_layout
+
+\begin_layout Standard
+
+  case 2  % Branin       
+\end_layout
+
+\begin_layout Standard
+
+    z(1) = (x(2)-(5/(4*pi^2))*x(1)^2+5*x(1)/pi-6)^2+10*(1-1/(8*pi))*cos(x(1))+10
+;
+\end_layout
+
+\begin_layout Standard
+
+  case 3  % Himmelblau    
+\end_layout
+
+\begin_layout Standard
+
+    z(1) = ((x(1)^2 + x(2) - 11)^2 + (x(1) + x(2)^2 - 7)^2);
+\end_layout
+
+\begin_layout Standard
+
+  case 4  % simple binary
+\end_layout
+
+\begin_layout Standard
+
+    z(1)=abs(bitxor(x(1)+x(2), bin2dec('11001100')));
+\end_layout
+
+\begin_layout Standard
+
+  otherwise  % simple parabola
+\end_layout
+
+\begin_layout Standard
+
+    z(1)=sum(x.*x);
+\end_layout
+
+\begin_layout Standard
+
+end
+\end_layout
+
+\begin_layout Standard
+
+
+\backslash
+end{lstlisting}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+%
+\backslash
+begin{algorithmic}  
+\backslash
+IF {$i
+\backslash
+geq maxval$}          
+\backslash
+STATE $i
+\backslash
+gets 0$ 
+\backslash
+ELSE         
+\backslash
+IF {$i+k
+\backslash
+leq maxval$}                 
+\end_layout
+
+\begin_layout Standard
+
+%
+\backslash
+STATE $i
+\backslash
+gets i+k$          
+\backslash
+ENDIF 
+\backslash
+ENDIF  
+\backslash
+end{algorithmic}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Caption
+Example m-function for optimization from Matlab
+\begin_inset LatexCommand \label{alg:Example-m-function}
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float algorithm
+wide false
+sideways false
+status open
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Standard
+
+
+\backslash
+lstset{language=java, basicstyle=
+\backslash
+tiny, numbers=left, stepnumber=1, numbersep=5pt}
+\end_layout
+
+\begin_layout Standard
+
+
+\backslash
+begin{lstlisting}
+\end_layout
+
+\begin_layout Standard
+
+javaaddpath '/home/username/workspace/EvA2Base.jar'
+\end_layout
+
+\begin_layout Standard
+
+R=[[-5 -5]; [5 5]];
+\end_layout
+
+\begin_layout Standard
+
+JI=JEInterface(@exampleFun, R, 3, 'Display', 'iter', 'TolX', 1e-6, 'TolFun',
+ 1e-6);
+\end_layout
+
+\begin_layout Standard
+
+JI=optimize(JI,4);
+\end_layout
+
+\begin_layout Standard
+
+[sol, solFit]=getResult(JI);
+\end_layout
+
+\begin_layout Standard
+
+
+\backslash
+end{lstlisting}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+%
+\backslash
+begin{algorithmic}  
+\backslash
+IF {$i
+\backslash
+geq maxval$}          
+\backslash
+STATE $i
+\backslash
+gets 0$ 
+\backslash
+ELSE         
+\backslash
+IF {$i+k
+\backslash
+leq maxval$}                 
+\end_layout
+
+\begin_layout Standard
+
+%
+\backslash
+STATE $i
+\backslash
+gets i+k$          
+\backslash
+ENDIF 
+\backslash
+ENDIF  
+\backslash
+end{algorithmic}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Caption
+Optimization from Matlab
+\begin_inset LatexCommand \label{alg:Optimization-from-Matlab.}
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
@@ -4145,7 +4855,7 @@ ns.
 \begin_inset Float algorithm
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Standard
 \begin_inset ERT
