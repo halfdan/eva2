@@ -150,13 +150,13 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
         population.incrGeneration();
     }
 
-    private void plot() {
+    private void plot(int gen) {
         double[]   a = new double[2];
         a[0] = 0.0;
         a[1] = 0.0;
         if (this.m_Problem instanceof TF1Problem) {
             // now i need to plot the pareto fronts
-            Plot plot = new Plot("TF3Problem", "y1", "y2", a, a);
+            Plot plot = new Plot("TF3Problem at gen. "+gen, "y1", "y2", a, a);
             plot.setUnconnectedPoint(0,0,0);
             plot.setUnconnectedPoint(1,5,0);
             GraphPointSet   mySet = new GraphPointSet(10, plot.getFunctionArea());
@@ -191,7 +191,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
             InterfaceDataTypeDouble tmpIndy1, best;
             Population              pop;
 
-            this.m_Topology          = new TopoPlot("CBN-Species","x","y",a,a);
+            this.m_Topology          = new TopoPlot("CBN-Species at gen. " + gen,"x","y",a,a);
             this.m_Topology.gridx = 60;
             this.m_Topology.gridy = 60;
             this.m_Topology.setTopology((Interface2DBorderProblem)this.m_Problem);
@@ -358,9 +358,9 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
     	// plot the populations
     	if (this.m_ShowCycle > 0) {
             if ((this.m_Undifferentiated.getGeneration() == 0) || (this.m_Undifferentiated.getGeneration() == 1) || (this.m_Undifferentiated.getGeneration() == 2)) {
-                this.plot();
+                this.plot(this.m_Undifferentiated.getGeneration());
             } else {
-                if (this.m_Undifferentiated.getGeneration()%this.m_ShowCycle == 0) this.plot();
+                if (this.m_Undifferentiated.getGeneration()%this.m_ShowCycle == 0) this.plot(this.m_Undifferentiated.getGeneration());
             }
         }
 
@@ -706,7 +706,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
      * @return description
      */
     public String globalInfo() {
-        return "This is a versatible species based niching EA method.";
+        return "This is a versatile species based niching EA method.";
     }
     /** This method will return a naming String
      * @return The name of the algorithm

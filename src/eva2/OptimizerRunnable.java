@@ -4,6 +4,8 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.BitSet;
 
+import wsi.ra.jproxy.RemoteStateListener;
+
 import eva2.server.go.IndividualInterface;
 import eva2.server.go.InterfaceGOParameters;
 import eva2.server.go.InterfaceTerminator;
@@ -88,6 +90,10 @@ public class OptimizerRunnable implements Runnable {
 		this.listener = lsnr;
 		if (listener != null) proc.getStatistics().addTextListener(listener);
 	}
+
+	public void addRemoteStateListener(RemoteStateListener rsl) {
+   		if (proc != null) proc.addListener(rsl);
+    }
 	
 	public void setDoRestart(boolean restart) {
 		doRestart = restart;

@@ -1,8 +1,5 @@
 package eva2.server.go.problems;
 
-import java.lang.reflect.Array;
-import java.util.BitSet;
-
 import eva2.gui.BeanInspector;
 
 /**
@@ -34,7 +31,7 @@ public class MatlabEvalMediator implements Runnable {
 	boolean quit = false;
 	volatile Object optSolution = null;
 	volatile Object[] optSolSet = null;
-//	MatlabProblem mp = null;
+	MatlabProblem mp = null;
 	// no good: even when waiting for only 1 ms the Matlab execution time increases by a factor of 5-10
 	final static int sleepTime = 0;
 
@@ -45,7 +42,7 @@ public class MatlabEvalMediator implements Runnable {
 	 * @return
 	 */
 	double[] requestEval(MatlabProblem mp, Object x) {
-//		this.mp = mp;
+		this.mp = mp;
 		question = x;
 //		System.err.println("IN REQUESTEVAL, x is " + BeanInspector.toString(x));
 		if (question.getClass().isArray()) {
@@ -54,11 +51,12 @@ public class MatlabEvalMediator implements Runnable {
 //			BitSet b = (BitSet)x;
 //			Integer.decode()
 //			
+			if (question == null) System.err.println("Error: requesting evaluation for null array!");
 		} else System.err.println("Error, requesting evaluation for non array!"); 
 		
 		requesting = true;
 //		int k=0;
-//		System.out.println("Requesting eval for " + BeanInspector.toString(x) + ", req state is " + requesting + "\n"); 
+		mp.log("-- Requesting eval for " + BeanInspector.toString(x) + ", req state is " + requesting + "\n"); 
 		while (requesting && !quit) {
 			// 	wait for matlab to answer the question
 			if (sleepTime > 0) try { Thread.sleep(sleepTime); } catch(Exception e) {};
@@ -67,8 +65,9 @@ public class MatlabEvalMediator implements Runnable {
 //			}
 //			k++;
 		}
-//		System.out.println("Requesting done \n");
+		mp.log("-- Requesting done\n");
 		// matlab is finished, answer is here
+		//return null;
 		return getAnswer(); // return to JE with answer
 	}
 
@@ -102,11 +101,12 @@ public class MatlabEvalMediator implements Runnable {
 	 * @return
 	 */
 	public Object getQuestion() {
-//		mp.log("-- Question: " + BeanInspector.toString(question) + "\n");
+		mp.log("-- Question: " + BeanInspector.toString(question) + "\n");
 		return question;
 	}
 
 	double[] getAnswer() {
+		mp.log("-- mediator delivering " + BeanInspector.toString(answer) + "\n");
 		return answer;
 	}
 
@@ -116,10 +116,14 @@ public class MatlabEvalMediator implements Runnable {
 	 * @param y
 	 */
 	public void setAnswer(double[] y) {
-//		mp.log("-- setAnswer: " + BeanInspector.toString(y) + "\n"); 
 //		System.err.println("answer is " + BeanInspector.toString(y)); 
+		if (y==null) {
+			System.err.println("Error: Matlab function returned null array - this is bad.");
+			System.err.println("X-value was " + BeanInspector.toString(getQuestion()));
+		}
 		answer = y;
 		requesting = false; // answer is finished, break request loop
+		mp.log("-- setAnswer: " + BeanInspector.toString(y) + ", req state is " + requesting + "\n"); 
 	}
 
 	void setFinished(boolean val) {

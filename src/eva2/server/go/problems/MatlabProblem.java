@@ -30,13 +30,13 @@ import eva2.server.stat.InterfaceTextListener;
  */
 public class MatlabProblem extends AbstractOptimizationProblem implements InterfaceTextListener, Serializable {
 	private static final long serialVersionUID = 4913310869887420815L;
-	public static final boolean 		TRACE = true; 
+	public static boolean 				TRACE = false; 
 	transient OptimizerRunnable			runnable = null;
 	protected boolean 					allowSingleRunnable = true;	
 	protected int 						problemDimension = 10;
 	transient PrintStream 				dos = null;
 	private double 						range[][] =	null;
-	private static final String			defTestOut = "matlabproblem-testout.dat";
+	private static String				defTestOut = "matlabproblem-debug.log";
 	int 								verbosityLevel	= 0;
 	private MatlabEvalMediator 			handler = null;
 	private boolean isDouble = true;
@@ -123,18 +123,35 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 //		System.err.println("range: " + BeanInspector.toString(range));
 		initTemplate();
 //		res = new ResultArr();
-		if ((dos == null) && TRACE) {
-			try {
-				dos = new PrintStream(new FileOutputStream(outFile));
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			}
-		}
+		
+		setDebugOut(TRACE, defTestOut);
 
 //		log("range is " + BeanInspector.toString(range)+ "\n");
 //		log("template len: " + ((ESIndividualDoubleData)m_Template).getDGenotype().length + "\n");
 	}
 
+	/**
+	 * If swtch is true and no output file is open yet, open a new one which will be used for debug output.
+	 * if fname is null, the default filename will be used.
+	 * if swtch is false, close the output file and deactivate debug output.
+	 * 
+	 * @param swtch
+	 * @param fname
+	 */
+	public void setDebugOut(boolean swtch, String fname) {
+		TRACE=swtch;
+		if (!swtch && (dos != null)) {
+			dos.close();
+			dos = null;
+		} else if ((dos == null) && swtch) {
+			try {
+				dos = new PrintStream(new FileOutputStream(fname==null ? defTestOut : fname));
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	public void setStatsOutput(int verboLevel) {
 		if ((verboLevel >= 0) && (verboLevel <= 3)) {
 			verbosityLevel = verboLevel;
@@ -386,10 +403,10 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 
 	@Override
 	public void evaluate(AbstractEAIndividual indy) {
-		log("evaluating " + BeanInspector.toString(indy) + "\n");
+		log("evaluating " + AbstractEAIndividual.getDefaultStringRepresentation(indy) + "\n");
 		double[] res = handler.requestEval(this, AbstractEAIndividual.getIndyData(indy));
+		log("evaluated to " + BeanInspector.toString(res) + "\n");
 		indy.SetFitness(res);
-//		System.err.println("evaluated to " + BeanInspector.toString(res));
 	}
 
 	@Override

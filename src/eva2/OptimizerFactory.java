@@ -35,7 +35,6 @@ import eva2.server.go.operators.selection.InterfaceSelection;
 import eva2.server.go.operators.selection.SelectBestIndividuals;
 import eva2.server.go.operators.terminators.CombinedTerminator;
 import eva2.server.go.operators.terminators.EvaluationTerminator;
-import eva2.server.go.operators.terminators.FitnessConvergenceTerminator;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.AbstractOptimizationProblem;
 import eva2.server.go.strategies.ClusterBasedNichingEA;
@@ -67,9 +66,8 @@ import eva2.server.modules.GOParameters;
  * the methods initialize the respective optimization procedure. To perform an
  * optimization one has to do the following: <code>
  * InterfaceOptimizer optimizer = OptimizerFactory.createCertainOptimizer(arguments);
- * EvaluationTerminator terminator = new EvaluationTerminator();
- * terminator.setFitnessCalls(numOfFitnessCalls);
- * while (!terminator.isTerminated(mc.getPopulation())) mc.optimize();
+ * EvaluationTerminator terminator = new EvaluationTerminator(numOfFitnessCalls);
+ * while (!terminator.isTerminated(optimizer.getPopulation())) optimizer.optimize();
  * </code>
  * </p>
  *
@@ -80,7 +78,7 @@ import eva2.server.modules.GOParameters;
  * @date 17.04.2007
  */
 public class OptimizerFactory {
-	private static InterfaceTerminator term = null;
+	private static InterfaceTerminator userTerm = null;
 
 	public final static int STD_ES = 1;
 
@@ -109,24 +107,6 @@ public class OptimizerFactory {
 	public final static int randSeed = 0;
 
 	private static OptimizerRunnable lastRunnable = null;
-
-	/**
-	 * Add an InterfaceTerminator to any new optimizer in a boolean combination.
-	 * The old and the given terminator will be combined as in (TOld && TNew) if
-	 * bAnd is true, and as in (TOld || TNew) if bAnd is false.
-	 *
-	 * @param newTerm
-	 *            a new InterfaceTerminator instance
-	 * @param bAnd
-	 *            indicate the boolean combination
-	 */
-	public static void addTerminator(InterfaceTerminator newTerm, boolean bAnd) {
-		if (OptimizerFactory.term == null)
-			OptimizerFactory.term = term;
-		else
-			setTerminator(new CombinedTerminator(OptimizerFactory.term,
-					newTerm, bAnd));
-	}
 
 	/**
 	 * This method optimizes the given problem using differential evolution.
@@ -501,10 +481,8 @@ public class OptimizerFactory {
 	}
 
 	// /////////////////////////// Termination criteria
-	public static InterfaceTerminator defaultTerminator() {
-		if (term == null)
-			term = new EvaluationTerminator(defaultFitCalls);
-		return term;
+	public static InterfaceTerminator makeDefaultTerminator() {
+		return new EvaluationTerminator(defaultFitCalls);
 	}
 
 	/**
@@ -582,21 +560,38 @@ public class OptimizerFactory {
 	public static OptimizerRunnable getOptRunnable(final int optType,
 			AbstractOptimizationProblem problem, int fitCalls,
 			String outputFilePrefix) {
+		return getOptRunnable(optType, problem, new EvaluationTerminator(fitCalls), outputFilePrefix);
+	}
+
+	/**
+	 * Produce a runnable optimizer from a strategy identifier, a problem instance and with a given
+	 * terminator. Output is written to a file if the prefix String is given. If the terminator is null
+	 * the current user-defined terminator will be used and if none is set, the default number of fitness
+	 * calls will be performed.
+	 * 
+	 * @param optType
+	 * @param problem
+	 * @param terminator
+	 * @param outputFilePrefix
+	 * @return a runnable optimizer
+	 */
+	public static OptimizerRunnable getOptRunnable(final int optType,
+			AbstractOptimizationProblem problem, InterfaceTerminator terminator,
+			String outputFilePrefix) {
 		OptimizerRunnable opt = null;
 		GOParameters params = getParams(optType, problem);
 		if (params != null) {
 			opt = new OptimizerRunnable(params, outputFilePrefix);
-			if (fitCalls != defaultFitCalls)
-				opt.getGOParams().setTerminator(
-						new EvaluationTerminator(fitCalls));
+			if (terminator != null) opt.getGOParams().setTerminator(terminator);
+			else opt.getGOParams().setTerminator(getTerminator());
 		}
 		return opt;
 	}
-
+	
 	// /////////////////////////// constructing a default OptimizerRunnable
 	/**
-	 * Produce a runnable optimizer from a strategy identifier, a problem instance and with the default
-	 * number of fitness calls to be performed. Output is written to a file if the prefix String is given.
+	 * Produce a runnable optimizer from a strategy identifier, a problem instance and with the current
+	 * static terminator in use. Output is written to a file if the prefix String is given.
 	 * @see #getOptRunnable(int, AbstractOptimizationProblem, int, String)
 	 * @param optType
 	 * @param problem
@@ -605,17 +600,17 @@ public class OptimizerFactory {
 	 */
 	public static OptimizerRunnable getOptRunnable(final int optType,
 			AbstractOptimizationProblem problem, String outputFilePrefix) {
-		return getOptRunnable(optType, problem, defaultFitCalls,
-				outputFilePrefix);
+		return getOptRunnable(optType, problem, getTerminator(), outputFilePrefix);
 	}
 
 	/**
-	 * Return the current default terminator.
+	 * Return the current user-defined or, if none was set, the default terminator.
 	 * 
 	 * @return the current default terminator
 	 */
 	public static InterfaceTerminator getTerminator() {
-		return OptimizerFactory.term;
+		if (OptimizerFactory.userTerm != null) return OptimizerFactory.userTerm;
+		else return makeDefaultTerminator();
 	}
 
 	/**
@@ -638,7 +633,7 @@ public class OptimizerFactory {
 	 */
 	public static GOParameters makeESParams(EvolutionStrategies es,
 			AbstractOptimizationProblem problem) {
-		return makeParams(es, es.getLambda(), problem, randSeed, defaultTerminator());
+		return makeParams(es, es.getLambda(), problem, randSeed, makeDefaultTerminator());
 	}
 
 	/**
@@ -651,7 +646,7 @@ public class OptimizerFactory {
 	 * @return
 	 */
 	public static GOParameters makeParams(InterfaceOptimizer opt, int popSize, AbstractOptimizationProblem problem) {
-		return makeParams(opt, popSize, problem, randSeed, defaultTerminator());
+		return makeParams(opt, popSize, problem, randSeed, makeDefaultTerminator());
 	}
 
 	public static GOParameters makeParams(InterfaceOptimizer opt,
@@ -709,17 +704,39 @@ public class OptimizerFactory {
 	 * @param optType
 	 * @param problem
 	 * @param outputFilePrefix
-	 * @return
+	 * @return the OptimizerRunnable instance just started
 	 */
-	public static OptimizerRunnable optimizeInThread(final int optType,
-			AbstractOptimizationProblem problem, String outputFilePrefix) {
-		OptimizerRunnable runnable = getOptRunnable(optType, problem,
-				outputFilePrefix);
-		if (runnable != null)
-			new Thread(runnable).start();
-		return runnable;
+	public static OptimizerRunnable optimizeInThread(final int optType, AbstractOptimizationProblem problem, String outputFilePrefix) {
+		return optimizeInThread(getOptRunnable(optType, problem, outputFilePrefix));
+	}
+	
+	/**
+	 * Create a runnable optimization Runnable and directly start it in an own
+	 * thread. The Runnable will notify waiting threads and set the isFinished
+	 * flag when the optimization is complete. If the optType is invalid, null
+	 * will be returned.
+	 *
+	 * @param params
+	 * @param outputFilePrefix
+	 * @return the OptimizerRunnable instance just started
+	 */
+	public static OptimizerRunnable optimizeInThread(GOParameters params, String outputFilePrefix) {
+		return optimizeInThread(new OptimizerRunnable(params, outputFilePrefix));
 	}
 
+	/**
+	 * Start a runnable optimizer in a concurrent thread.
+	 * @param runnable
+	 * @return the started runnable
+	 */
+	public static OptimizerRunnable optimizeInThread(OptimizerRunnable runnable) {
+		if (runnable != null) {
+			new Thread(runnable).start();
+			lastRunnable = runnable;
+		}
+		return runnable;
+	}
+	
 	// ///////////////////////////// Optimize a given parameter instance
 	public static BitSet optimizeToBinary(GOParameters params,
 			String outputFilePrefix) {
@@ -810,12 +827,30 @@ public class OptimizerFactory {
 		return (lastRunnable == null) ? null : postProcess(lastRunnable, ppp);
 	}
 
+	/**
+	 * Post process the given runnable with given parameters. The runnable will
+	 * not be stored.
+	 *  
+	 * @param runnable
+	 * @param steps
+	 * @param sigma
+	 * @param nBest
+	 * @return
+	 */
 	public static Population postProcess(OptimizerRunnable runnable, int steps,
 			double sigma, int nBest) {
 		PostProcessParams ppp = new PostProcessParams(steps, sigma, nBest);
 		return postProcess(runnable, ppp);
 	}
 
+	/**
+	 * Post process the given runnable with given parameters. The runnable will
+	 * not be stored.
+	 * 
+	 * @param runnable
+	 * @param ppp
+	 * @return
+	 */
 	public static Population postProcess(OptimizerRunnable runnable,
 			InterfacePostProcessParams ppp) {
 		runnable.setDoRestart(true);
@@ -845,6 +880,14 @@ public class OptimizerFactory {
 				nBest));
 	}
 
+	/**
+	 * Post process the given runnable with given parameters. Return the solution set
+	 * as a vector of BitSets. The runnable will not be stored.
+	 * 
+	 * @param runnable
+	 * @param ppp
+	 * @return
+	 */
 	public static Vector<BitSet> postProcessBinVec(OptimizerRunnable runnable,
 			InterfacePostProcessParams ppp) {
 		Population resPop = postProcess(runnable, ppp);
@@ -875,7 +918,15 @@ public class OptimizerFactory {
 		return postProcessDblVec(runnable, new PostProcessParams(steps, sigma,
 				nBest));
 	}
-
+	
+	/**
+	 * Post process the given runnable with given parameters. Return the solution set
+	 * as a vector of double arrays. The runnable will not be stored.
+	 * 
+	 * @param runnable
+	 * @param ppp
+	 * @return
+	 */
 	public static Vector<double[]> postProcessDblVec(
 			OptimizerRunnable runnable, InterfacePostProcessParams ppp) {
 		Population resPop = postProcess(runnable, ppp);
@@ -906,7 +957,15 @@ public class OptimizerFactory {
 		return postProcessIndVec(runnable, new PostProcessParams(steps, sigma,
 				nBest));
 	}
-
+	
+	/**
+	 * Post process the given runnable with given parameters. Return the solution set
+	 * as a vector of AbstractEAIndividuals. The runnable will not be stored.
+	 * 
+	 * @param runnable
+	 * @param ppp
+	 * @return
+	 */
 	public static Vector<AbstractEAIndividual> postProcessIndVec(
 			OptimizerRunnable runnable, InterfacePostProcessParams ppp) {
 		Population resPop = postProcess(runnable, ppp);
@@ -922,19 +981,48 @@ public class OptimizerFactory {
 	}
 	
 	///////////////////////////// termination management
+	/**
+	 * Replace the current user-defined terminator by the given one.
+	 * 
+	 * @param term
+	 */
+	public static void setTerminator(InterfaceTerminator term) {
+		OptimizerFactory.userTerm = term;
+	}
+
+	/**
+	 * Add a new InterfaceTerminator to the current user-defined optimizer in a boolean combination.
+	 * The old and the given terminator will be combined as in (TOld && TNew) if
+	 * bAnd is true, and as in (TOld || TNew) if bAnd is false.
+	 * If there was no user-defined terminator (or it was set to null) the new one is used without conjunction. 
+	 *
+	 * @param newTerm
+	 *            a new InterfaceTerminator instance
+	 * @param bAnd
+	 *            indicate the boolean combination
+	 */
+	public static void addTerminator(InterfaceTerminator newTerm, boolean bAnd) {
+		if (OptimizerFactory.userTerm == null)
+			OptimizerFactory.userTerm = newTerm;
+		else
+			setTerminator(new CombinedTerminator(OptimizerFactory.userTerm,
+					newTerm, bAnd));
+	}
+	
+	/**
+	 * Convenience method setting an EvaluationTerminator with the given
+	 * number of evaluations.
+	 * 
+	 * @param maxEvals
+	 */
 	public static void setEvaluationTerminator(int maxEvals) {
 		setTerminator(new EvaluationTerminator(maxEvals));
 	}
 
-	public static void setFitnessConvergenceTerminator(double fitThresh) {
-		setTerminator(new FitnessConvergenceTerminator(fitThresh, 100, true,
-				true));
-	}
-
-	public static void setTerminator(InterfaceTerminator term) {
-		OptimizerFactory.term = term;
-	}
-
+	/**
+	 * Return the termination message of the last runnable, if available. 
+	 * @return
+	 */
 	public static String terminatedBecause() {
 		return (lastRunnable != null) ? lastRunnable.terminatedBecause() : null;
 	}
@@ -947,12 +1035,12 @@ public class OptimizerFactory {
 	 */
 	public static final GOParameters hillClimbing(
 			AbstractOptimizationProblem problem) {
-		return makeParams(new HillClimbing(), 50, problem, randSeed, defaultTerminator());
+		return makeParams(new HillClimbing(), 50, problem, randSeed, makeDefaultTerminator());
 	}
 
 	public static final GOParameters monteCarlo(
 			AbstractOptimizationProblem problem) {
-		return makeParams(new MonteCarloSearch(), 50, problem, randSeed, defaultTerminator());
+		return makeParams(new MonteCarloSearch(), 50, problem, randSeed, makeDefaultTerminator());
 	}
 	
 	public static final GOParameters cbnES(AbstractOptimizationProblem problem) {
@@ -967,7 +1055,7 @@ public class OptimizerFactory {
 		cbn.setDifferentationCA(clustering);
 		cbn.setShowCycle(0); // don't do graphical output
 
-		return makeParams(cbn, 100, problem, randSeed, defaultTerminator());
+		return makeParams(cbn, 100, problem, randSeed, makeDefaultTerminator());
 	}
 
 	public static final GOParameters clusteringHillClimbing(
@@ -982,7 +1070,7 @@ public class OptimizerFactory {
 		chc.setNotifyGuiEvery(0);
 		chc.setStepSizeThreshold(0.000001);
 		chc.setSigmaClust(0.05);
-		return makeParams(chc, 100, problem, randSeed, defaultTerminator());
+		return makeParams(chc, 100, problem, randSeed, makeDefaultTerminator());
 	}
 
 	public static final GOParameters cmaES(AbstractOptimizationProblem problem) {
@@ -1052,7 +1140,7 @@ public class OptimizerFactory {
 		de.setK(0.6);
 		de.setLambda(0.6);
 		de.setMt(0.05);
-		return makeParams(de, 50, problem, randSeed, defaultTerminator());
+		return makeParams(de, 50, problem, randSeed, makeDefaultTerminator());
 	}
 
 	public static final GOParameters standardES(
@@ -1082,7 +1170,7 @@ public class OptimizerFactory {
 		GeneticAlgorithm ga = new GeneticAlgorithm();
 		ga.setElitism(true);
 
-		return makeParams(ga, 100, problem, randSeed, defaultTerminator());
+		return makeParams(ga, 100, problem, randSeed, makeDefaultTerminator());
 	}
 
 	public static final GOParameters standardPSO(
@@ -1090,10 +1178,10 @@ public class OptimizerFactory {
 		ParticleSwarmOptimization pso = new ParticleSwarmOptimization();
 		pso.setPhiValues(2.05, 2.05);
 		pso.getTopology().setSelectedTag("Grid");
-		return makeParams(pso, 30, problem, randSeed, defaultTerminator());
+		return makeParams(pso, 30, problem, randSeed, makeDefaultTerminator());
 	}
 
 	public static final GOParameters tribes(AbstractOptimizationProblem problem) {
-		return makeParams(new Tribes(), 1, problem, randSeed, defaultTerminator());
+		return makeParams(new Tribes(), 1, problem, randSeed, makeDefaultTerminator());
 	}
 }

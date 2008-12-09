@@ -4,6 +4,8 @@ package eva2;
  * Main product and version information strings.
  * 
  * --- Changelog
+ * 2.031: Some updates to the OptimizerFactory. Review of the MatlabInterface with adding an own options structure.
+ * 			Better access to the EvAClient, which now may have a RemoteStateListener added monitoring the optimization run.
  * 2.030: Added an EnumEditor to access enums easily through the GUI, which will replace SelectedTags sometimes.
  * 			IPOP-ES and RankMuCMA mutator have been added lately (wow!).
  * 			Cleaned up the IndividualInterface and reduced the usage of InterfaceESIndividual. This

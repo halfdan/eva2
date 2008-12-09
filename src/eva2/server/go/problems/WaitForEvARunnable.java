@@ -19,24 +19,23 @@ class WaitForEvARunnable implements Runnable {
 	public void run() {
 		if (runnable != null) {
 			mp.log("\nStarting optimize runnable!\n");
-
 			synchronized (runnable) {
 				try {
 					// whole optimization thread goes in here
 					new Thread(runnable).start();
-					mp.log("Starting optimize thread done!\n");
+					mp.log("Started optimize thread\n");
 					runnable.wait();
 					// wait for the runnable to finish
-					mp.log("After wait!\n");
+					mp.log("runnable continues...\n");
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 					mp.log("WaitForEvARunnable was interrupted with " + e.getMessage());
 				}
 			}
 			try {
-				mp.log("runnable.getDoubleSolution: " + BeanInspector.toString(runnable.getDoubleSolution()));
-				mp.log("runnable.getIntegerSolution: " + BeanInspector.toString(runnable.getIntegerSolution()));
-				mp.log("\ngetAllSols best: " + AbstractEAIndividual.getDefaultDataString(runnable.getGOParams().getOptimizer().getAllSolutions().getSolutions().getBestEAIndividual()));
+				mp.log("runnable.getDoubleSolution: " + BeanInspector.toString(runnable.getDoubleSolution()) + "\n");
+				mp.log("runnable.getIntegerSolution: " + BeanInspector.toString(runnable.getIntegerSolution()) + "\n");
+				mp.log("getAllSols best: " + AbstractEAIndividual.getDefaultDataString(runnable.getGOParams().getOptimizer().getAllSolutions().getSolutions().getBestEAIndividual()) + "\n");
 				mp.log("\n");
 				// write results back to matlab
 				mp.exportResultToMatlab(runnable);

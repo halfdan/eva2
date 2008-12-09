@@ -43,15 +43,14 @@ if ((nargin == 2) || (nargin == 3))
     if (isempty(int.opts.TolX)) ; xTol = 1e-4; end
     if (isempty(int.opts.TolFun)) ; fTol = 1e-4; end
     
-    evalsForConv=100;
     % construct Terminators
     if ((xTol > 0) && (fTol > 0))
         % both criteria are given, use combination
-        convTerm = CombinedTerminator(FitnessConvergenceTerminator(fTol, evalsForConv, 1, 1), PhenotypeConvergenceTerminator(xTol, evalsForConv, 1, 1), 1);
+        convTerm = CombinedTerminator(FitnessConvergenceTerminator(fTol, int.opts.TolFunEvals, 1, 1), PhenotypeConvergenceTerminator(xTol, int.opts.TolXEvals, 1, 1), 1);
     else if (xTol > 0)  % only phenotye convergence
-            convTerm = PhenotypeConvergenceTerminator(xTol, evalsForConv, 1, 1);
+            convTerm = PhenotypeConvergenceTerminator(xTol, int.opts.TolXEvals, 1, 1);
         else if (fTol > 0 )             % only fitness covnergence
-                convTerm = FitnessConvergenceTerminator(fTol, evalsForConv, 1, 1);
+                convTerm = FitnessConvergenceTerminator(fTol, int.opts.TolFunEvals, 1, 1);
             else
                convTerm = 'undef'; % signal that there is no terminator yet
             end
