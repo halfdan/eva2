@@ -124,7 +124,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 		if (a.algType != null)
 			this.algType = (SelectedTag)a.algType.clone();
 		this.m_Population                   = (Population)a.m_Population.clone();
-		this.m_Problem                      = (InterfaceOptimizationProblem)a.m_Problem.clone();
+		this.m_Problem                      = a.m_Problem;
 		this.m_Identifier                   = a.m_Identifier;
 		this.m_InitialVelocity              = a.m_InitialVelocity;
 		this.m_SpeedLimit                   = a.m_SpeedLimit;
@@ -169,8 +169,9 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 	 * Set the initial random velocity vector.
 	 *
 	 * @param indy 	the individual to work on
+	 * @param initialV initial velocity relative to the range
 	 */
-	protected void initIndividualDefaults(AbstractEAIndividual indy) {
+	public static void initIndividualDefaults(AbstractEAIndividual indy, double initialV) {
 		double[] writeData;
 		// init velocity
 		writeData   = new double[((InterfaceDataTypeDouble)indy).getDoubleData().length];
@@ -181,7 +182,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 		//sum = Math.sqrt(sum);
 		double relSpeed = getRelativeSpeed(writeData, ((InterfaceDataTypeDouble)indy).getDoubleRange());
 		for (int j = 0; j < writeData.length; j++) {
-			writeData[j]    = (writeData[j]/relSpeed)*this.m_InitialVelocity;
+			writeData[j]    = (writeData[j]/relSpeed)*initialV;
 		}
 		indy.putData(partTypeKey, defaultType);
 		indy.putData(partVelKey, writeData);
@@ -192,7 +193,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 	 *
 	 * @param indy 	the individual to work on
 	 */
-	protected void initIndividualMemory(AbstractEAIndividual indy) {
+	protected static void initIndividualMemory(AbstractEAIndividual indy) {
 		// init best fitness
 		double[] tmpD        = indy.getFitness();
 		double[] writeData   = new double[tmpD.length];
@@ -338,6 +339,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 	public double[] getPopulationVelocity(Population pop) {
 		return getPopulationVelSpeed(pop, 1);
 	}
+	
 	/**
 	 * Calculates the norm of the velocity vector relative to the problem range.
 	 *
@@ -345,7 +347,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 	 * @param range		the problem range in each dimension
 	 * @return			measure of the speed relative to the problem range
 	 */
-	public double getRelativeSpeed(double[] curSpeed, double[][] range) {
+	public static double getRelativeSpeed(double[] curSpeed, double[][] range) {
 		double sumV        = 0;
 		double sumR        = 0;
 		for (int i = 0; i < range.length; i++) {
@@ -403,7 +405,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 		for (int i = 0; i < pop.size(); i++) {
 			indy = (AbstractEAIndividual) pop.get(i);
 			if (indy instanceof InterfaceDataTypeDouble) {
-				initIndividualDefaults(indy);
+				initIndividualDefaults(indy, m_InitialVelocity);
 			}
 			indy.putData(indexKey, i);
 			indy.SetIndividualIndex(i);
@@ -470,13 +472,17 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 	}
 
 	protected void resetIndividual(AbstractEAIndividual indy) {
+		resetIndividual(indy, m_InitialVelocity);
+		plotIndy(((InterfaceDataTypeDouble)indy).getDoubleData(), null, (Integer)indy.getData(indexKey));
+	}
+	
+	public static void resetIndividual(AbstractEAIndividual indy, double initialV) {
 		if (indy instanceof InterfaceDataTypeDouble) {
 			indy.setParents(null);
 			indy.defaultInit();
 			indy.putData(partTypeKey, defaultType); // turn into default type
-			initIndividualDefaults(indy);
+			initIndividualDefaults(indy, initialV);
 			initIndividualMemory(indy);
-			plotIndy(((InterfaceDataTypeDouble)indy).getDoubleData(), null, (Integer)indy.getData(indexKey));
 		} else System.err.println("error, double valued individuals required for PSO");
 	}
 	
@@ -1432,7 +1438,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 			if (indy==null) {
 				System.err.println("Error in PSO.setPopulation!");
 			} else if (!indy.hasData(partTypeKey)) {
-				initIndividualDefaults(indy);
+				initIndividualDefaults(indy, m_InitialVelocity);
 				initIndividualMemory(indy);
 				indy.putData(indexKey, i);
 				indy.SetIndividualIndex(i);
@@ -1596,7 +1602,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 	public void setGOEShowProperties(Class<?> cls) {
 		GenericObjectEditor.setShowProperty(cls, "topologyRange", (m_Topology.getSelectedTag().getID() < 2) || (m_Topology.getSelectedTag().getID() == 6));
 		GenericObjectEditor.setShowProperty(cls, "subSwarmRadius", (m_Topology.getSelectedTag().getID() == 3));
-		GenericObjectEditor.setShowProperty(cls, "subSwarmSize", (m_Topology.getSelectedTag().getID() == 3));
+		GenericObjectEditor.setShowProperty(cls, "maxSubSwarmSize", (m_Topology.getSelectedTag().getID() == 3));
 		GenericObjectEditor.setShowProperty(cls, "treeStruct", (m_Topology.getSelectedTag().getID() == 4));
 		GenericObjectEditor.setShowProperty(cls, "treeBranchDegree", (m_Topology.getSelectedTag().getID() == 4) || (m_Topology.getSelectedTag().getID() == 5));
 		GenericObjectEditor.setShowProperty(cls, "wrapTopology", (m_Topology.getSelectedTag().getID() == 0));
@@ -1718,15 +1724,15 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 		return "Define the maximum distance to a swarm leader in the multi-swarm variant";
 	}
 
-	public int getSubSwarmSize() {
+	public int getMaxSubSwarmSize() {
 		return maxSubSwarmSize;
 	}
 
-	public void setSubSwarmSize(int subSize) {
+	public void setMaxSubSwarmSize(int subSize) {
 		maxSubSwarmSize = subSize;
 	}
 
-	public String subSwarmSizeTipText() {
+	public String maxSubSwarmSizeTipText() {
 		return "Maximum size of a sub swarm. Violating particles will be reinitialized. 0 means no limit to the sub swarm size.";
 	}
 

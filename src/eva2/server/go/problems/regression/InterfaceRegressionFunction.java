@@ -18,5 +18,5 @@ public interface InterfaceRegressionFunction {
      * @param x     Input vector.
      * @return y the function result.
      */
-    public double evaulateFunction(double[] x);
+    public double evaluateFunction(double[] x);
 }

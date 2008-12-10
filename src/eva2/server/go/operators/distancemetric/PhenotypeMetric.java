@@ -110,13 +110,14 @@ public class PhenotypeMetric implements InterfaceDistanceMetric, java.io.Seriali
         if ((indy1 instanceof InterfaceDataTypeDouble) && (indy2 instanceof InterfaceDataTypeDouble)) {
             double[]    d1, d2;
             double[][]  r1, r2;
-            double      tmpResult = 0;
+            double      tmpResult = 0, tmp=0;
             d1 = ((InterfaceDataTypeDouble) indy1).getDoubleData();
             r1 = ((InterfaceDataTypeDouble) indy1).getDoubleRange();
             d2 = ((InterfaceDataTypeDouble) indy2).getDoubleData();
             r2 = ((InterfaceDataTypeDouble) indy2).getDoubleRange();
             for (int i = 0; (i < d1.length) && (i < d2.length); i++) {
-                tmpResult += Math.pow(((d1[i] - r1[i][0])/(r1[i][1] - r1[i][0])) - ((d2[i] - r2[i][0])/(r2[i][1] - r2[i][0])), 2);
+            	tmp=((d1[i] - r1[i][0])/(r1[i][1] - r1[i][0])) - ((d2[i] - r2[i][0])/(r2[i][1] - r2[i][0]));
+                tmpResult += (tmp*tmp);
             }
             result += Math.sqrt(tmpResult);
         }
@@ -158,13 +159,33 @@ public class PhenotypeMetric implements InterfaceDistanceMetric, java.io.Seriali
     }
     
     public static double euclidianDistance(double[] v1, double[] v2) {
-        double      result = 0;
+        double      result = 0, tmp=0;
         for (int i = 0; (i < v1.length) && (i < v2.length); i++) {
-        	result += Math.pow(v1[i] - v2[i], 2);
+        	tmp = v1[i] - v2[i];
+        	result += (tmp*tmp);
         }
         return Math.sqrt(result);
     }
     
+    public static double squaredEuclidianDistance(double[] v1, double[] v2) {
+        double      tmp, result = 0;
+        for (int i = 0; (i < v1.length) && (i < v2.length); i++) {
+        	tmp=v1[i] - v2[i];
+        	result += (tmp*tmp);
+        }
+        return result;
+    }
+    
+    public static double normedDistance(double[] pos1, double[][] range1, double[] pos2, double[][] range2) {
+    	double      tmpResult = 0, tmp=0;
+
+    	for (int i = 0; (i < pos1.length) && (i < pos2.length); i++) {
+    		tmp=((pos1[i] - range1[i][0])/(range1[i][1] - range1[i][0])) - ((pos2[i] - range2[i][0])/(range2[i][1] - range2[i][0]));
+    		tmpResult += (tmp*tmp);
+    	}
+    	return Math.sqrt(tmpResult);
+    }
+
     public static double norm(AbstractEAIndividual indy) {
         double      result = 0;
         if (indy instanceof InterfaceDataTypeBinary) {

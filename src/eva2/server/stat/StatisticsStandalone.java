@@ -90,7 +90,7 @@ public class StatisticsStandalone extends AbstractStatistics implements Interfac
 		((ArrayList<double[]>[]) m_Result.get(0))[optRunsPerformed].add(new double[] {functionCalls, currentBestFit[0]});
 	}
 
-	public void plotSpecificData(PopulationInterface pop, InterfaceAdditionalPopulationInformer informer) {
+	public void plotSpecificData(PopulationInterface pop, List<InterfaceAdditionalPopulationInformer> informerList) {
 		if (TRACE) System.out.println(" m_SpecificData !!");
 		double[] specificData = pop.getSpecificData();
 		if (specificData != null) {

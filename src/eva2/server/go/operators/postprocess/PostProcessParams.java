@@ -40,11 +40,21 @@ public class PostProcessParams implements InterfacePostProcessParams, Serializab
 	}
 	
 	public PostProcessParams(PostProcessMethod meth, int steps, double clusterSigma, int nBest) {
+		reset(meth, steps, clusterSigma, nBest, false);
+	}
+	
+	public PostProcessParams(PostProcessMethod meth, int steps, double clusterSigma, int nBest, boolean doPlot) {
+		reset(meth, steps, clusterSigma, nBest, doPlot);
+	}
+	
+	public PostProcessParams reset(PostProcessMethod meth, int steps, double clusterSigma, int nBest, boolean doPlot) {
 		method = meth;
 		postProcessSteps = steps;
 		postProcess = true;
 		postProcessClusterSigma = clusterSigma;
 		printNBest = nBest;
+		withPlot = doPlot;
+		return this;
 	}
 	
 	public void hideHideable() {

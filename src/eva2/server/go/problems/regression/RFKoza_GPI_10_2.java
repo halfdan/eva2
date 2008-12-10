@@ -25,7 +25,7 @@ public class RFKoza_GPI_10_2 implements InterfaceRegressionFunction, java.io.Ser
      * @param x     Input vector.
      * @return y the function result.
      */
-    public double evaulateFunction(double[] x) {
+    public double evaluateFunction(double[] x) {
         double result = 0;
         for (int i = 0; i < x.length; i++) result += 3.1416*x[i] + 2.718 * Math.pow(x[i], 2);
         return result;

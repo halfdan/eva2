@@ -1,5 +1,7 @@
 package eva2.server.stat;
 
+import java.util.List;
+
 import eva2.server.go.IndividualInterface;
 import eva2.server.go.PopulationInterface;
 import eva2.server.go.individuals.AbstractEAIndividual;
@@ -35,7 +37,7 @@ public class StatisticsDummy implements InterfaceStatistics, InterfaceTextListen
 	}
 
 	public void createNextGenerationPerformed(PopulationInterface pop,
-			InterfaceAdditionalPopulationInformer informer) {
+			List<InterfaceAdditionalPopulationInformer> informerList) {
 		bestCurrentIndividual = (AbstractEAIndividual)pop.getBestIndividual();
 		if ((bestIndividualAllover == null) || (AbstractStatistics.secondIsBetter(bestIndividualAllover, bestCurrentIndividual))) {
 			bestIndividualAllover = bestCurrentIndividual;

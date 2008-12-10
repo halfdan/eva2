@@ -101,6 +101,8 @@ public class OptimizerFactory {
 	public final static int CL_HILLCL = 10;
 	
 	public final static int CMA_ES_IPOP = 11;
+	
+	public final static int CBN_GA = 12;
 
 	public final static int defaultFitCalls = 10000;
 
@@ -141,6 +143,8 @@ public class OptimizerFactory {
 		de.setLambda(lambda);
 		de.addPopulationChangedEventListener(listener);
 		de.init();
+
+		listener.registerPopulationStateChanged(de.getPopulation(), "");
 
 		return de;
 	}
@@ -208,13 +212,14 @@ public class OptimizerFactory {
 		AbstractEAIndividual tmpIndi = problem.getIndividualTemplate();
 		AbstractEAIndividual.setOperators(tmpIndi, mutationoperator, pm, crossoveroperator, pc);
 
-		EvolutionStrategies es = new EvolutionStrategies();
-		es.addPopulationChangedEventListener(listener);
-		//es.setParentSelection(selection);
-		//es.setPartnerSelection(selection);
-		es.setEnvironmentSelection(selection);
-		es.SetProblem(problem);
-		es.init();
+		theES.addPopulationChangedEventListener(listener);
+//		theES.setParentSelection(selection);
+//		theES.setPartnerSelection(selection);
+		theES.setEnvironmentSelection(selection);
+		theES.SetProblem(problem);
+		theES.init();
+
+		if (listener != null) listener.registerPopulationStateChanged(theES.getPopulation(), "");
 
 		return theES;
 	}
@@ -253,6 +258,8 @@ public class OptimizerFactory {
 		ga.setPartnerSelection(select);
 		ga.addPopulationChangedEventListener(listener);
 		ga.init();
+
+		listener.registerPopulationStateChanged(ga.getPopulation(), "");
 
 		return ga;
 	}
@@ -365,6 +372,8 @@ public class OptimizerFactory {
 		hc.SetProblem(problem);
 		hc.init();
 
+		listener.registerPopulationStateChanged(hc.getPopulation(), "");
+
 		return hc;
 	}
 
@@ -394,9 +403,10 @@ public class OptimizerFactory {
 		mc.SetProblem(problem);
 		mc.init();
 
+		listener.registerPopulationStateChanged(mc.getPopulation(), "");
+
 		return mc;
 	}
-
 
 	/**
 	 * This method performs a particle swarm optimization. Standard topologies are
@@ -438,6 +448,8 @@ public class OptimizerFactory {
 		pso.addPopulationChangedEventListener(listener);
 		pso.init();
 
+		listener.registerPopulationStateChanged(pso.getPopulation(), "");
+
 		return pso;
 	}
 
@@ -476,6 +488,8 @@ public class OptimizerFactory {
 		sa.getPopulation().setPopulationSize(popsize);
 		sa.addPopulationChangedEventListener(listener);
 		sa.init();
+
+		listener.registerPopulationStateChanged(sa.getPopulation(), "");
 
 		return sa;
 	}
@@ -526,9 +540,11 @@ public class OptimizerFactory {
 		case CBN_ES:
 			return cbnES(problem);
 		case CL_HILLCL:
-			return clusteringHillClimbing(problem);
+			return stdClusteringHillClimbing(problem);
 		case CMA_ES_IPOP: 
 			return cmaESIPOP(problem);
+		case CBN_GA:
+			return cbnGA(problem);
 		default:
 			System.err.println("Error: optimizer type " + optType
 					+ " is unknown!");
@@ -602,7 +618,6 @@ public class OptimizerFactory {
 			AbstractOptimizationProblem problem, String outputFilePrefix) {
 		return getOptRunnable(optType, problem, getTerminator(), outputFilePrefix);
 	}
-
 	/**
 	 * Return the current user-defined or, if none was set, the default terminator.
 	 * 
@@ -649,6 +664,18 @@ public class OptimizerFactory {
 		return makeParams(opt, popSize, problem, randSeed, makeDefaultTerminator());
 	}
 
+	/**
+	 * Set the population size, initialize the population and return a parameter structure containing all 
+	 * given parts.
+	 * 
+	 * @see #makeParams(InterfaceOptimizer, Population, AbstractOptimizationProblem, long, InterfaceTerminator)
+	 * @param opt
+	 * @param popSize
+	 * @param problem
+	 * @param seed
+	 * @param term
+	 * @return
+	 */
 	public static GOParameters makeParams(InterfaceOptimizer opt,
 			int popSize, AbstractOptimizationProblem problem, long seed,
 			InterfaceTerminator term) {
@@ -1035,9 +1062,20 @@ public class OptimizerFactory {
 	 */
 	public static final GOParameters hillClimbing(
 			AbstractOptimizationProblem problem) {
-		return makeParams(new HillClimbing(), 50, problem, randSeed, makeDefaultTerminator());
+		return hillClimbing(problem, 50);
 	}
-
+	
+	/**
+	 * Create a standard multi-start hill-climber parameter set with the given number of
+	 * individuals.
+	 * 
+	 * @return	a standard multi-start hill-climber
+	 */
+	public static final GOParameters hillClimbing(
+			AbstractOptimizationProblem problem, int popSize) {
+		return makeParams(new HillClimbing(), popSize, problem, randSeed, makeDefaultTerminator());
+	}
+	
 	public static final GOParameters monteCarlo(
 			AbstractOptimizationProblem problem) {
 		return makeParams(new MonteCarloSearch(), 50, problem, randSeed, makeDefaultTerminator());
@@ -1058,21 +1096,84 @@ public class OptimizerFactory {
 		return makeParams(cbn, 100, problem, randSeed, makeDefaultTerminator());
 	}
 
+	public static final GOParameters cbnGA(AbstractOptimizationProblem problem) {
+		ClusterBasedNichingEA cbn = new ClusterBasedNichingEA();
+		GeneticAlgorithm ga = new GeneticAlgorithm();
+		cbn.setOptimizer(ga);
+		ClusteringDensityBased clustering = new ClusteringDensityBased(0.1);
+		cbn.setConvergenceCA((ClusteringDensityBased) clustering.clone());
+		cbn.setDifferentationCA(clustering);
+		cbn.setShowCycle(0); // don't do graphical output
+
+		return makeParams(cbn, 100, problem, randSeed, makeDefaultTerminator());
+	}
+	
+	/**
+	 * Create a standard clustering hill climbing employing simple ES mutation with adaptive
+	 * step size, starting in parallel 100 local searches and clustering intermediate populations
+	 * to avoid optima being found several times by the same population (density based clustering with
+	 * sigma = 0.05).
+	 * The population is reinitialized if the average progress of one cycle does not exceed 1e-6.
+	 * 
+	 * @param problem
+	 * @return
+	 */
+	public static final GOParameters stdClusteringHillClimbing(
+			AbstractOptimizationProblem problem) {		
+		return clusteringHillClimbing(problem, 1000, 100, 0.000001, 
+				PostProcessMethod.hillClimber, 0.05, 0.000001, 0.05);
+	}
+
+	/**
+	 * Create a clustering hillclimber using nelder mead and additional given parameters.
+	 * 
+	 * @param problem
+	 * @param evalCycle
+	 * @param popSize
+	 * @param minImprovement
+	 * @param method
+	 * @param sigmaClust
+	 * @return
+	 */
+	public static final GOParameters clusteringHillClimbingNM(AbstractOptimizationProblem problem,
+			int evalCycle, int popSize, double minImprovement, double sigmaClust) {
+		return clusteringHillClimbing(problem, evalCycle, popSize, minImprovement, 
+				PostProcessMethod.nelderMead, 0.01, 0.00000001, sigmaClust);
+	}
+	
+	/**
+	 * Create a custom clustering hillclimber using ES mutation (simple or CMA) or nelder mead.
+	 * The parameters hcInitialStep and hcStepThresh are 
+	 * only relevant for the simple mutation based hc method.
+	 * 
+	 * @param problem
+	 * @param evalCycle
+	 * @param popSize
+	 * @param minImprovement
+	 * @param method
+	 * @param hcInitialStep
+	 * @param hcStepThresh
+	 * @param sigmaClust
+	 * @return
+	 */
 	public static final GOParameters clusteringHillClimbing(
-			AbstractOptimizationProblem problem) {
+			AbstractOptimizationProblem problem, int evalCycle, int popSize, double minImprovement, 
+			PostProcessMethod method, double hcInitialStep, double hcStepThresh, double sigmaClust) {
 		ClusteringHillClimbing chc = new ClusteringHillClimbing();
 		chc.SetProblem(problem);
 
-		chc.setHcEvalCycle(1000);
-		chc.setInitialPopSize(100);
-		chc.setStepSizeInitial(0.05);
-		chc.setMinImprovement(0.000001);
+		chc.setEvalCycle(evalCycle);
+		chc.setInitialPopSize(popSize);
+		chc.setStepSizeInitial(hcInitialStep);
+		chc.setLocalSearchMethod(method);
+		chc.setMinImprovement(minImprovement);
 		chc.setNotifyGuiEvery(0);
-		chc.setStepSizeThreshold(0.000001);
-		chc.setSigmaClust(0.05);
-		return makeParams(chc, 100, problem, randSeed, makeDefaultTerminator());
+		chc.setStepSizeThreshold(hcStepThresh);
+		chc.setSigmaClust(sigmaClust);
+		return makeParams(chc, popSize, problem, randSeed, makeDefaultTerminator());
 	}
 
+	
 	public static final GOParameters cmaES(AbstractOptimizationProblem problem) {
 		EvolutionStrategies es = new EvolutionStrategies();
 		es.setMu(15);

@@ -62,7 +62,7 @@ public class PropertyText extends JTextField {
   protected void updateEditor() {
     try {
       String x = getText();
-      m_Editor.setAsText(x);
+      if (!m_Editor.getAsText().equals(x)) m_Editor.setAsText(x);
     } catch (IllegalArgumentException ex) {}
   }
 }

@@ -3,6 +3,8 @@ package eva2.server.go.strategies;
 import java.io.Serializable;
 import java.util.Vector;
 
+import com.sun.org.apache.bcel.internal.generic.CHECKCAST;
+
 import eva2.OptimizerFactory;
 import eva2.OptimizerRunnable;
 import eva2.gui.BeanInspector;
@@ -17,10 +19,12 @@ import eva2.server.go.problems.AbstractOptimizationProblem;
 import eva2.server.go.problems.AbstractProblemDouble;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.server.stat.StatsParameter;
+import eva2.tools.Mathematics;
 
 /**
  * Nelder-Mead-Simplex does not guarantee an equal number of evaluations within each optimize call
  * because of the different step types.
+ * Range check is now available by projection at the bounds.
  *  
  * @author mkron
  *
@@ -35,6 +39,7 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
 	private AbstractOptimizationProblem m_Problem;
 	private transient Vector<InterfacePopulationChangedEventListener> m_Listener;
 	private String m_Identifier = "NelderMeadSimplex";
+	private boolean checkConstraints = true;
 
 	public NelderMeadSimplex() {
 		setPopulation(new Population(populationSize));
@@ -52,10 +57,8 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
 		return new NelderMeadSimplex(this);
 	}
 
-
 	public void SetIdentifier(String name) {
 		m_Identifier = name;
-
 	}
 
 	public void SetProblem(InterfaceOptimizationProblem problem) {
@@ -85,31 +88,44 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
 
 	public void freeWilly() {}
 
+	protected double[] calcChallengeVect(double[] centroid, double[] refX) {
+		double[] r = new double[centroid.length];
+		for (int i=0; i<r.length; i++) r[i] = 2*centroid[i] - refX[i];
+//		double alpha = 1.3;
+//		for (int i=0; i<r.length; i++) r[i] = centroid[i] + alpha*(centroid[i] - refX[i]);
+		return r;
+	}
+	
 	public AbstractEAIndividual simplexStep(Population subpop) {
 		// parameter
-
 
 		// hole die n-1 besten individuen
 		Population bestpop = subpop.getBestNIndividuals(subpop.size()-1);
 		// und das schlechteste
 		AbstractEAIndividual worst = subpop.getWorstEAIndividual();
 		AbstractEAIndividual best=subpop.getBestEAIndividual();
-		double[] u_q = ((InterfaceDataTypeDouble) worst).getDoubleData();
-		int dim = u_q.length;
+		
+		double[][] range = ((InterfaceDataTypeDouble) worst).getDoubleRange();
+		double[] x_worst = ((InterfaceDataTypeDouble) worst).getDoubleData();
+		int dim = x_worst.length;
 
 		// Centroid berechnen
-		double[] g = new double[dim];
+		double[] centroid = new double[dim];
 		for (int i=0; i<bestpop.size(); i++) {
 			for (int j=0; j<dim; j++) {
 				AbstractEAIndividual bestIndi= (AbstractEAIndividual) bestpop.getIndividual(i);
-				g[j] +=((InterfaceDataTypeDouble)bestIndi).getDoubleData()[j]/bestpop.size(); // bug?
+				centroid[j] +=((InterfaceDataTypeDouble)bestIndi).getDoubleData()[j]/bestpop.size(); // bug?
 			}
 		}
 
 		// Reflection
-		double[] r = new double[dim];
-		for (int i=0; i<dim; i++) 
-			r[i] = 2*g[i] - u_q[i];
+		double[] r = calcChallengeVect(centroid, x_worst);
+		
+		if (checkConstraints) {
+			if (!Mathematics.isInRange(r, range)) {
+				Mathematics.reflectBounds(r, range);
+			}
+		}
 		AbstractEAIndividual r_ind = (AbstractEAIndividual)((AbstractEAIndividual)bestpop.getIndividual(1)).clone(); 
 		((InterfaceDataTypeDouble)r_ind).SetDoubleGenotype(r);
 
@@ -122,7 +138,9 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
 		} else if (best.getFitness(0)>r_ind.getFitness(0)){ //neues besser als bisher bestes => Expansion
 
 			double[] e = new double[dim];
-			for (int i=0; i<dim; i++)  e[i] = 3*g[i] - 2*u_q[i];
+			for (int i=0; i<dim; i++)  e[i] = 3*centroid[i] - 2*x_worst[i];
+			if (checkConstraints && !Mathematics.isInRange(e, range)) Mathematics.projectToRange(e, range);
+			
 			AbstractEAIndividual e_ind = (AbstractEAIndividual)((AbstractEAIndividual)bestpop.getIndividual(1)).clone(); 
 			((InterfaceDataTypeDouble)e_ind).SetDoubleGenotype(e);
 			m_Problem.evaluate(e_ind);
@@ -135,7 +153,9 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
 
 		} else if(r_ind.getFitness(0) >= bestpop.getWorstEAIndividual().getFitness(0)){//kontrahiere da neues indi keine verbesserung brachte
 			double[] c = new double[dim];
-			for (int i=0; i<dim; i++)  c[i] = 0.5*g[i] + 0.5*u_q[i];
+			for (int i=0; i<dim; i++)  c[i] = 0.5*centroid[i] + 0.5*x_worst[i];
+			if (checkConstraints && !Mathematics.isInRange(c, range)) Mathematics.projectToRange(c, range);
+			
 			AbstractEAIndividual c_ind = (AbstractEAIndividual)((AbstractEAIndividual)bestpop.getIndividual(1)).clone(); 
 			((InterfaceDataTypeDouble)c_ind).SetDoubleGenotype(c);
 			m_Problem.evaluate(c_ind);
@@ -152,11 +172,11 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
 	}
 
 	public String getName() {
-		return "NelderMeadSimplex";
+		return m_Identifier;
 	}
 
 	public String globalInfo() {
-		return m_Identifier;
+		return "The Nelder-Mead simplex search algorithm for local search. Reflection is used as constra";
 	}
 
 	public Population getPopulation() {
@@ -182,6 +202,7 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
 
 	public void initByPopulation(Population pop, boolean reset) {
 		setPopulation(pop);
+		pop.addPopulationChangedEventListener(this);
 		if (reset) {
 			m_Problem.initPopulation(m_Population);
 			m_Problem.evaluate(m_Population);
@@ -205,6 +226,15 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
 		do {
 			AbstractEAIndividual ind = simplexStep(m_Population);
 			if(ind!=null){ //Verbesserung gefunden
+				double[] x=((InterfaceDataTypeDouble)ind).getDoubleData();
+				double[][] range = ((InterfaceDataTypeDouble)ind).getDoubleRange();
+				if (!Mathematics.isInRange(x, range)) {
+					System.err.println("WARNING: nelder mead step produced indy out of range!");
+//					Mathematics.projectToRange(x, range);
+//					((InterfaceDataTypeDouble)ind).SetDoubleGenotype(x);
+//					m_Problem.evaluate(ind);
+//					this.m_Population.incrFunctionCalls();
+				}
 				m_Population.set(m_Population.getIndexOfWorstIndividual(), ind);
 			}else{//keine Verbesserung gefunden shrink!!
 				
@@ -342,6 +372,9 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
 	public static Population createNMSPopulation(AbstractEAIndividual candidate, double perturbRatio, double[][] range, boolean includeCand) {
 		Population initPop = new Population();
 		if (includeCand) initPop.add(candidate);
+		if (perturbRatio >= 1. || (perturbRatio <= 0.)) {
+			System.err.println("Warning: perturbation ratio should lie between 0 and 1! (NelderMeadSimplex:createNMSPopulation)");
+		}
 		addPerturbedPopulation(perturbRatio, initPop, range, candidate);
 		return initPop;
 	}
@@ -362,45 +395,6 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
 		}
 		initialPop.setPopulationSize(initialPop.size());
 	}
-	
-//	/**
-//	 * Search for a local optimizer using nelder mead and return the solution found and the number of steps
-//	 * (evaluations) actually performed.
-//	 * 
-//	 * @param candidate
-//	 * @param problem
-//	 * @param term
-//	 * @param perturbationRatio
-//	 * @return
-//	 */
-//	public static int processWithNMS(Population candidates, AbstractOptimizationProblem problem, InterfaceTerminator term, double perturbationRatio) {
-//		NelderMeadSimplex nms = new NelderMeadSimplex();
-//		nms.setProblemAndPopSize(problem);
-//		nms.setGenerationCycle(5);
-//		nms.initByPopulation(candidates, false);
-//		int funCallsBefore = candidates.getFunctionCalls();
-//		candidates.SetFunctionCalls(0);
-//		
-//		OptimizerRunnable hcRunnable = new OptimizerRunnable(OptimizerFactory.makeParams(nms, candidates, problem, 0, term), true);
-//		// as nms creates a new population and has already evaluated them, send a signal to stats
-//		hcRunnable.getStats().createNextGenerationPerformed(nms.getPopulation(), null);
-//		hcRunnable.getGOParams().setDoPostProcessing(false);
-//		hcRunnable.setVerbosityLevel(StatsParameter.VERBOSITY_NONE);
-//		hcRunnable.run();
-//		hcRunnable.getGOParams().setDoPostProcessing(true);
-//		hcRunnable = null;
-//		int funCallsDone = candidates.getFunctionCalls();
-//		candidates.SetFunctionCalls(funCallsBefore+funCallsDone);
-//		
-//		return funCallsDone;
-//	}
-
-//	/**
-//	 * @return the generationCycle
-//	 */
-//	public int getGenerationCycle() {
-//		return generationCycle;
-//	}
 
 	/**
 	 * @param generationCycle the generationCycle to set
@@ -408,13 +402,17 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
 	public void setGenerationCycle(int generationCycle) {
 		this.generationCycle = generationCycle;
 	}
+
+	public boolean isCheckRange() {
+		return checkConstraints;
+	}
+
+	public void setCheckRange(boolean checkRange) {
+		this.checkConstraints = checkRange;
+	}
 	
-//	
-//	public static final GOParameters standardNMS(AbstractOptimizationProblem problem) {
-//		NelderMeadSimplex nms = NelderMeadSimplex.createNelderMeadSimplex(problem, null);
-//		Population pop = new Population();
-//		pop.setPopulationSize(nms.getPopulationSize());
-//
-//		return makeParams(nms, pop, problem, randSeed, defaultTerminator());
-//	}
+	public String checkRangeTipText() {
+		return "Mark to check range constraints by reflection/projection";
+	}
+
 }

@@ -51,7 +51,13 @@ import eva2.tools.StringTools;
 * CLASS DECLARATION
 *==========================================================================*/
 /**
- *
+ * TODO: document those tricks somewhere
+ * Trick methods: 
+ * 	String[] getGOEPropertyUpdateLinks()
+ * 	void hideHideable()
+ * 	void globalInfo()
+ * Trick statics:
+ *  boolean hideFromGOE 
  */
 public class PropertySheetPanel extends JPanel implements PropertyChangeListener {
     public final static boolean     TRACE       = false;
@@ -232,7 +238,7 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
             }
         } // end for (int i = 0; i < m_Methods.length; i++) {
 
-        // Now lets search for the individual properties their
+        // Now lets search for the individual properties, their
         // values, views and editors...
         m_Editors   = new PropertyEditor[m_Properties.length];
         m_Values    = new Object[m_Properties.length];
@@ -319,77 +325,7 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
             } // end try
 
             // Add some specific display for some greeks here
-            if (name.equalsIgnoreCase("alpha"))
-                name = "\u03B1";
-            if (name.equalsIgnoreCase("beta"))
-                name = "\u03B2";
-            if (name.equalsIgnoreCase("gamma"))
-                name = "\u03B3";
-            if (name.equalsIgnoreCase("gammab"))
-                name = "\u0393";
-            if (name.equalsIgnoreCase("delta"))
-                name = "\u03B4";
-            if (name.equalsIgnoreCase("deltab"))
-                name = "\u0394";
-            if ((name.equalsIgnoreCase("epsi")) || (name.equalsIgnoreCase("epsilon")))
-                name = "\u03B5";
-            if (name.equalsIgnoreCase("zeta"))
-                name = "\u03B6";
-            if (name.equalsIgnoreCase("theta"))
-                name = "\u03D1";
-            if (name.equalsIgnoreCase("thetab"))
-                name = "\u0398";
-            if (name.equalsIgnoreCase("iota"))
-                name = "\u03B9";
-            if (name.equalsIgnoreCase("kappa"))
-                name = "\u03BA";
-            if (name.equalsIgnoreCase("lambda"))
-                name = "\u03BB";
-            if (name.equalsIgnoreCase("lambdab"))
-                name = "\u039B";
-            if (name.equalsIgnoreCase("rho"))
-                name = "\u03C1";
-            if (name.equalsIgnoreCase("sigma"))
-                name = "\u03C3";
-            if (name.equalsIgnoreCase("sigmab"))
-                name = "\u03A3";
-            if (name.equalsIgnoreCase("tau"))
-                name = "\u03C4";
-            if (name.equalsIgnoreCase("upsilon"))
-                name = "\u03C5";
-            if (name.equalsIgnoreCase("upsilonb"))
-                name = "\u03D2";
-            if (name.equalsIgnoreCase("omega"))
-                name = "\u03C9";
-            if (name.equalsIgnoreCase("omegab"))
-                name = "\u03A9";
-
-            // these are too small
-            if (name.equalsIgnoreCase("eta"))
-                name = "\u03B7";
-            if (name.equalsIgnoreCase("psi"))
-                name = "\u03C8";
-            if (name.equalsIgnoreCase("psib"))
-                name = "\u03A8";
-            if (name.equalsIgnoreCase("phi"))
-                name = "\u03D5";
-            if (name.equalsIgnoreCase("phib"))
-                name = "\u03A6";
-            if (name.equalsIgnoreCase("chi"))
-                name = "\u03C7";
-            if ((name.equalsIgnoreCase("mu")) || (name.equalsIgnoreCase("my")) || (name.equalsIgnoreCase("myu")))
-                name = "\u03BC";
-            if (name.equalsIgnoreCase("nu"))
-                name = "\u03BD";
-            if (name.equalsIgnoreCase("xi"))
-                name = "\u03BE";
-            if (name.equalsIgnoreCase("xib"))
-                name = "\u039E";
-            if (name.equalsIgnoreCase("pi"))
-                name = "\u03C0";
-            if (name.equalsIgnoreCase("pib"))
-                name = "\u03A0";
-
+            name = translateGreek(name);
 
             m_Labels[i]         = new JLabel(name, SwingConstants.RIGHT);
             m_Labels[i].setBorder(BorderFactory.createEmptyBorder(10,10,0,5));
@@ -449,7 +385,83 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
         setVisible(true);
     }
    
-    /**
+    private String translateGreek(String name) {
+        // Add some specific display for some greeks here
+        if (name.equalsIgnoreCase("alpha"))
+            return "\u03B1";
+        if (name.equalsIgnoreCase("beta"))
+            return "\u03B2";
+        if (name.equalsIgnoreCase("gamma"))
+            return "\u03B3";
+        if (name.equalsIgnoreCase("gammab"))
+            return "\u0393";
+        if (name.equalsIgnoreCase("delta"))
+            return "\u03B4";
+        if (name.equalsIgnoreCase("deltab"))
+            return "\u0394";
+        if ((name.equalsIgnoreCase("epsi")) || (name.equalsIgnoreCase("epsilon")))
+            return "\u03B5";
+        if (name.equalsIgnoreCase("zeta"))
+            return "\u03B6";
+        if (name.equalsIgnoreCase("theta"))
+            return "\u03D1";
+        if (name.equalsIgnoreCase("thetab"))
+            return "\u0398";
+        if (name.equalsIgnoreCase("iota"))
+            return "\u03B9";
+        if (name.equalsIgnoreCase("kappa"))
+            return "\u03BA";
+        if (name.equalsIgnoreCase("lambda"))
+            return "\u03BB";
+        if (name.equalsIgnoreCase("lambdab"))
+            return "\u039B";
+        if (name.equalsIgnoreCase("rho"))
+            return "\u03C1";
+        if (name.equalsIgnoreCase("sigma"))
+            return "\u03C3";
+        if (name.equalsIgnoreCase("sigmab"))
+            return "\u03A3";
+        if (name.equalsIgnoreCase("tau"))
+            return "\u03C4";
+        if (name.equalsIgnoreCase("upsilon"))
+            return "\u03C5";
+        if (name.equalsIgnoreCase("upsilonb"))
+            return "\u03D2";
+        if (name.equalsIgnoreCase("omega"))
+            return "\u03C9";
+        if (name.equalsIgnoreCase("omegab"))
+            return "\u03A9";
+
+        // these are too small
+        if (name.equalsIgnoreCase("eta"))
+            return "\u03B7";
+        if (name.equalsIgnoreCase("psi"))
+            return "\u03C8";
+        if (name.equalsIgnoreCase("psib"))
+            return "\u03A8";
+        if (name.equalsIgnoreCase("phi"))
+            return "\u03D5";
+        if (name.equalsIgnoreCase("phib"))
+            return "\u03A6";
+        if (name.equalsIgnoreCase("chi"))
+            return "\u03C7";
+        if ((name.equalsIgnoreCase("mu")) || (name.equalsIgnoreCase("my")) || (name.equalsIgnoreCase("myu")))
+            return "\u03BC";
+        if (name.equalsIgnoreCase("nu"))
+            return "\u03BD";
+        if (name.equalsIgnoreCase("xi"))
+            return "\u03BE";
+        if (name.equalsIgnoreCase("xib"))
+            return "\u039E";
+        if (name.equalsIgnoreCase("pi"))
+            return "\u03C0";
+        if (name.equalsIgnoreCase("pib"))
+            return "\u03A0";
+        
+        return name;
+	}
+
+	/**
      * Get the html help file name.
      * 
      * @return
@@ -496,6 +508,109 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
     public int editableProperties() {
         return m_NumEditable;
     }
+    
+    /**
+     * Return true if the modification was successful.
+     * 
+     * @param i
+     * @param newValue
+     * @return
+     */
+    synchronized boolean updateValue(int i, Object newValue) {
+    	PropertyDescriptor property = m_Properties[i];
+        Method getter   = m_Properties[i].getReadMethod();
+        m_Values[i]     = newValue;
+        Method setter   = property.getWriteMethod();
+        // @todo: Streiche so something was changed, i could check if i have to change the editor
+
+        if (TRACE) System.out.println("Updating prop index " + i + " with " + newValue);
+        PropertyEditor  tmpEdit     = null;
+        // the findEditor method using properties may retrieve a primitive editor, the other one, for obscure reasons, cant.
+        // so Ill use the mightier first.
+        tmpEdit = PropertyEditorProvider.findEditor(m_Properties[i], newValue);
+        if (tmpEdit == null)    tmpEdit = PropertyEditorProvider.findEditor(m_Properties[i].getPropertyType());
+        if (tmpEdit.getClass() != m_Editors[i].getClass()) {
+        	m_Values[i]     = newValue;
+        	m_Editors[i]    = tmpEdit;
+        	if (tmpEdit instanceof GenericObjectEditor) ((GenericObjectEditor) tmpEdit).setClassType(m_Properties[i].getPropertyType());
+        	m_Editors[i].setValue(newValue);
+        	JComponent NewView = null;
+        	if (tmpEdit instanceof sun.beans.editors.BoolEditor) {
+        		NewView = new PropertyBoolSelector(tmpEdit);
+        	} else {
+        		if (tmpEdit instanceof sun.beans.editors.DoubleEditor) {
+        			NewView = new PropertyText(tmpEdit);
+        		} else {
+        			if (tmpEdit.isPaintable() && tmpEdit.supportsCustomEditor()) {
+        				NewView = new PropertyPanel(tmpEdit);
+        			} else {
+        				if (tmpEdit.getTags() != null ) {
+        					NewView = new PropertyValueSelector(tmpEdit);
+        				} else {
+        					if (tmpEdit.getAsText() != null) {
+        						NewView = new PropertyText(tmpEdit);
+        					} else {
+        						System.out.println("Warning: Property \"" + m_Properties[i].getDisplayName()
+        								+ "\" has non-displayabale editor.  Skipping.");
+        						return false;
+        					}
+        				}
+        			}
+        		}
+        	}
+        	m_Editors[i].addPropertyChangeListener(this);
+        	m_Views[i] = NewView;
+        	if (m_TipTexts[i] != null) m_Views[i].setToolTipText(m_TipTexts[i]);
+        	m_ViewWrapper[i].removeAll();
+        	m_ViewWrapper[i].setLayout(new BorderLayout());
+        	m_ViewWrapper[i].add(m_Views[i], BorderLayout.CENTER);
+        	m_ViewWrapper[i].repaint();
+        }
+        
+//        System.out.println("Value: "+value +" / m_Values[i]: " + m_Values[i]);
+        // Now try to update the target with the new value of the property
+        // and allow the target to do some changes to the value, therefore
+        // reread the new value from the target
+        try {
+            Object  args[]  = { newValue };
+            args[0]         = newValue;
+            Object  args2[] = { };
+            // setting the current value to the target object
+            setter.invoke(m_Target, args);
+            // i could also get the new value
+            //value = getter.invoke(m_Target, args2);
+            // Now i'm reading the set value from the target to my local values
+            m_Values[i] = getter.invoke(m_Target, args2);
+
+            if (newValue instanceof Integer) {
+                // This could check whether i have to set the value back to
+                // the editor, this would allow to check myu and lambda
+                // why shouldn't i do this for every property!?
+//                System.out.println("value: "+((Integer)value).intValue());
+//                System.out.println(" m_Values[i]: "+ ((Integer) m_Values[i]).intValue());
+                if (((Integer)newValue).intValue() != ((Integer) m_Values[i]).intValue()) {
+                	m_Editors[i].setValue(m_Values[i]);
+                }
+            }
+        } catch (InvocationTargetException ex) {
+            if (ex.getTargetException() instanceof PropertyVetoException) {
+                System.out.println("PropertySheetPanel.wasModified(): WARNING: Vetoed; reason is: " + ex.getTargetException().getMessage());
+            } else {
+                System.out.println("PropertySheetPanel.wasModified(): InvocationTargetException while updating " + property.getName());
+                System.out.println("PropertySheetPanel.wasModified(): "+ex.getMessage());
+                ex.printStackTrace();
+            }
+        } catch (Exception ex) {
+            System.out.println("PropertySheetPanel.wasModified(): Unexpected exception while updating " + property.getName());
+        }
+        //revalidate();
+        if (m_Views[i] != null && m_Views[i] instanceof PropertyPanel) {
+            //System.err.println("Trying to repaint the property canvas");
+            m_Views[i].repaint();
+            revalidate();
+        }
+        return true;
+    }
 
     /** Updates the propertysheet when a value has been changed (from outside
      * the propertysheet?).
@@ -503,171 +618,48 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
      */
     synchronized void wasModified(PropertyChangeEvent evt) {
         if (TRACE) {
-            System.out.println("PropertySheetPanel.wasModified(): My Target is "+this.m_Target.getClass());
+            System.out.println("*********** PropertySheetPanel.wasModified(): My Target is "+this.m_Target.getClass());
             System.out.println("PropertySheetPanel.wasModified(): "+evt.toString()+" - "+evt.getNewValue());
         }
+        int propIndex=-1;
         if (evt.getSource() instanceof PropertyEditor) {
             PropertyEditor editor = (PropertyEditor) evt.getSource();
             for (int i = 0 ; i < m_Editors.length; i++) {
 	            if (m_Editors[i] == editor) {
-	                PropertyDescriptor property = m_Properties[i];
-	                Method getter   = m_Properties[i].getReadMethod();
-	                Object value    = editor.getValue();
-	                m_Values[i]     = value;
-	                Method setter   = property.getWriteMethod();
-                    // @todo: Streiche so something was changed, i could check if i have to change the editor
-
-	                PropertyEditor  tmpEdit     = null;
-	                Object          newValue    = evt.getNewValue();
-	                if (newValue == null) newValue = editor.getValue();
-	                // the findEditor method using properties may retrieve a primitive editor, the other one, for obscure reasons, cant.
-	                // so Ill use the mightier first.
-	                tmpEdit = PropertyEditorProvider.findEditor(m_Properties[i], newValue);
-	                if (tmpEdit == null)    tmpEdit = PropertyEditorProvider.findEditor(m_Properties[i].getPropertyType());
-	                if (tmpEdit.getClass() != m_Editors[i].getClass()) {
-	                	value           = newValue;
-	                	m_Values[i]     = newValue;
-	                	m_Editors[i]    = tmpEdit;
-	                	if (tmpEdit instanceof GenericObjectEditor) ((GenericObjectEditor) tmpEdit).setClassType(m_Properties[i].getPropertyType());
-	                	m_Editors[i].setValue(newValue);
-	                	JComponent NewView = null;
-	                	if (tmpEdit instanceof sun.beans.editors.BoolEditor) {
-	                		NewView = new PropertyBoolSelector(tmpEdit);
-	                	} else {
-	                		if (tmpEdit instanceof sun.beans.editors.DoubleEditor) {
-	                			NewView = new PropertyText(tmpEdit);
-	                		} else {
-	                			if (tmpEdit.isPaintable() && tmpEdit.supportsCustomEditor()) {
-	                				NewView = new PropertyPanel(tmpEdit);
-	                			} else {
-	                				if (tmpEdit.getTags() != null ) {
-	                					NewView = new PropertyValueSelector(tmpEdit);
-	                				} else {
-	                					if (tmpEdit.getAsText() != null) {
-	                						NewView = new PropertyText(tmpEdit);
-	                					} else {
-	                						System.out.println("Warning: Property \"" + m_Properties[i].getDisplayName()
-	                								+ "\" has non-displayabale editor.  Skipping.");
-	                						continue;
-	                					}
-	                				}
-	                			}
-	                		}
-	                	}
-	                	m_Editors[i].addPropertyChangeListener(this);
-	                	m_Views[i] = NewView;
-	                	if (m_TipTexts[i] != null) m_Views[i].setToolTipText(m_TipTexts[i]);
-	                	m_ViewWrapper[i].removeAll();
-	                	m_ViewWrapper[i].setLayout(new BorderLayout());
-	                	m_ViewWrapper[i].add(m_Views[i], BorderLayout.CENTER);
-	                	m_ViewWrapper[i].repaint();
-	                }
-                    
-//                    System.out.println("Value: "+value +" / m_Values[i]: " + m_Values[i]);
-                    // Now try to update the target with the new value of the property
-                    // and allow the target to do some changes to the value, therefore
-                    // reread the new value from the target
-	                try {
-	                    Object  args[]  = { value };
-	                    args[0]         = value;
-                        Object  args2[] = { };
-                        // setting the current value to the target object
-	                    setter.invoke(m_Target, args);
-                        // i could also get the new value
-                        //value = getter.invoke(m_Target, args2);
-                        // Now i'm reading the set value from the target to my local values
-                        m_Values[i] = getter.invoke(m_Target, args2);
-
-                        if (value instanceof Integer) {
-                            // This could check whether i have to set the value back to
-                            // the editor, this would allow to check myu and lambda
-                            // why shouldn't i do this for every property!?
-//                            System.out.println("value: "+((Integer)value).intValue());
-//                            System.out.println(" m_Values[i]: "+ ((Integer) m_Values[i]).intValue());
-                            if (((Integer)value).intValue() != ((Integer) m_Values[i]).intValue()) {
-                                editor.setValue(m_Values[i]);
-                            }
-                        }
-	                } catch (InvocationTargetException ex) {
-	                    if (ex.getTargetException() instanceof PropertyVetoException) {
-	                        System.out.println("PropertySheetPanel.wasModified(): WARNING: Vetoed; reason is: " + ex.getTargetException().getMessage());
-	                    } else {
-	                        System.out.println("PropertySheetPanel.wasModified(): InvocationTargetException while updating " + property.getName());
-                            System.out.println("PropertySheetPanel.wasModified(): "+ex.getMessage());
-                            ex.printStackTrace();
-	                    }
-	                } catch (Exception ex) {
-	                    System.out.println("PropertySheetPanel.wasModified(): Unexpected exception while updating " + property.getName());
-	                }
-                    //revalidate();
-	                if (m_Views[i] != null && m_Views[i] instanceof PropertyPanel) {
-	                    //System.err.println("Trying to repaint the property canvas");
-	                    m_Views[i].repaint();
-	                    revalidate();
-	                }
-	                break;
-	            }	// end if (m_Editors[i] == editor)
-            } //  end for (int i = 0 ; i < m_Editors.length; i++) {
-            boolean doRepaint = false;
-            for (int i = 0 ; i < m_Editors.length; i++) { // check the views for out-of-date information. this is different than checking the editors
-            	if (m_Editors[i] != editor) {
-            		// looking at another field (not changed explicitly, maybe implicitely
-	            	boolean valChanged = false;
-	            	Object  args[]  = { };
-	            	Method getter   = m_Properties[i].getReadMethod();
-	            	if (m_Properties[i].isHidden() || m_Properties[i].isExpert()) {
-	            		if ((m_Labels[i] != null) && (m_Labels[i].isVisible())) {
-		            		// something is set to hidden but was visible up to now
-	            			m_ViewWrapper[i].setVisible(false);
-	            			m_Labels[i].setVisible(false);
-	            			doRepaint = true;
-	            		}
-	            		continue;
-	            	} else {
-	            		if ((m_Labels[i] != null) && !(m_Labels[i].isVisible())) {
-	            			 // something is invisible but set to not hidden in the mean time
-	            			m_ViewWrapper[i].setVisible(true);
-	            			m_Labels[i].setVisible(true);
-	            			doRepaint = true;
-	            		}
-	            	}
-	            	try {	// check if view i is up to date and in sync with the value of the getter
-	            		if (m_Views[i] != null) {
-	            			Object val = getter.invoke(m_Target, args);
-	            			if (m_Views[i] instanceof PropertyBoolSelector) {
-	            				valChanged = (((PropertyBoolSelector)m_Views[i]).isSelected() != ((Boolean)val));
-	            				if (valChanged) ((PropertyBoolSelector)m_Views[i]).setSelected(((Boolean)val));
-	            			} else if (m_Views[i] instanceof PropertyText) {
-	            				valChanged = !(((PropertyText)m_Views[i]).getText()).equals(val.toString());
-	            				if (valChanged) ((PropertyText)m_Views[i]).setText(val.toString());
-	            			} else if (m_Views[i] instanceof PropertyPanel) {
-	            				valChanged = false;//!((PropertyPanel)m_Views[i]).equals(value);
-	            				// disregard whole panels and hope for the best
-	            				if (TRACE) System.out.println("not checking for internal change of PropertyPanel");
-	            			} else if (m_Views[i] instanceof PropertyValueSelector) {
-	            				//changed = !((SelectedTag)val).isSelectedString((String)((PropertyValueSelector)m_Views[i]).getSelectedItem());
-	            				// interestingly there seems to be an implicit update of the ValueSelector, possible changes
-	            				// are already applied, all we need to see it is a repaint
-	            				m_Views[i].repaint();
-	            			} else {
-	            				System.out.println("Warning: Property \"" + i
-	            						+ "\" not recognized.  Skipping.");
-	            			}
-		            	}
-	            	} catch(Exception exc) {
-		            	System.err.println("Exception in PropertySheetPanel");
-	            	}
-	            }// end if (m_Editors[i] == editor) {
-            } // end for (int i = 0 ; i < m_Editors.length; i++) {	
-            if (doRepaint) {	// some components have been hidden or reappeared
-            	// MK this finally seems to work right
-            	Container p=this;
-				while (p != null) {
-					p.setSize(p.getPreferredSize());
-					p = p.getParent();
-				}
+	            	propIndex = i;
+	            	if (wasModified(i, editor.getValue(), true)) break;
+	            }
             }
-        } // end if (evt.getSource() instanceof PropertyEditor) {
+            if (propIndex == -1) System.err.println("error: could not identify event editor! (PropertySheetPanel)");
+        } else System.err.println("unknown event source! (PropertySheetPanel)");
+    }
+    
+    /** Updates the propertysheet when a value has been changed (from outside
+     * the propertysheet?).
+     * @param evt a value of type 'PropertyChangeEvent'
+     */
+    synchronized boolean wasModified(int propIndex, Object value, boolean followDependencies) {
+        if (TRACE) {
+            System.out.println("****PropertySheetPanel.wasModified(): My Target is "+ m_Properties[propIndex].getName() + ", new val: " + BeanInspector.toString(value));
+        }	            	
+        
+        if (!updateValue(propIndex, value)) return false;
+        
+        boolean doRepaint = false;
+
+        for (int i = 0 ; i < m_Editors.length; i++) { // check the views for out-of-date information. this is different than checking the editors
+        	if (i != propIndex) {
+        		if (updateFieldView(i)) doRepaint = true;
+        	}// end if (m_Editors[i] == editor) {
+        } // end for (int i = 0 ; i < m_Editors.length; i++) {	
+        if (doRepaint) {	// some components have been hidden or reappeared
+        	// MK this finally seems to work right
+        	Container p=this;
+        	while (p != null) {
+        		p.setSize(p.getPreferredSize());
+        		p = p.getParent();
+        	}
+        }
 
         // Now re-read all the properties and update the editors
         // for any other properties that have changed.
@@ -682,7 +674,8 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
             } catch (Exception ex) {
 	            o = null;
             }
-            if (o == m_Values[i]) {
+            if (TRACE) System.out.println("# cmp " + BeanInspector.toString(o) + "\n# vs. " + BeanInspector.toString(m_Values[i]));
+            if (o == m_Values[i] && (BeanInspector.isJavaPrimitive(o.getClass()))) {
 	            // The property is equal to its old value.
 	            continue;
             }
@@ -705,14 +698,133 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
             }
         }
 
+        if (followDependencies) {
+        	// Handle the special method getGOEPropertyUpdateLinks which returns a list of pairs
+        	// of strings indicating that on an update if the i-th property, the i+1-th property
+        	// should be updated. This is useful for changes within sub-classes of the target
+        	// which are not directly displayed in this panel but in sub-panels (and there have an own view etc.)
+        	Object o = BeanInspector.callIfAvailable(m_Target, "getGOEPropertyUpdateLinks", null);
+        	if ((o != null) && (o instanceof String[])) {
+        		maybeTriggerUpdates(propIndex, (String[])o);
+        	}
+        }
+        
         // Make sure the target bean gets repainted.
         if (Beans.isInstanceOf(m_Target, Component.class)) {
             //System.out.println("Beans.getInstanceOf repaint ");
             ((Component)(Beans.getInstanceOf(m_Target, Component.class))).repaint();
         }
+        return true;
     }
 
-    /** This method simply looks for an appropriate tiptext
+    /**
+     * Check a property for consistency with the object data and update the
+     * view if necessary. Return true if a repaint is necessary.
+     * @param i
+     * @return
+     */
+    private boolean updateFieldView(int i) {
+    	// looking at another field (not changed explicitly, maybe implicitely
+    	boolean valChanged = false;
+    	boolean doRepaint = false;
+    	Object  args[]  = { };
+    	Method getter   = m_Properties[i].getReadMethod();
+    	if (m_Properties[i].isHidden() || m_Properties[i].isExpert()) {
+    		if ((m_Labels[i] != null) && (m_Labels[i].isVisible())) {
+        		// something is set to hidden but was visible up to now
+    			m_ViewWrapper[i].setVisible(false);
+    			m_Labels[i].setVisible(false);
+    			doRepaint = true;
+    		}
+    		return doRepaint;
+    	} else {
+    		if ((m_Labels[i] != null) && !(m_Labels[i].isVisible())) {
+    			 // something is invisible but set to not hidden in the mean time
+    			m_ViewWrapper[i].setVisible(true);
+    			m_Labels[i].setVisible(true);
+    			doRepaint = true;
+    		}
+    	}
+    	try {	// check if view i is up to date and in sync with the value of the getter
+    		if (m_Views[i] != null) {
+    			Object val = getter.invoke(m_Target, args);
+    			if (m_Views[i] instanceof PropertyBoolSelector) {
+    				valChanged = (((PropertyBoolSelector)m_Views[i]).isSelected() != ((Boolean)val));
+    				if (valChanged) ((PropertyBoolSelector)m_Views[i]).setSelected(((Boolean)val));
+    			} else if (m_Views[i] instanceof PropertyText) {
+    				valChanged = !(((PropertyText)m_Views[i]).getText()).equals(val.toString());
+    				if (valChanged) ((PropertyText)m_Views[i]).setText(val.toString());
+    			} else if (m_Views[i] instanceof PropertyPanel) {
+    				valChanged = false;//!((PropertyPanel)m_Views[i]).equals(value);
+    				// disregard whole panels and hope for the best
+    				if (TRACE) {
+    					System.out.println("not checking for internal change of PropertyPanel " + !((PropertyPanel)m_Views[i]).equals(val));
+    					if (!((PropertyPanel)m_Views[i]).equals(val)) {
+    						System.out.println("# " + BeanInspector.toString(m_Views[i]));
+    						System.out.println("# " + BeanInspector.toString(val));
+    						System.out.println("Ed.: " + BeanInspector.toString(((PropertyPanel)m_Views[i]).getEditor()));
+    					}
+    				}    				
+    			} else if (m_Views[i] instanceof PropertyValueSelector) {
+    				//changed = !((SelectedTag)val).isSelectedString((String)((PropertyValueSelector)m_Views[i]).getSelectedItem());
+    				// interestingly there seems to be an implicit update of the ValueSelector, possible changes
+    				// are already applied, all we need to see it is a repaint
+    				m_Views[i].repaint();
+    			} else {
+    				System.out.println("Warning: Property \"" + i
+    						+ "\" not recognized.  Skipping.");
+    			}
+        	}
+    	} catch(Exception exc) {
+        	System.err.println("Exception in PropertySheetPanel");
+    	}
+    	return doRepaint;
+	}
+
+    /**
+     * Check the given link list and trigger updates of indicated properties.
+     * 
+     * @param propIndex
+     * @param links
+     */
+	private void maybeTriggerUpdates(int propIndex, String[] links) {
+    	int max = links.length;
+    	if (max % 2 == 1) {
+    		System.err.println("Error in PropertySheetPanel:maybeTriggerUpdates: odd number of strings provided!");
+    		max -= 1;
+    	}
+    	if (TRACE) System.out.println("maybeTriggerUpdates: " + BeanInspector.toString(links));
+		for (int i = 0; i<max; i+=2) {
+			if (links[i].equals(m_Properties[propIndex].getName())) {
+				if (TRACE) System.out.println("updating linked property " + links[i+1]);
+				updateLinkedProperty(links[i+1]);
+			}
+		}
+	}
+
+	private void updateLinkedProperty(String propName) {
+		for (int i=0; i<m_Properties.length; i++) {
+			if (m_Properties[i].getName().equals(propName)) {
+				if (TRACE) System.out.println("Found linked property " + propName);
+		        Method getter   = m_Properties[i].getReadMethod();
+	            Object val = null;
+				try {
+					val = getter.invoke(m_Target, (Object[])null);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					val = null;
+					e.printStackTrace();
+				}
+				if (val != null) {
+					m_Editors[i].setValue(val);
+//					wasModified(i, val, false);
+				} else System.err.println("Error in PropertySheetPanel:updateLinkedProperty");
+				return;
+			}
+		}
+	}
+
+	/** This method simply looks for an appropriate tiptext
      * @param name      The name of the property
      * @param methods   A list of methods to search.
      * @param target    The target object

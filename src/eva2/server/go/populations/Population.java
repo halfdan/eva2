@@ -2,7 +2,6 @@ package eva2.server.go.populations;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -40,7 +39,6 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     protected int           m_Size          = 50;
     protected Population    m_Archive       = null;
 
-    transient private ArrayList<AbstractEAIndividual> sortedArr = null;
     transient private ArrayList<InterfacePopulationChangedEventListener> listeners = null;
 //    transient protected InterfacePopulationChangedEventListener	m_Listener = null;
 
@@ -57,6 +55,8 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
 
     // remember when the last sorted queue was prepared
     private int lastQModCount = -1;
+    // a sorted queue (for efficiency)
+    transient private ArrayList<AbstractEAIndividual> sortedArr = null;
     // remember when the last evaluation was performed
 	private Pair<Integer,Integer> evaluationTimeHashes = null;
     // remember when the last evaluation was performed
@@ -513,7 +513,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      * 
      */
     public Population getSortedNIndividuals(int n, boolean bBestOrWorst) {
-    	Population result = new Population(n);
+    	Population result = new Population((n > 0) ? n : this.size());
     	getSortedNIndividuals(n, bBestOrWorst, result);
     	return result;
     }
@@ -557,7 +557,8 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     	if (sortedArr == null || (super.modCount != lastQModCount)) {
     		PriorityQueue<AbstractEAIndividual> sQueue = new PriorityQueue<AbstractEAIndividual>(super.size(), new AbstractEAIndividualComparator());
     		for (int i = 0; i < super.size(); i++) {
-    			sQueue.add(getEAIndividual(i));
+    			AbstractEAIndividual indy = getEAIndividual(i);
+    			if (indy != null) sQueue.add(indy);
     		}
     		lastQModCount = super.modCount;
     		if (sortedArr==null) sortedArr = new ArrayList<AbstractEAIndividual>(this.size());
@@ -794,24 +795,28 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
         return "A population stores the individuals of a generation.";
     }
 
-    /** This method allows you to set the population size
+    /** 
+     * This method allows you to set the population size. Be aware that this will not 
+     * directly alter the number of individuals stored. The actual size will be
+     * adapted on a reinitialization, for example.
+     * 
      * @param size
      */
     public void setPopulationSize(int size) {
         this.m_Size = size;
-//        int rand;
-//        if (this.size() != 0) {
-//            while (this.size() < size) {
-//                rand = RNG.randomInt(0, this.size()-1);
-//                this.add(((AbstractEAIndividual)this.get(rand)).clone());
-//            }
-//            while (this.size() > size) {
-//                rand = RNG.randomInt(0, this.size()-1);
-//                this.remove(rand);
-//            }
-//        }
-//        System.out.println("This.size() = "+this.size() +" this.getSize() = " + this.m_Size);
     }
+    
+    /**
+     * Convenience method.
+     * 
+     * @param size
+     * @return
+     */
+    public Population setPopSize(int size) {
+        this.m_Size = size;
+        return this;
+    }
+    
     public int getPopulationSize() {
         return this.m_Size;
     }
@@ -949,9 +954,51 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
                 if (d > maxDist) maxDist = d;
             }
         }
-        res[0] = meanDist / (this.size() * (this.size()-1) / 2);
         res[1] = minDist;
         res[2] = maxDist;
+        if (this.size() > 1) res[0] = meanDist / (this.size() * (this.size()-1) / 2);
+        else { // only one indy?
+        	res[1]=0;
+        	res[2]=0;
+        }
+        return res;
+    }
+    
+    /**
+     * Returns the average, minimal and maximal individual fitness and std dev. for the population in the given criterion.
+     *
+     * @param fitCrit fitness dimension to be used
+     * @return the average, minimal, maximal and std dev. of fitness of individuals in an array
+     */
+    public double[] getFitnessMeasures(int fitCrit) {
+    	double d;
+    	double[] res = new double[4];
+    	
+    	res[0] = 0.;
+    	res[1] = Double.MAX_VALUE;
+    	res[2] = Double.MIN_VALUE;
+    	res[3] = 0;
+    	
+        for (int i = 0; i < this.size(); i++) {
+        		d = this.getEAIndividual(i).getFitness(fitCrit);
+        		res[0] += d;
+                if (d < res[1]) res[1] = d;
+                if (d > res[2]) res[2] = d;
+        }
+        
+        if (size()==0) {
+        	res[0]=res[1]=res[2]=res[3]=Double.NaN;
+        } else {
+        	// calc standard deviation
+        	res[0] = res[0] / this.size();
+        	for (int i=0; i< this.size(); i++) {
+        		d = res[0]-this.getEAIndividual(i).getFitness(fitCrit);
+        		res[3]+=d*d;
+        	}
+        	res[3] /= this.size();
+        	res[3] = Math.sqrt(res[3]);
+        }
+        
         
         return res;
     }
@@ -1010,6 +1057,80 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
 			}
 		}
 		return mean;
+	}
+	
+	/**
+	 * Search for the closest individual which is not equal to the given individual. Return
+	 * its index or -1 if none could be found.
+	 * 
+	 * @param indy
+	 * @return closest neighbor (euclidian measure) of the given individual in the given population 
+	 */
+	public int getNeighborIndex(AbstractEAIndividual indy) {
+		// get the neighbor...
+		int index = -1;
+		double mindist = Double.POSITIVE_INFINITY;
+
+		for (int i = 0; i < size(); ++i){ 
+			AbstractEAIndividual currentindy = getEAIndividual(i);
+			if (!indy.equals(currentindy)){ // dont compare particle to itself or a copy of itself
+				double dist = PhenotypeMetric.euclidianDistance(AbstractEAIndividual.getDoublePosition(indy),
+						AbstractEAIndividual.getDoublePosition(currentindy));
+				if (dist  < mindist){ 
+					mindist = dist;
+					index = i;
+				}
+			}
+		}
+		if (index == -1){
+			System.err.println("Pop too small or all individuals in population are equal !?");
+			return -1;
+		}
+		return index;
+	}
+	
+	/**
+	 * Calculate the average of the distance of each individual to its closest neighbor in the population.
+	 * The boolean parameter switches between range-normalized and simple euclidian distance. If calcVariance
+	 * is true, the variance is calculated and returned as second entry
+	 * 
+	 * @param normalizedPhenoMetric
+	 * @return a double array containing the average (or average and variance) of the distance of each individual to its closest neighbor
+	 */
+	public double[] getAvgDistToClosestNeighbor(boolean normalizedPhenoMetric, boolean calcVariance){
+		PhenotypeMetric metric = new PhenotypeMetric();
+		ArrayList<Double> distances = null;
+		if (calcVariance) distances = new ArrayList<Double>(size());
+		double sum = 0;
+		double d=0;
+		for (int i = 0; i < size(); ++i){
+			AbstractEAIndividual neighbor, indy = getEAIndividual(i);
+			int neighborIndex = getNeighborIndex(indy);
+			if (neighborIndex >= 0) neighbor = getEAIndividual(neighborIndex);
+			else return null;
+			if (normalizedPhenoMetric){
+				d = metric.distance(indy, neighbor);
+			} else { 
+				d = PhenotypeMetric.euclidianDistance(AbstractEAIndividual.getDoublePosition(indy),
+						AbstractEAIndividual.getDoublePosition(neighbor));
+			}
+			if (calcVariance) distances.add(d);
+			sum += d;
+		}
+		double avg = sum/(double)size();
+		double[] res;
+		if (calcVariance) {
+			res = new double[2];
+			double var = 0;
+			for (int i=0; i<distances.size(); i++) {
+				var += Math.pow(distances.get(i)-avg, 2);
+			}
+			res[1]=var;
+		}
+		else res = new double[1];
+		res[0] = avg;
+
+		return res;
 	}
 	
 	/**

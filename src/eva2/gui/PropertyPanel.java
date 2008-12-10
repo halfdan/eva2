@@ -25,67 +25,71 @@ import javax.swing.JPanel;
 
 import eva2.tools.EVAHELP;
 /*==========================================================================*
-* CLASS DECLARATION
-*==========================================================================*/
+ * CLASS DECLARATION
+ *==========================================================================*/
 /**
  *
  */
 public class PropertyPanel extends JPanel {
-  private PropertyEditor m_PropertyEditor;
-  private PropertyDialog m_PropertyDialog;
-  /**
-   *
-   */
-  public PropertyPanel(PropertyEditor Editor) {
-    setBorder(BorderFactory.createEtchedBorder());
-    setToolTipText("Click to edit properties for this object");
-    setOpaque(true);
-    m_PropertyEditor = Editor;
-    addMouseListener(new MouseAdapter() {
-      public void mouseClicked(MouseEvent evt) {
-	if (m_PropertyEditor.getValue() != null) {
-	  if (m_PropertyDialog == null) {
-	    int x = getLocationOnScreen().x;
-	    int y = getLocationOnScreen().y;
-	    m_PropertyDialog = new PropertyDialog(m_PropertyEditor, EVAHELP.cutClassName(m_PropertyEditor.getClass().getName()) , x, y);
-	  }
-	  else {
-		  m_PropertyDialog.updateFrameTitle(m_PropertyEditor);
-	    m_PropertyDialog.setVisible(true);
-	  }
+	private PropertyEditor m_PropertyEditor;
+	private PropertyDialog m_PropertyDialog;
+	/**
+	 *
+	 */
+	public PropertyPanel(PropertyEditor Editor) {
+		setBorder(BorderFactory.createEtchedBorder());
+		setToolTipText("Click to edit properties for this object");
+		setOpaque(true);
+		m_PropertyEditor = Editor;
+		addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent evt) {
+				if (m_PropertyEditor.getValue() != null) {
+					if (m_PropertyDialog == null) {
+						int x = getLocationOnScreen().x;
+						int y = getLocationOnScreen().y;
+						m_PropertyDialog = new PropertyDialog(m_PropertyEditor, EVAHELP.cutClassName(m_PropertyEditor.getClass().getName()) , x, y);
+					}
+					else {
+						m_PropertyDialog.updateFrameTitle(m_PropertyEditor);
+						m_PropertyDialog.setVisible(true);
+					}
+				}
+			}
+		});
+		Dimension newPref = getPreferredSize();
+		newPref.height = getFontMetrics(getFont()).getHeight() * 6 / 4;  //6 / 4;
+		newPref.width = newPref.height * 6; //5
+		setPreferredSize(newPref);
 	}
-      }
-    });
-    Dimension newPref = getPreferredSize();
-    newPref.height = getFontMetrics(getFont()).getHeight() * 6 / 4;  //6 / 4;
-    newPref.width = newPref.height * 6; //5
-    setPreferredSize(newPref);
-  }
-  /**
-   *
-   */
-  public void removeNotify() {
-    if (m_PropertyDialog != null) {
-      //System.out.println("  m_PropertyDialog.dispose();");
-      m_PropertyDialog.dispose();
-      m_PropertyDialog = null;
-    }
-  }
-  /**
-   *
-   */
-  public void paintComponent(Graphics g) {
-    Insets i = getInsets();
-    Rectangle box = new Rectangle(i.left, i.top,
-      getSize().width - i.left - i.right ,
-      getSize().height - i.top - i.bottom);
-    g.clearRect(i.left, i.top,
-      getSize().width - i.right - i.left,
-      getSize().height - i.bottom - i.top);
-    m_PropertyEditor.paintValue(g, box);
+	/**
+	 *
+	 */
+	public void removeNotify() {
+		if (m_PropertyDialog != null) {
+			//System.out.println("  m_PropertyDialog.dispose();");
+			m_PropertyDialog.dispose();
+			m_PropertyDialog = null;
+		}
+	}
+	/**
+	 *
+	 */
+	public void paintComponent(Graphics g) {
+		Insets i = getInsets();
+		Rectangle box = new Rectangle(i.left, i.top,
+				getSize().width - i.left - i.right ,
+				getSize().height - i.top - i.bottom);
+		g.clearRect(i.left, i.top,
+				getSize().width - i.right - i.left,
+				getSize().height - i.bottom - i.top);
+		m_PropertyEditor.paintValue(g, box);
 
-//    Rectangle box = new Rectangle(i.left,i.top,
-//					  this.getWidth() - i.right,
-//					  this.getHeight() - i.bottom );
-  }
+//		Rectangle box = new Rectangle(i.left,i.top,
+//		this.getWidth() - i.right,
+//		this.getHeight() - i.bottom );
+	}
+	
+	public PropertyEditor getEditor() {
+		return m_PropertyEditor;
+	}
 }

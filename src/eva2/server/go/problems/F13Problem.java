@@ -17,6 +17,10 @@ public class F13Problem extends F1Problem implements InterfaceMultimodalProblem 
     public F13Problem(F13Problem b) {
     	super(b);
     }
+    public F13Problem(int dim) {
+    	super();
+    	setProblemDimension(dim);
+    }
 
     /** This method returns a deep clone of the problem.
      * @return  the clone

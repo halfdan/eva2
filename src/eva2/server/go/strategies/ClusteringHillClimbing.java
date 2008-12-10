@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import eva2.gui.GenericObjectEditor;
 import eva2.server.go.InterfacePopulationChangedEventListener;
+import eva2.server.go.enums.PostProcessMethod;
 import eva2.server.go.operators.mutation.MutateESFixedStepSize;
 import eva2.server.go.operators.postprocess.PostProcess;
 import eva2.server.go.populations.InterfaceSolutionSet;
@@ -50,6 +51,7 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
    	// reduce the step size when there is hardy improvement. 
    	private double							reduceFactor		= 0.2;
    	private MutateESFixedStepSize				mutator = new MutateESFixedStepSize(0.1);
+	private PostProcessMethod localSearchMethod = PostProcessMethod.nelderMead;
 
 	public ClusteringHillClimbing() {
 		hideHideable();
@@ -143,18 +145,25 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
 		loopCnt++;
 		m_Population.addPopulationChangedEventListener(this);
 		m_Population.setNotifyEvalInterval(notifyGuiEvery);
-		Pair<Population, Double> popD = PostProcess.clusterHC(m_Population, (AbstractOptimizationProblem)m_Problem, sigmaClust, hcEvalCycle - (m_Population.getFunctionCalls() % hcEvalCycle), 0.5, mutator);
+		Pair<Population, Double> popD;
+		if (TRACE) System.out.println("evalCycle: " + hcEvalCycle + ", evals now: " + (2*hcEvalCycle - (m_Population.getFunctionCalls() % hcEvalCycle)));
+		popD = PostProcess.clusterLocalSearch(localSearchMethod, m_Population, (AbstractOptimizationProblem)m_Problem, sigmaClust, 2*hcEvalCycle - (m_Population.getFunctionCalls() % hcEvalCycle), 0.5, mutator);
+//		(m_Population, (AbstractOptimizationProblem)m_Problem, sigmaClust, hcEvalCycle - (m_Population.getFunctionCalls() % hcEvalCycle), 0.5);
 		improvement = popD.tail();
 		m_Population = popD.head();
+		if (TRACE) System.out.println("num inds after clusterLS: " + m_Population.size());
 
 		popD.head().setGenerationTo(m_Population.getGeneration()+1);
 		
 		if (improvement < minImprovement) {
 			if (TRACE) System.out.println("improvement below " + minImprovement);
-			if (mutator.getSigma() < stepSizeThreshold) { // reinit!
+			if ((localSearchMethod != PostProcessMethod.hillClimber) || (mutator.getSigma() < stepSizeThreshold)) { // reinit!
+				// is performed for nm and cma, and if hc has too low sigma
 				if (TRACE) System.out.println("REINIT!!");
-		        // store results
-				mutator.setSigma(initialStepSize);
+		        
+				if (localSearchMethod == PostProcessMethod.hillClimber) mutator.setSigma(initialStepSize);
+				
+				// store results
 				archive.SetFunctionCalls(m_Population.getFunctionCalls());
 				archive.addPopulation(m_Population);
 				
@@ -171,7 +180,8 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
 				m_Population.addPopulation(tmpPop);
 				m_Population.incrFunctionCallsBy(tmpPop.size());
 		
-			} else  {  // decrease step size
+			} else  {  // decrease step size for hc
+				if (localSearchMethod != PostProcessMethod.hillClimber) System.err.println("Invalid case in ClusteringHillClimbing!");
 				mutator.setSigma(mutator.getSigma()*reduceFactor);
 				if (TRACE) System.out.println("mutation stepsize reduced to " + mutator.getSigma());
 			}
@@ -249,18 +259,18 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
 	/**
 	 * @return the hcEvalCycle
 	 */
-	public int getHcEvalCycle() {
+	public int getEvalCycle() {
 		return hcEvalCycle;
 	}
 
 	/**
 	 * @param hcEvalCycle the hcEvalCycle to set
 	 */
-	public void setHcEvalCycle(int hcEvalCycle) {
+	public void setEvalCycle(int hcEvalCycle) {
 		this.hcEvalCycle = hcEvalCycle;
 	}
 	
-	public String hcEvalCycleTipText() {
+	public String evalCycleTipText() {
 		return "The number of evaluations between two clustering/adaption steps.";
 	}
 
@@ -369,7 +379,19 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
 	}
 	
 	public String stepSizeInitialTipText() {
-		return "Initial mutation step size, relative to the problem range.";
+		return "Initial mutation step size for hill climbing, relative to the problem range.";
+	}
+
+	public PostProcessMethod getLocalSearchMethod() {
+		return localSearchMethod;
+	}
+
+	public void setLocalSearchMethod(PostProcessMethod localSearchMethod) {
+		this.localSearchMethod = localSearchMethod;
+	}
+	
+	public String localSearchMethodTipText() {
+		return "Set the method to be used for local search";
 	}
 
 //	/**

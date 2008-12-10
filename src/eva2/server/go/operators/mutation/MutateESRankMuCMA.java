@@ -99,7 +99,7 @@ class CMAParamSet implements InterfacePopulationChangedEventListener, Serializab
 //		c_u_sig = Math.sqrt(c_sig * (2.-c_sig));
 		params.d_sig = params.c_sig+1+2*Math.max(0, Math.sqrt((muEff-1)/(dim+1)) - 1);
 		
-		if (initialSigma<0) initialSigma = getAvgRange(params.range);
+		if (initialSigma<0) initialSigma = Mathematics.getAvgRange(params.range);
 		if (initialSigma <= 0) {
 			EVAERROR.errorMsgOnce("warning: initial sigma <= zero! Working with converged population?");
 			initialSigma = 10e-10;
@@ -159,18 +159,6 @@ class CMAParamSet implements InterfacePopulationChangedEventListener, Serializab
 	public static double getMuCov(double[] weights, int mu) {
 		// default parameter value ( HK03, sec. 2)
 		return getMuEff(weights, mu);
-	}
-	
-	/**
-	 * Calculate the average length of the range intervals over all dimensions.
-	 * 
-	 * @param range
-	 * @return
-	 */
-    public static double getAvgRange(double[][] range) {
-		double sum = 0.;
-		for (int i=0; i<range.length; i++) sum+=(range[i][1]-range[i][0]);
-		return sum/range.length;
 	}
     
 	/**
@@ -255,7 +243,7 @@ public class MutateESRankMuCMA implements InterfaceMutationGenerational, Seriali
 			// scaled by average range as the measures are normed
 			//return initGen.getPopulationMeasures(null)[0]*getAvgRange();
 			// use euclidian measures without normation and scaling
-			return initGen.getPopulationMeasures(null)[0];
+			return initGen.getPopulationMeasures()[0];
 		//case halfRange: return getAvgRange(range)/2.;
 		case userDefined: return userDefInitSig ;
 		default: return -1.;
