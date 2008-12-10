@@ -17,7 +17,7 @@ import eva2.tools.EVAERROR;
 public abstract class AbstractMultiModalProblemKnown extends AbstractProblemDouble implements Interface2DBorderProblem, InterfaceMultimodalProblemKnown {
 	protected static InterfaceDistanceMetric   m_Metric = new PhenotypeMetric();
 	private double                    m_GlobalOpt = 0;
-	private Population                  m_Optima;
+	protected Population                  m_Optima;
 	protected double                    m_Epsilon = 0.05;
 //	protected double[][]                m_Range;
 //	protected double[]                  m_Extrema;
@@ -87,9 +87,11 @@ public abstract class AbstractMultiModalProblemKnown extends AbstractProblemDoub
 		// population init must be last
 		// it set's fitcalls and generation to zero
 		population.init();
-		this.m_GlobalOpt = Double.NEGATIVE_INFINITY;
-		m_Optima = new Population();
-		this.initListOfOptima();
+		if (m_Optima == null) {
+			this.m_GlobalOpt = Double.NEGATIVE_INFINITY;
+			m_Optima = new Population();
+			this.initListOfOptima();
+		}
 	}
 	
 	public void initProblem() {
@@ -122,7 +124,7 @@ public abstract class AbstractMultiModalProblemKnown extends AbstractProblemDoub
 	 * @return String
 	 */
 	public String getAdditionalFileStringHeader(PopulationInterface pop) {
-		return "Solution \t Number of Optima found \t Maximum Peak Ratio";
+		return "#Optima found \t Maximum Peak Ratio";
 	}
 
 	/** 
@@ -132,7 +134,7 @@ public abstract class AbstractMultiModalProblemKnown extends AbstractProblemDoub
 	 */
 	public String getAdditionalFileStringValue(PopulationInterface pop) {
 		String result = "";
-		result += AbstractEAIndividual.getDefaultDataString(pop.getBestIndividual()) +"\t";
+//		result += AbstractEAIndividual.getDefaultDataString(pop.getBestIndividual()) +"\t";
 		result += this.getNumberOfFoundOptima((Population)pop)+"\t";
 		result += this.getMaximumPeakRatio((Population)pop);
 		return result;
@@ -242,7 +244,7 @@ public abstract class AbstractMultiModalProblemKnown extends AbstractProblemDoub
 	public static double getMaximumPeakRatio(InterfaceMultimodalProblemKnown mmProb, Population pop, double epsilon) {
 		double          foundInvertedSum = 0, sumRealMaxima = 0;
 		Population 		realOpts = mmProb.getRealOptima();
-		double 			maxOpt = realOpts.getEAIndividual(0).getFitness(0);
+		double 			tmp, maxOpt = realOpts.getEAIndividual(0).getFitness(0);
 		sumRealMaxima = maxOpt;
 		for (int i=1; i<realOpts.size(); i++) {
 			// search for the maximum fitness (for the maximization problem)
@@ -255,7 +257,10 @@ public abstract class AbstractMultiModalProblemKnown extends AbstractProblemDoub
 		for (int i=0; i<realOpts.size(); i++) {
 			// sum up the found optimal fitness values
 			if (optsFound[i] != null) {
-				foundInvertedSum += (maxOpt - optsFound[i].getFitness(0));
+				tmp = (maxOpt - optsFound[i].getFitness(0));
+				if (tmp < 0) EVAERROR.errorMsgOnce("warning: for the MPR calculation, negative fitness values may disturb the allover result (AbstractMultiModalProblemKnown)");
+				foundInvertedSum += Math.max(0., tmp);
+//				System.out.println("foundInvertedSum = " + foundInvertedSum);
 			}
 		}
 //		System.out.println("foundSum: " + foundInvertedSum + " realsum: " + sumRealMaxima + " ratio: " + foundInvertedSum/sumRealMaxima);

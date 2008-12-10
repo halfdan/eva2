@@ -7,16 +7,23 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+import eva2.server.go.InterfaceTerminator;
 import eva2.server.go.PopulationInterface;
+import eva2.server.go.enums.PostProcessMethod;
 import eva2.server.go.individuals.AbstractEAIndividual;
+import eva2.server.go.individuals.InterfaceDataTypeDouble;
 import eva2.server.go.operators.distancemetric.InterfaceDistanceMetric;
 import eva2.server.go.operators.distancemetric.PhenotypeMetric;
 import eva2.server.go.operators.moso.MOSONoConvert;
 import eva2.server.go.operators.mutation.InterfaceMutation;
 import eva2.server.go.operators.mutation.MutateESFixedStepSize;
 import eva2.server.go.operators.postprocess.PostProcess;
+import eva2.server.go.operators.terminators.CombinedTerminator;
+import eva2.server.go.operators.terminators.EvaluationTerminator;
+import eva2.server.go.operators.terminators.PhenotypeConvergenceTerminator;
 import eva2.server.go.populations.Population;
 import eva2.server.go.strategies.InterfaceOptimizer;
+import eva2.tools.Mathematics;
 
 /**
  * Created by IntelliJ IDEA.
@@ -111,6 +118,7 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
      */
     public String getAdditionalFileStringHeader(PopulationInterface pop) {
         return "Solution";
+//    	return "";
     }
 
     /** This method returns the additional data that is to be written into a file
@@ -118,6 +126,7 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
      * @return String
      */
     public String getAdditionalFileStringValue(PopulationInterface pop) {
+//    	return "";
         return AbstractEAIndividual.getDefaultDataString(pop.getBestIndividual());
     }
 
@@ -196,22 +205,27 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
     
     /**
      * This method extracts the individuals from a given population that are assumed to correspond to local or global optima.
-     * Similar inidviduals are clustered together with a density based clustering method
+     * Similar individuals are clustered together with a density based clustering method
      * @param pop
-     * @param epsilon maximal allowed improvement of an individual before considered premature (given as distance in the search space) 
+     * @param epsilonPhenoSpace maximal allowed improvement of an individual before considered premature (given as distance in the search space)
+     * @param epsilonFitConv if positive: additional absolute convergence criterion (fitness space) as termination criterion of the local search  
      * @param clusterSigma minimum cluster distance
+     * @param numOfFailures 
+     * @see #isPotentialOptimumNMS(AbstractEAIndividual, double, double, int)
      * @return 
      */
-    public Population extractPotentialOptima(Population pop, double epsilon, double clusterSigma) {
+    public Population extractPotentialOptima(Population pop, double epsilonPhenoSpace, double epsilonFitConv, double clusterSigma, int numOfFailures) {
     	Population potOptima = new Population();
     	for (int i = 0; i < pop.size(); ++i){
     		AbstractEAIndividual indy = pop.getEAIndividual(i);
-    		if (isPotentialOptimum(indy, epsilon,-1,-1)){ 
+//    		System.out.println("bef: " + indy.toString());
+    		if (isPotentialOptimumNMS(indy, epsilonPhenoSpace, epsilonFitConv, numOfFailures)){ 
+//       	if (isPotentialOptimum(indy, epsilon,-1,-1)){ 
     			potOptima.addIndividual(indy);
     		}
     	}
-    	Population clusteredPop = (Population)PostProcess.clusterBest(potOptima, clusterSigma, 0, PostProcess.KEEP_LONERS, PostProcess.BEST_ONLY).clone();
-    	return clusteredPop;
+    	if (clusterSigma > 0) return (Population)PostProcess.clusterBest(potOptima, clusterSigma, 0, PostProcess.KEEP_LONERS, PostProcess.BEST_ONLY).clone();
+    	else return potOptima;
     }
    
   /**
@@ -270,6 +284,50 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
         if (overallDist < epsilon) {
         	return true;
         }
+        else return false; 
+    }
+    
+    /**
+     * Refine a given individual using Nelder-Mead-Simplex local search. Return true, if the refined result is within a given
+     * distance from the original individual in phenotype space. The numOfFailures parameter gives the maximum evaluations
+     * for the local search Using the epsilonFitConv parameter may define a convergence criterion as PhenotypeConvergenceTerminator 
+     * which is combined (using OR) with the evaluation counter.
+     * If numOfFailures is smaller than zero, 100*dim is used. Be aware that this may cost quite some runtime depending on the target
+     * function.
+     * 
+     * @param orig
+     * @param epsilonPhenoSpace
+     * @param epsilonFitConv
+     * @param numOfFailures
+     * @return
+     */
+    public boolean isPotentialOptimumNMS(AbstractEAIndividual orig, double epsilonPhenoSpace, double epsilonFitConv, int numOfFailures){
+    	
+    	AbstractEAIndividual indy = (AbstractEAIndividual)orig.clone();
+    	this.evaluate(indy); // indy may be evaluated in a normalised way...
+    	
+    	InterfaceDistanceMetric metric = new PhenotypeMetric();
+    	double overallDist = 0;
+    	double initPerturb = -1;
+    	int dim = -1;
+    	if (orig instanceof InterfaceDataTypeDouble) {
+    		initPerturb = epsilonPhenoSpace/(2*(Mathematics.getAvgRange(((InterfaceDataTypeDouble)orig).getDoubleRange())));
+    		dim=((InterfaceDataTypeDouble)orig).getDoubleRange().length;
+        	if (numOfFailures<0) numOfFailures = 100*AbstractEAIndividual.getDoublePosition(this.m_Template).length; // scales the effort with the number of problem dimensions
+    	} else {
+    		System.err.println("Cannot initialize NMS on non-double valued individuals!");
+    		return false;
+    	}
+    	
+    	Population pop = new Population(1);
+    	pop.add(orig);
+    	InterfaceTerminator term = new EvaluationTerminator(numOfFailures); 
+    	if (epsilonFitConv > 0) term = new CombinedTerminator(new PhenotypeConvergenceTerminator(epsilonFitConv, 10*dim, true, true), term, false);
+    	int evalsPerf = PostProcess.processSingleCandidatesNMCMA(PostProcessMethod.nelderMead, pop, term, initPerturb, this);
+    	overallDist = metric.distance(indy, pop.getBestEAIndividual());
+//    	System.out.println("aft: " + pop.getBestEAIndividual().toString() + ", evals performed: " + evalsPerf + ", opt moved by " + overallDist);
+//    	System.out.println("terminated because: " + term.lastTerminationMessage());
+        if (overallDist < epsilonPhenoSpace) return true;
         else return false; 
     }
     

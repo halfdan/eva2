@@ -114,8 +114,8 @@ public class EvolutionStrategyIPOP extends EvolutionStrategies implements Interf
 	 *  Reinitialize population with increased mu,lambda
 	 **/
 	private void boostPopSize() {
-		// increase by at least one
-		int newLambda = Math.max((int)(getLambda()*incPopSizeFact), getLambda() + 1);
+		// potentially increase pop size, increase by at least one if the factor is > 1.
+		int newLambda = Math.max((int)(getLambda()*incPopSizeFact), getLambda() + ((incPopSizeFact > 1.) ? 1 : 0));
 		setLambda(newLambda);
 		checkPopulationConstraints();
 		// update the stagnation time in the terminator

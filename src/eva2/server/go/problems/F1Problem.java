@@ -38,7 +38,17 @@ public class F1Problem extends AbstractProblemDouble implements Interface2DBorde
     	this.m_YOffSet          = b.m_YOffSet;
     	this.m_UseTestConstraint = b.m_UseTestConstraint;
     }
-
+    
+    public F1Problem(int dim) {
+    	this();
+    	setProblemDimension(dim);
+    }
+    
+    public F1Problem(int dim, double defRange) {
+    	this(dim);
+    	setDefaultRange(defRange);
+    }
+    
     /** This method returns a deep clone of the problem.
      * @return  the clone
      */

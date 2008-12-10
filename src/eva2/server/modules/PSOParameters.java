@@ -220,14 +220,14 @@ public class PSOParameters extends AbstractGOParameters implements InterfaceGOPa
 		return ((ParticleSwarmOptimization)this.m_Optimizer).subSwarmRadiusTipText();
 	}
 	
-	public int getSubSwarmSize() {
-		return ((ParticleSwarmOptimization)this.m_Optimizer).getSubSwarmSize();
+	public int getMaxSubSwarmSize() {
+		return ((ParticleSwarmOptimization)this.m_Optimizer).getMaxSubSwarmSize();
 	}
-	public void setSubSwarmSize(int subSize) {
-		((ParticleSwarmOptimization)this.m_Optimizer).setSubSwarmSize(subSize);
+	public void setMaxSubSwarmSize(int subSize) {
+		((ParticleSwarmOptimization)this.m_Optimizer).setMaxSubSwarmSize(subSize);
 	}
-	public String subSwarmSizeTipText() {
-		return ((ParticleSwarmOptimization)this.m_Optimizer).subSwarmSizeTipText();
+	public String maxSubSwarmSizeTipText() {
+		return ((ParticleSwarmOptimization)this.m_Optimizer).maxSubSwarmSizeTipText();
 	}
     
 	/**

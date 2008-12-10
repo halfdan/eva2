@@ -73,8 +73,9 @@ public class SelectedTag implements java.io.Serializable {
 	 * 
 	 * @param i     The new selected tag index
 	 */
-	public void setSelectedTag(int i) {
+	public SelectedTag setSelectedTag(int i) {
 		if ((i >= 0) && (i < this.m_Tags.length)) this.m_Selected = i;
+		return this;
 	}
 	
 	/**
@@ -84,14 +85,15 @@ public class SelectedTag implements java.io.Serializable {
 	 *  
 	 * @param str    The new selected tag name
 	 */
-	public void setSelectedTag(String str) {
+	public SelectedTag setSelectedTag(String str) {
 		for (int i=0; i<m_Tags.length; i++) {
 			if (m_Tags[i].m_String.compareTo(str) == 0) {
 				m_Selected = i;
-				return;
+				return this;
 			}
 		}
 		System.err.println("Warning, trying to select unknown string (SelectedTag::setSelectedTag(String)");
+		return this;
 	}
 	
 	/**

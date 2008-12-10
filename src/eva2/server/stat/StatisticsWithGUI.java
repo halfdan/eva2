@@ -241,7 +241,7 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
 	/**
 	 *
 	 */
-	public void plotSpecificData(PopulationInterface pop, InterfaceAdditionalPopulationInformer informer) {
+	public void plotSpecificData(PopulationInterface pop, List<InterfaceAdditionalPopulationInformer> informer) {
 		double[] specificData = pop.getSpecificData();
 		int calls = pop.getFunctionCalls();
 		ArrayList<String[]> description = new ArrayList<String[]>();

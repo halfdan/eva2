@@ -166,8 +166,8 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
     }
 
     /** This method allows the user to read the length of the genotype.
-     * This may be necessary since BitSet.lenght only returns the index
-     * of the last significat bit.
+     * This may be necessary since BitSet.length only returns the index
+     * of the last significant bit.
      * @return The length of the genotype.
      */
     public int getGenotypeLength() {

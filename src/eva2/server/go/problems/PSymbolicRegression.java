@@ -190,7 +190,8 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
         evaluatePopulationEnd(population);
     }
 
-    /** This method evaluate a single individual and sets the fitness values
+    /** 
+     * This method evaluates a single individual and sets the fitness values
      * @param individual    The individual that is to be evalutated
      */
     public void evaluate(AbstractEAIndividual individual) {
@@ -203,13 +204,14 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
         if ((tmpIndy instanceof GAPIndividualProgramData) && (this.m_UseInnerConst))
             this.m_C = ((GAPIndividualProgramData)tmpIndy).getDoubleData();
         fitness     = 0;
-        for (double i = 0; i < this.m_NumberOfCheckPoints; i++) {
-            for (int j = 0; j < this.m_X.length; j++)
-                this.m_X[j] = this.m_LowerBound +(i*(this.m_UpperBound-this.m_LowerBound)/this.m_NumberOfCheckPoints);
-            tmpValue = ((Double)program.evaluate(this)).doubleValue();
-            fitness += Math.pow((this.m_TargetFunction.evaulateFunction(this.m_X) - ((Double)program.evaluate(this)).doubleValue()), 2);
-        }
 
+        for (int j = 0; j < this.m_NumberOfCheckPoints; j++)
+        	for (int i = 0; i < this.m_X.length; i++) {
+                this.m_X[i] = this.m_LowerBound +(j*(this.m_UpperBound-this.m_LowerBound)/this.m_NumberOfCheckPoints);
+            tmpValue = ((Double)program.evaluate(this)).doubleValue();
+            fitness += Math.pow((this.m_TargetFunction.evaluateFunction(this.m_X) - ((Double)program.evaluate(this)).doubleValue()), 2);
+        }
+        
         fitness = fitness / (double)this.m_NumberOfCheckPoints;
         // add noise to the fitness
         fitness += RNG.gaussianDouble(this.m_Noise);
@@ -225,7 +227,7 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
                     for (int j = 0; j < this.m_X.length; j++) this.m_X[j] = i ;
                     tmpValue = ((Double)program.evaluate(this)).doubleValue();
                     this.m_Plot.setConnectedPoint(this.m_X[0], tmpValue, 0);
-                    tmpValue = this.m_TargetFunction.evaulateFunction(this.m_X);
+                    tmpValue = this.m_TargetFunction.evaluateFunction(this.m_X);
                     this.m_Plot.setConnectedPoint(this.m_X[0], tmpValue, 1);
                     this.m_Plot.setInfoString(1, program.getStringRepresentation(), 1.0f);
                 }
@@ -233,7 +235,7 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
         }
     }
 
-    /** This method returns a string describing the optimization problem.
+	/** This method returns a string describing the optimization problem.
      * @param opt       The Optimizer that is used or had been used.
      * @return The description.
      */

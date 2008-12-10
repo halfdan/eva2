@@ -1,5 +1,9 @@
 package eva2.server.modules;
 
+import java.util.Vector;
+
+import wsi.ra.jproxy.RemoteStateListener;
+import wsi.ra.math.RNG;
 import eva2.gui.BeanInspector;
 import eva2.server.go.InterfaceGOParameters;
 import eva2.server.go.InterfacePopulationChangedEventListener;
@@ -11,13 +15,12 @@ import eva2.server.go.operators.terminators.EvaluationTerminator;
 import eva2.server.go.operators.terminators.GenerationTerminator;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.AbstractOptimizationProblem;
-import wsi.ra.math.RNG;
+import eva2.server.go.problems.InterfaceAdditionalPopulationInformer;
 import eva2.server.stat.InterfaceStatistics;
 import eva2.server.stat.InterfaceTextListener;
 import eva2.server.stat.StatisticsWithGUI;
 import eva2.tools.EVAERROR;
 import eva2.tools.EVAHELP;
-import wsi.ra.jproxy.RemoteStateListener;
 
 /**
  * The Processor may run as a thread permanently (GenericModuleAdapter) and is then stopped and started
@@ -64,7 +67,7 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
         m_Statistics = Stat;
     }
     
-    protected boolean isOptRunning() {
+    public boolean isOptRunning() {
     	return m_optRunning;
     }
     
@@ -213,6 +216,9 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
         	//////////////// PP or set results without further PP
         	if (isOptRunning()) {
         		resultPop = performPostProcessing();
+        		if (resultPop==null) { // post processing disabled, so use opt. solutions
+        			resultPop = goParams.getOptimizer().getAllSolutions().getSolutions();
+        		}
         	} else resultPop = goParams.getOptimizer().getAllSolutions().getSolutions();
 
         }
@@ -252,9 +258,13 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
      */
     public void registerPopulationStateChanged(Object source, String name) {
     	if (name.equals(Population.nextGenerationPerformed)) {
+//    		System.out.println(getGOParams().getOptimizer().getPopulation().getFunctionCalls() + " " + getGOParams().getOptimizer().getPopulation().getBestFitness()[0]);
+    		Vector informerList = new Vector<InterfaceAdditionalPopulationInformer>(2);
+    		informerList.add(this.goParams.getProblem());
+    		if (this.goParams.getOptimizer() instanceof InterfaceAdditionalPopulationInformer) informerList.add(this.goParams.getOptimizer());
     		m_Statistics.createNextGenerationPerformed(
     				(PopulationInterface)this.goParams.getOptimizer().getPopulation(), 
-    				this.goParams.getProblem());
+    				informerList);
     		if (m_ListenerModule != null) {
     			m_ListenerModule.updateProgress(
     					getStatusPercent(

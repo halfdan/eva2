@@ -727,4 +727,66 @@ public class Mathematics {
 		}
 		return viols;
 	}
+	
+	
+	/**
+	 * Calculate the average length of the range intervals over all dimensions.
+	 * 
+	 * @param range
+	 * @return the average length of the range intervals
+	 */
+    public static double getAvgRange(double[][] range) {
+		double sum = 0.;
+		for (int i=0; i<range.length; i++) sum+=(range[i][1]-range[i][0]);
+		return sum/range.length;
+	}
+
+    /**
+     * Reflect the entries of x which violate the bounds to within the range. 
+     * Return the number of violating dimensions.
+     * 
+     * @param x
+     * @param range
+     * @return the number of violating dimensions
+     */
+	public static int reflectBounds(double[] x, double[][] range) {
+		int viols=0;
+		double d = 0.;
+		for (int i=0; i<x.length; i++) {
+			double dimLen = range[i][1]-range[i][0];
+			if (dimLen <= 0.) System.err.println("Error in reflectBounds: empty range!");
+			if (x[i]<range[i][0]) {
+				viols++;
+				d = range[i][0]-x[i];
+				while (d > dimLen) d -= dimLen; // avoid violating the other bound immediately
+				x[i]=range[i][0]+d;
+			} else if (x[i]>range[i][1]) {
+				viols++;
+				d = x[i]-range[i][1];
+				while (d>dimLen) d -= dimLen; // avoid violating the other bound immediately
+				x[i]=range[i][1]-d;
+			}
+		}
+		return viols;
+	}
+	
+	/**
+	 * Simple version of reflection of a value moving by a step and bouncing
+	 * of min and max values like a pool ball. Precondition is min <= val <= max,
+	 * post condition is min <= retVal <= max.
+	 * 
+	 * @param val
+	 * @param step
+	 * @param min
+	 * @param max
+	 * @return
+	 */
+	public static double reflectValue(double val, double step, double min, double max) {
+		while (step > (max-min)) step -= (max-min);
+		if ((val + step) > max) 
+			return (2 * max - val - step);
+		if ((val + step) < min) 
+			 return (2 * min - val - step);
+		return (val += step);
+	}
 }

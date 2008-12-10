@@ -12,8 +12,9 @@ package eva2.server.stat;
 /*==========================================================================*
  * IMPORTS
  *==========================================================================*/
+import java.util.List;
+
 import eva2.server.go.IndividualInterface;
-import eva2.server.go.InterfaceGOParameters;
 import eva2.server.go.PopulationInterface;
 import eva2.server.go.problems.InterfaceAdditionalPopulationInformer;
 /*==========================================================================*
@@ -34,7 +35,7 @@ public interface InterfaceStatistics {
 	public void addTextListener(InterfaceTextListener listener);
 	public boolean removeTextListener(InterfaceTextListener listener);
 	public void printToTextListener(String s);
-	public void createNextGenerationPerformed(PopulationInterface Pop, InterfaceAdditionalPopulationInformer informer);
+	public void createNextGenerationPerformed(PopulationInterface Pop, List<InterfaceAdditionalPopulationInformer> informerList);
 	public void createNextGenerationPerformed(double[] bestfit,double[] worstfit,int calls);
 	public InterfaceStatisticsParameter getStatisticsParameter(); // called from moduleadapter
 	public IndividualInterface getBestSolution(); // returns the best overall solution

@@ -236,14 +236,20 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 		return (resultOut != null) || (textListeners.size()>0);
 	}
 	
-	protected String getOutputHeader(InterfaceAdditionalPopulationInformer informer, PopulationInterface pop) {
+	protected String getOutputHeader(List<InterfaceAdditionalPopulationInformer> informerList, PopulationInterface pop) {
+		
 		String headline = "Fit.-calls \t Best \t Mean \t Worst ";
-		if ((informer == null) || !m_StatsParams.isOutputAdditionalInfo()) {
+		if ((informerList == null) || !m_StatsParams.isOutputAdditionalInfo()) {
 			return headline;
-		} else return headline + "\t " + informer.getAdditionalFileStringHeader(pop);
+		} else {
+			for (InterfaceAdditionalPopulationInformer informer : informerList) {
+				headline = headline + "\t " + informer.getAdditionalFileStringHeader(pop);
+			}
+			return headline;
+		}
 	}
 	
-	protected String getOutputLine(InterfaceAdditionalPopulationInformer informer, PopulationInterface pop) {
+	protected String getOutputLine(List<InterfaceAdditionalPopulationInformer> informerList, PopulationInterface pop) {
 		StringBuffer sbuf = new StringBuffer(Integer.toString(functionCalls));
 		sbuf.append(" \t ");
 		sbuf.append(BeanInspector.toString(currentBestFit));
@@ -255,9 +261,11 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 			sbuf.append(" \t ");
 			sbuf.append(BeanInspector.toString(currentWorstFit));
 		} else sbuf.append(" # \t");
-		if (informer != null && m_StatsParams.isOutputAdditionalInfo()) {
-			sbuf.append(" \t ");
-			sbuf.append(informer.getAdditionalFileStringValue(pop));
+		if (informerList != null && m_StatsParams.isOutputAdditionalInfo()) {
+			for (InterfaceAdditionalPopulationInformer informer : informerList) {
+				sbuf.append(" \t ");
+				sbuf.append(informer.getAdditionalFileStringValue(pop));
+			}
 		}		
 		return sbuf.toString();
 	}
@@ -289,7 +297,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 	 * @param pop
 	 * @param informer
 	 */
-	public abstract void plotSpecificData(PopulationInterface pop, InterfaceAdditionalPopulationInformer informer);
+	public abstract void plotSpecificData(PopulationInterface pop, List<InterfaceAdditionalPopulationInformer> informerList);
 	
 	protected abstract void plotCurrentResults();
 	
@@ -303,16 +311,16 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 	 *
 	 */
 	public synchronized void createNextGenerationPerformed(PopulationInterface
-			pop, InterfaceAdditionalPopulationInformer informer) {
+			pop, List<InterfaceAdditionalPopulationInformer> informerList) {
 		if (firstPlot) {
 			initPlots(m_StatsParams.getPlotDescriptions());
 //			if (doTextOutput()) printToTextListener(getOutputHeader(informer, pop)+'\n');
 			firstPlot = false;
 		}
-		if ((runIterCnt==0) && printHeaderByVerbosity()) printToTextListener(getOutputHeader(informer, pop)+'\n');
+		if ((runIterCnt==0) && printHeaderByVerbosity()) printToTextListener(getOutputHeader(informerList, pop)+'\n');
 
 		if (pop.getSpecificData() != null) {
-			plotSpecificData(pop, informer);
+			plotSpecificData(pop, informerList);
 			return;
 		}
 		// by default plotting only the best
@@ -361,7 +369,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 		}
 //		meanCollection.set(pop.getGenerations()-1, means);
 		
-		if (doTextOutput() && printLineByVerbosity(runIterCnt)) printToTextListener(getOutputLine(informer, pop)+'\n');
+		if (doTextOutput() && printLineByVerbosity(runIterCnt)) printToTextListener(getOutputLine(informerList, pop)+'\n');
 		plotCurrentResults();
 
 		runIterCnt++;
