@@ -140,12 +140,15 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 	 */
 	public void setDebugOut(boolean swtch, String fname) {
 		TRACE=swtch;
+//		System.err.println("setDebugOut: " +  swtch +" " + fname);
 		if (!swtch && (dos != null)) {
 			dos.close();
 			dos = null;
-		} else if ((dos == null) && swtch) {
+		} else if (swtch && (dos == null)) {
 			try {
-				dos = new PrintStream(new FileOutputStream(fname==null ? defTestOut : fname));
+				if (fname==null || (fname.length()==0)) fname = defTestOut;
+//				System.err.println("Opening "+fname);
+				dos = new PrintStream(new FileOutputStream(fname));
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			}
