@@ -37,6 +37,8 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 	transient PrintStream 				dos = null;
 	private double 						range[][] =	null;
 	private static String				defTestOut = "matlabproblem-debug.log";
+	private static String				resOutFile = "matlabproblem-output.txt";
+	transient PrintStream				resOutStream = null;
 	int 								verbosityLevel	= 0;
 	private MatlabEvalMediator 			handler = null;
 	private boolean isDouble = true;
@@ -225,6 +227,7 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 //			runnable.getGOParams().setPostProcessParams(new PostProcessParams(0, 0.01, 5));
 			runnable.setTextListener(this);
 			runnable.setVerbosityLevel(verbosityLevel);
+			runnable.setOutputAdditionalInfo(true);
 
 			if ((specParams != null) && (specParams.length > 0)) {
 				if ((specValues == null) || (specValues.length != specParams.length)) {
@@ -386,9 +389,17 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 	}
 
 	public void print(String str) {
+		if (resOutStream==null) {
+			try {
+				resOutStream = new PrintStream(new FileOutputStream(resOutFile));
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+		}
 		if (verbosityLevel > 0) {
 			// matlab displays sysout output in the command window, so we simply use this channel
 			System.out.print(str);
+			if (resOutStream != null) resOutStream.print(str);
 		}
 		log(str);		
 	}

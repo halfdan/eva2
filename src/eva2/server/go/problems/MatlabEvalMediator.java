@@ -33,7 +33,7 @@ public class MatlabEvalMediator implements Runnable {
 	volatile Object[] optSolSet = null;
 	MatlabProblem mp = null;
 	// no good: even when waiting for only 1 ms the Matlab execution time increases by a factor of 5-10
-	final static int sleepTime = 0;
+	final static int sleepTime = 5;
 
 	/**
 	 * Request evaluation from Matlab for the given params.

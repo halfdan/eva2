@@ -42,11 +42,14 @@ end
 if isempty(stopOptimization),    
     % set switch to 0 now
     stopOptimization = 0;
-    
+    startTime=clock;
+    timeStr=sprintf('%d.%d. %d:%0.2d:%0.2d',startTime(3), startTime(2), startTime(4), startTime(5), round(startTime(6)));
+    disp(sprintf('Starting optimization at %s', timeStr));
     % create a cancel button box (case without SBtoolbox)
-    boxHandle=figure('Position',[100 600 250 80], 'MenuBar', 'none', 'Name', 'EvA2 optimization running...', 'NumberTitle','off');
+    stopText=sprintf('%s (%s)', stopText, timeStr);
+    boxHandle=figure('Position',[100 600 250 80], 'MenuBar', 'none', 'Name', 'EvA2 optimization...', 'NumberTitle','off');
     uicontrol(boxHandle,'Style', 'pushbutton', 'String', 'Cancel', 'Position', [25 25 60 30], 'Callback', 'global stopOptimization; stopOptimization=1;');
-    uicontrol(boxHandle,'Style', 'text', 'String', stopText, 'Position', [100 25 120 30]);
+    uicontrol(boxHandle,'Style', 'text', 'String', stopText, 'Position', [100 15 130 50]);
     drawnow;
     % set flag for non toolbox optimization
     nontoolboxopt = 1;
