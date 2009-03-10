@@ -14,6 +14,7 @@ class WaitForEvARunnable implements Runnable {
 	public WaitForEvARunnable(OptimizerRunnable runnable, MatlabProblem mp) {
 		this.runnable = runnable;
 		this.mp = mp;
+		mp.log("Created WaitForEvARunnable " + this + "\n");
 	}
 
 	public void run() {
@@ -40,6 +41,9 @@ class WaitForEvARunnable implements Runnable {
 				// write results back to matlab
 				mp.exportResultToMatlab(runnable);
 				mp.exportResultPopulationToMatlab(runnable.getSolutionSet());
+				mp.log("reported results.\n");
+				mp.notifyFinished();
+				mp.log("notified finish.\n");
 				System.out.println("Optimization finished: " + mp.getInfoString());
 			} catch (Exception e) {
 				StringWriter sw = new StringWriter();
@@ -51,9 +55,11 @@ class WaitForEvARunnable implements Runnable {
 			mp.log("invalid call, no optimization started.\n");
 			mp.exportResultToMatlab(null);
 			mp.exportResultPopulationToMatlab(null);
+			mp.log("notifying finish...\n");
+			mp.notifyFinished();
+			mp.log("notified finish.\n");
 		}
-		mp.notifyFinished();
-		mp.log("notified finish...");
+
 	}
 
 }

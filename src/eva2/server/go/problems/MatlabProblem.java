@@ -108,6 +108,7 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 
 	public void setMediator(MatlabEvalMediator h) {
 		handler = h;
+		handler.setMatlabProblem(this);
 	}
 
 	public void initProblem() {
@@ -222,13 +223,17 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 		if (allowSingleRunnable && (runnable != null) && (!runnable.isFinished())) {
 			System.err.println("Please wait for the current optimization to finish");
 		} else {
+//			log("in MP optimize A\n");
+			handler.setMatlabProblem(this);
 			handler.setFinished(false);
 			runnable = OptimizerFactory.getOptRunnable(optType, (AbstractOptimizationProblem)this, outputFilePrefix);
 //			runnable.getGOParams().setPostProcessParams(new PostProcessParams(0, 0.01, 5));
+//			log("in MP optimize B\n");
 			runnable.setTextListener(this);
 			runnable.setVerbosityLevel(verbosityLevel);
 			runnable.setOutputAdditionalInfo(true);
 
+//			log("in MP optimize C\n");
 			if ((specParams != null) && (specParams.length > 0)) {
 				if ((specValues == null) || (specValues.length != specParams.length)) {
 					System.err.println("mismatching value list for parameter arguments: " + specValues);
@@ -258,7 +263,9 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 					log(BeanInspector.toString(BeanInspector.getMemberDescriptions(opt, true)));
 				}
 			}
+//			log("in MP optimize D\n");
 			new Thread(new WaitForEvARunnable(runnable, this)).start();
+//			log("in MP optimize E\n");
 		}
 	}
 
