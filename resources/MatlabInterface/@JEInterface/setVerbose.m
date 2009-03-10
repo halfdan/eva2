@@ -14,8 +14,11 @@ end
 if (nargin > 2)
     if ischar(varargin{1})
         fname=varargin{1};
-        disp('Writing debug output to ');
-        disp(fname);
+	if (bOn==1)
+	    disp(['Writing debug output to ' fname]);
+	else
+	    disp('Debug output deactivated');
+        end
     else
         disp('Invalid third argument, expected char. Using default output file name');
     end

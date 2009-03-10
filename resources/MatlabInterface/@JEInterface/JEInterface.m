@@ -3,19 +3,18 @@ function int = JEInterface(fhandle, range, varargin)
 %       JEInterface(interfaceName, fhandle, range)
 %       JEInterface(interfaceName, fhandle, range, defaultargs)
 %       JEInterface(interfaceName, fhandle, range, defaultargs, options...)
-
-
-% arguments: 
+%
+% Arguments: 
 %   fhandle: a function handle defining the optimization target.
 %   range: a 2 x dim array defining the solution subspace with lower and
-%      upper bounds - or a scalar defining the bitwidth for binary
+%      upper bounds; or a scalar defining the bitwidth for binary
 %      problems.
 %   defaultArgs: (optional) additional constant argument to the target
 %       function, empty by default.
 %   options: (optional) options as name-value pairs defining optimization parameters,
 %       especially tolerance and maximum function calls.
 %       Check makeOoptions for default settings.
-
+%
 % Further options may be specified using setOptions with a JE options struct.
 % Main options are:
 %   TolX: convergence criterion in the solution space
@@ -85,13 +84,13 @@ if (nargin>2)
         if (rem(nargin,2)==0)
             error('Invalid number of arguments!');
         end
-        disp('Reading options...');
+        disp('Reading options:');
         for i=2:2:nargin-2
             int=setOpt(int, varargin{i}, varargin{i+1});
         end
     end
 end  
-
+display(getOptions(int));
 % finally create the java object
 int.mp = eva2.server.go.problems.MatlabProblem(int.dim, int.range);
 disp('Java object created');

@@ -19,11 +19,15 @@ if ~isempty(int.mediator)
     int.mediator.quit
     int.mediator='';
 end
+% disp(sprintf('creating mediator'));
 
 % set up a mediator and inform JE
-int.mediator = eva2.server.go.problems.MatlabEvalMediator;
+int.mediator = eva2.server.go.problems.MatlabEvalMediator(int.opts.NiceSleepTime);
 int.mp.setMediator(int.mediator);
 JEMediator=int.mediator;
+createStopBox=int.opts.CreateStopBox;
+
+% disp(sprintf('mediator created, calling optimize'));
 
 % start the JE thread
 if (optOrPostProc == 1)
@@ -33,6 +37,7 @@ else % post processing
     stopText='Stop EvA2 post processing';
     int.mp.requestPostProcessing(steps, sigmaClust, nBest);
 end
+% disp(sprintf('calling optimize done'));
 
 % handle the case when the optimization has been called from a users script
 % and not from the toolboxes parameter estimation function (which has an
@@ -47,10 +52,15 @@ if isempty(stopOptimization),
     disp(sprintf('Starting optimization at %s', timeStr));
     % create a cancel button box (case without SBtoolbox)
     stopText=sprintf('%s (%s)', stopText, timeStr);
-    boxHandle=figure('Position',[100 600 250 80], 'MenuBar', 'none', 'Name', 'EvA2 optimization...', 'NumberTitle','off');
-    uicontrol(boxHandle,'Style', 'pushbutton', 'String', 'Cancel', 'Position', [25 25 60 30], 'Callback', 'global stopOptimization; stopOptimization=1;');
-    uicontrol(boxHandle,'Style', 'text', 'String', stopText, 'Position', [100 15 130 50]);
-    drawnow;
+    if (createStopBox == 1)
+        boxHandle=figure('Position',[100 600 250 80], 'MenuBar', 'none', 'Name', 'EvA2 optimization...', 'NumberTitle','off');
+        uicontrol(boxHandle,'Style', 'pushbutton', 'String', 'Cancel', 'Position', [25 25 60 30], 'Callback', 'global stopOptimization; stopOptimization=1;');
+        uicontrol(boxHandle,'Style', 'text', 'String', stopText, 'Position', [100 15 130 50]);
+        drawnow;
+%    else
+%        disp(stopText);
+    end
+   
     % set flag for non toolbox optimization
     nontoolboxopt = 1;
 else
@@ -60,13 +70,19 @@ else
 end
 
 stopOnce=1;
-
+cnt=1;
+% disp(sprintf('before eval loop... %d',cnt));
 % repeat the mediator thread and eval call until finished
 try
     while (~int.mediator.isFinished())
-        int.mediator.run;
+% 		disp(sprintf('running mediator id %d',cnt));
+        int.mediator.run(cnt);
+% 		disp(sprintf('after running mediator id %d',cnt));
+	cnt=cnt+1;
         if (~int.mediator.isFinished())
+		%disp('getting question');
             x = int.mediator.getQuestion();
+		%disp('question asked');
             if (isempty(int.range))
                 %size(x)
                 x=convertUnsignedJE(int, x);
@@ -80,6 +96,7 @@ try
                 else
                     res = feval(int.f, x, int.args);
                 end
+% 		disp(sprintf('res is %d',res));
                 %res
             catch ME
                 disp('function evaluation failed:');
@@ -87,6 +104,7 @@ try
                 stopOptimization=1;
             end
             int.mediator.setAnswer(res);
+		%disp('answer provided');
             drawnow;
             if ((stopOptimization==1) && (stopOnce==1))
                 disp('User interrupt requested ...');
@@ -108,7 +126,7 @@ catch ME
     %    clear global stopOptimization
     %end
 end
-
+% disp('writing back results');
 % write back results
 int=setResultJE(int, int.mediator.getSolution());
 int=setResultArrayJE(int, int.mediator.getSolutionSet());
@@ -120,6 +138,9 @@ int.mediator='';
 % and not from the toolboxes parameter estimation function (which has an
 % own stop button). we decide this by checking nontoolboxopt
 if nontoolboxopt == 1,
-    if (ishandle(boxHandle)) , close(boxHandle); end
+    if createStopBox==1
+        if (ishandle(boxHandle)) , close(boxHandle); end
+    end
     clear global stopOptimization
 end
+% disp('runEvalLoop done');
