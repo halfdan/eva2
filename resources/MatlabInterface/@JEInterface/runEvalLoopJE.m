@@ -75,12 +75,12 @@ cnt=1;
 % repeat the mediator thread and eval call until finished
 try
     while (~int.mediator.isFinished())
-% 		disp(sprintf('running mediator id %d',cnt));
+ 		% disp(sprintf('running mediator id %d',cnt));
         int.mediator.run(cnt);
-% 		disp(sprintf('after running mediator id %d',cnt));
+ 		% disp(sprintf('after running mediator id %d',cnt));
 	cnt=cnt+1;
         if (~int.mediator.isFinished())
-		%disp('getting question');
+		% disp('getting question');
             x = int.mediator.getQuestion();
 		%disp('question asked');
             if (isempty(int.range))
@@ -96,7 +96,7 @@ try
                 else
                     res = feval(int.f, x, int.args);
                 end
-% 		disp(sprintf('res is %d',res));
+ 		% disp(sprintf('res is %d',res));
                 %res
             catch ME
                 disp('function evaluation failed:');
@@ -104,8 +104,7 @@ try
                 stopOptimization=1;
             end
             int.mediator.setAnswer(res);
-		%disp('answer provided');
-            drawnow;
+            if (createStopBox == 1) ; drawnow; end;
             if ((stopOptimization==1) && (stopOnce==1))
                 disp('User interrupt requested ...');
                 stopOptimize(int);
@@ -141,6 +140,7 @@ if nontoolboxopt == 1,
     if createStopBox==1
         if (ishandle(boxHandle)) , close(boxHandle); end
     end
+    clear boxHandle
     clear global stopOptimization
 end
 % disp('runEvalLoop done');
