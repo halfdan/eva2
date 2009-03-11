@@ -203,6 +203,10 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
     	return m_Template;
     }
     
+    public String individualTemplateTipText() {
+    	return "Choose the individual representation to use.";
+    }
+    
     /**
      * This method extracts the individuals from a given population that are assumed to correspond to local or global optima.
      * Similar individuals are clustered together with a density based clustering method

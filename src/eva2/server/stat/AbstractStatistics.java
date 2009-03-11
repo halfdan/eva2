@@ -46,9 +46,10 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 	protected double[] currentBestFit;
 	protected double[] meanFitness;
 	protected double[] currentWorstFit;
+	protected double[] meanBestOfRunFitness;
 	protected double avgPopDist;
 	protected double maxPopDist;
-	protected IndividualInterface bestCurrentIndividual, bestIndividualAllover;
+	protected IndividualInterface bestCurrentIndividual, bestRunIndividual, bestIndividualAllover;
 
 	
 	private ArrayList<InterfaceTextListener> textListeners;
@@ -118,11 +119,13 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 			convergenceCnt = 0;
 			if (saveParams) m_StatsParams.saveInstance();
 			initOutput(infoString);
-			bestCurrentIndividual = null;
 			bestIndividualAllover = null;
+			meanBestOfRunFitness = null;
 			if (refineMultiRuns) meanCollection = new ArrayList<double[][]>();
 			else meanCollection = null;
 		}
+		bestCurrentIndividual = null;
+		bestRunIndividual = null;
 		runIterCnt = 0;
     	if (printRunIntroVerbosity()) printToTextListener("\n****** Multirun "+runNumber);
     	if (params != null) {
@@ -150,13 +153,21 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 			if (Mathematics.norm(bestCurrentIndividual.getFitness()) < this.m_StatsParams.getConvergenceRateThreshold()) {
 				convergenceCnt++;
 			}
-			if (printRunStoppedVerbosity()) printToTextListener(" Run best individual	: " + BeanInspector.toString(bestCurrentIndividual) + "\n");
-			if (printRunStoppedVerbosity()) printToTextListener("	run solution data	: " + AbstractEAIndividual.getDefaultDataString(bestCurrentIndividual) + "\n");
-			if (printRunStoppedVerbosity()) printToTextListener("	run solution fit	: " + BeanInspector.toString(bestCurrentIndividual.getFitness()) + "\n");
+			if (printRunStoppedVerbosity()) printToTextListener(" Last best individual	: " + BeanInspector.toString(bestCurrentIndividual) + "\n");
+			if (printRunStoppedVerbosity()) printToTextListener("	Last solution data	: " + AbstractEAIndividual.getDefaultDataString(bestCurrentIndividual) + "\n");
+			if (printRunStoppedVerbosity()) printToTextListener("	Last solution fit	: " + BeanInspector.toString(bestCurrentIndividual.getFitness()) + "\n");
+		}		
+		if (bestRunIndividual != null) {
+			if (printRunStoppedVerbosity()) printToTextListener("  Run best individual	: " + BeanInspector.toString(bestRunIndividual) + "\n");
+			if (printRunStoppedVerbosity()) printToTextListener("	Run solution data	: " + AbstractEAIndividual.getDefaultDataString(bestRunIndividual) + "\n");
+			if (printRunStoppedVerbosity()) printToTextListener("	Run solution fit	: " + BeanInspector.toString(bestRunIndividual.getFitness()) + "\n");
+			if (meanBestOfRunFitness==null) {
+				meanBestOfRunFitness=bestRunIndividual.getFitness().clone();
+			} else addMean(meanBestOfRunFitness, bestRunIndividual.getFitness());
 		}
-		if (currentBestFit!= null) {
-			if (printRunStoppedVerbosity()) printToTextListener(" Best Fitness: " + BeanInspector.toString(currentBestFit) + "\n");
-		}
+//		if (currentBestFit!= null) {
+//			if (printRunStoppedVerbosity()) printToTextListener(" Best Fitness: " + BeanInspector.toString(currentBestFit) + "\n");
+//		}
 		if (optRunsPerformed == m_StatsParams.getMultiRuns()) finalizeOutput();
 	}
 	
@@ -170,6 +181,12 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 			if (printFinalVerbosity()) printToTextListener("Averaged performance:\n");
 			for (int i=0; i<meanCollection.size(); i++) divideMean(meanCollection.get(i), optRunsPerformed);
 			if (printFinalVerbosity()) printToTextListener(refineToText(meanCollection, showAvgIntervals));
+		}
+		if ((meanBestOfRunFitness!=null) && (optRunsPerformed>1)) {
+			Mathematics.svDiv((double)optRunsPerformed, meanBestOfRunFitness, meanBestOfRunFitness);
+			if (printFinalVerbosity()) {
+				printToTextListener(" Averaged best run fitness: " + BeanInspector.toString(meanBestOfRunFitness)+"\n");
+			}
 		}
 		if (TRACE)
 			System.out.println("End of run");
@@ -327,9 +344,11 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 		bestCurrentIndividual = pop.getBestIndividual().getClone();
 		if ((bestIndividualAllover == null) || (secondIsBetter(bestIndividualAllover, bestCurrentIndividual))) {
 			bestIndividualAllover = bestCurrentIndividual;
-//			printToTextListener("new best found!, last was " + BeanInspector.toString(bestIndivdualAllover) + "\n");
+//			printToTextListener("new best found!, last was " + BeanInspector.toString(bestIndividualAllover) + "\n");
 		}
-		
+		if ((bestRunIndividual==null) || (secondIsBetter(bestRunIndividual, bestCurrentIndividual))) {
+			bestRunIndividual=bestCurrentIndividual;
+		}
 //		IndividualInterface WorstInd = Pop.getWorstIndividual();
 		if (bestCurrentIndividual == null) {
 			System.err.println("createNextGenerationPerformed BestInd==null");
@@ -429,7 +448,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 		if (indy1 == null) return true;
 		if (indy2 == null) return false;
 		if (indy1 instanceof AbstractEAIndividual) return ((AbstractEAIndividual)indy2).isDominatingDebConstraints((AbstractEAIndividual)indy1);
-		return (indy1.isDominant(indy2));
+		return (indy2.isDominant(indy1));
 	}
 	
 	public double[] getBestFitness() {
@@ -438,6 +457,10 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 	
 	public IndividualInterface getBestSolution() {
 		return bestIndividualAllover;
+	}
+	
+	public IndividualInterface getRunBestSolution() {
+		return bestRunIndividual;
 	}
 	
 	public int getFitnessCalls() {

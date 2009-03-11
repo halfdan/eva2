@@ -567,7 +567,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
     }
     
     /**
-     * Returns true, if the first fitness vector dominates the second one in every component.
+     * Returns true if the first fitness vector dominates the second one in every component.
      * Symmetric case: if the vectors are equal, true is returned.
      * 
      * @param fit1 first fitness vector to look at
@@ -585,7 +585,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
     }
     
     /**
-     * Returns true, if the first fitness vector truly dominates the second one in every component.
+     * Returns true if the first fitness vector truly dominates the second one in every component.
      * 
      * @param fit1 first fitness vector to look at
      * @param fit2 second fitness vector to look at
@@ -605,7 +605,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      * Note this is dominance! If the individuals are not comparable this method will
      * return false!
      * @param indy      The individual to compare to.
-     * @return True if better false else
+     * @return True if the own fitness dominates the other indy's
      */
     public boolean isDominatingDebConstraints(AbstractEAIndividual indy) {
         double[]    tmpFitness  = indy.getFitness();
@@ -956,10 +956,18 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
     	return isDominatingFitnessNotEqual(m_Fitness, otherFitness);
     }
     
+    /**
+     * @return true if the own fitness dominates otherFitness.
+     * @see #isDominatingFitness(double[], double[])
+     */
     public boolean isDominant(double[] otherFitness) {
     	return isDominatingFitness(m_Fitness, otherFitness);
     }
     
+    /**
+     * @return true if the individual dominates the given one.
+     * @see #isDominatingDebConstraints(AbstractEAIndividual)
+     */
     public boolean isDominant(IndividualInterface indy) {
     	return isDominatingDebConstraints((AbstractEAIndividual)indy);
     }

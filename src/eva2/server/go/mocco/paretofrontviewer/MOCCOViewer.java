@@ -321,122 +321,6 @@ public class MOCCOViewer extends JPanel implements InterfaceRefSolutionListener,
         }
     };
 
-//    private void updateHistory() {
-//        this.m_History.removeAll();
-//        this.m_History.setLayout(new GridBagLayout());
-//        this.m_JLIternations    = new JLabel[this.m_MOCCO.m_State.m_PopulationHistory.length];
-//        this.m_JLIterSize       = new JLabel[this.m_MOCCO.m_State.m_PopulationHistory.length];
-//        this.m_JCUse            = new JCheckBox[this.m_MOCCO.m_State.m_PopulationHistory.length];
-//        this.m_JCShow           = new JCheckBox[this.m_MOCCO.m_State.m_PopulationHistory.length];
-//        this.m_JColor           = new JComboBox[this.m_MOCCO.m_State.m_PopulationHistory.length];
-//        GridBagConstraints gbc = new GridBagConstraints();
-//        gbc.anchor      = GridBagConstraints.WEST;
-//        gbc.fill        = GridBagConstraints.BOTH;
-//        gbc.gridx       = 0;
-//        gbc.gridy       = 0;
-//        gbc.weightx     = 1;
-//        this.m_History.add(new JLabel("Iteration"), gbc);
-//        gbc.gridx       = 1;
-//        gbc.gridy       = 0;
-//        this.m_History.add(new JLabel("Size"), gbc);
-//        gbc.gridx       = 2;
-//        gbc.gridy       = 0;
-//        this.m_History.add(new JLabel("Use"), gbc);
-//        gbc.gridx       = 3;
-//        gbc.gridy       = 0;
-//        this.m_History.add(new JLabel("Show"), gbc);
-//        gbc.gridx       = 4;
-//        gbc.gridy       = 0;
-//        this.m_History.add(new JLabel("Color"), gbc);
-//        for (int i = 0; i < this.m_MOCCO.m_State.m_PopulationHistory.length; i++) {
-//            gbc.gridx       = 0;
-//            gbc.gridy       = i+1;
-//            this.m_History.add(new JLabel((i+0)+"."), gbc);
-//            gbc.gridx       = 1;
-//            gbc.gridy       = i+1;
-//            this.m_History.add(new JLabel(this.m_MOCCO.m_State.m_PopulationHistory[i].size()+""), gbc);
-//            gbc.gridx       = 2;
-//            gbc.gridy       = i+1;
-//            this.m_JCUse[i] = new JCheckBox();
-//            this.m_JCUse[i].setSelected(this.m_MOCCO.m_State.m_Use[i]);
-//            this.m_JCUse[i].addActionListener(useModeChanged);
-//            this.m_History.add(this.m_JCUse[i], gbc);
-//            gbc.gridx       = 3;
-//            gbc.gridy       = i+1;
-//            this.m_JCShow[i] = new JCheckBox();
-//            this.m_JCShow[i].setSelected(this.m_MOCCO.m_State.m_Show[i]);
-//            this.m_JCShow[i].addActionListener(showModeChanged);
-//            this.m_History.add(this.m_JCShow[i], gbc);
-//            gbc.gridx       = 4;
-//            gbc.gridy       = i+1;
-//            this.m_JColor[i] = this.getComboBox(i);
-//            this.m_JColor[i].addActionListener(colorModeChanged);
-//            this.m_History.add(this.m_JColor[i], gbc);
-//        }
-//    }
-//
-//    ActionListener useModeChanged = new ActionListener() {
-//        public void actionPerformed(ActionEvent event) {
-//            for (int i = 0; i < m_JCUse.length; i++) {
-//                m_MOCCO.m_State.m_Use[i] = m_JCUse[i].isSelected();
-//            }
-//        }
-//    };
-//    ActionListener showModeChanged = new ActionListener() {
-//        public void actionPerformed(ActionEvent event) {
-//            for (int i = 0; i < m_JCShow.length; i++) {
-//                m_MOCCO.m_State.m_Show[i] = m_JCShow[i].isSelected();
-//            }
-//            m_View.updateView();
-//        }
-//    };
-//    ActionListener colorModeChanged = new ActionListener() {
-//        public void actionPerformed(ActionEvent event) {
-//            for (int i = 0; i < m_JColor.length; i++) {
-//                m_MOCCO.m_State.m_Color[i] = getColor(m_JColor[i].getSelectedIndex());
-//            }
-//            m_View.updateView();
-//        }
-//    };
-//
-//    private JComboBox getComboBox(int index) {
-//        String[] colors = {"RED", "BLUE", "GREEN", "CYAN", "MAGENTA", "ORANGE"};
-//        JComboBox result;
-//        result = new JComboBox(colors);
-//        int color = 0;
-//        if (this.m_MOCCO.m_State.m_Color[index] == Color.RED)     color = 0;
-//        if (this.m_MOCCO.m_State.m_Color[index] == Color.BLUE)    color = 1;
-//        if (this.m_MOCCO.m_State.m_Color[index] == Color.GREEN)   color = 2;
-//        if (this.m_MOCCO.m_State.m_Color[index] == Color.CYAN)    color = 3;
-//        if (this.m_MOCCO.m_State.m_Color[index] == Color.MAGENTA) color = 4;
-//        if (this.m_MOCCO.m_State.m_Color[index] == Color.ORANGE)  color = 5;
-//        result.setSelectedIndex(color);
-//        return result;
-//    }
-//    public Color getColor(int i) {
-//        switch (i)  {
-//            case 0 : {
-//                return Color.RED;
-//            }
-//            case 1 : {
-//                return Color.BLUE;
-//            }
-//            case 2 : {
-//                return Color.GREEN;
-//            }
-//            case 3 : {
-//                return Color.CYAN;
-//            }
-//            case 4 : {
-//                return Color.MAGENTA;
-//            }
-//            case 5 : {
-//                return Color.ORANGE;
-//            }
-//        }
-//        return Color.BLACK;
-//    }
-
     public void problemChanged(boolean t) {
         this.m_MOCCO.m_State.makeFitnessCache(t);
         //this.updateHistory();
@@ -613,5 +497,121 @@ public class MOCCOViewer extends JPanel implements InterfaceRefSolutionListener,
         this.m_RefPointListener = null;
         this.m_View.updateView();
     }
+
+//  private void updateHistory() {
+//      this.m_History.removeAll();
+//      this.m_History.setLayout(new GridBagLayout());
+//      this.m_JLIternations    = new JLabel[this.m_MOCCO.m_State.m_PopulationHistory.length];
+//      this.m_JLIterSize       = new JLabel[this.m_MOCCO.m_State.m_PopulationHistory.length];
+//      this.m_JCUse            = new JCheckBox[this.m_MOCCO.m_State.m_PopulationHistory.length];
+//      this.m_JCShow           = new JCheckBox[this.m_MOCCO.m_State.m_PopulationHistory.length];
+//      this.m_JColor           = new JComboBox[this.m_MOCCO.m_State.m_PopulationHistory.length];
+//      GridBagConstraints gbc = new GridBagConstraints();
+//      gbc.anchor      = GridBagConstraints.WEST;
+//      gbc.fill        = GridBagConstraints.BOTH;
+//      gbc.gridx       = 0;
+//      gbc.gridy       = 0;
+//      gbc.weightx     = 1;
+//      this.m_History.add(new JLabel("Iteration"), gbc);
+//      gbc.gridx       = 1;
+//      gbc.gridy       = 0;
+//      this.m_History.add(new JLabel("Size"), gbc);
+//      gbc.gridx       = 2;
+//      gbc.gridy       = 0;
+//      this.m_History.add(new JLabel("Use"), gbc);
+//      gbc.gridx       = 3;
+//      gbc.gridy       = 0;
+//      this.m_History.add(new JLabel("Show"), gbc);
+//      gbc.gridx       = 4;
+//      gbc.gridy       = 0;
+//      this.m_History.add(new JLabel("Color"), gbc);
+//      for (int i = 0; i < this.m_MOCCO.m_State.m_PopulationHistory.length; i++) {
+//          gbc.gridx       = 0;
+//          gbc.gridy       = i+1;
+//          this.m_History.add(new JLabel((i+0)+"."), gbc);
+//          gbc.gridx       = 1;
+//          gbc.gridy       = i+1;
+//          this.m_History.add(new JLabel(this.m_MOCCO.m_State.m_PopulationHistory[i].size()+""), gbc);
+//          gbc.gridx       = 2;
+//          gbc.gridy       = i+1;
+//          this.m_JCUse[i] = new JCheckBox();
+//          this.m_JCUse[i].setSelected(this.m_MOCCO.m_State.m_Use[i]);
+//          this.m_JCUse[i].addActionListener(useModeChanged);
+//          this.m_History.add(this.m_JCUse[i], gbc);
+//          gbc.gridx       = 3;
+//          gbc.gridy       = i+1;
+//          this.m_JCShow[i] = new JCheckBox();
+//          this.m_JCShow[i].setSelected(this.m_MOCCO.m_State.m_Show[i]);
+//          this.m_JCShow[i].addActionListener(showModeChanged);
+//          this.m_History.add(this.m_JCShow[i], gbc);
+//          gbc.gridx       = 4;
+//          gbc.gridy       = i+1;
+//          this.m_JColor[i] = this.getComboBox(i);
+//          this.m_JColor[i].addActionListener(colorModeChanged);
+//          this.m_History.add(this.m_JColor[i], gbc);
+//      }
+//  }
+//
+//  ActionListener useModeChanged = new ActionListener() {
+//      public void actionPerformed(ActionEvent event) {
+//          for (int i = 0; i < m_JCUse.length; i++) {
+//              m_MOCCO.m_State.m_Use[i] = m_JCUse[i].isSelected();
+//          }
+//      }
+//  };
+//  ActionListener showModeChanged = new ActionListener() {
+//      public void actionPerformed(ActionEvent event) {
+//          for (int i = 0; i < m_JCShow.length; i++) {
+//              m_MOCCO.m_State.m_Show[i] = m_JCShow[i].isSelected();
+//          }
+//          m_View.updateView();
+//      }
+//  };
+//  ActionListener colorModeChanged = new ActionListener() {
+//      public void actionPerformed(ActionEvent event) {
+//          for (int i = 0; i < m_JColor.length; i++) {
+//              m_MOCCO.m_State.m_Color[i] = getColor(m_JColor[i].getSelectedIndex());
+//          }
+//          m_View.updateView();
+//      }
+//  };
+//
+//  private JComboBox getComboBox(int index) {
+//      String[] colors = {"RED", "BLUE", "GREEN", "CYAN", "MAGENTA", "ORANGE"};
+//      JComboBox result;
+//      result = new JComboBox(colors);
+//      int color = 0;
+//      if (this.m_MOCCO.m_State.m_Color[index] == Color.RED)     color = 0;
+//      if (this.m_MOCCO.m_State.m_Color[index] == Color.BLUE)    color = 1;
+//      if (this.m_MOCCO.m_State.m_Color[index] == Color.GREEN)   color = 2;
+//      if (this.m_MOCCO.m_State.m_Color[index] == Color.CYAN)    color = 3;
+//      if (this.m_MOCCO.m_State.m_Color[index] == Color.MAGENTA) color = 4;
+//      if (this.m_MOCCO.m_State.m_Color[index] == Color.ORANGE)  color = 5;
+//      result.setSelectedIndex(color);
+//      return result;
+//  }
+//  public Color getColor(int i) {
+//      switch (i)  {
+//          case 0 : {
+//              return Color.RED;
+//          }
+//          case 1 : {
+//              return Color.BLUE;
+//          }
+//          case 2 : {
+//              return Color.GREEN;
+//          }
+//          case 3 : {
+//              return Color.CYAN;
+//          }
+//          case 4 : {
+//              return Color.MAGENTA;
+//          }
+//          case 5 : {
+//              return Color.ORANGE;
+//          }
+//      }
+//      return Color.BLACK;
+//  }
 
 }

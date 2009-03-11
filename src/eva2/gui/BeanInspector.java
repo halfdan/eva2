@@ -594,6 +594,43 @@ public class BeanInspector {
 		return value;
 	}
 
+
+	/**
+	 * Try to get an object member value.
+	 * 
+	 * @param obj
+	 * @param mem
+	 * @return the value if successful, else null
+	 */
+	public static Object getMem(Object obj, String mem) {
+		BeanInfo bi;    
+		try {
+			bi      = Introspector.getBeanInfo(obj.getClass());
+		} catch(IntrospectionException e) {
+			e.printStackTrace();
+			return false;
+		}
+		PropertyDescriptor[] 	m_Properties = bi.getPropertyDescriptors();
+		Method getter = null;
+		for (int i = 0; i < m_Properties.length; i++) {
+			if (m_Properties[i].getDisplayName().equals(mem)) {
+				getter  = m_Properties[i].getReadMethod();
+				break;
+			}
+		}
+		if (getter != null) {
+			try {
+				return getter.invoke(obj, (Object[]) null);
+			} catch (Exception e) {
+				System.err.println("Exception in invoking setter: "+e.getMessage());
+				return null;
+			} 
+		} else {
+			System.err.println("Getter method for " + mem + " not found!");
+			return null;
+		}
+	}
+	
 	/**
 	 * Try to set an object member to a given value.
 	 * Returns true if successful, else false. The types are adapted as generally as possible,

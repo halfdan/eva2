@@ -144,7 +144,7 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
     
     /**
      * Get the lower bound of the double range in the given dimension. Override
-     * this to implement non-symmetric ranges. User setDefaultRange for symmetric ranges.
+     * this to implement non-symmetric ranges. Use setDefaultRange for symmetric ranges.
      * 
      * @see makeRange()
      * @see getRangeUpperBound(int dim)

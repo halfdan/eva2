@@ -1,10 +1,17 @@
 package eva2.server.go.problems;
 
-import javax.swing.*;
+import java.awt.Color;
+import java.util.ArrayList;
 
+import javax.swing.JFrame;
+
+import wsi.ra.chart2d.DPoint;
 import eva2.gui.Chart2DDPointIconCircle;
+import eva2.gui.Chart2DDPointIconText;
 import eva2.gui.GraphPointSet;
+import eva2.gui.Plot;
 import eva2.server.go.individuals.AbstractEAIndividual;
+import eva2.server.go.individuals.ESIndividualDoubleData;
 import eva2.server.go.operators.archiving.ArchivingAllDominating;
 import eva2.server.go.operators.archiving.ArchivingNSGA;
 import eva2.server.go.operators.moso.InterfaceMOSOConverter;
@@ -12,12 +19,6 @@ import eva2.server.go.operators.moso.MOSONoConvert;
 import eva2.server.go.operators.paretofrontmetrics.InterfaceParetoFrontMetric;
 import eva2.server.go.operators.paretofrontmetrics.MetricS;
 import eva2.server.go.populations.Population;
-
-import java.util.ArrayList;
-import java.awt.*;
-
-import wsi.ra.chart2d.DPointIcon;
-import wsi.ra.chart2d.DPoint;
 
 /**
  * Created by IntelliJ IDEA.
@@ -33,15 +34,46 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
     transient protected Population              m_ParetoFront       = new Population();
     public    ArrayList                         m_AreaConst4Parallelization = new ArrayList();
     protected int                               m_OutputDimension   = 2;
+    double			m_borderLow = 0;
+    double			m_borderHigh = 5;
+    
+    transient protected   double[][]         	m_Border;
+    transient protected Plot  					m_Plot;
+    transient protected JFrame             		m_Result;
+    private transient boolean                	m_Show              = false;
 
-    /**
-     * TODO
+    public AbstractMultiObjectiveOptimizationProblem(double borderHigh) {
+    	super();
+    	m_borderHigh=borderHigh;
+        this.m_Template         = new ESIndividualDoubleData();
+        initBorder();
+        if (this.m_Show) this.initProblemFrame();
+    }
+    
+    public AbstractMultiObjectiveOptimizationProblem() {
+    	this(5.);
+    }
+
+    /** This method allows you to toggle pareto-front visualisation on and off.
+     * @param b     True if the pareto-front is to be shown.
      */
-    public    double[][]                        m_Border;
-    transient protected eva2.gui.Plot        m_Plot;
-    transient protected JFrame                  m_Result;
-    transient boolean                           m_Show              = false;
-
+    public void setShowParetoFront(boolean b) {
+        this.m_Show = b;
+        if (this.m_Show) this.initProblemFrame();
+        else if (this.m_Plot != null) {
+            this.m_Plot.dispose();
+            this.m_Plot = null;
+        }
+    }
+    
+    public boolean isShowParetoFront() {
+        return this.m_Show;
+    }
+    
+    public String showParetoFrontTipText() {
+        return "Toggles the pareto-front visualisation.";
+    }
+    
     /** This method returns a deep clone of the problem.
      * @return  the clone
      */
@@ -53,30 +85,38 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
      * problem frame (i'll provide a default implementation here.
      */
     public void initProblem() {
-        this.m_Border = new double[2][2];
-        for (int i = 0; i < this.m_Border.length; i++) {
-            this.m_Border[i][0] = 0;
-            this.m_Border[i][1] = 5;
-        }
+        initBorder();
         this.m_ParetoFront = new Population();
         if (this.m_Show) this.initProblemFrame();
+    }
+    
+    protected void initBorder() {
+    	initBorder(m_borderLow, m_borderHigh);
+    }
+    
+    protected void initBorder(double lower, double upper) {
+        if (this.m_Border == null) this.m_Border = new double[2][2];
+        for (int i = 0; i < this.m_Border.length; i++) {
+            this.m_Border[i][0] = lower;
+            this.m_Border[i][1] = upper;
+        }
     }
 
     /** This method checks whether the problem has truely evaluated
      * to a multiobjective problem
      * @return true if all individuals are multiobjective
      */
-    public boolean isPopulationMultiObjective(Population pop) {
+    public static boolean isPopulationMultiObjective(Population pop) {
         if (pop == null) return false;
         if (pop.size() == 0) return false;
-        int best = pop.getBestFitness().length, tmp;
+        int bestFitLen = pop.getBestFitness().length, tmpFitLen;
         for (int i = 0; i < pop.size(); i++) {
-            tmp = ((AbstractEAIndividual)pop.get(i)).getFitness().length;
-            if (tmp <= 1) {
+            tmpFitLen = ((AbstractEAIndividual)pop.get(i)).getFitness().length;
+            if (tmpFitLen <= 1) {
                 //System.out.println("There is a single objective individual in the population!");
                 return false;
             }
-            if (tmp != best) {
+            if (tmpFitLen != bestFitLen) {
                 //System.out.println("Not all individual have equal length fitness!");
                 return false;
             }
@@ -129,7 +169,11 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
 
         evaluatePopulationEnd(population); // refactored by MK
     }
-
+    
+    public void evaluatePopulationStart(Population population) {
+    	if (this.m_Show && (this.m_Plot==null)) this.initProblemFrame();
+    }
+    
     public void evaluatePopulationEnd(Population population) {
         // So what is the problem:
         // on the one hand i want to log the pareto-front in the
@@ -140,35 +184,48 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
         // could be pretty many
 
         // currently the problem should be multi-criteria
-        // log the pareto-front
-        if (this.isPopulationMultiObjective(population)) {
-            if (this.m_ParetoFront == null) this.m_ParetoFront = new Population();
-            if (this.m_ParetoFront.getArchive() == null) {
-                Population archive = new Population();
-                archive.setPopulationSize(100);
-                this.m_ParetoFront.SetArchive(archive);
-            }
-            this.m_ParetoFront.addPopulation((Population) population.getClone());
-            ArchivingNSGA archiving = new ArchivingNSGA();
-            archiving.addElementsToArchive(this.m_ParetoFront);
-            this.m_ParetoFront = this.m_ParetoFront.getArchive();
-        }
+    	logPopToParetoFront(m_ParetoFront, population);
 
         // Sometimes you want to transform a multiobjective optimization problem
         // into a single objective one, this way single objective optimization
         // algorithms can be applied more easily
         this.m_MOSOConverter.convertMultiObjective2SingleObjective(population);
 
-        if (this.m_Show) this.drawProblem(population);
+        if (this.m_Show) {
+        	if (m_Plot.isValid()) AbstractMultiObjectiveOptimizationProblem.drawProblem(population, m_Plot, this);	
+        }
     }
 
+    /**
+     * Unite the given population with the given pareto front and replace pFront with the new pareto front.
+     * This variant uses ArchivingNSGA 
+     * @param pFront
+     * @param pop
+     */
+	public static void logPopToParetoFront(Population pFront, Population pop) {
+		// log the pareto-front
+        if (AbstractMultiObjectiveOptimizationProblem.isPopulationMultiObjective(pop)) {
+            if (pFront == null) System.err.println("Error, give at least an empty population as initial pareto front");
+            if (pFront.getArchive() == null) {
+            	pFront.SetArchive(new Population(100));
+            }
+            Population tmpPop=new Population(pop.size());
+            tmpPop.addPopulation(pop);
+            tmpPop.addPopulation(pFront);
+            ArchivingNSGA archiving = new ArchivingNSGA();
+            archiving.addElementsToArchive(tmpPop);
+            pFront.clear();
+            pFront.addPopulation(tmpPop.getArchive());
+        }
+	}
+	
    /** This method will init the problem specific visualisation of the problem
      */
     public void initProblemFrame() {
         double[] tmpD = new double[2];
         tmpD[0] = 0;
         tmpD[1] = 0;
-        if (this.m_Plot == null) m_Plot = new eva2.gui.Plot("Multiobjective Optimization", "Y1", "Y2", tmpD, tmpD);
+        if (this.m_Plot == null) m_Plot = new Plot("Multiobjective Optimization", "Y1", "Y2", tmpD, tmpD);
 
         // plot init stuff
         this.initAdditionalData(this.m_Plot, 10);
@@ -178,17 +235,56 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
      * @param plot      The plot where you can draw your stuff.
      * @param index     The first index where you can draw your stuff
      */
-    public void initAdditionalData(eva2.gui.Plot plot, int index) {
+    public void initAdditionalData(Plot plot, int index) {
         // for example plot the current population
         plot.clearGraph(index);
         plot.setUnconnectedPoint(0, 0, index);
     }
 
     /** This method will draw the current state of the optimization process
+     * @param pFront     The current population
+     */
+    public static void drawProblem(Population pFront, Population archive, Plot plot) {
+    	ArchivingAllDominating  tmpArch = new ArchivingAllDominating();
+//  	Population              tmpPop = null;
+
+    	// i want to plot the pareto front for MOEA and other strategies
+    	// but i have to differentiate between the case where
+    	// there is a true MOEA at work and where the
+    	// MOOpt was converted into a SOOpt
+    	if (pFront != null && (plot != null)) {
+    		// i got either a multiobjective population or a multiobjective local population
+    		plot.clearAll();
+    		tmpArch.plotParetoFront(pFront, plot);
+    		if (archive != null) {
+    			GraphPointSet   mySet = new GraphPointSet(10, plot.getFunctionArea());
+    			DPoint          myPoint;
+    			Chart2DDPointIconCircle      icon;
+    			double[]        tmpD;
+    			mySet.setConnectedMode(false);
+    			for (int i = 0; i < archive.size(); i++) {
+    				icon    = new Chart2DDPointIconCircle();
+    				tmpD    = ((AbstractEAIndividual)archive.get(i)).getFitness();
+    				myPoint = new DPoint(tmpD[0], tmpD[1]);
+    				if (((AbstractEAIndividual)archive.get(i)).getConstraintViolation() > 0) {
+    					icon.setBorderColor(Color.RED);
+    					icon.setFillColor(Color.RED);
+    				} else {
+    					icon.setBorderColor(Color.BLACK);
+    					icon.setFillColor(Color.BLACK);
+    				}
+    				myPoint.setIcon(icon);
+    				mySet.addDPoint(myPoint);
+    			}
+    		}
+    	}
+    }
+    
+    /** 
+     * This method will draw the current state of the optimization process
      * @param p     The current population
      */
-    public void drawProblem(Population p) {
-
+    public static void drawProblem(Population p, Plot plot, AbstractMultiObjectiveOptimizationProblem moProblem) {
         ArchivingAllDominating  tmpArch = new ArchivingAllDominating();
         Population              tmpPop = null;
 
@@ -198,9 +294,9 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
             // but i have to differentiate between the case where
             // there is a true MOEA at work and where the
             // MOOpt was converted into a SOOpt
-            if (this.isPopulationMultiObjective(p)) {
+            if (AbstractMultiObjectiveOptimizationProblem.isPopulationMultiObjective(p)) {
                 // in this case i have to use my local archive
-                tmpPop = this.m_ParetoFront;
+                tmpPop = moProblem.m_ParetoFront;
             } else {
                 // in this case i use the population of the optimizer
                 // and eventually the pop.archive if there is one
@@ -210,54 +306,79 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
                 tmpArch.addElementsToArchive(tmpPop);
                 tmpPop = tmpPop.getArchive();
             }
-            if (tmpPop != null) {
-                // i got either a multiobjective population or a multiobjective local population
-                this.m_Plot.clearAll();
-                tmpArch.plotParetoFront(tmpPop, this.m_Plot);
-                if ((true) && (p.getArchive() != null)) {
-                    GraphPointSet   mySet = new GraphPointSet(10, this.m_Plot.getFunctionArea());
-                    DPoint          myPoint;
-                    Chart2DDPointIconCircle      icon;
-                    double[]        tmpD;
-                    mySet.setConnectedMode(false);
-                    tmpPop = p.getArchive();
-                    for (int i = 0; i < tmpPop.size(); i++) {
-                        icon    = new Chart2DDPointIconCircle();
-                        tmpD    = ((AbstractEAIndividual)tmpPop.get(i)).getFitness();
-                        myPoint = new DPoint(tmpD[0], tmpD[1]);
-                        if (((AbstractEAIndividual)tmpPop.get(i)).getConstraintViolation() > 0) {
-                            icon.setBorderColor(Color.RED);
-                            icon.setFillColor(Color.RED);
-                        } else {
-                            icon.setBorderColor(Color.BLACK);
-                            icon.setFillColor(Color.BLACK);
-                        }
-                        myPoint.setIcon(icon);
-                        mySet.addDPoint(myPoint);
-                    }
-                }
-            } else {
-//                // in this case i got a single objective optimization problem
-//                if (this.m_Plot != null) this.m_Plot.dispose();
-//                if (this.m_Result == null) {
-//                    this.m_Result = new JFrame();
-//                    this.m_Result.addWindowListener(new WindowAdapter() {
-//                        public void windowClosing(WindowEvent ev) {
-//                            System.gc();
-//                        }
-//                    });
-//                }
-            }
+            
+            if (tmpPop != null) drawProblem(tmpPop, p.getArchive(), plot);
+            // else : in this case i got a single objective optimization problem
             // draw additional data
-            this.drawAdditionalData(this.m_Plot, p, 10);
+            moProblem.drawAdditionalData(plot, p, 10);
         }
     }
+    
+//    /** This method will draw the current state of the optimization process
+//     * @param p     The current population
+//     */
+//    public static void drawProblem(Population p, Plot plot, AbstractMultiObjectiveOptimizationProblem moProblem) {
+//        ArchivingAllDominating  tmpArch = new ArchivingAllDominating();
+//        Population              tmpPop = null;
+//
+//        if (p.getGeneration() > 2) {
+////            m_Plot = new eva2.gui.Plot("Multiobjective Optimization", "Y1", "Y2");
+//            // i want to plot the pareto front for MOEA and other strategies
+//            // but i have to differentiate between the case where
+//            // there is a true MOEA at work and where the
+//            // MOOpt was converted into a SOOpt
+//            if (AbstractMultiObjectiveOptimizationProblem.isPopulationMultiObjective(p)) {
+//                // in this case i have to use my local archive
+//                tmpPop = moProblem.m_ParetoFront;
+//            } else {
+//                // in this case i use the population of the optimizer
+//                // and eventually the pop.archive if there is one
+//                tmpPop = new Population();
+//                tmpPop.addPopulation(p);
+//                if (p.getArchive() != null) tmpPop.addPopulation(p.getArchive());
+//                tmpArch.addElementsToArchive(tmpPop);
+//                tmpPop = tmpPop.getArchive();
+//            }
+//            if (tmpPop != null) {
+//                // i got either a multiobjective population or a multiobjective local population
+//            	plot.clearAll();
+//                tmpArch.plotParetoFront(tmpPop, plot);
+//                if ((true) && (p.getArchive() != null)) {
+//                    GraphPointSet   mySet = new GraphPointSet(10, plot.getFunctionArea());
+//                    DPoint          myPoint;
+//                    Chart2DDPointIconCircle      icon;
+//                    double[]        tmpD;
+//                    mySet.setConnectedMode(false);
+//                    tmpPop = p.getArchive();
+//                    for (int i = 0; i < tmpPop.size(); i++) {
+//                        icon    = new Chart2DDPointIconCircle();
+//                        tmpD    = ((AbstractEAIndividual)tmpPop.get(i)).getFitness();
+//                        myPoint = new DPoint(tmpD[0], tmpD[1]);
+//                        if (((AbstractEAIndividual)tmpPop.get(i)).getConstraintViolation() > 0) {
+//                            icon.setBorderColor(Color.RED);
+//                            icon.setFillColor(Color.RED);
+//                        } else {
+//                            icon.setBorderColor(Color.BLACK);
+//                            icon.setFillColor(Color.BLACK);
+//                        }
+//                        myPoint.setIcon(icon);
+//                        mySet.addDPoint(myPoint);
+//                    }
+//                }
+//            } else {
+////                // in this case i got a single objective optimization problem
+//            }
+//            // draw additional data
+//            moProblem.drawAdditionalData(plot, p, 10);
+//        }
+//    }
 
-    /** This method will plot a reference solutions or something like it
+    /** 
+     * This method will plot a reference solutions or something like it
      * @param plot      The plot where you can draw your stuff.
      * @param index     The first index where you can draw your stuff
      */
-    public void drawAdditionalData(eva2.gui.Plot plot, Population pop, int index) {
+    public void drawAdditionalData(Plot plot, Population pop, int index) {
         double[] tmpFitness;
         // for example plot the current population
         plot.clearGraph(index);
@@ -270,6 +391,86 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
         plot.setUnconnectedPoint(this.m_Border[0][0], this.m_Border[1][0], index);
     }
 
+    /**
+     * Plot the given population to a MO-plot with red dots for constraint violations and blue otherwise.
+     * The given border is used to set plot limits but may be null.
+     * 
+     * @param plot
+     * @param pop
+     * @param border
+     * @param index
+     */
+	public static void drawWithConstraints(Plot plot, Population pop, double[][] border, int index) {
+        // for example plot the current population
+    	double[][]      trueFitness, moFitness;
+    	double[]        constraint;
+
+    	GraphPointSet mySet = new GraphPointSet(index, plot.getFunctionArea());
+    	DPoint          myPoint;
+    	double          tmp1;
+    	
+    	trueFitness = new double[pop.size()][];
+    	constraint = new double[pop.size()];
+    	if (((AbstractEAIndividual)pop.get(0)).hasData("MOFitness")) {
+    		moFitness   = new double[pop.size()][];
+    	} else moFitness = null;
+    	for (int i = 0; i < pop.size(); i++) {
+    		constraint[i]   = ((AbstractEAIndividual)pop.get(i)).getConstraintViolation();
+    		trueFitness[i]  = ((AbstractEAIndividual)pop.get(i)).getFitness();
+    		if (moFitness != null) moFitness[i]    = (double[])((AbstractEAIndividual)pop.get(i)).getData("MOFitness");
+    	}
+    	mySet.setConnectedMode(false);
+    	for (int i = 0; i < trueFitness.length; i++) {
+    		if (moFitness != null) {
+    			// moso is active
+    			if (checkValidAt(moFitness, i)) {
+    				myPoint = new DPoint(moFitness[i][0], moFitness[i][1]);
+    				tmp1 = Math.round(trueFitness[i][0] *100)/100.0;
+    				addPoint(constraint, mySet, myPoint, i, ""+tmp1);
+    			}
+    		} else {
+    			// no moso is active
+    			if (checkValidAt(trueFitness, i)) {
+    				myPoint = new DPoint(trueFitness[i][0], trueFitness[i][1]);
+    				addPoint(constraint, mySet, myPoint, i, "");
+    			}
+    		}
+    	}
+    	if (border!= null) {
+    		plot.setUnconnectedPoint(border[0][1], border[1][1], index+1);
+    		plot.setUnconnectedPoint(border[0][0], border[1][0], index+1);
+    	}
+    }
+
+	/**
+	 * Check whether the given fitness array contains valid double values at position i.
+	 * 
+	 * @param fitArray
+	 * @param i
+	 * @return
+	 */
+	private static boolean checkValidAt(double[][] fitArray, int i) {
+		return !(new Double(fitArray[i][0]).isNaN()) && !(new Double(fitArray[i][1]).isNaN()) &&
+				!(new Double(fitArray[i][0]).isInfinite()) && !(new Double(fitArray[i][1]).isInfinite());
+	}
+
+	private static void addPoint(double[] constraint, GraphPointSet mySet,
+			DPoint myPoint, int i, String text) {
+		Chart2DDPointIconCircle icon;
+		Chart2DDPointIconText tmp = new Chart2DDPointIconText(text);
+		icon = new Chart2DDPointIconCircle();
+		if (constraint[i] > 0) {
+			icon.setBorderColor(Color.RED);
+			icon.setFillColor(Color.RED);
+		} else {
+			icon.setBorderColor(Color.BLUE);
+			icon.setFillColor(Color.BLUE);
+		}
+		tmp.setIcon(icon);
+		myPoint.setIcon(tmp);
+		mySet.addDPoint(myPoint);
+	}
+	
     /** This method returns a double value that will be displayed in a fitness
      * plot. A fitness that is to be minimized with a global min of zero
      * would be best, since log y can be used. But the value can depend on the problem.

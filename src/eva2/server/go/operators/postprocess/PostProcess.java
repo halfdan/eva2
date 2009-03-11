@@ -612,7 +612,7 @@ public class PostProcess {
 			
 			prob.evaluate(subPop);
 			stepsPerf += subPop.size();
-			subPop.add(candidates.getEAIndividual(i));
+			subPop.add(candidates.getEAIndividual(i).clone());
 			nmPops.add(subPop);
 		}
 		
@@ -636,9 +636,11 @@ public class PostProcess {
 			case cmaES: stepsPerf += PostProcess.processWithCMA(subPop, prob, term, subPop.size()-1); 
 			break;
 			}
+//			if (TRACE) System.out.println("*** after: " + subPop.getBestEAIndividual().getStringRepresentation());
 			if (checkRange(subPop.getBestEAIndividual())) {
 				// and replace corresponding individual (should usually be better)
-				if (subPop.getBestEAIndividual().isDominant(candidates.getEAIndividual(i))) {
+//				if (subPop.getBestEAIndividual().isDominant(candidates.getEAIndividual(i))) { // TODO Multiobjective???
+				if (subPop.getBestEAIndividual().getFitness(0)<candidates.getEAIndividual(i).getFitness(0)) {
 //					System.out.println("moved by "+ PhenotypeMetric.dist(candidates.getEAIndividual(i), subPop.getBestEAIndividual()));
 					subPop.getBestEAIndividual().putData("PostProcessingMovedBy", new Double(PhenotypeMetric.dist(candidates.getEAIndividual(i), subPop.getBestEAIndividual())));
 					candidates.set(i, subPop.getBestEAIndividual());
