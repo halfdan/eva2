@@ -146,7 +146,7 @@ public class MatlabEvalMediator {
     
 	private void logMPOrSysOut(String msg) {
 //		System.out.println("Hurz OR");
-		logMP(msg + "\n");
+		logMP(msg);
 //		else System.out.println("MEM has no MP! " + msg);
 	}
 	
