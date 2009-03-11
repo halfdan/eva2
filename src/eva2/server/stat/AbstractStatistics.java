@@ -174,18 +174,20 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 	protected void finalizeOutput() {
 		if (printFinalVerbosity()) printToTextListener("*******\n Runs performed: " + optRunsPerformed + ", reached target " + convergenceCnt + " times with threshold " + m_StatsParams.getConvergenceRateThreshold() + ", rate " + convergenceCnt/(double)m_StatsParams.getMultiRuns() + '\n');
 		if (printFinalVerbosity()) printToTextListener(" Average function calls: " + (functionCallSum/optRunsPerformed) + "\n");
-		if (printFinalVerbosity() && (bestIndividualAllover != null)) printToTextListener(" Overall best individual		: " + BeanInspector.toString(bestIndividualAllover) + '\n');
-		if (printFinalVerbosity() && (bestIndividualAllover != null)) printToTextListener("     overall solution data	: " + AbstractEAIndividual.getDefaultDataString(bestIndividualAllover) + '\n');
-		if (printFinalVerbosity() && (bestIndividualAllover != null)) printToTextListener("     overall solution fit	: " + BeanInspector.toString(bestIndividualAllover.getFitness()) + '\n');
-		if (refineMultiRuns && (optRunsPerformed>1) && (meanCollection != null)) {
-			if (printFinalVerbosity()) printToTextListener("Averaged performance:\n");
-			for (int i=0; i<meanCollection.size(); i++) divideMean(meanCollection.get(i), optRunsPerformed);
-			if (printFinalVerbosity()) printToTextListener(refineToText(meanCollection, showAvgIntervals));
-		}
-		if ((meanBestOfRunFitness!=null) && (optRunsPerformed>1)) {
-			Mathematics.svDiv((double)optRunsPerformed, meanBestOfRunFitness, meanBestOfRunFitness);
-			if (printFinalVerbosity()) {
-				printToTextListener(" Averaged best run fitness: " + BeanInspector.toString(meanBestOfRunFitness)+"\n");
+		if (printFinalVerbosity() && (bestIndividualAllover != null)) printToTextListener(" Overall best individual: " + BeanInspector.toString(bestIndividualAllover) + '\n');
+		if (printFinalVerbosity() && (bestIndividualAllover != null)) printToTextListener("     Overall solution data	: " + AbstractEAIndividual.getDefaultDataString(bestIndividualAllover) + '\n');
+		if (printFinalVerbosity() && (bestIndividualAllover != null)) printToTextListener("     Overall solution fit	: " + BeanInspector.toString(bestIndividualAllover.getFitness()) + '\n');
+		if (optRunsPerformed>1) {
+			if (meanBestOfRunFitness!=null) {
+				Mathematics.svDiv((double)optRunsPerformed, meanBestOfRunFitness, meanBestOfRunFitness);
+				if (printFinalVerbosity()) {
+					printToTextListener(" Averaged best fitness per run: " + BeanInspector.toString(meanBestOfRunFitness)+"\n");
+				}
+			}
+			if (refineMultiRuns && (meanCollection != null)) {
+				if (printFinalVerbosity()) printToTextListener(" Averaged performance:\n");
+				for (int i=0; i<meanCollection.size(); i++) divideMean(meanCollection.get(i), optRunsPerformed);
+				if (printFinalVerbosity()) printToTextListener(refineToText(meanCollection, showAvgIntervals));
 			}
 		}
 		if (TRACE)
@@ -198,7 +200,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 			resultOut.close();
 		}
 	}
-
+	
     public static String refineToText(ArrayList<double[][]> result, int iterationsToShow) {
     	double[][] mean;
     	StringBuffer sbuf = new StringBuffer("Iteration\tFun.Calls\tBest\tMean\tWorst\n");
