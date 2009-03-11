@@ -257,7 +257,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 	
 	protected String getOutputHeader(List<InterfaceAdditionalPopulationInformer> informerList, PopulationInterface pop) {
 		
-		String headline = "Fit.-calls \t Best \t Mean \t Worst ";
+		String headline = "Fun.calls \t Best \t Mean \t Worst ";
 		if ((informerList == null) || !m_StatsParams.isOutputAdditionalInfo()) {
 			return headline;
 		} else {
