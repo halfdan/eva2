@@ -2746,7 +2746,7 @@ swtch
 \emph on
 fname
 \emph default
- is given, thats the filename the debug information is written to.
+ is given, that's the filename the debug information is written to.
 \end_layout
 
 \begin_layout Description
@@ -3486,7 +3486,7 @@ switch y
 
 \begin_layout Standard
 
-    z(1)=sum(x.*x)+cos(x(1))*sin(x(2)); % modulated sphere
+    z(1)=sum(x.*x)+cos(x(1))*sin(x(2));
 \end_layout
 
 \begin_layout Standard
@@ -3716,7 +3716,7 @@ end{algorithmic}
 \end_layout
 
 \begin_layout Caption
-Optimization from Matlab
+Optimization from the Matlab console
 \begin_inset LatexCommand \label{alg:Optimization-from-Matlab.}
 
 \end_inset

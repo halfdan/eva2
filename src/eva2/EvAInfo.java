@@ -4,6 +4,16 @@ package eva2;
  * Main product and version information strings.
  * 
  * --- Changelog
+ * 2.033: There was an interesting problem with the Matlab-Interface, which just hung up after extensive optimization
+ * 			loops, yet only if Matlab was started without X-forwarding (which is necessary for qsub, e.g.).
+ * 			Debugging was tedious, since the debugging using System.out. itself caused threading deadlocks. The 
+ * 			problem showed up to be with System.out itself. Whatever Matlab does with that stream, it does it differently
+ * 			depending on the X-forwarding option. More specifically, the text written to System.out when X-forwarding
+ * 			is not available seems to never show up (as opposed to being printed to the console when X-forwarding is on)
+ * 			and silently fill up the JVM-memory. I havent the faintest idea why there havnt been OutOfMemory exceptions
+ * 			earlier or whether and how the deadlocks have to do with it. 
+ * 			The ingeniuos solution was: dont print anything to System.out, which is now done at verbosity 0.
+ * 2.032: Some cosmetics, e.g. to AbstractEAIndividualComparator and older MOCCO classes. 
  * 2.031: Some updates to the OptimizerFactory. Review of the MatlabInterface with adding an own options structure.
  * 			Better access to the EvAClient, which now may have a RemoteStateListener added monitoring the optimization run.
  * 2.030: Added an EnumEditor to access enums easily through the GUI, which will replace SelectedTags sometimes.

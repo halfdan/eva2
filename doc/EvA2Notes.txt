@@ -53,6 +53,13 @@ fine and displayed by the GOE due to the update event. However if O.varX influen
 (where U has its own parameter panel instance), this
 will not be visible to the user as O does not trigger updates of child panels.
 This is why sometimes the population size is out of sync in some strategy implementations. (mk, 10/08)
+- Seems that there may be another reason: some optimizers recreate their population instance in 
+every iteration. Since the GUI editors save the target objects they represent, this causes
+problems because the gui editors do not retrieve the new instance on every edit. This means the
+user is editing an old (invalid) instance which is dead w.r.t. to the optimizer. This is BAD.
+Look at how PropertySheetPanel is used - theres the target instance given by GOEPanel.setObject but
+not refreshed when editing internal fields, e.g. (mk, 2/09)
+
  
 - PropertyFilePath only works for "real" files, not within the Probs jar. Look atTSPLibTSPInstance.setFile 
 - Population -> getBest... use multi-objective methods!

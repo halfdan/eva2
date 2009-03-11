@@ -220,7 +220,7 @@ public class MultirunRefiner {
         int         numExp = 0, iteration = 0, lineCnt = 0;
         ArrayList<double[]>   result = new ArrayList<double[]>();
         String line;
-        String runHeader = "Fit.-calls 	 Best 	 Mean 	 Worst 	 Solution";
+        String runHeader = "Fun.calls 	 Best 	 Mean 	 Worst 	 Solution";
         String runFinalizer = " Best solution: ";
         boolean readRun = false;
         

@@ -17,7 +17,7 @@ import eva2.server.go.problems.InterfaceAdditionalPopulationInformer;
 public class StatisticsDummy implements InterfaceStatistics, InterfaceTextListener {
 	boolean consoleOut = false;
 	StatsParameter sParams = null;
-	AbstractEAIndividual bestCurrentIndividual, bestIndividualAllover;
+	AbstractEAIndividual bestCurrentIndividual, bestRunIndy, bestIndividualAllover;
 	
 	public StatisticsDummy() {
 		bestIndividualAllover = null;
@@ -41,6 +41,9 @@ public class StatisticsDummy implements InterfaceStatistics, InterfaceTextListen
 		bestCurrentIndividual = (AbstractEAIndividual)pop.getBestIndividual();
 		if ((bestIndividualAllover == null) || (AbstractStatistics.secondIsBetter(bestIndividualAllover, bestCurrentIndividual))) {
 			bestIndividualAllover = bestCurrentIndividual;
+		}		
+		if ((bestIndividualAllover == null) || (AbstractStatistics.secondIsBetter(bestIndividualAllover, bestCurrentIndividual))) {
+			bestIndividualAllover = bestCurrentIndividual;
 		}
 	}
 
@@ -56,7 +59,11 @@ public class StatisticsDummy implements InterfaceStatistics, InterfaceTextListen
 	public IndividualInterface getBestSolution() {
 		return bestIndividualAllover;
 	}
-
+	
+	public IndividualInterface getRunBestSolution() {
+		return bestRunIndy;
+	}
+	
 	public InterfaceStatisticsParameter getStatisticsParameter() {
 		return sParams;
 	}
@@ -72,7 +79,8 @@ public class StatisticsDummy implements InterfaceStatistics, InterfaceTextListen
 
 	public void startOptPerformed(String InfoString, int runnumber,
 			Object params) {
-		bestIndividualAllover = null;
+		if (runnumber==0) bestIndividualAllover = null;
+		bestRunIndy = null;
 	}
 
 	public void stopOptPerformed(boolean normal, String stopMessage) {}

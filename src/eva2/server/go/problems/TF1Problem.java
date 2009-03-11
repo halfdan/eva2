@@ -1,24 +1,24 @@
 package eva2.server.go.problems;
 
-import wsi.ra.chart2d.DPoint;
-import java.util.ArrayList;
 import java.awt.Color;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
+import java.util.ArrayList;
 
+import wsi.ra.chart2d.DPoint;
+import wsi.ra.math.RNG;
 import eva2.gui.Chart2DDPointIconCircle;
 import eva2.gui.Chart2DDPointIconText;
 import eva2.gui.GraphPointSet;
+import eva2.gui.Plot;
 import eva2.gui.PropertyFilePath;
 import eva2.server.go.individuals.AbstractEAIndividual;
-import eva2.server.go.individuals.ESIndividualDoubleData;
 import eva2.server.go.individuals.InterfaceDataTypeDouble;
 import eva2.server.go.operators.constraint.InterfaceConstraint;
 import eva2.server.go.operators.moso.InterfaceMOSOConverter;
 import eva2.server.go.operators.paretofrontmetrics.InterfaceParetoFrontMetric;
 import eva2.server.go.populations.Population;
 import eva2.server.go.strategies.InterfaceOptimizer;
-import wsi.ra.math.RNG;
 
 /**
  * Created by IntelliJ IDEA.
@@ -36,18 +36,16 @@ public class TF1Problem extends AbstractMultiObjectiveOptimizationProblem implem
     protected double                    m_YOffSet           = 0.0;
     protected boolean                   m_ApplyConstraints  = false;
 
-    transient private GraphPointSet     mySet;
-
+//    transient private GraphPointSet     mySet;
+    
     public TF1Problem() {
-        this.m_Template         = new ESIndividualDoubleData();
-        this.m_Border = new double[2][2];
-        for (int i = 0; i < this.m_Border.length; i++) {
-            this.m_Border[i][0] = 0;
-            this.m_Border[i][1] = 1;
-        }
-        if (this.m_Show) this.initProblemFrame();
+    	super(1.);
     }
-
+    
+    public TF1Problem(double borderHigh) {
+    	super(borderHigh);
+    }
+    
     public TF1Problem(TF1Problem b) {
         //AbstractOptimizationProblem
         if (b.m_Template != null)
@@ -88,18 +86,6 @@ public class TF1Problem extends AbstractMultiObjectiveOptimizationProblem implem
         return (Object) new TF1Problem(this);
     }
 
-    /** This method inits the Problem to log multiruns
-     */
-    public void initProblem() {
-        this.m_Border = new double[2][2];
-        for (int i = 0; i < this.m_Border.length; i++) {
-            this.m_Border[i][0] = 0;
-            this.m_Border[i][1] = 1;
-        }
-        this.m_ParetoFront = new Population();
-        if (this.m_Show) this.initProblemFrame();
-    }
-
     /** This method inits a given population
      * @param population    The populations that is to be inited
      */
@@ -107,11 +93,7 @@ public class TF1Problem extends AbstractMultiObjectiveOptimizationProblem implem
         AbstractEAIndividual tmpIndy;
         this.m_ParetoFront = new Population();
 
-        double[][] newRange = new double[this.m_ProblemDimension][2];
-        for (int i = 0; i < this.m_ProblemDimension; i++) {
-            newRange[i][0] = 0;
-            newRange[i][1] = 1;
-        }
+        double[][] newRange = makeRange();
 
         population.clear();
 
@@ -125,8 +107,20 @@ public class TF1Problem extends AbstractMultiObjectiveOptimizationProblem implem
         // population init must be last
         // it set's fitcalls and generation to zero
         population.init();
-        if (this.m_Show) this.initProblemFrame();
     }
+    
+	protected double[][] makeRange() {
+		return makeRange(0, 1);
+	}
+	
+	protected double[][] makeRange(double lower, double upper) {
+		double[][] newRange = new double[this.m_ProblemDimension][2];
+        for (int i = 0; i < this.m_ProblemDimension; i++) {
+            newRange[i][0] = lower;
+            newRange[i][1] = upper;
+        }
+		return newRange;
+	}
 
     /** This method evaluate a single individual and sets the fitness values
      * @param individual    The individual that is to be evalutated
@@ -194,89 +188,9 @@ public class TF1Problem extends AbstractMultiObjectiveOptimizationProblem implem
         return result;
     }
 
-    /** This method will plot a reference solutions or something like it
-     * @param plot      The plot where you can draw your stuff.
-     * @param index     The first index where you can draw your stuff
-     */
-    public void drawAdditionalData(eva2.gui.Plot plot, Population pop, int index) {
-        double[] tmpFitness;
-        // for example plot the current population
-        //plot.clearGraph(index);
-        if (true) {
-            double[][]      trueFitness, moFitness;
-            double[]        constraint;
-            if (mySet == null) mySet = new GraphPointSet(index, this.m_Plot.getFunctionArea());
-            mySet.removeAllPoints();
-            mySet = new GraphPointSet(index, this.m_Plot.getFunctionArea());
-            DPoint          myPoint;
-            double          tmp1, tmp2;
-            Chart2DDPointIconText tmp;
-            Chart2DDPointIconCircle icon;
-            trueFitness = new double[pop.size()][];
-            constraint = new double[pop.size()];
-            if (((AbstractEAIndividual)pop.get(0)).getData("MOFitness") != null) {
-                moFitness   = new double[pop.size()][];
-            }
-            else moFitness = null;
-            for (int i = 0; i < pop.size(); i++) {
-                constraint[i]   = ((AbstractEAIndividual)pop.get(i)).getConstraintViolation();
-                trueFitness[i]  = ((AbstractEAIndividual)pop.get(i)).getFitness();
-                if (moFitness != null) moFitness[i]    = (double[])((AbstractEAIndividual)pop.get(i)).getData("MOFitness");
-            }
-            mySet.setConnectedMode(false);
-            for (int i = 0; i < trueFitness.length; i++) {
-                if (moFitness != null) {
-                    // moso is active
-                    if (!(new Double(moFitness[i][0]).isNaN()) && !(new Double(moFitness[i][1]).isNaN()) &&
-                                !(new Double(moFitness[i][0]).isInfinite()) && !(new Double(moFitness[i][1]).isInfinite())) {
-                        myPoint = new DPoint(moFitness[i][0], moFitness[i][1]);
-                        tmp1 = Math.round(trueFitness[i][0] *100)/100.0;
-                        tmp = new Chart2DDPointIconText(""+tmp1);
-                        icon = new Chart2DDPointIconCircle();
-                        if (constraint[i] > 0) {
-                            icon.setBorderColor(Color.RED);
-                            icon.setFillColor(Color.RED);
-                        } else {
-                            icon.setBorderColor(Color.BLACK);
-                            icon.setFillColor(Color.BLACK);
-                        }
-                        tmp.setIcon(icon);
-                        myPoint.setIcon(tmp);
-                        mySet.addDPoint(myPoint);
-                    }
-                } else {
-                    // no moso is active
-                    if (!(new Double(trueFitness[i][0]).isNaN()) && !(new Double(trueFitness[i][1]).isNaN()) &&
-                        !(new Double(trueFitness[i][0]).isInfinite()) && !(new Double(trueFitness[i][1]).isInfinite())) {
-                        myPoint = new DPoint(trueFitness[i][0], trueFitness[i][1]);
-                        tmp = new Chart2DDPointIconText("");
-                        icon = new Chart2DDPointIconCircle();
-                        if (constraint[i] > 0) {
-                            icon.setBorderColor(Color.RED);
-                            icon.setFillColor(Color.RED);
-                        } else {
-                            icon.setBorderColor(Color.BLACK);
-                            icon.setFillColor(Color.BLACK);
-                        }
-                        tmp.setIcon(icon);
-                        myPoint.setIcon(tmp);
-                        mySet.addDPoint(myPoint);
-                    }
-                }
-            }
-        }
-//        for (int i = 0; i < pop.size(); i++) {
-//            tmpFitness = ((AbstractEAIndividual)pop.get(i)).getFitness();
-//            if (tmpFitness.length <= 1) tmpFitness = (double[])((AbstractEAIndividual)pop.get(i)).getData("MOFitness");
-//            if (!(new Double(tmpFitness[0]).isNaN()) && !(new Double(tmpFitness[1]).isNaN()) &&
-//                !(new Double(tmpFitness[0]).isInfinite()) && !(new Double(tmpFitness[1]).isInfinite()))
-//                plot.setUnconnectedPoint(tmpFitness[0], tmpFitness[1], index);
-//            else System.out.println("Index "+i+":("+tmpFitness[0]+"/"+tmpFitness[1]+")");
-//        }
-//        System.out.println(".");
-        plot.setUnconnectedPoint(this.m_Border[0][1], this.m_Border[1][1], index+1);
-        plot.setUnconnectedPoint(this.m_Border[0][0], this.m_Border[1][0], index+1);
-    }
+    public void drawAdditionalData(Plot plot, Population pop, int index) {
+		AbstractMultiObjectiveOptimizationProblem.drawWithConstraints(plot, pop, m_Border, index);
+	}
 
     /** This method returns a string describing the optimization problem.
      * @param opt       The Optimizer that is used or had been used.
@@ -424,24 +338,6 @@ public class TF1Problem extends AbstractMultiObjectiveOptimizationProblem implem
     }
     public InterfaceDataTypeDouble getEAIndividual() {
         return (InterfaceDataTypeDouble)this.m_Template;
-    }
-
-    /** This method allows you to toggle pareto-front visualisation on and off.
-     * @param b     True if the pareto-front is to be shown.
-     */
-    public void setShowParetoFront(boolean b) {
-        this.m_Show = b;
-        if (this.m_Show) this.initProblemFrame();
-        else if (this.m_Plot != null) {
-            this.m_Plot.dispose();
-            this.m_Plot = null;
-        }
-    }
-    public boolean getShowParetoFront() {
-        return this.m_Show;
-    }
-    public String showParetoFrontTipText() {
-        return "Toggles the pareto-front visualisation.";
     }
 
     /** This method allows you to set a Multiobjective to
