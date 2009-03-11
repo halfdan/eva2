@@ -55,7 +55,7 @@ public class MatlabEvalMediator {
 	
 	public void setMatlabProblem(MatlabProblem theMP) {
 		mp=theMP;
-		mp.log("setting MP " + theMP + " for MEM " + this + "\n");
+		logMP("setting MP " + theMP + " for MEM " + this + "\n");
 	}
 	
 	/**
@@ -76,15 +76,18 @@ public class MatlabEvalMediator {
 //			
 			if (question == null) System.err.println("Error: requesting evaluation for null array!");
 		} else System.err.println("Error, requesting evaluation for non array!"); 
+//		logMPAndSysOut("Synch requesting A requestEval " + getState());
 		synchronized(requesting) {
+//			logMPAndSysOut(" in synch requesting A requestEval " + getState());
 			if (requesting) {
 				String msg="Warning: already in requesting state when request arrived!";
 				System.err.println(msg);
-				mp.log(msg);
+				logMP(msg);
 			}
 			requesting = true;
-			mp.log("-- Requesting eval for " + BeanInspector.toString(x) + ", req state is " + requesting + "\n"); 
+//			logMPAndSysOut("-- Requesting eval for " + BeanInspector.toString(x) + ", req state is " + requesting + "\n"); 
 		}
+//		logMPAndSysOut("Synch requesting A done " + getState());
 		int k=0; int mod=25;
 		while (requesting && !quit) {
 			// 	wait for matlab to answer the question
@@ -94,13 +97,13 @@ public class MatlabEvalMediator {
 			k++;
 			if ((k%mod)==0) {
 //				System.out.println("waiting for matlab to answer...");
-				mp.log("waiting for matlab to answer... (" + mod + ") " + getState() + "\n");
+				logMP("waiting for matlab to answer... (" + mod + ") " + getState() + "\n");
 				mod*=2;
 				if (mod <=0) mod=Integer.MAX_VALUE;
 				
 			}
 		}
-		mp.log("-- Requesting done\n");
+		logMP("-- Requesting done\n");
 		// matlab is finished, answer is here
 		//return null;
 		return getAnswer(); // return to JE with answer
@@ -115,7 +118,7 @@ public class MatlabEvalMediator {
 	 * For debugging, an integer ID for this run may be provided.
 	 */
 	public void run(int id) {
-		logMPSys("## MEM start run " + id);
+		logMPOrSysOut("## MEM start run " + id);
 		runID=id;		
 		int k=0;int mod=25;
 		while (!requesting && !isFinished() && !quit) {
@@ -123,13 +126,13 @@ public class MatlabEvalMediator {
 			if (sleepTime > 0) try { Thread.sleep(sleepTime); } catch(Exception e) {};
 			k++;
 			if ((k%mod)==0) {
-				logMPSys("MEM waiting for JE to ask... (" + mod +") "  + getState());
+				logMPOrSysOut("MEM waiting for JE to ask... (" + mod +") "  + getState());
 				mod*=2;
 				if (mod<=0) mod = Integer.MAX_VALUE;
 			}
 		}
-		if (requesting) logMPSys("-- MEM Request arrived in MP thread " + runID);
-		else logMPSys("-- MEM finished or quit " + runID); 
+		if (requesting) logMPOrSysOut("-- MEM Request arrived in MP thread " + runID);
+		else logMPOrSysOut("-- MEM finished or quit " + runID); 
 		// requesting is true, now finish and let Matlab work
 	}
 	
@@ -140,12 +143,23 @@ public class MatlabEvalMediator {
 	public void run() {
 		run(0);
 	}
+    
+	private void logMPOrSysOut(String msg) {
+//		System.out.println("Hurz OR");
+		logMP(msg + "\n");
+//		else System.out.println("MEM has no MP! " + msg);
+	}
 	
-	private void logMPSys(String msg) {
-		if (mp!=null) mp.log(msg + "\n");
-		else System.out.println("MEM has no MP! " + msg);
+	private void logMPAndSysOut(String msg) {
+//		System.out.println("Hurz AND");
+//		logMP(msg + "\n");
+//		System.out.println(msg);
 	}
 
+	private void logMP(String msg) {
+		if (mp!=null) mp.log(msg + "\n");
+	}
+	
 	/**
 	 * Cancel waiting in any case.
 	 */
@@ -159,12 +173,12 @@ public class MatlabEvalMediator {
 	 * @return
 	 */
 	public Object getQuestion() {
-		mp.log("-- Question: " + BeanInspector.toString(question) + "\n");
+		logMP("-- Question: " + BeanInspector.toString(question) + "\n");
 		return question;
 	}
 
 	double[] getAnswer() {
-		mp.log("-- mediator delivering " + BeanInspector.toString(answer) + "\n");
+		logMP("-- mediator delivering " + BeanInspector.toString(answer) + "\n");
 		return answer;
 	}
 
@@ -174,11 +188,13 @@ public class MatlabEvalMediator {
 	 * @param y
 	 */
 	public void setAnswer(double[] y) {
+//		logMPAndSysOut("Synch requesting B setAnswer " + getState());
 		synchronized(requesting) {
+//			logMPAndSysOut("In Synch requesting B setAnswer " + getState());
 			if (!requesting) {
 				String msg="Error: not in requesting state when answer arrived!!";
 				System.err.println(msg);
-				mp.log(msg);
+				logMP(msg);
 			}
 //			System.err.println("answer is " + BeanInspector.toString(y)); 
 			if (y==null) {
@@ -187,20 +203,23 @@ public class MatlabEvalMediator {
 			}
 			answer = y;
 			requesting = false; // answer is finished, break request loop
-			mp.log("-- setAnswer: " + BeanInspector.toString(y) + ", req state is " + requesting + "\n");
+			logMP("-- setAnswer: " + BeanInspector.toString(y) + ", req state is " + requesting + "\n");
 		}
+//		logMPAndSysOut("Synch requesting B done " + getState());
 	}
 
 	void setFinished(boolean val) {
+//		logMPAndSysOut("Synch fin " + getState());
 		synchronized (fin) {
 			if (fin && val) {
 				String msg="Error: already finished when setFinished(true) was called!";
 				System.err.println(msg);
-				if (mp!=null) mp.log(msg+"\n");
+				logMP(msg);
 			}
 			fin = val;
-			logMPSys("MEM setFinished ok");
+			logMPOrSysOut("MEM setFinished ok");
 		}
+//		logMPAndSysOut("Synch fin done " + getState());
 	}
 
 	/**

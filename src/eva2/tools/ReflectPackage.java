@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.management.ManagementFactory;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,6 +13,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
+
+import javax.management.MBeanServer;
+import javax.management.ObjectName;
 
 import wsi.ra.tool.BasicResourceLoader;
 
@@ -406,4 +410,36 @@ public class ReflectPackage {
 //		System.out.println("classpath: " + classPath);
 		return classPath.split(File.pathSeparator);
 	}
+	
+    public static Object getHotspotMBean() {
+        MBeanServer server = ManagementFactory.getPlatformMBeanServer();
+        Object bean=null;
+        try {
+        	bean = server.getObjectInstance(new ObjectName("com.sun.management:type=HotSpotDiagnostic"));
+			//bean = server.queryMBeans(null, null);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return bean;
+    }
+    
+    public static Object dumpHeap(String file, boolean live) {
+        MBeanServer server = ManagementFactory.getPlatformMBeanServer();
+        Object ret=null;
+        try {
+//        	void setVMOption(String name, String value)
+        	//-Xrunhprof:heap=dump,format=b
+//        	ret = server.invoke(new ObjectName("com.sun.management:type=HotSpotDiagnostic"), 
+//        			"setVMOption", new Object[]{"agentlib", "hprof=heap=dump,format=a"}, 
+//        			new String[] {"java.lang.String","java.lang.String"});
+//        	ret = server.invoke(new ObjectName("com.sun.management:type=HotSpotDiagnostic"), "getDiagnosticOptions", new Object[] {}, new String[] {});
+        	server.invoke(new ObjectName("com.sun.management:type=HotSpotDiagnostic"), "dumpHeap", new Object[]{file, live}, new String[] {"java.lang.String", "boolean"});
+			//bean = server.queryMBeans(null, null);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return ret;
+    }
 }

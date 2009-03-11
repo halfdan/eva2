@@ -44,7 +44,7 @@ class WaitForEvARunnable implements Runnable {
 				mp.log("reported results.\n");
 				mp.notifyFinished();
 				mp.log("notified finish.\n");
-				System.out.println("Optimization finished: " + mp.getInfoString());
+				if (mp.verbosityLevel > 0) System.out.println("Optimization finished: " + mp.getInfoString());
 			} catch (Exception e) {
 				StringWriter sw = new StringWriter();
 				e.printStackTrace(new PrintWriter(sw));

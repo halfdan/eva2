@@ -427,6 +427,7 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 		log("evaluating " + AbstractEAIndividual.getDefaultStringRepresentation(indy) + "\n");
 		double[] res = handler.requestEval(this, AbstractEAIndividual.getIndyData(indy));
 		log("evaluated to " + BeanInspector.toString(res) + "\n");
+		log("Free mem is " + Runtime.getRuntime().freeMemory() + ", time is " + System.currentTimeMillis() + "\n");
 		indy.SetFitness(res);
 	}
 
