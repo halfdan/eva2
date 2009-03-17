@@ -190,6 +190,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 				if (printFinalVerbosity()) printToTextListener(refineToText(meanCollection, showAvgIntervals));
 			}
 		}
+
 		if (TRACE)
 			System.out.println("End of run");
 		if (resultOut != null) {
@@ -257,7 +258,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 	
 	protected String getOutputHeader(List<InterfaceAdditionalPopulationInformer> informerList, PopulationInterface pop) {
 		
-		String headline = "Fun.calls \t Best \t Mean \t Worst ";
+		String headline = "Fun.calls\t Best\t Mean\t Worst ";
 		if ((informerList == null) || !m_StatsParams.isOutputAdditionalInfo()) {
 			return headline;
 		} else {

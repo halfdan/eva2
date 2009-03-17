@@ -75,7 +75,15 @@ public class RNG extends Random {
    * @return int
    */
   public static int randomInt(int lo,int hi) {
+	  if (hi<lo) {
+		  System.err.println("Invalid boundary values! Returning zero.");
+		  return -1;
+	  }
       int result = (Math.abs(random.nextInt())%(hi-lo+1))+lo;
+      if ((result < lo) || (result > hi)) {
+    	  System.err.println("Error in RNG.randomInt!");
+    	  result = Math.abs(random.nextInt()%(hi-lo+1))+lo;
+      }
       return result;
   }
 
