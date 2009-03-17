@@ -149,9 +149,9 @@ public class EvolutionStrategyIPOP extends EvolutionStrategies implements Interf
     		setMu((initialLambda/2)+1);
     		System.err.println("Warning, too small initial lambda, adapting mu to " + getMu());
     	}
+    	super.setLambda(initialLambda);
     	checkPopulationConstraints();
 		setForceOrigPopSize(false);
-    	super.setLambda(initialLambda);
     	getPopulation().setNotifyEvalInterval(initialLambda);
     	super.init();
     	bestList = new LinkedList<AbstractEAIndividual>();
@@ -244,12 +244,12 @@ public class EvolutionStrategyIPOP extends EvolutionStrategies implements Interf
 	public String globalInfo() {
 		return "An ES with increasing population size.";
 	}
-	
-	protected void checkPopulationConstraints() {
-		if (getLambda()!=initialLambda) setLambda(initialLambda);
-		if (getMu()>getLambda()) System.err.println("Invalid mu/lambda ratio!");
-		super.checkPopulationConstraints();
-	}
+//	
+//	protected void checkPopulationConstraints() {
+//		if (getLambda()!=initialLambda) setLambda(initialLambda);
+//		if (getMu()>getLambda()) System.err.println("Invalid mu/lambda ratio!");
+//		super.checkPopulationConstraints();
+//	}
 	
 	/** Set an initial population size (if smaller lambda this is ignored).
      * @param l    The inital population size.
