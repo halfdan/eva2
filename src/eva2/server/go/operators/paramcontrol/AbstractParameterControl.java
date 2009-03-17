@@ -13,7 +13,7 @@ import eva2.gui.BeanInspector;
  */
 public abstract class AbstractParameterControl implements InterfaceParameterControl {
 	public Object[] initialValues = null;
-	protected static boolean TRACE=true;
+	protected static boolean TRACE=false;
 	
 	public void init(Object obj) {
 		String[] params = getControlledParameters();
