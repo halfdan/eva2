@@ -131,11 +131,43 @@ public class FunctionArea extends DArea implements Serializable {
 	  * @param graphID
 	  */
 	 public void drawCircle(String label, double[] position, int graphID) {
+		 drawIcon(new Chart2DDPointIconCircle(), label, position, graphID);
+	 }
+	 
+	 /**
+	  * Plot an icon to the function area which is annotated with a char and
+	  * a double value. The color corresponds to the color of the graph with given ID
+	  * Icon types are 0: circle, 1: cross, otherwise: point.
+	  * 
+	  * @param label
+	  * @param position
+	  * @param graphID
+	  */
+	 public void drawIcon(int iconType, String label, double[] position, int graphID) {
+		 DPointIcon theIcon;
+		 switch (iconType) {
+		 case 0: theIcon = new Chart2DDPointIconCircle(); break;
+		 case 1: theIcon = new Chart2DDPointIconCross(); break;
+		 default:
+		 case 2: theIcon = new Chart2DDPointIconPoint(); break;
+		 }
+		 drawIcon(theIcon, label, position, graphID);
+	 }
+	 
+	 /**
+	  * Plot a circle icon to the function area which is annotated with a char and
+	  * a double value. The color corresponds to the color of the graph with given ID
+	  * 
+	  * @param label
+	  * @param position
+	  * @param graphID
+	  */
+	 public void drawIcon(DPointIcon theIcon, String label, double[] position, int graphID) {
 		 DPointSet popRep;
 		 popRep = new DPointSet();
 		 popRep.addDPoint(new DPoint(position[0], position[1]));
 		 DPointIcon icon = new Chart2DDPointIconText(label);
-		 ((Chart2DDPointIconText)icon).setIcon(new Chart2DDPointIconCircle());
+		 ((Chart2DDPointIconText)icon).setIcon(theIcon);
 		 ((Chart2DDPointIconText)icon).setColor(getGraphPointSet(graphID).getColor());
 		 popRep.setIcon(icon);
 		 addDElement(popRep);
