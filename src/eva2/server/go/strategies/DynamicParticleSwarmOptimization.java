@@ -122,7 +122,7 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
      * @return	the favourite speed limit.
      */
     public double getFavTrackingSpeed(double[][] range) {
-    	return 2*getRelativeSpeed(getEMASpeed(), range);
+    	return 2*Mathematics.getRelativeLength(getEMASpeed(), range);
     }
 
     /** 
@@ -180,13 +180,13 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
 	protected void plotIndy(double[] curPosition, double[] curVelocity, int index) {
 		if (this.m_Show) {
 			if (plotBestOnly) {
-				return;
-//				if (index != ((Integer)(m_Population.getBestEAIndividual().getData(indexKey)))) return;
-//				else {
+				if (index != ((Integer)(m_Population.getBestEAIndividual().getData(indexKey)))) return;
+				else {
 //					if (lastBestPlot != null) this.m_Plot.setConnectedPoint(lastBestPlot[0], lastBestPlot[1], index);
 //					this.m_Plot.setConnectedPoint(curPosition[0], curPosition[1], index);
-//					lastBestPlot = curPosition.clone();
-//				}
+					this.m_Plot.setUnconnectedPoint(curPosition[0], curPosition[1], index);
+					lastBestPlot = curPosition.clone();
+				}
 			} else {
 				if (curVelocity == null) {
 			
@@ -404,6 +404,9 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
 				System.err.println("Could not perform PSO update, because individual is not instance of InterfaceESIndividual!");
 			}
 		}
+		//if (AbstractEAIndividual.getDoublePosition(indy)[0]<500000) {
+		//	System.err.println(indy.getStringRepresentation());
+		//}
 	}
 
     /** This method will evaluate the current population using the

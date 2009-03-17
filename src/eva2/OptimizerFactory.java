@@ -259,7 +259,7 @@ public class OptimizerFactory {
 		ga.addPopulationChangedEventListener(listener);
 		ga.init();
 
-		listener.registerPopulationStateChanged(ga.getPopulation(), "");
+		if (listener!=null) listener.registerPopulationStateChanged(ga.getPopulation(), "");
 
 		return ga;
 	}

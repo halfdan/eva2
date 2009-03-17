@@ -4,6 +4,10 @@ package eva2;
  * Main product and version information strings.
  * 
  * --- Changelog
+ * 2.034: Adding a generic parameter control method for optimizers, currently used by PSO to adapt inertness depending
+ * 			on EvaluationTerminator or GenerationTerminator instances defining the number of function evaluations.
+ * 			The new package is eva2.server.go.operators.paramcontrol.
+ * 			A Population may now be ordered by a specific fitness criterion, employed, e.g., by Nelder-Mead-Simplex.
  * 2.033: There was an interesting problem with the Matlab-Interface, which just hung up after extensive optimization
  * 			loops, yet only if Matlab was started without X-forwarding (which is necessary for qsub, e.g.).
  * 			Debugging was tedious, since the debugging using System.out. itself caused threading deadlocks. The 

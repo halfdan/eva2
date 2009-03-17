@@ -536,7 +536,19 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
             this.m_Fitness[index] = fitness;
         }
     }
-
+    
+    /** 
+     * This method will set the fitness of the individual to the given value in every component.
+     * If the fitness was null, nothing will be done.
+     * 
+     * @param resetVal   The new fitness array
+     */
+    public void resetFitness(double resetVal) {
+    	if (m_Fitness!=null) {
+    		for (int i=0; i<m_Fitness.length; i++) m_Fitness[i]=resetVal;
+    	}
+    }
+    
     /** This method will check the constraints imposed by the separation schemes
      * for parallelizing MOEAs
      */

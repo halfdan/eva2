@@ -2,6 +2,9 @@ package eva2.tools;
 
 import java.util.Arrays;
 
+import eva2.server.go.individuals.InterfaceDataTypeDouble;
+
+import wsi.ra.math.RNG;
 import wsi.ra.math.Jama.Matrix;
 import wsi.ra.math.interpolation.BasicDataSet;
 import wsi.ra.math.interpolation.InterpolationException;
@@ -433,7 +436,7 @@ public class Mathematics {
 		}
 		return result;
 	}
-
+	
 	/**
 	 * Multiplies (scales) every element of the array v with s returning a new vector.
 	 *
@@ -491,7 +494,20 @@ public class Mathematics {
 			res[i] = v[i] / s;
 		}
 	}
-
+	
+	/**
+	 * Component wise multiplication of vectors: res[i]=u[i]*v[i]
+	 *
+	 * @param s
+	 * @param v
+	 * @return
+	 */
+	public static void vvMultCw(double[] u, double[] v, double[] res) {
+		for (int i = 0; i < res.length; i++) {
+			res[i] = u[i]*v[i];
+		}
+	}
+	
 	/** 
 	 * Return a vector of given length containing zeroes.
 	 * @param n
@@ -616,6 +632,41 @@ public class Mathematics {
 	}
 	
 	/**
+	 * Calculates the norm of the given vector relative to the problem range.
+	 *
+	 * @param vector	a double vector within the range
+	 * @param range		the range in each dimension
+	 * @return			measure of the length relative to the problem range
+	 */
+	public static double getRelativeLength(double[] vector, double[][] range) {
+		double sumV        = 0;
+		double sumR        = 0;
+		for (int i = 0; i < range.length; i++) {
+			sumV += Math.pow(vector[i], 2);
+			sumR += Math.pow(range[i][1] - range[i][0], 2);
+		}
+		sumV = Math.sqrt(sumV);
+		sumR = Math.sqrt(sumR);
+		return sumV/sumR;
+	}
+	
+	/**
+	 * Create a random vector, the components will be set to gaussian distributed
+	 * values with mean zero and the given standard deviation.
+	 *  
+	 * @param dim the desired dimension
+	 * @param stdDev the gaussian standard deviation
+	 * @return	 random vector
+	 */
+	public static double[] randomVector(int dim, double stdDev) {
+		double[] vect   = new double[dim];
+		for (int j = 0; j < vect.length; j++) {
+			vect[j]    = RNG.gaussianDouble(stdDev);
+		}
+		return vect;
+	}
+	
+	/**
 	 * Normalizes the doubles in the array by their sum,
 	 * so that they add up to one.
 	 * @param doubles the array of double
@@ -676,6 +727,52 @@ public class Mathematics {
 		return A;
 	}
 
+	/**
+	 * Rotate the vector by angle alpha around axis i/j
+	 * 
+	 * @param vect
+	 * @param alpha
+	 * @param i
+	 * @param j
+	 */
+	public static void rotate(double[] vect, double alpha, int i, int j) {
+		double xi = vect[i];
+		double xj = vect[j];
+		vect[i] = (xi*Math.cos(alpha))-(xj*Math.sin(alpha));
+		vect[j] = (xi*Math.sin(alpha))+(xj*Math.cos(alpha));
+	}
+	
+	/**
+	 * Rotate the vector along all axes by angle alpha or a uniform random value
+	 * in [-alpha, alpha] if randomize is true.
+	 *  
+	 * @param vect
+	 * @param alpha
+	 * @param randomize
+	 */
+	public static void rotateAllAxes(double[] vect, double alpha, boolean randomize) {
+		for (int i=0; i<vect.length-1; i++) {
+			for (int j=i+1; j<vect.length; j++) {
+				if (randomize) rotate(vect, RNG.randomDouble(-alpha,alpha), i, j);
+				else rotate(vect, alpha, i, j);
+			}
+		}
+	}
+	
+	/**
+	 * Rotate the vector along all axes i/j by angle alphas[i][j].
+	 *  
+	 * @param vect
+	 * @param alphas
+	 */
+	public static void rotateAllAxes(double[] vect, double[][] alphas) {
+		for (int i=0; i<vect.length-1; i++) {
+			for (int j=i+1; j<vect.length; j++) {
+				rotate(vect, alphas[i][j], i, j);
+			}
+		}
+	}
+	
 	public static double max(double[] vals) {
 		double maxVal = vals[0];
 		for (int i=1; i<vals.length; i++) maxVal = Math.max(maxVal, vals[i]);
@@ -700,6 +797,21 @@ public class Mathematics {
 			if (x[i]<range[i][0] || (x[i]>range[i][1])) return false;
 		}
 		return true;
+	}
+	
+	/**
+	 * Return the vector of interval length values in any dimension.
+	 * ret[i]=range[i][1]-range[i][0]; 
+	 *
+	 * @param range
+	 * @return
+	 */
+	public static double[] shiftRange(double[][] range) {
+		double[] ret = new double[range.length];
+		for (int i = 0; i < ret.length; i++) {
+			ret[i]=range[i][1]-range[i][0];
+		}
+		return ret;
 	}
 	
 	/**

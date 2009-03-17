@@ -8,7 +8,10 @@ import eva2.gui.BeanInspector;
 import eva2.server.go.InterfaceGOParameters;
 import eva2.server.go.InterfacePopulationChangedEventListener;
 import eva2.server.go.InterfaceProcessor;
+import eva2.server.go.InterfaceTerminator;
 import eva2.server.go.PopulationInterface;
+import eva2.server.go.operators.paramcontrol.ConstantParameters;
+import eva2.server.go.operators.paramcontrol.InterfaceParameterControl;
 import eva2.server.go.operators.postprocess.PostProcess;
 import eva2.server.go.operators.postprocess.PostProcessParams;
 import eva2.server.go.operators.terminators.EvaluationTerminator;
@@ -16,6 +19,7 @@ import eva2.server.go.operators.terminators.GenerationTerminator;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.AbstractOptimizationProblem;
 import eva2.server.go.problems.InterfaceAdditionalPopulationInformer;
+import eva2.server.go.strategies.InterfaceOptimizer;
 import eva2.server.stat.InterfaceStatistics;
 import eva2.server.stat.InterfaceTextListener;
 import eva2.server.stat.StatisticsWithGUI;
@@ -202,14 +206,19 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
         	//m_Statistics.createNextGenerationPerformed((PopulationInterface)this.m_ModulParameter.getOptimizer().getPopulation());
         	if (m_ListenerModule!=null) m_ListenerModule.updateProgress(getStatusPercent(goParams.getOptimizer().getPopulation(), runCounter, m_Statistics.getStatisticsParameter().getMultiRuns()), null);
         	if (popLog != null) EVAHELP.clearLog(popLog);
+        	maybeInitParamCtrl(goParams.getOptimizer());
+        	
         	do {	// main loop
+        		maybeUpdateParamCtrl(goParams.getOptimizer(), goParams.getTerminator());
+
         		this.goParams.getOptimizer().optimize();
         		// registerPopulationStateChanged *SHOULD* be fired by the optimizer or resp. the population
         		// as we are event listener
         		if (popLog != null) EVAHELP.logString(this.goParams.getOptimizer().getPopulation().getIndyList(), popLog);
         	} while (isOptRunning() && !this.goParams.getTerminator().isTerminated(this.goParams.getOptimizer().getAllSolutions()));
         	runCounter++;
-
+        	maybeFinishParamCtrl(goParams.getOptimizer());
+        	
         	//////////////// Default stats
         	m_Statistics.stopOptPerformed(isOptRunning(), goParams.getTerminator().lastTerminationMessage()); // stop is "normal" if opt wasnt set false by the user (and thus still true)
         	
@@ -228,7 +237,42 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
         return resultPop;
     }
     
-    /**
+    private void maybeInitParamCtrl(InterfaceOptimizer optimizer) {
+    	Object paramCtrl=null;
+    	if (null!=(paramCtrl=BeanInspector.callIfAvailable(optimizer, "getParamControl", null))) {
+    		if (paramCtrl instanceof InterfaceParameterControl) {
+    			if (!(paramCtrl instanceof ConstantParameters)) {
+    				((InterfaceParameterControl)paramCtrl).init(optimizer);
+    			}
+    		}
+    	}
+	}
+    
+    private void maybeFinishParamCtrl(InterfaceOptimizer optimizer) {
+    	Object paramCtrl=null;
+    	if (null!=(paramCtrl=BeanInspector.callIfAvailable(optimizer, "getParamControl", null))) {
+    		if (paramCtrl instanceof InterfaceParameterControl) {
+    			if (!(paramCtrl instanceof ConstantParameters)) {
+    				((InterfaceParameterControl)paramCtrl).finish(optimizer);
+    			}
+    		}
+    	}
+	}
+    private void maybeUpdateParamCtrl(InterfaceOptimizer optimizer,
+			InterfaceTerminator terminator) {
+    	Object paramCtrl=null;
+    	if (null!=(paramCtrl=BeanInspector.callIfAvailable(optimizer, "getParamControl", null))) {
+    		if (paramCtrl instanceof InterfaceParameterControl) {
+    			if (!(paramCtrl instanceof ConstantParameters)) {
+    				if (terminator instanceof GenerationTerminator) ((InterfaceParameterControl)paramCtrl).updateParameters(optimizer, optimizer.getPopulation().getGeneration(),  ((GenerationTerminator)terminator).getGenerations());
+    				else if (terminator instanceof EvaluationTerminator) ((InterfaceParameterControl)paramCtrl).updateParameters(optimizer, optimizer.getPopulation().getFunctionCalls(), ((EvaluationTerminator)terminator).getFitnessCalls());
+    				else ((InterfaceParameterControl)paramCtrl).updateParameters(optimizer);
+    			}
+    		}
+    	}
+	}
+
+	/**
      * Calculate the percentage of current (multi-)run already performed, based on evaluations/generations 
      * for the EvaluationTerminator/GenerationTerminator or multi-runs only.
      * 

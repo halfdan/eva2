@@ -3,6 +3,7 @@ package eva2.server.go.strategies;
 import java.util.Vector;
 
 import wsi.ra.math.RNG;
+import eva2.gui.BeanInspector;
 import eva2.gui.GenericObjectEditor;
 import eva2.server.go.InterfacePopulationChangedEventListener;
 import eva2.server.go.enums.DETypeEnum;
@@ -329,6 +330,11 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
 	}
     
     private AbstractEAIndividual getRandomIndy(Population pop) {
+    	if (pop.size()<1) {
+    		System.err.println("Error: invalid pop size in DE!");
+    		System.err.println("DE: \n"+ BeanInspector.toString(this) + "\nPop: \n" + BeanInspector.toString(pop));
+    	}
+    	
     	int randIndex = RNG.randomInt(0, pop.size()-1);
     	return pop.getEAIndividual(randIndex);
     }
@@ -345,7 +351,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
 	public void optimize() {
         AbstractEAIndividual    indy = null, org;
         int index;
-        
+
         int nextDoomed = getNextDoomed(m_Population, 0);
         
         // required for dynamic problems especially
@@ -354,7 +360,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
          * MK: added aging mechanism to provide for dynamically changing problems. If an individual
          * reaches the age limit, it is doomed and replaced by the next challenge vector, even if its worse.
          */
-        
+
         for (int i = 0; i < this.m_Population.size(); i++) {
         	indy = this.generateNewIndividual(this.m_Population);
         	this.m_Problem.evaluate(indy);

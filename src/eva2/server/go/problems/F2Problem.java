@@ -35,6 +35,7 @@ public class F2Problem extends F1Problem implements InterfaceMultimodalProblem, 
         for (int i = 0; i < x.length-1; i++) {
             result[0]  += (100*(x[i+1]-x[i]*x[i])*(x[i+1]-x[i]*x[i])+(x[i]-1)*(x[i]-1));
         }
+        if (result[0]<=0) result[0]=Math.sqrt(Double.MIN_VALUE); // guard for plots in log scale
         return result;
     }
 

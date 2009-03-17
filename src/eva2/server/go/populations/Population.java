@@ -57,10 +57,12 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     private int lastQModCount = -1;
     // a sorted queue (for efficiency)
     transient private ArrayList<AbstractEAIndividual> sortedArr = null;
+    private int lastFitCrit = -1;
+    
     // remember when the last evaluation was performed
-	private Pair<Integer,Integer> evaluationTimeHashes = null;
+//	private Pair<Integer,Integer> evaluationTimeHashes = null;
     // remember when the last evaluation was performed
-	private int evaluationTimeModCount = -1;
+//	private int evaluationTimeModCount = -1;
 
     public Population() {
     }
@@ -154,8 +156,8 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
         this.m_History = new ArrayList();
         this.m_Generation       = 0;
         this.m_FunctionCalls    = 0;
-    	evaluationTimeHashes = null;
-    	evaluationTimeModCount = -1;
+//    	evaluationTimeHashes = null;
+//    	evaluationTimeModCount = -1;
         if (this.m_Archive != null) {
             this.m_Archive.clear();
             this.m_Archive.init();
@@ -373,9 +375,26 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
         return domSet;
 	}
 
-	private boolean compareFit(boolean bChooseBetter, double[] fit1, double[] fit2) {
-		if (bChooseBetter) return AbstractEAIndividual.isDominatingFitness(fit1, fit2);
-		else return AbstractEAIndividual.isDominatingFitness(fit2, fit1);
+	
+	/**
+	 * Compare two fitness vectors. If bChooseBetter is true, the function delivers the predicate
+	 * "first is better than second" using the fitness component indicated by fitIndex or a dominance
+	 * criterion if fitIndex < 0.
+	 * 
+	 * @param bChooseBetter
+	 * @param fit1
+	 * @param fit2
+	 * @param fitIndex
+	 * @return
+	 */
+	private boolean compareFit(boolean bChooseBetter, double[] fit1, double[] fit2, int fitIndex) {
+		if (fitIndex < 0) { // multiobjective case
+			if (bChooseBetter) return AbstractEAIndividual.isDominatingFitness(fit1, fit2);
+			else return AbstractEAIndividual.isDominatingFitness(fit2, fit1);
+		} else {
+			if (bChooseBetter) return fit1[fitIndex]<fit2[fitIndex];
+			else return fit1[fitIndex]>fit2[fitIndex];
+		}
 	}
 	
 	/** 
@@ -387,7 +406,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      */
     public int getIndexOfBestIndividual() {
     	if (size()<1) return -1;
-    	return getIndexOfBestOrWorstIndividual(true, true);
+    	return getIndexOfBestOrWorstIndividual(true, true, -1);
     }
 	
 	/** 
@@ -398,7 +417,31 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      * @return The index of the best individual.
      */
     public int getIndexOfWorstIndividual() {
-    	return getIndexOfBestOrWorstIndividual(false, false);
+    	return getIndexOfBestOrWorstIndividual(false, false, -1);
+    }
+    
+	/** 
+	 * This method will return the index of the current best individual from the
+     * population in the given fitness component (or using dominance when fitIndex < 0).
+     * If the population is empty, -1 is returned.
+     * 
+     * @see getIndexOfBestOrWorstIndividual()
+     * @return The index of the best individual.
+     */
+    public int getIndexOfBestIndividual(int fitIndex) {
+    	if (size()<1) return -1;
+    	return getIndexOfBestOrWorstIndividual(true, true, fitIndex);
+    }
+	
+	/** 
+	 * This method will return the index of the current best individual from the
+     * population in the given fitness component (or using dominance when fitIndex < 0).
+     * 
+     * @see getIndexOfBestOrWorstIndividual()
+     * @return The index of the best individual.
+     */
+    public int getIndexOfWorstIndividual(int fitIndex) {
+    	return getIndexOfBestOrWorstIndividual(false, false, fitIndex);
     }
     
 	/** 
@@ -412,7 +455,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      * @param indicate whether constraints should be regarded
      * @return The index of the best (worst) individual.
      */
-    public int getIndexOfBestOrWorstIndividual(boolean bBest, boolean checkConstraints) {
+    public int getIndexOfBestOrWorstIndividual(boolean bBest, boolean checkConstraints, int fitIndex) {
         int     result          = -1;
         double[]  curSelFitness = null;
         boolean allViolate = true;
@@ -420,7 +463,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
         for (int i = 0; i < super.size(); i++) {
             if (!checkConstraints || !(getEAIndividual(i).violatesConstraint())) {
             	allViolate = false;
-            	if ((result<0) || (compareFit(bBest, getEAIndividual(i).getFitness(), curSelFitness))) {
+            	if ((result<0) || (compareFit(bBest, getEAIndividual(i).getFitness(), curSelFitness, fitIndex))) {
             		// fit i is better than remembered
             		result          = i;
             		curSelFitness  = getEAIndividual(i).getFitness(); // remember fit i
@@ -460,16 +503,28 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      * @return The best individual
      */
     public AbstractEAIndividual getBestEAIndividual() {
+    	return getBestEAIndividual(-1);
+    }
+    
+    /** 
+     * This method returns the current best individual from the population 
+     * by a given fitness component.
+     * If the population is empty, null is returned.
+     *
+     * @param fitIndex the fitness criterion index or -1
+     * @return The best individual
+     */
+    public AbstractEAIndividual getBestEAIndividual(int fitIndex) {
     	if (size()<1) return null;
-        int best = this.getIndexOfBestIndividual();
-        if (best == -1) {
-        	System.err.println("This shouldnt happen!");
-        	return null;
-        } else {
-        	AbstractEAIndividual result = (AbstractEAIndividual)this.get(best);
-        	if (result == null) System.err.println("Serious Problem! Population Size: " + this.size());
-        	return result;
-        }
+    	int best = this.getIndexOfBestIndividual(fitIndex);
+    	if (best == -1) {
+    		System.err.println("This shouldnt happen!");
+    		return null;
+    	} else {
+    		AbstractEAIndividual result = (AbstractEAIndividual)this.get(best);
+    		if (result == null) System.err.println("Serious Problem! Population Size: " + this.size());
+    		return result;
+    	}
     }
 
     /** 
@@ -548,14 +603,34 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     }
     
     /**
-     * Avoids having to sort again in several calls without modifications in between.
+     * Set a fitness criterion for sorting procedures. This also affects getBest
+     * @param fitIndex
+     */
+    public void setSortingFitnessCriterion(int fitIndex) {
+    	getSorted(fitIndex);
+    }
+    
+    /**
+     * Reuses the last fitness criterion. Avoid having to sort again in several calls without modifications in between.
      * The returned array should not be modified!
      * 
      * @return
      */
     protected ArrayList<AbstractEAIndividual> getSorted() {
-    	if (sortedArr == null || (super.modCount != lastQModCount)) {
-    		PriorityQueue<AbstractEAIndividual> sQueue = new PriorityQueue<AbstractEAIndividual>(super.size(), new AbstractEAIndividualComparator());
+    	return getSorted(lastFitCrit);
+    }
+
+    /**
+     * Avoids having to sort again in several calls without modifications in between.
+     * The returned array should not be modified!
+     * 
+     * @param fitIndex the fitness criterion to be used or -1 for pareto dominance
+     * @return
+     */
+    protected ArrayList<AbstractEAIndividual> getSorted(int fitIndex) {
+    	if ((fitIndex != lastFitCrit) || (sortedArr == null) || (super.modCount != lastQModCount)) {
+    		lastFitCrit=fitIndex; // TODO check if this works right?
+    		PriorityQueue<AbstractEAIndividual> sQueue = new PriorityQueue<AbstractEAIndividual>(super.size(), new AbstractEAIndividualComparator(fitIndex));
     		for (int i = 0; i < super.size(); i++) {
     			AbstractEAIndividual indy = getEAIndividual(i);
     			if (indy != null) sQueue.add(indy);
@@ -568,7 +643,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     	}
     	return sortedArr;
     }
-    	
+    
     /** This method returns n random best individuals from the population.
      * 
      * @param n	number of individuals to look out for
@@ -635,7 +710,11 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      * @return The best individual
      */
     public AbstractEAIndividual getWorstEAIndividual() {
-    	return getEAIndividual(getIndexOfWorstIndividual());
+    	return getWorstEAIndividual(-1);
+    }
+    
+	public AbstractEAIndividual getWorstEAIndividual(int fitIndex) {
+    	return getEAIndividual(getIndexOfWorstIndividual(fitIndex));
     }
 
     /** 
@@ -1046,7 +1125,8 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
 	 */
 	public double[] getCenterWeighted(AbstractSelProb selProb, int criterion, boolean obeyConst) {
 		selProb.computeSelectionProbability(this, "Fitness", obeyConst);
-		double[] mean = AbstractEAIndividual.getDoublePosition(getEAIndividual(0));
+		double[] mean = AbstractEAIndividual.getDoublePosition(getEAIndividual(0)).clone();
+		
 		if (mean != null) {
 			Arrays.fill(mean, 0.);
 			AbstractEAIndividual indy = null;

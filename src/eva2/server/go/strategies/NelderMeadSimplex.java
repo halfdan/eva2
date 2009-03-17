@@ -3,13 +3,8 @@ package eva2.server.go.strategies;
 import java.io.Serializable;
 import java.util.Vector;
 
-import com.sun.org.apache.bcel.internal.generic.CHECKCAST;
-
-import eva2.OptimizerFactory;
-import eva2.OptimizerRunnable;
 import eva2.gui.BeanInspector;
 import eva2.server.go.InterfacePopulationChangedEventListener;
-import eva2.server.go.InterfaceTerminator;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceDataTypeDouble;
 import eva2.server.go.populations.InterfaceSolutionSet;
@@ -18,7 +13,6 @@ import eva2.server.go.populations.SolutionSet;
 import eva2.server.go.problems.AbstractOptimizationProblem;
 import eva2.server.go.problems.AbstractProblemDouble;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import eva2.server.stat.StatsParameter;
 import eva2.tools.Mathematics;
 
 /**
@@ -34,6 +28,8 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
 	private int populationSize = 100;
 	// simulating the generational cycle. Set rather small (eg 5) for use as local search, higher for global search (eg 50)
 	private int	generationCycle = 50;
+	
+	private int fitIndex = 0; // choose criterion for multi objective functions
 	
 	private Population m_Population;
 	private AbstractOptimizationProblem m_Problem;
@@ -96,14 +92,31 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
 		return r;
 	}
 	
+	protected boolean firstIsBetter(double[] first, double[] second) {
+		return first[fitIndex]<second[fitIndex];
+	}
+	
+	protected boolean firstIsBetterEqual(double[] first, double[] second) {
+		return first[fitIndex]<=second[fitIndex];
+	}
+	
+	protected boolean firstIsBetter(AbstractEAIndividual first, AbstractEAIndividual second) {
+		return firstIsBetter(first.getFitness(), second.getFitness());
+	}
+	
+	protected boolean firstIsBetterEqual(AbstractEAIndividual first, AbstractEAIndividual second) {
+		return firstIsBetterEqual(first.getFitness(), second.getFitness());
+	}
+	
 	public AbstractEAIndividual simplexStep(Population subpop) {
 		// parameter
 
-		// hole die n-1 besten individuen
+		// hole die n-1 besten individuen der fitness dimension fitIndex
+		subpop.setSortingFitnessCriterion(fitIndex);
 		Population bestpop = subpop.getBestNIndividuals(subpop.size()-1);
 		// und das schlechteste
-		AbstractEAIndividual worst = subpop.getWorstEAIndividual();
-		AbstractEAIndividual best=subpop.getBestEAIndividual();
+		AbstractEAIndividual worst = subpop.getWorstEAIndividual(fitIndex);
+		AbstractEAIndividual best=subpop.getBestEAIndividual(fitIndex);
 		
 		double[][] range = ((InterfaceDataTypeDouble) worst).getDoubleRange();
 		double[] x_worst = ((InterfaceDataTypeDouble) worst).getDoubleData();
@@ -126,17 +139,15 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
 				Mathematics.reflectBounds(r, range);
 			}
 		}
-		AbstractEAIndividual r_ind = (AbstractEAIndividual)((AbstractEAIndividual)bestpop.getIndividual(1)).clone(); 
-		((InterfaceDataTypeDouble)r_ind).SetDoubleGenotype(r);
+		AbstractEAIndividual reflectedInd = (AbstractEAIndividual)((AbstractEAIndividual)bestpop.getIndividual(1)).clone(); 
+		((InterfaceDataTypeDouble)reflectedInd).SetDoubleGenotype(r);
 
-		m_Problem.evaluate(r_ind);
+		m_Problem.evaluate(reflectedInd);
 		this.m_Population.incrFunctionCalls();
 
-		if ((best.getFitness(0)<r_ind.getFitness(0))&(r_ind.getFitness(0) < bestpop.getWorstEAIndividual().getFitness(0))) {               // Problem: Fitnesswert ist vektor
-
-			return r_ind;
-		} else if (best.getFitness(0)>r_ind.getFitness(0)){ //neues besser als bisher bestes => Expansion
-
+		if (firstIsBetter(best, reflectedInd) && firstIsBetter(reflectedInd, bestpop.getWorstEAIndividual(fitIndex))) {
+			return reflectedInd;
+		} else if (firstIsBetter(reflectedInd, best)) { //neues besser als bisher bestes => Expansion
 			double[] e = new double[dim];
 			for (int i=0; i<dim; i++)  e[i] = 3*centroid[i] - 2*x_worst[i];
 			if (checkConstraints && !Mathematics.isInRange(e, range)) Mathematics.projectToRange(e, range);
@@ -145,13 +156,13 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
 			((InterfaceDataTypeDouble)e_ind).SetDoubleGenotype(e);
 			m_Problem.evaluate(e_ind);
 			this.m_Population.incrFunctionCalls();
-			if(e_ind.getFitness(0)<r_ind.getFitness(0)){//expandiertes ist besser als reflektiertes
+			if (firstIsBetter(e_ind, reflectedInd)) { //expandiertes ist besser als reflektiertes
 				return e_ind;
 			} else {
-				return r_ind;
+				return reflectedInd;
 			}
-
-		} else if(r_ind.getFitness(0) >= bestpop.getWorstEAIndividual().getFitness(0)){//kontrahiere da neues indi keine verbesserung brachte
+		} else if (firstIsBetterEqual(bestpop.getWorstEAIndividual(fitIndex), reflectedInd)) {
+			//kontrahiere da neues indi keine verbesserung brachte
 			double[] c = new double[dim];
 			for (int i=0; i<dim; i++)  c[i] = 0.5*centroid[i] + 0.5*x_worst[i];
 			if (checkConstraints && !Mathematics.isInRange(c, range)) Mathematics.projectToRange(c, range);
@@ -160,7 +171,7 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
 			((InterfaceDataTypeDouble)c_ind).SetDoubleGenotype(c);
 			m_Problem.evaluate(c_ind);
 			this.m_Population.incrFunctionCalls();
-			if(c_ind.getFitness(0)<=worst.getFitness(0)){
+			if(firstIsBetterEqual(c_ind, worst)) {
 				return c_ind;
 			}
 		}
@@ -176,7 +187,7 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
 	}
 
 	public String globalInfo() {
-		return "The Nelder-Mead simplex search algorithm for local search. Reflection is used as constra";
+		return "The Nelder-Mead simplex search algorithm for local search. Reflection on bounds may be used for constraint handling.";
 	}
 
 	public Population getPopulation() {
@@ -235,10 +246,10 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
 //					m_Problem.evaluate(ind);
 //					this.m_Population.incrFunctionCalls();
 				}
-				m_Population.set(m_Population.getIndexOfWorstIndividual(), ind);
+				m_Population.set(m_Population.getIndexOfWorstIndividual(fitIndex), ind);
 			}else{//keine Verbesserung gefunden shrink!!
 				
-				double[] u_1 = ((InterfaceDataTypeDouble) m_Population.getBestEAIndividual()).getDoubleData();
+				double[] u_1 = ((InterfaceDataTypeDouble) m_Population.getBestEAIndividual(fitIndex)).getDoubleData();
 				
 				for(int j=0;j<m_Population.size();j++){
 					double [] c= ((InterfaceDataTypeDouble) m_Population.getEAIndividual(j)).getDoubleData();
@@ -413,6 +424,18 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
 	
 	public String checkRangeTipText() {
 		return "Mark to check range constraints by reflection/projection";
+	}
+
+	public int getCritIndex() {
+		return fitIndex;
+	}
+
+	public void setCritIndex(int fitIndex) {
+		this.fitIndex = fitIndex;
+	}
+	
+	public String critIndexTipText() {
+		return "For multi-criterial problems, set the index of the fitness to be used in 0..n-1. Default is 0";
 	}
 
 }

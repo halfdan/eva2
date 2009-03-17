@@ -15,9 +15,12 @@ import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.AbstractEAIndividualComparator;
 import eva2.server.go.individuals.InterfaceDataTypeDouble;
 import eva2.server.go.operators.distancemetric.PhenotypeMetric;
+import eva2.server.go.operators.paramcontrol.ConstantParameters;
+import eva2.server.go.operators.paramcontrol.InterfaceParameterControl;
 import eva2.server.go.populations.InterfaceSolutionSet;
 import eva2.server.go.populations.Population;
 import eva2.server.go.populations.SolutionSet;
+import eva2.server.go.problems.AbstractOptimizationProblem;
 import eva2.server.go.problems.F1Problem;
 import eva2.server.go.problems.Interface2DBorderProblem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
@@ -71,6 +74,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 	protected boolean 							wrapTopology = true;
 	protected int								treeBranchDeg = 3;
 	protected int								treeLevels, treeOrphans, treeLastFullLevelNodeCnt;
+	protected InterfaceParameterControl			paramControl = new ConstantParameters();
 	
 	/**
 	 * InertnessOrChi may contain the inertness or chi parameter depending on algoType
@@ -174,13 +178,10 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 	public static void initIndividualDefaults(AbstractEAIndividual indy, double initialV) {
 		double[] writeData;
 		// init velocity
-		writeData   = new double[((InterfaceDataTypeDouble)indy).getDoubleData().length];
-		for (int j = 0; j < writeData.length; j++) {
-			writeData[j]    = RNG.gaussianDouble(1.0);
-			//sum             += (writeData[j])*(writeData[j]);
-		}
+		writeData=Mathematics.randomVector(((InterfaceDataTypeDouble)indy).getDoubleData().length, 1); 
+		
 		//sum = Math.sqrt(sum);
-		double relSpeed = getRelativeSpeed(writeData, ((InterfaceDataTypeDouble)indy).getDoubleRange());
+		double relSpeed = Mathematics.getRelativeLength(writeData, ((InterfaceDataTypeDouble)indy).getDoubleRange());
 		for (int j = 0; j < writeData.length; j++) {
 			writeData[j]    = (writeData[j]/relSpeed)*initialV;
 		}
@@ -216,7 +217,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 			double[] curAvVelAndSpeed;
 			if (population.getGeneration() == 0) return;
 			
-			curAvVelAndSpeed = getPopulationVelSpeed(population, 3);
+			curAvVelAndSpeed = getPopulationVelSpeed(population, 3, partVelKey, partTypeKey, defaultType);
 			double[][] range = ((InterfaceDataTypeDouble)population.get(0)).getDoubleRange();
 			if (tracedVelocity == null) {
 				tracedVelocity = new double[((InterfaceDataTypeDouble)population.get(0)).getDoubleData().length];
@@ -228,7 +229,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 					addMovingAverage(tracedVelocity, curAvVelAndSpeed, 2./(emaPeriods+1));
 				}
 			}
-			if (m_Show) System.out.println(population.getGeneration() + " - abs avg " + curAvVelAndSpeed[curAvVelAndSpeed.length - 1] + ", vect " + getRelativeSpeed(curAvVelAndSpeed, range) + ", rel " + (curAvVelAndSpeed[curAvVelAndSpeed.length - 1]/getRelativeSpeed(curAvVelAndSpeed, range)));
+			if (m_Show) System.out.println(population.getGeneration() + " - abs avg " + curAvVelAndSpeed[curAvVelAndSpeed.length - 1] + ", vect " + Mathematics.getRelativeLength(curAvVelAndSpeed, range) + ", rel " + (curAvVelAndSpeed[curAvVelAndSpeed.length - 1]/Mathematics.getRelativeLength(curAvVelAndSpeed, range)));
 		}
 	}
 
@@ -244,7 +245,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 	}
 
 	public double getRelativeEMASpeed(double[][] range) {
-		return getRelativeSpeed(getEMASpeed(), range);
+		return Mathematics.getRelativeLength(getEMASpeed(), range);
 	}
 
 	/**
@@ -252,14 +253,19 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 	 * in the population. The mode switch may be 1 then the vectorial swarm velocity is returned; if it
 	 * is 2, the average speed relative to the range is returned (double array of length one); if it is 3 both
 	 * is returned in one array where the average absolute speed is in the last entry. 
+	 * The velocity vector key is to be passed over. Optionally, an additional identifier is tested - they may be null.
+	 * @see AbstractEAIndividual.getData(String)
 	 *
 	 * @param pop		the swarm population
 	 * @param calcModeSwitch		mode switch
+	 * @param velocityKey	String to access velocity vector within AbstractEAIndividual
+	 * @param typeString	optional type string to access individual type
+	 * @param requiredType optional required type identifier of the individual. 
 	 * @return	double array containing the vectorial sum of particle velocities or an array containing the average absolute speed 
 	 */
-	private double[] getPopulationVelSpeed(Population pop, int calcModeSwitch) {
+	public static double[] getPopulationVelSpeed(Population pop, int calcModeSwitch, final String velocityKey, final String typeString, final Object requiredType) {
 		AbstractEAIndividual indy = (AbstractEAIndividual)pop.get(0);
-		if (!(indy instanceof InterfaceDataTypeDouble)) System.out.println("error, PSO needs individuals with double data!");
+		if (!(indy instanceof InterfaceDataTypeDouble)) System.err.println("error, PSO needs individuals with double data!");
 
 		double[] ret;
 		double[][] range = ((InterfaceDataTypeDouble)indy).getDoubleRange();
@@ -270,31 +276,36 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 		boolean calcAbsSpeedAverage = ((calcModeSwitch & 2) > 0);
 		if ((calcModeSwitch & 3) == 0) System.err.println("Error, switch must be 1, 2 or 3 (getPopulationVelSpeed)");
 
-		double[] velocity       = (double[]) indy.getData(partVelKey);
-		if (calcVectVelocity) retSize+=velocity.length;	// entries for cumulative velocity 
-		if (calcAbsSpeedAverage) retSize++;		// one entry for average absolute speed
-		// return length of the array depends on what should be calculated
-		ret = new double[retSize];
-
+		double[] velocity       = (double[]) indy.getData(velocityKey);
 		if (velocity != null) {
+			if (calcVectVelocity) retSize+=velocity.length;	// entries for cumulative velocity 
+			if (calcAbsSpeedAverage) retSize++;		// one entry for average absolute speed
+			// return length of the array depends on what should be calculated
+			ret = new double[retSize];
+
 			double[] cumulVeloc    = new double[velocity.length];
 			double avSpeed = 0.;
 
 			for (int i=0; i<cumulVeloc.length; i++) cumulVeloc[i] = 0.;
 			int indCnt = 0;
 
-			for (int i = 0; i < this.m_Population.size(); i++) {
+			for (int i = 0; i < pop.size(); i++) {
 				indy = (AbstractEAIndividual)pop.get(i);
 
-				if (particleHasSpeed(indy)) {
-					indCnt++;
-					velocity = (double[]) (indy.getData(partVelKey));
-					if (calcVectVelocity) { 
-						for (int j=0; j<cumulVeloc.length; j++) cumulVeloc[j] += velocity[j];
-					}
-					if (calcAbsSpeedAverage) {
-						avSpeed += getRelativeSpeed(velocity, range);
-					}
+				if (indy.hasData(velocityKey)) {
+					velocity = (double[]) (indy.getData(velocityKey));
+					if (velocity != null) {
+						if ((typeString == null) || (indy.getData(typeString).equals(requiredType))) {
+						//if (particleHasSpeed(indy)) {
+							indCnt++;
+							if (calcVectVelocity) { 
+								for (int j=0; j<cumulVeloc.length; j++) cumulVeloc[j] += velocity[j];
+							}
+							if (calcAbsSpeedAverage) {
+								avSpeed += Mathematics.getRelativeLength(velocity, range);
+							}
+						}
+					} else System.err.println("Error: Indy without velocity!! (getPopulationVelSpeed)");
 				}
 			}
 			if (calcVectVelocity) {
@@ -306,7 +317,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 			}
 			return ret;
 		} else {
-			System.out.println("warning, no speed in particle! (DynamicParticleSwarmOptimization::getPopulationVelocity)");
+			System.err.println("warning, no speed in particle! (getPopulationVelocity)");
 			return null;
 		}
 		//for (int j=0; j<avSpeed.length; j++) avSpeed[j] /= velocity[j];
@@ -333,30 +344,21 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 	/**
 	 * Calculates the vectorial sum of the velocities of all particles in the given population.
 	 *
-	 * @param pop	vectorial sum of the particle velocities
-	 * @return
+	 * @param pop
+	 * @return	vectorial sum of the particle velocities
 	 */
 	public double[] getPopulationVelocity(Population pop) {
-		return getPopulationVelSpeed(pop, 1);
+		return getPopulationVelSpeed(pop, 1, partVelKey, partTypeKey, defaultType);
 	}
 	
 	/**
-	 * Calculates the norm of the velocity vector relative to the problem range.
+	 * Calculates the average of the (range-) normed velocities of all particles in the given population.
 	 *
-	 * @param curSpeed	the current speed of the particle
-	 * @param range		the problem range in each dimension
-	 * @return			measure of the speed relative to the problem range
+	 * @param pop 
+	 * @return average of the (range-) normed velocities
 	 */
-	public static double getRelativeSpeed(double[] curSpeed, double[][] range) {
-		double sumV        = 0;
-		double sumR        = 0;
-		for (int i = 0; i < range.length; i++) {
-			sumV += Math.pow(curSpeed[i], 2);
-			sumR += Math.pow(range[i][1] - range[i][0], 2);
-		}
-		sumV = Math.sqrt(sumV);
-		sumR = Math.sqrt(sumR);
-		return sumV/sumR;
+	public double getPopulationAvgNormedVelocity(Population pop) {
+		return getPopulationVelSpeed(pop, 2, partVelKey, partTypeKey, defaultType)[0];
 	}
 
 	/** This method will init the optimizer with a given population
@@ -620,22 +622,6 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 		return (AbstractEAIndividual.isDominatingFitnessNotEqual(indy.getFitness(), bestFitness));
 	}
 
-	protected void rotate(double[] vect, double alpha, int i, int j) {
-		double xi = vect[i];
-		double xj = vect[j];
-		vect[i] = (xi*Math.cos(alpha))-(xj*Math.sin(alpha));
-		vect[j] = (xi*Math.sin(alpha))+(xj*Math.cos(alpha));
-	}
-	
-	protected void rotateAllAxes(double[] vect, double alpha, boolean randomize) {
-		for (int i=0; i<vect.length-1; i++) {
-			for (int j=i+1; j<vect.length; j++) {
-				if (randomize) rotate(vect, RNG.randomDouble(-alpha,alpha), i, j);
-				else rotate(vect, alpha, i, j);
-			}
-		}
-	}
-	
 	/**
 	 * Main velocity update step.
 	 *
@@ -1061,7 +1047,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 	 * @param speedLim		the speed limit relative to the range
 	 */
 	protected void enforceSpeedLimit(double[] curVelocity, double[][] range, double speedLim) {
-		while (getRelativeSpeed(curVelocity, range) > speedLim) {
+		while (Mathematics.getRelativeLength(curVelocity, range) > speedLim) {
 			for (int i = 0; i < curVelocity.length; i++) {
 				curVelocity[i] *= this.m_ReduceSpeed;
 			}
@@ -1145,9 +1131,9 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 
 		if (sleepTime > 0 ) try { Thread.sleep(sleepTime); } catch(Exception e) {}
 		
-		maybeClearPlot();
+//		maybeClearPlot();
 	}
-	
+
 	protected void maybeClearPlot() {
 		if (((m_Population.getGeneration() % 23) == 0) && isShow() && (m_Plot != null)) {
 			m_Plot.clearAll();
@@ -1783,5 +1769,13 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 
 	protected void setEmaPeriods(int emaPeriods) {
 		this.emaPeriods = emaPeriods;
+	}
+
+	public InterfaceParameterControl getParamControl() {
+		return paramControl;
+	}
+
+	public void setParamControl(InterfaceParameterControl paramControl) {
+		this.paramControl = paramControl;
 	}
 }
