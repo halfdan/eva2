@@ -725,9 +725,11 @@ public class EvAClient implements RemoteStateListener, Serializable {
 	}
 	
 	private void showLicense() {
-    	HtmlDemo temp = new HtmlDemo(EvAInfo.licenseFile);
-        temp.show();
-	}	
+    	HtmlDemo lgpl = new HtmlDemo(EvAInfo.LGPLFile);
+    	HtmlDemo gpl = new HtmlDemo(EvAInfo.GPLFile);
+        gpl.show();
+        lgpl.show();
+        }	
 	
 	private void showNoHostFoundDialog() {
 		JOptionPane.showMessageDialog(m_Frame.getContentPane(), "No host with running EVASERVER found. Please start one or \nadd the correct address to the properties list.", EvAInfo.infoTitle, 1);
