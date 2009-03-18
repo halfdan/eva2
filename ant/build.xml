@@ -30,8 +30,14 @@
   <property name="build.directory"                value="build" />
   <property name="distribution.directory"         value="dist" />
   <property name="resources.directory"            value="resources" />
+  <property name="matlabinterface.basedir"            value="resources/MatlabInterface" />
+  <property name="matlabinterface.title"            value="JEInterface" />
   <property name="web.download.directory"            value="/afs/cs.uni-tuebingen.de/ra/www/software/EvA2/downloads" />
-  <property name="source.distribution.directory"  value="${distribution.directory}/src-dist" />
+  <property name="doc.directory" 			value="doc" />
+  <property name="htmldoc.directory.name" 			value="EvA2Doc" />
+  <property name="pdfdoc.name" 						value="EvA2Doc.pdf" />
+  <property name="web.documentation.directory" 		value="/afs/cs.uni-tuebingen.de/ra/www/software/EvA2/EvA2Doc/" />
+	<property name="source.distribution.directory"  value="${distribution.directory}/src-dist" />
   <property name="binary.distribution.directory"  value="${distribution.directory}/bin-dist" />
   <property name="javadoc.directory"              value="doc/api" />
   <property name="library.directory"              value="lib" />
@@ -345,16 +351,17 @@
 <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         Binary Distribution
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
-<target name="binaryDist" depends="compile" description="Compiles the project and puts the whole stuff into a jar-file..">
+<target name="binaryDist" depends="compile, JEInterface" description="Compiles the project and puts the whole stuff into a jar-file..">
     <property name="bin.dist.dir"  value="${binary.distribution.directory}/eva-${DSTAMP}" />
     <mkdir dir="${bin.dist.dir}" />
-<delete>
+	<delete>
       <fileset dir="${bin.dist.dir}/" includes="${jar.name}.jar" />
-</delete>
+	</delete>
 
-<jar jarfile="${bin.dist.dir}/${jar.name}.jar"  basedir="${build.directory}" >
-<manifest> <attribute name="Main-Class" value="eva2.client.EvAClient"/> </manifest>
-</jar>
+	<jar jarfile="${bin.dist.dir}/${jar.name}.jar"  basedir="${build.directory}" >
+	  <manifest> <attribute name="Main-Class" value="eva2.client.EvAClient"/> </manifest>
+	</jar>
+	
     <copy todir="${distribution.directory}">
       <fileset dir="${bin.dist.dir}">
         <include name="${jar.name}.jar" />
@@ -506,7 +513,26 @@
 
   <target name="dist" depends="distESModel, distProbs, binaryDist, sourceDist">
   </target>
+	
+	<!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	        Matlab Interface tar
+	+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
 
+  <target name="JEInterface">
+    <tar tarfile="${matlabinterface.basedir}/${matlabinterface.title}.tar"
+         basedir="${matlabinterface.basedir}" includes="**" excludes="*.tar*, *.zip"/>
+  	
+    <gzip zipfile="${matlabinterface.basedir}/${matlabinterface.title}.tar.gz"
+          src="${matlabinterface.basedir}/${matlabinterface.title}.tar" />
+    <copy todir="${distribution.directory}">
+  	  <fileset dir="${matlabinterface.basedir}">
+  		<include name="${matlabinterface.title}.tar.gz" />
+  	  </fileset>
+  	</copy>
+  	<delete file="${matlabinterface.basedir}/${matlabinterface.title}.tar" />
+  	<delete file="${matlabinterface.basedir}/${matlabinterface.title}.tar.gz" />
+  	  	  	
+  </target>
 <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	        Generate Distribution and put it online. This also replaces the 
 	        Probs and ESModel packages so keep them synchronized.
@@ -518,12 +544,38 @@
 	      <fileset dir="${web.download.directory}">
 	      	<include name="**Src.tar.gz" />
 	      	<include name="**.jar" />
+	      	<include name="${matlabinterface.title}.tar.gz" />
 	      </fileset>
-	    </copy>
+		  <fileset dir="${web.documentation.directory}">
+	      	<include name="**" />
+	      </fileset>
+	    </copy>		  
+		<delete>
+			<fileset dir="${web.documentation.directory}">
+				<include name="**" />
+			</fileset>
+		</delete> 
+		
+		  <property name="doc.directory" 			value="doc" />
+		  <property name="htmldoc.directory.name" 			value="EvA2Doc" />
+		  <property name="pdfdoc.name" 						value="EvA2Doc.pdf" />
+		  <property name="web.documentation.directory" 		value="/afs/cs.uni-tuebingen.de/ra/www/software/EvA2/EvA2Doc/" />
+
+		<copy todir="${web.documentation.directory}">
+		  <fileset dir="${doc.directory}">
+			<include name="${pdfdoc.name}" />
+		  </fileset>
+		</copy>
+		<copy todir="${web.documentation.directory}">
+			<fileset dir="${doc.directory}/${htmldoc.directory.name}">
+		  		<include name="**" />
+			</fileset>
+		</copy>
 	    <copy todir="${web.download.directory}">
 	      <fileset dir="${distribution.directory}">
 	      	<include name="**Src.tar.gz" />
 	      	<include name="**.jar" />
+	      	<include name="${matlabinterface.title}.tar.gz" />
 	      </fileset>
 	      <fileset dir="${source.directory}/eva2">
 	      	<include name="EvAInfo.java" />
