@@ -4,6 +4,7 @@ import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.operators.selection.probability.InterfaceSelectionProbability;
 import eva2.server.go.operators.selection.probability.SelProbBoltzman;
 import eva2.server.go.operators.selection.probability.SelProbStandard;
+import eva2.server.go.operators.selection.probability.SelProbStandardScaling;
 import eva2.server.go.populations.Population;
 import wsi.ra.math.RNG;
 
@@ -28,6 +29,14 @@ public class SelectParticleWheel implements InterfaceSelection, java.io.Serializ
 	private boolean selectFixedSteps = false;
 
     public SelectParticleWheel() {
+    }
+    
+    public SelectParticleWheel(double scalingProb) {
+    	m_SelProbCalculator = new SelProbStandardScaling(scalingProb);
+    }
+
+    public SelectParticleWheel(InterfaceSelectionProbability selProb) {
+    	m_SelProbCalculator = selProb;
     }
 
     public SelectParticleWheel(SelectParticleWheel a) {

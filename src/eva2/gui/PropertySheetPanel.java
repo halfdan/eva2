@@ -36,7 +36,6 @@ import java.beans.PropertyVetoException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -45,6 +44,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 
+import eva2.gui.GenericObjectEditor.GOEPanel;
 import eva2.tools.EVAHELP;
 import eva2.tools.StringTools;
 /*==========================================================================*
@@ -91,6 +91,9 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
     private PropertyChangeSupport   m_support = new PropertyChangeSupport(this);
     /** set true to use the GOE by default if no other editor is registered **/
 
+    // If true, tool tips are used up to the first point only. 
+    boolean stripToolTipToFirstPoint=false;
+    
     /** Creates the property sheet panel.
      */
     public PropertySheetPanel() {
@@ -105,6 +108,9 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
      */
     public void propertyChange(PropertyChangeEvent evt) {
         if (TRACE) System.out.println("PropertySheetPanel.propertyChange() "+m_Target.getClass()+": calling wasModified");
+        // GOEPanel gp=(GOEPanel)this.getParent();
+        // gp.validateTarget(this); // Once trying to find an irreproducible bug
+        
         wasModified(evt); // Let our panel update before guys downstream
         m_support.removePropertyChangeListener(this);
         m_support.firePropertyChange("", null, m_Target);
@@ -841,9 +847,11 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
 	                try {
                         Object  args[]  = { };
 		                String  tempTip = (String)(meth.invoke(target, args));
-		                int     ci      = tempTip.indexOf('.');
-		                if (ci < 0) result = tempTip;
-		                else        result = tempTip.substring(0, ci);
+		                result = tempTip;
+		                if (stripToolTipToFirstPoint) {
+		                	int     ci      = tempTip.indexOf('.');
+		                	if (ci > 0) result = tempTip.substring(0, ci);
+		                }
 	                } catch (Exception ex) {
                     }
 	                break;
