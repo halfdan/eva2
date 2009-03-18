@@ -1,3 +1,6 @@
+# Use Lyx to create a tex-file, then run bibtex to create a bbl file,
+# then use this script to convert to HTML.
+
 project="EvA2Doc"
 CUSTOM_ICONS="yes"
 latex2html ${project}.tex -prefix ${project}_ -antialias -local_icons
