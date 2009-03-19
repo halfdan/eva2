@@ -34,11 +34,11 @@ import eva2.server.go.problems.InterfaceOptimizationProblem;
 public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializable {
 
     //private double                          m_MyuRatio                  = 6;
-    private int                             m_Mu                       = 5;
-    private int                             m_Lambda                    = 20;
-    private boolean                         m_UsePlusStrategy           = false;
-    private Population                      m_Population                = new Population();
-    private InterfaceOptimizationProblem    m_Problem                   = new B1Problem();
+	protected int                             m_Mu                       = 5;
+	protected int                             m_Lambda                    = 20;
+	protected boolean                         m_UsePlusStrategy           = false;
+    protected Population                      m_Population                = new Population();
+    protected InterfaceOptimizationProblem    m_Problem                   = new B1Problem();
     private InterfaceSelection              m_ParentSelection           = new SelectRandom();
     private InterfaceSelection              m_PartnerSelection          = new SelectRandom();
     private InterfaceSelection              m_EnvironmentSelection      = new SelectBestIndividuals();
@@ -125,7 +125,7 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
      * given problem.
      * @param population The population that is to be evaluated
      */
-    private void evaluatePopulation(Population population) {
+    protected void evaluatePopulation(Population population) {
         this.m_Problem.evaluate(population);
         population.incrGeneration();
     }
@@ -144,7 +144,8 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
 //        else this.m_Population.setPopulationSize(lambda);
 //    }
 
-    /** This method will generate the offspring population from the
+    /**
+     * This method will generate the offspring population from the
      * given population of evaluated individuals.
      */
     protected Population generateEvalChildren(Population fromPopulation) {

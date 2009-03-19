@@ -16,7 +16,6 @@ import eva2.server.go.operators.crossover.NoCrossover;
 import eva2.server.go.operators.mutation.InterfaceMutation;
 import eva2.server.go.operators.mutation.NoMutation;
 import eva2.server.go.populations.Population;
-import eva2.server.go.problems.AbstractOptimizationProblem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.tools.EVAERROR;
 
@@ -913,6 +912,9 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
                 sb.append(b[i].getStringRepresentation());
                 if ((i+1) < b.length) sb.append(separator);
             }
+        } else if (BeanInspector.hasMethod(individual, "toString") != null) {
+        	EVAERROR.errorMsgOnce("warning in AbstractEAIndividual::getDefaultDataString: type " + individual.getClass() + " has no default data representation, using toString...");
+        	return individual.toString();
         } else {
         	System.err.println("error in AbstractEAIndividual::getDefaultDataString: type " + individual.getClass() + " not implemented");
         }
