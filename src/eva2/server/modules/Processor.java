@@ -402,6 +402,7 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
 	    		resultPop.setPopulationSize(resultPop.size());
 	    	}
 	    	resultPop = PostProcess.postProcess(ppp, resultPop, (AbstractOptimizationProblem)goParams.getProblem(), listener);
+	    	resPop = resultPop;
 	    	return resultPop;
     	} else return null;
     }

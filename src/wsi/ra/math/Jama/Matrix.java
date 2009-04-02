@@ -11,6 +11,7 @@ import java.util.Locale;
 
 import wsi.ra.math.Jama.util.Maths;
 import eva2.gui.BeanInspector;
+import eva2.tools.Mathematics;
 import eva2.tools.Pair;
 
 
@@ -232,6 +233,17 @@ public class Matrix implements Cloneable, java.io.Serializable {
       return A;
    }
 
+   /**
+    * Produce a matrix with the diagonal entries of the instance. All others are set to zero.
+    * 
+    * @return a diagonal matrix
+    */
+   public Matrix getDiagonalMatrix() {
+	   double[][] D = new double[m][n];
+	   for (int i=0; i<Math.min(m,n); i++) D[i][i]=A[i][i];
+	   return new Matrix(D);
+   }
+   
    /** Copy the internal two-dimensional array.
    @return     Two-dimensional array copy of matrix elements.
    */
@@ -239,9 +251,10 @@ public class Matrix implements Cloneable, java.io.Serializable {
    public double[][] getArrayCopy () {
       double[][] C = new double[m][n];
       for (int i = 0; i < m; i++) {
-         for (int j = 0; j < n; j++) {
-            C[i][j] = A[i][j];
-         }
+    	  System.arraycopy(A[i], 0, C[i], 0, n);
+//         for (int j = 0; j < n; j++) {
+//            C[i][j] = A[i][j];
+//         }
       }
       return C;
    }
@@ -271,6 +284,10 @@ public class Matrix implements Cloneable, java.io.Serializable {
       return vals;
    }
    
+   public double[] getRowShallow(int i) {
+	   return A[i];
+   }
+
    /** Make a one-dimensional row packed copy of the internal array.
    @return     Matrix elements packed in a one-dimensional array by rows.
    */
@@ -1175,6 +1192,32 @@ public class Matrix implements Cloneable, java.io.Serializable {
                 System.out.println("n"+n);
          throw new IllegalArgumentException("Matrix dimensions must agree.");
       }
+   }
+
+   /**
+    * Subtract a line from the indicated line of this matrix in place.
+    * 
+    * @param rowIndex
+    * @param B
+    */
+   public void rowSubtract(int rowIndex, double[] v) {
+	   if ((v.length != n) || (rowIndex<0) || (rowIndex>=m)) throw new IllegalArgumentException("Invalid matrix dimensions for rowMinus!");
+	   rowSubtract(rowIndex, rowIndex, v);
+   }
+   
+   /**
+    * Subtract a line from each line of this matrix in place.
+    * 
+    * @param rowIndex
+    * @param B
+    */
+   public void rowSubtract(double[] v) {
+	   if ((v.length != n)) throw new IllegalArgumentException("Invalid matrix dimensions for rowMinus!");
+	   rowSubtract(0, m-1, v);
+   }
+   
+   private void rowSubtract(int start, int end, double[] v) {
+	   for (int i=start; i<=end; i++) Mathematics.vvSub(A[i], v, A[i]);
    }
 
 }

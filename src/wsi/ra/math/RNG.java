@@ -1,8 +1,10 @@
 package wsi.ra.math;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
+import eva2.tools.EVAHELP;
 import eva2.tools.Mathematics;
 
 public class RNG extends Random {
@@ -165,8 +167,9 @@ public class RNG extends Random {
   public static double randomDouble(double lo,double hi) {
     return (hi-lo)*random.nextDouble()+lo;
   }
+  
   /**
-   *
+   * Create a uniform random vector within the given bounds.
    */
   public static double[] randomDoubleArray(double[] lo,double[] hi) {
     double[] xin = new double[lo.length];
@@ -174,14 +177,35 @@ public class RNG extends Random {
       xin[i] = (hi[i]-lo[i])*random.nextDouble()+lo[i];
     return xin;
   }
+  
   /**
-   *
+   * Create a uniform random vector within the given bounds.
    */
-  public static double[] randomDoubleArray(double lo,double hi,int size) {
-    double[] xin = new double[size];
-    for (int i=0;i<size;i++)
-      xin[i] = (hi-lo)*random.nextDouble()+lo;
-    return xin;
+  public static double[] randomDoubleArray(double[][] range) {
+	  double[] xin = new double[range.length];
+	  for (int i=0;i<xin.length;i++)
+		  xin[i] = (range[i][1]-range[i][0])*random.nextDouble()+range[i][0];
+	  return xin;
+  }
+
+  /**
+   * Create a uniform random double vector within the given bounds (inclusive) in every dimension.
+   * 
+   * @param lower
+   * @param upper
+   * @param size
+   * @return
+   */
+  public static double[] randomDoubleArray(double lower, double upper, int size) {
+	  double[] result = new double[size];
+	  for (int i = 0; i < result.length; i++) {
+		  result[i] = RNG.randomDouble(lower, upper);
+	  }
+	  return result;
+//    double[] xin = new double[size];
+//    for (int i=0;i<size;i++)
+//      xin[i] = (hi-lo)*random.nextDouble()+lo;
+//    return xin;
   }
 
   /**
@@ -193,6 +217,23 @@ public class RNG extends Random {
       xin[i] = (hi[i]-lo[i])*random.nextDouble()+lo[i];
     return xin;
   }
+  
+  /**
+   * Create a uniform random integer vector within the given bounds (inclusive) in every dimension.
+   * 
+   * @param n
+   * @param lower
+   * @param upper
+   * @return
+   */
+  public static int[] randomIntArray(int lower, int upper, int size) {
+	  int[] result = new int[size];
+	  for (int i = 0; i < result.length; i++) {
+		  result[i] = RNG.randomInt(lower, upper);
+	  }
+	  return result;
+  }
+  
   /**
    *
    */
@@ -305,15 +346,36 @@ public class RNG extends Random {
    * Create a normalized random vector with gaussian random double entries.
    * 
    * @param n
+   * @param dev
    * @return
    */
-  public static double[] gaussianVector(int n, double dev) {
+  public static double[] gaussianVector(int n, double dev, boolean normalize) {
 	  double[] result = new double[n];
+	  gaussianVector(dev, result, normalize);
+	  return result;
+  }
+  
+  /**
+   * Create a normalized random vector with gaussian random double entries.
+   * 
+   * @param n
+   * @return
+   */
+  public static double[] gaussianVector(double dev, double[] result, boolean normalize) {
 	  for (int i = 0; i < result.length; i++) {
 		  result[i] = RNG.gaussianDouble(dev);
 	  }
-	  Mathematics.normVect(result, result);
+	  if (normalize) Mathematics.normVect(result, result);
 	  return result;
+  }
+  
+  public static void main(String[] args) {
+	  double[] v = new double[2];
+	  for (int i=0; i<1000; i++) {
+		  gaussianVector(1., v, false);
+		  EVAHELP.logString(Arrays.toString(v)+"\n", "randtest.dat");
+//		  System.out.println(Arrays.toString(v));
+	  }
   }
   
   /**
@@ -324,28 +386,13 @@ public class RNG extends Random {
    * @param upper
    * @return
    */
-  public static double[] randomVector(int n, double lower, double upper) {
-	  double[] result = new double[n];
-	  for (int i = 0; i < result.length; i++) {
-		  result[i] = RNG.randomDouble(lower, upper);
-	  }
-	  return result;
-  }
+//  public static double[] randomVector(int n, double lower, double upper) {
+//	  double[] result = new double[n];
+//	  for (int i = 0; i < result.length; i++) {
+//		  result[i] = RNG.randomDouble(lower, upper);
+//	  }
+//	  return result;
+//  }
   
-  /**
-   * Create a uniform random integer vector within the given bounds (inclusive) in every dimension.
-   * 
-   * @param n
-   * @param lower
-   * @param upper
-   * @return
-   */
-  public static int[] randomVector(int n, int lower, int upper) {
-	  int[] result = new int[n];
-	  for (int i = 0; i < result.length; i++) {
-		  result[i] = RNG.randomInt(lower, upper);
-	  }
-	  return result;
-  }
 }
 

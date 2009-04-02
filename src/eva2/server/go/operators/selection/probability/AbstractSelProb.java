@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.populations.Population;
+import eva2.tools.EVAERROR;
 
 /** This abstract implementation gives some general
  * methods for retrieving and cleaning fitness values.
@@ -70,34 +71,42 @@ public abstract class AbstractSelProb implements InterfaceSelectionProbability, 
             tmpList = new ArrayList();
             for (int j = 0; j < inputs.length; j++) {
                 obj = tmpIndy.getData(inputs[j]);
+                if (obj==null) EVAERROR.errorMsgOnce("Error: could not get data by key " + inputs[j] + " from individual in AbstractSelProb");
                 if (obj instanceof double[]) {
                     for (int m = 0; m < ((double[])obj).length; m++) {
                         tmpList.add(new Double(((double[])obj)[m]));
                     }
+                    continue;
                 }
                 if (obj instanceof Double) {
                     tmpList.add((Double)obj);
+                    continue;
                 }
                 if (obj instanceof float[]) {
                     for (int m = 0; m < ((float[])obj).length; m++) {
                         tmpList.add(new Double(((float[])obj)[m]));
                     }
+                    continue;
                 }
                 if (obj instanceof Float) {
                     tmpList.add((Float)obj);
+                    continue;
                 }
                 if (obj instanceof long[]) {
                     for (int m = 0; m < ((long[])obj).length; m++) {
                         tmpList.add(new Double(((long[])obj)[m]));
                     }
+                    continue;
                 }
                 if (obj instanceof Long) {
                     tmpList.add((Long)obj);
+                    continue;
                 }
                 if (obj instanceof int[]) {
                     for (int m = 0; m < ((int[])obj).length; m++) {
                         tmpList.add(new Double(((int[])obj)[m]));
                     }
+                    continue;
                 }
                 if (obj instanceof Integer) {
                     tmpList.add((Integer)obj);
