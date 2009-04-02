@@ -35,7 +35,12 @@ public class Serializer {
   static public void store(Serializable o, File f) throws IOException {
     FileOutputStream file = new FileOutputStream(f);
     ObjectOutputStream out = new ObjectOutputStream(file);
-    out.writeObject(o);
+    try {
+    	out.writeObject(o);
+    } catch (java.io.NotSerializableException e) {
+    	System.err.println("Error: Object " + o.getClass() + " is not serializable - run settings cannot be stored.");
+    	e.printStackTrace();
+    }
     out.flush();
     out.close();
     file.close();
