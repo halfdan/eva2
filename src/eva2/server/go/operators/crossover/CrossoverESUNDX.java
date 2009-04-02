@@ -139,7 +139,7 @@ public class CrossoverESUNDX implements InterfaceCrossover, java.io.Serializable
         for (int i = 0; i < given.size(); i++) completeList.add(given.get(i));
 
         while (completeList.size() < mean.length) {
-            tmpVec = RNG.gaussianVector(mean.length, 1.);
+            tmpVec = RNG.gaussianVector(mean.length, 1., true);
             if (Mathematics.isValidVec(tmpVec)) {
                 // apply the infamous Gram-Schmidt
                 for (int j = 0; j < completeList.size(); j++) {
