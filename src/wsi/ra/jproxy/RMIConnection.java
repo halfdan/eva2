@@ -77,8 +77,9 @@ public class RMIConnection {
     try {
       ret = m_MainAdapter.getRMIThreadHandler(c);
     } catch (Exception e) {
-      System.out.println("Error while RMIThreadInvokationHandler server: " +
+      System.err.println("Error while RMIThreadInvokationHandler server: " +
                          e.getMessage());
+      e.printStackTrace();
     }
     return ret;
   }

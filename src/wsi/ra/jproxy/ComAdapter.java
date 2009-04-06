@@ -157,9 +157,11 @@ public class ComAdapter {
 	public RMIThreadInvocationHandler getRMIThreadHandler(Object c, String host) {
 		if (TRACE)
 			System.out.println("ComAdapter.getRMIThreadHandler()");
+		int cnt=0;
 		m_ownHostName = host;
 		RMIThreadInvocationHandler ret = null;
-		while (ret == null) {
+		while (cnt<100) { //ret == null) {
+			cnt++;
 			ret = getConnection(m_ownHostName).getRMIThreadHandler(c);
 			if (ret == null)
 				System.err.println("Error in getRMIThreadHandler");

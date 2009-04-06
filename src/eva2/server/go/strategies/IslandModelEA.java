@@ -161,7 +161,7 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
         this.m_Optimizer.SetProblem(this.m_Problem);
         InterfacePopulationChangedEventListener myLocal = null;
         if (this.m_Parallelize) {
-            // this is running on remote maschines
+            // this is running on remote machines
             if (this.m_LocalServer == null) this.m_LocalServer = RMIServer.getInstance();
             try {
                 myLocal = (InterfacePopulationChangedEventListener) RMIProxyLocal.newInstance(this);
@@ -239,7 +239,7 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
                 try {
                   Thread.sleep(1000);
                 } catch (Exception e) {
-                  System.out.println("Error in sleep of XThread");
+                  System.err.println("Error in sleep of XThread");
                 }
             }
         }
