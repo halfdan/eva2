@@ -186,10 +186,10 @@ public class XThread extends Thread implements Serializable {
 
   private void removemyself() {
     for (int i = 0; i < m_Instances.length; i++) {
-    	if (TRACE) System.out.println("TRYING TO REMOVE");
+//    	if (TRACE) System.out.println("TRYING TO REMOVE");
       if (this.m_Instances[i] == this) {
         this.m_Instances[i] = null;
-        System.out.println("REMOVED THREAD");
+        if (TRACE) System.out.println("REMOVED THREAD");
         return;
       }
     }
@@ -199,7 +199,7 @@ public class XThread extends Thread implements Serializable {
    *
    */
   private XThread(Object object, Method method, Object[] Para) {
-    System.out.println("XTHREAD INSTANZIERT");
+	  if (TRACE) System.out.println("XTHREAD INSTANZIERT");
     m_Object = object;
     m_Para = Para;
     m_Method = method;
@@ -210,7 +210,7 @@ public class XThread extends Thread implements Serializable {
    *
    */
   private XThread(Object x, String method, Object[] Para) {
-    System.out.println("XTHREAD INSTANZIERT");
+	  if (TRACE)  System.out.println("XTHREAD INSTANZIERT");
     m_Object = x;
     m_Para = Para;
     try {
@@ -222,7 +222,7 @@ public class XThread extends Thread implements Serializable {
         }
       }
     } catch (Exception e) {
-      System.out.println(" ERROR in XTHREAD +" + e.getMessage());
+      System.err.println(" ERROR in XTHREAD +" + e.getMessage());
       e.printStackTrace();
     }
     start();
@@ -232,11 +232,11 @@ public class XThread extends Thread implements Serializable {
    *
    */
   public void run() {
-   System.out.println("XTHREAD CALLED RUN");
+	  if (TRACE) System.out.println("XTHREAD CALLED RUN on " + this);
     if (m_Method != null) {
       //setPriority(Thread.MAX_PRIORITY);
       try {
-        System.out.println("XTHREAD calling m_Method "+m_Method.getName());
+    	  if (TRACE) System.out.println("XTHREAD calling m_Method "+m_Method.getName());
         //System.out.print("--->");
         //this.setPriority(Thread.MAX_PRIORITY);
         m_Method.invoke(m_Object, m_Para);
@@ -245,11 +245,11 @@ public class XThread extends Thread implements Serializable {
         //System.out.println("<--");
         //System.out.println("XThread --"+m_instances+" m_MAXinstances " +m_MAXinstances);
       } catch (Exception e) {
-        System.out.println("ERROR +" + e.getMessage());
+        System.err.println("ERROR +" + e.getMessage());
         e.printStackTrace();
       }
     } else {
-      System.out.println("Warning Method == null !!!!! in ThreadWrapper");
+      System.err.println("Warning Method == null !!!!! in ThreadWrapper");
     }
     removemyself();
   }
