@@ -389,8 +389,20 @@ public class Mathematics {
 	 * @return vector addition
 	 */
 	public static void vvAdd(double[] v1, double[] v2, double[] res) {
-		for (int i = 0; i < v1.length; i++)
-			res[i] = v1[i] + v2[i];
+		vvAddOffs(v1, 0, v2, 0, res, 0, v1.length);
+	}
+	
+	/**
+	 * Add vectors in place setting with an offset within the target
+	 * vector, meaning that res[resOffs+i]=v1[v1Offs+i]+v2[v2Offs+i] for i in length.
+	 *
+	 * @param v1
+	 * @param v2
+	 * @return vector addition
+	 */
+	public static void vvAddOffs(double[] v1, int v1Offs, double[] v2, int v2Offs, double[] res, int resOffs, int len) {
+		for (int i = 0; i < len; i++)
+			res[resOffs+i] = v1[v1Offs+i] + v2[v2Offs+i];
 	}
 
 	/**

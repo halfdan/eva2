@@ -244,6 +244,17 @@ public class Matrix implements Cloneable, java.io.Serializable {
 	   return new Matrix(D);
    }
    
+	/**
+	 * Return the diagonal array for a matrix.
+	 * @param M
+	 * @return
+	 */
+	public double[] diag() {
+		double[] d = new double[Math.min(getColumnDimension(), getRowDimension())];
+		for (int i=0; i<d.length; i++) d[i] = get(i, i);
+		return d;
+	}
+   
    /** Copy the internal two-dimensional array.
    @return     Two-dimensional array copy of matrix elements.
    */
@@ -622,15 +633,17 @@ public class Matrix implements Cloneable, java.io.Serializable {
        }
     }
    }
+  
    /**
-   *
+   * In-place multiplication of every entry by a scalar.
    */
-  public void multi (double multi) {
+  public Matrix multi (double multi) {
     for (int i = 0; i < m; i++) {
        for (int j = 0; j < n; j++) {
           A[i][j] = multi*A[i][j];
        }
     }
+    return this;
    }
 
    /** A = A + B
@@ -1220,4 +1233,93 @@ public class Matrix implements Cloneable, java.io.Serializable {
 	   for (int i=start; i<=end; i++) Mathematics.vvSub(A[i], v, A[i]);
    }
 
+   /**
+    *    Given two vectors, ``[a0, a1, ..., aM]`` and ``[b0, b1, ..., bN]``,
+    *    the outer product becomes::
+    *
+    *    [[a0*b0  a0*b1 ... a0*bN ]
+    *    [a1*b0    .      
+    *    [ ...          .
+    *    [aM*b0            aM*bN ]]
+    */
+	public static Matrix outer(double[] a, double[] b) {
+		double[][] M = new double[a.length][b.length];
+		for (int i=0; i<a.length; i++) {
+			for (int j=0; j<b.length; j++) {
+				M[i][j]=a[i]*b[j];
+			}
+		}
+		return new Matrix(M);
+	}
+	
+	/**
+	 * Create a full copy with each entry set to its absolute value. 
+	 * @param M
+	 * @return
+	 */
+	public Matrix abs(Matrix M) {
+		double[][] A = M.getArrayCopy();
+		for (int i=0; i<A.length; i++) {
+			for (int j=0; j<A[0].length; j++) {
+				A[i][j]=Math.abs(A[i][j]);
+			}
+		}
+		return new Matrix(A);
+	}
+
+	/**
+	 * Multiply the j-th row of the matrix by s, in place.
+	 * @param j
+	 * @param s
+	 */
+	public void multRow(int j, double s) {
+		Mathematics.svMult(s, getRowShallow(j), getRowShallow(j));
+	}
+
+	/**
+	 * Multiply the j-th column of the matrix by s, in place.
+	 * @param j
+	 * @param s
+	 */
+	public void multCol(int j, double s) {
+		for (int i=0; i<m; i++) {
+			A[i][j]*=s;
+		}
+	}
+	
+	/**
+	 * Return a sub matrix as deep copy from start/end rows and columns (inclusively)
+	 * @param startRow
+	 * @param endRow
+	 * @param startCol
+	 * @param endCol
+	 * @return
+	 */
+	public Matrix getSubMatrix(int startRow, int endRow, int startCol, int endCol) {
+		Matrix R=new Matrix(endRow-startRow+1, endCol-startCol+1);
+		for (int i=0; i<m; i++) {
+			System.arraycopy(getRowShallow(startRow+i), startCol, R.getRowShallow(i), 0, endCol-startCol+1);
+		}
+		return R;
+	}
+
+	/**
+	 * Return a sub matrix as deep copy from start/end rows and full columns (inclusively)
+	 * @param startRow
+	 * @param endRow
+	 * @return
+	 */
+	public Matrix getSubMatrixRows(int startRow, int endRow) {
+		return getSubMatrix(startRow, endRow, 0, n-1);
+	}
+	
+	/**
+	 * Return a sub matrix as deep copy from start/end columns and full rows (inclusively)
+	 * @param startRow
+	 * @param endRow
+	 * @return
+	 */
+	public Matrix getSubMatrixColumns(int startCol, int endCol) {
+		return getSubMatrix(0, m-1, startCol, endCol);
+	}
 }
