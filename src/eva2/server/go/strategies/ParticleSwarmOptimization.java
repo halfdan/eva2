@@ -11,6 +11,7 @@ import eva2.gui.BeanInspector;
 import eva2.gui.GenericObjectEditor;
 import eva2.gui.TopoPlot;
 import eva2.server.go.InterfacePopulationChangedEventListener;
+import eva2.server.go.enums.PSOTopologyEnum;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.AbstractEAIndividualComparator;
 import eva2.server.go.individuals.InterfaceDataTypeDouble;
@@ -20,7 +21,6 @@ import eva2.server.go.operators.paramcontrol.InterfaceParameterControl;
 import eva2.server.go.populations.InterfaceSolutionSet;
 import eva2.server.go.populations.Population;
 import eva2.server.go.populations.SolutionSet;
-import eva2.server.go.problems.AbstractOptimizationProblem;
 import eva2.server.go.problems.F1Problem;
 import eva2.server.go.problems.Interface2DBorderProblem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
@@ -55,7 +55,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 	protected boolean                         m_CheckConstraints  = true;
 	protected boolean						  checkSpeedLimit 		= false;
 	protected boolean						useAlternative		= false;
-	protected SelectedTag                     m_Topology;
+	protected PSOTopologyEnum				topology = PSOTopologyEnum.grid;
 	/**
 	 * Defines which version of PSO is applied, classical inertness or constriction (using chi) 
 	 */
@@ -112,9 +112,9 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 
 
 	public ParticleSwarmOptimization() {
-		this.m_Topology = new SelectedTag( "Linear", "Grid", "Star", "Multi-Swarm", "Tree", "HPSO", "Random" );
-		m_Topology.setSelectedTag(1);
-
+//		this.m_Topology = new SelectedTag( "Linear", "Grid", "Star", "Multi-Swarm", "Tree", "HPSO", "Random" );
+//		m_Topology.setSelectedTag(1);
+		topology = PSOTopologyEnum.grid;
 		algType = new SelectedTag("Inertness", "Constriction");
 		algType.setSelectedTag(1);
 
@@ -123,8 +123,9 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 	}
 
 	public ParticleSwarmOptimization(ParticleSwarmOptimization a) {
-		if (a.m_Topology != null)
-			this.m_Topology = (SelectedTag)a.m_Topology.clone();
+		topology=a.topology;
+//		if (a.m_Topology != null)
+//			this.m_Topology = (SelectedTag)a.m_Topology.clone();
 		if (a.algType != null)
 			this.algType = (SelectedTag)a.algType.clone();
 		this.m_Population                   = (Population)a.m_Population.clone();
@@ -833,8 +834,8 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 			bestIndy = pop.getBestEAIndividual();
 		}
 		
-		switch (this.m_Topology.getSelectedTag().getID()) {
-		case 0: 
+		switch (topology) {
+		case linear: 
 			// linear
 			for (int x = -this.m_TopologyRange; x <= this.m_TopologyRange; x++) {
 				if (wrapTopology) tmpIndex = (index + x + pop.size()) % pop.size();
@@ -845,7 +846,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 				}
 			}
 			break;
-		case 1: 
+		case grid: 
 			// grid
 			int     corner = 1+(int)Math.sqrt(pop.size());
 			for (int x = -this.m_TopologyRange; x <= this.m_TopologyRange; x++) {
@@ -857,11 +858,11 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 				}
 			}
 			break;
-		case 2: 
+		case star: 
 			// star: only compare to the absolutely best
 			this.compareAndSetAttractor(localBestFitness, localBestPosition, bestIndy, useHistoric);
 			break;
-		case 3:
+		case multiSwarm:
 			// self-organised multi-swarms
 			AbstractEAIndividual leader = (AbstractEAIndividual)indy.getData(multiSwTypeKey);
 			if (leader != null) {	// refer to position of leader, this may be the individual itself
@@ -880,7 +881,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 				System.err.println("no leader present!");
 			}
 			break;
-		case 4: // Sorted Tree
+		case tree: // Sorted Tree
 			sortedIndex = (Integer)((AbstractEAIndividual)sortedPop[index]).getData(sortedIndexKey);
 
 			if (sortedIndex>0) {	// its found and its not the root. root has no parent to check for
@@ -912,7 +913,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 //				}
 			}
 			break;
-		case 5: // Hierarchical PSO
+		case hpso: // Hierarchical PSO
 			if (index>=0) {
 				k = getParentIndex(treeBranchDeg, index, pop.size());
 //				compareAndSet(localBestFitness, localBestPosition, (AbstractEAIndividual)pop.get(k), useHistoric);
@@ -922,7 +923,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 
 			}
 			break;
-		case 6: // m_TopologyRange random informants, may be the same several times
+		case random: // m_TopologyRange random informants, may be the same several times
 			for (int i=0; i<m_TopologyRange; i++) {
 				// select random informant
 				indy = (AbstractEAIndividual)pop.get(RNG.randomInt(0, pop.size()-1));
@@ -1221,15 +1222,16 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 	}
 
 	protected void updateTopology(Population pop) {
-		int topoID = this.m_Topology.getSelectedTag().getID();
-		
-		if ((topoID == 3) || (topoID == 4)) {
+//		int topoID = this.m_Topology.getSelectedTag().getID();
+//		this.m_Topology = new SelectedTag( "Linear", "Grid", "Star", "Multi-Swarm", "Tree", "HPSO", "Random" );
+
+		if ((topology == PSOTopologyEnum.multiSwarm) || (topology == PSOTopologyEnum.tree)) {
 			sortedPop = pop.toArray();
-			if ((topoID == 3) || (treeStruct>=2)) Arrays.sort(sortedPop, new AbstractEAIndividualComparator()); 
+			if ((topology == PSOTopologyEnum.multiSwarm) || (treeStruct>=2)) Arrays.sort(sortedPop, new AbstractEAIndividualComparator()); 
 			else Arrays.sort(sortedPop, new AbstractEAIndividualComparator(partBestFitKey));
 			addSortedIndicesTo(sortedPop, pop);
 		}
-		if (topoID == 3) {
+		if (topology == PSOTopologyEnum.multiSwarm) {
 			// prepare multi swarm topology
 			PhenotypeMetric metric = new PhenotypeMetric();
 			Vector<AbstractEAIndividual> leaders = new Vector<AbstractEAIndividual>(pop.size());
@@ -1283,7 +1285,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 //			}
 			//System.out.println(" -- best " + m_Population.indexOf(m_Population.getBestEAIndividual()));
 		}
-		if (topoID == 5) { // HPSO sorting the population
+		if (topology == PSOTopologyEnum.hpso) { // HPSO sorting the population
 			int parentIndex;
 			AbstractEAIndividual indy;
 			AbstractEAIndividualComparator comp = new AbstractEAIndividualComparator(partBestFitKey);
@@ -1580,21 +1582,30 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 	/** This method allows you to choose the topology type.
 	 * @param s  The type.
 	 */
-	public void setTopology(SelectedTag s) {
-		this.m_Topology = s;
+	public void setTopology(PSOTopologyEnum t) {
+		this.topology = t;
 		setGOEShowProperties(getClass());
 	}
 	
 	public void setGOEShowProperties(Class<?> cls) {
-		GenericObjectEditor.setShowProperty(cls, "topologyRange", (m_Topology.getSelectedTag().getID() < 2) || (m_Topology.getSelectedTag().getID() == 6));
-		GenericObjectEditor.setShowProperty(cls, "subSwarmRadius", (m_Topology.getSelectedTag().getID() == 3));
-		GenericObjectEditor.setShowProperty(cls, "maxSubSwarmSize", (m_Topology.getSelectedTag().getID() == 3));
-		GenericObjectEditor.setShowProperty(cls, "treeStruct", (m_Topology.getSelectedTag().getID() == 4));
-		GenericObjectEditor.setShowProperty(cls, "treeBranchDegree", (m_Topology.getSelectedTag().getID() == 4) || (m_Topology.getSelectedTag().getID() == 5));
-		GenericObjectEditor.setShowProperty(cls, "wrapTopology", (m_Topology.getSelectedTag().getID() == 0));
+//		this.m_Topology = new SelectedTag( "Linear", "Grid", "Star", "Multi-Swarm", "Tree", "HPSO", "Random" );
+		
+		// linear, grid, random
+		GenericObjectEditor.setShowProperty(cls, "topologyRange", (topology==PSOTopologyEnum.linear) || (topology==PSOTopologyEnum.grid) || (topology==PSOTopologyEnum.random));
+		// multi swarm
+		GenericObjectEditor.setShowProperty(cls, "subSwarmRadius", (topology==PSOTopologyEnum.multiSwarm));
+		// multi swarm
+		GenericObjectEditor.setShowProperty(cls, "maxSubSwarmSize", (topology==PSOTopologyEnum.multiSwarm));
+		// tree
+		GenericObjectEditor.setShowProperty(cls, "treeStruct", (topology==PSOTopologyEnum.tree));
+		// tree, hpso
+		GenericObjectEditor.setShowProperty(cls, "treeBranchDegree", (topology==PSOTopologyEnum.tree) || (topology==PSOTopologyEnum.hpso));
+		// linear
+		GenericObjectEditor.setShowProperty(cls, "wrapTopology", (topology==PSOTopologyEnum.linear));
 	}
-	public SelectedTag getTopology() {
-		return this.m_Topology;
+	
+	public PSOTopologyEnum getTopology() {
+		return topology;
 	}
 	public String topologyTipText() {
 		return "Choose the topology type (preliminary).";
