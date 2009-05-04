@@ -10,6 +10,7 @@ import eva2.server.go.IndividualInterface;
 import eva2.server.go.InterfacePopulationChangedEventListener;
 import eva2.server.go.InterfaceTerminator;
 import eva2.server.go.enums.DETypeEnum;
+import eva2.server.go.enums.PSOTopologyEnum;
 import eva2.server.go.enums.PostProcessMethod;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceDataTypeBinary;
@@ -428,7 +429,7 @@ public class OptimizerFactory {
 			AbstractOptimizationProblem problem, int popsize, double phi1,
 			double phi2, double k,
 			InterfacePopulationChangedEventListener listener,
-			int selectedTopology) {
+			PSOTopologyEnum selectedTopology) {
 
 		problem.initProblem();
 
@@ -444,7 +445,8 @@ public class OptimizerFactory {
 		pso.setPhi1(phi1);
 		pso.setPhi2(phi2);
 		pso.setSpeedLimit(k);
-		pso.getTopology().setSelectedTag(selectedTopology);
+//		pso.getTopology().setSelectedTag(selectedTopology);
+		pso.setTopology(selectedTopology);
 		pso.addPopulationChangedEventListener(listener);
 		pso.init();
 
@@ -1278,7 +1280,8 @@ public class OptimizerFactory {
 			AbstractOptimizationProblem problem) {
 		ParticleSwarmOptimization pso = new ParticleSwarmOptimization();
 		pso.setPhiValues(2.05, 2.05);
-		pso.getTopology().setSelectedTag("Grid");
+//		pso.getTopology().setSelectedTag("Grid");
+		pso.setTopology(PSOTopologyEnum.grid);
 		return makeParams(pso, 30, problem, randSeed, makeDefaultTerminator());
 	}
 

@@ -7,6 +7,7 @@ import eva2.gui.GenericObjectEditor;
 import eva2.server.go.InterfaceGOParameters;
 import eva2.server.go.InterfacePopulationChangedEventListener;
 import eva2.server.go.InterfaceTerminator;
+import eva2.server.go.enums.PSOTopologyEnum;
 import eva2.server.go.operators.selection.InterfaceSelection;
 import eva2.server.go.operators.terminators.EvaluationTerminator;
 import eva2.server.go.populations.Population;
@@ -184,13 +185,13 @@ public class PSOParameters extends AbstractGOParameters implements InterfaceGOPa
 	}
 	
     /** This method allows you to choose the topology type.
-     * @param s  The type.
+     * @param t  The type.
      */
-    public void setTopology(SelectedTag s) {
-        ((ParticleSwarmOptimization)this.m_Optimizer).setTopology(s);
+    public void setTopology(PSOTopologyEnum t) {
+        ((ParticleSwarmOptimization)this.m_Optimizer).setTopology(t);
         ((ParticleSwarmOptimization)this.m_Optimizer).setGOEShowProperties(getClass());
     }
-    public SelectedTag getTopology() {
+    public PSOTopologyEnum getTopology() {
         return ((ParticleSwarmOptimization)this.m_Optimizer).getTopology();
     }
     public String topologyTipText() {
