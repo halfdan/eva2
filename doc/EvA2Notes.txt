@@ -1,3 +1,16 @@
+EvA2-Cheats:
+The following method names are reserved:
+globalInfo: return String, used to display information about a class 
+getName: return String, used as short name replacing the class name
+hideHideable: void, set hide property of all properties which should not be displayed in the current object state
+customPropertyOrder: return String[], for the given properties the given ordering will be enforced
+getGOEPropertyUpdateLinks: return String[] which is interpreted in pairs indicating that on an update of the i-th property, the i+1-th property
+        should be updated. This is useful for changes within sub-classes of the target
+        which are not directly displayed in this panel but in sub-panels (and there have an own view etc.)
+
+The following static properties are reserved:
+public static boolean hideFromGOE: if true, the class will not be available for loading in GUI drop-down boxes.
+
 RMI-Probleme:
 
 - Funny Bug: when starting JavaEvA from Matlab and reading jar packages, the conversion
