@@ -4,6 +4,7 @@ package eva2;
  * Main product and version information strings.
  * 
  * --- Changelog
+ * 2.035: Minor bugfix.
  * 2.034: Adding a generic parameter control method for optimizers, currently used by PSO to adapt inertness depending
  * 			on EvaluationTerminator or GenerationTerminator instances defining the number of function evaluations.
  * 			The new package is eva2.server.go.operators.paramcontrol.
@@ -55,7 +56,7 @@ package eva2;
 public class EvAInfo {
 	public static final String productName = "EvA 2";
 	public static final String productLongName = "Evolutionary Algorithms Workbench 2";
-	public static final String versionNum = new String ("2.034");
+	public static final String versionNum = new String ("2.035");
 	public static final String url = "http://www.ra.cs.uni-tuebingen.de/software/EvA2";
 
 	public static final String propertyFile = "resources/EvA2.props";
