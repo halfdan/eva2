@@ -134,4 +134,8 @@ public class GPArea implements java.io.Serializable {
         if (tmpArray.size() == 0) return null;
         else return (AbstractGPNode)tmpArray.get(RNG.randomInt(0, tmpArray.size()-1));
     }
+
+	public boolean isEmpty() {
+		return (m_CompleteList==null) || (m_CompleteList.size()==0);
+	}
 }
