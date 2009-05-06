@@ -51,13 +51,7 @@ import eva2.tools.StringTools;
 * CLASS DECLARATION
 *==========================================================================*/
 /**
- * TODO: document those tricks somewhere
- * Trick methods: 
- * 	String[] getGOEPropertyUpdateLinks()
- * 	void hideHideable()
- * 	void globalInfo()
- * Trick statics:
- *  boolean hideFromGOE 
+ * There are some trick methods interpreted here. Check EvA2Notes.txt.
  */
 public class PropertySheetPanel extends JPanel implements PropertyChangeListener {
     public final static boolean     TRACE       = false;

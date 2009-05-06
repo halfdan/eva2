@@ -1,11 +1,10 @@
 package eva2.gui;
 
 import java.awt.Color;
-import java.beans.BeanInfo;
-import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.beans.PropertyEditor;
 import java.beans.PropertyEditorManager;
+import java.util.List;
 
 import sun.beans.editors.BoolEditor;
 import sun.beans.editors.ByteEditor;
@@ -170,11 +169,12 @@ public class PropertyEditorProvider {
         PropertyEditorManager.registerEditor(PropertyEpsilonThreshold.class     , GenericEpsilonThresholdEditor.class);
         PropertyEditorManager.registerEditor(PropertyEpsilonConstraint.class    , GenericEpsilonConstraintEditor.class);
         PropertyEditorManager.registerEditor(PropertyWeightedLPTchebycheff.class, GenericWeigthedLPTchebycheffEditor.class);
-        PropertyEditorManager.registerEditor(PropertyStringList.class           , GenericStringListEditor.class);
+        PropertyEditorManager.registerEditor(PropertyStringList.class           , GenericStringListSelectionEditor.class);
         PropertyEditorManager.registerEditor(PropertyFilePath.class             , GenericFilePathEditor.class);
         PropertyEditorManager.registerEditor(PropertyRemoteServers.class        , GenericRemoteServersEditor.class);
         PropertyEditorManager.registerEditor(PropertyOptimizationObjectives.class  , GenericOptimizationObjectivesEditor.class);
         PropertyEditorManager.registerEditor(PropertyOptimizationObjectivesWithParam.class  , GenericOptimizationObjectivesWithParamEditor.class);
         PropertyEditorManager.registerEditor(eva2.gui.MultiLineString.class, eva2.gui.MultiLineStringEditor.class);
+        PropertyEditorManager.registerEditor(PropertySelectableList.class, GenericObjectListSelectionEditor.class);
     }
 }
