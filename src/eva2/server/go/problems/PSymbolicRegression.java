@@ -133,26 +133,34 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
      * @param population    The populations that is to be inited
      */
     public void initPopulation(Population population) {
-        AbstractEAIndividual tmpIndy;
+    	initPopulation(population, this, m_UseInnerConst, m_NumberOfConstants);
+    }
+    
+    /** This method inits a given population
+     * @param population    The populations that is to be inited
+     */
+    public static void initPopulation(Population pop, InterfaceProgramProblem prob, boolean useInnerConsts, int numConsts) {
+        AbstractEAIndividual tmpIndy, template;
 
-        population.clear();
-
+        pop.clear();
+        template = ((AbstractOptimizationProblem)prob).getIndividualTemplate();
         GPArea tmpArea[]    = new GPArea[1];
-        tmpArea[0]          = this.m_GPArea;
-        ((InterfaceDataTypeProgram)this.m_Template).setProgramDataLength(1);
-        ((InterfaceDataTypeProgram)this.m_Template).SetFunctionArea(tmpArea);
-        if ((this.m_Template instanceof GAPIndividualProgramData) && (this.m_UseInnerConst)) {
-            ((GAPIndividualProgramData)this.m_Template).setDoubleDataLength(this.m_NumberOfConstants);
+        tmpArea[0]          = prob.getArea();
+        ((InterfaceDataTypeProgram)template).setProgramDataLength(1);
+        ((InterfaceDataTypeProgram)template).SetFunctionArea(tmpArea);
+        if ((template instanceof GAPIndividualProgramData) && useInnerConsts) {
+            ((GAPIndividualProgramData)template).setDoubleDataLength(numConsts);
         }
-        for (int i = 0; i < population.getPopulationSize(); i++) {
-            tmpIndy = (AbstractEAIndividual)((AbstractEAIndividual)this.m_Template).clone();
-            tmpIndy.init(this);
-            population.add(tmpIndy);
+        for (int i = 0; i < pop.getPopulationSize(); i++) {
+            tmpIndy = (AbstractEAIndividual)((AbstractEAIndividual)template).clone();
+            tmpIndy.init((AbstractOptimizationProblem)prob);
+            pop.add(tmpIndy);
         }
         // population init must be last
         // it set's fitcalls and generation to zero
-        population.init();
+        pop.init();
     }
+    
     /** This method init the enviroment panel if necessary.
      */
     private void initEnvironmentPanel() {
@@ -259,9 +267,33 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
      * @return Sensor value
      */
     public Object getSensorValue(String sensor) {
-        for (int i = 0; i < this.m_X.length; i++) if (sensor.equalsIgnoreCase("X"+i)) return new Double(this.m_X[i]);
-        for (int i = 0; i < this.m_C.length; i++) if (sensor.equalsIgnoreCase("C"+i)) return new Double(this.m_C[i]);
-        return new Double(0);
+    	return PSymbolicRegression.getSensorValue(sensor, m_X, m_C);
+//        for (int i = 0; i < this.m_X.length; i++) if (sensor.equalsIgnoreCase("X"+i)) return new Double(this.m_X[i]);
+//        for (int i = 0; i < this.m_C.length; i++) if (sensor.equalsIgnoreCase("C"+i)) return new Double(this.m_C[i]);
+//        return new Double(0);
+    }
+    
+    /** 
+     * This method allows a GP program to sense the environment, e.g.
+     * input values, current time etc. Specialized to constants and variables
+     * in arrays whose identifiers have the form "Xi" and "Ci".
+     * 
+     * @param sensor    The identifier for the sensor.
+     * @param vars	array of x_i
+     * @param consts	array of c_i
+     * @return Sensor value
+     */
+    public static Object getSensorValue(String sensor, double[] vars, double[] consts) {
+    	if (sensor.charAt(0)=='X') {
+    		int index=Integer.parseInt(sensor.substring(1));
+    		return new Double(vars[index]);
+    	} else if (sensor.charAt(0)=='C') {
+    		int index=Integer.parseInt(sensor.substring(1));
+    		return new Double(consts[index]);
+    	} else return new Double(0);
+//        for (int i = 0; i < this.m_X.length; i++) if (sensor.equalsIgnoreCase("X"+i)) return new Double(this.m_X[i]);
+//        for (int i = 0; i < this.m_C.length; i++) if (sensor.equalsIgnoreCase("C"+i)) return new Double(this.m_C[i]);
+//        return new Double(0);
     }
 
     /** This method allows a GP program to act in the environment
