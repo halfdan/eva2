@@ -35,7 +35,7 @@ public class GenericAreaEditor extends AbstractListSelectionEditor {
 	}
 
 	@Override
-	protected void performOnAction() {
+	protected boolean performOnAction() {
 		/** This method checks the current BlackList and compiles it
 		 * to a new ReducedList.
 		 */
@@ -43,19 +43,19 @@ public class GenericAreaEditor extends AbstractListSelectionEditor {
 			this.m_AreaObject.setBlackListElement(i, this.m_BlackCheck[i].isSelected());
 		}
 		this.m_AreaObject.compileReducedList();
+		return true; 
 	}
 
 	@Override
 	protected boolean setObject(Object o) {
         if (o instanceof GPArea) {
             this.m_AreaObject = (GPArea) o;
+            m_AreaObject.addPropertyChangeListener(this);
             return true;
         } else return false;
 	}
-
-    /** Retruns the current object.
-     * @return the current object
-     */
+	
+	@Override
     public Object getValue() {
         return this.m_AreaObject;
     }

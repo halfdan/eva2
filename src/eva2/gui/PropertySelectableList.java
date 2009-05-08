@@ -1,5 +1,8 @@
 package eva2.gui;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+
 /**
  * Created by IntelliJ IDEA.
  * User: streiche
@@ -11,6 +14,7 @@ public class PropertySelectableList implements java.io.Serializable {
 
     private Object[]     m_Objects;
     private boolean[]    m_Selection;
+	private PropertyChangeSupport m_Support;
 
     public PropertySelectableList() {
     }
@@ -33,6 +37,7 @@ public class PropertySelectableList implements java.io.Serializable {
     public void setObjects(Object[] o) {
         this.m_Objects = o;
         this.m_Selection = new boolean[o.length];
+        m_Support.firePropertyChange("PropertySelectableList", null, this);
     }
     public Object[] getStrings() {
         return this.m_Objects;
@@ -40,6 +45,7 @@ public class PropertySelectableList implements java.io.Serializable {
 
     public void setSelection(boolean[] selection) {
         this.m_Selection = selection;
+		m_Support.firePropertyChange("PropertySelectableList", null, this);
     }
     
     public boolean[] getSelection() {
@@ -47,7 +53,10 @@ public class PropertySelectableList implements java.io.Serializable {
     }
 
     public void setSelectionForElement(int index, boolean b) {
-        this.m_Selection[index] = b;
+    	if (m_Selection[index]!=b) {
+    		this.m_Selection[index] = b;
+    		m_Support.firePropertyChange("PropertySelectableList", null, this);
+    	}
     }
     
     public int size() {
@@ -66,5 +75,14 @@ public class PropertySelectableList implements java.io.Serializable {
 	public void clear() {
 		m_Objects=null;
 		m_Selection=null;
+		m_Support.firePropertyChange("PropertySelectableList", null, this);
 	}
+	
+    public void addPropertyChangeListener(PropertyChangeListener l) {
+        m_Support.addPropertyChangeListener(l);
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener l) {
+        m_Support.removePropertyChangeListener(l);
+    }
 }

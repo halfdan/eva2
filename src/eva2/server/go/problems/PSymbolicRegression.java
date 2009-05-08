@@ -96,30 +96,36 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
     /** This method inits the Problem to log multiruns
      */
     public void initProblem() {
-        this.compileArea();
         if (m_TargetFunction == null) m_TargetFunction = new RFKoza_GPI_10_2();
         this.m_OverallBest  = null;
         this.m_C            = new double[this.m_NumberOfConstants];
         for (int i = 0; i < this.m_C.length; i++) this.m_C[i] = RNG.randomDouble(-10, 10);
-    }
+        this.compileArea();
+	}
 
-    /** This method compiles the area
+    /**
+     * This method compiles the area
      */
     private void compileArea() {
-        this.m_GPArea = new GPArea();
-
-        this.m_GPArea.add2CompleteList(new GPNodeAdd());
-        this.m_GPArea.add2CompleteList(new GPNodeSub());
-        this.m_GPArea.add2CompleteList(new GPNodeDiv());
-        this.m_GPArea.add2CompleteList(new GPNodeMult());
-        this.m_GPArea.add2CompleteList(new GPNodeSin(), false);
-        this.m_GPArea.add2CompleteList(new GPNodeCos(), false);
-        this.m_GPArea.add2CompleteList(new GPNodeExp(), false);
-        this.m_GPArea.add2CompleteList(new GPNodePow2(), false);
-        this.m_GPArea.add2CompleteList(new GPNodePow3(), false);
-        this.m_GPArea.add2CompleteList(new GPNodeSqrt(), false);
-        for (int i = 0; i < this.m_X.length; i++) this.m_GPArea.add2CompleteList(new GPNodeInput("X"+i));
-        for (int i = 0; i < this.m_C.length; i++) this.m_GPArea.add2CompleteList(new GPNodeInput("C"+i));
+    	// unfortunately this must be cloned or the GUI wont update.
+//    	if (m_GPArea==null) 
+    		m_GPArea = new GPArea();
+//    	else m_GPArea = (GPArea)m_GPArea.clone();
+    	
+    	if (m_GPArea.isEmpty()) {
+	        this.m_GPArea.add2CompleteList(new GPNodeAdd());
+	        this.m_GPArea.add2CompleteList(new GPNodeSub());
+	        this.m_GPArea.add2CompleteList(new GPNodeDiv());
+	        this.m_GPArea.add2CompleteList(new GPNodeMult());
+	        this.m_GPArea.add2CompleteList(new GPNodeSin(), false);
+	        this.m_GPArea.add2CompleteList(new GPNodeCos(), false);
+	        this.m_GPArea.add2CompleteList(new GPNodeExp(), false);
+	        this.m_GPArea.add2CompleteList(new GPNodePow2(), false);
+	        this.m_GPArea.add2CompleteList(new GPNodePow3(), false);
+	        this.m_GPArea.add2CompleteList(new GPNodeSqrt(), false);
+	        for (int i = 0; i < this.m_X.length; i++) this.m_GPArea.add2CompleteList(new GPNodeInput("X"+i));
+	        for (int i = 0; i < this.m_C.length; i++) this.m_GPArea.add2CompleteList(new GPNodeInput("C"+i));
+    	}
         this.m_GPArea.compileReducedList();
     }
 
@@ -192,7 +198,7 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
 
     /** 
      * This method evaluates a single individual and sets the fitness values
-     * @param individual    The individual that is to be evalutated
+     * @param individual    The individual that is to be evaluated
      */
     public void evaluate(AbstractEAIndividual individual) {
         InterfaceProgram            program;
@@ -330,8 +336,8 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
      */
     public void setNumberOfConstants(int b) {
         this.m_NumberOfConstants = b;
+        m_GPArea.clear();
         this.initProblem();
-        this.compileArea();
     }
     public int getNumberOfConstants() {
         return this.m_NumberOfConstants;
@@ -365,6 +371,7 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
         ((InterfaceDataTypeProgram)this.m_Template).SetFunctionArea(tmpArea);
     }
     public GPArea getArea() {
+    	if (m_GPArea==null) initProblem();
         return this.m_GPArea;
     }
     public String areaTipText() {
@@ -396,6 +403,7 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
         this.m_TargetFunction = b;
     }
     public InterfaceRegressionFunction getTargetFunction() {
+    	if (m_TargetFunction==null) initProblem();
         return this.m_TargetFunction;
     }
     public String targetFunctionTipText() {

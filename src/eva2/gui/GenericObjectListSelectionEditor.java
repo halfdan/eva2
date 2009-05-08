@@ -27,16 +27,22 @@ public class GenericObjectListSelectionEditor extends AbstractListSelectionEdito
 	}
 
 	@Override
-	protected void performOnAction() {
+	protected boolean performOnAction() {
+		boolean changed=false;
 		for (int i = 0; i < this.m_BlackCheck.length; i++) {
-			objList.setSelectionForElement(i, this.m_BlackCheck[i].isSelected());
+			if (objList.isSelected(i)!=this.m_BlackCheck[i].isSelected()) {
+				objList.setSelectionForElement(i, this.m_BlackCheck[i].isSelected());
+				changed=true;
+			}
 		}
+		return changed;
 	}
 
 	@Override
 	protected boolean setObject(Object o) {
         if (o instanceof PropertySelectableList) {
             this.objList = (PropertySelectableList) o;
+            objList.addPropertyChangeListener(this);
             return true;
         } else return false;
 	}

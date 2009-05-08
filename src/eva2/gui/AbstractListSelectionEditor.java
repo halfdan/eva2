@@ -7,6 +7,7 @@ import eva2.server.go.individuals.codings.gp.AbstractGPNode;
 import eva2.server.go.individuals.codings.gp.GPArea;
 import eva2.tools.EVAHELP;
 
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyEditorSupport;
 import java.beans.PropertyEditor;
 import java.beans.PropertyChangeListener;
@@ -24,7 +25,7 @@ import java.util.ArrayList;
  * Time: 11:41:01
  * To change this template use Options | File Templates.
  */
-public abstract class AbstractListSelectionEditor extends JPanel implements PropertyEditor {
+public abstract class AbstractListSelectionEditor extends JPanel implements PropertyEditor, PropertyChangeListener {
 
     /** Handles property change notification */
     private PropertyChangeSupport   m_Support = new PropertyChangeSupport(this);
@@ -71,7 +72,8 @@ public abstract class AbstractListSelectionEditor extends JPanel implements Prop
      */
     protected abstract boolean isElementAllowed(int i);
     
-    /** The object may have changed update the editor.
+    /** 
+     * The object may have changed update the editor. This notifies change listeners automatically.
      */
     private void updateEditor() {
         if (this.m_NodePanel != null) {
@@ -82,7 +84,7 @@ public abstract class AbstractListSelectionEditor extends JPanel implements Prop
                  this.m_BlackCheck[i] = new JCheckBox(getElementName(i), isElementAllowed(i));
                  this.m_BlackCheck[i].addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent ev) {
-                        performOnAction();
+                        if (performOnAction()) m_Support.firePropertyChange("AbstractListSelectionEditor", null, this);
                     }
                 });
                 this.m_NodePanel.add(this.m_BlackCheck[i]);
@@ -91,12 +93,14 @@ public abstract class AbstractListSelectionEditor extends JPanel implements Prop
     }
 
     /** 
-     * Perform actions when the selection state changes.
+     * Perform actions when the selection state changes. Return true if there was an actual change.
      */
-    protected abstract void performOnAction();
+    protected abstract boolean performOnAction();
 
     /**
-     * Set the base object, return true on success.
+     * Set the base object, return true on success. Make sure that the editor instance is 
+     * added as a listener to the object (if supported). 
+     * 
      * @param o
      * @return
      */
@@ -179,5 +183,9 @@ public abstract class AbstractListSelectionEditor extends JPanel implements Prop
     public Component getCustomEditor() {
         if (this.m_CustomEditor == null) this.initCustomEditor();
         return m_CustomEditor;
+    }
+    
+    public void propertyChange(PropertyChangeEvent evt) {
+    	m_Support.firePropertyChange("AbstractListSelectionEditor", null, this);
     }
 }
