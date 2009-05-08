@@ -169,7 +169,7 @@ public class PropertyEditorProvider {
         PropertyEditorManager.registerEditor(PropertyEpsilonThreshold.class     , GenericEpsilonThresholdEditor.class);
         PropertyEditorManager.registerEditor(PropertyEpsilonConstraint.class    , GenericEpsilonConstraintEditor.class);
         PropertyEditorManager.registerEditor(PropertyWeightedLPTchebycheff.class, GenericWeigthedLPTchebycheffEditor.class);
-        PropertyEditorManager.registerEditor(PropertyStringList.class           , GenericStringListSelectionEditor.class);
+//        PropertyEditorManager.registerEditor(PropertyStringList.class           , GenericStringListSelectionEditor.class);
         PropertyEditorManager.registerEditor(PropertyFilePath.class             , GenericFilePathEditor.class);
         PropertyEditorManager.registerEditor(PropertyRemoteServers.class        , GenericRemoteServersEditor.class);
         PropertyEditorManager.registerEditor(PropertyOptimizationObjectives.class  , GenericOptimizationObjectivesEditor.class);

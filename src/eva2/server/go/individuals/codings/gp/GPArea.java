@@ -1,6 +1,8 @@
 package eva2.server.go.individuals.codings.gp;
 
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 
 import wsi.ra.math.RNG;
@@ -14,7 +16,9 @@ import wsi.ra.math.RNG;
  * To change this template use Options | File Templates.
  */
 public class GPArea implements java.io.Serializable {
-
+    /** Handles property change notification */
+    private transient PropertyChangeSupport   m_Support = new PropertyChangeSupport(this);
+    
     private ArrayList       m_CompleteList  = new ArrayList();
     private ArrayList       m_ReducedList   = new ArrayList();
     private ArrayList       m_BlackList     = new ArrayList();
@@ -92,6 +96,7 @@ public class GPArea implements java.io.Serializable {
      */
     public void SetCompleteList(ArrayList a) {
         this.m_CompleteList = a;
+	    m_Support.firePropertyChange("GPArea", null, this);
     }
 
     /** This method compiles the Complete List to the allowed list using the BlackList
@@ -103,6 +108,7 @@ public class GPArea implements java.io.Serializable {
                 this.m_ReducedList.add(this.m_CompleteList.get(i));
             }
         }
+	    m_Support.firePropertyChange("GPArea", null, this);
     }
 
     /** This method allows you to fetch a random node of a given arity
@@ -138,4 +144,21 @@ public class GPArea implements java.io.Serializable {
 	public boolean isEmpty() {
 		return (m_CompleteList==null) || (m_CompleteList.size()==0);
 	}
+	
+	public void clear() {
+	    m_CompleteList  = new ArrayList();
+	    m_ReducedList   = new ArrayList();
+	    m_BlackList     = new ArrayList();
+	    m_Support.firePropertyChange("GPArea", null, this);
+	}
+	
+    public void addPropertyChangeListener(PropertyChangeListener l) {
+        m_Support.addPropertyChangeListener(l);
+    }
+    /**
+     *
+     */
+    public void removePropertyChangeListener(PropertyChangeListener l) {
+        m_Support.removePropertyChangeListener(l);
+    }
 }
