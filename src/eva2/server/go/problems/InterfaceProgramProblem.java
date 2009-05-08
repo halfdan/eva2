@@ -1,5 +1,7 @@
 package eva2.server.go.problems;
 
+import eva2.server.go.individuals.codings.gp.GPArea;
+
 /**
  * Created by IntelliJ IDEA.
  * User: streiche
@@ -21,4 +23,10 @@ public interface InterfaceProgramProblem {
      * @param parameter     The actuator parameter.
      */
     public void setActuatorValue(String actuator, Object parameter);
+    
+    /**
+     * Return the GPArea associated with the program problem.
+     * @return
+     */
+    public GPArea getArea();
 }
