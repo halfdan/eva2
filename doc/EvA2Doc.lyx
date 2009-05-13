@@ -1908,6 +1908,56 @@ status collapsed
 \noun default
  will search all classpath entries for compatible classes, so you should
  only add those packages which are really required.
+ For your own additional packages, this also means that, if you want your
+ extensions (e.g.
+ own problem implementations or operators) to be displayed in the 
+\noun on
+EvA
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+2
+\noun default
+ GUI, they have to be assigned the same package tree as the associated 
+\noun on
+EvA
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+2
+\noun default
+ operators.
+ Check Sec.
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+
+\begin_inset LatexCommand \ref{sec:Using-the-API}
+
+\end_inset
+
+ on more details.
 \end_layout
 
 \begin_layout Standard
@@ -4029,13 +4079,12 @@ Accessing Standard Optimizers
 \end_layout
 
 \begin_layout Standard
-A standard optimizer can be defined as a more or less popular optimization
- algorithm with operators and parameters predefined in a general way so
- that a user may use it out-of-the-box and expect good optimization results
- in general.
+A standard optimizer is typically a well-knwon optimization algorithm with
+ operators and parameters predefined in a way so that a user may start it
+ out-of-the-box and expect good optimization results in general.
  Of course, every expert may have an own notion on what parameters are preferabl
 e in general.
- Therefore we give two usage examples using the API.
+ Therefore we give two customization examples using the API.
  In any case, a necessary step is to extend a 
 \noun on
 EvA
@@ -4052,7 +4101,18 @@ status collapsed
 2
 \noun default
  base class constituting the target function.
- You may, again, use the simpleprobs package described in 
+ You may, again, use the simpleprobs package described in Sec.
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+
 \begin_inset LatexCommand \ref{sec:Quickly-Adding-Your-Problem}
 
 \end_inset
@@ -4064,8 +4124,8 @@ SimpleProblemWrapper
 \family default
 , which is great for direct GUI usage but may make programming a bit more
  complicated.
- We therefore recommend here to go one step higher in hierarchy and extend
- 
+ We therefore, at this point, recommend to go one step higher in hierarchy
+ and extend 
 \family typewriter
 AbstractProblemDouble
 \family default
@@ -4147,9 +4207,43 @@ AbstractProblemDouble
 \family typewriter
 AbstractProblemBinary
 \family default
-, depending on your preferred data prepresentation.
+, depending on your preferred data representation.
  Integer and program-data-based problems are currently not covered by this
  document.
+ Notice that if you want your problem implementation to be displayed and
+ manageable by the GUI in the same way the predefined problems are handled,
+ you have to assign it the same package tree as its parent class (e.g.
+ 
+\family typewriter
+eva2.ser
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+-
+\end_layout
+
+\end_inset
+
+ver.go.prob
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+-
+\end_layout
+
+\end_inset
+
+lems
+\family default
+ for new problem implementations).
 \end_layout
 
 \begin_layout Paragraph*
@@ -4165,20 +4259,7 @@ AbstractProblemDouble
 \family default
  class in the package 
 \family typewriter
-java
-\begin_inset ERT
-status collapsed
-
-\begin_layout Standard
-
-
-\backslash
--
-\end_layout
-
-\end_inset
-
-eva.ser
+eva2.ser
 \begin_inset ERT
 status collapsed
 
