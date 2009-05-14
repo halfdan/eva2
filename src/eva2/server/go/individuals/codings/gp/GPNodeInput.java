@@ -14,6 +14,12 @@ import eva2.server.go.problems.InterfaceProgramProblem;
 public class GPNodeInput extends AbstractGPNode implements java.io.Serializable {
     private String      m_Identifier;
     private Object      lastValue;
+    
+    /** This method creates a new GPNodeInput
+     */
+    public GPNodeInput() {
+        this.m_Identifier   = "X";
+    }
 
     /** This method creates a new GPNodeInput
      * @param identifier    The name of the sensor requested.
@@ -28,6 +34,10 @@ public class GPNodeInput extends AbstractGPNode implements java.io.Serializable 
         this.m_Parent   = node.m_Parent;
         this.m_Nodes    = new AbstractGPNode[node.m_Nodes.length];
         for (int i = 0; i < node.m_Nodes.length; i++) this.m_Nodes[i] = (AbstractGPNode) node.m_Nodes[i].clone();
+    }
+    
+    public void setIdentifier(String str) {
+    	m_Identifier=str;
     }
 
     /** This method allows you to determine wehter or not two subtrees
@@ -76,14 +86,14 @@ public class GPNodeInput extends AbstractGPNode implements java.io.Serializable 
     /** This method returns a string representation
      * @return string
      */
-    public String getStringRepresentation() {
+    public String getOpIdentifier() {
         if (this.lastValue == null) return this.m_Identifier;
         else {
             if (this.lastValue instanceof Double) {
                 double tmpD = ((Double)this.lastValue).doubleValue();
                 tmpD = ((long)(tmpD*10000.0 + ((tmpD>=0.0)?0.5:-0.5)))/10000.0;
-                return ("( S:" +this.m_Identifier + " = " + tmpD + " )");
-            } else return ("( S:" +this.m_Identifier + " = " + this.lastValue.toString() + " )");
+                return ("S:" +this.m_Identifier + " = " + tmpD);
+            } else return ("S:" +this.m_Identifier + " = " + this.lastValue.toString());
         }
     }
 }
