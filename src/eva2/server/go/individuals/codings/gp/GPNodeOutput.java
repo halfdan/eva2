@@ -15,7 +15,11 @@ import eva2.server.go.problems.InterfaceProgramProblem;
 public class GPNodeOutput extends AbstractGPNode implements java.io.Serializable {
 
     private String      m_Identifier;
-
+    
+    public GPNodeOutput() {
+        this.m_Identifier   = "Y";
+    }
+    
     /** This method creates a new GPNodeInput
      * @param identifier    The name of the sensor requested.
      */
@@ -75,10 +79,14 @@ public class GPNodeOutput extends AbstractGPNode implements java.io.Serializable
         return null;
     }
 
-    /** This method returns a string representation
-     * @return string
-     */
-    public String getStringRepresentation() {
-        return ("( A:" +this.m_Identifier + " )");
+    @Override
+    public String getOpIdentifier() {
+    	return "OUT:"+m_Identifier;
     }
+//    /** This method returns a string representation
+//     * @return string
+//     */
+//    public String getStringRepresentation() {
+//        return ("( A:" +this.m_Identifier + " )");
+//    }
 }

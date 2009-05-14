@@ -72,13 +72,18 @@ public class GPNodeSqrt extends AbstractGPNode implements java.io.Serializable {
         return new Double(result);
     }
 
-    /** This method returns a string representation
-     * @return string
-     */
-    public String getStringRepresentation() {
-        String result = "sqrt( ";
-        for (int i = 0; i < this.m_Nodes.length; i++) result += this.m_Nodes[i].getStringRepresentation() +" ";
-        result += ")";
-        return result;
+    @Override
+    public String getOpIdentifier() {
+    	return "sqrt";
     }
+    
+//    /** This method returns a string representation
+//     * @return string
+//     */
+//    public String getStringRepresentation() {
+//        String result = "sqrt( ";
+//        for (int i = 0; i < this.m_Nodes.length; i++) result += this.m_Nodes[i].getStringRepresentation() +" ";
+//        result += ")";
+//        return result;
+//    }
 }

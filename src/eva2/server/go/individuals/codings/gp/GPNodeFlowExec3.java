@@ -72,13 +72,17 @@ public class GPNodeFlowExec3 extends AbstractGPNode implements java.io.Serializa
         return result;
     }
 
-    /** This method returns a string representation
-     * @return string
-     */
-    public String getStringRepresentation() {
-        String result = "Exec3( ";
-        for (int i = 0; i < this.m_Nodes.length; i++) result += this.m_Nodes[i].getStringRepresentation() +" ";
-        result += ")";
-        return result;
+    @Override
+    public String getOpIdentifier() {
+    	return "Exec3";
     }
+//    /** This method returns a string representation
+//     * @return string
+//     */
+//    public String getStringRepresentation() {
+//        String result = "Exec3( ";
+//        for (int i = 0; i < this.m_Nodes.length; i++) result += this.m_Nodes[i].getStringRepresentation() +" ";
+//        result += ")";
+//        return result;
+//    }
 }

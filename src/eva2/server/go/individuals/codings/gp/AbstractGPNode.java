@@ -2,8 +2,12 @@ package eva2.server.go.individuals.codings.gp;
 
 
 import java.util.ArrayList;
+import java.util.Vector;
 
+import eva2.gui.BeanInspector;
+import eva2.gui.GenericObjectEditor;
 import eva2.server.go.problems.InterfaceProgramProblem;
+import eva2.tools.Pair;
 
 
 /** This gives an abstract node, with default functionality for get and set methods.
@@ -41,8 +45,175 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
     /** This method returns a string representation
      * @return string
      */
-    public abstract String getStringRepresentation();
+    public String getStringRepresentation() {
+    	StringBuffer sb = new StringBuffer();
+    	AbstractGPNode.appendStringRepresentation(this, sb);
+    	return sb.toString();
+    }
+    
+    private static void appendStringRepresentation(AbstractGPNode node, StringBuffer sbuf) {
+    	String op = node.getOpIdentifier(); 
+    	sbuf.append(op);
+    	if (node.getArity()>0) {
+    		sbuf.append("(");
+    		for (int i = 0; i < node.m_Nodes.length; i++) {
+    			sbuf.append(node.m_Nodes[i].getStringRepresentation());
+    			if (i<node.m_Nodes.length-1) sbuf.append(", ");
+    		}
+    		sbuf.append(")");
+    	}
+    }
+    
+    /** 
+     * This method returns a string identifier of the operator name - it should be unique. 
+     * 
+     * @return string
+     */
+    public abstract String getOpIdentifier();
+    
+    /**
+     * Small parser for GP nodes from a String. Format must be (nearly) equivalent to what makeStringRepresentation produces.
+     * This mainly means prefix notation with braces and commata, such as in:
+     *     AbstractGPNode node = AbstractGPNode.parseFromString("+(2.0,cos(*(pi,pi)))");
+     *     System.out.println("Parsed GPNode: " + node.getStringRepresentation());
+     *     node = AbstractGPNode.parseFromString(node.getStringRepresentation());
+     * @param str
+     * @param nodeTypes
+     * @return
+     */
+    public static Pair<AbstractGPNode,String> parseFromString(String str, Vector<AbstractGPNode> nodeTypes) {
+    	if (nodeTypes == null) {
+    		ArrayList<String>cls = GenericObjectEditor.getClassesFromClassPath(AbstractGPNode.class.getCanonicalName());
+    		nodeTypes = new Vector<AbstractGPNode>(cls.size());
+    		for (int i=0; i<cls.size(); i++) {
+    			try {
+    				AbstractGPNode node = (AbstractGPNode)Class.forName((String)cls.get(i)).newInstance();
+    				nodeTypes.add(node);
+    			} catch(Exception e) {}
+    		}
+			nodeTypes.add(new GPNodeInput("X"));
+    	}
+    	if (nodeTypes.size()>0) {
+    		Vector<AbstractGPNode> matchSet=AbstractGPNode.match(nodeTypes, str, true, true);
+    		if (matchSet.size()==0) {
+    			// try to read constant
+    			Pair<Double, String> nextState=readDouble(str, true);
+    			if (nextState != null) {
+    				return new Pair<AbstractGPNode,String>(new GPNodeConst(nextState.head().doubleValue()), nextState.tail());
+    			} else {
+        			System.err.println("String has unknown prefix: " + str);
+    			}
+    		}
+    		else if (matchSet.size()>1) System.err.println("String has ambiguous prefix: " + str + " -- " + BeanInspector.toString(matchSet));
+    		else { // exactly one match:
+    			AbstractGPNode currentNode = (AbstractGPNode)matchSet.get(0).clone();
+//    			System.out.println("Found match: " + currentNode.getOpIdentifier() + "/" + currentNode.getArity());
+    			int cutFront=currentNode.getOpIdentifier().length();
+    			String restStr;
+    			if (currentNode.getArity()==0) {
+    				restStr = str.substring(cutFront).trim();
+    				if (currentNode instanceof GPNodeInput) {
+    					Pair<Double, String> nextState=readDouble(restStr, false);
+    					if (nextState!=null) {
+    						((GPNodeInput)currentNode).setIdentifier("X"+((int)nextState.head().doubleValue()));
+        					restStr = nextState.tail();
+    					} else {
+    						((GPNodeInput)currentNode).setIdentifier("X");
+    					}
+    				}
+    				return new Pair<AbstractGPNode,String>(currentNode,restStr);
+    			} else {
+					restStr = str.substring(cutFront+1).trim(); // cut this op and front brace
+					currentNode.m_Nodes = new AbstractGPNode[currentNode.getArity()];
+    				for (int i=0; i<currentNode.getArity(); i++) {
+    					Pair<AbstractGPNode,String> nextState = parseFromString(restStr, nodeTypes);
+    					currentNode.m_Nodes[i]=nextState.head();
+    					restStr=nextState.tail().substring(1).trim(); // cut comma or brace
+    				}
+//    				System.out.println("lacking rest: " + restStr);
+    				return new Pair<AbstractGPNode,String>(currentNode, restStr);
+    			}
+    		}
+    	} return null;
+    }
+    
+    private static Pair<Double, String> readDouble(String str, boolean expect) {
+		String firstArg;
+		int argLen = str.indexOf(',');
+		if (argLen<0) argLen = str.indexOf(')');
+		else {
+			int firstBrace = str.indexOf(')');
+			if ((firstBrace >= 0) && (firstBrace<argLen)) argLen = firstBrace;
+		}
+		firstArg=str.substring(0,argLen);
+		try {
+			Double d=Double.parseDouble(firstArg);
+			return new Pair<Double,String>(d, str.substring(firstArg.length()));
+		} catch(NumberFormatException e) {
+			if (expect) System.err.println("String has unknown prefix: " + str);
+			return null;
+		}
+	}
 
+	/** 
+     * This method returns a string representation
+     * @return string
+     */
+    public static String makeStringRepresentation(AbstractGPNode[] nodes, String op) {
+    	if (nodes.length==0) return op;
+    	else if (nodes.length==1) return op+"(" + nodes[0].getStringRepresentation()+")";
+    	else {
+    		String result = "( "+nodes[0].getStringRepresentation();
+    		for (int i = 1; i < nodes.length; i++) result += " " + op +  " " + nodes[i].getStringRepresentation();
+    		result += ")";
+    		return result;
+    	}
+    }
+    
+    /**
+     * Match available nodes by their operator identifier string. Allows the option "first longest match" only
+     * for ambiguous situations where several operators match.
+     * 
+     * @param nodeTypes
+     * @param str
+     * @param firstLongestOnly
+     * @return
+     */
+    private static Vector<AbstractGPNode> match(
+			Vector<AbstractGPNode> nodeTypes, String str, boolean firstLongestOnly, boolean ignoreCase) {
+    	Vector<AbstractGPNode> matching = new Vector<AbstractGPNode>();
+		for (int i=0; i<nodeTypes.size(); i++) {
+			if (str.startsWith(nodeTypes.get(i).getOpIdentifier())) matching.add(nodeTypes.get(i));
+			else if (ignoreCase && str.toLowerCase().startsWith(nodeTypes.get(i).getOpIdentifier().toLowerCase())) matching.add(nodeTypes.get(i));
+		}
+		if (matching.size()>1 && firstLongestOnly) { // allow only the longest match (or first longest)
+			int maxLen = matching.get(0).getOpIdentifier().length();
+			AbstractGPNode longest=matching.get(0);
+			for (int i=1; i<matching.size(); i++) {
+				if (matching.get(i).getOpIdentifier().length()>maxLen) {
+					longest = matching.get(i);
+					maxLen = longest.getOpIdentifier().length();
+				}
+			}
+			matching.clear();
+			matching.add(longest);
+		}
+		return matching;
+	}
+
+    public static AbstractGPNode parseFromString(String str) {
+//    	System.out.println("Parsing " + str);
+    	Pair<AbstractGPNode,String> result = AbstractGPNode.parseFromString(str, null);
+    	return result.head();
+    }
+    
+	public static void main(String[] args) {
+//		Double d = Double.parseDouble("2.58923 + 3");
+    	AbstractGPNode node = AbstractGPNode.parseFromString("+(x,cOs(*(pI,x1)))");
+//    	System.out.println("Parsed GPNode: " + node.getStringRepresentation());
+    	node = AbstractGPNode.parseFromString(node.getStringRepresentation());
+    }
+    
     /** This method returns the depth of the current node
      * @return The depth.
      */
@@ -216,4 +387,5 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
      * @return boolean if equal true else false.
      */
     public abstract boolean equals(Object obj);
+    
 }

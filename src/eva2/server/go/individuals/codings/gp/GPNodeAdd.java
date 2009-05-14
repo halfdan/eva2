@@ -15,7 +15,6 @@ import eva2.server.go.problems.InterfaceProgramProblem;
 public class GPNodeAdd extends AbstractGPNode implements java.io.Serializable {
 
     public GPNodeAdd() {
-
     }
 
     public GPNodeAdd(GPNodeAdd node) {
@@ -78,13 +77,8 @@ public class GPNodeAdd extends AbstractGPNode implements java.io.Serializable {
         return new Double(result);
     }
 
-    /** This method returns a string representation
-     * @return string
-     */
-    public String getStringRepresentation() {
-        String result = "+( ";
-        for (int i = 0; i < this.m_Nodes.length; i++) result += this.m_Nodes[i].getStringRepresentation() +" ";
-        result += ")";
-        return result;
+    @Override
+    public String getOpIdentifier() {
+    	return "+";
     }
 }
