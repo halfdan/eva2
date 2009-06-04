@@ -38,6 +38,7 @@ public class PopulationBasedIncrementalLearning implements InterfaceOptimizer, j
     private double                                  m_MutationRate      = 0.5;
     private double                                  m_MutateSigma       = 0.01;
     private int                                     m_NumberOfPositiveSamples = 1;
+    private double[]								m_initialProbabilities = ((PBILPopulation)m_Population).getProbabilityVector();
 
     public PopulationBasedIncrementalLearning() {
     }
@@ -59,6 +60,11 @@ public class PopulationBasedIncrementalLearning implements InterfaceOptimizer, j
 
     public void init() {
         this.m_Problem.initPopulation(this.m_Population);
+        if ((m_initialProbabilities!=null) && (m_initialProbabilities.length==((PBILPopulation)m_Population).getProbabilityVector().length)) {
+        	((PBILPopulation)m_Population).SetProbabilityVector(m_initialProbabilities);
+        } else {
+        	if (m_initialProbabilities!=null) System.err.println("Warning: initial probability vector doesnt match in length!");
+        }
         this.evaluatePopulation(this.m_Population);
         this.firePropertyChangedEvent(Population.nextGenerationPerformed);
     }
@@ -308,4 +314,12 @@ public class PopulationBasedIncrementalLearning implements InterfaceOptimizer, j
     public String positiveSamplesTipText() {
         return "The number of positive samples that update the PBIL vector.";
     }
+
+	public double[] getInitialProbabilities() {
+		return m_initialProbabilities;
+	}
+
+	public void setInitialProbabilities(double[] probabilities) {
+		m_initialProbabilities = probabilities;
+	}
 }
