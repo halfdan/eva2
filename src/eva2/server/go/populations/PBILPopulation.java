@@ -19,11 +19,15 @@ import wsi.ra.math.RNG;
 
 public class PBILPopulation extends Population implements Cloneable, java.io.Serializable {
 
-    private double[]    m_ProbabilityVector = new double[0];
+    private double[]    m_ProbabilityVector = new double[1];
 
     public PBILPopulation() {
     }
 
+    public PBILPopulation(int popSize) {
+    	super(popSize);
+    }
+    
     public PBILPopulation(PBILPopulation population) {
         this.m_Generation       = population.m_Generation;
         this.m_FunctionCalls    = population.m_FunctionCalls;
@@ -132,7 +136,7 @@ public class PBILPopulation extends Population implements Cloneable, java.io.Ser
     public void SetProbabilityVector(double[] pv) {
         this.m_ProbabilityVector = pv;
     }
-    public double[] getProbabilityVector(double[] pv) {
+    public double[] getProbabilityVector() {
         return this.m_ProbabilityVector;
     }
 

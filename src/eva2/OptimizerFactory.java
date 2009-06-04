@@ -36,8 +36,10 @@ import eva2.server.go.operators.selection.InterfaceSelection;
 import eva2.server.go.operators.selection.SelectBestIndividuals;
 import eva2.server.go.operators.terminators.CombinedTerminator;
 import eva2.server.go.operators.terminators.EvaluationTerminator;
+import eva2.server.go.populations.PBILPopulation;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.AbstractOptimizationProblem;
+import eva2.server.go.problems.B1Problem;
 import eva2.server.go.strategies.ClusterBasedNichingEA;
 import eva2.server.go.strategies.ClusteringHillClimbing;
 import eva2.server.go.strategies.DifferentialEvolution;
@@ -50,6 +52,7 @@ import eva2.server.go.strategies.InterfaceOptimizer;
 import eva2.server.go.strategies.MonteCarloSearch;
 import eva2.server.go.strategies.MultiObjectiveEA;
 import eva2.server.go.strategies.ParticleSwarmOptimization;
+import eva2.server.go.strategies.PopulationBasedIncrementalLearning;
 import eva2.server.go.strategies.SimulatedAnnealing;
 import eva2.server.go.strategies.Tribes;
 import eva2.server.modules.GOParameters;
@@ -104,6 +107,8 @@ public class OptimizerFactory {
 	public final static int CMA_ES_IPOP = 11;
 	
 	public final static int CBN_GA = 12;
+	
+	public final static int PBIL = 13;
 
 	public final static int defaultFitCalls = 10000;
 
@@ -496,6 +501,41 @@ public class OptimizerFactory {
 		return sa;
 	}
 
+	/**
+	 * Calling init here makes problems when using the Matlab interface.
+	 * 
+	 * @param learningRate
+	 * @param mutateSigma
+	 * @param mutationRate
+	 * @param positiveSamples
+	 * @param selection
+	 * @param popsize
+	 * @param problem
+	 * @param listener
+	 * @return
+	 */
+	public static final PopulationBasedIncrementalLearning createPBIL(
+			double learningRate, double mutateSigma, double mutationRate, 
+			int positiveSamples, InterfaceSelection selection, int popsize,
+			AbstractOptimizationProblem problem, InterfacePopulationChangedEventListener listener) {
+		problem.initProblem();
+		PopulationBasedIncrementalLearning pbil = new PopulationBasedIncrementalLearning();
+
+		pbil.setLearningRate(learningRate);
+		pbil.setMutateSigma(mutateSigma);
+		pbil.setMutationRate(mutationRate);
+		pbil.setPopulation(new PBILPopulation(popsize));
+		pbil.setSelectionMethod(selection);
+		pbil.setPositiveSamples(positiveSamples);
+		
+		pbil.addPopulationChangedEventListener(listener);
+		pbil.SetProblem(problem);
+
+		if (listener != null) listener.registerPopulationStateChanged(pbil.getPopulation(), "");
+
+		return pbil;
+	}
+	
 	// /////////////////////////// Termination criteria
 	public static InterfaceTerminator makeDefaultTerminator() {
 		return new EvaluationTerminator(defaultFitCalls);
@@ -547,6 +587,8 @@ public class OptimizerFactory {
 			return cmaESIPOP(problem);
 		case CBN_GA:
 			return cbnGA(problem);
+		case PBIL:
+			return standardPBIL(problem);
 		default:
 			System.err.println("Error: optimizer type " + optType
 					+ " is unknown!");
@@ -562,7 +604,8 @@ public class OptimizerFactory {
 	 */
 	public static String showOptimizers() {
 		return "1: Standard ES \n2: CMA-ES \n3: GA \n4: PSO \n5: DE \n6: Tribes \n7: Random (Monte Carlo) "
-				+ "\n8: Hill-Climbing \n9: Cluster-based niching ES \n10: Clustering Hill-Climbing \n11: IPOP-CMA-ES.";
+				+ "\n8: Hill-Climbing \n9: Cluster-based niching ES \n10: Clustering Hill-Climbing \n11: IPOP-CMA-ES "
+				+ "\n12: Cluster-based niching GA \n13: PBIL";
 	}
 
 	/**
@@ -1108,6 +1151,13 @@ public class OptimizerFactory {
 		cbn.setShowCycle(0); // don't do graphical output
 
 		return makeParams(cbn, 100, problem, randSeed, makeDefaultTerminator());
+	}
+	
+	public static final GOParameters standardPBIL(AbstractOptimizationProblem problem) {
+		PopulationBasedIncrementalLearning pbil = createPBIL(0.04, 0.01, 0.5, 1, 
+				new SelectBestIndividuals(), 50, problem, null);
+
+		return makeParams(pbil, pbil.getPopulation(), problem, randSeed, makeDefaultTerminator());
 	}
 	
 	/**
