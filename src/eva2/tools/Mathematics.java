@@ -25,6 +25,14 @@ public class Mathematics {
 		System.out.println(median(y) / 1000);
 	}
 
+	public static void revertArray(Object[] src, Object[] dst) {
+		if (dst.length>=src.length) {
+			for (int i=0; i<src.length; i++) {
+				dst[src.length-i-1]=src[i];
+			}
+		} else System.err.println("Mismatching array lengths!");
+	}
+	
 	/**
 	 * Computes the median of a given double vector.
 	 *

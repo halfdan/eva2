@@ -583,7 +583,7 @@ public class GenericObjectEditor implements PropertyEditor {
 			}
 			return true;
 		} catch (Exception e) {
-			System.err.println("exception in setHideProperty: " + e.getMessage());
+			System.err.println("exception in setHideProperty for " + cls.getName() + "/" + property + " : " + e.getMessage());
 			return false;
 		}
 	}
@@ -616,8 +616,27 @@ public class GenericObjectEditor implements PropertyEditor {
 			System.err.println("Error: property " + property + " not found!");
 			return false;
 		} catch (Exception e) {
-			System.err.println("exception in setHideProperty: " + e.getMessage());
+			System.err.println("exception in setHideProperty for " + cls.getName() + "/" + property + " : " + e.getMessage());
 			return false;
+		}
+	}
+	
+	/**
+	 * Hide or unhide all properties of a given class. Added to avoid the problem with hidden
+	 * properties of inherited classes hide the property for all classes within the same inheritance tree.
+	 * 
+	 * @param cls
+	 * @param hide
+	 */
+	public static void setHideAllProperties(Class<?> cls, boolean hide) {
+		try {
+			BeanInfo    bi      = Introspector.getBeanInfo(cls);
+			PropertyDescriptor[] props = bi.getPropertyDescriptors();
+			for (int i=0; i<props.length; i++) {
+				props[i].setHidden(hide);
+			}
+		} catch (Exception e) {
+			System.err.println("exception in setHideProperty for " + cls.getName() + "/all : " + e.getMessage());
 		}
 	}
 	

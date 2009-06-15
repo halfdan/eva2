@@ -1,8 +1,8 @@
 function int = JEInterface(fhandle, range, varargin)
 % EvA2 Interface for Matlab
-%       JEInterface(interfaceName, fhandle, range)
-%       JEInterface(interfaceName, fhandle, range, defaultargs)
-%       JEInterface(interfaceName, fhandle, range, defaultargs, options...)
+%       JEInterface(fhandle, range)
+%       JEInterface(fhandle, range, defaultargs)
+%       JEInterface(fhandle, range, defaultargs, options...)
 %
 % Arguments: 
 %   fhandle: a function handle defining the optimization target.

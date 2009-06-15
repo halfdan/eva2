@@ -19,9 +19,9 @@ public class GPArea implements java.io.Serializable {
     /** Handles property change notification */
     private transient PropertyChangeSupport   m_Support = new PropertyChangeSupport(this);
     
-    private ArrayList       m_CompleteList  = new ArrayList();
-    private ArrayList       m_ReducedList   = new ArrayList();
-    private ArrayList       m_BlackList     = new ArrayList();
+    private ArrayList<AbstractGPNode>       m_CompleteList  = new ArrayList<AbstractGPNode>();
+    private ArrayList<AbstractGPNode>       m_ReducedList   = new ArrayList<AbstractGPNode>();
+    private ArrayList<Boolean>       m_BlackList     = new ArrayList<Boolean>();
 
     public GPArea() {
 
@@ -29,11 +29,11 @@ public class GPArea implements java.io.Serializable {
 
     public GPArea(GPArea g) {
         if (g.m_BlackList != null)
-            this.m_BlackList    = (ArrayList)g.m_BlackList.clone();
+            this.m_BlackList    = (ArrayList<Boolean>)g.m_BlackList.clone();
         if (g.m_ReducedList != null)
-            this.m_ReducedList  = (ArrayList)g.m_ReducedList.clone();
+            this.m_ReducedList  = (ArrayList<AbstractGPNode>)g.m_ReducedList.clone();
         if (g.m_CompleteList != null)
-            this.m_CompleteList = (ArrayList)g.m_CompleteList.clone();
+            this.m_CompleteList = (ArrayList<AbstractGPNode>)g.m_CompleteList.clone();
     }
 
     public Object clone() {
@@ -60,13 +60,13 @@ public class GPArea implements java.io.Serializable {
     /** This method allows you to fetch the black list
      * @return blacklist
      */
-    public ArrayList getBlackList() {
+    public ArrayList<Boolean> getBlackList() {
         return this.m_BlackList;
     }
     /** This method allows you to set the black list
      * @param a blacklist
      */
-    public void SetBlackList(ArrayList a) {
+    public void SetBlackList(ArrayList<Boolean> a) {
         this.m_BlackList = a;
     }
     /** This method allows you to set a BlackList element
@@ -80,21 +80,21 @@ public class GPArea implements java.io.Serializable {
     /** This method allows you to fetch the CompleteList
      * @return blacklist
      */
-    public ArrayList getCompleteList() {
+    public ArrayList<AbstractGPNode> getCompleteList() {
         return this.m_CompleteList;
     }
 
     /** This method allows you to fetch the CompleteList
      * @return blacklist
      */
-    public ArrayList getReducedList() {
+    public ArrayList<AbstractGPNode> getReducedList() {
         return this.m_ReducedList;
     }
 
     /** This method allows you to set the CompleteList
      * @param a blacklist
      */
-    public void SetCompleteList(ArrayList a) {
+    public void SetCompleteList(ArrayList<AbstractGPNode> a) {
         this.m_CompleteList = a;
 	    m_Support.firePropertyChange("GPArea", null, this);
     }
@@ -102,7 +102,7 @@ public class GPArea implements java.io.Serializable {
     /** This method compiles the Complete List to the allowed list using the BlackList
      */
     public void compileReducedList() {
-        this.m_ReducedList = new ArrayList();
+        this.m_ReducedList = new ArrayList<AbstractGPNode>();
         for (int i = 0; i < this.m_CompleteList.size(); i++) {
             if (((Boolean)(this.m_BlackList.get(i))).booleanValue()) {
                 this.m_ReducedList.add(this.m_CompleteList.get(i));
@@ -115,7 +115,7 @@ public class GPArea implements java.io.Serializable {
      * @param targetarity       The target arity.
      */
     public AbstractGPNode getRandomNodeWithArity(int targetarity) {
-        ArrayList   tmpArray = new ArrayList();
+        ArrayList<AbstractGPNode>   tmpArray = new ArrayList<AbstractGPNode>();
         for (int i = 0; i < this.m_ReducedList.size(); i++) {
             if (((AbstractGPNode)this.m_ReducedList.get(i)).getArity() == targetarity) tmpArray.add(this.m_ReducedList.get(i));
         }
@@ -133,7 +133,7 @@ public class GPArea implements java.io.Serializable {
     /** This method will return a non terminal
      */
     public AbstractGPNode getRandomNonTerminal() {
-        ArrayList   tmpArray = new ArrayList();
+        ArrayList<AbstractGPNode>   tmpArray = new ArrayList<AbstractGPNode>();
         for (int i = 0; i < this.m_ReducedList.size(); i++) {
             if (((AbstractGPNode)this.m_ReducedList.get(i)).getArity() > 0) tmpArray.add(this.m_ReducedList.get(i));
         }
@@ -146,19 +146,21 @@ public class GPArea implements java.io.Serializable {
 	}
 	
 	public void clear() {
-	    m_CompleteList  = new ArrayList();
-	    m_ReducedList   = new ArrayList();
-	    m_BlackList     = new ArrayList();
+	    m_CompleteList  = new ArrayList<AbstractGPNode>();
+	    m_ReducedList   = new ArrayList<AbstractGPNode>();
+	    m_BlackList     = new ArrayList<Boolean>();
 	    m_Support.firePropertyChange("GPArea", null, this);
 	}
 	
     public void addPropertyChangeListener(PropertyChangeListener l) {
+    	if (m_Support==null) m_Support = new PropertyChangeSupport(this);
         m_Support.addPropertyChangeListener(l);
     }
     /**
      *
      */
     public void removePropertyChangeListener(PropertyChangeListener l) {
+    	if (m_Support==null) m_Support = new PropertyChangeSupport(this);
         m_Support.removePropertyChangeListener(l);
     }
 }

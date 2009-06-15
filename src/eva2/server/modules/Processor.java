@@ -282,7 +282,7 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
      * @return the percentage of current (multi-)run already performed
      */
     private int getStatusPercent(Population pop, int currentRun, int multiRuns) {
-	    double percentPerRun = 100/multiRuns;
+	    double percentPerRun = 100./multiRuns;
 	    int curProgress;
 	    if (this.goParams.getTerminator() instanceof EvaluationTerminator) {
 	        double curRunPerf = pop.getFunctionCalls()*percentPerRun/(double)((EvaluationTerminator)this.goParams.getTerminator()).getFitnessCalls();

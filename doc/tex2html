@@ -3,6 +3,8 @@
 
 project="EvA2Doc"
 CUSTOM_ICONS="yes"
+latex ${project}.tex
+bibtex ${project}.tex
 latex2html ${project}.tex -prefix ${project}_ -antialias -local_icons
 dest="/home/mkron/workspace/EvA2web/resources/"
 cp -uvr $project $dest

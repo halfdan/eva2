@@ -150,20 +150,11 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
      */
     protected Population generateEvalChildren(Population fromPopulation) {
         Population                  result = m_Population.cloneWithoutInds(), parents;
-        AbstractEAIndividual[]      offSprings;
-        AbstractEAIndividual        tmpIndy;
 
         result.clear();
-        this.m_ParentSelection.prepareSelection(fromPopulation);
-        this.m_PartnerSelection.prepareSelection(fromPopulation);
-        parents     = this.m_ParentSelection.selectFrom(fromPopulation, this.m_Lambda);
 
-        for (int i = 0; i < parents.size(); i++) {
-            tmpIndy =  (AbstractEAIndividual)parents.get(i);
-            offSprings = tmpIndy.mateWith(this.m_PartnerSelection.findPartnerFor(tmpIndy, fromPopulation, this.m_NumberOfPartners));
-            offSprings[0].mutate();
-            result.add(i, offSprings[0]);
-        }
+        parents = generateChildren(fromPopulation, result, this.m_Lambda);
+        
         this.evaluatePopulation(result);
         
         if (result.getEAIndividual(0).getMutationOperator() instanceof InterfaceMutationGenerational) {
@@ -174,13 +165,43 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
         
         return result;
     }
- 
-    protected Population selectParents() {
-    	this.m_EnvironmentSelection.prepareSelection(this.m_Population);
-    	return this.m_EnvironmentSelection.selectFrom(this.m_Population, this.m_Mu);
+    
+    /**
+     * Create a new population by parent selection, partner selection, recombination and crossover.
+     * The new population is added to the result population, while the selected parent population (after
+     * selection but before recombination/crossover) is returned.
+     * Returned parents and result population are to have the same size and correspond per individual.
+     * 
+     * @param fromPopulation
+     * @param result
+     * @param lambda
+     * @return
+     */
+    protected Population generateChildren(Population fromPopulation, Population result, int lambda) {
+        AbstractEAIndividual        tmpIndy;
+        AbstractEAIndividual[]      offSprings;
+        Population parents;
+
+        this.m_ParentSelection.prepareSelection(fromPopulation);
+        this.m_PartnerSelection.prepareSelection(fromPopulation);
+        parents     = this.m_ParentSelection.selectFrom(fromPopulation, lambda);
+
+        for (int i = 0; i < parents.size(); i++) {
+            tmpIndy =  (AbstractEAIndividual)parents.get(i);
+            offSprings = tmpIndy.mateWith(this.m_PartnerSelection.findPartnerFor(tmpIndy, fromPopulation, this.m_NumberOfPartners));
+            offSprings[0].mutate();
+            result.add(i, offSprings[0]);
+        }
+        return parents;
     }
     
-    /** The optimize method will compute a 'improved' and evaluated population
+    protected Population selectParents(Population fromPop, int mu) {
+    	this.m_EnvironmentSelection.prepareSelection(fromPop);
+    	return this.m_EnvironmentSelection.selectFrom(fromPop, mu);
+    }
+    
+    /** 
+     * The optimize method will compute an improved and evaluated population.
      */
     public void optimize() {
         Population  nextGeneration, parents;
@@ -188,7 +209,7 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
        //System.out.println("optimize");
         
         // first perform the environment selection to select myu parents
-        parents = selectParents();
+        parents = selectParents(m_Population, this.m_Mu);
         
 //        System.out.println("-- selected avg fit " + BeanInspector.toString(parents.getMeanFitness()) + " from last gen " + BeanInspector.toString(m_Population.getMeanFitness()));
         
@@ -370,6 +391,11 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
     public String globalInfo() {
         return "This is an Evolution Strategy. Note that the population size depends on mu (number of parents) and lambda (number of offspring).";
     }
+    
+    public String[] customPropertyOrder() {
+    	return new String[]{"mu", "lambda"};
+    }
+    
     /** This method will return a naming String
      * @return The name of the algorithm
      */

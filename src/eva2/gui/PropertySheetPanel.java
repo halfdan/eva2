@@ -33,8 +33,10 @@ import java.beans.PropertyChangeSupport;
 import java.beans.PropertyDescriptor;
 import java.beans.PropertyEditor;
 import java.beans.PropertyVetoException;
+import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -46,6 +48,7 @@ import javax.swing.SwingConstants;
 
 import eva2.gui.GenericObjectEditor.GOEPanel;
 import eva2.tools.EVAHELP;
+import eva2.tools.Mathematics;
 import eva2.tools.StringTools;
 /*==========================================================================*
 * CLASS DECLARATION
@@ -151,91 +154,35 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
 
         int         rowHeight   = 12;
 //        JScrollPane js          = null;
-        JTextArea   jt          = new JTextArea();
+//        JTextArea   jt          = new JTextArea();
 //        m_HelpText              = null;
 
         // Look for a globalInfo method that returns a string
         // describing the target
         int methsFound = 0; // dont loop too long, so count until all found
+        GenericObjectEditor.setHideAllProperties(m_Target.getClass(), false);
         for (int i = 0; i < m_Methods.length; i++) {
             String name = m_Methods[i].getDisplayName();
             Method meth = m_Methods[i].getMethod();
             if (name.equals("globalInfo")) {
-            	if (TRACE) System.out.println("found globalInfo method for " + targ.getClass().toString());
-	            if (meth.getReturnType().equals(String.class)) {
-	                try {
-	                    Object  args[]      = { };
-	                    String  globalInfo  = (String)(meth.invoke(m_Target, args));
-                        String  summary     = globalInfo;
-//                        int     ci          = globalInfo.indexOf('.');
-//                        if (ci != -1) {	
-//                        	// this shortens the displayed text, using only the first "sentence".
-//                        	// May cause problems, if the dot belongs to a number, for example,
-//                        	// so I deactivated it (MK).
-//                            summary = globalInfo.substring(0, ci + 1);
-//                        }
-	                    m_ClassName = targ.getClass().getName();
-//                        m_HelpText  = new StringBuffer("NAME\n");
-//                        m_HelpText.append(m_ClassName).append("\n\n");
-//                        m_HelpText.append("SYNOPSIS\n").append(globalInfo).append("\n\n");
-                        m_HelpBut   = new JButton("Help");
-	                    m_HelpBut.setToolTipText("More information about " + m_ClassName);
-	                    m_HelpBut.addActionListener(new ActionListener() {
-                            public void actionPerformed(ActionEvent a) {
-                                openHelpFrame();
-                                //m_HelpBut.setEnabled(false);
-                            }
-                        });
-
-	                    jt.setText(summary);
-	                    jt.setFont(new Font("SansSerif", Font.PLAIN, rowHeight));
-	                    jt.setEditable(false);
-	                    jt.setLineWrap(true);
-	                    jt.setWrapStyleWord(true);
-                        jt.setBackground(getBackground());
-                        jt.setSize(jt.getPreferredSize());
-
-	                    JPanel jp = new JPanel();
-	                    jp.setBorder(BorderFactory.createCompoundBorder(
-			                BorderFactory.createTitledBorder("Info"),
-			                BorderFactory.createEmptyBorder(0, 5, 5, 5)
-		                ));
-	                    jp.setLayout(new BorderLayout());
-	                    jp.add(jt, BorderLayout.CENTER);
-                        JPanel      p2  = new JPanel();
-                        p2.setLayout(new BorderLayout());
-                        
-                        if (HtmlDemo.resourceExists(getHelpFileName())) {
-                        	// this means that the expected URL really exists
-                        	p2.add(m_HelpBut, BorderLayout.NORTH);
-                        } else {
-                        	if (TRACE) System.out.println("not adding help button because of missing " + getHelpFileName());
-                        }
-                        jp.add(p2, BorderLayout.EAST);
-	                    GridBagConstraints gbConstraints = new GridBagConstraints();
-	                    //gbConstraints.anchor = GridBagConstraints.EAST;
-	                    gbConstraints.fill = GridBagConstraints.BOTH;
-	                    //gbConstraints.gridy = 0;
-                        //gbConstraints.gridx = 0;
-	                    gbConstraints.gridwidth = 2;
-	                    gbConstraints.insets = new Insets(0,5,0,5);
-	                    gbLayout.setConstraints(jp, gbConstraints);
-	                    add(jp);
-	                    componentOffset = 1;
-	                    methsFound++;
-	                    if (methsFound == 2) break; // small speed-up
-	                } catch (Exception ex) {
-	                } // end try
-	            } // end if (meth.getReturnType().equals(String.class)) {
+            	JPanel jp = makeInfoPanel(meth, targ, rowHeight, gbLayout);
+            	if (jp!=null) {
+            		add(jp);
+                    componentOffset = 1;
+            	}
+                methsFound++;
             } // end if (name.equals("globalInfo")) {
             else if (name.equals("hideHideable")) {
                 Object  args[]      = { };
                 try {
                 	meth.invoke(m_Target, args);
-                	methsFound++;
-                    if (methsFound == 2) break; // small speed-up
                 } catch(Exception ex) {}
+            	methsFound++;
+            } else if (name.equals("customPropertyOrder")) {
+            	methsFound++;
+            	reorderProperties(meth);
             }
+            if (methsFound == 3) break; // small speed-up
         } // end for (int i = 0; i < m_Methods.length; i++) {
 
         // Now lets search for the individual properties, their
@@ -246,6 +193,7 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
         m_ViewWrapper= new JComponent[m_Properties.length];
         m_Labels    = new JLabel[m_Properties.length];
         m_TipTexts  = new String[m_Properties.length];
+
 //        boolean     firstTip = true;
         for (int i = 0; i < m_Properties.length; i++) {
             // For each property do this
@@ -385,6 +333,146 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
         setVisible(true);
     }
    
+    /**
+     * Be sure to give a clone
+     * @param oldProps
+     * @param meth
+     * @return
+     */
+    private PropertyDescriptor[] reorderProperties(Method meth) {
+    	PropertyDescriptor[] oldProps = m_Properties.clone();
+        PropertyDescriptor[] newProps = new PropertyDescriptor[oldProps.length];
+//        Mathematics.revertArray(oldProps, newProps);
+       	Object[] args      = { };
+       	Object retV=null;
+        try {
+        	retV = meth.invoke(m_Target, args);
+        } catch(Exception ex) {}
+        if (retV!=null) {
+            try {
+            	if (retV.getClass().isArray()) {
+            		String[] swProps=(String[])retV;
+            		//int findFirst=findFirstProp(props[0], oldProps);
+            		int firstNonNull=0;
+            		for (int i=0; i<oldProps.length; i++) {
+            			if (i<swProps.length) {
+            				int pInOld=findProp(oldProps, swProps[i]);
+            				newProps[i]=oldProps[pInOld];
+            				oldProps[pInOld]=null;
+            			} else {
+            				firstNonNull = findFirstNonNullAfter(oldProps, firstNonNull);
+            				newProps[i]=oldProps[firstNonNull];
+            				firstNonNull++;
+            			}
+            		}
+            		m_Properties=newProps;
+            	}
+            } catch (Exception e) {
+            	System.err.println("Error during reordering properties: " + e.getMessage());
+            	return m_Properties;
+            }
+        }
+		return newProps;
+	}
+
+    /**
+     * Find the first non-null entry in an Array at or after the given index and return its index.
+     * If only null entries are found, -1 is returned.
+     * 
+     * @param arr
+     * @param firstLook
+     * @return
+     */
+    private int findFirstNonNullAfter(PropertyDescriptor[] arr,
+			int firstLook) {
+    	for (int i=firstLook; i<arr.length; i++) if (arr[i]!=null) return i;
+		return -1;
+	}
+
+	/**
+     * Find a string property in an array and return its index or -1 if not found.
+     * 
+     * @param oldProps
+     * @param string
+     * @return
+     */
+	private int findProp(PropertyDescriptor[] oldProps, String string) {
+		for (int i=0; i<oldProps.length; i++) {
+			if (oldProps[i]==null) continue;
+			String  name    = oldProps[i].getDisplayName();
+			if (name.compareTo(string)==0) return i;
+		}
+		return -1;
+	}
+
+	private JPanel makeInfoPanel(Method meth, Object targ, int rowHeight, GridBagLayout gbLayout) {
+    	if (TRACE) System.out.println("found globalInfo method for " + targ.getClass().toString());
+        if (meth.getReturnType().equals(String.class)) {
+            try {
+                Object  args[]      = { };
+                String  globalInfo  = (String)(meth.invoke(m_Target, args));
+                String  summary     = globalInfo;
+//                int     ci          = globalInfo.indexOf('.');
+//                if (ci != -1) {	
+//                	// this shortens the displayed text, using only the first "sentence".
+//                	// May cause problems, if the dot belongs to a number, for example,
+//                	// so I deactivated it (MK).
+//                    summary = globalInfo.substring(0, ci + 1);
+//                }
+                m_ClassName = targ.getClass().getName();
+//                m_HelpText  = new StringBuffer("NAME\n");
+//                m_HelpText.append(m_ClassName).append("\n\n");
+//                m_HelpText.append("SYNOPSIS\n").append(globalInfo).append("\n\n");
+                m_HelpBut   = new JButton("Help");
+                m_HelpBut.setToolTipText("More information about " + m_ClassName);
+                m_HelpBut.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent a) {
+                        openHelpFrame();
+                        //m_HelpBut.setEnabled(false);
+                    }
+                });
+
+                JTextArea jt = new JTextArea();
+                jt.setText(summary);
+                jt.setFont(new Font("SansSerif", Font.PLAIN, rowHeight));
+                jt.setEditable(false);
+                jt.setLineWrap(true);
+                jt.setWrapStyleWord(true);
+                jt.setBackground(getBackground());
+                jt.setSize(jt.getPreferredSize());
+
+                JPanel jp = new JPanel();
+                jp.setBorder(BorderFactory.createCompoundBorder(
+	                BorderFactory.createTitledBorder("Info"),
+	                BorderFactory.createEmptyBorder(0, 5, 5, 5)
+                ));
+                jp.setLayout(new BorderLayout());
+                jp.add(jt, BorderLayout.CENTER);
+                JPanel      p2  = new JPanel();
+                p2.setLayout(new BorderLayout());
+                
+                if (HtmlDemo.resourceExists(getHelpFileName())) {
+                	// this means that the expected URL really exists
+                	p2.add(m_HelpBut, BorderLayout.NORTH);
+                } else {
+                	if (TRACE) System.out.println("not adding help button because of missing " + getHelpFileName());
+                }
+                jp.add(p2, BorderLayout.EAST);
+                GridBagConstraints gbConstraints = new GridBagConstraints();
+                //gbConstraints.anchor = GridBagConstraints.EAST;
+                gbConstraints.fill = GridBagConstraints.BOTH;
+                //gbConstraints.gridy = 0;
+                //gbConstraints.gridx = 0;
+                gbConstraints.gridwidth = 2;
+                gbConstraints.insets = new Insets(0,5,0,5);
+                gbLayout.setConstraints(jp, gbConstraints);
+                return jp;
+            } catch (Exception ex) {
+            } // end try
+        } // end if (meth.getReturnType().equals(String.class)) {
+        return null;
+    }
+    
     private String translateGreek(String name) {
         // Add some specific display for some greeks here
         if (name.equalsIgnoreCase("alpha"))
@@ -700,7 +788,7 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
 
         if (followDependencies) {
         	// Handle the special method getGOEPropertyUpdateLinks which returns a list of pairs
-        	// of strings indicating that on an update if the i-th property, the i+1-th property
+        	// of strings indicating that on an update of the i-th property, the i+1-th property
         	// should be updated. This is useful for changes within sub-classes of the target
         	// which are not directly displayed in this panel but in sub-panels (and there have an own view etc.)
         	Object o = BeanInspector.callIfAvailable(m_Target, "getGOEPropertyUpdateLinks", null);
