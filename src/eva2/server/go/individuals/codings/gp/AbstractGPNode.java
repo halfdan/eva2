@@ -21,7 +21,8 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
     protected AbstractGPNode        m_Parent;
     protected AbstractGPNode[]      m_Nodes = new AbstractGPNode[0];
     protected int                   m_Depth = 0;
-
+    private static final boolean	TRACE=false; 
+    
     /** This method allows you to clone the Nodes
      * @return the clone
      */
@@ -107,7 +108,7 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
     		else if (matchSet.size()>1) System.err.println("String has ambiguous prefix: " + str + " -- " + BeanInspector.toString(matchSet));
     		else { // exactly one match:
     			AbstractGPNode currentNode = (AbstractGPNode)matchSet.get(0).clone();
-//    			System.out.println("Found match: " + currentNode.getOpIdentifier() + "/" + currentNode.getArity());
+    			if (TRACE) System.out.println("Found match: " + currentNode.getOpIdentifier() + "/" + currentNode.getArity());
     			int cutFront=currentNode.getOpIdentifier().length();
     			String restStr;
     			if (currentNode.getArity()==0) {
@@ -130,7 +131,7 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
     					currentNode.m_Nodes[i]=nextState.head();
     					restStr=nextState.tail().substring(1).trim(); // cut comma or brace
     				}
-//    				System.out.println("lacking rest: " + restStr);
+    				if (TRACE) System.out.println("read " + currentNode.getName() + ", rest: " + restStr);
     				return new Pair<AbstractGPNode,String>(currentNode, restStr);
     			}
     		}
@@ -145,7 +146,8 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
 			int firstBrace = str.indexOf(')');
 			if ((firstBrace >= 0) && (firstBrace<argLen)) argLen = firstBrace;
 		}
-		firstArg=str.substring(0,argLen);
+		if (argLen>0) firstArg=str.substring(0,argLen);
+		else firstArg=str.trim();
 		try {
 			Double d=Double.parseDouble(firstArg);
 			return new Pair<Double,String>(d, str.substring(firstArg.length()));
@@ -183,8 +185,10 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
 			Vector<AbstractGPNode> nodeTypes, String str, boolean firstLongestOnly, boolean ignoreCase) {
     	Vector<AbstractGPNode> matching = new Vector<AbstractGPNode>();
 		for (int i=0; i<nodeTypes.size(); i++) {
-			if (str.startsWith(nodeTypes.get(i).getOpIdentifier())) matching.add(nodeTypes.get(i));
-			else if (ignoreCase && str.toLowerCase().startsWith(nodeTypes.get(i).getOpIdentifier().toLowerCase())) matching.add(nodeTypes.get(i));
+			String reqPrefix=nodeTypes.get(i).getOpIdentifier();
+			if (nodeTypes.get(i).getArity()>0) reqPrefix+="(";
+			if (str.startsWith(reqPrefix)) matching.add(nodeTypes.get(i));
+			else if (ignoreCase && str.toLowerCase().startsWith(reqPrefix.toLowerCase())) matching.add(nodeTypes.get(i));
 		}
 		if (matching.size()>1 && firstLongestOnly) { // allow only the longest match (or first longest)
 			int maxLen = matching.get(0).getOpIdentifier().length();
@@ -209,8 +213,13 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
     
 	public static void main(String[] args) {
 //		Double d = Double.parseDouble("2.58923 + 3");
-    	AbstractGPNode node = AbstractGPNode.parseFromString("+(x,cOs(*(pI,x1)))");
-//    	System.out.println("Parsed GPNode: " + node.getStringRepresentation());
+//    	AbstractGPNode node = AbstractGPNode.parseFromString("-23421");
+    	AbstractGPNode node = AbstractGPNode.parseFromString("+(-23421,cOs(*(pI,x1)))");
+		AbstractGPNode.parseFromString("+(+(85.334407,*(0.0056858,*(x1,x4))), +(*(0.00026,*(x0,x3)),*(-0.0022053,*(x2,x4))))");
+		AbstractGPNode.parseFromString("+(+(80.51249,*(0.0071317,*(x1,x4))), +(*(0.0029955,*(x0,x1)),*(0.0021813,*(x2,x2))))");
+		AbstractGPNode.parseFromString("+(+(9.300961,*(0.0047026,*(x2,x4))), +(*(0.0012547,*(x0,x2)),*(0.0019085,*(x2,x3))))");
+
+    	System.out.println("Parsed GPNode: " + node.getStringRepresentation());
     	node = AbstractGPNode.parseFromString(node.getStringRepresentation());
     }
     

@@ -44,7 +44,7 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
     private double[]                                m_C                     = new double[m_NumberOfConstants];
     private boolean                                 m_UseInnerConst         = false;
     private boolean                                 m_UseLocalHillClimbing  = false;
-    transient private GPArea                        m_GPArea                = new GPArea();
+    private GPArea                        			m_GPArea                = new GPArea();
     protected AbstractEAIndividual                  m_OverallBest           = null;
     protected double                                m_Noise                 = 0.0;
 
@@ -55,6 +55,7 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
     public PSymbolicRegression() {
         this.m_Template     = new GPIndividualProgramData();
         this.initProblem();
+        this.compileArea();
     }
 
     public PSymbolicRegression(PSymbolicRegression b) {
@@ -100,17 +101,16 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
         this.m_OverallBest  = null;
         this.m_C            = new double[this.m_NumberOfConstants];
         for (int i = 0; i < this.m_C.length; i++) this.m_C[i] = RNG.randomDouble(-10, 10);
-        this.compileArea();
 	}
 
     /**
-     * This method compiles the area
+     * This method compiles the area. Only to be called once in the constructor
+     * to build the basic function set or if the number of constants etc. change.
      */
     private void compileArea() {
     	// unfortunately this must be cloned or the GUI wont update.
-//    	if (m_GPArea==null) 
-    		m_GPArea = new GPArea();
-//    	else m_GPArea = (GPArea)m_GPArea.clone();
+    	GPArea oldArea=m_GPArea;
+    	m_GPArea = new GPArea();
     	
     	if (m_GPArea.isEmpty()) {
 	        this.m_GPArea.add2CompleteList(new GPNodeAdd());
@@ -125,6 +125,9 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
 	        this.m_GPArea.add2CompleteList(new GPNodeSqrt(), false);
 	        for (int i = 0; i < this.m_X.length; i++) this.m_GPArea.add2CompleteList(new GPNodeInput("X"+i));
 	        for (int i = 0; i < this.m_C.length; i++) this.m_GPArea.add2CompleteList(new GPNodeInput("C"+i));
+    	}
+    	if ((oldArea!=null) && (oldArea.getBlackList()!=null) && (oldArea.getBlackList().size()==m_GPArea.getBlackList().size())) {
+    		m_GPArea.SetBlackList(oldArea.getBlackList());
     	}
         this.m_GPArea.compileReducedList();
     }
@@ -319,7 +322,7 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
      * @return description
      */
     public String globalInfo() {
-        return "The task is to infer the equation from a system that can only be observed";
+        return "The task is to infer the equation of a system that can only be observed at a number of checkpoints.";
     }
 
     /** This method allows you to choose how much noise is to be added to the
@@ -360,7 +363,7 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
         return this.m_UseLocalHillClimbing;
     }
     public String useLocalHillClimbingTipText() {
-        return "Toggel the use of local hill climbing for inner constants.";
+        return "Toggle the use of local hill climbing for inner constants.";
     }
 
     /** This method allows you to set the number of ephremial constants.
@@ -368,8 +371,9 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
      */
     public void setNumberOfConstants(int b) {
         this.m_NumberOfConstants = b;
-        m_GPArea.clear();
         this.initProblem();
+        m_GPArea.clear();
+        this.compileArea();
     }
     public int getNumberOfConstants() {
         return this.m_NumberOfConstants;
@@ -407,7 +411,7 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
         return this.m_GPArea;
     }
     public String areaTipText() {
-        return "Select elements from the available area.";
+        return "Select function set from the available area.";
     }
 
     /** This method allows you to toggle path visualisation on and off.
