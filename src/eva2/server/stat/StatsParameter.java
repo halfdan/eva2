@@ -33,11 +33,13 @@ public class StatsParameter implements InterfaceStatisticsParameter, Serializabl
 	public final static int PLOT_WORST = 1;
 	public final static int PLOT_BEST_AND_WORST = 2;
 	public final static int PLOT_BEST_AND_MEASURES = 3;
+	public final static int PLOT_CURBEST_AND_RUNBEST = 4;
 	public final static Tag[] TAGS_PLOT_FITNESS = {
 		new Tag(PLOT_BEST, "plot best fitness"),
 		new Tag(PLOT_WORST, "plot worst fitness"),
 		new Tag(PLOT_BEST_AND_WORST, "both best and worst"),
-		new Tag(PLOT_BEST_AND_MEASURES, "both best and population measures")
+		new Tag(PLOT_BEST_AND_MEASURES, "both best and population measures"),
+		new Tag(PLOT_CURBEST_AND_RUNBEST, "current best and best of run")
 	};
 
 	public final static int VERBOSITY_NONE = 0;
@@ -113,7 +115,9 @@ public class StatsParameter implements InterfaceStatisticsParameter, Serializabl
 		case StatsParameter.PLOT_BEST_AND_MEASURES:
 			desc.add(new String[] {"Best", "AvgDist", "MaxDist"});
 			break;
-		}
+		case StatsParameter.PLOT_CURBEST_AND_RUNBEST:
+			desc.add(new String[] {"Cur.Best", "Run Best"});
+			break;		}
 		return desc;
 	}
 

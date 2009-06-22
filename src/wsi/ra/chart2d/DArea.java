@@ -88,11 +88,10 @@ private static final boolean TRACE = false;
    * the measures of the area
    * it calculates the coordinates
    */
-  private DMeasures measures;
-
+  protected DMeasures measures;
 
   private DBorder dborder = new DBorder();
-
+  
   /**
    * initializes the DArea with the initial capacity of 10 components
    */
@@ -142,6 +141,7 @@ private static final boolean TRACE = false;
     if( max_y != null ) srect.height = Math.min(srect.height, getMaxY() - getMinY());
     return srect;
   }
+  
   /**
    * switches the auto focus of this DArea on or off
    *
@@ -406,16 +406,20 @@ private static final boolean TRACE = false;
     if( auto_focus )  {
       container.restore();
       visible_rect = (DRectangle)container.getRectangle().clone();
+//      grid.updateDistByRect(visible_rect);
     }
-    if( visible_rect.isEmpty() )  visible_rect = (DRectangle)min_rect.clone();
+    if( visible_rect.isEmpty() )  {
+    	visible_rect = (DRectangle)min_rect.clone();
+//    	grid.updateDistByRect(visible_rect);
+    }
     super.paint( g );
-
+    
     measures.setGraphics( g );
     if( grid.isVisible() && !grid_to_front ) paintGrid( measures );
     container.paint( measures );
-    if( grid.isVisible() && grid_to_front ) paintGrid( measures );
+    if( grid.isVisible() && grid_to_front )  paintGrid( measures );
   }
-
+  
   /**
    * repaints a part of the visible area
    *
@@ -685,8 +689,8 @@ private static final boolean TRACE = false;
         return;
       }
       else{
-        grid.hor_dist = ScaledBorder.aBitBigger( grid.rectangle.width / max_grid );
-        grid.ver_dist = ScaledBorder.aBitBigger( grid.rectangle.height / max_grid );
+    	  grid.setDistances(ScaledBorder.aBitBigger( grid.rectangle.width / max_grid ), 
+    			  ScaledBorder.aBitBigger( grid.rectangle.height / max_grid ));
       }
     }
     grid.paint( m );
@@ -704,8 +708,7 @@ private static final boolean TRACE = false;
     if( TRACE ) System.out.println("DArea.paintGrid(ScaledBorder, DMeasures)");
     Dimension d = getSize();
     FontMetrics fm = m.getGraphics().getFontMetrics();
-    grid.hor_dist = sb.getSrcdX(fm, d);
-    grid.ver_dist = sb.getSrcdY(fm, d);
+    grid.setDistances(sb.getSrcdX(fm, d), sb.getSrcdY(fm, d));
 
     if( m.x_scale == null && m.y_scale == null ) grid.paint( m );
 
@@ -716,10 +719,10 @@ private static final boolean TRACE = false;
       SlimRect rect = getSlimRectangle();
       SlimRect src_rect = m.getSourceOf( rect );
 
-      int x = (int)(src_rect.x / grid.hor_dist),
-          y = (int)(src_rect.y / grid.ver_dist);
-      if( x * grid.hor_dist < src_rect.x ) x++;
-      if( y * grid.ver_dist < src_rect.y ) y++;
+      int x = (int)(src_rect.x / grid.getHorDist()),
+          y = (int)(src_rect.y / grid.getVerDist());
+      if( x * grid.getHorDist() < src_rect.x ) x++;
+      if( y * grid.getVerDist() < src_rect.y ) y++;
 
 //      DPoint min = new DPoint( rect.x, rect.y ),
 //             max = new DPoint( min.x + rect.width, min.y + rect.height );
@@ -727,14 +730,14 @@ private static final boolean TRACE = false;
 
       double pos;
 
-      for( ; (pos = x * grid.hor_dist) < src_rect.x + src_rect.width; x++ ){
+      for( ; (pos = x * grid.getHorDist()) < src_rect.x + src_rect.width; x++ ){
         if( m.x_scale != null ) pos = m.x_scale.getImageOf( pos );
         Point p1 = m.getPoint( pos, miny ),
               p2 = m.getPoint( pos, maxy );
         g.drawLine( p1.x, p1.y, p2.x, p2.y );
       }
 
-      for( ; (pos = y * grid.ver_dist) < src_rect.y + src_rect.height; y++ ){
+      for( ; (pos = y * grid.getVerDist()) < src_rect.y + src_rect.height; y++ ){
         if( m.y_scale != null ) pos = m.y_scale.getImageOf( pos );
         Point p1 = m.getPoint( minx, pos ),
               p2 = m.getPoint( maxx, pos );

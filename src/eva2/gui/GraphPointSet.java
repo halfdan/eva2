@@ -27,7 +27,7 @@ import java.util.Arrays;
   *
   */
 public class GraphPointSet {
-  private String m_InfoString = "InfoString";
+  private String m_InfoString = "Incomplete_Run";
   private int m_GraphLabel;
   private int colorOffset = 0;
   private ArrayList m_PointSetContainer = new ArrayList();

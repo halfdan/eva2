@@ -327,6 +327,7 @@ public class Plot implements PlotInterface, Serializable {
 	public void clearAll () {
 		m_PlotArea.clearAll();
 		m_PlotArea.removeAllDElements();
+		m_PlotArea.clearLegend();
 		m_Frame.repaint();
 	}
 	/**
@@ -443,6 +444,7 @@ public class Plot implements PlotInterface, Serializable {
 	public String getName() {
 		return this.m_PlotName;
 	}
+	
 	/**
 	 *
 	 */

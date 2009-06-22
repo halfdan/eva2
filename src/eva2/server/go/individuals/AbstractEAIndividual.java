@@ -50,6 +50,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
     private double                          m_ConstraintViolation   = 0;
     public boolean                          m_AreaConst4ParallelViolated = false;
     public boolean                          m_Marked                = false;    // is for GUI only!
+    public boolean							m_isPenalized			= false;	// may be set true for penalty based constraints
 
     protected double[]                      m_SelectionProbability  = new double[1];;
     public double                           m_CrossoverProbability  = 1.0;
@@ -144,6 +145,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
         m_ConstraintViolation = individual.m_ConstraintViolation;
         m_AreaConst4ParallelViolated = individual.m_AreaConst4ParallelViolated;
         m_Marked            = individual.m_Marked;
+        m_isPenalized		= individual.m_isPenalized;
         individualIndex = individual.individualIndex;
         if (individual.parentIDs != null) {
         	parentIDs = new Long[individual.parentIDs.length];
@@ -447,6 +449,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      * individual
      */
     public void resetConstraintViolation() {
+    	m_isPenalized=false;
         this.m_ConstraintViolation = 0;
     }
 
@@ -494,6 +497,21 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
         this.m_Marked = true;
     }
 
+    /**
+     * Allows marking an individual as infeasible if fitness penalty is used.
+     * @return
+     */
+    public boolean isMarkedPenalized() {
+    	return m_isPenalized;
+    } 
+    /**
+     * Allows marking an individual as infeasible if fitness penalty is used.
+     * @return
+     */
+    public void SetMarkPenalized(boolean p) {
+    	m_isPenalized=p;
+    }
+    
     /** This method can be used to read the current fitness of the individual.
      * Please note that the fitness can be based on multiple criteria therefore
      * double[] is used instead of a single double.

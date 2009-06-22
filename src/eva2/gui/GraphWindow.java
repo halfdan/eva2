@@ -68,6 +68,10 @@ public class GraphWindow {
 	  return (m_Plotter != null) && (m_Plotter.isValid());
   }
 
+  public PlotInterface getPlotter() {
+	  return m_Plotter;
+  }
+  
   /**
    *
    */
@@ -101,7 +105,7 @@ public class GraphWindow {
    */
   public Graph getNewGraph(String InfoString) {
     m_GraphCounter++;
-    if (TRACE) System.out.println("Graph.getNewGraph No:"+m_GraphCounter);
+    if (TRACE) System.out.println("Graph.getNewGraph No:"+m_GraphCounter + " - " + InfoString);
     return new Graph (InfoString,m_Plotter,m_GraphCounter);
   }
 }

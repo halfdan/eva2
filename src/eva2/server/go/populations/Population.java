@@ -444,6 +444,50 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     	return getIndexOfBestOrWorstIndividual(false, false, fitIndex);
     }
     
+    /**
+     * Return the best feasible individual or null if the population contains
+     * no or only infeasible individuals. This considers both aspects: the constraint setting
+     * as well as penalization. An individual is feasible only if it is both unpenalized and
+     * not violating the constraints.
+     * 
+     * @param fitIndex
+     * @return the best feasible individual or null if none is feasible
+     */
+    public AbstractEAIndividual getBestFeasibleIndividual(int fitIndex) {
+    	int index=getIndexOfBestOrWorstFeasibleIndividual(true, fitIndex);
+    	if (index<0) return null;
+    	else return getEAIndividual(index);
+    }
+    
+//    /**
+//     * Return the best individual which has a zero penalty value (is feasible concerning 
+//     * penalty). If all are penalized, null is returned.
+//     * 
+//     * @param fitIndex
+//     * @return
+//     */
+//    public AbstractEAIndividual getBestUnpenalizedIndividual(int fitIndex) {
+//        int     result          = -1;
+//        double[]  curSelFitness = null;
+//        boolean allViolate = true;
+//
+//        for (int i = 0; i < super.size(); i++) {
+//            if (!(getEAIndividual(i).isMarkedPenalized())) {
+//            	allViolate = false;
+//            	if ((result<0) || (compareFit(true, getEAIndividual(i).getFitness(), curSelFitness, fitIndex))) {
+//            		// fit i is better than remembered
+//            		result          = i;
+//            		curSelFitness  = getEAIndividual(i).getFitness(); // remember fit i
+//            	}
+//            }
+//        }
+//        if (allViolate) {
+//        	return null;
+//        } else {
+//        	return getEAIndividual(result);
+//        }
+//    }
+    
 	/** 
 	 * This method will return the index of the current best (worst) individual from the
      * population. If indicated, only those are regarded which do not violate the constraints.
@@ -485,7 +529,8 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
         				minViol  = ((AbstractEAIndividual)super.get(i)).getConstraintViolation();
         			}
         		}
-        		System.err.println("Population reports: All individuals violate the constraints, choosing smallest constraint violation.");
+//        		System.err.println("Population reports: All individuals violate the constraints, choosing smallest constraint violation.");
+        		// this is now really reported nicer...
         	} else {
         		// not all violate, maybe all are NaN!
         		// so just select a random one
@@ -496,6 +541,31 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
         return result;
     }
 
+    /**
+     * Search the population for the best (worst) considering the given criterion (or all criteria
+     * for fitIndex<0) which also does not violate constraints.
+     * Returns -1 if no feasible solution is found, else the index of the best feasible solution.
+     * 
+     * @param bBest
+     * @param fitIndex
+     * @return -1 if no feasible solution is found, else the index of the best feasible individual
+     */
+    public int getIndexOfBestOrWorstFeasibleIndividual(boolean bBest, int fitIndex) {
+        int     result          = -1;
+        double[]  curSelFitness = null;
+
+        for (int i = 0; i < super.size(); i++) {
+            if (!(getEAIndividual(i).violatesConstraint()) && !(getEAIndividual(i).isMarkedPenalized())) {
+            	if ((result<0) || (compareFit(bBest, getEAIndividual(i).getFitness(), curSelFitness, fitIndex))) {
+            		// fit i is better than remembered
+            		result          = i;
+            		curSelFitness  = getEAIndividual(i).getFitness(); // remember fit i
+            	}
+            }
+        }
+        return result;
+    }
+    
     /** 
 	 * This method returns the current best individual from the population.
 	 * If the population is empty, null is returned.

@@ -116,4 +116,19 @@ public class SlimRect {
 	public boolean hasEmptyIntersection(SlimRect r){
 		return (getIntersection(r)==null);
 	}
+
+	public double getX() {
+		return x;
+	}
+
+	public double getY() {
+		return y;
+	}
+
+	public double getWidth() {
+		return width;
+	}
+	public double getHeight() {
+		return height;
+	}
 }
