@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
@@ -57,9 +58,12 @@ public class FunctionArea extends DArea implements Serializable {
 	private ScaledBorder                    m_Border;
 	private boolean                         m_log = false;
 	private boolean 						notifyNegLog = true;
+	private boolean							m_legend = true;
 	private int                             m_x;
 	private int                             m_y;
 
+	private GraphPointSetLegend legendBox = null;
+	
 	private DPointIcon                      m_CurrentPointIcon;
 	/**
 	 *
@@ -90,6 +94,16 @@ public class FunctionArea extends DArea implements Serializable {
 		 notifyNegLog = true;
 	 }
 	
+	  /**
+	   * Set a legend for the function area. If null is given, the former legend is deactivated.
+	   * 
+	   * @param lBox
+	   */
+	  protected void setLegend(GraphPointSetLegend lBox) {
+		  legendBox=lBox;
+		  if (lBox!=null && m_legend) repaint();
+	  }
+	  
 	 /**
 	  * Plot a circle icon to the function area which is annotated with a char and
 	  * a double value.
@@ -172,7 +186,7 @@ public class FunctionArea extends DArea implements Serializable {
 		 popRep.setIcon(icon);
 		 addDElement(popRep);
 	 }
-	 
+
 	 /**
 	  *
 	  */
@@ -181,8 +195,8 @@ public class FunctionArea extends DArea implements Serializable {
 		 if ((m_PointSetContainer == null) || (m_PointSetContainer.size() == 0))
 			 return ret;
 		 int minindex = getNearestGraphIndex(x, y);
-		 ret = ((GraphPointSet) (m_PointSetContainer.get(minindex))).getInfoString();
-		 return ret;
+		 if (minindex>=0) return ((GraphPointSet) (m_PointSetContainer.get(minindex))).getInfoString();
+		 else return "none";
 	 }
 
 	 /**
@@ -196,8 +210,7 @@ public class FunctionArea extends DArea implements Serializable {
 		 ret = ((GraphPointSet) (m_PointSetContainer.get(minindex))).isStatisticsGraph();
 		 return ret;
 	 }
-
-
+	 
 	 /**
 	  *
 	  */
@@ -209,20 +222,18 @@ public class FunctionArea extends DArea implements Serializable {
 		 DPoint point2 = null;
 		 double dist = 0;
 		 for (int i = 0; i < m_PointSetContainer.size(); i++) {
-			 if (m_PointSetContainer.get(i)instanceof GraphPointSet) {
-				 GraphPointSet pointset = (GraphPointSet) (m_PointSetContainer.get(i));
-				 point2 = pointset.getNearestDPoint(point1);
-				 if (point2 == null)
-					 continue;
-				 if (point1 == null)
-					 System.err.println("point1 == null");
+			 GraphPointSet pointset = m_PointSetContainer.get(i);
+			 point2 = pointset.getNearestDPoint(point1);
+			 if (point2 == null)
+				 continue;
+			 if (point1 == null)
+				 System.err.println("point1 == null");
 
-				 dist = (point1.x - point2.x) * (point1.x - point2.x) + (point1.y - point2.y) * (point1.y - point2.y);
-				 //System.out.println("dist="+dist+"i="+i);
-				 if (dist < distmin) {
-					 distmin = dist;
-					 minindex = i;
-				 }
+			 dist = (point1.x - point2.x) * (point1.x - point2.x) + (point1.y - point2.y) * (point1.y - point2.y);
+			 //System.out.println("dist="+dist+"i="+i);
+			 if (dist < distmin) {
+				 distmin = dist;
+				 minindex = i;
 			 }
 		 }
 		 return minindex;
@@ -350,7 +361,13 @@ public class FunctionArea extends DArea implements Serializable {
 
 	 }
 
-	 /**
+	 @Override
+	public void paint(Graphics g) {
+		super.paint(g);
+		if (legendBox!=null && (m_legend)) legendBox.paintIn(g, m_Border.getInnerRect(this));
+	}
+
+	/**
 	  *
 	  */
 	 public void setConnectedPoint(double[] p, int graphLabel) {
@@ -428,6 +445,7 @@ public class FunctionArea extends DArea implements Serializable {
 			 return;
 		 int GraphLabel = ((GraphPointSet) (this.m_PointSetContainer.get(index))).getGraphLabel();
 		 clearGraph(GraphLabel);
+		 updateLegend();
 	 }
 
 	 /**
@@ -439,6 +457,7 @@ public class FunctionArea extends DArea implements Serializable {
 			 return;
 		 int GraphLabel = ((GraphPointSet) (this.m_PointSetContainer.get(index))).getGraphLabel();
 		 changeColorGraph(GraphLabel);
+		 updateLegend();
 	 }
 
 	 /**
@@ -589,7 +608,7 @@ public class FunctionArea extends DArea implements Serializable {
 			 //setVisibleRectangle(  0.001, 0.001, 100000, 1000 );
 			 setYScale(new Exp());
 			 m_Border.setSrcdY(Math.log(10));
-			 ((java.text.DecimalFormat) m_Border.format_y).applyPattern("0.###E0");
+			 m_Border.applyPattern(false, "0.###E0");
 			 m_log = true;
 		 } else {
 			 m_log = false;
@@ -769,6 +788,14 @@ public class FunctionArea extends DArea implements Serializable {
 
 					 }
 					 if (FunctionArea.this.m_PointSetContainer.size() > 0) {
+						 JMenuItem togLegend = new JMenuItem("Toggle legend");
+						 togLegend.addActionListener(new ActionListener() {
+							 public void actionPerformed(ActionEvent ee) {
+								 toggleLegend();
+							 }
+						 });
+						 GraphMenu.add(togLegend);						 
+						 
 						 JMenuItem removeGraph = new JMenuItem("Remove graph");
 						 removeGraph.addActionListener(new ActionListener() {
 							 public void actionPerformed(ActionEvent ee) {
@@ -776,8 +803,7 @@ public class FunctionArea extends DArea implements Serializable {
 							 }
 						 });
 						 GraphMenu.add(removeGraph);
-					 }
-					 if (FunctionArea.this.m_PointSetContainer.size() > 0) {
+
 						 JMenuItem changecolorGraph = new JMenuItem("Change color");
 						 changecolorGraph.addActionListener(new ActionListener() {
 							 public void actionPerformed(ActionEvent ee) {
@@ -785,8 +811,7 @@ public class FunctionArea extends DArea implements Serializable {
 							 }
 						 });
 						 GraphMenu.add(changecolorGraph);
-					 }
-					 if (FunctionArea.this.m_PointSetContainer.size() > 0) {
+						 
 						 JMenuItem removePoint = new JMenuItem("Remove point");
 						 removePoint.addActionListener(new ActionListener() {
 							 public void actionPerformed(ActionEvent ee) {
@@ -795,36 +820,13 @@ public class FunctionArea extends DArea implements Serializable {
 						 });
 						 GraphMenu.add(removePoint);
 					 }
-//					 if (isStatisticsGraph(e.getX(),e.getY())==true) {
-//					 if (getVar(e.getX(),e.getY())==false) {
-//					 JMenuItem showVar = new JMenuItem("Show varianz ");
-//					 showVar.addActionListener(new ActionListener() {
-//					 //
-//					 public void actionPerformed(ActionEvent ee) {
-//					 setVar(m_x,m_y,true);
-//					 }
-//					 });
-//					 GraphMenu.add(showVar);
-
-//					 }
-//					 else {
-//					 JMenuItem hideVar = new JMenuItem("Hide varianz ");
-//					 hideVar.addActionListener(new ActionListener() {
-//					 //
-//					 public void actionPerformed(ActionEvent ee) {
-//					 setVar(m_x,m_y,false);
-//					 }
-//					 });
-//					 GraphMenu.add(hideVar);
-//					 }
-//					 }
 					 GraphMenu.show(FunctionArea.this, e.getX(), e.getY());
 				 }
 			 }
 		 });
 	 }
 
-	 /** This method allows to add a selection listner to the PointIcon
+	 /** This method allows to add a selection listener to the PointIcon
 	  * it should need more than one listener to this abstruse event
 	  * @param a The selection listener
 	  */
@@ -832,17 +834,37 @@ public class FunctionArea extends DArea implements Serializable {
 		 this.m_RefPointListener = a;
 	 }
 
-	 /** This method returns the selection listner to the PointIcon
+	 /** This method returns the selection listener to the PointIcon
 	  * @return InterfaceSelectionListener
 	  */
 	 public InterfaceRefPointListener getRefPointSelectionListener() {
 		 return this.m_RefPointListener;
 	 }
 
-	 /** This method allows to remove the selection listner to the PointIcon
+	 /** This method allows to remove the selection listener to the PointIcon
 	  */
 	 public void removeRefPointSelectionListeners() {
 		 this.m_RefPointListener = null;
 	 }
 
+	 /**
+	  * Recreate the legend object with the current point sets.
+	  * 
+	  */
+	public void updateLegend() {
+		GraphPointSetLegend lb = new GraphPointSetLegend(m_PointSetContainer);
+		setLegend(lb);
+	}
+	
+	/**
+	 * Reset the legend clearing all information.
+	 */
+	public void clearLegend() {
+		setLegend(null);
+	}
+	
+	private void toggleLegend() {
+		m_legend=!m_legend;
+		repaint();
+	}
 }

@@ -18,19 +18,20 @@ import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 
+import wsi.ra.jproxy.MainAdapterClient;
+import wsi.ra.jproxy.RMIProxyLocal;
+import wsi.ra.jproxy.RMIProxyRemote;
 import eva2.gui.BeanInspector;
 import eva2.gui.Graph;
 import eva2.gui.GraphWindow;
 import eva2.gui.JTextoutputFrame;
 import eva2.gui.JTextoutputFrameInterface;
+import eva2.gui.Plot;
+import eva2.gui.PlotInterface;
 import eva2.server.EvAServer;
 import eva2.server.go.PopulationInterface;
 import eva2.server.go.problems.InterfaceAdditionalPopulationInformer;
 import eva2.tools.EVAERROR;
-
-import wsi.ra.jproxy.MainAdapterClient;
-import wsi.ra.jproxy.RMIProxyLocal;
-import wsi.ra.jproxy.RMIProxyRemote;
 
 /*==========================================================================*
  * CLASS DECLARATION
@@ -105,39 +106,48 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
 
 //		m_TextCounter = m_StatisticsParameter.GetTextoutput();
 		m_PlotCounter = m_StatsParams.GetPlotoutput();
+		if ((m_FitnessFrame!=null) && (m_FitnessFrame[0]!=null)) { 
+			PlotInterface p = m_FitnessFrame[0].getPlotter();
+			if ((p!=null) && p.isValid()) ((Plot)p).getFunctionArea().clearLegend();
+		}
 	}
 
 	public void stopOptPerformed(boolean normal, String stopMessage) {
 		super.stopOptPerformed(normal, stopMessage);
-
+		
 		if (optRunsPerformed > m_StatsParams.getMultiRuns()) {
 			// this may happen if the user reduces the multirun parameter during late multiruns
 			System.err.println("error: more runs performed than defined.");
 		}
+		
+		int fullRuns=optRunsPerformed;
+		if (!normal) fullRuns--;
+
 		// unite the graphs only if the break was "normal"
-		if (normal && (m_StatsParams.getMultiRuns() > 1) && (m_StatGraph != null)) {
+		if ((m_StatsParams.getMultiRuns() > 1) && (m_StatGraph != null)) {
 			// unite the point sets for a multirun
 			for (int i = 0; i < m_FitnessGraph.length; i++) {
 				for (int j = 0; j < m_FitnessGraph[i].length; j++) {
-					if (m_FitnessFrame[i].isValid()) {
+					m_StatGraph[i][j].setInfoString(
+							(m_FitnessGraph[i][j].getInfo().length() > 0 ? (m_FitnessGraph[i][j].getInfo() + "_") : "" )
+							+ (m_StatsParams.GetInfoString().length() > 0 ? (m_StatsParams.GetInfoString() + "_") : "" )
+							+ m_StatsParams.GetInfoString()
+							+ "Mean_of_" + fullRuns + " ",
+							(float) 2.0);
+					if (normal && m_FitnessFrame[i].isValid()) {
 						m_StatGraph[i][j].addGraph(m_FitnessGraph[i][j]);
-						m_StatGraph[i][j].setInfoString(
-								(m_FitnessGraph[i][j].getInfo().length() > 0 ? (m_FitnessGraph[i][j].getInfo() + "_") : "" )
-								+ (m_StatsParams.GetInfoString().length() > 0 ? (m_StatsParams.GetInfoString() + "_") : "" )
-								 + m_StatsParams.GetInfoString()
-								+ "Mean_of_" + optRunsPerformed + " ",
-								(float) 2.0);
 						m_FitnessGraph[i][j].clear();
 					}
 				}
 			}
 		}
-		// this is inconsistent, shouldnt be necessary here but reset in startOpt...
-//		if (optRunsPerformed == m_StatisticsParameter.getMultiRuns()) {
-//			finalizeRuns(m_ConvergenceCnt);
-//			m_OptRunsPerformed = 0;
-//			m_ConvergenceCnt = 0;
-//		}
+		PlotInterface p = m_FitnessFrame[0].getPlotter();
+		if ((optRunsPerformed >= m_StatsParams.getMultiRuns()) || !normal) {
+			// update the legend after the last multirun or after a user break
+			if ((p!=null) && p.isValid()) {
+				((Plot)p).getFunctionArea().updateLegend();
+			}
+		}
 	}
 	
 	public void maybeShowProxyPrinter() {
@@ -149,13 +159,13 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
 
 		maybeShowProxyPrinter();
 		int graphCount = description.size();
-		
+//		System.out.println("Initializing " + graphCount + " plots (StatisticsWithGUI)");
 		m_FitnessFrame = new GraphWindow[graphCount];
 		for (int i = 0; i < m_FitnessFrame.length; i++) {
 //			m_FitnessFrame[i] = GraphWindow.getInstance(m_MainAdapterClient, m_GraphInfoString + " " + i + " " + " on " + m_MyHostName + ", VM " + EvAServer.m_NumberOfVM, "function calls", "fitness");
 			m_FitnessFrame[i] = GraphWindow.getInstance(m_MainAdapterClient, "Optimization " + i + " " + " on " + m_MyHostName + ", VM " + EvAServer.m_NumberOfVM, "function calls", "fitness");
 		}
-
+		
 		m_FitnessGraph = new Graph[graphCount][];
 		// contains one graph for every value to be plotted (best / worst / best+worst)
 		// TODO Im really not sure why this is a 2-dimensional array. shouldnt one be enough?
@@ -163,7 +173,7 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
 			m_FitnessGraph[i] = new Graph[((String[]) description.get(i)).length];
 			for (int j = 0; j < m_FitnessGraph[i].length; j++) {
 				String[] d = (String[]) description.get(i);
-				// this is where the column string for ascii export is created!
+				// this is where the column string for ascii export is created! Uah!
 				m_FitnessGraph[i][j] =
 					m_FitnessFrame[i].getNewGraph(d[j] + "_" +
 							m_StatsParams.GetInfoString() +
@@ -215,12 +225,20 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
 			m_PlotCounter = m_StatsParams.GetPlotoutput();
 			boolean doPlotBest = (fitnessplot_setting == StatsParameter.PLOT_BEST)
 					|| (fitnessplot_setting == StatsParameter.PLOT_BEST_AND_WORST)
+										|| (fitnessplot_setting == StatsParameter.PLOT_CURBEST_AND_RUNBEST)
 					|| (fitnessplot_setting == StatsParameter.PLOT_BEST_AND_MEASURES);
 			boolean doPlotWorst = (fitnessplot_setting == StatsParameter.PLOT_WORST)
 					|| (fitnessplot_setting == StatsParameter.PLOT_BEST_AND_WORST);
 			boolean doPlotMeasures = (fitnessplot_setting == StatsParameter.PLOT_BEST_AND_MEASURES);
+			boolean doPlotBestFeasible = false; 
+			// TODO <-- das hier besser? 
+//					Oder erstmal ganz weg und dafür gesamtergebnis berechnen (textfenster)
+//					ZB: wie oft wurde feasible sol. gefunden (analog convergence counter)
+//					Durchschnitt: erste feasible sol., fitness der feasible sol...
+			int subGraph=0;
 			if (doPlotBest) {
-				plotFitnessPoint(0, 0, functionCalls, currentBestFit[0]);
+				plotFitnessPoint(0, subGraph++, functionCalls, currentBestFit[0]);
+				if (fitnessplot_setting == StatsParameter.PLOT_CURBEST_AND_RUNBEST) plotFitnessPoint(0, subGraph++, functionCalls, bestRunIndividual.getFitness()[0]);
 			}
 			if (doPlotWorst) {
 				// schlechteste Fitness plotten
@@ -229,11 +247,14 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
 					System.err.println("m_WorstFitness==null in plotStatisticsPerformed");
 					return;
 				}
-				plotFitnessPoint(0, (doPlotBest ? 1 : 0) , functionCalls, currentWorstFit[0]);
+				plotFitnessPoint(0, subGraph++ , functionCalls, currentWorstFit[0]);
 			}
 			if (doPlotMeasures) {
-				plotFitnessPoint(0, 1, functionCalls, avgPopDist);
-				plotFitnessPoint(0, 2, functionCalls, maxPopDist);
+				plotFitnessPoint(0, subGraph++, functionCalls, avgPopDist);
+				plotFitnessPoint(0, subGraph++, functionCalls, maxPopDist);
+			}
+			if (doPlotBestFeasible && currentBestFeasibleFit!=null) {
+				plotFitnessPoint(0, subGraph++, functionCalls, currentBestFeasibleFit[0]);
 			}
 		}
 	}

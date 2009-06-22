@@ -11,10 +11,20 @@ import eva2.gui.BeanInspector;
 import eva2.server.go.IndividualInterface;
 import eva2.server.go.PopulationInterface;
 import eva2.server.go.individuals.AbstractEAIndividual;
+import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceAdditionalPopulationInformer;
 import eva2.tools.Mathematics;
 
-
+/**
+ * An abstract class handling statistics. Most important stuff happens in startOptPerformed, stopOptPerformed
+ * and createNextGenerationPerformed. Any measures (run based or multi-run based) are reset in startOptPerformed, 
+ * updated per iteration in createNextGenerationPerformed and reported to listeners in stopOptPerformed.
+ * Several different verbosity levels are regarded.  
+ * The method plotCurrentResults should be implemented to plot further results per iteration. 
+ *  
+ * @author mkron
+ *
+ */
 public abstract class AbstractStatistics implements InterfaceTextListener, InterfaceStatistics {
 	private PrintWriter resultOut;
 	public final static boolean TRACE = false;
@@ -42,14 +52,19 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 	protected int functionCalls;
 	protected int functionCallSum;
 	protected int convergenceCnt;
+	protected int feasibleFoundAfter;
+	protected int numOfRunsFeasibleFound;
+	protected double feasibleFoundAfterSum;
 	protected int optRunsPerformed;
 	protected double[] currentBestFit;
+	protected double[] currentBestFeasibleFit;
+	protected double[] meanBestFeasibleFit;
 	protected double[] meanFitness;
 	protected double[] currentWorstFit;
 	protected double[] meanBestOfRunFitness;
 	protected double avgPopDist;
 	protected double maxPopDist;
-	protected IndividualInterface bestCurrentIndividual, bestRunIndividual, bestIndividualAllover;
+	protected IndividualInterface bestCurrentIndividual, bestRunIndividual, bestRunFeasibleIndy, bestIndividualAllover;
 
 	
 	private ArrayList<InterfaceTextListener> textListeners;
@@ -121,11 +136,17 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 			initOutput(infoString);
 			bestIndividualAllover = null;
 			meanBestOfRunFitness = null;
+			meanBestFeasibleFit = null;
 			if (refineMultiRuns) meanCollection = new ArrayList<double[][]>();
 			else meanCollection = null;
+			feasibleFoundAfterSum=-1;
+			numOfRunsFeasibleFound=0;
 		}
+		feasibleFoundAfter=-1;
 		bestCurrentIndividual = null;
 		bestRunIndividual = null;
+		currentBestFeasibleFit=null;
+		bestRunFeasibleIndy = null;
 		runIterCnt = 0;
     	if (printRunIntroVerbosity()) printToTextListener("\n****** Multirun "+runNumber);
     	if (params != null) {
@@ -165,6 +186,32 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 				meanBestOfRunFitness=bestRunIndividual.getFitness().clone();
 			} else addMean(meanBestOfRunFitness, bestRunIndividual.getFitness());
 		}
+		if (feasibleFoundAfter>0) {
+			if (printRunStoppedVerbosity()) printToTextListener(" Feasible ind. found after " + feasibleFoundAfter + " evaluations.\n");
+		} else {
+			if (printRunStoppedVerbosity()) printToTextListener(" NO feasible individual found.\n");
+		}
+		if (bestRunFeasibleIndy != null) { 
+			if (meanBestFeasibleFit==null) {
+				meanBestFeasibleFit=currentBestFeasibleFit.clone();
+			} else addMean(meanBestFeasibleFit, currentBestFeasibleFit);
+			if (printRunStoppedVerbosity()) {
+				if ((bestRunFeasibleIndy instanceof AbstractEAIndividual) && ((AbstractEAIndividual)bestRunFeasibleIndy).equalGenotypes((AbstractEAIndividual)bestRunIndividual)) {
+					printToTextListener(" Run best feasible individual equals best individual.\n");
+				} else {
+					if (bestRunFeasibleIndy instanceof AbstractEAIndividual) {
+						if (((AbstractEAIndividual)bestRunIndividual).violatesConstraint())
+							printToTextListener(" Run best individual violates constraints by " + ((AbstractEAIndividual)bestRunIndividual).getConstraintViolation() + "\n");
+						if (((AbstractEAIndividual)bestRunIndividual).isMarkedPenalized())
+							printToTextListener(" Run best individual is penalized.\n");
+					}
+					
+					printToTextListener(" Run best feasible ind.: " + BeanInspector.toString(bestRunFeasibleIndy) + "\n");
+					printToTextListener("	Feas. solution data	: " + AbstractEAIndividual.getDefaultDataString(bestRunFeasibleIndy) + "\n");
+					printToTextListener("	Feas. solution fit	: " + BeanInspector.toString(bestRunFeasibleIndy.getFitness()) + "\n");
+				}
+			}
+		}
 //		if (currentBestFit!= null) {
 //			if (printRunStoppedVerbosity()) printToTextListener(" Best Fitness: " + BeanInspector.toString(currentBestFit) + "\n");
 //		}
@@ -174,6 +221,12 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 	protected void finalizeOutput() {
 		if (printFinalVerbosity()) printToTextListener("*******\n Runs performed: " + optRunsPerformed + ", reached target " + convergenceCnt + " times with threshold " + m_StatsParams.getConvergenceRateThreshold() + ", rate " + convergenceCnt/(double)m_StatsParams.getMultiRuns() + '\n');
 		if (printFinalVerbosity()) printToTextListener(" Average function calls: " + (functionCallSum/optRunsPerformed) + "\n");
+		
+		if (printFinalVerbosity() && (feasibleFoundAfterSum>=0.)) {
+			printToTextListener("     Feasible solution found in " + numOfRunsFeasibleFound + " of " + optRunsPerformed + " runs \n");
+			printToTextListener("     Average evaluations until feasible ind. was found in " + numOfRunsFeasibleFound + " runs: " + feasibleFoundAfterSum/numOfRunsFeasibleFound + " evaluations\n");
+		}
+
 		if (printFinalVerbosity() && (bestIndividualAllover != null)) printToTextListener(" Overall best individual: " + BeanInspector.toString(bestIndividualAllover) + '\n');
 		if (printFinalVerbosity() && (bestIndividualAllover != null)) printToTextListener("     Overall solution data	: " + AbstractEAIndividual.getDefaultDataString(bestIndividualAllover) + '\n');
 		if (printFinalVerbosity() && (bestIndividualAllover != null)) printToTextListener("     Overall solution fit	: " + BeanInspector.toString(bestIndividualAllover.getFitness()) + '\n');
@@ -181,7 +234,13 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 			if (meanBestOfRunFitness!=null) {
 				Mathematics.svDiv((double)optRunsPerformed, meanBestOfRunFitness, meanBestOfRunFitness);
 				if (printFinalVerbosity()) {
-					printToTextListener(" Averaged best fitness per run: " + BeanInspector.toString(meanBestOfRunFitness)+"\n");
+					printToTextListener(" Average best fitness per run: " + BeanInspector.toString(meanBestOfRunFitness)+"\n");
+				}
+			}
+			if (meanBestFeasibleFit!=null) {
+				Mathematics.svDiv((double)numOfRunsFeasibleFound, meanBestFeasibleFit, meanBestFeasibleFit);
+				if (printFinalVerbosity()) {
+					printToTextListener(" Average best feasible fitness in " + numOfRunsFeasibleFound + " runs: " + BeanInspector.toString(meanBestFeasibleFit)+"\n");
 				}
 			}
 			if (refineMultiRuns && (meanCollection != null)) {
@@ -298,6 +357,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 		functionCalls = calls;
 		currentBestFit = bestfit;
 		currentWorstFit = worstfit;
+		currentBestFeasibleFit = null;
 		meanFitness = null;
 		
 		if (firstPlot) {
@@ -336,6 +396,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 			initPlots(m_StatsParams.getPlotDescriptions());
 //			if (doTextOutput()) printToTextListener(getOutputHeader(informer, pop)+'\n');
 			firstPlot = false;
+			currentBestFeasibleFit=null;
 		}
 		if ((runIterCnt==0) && printHeaderByVerbosity()) printToTextListener(getOutputHeader(informerList, pop)+'\n');
 
@@ -361,6 +422,23 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 		if (currentBestFit == null) {
 			System.err.println("BestFitness==null !");
 		}
+		if (pop instanceof Population) {
+			AbstractEAIndividual curBestFeasible = ((Population)pop).getBestFeasibleIndividual(-1);
+			
+			if (curBestFeasible!=null) { // a feasible ind. was found!
+				if (currentBestFeasibleFit==null) { // feasible indy found for the first time 
+					numOfRunsFeasibleFound++;
+					feasibleFoundAfter=((Population)pop).getFunctionCalls();
+					if (feasibleFoundAfterSum<0) feasibleFoundAfterSum=0.; // initial signalling value was -1.
+					feasibleFoundAfterSum+=feasibleFoundAfter;
+				}
+				currentBestFeasibleFit = curBestFeasible.getFitness().clone();
+				if ((bestRunFeasibleIndy==null) || (secondIsBetter(bestRunFeasibleIndy, curBestFeasible))) {
+					bestRunFeasibleIndy=curBestFeasible;
+				}
+			}		
+		}
+		
 		meanFitness = pop.getMeanFitness().clone();
 		currentWorstFit = pop.getWorstIndividual().getFitness().clone();
 		functionCalls = pop.getFunctionCalls();
