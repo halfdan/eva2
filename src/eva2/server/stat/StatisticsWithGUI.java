@@ -32,6 +32,7 @@ import eva2.server.EvAServer;
 import eva2.server.go.PopulationInterface;
 import eva2.server.go.problems.InterfaceAdditionalPopulationInformer;
 import eva2.tools.EVAERROR;
+import eva2.tools.StringSelection;
 
 /*==========================================================================*
  * CLASS DECLARATION
@@ -54,6 +55,7 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
 
 	private MainAdapterClient m_MainAdapterClient; // the connection to the client MainAdapter
 	private JTextoutputFrameInterface m_ProxyPrinter;
+	private StringSelection lastGraphSelection;
 
 	//////////////
 	protected static String m_MyHostName = null;
@@ -103,7 +105,10 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
 	public synchronized void startOptPerformed(String infoString, int runNumber, Object goParams) {
 		super.startOptPerformed(infoString, runNumber, goParams);
 		m_GraphInfoString = infoString;
-
+		if (runNumber == 0) {
+			lastGraphSelection = (StringSelection)m_StatsParams.getGraphSelection().clone();
+		}
+		
 //		m_TextCounter = m_StatisticsParameter.GetTextoutput();
 		m_PlotCounter = m_StatsParams.GetPlotoutput();
 		if ((m_FitnessFrame!=null) && (m_FitnessFrame[0]!=null)) { 
@@ -151,7 +156,7 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
 	}
 	
 	public void maybeShowProxyPrinter() {
-		if (m_ProxyPrinter != null) m_ProxyPrinter.setShow((m_StatsParams).isShowTextOutput());
+		if (m_ProxyPrinter != null) m_ProxyPrinter.setShow(m_StatsParams.isShowTextOutput());
 	}
 	
 	protected void initPlots(List<String[]> description) {
@@ -198,11 +203,11 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
 
 	private void plotFitnessPoint(int graph, int subGraph, int x, double y) {
 		if (m_FitnessGraph == null) {
-			EVAERROR.WARNING("fitness graph is null!");
+			EVAERROR.WARNING("fitness graph is null! (StatisticsWithGUI)");
 			return;
 		}
 		if (graph >= m_FitnessGraph.length || subGraph >= m_FitnessGraph[graph].length) {
-			EVAERROR.WARNING("tried to plot to invalid graph!");
+			EVAERROR.WARNING("tried to plot to invalid graph! (StatisticsWithGUI)");
 			return;
 		}
 		boolean isValidGraph = m_FitnessFrame[graph].isValid();
@@ -219,40 +224,39 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
 		// Plots
 		m_PlotCounter--;
 		
-		int fitnessplot_setting =  m_StatsParams.getPlotData().getSelectedTag().getID();
+//		int fitnessplot_setting =  m_StatsParams.getPlotData().getSelectedTag().getID();
 		
 		if (m_PlotCounter == 0) {
 			m_PlotCounter = m_StatsParams.GetPlotoutput();
-			boolean doPlotBest = (fitnessplot_setting == StatsParameter.PLOT_BEST)
-					|| (fitnessplot_setting == StatsParameter.PLOT_BEST_AND_WORST)
-										|| (fitnessplot_setting == StatsParameter.PLOT_CURBEST_AND_RUNBEST)
-					|| (fitnessplot_setting == StatsParameter.PLOT_BEST_AND_MEASURES);
-			boolean doPlotWorst = (fitnessplot_setting == StatsParameter.PLOT_WORST)
-					|| (fitnessplot_setting == StatsParameter.PLOT_BEST_AND_WORST);
-			boolean doPlotMeasures = (fitnessplot_setting == StatsParameter.PLOT_BEST_AND_MEASURES);
-			boolean doPlotBestFeasible = false; 
-			// TODO <-- das hier besser? 
-//					Oder erstmal ganz weg und dafür gesamtergebnis berechnen (textfenster)
-//					ZB: wie oft wurde feasible sol. gefunden (analog convergence counter)
-//					Durchschnitt: erste feasible sol., fitness der feasible sol...
+//			boolean doPlotBest = (fitnessplot_setting == StatsParameter.PLOT_BEST)
+//					|| (fitnessplot_setting == StatsParameter.PLOT_BEST_AND_WORST)
+//										|| (fitnessplot_setting == StatsParameter.PLOT_CURBEST_AND_RUNBEST)
+//					|| (fitnessplot_setting == StatsParameter.PLOT_BEST_AND_MEASURES);
+//			boolean doPlotWorst = (fitnessplot_setting == StatsParameter.PLOT_WORST)
+//					|| (fitnessplot_setting == StatsParameter.PLOT_BEST_AND_WORST);
+//			boolean doPlotMeasures = (fitnessplot_setting == StatsParameter.PLOT_BEST_AND_MEASURES);
+			
+			boolean doPlotCurrentBest = GraphSelectionEnum.doPlotCurrentBest(lastGraphSelection);
+			boolean doPlotRunBest = GraphSelectionEnum.doPlotRunBest(lastGraphSelection);
+			boolean doPlotWorst= GraphSelectionEnum.doPlotWorst(lastGraphSelection);
+			boolean doPlotBestFeasible =  GraphSelectionEnum.doPlotBestFeasible(lastGraphSelection);
+			boolean doPlotAvgDist= GraphSelectionEnum.doPlotAvgDist(lastGraphSelection);
+			boolean doPlotMaxPopDist= GraphSelectionEnum.doPlotMaxPopDist(lastGraphSelection);
+
 			int subGraph=0;
-			if (doPlotBest) {
-				plotFitnessPoint(0, subGraph++, functionCalls, currentBestFit[0]);
-				if (fitnessplot_setting == StatsParameter.PLOT_CURBEST_AND_RUNBEST) plotFitnessPoint(0, subGraph++, functionCalls, bestRunIndividual.getFitness()[0]);
-			}
-			if (doPlotWorst) {
-				// schlechteste Fitness plotten
-				m_PlotCounter = m_StatsParams.GetPlotoutput();
+			if (doPlotCurrentBest) plotFitnessPoint(0, subGraph++, functionCalls, currentBestFit[0]);
+			if (doPlotRunBest) plotFitnessPoint(0, subGraph++, functionCalls, bestRunIndividual.getFitness()[0]);
+			
+			if (doPlotWorst) {// schlechteste Fitness plotten
 				if (currentWorstFit == null) {
 					System.err.println("m_WorstFitness==null in plotStatisticsPerformed");
 					return;
 				}
 				plotFitnessPoint(0, subGraph++ , functionCalls, currentWorstFit[0]);
 			}
-			if (doPlotMeasures) {
-				plotFitnessPoint(0, subGraph++, functionCalls, avgPopDist);
-				plotFitnessPoint(0, subGraph++, functionCalls, maxPopDist);
-			}
+			if (doPlotAvgDist) plotFitnessPoint(0, subGraph++, functionCalls, avgPopDist);
+			if (doPlotMaxPopDist) plotFitnessPoint(0, subGraph++, functionCalls, maxPopDist);
+			
 			if (doPlotBestFeasible && currentBestFeasibleFit!=null) {
 				plotFitnessPoint(0, subGraph++, functionCalls, currentBestFeasibleFit[0]);
 			}

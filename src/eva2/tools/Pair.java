@@ -15,6 +15,10 @@ public class Pair<S, T> implements Serializable {
 	private static final long serialVersionUID = -3620465393975181451L;
 	public S head;
 	public T tail;
+	
+	public Object clone() {
+		return new Pair<S,T>(head, tail);
+	}
 
 	public Pair(S head, T tail) {
 		this.head = head;

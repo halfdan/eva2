@@ -11,9 +11,9 @@ import eva2.server.go.individuals.codings.gp.GPArea;
  * To change this template use Options | File Templates.
  */
 public class GenericAreaEditor extends AbstractListSelectionEditor {
-
     /** The GPArea that is to be edited*/
     private GPArea                  m_AreaObject;
+    
     public GenericAreaEditor() {
         // compiled code
     }
@@ -30,12 +30,12 @@ public class GenericAreaEditor extends AbstractListSelectionEditor {
 	}
 
 	@Override
-	protected boolean isElementAllowed(int i) {
+	protected boolean isElementSelected(int i) {
 		return ((Boolean)m_AreaObject.getBlackList().get(i)).booleanValue();
 	}
 
 	@Override
-	protected boolean performOnAction() {
+	protected boolean actionOnSelect() {
 		/** This method checks the current BlackList and compiles it
 		 * to a new ReducedList.
 		 */

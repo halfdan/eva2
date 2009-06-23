@@ -7,9 +7,7 @@ package eva2.gui;
 public class GenericObjectListSelectionEditor extends AbstractListSelectionEditor {
     private PropertySelectableList objList;
     
-    public GenericObjectListSelectionEditor() {
-        // compiled code
-    }
+    public GenericObjectListSelectionEditor() {}
     
 	@Override
 	protected int getElementCount() {
@@ -22,12 +20,12 @@ public class GenericObjectListSelectionEditor extends AbstractListSelectionEdito
 	}
 
 	@Override
-	protected boolean isElementAllowed(int i) {
+	protected boolean isElementSelected(int i) {
 		return objList.isSelected(i);
 	}
 
 	@Override
-	protected boolean performOnAction() {
+	protected boolean actionOnSelect() {
 		boolean changed=false;
 		for (int i = 0; i < this.m_BlackCheck.length; i++) {
 			if (objList.isSelected(i)!=this.m_BlackCheck[i].isSelected()) {

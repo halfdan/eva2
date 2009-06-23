@@ -31,6 +31,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.beans.PropertyEditor;
 import java.lang.reflect.Array;
+import java.lang.reflect.Method;
 
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
@@ -64,6 +65,8 @@ implements PropertyEditor {
 	private DefaultListModel m_ListModel;
 	/** The property editor for the class we are editing */
 	private PropertyEditor m_ElementEditor;
+	/** Cheat to handle selectable lists as well */
+	private PropertySelectableList selectableList = null;
 	/** Click this to delete the selected array values */
 	private JButton m_DeleteBut = new JButton("Delete");
 	/** Click to add the current object configuration to the array */
@@ -84,6 +87,8 @@ implements PropertyEditor {
 						}
 						m_ElementList.setModel(m_ListModel);
 					}
+
+					if (selectableList!=null) selectableList.setObjects(modelToArray(m_ListModel));
 					m_Support.firePropertyChange("", null, null);
 				}
 				if (m_ElementList.getSelectedIndex() == -1) {
@@ -103,6 +108,7 @@ implements PropertyEditor {
 						m_ListModel.addElement(addObj);
 					}
 					m_ElementList.setModel(m_ListModel);
+					if (selectableList!=null) selectableList.setObjects(modelToArray(m_ListModel));
 					m_Support.firePropertyChange("", null, null);
 				} catch (Exception ex) {
 					JOptionPane.showMessageDialog(GenericArrayEditor.this,"Could not create an object copy",null,JOptionPane.ERROR_MESSAGE);
@@ -110,7 +116,15 @@ implements PropertyEditor {
 			}
 		}
 	};
-
+	
+	private Object[] modelToArray(DefaultListModel listModel) {
+		Object[] os= new Object[listModel.size()];
+		for (int i=0; i<listModel.size(); i++) {
+			os[i]=listModel.get(i);
+		}
+		return os;
+	}
+	
 	/** Listens to list items being selected and takes appropriate action */
 	private ListSelectionListener m_InnerSelectionListener =
 		new ListSelectionListener() {
@@ -182,9 +196,12 @@ implements PropertyEditor {
 				}
 				e.setValue(value);
 				return new JPanel() {
-					/**
-					 *
-					 */
+//					return new JCheckBox("", isSelected) {
+//						public void paintComponent(Graphics g) {
+//							String name = (String)BeanInspector.callIfAvailable(value, "getName", new Object[]{});
+//							if (name==null) setText(value.getClass().getSimpleName());
+//							else setText(name);
+//							super.paintComponent(g);
 					public void paintComponent(Graphics g) {
 						Insets i = this.getInsets();
 						Rectangle box = new Rectangle(i.left,i.top,
@@ -195,20 +212,7 @@ implements PropertyEditor {
 						g.setColor(isSelected ? list.getSelectionForeground(): list.getForeground());
 						e.paintValue(g, box);
 					}
-					/**
-					 *
-					 */
 					public Dimension getPreferredSize() {
-//						Dimension newPref = getPreferredSize();
-//						newPref.height = getFontMetrics(getFont()).getHeight() * 6 / 4;  //6 / 4;
-//						newPref.width = newPref.height * 6; //5
-//						setPreferredSize(newPref);
-
-
-//						Font f = this.getFont();
-//						FontMetrics fm = this.getFontMetrics(f);
-//						return new Dimension(0, fm.getHeight());
-
 						Font f = this.getFont();
 						FontMetrics fm = this.getFontMetrics(f);
 						Dimension newPref = new Dimension(0, fm.getHeight());
@@ -229,19 +233,26 @@ implements PropertyEditor {
 	 *
 	 * @param o a value of type 'Object'
 	 */
-	private void updateEditorType(Object o) {
+	private void updateEditorType(Object obj) {
 
 		// Determine if the current object is an array
 		m_ElementEditor = null; m_ListModel = null;
 		removeAll();
 
-		if ((o != null) && (o.getClass().isArray())) {
-			Class elementClass = o.getClass().getComponentType();
+		if ((obj != null) && (obj.getClass().isArray() || (obj instanceof PropertySelectableList))) {
+			Object arrayInstance = obj;
+			if (!(obj.getClass().isArray())) {
+				arrayInstance=((PropertySelectableList)obj).getObjects();
+				selectableList = (PropertySelectableList)obj;
+			} else selectableList = null;
+			Class elementClass = arrayInstance.getClass().getComponentType();
 			PropertyEditor editor = PropertyEditorProvider.findEditor(elementClass);
+			if (editor instanceof EnumEditor) editor.setValue(obj);
 			Component view = null;
 			ListCellRenderer lcr = new DefaultListCellRenderer();
 			if (editor != null) {
 				if (editor instanceof GenericObjectEditor) {
+//					((GenericObjectEditor) editor).getCustomEditor();
 					((GenericObjectEditor) editor).setClassType(elementClass);
 				}
 				if (editor.isPaintable() && editor.supportsCustomEditor()) {
@@ -262,8 +273,8 @@ implements PropertyEditor {
 				// Create the ListModel and populate it
 				m_ListModel = new DefaultListModel();
 				m_ElementClass = elementClass;
-				for (int i = 0; i < Array.getLength(o); i++) {
-					m_ListModel.addElement(Array.get(o,i));
+				for (int i = 0; i < Array.getLength(arrayInstance); i++) {
+					m_ListModel.addElement(Array.get(arrayInstance,i));
 				}
 				m_ElementList.setCellRenderer(lcr);
 				m_ElementList.setModel(m_ListModel);
@@ -285,6 +296,7 @@ implements PropertyEditor {
 						}
 					}
 
+					setPreferredSize(new Dimension(300,300));
 					JPanel panel = new JPanel();
 					panel.setLayout(new BorderLayout());
 					panel.add(view, BorderLayout.CENTER);
@@ -325,17 +337,20 @@ implements PropertyEditor {
 	 * @return the current object array
 	 */
 	public Object getValue() {
-
 		if (m_ListModel == null) {
 			return null;
 		}
-		// Convert the listmodel to an array of strings and return it.
-		int length = m_ListModel.getSize();
-		Object result = Array.newInstance(m_ElementClass, length);
-		for (int i = 0; i < length; i++) {
-			Array.set(result, i, m_ListModel.elementAt(i));
+		if (selectableList!=null) {
+			return  selectableList;
+		} else {
+		// 	Convert the listmodel to an array of strings and return it.
+			int length = m_ListModel.getSize();
+			Object result = Array.newInstance(m_ElementClass, length);
+			for (int i = 0; i < length; i++) {
+				Array.set(result, i, m_ListModel.elementAt(i));
+			}
+			return result;
 		}
-		return result;
 	}
 
 	/**
@@ -370,7 +385,15 @@ implements PropertyEditor {
 		FontMetrics fm = gfx.getFontMetrics();
 		int vpad = (box.height - fm.getAscent()) / 2;
 //		System.out.println(m_ListModel + " --- " + m_ElementClass);
-		String rep = m_ListModel.getSize() + " of " + EVAHELP.cutClassName(m_ElementClass.getName());
+		String rep;
+		if (m_ListModel.getSize() == 0) rep="Empty";
+		else {
+			rep = m_ListModel.getSize() + " of " + EVAHELP.cutClassName(m_ElementClass.getName());
+			Object maybeName = BeanInspector.callIfAvailable(m_ListModel.get(0), "getName", new Object[]{});
+			if (maybeName!=null) {
+				rep = rep + " ("+(String)maybeName + "...)";
+			}
+		}
 		gfx.drawString(rep, 2, fm.getHeight() + vpad - 3  );
 	}
 	/**

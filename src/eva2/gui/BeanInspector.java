@@ -326,6 +326,7 @@ public class BeanInspector {
 				return meth.invoke(obj, args);
 			} catch(Exception e) {
 				System.err.println("Error on calling method "+mName + " on " + obj.getClass().getName());
+				e.printStackTrace();
 				return null;
 			}
 		} else return null;
