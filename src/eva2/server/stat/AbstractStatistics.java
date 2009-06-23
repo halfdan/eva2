@@ -442,7 +442,8 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 		meanFitness = pop.getMeanFitness().clone();
 		currentWorstFit = pop.getWorstIndividual().getFitness().clone();
 		functionCalls = pop.getFunctionCalls();
-		if (m_StatsParams.getPlotData().getSelectedTag().getID() == StatsParameter.PLOT_BEST_AND_MEASURES) {
+		if (GraphSelectionEnum.doPlotAvgDist(m_StatsParams.getGraphSelection()) 
+				|| GraphSelectionEnum.doPlotMaxPopDist(m_StatsParams.getGraphSelection()))  {
 			double[] measures = pop.getPopulationMeasures();
 			if (measures != null) {
 				avgPopDist = measures[0];

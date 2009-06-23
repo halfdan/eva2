@@ -820,6 +820,18 @@ public class Mathematics {
 	}
 	
 	/**
+	 * Check whether the given value lies within the interval in every dimension.
+	 * 
+	 * @param x
+	 * @param range
+	 * @return	true if the vector lies within the range, else false
+	 */
+	public static boolean isInRange(double v, double lower, double upper) {
+		if (v<lower || (v>upper)) return false;
+		return true;
+	}
+	
+	/**
 	 * Return the vector of interval length values in any dimension.
 	 * ret[i]=range[i][1]-range[i][0]; 
 	 *
@@ -860,6 +872,21 @@ public class Mathematics {
 		return viols;
 	}
 	
+	/**
+	 * Project the value to the range given.
+	 * 
+	 * @param v
+	 * @param min
+	 * @param max
+	 * @return the closest value to v within [min,max]
+	 */
+	public static double projectValue(double v, double min, double max) {
+		if (v<min) {
+			return min;
+		} else if (v>max) {
+			return max;
+		} else return v;
+	}
 	
 	/**
 	 * Calculate the average length of the range intervals over all dimensions.

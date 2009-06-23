@@ -18,6 +18,7 @@ import sun.beans.editors.StringEditor;
 import eva2.server.go.InterfaceTerminator;
 import eva2.server.go.individuals.codings.gp.GPArea;
 import eva2.tools.SelectedTag;
+import eva2.tools.StringSelection;
 
 public class PropertyEditorProvider {
     final static boolean TRACE = false;
@@ -162,6 +163,7 @@ public class PropertyEditorProvider {
         
         // The Editor for the new GO
         
+        PropertyEditorManager.registerEditor(StringSelection.class              , StringSelectionEditor.class);
 //            // Traveling Salesman problem
         PropertyEditorManager.registerEditor(GPArea.class                       , GenericAreaEditor.class);
         PropertyEditorManager.registerEditor(PropertyDoubleArray.class          , GenericDoubleArrayEditor.class);
@@ -175,6 +177,6 @@ public class PropertyEditorProvider {
         PropertyEditorManager.registerEditor(PropertyOptimizationObjectives.class  , GenericOptimizationObjectivesEditor.class);
         PropertyEditorManager.registerEditor(PropertyOptimizationObjectivesWithParam.class  , GenericOptimizationObjectivesWithParamEditor.class);
         PropertyEditorManager.registerEditor(eva2.gui.MultiLineString.class, eva2.gui.MultiLineStringEditor.class);
-        PropertyEditorManager.registerEditor(PropertySelectableList.class, GenericObjectListSelectionEditor.class);
+        PropertyEditorManager.registerEditor(PropertySelectableList.class, GenericArrayEditor.class);
     }
 }

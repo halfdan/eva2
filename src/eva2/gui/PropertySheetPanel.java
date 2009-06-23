@@ -33,10 +33,8 @@ import java.beans.PropertyChangeSupport;
 import java.beans.PropertyDescriptor;
 import java.beans.PropertyEditor;
 import java.beans.PropertyVetoException;
-import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Arrays;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -46,9 +44,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 
-import eva2.gui.GenericObjectEditor.GOEPanel;
 import eva2.tools.EVAHELP;
-import eva2.tools.Mathematics;
 import eva2.tools.StringTools;
 /*==========================================================================*
 * CLASS DECLARATION
@@ -761,6 +757,8 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
 	            o = getter.invoke(m_Target, args);
             } catch (Exception ex) {
 	            o = null;
+	            System.err.println(ex.getMessage());
+	            ex.printStackTrace();
             }
             if (TRACE) System.out.println("# cmp " + BeanInspector.toString(o) + "\n# vs. " + BeanInspector.toString(m_Values[i]));
             if (o == m_Values[i] && (BeanInspector.isJavaPrimitive(o.getClass()))) {

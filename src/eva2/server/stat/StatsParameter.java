@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import eva2.gui.GenericObjectEditor;
 import eva2.tools.SelectedTag;
 import eva2.tools.Serializer;
+import eva2.tools.StringSelection;
 import eva2.tools.Tag;
 
 
@@ -29,19 +30,19 @@ import eva2.tools.Tag;
  *
  */
 public class StatsParameter implements InterfaceStatisticsParameter, Serializable {
-	public final static int PLOT_BEST = 0;
-	public final static int PLOT_WORST = 1;
-	public final static int PLOT_BEST_AND_WORST = 2;
-	public final static int PLOT_BEST_AND_MEASURES = 3;
-	public final static int PLOT_CURBEST_AND_RUNBEST = 4;
-	public final static Tag[] TAGS_PLOT_FITNESS = {
-		new Tag(PLOT_BEST, "plot best fitness"),
-		new Tag(PLOT_WORST, "plot worst fitness"),
-		new Tag(PLOT_BEST_AND_WORST, "both best and worst"),
-		new Tag(PLOT_BEST_AND_MEASURES, "both best and population measures"),
-		new Tag(PLOT_CURBEST_AND_RUNBEST, "current best and best of run")
-	};
-
+//	public final static int PLOT_BEST = 0;
+//	public final static int PLOT_WORST = 1;
+//	public final static int PLOT_BEST_AND_WORST = 2;
+//	public final static int PLOT_BEST_AND_MEASURES = 3;
+//	public final static int PLOT_CURBEST_AND_RUNBEST = 4;
+//	public final static Tag[] TAGS_PLOT_FITNESS = {
+//		new Tag(PLOT_BEST, "plot best fitness"),
+//		new Tag(PLOT_WORST, "plot worst fitness"),
+//		new Tag(PLOT_BEST_AND_WORST, "both best and worst"),
+//		new Tag(PLOT_BEST_AND_MEASURES, "both best and population measures"),
+//		new Tag(PLOT_CURBEST_AND_RUNBEST, "current best and best of run")
+//	};
+	
 	public final static int VERBOSITY_NONE = 0;
 	public final static int VERBOSITY_FINAL = 1;
 	public final static int VERBOSITY_KTH_IT = 2;
@@ -54,7 +55,7 @@ public class StatsParameter implements InterfaceStatisticsParameter, Serializabl
 	SelectedTag outputTo = new SelectedTag("File (current dir.)", "Text-window", "Both file and text-window");
 	private int verboK = 10;
 
-	private int m_PlotFitness = PLOT_BEST;
+//	private int m_PlotFitness = PLOT_BEST;
 	private int m_Textoutput = 0;
 	private int m_Plotoutput = 1;
 	private int m_MultiRuns = 1;
@@ -64,6 +65,8 @@ public class StatsParameter implements InterfaceStatisticsParameter, Serializabl
 	private boolean m_useStatPlot = true;
 	private boolean showAdditionalProblemInfo = false;
 	private double m_ConvergenceRateThreshold=0.001;
+
+	private StringSelection graphSel = new StringSelection(GraphSelectionEnum.currentBest);
 
 	/**
 	 *
@@ -101,24 +104,30 @@ public class StatsParameter implements InterfaceStatisticsParameter, Serializabl
 	 * @return a list of String arrays describing the selected plot options
 	 */
 	public ArrayList<String[]> getPlotDescriptions() {
-		ArrayList<String[]> desc = new ArrayList<String[]>();
-		switch (getPlotData().getSelectedTagID()) {
-		case StatsParameter.PLOT_BEST_AND_WORST:
-			desc.add(new String[] {"Best", "Worst"});
-			break;
-		case StatsParameter.PLOT_BEST:
-			desc.add(new String[] {"Best"});
-			break;
-		case StatsParameter.PLOT_WORST:
-			desc.add(new String[] {"Worst"});
-			break;
-		case StatsParameter.PLOT_BEST_AND_MEASURES:
-			desc.add(new String[] {"Best", "AvgDist", "MaxDist"});
-			break;
-		case StatsParameter.PLOT_CURBEST_AND_RUNBEST:
-			desc.add(new String[] {"Cur.Best", "Run Best"});
-			break;		}
-		return desc;
+		ArrayList<String> desc = new ArrayList<String>();
+		for (int i=0; i<GraphSelectionEnum.values().length; i++) {
+			if (graphSel.isSelected(i)) desc.add(graphSel.getElement(i));
+		}
+		ArrayList<String[]> alist = new ArrayList<String[]>();
+		alist.add(desc.toArray(new String[desc.size()]));
+		return alist;
+//		switch (getPlotData().getSelectedTagID()) {
+//		case StatsParameter.PLOT_BEST_AND_WORST:
+//			desc.add(new String[] {"Best", "Worst"});
+//			break;
+//		case StatsParameter.PLOT_BEST:
+//			desc.add(new String[] {"Best"});
+//			break;
+//		case StatsParameter.PLOT_WORST:
+//			desc.add(new String[] {"Worst"});
+//			break;
+//		case StatsParameter.PLOT_BEST_AND_MEASURES:
+//			desc.add(new String[] {"Best", "AvgDist", "MaxDist"});
+//			break;
+//		case StatsParameter.PLOT_CURBEST_AND_RUNBEST:
+//			desc.add(new String[] {"Cur.Best", "Run Best"});
+//			break;		}
+//		return desc;
 	}
 
 	/**
@@ -136,7 +145,7 @@ public class StatsParameter implements InterfaceStatisticsParameter, Serializabl
 		m_useStatPlot = Source.m_useStatPlot;
 		m_Textoutput = Source.m_Textoutput;
 		m_Plotoutput = Source.m_Plotoutput;
-		m_PlotFitness = Source.m_PlotFitness;
+//		m_PlotFitness = Source.m_PlotFitness;
 		m_MultiRuns = Source.m_MultiRuns;
 		m_ResultFilePrefix = Source.m_ResultFilePrefix;
 		verboK = Source.verboK;
@@ -250,35 +259,6 @@ public class StatsParameter implements InterfaceStatisticsParameter, Serializabl
 	public String useStatPlotTipText() {
 		return "Plotting each fitness graph separate if multiruns > 1.";
 	}
-
-	/**
-	 *
-	 */
-	public SelectedTag getPlotData() {
-		return new SelectedTag(m_PlotFitness, TAGS_PLOT_FITNESS);
-	}
-
-	/**
-	 *
-	 */
-	public void setPlotData(SelectedTag newMethod) {
-		m_PlotFitness = newMethod.getSelectedTag().getID();
-	}
-
-	/**
-	 *
-	 */
-	public String plotDataTipText() {
-		return "The data to be plotted: best fitness, worst fitness or average/max distance in population.";
-	}
-
-//	/**
-//	*
-//	*/
-//	public String plotObjectivesTipText() {
-//	return "The individual of which the objectives are plotted.";
-//	}
-
 
 	/**
 	 *
@@ -413,4 +393,15 @@ public class StatsParameter implements InterfaceStatisticsParameter, Serializabl
 		return "Set the output destination; to deactivate output, set verbosity to none.";
 	}
 
+	public StringSelection getGraphSelection() {
+		return graphSel;
+	}
+	
+	public void setGraphSelection(StringSelection v) {
+		graphSel = v;
+	}
+	
+	public String graphSelectionTipText() {
+		return "Select the graphs to be plotted.";
+	}
 }

@@ -15,6 +15,7 @@ package eva2.server.stat;
 import java.util.List;
 
 import eva2.tools.SelectedTag;
+import eva2.tools.StringSelection;
 
 /*==========================================================================*
 * INTERFACE DECLARATION
@@ -44,9 +45,12 @@ public interface InterfaceStatisticsParameter {
   
   public List<String[]> getPlotDescriptions();
 
-  public SelectedTag getPlotData();
-  public void setPlotData(SelectedTag newMethod);
-
+//  public SelectedTag getPlotData();
+//  public void setPlotData(SelectedTag newMethod);
+  
+  public StringSelection getGraphSelection();
+  public void setGraphSelection(StringSelection v);
+  
   public String getResultFilePrefix();
   public void SetResultFilePrefix(String x);
   

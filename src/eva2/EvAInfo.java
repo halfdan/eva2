@@ -4,6 +4,8 @@ package eva2;
  * Main product and version information strings.
  * 
  * --- Changelog
+ * 2.036: New graph selection mode for statistic plots: every property may be selected independently.
+ * 			A simple plot legend is produced in the graph window, which can be deactivated.
  * 2.035: Reactivated some of the model-based functionality within the GO framework. Minor bugfixes.
  * 2.034: Adding a generic parameter control method for optimizers, currently used by PSO to adapt inertness depending
  * 			on EvaluationTerminator or GenerationTerminator instances defining the number of function evaluations.
@@ -17,7 +19,7 @@ package eva2;
  * 			is not available seems to never show up (as opposed to being printed to the console when X-forwarding is on)
  * 			and silently fill up the JVM-memory. I havent the faintest idea why there havnt been OutOfMemory exceptions
  * 			earlier or whether and how the deadlocks have to do with it. 
- * 			The ingeniuos solution was: dont print anything to System.out, which is now done at verbosity 0.
+ * 			The ingenious solution was: dont print anything to System.out, which is now done at verbosity 0.
  * 2.032: Some cosmetics, e.g. to AbstractEAIndividualComparator and older MOCCO classes. 
  * 2.031: Some updates to the OptimizerFactory. Review of the MatlabInterface with adding an own options structure.
  * 			Better access to the EvAClient, which now may have a RemoteStateListener added monitoring the optimization run.
@@ -56,7 +58,7 @@ package eva2;
 public class EvAInfo {
 	public static final String productName = "EvA 2";
 	public static final String productLongName = "Evolutionary Algorithms Workbench 2";
-	public static final String versionNum = new String ("2.035");
+	public static final String versionNum = new String ("2.036");
 	public static final String url = "http://www.ra.cs.uni-tuebingen.de/software/EvA2";
 
 	public static final String propertyFile = "resources/EvA2.props";

@@ -16,7 +16,7 @@ import javax.swing.JFrame;
  */
 public class EnumEditor extends PropertyEditorSupport {
 	/** The Enum values that may be chosen */
-	private Object[] 				values = null;
+	private Enum[] 	enumConstants;
 
 	public String getAsText() {
 		return getValue().toString();
@@ -24,29 +24,33 @@ public class EnumEditor extends PropertyEditorSupport {
 	
 	public void setValue(Object value) {
 		if (value instanceof Enum) {
-			values = ((Enum)value).getClass().getEnumConstants();
+			enumConstants = ((Enum)value).getClass().getEnumConstants();
+//			enumType = ((Enum)value);
+			super.setValue(value);
+		} else if (value.getClass().isArray() && value.getClass().getComponentType().isEnum() ) {
+//			values = value.getClass().getComponentType().getEnumConstants();
+			Enum<?>[] e = (Enum[])(value);
+			enumConstants =(Enum[]) e.getClass().getComponentType().getEnumConstants();
 			super.setValue(value);
 		}
 	}
 	
-	/**
-	 *
-	 */
+	@Override
 	public void setAsText(String text) throws IllegalArgumentException {
-		for (int i=0; i<values.length; i++) {
-			if (text.equals(values[i].toString())) {
-				setValue((Enum)values[i]);
+		for (int i=0; i<enumConstants.length; i++) {
+			if (text.equals(enumConstants[i].toString())) {
+				setValue((Enum)enumConstants[i]);
 				return;
 			}
 		}
 		throw new IllegalArgumentException("Invalid text for enum");
 	}
-	/**
-	 *
-	 */
+	
+	@Override
 	public String[] getTags() {
-		String[] tags = new String[values.length];
-		for (int i=0; i<tags.length; i++) tags[i]=values[i].toString();
+		if (getValue()==null) return null;
+		String[] tags = new String[enumConstants.length];
+		for (int i=0; i<tags.length; i++) tags[i]=enumConstants[i].toString();
 		return tags;
 	}
 
