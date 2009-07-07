@@ -13,7 +13,7 @@ public class F8Problem extends F1Problem implements InterfaceMultimodalProblem, 
     private double      a = 20;
     private double      b = 0.2;
     private double      c = 2*Math.PI;
-    final static double f8Range = 32768;
+    final static double f8Range = 32.768;
 
     public F8Problem() {
         setDefaultRange(f8Range);
