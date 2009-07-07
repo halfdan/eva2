@@ -76,12 +76,15 @@ public class MutateESCovarianceMatrixAdaption implements InterfaceMutation, java
      * @param mutator   The other mutation operator
      */
     public boolean equals(Object mutator) {
+    	if (mutator==this) return true;
         if (mutator instanceof MutateESCovarianceMatrixAdaption) {
             MutateESCovarianceMatrixAdaption mut = (MutateESCovarianceMatrixAdaption)mutator;
             // i assume if the C Matrix is equal then the mutation operators are equal
             try {
+            	if (this.m_C==mut.m_C) return true;
                 double[][] c1 = this.m_C.getArray();
                 double[][] c2 = mut.m_C.getArray();
+                if (c1==c2) return true;
                 for (int i = 0; i < c1.length; i++) {
                     for(int j = 0; j < c1[i].length; j++) {
                         if (c1[i][j] != c2[i][j]) return false;

@@ -63,6 +63,7 @@ public class MutateESLocal implements InterfaceMutation, java.io.Serializable {
      * @param mutator   The other mutation operator
      */
     public boolean equals(Object mutator) {
+    	if (mutator==this) return true;
         if (mutator instanceof MutateESLocal) {
             MutateESLocal mut = (MutateESLocal)mutator;
             if (this.m_Tau1 != mut.m_Tau1) return false;
