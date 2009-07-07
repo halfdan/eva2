@@ -42,6 +42,28 @@ class CMAParamSet implements InterfacePopulationChangedEventListener, Serializab
 	protected Matrix              mB;
 	protected boolean firstAdaptionDone = false;
 	
+	public CMAParamSet(CMAParamSet o) {
+		firstSigma=o.firstSigma;
+		sigma=o.sigma;
+		d_sig=o.d_sig;
+		c_sig=o.c_sig;
+		meanX=o.meanX.clone();
+		pathC=o.pathC.clone();
+		pathS=o.pathS.clone();
+		eigenvalues=o.eigenvalues.clone();
+		weights=o.weights.clone();
+		range = o.range;
+		mC=o.mC;
+		mB=o.mB;
+		firstAdaptionDone=o.firstAdaptionDone;
+	}
+	
+	public CMAParamSet() {}
+	
+	public Object clone() {
+		return new CMAParamSet(this);
+	}
+	
 	public String toString() {
 		return "d_sig " + d_sig + ", c_sig " + c_sig + ", sigma " + sigma + ", firstSigma " + firstSigma+ ", firstAdaptionDone " + firstAdaptionDone 
 			+ ",\n meanX " + Arrays.toString(meanX) + ", pathC " + Arrays.toString(pathC)+ ", pathS " + Arrays.toString(pathS)+ ", eigenvalues " + Arrays.toString(eigenvalues)
@@ -310,7 +332,11 @@ public class MutateESRankMuCMA implements InterfaceMutationGenerational, Seriali
             for (int j = 0; j < dim; ++j) {
                 sum += params.mB.get(j,i) * BDz[j]; // times B transposed, (Eq 4) in HK04
             }
-            zVect[i] = sum / Math.sqrt(params.eigenvalues[i]);
+            zVect[i] = sum / Math.sqrt(params.eigenvalues[i]);			
+            if (Double.isInfinite(zVect[i])|| Double.isNaN(zVect[i])) {
+				System.err.println("Error, infinite zVect entry!");
+				zVect[i]=0; // TODO MK
+			}
         }
 
         /* cumulation for sigma (ps) using B*z */
@@ -319,6 +345,9 @@ public class MutateESRankMuCMA implements InterfaceMutationGenerational, Seriali
 			for (int j = 0; j < dim; ++j) sum += params.mB.get(i,j) * zVect[j];
 			newPathS[i] = (1. - params.c_sig) * params.pathS[i]
 			              + Math.sqrt(params.c_sig * (2. - params.c_sig)) * sum;
+			if (Double.isInfinite(newPathS[i]) || Double.isNaN(newPathS[i])) {
+				System.err.println("Error, infinite pathS!");
+			}
 		}
 //		System.out.println("pathS diff: " + BeanInspector.toString(Mathematics.vvSub(newPathS, pathS)));
 //		System.out.println("newPathS is " + BeanInspector.toString(newPathS));
@@ -333,6 +362,7 @@ public class MutateESRankMuCMA implements InterfaceMutationGenerational, Seriali
         for (int i = 0; i < dim; ++i) {
             newPathC[i] = (1. - getCc()) * params.pathC[i] + hsig
             * Math.sqrt(getCc() * (2. - getCc())) * BDz[i];
+            checkValidDouble(newPathC[i]);
         }
 		
         // TODO missing: "remove momentum in ps"
@@ -356,9 +386,6 @@ public class MutateESRankMuCMA implements InterfaceMutationGenerational, Seriali
 		if (Double.isInfinite(sigFact)) params.sigma *= 10.; // in larger search spaces sigma tends to explode after init.  
 		else params.sigma *= sigFact;
 
-        if (Double.isInfinite(params.sigma) || Double.isNaN(params.sigma)) {
-        	System.err.println("Error, unstable sigma!");
-        }
 		testAndCorrectNumerics(params, generation, selectedSorted);
         
 		if (TRACE_1) {
@@ -372,7 +399,7 @@ public class MutateESRankMuCMA implements InterfaceMutationGenerational, Seriali
 		params.pathS = newPathS;
 		params.firstAdaptionDone = true;
 		
-		lastParams = params;
+		lastParams = (CMAParamSet)params.clone();
 		oldGen.putData(cmaParamsKey, params);
 		selectedP.putData(cmaParamsKey, params);
 //		if (TRACE_2) System.out.println("sampling around " + BeanInspector.toString(meanX));
@@ -408,6 +435,13 @@ public class MutateESRankMuCMA implements InterfaceMutationGenerational, Seriali
 //    			sigma=0.1;
     		}
     	}
+    	
+        if (!checkValidDouble(params.sigma)) {
+        	System.err.println("Error, unstable sigma!");
+        	params.sigma=params.firstSigma; // MK TODO
+//        	System.err.println(
+        }
+    	
     	/* Align (renormalize) scale C (and consequently sigma) */
     	/* e.g. for infinite stationary state simulations (noise
     	 * handling needs to be introduced for that) */
@@ -420,7 +454,7 @@ public class MutateESRankMuCMA implements InterfaceMutationGenerational, Seriali
     		fac = 1./Math.sqrt(Mathematics.min(params.eigenvalues));
 
     	if (fac != 1.) {
-    		System.err.println("Scaling by " + fac);
+//    		System.err.println("Scaling by " + fac);
     		params.sigma /= fac;
     		for(int i = 0; i < params.meanX.length; ++i) {
     			params.pathC[i] *= fac;
@@ -484,6 +518,7 @@ public class MutateESRankMuCMA implements InterfaceMutationGenerational, Seriali
                     * (1. / mcv)
                     * (newPathC[i] * newPathC[j] + (1 - hsig) * getCc()
                             * (2. - getCc()) * params.mC.get(i,j));
+                	checkValidDouble(newVal);
                 	params.mC.set(i,j,newVal);
                     for (int k = 0; k < mu; ++k) { /*
                     * additional rank mu
@@ -493,6 +528,7 @@ public class MutateESRankMuCMA implements InterfaceMutationGenerational, Seriali
                     	newVal = params.mC.get(i,j)+ ccv * (1 - 1. / mcv)
                         * params.weights[k]	* (x_k[i] - params.meanX[i])
                         							* (x_k[j] - params.meanX[j]) / (getSigma(params, i) * getSigma(params, j)); // TODO right sigmas?
+                    	checkValidDouble(newVal);
                     	params.mC.set(i,j, newVal);
                     }
                 }
@@ -511,6 +547,20 @@ public class MutateESRankMuCMA implements InterfaceMutationGenerational, Seriali
 //            minsqrtdiagC = Math.sqrt(math.min(math.diag(C)));
         } // update of C
         
+	}
+
+	/**
+	 * Return true if v is a valid numeric value (not NaN and not Infinity), else false.
+	 * 
+	 * @param v
+	 * @return
+	 */
+	private boolean checkValidDouble(double v) {
+		boolean valid = !(Double.isNaN(v) || Double.isInfinite(v));
+		if (!valid) {
+			System.err.println("Invalid double in rankMuCMA!");
+		}
+		return valid;
 	}
 
 	private double getCCov(double[] weights, int mu, int dim) {
@@ -651,6 +701,7 @@ public class MutateESRankMuCMA implements InterfaceMutationGenerational, Seriali
 			double[] sampl = new double[dim]; // generate scaled random vector (D * z)
 			for (int i = 0; i < dim; ++i) {
 				sampl[i] = Math.sqrt(params.eigenvalues[i]) * RNG.gaussianDouble(1.);
+				if (Double.isNaN(sampl[i])) sampl[i]=0;
 			}
 //			System.out.println("Sampling around " + BeanInspector.toString(meanX));
 			/* add mutation (sigma * B * (D*z)) */
@@ -659,6 +710,7 @@ public class MutateESRankMuCMA implements InterfaceMutationGenerational, Seriali
 				for (int j = 0; j < dim; ++j)
 					sum += params.mB.get(i,j) * sampl[j];
 				x[i] = params.meanX[i]+getSigma(params, i)*sum;
+				checkValidDouble(x[i]);
 			}
 		} else {
 			if (params==null) {
@@ -666,6 +718,7 @@ public class MutateESRankMuCMA implements InterfaceMutationGenerational, Seriali
 			}			// no valid meanX yet, so just do a gaussian jump with sigma
 			for (int i = 0; i < dim; ++i) {
 				x[i] += RNG.gaussianDouble(getSigma(params, i));
+				checkValidDouble(x[i]);
 			}
 		}
 		if (Mathematics.isInRange(x, range)) return x;
@@ -681,10 +734,7 @@ public class MutateESRankMuCMA implements InterfaceMutationGenerational, Seriali
 //	    % (the latter will decrease the overall step size) and
 //	    % recalculate arx accordingly. Do not change arx or arz in any
 //	    % other way.
-		for (int i=0; i<x.length; i++) {
-			if (x[i]<range[i][0]) x[i]=range[i][0];
-			else if (x[i]>range[i][1]) x[i]=range[i][1];
-		}
+		Mathematics.projectToRange(x, range);
 		return x;	
 	}
 

@@ -61,6 +61,7 @@ public class MutateESCorrolated implements InterfaceMutation, java.io.Serializab
      * @param mutator   The other mutation operator
      */
     public boolean equals(Object mutator) {
+    	if (mutator==this) return true;
         if (mutator instanceof MutateESCorrolated) {
             MutateESCorrolated mut = (MutateESCorrolated)mutator;
             if (this.m_Tau1 != mut.m_Tau1) return false;

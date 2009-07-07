@@ -63,9 +63,11 @@ public class MutateESMainVectorAdaption implements InterfaceMutation, java.io.Se
      * @param mutator   The other mutation operator
      */
     public boolean equals(Object mutator) {
+    	if (this==mutator) return true;
         if (mutator instanceof MutateESMainVectorAdaption) {
             MutateESMainVectorAdaption mut = (MutateESMainVectorAdaption)mutator;
             // i assume if the main_V is equal then the mutation operators are equal
+            if (this.m_main_v==mut.m_main_v) return true;
             if (this.m_main_v != null) {
                 for (int i = 0; i < this.m_main_v.length; i++) {
                     if (this.m_main_v[i] != mut.m_main_v[i]) return false;
