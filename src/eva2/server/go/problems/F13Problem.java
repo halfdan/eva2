@@ -13,6 +13,7 @@ public class F13Problem extends F1Problem implements InterfaceMultimodalProblem 
 
     public F13Problem() {
         this.m_Template         = new ESIndividualDoubleData();
+        setDefaultRange(500);
     }
     public F13Problem(F13Problem b) {
     	super(b);
@@ -29,14 +30,14 @@ public class F13Problem extends F1Problem implements InterfaceMultimodalProblem 
         return (Object) new F13Problem(this);
     }
     
-    public double[][] makeRange() {
-	    double[][] range = new double[this.m_ProblemDimension][2];
-	    for (int i = 0; i < range.length; i++) {
-	        range[i][0] = -512.03;
-	        range[i][1] = 511.97;
-	    }
-	    return range;
-    }
+//    public double[][] makeRange() {
+//	    double[][] range = new double[this.m_ProblemDimension][2];
+//	    for (int i = 0; i < range.length; i++) {
+//	        range[i][0] = -512.03;
+//	        range[i][1] = 511.97;
+//	    }
+//	    return range;
+//    }
 
     /** Ths method allows you to evaluate a double[] to determine the fitness
      * @param x     The n-dimensional input vector
