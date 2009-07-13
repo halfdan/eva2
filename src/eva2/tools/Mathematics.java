@@ -1,14 +1,14 @@
 package eva2.tools;
 
 import java.util.Arrays;
-
-import eva2.server.go.individuals.InterfaceDataTypeDouble;
+import java.util.List;
 
 import wsi.ra.math.RNG;
 import wsi.ra.math.Jama.Matrix;
 import wsi.ra.math.interpolation.BasicDataSet;
 import wsi.ra.math.interpolation.InterpolationException;
 import wsi.ra.math.interpolation.SplineInterpolation;
+import eva2.server.go.tools.DoubleArrayComparator;
 
 //created at June 27 2006
 
@@ -16,15 +16,6 @@ import wsi.ra.math.interpolation.SplineInterpolation;
  * @author Andreas Dr&auml;ger
  */
 public class Mathematics {
-
-	public static void main(String args[]) {
-		int i = 0;
-		double y[] = new double[args.length];
-		for (; i < args.length; i++)
-			y[i] = Double.parseDouble(args[i]);
-		System.out.println(median(y) / 1000);
-	}
-
 	public static void revertArray(Object[] src, Object[] dst) {
 		if (dst.length>=src.length) {
 			for (int i=0; i<src.length; i++) {
@@ -34,19 +25,48 @@ public class Mathematics {
 	}
 	
 	/**
-	 * Computes the median of a given double vector.
+	 * Computes the median of a given double vector by sorting x.
 	 *
-	 * @param x
-	 *                a vector of doubles
+	 * @param x a vector of doubles
+	 * @param cloneX	flag whether x should be cloned before sorting.
 	 * @return the median
 	 */
-	public static double median(double[] x) {
-		if (x.length == 1) return x[0];
-		Arrays.sort(x);
-		if (x.length % 2 == 0) return x[(x.length + 1) / 2];
-		return (x[x.length / 2] + x[x.length / 2 + 1]) / 2;
-	}
+	public static double median(double[] x, boolean cloneX) {
+		double[] in;
+		if (cloneX) in = (double[]) x.clone();
+		else in = x;
 
+		Arrays.sort(in);
+		if (in.length % 2 != 0) return in[(in.length-1) / 2];
+		else return (in[in.length/2] + in[(in.length/2)+1]) / 2.;
+	}
+	
+	/**
+	 * Computes the median of a given list of double vectors by sorting it.
+	 * If the size is even, no direct median is defined - in that case it may be
+	 * interpolated by the two closest elements or one of them may be selected (always
+	 * the smaller one depending on the comparator.
+	 *  
+	 * @see #DoubleArrayComparator
+	 * @param dblArrList	a list of double vectors
+	 * @param interpolate	flag whether, for even size, the median is interpolated 
+	 * @return the median
+	 */
+	public static double[] median(List<double[]> dblArrList, boolean interpolate) {
+		java.util.Collections.sort(dblArrList, new DoubleArrayComparator());
+		
+		int len = dblArrList.size();
+		if (len % 2 != 0) return dblArrList.get((len-1) / 2);
+		else {
+			double[] med = dblArrList.get(len/2).clone();
+			if (interpolate) {
+				vvAdd(med, dblArrList.get((len/2)+1), med);
+				svDiv(2, med, med);
+			}
+			return med;
+		}
+	}
+	
 	/**
 	 * This method gives a linear interpolation of the function values of the
 	 * given argument/function value pairs.
@@ -326,7 +346,7 @@ public class Mathematics {
 	 * @param d     d[i] the vectors, d[i][j] the jth coordinate of the ith vector
 	 * @return The mean vector.
 	 */
-	public static double[] getMeanVector(double[][] d) {
+	public static double[] meanVect(double[][] d) {
 		double[] result = new double[d[0].length];
 		for (int i = 0; i < d.length; i++) {
 			for (int j = 0; j < d[i].length; j++) {
@@ -947,5 +967,36 @@ public class Mathematics {
 		if ((val + step) < min) 
 			 return (2 * min - val - step);
 		return (val += step);
+	}
+	
+
+	/**
+	 * Return first multiple of interval which is larger than len.
+	 * 
+	 * @param len
+	 * @param interval
+	 * @return
+	 */
+	public static double firstMultipleAbove(double len, double interval) {
+		double startVal,dn = (len / interval );
+		startVal = Math.round(dn-0.5)*interval;
+
+		if( startVal < len || (len==0)) {
+			startVal+=interval; 
+		}
+		return startVal;
+	}
+
+	/**
+	 * Return the product over a double vector.
+	 * @param vals
+	 * @return
+	 */
+	public static double product(double[] vals) {
+		double prod=1.;
+		for (int i = 0; i < vals.length; i++) {
+			prod*=vals[i];
+		}
+		return prod;
 	}
 }

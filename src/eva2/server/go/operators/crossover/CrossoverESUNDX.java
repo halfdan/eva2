@@ -72,7 +72,7 @@ public class CrossoverESUNDX implements InterfaceCrossover, java.io.Serializable
             for (int i = 1; i < parents.length; i++) {
                 nParents[i-1] = parents[i];
             }
-            double[] g = Mathematics.getMeanVector(nParents), tmpD;
+            double[] g = Mathematics.meanVect(nParents), tmpD;
             double w, v;
             ArrayList givenCoordinates      = this.getGivenCoordinates(g, nParents);
             ArrayList missingCorrdinates    = this.getMissingCoordinates(g, parents[0], givenCoordinates);

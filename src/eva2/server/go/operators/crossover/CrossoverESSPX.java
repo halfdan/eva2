@@ -67,7 +67,7 @@ public class CrossoverESSPX implements InterfaceCrossover, java.io.Serializable 
             }
 
             double      r;
-            double[]    g = Mathematics.getMeanVector(parents);
+            double[]    g = Mathematics.meanVect(parents);
             double[][]  Y = new double[parents.length][], C;
 
             // calculate the Y vectors

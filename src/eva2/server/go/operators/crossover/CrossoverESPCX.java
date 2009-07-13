@@ -68,7 +68,7 @@ public class CrossoverESPCX implements InterfaceCrossover, java.io.Serializable 
                 System.arraycopy(((InterfaceESIndividual)result[i]).getDGenotype(), 0, children[i], 0, parents[i].length);
             }
 
-            double[]    g = Mathematics.getMeanVector(parents), tmpD;
+            double[]    g = Mathematics.meanVect(parents), tmpD;
             double      w, v;
             ArrayList   subSpace;
             // now determine the offsprings
