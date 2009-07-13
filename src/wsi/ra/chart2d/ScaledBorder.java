@@ -3,6 +3,9 @@ package wsi.ra.chart2d;
 import java.awt.* ;
 import javax.swing.BorderFactory;
 import javax.swing.border.* ;
+
+import eva2.tools.Mathematics;
+
 import java.awt.geom.AffineTransform ;
 import java.text.NumberFormat;
 import java.text.DecimalFormat;
@@ -291,16 +294,19 @@ public class ScaledBorder implements Border
 
 	  FontMetrics fm = g.getFontMetrics();
 	  int fontAsc = fm.getAscent(), v2m = fm.stringWidth("0") / y_values2marker;
-	  int n = (int)( src_rect.y / src_dY );
-//	  if( n * src_dY < src_rect.y || ( src_rect.x == 0 && src_rect.y == 0 ) ) n++;
-	  if( n * src_dY < src_rect.y || ( src_rect.x == 0 && src_rect.y == 0 ) ) {
-		  if (n+1 > n) n++;
-		  else System.err.println("Overflow error A in ScaledBorder!");
-	  }
+	  
+//	  double startVal,dn = (src_rect.y / src_dY );
+//	  startVal = Math.round(dn-0.5)*src_dY;
+//
+//	  if( startVal < src_rect.y || ( src_rect.x == 0 && src_rect.y == 0 ) ) {
+//		  startVal+=src_dY; 
+//	  }
+	  
+	  double startVal = Mathematics.firstMultipleAbove(src_rect.y, src_dY);
 	  
 	  double v, scaledV, minx = src_rect.x;
 	  if( x_scale != null ) minx = x_scale.getImageOf( minx );
-	  v = n * src_dY;
+	  v = startVal;
 	  while (v <= src_rect.y + src_rect.height){
 		  if( y_scale != null ) scaledV = y_scale.getImageOf( v );
 		  else scaledV=v;
@@ -321,7 +327,7 @@ public class ScaledBorder implements Border
 		  v += src_dY;
 	  }
   }
-
+  
   public double getSrcdY( FontMetrics fm, Dimension cd ){
 	  return getSrcdY(fm.getHeight(), cd.height);
   }
@@ -333,6 +339,7 @@ public class ScaledBorder implements Border
 	    double minsrc_dY = 2 * src_rect.height / (double)max; // die 2 einfach mal so eingesetzt   <--------------------------
 	    src_dY = aBitBigger( minsrc_dY );
 	    if( src_dY < minimal_increment ) src_dY = minimal_increment;
+	    if( under_construction ) System.out.println("Setting src_dY to " + src_dY + " for " + src_rect);
 	    return src_dY;
 	  }
   

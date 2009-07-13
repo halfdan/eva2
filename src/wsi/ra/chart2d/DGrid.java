@@ -19,6 +19,8 @@ package wsi.ra.chart2d;
 import java.awt.Color ;
 import java.awt.Graphics ;
 
+import eva2.tools.Mathematics;
+
 /*==========================================================================*
  * CLASS DECLARATION
  *==========================================================================*/
@@ -94,12 +96,14 @@ public class DGrid extends DComponent
     DPoint p1, p2;
     DLine l;
 
-    minX = (int)( rectangle.x / hor_dist );
-    if( minX * hor_dist <= rectangle.x ) minX++;
-    minX *= hor_dist;
-    minY = ( rectangle.y / ver_dist );
-    if( minY * ver_dist <= rectangle.y ) minY++;
-    minY *= ver_dist;
+    minX=Mathematics.firstMultipleAbove(rectangle.x, hor_dist);
+    minY=Mathematics.firstMultipleAbove(rectangle.y, ver_dist);
+//    minX = (int)( rectangle.x / hor_dist );
+//    if( minX * hor_dist <= rectangle.x ) minX++;
+//    minX *= hor_dist;
+//    minY = (int)( rectangle.y / ver_dist );
+//    if( minY * ver_dist <= rectangle.y ) minY++;
+//    minY *= ver_dist;
 
     p1 = new DPoint( 0, rectangle.y );
     p2 = new DPoint( 0, rectangle.y + rectangle.height );
@@ -127,16 +131,6 @@ public class DGrid extends DComponent
   public String toString(){
     return "chart2d.DGrid[ hor: "+hor_dist+", ver: "+ver_dist+" ]";
   }
-
-//  public void updateDistByRect(DRectangle rect) {
-//	  System.out.println(rect);
-//	  if (!rect.isEmpty() && (hor_dist>0 && ver_dist>0)) { 
-//		  double horRatio = Math.abs(rectangle.x)/hor_dist;
-//		  double verRatio =  Math.abs(rectangle.y)/ver_dist;
-////		  rectangle = visRect;
-//		  setDistances(rect.x*horRatio, rect.y*verRatio);
-//	  }
-//  }
 }
 
 /****************************************************************************
