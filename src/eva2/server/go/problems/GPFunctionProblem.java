@@ -83,12 +83,25 @@ public class GPFunctionProblem extends AbstractProblemDouble implements Interfac
 
 	@Override
 	public double[] eval(double[] x) {
-		if (x.length != dim) EVAERROR.errorMsgOnce("mismatching dimension of GPFunctionProblem!");
+		if (x.length != dim) {
+			EVAERROR.errorMsgOnce("mismatching dimension of GPFunctionProblem! Setting to " + x.length);
+			setProblemDimension(x.length);
+		}
 		pos = x;
 		Double res = (Double) gpProblem.evaluate(this);
 		double[] fit = new double[1];
 		fit[0] = scaleFit(res.doubleValue());
 		return fit;
+	}
+
+	/**
+	 * Set the problem dimension. Make sure that the associated GP tree is still valid
+	 * and does not explicitely use more dimensions than defined here, for instance.
+	 * @param newDim
+	 */
+	public void setProblemDimension(int newDim) {
+		dim = newDim;
+		((ESIndividualDoubleData)m_Template).setDoubleDataLength(dim);
 	}
 
 	/**
