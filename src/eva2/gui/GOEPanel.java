@@ -30,6 +30,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import wsi.ra.jproxy.RMIProxyLocal;
+import eva2.server.go.tools.FileTools;
 import eva2.tools.EVAHELP;
 /**
 *
@@ -55,8 +56,6 @@ public class GOEPanel extends JPanel implements ItemListener {
 	private JButton m_cancelBut;
 	/** edit source button */
 //	private JButton m_editSourceBut;
-	/** The filechooser for opening and saving object files */
-	private JFileChooser m_FileChooser;
 	/** Creates the GUI editor component */
 	private Vector<String> m_ClassesLongName;
 	private GenericObjectEditor m_goe = null;
@@ -90,7 +89,8 @@ public class GOEPanel extends JPanel implements ItemListener {
 		m_OpenBut.setEnabled(true);
 		m_OpenBut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Object object = openObject();
+				Object object = FileTools.openObject(m_OpenBut, m_goe.getClassType());
+//				Object object = openObject();
 				if (object != null) {
 					// setValue takes care of: Making sure obj is of right type,
 					// and firing property change.
@@ -107,7 +107,8 @@ public class GOEPanel extends JPanel implements ItemListener {
 		m_SaveBut.setEnabled(true);
 		m_SaveBut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				saveObject(m_goe.getValue());
+				FileTools.saveObjectWithFileChooser(m_SaveBut, m_goe.getValue());
+//				saveObject(m_goe.getValue());
 			}
 		});
 //
@@ -193,68 +194,6 @@ public class GOEPanel extends JPanel implements ItemListener {
 			updateChildPropertySheet();
 		}
 		m_ObjectChooser.addItemListener(this);
-	}
-
-	/**
-	 * Opens an object from a file selected by the user.
-	 *
-	 * @return the loaded object, or null if the operation was cancelled
-	 */
-	protected Object openObject() {
-		if (m_FileChooser == null) {
-			createFileChooser();
-		}
-		int returnVal = m_FileChooser.showOpenDialog(this);
-		if (returnVal == JFileChooser.APPROVE_OPTION) {
-			File selected = m_FileChooser.getSelectedFile();
-			try {
-				ObjectInputStream oi = new ObjectInputStream(new BufferedInputStream(new FileInputStream(selected)));
-				Object obj = oi.readObject();
-				oi.close();
-				if (!m_goe.getClassType().isAssignableFrom(obj.getClass())) {
-					throw new Exception("Object not of type: " + m_goe.getClassType().getName());
-				}
-				return obj;
-			} catch (Exception ex) {
-				JOptionPane.showMessageDialog(this,
-						"Couldn't read object: "
-						+ selected.getName()
-						+ "\n" + ex.getMessage(),
-						"Open object file",
-						JOptionPane.ERROR_MESSAGE);
-			}
-		}
-		return null;
-	}
-
-	/** Saves the current object to a file selected by the user.
-	 * @param object    The object to save.
-	 */
-	protected void saveObject(Object object) {
-
-		if (m_FileChooser == null) {
-			createFileChooser();
-		}
-		int returnVal = m_FileChooser.showSaveDialog(this);
-		if (returnVal == JFileChooser.APPROVE_OPTION) {
-			File sFile = m_FileChooser.getSelectedFile();
-			try {
-				ObjectOutputStream oo = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(sFile)));
-				oo.writeObject(object);
-				oo.close();
-			} catch (Exception ex) {
-				JOptionPane.showMessageDialog(this,
-						"Couldn't write to file: "
-						+ sFile.getName()
-						+ "\n" + ex.getMessage(),
-						"Save object",
-						JOptionPane.ERROR_MESSAGE);
-			}
-		}
-	}
-	protected void createFileChooser() {
-		m_FileChooser = new JFileChooser(new File("/resources"));
-		m_FileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 	}
 
 	/**

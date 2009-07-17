@@ -215,12 +215,17 @@ public class CHCAdaptiveSearchAlgorithm implements InterfaceOptimizer, java.io.S
         this.firePropertyChangedEvent(Population.nextGenerationPerformed);
     }
 
-    /** This method allows you to add the LectureGUI as listener to the Optimizer
-     * @param ea
-     */
     public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
         this.m_Listener = ea;
     }
+	public boolean removePopulationChangedEventListener(
+			InterfacePopulationChangedEventListener ea) {
+		if (m_Listener==ea) {
+			m_Listener=null;
+			return true;
+		} else return false;
+	}
+	
     /** Something has changed
      */
     protected void firePropertyChangedEvent (String name) {

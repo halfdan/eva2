@@ -105,7 +105,13 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
     public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
         this.m_Listener = ea;
     }
-
+	public boolean removePopulationChangedEventListener(
+			InterfacePopulationChangedEventListener ea) {
+		if (m_Listener==ea) {
+			m_Listener=null;
+			return true;
+		} else return false;
+	}
     public void init() {
        	loopCnt = 0;
        	mutator = new MutateESFixedStepSize(initialStepSize);

@@ -180,11 +180,11 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
             System.out.println("No Class found for " + tmp);
         }
         if ((object != null) && (editor != null)) paraPanel.registerEditor(object, editor);
-        this.m_O1 = (paraPanel.installActions());
+        this.m_O1 = (paraPanel.makePanel());
         EvAClient.setProperty("eva2.server.oa.go.Tools.InterfaceTest", "eva2.server.oa.go.Tools.Test1,eva2.server.oa.go.Tools.Test2");
         this.m_OptionsPanel = new JTabbedPane();
         JParaPanel paraPanel2 = new JParaPanel(this.m_GO, "MyGUI");
-        this.m_O2 = (paraPanel2.installActions());
+        this.m_O2 = (paraPanel2.makePanel());
         ((JTabbedPane)this.m_OptionsPanel).addTab("GO Parameters", this.m_O2);
         ((JTabbedPane)this.m_OptionsPanel).addTab("GO Statistics", this.m_O1);
         this.m_MainPanel.add(this.m_OptionsPanel, BorderLayout.CENTER);

@@ -29,11 +29,19 @@ public interface InterfaceOptimizer {
      */
     public String getName();
 
-    /** This method allows you to add the LectureGUI as listener to the Optimizer
+    /** 
+     * This method allows you to add a listener to the Optimizer.
      * @param ea
      */
     public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea);
-
+    
+    /** 
+     * This method removes a listener from the Optimizer. It returns true on success,
+     * false if the listener could not be found.
+     * @param ea
+     */
+    public boolean removePopulationChangedEventListener(InterfacePopulationChangedEventListener ea);
+    
     /** This method will init the optimizer
      */
     public void init();

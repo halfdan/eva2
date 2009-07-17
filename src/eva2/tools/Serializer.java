@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InvalidClassException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PipedInputStream;
@@ -187,25 +188,40 @@ public class Serializer {
     }
     return ret;
   }
+  
+  /**
+   * Deserialize the contents of File with given name containing
+   * a string and return the resulting string. If the indicated file
+   * doesnt exist or an error occurs, null is returned.
+   **/
+   public static Object loadObject (String Filename) {
+	   return loadObject(Filename, true);
+   }
+   
   /**
   * Deserialize the contents of File with given name containing
   * a string and return the resulting string. If the indicated file
   * doesnt exist or an error occurs, null is returned.
+  * If casually is false, an error message is printed and an exception
+  * is raised if the file was not found or an error occured on loading.
   **/
-  public static Object loadObject (String Filename) {
+  public static Object loadObject (String Filename, boolean casually) {
 	  Object s = null;
 
 	  File f = new File(Filename);
 	  if (f.exists()) {    
 		  try {
 			  s=(Object)load(new File(Filename));
-		  } catch (Exception e) {
+		  } catch (InvalidClassException e) {
 			  System.err.println("WARNING: loading object File "+Filename+ " not possible, this may happen on source code changes.");
 			  System.err.println(e.getMessage());
-			  //e.printStackTrace();
-			  return null;
+		  } catch (Exception e) {
+			  throw new RuntimeException("WARNING: loading object File "+Filename+ " not possible! ("+e.getMessage()+")");
 		  }
 		  return s;
-	  } else return null;
+	  } else {
+		  if (!casually) System.err.println("Error in Serializer: file " + Filename + " not found!");
+		  return null;
+	  }
   }
 }

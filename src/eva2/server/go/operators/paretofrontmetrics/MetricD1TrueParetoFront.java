@@ -8,7 +8,7 @@ import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.operators.archiving.ArchivingAllDominating;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.AbstractMultiObjectiveOptimizationProblem;
-import eva2.server.go.tools.FileLoader;
+import eva2.server.go.tools.FileTools;
 
 /** The D1 Pareto front metric requires a refrence Pareto front
  * and calculate the distance between the  current solution and
@@ -64,7 +64,7 @@ public class MetricD1TrueParetoFront implements eva2.server.go.operators.paretof
      *
      */
     private void loadReferenceData() {
-        String[]    tmpS, lines = FileLoader.loadStringsFromFile(this.m_InputFilePath.getCompleteFilePath());
+        String[]    tmpS, lines = FileTools.loadStringsFromFile(this.m_InputFilePath.getCompleteFilePath());
         if (lines == null) System.out.println("Failed to read "+this.m_InputFilePath.getCompleteFilePath());
         lines[0].trim();
         this.m_Titles = lines[0].split("\t");

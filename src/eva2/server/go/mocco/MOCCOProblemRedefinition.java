@@ -64,7 +64,7 @@ public class MOCCOProblemRedefinition extends MOCCOPhase implements InterfacePro
         this.m_Mocco.m_JPanelParameters.add(tmpP, BorderLayout.NORTH);
 
         JParaPanel paraPanel = new JParaPanel(this.m_Problem, "MyGUI");
-        tmpC = (paraPanel.installActions());
+        tmpC = (paraPanel.makePanel());
         this.m_Mocco.m_JPanelParameters.add(tmpC, BorderLayout.CENTER);
 
         this.m_Mocco.m_JFrame.setVisible(true);

@@ -171,6 +171,13 @@ public class GeneticAlgorithm implements InterfaceOptimizer, java.io.Serializabl
         public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
             this.m_Listener = ea;
         }
+    	public boolean removePopulationChangedEventListener(
+    			InterfacePopulationChangedEventListener ea) {
+    		if (m_Listener==ea) {
+    			m_Listener=null;
+    			return true;
+    		} else return false;
+    	}
         /** Something has changed
          */
         protected void firePropertyChangedEvent (String name) {
@@ -320,21 +327,4 @@ public class GeneticAlgorithm implements InterfaceOptimizer, java.io.Serializabl
         public String partnerSelectionTipText() {
             return "Choose a selection method for selecting recombination partners for given parents.";
         }
-
-    /** This method will set the number of individuals that are to be removed
-     * due to a plague [compare Saving Computational Effort in GP by means of
-     * Plagues, Fernandez, Tomassini, Vanneschi]
-     * offsprings by mating
-     * @param p
-     */
-//    public void setImpactOfPlague(int p) {
-//        if (p < 0) p = 0;
-//        this.m_Plague = p;
-//    }
-//    public int getImpactOfPlague() {
-//        return this.m_Plague;
-//    }
-//    public String impactOfPlagueTipText() {
-//        return "This gives the number of individuals that are to be removed each generation due to plague.";
-//    }
 }

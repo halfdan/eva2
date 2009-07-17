@@ -143,7 +143,12 @@ public class GenericObjectEditor implements PropertyEditor {
 							if (TRACE) System.out.println("Class " + class1 + " wants to be hidden from GOE, skipping...");
 							continue;
 						}
-					} catch (Exception e) {}
+					} catch (Exception e) {
+						
+					} catch (Error e) {
+						System.err.println("Error on checking fields of " + class1 + ": " + e);
+						continue;
+					}
 //					if (f)
 					if (!Modifier.isAbstract(m) && !class1.isInterface()) {	// dont take abstract classes or interfaces
 						try {

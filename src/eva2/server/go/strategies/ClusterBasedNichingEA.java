@@ -638,22 +638,20 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
     	spec.clear();
     	spec.add(survivor);   	
     }
-    
-    /** This method allows an optimizer to register a change in the optimizer.
-     * @param source        The source of the event.
-     * @param name          Could be used to indicate the nature of the event.
-     */
+  
     public void registerPopulationStateChanged(Object source, String name) {
         //Population population = ((InterfaceOptimizer)source).getPopulation();
     }
-    /** This method allows you to add the LectureGUI as listener to the Optimizer
-     * @param ea
-     */
     public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
         this.m_Listener = ea;
     }
-    /** Something has changed
-     */
+	public boolean removePopulationChangedEventListener(
+			InterfacePopulationChangedEventListener ea) {
+		if (m_Listener==ea) {
+			m_Listener=null;
+			return true;
+		} else return false;
+	}
     protected void firePropertyChangedEvent (String name) {
         if (this.m_Listener != null) this.m_Listener.registerPopulationStateChanged(this, name);
     }

@@ -597,7 +597,8 @@ public class BeanInspector {
 
 
 	/**
-	 * Try to get an object member value.
+	 * Try to get an object member value using the default getter.
+	 * Returns null if not successful.
 	 * 
 	 * @param obj
 	 * @param mem

@@ -150,6 +150,13 @@ public class MonteCarloSearch implements InterfaceOptimizer, java.io.Serializabl
     public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
         this.m_Listener = ea;
     }
+	public boolean removePopulationChangedEventListener(
+			InterfacePopulationChangedEventListener ea) {
+		if (m_Listener==ea) {
+			m_Listener=null;
+			return true;
+		} else return false;
+	}
     /** Something has changed
      */
     protected void firePropertyChangedEvent (String name) {

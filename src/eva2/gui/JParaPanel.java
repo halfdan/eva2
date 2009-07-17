@@ -17,13 +17,7 @@ import java.beans.PropertyEditor;
 import java.beans.PropertyEditorManager;
 import java.io.Serializable;
 
-/*
- *  ==========================================================================*
- *  CLASS DECLARATION
- *  ==========================================================================
- */
-
-public class JParaPanel implements Serializable {
+public class JParaPanel implements Serializable, PanelMaker {
 
     public static boolean TRACE = false;
     protected String m_Name = "undefined";
@@ -44,7 +38,7 @@ public class JParaPanel implements Serializable {
 
     /**
      */
-    public JComponent installActions() {
+    public JComponent makePanel() {
         m_Panel = new JPanel();
         //m_Panel.setPreferredSize(new Dimension(200, 200)); // MK: this was evil, killing all the auto-layout mechanisms
         PropertyEditorProvider.installEditors();

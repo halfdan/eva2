@@ -12,7 +12,7 @@ package eva2.server.modules;
 /*==========================================================================*
  * IMPORTS
  *==========================================================================*/
-import eva2.gui.JTabbedModuleFrame;
+import eva2.gui.EvATabbedFrameMaker;
 import eva2.gui.LogPanel;
 import eva2.server.go.operators.postprocess.PostProcessParams;
 import eva2.server.stat.InterfaceTextListener;
@@ -24,7 +24,7 @@ import wsi.ra.jproxy.RemoteStateListener;
  *
  */
 public interface ModuleAdapter extends RemoteStateListener {
-  public JTabbedModuleFrame getModuleFrame();
+  public EvATabbedFrameMaker getModuleFrame();
   public void startOpt(); // called from client
   public void restartOpt();
   public void stopOpt();

@@ -8,7 +8,7 @@ import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.operators.archiving.ArchivingAllDominating;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.AbstractMultiObjectiveOptimizationProblem;
-import eva2.server.go.tools.FileLoader;
+import eva2.server.go.tools.FileTools;
 
 /** Maximum Pareto Front Error gives the maximum distance of all minimum distances of each
  * element in the current solution to the true Pareto front.
@@ -60,7 +60,7 @@ public class MetricMaximumParetoFrontError implements eva2.server.go.operators.p
      *
      */
     private void loadReferenceData() {
-        String[]    tmpS, lines = FileLoader.loadStringsFromFile(this.m_InputFilePath.getCompleteFilePath());
+        String[]    tmpS, lines = FileTools.loadStringsFromFile(this.m_InputFilePath.getCompleteFilePath());
         if (lines == null) System.out.println("Failed to read "+this.m_InputFilePath.getCompleteFilePath());
         lines[0].trim();
         this.m_Titles = lines[0].split("\t");

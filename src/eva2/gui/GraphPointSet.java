@@ -20,6 +20,8 @@ import java.awt.BasicStroke;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import eva2.tools.Mathematics;
  /*==========================================================================*
  * CLASS DECLARATION
  *==========================================================================*/
@@ -30,7 +32,7 @@ public class GraphPointSet {
   private String m_InfoString = "Incomplete_Run";
   private int m_GraphLabel;
   private int colorOffset = 0;
-  private ArrayList m_PointSetContainer = new ArrayList();
+  private ArrayList<PointSet> m_PointSetContainer = new ArrayList<PointSet>();
   private float m_Stroke = (float) 1.0;
   private boolean m_isStatisticsGraph = false;
 //  private DPointSet m_PointSet_1;
@@ -317,74 +319,67 @@ public class GraphPointSet {
    * @param useForce 	forces the add even if point counts mismatch, maybe losing some data points
    */
   public void addGraph (GraphPointSet set,DMeasures measures, boolean useForce) {
-    if (set.m_ConnectedPointSet.getSize()!=m_ConnectedPointSet.getSize() &&
-      m_ConnectedPointSet.getSize()!=0 && !useForce) {
-      System.err.println("WARNING addGraph not possible, lost last graph");
-      System.err.println(" m_ConnectedPointSet.getSize() "+ m_ConnectedPointSet.getSize());
-      return;
-    }
-    m_isStatisticsGraph = true;
-    removeAllPoints();
-    m_ConnectedPointSet.setColor(set.getColor());
-//    m_PointSet_1.setColor(m_ConnectedPointSet.getColor());
-//    m_PointSet_2.setColor(m_ConnectedPointSet.getColor());
-//    m_PointSet_3.setColor(m_ConnectedPointSet.getColor());
-    m_PointSetContainer.add(set.getPointSet());
-    int[] index = new int[m_PointSetContainer.size()];
-    int[] GraphSize = new int[m_PointSetContainer.size()];
-    for (int i=0;i<m_PointSetContainer.size();i++)
-      GraphSize[i] = ((PointSet) m_PointSetContainer.get(i)).getSize();
-    boolean doit = true;
-    double minx =0;
-    while ( doit ) {
-      minx = ((PointSet) m_PointSetContainer.get(0)).m_X[index[0]];
-      int minindex = 0;
-      //System.out.println("m_PointSetContainer.size()"+m_PointSetContainer.size());
-      for (int i = 1;i<m_PointSetContainer.size();i++) {
-        //System.out.println("i="+i);
-        if (minx > ((PointSet) m_PointSetContainer.get(i)).m_X[index[i]]) {
-          minindex = i;
-          minx =  ((PointSet) m_PointSetContainer.get(i)).m_X[index[i]];
-        }
-      }
-      // Stelle minx wird gezeichnet. jetzt alle y werte dazu finden
-      int numberofpoints =0;
-      for (int i = 0;i<m_PointSetContainer.size();i++) {
-        if (minx == ((PointSet) m_PointSetContainer.get(i)).m_X[index[i]])
-          numberofpoints++;
-      }
-      double[] y = new double[numberofpoints];
-      int c = 0;
-      for (int i = 0;i<m_PointSetContainer.size();i++) {
-        if (minx == ((PointSet) m_PointSetContainer.get(i)).m_X[index[i]]) {
-          y[c]= ((PointSet) m_PointSetContainer.get(i)).m_Y[index[i]];
-          c++;
-          index[i]++;
-        }
-      }
-      double ymean =0;
-      for (int i = 0;i<y.length;i++)
-        ymean = ymean + y[i];
-      ymean = ymean / y.length;
-      // compute median double median = getMedian(y);
-      addDPoint(minx,ymean);// System.out.println("ymean "+ymean+"  y.length "+ y.length);
-      //addDPoint(minx,median);// System.out.println("ymean "+ymean+"  y.length "+ y.length);
-      doit = true;
-      for (int i=0;i<m_PointSetContainer.size();i++) {
-          if (GraphSize[i] <= index[i] ) {
-            doit = false;
-            break;
-          }
-        }
-//      doit = false;
-//      for (int i=0;i<m_PointSetContainer.size();i++) {
-//        if (GraphSize[i] > index[i] ) {
-//          doit = true;
-//          break;
-//        }
-//      }
-    }
-//    m_PointSet_2.removeAllPoints();
+	  if (set.m_ConnectedPointSet.getSize()!=m_ConnectedPointSet.getSize() &&
+			  m_ConnectedPointSet.getSize()!=0 && !useForce) {
+		  System.err.println("WARNING addGraph not possible, lost last graph");
+		  System.err.println(" m_ConnectedPointSet.getSize() "+ m_ConnectedPointSet.getSize());
+		  return;
+	  }
+	  if (set.getPointSet().getSize()==0) {
+		  System.err.println("Refusing to add empty graph...");
+		  return;
+	  }
+	  m_isStatisticsGraph = true;
+	  removeAllPoints();
+	  m_ConnectedPointSet.setColor(set.getColor());
+
+	  m_PointSetContainer.add(set.getPointSet());
+	  int[] index = new int[m_PointSetContainer.size()];
+	  int[] GraphSize = new int[m_PointSetContainer.size()];
+	  for (int i=0;i<m_PointSetContainer.size();i++) {
+		  GraphSize[i] = ((PointSet) m_PointSetContainer.get(i)).getSize();
+		  if (GraphSize[i]<=0) System.err.println("Warning: invalid graph size of " + GraphSize[i] + " at " + i + "!  (GraphPointSet.addGraph)");
+	  }
+	  if (Mathematics.sum(GraphSize)==0) {
+		  System.err.println("Error: not adding empty graphs... (GraphPointSet.addGraph)");
+		  return;
+	  }
+	  boolean allSetsHaveMorePoints = true;
+	  double nextXValue;
+	  double[] y = new double[m_PointSetContainer.size()];
+	  while ( allSetsHaveMorePoints ) { // Loop over all point sets, add them up and calc. mean  
+		  // this is a bit more complicated because it is allowed that the point sets are asynchronouos 
+		  // in the sense that the x values do not have to match - y values for any x value found are averaged 
+		  // over all points. However curves may look strange if this happens, since they consist of
+		  // heterogenous points. 
+		  nextXValue = m_PointSetContainer.get(0).m_X[index[0]];
+		  //System.out.println("m_PointSetContainer.size()"+m_PointSetContainer.size());
+		  for (int i = 1;i<m_PointSetContainer.size();i++) { // search for smalles x value at next index
+			  //System.out.println("i="+i);
+			  if (nextXValue > m_PointSetContainer.get(i).m_X[index[i]]) {
+				  nextXValue =  m_PointSetContainer.get(i).m_X[index[i]];
+			  }
+		  }
+		  // Stelle nextXValue wird gezeichnet. jetzt alle y werte dazu finden
+		  int numberofpoints =0;
+		  for (int i = 0;i<m_PointSetContainer.size();i++) { // collect all points at next x-value
+			  if (nextXValue == m_PointSetContainer.get(i).m_X[index[i]]) {
+				  y[i]=m_PointSetContainer.get(i).m_Y[index[i]];
+				  index[i]++;
+				  numberofpoints++;
+			  } else y[i]=0;
+		  }
+		  double ymean = Mathematics.sum(y)/numberofpoints;
+		  // compute median double median = getMedian(y);
+		  addDPoint(nextXValue,ymean);// System.out.println("ymean "+ymean+"  y.length "+ y.length);
+		  //addDPoint(minx,median);// System.out.println("ymean "+ymean+"  y.length "+ y.length);
+		  for (int i=0;i<m_PointSetContainer.size();i++) { // Stop if one of the point sets has no more points
+			  if (GraphSize[i] <= index[i] ) {
+				  allSetsHaveMorePoints = false;
+				  break;
+			  }
+		  }
+	  }
   }
   /**
    *
@@ -422,65 +417,6 @@ public class GraphPointSet {
     m_Stroke = stroke;
     //setStroke(new BasicStroke( m_Stroke ));
   }
-//  /**
-//   *
-//   */
-//  public SerPointSet getSerPointSet () {
-//    SerPointSet ret= new SerPointSet(this);
-//    return ret;
-//  }
-//  
-//  /**
-//  *
-//  */
-//  class SerPointSet implements Serializable {
-//    private String m_InfoString;
-//    private int m_GraphLabel;
-//    private Color m_Color;
-//    private float m_Stroke;
-////    private PointSet m_PointSet_1;
-////    private PointSet m_PointSet_2;
-////    private PointSet m_PointSet_3;
-//    private PointSet m_ConnectedPointSet;
-////    private PointSet m_VarPointSetPlus;
-////    private PointSet m_VarPointSetMinus;
-//    private boolean m_isStatisticeGraph;
-////    private boolean m_showVarianz;
-//    /**
-//     *
-//     */
-//    public SerPointSet (GraphPointSet Source) {
-//      m_InfoString = Source.m_InfoString;
-//      m_GraphLabel = Source.m_GraphLabel;
-//      m_Color = Source.m_Color;
-//      m_Stroke = Source.m_Stroke;
-//      m_isStatisticeGraph = Source.m_isStatisticsGraph;
-//
-//      // save the connected points
-//      m_ConnectedPointSet = new PointSet(Source.getConnectedPointSet());
-////      m_PointSet_1 = new PointSet (Source.m_PointSet_1);
-////      m_PointSet_2 = new PointSet (Source.m_PointSet_2);
-////      m_PointSet_3 = new PointSet (Source.m_PointSet_3);
-//    }
-//    /**
-//     *
-//     */
-//    public GraphPointSet getGraphPointSet () {
-//      GraphPointSet ret = new GraphPointSet(10,m_GraphLabel);
-//      ret.setInfoString(this.m_InfoString,this.m_Stroke);
-//      ret.setColor(this.m_Color);
-//      ret.m_Color = m_Color;
-//      ret.m_Stroke = m_Stroke;
-//      ret.m_isStatisticsGraph = m_isStatisticeGraph;
-//        //@todo why doesn't that work!?
-////      ret.m_ConnectedPointSet = (DPointSetMultiIcon)m_ConnectedPointSet;
-////      ret.m_PointSet_1 = m_PointSet_1.getDPointSet();
-////      ret.m_PointSet_2 = m_PointSet_2.getDPointSet();
-////      ret.m_PointSet_3 = m_PointSet_3.getDPointSet();
-//      ret.m_ConnectedPointSet.setConnected(true);
-//      return ret;
-//    }
-//  }
   
   /**
    *

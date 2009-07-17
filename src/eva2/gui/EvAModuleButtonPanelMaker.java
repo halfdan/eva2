@@ -33,13 +33,11 @@ import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.server.go.strategies.InterfaceOptimizer;
 import eva2.server.modules.AbstractModuleAdapter;
 import eva2.server.modules.ModuleAdapter;
-/*==========================================================================*
- * CLASS DECLARATION
- *==========================================================================*/
+
 /**
- *
+ * Contains the GUI elements of start and stop buttons and optionally a help button.
  */
-public class JModuleGeneralPanel implements RemoteStateListener, Serializable  {
+public class EvAModuleButtonPanelMaker implements RemoteStateListener, Serializable, PanelMaker  {
 	public static boolean TRACE = false;
 	private String m_Name ="undefined";
 	private ModuleAdapter m_Adapter;
@@ -56,16 +54,14 @@ public class JModuleGeneralPanel implements RemoteStateListener, Serializable  {
 	/**
 	 *
 	 */
-	public JModuleGeneralPanel(ModuleAdapter Adapter, boolean state) {
+	public EvAModuleButtonPanelMaker(ModuleAdapter Adapter, boolean state) {
 		m_Name = "GENERAL";
 		m_StateRunning = state;
-		if (TRACE) System.out.println("Constructor JModuleGeneralPanel:");
+		if (TRACE) System.out.println("Constructor EvAModuleButtonPanelMaker:");
 		m_Adapter = Adapter;
 	}
-	/**
-	 *
-	 */
-	public JComponent installActions() {
+
+	public JComponent makePanel() {
 		String myhostname = null;
 
 		m_Panel= new JPanel();
@@ -89,18 +85,8 @@ public class JModuleGeneralPanel implements RemoteStateListener, Serializable  {
 		//System.out.println("Start tm_RunButton.addActionListener Run Opt pressed ====================!!!!!!!!!!!!!!!!!!");
 		m_RunButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e){
-				//System.out.println("Run Opt pressed !!!!!!!!!!!!!!!!======================!!");
-				try {
-					m_Adapter.startOpt();
-					m_actStop.setEnabled(true);
-					m_RunButton.setEnabled(false);
-					m_PPButton.setEnabled(false);
-//					m_RestartButton.setEnabled(false);
-//					m_JHelpButton.setEnabled(true);
-				} catch (Exception ee) {
-					ee.printStackTrace();
-					System.err.print ("Error in run: " +ee +" : " + ee.getMessage() );
-				}
+				//Run Opt pressed !
+				onUserStart();
 			}
 		}
 		);
@@ -181,6 +167,20 @@ public class JModuleGeneralPanel implements RemoteStateListener, Serializable  {
 		return m_Panel;
 	}
 	
+	public void onUserStart() {
+		try {
+			m_Adapter.startOpt();
+			m_actStop.setEnabled(true);
+			m_RunButton.setEnabled(false);
+			m_PPButton.setEnabled(false);
+//			m_RestartButton.setEnabled(false);
+//			m_JHelpButton.setEnabled(true);
+		} catch (Exception ee) {
+			ee.printStackTrace();
+			System.err.print ("Error in run: " +ee +" : " + ee.getMessage() );
+		}
+	}
+	
 	private void makeHelpButton() {
 		///////////////////////////////////////////////////////////////
 		if (m_HelperFileName!=null && (!m_HelperFileName.equals(""))) {
@@ -210,7 +210,7 @@ public class JModuleGeneralPanel implements RemoteStateListener, Serializable  {
 	 *
 	 */
 	public void performedStop() {
-		if (TRACE) System.out.println("JModuleGeneralPanel.stopOptPerformed");
+		if (TRACE) System.out.println("EvAModuleButtonPanelMaker.stopOptPerformed");
 		m_RunButton.setEnabled(true);
 		m_PPButton.setEnabled(true);
 		m_RunButton.repaint();

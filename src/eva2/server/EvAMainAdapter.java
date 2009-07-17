@@ -25,9 +25,15 @@ public interface EvAMainAdapter extends MainAdapter {
 
   public String[] getModuleNameList();
   // returns the corresponding ModuleAdapter
-  public ModuleAdapter getModuleAdapter(String str,
+  public ModuleAdapter getModuleAdapter(String selectedModuleName,
 		  boolean withoutRMI,
 		  String hostAddress,
 		  MainAdapterClient client);
-
+  
+  public ModuleAdapter getModuleAdapter(String selectedModuleName,
+		  boolean withoutRMI,
+		  String hostAddress,
+		  String paramsFile,
+		  String noGuiStatsFile,
+		  MainAdapterClient client);
 }
