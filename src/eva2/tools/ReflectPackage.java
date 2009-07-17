@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.management.ManagementFactory;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -281,7 +282,15 @@ public class ReflectPackage {
 		String[] cpEntries = getClassPathElements();
 		URL url = ClassLoader.getSystemResource(res);
 		if (TRACE) System.out.println(res + ((url == null) ? " not" : " was") + " found by classloader.");
-		if (url != null) return url.getFile();
+		if (url != null) {
+			File f;
+			try {
+			  f = new File(url.toURI());
+			} catch(URISyntaxException e) {
+			  f = new File(url.getPath());
+			}
+			return f.getPath();
+		}
 		
 		File f;
 		String fNameSep;
