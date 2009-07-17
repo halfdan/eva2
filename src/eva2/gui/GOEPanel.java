@@ -373,7 +373,7 @@ public class GOEPanel extends JPanel implements ItemListener {
 				JOptionPane.showMessageDialog(this,
 						"Could not create an example of\n"
 						+ className + "\n"
-						+ "from the current classpath. Is it abstract? Is the default constructor missing?",
+						+ "from the current classpath. Is the resource folder at the right place?\nIs the class abstract or the default constructor missing?",
 						"GenericObjectEditor",
 						JOptionPane.ERROR_MESSAGE);
 				EVAHELP.getSystemPropertyString();

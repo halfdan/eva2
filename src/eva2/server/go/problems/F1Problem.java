@@ -1,9 +1,7 @@
 package eva2.server.go.problems;
 
-import wsi.ra.math.RNG;
 import eva2.server.go.individuals.AbstractEAIndividual;
-import eva2.server.go.individuals.InterfaceDataTypeDouble;
-import eva2.server.go.populations.Population;
+import eva2.server.go.operators.constraint.GenericConstraint;
 import eva2.server.go.strategies.InterfaceOptimizer;
 
 /**
@@ -23,7 +21,7 @@ public class F1Problem extends AbstractProblemDouble implements Interface2DBorde
     protected int                       m_ProblemDimension  = 10;
     protected double                    m_XOffSet           = 0.0;
     protected double                    m_YOffSet           = 0.0;
-    protected boolean                   m_UseTestConstraint = false;
+//    protected boolean                   m_UseTestConstraint = false;
 
     public F1Problem() {
     	super();
@@ -36,7 +34,7 @@ public class F1Problem extends AbstractProblemDouble implements Interface2DBorde
     	this.m_ProblemDimension = b.m_ProblemDimension;
     	this.m_XOffSet          = b.m_XOffSet;
     	this.m_YOffSet          = b.m_YOffSet;
-    	this.m_UseTestConstraint = b.m_UseTestConstraint;
+//    	this.m_UseTestConstraint = b.m_UseTestConstraint;
     }
     
     public F1Problem(int dim) {
@@ -55,32 +53,7 @@ public class F1Problem extends AbstractProblemDouble implements Interface2DBorde
     public Object clone() {
         return (Object) new F1Problem(this);
     }
-    
-//	@Override
-//	public void initPopulation(Population population) {
-//        AbstractEAIndividual tmpIndy;
-//        population.clear();
-//        initTemplate();
-//        
-//        for (int i = 0; i < population.getPopulationSize(); i++) {
-//            tmpIndy = (AbstractEAIndividual)((AbstractEAIndividual)this.m_Template).clone();
-//            tmpIndy.init(this);
-//            if (tmpIndy instanceof InterfaceDataTypeDouble) {
-//            	double[] v = ((InterfaceDataTypeDouble)tmpIndy).getDoubleData();
-//            	for (int j=0; j<v.length; j++) {
-//            		v[j] = 3; //getDefaultRange() * ((j % 2 == 0) ? 1 : 1);
-//            		v[j]+=RNG.gaussianDouble(.2);
-//            	}
-//            	((InterfaceDataTypeDouble)tmpIndy).SetDoubleGenotype(v);
-//            }
-//            
-//            population.add(tmpIndy);
-//        }
-//        // population init must be last
-//        // it set's fitcalls and generation to zero
-//        population.init();
-//	}
-	
+
     /** This method inits the Problem to log multiruns
      */
     public void initProblem() {
@@ -88,32 +61,16 @@ public class F1Problem extends AbstractProblemDouble implements Interface2DBorde
     	initTemplate();
     }
 
-	protected double[] getEvalArray(AbstractEAIndividual individual){
-		double[] x = super.getEvalArray(individual);
-        // add an offset in solution space
-        for (int i = 0; i < x.length; i++) x[i] = x[i] - this.m_XOffSet;
-        return x;
-	}
-     
-	protected void setEvalFitness(AbstractEAIndividual individual, double[] x, double[] fit) {
-		super.setEvalFitness(individual, x, fit);
-        if (this.m_UseTestConstraint) {
-            if (x[0] < 1) individual.addConstraintViolation(1-x[0]);
-        }
-//        if ((this.m_OverallBest == null) || (this.m_OverallBest.getFitness(0) > individual.getFitness(0))) {
-//            this.m_OverallBest = (AbstractEAIndividual)individual.clone();
-//        }	
-	}
-
     /** Ths method allows you to evaluate a simple bit string to determine the fitness
      * @param x     The n-dimensional input vector
      * @return  The m-dimensional output vector.
      */
     public double[] eval(double[] x) {
         double[] result = new double[1];
-        result[0]     = 0;
+        result[0]     = m_YOffSet;
+        // add an offset in solution space
         for (int i = 0; i < x.length; i++) {
-            result[0]  += Math.pow(x[i], 2);
+            result[0]  += Math.pow(x[i] - this.m_XOffSet, 2);
         }
         return result;
     }
@@ -189,18 +146,18 @@ public class F1Problem extends AbstractProblemDouble implements Interface2DBorde
         return this.m_ProblemDimension;
     }
     public String problemDimensionTipText() {
-        return "Length of the x vector at is to be optimized.";
+        return "Length of the x vector to be optimized.";
     }
-    /** This method allows you to toggle the application of a simple test constraint.
-     * @param b     The mode for the test constraint
-     */
-    public void setUseTestConstraint(boolean b) {
-        this.m_UseTestConstraint = b;
-    }
-    public boolean getUseTestConstraint() {
-        return this.m_UseTestConstraint;
-    }
-    public String useTestConstraintTipText() {
-        return "Just a simple test constraint of x[0] >= 1.";
-    }
+//    /** This method allows you to toggle the application of a simple test constraint.
+//     * @param b     The mode for the test constraint
+//     */
+//    public void setUseTestConstraint(boolean b) {
+//        this.m_UseTestConstraint = b;
+//    }
+//    public boolean getUseTestConstraint() {
+//        return this.m_UseTestConstraint;
+//    }
+//    public String useTestConstraintTipText() {
+//        return "Just a simple test constraint of x[0] >= 1.";
+//    }
 }

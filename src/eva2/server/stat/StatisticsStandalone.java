@@ -19,12 +19,11 @@ import java.io.PrintWriter;
 import java.io.Serializable;
 import java.net.InetAddress;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import eva2.server.go.InterfaceGOParameters;
 import eva2.server.go.PopulationInterface;
 import eva2.server.go.problems.InterfaceAdditionalPopulationInformer;
+import eva2.tools.Mathematics;
 
 
 /*
@@ -36,10 +35,6 @@ import eva2.server.go.problems.InterfaceAdditionalPopulationInformer;
  *
  */
 public class StatisticsStandalone extends AbstractStatistics implements InterfaceStatistics, Serializable {
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 2621394534751748968L;
 
 	private static String m_MyHostName = "not def";
@@ -53,30 +48,31 @@ public class StatisticsStandalone extends AbstractStatistics implements Interfac
 	private double m_SumOfBestFit = 0;
 	private double[] m_BestFitnessAtEnd;
 	private double m_FitnessMedianofALL;
-	/**
-	 *
-	 */
+
 	public StatisticsStandalone(InterfaceStatisticsParameter statParams) {
 		super();
 		m_StatsParams = statParams;
 		try {
 			m_MyHostName = InetAddress.getLocalHost().getHostName();
 		} catch (Exception e) {
-			System.out.println("ERROR getting HostName " + e.getMessage());
+			System.err.println("ERROR getting HostName " + e.getMessage());
 		}
 	}
 
-	/**
-	 *
-	 */
 	public StatisticsStandalone(String resultFileName) {
-		this(new StatsParameter());
+		this(StatsParameter.getInstance());
 		m_StatsParams.SetResultFilePrefix(resultFileName);
+		m_StatsParams.setOutputTo(m_StatsParams.getOutputTo().setSelectedTag(StatsParameter.OUTPUT_FILE));
 	}
-
-	/**
-	 *
-	 */
+	
+	public StatisticsStandalone(String resultFileName, int multiRuns, int verbosity) {
+		this(StatsParameter.getInstance());
+		m_StatsParams.setMultiRuns(multiRuns);
+		m_StatsParams.setOutputVerbosity(m_StatsParams.getOutputVerbosity().setSelectedTag(verbosity));
+		m_StatsParams.SetResultFilePrefix(resultFileName);
+		m_StatsParams.setOutputTo(m_StatsParams.getOutputTo().setSelectedTag(StatsParameter.OUTPUT_FILE));
+	}
+	
 	public StatisticsStandalone() {
 		this(new StatsParameter());
 	}
@@ -100,9 +96,6 @@ public class StatisticsStandalone extends AbstractStatistics implements Interfac
 		}
 	}
 
-	/**
-	 *
-	 */
 	private void initContainer(String[] description) {
 		for (int i = 0; i < description.length; i++) {
 			m_Result.add(new ArrayList[m_StatsParams.getMultiRuns()]);
@@ -127,7 +120,6 @@ public class StatisticsStandalone extends AbstractStatistics implements Interfac
 	
 	public void stopOptPerformed(boolean normal, String stopMessage) {
 		super.stopOptPerformed(normal, stopMessage);
-
 		if (bestCurrentIndividual != null) {
 			m_SumOfBestFit = m_SumOfBestFit + bestCurrentIndividual.getFitness()[0];
 			m_BestFitnessAtEnd[optRunsPerformed-1] = bestCurrentIndividual.getFitness()[0];
@@ -137,23 +129,11 @@ public class StatisticsStandalone extends AbstractStatistics implements Interfac
 		if (optRunsPerformed == m_StatsParams.getMultiRuns()) {
 			m_FitnessMeanofALL = m_SumOfBestFit / ((double) optRunsPerformed);
 			//System.out.println("m_FitnessMeanofALL  "+m_FitnessMeanofALL);
-			m_FitnessMedianofALL = getMedian(m_BestFitnessAtEnd);
+			m_FitnessMedianofALL = Mathematics.median(m_BestFitnessAtEnd, true);
 
 //			finalizeOutput();
 		}
 	}
-
-	/**
-	 *
-	 */
-	private static double getMedian(double[] in) {
-		double[] x = (double[]) in.clone();
-//		double ret = 0;
-		Arrays.sort(x);
-		int m = (int) (x.length / 2.0);
-		return x[m];
-	}
-
 
 	/**
 	 * write result of all runs.
@@ -263,25 +243,6 @@ public class StatisticsStandalone extends AbstractStatistics implements Interfac
 //		staticDescription = "";
 //		return ret;
 //	}
-
-
-	/**
-	 *
-	 */
-	public static File writeString(String FileName, String Result) {
-		File f = null;
-		try {
-			f = new File(FileName + ".txt");
-			f.createNewFile();
-			PrintWriter Out = new PrintWriter(new FileOutputStream(f));
-			Out.println(Result);
-			Out.flush();
-			Out.close();
-		} catch (Exception e) {
-			System.out.println("Error:" + e.getMessage());
-		}
-		return f;
-	}
 
 	/**
 	 *

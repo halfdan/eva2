@@ -20,16 +20,9 @@ import eva2.gui.GenericObjectEditor;
 import eva2.tools.SelectedTag;
 import eva2.tools.Serializer;
 import eva2.tools.StringSelection;
-import eva2.tools.Tag;
 
-
-/*==========================================================================*
- * CLASS DECLARATION
- *==========================================================================*/
-/**
- *
- */
 public class StatsParameter implements InterfaceStatisticsParameter, Serializable {
+	private static boolean TRACE = false;
 //	public final static int PLOT_BEST = 0;
 //	public final static int PLOT_WORST = 1;
 //	public final static int PLOT_BEST_AND_WORST = 2;
@@ -59,7 +52,7 @@ public class StatsParameter implements InterfaceStatisticsParameter, Serializabl
 	private int m_Textoutput = 0;
 	private int m_Plotoutput = 1;
 	private int m_MultiRuns = 1;
-	private String m_ResultFilePrefix = "JE2";
+	private String m_ResultFilePrefix = "EvA2";
 	protected String m_Name = "not defined";
 	protected String m_InfoString = "";
 	private boolean m_useStatPlot = true;
@@ -72,9 +65,12 @@ public class StatsParameter implements InterfaceStatisticsParameter, Serializabl
 	 *
 	 */
 	public static StatsParameter getInstance() {
+		if (TRACE ) System.out.println("Loading serialized stats..");
 		StatsParameter Instance = (StatsParameter) Serializer.loadObject("Statistics.ser");
-		if (Instance == null)
+		if (Instance == null) {
 			Instance = new StatsParameter();
+			if (TRACE) System.out.println("Loading failed!");
+		}
 		return Instance;
 	}
 

@@ -57,9 +57,7 @@ public class OptimizerRunnable implements Runnable {
 	 * @param restart
 	 */
 	public OptimizerRunnable(GOParameters params, boolean restart) {
-		proc = new Processor(new StatisticsDummy(), null, params);
-		if (proc.getStatistics() instanceof AbstractStatistics) ((AbstractStatistics)proc.getStatistics()).setSaveParams(false);
-		doRestart = restart;
+		this(params, new StatisticsDummy(), restart);
 	}
 	
 	/**
@@ -72,7 +70,19 @@ public class OptimizerRunnable implements Runnable {
 	 * @param restart
 	 */
 	public OptimizerRunnable(GOParameters params, String outputFilePrefix, boolean restart) {
-		proc = new Processor(new StatisticsStandalone(outputFilePrefix), null, params);
+		this(params, new StatisticsStandalone(outputFilePrefix), restart);
+	}
+	
+	/**
+	 * Construct an OptimizerRunnable with given parameters and statistics instance with optional restart.
+	 * If restart is true, the processor will not reinitialize the population allowing search on predefined populations.
+	 * 
+	 * @param params
+	 * @param outputFilePrefix
+	 * @param restart
+	 */
+	public OptimizerRunnable(GOParameters params, InterfaceStatistics stats, boolean restart) {
+		proc = new Processor(stats, null, params);
 		if (proc.getStatistics() instanceof AbstractStatistics) ((AbstractStatistics)proc.getStatistics()).setSaveParams(false);
 		doRestart = restart;
 	}
@@ -83,6 +93,13 @@ public class OptimizerRunnable implements Runnable {
 	
 	public InterfaceStatistics getStats() {
 		return proc.getStatistics();
+	}
+	
+	public void setStats(InterfaceStatistics stats) {
+		if (proc.isOptRunning()) throw new RuntimeException("Error - cannot change statistics instance during optimization.");
+		InterfaceGOParameters params = proc.getGOParams(); 
+		proc = new Processor(stats, null, params);
+		if (proc.getStatistics() instanceof AbstractStatistics) ((AbstractStatistics)proc.getStatistics()).setSaveParams(false);
 	}
 	
 	public void setTextListener(InterfaceTextListener lsnr) {

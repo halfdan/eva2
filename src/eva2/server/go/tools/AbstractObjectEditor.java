@@ -245,6 +245,9 @@ public abstract class AbstractObjectEditor implements PropertyEditor, java.beans
                 return result;
             }
         }
+        if (result==null) {
+        	System.err.println("Warning: unknown property or unable to create editor for property " + prop + ", object " + this.getClass().getName());
+        }
         return result;
     }
 

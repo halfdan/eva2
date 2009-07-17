@@ -160,6 +160,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      * @return boolean  if equal true else false
      */
     public boolean equals(Object obj) {
+    	if (this==obj) return true;
         if (obj instanceof AbstractEAIndividual) {
             AbstractEAIndividual indy = (AbstractEAIndividual) obj;
 
@@ -607,13 +608,18 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
     	boolean result = true;
     	int i=0;
     	while (result && (i < fit1.length) && (i < fit2.length)) {
-    		if (fit1[i] > fit2[i]) result = false;
+    		if (firstIsFiniteAndLarger(fit1[i], fit2[i])) result = false;
     		i++;
     	}
     	return result;
     }
     
-    /**
+    private static boolean firstIsFiniteAndLarger(double a, double b) {
+		if (Double.isNaN(a) || Double.isInfinite(a)) return false;
+		else return (a > b);
+	}
+
+	/**
      * Returns true if the first fitness vector truly dominates the second one in every component.
      * 
      * @param fit1 first fitness vector to look at
@@ -863,6 +869,8 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
 
         sb.append(", fitness: ");
         sb.append(BeanInspector.toString(individual.getFitness()));
+        if (individual.isMarkedPenalized() || individual.violatesConstraint()) 
+        	sb.append(", X"); 
         sb.append(", ID: ");
         sb.append(individual.getIndyID());
         if (individual.getParentIDs()!=null) {
@@ -882,7 +890,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
     public static String getDefaultDataString(IndividualInterface individual) {
     	// Note that changing this method might change the hashcode of an individual 
     	// which might interfere with some functionality.
-    	return getDefaultDataString(individual, "; ");
+    	return getDefaultDataString(individual, ", ");
     }
     
     /**
@@ -897,8 +905,8 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
     	// which might interfere with some functionality.
     	if (individual == null) return "null";
         StringBuffer sb = new StringBuffer("");
-        char left = '[';
-        char right = ']';
+        char left = '{';
+        char right = '}';
         sb.append(left);
         if (individual instanceof InterfaceDataTypeBinary) {
             BitSet b = ((InterfaceDataTypeBinary)individual).getBinaryData();

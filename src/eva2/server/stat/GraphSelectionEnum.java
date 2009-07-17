@@ -3,7 +3,7 @@ package eva2.server.stat;
 import eva2.tools.StringSelection;
 
 public enum GraphSelectionEnum {
-	currentBest, currentWorst, runBest, bestFeasible, avgPopDistance, maxPopDistance;
+	currentBest, currentWorst, runBest, currentBestFeasible, runBestFeasible, avgPopDistance, maxPopDistance;
 	
 	public static boolean doPlotCurrentBest(StringSelection sel) {
 		return sel.isSelected(GraphSelectionEnum.currentBest.ordinal());
@@ -17,8 +17,12 @@ public enum GraphSelectionEnum {
 		return sel.isSelected(GraphSelectionEnum.currentWorst.ordinal());
 	}
 	
-	public static boolean doPlotBestFeasible(StringSelection sel) {
-		return sel.isSelected(GraphSelectionEnum.bestFeasible.ordinal()); 
+	public static boolean doPlotCurrentBestFeasible(StringSelection sel) {
+		return sel.isSelected(GraphSelectionEnum.currentBestFeasible.ordinal()); 
+	}
+	
+	public static boolean doPlotRunBestFeasible(StringSelection sel) {
+		return sel.isSelected(GraphSelectionEnum.runBestFeasible.ordinal()); 
 	}
 	
 	public static boolean doPlotAvgDist(StringSelection sel) {

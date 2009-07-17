@@ -239,7 +239,8 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
 			boolean doPlotCurrentBest = GraphSelectionEnum.doPlotCurrentBest(lastGraphSelection);
 			boolean doPlotRunBest = GraphSelectionEnum.doPlotRunBest(lastGraphSelection);
 			boolean doPlotWorst= GraphSelectionEnum.doPlotWorst(lastGraphSelection);
-			boolean doPlotBestFeasible =  GraphSelectionEnum.doPlotBestFeasible(lastGraphSelection);
+			boolean doPlotCurBestFeasible = GraphSelectionEnum.doPlotCurrentBestFeasible(lastGraphSelection);
+			boolean doPlotRunBestFeasible = GraphSelectionEnum.doPlotRunBestFeasible(lastGraphSelection);
 			boolean doPlotAvgDist= GraphSelectionEnum.doPlotAvgDist(lastGraphSelection);
 			boolean doPlotMaxPopDist= GraphSelectionEnum.doPlotMaxPopDist(lastGraphSelection);
 
@@ -257,8 +258,11 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
 			if (doPlotAvgDist) plotFitnessPoint(0, subGraph++, functionCalls, avgPopDist);
 			if (doPlotMaxPopDist) plotFitnessPoint(0, subGraph++, functionCalls, maxPopDist);
 			
-			if (doPlotBestFeasible && currentBestFeasibleFit!=null) {
+			if (doPlotCurBestFeasible && currentBestFeasibleFit!=null) {
 				plotFitnessPoint(0, subGraph++, functionCalls, currentBestFeasibleFit[0]);
+			}
+			if (doPlotRunBestFeasible && bestRunFeasibleIndy!=null) {
+				plotFitnessPoint(0, subGraph++, functionCalls, bestRunFeasibleIndy.getFitness()[0]);
 			}
 		}
 	}

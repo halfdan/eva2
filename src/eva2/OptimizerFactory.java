@@ -649,6 +649,18 @@ public class OptimizerFactory {
 		return opt;
 	}
 	
+	/**
+	 * Produce a runnable optimizer from a GOParameters instance. Output is written to a file if the 
+	 * prefix String is given.
+	 * 
+	 * @param params
+	 * @param outputFilePrefix
+	 * @return a runnable optimizer
+	 */
+	public static OptimizerRunnable getOptRunnable(GOParameters params, String outputFilePrefix) {
+		return new OptimizerRunnable(params, outputFilePrefix);
+	}
+	
 	// /////////////////////////// constructing a default OptimizerRunnable
 	/**
 	 * Produce a runnable optimizer from a strategy identifier, a problem instance and with the current
@@ -708,7 +720,19 @@ public class OptimizerFactory {
 	public static GOParameters makeParams(InterfaceOptimizer opt, int popSize, AbstractOptimizationProblem problem) {
 		return makeParams(opt, popSize, problem, randSeed, makeDefaultTerminator());
 	}
-
+	
+	/**
+	 * Use default random seed and the population size of the optimizer.
+	 * 
+	 * @see #makeParams(InterfaceOptimizer, int, AbstractOptimizationProblem, long, InterfaceTerminator)
+	 * @param opt
+	 * @param popSize
+	 * @param problem
+	 * @return
+	 */
+	public static GOParameters makeParams(InterfaceOptimizer opt, AbstractOptimizationProblem problem, InterfaceTerminator term) {
+		return makeParams(opt, opt.getPopulation().getPopulationSize(), problem, randSeed, term);
+	}
 	/**
 	 * Set the population size, initialize the population and return a parameter structure containing all 
 	 * given parts.

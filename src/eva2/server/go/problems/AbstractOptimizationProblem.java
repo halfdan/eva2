@@ -1,6 +1,7 @@
 package eva2.server.go.problems;
 
 import java.awt.BorderLayout;
+import java.io.Serializable;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -32,9 +33,9 @@ import eva2.tools.Mathematics;
  * Time: 13:40:12
  * To change this template use Options | File Templates.
  */
-public abstract class AbstractOptimizationProblem implements InterfaceOptimizationProblem, java.io.Serializable {
-
+public abstract class AbstractOptimizationProblem implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serializable {
     protected 	AbstractEAIndividual      m_Template;
+//    private transient ArrayList<ParamChangeListener> changeListeners = null;
 
     /** This method returns a deep clone of the problem.
      * @return  the clone
@@ -61,8 +62,10 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
         evaluatePopulationStart(population);
         for (int i = 0; i < population.size(); i++) {
         	tmpIndy = (AbstractEAIndividual) population.get(i);
-        	tmpIndy.resetConstraintViolation();
-        	this.evaluate(tmpIndy);
+        	synchronized (tmpIndy) {
+            	tmpIndy.resetConstraintViolation();
+            	this.evaluate(tmpIndy);
+			}
         	population.incrFunctionCalls();
         }
         evaluatePopulationEnd(population);
@@ -335,6 +338,28 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
         else return false; 
     }
     
+//    /**********************************************************************************************************************
+//     * These are for InterfaceParamControllable
+//     */
+//	public Object[] getParamControl() {
+//		return null;
+//	}
+//	
+//	public void notifyParamChanged(String member, Object oldVal, Object newVal) {
+//		if (changeListeners != null) for (ParamChangeListener l : changeListeners) {
+//			l.notifyChange(this, oldVal, newVal, null);
+//		}
+//	}
+//	
+//	public void addChangeListener(ParamChangeListener l) {
+//		if (changeListeners==null) changeListeners = new ArrayList<ParamChangeListener>();
+//		if (!changeListeners.contains(l)) changeListeners.add(l);
+//	}
+//	
+//	public void removeChangeListener(ParamChangeListener l) {
+//		if (changeListeners!=null) changeListeners.remove(l);
+//	}
+	
 /**********************************************************************************************************************
  * These are for GUI
  */
