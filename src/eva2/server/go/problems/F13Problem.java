@@ -1,9 +1,6 @@
 package eva2.server.go.problems;
 
-import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.ESIndividualDoubleData;
-import eva2.server.go.individuals.InterfaceDataTypeDouble;
-import eva2.server.go.populations.Population;
 
 /**
  * Schwefels sine root function (1981) with a minimum at 420.9687^n of value 0.

@@ -65,40 +65,13 @@ public class F7Problem extends F1Problem implements java.io.Serializable {
         evaluatePopulationEnd(population);
     }
 
-    /** This method evaluate a single individual and sets the fitness values
-     * @param individual    The individual that is to be evalutated
-     */
-    public void evaluate(AbstractEAIndividual individual) {
-        double[]        x;
-        double[]        fitness;
-
-        x = new double[((InterfaceDataTypeDouble) individual).getDoubleData().length];
-        System.arraycopy(((InterfaceDataTypeDouble) individual).getDoubleData(), 0, x, 0, x.length);
-
-        for (int i = 0; i < x.length; i++) x[i] = x[i] - this.m_XOffSet;
-        fitness = this.eval(x);
-        for (int i = 0; i < fitness.length; i++) {
-            // add noise to the fitness
-            fitness[i] += RNG.gaussianDouble(this.getNoise());
-            fitness[i] += this.m_YOffSet;
-            // set the fitness of the individual
-            individual.SetFitness(i, fitness[i]);
-        }
-        if (this.m_UseTestConstraint) {
-            if (x[0] < 1) individual.addConstraintViolation(1-x[0]);
-        }
-//        if ((this.m_OverallBest == null) || (this.m_OverallBest.getFitness(0) > individual.getFitness(0))) {
-//            this.m_OverallBest = (AbstractEAIndividual)individual.clone();
-//        }
-    }
-
     /** Ths method allows you to evaluate a double[] to determine the fitness
      * @param x     The n-dimensional input vector
      * @return  The m-dimensional output vector.
      */
     public double[] eval(double[] x) {
         double[] result = new double[1];
-        result[0]     = 0;
+        result[0]     = m_YOffSet;
         if ((Math.floor(this.m_CurrentTimeStamp / this.m_t)%2) == 0) {
             for (int i = 0; i < x.length-1; i++) {
                 result[0]  += Math.pow(x[i], 2);

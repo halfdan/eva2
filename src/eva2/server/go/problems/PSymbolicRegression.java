@@ -280,6 +280,8 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
      * This method allows a GP program to sense the environment, e.g.
      * input values, current time etc. Specialized to constants and variables
      * in arrays whose identifiers have the form "Xi" and "Ci".
+     * For an identifier X only, the full vars array is returned. For an
+     * identifier N only, the array dimension is returned.
      * 
      * @param sensor    The identifier for the sensor.
      * @param vars	array of x_i
@@ -288,11 +290,17 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
      */
     public static Object getSensorValue(String sensor, double[] vars, double[] consts) {
     	if (sensor.charAt(0)=='X') {
-    		int index=Integer.parseInt(sensor.substring(1));
-    		return new Double(vars[index]);
+    		try {
+    			int index=Integer.parseInt(sensor.substring(1));
+        		return new Double(vars[index]);
+    		} catch(Exception e) {
+    			return vars;
+    		}
     	} else if (sensor.charAt(0)=='C') {
     		int index=Integer.parseInt(sensor.substring(1));
     		return new Double(consts[index]);
+    	} else if (sensor.charAt(0)=='N') {
+    		return (double)vars.length;
     	} else return new Double(0);
 //        for (int i = 0; i < this.m_X.length; i++) if (sensor.equalsIgnoreCase("X"+i)) return new Double(this.m_X[i]);
 //        for (int i = 0; i < this.m_C.length; i++) if (sensor.equalsIgnoreCase("C"+i)) return new Double(this.m_C[i]);

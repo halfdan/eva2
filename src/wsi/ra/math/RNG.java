@@ -248,8 +248,12 @@ public class RNG extends Random {
      //counter++;
      return randomInt();
   }
+  
   /**
-   *
+   * Returns true with probability p.
+   * 
+   * @param p
+   * @return true with probability p, else false
    */
   public static boolean flipCoin(double p) {
      //counter++;

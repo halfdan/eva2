@@ -6,7 +6,9 @@ import java.util.Vector;
 
 import eva2.gui.BeanInspector;
 import eva2.gui.GenericObjectEditor;
+import eva2.server.go.problems.GPFunctionProblem;
 import eva2.server.go.problems.InterfaceProgramProblem;
+import eva2.tools.Mathematics;
 import eva2.tools.Pair;
 
 
@@ -73,7 +75,8 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
     public abstract String getOpIdentifier();
     
     /**
-     * Small parser for GP nodes from a String. Format must be (nearly) equivalent to what makeStringRepresentation produces.
+     * Small parser for GP nodes from a String. Format must be (nearly) equivalent to what 
+     * makeStringRepresentation produces.
      * This mainly means prefix notation with braces and commata, such as in:
      *     AbstractGPNode node = AbstractGPNode.parseFromString("+(2.0,cos(*(pi,pi)))");
      *     System.out.println("Parsed GPNode: " + node.getStringRepresentation());
@@ -84,15 +87,7 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
      */
     public static Pair<AbstractGPNode,String> parseFromString(String str, Vector<AbstractGPNode> nodeTypes) {
     	if (nodeTypes == null) {
-    		ArrayList<String>cls = GenericObjectEditor.getClassesFromClassPath(AbstractGPNode.class.getCanonicalName());
-    		nodeTypes = new Vector<AbstractGPNode>(cls.size());
-    		for (int i=0; i<cls.size(); i++) {
-    			try {
-    				AbstractGPNode node = (AbstractGPNode)Class.forName((String)cls.get(i)).newInstance();
-    				nodeTypes.add(node);
-    			} catch(Exception e) {}
-    		}
-			nodeTypes.add(new GPNodeInput("X"));
+    		nodeTypes = getNodeTypes();
     	}
     	if (nodeTypes.size()>0) {
     		Vector<AbstractGPNode> matchSet=AbstractGPNode.match(nodeTypes, str, true, true);
@@ -116,10 +111,10 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
     				if (currentNode instanceof GPNodeInput) {
     					Pair<Double, String> nextState=readDouble(restStr, false);
     					if (nextState!=null) {
-    						((GPNodeInput)currentNode).setIdentifier("X"+((int)nextState.head().doubleValue()));
+    						((GPNodeInput)currentNode).setIdentifier(currentNode.getOpIdentifier()+((int)nextState.head().doubleValue()));
         					restStr = nextState.tail();
     					} else {
-    						((GPNodeInput)currentNode).setIdentifier("X");
+    						((GPNodeInput)currentNode).setIdentifier(currentNode.getOpIdentifier());
     					}
     				}
     				return new Pair<AbstractGPNode,String>(currentNode,restStr);
@@ -129,7 +124,13 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
     				for (int i=0; i<currentNode.getArity(); i++) {
     					Pair<AbstractGPNode,String> nextState = parseFromString(restStr, nodeTypes);
     					currentNode.m_Nodes[i]=nextState.head();
-    					restStr=nextState.tail().substring(1).trim(); // cut comma or brace
+    					try {
+    						restStr=nextState.tail().substring(1).trim(); // cut comma or brace
+    					} catch (StringIndexOutOfBoundsException e) {
+    						System.err.println("Error: parsing failed for node " + currentNode.getOpIdentifier() + "/" + currentNode.getArity() + ", depth " + currentNode.getDepth());
+    						System.err.println("String was " + str);
+    						e.printStackTrace();
+    					}
     				}
     				if (TRACE) System.out.println("read " + currentNode.getName() + ", rest: " + restStr);
     				return new Pair<AbstractGPNode,String>(currentNode, restStr);
@@ -137,6 +138,27 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
     		}
     	} return null;
     }
+
+    /**
+     * Return all available node types as AbstractGPNode list.
+     * Using getOpIdentifier on all elements gives an overview of the operators
+     * that can be used.
+     * 
+     * @return a list of available AbstractGPNode implementations
+     */
+	public static Vector<AbstractGPNode> getNodeTypes() {
+		ArrayList<String>cls = GenericObjectEditor.getClassesFromClassPath(AbstractGPNode.class.getCanonicalName());
+		Vector<AbstractGPNode> nodeTypes = new Vector<AbstractGPNode>(cls.size());
+		for (int i=0; i<cls.size(); i++) {
+			try {
+				AbstractGPNode node = (AbstractGPNode)Class.forName((String)cls.get(i)).newInstance();
+				nodeTypes.add(node);
+			} catch(Exception e) {}
+		}
+//			nodeTypes.add(new GPNodeInput("X"));
+		nodeTypes.add(new GPNodeInput("N"));
+		return nodeTypes;
+	}
     
     private static Pair<Double, String> readDouble(String str, boolean expect) {
 		String firstArg;
@@ -193,14 +215,19 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
 		if (matching.size()>1 && firstLongestOnly) { // allow only the longest match (or first longest)
 			int maxLen = matching.get(0).getOpIdentifier().length();
 			AbstractGPNode longest=matching.get(0);
+			Vector<AbstractGPNode> longestList = new Vector<AbstractGPNode>();
+			longestList.add(longest);
 			for (int i=1; i<matching.size(); i++) {
 				if (matching.get(i).getOpIdentifier().length()>maxLen) {
 					longest = matching.get(i);
 					maxLen = longest.getOpIdentifier().length();
-				}
+					longestList.clear();
+					longestList.add(longest);
+				} else if (matching.get(i).getOpIdentifier().length()==maxLen) longestList.add(matching.get(i));
 			}
 			matching.clear();
-			matching.add(longest);
+			matching.addAll(longestList);
+			// TODO test if arities are different!
 		}
 		return matching;
 	}
@@ -214,14 +241,46 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
 	public static void main(String[] args) {
 //		Double d = Double.parseDouble("2.58923 + 3");
 //    	AbstractGPNode node = AbstractGPNode.parseFromString("-23421");
-    	AbstractGPNode node = AbstractGPNode.parseFromString("+(-23421,cOs(*(pI,x1)))");
+    	AbstractGPNode node = AbstractGPNode.parseFromString("+(-23421,cOs(*(pI,x)))");
 		AbstractGPNode.parseFromString("+(+(85.334407,*(0.0056858,*(x1,x4))), +(*(0.00026,*(x0,x3)),*(-0.0022053,*(x2,x4))))");
 		AbstractGPNode.parseFromString("+(+(80.51249,*(0.0071317,*(x1,x4))), +(*(0.0029955,*(x0,x1)),*(0.0021813,*(x2,x2))))");
 		AbstractGPNode.parseFromString("+(+(9.300961,*(0.0047026,*(x2,x4))), +(*(0.0012547,*(x0,x2)),*(0.0019085,*(x2,x3))))");
 
     	System.out.println("Parsed GPNode: " + node.getStringRepresentation());
     	node = AbstractGPNode.parseFromString(node.getStringRepresentation());
+
+    	double[] sol= new double[]{4.755837346122817, 0.0, 1.618818602745894, 7.941611605461133, 7.949805645271173, 7.9567145687445695, 4.8033535294211225, 7.96718976492528, 1.641971622483205, 7.973813526015599, 7.980394418430633, 7.98301197251176, 7.98590997257042, 1.6493767411801206, 7.994756424330215, 7.994983501150322, 7.9971658558418035, 8.00273733683876, 8.00492865462689, 8.006601147955184};
+    	double[] sol2={7.897269942114308, 0.0, 7.939346674715275, 1.6272963933436047, 7.952303730484389, 7.960893192129872, 4.804987144876599, 7.9682843963405805, 7.977546251710085, 7.981109017707746, 1.642081396353059, 7.985246784301232, 4.827113167927753, 1.6448751122424057, 7.997468593784776, 8.00165633007073, 8.000613763831703, 8.003920903217887, 8.005789437120203, 8.012425280944097};
+    	double[] sol3={4.705970234231343, 4.71343334004773, 7.845971927185614, 4.708648989456629, 4.723918978896874, 7.864710619970946, 1.5776948341096448, 7.854961967305262, 7.858760422458277, 1.5743212019457036, 7.8488102514506, 1.5637070804731334, 1.5778078319616269, 1.5757833862993071, 4.711995406637344, 4.715448624806491, 7.8434193487088155, 4.7036514083601535, 7.848371610694223, 7.856489370257257};
+    	test("-(0.75,prod(x))", sol3);
+    	test("-(sum(x),*(7.5,n))", sol3);
+//    	test("+(*(1000,+(sin(-(-0.25,x2)),sin(-(-0.25,x3)))), -(894.8,x0))", new double[]{1.,2,0,0,});
+    	double[] solG5lit = new double[]{679.9453, 1026.067, 0.1188764, -0.3962336};
+    	double[] solG5 = new double[] {891.702675571982, 808.9201991846442, -0.028381806025171354, -0.4684444512076402};
+    	test("-(x2,+(x3,0.55))", solG5);
+    	test("-(x3,+(x2,0.55))", solG5);
+    	test("+(*(1000,+(sin(-(-0.25,x2)),sin(-(-0.25,x3)))), -(894.8,x0))", solG5);
+    	test("+(*(1000,+(sin(+(-0.25,x2)),sin(-(x2,+(x3,0.25))))), -(894.8,x1))", solG5);
+    	test("+(*(1000,+(sin(+(-0.25,x3)),sin(-(x3,+(x2,0.25))))), 1294.8)", solG5);
+    	
+    	double[] solG13lit = new double[] {-1.717143,1.595709,1.827247,-0.7636413,-0.763645}; 
+//    	double[] solG13 = new double[] {-0.999977165120676, -0.03949641197962931, 2.9901909235593664, 0.11170038214968671, -0.21164083835675082};
+//NMS:   	double[] solG13 = new double[] {-1.20317028354022, 0.9052295512320271, 2.580255691052748, 0.5210663754783309, 0.8965551458319728};
+    	double[] solG13 = {-1.717136209326236, 1.5957142570821299, -1.8272614459011625, -0.7636708932891901, 0.7636501970281446};
+    	test("-(+(+(pow2(x0),pow2(x1)),+(pow2(x2),+(pow2(x3),pow2(x4)))),10)", solG13);
+    	test("-(*(x1,x2),*(5,*(x3,x4)))", solG13);
+    	test("+(pow3(x0),+(pow3(x1),1))", solG13);
+    	System.out.println("" + Math.exp(Mathematics.product(solG13)));
+    	
+    	test("-(sum(x),*(7.5,n))", solG5);
     }
+	
+	public static void test(String constr, double[] pos) {
+		AbstractGPNode node = AbstractGPNode.parseFromString(constr);
+		GPFunctionProblem func = new GPFunctionProblem(node, null, pos.length, 0., 0.);
+		double[] ret = func.eval(pos);
+		System.out.println("testing " + constr + " evaluated to " + BeanInspector.toString(ret));
+	}
     
     /** This method returns the depth of the current node
      * @return The depth.

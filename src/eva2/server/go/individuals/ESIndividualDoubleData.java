@@ -6,6 +6,8 @@ import eva2.server.go.operators.crossover.CrossoverESDefault;
 import eva2.server.go.operators.mutation.InterfaceMutation;
 import eva2.server.go.operators.mutation.MutateESGlobal;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
+import eva2.tools.EVAERROR;
+import eva2.tools.Mathematics;
 
 /** This individual uses a real-valued genotype to code for double values.
  * Created by IntelliJ IDEA.
@@ -162,8 +164,9 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
         return this.m_Phenotype;
     }
     
-    /** This method allows you to read the double data without
-     * an update from the genotype
+    /** 
+     * This method allows you to read the double data without
+     * an update from the genotype.
      * @return double[] representing the double data.
      */
     public double[] getDoubleDataWithoutUpdate() {
@@ -198,6 +201,8 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
         this.defaultInit();
         this.m_MutationOperator.init(this, opt);
         this.m_CrossoverOperator.init(this, opt);
+        // evil operators may not respect the range, so at least give some hint
+        if (!Mathematics.isInRange(m_Genotype, m_Range)) EVAERROR.errorMsgOnce("Warning: Individual out of range after initialization (and potential initial crossover/mutation)!");
     }
 
     /** This method will init the individual with a given value for the
