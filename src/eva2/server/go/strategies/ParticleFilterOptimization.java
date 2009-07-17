@@ -240,20 +240,16 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
         
     }
 
-//    protected void collectStatistics(Population population) {
-//		// TODO Auto-generated method stub
-//		int tMax = 5;
-//		
-//	}
-
-	/** This method allows you to add the LectureGUI as listener to the Optimizer
-     * @param ea
-     */
     public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
         this.m_Listener = ea;
     }
-    /** Something has changed
-     */
+	public boolean removePopulationChangedEventListener(
+			InterfacePopulationChangedEventListener ea) {
+		if (m_Listener==ea) {
+			m_Listener=null;
+			return true;
+		} else return false;
+	}
     protected void firePropertyChangedEvent (String name) {
         if (this.m_Listener != null) this.m_Listener.registerPopulationStateChanged(this, name);
     }

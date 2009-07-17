@@ -20,6 +20,7 @@ import java.util.Properties;
 
 import wsi.ra.jproxy.MainAdapterClient;
 import wsi.ra.jproxy.RMIProxyLocal;
+import eva2.server.modules.GOModuleAdapter;
 import eva2.server.modules.ModuleAdapter;
 import eva2.tools.EVAERROR;
 import eva2.tools.ReflectPackage;
@@ -120,7 +121,7 @@ public class ModuleServer {
 	 */
 	public ModuleAdapter createModuleAdapter(String selectedModuleName,
 			MainAdapterClient Client, boolean runWithoutRMI,
-			String hostAddress) {
+			String hostAddress, String paramsFile, String noGuiLogFile) {
 		m_ModuleAdapterCounter++;
 		String adapterName = new String("ERROR MODULADAPTER !!");
 		if (TRACE) {
@@ -156,13 +157,28 @@ public class ModuleServer {
 					adapterName = new String(m_ModuleAdapterCounter + "_Running_" +
 							selectedModuleName);
 
+					Constructor<?>[] constructorArr = module.getConstructors();
 					// create a module instance
-					Constructor<?>[] Constructor = module.getConstructors();
-					Object[] Para = new Object[2];
-					Class<?> paramTypes[] = (Constructor[0]).getParameterTypes();
-					Para[0] = paramTypes[0].cast(adapterName);
-					Para[1] = paramTypes[1].cast(Client);
-					m_ModuleAdapter = (ModuleAdapter) Constructor[0].newInstance(Para);
+					if ((paramsFile==null && noGuiLogFile==null) || !module.equals(GOModuleAdapter.class)) {
+						if (paramsFile!=null) System.err.println("Cant load params - no matching constructor found for " + adapterName + " (ModuleServer)");
+						if (noGuiLogFile!=null) System.err.println("Cant deactivate GUI - no matching constructor found for " + adapterName + " (ModuleServer)");
+						Object[] Para = new Object[2];
+						Class<?> paramTypes[] = (constructorArr[0]).getParameterTypes();
+						Para[0] = paramTypes[0].cast(adapterName);
+						Para[1] = paramTypes[1].cast(Client);
+						m_ModuleAdapter = (ModuleAdapter) constructorArr[0].newInstance(Para);
+					} else {
+						Object[] Para = new Object[4];
+						Para[0] = (String)adapterName;
+						Para[1] = (String)paramsFile;
+						Para[2] = (String)noGuiLogFile;
+						Para[3] = (MainAdapterClient)Client;
+						int constrIndex=0;
+						while ((constructorArr[constrIndex].getParameterTypes().length!=4) && (constrIndex < constructorArr.length)) { 
+							constrIndex++;
+						}
+						m_ModuleAdapter = (ModuleAdapter) constructorArr[constrIndex].newInstance(Para);
+					}
 					if (!runWithoutRMI) { // if we're using RMI, send the object to a remote server
 //						for this to work the class of m_ModuleAdapter itself must implement the ModuleAdapter interface
 //						for a strange reason, it is _not_ enough if a superclass implements the same interface! 

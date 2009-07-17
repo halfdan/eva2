@@ -2,6 +2,7 @@ package eva2.server.go.operators.paramcontrol;
 
 import java.io.Serializable;
 
+import eva2.server.go.populations.Population;
 import eva2.server.go.strategies.ParticleSwarmOptimization;
 import eva2.tools.Mathematics;
 
@@ -21,33 +22,47 @@ import eva2.tools.Mathematics;
  * @author mkron
  *
  */
-public class ActivityFeedbackControl extends AbstractParameterControl implements Serializable {
+public class PSOActivityFeedbackControl implements ParamAdaption, Serializable {
 	private double minInert=0.5;
 	private double maxInert=1;
 	private double startAct=0.17;
 	private double endAct=0;
 	private double deltaInertness = 0.1;
+	private static boolean TRACE=false;
 	
-	private static String[] params = new String[]{"inertnessOrChi"};
+	private static String target = "inertnessOrChi";
 	
-	@Override
-	public String[] getControlledParameters() {
-		return params;
+	public PSOActivityFeedbackControl() {};
+			
+	public PSOActivityFeedbackControl(
+			PSOActivityFeedbackControl o) {
+		minInert = o.minInert;
+		maxInert = o.maxInert;
+		startAct = o.startAct;
+		endAct = o.endAct;
+		deltaInertness = o.deltaInertness;
 	}
 
-	@Override
-	public Object[] getValues(Object obj, int iteration, int maxIteration) {
+	public Object clone() {
+		return new PSOActivityFeedbackControl(this);
+	}
+
+	public Object calcValue(Object obj, Population pop, int iteration, int maxIteration) {
 		if (obj instanceof ParticleSwarmOptimization) {
 			ParticleSwarmOptimization pso = (ParticleSwarmOptimization)obj;
-			Object[] vals = new Double[1];
+			
 			double currentAct = calculateActivity(pso);
 			double currentInertness = pso.getInertnessOrChi();
-			vals[0] = calcNewInertness(currentInertness, currentAct, desiredActivity(iteration, maxIteration));
-			return vals;
+			Double val = calcNewInertness(currentInertness, currentAct, desiredActivity(iteration, maxIteration));
+			return val;
 		} else {
 			System.err.println("Cant control this object type!!");
 			return null;
 		}
+	}
+
+	public String getControlledParam() {
+		return target;
 	}
 
 	private double calcNewInertness(double currentInertness, double currentAct,
@@ -121,4 +136,8 @@ public class ActivityFeedbackControl extends AbstractParameterControl implements
 	public String globalInfo() {
 		return "Controls the inertness factor based on the average velocity.";
 	}
+
+	public void finish(Object obj, Population pop) {}
+
+	public void init(Object obj, Population pop, Object[] initialValues) {}
 }

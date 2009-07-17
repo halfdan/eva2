@@ -302,7 +302,13 @@ public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Ser
   public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
     this.m_Listener = ea;
   }
-
+  public boolean removePopulationChangedEventListener(
+		  InterfacePopulationChangedEventListener ea) {
+	  if (m_Listener==ea) {
+		  m_Listener=null;
+		  return true;
+	  } else return false;
+  }
   public static void main(String[] args) {
     GradientDescentAlgorithm program = new GradientDescentAlgorithm();
     InterfaceOptimizationProblem problem = new F1Problem();

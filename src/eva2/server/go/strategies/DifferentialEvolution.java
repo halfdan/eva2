@@ -20,12 +20,13 @@ import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.tools.EVAERROR;
 import eva2.tools.Mathematics;
 
-/** Differential evolution implementing DE1 and DE2 following the paper of Storm and
+/** 
+ * Differential evolution implementing DE1 and DE2 following the paper of Storm and
  * Price and the Trigonometric DE published recently. 
  * Please note that DE will only work on real-valued genotypes and will ignore
  * all mutation and crossover operators selected.
- * User: streiche
- * Date: 25.10.2004
+ * Added aging mechanism to provide for dynamically changing problems. If an individual
+ * reaches the age limit, it is doomed and replaced by the next challenge vector, even if its worse.
  *
  */
 public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serializable {
@@ -34,17 +35,20 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
     private AbstractOptimizationProblem		m_Problem           = new F1Problem();
     private DETypeEnum                     m_DEType;
     private double                          m_F                 = 0.8;
-    private double                          m_k                 = 0.6;
+    private double                          m_k                 = 0.6; // AKA CR
     private double                          m_Lambda            = 0.6;
     private double                          m_Mt                = 0.05;
     private int								maximumAge			= -1;
     // to log the parents of a newly created indy.
-    private boolean							doLogParents		= false; // TODO deactivate for better performance
-    private Vector<AbstractEAIndividual> 	parents				= null; 
+    private boolean							doLogParents		= false; // deactivate for better performance
+    private transient Vector<AbstractEAIndividual> 	parents				= null; 
 
+    private boolean 						randomizeFKLambda	= false;
     private String                          m_Identifier = "";
     transient private InterfacePopulationChangedEventListener m_Listener;
 	private boolean 						forceRange 			= true;
+	private boolean 						cyclePop		= false; // if true, individuals are used as parents in a cyclic sequence - otherwise randomly 
+    private boolean 						compareToParent = true;  // if true, the challenge indy is compared to its parent, otherwise to a random individual
 
     /**
      * A constructor.
@@ -53,6 +57,15 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
     public DifferentialEvolution() {
     	// sets DE2 as default
         m_DEType = DETypeEnum.DE2_CurrentToBest;
+    }
+    
+    public DifferentialEvolution(int popSize, DETypeEnum type, double f, double k, double lambda, double mt) {
+    	m_Population=new Population(popSize);
+        m_DEType = type;
+        m_F = f;
+        m_k = k;
+        m_Lambda = lambda;
+        m_Mt = mt;
     }
 
     /**
@@ -69,6 +82,12 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
         this.m_k                            = a.m_k;
         this.m_Lambda                       = a.m_Lambda;
         this.m_Mt                           = a.m_Mt;
+        
+        this.maximumAge			= a.maximumAge;
+        this.randomizeFKLambda		= a.randomizeFKLambda;
+        this.forceRange 		= a.forceRange;
+        this.cyclePop			= a.cyclePop; 
+        this.compareToParent 	= a.compareToParent;
     }
 
     public Object clone() {
@@ -216,16 +235,17 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
      * @param pop   The current population
      * @return AbstractEAIndividual
      */
-    public AbstractEAIndividual generateNewIndividual(Population pop) {
-    	int firstParentIndex;
+    public AbstractEAIndividual generateNewIndividual(Population pop, int parentIndex) {
+//    	int firstParentIndex;
         AbstractEAIndividual        indy;
         InterfaceDataTypeDouble       esIndy;
+        
         if (doLogParents) parents = new Vector<AbstractEAIndividual>();
         else parents = null;
         try {
         	// select one random indy as starting individual. its a parent in any case.
-        	firstParentIndex = RNG.randomInt(0, pop.size()-1);
-            indy = (AbstractEAIndividual)(pop.getEAIndividual(firstParentIndex)).getClone();
+        	if (parentIndex<0) parentIndex = RNG.randomInt(0, pop.size()-1);
+            indy = (AbstractEAIndividual)(pop.getEAIndividual(parentIndex)).getClone();
             esIndy = (InterfaceDataTypeDouble)indy;
         } catch (java.lang.ClassCastException e) {
             EVAERROR.errorMsgOnce("Differential Evolution currently requires InterfaceESIndividual as basic data type!");
@@ -239,9 +259,9 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
             case DE1_Rand_1: {
                 // this is DE1 or DE/rand/1
                 double[] delta = this.fetchDeltaRandom(pop);
-                if (parents != null) parents.add(pop.getEAIndividual(firstParentIndex));  // Add wherever oX is used directly
+                if (parents != null) parents.add(pop.getEAIndividual(parentIndex));  // Add wherever oX is used directly
                 for (int i = 0; i < oX.length; i++) {
-                    vX[i] = oX[i] + this.m_F*delta[i];
+                    vX[i] = oX[i] + this.getCurrentF()*delta[i];
                 }
                 break;
             }
@@ -249,9 +269,9 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
                 // this is DE2 or DE/current-to-best/1
                 double[] rndDelta = this.fetchDeltaRandom(pop);
                 double[] bestDelta = this.fetchDeltaBest(pop, esIndy);
-                if (parents != null) parents.add(pop.getEAIndividual(firstParentIndex));  // Add wherever oX is used directly
+                if (parents != null) parents.add(pop.getEAIndividual(parentIndex));  // Add wherever oX is used directly
                 for (int i = 0; i < oX.length; i++) {
-                    vX[i] = oX[i] + this.m_Lambda * bestDelta[i] + this.m_F * rndDelta[i];
+                    vX[i] = oX[i] + this.getCurrentLambda() * bestDelta[i] + this.getCurrentF() * rndDelta[i];
                 }
                 break;
             }
@@ -263,13 +283,13 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
                 double[] delta1 = this.fetchDeltaRandom(pop);
             	double[] delta2 = this.fetchDeltaRandom(pop);
                 for (int i = 0; i < oX.length; i++) {
-                    vX[i] = oX[i] + this.m_F * (delta1[i] + delta2[i]);
+                    vX[i] = oX[i] + this.getCurrentF() * (delta1[i] + delta2[i]);
                 }            	
             	break;
             }
             case TrigonometricDE : {
                 // this is trigonometric mutation
-            	if (parents != null) parents.add(pop.getEAIndividual(firstParentIndex));  // Add wherever oX is used directly
+            	if (parents != null) parents.add(pop.getEAIndividual(parentIndex));  // Add wherever oX is used directly
                 if (RNG.flipCoin(this.m_Mt)) {
                     double[]    xk, xl;
                     double      p, pj, pk, pl;
@@ -297,16 +317,16 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
                 } else {
                     // this is DE1
                     double[] delta = this.fetchDeltaRandom(pop);
-                    if (parents != null) parents.add(pop.getEAIndividual(firstParentIndex));  // Add wherever oX is used directly
+                    if (parents != null) parents.add(pop.getEAIndividual(parentIndex));  // Add wherever oX is used directly
                     for (int i = 0; i < oX.length; i++) {
-                        vX[i] = oX[i] + this.m_F*delta[i];
+                        vX[i] = oX[i] + this.getCurrentF()*delta[i];
                     }
                 }
                 break;
             }
         }
         for (int i =0; i < oX.length; i++) {
-            if (RNG.flipCoin(this.m_k)) {
+            if (RNG.flipCoin(this.getCurrentK())) {
                 // it remains the same
                 nX[i] = oX[i];
             } else {
@@ -318,6 +338,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
         if (forceRange) Mathematics.projectToRange(nX, esIndy.getDoubleRange()); // why did this never happen before?
         esIndy.SetDoubleGenotype(nX);
         indy.SetAge(0);
+        indy.resetConstraintViolation();
         double[] fit = new double[1];
         fit[0] = 0;
         indy.SetFitness(fit);
@@ -325,7 +346,22 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
         return indy;
     }
 
-    private AbstractEAIndividual getBestIndy(Population pop) {
+    private double getCurrentK() {
+    	if (randomizeFKLambda) return RNG.randomDouble(m_k*0.8, m_k * 1.2); 
+    	else return m_k;
+	}
+
+	private double getCurrentLambda() {
+    	if (randomizeFKLambda) return RNG.randomDouble(m_Lambda*0.8, m_Lambda * 1.2); 
+    	else return m_Lambda;
+	}
+
+	private double getCurrentF() {
+    	if (randomizeFKLambda) return RNG.randomDouble(m_F*0.8, m_F * 1.2); 
+    	else return m_F;
+	}
+
+	private AbstractEAIndividual getBestIndy(Population pop) {
     	return (AbstractEAIndividual)pop.getBestIndividual();
 	}
     
@@ -349,20 +385,20 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
     }
 
 	public void optimize() {
-        AbstractEAIndividual    indy = null, org;
+        AbstractEAIndividual    indy = null, orig;
         int index;
 
         int nextDoomed = getNextDoomed(m_Population, 0);
         
         // required for dynamic problems especially
         m_Problem.evaluatePopulationStart(m_Population);
-        /**
-         * MK: added aging mechanism to provide for dynamically changing problems. If an individual
-         * reaches the age limit, it is doomed and replaced by the next challenge vector, even if its worse.
-         */
-
+        
         for (int i = 0; i < this.m_Population.size(); i++) {
-        	indy = this.generateNewIndividual(this.m_Population);
+        	if (cyclePop) index=i;
+        	else index=RNG.randomInt(0, this.m_Population.size()-1);
+        	indy = generateNewIndividual(m_Population, index);
+//        	if (cyclePop) indy = this.generateNewIndividual(this.m_Population, i);
+//        	else indy = this.generateNewIndividual(this.m_Population, -1);
         	this.m_Problem.evaluate(indy);
         	this.m_Population.incrFunctionCalls();
         	if (nextDoomed >= 0) {	// this one is lucky, may replace an 'old' one
@@ -373,9 +409,10 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
 					ReplacementCrowding repl = new ReplacementCrowding();
 					repl.insertIndividual(indy, m_Population, null);
 				} else {
-					index   = RNG.randomInt(0, this.m_Population.size()-1);
-					org     = (AbstractEAIndividual)this.m_Population.get(index);
-					if (indy.isDominatingDebConstraints(org)) this.m_Population.replaceIndividualAt(index, indy);
+//					index   = RNG.randomInt(0, this.m_Population.size()-1);
+					if (!compareToParent) index = RNG.randomInt(0, this.m_Population.size()-1);
+					orig     = (AbstractEAIndividual)this.m_Population.get(index);
+					if (indy.isDominatingDebConstraints(orig)) this.m_Population.replaceIndividualAt(index, indy);
 				}
         	}
         }
@@ -446,6 +483,13 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
     public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
         this.m_Listener = ea;
     }
+	public boolean removePopulationChangedEventListener(
+			InterfacePopulationChangedEventListener ea) {
+		if (m_Listener==ea) {
+			m_Listener=null;
+			return true;
+		} else return false;
+	}
     /** Something has changed
      * @param name
      */
@@ -552,7 +596,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
         return this.m_k;
     }
     public String kTipText() {
-        return "Probability of alteration through DE (something like a discrete uniform crossover is performed here).";
+        return "Probability of alteration through DE (a.k.a. CR, similar to discrete uniform crossover).";
     }
 
     /** Enhance greediness through amplification of the differential vector to the best individual for DE2
@@ -633,5 +677,41 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
 	
 	public String checkRangeTipText() {
 		return "Set whether to enforce the problem range."; 
+	}
+
+	public boolean isRandomizeFKLambda() {
+		return randomizeFKLambda;
+	}
+
+	public void setRandomizeFKLambda(boolean randomizeFK) {
+		this.randomizeFKLambda = randomizeFK;
+	}
+
+	public String randomizeFKLambdaTipText() {
+		return "If true, values for k, f, lambda are randomly sampled around +/- 20% of the given values.";
+	}
+	
+//	public boolean isCyclePop() {
+//		return cyclePop;
+//	}
+//
+//	public void setCyclePop(boolean cyclePop) {
+//		this.cyclePop = cyclePop;
+//	}
+//	
+//	public String cyclePopTipText() {
+//		return "Use all individuals as parents in cyclic sequence instead of randomly.";
+//	}
+
+	public boolean isCompareToParent() {
+		return compareToParent;
+	}
+
+	public void setCompareToParent(boolean compareToParent) {
+		this.compareToParent = compareToParent;
+	}
+	
+	public String compareToParentTipText() {
+		return "Compare a challenge individual to its original parent instead of a random one.";
 	}
 }

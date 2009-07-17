@@ -286,6 +286,7 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
 //        }
 //    }
 
+	@Override
 	protected double[] updateVelocity(int index, double[] lastVelocity, double[] bestPosition, double[] curPosition, double[] localBestPos, double[][] range) {
 		if (envHasChanged) {
 			double chi;
@@ -473,7 +474,13 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
     	return false;
 	}
 
-    public void init() {
+    @Override
+	public void setPopulation(Population pop) {
+		super.setPopulation(pop);
+		if (detectAnchor>=pop.size()) detectAnchor=0;
+	}
+
+	public void init() {
     	super.init();
     	setEmaPeriods(15);
     	if (doSpeedAdaptation) setSpeedLimit(2*getInitialVelocity());

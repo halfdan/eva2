@@ -18,15 +18,18 @@ import java.util.Vector;
 
 import wsi.ra.jproxy.MainAdapterClient;
 import wsi.ra.jproxy.RemoteStateListener;
-import eva2.gui.JTabbedModuleFrame;
+import eva2.gui.EvATabbedFrameMaker;
 import eva2.gui.LogPanel;
 import eva2.server.go.InterfaceGOParameters;
 import eva2.server.go.InterfaceProcessor;
 /*==========================================================================*
 * ABSTRACT CLASS DECLARATION
 *==========================================================================*/
+
 /**
- *
+ * The module server expects a constructor with two arguments: String adapterName and MainAdapterClient client.
+ * 
+ * 
  */
 abstract public class AbstractModuleAdapter implements ModuleAdapter, Serializable {
   public static boolean TRACE = false;
@@ -41,14 +44,7 @@ abstract public class AbstractModuleAdapter implements ModuleAdapter, Serializab
   protected MainAdapterClient m_MainAdapterClient; // connection to client
   private Vector<RemoteStateListener> m_RemoteStateListeners;
   protected LogPanel	logPanel = null;
-  
-  /**
-   *
-   */
-  abstract public JTabbedModuleFrame getModuleFrame();
-  /**
-   *
-   */
+
   protected AbstractModuleAdapter(MainAdapterClient Client) {
     if (TRACE) System.out.println("AbstractModuleAdapter.AbstractModuleAdapter()");
     m_InstanceCounter++;
@@ -125,6 +121,18 @@ abstract public class AbstractModuleAdapter implements ModuleAdapter, Serializab
 		  return ((Processor)m_Processor).getGOParams();
 	  } else return null;
   }
+  
+//  public void setGOParameters(InterfaceGOParameters params) {
+//	  if ((m_Processor != null) && (m_Processor instanceof Processor)) {
+//		  ((Processor)m_Processor).setGOParams(params);
+//	  }
+//  }
+  
+//  public void loadGOParameters(String serParamsFile) {
+//	  if ((m_Processor != null) && (m_Processor instanceof Processor)) {
+//		  ((Processor)m_Processor).setGOParams(GOParameters.getInstance(serParamsFile, false));
+//	  }
+//  }
   
   public boolean isOptRunning() {
 	  if ((m_Processor != null) && (m_Processor instanceof Processor)) {

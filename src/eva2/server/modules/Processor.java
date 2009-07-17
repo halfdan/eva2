@@ -12,6 +12,7 @@ import eva2.server.go.InterfaceTerminator;
 import eva2.server.go.PopulationInterface;
 import eva2.server.go.operators.paramcontrol.ConstantParameters;
 import eva2.server.go.operators.paramcontrol.InterfaceParameterControl;
+import eva2.server.go.operators.paramcontrol.ParamAdaption;
 import eva2.server.go.operators.postprocess.PostProcess;
 import eva2.server.go.operators.postprocess.PostProcessParams;
 import eva2.server.go.operators.terminators.EvaluationTerminator;
@@ -25,10 +26,17 @@ import eva2.server.stat.InterfaceTextListener;
 import eva2.server.stat.StatisticsWithGUI;
 import eva2.tools.EVAERROR;
 import eva2.tools.EVAHELP;
+import eva2.tools.Pair;
 
 /**
  * The Processor may run as a thread permanently (GenericModuleAdapter) and is then stopped and started
  * by a switch in startOpt/stopOpt.
+ * 
+ * Processor also handles adaptive parameter control by checking for the method getParamControl in (so far)
+ * Optimizer and Problem instances. The return-value may be InterfaceParameterControl or an array of Objects.
+ * If it is a control interface, it is applied to the instance that returned it directly. For arrays of objects
+ * each array entry is again handled by checking for getParamControl, thus recursive controllable structures
+ * are possible.
  *  
  * @author mkron
  *
@@ -200,16 +208,16 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
 
         	this.goParams.getProblem().initProblem();
         	this.goParams.getOptimizer().SetProblem(this.goParams.getProblem());
-        	if (this.m_createInitialPopulations) this.goParams.getOptimizer().init();
         	this.goParams.getTerminator().init(this.goParams.getProblem());
+        	maybeInitParamCtrl(goParams);
+        	if (this.m_createInitialPopulations) this.goParams.getOptimizer().init();
         	
         	//m_Statistics.createNextGenerationPerformed((PopulationInterface)this.m_ModulParameter.getOptimizer().getPopulation());
         	if (m_ListenerModule!=null) m_ListenerModule.updateProgress(getStatusPercent(goParams.getOptimizer().getPopulation(), runCounter, m_Statistics.getStatisticsParameter().getMultiRuns()), null);
         	if (popLog != null) EVAHELP.clearLog(popLog);
-        	maybeInitParamCtrl(goParams.getOptimizer());
         	
         	do {	// main loop
-        		maybeUpdateParamCtrl(goParams.getOptimizer(), goParams.getTerminator());
+        		maybeUpdateParamCtrl(goParams);
 
         		this.goParams.getOptimizer().optimize();
         		// registerPopulationStateChanged *SHOULD* be fired by the optimizer or resp. the population
@@ -217,7 +225,7 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
         		if (popLog != null) EVAHELP.logString(this.goParams.getOptimizer().getPopulation().getIndyList(), popLog);
         	} while (isOptRunning() && !this.goParams.getTerminator().isTerminated(this.goParams.getOptimizer().getAllSolutions()));
         	runCounter++;
-        	maybeFinishParamCtrl(goParams.getOptimizer());
+        	maybeFinishParamCtrl(goParams);
         	
         	//////////////// Default stats
         	m_Statistics.stopOptPerformed(isOptRunning(), goParams.getTerminator().lastTerminationMessage()); // stop is "normal" if opt wasnt set false by the user (and thus still true)
@@ -234,42 +242,60 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
         setOptRunning(false); // normal finish
         if (m_ListenerModule!=null) m_ListenerModule.performedStop(); // is only needed in client server mode
         if (m_ListenerModule!=null) m_ListenerModule.updateProgress(0, null);
+        goParams.getOptimizer().removePopulationChangedEventListener(this);
         return resultPop;
     }
     
-    private void maybeInitParamCtrl(InterfaceOptimizer optimizer) {
-    	Object paramCtrl=null;
-    	if (null!=(paramCtrl=BeanInspector.callIfAvailable(optimizer, "getParamControl", null))) {
-    		if (paramCtrl instanceof InterfaceParameterControl) {
-    			if (!(paramCtrl instanceof ConstantParameters)) {
-    				((InterfaceParameterControl)paramCtrl).init(optimizer);
-    			}
+    private void iterateParamCtrl(Object instance, String methodName, Object[] args) {
+    	Object paramCtrlReturn=null;
+    	if (null!=(paramCtrlReturn=BeanInspector.callIfAvailable(instance, "getParamControl", null))) {
+    		if (paramCtrlReturn instanceof Object[]) {
+    			Object[] controllersOrSubControllables = (Object[])paramCtrlReturn;
+    			for (Object controllerOrSubControllable : controllersOrSubControllables) {
+    				// The returned array may contain (i) InterfaceParameterControl associated with the instance
+    				// itself or (ii) sub-instances which have their own parameter controls. On these, the method
+    				// is called recursively.
+    				if (controllerOrSubControllable instanceof InterfaceParameterControl) {
+    	    			if (!((InterfaceParameterControl)paramCtrlReturn instanceof ConstantParameters))
+    	    				BeanInspector.callIfAvailable((InterfaceParameterControl)paramCtrlReturn, methodName, args);
+    				}  else {	
+    					args[0]=controllerOrSubControllable;
+    					iterateParamCtrl(controllerOrSubControllable, methodName, args);
+    				}
+				}
+    		} else if (paramCtrlReturn instanceof InterfaceParameterControl) {
+    			if (!((InterfaceParameterControl)paramCtrlReturn instanceof ConstantParameters))
+    				BeanInspector.callIfAvailable((InterfaceParameterControl)paramCtrlReturn, methodName, args);
     		}
     	}
 	}
     
-    private void maybeFinishParamCtrl(InterfaceOptimizer optimizer) {
-    	Object paramCtrl=null;
-    	if (null!=(paramCtrl=BeanInspector.callIfAvailable(optimizer, "getParamControl", null))) {
-    		if (paramCtrl instanceof InterfaceParameterControl) {
-    			if (!(paramCtrl instanceof ConstantParameters)) {
-    				((InterfaceParameterControl)paramCtrl).finish(optimizer);
-    			}
-    		}
-    	}
+    private void maybeInitParamCtrl(InterfaceGOParameters goParams) {
+    	iterateParamCtrl(goParams.getOptimizer(), "init", new Object[]{goParams.getOptimizer(), goParams.getOptimizer().getPopulation()});
+    	iterateParamCtrl(goParams.getProblem(), "init", new Object[]{goParams.getProblem(), goParams.getOptimizer().getPopulation()});
 	}
-    private void maybeUpdateParamCtrl(InterfaceOptimizer optimizer,
-			InterfaceTerminator terminator) {
-    	Object paramCtrl=null;
-    	if (null!=(paramCtrl=BeanInspector.callIfAvailable(optimizer, "getParamControl", null))) {
-    		if (paramCtrl instanceof InterfaceParameterControl) {
-    			if (!(paramCtrl instanceof ConstantParameters)) {
-    				if (terminator instanceof GenerationTerminator) ((InterfaceParameterControl)paramCtrl).updateParameters(optimizer, optimizer.getPopulation().getGeneration(),  ((GenerationTerminator)terminator).getGenerations());
-    				else if (terminator instanceof EvaluationTerminator) ((InterfaceParameterControl)paramCtrl).updateParameters(optimizer, optimizer.getPopulation().getFunctionCalls(), ((EvaluationTerminator)terminator).getFitnessCalls());
-    				else ((InterfaceParameterControl)paramCtrl).updateParameters(optimizer);
-    			}
-    		}
-    	}
+    
+    private void maybeFinishParamCtrl(InterfaceGOParameters goParams) {
+    	iterateParamCtrl(goParams.getOptimizer(), "finish", new Object[]{goParams.getOptimizer(), goParams.getOptimizer().getPopulation()});
+    	iterateParamCtrl(goParams.getProblem(), "finish", new Object[]{goParams.getProblem(), goParams.getOptimizer().getPopulation()});
+	}
+    
+    private void maybeUpdateParamCtrl(InterfaceGOParameters goParams) {
+    	Object[] args;
+    	InterfaceTerminator terminator = goParams.getTerminator();
+    	InterfaceOptimizer optimizer = goParams.getOptimizer();
+		if (terminator instanceof GenerationTerminator)
+			args = new Object[]{optimizer, optimizer.getPopulation(), optimizer.getPopulation().getGeneration(),  ((GenerationTerminator)terminator).getGenerations()};
+//			((InterfaceParameterControl)paramCtrl).updateParameters(optimizer, optimizer.getPopulation().getGeneration(),  ((GenerationTerminator)terminator).getGenerations());
+		else if (terminator instanceof EvaluationTerminator)
+			args = new Object[] {optimizer, optimizer.getPopulation(), optimizer.getPopulation().getFunctionCalls(), ((EvaluationTerminator)terminator).getFitnessCalls()};
+//			((InterfaceParameterControl)paramCtrl).updateParameters(optimizer, optimizer.getPopulation().getFunctionCalls(), ((EvaluationTerminator)terminator).getFitnessCalls());
+		else args = new Object[]{optimizer, optimizer.getPopulation()};
+//			((InterfaceParameterControl)paramCtrl).updateParameters(optimizer);
+    	
+    	iterateParamCtrl(optimizer, "updateParameters", args);
+    	args[0]=goParams.getProblem();
+    	iterateParamCtrl(goParams.getProblem(), "updateParameters", args);
 	}
 
 	/**
@@ -361,8 +387,9 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
     public InterfaceGOParameters getGOParams() {
         return goParams;
     }
-    public void setGOParams(InterfaceGOParameters x) {
-        goParams= x;
+    public void setGOParams(InterfaceGOParameters params) {
+    	if (params!=null) goParams= params;
+    	else System.err.println("Setting parameters failed (parameters were null) (Processor.setGOParams)");
     }
     
     /** 

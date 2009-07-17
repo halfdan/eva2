@@ -51,6 +51,14 @@ public abstract class AbstractGOParameters implements InterfaceGOParameters, Ser
 	public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
 		this.m_Listener = ea;
 		if (this.m_Optimizer != null) this.m_Optimizer.addPopulationChangedEventListener(this.m_Listener);
+	}	
+	public boolean removePopulationChangedEventListener(
+			InterfacePopulationChangedEventListener ea) {
+		if (m_Listener==ea) {
+			m_Listener=null;
+			if (this.m_Optimizer!=null) this.m_Optimizer.removePopulationChangedEventListener(ea);
+			return true;
+		} else return false;
 	}
 	
 	public String toString() {

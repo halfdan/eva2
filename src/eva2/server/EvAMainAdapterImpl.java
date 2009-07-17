@@ -24,27 +24,24 @@ import wsi.ra.jproxy.MainAdapterImpl;
  */
 public class EvAMainAdapterImpl extends MainAdapterImpl implements EvAMainAdapter {
   private ModuleServer m_ModulServer=null;
-  /**
-   *
-   */
+
   public EvAMainAdapterImpl() {
 	  super();
 	  m_ModulServer = new ModuleServer(EvAClient.getProperties());
   }
-  /**
-   *
-   */
+
   public String[] getModuleNameList() {
     return m_ModulServer.getModuleNameList();
   }
 
-  /**
-   *
-   */
-  public ModuleAdapter getModuleAdapter(String str, boolean withoutRMI, String hostAddress, MainAdapterClient client) {
-    if (TRACE) System.out.println("MainAdapterImpl.GetModuleAdapter() for module " +
-      str +" for Client: "+hostAddress+ " called");
-    return m_ModulServer.createModuleAdapter(str,client,withoutRMI,hostAddress);
+  public ModuleAdapter getModuleAdapter(String selectedModuleName, boolean withoutRMI, String hostAddress, MainAdapterClient client) {
+    return getModuleAdapter(selectedModuleName, withoutRMI, hostAddress, null, null, client);
   }
+  
+ public ModuleAdapter getModuleAdapter(String selectedModuleName, boolean withoutRMI, String hostAddress, String paramsFile, String noGuiStatsFile, MainAdapterClient client) {
+   if (TRACE) System.out.println("MainAdapterImpl.GetModuleAdapter() for module " +
+		   selectedModuleName +" for Client: "+hostAddress+ " called");
+   return m_ModulServer.createModuleAdapter(selectedModuleName,client,withoutRMI,hostAddress, paramsFile, noGuiStatsFile);
+ }
 }
 

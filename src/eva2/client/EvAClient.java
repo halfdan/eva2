@@ -17,6 +17,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Event;
 import java.awt.Frame;
+import java.awt.HeadlessException;
 import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
@@ -24,8 +25,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.beans.BeanInfo;
 import java.io.Serializable;
 import java.net.URL;
+import java.util.LinkedList;
 import java.util.Properties;
 import java.util.Set;
 import java.util.Vector;
@@ -51,21 +54,24 @@ import javax.swing.event.MenuListener;
 import wsi.ra.jproxy.RemoteStateListener;
 import wsi.ra.tool.BasicResourceLoader;
 import eva2.EvAInfo;
+import eva2.gui.BeanInspector;
 import eva2.gui.ExtAction;
 import eva2.gui.HtmlDemo;
 import eva2.gui.JEFrame;
 import eva2.gui.JEFrameRegister;
 import eva2.gui.JExtMenu;
-import eva2.gui.JTabbedModuleFrame;
+import eva2.gui.EvATabbedFrameMaker;
 import eva2.gui.LogPanel;
 import eva2.server.EvAServer;
 import eva2.server.go.InterfaceGOParameters;
 import eva2.server.modules.AbstractModuleAdapter;
+import eva2.server.modules.GenericModuleAdapter;
 import eva2.server.modules.ModuleAdapter;
 import eva2.tools.EVAERROR;
 import eva2.tools.EVAHELP;
 import eva2.tools.ReflectPackage;
 import eva2.tools.Serializer;
+import eva2.tools.StringTools;
 
 /**
  *
@@ -122,6 +128,8 @@ public class EvAClient implements RemoteStateListener, Serializable {
 	private transient String currentModule = null;
 
 	Vector<RemoteStateListener> superListenerList = null;
+	private boolean withGUI = true	;
+	private EvATabbedFrameMaker frmMkr = null;
 	
 	public void addRemoteStateListener(RemoteStateListener l) {
 		if (superListenerList == null) superListenerList = new Vector<RemoteStateListener>();
@@ -165,22 +173,74 @@ public class EvAClient implements RemoteStateListener, Serializable {
 	 *
 	 */
 	public EvAClient(final String hostName) {
-		this(hostName, null);
+		this(hostName, null, false, false);
 	}
-
+	
 	/**
-	 * Constructor of GUI of EvA2.
-	 * Works as client for the EvA2 server.
-	 *
+	 * A constructor. Splash screen is optional, Gui is activated, no parent window.
+	 * 
+	 * @see #EvAClient(String, Window, String, boolean, boolean, boolean)
+	 * @param hostName
+	 * @param paramsFile
+	 * @param autorun
+	 * @param nosplash
 	 */
-	public EvAClient(final String hostName, final Window parent) {
-		final SplashScreen fSplashScreen = new SplashScreen(EvAInfo.splashLocation);
+	public EvAClient(final String hostName, final String paramsFile, boolean autorun, boolean nosplash) {
+		this(hostName, null, paramsFile, autorun, nosplash, false);
+	}
+	
+	/**
+	 * A constructor with optional spash screen.
+	 * @see #EvAClient(String, String, boolean, boolean)
+	 * 
+	 * @param hostName
+	 * @param autorun
+	 * @param nosplash
+	 */
+	public EvAClient(final String hostName, boolean autorun, boolean nosplash) {
+		this(hostName, null, autorun, nosplash);
+	}
+	
+	/**
+	 * A constructor with optional spash screen.
+	 * @see #EvAClient(String, String, boolean, boolean)
+	 * 
+	 * @param hostName
+	 * @param paramsFile
+	 * @param autorun
+	 * @param noSplash
+	 * @param noGui
+	 */
+	public EvAClient(final String hostName, String paramsFile, boolean autorun, boolean noSplash, boolean noGui) {
+		this(hostName, null, paramsFile, autorun, noSplash, noGui);
+	}
+	/**
+	 * Constructor of GUI of EvA2. Works as client for the EvA2 server.
+	 *
+	 * @param hostName
+	 * @param parent
+	 * @param paramsFile
+	 * @param autorun
+	 * @param noSplash
+	 * @param noGui
+	 */
+
+	public EvAClient(final String hostName, final Window parent, final String paramsFile, final boolean autorun, final boolean noSplash, final boolean noGui) {
+		final SplashScreenShell fSplashScreen = new SplashScreenShell(EvAInfo.splashLocation);
 
 		// preload some classes (into system cache) in a parallel thread
 		preloadClasses();
 
+	    withGUI = !noGui;
 		// activate the splash screen (show later using SwingUtilities)
-		fSplashScreen.splash();
+		if (!noSplash && withGUI) {
+			try {
+				fSplashScreen.splash();
+			} catch(HeadlessException e) {
+				System.err.println("Error: no xserver present - deactivating GUI.");
+				withGUI=false;
+			}
+		}
 	    
 		currentModule = null;
 		
@@ -189,14 +249,24 @@ public class EvAClient implements RemoteStateListener, Serializable {
 		SwingUtilities.invokeLater( new Runnable() {
 			public void run(){
 				long startTime = System.currentTimeMillis();
-				init(hostName, parent); // this takes a bit
+				init(hostName, paramsFile, parent); // this takes a bit
 				long wait = System.currentTimeMillis() - startTime;
-				try {
-					// if splashScreenTime has not passed, sleep some more 
-					if (wait < splashScreenTime) Thread.sleep(splashScreenTime - wait);
-				} catch (Exception e) {}
+				if (!autorun) {
+					if (!noSplash) try {
+						// if splashScreenTime has not passed, sleep some more 
+						if (wait < splashScreenTime) Thread.sleep(splashScreenTime - wait);
+					} catch (Exception e) {}
+				} else {
+					if (!withGUI && (currentModuleAdapter instanceof GenericModuleAdapter)) {
+						// do not save new parameters for an autorun without GUI - they werent changed manually anyways.
+						((GenericModuleAdapter)currentModuleAdapter).getStatistics().setSaveParams(false);
+						System.out.println("Autorun without GUI - not saving statistics parameters...");
+					}
+					if (withGUI) frmMkr.onUserStart();
+					else currentModuleAdapter.startOpt();
+				}
 				// close splash screen
-				fSplashScreen.dispose();
+				if (!noSplash && withGUI) fSplashScreen.dispose();
 		      }			
 		});
 	}
@@ -207,9 +277,9 @@ public class EvAClient implements RemoteStateListener, Serializable {
 	}
 	
 	/**
-	 *
+	 * Sets given hostname and tries to load GOParamsters from given file if non null.
 	 */
-	private void init(String hostName, final Window parent) {
+	private void init(String hostName, String paramsFile, final Window parent) {
 		//EVA_EDITOR_PROPERTIES
 		useDefaultModule = getProperty("DefaultModule");
 		
@@ -218,53 +288,54 @@ public class EvAClient implements RemoteStateListener, Serializable {
 			if (useDefaultModule.length() < 1) useDefaultModule = null;
 		}
 		
-
-		m_Frame = new JEFrame();
-		BasicResourceLoader loader = BasicResourceLoader.instance();
-		byte[] bytes = loader.getBytesFromResourceLocation(EvAInfo.iconLocation);
-		try {
-			m_Frame.setIconImage(Toolkit.getDefaultToolkit().createImage(bytes));
-		} catch (java.lang.NullPointerException e) {
-			System.out.println("Could not find EvA2 icon, please move resources folder to working directory!");
-		}
-		m_Frame.setTitle(EvAInfo.productName + " workbench");
-
-		try {
-			Thread.sleep(200);
-		} catch (Exception e) {
-			System.out.println("Error" + e.getMessage());
-		}
-
-		m_Frame.getContentPane().setLayout(new BorderLayout());
-		m_LogPanel = new LogPanel();
-		m_Frame.getContentPane().add(m_LogPanel, BorderLayout.CENTER);
-		m_ProgressBar = new JProgressBar();
-		m_Frame.getContentPane().add(m_ProgressBar, BorderLayout.SOUTH);
-
-		if (getProperty("ShowModules") != null) showLoadModules = true;
-		else showLoadModules = false; // may be set to true again if default module couldnt be loaded
-		
-		createActions();
-
-		if (useDefaultModule != null) {
-			loadModuleFromServer(useDefaultModule);//loadSpecificModule
-		}
-		
-		buildMenu();
-
-		m_Frame.addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent e) {
-				System.out.println("Closing EvA2 Client. Bye!");
-				m_Frame.dispose();
-				Set<String> keys = System.getenv().keySet();
-				if (keys.contains("MATLAB")) {
-					System.out.println("Seems like Ive been started from Matlab: not killing JVM");
-				} else {
-					if (parent == null) System.exit(1); 
-				}
+		if (withGUI ) {
+			m_Frame = new JEFrame();
+			BasicResourceLoader loader = BasicResourceLoader.instance();
+			byte[] bytes = loader.getBytesFromResourceLocation(EvAInfo.iconLocation);
+			try {
+				m_Frame.setIconImage(Toolkit.getDefaultToolkit().createImage(bytes));
+			} catch (java.lang.NullPointerException e) {
+				System.out.println("Could not find EvA2 icon, please move resources folder to working directory!");
 			}
-		});
+			m_Frame.setTitle(EvAInfo.productName + " workbench");
 
+			try {
+				Thread.sleep(200);
+			} catch (Exception e) {
+				System.out.println("Error" + e.getMessage());
+			}
+
+			m_Frame.getContentPane().setLayout(new BorderLayout());
+			m_LogPanel = new LogPanel();
+			m_Frame.getContentPane().add(m_LogPanel, BorderLayout.CENTER);
+			m_ProgressBar = new JProgressBar();
+			m_Frame.getContentPane().add(m_ProgressBar, BorderLayout.SOUTH);
+
+			if (getProperty("ShowModules") != null) showLoadModules = true;
+			else showLoadModules = false; // may be set to true again if default module couldnt be loaded
+
+			createActions();
+		}
+		if (useDefaultModule != null) {
+			loadModuleFromServer(useDefaultModule, paramsFile);//loadSpecificModule
+		}
+		
+		if (withGUI) {
+			buildMenu();
+			m_Frame.addWindowListener(new WindowAdapter() {
+				public void windowClosing(WindowEvent e) {
+					System.out.println("Closing EvA2 Client. Bye!");
+					m_Frame.dispose();
+					Set<String> keys = System.getenv().keySet();
+					if (keys.contains("MATLAB")) {
+						System.out.println("Seems like Ive been started from Matlab: not killing JVM");
+					} else {
+						if (parent == null) System.exit(1); 
+					}
+				}
+			});
+		}
+		
 		if (m_ComAdapter != null) {
 			if (hostName != null) selectHost(hostName);
 			m_ComAdapter.setLogPanel(m_LogPanel);
@@ -273,38 +344,87 @@ public class EvAClient implements RemoteStateListener, Serializable {
 //		m_mnuModule.setText("Select module");
 //		m_mnuModule.repaint();
 		
-		m_LogPanel.logMessage("Working directory is: " + System.getProperty("user.dir"));
-		m_LogPanel.logMessage("Class path is: " + System.getProperty("java.class.path","."));
+		if (withGUI) {
+			m_LogPanel.logMessage("Working directory is: " + System.getProperty("user.dir"));
+			m_LogPanel.logMessage("Class path is: " + System.getProperty("java.class.path","."));
 
-		if (!(m_Frame.isVisible())) {
-			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-			m_Frame.setLocation((int)((screenSize.width-m_Frame.getWidth())/2), (int)((screenSize.height-m_Frame.getHeight())/2.5));
-			m_Frame.pack();
-			m_Frame.setVisible(true);
+			if (!(m_Frame.isVisible())) {
+				Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+				m_Frame.setLocation((int)((screenSize.width-m_Frame.getWidth())/2), (int)((screenSize.height-m_Frame.getHeight())/2.5));
+				m_Frame.pack();
+				m_Frame.setVisible(true);
+			}
+			m_LogPanel.logMessage("EvA2 ready"); // if this message is omitted, the stupid scroll pane runs to the end of the last line which is ugly for a long class path
 		}
-		m_LogPanel.logMessage("EvA2 ready"); // if this message is omitted, the stupid scroll pane runs to the end of the last line which is ugly for a long class path
 	}
 
 	/**
-	 * The one and only main of the client program.
-	 *
+	 * The one and only main of the client program. Possible arguments:
+	 * --autorun immediately starts the optimization (with parameters loaded from current
+	 * directory if available.
+	 * --hostname HOST: sets the hostname for the EvAClient to HOST 
+	 * --nosplash: skip the splash screen.
+	 * --params PFILE: load the optimization parameter from the serialized file PFILE 
+	 * 
 	 * @param args command line parameters
 	 */
 	public static void main(String[] args) {
 		if (TRACE) {
 			System.out.println(EVAHELP.getSystemPropertyString());
 		}
-		EvAClient Client = new EvAClient((args.length == 1) ? args[0] : null, null);
 
+		String[] keys= new String[]{"--help", "--autorun", "--nosplash", "--nogui", "--remotehost", "--params"};
+		int[] arities = new int[]{0, 0, 0, 0, 1, 1};
+		Object[] values = new Object[6];
+		
+		Integer[] unknownArgs = StringTools.parseArguments(args, keys, arities, values, true);
+		
+		if (unknownArgs.length>0) {
+			System.err.println("Unrecognized command line options: ");
+			for (int i=0; i<unknownArgs.length; i++) System.err.println("   " + args[unknownArgs[i]]);
+			if (values[0]==null) System.err.println("Try --help as argument.");
+		}
+		
+		if (values[0]!=null) {
+			System.out.println(usage());
+		} else {
+			boolean autorun=(values[1]!=null);
+			boolean nosplash=(values[2]!=null);
+			boolean nogui=(values[3]!=null);
+			String hostName=StringTools.checkSingleStringArg(keys[4], values[4], arities[4]-1);
+			String paramsFile=StringTools.checkSingleStringArg(keys[5], values[5], arities[5]-1);
+			
+			if (TRACE) System.out.println("Command line arguments were: ");
+			if (TRACE) System.out.println("	" + BeanInspector.toString(keys));
+			if (TRACE) System.out.println("	" + BeanInspector.toString(values));
+			EvAClient Client = new EvAClient(hostName, paramsFile, autorun, nosplash, nogui);
+		}
 	}
 
-//	/**
-//	*
-//	*/
-//	public void addInternalFrame(JInternalFrame newFrame) {
-//	m_Desktop.add(newFrame);
-//	newFrame.toFront();
-//	}
+	public static String usage() {
+		StringBuffer sbuf = new StringBuffer();
+		sbuf.append(EvAInfo.productName);
+		sbuf.append(" - ");
+		sbuf.append(EvAInfo.productLongName);
+		sbuf.append(" - Version ");
+		sbuf.append(EvAInfo.versionNum);
+		sbuf.append("\n");
+		sbuf.append("License: ");
+		sbuf.append(EvAInfo.LGPLFile);
+		sbuf.append("\n");
+		sbuf.append("Homepage: ");
+		sbuf.append(EvAInfo.url);
+		sbuf.append("\n");
+		sbuf.append("Command-line arguments:\n");
+		sbuf.append("	--help: Show this text and exit\n");
+		sbuf.append("	--nosplash: Deactivate splash screen\n");
+		sbuf.append("	--nogui: Deactivate GUI (makes most sense with autorun and params set)\n");
+		sbuf.append("	--autorun: Start an optimization immediately and exit after execution\n");
+		sbuf.append("	--params PARAMFILE: Load the (serialized) parameters file on start\n");
+		sbuf.append("	--remotehost HOSTNAME: Try to load a module from a (remote) server\n");
+		
+		return sbuf.toString();
+	}
 
 	/**
 	 *
@@ -316,7 +436,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
 		m_actModuleLoad = new ExtAction("&Load", "Load Module",
 				KeyStroke.getKeyStroke(KeyEvent.VK_L, Event.CTRL_MASK)) {
 			public void actionPerformed(ActionEvent e) {
-				loadModuleFromServer(null);
+				loadModuleFromServer(null, null);
 			}
 		};
 
@@ -390,9 +510,6 @@ public class EvAClient implements RemoteStateListener, Serializable {
 		 */
 	}
 
-	/**
-	 *
-	 */
 	private void buildMenu() {
 		m_barMenu = new JMenuBar();
 		m_Frame.setJMenuBar(m_barMenu);
@@ -400,11 +517,6 @@ public class EvAClient implements RemoteStateListener, Serializable {
 		JExtMenu mnuLookAndFeel = new JExtMenu("&Look and Feel");
 		ButtonGroup grpLookAndFeel = new ButtonGroup();
 		UIManager.LookAndFeelInfo laf[] = UIManager.getInstalledLookAndFeels();
-//		if (TRACE) {
-//		for (int i=0;i<3;i++)
-//		System.out.println(laf[i].getName());
-//		System.out.println ("->"+UIManager.getLookAndFeel().getClass().getName());
-//		}
 
 		String LAF = Serializer.loadString("LookAndFeel.ser");
 
@@ -525,7 +637,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
 	/**
 	 *
 	 */
-	private void loadModuleFromServer(String selectedModule) {
+	private void loadModuleFromServer(String selectedModule, String paramsFile) {
 		if (m_ComAdapter.getHostName() == null) {
 			System.err.println("error in loadModuleFromServer!");
 			return;
@@ -567,10 +679,12 @@ public class EvAClient implements RemoteStateListener, Serializable {
 		} else {
 			Serializer.storeString("lastmodule.ser", selectedModule);
 
-			loadSpecificModule(selectedModule);
+			loadSpecificModule(selectedModule, paramsFile);
 
-			m_actHost.setEnabled(true);
-			m_actAvailableHost.setEnabled(true);
+			if (withGUI) {
+				m_actHost.setEnabled(true);
+				m_actAvailableHost.setEnabled(true);
+			}
 			logMessage("Selected Module: " + selectedModule);
 //			m_LogPanel.statusMessage("Selected Module: " + selectedModule);
 		}
@@ -601,11 +715,11 @@ public class EvAClient implements RemoteStateListener, Serializable {
 		} else return false;
 	}
 
-	private void loadSpecificModule(String selectedModule) {
+	private void loadSpecificModule(String selectedModule, String paramsFile) {
 		ModuleAdapter newModuleAdapter = null;
 		//
 		try {
-			newModuleAdapter = m_ComAdapter.getModuleAdapter(selectedModule);
+			newModuleAdapter = m_ComAdapter.getModuleAdapter(selectedModule, paramsFile, withGUI ? null : "EvA2");
 		} catch (Exception e) {
 			logMessage("Error while m_ComAdapter.GetModuleAdapter Host: " + e.getMessage());
 			e.printStackTrace();
@@ -621,7 +735,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
 				System.setProperty("java.class.path", cp + System.getProperty("path.separator") + baseDir.getPath());
 				ReflectPackage.resetDynCP();
 				m_ComAdapter.updateLocalMainAdapter();
-				loadSpecificModule(selectedModule); // end recursive call! handle with care!
+				loadSpecificModule(selectedModule, paramsFile); // end recursive call! handle with care!
 				return;
 			}
 			showLoadModules = true;
@@ -633,31 +747,32 @@ public class EvAClient implements RemoteStateListener, Serializable {
 				newModuleAdapter.addRemoteStateListener((RemoteStateListener)this);
 			}
 			try {
-				// this (or rather: JModuleGeneralPanel) is where the start button etc come from!
-				JTabbedModuleFrame Temp = newModuleAdapter.getModuleFrame();
-//				newModuleAdapter.setLogPanel(m_LogPanel);
+				if (withGUI) {
+					// this (or rather: EvAModuleButtonPanelMaker) is where the start button etc come from!
+					frmMkr  = newModuleAdapter.getModuleFrame();
+//					newModuleAdapter.setLogPanel(m_LogPanel);
+					JPanel moduleContainer = frmMkr.makePanel(); // MK the main frame is actually painted in here
 
-				JPanel moduleContainer = Temp.createContentPane(); // MK the frame is actually painted in here
-				//			m_Frame.setLayout(new BorderLayout());
-				boolean wasVisible = m_Frame.isVisible();
-				m_Frame.setVisible(false);
-				m_Frame.getContentPane().removeAll();
+					boolean wasVisible = m_Frame.isVisible();
+					m_Frame.setVisible(false);
+					m_Frame.getContentPane().removeAll();
+					
+					// nested info-panel so that we can stay with simple borderlayouts
+					JPanel infoPanel = new JPanel();
+					infoPanel.setLayout(new BorderLayout());
+					infoPanel.add(m_ProgressBar, BorderLayout.SOUTH);
+					infoPanel.add(m_LogPanel, BorderLayout.NORTH);
+					
+					m_Frame.add(frmMkr.getToolBar(), BorderLayout.NORTH);
+					m_Frame.add(moduleContainer, BorderLayout.CENTER);
+					//m_Frame.add(m_ProgressBar, BorderLayout.CENTER);
+					//m_Frame.add(m_LogPanel, BorderLayout.SOUTH);
+					m_Frame.add(infoPanel, BorderLayout.SOUTH);
+	
+					m_Frame.pack();
+					m_Frame.setVisible(wasVisible);
+				}
 				
-				// nested info-panel so that we can stay with simple borderlayouts
-				JPanel infoPanel = new JPanel();
-				infoPanel.setLayout(new BorderLayout());
-				infoPanel.add(m_ProgressBar, BorderLayout.SOUTH);
-				infoPanel.add(m_LogPanel, BorderLayout.NORTH);
-				
-				m_Frame.add(Temp.getToolBar(), BorderLayout.NORTH);
-				m_Frame.add(moduleContainer, BorderLayout.CENTER);
-				//m_Frame.add(m_ProgressBar, BorderLayout.CENTER);
-				//m_Frame.add(m_LogPanel, BorderLayout.SOUTH);
-				m_Frame.add(infoPanel, BorderLayout.SOUTH);
-
-				m_Frame.pack();
-				m_Frame.setVisible(wasVisible);
-
 				currentModule = selectedModule;
 				//			m_ModulGUIContainer.add(Temp);
 			} catch (Exception e) {
@@ -701,7 +816,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
 		logMessage("Selected Host: " + hostName);
 		if (currentModule != null) {
 			logMessage("Reloading module from server...");
-			loadModuleFromServer(currentModule);
+			loadModuleFromServer(currentModule, null);
 		}
 		
 //		m_mnuModule.setText("Select module");
@@ -782,6 +897,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
 		}
 		long t = (System.currentTimeMillis() - startTime);
 		logMessage(String.format("Stopped after %1$d.%2$tL s", (t / 1000), (t % 1000)));
+		if (!withGUI) System.exit(0);
 	}
 	
     /**
@@ -806,7 +922,28 @@ public class EvAClient implements RemoteStateListener, Serializable {
     }
 }
 
-final class SplashScreen extends Frame {
+final class SplashScreenShell {
+	SplashScreen splScr = null;
+	String imgLoc = null;
+	
+	public SplashScreenShell(String imageLoc) {
+		imgLoc = imageLoc;
+	}
+	
+	public void splash() {
+		splScr = new SplashScreen(imgLoc);
+		splScr.splash();
+	}
+	
+	public void dispose() {
+		if (splScr!=null) {
+			splScr.dispose();
+			splScr=null;
+		}
+	}
+}
+
+class SplashScreen extends Frame {
 	private static final long serialVersionUID = 1281793825850423095L;
 	String imgLocation;
 

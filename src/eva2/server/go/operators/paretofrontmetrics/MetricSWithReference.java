@@ -9,7 +9,7 @@ import eva2.server.go.individuals.ESIndividualDoubleData;
 import eva2.server.go.operators.archiving.ArchivingAllDominating;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.AbstractMultiObjectiveOptimizationProblem;
-import eva2.server.go.tools.FileLoader;
+import eva2.server.go.tools.FileTools;
 
 /** S-Metric calculates the hyper-volume covered between the current solutions and a reference point.
  * But here the difference to a given hybervolume is to be minimized.
@@ -74,7 +74,7 @@ public class MetricSWithReference implements InterfaceParetoFrontMetric, java.io
      *
      */
     private void loadReferenceData() {
-        String[]    tmpS, lines = FileLoader.loadStringsFromFile(this.m_InputFilePath.getCompleteFilePath());
+        String[]    tmpS, lines = FileTools.loadStringsFromFile(this.m_InputFilePath.getCompleteFilePath());
         if (lines == null) System.out.println("Failed to read "+this.m_InputFilePath.getCompleteFilePath());
         lines[0].trim();
         this.m_Titles = lines[0].split("\t");

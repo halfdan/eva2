@@ -23,6 +23,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import java.io.Serializable;
 
 import javax.swing.BorderFactory;
@@ -37,6 +38,7 @@ import javax.swing.event.ChangeListener;
 
 import wsi.ra.tool.BasicResourceLoader;
 import eva2.EvAInfo;
+import eva2.server.go.tools.FileTools;
 /*==========================================================================*
  * CLASS DECLARATION
  *==========================================================================*/
@@ -46,6 +48,7 @@ import eva2.EvAInfo;
 public class JTextoutputFrame implements JTextoutputFrameInterface,
 ActionListener,
 Serializable {
+	private JMenuItem clearItem, saveItem;
 	public static boolean TRACE = false;
 	protected String m_Name ="undefined";
 	private transient JTextArea m_TextArea = null;
@@ -161,9 +164,12 @@ Serializable {
 	void makePopupMenu() {
 		//Create the popup menu.
 		popup = new JPopupMenu();
-		JMenuItem menuItem = new JMenuItem("Clear");
-		menuItem.addActionListener(this);
-		popup.add(menuItem);
+		clearItem = new JMenuItem("Clear");
+		clearItem.addActionListener(this);
+		popup.add(clearItem);
+		saveItem = new JMenuItem("Save as...");
+		saveItem.addActionListener(this);
+		popup.add(saveItem);
 //		menuItem = new JMenuItem("Refine Multiruns");
 //		menuItem.addActionListener(this);
 //		popup.add(menuItem);
@@ -178,13 +184,13 @@ Serializable {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == popup.getComponent(0)) {
+		JMenuItem src = (JMenuItem)e.getSource();
+		if (src == clearItem) {
 			m_TextArea.setText(null);
-		} 
-//		else if (e.getSource() == popup.getComponent(1)) {
-//			m_TextArea.append(MultirunRefiner.refineToText(m_TextArea.getText()));
-//		} 
-		else System.out.println("no popup component!");
+		} else if (src == saveItem) {
+			FileTools.saveObjectWithFileChooser(frame, m_TextArea.getText());
+//			File outfile = FileTools.writeString("TextOutput.txt", m_TextArea.getText());
+		} else System.err.println("Unknown popup component (JTextoutputFrame)!");
 	}
 }
 

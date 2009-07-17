@@ -63,14 +63,14 @@ public class EvAComAdapter extends ComAdapter {
 	 * Creates the ModulAdapters RMI Object on the server
 	 * @return
 	 */
-	public ModuleAdapter getModuleAdapter(String str) {
+	public ModuleAdapter getModuleAdapter(String selectedModuleName, String paramsFile, String noGuiStatsFile) {
 		ModuleAdapter newModuleAdapter;
 		if ((m_RMIServer == null) && isRunLocally()) {
 			//ret = evaAdapter.getModuleAdapter(Modul, hostAdd, this.m_MainAdapterClient);
-			newModuleAdapter = getLocalMainAdapter().getModuleAdapter(str, true, getHostName(), null);
+			newModuleAdapter = getLocalMainAdapter().getModuleAdapter(selectedModuleName, true, getHostName(), paramsFile, noGuiStatsFile, null);
 		} else {
-			newModuleAdapter = ((RMIConnectionEvA)getConnection(getHostName())).getModuleAdapter(str);
-			if (newModuleAdapter == null) System.err.println("RMI Error for getting ModuleAdapterObject : " + str);
+			newModuleAdapter = ((RMIConnectionEvA)getConnection(getHostName())).getModuleAdapter(selectedModuleName);
+			if (newModuleAdapter == null) System.err.println("RMI Error for getting ModuleAdapterObject : " + selectedModuleName);
 		}
 		return newModuleAdapter;
 	}

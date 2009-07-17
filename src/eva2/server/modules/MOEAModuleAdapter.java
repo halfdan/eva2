@@ -4,9 +4,7 @@ package eva2.server.modules;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import eva2.gui.JModuleGeneralPanel;
 import eva2.gui.JParaPanel;
-import eva2.gui.JTabbedModuleFrame;
 import eva2.server.EvAServer;
 import eva2.server.go.InterfaceGOParameters;
 import eva2.server.stat.InterfaceStatisticsParameter;

@@ -81,7 +81,7 @@ public class TestESCrossover implements java.io.Serializable {
         this.m_ButtonPanel.add(this.m_CrossButton);
         this.m_MainPanel.add(this.m_ButtonPanel, BorderLayout.NORTH);
         // build the Options Panel
-        this.m_OptionsPanel = (new JParaPanel(this, "MyGUI").installActions());
+        this.m_OptionsPanel = (new JParaPanel(this, "MyGUI").makePanel());
         this.m_MainPanel.add(this.m_OptionsPanel, BorderLayout.CENTER);
         // The plot frame
         double[] tmpD = new double[2];

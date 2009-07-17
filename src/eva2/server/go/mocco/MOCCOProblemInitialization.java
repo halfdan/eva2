@@ -83,7 +83,7 @@ public class MOCCOProblemInitialization extends MOCCOPhase implements InterfaceP
         this.m_Mocco.m_JPanelParameters.setLayout(new BorderLayout());
         this.m_Mocco.m_JPanelParameters.add(tmpP, BorderLayout.NORTH);
         JParaPanel paraPanel = new JParaPanel(this.m_Mocco.m_State.m_OriginalProblem, "MyGUI");
-        this.m_Mocco.m_JPanelParameters.add(paraPanel.installActions(), BorderLayout.CENTER);
+        this.m_Mocco.m_JPanelParameters.add(paraPanel.makePanel(), BorderLayout.CENTER);
     }
 
     ActionListener continue2 = new ActionListener() {

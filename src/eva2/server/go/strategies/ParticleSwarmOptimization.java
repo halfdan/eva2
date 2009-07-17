@@ -16,8 +16,8 @@ import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.AbstractEAIndividualComparator;
 import eva2.server.go.individuals.InterfaceDataTypeDouble;
 import eva2.server.go.operators.distancemetric.PhenotypeMetric;
-import eva2.server.go.operators.paramcontrol.ConstantParameters;
-import eva2.server.go.operators.paramcontrol.InterfaceParameterControl;
+import eva2.server.go.operators.paramcontrol.ParamAdaption;
+import eva2.server.go.operators.paramcontrol.ParameterControlManager;
 import eva2.server.go.populations.InterfaceSolutionSet;
 import eva2.server.go.populations.Population;
 import eva2.server.go.populations.SolutionSet;
@@ -74,7 +74,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 	protected boolean 							wrapTopology = true;
 	protected int								treeBranchDeg = 3;
 	protected int								treeLevels, treeOrphans, treeLastFullLevelNodeCnt;
-	protected InterfaceParameterControl			paramControl = new ConstantParameters();
+	protected ParameterControlManager			paramControl = new ParameterControlManager();
 	
 	/**
 	 * InertnessOrChi may contain the inertness or chi parameter depending on algoType
@@ -140,6 +140,24 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 		//this.setCheckSpeedLimit(a.isCheckSpeedLimit());
 	}
 
+	/**
+	 * Constructor for most common parameters with constriction based approach.
+	 * 
+	 * @param p1 the value for phi1 
+	 * @param p2 the value for phi1 
+	 * @param topo type of the neighbourhood topology
+	 * @param topoRange range of the neighbourhood topology
+	 * @param popSize swarm size
+	 */
+	public ParticleSwarmOptimization(int popSize, double p1, double p2, PSOTopologyEnum topo, int topoRange) {
+		this();
+		algType.setSelectedTag(1); // set to constriction
+		m_Population = new Population(popSize);
+		setPhiValues(p1, p2);
+		m_TopologyRange=topoRange;
+		topology=topo;
+	}
+	
 	public Object clone() {
 		return (Object) new ParticleSwarmOptimization(this);
 	}
@@ -596,9 +614,11 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 	 * @param indy
 	 */
 	protected void resetFitness(AbstractEAIndividual indy) {
-		double[] fit = new double[1];
-		fit[0] = 0;
-		indy.SetFitness(fit);
+//		double[] fit = new double[1];
+//		fit[0] = 0;
+//		indy.SetFitness(fit);
+		indy.resetFitness(0);
+		indy.resetConstraintViolation();
 	}
 
 	/**
@@ -607,7 +627,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 	 * @param indy	the individual to update
 	 */
 	protected void updateIndProps(AbstractEAIndividual indy) {
-		indy.putData(partBestFitKey, indy.getFitness());
+		indy.putData(partBestFitKey, indy.getFitness().clone());
 		indy.putData(partBestPosKey, ((InterfaceDataTypeDouble)indy).getDoubleData());
 	}
 
@@ -995,6 +1015,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 	
 	/**
 	 * Update the given individuals position with given speed and position, maybe perform checkBounds.
+	 * Remember to reset the fitness and constraint violation of the individual.
 	 * 
 	 * @param indy
 	 * @param curVelocity
@@ -1169,7 +1190,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 	protected void logBestIndividual() {
 		if (this.m_Population.getBestEAIndividual().isDominatingDebConstraints(this.m_BestIndividual)) {
 			this.m_BestIndividual = (AbstractEAIndividual)this.m_Population.getBestEAIndividual().clone();
-			this.m_BestIndividual.putData(partBestFitKey, this.m_BestIndividual.getFitness());
+			this.m_BestIndividual.putData(partBestFitKey, this.m_BestIndividual.getFitness().clone());
 			this.m_BestIndividual.putData(partBestPosKey, ((InterfaceDataTypeDouble)this.m_BestIndividual).getDoubleData());
 //			System.out.println("new best: "+m_BestIndividual.toString());
 		}
@@ -1341,14 +1362,16 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 		}
 	}
 
-	/** This method allows you to add the LectureGUI as listener to the Optimizer
-	 * @param ea
-	 */
 	public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
 		this.m_Listener = ea;
 	}
-	/** Something has changed
-	 */
+	public boolean removePopulationChangedEventListener(
+			InterfacePopulationChangedEventListener ea) {
+		if (m_Listener==ea) {
+			m_Listener=null;
+			return true;
+		} else return false;
+	}
 	protected void firePropertyChangedEvent (String name) {
 		if (this.m_Listener != null) this.m_Listener.registerPopulationStateChanged(this, name);
 	}
@@ -1499,7 +1522,8 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 	 * where tau = tau1 + tau2 
 	 * See Clerc&Kennedy: The Particle Swarm: Explosion, stability and convergence, 2002.
 	 *
-	 * @param tau2	the 
+	 * @param tau1
+	 * @param tau2
 	 */
 	protected void setWithConstriction(double tau1, double tau2) {
 		double pSum = tau1+tau2;
@@ -1509,7 +1533,6 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 			setInertnessOrChi(2./(Math.abs(2-pSum-Math.sqrt((pSum*pSum)-(4*pSum)))));
 		}
 	}
-
 
 	/** 
 	 * This method will set the inertness/chi value
@@ -1782,11 +1805,34 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 		this.emaPeriods = emaPeriods;
 	}
 
-	public InterfaceParameterControl getParamControl() {
+	public ParameterControlManager getParamControl() {
 		return paramControl;
 	}
+	
+	public ParamAdaption[] getParameterControl() {
+		return paramControl.getSingleAdapters();
+	}
+	
+	public void setParameterControl(ParamAdaption[] paramControl) {
+		this.paramControl.setSingleAdapters(paramControl);
+	}
 
-	public void setParamControl(InterfaceParameterControl paramControl) {
-		this.paramControl = paramControl;
+	/**
+	 * Retrieve the set of personal best positions contained in the given population.
+	 * @param population
+	 * @return
+	 */
+	protected Population getPersonalBestPos(Population population) {
+		Population bests = new Population(population.size());
+		AbstractEAIndividual indy = (AbstractEAIndividual)population.getEAIndividual(0).clone();
+		if (!indy.hasData(partBestFitKey)) return null;
+		for (int i=0; i<population.size(); i++) {
+			double[] personalBestPos = (double[]) population.getEAIndividual(i).getData(partBestPosKey);
+			double[] personalBestfit = (double[]) population.getEAIndividual(i).getData(partBestFitKey);
+			((InterfaceDataTypeDouble)indy).SetDoubleGenotype(personalBestPos);
+			indy.SetFitness(personalBestfit);
+			bests.add((AbstractEAIndividual)indy.clone());
+		}
+		return bests;
 	}
 }

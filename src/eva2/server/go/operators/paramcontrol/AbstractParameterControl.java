@@ -1,12 +1,16 @@
 package eva2.server.go.operators.paramcontrol;
 
 import eva2.gui.BeanInspector;
+import eva2.server.go.populations.Population;
 
 /**
  * Convenience class. Besides the init() method, two more remain to be implemented: 
  * the first one to retrieve an array of strings with the canonical names of the controlled parameters,
  * and the second one to produce an object array of the same length with the values to be assigned
  * at the iteration. If there is no iteration known, iteration counts will be set to -1.
+ * 
+ * This class can be used to implement strategies to adapt multiple parameters within one strategy.
+ * For single parameter adaption, better use the ParamAdaption inheritance tree and the ParameterControlManager class.
  * 
  * @author mkron
  *
@@ -15,7 +19,15 @@ public abstract class AbstractParameterControl implements InterfaceParameterCont
 	public Object[] initialValues = null;
 	protected static boolean TRACE=false;
 	
-	public void init(Object obj) {
+	public AbstractParameterControl() {	}
+	
+	public AbstractParameterControl(AbstractParameterControl o) {
+		initialValues = o.initialValues.clone();
+	}
+	
+	public abstract Object clone();
+	
+	public void init(Object obj, Population initialPop) {
 		String[] params = getControlledParameters();
 		if (params != null) {
 			initialValues=new Object[params.length];
@@ -23,16 +35,16 @@ public abstract class AbstractParameterControl implements InterfaceParameterCont
 		}
 	}
 	
-	public void finish(Object obj) {
+	public void finish(Object obj, Population finalPop) {
 		String[] params = getControlledParameters();
 		if (params != null) {
 			for (int i=0; i<params.length; i++) BeanInspector.setMem(obj, params[i], initialValues[i]);
 		}
 	}
 
-	public void updateParameters(Object obj, int iteration, int maxIteration) {
+	public void updateParameters(Object obj, Population pop, int iteration, int maxIteration) {
 		String[] params = getControlledParameters();
-		Object[] vals = getValues(obj, iteration, maxIteration);
+		Object[] vals = getValues(obj, pop, iteration, maxIteration);
 		for (int i=0; i<params.length; i++) {
 			if (!BeanInspector.setMem(obj, params[i], vals[i])) {
 				System.err.println("Error: failed to set parameter from parameter control " + this.getClass().getName());;
@@ -44,7 +56,7 @@ public abstract class AbstractParameterControl implements InterfaceParameterCont
 	}
 	
 	public void updateParameters(Object obj) {
-		updateParameters(obj, -1, -1);
+		updateParameters(obj, null, -1, -1);
 	}
 	
 	/**
@@ -63,5 +75,5 @@ public abstract class AbstractParameterControl implements InterfaceParameterCont
 	 * @param maxIteration maximum iteration count (or -1 if unknown)
 	 * @return
 	 */
-	public abstract Object[] getValues(Object obj, int iteration, int maxIteration);
+	public abstract Object[] getValues(Object obj, Population pop, int iteration, int maxIteration);
 }

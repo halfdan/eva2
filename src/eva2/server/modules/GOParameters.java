@@ -23,32 +23,43 @@ public class GOParameters extends AbstractGOParameters implements InterfaceGOPar
 
     public static boolean   TRACE   = false;
 
-    /**
-     *
-     */
     public static GOParameters getInstance() {
-        if (TRACE) System.out.println("GOParameters getInstance 1");
-        GOParameters Instance = null;
-        try {
-        	Instance = (GOParameters) Serializer.loadObject("GOParameters.ser");
-        } catch(Exception e) {
-        	System.err.println("Error loading GOParameters!");
-        	Instance = null;
-        }
-        if (TRACE) System.out.println("GOParameters getInstance 2");
-        if (Instance == null) Instance = new GOParameters();
-        return Instance;
+    	return getInstance("GOParameters.ser", true);
+    }
+
+    /**
+     * Create an instance from a given serialized parameter file.
+     *  
+     * @param serParamFile
+     * @param casually if true, standard parameters are used quietly if the params cannot be loaded
+     * @return a GOParameters instance
+     */
+    public static GOParameters getInstance(String serParamFile, boolean casually) {
+    	if (TRACE) System.out.println("GOParameters getInstance 1 - " + serParamFile + " , " + casually);
+    	GOParameters Instance = null;
+    	if (serParamFile!=null) {
+	    	try {
+	    		Instance = (GOParameters) Serializer.loadObject(serParamFile, casually);
+	    		if (TRACE) System.out.println("Loading succeded.");
+	    	} catch(Exception e) {
+	    		System.err.println("Error loading GOParameters from " + serParamFile);
+	    		Instance = null;
+	    	}
+    	} else if (!casually) System.err.println("Error: null argument for noncasual param file loading! (GOParameters)");
+    	if (TRACE) System.out.println("GOParameters getInstance 2");
+    	if (Instance == null) Instance = new GOParameters();
+    	return Instance;
     }
     
-    /**
-     *
-     */
-    public void saveInstance() {
-        Serializer.storeObject("GOParameters.ser",this);
+    public void saveInstance(String serParamFile) {
+    	if (TRACE) System.out.println("GOParameters: saveInstance to " + serParamFile);
+    	Serializer.storeObject(serParamFile,this);
     }
-    /**
-     *
-     */
+    
+    public void saveInstance() {
+    	saveInstance("GOParameters.ser");
+    }
+
     public GOParameters() {
     	super(new GeneticAlgorithm(), new F1Problem(), new EvaluationTerminator(1000));
 //    	((F1Problem)m_Problem).setEAIndividual(new GAIndividualDoubleData());
