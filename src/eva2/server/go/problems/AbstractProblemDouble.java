@@ -49,6 +49,8 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
 		}
 	}
 	
+	public void hideHideable() {}
+	
 	protected void cloneObjects(AbstractProblemDouble o) {
 		this.m_DefaultRange = o.m_DefaultRange;
 		this.m_Noise = o.m_Noise;
