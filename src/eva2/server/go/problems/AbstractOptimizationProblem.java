@@ -1,7 +1,9 @@
 package eva2.server.go.problems;
 
 import java.awt.BorderLayout;
+import java.util.ArrayList;
 import java.io.Serializable;
+
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -34,6 +36,31 @@ import eva2.tools.Mathematics;
  * To change this template use Options | File Templates.
  */
 public abstract class AbstractOptimizationProblem implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serializable {
+	class EvalThread extends Thread {
+		AbstractOptimizationProblem prob;
+		AbstractEAIndividual ind;
+		ArrayList resultrep;
+		Population pop;
+		
+		public EvalThread(AbstractOptimizationProblem prob, AbstractEAIndividual ind, ArrayList resultrep, Population pop) {
+			this.ind = ind;
+			this.prob = prob;
+			this.resultrep = resultrep;
+			this.pop = pop;
+		}
+		
+		public void run() {
+			
+			prob.evaluate(ind);
+			resultrep.add(ind);
+			pop.incrFunctionCalls();
+		
+		}
+		
+	}
+	
+	int parallelthreads = 1;
+	
     protected 	AbstractEAIndividual      m_Template;
 //    private transient ArrayList<ParamChangeListener> changeListeners = null;
 
@@ -42,7 +69,15 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
      */
     public abstract Object clone();
 
-    /** This method inits the Problem to log multiruns
+    public int getParallelthreads() {
+		return parallelthreads;
+	}
+
+	public void setParallelthreads(int parallelthreads) {
+		this.parallelthreads = parallelthreads;
+	}
+
+	/** This method inits the Problem to log multiruns
      */
     public abstract void initProblem();
 
@@ -60,14 +95,37 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
     public void evaluate(Population population) {
         AbstractEAIndividual    tmpIndy;
         evaluatePopulationStart(population);
-        for (int i = 0; i < population.size(); i++) {
-        	tmpIndy = (AbstractEAIndividual) population.get(i);
-        	synchronized (tmpIndy) {
-            	tmpIndy.resetConstraintViolation();
-            	this.evaluate(tmpIndy);
-			}
-        	population.incrFunctionCalls();
+        
+        if (this.parallelthreads > 1) {
+        	ArrayList<AbstractEAIndividual> queue = new ArrayList<AbstractEAIndividual>();
+        	ArrayList<AbstractEAIndividual> finished =  new ArrayList<AbstractEAIndividual>();
+        	queue.addAll(population);
+        	
+        	while (finished.size() < population.size()) {
+        		if ((population.size()-(queue.size() + finished.size())) < parallelthreads) {
+        			if (queue.size() > 0) {
+	        			AbstractEAIndividual tmpindy = queue.get(0);
+		        		queue.remove(0);
+		        		tmpindy.resetConstraintViolation();
+		        		EvalThread evalthread = new EvalThread(this,tmpindy,finished,population);
+		        		evalthread.start();
+		        		
+        			} 
+        		}
+        	}
+        	
+        } else {
+
+	        for (int i = 0; i < population.size(); i++) {
+	        	tmpIndy = (AbstractEAIndividual) population.get(i);
+	        	synchronized (tmpIndy) {
+	            	tmpIndy.resetConstraintViolation();
+	            	this.evaluate(tmpIndy);
+				}
+	        	population.incrFunctionCalls();
+	        }
         }
+        
         evaluatePopulationEnd(population);
     }
     
