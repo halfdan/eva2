@@ -69,12 +69,16 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
      */
     public abstract Object clone();
 
-    public int getParallelthreads() {
+    public int getParallelThreads() {
 		return parallelthreads;
 	}
 
-	public void setParallelthreads(int parallelthreads) {
+	public void setParallelThreads(int parallelthreads) {
 		this.parallelthreads = parallelthreads;
+	}
+	
+	public String parallelThreadsTipText() {
+		return "Set the number of threaded parallel function evaluations - interesting for slow functions and generational optimizers.";
 	}
 
 	/** This method inits the Problem to log multiruns
