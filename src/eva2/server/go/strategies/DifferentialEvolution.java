@@ -32,6 +32,7 @@ import eva2.tools.Mathematics;
 public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serializable {
 
     private Population                      m_Population        = new Population();
+    private transient Population			children = null;
     private AbstractOptimizationProblem		m_Problem           = new F1Problem();
     private DETypeEnum                     m_DEType;
     private double                          m_F                 = 0.8;
@@ -44,6 +45,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
     private transient Vector<AbstractEAIndividual> 	parents				= null; 
 
     private boolean 						randomizeFKLambda	= false;
+    private boolean 						generational = true;
     private String                          m_Identifier = "";
     transient private InterfacePopulationChangedEventListener m_Listener;
 	private boolean 						forceRange 			= true;
@@ -384,7 +386,60 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
 	    }    	
     }
 
-	public void optimize() {
+    public void optimize() {
+    	if (generational) optimizeGenerational();
+    	else optimizeSteadyState();
+    }
+    
+    /**
+     * This generational DE variant calls the method AbstractOptimizationProblem.evaluate(Population).
+     * Its performance may be slightly worse for schemes that rely on current best individuals, 
+     * because improvements are not immediately incorporated as in the steady state DE.
+     * However it may be easier to parallelize.
+     * 
+     */
+	public void optimizeGenerational() {
+//        AbstractEAIndividual    indy = null, orig;
+        int parentIndex;        
+        // required for dynamic problems especially
+//        m_Problem.evaluatePopulationStart(m_Population);
+        if (children==null) children = new Population(m_Population.size());
+        else children.clear();
+        for (int i = 0; i < this.m_Population.size(); i++) {
+        	if (cyclePop) parentIndex=i;
+        	else parentIndex=RNG.randomInt(0, this.m_Population.size()-1);
+        	AbstractEAIndividual indy = generateNewIndividual(m_Population, parentIndex);
+        	children.add(indy);
+        }
+        
+        m_Problem.evaluate(children);
+        
+        int nextDoomed = getNextDoomed(m_Population, 0);
+        for (int i = 0; i < this.m_Population.size(); i++) {
+        	AbstractEAIndividual indy = children.getEAIndividual(i);
+        	if (cyclePop) parentIndex=i;
+        	else parentIndex=RNG.randomInt(0, this.m_Population.size()-1);
+        	if (nextDoomed >= 0) {	// this one is lucky, may replace an 'old' one
+        		m_Population.replaceIndividualAt(nextDoomed, indy);
+        		nextDoomed = getNextDoomed(m_Population, nextDoomed+1);	
+        	} else {
+            	if (m_Problem instanceof AbstractMultiObjectiveOptimizationProblem) {
+					ReplacementCrowding repl = new ReplacementCrowding();
+					repl.insertIndividual(indy, m_Population, null);
+				} else {
+//					index   = RNG.randomInt(0, this.m_Population.size()-1);
+					if (!compareToParent) parentIndex = RNG.randomInt(0, this.m_Population.size()-1);
+					AbstractEAIndividual orig     = (AbstractEAIndividual)this.m_Population.get(parentIndex);
+					if (indy.isDominatingDebConstraints(orig)) this.m_Population.replaceIndividualAt(parentIndex, indy);
+				}
+        	}
+        }
+        this.m_Population.incrFunctionCallsBy(children.size());
+        this.m_Population.incrGeneration();
+        this.firePropertyChangedEvent(Population.nextGenerationPerformed);
+	}
+	
+    public void optimizeSteadyState() {
         AbstractEAIndividual    indy = null, orig;
         int index;
 
@@ -458,7 +513,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
         this.m_Population.incrGeneration();
         this.firePropertyChangedEvent(Population.nextGenerationPerformed);
     }
-    
+
     /**
      * Search for the first individual which is older than the age limit and return its index.
      * If there is no age limit or  all individuals are younger, -1 is returned. The start index
@@ -713,5 +768,17 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
 	
 	public String compareToParentTipText() {
 		return "Compare a challenge individual to its original parent instead of a random one.";
+	}
+
+	public boolean isGenerational() {
+		return generational;
+	}
+
+	public void setGenerational(boolean generational) {
+		this.generational = generational;
+	}
+	
+	public String generationalTipText() {
+		return "Switch to generational DE as opposed to standard steady-state DE";
 	}
 }
