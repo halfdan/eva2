@@ -3,7 +3,6 @@ package eva2.server.go.individuals;
 
 import java.util.ArrayList;
 
-import wsi.ra.math.RNG;
 import eva2.server.go.individuals.codings.gp.AbstractGPNode;
 import eva2.server.go.individuals.codings.gp.GPArea;
 import eva2.server.go.individuals.codings.gp.InterfaceProgram;
@@ -12,6 +11,7 @@ import eva2.server.go.operators.mutation.InterfaceMutation;
 import eva2.server.go.operators.mutation.MutateDefault;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.tools.EVAERROR;
+import eva2.tools.math.RNG;
 
 /** This individual uses a tree-based genotype to code for program trees.
  * Created by IntelliJ IDEA.

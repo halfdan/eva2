@@ -5,10 +5,10 @@ import java.net.UnknownHostException;
 
 import eva2.server.EvAMainAdapter;
 import eva2.server.modules.ModuleAdapter;
+import eva2.tools.jproxy.MainAdapter;
+import eva2.tools.jproxy.MainAdapterClient;
+import eva2.tools.jproxy.RMIConnection;
 
-import wsi.ra.jproxy.MainAdapter;
-import wsi.ra.jproxy.MainAdapterClient;
-import wsi.ra.jproxy.RMIConnection;
 
 /**
  *

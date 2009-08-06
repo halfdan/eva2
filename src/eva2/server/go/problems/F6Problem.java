@@ -2,7 +2,7 @@ package eva2.server.go.problems;
 
 import eva2.server.go.individuals.ESIndividualDoubleData;
 import eva2.tools.Mathematics;
-import wsi.ra.math.Jama.Matrix;
+import eva2.tools.math.Jama.Matrix;
 
 /**
  * Created by IntelliJ IDEA.

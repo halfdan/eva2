@@ -5,7 +5,7 @@ import java.util.BitSet;
 
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceGAIndividual;
-import wsi.ra.math.RNG;
+import eva2.tools.math.RNG;
 
 /** This implementation of Population Based Incremental Learning is only
  * suited for a BitString based genotyp represenation.

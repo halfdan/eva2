@@ -8,7 +8,7 @@ import eva2.server.go.populations.Population;
 import eva2.server.go.populations.SolutionSet;
 import eva2.server.go.problems.B1Problem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import wsi.ra.math.RNG;
+import eva2.tools.math.RNG;
 
 /** Threshold accepting algorithm simliar strategy as the flood
  * algorithm, similar problems.

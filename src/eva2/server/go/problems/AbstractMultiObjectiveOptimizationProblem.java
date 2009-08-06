@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import javax.swing.JFrame;
 
-import wsi.ra.chart2d.DPoint;
 import eva2.gui.Chart2DDPointIconCircle;
 import eva2.gui.Chart2DDPointIconText;
 import eva2.gui.GraphPointSet;
@@ -19,6 +18,7 @@ import eva2.server.go.operators.moso.MOSONoConvert;
 import eva2.server.go.operators.paretofrontmetrics.InterfaceParetoFrontMetric;
 import eva2.server.go.operators.paretofrontmetrics.MetricS;
 import eva2.server.go.populations.Population;
+import eva2.tools.chart2d.DPoint;
 
 /**
  * Created by IntelliJ IDEA.

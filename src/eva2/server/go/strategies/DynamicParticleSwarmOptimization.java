@@ -1,6 +1,5 @@
 package eva2.server.go.strategies;
 
-import wsi.ra.math.RNG;
 import eva2.gui.GenericObjectEditor;
 import eva2.gui.Plot;
 import eva2.server.go.individuals.AbstractEAIndividual;
@@ -11,6 +10,7 @@ import eva2.server.go.problems.AbstractOptimizationProblem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.tools.Mathematics;
 import eva2.tools.SelectedTag;
+import eva2.tools.math.RNG;
 
 /** 
  * This extends our particle swarm implementation to dynamic optimization problems.

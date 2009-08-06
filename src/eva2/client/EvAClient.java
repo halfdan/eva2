@@ -51,8 +51,6 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 
-import wsi.ra.jproxy.RemoteStateListener;
-import wsi.ra.tool.BasicResourceLoader;
 import eva2.EvAInfo;
 import eva2.gui.BeanInspector;
 import eva2.gui.ExtAction;
@@ -72,6 +70,8 @@ import eva2.tools.EVAHELP;
 import eva2.tools.ReflectPackage;
 import eva2.tools.Serializer;
 import eva2.tools.StringTools;
+import eva2.tools.jproxy.RemoteStateListener;
+import eva2.tools.tool.BasicResourceLoader;
 
 /**
  *

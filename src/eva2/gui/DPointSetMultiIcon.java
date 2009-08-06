@@ -1,12 +1,13 @@
 package eva2.gui;
 
-import wsi.ra.chart2d.*;
 
-import wsi.ra.tool.IntegerArrayList;
 
 import java.awt.*;
 
 import java.util.ArrayList;
+
+import eva2.tools.chart2d.*;
+import eva2.tools.tool.IntegerArrayList;
 
 
 /**

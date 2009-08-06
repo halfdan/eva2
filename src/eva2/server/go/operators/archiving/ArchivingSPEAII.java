@@ -1,7 +1,5 @@
 package eva2.server.go.operators.archiving;
 
-import wsi.ra.chart2d.DPoint;
-import wsi.ra.chart2d.DPointIcon;
 
 import java.awt.*;
 
@@ -13,6 +11,8 @@ import eva2.server.go.operators.distancemetric.ObjectiveSpaceMetric;
 import eva2.server.go.operators.selection.InterfaceSelection;
 import eva2.server.go.operators.selection.SelectBestIndividuals;
 import eva2.server.go.populations.Population;
+import eva2.tools.chart2d.DPoint;
+import eva2.tools.chart2d.DPointIcon;
 
 /** The strength Pareto EA in it's second version, which is based on
  * dominance counts.

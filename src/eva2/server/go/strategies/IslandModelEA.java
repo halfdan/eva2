@@ -16,9 +16,9 @@ import eva2.server.go.problems.F1Problem;
 import eva2.server.go.problems.F8Problem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.server.go.problems.TF1Problem;
-import wsi.ra.jproxy.RMIProxyRemoteThread;
-import wsi.ra.jproxy.RMIProxyLocal;
-import wsi.ra.jproxy.RMIServer;
+import eva2.tools.jproxy.RMIProxyLocal;
+import eva2.tools.jproxy.RMIProxyRemoteThread;
+import eva2.tools.jproxy.RMIServer;
 
 /** The one and only island model for parallelization. Since parallelization based
  * on the RMIProxyRemoteThread is on the one hand much slower than benchmark function

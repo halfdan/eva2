@@ -18,9 +18,6 @@ import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 
-import wsi.ra.jproxy.MainAdapterClient;
-import wsi.ra.jproxy.RMIProxyLocal;
-import wsi.ra.jproxy.RMIProxyRemote;
 import eva2.gui.BeanInspector;
 import eva2.gui.Graph;
 import eva2.gui.GraphWindow;
@@ -33,6 +30,9 @@ import eva2.server.go.PopulationInterface;
 import eva2.server.go.problems.InterfaceAdditionalPopulationInformer;
 import eva2.tools.EVAERROR;
 import eva2.tools.StringSelection;
+import eva2.tools.jproxy.MainAdapterClient;
+import eva2.tools.jproxy.RMIProxyLocal;
+import eva2.tools.jproxy.RMIProxyRemote;
 
 /*==========================================================================*
  * CLASS DECLARATION

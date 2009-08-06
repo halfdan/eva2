@@ -1,12 +1,12 @@
 package eva2.server.go.operators.mutation;
 
 
-import wsi.ra.math.RNG;
 import eva2.server.go.IndividualInterface;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceGPIndividual;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
+import eva2.tools.math.RNG;
 
 /**
  * Created by IntelliJ IDEA.

@@ -1,6 +1,5 @@
 package eva2.server.go.tools;
 
-import wsi.ra.chart2d.DPoint;
 
 import java.io.*;
 
@@ -11,6 +10,7 @@ import eva2.server.go.individuals.ESIndividualDoubleData;
 import eva2.server.go.individuals.InterfaceDataTypeDouble;
 import eva2.server.go.operators.archiving.ArchivingAllDominating;
 import eva2.server.go.populations.Population;
+import eva2.tools.chart2d.DPoint;
 
 /**
  * Created by IntelliJ IDEA.

@@ -8,7 +8,7 @@ import eva2.server.go.populations.Population;
 import eva2.server.go.populations.SolutionSet;
 import eva2.server.go.problems.B1Problem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import wsi.ra.math.RNG;
+import eva2.tools.math.RNG;
 
 /** Simulated Annealing by Nelder and Mead, a simple yet efficient local search
  * method. But to become less prone to premature convergence the cooling rate

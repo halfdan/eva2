@@ -4,12 +4,12 @@ package eva2.server.go.mocco;
 import javax.swing.*;
 
 import eva2.server.go.MOCCOStandalone;
+import eva2.tools.tool.BasicResourceLoader;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-import wsi.ra.tool.BasicResourceLoader;
 
 /**
  * Created by IntelliJ IDEA.

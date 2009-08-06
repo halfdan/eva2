@@ -6,7 +6,7 @@ import java.util.List;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.server.go.strategies.Tribes;
-import wsi.ra.math.RNG;
+import eva2.tools.math.RNG;
 
 
 public class TribesSwarm implements java.io.Serializable{

@@ -3,7 +3,8 @@ package eva2.server.go.individuals.codings.ga;
 
 import java.util.BitSet;
 
-import wsi.ra.math.RNG;
+import eva2.tools.math.RNG;
+
 
 /** The traditional binary coding for integer number, no variable number of bits here, sorry.
  * Created by IntelliJ IDEA.

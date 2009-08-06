@@ -23,14 +23,14 @@ import eva2.server.EvAMainAdapter;
 import eva2.server.EvAMainAdapterImpl;
 import eva2.server.RMIServerEvA;
 import eva2.server.modules.ModuleAdapter;
+import eva2.tools.jproxy.ComAdapter;
+import eva2.tools.jproxy.MainAdapter;
+import eva2.tools.jproxy.MainAdapterClient;
+import eva2.tools.jproxy.MainAdapterClientImpl;
+import eva2.tools.jproxy.RMIConnection;
+import eva2.tools.jproxy.RMIInvocationHandler;
+import eva2.tools.jproxy.RMIProxyLocal;
 
-import wsi.ra.jproxy.ComAdapter;
-import wsi.ra.jproxy.MainAdapter;
-import wsi.ra.jproxy.MainAdapterClient;
-import wsi.ra.jproxy.MainAdapterClientImpl;
-import wsi.ra.jproxy.RMIConnection;
-import wsi.ra.jproxy.RMIInvocationHandler;
-import wsi.ra.jproxy.RMIProxyLocal;
 /*==========================================================================*
  * CLASS DECLARATION
  *==========================================================================*/

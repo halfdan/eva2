@@ -3,8 +3,9 @@ package eva2.server.go.operators.classification;
 import javax.swing.*;
 
 import eva2.gui.Chart2DDPointIconCross;
-import wsi.ra.math.RNG;
-import wsi.ra.chart2d.*;
+import eva2.tools.chart2d.*;
+import eva2.tools.math.RNG;
+
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.*;

@@ -3,7 +3,6 @@ package eva2.server.go.strategies;
 
 import java.util.BitSet;
 
-import wsi.ra.math.RNG;
 import eva2.server.go.InterfacePopulationChangedEventListener;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceGAIndividual;
@@ -15,6 +14,7 @@ import eva2.server.go.populations.Population;
 import eva2.server.go.populations.SolutionSet;
 import eva2.server.go.problems.B1Problem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
+import eva2.tools.math.RNG;
 
 /** This is an implementation of the CHC Adaptive Search Algorithm by Eselman. It is
  * limited to binary data and is based on massively distruptive crossover. I'm not

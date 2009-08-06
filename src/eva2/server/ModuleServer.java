@@ -18,12 +18,12 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Properties;
 
-import wsi.ra.jproxy.MainAdapterClient;
-import wsi.ra.jproxy.RMIProxyLocal;
 import eva2.server.modules.GOModuleAdapter;
 import eva2.server.modules.ModuleAdapter;
 import eva2.tools.EVAERROR;
 import eva2.tools.ReflectPackage;
+import eva2.tools.jproxy.MainAdapterClient;
+import eva2.tools.jproxy.RMIProxyLocal;
 
 /*==========================================================================*
  * CLASS DECLARATION

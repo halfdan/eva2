@@ -3,10 +3,6 @@ package eva2.server.go.strategies;
 import java.util.Arrays;
 import java.util.Vector;
 
-import wsi.ra.chart2d.DPoint;
-import wsi.ra.chart2d.DPointSet;
-import wsi.ra.math.RNG;
-import wsi.ra.math.Jama.Matrix;
 import eva2.gui.BeanInspector;
 import eva2.gui.GenericObjectEditor;
 import eva2.gui.TopoPlot;
@@ -27,6 +23,10 @@ import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.tools.EVAERROR;
 import eva2.tools.Mathematics;
 import eva2.tools.SelectedTag;
+import eva2.tools.chart2d.DPoint;
+import eva2.tools.chart2d.DPointSet;
+import eva2.tools.math.RNG;
+import eva2.tools.math.Jama.Matrix;
 
 
 /** 

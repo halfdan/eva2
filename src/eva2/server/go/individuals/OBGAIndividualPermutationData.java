@@ -7,7 +7,7 @@ import eva2.server.go.operators.crossover.CrossoverOBGAPMX;
 import eva2.server.go.operators.mutation.InterfaceMutation;
 import eva2.server.go.operators.mutation.MutateOBGAFlip;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import wsi.ra.math.RNG;
+import eva2.tools.math.RNG;
 
 /** This individual uses a permutation based genotype to code for
  * permutations.

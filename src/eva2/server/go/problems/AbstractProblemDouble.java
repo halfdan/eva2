@@ -1,6 +1,5 @@
 package eva2.server.go.problems;
 
-import wsi.ra.math.RNG;
 import eva2.gui.GenericObjectEditor;
 import eva2.server.go.PopulationInterface;
 import eva2.server.go.individuals.AbstractEAIndividual;
@@ -11,6 +10,7 @@ import eva2.server.go.operators.constraint.GenericConstraint;
 import eva2.server.go.populations.Population;
 import eva2.server.go.strategies.InterfaceOptimizer;
 import eva2.tools.Pair;
+import eva2.tools.math.RNG;
 
 /**
  * For a double valued problem, there are two main methods to implement: {@link #getProblemDimension()}

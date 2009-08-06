@@ -39,13 +39,13 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import wsi.ra.chart2d.DPointSet;
-import wsi.ra.tool.BasicResourceLoader;
 
 import com.sun.image.codec.jpeg.JPEGCodec;
 import com.sun.image.codec.jpeg.JPEGImageEncoder;
 
 import eva2.EvAInfo;
+import eva2.tools.chart2d.DPointSet;
+import eva2.tools.tool.BasicResourceLoader;
 /*==========================================================================*
  * CLASS DECLARATION
  *==========================================================================*/

@@ -6,7 +6,7 @@ import eva2.server.go.individuals.InterfaceESIndividual;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.server.go.strategies.Tribes;
-import wsi.ra.math.RNG;
+import eva2.tools.math.RNG;
 
 public class TribesExplorer extends AbstractEAIndividual implements InterfaceDataTypeDouble {
     /**

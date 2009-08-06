@@ -9,9 +9,9 @@ import eva2.server.EvAServer;
 import eva2.server.go.InterfaceGOParameters;
 import eva2.server.stat.InterfaceStatisticsParameter;
 import eva2.server.stat.StatisticsWithGUI;
+import eva2.tools.jproxy.MainAdapterClient;
+import eva2.tools.jproxy.RMIProxyLocal;
 
-import wsi.ra.jproxy.MainAdapterClient;
-import wsi.ra.jproxy.RMIProxyLocal;
 
 /** This the MOEA module adapter necessary to access this implementation
  * from the EvA top level.

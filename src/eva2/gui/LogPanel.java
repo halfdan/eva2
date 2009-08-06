@@ -29,8 +29,8 @@ import javax.swing.JViewport;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import wsi.ra.tool.BasicResourceLoader;
 import eva2.EvAInfo;
+import eva2.tools.tool.BasicResourceLoader;
 /*==========================================================================*
  * CLASS DECLARATION
  *==========================================================================*/

@@ -6,7 +6,6 @@ import java.util.BitSet;
 import java.util.HashMap;
 import java.util.List;
 
-import wsi.ra.math.RNG;
 import eva2.gui.BeanInspector;
 import eva2.server.go.IndividualInterface;
 import eva2.server.go.individuals.codings.gp.InterfaceProgram;
@@ -18,6 +17,7 @@ import eva2.server.go.operators.mutation.NoMutation;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.tools.EVAERROR;
+import eva2.tools.math.RNG;
 
 /** This is the abstract EA individual implementing the most important methods giving
  * access to mutation and crossover rates and operators, fitness values and selection

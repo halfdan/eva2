@@ -1,6 +1,5 @@
 package eva2.server.go.operators.migration;
 
-import wsi.ra.chart2d.DPoint;
 
 import java.io.*;
 
@@ -20,6 +19,7 @@ import eva2.server.go.problems.AbstractMultiObjectiveOptimizationProblem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.server.go.strategies.InterfaceOptimizer;
 import eva2.server.go.strategies.MultiObjectiveEA;
+import eva2.tools.chart2d.DPoint;
 
 /** This method implements the clustering based subdivision
  * scheme suited to identify uni- and multi-modal search spaces

@@ -18,7 +18,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import wsi.ra.math.RNG;
 import eva2.server.go.GOStandaloneVersion;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.ESIndividualDoubleData;
@@ -26,6 +25,7 @@ import eva2.server.go.individuals.InterfaceDataTypeDouble;
 import eva2.server.go.populations.Population;
 import eva2.server.go.strategies.InterfaceOptimizer;
 import eva2.server.modules.GOParameters;
+import eva2.tools.math.RNG;
 
 class MyLensViewer extends JPanel {
 

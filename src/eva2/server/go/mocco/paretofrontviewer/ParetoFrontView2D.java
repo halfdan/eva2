@@ -8,15 +8,15 @@ import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceMultiObjectiveDeNovoProblem;
 import eva2.server.go.problems.InterfaceOptimizationObjective;
+import eva2.tools.chart2d.DPoint;
+import eva2.tools.chart2d.DPointIcon;
+import eva2.tools.chart2d.ScaledBorder;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 
-import wsi.ra.chart2d.ScaledBorder;
-import wsi.ra.chart2d.DPoint;
-import wsi.ra.chart2d.DPointIcon;
 
 /**
  * Created by IntelliJ IDEA.

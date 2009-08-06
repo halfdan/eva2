@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.populations.Population;
-import wsi.ra.math.RNG;
+import eva2.tools.math.RNG;
 
 /** This method implements the multiple tournament scheme
  * for EP.

@@ -1,11 +1,11 @@
 package eva2.server.go.individuals;
 
 
-import wsi.ra.math.RNG;
 import eva2.server.go.individuals.codings.gp.InterfaceProgram;
 import eva2.server.go.operators.mutation.InterfaceMutation;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
+import eva2.tools.math.RNG;
 
 /** This individual combines a real-valued phenotype with a tree-based phenotype.
  * Created by IntelliJ IDEA.

@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Set;
 
-import wsi.ra.math.RNG;
 import eva2.server.go.IndividualInterface;
 import eva2.server.go.InterfacePopulationChangedEventListener;
 import eva2.server.go.PopulationInterface;
@@ -21,6 +20,7 @@ import eva2.server.go.operators.selection.probability.AbstractSelProb;
 import eva2.tools.EVAERROR;
 import eva2.tools.Mathematics;
 import eva2.tools.Pair;
+import eva2.tools.math.RNG;
 
 
 /** This is a basic implementation for a EA Population.

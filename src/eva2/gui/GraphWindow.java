@@ -15,8 +15,9 @@ package eva2.gui;
 import java.net.InetAddress;
 import java.util.ArrayList;
 
-import wsi.ra.jproxy.MainAdapterClient;
-import wsi.ra.jproxy.RMIProxyRemote;
+import eva2.tools.jproxy.MainAdapterClient;
+import eva2.tools.jproxy.RMIProxyRemote;
+
 /*==========================================================================*
  * CLASS DECLARATION
  *==========================================================================*/

@@ -9,8 +9,8 @@ import eva2.server.go.individuals.ESIndividualDoubleData;
 import eva2.server.go.individuals.InterfaceDataTypeDouble;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.F1Problem;
-import wsi.ra.math.RNG;
-import wsi.ra.chart2d.DPoint;
+import eva2.tools.chart2d.DPoint;
+import eva2.tools.math.RNG;
 
 /** The x-means clustering method should be able to determine a
  * suiteable value for k automatically, simply by evaluating all

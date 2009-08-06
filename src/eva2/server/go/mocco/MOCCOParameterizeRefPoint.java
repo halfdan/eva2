@@ -13,7 +13,7 @@ import eva2.server.go.operators.moso.MOSOLpMetric;
 import eva2.server.go.problems.AbstractMultiObjectiveOptimizationProblem;
 import eva2.server.go.strategies.IslandModelEA;
 import eva2.server.go.tools.GeneralGOEProperty;
-import wsi.ra.math.RNG;
+import eva2.tools.math.RNG;
 
 import java.awt.*;
 import java.awt.event.ActionListener;

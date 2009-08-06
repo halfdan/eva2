@@ -17,7 +17,8 @@ import java.util.ArrayList;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
-import wsi.ra.tool.BasicResourceLoader;
+import eva2.tools.tool.BasicResourceLoader;
+
 
 /**
  * Created by IntelliJ IDEA.

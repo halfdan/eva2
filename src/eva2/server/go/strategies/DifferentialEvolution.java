@@ -2,7 +2,6 @@ package eva2.server.go.strategies;
 
 import java.util.Vector;
 
-import wsi.ra.math.RNG;
 import eva2.gui.BeanInspector;
 import eva2.gui.GenericObjectEditor;
 import eva2.server.go.InterfacePopulationChangedEventListener;
@@ -19,6 +18,7 @@ import eva2.server.go.problems.F1Problem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.tools.EVAERROR;
 import eva2.tools.Mathematics;
+import eva2.tools.math.RNG;
 
 /** 
  * Differential evolution implementing DE1 and DE2 following the paper of Storm and

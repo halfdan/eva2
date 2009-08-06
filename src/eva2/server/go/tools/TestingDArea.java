@@ -1,8 +1,10 @@
 package eva2.server.go.tools;
 
-import wsi.ra.chart2d.*;
 
 import javax.swing.*;
+
+import eva2.tools.chart2d.*;
+
 import java.awt.*;
 
 /**

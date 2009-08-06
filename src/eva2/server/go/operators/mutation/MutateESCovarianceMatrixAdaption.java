@@ -5,9 +5,9 @@ import eva2.server.go.individuals.InterfaceESIndividual;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.tools.Mathematics;
-import wsi.ra.math.RNG;
-import wsi.ra.math.Jama.EigenvalueDecomposition;
-import wsi.ra.math.Jama.Matrix;
+import eva2.tools.math.RNG;
+import eva2.tools.math.Jama.EigenvalueDecomposition;
+import eva2.tools.math.Jama.Matrix;
 
 /**
  * Created by IntelliJ IDEA.

@@ -29,9 +29,9 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import wsi.ra.jproxy.RMIProxyLocal;
 import eva2.server.go.tools.FileTools;
 import eva2.tools.EVAHELP;
+import eva2.tools.jproxy.RMIProxyLocal;
 /**
 *
 */

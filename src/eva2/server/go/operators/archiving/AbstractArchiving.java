@@ -4,8 +4,8 @@ import eva2.gui.*;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.ESIndividualDoubleData;
 import eva2.server.go.populations.Population;
-import wsi.ra.chart2d.DPoint;
-import wsi.ra.chart2d.DPointIcon;
+import eva2.tools.chart2d.DPoint;
+import eva2.tools.chart2d.DPointIcon;
 
 /** This is an abstract archiving strategy giving default implementation of determining
  * dominance, inserting individuals in exsisting Pareto front (removing now dominated solutions)

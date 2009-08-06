@@ -2,10 +2,6 @@ package eva2.server.go.strategies;
 
 import java.util.ArrayList;
 
-import wsi.ra.chart2d.DPoint;
-import wsi.ra.chart2d.DPointIcon;
-import wsi.ra.chart2d.DPointSet;
-import wsi.ra.math.RNG;
 import eva2.gui.BeanInspector;
 import eva2.gui.Chart2DDPointIconCircle;
 import eva2.gui.Chart2DDPointIconText;
@@ -26,6 +22,10 @@ import eva2.server.go.problems.B1Problem;
 import eva2.server.go.problems.Interface2DBorderProblem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.server.go.problems.TF1Problem;
+import eva2.tools.chart2d.DPoint;
+import eva2.tools.chart2d.DPointIcon;
+import eva2.tools.chart2d.DPointSet;
+import eva2.tools.math.RNG;
 
 /** The infamuos clustering based niching EA, still under construction.
  * It should be able to identify and track multiple global/local optima

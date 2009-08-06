@@ -1,7 +1,7 @@
 package eva2.server.go.problems;
 
-import wsi.ra.jproxy.RMIProxyRemoteThread;
 import eva2.gui.PropertyRemoteServers;
+import eva2.tools.jproxy.RMIProxyRemoteThread;
 
 /**
  * This class is under construction. 

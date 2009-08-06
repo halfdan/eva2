@@ -9,8 +9,8 @@ import eva2.server.go.operators.moso.MOSOMaxiMin;
 import eva2.server.go.operators.selection.InterfaceSelection;
 import eva2.server.go.operators.selection.SelectBestIndividuals;
 import eva2.server.go.populations.Population;
+import eva2.tools.chart2d.DPointIcon;
 
-import wsi.ra.chart2d.DPointIcon;
 
 /** Another simple archiving strategy not based on dominance but on the MaxiMin
  * criterion. Doesn't work well on non-convex Pareto fronts.

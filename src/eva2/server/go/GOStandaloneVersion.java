@@ -25,8 +25,6 @@ import javax.swing.JProgressBar;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 
-import wsi.ra.jproxy.ThreadProxy;
-import wsi.ra.math.RNG;
 import eva2.client.EvAClient;
 import eva2.gui.JParaPanel;
 import eva2.server.go.individuals.AbstractEAIndividual;
@@ -46,6 +44,8 @@ import eva2.server.go.strategies.GeneticAlgorithm;
 import eva2.server.go.strategies.InterfaceOptimizer;
 import eva2.server.modules.GOParameters;
 import eva2.tools.TokenHolder;
+import eva2.tools.jproxy.ThreadProxy;
+import eva2.tools.math.RNG;
 
 /**
  * Created by IntelliJ IDEA.

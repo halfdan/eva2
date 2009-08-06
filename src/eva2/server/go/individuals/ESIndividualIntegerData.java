@@ -8,7 +8,7 @@ import eva2.server.go.operators.crossover.CrossoverESDefault;
 import eva2.server.go.operators.mutation.InterfaceMutation;
 import eva2.server.go.operators.mutation.MutateESGlobal;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import wsi.ra.math.RNG;
+import eva2.tools.math.RNG;
 
 /** This individual uses a real-valued genotype to code for integer values.
  * Created by IntelliJ IDEA.

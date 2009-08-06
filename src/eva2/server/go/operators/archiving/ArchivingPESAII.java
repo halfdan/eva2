@@ -1,8 +1,5 @@
 package eva2.server.go.operators.archiving;
 
-import wsi.ra.chart2d.DPointIcon;
-import wsi.ra.chart2d.DPoint;
-import wsi.ra.chart2d.DLine;
 
 import java.util.ArrayList;
 import java.awt.*;
@@ -11,7 +8,10 @@ import eva2.gui.*;
 import eva2.server.go.IndividualInterface;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.populations.Population;
-import wsi.ra.math.RNG;
+import eva2.tools.chart2d.DLine;
+import eva2.tools.chart2d.DPoint;
+import eva2.tools.chart2d.DPointIcon;
+import eva2.tools.math.RNG;
 
 /** The Pareto envelope sorting algorithm using a hybergrid and
  * the so called squezze factor.

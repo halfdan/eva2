@@ -58,8 +58,8 @@ import eva2.EvAInfo;
 import eva2.client.EvAClient;
 import eva2.tools.EVAHELP;
 import eva2.tools.ReflectPackage;
+import eva2.tools.jproxy.RMIProxyLocal;
 
-import wsi.ra.jproxy.RMIProxyLocal;
 
 
 /*==========================================================================*

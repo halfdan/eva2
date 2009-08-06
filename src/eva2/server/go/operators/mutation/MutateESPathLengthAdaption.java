@@ -1,11 +1,11 @@
 package eva2.server.go.operators.mutation;
 
-import wsi.ra.math.RNG;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceESIndividual;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.tools.Mathematics;
+import eva2.tools.math.RNG;
 
 /**
  * ES mutation with path length control. The step size (single sigma) is
