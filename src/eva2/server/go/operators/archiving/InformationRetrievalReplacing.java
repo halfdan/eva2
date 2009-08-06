@@ -1,7 +1,7 @@
 package eva2.server.go.operators.archiving;
 
 import eva2.server.go.populations.Population;
-import wsi.ra.math.RNG;
+import eva2.tools.math.RNG;
 
 /** This information retrieval method simply add the retrieved solutions
  * to the current population.

@@ -1,10 +1,10 @@
 package eva2.gui;
 
-import wsi.ra.tool.BasicResourceLoader;
 
 import javax.swing.*;
 
 import eva2.server.go.SwingWorker;
+import eva2.tools.tool.BasicResourceLoader;
 
 import java.beans.PropertyEditor;
 import java.beans.PropertyChangeSupport;

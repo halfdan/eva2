@@ -19,9 +19,9 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyEditor;
 
-import wsi.ra.tool.BasicResourceLoader;
 import eva2.EvAInfo;
 import eva2.tools.EVAHELP;
+import eva2.tools.tool.BasicResourceLoader;
 /*==========================================================================*
 * CLASS DECLARATION
 *==========================================================================*/

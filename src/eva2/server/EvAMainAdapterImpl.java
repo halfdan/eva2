@@ -14,8 +14,8 @@ package eva2.server;
  *==========================================================================*/
 import eva2.client.EvAClient;
 import eva2.server.modules.ModuleAdapter;
-import wsi.ra.jproxy.MainAdapterClient;
-import wsi.ra.jproxy.MainAdapterImpl;
+import eva2.tools.jproxy.MainAdapterClient;
+import eva2.tools.jproxy.MainAdapterImpl;
 /*==========================================================================*
 * CLASS DECLARATION
 *==========================================================================*/

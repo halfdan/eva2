@@ -1,9 +1,10 @@
 package eva2.gui;
 
-import wsi.ra.chart2d.DBorder;
-import wsi.ra.chart2d.DPointIcon;
 
 import java.awt.*;
+
+import eva2.tools.chart2d.DBorder;
+import eva2.tools.chart2d.DPointIcon;
 
 /**
  * Created by IntelliJ IDEA.

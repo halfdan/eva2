@@ -13,8 +13,8 @@ package eva2.server;
  *==========================================================================*/
 
 import eva2.server.modules.ModuleAdapter;
-import wsi.ra.jproxy.MainAdapter;
-import wsi.ra.jproxy.MainAdapterClient;
+import eva2.tools.jproxy.MainAdapter;
+import eva2.tools.jproxy.MainAdapterClient;
 /*==========================================================================*
 * INTERFACE DECLARATION
 *==========================================================================*/

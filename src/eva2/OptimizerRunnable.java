@@ -4,7 +4,6 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.BitSet;
 
-import wsi.ra.jproxy.RemoteStateListener;
 
 import eva2.server.go.IndividualInterface;
 import eva2.server.go.InterfaceGOParameters;
@@ -23,6 +22,7 @@ import eva2.server.stat.StatisticsDummy;
 import eva2.server.stat.InterfaceTextListener;
 import eva2.server.stat.StatisticsStandalone;
 import eva2.server.stat.StatsParameter;
+import eva2.tools.jproxy.RemoteStateListener;
 
 
 /**

@@ -1,6 +1,6 @@
 package eva2.server.go.tools;
 
-import wsi.ra.math.RNG;
+import eva2.tools.math.RNG;
 
 /**
  * Created by IntelliJ IDEA.

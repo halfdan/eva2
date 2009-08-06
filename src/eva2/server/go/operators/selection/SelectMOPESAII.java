@@ -8,7 +8,7 @@ import java.util.Enumeration;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.operators.archiving.ArchivingPESAII;
 import eva2.server.go.populations.Population;
-import wsi.ra.math.RNG;
+import eva2.tools.math.RNG;
 
 /** The multi-objective PESA II selection criteria based on an n-dimensional
  * grid using a squeezing factor. 

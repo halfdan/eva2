@@ -3,7 +3,8 @@ package eva2.server.go.individuals.codings.ga;
 
 import java.util.BitSet;
 
-import wsi.ra.math.RNG;
+import eva2.tools.math.RNG;
+
 
 /** This gives the gray coding for double with a variable number of bits for coding
  * As far as i recall the least significant bit is to the left.

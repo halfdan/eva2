@@ -2,7 +2,7 @@ package eva2.server.go.strategies.tribes;
 
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.server.go.strategies.Tribes;
-import wsi.ra.math.RNG;
+import eva2.tools.math.RNG;
 
 
 public class Tribe implements java.io.Serializable {

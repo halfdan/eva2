@@ -23,8 +23,8 @@ import eva2.server.go.populations.Population;
 import eva2.server.go.problems.regression.InterfaceRegressionFunction;
 import eva2.server.go.problems.regression.RFKoza_GPI_10_2;
 import eva2.server.go.strategies.InterfaceOptimizer;
-import wsi.ra.math.RNG;
 import eva2.tools.EVAERROR;
+import eva2.tools.math.RNG;
 
 /**
  * Created by IntelliJ IDEA.

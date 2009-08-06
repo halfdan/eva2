@@ -3,11 +3,11 @@ package eva2.server.go.individuals;
 
 import java.util.BitSet;
 
-import wsi.ra.math.RNG;
 import eva2.server.go.operators.crossover.CrossoverGANPoint;
 import eva2.server.go.operators.mutation.InterfaceMutation;
 import eva2.server.go.operators.mutation.MutateGAStandard;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
+import eva2.tools.math.RNG;
 
 /** This individual uses a binary genotype to code for binary values.
  * Created by IntelliJ IDEA.

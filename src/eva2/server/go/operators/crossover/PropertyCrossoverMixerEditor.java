@@ -6,6 +6,7 @@ import javax.swing.*;
 import eva2.gui.*;
 import eva2.server.go.tools.GeneralGEOFaker;
 import eva2.server.go.tools.GeneralGOEProperty;
+import eva2.tools.tool.BasicResourceLoader;
 
 import java.beans.*;
 import java.awt.*;
@@ -14,7 +15,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
 
-import wsi.ra.tool.BasicResourceLoader;
 
 /**
  * Created by IntelliJ IDEA.

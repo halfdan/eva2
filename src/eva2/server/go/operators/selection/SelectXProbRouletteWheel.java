@@ -4,7 +4,7 @@ import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.operators.selection.probability.InterfaceSelectionProbability;
 import eva2.server.go.operators.selection.probability.SelProbStandard;
 import eva2.server.go.populations.Population;
-import wsi.ra.math.RNG;
+import eva2.tools.math.RNG;
 
 
 class treeElement implements java.io.Serializable {

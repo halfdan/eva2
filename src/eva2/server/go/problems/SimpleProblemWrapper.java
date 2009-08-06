@@ -6,7 +6,6 @@ import simpleprobs.InterfaceSimpleProblem;
 import simpleprobs.SimpleF1;
 import simpleprobs.SimpleProblemBinary;
 import simpleprobs.SimpleProblemDouble;
-import wsi.ra.math.RNG;
 import eva2.gui.BeanInspector;
 import eva2.gui.GenericObjectEditor;
 import eva2.gui.Plot;
@@ -17,6 +16,7 @@ import eva2.server.go.individuals.InterfaceDataTypeBinary;
 import eva2.server.go.individuals.InterfaceDataTypeDouble;
 import eva2.server.go.populations.Population;
 import eva2.server.go.strategies.InterfaceOptimizer;
+import eva2.tools.math.RNG;
 
 public class SimpleProblemWrapper extends AbstractOptimizationProblem {
 	InterfaceSimpleProblem<?> simProb = new SimpleF1();

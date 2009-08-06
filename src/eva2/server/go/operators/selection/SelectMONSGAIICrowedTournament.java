@@ -3,7 +3,7 @@ package eva2.server.go.operators.selection;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.operators.archiving.ArchivingNSGAII;
 import eva2.server.go.populations.Population;
-import wsi.ra.math.RNG;
+import eva2.tools.math.RNG;
 
 /** The infamous NSGA-II selection scheme for multi-objective
  * optimization based on Pareto ranks and hybergrids.

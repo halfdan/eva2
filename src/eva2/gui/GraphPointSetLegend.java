@@ -13,8 +13,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import wsi.ra.chart2d.SlimRect;
 import eva2.tools.Pair;
+import eva2.tools.chart2d.SlimRect;
 
 /**
  * A class representing the legend of a plot. It is created from a list of GraphPointSets as

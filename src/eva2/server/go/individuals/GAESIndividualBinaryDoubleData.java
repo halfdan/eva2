@@ -6,7 +6,7 @@ import java.util.BitSet;
 import eva2.server.go.operators.mutation.InterfaceMutation;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import wsi.ra.math.RNG;
+import eva2.tools.math.RNG;
 
 /** This individual combines a binary and a real-valued phenotype.
  * Created by IntelliJ IDEA.

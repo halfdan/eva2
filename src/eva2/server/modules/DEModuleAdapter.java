@@ -1,8 +1,8 @@
 package eva2.server.modules;
 
 import eva2.gui.GenericObjectEditor;
+import eva2.tools.jproxy.MainAdapterClient;
 
-import wsi.ra.jproxy.MainAdapterClient;
 
 /** This the DE module adapter necessary to access this implementation
  * from the EvA top level.

@@ -2,7 +2,7 @@ package eva2.server.go.operators.archiving;
 
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.populations.Population;
-import wsi.ra.math.RNG;
+import eva2.tools.math.RNG;
 
 /** This class removes surplus individuals based on bounding
  * hybercube, which can be calculated in objective or decision

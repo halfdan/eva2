@@ -5,8 +5,8 @@ import eva2.gui.Chart2DDPointIconText;
 import eva2.gui.GraphPointSet;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.populations.Population;
-import wsi.ra.math.RNG;
-import wsi.ra.chart2d.DPoint;
+import eva2.tools.chart2d.DPoint;
+import eva2.tools.math.RNG;
 
 /**
  * Created by IntelliJ IDEA.

@@ -18,8 +18,8 @@ import java.lang.reflect.Field;
 import eva2.gui.DataViewer;
 import eva2.gui.DataViewerInterface;
 import eva2.gui.Graph;
+import eva2.tools.jproxy.MainAdapterClient;
 
-import wsi.ra.jproxy.MainAdapterClient;
 /**
  *
  */

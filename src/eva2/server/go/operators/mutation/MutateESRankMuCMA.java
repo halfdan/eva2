@@ -3,9 +3,6 @@ package eva2.server.go.operators.mutation;
 import java.io.Serializable;
 import java.util.Arrays;
 
-import wsi.ra.math.RNG;
-import wsi.ra.math.Jama.EigenvalueDecomposition;
-import wsi.ra.math.Jama.Matrix;
 import eva2.gui.BeanInspector;
 import eva2.gui.GenericObjectEditor;
 import eva2.server.go.InterfacePopulationChangedEventListener;
@@ -18,6 +15,9 @@ import eva2.server.go.strategies.EvolutionStrategies;
 import eva2.tools.EVAERROR;
 import eva2.tools.Mathematics;
 import eva2.tools.Pair;
+import eva2.tools.math.RNG;
+import eva2.tools.math.Jama.EigenvalueDecomposition;
+import eva2.tools.math.Jama.Matrix;
 
 /**
  * The collection of all population specific data required for a rank-mu-CMA optimization.

@@ -3,7 +3,7 @@ package eva2.server.go.strategies.tribes;
 import java.util.Arrays;
 
 import eva2.server.go.strategies.Tribes;
-import wsi.ra.math.RNG;
+import eva2.tools.math.RNG;
 
 
 public class TribesPosition implements java.io.Serializable {

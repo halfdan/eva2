@@ -9,8 +9,8 @@ import eva2.server.go.individuals.ESIndividualDoubleData;
 import eva2.server.go.individuals.InterfaceDataTypeDouble;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.F1Problem;
-import wsi.ra.math.RNG;
-import wsi.ra.chart2d.DPoint;
+import eva2.tools.chart2d.DPoint;
+import eva2.tools.math.RNG;
 
 /** The k-mean clustering algorithms. I guess it is not a hierachical
  * clustering method.

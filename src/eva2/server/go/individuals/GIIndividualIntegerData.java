@@ -1,10 +1,10 @@
 package eva2.server.go.individuals;
 
-import wsi.ra.math.RNG;
 import eva2.server.go.operators.crossover.CrossoverGIDefault;
 import eva2.server.go.operators.mutation.InterfaceMutation;
 import eva2.server.go.operators.mutation.MutateDefault;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
+import eva2.tools.math.RNG;
 
 /** This individual uses a integer genotype to code for integer values.
  * Created by IntelliJ IDEA.

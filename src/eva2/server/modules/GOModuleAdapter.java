@@ -2,7 +2,8 @@ package eva2.server.modules;
 
 import java.io.Serializable;
 
-import wsi.ra.jproxy.MainAdapterClient;
+import eva2.tools.jproxy.MainAdapterClient;
+
 
 /**
  * Starts a statistics GUI and the GOProcessor thread.

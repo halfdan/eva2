@@ -1,6 +1,5 @@
 package eva2.server.go.operators.migration;
 
-import wsi.ra.chart2d.DPoint;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -26,6 +25,7 @@ import eva2.server.go.problems.AbstractMultiObjectiveOptimizationProblem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.server.go.strategies.InterfaceOptimizer;
 import eva2.server.go.strategies.MultiObjectiveEA;
+import eva2.tools.chart2d.DPoint;
 
 /** This method implements the cone separation subdivision
  * scheme, this method rearanges the populations and may

@@ -2,6 +2,7 @@ package eva2.server.go.problems;
 
 import java.awt.BorderLayout;
 import java.util.ArrayList;
+import java.util.Vector;
 import java.io.Serializable;
 
 
@@ -39,10 +40,10 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
 	class EvalThread extends Thread {
 		AbstractOptimizationProblem prob;
 		AbstractEAIndividual ind;
-		ArrayList resultrep;
+		Vector<AbstractEAIndividual> resultrep;
 		Population pop;
 		
-		public EvalThread(AbstractOptimizationProblem prob, AbstractEAIndividual ind, ArrayList resultrep, Population pop) {
+		public EvalThread(AbstractOptimizationProblem prob, AbstractEAIndividual ind, Vector<AbstractEAIndividual> resultrep, Population pop) {
 			this.ind = ind;
 			this.prob = prob;
 			this.resultrep = resultrep;
@@ -101,8 +102,8 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
         evaluatePopulationStart(population);
         
         if (this.parallelthreads > 1) {
-        	ArrayList<AbstractEAIndividual> queue = new ArrayList<AbstractEAIndividual>();
-        	ArrayList<AbstractEAIndividual> finished =  new ArrayList<AbstractEAIndividual>();
+        	Vector<AbstractEAIndividual> queue = new Vector<AbstractEAIndividual>();
+        	Vector<AbstractEAIndividual> finished =  new Vector<AbstractEAIndividual>();
         	queue.addAll(population);
         	
         	while (finished.size() < population.size()) {

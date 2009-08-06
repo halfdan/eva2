@@ -32,13 +32,13 @@ import eva2.server.go.problems.TF1Problem;
 import eva2.server.go.strategies.InterfaceOptimizer;
 import eva2.server.go.strategies.IslandModelEA;
 import eva2.server.go.tools.GeneralGOEProperty;
+import eva2.tools.jproxy.ThreadProxy;
 
 import java.io.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
-import wsi.ra.jproxy.ThreadProxy;
 
 /*import wsi.ra.jproxy.test.Something;
 import wsi.ra.jproxy.test.SomethingInterface;*/

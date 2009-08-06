@@ -13,7 +13,8 @@ package eva2.tools;
  * IMPORTS
  *==========================================================================*/
 import java.util.Comparator;
-import wsi.ra.math.RNG;
+
+import eva2.tools.math.RNG;
 /**
  *
  */

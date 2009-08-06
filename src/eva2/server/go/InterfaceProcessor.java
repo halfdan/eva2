@@ -1,6 +1,6 @@
 package eva2.server.go;
 
-import wsi.ra.jproxy.RemoteStateListener;
+import eva2.tools.jproxy.RemoteStateListener;
 
 /*
  * Title:        EvA2

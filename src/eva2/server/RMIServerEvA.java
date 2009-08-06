@@ -11,8 +11,8 @@ package eva2.server;
 /*==========================================================================*
  * IMPORTS
  *==========================================================================*/
-import wsi.ra.jproxy.RMIProxyLocal;
-import wsi.ra.jproxy.RMIServer;
+import eva2.tools.jproxy.RMIProxyLocal;
+import eva2.tools.jproxy.RMIServer;
 
 /**
  *

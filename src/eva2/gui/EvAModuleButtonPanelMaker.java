@@ -24,8 +24,6 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import wsi.ra.jproxy.RMIProxyLocal;
-import wsi.ra.jproxy.RemoteStateListener;
 import eva2.server.go.InterfaceGOParameters;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.populations.Population;
@@ -33,6 +31,8 @@ import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.server.go.strategies.InterfaceOptimizer;
 import eva2.server.modules.AbstractModuleAdapter;
 import eva2.server.modules.ModuleAdapter;
+import eva2.tools.jproxy.RMIProxyLocal;
+import eva2.tools.jproxy.RemoteStateListener;
 
 /**
  * Contains the GUI elements of start and stop buttons and optionally a help button.

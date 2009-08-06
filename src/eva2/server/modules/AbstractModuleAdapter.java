@@ -16,8 +16,6 @@ import java.io.Serializable;
 import java.net.InetAddress;
 import java.util.Vector;
 
-import wsi.ra.jproxy.MainAdapterClient;
-import wsi.ra.jproxy.RemoteStateListener;
 import eva2.gui.EvATabbedFrameMaker;
 import eva2.gui.LogPanel;
 import eva2.server.go.InterfaceGOParameters;
@@ -25,6 +23,8 @@ import eva2.server.go.InterfaceProcessor;
 /*==========================================================================*
 * ABSTRACT CLASS DECLARATION
 *==========================================================================*/
+import eva2.tools.jproxy.MainAdapterClient;
+import eva2.tools.jproxy.RemoteStateListener;
 
 /**
  * The module server expects a constructor with two arguments: String adapterName and MainAdapterClient client.

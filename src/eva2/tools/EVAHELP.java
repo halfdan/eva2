@@ -25,8 +25,8 @@ import java.net.InetAddress;
 import java.util.Enumeration;
 import java.util.Properties;
 
-import wsi.ra.tool.BasicResourceLoader;
 import eva2.client.EvAClient;
+import eva2.tools.tool.BasicResourceLoader;
 
 
 /**

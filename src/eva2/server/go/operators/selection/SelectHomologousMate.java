@@ -6,7 +6,7 @@ import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.operators.distancemetric.InterfaceDistanceMetric;
 import eva2.server.go.operators.distancemetric.ObjectiveSpaceMetric;
 import eva2.server.go.populations.Population;
-import wsi.ra.math.RNG;
+import eva2.tools.math.RNG;
 
 /** An experimential implementation for mating restriction.
  * Possibly defunct.

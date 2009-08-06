@@ -18,7 +18,8 @@ import java.util.jar.JarInputStream;
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
 
-import wsi.ra.tool.BasicResourceLoader;
+import eva2.tools.tool.BasicResourceLoader;
+
 
 //import wsi.ra.tool.BasicResourceLoader;
 

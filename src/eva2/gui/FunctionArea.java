@@ -37,13 +37,13 @@ import javax.swing.JPopupMenu;
 
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.mocco.paretofrontviewer.InterfaceRefPointListener;
+import eva2.tools.chart2d.DArea;
+import eva2.tools.chart2d.DBorder;
+import eva2.tools.chart2d.DPoint;
+import eva2.tools.chart2d.DPointIcon;
+import eva2.tools.chart2d.DPointSet;
+import eva2.tools.chart2d.ScaledBorder;
 
-import wsi.ra.chart2d.DArea;
-import wsi.ra.chart2d.DBorder;
-import wsi.ra.chart2d.DPoint;
-import wsi.ra.chart2d.DPointIcon;
-import wsi.ra.chart2d.DPointSet;
-import wsi.ra.chart2d.ScaledBorder;
 
 /*==========================================================================*
  * CLASS DECLARATION

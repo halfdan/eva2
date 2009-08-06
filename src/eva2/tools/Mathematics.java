@@ -3,12 +3,12 @@ package eva2.tools;
 import java.util.Arrays;
 import java.util.List;
 
-import wsi.ra.math.RNG;
-import wsi.ra.math.Jama.Matrix;
-import wsi.ra.math.interpolation.BasicDataSet;
-import wsi.ra.math.interpolation.InterpolationException;
-import wsi.ra.math.interpolation.SplineInterpolation;
 import eva2.server.go.tools.DoubleArrayComparator;
+import eva2.tools.math.RNG;
+import eva2.tools.math.Jama.Matrix;
+import eva2.tools.math.interpolation.BasicDataSet;
+import eva2.tools.math.interpolation.InterpolationException;
+import eva2.tools.math.interpolation.SplineInterpolation;
 
 //created at June 27 2006
 

@@ -4,7 +4,6 @@ package eva2.server.go.individuals;
 import java.util.ArrayList;
 import java.util.BitSet;
 
-import wsi.ra.math.RNG;
 import eva2.server.go.individuals.codings.gp.AbstractGPNode;
 import eva2.server.go.individuals.codings.gp.GPArea;
 import eva2.server.go.individuals.codings.gp.InterfaceProgram;
@@ -12,6 +11,7 @@ import eva2.server.go.operators.crossover.CrossoverGADefault;
 import eva2.server.go.operators.mutation.InterfaceMutation;
 import eva2.server.go.operators.mutation.MutateDefault;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
+import eva2.tools.math.RNG;
 
 /** This individual uses a binary genotype to code for a tree-based representation
  * using a BNF grammar, see also Grammatical Evolution.

@@ -3,7 +3,8 @@ package eva2.gui;
 import java.rmi.Naming;
 import java.util.ArrayList;
 
-import wsi.ra.jproxy.RMIInvocationHandler;
+import eva2.tools.jproxy.RMIInvocationHandler;
+
 
 /**
  * Created by IntelliJ IDEA.

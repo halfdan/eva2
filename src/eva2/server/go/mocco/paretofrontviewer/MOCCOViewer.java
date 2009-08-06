@@ -12,6 +12,9 @@ import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceMultiObjectiveDeNovoProblem;
 import eva2.server.go.problems.InterfaceOptimizationObjective;
+import eva2.tools.chart2d.DPoint;
+import eva2.tools.chart2d.DPointIcon;
+import eva2.tools.chart2d.ScaledBorder;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -23,9 +26,6 @@ import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import wsi.ra.chart2d.DPoint;
-import wsi.ra.chart2d.DPointIcon;
-import wsi.ra.chart2d.ScaledBorder;
 
 /**
  * Created by IntelliJ IDEA.

@@ -2,8 +2,6 @@ package eva2.server.modules;
 
 import java.util.Vector;
 
-import wsi.ra.jproxy.RemoteStateListener;
-import wsi.ra.math.RNG;
 import eva2.gui.BeanInspector;
 import eva2.server.go.InterfaceGOParameters;
 import eva2.server.go.InterfacePopulationChangedEventListener;
@@ -27,6 +25,8 @@ import eva2.server.stat.StatisticsWithGUI;
 import eva2.tools.EVAERROR;
 import eva2.tools.EVAHELP;
 import eva2.tools.Pair;
+import eva2.tools.jproxy.RemoteStateListener;
+import eva2.tools.math.RNG;
 
 /**
  * The Processor may run as a thread permanently (GenericModuleAdapter) and is then stopped and started

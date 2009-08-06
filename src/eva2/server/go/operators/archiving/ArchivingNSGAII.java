@@ -8,10 +8,10 @@ import eva2.server.go.IndividualInterface;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.ESIndividualDoubleData;
 import eva2.server.go.populations.Population;
-import wsi.ra.math.RNG;
+import eva2.tools.chart2d.DPoint;
+import eva2.tools.chart2d.DPointIcon;
+import eva2.tools.math.RNG;
 
-import wsi.ra.chart2d.DPoint;
-import wsi.ra.chart2d.DPointIcon;
 
 /** The secon verison of the non dominace sorting GA.
  * Created by IntelliJ IDEA.

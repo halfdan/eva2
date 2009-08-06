@@ -6,12 +6,12 @@ import javax.swing.*;
 import eva2.server.go.problems.InterfaceOptimizationObjective;
 import eva2.server.go.problems.InterfaceOptimizationTarget;
 import eva2.server.go.tools.GeneralGOEProperty;
+import eva2.tools.tool.BasicResourceLoader;
 
 import java.beans.*;
 import java.awt.*;
 import java.awt.event.*;
 
-import wsi.ra.tool.BasicResourceLoader;
 
 /**
  * Created by IntelliJ IDEA.

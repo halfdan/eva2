@@ -12,7 +12,6 @@ package eva2.gui;
 /*==========================================================================*
  * IMPORTS
  *==========================================================================*/
-import wsi.ra.chart2d.*;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -22,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import eva2.tools.Mathematics;
+import eva2.tools.chart2d.*;
  /*==========================================================================*
  * CLASS DECLARATION
  *==========================================================================*/

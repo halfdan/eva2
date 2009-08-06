@@ -5,7 +5,8 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 
-import wsi.ra.math.RNG;
+import eva2.tools.math.RNG;
+
 
 /**  This class gives the area of GPNodes for a GP problem. The area gives
  * the range of possible nodes to select from for a GP.
