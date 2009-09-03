@@ -862,6 +862,12 @@ public class OptimizerFactory {
 		return runnable.getDoubleSolution();
 	}
 
+	public static double[] optimizeToDouble(GOParameters params) {
+		OptimizerRunnable runnable = optimize(new OptimizerRunnable(params,
+				false));
+		return runnable.getDoubleSolution();
+	}
+	
 	public static double[] optimizeToDouble(final int optType,
 			AbstractOptimizationProblem problem, String outputFilePrefix) {
 		OptimizerRunnable runnable = optimize(optType, problem,
