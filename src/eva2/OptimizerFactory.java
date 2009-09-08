@@ -56,6 +56,7 @@ import eva2.server.go.strategies.PopulationBasedIncrementalLearning;
 import eva2.server.go.strategies.SimulatedAnnealing;
 import eva2.server.go.strategies.Tribes;
 import eva2.server.modules.GOParameters;
+import eva2.server.stat.InterfaceStatistics;
 
 /**
  * <p>
@@ -868,6 +869,12 @@ public class OptimizerFactory {
 		return runnable.getDoubleSolution();
 	}
 	
+	public static double[] optimizeToDouble(GOParameters params,InterfaceStatistics stats) {
+		OptimizerRunnable runnable = optimize(new OptimizerRunnable(params,stats,
+				false));
+		return runnable.getDoubleSolution();
+	}
+	
 	public static double[] optimizeToDouble(final int optType,
 			AbstractOptimizationProblem problem, String outputFilePrefix) {
 		OptimizerRunnable runnable = optimize(optType, problem,
@@ -880,6 +887,8 @@ public class OptimizerFactory {
 		return (runnable != null) ? runnable.getDoubleSolution() : null;
 	}
 
+
+	
 	public static IndividualInterface optimizeToInd(GOParameters params,
 			String outputFilePrefix) {
 		OptimizerRunnable runnable = optimize(new OptimizerRunnable(params,
