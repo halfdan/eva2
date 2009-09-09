@@ -31,9 +31,9 @@ import eva2.tools.math.RNG;
  */
 public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serializable {
 
-    private Population                      m_Population        = new Population();
-    private transient Population			children = null;
-    private AbstractOptimizationProblem		m_Problem           = new F1Problem();
+	protected Population                      m_Population        = new Population();
+    protected transient Population			children = null;
+    protected AbstractOptimizationProblem		m_Problem           = new F1Problem();
     private DETypeEnum                     m_DEType;
     private double                          m_F                 = 0.8;
     private double                          m_k                 = 0.6; // AKA CR
@@ -780,5 +780,17 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
 	
 	public String generationalTipText() {
 		return "Switch to generational DE as opposed to standard steady-state DE";
+	}
+	
+	public boolean isCyclePop() {
+		return cyclePop;
+	}
+
+	public void setCyclePop(boolean cycle) {
+		this.cyclePop = cycle;
+	}
+	
+	public String cyclePopTipText() {
+		return "if true, individuals are used as parents in a cyclic sequence - otherwise randomly ";
 	}
 }
