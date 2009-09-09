@@ -41,8 +41,8 @@ public class F8Problem extends F1Problem implements InterfaceMultimodalProblem, 
         double          sum1 = 0, sum2 = 0, exp1, exp2;
 
         for (int i = 0; i < x.length; i++) {
-        	sum1 += (x[i])*(x[i]);
-        	sum2 += Math.cos(c * (x[i]));
+        	sum1 += (x[i] - this.m_XOffSet)*(x[i] - this.m_XOffSet);
+        	sum2 += Math.cos(c * (x[i] - this.m_XOffSet));
         }
         exp1    = -b*Math.sqrt(sum1/(double)this.m_ProblemDimension);
         exp2    = sum2/(double)this.m_ProblemDimension;
