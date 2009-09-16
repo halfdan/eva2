@@ -20,9 +20,6 @@ import javax.management.ObjectName;
 
 import eva2.tools.tool.BasicResourceLoader;
 
-
-//import wsi.ra.tool.BasicResourceLoader;
-
 /**
  * Allow for java to list Classes that exist in one package and can be instantiated from
  * the classpath, either directly or through a jar on the classpath.

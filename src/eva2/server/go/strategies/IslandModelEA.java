@@ -322,7 +322,7 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
      */
     public static void main(String[] args) {
         // @todo die ServerStarter muss ich noch hin kriegen
-        // @todo Wichtig ich brauche den wsi.ra.jproxy.RMIServer!
+        // @todo Wichtig ich brauche den eva2.tools.jproxy.RMIServer!
         PropertyRemoteServers s = new PropertyRemoteServers();
         s.addServerNode("raold1.informatik.uni-tuebingen.de", 2);
         s.addServerNode("raold2.informatik.uni-tuebingen.de", 2);

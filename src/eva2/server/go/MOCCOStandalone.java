@@ -39,10 +39,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
-
-/*import wsi.ra.jproxy.test.Something;
-import wsi.ra.jproxy.test.SomethingInterface;*/
-
 /**
  * Created by IntelliJ IDEA.
  * User: streiche

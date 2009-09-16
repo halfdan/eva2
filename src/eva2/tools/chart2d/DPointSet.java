@@ -240,7 +240,7 @@ public class DPointSet extends DComponent
   }
 
   public String toString(){
-    String text = "wsi.ra.chart2d.DPointSet[size:"+getSize();
+    String text = "eva2.tools.chart2d.DPointSet[size:"+getSize();
     for( int i=0; i<x.getSize(); i++ )
       text += ",("+x.getImage(i)+","+y.getImage(i)+")";
     text += "]";
