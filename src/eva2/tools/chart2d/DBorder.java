@@ -44,7 +44,7 @@ public class DBorder extends Insets{
   }
 
   public String toString(){
-    return "wsi.ra.chart2d.DBorder[top="+top+",left="+left
+    return "eva2.tools.chart2d.DBorder[top="+top+",left="+left
            +",bottom="+bottom+",right="+right+"]";
   }
 }

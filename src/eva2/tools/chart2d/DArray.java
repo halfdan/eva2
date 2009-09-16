@@ -190,7 +190,7 @@ public class DArray implements DIntDoubleMap{
   }
 
   public String toString(){
-    String text = "wsi.ra.chart2d.DArray[size:"+size;
+    String text = "eva2.tools.chart2d.DArray[size:"+size;
     if( size < 11 )
       for( int i=0; i<size; i++ ) text += ", "+value[i];
     text += "]";

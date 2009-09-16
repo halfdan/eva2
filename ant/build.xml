@@ -258,7 +258,20 @@
     <copy todir="${build.directory}/resources">
       <fileset dir="${resources.directory}" includes="**/*" />
    </copy>
-</target>
+
+  	<!-- 
+  	<copy todir="${JE2Probs.directory}/${build.directory}/resources">
+      <fileset dir="${JE2Probs.directory}/${resources.directory}" includes="**/*" />
+   </copy>
+  	
+    <copy todir="${JE2ESModel.directory}/${build.directory}/resources">
+      <fileset dir="${JE2ESModel.directory}/${resources.directory}" includes="**/*" />
+   </copy>
+    <copy todir="${JE2Research.directory}/${build.directory}/resources">
+      <fileset dir="${JE2Research.directory}/${resources.directory}" includes="**/*" />
+   </copy>  
+   -->
+  </target>
 	
 <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	        Compile JE2Probs

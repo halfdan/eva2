@@ -100,7 +100,7 @@ die Range mitzuführen, da sie häufig für alle gleich ist. Dann verschlingt si
 - History und Archive: Kommentar bzw. Schalter!
 - Graph/Plot aufräumen: Graph scheint nur ein "Label" zu sein, über das auf ein GraphPointSet innerhalb
 	eines FunctionArea elements zugegriffen wird. Eher chaotisch also.
-- JOpt bug in wsi.ra.chart2d.ScaledBorder Zeile 460 - Endlosschleife!?
+- JOpt bug in eva2.tools.chart2d.ScaledBorder Zeile 460 - Endlosschleife!?
 - cloneInPlace bei Individuen wird die Object-Daten aus AbstractEAIndividual idR nicht kopieren!
 - da nicht alle Klassen "hashCode" ableiten, kann es bei Verwendung von HashMaps o.ä. zu Problemen kommen
 

@@ -400,7 +400,7 @@ public class DPointSetMultiIcon extends DComponent
 
     public String toString()
     {
-        String text = "wsi.ra.chart2d.DPointSet[size:" + getSize();
+        String text = "eva2.tools.chart2d.DPointSet[size:" + getSize();
 
         for (int i = 0; i < xMI.getSize(); i++)
         {

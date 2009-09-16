@@ -34,7 +34,7 @@ class ServerNode implements java.io.Serializable {
 public class PropertyRemoteServers implements java.io.Serializable {
 
     private ServerNode[]        m_AvailableNodes;
-//    private String              m_ClassToStart  = "wsi.ra.jproxy.RMIServer";
+//    private String              m_ClassToStart  = "eva2.tools.jproxy.RMIServer";
     private transient String    m_password      = "";
     private String              m_Login         = "";
 //    private boolean             m_DeployJar     = true;
