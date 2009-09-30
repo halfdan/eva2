@@ -40,7 +40,7 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
     transient protected   double[][]         	m_Border;
     transient protected Plot  					m_Plot;
     transient protected JFrame             		m_Result;
-    private transient boolean                	m_Show              = false;
+    protected transient boolean                	m_Show              = false;
 
     public AbstractMultiObjectiveOptimizationProblem(double borderHigh) {
     	super();
