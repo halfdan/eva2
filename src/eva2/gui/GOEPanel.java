@@ -28,6 +28,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import eva2.server.go.tools.FileTools;
 import eva2.tools.EVAHELP;
@@ -175,8 +176,11 @@ public class GOEPanel extends JPanel implements ItemListener {
 		add(m_ObjectChooser, BorderLayout.NORTH);  // important
 		add(m_ChildPropertySheet, BorderLayout.CENTER);
 		// Since we resize to the size of the property sheet, a scrollpane isn't
-		// typically needed
-		// add(new JScrollPane(m_ChildPropertySheet), BorderLayout.CENTER);
+		// typically needed (O  Rly?)
+		JScrollPane myScrollPane =new JScrollPane(m_ChildPropertySheet,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		myScrollPane.setBorder(null);
+		add(myScrollPane, BorderLayout.CENTER);
+		
 
 		JPanel okcButs = new JPanel();
 		okcButs.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
