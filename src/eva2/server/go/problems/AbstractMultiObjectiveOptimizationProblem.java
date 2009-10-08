@@ -2,6 +2,7 @@ package eva2.server.go.problems;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Vector;
 
 import javax.swing.JFrame;
 
@@ -18,6 +19,7 @@ import eva2.server.go.operators.moso.MOSONoConvert;
 import eva2.server.go.operators.paretofrontmetrics.InterfaceParetoFrontMetric;
 import eva2.server.go.operators.paretofrontmetrics.MetricS;
 import eva2.server.go.populations.Population;
+import eva2.server.go.problems.AbstractOptimizationProblem.EvalThread;
 import eva2.tools.chart2d.DPoint;
 
 /**
@@ -29,6 +31,47 @@ import eva2.tools.chart2d.DPoint;
  */
 public abstract class AbstractMultiObjectiveOptimizationProblem extends AbstractOptimizationProblem {
 
+	class MultiObjectiveEvalThread extends Thread{
+		AbstractMultiObjectiveOptimizationProblem prob;
+		AbstractEAIndividual ind;
+		Vector<AbstractEAIndividual> resultrep;
+		Population pop;
+		
+		public MultiObjectiveEvalThread(AbstractMultiObjectiveOptimizationProblem prob,AbstractEAIndividual ind,Vector<AbstractEAIndividual> resultrep, Population pop) {
+			this.ind = ind;
+			this.prob = prob;
+			this.resultrep = resultrep;
+			this.pop = pop;
+		}
+	
+		public void run() {
+			double[]                fitness;
+			prob.evaluate(ind);
+			resultrep.add(ind);
+			
+			   fitness = ind.getFitness();
+	            // check and update border if necessary
+	            if (m_Border == null)
+	            	prob.m_Border = new double[fitness.length][2];
+	            else if (fitness.length != prob.m_Border.length) {
+	                //System.out.println("AbstractMOOptimizationProblem: Warning fitness.length("+fitness.length+") doesn't fit border.length("+this.m_Border.length+")");
+	                //System.out.println("Resetting the border!");
+	                prob.m_Border = new double[fitness.length][2];
+	            }
+	            for (int j = 0; j < fitness.length; j++) {
+//	                if ((this.m_Border[j][0] > fitness[j]) || (this.m_Border[j][1] < fitness[j])) {
+//	                    System.out.println("border... " + j);
+//	                    System.out.println(this.m_Border[j][0]+" > "+fitness[j]);
+//	                    System.out.println(this.m_Border[j][1]+" < "+fitness[j]);
+//	                }
+	                prob.m_Border[j][0] = Math.min(prob.m_Border[j][0], fitness[j]);
+	                prob.m_Border[j][1] = Math.max(prob.m_Border[j][1], fitness[j]);
+	            }
+			pop.incrFunctionCalls();
+		
+		}
+	}
+	
     protected InterfaceMOSOConverter            m_MOSOConverter     = new MOSONoConvert();
     protected InterfaceParetoFrontMetric        m_Metric            = new MetricS();
     transient protected Population              m_ParetoFront       = new Population();
@@ -141,6 +184,26 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
 
         evaluatePopulationStart(population);
 
+        
+        if (this.parallelthreads > 1) {
+        	Vector<AbstractEAIndividual> queue = new Vector<AbstractEAIndividual>();
+        	Vector<AbstractEAIndividual> finished =  new Vector<AbstractEAIndividual>();
+        	queue.addAll(population);
+        	
+        	while (finished.size() < population.size()) {
+        		if ((population.size()-(queue.size() + finished.size())) < parallelthreads) {
+        			if (queue.size() > 0) {
+	        			AbstractEAIndividual tmpindy = queue.get(0);
+		        		queue.remove(0);
+		        		tmpindy.resetConstraintViolation();
+		        		MultiObjectiveEvalThread evalthread = new MultiObjectiveEvalThread(this,tmpindy,finished,population);
+		        		evalthread.start();
+		        		
+        			} 
+        		}
+        	}
+        	
+        }else {
         // first evaluate the population
         for (int i = 0; i < population.size(); i++) {
             tmpIndy = (AbstractEAIndividual) population.get(i);
@@ -166,7 +229,7 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
             }
             population.incrFunctionCalls();
         }
-
+        }
         evaluatePopulationEnd(population); // refactored by MK
     }
     
