@@ -412,7 +412,9 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
         	children.add(indy);
         }
         
+        children.setGenerationTo(m_Population.getGeneration());
         m_Problem.evaluate(children);
+       
         
         int nextDoomed = getNextDoomed(m_Population, 0);
         for (int i = 0; i < this.m_Population.size(); i++) {
