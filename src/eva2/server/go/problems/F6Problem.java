@@ -58,9 +58,10 @@ public class F6Problem extends F1Problem implements InterfaceMultimodalProblem, 
 	    	x = resVec.getColumnPackedCopy();
     	}
         double[] result = new double[1];
-        result[0]     = x.length * this.m_A;
+        result[0]     = x.length * this.m_A + m_YOffSet;
         for (int i = 0; i < x.length; i++) {
-            result[0]  += Math.pow(x[i], 2) - this.m_A * Math.cos(this.m_Omega*x[i]);
+        	double xi = x[i]-m_XOffSet;
+            result[0]  += Math.pow(xi, 2) - this.m_A * Math.cos(this.m_Omega*xi);
         }
         return result;
     }

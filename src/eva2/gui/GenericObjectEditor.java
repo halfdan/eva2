@@ -297,7 +297,7 @@ public class GenericObjectEditor implements PropertyEditor {
 			return;
 		}
 		
-		Vector<String> v;
+		Vector<String> v=null;
 		if (Proxy.isProxyClass(m_ClassType)) {
 			if (TRACE) System.out.println("PROXY! original was " + ((RMIProxyLocal)Proxy.getInvocationHandler(((Proxy)m_Object))).getOriginalClass().getName());
 			v = new Vector<String>(getClassesFromProperties(((RMIProxyLocal)Proxy.getInvocationHandler(((Proxy)m_Object))).getOriginalClass().getName()));
@@ -305,7 +305,7 @@ public class GenericObjectEditor implements PropertyEditor {
 			v = new Vector<String>(getClassesFromProperties(m_ClassType.getName()));
 		}
 				
-		v = new Vector<String>(getClassesFromProperties(m_ClassType.getName()));
+//		v = new Vector<String>(getClassesFromProperties(m_ClassType.getName()));
 		try {
 			if (v.size() > 0)
 				setObject((Object)Class.forName((String)v.get(0)).newInstance());

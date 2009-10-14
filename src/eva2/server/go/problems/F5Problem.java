@@ -37,11 +37,11 @@ public class F5Problem extends F1Problem implements java.io.Serializable {
     public double[] eval(double[] x) {
         double[]    result = new double[1];
         double      tmp;
-        result[0]     = 0;
+        result[0]     = m_YOffSet;
         for (int i = 0; i < x.length-1; i++) {
             tmp = 0;
             for (int j = 0; j <= i; j++) {
-                tmp += x[j];
+                tmp += x[j]-m_XOffSet;
             }
             result[0] += Math.pow(tmp, 2);
         }

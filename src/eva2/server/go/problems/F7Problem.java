@@ -65,7 +65,7 @@ public class F7Problem extends F1Problem implements java.io.Serializable {
         evaluatePopulationEnd(population);
     }
 
-    /** Ths method allows you to evaluate a double[] to determine the fitness
+    /** This method allows you to evaluate a double[] to determine the fitness
      * @param x     The n-dimensional input vector
      * @return  The m-dimensional output vector.
      */
@@ -74,11 +74,11 @@ public class F7Problem extends F1Problem implements java.io.Serializable {
         result[0]     = m_YOffSet;
         if ((Math.floor(this.m_CurrentTimeStamp / this.m_t)%2) == 0) {
             for (int i = 0; i < x.length-1; i++) {
-                result[0]  += Math.pow(x[i], 2);
+                result[0]  += Math.pow(x[i]-m_XOffSet, 2);
             }
         } else {
             for (int i = 0; i < x.length-1; i++) {
-                result[0]  += Math.pow(x[i]-this.m_Change, 2);
+                result[0]  += Math.pow(x[i]-m_XOffSet-this.m_Change, 2);
             }
         }
         return result;

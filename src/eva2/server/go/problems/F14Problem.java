@@ -30,14 +30,10 @@ public class F14Problem extends F1Problem implements InterfaceMultimodalProblem,
         return (Object) new F14Problem(this);
     }
 
-    /** Ths method allows you to evaluate a double[] to determine the fitness
-     * @param x     The n-dimensional input vector
-     * @return  The m-dimensional output vector.
-     */
     public double[] eval(double[] x) {
         double[] result = new double[1];
-        double x0 = x[0]-rotationDX;
-        double x1 = x[1]-rotationDX;
+        double x0 = x[0]-rotationDX-m_XOffSet;
+        double x1 = x[1]-rotationDX-m_XOffSet;
         if (rotation != 0.) {
 			double cosw = Math.cos(rotation);
 			double sinw = Math.sin(rotation);
@@ -47,7 +43,7 @@ public class F14Problem extends F1Problem implements InterfaceMultimodalProblem,
 			x0=tmpx0;
         }
         //matlab: 40 + (- exp(cos(5*X)+cos(3*Y)) .* exp(-X.^2) .* (-.05*Y.^2+5));
-        result[0] = 36.9452804947;//36.945280494653247;
+        result[0] = m_YOffSet+36.9452804947;//36.945280494653247;
         result[0] += (-Math.exp(Math.cos(3*x0)+Math.cos(6*x1)) * Math.exp(-x0*x0/10) * (-.05*x1*x1+5));
 
         return result;

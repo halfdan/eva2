@@ -1,7 +1,6 @@
 package eva2.server.go.problems;
 
 import java.awt.BorderLayout;
-import java.util.ArrayList;
 import java.util.Vector;
 import java.io.Serializable;
 
@@ -51,11 +50,13 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
 		}
 		
 		public void run() {
-			
+//			System.out.println("Running ET " + this);
+//			long time=System.nanoTime();
 			prob.evaluate(ind);
 			resultrep.add(ind);
 			pop.incrFunctionCalls();
-		
+//			long duration=System.nanoTime()-time;
+//			System.out.println("Finished ET" + this +  ", time was " + duration);
 		}
 		
 	}
@@ -102,8 +103,8 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
         evaluatePopulationStart(population);
         
         if (this.parallelthreads > 1) {
-        	Vector<AbstractEAIndividual> queue = new Vector<AbstractEAIndividual>();
-        	Vector<AbstractEAIndividual> finished =  new Vector<AbstractEAIndividual>();
+        	Vector<AbstractEAIndividual> queue = new Vector<AbstractEAIndividual>(population.size());
+        	Vector<AbstractEAIndividual> finished =  new Vector<AbstractEAIndividual>(population.size());
         	queue.addAll(population);
         	
         	while (finished.size() < population.size()) {

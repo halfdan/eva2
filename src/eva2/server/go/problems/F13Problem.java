@@ -42,10 +42,11 @@ public class F13Problem extends F1Problem implements InterfaceMultimodalProblem 
      */
     public double[] eval(double[] x) {
         double[] result = new double[1];
-        result[0] = 0;
+        result[0] = m_YOffSet;
         
         for (int i=0; i<x.length; i++) {
-        	result[0] -= x[i]*Math.sin(Math.sqrt(Math.abs(x[i])));
+        	double xi = x[i]-m_XOffSet;
+        	result[0] -= xi*Math.sin(Math.sqrt(Math.abs(xi)));
         }
         result[0] += (418.9829 * m_ProblemDimension);
         return result;
