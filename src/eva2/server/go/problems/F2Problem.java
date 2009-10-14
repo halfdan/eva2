@@ -31,11 +31,14 @@ public class F2Problem extends F1Problem implements InterfaceMultimodalProblem, 
      */
     public double[] eval(double[] x) {
         double[] result = new double[1];
-        result[0]     = 0;
+        result[0]     = m_YOffSet;
+        double xi, xii;
         for (int i = 0; i < x.length-1; i++) {
-            result[0]  += (100*(x[i+1]-x[i]*x[i])*(x[i+1]-x[i]*x[i])+(x[i]-1)*(x[i]-1));
+        	xi=x[i]-m_XOffSet;
+        	xii=x[i+1]-m_XOffSet;
+            result[0]  += (100*(xii-xi*xi)*(xii-xi*xi)+(xi-1)*(xi-1));
         }
-        if (result[0]<=0) result[0]=Math.sqrt(Double.MIN_VALUE); // guard for plots in log scale
+        if (m_YOffSet==0 && (result[0]<=0)) result[0]=Math.sqrt(Double.MIN_VALUE); // guard for plots in log scale
         return result;
     }
 

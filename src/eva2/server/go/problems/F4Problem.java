@@ -36,9 +36,9 @@ public class F4Problem extends F1Problem implements java.io.Serializable {
      */
     public double[] eval(double[] x) {
         double[] result = new double[1];
-        result[0]     = 0;
+        result[0]     = m_YOffSet;
         for (int i = 0; i < x.length-1; i++) {
-            result[0]  += (i+1)*Math.pow(x[i], 4);
+            result[0]  += (i+1)*Math.pow((x[i]-m_XOffSet), 4);
         }
         return result;
     }

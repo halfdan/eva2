@@ -3,13 +3,6 @@ package eva2.server.go.problems;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.ESIndividualDoubleData;
 
-/**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 30.06.2005
- * Time: 13:59:12
- * To change this template use File | Settings | File Templates.
- */
 public class F9Problem extends F1Problem implements java.io.Serializable {
 
     public F9Problem() {
@@ -32,9 +25,9 @@ public class F9Problem extends F1Problem implements java.io.Serializable {
      */
     public double[] eval(double[] x) {
         double[] result = new double[1];
-        result[0]     = 0;
+        result[0]     = m_YOffSet;
         for (int i = 0; i < x.length; i++) {
-            result[0]  += (i+1)*Math.pow(x[i], 2);
+            result[0]  += (i+1)*Math.pow(x[i]-m_XOffSet, 2);
         }
         return result;
     }

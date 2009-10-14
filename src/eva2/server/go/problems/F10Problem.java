@@ -39,9 +39,10 @@ public class F10Problem extends F1Problem implements InterfaceMultimodalProblem,
     public double[] eval(double[] x) {
         double[] result = new double[1];
         double c1 = this.calculateC(1);
-        result[0]     = 0.;
+        result[0]     = m_YOffSet;
         for (int i = 0; i < x.length-1; i++) {
-            result[0]  += ((this.calculateC(x[i]))/(c1 * Math.pow(Math.abs(x[i]),2-this.m_D))) + Math.pow(x[i], 2) -1;
+        	double xi = x[i]-m_XOffSet;
+            result[0]  += ((this.calculateC(xi))/(c1 * Math.pow(Math.abs(xi),2-this.m_D))) + Math.pow(xi, 2) -1;
         }
         return result;
     }

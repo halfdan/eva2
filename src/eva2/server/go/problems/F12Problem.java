@@ -36,11 +36,11 @@ public class F12Problem extends F1Problem implements java.io.Serializable {
     public double[] eval(double[] x) {
         double[] result = new double[1];
         double tmp = -5;
-        result[0]     = 0;
         for (int i = 1; i < x.length-1; i++) {
-            tmp += Math.pow(x[i], 2);
+            tmp += Math.pow(x[i]-m_XOffSet, 2);
         }
-        result[0] = (Math.exp(-5*x[0]*x[0])+2*Math.exp(-5*Math.pow(1-x[0], 2)))*Math.exp(tmp);
+        double x0 = x[0]-m_XOffSet;
+        result[0] = m_YOffSet+(Math.exp(-5*x0*x0)+2*Math.exp(-5*Math.pow(1-x0, 2)))*Math.exp(tmp);
         return result;
     }
 

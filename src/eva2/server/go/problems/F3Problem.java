@@ -32,9 +32,9 @@ public class F3Problem extends F1Problem implements java.io.Serializable {
      */
     public double[] eval(double[] x) {
         double[] result = new double[1];
-        result[0]     = 6*x.length;
+        result[0]     = m_YOffSet+6*x.length;
         for (int i = 0; i < x.length-1; i++) {
-            result[0]  += Math.floor(x[i]);
+            result[0]  += Math.floor(x[i]- this.m_XOffSet);
         }
         return result;
     }
