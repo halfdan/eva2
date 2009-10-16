@@ -42,7 +42,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
     private static long						m_IDcounter = 0;
 //  private int								logParentLen = 10;
     private boolean 						logParents = false;
-    // heritage is to contain a list of all parents of the individual
+	// heritage is to contain a list of all parents of the individual
     private Long[]							parentIDs = null;
     transient private AbstractEAIndividual[]			parentTree = null;
 
@@ -984,6 +984,23 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
 	public double[] getDoublePosition() {
 		return AbstractEAIndividual.getDoublePosition(this);
 	}
+	
+	 /**
+     * @return true if parent history logging is activated
+     * 
+     */
+    protected boolean isLogParents() {
+		return logParents;
+	}
+
+    /** This method allows you to toggle parent history logging
+     * @param logParents   true if logging should be activated
+     */
+	protected void setLogParents(boolean logParents) {
+		this.logParents = logParents;
+	}
+	
+	
 /**********************************************************************************************************************
  * Implementing the Individual Interface
  */
