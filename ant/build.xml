@@ -44,7 +44,12 @@
   <property name="debug.flag"					  value="true" />
 	  <property name="jar.name"						value="EvA2Base" />
 	  <property name="srcpack.name"					value="EvA2BaseSrc" />
-	
+   <!-- documentation -->
+	<property name="doc.directory" 			value="doc" />
+	  <property name="htmldoc.directory.name" 			value="EvA2Doc" />
+	  <property name="pdfdoc.name" 						value="EvA2Doc.pdf" />
+	  <property name="web.documentation.directory" 		value="/afs/cs.uni-tuebingen.de/ra/www/software/EvA2/EvA2Doc/" />
+
 	<!-- SET THESE PATHES IF YOU WANT TO COMPILE ADDITIONAL EvA2 PACKAGES -->
 	  <property name="JE2Probs.directory"			value="../JE2Probs" />	
 	  <property name="JE2ESModel.directory"			value="../JE2ESModel" />
@@ -433,7 +438,7 @@
 -->
 
     <tar tarfile="${distribution.directory}/eva2-bin-${DSTAMP}.tar">
-      <tarfileset dir="${binary.distribution.directory}">
+      <tarfileset dir="${bin.dist.dir}">
         <include name="**" />
         <exclude name="*.tar*, *.zip" />
       </tarfileset>
@@ -443,7 +448,7 @@
     <delete file="${distribution.directory}/eva2-bin-${DSTAMP}.tar" />
 
     <zip zipfile="${distribution.directory}/eva2-bin-${DSTAMP}.zip">
-      <zipfileset dir="${binary.distribution.directory}">
+      <zipfileset dir="${bin.dist.dir}">
         <include name="**" />
         <exclude name="*.tar*, *.zip" />
       </zipfileset>
@@ -546,34 +551,17 @@
   	<delete file="${matlabinterface.basedir}/${matlabinterface.title}.tar.gz" />
   	  	  	
   </target>
+	
 <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	        Generate Distribution and put it online. This also replaces the 
-	        Probs and ESModel packages so keep them synchronized.
+	        Copy documentation to web directory. tex2html must be updated manually beforehand!
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
-
-	<target name="distToWWW" depends="init">
-		<mkdir dir="${web.download.directory}/old-${DSTAMP}-${TSTAMP}" />
-		<copy todir="${web.download.directory}/old-${DSTAMP}-${TSTAMP}">
-	      <fileset dir="${web.download.directory}">
-	      	<include name="**Src.tar.gz" />
-	      	<include name="**.jar" />
-	      	<include name="${matlabinterface.title}.tar.gz" />
-	      </fileset>
-		  <fileset dir="${web.documentation.directory}">
-	      	<include name="**" />
-	      </fileset>
-	    </copy>		  
-		<delete>
+	<target name="docToWWW" depends="init">
+	  	<delete>
 			<fileset dir="${web.documentation.directory}">
 				<include name="**" />
 			</fileset>
 		</delete> 
 		
-		  <property name="doc.directory" 			value="doc" />
-		  <property name="htmldoc.directory.name" 			value="EvA2Doc" />
-		  <property name="pdfdoc.name" 						value="EvA2Doc.pdf" />
-		  <property name="web.documentation.directory" 		value="/afs/cs.uni-tuebingen.de/ra/www/software/EvA2/EvA2Doc/" />
-
 		<copy todir="${web.documentation.directory}">
 		  <fileset dir="${doc.directory}">
 			<include name="${pdfdoc.name}" />
@@ -584,6 +572,30 @@
 		  		<include name="**" />
 			</fileset>
 		</copy>
+	</target>
+			
+	<!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+		        Copy www distributed version to backup directory.
+	+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+	<target name="backupWWW" depends="init">
+		<mkdir dir="${web.download.directory}/old-${DSTAMP}-${TSTAMP}" />
+		<copy todir="${web.download.directory}/old-${DSTAMP}-${TSTAMP}">
+	      <fileset dir="${web.download.directory}">
+	      	<include name="**Src.tar.gz" />
+	      	<include name="**.jar" />
+	      	<include name="${matlabinterface.title}.tar.gz" />
+	      </fileset>
+		  <fileset dir="${web.documentation.directory}">
+	      	<include name="**" />
+	      </fileset>
+	    </copy>		
+	</target>
+	
+	<!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+		        Generate Distribution and put it online. This also replaces the 
+		        Probs and ESModel packages so keep them synchronized.
+	+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+	<target name="distToWWW" depends="init, backupWWW, docToWWW">
 	    <copy todir="${web.download.directory}">
 	      <fileset dir="${distribution.directory}">
 	      	<include name="**Src.tar.gz" />
@@ -595,7 +607,6 @@
 	      </fileset>
 	    </copy>
 	</target>
-
 	
 <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         Run EvA2
