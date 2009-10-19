@@ -33,7 +33,7 @@ try
 catch ME
     disp('Function evaluation failed:');
     disp(ME.message);
-    error('Test failed!');
+    error(['Test failed! ' ME.message]);
 end
             
 disp('Function returned: ');
