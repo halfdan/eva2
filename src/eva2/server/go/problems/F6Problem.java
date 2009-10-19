@@ -28,7 +28,10 @@ public class F6Problem extends F1Problem implements InterfaceMultimodalProblem, 
         this.m_Omega            = b.m_Omega;
     }
 
-    /** This method inits the Problem to log multiruns
+    public F6Problem(int dim) {
+		super(dim);
+	}
+	/** This method inits the Problem to log multiruns
      */
     public void initProblem() {
         super.initProblem();

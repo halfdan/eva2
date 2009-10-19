@@ -64,9 +64,17 @@ public class StatsParameter implements InterfaceStatisticsParameter, Serializabl
 	/**
 	 *
 	 */
-	public static StatsParameter getInstance() {
+	public static StatsParameter getInstance(boolean loadDefaultSerFile) {
+		if (loadDefaultSerFile) return getInstance("Statistics.ser");
+		else return new StatsParameter();
+	}
+	
+	/**
+	 * Try to load instance from serialized file. If impossible, instantiate a new one.
+	 */
+	public static StatsParameter getInstance(String serFileName) {
 		if (TRACE ) System.out.println("Loading serialized stats..");
-		StatsParameter Instance = (StatsParameter) Serializer.loadObject("Statistics.ser");
+		StatsParameter Instance = (StatsParameter) Serializer.loadObject(serFileName);
 		if (Instance == null) {
 			Instance = new StatsParameter();
 			if (TRACE) System.out.println("Loading failed!");
@@ -79,7 +87,7 @@ public class StatsParameter implements InterfaceStatisticsParameter, Serializabl
 	 */
 	public StatsParameter() {
 		m_Name = "Statistics";
-		outputVerbosity.setSelectedTag(2);
+		outputVerbosity.setSelectedTag(VERBOSITY_KTH_IT);
 		outputTo.setSelectedTag(1);
 	}
 

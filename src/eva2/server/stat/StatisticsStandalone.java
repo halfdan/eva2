@@ -60,17 +60,16 @@ public class StatisticsStandalone extends AbstractStatistics implements Interfac
 	}
 
 	public StatisticsStandalone(String resultFileName) {
-		this(StatsParameter.getInstance());
-		m_StatsParams.SetResultFilePrefix(resultFileName);
-		m_StatsParams.setOutputTo(m_StatsParams.getOutputTo().setSelectedTag(StatsParameter.OUTPUT_FILE));
+		this(resultFileName, 1, resultFileName==null ? StatsParameter.VERBOSITY_NONE : StatsParameter.VERBOSITY_FINAL, false);
 	}
 	
-	public StatisticsStandalone(String resultFileName, int multiRuns, int verbosity) {
-		this(StatsParameter.getInstance());
+	public StatisticsStandalone(String resultFileName, int multiRuns, int verbosity, boolean showAdditionalInfo) {
+		this(StatsParameter.getInstance(false));
 		m_StatsParams.setMultiRuns(multiRuns);
 		m_StatsParams.setOutputVerbosity(m_StatsParams.getOutputVerbosity().setSelectedTag(verbosity));
 		m_StatsParams.SetResultFilePrefix(resultFileName);
-		m_StatsParams.setOutputTo(m_StatsParams.getOutputTo().setSelectedTag(StatsParameter.OUTPUT_FILE));
+		if (resultFileName==null) m_StatsParams.getOutputTo().setSelectedTag(StatsParameter.OUTPUT_WINDOW); 
+		else m_StatsParams.setOutputTo(m_StatsParams.getOutputTo().setSelectedTag(StatsParameter.OUTPUT_FILE));
 	}
 	
 	public StatisticsStandalone() {
@@ -120,9 +119,9 @@ public class StatisticsStandalone extends AbstractStatistics implements Interfac
 	
 	public void stopOptPerformed(boolean normal, String stopMessage) {
 		super.stopOptPerformed(normal, stopMessage);
-		if (bestCurrentIndividual != null) {
-			m_SumOfBestFit = m_SumOfBestFit + bestCurrentIndividual.getFitness()[0];
-			m_BestFitnessAtEnd[optRunsPerformed-1] = bestCurrentIndividual.getFitness()[0];
+		if (bestCurrentIndy != null) {
+			m_SumOfBestFit = m_SumOfBestFit + bestCurrentIndy.getFitness()[0];
+			m_BestFitnessAtEnd[optRunsPerformed-1] = bestCurrentIndy.getFitness()[0];
 		}
 
 		//System.out.println("stopOptPerformed :"+m_OptRunsPerformed);

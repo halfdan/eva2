@@ -46,6 +46,7 @@ import com.sun.image.codec.jpeg.JPEGImageEncoder;
 import eva2.EvAInfo;
 import eva2.tools.chart2d.DPointSet;
 import eva2.tools.tool.BasicResourceLoader;
+import eva2.server.go.populations.Population;
 /*==========================================================================*
  * CLASS DECLARATION
  *==========================================================================*/
@@ -277,6 +278,19 @@ public class Plot implements PlotInterface, Serializable {
 		m_Frame.setVisible(true);
 	}
 
+	/**
+	 * Draw a population to the Plot instance. Each individual is annotated with the
+	 * given prefix and its fitness.
+	 * 
+	 * @param prefix
+	 * @param pop
+	 */
+    public void drawPopulation(String prefix, Population pop) {
+		for (int i=0; i<pop.size(); i++) {
+			getFunctionArea().drawIcon(1, prefix+" "+pop.getEAIndividual(i).getFitness(0), pop.getEAIndividual(i).getDoublePosition(), 2);
+		}
+    }
+    
 	public void setPreferredSize(Dimension prefSize) {
 		if (m_Frame != null) {
 			m_Frame.setPreferredSize(prefSize);

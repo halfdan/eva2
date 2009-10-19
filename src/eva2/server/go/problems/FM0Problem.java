@@ -29,12 +29,12 @@ public class FM0Problem extends AbstractMultiModalProblemKnown implements Interf
 //        this.m_Extrema[1]       = 6;
     }
 
-    protected double getRangeUpperBound(int dim) {
+	public double getRangeUpperBound(int dim) {
     	if (dim == 0) return 2.0;
     	else return 2.8;
     }
     
-    protected double getRangeLowerBound(int dim) {
+	public double getRangeLowerBound(int dim) {
     	return -1*getRangeUpperBound(dim);
     }
     

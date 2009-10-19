@@ -256,7 +256,7 @@ public class BasicResourceLoader implements ResourceLoader
     
 	/**
 	 * Fill a line of an array with double values parsed from a String array. A subset of 
-	 * Columns may be selected by giving their indeces in an integer array cols. If cols
+	 * Columns may be selected by giving their indices in an integer array cols. If cols
 	 * is null, all are converted.
 	 *  
 	 * @param dest
@@ -288,7 +288,8 @@ public class BasicResourceLoader implements ResourceLoader
 	}
 	
 	/**
-	 * Test a string for prefixes. If a prefix matches, return its index, else return -1.
+	 * Test a string for prefixes. For the first matching prefix, the index
+	 * of the prefix within the prefix array is returned. If there is no match -1 is returned.
 	 * @param str
 	 * @param pref
 	 * @return
@@ -627,23 +628,23 @@ public class BasicResourceLoader implements ResourceLoader
 		if (bytes != null) {
 			ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
 			prop.load(bais);
+			if (prop != null) return prop;
 		}
-		if (prop != null)
-			return prop;
 		/////////////
 
 		int slInd = resourceName.lastIndexOf('/');
-		if (slInd != -1)
-			resourceName = resourceName.substring(slInd + 1);
+		String planBResName;
+		if (slInd != -1) planBResName = resourceName.substring(slInd + 1);
+		else planBResName = resourceName;
 		Properties userProps = new Properties();
-		File propFile = new File(File.separatorChar + "resources" + File.separatorChar + resourceName);
+		File propFile = new File(File.separatorChar + "resources" + File.separatorChar + planBResName);
 		if (propFile.exists()) {
 			try {
 				userProps.load(new FileInputStream(propFile));
 			} catch (Exception ex) {
-				System.out.println("Problem reading user properties: " + propFile);
+				System.err.println("Problem reading user properties: " + propFile);
 			}
-		}
+		} else System.err.println("Warning in readProperties: neither " + resourceName + " nor " + planBResName + " could be read.");
 		return userProps;
 	}
 	

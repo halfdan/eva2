@@ -316,11 +316,6 @@ public class FunctionArea extends DArea implements Serializable {
 				 for (int j = 1; j < s.length; j++) { // add column data of place holder if no value in this set
 					 if ((j-1) < pset.getSize()) s[j] = s[j] + " " + pset.getDPoint(j - 1).y;
 					 else s[j] += " #";
-//					 try {
-//						 s[j] = s[j] + " " + pset.getDPoint(j - 1).y;
-//					 } catch (Exception e) {
-//						 s[j] += " ";
-//					 }
 				 }
 			 } else System.err.println("error in FunctionArea::exportToAscii");
 		 }

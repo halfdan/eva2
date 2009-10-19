@@ -86,7 +86,7 @@ public class ConstrPressureVessel extends AbstractProblemDouble {
 	}
 	
 	@Override
-    protected double getRangeLowerBound(int dim) {
+	public double getRangeLowerBound(int dim) {
 		switch (dim) {
 		case 0: 
 		case 1: return minThickness/2;
@@ -100,7 +100,7 @@ public class ConstrPressureVessel extends AbstractProblemDouble {
     }
 
 	@Override
-    protected double getRangeUpperBound(int dim) {
+	public double getRangeUpperBound(int dim) {
 		switch (dim) {
 		case 0: 
 		case 1: return maxThickness;

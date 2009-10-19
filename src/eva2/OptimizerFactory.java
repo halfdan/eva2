@@ -39,7 +39,6 @@ import eva2.server.go.operators.terminators.EvaluationTerminator;
 import eva2.server.go.populations.PBILPopulation;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.AbstractOptimizationProblem;
-import eva2.server.go.problems.B1Problem;
 import eva2.server.go.strategies.ClusterBasedNichingEA;
 import eva2.server.go.strategies.ClusteringHillClimbing;
 import eva2.server.go.strategies.DifferentialEvolution;
@@ -57,6 +56,7 @@ import eva2.server.go.strategies.SimulatedAnnealing;
 import eva2.server.go.strategies.Tribes;
 import eva2.server.modules.GOParameters;
 import eva2.server.stat.InterfaceStatistics;
+import eva2.tools.math.RNG;
 
 /**
  * <p>
@@ -750,6 +750,7 @@ public class OptimizerFactory {
 			int popSize, AbstractOptimizationProblem problem, long seed,
 			InterfaceTerminator term) {
 		Population pop = new Population(popSize);
+		RNG.setRandomSeed(seed);
 		problem.initPopulation(pop);
 		return makeParams(opt, pop, problem, seed, term);
 	}

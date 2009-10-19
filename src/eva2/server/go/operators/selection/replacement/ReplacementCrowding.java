@@ -28,15 +28,20 @@ public class ReplacementCrowding implements InterfaceReplacement, java.io.Serial
         this.m_C    = b.m_C;
     }
 
+    public ReplacementCrowding(int C) {
+    	setC(C);
+    }
+    
     /** The ever present clone method
      */
     public Object clone() {
         return new ReplaceRandom();
     }
 
-    /** This method will insert the given individual into the population
-     * by replacing a individual either from the population or the given
-     * subset
+    /** 
+     * From a random subset of size C, the closest is replaced by the given individual. 
+     * The sub parameter is not regarded.
+     * 
      * @param indy      The individual to insert
      * @param pop       The population
      * @param sub       The subset

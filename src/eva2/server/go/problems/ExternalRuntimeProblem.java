@@ -32,8 +32,9 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem implemen
     protected String					m_WorkingDir		= "";
     protected double					m_upperBound		= 10;
     protected double					m_lowerBound		= 0;
+	private String additionalArg="";
 
-    // Private Subclass to redirect Streams within an extra Thread to avoid dead
+	// Private Subclass to redirect Streams within an extra Thread to avoid dead
 	// locks
 	private static class MonitorInputStreamThread extends Thread {
 		private Reader reader;
@@ -165,6 +166,9 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem implemen
 		try {
 			List<String> parameters=new ArrayList<String>();
 			parameters.add(this.m_Command);
+			if (additionalArg!=null && (additionalArg.length()>0)) {
+				parameters.add(additionalArg);
+			}
 			for(int i=0;i<this.m_ProblemDimension;i++){
 				parameters.add(new String(""+x[i]));
 			}
@@ -337,4 +341,14 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem implemen
 		return "Lower bound of the search space in any dimension.";
 	}
 
+	public String additionalArgumentTipText() {
+		return "Optionally define an additional (first) argument for the command line command.";
+	}
+	
+    public String getAdditionalArgument() {
+		return additionalArg;
+	}
+	public void setAdditionalArgument(String additionalArg) {
+		this.additionalArg = additionalArg;
+	}
 }

@@ -17,6 +17,9 @@ public class F2Problem extends F1Problem implements InterfaceMultimodalProblem, 
     public F2Problem(F2Problem b) {
         super(b);     
     }
+    public F2Problem(int dim) {
+    	super(dim);
+    }
 
     /** This method returns a deep clone of the problem.
      * @return  the clone

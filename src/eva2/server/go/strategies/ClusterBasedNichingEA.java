@@ -9,6 +9,7 @@ import eva2.gui.GraphPointSet;
 import eva2.gui.Plot;
 import eva2.gui.TopoPlot;
 import eva2.server.go.InterfacePopulationChangedEventListener;
+import eva2.server.go.PopulationInterface;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceDataTypeDouble;
 import eva2.server.go.operators.cluster.ClusteringDensityBased;
@@ -20,6 +21,7 @@ import eva2.server.go.populations.Population;
 import eva2.server.go.populations.SolutionSet;
 import eva2.server.go.problems.B1Problem;
 import eva2.server.go.problems.Interface2DBorderProblem;
+import eva2.server.go.problems.InterfaceAdditionalPopulationInformer;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.server.go.problems.TF1Problem;
 import eva2.tools.chart2d.DPoint;
@@ -29,10 +31,8 @@ import eva2.tools.math.RNG;
 
 /** The infamuos clustering based niching EA, still under construction.
  * It should be able to identify and track multiple global/local optima
- * at the same time, but currently i'm not sure what size the subpopulations
- * is. It is straightforward with a GA but in case of an ES i've changed the
- * interpretation of the population size and i guess that the mu/lambda ratio
- * is currently lost.. i'll have to fix that some day.
+ * at the same time.
+ * 
  * Copyright:       Copyright (c) 2003
  * Company:         University of Tuebingen, Computer Architecture
  * @author          Felix Streichert
@@ -41,7 +41,7 @@ import eva2.tools.math.RNG;
  *            $Author: mkron $
  */
 
-public class ClusterBasedNichingEA implements InterfacePopulationChangedEventListener, InterfaceOptimizer, java.io.Serializable {
+public class ClusterBasedNichingEA implements InterfacePopulationChangedEventListener, InterfaceAdditionalPopulationInformer, InterfaceOptimizer, java.io.Serializable {
 
     private Population                      m_Population                    = new Population();
     private transient Population			m_Archive						= new Population();
@@ -71,7 +71,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
     private int								convergedCnt					= 0;
 
     private static boolean                  TRACE     = false;
-    private int                             m_ShowCycle = 100;
+    private int                             m_ShowCycle = 0;
     transient private TopoPlot              m_Topology;
     private int                 			haltingWindow         			 = 15;
     private double							muLambdaRatio					 = 0.5;
@@ -639,9 +639,23 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
     	spec.add(survivor);   	
     }
   
+    
+    public int countActiveSpec() {
+    	int k = 0;
+    	for (int i=0; i<m_Species.size(); i++) {
+    		if (isActive(m_Species.get(i))) k++;
+    	}
+    	return k;
+    }
+    
+    /** This method allows an optimizer to register a change in the optimizer.
+     * @param source        The source of the event.
+     * @param name          Could be used to indicate the nature of the event.
+     */
     public void registerPopulationStateChanged(Object source, String name) {
         //Population population = ((InterfaceOptimizer)source).getPopulation();
     }
+
     public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
         this.m_Listener = ea;
     }
@@ -725,6 +739,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
         this.m_Undifferentiated = pop;
         pop.setUseHistory(true);
     }
+    
     public String populationTipText() {
         return "Edit the properties of the population used.";
     }
@@ -882,6 +897,10 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
         return "Determines the size of the initial population.";
     }
 
+    public String[] getGOEPropertyUpdateLinks() {
+    	return new String[] {"population", "populationSize", "populationSize", "population"};
+    }
+    
 //	/**
 //	 * @return the muLambdaRatio
 //	 */
@@ -914,4 +933,14 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
 	public String haltingWindowTipText() {
 		return "Lenght of the halting window defining when a cluster is seen as converged and frozen; set to zero to disable.";
 	}
+
+	public String getAdditionalFileStringHeader(PopulationInterface pop) {
+		return " Undiff. \t #Act.spec.; \t #Inact.spec."; 
+	}
+
+	public String getAdditionalFileStringValue(PopulationInterface pop) {
+		int actives = countActiveSpec();
+		return m_Undifferentiated.size() + " \t " + actives + " \t " + (m_Species.size()-actives);
+	}
+
 }

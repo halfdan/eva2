@@ -25,7 +25,11 @@ public class F8Problem extends F1Problem implements InterfaceMultimodalProblem, 
         this.c = b.c;
     }
 
-    /** This method returns a deep clone of the problem.
+    public F8Problem(int dim) {
+		super(dim);
+		setDefaultRange(f8Range);
+	}
+	/** This method returns a deep clone of the problem.
      * @return  the clone
      */
     public Object clone() {

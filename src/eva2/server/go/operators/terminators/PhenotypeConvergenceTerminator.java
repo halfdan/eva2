@@ -33,15 +33,15 @@ public class PhenotypeConvergenceTerminator extends FitnessConvergenceTerminator
 	 * @param curFit
 	 * @return
 	 */
-	protected boolean isStillConverged(IndividualInterface indy) {
-		double dist = pMetric.distance(oldIndy, (AbstractEAIndividual)indy);
+	protected boolean isStillConverged(PopulationInterface pop) {
+		double dist = pMetric.distance(oldIndy, (AbstractEAIndividual)pop.getBestIndividual());
 		boolean ret;
 		if (getConvergenceCondition().isSelectedString("Relative")) {
 			ret = (dist < (oldPhenNorm * convThresh));
 		} else {
 			ret = (dist < convThresh);
 		}
-		if (TRACE) System.out.println("isStillConverged returns " + ret + ", dist " + dist + ", old indy " + BeanInspector.toString(oldIndy) + ", cur indy" + BeanInspector.toString(indy));
+		if (TRACE) System.out.println("isStillConverged returns " + ret + ", dist " + dist + ", old indy " + BeanInspector.toString(oldIndy) + ", cur indy" + BeanInspector.toString(pop.getBestIndividual()));
 		return ret;
 	}
 

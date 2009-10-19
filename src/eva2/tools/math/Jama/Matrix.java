@@ -114,16 +114,22 @@ public class Matrix implements Cloneable, java.io.Serializable {
    */
 
    public Matrix (double[][] A) {
-      m = A.length;
-      n = A[0].length;
-      for (int i = 0; i < m; i++) {
-         if (A[i].length != n) {
-            throw new IllegalArgumentException("All rows must have the same length.");
-         }
-      }
-      this.A = A;
+      this(A, true);
    }
 
+   public Matrix (double[][] A, boolean checkDims) {
+	   m = A.length;
+	   n = A[0].length;
+	   if (checkDims) {
+		   for (int i = 0; i < m; i++) {
+			   if (A[i].length != n) {
+				   throw new IllegalArgumentException("All rows must have the same length.");
+			   }
+		   }
+	   }
+	   this.A = A;
+   }
+   
    /** Construct a matrix quickly without checking arguments.
    @param A    Two-dimensional array of doubles.
    @param m    Number of rows.
@@ -660,7 +666,24 @@ public class Matrix implements Cloneable, java.io.Serializable {
       }
       return this;
    }
+   
+   /** A = A + B
+   @param B    another matrix
+   @return     A + B
+   */
 
+   public Matrix plusEqualsArrayAsMatrix(double[][] B) {
+	   if ((B.length!=m) || (B[0].length!=n)) {
+		   throw new IllegalArgumentException("Matrix dimensions must agree.");
+	   }
+      for (int i = 0; i < m; i++) {
+         for (int j = 0; j < n; j++) {
+            A[i][j] = A[i][j] + B[i][j];
+         }
+      }
+      return this;
+   }
+   
    /** C = A - B
    @param B    another matrix
    @return     A - B
@@ -803,6 +826,19 @@ public class Matrix implements Cloneable, java.io.Serializable {
          }
       }
       return X;
+   }
+   
+   /** Multiply a matrix in place by a scalar, A = s*A. Returns A.
+    *  @param s    scalar
+    *   @return     s*A
+    */
+   public Matrix timesInplace(double s) {
+      for (int i = 0; i < m; i++) {
+         for (int j = 0; j < n; j++) {
+            A[i][j] = s*A[i][j];
+         }
+      }
+      return this;
    }
    
    /** Multiply a matrix by a vector, returning A*v.

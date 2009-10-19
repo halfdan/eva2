@@ -36,9 +36,13 @@ public class Mathematics {
 		if (cloneX) in = (double[]) x.clone();
 		else in = x;
 
-		Arrays.sort(in);
-		if (in.length % 2 != 0) return in[(in.length-1) / 2];
-		else return (in[in.length/2] + in[(in.length/2)+1]) / 2.;
+		if (in.length==1) return in[0];
+		else if (in.length==2) return (in[0]+in[1])/2.;
+		else {
+			Arrays.sort(in);
+			if (in.length % 2 != 0) return in[(in.length-1) / 2];
+			else return (in[in.length/2] + in[(in.length/2)+1]) / 2.;
+		}
 	}
 	
 	/**
@@ -892,6 +896,24 @@ public class Mathematics {
 		return viols;
 	}
 	
+
+    /**
+     * Scale a range by the given factor, meaning that the interval in each dimension is
+     * extended (fact>1) or reduced (fact<1) by the defined ratio around the center.
+     * 
+     * @param rangeScaleFact
+     * @param range
+     */
+	public static void scaleRange(double rangeScaleFact, double[][] range) {
+		double[] intervalLengths=Mathematics.shiftRange(range);
+		double[] tmpInts=Mathematics.svMult(rangeScaleFact, intervalLengths);
+		Mathematics.vvSub(tmpInts, intervalLengths, tmpInts); // this is what must be added to range interval
+		for (int i=0; i<range.length; i++) {
+			range[i][0]-=tmpInts[i]/2;
+			range[i][1]+=tmpInts[i]/2;
+		}
+	}
+	
 	/**
 	 * Project the value to the range given.
 	 * 
@@ -933,7 +955,7 @@ public class Mathematics {
 		double d = 0.;
 		for (int i=0; i<x.length; i++) {
 			double dimLen = range[i][1]-range[i][0];
-			if (dimLen <= 0.) System.err.println("Error in reflectBounds: empty range!");
+			if (dimLen <= 0.) EVAERROR.errorMsgOnce("Error in reflectBounds: empty range! (possibly multiple errors)");
 			if (x[i]<range[i][0]) {
 				viols++;
 				d = range[i][0]-x[i];
@@ -998,5 +1020,19 @@ public class Mathematics {
 			prod*=vals[i];
 		}
 		return prod;
+	}
+
+	/**
+	 * Intersect two ranges resulting in the maximum range contained in both.  
+	 * 
+	 * @param modRange
+	 * @param makeRange
+	 * @param destRange
+	 */
+	public static void intersectRange(double[][] r1, double[][] r2, double[][] destRange) {
+		for (int i=0; i<r1.length && i<r2.length; i++) {
+			destRange[i][0] = Math.max(r1[i][0], r2[i][0]);
+			destRange[i][1] = Math.min(r1[i][1], r2[i][1]);
+		}
 	}
 }

@@ -14,6 +14,7 @@ import eva2.server.go.PopulationInterface;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.AbstractEAIndividualComparator;
 import eva2.server.go.individuals.GAIndividualBinaryData;
+import eva2.server.go.individuals.InterfaceDataTypeDouble;
 import eva2.server.go.operators.distancemetric.InterfaceDistanceMetric;
 import eva2.server.go.operators.distancemetric.PhenotypeMetric;
 import eva2.server.go.operators.selection.probability.AbstractSelProb;
@@ -21,6 +22,8 @@ import eva2.tools.EVAERROR;
 import eva2.tools.Mathematics;
 import eva2.tools.Pair;
 import eva2.tools.math.RNG;
+import eva2.tools.math.Jama.Matrix;
+import eva2.tools.tool.StatisticUtils;
 
 
 /** This is a basic implementation for a EA Population.
@@ -38,8 +41,8 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     protected int           m_FunctionCalls = 0;
     protected int           m_Size          = 50;
     protected Population    m_Archive       = null;
-
-    transient private ArrayList<InterfacePopulationChangedEventListener> listeners = null;
+    PopulationInitMethod initMethod = PopulationInitMethod.individualDefault;
+	transient private ArrayList<InterfacePopulationChangedEventListener> listeners = null;
 //    transient protected InterfacePopulationChangedEventListener	m_Listener = null;
 
     // the evaluation interval at which listeners are notified
@@ -148,6 +151,15 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     	return res;
     }
 
+    /**
+     * Clone the population with shallow copies of the individual. This should be used with care!
+     * @return
+     */
+    public Population cloneShallowInds() {
+		Population pop = cloneWithoutInds();
+		pop.addAll(this);
+		return pop;
+	}
 
     /** This method inits the state of the population AFTER the individuals
      * have been inited by a problem
@@ -161,6 +173,13 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
         if (this.m_Archive != null) {
             this.m_Archive.clear();
             this.m_Archive.init();
+        }
+        switch (initMethod) {
+        case individualDefault:
+        	break;
+        case randomLatinHypercube:
+        	createRLHSampling(this, false);
+        	break;
         }
         firePropertyChangedEvent(Population.populationInitialized);
     }
@@ -183,6 +202,51 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
         }
     }
 
+    /**
+     * Create a population instance which distributes the individuals according to 
+     * a random latin hypercube sampling.
+     *  
+     * @param popSize
+     * @param template
+     * @return
+     */     
+    public static Population createRLHSampling(int popSize, AbstractEAIndividual template) {
+    	Population pop = new Population(popSize);
+    	pop.add(template);
+    	createRLHSampling(pop, true);
+    	return pop;
+    }
+    
+    /**
+     * Create a population instance which distributes the individuals according to 
+     * a random latin hypercube sampling.
+     *  
+     * @param popSize
+     * @param template
+     * @return
+     */     
+    public static void createRLHSampling(Population pop, boolean fillPop) {
+    	if (pop.size()<=0) {
+    		System.err.println("createRLHSampling needs at least one template individual in the population");
+    		return;
+    	}
+    	AbstractEAIndividual template = pop.getEAIndividual(0);
+    	if (fillPop && (pop.size()<pop.getPopulationSize())) {
+    		for (int i=pop.size(); i<pop.getPopulationSize(); i++) pop.add((AbstractEAIndividual)template.clone());
+    	}
+    	if (template instanceof InterfaceDataTypeDouble) {
+    		double[][] range = ((InterfaceDataTypeDouble)template).getDoubleRange();
+//    		Population pop = new Population(popSize);
+    		Matrix rlhM = StatisticUtils.rlh(pop.size(), range, true);
+    		for (int i=0; i<pop.size(); i++) {
+    			AbstractEAIndividual tmpIndy = pop.getEAIndividual(i);
+    			((InterfaceDataTypeDouble)tmpIndy).SetDoubleGenotype(rlhM.getRowShallow(i));
+    		}
+    	} else {
+    		System.err.println("Error: data type double required for Population.createUniformSampling");
+    	}
+    }
+    
     /**
      * Activate or deactivate the history tracking, which stores the best individual in every
      * generation in the incrGeneration() method.
@@ -664,12 +728,43 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     	int skip = 0;
     	if (!bBestOrWorst) skip = super.size()-n;
     	
-    	ArrayList<AbstractEAIndividual> sorted = getSorted();
+    	ArrayList<AbstractEAIndividual> sorted = getSorted(lastFitCrit);
     	res.clear();
         for (int i = skip; i < skip+n; i++) {
         	res.add(sorted.get(i));
         }
         res.setPopulationSize(res.size());
+    }
+    
+    /**
+     * From the given list, remove all but the first n elements.
+     * @param n
+     * @param l
+     */
+    public static List<AbstractEAIndividual> toHead(int n, List<AbstractEAIndividual> l) {
+    	l.subList(n, l.size()).clear();
+    	return l;
+    }
+    
+    /**
+     * From the given list, remove all but the last n elements.
+     * @param n
+     * @param l
+     */
+    public static List<AbstractEAIndividual> toTail(int n, List<AbstractEAIndividual> l) {
+    	l.subList(0, l.size()-n).clear();
+    	return l;
+    }
+    
+    /**
+     * Return a new population containing only the last n elements of the instance.
+     * @param n
+     * @param l
+     */
+    public Population toTail(int n) {
+    	Population retPop = new Population(n);
+    	retPop.addAll(subList(0, size()-n));
+    	return retPop;
     }
     
     /**
@@ -680,16 +775,35 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     	getSorted(fitIndex);
     }
     
+//    /**
+//     * Reuses the last fitness criterion. Avoid having to sort again in several calls without modifications in between.
+//     * The returned array should not be modified!
+//     * 
+//     * @return
+//     */
+//    protected ArrayList<AbstractEAIndividual> getSorted() {
+//    	return getSorted(lastFitCrit);
+//    }
+
     /**
-     * Reuses the last fitness criterion. Avoid having to sort again in several calls without modifications in between.
+     * Sort the population returning a new ArrayList.
      * The returned array should not be modified!
      * 
+     * @param comp A comparator by which sorting is performed
      * @return
      */
-    protected ArrayList<AbstractEAIndividual> getSorted() {
-    	return getSorted(lastFitCrit);
+    public ArrayList<AbstractEAIndividual> getSorted(AbstractEAIndividualComparator comp) {
+		PriorityQueue<AbstractEAIndividual> sQueue = new PriorityQueue<AbstractEAIndividual>(super.size(), comp);
+		for (int i = 0; i < super.size(); i++) {
+			AbstractEAIndividual indy = getEAIndividual(i);
+			if (indy != null) sQueue.add(indy);
+		}
+		ArrayList<AbstractEAIndividual> sArr = new ArrayList<AbstractEAIndividual>(this.size());
+		AbstractEAIndividual indy;
+		while ((indy=sQueue.poll())!=null) sArr.add(indy);
+		return sArr;
     }
-
+    
     /**
      * Avoids having to sort again in several calls without modifications in between.
      * The returned array should not be modified!
@@ -699,38 +813,57 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      */
     protected ArrayList<AbstractEAIndividual> getSorted(int fitIndex) {
     	if ((fitIndex != lastFitCrit) || (sortedArr == null) || (super.modCount != lastQModCount)) {
-    		lastFitCrit=fitIndex; // TODO check if this works right?
-    		PriorityQueue<AbstractEAIndividual> sQueue = new PriorityQueue<AbstractEAIndividual>(super.size(), new AbstractEAIndividualComparator(fitIndex));
-    		for (int i = 0; i < super.size(); i++) {
-    			AbstractEAIndividual indy = getEAIndividual(i);
-    			if (indy != null) sQueue.add(indy);
-    		}
+    		lastFitCrit=fitIndex;
+    		ArrayList<AbstractEAIndividual> sArr = getSorted(new AbstractEAIndividualComparator(fitIndex));
+    		if (sortedArr==null) sortedArr = sArr;
+    		else {
+    			sortedArr.clear();
+    			sortedArr.addAll(sArr);
+    		}    		
     		lastQModCount = super.modCount;
-    		if (sortedArr==null) sortedArr = new ArrayList<AbstractEAIndividual>(this.size());
-    		else sortedArr.clear();
-    		AbstractEAIndividual indy;
-    		while ((indy=sQueue.poll())!=null) sortedArr.add(indy);
     	}
     	return sortedArr;
     }
-    
-    /** This method returns n random best individuals from the population.
+
+    /** 
+     * This method retrieves n random individuals from the population and
+     * returns them within a new population.
      * 
      * @param n	number of individuals to look out for
      * @return The n best individuals
      * 
      */
-    public List<AbstractEAIndividual> getRandNIndividuals(int n) {
-    	return getRandNIndividualsExcept(n, new Population());	
+    public Population getRandNIndividuals(int n) {
+    	if (n>=size()) return (Population)clone();
+    	else {
+        	Population pop = cloneShallowInds();
+        	Population retPop = cloneWithoutInds();
+        	moveNInds(n, pop, retPop);
+        	return retPop;
+    	}
+    }
+
+	/** 
+     * This method removes n random individuals from the population and
+     * returns them within a new population.
+     * 
+     * @param n	number of individuals to look out for
+     * @return The n best individuals
+     * 
+     */
+    public Population moveRandNIndividuals(int n) {
+    	return moveRandNIndividualsExcept(n, new Population());	
     }
     
-    /** This method returns the n current best individuals from the population in an object array.
+    /** 
+     * This method removes n random individuals from the population (excluding the given ones)
+     * and returns them in a new population instance. 
      * 
      * @param n	number of individuals to look out for
-     * @return The n best individuals
+     * @return The n random individuals
      * 
      */
-    public Population getRandNIndividualsExcept(int n, Population exclude) {
+    public Population moveRandNIndividualsExcept(int n, Population exclude) {
     	return moveNInds(n, filter(exclude), new Population());
     }
 
@@ -757,7 +890,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      */
     public static void moveRandIndFromTo(Population src, Population dst) {
     	int k = RNG.randomInt(src.size());
-    	dst.add(src.remove(k));
+    	dst.add(src.removeIndexSwitched(k));
     }
     
     /**
@@ -901,6 +1034,10 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
         return strB.toString();
     }
 
+    public String getName() {
+    	return "Population-"+getPopulationSize();
+    }
+    
     /**
      * Return a list of individual IDs from the population.
      * @return
@@ -999,6 +1136,27 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     	return prev;
     }
     
+    /**
+	 * ArrayList does not increase the modCount in set. Why???
+	 * This method keeps the internally sorted array in synch to minimize complete resorting events.
+     */
+    public Object set(int index, Object element, int fitIndex) {
+    	Object prev = super.set(index, element);
+    	modCount++;
+    	if (lastFitCrit==fitIndex && (lastQModCount==(modCount-1))) {
+    		// if nothing happend between this event and the last sorting by the same criterion...
+    		sortedArr.remove(prev);
+    		int i=0;
+    		AbstractEAIndividualComparator comp = new AbstractEAIndividualComparator(fitIndex);
+    		while (i<sortedArr.size() && comp.compare(element, sortedArr.get(i))>0) {
+    			i++;
+    		}
+    		sortedArr.add(i, (AbstractEAIndividual)element);
+    		lastQModCount=modCount;
+    	}
+    	return prev;
+    }
+    
     public boolean addIndividual(IndividualInterface ind) {
         super.add(ind);
         return true;
@@ -1010,10 +1168,12 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      *
      * @param index	individual index to be removed
      */
-    public void removeIndexSwitched(int index) {
+    public AbstractEAIndividual removeIndexSwitched(int index) {
+    	AbstractEAIndividual indy = getEAIndividual(index);
     	int lastIndex = size()-1;
     	if (index < lastIndex) set(index, get(lastIndex));
     	remove(lastIndex);    	
+    	return indy;
     }
     
     /**
@@ -1095,8 +1255,8 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     	
         for (int i = 0; i < this.size(); i++) {
         	for (int j = i+1; j < this.size(); j++) {
-        		if (metric == null) d = PhenotypeMetric.euclidianDistance(AbstractEAIndividual.getDoublePosition(getEAIndividual(i)), 
-                		AbstractEAIndividual.getDoublePosition(getEAIndividual(j)));
+        		if (metric == null) d = PhenotypeMetric.euclidianDistance(AbstractEAIndividual.getDoublePositionShallow(getEAIndividual(i)), 
+                		AbstractEAIndividual.getDoublePositionShallow(getEAIndividual(j)));
         		else d = metric.distance((AbstractEAIndividual)this.get(i), (AbstractEAIndividual)this.get(j));
                 meanDist += d;
                 if (d < minDist) minDist = d;
@@ -1110,6 +1270,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
         	res[1]=0;
         	res[2]=0;
         }
+//        System.out.println("0-1-dist: " + BeanInspector.toString(metric.distance((AbstractEAIndividual)this.get(0), (AbstractEAIndividual)this.get(1))));
         return res;
     }
     
@@ -1152,6 +1313,32 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
         return res;
     }
     
+	 /**
+	  * Search for the closest (farthest) individual to the given position.
+	  * Return a Pair of the individuals index and distance.
+	  * If the population is empty, a Pair of (-1,-1) is returned.
+	  * 
+	  * @param pos
+	  * @param pop
+	  * @param closestOrFarthest if true, the closest individual is retrieved, otherwise the farthest
+	  * @return 
+	  */
+	 public static Pair<Integer,Double> getClosestFarthestIndy(double[] pos, Population pop, boolean closestOrFarthest) {
+		 double dist = -1.;
+		 int sel=-1;
+		 for (int i = 0; i < pop.size(); i++) {
+			 AbstractEAIndividual indy = pop.getEAIndividual(i);
+			 double[] indyPos = AbstractEAIndividual.getDoublePositionShallow(indy);
+			 double curDist = PhenotypeMetric.euclidianDistance(pos, indyPos);
+			 if ((dist<0) 	|| (!closestOrFarthest && (dist < curDist)) 
+					 		|| (closestOrFarthest && (dist > curDist))) {
+				 dist = curDist;
+				 sel = i;
+			 }
+		 }
+		 return new Pair<Integer,Double>(sel,dist);
+	 }
+    
 	/**
 	 * Calculate the average position of the population.
 	 * 
@@ -1161,7 +1348,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
 		if (size()==0) EVAERROR.errorMsgOnce("Invalid pop size in DistractingPopulation:getCenter!");
 		double[] centerPos = AbstractEAIndividual.getDoublePosition(getEAIndividual(0));
 		for (int i=1; i<size(); i++) {
-			Mathematics.vvAdd(centerPos, AbstractEAIndividual.getDoublePosition(getEAIndividual(i)), centerPos);
+			Mathematics.vvAdd(centerPos, AbstractEAIndividual.getDoublePositionShallow(getEAIndividual(i)), centerPos);
 		}
 		Mathematics.svDiv(size(), centerPos, centerPos);
 		return centerPos;
@@ -1177,7 +1364,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
 		double[] centerPos = AbstractEAIndividual.getDoublePosition(getEAIndividual(0));
 		Mathematics.svMult(weights[0], centerPos, centerPos);
 		for (int i=1; i<weights.length; i++) {
-			Mathematics.svvAddScaled(weights[i], AbstractEAIndividual.getDoublePosition(getEAIndividual(i)), centerPos, centerPos);
+			Mathematics.svvAddScaled(weights[i], AbstractEAIndividual.getDoublePositionShallow(getEAIndividual(i)), centerPos, centerPos);
 		}
 		return centerPos;
 	}
@@ -1195,14 +1382,14 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
 	 */
 	public double[] getCenterWeighted(AbstractSelProb selProb, int criterion, boolean obeyConst) {
 		selProb.computeSelectionProbability(this, "Fitness", obeyConst);
-		double[] mean = AbstractEAIndividual.getDoublePosition(getEAIndividual(0)).clone();
+		double[] mean = AbstractEAIndividual.getDoublePosition(getEAIndividual(0));
 		
 		if (mean != null) {
 			Arrays.fill(mean, 0.);
 			AbstractEAIndividual indy = null;
 			for (int i=0; i<size(); i++) {
 				indy = getEAIndividual(i);
-				double[] pos = AbstractEAIndividual.getDoublePosition(indy);
+				double[] pos = AbstractEAIndividual.getDoublePositionShallow(indy);
 				Mathematics.svvAddScaled(indy.getSelectionProbability(criterion), pos, mean, mean);
 			}
 		}
@@ -1224,8 +1411,8 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
 		for (int i = 0; i < size(); ++i){ 
 			AbstractEAIndividual currentindy = getEAIndividual(i);
 			if (!indy.equals(currentindy)){ // dont compare particle to itself or a copy of itself
-				double dist = PhenotypeMetric.euclidianDistance(AbstractEAIndividual.getDoublePosition(indy),
-						AbstractEAIndividual.getDoublePosition(currentindy));
+				double dist = PhenotypeMetric.euclidianDistance(AbstractEAIndividual.getDoublePositionShallow(indy),
+						AbstractEAIndividual.getDoublePositionShallow(currentindy));
 				if (dist  < mindist){ 
 					mindist = dist;
 					index = i;
@@ -1261,8 +1448,8 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
 			if (normalizedPhenoMetric){
 				d = metric.distance(indy, neighbor);
 			} else { 
-				d = PhenotypeMetric.euclidianDistance(AbstractEAIndividual.getDoublePosition(indy),
-						AbstractEAIndividual.getDoublePosition(neighbor));
+				d = PhenotypeMetric.euclidianDistance(AbstractEAIndividual.getDoublePositionShallow(indy),
+						AbstractEAIndividual.getDoublePositionShallow(neighbor));
 			}
 			if (calcVariance) distances.add(d);
 			sum += d;
@@ -1340,6 +1527,36 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
 		setPopulationSize(size());
 	}
 
+	/**
+	 * Update the range of all individuals to the given one. If forceRange is true
+	 * and the individuals are out of range, they are projected into the range
+	 * by force.
+	 * 
+	 * @param modRange
+	 * @param b
+	 */
+	public void updateRange(double[][] range, boolean forceRange) {
+		for (int i=0; i<size(); i++) {
+			((InterfaceDataTypeDouble)getEAIndividual(i)).SetDoubleRange(range);
+			double[] pos = ((InterfaceDataTypeDouble)getEAIndividual(i)).getDoubleData();
+			if (!Mathematics.isInRange(pos, range)) {
+				Mathematics.projectToRange(pos, range);
+				((InterfaceDataTypeDouble)getEAIndividual(i)).SetDoubleGenotype(pos);
+			}
+		}
+	}
+
+    public PopulationInitMethod getInitMethod() {
+		return initMethod;
+	}
+
+	public void setInitMethod(PopulationInitMethod initMethod) {
+		this.initMethod = initMethod;
+	}
+	
+	public String initMethodTipText() {
+		return "Define the initial sampling method. Note that anything other than inidividualDefault will override the individual initialization concerning the positions in solution space.";
+	}
 //	/**
 //	 * Check whether the population at the current state has been marked as
 //	 * evaluated. This allows to avoid double evaluations. 

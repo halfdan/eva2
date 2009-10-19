@@ -28,6 +28,7 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
         this.m_CrossoverProbability = 0.5;
         this.m_CrossoverOperator    = new CrossoverESDefault();
         this.m_Genotype             = new double[1];
+        this.m_Phenotype			= null;
         this.m_Range                = new double[1][2];
         this.m_Range[0][0]          = -10;
         this.m_Range[0][1]          = 10;
@@ -170,7 +171,8 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
      * @return double[] representing the double data.
      */
     public double[] getDoubleDataWithoutUpdate() {
-        return this.m_Phenotype;
+    	if (m_Phenotype==null) return getDoubleData();
+    	else return this.m_Phenotype;
     }
 
     /** This method allows you to set the phenotype double data. To change the genotype,

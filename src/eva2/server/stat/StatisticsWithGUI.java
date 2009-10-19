@@ -86,11 +86,11 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
 
 		
 		if ((Client == null) || Client.getHostName().equals(m_MyHostName)) {
-			m_StatsParams = StatsParameter.getInstance();
+			m_StatsParams = StatsParameter.getInstance(true);
 			m_ProxyPrinter = new JTextoutputFrame("TextOutput of " + m_MyHostName);
 		} else { // we use RMI
 			m_StatsParams = (InterfaceStatisticsParameter)RMIProxyLocal.newInstance(
-					StatsParameter.getInstance());
+					StatsParameter.getInstance(true));
 			m_ProxyPrinter = (JTextoutputFrameInterface) RMIProxyRemote.newInstance(new
 					JTextoutputFrame("TextOutput " + m_MyHostName),
 					m_MainAdapterClient);
@@ -246,7 +246,7 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
 
 			int subGraph=0;
 			if (doPlotCurrentBest) plotFitnessPoint(0, subGraph++, functionCalls, currentBestFit[0]);
-			if (doPlotRunBest) plotFitnessPoint(0, subGraph++, functionCalls, bestRunIndividual.getFitness()[0]);
+			if (doPlotRunBest) plotFitnessPoint(0, subGraph++, functionCalls, bestOfRunIndy.getFitness()[0]);
 			
 			if (doPlotWorst) {// schlechteste Fitness plotten
 				if (currentWorstFit == null) {
@@ -261,8 +261,8 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
 			if (doPlotCurBestFeasible && currentBestFeasibleFit!=null) {
 				plotFitnessPoint(0, subGraph++, functionCalls, currentBestFeasibleFit[0]);
 			}
-			if (doPlotRunBestFeasible && bestRunFeasibleIndy!=null) {
-				plotFitnessPoint(0, subGraph++, functionCalls, bestRunFeasibleIndy.getFitness()[0]);
+			if (doPlotRunBestFeasible && bestOfRunFeasibleIndy!=null) {
+				plotFitnessPoint(0, subGraph++, functionCalls, bestOfRunFeasibleIndy.getFitness()[0]);
 			}
 		}
 	}

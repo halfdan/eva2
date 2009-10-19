@@ -28,7 +28,8 @@ public enum PSOTopologyEnum {
 	/**
 	 *
 	 */
-	random; 
+	random,
+	dms; 
 
 	/**
 	 * A method to translate the "old" integer tags into the enum type.
@@ -44,6 +45,7 @@ public enum PSOTopologyEnum {
 		case 4: return tree;
 		case 5: return hpso;
 		case 6: return random;
+		case 7: return dms;
 		default:	System.err.println("Error: invalid old topology ID in PSOTopologyEnum translateOldID! Returning grid.");
 			return grid; 
 		}

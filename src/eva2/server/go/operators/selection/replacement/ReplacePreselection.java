@@ -11,7 +11,7 @@ import eva2.server.go.populations.Population;
  * Time: 15:24:03
  * To change this template use File | Settings | File Templates.
  */
-public class PreplacePreselection implements InterfaceReplacement, java.io.Serializable {
+public class ReplacePreselection implements InterfaceReplacement, java.io.Serializable {
 
     /** The ever present clone method
      */
