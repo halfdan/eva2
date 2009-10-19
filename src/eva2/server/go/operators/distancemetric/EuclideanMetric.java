@@ -26,8 +26,8 @@ public class EuclideanMetric implements InterfaceDistanceMetric {
 		double[]    dIndy1, dIndy2;
 		double      result = 0;
 
-		dIndy1 = AbstractEAIndividual.getDoublePosition(indy1);
-		dIndy2 = AbstractEAIndividual.getDoublePosition(indy2);
+		dIndy1 = AbstractEAIndividual.getDoublePositionShallow(indy1);
+		dIndy2 = AbstractEAIndividual.getDoublePositionShallow(indy2);
 
 		for (int i = 0; (i < dIndy1.length) && (i < dIndy2.length); i++) {
 			result += Math.pow((dIndy1[i] - dIndy2[i]), 2);

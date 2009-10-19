@@ -5,9 +5,9 @@ import eva2.server.go.populations.Population;
 import eva2.tools.math.RNG;
 
 
-/** Random selection typically used for ES a mating selection.
- * In case of multiple fitness values the selection
- * critria is selected randomly for each selection event. pff
+/** 
+ * Random selection typically used for ES as mating selection.
+ *
  * Created by IntelliJ IDEA.
  * User: streiche
  * Date: 18.03.2003
@@ -17,14 +17,21 @@ import eva2.tools.math.RNG;
 public class SelectRandom implements InterfaceSelection, java.io.Serializable {
 
     private boolean     m_ObeyDebsConstViolationPrinciple = false;
+    private boolean 	withReplacement = true;
 
     public SelectRandom() {
     }
 
     public SelectRandom(SelectRandom a) {
         this.m_ObeyDebsConstViolationPrinciple = a.m_ObeyDebsConstViolationPrinciple;
+        this.withReplacement = a.withReplacement;
     }
 
+    public SelectRandom(boolean withRepl) {
+    	withReplacement=withRepl;
+    	if (m_ObeyDebsConstViolationPrinciple) System.err.println("Error, replacement selection not supported for constrained selection (SelectRandom)");
+    }
+    
     public Object clone() {
         return (Object) new SelectRandom(this);
     }
@@ -39,9 +46,9 @@ public class SelectRandom implements InterfaceSelection, java.io.Serializable {
         // nothing to prepare here
     }
 
-    /** This method will select one Individual from the given
-     * Population in respect to the selection propability of the
-     * individual.
+    /** This method will select individuals randomly from the given
+     * Population. Individuals may be drawn several times or not at all.
+     * 
      * @param population    The source population where to select from
      * @param size          The number of Individuals to select
      * @return The selected population.
@@ -64,17 +71,22 @@ public class SelectRandom implements InterfaceSelection, java.io.Serializable {
                     }
                 }
             }
-
         } else {
-            for (int i = 0; i < size; i++) {
-                result.add(population.get(RNG.randomInt(0, population.size()-1)));
-            }
+        	if (withReplacement) {
+        		for (int i = 0; i < size; i++) {
+        			result.add(population.get(RNG.randomInt(0, population.size()-1)));
+        		}
+        	} else {
+        		if (size > population.size()) throw new RuntimeException("Error, invalid selection: trying to select more individuals (without replacement) than available in SelectRandom.");
+        		int[] perm = RNG.randomPerm(size);
+        		for (int i=0; i<size; i++) result.add(population.getEAIndividual(perm[i]));
+        	}
         }
         return result;
     }
 
     /** This method allows you to select partners for a given Individual
-     * @param dad               The already seleceted parent
+     * @param dad               The already selected parent
      * @param avaiablePartners  The mating pool.
      * @param size              The number of partners needed.
      * @return The selected partners.

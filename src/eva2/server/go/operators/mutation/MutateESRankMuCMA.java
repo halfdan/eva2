@@ -98,9 +98,27 @@ class CMAParamSet implements InterfacePopulationChangedEventListener, Serializab
 	 * @return
 	 */
 	public static CMAParamSet initCMAParams(CMAParamSet params, int mu, int lambda, Population pop, double initialSigma) {
+		initCMAParams(params, mu, lambda, pop.getCenter(), ((InterfaceDataTypeDouble)pop.getEAIndividual(0)).getDoubleRange(), initialSigma);
+		pop.addPopulationChangedEventListener(params);
+		return params;
+	}
+	
+	/**
+	 * Initializes the CMA parameter set for given mu, lambda and a population.
+	 * The initialSigma parameter is used as initial sigma directly unless it is <0, in
+	 * that case the average range is used as initial sigma.
+	 * 
+	 * @param params	the CMA parameter set to be used - its data are overwritten
+	 * @param mu	ES mu parameter
+	 * @param lambda	ES lambda parameter
+	 * @param pop	associated Population
+	 * @param initialSigma	initial sigma or -1 to indicate the usage of average range
+	 * @return
+	 */
+	public static CMAParamSet initCMAParams(CMAParamSet params, int mu, int lambda, double[] center, double[][] range, double initialSigma) {
 		// those are from init:
 		params.firstAdaptionDone = false;
-		params.range = ((InterfaceDataTypeDouble)pop.getEAIndividual(0)).getDoubleRange();
+		params.range = range;
 
 		int dim = params.range.length;
 //		if (TRACE_1) System.out.println("WCMA init " + dim);
@@ -129,8 +147,7 @@ class CMAParamSet implements InterfacePopulationChangedEventListener, Serializab
 		params.sigma = initialSigma;
 //		System.out.println("INitial sigma: "+sigma);
 		params.firstSigma = params.sigma;
-		params.meanX = pop.getCenter(); // this might be ok?
-		pop.addPopulationChangedEventListener(params);
+		params.meanX = center; // this might be ok?
 		return params;
 	}
 
@@ -286,6 +303,8 @@ public class MutateESRankMuCMA implements InterfaceMutationGenerational, Seriali
 		int mu,lambda;
 		mu = selectedP.size();
 		lambda = oldGen.size();
+		int generation = oldGen.getGeneration();
+
 		if (mu>= lambda) {
 			EVAERROR.errorMsgOnce("Warning: invalid mu/lambda ratio! Setting mu to lambda/2.");
 			mu = lambda/2;
@@ -300,9 +319,6 @@ public class MutateESRankMuCMA implements InterfaceMutationGenerational, Seriali
 				params = CMAParamSet.initCMAParams(mu, lambda, oldGen, getInitSigma(oldGen));
 			} else params = (CMAParamSet)oldGen.getData(cmaParamsKey);
 		}
-		
-		int generation = oldGen.getGeneration();
-		
 		if (TRACE_1) {
 			System.out.println("WCMA adaptGenerational **********");
 //			System.out.println("newPop measures: " + BeanInspector.toString(newPop.getPopulationMeasures()));
@@ -332,11 +348,16 @@ public class MutateESRankMuCMA implements InterfaceMutationGenerational, Seriali
             for (int j = 0; j < dim; ++j) {
                 sum += params.mB.get(j,i) * BDz[j]; // times B transposed, (Eq 4) in HK04
             }
-            zVect[i] = sum / Math.sqrt(params.eigenvalues[i]);			
-            if (Double.isInfinite(zVect[i])|| Double.isNaN(zVect[i])) {
-				System.err.println("Error, infinite zVect entry!");
-				zVect[i]=0; // TODO MK
-			}
+            if (params.eigenvalues[i]<0) {
+            	EVAERROR.errorMsgOnce("Warning: negative eigenvalue in MutateESRankMuCMA! (possibly multiple cases)");
+            	zVect[i]=0;
+            } else {
+            	zVect[i] = sum / Math.sqrt(params.eigenvalues[i]);			
+	            if (!checkValidDouble(zVect[i])) {
+					System.err.println("Error, infinite zVect entry!");
+					zVect[i]=0; // TODO MK
+				}
+            }
         }
 
         /* cumulation for sigma (ps) using B*z */
@@ -345,7 +366,7 @@ public class MutateESRankMuCMA implements InterfaceMutationGenerational, Seriali
 			for (int j = 0; j < dim; ++j) sum += params.mB.get(i,j) * zVect[j];
 			newPathS[i] = (1. - params.c_sig) * params.pathS[i]
 			              + Math.sqrt(params.c_sig * (2. - params.c_sig)) * sum;
-			if (Double.isInfinite(newPathS[i]) || Double.isNaN(newPathS[i])) {
+			if (!checkValidDouble(newPathS[i])) {
 				System.err.println("Error, infinite pathS!");
 			}
 		}
@@ -386,8 +407,11 @@ public class MutateESRankMuCMA implements InterfaceMutationGenerational, Seriali
 		if (Double.isInfinite(sigFact)) params.sigma *= 10.; // in larger search spaces sigma tends to explode after init.  
 		else params.sigma *= sigFact;
 
-		testAndCorrectNumerics(params, generation, selectedSorted);
-        
+		if (!testAndCorrectNumerics(params, generation, selectedSorted)) {
+			// parameter seemingly exploded...
+			params = CMAParamSet.initCMAParams(params, mu, lambda, params.meanX, ((InterfaceDataTypeDouble)oldGen.getEAIndividual(0)).getDoubleRange(), params.firstSigma);
+		}
+
 		if (TRACE_1) {
 			System.out.print("psLen=" + (psNorm) + " ");
 			outputParams(params, mu);
@@ -422,10 +446,13 @@ public class MutateESRankMuCMA implements InterfaceMutationGenerational, Seriali
 	/**
 	 * Requires selected population to be sorted by fitness.
 	 * 
-	 * @param iterations
-	 * @param selected
+	 * @param params refering parameter set 
+	 * @param iterations	number of iterations performed
+	 * @param selected	selected population
+	 * @return true if the parameters seem ok or were corrected, false if new parameters must be produced
 	 */
-    void testAndCorrectNumerics(CMAParamSet params, int iterations, Population selected) { // not much left here
+    private boolean testAndCorrectNumerics(CMAParamSet params, int iterations, Population selected) { // not much left here
+    	boolean corrected = true; 
     	/* Flat Fitness, Test if function values are identical */
     	if (iterations > 1) {
     		// selected pop is sorted
@@ -438,7 +465,8 @@ public class MutateESRankMuCMA implements InterfaceMutationGenerational, Seriali
     	
         if (!checkValidDouble(params.sigma)) {
         	System.err.println("Error, unstable sigma!");
-        	params.sigma=params.firstSigma; // MK TODO
+			corrected = false;
+//        	params.sigma=params.firstSigma; // MK TODO
 //        	System.err.println(
         }
     	
@@ -465,6 +493,7 @@ public class MutateESRankMuCMA implements InterfaceMutationGenerational, Seriali
     			}
     		}
     	}
+    	return corrected;
     } // Test...
 	
 	private boolean nearlySame(double[] bestFitness, double[] worstFitness) {

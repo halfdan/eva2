@@ -1,5 +1,6 @@
 package eva2.server.go.problems;
 
+import eva2.gui.BeanInspector;
 import eva2.gui.GenericObjectEditor;
 import eva2.server.go.PopulationInterface;
 import eva2.server.go.individuals.AbstractEAIndividual;
@@ -40,6 +41,7 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
 //	PropertySelectableList<AbstractConstraint> constraintList = new PropertySelectableList<AbstractConstraint>(new AbstractConstraint[]{new GenericConstraint()});
     private AbstractConstraint[] constraintArray = new AbstractConstraint[]{new GenericConstraint()};
     private boolean withConstraints = false;  
+    public static String rawFitKey="UnconstrainedFitnessValue";
     
 	public AbstractProblemDouble() {
 		initTemplate();
@@ -104,7 +106,10 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
         if (m_Noise != 0) RNG.addNoise(fitness, m_Noise); 
         // set the fitness
         setEvalFitness(individual, x, fitness);
-        if (isWithConstraints()) addConstraints(individual, x);
+        if (isWithConstraints()) {
+        	individual.putData(rawFitKey, individual.getFitness());
+        	addConstraints(individual, x);
+        }
 	}
 	
 	/**
@@ -187,7 +192,7 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
      * @param dim
      * @return the lower bound of the double range in the given dimension
      */
-    protected double getRangeLowerBound(int dim) {
+    public double getRangeLowerBound(int dim) {
     	return -getDefaultRange();
     }
     
@@ -200,7 +205,7 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
      * @param dim
      * @return the upper bound of the double range in the given dimension
      */
-    protected double getRangeUpperBound(int dim) {
+    public double getRangeUpperBound(int dim) {
     	return getDefaultRange();
     }
 
@@ -369,7 +374,7 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
 	@Override
 	public String getAdditionalFileStringHeader(PopulationInterface pop) {
 		String superHeader = super.getAdditionalFileStringHeader(pop);
-		if (isWithConstraints()) return superHeader + " \tNum.Viol. \t Sum.Viol.";
+		if (isWithConstraints()) return superHeader + " \tRawFit. \tNum.Viol. \t Sum.Viol.";
 		else return superHeader;
 	}
 
@@ -377,8 +382,9 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
 	public String getAdditionalFileStringValue(PopulationInterface pop) {
 		String superVal = super.getAdditionalFileStringValue(pop);
 		if (isWithConstraints()) {
-			Pair<Integer,Double> violation= getConstraintViolation((AbstractEAIndividual)pop.getBestIndividual());
-			return superVal + " \t" + violation.head() + " \t" + violation.tail();
+			AbstractEAIndividual indy = (AbstractEAIndividual)pop.getBestIndividual();
+			Pair<Integer,Double> violation= getConstraintViolation(indy);
+			return superVal + " \t" + BeanInspector.toString(indy.getData(rawFitKey)) + " \t" + violation.head() + " \t" + violation.tail();
 		} else return superVal;
 	}
 

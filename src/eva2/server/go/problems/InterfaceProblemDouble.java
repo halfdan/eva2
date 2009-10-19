@@ -1,5 +1,7 @@
 package eva2.server.go.problems;
 
+import eva2.server.go.individuals.InterfaceDataTypeDouble;
+
 /**
  * A minimal interface for double valued problems.
  * 
@@ -28,4 +30,33 @@ public interface InterfaceProblemDouble {
 	 * @return a range array
 	 */
     public double[][] makeRange();
+    
+    /**
+     * Get the EA individual template currently used by the problem.
+     * 
+     * @return the EA individual template currently used
+     */
+    public InterfaceDataTypeDouble getEAIndividual();
+    
+    /**
+     * Get the upper bound of the double range in the given dimension. Override
+     * this to implement non-symmetric ranges. User setDefaultRange for symmetric ranges.
+     * 
+     * @see makeRange()
+     * @see getRangeLowerBound(int dim)
+     * @param dim
+     * @return the upper bound of the double range in the given dimension
+     */
+    public double getRangeUpperBound(int dim);
+    
+    /**
+     * Get the lower bound of the double range in the given dimension. Override
+     * this to implement non-symmetric ranges. Use setDefaultRange for symmetric ranges.
+     * 
+     * @see makeRange()
+     * @see getRangeUpperBound(int dim)
+     * @param dim
+     * @return the lower bound of the double range in the given dimension
+     */
+    public double getRangeLowerBound(int dim);
 }

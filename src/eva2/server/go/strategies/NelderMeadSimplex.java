@@ -138,7 +138,8 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
 		for (int i=0; i<bestpop.size(); i++) {
 			for (int j=0; j<dim; j++) {
 				AbstractEAIndividual bestIndi= (AbstractEAIndividual) bestpop.getIndividual(i);
-				centroid[j] +=((InterfaceDataTypeDouble)bestIndi).getDoubleData()[j]/bestpop.size(); // bug?
+				double[] bestIndyPos = ((InterfaceDataTypeDouble)bestIndi).getDoubleDataWithoutUpdate();
+				centroid[j] +=bestIndyPos[j]/bestpop.size(); // bug?
 			}
 		}
 
@@ -269,7 +270,7 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
 //					m_Problem.evaluate(ind);
 //					this.m_Population.incrFunctionCalls();
 				}
-				m_Population.set(m_Population.getIndexOfWorstIndividual(fitIndex), ind);
+				m_Population.set(m_Population.getIndexOfWorstIndividual(fitIndex), ind, fitIndex);
 			}else{//keine Verbesserung gefunden shrink!!
 				
 				double[] u_1 = ((InterfaceDataTypeDouble) m_Population.getBestEAIndividual(fitIndex)).getDoubleData();

@@ -21,9 +21,10 @@ public class ReplaceDeterministicCrowding implements InterfaceReplacement, java.
         return new ReplaceRandom();
     }
 
-    /** This method will insert the given individual into the population
-     * by replacing a individual either from the population or the given
-     * subset
+    /** 
+     * Take the closest individual within the subset and remove it from pop. Add
+     * indy as a replacement. 
+     * 
      * @param indy      The individual to insert
      * @param pop       The population
      * @param sub       The subset

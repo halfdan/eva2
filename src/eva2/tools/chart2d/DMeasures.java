@@ -311,6 +311,7 @@ public class DMeasures implements Serializable
 	      }
 	    }
 	    catch( IllegalArgumentException nde ){ return null; }
+	    catch( NullPointerException npe) {return null;}
 	    return new SlimRect( x1, y1, x2 - x1, y2 - y1 );
 	  }
 //  SlimRect getSourceOf( double xpos, double ypos, double width, double height){

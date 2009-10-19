@@ -319,7 +319,7 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
     	
     	// if not provided reasonable values use defaults:
     	if (mutationStepSize<0) mutationStepSize = 0.0001; 
-    	if (numOfFailures<0) numOfFailures = 100*AbstractEAIndividual.getDoublePosition(this.m_Template).length; // scales the effort with the number of problem dimensions
+    	if (numOfFailures<0) numOfFailures = 100*AbstractEAIndividual.getDoublePositionShallow(this.m_Template).length; // scales the effort with the number of problem dimensions
     	
     	AbstractEAIndividual indy = (AbstractEAIndividual)orig.clone();
     	this.evaluate(indy); // indy may be evaluated in a normalised way...
@@ -384,7 +384,7 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
     	if (orig instanceof InterfaceDataTypeDouble) {
     		initPerturb = epsilonPhenoSpace/(2*(Mathematics.getAvgRange(((InterfaceDataTypeDouble)orig).getDoubleRange())));
     		dim=((InterfaceDataTypeDouble)orig).getDoubleRange().length;
-        	if (numOfFailures<0) numOfFailures = 100*AbstractEAIndividual.getDoublePosition(this.m_Template).length; // scales the effort with the number of problem dimensions
+        	if (numOfFailures<0) numOfFailures = 100*AbstractEAIndividual.getDoublePositionShallow(this.m_Template).length; // scales the effort with the number of problem dimensions
     	} else {
     		System.err.println("Cannot initialize NMS on non-double valued individuals!");
     		return false;

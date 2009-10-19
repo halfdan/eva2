@@ -150,7 +150,7 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
         //double[] rand = getUniformRandVect(position.length, range);
             
             Mathematics.vvAdd(newPos, rand, newPos);
-        	if (m_CheckConstraints) {
+        	if (m_CheckRange) {
         		Mathematics.projectToRange(newPos, range);
         	}
         	

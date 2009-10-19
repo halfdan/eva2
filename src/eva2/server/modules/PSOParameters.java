@@ -5,18 +5,12 @@ import java.io.Serializable;
 
 import eva2.gui.GenericObjectEditor;
 import eva2.server.go.InterfaceGOParameters;
-import eva2.server.go.InterfacePopulationChangedEventListener;
-import eva2.server.go.InterfaceTerminator;
 import eva2.server.go.enums.PSOTopologyEnum;
-import eva2.server.go.operators.selection.InterfaceSelection;
 import eva2.server.go.operators.terminators.EvaluationTerminator;
 import eva2.server.go.populations.Population;
-import eva2.server.go.problems.B1Problem;
 import eva2.server.go.problems.F1Problem;
-import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.server.go.strategies.InterfaceOptimizer;
 import eva2.server.go.strategies.ParticleSwarmOptimization;
-import eva2.server.go.strategies.PopulationBasedIncrementalLearning;
 import eva2.tools.SelectedTag;
 import eva2.tools.Serializer;
 
@@ -174,14 +168,14 @@ public class PSOParameters extends AbstractGOParameters implements InterfaceGOPa
 	/** Toggle Check Constraints.
 	 * @param s    Check Constraints.
 	 */
-	public void setCheckConstraints(boolean s) {
-		((ParticleSwarmOptimization)this.m_Optimizer).setCheckConstraints(s);
+	public void setCheckRange(boolean s) {
+		((ParticleSwarmOptimization)this.m_Optimizer).setCheckRange(s);
 	}
-	public boolean isCheckConstraints() {
-		return ((ParticleSwarmOptimization)this.m_Optimizer).isCheckConstraints();
+	public boolean isCheckRange() {
+		return ((ParticleSwarmOptimization)this.m_Optimizer).isCheckRange();
 	}
 	public String checkConstraintsTipText() {
-		return ((ParticleSwarmOptimization)this.m_Optimizer).checkConstraintsTipText();
+		return ((ParticleSwarmOptimization)this.m_Optimizer).checkRangeTipText();
 	}
 	
     /** This method allows you to choose the topology type.
@@ -264,23 +258,23 @@ public class PSOParameters extends AbstractGOParameters implements InterfaceGOPa
         return ((ParticleSwarmOptimization)this.m_Optimizer).algoTypeTipText();
     }
     
-	/**
-	 * @return the treeBranchDeg
-	 */
-	public int getTreeBranchDegree() {
-		return ((ParticleSwarmOptimization)this.m_Optimizer).getTreeBranchDegree();
-	}
-
-	/**
-	 * @param treeBranchDeg the treeBranchDeg to set
-	 */
-	public void setTreeBranchDegree(int treeBranchDeg) {
-		((ParticleSwarmOptimization)this.m_Optimizer).setTreeBranchDegree(treeBranchDeg);
-	}
-
-	public String treeBranchDegreeTipText() {
-		return ((ParticleSwarmOptimization)this.m_Optimizer).treeBranchDegreeTipText();
-	}
+//	/**
+//	 * @return the treeBranchDeg
+//	 */
+//	public int getTreeBranchDegree() {
+//		return ((ParticleSwarmOptimization)this.m_Optimizer).getTreeBranchDegree();
+//	}
+//
+//	/**
+//	 * @param treeBranchDeg the treeBranchDeg to set
+//	 */
+//	public void setTreeBranchDegree(int treeBranchDeg) {
+//		((ParticleSwarmOptimization)this.m_Optimizer).setTreeBranchDegree(treeBranchDeg);
+//	}
+//
+//	public String treeBranchDegreeTipText() {
+//		return ((ParticleSwarmOptimization)this.m_Optimizer).treeBranchDegreeTipText();
+//	}
 	
 	/**
 	 * @return the wrapTopology

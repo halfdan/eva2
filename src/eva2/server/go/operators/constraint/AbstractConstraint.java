@@ -10,6 +10,7 @@ import eva2.server.go.operators.paramcontrol.InterfaceParameterControl;
 import eva2.server.go.operators.paramcontrol.NoParamAdaption;
 import eva2.server.go.operators.paramcontrol.ParamAdaption;
 import eva2.server.go.operators.paramcontrol.ParameterControlManager;
+import eva2.server.go.problems.AbstractProblemDouble;
 import eva2.tools.EVAERROR;
 
 /**
@@ -25,6 +26,7 @@ public abstract class AbstractConstraint implements InterfaceDoubleConstraint, S
 	protected ConstraintHandlingEnum handling = ConstraintHandlingEnum.specificTag;
 	protected static boolean TRACE = false;
 	protected double equalityEpsilon = 0.0001; // threshold below which equality constraints are seen as satisfied 
+	private AbstractEAIndividual currentIndy = null;
 	
 	private double penaltyFactor = 1.;
 //	protected ParamAdaption	 penaltyFactAdaption = new NoParamAdaption();
@@ -62,7 +64,6 @@ public abstract class AbstractConstraint implements InterfaceDoubleConstraint, S
 	
 	/**
 	 * Return the absolute (positive) degree of violation or zero if the constraint is fulfilled.
-	 * The penalty factor is included here.
 	 */
 	public double getViolation(double[] indyX) {
 		double viol = getRawViolationValue(indyX);
@@ -71,13 +72,14 @@ public abstract class AbstractConstraint implements InterfaceDoubleConstraint, S
 
 	/**
 	 * Check whether the given individual violates the constraint and immediately add
-	 * the violation if it is the case. Expect that the fitness has already been set.
+	 * the penalty and violation if it is the case. Expect that the fitness has already been set.
 	 * This regards the handling strategy and adds the violation to the fitness (in each dimension) or 
 	 * sets the individual constraint violation.
 	 * 
 	 * @param indy the individual to check for constraint violation.
 	 */
 	public void addViolation(AbstractEAIndividual indy, double[] indyX) {
+		currentIndy=indy;
 		double v = getViolation(indyX);
 		switch (handling) {
 		case penaltyAdditive:
@@ -98,6 +100,54 @@ public abstract class AbstractConstraint implements InterfaceDoubleConstraint, S
 		case specificTag:
 			if (v>0) indy.addConstraintViolation(v);
 			break;
+		}
+		currentIndy=null;
+	}
+	
+	/**
+	 * Some constraints require further information on the individual or work on the
+	 * raw fitness which can be requested using this method.
+	 * 
+	 * @return
+	 */
+	protected double[] getIndyRawFit(String key) {
+		return getIndyDblData(AbstractProblemDouble.rawFitKey);
+	}
+
+	/**
+	 * Some constraints require further information on the individual, such as
+	 * additional individual data. This method uses getData of AbstractEAIndividual
+	 * to try to retrieve a double array.
+	 * 
+	 * @return
+	 */
+	protected double[] getIndyDblData(String key) {
+		if (currentIndy!=null) {
+			Object dat = currentIndy.getData(key);
+			if (dat!=null && (dat instanceof double[])) return (double[])dat;
+			else {
+				System.err.println("Error, invalid call to AbstractConstraint.getRawFitness(). Individual had no raw fitness set.");
+				return null;
+			}
+		} else {
+			System.err.println("Error, invalid call to AbstractConstraint.getRawFitness(). Individual was unknown.");
+			return null;
+		}
+	}
+	
+	/**
+	 * Some constraints require further information on the individual, such as
+	 * additional individual data. This method uses getData of AbstractEAIndividual
+	 * to try to retrieve a stored object.
+	 * 
+	 * @return
+	 */
+	protected Object getIndyData(String key) {
+		if (currentIndy!=null) {
+			return currentIndy.getData(key);
+		} else {
+			System.err.println("Error, invalid call to AbstractConstraint.getRawFitness(). Individual was unknown.");
+			return null;
 		}
 	}
 	

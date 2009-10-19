@@ -25,10 +25,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.beans.BeanInfo;
 import java.io.Serializable;
 import java.net.URL;
-import java.util.LinkedList;
 import java.util.Properties;
 import java.util.Set;
 import java.util.Vector;
@@ -53,18 +51,21 @@ import javax.swing.event.MenuListener;
 
 import eva2.EvAInfo;
 import eva2.gui.BeanInspector;
+import eva2.gui.EvATabbedFrameMaker;
 import eva2.gui.ExtAction;
 import eva2.gui.HtmlDemo;
 import eva2.gui.JEFrame;
 import eva2.gui.JEFrameRegister;
 import eva2.gui.JExtMenu;
-import eva2.gui.EvATabbedFrameMaker;
 import eva2.gui.LogPanel;
 import eva2.server.EvAServer;
 import eva2.server.go.InterfaceGOParameters;
 import eva2.server.modules.AbstractModuleAdapter;
 import eva2.server.modules.GenericModuleAdapter;
 import eva2.server.modules.ModuleAdapter;
+import eva2.server.stat.AbstractStatistics;
+import eva2.server.stat.InterfaceStatisticsParameter;
+import eva2.server.stat.StatsParameter;
 import eva2.tools.EVAERROR;
 import eva2.tools.EVAHELP;
 import eva2.tools.ReflectPackage;
@@ -274,6 +275,19 @@ public class EvAClient implements RemoteStateListener, Serializable {
 	private void preloadClasses() {
 		ClassPreloader cp = new ClassPreloader( "eva2.server.go.strategies.InterfaceOptimizer", "eva2.server.go.problems.InterfaceOptimizationProblem", "eva2.server.go.InterfaceTerminator");
 		new Thread(cp).start();
+	}
+	
+	/**
+	 * Try to start the optimization with current parameters on the loaded module.
+	 * Return true on success, otherwise false.
+	 * 
+	 * @return
+	 */
+	public boolean startOptimization() {
+		if (currentModuleAdapter!=null) {
+			currentModuleAdapter.startOpt();
+			return true;
+		} else return false;
 	}
 	
 	/**
@@ -702,6 +716,14 @@ public class EvAClient implements RemoteStateListener, Serializable {
 			}
 		}
 		return null;
+	}
+	
+	public AbstractStatistics getStatistics() {
+		return ((GenericModuleAdapter)currentModuleAdapter).getStatistics();
+	}
+	
+	public InterfaceStatisticsParameter getStatsParams() {
+		return ((GenericModuleAdapter)currentModuleAdapter).getStatistics().getStatisticsParameter();
 	}
 	
 	/**

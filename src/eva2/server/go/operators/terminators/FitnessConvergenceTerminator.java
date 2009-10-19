@@ -89,7 +89,7 @@ Serializable {
 	}
 
 	public boolean isTerminated(PopulationInterface Pop) {
-		if (!firstTime && isStillConverged(Pop.getBestIndividual())) {
+		if (!firstTime && isStillConverged(Pop)) {
 			if (stagnationTimeHasPassed(Pop)) {
 				// population hasnt improved much for max time, criterion is met
 				msg = getTerminationMessage(tagString);
@@ -137,8 +137,8 @@ Serializable {
 	 * @param curFit
 	 * @return
 	 */
-	protected boolean isStillConverged(IndividualInterface indy) {
-		double[] curFit = indy.getFitness();
+	protected boolean isStillConverged(PopulationInterface pop) {
+		double[] curFit = pop.getBestFitness();
 		double dist = PhenotypeMetric.euclidianDistance(oldFit, curFit);
 		boolean ret;
 		if (convergenceCondition.isSelectedString("Relative")) {

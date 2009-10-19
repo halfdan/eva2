@@ -202,10 +202,10 @@ public class PostProcess {
         			Population exclude = new Population();
         			exclude.add(clusters[j].getBestEAIndividual());
         			result.add(exclude.getEAIndividual(0));
-        			result.addAll(clusters[j].getRandNIndividualsExcept(n-1, exclude));
+        			result.addAll(clusters[j].moveRandNIndividualsExcept(n-1, exclude));
         			break;
         		case RAND_ONLY:
-        			result.addAll(clusters[j].getRandNIndividuals(n));
+        			result.addAll(clusters[j].moveRandNIndividuals(n));
         			break;
         		default: System.err.println("Unknown mode in PostProcess:clusterBest!"); break;
         		}
@@ -433,7 +433,7 @@ public class PostProcess {
 	}
 	
 	/**
-	 * Search for a local minimum using nelder mead and return the solution found and the number of steps
+	 * Search for a local minimum using CMA and return the solution found and the number of steps
 	 * (evaluations) actually performed. This uses the whole population as starting population for nelder mead
 	 * meaning that typically only one best is returned.
 	 * Returns the number of function calls really performed by the method; sets the number of function calls
@@ -448,10 +448,8 @@ public class PostProcess {
 	 * @return
 	 */
 	public static int processWithCMA(Population pop, AbstractOptimizationProblem problem, InterfaceTerminator term, int baseEvals) {
-//		GOParameters cmaParams = OptimizerFactory.cmaESIPOP(problem);
 		MutateESRankMuCMA mutator = new MutateESRankMuCMA();
 		mutator.setInitializeSigma(ESMutationInitialSigma.avgInitialDistance);
-//		mutator.
 		EvolutionStrategies es = OptimizerFactory.createEvolutionStrategy(pop.size()/2, pop.size(), false, mutator, 1., new CrossoverESDefault(), 0., 
 				new SelectBestIndividuals(), problem, null);
 		for (int i=0; i<pop.size(); i++) {
@@ -1006,14 +1004,24 @@ public class PostProcess {
 	public static double findNMSPerturb(Population candidates, int i, double maxPerturb) {
 		double minDistNeighbour = Double.MAX_VALUE;
 		AbstractEAIndividual indy = candidates.getEAIndividual(i);
+		boolean found=false;
 		for (int k=0; k<candidates.size(); k++) {
 			if (k!=i) {
-				double dist = PhenotypeMetric.euclidianDistance(AbstractEAIndividual.getDoublePosition(indy), AbstractEAIndividual.getDoublePosition(candidates.getEAIndividual(k)));
+				double dist = PhenotypeMetric.euclidianDistance(AbstractEAIndividual.getDoublePositionShallow(indy), AbstractEAIndividual.getDoublePositionShallow(candidates.getEAIndividual(k)));
 				if (dist == 0.) {
-					System.err.println("error, equal candidates in findNMSPerturb!");
+//					System.err.println("error, equal candidates in findNMSPerturb!");
 				} else if (dist < minDistNeighbour) {
 					minDistNeighbour = dist;
+					found=true;
 				}
+			}
+		}
+		if (!found) {
+//			System.err.println("warning, equal candidates in PostProcess.findNMSPerturb - converged population?!");
+			if (maxPerturb>0) return maxPerturb;
+			else {
+				System.err.println("error, unable to select perturbance value in PostProcess.findNMSPerturb since all candidates are equal. Converged population?!");
+				return 0.01;
 			}
 		}
 		if (maxPerturb>0) return Math.min(maxPerturb, minDistNeighbour/3.);
@@ -1083,9 +1091,9 @@ public class PostProcess {
 		int cnt = pop.size()-1;
 		if (cnt == 0) return 0.;
 		else {
-			double[] indyPos = AbstractEAIndividual.getDoublePosition(pop.getEAIndividual(index));
+			double[] indyPos = AbstractEAIndividual.getDoublePositionShallow(pop.getEAIndividual(index));
 			for (int i=0; i<pop.size(); i++) {
-				if (i!=index) distSum += PhenotypeMetric.euclidianDistance(AbstractEAIndividual.getDoublePosition(pop.getEAIndividual(i)), indyPos); 
+				if (i!=index) distSum += PhenotypeMetric.euclidianDistance(AbstractEAIndividual.getDoublePositionShallow(pop.getEAIndividual(i)), indyPos); 
 			}
 			return distSum/((double)cnt);
 		}

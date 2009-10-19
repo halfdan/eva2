@@ -291,9 +291,11 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
     public static Object getSensorValue(String sensor, double[] vars, double[] consts) {
     	if (sensor.charAt(0)=='X') {
     		try {
+    			if (sensor.length()==1) return vars;
     			int index=Integer.parseInt(sensor.substring(1));
         		return new Double(vars[index]);
     		} catch(Exception e) {
+    			System.err.println("Warning, unable to access " + sensor);
     			return vars;
     		}
     	} else if (sensor.charAt(0)=='C') {

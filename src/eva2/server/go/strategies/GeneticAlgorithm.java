@@ -123,9 +123,10 @@ public class GeneticAlgorithm implements InterfaceOptimizer, java.io.Serializabl
                 if (this.m_Population == null) System.out.println("population null "+i);
 
                 offSprings = tmpIndy.mateWith(this.m_PartnerSelection.findPartnerFor(tmpIndy, this.m_Population, this.m_NumberOfPartners));
-                for (int j = 0; j < offSprings.length; j++) {
-                    offSprings[j].mutate();
-                }
+//                for (int j = 0; j < offSprings.length; j++) {
+//                    offSprings[j].mutate(); // quite useless if n-1 are thrown away...
+//                }
+                offSprings[0].mutate();
                 result.add(i, offSprings[0]);
             }
             this.evaluatePopulation(result);

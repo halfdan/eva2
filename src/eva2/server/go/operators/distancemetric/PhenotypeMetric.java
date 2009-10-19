@@ -111,7 +111,7 @@ public class PhenotypeMetric implements InterfaceDistanceMetric, java.io.Seriali
             double[]    d1, d2;
             double[][]  r1, r2;
             double      tmpResult = 0, tmp=0;
-            d1 = ((InterfaceDataTypeDouble) indy1).getDoubleData();
+            d1 = ((InterfaceDataTypeDouble) indy1).getDoubleData(); // TODO WithoutUpdate would be much quicker - but in which cases is it up to date?
             r1 = ((InterfaceDataTypeDouble) indy1).getDoubleRange();
             d2 = ((InterfaceDataTypeDouble) indy2).getDoubleData();
             r2 = ((InterfaceDataTypeDouble) indy2).getDoubleRange();
