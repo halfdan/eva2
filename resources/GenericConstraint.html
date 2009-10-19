@@ -1,0 +1,56 @@
+<html>
+<head>
+<title>Generic Constraints</title>
+</head>
+<body>
+<h1 align="center">Generic Constraints</h1>
+<br>
+
+<p>To represent generic constraints on real-valued functions, this class can parse
+String expressions in prefix notation of the form:
+<blockquote>
+&lt;expr&gt; ::= &lt;constant-operator&gt; | &lt;functional-operator&gt; "(" &lt;arguments&gt; ")"<br>
+&lt;arguments> ::= &lt;expr&gt; | &lt;expr&gt; "," &lt;arguments&gt;
+</blockquote>
+</p>
+
+Setting the <b>constraint string</b>:
+Constant operators have an arity of zero. Examples are:<br>
+(pi,0) (X,0) (1.0,0)<br>
+ 
+Functional operators have an arity greater zero. Examples are:<br>
+  (sum,1) (prod,1) (abs,1) (sin,1) (pow2,1) (pow3,1) (sqrt,1) (neg,1) (cos,1) (exp,1)<br>
+  (+,2) (-,2) (/,2)  (*,2)<br>
+
+<p>
+Additionally, any numerical strings can also be used; they are parsed to numeric constants. The literal <i>n</i>
+is parsed to the current number of problem dimensions.<br>
+Notice that only the <i>sum</i> and <i>prod</i> operators may receive the literal X as input, standing
+for the full solution vector. Access to single solution components is possible by writing <i>x0...x9</i>
+for a problem with 10 dimensions.
+</p>
+ 
+<p>
+Thus you may write <font face="Courier">+(-(5,sum(X)),+sin(/(x0,pi)))</font>
+and select 'lessEqZero' as relation to require valid solutions to fulfill 5-sum(X)+sin(x0/pi)&lt;=0.<br>
+</p>
+
+<p>
+Typical <b>relations</b> concerning constraints allow for g(x)&lt;=0, g(x)==0, or g(x)&gt;=0 for
+constraint g. Notice that equal-to-zero constraints are converted to g(x)==0 &lt;=&gt; |g(x)-epsilon|&lt;=0 for 
+customizable small values of epsilon.
+</p>
+
+<p>
+The <b>handling method</b> defines how EvA 2 copes with the constraint. Simplest variant is an
+additive penalty which is scaled by the penalty factor and then added directly to the fitness
+of an individual. This will work for any optimization strategy, but results will depend on
+the selection of penalty factors. Multiplicative penalty works analogously with the difference of
+being multiplied with the raw fitness.<br>
+In the variant called specific tag, the constraint violation is stored in an extra field of any
+individual and may be regarded by the optimization strategy. However, not all strategies provide
+simple mechanisms of incorporating this specific tag. 
+</p>
+
+</body>
+</html>
