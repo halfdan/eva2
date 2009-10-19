@@ -1,6 +1,7 @@
 package eva2.server.go.individuals.codings.gp;
 
 
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -10,6 +11,7 @@ import eva2.server.go.problems.GPFunctionProblem;
 import eva2.server.go.problems.InterfaceProgramProblem;
 import eva2.tools.Mathematics;
 import eva2.tools.Pair;
+import eva2.tools.ReflectPackage;
 
 
 /** This gives an abstract node, with default functionality for get and set methods.
@@ -271,10 +273,37 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
     	test("-(*(x1,x2),*(5,*(x3,x4)))", solG13);
     	test("+(pow3(x0),+(pow3(x1),1))", solG13);
     	System.out.println("" + Math.exp(Mathematics.product(solG13)));
+    	test("+(sum(x),abs(sin(*(x0,x3))))", solG5);
+    	test("-(abs(sum(x)),*(abs(-7.5),n))", solG5);
     	
-    	test("-(sum(x),*(7.5,n))", solG5);
+    	System.out.println(createNodeList());
     }
 	
+	/**
+	 * Print all operator identifiers with arities.
+	 * 
+	 * @return
+	 */
+	public static String createNodeList() {
+		String ret = new String();
+		
+		Class<?> cls = AbstractGPNode.class;
+		Class<?>[] nodes = ReflectPackage.getAssignableClassesInPackage(cls.getPackage().getName(), AbstractGPNode.class, true, false);
+		for (Class<?> c : nodes) {
+			if (Modifier.isAbstract(c.getModifiers()) || c.isInterface()) continue;
+			AbstractGPNode node;
+			try {
+				node = (AbstractGPNode)c.newInstance();
+				ret = ret + " (" + node.getOpIdentifier() + "," + node.getArity() + ")";
+			} catch (InstantiationException e) {
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			}
+		}
+		return ret;
+	}
+
 	public static void test(String constr, double[] pos) {
 		AbstractGPNode node = AbstractGPNode.parseFromString(constr);
 		GPFunctionProblem func = new GPFunctionProblem(node, null, pos.length, 0., 0.);
