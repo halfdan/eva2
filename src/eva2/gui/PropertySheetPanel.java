@@ -737,9 +737,9 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
         	}// end if (m_Editors[i] == editor) {
         } // end for (int i = 0 ; i < m_Editors.length; i++) {	
         if (doRepaint) {	// some components have been hidden or reappeared
-        	// MK this finally seems to work right
+        	// MK this finally seems to work right, with a scroll pane, too.
         	Container p=this;
-        	while (p != null) {
+        	while (p != null && (!p.getSize().equals(p.getPreferredSize()))) {
         		p.setSize(p.getPreferredSize());
         		p = p.getParent();
         	}
