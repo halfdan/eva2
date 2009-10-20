@@ -1,5 +1,6 @@
 package eva2.server.go.individuals;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 /**
@@ -19,7 +20,7 @@ import java.util.Comparator;
  * @author mkron
  *
  */
-public class AbstractEAIndividualComparator implements Comparator<Object> {
+public class AbstractEAIndividualComparator implements Comparator<Object>, Serializable {
 
 	// flag whether a data field should be used.
 	String indyDataKey = null;
