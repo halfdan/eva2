@@ -146,7 +146,7 @@ public class ClusteringDensityBased implements InterfaceClustering, java.io.Seri
         }
     }
 
-    /** This method allows you to decied if two species converge.
+    /** This method allows you to decide if two species converge.
      * @param species1  The first species.
      * @param species2  The second species.
      * @return True if species converge, else False.
