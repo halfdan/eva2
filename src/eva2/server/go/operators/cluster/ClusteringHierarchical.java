@@ -39,7 +39,7 @@ public class ClusteringHierarchical implements InterfaceClustering, Serializable
     private Vector<Integer>[]				children;
 //    private boolean[]                   	clustered;
 //    private boolean                     m_TestConvergingSpeciesOnBestOnly = true;
-	private boolean TRACE = true;
+	private boolean TRACE = false;
 
     public ClusteringHierarchical() {
 	}
