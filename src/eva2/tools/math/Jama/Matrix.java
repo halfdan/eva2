@@ -7,6 +7,7 @@ import java.io.StreamTokenizer;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
+import java.util.Arrays;
 import java.util.Locale;
 
 import eva2.gui.BeanInspector;
@@ -448,7 +449,16 @@ public class Matrix implements Cloneable, java.io.Serializable {
    public void set (int i, int j, double s) {
       A[i][j] = s;
    }
-
+   
+   /**
+    * Set all matrix values to the given value. Overwrites the Matrix completely.
+    * 
+    * @param v
+    */
+   public void fill(double v) {
+	   for (int i=0; i<A.length; i++) Arrays.fill(A[i], v);
+   }
+   
    /** Set a submatrix.
    @param i0   Initial row index
    @param i1   Final row index
