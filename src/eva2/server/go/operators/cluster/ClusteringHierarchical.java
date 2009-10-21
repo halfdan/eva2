@@ -25,26 +25,34 @@ import eva2.server.go.populations.Population;
  *
  */
 public class ClusteringHierarchical implements InterfaceClustering, Serializable {
-	
-    private InterfaceDistanceMetric     	metric            = new PhenotypeMetric();
+	private static final long serialVersionUID = 1L;
+	private InterfaceDistanceMetric     	metric            = new PhenotypeMetric();
     private double                      	absoluteDistThreshold = 0.5;
     private boolean 						thresholdMultipleOfMeanDist = false;
     private double 							meanDistFactor = 2.; // recommended setting
     private double							currentMeanDistance = -1.;
     private int                         	minimumGroupSize  = 3;
+	private boolean 						testConvergingSpeciesOnBestOnly = true; // if two species are tested for convergence, only the best indies may be compared regarding the distance threshold 
 
 	private int[]                 			uplink;
     private double[]						uplinkDist;
     private AbstractEAIndividualComparator comparator = new AbstractEAIndividualComparator();
     private Vector<Integer>[]				children;
-//    private boolean[]                   	clustered;
-//    private boolean                     m_TestConvergingSpeciesOnBestOnly = true;
-	private boolean TRACE = false;
 
-    public ClusteringHierarchical() {
+	private static boolean TRACE = false;
+
+	public ClusteringHierarchical() {
 	}
 
-    public ClusteringHierarchical(ClusteringHierarchical clusteringHierarchical) {
+    public ClusteringHierarchical(ClusteringHierarchical o) {
+    	this.metric = o.metric;
+    	this.absoluteDistThreshold = o.absoluteDistThreshold;
+    	this.thresholdMultipleOfMeanDist = o.thresholdMultipleOfMeanDist;
+    	this.meanDistFactor = o.meanDistFactor;
+    	this.currentMeanDistance = o.currentMeanDistance;
+    	this.minimumGroupSize = o.minimumGroupSize;
+    	this.comparator = (AbstractEAIndividualComparator)o.comparator.clone();
+    	this.testConvergingSpeciesOnBestOnly = o.testConvergingSpeciesOnBestOnly;
 	}
     
     public void hideHideable() {
@@ -154,15 +162,34 @@ public class ClusteringHierarchical implements InterfaceClustering, Serializable
 		else return absoluteDistThreshold;
 	}
 
-	public boolean convergingSpecies(Population species1, Population species2) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+    /** This method allows you to decide if two species converge.
+     * @param species1  The first species.
+     * @param species2  The second species.
+     * @return True if species converge, else False.
+     */
+    public boolean convergingSpecies(Population species1, Population species2) {
+        if (testConvergingSpeciesOnBestOnly) {
+            if (this.metric.distance(species1.getBestEAIndividual(), species2.getBestEAIndividual()) < this.currentDistThreshold()) return true;
+            else return false;
+        } else {
+            Population tmpPop = new Population(species1.size()+species2.size());
+            tmpPop.addPopulation(species1);
+            tmpPop.addPopulation(species2);
+            if (this.cluster(tmpPop).length <= 2) return true;
+            else return false;
+        }
+    }
+    
+    public String globalInfo() { 
+    	return "A tree is produced by assigning each individual the closest individual with better fitness. Connections with a distance above a certain threshold are cut. After that, each interconnected subtree forms a cluster.";
+    }
 
+    public String metricTipText() {
+    	return "The metric to use during clustering.";
+    }
     public InterfaceDistanceMetric getMetric() {
 		return metric;
 	}
-
 	public void setMetric(InterfaceDistanceMetric metric) {
 		this.metric = metric;
 	}
@@ -193,9 +220,9 @@ public class ClusteringHierarchical implements InterfaceClustering, Serializable
 	public AbstractEAIndividualComparator getComparator() {
 		return comparator;
 	}
-	public void setComparator(AbstractEAIndividualComparator comparator) {
-		this.comparator = comparator;
-	}
+//	public void setComparator(AbstractEAIndividualComparator comparator) {
+//		this.comparator = comparator;
+//	}
 	
 	public String adaptiveThresholdTipText() {
 		return "Activate adaptive threshold which is calculated from mean distance in the population and a constant factor.";
@@ -205,8 +232,8 @@ public class ClusteringHierarchical implements InterfaceClustering, Serializable
 	}
 	public void setAdaptiveThreshold(boolean thresholdMultipleOfMeanDist) {
 		this.thresholdMultipleOfMeanDist = thresholdMultipleOfMeanDist;
-		GenericObjectEditor.setHideProperty(this.getClass(), "meanDistFactor", thresholdMultipleOfMeanDist);
-		GenericObjectEditor.setHideProperty(this.getClass(), "distThreshold", !thresholdMultipleOfMeanDist);
+		GenericObjectEditor.setHideProperty(this.getClass(), "meanDistFactor", !thresholdMultipleOfMeanDist);
+		GenericObjectEditor.setHideProperty(this.getClass(), "distThreshold", thresholdMultipleOfMeanDist);
 	}
 
 	public String meanDistFactorTipText() {
@@ -218,4 +245,16 @@ public class ClusteringHierarchical implements InterfaceClustering, Serializable
 	public void setMeanDistFactor(double meanDistFactor) {
 		this.meanDistFactor = meanDistFactor;
 	}	
+
+	public String testConvergingSpeciesOnBestOnlyTipText() {
+		return "Only the best individuals may be compared when testing whether to merge two species."; 
+	}
+    public boolean isTestConvergingSpeciesOnBestOnly() {
+		return testConvergingSpeciesOnBestOnly;
+	}
+	public void SetTestConvergingSpeciesOnBestOnly(
+			boolean testConvergingSpeciesOnBestOnly) {
+		this.testConvergingSpeciesOnBestOnly = testConvergingSpeciesOnBestOnly;
+	}
+
 }
