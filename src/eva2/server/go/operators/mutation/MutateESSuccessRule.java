@@ -120,6 +120,11 @@ public class MutateESSuccessRule extends MutateESFixedStepSize implements Interf
     public String alphaTipText() {
         return "Choose the factor > 1 by which the mutation step size is to be increased/decreased.";
     }
+    
+    @Override
+    public String sigmaTipText() {
+    	return "The initial step size.";
+    }
 
 	public void adaptAfterSelection(Population oldGen, Population selected) {
 		// nothing to do here		

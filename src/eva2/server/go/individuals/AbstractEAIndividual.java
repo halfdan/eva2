@@ -53,8 +53,8 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
     public boolean							m_isPenalized			= false;	// may be set true for penalty based constraints
 
     protected double[]                      m_SelectionProbability  = new double[1];;
-    public double                           m_CrossoverProbability  = 1.0;
-    public double                           m_MutationProbability   = 0.2;
+    protected double                           m_CrossoverProbability  = 1.0;
+    protected double                           m_MutationProbability   = 0.2;
     protected InterfaceMutation             m_MutationOperator      = new NoMutation();
     protected InterfaceCrossover            m_CrossoverOperator     = new NoCrossover();
 //    protected String[]                      m_Identifiers           = new String[m_ObjectIncrement];

@@ -202,7 +202,7 @@ public class MutateESLocal implements InterfaceMutation, java.io.Serializable {
         return this.m_MutationStepSize;
     }
     public String mutationStepSizeTipText() {
-        return "Choose the initial mutation step size.";
+        return "Choose the initial mutation step size sigma.";
     }
 
     /** Set the lower limit for the mutation step size with this method.

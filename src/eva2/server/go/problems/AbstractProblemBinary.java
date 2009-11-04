@@ -5,6 +5,7 @@ import java.util.BitSet;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.GAIndividualBinaryData;
 import eva2.server.go.individuals.InterfaceDataTypeBinary;
+import eva2.server.go.individuals.InterfaceGAIndividual;
 import eva2.server.go.populations.Population;
 import eva2.server.go.strategies.InterfaceOptimizer;
 
@@ -16,8 +17,10 @@ public abstract class AbstractProblemBinary extends AbstractOptimizationProblem 
 	}
 	
 	protected void initTemplate() {
-		this.m_Template         = new GAIndividualBinaryData();
-        ((InterfaceDataTypeBinary)this.m_Template).setBinaryDataLength(this.getProblemDimension());
+		if (m_Template == null) this.m_Template         = new GAIndividualBinaryData();
+		if (((InterfaceGAIndividual)this.m_Template).getGenotypeLength()!=this.getProblemDimension()) {
+			((InterfaceDataTypeBinary)this.m_Template).setBinaryDataLength(this.getProblemDimension());
+		}
 	}
 	
 	public void cloneObjects(AbstractProblemBinary o) {

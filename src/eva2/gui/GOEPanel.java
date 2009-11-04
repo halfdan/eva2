@@ -73,7 +73,7 @@ public class GOEPanel extends JPanel implements ItemListener {
 		m_Support = support;
 		m_goe  = goe;
 		
-		//System.out.println("GOEPanel.Constructor !!");
+		//System.out.println("GOEPanel.Constructor ! Backup is " + m_Backup + " " +  BeanInspector.toString(m_goe.getValue()));
 		if (!(Proxy.isProxyClass(m_Object.getClass()))) m_Backup = copyObject(m_Object);
 		m_ObjectNames = new DefaultComboBoxModel(new String [0]);
 		m_ObjectChooser = new JComboBox(m_ObjectNames);

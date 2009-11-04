@@ -1035,4 +1035,14 @@ public class Mathematics {
 			destRange[i][1] = Math.min(r1[i][1], r2[i][1]);
 		}
 	}
+
+	/**
+	 * Fill the front of an array with data from a given source array.
+	 * 
+	 * @param dest
+	 * @param src
+	 */
+	public static void fillFront(double[] dest, double[] src) {
+		System.arraycopy(src, 0, dest, 0, Math.min(dest.length, src.length));
+	}
 }

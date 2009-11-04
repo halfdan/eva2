@@ -24,7 +24,7 @@ public class ClusteringKMeans implements InterfaceClustering, java.io.Serializab
 
     public int                         m_K                 = 5;
     public double[][]                  m_C                 = null;
-    public boolean                     m_UseSearchSpace    = false;
+    public boolean                     m_UseSearchSpace    = true;
     public boolean                     m_ReuseC            = false;
     public boolean                     m_Debug             = false;
 
@@ -278,7 +278,7 @@ public class ClusteringKMeans implements InterfaceClustering, java.io.Serializab
      * @param species2  The second species.
      * @return True if species converge, else False.
      */
-    public boolean convergingSpecies(Population species1, Population species2) {
+    public boolean mergingSpecies(Population species1, Population species2) {
         // @todo i could use the BIC metric from X-means to calculate this
         return false;
     }

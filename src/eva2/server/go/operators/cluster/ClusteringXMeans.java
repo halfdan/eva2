@@ -221,7 +221,7 @@ public class ClusteringXMeans implements InterfaceClustering, java.io.Serializab
      * @param species2  The second species.
      * @return True if species converge, else False.
      */
-    public boolean convergingSpecies(Population species1, Population species2) {
+    public boolean mergingSpecies(Population species1, Population species2) {
         // @todo i could use the BIC metric from X-means to calculate this
         return false;
     }

@@ -23,7 +23,7 @@ import eva2.server.go.strategies.InterfaceOptimizer;
 
 import eva2.server.go.problems.Interface2DBorderProblem;
 
-public class ExternalRuntimeProblem extends AbstractOptimizationProblem implements Interface2DBorderProblem {
+public class ExternalRuntimeProblem extends AbstractOptimizationProblem implements Interface2DBorderProblem, InterfaceProblemDouble {
 
 	protected AbstractEAIndividual      m_OverallBest       = null;
     protected int                       m_ProblemDimension  = 10;
@@ -53,8 +53,17 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem implemen
 					writer.write(c);
 					writer.flush();
 				}
+//				System.out.println("monitor-thread finished!");
 			} catch (IOException ioe) {
 				ioe.printStackTrace(System.err);
+			} finally {
+				try {
+					reader.close();
+					writer.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		}
 	}
@@ -115,7 +124,7 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem implemen
         population.init();
     }
     
-    protected double[][] makeRange() {
+    public double[][] makeRange() {
 	    double[][] range = new double[this.m_ProblemDimension][2];
 	    for (int i = 0; i < range.length; i++) {
 	        range[i][0] = getRangeLowerBound(i);
@@ -124,11 +133,11 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem implemen
 	    return range;
     }
     
-    protected double getRangeLowerBound(int dim) {
+    public double getRangeLowerBound(int dim) {
     	return m_lowerBound;
     }
     
-    protected double getRangeUpperBound(int dim) {
+    public double getRangeUpperBound(int dim) {
     	return m_upperBound;
     }
     
@@ -137,14 +146,13 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem implemen
     }
 
     /** This method evaluate a single individual and sets the fitness values
-     * @param individual    The individual that is to be evalutated
+     * @param individual    The individual that is to be evaluatated
      */
     public void evaluate(AbstractEAIndividual individual) {
         double[]        x;
 //        double[]        fitness;
 
-        x = new double[((InterfaceDataTypeDouble) individual).getDoubleData().length];
-        System.arraycopy(((InterfaceDataTypeDouble) individual).getDoubleData(), 0, x, 0, x.length);
+        x = getXVector(individual);
 
      //TODO call external runtime
         double[] fit = eval(x);
@@ -158,22 +166,20 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem implemen
         }
     }
     
-	protected double[] eval(double[] x) {
+	protected double[] getXVector(AbstractEAIndividual individual) {
+		double[] x;
+		x = new double[((InterfaceDataTypeDouble) individual).getDoubleData().length];
+        System.arraycopy(((InterfaceDataTypeDouble) individual).getDoubleData(), 0, x, 0, x.length);
+		return x;
+	}
+    
+    public static List<String> runProcess(List<String> parameters, String workingDir) {
 		Process process;
         ProcessBuilder pb;
-        
-        ArrayList<Double> fitList = new ArrayList<Double>();
+		List<String> results  = new ArrayList<String>(); 
 		try {
-			List<String> parameters=new ArrayList<String>();
-			parameters.add(this.m_Command);
-			if (additionalArg!=null && (additionalArg.length()>0)) {
-				parameters.add(additionalArg);
-			}
-			for(int i=0;i<this.m_ProblemDimension;i++){
-				parameters.add(new String(""+x[i]));
-			}
 			pb = new ProcessBuilder(parameters);
-			pb.directory(new File(this.m_WorkingDir));
+			pb.directory(new File(workingDir));
 			process=pb.start();
 			BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
             Thread thread = new MonitorInputStreamThread(process.getErrorStream());//grab the Error Stream
@@ -184,24 +190,58 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem implemen
 				if (line.contains(" ")) {
 					String[] parts = line.split(" ");
 					for (String str : parts) {
-						fitList.add(new Double(str));
+						results.add(str);
 					}
 				} else {
-					fitList.add(new Double(line)); 
+					results.add(line); 
 				}
 			}
+			br.close();
 		} catch (IOException e) {
-			System.err.println("IO Error in ExternalRuntimeProblem!");
-			e.printStackTrace();
-		} catch (NumberFormatException e) {
-			System.err.println("Error: " + m_Command + " delivered malformatted output for " + BeanInspector.toString(x));
+			System.err.println("IO Error when calling external command!");
 			e.printStackTrace();
 		}
-		double[] fit = new double[fitList.size()];
-		for (int i=0; i<fit.length; i++) {
-			fit[i] = fitList.get(i);
-		}
-		return fit;
+		return results;
+	}
+
+    public double[] eval(double[] x) {
+    	if (x==null) throw new RuntimeException("Error, x=null value received in ExternalRuntimeProblem.eval");
+    	ArrayList<Double> fitList = new ArrayList<Double>();
+
+    	List<String> parameters=new ArrayList<String>();
+    	parameters.add(this.m_Command);
+    	if (additionalArg!=null && (additionalArg.length()>0)) parameters.add(additionalArg);
+    	for(int i=0;i<this.m_ProblemDimension;i++){
+    		String p = prepareParameter(x, i);
+    		parameters.add(p);
+    	}
+
+    	List<String> res = runProcess(parameters, m_WorkingDir);
+    	try {
+    		for (String str : res) {
+    			fitList.add(new Double(str));
+    		}
+    	} catch (NumberFormatException e) {
+    		System.err.println("Error: " + m_Command + " delivered malformatted output for " + BeanInspector.toString(x));
+    		e.printStackTrace();
+    	}
+    	double[] fit = new double[fitList.size()];
+    	for (int i=0; i<fit.length; i++) {
+    		fit[i] = fitList.get(i);
+    	}
+    	return fit;
+    }
+
+    /**
+     * How to prepare a given parameter within a double array to present it 
+     * to the external program.
+     * 
+     * @param x
+     * @param i
+     * @return
+     */
+    protected String prepareParameter(double[] x, int i) {
+		return new String(""+x[i]);
 	}
 
     /** This method returns a string describing the optimization problem.

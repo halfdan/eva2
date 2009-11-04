@@ -17,7 +17,7 @@ import eva2.tools.EVAERROR;
 public abstract class AbstractMultiModalProblemKnown extends AbstractProblemDouble implements Interface2DBorderProblem, InterfaceMultimodalProblemKnown {
 	protected static InterfaceDistanceMetric   m_Metric = new PhenotypeMetric();
 	private double                    m_GlobalOpt = 0;
-	protected Population                  m_Optima;
+	protected Population                  m_ListOfOptima;
 	protected double                    m_Epsilon = 0.05;
 //	protected double[][]                m_Range;
 //	protected double[]                  m_Extrema;
@@ -36,8 +36,8 @@ public abstract class AbstractMultiModalProblemKnown extends AbstractProblemDoub
 
 	protected void cloneObjects(AbstractMultiModalProblemKnown b) {
 		super.cloneObjects(b);
-		if (b.m_Optima != null)
-			this.m_Optima           = (Population)((Population)b.m_Optima).clone();
+		if (b.m_ListOfOptima != null)
+			this.m_ListOfOptima           = (Population)((Population)b.m_ListOfOptima).clone();
 //		if (b.m_Range != null) {
 //			this.m_Range          = new double[b.m_Range.length][b.m_Range[0].length];
 //			for (int i = 0; i < this.m_Range.length; i++) {
@@ -87,9 +87,9 @@ public abstract class AbstractMultiModalProblemKnown extends AbstractProblemDoub
 		// population init must be last
 		// it set's fitcalls and generation to zero
 		population.init();
-		if (m_Optima == null) {
+		if (m_ListOfOptima == null) {
 			this.m_GlobalOpt = Double.NEGATIVE_INFINITY;
-			m_Optima = new Population();
+			m_ListOfOptima = new Population();
 			this.initListOfOptima();
 		}
 	}
@@ -97,7 +97,7 @@ public abstract class AbstractMultiModalProblemKnown extends AbstractProblemDoub
 	public void initProblem() {
 		super.initProblem();
 		this.m_GlobalOpt = Double.NEGATIVE_INFINITY;
-		m_Optima = new Population();
+		m_ListOfOptima = new Population();
 		this.initListOfOptima();
 	}
 
@@ -194,7 +194,7 @@ public abstract class AbstractMultiModalProblemKnown extends AbstractProblemDoub
 				m_GlobalOpt = tmp;
 			}
 		} 
-		this.m_Optima.add(tmpIndy);
+		this.m_ListOfOptima.add(tmpIndy);
 	}
 
 	/** 
@@ -210,7 +210,7 @@ public abstract class AbstractMultiModalProblemKnown extends AbstractProblemDoub
 	 * @return population
 	 */
 	public Population getRealOptima() {
-		return this.m_Optima;
+		return this.m_ListOfOptima;
 	}
 
 	/** This method returns the Number of Identified optima

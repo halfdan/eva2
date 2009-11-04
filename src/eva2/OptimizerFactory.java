@@ -1174,8 +1174,8 @@ public class OptimizerFactory {
 		es.setPlusStrategy(false);
 		cbn.setOptimizer(es);
 		ClusteringDensityBased clustering = new ClusteringDensityBased(0.1);
-		cbn.setConvergenceCA((ClusteringDensityBased) clustering.clone());
-		cbn.setDifferentationCA(clustering);
+		cbn.setMergingCA((ClusteringDensityBased) clustering.clone());
+		cbn.setDifferentiationCA(clustering);
 		cbn.setShowCycle(0); // don't do graphical output
 
 		return makeParams(cbn, 100, problem, randSeed, makeDefaultTerminator());
@@ -1186,8 +1186,8 @@ public class OptimizerFactory {
 		GeneticAlgorithm ga = new GeneticAlgorithm();
 		cbn.setOptimizer(ga);
 		ClusteringDensityBased clustering = new ClusteringDensityBased(0.1);
-		cbn.setConvergenceCA((ClusteringDensityBased) clustering.clone());
-		cbn.setDifferentationCA(clustering);
+		cbn.setMergingCA((ClusteringDensityBased) clustering.clone());
+		cbn.setDifferentiationCA(clustering);
 		cbn.setShowCycle(0); // don't do graphical output
 
 		return makeParams(cbn, 100, problem, randSeed, makeDefaultTerminator());

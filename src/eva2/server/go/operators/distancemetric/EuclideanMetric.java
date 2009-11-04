@@ -34,7 +34,45 @@ public class EuclideanMetric implements InterfaceDistanceMetric {
 		}
 		return Math.sqrt(result);
 	}
+	
+    /**
+     * The euclidean distance normed by the given ranges lying between 0 and sqrt(n)
+     * for n dimensions.
+     * 
+     * @param pos1
+     * @param range1
+     * @param pos2
+     * @param range2
+     * @return
+     */
+    public static double normedEuclideanDistance(double[] pos1, double[][] range1, double[] pos2, double[][] range2) {
+    	double      tmpResult = 0, tmp=0;
 
+    	for (int i = 0; (i < pos1.length) && (i < pos2.length); i++) {
+    		tmp=((pos1[i] - range1[i][0])/(range1[i][1] - range1[i][0])) - ((pos2[i] - range2[i][0])/(range2[i][1] - range2[i][0]));
+    		tmpResult += (tmp*tmp);
+    	}
+    	return Math.sqrt(tmpResult);
+    }
+    
+    public static double squaredEuclideanDistance(double[] v1, double[] v2) {
+        double      tmp, result = 0;
+        for (int i = 0; (i < v1.length) && (i < v2.length); i++) {
+        	tmp=v1[i] - v2[i];
+        	result += (tmp*tmp);
+        }
+        return result;
+    }
+    
+    public static double euclideanDistance(double[] v1, double[] v2) {
+        double      result = 0, tmp=0;
+        for (int i = 0; (i < v1.length) && (i < v2.length); i++) {
+        	tmp = v1[i] - v2[i];
+        	result += (tmp*tmp);
+        }
+        return Math.sqrt(result);
+    }
+	
 	/** This method returns a global info string
 	 * @return description
 	 */

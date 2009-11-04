@@ -151,7 +151,7 @@ public class ClusteringDensityBased implements InterfaceClustering, java.io.Seri
      * @param species2  The second species.
      * @return True if species converge, else False.
      */
-    public boolean convergingSpecies(Population species1, Population species2) {
+    public boolean mergingSpecies(Population species1, Population species2) {
         if (m_TestConvergingSpeciesOnBestOnly) {
             if (this.m_Metric.distance(species1.getBestEAIndividual(), species2.getBestEAIndividual()) < this.m_ClusterDistance) return true;
             else return false;

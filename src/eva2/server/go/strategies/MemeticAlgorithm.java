@@ -47,7 +47,7 @@ public class MemeticAlgorithm implements InterfaceOptimizer,
 
 	private int	                                              subsetsize	      = 5;
 
-	private int	                                              globalSearchSteps	= 1;
+	private int	                                              globalSearchIterations	= 1;
 
 	private boolean	                                          lamarckism	      = true;
 
@@ -78,7 +78,7 @@ public class MemeticAlgorithm implements InterfaceOptimizer,
 		this.m_Identifier = a.m_Identifier;
 		this.localSearchSteps = a.localSearchSteps;
 		this.subsetsize = a.subsetsize;
-		this.globalSearchSteps = a.globalSearchSteps;
+		this.globalSearchIterations = a.globalSearchIterations;
 		this.lamarckism = a.lamarckism;
 	}
 
@@ -120,9 +120,8 @@ public class MemeticAlgorithm implements InterfaceOptimizer,
 		if (TRACE) System.out.println("global search");
 		this.m_GlobalOptimizer.optimize();
 
-		if ((this.m_GlobalOptimizer.getPopulation().getGeneration()
-		    % this.globalSearchSteps == 0)
-		    && (this.localSearchSteps != 0)
+		if (((this.m_GlobalOptimizer.getPopulation().getGeneration() % this.globalSearchIterations) == 0)
+		    && (this.localSearchSteps > 0)
 		    && (this.m_Problem instanceof InterfaceLocalSearchable)) {
 			// here the local search is performed
 			if (TRACE)
@@ -282,7 +281,9 @@ public class MemeticAlgorithm implements InterfaceOptimizer,
 	 * @return description
 	 */
 	public String globalInfo() {
-		return "This is a basic generational Memetic Algorithm.";
+		return "This is a basic generational Memetic Algorithm. Local search steps are performed on a selected subset " +
+				"of individuals after certain numbers of global search iterations. Note " +
+				"that the problem class must implement InterfaceLocalSearchable.";
 	}
 
 	/**
@@ -291,7 +292,7 @@ public class MemeticAlgorithm implements InterfaceOptimizer,
 	 * @return The name of the algorithm
 	 */
 	public String getName() {
-		return "Memetic-Algorithm";
+		return "MemeticAlgorithm";
 	}
 
 	/**
@@ -332,18 +333,16 @@ public class MemeticAlgorithm implements InterfaceOptimizer,
 	}
 
 	/**
-	 * Choose the number of local search steps to perform per selected individual
+	 * Choose the number of local search steps to perform per selected individual.
 	 *
 	 * @param localSearchSteps
 	 */
 	public void setLocalSearchSteps(int localSearchSteps) {
 		this.localSearchSteps = localSearchSteps;
 	}
-
 	public int getLocalSearchSteps() {
 		return localSearchSteps;
 	}
-
 	public String localSearchStepsTipText() {
 		return "Choose the number of local search steps to perform per selected individual.";
 	}
@@ -353,17 +352,19 @@ public class MemeticAlgorithm implements InterfaceOptimizer,
 	 *
 	 * @param globalSearchSteps
 	 */
-	public void setGlobalSearchSteps(int globalSearchSteps) {
-		this.globalSearchSteps = globalSearchSteps;
+	public void setGlobalSearchIterations(int globalSearchSteps) {
+		this.globalSearchIterations = globalSearchSteps;
 	}
-
-	public int getGlobalSearchSteps() {
-		return globalSearchSteps;
+	public int getGlobalSearchIterations() {
+		return globalSearchIterations;
 	}
-
-	public String globalSearchStepsTipText() {
+	public String globalSearchIterationsTipText() {
 		return "Choose the interval between the application of the local search.";
 	}
+
+    public InterfaceSolutionSet getAllSolutions() {
+    	return new SolutionSet(getPopulation());
+    }
 
 	/**
 	 * Choose the number of individual to be locally optimized
@@ -373,36 +374,35 @@ public class MemeticAlgorithm implements InterfaceOptimizer,
 	public void setSubsetsize(int subsetsize) {
 		this.subsetsize = subsetsize;
 	}
-    
-    public InterfaceSolutionSet getAllSolutions() {
-    	return new SolutionSet(getPopulation());
-    }
-	public int getSubsetsize() {
+    public int getSubsetsize() {
 		return subsetsize;
 	}
-
 	public String subsetsizeTipText() {
-		return "Choose the number of individual to be locally optimized.";
+		return "Choose the number of individuals to be locally optimized.";
 	}
 
 	/**
-	 * Toggel between Lamarcksim and the Baldwin Effect
+	 * Toggle between Lamarckism and the Baldwin Effect
 	 *
 	 * @param lamarckism
 	 */
 	public void setLamarckism(boolean lamarckism) {
 		this.lamarckism = lamarckism;
 	}
-
-	public boolean getLamarckism() {
-		return this.lamarckism;
-	}
-
 	public String lamarckismTipText() {
-		return "Toggel between Lamarcksim and the Baldwin Effect.";
+		return "Toggle between Lamarckism and the Baldwin Effect.";
 	}
-
 	public boolean isLamarckism() {
 		return lamarckism;
+	}
+
+	public InterfaceSelection getSubSetSelector() {
+		return selectorPlug;
+	}
+	public void setSubSetSelector(InterfaceSelection selectorPlug) {
+		this.selectorPlug = selectorPlug;
+	}
+	public String subSetSelectorTipText() {
+		return "Selection method to select the subset on which local search is to be performed.";
 	}
 }

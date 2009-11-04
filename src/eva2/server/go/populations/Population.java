@@ -15,6 +15,7 @@ import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.AbstractEAIndividualComparator;
 import eva2.server.go.individuals.GAIndividualBinaryData;
 import eva2.server.go.individuals.InterfaceDataTypeDouble;
+import eva2.server.go.operators.distancemetric.EuclideanMetric;
 import eva2.server.go.operators.distancemetric.InterfaceDistanceMetric;
 import eva2.server.go.operators.distancemetric.PhenotypeMetric;
 import eva2.server.go.operators.selection.probability.AbstractSelProb;
@@ -26,7 +27,14 @@ import eva2.tools.math.Jama.Matrix;
 import eva2.tools.tool.StatisticUtils;
 
 
-/** This is a basic implementation for a EA Population.
+/** 
+ * A basic implementation of an EA population. Manage a set of potential solutions
+ * in form of AbstractEAIndividuals. They can be sorted using an AbstractEAIndividualComparator.
+ * Optionally, a history list is kept storing a clone of the best individual of any generation.
+ * The Population also provides for appropriate counting of function calls performed.
+ * For initialization, the default individual initialization method may be used, as well as a
+ * random latin hypercube implementation for InterfaceDataTypeDouble individuals. 
+ * 
  * Copyright:       Copyright (c) 2003
  * Company:         University of Tuebingen, Computer Architecture
  * @author          Felix Streichert, Marcel Kronfeld
@@ -342,7 +350,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      * Stagnation measured etc. pp.
      */
     public void incrGeneration() {
-        if (useHistory && (this.size() >= 1)) this.m_History.add(this.getBestEAIndividual());
+        if (useHistory && (this.size() >= 1)) this.m_History.add((AbstractEAIndividual)this.getBestEAIndividual().clone());
         for (int i=0; i<size(); i++) ((AbstractEAIndividual)get(i)).incrAge(); 
         this.m_Generation++;
         firePropertyChangedEvent(nextGenerationPerformed);
@@ -947,9 +955,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
         }
     }
 
-    /** This method will remove double instances from the population.
-     * This method relies on the implementation of the equals method
-     * in the individuals.
+    /** This method will remove instances with equal fitness from the population.
      */
     public void removeDoubleInstancesUsingFitness() {
         for (int i = 0; i < this.size(); i++) {
@@ -1255,7 +1261,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     	
         for (int i = 0; i < this.size(); i++) {
         	for (int j = i+1; j < this.size(); j++) {
-        		if (metric == null) d = PhenotypeMetric.euclidianDistance(AbstractEAIndividual.getDoublePositionShallow(getEAIndividual(i)), 
+        		if (metric == null) d = EuclideanMetric.euclideanDistance(AbstractEAIndividual.getDoublePositionShallow(getEAIndividual(i)), 
                 		AbstractEAIndividual.getDoublePositionShallow(getEAIndividual(j)));
         		else d = metric.distance((AbstractEAIndividual)this.get(i), (AbstractEAIndividual)this.get(j));
                 meanDist += d;
@@ -1329,7 +1335,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
 		 for (int i = 0; i < pop.size(); i++) {
 			 AbstractEAIndividual indy = pop.getEAIndividual(i);
 			 double[] indyPos = AbstractEAIndividual.getDoublePositionShallow(indy);
-			 double curDist = PhenotypeMetric.euclidianDistance(pos, indyPos);
+			 double curDist = EuclideanMetric.euclideanDistance(pos, indyPos);
 			 if ((dist<0) 	|| (!closestOrFarthest && (dist < curDist)) 
 					 		|| (closestOrFarthest && (dist > curDist))) {
 				 dist = curDist;
@@ -1411,7 +1417,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
 		for (int i = 0; i < size(); ++i){ 
 			AbstractEAIndividual currentindy = getEAIndividual(i);
 			if (!indy.equals(currentindy)){ // dont compare particle to itself or a copy of itself
-				double dist = PhenotypeMetric.euclidianDistance(AbstractEAIndividual.getDoublePositionShallow(indy),
+				double dist = EuclideanMetric.euclideanDistance(AbstractEAIndividual.getDoublePositionShallow(indy),
 						AbstractEAIndividual.getDoublePositionShallow(currentindy));
 				if (dist  < mindist){ 
 					mindist = dist;
@@ -1448,7 +1454,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
 			if (normalizedPhenoMetric){
 				d = metric.distance(indy, neighbor);
 			} else { 
-				d = PhenotypeMetric.euclidianDistance(AbstractEAIndividual.getDoublePositionShallow(indy),
+				d = EuclideanMetric.euclideanDistance(AbstractEAIndividual.getDoublePositionShallow(indy),
 						AbstractEAIndividual.getDoublePositionShallow(neighbor));
 			}
 			if (calcVariance) distances.add(d);
