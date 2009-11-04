@@ -1,3 +1,14 @@
+Swing structure:
+JEFrame-RootPane--- JPanel (glassPane)
+		\-- JLayeredPane --- JPanel --- GOEPanel --- JScrollPane (PropertySheetPanel)
+						\--- JPanel (Button bar)
+						\--- JComboBox (Class selection)
+
+Start-Up calling sequence:
+EvAClient.loadSpecificModule -> EvAComAdapter.getModuleAdapter
+	-> ModuleServer.createModuleAdapter -> GenericModuleAdapter (GO/ES..) / AbstractModuleAdapter (starts Processor thread in constructor)
+	-> AbstractStatistics, GOParameters, Processor, LogPanel
+
 EvA2-Cheats:
 The following method names are reserved:
 globalInfo: return String, used to display information about a class 
