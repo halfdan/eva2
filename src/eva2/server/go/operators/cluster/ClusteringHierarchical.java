@@ -167,7 +167,7 @@ public class ClusteringHierarchical implements InterfaceClustering, Serializable
      * @param species2  The second species.
      * @return True if species converge, else False.
      */
-    public boolean convergingSpecies(Population species1, Population species2) {
+    public boolean mergingSpecies(Population species1, Population species2) {
         if (testConvergingSpeciesOnBestOnly) {
             if (this.metric.distance(species1.getBestEAIndividual(), species2.getBestEAIndividual()) < this.currentDistThreshold()) return true;
             else return false;

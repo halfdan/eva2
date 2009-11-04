@@ -690,6 +690,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
     public void setDEType(DETypeEnum s) {
         this.m_DEType = s;
         // show mt for trig. DE only
+        GenericObjectEditor.setShowProperty(this.getClass(), "lambda", s==DETypeEnum.DE2_CurrentToBest);
         GenericObjectEditor.setShowProperty(this.getClass(), "mt", s==DETypeEnum.TrigonometricDE);
     }
     public DETypeEnum getDEType() {

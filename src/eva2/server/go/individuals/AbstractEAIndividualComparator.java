@@ -23,7 +23,7 @@ import java.util.Comparator;
 public class AbstractEAIndividualComparator implements Comparator<Object>, Serializable {
 
 	// flag whether a data field should be used.
-	String indyDataKey = null;
+	String indyDataKey = "";
 	int fitCriterion = -1;
 	
 	/**
@@ -34,7 +34,7 @@ public class AbstractEAIndividualComparator implements Comparator<Object>, Seria
 	 *
 	 */
 	public AbstractEAIndividualComparator() {
-		this(null, -1);
+		this("", -1);
 	}
 	
 	/**
@@ -57,7 +57,7 @@ public class AbstractEAIndividualComparator implements Comparator<Object>, Seria
 	 * @param fitnessCriterion
 	 */
 	public AbstractEAIndividualComparator(int fitnessCriterion) {
-		this(null, fitnessCriterion);
+		this("", fitnessCriterion);
 	}
 	
 	/**
@@ -92,7 +92,7 @@ public class AbstractEAIndividualComparator implements Comparator<Object>, Seria
 	public int compare(Object o1, Object o2) {
 		boolean o1domO2, o2domO1;
 		
-		if (indyDataKey != null) {
+		if (indyDataKey != null && (indyDataKey.length()>0)) {
 			double[] fit1 = (double[])((AbstractEAIndividual)o1).getData(indyDataKey);
 			double[] fit2 = (double[])((AbstractEAIndividual)o2).getData(indyDataKey);
 			if (fitCriterion < 0) {
@@ -113,5 +113,32 @@ public class AbstractEAIndividualComparator implements Comparator<Object>, Seria
 		}
 		if (o1domO2 ^ o2domO1) return (o1domO2 ? -1 : 1);
 		else return 0; // these are not comparable
+	}
+
+	public String getIndyDataKey() {
+		return indyDataKey;
+	}
+	public void setIndyDataKey(String indyDataKey) {
+		this.indyDataKey = indyDataKey;
+	}
+	public String indyDataKeyTipText() {
+		return "A String can be given which retrievies individual properties based on which the comparison is performed.";
+	}
+
+	public int getFitCriterion() {
+		return fitCriterion;
+	}
+	public void setFitCriterion(int fitCriterion) {
+		this.fitCriterion = fitCriterion;
+	}
+	public String fitCriterionTipText() {
+		return "If -1, dominance is used, otherwise the indexed fitness criterion (for multiobjective problems)"; 
+	}
+	
+	public String globalInfo() {
+		return "A comparator class for general EA individuals. Compares individuals based on their fitness in context of minimization.";
+	}
+	public String getName() {
+		return "IndividualComparator";
 	}
 }

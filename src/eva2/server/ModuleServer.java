@@ -29,7 +29,7 @@ import eva2.tools.jproxy.RMIProxyLocal;
  * CLASS DECLARATION
  *==========================================================================*/
 /**
- *
+ * Collect available ModuleAdapter implementations and load them on request.
  */
 public class ModuleServer {
 	public static boolean TRACE = false;
@@ -117,7 +117,11 @@ public class ModuleServer {
 	}
 
 	/**
-	 *
+	 * Load the module indicated by the selectedModuleName from all available
+	 * module classes; if necessary through a remote proxy. Try to load a given
+	 * parameter file in case its a GOModuleAdapter.
+	 * 
+	 * @return the loaded module adapter instance
 	 */
 	public ModuleAdapter createModuleAdapter(String selectedModuleName,
 			MainAdapterClient Client, boolean runWithoutRMI,

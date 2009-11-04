@@ -20,6 +20,7 @@ import eva2.server.go.individuals.InterfaceESIndividual;
 import eva2.server.go.operators.cluster.ClusteringDensityBased;
 import eva2.server.go.operators.cluster.InterfaceClustering;
 import eva2.server.go.operators.crossover.CrossoverESDefault;
+import eva2.server.go.operators.distancemetric.EuclideanMetric;
 import eva2.server.go.operators.distancemetric.InterfaceDistanceMetric;
 import eva2.server.go.operators.distancemetric.PhenotypeMetric;
 import eva2.server.go.operators.mutation.InterfaceMutation;
@@ -845,7 +846,7 @@ public class PostProcess {
 		
 		clust.SetFunctionCalls(evalsBefore + evalsDone);
 		
-		double improvement = PhenotypeMetric.euclidianDistance(meanFit, clust.getMeanFitness());
+		double improvement = EuclideanMetric.euclideanDistance(meanFit, clust.getMeanFitness());
 		if (TRACE) System.out.println("improvement by " + improvement + " funcalls done: " + evalsDone);
 		return new Pair<Population, Double>(clust, improvement);
 	}
@@ -1007,7 +1008,7 @@ public class PostProcess {
 		boolean found=false;
 		for (int k=0; k<candidates.size(); k++) {
 			if (k!=i) {
-				double dist = PhenotypeMetric.euclidianDistance(AbstractEAIndividual.getDoublePositionShallow(indy), AbstractEAIndividual.getDoublePositionShallow(candidates.getEAIndividual(k)));
+				double dist = EuclideanMetric.euclideanDistance(AbstractEAIndividual.getDoublePositionShallow(indy), AbstractEAIndividual.getDoublePositionShallow(candidates.getEAIndividual(k)));
 				if (dist == 0.) {
 //					System.err.println("error, equal candidates in findNMSPerturb!");
 				} else if (dist < minDistNeighbour) {
@@ -1093,7 +1094,7 @@ public class PostProcess {
 		else {
 			double[] indyPos = AbstractEAIndividual.getDoublePositionShallow(pop.getEAIndividual(index));
 			for (int i=0; i<pop.size(); i++) {
-				if (i!=index) distSum += PhenotypeMetric.euclidianDistance(AbstractEAIndividual.getDoublePositionShallow(pop.getEAIndividual(i)), indyPos); 
+				if (i!=index) distSum += EuclideanMetric.euclideanDistance(AbstractEAIndividual.getDoublePositionShallow(pop.getEAIndividual(i)), indyPos); 
 			}
 			return distSum/((double)cnt);
 		}

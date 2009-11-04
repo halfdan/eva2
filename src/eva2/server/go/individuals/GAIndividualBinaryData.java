@@ -4,6 +4,7 @@ package eva2.server.go.individuals;
 import java.util.BitSet;
 
 import eva2.server.go.operators.crossover.CrossoverGANPoint;
+import eva2.server.go.operators.crossover.InterfaceCrossover;
 import eva2.server.go.operators.mutation.InterfaceMutation;
 import eva2.server.go.operators.mutation.MutateGAStandard;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
@@ -40,7 +41,7 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
 
         // cloning the members of AbstractEAIndividual
         this.m_Age                      = individual.m_Age;
-        this.m_CrossoverOperator        = individual.m_CrossoverOperator;
+        this.m_CrossoverOperator        = (InterfaceCrossover)individual.m_CrossoverOperator.clone();
         this.m_CrossoverProbability     = individual.m_CrossoverProbability;
         this.m_MutationOperator         = (InterfaceMutation)individual.m_MutationOperator.clone();
         this.m_MutationProbability      = individual.m_MutationProbability;

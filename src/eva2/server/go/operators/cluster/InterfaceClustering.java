@@ -35,12 +35,12 @@ public interface InterfaceClustering {
      */
     public Population[] cluster(Population pop);
 
-    /** This method allows you to decide if two species converge.
+    /** This method allows you to decide if two species are to be merged regarding this clustering algorithm.
      * @param species1  The first species.
      * @param species2  The second species.
      * @return True if species converge, else False.
      */
-    public boolean convergingSpecies(Population species1, Population species2);
+    public boolean mergingSpecies(Population species1, Population species2);
 
     /** This method decides if an unclustered individual belongs to an already established species.
      * @param indy          A unclustered individual.

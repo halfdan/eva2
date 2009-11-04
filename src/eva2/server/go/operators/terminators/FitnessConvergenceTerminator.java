@@ -16,9 +16,9 @@ package eva2.server.go.operators.terminators;
 import java.io.Serializable;
 
 import eva2.gui.BeanInspector;
-import eva2.server.go.IndividualInterface;
 import eva2.server.go.InterfaceTerminator;
 import eva2.server.go.PopulationInterface;
+import eva2.server.go.operators.distancemetric.EuclideanMetric;
 import eva2.server.go.operators.distancemetric.PhenotypeMetric;
 import eva2.server.go.populations.InterfaceSolutionSet;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
@@ -139,7 +139,7 @@ Serializable {
 	 */
 	protected boolean isStillConverged(PopulationInterface pop) {
 		double[] curFit = pop.getBestFitness();
-		double dist = PhenotypeMetric.euclidianDistance(oldFit, curFit);
+		double dist = EuclideanMetric.euclideanDistance(oldFit, curFit);
 		boolean ret;
 		if (convergenceCondition.isSelectedString("Relative")) {
 			ret = (dist < (oldNorm * convThresh));

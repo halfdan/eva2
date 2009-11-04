@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import eva2.gui.BeanInspector;
 import eva2.gui.Chart2DDPointIconCircle;
 import eva2.gui.Chart2DDPointIconText;
+import eva2.gui.GenericObjectEditor;
 import eva2.gui.GraphPointSet;
 import eva2.gui.Plot;
 import eva2.gui.TopoPlot;
@@ -65,7 +66,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
 //    private boolean                         m_UseClearing                   = false;
     private boolean							m_UseArchive					= true;
     private boolean                         m_UseSpeciesDifferentation      = true;
-    private boolean                         m_UseSpeciesConvergence         = true;
+    private boolean                         m_UseSpeciesMerging         = true;
 //    private boolean                         m_UseHaltingWindow              = true;
     private int                             m_PopulationSize                = 50;
     private int								convergedCnt					= 0;
@@ -96,7 +97,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
         this.m_minGroupSize					= a.m_minGroupSize;
 //        this.m_UseClearing                  = a.m_UseClearing;
         this.m_UseSpeciesDifferentation     = a.m_UseSpeciesDifferentation;
-        this.m_UseSpeciesConvergence        = a.m_UseSpeciesConvergence;
+        this.m_UseSpeciesMerging        = a.m_UseSpeciesMerging;
 //        this.m_UseHaltingWindow             = a.m_UseHaltingWindow;
         this.m_PopulationSize               = a.m_PopulationSize;
         this.haltingWindow					= a.haltingWindow;
@@ -140,7 +141,11 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
         this.m_Undifferentiated = m_Optimizer.getPopulation(); // required for changes to the population by the optimizer
         this.firePropertyChangedEvent("FirstGenerationPerformed");
     }
-
+    
+    public void hideHideable() {
+    	GenericObjectEditor.setHideProperty(this.getClass(), "population", true);
+    	setUseMerging(isUseMerging());
+    }
     /** This method will evaluate the current population using the
      * given problem.
      * @param population The population that is to be evaluated
@@ -511,7 +516,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
                 //if (this.m_Show) this.plot();
             }
 
-            if (this.m_UseSpeciesConvergence) {
+            if (this.m_UseSpeciesMerging) {
 ///////////////////////////// species convergence phase
                 if (TRACE) {
                 	System.out.println("-Species convergence:");
@@ -549,7 +554,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
                     spec1 = (Population)this.m_Species.get(i1);
                     for (int i2 = i1+1; i2 < this.m_Species.size(); i2++) {
                         spec2 = (Population)this.m_Species.get(i2);
-                        if (this.m_CAForSpeciesConvergence.convergingSpecies(spec1, spec2)) {
+                        if (this.m_CAForSpeciesConvergence.mergingSpecies(spec1, spec2)) {
                             if (TRACE) System.out.println("--------------------Merging species (" + i1 +", " +i2 +") ["+spec1.size()+"/"+spec2.size()+"]");
 //                            this.m_CAForSpeciesConvergence.convergingSpecies(spec1, spec2);
                             if (isActive(spec1) && isActive(spec2)) {
@@ -756,13 +761,13 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
      * of species differentiation.
      * @return The current status of this flag
      */
-    public boolean getApplyDifferentation() {
+    public boolean getApplyDifferentiation() {
         return this.m_UseSpeciesDifferentation;
     }
-    public void setApplyDifferentation(boolean b){
+    public void setApplyDifferentiation(boolean b){
         this.m_UseSpeciesDifferentation = b;
     }
-    public String applyDifferentationTipText() {
+    public String applyDifferentiationTipText() {
         return "Toggle the species differentation mechanism.";
     }
 
@@ -792,18 +797,19 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
         return "With a halting window converged species are frozen.";
     }
 
-    /** This method allows you to set/get the switch that toggels the use
+    /** This method allows you to set/get the switch that toggles the use
      * of species convergence.
      * @return The current status of this flag
      */
-    public boolean getApplyConvergence() {
-        return this.m_UseSpeciesConvergence;
+    public boolean isUseMerging() {
+        return this.m_UseSpeciesMerging;
     }
-    public void setApplyConvergence(boolean b){
-        this.m_UseSpeciesConvergence = b;
+    public void setUseMerging(boolean b){
+        this.m_UseSpeciesMerging = b;
+        GenericObjectEditor.setHideProperty(this.getClass(), "mergingCA", !m_UseSpeciesMerging);
     }
-    public String applyConvergenceTipText() {
-        return "Toggle the species convergence mechanism.";
+    public String useMergingTipText() {
+        return "Toggle the use of species merging.";
     }
 
     /** Choose a population based optimizing technique to use
@@ -826,27 +832,27 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
     /** The cluster algorithm on which the species differentiation is based
      * @return The current clustering method
      */
-    public InterfaceClustering getDifferentationCA() {
+    public InterfaceClustering getDifferentiationCA() {
         return this.m_CAForSpeciesDifferentation;
     }
-    public void setDifferentationCA(InterfaceClustering b){
+    public void setDifferentiationCA(InterfaceClustering b){
         this.m_CAForSpeciesDifferentation = b;
     }
-    public String differentationCATipText() {
+    public String differentiationCATipText() {
         return "The cluster algorithm on which the species differentation is based.";
     }
 
     /** The Cluster Algorithm on which the species convergence is based.
      * @return The current clustering method
      */
-    public InterfaceClustering getConvergenceCA() {
+    public InterfaceClustering getMergingCA() {
         return this.m_CAForSpeciesConvergence;
     }
-    public void setConvergenceCA(InterfaceClustering b){
+    public void setMergingCA(InterfaceClustering b){
         this.m_CAForSpeciesConvergence = b;
     }
-    public String convergenceCATipText() {
-        return "The cluster algorithm on which the species convergence is based.";
+    public String mergingCATipText() {
+        return "The cluster algorithm on which the species merging is based.";
     }
 
     public void setUseArchive(boolean v) {
@@ -869,7 +875,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
         this.m_SpeciesCycle = b;
     }
     public String speciesCycleTipText() {
-        return "Determines how often species differentation/convergence is performed.";
+        return "Determines how often species differentation/merging is performed.";
     }
 
     /** TDetermines how often show is performed.
@@ -884,6 +890,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
     public String showCycleTipText() {
         return "Determines how often show is performed (generations); set to zero to deactivate.";
     }
+    
     /** Determines the size of the initial population.
      * @return This number gives initial population size.
      */
@@ -922,14 +929,12 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
 	public int getHaltingWindow() {
 		return haltingWindow;
 	}
-
 	/**
 	 * @param haltingWindow the haltingWindow to set
 	 */
 	public void setHaltingWindow(int haltingWindow) {
 		this.haltingWindow = haltingWindow;
 	}
-
 	public String haltingWindowTipText() {
 		return "Lenght of the halting window defining when a cluster is seen as converged and frozen; set to zero to disable.";
 	}
@@ -943,4 +948,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
 		return m_Undifferentiated.size() + " \t " + actives + " \t " + (m_Species.size()-actives);
 	}
 
+	public String[] customPropertyOrder() {
+		return new String[]{"mergingCA", "differentiationCA"};
+	}
 }
