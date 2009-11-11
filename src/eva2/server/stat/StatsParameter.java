@@ -96,8 +96,11 @@ public class StatsParameter implements InterfaceStatisticsParameter, Serializabl
 	 */
 	public String toString() {
 		String ret = "\r\nStatParameter:\r\nm_MultiRuns=" + m_MultiRuns +
-		"\r\nm_Textoutput=" + m_Textoutput +
-		"\r\nm_Plotoutput=" + m_Plotoutput;
+		"\nm_Textoutput=" + m_Textoutput +
+		"\nm_Plotoutput=" + m_Plotoutput +
+		"\nverbosity= " + outputVerbosity.getSelectedString() +
+		"\n" + outputTo.getSelectedString() + 
+		"\n";
 		return ret;
 	}
 

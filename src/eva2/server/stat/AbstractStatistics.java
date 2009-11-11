@@ -90,7 +90,9 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 	}
 	
 	public void addTextListener(InterfaceTextListener listener) {
-		if (!textListeners.contains(listener)) textListeners.add(listener);
+		if (!textListeners.contains(listener)) {
+			textListeners.add(listener);
+		}
 	}
 	
 	public boolean removeTextListener(InterfaceTextListener listener) {

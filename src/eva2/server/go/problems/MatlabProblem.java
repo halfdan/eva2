@@ -37,8 +37,8 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 	transient PrintStream 				dos = null;
 	private double 						range[][] =	null;
 	private static String				defTestOut = "matlabproblem-debug.log";
-	private static String				resOutFile = "matlabproblem-output.txt";
-	transient PrintStream				resOutStream = null;
+//	private static String				resOutFile = "matlabproblem-output.txt";
+//	transient PrintStream				resOutStream = null;
 	int 								verbosityLevel	= 0;
 	private MatlabEvalMediator 			handler = null;
 	private boolean isDouble = true;
@@ -228,9 +228,12 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 			handler.setFinished(false);
 			runnable = OptimizerFactory.getOptRunnable(optType, (AbstractOptimizationProblem)this, outputFilePrefix);
 //			runnable.getGOParams().setPostProcessParams(new PostProcessParams(0, 0.01, 5));
-//			log("in MP optimize B\n");
+			log("in MP optimize B\n");
+			log("Setting text listener, verbo " + verbosityLevel + "\n");
 			runnable.setTextListener(this);
 			runnable.setVerbosityLevel(verbosityLevel);
+			if (verbosityLevel>0) runnable.setOutputTo(2); // both file + window
+			else runnable.setOutputTo(1); // only window
 			runnable.setOutputAdditionalInfo(true);
 
 //			log("in MP optimize C\n");
@@ -396,17 +399,18 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 	}
 
 	public void print(String str) {
-		if (resOutStream==null) {
-			try {
-				resOutStream = new PrintStream(new FileOutputStream(resOutFile));
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			}
-		}
+//		System.err.println("MP print: " + str);
+//		if (resOutStream==null) {
+//			try {
+//				resOutStream = new PrintStream(new FileOutputStream(resOutFile));
+//			} catch (FileNotFoundException e) {
+//				e.printStackTrace();
+//			}
+//		}
 		if (verbosityLevel > 0) {
 			// matlab displays sysout output in the command window, so we simply use this channel
 			System.out.print(str);
-			if (resOutStream != null) resOutStream.print(str);
+//			if (resOutStream != null) resOutStream.print(str);
 		}
 		log(str);		
 	}
