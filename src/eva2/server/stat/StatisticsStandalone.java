@@ -37,7 +37,7 @@ import eva2.tools.Mathematics;
 public class StatisticsStandalone extends AbstractStatistics implements InterfaceStatistics, Serializable {
 	private static final long serialVersionUID = 2621394534751748968L;
 
-	private static String m_MyHostName = "not def";
+	private static String m_MyHostName = "unknown";
 
 	private String m_InfoString;
 	private ArrayList<ArrayList<double[]>[]> m_Result;
