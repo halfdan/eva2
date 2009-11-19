@@ -2,6 +2,9 @@ package eva2.server.go.problems;
 
 import java.awt.BorderLayout;
 import java.util.Vector;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Semaphore;
 import java.io.Serializable;
 
 
@@ -41,12 +44,14 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
 		AbstractEAIndividual ind;
 		Vector<AbstractEAIndividual> resultrep;
 		Population pop;
+		Semaphore m_Semaphore;
 		
-		public EvalThread(AbstractOptimizationProblem prob, AbstractEAIndividual ind, Vector<AbstractEAIndividual> resultrep, Population pop) {
+		public EvalThread(AbstractOptimizationProblem prob, AbstractEAIndividual ind, Vector<AbstractEAIndividual> resultrep, Population pop,Semaphore sema) {
 			this.ind = ind;
 			this.prob = prob;
 			this.resultrep = resultrep;
 			this.pop = pop;
+			this.m_Semaphore=sema;
 		}
 		
 		public void run() {
@@ -55,6 +60,7 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
 			prob.evaluate(ind);
 			resultrep.add(ind);
 			pop.incrFunctionCalls();
+			m_Semaphore.release();
 //			long duration=System.nanoTime()-time;
 //			System.out.println("Finished ET" + this +  ", time was " + duration);
 		}
@@ -105,21 +111,42 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
         if (this.parallelthreads > 1) {
         	Vector<AbstractEAIndividual> queue = new Vector<AbstractEAIndividual>(population.size());
         	Vector<AbstractEAIndividual> finished =  new Vector<AbstractEAIndividual>(population.size());
-        	queue.addAll(population);
-        	
+        	/* 	queue.addAll(population);
+        	Semaphore sema=new Semaphore(parallelthreads);
         	while (finished.size() < population.size()) {
+        		try {
+					sema.acquire();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
         		if ((population.size()-(queue.size() + finished.size())) < parallelthreads) {
         			if (queue.size() > 0) {
 	        			AbstractEAIndividual tmpindy = queue.get(0);
 		        		queue.remove(0);
 		        		tmpindy.resetConstraintViolation();
-		        		EvalThread evalthread = new EvalThread(this,tmpindy,finished,population);
+		        		EvalThread evalthread = new EvalThread(this,tmpindy,finished,population,sema);
 		        		evalthread.start();
-		        		
+
         			} 
         		}
+        	}*/
+        	Semaphore sema=new Semaphore(0);
+        	ExecutorService pool = Executors.newFixedThreadPool(parallelthreads);     
+        	for (int i = 0; i < population.size(); i++){
+        		AbstractEAIndividual tmpindy =  (AbstractEAIndividual)population.get(i);   		
+        		tmpindy.resetConstraintViolation();
+        		EvalThread evalthread = new EvalThread(this,tmpindy,finished,population,sema);
+        		pool.execute(evalthread);
+
         	}
-        	
+        	try {
+        		sema.acquire(population.size());
+        	} catch (InterruptedException e) {
+        		// TODO Auto-generated catch block
+        		e.printStackTrace();
+        	}
+        	pool.shutdownNow();
         } else {
 
 	        for (int i = 0; i < population.size(); i++) {

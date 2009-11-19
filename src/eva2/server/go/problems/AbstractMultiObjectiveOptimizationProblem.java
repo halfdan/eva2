@@ -3,6 +3,9 @@ package eva2.server.go.problems;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Vector;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Semaphore;
 
 import javax.swing.JFrame;
 
@@ -31,23 +34,27 @@ import eva2.tools.chart2d.DPoint;
  */
 public abstract class AbstractMultiObjectiveOptimizationProblem extends AbstractOptimizationProblem {
 
+	
 	class MultiObjectiveEvalThread extends Thread{
 		AbstractMultiObjectiveOptimizationProblem prob;
 		AbstractEAIndividual ind;
 		Vector<AbstractEAIndividual> resultrep;
 		Population pop;
+		Semaphore m_Semaphore=null;
 		
-		public MultiObjectiveEvalThread(AbstractMultiObjectiveOptimizationProblem prob,AbstractEAIndividual ind,Vector<AbstractEAIndividual> resultrep, Population pop) {
+		public MultiObjectiveEvalThread(AbstractMultiObjectiveOptimizationProblem prob,AbstractEAIndividual ind,Vector<AbstractEAIndividual> resultrep, Population pop,Semaphore sema) {
 			this.ind = ind;
 			this.prob = prob;
 			this.resultrep = resultrep;
 			this.pop = pop;
+			this.m_Semaphore=sema;
 		}
 	
 		public void run() {
 			double[]                fitness;
 			prob.evaluate(ind);
 			resultrep.add(ind);
+		
 			
 			   fitness = ind.getFitness();
 	            // check and update border if necessary
@@ -68,6 +75,7 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
 	                prob.m_Border[j][1] = Math.max(prob.m_Border[j][1], fitness[j]);
 	            }
 			pop.incrFunctionCalls();
+			m_Semaphore.release();
 		
 		}
 	}
@@ -189,20 +197,42 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
         	Vector<AbstractEAIndividual> queue = new Vector<AbstractEAIndividual>();
         	Vector<AbstractEAIndividual> finished =  new Vector<AbstractEAIndividual>();
         	queue.addAll(population);
-        	
+       /* 	Semaphore available=new Semaphore(parallelthreads);
         	while (finished.size() < population.size()) {
+        		try {
+        			available.acquire();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
         		if ((population.size()-(queue.size() + finished.size())) < parallelthreads) {
         			if (queue.size() > 0) {
 	        			AbstractEAIndividual tmpindy = queue.get(0);
 		        		queue.remove(0);
 		        		tmpindy.resetConstraintViolation();
-		        		MultiObjectiveEvalThread evalthread = new MultiObjectiveEvalThread(this,tmpindy,finished,population);
+		        		MultiObjectiveEvalThread evalthread = new MultiObjectiveEvalThread(this,tmpindy,finished,population,available);
 		        		evalthread.start();
 		        		
         			} 
         		}
         	}
-        	
+        	*/
+        	Semaphore sema=new Semaphore(0);
+        	ExecutorService pool = Executors.newFixedThreadPool(parallelthreads);     
+        	for (int i = 0; i < population.size(); i++){
+        		AbstractEAIndividual tmpindy =  (AbstractEAIndividual)population.get(i);   		
+        		tmpindy.resetConstraintViolation();
+        		EvalThread evalthread = new EvalThread(this,tmpindy,finished,population,sema);
+        		pool.execute(evalthread);
+
+        	}
+        	try {
+        		sema.acquire(population.size());
+        	} catch (InterruptedException e) {
+        		// TODO Auto-generated catch block
+        		e.printStackTrace();
+        	}
+        	pool.shutdownNow();
         }else {
         // first evaluate the population
         for (int i = 0; i < population.size(); i++) {
