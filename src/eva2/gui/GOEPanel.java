@@ -73,7 +73,7 @@ public class GOEPanel extends JPanel implements ItemListener {
 		m_Support = support;
 		m_goe  = goe;
 		
-		//System.out.println("GOEPanel.Constructor ! Backup is " + m_Backup + " " +  BeanInspector.toString(m_goe.getValue()));
+		//System.out.println("GOEPanel.Constructor !!");
 		if (!(Proxy.isProxyClass(m_Object.getClass()))) m_Backup = copyObject(m_Object);
 		m_ObjectNames = new DefaultComboBoxModel(new String [0]);
 		m_ObjectChooser = new JComboBox(m_ObjectNames);
@@ -174,12 +174,15 @@ public class GOEPanel extends JPanel implements ItemListener {
 
 		setLayout(new BorderLayout());
 		add(m_ObjectChooser, BorderLayout.NORTH);  // important
-//		add(m_ChildPropertySheet, BorderLayout.CENTER);
+		//add(m_ChildPropertySheet, BorderLayout.CENTER);
 		// Since we resize to the size of the property sheet, a scrollpane isn't
 		// typically needed (O  Rly?)
 		JScrollPane myScrollPane =new JScrollPane(m_ChildPropertySheet,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
+
 		myScrollPane.setBorder(null);
 		add(myScrollPane, BorderLayout.CENTER);
+		
 
 		JPanel okcButs = new JPanel();
 		okcButs.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
