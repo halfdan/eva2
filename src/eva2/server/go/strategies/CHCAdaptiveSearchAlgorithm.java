@@ -118,7 +118,7 @@ public class CHCAdaptiveSearchAlgorithm implements InterfaceOptimizer, java.io.S
         //System.out.println("Population:"+this.m_Population.getSolutionRepresentationFor());
         this.m_PopulSelectionOperator.prepareSelection(this.m_Population);
         this.m_RecombSelectionOperator.prepareSelection(this.m_Population);
-        parents     = this.m_PopulSelectionOperator.selectFrom(this.m_Population, this.m_Population.getPopulationSize());
+        parents     = this.m_PopulSelectionOperator.selectFrom(this.m_Population, this.m_Population.getTargetSize());
         //System.out.println("Parents:"+parents.getSolutionRepresentationFor());
 
         for (int i = 0; i < parents.size(); i++) {
@@ -169,7 +169,7 @@ public class CHCAdaptiveSearchAlgorithm implements InterfaceOptimizer, java.io.S
 
         this.m_Population.clear();
         this.m_Population.add(best);
-        for (int i = 1; i < this.m_Population.getPopulationSize(); i++) {
+        for (int i = 1; i < this.m_Population.getTargetSize(); i++) {
             mutant      = (InterfaceGAIndividual)best.clone();
             tmpBitSet   = mutant.getBGenotype();
             for (int j = 0; j < mutant.getGenotypeLength(); j++) {
@@ -207,7 +207,7 @@ public class CHCAdaptiveSearchAlgorithm implements InterfaceOptimizer, java.io.S
             nextGeneration.addPopulation(this.m_Population);
 //            this.m_NormationOperator.computeSelectionProbability(nextGeneration, "Fitness");
             this.m_PopulSelectionOperator.prepareSelection(this.m_Population);
-            tmp = this.m_PopulSelectionOperator.selectFrom(nextGeneration, this.m_Population.getPopulationSize());
+            tmp = this.m_PopulSelectionOperator.selectFrom(nextGeneration, this.m_Population.getTargetSize());
             nextGeneration.clear();
             nextGeneration.addPopulation(tmp);
             this.m_Population = nextGeneration;

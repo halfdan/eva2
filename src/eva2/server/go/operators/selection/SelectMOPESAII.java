@@ -86,7 +86,7 @@ public class SelectMOPESAII implements InterfaceSelection, java.io.Serializable 
      */
     public Population selectFrom(Population population, int size) {
         Population result = new Population();
-        result.setPopulationSize(size);
+        result.setTargetSize(size);
         for (int i = 0; i < size; i++) {
             result.add(this.select(population));
         }

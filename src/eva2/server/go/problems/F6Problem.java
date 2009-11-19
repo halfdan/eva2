@@ -11,7 +11,7 @@ import eva2.tools.math.Jama.Matrix;
  * Time: 13:09:36
  * To change this template use File | Settings | File Templates.
  */
-public class F6Problem extends F1Problem implements InterfaceMultimodalProblem, java.io.Serializable {
+public class F6Problem extends AbstractProblemDoubleOffset implements InterfaceMultimodalProblem, java.io.Serializable {
 
 	private boolean 		doRotation = false;
     private double          m_A     = 10;

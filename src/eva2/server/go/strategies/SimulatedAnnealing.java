@@ -37,7 +37,7 @@ public class SimulatedAnnealing implements InterfaceOptimizer, java.io.Serializa
 
     public SimulatedAnnealing() {
         this.m_Population = new Population();
-        this.m_Population.setPopulationSize(10);
+        this.m_Population.setTargetSize(10);
     }
     
     public SimulatedAnnealing(SimulatedAnnealing a) {

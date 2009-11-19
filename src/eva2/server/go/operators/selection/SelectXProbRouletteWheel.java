@@ -95,7 +95,7 @@ public class SelectXProbRouletteWheel implements InterfaceSelection, java.io.Ser
      */
     public Population selectFrom(Population population, int size) {
         Population result = new Population();
-        result.setPopulationSize(size);
+        result.setTargetSize(size);
 
         if (true) {
             //this.m_TreeRoot = this.buildSelectionTree(population);

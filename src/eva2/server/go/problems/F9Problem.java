@@ -3,7 +3,7 @@ package eva2.server.go.problems;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.ESIndividualDoubleData;
 
-public class F9Problem extends F1Problem implements java.io.Serializable {
+public class F9Problem extends AbstractProblemDoubleOffset implements java.io.Serializable {
 
     public F9Problem() {
         this.m_Template         = new ESIndividualDoubleData();

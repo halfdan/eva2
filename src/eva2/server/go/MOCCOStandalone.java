@@ -128,7 +128,7 @@ public class MOCCOStandalone implements InterfaceGOStandalone, InterfacePopulati
                 while (!tmpP.isFinished()) { try { Thread.sleep(1000); } catch (java.lang.InterruptedException e) { }}
                 this.m_State.m_InitialPopulationSize = Math.max(1, this.m_State.m_InitialPopulationSize);
                 Population pop = new Population();
-                pop.setPopulationSize(this.m_State.m_InitialPopulationSize);
+                pop.setTargetSize(this.m_State.m_InitialPopulationSize);
                 this.m_State.m_CurrentProblem = (InterfaceOptimizationProblem) this.m_State.m_OriginalProblem.clone();
                 this.m_State.m_CurrentProblem.initPopulation(pop);
                 this.m_State.m_CurrentProblem.evaluate(pop);

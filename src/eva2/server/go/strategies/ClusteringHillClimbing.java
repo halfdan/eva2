@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import eva2.gui.GenericObjectEditor;
 import eva2.server.go.InterfacePopulationChangedEventListener;
+import eva2.server.go.PopulationInterface;
 import eva2.server.go.enums.PostProcessMethod;
 import eva2.server.go.operators.mutation.MutateESFixedStepSize;
 import eva2.server.go.operators.postprocess.PostProcess;
@@ -12,6 +13,7 @@ import eva2.server.go.populations.Population;
 import eva2.server.go.populations.SolutionSet;
 import eva2.server.go.problems.AbstractOptimizationProblem;
 import eva2.server.go.problems.F1Problem;
+import eva2.server.go.problems.InterfaceAdditionalPopulationInformer;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.tools.Pair;
 
@@ -31,7 +33,7 @@ import eva2.tools.Pair;
  * @author mkron
  *
  */
-public class ClusteringHillClimbing implements InterfacePopulationChangedEventListener, InterfaceOptimizer, Serializable {
+public class ClusteringHillClimbing implements InterfacePopulationChangedEventListener, InterfaceOptimizer, Serializable, InterfaceAdditionalPopulationInformer {
     transient private InterfacePopulationChangedEventListener   m_Listener;
     public static final boolean TRACE = false;
     
@@ -52,6 +54,7 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
    	private double							reduceFactor		= 0.2;
    	private MutateESFixedStepSize				mutator = new MutateESFixedStepSize(0.1);
 	private PostProcessMethod localSearchMethod = PostProcessMethod.nelderMead;
+	private boolean doReinitialization = true;
 
 	public ClusteringHillClimbing() {
 		hideHideable();
@@ -83,6 +86,8 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
 	 */
 	public void hideHideable() {
 		GenericObjectEditor.setHideProperty(getClass(), "population", true);
+		setDoReinitialization(isDoReinitialization());
+		setLocalSearchMethod(getLocalSearchMethod());
 	}
 	
      public void SetIdentifier(String name) {
@@ -117,7 +122,7 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
        	mutator = new MutateESFixedStepSize(initialStepSize);
        	archive = new Population();
        	hideHideable();
-       	m_Population.setPopulationSize(initialPopSize);
+       	m_Population.setTargetSize(initialPopSize);
         this.m_Problem.initPopulation(this.m_Population);
         m_Population.addPopulationChangedEventListener(null); // noone will be notified directly on pop changes
         this.m_Problem.evaluate(this.m_Population);
@@ -152,16 +157,26 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
 		m_Population.addPopulationChangedEventListener(this);
 		m_Population.setNotifyEvalInterval(notifyGuiEvery);
 		Pair<Population, Double> popD;
-		if (TRACE) System.out.println("evalCycle: " + hcEvalCycle + ", evals now: " + (2*hcEvalCycle - (m_Population.getFunctionCalls() % hcEvalCycle)));
-		popD = PostProcess.clusterLocalSearch(localSearchMethod, m_Population, (AbstractOptimizationProblem)m_Problem, sigmaClust, 2*hcEvalCycle - (m_Population.getFunctionCalls() % hcEvalCycle), 0.5, mutator);
-//		(m_Population, (AbstractOptimizationProblem)m_Problem, sigmaClust, hcEvalCycle - (m_Population.getFunctionCalls() % hcEvalCycle), 0.5);
+		int funCallsBefore=m_Population.getFunctionCalls();
+		int evalsNow, lastOverhead = (m_Population.getFunctionCalls() % hcEvalCycle); 
+		if (lastOverhead>0) evalsNow = (2*hcEvalCycle - (m_Population.getFunctionCalls() % hcEvalCycle));
+		else evalsNow = hcEvalCycle;
+		do {
+			if (TRACE) System.out.println("evalCycle: " + hcEvalCycle + ", evals now: " + evalsNow);
+			popD = PostProcess.clusterLocalSearch(localSearchMethod, m_Population, (AbstractOptimizationProblem)m_Problem, sigmaClust, evalsNow, 0.5, mutator);
+			//		(m_Population, (AbstractOptimizationProblem)m_Problem, sigmaClust, hcEvalCycle - (m_Population.getFunctionCalls() % hcEvalCycle), 0.5);
+			if (popD.head().getFunctionCalls()==funCallsBefore) {
+				System.err.println("Bad case, increasing allowed evaluations!");
+				evalsNow=Math.max(evalsNow++, (int)(evalsNow*1.2));
+			}
+		} while (popD.head().getFunctionCalls()==funCallsBefore);
 		improvement = popD.tail();
 		m_Population = popD.head();
 		if (TRACE) System.out.println("num inds after clusterLS: " + m_Population.size());
 
 		popD.head().setGenerationTo(m_Population.getGeneration()+1);
 		
-		if (improvement < minImprovement) {
+		if (doReinitialization  && (improvement < minImprovement)) {
 			if (TRACE) System.out.println("improvement below " + minImprovement);
 			if ((localSearchMethod != PostProcessMethod.hillClimber) || (mutator.getSigma() < stepSizeThreshold)) { // reinit!
 				// is performed for nm and cma, and if hc has too low sigma
@@ -175,10 +190,10 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
 				
 				Population tmpPop = new Population();
 				tmpPop.addPopulationChangedEventListener(null);
-				tmpPop.setPopulationSize(initialPopSize);
+				tmpPop.setTargetSize(initialPopSize);
 				this.m_Problem.initPopulation(tmpPop);
 				tmpPop.setSameParams(m_Population);
-				tmpPop.setPopulationSize(initialPopSize);
+				tmpPop.setTargetSize(initialPopSize);
 				this.m_Problem.evaluate(tmpPop);
 				
 				// reset population while keeping function calls etc.
@@ -245,7 +260,7 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
     public String getStringRepresentation() {
         StringBuffer sbuf = new StringBuffer("Clustering Hill Climbing");
         sbuf.append(", initial pop size: ");
-        sbuf.append(getPopulation().getPopulationSize());
+        sbuf.append(getPopulation().getTargetSize());
         sbuf.append("Optimization Problem: ");
         sbuf.append(this.m_Problem.getStringRepresentationForProblem(this));
         sbuf.append(this.m_Population.getStringRepresentation());
@@ -259,7 +274,8 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
 	}
 
 	public String globalInfo() {
-		return "Similar to multi-start HC, but clusters the population during optimization to remove redundant individuals for efficiency.";
+		return "Similar to multi-start HC, but clusters the population during optimization to remove redundant individuals for efficiency." +
+				"If the local search step does not achieve a minimum improvement, the population may be reinitialized.";
 	}
 	
 	/**
@@ -394,23 +410,32 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
 
 	public void setLocalSearchMethod(PostProcessMethod localSearchMethod) {
 		this.localSearchMethod = localSearchMethod;
+		GenericObjectEditor.setShowProperty(this.getClass(), "stepSizeInitial", localSearchMethod==PostProcessMethod.hillClimber);
+		GenericObjectEditor.setShowProperty(this.getClass(), "stepSizeThreshold", localSearchMethod==PostProcessMethod.hillClimber);
 	}
 	
 	public String localSearchMethodTipText() {
-		return "Set the method to be used for local search";
+		return "Set the method to be used for the hill climbing as local search";
 	}
 
-//	/**
-//	 * @return the mutator
-//	 */
-//	public InterfaceMutation getMutator() {
-//		return mutator;
-//	}
-//
-//	/**
-//	 * @param mutator the mutator to set
-//	 */
-//	public void setMutator(InterfaceMutation mutator) {
-//		this.mutator = mutator;
-//	}
+	public String getAdditionalFileStringHeader(PopulationInterface pop) {
+		return "#Indies";
+	}
+
+	public String getAdditionalFileStringValue(PopulationInterface pop) {
+		return ""+m_Population.size();
+	}
+
+	public boolean isDoReinitialization() {
+		return doReinitialization;
+	}
+
+	public void setDoReinitialization(boolean doReinitialization) {
+		this.doReinitialization = doReinitialization;
+		GenericObjectEditor.setShowProperty(this.getClass(), "minImprovement", doReinitialization); 
+	}
+
+	public String doReinitializationTipText() {
+		return "Activate reinitialization if no improvement was achieved.";
+	}
 }

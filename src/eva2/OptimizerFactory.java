@@ -143,7 +143,7 @@ public class OptimizerFactory {
 
 		DifferentialEvolution de = new DifferentialEvolution();
 		de.SetProblem(problem);
-		de.getPopulation().setPopulationSize(popsize);
+		de.getPopulation().setTargetSize(popsize);
 		de.setDEType(DETypeEnum.DE2_CurrentToBest);
 		de.setF(f);
 		de.setK(CR);
@@ -260,7 +260,7 @@ public class OptimizerFactory {
 
 		GeneticAlgorithm ga = new GeneticAlgorithm();
 		ga.SetProblem(problem);
-		ga.getPopulation().setPopulationSize(popsize);
+		ga.getPopulation().setTargetSize(popsize);
 		ga.setParentSelection(select);
 		ga.setPartnerSelection(select);
 		ga.addPopulationChangedEventListener(listener);
@@ -374,7 +374,7 @@ public class OptimizerFactory {
 		tmpIndi.setCrossoverProbability(0);
 
 		HillClimbing hc = new HillClimbing();
-		hc.getPopulation().setPopulationSize(pop);
+		hc.getPopulation().setTargetSize(pop);
 		hc.addPopulationChangedEventListener(listener);
 		hc.SetProblem(problem);
 		hc.init();
@@ -405,7 +405,7 @@ public class OptimizerFactory {
 		tmpIndi.setCrossoverProbability(0);
 
 		MonteCarloSearch mc = new MonteCarloSearch();
-		mc.getPopulation().setPopulationSize(popsize);
+		mc.getPopulation().setTargetSize(popsize);
 		mc.addPopulationChangedEventListener(listener);
 		mc.SetProblem(problem);
 		mc.init();
@@ -447,7 +447,7 @@ public class OptimizerFactory {
 
 		ParticleSwarmOptimization pso = new ParticleSwarmOptimization();
 		pso.SetProblem(problem);
-		pso.getPopulation().setPopulationSize(popsize);
+		pso.getPopulation().setTargetSize(popsize);
 		pso.setPhi1(phi1);
 		pso.setPhi2(phi2);
 		pso.setSpeedLimit(k);
@@ -493,7 +493,7 @@ public class OptimizerFactory {
 		sa.setAlpha(alpha);
 		sa.setInitialTemperature(temperature);
 		sa.SetProblem(problem);
-		sa.getPopulation().setPopulationSize(popsize);
+		sa.getPopulation().setTargetSize(popsize);
 		sa.addPopulationChangedEventListener(listener);
 		sa.init();
 
@@ -732,7 +732,7 @@ public class OptimizerFactory {
 	 * @return
 	 */
 	public static GOParameters makeParams(InterfaceOptimizer opt, AbstractOptimizationProblem problem, InterfaceTerminator term) {
-		return makeParams(opt, opt.getPopulation().getPopulationSize(), problem, randSeed, term);
+		return makeParams(opt, opt.getPopulation().getTargetSize(), problem, randSeed, term);
 	}
 	/**
 	 * Set the population size, initialize the population and return a parameter structure containing all 

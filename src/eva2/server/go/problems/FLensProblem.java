@@ -247,13 +247,8 @@ public class FLensProblem extends AbstractOptimizationProblem implements Interfa
 	 * @param population    The populations that is to be inited
 	 */
 	public void initPopulation(Population population) {
-		AbstractEAIndividual tmpIndy;
-
 		this.m_OverallBest = null;
-		population.clear();
-
 		((InterfaceDataTypeDouble)this.m_Template).setDoubleDataLength(this.m_ProblemDimension);
-
         // set the range
         double[][] range = new double[this.m_ProblemDimension][2];
         for (int i = 0; i < range.length; i++) {
@@ -262,13 +257,8 @@ public class FLensProblem extends AbstractOptimizationProblem implements Interfa
         }
        ((InterfaceDataTypeDouble)this.m_Template).SetDoubleRange(range);
 
-		for (int i = 0; i < population.getPopulationSize(); i++) {
-			tmpIndy = (AbstractEAIndividual)((AbstractEAIndividual)this.m_Template).clone();
-			tmpIndy.init(this);
-			population.add(tmpIndy);
-		}
+		AbstractOptimizationProblem.defaultInitPopulation(population, m_Template, this);
         if (this.m_Show) this.initProblemFrame();
-		population.init();
 	}
 
 	public void evaluatePopulationEnd(Population pop) {

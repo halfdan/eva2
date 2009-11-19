@@ -9,7 +9,7 @@ import eva2.server.go.individuals.ESIndividualDoubleData;
  * Time: 19:15:03
  * To change this template use File | Settings | File Templates.
  */
-public class F14Problem extends F1Problem implements InterfaceMultimodalProblem, java.io.Serializable {
+public class F14Problem extends AbstractProblemDoubleOffset implements InterfaceMultimodalProblem, java.io.Serializable {
 	double rotation = 0.;
 	double rotationDX = 2;
 	

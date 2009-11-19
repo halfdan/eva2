@@ -136,7 +136,7 @@ public class ArchivingPESAII extends AbstractArchiving implements java.io.Serial
         // Now check whether there are individuals to remove
         int         bigSqueeze, index;
         int[]       squeezeFactor;
-        while(archive.size() > archive.getPopulationSize()) {
+        while(archive.targetSizeExceeded()) {
             squeezeFactor   = this.calculateSqueezeFactor(archive);
             bigSqueeze = 0;
             index = -1;

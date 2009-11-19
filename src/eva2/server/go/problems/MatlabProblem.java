@@ -437,19 +437,8 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 
 	@Override
 	public void initPopulation(Population population) {
-		AbstractEAIndividual tmpIndy;
-		population.clear();
 		initTemplate();
-
-		for (int i = 0; i < population.getPopulationSize(); i++) {
-			tmpIndy = (AbstractEAIndividual)((AbstractEAIndividual)this.m_Template).clone();
-			tmpIndy.init(this);
-//			System.err.println("initPopulation: " + AbstractEAIndividual.getDefaultDataString(tmpIndy) + " , " + tmpIndy.getStringRepresentation());
-			population.add(tmpIndy);
-		}
-		// population init must be last
-		// it set's fitcalls and generation to zero
-		population.init();
+		AbstractOptimizationProblem.defaultInitPopulation(population, m_Template, this);
 	}
 
 	public String getStringRepresentationForProblem(InterfaceOptimizer opt) {

@@ -100,7 +100,7 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
     	} else {
     		(((AbstractOptimizationProblem)m_Problem).getIndividualTemplate()).setMutationOperator(new MutateESCorrVector(mutationSigma, initialVelocity, rotationDeg));
     	}
-    	m_Population.setPopSize(popSize);
+    	m_Population.setTargetSize(popSize);
         this.m_Problem.initPopulation(this.m_Population);
         
         setWithShow(withShow);
@@ -144,13 +144,13 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
         
         // Generate a Population of Parents with Parantselectionmethod.
         // DONT forget cloning -> selection does only shallow copies!
-        int targetSize = this.m_Population.getPopulationSize();
+        int targetSize = this.m_Population.getTargetSize();
         if (randomImmigrationQuota>0) {
         	if (randomImmigrationQuota>1.) System.err.println("Error, invalid immigration quota!");
         	else {
-        		targetSize = (int)(this.m_Population.getPopulationSize() * (1.-randomImmigrationQuota));
+        		targetSize = (int)(this.m_Population.getTargetSize() * (1.-randomImmigrationQuota));
         		targetSize = Math.max(1, targetSize); // guarantee at least one to be selected 
-        		if (targetSize < this.m_Population.getPopulationSize()) doImmigr=true;
+        		if (targetSize < this.m_Population.getTargetSize()) doImmigr=true;
         	}
         }
 
@@ -160,7 +160,7 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
         	// add immigrants
     		AbstractEAIndividual immi;
     		int i;
-        	for (i=0; (i+parents.getPopulationSize())<pop.getPopulationSize(); i++) {
+        	for (i=0; (i+parents.getTargetSize())<pop.getTargetSize(); i++) {
         		immi = (AbstractEAIndividual)pop.getEAIndividual(0).clone();
         		immi.init(getProblem());
         		parents.add(immi);
@@ -181,7 +181,7 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
     	if (withShow) {
     		drawPop(pop, 0, false);
     	}
-        for (int i = 0; i < pop.getPopulationSize(); i++) {
+        for (int i = 0; i < pop.getTargetSize(); i++) {
         	applyMotionModel((AbstractEAIndividual)((AbstractEAIndividual)pop.get(i)), 0.);
         	indCount++;
         }
@@ -454,6 +454,6 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
 
 	public void setPopSize(int popSize) {
 		this.popSize = popSize;
-		m_Population.setPopSize(popSize);
+		m_Population.setTargetSize(popSize);
 	}
 }

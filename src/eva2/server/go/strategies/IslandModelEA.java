@@ -336,7 +336,7 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
         if (false) {
             imea.m_Optimizer    = new MultiObjectiveEA();
             ((MultiObjectiveEA)imea.m_Optimizer).setArchiveSize(25);
-            ((MultiObjectiveEA)imea.m_Optimizer).getPopulation().setPopulationSize(50);
+            ((MultiObjectiveEA)imea.m_Optimizer).getPopulation().setTargetSize(50);
             imea.m_Problem      = new TF1Problem();
             ((TF1Problem)imea.m_Problem).setEAIndividual(new ESIndividualDoubleData());
 //            ((TF1Problem)imea.m_Problem).setEAIndividual(new ESIndividualDoubleData());

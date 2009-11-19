@@ -1,0 +1,75 @@
+package eva2.server.go.operators.distancemetric;
+
+import java.io.Serializable;
+
+import eva2.server.go.individuals.AbstractEAIndividual;
+import eva2.server.go.individuals.InterfaceDataTypeDouble;
+import eva2.server.go.strategies.ParticleSwarmOptimization;
+
+/**
+ * Define a metric on data stored within individuals, such as the personal best position
+ * in PSO.
+ * @author mkron
+ *
+ */
+public class IndividualDataMetric implements InterfaceDistanceMetric, Serializable {
+	private String dataKey = ParticleSwarmOptimization.partBestPosKey;
+	private boolean normedDistance = true; // flag whether to use normed distances (for InterfaceDataTypeDouble)
+	
+    public IndividualDataMetric() {}    
+    
+    public IndividualDataMetric(String key) {
+		dataKey = key;
+	}
+    
+    public IndividualDataMetric(IndividualDataMetric pBestMetric) {
+		// TODO Auto-generated constructor stub
+	}
+
+	/** This method allows you to make a deep clone of
+     * the object
+     * @return the deep clone
+     */
+    public Object clone() {
+    	return new IndividualDataMetric(this);
+    }
+    
+	public double distance(AbstractEAIndividual indy1, AbstractEAIndividual indy2) {
+		if (dataKey==null) throw new RuntimeException("Error, no data key defined in " + this.getClass().getName() + "::distance()");
+		else {
+			Object data1 = indy1.getData(dataKey);
+			Object data2 = indy2.getData(dataKey);
+			if (data1 instanceof double[] && (data2 instanceof double[])) {
+				if (normedDistance) {
+					double[][] range1 = ((InterfaceDataTypeDouble)indy1).getDoubleRange();
+					double[][] range2 = ((InterfaceDataTypeDouble)indy2).getDoubleRange();
+					return EuclideanMetric.normedEuclideanDistance((double[])data1, range1, (double[])data2, range2);
+				} else return EuclideanMetric.euclideanDistance((double[])data1, (double[])data2);
+			} else throw new RuntimeException("Error, invalid key data, double array required by " + this.getClass().getName());
+		}
+	}
+
+	public String dataKeyTipText() {
+		return "Name of the data key to use to retrieve individual data (double[] for now).";
+	}
+	public String getDataKey() {
+		return dataKey;
+	}
+	public void setDataKey(String dataKey) {
+		this.dataKey = dataKey;
+	}
+
+	public String normedDistanceTipText() {
+		return "Flag whether to use euclidean distance directly or normed by the double range."; 
+	}
+	public boolean isNormedDistance() {
+		return normedDistance;
+	}
+	public void setNormedDistance(boolean normedDistance) {
+		this.normedDistance = normedDistance;
+	}
+	
+	public String globalInfo() {
+		return "Uses individual object data (so far only double[]) to calculate the distance.";
+	}
+}

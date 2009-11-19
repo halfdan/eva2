@@ -96,7 +96,7 @@ public class TestESCrossover implements java.io.Serializable {
     ActionListener initListener = new ActionListener() {
         public void actionPerformed(ActionEvent event) {
             m_Partners = new Population();
-            m_Partners.setPopulationSize(m_NumberOfPartners);
+            m_Partners.setTargetSize(m_NumberOfPartners);
             m_Partners.clear();
 
             InterfaceDataTypeDouble tmpIndyD = new ESIndividualDoubleData();
@@ -108,7 +108,7 @@ public class TestESCrossover implements java.io.Serializable {
             }
             tmpIndyD.setDoubleDataLength(m_Dimension);
             tmpIndyD.SetDoubleRange(newRange);
-            for (int i = 0; i < m_Partners.getPopulationSize(); i++) {
+            for (int i = 0; i < m_Partners.getTargetSize(); i++) {
                 tmpIndyEA = (AbstractEAIndividual)((AbstractEAIndividual)tmpIndyD).clone();
                 tmpIndyEA.init(m_Problem);
                 m_Partners.add(tmpIndyEA);
@@ -134,7 +134,7 @@ public class TestESCrossover implements java.io.Serializable {
     ActionListener init2Listener = new ActionListener() {
         public void actionPerformed(ActionEvent event) {
             m_Partners = new Population();
-            m_Partners.setPopulationSize(2);
+            m_Partners.setTargetSize(2);
             m_Partners.clear();
 
             InterfaceDataTypeDouble tmpIndyD = new ESIndividualDoubleData();
@@ -177,7 +177,7 @@ public class TestESCrossover implements java.io.Serializable {
     ActionListener init3Listener = new ActionListener() {
         public void actionPerformed(ActionEvent event) {
             m_Partners = new Population();
-            m_Partners.setPopulationSize(3);
+            m_Partners.setTargetSize(3);
             m_Partners.clear();
 
             InterfaceDataTypeDouble tmpIndyD = new ESIndividualDoubleData();

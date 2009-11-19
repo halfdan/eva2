@@ -101,20 +101,8 @@ public class SimpleProblemWrapper extends AbstractOptimizationProblem {
 	
 	@Override
 	public void initPopulation(Population population) {
-        AbstractEAIndividual tmpIndy;
-        population.clear();
-
         initTemplate();
-
-        for (int i = 0; i < population.getPopulationSize(); i++) {
-            tmpIndy = (AbstractEAIndividual)((AbstractEAIndividual)this.m_Template).clone();
-            tmpIndy.init(this);
-            population.add(tmpIndy);
-        }
-        // population init must be last
-        // it set's fitcalls and generation to zero
-        population.init();
-		
+        AbstractOptimizationProblem.defaultInitPopulation(population, m_Template, this);
 	}
 
 	@Override

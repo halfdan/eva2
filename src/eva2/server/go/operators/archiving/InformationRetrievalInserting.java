@@ -31,9 +31,9 @@ public class InformationRetrievalInserting implements InterfaceInformationRetrie
         Population archive = pop.getArchive();
 
         if (archive == null) return;
-        if (archive.size() < pop.getPopulationSize()) {
+        if (archive.size() < pop.getTargetSize()) {
             // remove archive size individuals from pop
-            pop.removeNIndividuals(archive.size()-(pop.getPopulationSize()-pop.size()));
+            pop.removeNIndividuals(archive.size()-(pop.getTargetSize()-pop.size()));
         } else {
             pop.clear();
         }

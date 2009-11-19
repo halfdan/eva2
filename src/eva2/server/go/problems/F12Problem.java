@@ -12,7 +12,7 @@ import eva2.server.go.populations.Population;
  * Time: 14:59:33
  * To change this template use File | Settings | File Templates.
  */
-public class F12Problem extends F1Problem implements java.io.Serializable {
+public class F12Problem extends AbstractProblemDoubleOffset implements java.io.Serializable {
 	private final static double f12range = 5.;
 
     public F12Problem() {

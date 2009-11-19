@@ -48,7 +48,7 @@ public class MultiObjectiveEA implements InterfaceOptimizer, java.io.Serializabl
     transient private InterfacePopulationChangedEventListener m_Listener;
 
     public MultiObjectiveEA() {
-        this.m_Optimizer.getPopulation().setPopulationSize(100);
+        this.m_Optimizer.getPopulation().setTargetSize(100);
         ((GeneticAlgorithm)this.m_Optimizer).setParentSelection(new SelectMONonDominated());
         ((GeneticAlgorithm)this.m_Optimizer).setPartnerSelection(new SelectMONonDominated());
     }
@@ -297,7 +297,7 @@ public class MultiObjectiveEA implements InterfaceOptimizer, java.io.Serializabl
             archive = new Population();
             this.m_Optimizer.getPopulation().SetArchive(archive);
         }
-        return archive.getPopulationSize();
+        return archive.getTargetSize();
     }
     public void setArchiveSize(int b){
         Population archive = this.m_Optimizer.getPopulation().getArchive();
@@ -305,7 +305,7 @@ public class MultiObjectiveEA implements InterfaceOptimizer, java.io.Serializabl
             archive = new Population();
             this.m_Optimizer.getPopulation().SetArchive(archive);
         }
-        archive.setPopulationSize(b);
+        archive.setTargetSize(b);
     }
     public String archiveSizeTipText() {
         return "Choose the size of the archive.";

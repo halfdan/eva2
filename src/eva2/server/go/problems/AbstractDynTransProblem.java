@@ -158,7 +158,7 @@ public abstract class AbstractDynTransProblem extends AbstractSynchronousOptimiz
 		this.prob = prob;
 		/* to get the right values for problemDimension and Range */
 		Population pop = new Population();
-		pop.setPopulationSize(1);		
+		pop.setTargetSize(1);		
 		prob.initPopulation(pop);
 		AbstractEAIndividual indy = (AbstractEAIndividual)pop.get(0);
 		if (indy instanceof InterfaceDataTypeDouble) {

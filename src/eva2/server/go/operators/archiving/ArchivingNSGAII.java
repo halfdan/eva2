@@ -74,21 +74,21 @@ public class ArchivingNSGAII extends ArchivingNSGA implements java.io.Serializab
 
         // Now init the new archive
         Population archive = new Population();
-        archive.setPopulationSize(pop.getArchive().getPopulationSize());
+        archive.setTargetSize(pop.getArchive().getTargetSize());
 
         // Now add the fronts to the archive
         int index = 0;
-        while ((index < fronts.length) && ((archive.size() + fronts[index].size()) < archive.getPopulationSize())) {
+        while ((index < fronts.length) && ((archive.size() + fronts[index].size()) < archive.getTargetSize())) {
             archive.addPopulation(fronts[index]);
             index++;
         }
 
-        if ((index < fronts.length) && (archive.size() < archive.getPopulationSize())) {
+        if ((index < fronts.length) && (!archive.targetSizeReached())) {
             // In this case there are still elements left in the front which could be added to the archive!
             // and there is still some place left in the archive
             // therefore we could add some individuals from front[index]
             // to the archive using the crowding distance sorting
-            fronts[index].setPopulationSize(archive.getPopulationSize() - archive.size());
+            fronts[index].setTargetSize(archive.getTargetSize() - archive.size());
             this.m_Cleaner.removeSurplusIndividuals(fronts[index]);
             archive.addPopulation(fronts[index]);
         }

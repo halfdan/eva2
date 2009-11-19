@@ -1569,17 +1569,12 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 		return "PSO-"+getTopology()+getTopologyRange()+"_"+getPhi1()+"_"+getPhi2();
 	}
 
-	/** Assuming that all optimizer will store thier data in a population
-	 * we will allow acess to this population to query to current state
-	 * of the optimizer.
-	 * @return The population of current solutions to a given problem.
-	 */
 	public Population getPopulation() {
 		return this.m_Population;
 	}
 	public void setPopulation(Population pop){
 		this.m_Population = pop;
-		if (pop.size() != pop.getPopulationSize()) { // new particle count!
+		if (pop.size() != pop.getTargetSize()) { // new particle count!
 			tracedVelocity = null;
 			initByPopulation(null, false);
 		} else for (int i=0; i<pop.size(); i++) {

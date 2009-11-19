@@ -65,7 +65,7 @@ public class TribesSwarm implements java.io.Serializable{
         	for (int i=0; i<tribes[n].explorerNb; i++) pop.add(tribes[n].explorer[i]);
         }
         pop.add(getBestMemory().asDummyExplorer(range, masterTribe.getObjectiveFirstDim()));
-        pop.setPopulationSize(pop.size());
+        pop.synchSize();
     	return pop;
     }
 

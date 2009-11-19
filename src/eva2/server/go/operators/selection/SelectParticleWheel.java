@@ -63,7 +63,7 @@ public class SelectParticleWheel implements InterfaceSelection, java.io.Serializ
      */
     public Population selectFrom(Population population, int size) {
         Population result = new Population();
-        result.setPopulationSize(size);
+        result.setTargetSize(size);
         
         if (selectFixedSteps ) selectFixed(population, size, result);
         else selectDrawIndependent(population, size, result);

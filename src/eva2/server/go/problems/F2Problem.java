@@ -9,7 +9,7 @@ import eva2.server.go.individuals.ESIndividualDoubleData;
  * Time: 19:03:09
  * To change this template use File | Settings | File Templates.
  */
-public class F2Problem extends F1Problem implements InterfaceMultimodalProblem, java.io.Serializable {
+public class F2Problem extends AbstractProblemDoubleOffset implements InterfaceMultimodalProblem, java.io.Serializable, InterfaceFirstOrderDerivableProblem {
 
     public F2Problem() {
         this.m_Template         = new ESIndividualDoubleData();
@@ -44,7 +44,22 @@ public class F2Problem extends F1Problem implements InterfaceMultimodalProblem, 
         if (m_YOffSet==0 && (result[0]<=0)) result[0]=Math.sqrt(Double.MIN_VALUE); // guard for plots in log scale
         return result;
     }
-
+    
+	public double[] getFirstOrderGradients(double[] x) {
+        int dim = x.length;
+        double[] result = new double[dim];
+        double xi, xii;
+        
+        for (int i = 0; i < dim-1; i++) {
+        	xi=x[i]-m_XOffSet;
+        	xii=x[i+1]-m_XOffSet;
+        	
+            result[i] += (-200.*xii+200.*xi+2.*xi-2);
+            result[i+1] += (200.*xii-200*xi);
+        }
+        return result;
+	}
+	
     /** This method returns a string describing the optimization problem.
      * @return The description.
      */
