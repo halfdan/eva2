@@ -59,8 +59,8 @@ public class ArchivingMaxiMin implements InterfaceArchiving, java.io.Serializabl
         this.m_MaxiMin.convertMultiObjective2SingleObjective(tmpPop);
         this.m_Selection.setObeyDebsConstViolationPrinciple(this.m_ObeyDebsConstViolationPrinciple);
         this.m_Selection.prepareSelection(tmpPop);
-        archive = this.m_Selection.selectFrom(tmpPop, pop.getArchive().getPopulationSize());
-        archive.setPopulationSize(pop.getArchive().getPopulationSize());
+        archive = this.m_Selection.selectFrom(tmpPop, pop.getArchive().getTargetSize());
+        archive.setTargetSize(pop.getArchive().getTargetSize());
 
         // now unconvert from SO to MO
         for (int i = 0; i < archive.size(); i++) {

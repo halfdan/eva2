@@ -312,8 +312,8 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
 	public void setPopulationSize(int populationSize) {
 		this.populationSize = populationSize;
 		if (m_Population!=null) {
-			m_Population.setPopulationSize(populationSize);
-			m_Population.setNotifyEvalInterval(m_Population.getPopulationSize());
+			m_Population.setTargetSize(populationSize);
+			m_Population.setNotifyEvalInterval(m_Population.getTargetSize());
 		}
 	}
 	
@@ -430,7 +430,7 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
 			indy.resetConstraintViolation();
 			initialPop.add((AbstractEAIndividual)indy.clone());
 		}
-		initialPop.setPopulationSize(initialPop.size());
+		initialPop.synchSize();
 	}
 
 	/**

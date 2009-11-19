@@ -47,7 +47,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
 
     protected int           m_Generation    = 0;
     protected int           m_FunctionCalls = 0;
-    protected int           m_Size          = 50;
+    protected int           m_TargetSize          = 50;
     protected Population    m_Archive       = null;
     PopulationInitMethod initMethod = PopulationInitMethod.individualDefault;
 	transient private ArrayList<InterfacePopulationChangedEventListener> listeners = null;
@@ -86,7 +86,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      */
     public Population(int initialCapacity) {
     	super(initialCapacity);
-    	setPopulationSize(initialCapacity);
+    	setTargetSize(initialCapacity);
     }
 
     public Population(Population population) {
@@ -110,7 +110,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     public void setSameParams(Population population) {
         this.m_Generation       = population.m_Generation;
         this.m_FunctionCalls    = population.m_FunctionCalls;
-        this.m_Size             = population.m_Size;
+        this.m_TargetSize             = population.m_TargetSize;
         this.useHistory 		= population.useHistory;
         this.notifyEvalInterval = population.notifyEvalInterval;
 //        this.m_Listener			= population.m_Listener;
@@ -196,15 +196,13 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      * are reset and m_Size default Individuals are created and initialized by
      * the GAIndividual default init() method.
       */
-    public void defaultInitPopulation() {
-        GAIndividualBinaryData tmpIndy;
-
+    public void defaultInit(AbstractEAIndividual template) {
         this.m_Generation       = 0;
         this.m_FunctionCalls    = 0;
         this.m_Archive          = null;
         this.clear();
-        for (int i = 0; i < this.m_Size; i++) {
-            tmpIndy = new GAIndividualBinaryData();
+        for (int i = 0; i < this.m_TargetSize; i++) {
+            AbstractEAIndividual tmpIndy = (AbstractEAIndividual)template.clone();
             tmpIndy.defaultInit();
             super.add(tmpIndy);
         }
@@ -239,8 +237,8 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     		return;
     	}
     	AbstractEAIndividual template = pop.getEAIndividual(0);
-    	if (fillPop && (pop.size()<pop.getPopulationSize())) {
-    		for (int i=pop.size(); i<pop.getPopulationSize(); i++) pop.add((AbstractEAIndividual)template.clone());
+    	if (fillPop && (pop.size()<pop.getTargetSize())) {
+    		for (int i=pop.size(); i<pop.getTargetSize(); i++) pop.add((AbstractEAIndividual)template.clone());
     	}
     	if (template instanceof InterfaceDataTypeDouble) {
     		double[][] range = ((InterfaceDataTypeDouble)template).getDoubleRange();
@@ -695,7 +693,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     public Population getSortedBestFirst() {
     	Population result = this.cloneWithoutInds();
     	getSortedNIndividuals(size(), true, result);
-    	result.setPopulationSize(result.size());
+    	result.synchSize();
     	return result;
     }
     
@@ -741,7 +739,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
         for (int i = skip; i < skip+n; i++) {
         	res.add(sorted.get(i));
         }
-        res.setPopulationSize(res.size());
+        res.synchSize();
     }
     
     /**
@@ -1041,7 +1039,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     }
 
     public String getName() {
-    	return "Population-"+getPopulationSize();
+    	return "Population-"+getTargetSize();
     }
     
     /**
@@ -1094,8 +1092,8 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      * 
      * @param size
      */
-    public void setPopulationSize(int size) {
-        this.m_Size = size;
+    public void setTargetSize(int size) {
+        this.m_TargetSize = size;
     }
     
     /**
@@ -1104,16 +1102,16 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      * @param size
      * @return
      */
-    public Population setPopSize(int size) {
-        this.m_Size = size;
+    public Population setTargetPopSize(int size) {
+        setTargetSize(size);
         return this;
     }
     
-    public int getPopulationSize() {
-        return this.m_Size;
+    public int getTargetSize() {
+        return this.m_TargetSize;
     }
-    public String populationSizeTipText() {
-        return "The population size.";
+    public String targetSizeTipText() {
+        return "The initial population size.";
     }   
     public AbstractEAIndividual getEAIndividual(int i) {
         return (AbstractEAIndividual)this.get(i);
@@ -1255,7 +1253,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     	double d;
     	double[] res = new double[3];
     	
-    	double meanDist = 0.;
+    	double distSum = 0.;
     	double maxDist = Double.MIN_VALUE;
     	double minDist = Double.MAX_VALUE;
     	
@@ -1264,14 +1262,14 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
         		if (metric == null) d = EuclideanMetric.euclideanDistance(AbstractEAIndividual.getDoublePositionShallow(getEAIndividual(i)), 
                 		AbstractEAIndividual.getDoublePositionShallow(getEAIndividual(j)));
         		else d = metric.distance((AbstractEAIndividual)this.get(i), (AbstractEAIndividual)this.get(j));
-                meanDist += d;
+                distSum += d;
                 if (d < minDist) minDist = d;
                 if (d > maxDist) maxDist = d;
             }
         }
         res[1] = minDist;
         res[2] = maxDist;
-        if (this.size() > 1) res[0] = meanDist / (this.size() * (this.size()-1) / 2);
+        if (this.size() > 1) res[0] = distSum / (this.size() * (this.size()-1) / 2);
         else { // only one indy?
         	res[1]=0;
         	res[2]=0;
@@ -1496,14 +1494,14 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
 	 * this method cannot grow, of course.
 	 */
 	public void fitToSize() {
-		if (size() != getPopulationSize()) {
-			while (size() > getPopulationSize()) remove(size()-1);
-			if (size() < getPopulationSize()) {
+		if (size() != getTargetSize()) {
+			while (size() > getTargetSize()) remove(size()-1);
+			if (size() < getTargetSize()) {
 				if (size() == 0) System.err.println("Cannot grow empty population!");
 				else {
 					int origSize=size();
 					int k=0;
-					while (size()< getPopulationSize()) {
+					while (size()< getTargetSize()) {
 						addIndividual((AbstractEAIndividual)getEAIndividual(k%origSize).clone());
 					}
 				}
@@ -1530,7 +1528,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
 	 * 
 	 */
 	public void synchSize() {
-		setPopulationSize(size());
+		setTargetSize(size());
 	}
 
 	/**
@@ -1576,6 +1574,30 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
 //		if (evaluationTimeHashes == null) return false;
 //		else return ((hashes.head().equals(evaluationTimeHashes.head())) && (hashes.tail().equals(evaluationTimeHashes.tail())) && (evaluationTimeModCount == modCount));
 //	}
+
+	/**
+	 * Return true if the targeted size of the population has been reached.
+	 */
+	public boolean targetSizeReached() {
+		return this.size()>=this.getTargetSize();
+	}
+	
+	/**
+	 * Return true if the targeted size of the population has been exceeded.
+	 */
+	public boolean targetSizeExceeded() {
+		return this.size()>this.getTargetSize();
+	}
+
+	/**
+	 * Return the number of free individual slots until the target size is reached.
+	 * Returns zero if the target size is already reached or exceeded.
+	 * 
+	 * @return
+	 */
+	public int getFreeSlots() {
+		return Math.max(0, this.getTargetSize() - this.size());
+	}
 
 //	/**
 //	 * Mark the population at the current state as evaluated. Changes to the modCount or hashes of individuals

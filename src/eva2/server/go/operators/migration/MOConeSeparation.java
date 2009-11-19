@@ -111,8 +111,8 @@ public class MOConeSeparation implements InterfaceMigration, java.io.Serializabl
             oldIPOP[i].clear();
             oldIPOP[i].addPopulation(newIPOP[i]);
             // todo remove this for nice pictures
-            if (oldIPOP[i].size() < oldIPOP[i].getPopulationSize()) {
-                oldIPOP[i].addPopulation(this.m_Selection.selectFrom(memory, oldIPOP[i].getPopulationSize()-oldIPOP[i].size()));
+            if (!oldIPOP[i].targetSizeReached()) {
+                oldIPOP[i].addPopulation(this.m_Selection.selectFrom(memory, oldIPOP[i].getTargetSize()-oldIPOP[i].size()));
             }
             if (this.m_Debug) System.out.println("Setting island "+i+" to population size " + oldIPOP[i].size());
             allDom.addElementsToArchive(oldIPOP[i]);

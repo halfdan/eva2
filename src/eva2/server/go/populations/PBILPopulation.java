@@ -29,12 +29,8 @@ public class PBILPopulation extends Population implements Cloneable, java.io.Ser
     }
     
     public PBILPopulation(PBILPopulation population) {
-        this.m_Generation       = population.m_Generation;
-        this.m_FunctionCalls    = population.m_FunctionCalls;
-        this.m_Size             = population.m_Size;
-        for (int i = 0; i < population.size(); i++) {
-            this.add((((AbstractEAIndividual)population.get(i))).clone());
-        }
+    	super(population);
+
         this.m_ProbabilityVector = new double[population.m_ProbabilityVector.length];
         for (int i = 0; i < this.m_ProbabilityVector.length; i++) {
             this.m_ProbabilityVector[i] = population.m_ProbabilityVector[i];
@@ -86,7 +82,7 @@ public class PBILPopulation extends Population implements Cloneable, java.io.Ser
         BitSet                  tmpBitSet;
 
         this.clear();
-        for (int i = 0; i < this.m_Size; i++) {
+        for (int i = 0; i < this.getTargetSize(); i++) {
             tmpIndy = (InterfaceGAIndividual)((AbstractEAIndividual)template).clone();
             tmpBitSet = tmpIndy.getBGenotype();
             for (int j = 0; j < this.m_ProbabilityVector.length; j++) {

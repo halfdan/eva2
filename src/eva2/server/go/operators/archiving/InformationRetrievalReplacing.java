@@ -33,7 +33,7 @@ public class InformationRetrievalReplacing implements InterfaceInformationRetrie
         Population tmp = new Population();
 
         tmp.addPopulation(archive);
-        while (tmp.size() < archive.getPopulationSize()) {
+        while (tmp.size() < archive.getTargetSize()) {
             tmp.add(pop.get(RNG.randomInt(0,pop.size()-1)));
         }
 

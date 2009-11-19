@@ -98,7 +98,7 @@ public class ArchivingSPEAII extends AbstractArchiving implements java.io.Serial
 
         // Now init the new archive
         Population archive = new Population();
-        archive.setPopulationSize(pop.getArchive().getPopulationSize());
+        archive.setTargetSize(pop.getArchive().getTargetSize());
 
 //        archive = this.m_Selection.selectFrom(tmpPop, archive.getPopulationSize());
 
@@ -160,7 +160,7 @@ public class ArchivingSPEAII extends AbstractArchiving implements java.io.Serial
 
         // if there is some place left let's add some more
         int currentLevel = 0;
-        while (archive.size() < archive.getPopulationSize()) {
+        while (!archive.targetSizeReached()) {
             currentLevel++;
             for (int i = 0; i < RawFitness.length; i++) {
                 if ((RawFitness[i] >= currentLevel) && (RawFitness[i] < currentLevel +1)) {
@@ -194,7 +194,7 @@ public class ArchivingSPEAII extends AbstractArchiving implements java.io.Serial
         // RawFitness for the lowest kthDistance()!!!
         int     ICurSma;
         double  curSmall, highestLevel;
-        while (archive.size() > archive.getPopulationSize()) {
+        while (archive.targetSizeExceeded()) {
             highestLevel    = 0;
             RawFitness      = this.calculateRawFitness(archive);
             for (int i = 0; i < RawFitness.length; i++) {

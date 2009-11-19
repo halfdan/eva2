@@ -2,6 +2,8 @@ package eva2.server.modules;
 
 import java.util.Vector;
 
+import javax.swing.JOptionPane;
+
 import eva2.gui.BeanInspector;
 import eva2.server.go.InterfaceGOParameters;
 import eva2.server.go.InterfacePopulationChangedEventListener;
@@ -25,6 +27,7 @@ import eva2.server.stat.StatisticsWithGUI;
 import eva2.tools.EVAERROR;
 import eva2.tools.EVAHELP;
 import eva2.tools.Pair;
+import eva2.tools.StringTools;
 import eva2.tools.jproxy.RemoteStateListener;
 import eva2.tools.math.RNG;
 
@@ -165,15 +168,19 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
     			setPriority(1);
     		}
     	} catch (Exception e) {
-    		System.err.println("Caught exception in Processor: "+e.getMessage());
+    		String errMsg = e.getMessage();
+    		if ((errMsg == null) || (errMsg.length() == 0)) errMsg="check console output for error messages.";
+    		errMsg = "Exception in Processor: "+errMsg;
+    		System.err.println(errMsg);
     		e.printStackTrace();
+    		try {
+    			JOptionPane.showMessageDialog(null, StringTools.wrapLine(errMsg, 60, 0.2), "Error in Optimization", JOptionPane.ERROR_MESSAGE);
+    		} catch (Exception ex) {} catch(Error er) {};
         	//m_Statistics.stopOptPerformed(false);
         	setOptRunning(false); // normal finish
         	if (m_ListenerModule!=null) {
         		m_ListenerModule.performedStop(); // is only needed in client server mode
-        		String errMsg = e.getMessage();
-        		if ((errMsg == null) || (errMsg.length() == 0)) errMsg="check console output for error messages.";
-            	m_ListenerModule.updateProgress(0, "Error in optimization: " + errMsg);    		
+            	m_ListenerModule.updateProgress(0, errMsg);    		
         	}
     	}
     	return resPop;
@@ -428,7 +435,7 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
 	    	}
 	    	if (!resultPop.contains(m_Statistics.getBestSolution())) {
 	    		resultPop.add(m_Statistics.getBestSolution()); // this is a minor cheat but guarantees that the best solution ever found is contained in the final results
-	    		resultPop.setPopulationSize(resultPop.size());
+	    		resultPop.synchSize();
 	    	}
 	    	resultPop = PostProcess.postProcess(ppp, resultPop, (AbstractOptimizationProblem)goParams.getProblem(), listener);
 	    	resPop = resultPop;

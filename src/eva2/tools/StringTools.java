@@ -130,4 +130,52 @@ public class StringTools {
 			return null;
 		}
 	}
+
+	/**
+	 * Rewrap a given string to lines of approx. length len.
+	 * 
+	 * @param str
+	 * @param len
+	 * @return
+	 */
+	public static String wrapLine(String str,  int len, double tolerancePerCent) {
+		return wrapLine(str, new char[]{' ', '-', ',', '.'}, len, tolerancePerCent);
+	}
+	
+	/**
+	 * Rewrap a given string to lines of approx. length len.
+	 * 
+	 * @param str
+	 * @param len
+	 * @return
+	 */
+	public static String wrapLine(String str, char[] breakChars, int len, double tolerancePerCent) {
+		StringBuffer res=new StringBuffer(); 
+		String rest=str;
+		int minLen = (int)((1.-tolerancePerCent)*(double)len);
+		int maxLen = (int)((1.+tolerancePerCent)*(double)len);
+		int nextBreak=-1;
+		while (rest.length()>0) {
+			if (rest.length()<=maxLen) {
+				nextBreak = rest.length()-1;
+			} else {
+				nextBreak = getNextBreak(minLen, maxLen, breakChars, rest); // search for a break character in a certain interval
+				if (nextBreak<0) nextBreak = len; // if none found force the break at the intended length
+			}
+			if (res.length()>0) res.append("\n"); // insert newline
+			res.append(rest.substring(0, nextBreak+1));
+			rest = rest.substring(nextBreak+1);
+		}
+		return res.toString();
+	}
+	
+	public static int getNextBreak(int startIndex, int endIndex, char[] brkChars, String str) {
+		int index;
+		for (int i=0; i<brkChars.length; i++) {
+			//indices[i] = str.indexOf(""+brkChars[i], startIndex);
+			index =str.indexOf(""+brkChars[i], startIndex);
+			if (index>=0 && (index <= endIndex)) return index;
+		}
+		return -1;
+	}
 }

@@ -46,7 +46,7 @@ public class ArchivingAllDominating extends AbstractArchiving implements java.io
             if ((pop.getArchive().size() == 0) && (pop.size() > 0)) {
                 SelectBestIndividuals select = new SelectBestIndividuals();
                 select.setObeyDebsConstViolationPrinciple(true);
-                pop.getArchive().addPopulation(select.selectFrom(pop, pop.getArchive().getPopulationSize()));
+                pop.getArchive().addPopulation(select.selectFrom(pop, pop.getArchive().getTargetSize()));
             }
         } else {
             // test for each element in population if it

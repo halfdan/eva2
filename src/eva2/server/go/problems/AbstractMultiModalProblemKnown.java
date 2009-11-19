@@ -79,7 +79,7 @@ public abstract class AbstractMultiModalProblemKnown extends AbstractProblemDoub
 //		this.m_ProblemDimension = 2;
 		((InterfaceDataTypeDouble)this.m_Template).setDoubleDataLength(this.m_ProblemDimension);
 		((InterfaceDataTypeDouble)this.m_Template).SetDoubleRange(makeRange());
-		for (int i = 0; i < population.getPopulationSize(); i++) {
+		for (int i = 0; i < population.getTargetSize(); i++) {
 			tmpIndy = (AbstractEAIndividual)((AbstractEAIndividual)this.m_Template).clone();
 			tmpIndy.init(this);
 			population.add(tmpIndy);

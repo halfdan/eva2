@@ -9,7 +9,7 @@ import eva2.server.go.individuals.codings.gp.GPArea;
  * Time: 14:43:03
  * To change this template use Options | File Templates.
  */
-public interface InterfaceProgramProblem {
+public interface InterfaceProgramProblem extends InterfaceOptimizationProblem {
 
     /** This method allows a GP program to sense the environment, e.g.
      * input values, current time etc

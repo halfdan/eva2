@@ -181,68 +181,22 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
     public void resetParetoFront() {
         this.m_ParetoFront = new Population();
     }
-
-    /** This method evaluates a given population and set the fitness values
-     * accordingly
-     * @param population    The population that is to be evaluated.
-     */
-    public void evaluate(Population population) {
-        AbstractEAIndividual    tmpIndy;
-        double[]                fitness;
-
-        evaluatePopulationStart(population);
-
-        
-        if (this.parallelthreads > 1) {
-        	Vector<AbstractEAIndividual> queue = new Vector<AbstractEAIndividual>();
-        	Vector<AbstractEAIndividual> finished =  new Vector<AbstractEAIndividual>();
-        	queue.addAll(population);
-       /* 	Semaphore available=new Semaphore(parallelthreads);
-        	while (finished.size() < population.size()) {
-        		try {
-        			available.acquire();
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-        		if ((population.size()-(queue.size() + finished.size())) < parallelthreads) {
-        			if (queue.size() > 0) {
-	        			AbstractEAIndividual tmpindy = queue.get(0);
-		        		queue.remove(0);
-		        		tmpindy.resetConstraintViolation();
-		        		MultiObjectiveEvalThread evalthread = new MultiObjectiveEvalThread(this,tmpindy,finished,population,available);
-		        		evalthread.start();
-		        		
-        			} 
-        		}
-        	}
-        	*/
-        	Semaphore sema=new Semaphore(0);
-        	ExecutorService pool = Executors.newFixedThreadPool(parallelthreads);     
-        	for (int i = 0; i < population.size(); i++){
-        		AbstractEAIndividual tmpindy =  (AbstractEAIndividual)population.get(i);   		
-        		tmpindy.resetConstraintViolation();
-        		EvalThread evalthread = new EvalThread(this,tmpindy,finished,population,sema);
-        		pool.execute(evalthread);
-
-        	}
-        	try {
-        		sema.acquire(population.size());
-        	} catch (InterruptedException e) {
-        		// TODO Auto-generated catch block
-        		e.printStackTrace();
-        	}
-        	pool.shutdownNow();
-        }else {
-        // first evaluate the population
-        for (int i = 0; i < population.size(); i++) {
-            tmpIndy = (AbstractEAIndividual) population.get(i);
-            tmpIndy.resetConstraintViolation();
-            this.evaluate(tmpIndy);
+    
+    public void evaluatePopulationStart(Population population) {
+    	super.evaluatePopulationStart(population);
+    	if (this.m_Show && (this.m_Plot==null)) this.initProblemFrame();
+    }
+    
+    public void evaluatePopulationEnd(Population population) {
+    	super.evaluatePopulationEnd(population);
+    	double[]                fitness;
+    	
+    	for (int i = 0; i < population.size(); i++) {
+        	// check and update border if necessary
+        	AbstractEAIndividual tmpIndy = (AbstractEAIndividual) population.get(i);
             fitness = tmpIndy.getFitness();
             // check and update border if necessary
-            if (m_Border == null)
-            	this.m_Border = new double[fitness.length][2];
+            if (m_Border == null) this.m_Border = new double[fitness.length][2];
             else if (fitness.length != this.m_Border.length) {
                 //System.out.println("AbstractMOOptimizationProblem: Warning fitness.length("+fitness.length+") doesn't fit border.length("+this.m_Border.length+")");
                 //System.out.println("Resetting the border!");
@@ -257,17 +211,8 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
                 this.m_Border[j][0] = Math.min(this.m_Border[j][0], fitness[j]);
                 this.m_Border[j][1] = Math.max(this.m_Border[j][1], fitness[j]);
             }
-            population.incrFunctionCalls();
         }
-        }
-        evaluatePopulationEnd(population); // refactored by MK
-    }
-    
-    public void evaluatePopulationStart(Population population) {
-    	if (this.m_Show && (this.m_Plot==null)) this.initProblemFrame();
-    }
-    
-    public void evaluatePopulationEnd(Population population) {
+    	
         // So what is the problem:
         // on the one hand i want to log the pareto-front in the
         // multiobjective case

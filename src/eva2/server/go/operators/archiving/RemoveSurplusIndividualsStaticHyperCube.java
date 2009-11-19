@@ -47,7 +47,7 @@ public class RemoveSurplusIndividualsStaticHyperCube extends RemoveSurplusIndivi
             ((AbstractEAIndividual)archive.get(i)).putData("HyperCube", new Double(space[i]));
         }
 
-        while(archive.size() > archive.getPopulationSize()) {
+        while(archive.targetSizeExceeded()) {
             // select the individual with the least space around him
             // to do this i got to find the next smaller and the next bigger one
             smallestHyperCube   = ((Double)((AbstractEAIndividual)archive.get(0)).getData("HyperCube")).doubleValue();

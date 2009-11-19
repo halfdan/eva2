@@ -105,7 +105,7 @@ public class MetricSWithReference implements InterfaceParetoFrontMetric, java.io
         if (this.m_ReferenceSMetric < 0) {
             Population              tmpPop = new Population();
             AbstractEAIndividual  tmpIndy;
-            tmpPop.setPopulationSize(this.m_Reference.length);
+            tmpPop.setTargetSize(this.m_Reference.length);
             tmpPop.clear();
             for (int i = 0; i < this.m_Reference.length; i++) {
                 tmpIndy = new ESIndividualDoubleData();

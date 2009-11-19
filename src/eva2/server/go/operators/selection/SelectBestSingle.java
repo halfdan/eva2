@@ -52,7 +52,7 @@ public class SelectBestSingle implements InterfaceSelection, java.io.Serializabl
         double                  currentBestValue;
 
         critSize = ((AbstractEAIndividual)population.get(0)).getFitness().length;
-        result.setPopulationSize(size);
+        result.setTargetSize(size);
         if (this.m_ObeyDebsConstViolationPrinciple) {
             for (int i = 0; i < size; i++) {
                 currentCriteria     = RNG.randomInt(0, critSize-1);

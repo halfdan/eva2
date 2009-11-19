@@ -6,7 +6,7 @@ import eva2.server.go.individuals.ESIndividualDoubleData;
  * Schwefels sine root function (1981) with a minimum at 420.9687^n of value 0.
  * Function f(x) = (418.9829 * n) - sum_n(x_i * sin(sqrt(abs(x_i)))) + (418.9829 * n);
  */
-public class F13Problem extends F1Problem implements InterfaceMultimodalProblem {
+public class F13Problem extends AbstractProblemDoubleOffset implements InterfaceMultimodalProblem {
 
     public F13Problem() {
         this.m_Template         = new ESIndividualDoubleData();

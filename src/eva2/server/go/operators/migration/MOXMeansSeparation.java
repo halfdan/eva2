@@ -137,7 +137,7 @@ public class MOXMeansSeparation implements InterfaceMigration, java.io.Serializa
         newIPOP = this.m_XMeans.cluster(collector, c);
         for (int i = 0; i < islands.length; i++) {
             islands[i].getPopulation().clear();
-            islands[i].getPopulation().setPopulationSize(0);
+            islands[i].getPopulation().setTargetSize(0);
         }
         if (this.m_Debug) {
             Plot        plot;
@@ -218,12 +218,12 @@ public class MOXMeansSeparation implements InterfaceMigration, java.io.Serializa
             oldIPOP[i].clear();
             oldIPOP[i].addPopulation(newIPOP[i]);
             // todo remove this for nice pictures
-            if (oldIPOP[i].size() < oldIPOP[i].getPopulationSize()) {
-                oldIPOP[i].addPopulation(this.m_Selection.selectFrom(memory, oldIPOP[i].getPopulationSize()-oldIPOP[i].size()));
+            if (!oldIPOP[i].targetSizeReached()) {
+                oldIPOP[i].addPopulation(this.m_Selection.selectFrom(memory, oldIPOP[i].getFreeSlots()));
             }
             if (this.m_Debug) System.out.println("Setting "+i+" to population size " + oldIPOP[i].size());
             islands[i].setPopulation(oldIPOP[i]);
-            islands[i].getPopulation().setPopulationSize(oldIPOP[i].size());
+            islands[i].getPopulation().setTargetSize(oldIPOP[i].size());
         }
     }
 

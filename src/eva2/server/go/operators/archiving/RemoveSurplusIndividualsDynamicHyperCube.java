@@ -35,7 +35,7 @@ public class RemoveSurplusIndividualsDynamicHyperCube implements InterfaceRemove
         double[][]  fitness;
         double[]    space;
         int         indexSmallHyperCube;
-        while(archive.size() > archive.getPopulationSize()) {
+        while(archive.targetSizeExceeded()) {
             // select the individual with the least space around him
             // to do this i got to find the next smaller and the next bigger one
             fitness = new double[archive.size()][];

@@ -105,23 +105,12 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem implemen
      * @param population    The populations that is to be inited
      */
     public void initPopulation(Population population) {
-        AbstractEAIndividual tmpIndy;
-
         this.m_OverallBest = null;
-
-        population.clear();
 
         ((InterfaceDataTypeDouble)this.m_Template).setDoubleDataLength(this.m_ProblemDimension);
         ((InterfaceDataTypeDouble)this.m_Template).SetDoubleRange(makeRange());
 
-        for (int i = 0; i < population.getPopulationSize(); i++) {
-            tmpIndy = (AbstractEAIndividual)((AbstractEAIndividual)this.m_Template).clone();
-            tmpIndy.init(this);
-            population.add(tmpIndy);
-        }
-        // population init must be last
-        // it set's fitcalls and generation to zero
-        population.init();
+        AbstractOptimizationProblem.defaultInitPopulation(population, m_Template, this);
     }
     
     public double[][] makeRange() {

@@ -143,9 +143,8 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
      * @param population    The populations that is to be inited
      */
     public static void initPopulation(Population pop, InterfaceProgramProblem prob, boolean useInnerConsts, int numConsts) {
-        AbstractEAIndividual tmpIndy, template;
+        AbstractEAIndividual template;
 
-        pop.clear();
         template = ((AbstractOptimizationProblem)prob).getIndividualTemplate();
         GPArea tmpArea[]    = new GPArea[1];
         tmpArea[0]          = prob.getArea();
@@ -154,14 +153,7 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
         if ((template instanceof GAPIndividualProgramData) && useInnerConsts) {
             ((GAPIndividualProgramData)template).setDoubleDataLength(numConsts);
         }
-        for (int i = 0; i < pop.getPopulationSize(); i++) {
-            tmpIndy = (AbstractEAIndividual)((AbstractEAIndividual)template).clone();
-            tmpIndy.init((AbstractOptimizationProblem)prob);
-            pop.add(tmpIndy);
-        }
-        // population init must be last
-        // it set's fitcalls and generation to zero
-        pop.init();
+        AbstractOptimizationProblem.defaultInitPopulation(pop, template, prob);
     }
     
     /** This method init the enviroment panel if necessary.
@@ -238,6 +230,7 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
         if ((this.m_OverallBest == null) || (this.m_OverallBest.getFitness(0) > individual.getFitness(0))) {
             this.m_OverallBest = (AbstractEAIndividual)individual.clone();
             if (this.m_Show) {
+            	if (m_Plot==null) this.initEnvironmentPanel();
                 this.m_Plot.clearAll();
                 program     = ((InterfaceDataTypeProgram)this.m_OverallBest).getProgramData()[0];
                 for (double i = 0; i < this.m_NumberOfCheckPoints; i++) {

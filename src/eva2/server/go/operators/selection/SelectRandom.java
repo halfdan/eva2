@@ -55,7 +55,7 @@ public class SelectRandom implements InterfaceSelection, java.io.Serializable {
      */
     public Population selectFrom(Population population, int size) {
         Population result = new Population();
-        result.setPopulationSize(size);
+        result.setTargetSize(size);
         if (this.m_ObeyDebsConstViolationPrinciple) {
             int index = 0, rand;
             while (result.size() < size) {

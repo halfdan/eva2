@@ -39,7 +39,7 @@ public class FloodAlgorithm implements InterfaceOptimizer, java.io.Serializable 
 
     public FloodAlgorithm() {
         this.m_Population = new Population();
-        this.m_Population.setPopulationSize(10);
+        this.m_Population.setTargetSize(10);
     }
 
     public FloodAlgorithm(FloodAlgorithm a) {

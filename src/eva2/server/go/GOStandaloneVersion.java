@@ -317,7 +317,7 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
                 ga.setParentSelection(tour);
                 ga.setPartnerSelection(tour);
                 this.m_GO.setOptimizer(ga);
-                this.m_GO.getOptimizer().getPopulation().setPopulationSize(100);
+                this.m_GO.getOptimizer().getPopulation().setTargetSize(100);
                 F1Problem problem = new F1Problem();
                 tmpIndy = new GAIndividualDoubleData();
                 ((GAIndividualDoubleData)tmpIndy).setCrossoverOperator(new CrossoverGANPoint());
@@ -335,7 +335,7 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
             	this.m_OutputFileName = "X360_StandardES";
                 EvolutionStrategies es = new EvolutionStrategies();
                 this.m_GO.setOptimizer(es);
-                this.m_GO.getOptimizer().getPopulation().setPopulationSize(50);
+                this.m_GO.getOptimizer().getPopulation().setTargetSize(50);
                 F1Problem problem = new F1Problem();
                 tmpIndy = new ESIndividualDoubleData();
                 ((AbstractEAIndividual)tmpIndy).setMutationOperator(new MutateESLocal());

@@ -134,7 +134,7 @@ public class PostProcess {
     	for (int i=0; i<optsFound.length; i++) {
 			if (optsFound[i] != null) result.add(optsFound[i]);
 		}
-    	result.setPopulationSize(result.size());
+    	result.synchSize();
     	return result;
     }
 
@@ -212,7 +212,7 @@ public class PostProcess {
         		}
         	}
         }
-        result.setPopulationSize(result.size());
+        result.synchSize();
         return result;
     }
     
@@ -387,8 +387,8 @@ public class PostProcess {
 		hc.SetProblem(problem);
 		mute.init(problem.getIndividualTemplate(), problem);
 		hc.SetMutationOperator(mute);
-		if (pop.size() != pop.getPopulationSize()) {
-			System.err.println(pop.size() + " vs. "+ pop.getPopulationSize());
+		if (pop.size() != pop.getTargetSize()) {
+			System.err.println(pop.size() + " vs. "+ pop.getTargetSize());
 			System.err.println("warning: population size and vector size dont match! (PostProcess::processWithHC)");
 		}
 		hc.setPopulation(pop);

@@ -13,7 +13,7 @@ import eva2.tools.math.RNG;
  * Time: 19:30:52
  * To change this template use File | Settings | File Templates.
  */
-public class F5Problem extends F1Problem implements java.io.Serializable {
+public class F5Problem extends AbstractProblemDoubleOffset implements java.io.Serializable {
 	final static double f5range = 65.536;
 	
     public F5Problem() {

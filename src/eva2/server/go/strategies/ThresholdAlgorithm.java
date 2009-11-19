@@ -35,7 +35,7 @@ public class ThresholdAlgorithm implements InterfaceOptimizer, java.io.Serializa
 
     public ThresholdAlgorithm() {
         this.m_Population = new Population();
-        this.m_Population.setPopulationSize(10);
+        this.m_Population.setTargetSize(10);
     }
 
     public ThresholdAlgorithm(ThresholdAlgorithm a) {

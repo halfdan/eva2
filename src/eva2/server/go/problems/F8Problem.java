@@ -8,7 +8,7 @@ package eva2.server.go.problems;
  * Time: 19:40:28
  * To change this template use File | Settings | File Templates.
  */
-public class F8Problem extends F1Problem implements InterfaceMultimodalProblem, java.io.Serializable {
+public class F8Problem extends AbstractProblemDoubleOffset implements InterfaceMultimodalProblem, java.io.Serializable {
 
     private double      a = 20;
     private double      b = 0.2;

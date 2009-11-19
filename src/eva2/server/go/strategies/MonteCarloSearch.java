@@ -42,7 +42,7 @@ public class MonteCarloSearch implements InterfaceOptimizer, java.io.Serializabl
 
     public MonteCarloSearch() {
         this.m_Population = new Population();
-        this.m_Population.setPopulationSize(50);
+        this.m_Population.setTargetSize(50);
     }
 
     public MonteCarloSearch(MonteCarloSearch a) {

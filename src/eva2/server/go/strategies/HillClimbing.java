@@ -38,7 +38,7 @@ public class HillClimbing implements InterfaceOptimizer, java.io.Serializable {
 
     public HillClimbing() {
         this.m_Population = new Population();
-        this.m_Population.setPopulationSize(10);
+        this.m_Population.setTargetSize(10);
     }
     
     public HillClimbing(HillClimbing a) {

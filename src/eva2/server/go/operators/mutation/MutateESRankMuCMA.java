@@ -413,6 +413,7 @@ public class MutateESRankMuCMA implements InterfaceMutationGenerational, Seriali
 		}
 
 		if (TRACE_1) {
+			System.out.println("sigma=" + params.sigma);
 			System.out.print("psLen=" + (psNorm) + " ");
 			outputParams(params, mu);
 		}

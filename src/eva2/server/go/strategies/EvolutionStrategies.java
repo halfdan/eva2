@@ -52,7 +52,7 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
     public static final String esMuParam = "EvolutionStrategyMuParameter";
 
     public EvolutionStrategies() {
-        this.m_Population.setPopulationSize(this.m_Lambda);
+        this.m_Population.setTargetSize(this.m_Lambda);
     }
     
     public EvolutionStrategies(int mu, int lambda, boolean usePlus) {
@@ -111,7 +111,7 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
      * @param reset     If true the population is reset.
      */
     public void initByPopulation(Population pop, boolean reset) {
-    	origPopSize = pop.getPopulationSize();
+    	origPopSize = pop.getTargetSize();
 //    	System.out.println("ES: orig popsize is " + origPopSize);
         this.m_Population = (Population)pop.clone();
         if (reset) {
@@ -368,9 +368,9 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
         	System.err.println("Invalid mu/lambda ratio! Setting mu=lambda="+m_Mu);
         	this.m_Lambda = this.m_Mu;
         }
-        if (this.m_UsePlusStrategy) this.m_Population.setPopulationSize(this.m_Mu + this.m_Lambda);
-        else this.m_Population.setPopulationSize(this.m_Lambda);
-        origPopSize=m_Population.getPopulationSize();
+        if (this.m_UsePlusStrategy) this.m_Population.setTargetSize(this.m_Mu + this.m_Lambda);
+        else this.m_Population.setTargetSize(this.m_Lambda);
+        origPopSize=m_Population.getTargetSize();
     }
 
     /** This method allows you to set an identifier for the algorithm

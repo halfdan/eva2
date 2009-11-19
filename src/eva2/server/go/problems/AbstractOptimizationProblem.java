@@ -1,12 +1,11 @@
 package eva2.server.go.problems;
 
 import java.awt.BorderLayout;
-import java.util.Vector;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Semaphore;
 import java.io.Serializable;
-
+import java.util.Vector;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -42,14 +41,14 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
 	class EvalThread extends Thread {
 		AbstractOptimizationProblem prob;
 		AbstractEAIndividual ind;
-		Vector<AbstractEAIndividual> resultrep;
+//		Vector<AbstractEAIndividual> resultrep;
 		Population pop;
 		Semaphore m_Semaphore;
 		
-		public EvalThread(AbstractOptimizationProblem prob, AbstractEAIndividual ind, Vector<AbstractEAIndividual> resultrep, Population pop,Semaphore sema) {
+		public EvalThread(AbstractOptimizationProblem prob, AbstractEAIndividual ind, Population pop,Semaphore sema) {
 			this.ind = ind;
 			this.prob = prob;
-			this.resultrep = resultrep;
+//			this.resultrep = resultrep;
 			this.pop = pop;
 			this.m_Semaphore=sema;
 		}
@@ -58,7 +57,7 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
 //			System.out.println("Running ET " + this);
 //			long time=System.nanoTime();
 			prob.evaluate(ind);
-			resultrep.add(ind);
+//			resultrep.add(ind);
 			pop.incrFunctionCalls();
 			m_Semaphore.release();
 //			long duration=System.nanoTime()-time;
@@ -110,7 +109,7 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
         
         if (this.parallelthreads > 1) {
         	Vector<AbstractEAIndividual> queue = new Vector<AbstractEAIndividual>(population.size());
-        	Vector<AbstractEAIndividual> finished =  new Vector<AbstractEAIndividual>(population.size());
+//        	Vector<AbstractEAIndividual> finished =  new Vector<AbstractEAIndividual>(population.size());
         	/* 	queue.addAll(population);
         	Semaphore sema=new Semaphore(parallelthreads);
         	while (finished.size() < population.size()) {
@@ -132,19 +131,19 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
         		}
         	}*/
         	Semaphore sema=new Semaphore(0);
-        	ExecutorService pool = Executors.newFixedThreadPool(parallelthreads);     
-        	for (int i = 0; i < population.size(); i++){
-        		AbstractEAIndividual tmpindy =  (AbstractEAIndividual)population.get(i);   		
+        	ExecutorService pool = Executors.newFixedThreadPool(parallelthreads);
+        	int cntIndies=0;    
+        	for (; cntIndies < population.size(); cntIndies++){
+        		AbstractEAIndividual tmpindy =  (AbstractEAIndividual)population.get(cntIndies);   		
         		tmpindy.resetConstraintViolation();
-        		EvalThread evalthread = new EvalThread(this,tmpindy,finished,population,sema);
+        		EvalThread evalthread = new EvalThread(this,tmpindy,population,sema);
         		pool.execute(evalthread);
-
         	}
         	try {
-        		sema.acquire(population.size());
+        		sema.acquire(cntIndies);
         	} catch (InterruptedException e) {
-        		// TODO Auto-generated catch block
         		e.printStackTrace();
+        		throw new RuntimeException("Threading error in AbstractOptimizationProblem: " + e.getMessage());
         	}
         	pool.shutdownNow();
         } else {
@@ -185,6 +184,21 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
      */
     public abstract void evaluate(AbstractEAIndividual individual);
 
+    
+	public static void defaultInitPopulation(Population population, AbstractEAIndividual template, InterfaceOptimizationProblem prob) {
+        AbstractEAIndividual tmpIndy;
+        population.clear();
+        
+        for (int i = 0; i < population.getTargetSize(); i++) {
+            tmpIndy = (AbstractEAIndividual)((AbstractEAIndividual)template).clone();
+            tmpIndy.init(prob);
+            population.add(tmpIndy);
+        }
+        // population init must be last
+        // it set's fitcalls and generation to zero
+        population.init();
+	}
+	
     /******************** Some output methods *******************************************/
 
     /** This method allows you to output a string that describes a found solution

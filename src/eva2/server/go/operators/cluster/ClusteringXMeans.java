@@ -273,7 +273,7 @@ public class ClusteringXMeans implements InterfaceClustering, java.io.Serializab
         ckm.setUseSearchSpace(true);
         ckm.m_Debug = true;
         Population pop = new Population();
-        pop.setPopulationSize(100);
+        pop.setTargetSize(100);
         F1Problem f1 = new F1Problem();
         f1.setProblemDimension(2);
         f1.setEAIndividual(new ESIndividualDoubleData());

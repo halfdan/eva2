@@ -133,7 +133,7 @@ public class MOEAParameters extends AbstractGOParameters implements InterfaceGOP
             archive = new Population();
             ((MultiObjectiveEA)this.m_Optimizer).getPopulation().SetArchive(archive);
         }
-        ((MultiObjectiveEA)this.m_Optimizer).getPopulation().getArchive().setPopulationSize(b);
+        ((MultiObjectiveEA)this.m_Optimizer).getPopulation().getArchive().setTargetSize(b);
     }
     public String archiveSizeTipText() {
         return "Choose the size of the archive.";

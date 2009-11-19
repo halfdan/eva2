@@ -110,7 +110,7 @@ public class GeneticAlgorithm implements InterfaceOptimizer, java.io.Serializabl
             //System.out.println("Population:"+this.m_Population.getSolutionRepresentationFor());
             this.m_ParentSelection.prepareSelection(this.m_Population);
             this.m_PartnerSelection.prepareSelection(this.m_Population);
-            parents     = this.m_ParentSelection.selectFrom(this.m_Population, this.m_Population.getPopulationSize());
+            parents     = this.m_ParentSelection.selectFrom(this.m_Population, this.m_Population.getTargetSize());
             //System.out.println("Parents:"+parents.getSolutionRepresentationFor());
 
             if (parents.getEAIndividual(0).getMutationOperator() instanceof InterfaceMutationGenerational) {
@@ -153,7 +153,7 @@ public class GeneticAlgorithm implements InterfaceOptimizer, java.io.Serializabl
             }
             if (this.m_Plague > 0) {
                 for (int i = 0; i < this.m_Plague; i++) if (this.m_Population.size() > 2) this.m_Population.remove(this.m_Population.getWorstEAIndividual());
-                this.m_Population.setPopulationSize(this.m_Population.size());
+                this.m_Population.setTargetSize(this.m_Population.size());
             }
             //System.out.println("Population size: " + this.m_Population.size());
 //        if (this.m_Population.getArchive() != null) {
@@ -203,7 +203,7 @@ public class GeneticAlgorithm implements InterfaceOptimizer, java.io.Serializabl
             String result = "";
             result += "Genetic Algorithm:\n";
             result += "Using:\n";
-            result += " Population Size    = " + this.m_Population.getPopulationSize() + "/" + this.m_Population.size() + "\n";
+            result += " Population Size    = " + this.m_Population.getTargetSize() + "/" + this.m_Population.size() + "\n";
             result += " Parent Selection   = " + this.m_ParentSelection.getClass().toString() + "\n";
             result += " Partner Selection  = " + this.m_PartnerSelection.getClass().toString() + "\n";
             result += " Number of Partners = " + this.m_NumberOfPartners + "\n";
