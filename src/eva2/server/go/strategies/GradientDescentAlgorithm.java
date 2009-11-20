@@ -207,6 +207,7 @@ public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Ser
     } // for loop population size
 
     this.m_Problem.evaluate(this.m_Population);
+    m_Population.incrGeneration();
 
     if (this.recovery) {
       for (int i = 0; i < this.m_Population.size(); i++) {
@@ -232,6 +233,7 @@ public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Ser
         }
       }
       this.m_Problem.evaluate(this.m_Population);
+      m_Population.incrGeneration();
     }
 
     if (this.globalStepSizeAdaption) {
