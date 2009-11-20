@@ -365,15 +365,41 @@ public class ReflectPackage {
 	}
 	
 	/**
-	 * Retrieve assignable classes of the given package from classpath.
+	 * Retrieve assignable classes of the given package from classpath given by package name and Class instance.
 	 * 
 	 * @param pckg	String denoting the package
 	 * @param reqSuperCls
 	 * @return
 	 */
-	public static Class[] getAssignableClassesInPackage(String pckg, Class reqSuperCls, boolean includeSubs, boolean bSort) {
+	public static Class<?>[] getAssignableClassesInPackage(String pckg, Class reqSuperCls, boolean includeSubs, boolean bSort) {
 		if (TRACE) System.out.println("requesting classes assignable from " + reqSuperCls.getName());
 		return getClassesInPackageFltr(new HashSet<Class>(), pckg, includeSubs, bSort, reqSuperCls);
+	}
+	
+	/**
+	 * Retrieve assignable classes of the given package from classpath given by full class and package String,
+	 * such as eva2.server.go.problems.AbstractOptimizationProblem.
+	 * 
+	 * @param pckg	String denoting the package
+	 * @param reqSuperCls
+	 * @return
+	 */
+	public static Class<?>[] getAssignableClasses(String pckgClassName, boolean includeSubs, boolean bSort) {
+		int dotIndex = pckgClassName.lastIndexOf('.');
+		if (dotIndex <= 0) {
+			System.err.println("warning: " + pckgClassName + " is not a package!");
+			return null;
+		} else {		
+			String pckg = pckgClassName.substring(0, pckgClassName.lastIndexOf('.'));
+			Class<?>[] clsArr; 
+			try {
+				clsArr = ReflectPackage.getAssignableClassesInPackage(pckg, Class.forName(pckgClassName), includeSubs, bSort);
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+				clsArr = null;
+			}
+			return clsArr;
+		}
 	}
 	
 	public static void main(String[] args) {

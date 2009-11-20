@@ -10,6 +10,7 @@ import eva2.server.go.problems.F1Problem;
 import eva2.server.go.problems.InterfaceFirstOrderDerivableProblem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.tools.EVAERROR;
+import eva2.tools.ReflectPackage;
 
 /** 
  * A gradient descent algorithm by hannes planatscher don't expect any
@@ -195,6 +196,12 @@ public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Ser
       else {
     	  String msg="Warning, problem of type InterfaceFirstOrderDerivableProblem and template of type InterfaceDataTypeDouble is required for " + this.getClass();
     	  EVAERROR.errorMsgOnce(msg);
+    	  Class<?>[] clsArr = ReflectPackage.getAssignableClasses("eva2.server.go.problems.InterfaceFirstOrderDerivableProblem", true, true);
+    	  msg=msg+" (available: ";
+    	  for (Class<?> cls: clsArr) {
+    		  msg=msg+" "+cls.getSimpleName();
+    	  }
+    	  msg=msg+")";
     	  throw new RuntimeException(msg);
       }
     } // for loop population size

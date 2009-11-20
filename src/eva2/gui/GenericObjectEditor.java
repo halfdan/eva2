@@ -117,47 +117,36 @@ public class GenericObjectEditor implements PropertyEditor {
 	 */
 	public static ArrayList<String> getClassesFromClassPath(String className) { 
 		ArrayList<String> classes = new ArrayList<String>();
-		int dotIndex = className.lastIndexOf('.');
-		if (dotIndex <= 0) {
-			System.err.println("warning: " + className + " is not a package!");
-		} else {		
-			String pckg = className.substring(0, className.lastIndexOf('.'));
-			Class<?>[] clsArr; 
-			try {
-				clsArr = ReflectPackage.getAssignableClassesInPackage(pckg, Class.forName(className), true, true);
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-				clsArr = null;
-			}
-			if (clsArr == null) {
-				System.err.println("Warning: No configuration property found in: "
-						+EvAInfo.propertyFile + " "+"for "+className);
-				classes.add(className);
-			} else {
-				for (Class<?> class1 : clsArr) {
-					int m = class1.getModifiers();
-					try {
-						// a field allowing a class to indicate it doesnt want to be displayed
-						Field f = class1.getDeclaredField("hideFromGOE");
-						if (f.getBoolean(class1) == true) {
-							if (TRACE) System.out.println("Class " + class1 + " wants to be hidden from GOE, skipping...");
-							continue;
-						}
-					} catch (Exception e) {
-						
-					} catch (Error e) {
-						System.err.println("Error on checking fields of " + class1 + ": " + e);
+		Class<?>[] clsArr;
+		clsArr=ReflectPackage.getAssignableClasses(className, true, true);
+		if (clsArr == null) {
+			System.err.println("Warning: No assignable classes found in property file or on classpath: "
+					+EvAInfo.propertyFile + " for "+className);
+			classes.add(className);
+		} else {
+			for (Class<?> class1 : clsArr) {
+				int m = class1.getModifiers();
+				try {
+					// a field allowing a class to indicate it doesnt want to be displayed
+					Field f = class1.getDeclaredField("hideFromGOE");
+					if (f.getBoolean(class1) == true) {
+						if (TRACE) System.out.println("Class " + class1 + " wants to be hidden from GOE, skipping...");
 						continue;
 					}
-//					if (f)
-					if (!Modifier.isAbstract(m) && !class1.isInterface()) {	// dont take abstract classes or interfaces
-						try {
-							Class<?>[] params = new Class[0];
-							class1.getConstructor(params);
-							classes.add(class1.getName());
-						} catch (NoSuchMethodException e) {
-							System.err.println("GOE warning: Class " + class1.getName() + " has no default constructor, skipping...");
-						}
+				} catch (Exception e) {
+
+				} catch (Error e) {
+					System.err.println("Error on checking fields of " + class1 + ": " + e);
+					continue;
+				}
+				//					if (f)
+				if (!Modifier.isAbstract(m) && !class1.isInterface()) {	// dont take abstract classes or interfaces
+					try {
+						Class<?>[] params = new Class[0];
+						class1.getConstructor(params);
+						classes.add(class1.getName());
+					} catch (NoSuchMethodException e) {
+						System.err.println("GOE warning: Class " + class1.getName() + " has no default constructor, skipping...");
 					}
 				}
 			}
