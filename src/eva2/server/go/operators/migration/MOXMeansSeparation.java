@@ -131,7 +131,7 @@ public class MOXMeansSeparation implements InterfaceMigration, java.io.Serializa
 
         // first set the K to the K-Means
         this.m_XMeans.setMaxK(islands.length);
-        this.m_XMeans.cluster(toCluster);
+        this.m_XMeans.cluster(toCluster, (Population)null);
         double[][] c = this.m_XMeans.getC();
         //@todo Hier muss ich mal denk machen und weniger click...
         newIPOP = this.m_XMeans.cluster(collector, c);

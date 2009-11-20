@@ -239,7 +239,7 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
      */
     protected Population getReplacePop(Population nextGeneration) {
     	if (forceOrigPopSize && (origPopSize > 0) && (origPopSize < nextGeneration.size())) {
-    		// this is especially for CBN: 
+    		// this is especially for CBN: earlier selection to immediately reduce the size of mu+lambda to lambda
     		this.m_EnvironmentSelection.prepareSelection(nextGeneration);
     		Population tmpPop = (Population)nextGeneration.clone();
     		nextGeneration.clear();
@@ -368,8 +368,9 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
         	System.err.println("Invalid mu/lambda ratio! Setting mu=lambda="+m_Mu);
         	this.m_Lambda = this.m_Mu;
         }
-        if (this.m_UsePlusStrategy) this.m_Population.setTargetSize(this.m_Mu + this.m_Lambda);
-        else this.m_Population.setTargetSize(this.m_Lambda);
+//        if (this.m_UsePlusStrategy) this.m_Population.setTargetSize(this.m_Mu + this.m_Lambda);
+//        else this.m_Population.setTargetSize(this.m_Lambda);
+		this.m_Population.setTargetSize(this.m_Lambda);
         origPopSize=m_Population.getTargetSize();
     }
 

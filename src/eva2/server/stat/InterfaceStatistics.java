@@ -17,6 +17,7 @@ import java.util.List;
 import eva2.server.go.IndividualInterface;
 import eva2.server.go.PopulationInterface;
 import eva2.server.go.problems.InterfaceAdditionalPopulationInformer;
+import eva2.server.go.strategies.InterfaceOptimizer;
 /*==========================================================================*
  * INTERFACE DECLARATION
  *==========================================================================*/
@@ -35,7 +36,7 @@ public interface InterfaceStatistics {
 	public void addTextListener(InterfaceTextListener listener);
 	public boolean removeTextListener(InterfaceTextListener listener);
 	public void printToTextListener(String s);
-	public void createNextGenerationPerformed(PopulationInterface Pop, List<InterfaceAdditionalPopulationInformer> informerList);
+	public void createNextGenerationPerformed(PopulationInterface Pop, InterfaceOptimizer opt, List<InterfaceAdditionalPopulationInformer> informerList);
 	public void createNextGenerationPerformed(double[] bestfit,double[] worstfit,int calls);
 	public InterfaceStatisticsParameter getStatisticsParameter(); // called from moduleadapter
 	public IndividualInterface getRunBestSolution(); // return the best fitness of the last run (may not be equal to the last population)

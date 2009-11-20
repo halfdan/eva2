@@ -42,9 +42,9 @@ public class FitnessAdaptiveClustering implements java.io.Serializable, Interfac
                 // also note that if all individual achieve equal fitness the sum will be zero
                 result[i] = data[i][x] -min + 0.1;
             }
-
+            this.m_ClusteringAlgorithm.initClustering(population);
             // Now search for clusters
-            Population[]    ClusterResult = this.m_ClusteringAlgorithm.cluster(population);
+            Population[]    ClusterResult = this.m_ClusteringAlgorithm.cluster(population, population);
             Population      cluster;
             for (int i = 1; i < ClusterResult.length; i++) {
                 cluster = ClusterResult[i];

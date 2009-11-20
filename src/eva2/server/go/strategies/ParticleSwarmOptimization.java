@@ -1201,7 +1201,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 	}
 
 	public void optimize() {
-
+//		System.out.println(">>> " + m_Population.getStringRepresentation());
 		startOptimize();
 
 		// Update the individuals
@@ -1216,7 +1216,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 		// log the best individual of the population
 		logBestIndividual();
 
-//		System.out.println(">>> " + m_Population.getBestEAIndividual().getStringRepresentation());
+//		System.out.println("<<< " + m_Population.getStringRepresentation());
 		
 //		if (doLocalSearch && (m_Population.getGeneration()%localSearchGens==0)) {
 ////			System.out.println("Local search at gen "+m_Population.getGeneration());

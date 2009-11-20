@@ -33,19 +33,46 @@ public interface InterfaceClustering {
      * @param pop       The population of individuals that is to be clustered.
      * @return Population[]
      */
-    public Population[] cluster(Population pop);
+    public Population[] cluster(Population pop, Population referenceSet);
 
     /** This method allows you to decide if two species are to be merged regarding this clustering algorithm.
      * @param species1  The first species.
      * @param species2  The second species.
      * @return True if species converge, else False.
      */
-    public boolean mergingSpecies(Population species1, Population species2);
+    public boolean mergingSpecies(Population species1, Population species2, Population referenceSet);
 
-    /** This method decides if an unclustered individual belongs to an already established species.
+    /**
+     * Do some pre-calculations on a population for clustering. If additional population data
+     * is set, return the associated key, otherwise null.
+     * 
+     * @param pop
+     */
+    public String initClustering(Population pop);
+
+    /**
+     * This method decides if an unclustered individual belongs to an already established species.
+     * For some clustering methods this can only be decided in reference to the complete population.
+     * 
      * @param indy          A unclustered individual.
      * @param species       A species.
+     * @param pop			The complete population as a reference.
      * @return True or False.
      */
-    public boolean belongsToSpecies(AbstractEAIndividual indy, Population species);
+    //Removed since for some clustering methods its not feasible to associate loners sequentially. Instead, a whole set of
+    // lone individuals can now be associated to a given set of clusters
+    //public boolean belongsToSpecies(AbstractEAIndividual indy, Population species);
+    
+    /**
+     * Try to associate a set of loners with a given set of species. Return a list
+     * of indices assigning loner i with species j for all loners. If no species can
+     * be associated, -1 is returned as individual entry.
+     * Note that the last cluster threshold is used which may have depended on the last
+     * generation.
+     * 
+     * @param loners
+     * @param species
+     * @return associative list matching loners to species.
+     */
+    public int[] associateLoners(Population loners, Population[] species, Population referenceSet);
 }

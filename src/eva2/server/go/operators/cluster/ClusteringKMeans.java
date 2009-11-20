@@ -1,5 +1,7 @@
 package eva2.server.go.operators.cluster;
 
+import java.util.Arrays;
+
 import eva2.gui.Chart2DDPointIconCircle;
 import eva2.gui.Chart2DDPointIconText;
 import eva2.gui.GraphPointSet;
@@ -59,7 +61,7 @@ public class ClusteringKMeans implements InterfaceClustering, java.io.Serializab
      * @param pop       The population of individuals that is to be clustered.
      * @return Population[]
      */
-    public Population[] cluster(Population pop) {
+    public Population[] cluster(Population pop, Population referencePop) {
         double[][] data     = this.extractClusterDataFrom(pop);
         if (!(this.m_ReuseC) || (this.m_C == null)) {
             this.m_C            = new double[this.m_K][];
@@ -278,20 +280,27 @@ public class ClusteringKMeans implements InterfaceClustering, java.io.Serializab
      * @param species2  The second species.
      * @return True if species converge, else False.
      */
-    public boolean mergingSpecies(Population species1, Population species2) {
+    public boolean mergingSpecies(Population species1, Population species2, Population referencePop) {
         // @todo i could use the BIC metric from X-means to calculate this
         return false;
     }
 
-    /** This method decides if a unclustered individual belongs to an already established species.
-     * @param indy          A unclustered individual.
-     * @param species       A species.
-     * @return True or False.
-     */
-    public boolean belongsToSpecies(AbstractEAIndividual indy, Population species) {
-        // @todo perhaps the same as in convergingSpecies
-        return false;
-    }
+//    /** This method decides if a unclustered individual belongs to an already established species.
+//     * @param indy          A unclustered individual.
+//     * @param species       A species.
+//     * @return True or False.
+//     */
+//    public boolean belongsToSpecies(AbstractEAIndividual indy, Population species, Population pop) {
+//        // @todo perhaps the same as in convergingSpecies
+//        return false;
+//    }
+    
+	public int[] associateLoners(Population loners, Population[] species, Population referencePop) {
+		int[] res=new int[loners.size()];
+		System.err.println("Warning, associateLoners not implemented for " + this.getClass());
+		Arrays.fill(res, -1);
+		return res;
+	}
 
     /** This method allows you to recieve the c centroids
      * @return The centroids
@@ -313,7 +322,7 @@ public class ClusteringKMeans implements InterfaceClustering, java.io.Serializab
         f1.setProblemDimension(2);
         f1.setEAIndividual(new ESIndividualDoubleData());
         f1.initPopulation(pop);
-        ckm.cluster(pop);
+        ckm.cluster(pop, (Population)null);
 
     }
 
@@ -374,4 +383,8 @@ public class ClusteringKMeans implements InterfaceClustering, java.io.Serializab
     public String reuseCTipText() {
         return "Toggel reuse of previously found cluster centroids.";
     }
+
+	public String initClustering(Population pop) {
+		return null;
+	}
 }

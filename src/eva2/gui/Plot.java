@@ -39,14 +39,14 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-
 import com.sun.image.codec.jpeg.JPEGCodec;
 import com.sun.image.codec.jpeg.JPEGImageEncoder;
 
 import eva2.EvAInfo;
+import eva2.server.go.individuals.AbstractEAIndividual;
+import eva2.server.go.populations.Population;
 import eva2.tools.chart2d.DPointSet;
 import eva2.tools.tool.BasicResourceLoader;
-import eva2.server.go.populations.Population;
 /*==========================================================================*
  * CLASS DECLARATION
  *==========================================================================*/
@@ -287,8 +287,20 @@ public class Plot implements PlotInterface, Serializable {
 	 */
     public void drawPopulation(String prefix, Population pop) {
 		for (int i=0; i<pop.size(); i++) {
-			getFunctionArea().drawIcon(1, prefix+" "+pop.getEAIndividual(i).getFitness(0), pop.getEAIndividual(i).getDoublePosition(), 2);
+			drawIndividual(1, 2, prefix, pop.getEAIndividual(i));
 		}
+    }
+    
+	/**
+	 * Draw an individual to the Plot instance. It is annotated with the
+	 * given prefix and its fitness.
+	 * 
+	 * @param prefix
+	 * @param pop
+	 * @see FunctionArea.drawIcon
+	 */
+    public void drawIndividual(int iconType, int graphID, String prefix, AbstractEAIndividual indy) {
+    	getFunctionArea().drawIcon(iconType, prefix+" "+indy.getFitness(0), indy.getDoublePosition(), graphID);
     }
     
 	public void setPreferredSize(Dimension prefSize) {
