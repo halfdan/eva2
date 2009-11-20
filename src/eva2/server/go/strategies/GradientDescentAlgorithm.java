@@ -196,7 +196,7 @@ public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Ser
       else {
     	  String msg="Warning, problem of type InterfaceFirstOrderDerivableProblem and template of type InterfaceDataTypeDouble is required for " + this.getClass();
     	  EVAERROR.errorMsgOnce(msg);
-    	  Class<?>[] clsArr = ReflectPackage.getAssignableClasses("eva2.server.go.problems.InterfaceFirstOrderDerivableProblem", true, true);
+    	  Class<?>[] clsArr = ReflectPackage.getAssignableClasses(InterfaceFirstOrderDerivableProblem.class.getName(), true, true);
     	  msg=msg+" (available: ";
     	  for (Class<?> cls: clsArr) {
     		  msg=msg+" "+cls.getSimpleName();
