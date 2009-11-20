@@ -14,8 +14,10 @@ import eva2.server.go.IndividualInterface;
 import eva2.server.go.PopulationInterface;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.operators.distancemetric.InterfaceDistanceMetric;
+import eva2.server.go.populations.InterfaceSolutionSet;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceAdditionalPopulationInformer;
+import eva2.server.go.strategies.InterfaceOptimizer;
 import eva2.tools.Mathematics;
 import eva2.tools.Pair;
 
@@ -77,7 +79,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 	
 	private ArrayList<InterfaceTextListener> textListeners;
 	private List<InterfaceAdditionalPopulationInformer> lastInformerList = null;
-	private PopulationInterface lastPop = null;
+	private PopulationInterface lastSols = null;
 
 	public AbstractStatistics() {
 		firstPlot = true;
@@ -173,7 +175,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 		currentBestFeasibleFit=null;
 		bestOfRunFeasibleIndy = null;
 		lastInformerList = null;
-		lastPop = null;
+		lastSols = null;
 		runIterCnt = 0;
     	if (printRunIntroVerbosity()) printToTextListener("\n****** Multirun "+runNumber);
     	if (params != null) {
@@ -578,8 +580,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 	 * @param pop
 	 */
 	private void updateLastAdditionalInfo() {
-		// TODO Auto-generated method stub
-		Double[] lastVals = appendAdditionalInfo(lastInformerList, lastPop, null);
+		Double[] lastVals = appendAdditionalInfo(lastInformerList,  lastSols, null);
 		lastAdditionalInfoSums = updateAdditionalInfo(lastAdditionalInfoSums, lastVals);
 	}
 	
@@ -602,9 +603,8 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 	 *
 	 */
 	public synchronized void createNextGenerationPerformed(PopulationInterface
-			pop, List<InterfaceAdditionalPopulationInformer> informerList) {
+			pop, InterfaceOptimizer opt, List<InterfaceAdditionalPopulationInformer> informerList) {
 		lastInformerList  = informerList;
-		lastPop  = pop;
 		if (firstPlot) {
 			initPlots(m_StatsParams.getPlotDescriptions());
 //			if (doTextOutput()) printToTextListener(getOutputHeader(informer, pop)+'\n');
@@ -676,7 +676,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 				meanCollection.add(means);
 			} else {
 				if (meanCollection.size()<=runIterCnt) {// bad case!
-					// may happen for dynamic pop-sizes, e.g. in Tribe, when runs do not necessarily send the
+					// may happen for dynamic pop-sizes, e.g. in Tribes, when runs do not necessarily send the
 					// "generation performed" event the same number of times. 
 					// thus: dont do an update for events that are "too late"
 					means = null;
@@ -686,8 +686,10 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 		}
 //		meanCollection.set(pop.getGenerations()-1, means);
 		
+		lastSols  = (opt!=null) ? new Population(opt.getAllSolutions()) : pop;
 		if (doTextOutput()) {
-			Pair<String,Double[]> addInfo = getOutputLine(informerList, pop);
+			Pair<String,Double[]> addInfo = getOutputLine(informerList, lastSols);
+
 			if (printLineByVerbosity(runIterCnt)) printToTextListener(addInfo.head()+'\n');
 //			updateAdditionalInfo(addInfo.tail());
 			if (addInfo.tail()!=null) {

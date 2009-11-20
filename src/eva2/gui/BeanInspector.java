@@ -164,7 +164,7 @@ public class BeanInspector {
 		}
 
 		if (Target instanceof List && !(Target instanceof Population)) { // handle the list case
-			StringBuffer sbuf = new StringBuffer("[ ");
+			StringBuffer sbuf = new StringBuffer("[  ");
 			List<?> lst = (List<?>)Target;
 			for (Object o : lst) {
 				sbuf.append(o.toString());

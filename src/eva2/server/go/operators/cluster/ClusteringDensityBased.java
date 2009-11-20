@@ -6,6 +6,7 @@ import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.operators.distancemetric.InterfaceDistanceMetric;
 import eva2.server.go.operators.distancemetric.PhenotypeMetric;
 import eva2.server.go.populations.Population;
+import eva2.tools.Pair;
 
 
 /** The DBSCAN method. As far as I recall this is an hierachical
@@ -76,14 +77,7 @@ public class ClusteringDensityBased implements InterfaceClustering, java.io.Seri
         return (Object) new ClusteringDensityBased(this);
     }
 
-    /** This method allows you to search for clusters in a given population. The method
-     * returns Number of populations. The first population contains all individuals that
-     * could not be associated with any cluster and may be empty.
-     * All other populations group individuals into clusters.
-     * @param pop       The population of individuals that is to be clustered.
-     * @return Population[]
-     */
-    public Population[] cluster(Population pop) {
+    public Population[] cluster(Population pop, Population referencePop) {
         ConnectionMatrix    = new boolean[pop.size()][pop.size()];
         Clustered           = new boolean[pop.size()];
         AbstractEAIndividual   tmpIndy1, tmpIndy2;
@@ -151,36 +145,64 @@ public class ClusteringDensityBased implements InterfaceClustering, java.io.Seri
      * @param species2  The second species.
      * @return True if species converge, else False.
      */
-    public boolean mergingSpecies(Population species1, Population species2) {
+    public boolean mergingSpecies(Population species1, Population species2, Population referencePop) {
         if (m_TestConvergingSpeciesOnBestOnly) {
-            if (this.m_Metric.distance(species1.getBestEAIndividual(), species2.getBestEAIndividual()) < this.m_ClusterDistance) return true;
-            else return false;
+        	double specDist = this.m_Metric.distance(species1.getBestEAIndividual(), species2.getBestEAIndividual());
+//        	System.out.println("Dist between species is " + specDist);
+            return (specDist < this.m_ClusterDistance);
         } else {
             Population tmpPop = new Population(species1.size()+species2.size());
             tmpPop.addPopulation(species1);
             tmpPop.addPopulation(species2);
-            if (this.cluster(tmpPop).length <= 2) return true;
+            if (this.cluster(tmpPop, referencePop).length <= 2) return true;
             else return false;
         }
     }
 
-    /** This method decides if a unclustered individual belongs to an already established species.
-     * @param indy          A unclustered individual.
-     * @param species       A species.
-     * @return True or False.
+//    /** This method decides if a unclustered individual belongs to an already established species.
+//     * @param indy          A unclustered individual.
+//     * @param species       A species.
+//     * @return True or False.
+//     */
+//    public boolean belongsToSpecies(AbstractEAIndividual indy, Population species, Population pop) {
+//        if (this.m_TestConvergingSpeciesOnBestOnly) {
+//            if (this.m_Metric.distance(indy, species.getBestEAIndividual()) < this.m_ClusterDistance) return true;
+//            else return false;
+//        } else {
+//            Population tmpPop = (Population)species.clone();
+//            tmpPop.add(indy);
+//            if (this.cluster(tmpPop)[0].size() == 0) return true;
+//            else return false;
+//        }
+//    }
+    
+    /**
+     * Try to associate a set of loners with a given set of species. Return a list
+     * of indices assigning loner i with species j for all loners. If no species can
+     * be associated, -1 is returned as individual entry.
+     * Note that the last cluster threshold is used which may have depended on the last
+     * generation.
+     * 
+     * @param loners
+     * @param species
+     * @return associative list matching loners to species.
      */
-    public boolean belongsToSpecies(AbstractEAIndividual indy, Population species) {
-        if (this.m_TestConvergingSpeciesOnBestOnly) {
-            if (this.m_Metric.distance(indy, species.getBestEAIndividual()) < this.m_ClusterDistance) return true;
-            else return false;
-        } else {
-            Population tmpPop = (Population)species.clone();
-            tmpPop.add(indy);
-            if (this.cluster(tmpPop)[0].size() == 0) return true;
-            else return false;
-        }
+    public int[] associateLoners(Population loners, Population[] species, Population referencePop) {
+    	int[] res = new int[loners.size()];
+    	for (int l=0; l<loners.size(); l++) {
+    		double minDist = -1;
+    		res[l]=-1;
+    		for (int spI=0; spI<species.length; spI++) {  // O(species.length^2)
+    			Pair<Integer,Double> iDist = Population.getClosestFarthestIndy(loners.getEAIndividual(l), species[spI], m_Metric, true);
+    			if (iDist.tail() < m_ClusterDistance) { // its close enough to be added
+    				// set SP ID only if its the closest species which is still below cluster distance
+    				if (minDist<0 || (iDist.tail() < minDist)) res[l]=spI;
+    			}
+    		} // end for all species
+    	} // end for all loners
+    	return res;
     }
-
+    
 /**********************************************************************************************************************
  * These are for GUI
  */
@@ -235,6 +257,10 @@ public class ClusteringDensityBased implements InterfaceClustering, java.io.Seri
     public String minimumGroupSizeTipText() {
         return "Set the minimum group size for the DBSCAN method.";
     }
+
+	public String initClustering(Population pop) {
+		return null;
+	}
 
 
 //    /** For debuggy only

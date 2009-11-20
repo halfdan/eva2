@@ -5,6 +5,7 @@ import java.io.Serializable;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceDataTypeDouble;
 import eva2.server.go.strategies.ParticleSwarmOptimization;
+import eva2.tools.EVAERROR;
 
 /**
  * Define a metric on data stored within individuals, such as the personal best position
@@ -45,7 +46,12 @@ public class IndividualDataMetric implements InterfaceDistanceMetric, Serializab
 					double[][] range2 = ((InterfaceDataTypeDouble)indy2).getDoubleRange();
 					return EuclideanMetric.normedEuclideanDistance((double[])data1, range1, (double[])data2, range2);
 				} else return EuclideanMetric.euclideanDistance((double[])data1, (double[])data2);
-			} else throw new RuntimeException("Error, invalid key data, double array required by " + this.getClass().getName());
+			} else {
+				EVAERROR.errorMsgOnce("Error, invalid key data, double array required by " + this.getClass().getName());
+				EVAERROR.errorMsgOnce("Using PhenotypeMetric as Backup...");
+				return (new PhenotypeMetric().distance(indy1, indy2));
+//				throw new RuntimeException("Invalid data key, double array required by " + this.getClass().getName());
+			}
 		}
 	}
 

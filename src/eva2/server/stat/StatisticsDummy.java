@@ -6,6 +6,7 @@ import eva2.server.go.IndividualInterface;
 import eva2.server.go.PopulationInterface;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.problems.InterfaceAdditionalPopulationInformer;
+import eva2.server.go.strategies.InterfaceOptimizer;
 
 /**
  * This may be given to a Processor if no further stats are required. It speeds up
@@ -36,7 +37,7 @@ public class StatisticsDummy implements InterfaceStatistics, InterfaceTextListen
 		System.err.println("addTextListener not provided!");
 	}
 
-	public void createNextGenerationPerformed(PopulationInterface pop,
+	public void createNextGenerationPerformed(PopulationInterface pop, InterfaceOptimizer opt,
 			List<InterfaceAdditionalPopulationInformer> informerList) {
 		bestCurrentIndividual = (AbstractEAIndividual)pop.getBestIndividual();
 		if ((bestIndividualAllover == null) || (AbstractStatistics.secondIsBetter(bestIndividualAllover, bestCurrentIndividual))) {

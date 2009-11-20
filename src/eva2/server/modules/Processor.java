@@ -343,6 +343,7 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
     		if (this.goParams.getOptimizer() instanceof InterfaceAdditionalPopulationInformer) informerList.add(this.goParams.getOptimizer());
     		m_Statistics.createNextGenerationPerformed(
     				(PopulationInterface)this.goParams.getOptimizer().getPopulation(), 
+    				this.goParams.getOptimizer(),
     				informerList);
     		if (m_ListenerModule != null) {
     			m_ListenerModule.updateProgress(

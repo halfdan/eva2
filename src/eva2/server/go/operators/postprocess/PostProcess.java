@@ -173,7 +173,8 @@ public class PostProcess {
         //cluster the undifferentiated population
     	Population result = new Population(10);
     	result.setSameParams(pop);
-    	Population[] clusters = clustering.cluster(pop);
+    	clustering.initClustering(pop);
+    	Population[] clusters = clustering.cluster(pop, null);
     	if (TRACE) {
     		System.out.println("found " + clusters.length + " clusters!");
     		int sum=0;
@@ -423,7 +424,7 @@ public class PostProcess {
 		
 		ppRunnable = new OptimizerRunnable(OptimizerFactory.makeParams(nms, pop, problem, 0, term), true);
 		// as nms creates a new population and has already evaluated them, send a signal to stats
-		ppRunnable.getStats().createNextGenerationPerformed(nms.getPopulation(), null);
+		ppRunnable.getStats().createNextGenerationPerformed(nms.getPopulation(), nms, null);
 		
 		runPP();
 
@@ -464,7 +465,7 @@ public class PostProcess {
 		pop.SetFunctionCalls(baseEvals);
 		
 		ppRunnable = new OptimizerRunnable(cmaParams, true);
-		ppRunnable.getStats().createNextGenerationPerformed(cmaParams.getOptimizer().getPopulation(), null);
+		ppRunnable.getStats().createNextGenerationPerformed(cmaParams.getOptimizer().getPopulation(), cmaParams.getOptimizer(), null);
 		
 		runPP();
 		pop.clear();

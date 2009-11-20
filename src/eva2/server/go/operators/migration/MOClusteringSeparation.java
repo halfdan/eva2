@@ -136,7 +136,7 @@ public class MOClusteringSeparation implements InterfaceMigration, java.io.Seria
 
         // first set the K to the K-Means
         this.m_KMeans.setK(islands.length);
-        this.m_KMeans.cluster(toCluster);
+        this.m_KMeans.cluster(toCluster, (Population)null);
         double[][] c = this.m_KMeans.getC();
         newIPOP = this.m_KMeans.cluster(collector, c);
 

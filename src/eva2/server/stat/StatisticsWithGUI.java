@@ -247,23 +247,12 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
 			int subGraph=0;
 			if (doPlotCurrentBest) plotFitnessPoint(0, subGraph++, functionCalls, currentBestFit[0]);
 			if (doPlotRunBest) plotFitnessPoint(0, subGraph++, functionCalls, bestOfRunIndy.getFitness()[0]);
-			
-			if (doPlotWorst) {// schlechteste Fitness plotten
-				if (currentWorstFit == null) {
-					System.err.println("m_WorstFitness==null in plotStatisticsPerformed");
-					return;
-				}
-				plotFitnessPoint(0, subGraph++ , functionCalls, currentWorstFit[0]);
-			}
+			if (doPlotWorst) plotFitnessPoint(0, subGraph++ , functionCalls, currentWorstFit[0]);
 			if (doPlotAvgDist) plotFitnessPoint(0, subGraph++, functionCalls, avgPopDist);
 			if (doPlotMaxPopDist) plotFitnessPoint(0, subGraph++, functionCalls, maxPopDist);
-			
-			if (doPlotCurBestFeasible && currentBestFeasibleFit!=null) {
-				plotFitnessPoint(0, subGraph++, functionCalls, currentBestFeasibleFit[0]);
-			}
-			if (doPlotRunBestFeasible && bestOfRunFeasibleIndy!=null) {
-				plotFitnessPoint(0, subGraph++, functionCalls, bestOfRunFeasibleIndy.getFitness()[0]);
-			}
+			if (doPlotCurBestFeasible && currentBestFeasibleFit!=null) plotFitnessPoint(0, subGraph++, functionCalls, currentBestFeasibleFit[0]);
+			if (doPlotRunBestFeasible && bestOfRunFeasibleIndy!=null) plotFitnessPoint(0, subGraph++, functionCalls, bestOfRunFeasibleIndy.getFitness()[0]);
+
 		}
 	}
 

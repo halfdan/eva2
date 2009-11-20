@@ -250,8 +250,8 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
             indy = (AbstractEAIndividual)(pop.getEAIndividual(parentIndex)).getClone();
             esIndy = (InterfaceDataTypeDouble)indy;
         } catch (java.lang.ClassCastException e) {
-            EVAERROR.errorMsgOnce("Differential Evolution currently requires InterfaceESIndividual as basic data type!");
-            return (AbstractEAIndividual)((AbstractEAIndividual)pop.get(RNG.randomInt(0, pop.size()-1))).getClone();
+            throw new RuntimeException("Differential Evolution currently requires InterfaceESIndividual as basic data type!");
+//            return (AbstractEAIndividual)((AbstractEAIndividual)pop.get(RNG.randomInt(0, pop.size()-1))).getClone();
         }
         double[] nX, vX, oX;
         oX = esIndy.getDoubleData();
