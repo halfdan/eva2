@@ -11,7 +11,7 @@ import eva2.tools.math.Jama.Matrix;
  * Time: 13:09:36
  * To change this template use File | Settings | File Templates.
  */
-public class F6Problem extends AbstractProblemDoubleOffset implements InterfaceMultimodalProblem, java.io.Serializable {
+public class F6Problem extends AbstractProblemDoubleOffset implements InterfaceMultimodalProblem, InterfaceFirstOrderDerivableProblem, java.io.Serializable {
 
 	private boolean 		doRotation = false;
     private double          m_A     = 10;
@@ -55,7 +55,6 @@ public class F6Problem extends AbstractProblemDoubleOffset implements InterfaceM
      * @return  The m-dimensional output vector.
      */
     public double[] eval(double[] x) {
-    	
     	if (doRotation) {
 	    	Matrix resVec = rotation.times(new Matrix(x, x.length));
 	    	x = resVec.getColumnPackedCopy();
@@ -68,7 +67,21 @@ public class F6Problem extends AbstractProblemDoubleOffset implements InterfaceM
         }
         return result;
     }
-
+    
+	public double[] getFirstOrderGradients(double[] x) {
+    	if (doRotation) {
+	    	Matrix resVec = rotation.times(new Matrix(x, x.length));
+	    	x = resVec.getColumnPackedCopy();
+    	}
+        double[] result = new double[x.length];        
+        for (int j=0; j<x.length; j++) {
+        	result[j]=0;
+        	double xj = x[j]-m_XOffSet;
+        	result[j]  += 2*xj + this.m_Omega * this.m_A * Math.sin(this.m_Omega*xj);
+        }
+        return result;
+	}
+	
     /** This method returns a string describing the optimization problem.
      * @return The description.
      */
