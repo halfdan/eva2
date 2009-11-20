@@ -4,6 +4,15 @@ package eva2;
  * Main product and version information strings.
  * 
  * --- Changelog
+ * 2.040: Several updates: The clustering interface has been changed for easier implementation of adaptive clustering
+ * 			methods. The GradientDescentAlgorithm has been updated and some benchmark problems been made derivable.
+ * 			The ClusterBasedNiching algorithm has been slightly restructured updated according to the new clustering.
+ * 			An additional clustering method is included: nearest-best clustering with dynamic adaption of niche radius.
+ * 			Some changes to (text) statistics: they are now printed regarding the full solution set instead of the
+ * 			last population. The Population field "size" is now termed "targetSize" to avoid misunderstandigs. Populations
+ * 			can be initialized using a Random Latin Hypercube sampling. Some basic console options are recognized:
+ * 			EvA2 can be started without splash screen and even without GUI. If configuration file is given which was 
+ * 			earlier saved from the GUI, the thus defined optimization run is then processed automatically by EvA2. 
  * 2.036: New graph selection mode for statistic plots: every property may be selected independently.
  * 			A simple plot legend is produced in the graph window, which can be deactivated.
  * 2.035: Reactivated some of the model-based functionality within the GO framework. Minor bugfixes.
@@ -58,7 +67,7 @@ package eva2;
 public class EvAInfo {
 	public static final String productName = "EvA 2";
 	public static final String productLongName = "Evolutionary Algorithms Workbench 2";
-	public static final String versionNum = new String ("2.036");
+	public static final String versionNum = new String ("2.040");
 	public static final String url = "http://www.ra.cs.uni-tuebingen.de/software/EvA2";
 
 	public static final String propertyFile = "resources/EvA2.props";
