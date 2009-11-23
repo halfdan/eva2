@@ -168,7 +168,7 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
     			setPriority(1);
     		}
     	} catch (Exception e) {
-    		String errMsg = e.getMessage();
+    		String errMsg = e.toString();
     		if ((errMsg == null) || (errMsg.length() == 0)) errMsg="check console output for error messages.";
     		errMsg = "Exception in Processor: "+errMsg;
     		System.err.println(errMsg);
