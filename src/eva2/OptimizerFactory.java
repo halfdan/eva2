@@ -79,7 +79,7 @@ import eva2.tools.math.RNG;
  * @version 0.1
  * @since 2.0
  * @author mkron
- * @author Andreas Dr&auml;ger <andreas.draeger@uni-tuebingen.de>
+ * @author <a href="mailto:andreas.draeger@uni-tuebingen.de">Andreas Dr&auml;ger</a>
  * @date 17.04.2007
  */
 public class OptimizerFactory {
