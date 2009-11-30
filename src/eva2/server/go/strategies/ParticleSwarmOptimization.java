@@ -54,6 +54,11 @@ import eva2.tools.math.Jama.Matrix;
  */
 public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Serializable, InterfaceAdditionalPopulationInformer {
 
+	/**
+	 * Generated serial version uid.
+	 */
+	private static final long serialVersionUID = -149996122795669589L;
+		
 	protected Population                      m_Population        = new Population();
 	Object[] 								sortedPop			= null;
 	protected AbstractEAIndividual            m_BestIndividual;
