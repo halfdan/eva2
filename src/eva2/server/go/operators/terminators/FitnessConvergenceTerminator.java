@@ -123,7 +123,7 @@ Serializable {
 	}
 
 	protected void saveState(PopulationInterface Pop) {
-		oldFit = Pop.getBestFitness();
+		oldFit = Pop.getBestFitness().clone();
 		oldNorm = PhenotypeMetric.norm(oldFit);
 		popFitCalls = Pop.getFunctionCalls();
 		popGens = Pop.getGeneration();
