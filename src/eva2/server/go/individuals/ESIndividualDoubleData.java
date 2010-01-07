@@ -6,7 +6,7 @@ import eva2.server.go.operators.mutation.InterfaceMutation;
 import eva2.server.go.operators.mutation.MutateESGlobal;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.tools.EVAERROR;
-import eva2.tools.Mathematics;
+import eva2.tools.math.Mathematics;
 import eva2.tools.math.RNG;
 
 /** This individual uses a real-valued genotype to code for double values.

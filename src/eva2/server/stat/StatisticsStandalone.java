@@ -23,7 +23,7 @@ import java.util.List;
 
 import eva2.server.go.PopulationInterface;
 import eva2.server.go.problems.InterfaceAdditionalPopulationInformer;
-import eva2.tools.Mathematics;
+import eva2.tools.math.Mathematics;
 
 
 /*

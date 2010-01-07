@@ -28,7 +28,7 @@ import eva2.server.go.operators.terminators.EvaluationTerminator;
 import eva2.server.go.operators.terminators.PhenotypeConvergenceTerminator;
 import eva2.server.go.populations.Population;
 import eva2.server.go.strategies.InterfaceOptimizer;
-import eva2.tools.Mathematics;
+import eva2.tools.math.Mathematics;
 
 /**
  * Created by IntelliJ IDEA.

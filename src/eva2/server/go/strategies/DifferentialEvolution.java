@@ -17,7 +17,7 @@ import eva2.server.go.problems.AbstractOptimizationProblem;
 import eva2.server.go.problems.F1Problem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.tools.EVAERROR;
-import eva2.tools.Mathematics;
+import eva2.tools.math.Mathematics;
 import eva2.tools.math.RNG;
 
 /** 

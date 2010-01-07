@@ -5,7 +5,7 @@ import java.io.Serializable;
 import eva2.gui.GenericObjectEditor;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.tools.EVAERROR;
-import eva2.tools.Mathematics;
+import eva2.tools.math.Mathematics;
 
 /**
  * A constraint for a parameter or a generic function to lie within certain bounds.

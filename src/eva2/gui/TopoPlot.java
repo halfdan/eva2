@@ -15,9 +15,9 @@ package eva2.gui;
 import java.awt.*;
 
 import eva2.server.go.problems.Interface2DBorderProblem;
-import eva2.tools.Mathematics;
 import eva2.tools.chart2d.*;
 import eva2.tools.diagram.ColorBarCalculator;
+import eva2.tools.math.Mathematics;
 
 
 /*==========================================================================*

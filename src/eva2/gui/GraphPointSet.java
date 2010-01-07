@@ -20,8 +20,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import eva2.tools.Mathematics;
 import eva2.tools.chart2d.*;
+import eva2.tools.math.Mathematics;
  /*==========================================================================*
  * CLASS DECLARATION
  *==========================================================================*/

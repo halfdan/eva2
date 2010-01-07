@@ -27,10 +27,10 @@ import eva2.server.go.problems.InterfaceAdditionalPopulationInformer;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.server.go.problems.InterfaceProblemDouble;
 import eva2.tools.EVAERROR;
-import eva2.tools.Mathematics;
 import eva2.tools.SelectedTag;
 import eva2.tools.chart2d.DPoint;
 import eva2.tools.chart2d.DPointSet;
+import eva2.tools.math.Mathematics;
 import eva2.tools.math.RNG;
 import eva2.tools.math.Jama.Matrix;
 

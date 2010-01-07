@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import eva2.gui.BeanInspector;
 import eva2.server.go.populations.Population;
-import eva2.tools.Mathematics;
+import eva2.tools.math.Mathematics;
 
 /**
  * Simple linear adaption of a String property.
