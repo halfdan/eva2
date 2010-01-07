@@ -12,7 +12,7 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-package eva2.tools.tool;
+package eva2.tools.math;
 
 import java.util.ArrayList;
 import java.util.Collections;

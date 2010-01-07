@@ -30,7 +30,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import eva2.EvAInfo;
-import eva2.tools.tool.BasicResourceLoader;
+import eva2.tools.BasicResourceLoader;
 /*==========================================================================*
  * CLASS DECLARATION
  *==========================================================================*/

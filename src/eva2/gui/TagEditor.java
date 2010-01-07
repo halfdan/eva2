@@ -23,9 +23,9 @@ import java.beans.PropertyEditorSupport;
 import javax.swing.JFrame;
 
 import eva2.EvAInfo;
+import eva2.tools.BasicResourceLoader;
 import eva2.tools.SelectedTag;
 import eva2.tools.Tag;
-import eva2.tools.tool.BasicResourceLoader;
 /*==========================================================================*
 * CLASS DECLARATION
 *==========================================================================*/

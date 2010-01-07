@@ -24,7 +24,7 @@
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 ///////////////////////////////////////////////////////////////////////////////
-package eva2.tools.tool;
+package eva2.tools;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
@@ -39,12 +39,9 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
-import java.util.Vector;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
-
-import eva2.tools.ReflectPackage;
 
 
 /**

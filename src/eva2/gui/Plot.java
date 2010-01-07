@@ -45,8 +45,8 @@ import com.sun.image.codec.jpeg.JPEGImageEncoder;
 import eva2.EvAInfo;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.populations.Population;
+import eva2.tools.BasicResourceLoader;
 import eva2.tools.chart2d.DPointSet;
-import eva2.tools.tool.BasicResourceLoader;
 /*==========================================================================*
  * CLASS DECLARATION
  *==========================================================================*/

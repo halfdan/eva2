@@ -4,7 +4,7 @@ package eva2.server.go.mocco;
 import javax.swing.*;
 
 import eva2.server.go.MOCCOStandalone;
-import eva2.tools.tool.BasicResourceLoader;
+import eva2.tools.BasicResourceLoader;
 
 import java.awt.*;
 import java.awt.event.ActionListener;

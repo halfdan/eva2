@@ -25,7 +25,7 @@
 //MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //GNU General Public License for more details.
 ///////////////////////////////////////////////////////////////////////////////
-package eva2.tools.tool;
+package eva2.tools;
 
 /**
  * TODO description.

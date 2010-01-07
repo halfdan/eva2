@@ -4,7 +4,7 @@ package eva2.gui;
 import javax.swing.*;
 
 import eva2.server.go.SwingWorker;
-import eva2.tools.tool.BasicResourceLoader;
+import eva2.tools.BasicResourceLoader;
 
 import java.beans.PropertyEditor;
 import java.beans.PropertyChangeSupport;

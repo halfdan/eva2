@@ -11,7 +11,7 @@ import eva2.server.go.operators.archiving.ArchivingAllDominating;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.AbstractMultiObjectiveOptimizationProblem;
 import eva2.server.go.tools.FileTools;
-import eva2.tools.tool.ResourceLoader;
+import eva2.tools.ResourceLoader;
 
 
 /** The error ratio metric only suited for small discrete

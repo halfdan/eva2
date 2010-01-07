@@ -1,4 +1,4 @@
-package eva2.tools.tool;
+package eva2.tools;
 
 /**
  * Dummy class replacing the log4j Category because log4j couldnt be included in a clean

@@ -23,8 +23,8 @@ import eva2.tools.EVAERROR;
 import eva2.tools.Pair;
 import eva2.tools.math.Mathematics;
 import eva2.tools.math.RNG;
+import eva2.tools.math.StatisticUtils;
 import eva2.tools.math.Jama.Matrix;
-import eva2.tools.tool.StatisticUtils;
 
 
 /** 
