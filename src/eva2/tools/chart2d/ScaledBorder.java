@@ -4,7 +4,7 @@ import java.awt.* ;
 import javax.swing.BorderFactory;
 import javax.swing.border.* ;
 
-import eva2.tools.Mathematics;
+import eva2.tools.math.Mathematics;
 
 import java.awt.geom.AffineTransform ;
 import java.text.NumberFormat;

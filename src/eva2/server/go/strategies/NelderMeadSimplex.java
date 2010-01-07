@@ -13,7 +13,7 @@ import eva2.server.go.populations.SolutionSet;
 import eva2.server.go.problems.AbstractOptimizationProblem;
 import eva2.server.go.problems.AbstractProblemDouble;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import eva2.tools.Mathematics;
+import eva2.tools.math.Mathematics;
 
 /**
  * Nelder-Mead-Simplex does not guarantee an equal number of evaluations within each optimize call

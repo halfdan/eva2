@@ -18,8 +18,8 @@ import eva2.server.go.populations.InterfaceSolutionSet;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceAdditionalPopulationInformer;
 import eva2.server.go.strategies.InterfaceOptimizer;
-import eva2.tools.Mathematics;
 import eva2.tools.Pair;
+import eva2.tools.math.Mathematics;
 
 /**
  * An abstract class handling statistics. Most important stuff happens in startOptPerformed, stopOptPerformed

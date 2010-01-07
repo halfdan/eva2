@@ -1,10 +1,10 @@
-package eva2.tools;
+package eva2.tools.math;
 
 import java.util.Arrays;
 import java.util.List;
 
 import eva2.server.go.tools.DoubleArrayComparator;
-import eva2.tools.math.RNG;
+import eva2.tools.EVAERROR;
 import eva2.tools.math.Jama.Matrix;
 import eva2.tools.math.interpolation.BasicDataSet;
 import eva2.tools.math.interpolation.InterpolationException;

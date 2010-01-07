@@ -1,7 +1,7 @@
 package eva2.server.go.problems;
 
 import eva2.server.go.individuals.ESIndividualDoubleData;
-import eva2.tools.Mathematics;
+import eva2.tools.math.Mathematics;
 import eva2.tools.math.Jama.Matrix;
 
 /**

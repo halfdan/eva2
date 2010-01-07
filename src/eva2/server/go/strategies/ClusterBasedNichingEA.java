@@ -27,10 +27,10 @@ import eva2.server.go.problems.Interface2DBorderProblem;
 import eva2.server.go.problems.InterfaceAdditionalPopulationInformer;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.server.go.problems.TF1Problem;
-import eva2.tools.Mathematics;
 import eva2.tools.chart2d.DPoint;
 import eva2.tools.chart2d.DPointIcon;
 import eva2.tools.chart2d.DPointSet;
+import eva2.tools.math.Mathematics;
 
 /** The infamous clustering based niching EA, still under construction.
  * It should be able to identify and track multiple global/local optima

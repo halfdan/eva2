@@ -2,7 +2,7 @@ package eva2.server.go.individuals.codings.gp;
 
 
 import eva2.server.go.problems.InterfaceProgramProblem;
-import eva2.tools.Mathematics;
+import eva2.tools.math.Mathematics;
 
 /** 
  * A simple product node with a single, possibly vectorial (array), argument.

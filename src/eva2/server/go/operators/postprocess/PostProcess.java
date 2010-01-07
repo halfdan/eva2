@@ -41,8 +41,8 @@ import eva2.server.go.strategies.NelderMeadSimplex;
 import eva2.server.modules.GOParameters;
 import eva2.server.stat.InterfaceTextListener;
 import eva2.server.stat.StatsParameter;
-import eva2.tools.Mathematics;
 import eva2.tools.Pair;
+import eva2.tools.math.Mathematics;
 
 
 /**

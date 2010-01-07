@@ -9,9 +9,9 @@ import eva2.gui.BeanInspector;
 import eva2.gui.GenericObjectEditor;
 import eva2.server.go.problems.GPFunctionProblem;
 import eva2.server.go.problems.InterfaceProgramProblem;
-import eva2.tools.Mathematics;
 import eva2.tools.Pair;
 import eva2.tools.ReflectPackage;
+import eva2.tools.math.Mathematics;
 
 
 /** This gives an abstract node, with default functionality for get and set methods.

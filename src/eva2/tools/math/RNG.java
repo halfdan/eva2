@@ -3,7 +3,6 @@ package eva2.tools.math;
 import java.util.ArrayList;
 import java.util.Random;
 
-import eva2.tools.Mathematics;
 
 /**
  * 

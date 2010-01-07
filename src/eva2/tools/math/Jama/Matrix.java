@@ -11,8 +11,8 @@ import java.util.Arrays;
 import java.util.Locale;
 
 import eva2.gui.BeanInspector;
-import eva2.tools.Mathematics;
 import eva2.tools.Pair;
+import eva2.tools.math.Mathematics;
 import eva2.tools.math.Jama.util.Maths;
 
 
