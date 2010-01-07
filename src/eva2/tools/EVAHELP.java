@@ -26,7 +26,6 @@ import java.util.Enumeration;
 import java.util.Properties;
 
 import eva2.client.EvAClient;
-import eva2.tools.tool.BasicResourceLoader;
 
 
 /**

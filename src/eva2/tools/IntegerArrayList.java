@@ -11,7 +11,7 @@
  *  Copyright (c) Dept. Computer Architecture, University of Tuebingen, Germany
  */
 
-package eva2.tools.tool;
+package eva2.tools;
 
 /*==========================================================================*
  * CLASS DECLARATION

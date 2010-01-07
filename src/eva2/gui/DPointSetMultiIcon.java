@@ -6,8 +6,8 @@ import java.awt.*;
 
 import java.util.ArrayList;
 
+import eva2.tools.IntegerArrayList;
 import eva2.tools.chart2d.*;
-import eva2.tools.tool.IntegerArrayList;
 
 
 /**

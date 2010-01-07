@@ -30,7 +30,7 @@ import javax.swing.text.html.HTMLFrameHyperlinkEvent;
 
 import eva2.EvAInfo;
 import eva2.client.EvAClient;
-import eva2.tools.tool.BasicResourceLoader;
+import eva2.tools.BasicResourceLoader;
 /**
  *
  */

@@ -20,8 +20,8 @@ import java.awt.event.WindowEvent;
 import java.beans.PropertyEditor;
 
 import eva2.EvAInfo;
+import eva2.tools.BasicResourceLoader;
 import eva2.tools.EVAHELP;
-import eva2.tools.tool.BasicResourceLoader;
 /*==========================================================================*
 * CLASS DECLARATION
 *==========================================================================*/

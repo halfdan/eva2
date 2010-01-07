@@ -18,7 +18,7 @@ package eva2.tools.chart2d;
 
 import java.awt.* ;
 
-import eva2.tools.tool.IntegerArrayList;
+import eva2.tools.IntegerArrayList;
 
 /*==========================================================================*
  * CLASS DECLARATION

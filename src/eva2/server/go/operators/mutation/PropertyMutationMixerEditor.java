@@ -5,7 +5,7 @@ import javax.swing.*;
 import eva2.gui.*;
 import eva2.server.go.tools.GeneralGEOFaker;
 import eva2.server.go.tools.GeneralGOEProperty;
-import eva2.tools.tool.BasicResourceLoader;
+import eva2.tools.BasicResourceLoader;
 
 import java.beans.*;
 import java.awt.*;
