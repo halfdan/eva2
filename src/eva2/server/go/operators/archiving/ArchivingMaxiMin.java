@@ -3,12 +3,12 @@ package eva2.server.go.operators.archiving;
 
 import java.util.ArrayList;
 
-import eva2.gui.Chart2DDPointIconCross;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.operators.moso.MOSOMaxiMin;
 import eva2.server.go.operators.selection.InterfaceSelection;
 import eva2.server.go.operators.selection.SelectBestIndividuals;
 import eva2.server.go.populations.Population;
+import eva2.tools.chart2d.Chart2DDPointIconCross;
 import eva2.tools.chart2d.DPointIcon;
 
 

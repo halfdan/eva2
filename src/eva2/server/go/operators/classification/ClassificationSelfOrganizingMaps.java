@@ -2,7 +2,6 @@ package eva2.server.go.operators.classification;
 
 import javax.swing.*;
 
-import eva2.gui.Chart2DDPointIconCross;
 import eva2.tools.chart2d.*;
 import eva2.tools.math.RNG;
 

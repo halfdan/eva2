@@ -3,7 +3,6 @@ package eva2.server.go.mocco.paretofrontviewer;
 
 import javax.swing.*;
 
-import eva2.gui.Chart2DDPointContentSelectable;
 import eva2.gui.FunctionArea;
 import eva2.gui.GraphPointSet;
 import eva2.gui.InterfaceDPointWithContent;
@@ -12,6 +11,7 @@ import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceMultiObjectiveDeNovoProblem;
 import eva2.server.go.problems.InterfaceOptimizationObjective;
+import eva2.tools.chart2d.Chart2DDPointContentSelectable;
 import eva2.tools.chart2d.DPoint;
 import eva2.tools.chart2d.DPointIcon;
 import eva2.tools.chart2d.ScaledBorder;

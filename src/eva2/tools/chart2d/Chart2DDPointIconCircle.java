@@ -1,9 +1,7 @@
-package eva2.gui;
+package eva2.tools.chart2d;
 
 import java.awt.*;
 
-import eva2.tools.chart2d.DBorder;
-import eva2.tools.chart2d.DPointIcon;
 
 /**
  * Created by IntelliJ IDEA.

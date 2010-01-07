@@ -5,8 +5,6 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.util.ArrayList;
 
-import eva2.gui.Chart2DDPointIconCircle;
-import eva2.gui.Chart2DDPointIconText;
 import eva2.gui.GraphPointSet;
 import eva2.gui.Plot;
 import eva2.gui.PropertyFilePath;
@@ -17,6 +15,8 @@ import eva2.server.go.operators.moso.InterfaceMOSOConverter;
 import eva2.server.go.operators.paretofrontmetrics.InterfaceParetoFrontMetric;
 import eva2.server.go.populations.Population;
 import eva2.server.go.strategies.InterfaceOptimizer;
+import eva2.tools.chart2d.Chart2DDPointIconCircle;
+import eva2.tools.chart2d.Chart2DDPointIconText;
 import eva2.tools.chart2d.DPoint;
 import eva2.tools.math.RNG;
 

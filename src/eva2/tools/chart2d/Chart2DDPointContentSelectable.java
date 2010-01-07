@@ -1,13 +1,13 @@
-package eva2.gui;
+package eva2.tools.chart2d;
 
 
 import javax.swing.*;
 
+import eva2.gui.InterfaceDPointWithContent;
+import eva2.gui.InterfaceSelectablePointIcon;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.mocco.paretofrontviewer.InterfaceRefSolutionListener;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import eva2.tools.chart2d.DBorder;
-import eva2.tools.chart2d.DPointIcon;
 
 import java.awt.*;
 import java.awt.event.WindowAdapter;
