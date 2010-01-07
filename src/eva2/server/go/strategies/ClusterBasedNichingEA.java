@@ -5,8 +5,6 @@ import java.util.Collections;
 import java.util.PriorityQueue;
 
 import eva2.gui.BeanInspector;
-import eva2.gui.Chart2DDPointIconCircle;
-import eva2.gui.Chart2DDPointIconText;
 import eva2.gui.GenericObjectEditor;
 import eva2.gui.GraphPointSet;
 import eva2.gui.Plot;
@@ -27,6 +25,8 @@ import eva2.server.go.problems.Interface2DBorderProblem;
 import eva2.server.go.problems.InterfaceAdditionalPopulationInformer;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.server.go.problems.TF1Problem;
+import eva2.tools.chart2d.Chart2DDPointIconCircle;
+import eva2.tools.chart2d.Chart2DDPointIconText;
 import eva2.tools.chart2d.DPoint;
 import eva2.tools.chart2d.DPointIcon;
 import eva2.tools.chart2d.DPointSet;

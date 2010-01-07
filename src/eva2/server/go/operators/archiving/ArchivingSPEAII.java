@@ -11,6 +11,8 @@ import eva2.server.go.operators.distancemetric.ObjectiveSpaceMetric;
 import eva2.server.go.operators.selection.InterfaceSelection;
 import eva2.server.go.operators.selection.SelectBestIndividuals;
 import eva2.server.go.populations.Population;
+import eva2.tools.chart2d.Chart2DDPointIconCircle;
+import eva2.tools.chart2d.Chart2DDPointIconText;
 import eva2.tools.chart2d.DPoint;
 import eva2.tools.chart2d.DPointIcon;
 

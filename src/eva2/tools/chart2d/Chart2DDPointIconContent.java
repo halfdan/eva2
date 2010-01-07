@@ -1,4 +1,4 @@
-package eva2.gui;
+package eva2.tools.chart2d;
 
 
 import java.awt.*;
@@ -8,10 +8,9 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.*;
 
+import eva2.gui.InterfaceDPointWithContent;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import eva2.tools.chart2d.DBorder;
-import eva2.tools.chart2d.DPointIcon;
 
 /**
  * Created by IntelliJ IDEA.

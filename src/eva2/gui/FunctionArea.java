@@ -37,6 +37,11 @@ import javax.swing.JPopupMenu;
 
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.mocco.paretofrontviewer.InterfaceRefPointListener;
+import eva2.tools.chart2d.Chart2DDPointIconCircle;
+import eva2.tools.chart2d.Chart2DDPointIconContent;
+import eva2.tools.chart2d.Chart2DDPointIconCross;
+import eva2.tools.chart2d.Chart2DDPointIconPoint;
+import eva2.tools.chart2d.Chart2DDPointIconText;
 import eva2.tools.chart2d.DArea;
 import eva2.tools.chart2d.DBorder;
 import eva2.tools.chart2d.DPoint;
