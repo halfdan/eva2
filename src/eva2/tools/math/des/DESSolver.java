@@ -6,7 +6,7 @@
  * @version 1.0
  */
 
-package eva2.tools.des;
+package eva2.tools.math.des;
 
 import java.io.Serializable;
 
