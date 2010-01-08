@@ -446,10 +446,21 @@ public class Mathematics {
 	 */
 	public static double[] svAdd (double s, double[] v) {
 		double[] res = new double[v.length];
+		svAdd(s, v, res);
+		return res;
+	}
+	
+	/**
+	 * Add each entry of a vector with a scalar in a result vector.
+	 * 
+	 * @param s
+	 * @param v
+	 * @return 
+	 */
+	public static void svAdd(double s, double[] v, double[] res) {
 		for (int i = 0; i < v.length; i++) {
 			res[i] = v[i] + s;
 		}
-		return res;
 	}
 	
 	/**
@@ -862,7 +873,7 @@ public class Mathematics {
 	 * @param range
 	 * @return
 	 */
-	public static double[] shiftRange(double[][] range) {
+	public static double[] getAbsRange(double[][] range) {
 		double[] ret = new double[range.length];
 		for (int i = 0; i < ret.length; i++) {
 			ret[i]=range[i][1]-range[i][0];
@@ -870,6 +881,31 @@ public class Mathematics {
 		return ret;
 	}
 	
+	/**
+	 * Shift bounds by a constant value in every dimension.  
+	 *
+	 * @param range
+	 * @return
+	 */
+	public static void shiftRange(double[][] range, double dist) {
+		for (int i = 0; i < range.length; i++) {
+			svAdd(dist, range[i]);
+		}
+	}
+		
+	/**
+	 * Shift bounds by a constant value in every dimension. The dists 
+	 * must be of dimensions as the range.
+	 *
+	 * @param range
+	 * @return
+	 */
+	public static void shiftRange(double[][] range, double[] dists) {
+		for (int i = 0; i < range.length; i++) {
+			svAdd(dists[i], range[i]);
+		}
+	}
+
 	/**
 	 * Project the values in x to the range given. The range must be an vector of 2d-arrays
 	 * each of which containing lower and upper bound in the i-th dimension.
@@ -905,7 +941,7 @@ public class Mathematics {
      * @param range
      */
 	public static void scaleRange(double rangeScaleFact, double[][] range) {
-		double[] intervalLengths=Mathematics.shiftRange(range);
+		double[] intervalLengths=Mathematics.getAbsRange(range);
 		double[] tmpInts=Mathematics.svMult(rangeScaleFact, intervalLengths);
 		Mathematics.vvSub(tmpInts, intervalLengths, tmpInts); // this is what must be added to range interval
 		for (int i=0; i<range.length; i++) {
