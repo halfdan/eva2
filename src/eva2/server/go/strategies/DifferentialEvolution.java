@@ -9,6 +9,7 @@ import eva2.server.go.enums.DETypeEnum;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceDataTypeDouble;
 import eva2.server.go.operators.selection.replacement.ReplacementCrowding;
+import eva2.server.go.operators.selection.replacement.ReplacementNondominatedSortingDistanceCrowding;
 import eva2.server.go.populations.InterfaceSolutionSet;
 import eva2.server.go.populations.Population;
 import eva2.server.go.populations.SolutionSet;
@@ -463,9 +464,18 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
         		nextDoomed = getNextDoomed(m_Population, nextDoomed+1);	
         	} else {
             	if (m_Problem instanceof AbstractMultiObjectiveOptimizationProblem) {
-					ReplacementCrowding repl = new ReplacementCrowding();
-					repl.insertIndividual(indy, m_Population, null);
-				} else {
+            		
+            		if(indy.isDominatingDebConstraints(m_Population.getEAIndividual(index))){ //child dominates the parent replace the parent
+            			m_Population.replaceIndividualAt(index, indy);
+            		}else if(!(m_Population.getEAIndividual(index).isDominatingDebConstraints(indy))){ //do nothing if parent dominates the child use crowding if neither one dominates the other one
+            			ReplacementNondominatedSortingDistanceCrowding repl =new ReplacementNondominatedSortingDistanceCrowding();
+            			repl.insertIndividual(indy, m_Population, null);
+            		}
+				//	ReplacementCrowding repl = new ReplacementCrowding();
+				//	repl.insertIndividual(indy, m_Population, null);
+				
+            	
+            	} else {
 //					index   = RNG.randomInt(0, this.m_Population.size()-1);
 					if (!compareToParent) index = RNG.randomInt(0, this.m_Population.size()-1);
 					orig     = (AbstractEAIndividual)this.m_Population.get(index);
