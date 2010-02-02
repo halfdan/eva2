@@ -889,6 +889,11 @@ public class OptimizerFactory {
 	}
 
 
+	public static IndividualInterface optimizeToInd(GOParameters params) {
+		OptimizerRunnable runnable = optimize(new OptimizerRunnable(params,
+				false));
+		return runnable.getResult();
+	}
 	
 	public static IndividualInterface optimizeToInd(GOParameters params,
 			String outputFilePrefix) {
