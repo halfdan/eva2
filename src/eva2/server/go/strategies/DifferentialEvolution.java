@@ -48,7 +48,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
     private boolean 						randomizeFKLambda	= false;
     private boolean 						generational = true;
     private String                          m_Identifier = "";
-    transient private InterfacePopulationChangedEventListener m_Listener;
+    transient private Vector<InterfacePopulationChangedEventListener> m_Listener=new Vector<InterfacePopulationChangedEventListener>();
 	private boolean 						forceRange 			= true;
 	private boolean 						cyclePop		= false; // if true, individuals are used as parents in a cyclic sequence - otherwise randomly 
     private boolean 						compareToParent = true;  // if true, the challenge indy is compared to its parent, otherwise to a random individual
@@ -179,6 +179,55 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
 
         return result;
     }
+    
+    /** 
+     * This method returns a difference vector between two random individuals from the population.
+     * This method should make sure that delta is not zero.
+     * 
+     * @param pop   The population to choose from
+     * @return The delta vector
+     */
+    private double[] fetchDeltaCurrentRandom(Population pop,InterfaceDataTypeDouble indy) {
+        double[]                x1, x2;
+        double[]                result;
+        boolean					isEmpty;
+        int                     iterations = 0;
+
+
+        x1 = indy.getDoubleData();
+        
+        
+        if (parents != null) parents.add((AbstractEAIndividual)indy);
+        
+        result = new double[x1.length];
+        isEmpty = true;
+        AbstractEAIndividual x2Indy = null;
+        while (isEmpty && (iterations < pop.size())) {
+        	x2Indy = getRandomIndy(pop);
+        	x2 = getGenotype(x2Indy);
+            
+            for (int i = 0; i < x1.length; i++) {
+                result[i] = x1[i] - x2[i];
+                isEmpty = (isEmpty && (result[i]==0));
+            }
+            iterations++;
+        }
+        if (!isEmpty && (parents != null)) parents.add(x2Indy); 
+        
+        while (isEmpty) {
+        	// for n (popSize) iterations there were only zero vectors found
+        	// so now the hard way: construct a random vector
+            for (int i = 0; i < x1.length; i++) {
+                if (RNG.flipCoin(1/(double)x1.length))
+                    result[i] = 0.01*RNG.gaussianDouble(0.1);
+                else result[i] = 0;
+                isEmpty = (isEmpty && (result[i]==0));
+            }
+            // single parent! dont add another one
+        }
+
+        return result;
+    }
 
     /** 
      * This method will return the delta vector to the best individual
@@ -265,6 +314,16 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
                 if (parents != null) parents.add(pop.getEAIndividual(parentIndex));  // Add wherever oX is used directly
                 for (int i = 0; i < oX.length; i++) {
                     vX[i] = oX[i] + this.getCurrentF()*delta[i];
+                }
+                break;
+            }
+            case DE_CurrentToRand : {
+                // this is DE/current-to-rand/1
+                double[] rndDelta = this.fetchDeltaRandom(pop);
+                double[] bestDelta = this.fetchDeltaCurrentRandom(pop, esIndy);
+                if (parents != null) parents.add(pop.getEAIndividual(parentIndex));  // Add wherever oX is used directly
+                for (int i = 0; i < oX.length; i++) {
+                    vX[i] = oX[i] + this.getCurrentLambda() * bestDelta[i] + this.getCurrentF() * rndDelta[i];
                 }
                 break;
             }
@@ -426,7 +485,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
         		m_Population.replaceIndividualAt(nextDoomed, indy);
         		nextDoomed = getNextDoomed(m_Population, nextDoomed+1);	
         	} else {
-            	if (m_Problem instanceof AbstractMultiObjectiveOptimizationProblem) {
+            	if (m_Problem instanceof AbstractMultiObjectiveOptimizationProblem&indy.getFitness().length>1) {
 					ReplacementCrowding repl = new ReplacementCrowding();
 					repl.insertIndividual(indy, m_Population, null);
 				} else {
@@ -548,12 +607,12 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
      * @param ea
      */
     public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
-        this.m_Listener = ea;
+        this.m_Listener.add(ea);
     }
 	public boolean removePopulationChangedEventListener(
 			InterfacePopulationChangedEventListener ea) {
-		if (m_Listener==ea) {
-			m_Listener=null;
+		if (m_Listener.removeElement(ea)) {
+			
 			return true;
 		} else return false;
 	}
@@ -561,7 +620,11 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
      * @param name
      */
     protected void firePropertyChangedEvent (String name) {
-        if (this.m_Listener != null) this.m_Listener.registerPopulationStateChanged(this, name);
+        if (this.m_Listener != null){
+        	for(int i=0;i<this.m_Listener.size();i++){
+        		this.m_Listener.get(i).registerPopulationStateChanged(this, name);
+        	}
+        }
     }
 
     /** This method will set the problem that is to be optimized
