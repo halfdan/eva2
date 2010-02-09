@@ -23,6 +23,7 @@ public class RKSolverV2 extends AbstractDESSolver implements Serializable {
 	 * 
 	 */
 	private static boolean useLinearCalc = true;
+
 	/**
 	 * 
 	 * @param args
@@ -96,13 +97,14 @@ public class RKSolverV2 extends AbstractDESSolver implements Serializable {
 	 * @param Ytemp
 	 * @return
 	 */
-	public double[] rkTerm(EventDESystem EDES, double h, double x, double[] Ytemp) {
+	public double[] rkTerm(EventDESystem EDES, double h, double x,
+			double[] Ytemp) {
 		double[][] K = new double[4][];
 		K[0] = Mathematics.svMult(h, EDES.getValue(x, Ytemp));
-		K[1] = Mathematics.svMult(h, EDES.getValue(x + h / 2, Mathematics.vvAdd(
-				Ytemp, Mathematics.svMult(0.5, K[0]))));
-		K[2] = Mathematics.svMult(h, EDES.getValue(x + h / 2, Mathematics.vvAdd(
-				Ytemp, Mathematics.svMult(0.5, K[1]))));
+		K[1] = Mathematics.svMult(h, EDES.getValue(x + h / 2, Mathematics
+				.vvAdd(Ytemp, Mathematics.svMult(0.5, K[0]))));
+		K[2] = Mathematics.svMult(h, EDES.getValue(x + h / 2, Mathematics
+				.vvAdd(Ytemp, Mathematics.svMult(0.5, K[1]))));
 		K[3] = Mathematics.svMult(h, EDES.getValue(x + h, Mathematics.vvAdd(
 				Ytemp, K[2])));
 
@@ -233,8 +235,8 @@ public class RKSolverV2 extends AbstractDESSolver implements Serializable {
 		return solveAtTimePoints(DES, initialValues, timeVector);
 	}
 
-	public double[][] solveAtTimePoints(EventDESystem EDES, double[] initialValues,
-			double[] timePoints) {
+	public double[][] solveAtTimePoints(EventDESystem EDES,
+			double[] initialValues, double[] timePoints) {
 		return solveAtTimePoints(EDES, initialValues, timePoints, false);
 	}
 
@@ -257,8 +259,8 @@ public class RKSolverV2 extends AbstractDESSolver implements Serializable {
 	/**
    *
    */
-	public double[][] solveAtTimePointsWithInitialConditions(EventDESystem EDES,
-			double[][] initConditions, double[] timePoints) {
+	public double[][] solveAtTimePointsWithInitialConditions(
+			EventDESystem EDES, double[][] initConditions, double[] timePoints) {
 		int order = EDES.getDESystemDimension();
 		double[][] result = new double[timePoints.length][order];
 		result[0] = initConditions[0];
@@ -302,8 +304,8 @@ public class RKSolverV2 extends AbstractDESSolver implements Serializable {
 	 * @param timeEnd
 	 * @return
 	 */
-	public double[][] solveByStepSize(EventDESystem EDES, double[] initialValues,
-			double timeBegin, double timeEnd) {
+	public double[][] solveByStepSize(EventDESystem EDES,
+			double[] initialValues, double timeBegin, double timeEnd) {
 		return solveByStepSize(EDES, initialValues, timeBegin, timeEnd, false);
 	}
 
@@ -319,31 +321,46 @@ public class RKSolverV2 extends AbstractDESSolver implements Serializable {
 		return solveByStepSize(EDES, initialValues, timeBegin, timeEnd, true);
 	}
 
-	public double[] processEvents(double time, double[] Ytemp, EventDESystem EDES) {
+	public double[] processEvents(double time, double[] Ytemp,
+			EventDESystem EDES) {
 		double[] res = new double[Ytemp.length];
-		//Arrays.fill(res, 0);
-		double[] delays = EDES.processEvents(time, Ytemp, res);			
-		for (int j = 0; j < delays.length; j++) 
-			if (delays[j] != Double.NaN) {
-				//System.out.printf("Ytemp[j]_old = %s\tYtemp[j]_new = %s\n", Ytemp[j], res[j]);
-				Ytemp[j] = res[j];	
-			}
+		// Arrays.fill(res, 0);
+		double[] delays = EDES.processEvents(time, Ytemp, res);
+		System.out.println("delay " +Arrays.toString(delays));
+		for (int j = 0; j < delays.length; j++)
+			if (!Double.isNaN(delays[j])) {	
+				System.out.printf("time %s :Ytemp[%s]_old = %s\tYtemp[%s]_new = %s\n",
+						time,j, Ytemp[j], j, (res[j] - Ytemp[j]));
+					Ytemp[j] = res[j] - Ytemp[j];
+			} else Ytemp[j] = 0d;
+
 		return Ytemp;
-		
+
 	}
 	
-	
-	public void processEventsVoid(double time, double[] Ytemp, EventDESystem EDES) {
+	public static boolean containsNaN(double[] arr){
+		for (int i = 0; i < arr.length; i++) {
+			if (Double.isNaN(arr[i]))
+				return true;
+		}
+		
+		return false;
+	}
+
+	public void processEventsVoid(double time, double[] Ytemp,
+			EventDESystem EDES) {
 		double[] res = new double[Ytemp.length];
-		//Arrays.fill(res, 0);
-		double[] delays = EDES.processEvents(time, Ytemp, res);			
-		for (int j = 0; j < delays.length; j++) 
-			if (delays[j] != Double.NaN) {
-				//System.out.printf("Ytemp[j]_old = %s\tYtemp[j]_new = %s\n", Ytemp[j], res[j]);
-				Ytemp[j] = res[j];	
+		// Arrays.fill(res, 0);
+		double[] delays = EDES.processEvents(time, Ytemp, res);
+		for (int j = 0; j < delays.length; j++)
+			if (!Double.isNaN(delays[j])) {
+				// System.out.printf("Ytemp[j]_old = %s\tYtemp[j]_new = %s\n",
+				// Ytemp[j], res[j]);
+				Ytemp[j] = res[j];
 			}
-		
+
 	}
+
 	/**
 	 * When set to <code>TRUE</code>, <code>includeTimes</code> will make the
 	 * solver to return a matrix with the first column containing the times. By
@@ -351,8 +368,8 @@ public class RKSolverV2 extends AbstractDESSolver implements Serializable {
 	 * 
 	 * @param includeTimes
 	 */
-	private double[][] solveAtTimePoints(EventDESystem EDES, double[] initialValues,
-			double[] timePoints, boolean includeTimes) {
+	private double[][] solveAtTimePoints(EventDESystem EDES,
+			double[] initialValues, double[] timePoints, boolean includeTimes) {
 		// sorted timepoints!!!!!!!!!!!!!!!!!!!!!
 		int order = EDES.getDESystemDimension();
 		double result[][], x = timePoints[0];
@@ -389,28 +406,21 @@ public class RKSolverV2 extends AbstractDESSolver implements Serializable {
 						result[i - 1].length - 1);
 			else
 				Ytemp = result[i - 1].clone();
-			
-			//process events
-			/*double[] res = new double[Ytemp.length];
-			Arrays.fill(res, 0);
-			double[] delays = EDES.processEvents(x, Ytemp, res);			
-			for (int j = 0; j < delays.length; j++) 
-				if (delays[j] != Double.NaN) {
-					System.out.println(res[j]);
-					Ytemp[j] = res[j];	
-				}
-			 */
-			//double[] YtempClone = processEvents(x, Ytemp.clone(),EDES);
-			processEventsVoid(x, Ytemp,EDES);
-			
+
+			// process events
+			//double[] YtempClone = processEvents(x, Ytemp.clone(), EDES);
+			// Ytemp = processEventsVoid(x, Ytemp,EDES);
+
 			for (int j = 0; j < inbetweensteps; j++) {
+				
 				if (useLinearCalc)
 					rkTerm2(EDES, h, x, Ytemp, change);
 				else
 					change = rkTerm(EDES, h, x, Ytemp);
 				// System.out.println("aft change 0 " + change[0]);
-
+				
 				Mathematics.vvAdd(Ytemp, change, Ytemp);
+		
 
 				if (this.nonnegative) {
 					for (int k = 0; k < Ytemp.length; k++) {
@@ -420,12 +430,14 @@ public class RKSolverV2 extends AbstractDESSolver implements Serializable {
 				}
 
 				x += h;
-				
-			//double[] YtempClone2 = processEvents(x, Ytemp.clone(),EDES);
-			processEventsVoid(x, Ytemp,EDES);
-			//Mathematics.vvAdd(Ytemp, YtempClone2, Ytemp);
-			
+
+				// process events	
+				double[] YtempClone2 = processEvents(x, Ytemp.clone(), EDES);
+				Mathematics.vvAdd(Ytemp, YtempClone2, Ytemp);
+				//processEventsVoid(x, Ytemp,EDES);
+
 			}
+			// ohne wirkung
 			//Mathematics.vvAdd(Ytemp, YtempClone, Ytemp);
 
 			h = timePoints[i] - x;
@@ -436,8 +448,7 @@ public class RKSolverV2 extends AbstractDESSolver implements Serializable {
 				change = rkTerm(EDES, h, x, Ytemp);
 
 			Mathematics.vvAdd(Ytemp, change, Ytemp);
-			
-			
+
 			if (this.nonnegative) {
 				for (int k = 0; k < Ytemp.length; k++) {
 					if (Ytemp[k] < 0)
@@ -464,8 +475,9 @@ public class RKSolverV2 extends AbstractDESSolver implements Serializable {
 	 * @param timeEnd
 	 * @return
 	 */
-	private double[][] solveByStepSize(EventDESystem EDES, double[] initialValues,
-			double timeBegin, double timeEnd, boolean time) {
+	private double[][] solveByStepSize(EventDESystem EDES,
+			double[] initialValues, double timeBegin, double timeEnd,
+			boolean time) {
 		int numsteps = (int) Math.round(((timeEnd - timeBegin) / stepSize) + 1);
 		unstableFlag = false;
 		// System.out.println(numsteps);
