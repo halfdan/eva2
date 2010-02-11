@@ -69,7 +69,7 @@ public class TopoPlot extends Plot {
    * Defines the topology (by setting a specific problem) and draws the topology
    */
   public void setTopology(Interface2DBorderProblem problem, double[][] border) {
-	double[] sizeXY=Mathematics.shiftRange(border);
+	double[] sizeXY=Mathematics.getAbsRange(border);
     double deltaX = sizeXY[0]/gridx;
     double deltaY = sizeXY[1]/gridy;
     double[] pos = new double[2];
