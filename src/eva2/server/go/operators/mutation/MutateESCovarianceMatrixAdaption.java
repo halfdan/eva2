@@ -19,25 +19,25 @@ import eva2.tools.math.Jama.Matrix;
 
 public class MutateESCovarianceMatrixAdaption implements InterfaceMutation, java.io.Serializable  {
     
-    private int                 m_D;
-    private double[]            m_Z;
-    private double              m_SigmaGlobal       = 1;
-    private double              m_InitSigmaScalar   = 1;
-    private double              m_c;
-    private double              cu;
-    private double              cov;
-    private double              Beta;
-    private double[]            s_N;
-    private double[]            m_PathS;
-    public double[]             Bz;
-    private double              xi_dach;
-    private Matrix              m_C;
-    private Matrix              B;
-    private boolean             m_CheckConstraints  = false;
-    private int                 m_constraint        = 20;
-    private int                 m_Counter;
-    private int                 m_frequency         = 1;
-    private double[]            m_Eigenvalues;
+    protected int                 m_D;
+    protected double[]            m_Z;
+    protected double              m_SigmaGlobal       = 1;
+    protected double              m_InitSigmaScalar   = 1;
+    protected double              m_c;
+    protected double              cu;
+    protected double              cov;
+    protected double              Beta;
+    protected double[]            s_N;
+    protected double[]            m_PathS;
+    protected double[]             Bz;
+    protected double              xi_dach;
+    protected Matrix              m_C;
+    protected Matrix              B;
+    protected boolean             m_CheckConstraints  = false;
+    protected int                 m_constraint        = 20;
+    protected int                 m_Counter;
+    protected int                 m_frequency         = 1;
+    protected double[]            m_Eigenvalues;
 
     public MutateESCovarianceMatrixAdaption() {
 
@@ -158,7 +158,7 @@ public class MutateESCovarianceMatrixAdaption implements InterfaceMutation, java
         // nothing to do here
     }
 
-    private void adaptStrategy() {
+    protected void adaptStrategy() {
         double  Cij;
         double  Bz_d;
         double  pathLen = 0.0;
@@ -184,7 +184,7 @@ public class MutateESCovarianceMatrixAdaption implements InterfaceMutation, java
         this.m_SigmaGlobal = this.m_SigmaGlobal * Math.exp(this.Beta * this.m_c * (Math.sqrt(pathLen) - this.xi_dach));;
   }
 
-    private void evaluateNewObjectX(double[] x,double[][] range) {
+    protected void evaluateNewObjectX(double[] x,double[][] range) {
 //        if (Double.isNaN((x[0]))) System.out.println("treffer in cma "+ x[0]);
 //        if (Double.isNaN((m_C.get(0,0)))) System.out.println("treffer in cma");
 //        for (int i=0;i<N;i++)   {   // evaluate new random values
