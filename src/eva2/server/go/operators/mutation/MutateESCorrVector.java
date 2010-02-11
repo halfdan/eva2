@@ -98,7 +98,7 @@ public class MutateESCorrVector implements InterfaceMutation, java.io.Serializab
     private double[] calcInitialVel(double velocity, double[][] doubleRange) {
     	double[] initVelocity = Mathematics.randomVector(doubleRange.length, 1.0);
     	double nrm=Mathematics.norm(initVelocity);
-    	double[] shiftedRange=Mathematics.shiftRange(doubleRange);
+    	double[] shiftedRange=Mathematics.getAbsRange(doubleRange);
     	// normalize to speed
     	Mathematics.svMult(velocity/nrm, initVelocity, initVelocity);
     	// and scale by ranges
