@@ -24,6 +24,11 @@ public class CrossoverESSBX implements InterfaceCrossover, java.io.Serializable 
     public CrossoverESSBX() {
 
     }
+    
+    public CrossoverESSBX(double eta) {
+    	m_Eta=eta;
+    }
+    
     public CrossoverESSBX(CrossoverESSBX c) {
         this.m_OptimizationProblem      = c.m_OptimizationProblem;
         this.m_Eta                      = c.m_Eta;
