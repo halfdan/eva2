@@ -5,7 +5,7 @@ package eva2.tools.math.des;
 
 import java.util.ArrayList;
 
-import org.sbml.squeezer.math.DESEvent;
+
 
 /**
  * This Class represents an event-driven DES
@@ -25,10 +25,10 @@ public interface EventDESystem extends DESystem {
 	 *
 	 * @return Returns an array with delays for the change of concentration due to events
 	 */
-	public ArrayList<DESEvent> processEvents(double t, double Y[]);
+	public ArrayList<DESAssignment> processEvents(double t, double Y[]);
 	
-	public double[] processAssignmentRules(double t, double Y[], double res[]);
+	public ArrayList<DESAssignment>  processAssignmentRules(double t, double Y[]);
 	
-	public double[] processAlgebraicRules(double t, double Y[], double res[]);
+	public ArrayList<DESAssignment>  processAlgebraicRules(double t, double Y[]);
 
 }
