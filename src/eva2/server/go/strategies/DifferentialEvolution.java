@@ -607,11 +607,14 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
      * @param ea
      */
     public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
+    	if(this.m_Listener ==null){
+    		this.m_Listener=new Vector<InterfacePopulationChangedEventListener>();
+    	}
         this.m_Listener.add(ea);
     }
 	public boolean removePopulationChangedEventListener(
 			InterfacePopulationChangedEventListener ea) {
-		if (m_Listener.removeElement(ea)) {
+		if (m_Listener!=null&&m_Listener.removeElement(ea)) {
 			
 			return true;
 		} else return false;
