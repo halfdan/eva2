@@ -3,7 +3,6 @@ package eva2.tools.math.des;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import org.sbml.squeezer.math.DESEvent;
 
 import eva2.tools.math.Mathematics;
 
@@ -27,10 +26,6 @@ public class RKEventSolver extends AbstractDESSolver implements Serializable {
 	 * 
 	 */
 	private static boolean useLinearCalc = true;
-	/*
-	 * 
-	 */
-	private ArrayList<DESEvent> events;
 	/**
 	 * 
 	 * @param args
@@ -64,6 +59,7 @@ public class RKEventSolver extends AbstractDESSolver implements Serializable {
 	 * 
 	 */
 	public RKEventSolver() {
+
 	}
 
 	/**
@@ -74,7 +70,7 @@ public class RKEventSolver extends AbstractDESSolver implements Serializable {
 	 */
 	public RKEventSolver(boolean withLinearCalc) {
 		useLinearCalc = withLinearCalc;
-		events = new ArrayList<DESEvent>();
+		
 	}
 
 	/**
@@ -82,7 +78,7 @@ public class RKEventSolver extends AbstractDESSolver implements Serializable {
 	 */
 	public RKEventSolver(double stepSize) {
 		this.stepSize = stepSize;
-		events = new ArrayList<DESEvent>();
+		
 	}
 
 	/**
@@ -342,27 +338,18 @@ public class RKEventSolver extends AbstractDESSolver implements Serializable {
 	 */
 	public double[] processEvents(double time, double[] Ytemp,
 			EventDESystem EDES, double[] change) {
-		double[] YtempNew = new double[Ytemp.length];
-		       
-		for (DESEvent event : EDES.processEvents(time, Ytemp)) {
-			if (event.hasDelay()){
-				this.events.add(event);
-			}
-			else{
-				System.out.printf("time %s: Ytemp[%s]_old = %s\tYtemp[%s]_new = %s\n",
-						time,j, Ytemp[j], j, res[j] - (Ytemp[j] - change[j]));
-					Ytemp[j] = res[j] - (Ytemp[j] - change[j]);
-			}
-		}
-		
-		for (int j = 0; j < delays.length; j++)
-			if (!Double.isNaN(delays[j])) {	
-				System.out.printf("time %s: Ytemp[%s]_old = %s\tYtemp[%s]_new = %s\n",
-						time,j, Ytemp[j], j, res[j] - (Ytemp[j] - change[j]));
-					Ytemp[j] = res[j] - (Ytemp[j] - change[j]);
-			} else Ytemp[j] = 0d;
+		double[] newYtemp = new double[Ytemp.length];
+		int index;		
+		for (DESAssignment event : EDES.processEvents(time, Ytemp)) {
+			index = event.getIndex();
 
-		return Ytemp;
+			//newYtemp[index] = event.getValue() - (Ytemp[index]);
+			newYtemp[index] = event.getValue() - (Ytemp[index] - change[index]);
+			System.out.printf("time %s: \tYtemp[%s]_old = %s\tYtemp[%s]_new = %s\t change %s \n",
+			time,index, Ytemp[index], index, (event.getValue() - (Ytemp[index])),change[index]);
+		}		
+
+		return newYtemp;
 
 	}
 	
@@ -374,10 +361,13 @@ public class RKEventSolver extends AbstractDESSolver implements Serializable {
 	 * @param EDES
 	 * @return
 	 */
-	public double[] processRules(double time, double[] Ytemp,
+	public void processRules(double time, double[] Ytemp,
 			EventDESystem EDES){
-		
-		return null;
+		int index;
+		for (DESAssignment event : EDES.processAssignmentRules(time, Ytemp)) {
+			index = event.getIndex();
+			Ytemp[index] = event.getValue();
+		}
 		
 	}
 	
@@ -454,8 +444,9 @@ public class RKEventSolver extends AbstractDESSolver implements Serializable {
 				x += h;
 
 				// process events	
-				double[] YtempClone2 = processEvents(x, Ytemp.clone(), EDES, change);
+				double[] YtempClone2 = processEvents(x, Ytemp, EDES, change);
 				Mathematics.vvAdd(Ytemp, YtempClone2, Ytemp);
+				processRules(x, Ytemp, EDES);
 
 			}
 
@@ -475,8 +466,9 @@ public class RKEventSolver extends AbstractDESSolver implements Serializable {
 				}
 			}
 			// process events
-			double[] YtempClone = processEvents(x, Ytemp.clone(), EDES, change);
+			double[] YtempClone = processEvents(x, Ytemp, EDES, change);
 			Mathematics.vvAdd(Ytemp, YtempClone, Ytemp);
+			processRules(x, Ytemp, EDES);
 			
 			if (includeTimes) {
 				result[i][0] = timePoints[i];
