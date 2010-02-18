@@ -3,7 +3,7 @@
  */
 package eva2.tools.math.des;
 
-import java.util.ArrayList;
+import java.util.List;
 
 
 
@@ -22,13 +22,14 @@ public interface EventDESystem extends DESystem {
 	 * of the species stored in Y. The new values for the species
 	 * are stored in res. The positions in the array returned by this method
 	 * correspond to the positions in Y/res. 
+	 * @param res 
 	 *
 	 * @return Returns an array with delays for the change of concentration due to events
 	 */
-	public ArrayList<DESAssignment> processEvents(double t, double Y[]);
+	public List<DESAssignment> processEvents(double t, double Y[], double[] res);
 	
-	public ArrayList<DESAssignment>  processAssignmentRules(double t, double Y[]);
+	public List<DESAssignment>  processAssignmentRules(double t, double Y[]);
 	
-	public ArrayList<DESAssignment>  processAlgebraicRules(double t, double Y[]);
+	public List<DESAssignment>  processAlgebraicRules(double t, double Y[]);
 
 }

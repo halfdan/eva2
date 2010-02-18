@@ -326,24 +326,26 @@ public class RKSolverV2 extends AbstractDESSolver implements Serializable {
 		double[] res = new double[Ytemp.length];
 		// Arrays.fill(res, 0);
 		double[] delays = EDES.processEvents(time, Ytemp, res);
-		System.out.println("delay " +Arrays.toString(delays));
+		System.out.println("delay " + Arrays.toString(delays));
 		for (int j = 0; j < delays.length; j++)
-			if (!Double.isNaN(delays[j])) {	
-				System.out.printf("time %s :Ytemp[%s]_old = %s\tYtemp[%s]_new = %s\n",
-						time,j, Ytemp[j], j, (res[j] - Ytemp[j]));
-					Ytemp[j] = res[j] - Ytemp[j];
-			} else Ytemp[j] = 0d;
+			if (!Double.isNaN(delays[j])) {
+				System.out.printf(
+						"time %s :Ytemp[%s]_old = %s\tYtemp[%s]_new = %s\n",
+						time, j, Ytemp[j], j, (res[j] - Ytemp[j]));
+				Ytemp[j] = res[j] - Ytemp[j];
+			} else
+				Ytemp[j] = 0d;
 
 		return Ytemp;
 
 	}
-	
-	public static boolean containsNaN(double[] arr){
+
+	public static boolean containsNaN(double[] arr) {
 		for (int i = 0; i < arr.length; i++) {
 			if (Double.isNaN(arr[i]))
 				return true;
 		}
-		
+
 		return false;
 	}
 
@@ -408,19 +410,18 @@ public class RKSolverV2 extends AbstractDESSolver implements Serializable {
 				Ytemp = result[i - 1].clone();
 
 			// process events
-			//double[] YtempClone = processEvents(x, Ytemp.clone(), EDES);
+			// double[] YtempClone = processEvents(x, Ytemp.clone(), EDES);
 			// Ytemp = processEventsVoid(x, Ytemp,EDES);
 
 			for (int j = 0; j < inbetweensteps; j++) {
-				
+
 				if (useLinearCalc)
 					rkTerm2(EDES, h, x, Ytemp, change);
 				else
 					change = rkTerm(EDES, h, x, Ytemp);
 				// System.out.println("aft change 0 " + change[0]);
-				
+
 				Mathematics.vvAdd(Ytemp, change, Ytemp);
-		
 
 				if (this.nonnegative) {
 					for (int k = 0; k < Ytemp.length; k++) {
@@ -431,14 +432,14 @@ public class RKSolverV2 extends AbstractDESSolver implements Serializable {
 
 				x += h;
 
-				// process events	
+				// process events
 				double[] YtempClone2 = processEvents(x, Ytemp.clone(), EDES);
 				Mathematics.vvAdd(Ytemp, YtempClone2, Ytemp);
-				//processEventsVoid(x, Ytemp,EDES);
+				// processEventsVoid(x, Ytemp,EDES);
 
 			}
 			// ohne wirkung
-			//Mathematics.vvAdd(Ytemp, YtempClone, Ytemp);
+			// Mathematics.vvAdd(Ytemp, YtempClone, Ytemp);
 
 			h = timePoints[i] - x;
 
@@ -523,14 +524,14 @@ public class RKSolverV2 extends AbstractDESSolver implements Serializable {
 		return result;
 	}
 
-	@Override
+	// @Override
 	public double[][] solveAtTimePoints(DESystem DES, double[] initialvalue,
 			double[] timepoints) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
+	// @Override
 	public double[][] solveAtTimePointsWithInitialConditions(DESystem DES,
 			double[][] initconditions, double[] timepoints) {
 		// TODO Auto-generated method stub

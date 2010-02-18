@@ -3,19 +3,19 @@ package eva2.tools.math.des;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-
 import eva2.tools.math.Mathematics;
 
 /**
- * Title: JAVA-EVA Description: Runge-Kutta Method with Events Copyright: Copyright (c) 2002
- * Company: University of T&uuml;bingen, Computer Architecture
+ * Title: JAVA-EVA Description: Runge-Kutta Method with Events Copyright:
+ * Copyright (c) 2002 Company: University of T&uuml;bingen, Computer
+ * Architecture
  * 
  * @author Hannes Planatscher
  * @author Andreas Dr&auml;ger
  * @author Marcel Kronfeld
  * @author Alexander D&ouml;rr
- * @version 1.1 Status: works, but numerical inaccurate. Modified to process events, e.g. sudden
- * changes in the absolute values of the system
+ * @version 1.1 Status: works, but numerical inaccurate. Modified to process
+ *          events, e.g. sudden changes in the absolute values of the system
  */
 public class RKEventSolver extends AbstractDESSolver implements Serializable {
 	/**
@@ -26,6 +26,7 @@ public class RKEventSolver extends AbstractDESSolver implements Serializable {
 	 * 
 	 */
 	private static boolean useLinearCalc = true;
+
 	/**
 	 * 
 	 * @param args
@@ -70,7 +71,7 @@ public class RKEventSolver extends AbstractDESSolver implements Serializable {
 	 */
 	public RKEventSolver(boolean withLinearCalc) {
 		useLinearCalc = withLinearCalc;
-		
+
 	}
 
 	/**
@@ -78,7 +79,7 @@ public class RKEventSolver extends AbstractDESSolver implements Serializable {
 	 */
 	public RKEventSolver(double stepSize) {
 		this.stepSize = stepSize;
-		
+
 	}
 
 	/**
@@ -327,8 +328,7 @@ public class RKEventSolver extends AbstractDESSolver implements Serializable {
 	}
 
 	/**
-	 * Processes sudden changes in the system due to events in 
-	 * the EDES 
+	 * Processes sudden changes in the system due to events in the EDES
 	 * 
 	 * @param time
 	 * @param Ytemp
@@ -339,21 +339,23 @@ public class RKEventSolver extends AbstractDESSolver implements Serializable {
 	public double[] processEvents(double time, double[] Ytemp,
 			EventDESystem EDES, double[] change) {
 		double[] newYtemp = new double[Ytemp.length];
-		int index;		
+		int index;
 		for (DESAssignment event : EDES.processEvents(time, Ytemp)) {
 			index = event.getIndex();
 
-			//newYtemp[index] = event.getValue() - (Ytemp[index]);
+			// newYtemp[index] = event.getValue() - (Ytemp[index]);
 			newYtemp[index] = event.getValue() - (Ytemp[index] - change[index]);
-			System.out.printf("time %s: \tYtemp[%s]_old = %s\tYtemp[%s]_new = %s\t change %s \n",
-			time,index, Ytemp[index], index, (event.getValue() - (Ytemp[index])),change[index]);
-		}		
+			System.out
+					.printf(
+							"time %s: \tYtemp[%s]_old = %s\tYtemp[%s]_new = %s\t change %s \n",
+							time, index, Ytemp[index], index,
+							(event.getValue() - (Ytemp[index])), change[index]);
+		}
 
 		return newYtemp;
 
 	}
-	
-	
+
 	/**
 	 * 
 	 * @param time
@@ -361,16 +363,14 @@ public class RKEventSolver extends AbstractDESSolver implements Serializable {
 	 * @param EDES
 	 * @return
 	 */
-	public void processRules(double time, double[] Ytemp,
-			EventDESystem EDES){
+	public void processRules(double time, double[] Ytemp, EventDESystem EDES) {
 		int index;
 		for (DESAssignment event : EDES.processAssignmentRules(time, Ytemp)) {
 			index = event.getIndex();
 			Ytemp[index] = event.getValue();
 		}
-		
+
 	}
-	
 
 	/**
 	 * When set to <code>TRUE</code>, <code>includeTimes</code> will make the
@@ -418,21 +418,17 @@ public class RKEventSolver extends AbstractDESSolver implements Serializable {
 			else
 				Ytemp = result[i - 1].clone();
 
-
 			// Ytemp = processEventsVoid(x, Ytemp,EDES);
 
 			for (int j = 0; j < inbetweensteps; j++) {
 
-				
 				if (useLinearCalc)
 					rkTerm2(EDES, h, x, Ytemp, change);
 				else
 					change = rkTerm(EDES, h, x, Ytemp);
 				// System.out.println("aft change 0 " + change[0]);
-				
-				
+
 				Mathematics.vvAdd(Ytemp, change, Ytemp);
-		
 
 				if (this.nonnegative) {
 					for (int k = 0; k < Ytemp.length; k++) {
@@ -443,7 +439,7 @@ public class RKEventSolver extends AbstractDESSolver implements Serializable {
 
 				x += h;
 
-				// process events	
+				// process events
 				double[] YtempClone2 = processEvents(x, Ytemp, EDES, change);
 				Mathematics.vvAdd(Ytemp, YtempClone2, Ytemp);
 				processRules(x, Ytemp, EDES);
@@ -469,7 +465,7 @@ public class RKEventSolver extends AbstractDESSolver implements Serializable {
 			double[] YtempClone = processEvents(x, Ytemp, EDES, change);
 			Mathematics.vvAdd(Ytemp, YtempClone, Ytemp);
 			processRules(x, Ytemp, EDES);
-			
+
 			if (includeTimes) {
 				result[i][0] = timePoints[i];
 				System.arraycopy(Ytemp, 0, result[i], 1, Ytemp.length);
@@ -537,14 +533,14 @@ public class RKEventSolver extends AbstractDESSolver implements Serializable {
 		return result;
 	}
 
-	@Override
+	// @Override
 	public double[][] solveAtTimePoints(DESystem DES, double[] initialvalue,
 			double[] timepoints) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
+	// @Override
 	public double[][] solveAtTimePointsWithInitialConditions(DESystem DES,
 			double[][] initconditions, double[] timepoints) {
 		// TODO Auto-generated method stub
