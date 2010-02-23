@@ -124,7 +124,56 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
         m_support.removePropertyChangeListener(l);
     }
     
-   
+    /**
+     * Create a fitting viewer component for an editor instance. If none can be identified,
+     * null is returned.
+     * 
+     * @param editor
+     * @return
+     */
+    public static JComponent getView(PropertyEditor editor) {
+    	JComponent view = null;
+    	// Now figure out how to display it...
+    	if (editor.isPaintable() && editor.supportsCustomEditor()) {
+    		view = new PropertyPanel(editor);
+    	} else {
+    		String[] tags = editor.getTags();
+    		if (tags != null ) {
+    			if ((tags.length==2) && (tags[0].equals("True")) && (tags[1].equals("False")) ) view = new PropertyBoolSelector(editor);
+    			else view = new PropertyValueSelector(editor);
+    		} else {
+    			if (editor.getAsText() != null) {
+    				view = new PropertyText(editor);
+    			} else {
+    				view=null;
+    			}
+    		}
+    	}
+    	/*
+    	if (tmpEdit instanceof sun.beans.editors.BoolEditor) {
+    		NewView = new PropertyBoolSelector(tmpEdit);
+    	} else {
+    		if (tmpEdit instanceof sun.beans.editors.DoubleEditor) {
+    			NewView = new PropertyText(tmpEdit);
+    		} else {
+    			if (tmpEdit.isPaintable() && tmpEdit.supportsCustomEditor()) {
+    				NewView = new PropertyPanel(tmpEdit);
+    			} else {
+    				if (tmpEdit.getTags() != null ) {
+    					NewView = new PropertyValueSelector(tmpEdit);
+    				} else {
+    					if (tmpEdit.getAsText() != null) {
+    						NewView = new PropertyText(tmpEdit);
+    					} else {
+
+    					}
+    				}
+    			}
+    		}
+    	}*/
+    	return view;
+    }
+    
     /** Sets a new target object for customisation.
      * @param targ a value of type 'Object'
      */
@@ -204,7 +253,7 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
             Method  setter  = m_Properties[i].getWriteMethod();
             // Only display read/write properties.
             if (getter == null || setter == null) continue;
-            JComponent NewView = null;
+            JComponent newView = null;
             try {
 	            Object          args[]  = { };
 	            Object          value   = getter.invoke(m_Target, args);
@@ -231,30 +280,13 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
                 
                 m_TipTexts[i] = getToolTipText(name, m_Methods, m_Target, tipTextLineLen);
 
-                // Now figure out how to display it...
-                if (editor instanceof sun.beans.editors.BoolEditor) {
-                    NewView = new PropertyBoolSelector(editor);
-	            } else {
-                    if (editor instanceof sun.beans.editors.DoubleEditor) {
-                        NewView = new PropertyText(editor);
-	                } else {
-	                    if (editor.isPaintable() && editor.supportsCustomEditor()) {
-	                        NewView = new PropertyPanel(editor);
-                        } else {
-                            if (editor.getTags() != null ) {
-                                NewView = new PropertyValueSelector(editor);
-                            } else {
-                                if (editor.getAsText() != null) {
-                                    NewView = new PropertyText(editor);
-                                } else {
-                                    System.out.println("Warning: Property \"" + name
-                                        + "\" has non-displayabale editor.  Skipping.");
-                                    continue;
-                                }
-                            }
-                        }
-                    }
+//                System.out.println("PSP editor class: " + editor.getClass());
+                newView = getView(editor);
+                if (newView==null) {
+                	System.err.println("Warning: Property \"" + name + "\" has non-displayabale editor.  Skipping.");
+                	continue;
                 }
+                
                 editor.addPropertyChangeListener(this);
             } catch (InvocationTargetException ex) {
 	            System.out.println("InvocationTargetException " + name
@@ -273,7 +305,7 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
 
             m_Labels[i]         = new JLabel(name, SwingConstants.RIGHT);
             m_Labels[i].setBorder(BorderFactory.createEmptyBorder(10,10,0,5));
-            m_Views[i]          = NewView;
+            m_Views[i]          = newView;
             m_ViewWrapper[i]    = new JPanel();
             m_ViewWrapper[i].setLayout(new BorderLayout());
             GridBagConstraints gbConstraints = new GridBagConstraints();
@@ -407,7 +439,7 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
             try {
                 Object  args[]      = { };
                 String  globalInfo  = (String)(meth.invoke(m_Target, args));
-                String  summary     = globalInfo;
+//                String  summary     = globalInfo;
 //                int     ci          = globalInfo.indexOf('.');
 //                if (ci != -1) {	
 //                	// this shortens the displayed text, using only the first "sentence".
@@ -429,7 +461,7 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
                 });
 
                 JTextArea jt = new JTextArea();
-                jt.setText(summary);
+                jt.setText(globalInfo);
                 jt.setFont(new Font("SansSerif", Font.PLAIN, rowHeight));
                 jt.setEditable(false);
                 jt.setLineWrap(true);
@@ -618,32 +650,14 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
         	m_Editors[i]    = tmpEdit;
         	if (tmpEdit instanceof GenericObjectEditor) ((GenericObjectEditor) tmpEdit).setClassType(m_Properties[i].getPropertyType());
         	m_Editors[i].setValue(newValue);
-        	JComponent NewView = null;
-        	if (tmpEdit instanceof sun.beans.editors.BoolEditor) {
-        		NewView = new PropertyBoolSelector(tmpEdit);
-        	} else {
-        		if (tmpEdit instanceof sun.beans.editors.DoubleEditor) {
-        			NewView = new PropertyText(tmpEdit);
-        		} else {
-        			if (tmpEdit.isPaintable() && tmpEdit.supportsCustomEditor()) {
-        				NewView = new PropertyPanel(tmpEdit);
-        			} else {
-        				if (tmpEdit.getTags() != null ) {
-        					NewView = new PropertyValueSelector(tmpEdit);
-        				} else {
-        					if (tmpEdit.getAsText() != null) {
-        						NewView = new PropertyText(tmpEdit);
-        					} else {
-        						System.out.println("Warning: Property \"" + m_Properties[i].getDisplayName()
-        								+ "\" has non-displayabale editor.  Skipping.");
-        						return false;
-        					}
-        				}
-        			}
-        		}
+        	JComponent newView = null;
+        	newView = getView(tmpEdit);
+        	if (newView==null) {
+        		System.err.println("Warning: Property \"" + m_Properties[i].getDisplayName() + "\" has non-displayabale editor.  Skipping.");
+        		return false;
         	}
         	m_Editors[i].addPropertyChangeListener(this);
-        	m_Views[i] = NewView;
+        	m_Views[i] = newView;
         	if (m_TipTexts[i] != null) m_Views[i].setToolTipText(m_TipTexts[i]);
         	m_ViewWrapper[i].removeAll();
         	m_ViewWrapper[i].setLayout(new BorderLayout());

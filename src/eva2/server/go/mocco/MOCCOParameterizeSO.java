@@ -1,7 +1,16 @@
 package eva2.server.go.mocco;
 
 
-import javax.swing.*;
+import java.awt.BorderLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 import eva2.gui.GenericObjectEditor;
 import eva2.gui.PropertyEditorProvider;
@@ -10,11 +19,8 @@ import eva2.server.go.MOCCOStandalone;
 import eva2.server.go.strategies.GeneticAlgorithm;
 import eva2.server.go.strategies.InterfaceOptimizer;
 import eva2.server.go.strategies.MultiObjectiveEA;
+import eva2.server.go.tools.AbstractObjectEditor;
 import eva2.server.go.tools.GeneralGOEProperty;
-
-import java.awt.*;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 /**
  * Created by IntelliJ IDEA.
@@ -79,7 +85,7 @@ public class MOCCOParameterizeSO extends MOCCOPhase implements InterfaceProcessE
             if (editor.m_Editor instanceof GenericObjectEditor)
                 ((GenericObjectEditor) editor.m_Editor).setClassType(InterfaceOptimizer.class);
             editor.m_Editor.setValue(editor.m_Value);
-            this.findViewFor(editor);
+            AbstractObjectEditor.findViewFor(editor);
             if (editor.m_View != null) editor.m_View.repaint();
         } catch (Exception e) {
             System.out.println("Darn can't read the value...");
@@ -102,7 +108,7 @@ public class MOCCOParameterizeSO extends MOCCOPhase implements InterfaceProcessE
             if (editor.m_Editor instanceof GenericObjectEditor)
                 ((GenericObjectEditor) editor.m_Editor).setClassType(InterfaceTerminator.class);
             editor.m_Editor.setValue(editor.m_Value);
-            this.findViewFor(editor);
+            AbstractObjectEditor.findViewFor(editor);
             if (editor.m_View != null) editor.m_View.repaint();
         } catch (Exception e) {
             System.out.println("Darn can't read the value...");

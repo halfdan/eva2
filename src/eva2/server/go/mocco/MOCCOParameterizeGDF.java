@@ -15,6 +15,7 @@ import eva2.server.go.problems.InterfaceMultiObjectiveDeNovoProblem;
 import eva2.server.go.problems.InterfaceOptimizationObjective;
 import eva2.server.go.strategies.GeneticAlgorithm;
 import eva2.server.go.strategies.InterfaceOptimizer;
+import eva2.server.go.tools.AbstractObjectEditor;
 import eva2.server.go.tools.GeneralGOEProperty;
 
 import java.awt.*;
@@ -134,7 +135,7 @@ public class MOCCOParameterizeGDF extends MOCCOPhase implements InterfaceProcess
             if (this.m_EOpt.m_Editor instanceof GenericObjectEditor)
                 ((GenericObjectEditor) this.m_EOpt.m_Editor).setClassType(InterfaceOptimizer.class);
             this.m_EOpt.m_Editor.setValue(this.m_EOpt.m_Value);
-            this.findViewFor(this.m_EOpt);
+            AbstractObjectEditor.findViewFor(this.m_EOpt);
             if (this.m_EOpt.m_View != null) this.m_EOpt.m_View.repaint();
         } catch (Exception e) {
             System.out.println("Darn can't read the value...");
@@ -157,7 +158,7 @@ public class MOCCOParameterizeGDF extends MOCCOPhase implements InterfaceProcess
             if (editor.m_Editor instanceof GenericObjectEditor)
                 ((GenericObjectEditor) editor.m_Editor).setClassType(InterfaceTerminator.class);
             editor.m_Editor.setValue(editor.m_Value);
-            this.findViewFor(editor);
+            AbstractObjectEditor.findViewFor(editor);
             if (editor.m_View != null) editor.m_View.repaint();
         } catch (Exception e) {
             System.out.println("Darn can't read the value...");

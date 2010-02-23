@@ -3,6 +3,7 @@ package eva2.server.go.operators.mutation;
 import javax.swing.*;
 
 import eva2.gui.*;
+import eva2.server.go.tools.AbstractObjectEditor;
 import eva2.server.go.tools.GeneralGEOFaker;
 import eva2.server.go.tools.GeneralGOEProperty;
 import eva2.tools.BasicResourceLoader;
@@ -67,7 +68,7 @@ public class PropertyMutationMixerEditor extends JPanel implements PropertyEdito
                     ((GenericObjectEditor) this.m_Editors[i].m_Editor).setClassType(InterfaceMutation.class);
                 this.m_Editors[i].m_Editor.setValue(this.m_Editors[i].m_Value);
                 this.m_Editors[i].m_Editor.addPropertyChangeListener(this);
-                this.findViewFor(this.m_Editors[i]);
+                AbstractObjectEditor.findViewFor(this.m_Editors[i]);
                 if (this.m_Editors[i].m_View != null) this.m_Editors[i].m_View.repaint();
             } catch (Exception e) {
                 System.out.println("Darn can't read the value...");
@@ -227,7 +228,7 @@ public class PropertyMutationMixerEditor extends JPanel implements PropertyEdito
                     ((GenericObjectEditor) newEdit[l].m_Editor).setClassType(InterfaceMutation.class);
                 newEdit[l].m_Editor.setValue(newEdit[l].m_Value);
                 newEdit[l].m_Editor.addPropertyChangeListener(m_self);
-                findViewFor(newEdit[l]);
+                AbstractObjectEditor.findViewFor(newEdit[l]);
                 if (newEdit[l].m_View != null) newEdit[l].m_View.repaint();
             } catch (Exception e) {
                 System.out.println("Darn can't read the value...");
@@ -402,31 +403,6 @@ public class PropertyMutationMixerEditor extends JPanel implements PropertyEdito
         this.updateEditor();
     }
 
-    public void findViewFor(GeneralGOEProperty editor) {
-        if (editor.m_Editor instanceof sun.beans.editors.BoolEditor) {
-            editor.m_View = new PropertyBoolSelector(editor.m_Editor);
-        } else {
-            if (editor.m_Editor instanceof sun.beans.editors.DoubleEditor) {
-                editor.m_View = new PropertyText(editor.m_Editor);
-            } else {
-                if (editor.m_Editor.isPaintable() && editor.m_Editor.supportsCustomEditor()) {
-                    editor.m_View = new PropertyPanel(editor.m_Editor);
-                } else {
-                    if (editor.m_Editor.getTags() != null ) {
-                        editor.m_View = new PropertyValueSelector(editor.m_Editor);
-                    } else {
-                        if (editor.m_Editor.getAsText() != null) {
-                            editor.m_View = new PropertyText(editor.m_Editor);
-                        } else {
-                            System.out.println("Warning: Property \"" + editor.m_Name
-                                 + "\" has non-displayabale editor.  Skipping.");
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     /********************************* java.beans.PropertyChangeListener *************************/
 
     public void addPropertyChangeListener(PropertyChangeListener l) {
@@ -456,7 +432,7 @@ public class PropertyMutationMixerEditor extends JPanel implements PropertyEdito
                         ((GenericObjectEditor) this.m_Editors[i].m_Editor).setClassType(InterfaceMutation.class);
                     this.m_Editors[i].m_Editor.setValue(this.m_Editors[i].m_Value);
                     this.m_Editors[i].m_Editor.addPropertyChangeListener(this);
-                    this.findViewFor(this.m_Editors[i]);
+                    AbstractObjectEditor.findViewFor(this.m_Editors[i]);
                     if (this.m_Editors[i].m_View != null) this.m_Editors[i].m_View.repaint();
                 } catch (Exception e) {
                     System.out.println("Darn can't read the value...");

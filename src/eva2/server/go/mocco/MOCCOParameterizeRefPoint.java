@@ -1,7 +1,16 @@
 package eva2.server.go.mocco;
 
 
-import javax.swing.*;
+import java.awt.BorderLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import eva2.gui.GenericObjectEditor;
 import eva2.gui.PropertyEditorProvider;
@@ -12,12 +21,9 @@ import eva2.server.go.operators.migration.SOBestMigration;
 import eva2.server.go.operators.moso.MOSOLpMetric;
 import eva2.server.go.problems.AbstractMultiObjectiveOptimizationProblem;
 import eva2.server.go.strategies.IslandModelEA;
+import eva2.server.go.tools.AbstractObjectEditor;
 import eva2.server.go.tools.GeneralGOEProperty;
 import eva2.tools.math.RNG;
-
-import java.awt.*;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 /**
  * Created by IntelliJ IDEA.
@@ -110,7 +116,7 @@ public class MOCCOParameterizeRefPoint extends MOCCOPhase implements InterfacePr
             if (this.m_EMOSO.m_Editor instanceof GenericObjectEditor)
                 ((GenericObjectEditor) this.m_EMOSO.m_Editor).setClassType(MOSOLpMetric.class);
             this.m_EMOSO.m_Editor.setValue(this.m_EMOSO.m_Value);
-            this.findViewFor(this.m_EMOSO);
+            AbstractObjectEditor.findViewFor(this.m_EMOSO);
             if (this.m_EMOSO.m_View != null) this.m_EMOSO.m_View.repaint();
         } catch (Exception e) {
             System.out.println("Darn can't read the value...");
@@ -141,7 +147,7 @@ public class MOCCOParameterizeRefPoint extends MOCCOPhase implements InterfacePr
             if (this.m_EIMEA.m_Editor instanceof GenericObjectEditor)
                 ((GenericObjectEditor) this.m_EIMEA.m_Editor).setClassType(IslandModelEA.class);
             this.m_EIMEA.m_Editor.setValue(this.m_EIMEA.m_Value);
-            this.findViewFor(this.m_EIMEA);
+            AbstractObjectEditor.findViewFor(this.m_EIMEA);
             if (this.m_EIMEA.m_View != null) this.m_EIMEA.m_View.repaint();
         } catch (Exception e) {
             System.out.println("Darn can't read the value...");
@@ -164,7 +170,7 @@ public class MOCCOParameterizeRefPoint extends MOCCOPhase implements InterfacePr
             if (editor.m_Editor instanceof GenericObjectEditor)
                 ((GenericObjectEditor) editor.m_Editor).setClassType(InterfaceTerminator.class);
             editor.m_Editor.setValue(editor.m_Value);
-            this.findViewFor(editor);
+            AbstractObjectEditor.findViewFor(editor);
             if (editor.m_View != null) editor.m_View.repaint();
         } catch (Exception e) {
             System.out.println("Darn can't read the value...");

@@ -283,28 +283,9 @@ public abstract class AbstractObjectEditor implements PropertyEditor, java.beans
     /** This method tries to find a suitable view for a given Property
      * @param editor    The property the select a view for.
      */
-    public void findViewFor(GeneralGOEProperty editor) {
-        if (editor.m_Editor instanceof sun.beans.editors.BoolEditor) {
-            editor.m_View = new PropertyBoolSelector(editor.m_Editor);
-        } else {
-            if (editor.m_Editor instanceof sun.beans.editors.DoubleEditor) {
-                editor.m_View = new PropertyText(editor.m_Editor);
-            } else {
-                if (editor.m_Editor.isPaintable() && editor.m_Editor.supportsCustomEditor()) {
-                    editor.m_View = new PropertyPanel(editor.m_Editor);
-                } else {
-                    if (editor.m_Editor.getTags() != null ) {
-                        editor.m_View = new PropertyValueSelector(editor.m_Editor);
-                    } else {
-                        if (editor.m_Editor.getAsText() != null) {
-                            editor.m_View = new PropertyText(editor.m_Editor);
-                        } else {
-                            System.out.println("Warning: Property \"" + editor.m_Name
+    public static void findViewFor(GeneralGOEProperty editor) {
+    	editor.m_View = PropertySheetPanel.getView(editor.m_Editor);
+    	if (editor.m_View==null) System.out.println("Warning: Property \"" + editor.m_Name
                                  + "\" has non-displayabale editor.  Skipping.");
-                        }
-                    }
-                }
-            }
-        }
     }
 }

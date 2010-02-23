@@ -33,14 +33,12 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
+import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-
-import com.sun.image.codec.jpeg.JPEGCodec;
-import com.sun.image.codec.jpeg.JPEGImageEncoder;
 
 import eva2.EvAInfo;
 import eva2.server.go.individuals.AbstractEAIndividual;
@@ -144,94 +142,9 @@ public class Plot implements PlotInterface, Serializable {
 			}
 		});
 
-//		JButton PrintButton = new JButton ("Print");
-//		PrintButton.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//				try {
-//					Robot robot = new Robot();
-//					// Capture a particular area on the screen
-//					int x = 100;
-//					int y = 100;
-//					int width = 200;
-//					int height = 200;
-//					Rectangle area = new Rectangle(x, y, width, height);
-//					BufferedImage bufferedImage = robot.createScreenCapture(area);
-//
-//					// Capture the whole screen
-//					area = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
-//					bufferedImage = robot.createScreenCapture(area);
-//					try {
-//						FileOutputStream fos = new FileOutputStream("test.jpeg");
-//						BufferedOutputStream bos = new BufferedOutputStream(fos);
-//						JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(bos);
-//						encoder.encode(bufferedImage);
-//						bos.close();
-//					} catch (Exception eee) {}
-//
-//
-//				} catch (AWTException ee) {
-//					ee.printStackTrace();
-//				}
-//
-//
-//
-//				PrinterJob job = PrinterJob.getPrinterJob();
-////				PageFormat format = job.defaultPage();
-////				job.setPrintable(m_PlotArea, format);
-////				if (job.printDialog()) {
-////				// If not cancelled, start printing!  This will call the print()
-////				// method defined by the Printable interface.
-////				try { job.print(); }
-////				catch (PrinterException ee) {
-////				System.out.println(ee);
-////				ee.printStackTrace();
-////				}
-////				}
-//
-//				///////////////////////////////////////////////
-//				//PagePrinter pp = new PagePrinter(m_PlotArea,m_PlotArea.getGraphics(),job.defaultPage());
-//				//pp.print();
-//				//  public int print( Graphics g, PageFormat pf, int pi ){
-////				m_PlotArea.print(m_PlotArea.getGraphics(), new PageFormat(),0);
-//				// Obtain a java.awt.print.PrinterJob  (not java.awt.PrintJob)
-//				//PrinterJob job = PrinterJob.getPrinterJob();
-//				// Tell the PrinterJob to print us (since we implement Printable)
-//				// using the default page layout
-//				PageFormat page = job.defaultPage();
-//
-//				job.setPrintable(m_PlotArea, page);
-//				// Display the print dialog that allows the user to set options.
-//				// The method returns false if the user cancelled the print request
-//				if (job.printDialog()) {
-//					// If not cancelled, start printing!  This will call the print()
-//					// method defined by the Printable interface.
-//					try { job.print(); }
-//					catch (PrinterException ee) {
-//						System.out.println(ee);
-//						ee.printStackTrace();
-//					}
-//				}
-//			}
-//		});
-
-		// MK: Im not sure whether save/open ever worked...
-//		JButton OpenButton = new JButton ("Open..");
-//		OpenButton.setToolTipText("Load an old plot");
-//		OpenButton.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//				m_PlotArea.openObject();
-//			}
-//		});
-//		JButton SaveButton = new JButton ("Save..");
-//		SaveButton.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//				m_PlotArea.saveObject();
-//			}
-//		});
-		JButton SaveJPGButton = new JButton ("Save as JPG...");
+		JButton SaveJPGButton = new JButton ("Save as PNG...");
 		SaveJPGButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String outfile ="";
 				try {
 					Robot       robot = new Robot();
 					Rectangle   area;
@@ -241,16 +154,34 @@ public class Plot implements PlotInterface, Serializable {
 					if (fc.showSaveDialog(m_Frame) != JFileChooser.APPROVE_OPTION) return;
 //					System.out.println("Name " + outfile);
 					try {
+						/* Old version
 						FileOutputStream fos = new FileOutputStream(fc.getSelectedFile().getAbsolutePath()+".jpeg");
 						BufferedOutputStream bos = new BufferedOutputStream(fos);
 						JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(bos);
 						encoder.encode(bufferedImage);
-						bos.close();
+						bos.close();*/
+						File file = new File(fc.getSelectedFile().getAbsolutePath()+".png"); 
+						ImageIO.write(bufferedImage, "png", file); 
+						/* JPEG version with javax.imageio
+					    float compression = 0.8f;
+						FileImageOutputStream out = new FileImageOutputStream(new File(fc.getSelectedFile().getAbsolutePath()+".jpeg"));
+						ImageWriter encoder = (ImageWriter)ImageIO.getImageWritersByFormatName("JPEG").next();
+						JPEGImageWriteParam param = new JPEGImageWriteParam(null);
+
+						param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+						param.setCompressionQuality(compression);
+
+						encoder.setOutput(out);
+						encoder.write((IIOMetadata) null, new IIOImage(bufferedImage,null,null), param);
+
+						out.close();
+*/
+						
 					} catch (Exception eee) {
-						System.err.println("Error on exporting JPEG: " + eee.getMessage());
+						System.err.println("Error on exporting PNG: " + eee.getMessage());
 					}
 				} catch (AWTException ee) {
-					System.err.println("Error on creating JPEG: " + ee.getMessage());
+					System.err.println("Error on creating PNG: " + ee.getMessage());
 					ee.printStackTrace();
 				}
 			}
