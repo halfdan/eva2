@@ -29,4 +29,8 @@ public class DESAssignment{
 		return value;
 	}
 	
+	public void setValue(Double value) {
+		this.value = value;
+	}
+	
 }
