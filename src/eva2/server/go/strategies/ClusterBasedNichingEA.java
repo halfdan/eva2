@@ -222,8 +222,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
             Population              pop;
 
             this.m_Topology          = new TopoPlot("CBN-Species at gen. " + gen,"x","y",a,a);
-            this.m_Topology.gridx = 60;
-            this.m_Topology.gridy = 60;
+			this.m_Topology.setParams(60, 60);
             this.m_Topology.setTopology((Interface2DBorderProblem)this.m_Problem);
             //draw the undifferentiated
             for (int i = 0; i < this.m_Undifferentiated.size(); i++) {

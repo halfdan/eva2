@@ -21,6 +21,7 @@ import java.awt.event.MouseEvent;
 import java.beans.PropertyEditor;
 
 import javax.swing.BorderFactory;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import eva2.tools.EVAHELP;
@@ -51,7 +52,13 @@ public class PropertyPanel extends JPanel {
 					}
 					else {
 						m_PropertyDialog.updateFrameTitle(m_PropertyEditor);
+//						System.out.println("" + BeanInspector.toString(m_PropertyDialog));
+						m_PropertyDialog.setVisible(false);
+						m_PropertyDialog.setExtendedState(JFrame.NORMAL);
 						m_PropertyDialog.setVisible(true);
+						m_PropertyDialog.requestFocus();
+//						System.out.println("" + BeanInspector.toString(m_PropertyDialog));
+//						System.out.println("Aft: " + m_PropertyDialog.isShowing() + " " + m_PropertyDialog.isVisible() + " " + m_PropertyDialog.isActive() + " " + m_PropertyDialog.isFocused());
 					}
 				}
 			}

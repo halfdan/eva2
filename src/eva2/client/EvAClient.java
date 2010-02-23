@@ -41,6 +41,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JRadioButtonMenuItem;
+import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.JWindow;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
@@ -78,7 +80,8 @@ import eva2.tools.jproxy.RemoteStateListener;
  *
  */
 public class EvAClient implements RemoteStateListener, Serializable {
-	final int splashScreenTime = 1500;
+	private final int splashScreenTime = 1500;
+	private final int maxWindowMenuLength = 30;
 	private static Properties EVA_PROPERTIES;
 	
 	public static boolean TRACE = false;
@@ -303,7 +306,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
 		}
 		
 		if (withGUI ) {
-			m_Frame = new JEFrame();
+			m_Frame = new JEFrame(EvAInfo.productName + " workbench");
 			BasicResourceLoader loader = BasicResourceLoader.instance();
 			byte[] bytes = loader.getBytesFromResourceLocation(EvAInfo.iconLocation);
 			try {
@@ -311,7 +314,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
 			} catch (java.lang.NullPointerException e) {
 				System.out.println("Could not find EvA2 icon, please move resources folder to working directory!");
 			}
-			m_Frame.setTitle(EvAInfo.productName + " workbench");
+//			m_Frame.setTitle(EvAInfo.productName + " workbench");
 
 			try {
 				Thread.sleep(200);
@@ -583,22 +586,47 @@ public class EvAClient implements RemoteStateListener, Serializable {
 		m_mnuWindow = new JExtMenu("&Window");
 		m_mnuWindow.addMenuListener(new MenuListener() {
 			public void menuSelected(MenuEvent e) {
-//				System.out.println("Selected");
+				//				System.out.println("Selected");
 				m_mnuWindow.removeAll();
+				JExtMenu curMenu = m_mnuWindow;
+//				JScrollPane jsp = new JScrollPane();
 				Object[] framelist = JEFrameRegister.getFrameList();
 				for (int i = 0; i < framelist.length; i++) {
 					JMenuItem act = new JMenuItem((i + 1) + ". " + ((JEFrame) framelist[i]).getTitle());
 					final JFrame x = ((JEFrame) framelist[i]);
+					
 					act.addActionListener((new ActionListener() {
 						public void actionPerformed(ActionEvent e) {
-							x.setExtendedState(JFrame.NORMAL);
-							x.toFront();
+							if (!x.isActive()) {
+								x.setExtendedState(JFrame.NORMAL);
+								x.setVisible(false);
+								x.setVisible(true); // it seems to be quite a fuss to bring something to the front and actually mean it...
+								x.toFront();		// this seems useless
+								x.requestFocus();	// this seems useless too
+							}
 						}
+					}));
+					if (curMenu.getItemCount()>=maxWindowMenuLength) {
+						JExtMenu subMenu = new JExtMenu("&More...");
+						curMenu.add(new JSeparator());
+						curMenu.add(subMenu);
+						curMenu=subMenu;
 					}
-					)
-					);
+					curMenu.add(act);
+				}
+				String[] commonPrefixes = JEFrameRegister.getCommonPrefixes(10);
+				if (commonPrefixes.length > 0) m_mnuWindow.add(new JSeparator());
+				for (int i=0; i<commonPrefixes.length; i++) {
+					final String prefix = commonPrefixes[i];
+					JMenuItem act = new JMenuItem("Close all of " + prefix + "...");
+					act.addActionListener((new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+							JEFrameRegister.closeAllByPrefix(prefix);
+						}
+					}));
 					m_mnuWindow.add(act);
 				}
+
 			}
 			public void menuCanceled(MenuEvent e) {
 			}

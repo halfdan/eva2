@@ -174,6 +174,20 @@ public class FunctionArea extends DArea implements Serializable {
 	 }
 	 
 	 /**
+	  * Draw a line with given start and end points.
+	  * 
+	  * @param p1
+	  * @param p2
+	  */
+	 public void drawLine(double[] p1, double[] p2) {
+		DPointSet popRep      = new DPointSet();
+		popRep.setConnected(true);
+		popRep.addDPoint(new DPoint(p1[0], p1[1]));
+		popRep.addDPoint(new DPoint(p2[0], p2[1]));
+		addDElement(popRep);
+	 }
+	 
+	 /**
 	  * Plot a circle icon to the function area which is annotated with a char and
 	  * a double value. The color corresponds to the color of the graph with given ID
 	  * 

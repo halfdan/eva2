@@ -12,10 +12,11 @@ package eva2.gui;
 /*==========================================================================*
  * IMPORTS
  *==========================================================================*/
-import java.awt.*;
+import java.awt.Color;
 
 import eva2.server.go.problems.Interface2DBorderProblem;
-import eva2.tools.chart2d.*;
+import eva2.server.go.problems.InterfaceFirstOrderDerivableProblem;
+import eva2.tools.chart2d.DRectangle;
 import eva2.tools.diagram.ColorBarCalculator;
 import eva2.tools.math.Mathematics;
 
@@ -28,8 +29,8 @@ import eva2.tools.math.Mathematics;
  */
 public class TopoPlot extends Plot {
 
-  public int gridx = 50;
-  public int gridy = 50;
+  private int gridx = 50;
+  private int gridy = 50;
   int colorScale = ColorBarCalculator.BLUE_TO_RED;
 
   /**
@@ -60,18 +61,28 @@ public class TopoPlot extends Plot {
   }
 
   /**
+   * Defines parameters used for drawing the topology.
+   * @param gridX the x-resolution of the topology, higher value means higher resolution
+   * @param gridY the y-resolution of the topology, higher value means higher resolution
+   */
+  public void setParams(int gridX, int gridY) {
+    setParams(gridX, gridY, colorScale);
+  }
+
+  /**
    * Defines the topology (by setting a specific problem) and draws the topology
    */
   public void setTopology(Interface2DBorderProblem problem) {
-	  setTopology(problem, problem.get2DBorder());
+	  setTopology(problem, problem.get2DBorder(), false);
   }
    /**
    * Defines the topology (by setting a specific problem) and draws the topology
    */
-  public void setTopology(Interface2DBorderProblem problem, double[][] border) {
+  public void setTopology(Interface2DBorderProblem problem, double[][] border, boolean withGradientsIfAvailable) {
 	double[] sizeXY=Mathematics.getAbsRange(border);
     double deltaX = sizeXY[0]/gridx;
     double deltaY = sizeXY[1]/gridy;
+    double maxDeriv=0;
     double[] pos = new double[2];
     //double fitRange = java.lang.Math.abs(problem.getMinFitness()-problem.getMaxFitness() );
     double fitRange = 0, max = -Double.MAX_VALUE, min = Double.MAX_VALUE, tmp;
@@ -82,6 +93,10 @@ public class TopoPlot extends Plot {
     		tmp = (float)(problem.functionValue(pos));
     		if (tmp < min) min = tmp;
     		if (tmp > max) max = tmp;
+    		if (problem instanceof InterfaceFirstOrderDerivableProblem) {
+    			double[] deriv = ((InterfaceFirstOrderDerivableProblem)problem).getFirstOrderGradients(pos);
+    			for (int i=0; i<2;i++) maxDeriv=Math.max(maxDeriv, Math.abs(deriv[i])); // maximum deriv of first 2 dims
+    		}
     	} // for y
     } // for x
     fitRange = java.lang.Math.abs(max - min);
@@ -89,18 +104,31 @@ public class TopoPlot extends Plot {
 
     m_Frame.setVisible(false);
     for (int x=0; x<gridx; x++) {
-      for (int y=0; y<gridy; y++) {
-    	  pos[0]  = border[0][0]+x*deltaX;
-    	  pos[1]  = border[1][0]+y*deltaY;
-    	  DRectangle rect = new DRectangle(pos[0],pos[1],deltaX,deltaY);
-    	  Color color = new Color(colorBar.getRGB((float)((problem.functionValue(pos)-min)/fitRange)));
-    	  // Color color = new Color(255,(int)(problem.doEvaluation(pos)[0]/fitRange*255),(int)(problem.doEvaluation(pos)[0]/fitRange*255));
-//  	  Color color = new Color(colorBar.getRGB((float)(problem.functionValue(pos)/fitRange))); // Color color = new Color(255,(int)(problem.doEvaluation(pos)[0]/fitRange*255),(int)(problem.doEvaluation(pos)[0]/fitRange*255));
-    	  rect.setColor(color);
-    	  rect.setFillColor(color);
-    	  m_PlotArea.addDElement(rect);
-      } // for y
+    	for (int y=0; y<gridy; y++) {
+    		pos[0]  = border[0][0]+x*deltaX;
+    		pos[1]  = border[1][0]+y*deltaY;
+    		DRectangle rect = new DRectangle(pos[0]-(deltaX/2),pos[1]-(deltaY/2),deltaX,deltaY);
+    		Color color = new Color(colorBar.getRGB((float)((problem.functionValue(pos)-min)/fitRange)));
+    		// Color color = new Color(255,(int)(problem.doEvaluation(pos)[0]/fitRange*255),(int)(problem.doEvaluation(pos)[0]/fitRange*255));
+    		//  	  Color color = new Color(colorBar.getRGB((float)(problem.functionValue(pos)/fitRange))); // Color color = new Color(255,(int)(problem.doEvaluation(pos)[0]/fitRange*255),(int)(problem.doEvaluation(pos)[0]/fitRange*255));
+    		rect.setColor(color);
+    		rect.setFillColor(color);
+    		m_PlotArea.addDElement(rect);
+    	} // for y
     } // for x
+    if (withGradientsIfAvailable && (problem instanceof InterfaceFirstOrderDerivableProblem)) {
+    	for (int x=0; x<gridx; x++) {
+    		for (int y=0; y<gridy; y++) {
+    			pos[0]  = border[0][0]+x*deltaX;
+    			pos[1]  = border[1][0]+y*deltaY;
+    			double[] derivPos = ((InterfaceFirstOrderDerivableProblem)problem).getFirstOrderGradients(pos);
+    			Mathematics.svDiv(1.1*(2*maxDeriv/Math.max(deltaX, deltaY)), derivPos, derivPos);
+    			Mathematics.vvAdd(pos, derivPos, derivPos);
+    			getFunctionArea().drawLine(pos, derivPos);
+    			getFunctionArea().drawIcon(1, "", derivPos, 0);
+    		} // for y
+    	} // for x
+    }
     m_Frame.setVisible(true);
 
   } // setTopology

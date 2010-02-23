@@ -19,74 +19,85 @@ import java.awt.*;
 
 public class JEFrame extends JFrame {
 
-  public JEFrame() {
-    super();
-    register();
-  }
+	public JEFrame() {
+		super();
+		init();
+	}
 
-  public JEFrame(String name) {
-    super(name);
-    register();
-  }
+	public JEFrame(String name) {
+		super(name);
+		init();
+	}
+	
+	@Override
+	public void addWindowListener(WindowListener l) {
+		super.addWindowListener(l);
+	}
+	
+	private void init() {
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		
+		this.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosed(WindowEvent e) {
+				super.windowClosed(e);
+				JEFrameRegister.unregister((JEFrame) e.getWindow());
+				//       ((JFrame) e.getWindow()).dispose();
+			}
+			@Override
+			public void windowOpened(WindowEvent e) {
+				super.windowOpened(e);
+				JEFrameRegister.register((JEFrame) e.getWindow());
+			}
+			@Override
+			public void windowActivated(WindowEvent e) {
+				JEFrameRegister.register((JEFrame) e.getWindow());
+				super.windowActivated(e);
+			}
+			
+		});
+		this.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+				KeyStroke.getKeyStroke(KeyEvent.VK_F,Event.CTRL_MASK),
+				"ctrlFpressed"
+		);
+		this.getRootPane().getActionMap().put(
+				"ctrlFpressed",
+				new AbstractAction("ctrlFpressed") {
+					public void actionPerformed( ActionEvent actionEvent ) {
+						((JEFrame) JEFrameRegister.getFrameList()[0]).setExtendedState(JEFrame.NORMAL);
+						((JEFrame) JEFrameRegister.getFrameList()[0]).toFront();
+					}
+				}
+		);
+		this.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+				KeyStroke.getKeyStroke(KeyEvent.VK_O,Event.CTRL_MASK),
+				"ctrlOpressed"
+		);
+		this.getRootPane().getActionMap().put(
+				"ctrlOpressed",
+				new AbstractAction("ctrlOpressed") {
+					public void actionPerformed( ActionEvent actionEvent ) {
+						Object[] fl = JEFrameRegister.getFrameList();
+						for (int i = 0; i < fl.length; i++) {
+							((JEFrame) JEFrameRegister.getFrameList()[i]).setExtendedState(JEFrame.NORMAL);
+							((JEFrame) JEFrameRegister.getFrameList()[i]).toFront();
+						}
 
-  private void register() {
-    JEFrameRegister.register(this);
-
-    this.addWindowListener(new WindowAdapter() {
-      public void windowClosing(WindowEvent e) {
-        JEFrameRegister.unregister((JEFrame) e.getWindow());
-      }
-      public void windowClosed(WindowEvent e) {
-       JEFrameRegister.unregister((JEFrame) e.getWindow());
-      }
-    });
-    this.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-      KeyStroke.getKeyStroke(KeyEvent.VK_F,Event.CTRL_MASK),
-      "ctrlFpressed"
-    );
-    this.getRootPane().getActionMap().put(
-      "ctrlFpressed",
-      new AbstractAction("ctrlFpressed") {
-        public void actionPerformed( ActionEvent actionEvent ) {
-          ((JEFrame) JEFrameRegister.getFrameList()[0]).setExtendedState(JEFrame.NORMAL);
-          ((JEFrame) JEFrameRegister.getFrameList()[0]).toFront();
-       }
-      }
-    );
-    this.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-      KeyStroke.getKeyStroke(KeyEvent.VK_O,Event.CTRL_MASK),
-      "ctrlOpressed"
-    );
-    this.getRootPane().getActionMap().put(
-      "ctrlOpressed",
-      new AbstractAction("ctrlOpressed") {
-        public void actionPerformed( ActionEvent actionEvent ) {
-          Object[] fl = JEFrameRegister.getFrameList();
-          for (int i = 0; i < fl.length; i++) {
-                      ((JEFrame) JEFrameRegister.getFrameList()[i]).setExtendedState(JEFrame.NORMAL);
-                      ((JEFrame) JEFrameRegister.getFrameList()[i]).toFront();
-          }
-
-       }
-      }
-    );
-    this.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-      KeyStroke.getKeyStroke(KeyEvent.VK_LESS , Event.CTRL_MASK),
-      "ctrlSmallerpressed"
-    );
-    final JEFrame self = this;
-    this.getRootPane().getActionMap().put(
-      "ctrlSmallerpressed",
-      new AbstractAction("ctrlSmallerpressed") {
-        public void actionPerformed( ActionEvent actionEvent ) {
-          JEFrameRegister.setFocusToNext(self);
-       }
-      }
-    );
-
-
-    }
-
-
-
+					}
+				}
+		);
+		this.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+				KeyStroke.getKeyStroke(KeyEvent.VK_LESS , Event.CTRL_MASK),
+				"ctrlSmallerpressed"
+		);
+		final JEFrame self = this;
+		this.getRootPane().getActionMap().put(
+				"ctrlSmallerpressed",
+				new AbstractAction("ctrlSmallerpressed") {
+					public void actionPerformed( ActionEvent actionEvent ) {
+						JEFrameRegister.setFocusToNext(self);
+					}
+				}
+		);
+	}
 }

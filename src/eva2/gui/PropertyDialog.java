@@ -41,14 +41,10 @@ public class PropertyDialog extends JEFrame {
     try {
         setIconImage(Toolkit.getDefaultToolkit().createImage(bytes));
     } catch (java.lang.NullPointerException e) {
-        System.out.println("Could not find EvA2 icon, please move resources folder to working directory!");
+        System.err.println("Could not find EvA2 icon, please move resources folder to working directory!");
     }
     //System.out.println("PropertyDialog.Constructor  of "+ Title);
-    addWindowListener(new WindowAdapter() {
-      public void windowClosing(WindowEvent e) {
-	e.getWindow().dispose();
-      }
-    });
+    setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     getContentPane().setLayout(new BorderLayout());
     m_Editor = editor;
     m_EditorComponent = editor.getCustomEditor();
