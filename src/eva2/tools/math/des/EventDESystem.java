@@ -26,7 +26,7 @@ public interface EventDESystem extends DESystem {
 	 *
 	 * @return Returns an array with delays for the change of concentration due to events
 	 */
-	public List<DESAssignment> processEvents(double t, double Y[], double[] res);
+	public List<DESAssignment> processEvents(double t, double Y[]);
 	
 	public List<DESAssignment>  processAssignmentRules(double t, double Y[]);
 	
