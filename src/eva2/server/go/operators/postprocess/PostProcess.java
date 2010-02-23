@@ -760,8 +760,7 @@ public class PostProcess {
 		if (plot == null) {
 			plot = new TopoPlot("PostProcessing: " + title, "x", "y",range[0],range[1]);
 		    if (prob instanceof Interface2DBorderProblem) {
-		    	plot.gridx=60;
-		    	plot.gridy=60;
+				plot.setParams(60, 60);
 		    	plot.setTopology((Interface2DBorderProblem)prob);
 		    }
 		}

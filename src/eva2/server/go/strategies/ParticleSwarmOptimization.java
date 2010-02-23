@@ -1312,8 +1312,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 				a[1] = 0.0;
 				if (topoPlot == null) {
 					this.topoPlot = new TopoPlot("CBN-Species","x","y",a,a);
-					this.topoPlot.gridx = 60;
-					this.topoPlot.gridy = 60;
+					this.topoPlot.setParams(60, 60);
 					this.topoPlot.setTopology((Interface2DBorderProblem)this.m_Problem);
 				}
 				
