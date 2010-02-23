@@ -91,12 +91,6 @@ public class OBGAIndividualPermutationData extends AbstractEAIndividual implemen
    * AbstractEAIndividual methods
    */
 
-  public void init(InterfaceOptimizationProblem opt) {
-    this.defaultInit();
-    this.m_MutationOperator.init(this, opt);
-    this.m_CrossoverOperator.init(this, opt);
- }
-
  /** This method will init the individual with a given value for the
   * phenotype.
   * @param obj   The initial value for the phenotype
@@ -106,7 +100,7 @@ public class OBGAIndividualPermutationData extends AbstractEAIndividual implemen
    if (obj instanceof int[]) {
     this.SetPermutationGenotype((int[][]) obj);
    } else {
-     this.defaultInit();
+     this.defaultInit(opt);
      System.out.println("Initial value for OBGAIndividualBinaryData is no Permutation!");
    }
    this.m_MutationOperator.init(this, opt);
@@ -180,8 +174,7 @@ public class OBGAIndividualPermutationData extends AbstractEAIndividual implemen
     this.SetPermutationGenotype(permmatrix);
   }
 
-/*generates a random permutation */
-  public void defaultInit(){
+  public void defaultInit(InterfaceOptimizationProblem prob){
     //System.out.println("Default Init!");
     int[][] perm = new int[this.m_Genotype.length][];
     for (int p = 0; p < perm.length; p++) {

@@ -208,14 +208,6 @@ public class GAIndividualDoubleData extends AbstractEAIndividual implements Inte
 /************************************************************************************
  * AbstractEAIndividual methods
  */
-    /** This method will allow a default initialisation of the individual
-     * @param opt   The optimization problem that is to be solved.
-     */
-    public void init(InterfaceOptimizationProblem opt) {
-        this.defaultInit();
-        this.m_MutationOperator.init(this, opt);
-        this.m_CrossoverOperator.init(this, opt);
-    }
 
     /** This method will init the individual with a given value for the
      * phenotype.
@@ -228,7 +220,7 @@ public class GAIndividualDoubleData extends AbstractEAIndividual implements Inte
             if (bs.length != this.m_Range.length) System.out.println("Init value and requested length doesn't match!");
             this.SetDoubleGenotype(bs);
         } else {
-            this.defaultInit();
+            this.defaultInit(opt);
             System.out.println("Initial value for GAIndividualDoubleData is not double[]!");
         }
         this.m_MutationOperator.init(this, opt);
@@ -290,9 +282,7 @@ public class GAIndividualDoubleData extends AbstractEAIndividual implements Inte
         return this.m_GenotypeLength;
     }
 
-    /** This method inits the genotpye of the individual
-     */
-    public void defaultInit() {
+    public void defaultInit(InterfaceOptimizationProblem prob) {
         for (int i = 0; i < this.m_GenotypeLength; i++) {
             if (RNG.flipCoin(0.5)) this.m_Genotype.set(i);
             else this.m_Genotype.clear(i);

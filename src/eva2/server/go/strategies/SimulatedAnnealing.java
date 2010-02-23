@@ -138,7 +138,7 @@ public class SimulatedAnnealing implements InterfaceOptimizer, java.io.Serializa
     public void defaultInit() {
         this.m_FitnessCallsNeeded = 0;
         this.m_Best = new GAIndividualBinaryData();
-        this.m_Best.defaultInit();
+        this.m_Best.defaultInit(m_Problem);
     }
 
     /** This method will optimize

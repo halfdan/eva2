@@ -1,9 +1,9 @@
 package eva2.server.go.individuals;
 
-import eva2.server.go.IndividualInterface;
 import eva2.server.go.operators.crossover.CrossoverESDefault;
 import eva2.server.go.operators.mutation.InterfaceMutation;
 import eva2.server.go.operators.mutation.MutateESGlobal;
+import eva2.server.go.problems.InterfaceHasInitRange;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
 
@@ -214,14 +214,6 @@ public class ESIndividualPermutationData extends AbstractEAIndividual implements
 	/************************************************************************************
 	 * AbstractEAIndividual methods
 	 */
-	/** This method will allow a default initialisation of the individual
-	 * @param opt   The optimization problem that is to be solved.
-	 */
-	public void init(InterfaceOptimizationProblem opt) {
-		this.defaultInit();
-		this.m_MutationOperator.init(this, opt);
-		this.m_CrossoverOperator.init(this, opt);
-	}
 
 	/** This method will init the individual with a given value for the
 	 * phenotype.
@@ -234,7 +226,7 @@ public class ESIndividualPermutationData extends AbstractEAIndividual implements
 			if (bs.length != this.m_Genotype.length) System.out.println("Init value and requested length doesn't match!");
 			this.SetPermutationGenotype(bs);
 		} else {
-			this.defaultInit();
+			this.defaultInit(opt);
 			System.out.println("Initial value for ESIndividualPermutationData is not int[]!");
 		}
 		this.m_MutationOperator.init(this, opt);
@@ -325,12 +317,12 @@ public class ESIndividualPermutationData extends AbstractEAIndividual implements
 		 }
 	 }
 
-	 /** 
-	  * This method initializes the double vector
-	  */
-	 public void defaultInit() {
+	 public void defaultInit(InterfaceOptimizationProblem prob) {
+		 double[][][] range = m_Range;
+		 if (prob instanceof InterfaceHasInitRange && (((InterfaceHasInitRange)prob).getInitRange()!=null)) range = (double[][][])((InterfaceHasInitRange)prob).getInitRange();
+	    	
 		 for (int i = 0; i < this.m_Genotype.length; i++) {
-			 ESIndividualDoubleData.defaultInit(m_Genotype[i], m_Range[i]);
+			 ESIndividualDoubleData.defaultInit(m_Genotype[i], range[i]);
 		 }
 	 }
 

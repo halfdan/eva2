@@ -130,9 +130,9 @@ public class CrossoverESSBX implements InterfaceCrossover, java.io.Serializable 
         indy3 = (ESIndividualDoubleData)indy1.clone();
         if (false) {
             // random init
-            indy1.defaultInit();
-            indy2.defaultInit();
-            indy3.defaultInit();
+            indy1.defaultInit(prob);
+            indy2.defaultInit(prob);
+            indy3.defaultInit(prob);
         } else {
             // value init
             tmpD[0] = 0.5;

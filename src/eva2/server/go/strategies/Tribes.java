@@ -207,7 +207,7 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
 		m_problem = (AbstractOptimizationProblem)problem;
 		range = null;
 		if (problem instanceof InterfaceHasInitRange) {
-			initRange = ((InterfaceHasInitRange)problem).getInitRange();
+			initRange = (double[][])((InterfaceHasInitRange)problem).getInitRange();
 		}
 		Population pop = new Population(1);
 		problem.initPopulation(pop);

@@ -102,7 +102,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 	transient final static String				partTypeKey = "ParticleType";
 	public transient final static String		partBestPosKey = "BestPosition";
 	transient final static String				partBestFitKey = "BestFitness";
-	transient final static String				partVelKey = "Velocity";
+	public transient final static String				partVelKey = "Velocity";
 	transient final static String 				multiSwTypeKey="MultiSwarmType";
 	transient final static String 				multiSwSizeKey="MultiSwarmSize";
 	transient final static String				indexKey="particleIndex";
@@ -569,7 +569,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 	public static void resetIndividual(AbstractEAIndividual indy, double initialV) {
 		if (indy instanceof InterfaceDataTypeDouble) {
 			indy.setParents(null);
-			indy.defaultInit();
+			indy.defaultInit(null);
 			indy.putData(partTypeKey, defaultType); // turn into default type
 			initIndividualDefaults(indy, initialV);
 			initIndividualMemory(indy);

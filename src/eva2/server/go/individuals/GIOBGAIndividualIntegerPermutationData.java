@@ -75,9 +75,9 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
         ((AbstractEAIndividual)this.m_Permutation).init(opt);
     }
     
-    public void defaultInit() {
-        ((AbstractEAIndividual)this.m_Integer).defaultInit();
-        ((AbstractEAIndividual)this.m_Permutation).defaultInit();
+    public void defaultInit(InterfaceOptimizationProblem prob) {
+        ((AbstractEAIndividual)this.m_Integer).defaultInit(prob);
+        ((AbstractEAIndividual)this.m_Permutation).defaultInit(prob);
     }
 
     /** This method will init the individual with a given value for the

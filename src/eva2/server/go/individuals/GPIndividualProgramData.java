@@ -193,15 +193,6 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
 /************************************************************************************
  * InterfaceEAIndividual methods
  */
-    /** This method will allow a default initialisation of the individual
-     * @param opt   The optimization problem that is to be solved.
-     */
-    public void init(InterfaceOptimizationProblem opt) {
-        this.defaultInit();
-        this.m_MutationOperator.init(this, opt);
-        this.m_CrossoverOperator.init(this, opt);
-    }
-
     /** This method will init the individual with a given value for the
      * phenotype.
      * @param obj   The initial value for the phenotype
@@ -211,7 +202,7 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
         if (obj instanceof InterfaceProgram[]) {
             this.SetProgramGenotype((InterfaceProgram[])obj);
         } else {
-            this.defaultInit();
+            this.defaultInit(opt);
             System.out.println("Initial value for GPIndividualDoubleData is no InterfaceProgram[]!");
         }
         this.m_MutationOperator.init(this, opt);
@@ -271,7 +262,7 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
             this.m_Genotype[i].addNodesTo(allNodes);
             AbstractGPNode nodeToMutate = (AbstractGPNode) allNodes.get(RNG.randomInt(0, allNodes.size()-1));
             if (nodeToMutate.getParent() == null) {
-                this.defaultInit();
+                this.defaultInit(null);
             } else {
                 AbstractGPNode parent = nodeToMutate.getParent();
                 AbstractGPNode newNode = (AbstractGPNode)(((AbstractGPNode)this.m_Area[i].getRandomNode().clone()));
@@ -282,9 +273,7 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
         }
     }
 
-    /** This method initializes the program
-     */
-    public void defaultInit() {
+    public void defaultInit(InterfaceOptimizationProblem prob) {
         for (int i = 0; i < this.m_Area.length; i++) {
             if (this.m_Area[i] == null) {
             	EVAERROR.errorMsgOnce("Error in GPIndividualProgramData.defaultInit(): Area["+i+"] == null !!");

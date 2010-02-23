@@ -205,10 +205,10 @@ public class CrossoverESUNDX implements InterfaceCrossover, java.io.Serializable
         indy4 = (ESIndividualDoubleData)indy1.clone();
         if (false) {
             // random init
-            indy1.defaultInit();
-            indy2.defaultInit();
-            indy3.defaultInit();
-            indy4.defaultInit();
+            indy1.defaultInit(prob);
+            indy2.defaultInit(prob);
+            indy3.defaultInit(prob);
+            indy4.defaultInit(prob);
         } else {
             // value init
             tmpD[0] =  -1.9;

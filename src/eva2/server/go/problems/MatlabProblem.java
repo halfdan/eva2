@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.io.Serializable;
+import java.util.Arrays;
 
 import eva2.OptimizerFactory;
 import eva2.OptimizerRunnable;
@@ -28,7 +29,7 @@ import eva2.server.stat.InterfaceTextListener;
  * @author mkron
  *
  */
-public class MatlabProblem extends AbstractOptimizationProblem implements InterfaceTextListener, Serializable {
+public class MatlabProblem extends AbstractOptimizationProblem implements InterfaceHasInitRange, InterfaceTextListener, Serializable {
 	private static final long serialVersionUID = 4913310869887420815L;
 	public static boolean 				TRACE = false; 
 	transient OptimizerRunnable			runnable = null;
@@ -42,6 +43,7 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 	int 								verbosityLevel	= 0;
 	private MatlabEvalMediator 			handler = null;
 	private boolean isDouble = true;
+	private double[][] initialRange = null; // the initial range for double-valued problems
 
 	public static boolean hideFromGOE = true; 
 
@@ -59,6 +61,7 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 //		if (o.res != null) if (o.res.get() != null) res.set(o.res.get());
 		this.range = o.range;
 		this.isDouble = o.isDouble;
+		this.initialRange = o.initialRange;
 //		this.mtCmd = o.mtCmd;
 //		currArray = null;
 	}
@@ -72,7 +75,11 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 	}
 
 	public MatlabProblem(int dim, double[][] range) {
-		init(dim, range, defTestOut);
+		init(dim, range, null, defTestOut);
+	}
+	
+	public MatlabProblem(int dim, double[][] range, double[][] initRange) {
+		init(dim, range, initRange, defTestOut);
 	}
 
 	public MatlabProblem(int dim, double lower, double upper) {
@@ -112,13 +119,36 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 	}
 
 	public void initProblem() {
-		init(this.problemDimension, range, defTestOut);
+		init(this.problemDimension, range, initialRange, defTestOut);
 	}
 
-	private void init(int dim, double[][] rng, String outFile) {
-		problemDimension = dim;
+	/**
+	 * Make deep clones for the ranges, or there may be deadlocks in communicating with Matlab!
+	 *  
+	 * @param dim
+	 * @param globalRange
+	 * @param initRange
+	 * @param outFile
+	 */
+	private void init(int dim, double[][] globalRange, double[][] initRange, String outFile) {
+		this.problemDimension = dim;
 //		if ((rng != null) && (dim != rng.length)) throw new ArrayIndexOutOfBoundsException("Mismatching dimension and range!");
-		range = rng;
+		if (globalRange!=null) { // these may be Matlab objects, so I do it by foot, just to be sure not to clone them within Matlab instead of here 
+			this.range = new double[globalRange.length][globalRange[0].length];
+			for (int i=0; i<this.range.length; i++) {
+				for (int j=0; j<this.range[0].length; j++) this.range[i][j]=globalRange[i][j]; 
+			}
+		} else this.range=null;
+		
+		if (initialRange!=null) { // these may be Matlab objects, so I do it by foot, just to be sure not to clone them within Matlab instead of here
+			this.initialRange = new double[initRange.length][initRange[0].length];
+			for (int i=0; i<this.initialRange.length; i++) {
+				for (int j=0; j<this.initialRange[0].length; j++) this.initialRange[i][j]=initRange[i][j]; 
+			}
+		} else this.initialRange=null;
+		
+		if (Arrays.deepEquals(initialRange, range)) initialRange=null;
+		
 		if (range==null) isDouble = false;
 		else isDouble = true;
 
@@ -128,6 +158,7 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 //		res = new ResultArr();
 		
 		setDebugOut(TRACE, defTestOut);
+		log("Initial range is " + BeanInspector.toString(initialRange) + "\n");
 
 //		log("range is " + BeanInspector.toString(range)+ "\n");
 //		log("template len: " + ((ESIndividualDoubleData)m_Template).getDGenotype().length + "\n");
@@ -447,5 +478,10 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
         sb.append(this.getName());
         //sb.append("\n");
         return sb.toString();
+	}
+
+	public Object getInitRange() {
+		log("retrieving initial range..., first entry: " + ((initialRange==null) ? "null" : BeanInspector.toString(initialRange[0])));
+		return initialRange;
 	}
 }

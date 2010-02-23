@@ -956,7 +956,7 @@ v[d] = cmin * v[d];
         }
 	}
 
-	public void defaultInit() {
+	public void defaultInit(InterfaceOptimizationProblem prob) {
 		// shouldnt be called as we are beyond the EvA framework in this class
         for (int i = 0; i < this.position.x.length; i++) {
             this.position.x[0] = 0.;

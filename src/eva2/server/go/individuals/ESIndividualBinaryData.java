@@ -5,6 +5,7 @@ import java.util.BitSet;
 import eva2.server.go.operators.crossover.CrossoverESDefault;
 import eva2.server.go.operators.mutation.InterfaceMutation;
 import eva2.server.go.operators.mutation.MutateESGlobal;
+import eva2.server.go.problems.InterfaceHasInitRange;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
 
@@ -170,15 +171,6 @@ public class ESIndividualBinaryData extends AbstractEAIndividual implements Inte
 /************************************************************************************
  * AbstractEAIndividual methods
  */
-    /** This method will allow a default initialisation of the individual
-     * @param opt   The optimization problem that is to be solved.
-     */
-    public void init(InterfaceOptimizationProblem opt) {
-        this.defaultInit();
-        this.m_MutationOperator.init(this, opt);
-        this.m_CrossoverOperator.init(this, opt);
-    }
-
     /** This method will init the individual with a given value for the
      * phenotype.
      * @param obj   The initial value for the phenotype
@@ -189,7 +181,7 @@ public class ESIndividualBinaryData extends AbstractEAIndividual implements Inte
             BitSet  bs = (BitSet) obj;
             this.SetBinaryGenotype(bs);
         } else {
-            this.defaultInit();
+            this.defaultInit(opt);
             System.out.println("Initial value for ESIndividualBinaryData is no BitSet!");
         }
         this.m_MutationOperator.init(this, opt);
@@ -260,10 +252,9 @@ public class ESIndividualBinaryData extends AbstractEAIndividual implements Inte
     	ESIndividualDoubleData.defaultMutate(m_Genotype, m_Range);
     }
 
-    /** This method initializes the double vector
-     */
-    public void defaultInit() {
-    	ESIndividualDoubleData.defaultInit(m_Genotype, m_Range);
+    public void defaultInit(InterfaceOptimizationProblem prob) {
+    	if (prob instanceof InterfaceHasInitRange && (((InterfaceHasInitRange)prob).getInitRange()!=null)) ESIndividualDoubleData.defaultInit(m_Genotype, (double[][])((InterfaceHasInitRange)prob).getInitRange());
+    	else ESIndividualDoubleData.defaultInit(m_Genotype, m_Range);
     }
 /**********************************************************************************************************************
  * These are for GUI

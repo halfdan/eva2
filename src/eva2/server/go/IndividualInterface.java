@@ -1,4 +1,7 @@
 package eva2.server.go;
+
+import eva2.server.go.problems.InterfaceOptimizationProblem;
+
 /*
  * Title:        EvA2
  * Description:
@@ -62,7 +65,9 @@ public interface IndividualInterface {
 	public void defaultMutate();
 
 	/** 
-	 * Initialize the genotype randomly, usually in a uniform distribution.
+	 * Initialize the genotype randomly, usually in a uniform distribution. Make sure,
+	 * if the problem has an initial range (it implements InterfaceHasInitialRange), that this
+	 * initial range is used.
 	 */
-	public void defaultInit();
+	public void defaultInit(InterfaceOptimizationProblem prob);
 }

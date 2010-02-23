@@ -501,15 +501,6 @@ public class GEIndividualProgramData extends AbstractEAIndividual implements Int
 /************************************************************************************
  * InterfaceEAIndividual methods
  */
-    /** This method will allow a default initialisation of the individual
-     * @param opt   The optimization problem that is to be solved.
-     */
-    public void init(InterfaceOptimizationProblem opt) {
-        this.defaultInit();
-        this.m_MutationOperator.init(this, opt);
-        this.m_CrossoverOperator.init(this, opt);
-    }
-
     /** This method will init the individual with a given value for the
      * phenotype.
      * @param obj   The initial value for the phenotype
@@ -519,7 +510,7 @@ public class GEIndividualProgramData extends AbstractEAIndividual implements Int
         if (obj instanceof InterfaceProgram) {
             this.SetProgramGenotype((InterfaceProgram[])obj);
         } else {
-            this.defaultInit();
+            this.defaultInit(opt);
             System.out.println("Initial value for GPIndividualDoubleData is no InterfaceProgram[]!");
         }
         this.m_MutationOperator.init(this, opt);
@@ -574,9 +565,7 @@ public class GEIndividualProgramData extends AbstractEAIndividual implements Int
             return this.m_GenotypeLengthPerProgram*this.m_Area.length;
         }
 
-        /** This method inits the genotpye of the individual
-         */
-        public void defaultInit() {
+        public void defaultInit(InterfaceOptimizationProblem prob) {
             for (int i = 0; i < this.m_GenotypeLengthPerProgram*this.m_Area.length; i++) {
                 if (RNG.flipCoin(0.5)) this.m_Genotype.set(i);
                 else this.m_Genotype.clear(i);
