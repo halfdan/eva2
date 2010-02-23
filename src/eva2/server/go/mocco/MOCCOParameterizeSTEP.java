@@ -1,7 +1,19 @@
 package eva2.server.go.mocco;
 
 
-import javax.swing.*;
+import java.awt.BorderLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import eva2.gui.GenericObjectEditor;
 import eva2.gui.PropertyDoubleArray;
@@ -15,12 +27,8 @@ import eva2.server.go.problems.InterfaceMultiObjectiveDeNovoProblem;
 import eva2.server.go.problems.InterfaceOptimizationObjective;
 import eva2.server.go.strategies.GeneticAlgorithm;
 import eva2.server.go.strategies.InterfaceOptimizer;
+import eva2.server.go.tools.AbstractObjectEditor;
 import eva2.server.go.tools.GeneralGOEProperty;
-
-import java.awt.*;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.util.ArrayList;
 
 /**
  * Created by IntelliJ IDEA.
@@ -169,7 +177,7 @@ public class MOCCOParameterizeSTEP extends MOCCOPhase implements InterfaceProces
             if (this.m_EOpt.m_Editor instanceof GenericObjectEditor)
                 ((GenericObjectEditor) this.m_EOpt.m_Editor).setClassType(InterfaceOptimizer.class);
             this.m_EOpt.m_Editor.setValue(this.m_EOpt.m_Value);
-            this.findViewFor(this.m_EOpt);
+            AbstractObjectEditor.findViewFor(this.m_EOpt);
             if (this.m_EOpt.m_View != null) this.m_EOpt.m_View.repaint();
         } catch (Exception e) {
             System.out.println("Darn can't read the value...");
@@ -192,7 +200,7 @@ public class MOCCOParameterizeSTEP extends MOCCOPhase implements InterfaceProces
             if (editor.m_Editor instanceof GenericObjectEditor)
                 ((GenericObjectEditor) editor.m_Editor).setClassType(InterfaceTerminator.class);
             editor.m_Editor.setValue(editor.m_Value);
-            this.findViewFor(editor);
+            AbstractObjectEditor.findViewFor(editor);
             if (editor.m_View != null) editor.m_View.repaint();
         } catch (Exception e) {
             System.out.println("Darn can't read the value...");

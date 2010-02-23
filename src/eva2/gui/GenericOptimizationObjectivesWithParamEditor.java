@@ -1,18 +1,41 @@
 package eva2.gui;
 
 
-import javax.swing.*;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Rectangle;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import java.beans.PropertyEditor;
+
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 import eva2.server.go.problems.InterfaceOptimizationObjective;
+import eva2.server.go.tools.AbstractObjectEditor;
 import eva2.server.go.tools.GeneralGOEProperty;
 import eva2.tools.BasicResourceLoader;
-
-import java.beans.*;
-import java.awt.*;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.KeyEvent;
 
 
 /**
@@ -67,7 +90,7 @@ public class GenericOptimizationObjectivesWithParamEditor extends JPanel impleme
                     ((GenericObjectEditor) this.m_Editors[i].m_Editor).setClassType(InterfaceOptimizationObjective.class);
                 this.m_Editors[i].m_Editor.setValue(this.m_Editors[i].m_Value);
                 this.m_Editors[i].m_Editor.addPropertyChangeListener(this);
-                this.findViewFor(this.m_Editors[i]);
+                AbstractObjectEditor.findViewFor(this.m_Editors[i]);
                 if (this.m_Editors[i].m_View != null) this.m_Editors[i].m_View.repaint();
             } catch (Exception e) {
                 System.out.println("Darn can't read the value...");
@@ -227,7 +250,7 @@ public class GenericOptimizationObjectivesWithParamEditor extends JPanel impleme
                     ((GenericObjectEditor) newEdit[l].m_Editor).setClassType(InterfaceOptimizationObjective.class);
                 newEdit[l].m_Editor.setValue(newEdit[l].m_Value);
                 newEdit[l].m_Editor.addPropertyChangeListener(m_self);
-                findViewFor(newEdit[l]);
+                AbstractObjectEditor.findViewFor(newEdit[l]);
                 if (newEdit[l].m_View != null) newEdit[l].m_View.repaint();
             } catch (Exception e) {
                 System.out.println("Darn can't read the value...");
@@ -409,31 +432,6 @@ public class GenericOptimizationObjectivesWithParamEditor extends JPanel impleme
         this.updateEditor();
     }
 
-    public void findViewFor(GeneralGOEProperty editor) {
-        if (editor.m_Editor instanceof sun.beans.editors.BoolEditor) {
-            editor.m_View = new PropertyBoolSelector(editor.m_Editor);
-        } else {
-            if (editor.m_Editor instanceof sun.beans.editors.DoubleEditor) {
-                editor.m_View = new PropertyText(editor.m_Editor);
-            } else {
-                if (editor.m_Editor.isPaintable() && editor.m_Editor.supportsCustomEditor()) {
-                    editor.m_View = new PropertyPanel(editor.m_Editor);
-                } else {
-                    if (editor.m_Editor.getTags() != null ) {
-                        editor.m_View = new PropertyValueSelector(editor.m_Editor);
-                    } else {
-                        if (editor.m_Editor.getAsText() != null) {
-                            editor.m_View = new PropertyText(editor.m_Editor);
-                        } else {
-                            System.out.println("Warning: Property \"" + editor.m_Name
-                                 + "\" has non-displayabale editor.  Skipping.");
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     /********************************* java.beans.PropertyChangeListener *************************/
 
     public void addPropertyChangeListener(PropertyChangeListener l) {
@@ -463,7 +461,7 @@ public class GenericOptimizationObjectivesWithParamEditor extends JPanel impleme
                         ((GenericObjectEditor) this.m_Editors[i].m_Editor).setClassType(InterfaceOptimizationObjective.class);
                     this.m_Editors[i].m_Editor.setValue(this.m_Editors[i].m_Value);
                     this.m_Editors[i].m_Editor.addPropertyChangeListener(this);
-                    this.findViewFor(this.m_Editors[i]);
+                    AbstractObjectEditor.findViewFor(this.m_Editors[i]);
                     if (this.m_Editors[i].m_View != null) this.m_Editors[i].m_View.repaint();
                 } catch (Exception e) {
                     System.out.println("Darn can't read the value...");

@@ -4,17 +4,7 @@ import java.awt.Color;
 import java.beans.PropertyDescriptor;
 import java.beans.PropertyEditor;
 import java.beans.PropertyEditorManager;
-import java.util.List;
 
-import sun.beans.editors.BoolEditor;
-import sun.beans.editors.ByteEditor;
-import sun.beans.editors.ColorEditor;
-import sun.beans.editors.DoubleEditor;
-import sun.beans.editors.FloatEditor;
-import sun.beans.editors.IntEditor;
-import sun.beans.editors.LongEditor;
-import sun.beans.editors.ShortEditor;
-import sun.beans.editors.StringEditor;
 import eva2.server.go.InterfaceTerminator;
 import eva2.server.go.individuals.codings.gp.GPArea;
 import eva2.tools.SelectedTag;
@@ -151,15 +141,15 @@ public class PropertyEditorProvider {
         PropertyEditorManager.registerEditor(double[].class, GenericArrayEditor.class);
         PropertyEditorManager.registerEditor(InterfaceTerminator[].class, GenericArrayEditor.class);
         
-        PropertyEditorManager.registerEditor(Double.class, DoubleEditor.class);
-        PropertyEditorManager.registerEditor(Integer.class, IntEditor.class);
-        PropertyEditorManager.registerEditor(Boolean.class, BoolEditor.class);
-        PropertyEditorManager.registerEditor(byte.class, ByteEditor.class);
-        PropertyEditorManager.registerEditor(Color.class, ColorEditor.class);
-        PropertyEditorManager.registerEditor(short.class, ShortEditor.class);
-        PropertyEditorManager.registerEditor(float.class, FloatEditor.class);
-        PropertyEditorManager.registerEditor(long.class, LongEditor.class);
-        PropertyEditorManager.registerEditor(String.class, StringEditor.class);
+//        PropertyEditorManager.registerEditor(Double.class, DoubleEditor.class);
+//        PropertyEditorManager.registerEditor(Integer.class, IntEditor.class);
+//        PropertyEditorManager.registerEditor(Boolean.class, BoolEditor.class);
+//        PropertyEditorManager.registerEditor(byte.class, ByteEditor.class);
+//        PropertyEditorManager.registerEditor(Color.class, ColorEditor.class);
+//        PropertyEditorManager.registerEditor(short.class, ShortEditor.class);
+//        PropertyEditorManager.registerEditor(float.class, FloatEditor.class);
+//        PropertyEditorManager.registerEditor(long.class, LongEditor.class);
+//        PropertyEditorManager.registerEditor(String.class, StringEditor.class);
         
         // The Editor for the new GO
         

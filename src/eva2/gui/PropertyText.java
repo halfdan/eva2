@@ -1,68 +1,64 @@
 package eva2.gui;
-/*
- * Title:        EvA2
- * Description:
- * Copyright:    Copyright (c) 2003
- * Company:      University of Tuebingen, Computer Architecture
- * @author Holger Ulmer, Felix Streichert, Hannes Planatscher
- * @version:  $Revision: 57 $
- *            $Date: 2007-05-04 14:22:16 +0200 (Fri, 04 May 2007) $
- *            $Author: mkron $
- */
-/*==========================================================================*
- * IMPORTS
- *==========================================================================*/
-import java.awt.*;
-import java.awt.event.*;
-import java.beans.*;
-import javax.swing.*;
-/*==========================================================================*
-* CLASS DECLARATION
-*==========================================================================*/
+
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.beans.PropertyEditor;
+
+import javax.swing.JTextField;
+
 /**
- *
+ * A text property editor view. Updates the editor on key release and lost focus events.
+ * 
  */
 public class PropertyText extends JTextField {
-  private PropertyEditor m_Editor;
-  /**
-   *
-   */
-  public PropertyText(PropertyEditor pe) {
-    super(pe.getAsText());
-    m_Editor = pe;
-//    m_Editor.addPropertyChangeListener(new PropertyChangeListener() {
-//      public void propertyChange(PropertyChangeEvent evt) {
-//	updateUs();
-//      }
-//    });
-    addKeyListener(new KeyAdapter() {
-      public void keyReleased(KeyEvent e) {
-        //if (e.getKeyCode() == KeyEvent.VK_ENTER)
-	  updateEditor();
-      }
-    });
-    addFocusListener(new FocusAdapter() {
-      public void focusLost(FocusEvent e) {
-	updateEditor();
-      }
-    });
-  }
-  /**
-   *
-   */
-  public void updateUs() {
-    try {
-      String x = m_Editor.getAsText();
-      setText(x);
-    } catch (IllegalArgumentException ex) {}
-  }
-  /**
-   *
-   */
-  protected void updateEditor() {
-    try {
-      String x = getText();
-      if (!m_Editor.getAsText().equals(x)) m_Editor.setAsText(x);
-    } catch (IllegalArgumentException ex) {}
-  }
+	private PropertyEditor m_Editor;
+	/**
+	 *
+	 */
+	public PropertyText(PropertyEditor pe) {
+		super(pe.getAsText());
+		m_Editor = pe;
+		//    m_Editor.addPropertyChangeListener(new PropertyChangeListener() {
+		//      public void propertyChange(PropertyChangeEvent evt) {
+		//	updateUs();
+		//      }
+		//    });
+		addKeyListener(new KeyAdapter() {
+			public void keyReleased(KeyEvent e) {
+				//if (e.getKeyCode() == KeyEvent.VK_ENTER)
+				updateEditor();
+			}
+		});
+		addFocusListener(new FocusAdapter() {
+			public void focusLost(FocusEvent e) {
+				updateEditor();
+			}
+		});
+	}
+
+	/**
+	 *
+	 */
+	protected void updateEditor() {
+		try {
+			String x = getText();
+			if (!m_Editor.getAsText().equals(x)) {
+				m_Editor.setAsText(x);
+//				setText(m_Editor.getAsText());
+			}
+		} catch (IllegalArgumentException ex) {
+//			System.err.println("Warning: Couldnt set value (PropertyText)");
+		}
+	}
+	
+	public boolean checkConsistency() {
+		String x = getText();
+		return x.equals(m_Editor.getAsText());
+	}
+	
+	public void updateFromEditor() {
+		setText(m_Editor.getAsText());
+	}
 }

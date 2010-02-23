@@ -76,34 +76,6 @@ public abstract class MOCCOPhase implements InterfaceProcessElement {
 //        return classes;
 //    }
 
-    /** Find a proper property editor for a given GeneralGOEProperty
-      * @param editor   The object to search the visualization for.
-     */
-    public void findViewFor(GeneralGOEProperty editor) {
-        if (editor.m_Editor instanceof sun.beans.editors.BoolEditor) {
-            editor.m_View = new PropertyBoolSelector(editor.m_Editor);
-        } else {
-            if (editor.m_Editor instanceof sun.beans.editors.DoubleEditor) {
-                editor.m_View = new PropertyText(editor.m_Editor);
-            } else {
-                if (editor.m_Editor.isPaintable() && editor.m_Editor.supportsCustomEditor()) {
-                    editor.m_View = new PropertyPanel(editor.m_Editor);
-                } else {
-                    if (editor.m_Editor.getTags() != null ) {
-                        editor.m_View = new PropertyValueSelector(editor.m_Editor);
-                    } else {
-                        if (editor.m_Editor.getAsText() != null) {
-                            editor.m_View = new PropertyText(editor.m_Editor);
-                        } else {
-                            System.out.println("Warning: Property \"" + editor.m_Name
-                                 + "\" has non-displayabale editor.  Skipping.");
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     /** This method makes a helptext element similar to that used in EvA
      * @param help  The text to display
      * @return the helptext component
