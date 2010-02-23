@@ -1054,7 +1054,7 @@ public class PostProcess {
 			for (int i=0; i<curPopSize; i++) {
 				// fill pop randomly
 				indy = prob.getIndividualTemplate().getClone();
-				indy.defaultInit();
+				indy.defaultInit(prob);
 				pop.add(indy);
 			}
 			pop.synchSize();

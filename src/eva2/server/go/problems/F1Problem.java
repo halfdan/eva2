@@ -1,6 +1,7 @@
 package eva2.server.go.problems;
 
 import eva2.server.go.strategies.InterfaceOptimizer;
+import eva2.tools.math.Mathematics;
 
 /**
  * Created by IntelliJ IDEA.
@@ -9,7 +10,9 @@ import eva2.server.go.strategies.InterfaceOptimizer;
  * Time: 17:58:55
  * To change this template use Options | File Templates.
  */
-public class F1Problem extends AbstractProblemDoubleOffset implements Interface2DBorderProblem, java.io.Serializable, InterfaceFirstOrderDerivableProblem {
+public class F1Problem extends AbstractProblemDoubleOffset implements Interface2DBorderProblem, InterfaceHasInitRange, java.io.Serializable, InterfaceFirstOrderDerivableProblem {
+	private double initialRangeRatio=1.; // reduce to initialize in a smaller subrange of the original range (in the corner box)
+	
     public F1Problem() {
     	super();
     	setDefaultRange(10);
@@ -92,5 +95,24 @@ public class F1Problem extends AbstractProblemDoubleOffset implements Interface2
 			grads[i]=(2.*(x[i] - this.m_XOffSet));
 		}
 		return grads;
+	}
+
+	/**
+	 * If initialRangeRatio<1, produce a reduced initial range in the negative corner of the range.
+	 */
+	public Object getInitRange() {
+		if (initialRangeRatio<1.) {
+			double[][] gR=makeRange();
+			double[][] initR = makeRange();
+			//		double[] rng = Mathematics.shiftRange(initR);
+			Mathematics.scaleRange(initialRangeRatio, initR);
+			for (int i=0; i<getProblemDimension(); i++) {
+				double d=gR[i][0]-initR[i][0];
+				initR[i][0]+=d; // shift back by original offsets
+				initR[i][1]+=d;
+			}
+//			System.out.println(BeanInspector.toString(initR));
+			return initR;
+		} else return makeRange();
 	}
 }

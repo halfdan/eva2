@@ -240,21 +240,21 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
         firePropertyChangedEvent(Population.populationInitialized);
     }
 
-    /** This method inits the population. Function and generation counters
-     * are reset and m_Size default Individuals are created and initialized by
-     * the GAIndividual default init() method.
-      */
-    public void defaultInit(AbstractEAIndividual template) {
-        this.m_Generation       = 0;
-        this.m_FunctionCalls    = 0;
-        this.m_Archive          = null;
-        this.clear();
-        for (int i = 0; i < this.m_TargetSize; i++) {
-            AbstractEAIndividual tmpIndy = (AbstractEAIndividual)template.clone();
-            tmpIndy.defaultInit();
-            super.add(tmpIndy);
-        }
-    }
+//    /** This method inits the population. Function and generation counters
+//     * are reset and m_Size default Individuals are created and initialized by
+//     * the GAIndividual default init() method.
+//      */
+//    public void defaultInit(AbstractEAIndividual template) { Were missing the optimization problem - thus no initial range can be specified. And since no one calls this method, I removed it for now
+//        this.m_Generation       = 0;
+//        this.m_FunctionCalls    = 0;
+//        this.m_Archive          = null;
+//        this.clear();
+//        for (int i = 0; i < this.m_TargetSize; i++) {
+//            AbstractEAIndividual tmpIndy = (AbstractEAIndividual)template.clone();
+//            tmpIndy.defaultInit(null);
+//            super.add(tmpIndy);
+//        }
+//    }
 
     /**
      * Create a population instance which distributes the individuals according to 

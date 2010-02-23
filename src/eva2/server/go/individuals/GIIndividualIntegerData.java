@@ -3,6 +3,7 @@ package eva2.server.go.individuals;
 import eva2.server.go.operators.crossover.CrossoverGIDefault;
 import eva2.server.go.operators.mutation.InterfaceMutation;
 import eva2.server.go.operators.mutation.MutateDefault;
+import eva2.server.go.problems.InterfaceHasInitRange;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
 
@@ -189,15 +190,6 @@ public class GIIndividualIntegerData extends AbstractEAIndividual implements Int
 /************************************************************************************
  * AbstractEAIndividual methods
  */
-    /** This method will allow a default initialisation of the individual
-     * @param opt   The optimization problem that is to be solved.
-     */
-    public void init(InterfaceOptimizationProblem opt) {
-        this.defaultInit();
-        this.m_MutationOperator.init(this, opt);
-        this.m_CrossoverOperator.init(this, opt);
-    }
-
     /** This method will init the individual with a given value for the
      * phenotype.
      * @param obj   The initial value for the phenotype
@@ -209,7 +201,7 @@ public class GIIndividualIntegerData extends AbstractEAIndividual implements Int
             if (bs.length != this.m_Range.length) System.out.println("Init value and requested length doesn't match!");
             this.SetIntGenotype(bs);
         } else {
-            this.defaultInit();
+            this.defaultInit(opt);
             System.out.println("Initial value for GAIndividualDoubleData is not double[]!");
         }
         this.m_MutationOperator.init(this, opt);
@@ -279,11 +271,12 @@ public class GIIndividualIntegerData extends AbstractEAIndividual implements Int
         this.m_Genotype[mutationIndex] = RNG.randomInt(this.m_Range[mutationIndex][0], this.m_Range[mutationIndex][1]);
     }
 
-    /** This method initializes the GA genotype randomly
-     */
-    public void defaultInit() {
+    public void defaultInit(InterfaceOptimizationProblem prob) {
+    	int[][] range = m_Range;
+        if (prob instanceof InterfaceHasInitRange && (((InterfaceHasInitRange)prob).getInitRange()!=null)) range = (int[][])((InterfaceHasInitRange)prob).getInitRange();
+    	
         for (int i = 0; i < this.m_Genotype.length; i++) {
-            this.m_Genotype[i] = RNG.randomInt(this.m_Range[i][0], this.m_Range[i][1]);
+            this.m_Genotype[i] = RNG.randomInt(range[i][0], range[i][1]);
         }
     }
 

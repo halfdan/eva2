@@ -1,8 +1,9 @@
 function int = JEInterface(fhandle, range, varargin)
 % EvA2 Interface for Matlab
 %       JEInterface(fhandle, range)
-%       JEInterface(fhandle, range, defaultargs)
-%       JEInterface(fhandle, range, defaultargs, options...)
+%       JEInterface(fhandle, range, initRange)
+%       JEInterface(fhandle, range, initRange, defaultargs)
+%       JEInterface(fhandle, range, initRange, defaultargs, options...)
 %
 % Arguments: 
 %   fhandle: a function handle defining the optimization target.
@@ -43,6 +44,7 @@ int.resultArr = [];
 int.f = '';
 int.dim = 0;
 int.range = [];
+int.initialRange=[];
 int.mp = [];
 int.msg = '';
 int.funCalls = 0;
@@ -78,21 +80,42 @@ int = class(int,'JEInterface');
 int.opts = makeOptions(int);
 
 if (nargin>2)
-    int.args = varargin{1};
-    disp('Fitness function argument: '); disp(int.args);
-    if (nargin > 3)
-        if (rem(nargin,2)==0)
-            error('Invalid number of arguments!');
+    int.initialRange=varargin{1};
+    
+    if (isa(varargin{1}, 'double') && (size(varargin{1},1) == 2))
+        if (int.dim ~= size(varargin{1},2))
+            error('Invalid initial range: wrong dimensions');
         end
-        disp('Reading options:');
-        for i=2:2:nargin-2
-            int=setOpt(int, varargin{i}, varargin{i+1});
+        int.initialRange=transpose(varargin{1});
+        s = ['Double valued initial search space: ' mat2str(int.initialRange)];
+        disp(s);
+    end
+    
+    if (nargin>3)
+        int.args = varargin{2};
+        disp('Fitness function argument: '); disp(int.args);
+        if (nargin > 4)
+            if (rem(nargin,2)==1)
+                error('Invalid number of arguments!');
+            end
+            disp('Reading options:');
+            for i=3:2:nargin-2
+                int=setOpt(int, varargin{i}, varargin{i+1});
+            end
         end
     end
 end  
 display(getOptions(int));
 % finally create the java object
-int.mp = eva2.server.go.problems.MatlabProblem(int.dim, int.range);
+if (isempty(int.initialRange))
+    int.mp = eva2.server.go.problems.MatlabProblem(int.dim, int.range);
+else
+    if (eq(size(int.range), size(int.initialRange)))
+        int.mp = eva2.server.go.problems.MatlabProblem(int.dim, int.range, int.initialRange);
+    else 
+        error('Mismatching dimensions of range and initial range!');
+    end
+end
 disp('Java object created');
 
 testEvalFunc(int);

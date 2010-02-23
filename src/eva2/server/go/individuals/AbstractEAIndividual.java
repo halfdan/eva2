@@ -269,7 +269,11 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
     /** This method will allow a default initialisation of the individual
      * @param opt   The optimization problem that is to be solved.
      */
-    public abstract void init(InterfaceOptimizationProblem opt);
+    public void init(InterfaceOptimizationProblem opt) {
+        this.defaultInit(opt);
+        this.m_MutationOperator.init(this, opt);
+        this.m_CrossoverOperator.init(this, opt);
+    }
 
     /** This method will init the individual with a given value for the
      * phenotype.

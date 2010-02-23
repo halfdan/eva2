@@ -91,15 +91,6 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
 /************************************************************************************
  * AbstractEAIndividual methods
  */
-    /** This method will allow a default initialisation of the individual
-     * @param opt   The optimization problem that is to be solved.
-     */
-    public void init(InterfaceOptimizationProblem opt) {
-        this.defaultInit();
-        this.m_MutationOperator.init(this, opt);
-        this.m_CrossoverOperator.init(this, opt);
-    }
-
     /** This method will init the individual with a given value for the
      * phenotype.
      * @param obj   The initial value for the phenotype
@@ -110,7 +101,7 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
             BitSet  bs = (BitSet) obj;
             this.SetBinaryGenotype(bs);
         } else {
-            this.defaultInit();
+            this.defaultInit(opt);
             System.out.println("Initial value for GAIndividualBinaryData is no BitSet!");
         }
         this.m_MutationOperator.init(this, opt);
@@ -175,9 +166,7 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
         return this.m_GenotypeLength;
     }
 
-    /** This method inits the genotpye of the individual
-     */
-    public void defaultInit() {
+    public void defaultInit(InterfaceOptimizationProblem prob) {
         for (int i = 0; i < this.m_GenotypeLength; i++) {
             if (RNG.flipCoin(0.5)) this.m_Genotype.set(i);
             else this.m_Genotype.clear(i);

@@ -4,6 +4,7 @@ package eva2.server.go.individuals;
 import eva2.server.go.operators.crossover.CrossoverESDefault;
 import eva2.server.go.operators.mutation.InterfaceMutation;
 import eva2.server.go.operators.mutation.MutateESGlobal;
+import eva2.server.go.problems.InterfaceHasInitRange;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.tools.EVAERROR;
 import eva2.tools.math.Mathematics;
@@ -200,9 +201,7 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
      * @param opt   The optimization problem that is to be solved.
      */
     public void init(InterfaceOptimizationProblem opt) {
-        this.defaultInit();
-        this.m_MutationOperator.init(this, opt);
-        this.m_CrossoverOperator.init(this, opt);
+        super.init(opt);
         // evil operators may not respect the range, so at least give some hint
         if (!Mathematics.isInRange(m_Genotype, m_Range)) EVAERROR.errorMsgOnce("Warning: Individual out of range after initialization (and potential initial crossover/mutation)!");
     }
@@ -218,7 +217,7 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
             if (bs.length != this.m_Genotype.length) System.out.println("Init value and requested length doesn't match!");
             this.SetDoubleGenotype(bs);
         } else {
-            this.defaultInit();
+            this.defaultInit(opt);
             System.out.println("Initial value for ESIndividualDoubleData is not double[]!");
         }
         this.m_MutationOperator.init(this, opt);
@@ -300,10 +299,9 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
         if (genotype[mutationIndex] > range[mutationIndex][1]) genotype[mutationIndex] = range[mutationIndex][1];
     }
     
-    /** This method initializes the double vector
-     */
-    public void defaultInit() {
-        ESIndividualDoubleData.defaultInit(m_Genotype, m_Range);
+    public void defaultInit(InterfaceOptimizationProblem prob) {
+    	if (prob instanceof InterfaceHasInitRange && (((InterfaceHasInitRange)prob).getInitRange()!=null)) ESIndividualDoubleData.defaultInit(m_Genotype, (double[][])((InterfaceHasInitRange)prob).getInitRange());
+    	else ESIndividualDoubleData.defaultInit(m_Genotype, m_Range);
     }
     
     /**

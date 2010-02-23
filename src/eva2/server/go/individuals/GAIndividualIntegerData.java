@@ -237,15 +237,6 @@ public class GAIndividualIntegerData extends AbstractEAIndividual implements Int
 /************************************************************************************
  * AbstractEAIndividual methods
  */
-    /** This method will allow a default initialisation of the individual
-     * @param opt   The optimization problem that is to be solved.
-     */
-    public void init(InterfaceOptimizationProblem opt) {
-        this.defaultInit();
-        this.m_MutationOperator.init(this, opt);
-        this.m_CrossoverOperator.init(this, opt);
-    }
-
     /** This method will init the individual with a given value for the
      * phenotype.
      * @param obj   The initial value for the phenotype
@@ -257,7 +248,7 @@ public class GAIndividualIntegerData extends AbstractEAIndividual implements Int
             if (bs.length != this.m_Range.length) System.out.println("Init value and requested length doesn't match!");
             this.SetIntGenotype(bs);
         } else {
-            this.defaultInit();
+            this.defaultInit(opt);
             System.out.println("Initial value for GAIndividualDoubleData is not double[]!");
         }
         this.m_MutationOperator.init(this, opt);
@@ -333,9 +324,7 @@ public class GAIndividualIntegerData extends AbstractEAIndividual implements Int
         return overallLength;
     }
 
-    /** This method inits the genotpye of the individual
-     */
-    public void defaultInit() {
+    public void defaultInit(InterfaceOptimizationProblem prob) {
         int overallLength = 0;
         for (int i = 0; i < this.m_CodingLenghts.length; i++) overallLength += this.m_CodingLenghts[i];
         for (int i = 0; i < overallLength; i++) {
@@ -365,7 +354,7 @@ public class GAIndividualIntegerData extends AbstractEAIndividual implements Int
         }
         indy.setIntegerDataLength(dimension);
         indy.SetIntRange(range);
-        indy.defaultInit();
+        indy.defaultInit(null);
         System.out.println(""+indy.getStringRepresentation());
         System.out.println("System.exit(0)");
         int[] data = indy.getIntegerData();

@@ -76,13 +76,17 @@ public class MonteCarloSearch implements InterfaceOptimizer, java.io.Serializabl
     }
 
     /** 
-     * This method will optimize without specific operators, by just calling the problem method
-     * for population initialization.
+     * This method will optimize without specific operators, by just calling the individual method
+     * for initialization.
      */
     public void optimize() {
         Population original = (Population)this.m_Population.clone();
 
-        this.m_Problem.initPopulation(this.m_Population);
+//        this.m_Problem.initPopulation(this.m_Population);
+        for (int i=0; i<m_Population.size(); i++) {
+        	m_Population.getEAIndividual(i).defaultInit(null);
+        }
+        
         this.m_Population.SetFunctionCalls(original.getFunctionCalls());
         this.m_Problem.evaluate(this.m_Population);
         for (int i = 0; i < this.m_Population.size(); i++) {
@@ -111,7 +115,7 @@ public class MonteCarloSearch implements InterfaceOptimizer, java.io.Serializabl
     public void defaultInit() {
         this.m_FitnessCallsNeeded = 0;
         this.m_Best = new GAIndividualBinaryData();
-        this.m_Best.defaultInit();
+        this.m_Best.defaultInit(m_Problem);
     }
 
     /** This method will optimize
@@ -119,7 +123,7 @@ public class MonteCarloSearch implements InterfaceOptimizer, java.io.Serializabl
     public void defaultOptimize() {
         for (int i = 0; i < m_FitnessCalls; i++) {
             this.m_Test = new GAIndividualBinaryData();
-            this.m_Test.defaultInit();
+            this.m_Test.defaultInit(m_Problem);
             if (this.m_Test.defaultEvaulateAsMiniBits() < this.m_Best.defaultEvaulateAsMiniBits()) this.m_Best = this.m_Test;
             this.m_FitnessCallsNeeded = i;
             if (this.m_Best.defaultEvaulateAsMiniBits() == 0) i = this.m_FitnessCalls +1;

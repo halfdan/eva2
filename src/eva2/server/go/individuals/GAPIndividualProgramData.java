@@ -74,9 +74,9 @@ public class GAPIndividualProgramData extends AbstractEAIndividual implements In
         ((AbstractEAIndividual)this.m_Program).init(opt);
     }
     
-    public void defaultInit() {
-        ((AbstractEAIndividual)this.m_Numbers).defaultInit();
-        ((AbstractEAIndividual)this.m_Program).defaultInit();   	
+    public void defaultInit(InterfaceOptimizationProblem prob) {
+        ((AbstractEAIndividual)this.m_Numbers).defaultInit(prob);
+        ((AbstractEAIndividual)this.m_Program).defaultInit(prob);   	
     }
     
     /** This method will init the individual with a given value for the
