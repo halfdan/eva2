@@ -290,7 +290,7 @@
 <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	        Dist JE2Probs
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
-	<target name="distProbs" depends="compileProbs" description="Compiles the Probs project." if="JE2Probs.available">
+	<target name="distProbs" depends="compileProbs" description="Build dist. of the Probs project." if="JE2Probs.available">
 	  	<ant inheritAll="false" antfile="${ant.directory}/build.xml" dir="${JE2Probs.directory}" target="dist">
 			<property name="silent" value="true"/>
 		</ant>
@@ -308,7 +308,7 @@
 <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	        Dist JE2ESModel
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
-	<target name="distESModel" depends="compileProbs" description="Compiles the Probs project." if="JE2Probs.available">
+	<target name="distESModel" depends="compileESModel" description="Build dist. of the ESModel project." if="JE2Probs.available">
 	  	<ant inheritAll="false" antfile="${ant.directory}/build.xml" dir="${JE2ESModel.directory}" target="dist">
 			<property name="silent" value="true"/>
 		</ant>
