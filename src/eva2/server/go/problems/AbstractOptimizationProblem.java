@@ -256,7 +256,7 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
     }
 
     /** 
-	 * This method allows you to request a graphical represenation for a given individual.
+	 * This method allows you to request a graphical representation for a given individual.
 	 * The additional informations generation and funCalls are shown if they are >= 0.
      * individual.
      * @param generation	generation of the individual or -1

@@ -69,7 +69,7 @@ public interface InterfaceOptimizationProblem extends InterfaceAdditionalPopulat
      */
     public String getStringRepresentationForProblem(InterfaceOptimizer opt);
 
-    /** This method allows you to request a graphical represenation for a given
+    /** This method allows you to request a graphical representation for a given
      * individual.
      */
     public JComponent drawIndividual(int generation, int funCalls, AbstractEAIndividual indy);
