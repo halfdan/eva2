@@ -8,7 +8,7 @@ import eva2.server.go.individuals.InterfaceGAIndividual;
 import eva2.tools.math.RNG;
 
 /** This implementation of Population Based Incremental Learning is only
- * suited for a BitString based genotyp represenation.
+ * suited for a BitString based genotype representation.
  * Copyright:       Copyright (c) 2003
  * Company:         University of Tuebingen, Computer Architecture
  * @author          Felix Streichert

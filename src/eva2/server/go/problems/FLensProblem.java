@@ -344,14 +344,6 @@ public class FLensProblem extends AbstractOptimizationProblem implements Interfa
 		return result;
 	}
 
-	/** This method returns a double value that will be displayed in a fitness
-	 * plot. A fitness that is to be minimized with a global min of zero
-	 * would be best, since log y can be used. But the value can depend on the problem.
-	 */
-	public Double getDoublePlotValue(Population pop) {
-		return new Double(pop.getBestEAIndividual().getFitness(0));
-	}
-
 	/** This method returns the header for the additional data that is to be written into a file
 	 * @param pop   The population that is to be refined.
 	 * @return String
@@ -400,7 +392,7 @@ public class FLensProblem extends AbstractOptimizationProblem implements Interfa
 		return result;
 	}
 
-	/** This method allows you to request a graphical represenation for a given
+	/** This method allows you to request a graphical representation for a given
 	 * individual.
 	 */
 	public JComponent drawIndividual(AbstractEAIndividual indy) {
