@@ -120,7 +120,7 @@ public class MemeticAlgorithm implements InterfaceOptimizer,
 		if (TRACE) System.out.println("global search");
 		this.m_GlobalOptimizer.optimize();
 
-		if (((this.m_GlobalOptimizer.getPopulation().getGeneration() % this.globalSearchIterations) == 0)
+		if ((globalSearchIterations>0) && (((this.m_GlobalOptimizer.getPopulation().getGeneration() % this.globalSearchIterations) == 0))
 		    && (this.localSearchSteps > 0)
 		    && (this.m_Problem instanceof InterfaceLocalSearchable)) {
 			// here the local search is performed

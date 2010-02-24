@@ -20,6 +20,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -31,7 +32,6 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.beans.PropertyEditor;
 import java.lang.reflect.Array;
-import java.lang.reflect.Method;
 
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
@@ -71,15 +71,26 @@ implements PropertyEditor {
 	private JButton m_DeleteBut = new JButton("Delete");
 	/** Click to add the current object configuration to the array */
 	private JButton m_AddBut = new JButton("Add");
+	private JButton m_SetBut = new JButton("Set");
+	private JButton m_SetAllBut = new JButton("Set all");
+	private Component m_View = null;
 	/** Listens to buttons being pressed and taking the appropriate action */
 	private ActionListener m_InnerActionListener =
 		new ActionListener() {
 		//
 		public void actionPerformed(ActionEvent e) {
+			boolean consistentView = true; // be optimistic...
+			if (m_View instanceof PropertyText) { // check consistency!
+				consistentView = ((PropertyText)m_View).checkConsistency();
+				if (!consistentView) {
+//					System.err.println("Warning, inconsistent view!");
+					((PropertyText)m_View).updateFromEditor();
+				}
+			}
 			if (e.getSource() == m_DeleteBut) {
 				int [] selected = m_ElementList.getSelectedIndices();
 				if (selected != null) {
-					for (int i = 0; i < selected.length; i++) {
+					for (int i = selected.length-1; i>=0; i--) {
 						int current = selected[i];
 						m_ListModel.removeElementAt(current);
 						if (m_ListModel.size() > current) {
@@ -113,6 +124,27 @@ implements PropertyEditor {
 				} catch (Exception ex) {
 					JOptionPane.showMessageDialog(GenericArrayEditor.this,"Could not create an object copy",null,JOptionPane.ERROR_MESSAGE);
 				}
+			} else if (e.getSource() == m_SetAllBut) {
+				Object addObj = m_ElementEditor.getValue();
+				for (int i=0; i<m_ListModel.size(); i++) {
+					try {
+						m_ListModel.setElementAt(new SerializedObject(addObj).getObject(), i);
+					} catch (Exception e1) {
+						JOptionPane.showMessageDialog(GenericArrayEditor.this,"Could not create an object copy",null,JOptionPane.ERROR_MESSAGE);
+					}
+				}
+				m_Support.firePropertyChange("", null, null);
+			} else if (e.getSource() == m_SetBut) {
+				int selected = m_ElementList.getSelectedIndex();
+				Object addObj = m_ElementEditor.getValue();
+				if (selected>=0 && (selected <m_ListModel.size())) {
+					try {
+						m_ListModel.setElementAt(new SerializedObject(addObj).getObject(), selected);
+					} catch (Exception e1) {
+						JOptionPane.showMessageDialog(GenericArrayEditor.this,"Could not create an object copy",null,JOptionPane.ERROR_MESSAGE);
+					}
+					m_Support.firePropertyChange("", null, null);
+				}
 			}
 		}
 	};
@@ -136,6 +168,7 @@ implements PropertyEditor {
 				if (m_ElementList.getSelectedIndex() != -1) {
 					m_DeleteBut.setEnabled(true);
 					m_ElementEditor.setValue(m_ElementList.getSelectedValue());
+					if (m_View instanceof PropertyText) ((PropertyText)m_View).updateFromEditor();
 				}
 			}
 		}
@@ -150,6 +183,8 @@ implements PropertyEditor {
 		add(m_Label, BorderLayout.CENTER);
 		m_DeleteBut.addActionListener(m_InnerActionListener);
 		m_AddBut.addActionListener(m_InnerActionListener);
+		m_SetAllBut.addActionListener(m_InnerActionListener);
+		m_SetBut.addActionListener(m_InnerActionListener);
 		m_ElementList.addListSelectionListener(m_InnerSelectionListener);
 		m_AddBut.setToolTipText("Add the current item to the list");
 		m_DeleteBut.setToolTipText("Delete the selected list item");
@@ -248,7 +283,7 @@ implements PropertyEditor {
 			Class elementClass = arrayInstance.getClass().getComponentType();
 			PropertyEditor editor = PropertyEditorProvider.findEditor(elementClass);
 			if (editor instanceof EnumEditor) editor.setValue(obj);
-			Component view = null;
+			m_View = null;
 			ListCellRenderer lcr = new DefaultListCellRenderer();
 			if (editor != null) {
 				if (editor instanceof GenericObjectEditor) {
@@ -256,15 +291,15 @@ implements PropertyEditor {
 					((GenericObjectEditor) editor).setClassType(elementClass);
 				}
 				if (editor.isPaintable() && editor.supportsCustomEditor()) {
-					view = new PropertyPanel(editor);
+					m_View = new PropertyPanel(editor);
 					lcr = new EditorListCellRenderer(editor.getClass(), elementClass);
 				} else if (editor.getTags() != null) {
-					view = new PropertyValueSelector(editor);
+					m_View = new PropertyValueSelector(editor);
 				} else if (editor.getAsText() != null) {
-					view = new PropertyText(editor);
+					m_View = new PropertyText(editor);
 				}
 			}
-			if (view == null) {
+			if (m_View == null) {
 				System.err.println("No property editor for class: "
 						+ elementClass.getName());
 			} else {
@@ -296,12 +331,18 @@ implements PropertyEditor {
 						}
 					}
 
-					setPreferredSize(new Dimension(300,300));
-					JPanel panel = new JPanel();
-					panel.setLayout(new BorderLayout());
-					panel.add(view, BorderLayout.CENTER);
-					panel.add(m_AddBut, BorderLayout.EAST);
-					add(panel, BorderLayout.NORTH);
+					setPreferredSize(new Dimension(300,400));
+//					JPanel panel = new JPanel();
+//					panel.setLayout(new BorderLayout());
+//					panel.add(view, BorderLayout.CENTER);
+//					panel.add(m_AddBut, BorderLayout.EAST);
+//					JPanel buttonPanel=new JPanel(new FlowLayout());
+					JPanel combinedPanel = new JPanel(new GridLayout(1,3));
+					combinedPanel.add(m_View );
+					combinedPanel.add(m_AddBut);
+					combinedPanel.add(m_SetBut);
+					combinedPanel.add(m_SetAllBut);
+					add(combinedPanel, BorderLayout.NORTH);
 					add(new JScrollPane(m_ElementList), BorderLayout.CENTER);
 					add(m_DeleteBut, BorderLayout.SOUTH);
 					m_ElementEditor.addPropertyChangeListener(new PropertyChangeListener() {
@@ -454,7 +495,7 @@ implements PropertyEditor {
 			editor.setValue(initial);
 			PropertyDialog pd = new PropertyDialog(editor,EVAHELP.cutClassName(editor.getClass().getName())
 					, 100, 100);
-			pd.setSize(200,200);
+//			pd.setSize(200,200);
 			pd.addWindowListener(new WindowAdapter() {
 				public void windowClosing(WindowEvent e) {
 					System.exit(0);

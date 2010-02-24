@@ -8,16 +8,17 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Set;
 
+import eva2.gui.GenericObjectEditor;
 import eva2.server.go.IndividualInterface;
 import eva2.server.go.InterfacePopulationChangedEventListener;
 import eva2.server.go.PopulationInterface;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.AbstractEAIndividualComparator;
-import eva2.server.go.individuals.GAIndividualBinaryData;
 import eva2.server.go.individuals.InterfaceDataTypeDouble;
 import eva2.server.go.operators.distancemetric.EuclideanMetric;
 import eva2.server.go.operators.distancemetric.InterfaceDistanceMetric;
 import eva2.server.go.operators.distancemetric.PhenotypeMetric;
+import eva2.server.go.operators.postprocess.PostProcess;
 import eva2.server.go.operators.selection.probability.AbstractSelProb;
 import eva2.tools.EVAERROR;
 import eva2.tools.Pair;
@@ -44,7 +45,6 @@ import eva2.tools.math.Jama.Matrix;
  */
 
 public class Population extends ArrayList implements PopulationInterface, Cloneable, java.io.Serializable {
-
     protected int           m_Generation    = 0;
     protected int           m_FunctionCalls = 0;
     protected int           m_TargetSize          = 50;
@@ -62,13 +62,16 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     public static final String nextGenerationPerformed = "NextGenerationPerformed";
     
     boolean useHistory						= false;
-    public ArrayList<AbstractEAIndividual>  m_History       = new ArrayList<AbstractEAIndividual>();
+    private transient ArrayList<AbstractEAIndividual>  m_History       = new ArrayList<AbstractEAIndividual>();
 
     // remember when the last sorted queue was prepared
     private int lastQModCount = -1;
     // a sorted queue (for efficiency)
     transient private ArrayList<AbstractEAIndividual> sortedArr = null;
     private int lastFitCrit = -1;
+	private AbstractEAIndividualComparator historyComparator = null;
+	private double[] seedPos = new double[10];
+	private double aroundDist=0.1;
 	private transient static boolean TRACE = false;
     
     // remember when the last evaluation was performed
@@ -138,6 +141,10 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
 		}
 	}
 
+	public void hideHideable() {
+		setInitMethod(getInitMethod());
+	}
+	
 	public void copyHistAndArchive(Population population) {
     	if (population.m_Archive != null) this.m_Archive = (Population)population.m_Archive.clone();
     	if (population.m_History != null) this.m_History = (ArrayList<AbstractEAIndividual>)population.m_History.clone();
@@ -161,6 +168,8 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
         this.m_TargetSize             = population.m_TargetSize;
         this.useHistory 		= population.useHistory;
         this.notifyEvalInterval = population.notifyEvalInterval;
+        this.initMethod			= population.initMethod;
+        if (population.seedPos!=null) this.seedPos = population.seedPos.clone();
 //        this.m_Listener			= population.m_Listener;
         if (population.listeners != null) this.listeners			= (ArrayList<InterfacePopulationChangedEventListener>)population.listeners.clone();
         else listeners = null;
@@ -236,22 +245,53 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
         case randomLatinHypercube:
         	createRLHSampling(this, false);
         	break;
+        case aroundSeed:
+        	AbstractEAIndividual template = (AbstractEAIndividual) getEAIndividual(0).clone();
+        	if (template.getDoublePosition().length<=seedPos.length) {
+        		if (template.getDoublePosition().length<seedPos.length) {
+        			double[] smallerSeed = new double[template.getDoublePosition().length];
+        			System.arraycopy(seedPos, 0, smallerSeed, 0, smallerSeed.length);
+        			AbstractEAIndividual.setDoublePosition(template, smallerSeed);
+        		} else AbstractEAIndividual.setDoublePosition(template, seedPos);
+        		PostProcess.createPopInSubRange(this, aroundDist, this.getTargetSize(), template);
+        	} else System.err.println("Warning, skipping seed initialization: too small individual seed!");
+        	break;
         }
         firePropertyChangedEvent(Population.populationInitialized);
     }
+    
+    public double[] getInitPos() {
+    	return seedPos ;
+    }
+    public void setInitPos(double[] si) {
+    	seedPos=si;
+    }
+    public String initPosTipText() {
+    	return "Position around which the population will be (randomly) initialized. Be aware that the vector length must match (or exceed) problem dimension!";
+    }
 
+    public void setInitAround(double d) {
+    	aroundDist = d;
+    }
+    public double getInitAround() {
+    	return aroundDist;
+    }
+    public String initAroundTipText() {
+    	return "Lenght of hypercube within which individuals are initialized around the initial position.";
+    }
+    
 //    /** This method inits the population. Function and generation counters
 //     * are reset and m_Size default Individuals are created and initialized by
 //     * the GAIndividual default init() method.
 //      */
-//    public void defaultInit(AbstractEAIndividual template) { Were missing the optimization problem - thus no initial range can be specified. And since no one calls this method, I removed it for now
+//    public void defaultInit(AbstractEAIndividual template) {
 //        this.m_Generation       = 0;
 //        this.m_FunctionCalls    = 0;
 //        this.m_Archive          = null;
 //        this.clear();
 //        for (int i = 0; i < this.m_TargetSize; i++) {
 //            AbstractEAIndividual tmpIndy = (AbstractEAIndividual)template.clone();
-//            tmpIndy.defaultInit(null);
+//            tmpIndy.defaultInit();
 //            super.add(tmpIndy);
 //        }
 //    }
@@ -303,12 +343,38 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     
     /**
      * Activate or deactivate the history tracking, which stores the best individual in every
-     * generation in the incrGeneration() method.
+     * generation in the incrGeneration() method. This uses a default individual comparator
+     * which is based on fitness.
      * 
      * @param useHist
      */
     public void setUseHistory(boolean useHist) {
+    	this.setUseHistory(useHist, (useHist ? (new AbstractEAIndividualComparator()) : null));
+    }
+    
+    /**
+     * Activate or deactivate the history tracking, which stores the best individual in every
+     * generation in the incrGeneration() method.
+     * 
+     * @param useHist
+     * @param histComparator comparator to use for determining the best current individual
+     */
+    public void setUseHistory(boolean useHist, AbstractEAIndividualComparator histComparator) {
     	useHistory = useHist;
+    	this.historyComparator  = histComparator;
+    }
+    
+    public int getHistoryLength() {
+    	if (useHistory) return m_History.size();
+    	else return 0;
+    }
+    
+    public ArrayList<AbstractEAIndividual> getHistory() {
+    	return m_History;
+    }
+    
+    public void SetHistory(ArrayList<AbstractEAIndividual> theHist) {
+    	m_History = theHist;
     }
     
     /** This method will allow you to increment the current number of function calls.
@@ -396,7 +462,9 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      * Stagnation measured etc. pp.
      */
     public void incrGeneration() {
-        if (useHistory && (this.size() >= 1)) this.m_History.add((AbstractEAIndividual)this.getBestEAIndividual().clone());
+        if (useHistory && (this.size() >= 1)) {
+        	this.m_History.add((AbstractEAIndividual)this.getBestEAIndividual().clone());// TODO
+        }
         for (int i=0; i<size(); i++) ((AbstractEAIndividual)get(i)).incrAge(); 
         this.m_Generation++;
         firePropertyChangedEvent(nextGenerationPerformed);
@@ -591,9 +659,9 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      * @see getIndexOfBestOrWorstIndividual()
      * @return The index of the best individual.
      */
-    public int getIndexOfBestIndividual() {
+    public int getIndexOfBestIndividualPrefFeasible() {
     	if (size()<1) return -1;
-    	return getIndexOfBestOrWorstIndividual(true, true, -1);
+    	return getIndexOfBestOrWorstIndy(true, true, -1);
     }
 	
 	/** 
@@ -603,8 +671,8 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      * @see getIndexOfBestOrWorstIndividual()
      * @return The index of the best individual.
      */
-    public int getIndexOfWorstIndividual() {
-    	return getIndexOfBestOrWorstIndividual(false, false, -1);
+    public int getIndexOfWorstIndividualNoConstr() {
+    	return getIndexOfBestOrWorstIndy(false, false, -1);
     }
     
 	/** 
@@ -615,9 +683,9 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      * @see getIndexOfBestOrWorstIndividual()
      * @return The index of the best individual.
      */
-    public int getIndexOfBestIndividual(int fitIndex) {
+    public int getIndexOfBestIndividualPrefFeasible(int fitIndex) {
     	if (size()<1) return -1;
-    	return getIndexOfBestOrWorstIndividual(true, true, fitIndex);
+    	return getIndexOfBestOrWorstIndy(true, true, fitIndex);
     }
 	
 	/** 
@@ -627,8 +695,8 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      * @see getIndexOfBestOrWorstIndividual()
      * @return The index of the best individual.
      */
-    public int getIndexOfWorstIndividual(int fitIndex) {
-    	return getIndexOfBestOrWorstIndividual(false, false, fitIndex);
+    public int getIndexOfWorstIndividualNoConstr(int fitIndex) {
+    	return getIndexOfBestOrWorstIndy(false, false, fitIndex);
     }
     
     /**
@@ -686,49 +754,104 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      * @param indicate whether constraints should be regarded
      * @return The index of the best (worst) individual.
      */
-    public int getIndexOfBestOrWorstIndividual(boolean bBest, boolean checkConstraints, int fitIndex) {
-        int     result          = -1;
-        double[]  curSelFitness = null;
-        boolean allViolate = true;
-
-        for (int i = 0; i < super.size(); i++) {
-            if (!checkConstraints || !(getEAIndividual(i).violatesConstraint())) {
-            	allViolate = false;
-            	if ((result<0) || (compareFit(bBest, getEAIndividual(i).getFitness(), curSelFitness, fitIndex))) {
-            		// fit i is better than remembered
-            		result          = i;
-            		curSelFitness  = getEAIndividual(i).getFitness(); // remember fit i
-            	}
-            }
-        }
-        if (result < 0) {
-        	if (checkConstraints && allViolate) {
-        		// darn all seem to violate the constraint
-        		// so lets search for the guy who is close to feasible
-        		
-        		// to avoid problems with NaN or infinite fitness value, preselect an ind.
-        		result          = 0;
-        		double minViol = getEAIndividual(0).getConstraintViolation();
-        		for (int i = 1; i < super.size(); i++) {
-        			if ((bBest && getEAIndividual(i).getConstraintViolation() < minViol) ||
-            			(!bBest && (getEAIndividual(i).getConstraintViolation() > minViol))) {
-        				result          = i;
-        				minViol  = ((AbstractEAIndividual)super.get(i)).getConstraintViolation();
-        			}
-        		}
-//        		System.err.println("Population reports: All individuals violate the constraints, choosing smallest constraint violation.");
-        		// this is now really reported nicer...
-        	} else {
-        		// not all violate, maybe all are NaN!
-        		// so just select a random one
-        		System.err.println("Population reports: All individuals seem to have NaN or infinite fitness!");
-        		result = RNG.randomInt(size());
-        	}
-        }
-        return result;
+    public int getIndexOfBestOrWorstIndividual(boolean bBest, AbstractEAIndividualComparator comparator) {
+    	ArrayList<AbstractEAIndividual> sorted = getSorted(comparator);
+    	if (bBest) return indexOf(sorted.get(0));
+    	else return indexOfInstance(sorted.get(sorted.size()-1));
     }
 
+    public int getIndexOfBestOrWorstIndy(boolean bBest, boolean checkConstraints, int fitIndex) {
+    	return getIndexOfBestOrWorstIndividual(bBest, new AbstractEAIndividualComparator(fitIndex, checkConstraints));
+    }
+    
     /**
+     * Returns the index of the first occurrence of the specified element
+     * in this list, or -1 if this list does not contain the element.
+     * This only checks for pointer equality. Different instances which
+     * have equal properties will be considered different. 
+     */
+    public int indexOfInstance(Object o) {
+    	if (o == null) {
+    		System.err.println("Error, instance null should not be contained! (Population.indexOfInstance)");
+    	} else {
+    		for (int i = 0; i < size(); i++) {
+    			if (o==get(i)) {
+    				return i;
+    			}
+    		}
+    	}
+    	return -1;
+    }
+
+//	/** 
+//	 * This method will return the index of the current best (worst) individual from the
+//     * population. If indicated, only those are regarded which do not violate the constraints.
+//     * If all violate the constraints, the smallest (largest) violation is selected.
+//     * Comparisons are done multicriterial, but note that for incomparable sets (pareto fronts)
+//     * this selection will not be fair (always the lowest index of incomparable sets will be returned).
+//     * 
+//     * @param bBest if true, smallest fitness (regarded best) index is returned, else the highest one
+//     * @param indicate whether constraints should be regarded
+//     * @return The index of the best (worst) individual.
+//     */
+//    public int getIndexOfBestOrWorstIndividual(boolean bBest, boolean checkConstraints, int fitIndex) {
+//        int     result          = -1;
+//        double[]  curSelFitness = null;
+//        boolean allViolate = true;
+//
+//        for (int i = 0; i < super.size(); i++) {
+//            if (!checkConstraints || !(getEAIndividual(i).violatesConstraint())) {
+//            	allViolate = false;
+//            	if ((result<0) || (compareFit(bBest, getEAIndividual(i).getFitness(), curSelFitness, fitIndex))) {
+//            		// fit i is better than remembered
+//            		result          = i;
+//            		curSelFitness  = getEAIndividual(i).getFitness(); // remember fit i
+//            	}
+//            }
+//        }
+//        if (result < 0) {
+//        	if (checkConstraints && allViolate) {
+//        		// darn all seem to violate the constraint
+//        		// so lets search for the guy who is close to feasible
+//        		
+//        		// to avoid problems with NaN or infinite fitness value, preselect an ind.
+//        		result          = 0;
+//        		double minViol = getEAIndividual(0).getConstraintViolation();
+//        		for (int i = 1; i < super.size(); i++) {
+//        			if ((bBest && getEAIndividual(i).getConstraintViolation() < minViol) ||
+//            			(!bBest && (getEAIndividual(i).getConstraintViolation() > minViol))) {
+//        				result          = i;
+//        				minViol  = ((AbstractEAIndividual)super.get(i)).getConstraintViolation();
+//        			}
+//        		}
+////        		System.err.println("Population reports: All individuals violate the constraints, choosing smallest constraint violation.");
+//        		// this is now really reported nicer...
+//        	} else {
+//        		// not all violate, maybe all are NaN!
+//        		// so just select a random one
+//        		System.err.println("Population reports: All individuals seem to have NaN or infinite fitness!");
+//        		result = RNG.randomInt(size());
+//        	}
+//        }
+//        int testcmp = getIndexOfBestOrWorstIndy(bBest, checkConstraints, fitIndex);
+//        if (result!=testcmp) {
+//        	if (((getEAIndividual(result).getFitness(0)!=getEAIndividual(testcmp).getFitness(0)) && (!violatesConstraints(testcmp) || !violatesConstraints(result)))
+//        			|| (violatesConstraints(testcmp) && violatesConstraints(result) && (!equalConstraintViolation(testcmp, result)))) {
+//        		System.err.println("Error in comparison!!! " + getIndexOfBestOrWorstIndy(bBest, checkConstraints, fitIndex));
+//        	}
+//        } else System.err.println("Succ with " + bBest + " " + checkConstraints + " " + fitIndex);
+//        return result;
+//    }
+
+//    private boolean equalConstraintViolation(int a, int b) {
+//    	return (getEAIndividual(a).getConstraintViolation()==getEAIndividual(b).getConstraintViolation());
+//	}
+//
+//	private boolean violatesConstraints(int i) {
+//    	return (getEAIndividual(i).isMarkedPenalized() || getEAIndividual(i).violatesConstraint());
+//	}
+
+	/**
      * Search the population for the best (worst) considering the given criterion (or all criteria
      * for fitIndex<0) which also does not violate constraints.
      * Returns -1 if no feasible solution is found, else the index of the best feasible solution.
@@ -764,8 +887,8 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     }
     
     /** 
-     * This method returns the current best individual from the population 
-     * by a given fitness component.
+     * This method returns the currently best individual from the population 
+     * by a given fitness component while prioritizing feasible ones.
      * If the population is empty, null is returned.
      *
      * @param fitIndex the fitness criterion index or -1
@@ -773,7 +896,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      */
     public AbstractEAIndividual getBestEAIndividual(int fitIndex) {
     	if (size()<1) return null;
-    	int best = this.getIndexOfBestIndividual(fitIndex);
+    	int best = this.getIndexOfBestIndividualPrefFeasible(fitIndex);
     	if (best == -1) {
     		System.err.println("This shouldnt happen!");
     		return null;
@@ -1041,7 +1164,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     }
     
 	public AbstractEAIndividual getWorstEAIndividual(int fitIndex) {
-    	return getEAIndividual(getIndexOfWorstIndividual(fitIndex));
+    	return getEAIndividual(getIndexOfWorstIndividualNoConstr(fitIndex));
     }
 
     /** 
@@ -1135,14 +1258,14 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
         this.m_Archive = a;
     }
 
-    /** This method will return a string description of the GAIndividal
-     * noteably the Genotype.
+    /** 
+     * This method will return a string description of the Population 
+     * including the individuals.
      * @return A descriptive string
      */
     public String getStringRepresentation() {
         StringBuilder strB = new StringBuilder(200);
         strB.append("Population:\nPopulation size: ");
-        strB.append("Population size: ");
         strB.append(this.size());
         strB.append("\nFunction calls : ");
         strB.append(this.m_FunctionCalls);
@@ -1268,7 +1391,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     	modCount++;
     	if (lastFitCrit==fitIndex && (lastQModCount==(modCount-1))) {
     		// if nothing happend between this event and the last sorting by the same criterion...
-    		sortedArr.remove(prev);
+    		if (!sortedArr.remove(prev)) System.err.println("Error in Population.set!");
     		int i=0;
     		AbstractEAIndividualComparator comp = new AbstractEAIndividualComparator(fitIndex);
     		while (i<sortedArr.size() && comp.compare(element, sortedArr.get(i))>0) {
@@ -1310,15 +1433,30 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     	return (IndividualInterface)set(index, ind);
     }
     
-    public void removeIndividual (IndividualInterface ind) {
+    /**
+     * 
+     * @param ind
+     * @return true if an indy was actually removed, else false
+     */
+    public boolean removeMember(IndividualInterface ind) {
+    	long id = ((AbstractEAIndividual)ind).getIndyID();
         for (int i = 0; i < this.size(); i++) {
-            if (ind.equals(this.get(i))) {
-                this.remove(i);
-                return;
+            if (getEAIndividual(i).getIndyID()==id) {
+            	removeIndexSwitched(i);
+            	return true;
             }
         }
+        return false;
     }
 
+	public void removeMembers(Population tmpPop, boolean errorOnMissing) {
+		for (int i=0; i<tmpPop.size(); i++) {
+			if (!removeMember(tmpPop.getEAIndividual(i))) {
+				if (errorOnMissing) throw new RuntimeException("Error, member to be removed was missing (Population.removeMembers)!");
+			}
+		}
+	}
+	
     public IndividualInterface getBestIndividual() {
         return (IndividualInterface)this.getBestEAIndividual();
     }
@@ -1382,7 +1520,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
 //            }
 //    		return measures;
 //    	} 
-    	double[] res = calcPopulationMeasures(metric);
+    	double[] res = getPopulationMeasures(this, metric);
 //        putData(lastPopMeasuresFlagKey, new Integer(modCount));
 //        putData(lastPopMeasuresDatKey, res);
 //        System.out.println(getStringRepresentation());
@@ -1390,34 +1528,34 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
         return res;
     }
 
-	private double[] calcPopulationMeasures(InterfaceDistanceMetric metric) {
+	public static double[] getPopulationMeasures(List<AbstractEAIndividual> pop, InterfaceDistanceMetric metric) {
 		double d;
     	double[] res = new double[3];
     	
-    	double meanDist = 0.;
+    	double distSum = 0.;
     	double maxDist = Double.MIN_VALUE;
     	double minDist = Double.MAX_VALUE;
     	
-        for (int i = 0; i < this.size(); i++) {
-        	for (int j = i+1; j < this.size(); j++) {
-        		if (metric == null) d = EuclideanMetric.euclideanDistance(AbstractEAIndividual.getDoublePositionShallow(getEAIndividual(i)), 
-                		AbstractEAIndividual.getDoublePositionShallow(getEAIndividual(j)));
-        		else d = metric.distance((AbstractEAIndividual)this.get(i), (AbstractEAIndividual)this.get(j));
-                meanDist += d;
+        for (int i = 0; i < pop.size(); i++) {
+        	for (int j = i+1; j < pop.size(); j++) {
+        		if (metric == null) d = EuclideanMetric.euclideanDistance(AbstractEAIndividual.getDoublePositionShallow(pop.get(i)), 
+                		AbstractEAIndividual.getDoublePositionShallow(pop.get(j)));
+        		else d = metric.distance((AbstractEAIndividual)pop.get(i), (AbstractEAIndividual)pop.get(j));
+                distSum += d;
                 if (d < minDist) minDist = d;
                 if (d > maxDist) maxDist = d;
             }
         }
         res[1] = minDist;
         res[2] = maxDist;
-        if (this.size() > 1) res[0] = meanDist / (this.size() * (this.size()-1) / 2);
+        if (pop.size() > 1) res[0] = distSum / (pop.size() * (pop.size()-1) / 2);
         else { // only one indy?
         	res[1]=0;
         	res[2]=0;
         }
 		return res;
 	}
-    
+
     /**
      * Returns the average, minimal and maximal individual fitness and std dev. for the population in the given criterion.
      *
@@ -1425,6 +1563,16 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      * @return the average, minimal, maximal and std dev. of fitness of individuals in an array
      */
     public double[] getFitnessMeasures(int fitCrit) {
+    	return Population.getFitnessMeasures(this, fitCrit);
+    }
+    
+    /**
+     * Returns the average, minimal and maximal individual fitness and std dev. for the population in the given criterion.
+     *
+     * @param fitCrit fitness dimension to be used
+     * @return the average, minimal, maximal and std dev. of fitness of individuals in an array
+     */
+    public static double[] getFitnessMeasures(List<AbstractEAIndividual> pop, int fitCrit) {
     	double d;
     	double[] res = new double[4];
     	
@@ -1433,23 +1581,23 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     	res[2] = Double.MIN_VALUE;
     	res[3] = 0;
     	
-        for (int i = 0; i < this.size(); i++) {
-        		d = this.getEAIndividual(i).getFitness(fitCrit);
+        for (int i = 0; i < pop.size(); i++) {
+        		d = pop.get(i).getFitness(fitCrit);
         		res[0] += d;
                 if (d < res[1]) res[1] = d;
                 if (d > res[2]) res[2] = d;
         }
         
-        if (size()==0) {
+        if (pop.size()==0) {
         	res[0]=res[1]=res[2]=res[3]=Double.NaN;
         } else {
         	// calc standard deviation
-        	res[0] = res[0] / this.size();
-        	for (int i=0; i< this.size(); i++) {
-        		d = res[0]-this.getEAIndividual(i).getFitness(fitCrit);
+        	res[0] = res[0] / pop.size();
+        	for (int i=0; i< pop.size(); i++) {
+        		d = res[0]-pop.get(i).getFitness(fitCrit);
         		res[3]+=d*d;
         	}
-        	res[3] /= this.size();
+        	res[3] /= pop.size();
         	res[3] = Math.sqrt(res[3]);
         }
         
@@ -1564,33 +1712,33 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
 	}
 	
 	/**
-	 * Search for the closest individual which is not equal to the given individual. Return
+	 * Search for the closest individual to the indexed individual within the population. Return
 	 * its index or -1 if none could be found.
 	 * 
 	 * @param indy
 	 * @return closest neighbor (euclidian measure) of the given individual in the given population 
 	 */
-	public int getNeighborIndex(AbstractEAIndividual indy) {
+	public int getNeighborIndex(int neighborIndex) {
 		// get the neighbor...
-		int index = -1;
+		int foundIndex = -1;
 		double mindist = Double.POSITIVE_INFINITY;
 
 		for (int i = 0; i < size(); ++i){ 
 			AbstractEAIndividual currentindy = getEAIndividual(i);
-			if (!indy.equals(currentindy)){ // dont compare particle to itself or a copy of itself
-				double dist = EuclideanMetric.euclideanDistance(AbstractEAIndividual.getDoublePositionShallow(indy),
+			if (i!=neighborIndex){ // dont compare particle to itself or a copy of itself
+				double dist = EuclideanMetric.euclideanDistance(AbstractEAIndividual.getDoublePositionShallow(getEAIndividual(neighborIndex)),
 						AbstractEAIndividual.getDoublePositionShallow(currentindy));
 				if (dist  < mindist){ 
 					mindist = dist;
-					index = i;
+					foundIndex = i;
 				}
 			}
 		}
-		if (index == -1){
+		if (foundIndex == -1){
 			System.err.println("Pop too small or all individuals in population are equal !?");
 			return -1;
 		}
-		return index;
+		return foundIndex;
 	}
 	
 	/**
@@ -1609,7 +1757,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
 		double d=0;
 		for (int i = 0; i < size(); ++i){
 			AbstractEAIndividual neighbor, indy = getEAIndividual(i);
-			int neighborIndex = getNeighborIndex(indy);
+			int neighborIndex = getNeighborIndex(i);
 			if (neighborIndex >= 0) neighbor = getEAIndividual(neighborIndex);
 			else return null;
 			if (normalizedPhenoMetric){
@@ -1719,6 +1867,8 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
 
 	public void setInitMethod(PopulationInitMethod initMethod) {
 		this.initMethod = initMethod;
+		GenericObjectEditor.setShowProperty(this.getClass(), "initAround", initMethod==PopulationInitMethod.aroundSeed);
+		GenericObjectEditor.setShowProperty(this.getClass(), "initPos", initMethod==PopulationInitMethod.aroundSeed);
 	}
 	
 	public String initMethodTipText() {
@@ -1790,6 +1940,16 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
 	 */
 	public int getFreeSlots() {
 		return Math.max(0, this.getTargetSize() - this.size());
+	}
+
+	public boolean assertMembers(Population pop) {
+		for (int i=0; i<pop.size(); i++) {
+			if (!isMemberByID(pop.getEAIndividual(i))) {
+				System.err.println("Warning, indy " + i + " is not a member of " + this);
+				return false;
+			}
+		}
+		return true;
 	}
 
 //	/**

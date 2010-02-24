@@ -1,5 +1,6 @@
 package eva2.server.go.operators.mutation;
 
+import eva2.gui.BeanInspector;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceESIndividual;
 import eva2.server.go.populations.Population;
@@ -34,7 +35,7 @@ public class MutateESCovarianceMatrixAdaption implements InterfaceMutation, java
     protected Matrix              m_C;
     protected Matrix              B;
     protected boolean             m_CheckConstraints  = false;
-    protected int                 m_constraint        = 20;
+    protected int                 m_constraintMaxTries        = 50;
     protected int                 m_Counter;
     protected int                 m_frequency         = 1;
     protected double[]            m_Eigenvalues;
@@ -46,7 +47,7 @@ public class MutateESCovarianceMatrixAdaption implements InterfaceMutation, java
         this.m_Counter          = mutator.m_Counter;
         this.m_frequency        = mutator.m_frequency;
         this.m_InitSigmaScalar  = mutator.m_InitSigmaScalar;
-        this.m_constraint       = mutator.m_constraint;
+        this.m_constraintMaxTries       = mutator.m_constraintMaxTries;
         this.m_CheckConstraints = mutator.m_CheckConstraints;
         this.m_D                = mutator.m_D;
         this.m_SigmaGlobal      = mutator.m_SigmaGlobal;
@@ -181,7 +182,7 @@ public class MutateESCovarianceMatrixAdaption implements InterfaceMutation, java
             this.m_PathS[i]   = (1.0 - this.m_c) * this.m_PathS[i] + this.m_c * this.cu * Bz_d;
             pathLen          = pathLen + this.m_PathS[i] * this.m_PathS[i];
         }
-        this.m_SigmaGlobal = this.m_SigmaGlobal * Math.exp(this.Beta * this.m_c * (Math.sqrt(pathLen) - this.xi_dach));;
+        this.m_SigmaGlobal = this.m_SigmaGlobal * Math.exp(this.Beta * this.m_c * (Math.sqrt(pathLen) - this.xi_dach));
   }
 
     protected void evaluateNewObjectX(double[] x,double[][] range) {
@@ -218,8 +219,10 @@ public class MutateESCovarianceMatrixAdaption implements InterfaceMutation, java
 //            }
 //        }
 //        for (int i = 0; i < N; i++) x[i] = tmpD[i];
-        // conservation of mutaion direction:
-        double[] old = (double[]) this.m_Z.clone();
+        // conservation of mutation direction:
+        //double[] oldZ = (double[]) this.m_Z.clone();
+        double[] oldX = (double[])x.clone();
+        
         for (int i = 0; i < this.m_D; i++) this.m_Z[i] = RNG.gaussianDouble(1.0);
 
         this.m_C = (this.m_C.plus(this.m_C.transpose()).times(0.5)); // MAKE C SYMMETRIC
@@ -232,9 +235,9 @@ public class MutateESCovarianceMatrixAdaption implements InterfaceMutation, java
             this.m_Eigenvalues  = helper.getRealEigenvalues();
 
         }
-        boolean constraint  = false;
+        boolean isNewPosFeasible  = false;
         int     counter     = 0;
-        while (constraint == false && counter < this.m_constraint) {
+        while (!isNewPosFeasible && counter < this.m_constraintMaxTries) {
             for (int i = 0; i < this.m_D; i++) {
                 this.Bz[i] = 0;
                 for (int j = 0; j < this.m_D; j++) {
@@ -242,22 +245,28 @@ public class MutateESCovarianceMatrixAdaption implements InterfaceMutation, java
                 }
                 x[i] = x[i] + this.m_SigmaGlobal * this.Bz[i]; // here is the new value
             }
-            constraint = true;
+            isNewPosFeasible = true;
             if (this.m_CheckConstraints == true) {
                 for (int i = 0; i < m_D; i++) {
                     if (x[i] < range[i][0] || x[i] > range[i][1]) {
                     	// undo the step and try new Z
-                        for (int j = 0; j < this.m_D; j++) x[j] = x[j] - this.m_SigmaGlobal * this.Bz[j];
-                        this.m_Z[i] = RNG.gaussianDouble(1.0);
-                        constraint = false;
+                        for (int j = 0; j < this.m_D; j++) x[j] = oldX[j] - this.m_SigmaGlobal * this.Bz[j];
+                        this.m_Z[i] = RNG.gaussianDouble(1.0); // TODO is this feasible? mal mit rank-mu testen
+                        isNewPosFeasible = false;
                         counter++;
                         break;
                     }
                 }
             }
         }
-        if (this.m_CheckConstraints) { // CSpieth
+        if (counter>0) {
+//        	System.out.print("CMA ES Req " + counter + " ");
+//        	if (counter > 15) System.out.println(BeanInspector.toString(x));
+//        	else System.out.println();
+        }
+        if (this.m_CheckConstraints && !isNewPosFeasible) { // use force
         	Mathematics.projectToRange(x, range);
+//        	System.err.println("PROJECTING BY FORCE");
         }
     }
 

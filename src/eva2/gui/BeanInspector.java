@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import eva2.server.go.populations.Population;
+import eva2.tools.Pair;
 import eva2.tools.SelectedTag;
 import eva2.tools.Tag;
 
@@ -131,7 +132,9 @@ public class BeanInspector {
 		return true;
 	}
 
-
+	public static String toString(Object Target) {
+		return toString(Target, ';', false);
+	}
 	/**
 	 * Collect the accessible properties of an object and their values in a string.
 	 * Special cases: Arrays and Lists are concatenations of their elements, Population is excepted from lists.
@@ -141,7 +144,7 @@ public class BeanInspector {
 	 * @param  Target  Description of the Parameter
 	 * @return         Description of the Return Value
 	 */
-	public static String toString(Object Target) {
+	public static String toString(Object Target, char delim, boolean tight) {
 		String ret = "";
 		if (Target == null) return "null";
 		// try the object itself
@@ -149,13 +152,18 @@ public class BeanInspector {
 		Class<? extends Object> type = Target.getClass();
 
 		if (type.isArray()) { // handle the array case
-			StringBuffer sbuf = new StringBuffer("[ ");
+			StringBuffer sbuf = new StringBuffer("[");
+			if (!tight) sbuf.append(" ");
 			int len = Array.getLength(Target);
 			for (int i=0; i<len; i++) {
 				sbuf.append(toString(Array.get(Target, i)));
-				if (i<len-1) sbuf.append("; ");
+				if (i<len-1) {
+					sbuf.append(delim);
+					if (!tight) sbuf.append(" ");
+				}
 			}
-			sbuf.append(" ]");
+			if (!tight) sbuf.append(" ");
+			sbuf.append("]");
 			return sbuf.toString();
 		}
 		
@@ -164,13 +172,15 @@ public class BeanInspector {
 		}
 
 		if (Target instanceof List && !(Target instanceof Population)) { // handle the list case
-			StringBuffer sbuf = new StringBuffer("[  ");
+			StringBuffer sbuf = new StringBuffer("[");
+			if (!tight) sbuf.append(" ");
 			List<?> lst = (List<?>)Target;
 			for (Object o : lst) {
 				sbuf.append(o.toString());
-				sbuf.append("; ");
+				sbuf.append(delim);
+				if (!tight) sbuf.append(" ");
 			}
-			sbuf.setCharAt(sbuf.length()-2, ' ');
+			if (!tight) sbuf.setCharAt(sbuf.length()-2, ' ');
 			sbuf.setCharAt(sbuf.length()-1, ']');
 			return sbuf.toString();
 		}
@@ -192,20 +202,48 @@ public class BeanInspector {
 		}
 
 		// otherwise try introspection and collect all public properties as strings
+
+		Pair<String[],Object[]> nameVals = getPublicPropertiesOf(Target, true); 
+
+		StringBuffer sbuf = new StringBuffer(type.getName());
+		sbuf.append("{");
+		for (int i=0; i<nameVals.head.length; i++) {
+			if (nameVals.head[i]!=null) {
+				sbuf.append(nameVals.head[i]);
+				sbuf.append("=");
+				sbuf.append(toString(nameVals.tail[i]));
+				sbuf.append(delim);
+				if (!tight) sbuf.append(" ");
+			}
+		}
+
+		sbuf.append("}");
+		return sbuf.toString();
+	}
+
+	/**
+	 * Retrieve names and values of instance fields which are accessible by getter method, optionally
+	 * by both getter and setter method. The returned arrays may contain null entries.
+	 * Properties marked as hidden or expert are skipped.
+	 *   
+	 * @param target
+	 * @return
+	 */
+	public static Pair<String[],Object[]> getPublicPropertiesOf(Object target, boolean requireSetter) {
 		BeanInfo Info = null;
 		PropertyDescriptor[] Properties = null;
 //		MethodDescriptor[] Methods = null;
 		try {
-			Info = Introspector.getBeanInfo(Target.getClass());
+			Info = Introspector.getBeanInfo(target.getClass());
 			Properties = Info.getPropertyDescriptors();
 			Info.getMethodDescriptors();
 		} catch (IntrospectionException ex) {
 			System.err.println("BeanTest: Couldn't introspect");
-			return ret;
+			return null;
 		}
 
-		StringBuffer sbuf = new StringBuffer(type.getName());
-		sbuf.append("{");
+		String[] nameArray = new String[Properties.length];
+		Object[] valArray = new Object[Properties.length];
 		for (int i = 0; i < Properties.length; i++) {
 			if (Properties[i].isHidden() || Properties[i].isExpert()) {
 				continue;
@@ -217,7 +255,7 @@ public class BeanInspector {
 			Method getter = Properties[i].getReadMethod();
 			Method setter = Properties[i].getWriteMethod();
 			// Only display read/write properties.
-			if (getter == null || setter == null) {
+			if (getter == null || (setter == null && requireSetter)) {
 				continue;
 			}
 			//System.out.println("name = "+name );
@@ -226,20 +264,16 @@ public class BeanInspector {
 			//System.out.println("m_Target"+m_Target.toString());
 
 			try {
-				Object value = getter.invoke(Target, args);
-				sbuf.append(name);
-				sbuf.append("=");
-				sbuf.append(toString(value));
-				sbuf.append("; ");
+				nameArray[i]=name;
+				valArray[i] = getter.invoke(target, args);
 			} catch (Exception e) {
 				System.err.println("BeanTest ERROR +"+ e.getMessage());
-				return sbuf.toString();
 			}
 		}
-		sbuf.append("}");
-		return sbuf.toString();
+		Pair<String[],Object[]> nameVals = new Pair<String[],Object[]>(nameArray, valArray);
+		return nameVals;
 	}
-
+	
 
 	/**
 	 *@param  Target  Description of the Parameter

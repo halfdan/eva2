@@ -69,7 +69,7 @@ public class SlimRect {
 	 * @return A rectangle representing the intersection or null
 	 */
 	public SlimRect getIntersection( DRectangle r ){
-		return getIntersection(r.x, r.y, r.width, r.height);
+		return getIntersection(r.getX(), r.getY(), r.getWidth(), r.getHeight());
 	}
 	
 	/**
@@ -105,7 +105,7 @@ public class SlimRect {
 	 * @return true if the two rectangles do not intersect, else false
 	 */
 	public boolean hasEmptyIntersection(DRectangle r){
-		return (getIntersection(r.x, r.y, r.width, r.height)==null);
+		return (getIntersection(r.getX(), r.getY(), r.getWidth(), r.getHeight())==null);
 	}
 	
 	/**

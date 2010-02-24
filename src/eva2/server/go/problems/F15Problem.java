@@ -1,0 +1,102 @@
+package eva2.server.go.problems;
+
+import static java.lang.Math.PI;
+import static java.lang.Math.sin;
+
+public class F15Problem extends AbstractProblemDoubleOffset {
+	int iterations = 100;
+	
+    public F15Problem(F15Problem f15Problem) {
+		iterations = f15Problem.iterations;
+	}
+
+	public Object clone() {
+        return (Object) new F15Problem(this);
+    }
+
+    /** This method allows you to evaluate a double[] to determine the fitness
+     * @param x     The n-dimensional input vector
+     * @return  The m-dimensional output vector.
+     */
+    public double[] eval(double[] x) {
+    	x = rotateMaybe(x);
+    	double[] c = new double[2];
+    	
+//    	c[0]= (x[0])*getXOffSet();
+//    	c[1]= (x[1])*Math.sin((Math.PI/2)*getYOffSet());
+    	
+		c[0] = x[0]*x[2];
+		c[1] = x[1] * sin( PI / 2.0 * x[3]);
+		
+//    	c[0]= (x[0]+(x[2]/10))*getXOffSet();
+//    	c[1]= (x[1]+(x[3]/10))*Math.sin(Math.PI/2*getYOffSet());
+//    	c[0]= (x[0]*(1-x[2]/10));
+//    	c[1]= (x[1]*(1-x[3]/10));
+        double[] result = new double[1];
+        result[0] = flatten(evalRec(x, c, iterations));
+        return result;
+    }
+    
+    private double[] evalRec(double[] x, double[] c, int n) {
+        if (n==0) return x;
+        else return evalRec(addComplex(squareComplex(x),c), c, n-1);
+    }
+    
+    private double[] squareComplex(double[] x) {
+    	double[] result = new double[2];
+    	result[0] = (x[0]*x[0])-(x[1]*x[1]);
+    	result[1] = (2*x[0]*x[1]);
+    	return result;
+    }
+    
+    private double[] addComplex(double[] x, double[] y) {
+    	double[] result = new double[2];
+    	result[0] = x[0] + y[0];
+    	result[1] = x[1] + y[1];
+    	return result;
+    }
+    
+    private double flatten(double[] x) {
+    	
+    	double len = Math.sqrt((x[0]*x[0])+(x[1]*x[1]));
+    	double ang = Math.atan2(x[1],x[0]);
+    	if (Double.isNaN(len) || (len > 1000.)) len = 1000.;
+    	return len;
+//    	return 0.5+0.5*t*(2*b*a*u(x/a));
+//    	return 1/(2*Math.PI*ang);
+//    	return +Math.abs(x[0])+Math.abs(x[1]);
+    }
+    
+    public int getProblemDimension() {
+    	return 4;
+    }
+    
+    public String getName() {
+    	return "F15-Problem";
+    }
+    
+    public double getRangeLowerBound(int dim) {
+//    	return -1;
+    	if (dim == 0) return -2.5;
+    	else return -1.5;
+    }
+
+    public double getRangeUpperBound(int dim) {
+//    	return 1;
+    	return 1.5;
+    }
+
+	/**
+	 * @return the iterations
+	 */
+	public int getIterations() {
+		return iterations;
+	}
+
+	/**
+	 * @param iterations the iterations to set
+	 */
+	public void setIterations(int iterations) {
+		this.iterations = iterations;
+	}
+}

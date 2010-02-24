@@ -1,5 +1,6 @@
 package eva2.server.go.strategies;
 
+import eva2.gui.BeanInspector;
 import eva2.server.go.InterfacePopulationChangedEventListener;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceDataTypeDouble;
@@ -50,6 +51,8 @@ public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Ser
 	transient private String m_Identifier = "";
 	private Population m_Population;
 
+	private static boolean TRACE=false;
+
 	private static final String lockKey = "gdaLockDataKey";
 	private static final String lastFitnessKey = "gdaLastFitDataKey";
 	private static final String stepSizeKey = "gdaStepSizeDataKey";
@@ -73,6 +76,23 @@ public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Ser
 //    indyhash = new Hashtable();
     this.m_Population = new Population();
     this.m_Population.setTargetSize(1);
+  }
+  
+  /**
+   * GDA with locally adapted step size.
+   * 
+   * @param minStepSize
+   * @param maxStepSize
+   * @param maxAbsoluteChange
+   */
+  public GradientDescentAlgorithm(double minStepSize, double maxStepSize, double maxAbsoluteChange) {
+	  globalStepSizeAdaption=false;
+	  localStepSizeAdaption=true;
+	  localminstepsize = minStepSize; 
+	  globalminstepsize = minStepSize;
+	  localmaxstepsize = maxStepSize;
+	  globalmaxstepsize = maxStepSize;
+	  maximumabsolutechange = maxAbsoluteChange;
   }
 
   public Object clone() {
@@ -140,6 +160,7 @@ public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Ser
           double[] oldchange = null;
 
           double[] gradient = ((InterfaceFirstOrderDerivableProblem) m_Problem).getFirstOrderGradients(params);
+          if (TRACE) System.out.println("GDA: " + BeanInspector.toString(params) + ", grad: " + BeanInspector.toString(gradient));
           if ((oldgradient != null) && (wstepsize != null)) { // LOCAL adaption
             for (int li = 0; li < wstepsize.length; li++) {
               double prod = gradient[li] * oldgradient[li];
@@ -214,7 +235,7 @@ public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Ser
         indy = ((AbstractEAIndividual)this.m_Population.get(i));
 //        Hashtable history = (Hashtable) indyhash.get(indy);
         if (indy.getFitness()[0] > recoverythreshold) {
-          System.out.println("Gradient Descent: Fitness critical:" + indy.getFitness()[0]);
+          if (TRACE) System.out.println("Gradient Descent: Fitness critical:" + indy.getFitness()[0]);
           ((InterfaceDataTypeDouble) indy).SetDoublePhenotype((double[]) indy.getData(oldParamsKey));
           double[] changes = (double[]) indy.getData(changesKey);
           int[] lock = (int[]) indy.getData(lockKey);

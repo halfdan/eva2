@@ -48,7 +48,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
 
     protected double[]                      m_Fitness               = new double[1];
     private double                          m_ConstraintViolation   = 0;
-    public boolean                          m_AreaConst4ParallelViolated = false;
+    public boolean                          m_AreaConst4ParallelViolated = false; // no idea what felix used this for...
     public boolean                          m_Marked                = false;    // is for GUI only!
     public boolean							m_isPenalized			= false;	// may be set true for penalty based constraints
 
@@ -143,7 +143,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
 //        m_Name              = new String(individual.m_Name);
     	m_dataHash			= (HashMap<String,Object>)(individual.m_dataHash.clone());
         m_ConstraintViolation = individual.m_ConstraintViolation;
-        m_AreaConst4ParallelViolated = individual.m_AreaConst4ParallelViolated;
+//        m_AreaConst4ParallelViolated = individual.m_AreaConst4ParallelViolated;
         m_Marked            = individual.m_Marked;
         m_isPenalized		= individual.m_isPenalized;
         individualIndex = individual.individualIndex;
@@ -181,7 +181,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
             // checking in mutation/crossover operators
             if (!this.m_MutationOperator.equals(indy.m_MutationOperator)) return false;
             if (!this.m_CrossoverOperator.equals(indy.m_CrossoverOperator)) return false;
-
+            System.err.println("Check whether this is semantically meant by equality!!! (AbstractEAIndividual.equals())");
             return true;
         } else {
             return false;
@@ -640,6 +640,28 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
     	return result;
     }
     
+    /** 
+     * This method will allow you to compare two individuals regarding the constraint violation only, 
+     * and only if the specific tag has been set. (For, e.g., additive penalty there is no way of discriminating
+     * fitness and penalty after assigning).
+     * The one with lesser violation is regarded better. If the instance is better than the given
+     * indy, 1 is returned. If it is worse than the given indy, -1 is returned. 
+     * If they both violate them equally, 0 is returned. 
+     * This means that if both do not violate the constraints, 0 is returned.
+     * 
+     * @param indy      The individual to compare to.
+     * @return 1 if the instance is better (regarding constraints only), -1 if is worse, 0 if they are equal in that respect.
+     */
+    public int compareConstraintViolation(AbstractEAIndividual indy) {
+        if ((this.m_ConstraintViolation > 0) && (indy.m_ConstraintViolation <= 0)) return -1;
+        if ((this.m_ConstraintViolation <= 0) && (indy.m_ConstraintViolation > 0)) return 1;
+        else {  // both violate: ((this.m_ConstraintViolation > 0) && (indy.m_ConstraintViolation > 0)) {
+            if (this.m_ConstraintViolation < indy.m_ConstraintViolation) return 1 ;
+            else if (this.m_ConstraintViolation > indy.m_ConstraintViolation) return -1;
+            else return 0;
+        }
+    }
+    
     /** This method will allow you to compare two individuals regarding the dominance.
      * Note this is dominance! If the individuals are not comparable this method will
      * return false!
@@ -647,16 +669,9 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      * @return True if the own fitness dominates the other indy's
      */
     public boolean isDominatingDebConstraints(AbstractEAIndividual indy) {
-        double[]    tmpFitness  = indy.getFitness();
-        if (this.m_AreaConst4ParallelViolated) return false;
-        if (indy.m_AreaConst4ParallelViolated) return true;
-        if ((this.m_ConstraintViolation > 0) && (indy.m_ConstraintViolation == 0)) return false;
-        if ((this.m_ConstraintViolation == 0) && (indy.m_ConstraintViolation > 0)) return true;
-        if ((this.m_ConstraintViolation > 0) && (indy.m_ConstraintViolation > 0)) {
-            if (this.m_ConstraintViolation > indy.m_ConstraintViolation) return false;
-            else return true;
-        }
-        return isDominatingFitness(getFitness(), tmpFitness);
+        int constrViolComp = compareConstraintViolation(indy);
+        if (constrViolComp==0) return isDominatingFitness(getFitness(), indy.getFitness());
+        else return (constrViolComp > 0);
 //        for (int i = 0; (i < this.m_Fitness.length) && (i < tmpFitness.length); i++) {
 //            if (this.m_Fitness[i] <= tmpFitness[i]) result &= true;
 //            else result &= false;
@@ -677,7 +692,8 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
         return isDominatingFitnessNotEqual(getFitness(), indy.getFitness());
     }
 
-    /** This method will allow you to compare two individuals regarding the dominance.
+    /** 
+     * This method will allow you to compare two individuals regarding the dominance.
      * Note this is dominance! If the individuals are not comparable this method will
      * return false!
      *
@@ -686,19 +702,10 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      */
     public boolean isDominatingDebConstraintsEqual(AbstractEAIndividual indy) {
     	// TODO: should this method really be called "..Equal"?
-        if (this.m_AreaConst4ParallelViolated) return false;
-        if (indy.m_AreaConst4ParallelViolated) return true;
-        if ((this.m_ConstraintViolation > 0) && (indy.m_ConstraintViolation == 0)) return false;
-        if ((this.m_ConstraintViolation == 0) && (indy.m_ConstraintViolation > 0)) return true;
-        if ((this.m_ConstraintViolation > 0) && (indy.m_ConstraintViolation > 0)) {
-            if (this.m_ConstraintViolation > indy.m_ConstraintViolation) return false;
-            else return true;
-        }
-//        for (int i = 0; (i < this.m_Fitness.length) && (i < tmpFitness.length); i++) {
-//            if (this.m_Fitness[i] < tmpFitness[i]) result &= true;
-//            else result &= false;
-//        }
-        return isDominatingFitnessNotEqual(getFitness(), indy.getFitness());
+        int constrViolComp = compareConstraintViolation(indy);
+        if (constrViolComp==0) return isDominatingFitnessNotEqual(getFitness(), indy.getFitness());
+        else return (constrViolComp > 0);
+//        return isDominatingFitnessNotEqual(getFitness(), indy.getFitness());
     }
 
     /** This method can be used to read the current selection probability of the individual.
@@ -869,14 +876,15 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
     public static String getDefaultStringRepresentation(AbstractEAIndividual individual) {
     	// Note that changing this method might change the hashcode of an individual 
     	// which might interfere with some functionality.
-        StringBuffer sb = new StringBuffer(getDefaultDataString(individual));
-
-        sb.append(", fitness: ");
+        StringBuffer sb = new StringBuffer("Fit.: ");
         sb.append(BeanInspector.toString(individual.getFitness()));
         if (individual.isMarkedPenalized() || individual.violatesConstraint()) 
         	sb.append(", X"); 
         sb.append(", ID: ");
         sb.append(individual.getIndyID());
+        sb.append(", ");
+        sb.append(getDefaultDataString(individual));
+
         if (individual.getParentIDs()!=null) {
         	sb.append(", parents: ");
             sb.append(BeanInspector.toString(individual.getParentIDs()));
@@ -996,10 +1004,35 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
 			for (int i=0; i<intData.length; i++) pos[i] = (double)intData[i];
 			return pos;
 		} // TODO check some more types here?
-		EVAERROR.errorMsgOnce("Unhandled case in AbstractEAIndividual.getPosition()!");
+		EVAERROR.errorMsgOnce("Unhandled case in AbstractEAIndividual.getDoublePosition()!");
 		return null;
 	}
     
+	/**
+	 * For any AbstractEAIndividual try to convert its position to double[] and return it.
+	 * Returns null if there is no conversion available.
+	 * 
+	 * @param indy
+	 * @return double valued position of an individual or null
+	 */
+	public static boolean setDoublePosition(AbstractEAIndividual indy, double[] pos) {
+		if (indy instanceof InterfaceESIndividual) {
+			((InterfaceESIndividual)indy).SetDGenotype(pos);
+			return true;
+		} else if (indy instanceof InterfaceDataTypeDouble) {
+			((InterfaceDataTypeDouble)indy).SetDoubleGenotype(pos);
+			return true;
+		} else if (indy instanceof InterfaceDataTypeInteger) {
+			EVAERROR.errorMsgOnce("Warning, double position truncated to integer! (AbstractEAIndividual.setDoublePosition)");
+			int[] intData = new int[pos.length];
+			for (int i=0; i<intData.length; i++) intData[i] = (int)pos[i];
+			((InterfaceDataTypeInteger)indy).SetIntGenotype(intData);
+			return true;
+		} // TODO check some more types here?
+		EVAERROR.errorMsgOnce("Unhandled case in AbstractEAIndividual.setDoublePosition()!");
+		return false;
+	}
+	
 	/**
 	 * Try to convert the individuals position to double[] and return it.
 	 * Returns null if there is no conversion available.

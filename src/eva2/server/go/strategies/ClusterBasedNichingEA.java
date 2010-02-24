@@ -327,7 +327,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
      * @return True if converged.
      */
     private boolean testSpeciesForConvergence(Population pop) {
-        ArrayList<AbstractEAIndividual> speciesHistory = pop.m_History;
+        ArrayList<AbstractEAIndividual> speciesHistory = pop.getHistory();
         int     histLen = speciesHistory.size();
 
         if (histLen <= haltingWindow) {
@@ -762,7 +762,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
     	if (plot && (m_Topology!=null)) plotLine(m_Topology, spec1.getBestEAIndividual(), spec2.getBestEAIndividual());
     	spec1.addPopulation(spec2);
     	// keep longer history
-        if (spec2.m_History.size() > spec1.m_History.size()) spec1.m_History = spec2.m_History;
+        if (spec2.getHistoryLength() > spec1.getHistoryLength()) spec1.SetHistory(spec2.getHistory());
         if (spec2.getGeneration() > spec1.getGeneration()) spec1.setGenerationTo(spec2.getGeneration());
         // possibly notify the optimizer of the merging event to merge population based information
         if (m_Optimizer instanceof InterfaceSpeciesAware) ((InterfaceSpeciesAware)m_Optimizer).mergeToFirstPopulationEvent(spec1, spec2);
@@ -780,10 +780,10 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
 		newSp.setUseHistory(true);
     	if (startAtP1Gen) { // start explicitely as a child population of p1
     		newSp.setGenerationTo(parentSp.getGeneration());
-    		newSp.m_History = (ArrayList<AbstractEAIndividual>) parentSp.m_History.clone();
+    		newSp.SetHistory((ArrayList<AbstractEAIndividual>) parentSp.getHistory().clone());
     	} else { // start anew (from undiff)
         	newSp.setGenerationTo(0);
-            newSp.m_History = new ArrayList<AbstractEAIndividual>();
+            newSp.SetHistory(new ArrayList<AbstractEAIndividual>());
     	}
     	
         if (m_Optimizer instanceof InterfaceSpeciesAware) ((InterfaceSpeciesAware)m_Optimizer).splitFromFirst(parentSp, newSp);

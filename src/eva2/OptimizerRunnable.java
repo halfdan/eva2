@@ -37,6 +37,7 @@ public class OptimizerRunnable implements Runnable {
 	private boolean doRestart = false; // indicate whether start or restart should be done --> whether pop will be reinitialized.
 	private boolean postProcessOnly = false;
 	private InterfaceTextListener listener = null;
+	private String ident="OptimizerRunnable";
 	
 	/**
 	 * Construct an OptimizerRunnable with given parameters and a StatisticsStandalone instance without restart,
@@ -85,6 +86,14 @@ public class OptimizerRunnable implements Runnable {
 		proc = new Processor(stats, null, params);
 		if (proc.getStatistics() instanceof AbstractStatistics) ((AbstractStatistics)proc.getStatistics()).setSaveParams(false);
 		doRestart = restart;
+	}
+	
+	public void setIdentifier(String id) {
+		ident=id;
+	}
+	
+	public String getIdentifier() {
+		return ident;
 	}
 	
 	public InterfaceGOParameters getGOParams() {

@@ -4,27 +4,19 @@ import java.util.ArrayList;
 import java.util.Random;
 
 
-/**
- * 
- */
-public class RNG extends Random {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1565216859128723844L;
+public class RNG {
 	private static Random random;
 	private static long randomSeed;
 	/**
 	 *
 	 */
 	static {
-		randomSeed = System.currentTimeMillis();
-		random = new Random(randomSeed);
+		randomSeed=System.currentTimeMillis();
+		random=new Random(randomSeed);
 	}
-
 	/**
-	  *
-	  */
+	 *
+	 */
 	public static void setRandomSeed(long new_seed) {
 		// counter++;
 		randomSeed = new_seed;
@@ -43,23 +35,23 @@ public class RNG extends Random {
 	}
 
 	/**
-	   *
-	   */
+	 *
+	 */
 	public static void setRandomSeed() {
 		randomSeed = System.currentTimeMillis();
 		random = new Random(randomSeed);
 	}
 
 	/**
-	   *
-	   */
+	 *
+	 */
 	public static void setRandom(Random base_random) {
 		random = base_random;
 	}
 
 	/**
-	   *
-	   */
+	 *
+	 */
 	public static long getRandomSeed() {
 		return randomSeed;
 	}
@@ -157,6 +149,25 @@ public class RNG extends Random {
 		return result;
 	}
 
+	/** This method returns a evenly distributed int value.
+	 * The boundarys are included.
+	 * @param lo         Lower bound.
+	 * @param hi         Upper bound.
+	 * @return int
+	 */
+	public static int randomInt(Random rand, int lo,int hi) {
+		if (hi<lo) {
+			System.err.println("Invalid boundary values! Returning zero.");
+			return -1;
+		}
+		int result = (Math.abs(rand.nextInt())%(hi-lo+1))+lo;
+		if ((result < lo) || (result > hi)) {
+			System.err.println("Error, invalid value " + result + " in RNG.randomInt! boundaries were lo/hi: " + lo + " / " + hi);
+			result = Math.abs(rand.nextInt()%(hi-lo+1))+lo;
+		}
+		return result;
+	}
+
 	/**
 	 * Returns a random long between 0 and Long.MAX_VALUE-1 (inclusively).
 	 */
@@ -172,15 +183,15 @@ public class RNG extends Random {
 	}
 
 	/**
-	   *
-	   */
+	 *
+	 */
 	public static float randomFloat() {
 		return random.nextFloat();
 	}
 
 	/**
-	   *
-	   */
+	 *
+	 */
 	public static float randomFloat(float lo, float hi) {
 		return (hi - lo) * random.nextFloat() + lo;
 	}
@@ -193,19 +204,23 @@ public class RNG extends Random {
 	}
 
 	/**
-	   *
-	   */
-	public static double randomDouble(double lo, double hi) {
-		return (hi - lo) * random.nextDouble() + lo;
+	 *
+	 */
+	public static double randomDouble(double lo,double hi) {
+		return (hi-lo)*random.nextDouble()+lo;
+	}
+
+	public static double randomDouble(Random rand, double lo,double hi) {
+		return (hi-lo)*rand.nextDouble()+lo;
 	}
 
 	/**
 	 * Create a uniform random vector within the given bounds.
 	 */
-	public static double[] randomDoubleArray(double[] lo, double[] hi) {
+	public static double[] randomDoubleArray(double[] lo,double[] hi) {
 		double[] xin = new double[lo.length];
-		for (int i = 0; i < lo.length; i++)
-			xin[i] = (hi[i] - lo[i]) * random.nextDouble() + lo[i];
+		for (int i=0;i<lo.length;i++)
+			xin[i] = (hi[i]-lo[i])*random.nextDouble()+lo[i];
 		return xin;
 	}
 
@@ -214,48 +229,50 @@ public class RNG extends Random {
 	 */
 	public static double[] randomDoubleArray(double[][] range) {
 		double[] xin = new double[range.length];
-		for (int i = 0; i < xin.length; i++)
-			xin[i] = (range[i][1] - range[i][0]) * random.nextDouble()
-					+ range[i][0];
+		for (int i=0;i<xin.length;i++)
+			xin[i] = (range[i][1]-range[i][0])*random.nextDouble()+range[i][0];
 		return xin;
 	}
 
 	/**
-	 * Create a uniform random double vector within the given bounds (inclusive)
-	 * in every dimension.
+	 * Create a uniform random double vector within the given bounds (inclusive) in every dimension.
 	 * 
 	 * @param lower
 	 * @param upper
 	 * @param size
 	 * @return
 	 */
-	public static double[] randomDoubleArray(double lower, double upper,
-			int size) {
+	public static double[] randomDoubleArray(double lower, double upper, int size) {
 		double[] result = new double[size];
 		for (int i = 0; i < result.length; i++) {
 			result[i] = RNG.randomDouble(lower, upper);
 		}
 		return result;
-		// double[] xin = new double[size];
-		// for (int i=0;i<size;i++)
-		// xin[i] = (hi-lo)*random.nextDouble()+lo;
-		// return xin;
+		//	    double[] xin = new double[size];
+		//	    for (int i=0;i<size;i++)
+		//	      xin[i] = (hi-lo)*random.nextDouble()+lo;
+		//	    return xin;
 	}
 
+	public static double[] randomDoubleArray(Random rand, double lower, double upper, int size) {
+		double[] result = new double[size];
+		for (int i = 0; i < result.length; i++) {
+			result[i] = RNG.randomDouble(rand, lower, upper);
+		}
+		return result;
+	}
 	/**
-	   *
-	   */
-	public static double[] randomDoubleArray(double[] lo, double[] hi,
-			double[] xin) {
-		// counter++;
-		for (int i = 0; i < lo.length; i++)
-			xin[i] = (hi[i] - lo[i]) * random.nextDouble() + lo[i];
+	 *
+	 */
+	public static double[] randomDoubleArray(double[] lo,double[] hi,double[] xin) {
+		//counter++;
+		for (int i=0;i<lo.length;i++)
+			xin[i] = (hi[i]-lo[i])*random.nextDouble()+lo[i];
 		return xin;
 	}
 
 	/**
-	 * Create a uniform random integer vector within the given bounds
-	 * (inclusive) in every dimension.
+	 * Create a uniform random integer vector within the given bounds (inclusive) in every dimension.
 	 * 
 	 * @param n
 	 * @param lower
@@ -270,17 +287,24 @@ public class RNG extends Random {
 		return result;
 	}
 
+	public static int[] randomIntArray(Random rand, int lower, int upper, int size) {
+		int[] result = new int[size];
+		for (int i = 0; i < result.length; i++) {
+			result[i] = RNG.randomInt(rand, lower, upper);
+		}
+		return result;
+	}
 	/**
-	   *
-	   */
+	 *
+	 */
 	public static boolean randomBoolean() {
 		// counter++;
 		return (randomInt() == 1);
 	}
 
 	/**
-	   *
-	   */
+	 *
+	 */
 	public static int randomBit() {
 		// counter++;
 		return randomInt();
@@ -298,8 +322,8 @@ public class RNG extends Random {
 	}
 
 	/**
-	   *
-	   */
+	 *
+	 */
 	public static float gaussianFloat(float dev) {
 		// counter++;
 		return (float) random.nextGaussian() * dev;
@@ -318,16 +342,16 @@ public class RNG extends Random {
 	}
 
 	/**
-	   *
-	   */
+	 *
+	 */
 	public static float exponentialFloat(float mean) {
 		// counter++;
 		return (float) (-mean * Math.log(randomDouble()));
 	}
 
 	/**
-	   *
-	   */
+	 *
+	 */
 	public static double exponentialDouble(double mean) {
 		// counter++;
 		return -mean * Math.log(randomDouble());

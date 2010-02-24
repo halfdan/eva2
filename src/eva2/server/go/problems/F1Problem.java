@@ -44,6 +44,7 @@ public class F1Problem extends AbstractProblemDoubleOffset implements Interface2
      * @return  The m-dimensional output vector.
      */
     public double[] eval(double[] x) {
+    	x = rotateMaybe(x);
         double[] result = new double[1];
         result[0]     = m_YOffSet;
         // add an offset in solution space
@@ -89,6 +90,7 @@ public class F1Problem extends AbstractProblemDoubleOffset implements Interface2
     }
 
 	public double[] getFirstOrderGradients(double[] x) {
+		x = rotateMaybe(x);
 		// first order partial derivation in direction x_i is 2*x_i
 		double[] grads=new double[x.length];
 		for (int i=0; i<x.length; i++) {

@@ -122,10 +122,10 @@ private static final boolean TRACE = false;
    */
   public DRectangle getDRectangle(){
     DRectangle rect = (DRectangle)visible_rect.clone();
-    if( min_x != null ) rect.x      = Math.max(rect.x,      getMinX()            );
-    if( min_y != null ) rect.y      = Math.max(rect.y,      getMinY()            );
-    if( max_x != null ) rect.width  = Math.min(rect.width,  getMaxX() - getMinX());
-    if( max_y != null ) rect.height = Math.min(rect.height, getMaxY() - getMinY());
+    if( min_x != null ) rect.setX(Math.max(rect.getX(),      getMinX()            ));
+    if( min_y != null ) rect.setY(Math.max(rect.getY(),      getMinY()            ));
+    if( max_x != null ) rect.setWidth(Math.min(rect.getWidth(),  getMaxX() - getMinX()));
+    if( max_y != null ) rect.setHeight(Math.min(rect.getHeight(), getMaxY() - getMinY()));
     return rect;
   }
 
@@ -135,7 +135,7 @@ private static final boolean TRACE = false;
    * @return DRectangle the size and position of the visible area
    */
   public SlimRect getSlimRectangle(){
-	  SlimRect srect = new SlimRect(visible_rect.x, visible_rect.y, visible_rect.width, visible_rect.height);
+	  SlimRect srect = new SlimRect(visible_rect.getX(), visible_rect.getY(), visible_rect.getWidth(), visible_rect.getHeight());
     if( min_x != null ) srect.x      = Math.max(srect.x,      getMinX()            );
     if( min_y != null ) srect.y      = Math.max(srect.y,      getMinY()            );
     if( max_x != null ) srect.width  = Math.min(srect.width,  getMaxX() - getMinX());
@@ -186,7 +186,7 @@ private static final boolean TRACE = false;
         "You shopuld never try to set an empty rectangle\n"
         + "as the visible rectangle of an DArea" );
 
-    if( !rect.equals( visible_rect ) && rect.width > 0 && rect.height > 0 ){
+    if( !rect.equals( visible_rect ) && rect.getWidth() > 0 && rect.getHeight() > 0 ){
       auto_focus = false;
       visible_rect = (DRectangle)rect.clone();
       repaint();
@@ -278,7 +278,7 @@ private static final boolean TRACE = false;
    * @param mix the minimal x-value
    */
   public void setMinX( double mix ){
-    if( mix > min_rect.x ) throw
+    if( mix > min_rect.getX() ) throw
       new IllegalArgumentException(
         "Mimimal y-value axes intersects minmal rectangle.");
     min_x = new Double( mix );
@@ -309,7 +309,7 @@ private static final boolean TRACE = false;
    * @param miy the minimal y-value
    */
   public void setMinY( double miy ){
-    if( miy > min_rect.y ) throw
+    if( miy > min_rect.getY() ) throw
       new IllegalArgumentException(
         "Mimimal y-value axes intersects minmal rectangle.");
     min_y = new Double( miy );
@@ -341,7 +341,7 @@ private static final boolean TRACE = false;
    * @param max the maximal x-value
    */
   public void setMaxX( double max ){
-    if( max < min_rect.x + min_rect.width ) throw
+    if( max < min_rect.getX() + min_rect.getWidth() ) throw
       new IllegalArgumentException(
         "Maximal x-value axes intersects minmal rectangle.");
     max_x = new Double( max );
@@ -373,7 +373,7 @@ private static final boolean TRACE = false;
    * @param may the maximal y-value
    */
   public void setMaxY( double may ){
-    if( may < min_rect.y + min_rect.height ) throw
+    if( may < min_rect.getY() + min_rect.getHeight() ) throw
       new IllegalArgumentException(
         "Maximal y-value axes intersects minmal rectangle.");
     max_y = new Double( may );
@@ -432,8 +432,10 @@ private static final boolean TRACE = false;
       new IllegalArgumentException("Cannot repaint a null DRectangle");
     if( r.isAll() || auto_focus ) repaint();
     else{
-      Point p1 = measures.getPoint( r.x, r.y ),
-            p2 = measures.getPoint( r.x + r.width, r.y + r.height);
+        Point p1 = measures.getPoint( r.getX(), r.getY() ),
+        p2 = measures.getPoint( r.getX() + r.getWidth(), r.getY() + r.getHeight());
+//        Point p1 = measures.getPoint( r.x, r.y ),
+//        p2 = measures.getPoint( r.x + r.width, r.y + r.height);
       if( p1 == null || p2 == null ) repaint();
       else {
         DBorder b = getDBorder();
@@ -690,8 +692,8 @@ private static final boolean TRACE = false;
         return;
       }
       else{
-    	  grid.setDistances(ScaledBorder.aBitBigger( grid.rectangle.width / max_grid ), 
-    			  ScaledBorder.aBitBigger( grid.rectangle.height / max_grid ));
+    	  grid.setDistances(ScaledBorder.aBitBigger( grid.rectangle.getWidth() / max_grid ), 
+    			  ScaledBorder.aBitBigger( grid.rectangle.getHeight() / max_grid ));
       }
     }
     grid.paint( m );

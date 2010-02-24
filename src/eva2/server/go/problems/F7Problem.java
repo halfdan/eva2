@@ -70,6 +70,7 @@ public class F7Problem extends AbstractProblemDoubleOffset implements java.io.Se
      * @return  The m-dimensional output vector.
      */
     public double[] eval(double[] x) {
+    	x = rotateMaybe(x);
         double[] result = new double[1];
         result[0]     = m_YOffSet;
         if ((Math.floor(this.m_CurrentTimeStamp / this.m_t)%2) == 0) {

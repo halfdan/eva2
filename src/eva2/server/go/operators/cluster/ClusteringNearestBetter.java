@@ -11,6 +11,8 @@ import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.AbstractEAIndividualComparator;
 import eva2.server.go.operators.distancemetric.InterfaceDistanceMetric;
 import eva2.server.go.operators.distancemetric.PhenotypeMetric;
+import eva2.server.go.operators.paramcontrol.ParamAdaption;
+import eva2.server.go.operators.paramcontrol.ParameterControlManager;
 import eva2.server.go.populations.Population;
 import eva2.tools.Pair;
 
@@ -34,7 +36,8 @@ public class ClusteringNearestBetter implements InterfaceClustering, Serializabl
     private double							currentMeanDistance = -1.;
     private int                         	minimumGroupSize  = 3;
 	private boolean 						testConvergingSpeciesOnBestOnly = true; // if two species are tested for convergence, only the best indies may be compared regarding the distance threshold 
-
+	protected ParameterControlManager		paramControl = new ParameterControlManager();
+	
 	private int[]                 			uplink;
     private double[]						uplinkDist;
     private AbstractEAIndividualComparator comparator = new AbstractEAIndividualComparator();
@@ -42,7 +45,7 @@ public class ClusteringNearestBetter implements InterfaceClustering, Serializabl
 	private static final String initializedForKey = "initializedClustNearestBetterOnHash";
 	private static final String initializedRefData = "initializedClustNearestBetterData";
 	
-	private static boolean TRACE = true;
+	private static boolean TRACE = false;
 
 	public ClusteringNearestBetter() {
 	}
@@ -58,9 +61,35 @@ public class ClusteringNearestBetter implements InterfaceClustering, Serializabl
     	this.testConvergingSpeciesOnBestOnly = o.testConvergingSpeciesOnBestOnly;
 	}
     
-    public void hideHideable() {
+    /**
+     * Set the mean distance factor in the adaptive case or the absolute distance
+     * threshold in the non-adaptive case.
+     * 
+     * @param adaptive
+     * @param thresholdOrFactor
+     * 
+     */
+    public ClusteringNearestBetter(boolean adaptive, double thresholdOrFactor) {
+    	setAdaptiveThreshold(adaptive);
+    	if (adaptive) setMeanDistFactor(thresholdOrFactor);
+    	else setDistThreshold(thresholdOrFactor);
+	}
+
+	public void hideHideable() {
     	setAdaptiveThreshold(isAdaptiveThreshold());
     }
+    
+	public ParameterControlManager getParamControl() {
+		return paramControl;
+	}
+	
+	public ParamAdaption[] getParameterControl() {
+		return paramControl.getSingleAdapters();
+	}
+	
+	public void setParameterControl(ParamAdaption[] paramControl) {
+		this.paramControl.setSingleAdapters(paramControl);
+	}
 
 	/** This method allows you to make a deep clone of
      * the object
@@ -289,7 +318,10 @@ public class ClusteringNearestBetter implements InterfaceClustering, Serializabl
 					// so add it to the cluster, mark it, and proceed recursively.
 					currentClust.add(sorted.get(children[current].get(i)));
 					clustered[children[current].get(i)]=true;
+					if (TRACE) System.out.println("Assigned " + current);
 					addChildren(children[current].get(i), clustered, sorted, currentClust);
+				} else {
+					if (TRACE) System.out.println("Not assigned " + current);
 				}
 			}
 		} else {

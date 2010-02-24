@@ -2,28 +2,26 @@ package eva2.server.go.problems;
 
 import eva2.server.go.individuals.ESIndividualDoubleData;
 import eva2.tools.math.Mathematics;
+import eva2.server.go.operators.postprocess.SolutionHistogram;
+import eva2.server.go.populations.Population;
+import eva2.server.go.strategies.GradientDescentAlgorithm;
 import eva2.tools.math.Jama.Matrix;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 30.06.2005
- * Time: 13:09:36
- * To change this template use File | Settings | File Templates.
+ * Generalized Rastrigin's function.
+ * 
  */
-public class F6Problem extends AbstractProblemDoubleOffset implements InterfaceMultimodalProblem, InterfaceFirstOrderDerivableProblem, java.io.Serializable {
-
-	private boolean 		doRotation = false;
+public class F6Problem extends AbstractProblemDoubleOffset
+implements InterfaceMultimodalProblem, InterfaceFirstOrderDerivableProblem, InterfaceLocalSearchable, java.io.Serializable, InterfaceInterestingHistogram {
     private double          m_A     = 10;
     private double          m_Omega = 2*Math.PI;
-    private Matrix 			rotation;
+	private transient GradientDescentAlgorithm localSearchOptimizer=null;
 
     public F6Problem() {
         this.m_Template         = new ESIndividualDoubleData();
     }
     public F6Problem(F6Problem b) {
-        super(b);       
-        doRotation 				= b.doRotation;
+        super(b);
         this.m_A                = b.m_A;
         this.m_Omega            = b.m_Omega;
     }
@@ -31,17 +29,6 @@ public class F6Problem extends AbstractProblemDoubleOffset implements InterfaceM
     public F6Problem(int dim) {
 		super(dim);
 	}
-	/** This method inits the Problem to log multiruns
-     */
-    public void initProblem() {
-        super.initProblem();
-        if (doRotation) {
-        	rotation = new Matrix(m_ProblemDimension, m_ProblemDimension);
-        	Matrix vec = new Matrix(m_ProblemDimension, 1);
-        	for (int i=0; i<m_ProblemDimension; i++) vec.set(i,0, i+1);
-        	rotation = Mathematics.getRotationMatrix(vec).transpose();
-        } else rotation = null;
-    }
     
     /** This method returns a deep clone of the problem.
      * @return  the clone
@@ -55,10 +42,7 @@ public class F6Problem extends AbstractProblemDoubleOffset implements InterfaceM
      * @return  The m-dimensional output vector.
      */
     public double[] eval(double[] x) {
-    	if (doRotation) {
-	    	Matrix resVec = rotation.times(new Matrix(x, x.length));
-	    	x = resVec.getColumnPackedCopy();
-    	}
+    	x = rotateMaybe(x);
         double[] result = new double[1];
         result[0]     = x.length * this.m_A + m_YOffSet;
         for (int i = 0; i < x.length; i++) {
@@ -69,10 +53,7 @@ public class F6Problem extends AbstractProblemDoubleOffset implements InterfaceM
     }
     
 	public double[] getFirstOrderGradients(double[] x) {
-    	if (doRotation) {
-	    	Matrix resVec = rotation.times(new Matrix(x, x.length));
-	    	x = resVec.getColumnPackedCopy();
-    	}
+		x = rotateMaybe(x);
         double[] result = new double[x.length];        
         for (int j=0; j<x.length; j++) {
         	result[j]=0;
@@ -141,10 +122,36 @@ public class F6Problem extends AbstractProblemDoubleOffset implements InterfaceM
     public String omegaTipText() {
         return "Choose Omega.";
     }
-	public boolean isDoRotation() {
-		return doRotation;
+    
+    public void setDefaultAccuracy(double acc) {
+    	super.SetDefaultAccuracy(acc);
+    }
+
+	public SolutionHistogram getHistogram() {
+		if (getProblemDimension() < 15) return new SolutionHistogram(-0.5, 15.5, 16);
+		else if (getProblemDimension() < 25) return new SolutionHistogram(-0.5, 39.5, 16);
+		else return new SolutionHistogram(0, 80, 16);
 	}
-	public void setDoRotation(boolean doRotation) {
-		this.doRotation = doRotation;
-	}
+	
+    public void doLocalSearch(Population pop) {
+    	if (localSearchOptimizer == null) {
+    		initLS();
+    	}
+    	localSearchOptimizer.setPopulation(pop);
+    	localSearchOptimizer.optimize();
+    }
+
+    private void initLS() {
+		localSearchOptimizer = new GradientDescentAlgorithm();
+	    localSearchOptimizer.SetProblem(this);
+	    localSearchOptimizer.init();
+    }
+
+    public double getLocalSearchStepFunctionCallEquivalent() {
+    	double cost = 1;
+    	if (this.localSearchOptimizer instanceof GradientDescentAlgorithm) {
+    		cost = ((GradientDescentAlgorithm) localSearchOptimizer).getIterations();
+    	}
+    	return cost;
+    }
 }

@@ -1,6 +1,8 @@
 package eva2.server.go.problems;
 
 import eva2.server.go.individuals.ESIndividualDoubleData;
+import eva2.server.go.populations.Population;
+import eva2.server.go.strategies.GradientDescentAlgorithm;
 
 /**
  * Created by IntelliJ IDEA.
@@ -9,9 +11,12 @@ import eva2.server.go.individuals.ESIndividualDoubleData;
  * Time: 19:03:09
  * To change this template use File | Settings | File Templates.
  */
-public class F2Problem extends AbstractProblemDoubleOffset implements InterfaceMultimodalProblem, java.io.Serializable, InterfaceFirstOrderDerivableProblem {
+public class F2Problem extends AbstractProblemDoubleOffset implements InterfaceLocalSearchable, InterfaceMultimodalProblem, java.io.Serializable, InterfaceFirstOrderDerivableProblem {
 
-    public F2Problem() {
+    private transient GradientDescentAlgorithm localSearchOptimizer=null;
+
+
+	public F2Problem() {
         this.m_Template         = new ESIndividualDoubleData();
     }
     public F2Problem(F2Problem b) {
@@ -33,6 +38,7 @@ public class F2Problem extends AbstractProblemDoubleOffset implements InterfaceM
      * @return  The m-dimensional output vector.
      */
     public double[] eval(double[] x) {
+    	x = rotateMaybe(x);
         double[] result = new double[1];
         result[0]     = m_YOffSet;
         double xi, xii;
@@ -46,6 +52,7 @@ public class F2Problem extends AbstractProblemDoubleOffset implements InterfaceM
     }
     
 	public double[] getFirstOrderGradients(double[] x) {
+		x = rotateMaybe(x);
         int dim = x.length;
         double[] result = new double[dim];
         double xi, xii;
@@ -92,5 +99,27 @@ public class F2Problem extends AbstractProblemDoubleOffset implements InterfaceM
      */
     public String globalInfo() {
         return "Generalized Rosenbrock's function.";
+    }
+
+    public void doLocalSearch(Population pop) {
+    	if (localSearchOptimizer == null) {
+    		initLS();
+    	}
+    	localSearchOptimizer.setPopulation(pop);
+    	localSearchOptimizer.optimize();
+    }
+
+    private void initLS() {
+		localSearchOptimizer = new GradientDescentAlgorithm();
+	    localSearchOptimizer.SetProblem(this);
+	    localSearchOptimizer.init();
+    }
+
+    public double getLocalSearchStepFunctionCallEquivalent() {
+    	double cost = 1;
+    	if (this.localSearchOptimizer instanceof GradientDescentAlgorithm) {
+    		cost = ((GradientDescentAlgorithm) localSearchOptimizer).getIterations();
+    	}
+    	return cost;
     }
 }

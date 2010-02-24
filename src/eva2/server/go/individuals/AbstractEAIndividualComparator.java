@@ -23,31 +23,31 @@ import java.util.Comparator;
 public class AbstractEAIndividualComparator implements Comparator<Object>, Serializable {
 
 	// flag whether a data field should be used.
-	String indyDataKey = "";
-	int fitCriterion = -1;
+	private String indyDataKey = "";
+	private int fitCriterion = -1;
+	private boolean preferFeasible = true;
 	
 	/**
 	 * Comparator implementation which compares two individuals based on their fitness.
-	 * The default version calls isDominatingDebConstraints() of the AbstractEAIndividual
-	 * class and assigns -1 if first is dominant, 1 if second is dominant, 0 if the two ind.s
-	 * are not comparable.
+	 * The default version calls compares based on dominance with priority of feasibility if there are constraints.
+	 * It assigns -1 if first is better, 1 if second is better, 0 if the two ind.s are not comparable.
 	 *
 	 */
 	public AbstractEAIndividualComparator() {
-		this("", -1);
+		this("", -1, true);
 	}
 	
 	/**
 	 * Constructor with data key. A data field of the individuals may be used to retrieve
 	 * the double array used for comparison. Both individuals must have a data field with
-	 * the given key and return a double array of the same dimension. No constraints are 
-	 * regarded for this comparison.
+	 * the given key and return a double array of the same dimension. Constraints are 
+	 * also regarded by default.
 	 * If indyDataKey is null, the default comparison is used.
 	 * 
 	 * @param indyDataKey
 	 */
 	public AbstractEAIndividualComparator(String indyDataKey) {
-		this(indyDataKey, -1);		
+		this(indyDataKey, -1, true);		
 	}
 	
 	/**
@@ -57,7 +57,11 @@ public class AbstractEAIndividualComparator implements Comparator<Object>, Seria
 	 * @param fitnessCriterion
 	 */
 	public AbstractEAIndividualComparator(int fitnessCriterion) {
-		this("", fitnessCriterion);
+		this("", fitnessCriterion, true);
+	}
+	
+	public AbstractEAIndividualComparator(int fitIndex, boolean preferFeasible) {
+		this("", fitIndex, preferFeasible);
 	}
 	
 	/**
@@ -67,16 +71,20 @@ public class AbstractEAIndividualComparator implements Comparator<Object>, Seria
 	 * @see #AbstractEAIndividualComparator(String)
 	 * @param indyDataKey
 	 * @param fitnessCriterion
+	 * @param priorizeConstraints
 	 */
-	public AbstractEAIndividualComparator(String indDataKey, int fitnessCriterion) {
-		indyDataKey = indDataKey;
-		fitCriterion = fitnessCriterion;	
+	public AbstractEAIndividualComparator(String indDataKey, int fitnessCriterion, boolean preferFeasible) {
+		this.indyDataKey = indDataKey;
+		this.fitCriterion = fitnessCriterion;
+		this.preferFeasible = preferFeasible;
 	}
 
 	public AbstractEAIndividualComparator(AbstractEAIndividualComparator other) {
 		indyDataKey = other.indyDataKey;
+		fitCriterion = other.fitCriterion;
+		preferFeasible = other.preferFeasible;
 	}
-	
+
 	public Object clone() {
 		return new AbstractEAIndividualComparator(this);
 	}
@@ -92,9 +100,16 @@ public class AbstractEAIndividualComparator implements Comparator<Object>, Seria
 	public int compare(Object o1, Object o2) {
 		boolean o1domO2, o2domO1;
 		
-		if (indyDataKey != null && (indyDataKey.length()>0)) {
+		if (preferFeasible) { // check constraint violation first?
+			int constrViolComp = ((AbstractEAIndividual) o1).compareConstraintViolation((AbstractEAIndividual) o2);
+			if (constrViolComp>0) return -1;
+			else if (constrViolComp < 0) return 1;
+			// otherwise both do not violate, so regard fitness
+		}
+		if (indyDataKey != null && (indyDataKey.length()>0)) { // check specific key
 			double[] fit1 = (double[])((AbstractEAIndividual)o1).getData(indyDataKey);
 			double[] fit2 = (double[])((AbstractEAIndividual)o2).getData(indyDataKey);
+			if ((fit1==null) || (fit2==null)) throw new RuntimeException("Unknown individual data key " + indyDataKey + ", unable to compare individuals ("+this.getClass().getSimpleName()+")");
 			if (fitCriterion < 0) {
 				o1domO2 = AbstractEAIndividual.isDominatingFitness(fit1, fit2);
 				o2domO1 = AbstractEAIndividual.isDominatingFitness(fit2, fit1);
@@ -104,15 +119,15 @@ public class AbstractEAIndividualComparator implements Comparator<Object>, Seria
 			}
 		} else {
 			if (fitCriterion < 0) {
-				o1domO2 = ((AbstractEAIndividual) o1).isDominatingDebConstraints((AbstractEAIndividual) o2);
-				o2domO1 = ((AbstractEAIndividual) o2).isDominatingDebConstraints((AbstractEAIndividual) o1);
+				o1domO2 = ((AbstractEAIndividual) o1).isDominating((AbstractEAIndividual) o2);
+				o2domO1 = ((AbstractEAIndividual) o2).isDominating((AbstractEAIndividual) o1);
 			} else {
 				if (((AbstractEAIndividual) o1).getFitness()[fitCriterion] == ((AbstractEAIndividual) o2).getFitness()[fitCriterion]) return 0;
 				return (((AbstractEAIndividual) o1).getFitness()[fitCriterion] < ((AbstractEAIndividual) o2).getFitness()[fitCriterion]) ? -1 : 1;
 			}
 		}
-		if (o1domO2 ^ o2domO1) return (o1domO2 ? -1 : 1);
-		else return 0; // these are not comparable
+		if (o1domO2 ^ o2domO1) return (o1domO2 ? -1 : 1); // they are comparable
+		else return 0; // they are not comparable
 	}
 
 	public String getIndyDataKey() {
@@ -133,6 +148,16 @@ public class AbstractEAIndividualComparator implements Comparator<Object>, Seria
 	}
 	public String fitCriterionTipText() {
 		return "If -1, dominance is used, otherwise the indexed fitness criterion (for multiobjective problems)"; 
+	}
+	
+	public boolean isPreferFeasible() {
+		return preferFeasible;
+	}
+	public void setPreferFeasible(boolean priorConst) {
+		preferFeasible = priorConst;
+	}
+	public String preferFeasibleTipText() {
+		return "Activate preference of feasible individuals in any comparison acc. to Deb's rules.";
 	}
 	
 	public String globalInfo() {

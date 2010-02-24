@@ -1,5 +1,6 @@
 package eva2.tools;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.StringTokenizer;
 
@@ -72,7 +73,7 @@ public class StringTools {
 	 * with their arities. Returns for each key a value depending on arity and whether it was found.
 	 * For any key, if it was not found null is returned as value. Its index in the keys array is contained
 	 * in the returned integer array.
-	 * For any key, if it was found, the corresponding value is either Boolean(true) for zero-arity-keys
+	 * For any key, if it was found, the corresponding value is a String containing "true" for zero-arity-keys
 	 * or a String array of length of the arity containing the arguments to the key. 
 	 * 
 	 * @param args
@@ -88,16 +89,30 @@ public class StringTools {
     	for (int i=0; i<args.length; i++) { // loop all arguments
     		boolean found=false;
     		for (int k=0; k<keys.length; k++) { // loop all keys
+    			if (found || (i>=args.length)) break; // if a key was found look at next argument
 	    		if ((ignoreCase && (args[i].equalsIgnoreCase(keys[k]))) 
 	    				|| (!ignoreCase && (args[i].equals(keys[k])))) { // if the key was found
 	    			found=true;
-	    			if (arities[k]==0) values[k]=new Boolean(true); // and its zero-arity, just return true as its value
+	    			if (arities[k]==0) values[k]=new String("true"); // and its zero-arity, just return true as its value
 	    			else { // else return an array of size arity with following strings
-	    				values[k]=new String[arities[k]];
-	    				for (int j=0; j<arities[k]; j++) {
-	    					i++;
-	    					((String[])values[k])[j]=args[i];
+	    				try {
+	    				if (arities[k]==1) {
+	    					values[k]=args[i+1];
+	    				} else { // create String array and fill with following args depending on arity
+	    					values[k]=new String[arities[k]];
+	    					if (arities[k]>0) {
+	    						for (int j=0; j<arities[k]; j++) {
+	    							((String[])values[k])[j]=args[i+j+1];
+	    						}
+	    						i+=(arities[k]-1); // jump one more for every arity beyond 1
+	    					}
 	    				}
+	    				} catch (ArrayIndexOutOfBoundsException e) {
+	    					String errMsg = "Not enough parameters for option "+ keys[k] + ", expected number of arguments: " + arities[k];
+	    					System.err.println(errMsg);
+	    					throw new RuntimeException(errMsg);
+	    				}
+	    				i++; // jump one cause we had at least arity 1
 	    			}
 	    		}
     		}
@@ -106,6 +121,31 @@ public class StringTools {
     	return unrecogs.toArray(new Integer[unrecogs.size()]);
     }
     
+    /**
+     * Store the arguments in a hash map.
+     * 
+     * @see #parseArguments(String[], String[], int[], Object[], boolean)
+     * @param args
+     * @param keys
+     * @param arities
+     * @param ignoreCase
+     * @return
+     */
+    public static HashMap<String, Object> parseArguments(String[] args, String[] keys, int[] arities, boolean ignoreCase, boolean printErrorsOnUnrecog) {
+    	Object[] values = new Object[keys.length];
+    	Integer[] unrecogs = parseArguments(args, keys, arities, values, ignoreCase);
+    	if (printErrorsOnUnrecog) {
+    		if (unrecogs.length>0) {
+    			System.err.println("Unrecognized command line options: ");
+    			for (int i=0; i<unrecogs.length; i++) System.err.println("   " + args[unrecogs[i]]);
+    		}
+    	}
+    	HashMap<String, Object> map = new HashMap<String, Object>();
+    	for (int i=0; i<keys.length; i++) {
+    		map.put(keys[i], values[i]);
+    	}
+    	return map;
+    }
 	
 	/**
 	 * Check whether an object is a valid String array and if so return the i-th String.

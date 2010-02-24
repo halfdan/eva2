@@ -14,6 +14,7 @@ InterfaceMultimodalProblem {
 	}
 
 	public double[] eval(double[] x) {
+		x = rotateMaybe(x);
 		double[] res = new double[1];
 		double sum = 0;
 		for (int i=0; i<getProblemDimension(); i++) {

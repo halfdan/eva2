@@ -138,8 +138,7 @@ public class EvolutionStrategyIPOP extends EvolutionStrategies implements Interf
     protected void firePropertyChangedEvent(String name) {
     	if (name.equals(Population.funCallIntervalReached)) {
     		super.firePropertyChangedEvent(Population.nextGenerationPerformed);
-    	}
-    	else {} // nothing, evt is produced in #registerPopulationStateChanged, dont forward original due to changing pop size
+    	} else {} // nothing, evt is produced in #registerPopulationStateChanged, dont forward original due to changing pop size
     }
     
     public void init() {
@@ -152,7 +151,7 @@ public class EvolutionStrategyIPOP extends EvolutionStrategies implements Interf
     	super.setLambda(initialLambda);
     	checkPopulationConstraints();
 		setForceOrigPopSize(false);
-    	getPopulation().setNotifyEvalInterval(initialLambda);
+    	getPopulation().setNotifyEvalInterval(Math.max(initialLambda, 100));
     	super.init();
     	bestList = new LinkedList<AbstractEAIndividual>();
     	best = getPopulation().getBestEAIndividual();
@@ -291,13 +290,15 @@ public class EvolutionStrategyIPOP extends EvolutionStrategies implements Interf
 	public double getStagThreshold() {
 		return stagThreshold;
 	}
-
 	/**
 	 * @param stagThreshold the stagThreshold to set
 	 */
 	public void setStagThreshold(double stagThreshold) {
 		this.stagThreshold = stagThreshold;
 		if (fitConvTerm != null) fitConvTerm.setConvergenceThreshold(stagThreshold);
+	}
+	public String getStagThresholdTipText() {
+		return "Trigger new aera if the fitness does not change more than this threshold within certain no. iterations."; 
 	}
 
 	/**

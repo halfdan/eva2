@@ -7,7 +7,8 @@ import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
 
 /**
- * Created by IntelliJ IDEA.
+ * Default 1-point-Crossover on InterfaceESIndividual instances.
+ * 
  * User: streiche
  * Date: 25.03.2003
  * Time: 11:16:39

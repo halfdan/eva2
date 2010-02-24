@@ -10,6 +10,8 @@ public interface InterfaceFirstOrderDerivableProblem {
 
 	/**
 	 * Calculate the first order gradients of this problem.
+	 * If you implement this, be aware that some types of AbstractProblemDouble may be rotated,
+	 * so you may have to use x = rotateMaybe(x) first.
 	 * @param x
 	 * @return the first order gradients of this problem
 	 */

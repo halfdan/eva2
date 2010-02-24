@@ -9,6 +9,7 @@ import eva2.server.go.InterfacePopulationChangedEventListener;
 import eva2.server.go.enums.ESMutationInitialSigma;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceDataTypeDouble;
+import eva2.server.go.operators.distancemetric.EuclideanMetric;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.server.go.strategies.EvolutionStrategies;
@@ -139,7 +140,10 @@ class CMAParamSet implements InterfacePopulationChangedEventListener, Serializab
 //		c_u_sig = Math.sqrt(c_sig * (2.-c_sig));
 		params.d_sig = params.c_sig+1+2*Math.max(0, Math.sqrt((muEff-1)/(dim+1)) - 1);
 		
-		if (initialSigma<0) initialSigma = Mathematics.getAvgRange(params.range);
+		if (initialSigma<0) { // this means we scale the average range
+			if (initialSigma!=-0.25 && (initialSigma!=-0.5)) EVAERROR.errorMsgOnce("Warning, unexpected initial sigma in CMAParamSet!");
+			initialSigma = -initialSigma*Mathematics.getAvgRange(params.range);
+		}
 		if (initialSigma <= 0) {
 			EVAERROR.errorMsgOnce("warning: initial sigma <= zero! Working with converged population?");
 			initialSigma = 10e-10;
@@ -248,7 +252,7 @@ public class MutateESRankMuCMA implements InterfaceMutationGenerational, Seriali
 	// instance, however this would create quite a big baustelle.
 	private static transient CMAParamSet lastParams=null;
 
-	private ESMutationInitialSigma initializeSig = ESMutationInitialSigma.avgInitialDistance;
+	private ESMutationInitialSigma initializeSig = ESMutationInitialSigma.quarterRange;
 	private double userDefInitSig = 0.2;
 	public static final String cmaParamsKey = "RankMuCMAParameters";
 	
@@ -263,6 +267,7 @@ public class MutateESRankMuCMA implements InterfaceMutationGenerational, Seriali
 		this.c_c            = mutator.c_c;
 		this.expRandStepLen     = mutator.expRandStepLen;
 		this.initializeSig = mutator.initializeSig;
+		this.userDefInitSig = mutator.userDefInitSig;
 	}
 
 	public Object clone() {
@@ -272,7 +277,8 @@ public class MutateESRankMuCMA implements InterfaceMutationGenerational, Seriali
 
 	/**
 	 * Retrieve the initial sigma for the given population and the user defined method.
-	 * For the halfRange case, -1 is returned, as the range is not available here.
+	 * For the halfRange case, -1 is returned, as the range is not available here but set 
+	 * in initializing the CMAParams.
 	 * @param initGen
 	 * @return
 	 */
@@ -282,11 +288,13 @@ public class MutateESRankMuCMA implements InterfaceMutationGenerational, Seriali
 			// scaled by average range as the measures are normed
 			//return initGen.getPopulationMeasures(null)[0]*getAvgRange();
 			// use euclidian measures without normation and scaling
-			return initGen.getPopulationMeasures()[0];
+			return initGen.getPopulationMeasures(new EuclideanMetric())[0]; // use euclidean metric which is not normed by range instead of phenotype metric
 		//case halfRange: return getAvgRange(range)/2.;
 		case userDefined: return userDefInitSig ;
-		default: return -1.;
+		case halfRange: return -0.5;
+		case quarterRange: return -0.25;
 		}
+		throw new RuntimeException("Unknown initial sigma type!");
 	}
 	
 	/**
@@ -554,7 +562,8 @@ public class MutateESRankMuCMA implements InterfaceMutationGenerational, Seriali
                     * additional rank mu
                     * update
                     */
-                    	double[] x_k = ((InterfaceDataTypeDouble)selected.getEAIndividual(k)).getDoubleData();
+//                    	double[] x_k = ((InterfaceDataTypeDouble)selected.getEAIndividual(k)).getDoubleData();
+                    	double[] x_k = AbstractEAIndividual.getDoublePositionShallow(selected.getEAIndividual(k));
                     	newVal = params.mC.get(i,j)+ ccv * (1 - 1. / mcv)
                         * params.weights[k]	* (x_k[i] - params.meanX[i])
                         							* (x_k[j] - params.meanX[j]) / (getSigma(params, i) * getSigma(params, j)); // TODO right sigmas?
@@ -753,7 +762,7 @@ public class MutateESRankMuCMA implements InterfaceMutationGenerational, Seriali
 		}
 		if (Mathematics.isInRange(x, range)) return x;
 		else {
-			if (count > 5) return repairMutation(x, range); // allow some nice tries before using brute force
+			if (count > 2*x.length) return repairMutation(x, range); // allow some nice tries before using brute force
 			else return mutate(params, x, range, count+1); // for really bad initial deviations this might be a quasi infinite loop
 		}
 	}
@@ -764,6 +773,7 @@ public class MutateESRankMuCMA implements InterfaceMutationGenerational, Seriali
 //	    % (the latter will decrease the overall step size) and
 //	    % recalculate arx accordingly. Do not change arx or arz in any
 //	    % other way.
+		EVAERROR.errorMsgOnce("Warning, brute-forcing constraints! Too large initial sigma? (pot. multiple errors)");
 		Mathematics.projectToRange(x, range);
 		return x;	
 	}
@@ -895,5 +905,9 @@ public class MutateESRankMuCMA implements InterfaceMutationGenerational, Seriali
 	 */
 	public void setUserDefInitSig(double userDefInitSig) {
 		this.userDefInitSig = userDefInitSig;
+	}
+	
+	public String userDefInitSigTipText() {
+		return "Set a manual initial sigma which should be related to the initial individual distribution.";
 	}
 }

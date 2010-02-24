@@ -19,6 +19,12 @@ public interface InterfaceMultimodalProblemKnown extends InterfaceMultimodalProb
      */
     public void initListOfOptima();
 
+    /**
+     * Return true if the full list of optima is available, else false.
+     * @return
+     */
+    public boolean fullListAvailable();
+    
     /** 
      * This method returns a list of all optima as population or null if 
      * the optima are unknown.
@@ -48,5 +54,5 @@ public interface InterfaceMultimodalProblemKnown extends InterfaceMultimodalProb
      *   
      * @return
      */
-    public double getEpsilon();
+    public double getDefaultAccuracy();
 }

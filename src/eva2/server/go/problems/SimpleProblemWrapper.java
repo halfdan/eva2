@@ -267,9 +267,10 @@ public class SimpleProblemWrapper extends AbstractOptimizationProblem {
      * @return description
      */
     public String globalInfo() {
-    	Object maybeAdditionalString = BeanInspector.callIfAvailable(simProb, "globalInfo", null);
-    	if (maybeAdditionalString != null) {
-    		return "Wrapping a simple problem: " + (String)maybeAdditionalString;
-    	} else return "Wrapping a simple problem.";
+    	return "Wrapping simple problem implementations.";
+    }
+    
+    public String[] getGOEPropertyUpdateLinks() {
+    	return new String[] {"globalInfo", "simpleProblem"};
     }
 }
