@@ -319,7 +319,7 @@ public class ESIndividualPermutationData extends AbstractEAIndividual implements
 
 	 public void defaultInit(InterfaceOptimizationProblem prob) {
 		 double[][][] range = m_Range;
-		 if (prob instanceof InterfaceHasInitRange && (((InterfaceHasInitRange)prob).getInitRange()!=null)) range = (double[][][])((InterfaceHasInitRange)prob).getInitRange();
+		 if ((prob != null) && (prob instanceof InterfaceHasInitRange) && (((InterfaceHasInitRange)prob).getInitRange()!=null)) range = (double[][][])((InterfaceHasInitRange)prob).getInitRange();
 	    	
 		 for (int i = 0; i < this.m_Genotype.length; i++) {
 			 ESIndividualDoubleData.defaultInit(m_Genotype[i], range[i]);
