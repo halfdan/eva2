@@ -99,6 +99,7 @@ public abstract class AbstractMultiModalProblemKnown extends AbstractProblemDoub
 		this.m_GlobalOpt = Double.NEGATIVE_INFINITY;
 		m_ListOfOptima = new Population();
 		this.initListOfOptima();
+		if (!fullListAvailable() && (Double.isInfinite(m_GlobalOpt))) m_GlobalOpt=0;
 	}
 
 	/** Ths method allows you to evaluate a simple bit string to determine the fitness
@@ -106,6 +107,7 @@ public abstract class AbstractMultiModalProblemKnown extends AbstractProblemDoub
 	 * @return  The m-dimensional output vector.
 	 */
 	public double[] eval(double[] x) {
+		x = rotateMaybe(x);
 		double[] result = new double[1];
 		result[0]   = this.m_GlobalOpt - evalUnnormalized(x)[0];
 		return result;
@@ -124,7 +126,7 @@ public abstract class AbstractMultiModalProblemKnown extends AbstractProblemDoub
 	 * @return String
 	 */
 	public String getAdditionalFileStringHeader(PopulationInterface pop) {
-		return "#Optima found \t Maximum Peak Ratio";
+		return "#Optima found \tMaximum Peak Ratio \t" + super.getAdditionalFileStringHeader(pop);
 	}
 
 	/** 
@@ -137,7 +139,7 @@ public abstract class AbstractMultiModalProblemKnown extends AbstractProblemDoub
 //		result += AbstractEAIndividual.getDefaultDataString(pop.getBestIndividual()) +"\t";
 		result += this.getNumberOfFoundOptima((Population)pop)+"\t";
 		result += this.getMaximumPeakRatio((Population)pop);
-		return result;
+		return result +"\t"+ super.getAdditionalFileStringValue(pop);
 	}
 //
 //	/** This method returns a string describing the optimization problem.
@@ -212,6 +214,14 @@ public abstract class AbstractMultiModalProblemKnown extends AbstractProblemDoub
 	public Population getRealOptima() {
 		return this.m_ListOfOptima;
 	}
+	
+    /**
+     * Return true if the full list of optima is available, else false.
+     * @return
+     */
+    public boolean fullListAvailable() {
+    	return ((getRealOptima()!=null) && (getRealOptima().size()>0));
+    }
 
 	/** This method returns the Number of Identified optima
 	 * @param pop       A population of possible solutions.
@@ -222,7 +232,7 @@ public abstract class AbstractMultiModalProblemKnown extends AbstractProblemDoub
 	}
 	
 	public static int getNoFoundOptimaOf(InterfaceMultimodalProblemKnown mmProb, Population pop) {
-		List<AbstractEAIndividual> sols = PostProcess.getFoundOptima(pop, mmProb.getRealOptima(), mmProb.getEpsilon(), true);
+		List<AbstractEAIndividual> sols = PostProcess.getFoundOptima(pop, mmProb.getRealOptima(), mmProb.getDefaultAccuracy(), true);
 		return sols.size();
 	}
 
@@ -241,9 +251,19 @@ public abstract class AbstractMultiModalProblemKnown extends AbstractProblemDoub
 		return getMaximumPeakRatio(this, pop, m_Epsilon);
 	}
 	
+	/**
+	 * Returns -1 if the full list is not available. Otherwise calculates the maximum peak ratio
+	 * based on the full list of known optima.
+	 * 
+	 * @param mmProb
+	 * @param pop
+	 * @param epsilon
+	 * @return
+	 */
 	public static double getMaximumPeakRatio(InterfaceMultimodalProblemKnown mmProb, Population pop, double epsilon) {
 		double          foundInvertedSum = 0, sumRealMaxima = 0;
-		Population 		realOpts = mmProb.getRealOptima();
+		if (!mmProb.fullListAvailable()) return -1;
+		Population realOpts = mmProb.getRealOptima();
 		double 			tmp, maxOpt = realOpts.getEAIndividual(0).getFitness(0);
 		sumRealMaxima = maxOpt;
 		for (int i=1; i<realOpts.size(); i++) {
@@ -306,23 +326,23 @@ public abstract class AbstractMultiModalProblemKnown extends AbstractProblemDoub
 //	return range;
 //	}
 
-	/**
-	 * @return the m_Epsilon
-	 */
-	public double getEpsilon() {
-		return m_Epsilon;
-	}
+//	/**
+//	 * @return the m_Epsilon
+//	 */
+//	public double getEpsilon() {
+//		return m_Epsilon;
+//	}
 
 	/**
 	 * @param epsilon the m_Epsilon to set
 	 */
-	public void setEpsilon(double epsilon) {
-		m_Epsilon = epsilon;
+	public void setDefaultAccuracy(double epsilon) {
+		super.SetDefaultAccuracy(epsilon);
 	}
-
-	public String epsilonTipText() {
-		return "Epsilon criterion indicating whether an optimum was found";
-	}
+//
+//	public String epsilonTipText() {
+//		return "Epsilon criterion indicating whether an optimum was found";
+//	}
 
 	@Override
 	public int getProblemDimension() {

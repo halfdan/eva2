@@ -46,6 +46,16 @@ public class ClusteringDensityBased implements InterfaceClustering, java.io.Seri
     	m_MinimumGroupSize = minGSize;
     }
     
+    /**
+     * Directly set the minimum cluster distance sigma and minimum group size.
+     * @param sigma the minimum cluster distance
+     */
+    public ClusteringDensityBased(double sigma, int minGSize, InterfaceDistanceMetric metric) {
+    	m_ClusterDistance = sigma;
+    	m_MinimumGroupSize = minGSize;
+    	m_Metric = metric;
+    }
+    
     public ClusteringDensityBased(ClusteringDensityBased a) {
         if (a.m_Metric != null) this.m_Metric           = (InterfaceDistanceMetric)a.m_Metric.clone();
         this.m_TestConvergingSpeciesOnBestOnly  = a.m_TestConvergingSpeciesOnBestOnly;

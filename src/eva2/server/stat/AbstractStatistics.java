@@ -1,5 +1,6 @@
 package eva2.server.stat;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
@@ -14,7 +15,6 @@ import eva2.server.go.IndividualInterface;
 import eva2.server.go.PopulationInterface;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.operators.distancemetric.InterfaceDistanceMetric;
-import eva2.server.go.populations.InterfaceSolutionSet;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceAdditionalPopulationInformer;
 import eva2.server.go.strategies.InterfaceOptimizer;
@@ -107,13 +107,18 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 	 * @param infoString
 	 */
 	protected void initOutput(String infoString) {
-		SimpleDateFormat formatter = new SimpleDateFormat("E'_'yyyy.MM.dd'_at_'HH.mm.ss");
-		String startDate = formatter.format(new Date());
+		String startDate = getDateString();
 		// open the result file:
 		if (doFileOutput()  // not "text-window only" 
 				&& (m_StatsParams.getOutputVerbosity().getSelectedTagID() > StatsParameter.VERBOSITY_NONE)) { // verbosity accordingly high
 			//!resFName.equalsIgnoreCase("none") && !resFName.equals("")) {
-			String fname = makeOutputFileName(m_StatsParams.getResultFilePrefix(), infoString, startDate);
+			String fnameBase = makeOutputFileName(m_StatsParams.getResultFilePrefix(), infoString, startDate);
+			int cnt=0;
+			String fname = fnameBase;
+			while (new File(fname).exists()) {
+				cnt++;
+				fname=fnameBase+"."+cnt;
+			}
 			if (TRACE) System.out.println("FileName =" + fname);
 			try {
 				resultOut = new PrintWriter(new FileOutputStream(fname));
@@ -124,6 +129,16 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 			resultOut.println("StartDate:" + startDate);
 			resultOut.println("On Host:" + getHostName());
 		} else resultOut = null;
+	}
+	
+	/**
+	 * Return a simple String describing the current date and time.
+	 * @return
+	 */
+	public static String getDateString() {
+		SimpleDateFormat formatter = new SimpleDateFormat("E'_'yyyy.MM.dd'_at_'HH.mm.ss");
+		String dt = formatter.format(new Date());
+		return dt;
 	}
 	
 	protected boolean doFileOutput() {
@@ -319,9 +334,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 		if (TRACE)
 			System.out.println("End of run");
 		if (resultOut != null) {
-			SimpleDateFormat formatter = new SimpleDateFormat(
-			"E'_'yyyy.MM.dd'_at_'hh:mm:ss");
-			String StopDate = formatter.format(new Date());
+			String StopDate = getDateString();
 			resultOut.println("StopDate:" + StopDate);
 			resultOut.close();
 		}
@@ -686,11 +699,13 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 		}
 //		meanCollection.set(pop.getGenerations()-1, means);
 		
-		lastSols  = (opt!=null) ? new Population(opt.getAllSolutions()) : pop;
+		lastSols  = (opt!=null) ? new Population(opt.getAllSolutions().getSolutions()) : pop;
 		if (doTextOutput()) {
 			Pair<String,Double[]> addInfo = getOutputLine(informerList, lastSols);
 
-			if (printLineByVerbosity(runIterCnt)) printToTextListener(addInfo.head()+'\n');
+			if (printLineByVerbosity(runIterCnt)) {
+				printToTextListener(addInfo.head()+'\n');
+			}
 //			updateAdditionalInfo(addInfo.tail());
 			if (addInfo.tail()!=null) {
 				additionalInfoSums = updateAdditionalInfo(additionalInfoSums, addInfo.tail());
@@ -728,7 +743,14 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 	}
 		
 	private boolean isKthRun(int i, int k) {
-		return (i % k) == 0;
+		// ingeniously shifting i by two since the stats counter starts at 0
+		// after two evaluations have already happened: initialization and first optimization
+		// this allows the last iteration to be within the displayed set if k is a divisor of whole iterations as expected 
+		if ((i==0) || (k==0)) return true;
+		else {
+			if (i<=2) return (i % k) == 0; // show more at the beginning (always first time)
+			else return ((i+2) % k) == 0;
+		}
 	}
 	
 	private boolean printHeaderByVerbosity() {

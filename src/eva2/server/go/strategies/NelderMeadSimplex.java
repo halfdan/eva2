@@ -83,8 +83,10 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
 
 	public void addPopulationChangedEventListener(
 			InterfacePopulationChangedEventListener ea) {
-		if (m_Listener == null) m_Listener = new Vector<InterfacePopulationChangedEventListener>();
-		if (!m_Listener.contains(ea)) m_Listener.add(ea);
+		if (ea!=null) {
+			if (m_Listener == null) m_Listener = new Vector<InterfacePopulationChangedEventListener>();
+			if (!m_Listener.contains(ea)) m_Listener.add(ea);
+		}
 	}
 	
 	public boolean removePopulationChangedEventListener(
@@ -270,7 +272,7 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
 //					m_Problem.evaluate(ind);
 //					this.m_Population.incrFunctionCalls();
 				}
-				m_Population.set(m_Population.getIndexOfWorstIndividual(fitIndex), ind, fitIndex);
+				m_Population.set(m_Population.getIndexOfWorstIndividualNoConstr(fitIndex), ind, fitIndex);
 			}else{//keine Verbesserung gefunden shrink!!
 				
 				double[] u_1 = ((InterfaceDataTypeDouble) m_Population.getBestEAIndividual(fitIndex)).getDoubleData();
@@ -286,6 +288,7 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
 			evalsDone =  m_Population.getFunctionCalls() - evalCntStart;
 		} while (evalsDone < generationCycle);
 		m_Problem.evaluatePopulationEnd(m_Population);
+		this.m_Population.incrGeneration();
 	}
 
 	public void setPopulation(Population pop) {
@@ -344,7 +347,7 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
 		NelderMeadSimplex nms = new NelderMeadSimplex();
 		nms.setProblemAndPopSize(problem);
 		
-		nms.addPopulationChangedEventListener(listener);
+		if (listener!=null) nms.addPopulationChangedEventListener(listener);
 		nms.init();
 
 		if (listener!=null) listener.registerPopulationStateChanged(nms.getPopulation(), "");
@@ -400,18 +403,18 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
 	 * also contains the initial candidate. However, the new candidates have not been evaluated.
 	 * 
 	 * @param candidate
-	 * @param perturbRatio
+	 * @param perturbRelative
 	 * @param range
 	 * @param includeCand
 	 * @return
 	 */
-	public static Population createNMSPopulation(AbstractEAIndividual candidate, double perturbRatio, double[][] range, boolean includeCand) {
+	public static Population createNMSPopulation(AbstractEAIndividual candidate, double perturbRelative, double[][] range, boolean includeCand) {
 		Population initPop = new Population();
 		if (includeCand) initPop.add(candidate);
-		if (perturbRatio >= 1. || (perturbRatio <= 0.)) {
+		if (perturbRelative >= 1. || (perturbRelative <= 0.)) {
 			System.err.println("Warning: perturbation ratio should lie between 0 and 1! (NelderMeadSimplex:createNMSPopulation)");
 		}
-		addPerturbedPopulation(perturbRatio, initPop, range, candidate);
+		addPerturbedPopulation(perturbRelative, initPop, range, candidate);
 		return initPop;
 	}
 

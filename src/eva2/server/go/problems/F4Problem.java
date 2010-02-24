@@ -35,6 +35,7 @@ public class F4Problem extends AbstractProblemDoubleOffset implements java.io.Se
      * @return  The m-dimensional output vector.
      */
     public double[] eval(double[] x) {
+    	x = rotateMaybe(x);
         double[] result = new double[1];
         result[0]     = m_YOffSet;
         for (int i = 0; i < x.length-1; i++) {

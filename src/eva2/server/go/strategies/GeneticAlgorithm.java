@@ -1,5 +1,6 @@
 package eva2.server.go.strategies;
 
+import eva2.gui.BeanInspector;
 import eva2.server.go.InterfacePopulationChangedEventListener;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.GAIndividualBinaryData;
@@ -111,7 +112,8 @@ public class GeneticAlgorithm implements InterfaceOptimizer, java.io.Serializabl
             this.m_ParentSelection.prepareSelection(this.m_Population);
             this.m_PartnerSelection.prepareSelection(this.m_Population);
             parents     = this.m_ParentSelection.selectFrom(this.m_Population, this.m_Population.getTargetSize());
-            //System.out.println("Parents:"+parents.getSolutionRepresentationFor());
+//            System.out.println("Parents:"+parents.getStringRepresentation());
+//            double[] meas = parents.getPopulationMeasures();
 
             if (parents.getEAIndividual(0).getMutationOperator() instanceof InterfaceMutationGenerational) {
             	((InterfaceMutationGenerational)parents.getEAIndividual(0).getMutationOperator()).adaptAfterSelection(m_Population, parents);
@@ -155,7 +157,8 @@ public class GeneticAlgorithm implements InterfaceOptimizer, java.io.Serializabl
                 for (int i = 0; i < this.m_Plague; i++) if (this.m_Population.size() > 2) this.m_Population.remove(this.m_Population.getWorstEAIndividual());
                 this.m_Population.setTargetSize(this.m_Population.size());
             }
-            //System.out.println("Population size: " + this.m_Population.size());
+//            System.out.println("Population size: " + this.m_Population.size());
+//            System.out.println("Population: " + m_Population.getStringRepresentation());
 //        if (this.m_Population.getArchive() != null) {
 //            if (this.m_Population.getArchive().getArchive() != null) {
 //                System.out.println("Zwei Archive!");

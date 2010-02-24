@@ -1,11 +1,13 @@
 package eva2.server.go.operators.paramcontrol;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Vector;
 
 import eva2.gui.BeanInspector;
 import eva2.server.go.populations.Population;
 import eva2.server.modules.Processor;
+import eva2.tools.Pair;
 
 /**
  * The ParameterControlManager handles an array of ParamAdaption instances which dynamically adapt
@@ -143,5 +145,26 @@ public class ParameterControlManager implements InterfaceParameterControl, Seria
 	
 	public String getName() {
 		return "ParameterControlManager";
+	}
+
+	/**
+	 * Retrieve a list of objects which are properties of the given target object (retrievable by a 
+	 * getter method) and which implement the getParamControl method.
+	 * 
+	 * @param target
+	 * @return
+	 */
+	public static Object[] arrayOfControllables(
+			Object target) {
+		Pair<String[],Object[]> propsNamesVals = BeanInspector.getPublicPropertiesOf(target, true);
+		ArrayList<Object> controllables = new ArrayList<Object>();
+		Object[] objs = propsNamesVals.tail;
+		for (int i=0; i<objs.length; i++) {
+			if (objs[i]!=null) {
+				// TODO avoid hasMethod recreate some interface for this??
+				if (BeanInspector.hasMethod(objs[i], "getParamControl")!=null) controllables.add(objs[i]);
+			}
+		}
+		return controllables.toArray(new Object[controllables.size()]);
 	}
 }

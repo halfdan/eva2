@@ -1,14 +1,23 @@
 package eva2.server.go.problems;
 
 import java.util.Arrays;
+import java.util.Random;
 
-import wsi.ra.math.RNG;
+import eva2.server.go.operators.postprocess.SolutionHistogram;
+import eva2.tools.math.RNG;
 
+/**
+ * Fletcher-Powell function with up to 2^n optima from Shir&Baeck, PPSN 2006, 
+ * after Bäck 1996. Alphas and Matrices A and B are randomly created with a fixed seed.
+ * @author mkron
+ *
+ */
 public class F19Problem extends AbstractProblemDouble implements
-InterfaceMultimodalProblem {
+InterfaceMultimodalProblem, InterfaceInterestingHistogram {
 	int dim = 10;
 	transient private double[] alphas, As;
 	transient private int[] A,B;
+	private long randSeed = 23; 
 	
 	public F19Problem() {
 		alphas=null;
@@ -21,15 +30,21 @@ InterfaceMultimodalProblem {
 		alphas=null;
 	}
 
+	public F19Problem(int d) {
+		this();
+		setProblemDimension(d);
+	}
+
 	public void initProblem() {
 		super.initProblem();
-		if (alphas==null) {
+//		if (alphas==null) {
 			// create static random data
-			alphas = RNG.randomVector(dim, -Math.PI, Math.PI);
-			A = RNG.randomVector(dim*dim, -100, 100);
-			B = RNG.randomVector(dim*dim, -100, 100);
+			Random rand = new Random(randSeed);
+			alphas = RNG.randomDoubleArray(rand, -Math.PI, Math.PI, dim);
+			A = RNG.randomIntArray(rand, -100, 100, dim*dim);
+			B = RNG.randomIntArray(rand, -100, 100, dim*dim);
 			As = transform(alphas);
-		}
+//		}
 	}
 
 	private double[] transform(double[] x) {
@@ -55,6 +70,7 @@ InterfaceMultimodalProblem {
 	}
 	
 	public double[] eval(double[] x) {
+		x = rotateMaybe(x);
 		double[] res = new double[1];
 		double[] Bs = transform(x);
 		
@@ -88,7 +104,12 @@ InterfaceMultimodalProblem {
 	}
 
 	public String globalInfo() {
-		return "Fletcher-Powell function with up to 2^n optima from Shir&Baeck, PPSN 2006, after Bäck 1996. Alphas and Matrices A and B are randomly created but kept when the dimension is decreased.";
+		return "Fletcher-Powell function with up to 2^n optima from Shir&Baeck, PPSN 2006, after Bäck 1996. Alphas and Matrices A and B are randomly created with a fixed seed.";
+	}
+
+	public SolutionHistogram getHistogram() {
+		if (getProblemDimension()<15) return new SolutionHistogram(0, 8, 16);
+		else return new SolutionHistogram(0, 40000, 16);
 	}
 }
 

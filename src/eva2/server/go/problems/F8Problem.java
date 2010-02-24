@@ -41,6 +41,7 @@ public class F8Problem extends AbstractProblemDoubleOffset implements InterfaceM
      * @return  The m-dimensional output vector.
      */
     public double[] eval(double[] x) {
+    	x = rotateMaybe(x);
         double[]        result = new double[1];
         double          sum1 = 0, sum2 = 0, exp1, exp2;
 

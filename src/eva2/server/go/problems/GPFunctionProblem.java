@@ -87,6 +87,7 @@ public class GPFunctionProblem extends AbstractProblemDouble implements Interfac
 			EVAERROR.errorMsgOnce("mismatching dimension of GPFunctionProblem! Setting to " + x.length);
 			setProblemDimension(x.length);
 		}
+		x = rotateMaybe(x);
 		pos = x;
 		Double res = (Double) gpProblem.evaluate(this);
 		double[] fit = new double[1];

@@ -1,11 +1,11 @@
 package eva2.server.go.problems;
 
 import java.awt.BorderLayout;
+import java.io.Serializable;
+import java.util.Vector;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Semaphore;
-import java.io.Serializable;
-import java.util.Vector;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -17,12 +17,16 @@ import eva2.server.go.PopulationInterface;
 import eva2.server.go.enums.PostProcessMethod;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceDataTypeDouble;
+import eva2.server.go.operators.cluster.ClusteringDensityBased;
+import eva2.server.go.operators.cluster.InterfaceClustering;
+import eva2.server.go.operators.distancemetric.IndividualDataMetric;
 import eva2.server.go.operators.distancemetric.InterfaceDistanceMetric;
 import eva2.server.go.operators.distancemetric.PhenotypeMetric;
 import eva2.server.go.operators.moso.MOSONoConvert;
 import eva2.server.go.operators.mutation.InterfaceMutation;
 import eva2.server.go.operators.mutation.MutateESFixedStepSize;
 import eva2.server.go.operators.postprocess.PostProcess;
+import eva2.server.go.operators.postprocess.SolutionHistogram;
 import eva2.server.go.operators.terminators.CombinedTerminator;
 import eva2.server.go.operators.terminators.EvaluationTerminator;
 import eva2.server.go.operators.terminators.PhenotypeConvergenceTerminator;
@@ -37,7 +41,8 @@ import eva2.tools.math.Mathematics;
  * Time: 13:40:12
  * To change this template use Options | File Templates.
  */
-public abstract class AbstractOptimizationProblem implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serializable {
+public abstract class AbstractOptimizationProblem 
+implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serializable {
 	class EvalThread extends Thread {
 		AbstractOptimizationProblem prob;
 		AbstractEAIndividual ind;
@@ -71,6 +76,8 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
     protected 	AbstractEAIndividual      m_Template;
 //    private transient ArrayList<ParamChangeListener> changeListeners = null;
 
+	private double defaultAccuracy = 0.01; // default accuracy for identifying optima.
+
     /** This method returns a deep clone of the problem.
      * @return  the clone
      */
@@ -88,7 +95,9 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
 		return "Set the number of threaded parallel function evaluations - interesting for slow functions and generational optimizers.";
 	}
 
-	/** This method inits the Problem to log multiruns
+	/** 
+	 * This method initializes the problem instance.
+	 * If you override it, make sure to call the super method!
      */
     public abstract void initProblem();
 
@@ -231,8 +240,8 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
      * @return String
      */
     public String getAdditionalFileStringHeader(PopulationInterface pop) {
-        return "Solution";
-//    	return "";
+    	if (this instanceof InterfaceInterestingHistogram) return "Solution \t Histogram(c0) \t Score";
+    	else return "Solution";
     }
 
     /** This method returns the additional data that is to be written into a file
@@ -240,8 +249,12 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
      * @return String
      */
     public String getAdditionalFileStringValue(PopulationInterface pop) {
-//    	return "";
-        return AbstractEAIndividual.getDefaultDataString(pop.getBestIndividual());
+    	String solStr = AbstractEAIndividual.getDefaultDataString(pop.getBestIndividual()); 
+    	if (this instanceof InterfaceInterestingHistogram) {
+    		SolutionHistogram hist = ((InterfaceInterestingHistogram)this).getHistogram();
+    		Population sols = PostProcess.clusterBestUpdateHistogram((Population)pop, this, hist, 0, getDefaultAccuracy());
+    		return solStr + " \t " + hist + "\t" + hist.getScore();
+    	} else return solStr; 
     }
 
     /**
@@ -328,21 +341,27 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
      * @param epsilonPhenoSpace maximal allowed improvement of an individual before considered premature (given as distance in the search space)
      * @param epsilonFitConv if positive: additional absolute convergence criterion (fitness space) as termination criterion of the local search  
      * @param clusterSigma minimum cluster distance
-     * @param numOfFailures 
+     * @param maxEvalsPerIndy 
      * @see #isPotentialOptimumNMS(AbstractEAIndividual, double, double, int)
      * @return 
      */
-    public Population extractPotentialOptima(Population pop, double epsilonPhenoSpace, double epsilonFitConv, double clusterSigma, int numOfFailures) {
+    public static Population extractPotentialOptima(AbstractOptimizationProblem prob, Population pop, double epsilonPhenoSpace, double epsilonFitConv, double clusterSigma, int maxEvalsPerIndy) {
     	Population potOptima = new Population();
     	for (int i = 0; i < pop.size(); ++i){
     		AbstractEAIndividual indy = pop.getEAIndividual(i);
 //    		System.out.println("bef: " + indy.toString());
-    		if (isPotentialOptimumNMS(indy, epsilonPhenoSpace, epsilonFitConv, numOfFailures)){ 
-//       	if (isPotentialOptimum(indy, epsilon,-1,-1)){ 
+    		boolean isConverged = AbstractOptimizationProblem.isPotentialOptimumNMS(prob, indy, epsilonPhenoSpace, epsilonFitConv, maxEvalsPerIndy);
+    		if (isConverged) {
     			potOptima.addIndividual(indy);
+    			if (!indy.hasData(PostProcess.movedDistanceKey)) {
+    				System.err.println("Error, missing distance information in individual (AbstractOptimizationProblem.extractPotentialOptimum)");
+    			}
     		}
     	}
-    	if (clusterSigma > 0) return (Population)PostProcess.clusterBest(potOptima, clusterSigma, 0, PostProcess.KEEP_LONERS, PostProcess.BEST_ONLY).clone();
+    	// cluster by the converged-to positions instead of the original ones
+    	InterfaceClustering clustering = new ClusteringDensityBased(clusterSigma, 2, new IndividualDataMetric(PostProcess.movedToPositionKey));
+    	clustering = new ClusteringDensityBased(clusterSigma, 2);
+    	if (clusterSigma > 0) return (Population)PostProcess.clusterBest(potOptima, clustering, 0, PostProcess.KEEP_LONERS, PostProcess.BEST_ONLY).clone();
     	else return potOptima;
     }
    
@@ -407,31 +426,33 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
     
     /**
      * Refine a given individual using Nelder-Mead-Simplex local search. Return true, if the refined result is within a given
-     * distance from the original individual in phenotype space. The numOfFailures parameter gives the maximum evaluations
-     * for the local search Using the epsilonFitConv parameter may define a convergence criterion as PhenotypeConvergenceTerminator 
+     * distance from the original individual in phenotype space. The maxEvaluations parameter gives the maximum evaluations
+     * for the local search. Using the epsilonFitConv parameter one may define a convergence criterion as PhenotypeConvergenceTerminator 
      * which is combined (using OR) with the evaluation counter.
-     * If numOfFailures is smaller than zero, 100*dim is used. Be aware that this may cost quite some runtime depending on the target
+     * If maxEvaluations is smaller than zero, 100*dim is used. Be aware that this may cost quite some runtime depending on the target
      * function.
+     * A double value for the distance by which it was moved is added to the individual using the key PostProcess.movedDistanceKey.
      * 
      * @param orig
-     * @param epsilonPhenoSpace
-     * @param epsilonFitConv
-     * @param numOfFailures
+     * @param epsilonPhenoSpace allowed distance for a solution moved by local search 
+     * @param epsilonFitConv	if the fitness changes below the threshold, the search is stopped earlier. Set to -1 to deactivate.
+     * @param maxEvaluations	maximal number of evaluations or -1
      * @return
      */
-    public boolean isPotentialOptimumNMS(AbstractEAIndividual orig, double epsilonPhenoSpace, double epsilonFitConv, int numOfFailures){
+    public static boolean isPotentialOptimumNMS(AbstractOptimizationProblem prob, AbstractEAIndividual orig, double epsilonPhenoSpace, double epsilonFitConv, int maxEvaluations){
     	
     	AbstractEAIndividual indy = (AbstractEAIndividual)orig.clone();
-    	this.evaluate(indy); // indy may be evaluated in a normalised way...
+    	prob.evaluate(indy); // indy may be evaluated in a normalised way...
     	
     	InterfaceDistanceMetric metric = new PhenotypeMetric();
     	double overallDist = 0;
-    	double initPerturb = -1;
+    	double initRelPerturb = -1;
     	int dim = -1;
     	if (orig instanceof InterfaceDataTypeDouble) {
-    		initPerturb = epsilonPhenoSpace/(2*(Mathematics.getAvgRange(((InterfaceDataTypeDouble)orig).getDoubleRange())));
+//    		initPerturb = epsilonPhenoSpace/(2*(Mathematics.getAvgRange(((InterfaceDataTypeDouble)orig).getDoubleRange())));
+    		initRelPerturb = epsilonPhenoSpace*0.5;
     		dim=((InterfaceDataTypeDouble)orig).getDoubleRange().length;
-        	if (numOfFailures<0) numOfFailures = 100*AbstractEAIndividual.getDoublePositionShallow(this.m_Template).length; // scales the effort with the number of problem dimensions
+        	if (maxEvaluations<0) maxEvaluations = 100*AbstractEAIndividual.getDoublePositionShallow(prob.m_Template).length; // scales the effort with the number of problem dimensions
     	} else {
     		System.err.println("Cannot initialize NMS on non-double valued individuals!");
     		return false;
@@ -439,14 +460,31 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
     	
     	Population pop = new Population(1);
     	pop.add(orig);
-    	InterfaceTerminator term = new EvaluationTerminator(numOfFailures); 
+    	InterfaceTerminator term = new EvaluationTerminator(maxEvaluations); 
     	if (epsilonFitConv > 0) term = new CombinedTerminator(new PhenotypeConvergenceTerminator(epsilonFitConv, 10*dim, true, true), term, false);
-    	int evalsPerf = PostProcess.processSingleCandidatesNMCMA(PostProcessMethod.nelderMead, pop, term, initPerturb, this);
+    	int evalsPerf = PostProcess.processSingleCandidatesNMCMA(PostProcessMethod.nelderMead, pop, term, initRelPerturb, prob);
     	overallDist = metric.distance(indy, pop.getBestEAIndividual());
 //    	System.out.println("aft: " + pop.getBestEAIndividual().toString() + ", evals performed: " + evalsPerf + ", opt moved by " + overallDist);
 //    	System.out.println("terminated because: " + term.lastTerminationMessage());
-        if (overallDist < epsilonPhenoSpace) return true;
-        else return false; 
+    	orig.putData(PostProcess.movedDistanceKey, overallDist);
+    	orig.putData(PostProcess.movedToPositionKey, pop.getBestEAIndividual().getDoublePosition());
+//    	if (overallDist==0) {
+//    		PostProcess.processSingleCandidatesNMCMA(PostProcessMethod.nelderMead, pop, term, initPerturb, this);
+//    	}
+    	return (overallDist < epsilonPhenoSpace);
+    }
+    
+    public double getDefaultAccuracy() {
+    	return defaultAccuracy ;
+    }
+    public void SetDefaultAccuracy(double defAcc) {
+    	defaultAccuracy = defAcc;
+    }    
+    public void setDefaultAccuracy(double defAcc) {
+    	defaultAccuracy = defAcc;
+    }
+    public String defaultAccuracyTipText() {
+    	return "A default threshold to identify optima - e.g. the assumed minimal distance between any two optima.";
     }
     
 //    /**********************************************************************************************************************

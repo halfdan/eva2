@@ -15,8 +15,6 @@ package eva2.gui;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Toolkit;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.beans.PropertyEditor;
 
 import eva2.EvAInfo;
@@ -55,7 +53,9 @@ public class PropertyDialog extends JEFrame {
   }
   
   protected static String getFrameNameFromEditor(PropertyEditor editor) {
-	  return EVAHELP.cutClassName(editor.getValue().getClass().getName());
+	  if (editor.getValue().getClass().isArray()) {
+		  return "Array of " + EVAHELP.cutClassName(editor.getValue().getClass().getComponentType().getName());
+	  } else return EVAHELP.cutClassName(editor.getValue().getClass().getName());
   }
   
   /**

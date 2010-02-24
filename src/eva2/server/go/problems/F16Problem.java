@@ -13,6 +13,7 @@ public class F16Problem extends AbstractProblemDouble implements InterfaceMultim
 	
 	@Override
 	public double[] eval(double[] x) {
+		x = rotateMaybe(x);
 		double[] res = new double[1];
 		double sum = 0;
 		
@@ -50,6 +51,6 @@ public class F16Problem extends AbstractProblemDouble implements InterfaceMultim
 	}
 	
 	public String globalInfo() {
-		return "Multiple optima with increasing densitiy near the lower bounds, there for decreasing attractor size.";
+		return "Multiple optima with increasing densitiy near the lower bounds, therefore decreasing attractor size.";
 	}
 }

@@ -69,7 +69,7 @@ public class ScaledBorder implements Border
    * the size of the source rectangle
    * that means before the values are mdified by scale functions
    */
-  SlimRect src_rect;
+  SlimRect src_rect = null;
 
   /**
    * the minimal increment of the scales
@@ -321,7 +321,7 @@ public class ScaledBorder implements Border
 			  g.drawLine( insets.left - marker_length, p.y, insets.left, p.y );
 		  }
 		  if (v+src_dY<= v) {
-			  System.err.println("Overflow error B in ScaledBorder!");
+			  System.err.println("Overflow error B in ScaledBorder! v,src_dY:" + v + ", " + src_dY);
 			  v*=1.01;
 		  }
 		  v += src_dY;
@@ -336,6 +336,9 @@ public class ScaledBorder implements Border
 	    if( under_construction ) System.out.println("ScaledBorder.getSrcdY()");
 	    if( (!do_refresh && src_dY != -1) || !auto_scale_y ) return src_dY;
 	    int max = componentHeight / fontMetricsHeight;
+	    if (Double.isInfinite(src_rect.height) || Double.isInfinite(src_rect.width)) {
+	    	System.err.println("Error, infinite value in ScaledBorder:getSrcdY !!");
+	    }
 	    double minsrc_dY = 2 * src_rect.height / (double)max; // die 2 einfach mal so eingesetzt   <--------------------------
 	    src_dY = aBitBigger( minsrc_dY );
 	    if( src_dY < minimal_increment ) src_dY = minimal_increment;
@@ -417,7 +420,7 @@ public class ScaledBorder implements Border
    * @return the displayable value
    */
   public static double aBitBigger( double min ){
-    if( min <= 0 ) return 1;
+    if( min <= 0 || Double.isInfinite(min) || Double.isNaN(min)) return 1;
     double d = 1;
     if( min < d ){
       while( d * .5 > min ) {

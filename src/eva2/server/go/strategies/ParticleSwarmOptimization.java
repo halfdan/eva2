@@ -1,6 +1,8 @@
 package eva2.server.go.strategies;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.Vector;
 
 import eva2.gui.BeanInspector;
@@ -13,6 +15,7 @@ import eva2.server.go.enums.PostProcessMethod;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.AbstractEAIndividualComparator;
 import eva2.server.go.individuals.InterfaceDataTypeDouble;
+import eva2.server.go.operators.distancemetric.EuclideanMetric;
 import eva2.server.go.operators.distancemetric.PhenotypeMetric;
 import eva2.server.go.operators.paramcontrol.ParamAdaption;
 import eva2.server.go.operators.paramcontrol.ParameterControlManager;
@@ -61,7 +64,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 		
 	protected Population                      m_Population        = new Population();
 	Object[] 								sortedPop			= null;
-	protected AbstractEAIndividual            m_BestIndividual;
+	protected AbstractEAIndividual            m_BestIndividual = null;
 	protected InterfaceOptimizationProblem    m_Problem           = new F1Problem();
 	protected boolean                         m_CheckRange  = true;
 	protected boolean						  checkSpeedLimit 		= false;
@@ -127,6 +130,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 	transient protected eva2.gui.Plot      m_Plot;
 
 	private boolean externalInitialPop = false;
+	private static String lastSuccessKey = "successfulUpdate";
 //	private double lsCandidateRatio=0.25;
 
 
@@ -137,7 +141,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 		algType = new SelectedTag("Inertness", "Constriction");
 		algType.setSelectedTag(1);
 
-		setWithConstriction(getPhi1(), getPhi2());
+		setConstriction(getPhi1(), getPhi2());
 		hideHideable();
 	}
 
@@ -224,6 +228,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 		// evaluation needs to be done here now, as its omitted if reset is false
 		initDefaults(this.m_Population);
 		this.evaluatePopulation(this.m_Population);
+		if (m_BestIndividual == null) m_BestIndividual = m_Population.getBestEAIndividual();
 		initByPopulation(null, false);
 		externalInitialPop = false;
 	}
@@ -673,8 +678,9 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 			AbstractEAIndividual indy = (AbstractEAIndividual)pop.get(i);
 			if (isIndividualToUpdate(indy)) {
 				updateIndProps(indy, indy);
+				indy.putData(lastSuccessKey , indy.getData(partVelKey));
 //				System.err.println("updated " + i + " - "+ getParticleInfo(indy));
-			}
+			} else indy.putData(lastSuccessKey, null);
 		}
 	}
 
@@ -768,7 +774,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 		double[] accel, curVelocity    = new double[lastVelocity.length];
 		
 		if (useAlternative) {
-			accel	= getAccelerationAlternative(personalBestPos, neighbourBestPos, curPosition, range);
+			accel	= getAccelerationAlternative(index, personalBestPos, neighbourBestPos, curPosition, range);
 		} else {
 			accel	= getAcceleration(personalBestPos, neighbourBestPos, curPosition, range);
 		}
@@ -801,32 +807,74 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 		return accel;
 	}
 	
-	protected double[] getAccelerationAlternative(double[] personalBestPos, double[] neighbourBestPos, double[] curPosition, double[][] range) {
-		double[] accel    = new double[curPosition.length];
-		double chi;
-		
-		Matrix cogVecB = new Matrix(curPosition.length, 1);
-		Matrix socVecB = new Matrix(curPosition.length, 1);
-		
-		for (int i = 0; i < personalBestPos.length; i++) {
-			cogVecB.set(i, 0, (personalBestPos[i]-curPosition[i]));
-			socVecB.set(i, 0, (neighbourBestPos[i]-curPosition[i]));
-		}
-		Matrix cogRandB = getOrientedGaussianRandomVectorB(cogVecB, 5);
-		Matrix socRandB = getOrientedGaussianRandomVectorB(socVecB, 5);
-
-		for (int i = 0; i < curPosition.length; i++) {
-			if (algType.getSelectedTag().getID()==1) chi=m_InertnessOrChi;
-			else chi = 1.;
-			// the component from the cognition model
-//			accel[i]  = this.m_Phi1*chi*/*RNG.randomDouble(0,1)**/cogRand.getElement(i);
-			accel[i]  = this.m_Phi1*chi*/*RNG.randomDouble(0,1)**/cogRandB.get(i,0);
-			// the component from the social model
-//			accel[i]  += this.m_Phi2*chi*/*RNG.randomDouble(0,1)**/socRand.getElement(i);
-			accel[i]  += this.m_Phi2*chi*/*RNG.randomDouble(0,1)**/socRandB.get(i,0);
+	protected double[] getAccelerationAlternative(int index, double[] personalBestPos, double[] neighbourBestPos, double[] curPosition, double[][] range) {
+		double[] accel    = getAcceleration(personalBestPos, neighbourBestPos, curPosition, range);
+		double[] successfulVel = getSuccessfulVel(index);
+//		double succW = 0.5;
+		if (successfulVel!=null) {
+			Mathematics.vvAdd(accel, successfulVel, accel);
+			Mathematics.svMult(0.5, accel, accel);
 		}
 		return accel;
 	}
+	
+	private double[] getSuccessfulVel(int index) {
+		if (true) {
+			return (double[])m_Population.getEAIndividual(index).getData(lastSuccessKey);
+		} else { // random one
+		ArrayList<Integer> successes = new ArrayList<Integer>();
+		for (int i = 0; i < this.m_Population.size(); i++) {
+			double[] succVel = (double[])m_Population.getEAIndividual(i).getData(lastSuccessKey);
+			if (succVel!=null) successes.add(new Integer(i));
+		}
+		if (successes.size()>0) {
+			int i = successes.get(RNG.randomInt(successes.size()));
+			return (double[])m_Population.getEAIndividual(i).getData(lastSuccessKey);
+		} else return null;
+		}
+	}
+
+//	protected double[] getAccelerationAlternative(double[] personalBestPos, double[] neighbourBestPos, double[] curPosition, double[][] range) {
+//		double[] accel    = new double[curPosition.length];
+//		double chi;
+//
+//		if (algType.getSelectedTag().getID()==1) chi=m_InertnessOrChi;
+//		else chi = 1.;
+//
+//		boolean rotatedVect=false;
+//		if (rotatedVect) {
+//			Matrix cogVecB = new Matrix(curPosition.length, 1);
+//			Matrix socVecB = new Matrix(curPosition.length, 1);
+//			for (int i = 0; i < personalBestPos.length; i++) {
+//				cogVecB.set(i, 0, (personalBestPos[i]-curPosition[i]));
+//				socVecB.set(i, 0, (neighbourBestPos[i]-curPosition[i]));
+//			}
+//			Matrix cogRandB = getOrientedGaussianRandomVectorB(cogVecB, 5);
+//			Matrix socRandB = getOrientedGaussianRandomVectorB(socVecB, 5);
+//
+//			for (int i = 0; i < curPosition.length; i++) {
+//				// the component from the cognition model
+//				//			accel[i]  = this.m_Phi1*chi*/*RNG.randomDouble(0,1)**/cogRand.getElement(i);
+//				accel[i]  = this.m_Phi1*chi*/*RNG.randomDouble(0,1)**/cogRandB.get(i,0);
+//				// the component from the social model
+//				//			accel[i]  += this.m_Phi2*chi*/*RNG.randomDouble(0,1)**/socRand.getElement(i);
+//				accel[i]  += this.m_Phi2*chi*/*RNG.randomDouble(0,1)**/socRandB.get(i,0);
+//			}
+//			return accel;
+//		} else {
+//			double sPB = RNG.randomDouble();
+//			double sNB = 1.-sPB;
+//			double[] mean= personalBestPos.clone();
+//			Mathematics.svMult(sPB, mean);
+//			Mathematics.svvAddScaled(sNB, neighbourBestPos, mean, mean); // middle position
+//			double stddev = chi*EuclideanMetric.euclideanDistance(personalBestPos, neighbourBestPos)/3.; // std.dev is one third of the distance
+//			double[] gausRnd = getGaussianVector(mean, stddev);
+//			for (int i=0; i<accel.length; i++) {
+//				accel[i] = (gausRnd[i] - curPosition[i]); 
+//			}
+//			return accel;
+//		}
+//	}
 	
 //	public static void main(String[] args) {
 //		ParticleSwarmOptimization pso = new ParticleSwarmOptimization();
@@ -884,6 +932,13 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 			resVec = rotation.times(randVec);
 		}
 		return resVec;
+	}
+	
+	protected double[] getGaussianVector(double[] mean, double dev) {
+		double[] res = new double[mean.length];
+		RNG.gaussianVector(dev, res, false);
+		Mathematics.vvAdd(mean, res, res);
+		return res;
 	}
 	
 	public static double project(double min, double max, double val) {
@@ -1593,6 +1648,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 				if (TRACE) System.err.println("init indy " + i + " " + AbstractEAIndividual.getDefaultDataString(indy));
 			}
 		}
+		m_BestIndividual = pop.getBestEAIndividual();
 	}
 	public String populationTipText() {
 		return "Edit the properties of the population used.";
@@ -1648,8 +1704,8 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 	}
 
 	/**
-	 * Set the inertness parameter so as to resemble the constriction scheme. Use this before
-	 * calling the setAsTau methods. The constriction scheme calculates the speed update in the following
+	 * Set the phi values as well as the inertness parameter so as to resemble the constriction scheme. 
+	 * The constriction scheme calculates the speed update in the following
 	 * way: v(t+1) = Chi * ( v(t) + tau1*u1*(p-x(t)) * tau2*u2*(g-x(t)))
 	 * with u1, u2 random variables in (0,1) and tau1 and tau2 usually set to 2.05. The sum tau1 and tau2
 	 * must be greater than 4. The Chi parameter (constriction) is set as in
@@ -1662,11 +1718,14 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 	 * @param tau1
 	 * @param tau2
 	 */
-	protected void setWithConstriction(double tau1, double tau2) {
+	protected void setConstriction(double tau1, double tau2) {
 		double pSum = tau1+tau2;
 		if (pSum <= 4) {
 			System.err.println("error, invalid tauSum value in PSO::setWithConstriction");
 		} else {
+			if (!getAlgoType().isSelectedString("Constriction")) System.err.println("Warning, PSO algorithm variant constriction expected!");
+			m_Phi1=tau1;
+			m_Phi2=tau2;
 			setInertnessOrChi(2./(Math.abs(2-pSum-Math.sqrt((pSum*pSum)-(4*pSum)))));
 		}
 	}
@@ -1691,7 +1750,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 	 */
 	public void setPhi1 (double l) {
 		this.m_Phi1 = l;
-		if (algType.getSelectedTag().getID() == 1) setWithConstriction(getPhi1(), getPhi2());
+		if (algType.getSelectedTag().getID() == 1) setConstriction(getPhi1(), getPhi2());
 	}
 	public double getPhi1() {
 		return this.m_Phi1;
@@ -1705,7 +1764,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 	 */
 	public void setPhi2 (double l) {
 		this.m_Phi2 = l;
-		if (algType.getSelectedTag().getID() == 1) setWithConstriction(getPhi1(), getPhi2());
+		if (algType.getSelectedTag().getID() == 1) setConstriction(getPhi1(), getPhi2());
 	}
 	public double getPhi2() {
 		return this.m_Phi2;
@@ -1723,7 +1782,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 	public void setPhiValues(double phi1, double phi2) {
 		m_Phi1 = phi1;
 		m_Phi2 = phi2;
-		if (algType.isSelectedString("Constriction")) setWithConstriction(phi1, phi2);
+		if (algType.isSelectedString("Constriction")) setConstriction(phi1, phi2);
 	}
 	
 	/**
@@ -1778,7 +1837,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 	 */
 	public void setAlgoType(SelectedTag s) {
 		this.algType = s;
-		if (s.getSelectedTag().getID() == 1) setWithConstriction(getPhi1(), getPhi2());
+		if (s.getSelectedTag().getID() == 1) setConstriction(getPhi1(), getPhi2());
 	}
 
 	public SelectedTag getAlgoType() {
@@ -1956,7 +2015,10 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 		for (int i=0; i<population.size(); i++) {
 			double[] personalBestPos = (double[]) population.getEAIndividual(i).getData(partBestPosKey);
 			double[] personalBestfit = (double[]) population.getEAIndividual(i).getData(partBestFitKey);
-			double relDiff = (personalBestfit[0]-((InterfaceProblemDouble)m_Problem).eval(personalBestPos)[0])/personalBestfit[0];
+			
+			double relDiff;
+			if (personalBestfit[0]!=0) relDiff = (personalBestfit[0]-((InterfaceProblemDouble)m_Problem).eval(personalBestPos)[0])/personalBestfit[0];
+			else relDiff=(personalBestfit[0]-((InterfaceProblemDouble)m_Problem).eval(personalBestPos)[0]); // absolute diff in this case
 //			if (personalBestfit[0]!=((InterfaceProblemDouble)m_Problem).eval(personalBestPos)[0]) {
 			if (Math.abs(relDiff)>1e-20) {
 				System.err.println("Warning: mismatching best fitness by " + relDiff);

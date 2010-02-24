@@ -88,7 +88,8 @@ public class CombinedTerminator implements InterfaceTerminator, Serializable {
 			// make sure that both terminators are triggered by every call, because some judge
 			// time-dependently and store information on the population.
 			ret = getTermState(t1, curPopOrSols);
-			ret = ret && getTermState(t2, curPopOrSols); 
+			boolean ret2 = getTermState(t2, curPopOrSols);
+			ret=ret && ret2;
 			if (ret) msg = "Terminated because both: " + t1.lastTerminationMessage() + " And " + t2.lastTerminationMessage();
 		} else { // OR
 			// make sure that both terminators are triggered on every call, because some judge

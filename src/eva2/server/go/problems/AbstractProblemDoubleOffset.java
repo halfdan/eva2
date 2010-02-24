@@ -39,13 +39,6 @@ public abstract class AbstractProblemDoubleOffset extends AbstractProblemDouble 
     	setDefaultRange(defRange);
     }
 
-    /** This method inits the Problem to log multiruns
-     */
-    public void initProblem() {
-//        this.m_OverallBest = null;
-    	initTemplate();
-    }
-
 /**********************************************************************************************************************
  * These are for GUI
  */

@@ -113,7 +113,7 @@ public class MutateGIOrdinal implements InterfaceMutation, java.io.Serializable 
      * @return description
      */
     public String globalInfo() {
-        return "The ordinal mutation alters n element of the int attributes based on an oridinal ordering.";
+        return "The ordinal mutation alters n element of the int attributes based on an ordinal ordering.";
     }
 
     /** This method allows you to set the mean step size.

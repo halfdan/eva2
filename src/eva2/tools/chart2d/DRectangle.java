@@ -24,7 +24,8 @@ import java.awt.* ;
 
 public class DRectangle extends DComponent
 {
-  public double x, y, width, height;
+  private double  x, y;
+  private double width, height;
   public static final int PART = 0, ALL = 1, EMPTY = 2;
   protected int status;
   protected Color fillColor;
@@ -38,11 +39,11 @@ public class DRectangle extends DComponent
     super(true);
     this.x = x;
     this.y = y;
-    if( width < 0 ) throw
-      new IllegalArgumentException("Width of a DRectangle has to be >= 0");
+    if( width < 0  || Double.isInfinite(width) || Double.isNaN(width)) throw
+      new IllegalArgumentException("Width of a DRectangle is invalid (" + width + ")");
     this.width = width;
-    if( height < 0 ) throw
-      new IllegalArgumentException("Height of a DRectangle has to be >= 0");
+    if( height < 0 || Double.isInfinite(height) || Double.isNaN(height)) throw
+      new IllegalArgumentException("Height of a DRectangle is invalid (" + height + ")");
     this.height = height;
     status = PART;
   }
@@ -76,6 +77,31 @@ public class DRectangle extends DComponent
     if( p.x > x + width ) return false;
     if( p.y > y + height ) return false;
     return true;
+  }
+  
+  public double getHeight() { return height; }
+  public double getWidth() { return width; }
+  public void setHeight(double h) {
+	  if (Double.isInfinite(h) || Double.isNaN(h)) {
+		  System.err.println("Warning, infinite vaule for height!");
+	  } else height = h;
+  }
+  public void setWidth(double w) {
+	  if (Double.isInfinite(w) || Double.isNaN(w)) {
+		  System.err.println("Warning, infinite vaule for width!");
+	  } else width = w;
+  }
+  public double getX() { return x; } 
+  public double getY() { return y; } 
+  public void setX(double v) {
+	  if (Double.isInfinite(v) || Double.isNaN(v)) {
+		  System.err.println("Warning, infinite vaule for x!");
+	  } else x = v;
+  }
+  public void setY(double v) {
+	  if (Double.isInfinite(v) || Double.isNaN(v)) {
+		  System.err.println("Warning, infinite vaule for y!");
+	  } else y = v;
   }
   
   /**
@@ -135,7 +161,9 @@ public class DRectangle extends DComponent
    * @return true when the size of the rectangle changed
    */
   public boolean insert( DPoint p ){
-    if( p.x == Double.NaN || p.y == Double.NaN ) return false;
+    if( p.x == Double.NaN || p.y == Double.NaN || Double.isInfinite(p.x) || Double.isInfinite(p.y)) {
+    	return false;
+    }
     if( isAll() ) return false;
     if( contains( p ) ) return false;
     if( isEmpty() ){

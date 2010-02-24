@@ -2,6 +2,7 @@ package eva2.server.go.problems;
 
 import eva2.gui.BeanInspector;
 import eva2.gui.GenericObjectEditor;
+import eva2.gui.TopoPlot;
 import eva2.server.go.PopulationInterface;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.ESIndividualDoubleData;
@@ -11,7 +12,10 @@ import eva2.server.go.operators.constraint.GenericConstraint;
 import eva2.server.go.populations.Population;
 import eva2.server.go.strategies.InterfaceOptimizer;
 import eva2.tools.Pair;
+import eva2.tools.diagram.ColorBarCalculator;
+import eva2.tools.math.Mathematics;
 import eva2.tools.math.RNG;
+import eva2.tools.math.Jama.Matrix;
 
 /**
  * For a double valued problem, there are two main methods to implement: {@link #getProblemDimension()}
@@ -37,10 +41,14 @@ import eva2.tools.math.RNG;
 public abstract class AbstractProblemDouble extends AbstractOptimizationProblem implements InterfaceProblemDouble, Interface2DBorderProblem/*, InterfaceParamControllable */{
 	private double m_DefaultRange = 10;
 	private double m_Noise = 0;
-	
+	private boolean doRotation = false; // should really be false by default
+    private Matrix 			rotation;
+    
 //	PropertySelectableList<AbstractConstraint> constraintList = new PropertySelectableList<AbstractConstraint>(new AbstractConstraint[]{new GenericConstraint()});
     private AbstractConstraint[] constraintArray = new AbstractConstraint[]{new GenericConstraint()};
-    private boolean withConstraints = false;  
+    private boolean withConstraints = false;
+	private transient boolean isShowing = false;
+	private double rotAngle = 22.5; // for default rotation along every axis   
     public static String rawFitKey="UnconstrainedFitnessValue";
     
 	public AbstractProblemDouble() {
@@ -66,12 +74,16 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
 	protected void cloneObjects(AbstractProblemDouble o) {
 		this.m_DefaultRange = o.m_DefaultRange;
 		this.m_Noise = o.m_Noise;
+		this.SetDefaultAccuracy(o.getDefaultAccuracy());
 		if (o.m_Template != null) this.m_Template = (AbstractEAIndividual)o.m_Template.clone();
 		if (o.constraintArray!=null) {
 			this.constraintArray=o.constraintArray.clone();
 			for (int i=0; i<constraintArray.length; i++) constraintArray[i]=(AbstractConstraint)o.constraintArray[i].clone();
 		}
 		this.withConstraints=o.withConstraints;
+		this.doRotation = o.doRotation;
+		this.rotation = (Matrix)o.rotation.clone();
+		this.rotAngle = o.rotAngle;
 	}
 	
 	/**
@@ -111,6 +123,14 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
         	addConstraints(individual, x);
         }
 	}
+
+	protected double[] rotateMaybe(double[] x) {
+		if (isDoRotation()) {
+    		if (rotation==null) initProblem();
+	    	x = Mathematics.rotate(x, rotation);
+    	}
+		return x;
+	}
 	
 	/**
 	 * Add all constraint violations to the individual. Expect that the fitness has already been set.
@@ -140,6 +160,8 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
 	
 	/**
 	 * Evaluate a double vector, representing the target function.
+	 * If you implement this, you should take care of the offsets and rotation,
+	 * e.g. by using x=rotateMaybe(x) before further evaluation.
 	 * 
 	 * @param x the vector to evaluate
 	 * @return	the target function value
@@ -202,6 +224,28 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
 	@Override
 	public void initProblem() {
 		initTemplate();
+        if (isDoRotation()) {
+        	rotation = initDefaultRotationMatrix(rotAngle , getProblemDimension());
+        } else rotation = null;
+	}
+	
+	/**
+	 * Initialize rotation matrix which rotates around the given angle in every axis.
+	 * 
+	 * @param rotAngle
+	 * @param dim
+	 * @return
+	 */
+	public static Matrix initDefaultRotationMatrix(double rotAngle, int dim) {
+		Matrix rotation=null;
+//		Matrix vec = new Matrix(dim, 1);
+//		for (int i=0; i<dim; i++) vec.set(i,0, i+1);
+		//	System.out.println(BeanInspector.toString(eval(vec.getColumnPackedCopy())));
+//		rotation = new Matrix(dim, dim);
+//		rotation = Mathematics.getRotationMatrix(vec).transpose();
+		rotation = Mathematics.getRotationMatrix((rotAngle*Math.PI/180.), dim).transpose();
+		//	System.out.println(BeanInspector.toString(eval(vec.getColumnPackedCopy())));
+		return rotation;
 	}
 	
     /** 
@@ -267,6 +311,17 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
 		return "Absolute limit for the symmetric range in any dimension";
 	}
 	
+	public void setDoRotation(boolean doRotation) {
+		this.doRotation = doRotation;
+		if (!doRotation) rotation=null;
+	}
+
+	public boolean isDoRotation() {
+		return doRotation;
+	}
+	public String doRotationTipText() {
+		return "If marked, the function is rotated by 22.5 degrees along every axis.";
+	}
     /**********************************************************************************************************************
      * These are for InterfaceParamControllable
      */
@@ -387,5 +442,20 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
 			sum += v;
 		}
 		return new Pair<Integer,Double>(numViol, sum);
+	}
+	
+	public boolean isShowPlot() {
+		return isShowing ;
+	}
+	public void setShowPlot(boolean showP) {
+		if (!isShowing && showP) {
+			TopoPlot plot = new TopoPlot(getName(), "x1", "x2");
+			plot.setParams(60,60, ColorBarCalculator.BLUE_TO_RED);
+			plot.setTopology(this, makeRange(), true);
+		}
+		isShowing = showP;
+	}
+	public String showPlotTipText() {
+		return "Produce an exemplary 2D plot of the function (dimensional cut at x_i=0 for n>1).";
 	}
 }

@@ -1,12 +1,14 @@
 package eva2.server.go.problems;
 
+import eva2.gui.GenericObjectEditor;
 import eva2.server.go.individuals.ESIndividualDoubleData;
+import eva2.server.go.operators.postprocess.SolutionHistogram;
 
 /**
  * Schwefels sine root function (1981) with a minimum at 420.9687^n of value 0.
  * Function f(x) = (418.9829 * n) - sum_n(x_i * sin(sqrt(abs(x_i)))) + (418.9829 * n);
  */
-public class F13Problem extends AbstractProblemDoubleOffset implements InterfaceMultimodalProblem {
+public class F13Problem extends AbstractProblemDoubleOffset implements InterfaceMultimodalProblem, InterfaceInterestingHistogram {
 
     public F13Problem() {
         this.m_Template         = new ESIndividualDoubleData();
@@ -27,28 +29,37 @@ public class F13Problem extends AbstractProblemDoubleOffset implements Interface
         return (Object) new F13Problem(this);
     }
     
-//    public double[][] makeRange() {
-//	    double[][] range = new double[this.m_ProblemDimension][2];
-//	    for (int i = 0; i < range.length; i++) {
-//	        range[i][0] = -512.03;
-//	        range[i][1] = 511.97;
-//	    }
-//	    return range;
-//    }
-
+    @Override
+    public double getRangeLowerBound(int dim) {
+    	return -512.03;
+	}
+    
+	@Override
+	public double getRangeUpperBound(int dim) {
+		return 511.97;
+	}
+	
+	@Override
+	public void hideHideable() {
+		super.hideHideable();
+		GenericObjectEditor.setHideProperty(this.getClass(), "defaultRange", true);
+	}
+ 
     /** Ths method allows you to evaluate a double[] to determine the fitness
      * @param x     The n-dimensional input vector
      * @return  The m-dimensional output vector.
      */
     public double[] eval(double[] x) {
+    	x = rotateMaybe(x);
         double[] result = new double[1];
         result[0] = m_YOffSet;
         
         for (int i=0; i<x.length; i++) {
-        	double xi = x[i]-m_XOffSet;
+        	double xi = (x[i]-m_XOffSet);
         	result[0] -= xi*Math.sin(Math.sqrt(Math.abs(xi)));
         }
         result[0] += (418.9829 * m_ProblemDimension);
+        // res = cn-sum_i(xi*sin(sqrt(abs(xi))))
         return result;
     }
 
@@ -67,6 +78,11 @@ public class F13Problem extends AbstractProblemDoubleOffset implements Interface
         return result;
     }
 
+	public SolutionHistogram getHistogram() {
+		if (getProblemDimension() < 15) return new SolutionHistogram(0, 800, 16);
+		else if (getProblemDimension() < 25) return new SolutionHistogram(0, 1600, 16);
+		else return new SolutionHistogram(0, 3200, 12);
+	}
 /**********************************************************************************************************************
  * These are for GUI
  */
@@ -85,4 +101,7 @@ public class F13Problem extends AbstractProblemDoubleOffset implements Interface
         return "Schwefels sine-root Function (multimodal, 1981). Remember to use range check!";
     }
 
+    public void setDefaultAccuracy(double v) {
+    	super.SetDefaultAccuracy(v);
+    }
 }

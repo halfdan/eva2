@@ -743,44 +743,82 @@ public class Mathematics {
 	public static void normalizeSum(double[] v, double[] res) {
 		svMult(1./sum(v), v, res);
 	}
+	
+    /**
+     * Return a matrix A which performs the rotation of vec to (1,0,0,...0) if forward is true, else
+     * return a matrix B which performs the reverted rotation, where B=A' (transposition).
+     *   
+     * @param vec
+     * @return
+     */
+    public static Matrix getRotationMatrix(Matrix vec) {
+            Matrix A = Matrix.identity(vec.getRowDimension(), vec.getRowDimension());
+            Matrix tmp = Matrix.identity(vec.getRowDimension(), vec.getRowDimension());
+            Matrix z = (Matrix)vec.clone();
+            
+            z.multi(1./z.norm2()); // normalize
+    
+            for (int i=1; i<vec.getRowDimension(); i++) {
+                    double w = Math.atan2(z.get(i,0), z.get(0,0));// calc angle between the projection of x and x0 in x0-xi-plane
+//                  System.out.println("deg: "+(w/Math.PI)*180);
 
-	/**
-	 * Return a matrix A which performs the rotation of vec to (1,0,0,...0) if forward is true, else
-	 * return a matrix B which performs the reverted rotation, where B=A' (transposition).
-	 *   
-	 * @param vec
-	 * @return
-	 */
-	public static Matrix getRotationMatrix(Matrix vec) {
-		Matrix A = Matrix.identity(vec.getRowDimension(), vec.getRowDimension());
-		Matrix tmp = Matrix.identity(vec.getRowDimension(), vec.getRowDimension());
-		Matrix z = (Matrix)vec.clone();
+                    // make partial rotation matrix
+                    getRotationEntriesSingleAxis(tmp, 0, i, w);
+    
+                    A = tmp.times(A);                       // add to resulting rotation
+                    z = tmp.times(z);                       // z is now 0 in i-th component
+    
+                    // reset tmp matrix to unity
+                    resetRotationEntriesSingleAxis(tmp, 0, i);
+            }
+            return A;
+    }
 	
-		double w, cosw, sinw;
-	
-		z.multi(z.norm2()); // normalize
-	
-	
-		for (int i=1; i<vec.getRowDimension(); i++) {
-			w = Math.atan2(z.get(i,0), z.get(0,0));// calc angle between the projection of x and x0 in x0-xi-plane
-	
-			cosw = Math.cos(w);
-			sinw = Math.sin(w);
-			tmp.set(0, 0, cosw);	// make partial rotation matrix
-			tmp.set(0, i, sinw);
-			tmp.set(i, 0, -sinw);
-			tmp.set(i, i, cosw);
-	
-			A = tmp.times(A);			// add to resulting rotation
-			z = tmp.times(z);			// z is now 0 in i-th component
-	
-			tmp.set(0, 0, 1); // reset tmp matrix to unity
-			tmp.set(0, i, 0);
-			tmp.set(i, 0, 0);
-			tmp.set(i, i, 1);
-		}
-		return A;
-	}
+    public static Matrix getRotationMatrix(double w, int dim) {
+        Matrix A = Matrix.identity(dim, dim);
+        Matrix tmp = Matrix.identity(dim, dim);
+
+        for (int i=1; i<dim; i++) {
+//              System.out.println("deg: "+(w/Math.PI)*180);
+                // make partial rotation matrix
+                getRotationEntriesSingleAxis(tmp, i-1, i, w);
+                A = tmp.times(A);                       // add to resulting rotation
+                // reset tmp matrix to unity
+                resetRotationEntriesSingleAxis(tmp, i-1, i);
+        }
+//      Matrix vec = new Matrix(dim, 1);
+//      for (int i=0; i<dim; i++) vec.set(i,0, 1);
+//      vec = A.times(vec);
+//      vec = A.times(vec);
+        return A;
+    }
+
+    /**
+     * Set rotation matrix entries along i/j axis. w is expected in radians.
+     * 
+     * @param tmp
+     * @param i
+     * @param j
+     * @param w
+     */
+    public static void getRotationEntriesSingleAxis(Matrix tmp, int i, int j, double w) {
+    	double cosw = Math.cos(w);
+    	double sinw = Math.sin(w);
+    	tmp.set(i, i, cosw);
+    	tmp.set(i, j, sinw);
+    	tmp.set(j, i, -sinw);
+    	tmp.set(j, j, cosw);
+    }
+
+    /**
+     *  Reset single axis rotation matrix to unity.
+     */
+    public static void resetRotationEntriesSingleAxis(Matrix tmp, int i, int j) {
+    	tmp.set(i, i, 1);
+    	tmp.set(i, j, 0);
+    	tmp.set(j, i, 0);
+    	tmp.set(j, j, 1);               
+    }
 
 	/**
 	 * Rotate the vector by angle alpha around axis i/j
@@ -796,7 +834,23 @@ public class Mathematics {
 		vect[i] = (xi*Math.cos(alpha))-(xj*Math.sin(alpha));
 		vect[j] = (xi*Math.sin(alpha))+(xj*Math.cos(alpha));
 	}
-	
+    
+    /**
+     * Rotate a given double vector using a rotation matrix. If the matrix
+     * is null, x will be returned unchanged. Matrix dimensions must fit.
+     * 
+     * @param x
+     * @param rotMatrix
+     * @return the rotated vector
+     */
+    public static double[] rotate(double[] x, Matrix rotMatrix) {
+            if (rotMatrix!=null) {
+                    Matrix resVec = rotMatrix.times(new Matrix(x, x.length));
+                    x = resVec.getColumnPackedCopy();
+                    return x;
+            } else return x;
+    }
+
 	/**
 	 * Rotate the vector along all axes by angle alpha or a uniform random value
 	 * in [-alpha, alpha] if randomize is true.

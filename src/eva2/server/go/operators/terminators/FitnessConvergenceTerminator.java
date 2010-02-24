@@ -91,11 +91,11 @@ Serializable {
 	public boolean isTerminated(PopulationInterface Pop) {
 		if (!firstTime && isStillConverged(Pop)) {
 			if (stagnationTimeHasPassed(Pop)) {
-				// population hasnt improved much for max time, criterion is met
+				// population hasnt changed much for max time, criterion is met
 				msg = getTerminationMessage(tagString);
 				return true;
 			} else {
-				// population hasnt improved much for i<max time, keep running
+				// population hasnt changed much for i<max time, keep running
 				return false;
 			}
 		} else {
@@ -131,7 +131,7 @@ Serializable {
 	}
 
 	/**
-	 * Return true if |oldFit - curFit| < |oldFit| * thresh% (relative case)
+	 * Return true if |oldFit - curFit| < |oldFit| * thresh (relative case)
 	 * and if |oldFit - curFit| < thresh (absolute case).
 	 *
 	 * @param curFit
@@ -159,13 +159,6 @@ Serializable {
 			return (pop.getGeneration() - popGens) >= m_stagTime;
 		}
 	}
-
-	/**
-	 *
-	 */
-//	public String toString() {
-//		return BeanTest.toString(this);
-//	}
 
 	/**
 	 *

@@ -21,9 +21,11 @@ import eva2.server.go.operators.archiving.InformationRetrievalInserting;
 import eva2.server.go.operators.archiving.InterfaceArchiving;
 import eva2.server.go.operators.archiving.InterfaceInformationRetrieval;
 import eva2.server.go.operators.cluster.ClusteringDensityBased;
+import eva2.server.go.operators.cluster.InterfaceClustering;
 import eva2.server.go.operators.crossover.CrossoverESDefault;
 import eva2.server.go.operators.crossover.InterfaceCrossover;
 import eva2.server.go.operators.crossover.NoCrossover;
+import eva2.server.go.operators.distancemetric.IndividualDataMetric;
 import eva2.server.go.operators.mutation.InterfaceMutation;
 import eva2.server.go.operators.mutation.MutateESCovarianceMatrixAdaption;
 import eva2.server.go.operators.mutation.MutateESFixedStepSize;
@@ -50,6 +52,7 @@ import eva2.server.go.strategies.HillClimbing;
 import eva2.server.go.strategies.InterfaceOptimizer;
 import eva2.server.go.strategies.MonteCarloSearch;
 import eva2.server.go.strategies.MultiObjectiveEA;
+import eva2.server.go.strategies.NelderMeadSimplex;
 import eva2.server.go.strategies.ParticleSwarmOptimization;
 import eva2.server.go.strategies.PopulationBasedIncrementalLearning;
 import eva2.server.go.strategies.SimulatedAnnealing;
@@ -117,6 +120,12 @@ public class OptimizerFactory {
 
 	private static OptimizerRunnable lastRunnable = null;
 
+	private static final int cbnDefaultHaltingWindowLength=new ClusterBasedNichingEA().getHaltingWindow();
+	private static final double cbnDefaultHaltingWindowEpsilon=new ClusterBasedNichingEA().getEpsilonBound();
+	private static final double cbnDefaultClusterSigma = 0.1;
+	private static final int cbnDefaultMinGroupSize = 5;
+	private static final int cbnDefaultMaxGroupSize = -1;
+	
 	/**
 	 * This method optimizes the given problem using differential evolution.
 	 *
@@ -424,7 +433,7 @@ public class OptimizerFactory {
 	 * @param popsize
 	 * @param phi1
 	 * @param phi2
-	 * @param k
+	 * @param speedLim
 	 * @param listener
 	 * @param topology
 	 * @see ParticleSwarmOpimization
@@ -433,9 +442,8 @@ public class OptimizerFactory {
 	 */
 	public static final ParticleSwarmOptimization createParticleSwarmOptimization(
 			AbstractOptimizationProblem problem, int popsize, double phi1,
-			double phi2, double k,
-			InterfacePopulationChangedEventListener listener,
-			PSOTopologyEnum selectedTopology) {
+			double phi2, double speedLim, PSOTopologyEnum selectedTopology, int topologyRange, 
+			InterfacePopulationChangedEventListener listener) {
 
 		problem.initProblem();
 
@@ -450,9 +458,10 @@ public class OptimizerFactory {
 		pso.getPopulation().setTargetSize(popsize);
 		pso.setPhi1(phi1);
 		pso.setPhi2(phi2);
-		pso.setSpeedLimit(k);
+		pso.setSpeedLimit(speedLim);
 //		pso.getTopology().setSelectedTag(selectedTopology);
 		pso.setTopology(selectedTopology);
+		pso.setTopologyRange(topologyRange);
 		pso.addPopulationChangedEventListener(listener);
 		pso.init();
 
@@ -581,13 +590,13 @@ public class OptimizerFactory {
 		case HILLCL:
 			return hillClimbing(problem);
 		case CBN_ES:
-			return cbnES(problem);
+			return standardCbnES(problem);
 		case CL_HILLCL:
 			return stdClusteringHillClimbing(problem);
 		case CMA_ES_IPOP: 
 			return cmaESIPOP(problem);
 		case CBN_GA:
-			return cbnGA(problem);
+			return standardCbnGA(problem);
 		case PBIL:
 			return standardPBIL(problem);
 		default:
@@ -1171,31 +1180,99 @@ public class OptimizerFactory {
 		return makeParams(new MonteCarloSearch(), 50, problem, randSeed, makeDefaultTerminator());
 	}
 	
-	public static final GOParameters cbnES(AbstractOptimizationProblem problem) {
+	/**
+	 * Create a generic Clustering-based Niching EA with given parameters. Uses ClusteringDensityBased as
+	 * a default clustering algorithm.
+	 * 
+	 * @param problem
+	 * @param opt
+	 * @param clusterSigma
+	 * @param minClustSize
+	 * @param haltingWindowLength
+	 * @param haltingWindowEpsilon
+	 * @param popSize
+	 * @return
+	 */
+	public static final GOParameters createCbn(AbstractOptimizationProblem problem, InterfaceOptimizer opt,
+			double clusterSigma, int minClustSize, int maxSpecSize, int haltingWindowLength, double haltingWindowEpsilon, int popSize) {
+		return createCbn(problem, opt, new ClusteringDensityBased(clusterSigma, minClustSize), maxSpecSize,
+				new ClusteringDensityBased(clusterSigma, minClustSize), haltingWindowLength, haltingWindowEpsilon, popSize);
+	}
+	
+	/**
+	 * Create a generic Clustering-based Niching EA with given parameters. 
+	 * 
+	 * @param problem
+	 * @param opt
+	 * @param clustDifferentiate
+	 * @param clustMerge
+	 * @param haltingWindowLength
+	 * @param haltingWindowEpsilon
+	 * @param popSize
+	 * @return
+	 */
+	public static final GOParameters createCbn(AbstractOptimizationProblem problem, InterfaceOptimizer opt,
+			InterfaceClustering clustDifferentiate, int maxSpecSize, InterfaceClustering clustMerge, int haltingWindowLength, 
+			double haltingWindowEpsilon, int popSize) {
 		ClusterBasedNichingEA cbn = new ClusterBasedNichingEA();
+		cbn.setOptimizer(opt);
+		cbn.setMergingCA(clustMerge);
+		cbn.setMaxSpeciesSize(maxSpecSize);
+		cbn.setDifferentiationCA(clustDifferentiate);
+		if (clustMerge!=null) cbn.setUseMerging(true);
+		cbn.setShowCycle(0); // don't do graphical output
+		cbn.setHaltingWindow(haltingWindowLength);
+		cbn.setEpsilonBound(haltingWindowEpsilon);
+		return makeParams(cbn, popSize, problem, randSeed, makeDefaultTerminator());
+	}
+	
+	/**
+	 * A standard CBNES which employs a (15,50)-ES with further parameters as set by the EvA2 framework.
+	 *  
+	 * @param problem
+	 * @return
+	 */
+	public static final GOParameters standardCbnES(AbstractOptimizationProblem problem) {
 		EvolutionStrategies es = new EvolutionStrategies();
 		es.setMu(15);
 		es.setLambda(50);
 		es.setPlusStrategy(false);
-		cbn.setOptimizer(es);
-		ClusteringDensityBased clustering = new ClusteringDensityBased(0.1);
-		cbn.setMergingCA((ClusteringDensityBased) clustering.clone());
-		cbn.setDifferentiationCA(clustering);
-		cbn.setShowCycle(0); // don't do graphical output
-
-		return makeParams(cbn, 100, problem, randSeed, makeDefaultTerminator());
+		return createCbn(problem, es, cbnDefaultClusterSigma, cbnDefaultMinGroupSize, cbnDefaultMaxGroupSize, cbnDefaultHaltingWindowLength, cbnDefaultHaltingWindowEpsilon, 100);
 	}
 
-	public static final GOParameters cbnGA(AbstractOptimizationProblem problem) {
-		ClusterBasedNichingEA cbn = new ClusterBasedNichingEA();
-		GeneticAlgorithm ga = new GeneticAlgorithm();
-		cbn.setOptimizer(ga);
-		ClusteringDensityBased clustering = new ClusteringDensityBased(0.1);
-		cbn.setMergingCA((ClusteringDensityBased) clustering.clone());
-		cbn.setDifferentiationCA(clustering);
-		cbn.setShowCycle(0); // don't do graphical output
-
-		return makeParams(cbn, 100, problem, randSeed, makeDefaultTerminator());
+	/**
+	 * A standard CBNES which employs a CMA-ES, see {@link #cmaES(AbstractOptimizationProblem)}.
+	 *  
+	 * @param problem
+	 * @return
+	 */
+	public static final GOParameters standardCbnCmaES(AbstractOptimizationProblem problem) {
+		GOParameters cmaEsParams = cmaES(problem);
+		EvolutionStrategies cmaES = (EvolutionStrategies)cmaEsParams.getOptimizer();
+		return createCbn(problem, cmaES, cbnDefaultClusterSigma, cbnDefaultMinGroupSize, cbnDefaultMaxGroupSize, cbnDefaultHaltingWindowLength, cbnDefaultHaltingWindowEpsilon, 100);
+	}
+	
+	/**
+	 * A standard CBNGA with a GA and further parameters as set by the EvA2 framework.
+	 * @param problem
+	 * @return
+	 */
+	public static final GOParameters standardCbnGA(AbstractOptimizationProblem problem) {
+		GeneticAlgorithm ga = new GeneticAlgorithm();	
+		return createCbn(problem, ga, cbnDefaultClusterSigma, cbnDefaultMinGroupSize, cbnDefaultMaxGroupSize, cbnDefaultHaltingWindowLength, cbnDefaultHaltingWindowEpsilon, 100);
+	}
+	
+	/**
+	 * A standard CBNPSO with density based clustering working on personal best positions.
+	 * 
+	 * @param problem
+	 * @return
+	 */
+	public static final GOParameters standardCbnPSO(AbstractOptimizationProblem problem) {
+		GOParameters psoParams = standardPSO(problem);
+		ParticleSwarmOptimization pso = (ParticleSwarmOptimization)psoParams.getOptimizer();
+		ClusteringDensityBased clust = new ClusteringDensityBased(cbnDefaultClusterSigma, cbnDefaultMinGroupSize, new IndividualDataMetric(ParticleSwarmOptimization.partBestPosKey));
+		return createCbn(problem, pso, clust, cbnDefaultMaxGroupSize, new ClusteringDensityBased(clust), cbnDefaultHaltingWindowLength, cbnDefaultHaltingWindowEpsilon, 100);
 	}
 	
 	public static final GOParameters standardPBIL(AbstractOptimizationProblem problem) {
@@ -1306,6 +1383,10 @@ public class OptimizerFactory {
 	 * @return
 	 */
 	public static final GOParameters cmaESIPOP(AbstractOptimizationProblem problem) {
+		return createCmaEsIPop(problem, 2.);
+	}
+	
+	public static final GOParameters createCmaEsIPop(AbstractOptimizationProblem problem, double incLambdaFact) {
 		EvolutionStrategies es = new EvolutionStrategyIPOP();
 
 		AbstractEAIndividual indyTemplate = problem.getIndividualTemplate();
@@ -1317,6 +1398,7 @@ public class OptimizerFactory {
 			int lambda = (int) (4.0 + 3.0 * Math.log(dim));
 			es.setGenerationStrategy((int)Math.floor(lambda/2.),lambda, false);
 			es.setForceOrigPopSize(false);
+			((EvolutionStrategyIPOP)es).setIncPopSizeFact(incLambdaFact);
 			// Set CMA operator for mutation
 			AbstractEAIndividual indy = (AbstractEAIndividual) indyTemplate;
 			MutateESRankMuCMA cmaMut = new MutateESRankMuCMA();
@@ -1328,6 +1410,11 @@ public class OptimizerFactory {
 		}
 
 		return makeESParams(es, problem);
+	}
+	
+	public static final GOParameters standardNMS(AbstractOptimizationProblem problem) {
+		NelderMeadSimplex nms = NelderMeadSimplex.createNelderMeadSimplex(problem, null);
+		return makeParams(nms, 50, problem, randSeed, makeDefaultTerminator());
 	}
 	
 	public static final GOParameters standardDE(
@@ -1370,13 +1457,14 @@ public class OptimizerFactory {
 
 		return makeParams(ga, 100, problem, randSeed, makeDefaultTerminator());
 	}
-
+	
 	public static final GOParameters standardPSO(
 			AbstractOptimizationProblem problem) {
 		ParticleSwarmOptimization pso = new ParticleSwarmOptimization();
 		pso.setPhiValues(2.05, 2.05);
 //		pso.getTopology().setSelectedTag("Grid");
 		pso.setTopology(PSOTopologyEnum.grid);
+		pso.setTopologyRange(1);
 		return makeParams(pso, 30, problem, randSeed, makeDefaultTerminator());
 	}
 

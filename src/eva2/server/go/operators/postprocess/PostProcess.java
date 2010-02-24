@@ -34,8 +34,11 @@ import eva2.server.go.problems.AbstractMultiModalProblemKnown;
 import eva2.server.go.problems.AbstractOptimizationProblem;
 import eva2.server.go.problems.FM0Problem;
 import eva2.server.go.problems.Interface2DBorderProblem;
+import eva2.server.go.problems.InterfaceFirstOrderDerivableProblem;
+import eva2.server.go.problems.InterfaceInterestingHistogram;
 import eva2.server.go.problems.InterfaceMultimodalProblemKnown;
 import eva2.server.go.strategies.EvolutionStrategies;
+import eva2.server.go.strategies.GradientDescentAlgorithm;
 import eva2.server.go.strategies.HillClimbing;
 import eva2.server.go.strategies.NelderMeadSimplex;
 import eva2.server.modules.GOParameters;
@@ -61,6 +64,8 @@ public class PostProcess {
 	private static double minMutationStepSize = 0.0000000000000001;
 	// used for hill climbing post processing and only alive during that period
 	private static OptimizerRunnable ppRunnable = null;
+	public static final String movedDistanceKey = "PostProcessingMovedBy";
+	public static final String movedToPositionKey = "PostProcessingMovedTo";
 	
 	public static final int BEST_ONLY = 1;
 	public static final int BEST_RAND = 2;
@@ -157,9 +162,9 @@ public class PostProcess {
      * Cluster the population. Return for every cluster a subset of representatives which are the best individuals 
      * or a random subset of the cluster or the best and a random subset. Returns shallow copies!
      * returnQuota should be in  [0,1] and defines, which percentage of individuals of each cluster is kept, however
-     * if returnQuota is > 0, at least one is kept.
+     * at least one is kept per cluster.
      * lonerMode defines whether loners are discarded, kept, or treated as clusters, meaning they are kept if returnQuota > 0.
-     * takOverMode defines whether, of a cluster with size > 1, which n individuals are kept. Either the n best only,
+     * takeOverMode defines whether, of a cluster with size > 1, which n individuals are kept. Either the n best only,
      * or the single best and random n-1, or all n random. 
      * 
      * @param pop
@@ -231,9 +236,9 @@ public class PostProcess {
      * @param upper
      * @return
      */
-    public static Population filterFitnessIn(Population pop, double lower, double upper) {
-    	Population result = filterFitness(pop, upper, true);
-    	return filterFitness(result, lower, false);
+    public static Population filterFitnessIn(Population pop, double lower, double upper, int crit) {
+    	Population result = filterFitness(pop, upper, true, crit);
+    	return filterFitness(result, lower, false, crit);
     }
     
     /**
@@ -245,7 +250,7 @@ public class PostProcess {
      * @param bSmaller if true, return individuals with lower or equal, else with higher fitness norm only
      * @return
      */
-    public static Population filterFitness(Population pop, double fitNorm, boolean bSmallerEq) {
+    public static Population filterFitnessNormed(Population pop, double fitNorm, boolean bSmallerEq) {
     	AbstractEAIndividual indy;
     	Population result = new Population();
     	for (int i=0; i<pop.size(); i++) {
@@ -257,30 +262,32 @@ public class PostProcess {
     }
     
     /**
-     * Create a fitness histogram of an evaluated population within the given interval and nBins number of bins.
-     * Therefore a bin is of size (upperBound-lowerBound)/nBins, and bin 0 starts at lowerBound.
-     * Returns an integer array with the number of individuals in each bin.  
+     * Filter the individuals of a population which have a fitness below a given value.
+     * If the single fitness criterion is valid (within the range of the fitness array),
+     * the absolute value of that criterion is compared, otherwise (e.g. crit=-1) the
+     * phenotypic norm of the full vector is used.
+     * Returns shallow copies!
      * 
-     * @param pop	the population to scan.
-     * @param lowerBound	lower bound of the fitness interval
-     * @param upperBound	upper bound of the fitness interval
-     * @param nBins	number of bins
-     * @return	an integer array with the number of individuals in each bin
-     * @see filterFitnessIn()
+     * @param pop
+     * @param fitNorm
+     * @param bSmaller if true, return individuals with lower or equal, else with higher fitness only
+     * @param crit index of the fitness criterion or -1 to use the norm
+     * @return
      */
-    public static int[] createFitNormHistogram(Population pop, double lowerBound, double upperBound, int nBins) {
-    	int[] res = new int[nBins];
-    	double lower = lowerBound;
-    	double step = (upperBound - lowerBound) / nBins;
-    	for (int i=0; i<nBins; i++) {
-//    		if (TRACE) System.out.println("checking between " + lower + " and " + (lower+step));
-    		res[i] = filterFitnessIn(pop, lower, lower+step).size();
-//    		if (TRACE) System.out.println("found " + res[i]);
-    		lower += step;
-    	}
-    	return res;
+    public static Population filterFitness(Population pop, double fitThresh, boolean bSmallerEq, int crit) {
+    	double curFit;
+    	AbstractEAIndividual indy;
+    	Population result = new Population();
+    	for (int i=0; i<pop.size(); i++) {
+			indy = pop.getEAIndividual(i);
+			if ((crit>=0) && (crit<indy.getFitness().length)) curFit = indy.getFitness(crit);
+			else curFit = PhenotypeMetric.norm(indy.getFitness());
+			
+			if (bSmallerEq && (curFit<=fitThresh)) result.add(indy);
+			else if (!bSmallerEq && (curFit>fitThresh)) result.add(indy);
+		}
+    	return result;
     }
-    
     
 //    /** 
 //     * This method returns a set of individuals corresponding to an optimum in a given list.
@@ -399,6 +406,28 @@ public class PostProcess {
 		runPP();
 	}
 	
+	// TODO ! test this
+	public static int processWithGDA(Population pop, AbstractOptimizationProblem problem, InterfaceTerminator term, int baseEvals, double minStepSize, double maxStepSize) {
+		GradientDescentAlgorithm gda = new GradientDescentAlgorithm();
+		gda.setAdaptStepSizeLocally(true);
+		gda.SetProblem(problem);
+		gda.setLocalMinStepSize(minStepSize);
+		gda.setLocalMaxStepSize(maxStepSize);
+		gda.setRecovery(false);
+		gda.initByPopulation(pop, false);
+
+		int funCallsBefore = pop.getFunctionCalls();
+		pop.SetFunctionCalls(baseEvals);
+
+		ppRunnable = new OptimizerRunnable(OptimizerFactory.makeParams(gda, pop, problem, 0, term), true);
+		ppRunnable.getStats().createNextGenerationPerformed(gda.getPopulation(), gda, null);
+
+		int funCallsDone = pop.getFunctionCalls()-baseEvals;
+		pop.SetFunctionCalls(funCallsBefore);
+
+		return funCallsDone;
+	}
+
 	/**
 	 * Search for a local minimum using nelder mead and return the solution found and the number of steps
 	 * (evaluations) actually performed. This uses the whole population as starting population for nelder mead
@@ -426,7 +455,17 @@ public class PostProcess {
 		// as nms creates a new population and has already evaluated them, send a signal to stats
 		ppRunnable.getStats().createNextGenerationPerformed(nms.getPopulation(), nms, null);
 		
+//		if (problem instanceof InterfaceFirstOrderDerivableProblem) {
+//			double[] x = pop.getBestEAIndividual().getDoublePosition();
+//			System.out.println("grads: " + BeanInspector.toString(((InterfaceFirstOrderDerivableProblem)problem).getFirstOrderGradients(x)));
+//		}
+		
 		runPP();
+		
+//		if (problem instanceof InterfaceFirstOrderDerivableProblem) {
+//			double[] x = pop.getBestEAIndividual().getDoublePosition();
+//			System.out.println("grads: " + BeanInspector.toString(((InterfaceFirstOrderDerivableProblem)problem).getFirstOrderGradients(x)));
+//		}
 
 		int funCallsDone = pop.getFunctionCalls()-baseEvals;
 		pop.SetFunctionCalls(funCallsBefore);
@@ -520,25 +559,46 @@ public class PostProcess {
 	 * @param maxPerturbation
 	 * @param includeCand
 	 */
-	public static Population createLSSupPopulation(PostProcessMethod method, AbstractOptimizationProblem problem, Population candidates, int index, double maxPerturbation, boolean includeCand) {
+	public static Population createLSSupPopulation(PostProcessMethod method, AbstractOptimizationProblem problem, Population candidates, int index, double maxRelativePerturbation, boolean includeCand) {
 		Population subPop = null;
 		switch (method) {
 		case cmaES:
-			subPop = createPopInSubRange(maxPerturbation, problem, candidates.getEAIndividual(index));
+			// target size minus one because indy is added later
+			subPop = new Population();
+			createPopInSubRange(subPop, maxRelativePerturbation, getDefCMAPopSize(candidates.getEAIndividual(index))-1, candidates.getEAIndividual(index));
 			break;
 		case hillClimber:
 			System.err.println("INVALID in createLSSupPopulation");
 			break;
 		case nelderMead:
 			double[][] range = ((InterfaceDataTypeDouble)candidates.getEAIndividual(index)).getDoubleRange();
-			double perturb = findNMSPerturb(candidates, index, maxPerturbation);
+			double perturb = findNMSPerturb(candidates, index, relToAbsPerturb(maxRelativePerturbation, range));
 			if (TRACE) System.out.println("perturb " + index + " is " + perturb);
-			subPop = NelderMeadSimplex.createNMSPopulation(candidates.getEAIndividual(index), perturb, range, false); 
+			subPop = NelderMeadSimplex.createNMSPopulation(candidates.getEAIndividual(index), absToRelPerturb(perturb, range), range, false); 
 		}
 //		subPop.setSameParams(candidates);
 		return subPop;
 	}
 	
+	public static double relToAbsPerturb(double maxRelativePerturbation, double[][] range) {
+		return maxRelativePerturbation*(Mathematics.getAvgRange(range));
+	}
+	
+	public static double absToRelPerturb(double maxAbsPerturbation, double[][] range) {
+		return maxAbsPerturbation/(Mathematics.getAvgRange(range));
+	}
+	
+	private static int getDefCMAPopSize(AbstractEAIndividual template) {
+		if (isDoubleCompliant(template)) {
+			double[][] range = getDoubleRange(template);
+			int targetSize = (int) (4.0 + 3.0 * Math.log(range.length)); // minus one because indy is added later
+			return targetSize;
+		} else {
+			System.err.println("Warning, invalid individual for PostProcess.getDefCMAPopSize");
+			return 10;
+		}
+	}
+
 	/**
 	 * Employ hill-climbing directly or NM/CMA on the candidates. The candidate population
 	 * must not be empty and candidates must implement InterfaceDataTypeDouble.
@@ -588,7 +648,8 @@ public class PostProcess {
 	 * improved by checking the convergence state in the future. The given terminator will be applied to each
 	 * candidate sub-population anew. If the terminator is null, 10*n steps will be performed on each candidate.
 	 * 
-	 * A double value is added to each solution individual that replaces its ancestor candidate, using the key "PostProcessingMovedBy".
+	 * A double value is added to each solution individual that replaces its ancestor candidate, using the key 
+	 * PostProcess.movedDistanceKey.
 	 * It indicates the phenotype distance the found solution has moved relatively to the original candidate.
 	 * 
 	 * @see #findNMSPerturb(Population, int, double)
@@ -598,17 +659,17 @@ public class PostProcess {
 	 * @param method	NM or CMA is allowed here
 	 * @param candidates
 	 * @param term
-	 * @param maxPerturbation perturbation for the sub population
+	 * @param maxRelativePerturbation perturbation for the sub population relative to problem range
 	 * @param prob
 	 * @return the number of evaluations performed
 	 */
-	public static int processSingleCandidatesNMCMA(PostProcessMethod method, Population candidates, InterfaceTerminator term, double maxPerturbation, AbstractOptimizationProblem prob) {
+	public static int processSingleCandidatesNMCMA(PostProcessMethod method, Population candidates, InterfaceTerminator term, double maxRelativePerturbation, AbstractOptimizationProblem prob) {
 		ArrayList<Population> nmPops = new ArrayList<Population>();
 		int stepsPerf = 0;
 		Population subPop;
 		
 		for (int i=0; i<candidates.size(); i++) { // create all subPopulations
-			subPop = createLSSupPopulation(method, prob, candidates, i, maxPerturbation, false);
+			subPop = createLSSupPopulation(method, prob, candidates, i, maxRelativePerturbation, false);
 			
 			prob.evaluate(subPop);
 			stepsPerf += subPop.size();
@@ -642,7 +703,9 @@ public class PostProcess {
 //				if (subPop.getBestEAIndividual().isDominant(candidates.getEAIndividual(i))) { // TODO Multiobjective???
 				if (subPop.getBestEAIndividual().getFitness(0)<candidates.getEAIndividual(i).getFitness(0)) {
 //					System.out.println("moved by "+ PhenotypeMetric.dist(candidates.getEAIndividual(i), subPop.getBestEAIndividual()));
-					subPop.getBestEAIndividual().putData("PostProcessingMovedBy", new Double(PhenotypeMetric.dist(candidates.getEAIndividual(i), subPop.getBestEAIndividual())));
+					subPop.getBestEAIndividual().putData(movedDistanceKey, new Double(PhenotypeMetric.dist(candidates.getEAIndividual(i), subPop.getBestEAIndividual())));
+//					subPop.getBestEAIndividual().putData(movedToPositionKey, subPop.getBestEAIndividual().getDoublePosition());
+					// ^ this makes no sense here since the new position is returned anyways by replacing the candidate individual
 					candidates.set(i, subPop.getBestEAIndividual());
 				}
 			} else {
@@ -689,36 +752,33 @@ public class PostProcess {
 	 * problem constraints, meaning that the box may be smaller at the brim of the problem-defined search range.
 	 * 
 	 * @param searchBoxLen
-	 * @param prob
 	 * @param indy
 	 * @return
 	 */
-	private static Population createPopInSubRange(double searchBoxLen,
-			AbstractOptimizationProblem prob,
+	public static void createPopInSubRange(Population destPop, double searchBoxLen,
+			int targetSize,
 			AbstractEAIndividual indy) {
 		if (isDoubleCompliant(indy)) {
 			double[][] range = getDoubleRange(indy);
 			double[] data = getDoubleData(indy);
-			int lambda= (int) (4.0 + 3.0 * Math.log(range.length));
 			double[][] newRange = new double[range.length][2];
 			for (int dim=0; dim<range.length; dim++) {
 				// create a small range array around the expected local optimum 
 				newRange[dim][0] = Math.max(range[dim][0], data[dim]-(searchBoxLen/2.));
 				newRange[dim][1] = Math.min(range[dim][1], data[dim]+(searchBoxLen/2.));
 			}
-			Population pop = new Population();
-			for (int i=0; i<lambda-1; i++) { // minus one because indy is added later
+//			Population pop = new Population();
+			destPop.clear();
+			for (int i=0; i<targetSize; i++) { 
 				AbstractEAIndividual tmpIndy = (AbstractEAIndividual)indy.clone();
 				data = getDoubleData(tmpIndy);
 				ESIndividualDoubleData.defaultInit(data, newRange);
 				setDoubleData(tmpIndy, data);
-				pop.addIndividual(tmpIndy);
+				destPop.addIndividual(tmpIndy);
 			}
-			pop.synchSize();
-			return pop;
+			destPop.synchSize();
 		} else {
 			System.err.println("invalid individual type!");
-			return null;
 		}
 	}
 
@@ -760,7 +820,7 @@ public class PostProcess {
 		if (plot == null) {
 			plot = new TopoPlot("PostProcessing: " + title, "x", "y",range[0],range[1]);
 		    if (prob instanceof Interface2DBorderProblem) {
-				plot.setParams(60, 60);
+		    	plot.setParams(60, 60);
 		    	plot.setTopology((Interface2DBorderProblem)prob);
 		    }
 		}
@@ -860,9 +920,9 @@ public class PostProcess {
 		if (prob instanceof InterfaceMultimodalProblemKnown) {
 			InterfaceMultimodalProblemKnown mmkProb = (InterfaceMultimodalProblemKnown)prob;
 			listener.println("number of known optima is " + mmkProb.getRealOptima().size());
-			listener.println("default epsilon is " + mmkProb.getEpsilon());
-			listener.println("optima found with default epsilon: " + getFoundOptima(solutions, mmkProb.getRealOptima(), mmkProb.getEpsilon(), true).size());
-			listener.println("max peak ratio is " + mmkProb.getMaximumPeakRatio(getFoundOptima(solutions, mmkProb.getRealOptima(), mmkProb.getEpsilon(), true)));
+			listener.println("default epsilon is " + mmkProb.getDefaultAccuracy());
+			listener.println("optima found with default epsilon: " + getFoundOptima(solutions, mmkProb.getRealOptima(), mmkProb.getDefaultAccuracy(), true).size());
+			listener.println("max peak ratio is " + mmkProb.getMaximumPeakRatio(getFoundOptima(solutions, mmkProb.getRealOptima(), mmkProb.getDefaultAccuracy(), true)));
 			for (double epsilon=0.1; epsilon > 0.00000001; epsilon/=10.) {
 				//	out.println("no optima found: " + ((InterfaceMultimodalProblemKnown)mmProb).getNumberOfFoundOptima(pop));
 				listener.println("found " + getFoundOptima(solutions, mmkProb.getRealOptima(), epsilon, true).size() + " for epsilon = " + epsilon + ", maxPeakRatio: " + AbstractMultiModalProblemKnown.getMaximumPeakRatio(mmkProb,solutions, epsilon));
@@ -886,6 +946,24 @@ public class PostProcess {
 	}
 	
 	/**
+	 * Cluster the potential optima from a population using {@link #getFoundOptima(Population, Population, double, boolean)} or
+	 * extractPotentialOptima {@link AbstractOptimizationProblem}. Overwrites the given histogram and returns the found solutions
+	 * within a new population.
+	 * 
+	 * @param pop
+	 * @param prob
+	 * @param hist
+	 * @param accuracy
+	 * @param maxPPEvalsPerIndy
+	 * @return
+	 */
+	public static Population clusterBestUpdateHistogram(Population pop, AbstractOptimizationProblem prob, SolutionHistogram hist, int crit, double accuracy) {
+		Population opts = clusterBest(pop, accuracy, 0, KEEP_LONERS, BEST_ONLY);
+		hist.updateFrom(opts, crit);
+		return opts;
+	}
+	
+	/**
 	 * General post processing method, receiving parameter instance for specification.
 	 * Optional clustering and HC step, output contains population measures, fitness histogram and
 	 * a list of solutions after post processing.
@@ -897,7 +975,7 @@ public class PostProcess {
 	 * @return the clustered, post-processed population
 	 */
 	public static Population postProcess(InterfacePostProcessParams params, Population inputPop, AbstractOptimizationProblem problem, InterfaceTextListener listener) {
-		if (params.isDoPostProcessing()) {
+		if (params.isDoPostProcessing() && (inputPop!=null)) {
 			Plot plot;
 			
 			Population clusteredPop, outputPop, stateBeforeLS;
@@ -945,11 +1023,17 @@ public class PostProcess {
 			double upBnd = PhenotypeMetric.norm(outputPop.getWorstEAIndividual().getFitness())*1.1;
 			upBnd = Math.pow(10,Math.floor(Math.log10(upBnd)+1));
 			double lowBnd = 0;
-			int[] sols = PostProcess.createFitNormHistogram(outputPop, lowBnd, upBnd, 20);
+			int fitCrit = 0; // use first fitness criterion
+			SolutionHistogram solHist = SolutionHistogram.createFitNormHistogram(outputPop, lowBnd, upBnd, 20, fitCrit);
 //			PostProcessInterim.outputResult((AbstractOptimizationProblem)goParams.getProblem(), outputPop, 0.01, System.out, 0, 2000, 20, goParams.getPostProcessSteps());
 			if (outputPop.size()>1) {
 				if (listener != null) listener.println("measures: " + BeanInspector.toString(outputPop.getPopulationMeasures()));
-				if (listener != null) listener.println("solution histogram in [" + lowBnd + "," + upBnd + "]: " + BeanInspector.toString(sols));
+				if (listener != null) listener.println("solution histogram: " + solHist + ", score " + solHist.getScore());
+				if ((listener != null) && (problem instanceof InterfaceInterestingHistogram)) {
+					SolutionHistogram pSolHist = ((InterfaceInterestingHistogram)problem).getHistogram();
+					pSolHist.updateFrom(outputPop, fitCrit);
+					listener.println("problem-defined histogram: " + pSolHist + ", score " + pSolHist.getScore());
+				}
 			}
 			
 			//////////// multimodal data output
@@ -1002,7 +1086,7 @@ public class PostProcess {
 	 * @param maxPerturb optional upper bound of the returned perturbation
 	 * @return
 	 */
-	public static double findNMSPerturb(Population candidates, int i, double maxPerturb) {
+	public static double findNMSPerturb(Population candidates, int i, double maxAbsPerturb) {
 		double minDistNeighbour = Double.MAX_VALUE;
 		AbstractEAIndividual indy = candidates.getEAIndividual(i);
 		boolean found=false;
@@ -1019,13 +1103,13 @@ public class PostProcess {
 		}
 		if (!found) {
 //			System.err.println("warning, equal candidates in PostProcess.findNMSPerturb - converged population?!");
-			if (maxPerturb>0) return maxPerturb;
+			if (maxAbsPerturb>0) return maxAbsPerturb;
 			else {
 				System.err.println("error, unable to select perturbance value in PostProcess.findNMSPerturb since all candidates are equal. Converged population?!");
 				return 0.01;
 			}
 		}
-		if (maxPerturb>0) return Math.min(maxPerturb, minDistNeighbour/3.);
+		if (maxAbsPerturb>0) return Math.min(maxAbsPerturb, minDistNeighbour/3.);
 		else return minDistNeighbour/3.;
 	}
 	

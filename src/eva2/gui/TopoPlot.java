@@ -84,6 +84,7 @@ public class TopoPlot extends Plot {
     double deltaY = sizeXY[1]/gridy;
     double maxDeriv=0;
     double[] pos = new double[2];
+    boolean TRACEMETH=false;
     //double fitRange = java.lang.Math.abs(problem.getMinFitness()-problem.getMaxFitness() );
     double fitRange = 0, max = -Double.MAX_VALUE, min = Double.MAX_VALUE, tmp;
     for (int x=0; x<gridx; x++) {
@@ -91,12 +92,14 @@ public class TopoPlot extends Plot {
     		pos[0] = border[0][0]+x*deltaX;
     		pos[1] = border[1][0]+y*deltaY;
     		tmp = (float)(problem.functionValue(pos));
+    		if (TRACEMETH) System.out.println(pos[0] + " " + pos[1] + " " + tmp);
     		if (tmp < min) min = tmp;
     		if (tmp > max) max = tmp;
-    		if (problem instanceof InterfaceFirstOrderDerivableProblem) {
+    		if (withGradientsIfAvailable && (problem instanceof InterfaceFirstOrderDerivableProblem)) {
     			double[] deriv = ((InterfaceFirstOrderDerivableProblem)problem).getFirstOrderGradients(pos);
     			for (int i=0; i<2;i++) maxDeriv=Math.max(maxDeriv, Math.abs(deriv[i])); // maximum deriv of first 2 dims
     		}
+
     	} // for y
     } // for x
     fitRange = java.lang.Math.abs(max - min);

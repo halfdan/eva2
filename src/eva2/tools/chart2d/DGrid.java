@@ -96,8 +96,8 @@ public class DGrid extends DComponent
     DPoint p1, p2;
     DLine l;
 
-    minX=Mathematics.firstMultipleAbove(rectangle.x, hor_dist);
-    minY=Mathematics.firstMultipleAbove(rectangle.y, ver_dist);
+    minX=Mathematics.firstMultipleAbove(rectangle.getX(), hor_dist);
+    minY=Mathematics.firstMultipleAbove(rectangle.getY(), ver_dist);
 //    minX = (int)( rectangle.x / hor_dist );
 //    if( minX * hor_dist <= rectangle.x ) minX++;
 //    minX *= hor_dist;
@@ -105,18 +105,18 @@ public class DGrid extends DComponent
 //    if( minY * ver_dist <= rectangle.y ) minY++;
 //    minY *= ver_dist;
 
-    p1 = new DPoint( 0, rectangle.y );
-    p2 = new DPoint( 0, rectangle.y + rectangle.height );
-    for( pos = minX; pos<=rectangle.x + rectangle.width; pos += hor_dist ){
+    p1 = new DPoint( 0, rectangle.getY() );
+    p2 = new DPoint( 0, rectangle.getY() + rectangle.getHeight() );
+    for( pos = minX; pos<=rectangle.getX() + rectangle.getWidth(); pos += hor_dist ){
       p1.x = p2.x = pos;
       l = new DLine( p1, p2, color );
       l.paint( m );
     }
 
-    p1.x = rectangle.x;
-    p2.x = p1.x + rectangle.width;
+    p1.x = rectangle.getX();
+    p2.x = p1.x + rectangle.getWidth();
     pos = minY;
-    while ( pos<=rectangle.y + rectangle.height){
+    while ( pos<=rectangle.getY() + rectangle.getHeight()){
       p1.y = p2.y = pos;
       l = new DLine( p1, p2, color );
       l.paint( m );
