@@ -402,7 +402,7 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
 				break;
 				}
 			} else {
-				System.err.println("Could not perform PSO update, because individual is not instance of InterfaceESIndividual!");
+				throw new RuntimeException("Could not perform PSO update, because individual is not instance of InterfaceESIndividual!");
 			}
 		}
 		//if (AbstractEAIndividual.getDoublePosition(indy)[0]<500000) {
