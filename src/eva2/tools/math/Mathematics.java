@@ -1030,8 +1030,8 @@ public class Mathematics {
 	 * @return
 	 */
 	public static double[] expandVector(double[] x, int len, double v) {
-		if (len <= x.length ) {
-			System.err.println("Error, invalid length in expandVector, expecting l>" + x.length);
+		if (len <= x.length ) {// not really an error, just perform identity
+//			System.err.println("Error, invalid length in expandVector, expecting l>" + x.length);
 			return x;
 	 	} else {
 	 		double[] expanded = new double[len];
