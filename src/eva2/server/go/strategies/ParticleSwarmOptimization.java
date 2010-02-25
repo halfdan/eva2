@@ -600,7 +600,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 			default: System.err.println("particle type " + type + " unknown!"); break;
 			}
 		} else {
-			EVAERROR.errorMsgOnce("Could not perform PSO update, because individual is not instance of InterfaceESIndividual!");
+			throw new RuntimeException("Could not perform PSO update, because individual is not instance of InterfaceESIndividual!");
 		}
 	}
 	
