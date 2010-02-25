@@ -22,6 +22,7 @@ import eva2.server.go.strategies.InterfaceOptimizer;
 
 
 import eva2.server.go.problems.Interface2DBorderProblem;
+import eva2.tools.math.Mathematics;
 
 public class ExternalRuntimeProblem extends AbstractOptimizationProblem implements Interface2DBorderProblem, InterfaceProblemDouble {
 
@@ -328,11 +329,11 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem implemen
         return (InterfaceDataTypeDouble)this.m_Template;
     }
 	public double functionValue(double[] point) {
-		double x[] = new double[m_ProblemDimension];
-		for (int i=0; i<point.length; i++) x[i]=point[i];
-		for (int i=point.length; i<m_ProblemDimension; i++) x[i] = 0;
-		return eval(x)[0];
+		return eval(project2DPoint(point))[0];
 	}
+    public double[] project2DPoint(double[] point) {
+    	return Mathematics.expandVector(point, getProblemDimension(), 0.);
+    }
 	public double[][] get2DBorder() {
 		return getDoubleRange();
 	}
