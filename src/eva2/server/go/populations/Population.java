@@ -280,21 +280,21 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     	return "Lenght of hypercube within which individuals are initialized around the initial position.";
     }
     
-//    /** This method inits the population. Function and generation counters
-//     * are reset and m_Size default Individuals are created and initialized by
-//     * the GAIndividual default init() method.
-//      */
-//    public void defaultInit(AbstractEAIndividual template) {
-//        this.m_Generation       = 0;
-//        this.m_FunctionCalls    = 0;
-//        this.m_Archive          = null;
-//        this.clear();
-//        for (int i = 0; i < this.m_TargetSize; i++) {
-//            AbstractEAIndividual tmpIndy = (AbstractEAIndividual)template.clone();
-//            tmpIndy.defaultInit();
-//            super.add(tmpIndy);
-//        }
-//    }
+    /** This method inits the population. Function and generation counters
+     * are reset and m_Size default Individuals are created and initialized by
+     * the GAIndividual default init() method.
+      */
+    public void defaultInit(AbstractEAIndividual template) {
+        this.m_Generation       = 0;
+        this.m_FunctionCalls    = 0;
+        this.m_Archive          = null;
+        this.clear();
+        for (int i = 0; i < this.m_TargetSize; i++) {
+            AbstractEAIndividual tmpIndy = (AbstractEAIndividual)template.clone();
+            tmpIndy.defaultInit(null);
+            super.add(tmpIndy);
+        }
+    }
 
     /**
      * Create a population instance which distributes the individuals according to 
