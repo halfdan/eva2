@@ -14,6 +14,8 @@ package eva2.gui;
  *==========================================================================*/
 import java.awt.Color;
 
+import javax.swing.JPanel;
+
 import eva2.server.go.problems.Interface2DBorderProblem;
 import eva2.server.go.problems.InterfaceFirstOrderDerivableProblem;
 import eva2.tools.chart2d.DRectangle;
@@ -28,7 +30,9 @@ import eva2.tools.math.Mathematics;
  *
  */
 public class TopoPlot extends Plot {
-
+  Interface2DBorderProblem prob=null;
+  double[][] range=null;
+  boolean withGrads=false;
   private int gridx = 50;
   private int gridy = 50;
   int colorScale = ColorBarCalculator.BLUE_TO_RED;
@@ -60,7 +64,24 @@ public class TopoPlot extends Plot {
     colorScale = color_scale;
   }
 
-  /**
+  
+  
+  @Override
+  protected void installButtons(JPanel buttonPan) {
+	  super.installButtons(buttonPan);
+	  // TODO this actually works, but it is horribly slow
+//	  JButton refineButton = new JButton ("Refine");
+//	  refineButton.setToolTipText("Refine the graph resolution");
+//	  refineButton.addActionListener(new ActionListener() {
+//		  public void actionPerformed(ActionEvent e) {
+//			  gridx=(int)(Math.sqrt(2.)*gridx);
+//			  gridy=(int)(Math.sqrt(2.)*gridy);
+//			  setTopology(prob, range, withGrads);
+//		  }
+//	  });
+//	  buttonPan.add(refineButton);
+  }
+/**
    * Defines parameters used for drawing the topology.
    * @param gridX the x-resolution of the topology, higher value means higher resolution
    * @param gridY the y-resolution of the topology, higher value means higher resolution
@@ -79,6 +100,9 @@ public class TopoPlot extends Plot {
    * Defines the topology (by setting a specific problem) and draws the topology
    */
   public void setTopology(Interface2DBorderProblem problem, double[][] border, boolean withGradientsIfAvailable) {
+	  prob=problem;
+	  range=border;
+	  withGrads=withGradientsIfAvailable;
 	double[] sizeXY=Mathematics.getAbsRange(border);
     double deltaX = sizeXY[0]/gridx;
     double deltaY = sizeXY[1]/gridy;
@@ -133,9 +157,5 @@ public class TopoPlot extends Plot {
     	} // for x
     }
     m_Frame.setVisible(true);
-
   } // setTopology
-
-
-
 } // class

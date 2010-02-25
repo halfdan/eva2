@@ -1,102 +1,77 @@
 package eva2.server.go.problems;
 
-import static java.lang.Math.PI;
-import static java.lang.Math.sin;
+import java.io.Serializable;
 
-public class F15Problem extends AbstractProblemDoubleOffset {
-	int iterations = 100;
+import eva2.server.go.operators.postprocess.SolutionHistogram;
+
+/**
+ * The Levy-function, from Levy, A., and Montalvo, A. (1985). Also described in 
+ * "A Trust-Region Algorithm for Global Optimization", Bernardetta Addisy and Sven Leyfferz, 2004/2006.
+ */
+
+public class F15Problem extends AbstractProblemDouble implements Serializable, InterfaceInterestingHistogram {
+	private int dim=10;
+    
+	public F15Problem() {
+		super();
+		super.SetDefaultAccuracy(0.00001);
+		setDefaultRange(10);
+	}
 	
-    public F15Problem(F15Problem f15Problem) {
-		iterations = f15Problem.iterations;
+	public F15Problem(int d) {
+		this();
+		setProblemDimension(d);
 	}
+	
+	public F15Problem(F15Problem o) {
+		super(o);
+		dim=o.getProblemDimension();
+		setDefaultRange(o.getDefaultRange());
+	}
+	
+	@Override
+	public double[] eval(double[] x) {
+		x = rotateMaybe(x);
+		double t=0, s=0, sum=0;
 
-	public Object clone() {
-        return (Object) new F15Problem(this);
-    }
-
-    /** This method allows you to evaluate a double[] to determine the fitness
-     * @param x     The n-dimensional input vector
-     * @return  The m-dimensional output vector.
-     */
-    public double[] eval(double[] x) {
-    	x = rotateMaybe(x);
-    	double[] c = new double[2];
-    	
-//    	c[0]= (x[0])*getXOffSet();
-//    	c[1]= (x[1])*Math.sin((Math.PI/2)*getYOffSet());
-    	
-		c[0] = x[0]*x[2];
-		c[1] = x[1] * sin( PI / 2.0 * x[3]);
+		for (int i=0; i<x.length-2; i++) {
+			s=(x[i]-1.);
+			t=Math.sin(Math.PI*x[i+1]);
+			sum += (s*s)*(1+10.*t*t);
+		}
 		
-//    	c[0]= (x[0]+(x[2]/10))*getXOffSet();
-//    	c[1]= (x[1]+(x[3]/10))*Math.sin(Math.PI/2*getYOffSet());
-//    	c[0]= (x[0]*(1-x[2]/10));
-//    	c[1]= (x[1]*(1-x[3]/10));
-        double[] result = new double[1];
-        result[0] = flatten(evalRec(x, c, iterations));
-        return result;
-    }
-    
-    private double[] evalRec(double[] x, double[] c, int n) {
-        if (n==0) return x;
-        else return evalRec(addComplex(squareComplex(x),c), c, n-1);
-    }
-    
-    private double[] squareComplex(double[] x) {
-    	double[] result = new double[2];
-    	result[0] = (x[0]*x[0])-(x[1]*x[1]);
-    	result[1] = (2*x[0]*x[1]);
-    	return result;
-    }
-    
-    private double[] addComplex(double[] x, double[] y) {
-    	double[] result = new double[2];
-    	result[0] = x[0] + y[0];
-    	result[1] = x[1] + y[1];
-    	return result;
-    }
-    
-    private double flatten(double[] x) {
-    	
-    	double len = Math.sqrt((x[0]*x[0])+(x[1]*x[1]));
-    	double ang = Math.atan2(x[1],x[0]);
-    	if (Double.isNaN(len) || (len > 1000.)) len = 1000.;
-    	return len;
-//    	return 0.5+0.5*t*(2*b*a*u(x/a));
-//    	return 1/(2*Math.PI*ang);
-//    	return +Math.abs(x[0])+Math.abs(x[1]);
-    }
-    
-    public int getProblemDimension() {
-    	return 4;
-    }
-    
-    public String getName() {
-    	return "F15-Problem";
-    }
-    
-    public double getRangeLowerBound(int dim) {
-//    	return -1;
-    	if (dim == 0) return -2.5;
-    	else return -1.5;
-    }
-
-    public double getRangeUpperBound(int dim) {
-//    	return 1;
-    	return 1.5;
-    }
-
-	/**
-	 * @return the iterations
-	 */
-	public int getIterations() {
-		return iterations;
+		s=Math.sin(Math.PI*x[0]);
+		double[] y = new double[1];
+		y[0] = 10.*s*s+sum+dim*(x[dim-1]-1)*(x[dim-1]-1);
+		return y;
 	}
 
-	/**
-	 * @param iterations the iterations to set
-	 */
-	public void setIterations(int iterations) {
-		this.iterations = iterations;
+	@Override
+	public int getProblemDimension() {
+		return dim;
 	}
+
+	public void setProblemDimension(int d) {
+		dim=d;
+	}
+	
+	@Override
+	public Object clone() {
+		return new F15Problem(this);
+	}
+
+	public SolutionHistogram getHistogram() {
+		if (getProblemDimension()<15) return new SolutionHistogram(0, 2, 16);
+		else if (getProblemDimension()<25) return new SolutionHistogram(0, 4, 16);
+		else return new SolutionHistogram(0, 8, 16);
+	}
+
+	public String getName() {
+		return "F15-Problem";
+	}
+	
+	public String globalInfo() {
+		return "The Levy-function, from Levy, A., and Montalvo, A. (1985)";
+	}
+	
 }
