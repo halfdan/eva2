@@ -1021,6 +1021,27 @@ public class Mathematics {
 	}
 	
 	/**
+	 * Expand a vector to a higher dimension (len) by filling it up 
+	 * with a constant value.
+	 * 
+	 * @param x
+	 * @param len
+	 * @param v
+	 * @return
+	 */
+	public static double[] expandVector(double[] x, int len, double v) {
+		if (len <= x.length ) {
+			System.err.println("Error, invalid length in expandVector, expecting l>" + x.length);
+			return x;
+	 	} else {
+	 		double[] expanded = new double[len];
+	 		System.arraycopy(x, 0, expanded, 0, x.length);
+	 		for (int i=x.length; i<expanded.length; i++) expanded[i] = v;
+	 		return expanded;
+	 	}
+	}
+	
+	/**
 	 * Calculate the average length of the range intervals over all dimensions.
 	 * 
 	 * @param range

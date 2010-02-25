@@ -120,7 +120,7 @@ public class TopoPlot extends Plot {
     		if (tmp < min) min = tmp;
     		if (tmp > max) max = tmp;
     		if (withGradientsIfAvailable && (problem instanceof InterfaceFirstOrderDerivableProblem)) {
-    			double[] deriv = ((InterfaceFirstOrderDerivableProblem)problem).getFirstOrderGradients(pos);
+    			double[] deriv = ((InterfaceFirstOrderDerivableProblem)problem).getFirstOrderGradients(problem.project2DPoint(pos));
     			for (int i=0; i<2;i++) maxDeriv=Math.max(maxDeriv, Math.abs(deriv[i])); // maximum deriv of first 2 dims
     		}
 
@@ -148,7 +148,7 @@ public class TopoPlot extends Plot {
     		for (int y=0; y<gridy; y++) {
     			pos[0]  = border[0][0]+x*deltaX;
     			pos[1]  = border[1][0]+y*deltaY;
-    			double[] derivPos = ((InterfaceFirstOrderDerivableProblem)problem).getFirstOrderGradients(pos);
+    			double[] derivPos = ((InterfaceFirstOrderDerivableProblem)problem).getFirstOrderGradients(problem.project2DPoint(pos));
     			Mathematics.svDiv(1.1*(2*maxDeriv/Math.max(deltaX, deltaY)), derivPos, derivPos);
     			Mathematics.vvAdd(pos, derivPos, derivPos);
     			getFunctionArea().drawLine(pos, derivPos);

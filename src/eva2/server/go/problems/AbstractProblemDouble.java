@@ -338,12 +338,12 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
     	return makeRange();
     }
 
+    public double[] project2DPoint(double[] point) {
+    	return Mathematics.expandVector(point, getProblemDimension(), 0.);
+    }
     
 	public double functionValue(double[] point) {
-		double x[] = new double[getProblemDimension()];
-		for (int i=0; i<point.length; i++) x[i]=point[i];
-		for (int i=point.length; i<x.length; i++) x[i] = 0;
-		return eval(x)[0];
+		return eval(project2DPoint(point))[0];
 	}
     /**********************************************************************************************************************
      * These are for GUI
