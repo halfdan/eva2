@@ -114,7 +114,8 @@ public abstract class AbstractMultiModalProblemKnown extends AbstractProblemDoub
 	}
 
 	/** 
-	 * This method returns the unnormalized function value for an maximization problem
+	 * This method returns the unnormalized (and unrotated!) function value for an maximization problem.
+	 * 
 	 * @param x     The n-dimensional input vector
 	 * @return  The m-dimensional output vector.
 	 */
@@ -196,6 +197,10 @@ public abstract class AbstractMultiModalProblemKnown extends AbstractProblemDoub
 				m_GlobalOpt = tmp;
 			}
 		} 
+		if (isDoRotation()) {
+			point = inverseRotateMaybe(point); // theres an inverse rotation required
+			tmpIndy.SetDoubleGenotype(point);
+		}
 		this.m_ListOfOptima.add(tmpIndy);
 	}
 
