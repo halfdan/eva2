@@ -4,6 +4,9 @@ package eva2;
  * Main product and version information strings.
  * 
  * --- Changelog
+ * 2.042: Some bugfixes. Removing dependecy on sun.beans.editors, replaced non-free jpeg-codec. There should
+ * 			be no more problems on OpenJDK. Added a simple initialization range, especially for use from Matlab.
+ * 			Some restructurings (RNG and Mathematics is now in eva2.tools.math). Some cleanup.
  * 2.040: Several updates: The clustering interface has been changed for easier implementation of adaptive clustering
  * 			methods. The GradientDescentAlgorithm has been updated and some benchmark problems been made derivable.
  * 			The ClusterBasedNiching algorithm has been slightly restructured updated according to the new clustering.
@@ -65,9 +68,9 @@ package eva2;
  *
  */
 public class EvAInfo {
-	public static final String productName = "EvA 2";
+	public static final String productName = "EvA2";
 	public static final String productLongName = "Evolutionary Algorithms Workbench 2";
-	public static final String versionNum = new String ("2.040");
+	public static final String versionNum = new String ("2.042");
 	public static final String url = "http://www.ra.cs.uni-tuebingen.de/software/EvA2";
 
 	public static final String propertyFile = "resources/EvA2.props";
