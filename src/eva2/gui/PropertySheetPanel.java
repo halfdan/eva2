@@ -430,6 +430,7 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
 			String  name    = oldProps[i].getDisplayName();
 			if (name.compareTo(string)==0) return i;
 		}
+		System.err.println("Error, property not found: " + string);
 		return -1;
 	}
 

@@ -1066,17 +1066,20 @@ public class Mathematics {
 		double d = 0.;
 		for (int i=0; i<x.length; i++) {
 			double dimLen = range[i][1]-range[i][0];
-			if (dimLen <= 0.) EVAERROR.errorMsgOnce("Error in reflectBounds: empty range! (possibly multiple errors)");
-			if (x[i]<range[i][0]) {
-				viols++;
-				d = range[i][0]-x[i];
-				while (d > dimLen) d -= dimLen; // avoid violating the other bound immediately
-				x[i]=range[i][0]+d;
-			} else if (x[i]>range[i][1]) {
-				viols++;
-				d = x[i]-range[i][1];
-				while (d>dimLen) d -= dimLen; // avoid violating the other bound immediately
-				x[i]=range[i][1]-d;
+			if (dimLen <= 0.) {
+				EVAERROR.errorMsgOnce("Error in reflectBounds: empty range! (possibly multiple errors)");
+			} else {
+				if (x[i]<range[i][0]) {
+					viols++;
+					d = range[i][0]-x[i];
+					while (d > dimLen) d -= dimLen; // avoid violating the other bound immediately
+					x[i]=range[i][0]+d;
+				} else if (x[i]>range[i][1]) {
+					viols++;
+					d = x[i]-range[i][1];
+					while (d>dimLen) d -= dimLen; // avoid violating the other bound immediately
+					x[i]=range[i][1]-d;
+				}
 			}
 		}
 		return viols;
