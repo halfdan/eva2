@@ -132,6 +132,13 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
 		return x;
 	}
 	
+	protected double[] inverseRotateMaybe(double[] x) {
+		if (isDoRotation()) {
+    		if (rotation==null) initProblem();
+	    	x = Mathematics.rotate(x, rotation.inverse());
+    	}
+		return x;
+	}
 	/**
 	 * Add all constraint violations to the individual. Expect that the fitness has already been set.
 	 * 
