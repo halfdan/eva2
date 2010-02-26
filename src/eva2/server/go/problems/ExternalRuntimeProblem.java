@@ -144,7 +144,6 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem implemen
 
         x = getXVector(individual);
 
-     //TODO call external runtime
         double[] fit = eval(x);
         individual.SetFitness(fit);
 		        

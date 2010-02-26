@@ -160,7 +160,7 @@ public class OptimizerFactory {
 		de.addPopulationChangedEventListener(listener);
 		de.init();
 
-		listener.registerPopulationStateChanged(de.getPopulation(), "");
+		if (listener!=null) listener.registerPopulationStateChanged(de.getPopulation(), "");
 
 		return de;
 	}
@@ -388,7 +388,7 @@ public class OptimizerFactory {
 		hc.SetProblem(problem);
 		hc.init();
 
-		listener.registerPopulationStateChanged(hc.getPopulation(), "");
+		if (listener != null) listener.registerPopulationStateChanged(hc.getPopulation(), "");
 
 		return hc;
 	}
@@ -419,7 +419,7 @@ public class OptimizerFactory {
 		mc.SetProblem(problem);
 		mc.init();
 
-		listener.registerPopulationStateChanged(mc.getPopulation(), "");
+		if (listener != null) listener.registerPopulationStateChanged(mc.getPopulation(), "");
 
 		return mc;
 	}
@@ -465,7 +465,7 @@ public class OptimizerFactory {
 		pso.addPopulationChangedEventListener(listener);
 		pso.init();
 
-		listener.registerPopulationStateChanged(pso.getPopulation(), "");
+		if (listener != null) listener.registerPopulationStateChanged(pso.getPopulation(), "");
 
 		return pso;
 	}
@@ -506,7 +506,7 @@ public class OptimizerFactory {
 		sa.addPopulationChangedEventListener(listener);
 		sa.init();
 
-		listener.registerPopulationStateChanged(sa.getPopulation(), "");
+		if (listener!=null) listener.registerPopulationStateChanged(sa.getPopulation(), "");
 
 		return sa;
 	}
