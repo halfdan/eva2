@@ -43,6 +43,7 @@ public class GenericRemoteServersEditor extends JPanel implements PropertyEditor
     private JTextField[]                m_Names;
     private JComboBox[]                 m_CPUs;
     private JButton[]                   m_Delete;
+    private int prefEditorHeight = 200;
 
     public GenericRemoteServersEditor() {
 
@@ -51,149 +52,79 @@ public class GenericRemoteServersEditor extends JPanel implements PropertyEditor
     /** This method will init the CustomEditor Panel
      */
     private void initCustomEditor() {
-        this.m_Editor = new JPanel();
-        // This is the upper panel
-        this.m_ParameterPanel   = new JPanel();
-        GridBagConstraints gbc = new GridBagConstraints();
-            gbc.anchor      = GridBagConstraints.WEST;
-            gbc.fill        = GridBagConstraints.HORIZONTAL;
-            gbc.gridwidth   = 1;
-            gbc.gridx       = 0;
-            gbc.gridy       = 0;
-            gbc.weightx     = 1;
-            this.m_ParameterPanel.setLayout(new GridBagLayout());
-            this.m_ParameterPanel.add(new JLabel("Login: "), gbc);
-            this.m_Login    = new JTextField(""+this.m_RemoteServers.getLogin());
-            this.m_Login.addKeyListener(loginListener);
-            gbc.anchor      = GridBagConstraints.WEST;
-            gbc.fill        = GridBagConstraints.HORIZONTAL;
-            gbc.gridwidth   = 2;
-            gbc.gridx       = 1;
-            gbc.gridy       = 0;
-            gbc.weightx     = 100;
-            this.m_ParameterPanel.add(this.m_Login, gbc);
-            gbc.anchor      = GridBagConstraints.WEST;
-            gbc.fill        = GridBagConstraints.HORIZONTAL;
-            gbc.gridwidth   = 1;
-            gbc.gridx       = 3;
-            gbc.gridy       = 0;
-            gbc.weightx     = 1;
-            this.m_ParameterPanel.add(new JLabel("Password: "), gbc);
-            this.m_Password = new JPasswordField(""+this.m_RemoteServers.getPassword());
-            this.m_Password.addKeyListener(passwordListener);
-            gbc.anchor      = GridBagConstraints.WEST;
-            gbc.fill        = GridBagConstraints.HORIZONTAL;
-            gbc.gridwidth   = 2;
-            gbc.gridx       = 4;
-            gbc.gridy       = 0;
-            gbc.weightx     = 100;
-            this.m_ParameterPanel.add(this.m_Password, gbc);
+    	this.m_Editor = new JPanel();
+    	// This is the upper panel
+    	this.m_ParameterPanel   = new JPanel();
+    	GridBagConstraints gbc = new GridBagConstraints();
+    	setGBC(gbc, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, 1, 0, 0, 1);
+    	this.m_ParameterPanel.setLayout(new GridBagLayout());
+    	this.m_ParameterPanel.add(new JLabel("Login: "), gbc);
+    	this.m_Login    = new JTextField(""+this.m_RemoteServers.getLogin());
+    	this.m_Login.addKeyListener(loginListener);
+    	setGBC(gbc, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, 2, 1, 0, 100);
+    	this.m_ParameterPanel.add(this.m_Login, gbc);
+    	setGBC(gbc, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, 1, 3, 0, 1);
+    	this.m_ParameterPanel.add(new JLabel("Password: "), gbc);
+    	this.m_Password = new JPasswordField(""+this.m_RemoteServers.getPassword());
+    	this.m_Password.addKeyListener(passwordListener);
+    	setGBC(gbc, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, 2, 4, 0, 100);
+    	this.m_ParameterPanel.add(this.m_Password, gbc);
 
-            JButton tmpB;
-            BasicResourceLoader loader = BasicResourceLoader.instance();
-            byte[]  bytes;
-            bytes = loader.getBytesFromResourceLocation("resources/images/Add24.gif");
-            try {
-                tmpB = new JButton("", new ImageIcon(Toolkit.getDefaultToolkit().createImage(bytes)));
-            } catch (java.lang.NullPointerException e) {
-                System.out.println("Could not find Add24 icon, please move resources folder to working directory!");
-                tmpB = new JButton("Add");
-            }
-            tmpB.addActionListener(addServer);
-            gbc.anchor      = GridBagConstraints.WEST;
-            gbc.fill        = GridBagConstraints.HORIZONTAL;
-            gbc.gridwidth   = 1;
-            gbc.gridx       = 0;
-            gbc.gridy       = 1;
-            gbc.weightx     = 1;
-            this.m_ParameterPanel.add(tmpB, gbc);
-            bytes = loader.getBytesFromResourceLocation("resources/images/Export24.gif");
-            try {
-                tmpB = new JButton("Load", new ImageIcon(Toolkit.getDefaultToolkit().createImage(bytes)));
-            } catch (java.lang.NullPointerException e) {
-                System.out.println("Could not find Export24 icon, please move resources folder to working directory!");
-                tmpB = new JButton("Load");
-            }
-            tmpB.addActionListener(loadServers);
-            gbc.anchor      = GridBagConstraints.WEST;
-            gbc.fill        = GridBagConstraints.HORIZONTAL;
-            gbc.gridx       = 1;
-            gbc.gridy       = 1;
-            gbc.weightx     = 1;
-            this.m_ParameterPanel.add(tmpB, gbc);
-            bytes = loader.getBytesFromResourceLocation("resources/images/Import24.gif");
-            try {
-                tmpB = new JButton("Save", new ImageIcon(Toolkit.getDefaultToolkit().createImage(bytes)));
-            } catch (java.lang.NullPointerException e) {
-                System.out.println("Could not find Import24 icon, please move resources folder to working directory!");
-                tmpB = new JButton("Save");
-            }
-            tmpB.addActionListener(saveServers);
-            gbc.anchor      = GridBagConstraints.WEST;
-            gbc.fill        = GridBagConstraints.HORIZONTAL;
-            gbc.gridx       = 2;
-            gbc.gridy       = 1;
-            gbc.weightx     = 1;
-            this.m_ParameterPanel.add(tmpB, gbc);
-            bytes = loader.getBytesFromResourceLocation("resources/images/Refresh24.gif");
-            try {
-                tmpB = new JButton("Update Status", new ImageIcon(Toolkit.getDefaultToolkit().createImage(bytes)));
-            } catch (java.lang.NullPointerException e) {
-                System.out.println("Could not find Refresh24 icon, please move resources folder to working directory!");
-                tmpB = new JButton("Update Status");
-            }
-            tmpB.addActionListener(updateServers);
-            gbc.anchor      = GridBagConstraints.WEST;
-            gbc.fill        = GridBagConstraints.HORIZONTAL;
-            gbc.gridx       = 3;
-            gbc.gridy       = 1;
-            gbc.weightx     = 1;
-            this.m_ParameterPanel.add(tmpB, gbc);
-            bytes = loader.getBytesFromResourceLocation("resources/images/Play24.gif");
-            try {
-                tmpB = new JButton("Start Server", new ImageIcon(Toolkit.getDefaultToolkit().createImage(bytes)));
-            } catch (java.lang.NullPointerException e) {
-                System.out.println("Could not find Play24 icon, please move resources folder to working directory!");
-                tmpB = new JButton("Start Server");
-            }
-            tmpB.addActionListener(startServers);
-            gbc.anchor      = GridBagConstraints.WEST;
-            gbc.fill        = GridBagConstraints.HORIZONTAL;
-            gbc.gridx       = 4;
-            gbc.gridy       = 1;
-            gbc.weightx     = 1;
-            this.m_ParameterPanel.add(tmpB, gbc);
-            bytes = loader.getBytesFromResourceLocation("resources/images/Stop24.gif");
-            try {
-                tmpB = new JButton("Stop Server", new ImageIcon(Toolkit.getDefaultToolkit().createImage(bytes)));
-            } catch (java.lang.NullPointerException e) {
-                System.out.println("Could not find Stop24 icon, please move resources folder to working directory!");
-                tmpB = new JButton("Stop Server");
-            }
-            tmpB.addActionListener(killServers);
-            gbc.anchor      = GridBagConstraints.WEST;
-            gbc.fill        = GridBagConstraints.HORIZONTAL;
-            gbc.gridx       = 5;
-            gbc.gridy       = 1;
-            gbc.weightx     = 1;
-            this.m_ParameterPanel.add(tmpB, gbc);
+    	JButton tmpB;
+    	tmpB = makeButtonWith("resources/images/Add24.gif", "add");
+    	tmpB.addActionListener(addServer);
+    	setGBC(gbc, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, 1, 0, 1, 1);
+    	this.m_ParameterPanel.add(tmpB, gbc);
+    	tmpB = makeButtonWith("resources/images/Export24.gif", "Load");
+    	tmpB.addActionListener(loadServers);
+    	setGBC(gbc, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, 1, 1, 1, 1);
+    	this.m_ParameterPanel.add(tmpB, gbc);
+    	tmpB = makeButtonWith("resources/images/Import24.gif", "Save");
+    	tmpB.addActionListener(saveServers);
+    	setGBC(gbc, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, 1, 2, 1, 1);
+    	this.m_ParameterPanel.add(tmpB, gbc);
+    	tmpB = makeButtonWith("resources/images/Refresh24.gif", "Update Status");
+    	tmpB.addActionListener(updateServers);
+    	setGBC(gbc, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, 1, 3, 1, 1);
+    	this.m_ParameterPanel.add(tmpB, gbc);
+    	tmpB = makeButtonWith("resources/images/Play24.gif", "Start Server");
+    	tmpB.addActionListener(startServers);
+    	setGBC(gbc, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, 1, 4, 1, 1);
+    	this.m_ParameterPanel.add(tmpB, gbc);
+    	tmpB = makeButtonWith("resources/images/Stop24.gif", "Stop Server");
+    	tmpB.addActionListener(killServers);
+    	setGBC(gbc, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, 1, 5, 1, 1);
+    	this.m_ParameterPanel.add(tmpB, gbc);
 
-        this.m_ServerList       = new JPanel();
-            this.updateServerList();
-        JScrollPane scrollServer = new JScrollPane(this.m_ServerList);
-
-        this.m_Editor.setLayout(new BorderLayout());
-        this.m_Editor.add(this.m_ParameterPanel, BorderLayout.NORTH);
-        this.m_Editor.add(scrollServer, BorderLayout.CENTER);
-
-       this.updateEditor();
+    	this.m_ServerList       = new JPanel();
+    	this.updateServerList();
+    	JScrollPane scrollServer = new JScrollPane(this.m_ServerList);
+    	scrollServer.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+    	scrollServer.setPreferredSize(new Dimension(200,prefEditorHeight));
+    	
+    	this.m_Editor.setLayout(new BorderLayout());
+    	this.m_Editor.add(this.m_ParameterPanel, BorderLayout.NORTH);
+    	this.m_Editor.add(scrollServer, BorderLayout.CENTER);
+    	this.updateEditor();
     }
+
+	private JButton makeButtonWith(String iconSrc, String title) {
+		JButton tmpB;
+		byte[]  bytes;
+		bytes = BasicResourceLoader.instance().getBytesFromResourceLocation(iconSrc);
+		try {
+		    tmpB = new JButton(title, new ImageIcon(Toolkit.getDefaultToolkit().createImage(bytes)));
+		} catch (java.lang.NullPointerException e) {
+		    System.err.println("Could not find icon " + iconSrc + ", please move resources folder to working directory!");
+		    tmpB = new JButton(title);
+		}
+		return tmpB;
+	}
 
     /** This method updates the server list
      *
      */
     private void updateServerList() {
-    	BasicResourceLoader  loader = BasicResourceLoader.instance();
         byte[]          bytes;
         ServerNode      t;
         this.m_ServerList.removeAll();
@@ -206,33 +137,22 @@ public class GenericRemoteServersEditor extends JPanel implements PropertyEditor
         String[] cups   = new String[8];
         for (int i = 0; i < cups.length; i++) cups[i] = ""+(i+1);
         // The head title
-        gbc.anchor      = GridBagConstraints.WEST;
-        gbc.fill        = GridBagConstraints.BOTH;
-        gbc.gridx       = 0;
-        gbc.weightx     = 1;
+        setGBC(gbc, GridBagConstraints.WEST, GridBagConstraints.BOTH, 0, 1);
         this.m_ServerList.add(new JLabel("Status"), gbc);
-        gbc.anchor      = GridBagConstraints.WEST;
-        gbc.fill        = GridBagConstraints.BOTH;
-        gbc.gridx       = 1;
-        gbc.weightx     = 80;
+        
+        setGBC(gbc, GridBagConstraints.WEST, GridBagConstraints.BOTH, 1, 80);
         this.m_ServerList.add(new JLabel("Server Name"), gbc);
-        gbc.anchor      = GridBagConstraints.WEST;
-        gbc.fill        = GridBagConstraints.BOTH;
-        gbc.gridx       = 2;
-        gbc.weightx     = 10;
+
+        setGBC(gbc, GridBagConstraints.WEST, GridBagConstraints.BOTH, 2, 10);
         this.m_ServerList.add(new JLabel("CPUs"), gbc);
-        gbc.anchor      = GridBagConstraints.WEST;
-        gbc.fill        = GridBagConstraints.REMAINDER;
-        gbc.gridx       = 3;
-        gbc.weightx     = 10;
+        
+        setGBC(gbc, GridBagConstraints.WEST, GridBagConstraints.REMAINDER, 3, 10);
         this.m_ServerList.add(new JLabel("Remove"), gbc);
+
         for (int i = 0; i < this.m_RemoteServers.size(); i++) {
             t = this.m_RemoteServers.get(i);
             // the status indicator
-            gbc.anchor      = GridBagConstraints.WEST;
-            gbc.fill        = GridBagConstraints.BOTH;
-            gbc.gridx       = 0;
-            gbc.weightx     = 1;
+            setGBC(gbc, GridBagConstraints.WEST, GridBagConstraints.BOTH, 0, 1);
             this.m_Status[i] = new JButton(" ");
             this.m_Status[i].setEnabled(false);
             if (this.m_RemoteServers.isServerOnline(t.m_ServerName)) this.m_Status[i].setBackground(Color.GREEN);
@@ -240,42 +160,46 @@ public class GenericRemoteServersEditor extends JPanel implements PropertyEditor
             this.m_ServerList.add(this.m_Status[i], gbc);
             // the server name
             gbc             = new GridBagConstraints();
-            gbc.anchor      = GridBagConstraints.WEST;
-            gbc.fill        = GridBagConstraints.BOTH;
-            gbc.gridx       = 1;
-            gbc.weightx     = 80;
+            setGBC(gbc, GridBagConstraints.WEST, GridBagConstraints.BOTH, 1, 80);
             this.m_Names[i] = new JTextField(""+t.m_ServerName);
             this.m_Names[i].addKeyListener(serverNameListener);
             this.m_ServerList.add(this.m_Names[i], gbc);
             // the number of CPUs
-            gbc.anchor      = GridBagConstraints.WEST;
-            gbc.fill        = GridBagConstraints.BOTH;
-            gbc.gridx       = 2;
-            gbc.weightx     = 10;
+            setGBC(gbc, GridBagConstraints.WEST, GridBagConstraints.BOTH, 2, 10);
             this.m_CPUs[i]  = new JComboBox(cups);
             this.m_CPUs[i].setSelectedIndex(t.m_CPUs-1);
             this.m_CPUs[i].addItemListener(cpuStateListener);
             this.m_ServerList.add(this.m_CPUs[i], gbc);
             // The delete button
-            gbc.anchor      = GridBagConstraints.WEST;
-            gbc.fill        = GridBagConstraints.REMAINDER;
-            gbc.gridx       = 3;
-            gbc.weightx     = 10;
-            bytes = loader.getBytesFromResourceLocation("resources/images/Sub24.gif");
+            setGBC(gbc, GridBagConstraints.WEST, GridBagConstraints.REMAINDER, 3, 10);
+            bytes = BasicResourceLoader.instance().getBytesFromResourceLocation("resources/images/Sub24.gif");
             this.m_Delete[i] = new JButton("", new ImageIcon(Toolkit.getDefaultToolkit().createImage(bytes)));
             this.m_Delete[i].addActionListener(deleteServer);
             this.m_ServerList.add(this.m_Delete[i], gbc);
         }
         String[] h = this.m_RemoteServers.getCheckedServerNodes();
-        System.out.println("My active nodes: ");
-        for (int i = 0; i < h.length; i++) {
-            System.out.println(""+h[i]);
-        }
+//        System.out.println("My active nodes: ");
+//        for (int i = 0; i < h.length; i++) {
+//            System.out.println(""+h[i]);
+//        }
         this.m_ServerList.repaint();
         this.m_ServerList.validate();
     }
 
-    /** This action listener,...
+    private void setGBC(GridBagConstraints gbc, int anchor, int fill, int gridx, int weightx) {
+        gbc.anchor      = anchor;
+        gbc.fill        = fill;
+        gbc.gridx       = gridx;
+        gbc.weightx     = weightx;
+	}
+    
+    private void setGBC(GridBagConstraints gbc, int anchor, int fill, int gridwidth, int gridx, int gridy, int weightx) {
+        setGBC(gbc, anchor, fill, gridx, weightx);
+        gbc.gridwidth   = gridwidth;
+        gbc.gridy       = gridy;
+    }
+    
+	/** This action listener,...
      */
     ActionListener saveServers = new ActionListener() {
         public void actionPerformed(ActionEvent event) {
@@ -290,9 +214,9 @@ public class GenericRemoteServersEditor extends JPanel implements PropertyEditor
                     OutputFile.write(text);
                     OutputFile.close();
                 } catch (FileNotFoundException t) {
-                    System.out.println("Could not open output file! Filename: " + file.getName());
+                    System.err.println("Could not open output file! Filename: " + file.getName());
                 } catch (java.io.IOException t) {
-                    System.out.println("Could not write to output file! Filename: " + file.getName());
+                    System.err.println("Could not write to output file! Filename: " + file.getName());
                 }
 	        }
         }
@@ -329,8 +253,9 @@ public class GenericRemoteServersEditor extends JPanel implements PropertyEditor
      */
     ActionListener addServer = new ActionListener() {
         public void actionPerformed(ActionEvent event) {
-            m_RemoteServers.addServerNode("none", 1);
+            m_RemoteServers.addServerNode("noname-"+m_RemoteServers.size(), 1);
             updateServerList();
+            updateEditor();
         }
     };
 
@@ -342,6 +267,7 @@ public class GenericRemoteServersEditor extends JPanel implements PropertyEditor
                 if (event.getSource().equals(m_Delete[i])) m_RemoteServers.removeServerNode(m_RemoteServers.get(i).m_ServerName);
             }
             updateServerList();
+            updateEditor();
         }
     };
 

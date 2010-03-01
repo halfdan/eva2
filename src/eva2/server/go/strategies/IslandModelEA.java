@@ -1,5 +1,6 @@
 package eva2.server.go.strategies;
 
+import eva2.gui.BeanInspector;
 import eva2.gui.Plot;
 import eva2.gui.PropertyRemoteServers;
 import eva2.server.go.InterfacePopulationChangedEventListener;
@@ -52,9 +53,9 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
     private PropertyRemoteServers                   m_Servers           = new PropertyRemoteServers();
 
     // These are the processor to run on
-    private int                                                 m_LocalCPUs         = 4;
-    private boolean                                             m_Parallelize       = false;
-    private InterfaceOptimizer[]                                m_Islands;
+    private int                                                 m_numLocalCPUs         = 1;
+    private boolean                                             m_localOnly       = false;
+    transient private InterfaceOptimizer[]                      m_Islands;
     transient private RMIServer                                 m_LocalServer       = null;
 
     // This is for debugging
@@ -64,6 +65,7 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
 
     transient private String                                    m_Identifier        = "";
     transient private InterfacePopulationChangedEventListener   m_Listener;
+	transient private final boolean TRACE = false;
 
 
     public IslandModelEA() {
@@ -75,8 +77,10 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
         this.m_Optimizer                    = (InterfaceOptimizer)a.m_Optimizer.clone();
         this.m_Migration                    = (InterfaceMigration)a.m_Migration.clone();
         this.m_Servers                      = (PropertyRemoteServers)a.m_Servers.clone();
-        this.m_LocalCPUs                    = a.m_LocalCPUs;
-        this.m_Parallelize                  = a.m_Parallelize;
+        this.m_MigrationRate				= a.m_MigrationRate;
+        this.m_HeterogenuousProblems		= a.m_HeterogenuousProblems;
+        this.m_numLocalCPUs                    = a.m_numLocalCPUs;
+        this.m_localOnly                  = a.m_localOnly;
     }
 
     public Object clone() {
@@ -93,21 +97,35 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
             }
         }
 
-        this.m_Population = new Population();
-        this.m_Population.incrGeneration();
+//        this.m_Population = new Population();
+        this.m_Population.clear();
+        this.m_Population.init();
         this.m_Optimizer.init();
         this.m_Optimizer.SetProblem(this.m_Problem);
+        this.m_Optimizer.setPopulation((Population)m_Population.clone());
         InterfacePopulationChangedEventListener myLocal = null;
-        if (this.m_Parallelize) {
+        if (this.m_localOnly) {
+            // this is running on the local machine
+            this.m_Islands = new InterfaceOptimizer[this.m_numLocalCPUs];
+            for (int i = 0; i < this.m_numLocalCPUs; i++) {
+                this.m_Islands[i] = (InterfaceOptimizer) this.m_Optimizer.clone();
+                this.m_Islands[i].SetIdentifier(""+i);
+                this.m_Islands[i].init();
+                if (this.m_LogLocalChanges)
+                    this.m_Islands[i].addPopulationChangedEventListener(this);
+            }
+        } else {
             // this is running on remote machines
             if (this.m_LocalServer == null) this.m_LocalServer = RMIServer.getInstance();
             try {
                 myLocal = (InterfacePopulationChangedEventListener) RMIProxyLocal.newInstance(this);
             } catch(Exception e) {
-                System.out.println("Island Model EA warning on local RMIServer... but i'll start anyway!");
+                System.err.println("Island Model EA warning on local RMIServer... but i'll start anyway!");
             }
             String[] nodesList = this.m_Servers.getCheckedServerNodes();
-            if ((nodesList == null) || (nodesList.length == 0)) return;
+            if ((nodesList == null) || (nodesList.length == 0)) {
+            	throw new RuntimeException("Error, no active remote servers available! Activate servers or use localOnly mode.");
+            }
             this.m_Islands = new InterfaceOptimizer[nodesList.length];
             for (int i = 0; i < nodesList.length; i++) {
                 this.m_Islands[i] = (InterfaceOptimizer) RMIProxyRemoteThread.newInstance(this.m_Optimizer, nodesList[i]);
@@ -116,24 +134,19 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
                 if (this.m_LogLocalChanges)
                     this.m_Islands[i].addPopulationChangedEventListener(myLocal);
             }
-        } else {
-            // this is running on the local machine
-            this.m_Islands = new InterfaceOptimizer[this.m_LocalCPUs];
-            for (int i = 0; i < this.m_LocalCPUs; i++) {
-                this.m_Islands[i] = (InterfaceOptimizer) this.m_Optimizer.clone();
-                this.m_Islands[i].SetIdentifier(""+i);
-                this.m_Islands[i].init();
-                if (this.m_LogLocalChanges)
-                    this.m_Islands[i].addPopulationChangedEventListener(this);
-            }
         }
 
         this.m_Migration.initMigration(this.m_Islands);
         Population pop;
+   		this.m_Population.incrGeneration(); // the island-initialization has increased the island-pop generations. 
+
         for (int i = 0; i < this.m_Islands.length; i++) {
             pop = (Population)this.m_Islands[i].getPopulation().clone();
             this.m_Population.addPopulation(pop);
             this.m_Population.incrFunctionCallsBy(pop.getFunctionCalls());
+            if (m_Islands[i].getPopulation().getGeneration()!=m_Population.getGeneration()) {
+            	System.err.println("Error, inconsistent generations!");
+            }
         }
         this.firePropertyChangedEvent(Population.nextGenerationPerformed, this.m_Optimizer.getPopulation());
     }
@@ -160,13 +173,23 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
         this.m_Optimizer.init();
         this.m_Optimizer.SetProblem(this.m_Problem);
         InterfacePopulationChangedEventListener myLocal = null;
-        if (this.m_Parallelize) {
+        if (this.m_localOnly) {
+            // this is running on the local machine
+            this.m_Islands = new InterfaceOptimizer[this.m_numLocalCPUs];
+            for (int i = 0; i < this.m_numLocalCPUs; i++) {
+                this.m_Islands[i] = (InterfaceOptimizer) this.m_Optimizer.clone();
+                this.m_Islands[i].SetIdentifier(""+i);
+                this.m_Islands[i].init();
+                if (this.m_LogLocalChanges)
+                    this.m_Islands[i].addPopulationChangedEventListener(this);
+            }
+        } else {
             // this is running on remote machines
             if (this.m_LocalServer == null) this.m_LocalServer = RMIServer.getInstance();
             try {
                 myLocal = (InterfacePopulationChangedEventListener) RMIProxyLocal.newInstance(this);
             } catch(Exception e) {
-                System.out.println("Island Model EA warning on local RMIServer... but i'll start anyway!");
+                System.err.println("Island Model EA warning on local RMIServer... but i'll try to start anyway!");
             }
             String[] nodesList = this.m_Servers.getCheckedServerNodes();
             if ((nodesList == null) || (nodesList.length == 0)) return;
@@ -177,16 +200,6 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
                 this.m_Islands[i].init();
                 if (this.m_LogLocalChanges)
                     this.m_Islands[i].addPopulationChangedEventListener(myLocal);
-            }
-        } else {
-            // this is running on the local machine
-            this.m_Islands = new InterfaceOptimizer[this.m_LocalCPUs];
-            for (int i = 0; i < this.m_LocalCPUs; i++) {
-                this.m_Islands[i] = (InterfaceOptimizer) this.m_Optimizer.clone();
-                this.m_Islands[i].SetIdentifier(""+i);
-                this.m_Islands[i].init();
-                if (this.m_LogLocalChanges)
-                    this.m_Islands[i].addPopulationChangedEventListener(this);
             }
         }
 
@@ -204,14 +217,17 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
      */
     public void optimize() {
         for (int i = 0; i < this.m_Islands.length; i++) {
-            if (this.m_Islands[i].getPopulation().size() > 0) this.m_Islands[i].optimize();
-            else this.m_Islands[i].getPopulation().incrGeneration();
+            if (this.m_Islands[i].getPopulation().size() > 0) {
+            	this.m_Islands[i].optimize();
+            	if (TRACE ) System.out.println(BeanInspector.toString(m_Islands[i].getPopulation()));
+            } else this.m_Islands[i].getPopulation().incrGeneration();
+            if (TRACE) System.out.println("----");
         }
         this.m_Population.incrGeneration();
         if ((this.m_Population.getGeneration() % this.m_MigrationRate) == 0) {
             this.communicate();
         }
-        // this is necessary for heterogeneuous islands
+        // this is necessary for heterogeneous islands
         if (this.m_HeterogenuousProblems) {
             for (int i = 0; i < this.m_Islands.length; i++) {
                 this.m_Islands[i].getProblem().evaluate(this.m_Islands[i].getPopulation());
@@ -220,7 +236,7 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
         System.gc();
     }
 
-    /** This method will manage comunication between the
+    /** This method will manage communication between the
      * islands
      */
     private void communicate() {
@@ -299,7 +315,7 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
         result += "Using:\n";
         result += " Migration Strategy    = " + this.m_Migration.getClass().toString() + "\n";
         result += " Migration rate        = " + this.m_MigrationRate + "\n";
-        result += " Truely Parallel       = " + this.m_Parallelize + "\n";
+        result += " Local only       = " + this.m_localOnly + "\n";
         result += " Het. Problems         = " + this.m_HeterogenuousProblems + "\n";
         if (this.m_HeterogenuousProblems) {
             result += " Heterogenuous Optimizers: \n";
@@ -331,7 +347,7 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
         s.startServers();
         IslandModelEA imea  = new IslandModelEA();
         imea.m_Show = true;
-        imea.m_Parallelize = true;
+        imea.m_localOnly = false;
         imea.setServers(s);
         if (false) {
             imea.m_Optimizer    = new MultiObjectiveEA();
@@ -431,27 +447,29 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
      * @return description
      */
     public String globalInfo() {
-        return "This is general Evolutionary Multi-Criteria Optimization Framework.";
+        return "This is an island model EA distributing the individuals across several (remote) CPUs for optimization.";
     }
     /** This method will return a naming String
      * @return The name of the algorithm
      */
     public String getName() {
-        return "Island EA";
+        return "IslandEA";
     }
 
     /** This method allows you to toggle between a truly parallel
      * and a serial implementation.
-     * @return The current optimzation mode
+     * @return The current optimization mode
      */
-    public boolean getParallelize() {
-        return this.m_Parallelize;
+    // TODO Deactivated from GUI because the current implementation does not really parallelize on a multicore. 
+    // Instead, the new direct problem parallelization can be used.
+//    public boolean isLocalOnly() {
+//        return this.m_localOnly;
+//    }
+    public void setLocalOnly(boolean b){
+        this.m_localOnly = b;
     }
-    public void setParallelize(boolean b){
-        this.m_Parallelize = b;
-    }
-    public String parallelizeTipText() {
-        return "Toggle between parallel and serial implementation.";
+    public String localOnlyTipText() {
+        return "Toggle between usage of local CPUs and remote servers.";
     }
 
     /** This will show the local performance
@@ -543,12 +561,15 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
      * @param n     Number of processors.
      */
     public void setNumberLocalCPUs(int n) {
-        this.m_LocalCPUs = n;
+    	if (n>=1) this.m_numLocalCPUs = n;
+    	else System.err.println("Number of CPUs must be at least 1!");
     }
-    public int getNumberLocalCPUs() {
-        return this.m_LocalCPUs;
-    }
+    // TODO Deactivated from GUI because the current implementation does not really parallelize on a multicore. 
+    // Instead, the new direct problem parallelization can be used.
+//    public int getNumberLocalCPUs() {
+//        return this.m_LocalCPUs;
+//    }
     public String numberLocalCPUsTipText() {
-        return "Set the number of local CPUS (only active in non-parallelized mode).";
+        return "Set the number of local CPUS (>=1, only used in local mode).";
     }
 }

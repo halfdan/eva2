@@ -82,7 +82,7 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
 		}
 		this.withConstraints=o.withConstraints;
 		this.doRotation = o.doRotation;
-		this.rotation = (Matrix)o.rotation.clone();
+		this.rotation = (o.rotation==null) ? null : (Matrix)o.rotation.clone();
 		this.rotAngle = o.rotAngle;
 	}
 	

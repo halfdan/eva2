@@ -133,7 +133,7 @@ public class MOCCOParameterizeRefPoint extends MOCCOPhase implements InterfacePr
         this.m_EIMEA    = new GeneralGOEProperty();
         this.m_Island   = new IslandModelEA();
         this.m_Island.setHeterogenuousProblems(true);
-        this.m_Island.setParallelize(false);
+        this.m_Island.setLocalOnly(true);
         this.m_Island.setMigrationRate(2);
         this.m_Island.setMigrationStrategy(new SOBestMigration());
         this.m_Island.setNumberLocalCPUs(this.m_Perturbations);
@@ -223,16 +223,16 @@ public class MOCCOParameterizeRefPoint extends MOCCOPhase implements InterfacePr
                 System.out.println("The selected MOSO conversion is not suited for the reference point approach!");
             }
             // then set the values
-            if (m_Island.getParallelize()) {
+//            if (!m_Island.getLocalOnly()) {
                 PropertyRemoteServers t = m_Island.getServers();
                 String[] servers = t.getServerNodes();
                 if (servers.length != m_Perturbations) {
                     System.out.println("Warning: Number of servers overrides number of perturbations!");
                     m_Perturbations = servers.length;
                 }
-            } else {
-                m_Island.setNumberLocalCPUs(m_Perturbations);
-            }
+//            } else {
+//                m_Island.setNumberLocalCPUs(m_Perturbations);
+//            }
             m_Mocco.m_State.m_Optimizer = m_Island;
             m_Mocco.m_State.m_Optimizer.SetProblem(m_Mocco.m_State.m_CurrentProblem);
             m_Island.init();
