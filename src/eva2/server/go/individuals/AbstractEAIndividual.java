@@ -181,7 +181,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
             // checking in mutation/crossover operators
             if (!this.m_MutationOperator.equals(indy.m_MutationOperator)) return false;
             if (!this.m_CrossoverOperator.equals(indy.m_CrossoverOperator)) return false;
-            System.err.println("Check whether this is semantically meant by equality!!! (AbstractEAIndividual.equals())");
+//            System.err.println("Check whether this is semantically meant by equality!!! (AbstractEAIndividual.equals())");
             return true;
         } else {
             return false;

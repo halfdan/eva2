@@ -33,7 +33,7 @@ class ServerNode implements java.io.Serializable {
 
 public class PropertyRemoteServers implements java.io.Serializable {
 
-    private ServerNode[]        m_AvailableNodes;
+    private ServerNode[]        m_AvailableNodes=null;
 //    private String              m_ClassToStart  = "eva2.tools.jproxy.RMIServer";
     private transient String    m_password      = "";
     private String              m_Login         = "";
@@ -48,6 +48,7 @@ public class PropertyRemoteServers implements java.io.Serializable {
     }
 
     public PropertyRemoteServers(PropertyRemoteServers e) {
+    	this();
         if (e.m_AvailableNodes != null) {
             this.m_AvailableNodes = new ServerNode[e.m_AvailableNodes.length];
             for (int i = 0; i < e.m_AvailableNodes.length; i++) {
