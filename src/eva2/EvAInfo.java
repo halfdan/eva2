@@ -80,5 +80,6 @@ public class EvAInfo {
 
 	public static final String splashLocation = "resources/images/splashScreen2.png";
 	public static final String infoTitle = productName+" Information";
+	public static final String copyrightYear = "2010";
 
 }
