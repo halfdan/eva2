@@ -882,11 +882,11 @@ public class EvAClient implements RemoteStateListener, Serializable {
 		JOptionPane.showMessageDialog
 		(m_Frame,
 				EvAInfo.productName + " - " + EvAInfo.productLongName + 
-				"\n University of Tuebingen\n Computer Architecture\n " +
-				"M. Kronfeld, H. Planatscher, M. de Paly, F. Streichert & H. Ulmer\n " +
+				"\n University of Tübingen\n Chair for Computer Architecture\n " +
+				"M. Kronfeld, H. Planatscher, M. de Paly, A. Dräger, F. Streichert, H. Ulmer\n " +
 //				"H. Ulmer & F. Streichert & H. Planatscher & M. de Paly & M. Kronfeld\n" +
-				"Prof. Dr. Andreas Zell \n (c) 2008 \n Version " + EvAInfo.versionNum + 
-				"\n " + EvAInfo.url, EvAInfo.infoTitle, 1);
+				"Prof. Dr. Andreas Zell \n (c) " + EvAInfo.copyrightYear + "\n Version " + EvAInfo.versionNum + 
+				"\n URL: " + EvAInfo.url, EvAInfo.infoTitle, 1);
 	}
 	
 	private void showLicense() {
