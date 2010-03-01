@@ -261,7 +261,9 @@
 
    <!-- COPY DATA FILES TO BUILD DIRECTORY -->
     <copy todir="${build.directory}/resources">
-      <fileset dir="${resources.directory}" includes="**/*" />
+      <fileset dir="${resources.directory}" includes="**/*">
+        <exclude name="**/*.xcf" />
+      </fileset>
    </copy>
 
   	<!-- 
