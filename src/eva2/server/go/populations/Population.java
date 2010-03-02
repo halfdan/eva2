@@ -45,22 +45,20 @@ import eva2.tools.math.Jama.Matrix;
  */
 
 public class Population extends ArrayList implements PopulationInterface, Cloneable, java.io.Serializable {
+	private transient static boolean TRACE = false;
     protected int           m_Generation    = 0;
     protected int           m_FunctionCalls = 0;
     protected int           m_TargetSize          = 50;
     protected Population    m_Archive       = null;
     PopulationInitMethod initMethod = PopulationInitMethod.individualDefault;
+	private double[] seedPos = new double[10];
+	private double aroundDist=0.1;
 	transient private ArrayList<InterfacePopulationChangedEventListener> listeners = null;
-//    transient protected InterfacePopulationChangedEventListener	m_Listener = null;
-
     // the evaluation interval at which listeners are notified
     protected int 			notifyEvalInterval	= 0;
+    // additional data connected to the population
     protected HashMap<String, Object>		additionalPopData = null;
-    
-    public static final String funCallIntervalReached = "FunCallIntervalReached";
-    public static final String populationInitialized = "PopulationReinitOccured";
-    public static final String nextGenerationPerformed = "NextGenerationPerformed";
-    
+    // historical best indidivuals may be traced
     boolean useHistory						= false;
     private transient ArrayList<AbstractEAIndividual>  m_History       = new ArrayList<AbstractEAIndividual>();
 
@@ -69,16 +67,12 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     // a sorted queue (for efficiency)
     transient private ArrayList<AbstractEAIndividual> sortedArr = null;
     private int lastFitCrit = -1;
-	private AbstractEAIndividualComparator historyComparator = null;
-	private double[] seedPos = new double[10];
-	private double aroundDist=0.1;
-	private transient static boolean TRACE = false;
-    
-    // remember when the last evaluation was performed
-//	private Pair<Integer,Integer> evaluationTimeHashes = null;
-    // remember when the last evaluation was performed
-//	private int evaluationTimeModCount = -1;
+//	private AbstractEAIndividualComparator historyComparator = null;
 
+    public static final String funCallIntervalReached = "FunCallIntervalReached";
+    public static final String populationInitialized = "PopulationReinitOccured";
+    public static final String nextGenerationPerformed = "NextGenerationPerformed";
+    
     public Population() {
     	if (TRACE) System.err.println("TRACING POP");
     }
@@ -159,16 +153,18 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     }
     
     /**
-     * Takes over all scalar parameters of the given population.
+     * Takes over all scalar parameters of the given population and copies the additional data
+     * as well as listeners and the seed position. Those are considered functional.
      * @param population
      */
     public void setSameParams(Population population) {
         this.m_Generation       = population.m_Generation;
         this.m_FunctionCalls    = population.m_FunctionCalls;
-        this.m_TargetSize             = population.m_TargetSize;
+        this.m_TargetSize       = population.m_TargetSize;
         this.useHistory 		= population.useHistory;
         this.notifyEvalInterval = population.notifyEvalInterval;
         this.initMethod			= population.initMethod;
+    	this.aroundDist			= population.aroundDist;
         if (population.seedPos!=null) this.seedPos = population.seedPos.clone();
 //        this.m_Listener			= population.m_Listener;
         if (population.listeners != null) this.listeners			= (ArrayList<InterfacePopulationChangedEventListener>)population.listeners.clone();
@@ -182,6 +178,33 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
         }
     }
 
+    /**
+     * Be aware that this does not check all fields. Fields which are not considered
+     * functional are omitted, such as archive, history and the listeners. 
+     */
+    public boolean equals(Object o) {
+    	if (!super.equals(o)) return false;
+    	if (o==null) return false;
+    	if (!(o instanceof Population)) return false;
+    	Population opop = (Population)o;
+    	if (this.m_Generation   != opop.m_Generation) return false;
+    	if (this.m_FunctionCalls    != opop.m_FunctionCalls) return false;
+    	if (this.m_TargetSize       != opop.m_TargetSize) return false;
+    	if (this.useHistory 		!= opop.useHistory) return false;
+    	if (this.notifyEvalInterval != opop.notifyEvalInterval) return false;
+    	if (this.initMethod			!= opop.initMethod) return false;
+    	if (this.aroundDist			!= opop.aroundDist) return false;
+    	if ((this.seedPos!=null) ^ (opop.seedPos!=null)) return false;
+    	if ((this.seedPos!=null) && (!this.seedPos.equals(opop.seedPos))) return false; 
+    	//listeners may be omitted
+    	if ((this.additionalPopData!=null) ^ (opop.additionalPopData!=null)) return false;
+    	if (this.additionalPopData!=null) for (String s : this.additionalPopData.keySet()) {
+    		if (this.additionalPopData.get(s)==null && (opop.additionalPopData.get(s)!=null)) return false;
+    		if (this.additionalPopData.get(s)!=null && (!this.additionalPopData.get(s).equals(this.additionalPopData))) return false;
+		}
+    	return true;
+    }
+    
     public void putData(String key, Object value) {
     	if (additionalPopData == null) additionalPopData = new HashMap<String, Object>();
     	additionalPopData.put(key, value);
@@ -343,26 +366,26 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     
     /**
      * Activate or deactivate the history tracking, which stores the best individual in every
-     * generation in the incrGeneration() method. This uses a default individual comparator
-     * which is based on fitness.
+     * generation in the incrGeneration() method.
      * 
      * @param useHist
      */
     public void setUseHistory(boolean useHist) {
-    	this.setUseHistory(useHist, (useHist ? (new AbstractEAIndividualComparator()) : null));
+    	useHistory = useHist;
+//    	this.setUseHistory(useHist, (useHist ? (new AbstractEAIndividualComparator()) : null));
     }
     
-    /**
-     * Activate or deactivate the history tracking, which stores the best individual in every
-     * generation in the incrGeneration() method.
-     * 
-     * @param useHist
-     * @param histComparator comparator to use for determining the best current individual
-     */
-    public void setUseHistory(boolean useHist, AbstractEAIndividualComparator histComparator) {
-    	useHistory = useHist;
-    	this.historyComparator  = histComparator;
-    }
+//    /**
+//     * Activate or deactivate the history tracking, which stores the best individual in every
+//     * generation in the incrGeneration() method.
+//     * 
+//     * @param useHist
+//     * @param histComparator comparator to use for determining the best current individual
+//     */
+//    public void setUseHistory(boolean useHist, AbstractEAIndividualComparator histComparator) {
+//    	useHistory = useHist;
+//    	this.historyComparator  = histComparator;
+//    }
     
     public int getHistoryLength() {
     	if (useHistory) return m_History.size();
