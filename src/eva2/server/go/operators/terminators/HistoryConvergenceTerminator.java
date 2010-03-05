@@ -37,7 +37,7 @@ public class HistoryConvergenceTerminator implements InterfaceTerminator, Serial
 		this.stdDevInsteadOfImprovement = stdDevInsteadOfImprovement;
 	}
 	
-	public String globalInfo() {
+	public static String globalInfo() {
 		return "Converge based on a halting window on a population history.";
 	}
 	

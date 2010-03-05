@@ -38,7 +38,7 @@ Serializable {
 		msg = "Not terminated.";
 	}
 	
-	public String globalInfo() {
+	public static String globalInfo() {
 		return "Terminate after the given number of generations";
 	}
 

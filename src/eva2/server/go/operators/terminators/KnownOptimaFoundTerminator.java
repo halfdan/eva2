@@ -79,7 +79,7 @@ public class KnownOptimaFoundTerminator implements InterfaceTerminator, Serializ
 		return "KnownOptimaFoundTerminator requiring " + reqOptima + " optima.";
 	}
 	
-	public String globalInfo() {
+	public static String globalInfo() {
 		return "Terminate if a given number of optima has been found. Works for problems implementing InterfaceMultimodalProblemKnown, e.g. FM0."; 
 	}
 }

@@ -160,7 +160,7 @@ public class AbstractEAIndividualComparator implements Comparator<Object>, Seria
 		return "Activate preference of feasible individuals in any comparison acc. to Deb's rules.";
 	}
 	
-	public String globalInfo() {
+	public static String globalInfo() {
 		return "A comparator class for general EA individuals. Compares individuals based on their fitness in context of minimization.";
 	}
 	public String getName() {

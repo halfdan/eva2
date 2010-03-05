@@ -135,7 +135,7 @@ public class CrossoverESNPointDiscreteDislocation implements InterfaceCrossover,
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "This is a discrete n-point crossover between m ES individuals with dislocation.";
     }
 

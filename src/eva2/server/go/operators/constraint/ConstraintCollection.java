@@ -69,7 +69,7 @@ public class ConstraintCollection extends AbstractConstraint {
 		return constraintArray.length + " constr./" + getPenaltyFactor() + "/" + getHandlingMethod() + "/" + getPenaltyFactControl().getClass().getSimpleName();
 	}
 	
-	public String globalInfo() {
+	public static String globalInfo() {
 		return "A set of constraints with a single parameter adaption mechanism.";
 	}
 }

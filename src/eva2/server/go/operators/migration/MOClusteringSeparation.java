@@ -348,7 +348,7 @@ public class MOClusteringSeparation implements InterfaceMigration, java.io.Seria
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "This is migration scheme, which implements a clustering based partitioning.";
     }
     /** This method will return a naming String

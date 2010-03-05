@@ -514,7 +514,7 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "Particle Swarm Optimization tuned for tracking a dynamic target";
     }
     /** This method will return a naming String

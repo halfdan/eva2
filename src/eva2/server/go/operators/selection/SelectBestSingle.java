@@ -17,10 +17,15 @@ import eva2.tools.math.RNG;
 public class SelectBestSingle implements InterfaceSelection, java.io.Serializable {
 
     private boolean     m_ObeyDebsConstViolationPrinciple = true;
+    private boolean		excludeSelfAsPartner = true; // try to avoid selecting as a mating partner the individual itself
 
-    public SelectBestSingle() {
+	public SelectBestSingle() {
     }
-
+	
+	public SelectBestSingle(boolean excludeSelfInPartners) {
+		this.excludeSelfAsPartner=excludeSelfInPartners;
+    }
+	
     public SelectBestSingle(SelectBestSingle a) {
         this.m_ObeyDebsConstViolationPrinciple = a.m_ObeyDebsConstViolationPrinciple;
     }
@@ -93,13 +98,14 @@ public class SelectBestSingle implements InterfaceSelection, java.io.Serializabl
     }
 
     /** This method allows you to select >size< partners for a given Individual
-     * @param dad               The already seleceted parent
+     * @param dad               The already selected parent
      * @param avaiablePartners  The mating pool.
      * @param size              The number of partners needed.
      * @return The selected partners.
      */
     public Population findPartnerFor(AbstractEAIndividual dad, Population avaiablePartners, int size) {
-        return this.selectFrom(avaiablePartners, size);
+    	if (excludeSelfAsPartner) return this.selectFrom(avaiablePartners.filter(new Population().addToPop(dad)), size);
+    	else return this.selectFrom(avaiablePartners, size);
     }
 /**********************************************************************************************************************
  * These are for GUI
@@ -107,7 +113,7 @@ public class SelectBestSingle implements InterfaceSelection, java.io.Serializabl
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "This selection method will select the single Best individual (n-times if necessary)." +
                 "This is a single objective selecting method, it will select in respect to a random criterion.";
     }
@@ -131,4 +137,15 @@ public class SelectBestSingle implements InterfaceSelection, java.io.Serializabl
     public String obeyDebsConstViolationPrincipleToolTip() {
         return "Toggle the use of Deb's coonstraint violation principle.";
     }
+    
+    public boolean isExcludeSelfAsPartner() {
+		return excludeSelfAsPartner;
+	}
+	public void setExcludeSelfAsPartner(boolean excludeSelfAsPartner) {
+		this.excludeSelfAsPartner = excludeSelfAsPartner;
+	}
+	public String excludeSelfAsPartnerTipText() {
+		return "When employed for partner selection, the partners may be allowed to contain the parents itself or not.";
+	}
 }
+

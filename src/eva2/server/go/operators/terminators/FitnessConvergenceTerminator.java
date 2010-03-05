@@ -73,7 +73,7 @@ Serializable {
 	/**
 	 *
 	 */
-	public String globalInfo() {
+	public static String globalInfo() {
 		return "Stop if a fitness convergence criterion has been met.";
 	}
 

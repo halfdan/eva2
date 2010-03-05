@@ -36,7 +36,7 @@ public class InformationRetrievalNone implements InterfaceInformationRetrieval, 
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "This implements a deactivated Information Retrieval.";
     }
     /** This method will return a naming String

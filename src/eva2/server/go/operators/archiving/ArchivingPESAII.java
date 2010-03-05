@@ -267,7 +267,7 @@ public class ArchivingPESAII extends AbstractArchiving implements java.io.Serial
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "Pareto Envelope-based Selection Algorithm revision 2.0.";
     }
     /** This method will return a naming String

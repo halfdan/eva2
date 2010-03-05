@@ -139,7 +139,7 @@ public class MetricD1TrueParetoFront implements eva2.server.go.operators.paretof
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "This method calculates the mean distance of the true Pareto front to the approximated set.";
     }
 

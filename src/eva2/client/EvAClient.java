@@ -82,7 +82,6 @@ import eva2.tools.jproxy.RemoteStateListener;
 public class EvAClient implements RemoteStateListener, Serializable {
 	private final int splashScreenTime = 1500;
 	private final int maxWindowMenuLength = 30;
-	private static Properties EVA_PROPERTIES;
 	
 	public static boolean TRACE = false;
 
@@ -144,31 +143,6 @@ public class EvAClient implements RemoteStateListener, Serializable {
 		if (superListenerList != null) { 
 			return superListenerList.remove(l);
 		} else return false;
-	}
-	
-	public static String getProperty(String key) {
-		String myVal = EVA_PROPERTIES.getProperty(key);
-		return myVal;
-	}
-
-	public static Properties getProperties() {
-		return EVA_PROPERTIES;
-	}
-	
-	public static void setProperty(String key, String value) {
-		EVA_PROPERTIES.setProperty(key, value);
-	}
-
-	/**
-	 * Statically loading Properties.
-	 */
-	static {
-		try {
-			EVA_PROPERTIES = BasicResourceLoader.readProperties(EvAInfo.propertyFile);
-		} catch (Exception ex) {
-			System.err.println("Could not read the configuration file "+ EvAInfo.propertyFile);
-			ex.printStackTrace();
-		}
 	}
 
 	/**
@@ -298,7 +272,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
 	 */
 	private void init(String hostName, String paramsFile, final Window parent) {
 		//EVA_EDITOR_PROPERTIES
-		useDefaultModule = getProperty("DefaultModule");
+		useDefaultModule = EvAInfo.propDefaultModule();
 		
 		if (useDefaultModule != null) {
 			useDefaultModule = useDefaultModule.trim();
@@ -312,7 +286,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
 			try {
 				m_Frame.setIconImage(Toolkit.getDefaultToolkit().createImage(bytes));
 			} catch (java.lang.NullPointerException e) {
-				System.out.println("Could not find EvA2 icon, please move resources folder to working directory!");
+				System.err.println("Could not find EvA2 icon, please move resources folder to working directory!");
 			}
 //			m_Frame.setTitle(EvAInfo.productName + " workbench");
 
@@ -328,7 +302,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
 			m_ProgressBar = new JProgressBar();
 			m_Frame.getContentPane().add(m_ProgressBar, BorderLayout.SOUTH);
 
-			if (getProperty("ShowModules") != null) showLoadModules = true;
+			if (EvAInfo.propShowModules() != null) showLoadModules = true;
 			else showLoadModules = false; // may be set to true again if default module couldnt be loaded
 
 			createActions();
@@ -424,7 +398,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
 		sbuf.append(" - ");
 		sbuf.append(EvAInfo.productLongName);
 		sbuf.append(" - Version ");
-		sbuf.append(EvAInfo.versionNum);
+		sbuf.append(EvAInfo.getVersion());
 		sbuf.append("\n");
 		sbuf.append("License: ");
 		sbuf.append(EvAInfo.LGPLFile);
@@ -885,7 +859,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
 				"\n University of Tübingen\n Chair for Computer Architecture\n " +
 				"M. Kronfeld, H. Planatscher, M. de Paly, A. Dräger, F. Streichert, H. Ulmer\n " +
 //				"H. Ulmer & F. Streichert & H. Planatscher & M. de Paly & M. Kronfeld\n" +
-				"Prof. Dr. Andreas Zell \n (c) " + EvAInfo.copyrightYear + "\n Version " + EvAInfo.versionNum + 
+				"Prof. Dr. Andreas Zell \n (c) " + EvAInfo.copyrightYear + "\n Version " + EvAInfo.getVersion()+ 
 				"\n URL: " + EvAInfo.url, EvAInfo.infoTitle, 1);
 	}
 	

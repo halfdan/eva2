@@ -47,7 +47,7 @@ public class InformationRetrievalInserting implements InterfaceInformationRetrie
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "This Information Retrieval will insert the archive into current population by replacing random individuals if necessary.";
     }
     /** This method will return a naming String

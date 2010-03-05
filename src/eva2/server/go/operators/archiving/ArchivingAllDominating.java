@@ -67,7 +67,7 @@ public class ArchivingAllDominating extends AbstractArchiving implements java.io
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "This is a straightforward strategy, which selects all dominating individuals (very prone to generate OutOfMemory errors).";
     }
     /** This method will return a naming String

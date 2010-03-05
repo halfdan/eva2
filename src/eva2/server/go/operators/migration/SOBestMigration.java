@@ -77,7 +77,7 @@ public class SOBestMigration implements InterfaceMigration, java.io.Serializable
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "This is a single-objective migration scheme.";
     }
     /** This method will return a naming String

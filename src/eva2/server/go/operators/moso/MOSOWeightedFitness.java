@@ -102,7 +102,7 @@ public class MOSOWeightedFitness implements InterfaceMOSOConverter, java.io.Seri
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "This method calcuates the weighted sum over all fitness values.";
     }
 

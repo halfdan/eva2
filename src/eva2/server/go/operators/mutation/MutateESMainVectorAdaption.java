@@ -209,7 +209,7 @@ public class MutateESMainVectorAdaption implements InterfaceMutation, java.io.Se
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "This is the most sophisticated MVA mutation.";
     }
 

@@ -166,7 +166,7 @@ public class SelectEPTournaments implements InterfaceSelection, java.io.Serializ
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "The EP tournament selection performs a number of tournaments per individual, the winner is assigned a point." +
                 " The individuals with the most points are selected." +
                 " This is a single objective selecting method, it will select in respect to a random criterion.";

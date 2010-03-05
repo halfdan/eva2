@@ -181,7 +181,8 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
         }
         if ((object != null) && (editor != null)) paraPanel.registerEditor(object, editor);
         this.m_O1 = (paraPanel.makePanel());
-        EvAClient.setProperty("eva2.server.oa.go.Tools.InterfaceTest", "eva2.server.oa.go.Tools.Test1,eva2.server.oa.go.Tools.Test2");
+        // TODO this is defunct anyways... (MK, 2010-03)
+//        EvAClient.setProperty("eva2.server.oa.go.Tools.InterfaceTest", "eva2.server.oa.go.Tools.Test1,eva2.server.oa.go.Tools.Test2");
         this.m_OptionsPanel = new JTabbedPane();
         JParaPanel paraPanel2 = new JParaPanel(this.m_GO, "MyGUI");
         this.m_O2 = (paraPanel2.makePanel());
@@ -624,7 +625,7 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "This is a simple example framework for Evolutionary Algorithms.";
     }
 

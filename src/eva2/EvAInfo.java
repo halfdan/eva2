@@ -1,5 +1,10 @@
 package eva2;
 
+import java.io.File;
+import java.util.Properties;
+
+import eva2.tools.BasicResourceLoader;
+
 /**
  * Main product and version information strings.
  * 
@@ -68,10 +73,11 @@ package eva2;
  * @author mkron
  *
  */
+
 public class EvAInfo {
 	public static final String productName = "EvA2";
 	public static final String productLongName = "Evolutionary Algorithms Workbench 2";
-	public static final String versionNum = new String ("2.043");
+	// public static final String fullVersion = "2.043"; // moved to EvA2.props!
 	public static final String url = "http://www.ra.cs.uni-tuebingen.de/software/EvA2";
 
 	public static final String propertyFile = "resources/EvA2.props";
@@ -83,4 +89,48 @@ public class EvAInfo {
 	public static final String infoTitle = productName+" Information";
 	public static final String copyrightYear = "2010";
 
+	////////////// Property handling...
+	
+	private static Properties EVA_PROPERTIES;
+	static {
+		try {
+			EVA_PROPERTIES = BasicResourceLoader.readProperties(EvAInfo.propertyFile);
+		} catch (Exception ex) {
+			System.err.println("ERROR! Could not read the configuration file "+ EvAInfo.propertyFile);
+			System.err.println(ex.getMessage());
+			System.exit(1);
+		}
+		File f=new File(EvAInfo.iconLocation);
+		if (!f.exists()) {
+			System.err.println("Error: Could not find EvA2 resources. Did you copy the resources folder to working directory?");
+			System.exit(2);
+		}
+	}
+	
+	public static String getProperty(String key) {
+		String myVal = EVA_PROPERTIES.getProperty(key);
+		return myVal;
+	}
+
+	public static Properties getProperties() {
+		return EVA_PROPERTIES;
+	}
+	
+	private static void setProperty(String key, String value) {
+		EVA_PROPERTIES.setProperty(key, value);
+	}
+
+	public static String getVersion() {
+		String version = getProperty("EvA2Version");
+		if (version==null) System.err.println("ERROR, missing property EvA2Version!");
+		return version;
+	}
+
+	public static String propDefaultModule() {
+		return getProperty("DefaultModule");
+	}
+
+	public static String propShowModules() {
+		return getProperty("ShowModules");
+	}
 }

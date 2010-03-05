@@ -38,7 +38,7 @@ public class ReplaceWorst implements InterfaceReplacement, java.io.Serializable 
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "This method replaces the worst individual from the population.";
     }
     /** This method will return a naming String

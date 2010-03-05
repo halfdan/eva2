@@ -156,7 +156,7 @@ public class SelProbLinearRanking extends AbstractSelProb implements java.io.Ser
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "This is linear ranking normation.";
     }
     /** This method will return a naming String

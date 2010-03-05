@@ -596,7 +596,7 @@ public class GEIndividualProgramData extends AbstractEAIndividual implements Int
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "This is a GE individual suited to optimize programs.";
     }
 

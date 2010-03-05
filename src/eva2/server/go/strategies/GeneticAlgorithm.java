@@ -238,7 +238,7 @@ public class GeneticAlgorithm implements InterfaceOptimizer, java.io.Serializabl
         /** This method returns a global info string
          * @return description
          */
-        public String globalInfo() {
+        public static String globalInfo() {
             return "This is a basic generational Genetic Algorithm.";
         }
         /** This method will return a naming String

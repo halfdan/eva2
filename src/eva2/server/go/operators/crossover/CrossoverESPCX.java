@@ -288,7 +288,7 @@ public class CrossoverESPCX implements InterfaceCrossover, java.io.Serializable 
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "This is the Parent Centric Crossover (PCX).";
     }
     public void setEta(double a) {

@@ -144,7 +144,7 @@ public class MOSOMaxiMin implements InterfaceMOSOConverter, java.io.Serializable
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "This method calculate the maximum of minimum distance over all criterias over all individuals.";
     }
 //    /** This method allows you to choose the ScalingFactor for

@@ -38,7 +38,7 @@ public class ReplacePreselection implements InterfaceReplacement, java.io.Serial
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "This method replaces the worst parent if better.";
     }
     /** This method will return a naming String

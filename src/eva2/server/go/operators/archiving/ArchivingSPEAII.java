@@ -548,7 +548,7 @@ public class ArchivingSPEAII extends AbstractArchiving implements java.io.Serial
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "Strength Pareto EA revision 2.0. The variable k to calculate the k-th distance is given by max(2, sqrt(archive.size())).";
     }
     /** This method will return a naming String

@@ -47,7 +47,7 @@ public class InformationRetrievalReplacing implements InterfaceInformationRetrie
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "This Information Retrieval will replace the current population by the archive.";
     }
     /** This method will return a naming String

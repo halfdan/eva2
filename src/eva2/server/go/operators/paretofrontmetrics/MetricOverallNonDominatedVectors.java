@@ -68,7 +68,7 @@ public class MetricOverallNonDominatedVectors implements InterfaceParetoFrontMet
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "Calculating the number of non dominated individuals.";
     }
 }

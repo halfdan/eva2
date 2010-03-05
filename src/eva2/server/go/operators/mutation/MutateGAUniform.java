@@ -91,7 +91,7 @@ public class MutateGAUniform implements InterfaceMutation, Serializable {
 		return "Uniform-GA-Mutation";
 	}
 	
-	public String globalInfo() {
+	public static String globalInfo() {
 		return "Uniform mutation mutates every GA bit with a fixed probability.";
 	}
 }

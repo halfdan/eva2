@@ -94,7 +94,7 @@ public class MutateOBGAFlip implements InterfaceMutation, java.io.Serializable {
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "This mutation operators flips edges of the OBGA.";
     }
   public int getTimes() {

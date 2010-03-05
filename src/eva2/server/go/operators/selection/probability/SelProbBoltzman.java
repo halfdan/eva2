@@ -177,7 +177,7 @@ public class SelProbBoltzman extends AbstractSelProb implements java.io.Serializ
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "This is the Boltzman Normation.";
     }
     /** This method will return a naming String

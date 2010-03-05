@@ -12,7 +12,7 @@ package eva2.server;
 /*==========================================================================*
  * IMPORTS
  *==========================================================================*/
-import eva2.client.EvAClient;
+import eva2.EvAInfo;
 import eva2.server.modules.ModuleAdapter;
 import eva2.tools.jproxy.MainAdapterClient;
 import eva2.tools.jproxy.MainAdapterImpl;
@@ -27,7 +27,7 @@ public class EvAMainAdapterImpl extends MainAdapterImpl implements EvAMainAdapte
 
   public EvAMainAdapterImpl() {
 	  super();
-	  m_ModulServer = new ModuleServer(EvAClient.getProperties());
+	  m_ModulServer = new ModuleServer(EvAInfo.getProperties());
   }
 
   public String[] getModuleNameList() {

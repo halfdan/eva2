@@ -219,7 +219,7 @@ public class FloodAlgorithm implements InterfaceOptimizer, java.io.Serializable 
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "The flood algorithm uses an declining flood peak to accpect new solutions (*shudder* check inital flood peak and drain very carefully!).";
     }
     /** This method will return a naming String

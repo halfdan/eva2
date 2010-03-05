@@ -477,7 +477,7 @@ public class ClassificationSelfOrganizingMaps implements java.io.Serializable, I
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "The Self-Organizing Maps, have been proposed by Kohonen (read this book on SOMs for further details).";
     }
 

@@ -240,7 +240,7 @@ public class EvolutionStrategyIPOP extends EvolutionStrategies implements Interf
 		return "ES-IPOP";
 	}
 	
-	public String globalInfo() {
+	public static String globalInfo() {
 		return "An ES with increasing population size.";
 	}
 //	

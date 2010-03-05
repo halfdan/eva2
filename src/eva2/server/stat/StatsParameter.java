@@ -172,7 +172,7 @@ public class StatsParameter implements InterfaceStatisticsParameter, Serializabl
 		return m_Name;
 	}
 
-	public String globalInfo() {
+	public static String globalInfo() {
 		return "Configure statistics and output of the optimization run.";
 	}
 

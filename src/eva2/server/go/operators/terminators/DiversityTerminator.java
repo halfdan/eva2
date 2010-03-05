@@ -60,7 +60,7 @@ public class DiversityTerminator implements InterfaceTerminator, Serializable {
 		msg = "Not terminated.";
 	}
 
-	public String globalInfo() {
+	public static String globalInfo() {
 		return "The diversity terminator uses the distance of individuals in the population as a termination criterion.";
 	}
 	

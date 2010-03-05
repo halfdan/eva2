@@ -97,7 +97,7 @@ public class F13Problem extends AbstractProblemDoubleOffset implements Interface
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "Schwefels sine-root Function (multimodal, 1981). Remember to use range check!";
     }
 

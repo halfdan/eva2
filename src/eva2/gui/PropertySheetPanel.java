@@ -776,7 +776,7 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
 	            ex.printStackTrace();
             }
             if (TRACE) System.out.println("# cmp " + BeanInspector.toString(o) + "\n# vs. " + BeanInspector.toString(m_Values[i]));
-            if (o == m_Values[i] && (BeanInspector.isJavaPrimitive(o.getClass()))) {
+            if ((o!=null) && o == m_Values[i] && (BeanInspector.isJavaPrimitive(o.getClass()))) {
 	            // The property is equal to its old value.
 	            continue;
             }

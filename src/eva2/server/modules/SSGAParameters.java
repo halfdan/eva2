@@ -62,7 +62,7 @@ public class SSGAParameters extends AbstractGOParameters implements InterfaceGOP
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "This is a steady-state GA.";
     }
 

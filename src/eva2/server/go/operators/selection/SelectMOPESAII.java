@@ -133,7 +133,7 @@ public class SelectMOPESAII implements InterfaceSelection, java.io.Serializable 
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "Performs a binary tournament selection, preferring the gridbox of smaller squeezing factor and selecting a random individual from the winner box.";
     }
     /** This method will return a naming String

@@ -40,7 +40,7 @@ public class LinearParamAdaption extends AbstractLinearParamAdaption implements 
 		this.target = target;
 	}
 	
-	public String globalInfo() {
+	public static String globalInfo() {
 		return "Simple linear parameter adaption.";
 	}
 }

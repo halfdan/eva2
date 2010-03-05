@@ -100,7 +100,7 @@
 //    /** This method returns a global info string
 //     * @return description
 //     */
-//    public String globalInfo() {
+//    public static String globalInfo() {
 //        return "The standard mutation alters all elements of the double attributes with a fixed mutation step size.";
 //    }
 //

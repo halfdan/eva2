@@ -103,7 +103,7 @@ public class MutateGINominal implements InterfaceMutation, java.io.Serializable 
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "The nominal mutation alters n element of the int attributes completely at random.";
     }
 

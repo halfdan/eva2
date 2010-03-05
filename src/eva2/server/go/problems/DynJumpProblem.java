@@ -169,7 +169,7 @@ public class DynJumpProblem extends AbstractDynTransProblem {
 	public String getName() {
 		return "DynJumpProblem";
 	}
-    public String globalInfo() {
+    public static String globalInfo() {
     	return "A real valued problem jumping dynamically."; 
     }
     

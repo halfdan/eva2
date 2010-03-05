@@ -66,7 +66,7 @@ public class ConstrHimmelblauProblem extends AbstractProblemDouble implements Se
 		return "Constrained Himmelblau Problem";
 	}
 	
-	public String globalInfo() {
+	public static String globalInfo() {
 		return "Himmelblau's nonlinear optimization problem with 5 simple boundary constraints and 3 nonlinear boundary constraints.";
 	}
 

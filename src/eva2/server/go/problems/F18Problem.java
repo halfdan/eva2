@@ -48,7 +48,7 @@ InterfaceMultimodalProblem {
 		return "F18-Problem";
 	}
 
-	public String globalInfo() {
+	public static String globalInfo() {
 		return "N-Function from Shir&Baeck, PPSN 2006.";
 	}
 

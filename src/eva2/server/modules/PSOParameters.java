@@ -61,8 +61,8 @@ public class PSOParameters extends AbstractGOParameters implements InterfaceGOPa
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
-        return ((ParticleSwarmOptimization)m_Optimizer).globalInfo();
+    public static String globalInfo() {
+        return ParticleSwarmOptimization.globalInfo();
     }
 
 	/**

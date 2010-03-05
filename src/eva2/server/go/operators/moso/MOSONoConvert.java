@@ -77,7 +77,7 @@ public class MOSONoConvert implements InterfaceMOSOConverter, java.io.Serializab
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "This method leaves everything the same.";
     }
 

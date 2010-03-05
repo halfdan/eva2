@@ -132,7 +132,7 @@ public class SelectMOSPEAII implements InterfaceSelection, java.io.Serializable 
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "This selection method calucates the strength and selects using the strength.";
     }
 

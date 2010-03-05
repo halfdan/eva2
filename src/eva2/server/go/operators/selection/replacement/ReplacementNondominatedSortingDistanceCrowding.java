@@ -66,7 +66,7 @@ public class ReplacementNondominatedSortingDistanceCrowding implements Interface
     
     	pop.add(indy);
     	Population []store=dummyArchive.getNonDomiatedSortedFronts(pop);
-		dummyArchive.calculateCrowdingDistance(store);//TODO die für das gesamte Archiv am Stück berechnen und nicht für die Einzelfronten!
+		dummyArchive.calculateCrowdingDistance(store);//TODO die fï¿½r das gesamte Archiv am Stï¿½ck berechnen und nicht fï¿½r die Einzelfronten!
 		for(int i=0;i<store.length;i++){
 			synchronized (store[i]) {
 				
@@ -93,7 +93,7 @@ public class ReplacementNondominatedSortingDistanceCrowding implements Interface
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "This method replaces the individual with the worsr paretorank and crowding factor";
     }
     /** This method will return a naming String

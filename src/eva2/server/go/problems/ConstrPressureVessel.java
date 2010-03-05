@@ -120,8 +120,7 @@ public class ConstrPressureVessel extends AbstractProblemDouble {
 		return "Constrained-Pressure-Vessel";
 	}
 
-	@Override
-	public String globalInfo() {
+	public static String globalInfo() {
 		return "Minimize the material cost of a pressure vessel";
 	}
 

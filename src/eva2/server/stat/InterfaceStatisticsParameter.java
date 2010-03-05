@@ -26,7 +26,7 @@ import eva2.tools.StringSelection;
 public interface InterfaceStatisticsParameter {
   public String getName();
   public void saveInstance();
-  public String globalInfo();
+//  public String globalInfo();
 //  public void setTextoutput(int i);
   public void setPlotoutput(int i);
   public int GetPlotoutput();

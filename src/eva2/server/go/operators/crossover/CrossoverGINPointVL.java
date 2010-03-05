@@ -184,7 +184,7 @@ public class CrossoverGINPointVL implements InterfaceCrossover, java.io.Serializ
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "This is a variable length n-point crossover between m individuals.";
     }
 

@@ -127,7 +127,7 @@ public class MOSOWeightedLPTchebycheff implements InterfaceMOSOConverter, java.i
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "This method implements the Lp-problem and the Tchebycheff metric, the weighted version is also known as compromise programming.";
     }
 

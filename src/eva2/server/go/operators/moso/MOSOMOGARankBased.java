@@ -92,7 +92,7 @@ public class MOSOMOGARankBased implements InterfaceMOSOConverter, java.io.Serial
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "This method calcuates the MOGA rank of each individual and uses the rank as fitness [Fonseca93Genetic].";
     }
 }

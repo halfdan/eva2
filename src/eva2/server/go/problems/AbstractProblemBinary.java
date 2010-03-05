@@ -90,7 +90,7 @@ public abstract class AbstractProblemBinary extends AbstractOptimizationProblem 
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
     	return "The programmer did not give further details.";
     }
 

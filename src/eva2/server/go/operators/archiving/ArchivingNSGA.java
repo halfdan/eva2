@@ -58,7 +58,7 @@ public class ArchivingNSGA extends AbstractArchiving implements java.io.Serializ
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "Non-dominating sorting GA revision 1.0.";
     }
     /** This method will return a naming String

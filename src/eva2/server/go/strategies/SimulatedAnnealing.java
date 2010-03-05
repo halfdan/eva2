@@ -220,7 +220,7 @@ public class SimulatedAnnealing implements InterfaceOptimizer, java.io.Serializa
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "The simulated annealing uses an additional cooling rate instead of a simple dominate criteria to accpect worse solutions by chance.";
     }
     /** This method will return a naming String

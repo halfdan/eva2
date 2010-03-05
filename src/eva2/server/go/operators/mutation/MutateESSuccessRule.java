@@ -84,7 +84,7 @@ public class MutateESSuccessRule extends MutateESFixedStepSize implements Interf
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "The 1/5 success rule works only together with an ES optimizer.";
     }
 

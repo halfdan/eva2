@@ -139,7 +139,7 @@ public class ParameterControlManager implements InterfaceParameterControl, Seria
 		this.singleAdapters = singleAdapters;
 	}
 	
-	public String globalInfo() {
+	public static String globalInfo() {
 		return "Define a list of dynamically adapted parameters.";
 	}
 	

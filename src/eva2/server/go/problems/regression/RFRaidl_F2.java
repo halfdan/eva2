@@ -45,7 +45,7 @@ public class RFRaidl_F2 implements InterfaceRegressionFunction, java.io.Serializ
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "This target function is given in Raidl98Hybrid F2.";
     }
 }

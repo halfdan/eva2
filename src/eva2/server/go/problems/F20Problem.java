@@ -82,7 +82,7 @@ public class F20Problem extends AbstractProblemDouble implements Serializable, I
 		return "Rana"+(isDoRotation() ? "-rot" : "");
 	}
 	
-	public String globalInfo() {
+	public static String globalInfo() {
 		return "The Rana function is non-separable, highly multi-modal and multi-funnel." +
 				" There are diagonal ridges across the search space and the optima are close to the bounds." +
 				"The minimum fitness f(x*) is close to (n-1)*r for dimension n and default range r, by which " +

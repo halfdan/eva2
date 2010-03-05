@@ -102,7 +102,7 @@ public class GenericConstraint extends AbstractConstraint implements InterfaceDo
 		return this.getClass().getSimpleName() + " " + constraintString;
 	}
 	
-	public String globalInfo() {
+	public static String globalInfo() {
 		return "A generic constraint which is parsed from a String; n is dimension, x0..xn are solution components. Use prefix notation as in \"+(-(sum(x),n),sqrt(*(pi,x0)))\".";
 	}
 

@@ -107,7 +107,7 @@ public class CrossoverOBGAPMX implements InterfaceCrossover, java.io.Serializabl
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "The infamous PMX crossover for Permutations.";
     }
 

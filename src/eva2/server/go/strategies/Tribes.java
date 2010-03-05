@@ -734,7 +734,7 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
 		return globalInfo();
 	}
 	
-	public String globalInfo() {
+	public static String globalInfo() {
 		return "TRIBES: a parameter free PSO implementation by Maurice Clerc.";
 	}
 

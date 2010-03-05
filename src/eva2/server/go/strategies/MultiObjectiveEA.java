@@ -219,7 +219,7 @@ public class MultiObjectiveEA implements InterfaceOptimizer, java.io.Serializabl
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "This is general Evolutionary Multi-Criteria Optimization Framework.";
     }
     /** This method will return a naming String

@@ -2,6 +2,7 @@ package eva2.gui;
 
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
@@ -11,24 +12,22 @@ import java.awt.event.ItemListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.lang.reflect.Proxy;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.plaf.basic.BasicComboBoxRenderer;
 
 import eva2.server.go.tools.FileTools;
 import eva2.tools.EVAHELP;
@@ -58,8 +57,10 @@ public class GOEPanel extends JPanel implements ItemListener {
 	/** edit source button */
 //	private JButton m_editSourceBut;
 	/** Creates the GUI editor component */
-	private Vector<String> m_ClassesLongName;
+//	private Vector<String> m_ClassesLongName;
 	private GenericObjectEditor m_goe = null;
+	private boolean withComboBoxToolTips = true; // should tool tips for the combo box be created?
+	private int tipMaxLen = 100; // maximum length of tool tip
 //	private String[] m_ClassesShortName;
 //	private SourceCodeEditor m_SourceCodeEditor;
 //	private PropertyDialog m_SourceCodeEditorFrame;
@@ -256,19 +257,40 @@ public class GOEPanel extends JPanel implements ItemListener {
 	 */
 	protected void updateClassType() {
 		if (TRACE) System.out.println("# updating class "+m_goe.getClassType().getName());
-		
+		Vector<String> classesLongNames;
+		ArrayList<Class<?>> instances = new ArrayList<Class<?>>(5);
 		if (Proxy.isProxyClass(m_goe.getClassType())) {
 			if (TRACE) System.out.println("PROXY! original was " + ((RMIProxyLocal)Proxy.getInvocationHandler(((Proxy)m_goe.getValue()))).getOriginalClass().getName());
-			m_ClassesLongName = new Vector<String>(GenericObjectEditor.getClassesFromProperties(((RMIProxyLocal)Proxy.getInvocationHandler(((Proxy)m_goe.getValue()))).getOriginalClass().getName()));
+			classesLongNames = new Vector<String>(GenericObjectEditor.getClassesFromProperties(((RMIProxyLocal)Proxy.getInvocationHandler(((Proxy)m_goe.getValue()))).getOriginalClass().getName(), null));
 		} else {		
-			m_ClassesLongName = new Vector<String>(GenericObjectEditor.getClassesFromProperties(m_goe.getClassType().getName()));
+			classesLongNames = new Vector<String>(GenericObjectEditor.getClassesFromProperties(m_goe.getClassType().getName(), instances));
 		}
-		m_ObjectChooser.setModel(new DefaultComboBoxModel(m_ClassesLongName));
-		if (m_ClassesLongName.size() > 1)  // testhu
+		if (classesLongNames.size() > 1) {
+			m_ObjectChooser.setModel(new DefaultComboBoxModel(classesLongNames));
+			if (withComboBoxToolTips) m_ObjectChooser.setRenderer(new ToolTipComboBoxRenderer(collectComboToolTips(instances, tipMaxLen) ));
 			add(m_ObjectChooser, BorderLayout.NORTH);
-		else
-			remove(m_ObjectChooser);
+		} else remove(m_ObjectChooser);
 		if (TRACE) System.out.println("# done updating class "+m_goe.getClassType().getName());
+	}
+
+	private String[] collectComboToolTips(List<Class<?>> instances, int maxLen) {
+		String[] tips = new String[instances.size()];
+		for (int i=0; i<tips.length; i++) {
+			tips[i]=null;
+			Class[] classParams = new Class[]{};
+			try {
+				String tip=null;
+				Method giMeth = instances.get(i).getDeclaredMethod("globalInfo", classParams);
+				if (Modifier.isStatic(giMeth.getModifiers())) {
+					tip = (String)giMeth.invoke(null, (Object[])null);
+				}
+				if (tip!=null) {
+					if (tip.length()<=maxLen) tips[i]=tip;
+					else tips[i] = tip.substring(0,maxLen-2)+"..";
+				}
+			} catch (Exception e) {}
+		}
+		return tips;
 	}
 
 	protected void updateChooser() {
@@ -386,5 +408,32 @@ public class GOEPanel extends JPanel implements ItemListener {
 			}
 		}
 	}
-} // end of inner class
+}
 
+class ToolTipComboBoxRenderer extends BasicComboBoxRenderer {
+	private static final long serialVersionUID = -5781643352198561208L;
+	String[] toolTips = null;
+	
+	public ToolTipComboBoxRenderer(String[] tips) {
+		super();
+		toolTips=tips;
+	}
+    
+    @Override
+    public Component getListCellRendererComponent(JList list, Object value,
+        int index, boolean isSelected, boolean cellHasFocus) {
+      if (isSelected) {
+        setBackground(list.getSelectionBackground());
+        setForeground(list.getSelectionForeground());
+        if ((toolTips!=null) && (index >= 0)) {
+        	if (toolTips[index]!=null) list.setToolTipText(toolTips[index]);
+        }
+      } else {
+        setBackground(list.getBackground());
+        setForeground(list.getForeground());
+      }
+      setFont(list.getFont());
+      setText((value == null) ? "" : value.toString());
+      return this;
+    }
+  }

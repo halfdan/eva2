@@ -286,7 +286,7 @@ public class ESIndividualIntegerData extends AbstractEAIndividual implements Int
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "This is an ES individual suited to optimize integer values.";
     }
 }

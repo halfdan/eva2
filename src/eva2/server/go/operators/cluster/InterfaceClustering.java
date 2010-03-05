@@ -29,15 +29,27 @@ public interface InterfaceClustering {
      * All other populations group individuals into clusters.
      * It should make sure that the returned Population instances are of the same type
      * as the given one, which may be a subclass of Population.
+     * If the clustering depends on population measures, a reference set may be given
+     * which is the reference population to consider the measures of. This is for cases
+     * where, e.g., subsets of a Population are to be clustered using measures of the
+     * original population. 
      * 
      * @param pop       The population of individuals that is to be clustered.
+     * @param referenceSet a reference population for dynamic measures
      * @return Population[]
      */
     public Population[] cluster(Population pop, Population referenceSet);
 
-    /** This method allows you to decide if two species are to be merged regarding this clustering algorithm.
+    /**
+     * This method allows you to decide if two species are to be merged regarding this clustering algorithm.
+     * If the clustering depends on population measures, a reference set may be given
+     * which is the reference population to consider the measures of. This is for cases
+     * where, e.g., subsets of a Population are to be clustered using measures of the
+     * original population. 
+     * 
      * @param species1  The first species.
      * @param species2  The second species.
+     * @param referenceSet a reference population for dynamic measures
      * @return True if species converge, else False.
      */
     public boolean mergingSpecies(Population species1, Population species2, Population referenceSet);
@@ -69,9 +81,14 @@ public interface InterfaceClustering {
      * be associated, -1 is returned as individual entry.
      * Note that the last cluster threshold is used which may have depended on the last
      * generation.
+     * If the clustering depends on population measures, a reference set may be given
+     * which is the reference population to consider the measures of. This is for cases
+     * where, e.g., subsets of a Population are to be clustered using measures of the
+     * original population.
      * 
      * @param loners
      * @param species
+     * @param referenceSet a reference population for dynamic measures
      * @return associative list matching loners to species.
      */
     public int[] associateLoners(Population loners, Population[] species, Population referenceSet);

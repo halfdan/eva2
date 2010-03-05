@@ -102,7 +102,7 @@ public class MutateGAStandard implements InterfaceMutation, java.io.Serializable
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "The standard mutation switches n bits of the GA genotype.";
     }
 

@@ -212,7 +212,7 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
 		return m_Identifier;
 	}
 
-	public String globalInfo() {
+	public static String globalInfo() {
 		return "The Nelder-Mead simplex search algorithm for local search. Reflection on bounds may be used for constraint handling.";
 	}
 

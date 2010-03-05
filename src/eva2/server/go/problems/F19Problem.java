@@ -103,7 +103,7 @@ InterfaceMultimodalProblem, InterfaceInterestingHistogram {
 		return "F19-Problem";
 	}
 
-	public String globalInfo() {
+	public static String globalInfo() {
 		return "Fletcher-Powell function with up to 2^n optima from Shir&Baeck, PPSN 2006, after Bäck 1996. Alphas and Matrices A and B are randomly created with a fixed seed.";
 	}
 

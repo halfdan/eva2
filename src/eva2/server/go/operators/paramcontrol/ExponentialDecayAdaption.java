@@ -63,7 +63,7 @@ public class ExponentialDecayAdaption implements GenericParamAdaption, Serializa
 		return "Exp. adapt. "+target+" ("+startValue + "/" + halvingTimePerCent + ")";
 	}
 	
-	public String globalInfo() {
+	public static String globalInfo() {
 		return "Exponential decay with a percentual halving time.";
 	}
 

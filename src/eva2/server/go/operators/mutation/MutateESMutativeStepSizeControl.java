@@ -131,7 +131,7 @@ public class MutateESMutativeStepSizeControl implements InterfaceMutation, java.
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "The mutative step size control mutation randomly increases/decreases the current step size.";
     }
 

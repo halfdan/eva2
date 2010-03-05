@@ -43,7 +43,7 @@ Serializable {
 	/**
 	 *
 	 */
-	public String globalInfo() {
+	public static String globalInfo() {
 		return "Terminate if a certain fitness value has been reached.";
 	}
 	/**

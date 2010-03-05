@@ -75,7 +75,7 @@ public class IndividualDataMetric implements InterfaceDistanceMetric, Serializab
 		this.normedDistance = normedDistance;
 	}
 	
-	public String globalInfo() {
+	public static String globalInfo() {
 		return "Uses individual object data (so far only double[]) to calculate the distance.";
 	}
 }

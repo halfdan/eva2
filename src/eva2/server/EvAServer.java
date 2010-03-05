@@ -41,7 +41,7 @@ public class EvAServer {
 //    m_InsideClient = insideClient;
 //    m_Restart = Restart;
     System.out.println ("*******************************************************************************");
-    System.out.println ("This is EvA Server Version: "+ EvAInfo.versionNum);
+    System.out.println ("This is EvA Server Version: "+ EvAInfo.getVersion());
     //System.out.println ("Java Version: " + System.getProperty("java.version") );
     System.out.println ("*******************************************************************************");
     m_UserName = System.getProperty("user.name");

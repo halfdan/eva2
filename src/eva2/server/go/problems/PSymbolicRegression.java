@@ -324,7 +324,7 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "The task is to infer the equation of a system that can only be observed at a number of checkpoints.";
     }
 

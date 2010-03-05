@@ -331,7 +331,7 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "This is an ES individual suited to optimize double values.";
     }
     

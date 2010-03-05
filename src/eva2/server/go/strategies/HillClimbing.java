@@ -226,7 +226,7 @@ public class HillClimbing implements InterfaceOptimizer, java.io.Serializable {
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "The Hill Climber uses the default EA mutation and initializing operators. If the population size is bigger than one a multi-start Hill Climber is performed.";
     }
     /** This method will return a naming String

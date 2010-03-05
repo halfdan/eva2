@@ -204,6 +204,8 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 	
 	public void stopOptPerformed(boolean normal, String stopMessage) {
 		if (TRACE) System.out.println("AbstractStatistics.stopOptPerformed");
+		if (lastSols==null) System.err.println("WARNING, possibly there was no call to createNextGenerationPerformed before calling stopOptPerformed (AnstractStatistics).");
+
 		if (runIterCnt < meanCollection.size()) {
 			// no good: later run was shorter than the first one. What to do? Discard the longer one:
 			if (TRACE) System.err.println("Error in AbstractStatistics: later run was shorter than earlier one... discarding rest...");

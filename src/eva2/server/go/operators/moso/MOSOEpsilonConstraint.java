@@ -104,7 +104,7 @@ public class MOSOEpsilonConstraint implements InterfaceMOSOConverter, java.io.Se
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "This method uses n-1 objected as hard constraints.";
     }
 
