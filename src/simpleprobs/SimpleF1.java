@@ -2,7 +2,7 @@ package simpleprobs;
 
 
 public class SimpleF1 extends SimpleProblemDouble {
-	public String globalInfo() {
+	public static String globalInfo() {
 		return "A simple F1 implementation, find the minimum of a hyper parabola.";
 	}
 

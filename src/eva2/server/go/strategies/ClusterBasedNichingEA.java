@@ -890,7 +890,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "This is a versatile species based niching EA method.";
     }
     /** This method will return a naming String

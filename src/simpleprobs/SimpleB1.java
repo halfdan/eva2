@@ -3,7 +3,7 @@ package simpleprobs;
 import java.util.BitSet;
 
 public class SimpleB1 extends SimpleProblemBinary {
-	public String globalInfo() {
+	public static String globalInfo() {
 		return "A simple B1 implementation, minimize bits in a binary vector.";
 	}
 	
