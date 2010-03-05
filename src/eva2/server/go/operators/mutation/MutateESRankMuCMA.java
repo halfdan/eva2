@@ -682,7 +682,7 @@ public class MutateESRankMuCMA implements InterfaceMutationGenerational, Seriali
 		return "Rank-Mu-CMA-Mutator";
 	}
 
-	public String globalInfo() {
+	public static String globalInfo() {
 		return "The CMA mutator scheme with static cov. matrix, rank-mu update and weighted recombination.";
 	}
 	
