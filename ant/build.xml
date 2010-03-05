@@ -55,9 +55,15 @@
 	  <property name="JE2ESModel.directory"			value="../JE2ESModel" />
 	  <property name="JE2Research.directory"		value="../JE2Research" />				
 
-	<available file="${JE2Probs.directory}" property="JE2Probs.available"/>
-	<available file="${JE2ESModel.directory}" property="JE2ESModel.available"/>
-	<available file="${JE2Research.directory}" property="JE2Research.available"/>
+	<condition property="JE2Probs.available" else="false">
+	  <available file="${JE2Probs.directory}"/>
+	</condition>
+	<condition property="JE2ESModel.available" else="false">
+	  <available file="${JE2ESModel.directory}"/>
+	</condition>
+	<condition property="JE2Research.available" else="false">
+	  <available file="${JE2Research.directory}"/>
+	</condition>
 	
   <!-- SET THE BINARY LIBRARIES PROPERTIES -->
   <property name="check.libraries.ant"            value="ant/check.xml" />
@@ -101,7 +107,13 @@
 
   <!-- ENVIRNONMENT PROPERTIES -->
   <property environment="env"/>
-
+  
+  <!-- EvA2 PROPERTIES -->
+  <property file="${resources.directory}/EvA2.props"/>
+	<condition property="web.currentVersionExists" else="false">
+	  <available file="${web.download.directory}/${jar.name}-${EvA2Version}.jar"/>
+	</condition>
+	
 <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         Usage
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
@@ -112,9 +124,8 @@
       -------------------------------------------------------------------------
       check      - checks if all needed binary and source libraries are
                    available.
-      compile    - compile all project files.
-      compileAll - 1. gets an actual version from the WSI library
-                   2. and compiles all project files.
+      compile    - compile all project files of the base package.
+      compileAll - compiles all project files of all packages.
       javadoc    - build project javadoc files
       binaryDist - will create a complete binary distribution
       clean      - will clean up files, except the source files and the api
@@ -595,7 +606,7 @@
 	
 	<!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 		        Generate Distribution and put it online. This also replaces the 
-		        Probs and ESModel packages so keep them synchronized.
+		        Probs and ESModel packages, so keep them synchronized.
 	+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
 	<target name="distToWWW" depends="init, backupWWW, docToWWW">
 	    <copy todir="${web.download.directory}">
@@ -651,14 +662,14 @@
             <doctitle><![CDATA[<h1>Test</h1>]]></doctitle>
 
             <header><![CDATA[<font size="-1"><b><i>
-                             <A HREF="http://www.ra.cs.uni-tuebingen.de/forschung/"
+                             <A HREF="http://www.ra.cs.uni-tuebingen.de/software/EvA2/index.html"
                                 target="_top">EvA2
                              </A>
                              </b></i></font>]]>
             </header>
 
         <footer><![CDATA[eva2<br>
-                         <A HREF="http://www.ra.cs.uni-tuebingen.de/forschung/"
+                         <A HREF="http://www.ra.cs.uni-tuebingen.de/software/EvA2/index.html"
                             target="_top">EvA2
                          </A>]]>
         </footer>

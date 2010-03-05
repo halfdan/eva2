@@ -11,12 +11,13 @@ EvAClient.loadSpecificModule -> EvAComAdapter.getModuleAdapter
 
 EvA2-Cheats:
 The following method names are reserved:
-globalInfo: return String, used to display information about a class 
+static globalInfo: return String, used to display information about a class. Should be static to allow tool tips in the combo box.
 getName: return String, used as short name replacing the class name
 hideHideable: void, set hide property of all properties which should not be displayed in the current object state
 customPropertyOrder: return String[], for the given properties the given ordering will be enforced
-getGOEPropertyUpdateLinks: return String[] which is interpreted in pairs indicating that on an update of the i-th property, the i+1-th property
-        should be updated. This is useful for changes within sub-classes of the target
+getGOEPropertyUpdateLinks: return String[] which is interpreted in pairs indicating that on an update 
+		of the i-th property, the i+1-th property should be updated (for even i).
+		This is useful for changes within sub-classes of the target
         which are not directly displayed in this panel but in sub-panels (and there have an own view etc.)
 
 The following static properties are reserved:
@@ -115,7 +116,7 @@ die Range mitzuführen, da sie häufig für alle gleich ist. Dann verschlingt si
 - cloneInPlace bei Individuen wird die Object-Daten aus AbstractEAIndividual idR nicht kopieren!
 - da nicht alle Klassen "hashCode" ableiten, kann es bei Verwendung von HashMaps o.ä. zu Problemen kommen
 
-Main changelog:
+Main changelog: // this is out-of-date. Check the SVN log messages for current changes.
 - CBN now also works with (m+n)-ES, not only (m,n)-ES
 11.3.08 (mkron)
 - Finally fixed problem with logarithmic view and values <= 0.
