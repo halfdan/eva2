@@ -93,7 +93,7 @@ public class MOSOGoalProgramming implements InterfaceMOSOConverter, java.io.Seri
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "This method minimizes the delta to a given target fitness values.";
     }
 

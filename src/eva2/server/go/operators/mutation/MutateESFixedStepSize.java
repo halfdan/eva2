@@ -104,7 +104,7 @@ public class MutateESFixedStepSize implements InterfaceMutation, java.io.Seriali
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "The fixed step size mutation alters all elements with a fixed mutation step size.";
     }
 

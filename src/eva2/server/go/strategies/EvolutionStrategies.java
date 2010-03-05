@@ -396,7 +396,7 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "This is an Evolution Strategy. Note that the population size depends on mu (number of parents) and lambda (number of offspring).";
     }
     

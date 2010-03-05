@@ -206,7 +206,7 @@ public class PhenotypeMetric implements InterfaceDistanceMetric, java.io.Seriali
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "This is a phenotype based metric which can be applied to binary, integer, double, permutation, and program data types. For the latter two, the Levenshtein distance is computed. All distance values are normed.";
     }
     /** This method will return a naming String

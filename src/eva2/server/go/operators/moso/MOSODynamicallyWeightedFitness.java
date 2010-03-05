@@ -94,7 +94,7 @@ public class MOSODynamicallyWeightedFitness implements InterfaceMOSOConverter, j
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "This method calcuates a dynamic weighted sum over TWO fitness values depending on the current generation.";
     }
 

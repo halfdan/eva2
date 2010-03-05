@@ -85,7 +85,7 @@ public class ArchivingMaxiMin implements InterfaceArchiving, java.io.Serializabl
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "Maxi Min Archiving.";
     }
     /** This method will return a naming String
@@ -185,7 +185,7 @@ public class ArchivingMaxiMin implements InterfaceArchiving, java.io.Serializabl
 //    /** This method returns a global info string
 //     * @return description
 //     */
-//    public String globalInfo() {
+//    public static String globalInfo() {
 //        return "Maxi Min Archiving.";
 //    }
 //    /** This method will return a naming String

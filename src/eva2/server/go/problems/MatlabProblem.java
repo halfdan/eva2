@@ -425,7 +425,7 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 		else return runnable.getProgress();
 	}
 
-	public String globalInfo() {
+	public static String globalInfo() {
 		return "Interface problem class for optimization in Matlab, only usable from within Matlab";
 	}
 

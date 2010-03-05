@@ -278,7 +278,7 @@ public class CHCAdaptiveSearchAlgorithm implements InterfaceOptimizer, java.io.S
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "This is an implementation of the CHC Adaptive Search Algorithm by Eselman.";
     }
     /** This method will return a naming String

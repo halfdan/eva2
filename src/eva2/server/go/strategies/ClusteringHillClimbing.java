@@ -273,7 +273,7 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
 		return "Clustering-HC";
 	}
 
-	public String globalInfo() {
+	public static String globalInfo() {
 		return "Similar to multi-start HC, but clusters the population during optimization to remove redundant individuals for efficiency." +
 				"If the local search step does not achieve a minimum improvement, the population may be reinitialized.";
 	}

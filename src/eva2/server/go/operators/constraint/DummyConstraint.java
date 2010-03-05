@@ -24,7 +24,7 @@ public class DummyConstraint extends AbstractConstraint {
 		return 0;
 	}
 
-	public String globalInfo() {
+	public static String globalInfo() {
 		return "This constraint is always fulfilled.";
 	}
 }

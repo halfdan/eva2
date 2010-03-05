@@ -270,7 +270,7 @@ public class WingedMultiObjectiveEA implements InterfaceOptimizer, java.io.Seria
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "This is Evolutionary Multi-Criteria Optimization Algorithm hybridized with Local Searchers to span the Pareto-Front.";
     }
     /** This method will return a naming String

@@ -26,7 +26,7 @@ public class ClassPreloader implements Runnable {
 		if (clsNames !=null) {
 			for (int i = 0; i < clsNames.length; i++) {
 				if (TRACE) System.out.println("Preloading " + clsNames[i]);
-				GenericObjectEditor.getClassesFromClassPath(clsNames[i]);
+				GenericObjectEditor.getClassesFromClassPath(clsNames[i], null);
 			}
 		}
 	}

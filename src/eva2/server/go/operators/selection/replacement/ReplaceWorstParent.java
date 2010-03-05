@@ -45,7 +45,7 @@ public class ReplaceWorstParent implements InterfaceReplacement, java.io.Seriali
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "This method replaces the worst parent, if better.";
     }
     /** This method will return a naming String

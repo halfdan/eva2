@@ -17,7 +17,7 @@ public interface InterfaceGOParameters {
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo();
+//    public String globalInfo();
 
     /** This method allows you to serialize the current parameters into a *.ser file
      */

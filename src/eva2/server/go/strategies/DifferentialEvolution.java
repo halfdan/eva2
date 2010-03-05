@@ -674,7 +674,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "Differential Evolution using a steady-state population scheme.";
     }
     /** This method will return a naming String

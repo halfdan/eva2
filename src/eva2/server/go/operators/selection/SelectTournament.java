@@ -115,7 +115,7 @@ public class SelectTournament implements InterfaceSelection, java.io.Serializabl
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "The tournament selection compares the raw fitness of n individuals and takes the best." +
                 "This is a single-objective method, it selects with respect to the first criterion in the multi-objective case.";
     }

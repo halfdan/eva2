@@ -87,7 +87,7 @@ public class F8Problem extends AbstractProblemDoubleOffset implements InterfaceM
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "Ackley's function.";
     }
 }

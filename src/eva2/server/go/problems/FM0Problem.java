@@ -87,7 +87,7 @@ public class FM0Problem extends AbstractMultiModalProblemKnown implements Interf
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "M0(x) = sin(2*x - 0.5*PI) + 1 + 2*cos(y) + 0.5*x is to be maximized, two optima.";
     }
 }

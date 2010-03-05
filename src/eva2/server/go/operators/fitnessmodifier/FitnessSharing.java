@@ -68,7 +68,7 @@ public class FitnessSharing implements java.io.Serializable, InterfaceFitnessMod
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "This is a normation method based on Fitness Sharing. It adds a penalty for too similar individuals on the standard Normation method.";
     }
 

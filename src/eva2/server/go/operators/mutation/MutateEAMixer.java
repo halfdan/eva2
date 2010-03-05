@@ -25,7 +25,7 @@ public class MutateEAMixer implements InterfaceMutation, java.io.Serializable  {
 
     public MutateEAMixer() {
         InterfaceMutation[] tmpList;
-        ArrayList<String> mutators = GenericObjectEditor.getClassesFromProperties("eva2.server.go.operators.mutation.InterfaceMutation");
+        ArrayList<String> mutators = GenericObjectEditor.getClassesFromProperties(InterfaceMutation.class.getCanonicalName(), null);
         tmpList = new InterfaceMutation[mutators.size()];
          for (int i = 0; i < mutators.size(); i++) {
         	 if (((String)mutators.get(i)).equals(this.getClass().getName())) continue;
@@ -149,7 +149,7 @@ public class MutateEAMixer implements InterfaceMutation, java.io.Serializable  {
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "This mmeta-mutation operator allows you to combine multiple alternative mutation operators.";
     }
 

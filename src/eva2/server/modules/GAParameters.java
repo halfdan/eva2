@@ -65,7 +65,7 @@ public class GAParameters extends AbstractGOParameters implements InterfaceGOPar
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "This is a Genetic Algorithm, which transforms into a GP or GE if the appropriate problem and genotype is used.";
     }
 

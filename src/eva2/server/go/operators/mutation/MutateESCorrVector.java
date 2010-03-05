@@ -194,7 +194,7 @@ public class MutateESCorrVector implements InterfaceMutation, java.io.Serializab
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "The correlated vector mutation stores a specific mutation vector per individual.";
     }
 

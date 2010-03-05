@@ -211,7 +211,7 @@ public class ThresholdAlgorithm implements InterfaceOptimizer, java.io.Serializa
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "The threshold algorithm uses an declining threshold to accpect new solutions.";
     }
     /** This method will return a naming String

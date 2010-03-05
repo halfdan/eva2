@@ -91,7 +91,7 @@ public class MOSOUtilityFunction implements InterfaceMOSOConverter, java.io.Seri
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "This method allows you to progamm an individual utility function.";
     }
 

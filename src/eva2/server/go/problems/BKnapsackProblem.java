@@ -333,7 +333,7 @@ public class BKnapsackProblem extends AbstractProblemBinary implements java.io.S
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "Maximize the value of the knapsack without exceeding the weight limit.";
     }
 

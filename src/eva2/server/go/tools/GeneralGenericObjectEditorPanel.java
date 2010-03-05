@@ -258,7 +258,7 @@ public class GeneralGenericObjectEditorPanel extends JPanel implements ItemListe
     /** This method updates the class type*
      */
     protected void updateClassType() {
-        m_ClassesLongName = GenericObjectEditor.getClassesFromProperties(m_ObjectEditor.getClassType().getName());
+        m_ClassesLongName = GenericObjectEditor.getClassesFromProperties(m_ObjectEditor.getClassType().getName(), null);
         m_ObjectChooser.setModel(new DefaultComboBoxModel(m_ClassesLongName.toArray()));
         if (m_ClassesLongName.size() > 1) add(m_ObjectChooser, BorderLayout.NORTH);
         else remove(m_ObjectChooser);

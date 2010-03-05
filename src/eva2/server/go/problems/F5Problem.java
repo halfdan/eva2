@@ -79,7 +79,7 @@ public class F5Problem extends AbstractProblemDoubleOffset implements java.io.Se
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "Schwefel's Function.";
     }
 }

@@ -113,7 +113,7 @@ public class CrossoverESUniformDiscrete implements InterfaceCrossover, java.io.S
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "This is a discrete n-point crossover between m ES individuals.";
     }
 }

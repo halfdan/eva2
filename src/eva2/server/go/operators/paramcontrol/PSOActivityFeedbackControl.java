@@ -133,7 +133,7 @@ public class PSOActivityFeedbackControl implements ParamAdaption, Serializable {
 		return "The additive change of the inertness in each adaption step.";
 	}
 	
-	public String globalInfo() {
+	public static String globalInfo() {
 		return "Controls the inertness factor based on the average velocity.";
 	}
 

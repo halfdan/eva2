@@ -353,7 +353,7 @@ public class ClusteringNearestBetter implements InterfaceClustering, Serializabl
         }
     }
     
-    public String globalInfo() { 
+    public static String globalInfo() { 
     	return "A tree is produced by assigning each individual the closest individual with better fitness. Connections with a distance above a certain threshold are cut. After that, each interconnected subtree forms a cluster.";
     }
 

@@ -87,7 +87,7 @@ public class F10Problem extends AbstractProblemDoubleOffset implements Interface
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "Weierstrass-Mandelbrot Fractal Function";
     }
 

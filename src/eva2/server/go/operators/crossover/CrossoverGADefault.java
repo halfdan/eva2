@@ -141,7 +141,7 @@ public class CrossoverGADefault implements InterfaceCrossover,
 	 *
 	 * @return description
 	 */
-	public String globalInfo() {
+	public static String globalInfo() {
 		return "This is a one-point crossover between two individuals.";
 	}
 }

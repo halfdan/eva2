@@ -139,7 +139,7 @@ public class MutateGIInsertDelete implements InterfaceMutation, java.io.Serializ
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "This mutation operator inserts or adds elements to the array.";
     }
 

@@ -83,7 +83,7 @@ public class SelectMOMaxiMin implements InterfaceSelection, java.io.Serializable
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "This selection method will use the MaxiMin criteria to select individuals (use SelectBestIndividuals).";
     }
     /** This method will return a naming String

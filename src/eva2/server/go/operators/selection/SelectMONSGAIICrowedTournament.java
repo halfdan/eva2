@@ -150,7 +150,7 @@ public class SelectMONSGAIICrowedTournament implements InterfaceSelection, java.
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "The Crowded Tournament Selection first chooses the better Pareto Front and then the smaller Crowding Distance.";
     }
 

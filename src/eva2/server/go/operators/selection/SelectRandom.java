@@ -109,7 +109,7 @@ public class SelectRandom implements InterfaceSelection, java.io.Serializable {
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "This method selects randomly. Therefore, it even works fine on Multiobjective fitness cases.";
     }
 

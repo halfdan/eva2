@@ -392,7 +392,7 @@ public class GAIndividualIntegerData extends AbstractEAIndividual implements Int
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "This is a GA individual suited to optimize int values.";
     }
 

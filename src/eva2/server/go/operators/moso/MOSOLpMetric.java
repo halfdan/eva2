@@ -115,7 +115,7 @@ public class MOSOLpMetric implements InterfaceMOSOConverter, java.io.Serializabl
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "This method minimizes the Lp metric to a given target fitness values, for (p<1) this equals the Tchebycheff metric.";
     }
 

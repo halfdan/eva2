@@ -259,7 +259,7 @@ public class MutateESCorrolated implements InterfaceMutation, java.io.Serializab
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "The local correlated mutation stores n sigmas for each double attribute and n(n-1) alphas.";
     }
     

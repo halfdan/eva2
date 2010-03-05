@@ -87,7 +87,7 @@ public class F14Problem extends AbstractProblemDoubleOffset implements Interface
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "F14 function: numerous optima in linear order which may be rotated.";
     }
 }

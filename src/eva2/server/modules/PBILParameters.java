@@ -51,9 +51,9 @@ public class PBILParameters extends AbstractGOParameters implements InterfaceGOP
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
-    	return ((PopulationBasedIncrementalLearning)this.m_Optimizer).globalInfo();
-    }
+//    public static String globalInfo() {
+//    	return ((PopulationBasedIncrementalLearning)this.m_Optimizer).globalInfo();
+//    }
 
     public void setOptimizer(InterfaceOptimizer optimizer) {
         // i'm a Monte Carlo Search Algorithm

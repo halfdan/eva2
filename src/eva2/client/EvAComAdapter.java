@@ -15,21 +15,17 @@ package eva2.client;
  *==========================================================================*/
 
 import java.rmi.RemoteException;
-import java.rmi.registry.Registry;
-import java.util.ArrayList;
 
+import eva2.EvAInfo;
 import eva2.gui.LogPanel;
 import eva2.server.EvAMainAdapter;
 import eva2.server.EvAMainAdapterImpl;
-import eva2.server.RMIServerEvA;
 import eva2.server.modules.ModuleAdapter;
 import eva2.tools.jproxy.ComAdapter;
 import eva2.tools.jproxy.MainAdapter;
 import eva2.tools.jproxy.MainAdapterClient;
-import eva2.tools.jproxy.MainAdapterClientImpl;
 import eva2.tools.jproxy.RMIConnection;
 import eva2.tools.jproxy.RMIInvocationHandler;
-import eva2.tools.jproxy.RMIProxyLocal;
 
 /*==========================================================================*
  * CLASS DECLARATION
@@ -54,7 +50,7 @@ public class EvAComAdapter extends ComAdapter {
 	public static EvAComAdapter getInstance() {
 		if (m_instance==null) {
 			m_instance = new EvAComAdapter();
-			m_instance.addServersFromProperties(EvAClient.getProperties());
+			m_instance.addServersFromProperties(EvAInfo.getProperties());
 		}
 		return (EvAComAdapter)m_instance;
 	}

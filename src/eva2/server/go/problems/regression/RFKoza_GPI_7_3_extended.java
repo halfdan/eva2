@@ -45,7 +45,7 @@ public class RFKoza_GPI_7_3_extended implements InterfaceRegressionFunction, jav
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "This target function is given in Koza GP I chapter 7.3.";
     }
 }

@@ -84,7 +84,7 @@ public class MOSORandomChoice  implements InterfaceMOSOConverter, java.io.Serial
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "This method selects a random fitness value, actually this implements VEGA [Schaffer84Experiments].";
     }
 }

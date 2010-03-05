@@ -360,7 +360,7 @@ public class ESIndividualPermutationData extends AbstractEAIndividual implements
 	 /** This method returns a global info string
 	  * @return description
 	  */
-	 public String globalInfo() {
+	 public static String globalInfo() {
 		 return "This is an ES individual suited to optimize permutations.";
 	 }
 

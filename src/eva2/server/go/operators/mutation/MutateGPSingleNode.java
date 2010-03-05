@@ -112,7 +112,7 @@ public class MutateGPSingleNode implements InterfaceMutation, java.io.Serializab
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "The node mutation replaces a random node but keeps the descendants.";
     }
 }

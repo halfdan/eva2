@@ -95,7 +95,7 @@ public class SelectAll implements InterfaceSelection, java.io.Serializable {
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "This method selects all individuals.";
     }
 

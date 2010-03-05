@@ -125,7 +125,7 @@ public class MutateGITranslocate implements InterfaceMutation, java.io.Serializa
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "This mutation translocates a segment of the int[].";
     }
 

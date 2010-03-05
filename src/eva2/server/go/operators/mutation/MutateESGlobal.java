@@ -146,7 +146,7 @@ public class MutateESGlobal implements InterfaceMutation, java.io.Serializable {
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "The global mutation stores only one sigma for all double attributes.";
     }
 

@@ -37,7 +37,7 @@ public class CombinedTerminator implements InterfaceTerminator, Serializable {
 		andOrTag.setSelectedTag(bAnd ? "AND" : "OR");
 	}
 	
-	public String globalInfo() {
+	public static String globalInfo() {
 		return "Boolean combination of two terminators.";
 	}
 	

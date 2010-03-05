@@ -70,7 +70,7 @@ public class F15Problem extends AbstractProblemDouble implements Serializable, I
 		return "F15-Problem";
 	}
 	
-	public String globalInfo() {
+	public static String globalInfo() {
 		return "The Levy-function, from Levy, A., and Montalvo, A. (1985)";
 	}
 	

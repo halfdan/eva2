@@ -84,7 +84,7 @@ public class NoCrossover implements InterfaceCrossover, java.io.Serializable {
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "No crossover at all, even for occasional strategy paramters.";
     }
 }

@@ -177,7 +177,7 @@ public class MutateESPathLengthAdaption implements InterfaceMutation, java.io.Se
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "The single step size is controlled using the evolution path.";
     }
 

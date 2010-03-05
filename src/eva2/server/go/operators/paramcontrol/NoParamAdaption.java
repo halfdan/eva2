@@ -24,7 +24,7 @@ public class NoParamAdaption implements ParamAdaption, Serializable {
 		return null;
 	}
 	
-	public String globalInfo() {
+	public static String globalInfo() {
 		return "A dummy implementation which will not change parameters.";
 	}
 

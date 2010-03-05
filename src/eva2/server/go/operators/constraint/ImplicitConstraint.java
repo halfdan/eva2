@@ -35,7 +35,7 @@ public class ImplicitConstraint extends AbstractConstraint {
 		return "ImplicitCnstr-"+index;
 	}
 
-	public String globalInfo() {
+	public static String globalInfo() {
 		return "Similar to a multi-objective translation into fitness, this class allows to interpret fitness criteria as constraints.";
 	}
 	

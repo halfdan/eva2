@@ -32,7 +32,7 @@ public class PSOInertnessAdaption extends LinearParamAdaption implements Seriali
 		return "End value for the inertness";
 	}
 
-	public String globalInfo() {
+	public static String globalInfo() {
 		return "Adapt the inertnessOrChi value of PSO.";
 	}
 }

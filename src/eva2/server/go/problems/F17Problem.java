@@ -54,7 +54,7 @@ public class F17Problem extends AbstractProblemDouble implements
 		return "F17-Problem";
 	}
 	
-	public String globalInfo() {
+	public static String globalInfo() {
 		return "Bohachevsky function, numerous optima on an oval hyperparabola with similar attractor sizes but decreasing fitness towards the bounds.";
 	}
 

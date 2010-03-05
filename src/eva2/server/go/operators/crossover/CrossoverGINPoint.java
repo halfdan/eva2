@@ -125,7 +125,7 @@ public class CrossoverGINPoint implements InterfaceCrossover, java.io.Serializab
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "This is an n-point crossover between m individuals.";
     }
 

@@ -74,7 +74,7 @@ public class F12Problem extends AbstractProblemDoubleOffset implements java.io.S
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "Galar Function";
     }
 

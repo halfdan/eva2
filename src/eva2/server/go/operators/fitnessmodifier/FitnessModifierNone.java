@@ -35,7 +35,7 @@ public class FitnessModifierNone implements java.io.Serializable, InterfaceFitne
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "With this method the fitness remains unaltered.";
     }
 }

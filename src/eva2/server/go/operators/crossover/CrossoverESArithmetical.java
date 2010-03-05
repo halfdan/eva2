@@ -118,7 +118,7 @@ public class CrossoverESArithmetical implements InterfaceCrossover, java.io.Seri
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "This is an arithmetical crossover between m ES individuals.";
     }
 }

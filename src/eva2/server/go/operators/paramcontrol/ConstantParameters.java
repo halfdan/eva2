@@ -34,7 +34,7 @@ public class ConstantParameters extends AbstractParameterControl implements Seri
 	public void updateParameters(Object obj) {
 	}
 	
-	public String globalInfo() {
+	public static String globalInfo() {
 		return "Parameters will not be changed.";
 	}
 }

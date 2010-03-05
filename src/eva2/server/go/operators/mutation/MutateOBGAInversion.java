@@ -91,7 +91,7 @@ public class MutateOBGAInversion implements java.io.Serializable, InterfaceMutat
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "This mutation operators inverts a certain section of the OBGA.";
     }
 

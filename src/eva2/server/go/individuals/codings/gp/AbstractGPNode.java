@@ -149,7 +149,7 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
      * @return a list of available AbstractGPNode implementations
      */
 	public static Vector<AbstractGPNode> getNodeTypes() {
-		ArrayList<String>cls = GenericObjectEditor.getClassesFromClassPath(AbstractGPNode.class.getCanonicalName());
+		ArrayList<String>cls = GenericObjectEditor.getClassesFromClassPath(AbstractGPNode.class.getCanonicalName(), null);
 		Vector<AbstractGPNode> nodeTypes = new Vector<AbstractGPNode>(cls.size());
 		for (int i=0; i<cls.size(); i++) {
 			try {

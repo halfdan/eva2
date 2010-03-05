@@ -124,7 +124,7 @@ public class CrossoverESBLXAlpha implements InterfaceCrossover, java.io.Serializ
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "The BLX crossover inits the values within the extreme values plus an additional alpha range (BLX-0.0 equals flat crossover).";
     }
 

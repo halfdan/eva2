@@ -246,7 +246,7 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "This is a GA individual suited to optimize binary values.";
     }
 }

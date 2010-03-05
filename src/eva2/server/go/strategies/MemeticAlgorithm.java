@@ -280,7 +280,7 @@ public class MemeticAlgorithm implements InterfaceOptimizer,
 	 *
 	 * @return description
 	 */
-	public String globalInfo() {
+	public static String globalInfo() {
 		return "This is a basic generational Memetic Algorithm. Local search steps are performed on a selected subset " +
 				"of individuals after certain numbers of global search iterations. Note " +
 				"that the problem class must implement InterfaceLocalSearchable.";

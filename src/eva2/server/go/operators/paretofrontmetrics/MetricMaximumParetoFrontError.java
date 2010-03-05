@@ -135,7 +135,7 @@ public class MetricMaximumParetoFrontError implements eva2.server.go.operators.p
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "This method calculates the maximum distance to the reference.";
     }
 

@@ -162,7 +162,7 @@ public class PBILPopulation extends Population implements Cloneable, java.io.Ser
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "This is a PBIL-population, using a probability vector for Bit-String based individuals.";
     }
 }

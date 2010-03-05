@@ -91,7 +91,7 @@ public class SelProbRanking extends AbstractSelProb implements java.io.Serializa
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "This is ranking normation.";
     }
     /** This method will return a naming String

@@ -50,7 +50,7 @@ public class F16Problem extends AbstractProblemDouble implements InterfaceMultim
 		return "Vincent function";
 	}
 	
-	public String globalInfo() {
+	public static String globalInfo() {
 		return "Multiple optima with increasing densitiy near the lower bounds, therefore decreasing attractor size.";
 	}
 }

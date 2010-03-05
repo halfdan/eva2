@@ -364,7 +364,7 @@ public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Ser
 
   public void freeWilly() {  }
 
-  public String globalInfo() {
+  public static String globalInfo() {
 	  return "Gradient Descent can be applied to derivable functions ("+InterfaceFirstOrderDerivableProblem.class.getSimpleName()+").";
   }
 //////////////// for global adaption

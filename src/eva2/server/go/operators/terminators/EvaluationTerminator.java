@@ -40,7 +40,7 @@ Serializable {
 		msg = "Not terminated.";
 	}
 
-	public String globalInfo() {
+	public static String globalInfo() {
 		return "Terminates after the given number of fitness calls.";
 	}
 

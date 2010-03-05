@@ -612,15 +612,15 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
     	boolean result = true;
     	int i=0;
     	while (result && (i < fit1.length) && (i < fit2.length)) {
-    		if (firstIsFiniteAndLarger(fit1[i], fit2[i])) result = false;
+    		if (firstIsFiniteAndLargerOrEqual(fit1[i], fit2[i])) result = false;
     		i++;
     	}
     	return result;
     }
     
-    private static boolean firstIsFiniteAndLarger(double a, double b) {
+    private static boolean firstIsFiniteAndLargerOrEqual(double a, double b) {
 		if (Double.isNaN(a) || Double.isInfinite(a)) return false;
-		else return (a > b);
+		else return (a >= b);
 	}
 
 	/**

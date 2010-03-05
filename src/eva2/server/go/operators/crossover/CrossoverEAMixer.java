@@ -25,7 +25,7 @@ public class CrossoverEAMixer implements InterfaceCrossover, java.io.Serializabl
 
     public CrossoverEAMixer() {
         InterfaceCrossover[] tmpList;
-        ArrayList<String> crossers = GenericObjectEditor.getClassesFromProperties("eva2.server.go.operators.crossover.InterfaceCrossover");
+        ArrayList<String> crossers = GenericObjectEditor.getClassesFromProperties(InterfaceCrossover.class.getCanonicalName(), null);
         tmpList = new InterfaceCrossover[crossers.size()];
          for (int i = 0; i < crossers.size(); i++) {
         	 if (((String)crossers.get(i)).equals(this.getClass().getName())) continue;
@@ -140,7 +140,7 @@ public class CrossoverEAMixer implements InterfaceCrossover, java.io.Serializabl
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "This meta-mutation operator allows you to combine multiple alternative mutation operators.";
     }
 

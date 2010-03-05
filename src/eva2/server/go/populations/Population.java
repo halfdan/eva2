@@ -1345,7 +1345,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "A population stores the individuals of a generation.";
     }
 
@@ -1395,6 +1395,11 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     	return addIndividual((IndividualInterface)o);
     }
 
+    public Population addToPop(IndividualInterface o) {
+    	add(o);
+    	return this;
+    }
+    
     /**
 	 * ArrayList does not increase the modCount in set. Maybe because it is not
 	 * seen as "structural change"?
@@ -1677,6 +1682,20 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
 		 }
 		 return new Pair<Integer,Double>(sel,dist);
 	 }
+	 
+
+	 /**
+	  * Check if the given indy is closer than d to any individual in the population.
+	  * @param indy
+	  * @param pop
+	  * @param d
+	  * @return true if d(indy,pop)<=d, else false
+	  */
+	 public boolean isWithinPopDist(AbstractEAIndividual indy, double d, InterfaceDistanceMetric metric) {
+		 Pair<Integer,Double> closest = Population.getClosestFarthestIndy(indy, this, metric, true);
+		 return (closest.tail()<=d);
+	 }
+	 
 	/**
 	 * Calculate the average position of the population.
 	 * 
@@ -1973,6 +1992,17 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
 			}
 		}
 		return true;
+	}
+
+	/**
+	 * Put an equal data object into every individual. Old data may be overwritten. 
+	 * @param key
+	 * @param obj
+	 */
+	public void putDataAllIndies(String key, Object obj) {
+		for (int i=0; i<size(); i++) {
+			getEAIndividual(i).putData(key, obj);
+		}
 	}
 
 //	/**

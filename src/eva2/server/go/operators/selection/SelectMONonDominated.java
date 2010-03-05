@@ -123,7 +123,7 @@ public class SelectMONonDominated implements InterfaceSelection, java.io.Seriali
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "This selection method will select all non-dominated individuals. Therefore the target size of the selection may be exceeded.";
     }
     /** This method will return a naming String

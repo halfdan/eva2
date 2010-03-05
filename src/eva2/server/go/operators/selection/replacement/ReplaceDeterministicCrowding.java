@@ -53,7 +53,7 @@ public class ReplaceDeterministicCrowding implements InterfaceReplacement, java.
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "This method replaces the most similar parent if better.";
     }
     /** This method will return a naming String

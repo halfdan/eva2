@@ -76,7 +76,7 @@ public class EuclideanMetric implements InterfaceDistanceMetric {
 	/** This method returns a global info string
 	 * @return description
 	 */
-	public String globalInfo() {
+	public static String globalInfo() {
 		return "The euclidean metric calculates euclidian distances for individuals which have a real valued interpretation.";
 	}
 	/** This method will return a naming String

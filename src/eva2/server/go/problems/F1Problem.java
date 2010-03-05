@@ -85,7 +85,7 @@ public class F1Problem extends AbstractProblemDoubleOffset implements Interface2
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "F1: multidimensional parabola problem";
     }
 

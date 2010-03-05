@@ -192,7 +192,7 @@ public class CrossoverESSBX implements InterfaceCrossover, java.io.Serializable 
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "The SBX crossover simulates a binary crossover (works only for two partners!).";
     }
 

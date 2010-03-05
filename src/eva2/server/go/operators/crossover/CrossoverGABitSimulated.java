@@ -114,7 +114,7 @@ public class CrossoverGABitSimulated implements InterfaceCrossover, java.io.Seri
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "This is a bit simulated crossover between m individuals.";
     }
 }

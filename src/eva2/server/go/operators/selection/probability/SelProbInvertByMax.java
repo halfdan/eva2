@@ -88,7 +88,7 @@ public class SelProbInvertByMax extends AbstractSelProb {
 	/** This method returns a global info string
 	 * @return description
 	 */
-	public String globalInfo() {
+	public static String globalInfo() {
 		return "This is a standard normation method inverted by maximum fitness.";
 	}
 	/** This method will return a naming String

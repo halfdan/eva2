@@ -103,7 +103,7 @@ public class CrossoverOBGAPMXUniform implements InterfaceCrossover, java.io.Seri
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "The infamous PMX uniform crossover for Permutations.";
     }
 

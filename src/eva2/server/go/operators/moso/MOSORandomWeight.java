@@ -91,7 +91,7 @@ public class MOSORandomWeight implements InterfaceMOSOConverter, java.io.Seriali
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "This method calcuates a randomly weighted sum over all fitness values [Murata95MOGA].";
     }
 }

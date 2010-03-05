@@ -120,7 +120,7 @@ public class CrossoverESFlat implements InterfaceCrossover, java.io.Serializable
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "The flat crossover inits the values within the extreme values.";
     }
 }

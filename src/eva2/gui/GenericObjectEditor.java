@@ -53,14 +53,14 @@ public class GenericObjectEditor implements PropertyEditor {
 	/**
 	 * Read the classes available for user selection from the properties or the classpath respectively
 	 */
-	public static ArrayList<String> getClassesFromProperties(String className) {
+	public static ArrayList<String> getClassesFromProperties(String className, ArrayList<Class<?>> instances) {
 		if (TRACE) System.out.println("getClassesFromProperties - requesting className: "+className);
 		
 		// Try to read the predefined classes from the props file.
-		String typeOptions = EvAClient.getProperty(className);
+		String typeOptions = EvAInfo.getProperty(className);
 		if (typeOptions == null) {
 			// If none are defined, all assignable classes are searched the hard way, using the ReflectPackage 
-			return getClassesFromClassPath(className);
+			return getClassesFromClassPath(className, instances);
 		} else {
 			StringTokenizer st = new StringTokenizer(typeOptions, ", ");
 			ArrayList<String> classes = new ArrayList<String>();
@@ -68,7 +68,8 @@ public class GenericObjectEditor implements PropertyEditor {
 				String current = st.nextToken().trim();
 				//System.out.println("current ="+current);
 				try {
-					Class.forName(current); // test for instantiability
+					Class<?> clz = Class.forName(current); // test for instantiability
+					if (instances!=null) instances.add(clz);
 					classes.add(current);
 				} catch (Exception ex) {
 					System.err.println("Couldn't load class with name: " + current);
@@ -90,7 +91,7 @@ public class GenericObjectEditor implements PropertyEditor {
 	 * @param className
 	 * @return
 	 */
-	public static ArrayList<String> getClassesFromClassPath(String className) { 
+	public static ArrayList<String> getClassesFromClassPath(String className, ArrayList<Class<?>> instances) { 
 		ArrayList<String> classes = new ArrayList<String>();
 		Class<?>[] clsArr;
 		clsArr=ReflectPackage.getAssignableClasses(className, true, true);
@@ -119,6 +120,7 @@ public class GenericObjectEditor implements PropertyEditor {
 					try {
 						Class<?>[] params = new Class[0];
 						class1.getConstructor(params);
+						if (instances!=null) instances.add(class1);
 						classes.add(class1.getName());
 					} catch (NoSuchMethodException e) {
 						System.err.println("GOE warning: Class " + class1.getName() + " has no default constructor, skipping...");
@@ -264,9 +266,9 @@ public class GenericObjectEditor implements PropertyEditor {
 		Vector<String> v=null;
 		if (Proxy.isProxyClass(m_ClassType)) {
 			if (TRACE) System.out.println("PROXY! original was " + ((RMIProxyLocal)Proxy.getInvocationHandler(((Proxy)m_Object))).getOriginalClass().getName());
-			v = new Vector<String>(getClassesFromProperties(((RMIProxyLocal)Proxy.getInvocationHandler(((Proxy)m_Object))).getOriginalClass().getName()));
+			v = new Vector<String>(getClassesFromProperties(((RMIProxyLocal)Proxy.getInvocationHandler(((Proxy)m_Object))).getOriginalClass().getName(), null));
 		} else {		
-			v = new Vector<String>(getClassesFromProperties(m_ClassType.getName()));
+			v = new Vector<String>(getClassesFromProperties(m_ClassType.getName(), null));
 		}
 				
 //		v = new Vector<String>(getClassesFromProperties(m_ClassType.getName()));
@@ -288,7 +290,7 @@ public class GenericObjectEditor implements PropertyEditor {
 	public void setValue(Object o) {
 		//System.err.println("setValue()" + m_ClassType.toString());
 
-		if (m_ClassType == null) {
+		if (o==null || m_ClassType == null) {
 			System.err.println("No ClassType set up for GenericObjectEditor!!");
 			return;
 		}

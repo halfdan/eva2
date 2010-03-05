@@ -254,7 +254,7 @@ public class MetricSWithReference implements InterfaceParetoFrontMetric, java.io
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "Difference between the current SMetric and the reference SMetric (curSM - refSM).";
     }
 

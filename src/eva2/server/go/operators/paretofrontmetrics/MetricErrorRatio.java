@@ -145,7 +145,7 @@ public class MetricErrorRatio implements eva2.server.go.operators.paretofrontmet
     /** This method returns a global info string
      * @return description
      */
-    public String globalInfo() {
+    public static String globalInfo() {
         return "This method calculates how many solutions are contained in the reference solution.";
     }
 
