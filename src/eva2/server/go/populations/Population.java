@@ -688,11 +688,11 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     }
 	
 	/** 
-	 * This method will return the index of the current best individual from the
+	 * This method will return the index of the current worst individual from the
      * population.
      * 
      * @see getIndexOfBestOrWorstIndividual()
-     * @return The index of the best individual.
+     * @return The index of the worst individual.
      */
     public int getIndexOfWorstIndividualNoConstr() {
     	return getIndexOfBestOrWorstIndy(false, false, -1);
