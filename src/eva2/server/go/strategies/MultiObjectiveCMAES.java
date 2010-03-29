@@ -26,26 +26,23 @@ import eva2.server.go.populations.SolutionSet;
 import eva2.server.go.problems.AbstractOptimizationProblem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 
-
 import eva2.tools.math.Mathematics;
 import eva2.tools.math.RNG;
 import eva2.tools.math.Jama.EigenvalueDecomposition;
 import eva2.tools.math.Jama.Matrix;
 
-public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable
-{
+public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
 
-	class CounterClass{
+	class CounterClass {
 		public CounterClass(int i) {
-			value=i;
+			value = i;
 		}
+
 		public int value;
-		public boolean seen=false;
+		public boolean seen = false;
 	}
 
-
 	private String m_Identifier = "NelderMeadSimplex";
-
 
 	private Population m_Population;
 	private AbstractOptimizationProblem m_Problem;
@@ -53,17 +50,15 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable
 	transient private InterfacePopulationChangedEventListener m_Listener;
 
 	private int m_lambda = 1;
-	private int m_lambdamo=1;
-
-
+	private int m_lambdamo = 1;
 
 	public MultiObjectiveCMAES() {
-		m_Population=new Population(m_lambdamo);
+		m_Population = new Population(m_lambdamo);
 	}
 
 	public MultiObjectiveCMAES(MultiObjectiveCMAES a) {
-		m_Problem = (AbstractOptimizationProblem)a.m_Problem.clone();
-		setPopulation((Population)a.m_Population.clone());
+		m_Problem = (AbstractOptimizationProblem) a.m_Problem.clone();
+		setPopulation((Population) a.m_Population.clone());
 		m_lambda = a.m_lambda;
 		m_Identifier = a.m_Identifier;
 	}
@@ -72,161 +67,182 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable
 		return new MultiObjectiveCMAES(this);
 	}
 
-
-	@Override
+	// @Override
 	public void SetIdentifier(String name) {
-		m_Identifier=name;
+		m_Identifier = name;
 	}
 
-	@Override
+	// @Override
 	public void SetProblem(InterfaceOptimizationProblem problem) {
-		m_Problem = (AbstractOptimizationProblem)problem;
+		m_Problem = (AbstractOptimizationProblem) problem;
 	}
 
-	/** This method allows you to add the LectureGUI as listener to the Optimizer
+	/**
+	 * This method allows you to add the LectureGUI as listener to the Optimizer
+	 * 
 	 * @param ea
 	 */
-	public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
+	public void addPopulationChangedEventListener(
+			InterfacePopulationChangedEventListener ea) {
 		this.m_Listener = ea;
 	}
 
-
-	@Override
+	// @Override
 	public void freeWilly() {
 	}
 
-	@Override
+	// @Override
 	public InterfaceSolutionSet getAllSolutions() {
 		Population pop = getPopulation();
 		return new SolutionSet(pop, pop);
 	}
 
-	@Override
+	// @Override
 	public String getIdentifier() {
 
 		return m_Identifier;
 	}
 
-	@Override
+	// @Override
 	public String getName() {
-		return "(1+"+m_lambda+") MO-CMA-ES";
+		return "(1+" + m_lambda + ") MO-CMA-ES";
 	}
 
-	@Override
+	// @Override
 	public Population getPopulation() {
 		return m_Population;
 	}
 
-	@Override
+	// @Override
 	public InterfaceOptimizationProblem getProblem() {
 		return m_Problem;
 	}
 
-	@Override
+	// @Override
 	public String getStringRepresentation() {
 		StringBuilder strB = new StringBuilder(200);
-		strB.append("(1+"+m_lambda+") MO-CMA-ES:\nOptimization Problem: ");
+		strB.append("(1+" + m_lambda + ") MO-CMA-ES:\nOptimization Problem: ");
 		strB.append(this.m_Problem.getStringRepresentationForProblem(this));
 		strB.append("\n");
 		strB.append(this.m_Population.getStringRepresentation());
 		return strB.toString();
 	}
 
-	@Override
+	// @Override
 	public void init() {
-		//initByPopulation(m_Population, true);
+		// initByPopulation(m_Population, true);
 		this.m_Population.setTargetSize(m_lambdamo);
 		this.m_Problem.initPopulation(this.m_Population);
-		//	        children = new Population(m_Population.size());
+		// children = new Population(m_Population.size());
 		this.evaluatePopulation(this.m_Population);
 		this.firePropertyChangedEvent(Population.nextGenerationPerformed);
 
 	}
 
-
-
-	@Override
+	// @Override
 	public void initByPopulation(Population pop, boolean reset) {
 		setPopulation(pop);
 		if (reset) {
 			m_Problem.initPopulation(m_Population);
 			m_Problem.evaluate(m_Population);
-	
+
 		}
 	}
 
-	/** This method will evaluate the current population using the
-	 * given problem.
-	 * @param population The population that is to be evaluated
+	/**
+	 * This method will evaluate the current population using the given problem.
+	 * 
+	 * @param population
+	 *            The population that is to be evaluated
 	 */
 	private void evaluatePopulation(Population population) {
 		this.m_Problem.evaluate(population);
 	}
 
-	@Override
+	// @Override
 	public void optimize() {
 
-		HashMap<Long, CounterClass> SuccessCounterMap=new HashMap<Long, CounterClass>();
+		HashMap<Long, CounterClass> SuccessCounterMap = new HashMap<Long, CounterClass>();
 
-		//Eltern markieren und für die Zählung vorbereiten
-		for(int j=0;j<m_lambdamo&&j<m_Population.size();j++){
-			m_Population.getEAIndividual(j).putData("Parent",m_Population.getEAIndividual(j) );
-			SuccessCounterMap.put(m_Population.getEAIndividual(j).getIndyID(),new CounterClass(0));
+		// Eltern markieren und fï¿½r die Zï¿½hlung vorbereiten
+		for (int j = 0; j < m_lambdamo && j < m_Population.size(); j++) {
+			m_Population.getEAIndividual(j).putData("Parent",
+					m_Population.getEAIndividual(j));
+			SuccessCounterMap.put(m_Population.getEAIndividual(j).getIndyID(),
+					new CounterClass(0));
 		}
 
-		//Kinder erzeugen
-		Population children=new Population(m_lambdamo*m_lambda);
+		// Kinder erzeugen
+		Population children = new Population(m_lambdamo * m_lambda);
 		children.setGenerationTo(m_Population.getGeneration());
 
-		for(int j=0;j<children.getTargetSize();j++){
-			AbstractEAIndividual parent=m_Population.getEAIndividual(j%m_lambdamo); 
-			AbstractEAIndividual indy=(AbstractEAIndividual)parent.clone();
+		for (int j = 0; j < children.getTargetSize(); j++) {
+			AbstractEAIndividual parent = m_Population.getEAIndividual(j
+					% m_lambdamo);
+			AbstractEAIndividual indy = (AbstractEAIndividual) parent.clone();
 			indy.mutate();
 			indy.putData("Parent", parent);
 			children.add(indy);
 		}
 		evaluatePopulation(children);
 
-	
 		m_Population.addPopulation(children);
-		//Ranking
-		ArchivingNSGAII dummyArchive=new ArchivingNSGAIISMeasure();
-		Population []store=dummyArchive.getNonDomiatedSortedFronts(m_Population);
-		store=dummyArchive.getNonDomiatedSortedFronts(m_Population);
+		// Ranking
+		ArchivingNSGAII dummyArchive = new ArchivingNSGAIISMeasure();
+		Population[] store = dummyArchive
+				.getNonDomiatedSortedFronts(m_Population);
+		store = dummyArchive.getNonDomiatedSortedFronts(m_Population);
 		dummyArchive.calculateCrowdingDistance(store);
 
-		//Vergleichen und den Successcounter hochzählen wenn wir besser als unser Elter sind
-		for(int j=0;j<m_Population.size();j++){
-			AbstractEAIndividual parent= (AbstractEAIndividual) m_Population.getEAIndividual(j).getData("Parent");
-			if(m_Population.getEAIndividual(j)!=parent){ //Eltern nicht mit sich selber vergleichen
-				int parentParetoLevel=((Integer) parent.getData("ParetoLevel")).intValue();
-				double parentSMeasure=((Double) parent.getData("HyperCube")).doubleValue();
-				int childParetoLevel=((Integer) m_Population.getEAIndividual(j).getData("ParetoLevel")).intValue();
-				double childSMeasure=((Double) m_Population.getEAIndividual(j).getData("HyperCube")).doubleValue();
-				if( childParetoLevel<parentParetoLevel||((childParetoLevel==parentParetoLevel)&&childSMeasure>parentSMeasure )      ){
-					SuccessCounterMap.get(parent.getIndyID()).value++;		
+		// Vergleichen und den Successcounter hochzï¿½hlen wenn wir besser als
+		// unser Elter sind
+		for (int j = 0; j < m_Population.size(); j++) {
+			AbstractEAIndividual parent = (AbstractEAIndividual) m_Population
+					.getEAIndividual(j).getData("Parent");
+			if (m_Population.getEAIndividual(j) != parent) { // Eltern nicht mit
+																// sich selber
+																// vergleichen
+				int parentParetoLevel = ((Integer) parent
+						.getData("ParetoLevel")).intValue();
+				double parentSMeasure = ((Double) parent.getData("HyperCube"))
+						.doubleValue();
+				int childParetoLevel = ((Integer) m_Population.getEAIndividual(
+						j).getData("ParetoLevel")).intValue();
+				double childSMeasure = ((Double) m_Population
+						.getEAIndividual(j).getData("HyperCube")).doubleValue();
+				if (childParetoLevel < parentParetoLevel
+						|| ((childParetoLevel == parentParetoLevel) && childSMeasure > parentSMeasure)) {
+					SuccessCounterMap.get(parent.getIndyID()).value++;
 				}
-			}else{ //Debug
+			} else { // Debug
 
-				SuccessCounterMap.get(parent.getIndyID()).seen=true;	
+				SuccessCounterMap.get(parent.getIndyID()).seen = true;
 			}
 		}
 
-
-		//Selection
+		// Selection
 		m_Population.clear();
-		for(int i=0;i<store.length;i++){
-			if(m_Population.size()+store[i].size()<=m_lambdamo){ //Die Front passt noch komplett
+		for (int i = 0; i < store.length; i++) {
+			if (m_Population.size() + store[i].size() <= m_lambdamo) { // Die
+																		// Front
+																		// passt
+																		// noch
+																		// komplett
 				m_Population.addPopulation(store[i]);
 
-			}else{ //die besten aus der aktuellen Front heraussuchen bis voll
-				while(store[i].size()>0&&m_Population.size()<m_lambdamo){
-					AbstractEAIndividual indy=store[i].getEAIndividual(0);
-					double bestMeasure=((Double) indy.getData("HyperCube")).doubleValue(); //TODO mal noch effizient machen (sortieren und die besten n herausholen)
-					for(int j=1;j<store[i].size();j++ ){
-						if(bestMeasure<((Double) store[i].getEAIndividual(j).getData("HyperCube")).doubleValue()){
-							bestMeasure=((Double) store[i].getEAIndividual(j).getData("HyperCube")).doubleValue();
-							indy=store[i].getEAIndividual(j);
+			} else { // die besten aus der aktuellen Front heraussuchen bis voll
+				while (store[i].size() > 0 && m_Population.size() < m_lambdamo) {
+					AbstractEAIndividual indy = store[i].getEAIndividual(0);
+					double bestMeasure = ((Double) indy.getData("HyperCube"))
+							.doubleValue(); // TODO mal noch effizient machen
+											// (sortieren und die besten n
+											// herausholen)
+					for (int j = 1; j < store[i].size(); j++) {
+						if (bestMeasure < ((Double) store[i].getEAIndividual(j)
+								.getData("HyperCube")).doubleValue()) {
+							bestMeasure = ((Double) store[i].getEAIndividual(j)
+									.getData("HyperCube")).doubleValue();
+							indy = store[i].getEAIndividual(j);
 						}
 					}
 					m_Population.add(indy);
@@ -236,51 +252,67 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable
 
 		}
 
-		//Strategieparemeter updaten
-		for(int j=0;j<m_Population.size();j++){
+		// Strategieparemeter updaten
+		for (int j = 0; j < m_Population.size(); j++) {
 
-			AbstractEAIndividual indy=m_Population.getEAIndividual(j);
-			if(indy.getMutationOperator() instanceof MutateESCovarianceMatrixAdaptionPlus ){ //Das geht nur wenn wir auch die richtige Mutation haben
-				AbstractEAIndividual parent=(AbstractEAIndividual)indy.getData("Parent");
-				MutateESCovarianceMatrixAdaptionPlus muta=(MutateESCovarianceMatrixAdaptionPlus) indy.getMutationOperator();
-				double rate=((double) SuccessCounterMap.get(parent.getIndyID()).value)/((double) m_lambda);
+			AbstractEAIndividual indy = m_Population.getEAIndividual(j);
+			if (indy.getMutationOperator() instanceof MutateESCovarianceMatrixAdaptionPlus) { // Das
+																								// geht
+																								// nur
+																								// wenn
+																								// wir
+																								// auch
+																								// die
+																								// richtige
+																								// Mutation
+																								// haben
+				AbstractEAIndividual parent = (AbstractEAIndividual) indy
+						.getData("Parent");
+				MutateESCovarianceMatrixAdaptionPlus muta = (MutateESCovarianceMatrixAdaptionPlus) indy
+						.getMutationOperator();
+				double rate = ((double) SuccessCounterMap.get(parent
+						.getIndyID()).value)
+						/ ((double) m_lambda);
 
-				if(indy!=parent){
+				if (indy != parent) {
 					muta.updateCovariance();
 				}
-				muta.updateStepSize(rate);			
+				muta.updateStepSize(rate);
 			}
 		}
 
-		for(int j=0;j<children.size();j++){
+		for (int j = 0; j < children.size(); j++) {
 			children.getEAIndividual(j).putData("Parent", null);
 		}
-		
+
 		m_Population.incrFunctionCallsBy(children.size());
 		m_Population.incrGeneration();
 		this.firePropertyChangedEvent(Population.nextGenerationPerformed);
 
 	}
 
-	@Override
+	// @Override
 	public boolean removePopulationChangedEventListener(
 			InterfacePopulationChangedEventListener ea) {
 		return false;
 	}
 
-	@Override
+	// @Override
 	public void setPopulation(Population pop) {
 		m_Population = pop;
 		m_Population.setNotifyEvalInterval(1);
-		m_lambdamo=m_Population.getTargetSize();
+		m_lambdamo = m_Population.getTargetSize();
 
 	}
 
-	/** Something has changed
+	/**
+	 * Something has changed
+	 * 
 	 * @param name
 	 */
-	protected void firePropertyChangedEvent (String name) {
-		if (this.m_Listener != null) this.m_Listener.registerPopulationStateChanged(this, name);
+	protected void firePropertyChangedEvent(String name) {
+		if (this.m_Listener != null)
+			this.m_Listener.registerPopulationStateChanged(this, name);
 	}
 
 	public int getLambda() {
@@ -291,13 +323,10 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable
 		m_lambda = mLambda;
 	}
 
-	/*public int getLambdaMo() {
-		return m_lambdamo;
-	}
-
-	public void setLambdaMo(int mLambda) {
-		m_lambdamo = mLambda;
-	}*/
-
+	/*
+	 * public int getLambdaMo() { return m_lambdamo; }
+	 * 
+	 * public void setLambdaMo(int mLambda) { m_lambdamo = mLambda; }
+	 */
 
 }
