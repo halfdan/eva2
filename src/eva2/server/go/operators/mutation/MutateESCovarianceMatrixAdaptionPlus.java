@@ -125,11 +125,11 @@ public class MutateESCovarianceMatrixAdaptionPlus extends
 	protected void adaptStrategy() {
 	}
 
-	public int getM_lambda() {
+	public int getLambda() {
 		return m_lambda;
 	}
 
-	public void setM_lambda(int mLambda) {
+	public void setLambda(int mLambda) {
 		m_lambda = mLambda;
 	}
 
@@ -197,7 +197,7 @@ public class MutateESCovarianceMatrixAdaptionPlus extends
 		mutator.updateStepSize(rate);
 	}
 
-	public double getM_psuccess() {
+	public double getPSuccess() {
 		return m_psuccess;
 	}
 
