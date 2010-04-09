@@ -418,12 +418,12 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
 		return "Set the method to be used for the hill climbing as local search";
 	}
 
-	public String getAdditionalFileStringHeader(PopulationInterface pop) {
-		return "#Indies";
+	public String[] getAdditionalFileStringHeader(PopulationInterface pop) {
+		return new String[]{"#Indies"};
 	}
 
-	public String getAdditionalFileStringValue(PopulationInterface pop) {
-		return ""+m_Population.size();
+	public Object[] getAdditionalFileStringValue(PopulationInterface pop) {
+		return new Object[]{m_Population.size()};
 	}
 
 	public boolean isDoReinitialization() {

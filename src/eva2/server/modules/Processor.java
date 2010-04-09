@@ -58,6 +58,7 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
 //    private int 					postProcessSteps = 0;
     private int 					runCounter = 0;	
     private Population				resPop = null;
+	private boolean 				userAborted = false;
 
 //    transient private String				m_OutputPath = "";
 //    transient private BufferedWriter		m_OutputFile = null;
@@ -110,8 +111,19 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
             return;
         }
         resPop = null;
+        userAborted = false;
         wasRestarted = false;
         setOptRunning(true);
+    }
+    
+    /**
+     * Return true if the optimization was stopped by the user instead of 
+     * the termination criterion.
+     * 
+     * @return
+     */
+    public boolean wasAborted() {
+    	return userAborted;
     }
 
     /**
@@ -124,6 +136,7 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
             System.err.println("ERROR: Processor is already running !!");
             return;
         }
+        userAborted = false;
         wasRestarted = true;
         setOptRunning(true);
     }
@@ -192,7 +205,7 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
      */
     protected Population optimize(String infoString) {
     	Population resultPop = null;
-    	
+
     	if (!isOptRunning()) {
     		System.err.println("warning, this shouldnt happen in processor! Was startOpt called?");
     		setOptRunning(true);
@@ -233,12 +246,12 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
         	} while (isOptRunning() && !this.goParams.getTerminator().isTerminated(this.goParams.getOptimizer().getAllSolutions()));
         	runCounter++;
         	maybeFinishParamCtrl(goParams);
-        	
+        	userAborted  = !isOptRunning(); // stop is "normal" if opt wasnt set false by the user (and thus still true)
         	//////////////// Default stats
-        	m_Statistics.stopOptPerformed(isOptRunning(), goParams.getTerminator().lastTerminationMessage()); // stop is "normal" if opt wasnt set false by the user (and thus still true)
+        	m_Statistics.stopOptPerformed(!userAborted, goParams.getTerminator().lastTerminationMessage()); // stop is "normal" if opt wasnt set false by the user (and thus still true)
         	
         	//////////////// PP or set results without further PP
-        	if (isOptRunning()) {
+        	if (!userAborted) {
         		resultPop = performPostProcessing();
         		if (resultPop==null) { // post processing disabled, so use opt. solutions
         			resultPop = goParams.getOptimizer().getAllSolutions().getSolutions();

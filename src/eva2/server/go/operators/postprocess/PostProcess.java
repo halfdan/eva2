@@ -3,6 +3,7 @@ package eva2.server.go.operators.postprocess;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Vector;
 
 import eva2.OptimizerFactory;
 import eva2.OptimizerRunnable;
@@ -34,7 +35,6 @@ import eva2.server.go.problems.AbstractMultiModalProblemKnown;
 import eva2.server.go.problems.AbstractOptimizationProblem;
 import eva2.server.go.problems.FM0Problem;
 import eva2.server.go.problems.Interface2DBorderProblem;
-import eva2.server.go.problems.InterfaceFirstOrderDerivableProblem;
 import eva2.server.go.problems.InterfaceInterestingHistogram;
 import eva2.server.go.problems.InterfaceMultimodalProblemKnown;
 import eva2.server.go.strategies.EvolutionStrategies;
@@ -63,7 +63,7 @@ public class PostProcess {
 	// lower limit mutation step size for HC post processing
 	private static double minMutationStepSize = 0.0000000000000001;
 	// used for hill climbing post processing and only alive during that period
-	private static OptimizerRunnable ppRunnable = null;
+	private static Vector<OptimizerRunnable> ppRunnables = new Vector<OptimizerRunnable>();
 	public static final String movedDistanceKey = "PostProcessingMovedBy";
 	public static final String movedToPositionKey = "PostProcessingMovedTo";
 	
@@ -401,9 +401,10 @@ public class PostProcess {
 		}
 		hc.setPopulation(pop);
 //		hc.initByPopulation(pop, false);
-		ppRunnable = new OptimizerRunnable(OptimizerFactory.makeParams(hc, pop, problem, 0, term), true);
+		OptimizerRunnable ppRunnable = new OptimizerRunnable(OptimizerFactory.makeParams(hc, pop, problem, 0, term), true);
 		
-		runPP();
+		runPP(ppRunnable);
+		
 	}
 	
 	// TODO ! test this
@@ -419,8 +420,9 @@ public class PostProcess {
 		int funCallsBefore = pop.getFunctionCalls();
 		pop.SetFunctionCalls(baseEvals);
 
-		ppRunnable = new OptimizerRunnable(OptimizerFactory.makeParams(gda, pop, problem, 0, term), true);
-		ppRunnable.getStats().createNextGenerationPerformed(gda.getPopulation(), gda, null);
+		OptimizerRunnable ppRunnable = new OptimizerRunnable(OptimizerFactory.makeParams(gda, pop, problem, 0, term), true);
+		runPP(ppRunnable);
+//		ppRunnable.getStats().createNextGenerationPerformed(gda.getPopulation(), gda, null);
 
 		int funCallsDone = pop.getFunctionCalls()-baseEvals;
 		pop.SetFunctionCalls(funCallsBefore);
@@ -432,7 +434,8 @@ public class PostProcess {
 	 * Search for a local minimum using nelder mead and return the solution found and the number of steps
 	 * (evaluations) actually performed. This uses the whole population as starting population for nelder mead
 	 * meaning that typically only one best is returned.
-	 * Returns the number of function calls really performed by the method; sets the number of function calls
+	 * Returns the number of function calls really performed by the method and a flag indicating whether the 
+	 * processing was aborted by the user. Sets the number of function calls
 	 * in the population back to the original count.
 	 * If the baseEvals parameter (which should be >= 0) is > 0, then the number of evaluations is set as
 	 * number of evaluations before the optimization using the given terminator.
@@ -441,9 +444,9 @@ public class PostProcess {
 	 * @param problem
 	 * @param term
 	 * @param baseEvals
-	 * @return
+	 * @return pair of the number of performed function calls and a flag indicating whether the processing was aborted by the user
 	 */
-	public static int processWithNMS(Population pop, AbstractOptimizationProblem problem, InterfaceTerminator term, int baseEvals) {
+	public static Pair<Integer,Boolean> processWithNMS(Population pop, AbstractOptimizationProblem problem, InterfaceTerminator term, int baseEvals) {
 		NelderMeadSimplex nms = new NelderMeadSimplex();
 		nms.setProblemAndPopSize(problem);
 		nms.setGenerationCycle(5);
@@ -451,7 +454,7 @@ public class PostProcess {
 		int funCallsBefore = pop.getFunctionCalls();
 		pop.SetFunctionCalls(baseEvals);
 		
-		ppRunnable = new OptimizerRunnable(OptimizerFactory.makeParams(nms, pop, problem, 0, term), true);
+		OptimizerRunnable ppRunnable = new OptimizerRunnable(OptimizerFactory.makeParams(nms, pop, problem, 0, term), true);
 		// as nms creates a new population and has already evaluated them, send a signal to stats
 		ppRunnable.getStats().createNextGenerationPerformed(nms.getPopulation(), nms, null);
 		
@@ -460,7 +463,7 @@ public class PostProcess {
 //			System.out.println("grads: " + BeanInspector.toString(((InterfaceFirstOrderDerivableProblem)problem).getFirstOrderGradients(x)));
 //		}
 		
-		runPP();
+		runPP(ppRunnable);
 		
 //		if (problem instanceof InterfaceFirstOrderDerivableProblem) {
 //			double[] x = pop.getBestEAIndividual().getDoublePosition();
@@ -470,14 +473,15 @@ public class PostProcess {
 		int funCallsDone = pop.getFunctionCalls()-baseEvals;
 		pop.SetFunctionCalls(funCallsBefore);
 		
-		return funCallsDone;
+		return new Pair<Integer, Boolean>(funCallsDone, ppRunnable.wasAborted());
 	}
 	
 	/**
 	 * Search for a local minimum using CMA and return the solution found and the number of steps
 	 * (evaluations) actually performed. This uses the whole population as starting population for nelder mead
 	 * meaning that typically only one best is returned.
-	 * Returns the number of function calls really performed by the method; sets the number of function calls
+	 * Returns the number of function calls really performed by the method and a flag indicating whether the 
+	 * processing was aborted by the user. Sets the number of function calls
 	 * in the population back to the original count. If the baseEvals parameter (which should be >= 0) is > 0, 
 	 * then the number of evaluations is set as
 	 * number of evaluations before the optimization using the given terminator.
@@ -488,7 +492,7 @@ public class PostProcess {
 	 * @param baseEvals
 	 * @return
 	 */
-	public static int processWithCMA(Population pop, AbstractOptimizationProblem problem, InterfaceTerminator term, int baseEvals) {
+	public static Pair<Integer,Boolean> processWithCMA(Population pop, AbstractOptimizationProblem problem, InterfaceTerminator term, int baseEvals) {
 		MutateESRankMuCMA mutator = new MutateESRankMuCMA();
 		mutator.setInitializeSigma(ESMutationInitialSigma.avgInitialDistance);
 		EvolutionStrategies es = OptimizerFactory.createEvolutionStrategy(pop.size()/2, pop.size(), false, mutator, 1., new CrossoverESDefault(), 0., 
@@ -503,17 +507,17 @@ public class PostProcess {
 		int funCallsBefore = pop.getFunctionCalls();
 		pop.SetFunctionCalls(baseEvals);
 		
-		ppRunnable = new OptimizerRunnable(cmaParams, true);
+		OptimizerRunnable ppRunnable = new OptimizerRunnable(cmaParams, true);
 		ppRunnable.getStats().createNextGenerationPerformed(cmaParams.getOptimizer().getPopulation(), cmaParams.getOptimizer(), null);
 		
-		runPP();
+		runPP(ppRunnable);
 		pop.clear();
 		pop.addPopulation(es.getPopulation());
 		
 		int funCallsDone = es.getPopulation().getFunctionCalls()-baseEvals;
 		pop.SetFunctionCalls(funCallsBefore);
 		
-		return funCallsDone;
+		return new Pair<Integer,Boolean>(funCallsDone, ppRunnable.wasAborted());
 	}
 	
 	private static boolean checkRange(AbstractEAIndividual indy) {
@@ -686,18 +690,27 @@ public class PostProcess {
 			}
 			term = new EvaluationTerminator(stepsPerCand);
 		}
+		Pair<Integer, Boolean> stepsAbortedFlag = null;
 		for (int i=0; i<candidates.size(); i++) { // improve each single sub pop
 			subPop = nmPops.get(i);
 			term.init(prob);
 //			if (TRACE) System.out.println("*** before " + subPop.getBestEAIndividual().getStringRepresentation());
 
 			switch (method) {
-			case nelderMead: stepsPerf += PostProcess.processWithNMS(subPop, prob, term, subPop.size()-1); 
+			case nelderMead: stepsAbortedFlag = PostProcess.processWithNMS(subPop, prob, term, subPop.size()-1);
 			break;
-			case cmaES: stepsPerf += PostProcess.processWithCMA(subPop, prob, term, subPop.size()-1); 
+			case cmaES: stepsAbortedFlag = PostProcess.processWithCMA(subPop, prob, term, subPop.size()-1); 
 			break;
+			default: System.err.println("Invalid pp method in processSingleCandidatesNMCMA!");
 			}
-//			if (TRACE) System.out.println("*** after: " + subPop.getBestEAIndividual().getStringRepresentation());
+			if (stepsAbortedFlag==null) System.err.println("Error in processSingleCandidatesNMCMA!");
+			stepsPerf += stepsAbortedFlag.head;
+			if (stepsAbortedFlag.tail) { // user aborted post processing
+				System.err.println("Warning: Post processing interrupted after " + i + " of " + candidates.size() + " candidates were processed.");
+				break;
+			}
+
+			//			if (TRACE) System.out.println("*** after: " + subPop.getBestEAIndividual().getStringRepresentation());
 			if (checkRange(subPop.getBestEAIndividual())) {
 				// and replace corresponding individual (should usually be better)
 //				if (subPop.getBestEAIndividual().isDominant(candidates.getEAIndividual(i))) { // TODO Multiobjective???
@@ -785,20 +798,42 @@ public class PostProcess {
 	/**
 	 * Just execute the runnable.
 	 */
-	private static void runPP() {
-		ppRunnable.getGOParams().setDoPostProcessing(false);
-		ppRunnable.setVerbosityLevel(StatsParameter.VERBOSITY_NONE);
-		ppRunnable.run();
-		ppRunnable.getGOParams().setDoPostProcessing(true);
-		ppRunnable = null;
+	private static void runPP(OptimizerRunnable rnbl) {
+		rnbl.getGOParams().setDoPostProcessing(false);
+		rnbl.setVerbosityLevel(StatsParameter.VERBOSITY_NONE);
+		ppRunnables.add(rnbl);
+//		System.err.println("Starting runbl " + rnbl);
+		rnbl.run();
+//		System.err.println("Aborted: " + rnbl.wasAborted());
+		rnbl.getGOParams().setDoPostProcessing(true);
+		ppRunnables.remove(rnbl);
 	}
 	
 	/**
+	 * Stop the post processing thread with the given ID.
+	 */
+	public static void stopPP(int rnblID) {
+//		System.err.println("Stopping pp " + rnblID);
+		OptimizerRunnable rnbl = getRunnable(rnblID);
+		stopPP(rnbl);
+	}
+	
+	private static OptimizerRunnable getRunnable(int rnblID) {
+		synchronized (ppRunnables) {
+			for (int i=0; i<ppRunnables.size(); i++) {
+				if (rnblID == ppRunnables.get(i).getID()) return ppRunnables.get(i);
+			}
+		}
+		return null; // no runnable with that ID was found
+	}
+
+	/**
 	 * Stop the post processing if its currently running.
 	 */
-	public static void stopPP() {
-		if (ppRunnable != null) synchronized (ppRunnable) {
-			if (ppRunnable != null) ppRunnable.stopOpt();
+	public static void stopPP(OptimizerRunnable rnbl) {
+//		System.err.println("Stopping rnbl " + rnbl);
+		if (rnbl != null) synchronized (rnbl) {
+			rnbl.stopOpt();
 		}
 	}
 	
@@ -923,9 +958,9 @@ public class PostProcess {
 			listener.println("default epsilon is " + mmkProb.getDefaultAccuracy());
 			listener.println("optima found with default epsilon: " + getFoundOptima(solutions, mmkProb.getRealOptima(), mmkProb.getDefaultAccuracy(), true).size());
 			listener.println("max peak ratio is " + mmkProb.getMaximumPeakRatio(getFoundOptima(solutions, mmkProb.getRealOptima(), mmkProb.getDefaultAccuracy(), true)));
-			for (double epsilon=0.1; epsilon > 0.00000001; epsilon/=10.) {
+			if (mmkProb.fullListAvailable()) for (double epsilon=0.1; epsilon > 0.00000001; epsilon/=10.) {
 				//	out.println("no optima found: " + ((InterfaceMultimodalProblemKnown)mmProb).getNumberOfFoundOptima(pop));
-				listener.println("found " + getFoundOptima(solutions, mmkProb.getRealOptima(), epsilon, true).size() + " for epsilon = " + epsilon + ", maxPeakRatio: " + AbstractMultiModalProblemKnown.getMaximumPeakRatio(mmkProb,solutions, epsilon));
+				listener.println("found " + getFoundOptima(solutions, mmkProb.getRealOptima(), epsilon, true).size() + " for epsilon = " + epsilon + ", maxPeakRatio: " + mmkProb.getMaximumPeakRatio(solutions));
 			}
 		} else {
 			// TODO in this form it may cost a lot of time and cant be stopped, which is bad
@@ -980,14 +1015,12 @@ public class PostProcess {
 			
 			Population clusteredPop, outputPop, stateBeforeLS;
 			if (params.getPostProcessClusterSigma() > 0) {
+				// ##### pre clustering
 				clusteredPop = (Population)PostProcess.clusterBest(inputPop, params.getPostProcessClusterSigma(), 0, PostProcess.KEEP_LONERS, PostProcess.BEST_ONLY).clone();
 				if (clusteredPop.size() < inputPop.size()) {
 					if (listener != null) listener.println("Initial clustering reduced population size from " + inputPop.size() + " to " + clusteredPop.size());
 				} else if (listener != null) listener.println("Initial clustering yielded no size reduction.");
 			} else clusteredPop = inputPop;
-//			if (DRAW_PPPOP) {
-//				plot = draw((params.getPostProcessClusterSigma()>0) ? "After first clustering" : "Initial population", null, clusteredPop, null, problem);
-//			}
 						
 			int stepsDone = 0;
 			if (params.getPostProcessSteps() > 0) {
@@ -1001,12 +1034,14 @@ public class PostProcess {
 				} else {
 					mutator = null;
 				}
+				// #### Actuall call to post processing
 				stepsDone = processSingleCandidates(params.getPPMethod(), clusteredPop, params.getPostProcessSteps(), stepSize, problem, mutator);
 
 				if (listener != null) listener.println("Post processing: " + stepsDone + " steps done.");
 				if (params.isWithPlot()) {
 					plot = draw("After " + stepsDone + " steps ("+ params.getPPMethod() + ")", null, stateBeforeLS, clusteredPop, problem);
 				}
+				// ##### post clustering
 				// some individuals may have now converged again
 				if (params.getPostProcessClusterSigma() > 0) {
 					// so if wished, cluster again.
@@ -1016,10 +1051,11 @@ public class PostProcess {
 					} else if (listener != null) listener.println("Second clustering yielded no size reduction.");
 				} else outputPop = clusteredPop;
 			} else outputPop = clusteredPop;
-			
+
 			if (params.isWithPlot()) {
 				plot = draw("After " + stepsDone + " steps (" + params.getPPMethod() + ")" + ((params.getPostProcessClusterSigma()>0) ? " and second clustering" : ""), null, outputPop, null, problem);
 			}
+			// ##### some statistics
 			double upBnd = PhenotypeMetric.norm(outputPop.getWorstEAIndividual().getFitness())*1.1;
 			upBnd = Math.pow(10,Math.floor(Math.log10(upBnd)+1));
 			double lowBnd = 0;
@@ -1040,7 +1076,7 @@ public class PostProcess {
 			evaluateMultiModal(outputPop, problem, listener);
 
 			Population nBestPop = outputPop.getBestNIndividuals(params.getPrintNBest()); // n individuals are returned and sorted, all of them if n<=0
-			if (listener != null) listener.println("Best after post process:" + ((outputPop.size()>nBestPop.size()) ? ( "(first " + nBestPop.size() + " of " + outputPop.size() + ")") : ""));
+			if (listener != null) listener.println("Best after post process:" + ((outputPop.size()>nBestPop.size()) ? ( " (first " + nBestPop.size() + " of " + outputPop.size() + ")") : (" (" + nBestPop.size() + ")") ));
 			//////////// output some individual data
 			if (listener != null) for (int i=0; i<nBestPop.size(); i++) {
 				listener.println(AbstractEAIndividual.getDefaultStringRepresentation(nBestPop.getEAIndividual(i)));
@@ -1207,6 +1243,18 @@ public class PostProcess {
 			scoreSum += indyScore;
 		}
 		return Math.sqrt(scoreSum);
+	}
+
+	/**
+	 * Try to abort all post processing threads currently running.
+	 * 
+	 */
+	public static void stopAllPP() {
+		synchronized (ppRunnables) {
+			for (OptimizerRunnable rnbl : ppRunnables) {
+				rnbl.stopOpt();
+			}			
+		}
 	}
 }
 

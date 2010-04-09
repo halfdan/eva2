@@ -1,7 +1,7 @@
 package eva2.server.go;
 
-import eva2.gui.GenericObjectEditor;
 import eva2.server.go.operators.postprocess.InterfacePostProcessParams;
+import eva2.server.go.problems.InterfaceAdditionalPopulationInformer;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.server.go.strategies.InterfaceOptimizer;
 
@@ -69,15 +69,13 @@ public interface InterfaceGOParameters {
     public void setPostProcessParams(InterfacePostProcessParams ppp);
     public String postProcessParamsTipText();
     public void setDoPostProcessing(boolean doPP);
-//    public int getPostProcessSteps();
-//    public void setPostProcessSteps(int ppSteps);
-//    public String postProcessStepsTipText();
-//    
-//    public boolean isPostProcess();
-//	public void setPostProcess(boolean postProcess);
-//	public String postProcessTipText();
-//	
-//	public double getPostProcessClusterSigma();
-//	public void setPostProcessClusterSigma(double postProcessClusterSigma);
-//	public String postProcessClusterSigmaTipText();
+    
+    /**
+     * Give an instance which should be informed about elements which are additional informers.
+     * 
+     * @see InterfaceAdditionalPopulationInformer
+     * @param o
+     */
+    public void addInformableInstance(InterfaceNotifyOnInformers o);
+    public boolean removeInformableInstance(InterfaceNotifyOnInformers o);
 }

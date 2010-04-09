@@ -19,6 +19,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import eva2.server.go.GOStandaloneVersion;
+import eva2.server.go.PopulationInterface;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.ESIndividualDoubleData;
 import eva2.server.go.individuals.InterfaceDataTypeDouble;
@@ -344,26 +345,19 @@ public class FLensProblem extends AbstractOptimizationProblem implements Interfa
 		return result;
 	}
 
-	/** This method returns the header for the additional data that is to be written into a file
-	 * @param pop   The population that is to be refined.
-	 * @return String
-	 */
-	public String getAdditionalFileStringHeader(Population pop) {
-		return "Solution";
+	@Override
+	public String[] getAdditionalFileStringHeader(PopulationInterface pop) {
+		return new String[]{"Solution"};
 	}
-
-	/** This method returns the additional data that is to be written into a file
-	 * @param pop   The population that is to be refined.
-	 * @return String
-	 */
-	public String getAdditionalFileStringValue(Population pop) {
+	@Override
+	public Object[] getAdditionalFileStringValue(PopulationInterface pop) {
 		String result ="{";
-		double[] data = ((InterfaceDataTypeDouble) pop.getBestEAIndividual()).getDoubleData();
+		double[] data = ((InterfaceDataTypeDouble) pop.getBestIndividual()).getDoubleData();
 		for (int i = 0; i < data.length; i++) result += data[i] +"; ";
 		result += "}";
-		return result;
+		return new Object[]{result};
 	}
-
+	
 	/** This method allows you to output a string that describes a found solution
 	 * in a way that is most suiteable for a given problem.
 	 * @param optimizer        The individual that is to be shown.

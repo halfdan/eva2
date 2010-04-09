@@ -1,17 +1,20 @@
 package eva2.server.go.problems;
 
-import eva2.gui.BeanInspector;
 import eva2.gui.GenericObjectEditor;
 import eva2.gui.TopoPlot;
 import eva2.server.go.PopulationInterface;
+import eva2.server.go.enums.PostProcessMethod;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.ESIndividualDoubleData;
 import eva2.server.go.individuals.InterfaceDataTypeDouble;
 import eva2.server.go.operators.constraint.AbstractConstraint;
 import eva2.server.go.operators.constraint.GenericConstraint;
+import eva2.server.go.operators.postprocess.PostProcess;
+import eva2.server.go.operators.terminators.FitnessConvergenceTerminator;
 import eva2.server.go.populations.Population;
 import eva2.server.go.strategies.InterfaceOptimizer;
 import eva2.tools.Pair;
+import eva2.tools.ToolBox;
 import eva2.tools.diagram.ColorBarCalculator;
 import eva2.tools.math.Mathematics;
 import eva2.tools.math.RNG;
@@ -139,6 +142,7 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
     	}
 		return x;
 	}
+	
 	/**
 	 * Add all constraint violations to the individual. Expect that the fitness has already been set.
 	 * 
@@ -352,6 +356,70 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
 	public double functionValue(double[] point) {
 		return eval(project2DPoint(point))[0];
 	}
+	
+	/**
+	 * Add a position as a known optimum to a list of optima. This method evaluates the fitness
+	 * and applies inverse rotation if necessary.
+	 * 
+	 * @param optimas
+	 * @param prob
+	 * @param pos
+	 */
+	public static void addUnrotatedOptimum(Population optimas, AbstractProblemDouble prob, double[] pos) {
+		InterfaceDataTypeDouble tmpIndy;
+		tmpIndy = (InterfaceDataTypeDouble)prob.getIndividualTemplate().clone();
+		tmpIndy.SetDoubleGenotype(pos);
+		if (prob.isDoRotation()) {
+			pos = prob.inverseRotateMaybe(pos); // theres an inverse rotation required
+			tmpIndy.SetDoubleGenotype(pos);
+		}
+		((AbstractEAIndividual)tmpIndy).SetFitness(prob.eval(pos));
+		if (!Mathematics.isInRange(pos, prob.makeRange())) {
+			System.err.println("Warning, add optimum which is out of range!");
+		}
+		optimas.add(tmpIndy);
+	}
+	
+	/**
+	 * Refine a potential solution using Nelder-Mead-Simplex.
+	 * @param prob
+	 * @param pos
+	 * @return
+	 */
+	public static double[] refineSolutionNMS(AbstractProblemDouble prob, double[] pos) {
+		Population pop = new Population();
+		InterfaceDataTypeDouble tmpIndy;
+		tmpIndy = (InterfaceDataTypeDouble)prob.getIndividualTemplate().clone();
+		tmpIndy.SetDoubleGenotype(pos);
+		((AbstractEAIndividual)tmpIndy).SetFitness(prob.eval(pos));
+		pop.add(tmpIndy);
+		FitnessConvergenceTerminator convTerm = new FitnessConvergenceTerminator(1e-25, 10, false, true);
+		int calls = PostProcess.processSingleCandidatesNMCMA(PostProcessMethod.nelderMead, pop, convTerm, 0.001, prob);
+		return ((InterfaceDataTypeDouble)pop.getBestEAIndividual()).getDoubleData();
+	}
+	
+
+	/**
+	 * Refine a candidate solution vector regarding rotations. Saves the
+	 * new solution vector in pos and returns the number of dimensions
+	 * that had to be modified after rotation due to range restrictions.
+	 * 
+	 * The given position is expected to be unrotated! The returned solution
+	 * is unrotated as well.
+	 * 
+	 * @param pos
+	 * @param prob
+	 * @return
+	 */
+	public static int refineWithRotation(double[] pos, AbstractProblemDouble prob) {
+		double[] res = prob.inverseRotateMaybe(pos);
+		int modifiedInPrjct = Mathematics.projectToRange(res, prob.makeRange());
+		res = AbstractProblemDouble.refineSolutionNMS(prob, res);
+		res = prob.rotateMaybe(res);
+		System.arraycopy(res, 0, pos, 0, res.length);
+		return modifiedInPrjct;
+	}
+	
     /**********************************************************************************************************************
      * These are for GUI
      */
@@ -424,19 +492,22 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
 	}
 
 	@Override
-	public String getAdditionalFileStringHeader(PopulationInterface pop) {
-		String superHeader = super.getAdditionalFileStringHeader(pop);
-		if (isWithConstraints()) return superHeader + " \tRawFit. \tNum.Viol. \t Sum.Viol.";
+	public String[] getAdditionalFileStringHeader(PopulationInterface pop) {
+		String[] superHeader = super.getAdditionalFileStringHeader(pop);
+		if (isWithConstraints()) return ToolBox.appendArrays(superHeader, new String[]{"RawFit.","Num.Viol.","Sum.Viol."});
 		else return superHeader;
 	}
 
 	@Override
-	public String getAdditionalFileStringValue(PopulationInterface pop) {
-		String superVal = super.getAdditionalFileStringValue(pop);
+	public Object[] getAdditionalFileStringValue(PopulationInterface pop) {
+		Object[] superVal = super.getAdditionalFileStringValue(pop);
 		if (isWithConstraints()) {
 			AbstractEAIndividual indy = (AbstractEAIndividual)pop.getBestIndividual();
 			Pair<Integer,Double> violation= getConstraintViolation(indy);
-			return superVal + " \t" + BeanInspector.toString(indy.getData(rawFitKey)) + " \t" + violation.head() + " \t" + violation.tail();
+			return ToolBox.appendArrays(superVal, new Object[]{indy.getData(rawFitKey), 
+					violation.head(), 
+					violation.tail()});
+//			return superVal + " \t" + BeanInspector.toString(indy.getData(rawFitKey)) + " \t" + violation.head() + " \t" + violation.tail();
 		} else return superVal;
 	}
 
@@ -458,7 +529,11 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
 		if (!isShowing && showP) {
 			TopoPlot plot = new TopoPlot(getName(), "x1", "x2");
 			plot.setParams(60,60, ColorBarCalculator.BLUE_TO_RED);
+			this.initProblem();
 			plot.setTopology(this, makeRange(), true);
+			if (this instanceof InterfaceMultimodalProblemKnown && ((InterfaceMultimodalProblemKnown)this).fullListAvailable()) {
+				plot.drawPopulation("Opt", ((InterfaceMultimodalProblemKnown)this).getRealOptima());
+			}
 		}
 		isShowing = showP;
 	}
