@@ -17,14 +17,20 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
+import eva2.server.go.InterfaceNotifyOnInformers;
+import eva2.server.go.problems.InterfaceAdditionalPopulationInformer;
+
 /**
- * Produces the main EvA2 frame and a tool bar instance.
+ * Produces the main EvA2 frame and a tool bar instance. 
+ * TODO This class should be removed alltogether. 
  */
-public class EvATabbedFrameMaker implements Serializable, PanelMaker {
+public class EvATabbedFrameMaker implements Serializable, PanelMaker, InterfaceNotifyOnInformers {
+	private static final long serialVersionUID = 2637376545826821423L;
 	private ArrayList<PanelMaker>         guiContainer;
 	private JExtToolBar       m_BarStandard;
 	EvAModuleButtonPanelMaker butPanelMkr=null;
@@ -42,7 +48,24 @@ public class EvATabbedFrameMaker implements Serializable, PanelMaker {
 		gbconst.weighty     = 1;
 		gbconst.gridwidth   = GridBagConstraints.REMAINDER;
 
-		JTabbedPane m_MainPanel = new JTabbedPane();
+		final JTabbedPane m_MainPanel = new JTabbedPane();
+//		m_MainPanel.addChangeListener(new ChangeListener() {
+//			/*
+//			 * This listener was added to catch the switch to the statistics panel. In that event,
+//			 * the stats selection string may have to be updated.
+//			 */
+//			public void stateChanged(ChangeEvent e) {
+////				System.out.println("AAAA " + e.toString());
+//				if (m_MainPanel.getSelectedIndex()==1) {
+//					// the statistics panel is being activated!
+////					System.out.println(guiContainer);
+//					// the third object should be the statistics panel, refer to GenericModuleAdapter
+//					JParaPanel statsPan = (JParaPanel) guiContainer.get(2);
+////					System.out.println(statsPan.m_LocalParameter);
+////					statsPan.m_Editor.setValue(statsPan.m_Editor.getValue()); // really update the contents of the stats panel -- 
+				// this is now done in a cleaner way using this class as a listener from AbstractGOParameters
+//				}
+//			}});
 		
 		m_BarStandard = new JExtToolBar();
 		m_BarStandard.setFloatable(false);
@@ -72,5 +95,21 @@ public class EvATabbedFrameMaker implements Serializable, PanelMaker {
 		if (butPanelMkr!=null) {
 			butPanelMkr.onUserStart();
 		} else System.err.println("Error: button panel was null (EvATabbedFrameMaker)");
+	}
+
+	public void setInformers(
+			List<InterfaceAdditionalPopulationInformer> informers) {
+		// if the informers have changed, update the GUI element which displays them
+		try {
+			JParaPanel statsPan = (JParaPanel) guiContainer.get(2);
+			if (statsPan.m_Editor!=null) {
+				statsPan.m_Editor.setValue(statsPan.m_Editor.getValue()); // really update the contents of the stats panel
+//				System.out.println("OOO setting informers to stats panel succeeded!");
+			}
+		} catch(Exception e) {
+			System.err.println("Failed to update statistics panel from " + this.getClass());
+			System.err.println(e.getMessage());
+			e.printStackTrace(System.err);
+		}
 	}
 }

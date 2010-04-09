@@ -38,6 +38,8 @@ public class OptimizerRunnable implements Runnable {
 	private boolean postProcessOnly = false;
 	private InterfaceTextListener listener = null;
 	private String ident="OptimizerRunnable";
+	private static int cntID = 0; 
+	private int rnblID = -1;
 	
 	/**
 	 * Construct an OptimizerRunnable with given parameters and a StatisticsStandalone instance without restart,
@@ -83,6 +85,8 @@ public class OptimizerRunnable implements Runnable {
 	 * @param restart
 	 */
 	public OptimizerRunnable(GOParameters params, InterfaceStatistics stats, boolean restart) {
+		rnblID = cntID;
+		cntID++;
 		proc = new Processor(stats, null, params);
 		if (proc.getStatistics() instanceof AbstractStatistics) ((AbstractStatistics)proc.getStatistics()).setSaveParams(false);
 		doRestart = restart;
@@ -94,6 +98,14 @@ public class OptimizerRunnable implements Runnable {
 	
 	public String getIdentifier() {
 		return ident;
+	}
+	
+	/**
+	 * A unique ID for the runnable.
+	 * @return
+	 */
+	public int getID() {
+		return rnblID;
 	}
 	
 	public InterfaceGOParameters getGOParams() {
@@ -154,6 +166,10 @@ public class OptimizerRunnable implements Runnable {
 	
 	public boolean isFinished() {
 		return isFinished;
+	}
+	
+	public boolean wasAborted() {
+		return (proc!=null && (proc.wasAborted()));
 	}
 	
 	public void restartOpt() {
@@ -243,12 +259,12 @@ public class OptimizerRunnable implements Runnable {
 	}
 	
 	/**
-	 * Set the additional info output.
+	 * Indicate whether full stats should be printed as text (or only selected entries).
 	 * @see StatsParameter
 	 * @param addInfo
 	 */
-	public void setOutputAdditionalInfo(boolean addInfo) {
-		((AbstractStatistics)proc.getStatistics()).getStatisticsParameter().setOutputAdditionalInfo(addInfo);
+	public void setOutputFullStatsToText(boolean addInfo) {
+		((AbstractStatistics)proc.getStatistics()).getStatisticsParameter().setOutputAllFieldsAsText(addInfo);
 	}
 	
 //	public void configureStats(int verbosityLevel, int outputDirection, int multiRuns, boolean additionalInfo) {

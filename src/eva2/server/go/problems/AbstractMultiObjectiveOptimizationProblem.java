@@ -11,6 +11,7 @@ import javax.swing.JFrame;
 
 import eva2.gui.GraphPointSet;
 import eva2.gui.Plot;
+import eva2.server.go.PopulationInterface;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.ESIndividualDoubleData;
 import eva2.server.go.operators.archiving.ArchivingAllDominating;
@@ -514,11 +515,11 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
      * would be best, since log y can be used. But the value can depend on the problem.
      */
     public Double getDoublePlotValue(Population pop) {
-        if (this.isPopulationMultiObjective(pop)) {
+        if (AbstractMultiObjectiveOptimizationProblem.isPopulationMultiObjective(pop)) {
             return new Double(this.calculateMetric(pop));
         } else {
             // in this case the local Pareto-Front could be multi-objective
-            if (this.isPopulationMultiObjective(this.m_ParetoFront)) {
+            if (AbstractMultiObjectiveOptimizationProblem.isPopulationMultiObjective(this.m_ParetoFront)) {
                 return new Double(this.calculateMetric(this.m_ParetoFront));
             } else {
                 return new Double(pop.getBestEAIndividual().getFitness(0));
@@ -533,29 +534,23 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
         return this.m_ParetoFront;
     }
 
-    /** This method returns the header for the additional data that is to be written into a file
-     * @param pop   The population that is to be refined.
-     * @return String
-     */
-    public String getAdditionalFileStringHeader(Population pop) {
-        String result;
-        if (this.isPopulationMultiObjective(pop))
-            result = "SMetric";
+    @Override
+    public String[] getAdditionalFileStringHeader(PopulationInterface pop) {
+        String[] result = new String[1];
+        if (AbstractMultiObjectiveOptimizationProblem.isPopulationMultiObjective((Population)pop))
+            result[0] = "SMetric";
         else
-            result = "BestFitness";
+            result[0] = "BestFitness";
         return result;
     }
 
-    /** This method returns the additional data that is to be written into a file
-     * @param pop   The population that is to be refined.
-     * @return String
-     */
-    public String getAdditionalFileStringValue(Population pop) {
-        String result = "";
-        if (this.isPopulationMultiObjective(pop))
-            result += this.calculateMetric(pop);
+    @Override
+    public Object[] getAdditionalFileStringValue(PopulationInterface pop) {
+        Object[] result = new Object[1];
+        if (AbstractMultiObjectiveOptimizationProblem.isPopulationMultiObjective((Population)pop))
+            result[0] = this.calculateMetric((Population)pop);
         else
-            result += pop.getBestEAIndividual().getFitness()[0];
+            result[0] = ((Population)pop).getBestEAIndividual().getFitness()[0];
         return result;
     }
 

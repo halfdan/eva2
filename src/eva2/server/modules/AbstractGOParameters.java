@@ -1,13 +1,17 @@
 package eva2.server.modules;
 
 import java.io.Serializable;
+import java.util.LinkedList;
+import java.util.List;
 
 import eva2.gui.BeanInspector;
 import eva2.server.go.InterfaceGOParameters;
+import eva2.server.go.InterfaceNotifyOnInformers;
 import eva2.server.go.InterfacePopulationChangedEventListener;
 import eva2.server.go.InterfaceTerminator;
 import eva2.server.go.operators.postprocess.InterfacePostProcessParams;
 import eva2.server.go.operators.postprocess.PostProcessParams;
+import eva2.server.go.problems.InterfaceAdditionalPopulationInformer;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.server.go.strategies.InterfaceOptimizer;
 
@@ -22,11 +26,13 @@ public abstract class AbstractGOParameters implements InterfaceGOParameters, Ser
 	protected InterfaceTerminator             m_Terminator;
 	protected InterfacePostProcessParams		m_PostProc = new PostProcessParams(false);
 	transient protected InterfacePopulationChangedEventListener m_Listener;
-
+	transient private List<InterfaceNotifyOnInformers> toInformAboutInformers = null;
+	
 	protected AbstractGOParameters() {
 	}
 
 	protected AbstractGOParameters(AbstractGOParameters Source) {
+		this();
 		this.m_Optimizer        = Source.m_Optimizer;
 		this.m_Problem          = Source.m_Problem;
 		this.m_Terminator       = Source.m_Terminator;
@@ -36,6 +42,7 @@ public abstract class AbstractGOParameters implements InterfaceGOParameters, Ser
 	}
 	
 	public AbstractGOParameters(InterfaceOptimizer opt, InterfaceOptimizationProblem prob, InterfaceTerminator term) {
+		this();
 		m_Optimizer = opt;
 		m_Problem = prob;
 		m_Terminator = term;
@@ -76,11 +83,37 @@ public abstract class AbstractGOParameters implements InterfaceGOParameters, Ser
 		return sb.toString();
 	}
 
+	public void addInformableInstance(InterfaceNotifyOnInformers o) {
+		if (toInformAboutInformers==null) toInformAboutInformers=new LinkedList<InterfaceNotifyOnInformers>();
+		if (!toInformAboutInformers.contains(o)) toInformAboutInformers.add(o);
+		o.setInformers(getInformerList());
+	}
+	
+	public boolean removeInformableInstance(InterfaceNotifyOnInformers o) {
+		if (toInformAboutInformers==null) return false;
+		else return toInformAboutInformers.remove(o);
+	}
+	
+	private void fireNotifyOnInformers() {
+		if (toInformAboutInformers!=null) for (InterfaceNotifyOnInformers listener : toInformAboutInformers) {
+			listener.setInformers(getInformerList());
+		}
+	}
+
 	public void setOptimizer(InterfaceOptimizer optimizer) {
 		this.m_Optimizer = optimizer;
 		this.m_Optimizer.SetProblem(this.m_Problem);
 		if (this.m_Listener != null) this.m_Optimizer.addPopulationChangedEventListener(this.m_Listener);
+		fireNotifyOnInformers();
 	}
+	
+	private List<InterfaceAdditionalPopulationInformer> getInformerList() {
+		LinkedList<InterfaceAdditionalPopulationInformer> ret = new LinkedList<InterfaceAdditionalPopulationInformer>();
+		if (m_Problem instanceof InterfaceAdditionalPopulationInformer) ret.add(m_Problem);
+		if (m_Optimizer instanceof InterfaceAdditionalPopulationInformer) ret.add((InterfaceAdditionalPopulationInformer)m_Optimizer);
+		return ret;
+	}
+
 	public InterfaceOptimizer getOptimizer() {
 		return this.m_Optimizer;
 	}
@@ -99,7 +132,9 @@ public abstract class AbstractGOParameters implements InterfaceGOParameters, Ser
 	public void setProblem (InterfaceOptimizationProblem problem) {
 		this.m_Problem = problem;
 		this.m_Optimizer.SetProblem(this.m_Problem);
+		fireNotifyOnInformers();
 	}
+	
 	public InterfaceOptimizationProblem getProblem() {
 		return this.m_Problem;
 	}

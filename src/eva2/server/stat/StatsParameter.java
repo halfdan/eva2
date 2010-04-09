@@ -1,40 +1,33 @@
 package eva2.server.stat;
 
-/*
- * Title:        EvA2
- * Description:
- * Copyright:    Copyright (c) 2003
- * Company:      University of Tuebingen, Computer Architecture
- * @author Holger Ulmer, Felix Streichert, Hannes Planatscher
- * @version:  $Revision: 284 $
- *            $Date: 2007-11-27 14:37:05 +0100 (Tue, 27 Nov 2007) $
- *            $Author: mkron $
- */
-/*==========================================================================*
- * IMPORTS
- *==========================================================================*/
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
+import eva2.gui.BeanInspector;
 import eva2.gui.GenericObjectEditor;
+import eva2.server.go.InterfaceNotifyOnInformers;
+import eva2.server.go.problems.InterfaceAdditionalPopulationInformer;
 import eva2.tools.SelectedTag;
 import eva2.tools.Serializer;
 import eva2.tools.StringSelection;
 
-public class StatsParameter implements InterfaceStatisticsParameter, Serializable {
+/**
+ * A set of parameters for statistics in EvA2. Several data entries are provided by the AbstractStatistics class,
+ * others by the additional informers. This class allows customization of entries and frequency of data output.
+ * Data entries can be selected using a StringSelection instance.
+ * There is a switch called "output full data as text" which will be interpreted by AbstractStatistics showing
+ * all or only the selected entities.
+ * 
+ * @see AbstractStatistics
+ * @author mkron
+ */
+
+public class StatsParameter implements InterfaceStatisticsParameter, InterfaceNotifyOnInformers, Serializable {
+	private static final long serialVersionUID = -8681061379203108390L;
+
 	private static boolean TRACE = false;
-//	public final static int PLOT_BEST = 0;
-//	public final static int PLOT_WORST = 1;
-//	public final static int PLOT_BEST_AND_WORST = 2;
-//	public final static int PLOT_BEST_AND_MEASURES = 3;
-//	public final static int PLOT_CURBEST_AND_RUNBEST = 4;
-//	public final static Tag[] TAGS_PLOT_FITNESS = {
-//		new Tag(PLOT_BEST, "plot best fitness"),
-//		new Tag(PLOT_WORST, "plot worst fitness"),
-//		new Tag(PLOT_BEST_AND_WORST, "both best and worst"),
-//		new Tag(PLOT_BEST_AND_MEASURES, "both best and population measures"),
-//		new Tag(PLOT_CURBEST_AND_RUNBEST, "current best and best of run")
-//	};
 	
 	public final static int VERBOSITY_NONE = 0;
 	public final static int VERBOSITY_FINAL = 1;
@@ -50,11 +43,11 @@ public class StatsParameter implements InterfaceStatisticsParameter, Serializabl
 
 //	private int m_PlotFitness = PLOT_BEST;
 	private int m_Textoutput = 0;
-	private int m_Plotoutput = 1;
+//	private int m_Plotoutput = 1;
 	private int m_MultiRuns = 1;
 	private String m_ResultFilePrefix = "EvA2";
 	protected String m_Name = "not defined";
-	protected String m_InfoString = "";
+//	protected String m_InfoString = "";
 	private boolean m_useStatPlot = true;
 	private boolean showAdditionalProblemInfo = false;
 	private double m_ConvergenceRateThreshold=0.001;
@@ -95,47 +88,30 @@ public class StatsParameter implements InterfaceStatisticsParameter, Serializabl
 	 *
 	 */
 	public String toString() {
-		String ret = "\r\nStatParameter:\r\nm_MultiRuns=" + m_MultiRuns +
-		"\nm_Textoutput=" + m_Textoutput +
-		"\nm_Plotoutput=" + m_Plotoutput +
-		"\nverbosity= " + outputVerbosity.getSelectedString() +
-		"\n" + outputTo.getSelectedString() + 
-		"\n";
+		String ret = "\r\nStatParameter (" + super.toString() + "):\r\nm_MultiRuns=" + m_MultiRuns +
+		", m_Textoutput=" + m_Textoutput +
+//		", m_Plotoutput=" + m_Plotoutput +
+		", verbosity= " + outputVerbosity.getSelectedString() +
+		"\nTo " + outputTo.getSelectedString() + 
+		", " + BeanInspector.toString(graphSel.getStrings());
 		return ret;
 	}
 
-	/**
-	 * Return a list of String arrays describing the selected plot options, e.g. {"Best"} or {"Best", "Worst"}.
-	 * For now, only one array is returned.
-	 * 
-	 * @return a list of String arrays describing the selected plot options
-	 */
-	public ArrayList<String[]> getPlotDescriptions() {
-		ArrayList<String> desc = new ArrayList<String>();
-		for (int i=0; i<GraphSelectionEnum.values().length; i++) {
-			if (graphSel.isSelected(i)) desc.add(graphSel.getElement(i));
-		}
-		ArrayList<String[]> alist = new ArrayList<String[]>();
-		alist.add(desc.toArray(new String[desc.size()]));
-		return alist;
-//		switch (getPlotData().getSelectedTagID()) {
-//		case StatsParameter.PLOT_BEST_AND_WORST:
-//			desc.add(new String[] {"Best", "Worst"});
-//			break;
-//		case StatsParameter.PLOT_BEST:
-//			desc.add(new String[] {"Best"});
-//			break;
-//		case StatsParameter.PLOT_WORST:
-//			desc.add(new String[] {"Worst"});
-//			break;
-//		case StatsParameter.PLOT_BEST_AND_MEASURES:
-//			desc.add(new String[] {"Best", "AvgDist", "MaxDist"});
-//			break;
-//		case StatsParameter.PLOT_CURBEST_AND_RUNBEST:
-//			desc.add(new String[] {"Cur.Best", "Run Best"});
-//			break;		}
-//		return desc;
-	}
+//	/**
+//	 * Return a list of String arrays describing the selected plot options, e.g. {"Best"} or {"Best", "Worst"}.
+//	 * For now, only one array is returned.
+//	 * 
+//	 * @return a list of String arrays describing the selected plot options
+//	 */
+//	public ArrayList<String[]> getPlotDescriptions() {
+//		ArrayList<String> desc = new ArrayList<String>();
+//		for (int i=0; i<graphSel.getLength(); i++) {
+//			if (graphSel.isSelected(i)) desc.add(graphSel.getElement(i));
+//		}
+//		ArrayList<String[]> alist = new ArrayList<String[]>();
+//		alist.add(desc.toArray(new String[desc.size()]));
+//		return alist;
+//	}
 
 	/**
 	 *
@@ -151,7 +127,7 @@ public class StatsParameter implements InterfaceStatisticsParameter, Serializabl
 		m_ConvergenceRateThreshold = Source.m_ConvergenceRateThreshold;
 		m_useStatPlot = Source.m_useStatPlot;
 		m_Textoutput = Source.m_Textoutput;
-		m_Plotoutput = Source.m_Plotoutput;
+//		m_Plotoutput = Source.m_Plotoutput;
 //		m_PlotFitness = Source.m_PlotFitness;
 		m_MultiRuns = Source.m_MultiRuns;
 		m_ResultFilePrefix = Source.m_ResultFilePrefix;
@@ -173,21 +149,7 @@ public class StatsParameter implements InterfaceStatisticsParameter, Serializabl
 	}
 
 	public static String globalInfo() {
-		return "Configure statistics and output of the optimization run.";
-	}
-
-	/**
-	 *
-	 */
-	public void setPlotoutput(int i) {
-		m_Plotoutput = i;
-	}
-
-	/**
-	 *
-	 */
-	public int GetPlotoutput() {
-		return m_Plotoutput;
+		return "Configure statistics and output of the optimization run. Changes to the data selection state will not take effect during a run.";
 	}
 
 //	/**
@@ -225,19 +187,19 @@ public class StatsParameter implements InterfaceStatisticsParameter, Serializabl
 		return "Number of independent optimization runs to evaluate.";
 	}
 
-	/**
-	 *
-	 */
-	public String GetInfoString() {
-		return m_InfoString;
-	}
-
-	/**
-	 *
-	 */
-	public void setInfoString(String s) {
-		m_InfoString = s;
-	}
+//	/**
+//	 *
+//	 */
+//	public String GetInfoString() {
+//		return m_InfoString;
+//	}
+//
+//	/**
+//	 *
+//	 */
+//	public void setInfoString(String s) {
+//		m_InfoString = s;
+//	}
 
 	/**
 	 *
@@ -247,24 +209,21 @@ public class StatsParameter implements InterfaceStatisticsParameter, Serializabl
 	}
 
 	/**
-	 *
+	 *  Use averaged graph for multi-run plots or not
 	 */
-	public boolean GetuseStatPlot() {
+	public boolean GetUseStatPlot() {
 		return m_useStatPlot;
 	}
 
 	/**
-	 *
+	 * Activate or deactivate averaged graph for multi-run plots
 	 */
-	public void setuseStatPlot(boolean x) {
+	public void setUseStatPlot(boolean x) {
 		m_useStatPlot = x;
 	}
 
-	/**
-	 *
-	 */
 	public String useStatPlotTipText() {
-		return "Plotting each fitness graph separate if multiruns > 1.";
+		return "Plotting each fitness graph separately if multiruns > 1.";
 	}
 
 	/**
@@ -338,16 +297,16 @@ public class StatsParameter implements InterfaceStatisticsParameter, Serializabl
 //	return "Indicates whether further text output should be printed";
 //	}
 
-	public boolean isOutputAdditionalInfo() {
+	public boolean isOutputAllFieldsAsText() {
 		return showAdditionalProblemInfo;
 	}
 
-	public void setOutputAdditionalInfo(boolean showAdd) {
-		showAdditionalProblemInfo = showAdd;
+	public void setOutputAllFieldsAsText(boolean bShowFullText) {
+		showAdditionalProblemInfo = bShowFullText;
 	}
 
-	public String outputAdditionalInfoTipText() {
-		return "Activate to output additional problem information per iteration, such as the current solution representation.";
+	public String outputAllFieldsAsTextTipText() {
+		return "Output all available data fields or only the selected entries as text.";
 	}
 
 	public void hideHideable() {
@@ -400,15 +359,40 @@ public class StatsParameter implements InterfaceStatisticsParameter, Serializabl
 		return "Set the output destination; to deactivate output, set verbosity to none.";
 	}
 
-	public StringSelection getGraphSelection() {
+	public StringSelection getFieldSelection() {
 		return graphSel;
 	}
 	
-	public void setGraphSelection(StringSelection v) {
+	public void setFieldSelection(StringSelection v) {
 		graphSel = v;
 	}
 	
-	public String graphSelectionTipText() {
-		return "Select the graphs to be plotted.";
+	public String fieldSelectionTipText() {
+		return "Select the data fields to be collected and plotted. Note that only simple types can be plotted to the GUI.";
+	}
+
+	/**
+	 * May be called to dynamically alter the set of graphs that can be selected, 
+	 * using a list of informer instances, which usually are the problem and the
+	 * optimizer instance.
+	 * 
+	 * @see InterfaceAdditionalPopulationInformer
+	 */
+	public void setInformers(
+			List<InterfaceAdditionalPopulationInformer> informers) {
+		ArrayList<String> headerFields = new ArrayList<String>();
+		// parse list of header elements, show additional Strings according to names.
+		for (InterfaceAdditionalPopulationInformer inf : informers) {
+			headerFields.addAll(Arrays.asList(inf.getAdditionalFileStringHeader(null)));
+//			header += inf.getAdditionalFileStringHeader(null); // lets hope this works with a null 
+		}
+		// create additional fields to be selectable by the user, defined by the informer headers
+//		StringSelection ss = new StringSelection(GraphSelectionEnum.getAndAppendArray(headerFields.toArray(new String[headerFields.size()])));
+		StringSelection ss = new StringSelection(GraphSelectionEnum.currentBest, headerFields);
+		ss.takeOverSelection(graphSel);
+//		System.out.println("In " + this + ": setting new informers: " + BeanInspector.toString(ss.getStrings()));
+		// This works!
+		setFieldSelection(ss);
+//		System.out.println("After: " + this);
 	}
 }

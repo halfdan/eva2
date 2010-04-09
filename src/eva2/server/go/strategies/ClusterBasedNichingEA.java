@@ -1141,13 +1141,18 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
 		return "If fitness improves less than this value within the halting window, convergence is assumed. May be set to zero.";
 	}
 
-	public String getAdditionalFileStringHeader(PopulationInterface pop) {
-		return " Undiff. \t #Act.spec. \tAvg.Spec.Meas. \t #Archived."; 
+	public String[] getAdditionalFileStringHeader(PopulationInterface pop) {
+		return new String[]{"Undiff.","#Act.spec.","Avg.Spec.Meas.","#Archived."}; 
 	}
 
-	public String getAdditionalFileStringValue(PopulationInterface pop) {
+	public Object[] getAdditionalFileStringValue(PopulationInterface pop) {
 //		int actives = countActiveSpec();
-		return m_Undifferentiated.size() + " \t " + m_Species.size() + " \t " + BeanInspector.toString(getAvgSpeciesMeasures()[0]) + " \t " + (m_Archive.size());
+		return new Object[] {
+				m_Undifferentiated.size(),
+				m_Species.size(),
+				getAvgSpeciesMeasures()[0],
+				m_Archive.size()};
+//		return m_Undifferentiated.size() + " \t " + m_Species.size() + " \t " + BeanInspector.toString(getAvgSpeciesMeasures()[0]) + " \t " + (m_Archive.size());
 	}
 
 	/**

@@ -239,22 +239,22 @@ implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serial
      * @param pop   The population that is to be refined.
      * @return String
      */
-    public String getAdditionalFileStringHeader(PopulationInterface pop) {
-    	if (this instanceof InterfaceInterestingHistogram) return "Solution \t Histogram(c0) \t Score";
-    	else return "Solution";
+    public String[] getAdditionalFileStringHeader(PopulationInterface pop) {
+    	if (this instanceof InterfaceInterestingHistogram) return new String[]{"Solution","Histogram(c0)","Score"};
+    	else return new String[]{"Solution"};
     }
 
     /** This method returns the additional data that is to be written into a file
      * @param pop   The population that is to be refined.
      * @return String
      */
-    public String getAdditionalFileStringValue(PopulationInterface pop) {
+    public Object[] getAdditionalFileStringValue(PopulationInterface pop) {
     	String solStr = AbstractEAIndividual.getDefaultDataString(pop.getBestIndividual()); 
     	if (this instanceof InterfaceInterestingHistogram) {
     		SolutionHistogram hist = ((InterfaceInterestingHistogram)this).getHistogram();
     		Population sols = PostProcess.clusterBestUpdateHistogram((Population)pop, this, hist, 0, getDefaultAccuracy());
-    		return solStr + " \t " + hist + "\t" + hist.getScore();
-    	} else return solStr; 
+    		return new Object[]{solStr, hist, hist.getScore()};
+    	} else return new Object[]{solStr}; 
     }
 
     /**

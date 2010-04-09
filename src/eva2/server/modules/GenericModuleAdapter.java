@@ -11,6 +11,7 @@ import eva2.gui.GenericObjectEditor;
 import eva2.gui.JParaPanel;
 import eva2.gui.PanelMaker;
 import eva2.server.go.InterfaceGOParameters;
+import eva2.server.go.InterfaceNotifyOnInformers;
 import eva2.server.stat.AbstractStatistics;
 import eva2.server.stat.InterfaceStatisticsParameter;
 import eva2.server.stat.StatisticsStandalone;
@@ -46,7 +47,10 @@ public class GenericModuleAdapter extends AbstractModuleAdapter implements Seria
         	m_StatisticsModul	= new StatisticsStandalone(noGUIStatOut);
         }
         m_Processor         = new Processor(m_StatisticsModul,this, params);
-
+        
+        // the statistics want to be informed if the strategy or the optimizer (which provide statistical data as InterfaceAdditionalInformer) change.
+        if (m_StatisticsModul.getStatisticsParameter() instanceof InterfaceNotifyOnInformers) 
+        	params.addInformableInstance((InterfaceNotifyOnInformers)m_StatisticsModul.getStatisticsParameter());
         // this prevents the optimizer property to be shown by the GOE if optimizerExpert is true
     	GenericObjectEditor.setExpertProperty(params.getClass(), "optimizer", optimizerExpert);
        
@@ -89,7 +93,9 @@ public class GenericModuleAdapter extends AbstractModuleAdapter implements Seria
         if (m_RMI && !Proxy.isProxyClass(Stat.getClass())) GUIContainer.add(new JParaPanel( RMIProxyLocal.newInstance(Stat), Stat.getName()));
         else GUIContainer.add(new JParaPanel(Stat, Stat.getName()));
 
-        return new EvATabbedFrameMaker(GUIContainer);
+        EvATabbedFrameMaker frmMkr = new EvATabbedFrameMaker(GUIContainer);
+        ((Processor)m_Processor).getGOParams().addInformableInstance(frmMkr);
+        return frmMkr;
     }
     
     public static String getName() {

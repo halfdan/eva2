@@ -10,9 +10,9 @@ import eva2.server.go.operators.distancemetric.InterfaceDistanceMetric;
 import eva2.server.go.operators.distancemetric.PhenotypeMetric;
 import eva2.server.go.operators.postprocess.PostProcess;
 import eva2.server.go.populations.Population;
-
-import eva2.server.go.problems.Interface2DBorderProblem;
 import eva2.tools.EVAERROR;
+import eva2.tools.ToolBox;
+import eva2.tools.math.Mathematics;
 
 public abstract class AbstractMultiModalProblemKnown extends AbstractProblemDouble implements Interface2DBorderProblem, InterfaceMultimodalProblemKnown {
 	protected static InterfaceDistanceMetric   m_Metric = new PhenotypeMetric();
@@ -121,26 +121,18 @@ public abstract class AbstractMultiModalProblemKnown extends AbstractProblemDoub
 	 */
 	public abstract double[] evalUnnormalized(double[] x);
 	
-	/** 
-	 * This method returns the header for the additional data that is to be written into a file
-	 * @param pop   The population that is to be refined.
-	 * @return String
-	 */
-	public String getAdditionalFileStringHeader(PopulationInterface pop) {
-		return "#Optima found \tMaximum Peak Ratio \t" + super.getAdditionalFileStringHeader(pop);
+	@Override
+	public String[] getAdditionalFileStringHeader(PopulationInterface pop) {
+		return ToolBox.appendArrays(new String[]{"numOptsFound", "maxPeakRatio"}, super.getAdditionalFileStringHeader(pop));
 	}
 
-	/** 
-	 * This method returns the additional data that is to be written into a file
-	 * @param pop   The population that is to be refined.
-	 * @return String
-	 */
-	public String getAdditionalFileStringValue(PopulationInterface pop) {
-		String result = "";
+	@Override
+	public Object[] getAdditionalFileStringValue(PopulationInterface pop) {
+		Object[] result = new Object[2];
 //		result += AbstractEAIndividual.getDefaultDataString(pop.getBestIndividual()) +"\t";
-		result += this.getNumberOfFoundOptima((Population)pop)+"\t";
-		result += this.getMaximumPeakRatio((Population)pop);
-		return result +"\t"+ super.getAdditionalFileStringValue(pop);
+		result[0] = this.getNumberOfFoundOptima((Population)pop);
+		result[1] = this.getMaximumPeakRatio((Population)pop);
+		return ToolBox.appendArrays(result, super.getAdditionalFileStringValue(pop));
 	}
 //
 //	/** This method returns a string describing the optimization problem.
@@ -253,22 +245,28 @@ public abstract class AbstractMultiModalProblemKnown extends AbstractProblemDoub
 	 * @return double
 	 */
 	public double getMaximumPeakRatio(Population pop) {
-		return getMaximumPeakRatio(this, pop, m_Epsilon);
+		if (!this.fullListAvailable()) return -1;
+		else return getMaximumPeakRatio(this.getRealOptima(), pop, m_Epsilon);
 	}
 	
 	/**
 	 * Returns -1 if the full list is not available. Otherwise calculates the maximum peak ratio
 	 * based on the full list of known optima.
+	 * This assumes that the realOpts have fitness values assigned as for maximization and the
+	 * pop has fitness values assigned for minimization (mirrored by maximum fitness within realOpts).
+	 * 
+	 * This is in analogy to the original implementation by F.Streichert.  
 	 * 
 	 * @param mmProb
 	 * @param pop
 	 * @param epsilon
 	 * @return
 	 */
-	public static double getMaximumPeakRatio(InterfaceMultimodalProblemKnown mmProb, Population pop, double epsilon) {
+	public static double getMaximumPeakRatio(Population realOpts, Population pop, double epsilon) {
 		double          foundInvertedSum = 0, sumRealMaxima = 0;
-		if (!mmProb.fullListAvailable()) return -1;
-		Population realOpts = mmProb.getRealOptima();
+		if (realOpts==null || (realOpts.size()==0)) return -1;
+//		if (!mmProb.fullListAvailable()) return -1;
+//		Population realOpts = mmProb.getRealOptima();
 		double 			tmp, maxOpt = realOpts.getEAIndividual(0).getFitness(0);
 		sumRealMaxima = maxOpt;
 		for (int i=1; i<realOpts.size(); i++) {
@@ -291,6 +289,87 @@ public abstract class AbstractMultiModalProblemKnown extends AbstractProblemDoub
 //		System.out.println("foundSum: " + foundInvertedSum + " realsum: " + sumRealMaxima + " ratio: " + foundInvertedSum/sumRealMaxima);
 		return foundInvertedSum/sumRealMaxima;
 	}
+	
+	/**
+	 * Returns -1 if the full list is not available. Otherwise calculates the maximum peak ratio
+	 * based on the full list of known optima. Assumes that both realOpts and pop have fitness
+	 * values assigned as in a maximization problem. This is the standard formulation of MPR.
+	 * 
+	 * @param mmProb
+	 * @param pop
+	 * @param epsilon
+	 * @return
+	 */
+	public static double getMaximumPeakRatioMaximization(Population realOpts, Population pop, double epsilon, int fitCrit) {
+		AbstractEAIndividual[] optsFound = PostProcess.getFoundOptimaArray(pop, realOpts, epsilon, true);
+		double mpr = 0;
+		for (int i=0; i<realOpts.size(); i++) {
+			// sum up the specific optimal fitness values relative to optimal fitness
+			if (optsFound[i] != null) {
+				double tmp = optsFound[i].getFitness(fitCrit);
+				if (tmp < 0) EVAERROR.errorMsgOnce("warning: for the MPR calculation, negative fitness values may disturb the allover result (AbstractMultiModalProblemKnown)");
+				mpr += (Math.max(0., tmp)/realOpts.getEAIndividual(i).getFitness(fitCrit));
+			}
+		}
+		return mpr;
+	}
+	
+	/**
+	 * Calculates the maximum peak ratio based on the given fitness values.
+	 * This is the standard formulation of MPR which assumes that all fitness
+	 * values are positive (and for a corresponding pair, foundFits[i]<realFits[i]).
+	 * If these assumptions hold, the MPR lies in [0,1]. 
+	 * 
+	 * @param mmProb
+	 * @param pop
+	 * @param epsilon
+	 * @return
+	 */
+	public static double getMaximumPeakRatioMaximization(double[] realFits, double[] foundFits) {
+		double mpr = Mathematics.sum(foundFits)/Mathematics.sum(realFits);
+		return mpr;
+	}
+	
+	/**
+	 * Returns -1 if the full list is not available. Otherwise calculates the maximum peak ratio
+	 * based on the full list of known optima. Assumes that both realOpts and pop have fitness
+	 * values assigned as in a maximization problem. This is the standard formulation of MPR.
+	 * 
+	 * @param mmProb
+	 * @param pop
+	 * @param epsilon
+	 * @return
+	 */
+	public static double getMaximumPeakRatioMinimization(Population realOpts, Population pop, double epsilon, int fitCrit, double fitThreshold) {
+		AbstractEAIndividual[] optsFound = PostProcess.getFoundOptimaArray(pop, realOpts, epsilon, true);
+		double[] realFits = new double[realOpts.size()];
+		double[] foundFits = new double[realOpts.size()];
+		double minOpt = Double.MAX_VALUE; 
+		for (int i=0; i<realOpts.size(); i++) {
+			// store the optimal fitness values and remember the smallest one
+			realFits[i]=realOpts.getEAIndividual(i).getFitness(fitCrit);
+			if (realFits[i]>fitThreshold) System.err.println("Warning: The fitness threshold to turn minimization fitness values into " +
+					"maximization values should be larger than any optimal fitness! (AbstractMultiModalProblemKnown)");
+			if (i==0 || (minOpt>realFits[i])) minOpt = realFits[i];
+			// check if the opt. was found and store the corr. found fitness
+			if (optsFound[i]!=null) {
+				foundFits[i] = new Double(optsFound[i].getFitness(fitCrit));
+			} else foundFits[i]=fitThreshold; // note that it wasnt found -- will result in zero
+		}
+		// now we mirror all values with the threshold - provided they are below the threshold...
+		for (int i=0; i<realOpts.size(); i++) {
+			realFits[i] = fitThreshold-realFits[i];
+			foundFits[i] = fitThreshold-foundFits[i];
+			if (foundFits[i]>realFits[i] && (foundFits[i]-realFits[i]>1e-10)) {
+				// this can happen if the real fitness is wrong or if the threshold allows individuals close to better optima to 
+				// be counted for actually inferior optima    
+				System.err.println("Warning: found fitness is better than real fitness - wrong predefined solution or suboptimal epsilon-criterion? Diff was: " + (foundFits[i]-realFits[i]));
+			}
+			if ((realFits[i] < 0) || (foundFits[i] < 0)) EVAERROR.errorMsgOnce("warning: for the MPR calculation, negative fitness values may disturb the allover result (AbstractMultiModalProblemKnown)");
+		}
+		// now we can call the standard calculation method
+		return getMaximumPeakRatioMaximization(realFits, foundFits);
+	}	
 	
 //	public double getMaximumPeakRatio(Population pop) {
 //		double                  result = 0, sum = 0;

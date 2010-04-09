@@ -2,6 +2,7 @@ package eva2.tools;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.StringTokenizer;
 
 import eva2.gui.BeanInspector;
@@ -218,4 +219,44 @@ public class StringTools {
 		}
 		return -1;
 	}
+
+	/**
+	 * Concatenate a list of Strings using a given delimiter string.
+	 * 
+	 * @param headlineFields
+	 * @param delim
+	 * @return
+	 */
+	public static String concatFields(List<String> strings,
+			String delim) {
+		StringBuffer sb = new StringBuffer();
+		int cnt=0;
+		for (String field : strings) {
+			if (cnt>0) sb.append(delim);
+			sb.append(field);
+			cnt++;
+		}
+		return sb.toString();
+	}
+	
+	/**
+	 * Concatenate a list of Objects using a given delimiter string.
+	 * The objects are converted to strings using the BeanInspector class.
+	 * 
+	 * @param headlineFields
+	 * @param delim
+	 * @return
+	 */
+	public static String concatValues(List<Object> objects,
+			String delim) {
+		StringBuffer sb = new StringBuffer();
+		int cnt=0;
+		for (Object v : objects) {
+			if (cnt>0) sb.append(delim);
+			sb.append(BeanInspector.toString(v));
+			cnt++;
+		}
+		return sb.toString();
+	}
 }
+

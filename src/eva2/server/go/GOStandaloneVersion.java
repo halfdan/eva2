@@ -26,6 +26,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 
 import eva2.client.EvAClient;
+import eva2.gui.BeanInspector;
 import eva2.gui.JParaPanel;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.ESIndividualDoubleData;
@@ -410,7 +411,7 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
                 if (Thread.interrupted())
                     throw new InterruptedException();
                 // write header to file
-                this.writeToFile(" FitnessCalls\t Best\t Mean\t Worst \t" + this.m_GO.getProblem().getAdditionalFileStringHeader(this.m_GO.getOptimizer().getPopulation()));
+                this.writeToFile(" FitnessCalls\t Best\t Mean\t Worst \t" + BeanInspector.toString(this.m_GO.getProblem().getAdditionalFileStringHeader(this.m_GO.getOptimizer().getPopulation()), '\t', false));
                 if ((this.m_ContinueFlag) && (this.m_Backup != null)) {
                     this.m_RecentFC += this.m_Backup.getFunctionCalls();
                     this.m_GO.getOptimizer().getProblem().initProblem();

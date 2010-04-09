@@ -265,7 +265,7 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 			runnable.setVerbosityLevel(verbosityLevel);
 			if (verbosityLevel>0) runnable.setOutputTo(2); // both file + window
 			else runnable.setOutputTo(1); // only window
-			runnable.setOutputAdditionalInfo(true);
+			runnable.setOutputFullStatsToText(true);
 
 //			log("in MP optimize C\n");
 			if ((specParams != null) && (specParams.length > 0)) {
@@ -346,12 +346,16 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 		requestPostProcessing(steps, sigma, -1);
 	}
 
+	/**
+	 * Try and stop the current optimization as well as any post processing 
+	 * currently running.
+	 */
 	public void stopOptimize() {
 		log(">>>>>>>>>> Stop event!\n");
 		if (runnable != null) {
 			runnable.stopOpt();
 		}
-		PostProcess.stopPP();
+		PostProcess.stopAllPP();
 	}
 
 	public String getInfoString() {

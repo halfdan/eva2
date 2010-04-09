@@ -1991,6 +1991,10 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 		this.emaPeriods = emaPeriods;
 	}
 
+	/**
+	 * This method is necessary to allow access from the Processor.
+	 * @return
+	 */
 	public ParameterControlManager getParamControl() {
 		return paramControl;
 	}
@@ -1998,9 +2002,11 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 	public ParamAdaption[] getParameterControl() {
 		return paramControl.getSingleAdapters();
 	}
-	
 	public void setParameterControl(ParamAdaption[] paramControl) {
 		this.paramControl.setSingleAdapters(paramControl);
+	}
+	public String parameterControlTipText() {
+		return "You may define dynamic paramter control strategies using the parameter name.";
 	}
 
 	/**
@@ -2055,20 +2061,19 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 //		this.doLocalSearch = doLocalSearch;
 //	}
 
-	public String getAdditionalFileStringHeader(PopulationInterface pop) {
-		if (emaPeriods > 0) return " \tMeanCurSpeed \tMeanEMASpeed";
-		else return " \tMeanCurSpeed";
+	public String[] getAdditionalFileStringHeader(PopulationInterface pop) {
+		if (emaPeriods > 0) return new String[]{"MeanCurSpeed","MeanEMASpeed"};
+		else return new String[]{"MeanCurSpeed"};
 	}
 
-	public String getAdditionalFileStringValue(PopulationInterface pop) {
-		String res=" \t";
+	public Object[] getAdditionalFileStringValue(PopulationInterface pop) {
 		AbstractEAIndividual indy = (AbstractEAIndividual)pop.get(0);
 		if (emaPeriods>0) {
+			double relSp;
 			if (indy instanceof InterfaceDataTypeDouble) {
-				res = getRelativeEMASpeed(((InterfaceDataTypeDouble)indy).getDoubleRange()) + " \t";
-			} else res=Double.NaN + " \t";;
-		}
-		res += getPopulationAvgNormedVelocity((Population) pop);
-		return res;
+				relSp = getRelativeEMASpeed(((InterfaceDataTypeDouble)indy).getDoubleRange());
+			} else relSp=Double.NaN;
+			return new Object[]{relSp, getPopulationAvgNormedVelocity((Population) pop)};
+		} else return new Object[]{getPopulationAvgNormedVelocity((Population) pop)};
 	}
 }

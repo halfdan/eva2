@@ -29,21 +29,17 @@ import eva2.server.EvAServer;
 import eva2.server.go.PopulationInterface;
 import eva2.server.go.problems.InterfaceAdditionalPopulationInformer;
 import eva2.tools.EVAERROR;
-import eva2.tools.StringSelection;
+import eva2.tools.Pair;
 import eva2.tools.jproxy.MainAdapterClient;
 import eva2.tools.jproxy.RMIProxyLocal;
 import eva2.tools.jproxy.RMIProxyRemote;
 
-/*==========================================================================*
- * CLASS DECLARATION
- *==========================================================================*/
 /**
- * A statistics class to plot fitness curves in client-server mode.
+ * A statistics class to plot fitness curves in client-server mode. Mainly, arrays of GraphWindows 
+ * and Graphs are managed and the selected data fields are plotted.
+ * 
  */
 public class StatisticsWithGUI extends AbstractStatistics implements Serializable, InterfaceStatistics {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 3213603978877954103L;
 	// Plot frames:
 	private GraphWindow[] m_FitnessFrame; // frame for the fitness plots
@@ -55,7 +51,7 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
 
 	private MainAdapterClient m_MainAdapterClient; // the connection to the client MainAdapter
 	private JTextoutputFrameInterface m_ProxyPrinter;
-	private StringSelection lastGraphSelection;
+	private transient List<Pair<String, Integer>> graphDesc=null; // list of descriptor strings and optional indices. strictly its redundant since super.lastGraphSelection is always available. However it spares some time.
 
 	//////////////
 	protected static String m_MyHostName = null;
@@ -105,12 +101,9 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
 	public synchronized void startOptPerformed(String infoString, int runNumber, Object goParams) {
 		super.startOptPerformed(infoString, runNumber, goParams);
 		m_GraphInfoString = infoString;
-		if (runNumber == 0) {
-			lastGraphSelection = (StringSelection)m_StatsParams.getGraphSelection().clone();
-		}
 		
 //		m_TextCounter = m_StatisticsParameter.GetTextoutput();
-		m_PlotCounter = m_StatsParams.GetPlotoutput();
+//		m_PlotCounter = m_StatsParams.GetPlotoutput();
 		if ((m_FitnessFrame!=null) && (m_FitnessFrame[0]!=null)) { 
 			PlotInterface p = m_FitnessFrame[0].getPlotter();
 			if ((p!=null) && p.isValid()) ((Plot)p).getFunctionArea().clearLegend();
@@ -135,8 +128,8 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
 				for (int j = 0; j < m_FitnessGraph[i].length; j++) {
 					m_StatGraph[i][j].setInfoString(
 							(m_FitnessGraph[i][j].getInfo().length() > 0 ? (m_FitnessGraph[i][j].getInfo() + "_") : "" )
-							+ (m_StatsParams.GetInfoString().length() > 0 ? (m_StatsParams.GetInfoString() + "_") : "" )
-							+ m_StatsParams.GetInfoString()
+//							+ (m_StatsParams.GetInfoString().length() > 0 ? (m_StatsParams.GetInfoString() + "_") : "" )
+//							+ m_StatsParams.GetInfoString()
 							+ "Mean_of_" + fullRuns + " ",
 							(float) 2.0);
 					if (normal && m_FitnessFrame[i].isValid()) {
@@ -159,42 +152,55 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
 		if (m_ProxyPrinter != null) m_ProxyPrinter.setShow(m_StatsParams.isShowTextOutput());
 	}
 	
-	protected void initPlots(List<String[]> description) {
+	protected void initPlots(PopulationInterface pop, List<InterfaceAdditionalPopulationInformer> informerList) {
 		if (TRACE) System.out.println("initPlots");
-
+		if (m_StatsParams instanceof StatsParameter) {
+//			StringSelection ss = ((StatsParameter)m_StatsParams).getGraphSelection();
+			graphDesc = lastFieldSelection.getSelectedWithIndex();
+//			for (int i=0; i<description.get(0).length; i++) graphDesc.add(description.get(0)[i]);
+		} else {
+			graphDesc = null;
+			System.err.println("Error in StatisticsWithGUI.initPlots()!");
+		}
+		
 		maybeShowProxyPrinter();
-		int graphCount = description.size();
+		int windowCount = 1; // TODO this was earlier description.length for the 2-D String-Array returned by m_StatsParams.getPlotDescriptions, which however always returned an array of length 1 (in the first dim).
+		int graphCount = graphDesc.size();
 //		System.out.println("Initializing " + graphCount + " plots (StatisticsWithGUI)");
-		m_FitnessFrame = new GraphWindow[graphCount];
+		m_FitnessFrame = new GraphWindow[windowCount];
 		for (int i = 0; i < m_FitnessFrame.length; i++) {
 //			m_FitnessFrame[i] = GraphWindow.getInstance(m_MainAdapterClient, m_GraphInfoString + " " + i + " " + " on " + m_MyHostName + ", VM " + EvAServer.m_NumberOfVM, "function calls", "fitness");
 			m_FitnessFrame[i] = GraphWindow.getInstance(m_MainAdapterClient, "Optimization " + i + " " + " on " + m_MyHostName + ", VM " + EvAServer.m_NumberOfVM, "function calls", "fitness");
 		}
 		
-		m_FitnessGraph = new Graph[graphCount][];
+		m_FitnessGraph = new Graph[windowCount][];
 		// contains one graph for every value to be plotted (best / worst / best+worst)
 		// TODO Im really not sure why this is a 2-dimensional array. shouldnt one be enough?
 		for (int i = 0; i < m_FitnessGraph.length; i++) {
-			m_FitnessGraph[i] = new Graph[((String[]) description.get(i)).length];
+			m_FitnessGraph[i] = new Graph[graphCount];
 			for (int j = 0; j < m_FitnessGraph[i].length; j++) {
-				String[] d = (String[]) description.get(i);
+//				String[] d = (String[]) description.get(i);
 				// this is where the column string for ascii export is created! Uah!
 				m_FitnessGraph[i][j] =
-					m_FitnessFrame[i].getNewGraph(d[j] + "_" +
-							m_StatsParams.GetInfoString() +
+					m_FitnessFrame[i].getNewGraph(graphDesc.get(j).head + "_" +
+//							m_StatsParams.GetInfoString() +
 							m_GraphInfoString);
+//				m_FitnessGraph[i][j] =
+//					m_FitnessFrame[i].getNewGraph(d[j] + "_" +
+//							m_StatsParams.GetInfoString() +
+//							m_GraphInfoString);
 				m_FitnessGraph[i][j].jump();
 			}
 		}
 		if (m_StatsParams.getMultiRuns() > 1 &&
-				m_StatsParams.GetuseStatPlot() == true) {
-			String Info = m_StatsParams.GetInfoString();
-			m_StatGraph = new Graph[graphCount][];
+				m_StatsParams.GetUseStatPlot() == true) {
+//			String Info = m_StatsParams.GetInfoString();
+			m_StatGraph = new Graph[windowCount][];
 			for (int i = 0; i < m_StatGraph.length; i++) {
-				m_StatGraph[i] = new Graph[((String[]) description.get(i)).length];
+				m_StatGraph[i] = new Graph[graphCount];
 				for (int j = 0; j < m_StatGraph[i].length; j++) {
-					String[] d = (String[]) description.get(i);
-					m_StatGraph[i][j] = m_FitnessFrame[i].getNewGraph(d[j] + "_" + Info +
+//					String[] d = (String[]) description.get(i);
+					m_StatGraph[i][j] = m_FitnessFrame[i].getNewGraph(graphDesc.get(j).head + "_" + //Info +
 							m_GraphInfoString);
 				}
 			}
@@ -220,44 +226,29 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
 		if (isValidGraph) m_FitnessGraph[graph][subGraph].setConnectedPoint(x, y);
 	}
 	
-	protected void plotCurrentResults() {
-		// Plots
-		m_PlotCounter--;
-		
-//		int fitnessplot_setting =  m_StatsParams.getPlotData().getSelectedTag().getID();
-		
-		if (m_PlotCounter == 0) {
-			m_PlotCounter = m_StatsParams.GetPlotoutput();
-//			boolean doPlotBest = (fitnessplot_setting == StatsParameter.PLOT_BEST)
-//					|| (fitnessplot_setting == StatsParameter.PLOT_BEST_AND_WORST)
-//										|| (fitnessplot_setting == StatsParameter.PLOT_CURBEST_AND_RUNBEST)
-//					|| (fitnessplot_setting == StatsParameter.PLOT_BEST_AND_MEASURES);
-//			boolean doPlotWorst = (fitnessplot_setting == StatsParameter.PLOT_WORST)
-//					|| (fitnessplot_setting == StatsParameter.PLOT_BEST_AND_WORST);
-//			boolean doPlotMeasures = (fitnessplot_setting == StatsParameter.PLOT_BEST_AND_MEASURES);
-			
-			boolean doPlotCurrentBest = GraphSelectionEnum.doPlotCurrentBest(lastGraphSelection);
-			boolean doPlotRunBest = GraphSelectionEnum.doPlotRunBest(lastGraphSelection);
-			boolean doPlotWorst= GraphSelectionEnum.doPlotWorst(lastGraphSelection);
-			boolean doPlotCurBestFeasible = GraphSelectionEnum.doPlotCurrentBestFeasible(lastGraphSelection);
-			boolean doPlotRunBestFeasible = GraphSelectionEnum.doPlotRunBestFeasible(lastGraphSelection);
-			boolean doPlotAvgDist= GraphSelectionEnum.doPlotAvgDist(lastGraphSelection);
-			boolean doPlotMaxPopDist= GraphSelectionEnum.doPlotMaxPopDist(lastGraphSelection);
-
-			int subGraph=0;
-			if (doPlotCurrentBest) plotFitnessPoint(0, subGraph++, functionCalls, currentBestFit[0]);
-			if (doPlotRunBest) plotFitnessPoint(0, subGraph++, functionCalls, bestOfRunIndy.getFitness()[0]);
-			if (doPlotWorst) plotFitnessPoint(0, subGraph++ , functionCalls, currentWorstFit[0]);
-			if (doPlotAvgDist) plotFitnessPoint(0, subGraph++, functionCalls, avgPopDist);
-			if (doPlotMaxPopDist) plotFitnessPoint(0, subGraph++, functionCalls, maxPopDist);
-			if (doPlotCurBestFeasible && currentBestFeasibleFit!=null) plotFitnessPoint(0, subGraph++, functionCalls, currentBestFeasibleFit[0]);
-			if (doPlotRunBestFeasible && bestOfRunFeasibleIndy!=null) plotFitnessPoint(0, subGraph++, functionCalls, bestOfRunFeasibleIndy.getFitness()[0]);
-
-		}
-	}
-
 	/**
-	 *
+	 * Plots the selected data to the fitness graphs.
+	 */
+	protected void plotCurrentResults() {
+//		m_PlotCounter--;
+
+//		if (m_PlotCounter == 0) {
+//			m_PlotCounter = m_StatsParams.GetPlotoutput();
+			int subGraph=0;
+//			boolean doPlotAdditionalInfo = m_StatsParams.isOutputAdditionalInfo();
+			for (int i=0; i<graphDesc.size(); i++) {
+				Integer colIndex = i+1; // always add one because the function calls are located in column zero
+				if (lastIsShowFull) colIndex = 1+graphDesc.get(i).tail;
+				// plot the column as indicated by the graph description
+				if (currentStatDoubleData[colIndex]!=null) plotFitnessPoint(0, subGraph++, functionCalls, currentStatDoubleData[colIndex]);
+				else EVAERROR.errorMsgOnce("Error, data field " + graphDesc.get(i).head + " does not contain primitive data and cannot be plotted.");
+			}
+//		}
+	}
+	
+	/**
+	 * This method is more or less deprecated. The current standard population does not
+	 * define specific data. However its used by the ES module implementation.
 	 */
 	public void plotSpecificData(PopulationInterface pop, List<InterfaceAdditionalPopulationInformer> informer) {
 		double[] specificData = pop.getSpecificData();
@@ -291,9 +282,9 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
 			printToTextListener(s + "\n");
 		}
 
-		m_PlotCounter--;
-		if (m_PlotCounter == 0) {
-			m_PlotCounter = m_StatsParams.GetPlotoutput();
+//		m_PlotCounter--;
+//		if (m_PlotCounter == 0) {
+//			m_PlotCounter = m_StatsParams.GetPlotoutput();
 			int index = 0;
 			for (int i = 0; i < m_FitnessGraph.length; i++) {
 				for (int j = 0; j < m_FitnessGraph[i].length; j++) {
@@ -301,8 +292,7 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
 					index++;
 				}
 			}
-
-		}
+//		}
 	}
 	
 	public String getHostName() {
