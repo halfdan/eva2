@@ -2,12 +2,22 @@ package eva2.gui;
 
 
 
-import java.awt.*;
-
+import java.awt.BasicStroke;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Stroke;
 import java.util.ArrayList;
 
 import eva2.tools.IntegerArrayList;
-import eva2.tools.chart2d.*;
+import eva2.tools.chart2d.DArray;
+import eva2.tools.chart2d.DBorder;
+import eva2.tools.chart2d.DComponent;
+import eva2.tools.chart2d.DIntDoubleMap;
+import eva2.tools.chart2d.DMeasures;
+import eva2.tools.chart2d.DPoint;
+import eva2.tools.chart2d.DPointIcon;
+import eva2.tools.chart2d.DPointSet;
+import eva2.tools.chart2d.DRectangle;
 
 
 /**
@@ -21,30 +31,84 @@ public class DPointSetMultiIcon extends DComponent
 {
     //~ Instance fields ////////////////////////////////////////////////////////
 
-    protected ArrayList<DPointIcon> m_IconsMI = new ArrayList<DPointIcon>();
-    protected DIntDoubleMap xMI;
-    protected DIntDoubleMap yMI;
+    /**
+     * this class stores the jump positions (see this.jump)
+     */
+    class JumpManager
+    {
+        protected int index = -1;
+        protected IntegerArrayList jumps = new IntegerArrayList();
+
+        public void addJump()
+        {
+            jumps.add(getSize());
+        }
+
+        public boolean hasMoreIntervals()
+        {
+            return index < jumps.size();
+        }
+
+        public int[] nextInterval()
+        {
+            int no_jumps = jumps.size();
+
+            if (index >= no_jumps)
+            {
+                throw new ArrayIndexOutOfBoundsException(
+                    "No more intervals in JumpManager");
+            }
+
+            int[] inter = new int[2];
+
+            if (index == -1)
+            {
+                inter[0] = 0;
+            }
+            else
+            {
+                inter[0] = jumps.get(index);
+            }
+
+            index++;
+
+            if (index < no_jumps)
+            {
+                inter[1] = jumps.get(index);
+            }
+            else
+            {
+                inter[1] = getSize();
+            }
+
+            return inter;
+        }
+
+        public void reset()
+        {
+            index = -1;
+            jumps.clear();
+        }
+
+        public void restore()
+        {
+            index = -1;
+        }
+    }
+    protected boolean connectedMI;
     protected DPointIcon iconMI = null;
     protected DPointSetMultiIcon.JumpManager jumperMI = new DPointSetMultiIcon.JumpManager();
+    protected ArrayList<DPointIcon> m_IconsMI = new ArrayList<DPointIcon>();
     protected Stroke strokeMI = new BasicStroke();
-    protected boolean connectedMI;
+    protected DIntDoubleMap xMI;
 
     //~ Constructors ///////////////////////////////////////////////////////////
+
+    protected DIntDoubleMap yMI;
 
     public DPointSetMultiIcon()
     {
         this(10, 2);
-    }
-
-    public DPointSetMultiIcon(int initial_capacity)
-    {
-        this(initial_capacity, 2);
-    }
-
-    public DPointSetMultiIcon(int initial_capacity, int length_multiplier)
-    {
-        this(new DArray(initial_capacity, length_multiplier),
-            new DArray(initial_capacity, length_multiplier));
     }
 
     public DPointSetMultiIcon(DIntDoubleMap x_values, DIntDoubleMap y_values)
@@ -61,37 +125,30 @@ public class DPointSetMultiIcon extends DComponent
         setDBorder(new DBorder(1, 1, 1, 1));
     }
 
-    //~ Methods ////////////////////////////////////////////////////////////////
-
-    public void setConnected(boolean aFlag)
+    public DPointSetMultiIcon(int initial_capacity)
     {
-        boolean changed = !(aFlag == connectedMI);
-        connectedMI = aFlag;
-
-        if (changed)
-        {
-            repaint();
-        }
+        this(initial_capacity, 2);
     }
 
-    /**
-     * method puts the given DPoint at the given position in the set
-     *
-     * @param index the index of the point
-     * @param p     the point to insert
-     */
-    public void setDPoint(int index, DPoint p)
-    {
-        if (index >= xMI.getSize())
-        {
-            throw new ArrayIndexOutOfBoundsException(index);
-        }
+    //~ Methods ////////////////////////////////////////////////////////////////
 
+    public DPointSetMultiIcon(int initial_capacity, int length_multiplier)
+    {
+        this(new DArray(initial_capacity, length_multiplier),
+            new DArray(initial_capacity, length_multiplier));
+    }
+
+    public void addDPoint(double x, double y)
+    {
+        addDPoint(new DPoint(x, y));
+    }
+
+    public void addDPoint(DPoint p)
+    {
+        xMI.addImage(p.x);
+        yMI.addImage(p.y);
+        m_IconsMI.add(p.getIcon());
         rectangle.insert(p);
-        xMI.setImage(index, p.x);
-        yMI.setImage(index, p.y);
-        m_IconsMI.set(index, p.getIcon());
-        restore();
         repaint();
     }
 
@@ -120,29 +177,6 @@ public class DPointSetMultiIcon extends DComponent
         return new DPointSet(xMI, yMI);
     }
 
-    public ArrayList<DPointIcon> getIconsMI() {
-        return this.m_IconsMI;
-    }
-
-    /**
-     * method sets an icon for a better displaying of the point set
-     *
-     * @param icon the DPointIcon
-     */
-    public void setIcon(DPointIcon icon)
-    {
-        this.iconMI = icon;
-
-        if (icon == null)
-        {
-            setDBorder(new DBorder(1, 1, 1, 1));
-        }
-        else
-        {
-            setDBorder(icon.getDBorder());
-        }
-    }
-
     /**
      * method returns the current icon of the point set
      *
@@ -151,6 +185,10 @@ public class DPointSetMultiIcon extends DComponent
     public DPointIcon getIcon()
     {
         return iconMI;
+    }
+
+    public ArrayList<DPointIcon> getIconsMI() {
+        return this.m_IconsMI;
     }
 
     /**
@@ -214,23 +252,6 @@ public class DPointSetMultiIcon extends DComponent
     }
 
     /**
-     *  method sets the stroke of the line
-     *  if the points were not connected, they now will be connected
-     *
-     * @param s the new stroke
-     */
-    public void setStroke(Stroke s)
-    {
-        if (s == null)
-        {
-            s = new BasicStroke();
-        }
-
-        strokeMI = s;
-        repaint();
-    }
-
-    /**
      * method returns the current stroke of the line
      *
      * @return the stroke
@@ -238,20 +259,6 @@ public class DPointSetMultiIcon extends DComponent
     public Stroke getStroke()
     {
         return strokeMI;
-    }
-
-    public void addDPoint(DPoint p)
-    {
-        xMI.addImage(p.x);
-        yMI.addImage(p.y);
-        m_IconsMI.add(p.getIcon());
-        rectangle.insert(p);
-        repaint();
-    }
-
-    public void addDPoint(double x, double y)
-    {
-        addDPoint(new DPoint(x, y));
     }
 
     /**
@@ -398,20 +405,6 @@ public class DPointSetMultiIcon extends DComponent
         jumperMI.reset();
     }
 
-    public String toString()
-    {
-        String text = "eva2.tools.chart2d.DPointSet[size:" + getSize();
-
-        for (int i = 0; i < xMI.getSize(); i++)
-        {
-            text += (",(" + xMI.getImage(i) + "," + yMI.getImage(i) + ")");
-        }
-
-        text += "]";
-
-        return text;
-    }
-
     protected void restore()
     {
         if (getSize() == 0)
@@ -428,71 +421,88 @@ public class DPointSetMultiIcon extends DComponent
         rectangle = new DRectangle(min_x, min_y, max_x - min_x, max_y - min_y);
     }
 
-    //~ Inner Classes //////////////////////////////////////////////////////////
+    public void setConnected(boolean aFlag)
+    {
+        boolean changed = !(aFlag == connectedMI);
+        connectedMI = aFlag;
+
+        if (changed)
+        {
+            repaint();
+        }
+    }
 
     /**
-     * this class stores the jump positions (see this.jump)
+     * method puts the given DPoint at the given position in the set
+     *
+     * @param index the index of the point
+     * @param p     the point to insert
      */
-    class JumpManager
+    public void setDPoint(int index, DPoint p)
     {
-        protected IntegerArrayList jumps = new IntegerArrayList();
-        protected int index = -1;
-
-        public void addJump()
+        if (index >= xMI.getSize())
         {
-            jumps.add(getSize());
+            throw new ArrayIndexOutOfBoundsException(index);
         }
 
-        public boolean hasMoreIntervals()
+        rectangle.insert(p);
+        xMI.setImage(index, p.x);
+        yMI.setImage(index, p.y);
+        m_IconsMI.set(index, p.getIcon());
+        restore();
+        repaint();
+    }
+
+    /**
+     * method sets an icon for a better displaying of the point set
+     *
+     * @param icon the DPointIcon
+     */
+    public void setIcon(DPointIcon icon)
+    {
+        this.iconMI = icon;
+
+        if (icon == null)
         {
-            return index < jumps.size();
+            setDBorder(new DBorder(1, 1, 1, 1));
+        }
+        else
+        {
+            setDBorder(icon.getDBorder());
+        }
+    }
+
+    /**
+     *  method sets the stroke of the line
+     *  if the points were not connected, they now will be connected
+     *
+     * @param s the new stroke
+     */
+    public void setStroke(Stroke s)
+    {
+        if (s == null)
+        {
+            s = new BasicStroke();
         }
 
-        public int[] nextInterval()
+        strokeMI = s;
+        repaint();
+    }
+
+    //~ Inner Classes //////////////////////////////////////////////////////////
+
+    public String toString()
+    {
+        String text = "eva2.tools.chart2d.DPointSet[size:" + getSize();
+
+        for (int i = 0; i < xMI.getSize(); i++)
         {
-            int no_jumps = jumps.size();
-
-            if (index >= no_jumps)
-            {
-                throw new ArrayIndexOutOfBoundsException(
-                    "No more intervals in JumpManager");
-            }
-
-            int[] inter = new int[2];
-
-            if (index == -1)
-            {
-                inter[0] = 0;
-            }
-            else
-            {
-                inter[0] = jumps.get(index);
-            }
-
-            index++;
-
-            if (index < no_jumps)
-            {
-                inter[1] = jumps.get(index);
-            }
-            else
-            {
-                inter[1] = getSize();
-            }
-
-            return inter;
+            text += (",(" + xMI.getImage(i) + "," + yMI.getImage(i) + ")");
         }
 
-        public void reset()
-        {
-            index = -1;
-            jumps.clear();
-        }
+        text += "]";
 
-        public void restore()
-        {
-            index = -1;
-        }
+        return text;
     }
 }
 ///////////////////////////////////////////////////////////////////////////////
