@@ -296,7 +296,11 @@ public class FunctionArea extends DArea implements Serializable {
 		updateLegend();
 	}
 
-	protected boolean checkLoggable() {
+	/**
+	 * 
+	 * @return
+	 */
+	public boolean checkLoggable() {
 		double minY = Double.MAX_VALUE;
 		for (int i = 0; i < m_PointSetContainer.size(); i++) {
 			DPointSet pSet = (m_PointSetContainer.get(i).getConnectedPointSet());
@@ -522,7 +526,7 @@ public class FunctionArea extends DArea implements Serializable {
 			}
 		}
 		if (maxSize > 0) { // if there is any data, init string array and set x
-							// value column
+			// value column
 			s = new String[maxSize + 1];
 			s[0] = "calls";
 			for (int j = 1; j <= maxSize; j++)
@@ -536,11 +540,11 @@ public class FunctionArea extends DArea implements Serializable {
 				GraphPointSet set = (GraphPointSet) m_PointSetContainer.get(i);
 				DPointSet pset = set.getConnectedPointSet();
 				s[0] = s[0] + " " + cleanBlanks(set.getInfoString(), '_'); // add
-																			// column
-																			// name
+				// column
+				// name
 				for (int j = 1; j < s.length; j++) { // add column data of place
-														// holder if no value in
-														// this set
+					// holder if no value in
+					// this set
 					if ((j - 1) < pset.getSize())
 						s[j] = s[j] + " " + pset.getDPoint(j - 1).y;
 					else
@@ -748,7 +752,7 @@ public class FunctionArea extends DArea implements Serializable {
 		if (legendBox != null && (m_legend))
 			legendBox.paintIn(g, m_Border.getInnerRect(this));
 	}
-	
+
 	/**
 	  *
 	  */
@@ -968,11 +972,23 @@ public class FunctionArea extends DArea implements Serializable {
 			ScaledBorder buffer = m_Border;
 			m_Border = new ScaledBorder();
 			m_Border.x_label = buffer.x_label; // "App. " + Name +
-												// " func. calls";
+			// " func. calls";
 			m_Border.y_label = buffer.y_label; // "fitness";
 			setBorder(m_Border);
 		}
 		repaint();
+	}
+
+	/**
+	 * Allows setting whether or not to paint the y-axis in logarithmic scale.
+	 * 
+	 * @param log
+	 *            if true logarithmic scale is used, linear scale in case of
+	 *            false.
+	 */
+	public void toggleLog(boolean log) {
+		if (log != m_log)
+			toggleLog();
 	}
 
 	/**
