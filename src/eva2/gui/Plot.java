@@ -1,4 +1,5 @@
 package eva2.gui;
+
 /*
  * Title:        EvA2
  * Description:
@@ -45,6 +46,7 @@ import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.populations.Population;
 import eva2.tools.BasicResourceLoader;
 import eva2.tools.chart2d.DPointSet;
+
 /*==========================================================================*
  * CLASS DECLARATION
  *==========================================================================*/
@@ -53,6 +55,10 @@ import eva2.tools.chart2d.DPointSet;
  */
 public class Plot implements PlotInterface, Serializable {
 
+	/**
+	 * Generated serial version identifier.
+	 */
+	private static final long serialVersionUID = -9027101244918249825L;
 	public static boolean TRACE = false;
 	private JFileChooser m_FileChooser;
 	private JPanel m_ButtonPanel;
@@ -63,36 +69,43 @@ public class Plot implements PlotInterface, Serializable {
 	protected JFrame m_Frame;
 
 	/**
-	 * You might want to try to assign the x-range as x and y-range as y array parameters.
+	 * You might want to try to assign the x-range as x and y-range as y array
+	 * parameters.
 	 */
-	public Plot(String PlotName,String xname,String yname,double[] x,double[] y) {
-		if (TRACE) System.out.println("Constructor Plot "+PlotName);
+	public Plot(String PlotName, String xname, String yname, double[] x,
+			double[] y) {
+		if (TRACE)
+			System.out.println("Constructor Plot " + PlotName);
 		m_xname = xname;
 		m_yname = yname;
 		m_PlotName = PlotName;
 		init();
 		DPointSet points = new DPointSet();
-		for (int i=0;i<x.length;i++) {
-			points.addDPoint(x[i],y[i]);
+		for (int i = 0; i < x.length; i++) {
+			points.addDPoint(x[i], y[i]);
 		}
 		m_PlotArea.addDElement(points);
 	}
+
 	/**
 	 *
 	 */
-	public Plot(String PlotName,String xname,String yname, boolean init) {
-		if (TRACE) System.out.println("Constructor Plot "+PlotName);
+	public Plot(String PlotName, String xname, String yname, boolean init) {
+		if (TRACE)
+			System.out.println("Constructor Plot " + PlotName);
 		m_xname = xname;
 		m_yname = yname;
 		m_PlotName = PlotName;
 		if (init)
 			init();
 	}
+
 	/**
 	 *
 	 */
-	public Plot(String PlotName,String xname,String yname) {
-		if (TRACE) System.out.println("Constructor Plot "+PlotName);
+	public Plot(String PlotName, String xname, String yname) {
+		if (TRACE)
+			System.out.println("Constructor Plot " + PlotName);
 		m_xname = xname;
 		m_yname = yname;
 		m_PlotName = PlotName;
@@ -100,27 +113,29 @@ public class Plot implements PlotInterface, Serializable {
 	}
 
 	protected void installButtons(JPanel buttonPan) {
-		JButton ClearButton = new JButton ("Clear");
+		JButton ClearButton = new JButton("Clear");
 		ClearButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				clearAll();
 			}
 		});
-		JButton LOGButton = new JButton ("Log/Lin");
-		LOGButton.setToolTipText("Toggle between a linear and a log scale on the y-axis.");
+		JButton LOGButton = new JButton("Log/Lin");
+		LOGButton
+				.setToolTipText("Toggle between a linear and a log scale on the y-axis.");
 		LOGButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				m_PlotArea.toggleLog();
 			}
 		});
-		JButton ExportButton = new JButton ("Export...");
-		ExportButton.setToolTipText("Exports the graph data to a simple ascii file.");
+		JButton ExportButton = new JButton("Export...");
+		ExportButton
+				.setToolTipText("Exports the graph data to a simple ascii file.");
 		ExportButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				exportPlot();
 			}
 		});
-		JButton DumpButton = new JButton ("Dump");
+		JButton DumpButton = new JButton("Dump");
 		DumpButton.setToolTipText("Dump the graph data to standard output");
 		DumpButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -128,46 +143,61 @@ public class Plot implements PlotInterface, Serializable {
 			}
 		});
 
-		JButton saveImageButton = new JButton ("Save as PNG...");
+		JButton saveImageButton = new JButton("Save as PNG...");
 		saveImageButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					Robot       robot = new Robot();
-					Rectangle   area;
-					area        = m_Frame.getBounds();
-					BufferedImage   bufferedImage   = robot.createScreenCapture(area);
-					JFileChooser    fc              = new JFileChooser();
-					if (fc.showSaveDialog(m_Frame) != JFileChooser.APPROVE_OPTION) return;
-					//				System.out.println("Name " + outfile);
+					Robot robot = new Robot();
+					Rectangle area;
+					area = m_Frame.getBounds();
+					BufferedImage bufferedImage = robot
+							.createScreenCapture(area);
+					JFileChooser fc = new JFileChooser();
+					if (fc.showSaveDialog(m_Frame) != JFileChooser.APPROVE_OPTION)
+						return;
+					// System.out.println("Name " + outfile);
 					try {
-						/* Old version
-					FileOutputStream fos = new FileOutputStream(fc.getSelectedFile().getAbsolutePath()+".jpeg");
-					BufferedOutputStream bos = new BufferedOutputStream(fos);
-					JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(bos);
-					encoder.encode(bufferedImage);
-					bos.close();*/
-						File file = new File(fc.getSelectedFile().getAbsolutePath()+".png"); 
-						ImageIO.write(bufferedImage, "png", file); 
-						/* JPEG version with javax.imageio
-				    float compression = 0.8f;
-					FileImageOutputStream out = new FileImageOutputStream(new File(fc.getSelectedFile().getAbsolutePath()+".jpeg"));
-					ImageWriter encoder = (ImageWriter)ImageIO.getImageWritersByFormatName("JPEG").next();
-					JPEGImageWriteParam param = new JPEGImageWriteParam(null);
-
-					param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
-					param.setCompressionQuality(compression);
-
-					encoder.setOutput(out);
-					encoder.write((IIOMetadata) null, new IIOImage(bufferedImage,null,null), param);
-
-					out.close();
+						/*
+						 * Old version FileOutputStream fos = new
+						 * FileOutputStream
+						 * (fc.getSelectedFile().getAbsolutePath()+".jpeg");
+						 * BufferedOutputStream bos = new
+						 * BufferedOutputStream(fos); JPEGImageEncoder encoder =
+						 * JPEGCodec.createJPEGEncoder(bos);
+						 * encoder.encode(bufferedImage); bos.close();
+						 */
+						File file = new File(fc.getSelectedFile()
+								.getAbsolutePath()
+								+ ".png");
+						ImageIO.write(bufferedImage, "png", file);
+						/*
+						 * JPEG version with javax.imageio float compression =
+						 * 0.8f; FileImageOutputStream out = new
+						 * FileImageOutputStream(new
+						 * File(fc.getSelectedFile().getAbsolutePath
+						 * ()+".jpeg")); ImageWriter encoder =
+						 * (ImageWriter)ImageIO
+						 * .getImageWritersByFormatName("JPEG").next();
+						 * JPEGImageWriteParam param = new
+						 * JPEGImageWriteParam(null);
+						 * 
+						 * 
+						 * param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT
+						 * ); param.setCompressionQuality(compression);
+						 * 
+						 * encoder.setOutput(out); encoder.write((IIOMetadata)
+						 * null, new IIOImage(bufferedImage,null,null), param);
+						 * 
+						 * out.close();
 						 */
 
 					} catch (Exception eee) {
-						System.err.println("Error on exporting PNG: " + eee.getMessage());
+						System.err.println("Error on exporting PNG: "
+								+ eee.getMessage());
 					}
 				} catch (AWTException ee) {
-					System.err.println("Error on creating PNG: " + ee.getMessage());
+					System.err.println("Error on creating PNG: "
+							+ ee.getMessage());
 					ee.printStackTrace();
 				}
 			}
@@ -177,33 +207,39 @@ public class Plot implements PlotInterface, Serializable {
 		buttonPan.add(LOGButton);
 		buttonPan.add(DumpButton);
 		buttonPan.add(ExportButton);
-		//	m_ButtonPanel.add(PrintButton);
-		//	m_ButtonPanel.add(OpenButton);
-		//	m_ButtonPanel.add(SaveButton);
+		// m_ButtonPanel.add(PrintButton);
+		// m_ButtonPanel.add(OpenButton);
+		// m_ButtonPanel.add(SaveButton);
 		buttonPan.add(saveImageButton);
 	}
+
 	/**
 	 *
 	 */
 	public void init() {
-		m_Frame = new JEFrame("Plot: "+m_PlotName);
-		BasicResourceLoader  loader  = BasicResourceLoader.instance();
-		byte[] bytes   = loader.getBytesFromResourceLocation(EvAInfo.iconLocation);
+		m_Frame = new JEFrame("Plot: " + m_PlotName);
+		BasicResourceLoader loader = BasicResourceLoader.instance();
+		byte[] bytes = loader
+				.getBytesFromResourceLocation(EvAInfo.iconLocation);
 		try {
-			m_Frame.setIconImage(Toolkit.getDefaultToolkit().createImage(bytes));
+			m_Frame
+					.setIconImage(Toolkit.getDefaultToolkit()
+							.createImage(bytes));
 		} catch (java.lang.NullPointerException e) {
-			System.err.println("Could not find EvA2 icon, please move resources folder to working directory!");
+			System.err
+					.println("Could not find EvA2 icon, please move resources folder to working directory!");
 		}
 
 		m_ButtonPanel = new JPanel();
-		m_PlotArea = new FunctionArea(m_xname,m_yname);
-		m_ButtonPanel.setLayout( new FlowLayout(FlowLayout.LEFT, 10,10));
+		m_PlotArea = new FunctionArea(m_xname, m_yname);
+		m_ButtonPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
 
 		installButtons(m_ButtonPanel);
 
-		//  getContentPane().smultetLayout( new GridLayout(1, 4) );
-		m_Frame.getContentPane().add(m_ButtonPanel,"South");
-		m_Frame.getContentPane().add(m_PlotArea,"Center"); // north was not so nice
+		// getContentPane().smultetLayout( new GridLayout(1, 4) );
+		m_Frame.getContentPane().add(m_ButtonPanel, "South");
+		m_Frame.getContentPane().add(m_PlotArea, "Center"); // north was not so
+															// nice
 		m_Frame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				m_PlotArea.clearAll(); // this was a memory leak
@@ -216,28 +252,30 @@ public class Plot implements PlotInterface, Serializable {
 	}
 
 	/**
-	 * Draw a population to the Plot instance. Each individual is annotated with the
-	 * given prefix and its fitness.
+	 * Draw a population to the Plot instance. Each individual is annotated with
+	 * the given prefix and its fitness.
 	 * 
 	 * @param prefix
 	 * @param pop
 	 */
 	public void drawPopulation(String prefix, Population pop) {
-		for (int i=0; i<pop.size(); i++) {
+		for (int i = 0; i < pop.size(); i++) {
 			drawIndividual(1, 2, prefix, pop.getEAIndividual(i));
 		}
 	}
 
 	/**
-	 * Draw an individual to the Plot instance. It is annotated with the
-	 * given prefix and its fitness.
+	 * Draw an individual to the Plot instance. It is annotated with the given
+	 * prefix and its fitness.
 	 * 
 	 * @param prefix
 	 * @param pop
 	 * @see FunctionArea.drawIcon
 	 */
-	public void drawIndividual(int iconType, int graphID, String prefix, AbstractEAIndividual indy) {
-		getFunctionArea().drawIcon(iconType, prefix+" "+indy.getFitness(0), indy.getDoublePosition(), graphID);
+	public void drawIndividual(int iconType, int graphID, String prefix,
+			AbstractEAIndividual indy) {
+		getFunctionArea().drawIcon(iconType, prefix + " " + indy.getFitness(0),
+				indy.getDoublePosition(), graphID);
 	}
 
 	public void setPreferredSize(Dimension prefSize) {
@@ -249,7 +287,7 @@ public class Plot implements PlotInterface, Serializable {
 
 	/**
 	 * Return true if the Plot object is valid.
-	 *
+	 * 
 	 * @return true if the Plot object is valid
 	 */
 	public boolean isValid() {
@@ -259,11 +297,13 @@ public class Plot implements PlotInterface, Serializable {
 	/**
 	 *
 	 */
-	public void setConnectedPoint (double x,double y,int func) {
-		if (TRACE) System.out.println("size before is " + m_PlotArea.getPointCount(func));
-		m_PlotArea.setConnectedPoint(x,y,func);
+	public void setConnectedPoint(double x, double y, int func) {
+		if (TRACE)
+			System.out.println("size before is "
+					+ m_PlotArea.getPointCount(func));
+		m_PlotArea.setConnectedPoint(x, y, func);
 		if (TRACE) {
-			System.out.println("added "+x+"/" + y + " to graph "+ func);
+			System.out.println("added " + x + "/" + y + " to graph " + func);
 			System.out.println("size is now " + m_PlotArea.getPointCount(func));
 		}
 	}
@@ -271,46 +311,52 @@ public class Plot implements PlotInterface, Serializable {
 	public int getPointCount(int graphLabel) {
 		return m_PlotArea.getPointCount(graphLabel);
 	}
+
 	/**
 	 *
 	 */
-	public void addGraph (int g1,int g2, boolean forceAdd) {
+	public void addGraph(int g1, int g2, boolean forceAdd) {
 		m_PlotArea.addGraph(g1, g2, forceAdd);
-	}
-	/**
-	 *
-	 */
-	public void setUnconnectedPoint (double x, double y,int GraphLabel) {
-		m_PlotArea.setUnconnectedPoint(x,y,GraphLabel);
 	}
 
 	/**
 	 *
 	 */
-	public void clearAll () {
+	public void setUnconnectedPoint(double x, double y, int GraphLabel) {
+		m_PlotArea.setUnconnectedPoint(x, y, GraphLabel);
+	}
+
+	/**
+	 *
+	 */
+	public void clearAll() {
 		m_PlotArea.clearAll();
 		m_PlotArea.removeAllDElements();
 		m_PlotArea.clearLegend();
 		m_Frame.repaint();
 	}
+
 	/**
 	 *
 	 */
-	public void clearGraph (int GraphNumber) {
+	public void clearGraph(int GraphNumber) {
 		m_PlotArea.clearGraph(GraphNumber);
 	}
+
 	/**
 	 *
 	 */
-	public void setInfoString (int GraphLabel, String Info, float stroke) {
-		m_PlotArea.setInfoString(GraphLabel,Info,stroke);
+	public void setInfoString(int GraphLabel, String Info, float stroke) {
+		m_PlotArea.setInfoString(GraphLabel, Info, stroke);
 	}
+
 	/**
 	 *
 	 */
-	public void jump () {
+	public void jump() {
 		m_PlotArea.jump();
 	}
+
 	/**
 	 */
 	protected Object openObject() {
@@ -320,20 +366,19 @@ public class Plot implements PlotInterface, Serializable {
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File selected = m_FileChooser.getSelectedFile();
 			try {
-				ObjectInputStream oi = new ObjectInputStream(new BufferedInputStream(new FileInputStream(selected)));
+				ObjectInputStream oi = new ObjectInputStream(
+						new BufferedInputStream(new FileInputStream(selected)));
 				Object obj = oi.readObject();
 				oi.close();
-				Class ClassType = Class.forName("FunctionArea");
+				Class<?> ClassType = Class.forName("FunctionArea");
 				if (!ClassType.isAssignableFrom(obj.getClass()))
-					throw new Exception("Object not of type: " + ClassType.getName());
+					throw new Exception("Object not of type: "
+							+ ClassType.getName());
 				return obj;
 			} catch (Exception ex) {
-				JOptionPane.showMessageDialog(m_Frame,
-						"Couldn't read object: "
-						+ selected.getName()
-						+ "\n" + ex.getMessage(),
-						"Open object file",
-						JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(m_Frame, "Couldn't read object: "
+						+ selected.getName() + "\n" + ex.getMessage(),
+						"Open object file", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 		return null;
@@ -356,15 +401,15 @@ public class Plot implements PlotInterface, Serializable {
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File sFile = m_FileChooser.getSelectedFile();
 			if (sFile.exists()) {
-				returnVal = JOptionPane.showConfirmDialog(m_Frame, "The file "+sFile.getName()+" already exists. Overwrite?");
-				if (returnVal != JOptionPane.YES_OPTION) return;
+				returnVal = JOptionPane.showConfirmDialog(m_Frame, "The file "
+						+ sFile.getName() + " already exists. Overwrite?");
+				if (returnVal != JOptionPane.YES_OPTION)
+					return;
 			}
 			if (!(m_PlotArea.exportToAscii(sFile))) {
 				JOptionPane.showMessageDialog(m_Frame,
-						"Couldn't write to file: "
-						+ sFile.getName(),
-						"Export error",
-						JOptionPane.ERROR_MESSAGE);
+						"Couldn't write to file: " + sFile.getName(),
+						"Export error", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 	}
@@ -379,15 +424,14 @@ public class Plot implements PlotInterface, Serializable {
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File sFile = m_FileChooser.getSelectedFile();
 			try {
-				ObjectOutputStream oo = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(sFile)));
+				ObjectOutputStream oo = new ObjectOutputStream(
+						new BufferedOutputStream(new FileOutputStream(sFile)));
 				oo.writeObject(object);
 				oo.close();
 			} catch (IOException ex) {
 				JOptionPane.showMessageDialog(m_Frame,
-						"Couldn't write to file: "
-						+ sFile.getName()
-						+ "\n" + ex.getMessage(),
-						"Save object",
+						"Couldn't write to file: " + sFile.getName() + "\n"
+								+ ex.getMessage(), "Save object",
 						JOptionPane.ERROR_MESSAGE);
 			}
 		}
@@ -414,6 +458,7 @@ public class Plot implements PlotInterface, Serializable {
 	public FunctionArea getFunctionArea() {
 		return m_PlotArea;
 	}
+
 	/**
 	 *
 	 */
@@ -424,7 +469,7 @@ public class Plot implements PlotInterface, Serializable {
 
 	/**
 	 * Add the corners of the given range as unconnected points.
-	 *  
+	 * 
 	 * @param range
 	 * @param graphLabel
 	 */
@@ -433,23 +478,22 @@ public class Plot implements PlotInterface, Serializable {
 		setUnconnectedPoint(range[0][1], range[1][1], graphLabel);
 	}
 
-	//	/**
-	//	 * Just for testing the Plot class.
-	//	 */
-	//	public static void main( String[] args ){
-	//		Plot plot = new Plot("Plot-Test","x-value","y-value");
-	//		plot.init();
-	//		double x;
-	//		for  (x= 0; x <6000; x++) {
-	//			//double y = SpecialFunction.getnormcdf(x);
-	//			// double yy = 0.5*SpecialFunction.getnormpdf(x);
-	//			double n = Math.sin(((double)x/1000*Math.PI));
-	//			//plot.setConnectedPoint(x,Math.sin(x),0);
-	//			//plot.setConnectedPoint(x,Math.cos(x),1);
-	//			//plot.setConnectedPoint(x,y,0);
-	//			plot.setConnectedPoint(x,n,1);
-	//		}
-	//		//plot.addGraph(1,2);
-	//	}
+	// /**
+	// * Just for testing the Plot class.
+	// */
+	// public static void main( String[] args ){
+	// Plot plot = new Plot("Plot-Test","x-value","y-value");
+	// plot.init();
+	// double x;
+	// for (x= 0; x <6000; x++) {
+	// //double y = SpecialFunction.getnormcdf(x);
+	// // double yy = 0.5*SpecialFunction.getnormpdf(x);
+	// double n = Math.sin(((double)x/1000*Math.PI));
+	// //plot.setConnectedPoint(x,Math.sin(x),0);
+	// //plot.setConnectedPoint(x,Math.cos(x),1);
+	// //plot.setConnectedPoint(x,y,0);
+	// plot.setConnectedPoint(x,n,1);
+	// }
+	// //plot.addGraph(1,2);
+	// }
 }
-
