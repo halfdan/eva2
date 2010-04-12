@@ -16,160 +16,61 @@ import eva2.tools.math.interpolation.SplineInterpolation;
  * @author Andreas Dr&auml;ger
  */
 public class Mathematics {
-	public static void revertArray(Object[] src, Object[] dst) {
-		if (dst.length>=src.length) {
-			for (int i=0; i<src.length; i++) {
-				dst[src.length-i-1]=src[i];
-			}
-		} else System.err.println("Mismatching array lengths!");
-	}
-	
 	/**
-	 * Computes the median of a given double vector by sorting x.
+	 * Computes the full adjoint matrix.
 	 *
-	 * @param x a vector of doubles
-	 * @param cloneX	flag whether x should be cloned before sorting.
-	 * @return the median
-	 */
-	public static double median(double[] x, boolean cloneX) {
-		double[] in;
-		if (cloneX) in = (double[]) x.clone();
-		else in = x;
-
-		if (in.length==1) return in[0];
-		else if (in.length==2) return (in[0]+in[1])/2.;
-		else {
-			Arrays.sort(in);
-			if (in.length % 2 != 0) return in[(in.length-1) / 2];
-			else return (in[in.length/2] + in[(in.length/2)+1]) / 2.;
-		}
-	}
-	
-	/**
-	 * Computes the median of a given list of double vectors by sorting it.
-	 * If the size is even, no direct median is defined - in that case it may be
-	 * interpolated by the two closest elements or one of them may be selected (always
-	 * the smaller one depending on the comparator.
-	 *  
-	 * @see #DoubleArrayComparator
-	 * @param dblArrList	a list of double vectors
-	 * @param interpolate	flag whether, for even size, the median is interpolated 
-	 * @return the median
-	 */
-	public static double[] median(List<double[]> dblArrList, boolean interpolate) {
-		java.util.Collections.sort(dblArrList, new DoubleArrayComparator());
-		
-		int len = dblArrList.size();
-		if (len % 2 != 0) return dblArrList.get((len-1) / 2);
-		else {
-			double[] med = dblArrList.get(len/2).clone();
-			if (interpolate) {
-				vvAdd(med, dblArrList.get((len/2)+1), med);
-				svDiv(2, med, med);
-			}
-			return med;
-		}
-	}
-	
-	/**
-	 * This method gives a linear interpolation of the function values of the
-	 * given argument/function value pairs.
-	 *
-	 * @param x
-	 *                The argument at the point with unknown function value
-	 * @param x0
-	 *                The argument at the last position with a function value
-	 * @param x1
-	 *                The argument at the next known fuction value
-	 * @param f0
-	 *                The function value at the position x0
-	 * @param f1
-	 *                The function value at the position x1
-	 * @return The function value at position x given by linear interpolation.
-	 */
-	public static double linearInterpolation(double x, double x0, double x1,
-			double f0, double f1) {
-		if (x1 == x0) return f0;
-		return lerp(f0, f1, (x - x0) / (x1 - x0));
-	}
-
-	/**
-	 * Computes a hyperbolic interpolation of the two point (x0,f0) and (x1,f1).
-	 *
-	 * @param x
-	 * @param x0
-	 * @param x1
-	 * @param f0
-	 * @param f1
+	 * @param a
 	 * @return
 	 */
-	public static double hyperbolicInterpolation(double x, double x0, double x1,
-			double f0, double f1) {
-		if (x1 == 0) return lerp(f0, f1, (x - x0) / (-x0));
-		double l = lerp(x0 / x1, 1, x);
-		if (l == 0) return linearInterpolation(x, x0, x1, f0, f1);
-		return lerp(f0, f1, x / l);
+	public static double[][] adjoint(double[][] a) {
+		if (a == null) return null;
+		if (a.length != a[0].length) return null;
+		double[][] b = new double[a.length][a.length];
+		for (int i = 0; i < a.length; i++)
+			for (int j = 0; j < a.length; j++)
+				b[i][j] = adjoint(a, i, j);
+		return b;
 	}
-
-//	<<<<<<< .working
-//	/**
-//	* Computes a spline interpolation of the two point (x0,f0) and (x1,f1).
-//	* 
-//	* @param x
-//	* @param x0
-//	* @param x1
-//	* @param f0
-//	* @param f1
-//	* @return If an error with the spline occurs, a linear interpolation will be
-//	*         returned.
-//	*/
-//	/*	public static double splineInterpolation(double x, double x0, double x1,
-//	double f0, double f1) {
-//	try {
-//	double[] t = { x0, x1 }, f = { f0, f1 };
-//	SplineInterpolation spline = new SplineInterpolation(new BasicDataSet(t,
-//	f, 1));
-//	return spline.getY(x);
-//	} catch (InterpolationException e) {
-//	e.printStackTrace();
-//	}
-//	return linearInterpolation(x, x0, x1, f0, f1);
-//	}*/
-//	=======
+	
 	/**
-	 * Computes a spline interpolation of the two point (x0,f0) and (x1,f1).
+	 * Computes the adjoint of the matrix element at the position (k, l).
 	 *
-	 * @param x
-	 * @param x0
-	 * @param x1
-	 * @param f0
-	 * @param f1
-	 * @return If an error with the spline occurs, a linear interpolation will be
-	 *         returned.
-	 */
-	public static double splineInterpolation(double x, double x0, double x1,
-			double f0, double f1) {
-		try {
-			double[] t = {x0, x1}, f = {f0, f1};
-			SplineInterpolation spline = new SplineInterpolation(new BasicDataSet(t,
-					f, 1));
-			return spline.getY(x);
-		} catch (InterpolationException e) {
-			e.printStackTrace();
-		}
-		return linearInterpolation(x, x0, x1, f0, f1);
-	}
-
-	/**
-	 * @param f0
-	 * @param f1
-	 * @param t
+	 * @param a
+	 * @param k
+	 * @param l
 	 * @return
 	 */
-	private static double lerp(double f0, double f1, double t) {
-		return f0 + (f1 - f0) * t;
+	public static double adjoint(double[][] a, int k, int l) {
+		return Math.pow(-1, k + l + 2) * determinant(submatrix(a, k, l));
 	}
+	
+	/**
+	 * This computes the determinant of the given matrix
+	 *
+	 * @param matrix
+	 * @return The determinant or null if there is no determinant (if the matrix
+	 *         is not square).
+	 */
+	public static double determinant(double[][] matrix) {
+		if (matrix == null) return 0;
+		if (matrix.length != matrix[0].length) return 0;
+		if (matrix.length == 1) return matrix[0][0];
+		if (matrix.length == 2)
+			return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0];
+		if (matrix.length == 3)
+			return matrix[0][0] * matrix[1][1] * matrix[2][2] + matrix[0][1]
+			                                                              * matrix[1][2] * matrix[2][0] + matrix[0][2] * matrix[1][0]
+			                                                                                                                       * matrix[2][1] - matrix[2][0] * matrix[1][1] * matrix[0][2]
+			                                                                                                                                                                                - matrix[2][1] * matrix[1][2] * matrix[0][0] - matrix[2][2]
+			                                                                                                                                                                                                                                         * matrix[1][0] * matrix[0][1];
 
+		double det = 0;
+		for (int k = 0; k < matrix.length; k++) {
+			if (matrix[0][k] != 0) det += matrix[0][k] * adjoint(matrix, 0, k);
+		}
+		return det;
+	}
+	
 	/**
 	 * Computes the root-Distance function. For example root = 2 gives the
 	 * Euclidian Distance.
@@ -217,475 +118,82 @@ public class Mathematics {
 			d += Math.pow(Math.abs(x[i] - y[i]), 2);
 		return Math.sqrt(d);
 	}
-	
-	/**
-	 * Computes the relative distance of vector x to vector y. Therefore the
-	 * difference of x[i] and y[i] is divided by y[i] for every i. If y[i] is
-	 * zero, the default value def is used instead. The sum of these differences
-	 * gives the distance function.
-	 *
+
+/**
+	 * Expand a vector to a higher dimension (len) by filling it up 
+	 * with a constant value.
+	 * 
 	 * @param x
-	 *                A vector
-	 * @param y
-	 *                The reference vector
-	 * @param def
-	 *                The default value to be use to avoid division by zero.
-	 * @return The relative distance of x to y.
-	 * @throws Exception
-	 */
-	public static double relDist(double[] x, double[] y, double def)
-	throws Exception {
-		if (x.length != y.length)
-			throw new Exception("The vectors x and y must have the same dimension");
-		double d = 0;
-		for (int i = 0; i < x.length; i++)
-			if (y[i] != 0)
-				d += Math.pow(((x[i] - y[i]) / y[i]), 2);
-			else d += def;
-		return d;
-	}
-
-	/**
-	 * This computes the determinant of the given matrix
-	 *
-	 * @param matrix
-	 * @return The determinant or null if there is no determinant (if the matrix
-	 *         is not square).
-	 */
-	public static double determinant(double[][] matrix) {
-		if (matrix == null) return 0;
-		if (matrix.length != matrix[0].length) return 0;
-		if (matrix.length == 1) return matrix[0][0];
-		if (matrix.length == 2)
-			return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0];
-		if (matrix.length == 3)
-			return matrix[0][0] * matrix[1][1] * matrix[2][2] + matrix[0][1]
-			                                                              * matrix[1][2] * matrix[2][0] + matrix[0][2] * matrix[1][0]
-			                                                                                                                       * matrix[2][1] - matrix[2][0] * matrix[1][1] * matrix[0][2]
-			                                                                                                                                                                                - matrix[2][1] * matrix[1][2] * matrix[0][0] - matrix[2][2]
-			                                                                                                                                                                                                                                         * matrix[1][0] * matrix[0][1];
-
-		double det = 0;
-		for (int k = 0; k < matrix.length; k++) {
-			if (matrix[0][k] != 0) det += matrix[0][k] * adjoint(matrix, 0, k);
-		}
-		return det;
-	}
-
-	/**
-	 * This computes the submatrix of the given matrix as a result by scraching
-	 * out the row k and the column l.
-	 *
-	 * @param a
-	 * @param k
-	 * @param l
+	 * @param len
+	 * @param v
 	 * @return
 	 */
-	public static double[][] submatrix(double[][] a, int k, int l) {
-		double b[][] = new double[a.length - 1][a[0].length - 1];
-		int i, j, m = 0, n = 0;
-
-		for (i = 0; i < a.length; i++) {
-			if (i == k) continue;
-			for (j = 0; j < a[0].length; j++) {
-				if (j == l) continue;
-				b[m][n++] = a[i][j];
-			}
-			m++;
-			n = 0;
-		}
-
-		return b;
+	public static double[] expandVector(double[] x, int len, double v) {
+		if (len <= x.length ) {// not really an error, just perform identity
+//			System.err.println("Error, invalid length in expandVector, expecting l>" + x.length);
+			return x;
+	 	} else {
+	 		double[] expanded = new double[len];
+	 		System.arraycopy(x, 0, expanded, 0, x.length);
+	 		for (int i=x.length; i<expanded.length; i++) expanded[i] = v;
+	 		return expanded;
+	 	}
 	}
 
 	/**
-	 * Computes the adjoint of the matrix element at the position (k, l).
-	 *
-	 * @param a
-	 * @param k
-	 * @param l
-	 * @return
-	 */
-	public static double adjoint(double[][] a, int k, int l) {
-		return Math.pow(-1, k + l + 2) * determinant(submatrix(a, k, l));
-	}
-
-	/**
-	 * Computes the full adjoint matrix.
-	 *
-	 * @param a
-	 * @return
-	 */
-	public static double[][] adjoint(double[][] a) {
-		if (a == null) return null;
-		if (a.length != a[0].length) return null;
-		double[][] b = new double[a.length][a.length];
-		for (int i = 0; i < a.length; i++)
-			for (int j = 0; j < a.length; j++)
-				b[i][j] = adjoint(a, i, j);
-		return b;
-	}
-
-	/**
-	 * Computes the inverse of the given matrix or returns null if there is no
-	 * inverse (if the determinant is 0).
-	 *
-	 * @param a
-	 * @return
-	 */
-	public static double[][] inverse(double[][] a) {
-		if (a == null) return null;
-		if (a.length != a[0].length) return null;
-		double det = determinant(a);
-
-		if (det == 0) return null;
-		double[][] b = adjoint(a);
-		for (int i = 0; i < a.length; i++)
-			for (int j = 0; j < a.length; j++)
-				b[i][j] /= det;
-		return b;
-	}
-
-	/** This method returns a mean vector from a whole array of vectors.
-	 * @param d     d[i] the vectors, d[i][j] the jth coordinate of the ith vector
-	 * @return The mean vector.
-	 */
-	public static double[] meanVect(double[][] d) {
-		double[] result = new double[d[0].length];
-		for (int i = 0; i < d.length; i++) {
-			for (int j = 0; j < d[i].length; j++) {
-				result[j] += d[i][j];
-			}
-		}
-		for (int i = 0; i < result.length; i++) {
-			result[i] = result[i]/((double)d.length);
-		}
-		return result;
-	}
-
-	/**
-	 * Subtract vectors returning a new vector c = a - b.
+	 * Fill the front of an array with data from a given source array.
 	 * 
-	 * @param a
-	 * @param b
-	 * @return a new vector c = a - b
+	 * @param dest
+	 * @param src
 	 */
-	public static double[] vvSub(double[] a, double[] b) {
-		double[] result = new double[a.length];
-		vvSub(a, b, result);
-		return result;
+	public static void fillFront(double[] dest, double[] src) {
+		System.arraycopy(src, 0, dest, 0, Math.min(dest.length, src.length));
 	}
 
 	/**
-	 * Subtract vectors returning a new vector c = a - b.
+	 * Return first multiple of interval which is larger than len.
 	 * 
-	 * @param a
-	 * @param b
-	 * @return a new vector c = a - b
+	 * @param len
+	 * @param interval
+	 * @return
 	 */
-	public static void vvSub(double[] a, double[] b, double[] res) {
-		for (int i = 0; i < a.length; i++) {
-			res[i] = a[i] - b[i];
+	public static double firstMultipleAbove(double len, double interval) {
+		double startVal,dn = (len / interval );
+		startVal = Math.round(dn-0.5)*interval;
+
+		if( startVal < len || (len==0)) {
+			startVal+=interval; 
 		}
-	}
-	
-	/** 
-	 * This method return a vector from a to b
-	 * @param a     first vector
-	 * @param b     second vectors
-	 * @return the vector from a to b
-	 */
-	public static double[] getVectorFromTo(double[] a, double[] b) {
-		return vvSub(b,a);
+		return startVal;
 	}
 
 	/**
-	 * Add vectors returning a new vector c = a + b;
-	 * @param a
-	 * @param b
-	 * @return a new vector c = a + b
-	 */
-	public static double[] vvAdd(double[] a, double[] b) {
-		double[] result = new double[a.length];
-		for (int i = 0; i < a.length; i++) {
-			result[i] = a[i] + b[i];
-		}
-		return result;
-	}
-
-	/**
-	 * Add vectors in place setting res = v1 + v2.
+	 * Return the vector of interval length values in any dimension.
+	 * ret[i]=range[i][1]-range[i][0]; 
 	 *
-	 * @param v1
-	 * @param v2
-	 * @return vector addition
+	 * @param range
+	 * @return
 	 */
-	public static void vvAdd(double[] v1, double[] v2, double[] res) {
-		vvAddOffs(v1, 0, v2, 0, res, 0, v1.length);
+	public static double[] getAbsRange(double[][] range) {
+		double[] ret = new double[range.length];
+		for (int i = 0; i < ret.length; i++) {
+			ret[i]=range[i][1]-range[i][0];
+		}
+		return ret;
 	}
 	
 	/**
-	 * Add vectors in place setting with an offset within the target
-	 * vector, meaning that res[resOffs+i]=v1[v1Offs+i]+v2[v2Offs+i] for i in length.
-	 *
-	 * @param v1
-	 * @param v2
-	 * @return vector addition
-	 */
-	public static void vvAddOffs(double[] v1, int v1Offs, double[] v2, int v2Offs, double[] res, int resOffs, int len) {
-		for (int i = 0; i < len; i++)
-			res[resOffs+i] = v1[v1Offs+i] + v2[v2Offs+i];
-	}
-
-	/**
-	 * Add each entry of a vector with a scalar in a new vector.
+	 * Calculate the average length of the range intervals over all dimensions.
 	 * 
-	 * @param s
-	 * @param v
-	 * @return 
+	 * @param range
+	 * @return the average length of the range intervals
 	 */
-	public static double[] svAdd (double s, double[] v) {
-		double[] res = new double[v.length];
-		svAdd(s, v, res);
-		return res;
-	}
-	
-	/**
-	 * Add each entry of a vector with a scalar in a result vector.
-	 * 
-	 * @param s
-	 * @param v
-	 * @return 
-	 */
-	public static void svAdd(double s, double[] v, double[] res) {
-		for (int i = 0; i < v.length; i++) {
-			res[i] = v[i] + s;
-		}
-	}
-	
-	/**
-	 * Add vectors scaled: res[i] = s*v[i] + w[i]
-	 * 
-	 * @param s
-	 * @param v
-	 * @param w
-	 * @return 
-	 */
-	public static void svvAddScaled(double s, double[] v, double[] w, double[] res) {
-		for (int i = 0; i < v.length; i++) {
-			res[i] = s*v[i] + w[i];
-		}
+    public static double getAvgRange(double[][] range) {
+		double sum = 0.;
+		for (int i=0; i<range.length; i++) sum+=(range[i][1]-range[i][0]);
+		return sum/range.length;
 	}
 
-	/**
-	 * Scalar product of two vectors returning sum_i (a_i * b_i).
-	 * 
-	 * @param a
-	 * @param b
-	 * @return
-	 */
-	public static double vvMult(double[] a, double[] b) {
-		double result = 0;
-		for (int i = 0; i < a.length; i++) {
-			result += a[i]*b[i];
-		}
-		return result;
-	}
-	
-	/**
-	 * Multiplies (scales) every element of the array v with s returning a new vector.
-	 *
-	 * @param s
-	 *                a scalar
-	 * @param v
-	 *                an array to be multiplied with s.
-	 * @return a scaled array.
-	 */
-	public static double[] svMult(double s, double[] v) {
-		double[] res = new double[v.length];
-		for (int i = 0; i < v.length; i++) {
-			res[i] = v[i] * s;
-		}
-		return res;
-	}
-
-	/**
-	 * Multiplies (scales) every element of the array v with s in place.
-	 *
-	 * @param s a scalar
-	 * @param v an array to be multiplied with s.
-	 * @return a scaled array.
-	 */
-	public static void svMult(double s, double[] v, double[] res) {
-		for (int i = 0; i < v.length; i++) {
-			res[i] = v[i] * s;
-		}
-	}
-
-	/**
-	 * Return a new vector which is c = (v_i/s).
-	 *
-	 * @param s
-	 * @param v
-	 * @return
-	 */
-	public static double[] svDiv(double s, double[] v) {
-		double[] res = new double[v.length];
-		for (int i = 0; i < v.length; i++) {
-			res[i] = v[i] / s;
-		}
-		return res;
-	}
-
-	/**
-	 * Divide by scalar in place, res_i = v_i/s.
-	 *
-	 * @param s
-	 * @param v
-	 * @return
-	 */
-	public static void svDiv(double s, double[] v, double[] res) {
-		for (int i = 0; i < v.length; i++) {
-			res[i] = v[i] / s;
-		}
-	}
-	
-	/**
-	 * Component wise multiplication of vectors: res[i]=u[i]*v[i]
-	 *
-	 * @param s
-	 * @param v
-	 * @return
-	 */
-	public static void vvMultCw(double[] u, double[] v, double[] res) {
-		for (int i = 0; i < res.length; i++) {
-			res[i] = u[i]*v[i];
-		}
-	}
-	
-	/** 
-	 * Return a vector of given length containing zeroes.
-	 * @param n
-	 * @return
-	 */
-	public static double[] zeroes(int n) {
-		double[] result = new double[n];
-		Arrays.fill(result, 0, result.length-1, 0.);
-		return result;
-	}
-
-	/**
-	 * Returns false if a vector contains NaN, its squared sum is NaN
-	 * or the absolute sum is smaller than 10^-18.
-	 * @param d
-	 * @return
-	 */
-	public static boolean isValidVec(double[] d) {
-		double sum = 0;
-		for (int i = 0; i < d.length; i++) {
-			if (Double.isNaN(d[i])) return false;
-			sum += Math.pow(d[i],2);
-		}
-		if (Double.isNaN(sum)) return false;
-		if (Math.abs(sum) < 0.000000000000000001) return false;
-		return true;
-	}
-
-	/**
-	 * Computes the sum of the elements of an array of doubles.
-	 *
-	 * @param doubles the array of double
-	 * @return the sum of the elements
-	 */
-	public static double sum(double[] doubles) {
-		double sum = 0;
-		for (int i = 0; i < doubles.length; i++) {
-			sum += doubles[i];
-		}
-		return sum;
-	}
-
-	/**
-	 * Computes the mean for an array of doubles.
-	 *
-	 * @param vector the array
-	 * @return the mean
-	 */
-	public static double mean(double[] vector) {
-		if (vector.length == 0) {
-			return 0;
-		}
-		return sum(vector) / (double)vector.length;
-	}
-
-//	/**
-//	 * Normalizes the doubles in the array using the given value so that they sum up to 1.
-//	 *
-//	 * @param doubles the array of double
-//	 * @param sum the value by which the doubles are to be normalized
-//	 * @exception IllegalArgumentException if sum is zero or NaN
-//	 */
-//	public static void normalize(double[] v, double sum, double[] res) {
-//		if (Double.isNaN(sum)) {
-//			throw new IllegalArgumentException("Can't normalize array. Sum is NaN.");
-//		}
-//		if (sum == 0) {
-//			// Maybe this should just be a return.
-//			throw new IllegalArgumentException("Can't normalize array. Sum is zero.");
-//		}
-//		svMult(1/sum, v, res);
-//	}
-
-	/**
-	 * Computes the sum of the elements of an array of integers.
-	 *
-	 * @param ints the array of integers
-	 * @return the sum of the elements
-	 */
-	public static int sum(int[] ints) {
-
-		int sum = 0;
-
-		for (int i = 0; i < ints.length; i++) {
-			sum += ints[i];
-		}
-		return sum;
-	}
-
-	/**
-	 * Computes the 2-norm of an array of doubles.
-	 *
-	 * @param doubles the array of double
-	 * @return the 2-norm of the elements
-	 */
-	public static double norm(double[] d) {
-		double sqSum = 0;
-		for (int i = 0; i < d.length; i++) {
-			sqSum += d[i]*d[i];
-		}
-		return Math.sqrt(sqSum);
-	}
-	
-	/**
-	 * Normalize the given vector to an euclidian length of 1.
-	 * 
-	 * @param v
-	 * @return
-	 */
-	public static double[] normVect(double[] v) {
-		return svDiv(norm(v), v);
-	}
-	
-	/**
-	 * Normalize the given vector to an euclidian length of 1.
-	 * 
-	 * @param v
-	 * @return
-	 */
-	public static void normVect(double[] v, double[] res) {
-		svDiv(norm(v), v, res);
-	}
-	
 	/**
 	 * Calculates the norm of the given vector relative to the problem range.
 	 *
@@ -704,47 +212,44 @@ public class Mathematics {
 		sumR = Math.sqrt(sumR);
 		return sumV/sumR;
 	}
-	
+
 	/**
-	 * Create a random vector, the components will be set to gaussian distributed
-	 * values with mean zero and the given standard deviation.
-	 *  
-	 * @param dim the desired dimension
-	 * @param stdDev the gaussian standard deviation
-	 * @return	 random vector
-	 */
-	public static double[] randomVector(int dim, double stdDev) {
-		double[] vect   = new double[dim];
-		for (int j = 0; j < vect.length; j++) {
-			vect[j]    = RNG.gaussianDouble(stdDev);
-		}
-		return vect;
-	}
-	
+     * Set rotation matrix entries along i/j axis. w is expected in radians.
+     * 
+     * @param tmp
+     * @param i
+     * @param j
+     * @param w
+     */
+    public static void getRotationEntriesSingleAxis(Matrix tmp, int i, int j, double w) {
+    	double cosw = Math.cos(w);
+    	double sinw = Math.sin(w);
+    	tmp.set(i, i, cosw);
+    	tmp.set(i, j, sinw);
+    	tmp.set(j, i, -sinw);
+    	tmp.set(j, j, cosw);
+    }
+
+	public static Matrix getRotationMatrix(double w, int dim) {
+        Matrix A = Matrix.identity(dim, dim);
+        Matrix tmp = Matrix.identity(dim, dim);
+
+        for (int i=1; i<dim; i++) {
+//              System.out.println("deg: "+(w/Math.PI)*180);
+                // make partial rotation matrix
+                getRotationEntriesSingleAxis(tmp, i-1, i, w);
+                A = tmp.times(A);                       // add to resulting rotation
+                // reset tmp matrix to unity
+                resetRotationEntriesSingleAxis(tmp, i-1, i);
+        }
+//      Matrix vec = new Matrix(dim, 1);
+//      for (int i=0; i<dim; i++) vec.set(i,0, 1);
+//      vec = A.times(vec);
+//      vec = A.times(vec);
+        return A;
+    }
+
 	/**
-	 * Normalizes the doubles in the array by their sum,
-	 * so that they add up to one.
-	 * @param doubles the array of double
-	 * @exception IllegalArgumentException if sum is Zero or NaN
-	 */
-	public static double[] normalizeSum(double[] v) {
-		double[] res = new double[v.length];
-		svMult(1./sum(v), v,res);
-		return res;
-	}
-	
-	/**
-	 * Normalizes the doubles in the array by their sum,
-	 * so that they add up to one.
-	 *
-	 * @param doubles the array of double
-	 * @exception IllegalArgumentException if sum is Zero or NaN
-	 */
-	public static void normalizeSum(double[] v, double[] res) {
-		svMult(1./sum(v), v, res);
-	}
-	
-    /**
      * Return a matrix A which performs the rotation of vec to (1,0,0,...0) if forward is true, else
      * return a matrix B which performs the reverted rotation, where B=A' (transposition).
      *   
@@ -773,139 +278,67 @@ public class Mathematics {
             }
             return A;
     }
-	
-    public static Matrix getRotationMatrix(double w, int dim) {
-        Matrix A = Matrix.identity(dim, dim);
-        Matrix tmp = Matrix.identity(dim, dim);
 
-        for (int i=1; i<dim; i++) {
-//              System.out.println("deg: "+(w/Math.PI)*180);
-                // make partial rotation matrix
-                getRotationEntriesSingleAxis(tmp, i-1, i, w);
-                A = tmp.times(A);                       // add to resulting rotation
-                // reset tmp matrix to unity
-                resetRotationEntriesSingleAxis(tmp, i-1, i);
-        }
-//      Matrix vec = new Matrix(dim, 1);
-//      for (int i=0; i<dim; i++) vec.set(i,0, 1);
-//      vec = A.times(vec);
-//      vec = A.times(vec);
-        return A;
-    }
-
-    /**
-     * Set rotation matrix entries along i/j axis. w is expected in radians.
-     * 
-     * @param tmp
-     * @param i
-     * @param j
-     * @param w
-     */
-    public static void getRotationEntriesSingleAxis(Matrix tmp, int i, int j, double w) {
-    	double cosw = Math.cos(w);
-    	double sinw = Math.sin(w);
-    	tmp.set(i, i, cosw);
-    	tmp.set(i, j, sinw);
-    	tmp.set(j, i, -sinw);
-    	tmp.set(j, j, cosw);
-    }
-
-    /**
-     *  Reset single axis rotation matrix to unity.
-     */
-    public static void resetRotationEntriesSingleAxis(Matrix tmp, int i, int j) {
-    	tmp.set(i, i, 1);
-    	tmp.set(i, j, 0);
-    	tmp.set(j, i, 0);
-    	tmp.set(j, j, 1);               
-    }
-
-	/**
-	 * Rotate the vector by angle alpha around axis i/j
-	 * 
-	 * @param vect
-	 * @param alpha
-	 * @param i
-	 * @param j
+	/** 
+	 * This method return a vector from a to b
+	 * @param a     first vector
+	 * @param b     second vectors
+	 * @return the vector from a to b
 	 */
-	public static void rotate(double[] vect, double alpha, int i, int j) {
-		double xi = vect[i];
-		double xj = vect[j];
-		vect[i] = (xi*Math.cos(alpha))-(xj*Math.sin(alpha));
-		vect[j] = (xi*Math.sin(alpha))+(xj*Math.cos(alpha));
+	public static double[] getVectorFromTo(double[] a, double[] b) {
+		return vvSub(b,a);
 	}
-    
-    /**
-     * Rotate a given double vector using a rotation matrix. If the matrix
-     * is null, x will be returned unchanged. Matrix dimensions must fit.
-     * 
-     * @param x
-     * @param rotMatrix
-     * @return the rotated vector
-     */
-    public static double[] rotate(double[] x, Matrix rotMatrix) {
-            if (rotMatrix!=null) {
-                    Matrix resVec = rotMatrix.times(new Matrix(x, x.length));
-                    x = resVec.getColumnPackedCopy();
-                    return x;
-            } else return x;
-    }
 
 	/**
-	 * Rotate the vector along all axes by angle alpha or a uniform random value
-	 * in [-alpha, alpha] if randomize is true.
-	 *  
-	 * @param vect
-	 * @param alpha
-	 * @param randomize
-	 */
-	public static void rotateAllAxes(double[] vect, double alpha, boolean randomize) {
-		for (int i=0; i<vect.length-1; i++) {
-			for (int j=i+1; j<vect.length; j++) {
-				if (randomize) rotate(vect, RNG.randomDouble(-alpha,alpha), i, j);
-				else rotate(vect, alpha, i, j);
-			}
-		}
-	}
-	
-	/**
-	 * Rotate the vector along all axes i/j by angle alphas[i][j].
-	 *  
-	 * @param vect
-	 * @param alphas
-	 */
-	public static void rotateAllAxes(double[] vect, double[][] alphas) {
-		for (int i=0; i<vect.length-1; i++) {
-			for (int j=i+1; j<vect.length; j++) {
-				rotate(vect, alphas[i][j], i, j);
-			}
-		}
-	}
-	
-	public static double max(double[] vals) {
-		double maxVal = vals[0];
-		for (int i=1; i<vals.length; i++) maxVal = Math.max(maxVal, vals[i]);
-		return maxVal;
-	}
-	
-	public static double min(double[] vals) {
-		double minVal = vals[0];
-		for (int i=1; i<vals.length; i++) minVal = Math.min(minVal, vals[i]);
-		return minVal;
-	}
-	
-	/**
-	 * Check whether the given vector lies within the range in every dimension.
-	 * 
+	 * Computes a hyperbolic interpolation of the two point (x0,f0) and (x1,f1).
+	 *
 	 * @param x
-	 * @param range
-	 * @return	true if the vector lies within the range, else false
+	 * @param x0
+	 * @param x1
+	 * @param f0
+	 * @param f1
+	 * @return
 	 */
-	public static boolean isInRange(double[] x, double[][] range) {
-		for (int i=0; i<x.length; i++) {
-			if (x[i]<range[i][0] || (x[i]>range[i][1])) return false;
+	public static double hyperbolicInterpolation(double x, double x0, double x1,
+			double f0, double f1) {
+		if (x1 == 0) return lerp(f0, f1, (x - x0) / (-x0));
+		double l = lerp(x0 / x1, 1, x);
+		if (l == 0) return linearInterpolation(x, x0, x1, f0, f1);
+		return lerp(f0, f1, x / l);
+	}
+
+	/**
+	 * Intersect two ranges resulting in the maximum range contained in both.  
+	 * 
+	 * @param modRange
+	 * @param makeRange
+	 * @param destRange
+	 */
+	public static void intersectRange(double[][] r1, double[][] r2, double[][] destRange) {
+		for (int i=0; i<r1.length && i<r2.length; i++) {
+			destRange[i][0] = Math.max(r1[i][0], r2[i][0]);
+			destRange[i][1] = Math.min(r1[i][1], r2[i][1]);
 		}
-		return true;
+	}
+
+	/**
+	 * Computes the inverse of the given matrix or returns null if there is no
+	 * inverse (if the determinant is 0).
+	 *
+	 * @param a
+	 * @return
+	 */
+	public static double[][] inverse(double[][] a) {
+		if (a == null) return null;
+		if (a.length != a[0].length) return null;
+		double det = determinant(a);
+
+		if (det == 0) return null;
+		double[][] b = adjoint(a);
+		for (int i = 0; i < a.length; i++)
+			for (int j = 0; j < a.length; j++)
+				b[i][j] /= det;
+		return b;
 	}
 	
 	/**
@@ -919,46 +352,246 @@ public class Mathematics {
 		if (v<lower || (v>upper)) return false;
 		return true;
 	}
-	
+
 	/**
-	 * Return the vector of interval length values in any dimension.
-	 * ret[i]=range[i][1]-range[i][0]; 
-	 *
+	 * Check whether the given vector lies within the range in every dimension.
+	 * 
+	 * @param x
 	 * @param range
+	 * @return	true if the vector lies within the range, else false
+	 */
+	public static boolean isInRange(double[] x, double[][] range) {
+		for (int i=0; i<x.length; i++) {
+			if (x[i]<range[i][0] || (x[i]>range[i][1])) return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Returns false if a vector contains NaN, its squared sum is NaN
+	 * or the absolute sum is smaller than 10^-18.
+	 * @param d
 	 * @return
 	 */
-	public static double[] getAbsRange(double[][] range) {
-		double[] ret = new double[range.length];
-		for (int i = 0; i < ret.length; i++) {
-			ret[i]=range[i][1]-range[i][0];
+	public static boolean isValidVec(double[] d) {
+		double sum = 0;
+		for (int i = 0; i < d.length; i++) {
+			if (Double.isNaN(d[i])) return false;
+			sum += Math.pow(d[i],2);
 		}
-		return ret;
+		if (Double.isNaN(sum)) return false;
+		if (Math.abs(sum) < 0.000000000000000001) return false;
+		return true;
 	}
 	
 	/**
-	 * Shift bounds by a constant value in every dimension.  
-	 *
-	 * @param range
+	 * @param f0
+	 * @param f1
+	 * @param t
 	 * @return
 	 */
-	public static void shiftRange(double[][] range, double dist) {
-		for (int i = 0; i < range.length; i++) {
-			svAdd(dist, range[i]);
+	private static double lerp(double f0, double f1, double t) {
+		return f0 + (f1 - f0) * t;
+	}
+
+	/**
+	 * This method gives a linear interpolation of the function values of the
+	 * given argument/function value pairs.
+	 *
+	 * @param x
+	 *                The argument at the point with unknown function value
+	 * @param x0
+	 *                The argument at the last position with a function value
+	 * @param x1
+	 *                The argument at the next known fuction value
+	 * @param f0
+	 *                The function value at the position x0
+	 * @param f1
+	 *                The function value at the position x1
+	 * @return The function value at position x given by linear interpolation.
+	 */
+	public static double linearInterpolation(double x, double x0, double x1,
+			double f0, double f1) {
+		if (x1 == x0) return f0;
+		return lerp(f0, f1, (x - x0) / (x1 - x0));
+	}
+	
+	public static double max(double[] vals) {
+		double maxVal = vals[0];
+		for (int i=1; i<vals.length; i++) maxVal = Math.max(maxVal, vals[i]);
+		return maxVal;
+	}
+	
+	/**
+	 * Computes the mean for an array of doubles.
+	 *
+	 * @param vector the array
+	 * @return the mean
+	 */
+	public static double mean(double[] vector) {
+		if (vector.length == 0) {
+			return 0;
+		}
+		return sum(vector) / (double)vector.length;
+	}
+
+	/** This method returns a mean vector from a whole array of vectors.
+	 * @param d     d[i] the vectors, d[i][j] the jth coordinate of the ith vector
+	 * @return The mean vector.
+	 */
+	public static double[] meanVect(double[][] d) {
+		double[] result = new double[d[0].length];
+		for (int i = 0; i < d.length; i++) {
+			for (int j = 0; j < d[i].length; j++) {
+				result[j] += d[i][j];
+			}
+		}
+		for (int i = 0; i < result.length; i++) {
+			result[i] = result[i]/((double)d.length);
+		}
+		return result;
+	}
+	
+	/**
+	 * Computes the median of a given double vector by sorting x.
+	 *
+	 * @param x a vector of doubles
+	 * @param cloneX	flag whether x should be cloned before sorting.
+	 * @return the median
+	 */
+	public static double median(double[] x, boolean cloneX) {
+		double[] in;
+		if (cloneX) in = (double[]) x.clone();
+		else in = x;
+
+		if (in.length==1) return in[0];
+		else if (in.length==2) return (in[0]+in[1])/2.;
+		else {
+			Arrays.sort(in);
+			if (in.length % 2 != 0) return in[(in.length-1) / 2];
+			else return (in[in.length/2] + in[(in.length/2)+1]) / 2.;
 		}
 	}
+
+	/**
+	 * Computes the median of a given list of double vectors by sorting it.
+	 * If the size is even, no direct median is defined - in that case it may be
+	 * interpolated by the two closest elements or one of them may be selected (always
+	 * the smaller one depending on the comparator.
+	 *  
+	 * @see #DoubleArrayComparator
+	 * @param dblArrList	a list of double vectors
+	 * @param interpolate	flag whether, for even size, the median is interpolated 
+	 * @return the median
+	 */
+	public static double[] median(List<double[]> dblArrList, boolean interpolate) {
+		java.util.Collections.sort(dblArrList, new DoubleArrayComparator());
 		
-	/**
-	 * Shift bounds by a constant value in every dimension. The dists 
-	 * must be of dimensions as the range.
-	 *
-	 * @param range
-	 * @return
-	 */
-	public static void shiftRange(double[][] range, double[] dists) {
-		for (int i = 0; i < range.length; i++) {
-			svAdd(dists[i], range[i]);
+		int len = dblArrList.size();
+		if (len % 2 != 0) return dblArrList.get((len-1) / 2);
+		else {
+			double[] med = dblArrList.get(len/2).clone();
+			if (interpolate) {
+				vvAdd(med, dblArrList.get((len/2)+1), med);
+				svDiv(2, med, med);
+			}
+			return med;
 		}
 	}
+
+	public static double min(double[] vals) {
+		double minVal = vals[0];
+		for (int i=1; i<vals.length; i++) minVal = Math.min(minVal, vals[i]);
+		return minVal;
+	}
+
+	/**
+	 * Computes the 2-norm of an array of doubles.
+	 *
+	 * @param doubles the array of double
+	 * @return the 2-norm of the elements
+	 */
+	public static double norm(double[] d) {
+		double sqSum = 0;
+		for (int i = 0; i < d.length; i++) {
+			sqSum += d[i]*d[i];
+		}
+		return Math.sqrt(sqSum);
+	}
+	
+	/**
+	 * Normalizes the doubles in the array by their sum,
+	 * so that they add up to one.
+	 * @param doubles the array of double
+	 * @exception IllegalArgumentException if sum is Zero or NaN
+	 */
+	public static double[] normalizeSum(double[] v) {
+		double[] res = new double[v.length];
+		svMult(1./sum(v), v,res);
+		return res;
+	}
+	
+	/**
+	 * Normalizes the doubles in the array by their sum,
+	 * so that they add up to one.
+	 *
+	 * @param doubles the array of double
+	 * @exception IllegalArgumentException if sum is Zero or NaN
+	 */
+	public static void normalizeSum(double[] v, double[] res) {
+		svMult(1./sum(v), v, res);
+	}
+
+	/**
+	 * Normalize the given vector to an euclidian length of 1.
+	 * 
+	 * @param v
+	 * @return
+	 */
+	public static double[] normVect(double[] v) {
+		return svDiv(norm(v), v);
+	}
+
+	/**
+	 * Normalize the given vector to an euclidian length of 1.
+	 * 
+	 * @param v
+	 * @return
+	 */
+	public static void normVect(double[] v, double[] res) {
+		svDiv(norm(v), v, res);
+	}
+
+	/**
+	 * Return the product over a double vector.
+	 * @param vals
+	 * @return
+	 */
+	public static double product(double[] vals) {
+		double prod=1.;
+		for (int i = 0; i < vals.length; i++) {
+			prod*=vals[i];
+		}
+		return prod;
+	}
+
+//	/**
+//	 * Normalizes the doubles in the array using the given value so that they sum up to 1.
+//	 *
+//	 * @param doubles the array of double
+//	 * @param sum the value by which the doubles are to be normalized
+//	 * @exception IllegalArgumentException if sum is zero or NaN
+//	 */
+//	public static void normalize(double[] v, double sum, double[] res) {
+//		if (Double.isNaN(sum)) {
+//			throw new IllegalArgumentException("Can't normalize array. Sum is NaN.");
+//		}
+//		if (sum == 0) {
+//			// Maybe this should just be a return.
+//			throw new IllegalArgumentException("Can't normalize array. Sum is zero.");
+//		}
+//		svMult(1/sum, v, res);
+//	}
 
 	/**
 	 * Project the values in x to the range given. The range must be an vector of 2d-arrays
@@ -985,25 +618,7 @@ public class Mathematics {
 		}
 		return viols;
 	}
-	
 
-    /**
-     * Scale a range by the given factor, meaning that the interval in each dimension is
-     * extended (fact>1) or reduced (fact<1) by the defined ratio around the center.
-     * 
-     * @param rangeScaleFact
-     * @param range
-     */
-	public static void scaleRange(double rangeScaleFact, double[][] range) {
-		double[] intervalLengths=Mathematics.getAbsRange(range);
-		double[] tmpInts=Mathematics.svMult(rangeScaleFact, intervalLengths);
-		Mathematics.vvSub(tmpInts, intervalLengths, tmpInts); // this is what must be added to range interval
-		for (int i=0; i<range.length; i++) {
-			range[i][0]-=tmpInts[i]/2;
-			range[i][1]+=tmpInts[i]/2;
-		}
-	}
-	
 	/**
 	 * Project the value to the range given.
 	 * 
@@ -1021,39 +636,22 @@ public class Mathematics {
 	}
 	
 	/**
-	 * Expand a vector to a higher dimension (len) by filling it up 
-	 * with a constant value.
-	 * 
-	 * @param x
-	 * @param len
-	 * @param v
-	 * @return
+	 * Create a random vector, the components will be set to gaussian distributed
+	 * values with mean zero and the given standard deviation.
+	 *  
+	 * @param dim the desired dimension
+	 * @param stdDev the gaussian standard deviation
+	 * @return	 random vector
 	 */
-	public static double[] expandVector(double[] x, int len, double v) {
-		if (len <= x.length ) {// not really an error, just perform identity
-//			System.err.println("Error, invalid length in expandVector, expecting l>" + x.length);
-			return x;
-	 	} else {
-	 		double[] expanded = new double[len];
-	 		System.arraycopy(x, 0, expanded, 0, x.length);
-	 		for (int i=x.length; i<expanded.length; i++) expanded[i] = v;
-	 		return expanded;
-	 	}
+	public static double[] randomVector(int dim, double stdDev) {
+		double[] vect   = new double[dim];
+		for (int j = 0; j < vect.length; j++) {
+			vect[j]    = RNG.gaussianDouble(stdDev);
+		}
+		return vect;
 	}
 	
 	/**
-	 * Calculate the average length of the range intervals over all dimensions.
-	 * 
-	 * @param range
-	 * @return the average length of the range intervals
-	 */
-    public static double getAvgRange(double[][] range) {
-		double sum = 0.;
-		for (int i=0; i<range.length; i++) sum+=(range[i][1]-range[i][0]);
-		return sum/range.length;
-	}
-
-    /**
      * Reflect the entries of x which violate the bounds to within the range. 
      * Return the number of violating dimensions.
      * 
@@ -1105,58 +703,460 @@ public class Mathematics {
 		return (val += step);
 	}
 	
+	/**
+	 * Computes the relative distance of vector x to vector y. Therefore the
+	 * difference of x[i] and y[i] is divided by y[i] for every i. If y[i] is
+	 * zero, the default value def is used instead. The sum of these differences
+	 * gives the distance function.
+	 *
+	 * @param x
+	 *                A vector
+	 * @param y
+	 *                The reference vector
+	 * @param def
+	 *                The default value to be use to avoid division by zero.
+	 * @return The relative distance of x to y.
+	 * @throws Exception
+	 */
+	public static double relDist(double[] x, double[] y, double def)
+	throws Exception {
+		if (x.length != y.length)
+			throw new Exception("The vectors x and y must have the same dimension");
+		double d = 0;
+		for (int i = 0; i < x.length; i++)
+			if (y[i] != 0)
+				d += Math.pow(((x[i] - y[i]) / y[i]), 2);
+			else d += def;
+		return d;
+	}
+	
+	/**
+     *  Reset single axis rotation matrix to unity.
+     */
+    public static void resetRotationEntriesSingleAxis(Matrix tmp, int i, int j) {
+    	tmp.set(i, i, 1);
+    	tmp.set(i, j, 0);
+    	tmp.set(j, i, 0);
+    	tmp.set(j, j, 1);               
+    }
+	
+	public static void revertArray(Object[] src, Object[] dst) {
+		if (dst.length>=src.length) {
+			for (int i=0; i<src.length; i++) {
+				dst[src.length-i-1]=src[i];
+			}
+		} else System.err.println("Mismatching array lengths!");
+	}
+	
+    /**
+	 * Rotate the vector by angle alpha around axis i/j
+	 * 
+	 * @param vect
+	 * @param alpha
+	 * @param i
+	 * @param j
+	 */
+	public static void rotate(double[] vect, double alpha, int i, int j) {
+		double xi = vect[i];
+		double xj = vect[j];
+		vect[i] = (xi*Math.cos(alpha))-(xj*Math.sin(alpha));
+		vect[j] = (xi*Math.sin(alpha))+(xj*Math.cos(alpha));
+	}
+	
+    /**
+     * Rotate a given double vector using a rotation matrix. If the matrix
+     * is null, x will be returned unchanged. Matrix dimensions must fit.
+     * 
+     * @param x
+     * @param rotMatrix
+     * @return the rotated vector
+     */
+    public static double[] rotate(double[] x, Matrix rotMatrix) {
+            if (rotMatrix!=null) {
+                    Matrix resVec = rotMatrix.times(new Matrix(x, x.length));
+                    x = resVec.getColumnPackedCopy();
+                    return x;
+            } else return x;
+    }
+
+    /**
+	 * Rotate the vector along all axes by angle alpha or a uniform random value
+	 * in [-alpha, alpha] if randomize is true.
+	 *  
+	 * @param vect
+	 * @param alpha
+	 * @param randomize
+	 */
+	public static void rotateAllAxes(double[] vect, double alpha, boolean randomize) {
+		for (int i=0; i<vect.length-1; i++) {
+			for (int j=i+1; j<vect.length; j++) {
+				if (randomize) rotate(vect, RNG.randomDouble(-alpha,alpha), i, j);
+				else rotate(vect, alpha, i, j);
+			}
+		}
+	}
+
+    /**
+	 * Rotate the vector along all axes i/j by angle alphas[i][j].
+	 *  
+	 * @param vect
+	 * @param alphas
+	 */
+	public static void rotateAllAxes(double[] vect, double[][] alphas) {
+		for (int i=0; i<vect.length-1; i++) {
+			for (int j=i+1; j<vect.length; j++) {
+				rotate(vect, alphas[i][j], i, j);
+			}
+		}
+	}
 
 	/**
-	 * Return first multiple of interval which is larger than len.
-	 * 
-	 * @param len
-	 * @param interval
+     * Scale a range by the given factor, meaning that the interval in each dimension is
+     * extended (fact>1) or reduced (fact<1) by the defined ratio around the center.
+     * 
+     * @param rangeScaleFact
+     * @param range
+     */
+	public static void scaleRange(double rangeScaleFact, double[][] range) {
+		double[] intervalLengths=Mathematics.getAbsRange(range);
+		double[] tmpInts=Mathematics.svMult(rangeScaleFact, intervalLengths);
+		Mathematics.vvSub(tmpInts, intervalLengths, tmpInts); // this is what must be added to range interval
+		for (int i=0; i<range.length; i++) {
+			range[i][0]-=tmpInts[i]/2;
+			range[i][1]+=tmpInts[i]/2;
+		}
+	}
+    
+    /**
+	 * Shift bounds by a constant value in every dimension.  
+	 *
+	 * @param range
 	 * @return
 	 */
-	public static double firstMultipleAbove(double len, double interval) {
-		double startVal,dn = (len / interval );
-		startVal = Math.round(dn-0.5)*interval;
-
-		if( startVal < len || (len==0)) {
-			startVal+=interval; 
+	public static void shiftRange(double[][] range, double dist) {
+		for (int i = 0; i < range.length; i++) {
+			svAdd(dist, range[i]);
 		}
-		return startVal;
 	}
 
 	/**
-	 * Return the product over a double vector.
-	 * @param vals
+	 * Shift bounds by a constant value in every dimension. The dists 
+	 * must be of dimensions as the range.
+	 *
+	 * @param range
 	 * @return
 	 */
-	public static double product(double[] vals) {
-		double prod=1.;
-		for (int i = 0; i < vals.length; i++) {
-			prod*=vals[i];
+	public static void shiftRange(double[][] range, double[] dists) {
+		for (int i = 0; i < range.length; i++) {
+			svAdd(dists[i], range[i]);
 		}
-		return prod;
+	}
+	
+	//	<<<<<<< .working
+//	/**
+//	* Computes a spline interpolation of the two point (x0,f0) and (x1,f1).
+//	* 
+//	* @param x
+//	* @param x0
+//	* @param x1
+//	* @param f0
+//	* @param f1
+//	* @return If an error with the spline occurs, a linear interpolation will be
+//	*         returned.
+//	*/
+//	/*	public static double splineInterpolation(double x, double x0, double x1,
+//	double f0, double f1) {
+//	try {
+//	double[] t = { x0, x1 }, f = { f0, f1 };
+//	SplineInterpolation spline = new SplineInterpolation(new BasicDataSet(t,
+//	f, 1));
+//	return spline.getY(x);
+//	} catch (InterpolationException e) {
+//	e.printStackTrace();
+//	}
+//	return linearInterpolation(x, x0, x1, f0, f1);
+//	}*/
+//	=======
+	/**
+	 * Computes a spline interpolation of the two point (x0,f0) and (x1,f1).
+	 *
+	 * @param x
+	 * @param x0
+	 * @param x1
+	 * @param f0
+	 * @param f1
+	 * @return If an error with the spline occurs, a linear interpolation will be
+	 *         returned.
+	 */
+	public static double splineInterpolation(double x, double x0, double x1,
+			double f0, double f1) {
+		try {
+			double[] t = {x0, x1}, f = {f0, f1};
+			SplineInterpolation spline = new SplineInterpolation(new BasicDataSet(t,
+					f, 1));
+			return spline.getY(x);
+		} catch (InterpolationException e) {
+			e.printStackTrace();
+		}
+		return linearInterpolation(x, x0, x1, f0, f1);
+	}
+	
+	/**
+	 * This computes the submatrix of the given matrix as a result by scraching
+	 * out the row k and the column l.
+	 *
+	 * @param a
+	 * @param k
+	 * @param l
+	 * @return
+	 */
+	public static double[][] submatrix(double[][] a, int k, int l) {
+		double b[][] = new double[a.length - 1][a[0].length - 1];
+		int i, j, m = 0, n = 0;
+
+		for (i = 0; i < a.length; i++) {
+			if (i == k) continue;
+			for (j = 0; j < a[0].length; j++) {
+				if (j == l) continue;
+				b[m][n++] = a[i][j];
+			}
+			m++;
+			n = 0;
+		}
+
+		return b;
+	}
+	
+	/**
+	 * Computes the sum of the elements of an array of doubles.
+	 *
+	 * @param doubles the array of double
+	 * @return the sum of the elements
+	 */
+	public static double sum(double[] doubles) {
+		double sum = 0;
+		for (int i = 0; i < doubles.length; i++) {
+			sum += doubles[i];
+		}
+		return sum;
+	}
+	
+	/**
+	 * Computes the sum of the elements of an array of integers.
+	 *
+	 * @param ints the array of integers
+	 * @return the sum of the elements
+	 */
+	public static int sum(int[] ints) {
+
+		int sum = 0;
+
+		for (int i = 0; i < ints.length; i++) {
+			sum += ints[i];
+		}
+		return sum;
+	}
+	
+	/**
+	 * Add each entry of a vector with a scalar in a new vector.
+	 * 
+	 * @param s
+	 * @param v
+	 * @return 
+	 */
+	public static double[] svAdd (double s, double[] v) {
+		double[] res = new double[v.length];
+		svAdd(s, v, res);
+		return res;
+	}
+	
+	/**
+	 * Add each entry of a vector with a scalar in a result vector.
+	 * 
+	 * @param s
+	 * @param v
+	 * @return 
+	 */
+	public static void svAdd(double s, double[] v, double[] res) {
+		for (int i = 0; i < v.length; i++) {
+			res[i] = v[i] + s;
+		}
+	}
+	
+	/**
+	 * Return a new vector which is c = (v_i/s).
+	 *
+	 * @param s
+	 * @param v
+	 * @return
+	 */
+	public static double[] svDiv(double s, double[] v) {
+		double[] res = new double[v.length];
+		for (int i = 0; i < v.length; i++) {
+			res[i] = v[i] / s;
+		}
+		return res;
+	}
+		
+	/**
+	 * Divide by scalar in place, res_i = v_i/s.
+	 *
+	 * @param s
+	 * @param v
+	 * @return
+	 */
+	public static void svDiv(double s, double[] v, double[] res) {
+		for (int i = 0; i < v.length; i++) {
+			res[i] = v[i] / s;
+		}
 	}
 
 	/**
-	 * Intersect two ranges resulting in the maximum range contained in both.  
-	 * 
-	 * @param modRange
-	 * @param makeRange
-	 * @param destRange
+	 * Multiplies (scales) every element of the array v with s returning a new vector.
+	 *
+	 * @param s
+	 *                a scalar
+	 * @param v
+	 *                an array to be multiplied with s.
+	 * @return a scaled array.
 	 */
-	public static void intersectRange(double[][] r1, double[][] r2, double[][] destRange) {
-		for (int i=0; i<r1.length && i<r2.length; i++) {
-			destRange[i][0] = Math.max(r1[i][0], r2[i][0]);
-			destRange[i][1] = Math.min(r1[i][1], r2[i][1]);
+	public static double[] svMult(double s, double[] v) {
+		double[] res = new double[v.length];
+		for (int i = 0; i < v.length; i++) {
+			res[i] = v[i] * s;
+		}
+		return res;
+	}
+	
+
+    /**
+	 * Multiplies (scales) every element of the array v with s in place.
+	 *
+	 * @param s a scalar
+	 * @param v an array to be multiplied with s.
+	 * @return a scaled array.
+	 */
+	public static void svMult(double s, double[] v, double[] res) {
+		for (int i = 0; i < v.length; i++) {
+			res[i] = v[i] * s;
+		}
+	}
+	
+	/**
+	 * Add vectors scaled: res[i] = s*v[i] + w[i]
+	 * 
+	 * @param s
+	 * @param v
+	 * @param w
+	 * @return 
+	 */
+	public static void svvAddScaled(double s, double[] v, double[] w, double[] res) {
+		for (int i = 0; i < v.length; i++) {
+			res[i] = s*v[i] + w[i];
+		}
+	}
+	
+	/**
+	 * Add vectors returning a new vector c = a + b;
+	 * @param a
+	 * @param b
+	 * @return a new vector c = a + b
+	 */
+	public static double[] vvAdd(double[] a, double[] b) {
+		double[] result = new double[a.length];
+		for (int i = 0; i < a.length; i++) {
+			result[i] = a[i] + b[i];
+		}
+		return result;
+	}
+	
+	/**
+	 * Add vectors in place setting res = v1 + v2.
+	 *
+	 * @param v1
+	 * @param v2
+	 * @return vector addition
+	 */
+	public static void vvAdd(double[] v1, double[] v2, double[] res) {
+		vvAddOffs(v1, 0, v2, 0, res, 0, v1.length);
+	}
+
+    /**
+	 * Add vectors in place setting with an offset within the target
+	 * vector, meaning that res[resOffs+i]=v1[v1Offs+i]+v2[v2Offs+i] for i in length.
+	 *
+	 * @param v1
+	 * @param v2
+	 * @return vector addition
+	 */
+	public static void vvAddOffs(double[] v1, int v1Offs, double[] v2, int v2Offs, double[] res, int resOffs, int len) {
+		for (int i = 0; i < len; i++)
+			res[resOffs+i] = v1[v1Offs+i] + v2[v2Offs+i];
+	}
+	
+	/**
+	 * Scalar product of two vectors returning sum_i (a_i * b_i).
+	 * 
+	 * @param a
+	 * @param b
+	 * @return
+	 */
+	public static double vvMult(double[] a, double[] b) {
+		double result = 0;
+		for (int i = 0; i < a.length; i++) {
+			result += a[i]*b[i];
+		}
+		return result;
+	}
+	
+
+	/**
+	 * Component wise multiplication of vectors: res[i]=u[i]*v[i]
+	 *
+	 * @param s
+	 * @param v
+	 * @return
+	 */
+	public static void vvMultCw(double[] u, double[] v, double[] res) {
+		for (int i = 0; i < res.length; i++) {
+			res[i] = u[i]*v[i];
 		}
 	}
 
 	/**
-	 * Fill the front of an array with data from a given source array.
+	 * Subtract vectors returning a new vector c = a - b.
 	 * 
-	 * @param dest
-	 * @param src
+	 * @param a
+	 * @param b
+	 * @return a new vector c = a - b
 	 */
-	public static void fillFront(double[] dest, double[] src) {
-		System.arraycopy(src, 0, dest, 0, Math.min(dest.length, src.length));
+	public static double[] vvSub(double[] a, double[] b) {
+		double[] result = new double[a.length];
+		vvSub(a, b, result);
+		return result;
+	}
+
+	/**
+	 * Subtract vectors returning a new vector c = a - b.
+	 * 
+	 * @param a
+	 * @param b
+	 * @return a new vector c = a - b
+	 */
+	public static void vvSub(double[] a, double[] b, double[] res) {
+		for (int i = 0; i < a.length; i++) {
+			res[i] = a[i] - b[i];
+		}
+	}
+
+	/** 
+	 * Return a vector of given length containing zeroes.
+	 * @param n
+	 * @return
+	 */
+	public static double[] zeroes(int n) {
+		double[] result = new double[n];
+		Arrays.fill(result, 0, result.length-1, 0.);
+		return result;
 	}
 }
