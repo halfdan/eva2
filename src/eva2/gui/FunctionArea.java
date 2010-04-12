@@ -951,6 +951,22 @@ public class FunctionArea extends DArea implements Serializable {
 	}
 
 	/**
+	 * Shows the legend or switches it off.
+	 * 
+	 * @param on
+	 */
+	public void showLegend(boolean on) {
+		m_legend = on;
+		if (on) {
+			if (legendBox == null)
+				legendBox = new GraphPointSetLegend(m_PointSetContainer);
+		} else {
+			legendBox = null;
+		}
+		repaint();
+	}
+
+	/**
 	  *
 	  */
 	public void toggleLog() {
