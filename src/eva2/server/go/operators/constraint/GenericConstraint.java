@@ -83,11 +83,7 @@ public class GenericConstraint extends AbstractConstraint implements InterfaceDo
 		EVAERROR.errorMsgOnce("Error: unknown relation for GenericConstraint!");
 		return 0.;
 	}
-	
-//	private double evalLinearConstr(AbstractEAIndividual indy) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
+
 	public String getConstraintString() {
 		return constraintString;
 	}

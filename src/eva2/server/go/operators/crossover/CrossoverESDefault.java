@@ -48,6 +48,9 @@ public class CrossoverESDefault implements InterfaceCrossover, java.io.Serializa
         }
         //for (int i = 0; i < result.length; i++) System.out.println("Before Crossover: " +result[i].getSolutionRepresentationFor());
 
+        if (partners==null || (partners.size()==0)) {
+        	throw new RuntimeException("Error, empty partner population for crossover!");
+        }
         if ((indy1 instanceof InterfaceESIndividual) && (partners.get(0) instanceof InterfaceESIndividual)) {
             int     crossoverpoint = RNG.randomInt(0,((InterfaceESIndividual)indy1).getDGenotype().length-1);
             boolean switcher = RNG.randomBoolean();
@@ -75,7 +78,7 @@ public class CrossoverESDefault implements InterfaceCrossover, java.io.Serializa
             // write the result back
             for (int i = 0; i < result.length; i++) ((InterfaceESIndividual)result[i]).SetDGenotype(children[i]);
         }
-        //in case the crossover was successfull lets give the mutation operators a chance to mate the strategy parameters
+        //in case the crossover was successful lets give the mutation operators a chance to mate the strategy parameters
         for (int i = 0; i < result.length; i++) result[i].getMutationOperator().crossoverOnStrategyParameters(indy1, partners);
         //for (int i = 0; i < result.length; i++) System.out.println("After Crossover: " +result[i].getSolutionRepresentationFor());
         return result;

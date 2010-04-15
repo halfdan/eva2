@@ -60,7 +60,6 @@ public class MOCCOProblemInitialization extends MOCCOPhase implements InterfaceP
 		try {
 			altern = ReflectPackage.getAssignableClassesInPackage("eva2.server.go.problems", Class.forName("eva2.server.go.problems.InterfaceMultiObjectiveDeNovoProblem"), true, true);
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
         this.m_ProblemChooser.setModel(new DefaultComboBoxModel(altern));

@@ -1,6 +1,7 @@
 package eva2.server.go.individuals;
 
 
+import eva2.server.go.enums.MutateESCrossoverTypeEnum;
 import eva2.server.go.operators.crossover.CrossoverESDefault;
 import eva2.server.go.operators.mutation.InterfaceMutation;
 import eva2.server.go.operators.mutation.MutateESGlobal;
@@ -25,7 +26,7 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
 
     public ESIndividualDoubleData() {
         this.m_MutationProbability  = 1.0;
-        this.m_MutationOperator     = new MutateESGlobal();
+        this.m_MutationOperator     = new MutateESGlobal(0.2, MutateESCrossoverTypeEnum.intermediate);
         this.m_CrossoverProbability = 0.5;
         this.m_CrossoverOperator    = new CrossoverESDefault();
         this.m_Genotype             = new double[1];

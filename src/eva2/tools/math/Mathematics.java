@@ -485,8 +485,8 @@ public class Mathematics {
 	 * @return the median
 	 */
 	public static double[] median(List<double[]> dblArrList, boolean interpolate) {
-		java.util.Collections.sort(dblArrList, new DoubleArrayComparator());
-		
+		java.util.Collections.sort(dblArrList, new DoubleArrayComparator()); // by default, the comparator uses pareto dominance
+			
 		int len = dblArrList.size();
 		if (len % 2 != 0) return dblArrList.get((len-1) / 2);
 		else {
@@ -1081,6 +1081,21 @@ public class Mathematics {
 		vvAddOffs(v1, 0, v2, 0, res, 0, v1.length);
 	}
 
+	/**
+	 * Calculate r=1/2 * sqrt(sum(sqr(upperBound_i - lowerBound_i))).
+	 * 
+	 * @param range
+	 * @return the average length of the range intervals
+	 */
+    public static double getAvgRangeL2(double[][] range) {
+		double sum = 0.;
+		for (int i=0; i<range.length; i++) {
+			double d=(range[i][1]-range[i][0]);
+			sum+=(d*d);
+		}
+		return Math.sqrt(sum)/2.;
+	}
+    
     /**
 	 * Add vectors in place setting with an offset within the target
 	 * vector, meaning that res[resOffs+i]=v1[v1Offs+i]+v2[v2Offs+i] for i in length.
@@ -1158,5 +1173,18 @@ public class Mathematics {
 		double[] result = new double[n];
 		Arrays.fill(result, 0, result.length-1, 0.);
 		return result;
+	}
+
+	/**
+	 * Create a double vector of length dim filled with value d.
+	 * 
+	 * @param d
+	 * @param dim
+	 * @return a double vector of length dim filled with value d
+	 */
+	public static double[] makeVector(double d, int dim) {
+		double[] ret = new double[dim];
+		Arrays.fill(ret, d);
+		return ret;
 	}
 }

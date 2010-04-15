@@ -2,6 +2,8 @@ package eva2.server.go.strategies;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.PriorityQueue;
 
 import eva2.gui.BeanInspector;
@@ -17,7 +19,6 @@ import eva2.server.go.individuals.InterfaceDataTypeDouble;
 import eva2.server.go.operators.cluster.ClusteringDensityBased;
 import eva2.server.go.operators.cluster.InterfaceClustering;
 import eva2.server.go.operators.distancemetric.ObjectiveSpaceMetric;
-//import eva2.server.go.populations.Distraction;
 import eva2.server.go.populations.Population;
 import eva2.server.go.populations.SolutionSet;
 import eva2.server.go.problems.B1Problem;
@@ -327,7 +328,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
      * @return True if converged.
      */
     private boolean testSpeciesForConvergence(Population pop) {
-        ArrayList<AbstractEAIndividual> speciesHistory = pop.getHistory();
+        List<AbstractEAIndividual> speciesHistory = pop.getHistory();
         int     histLen = speciesHistory.size();
 
         if (histLen <= haltingWindow) {
@@ -780,10 +781,10 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
 		newSp.setUseHistory(true);
     	if (startAtP1Gen) { // start explicitely as a child population of p1
     		newSp.setGenerationTo(parentSp.getGeneration());
-    		newSp.SetHistory((ArrayList<AbstractEAIndividual>) parentSp.getHistory().clone());
+    		newSp.SetHistory((LinkedList<AbstractEAIndividual>) parentSp.getHistory().clone());
     	} else { // start anew (from undiff)
         	newSp.setGenerationTo(0);
-            newSp.SetHistory(new ArrayList<AbstractEAIndividual>());
+            newSp.SetHistory(new LinkedList<AbstractEAIndividual>());
     	}
     	
         if (m_Optimizer instanceof InterfaceSpeciesAware) ((InterfaceSpeciesAware)m_Optimizer).splitFromFirst(parentSp, newSp);

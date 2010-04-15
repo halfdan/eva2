@@ -3,6 +3,7 @@ package eva2.server.go.individuals;
 
 import java.util.ArrayList;
 import java.util.BitSet;
+import java.util.Formatter;
 import java.util.HashMap;
 import java.util.List;
 
@@ -805,7 +806,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
     public double getCrossoverProbability() {
         return this.m_CrossoverProbability;
     }
-    public String crossoverProbalilityTipText() {
+    public String crossoverProbabilityTipText() {
         return "The chance that crossover occurs.";
     }
 
@@ -876,13 +877,13 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
     public static String getDefaultStringRepresentation(AbstractEAIndividual individual) {
     	// Note that changing this method might change the hashcode of an individual 
     	// which might interfere with some functionality.
-        StringBuffer sb = new StringBuffer("Fit.: ");
+        StringBuffer sb = new StringBuffer("Fit.:\t");
         sb.append(BeanInspector.toString(individual.getFitness()));
         if (individual.isMarkedPenalized() || individual.violatesConstraint()) 
         	sb.append(", X"); 
         sb.append(", ID: ");
         sb.append(individual.getIndyID());
-        sb.append(", ");
+        sb.append(",\t");
         sb.append(getDefaultDataString(individual));
 
         if (individual.getParentIDs()!=null) {
@@ -902,7 +903,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
     public static String getDefaultDataString(IndividualInterface individual) {
     	// Note that changing this method might change the hashcode of an individual 
     	// which might interfere with some functionality.
-    	return getDefaultDataString(individual, ", ");
+    	return getDefaultDataString(individual, ",");
     }
     
     /**
@@ -917,6 +918,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
     	// which might interfere with some functionality.
     	if (individual == null) return "null";
         StringBuffer sb = new StringBuffer("");
+        Formatter fm = new Formatter(sb);
         char left = '{';
         char right = '}';
         sb.append(left);
@@ -933,10 +935,12 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
                 if ((i+1) < b.length) sb.append(separator);
             }
         } else if (individual instanceof InterfaceDataTypeDouble) {
-            double[] b = ((InterfaceDataTypeDouble)individual).getDoubleData();
-            for (int i = 0; i < b.length; i++) {
-                sb.append(b[i]);
-                if ((i+1) < b.length) sb.append(separator);
+            double[] d = ((InterfaceDataTypeDouble)individual).getDoubleData();
+            for (int i = 0; i < d.length; i++) {
+//                sb.append(d[i]);
+//                if ((i+1) < d.length) sb.append(separator);
+            	fm.format("% .3f", d[i]);
+            	if ((i+1) < d.length) sb.append(separator);
             }
         } else if (individual instanceof InterfaceDataTypePermutation) {
             int[] b = ((InterfaceDataTypePermutation)individual).getPermutationData()[0];

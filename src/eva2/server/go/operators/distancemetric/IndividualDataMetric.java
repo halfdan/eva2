@@ -24,7 +24,6 @@ public class IndividualDataMetric implements InterfaceDistanceMetric, Serializab
 	}
     
     public IndividualDataMetric(IndividualDataMetric pBestMetric) {
-		// TODO Auto-generated constructor stub
 	}
 
 	/** This method allows you to make a deep clone of

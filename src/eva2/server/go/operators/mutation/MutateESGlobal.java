@@ -2,6 +2,7 @@ package eva2.server.go.operators.mutation;
 
 import java.util.ArrayList;
 
+import eva2.server.go.enums.MutateESCrossoverTypeEnum;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceESIndividual;
 import eva2.server.go.populations.Population;
@@ -21,28 +22,37 @@ public class MutateESGlobal implements InterfaceMutation, java.io.Serializable {
     protected double      m_MutationStepSize    = 0.2;
     protected double      m_Tau1                = 0.15;
     protected double      m_LowerLimitStepSize  = 0.0000005;
-    protected SelectedTag m_CrossoverType;
+    protected MutateESCrossoverTypeEnum m_CrossoverType = MutateESCrossoverTypeEnum.none;
 
     public MutateESGlobal() {
-        initTags();
     }
 
+    /**
+     * Use given mutation step size and no crossover on strategy params.
+     * 
+     * @param mutationStepSize
+     */
     public MutateESGlobal(double mutationStepSize) {
-        initTags();
+    	this(mutationStepSize, MutateESCrossoverTypeEnum.none);
+    }
+
+    /**
+     * Use given mutation step size and given crossover type on strategy params.
+     * 
+     * @param mutationStepSize
+     */
+    public MutateESGlobal(double mutationStepSize, MutateESCrossoverTypeEnum coType) {
         setMutationStepSize(mutationStepSize);
+        setCrossoverType(coType);
     }
     
     public MutateESGlobal(MutateESGlobal mutator) {
         this.m_MutationStepSize     = mutator.m_MutationStepSize;
         this.m_Tau1                 = mutator.m_Tau1;
         this.m_LowerLimitStepSize   = mutator.m_LowerLimitStepSize;
-        this.m_CrossoverType        = (SelectedTag)mutator.m_CrossoverType.clone();
+        this.m_CrossoverType        = mutator.m_CrossoverType;
     }
 
-    protected void initTags() {
-        this.m_CrossoverType = new SelectedTag(new String[]{"None", "Intermediate", "Discrete"});
-    }
-    
     /** This method will enable you to clone a given mutation operator
      * @return The clone
      */
@@ -100,29 +110,29 @@ public class MutateESGlobal implements InterfaceMutation, java.io.Serializable {
      * @param partners  The original partners
      */
     public void crossoverOnStrategyParameters(AbstractEAIndividual indy1, Population partners) {
-        ArrayList<Double> tmpList = new ArrayList<Double>();
-        if (indy1.getMutationOperator() instanceof MutateESGlobal) tmpList.add(new Double(((MutateESGlobal)indy1.getMutationOperator()).m_MutationStepSize));
-        for (int i = 0; i < partners.size(); i++) {
-            if (((AbstractEAIndividual)partners.get(i)).getMutationOperator() instanceof MutateESGlobal) tmpList.add(new Double(((MutateESGlobal)((AbstractEAIndividual)partners.get(i)).getMutationOperator()).m_MutationStepSize));
-        }
-        double[] list = new double[tmpList.size()];
-        for (int i = 0; i < tmpList.size(); i++) list[i] = ((Double)tmpList.get(i)).doubleValue();
-        if (list.length <= 1) return;
-        switch (this.m_CrossoverType.getSelectedTag().getID()) {
-            case 1 : {
-                this.m_MutationStepSize = 0;
-                for (int i = 0; i < list.length; i++) this.m_MutationStepSize += list[i];
-                this.m_MutationStepSize = this.m_MutationStepSize/(double)list.length;
-                break;
-            }
-            case 2 : {
-                this.m_MutationStepSize = list[RNG.randomInt(0, list.length-1)];
-                break;
-            }
-            default : {
-                // do nothing
-            }
-        }
+    	if (m_CrossoverType!=MutateESCrossoverTypeEnum.none) {
+    		ArrayList<Double> tmpList = new ArrayList<Double>();
+    		if (indy1.getMutationOperator() instanceof MutateESGlobal) tmpList.add(new Double(((MutateESGlobal)indy1.getMutationOperator()).m_MutationStepSize));
+    		for (int i = 0; i < partners.size(); i++) {
+    			if (((AbstractEAIndividual)partners.get(i)).getMutationOperator() instanceof MutateESGlobal) tmpList.add(new Double(((MutateESGlobal)((AbstractEAIndividual)partners.get(i)).getMutationOperator()).m_MutationStepSize));
+    		}
+    		double[] list = new double[tmpList.size()];
+    		for (int i = 0; i < tmpList.size(); i++) list[i] = ((Double)tmpList.get(i)).doubleValue();
+    		if (list.length <= 1) return;
+
+    		switch (this.m_CrossoverType) {
+    		case intermediate : 
+    			this.m_MutationStepSize = 0;
+    			for (int i = 0; i < list.length; i++) this.m_MutationStepSize += list[i];
+    			this.m_MutationStepSize = this.m_MutationStepSize/(double)list.length;
+    			break;
+    		case discrete : 
+    			this.m_MutationStepSize = list[RNG.randomInt(0, list.length-1)];
+    			break;
+    		case none : // do nothing
+    		break;
+    		}
+    	}
     }
 
     /** This method allows you to get a string representation of the mutation
@@ -195,10 +205,10 @@ public class MutateESGlobal implements InterfaceMutation, java.io.Serializable {
     /** Set the value for tau1 with this method.
      * @param d   The mutation operator.
      */
-    public void setCrossoverType(SelectedTag d) {
+    public void setCrossoverType(MutateESCrossoverTypeEnum d) {
         this.m_CrossoverType = d;
     }
-    public SelectedTag getCrossoverType() {
+    public MutateESCrossoverTypeEnum getCrossoverType() {
         return this.m_CrossoverType;
     }
     public String crossoverTypeTipText() {

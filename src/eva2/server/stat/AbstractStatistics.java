@@ -305,6 +305,9 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 		} else {
 			if (printRunStoppedVerbosity()) printToTextListener(" NO feasible individual found.\n");
 		}
+		if (printRunStoppedVerbosity()) {
+			printToTextListener(" Solution correlations (min,max,avg,med,var): " + BeanInspector.toString(((Population)lastSols).getCorrelations((Population)lastSols)) + "\n");
+		}
 		if (bestOfRunFeasibleIndy != null) { 
 			runBestFeasibleList.add(bestOfRunFeasibleIndy);
 //			if (meanBestFeasibleFit==null) {
@@ -666,8 +669,8 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 			case meanFit: ret[i] = (currentMeanFit==null) ? Double.NaN : currentMeanFit[defaultFitCriterion]; break;
 			case currentWorst: ret[i] = (currentWorstFit==null) ? Double.NaN : currentWorstFit[defaultFitCriterion]; break;
 			case runBest: ret[i] = bestOfRunIndy.getFitness()[defaultFitCriterion]; break;
-			case currentBestFeasible: ret[i] = currentBestFeasibleFit[defaultFitCriterion]; break;
-			case runBestFeasible: ret[i] = bestOfRunFeasibleIndy.getFitness()[defaultFitCriterion]; break;
+			case currentBestFeasible: ret[i] = (currentBestFeasibleFit==null) ? Double.NaN : currentBestFeasibleFit[defaultFitCriterion]; break;
+			case runBestFeasible: ret[i] = (bestOfRunFeasibleIndy==null) ? Double.NaN : bestOfRunFeasibleIndy.getFitness()[defaultFitCriterion]; break;
 			case avgPopDistance: ret[i] = currentAvgPopDist; break;
 			case maxPopDistance: ret[i] = currentMaxPopDist; break;
 			}

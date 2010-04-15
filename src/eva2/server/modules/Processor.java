@@ -310,7 +310,7 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
 		else if (terminator instanceof EvaluationTerminator)
 			args = new Object[] {optimizer, optimizer.getPopulation(), optimizer.getPopulation().getFunctionCalls(), ((EvaluationTerminator)terminator).getFitnessCalls()};
 //			((InterfaceParameterControl)paramCtrl).updateParameters(optimizer, optimizer.getPopulation().getFunctionCalls(), ((EvaluationTerminator)terminator).getFitnessCalls());
-		else args = null;//new Object[]{optimizer, optimizer.getPopulation()};
+		else args = new Object[]{optimizer, optimizer.getPopulation()};
 //			((InterfaceParameterControl)paramCtrl).updateParameters(optimizer);
     	
 		if (args != null) { // only if iteration counting is available
