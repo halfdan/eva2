@@ -390,12 +390,12 @@ public class MOClusteringSeparation implements InterfaceMigration, java.io.Seria
      * @return The distance type to use.
      */
     public boolean getReuseC() {
-        this.m_ReuseC = this.m_KMeans.m_ReuseC;
+        this.m_ReuseC = this.m_KMeans.getReuseC();
         return this.m_ReuseC;
     }
     public void setReuseC(boolean m){
         this.m_ReuseC = m;
-        this.m_KMeans.m_ReuseC = this.m_ReuseC;
+        this.m_KMeans.setReuseC(this.m_ReuseC);
     }
     public String reuseCTipText() {
         return "Toggel reuse of previously found cluster centroids.";

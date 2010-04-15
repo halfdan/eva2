@@ -33,6 +33,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.Formatter;
+import java.util.Locale;
 
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
@@ -260,22 +262,24 @@ public class Plot implements PlotInterface, Serializable {
 	 */
 	public void drawPopulation(String prefix, Population pop) {
 		for (int i = 0; i < pop.size(); i++) {
-			drawIndividual(1, 2, prefix, pop.getEAIndividual(i));
+			drawIndividual(0, 2, prefix, pop.getEAIndividual(i));
 		}
 	}
 
 	/**
-	 * Draw an individual to the Plot instance. It is annotated with the given
-	 * prefix and its fitness.
+	 * Draw an individual to the Plot instance. It is annotated with the
+	 * given prefix and its fitness with short scientific notation.
 	 * 
 	 * @param prefix
 	 * @param pop
 	 * @see FunctionArea.drawIcon
 	 */
-	public void drawIndividual(int iconType, int graphID, String prefix,
-			AbstractEAIndividual indy) {
-		getFunctionArea().drawIcon(iconType, prefix + " " + indy.getFitness(0),
-				indy.getDoublePosition(), graphID);
+	public void drawIndividual(int iconType, int graphID, String prefix, AbstractEAIndividual indy) {
+		StringBuffer sb = new StringBuffer();
+		Formatter formatter = new Formatter(sb, Locale.US);
+		formatter.format("%s %.3e", prefix, indy.getFitness(0));
+
+		getFunctionArea().drawIcon(iconType, sb.toString(), indy.getDoublePosition(), graphID);
 	}
 
 	public void setPreferredSize(Dimension prefSize) {

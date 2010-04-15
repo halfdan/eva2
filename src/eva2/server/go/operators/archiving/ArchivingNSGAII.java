@@ -65,7 +65,7 @@ public class ArchivingNSGAII extends ArchivingNSGA implements java.io.Serializab
         Population tmpPop = new Population();
         tmpPop.addPopulation((Population)pop.getClone());
         tmpPop.addPopulation((Population)pop.getArchive().getClone());
-        tmpPop.removeDoubleInstancesUsingFitness();
+        tmpPop.removeRedundantIndiesUsingFitness();
 
         // Now fetch the n pareto-fronts
         Population[] fronts = this.getNonDomiatedSortedFronts(tmpPop);

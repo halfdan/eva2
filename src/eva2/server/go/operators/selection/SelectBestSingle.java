@@ -56,6 +56,7 @@ public class SelectBestSingle implements InterfaceSelection, java.io.Serializabl
         int                     currentCriteria = 0, critSize;
         double                  currentBestValue;
 
+        if (population.size()==0) return population; // trivial
         critSize = ((AbstractEAIndividual)population.get(0)).getFitness().length;
         result.setTargetSize(size);
         if (this.m_ObeyDebsConstViolationPrinciple) {
@@ -99,13 +100,21 @@ public class SelectBestSingle implements InterfaceSelection, java.io.Serializabl
 
     /** This method allows you to select >size< partners for a given Individual
      * @param dad               The already selected parent
-     * @param avaiablePartners  The mating pool.
+     * @param availablePartners  The mating pool.
      * @param size              The number of partners needed.
      * @return The selected partners.
      */
-    public Population findPartnerFor(AbstractEAIndividual dad, Population avaiablePartners, int size) {
-    	if (excludeSelfAsPartner) return this.selectFrom(avaiablePartners.filter(new Population().addToPop(dad)), size);
-    	else return this.selectFrom(avaiablePartners, size);
+    public Population findPartnerFor(AbstractEAIndividual dad, Population availablePartners, int size) {
+    	if (excludeSelfAsPartner) {
+    		Population newPartners = availablePartners.filter(new Population().addToPop(dad));
+    		if (newPartners.size()==0) { 
+    			// no problem if crossover is deactivated
+//    			EVAERROR.errorMsgOnce("Warning, no partners available when excluding self (SelectBestSingle.findPartnerFor)");
+//    			EVAERROR.errorMsgOnce("Partners where: " + availablePartners.getStringRepresentation());
+    			return newPartners;
+    		}
+    		return this.selectFrom(newPartners, size);
+    	} else return this.selectFrom(availablePartners, size);
     }
 /**********************************************************************************************************************
  * These are for GUI

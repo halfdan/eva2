@@ -108,7 +108,7 @@ public class MOSOMaxiMin implements InterfaceMOSOConverter, java.io.Serializable
 
         tmpFit          = indy.getFitness();
         indy.putData("MOFitness", tmpFit);
-        System.out.println("The MaxiMin MOSO can not be applied to single individuals! I default to random criterion.");
+        System.err.println("The MaxiMin MOSO can not be applied to single individuals! I default to random criterion.");
         resultFit[0]    = tmpFit[RNG.randomInt(0, tmpFit.length)];
         indy.SetFitness(resultFit);
     }

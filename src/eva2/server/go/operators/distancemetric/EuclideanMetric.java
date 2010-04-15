@@ -1,5 +1,7 @@
 package eva2.server.go.operators.distancemetric;
 
+import java.io.Serializable;
+
 import eva2.server.go.individuals.AbstractEAIndividual;
 
 /**
@@ -10,7 +12,7 @@ import eva2.server.go.individuals.AbstractEAIndividual;
  * @author mkron
  *
  */
-public class EuclideanMetric implements InterfaceDistanceMetric {
+public class EuclideanMetric implements InterfaceDistanceMetric, Serializable {
 
 	public Object clone() {
 		return (Object) new EuclideanMetric(this);

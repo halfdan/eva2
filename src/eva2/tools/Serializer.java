@@ -12,6 +12,8 @@ package eva2.tools;
 /*==========================================================================*
  * IMPORTS
  *==========================================================================*/
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -68,6 +70,35 @@ public class Serializer {
     return ret;
   }
 
+  /**
+   * Returns a copy of the object, or null if the object cannot
+   * be serialized.
+   */
+  public static Object deepClone(Object orig) {
+      Object obj = null;
+      try {
+          // Write the object out to a byte array
+          ByteArrayOutputStream bos = new ByteArrayOutputStream();
+          ObjectOutputStream out = new ObjectOutputStream(bos);
+          out.writeObject(orig);
+          out.flush();
+          out.close();
+
+          // Make an input stream from the byte array and read
+          // a copy of the object back in.
+          ObjectInputStream in = new ObjectInputStream(
+              new ByteArrayInputStream(bos.toByteArray()));
+          obj = in.readObject();
+      }
+      catch(IOException e) {
+          e.printStackTrace();
+      }
+      catch(ClassNotFoundException cnfe) {
+          cnfe.printStackTrace();
+      }
+      return obj;
+  }
+
 
   /**
     * Use object serialization to make a "deep clone" of the object o.
@@ -77,35 +108,35 @@ public class Serializer {
     * usually implemented to produce a "shallow" clone that copies references
     * to other objects, instead of copying all referenced objects.
   **/
-  static public Object deepclone(final Serializable o) throws IOException, ClassNotFoundException {
-    // Create a connected pair of "piped" streams.
-    // We'll write bytes to one, and them from the other one.
-    final PipedOutputStream pipeout = new PipedOutputStream();
-    PipedInputStream pipein = new PipedInputStream(pipeout);
-    // Now define an independent thread to serialize the object and write
-    // its bytes to the PipedOutputStream
-    Thread writer = new Thread() {
-      public void run() {
-	ObjectOutputStream out = null;
-	try {
-	  out = new ObjectOutputStream(pipeout);
-	  out.writeObject(o); }
-	catch(IOException e) {
-	  System.out.println("ERROR in Serialization1"+ e.getMessage());
-	}
-	finally {
-	  try { out.close(); } catch (Exception e) {
-	    System.out.println("ERROR in Serialization2"+ e.getMessage());
-	  }
-	}
-      }
-    };
-    writer.start();
-    // Meanwhile, in this thread, read and deserialize from the piped
-    // input stream.  The resulting object is a deep clone of the original.
-    ObjectInputStream in = new ObjectInputStream(pipein);
-    return in.readObject();
-  }
+//  static public Object deepclone(final Serializable o) throws IOException, ClassNotFoundException {
+//    // Create a connected pair of "piped" streams.
+//    // We'll write bytes to one, and them from the other one.
+//    final PipedOutputStream pipeout = new PipedOutputStream();
+//    PipedInputStream pipein = new PipedInputStream(pipeout);
+//    // Now define an independent thread to serialize the object and write
+//    // its bytes to the PipedOutputStream
+//    Thread writer = new Thread() {
+//      public void run() {
+//	ObjectOutputStream out = null;
+//	try {
+//	  out = new ObjectOutputStream(pipeout);
+//	  out.writeObject(o); }
+//	catch(IOException e) {
+//	  System.out.println("ERROR in Serialization1"+ e.getMessage());
+//	}
+//	finally {
+//	  try { out.close(); } catch (Exception e) {
+//	    System.out.println("ERROR in Serialization2"+ e.getMessage());
+//	  }
+//	}
+//      }
+//    };
+//    writer.start();
+//    // Meanwhile, in this thread, read and deserialize from the piped
+//    // input stream.  The resulting object is a deep clone of the original.
+//    ObjectInputStream in = new ObjectInputStream(pipein);
+//    return in.readObject();
+//  }
   /**
      * This is a simple serializable data structure that we use below for
      * testing the methods above
@@ -123,8 +154,6 @@ public class Serializer {
     }
   }
 
-  /** This class defines a main() method for testing */
-  public static class Test {
     public static void main(String[] args) throws IOException, ClassNotFoundException {
       // Create a simple object graph
       DataStructure ds = new DataStructure();
@@ -144,11 +173,11 @@ public class Serializer {
       System.out.println("Read from the file: " + ds);
       // Create a deep clone and display that.  After making the copy
       // modify the original to prove that the clone is "deep".
-      DataStructure ds2 = (DataStructure) Serializer.deepclone(ds);
+      DataStructure ds2 = (DataStructure) Serializer.deepClone(ds);
       ds.other.message = null; ds.other.data = null; // Change original
       System.out.println("Deep clone: " + ds2);
     }
-  }
+
   /**
   * Serialize the string s and
   * store its serialized state in File with name Filename.

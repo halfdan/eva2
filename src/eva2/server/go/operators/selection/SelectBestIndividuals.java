@@ -41,7 +41,8 @@ public class SelectBestIndividuals implements InterfaceSelection, java.io.Serial
         // nothing to prepare here
     }
 
-    /** This method will select one Individual from the given
+    /** 
+     * This method will select n best individuals from the given
      * Population.
      * @param population    The source population where to select from
      * @param size          The number of Individuals to select

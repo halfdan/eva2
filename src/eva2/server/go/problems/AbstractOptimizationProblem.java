@@ -240,7 +240,7 @@ implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serial
      * @return String
      */
     public String[] getAdditionalFileStringHeader(PopulationInterface pop) {
-    	if (this instanceof InterfaceInterestingHistogram) return new String[]{"Solution","Histogram(c0)","Score"};
+    	if (this instanceof InterfaceInterestingHistogram) return new String[]{"Solution","Histogram","Score"};
     	else return new String[]{"Solution"};
     }
 

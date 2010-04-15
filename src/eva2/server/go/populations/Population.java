@@ -2,8 +2,10 @@ package eva2.server.go.populations;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Set;
@@ -22,6 +24,7 @@ import eva2.server.go.operators.postprocess.PostProcess;
 import eva2.server.go.operators.selection.probability.AbstractSelProb;
 import eva2.tools.EVAERROR;
 import eva2.tools.Pair;
+import eva2.tools.Serializer;
 import eva2.tools.math.Mathematics;
 import eva2.tools.math.RNG;
 import eva2.tools.math.StatisticUtils;
@@ -58,9 +61,10 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     protected int 			notifyEvalInterval	= 0;
     // additional data connected to the population
     protected HashMap<String, Object>		additionalPopData = null;
-    // historical best indidivuals may be traced
-    boolean useHistory						= false;
-    private transient ArrayList<AbstractEAIndividual>  m_History       = new ArrayList<AbstractEAIndividual>();
+    // historical best indidivuals may be traced for a given number of generations. Set to -1 to trace all, set to 0 to not trace at all
+    int historyMaxLen = 0;
+//    boolean useHistory						= false;
+    private transient LinkedList<AbstractEAIndividual>  m_History       = new LinkedList<AbstractEAIndividual>();
 
     // remember when the last sorted queue was prepared
     private int lastQModCount = -1;
@@ -78,7 +82,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     }
     
     /**
-     * Constructor setting initial capacity and population size to the given
+     * Constructor setting initial capacity and target population size to the given
      * integer value.
      * 
      * @param initialCapacity initial capacity and population size of the instance
@@ -123,7 +127,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
 	public Population(InterfaceSolutionSet allSolutions) {
 		this(allSolutions.getCurrentPopulation().size()+allSolutions.getSolutions().size());
     	if (TRACE) System.err.println("TRACING POP");
-		addPopulation(allSolutions.getCurrentPopulation());
+		addPopulation(allSolutions.getCurrentPopulation(), false);
 		HashMap<Long, Integer> checkCols = new HashMap<Long, Integer>(size());
 		for (int i=0; i<size(); i++) {
 			checkCols.put(getEAIndividual(i).getIndyID(), 1);
@@ -139,9 +143,13 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
 		setInitMethod(getInitMethod());
 	}
 	
+	/**
+	 * Make (shallow) copies of the given instance within the current instance. 
+	 * @param population
+	 */
 	public void copyHistAndArchive(Population population) {
     	if (population.m_Archive != null) this.m_Archive = (Population)population.m_Archive.clone();
-    	if (population.m_History != null) this.m_History = (ArrayList<AbstractEAIndividual>)population.m_History.clone();
+    	if (population.m_History != null) this.m_History = (LinkedList<AbstractEAIndividual>)population.m_History.clone();
     	if (population.additionalPopData!=null) {
     		this.additionalPopData = (HashMap<String, Object>)additionalPopData.clone();
     		if (population.additionalPopData.size()>0) {
@@ -161,7 +169,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
         this.m_Generation       = population.m_Generation;
         this.m_FunctionCalls    = population.m_FunctionCalls;
         this.m_TargetSize       = population.m_TargetSize;
-        this.useHistory 		= population.useHistory;
+        this.historyMaxLen 		= population.historyMaxLen;
         this.notifyEvalInterval = population.notifyEvalInterval;
         this.initMethod			= population.initMethod;
     	this.aroundDist			= population.aroundDist;
@@ -190,7 +198,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     	if (this.m_Generation   != opop.m_Generation) return false;
     	if (this.m_FunctionCalls    != opop.m_FunctionCalls) return false;
     	if (this.m_TargetSize       != opop.m_TargetSize) return false;
-    	if (this.useHistory 		!= opop.useHistory) return false;
+    	if (this.historyMaxLen 		!= opop.historyMaxLen) return false;
     	if (this.notifyEvalInterval != opop.notifyEvalInterval) return false;
     	if (this.initMethod			!= opop.initMethod) return false;
     	if (this.aroundDist			!= opop.aroundDist) return false;
@@ -253,7 +261,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      * have been inited by a problem
      */
     public void init() {
-        this.m_History = new ArrayList<AbstractEAIndividual>();
+        this.m_History = new LinkedList<AbstractEAIndividual>();
         this.m_Generation       = 0;
         this.m_FunctionCalls    = 0;
 //    	evaluationTimeHashes = null;
@@ -371,10 +379,19 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      * @param useHist
      */
     public void setUseHistory(boolean useHist) {
-    	useHistory = useHist;
+    	if (useHist) setMaxHistoryLength(-1); // trace full history!
+    	else setMaxHistoryLength(0); // dont trace at all!
 //    	this.setUseHistory(useHist, (useHist ? (new AbstractEAIndividualComparator()) : null));
     }
-    
+    public boolean isUsingHistory() {
+    	return historyMaxLen!=0;
+    }
+    public void setMaxHistoryLength(int len) {
+    	historyMaxLen = len; 
+    }
+    public int getMaxHistLength() {
+    	return historyMaxLen;
+    }
 //    /**
 //     * Activate or deactivate the history tracking, which stores the best individual in every
 //     * generation in the incrGeneration() method.
@@ -388,15 +405,15 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
 //    }
     
     public int getHistoryLength() {
-    	if (useHistory) return m_History.size();
+    	if (historyMaxLen!=0) return m_History.size();
     	else return 0;
     }
     
-    public ArrayList<AbstractEAIndividual> getHistory() {
+    public LinkedList<AbstractEAIndividual> getHistory() {
     	return m_History;
     }
     
-    public void SetHistory(ArrayList<AbstractEAIndividual> theHist) {
+    public void SetHistory(LinkedList<AbstractEAIndividual> theHist) {
     	m_History = theHist;
     }
     
@@ -485,8 +502,12 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      * Stagnation measured etc. pp.
      */
     public void incrGeneration() {
-        if (useHistory && (this.size() >= 1)) {
-        	this.m_History.add((AbstractEAIndividual)this.getBestEAIndividual().clone());// TODO
+        if (isUsingHistory() && (this.size() >= 1)) {
+        	if (historyMaxLen>0 && (m_History.size()>=historyMaxLen)) {
+        		// oldest one must be replaced.. should be the one in front
+        		m_History.removeFirst();
+        	}
+        	this.m_History.add((AbstractEAIndividual)this.getBestEAIndividual().clone());
         }
         for (int i=0; i<size(); i++) ((AbstractEAIndividual)get(i)).incrAge(); 
         this.m_Generation++;
@@ -524,17 +545,35 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     		listeners.remove(ea);
     	}
     }
-    
+
     /** This method allows you to add a complete population to the current population.
      * Note: After this operation the target population size may be exceeded.
+     * This method does not check for duplicate object pointers.
+     * 
      * @param pop   The population that is to be added.
      */
     public Population addPopulation(Population pop) {
+    	return this.addPopulation(pop, false);
+    }
+    
+    /**
+     * This method allows you to add a complete population to the current population.
+     * Note: After this operation the target population size may be exceeded.
+     * If indicated, this method checks for and avoids duplicate object pointers.
+     * 
+     * @param pop   The population that is to be added.
+     * @param avoidDuplicatePointers if true, duplicate object pointers are forbidden
+     */
+    public Population addPopulation(Population pop, boolean avoidDuplicatePointers) {
         if (pop != null) {
         	for (int i = 0; i < pop.size(); i++) {
         		AbstractEAIndividual indy = (AbstractEAIndividual)pop.get(i);
-        		if (indy != null) {
-        			this.add(indy);
+        		if (avoidDuplicatePointers && this.contains(indy)) {
+        			System.err.println("Warning, duplicate indy avoided in Population.addPopulation! Index of " + this.indexOf(indy));
+        		} else {
+        			if (indy != null) {
+        				this.add(indy);
+        			}
         		}
         	}
         }
@@ -1058,10 +1097,10 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      * Sort the population returning a new ArrayList.
      * The returned array should not be modified!
      * 
-     * @param comp A comparator by which sorting is performed
+     * @param comp A comparator by which sorting is performed - it should work on AbstractEAIndividual instances.
      * @return
      */
-    public ArrayList<AbstractEAIndividual> getSorted(AbstractEAIndividualComparator comp) {
+    public ArrayList<AbstractEAIndividual> getSorted(Comparator<Object> comp) {
     	if (super.size()==0) return new ArrayList<AbstractEAIndividual>();
 		PriorityQueue<AbstractEAIndividual> sQueue = new PriorityQueue<AbstractEAIndividual>(super.size(), comp);
 		for (int i = 0; i < super.size(); i++) {
@@ -1206,7 +1245,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      * This method relies on the implementation of the equals method
      * in the individuals.
      */
-    public void removeDoubleInstances() {
+    public void removeRedundantIndies() {
         for (int i = 0; i < this.size(); i++) {
             for (int j = i+1; j < this.size(); j++) {
                 if (((AbstractEAIndividual)this.get(i)).equals(this.get(j))) {
@@ -1217,9 +1256,34 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
         }
     }
 
+    public Population removeRedundantIndiesAsNew() {
+    	Population pop = this.cloneShallowInds();
+    	pop.removeRedundantIndies();
+    	return pop;
+    }
+	/**
+	 * Return the number of individuals within this instance that are
+	 * seen as being equal by the equals relation of the individual.
+	 * 
+	 * @return the number of equal individuals
+	 * 
+	 */
+	public int getRedundancyCount() {
+		int redund = 0;
+		for (int i=0; i<size()-1; i++) {
+			for (int j=i+1; j<size(); j++) {
+				if (getEAIndividual(i).equals(getEAIndividual(j))) {
+					redund++;
+					break; // jump because the i-th is redundant and we dont want to count all redundant pairs
+				}
+			}
+		}
+		return redund;
+	}
+	
     /** This method will remove instances with equal fitness from the population.
      */
-    public void removeDoubleInstancesUsingFitness() {
+    public void removeRedundantIndiesUsingFitness() {
         for (int i = 0; i < this.size(); i++) {
             for (int j = i+1; j < this.size(); j++) {
                 if (((AbstractEAIndividual)this.get(i)).equalFitness((AbstractEAIndividual)this.get(j))) {
@@ -1477,9 +1541,17 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
         return false;
     }
 
-	public void removeMembers(Population tmpPop, boolean errorOnMissing) {
-		for (int i=0; i<tmpPop.size(); i++) {
-			if (!removeMember(tmpPop.getEAIndividual(i))) {
+    /**
+     * Remove a set of individuals from the instance. If indicated by the errorOnMissing-flag
+     * a RuntimeException is thrown as soon as one individual to be removed is not contained
+     * in the instance. Otherwise, this is ignored.
+     * 
+     * @param tmpPop
+     * @param errorOnMissing
+     */
+	public void removeMembers(Population popToRemove, boolean errorOnMissing) {
+		for (int i=0; i<popToRemove.size(); i++) {
+			if (!removeMember(popToRemove.getEAIndividual(i))) {
 				if (errorOnMissing) throw new RuntimeException("Error, member to be removed was missing (Population.removeMembers)!");
 			}
 		}
@@ -1583,7 +1655,43 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
         }
 		return res;
 	}
-
+	
+	/**
+	 * Return the minimal, maximal, average, median, and variance of correlations between any two solutions.
+	 * @return
+	 */
+	public double[] getCorrelations() {
+		return Population.getCorrelations(this);
+	}
+	
+	/**
+	 * Return the minimal, maximal, average, median, and variance of correlations between any two solutions.
+	 * 
+	 * @param pop the population instance to look at
+	 * @return
+	 */
+	public static double[] getCorrelations(Population pop) {
+		double[] cors = new double[pop.size()*(pop.size()-1)/2]; 
+	
+		if (pop.size()<2) {
+			return new double[]{1.,1.,1.,1.};
+		}
+		int index=0;
+		double corsSum=0, minCor = 10., maxCor=-10.;
+        for (int i = 0; i < pop.size()-1; i++) {
+        	for (int j = i+1; j < pop.size(); j++) {
+        		double cor = StatisticUtils.correlation(pop.getEAIndividual(i).getDoublePosition(), pop.getEAIndividual(j).getDoublePosition());
+        		cors[index++] = cor; 
+        		corsSum += cor;
+        		if (cor>maxCor) maxCor=cor;
+        		if (cor<minCor) minCor=cor;
+        	}
+        }
+        double var = StatisticUtils.variance(cors, true);
+        double[] res = new double[] {minCor, maxCor, corsSum/cors.length, Mathematics.median(cors, false), var};
+        return res;
+	}
+	
     /**
      * Returns the average, minimal and maximal individual fitness and std dev. for the population in the given criterion.
      *
@@ -1673,11 +1781,13 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
 		 double dist = -1.;
 		 int sel=-1;
 		 for (int i = 0; i < pop.size(); i++) {
-			 double curDist = metric.distance(refIndy, pop.getEAIndividual(i));
-			 if ((dist<0) 	|| (!closestOrFarthest && (dist < curDist)) 
-					 		|| (closestOrFarthest && (dist > curDist))) {
-				 dist = curDist;
-				 sel = i;
+			 if (pop.getEAIndividual(i)!=null) {
+				 double curDist = metric.distance(refIndy, pop.getEAIndividual(i));
+				 if ((dist<0) 	|| (!closestOrFarthest && (dist < curDist)) 
+						 || (closestOrFarthest && (dist > curDist))) {
+					 dist = curDist;
+					 sel = i;
+				 }
 			 }
 		 }
 		 return new Pair<Integer,Double>(sel,dist);
@@ -1693,7 +1803,14 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
 	  */
 	 public boolean isWithinPopDist(AbstractEAIndividual indy, double d, InterfaceDistanceMetric metric) {
 		 Pair<Integer,Double> closest = Population.getClosestFarthestIndy(indy, this, metric, true);
-		 return (closest.tail()<=d);
+		 if (closest.tail()<=d) {
+			 return true;
+		 } else {
+//			 if (size()==1) {
+//				 System.out.println("dist is " + metric.distance(getEAIndividual(0), indy));
+//			 }
+			 return false;
+		 }
 	 }
 	 
 	/**
@@ -1712,12 +1829,28 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
 	}
 	
 	/**
+	 * Return an individual which is located at the center of the population.
+	 * The fitness will be invalid.
+	 * 
+	 * @return
+	 */
+	public IndividualInterface getCenterIndy() {
+		AbstractEAIndividual indy = (AbstractEAIndividual)getEAIndividual(0).clone();
+		double[] center = getCenter();
+		indy.setDoublePosition(indy, center);
+		indy.SetFitness(null);
+		return indy;
+	}
+	
+	/**
 	 * Calculate the weighted center position of the population. Weights must add up to one!
 	 * 
 	 * @return the average position of the population
 	 */
 	public double[] getCenterWeighted(double[] weights) {
-		if (size()==0 || (weights.length > size())) EVAERROR.errorMsgOnce("Invalid pop size in DistractingPopulation:getCenterWeighted!");
+		if (size()==0 || (weights.length > size()) || (weights.length==0)) {
+			EVAERROR.errorMsgOnce("Invalid pop size in DistractingPopulation:getCenterWeighted!");
+		}
 		double[] centerPos = AbstractEAIndividual.getDoublePosition(getEAIndividual(0));
 		Mathematics.svMult(weights[0], centerPos, centerPos);
 		for (int i=1; i<weights.length; i++) {
@@ -2003,6 +2136,56 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
 		for (int i=0; i<size(); i++) {
 			getEAIndividual(i).putData(key, obj);
 		}
+	}
+
+	/**
+	 * Return true if the current instance is a subset of the given population, otherwise false.
+	 * 
+	 * @param offspring
+	 * @return
+	 */
+	public boolean isSubSet(Population set) {
+		Population filtered = this.filter(set); // if this is a subset of s, filtered must be empty. 
+		return (filtered.size()==0);
+	}
+
+	/**
+	 * Return the set of individuals which are members of both this and the other population.
+	 * Uses the individuals equals predicate.
+	 * 
+	 * @param other
+	 * @return
+	 */
+	public Population setCut(Population other) {
+		Population cut = new Population();
+		for (int i=0; i<size(); i++) {
+			if (other.indexOf(getEAIndividual(i))>=0) cut.add(getEAIndividual(i));
+		}
+		return cut;
+	}
+
+	/**
+	 * Copy all additional population data of the given instance
+	 * into the current instance (by references only).
+	 * 
+	 * @param pop
+	 */
+	public void copyHashData(Population pop) {
+		if (pop!=null && (pop.additionalPopData!=null)) {
+			for (String key : pop.additionalPopData.keySet()) {
+				Object origData = pop.getData(key);
+				Object maybeClone = Serializer.deepClone(origData);
+				if (maybeClone!=null) putData(key, maybeClone);
+				else {
+					System.err.println("Warning, additional pop data could not be cloned!");
+					putData(key, origData);
+				}
+			}
+		}
+	}
+
+	public void clearHistory() {
+		m_History.clear();
 	}
 
 //	/**

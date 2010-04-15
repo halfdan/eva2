@@ -912,7 +912,6 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
 				try {
 					val = getter.invoke(m_Target, (Object[])null);
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
 					val = null;
 					e.printStackTrace();
 				}

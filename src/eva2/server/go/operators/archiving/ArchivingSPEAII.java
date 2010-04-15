@@ -63,7 +63,7 @@ public class ArchivingSPEAII extends AbstractArchiving implements java.io.Serial
         Population tmpPop = new Population();
         tmpPop.addPopulation((Population)pop.getClone());
         tmpPop.addPopulation((Population)pop.getArchive().getClone());
-        tmpPop.removeDoubleInstancesUsingFitness();
+        tmpPop.removeRedundantIndiesUsingFitness();
 //        double[][] d = this.showMay(tmpPop);
 
         double[] RawFitness     = this.calculateRawFitness(tmpPop);

@@ -494,7 +494,7 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
 	@Override
 	public String[] getAdditionalFileStringHeader(PopulationInterface pop) {
 		String[] superHeader = super.getAdditionalFileStringHeader(pop);
-		if (isWithConstraints()) return ToolBox.appendArrays(superHeader, new String[]{"RawFit.","Num.Viol.","Sum.Viol."});
+		if (isWithConstraints()) return ToolBox.appendArrays(superHeader, new String[]{"rawFit","numViol","sumViol"});
 		else return superHeader;
 	}
 

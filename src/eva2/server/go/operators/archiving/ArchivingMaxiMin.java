@@ -53,7 +53,7 @@ public class ArchivingMaxiMin implements InterfaceArchiving, java.io.Serializabl
         Population tmpPop = new Population();
         tmpPop.addPopulation((Population)pop.getClone());
         tmpPop.addPopulation((Population)pop.getArchive().getClone());
-        tmpPop.removeDoubleInstancesUsingFitness();
+        tmpPop.removeRedundantIndiesUsingFitness();
 
         // Now calculate the MaxiMin Criterium
         this.m_MaxiMin.convertMultiObjective2SingleObjective(tmpPop);

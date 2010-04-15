@@ -320,9 +320,8 @@ public class GenericObjectEditor implements PropertyEditor {
 	 */
 	private void setObject(Object c) {
 		// This should really call equals() for comparison.
-		if (TRACE) System.out.println("setObject "+ c.getClass().getName());
+		if (TRACE) System.out.println("setObject "+ c.getClass().getName() + " " + c);
 		boolean trueChange = (c != getValue());
-		//System.err.println("Didn't even try to make a Object copy!! "+ "(using original)");
 
 		m_Backup = m_Object;
 		m_Object = c;
