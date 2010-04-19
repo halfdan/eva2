@@ -68,8 +68,14 @@ public class FunctionArea extends DArea implements Serializable {
 	private InterfaceRefPointListener m_RefPointListener;
 	private int m_x;
 
+	/**
+	 * 
+	 */
 	private int m_y;
 
+	/**
+	 * 
+	 */
 	private boolean notifyNegLog = true;
 
 	/**
@@ -596,15 +602,20 @@ public class FunctionArea extends DArea implements Serializable {
 	}
 
 	/**
-	  *
-	  */
+	 * This gives the number of graphs already plotted.
+	 * 
+	 * @return
+	 */
 	public int getContainerSize() {
 		return m_PointSetContainer.size();
 	}
 
 	/**
-	  *
-	  */
+	 * 
+	 * @param x
+	 * @param y
+	 * @return
+	 */
 	public String getGraphInfo(int x, int y) {
 		String ret = "";
 		if ((m_PointSetContainer == null) || (m_PointSetContainer.size() == 0))
@@ -618,8 +629,10 @@ public class FunctionArea extends DArea implements Serializable {
 	}
 
 	/**
-	  *
-	  */
+	 * 
+	 * @param GraphLabel
+	 * @return
+	 */
 	private GraphPointSet getGraphPointSet(int GraphLabel) {
 		// System.out.println("looping through " + m_PointSetContainer.size() +
 		// " point sets...");
@@ -677,8 +690,11 @@ public class FunctionArea extends DArea implements Serializable {
 	}
 
 	/**
-	  *
-	  */
+	 * 
+	 * @param x
+	 * @param y
+	 * @return
+	 */
 	private int getNearestGraphIndex(int x, int y) {
 		// get index of nearest Graph
 		double distmin = 10000000;
@@ -749,13 +765,14 @@ public class FunctionArea extends DArea implements Serializable {
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
-		if (legendBox != null && (m_legend))
+		if (legendBox != null && m_legend)
 			legendBox.paintIn(g, m_Border.getInnerRect(this));
 	}
 
 	/**
-	  *
-	  */
+	 * 
+	 * @return
+	 */
 	public DPointSet[] printPoints() {
 		DPointSet[] ret = new DPointSet[m_PointSetContainer.size()];
 		for (int i = 0; i < m_PointSetContainer.size(); i++) {
@@ -768,6 +785,11 @@ public class FunctionArea extends DArea implements Serializable {
 
 	}
 
+	/**
+	 * 
+	 * @param i
+	 * @return
+	 */
 	public DPointSet printPoints(int i) {
 		// for (int i = 0; i < m_PointSetContainer.size();i++) {
 		System.out.println("");
@@ -820,8 +842,10 @@ public class FunctionArea extends DArea implements Serializable {
 	}
 
 	/**
-	  *
-	  */
+	 * 
+	 * @param p
+	 * @param graphLabel
+	 */
 	public void setConnectedPoint(double[] p, int graphLabel) {
 		setConnectedPoint(p[0], p[1], graphLabel);
 	}
@@ -910,8 +934,11 @@ public class FunctionArea extends DArea implements Serializable {
 	}
 
 	/**
-	  *
-	  */
+	 * 
+	 * @param GraphLabel
+	 * @param Info
+	 * @param stroke
+	 */
 	public void setInfoString(int GraphLabel, String Info, float stroke) {
 		getGraphPointSet(GraphLabel).setInfoString(Info, stroke);
 	}
@@ -929,8 +956,11 @@ public class FunctionArea extends DArea implements Serializable {
 	}
 
 	/**
-	  *
-	  */
+	 * 
+	 * @param x
+	 * @param y
+	 * @param GraphLabel
+	 */
 	public void setUnconnectedPoint(double x, double y, int GraphLabel) {
 		if (!checkLogValidYValue(x, y, GraphLabel)) {
 			if (m_log)
@@ -941,10 +971,18 @@ public class FunctionArea extends DArea implements Serializable {
 		repaint();
 	}
 
+	/**
+	 * 
+	 * @param p
+	 * @param GraphLabel
+	 */
 	public void setUnconnectedPoint(double[] p, int GraphLabel) {
 		setUnconnectedPoint(p[0], p[1], GraphLabel);
 	}
 
+	/**
+	 * 
+	 */
 	private void toggleLegend() {
 		m_legend = !m_legend;
 		repaint();
@@ -957,18 +995,16 @@ public class FunctionArea extends DArea implements Serializable {
 	 */
 	public void showLegend(boolean on) {
 		m_legend = on;
-		if (on) {
-			if (legendBox == null)
-				legendBox = new GraphPointSetLegend(m_PointSetContainer);
-		} else {
+		if (!on)
 			legendBox = null;
-		}
+		else
+			legendBox = new GraphPointSetLegend(m_PointSetContainer);
 		repaint();
 	}
 
 	/**
-	  *
-	  */
+	 * 
+	 */
 	public void toggleLog() {
 		// System.out.println("ToggleLog log was: "+m_log);
 		if (!m_log && !checkLoggable()) {
@@ -1014,5 +1050,16 @@ public class FunctionArea extends DArea implements Serializable {
 	public void updateLegend() {
 		GraphPointSetLegend lb = new GraphPointSetLegend(m_PointSetContainer);
 		setLegend(lb);
+	}
+
+	/**
+	 * Gives the info string for a graph label.
+	 * 
+	 * @param j
+	 *            The graph label identifier.
+	 * @return The associated info string.
+	 */
+	public String getInfoString(int j) {
+		return getGraphPointSet(j).getInfoString();
 	}
 }
