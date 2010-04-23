@@ -151,7 +151,7 @@ public class BeanInspector {
 				sbuf.append(delim);
 				if (!tight) sbuf.append(" ");
 			}
-			if (!tight) sbuf.setCharAt(sbuf.length()-2, ' ');
+			if (!tight && (sbuf.charAt(sbuf.length()-2) == delim)) sbuf.setCharAt(sbuf.length()-2, ' '); // delete the delim
 			sbuf.setCharAt(sbuf.length()-1, ']');
 			return sbuf.toString();
 		}
@@ -331,6 +331,8 @@ public class BeanInspector {
 				return meth.invoke(obj, args);
 			} catch(Exception e) {
 				System.err.println("Error on calling method "+mName + " on " + obj.getClass().getName());
+				System.err.println("Object: " + obj.toString() + ", method name: " + mName);
+				System.err.println("Arguments were " + BeanInspector.toString(args));
 				e.printStackTrace();
 				return null;
 			}
@@ -348,7 +350,7 @@ public class BeanInspector {
 		if (o==null) return null;
 		Class[] clz = new Class[o.length];
 		for (int i=0; i<o.length; i++) {
-			clz[i]=o.getClass();
+			clz[i]=o[i].getClass();
 		}
 		return clz;
 	}
@@ -388,7 +390,7 @@ public class BeanInspector {
 					if (paramTypes!=null && (methParamTypes.length==paramTypes.length)) {
 						boolean mismatch = false; int i=0;
 						while ((i<methParamTypes.length) && (!mismatch)) {
-							if (!methParamTypes[i].equals(paramTypes[i])) mismatch=true;
+							if (!methParamTypes[i].isAssignableFrom(paramTypes[i])) mismatch=true;
 							i++;
 						} 
 						if (!mismatch) return method; // parameter match, otherwise search on
