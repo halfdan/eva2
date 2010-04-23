@@ -138,7 +138,7 @@ public class ParameterControlManager implements InterfaceParameterControl, Seria
 	public void setSingleAdapters(ParamAdaption[] singleAdapters) {
 		this.singleAdapters = singleAdapters;
 	}
-	
+
 	public static String globalInfo() {
 		return "Define a list of dynamically adapted parameters.";
 	}
@@ -150,6 +150,7 @@ public class ParameterControlManager implements InterfaceParameterControl, Seria
 	/**
 	 * Retrieve a list of objects which are properties of the given target object (retrievable by a 
 	 * getter method) and which implement the getParamControl method.
+	 * This can be used to avoid a GUI layer as stated in the class comment.
 	 * 
 	 * @param target
 	 * @return
