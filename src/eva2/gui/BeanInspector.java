@@ -1,20 +1,9 @@
 package eva2.gui;
-/*
- * Title:        EvA2
- * Description:
- * Copyright:    Copyright (c) 2003
- * Company:      University of Tuebingen, Computer Architecture
- * @author Holger Ulmer, Felix Streichert, Hannes Planatscher
- * @version:  $Revision: 202 $
- *            $Date: 2007-10-25 16:12:49 +0200 (Thu, 25 Oct 2007) $
- *            $Author: mkron $
- */
-/*==========================================================================*
- * IMPORTS
- *==========================================================================*/
+
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
+import java.beans.MethodDescriptor;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
@@ -24,36 +13,18 @@ import java.util.List;
 import eva2.server.go.populations.Population;
 import eva2.tools.Pair;
 import eva2.tools.SelectedTag;
+import eva2.tools.StringTools;
 import eva2.tools.Tag;
 
 
-/*
- *  ==========================================================================*
- *  CLASS DECLARATION
- *  ==========================================================================
+/**
+ * Some miscellaneous functions to help with Beans, reflection, conversion and generic display.
+ * 
+ * @author mkron, Holger Ulmer, Felix Streichert, Hannes Planatscher
+ *
  */
 public class BeanInspector {
 	public static boolean TRACE = false;
-
-//	public static int  step = 0;
-//	public static String check(String s) {
-
-//	s=s.replace('$','_');
-//	s=s.replace(';','_');
-////	String ret = null;
-////	try {
-////	RE r = new RE("\\[");
-////	ret = r.subst(s,"");
-////	//ret.substring();
-////	//ret
-////	} catch (Exception e) {e.getMessage();};
-////	System.out.println("s="+s+"  ret"+ret);
-//	if (s.equals("[D")) return "Double_Array";
-//	if (s.startsWith("[D")) return s.substring(2);
-//	if (s.startsWith("[L")) return s.substring(2);
-
-//	return s;
-//	}
 
 	/**
 	 * Check for equality based on bean properties of two target objects.
@@ -354,7 +325,7 @@ public class BeanInspector {
 	 * @return the return value of the called method or null
 	 */
 	public static Object callIfAvailable(Object obj, String mName, Object[] args) {
-		Method meth = hasMethod(obj, mName);
+		Method meth = hasMethod(obj, mName, toClassArray(args));
 		if (meth != null) {
 			try {
 				return meth.invoke(obj, args);
@@ -367,18 +338,63 @@ public class BeanInspector {
 	}
 
 	/**
-	 * Check whether an object has a method by the given name. Return
+	 * Produce an array of Class instances matching the types of 
+	 * the given object array.
+	 * 
+	 * @param o
+	 * @return
+	 */
+	public static Class[] toClassArray(Object[] o) {
+		if (o==null) return null;
+		Class[] clz = new Class[o.length];
+		for (int i=0; i<o.length; i++) {
+			clz[i]=o.getClass();
+		}
+		return clz;
+	}
+	
+	/**
+	 * Check whether an object has a method by the given name and with
+	 * matching signature considering the arguments. Return
 	 * it if found, or null if not.
 	 *  
 	 * @param obj
 	 * @param mName the method name
+	 * @param args the arguments, null allowed if the method takes no parameters
 	 * @return the method or null if it isn't found
 	 */
-	public static Method hasMethod(Object obj, String mName) {
+	public static Method hasMethod(Object obj, String mName, Object[] args) {
+		return hasMethod(obj, mName, toClassArray(args));
+	}
+	
+	/**
+	 * Check whether an object has a method by the given name and
+	 * with the given parameter signature. Return
+	 * it if found, or null if not.
+	 *  
+	 * @param obj
+	 * @param mName the method name
+	 * @param paramTypes the parameter types, null allowed if no parameters are expected
+	 * @return the method or null if it isn't found
+	 */
+	public static Method hasMethod(Object obj, String mName, Class[] paramTypes) {
 		Class<?> cls = obj.getClass();
 		Method[] meths = cls.getMethods();
 		for (Method method : meths) {
-			if (method.getName().equals(mName)) return method;
+			if (method.getName().equals(mName)) { // name match
+				Class[] methParamTypes = method.getParameterTypes();
+				if (paramTypes==null && methParamTypes.length==0) return method; // full match
+				else {
+					if (paramTypes!=null && (methParamTypes.length==paramTypes.length)) {
+						boolean mismatch = false; int i=0;
+						while ((i<methParamTypes.length) && (!mismatch)) {
+							if (!methParamTypes[i].equals(paramTypes[i])) mismatch=true;
+							i++;
+						} 
+						if (!mismatch) return method; // parameter match, otherwise search on
+					} // parameter mismatch, search on
+				}
+			}
 		}
 		return null;
 	}
@@ -428,7 +444,7 @@ public class BeanInspector {
 
 	/**
 	 * Return an info string on the members of the object class, containing name, type, optional
-	 * value and tool tip text if available. The type is accompagnied by a tag "common" or "restricted",
+	 * value and tool tip text if available. The type is accompanied by a tag "common" or "restricted",
 	 * indicating whether the member property is normal or hidden, meaning it may have effect depending
 	 * on settings of other members only, for instance.
 	 * 
@@ -499,7 +515,7 @@ public class BeanInspector {
 				}
 				
 				// now look for a TipText method for this property
-				Method tipTextMethod = hasMethod(obj, name + "TipText");
+				Method tipTextMethod = hasMethod(obj, name + "TipText", null);
 				if (tipTextMethod == null) {
 					memberInfoBf.append("\tNo further hint.");
 				} else {
@@ -719,5 +735,49 @@ public class BeanInspector {
 			System.err.println("Setter method for " + mem + " not found!");
 			return false;
 		}
+	}
+
+	/** This method simply looks for an appropriate tiptext
+	 * @param name      The name of the property
+	 * @param methods   A list of methods to search.
+	 * @param target    The target object
+	 * @return String for the tooltip.
+	 */
+	public static String getToolTipText(String name, MethodDescriptor[] methods, Object target, boolean stripToolTipToFirstPoint, int toHTMLLen) {
+	    String result   = "";
+	    String tipName  = name + "TipText";
+	    for (int j = 0; j < methods.length; j++) {
+	        String mname    = methods[j].getDisplayName();
+	        Method meth     = methods[j].getMethod();
+	        if (mname.equals(tipName)) {
+	            if (meth.getReturnType().equals(String.class)) {
+	                try {
+	                    Object  args[]  = { };
+		                String  tempTip = (String)(meth.invoke(target, args));
+		                result = tempTip;
+		                if (stripToolTipToFirstPoint) {
+		                	int     ci      = tempTip.indexOf('.');
+		                	if (ci > 0) result = tempTip.substring(0, ci);
+		                }
+	                } catch (Exception ex) {
+	                }
+	                break;
+	            }
+	        }
+	    } // end for looking for tiptext
+	    if (toHTMLLen > 0) return StringTools.toHTML(result, toHTMLLen);
+	    else return result;
+	}
+
+	/** 
+	 * This method simply looks for an appropriate tool tip text
+	 * 
+	 * @param name      The name of the property
+	 * @param methods   A list of methods to search.
+	 * @param target    The target object
+	 * @return String for the tooltip.
+	 */
+	public static String getToolTipText(String name, MethodDescriptor[] methods, Object target) {
+		return getToolTipText(name, methods, target, false, 0);
 	}
 }

@@ -220,7 +220,7 @@ public abstract class AbstractObjectEditor implements PropertyEditor, java.beans
                 result.m_PropertyType   = props[i].getPropertyType();
                 result.m_Name           = props[i].getDisplayName();
                 result.m_Label          = new JLabel(result.m_Name, SwingConstants.RIGHT);
-                result.m_TipText        = this.getToolTipText(result.m_Name, methods, target);
+                result.m_TipText        = BeanInspector.getToolTipText(result.m_Name, methods, target);
                 try {
                     result.m_Value      = result.m_getMethod.invoke(target, args);
 //                    result.m_Editor     = PropertyEditorProvider.findEditor(result.m_Value.getClass());
@@ -248,35 +248,6 @@ public abstract class AbstractObjectEditor implements PropertyEditor, java.beans
         if (result==null) {
         	System.err.println("Warning: unknown property or unable to create editor for property " + prop + ", object " + this.getClass().getName());
         }
-        return result;
-    }
-
-    /** This method simply looks for an appropriate tiptext
-     * @param name      The name of the property
-     * @param methods   A list of methods to search.
-     * @param target    The target object
-     * @return String for the tooltip.
-     */
-    public String getToolTipText(String name, MethodDescriptor[] methods, Object target) {
-        String result   = "No tooltip available.";
-        String tipName  = name + "TipText";
-	    for (int j = 0; j < methods.length; j++) {
-	        String mname    = methods[j].getDisplayName();
-	        Method meth     = methods[j].getMethod();
-	        if (mname.equals(tipName)) {
-	            if (meth.getReturnType().equals(String.class)) {
-	                try {
-                        Object  args[]  = { };
-		                String  tempTip = (String)(meth.invoke(target, args));
-		                int     ci      = tempTip.indexOf('.');
-		                if (ci < 0) result = tempTip;
-		                else        result = tempTip.substring(0, ci);
-	                } catch (Exception ex) {
-                    }
-	                return result;
-	            }
-	        }
-	    } // end for looking for tiptext
         return result;
     }
 

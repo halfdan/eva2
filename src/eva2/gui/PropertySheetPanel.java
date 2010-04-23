@@ -45,7 +45,6 @@ import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 
 import eva2.tools.EVAHELP;
-import eva2.tools.StringTools;
 /*==========================================================================*
 * CLASS DECLARATION
 *==========================================================================*/
@@ -278,7 +277,7 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
 	            }
                 editor.setValue(value);
                 
-                m_TipTexts[i] = getToolTipText(name, m_Methods, m_Target, tipTextLineLen);
+                m_TipTexts[i] = BeanInspector.getToolTipText(name, m_Methods, m_Target, stripToolTipToFirstPoint, tipTextLineLen);
 
 //                System.out.println("PSP editor class: " + editor.getClass());
                 newView = getView(editor);
@@ -923,39 +922,6 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
 			}
 		}
 	}
-
-	/** This method simply looks for an appropriate tiptext
-     * @param name      The name of the property
-     * @param methods   A list of methods to search.
-     * @param target    The target object
-     * @return String for the tooltip.
-     */
-    private String getToolTipText(String name, MethodDescriptor[] methods, Object target, int toHTMLLen) {
-        String result   = "";
-        String tipName  = name + "TipText";
-	    for (int j = 0; j < methods.length; j++) {
-	        String mname    = methods[j].getDisplayName();
-	        Method meth     = methods[j].getMethod();
-	        if (mname.equals(tipName)) {
-	            if (meth.getReturnType().equals(String.class)) {
-	                try {
-                        Object  args[]  = { };
-		                String  tempTip = (String)(meth.invoke(target, args));
-		                result = tempTip;
-		                if (stripToolTipToFirstPoint) {
-		                	int     ci      = tempTip.indexOf('.');
-		                	if (ci > 0) result = tempTip.substring(0, ci);
-		                }
-	                } catch (Exception ex) {
-                    }
-	                break;
-	            }
-	        }
-	    } // end for looking for tiptext
-	    if (toHTMLLen > 0) return StringTools.toHTML(result, toHTMLLen);
-	    else return result;
-    }
-
 }
 
 

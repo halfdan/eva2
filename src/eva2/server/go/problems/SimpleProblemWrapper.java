@@ -27,6 +27,7 @@ public class SimpleProblemWrapper extends AbstractOptimizationProblem {
 	transient Plot m_plot = null;
 	transient AbstractEAIndividual bestIndy = null;
 	String plotFunc = "plotBest";
+	transient Class[] plotFuncSig = new Class[]{Plot.class, AbstractEAIndividual.class};
 	transient private boolean resetTemplate = true;
 	
 	public SimpleProblemWrapper() {
@@ -165,7 +166,7 @@ public class SimpleProblemWrapper extends AbstractOptimizationProblem {
 		initTemplate();
 		GenericObjectEditor.setShowProperty(getClass(), "noise", (simProb instanceof SimpleProblemDouble));
 		GenericObjectEditor.setShowProperty(getClass(), "defaultRange", (simProb instanceof SimpleProblemDouble));
-		if (BeanInspector.hasMethod(simProb, plotFunc) != null) {
+		if (BeanInspector.hasMethod(simProb, plotFunc, plotFuncSig) != null) {
 			if (m_plot == null) openPlot();
 			else {
 				if (!m_plot.isValid()) {
