@@ -162,7 +162,7 @@ public class ParameterControlManager implements InterfaceParameterControl, Seria
 		for (int i=0; i<objs.length; i++) {
 			if (objs[i]!=null) {
 				// TODO avoid hasMethod recreate some interface for this??
-				if (BeanInspector.hasMethod(objs[i], "getParamControl")!=null) controllables.add(objs[i]);
+				if (BeanInspector.hasMethod(objs[i], "getParamControl", null)!=null) controllables.add(objs[i]);
 			}
 		}
 		return controllables.toArray(new Object[controllables.size()]);

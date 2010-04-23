@@ -399,7 +399,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
     		System.out.println("Best bef: " + BeanInspector.toString(m_Optimizer.getPopulation().getBestFitness()));
     	}
     	
-    	if (BeanInspector.hasMethod(m_Optimizer, "getLastModelPopulation")!=null) {
+    	if (BeanInspector.hasMethod(m_Optimizer, "getLastModelPopulation", null)!=null) {
     		Object pc = BeanInspector.callIfAvailable(m_Optimizer, "getLastTrainingPatterns", null);
    			System.out.println("MAPSO train set bef optSpec: " + BeanInspector.callIfAvailable(pc, "getStringRepresentation", null));
     	}

@@ -954,7 +954,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
                 sb.append(b[i].getStringRepresentation());
                 if ((i+1) < b.length) sb.append(separator);
             }
-        } else if (BeanInspector.hasMethod(individual, "toString") != null) {
+        } else if (BeanInspector.hasMethod(individual, "toString", null) != null) {
         	EVAERROR.errorMsgOnce("warning in AbstractEAIndividual::getDefaultDataString: type " + individual.getClass() + " has no default data representation, using toString...");
         	return individual.toString();
         } else {
