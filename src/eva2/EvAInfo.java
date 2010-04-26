@@ -102,8 +102,8 @@ public class EvAInfo {
 		}
 		File f=new File(EvAInfo.iconLocation);
 		if (!f.exists()) {
-			System.err.println("Error: Could not find EvA2 resources. Did you copy the resources folder to working directory?");
-			System.exit(2);
+			System.err.println("Error: Could not find EvA2 resources. Did you copy the resources folder to working directory? (EvAInfo.static)");
+//			System.exit(2); // dont be as harsh right here - there will be plenty of exceptions later in the bad case...
 		}
 	}
 	
