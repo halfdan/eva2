@@ -33,21 +33,25 @@ public class GraphPointSetLegend {
 	/**
 	 * 
 	 * @author draeger
-	 *
+	 * 
 	 */
 	private static class PairComp implements Comparator<Pair<String, Color>> {
 
 		/*
 		 * (non-Javadoc)
+		 * 
 		 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
 		 */
 		public int compare(Pair<String, Color> o1, Pair<String, Color> o2) {
-			return o1.car().compareTo(o2.car());
+			int comp = o1.car().compareTo(o2.car());
+			// Same text; let us see if the color is also identical.
+			return comp == 0 ? comp = Integer.valueOf(o1.cdr().getRGB())
+					.compareTo(Integer.valueOf(o2.cdr().getRGB())) : comp;
 		}
-		
+
 	}
-	
-	private static final PairComp comperator = new PairComp(); 
+
+	private static final PairComp comperator = new PairComp();
 
 	/**
 	 * 
@@ -167,8 +171,7 @@ public class GraphPointSetLegend {
 			// System.out.println(legendEntries[i].toString() + "\tcontaines: "
 			// + set.contains(legendEntries[i]));
 			g.setColor(legendEntry.tail);
-			Rectangle2D stringBounds = fm.getStringBounds(
-					legendEntry.head, g);
+			Rectangle2D stringBounds = fm.getStringBounds(legendEntry.head, g);
 			xOffs = (int) (maxX - stringBounds.getWidth() - 5);
 			g.drawString(legendEntry.head, xOffs, yOffs);
 			// g.drawString(legendEntries[i].head, 80, 80);
