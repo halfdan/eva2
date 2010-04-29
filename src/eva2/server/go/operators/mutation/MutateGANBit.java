@@ -16,13 +16,13 @@ import eva2.tools.math.RNG;
  * Time: 10:03:37
  * To change this template use Options | File Templates.
  */
-public class MutateGAStandard implements InterfaceMutation, java.io.Serializable {
+public class MutateGANBit implements InterfaceMutation, java.io.Serializable {
     private int         m_NumberOfMutations = 1;
 
-    public MutateGAStandard() {
+    public MutateGANBit() {
 
     }
-    public MutateGAStandard(MutateGAStandard mutator) {
+    public MutateGANBit(MutateGANBit mutator) {
         this.m_NumberOfMutations     = mutator.m_NumberOfMutations;
     }
 
@@ -30,7 +30,7 @@ public class MutateGAStandard implements InterfaceMutation, java.io.Serializable
      * @return The clone
      */
     public Object clone() {
-        return new MutateGAStandard(this);
+        return new MutateGANBit(this);
     }
     
     /** This method allows you to evaluate wether two mutation operators
@@ -38,8 +38,8 @@ public class MutateGAStandard implements InterfaceMutation, java.io.Serializable
      * @param mutator   The other mutation operator
      */
     public boolean equals(Object mutator) {
-        if (mutator instanceof MutateGAStandard) {
-            MutateGAStandard mut = (MutateGAStandard)mutator;
+        if (mutator instanceof MutateGANBit) {
+            MutateGANBit mut = (MutateGANBit)mutator;
             if (this.m_NumberOfMutations != mut.m_NumberOfMutations) return false;
             return true;
         } else return false;
@@ -86,7 +86,7 @@ public class MutateGAStandard implements InterfaceMutation, java.io.Serializable
      * @return A descriptive string.
      */
     public String getStringRepresentation() {
-        return "GA standard mutation";
+        return "GA n-Bit mutation";
     }
 
 /**********************************************************************************************************************
@@ -97,13 +97,13 @@ public class MutateGAStandard implements InterfaceMutation, java.io.Serializable
      * @return The name.
      */
     public String getName() {
-        return "GA standard mutation";
+        return "GA n-Bit mutation";
     }
     /** This method returns a global info string
      * @return description
      */
     public static String globalInfo() {
-        return "The standard mutation switches n bits of the GA genotype.";
+        return "Switch n bits of the GA genotype.";
     }
 
     /** This method allows you to set the number of mutations that occur in the

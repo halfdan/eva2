@@ -6,7 +6,7 @@ import java.util.BitSet;
 import eva2.server.go.operators.crossover.CrossoverGANPoint;
 import eva2.server.go.operators.crossover.InterfaceCrossover;
 import eva2.server.go.operators.mutation.InterfaceMutation;
-import eva2.server.go.operators.mutation.MutateGAStandard;
+import eva2.server.go.operators.mutation.MutateGANBit;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
 
@@ -25,7 +25,7 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
 
     public GAIndividualBinaryData() {
         this.m_MutationProbability  = 0.1;
-        this.m_MutationOperator     = new MutateGAStandard();
+        this.m_MutationOperator     = new MutateGANBit();
         this.m_CrossoverProbability = 1.0;
         this.m_CrossoverOperator    = new CrossoverGANPoint();
         this.m_GenotypeLength       = 20;

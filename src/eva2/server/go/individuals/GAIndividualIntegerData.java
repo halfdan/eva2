@@ -3,13 +3,11 @@ package eva2.server.go.individuals;
 
 import java.util.BitSet;
 
-import eva2.server.go.individuals.codings.ga.GAStandardCodingDouble;
 import eva2.server.go.individuals.codings.ga.GAStandardCodingInteger;
-import eva2.server.go.individuals.codings.ga.InterfaceGADoubleCoding;
 import eva2.server.go.individuals.codings.ga.InterfaceGAIntegerCoding;
 import eva2.server.go.operators.crossover.CrossoverGANPoint;
 import eva2.server.go.operators.mutation.InterfaceMutation;
-import eva2.server.go.operators.mutation.MutateGAStandard;
+import eva2.server.go.operators.mutation.MutateGANBit;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
 
@@ -31,7 +29,7 @@ public class GAIndividualIntegerData extends AbstractEAIndividual implements Int
 
     public GAIndividualIntegerData() {
         this.m_MutationProbability  = 0.1;
-        this.m_MutationOperator     = new MutateGAStandard();
+        this.m_MutationOperator     = new MutateGANBit();
         this.m_CrossoverProbability = 0.7;
         this.m_CrossoverOperator    = new CrossoverGANPoint();
         this.m_Range                = new int[1][2];
