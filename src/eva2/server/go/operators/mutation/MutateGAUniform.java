@@ -51,7 +51,7 @@ public class MutateGAUniform implements InterfaceMutation, Serializable {
 
 	public void init(AbstractEAIndividual individual,
 			InterfaceOptimizationProblem opt) {
-		if (useInvertedLength && (individual instanceof InterfaceGAIndividual)) setBitwiseProb(((InterfaceGAIndividual)individual).getGenotypeLength());
+		if (useInvertedLength && (individual instanceof InterfaceGAIndividual)) setBitwiseProb(1./((double)((InterfaceGAIndividual)individual).getGenotypeLength()));
 	}
 
 	/**
@@ -70,6 +70,7 @@ public class MutateGAUniform implements InterfaceMutation, Serializable {
 		return bitwiseProb;
 	}
 	public void setBitwiseProb(double bitwiseProb) {
+		if (bitwiseProb <0. && (bitwiseProb > 1.)) System.err.println("Warning, probability should be within [0,1], given: " + bitwiseProb); 
 		this.bitwiseProb = bitwiseProb;
 	}
 	public String bitwiseProbTipText() {

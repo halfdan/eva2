@@ -8,7 +8,7 @@ import eva2.server.go.individuals.codings.ga.InterfaceGADoubleCoding;
 import eva2.server.go.operators.crossover.CrossoverGANPoint;
 import eva2.server.go.operators.crossover.InterfaceCrossover;
 import eva2.server.go.operators.mutation.InterfaceMutation;
-import eva2.server.go.operators.mutation.MutateGAStandard;
+import eva2.server.go.operators.mutation.MutateGAUniform;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
 
@@ -31,7 +31,7 @@ public class GAIndividualDoubleData extends AbstractEAIndividual implements Inte
 
     public GAIndividualDoubleData() {
         this.m_MutationProbability  = 0.1;
-        this.m_MutationOperator     = new MutateGAStandard();
+        this.m_MutationOperator     = new MutateGAUniform();
         this.m_CrossoverProbability = 0.7;
         this.m_CrossoverOperator    = new CrossoverGANPoint();
         this.m_Range                = new double[1][2];
