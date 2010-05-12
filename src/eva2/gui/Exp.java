@@ -19,7 +19,12 @@ import eva2.tools.chart2d.DFunction;
  *
  */
 public class Exp extends DFunction {
+	private double minValue = 1e-10; // think of a minimal value we want to show in case invalid (<=0) values are requested
 	
+	public void setMinValue(double v) {
+		if (v>0) minValue = v;
+		else System.err.println("Error, minimal value for Exp must be positive!");
+	}
 	/*
 	 * (non-Javadoc)
 	 * @see eva2.tools.chart2d.DFunction#isDefinedAt(double)
@@ -50,10 +55,15 @@ public class Exp extends DFunction {
 	 */
 	public double getSourceOf(double target) {
 		if (target <= 0) {
-			throw new IllegalArgumentException(
-					"Can not calculate log on values smaller than or equal 0 --> target = "
-							+ target);
+			return Math.log(minValue); // think of a minimal value we want to show in case invalid values are requested
+//			throw new IllegalArgumentException(
+//					"Can not calculate log on values smaller than or equal 0 --> target = "
+//							+ target);
 		}
 		return Math.log(target);
+	}
+	
+	public void updateMinValue(double y) {
+		if (y<minValue && (y>0)) minValue=y;
 	}
 }

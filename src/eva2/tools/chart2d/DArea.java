@@ -797,6 +797,10 @@ public class DArea extends JComponent implements DParent, Printable {
 		measures.x_scale = x_s;
 		repaint();
 	}
+	
+	public DFunction getYScale() {
+		return measures.y_scale; 
+	}
 
 	/**
 	 * sets a new scale function to the y-axis That means that not the standard

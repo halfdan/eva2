@@ -42,6 +42,7 @@ import eva2.tools.chart2d.Chart2DDPointIconPoint;
 import eva2.tools.chart2d.Chart2DDPointIconText;
 import eva2.tools.chart2d.DArea;
 import eva2.tools.chart2d.DBorder;
+import eva2.tools.chart2d.DFunction;
 import eva2.tools.chart2d.DPoint;
 import eva2.tools.chart2d.DPointIcon;
 import eva2.tools.chart2d.DPointSet;
@@ -315,6 +316,18 @@ public class FunctionArea extends DArea implements Serializable {
 		}
 		// if (TRACE) System.out.println("min is " + minY);
 		return (minY > 0);
+	}
+
+	protected double getMinimalPositiveYValue() {
+		double minY = Double.MAX_VALUE;
+		for (int i = 0; i < m_PointSetContainer.size(); i++) {
+			DPointSet pSet = (m_PointSetContainer.get(i).getConnectedPointSet());
+			if (pSet.getSize() > 0) {
+				double tmpMinY = Math.min(minY, pSet.getMinYVal());
+				if (tmpMinY>0) minY=tmpMinY;
+			}
+		}
+		return minY;
 	}
 
 	protected boolean checkLogValidYValue(double x, double y, int graphLabel) {
@@ -821,23 +834,12 @@ public class FunctionArea extends DArea implements Serializable {
 		this.m_RefPointListener = null;
 	}
 
-	/**
-	  *
-	  */
 	public void setConnectedPoint(double x, double y, int graphLabel) {
+		DFunction scF = getYScale();
+		if (scF instanceof Exp) ((Exp)scF).updateMinValue(y);
 		if (!checkLogValidYValue(x, y, graphLabel)) {
-			if (m_log)
-				toggleLog();
+			//			 if (m_log) toggleLog();
 		}
-		// if (y <= 0.0) {
-		// // y = Double.MIN_VALUE;
-		// if (notifyNegLog) {
-		// System.err.println("Warning: trying to plot value (" + x + "/" + y +
-		// ") with y <= 0 in logarithmic mode! Setting y to " + 1e-30);
-		// notifyNegLog = false;
-		// }
-		// y = 1e-30;
-		// }
 		getGraphPointSet(graphLabel).addDPoint(x, y);
 	}
 
@@ -955,6 +957,7 @@ public class FunctionArea extends DArea implements Serializable {
 			repaint();
 	}
 
+
 	/**
 	 * 
 	 * @param x
@@ -962,9 +965,10 @@ public class FunctionArea extends DArea implements Serializable {
 	 * @param GraphLabel
 	 */
 	public void setUnconnectedPoint(double x, double y, int GraphLabel) {
+		DFunction scF = getYScale();
+		if (scF instanceof Exp) ((Exp)scF).updateMinValue(y);
 		if (!checkLogValidYValue(x, y, GraphLabel)) {
-			if (m_log)
-				toggleLog();
+			//			 if (m_log) toggleLog();
 		}
 		this.getGraphPointSet(GraphLabel).addDPoint(x, y);
 		this.getGraphPointSet(GraphLabel).setConnectedMode(false);
@@ -1007,17 +1011,20 @@ public class FunctionArea extends DArea implements Serializable {
 	 */
 	public void toggleLog() {
 		// System.out.println("ToggleLog log was: "+m_log);
+		boolean setMinPos=false;
 		if (!m_log && !checkLoggable()) {
-			System.err.println("Cant toggle log with values <= 0!");
-			return;
+			 System.err.println("Warning: toggling logarithmics scale with values <= 0! Some points will not be displayed.");
+			 setMinPos=true;
 		}
 		if (m_log == false) {
-			setMinRectangle(0.001, 0.001, 1, 1);
-			// setVisibleRectangle( 0.001, 0.001, 100000, 1000 );
-			setYScale(new Exp());
-			m_Border.setSrcdY(Math.log(10));
-			m_Border.applyPattern(false, "0.###E0");
-			m_log = true;
+			 setMinRectangle(0.001, 0.001, 1, 1);
+			 //setVisibleRectangle(  0.001, 0.001, 100000, 1000 );
+			 Exp exp = new Exp();
+			 if (setMinPos) exp.setMinValue(getMinimalPositiveYValue());
+			 setYScale(exp);
+			 m_Border.setSrcdY(Math.log(10));
+			 m_Border.applyPattern(false, "0.###E0");
+			 m_log = true;
 		} else {
 			m_log = false;
 			setYScale(null);
