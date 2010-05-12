@@ -96,17 +96,31 @@ public class EvAInfo {
 		try {
 			EVA_PROPERTIES = BasicResourceLoader.readProperties(EvAInfo.propertyFile);
 		} catch (Exception ex) {
-			System.err.println("ERROR! Could not read the configuration file "+ EvAInfo.propertyFile);
+			System.err.println(resourceNotFoundErrorMessage(EvAInfo.propertyFile));
 			System.err.println(ex.getMessage());
 			System.exit(1);
 		}
 		File f=new File(EvAInfo.iconLocation);
 		if (!f.exists()) {
-			System.err.println("Error: Could not find EvA2 resources. Did you copy the resources folder to working directory? (EvAInfo.static)");
+			throw new RuntimeException(resourceNotFoundErrorMessage(EvAInfo.iconLocation) + " (EvAInfo.static)");
 //			System.exit(2); // dont be as harsh right here - there will be plenty of exceptions later in the bad case...
 		}
 	}
 	
+    /**
+     * An eloquent error message in case a resource was not found - which was
+     * expected in the EvA2 resource directory.
+     * @param resourceName
+     * @return
+     */
+    public static String resourceNotFoundErrorMessage(String resourceName) {
+    	String cp = System.getProperty("java.class.path");
+    	return "Could not find " + resourceName +
+		"\nPlease make resources folder available on the class path! " +
+		"Current class path is: " + cp + 
+		"\nYou may copy it there or add the parent folder of resources/ to the class path.";
+    }
+    
 	public static String getProperty(String key) {
 		String myVal = EVA_PROPERTIES.getProperty(key);
 		return myVal;

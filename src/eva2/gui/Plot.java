@@ -221,16 +221,8 @@ public class Plot implements PlotInterface, Serializable {
 	public void init() {
 		m_Frame = new JEFrame("Plot: " + m_PlotName);
 		BasicResourceLoader loader = BasicResourceLoader.instance();
-		byte[] bytes = loader
-				.getBytesFromResourceLocation(EvAInfo.iconLocation);
-		try {
-			m_Frame
-					.setIconImage(Toolkit.getDefaultToolkit()
-							.createImage(bytes));
-		} catch (java.lang.NullPointerException e) {
-			System.err
-					.println("Could not find EvA2 icon, please move resources folder to working directory!");
-		}
+		byte[] bytes = loader.getBytesFromResourceLocation(EvAInfo.iconLocation, true);
+			m_Frame.setIconImage(Toolkit.getDefaultToolkit().createImage(bytes));
 
 		m_ButtonPanel = new JPanel();
 		m_PlotArea = new FunctionArea(m_xname, m_yname);

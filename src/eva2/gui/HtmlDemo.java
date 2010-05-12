@@ -94,12 +94,8 @@ public class HtmlDemo {
         }
         JFrame          frame       = new JFrame (m_name);
         BasicResourceLoader  loader      = BasicResourceLoader.instance();
-        byte[]          bytes       = loader.getBytesFromResourceLocation(EvAInfo.iconLocation);
-        try {
-            frame.setIconImage(Toolkit.getDefaultToolkit().createImage(bytes));
-        } catch (java.lang.NullPointerException e) {
-            System.err.println("Could not find EvA2 icon, please move resources folder to working directory!");
-        } 
+        byte[]          bytes       = loader.getBytesFromResourceLocation(EvAInfo.iconLocation, true);
+        frame.setIconImage(Toolkit.getDefaultToolkit().createImage(bytes));
         JScrollPane     scroller    = new JScrollPane();
         JViewport       vp          = scroller.getViewport();
         vp.add(m_html);

@@ -105,12 +105,8 @@ public class LogPanel extends JPanel {
 			final JFrame frame = new JFrame("Log_Panel_Test");
 			frame.getContentPane().setLayout(new BorderLayout());
 			BasicResourceLoader  loader  = BasicResourceLoader.instance();
-			byte[] bytes   = loader.getBytesFromResourceLocation(EvAInfo.iconLocation);
-			try {
-				frame.setIconImage(Toolkit.getDefaultToolkit().createImage(bytes));
-			} catch (java.lang.NullPointerException e) {
-				System.out.println("Could not find EvA2 icon, please move resources folder to working directory!");
-			}
+			byte[] bytes   = loader.getBytesFromResourceLocation(EvAInfo.iconLocation, true);
+			frame.setIconImage(Toolkit.getDefaultToolkit().createImage(bytes));
 			LogPanel panel = new LogPanel();
 			frame.getContentPane().add(panel, BorderLayout.CENTER);
 			frame.addWindowListener(new WindowAdapter() {

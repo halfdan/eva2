@@ -174,13 +174,8 @@ public class GenericOptimizationObjectivesEditor extends JPanel implements Prope
             gbc.fill        = GridBagConstraints.REMAINDER;
             gbc.gridx       = 1;
             gbc.weightx     = 1;
-            bytes = loader.getBytesFromResourceLocation("resources/images/Sub24.gif");
-            try {
-                this.m_Delete[i] = new JButton("", new ImageIcon(Toolkit.getDefaultToolkit().createImage(bytes)));
-            } catch (java.lang.NullPointerException e) {
-                System.out.println("Could not find Sub24 icon, please move resources folder to working directory!");
-                this.m_Delete[i] = new JButton("Sub");
-            }
+            bytes = loader.getBytesFromResourceLocation("resources/images/Sub24.gif", true);
+            this.m_Delete[i] = new JButton("", new ImageIcon(Toolkit.getDefaultToolkit().createImage(bytes)));
             this.m_Delete[i].addActionListener(deleteTarget);
             this.m_TargetList.add(this.m_Delete[i], gbc);
         }
