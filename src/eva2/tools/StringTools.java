@@ -1,5 +1,6 @@
 package eva2.tools;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -41,6 +42,26 @@ public class StringTools {
     	return (searchStringArray(arr, key, 0, ignoreCase))>=0; 
     }
     
+	/**
+	 * Convert an integer to a String filling it with zeros from the left, so
+	 * that is it of the same length as the Integer maxSize would achieve.
+	 * Note that this only works for positive values.
+	 * 
+	 * @param index
+	 * @param maxSize
+	 * @return
+	 */
+	public static String expandPrefixZeros(int index, int maxSize) {
+		if (maxSize<10) return ""+index;
+		else if (maxSize<100) return ((index<10) ? "0" : "")+index;
+		else {
+			int lenZeros = (int)Math.log10(maxSize)-(int)Math.log10(index);
+			char[] zerArr = new char[lenZeros];
+			Arrays.fill(zerArr, '0');
+			return new String(zerArr)+index;
+		} 
+	}
+
     /**
      * Search a String array for a given String and return its index if it is found.
      * If it is not found, -1 is returned.
