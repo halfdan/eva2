@@ -276,6 +276,13 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
     	test("+(sum(x),abs(sin(*(x0,x3))))", solG5);
     	test("-(abs(sum(x)),*(abs(-7.5),n))", solG5);
     	
+    	GPNodeConst n1 = new GPNodeConst(3.);
+    	GPNodeConst n2 = new GPNodeConst(7.);
+    	GPNodeAdd n3 = new GPNodeAdd();
+    	System.out.println(n1.equals(n2));
+    	System.out.println(n2.equals(n1));
+    	System.out.println(n1.equals(n3));
+    	
     	System.out.println(createNodeList());
     }
 	
@@ -478,11 +485,29 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
 
     }
 
+    /** This method allows you to determine whether or not two subtrees
+     * are actually the same.
+     * @param obj   The other subtree.
+     * @return boolean if equal true else false.
+     */
+//    public abstract boolean equals(Object obj);
     /** This method allows you to determine wehter or not two subtrees
      * are actually the same.
      * @param obj   The other subtree.
      * @return boolean if equal true else false.
      */
-    public abstract boolean equals(Object obj);
+    public boolean equals(Object obj) {
+        if (obj.getClass().equals(this.getClass())) {
+        	AbstractGPNode node = (AbstractGPNode)obj;
+        	if (this.getArity()!=node.getArity()) return false;
+            if (this.m_Nodes.length != node.m_Nodes.length) return false;
+            for (int i = 0; i < this.m_Nodes.length; i++) {
+                if (!this.m_Nodes[i].equals(node.m_Nodes[i])) return false;
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
     
 }

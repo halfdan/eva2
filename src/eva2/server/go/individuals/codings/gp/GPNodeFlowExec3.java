@@ -21,24 +21,6 @@ public class GPNodeFlowExec3 extends AbstractGPNode implements java.io.Serializa
         for (int i = 0; i < node.m_Nodes.length; i++) this.m_Nodes[i] = (AbstractGPNode) node.m_Nodes[i].clone();
     }
 
-    /** This method allows you to determine wehter or not two subtrees
-     * are actually the same.
-     * @param obj   The other subtree.
-     * @return boolean if equal true else false.
-     */
-    public boolean equals(Object obj) {
-        if (obj instanceof GPNodeFlowExec3) {
-            GPNodeFlowExec3 node = (GPNodeFlowExec3)obj;
-            if (this.m_Nodes.length != node.m_Nodes.length) return false;
-            for (int i = 0; i < this.m_Nodes.length; i++) {
-                if (!this.m_Nodes[i].equals(node.m_Nodes[i])) return false;
-            }
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     /** This method will be used to identify the node in the GPAreaEditor
      * @return The name.
      */

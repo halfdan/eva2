@@ -21,21 +21,16 @@ public class GPNodeConst extends AbstractGPNode implements java.io.Serializable 
         this.m_Nodes    = new AbstractGPNode[node.m_Nodes.length];
         for (int i = 0; i < node.m_Nodes.length; i++) this.m_Nodes[i] = (AbstractGPNode) node.m_Nodes[i].clone();
     }
-    
-    /** This method allows you to determine wehter or not two subtrees
-     * are actually the same.
-     * @param obj   The other subtree.
-     * @return boolean if equal true else false.
-     */
-    public boolean equals(Object obj) {
-        if (obj instanceof GPNodeConst) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 
-    /** This method will be used to identify the node in the GPAreaEditor
+    @Override
+	public boolean equals(Object obj) {
+		if (obj instanceof GPNodeConst) {
+			GPNodeConst node = (GPNodeConst)obj;
+			return (node.value==this.value);
+		} else return false;
+	}
+
+	/** This method will be used to identify the node in the GPAreaEditor
      * @return The name.
      */
     public String getName() {
