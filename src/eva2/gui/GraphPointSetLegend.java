@@ -17,6 +17,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import eva2.tools.Pair;
+import eva2.tools.StringTools;
 import eva2.tools.chart2d.SlimRect;
 
 /**
@@ -64,12 +65,12 @@ public class GraphPointSetLegend {
 		for (int i = 0; i < pointSetContainer.size(); i++) {
 			GraphPointSet pointset = pointSetContainer.get(i);
 			String entryStr;
-			if (appendIndex) entryStr = i + ": " + pointset.getInfoString();
+			if (appendIndex) entryStr = StringTools.expandPrefixZeros(i, pointSetContainer.size()-1) + ": " + pointset.getInfoString();
 			else entryStr = pointset.getInfoString();
 			legendEntries.add(new Pair<String, Color>(entryStr,pointset.getColor()));
 		}
 	}
-	
+
 	/**
 	 * A constructor without enumeration.
 	 * 
