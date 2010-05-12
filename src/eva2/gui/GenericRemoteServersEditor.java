@@ -111,13 +111,9 @@ public class GenericRemoteServersEditor extends JPanel implements PropertyEditor
 	private JButton makeButtonWith(String iconSrc, String title) {
 		JButton tmpB;
 		byte[]  bytes;
-		bytes = BasicResourceLoader.instance().getBytesFromResourceLocation(iconSrc);
-		try {
-		    tmpB = new JButton(title, new ImageIcon(Toolkit.getDefaultToolkit().createImage(bytes)));
-		} catch (java.lang.NullPointerException e) {
-		    System.err.println("Could not find icon " + iconSrc + ", please move resources folder to working directory!");
-		    tmpB = new JButton(title);
-		}
+		bytes = BasicResourceLoader.instance().getBytesFromResourceLocation(iconSrc, false);
+	    if (bytes!=null) tmpB = new JButton(title, new ImageIcon(Toolkit.getDefaultToolkit().createImage(bytes)));
+	    else tmpB = new JButton(title);
 		return tmpB;
 	}
 
@@ -172,7 +168,7 @@ public class GenericRemoteServersEditor extends JPanel implements PropertyEditor
             this.m_ServerList.add(this.m_CPUs[i], gbc);
             // The delete button
             setGBC(gbc, GridBagConstraints.WEST, GridBagConstraints.REMAINDER, 3, 10);
-            bytes = BasicResourceLoader.instance().getBytesFromResourceLocation("resources/images/Sub24.gif");
+            bytes = BasicResourceLoader.instance().getBytesFromResourceLocation("resources/images/Sub24.gif", true);
             this.m_Delete[i] = new JButton("", new ImageIcon(Toolkit.getDefaultToolkit().createImage(bytes)));
             this.m_Delete[i].addActionListener(deleteServer);
             this.m_ServerList.add(this.m_Delete[i], gbc);

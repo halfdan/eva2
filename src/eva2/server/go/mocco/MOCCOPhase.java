@@ -50,32 +50,6 @@ public abstract class MOCCOPhase implements InterfaceProcessElement {
         }
     };
 
-//    /** Fetch the alternatives for a given class
-//     * @param type      The class to test
-//     * @return The class alternatives
-//     */
-//    public Vector getClassAlternatives4(String type) {
-//        String          typeOptions     = EvAClient.getProperty(type);
-//        Vector          classes         = new Vector();
-//        StringTokenizer st              = new StringTokenizer(typeOptions, ", ");
-//        while (st.hasMoreTokens()) {
-//            String current = st.nextToken().trim();
-//            try {
-//                try {
-//                    Class c = Class.forName(current);
-//                    classes.addElement(current);
-//                } catch (java.lang.ClassNotFoundException et) {
-//                    System.out.println("Could not find class for value " + current + " for type " + type);
-//                }
-//            } catch (Exception ex) {
-//                System.out.println("Couldn't load class with name: " + current + " for type " + type);
-//                    System.out.println("ex:"+ex.getMessage());
-//                ex.printStackTrace();
-//            }
-//        }
-//        return classes;
-//    }
-
     /** This method makes a helptext element similar to that used in EvA
      * @param help  The text to display
      * @return the helptext component

@@ -37,17 +37,17 @@ public class FileTools {
     static public String[] loadStringsFromFile(String file) {
         String[] result = null;
         BasicResourceLoader  loader = BasicResourceLoader.instance();
-        byte            bytes[] = loader.getBytesFromResourceLocation(file);
+        byte            bytes[] = loader.getBytesFromResourceLocation(file, false);
         if (bytes != null) {
             String      data = new String(bytes);
             result      = data.split("\n");
         } else {
-            System.out.println("BasicResourceLoader failed to read "+file);
+            System.err.println("BasicResourceLoader failed to read "+file);
             BufferedReader reader= null;
             try {
                 reader = new BufferedReader(new FileReader(file));
             } catch (java.io.FileNotFoundException e) {
-                System.out.println("Could not find " + file);
+                System.err.println("Could not find " + file);
                 return result;
             }
             String      currentLine;
@@ -63,7 +63,7 @@ public class FileTools {
                 }
                 reader.close();
             } catch (java.io.IOException e) {
-                System.out.println("Java.io.IOExeption: " + e.getMessage());
+                System.err.println("Java.io.IOExeption: " + e.getMessage());
             }
         }
         return result;

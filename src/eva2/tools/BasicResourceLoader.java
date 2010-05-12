@@ -43,6 +43,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
 
+import eva2.EvAInfo;
+
 
 /**
  *  Loads resource file from directory OR jar file. Now it is easier possible to
@@ -117,13 +119,13 @@ public class BasicResourceLoader implements ResourceLoader
     }
     
     /**
-     *  Description of the Method
+     *  Read String lines from a file into a list. 
      *
-     * @param  resourceFile    Description of the Parameter
+     * @param  resourceFile    File to read
      * @param  ignorePrefix		array of prefixes which mark a line to be ignored 
      * @param lOffset		offset of the first line to read
      * @param lCnt			number of lines to read, if <= 0, all lines are read
-     * @return                 Description of the Return Value
+     * @return                 List of lines which were read or null on an error
      */
     public static List<String> readLines(String resourceFile,
         String[] ignorePrefix, int lOffset, int lCnt)
@@ -135,7 +137,7 @@ public class BasicResourceLoader implements ResourceLoader
 
         byte[] bytes = BasicResourceLoader.instance()
                                           .getBytesFromResourceLocation(
-                resourceFile);
+                resourceFile, false);
 
         if (bytes == null)
         {
@@ -382,21 +384,34 @@ public class BasicResourceLoader implements ResourceLoader
 //		}
 //		return getStreamFromFile(found.get(0));
 //    }
-    
     /**
      *  Gets the byte data from a file at the given resource location.
      *
      * @param  rawResrcLoc  Description of the Parameter
      * @return                   the byte array of file.
      */
-    public byte[] getBytesFromResourceLocation(String rawResrcLoc)
+    public byte[] getBytesFromResourceLocation(String rawResrcLoc) {
+    	return getBytesFromResourceLocation(rawResrcLoc, false);
+    }
+    
+    /**
+     *  Gets the byte data from a file at the given resource location.
+     *
+     * @param  rawResrcLoc  Location of the resource
+     * @param exceptionOnNotFound  if true, a RuntimeException is thrown if the resource was not found. 
+     * @return                   the byte array of file.
+     */
+    public byte[] getBytesFromResourceLocation(String rawResrcLoc, boolean exceptionOnNotFound)
     {
         InputStream in = getStreamFromResourceLocation(rawResrcLoc);
-
-        if (in == null) {
-        	return null;
+        byte[] arr = null;
+        if (in != null) {
+        	arr = getBytesFromStream(in);
         }
-        return getBytesFromStream(in);
+        if (exceptionOnNotFound && (arr==null)) {
+        	throw new RuntimeException(EvAInfo.resourceNotFoundErrorMessage(rawResrcLoc));
+        }
+        return arr;
     }
 
     /**
@@ -621,7 +636,7 @@ public class BasicResourceLoader implements ResourceLoader
 		Properties prop = new Properties();
 		BasicResourceLoader loader = BasicResourceLoader.instance();
 
-		byte bytes[] = loader.getBytesFromResourceLocation(resourceName);
+		byte bytes[] = loader.getBytesFromResourceLocation(resourceName, false);
 		if (bytes != null) {
 			ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
 			prop.load(bais);

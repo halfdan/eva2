@@ -126,12 +126,8 @@ public class TagEditor extends PropertyEditorSupport {
       PropertyValueSelector ps = new PropertyValueSelector(ce);
       JFrame f = new JFrame();
       BasicResourceLoader  loader  = BasicResourceLoader.instance();
-      byte[] bytes   = loader.getBytesFromResourceLocation(EvAInfo.iconLocation);
-      try {
-          f.setIconImage(Toolkit.getDefaultToolkit().createImage(bytes));
-      } catch (java.lang.NullPointerException e) {
-        System.out.println("Could not find EvA2 icon, please move resources folder to working directory!");
-      }
+      byte[] bytes   = loader.getBytesFromResourceLocation(EvAInfo.iconLocation, true);
+      f.setIconImage(Toolkit.getDefaultToolkit().createImage(bytes));
       f.addWindowListener(new WindowAdapter() {
 	public void windowClosing(WindowEvent e) {
 	  System.exit(0);

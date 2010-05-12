@@ -35,12 +35,9 @@ public class PropertyDialog extends JEFrame {
   public PropertyDialog (PropertyEditor editor,String Title, int x, int y) {
     super(getFrameNameFromEditor(editor)); // that was the long class name !!
     BasicResourceLoader  loader  = BasicResourceLoader.instance();
-    byte[] bytes   = loader.getBytesFromResourceLocation(EvAInfo.iconLocation);
-    try {
-        setIconImage(Toolkit.getDefaultToolkit().createImage(bytes));
-    } catch (java.lang.NullPointerException e) {
-        System.err.println("Could not find EvA2 icon, please move resources folder to working directory!");
-    }
+    byte[] bytes   = loader.getBytesFromResourceLocation(EvAInfo.iconLocation, true);
+    setIconImage(Toolkit.getDefaultToolkit().createImage(bytes));
+      
     //System.out.println("PropertyDialog.Constructor  of "+ Title);
     setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     getContentPane().setLayout(new BorderLayout());

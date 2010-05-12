@@ -107,12 +107,9 @@ Serializable {
 		m_TextArea.setCaretPosition(0);
 
 		BasicResourceLoader  loader  = BasicResourceLoader.instance();
-		byte[] bytes   = loader.getBytesFromResourceLocation(EvAInfo.iconLocation);
-		try {
-			frame.setIconImage(Toolkit.getDefaultToolkit().createImage(bytes));
-		} catch (java.lang.NullPointerException e) {
-			System.out.println("Could not find EvA2 icon, please move resources folder to working directory!");
-		} 
+		byte[] bytes   = loader.getBytesFromResourceLocation(EvAInfo.iconLocation, true);
+		frame.setIconImage(Toolkit.getDefaultToolkit().createImage(bytes));
+		 
 		frame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				frame.dispose();

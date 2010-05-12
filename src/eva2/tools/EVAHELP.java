@@ -12,20 +12,15 @@ package eva2.tools;
 /*==========================================================================*
  * IMPORTS
  *==========================================================================*/
-import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.util.Enumeration;
 import java.util.Properties;
-
-import eva2.client.EvAClient;
 
 
 /**
@@ -36,38 +31,6 @@ public class EVAHELP {
   /**
    *
    */
-  /**
-  *
-  */
- static public Properties readProperties(String resourceName) throws Exception {
-   if (EvAClient.TRACE) System.out.println("readProperties of file: " + resourceName);
-   Properties prop = new Properties();
-   BasicResourceLoader loader = BasicResourceLoader.instance();
-   byte bytes[] = loader.getBytesFromResourceLocation(resourceName);
-   if (bytes != null) {
-     ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
-     prop.load(bais);
-   }
-   if (prop != null)
-     return prop;
-   /////////////
-
-   int slInd = resourceName.lastIndexOf('/');
-   if (slInd != -1)
-     resourceName = resourceName.substring(slInd + 1);
-   Properties userProps = new Properties();
-   File propFile = new File(File.separatorChar + "resources" +
-                            File.separatorChar + resourceName);
-   if (propFile.exists()) {
-     try {
-       userProps.load(new FileInputStream(propFile));
-     }
-     catch (Exception ex) {
-       System.out.println("Problem reading user properties: " + propFile);
-     }
-   }
-   return userProps;
- }
 
   /**
    *

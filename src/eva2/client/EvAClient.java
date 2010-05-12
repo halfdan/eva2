@@ -282,12 +282,8 @@ public class EvAClient implements RemoteStateListener, Serializable {
 		if (withGUI ) {
 			m_Frame = new JEFrame(EvAInfo.productName + " workbench");
 			BasicResourceLoader loader = BasicResourceLoader.instance();
-			byte[] bytes = loader.getBytesFromResourceLocation(EvAInfo.iconLocation);
-			try {
-				m_Frame.setIconImage(Toolkit.getDefaultToolkit().createImage(bytes));
-			} catch (java.lang.NullPointerException e) {
-				System.err.println("Could not find EvA2 icon, please move resources folder to working directory!");
-			}
+			byte[] bytes = loader.getBytesFromResourceLocation(EvAInfo.iconLocation, true);
+			m_Frame.setIconImage(Toolkit.getDefaultToolkit().createImage(bytes));
 //			m_Frame.setTitle(EvAInfo.productName + " workbench");
 
 			try {
@@ -986,18 +982,14 @@ class SplashScreen extends Frame {
 	public void splash(){
 		JWindow splashWindow = new JWindow(this);
 		BasicResourceLoader loader = BasicResourceLoader.instance();
-		byte[] bytes = loader.getBytesFromResourceLocation(imgLocation);
-		try {
-			ImageIcon ii = new ImageIcon(Toolkit.getDefaultToolkit().createImage(bytes));
-			JLabel splashLabel = new JLabel(ii);
-			splashWindow.add(splashLabel);
-			splashWindow.pack();
-			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-			splashWindow.setLocation(screenSize.width / 2 - splashWindow.getSize().width / 2, screenSize.height / 2 - splashWindow.getSize().height / 2);
-			splashWindow.setVisible(true);
-		} catch (java.lang.NullPointerException e) {
-			System.err.println("Could not find EvA2 splash screen, please move resources folder to working directory!");
-		}
+		byte[] bytes = loader.getBytesFromResourceLocation(imgLocation, true);
+		ImageIcon ii = new ImageIcon(Toolkit.getDefaultToolkit().createImage(bytes));
+		JLabel splashLabel = new JLabel(ii);
+		splashWindow.add(splashLabel);
+		splashWindow.pack();
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		splashWindow.setLocation(screenSize.width / 2 - splashWindow.getSize().width / 2, screenSize.height / 2 - splashWindow.getSize().height / 2);
+		splashWindow.setVisible(true);
 	}
 
 }
