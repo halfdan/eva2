@@ -40,11 +40,7 @@ public class GPNodeInput extends AbstractGPNode implements java.io.Serializable 
     	m_Identifier=str;
     }
 
-    /** This method allows you to determine wehter or not two subtrees
-     * are actually the same.
-     * @param obj   The other subtree.
-     * @return boolean if equal true else false.
-     */
+    @Override
     public boolean equals(Object obj) {
         if (obj instanceof GPNodeInput) {
             GPNodeInput node = (GPNodeInput)obj;
