@@ -16,6 +16,7 @@ package eva2.gui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
@@ -83,13 +84,15 @@ public class FunctionArea extends DArea implements Serializable {
 	 *
 	 */
 	public FunctionArea() {
+		super();
+		setToolTipText("Graph Info ");
 	}
 
 	/**
 	  *
 	  */
 	public FunctionArea(String xname, String yname) {
-		super();
+		this();
 		setPreferredSize(new Dimension(600, 500));
 		setVisibleRectangle(1, 1, 100000, 1000);
 		setAutoFocus(true);
@@ -107,6 +110,30 @@ public class FunctionArea extends DArea implements Serializable {
 		addPopup();
 		repaint();
 		notifyNegLog = true;
+	}
+
+	@Override
+	public String getToolTipText(MouseEvent event) {
+		int gIndex = getNearestGraphIndex(event.getX(), event.getY());
+		if (gIndex >= 0) {
+			StringBuffer sb = new StringBuffer(super.getToolTipText());
+			sb.append(gIndex);
+			sb.append(": ");
+			sb.append(getGraphInfo(gIndex));
+			return sb.toString();
+		} else return null;
+	}
+	
+	@Override
+	public Point getToolTipLocation(MouseEvent event) {
+		int gIndex = getNearestGraphIndex(event.getX(), event.getY());
+		if (gIndex >= 0) {
+			DPoint pt = ((GraphPointSet) (m_PointSetContainer.get(gIndex))).getMedPoint();
+			Point pt2 = getDMeasures().getPoint(pt.x, pt.y);
+			pt2.x+=(5*(gIndex%7)); // slight shift depending on index - easier distinction of very close graphs
+			pt2.y-=(10+(gIndex%3)*5);
+			return pt2;
+		} else return null;
 	}
 
 	/**
@@ -641,6 +668,18 @@ public class FunctionArea extends DArea implements Serializable {
 			return "none";
 	}
 
+	public String getGraphInfo(int graphIndex) {
+		String ret = "";
+		if ((m_PointSetContainer == null) || (m_PointSetContainer.size() == 0))
+			return ret;
+
+		if (graphIndex >= 0 && (graphIndex <m_PointSetContainer.size()))
+			return ((GraphPointSet) (m_PointSetContainer.get(graphIndex)))
+					.getInfoString();
+		else
+			return "none";
+	}
+	
 	/**
 	 * 
 	 * @param GraphLabel
@@ -1002,7 +1041,7 @@ public class FunctionArea extends DArea implements Serializable {
 		if (!on)
 			legendBox = null;
 		else
-			legendBox = new GraphPointSetLegend(m_PointSetContainer);
+			legendBox = new GraphPointSetLegend(m_PointSetContainer, true);
 		repaint();
 	}
 
@@ -1055,7 +1094,7 @@ public class FunctionArea extends DArea implements Serializable {
 	 * 
 	 */
 	public void updateLegend() {
-		GraphPointSetLegend lb = new GraphPointSetLegend(m_PointSetContainer);
+		GraphPointSetLegend lb = new GraphPointSetLegend(m_PointSetContainer, true);
 		setLegend(lb);
 	}
 

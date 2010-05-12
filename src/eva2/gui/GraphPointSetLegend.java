@@ -51,19 +51,32 @@ public class GraphPointSetLegend {
 
 	}
 
-	private static final PairComp comperator = new PairComp();
+	private static final PairComp comparator = new PairComp();
 
 	/**
+	 * A constructor which may enumerate the point sets.
 	 * 
-	 * @param pointSetContainer
+	 * @param pointSetContainer the set of point sets to be shown.
+	 * @param appendIndex if true, the string entries are enumerated according to the index
 	 */
-	public GraphPointSetLegend(List<GraphPointSet> pointSetContainer) {
-		legendEntries = new TreeSet<Pair<String, Color>>(comperator);
+	public GraphPointSetLegend(List<GraphPointSet> pointSetContainer, boolean appendIndex) {
+		legendEntries = new TreeSet<Pair<String, Color>>(comparator);
 		for (int i = 0; i < pointSetContainer.size(); i++) {
 			GraphPointSet pointset = pointSetContainer.get(i);
-			legendEntries.add(new Pair<String, Color>(pointset.getInfoString(),
-					pointset.getColor()));
+			String entryStr;
+			if (appendIndex) entryStr = i + ": " + pointset.getInfoString();
+			else entryStr = pointset.getInfoString();
+			legendEntries.add(new Pair<String, Color>(entryStr,pointset.getColor()));
 		}
+	}
+	
+	/**
+	 * A constructor without enumeration.
+	 * 
+	 * @param pointSetContainer the set of point sets to be shown.
+	 */
+	public GraphPointSetLegend(List<GraphPointSet> pointSetContainer) {
+		this(pointSetContainer, false);
 	}
 
 	/**
