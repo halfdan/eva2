@@ -350,7 +350,7 @@ public class FunctionArea extends DArea implements Serializable {
 		for (int i = 0; i < m_PointSetContainer.size(); i++) {
 			DPointSet pSet = (m_PointSetContainer.get(i).getConnectedPointSet());
 			if (pSet.getSize() > 0) {
-				double tmpMinY = Math.min(minY, pSet.getMinYVal());
+				double tmpMinY = Math.min(minY, pSet.getMinPositiveYValue());
 				if (tmpMinY>0) minY=tmpMinY;
 			}
 		}
@@ -381,6 +381,7 @@ public class FunctionArea extends DArea implements Serializable {
 		for (int i = 0; i < m_PointSetContainer.size(); i++)
 			((GraphPointSet) (m_PointSetContainer.get(i))).removeAllPoints();
 		m_PointSetContainer.clear();
+		if (getYScale() instanceof Exp) setYScale(new Exp()); // to remove smallest seen value
 		notifyNegLog = true;
 	}
 
@@ -390,6 +391,9 @@ public class FunctionArea extends DArea implements Serializable {
 	public void clearGraph(int graphLabel) {
 		getGraphPointSet(graphLabel).removeAllPoints();
 		m_PointSetContainer.remove(getGraphPointSet(graphLabel));
+		if (getYScale() instanceof Exp) {
+			((Exp)getYScale()).setMinValue(getMinimalPositiveYValue());
+		}
 		repaint();
 		notifyNegLog = true;
 	}

@@ -17,7 +17,7 @@ package eva2.tools.chart2d;
  */
 public class DArray implements DIntDoubleMap{
   private int initial_capacity, size;
-  private double capacity_multiplier = 2, max, min;
+  private double capacity_multiplier = 2, max, min, minPositive=-1;
   private double[] value;
 
   /**
@@ -66,7 +66,7 @@ public class DArray implements DIntDoubleMap{
     boolean min_max_changed = false, restore = false;
     if( image < min ){ min = image; min_max_changed = true; }
     else if( image > max ){ max = image; min_max_changed = true; }
-    if( value[source] == min || value[source] == max ) restore = true;
+    if( value[source] == min || value[source] == max || (value[source]==minPositive)) restore = true;
     value[source] = image;
     if( restore ) min_max_changed = restore() || min_max_changed;
     return min_max_changed;
@@ -106,10 +106,12 @@ public class DArray implements DIntDoubleMap{
       value = new_val;
     }
     boolean min_max_changed = false;
-    if( size == 0 ){ min = image; max = image; min_max_changed = true;}
-    else
+    if( size == 0 ){ min = image; max = image; min_max_changed = true; if (image>0) minPositive=image;}
+    else {
+      if ((image >0) && ((image<minPositive) || (minPositive<0))) { minPositive=image; min_max_changed=true;}
       if( image > max ) { max = image; min_max_changed = true; }
       else if( image < min ) { min = image; min_max_changed = true; }
+    }
     value[size++] = image;
     return min_max_changed;
   }
@@ -133,9 +135,13 @@ public class DArray implements DIntDoubleMap{
     double old_min = min, old_max = max;
     min = value[0];
     max = value[0];
-    for( int i=1; i<size; i++ )
+    minPositive=Double.POSITIVE_INFINITY;
+    for( int i=1; i<size; i++ ) {
+      if (value[i]>0 && (value[i]<minPositive)) minPositive=value[i];
       if( value[i] < min ) min = value[i];
       else if( value[i] > max ) max = value[i];
+    }
+    if (Double.isInfinite(minPositive)) minPositive=-1;
     return (old_min != min) || (old_max != max);
   }
 
@@ -158,7 +164,15 @@ public class DArray implements DIntDoubleMap{
     return min;
   }
 
-
+  /**
+   * Return the minimal positive image value or the maximal value if none is positive. 
+   * @return
+   */
+  public double getMinPositiveImageValue() {
+	  if ( size==0) throw
+	  	new IllegalArgumentException("DArray is empty. No minimal value exists");
+	  return (minPositive < 0) ? max : minPositive;
+  }
   /**
    * returns the maxmal image value
    *
@@ -184,6 +198,7 @@ public class DArray implements DIntDoubleMap{
     if( comp.size != size ) return false;
     if( comp.max != max ) return false;
     if( comp.min != min ) return false;
+    if( comp.minPositive != minPositive) return false;
     for( int i=0; i<size; i++ )
       if( comp.value[i] != value[i] ) return false;
     return true;
