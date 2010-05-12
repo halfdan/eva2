@@ -223,6 +223,10 @@ public class DPointSet extends DComponent
   public double getMinYVal() {
 	  return y.getMinImageValue();
   }
+  
+  public double getMinPositiveYValue() {
+	  return y.getMinPositiveImageValue();
+  }
 
   public void setConnected( boolean aFlag ){
     boolean changed = !( aFlag == connected );

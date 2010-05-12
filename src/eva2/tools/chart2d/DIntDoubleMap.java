@@ -73,6 +73,14 @@ public interface DIntDoubleMap {
   double getMinImageValue();
 
   /**
+   * returns the minimal image value
+   *
+   * @return the minmal image value
+   * @throw an IllegalArgumentException when it has no image values
+   */
+  double getMinPositiveImageValue();
+  
+  /**
    * checks the minimal and the maximal image values and returns <code>true</code>
    * when at least one of them has changed
    *
