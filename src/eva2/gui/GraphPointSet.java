@@ -477,7 +477,7 @@ public class GraphPointSet {
 	}
 
 	/**
-	 * Causes the PointSet to interupt the connected painting at the current
+	 * Causes the PointSet to interrupt the connected painting at the current
 	 * position.
 	 */
 	public void jump() {
@@ -567,5 +567,16 @@ public class GraphPointSet {
 		m_InfoString = x;
 		m_Stroke = stroke;
 		// setStroke(new BasicStroke( m_Stroke ));
+	}
+
+	/**
+	 * Retrieve the median point of this point set.
+	 * 
+	 * @return the median point of this point set or null if it is empty
+	 */
+	public DPoint getMedPoint() {
+		if (m_ConnectedPointSet==null) return null;
+		int medX = m_ConnectedPointSet.getSize()/2;
+		return m_ConnectedPointSet.getDPoint(medX);
 	}
 }
