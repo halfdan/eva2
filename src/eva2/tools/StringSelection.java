@@ -144,16 +144,35 @@ public class StringSelection implements Serializable {
 	}
 
 	/**
-	 * Apply the selection state of the given instance to this instance. Is only done
-	 * for Strings which are equivalent and at the same index.
+	 * Apply the selection state of the given instance to this instance. Compares
+	 * Strings and takes over the selection state if they are equal.
 	 * 
 	 * @param sel
 	 */
 	public void takeOverSelection(StringSelection sel) {
-		// try to apply the same selection for equivalent string (must be in same order)
-		for (int i=0; i<sel.getLength() && i<getLength(); i++) {
+		// try to apply the same selection for equivalent string (should be in same order)
+		int mismatchAt = -1;
+		for (int i=0; i<sel.getLength() && i<getLength(); i++) { 
+			// hope that elements are aligned at the beginning and take over selection state
 			if (sel.getElement(i).equals(getElement(i))) {
+//				System.out.println("Fit: " + getElement(i) + " / " + sel.getElement(i));
 				setSelected(i, sel.isSelected(i));
+			} else {
+//				System.out.println(" - does not fit: " + getElement(i) + " vs " + sel.getElement(i));
+				mismatchAt = i; // if elements are not aligned, start double loop search at that point
+				break;
+			}
+		}
+		if (mismatchAt>=0) {
+			// double look search to find matching elements (equal strings)
+			for (int i=mismatchAt; i<getLength(); i++) {
+				for (int j=mismatchAt; j<sel.getLength(); j++) {
+					if (sel.getElement(j).equals(getElement(i))) {
+						// if strings match, take over the selection state
+//						System.out.println("Fit: " + getElement(i) + " / " + sel.getElement(j));
+						setSelected(i, sel.isSelected(j));
+					}
+				}
 			}
 		}
 	}
