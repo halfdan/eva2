@@ -65,7 +65,16 @@ public class MutateESCovarianceMatrixAdaption implements InterfaceMutation, java
         if (mutator.m_Eigenvalues != null) this.m_Eigenvalues = (double[]) mutator.m_Eigenvalues.clone();
     }
 
-    /** This method will enable you to clone a given mutation operator
+    /**
+	 * Constructor allowing to set the range check option.
+	 * 
+	 * @param doCheckConstraints if true, the range constraints are enforced on mutation.
+	 */
+    public MutateESCovarianceMatrixAdaption(boolean doCheckConstraints) {
+		setCheckConstraints(doCheckConstraints);
+	}
+    
+	/** This method will enable you to clone a given mutation operator
      * @return The clone
      */
     public Object clone() {

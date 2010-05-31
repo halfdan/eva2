@@ -10,6 +10,7 @@ import eva2.server.go.IndividualInterface;
 import eva2.server.go.InterfacePopulationChangedEventListener;
 import eva2.server.go.InterfaceTerminator;
 import eva2.server.go.enums.DETypeEnum;
+import eva2.server.go.enums.MutateESCrossoverTypeEnum;
 import eva2.server.go.enums.PSOTopologyEnum;
 import eva2.server.go.enums.PostProcessMethod;
 import eva2.server.go.individuals.AbstractEAIndividual;
@@ -144,11 +145,7 @@ public class OptimizerFactory {
 
 		problem.initProblem();
 
-		AbstractEAIndividual tmpIndi = problem.getIndividualTemplate();
-		tmpIndi.setCrossoverOperator(new NoCrossover());
-		tmpIndi.setCrossoverProbability(0.0);
-		tmpIndi.setMutationOperator(new NoMutation());
-		tmpIndi.setMutationProbability(0.0);
+		setTemplateOperators(problem, new NoMutation(), 0, new NoCrossover(), 0);
 
 		DifferentialEvolution de = new DifferentialEvolution();
 		de.SetProblem(problem);
@@ -261,11 +258,7 @@ public class OptimizerFactory {
 
 		problem.initProblem();
 
-		AbstractEAIndividual tmpIndi = problem.getIndividualTemplate();
-		tmpIndi.setCrossoverOperator(cross);
-		tmpIndi.setCrossoverProbability(pc);
-		tmpIndi.setMutationOperator(mut);
-		tmpIndi.setMutationProbability(pm);
+		setTemplateOperators(problem, mut, pm, cross, pc);
 
 		GeneticAlgorithm ga = new GeneticAlgorithm();
 		ga.SetProblem(problem);
@@ -374,13 +367,7 @@ public class OptimizerFactory {
 
 		problem.initProblem();
 
-		MutateESFixedStepSize mutator = new MutateESFixedStepSize();
-		mutator.setSigma(0.2); // mutations step size
-		AbstractEAIndividual tmpIndi = problem.getIndividualTemplate();
-		tmpIndi.setMutationOperator(mutator);
-		tmpIndi.setMutationProbability(1.0);
-		tmpIndi.setCrossoverOperator(new NoCrossover());
-		tmpIndi.setCrossoverProbability(0);
+		setTemplateOperators(problem, new MutateESFixedStepSize(0.2), 1., new NoCrossover(), 0);
 
 		HillClimbing hc = new HillClimbing();
 		hc.getPopulation().setTargetSize(pop);
@@ -395,7 +382,7 @@ public class OptimizerFactory {
 
 	/**
 	 * This method performs a Monte Carlo Search with the given number of
-	 * fitnesscalls.
+	 * fitness calls.
 	 *
 	 * @param problem
 	 * @param popsize
@@ -407,11 +394,7 @@ public class OptimizerFactory {
 			InterfacePopulationChangedEventListener listener) {
 
 		problem.initProblem();
-		AbstractEAIndividual tmpIndi = problem.getIndividualTemplate();
-		tmpIndi.setMutationOperator(new NoMutation());
-		tmpIndi.setMutationProbability(0);
-		tmpIndi.setCrossoverOperator(new NoCrossover());
-		tmpIndi.setCrossoverProbability(0);
+		setTemplateOperators(problem, new NoMutation(), 0, new NoCrossover(), 0);
 
 		MonteCarloSearch mc = new MonteCarloSearch();
 		mc.getPopulation().setTargetSize(popsize);
@@ -426,7 +409,7 @@ public class OptimizerFactory {
 
 	/**
 	 * This method performs a particle swarm optimization. Standard topologies are
-	 * linear (0), grid (1) and star (2).
+	 * linear, grid and star.
 	 *
 	 * @param problem
 	 * @param mut
@@ -447,11 +430,7 @@ public class OptimizerFactory {
 
 		problem.initProblem();
 
-		AbstractEAIndividual tmpIndi = problem.getIndividualTemplate();
-		tmpIndi.setCrossoverOperator(new NoCrossover());
-		tmpIndi.setCrossoverProbability(0.0);
-		tmpIndi.setMutationOperator(new NoMutation());
-		tmpIndi.setMutationProbability(0.0);
+		setTemplateOperators(problem, new NoMutation(), 0, new NoCrossover(), 0);
 
 		ParticleSwarmOptimization pso = new ParticleSwarmOptimization();
 		pso.SetProblem(problem);
@@ -492,11 +471,7 @@ public class OptimizerFactory {
 
 		problem.initProblem();
 
-		AbstractEAIndividual tmpIndi = problem.getIndividualTemplate();
-		tmpIndi.setCrossoverOperator(new NoCrossover());
-		tmpIndi.setCrossoverProbability(0.0);
-		tmpIndi.setMutationOperator(mut);
-		tmpIndi.setMutationProbability(1.0);
+		setTemplateOperators(problem, mut, 1, new NoCrossover(), 0);
 
 		SimulatedAnnealing sa = new SimulatedAnnealing();
 		sa.setAlpha(alpha);
@@ -927,19 +902,19 @@ public class OptimizerFactory {
 			String outputFilePrefix) {
 		OptimizerRunnable runnable = optimize(new OptimizerRunnable(params,
 				outputFilePrefix));
-		return runnable.getSolutionSet();
+		return runnable.getResultPopulation();
 	}
 
 	public static Population optimizeToPop(final int optType,
 			AbstractOptimizationProblem problem, String outputFilePrefix) {
 		OptimizerRunnable runnable = optimize(optType, problem,
 				outputFilePrefix);
-		return (runnable != null) ? runnable.getSolutionSet() : null;
+		return (runnable != null) ? runnable.getResultPopulation() : null;
 	}
 
 	public static Population optimizeToPop(OptimizerRunnable runnable) {
 		optimize(runnable);
-		return (runnable != null) ? runnable.getSolutionSet() : null;
+		return (runnable != null) ? runnable.getResultPopulation() : null;
 	}
 
 	///////////////////////////// post processing
@@ -985,7 +960,7 @@ public class OptimizerFactory {
 		runnable.run(); // this run will not set the lastRunnable -
 						// postProcessing
 		// starts always anew
-		return runnable.getSolutionSet();
+		return runnable.getResultPopulation();
 	}
 
 	public static Vector<BitSet> postProcessBinVec(int steps, double sigma,
@@ -1354,17 +1329,10 @@ public class OptimizerFactory {
 		es.setLambda(50);
 		es.setPlusStrategy(false);
 
-		AbstractEAIndividual indyTemplate = problem.getIndividualTemplate();
-		if ((indyTemplate != null)
-				&& (indyTemplate instanceof InterfaceESIndividual)) {
-			// Set CMA operator for mutation
-			AbstractEAIndividual indy = (AbstractEAIndividual) indyTemplate;
-			MutateESCovarianceMatrixAdaption cmaMut = new MutateESCovarianceMatrixAdaption();
-			cmaMut.setCheckConstraints(true);
-			AbstractEAIndividual.setOperators(indy, cmaMut, 1., new CrossoverESDefault(), 0.);
-		} else {
-			System.err
-					.println("Error, CMA-ES is implemented for ES individuals only (requires double data types)");
+		if (assertIndyType(problem,InterfaceESIndividual.class)) {
+			setTemplateOperators(problem, new MutateESCovarianceMatrixAdaption(true), 1, new CrossoverESDefault(), 0);
+		}  else {
+			System.err.println("Error, CMA-ES is implemented for ES individuals only (requires double data types)");
 			return null;
 		}
 
@@ -1417,6 +1385,12 @@ public class OptimizerFactory {
 		return makeParams(nms, 50, problem, randSeed, makeDefaultTerminator());
 	}
 	
+	/**
+	 * This constructs a standard DE variant with current-to-best/1 scheme, F=0.8,
+	 * k=0.6, lambda=0.6. The population size is 50 by default.
+	 * @param problem
+	 * @return
+	 */
 	public static final GOParameters standardDE(
 			AbstractOptimizationProblem problem) {
 		DifferentialEvolution de = new DifferentialEvolution();
@@ -1424,7 +1398,7 @@ public class OptimizerFactory {
 		de.setF(0.8);
 		de.setK(0.6);
 		de.setLambda(0.6);
-		de.setMt(0.05);
+		de.setMt(0.05); // this is not really employed for currentToBest
 		return makeParams(de, 50, problem, randSeed, makeDefaultTerminator());
 	}
 
@@ -1434,19 +1408,13 @@ public class OptimizerFactory {
 		es.setMu(15);
 		es.setLambda(50);
 		es.setPlusStrategy(false);
-
-		AbstractEAIndividual indy = problem.getIndividualTemplate();
-
-		if ((indy != null) && (indy instanceof InterfaceESIndividual)) {
-			// Set CMA operator for mutation
-			indy.setMutationOperator(new MutateESGlobal());
-			indy.setCrossoverOperator(new CrossoverESDefault());
-		} else {
-			System.err
-					.println("Error, standard ES is implemented for ES individuals only (requires double data types)");
+		
+		if (assertIndyType(problem,InterfaceESIndividual.class)) {
+			setTemplateOperators(problem, new MutateESGlobal(0.2, MutateESCrossoverTypeEnum.intermediate), 0.9, new CrossoverESDefault(), 0.2);
+		}  else {
+			System.err.println("Error, standard ES is implemented for ES individuals only (requires double data types)");
 			return null;
 		}
-
 		return makeESParams(es, problem);
 	}
 
@@ -1458,6 +1426,12 @@ public class OptimizerFactory {
 		return makeParams(ga, 100, problem, randSeed, makeDefaultTerminator());
 	}
 	
+	/**
+	 * A standard constricted PSO instance with phi1=phi2=2.05, grid topology of range 1 and
+	 * a population size of 30. The chi parameter is set to approx. 0.73 automatically.
+	 * @param problem
+	 * @return
+	 */
 	public static final GOParameters standardPSO(
 			AbstractOptimizationProblem problem) {
 		ParticleSwarmOptimization pso = new ParticleSwarmOptimization();
@@ -1470,5 +1444,32 @@ public class OptimizerFactory {
 
 	public static final GOParameters tribes(AbstractOptimizationProblem problem) {
 		return makeParams(new Tribes(), 1, problem, randSeed, makeDefaultTerminator());
+	}
+
+	/**
+	 * Check if a given problem instance has a template individual matching the given class.
+	 * 
+	 * @param prob
+	 * @param cls
+	 * @return
+	 */
+	private static boolean assertIndyType(AbstractOptimizationProblem prob,
+			Class<InterfaceESIndividual> cls) {
+		return cls.isAssignableFrom(prob.getIndividualTemplate().getClass());
+	}
+
+	/**
+	 * Set the evolutionary operators of the individual template of the given problem instance.
+	 * @param prob
+	 * @param mute
+	 * @param pMut
+	 * @param cross
+	 * @param pCross
+	 */
+	public static void setTemplateOperators(AbstractOptimizationProblem prob, InterfaceMutation mute, double pMut, InterfaceCrossover cross, double pCross) {
+		AbstractEAIndividual indy = prob.getIndividualTemplate();
+		if ((indy != null)) {
+			indy.setOperators(mute, pMut, cross, pCross);
+		}
 	}
 }
