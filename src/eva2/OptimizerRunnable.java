@@ -4,9 +4,9 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.BitSet;
 
-
 import eva2.server.go.IndividualInterface;
 import eva2.server.go.InterfaceGOParameters;
+import eva2.server.go.InterfaceNotifyOnInformers;
 import eva2.server.go.InterfaceTerminator;
 import eva2.server.go.individuals.InterfaceDataTypeBinary;
 import eva2.server.go.individuals.InterfaceDataTypeDouble;
@@ -14,12 +14,13 @@ import eva2.server.go.individuals.InterfaceDataTypeInteger;
 import eva2.server.go.operators.postprocess.InterfacePostProcessParams;
 import eva2.server.go.operators.postprocess.PostProcessParams;
 import eva2.server.go.populations.Population;
+import eva2.server.go.populations.SolutionSet;
 import eva2.server.modules.GOParameters;
 import eva2.server.modules.Processor;
 import eva2.server.stat.AbstractStatistics;
 import eva2.server.stat.InterfaceStatistics;
-import eva2.server.stat.StatisticsDummy;
 import eva2.server.stat.InterfaceTextListener;
+import eva2.server.stat.StatisticsDummy;
 import eva2.server.stat.StatisticsStandalone;
 import eva2.server.stat.StatsParameter;
 import eva2.tools.jproxy.RemoteStateListener;
@@ -86,7 +87,11 @@ public class OptimizerRunnable implements Runnable {
 	 */
 	public OptimizerRunnable(GOParameters params, InterfaceStatistics stats, boolean restart) {
 		rnblID = cntID;
-		cntID++;
+		cntID++;        
+		if (stats.getStatisticsParameter() instanceof InterfaceNotifyOnInformers) {
+			// addition for the statistics revision with selectable strings - make sure the go parameters are represented within the statistics
+			params.addInformableInstance((InterfaceNotifyOnInformers)(stats.getStatisticsParameter()));
+		}
 		proc = new Processor(stats, null, params);
 		if (proc.getStatistics() instanceof AbstractStatistics) ((AbstractStatistics)proc.getStatistics()).setSaveParams(false);
 		doRestart = restart;
@@ -121,6 +126,10 @@ public class OptimizerRunnable implements Runnable {
 		InterfaceGOParameters params = proc.getGOParams(); 
 		proc = new Processor(stats, null, params);
 		if (proc.getStatistics() instanceof AbstractStatistics) ((AbstractStatistics)proc.getStatistics()).setSaveParams(false);
+		if (stats.getStatisticsParameter() instanceof InterfaceNotifyOnInformers) {
+			// addition for the statistics revision with selectable strings - make sure the go parameters are represented within the statistics
+			params.addInformableInstance((InterfaceNotifyOnInformers)(stats.getStatisticsParameter()));
+		}
 	}
 	
 	public void setTextListener(InterfaceTextListener lsnr) {
@@ -184,8 +193,12 @@ public class OptimizerRunnable implements Runnable {
 		return proc.getStatistics().getBestSolution();
 	}
 	
-	public Population getSolutionSet() {
+	public Population getResultPopulation() {
 		return proc.getResultPopulation();
+	}
+	
+	public SolutionSet getSolutionSet() {
+		return (SolutionSet)proc.getGOParams().getOptimizer().getAllSolutions();
 	}
 	
 	public void setPostProcessingParams(InterfacePostProcessParams ppp) {

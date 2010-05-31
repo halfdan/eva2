@@ -40,7 +40,7 @@ class WaitForEvARunnable implements Runnable {
 				mp.log("\n");
 				// write results back to matlab
 				mp.exportResultToMatlab(runnable);
-				mp.exportResultPopulationToMatlab(runnable.getSolutionSet());
+				mp.exportResultPopulationToMatlab(runnable.getResultPopulation());
 				mp.log("reported results.\n");
 				mp.notifyFinished();
 				mp.log("notified finish.\n");
