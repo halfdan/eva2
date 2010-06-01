@@ -1676,6 +1676,10 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
 		if (pop.size()<2) {
 			return new double[]{1.,1.,1.,1.};
 		}
+		if (!(pop.getEAIndividual(0) instanceof InterfaceDataTypeDouble)) {
+			EVAERROR.errorMsgOnce("Warning: population correlations can only be calculated for double valued data!");
+			return new double[]{1.,1.,1.,1.};
+		}
 		int index=0;
 		double corsSum=0, minCor = 10., maxCor=-10.;
         for (int i = 0; i < pop.size()-1; i++) {

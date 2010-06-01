@@ -1,6 +1,6 @@
 package eva2;
 
-import java.io.File;
+import java.io.InputStream;
 import java.util.Properties;
 
 import eva2.tools.BasicResourceLoader;
@@ -100,8 +100,8 @@ public class EvAInfo {
 			System.err.println(ex.getMessage());
 			System.exit(1);
 		}
-		File f=new File(EvAInfo.iconLocation);
-		if (!f.exists()) {
+		InputStream istr = BasicResourceLoader.instance().getStreamFromResourceLocation(EvAInfo.iconLocation);
+		if (istr==null) {
 			throw new RuntimeException(resourceNotFoundErrorMessage(EvAInfo.iconLocation) + " (EvAInfo.static)");
 //			System.exit(2); // dont be as harsh right here - there will be plenty of exceptions later in the bad case...
 		}
