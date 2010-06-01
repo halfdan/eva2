@@ -1,16 +1,15 @@
 package eva2.server.go.strategies;
 
-import eva2.gui.BeanInspector;
 import eva2.server.go.InterfacePopulationChangedEventListener;
 import eva2.server.go.individuals.AbstractEAIndividual;
-import eva2.server.go.individuals.GAIndividualBinaryData;
 import eva2.server.go.operators.mutation.InterfaceMutationGenerational;
 import eva2.server.go.operators.selection.InterfaceSelection;
-import eva2.server.go.operators.selection.SelectTournament;
+import eva2.server.go.operators.selection.SelectRandom;
+import eva2.server.go.operators.selection.SelectXProbRouletteWheel;
 import eva2.server.go.populations.InterfaceSolutionSet;
 import eva2.server.go.populations.Population;
 import eva2.server.go.populations.SolutionSet;
-import eva2.server.go.problems.B1Problem;
+import eva2.server.go.problems.F1Problem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 
 /** The traditional genetic algorithms as devised by Holland. To only special here
@@ -29,9 +28,9 @@ import eva2.server.go.problems.InterfaceOptimizationProblem;
 public class GeneticAlgorithm implements InterfaceOptimizer, java.io.Serializable {
 
         private Population                      m_Population        = new Population();
-        private InterfaceOptimizationProblem    m_Problem           = new B1Problem();
-        private InterfaceSelection              m_ParentSelection   = new SelectTournament();
-        private InterfaceSelection              m_PartnerSelection  = new SelectTournament();
+        private InterfaceOptimizationProblem    m_Problem           = new F1Problem();
+        private InterfaceSelection              m_ParentSelection   = new SelectXProbRouletteWheel();
+        private InterfaceSelection              m_PartnerSelection  = new SelectRandom();
         private boolean                         m_UseElitism        = true;
         private int                             m_Plague            = 0;
         private int                             m_NumberOfPartners  = 1;

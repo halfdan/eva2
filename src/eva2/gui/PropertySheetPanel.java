@@ -367,18 +367,19 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
      * @return
      */
     private PropertyDescriptor[] reorderProperties(Method meth) {
-    	PropertyDescriptor[] oldProps = m_Properties.clone();
-        PropertyDescriptor[] newProps = new PropertyDescriptor[oldProps.length];
 //        Mathematics.revertArray(oldProps, newProps);
        	Object[] args      = { };
        	Object retV=null;
+       	PropertyDescriptor[] newProps = null;
         try {
-        	retV = meth.invoke(m_Target, args);
+        	retV = meth.invoke(m_Target, args); // should return String[] to be interpreted as a list of ordered properties
         } catch(Exception ex) {}
         if (retV!=null) {
             try {
-            	if (retV.getClass().isArray()) {
+            	if (retV.getClass().isArray()) { // reorder the properties
             		String[] swProps=(String[])retV;
+                	PropertyDescriptor[] oldProps = m_Properties.clone();
+                    newProps = new PropertyDescriptor[oldProps.length];
             		//int findFirst=findFirstProp(props[0], oldProps);
             		int firstNonNull=0;
             		for (int i=0; i<oldProps.length; i++) {
