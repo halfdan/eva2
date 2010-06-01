@@ -27,8 +27,8 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
     protected GPArea[]                    m_Area;
     protected double                      m_InitFullGrowRatio   = 0.5;
     protected int                         m_InitDepth           = 4;
-    protected int                         m_TargetDepth         = 8;
-    protected boolean                     m_CheckTargetDepth    = true;
+    protected int                         m_maxDepth         = 8;
+    protected boolean                     m_CheckMaxDepth    = true;
 
     public GPIndividualProgramData() {
         this.m_Area                 = new GPArea[1];
@@ -58,8 +58,8 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
         }
         this.m_InitFullGrowRatio        = individual.m_InitFullGrowRatio;
         this.m_InitDepth                = individual.m_InitDepth;
-        this.m_TargetDepth              = individual.m_TargetDepth;
-        this.m_CheckTargetDepth         = individual.m_CheckTargetDepth;
+        this.m_maxDepth              = individual.m_maxDepth;
+        this.m_CheckMaxDepth         = individual.m_CheckMaxDepth;
 
         // cloning the members of AbstractEAIndividual
         this.m_Age                      = individual.m_Age;
@@ -90,7 +90,7 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
         if (individual instanceof GPIndividualProgramData) {
             GPIndividualProgramData indy = (GPIndividualProgramData) individual;
             //@todo Eigendlich k�nnte ich noch die Areas vergleichen
-            if (this.m_TargetDepth != indy.m_TargetDepth)
+            if (this.m_maxDepth != indy.m_maxDepth)
                 return false;
             if ((this.m_Genotype == null) || (indy.m_Genotype == null))
                 return false;
@@ -134,9 +134,9 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
         this.m_Phenotype = new AbstractGPNode[this.m_Genotype.length];
         for (int i = 0; i < this.m_Genotype.length; i++) {
             this.m_Phenotype[i] = (AbstractGPNode)this.m_Genotype[i].clone();
-            if ((this.m_CheckTargetDepth) && (this.m_Phenotype[i].isMaxDepthViolated(this.m_TargetDepth))) {
+            if ((this.m_CheckMaxDepth) && (this.m_Phenotype[i].isMaxDepthViolated(this.m_maxDepth))) {
                 //System.out.println("Trying to meet the Target Depth!");
-                this.m_Phenotype[i].repairMaxDepth(this.m_Area[i], this.m_TargetDepth);
+                this.m_Phenotype[i].repairMaxDepth(this.m_Area[i], this.m_maxDepth);
                 //System.out.println("TragetDepth: " + this.m_TargetDepth + " : " + this.m_Program.getMaxDepth());
             }
         }
@@ -267,7 +267,7 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
                 AbstractGPNode parent = nodeToMutate.getParent();
                 AbstractGPNode newNode = (AbstractGPNode)(((AbstractGPNode)this.m_Area[i].getRandomNode().clone()));
                 newNode.setDepth(nodeToMutate.getDepth());
-                newNode.initGrow(this.m_Area[i], this.m_TargetDepth);
+                newNode.initGrow(this.m_Area[i], this.m_maxDepth);
                 parent.setNode(newNode, nodeToMutate);
             }
         }
@@ -310,14 +310,14 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
     /** This method will toggle between checking for max depth or not.
      * @param b     the Switch.
      */
-    public void setCheckTargetDepth(boolean b) {
-        this.m_CheckTargetDepth = b;
+    public void setCheckMaxDepth(boolean b) {
+        this.m_CheckMaxDepth = b;
     }
-    public boolean getCheckTargetDepth() {
-        return this.m_CheckTargetDepth;
+    public boolean getCheckMaxDepth() {
+        return this.m_CheckMaxDepth;
     }
-    public String checkTargetDepthTipText() {
-        return "If activated the program will be checked for MaxDepth.";
+    public String checkMaxDepthTipText() {
+        return "If activated the maximum depth of the program tree will be enforced.";
     }
 
     /** This method set/get the init Full Grow Ratio.
@@ -339,9 +339,9 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
      * @param b     The new init Depth of the GP Tree.
      */
     public void setInitDepth(int b) {
-        if (b > this.m_TargetDepth) {
+        if (b > this.m_maxDepth) {
             System.out.println("Waring Init Depth will be set to Target Depth!");
-            b = this.m_TargetDepth;
+            b = this.m_maxDepth;
         }
         this.m_InitDepth = b;
     }
@@ -355,13 +355,17 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
     /** This method set/get the target depth.
      * @param b     The new target Depth of the GP Tree.
      */
-    public void setTargetDepth(int b) {
-        this.m_TargetDepth = b;
+    public void setMaxDepth(int b) {
+        this.m_maxDepth = b;
     }
-    public int getTargetDepth() {
-        return this.m_TargetDepth;
+    public int getMaxDepth() {
+        return this.m_maxDepth;
     }
-    public String targetDepthTipText() {
-        return "The target depth of the GP Tree.";
+    public String maxDepthTipText() {
+        return "The maximum depth of the GP tree.";
+    }
+    
+    public String[] customPropertyOrder() {
+    	return new String[] {"initDepth", "checkMaxDepth", "maxDepth"};
     }
 }

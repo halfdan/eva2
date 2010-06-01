@@ -1,18 +1,25 @@
 package eva2.server.go.problems;
 
+import java.io.Serializable;
+
 import eva2.gui.Plot;
+import eva2.server.go.PopulationInterface;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.GAPIndividualProgramData;
 import eva2.server.go.individuals.GPIndividualProgramData;
 import eva2.server.go.individuals.InterfaceDataTypeDouble;
 import eva2.server.go.individuals.InterfaceDataTypeProgram;
+import eva2.server.go.individuals.codings.gp.AbstractGPNode;
 import eva2.server.go.individuals.codings.gp.GPArea;
+import eva2.server.go.individuals.codings.gp.GPNodeAbs;
 import eva2.server.go.individuals.codings.gp.GPNodeAdd;
 import eva2.server.go.individuals.codings.gp.GPNodeCos;
 import eva2.server.go.individuals.codings.gp.GPNodeDiv;
 import eva2.server.go.individuals.codings.gp.GPNodeExp;
 import eva2.server.go.individuals.codings.gp.GPNodeInput;
 import eva2.server.go.individuals.codings.gp.GPNodeMult;
+import eva2.server.go.individuals.codings.gp.GPNodeOne;
+import eva2.server.go.individuals.codings.gp.GPNodePi;
 import eva2.server.go.individuals.codings.gp.GPNodePow2;
 import eva2.server.go.individuals.codings.gp.GPNodePow3;
 import eva2.server.go.individuals.codings.gp.GPNodeSin;
@@ -21,9 +28,10 @@ import eva2.server.go.individuals.codings.gp.GPNodeSub;
 import eva2.server.go.individuals.codings.gp.InterfaceProgram;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.regression.InterfaceRegressionFunction;
-import eva2.server.go.problems.regression.RFKoza_GPI_10_2;
+import eva2.server.go.problems.regression.RFKoza_GPI_7_3;
 import eva2.server.go.strategies.InterfaceOptimizer;
 import eva2.tools.EVAERROR;
+import eva2.tools.ToolBox;
 import eva2.tools.math.RNG;
 
 /**
@@ -33,14 +41,14 @@ import eva2.tools.math.RNG;
  * Time: 16:44:25
  * To change this template use Options | File Templates.
  */
-public class PSymbolicRegression extends AbstractOptimizationProblem implements InterfaceProgramProblem, java.io.Serializable  {
+public class PSymbolicRegression extends AbstractOptimizationProblem implements InterfaceProgramProblem, InterfaceAdditionalPopulationInformer, Serializable  {
 
     private double[]                                m_X                     = new double[1];
-    private int                                     m_NumberOfConstants     = 10;
-    private double                                  m_LowerBound            = 0;
-    private double                                  m_UpperBound            = 10;
-    private int                                     m_NumberOfCheckPoints   = 10;
-    transient private InterfaceRegressionFunction   m_TargetFunction        = new RFKoza_GPI_10_2();
+    private int                                     m_NumberOfConstants     = 3;
+    private double                                  m_LowerBound            = -1;
+	private double                                  m_UpperBound            = 1;
+    private int                                     m_NumberOfCheckPoints   = 20;
+    transient private InterfaceRegressionFunction   m_TargetFunction        = new RFKoza_GPI_7_3();
     private double[]                                m_C                     = new double[m_NumberOfConstants];
     private boolean                                 m_UseInnerConst         = false;
     private boolean                                 m_UseLocalHillClimbing  = false;
@@ -97,7 +105,7 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
     /** This method inits the Problem to log multiruns
      */
     public void initProblem() {
-        if (m_TargetFunction == null) m_TargetFunction = new RFKoza_GPI_10_2();
+        if (m_TargetFunction == null) m_TargetFunction = new RFKoza_GPI_7_3();
         this.m_OverallBest  = null;
         this.m_C            = new double[this.m_NumberOfConstants];
         for (int i = 0; i < this.m_C.length; i++) this.m_C[i] = RNG.randomDouble(-10, 10);
@@ -113,18 +121,21 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
     	m_GPArea = new GPArea();
     	
     	if (m_GPArea.isEmpty()) {
+	        this.m_GPArea.add2CompleteList(new GPNodeOne());
+	        this.m_GPArea.add2CompleteList(new GPNodePi(), false);
 	        this.m_GPArea.add2CompleteList(new GPNodeAdd());
 	        this.m_GPArea.add2CompleteList(new GPNodeSub());
 	        this.m_GPArea.add2CompleteList(new GPNodeDiv());
 	        this.m_GPArea.add2CompleteList(new GPNodeMult());
+	        this.m_GPArea.add2CompleteList(new GPNodeAbs(), false);
 	        this.m_GPArea.add2CompleteList(new GPNodeSin(), false);
 	        this.m_GPArea.add2CompleteList(new GPNodeCos(), false);
 	        this.m_GPArea.add2CompleteList(new GPNodeExp(), false);
+	        this.m_GPArea.add2CompleteList(new GPNodeSqrt(), false);
 	        this.m_GPArea.add2CompleteList(new GPNodePow2(), false);
 	        this.m_GPArea.add2CompleteList(new GPNodePow3(), false);
-	        this.m_GPArea.add2CompleteList(new GPNodeSqrt(), false);
 	        for (int i = 0; i < this.m_X.length; i++) this.m_GPArea.add2CompleteList(new GPNodeInput("X"+i));
-	        for (int i = 0; i < this.m_C.length; i++) this.m_GPArea.add2CompleteList(new GPNodeInput("C"+i));
+	        for (int i = 0; i < this.m_C.length; i++) this.m_GPArea.add2CompleteList(new GPNodeInput("C"+i), false);
     	}
     	if ((oldArea!=null) && (oldArea.getBlackList()!=null) && (oldArea.getBlackList().size()==m_GPArea.getBlackList().size())) {
     		m_GPArea.SetBlackList(oldArea.getBlackList());
@@ -200,7 +211,9 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
     }
 
     /** 
-     * This method evaluates a single individual and sets the fitness values
+     * This method evaluates a single individual and sets the fitness values. In this case,
+     * the averaged square error between represented function and target function per check point is calculated.
+     * 
      * @param individual    The individual that is to be evaluated
      */
     public void evaluate(AbstractEAIndividual individual) {
@@ -214,9 +227,8 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
             this.m_C = ((GAPIndividualProgramData)tmpIndy).getDoubleData();
         fitness     = 0;
 
-        for (int j = 0; j < this.m_NumberOfCheckPoints; j++)
-        	for (int i = 0; i < this.m_X.length; i++) {
-                this.m_X[i] = this.m_LowerBound +(j*(this.m_UpperBound-this.m_LowerBound)/this.m_NumberOfCheckPoints);
+        for (int j = 0; j < this.m_NumberOfCheckPoints; j++) {
+    		setCheckPoint(m_X, j);
             tmpValue = ((Double)program.evaluate(this)).doubleValue();
             fitness += Math.pow((this.m_TargetFunction.evaluateFunction(this.m_X) - ((Double)program.evaluate(this)).doubleValue()), 2);
         }
@@ -233,8 +245,8 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
             	if (m_Plot==null) this.initEnvironmentPanel();
                 this.m_Plot.clearAll();
                 program     = ((InterfaceDataTypeProgram)this.m_OverallBest).getProgramData()[0];
-                for (double i = 0; i < this.m_NumberOfCheckPoints; i++) {
-                    for (int j = 0; j < this.m_X.length; j++) this.m_X[j] = i ;
+                for (int i = 0; i < this.m_NumberOfCheckPoints; i++) {
+                    setCheckPoint(m_X, i);
                     tmpValue = ((Double)program.evaluate(this)).doubleValue();
                     this.m_Plot.setConnectedPoint(this.m_X[0], tmpValue, 0);
                     tmpValue = this.m_TargetFunction.evaluateFunction(this.m_X);
@@ -244,6 +256,17 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
             }
         }
     }
+
+    /**
+     * Select a test point - TODO this btw only makes much sense in 1D.
+     * @param x
+     * @param j
+     */
+	private void setCheckPoint(double[] x, int j) {
+    	for (int i = 0; i < x.length; i++) {
+            x[i] = this.m_LowerBound +(j*(this.m_UpperBound-this.m_LowerBound)/(this.m_NumberOfCheckPoints-1));
+    	}
+	}
 
 	/** This method returns a string describing the optimization problem.
      * @param opt       The Optimizer that is used or had been used.
@@ -458,4 +481,122 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
     public InterfaceDataTypeProgram getGPIndividual() {
         return (InterfaceDataTypeProgram)this.m_Template;
     }
+    public String GPIndividualTipText() {
+    	return "Modify the properties of the template GP individual such as maximum tree depth etc.";
+    }
+    
+    public double getLowerBound() {
+		return m_LowerBound;
+	}
+	public void setLowerBound(double mLowerBound) {
+		m_LowerBound = mLowerBound;
+	}
+	public String lowerBoundTipText() {
+		return "The lower bound of the 1D double interval where the target function is sampled.";
+	}
+
+	public double getUpperBound() {
+		return m_UpperBound;
+	}
+	public void setUpperBound(double mUpperBound) {
+		m_UpperBound = mUpperBound;
+	}
+	public String upperBoundTipText() {
+		return "The upper bound of the 1D double interval where the target function is sampled.";
+	}
+
+	public String[] customPropertyOrder() {
+		return new String[] {"lowerBound", "upperBound"};
+	}
+
+	@Override
+	public String[] getAdditionalFileStringHeader(PopulationInterface pop) {
+		String[] superHd = super.getAdditionalFileStringHeader(pop);
+		return ToolBox.appendArrays(new String[]{"bestIndySize","avgIndySize","avgIndyDepth"}, superHd);
+	}
+
+	@Override
+	public Object[] getAdditionalFileStringValue(PopulationInterface pop) {
+		Object[] superDat = super.getAdditionalFileStringValue(pop);
+		return ToolBox.appendArrays(new Object[]{getBestIndySize(pop), getAvgIndySize(pop), getAvgIndyDepth(pop)}, superDat);
+	}
+
+	/**
+	 * Get the average tree depth of the given population (for program individuals).
+	 * 
+	 * @see #getIndyDepth(AbstractEAIndividual)
+	 * @param pop
+	 * @return
+	 */
+	public static double getAvgIndyDepth(PopulationInterface pop) {
+		Population p = (Population)pop;
+		double sum=0;
+		for (int i=0; i<p.size(); i++) {
+			sum+=getIndyDepth(p.getEAIndividual(i));
+		}
+		return sum/p.size();
+	}
+
+	/**
+	 * Return the average number of nodes of program individuals.
+	 * 
+	 * @see #getIndySize(AbstractEAIndividual)
+	 * @param pop
+	 * @return
+	 */
+	public static double getAvgIndySize(PopulationInterface pop) {
+		Population p = (Population)pop;
+		double sum=0;
+		for (int i=0; i<p.size(); i++) {
+			sum+=getIndySize(p.getEAIndividual(i));
+		}
+		return sum/p.size();
+	}
+
+	/**
+	 * Return the number of nodes of the best current individual if it represents a program,
+	 * otherwise zero.
+	 * 
+	 * @param pop
+	 * @return
+	 */
+	public static int getBestIndySize(PopulationInterface pop) {
+		Population p = (Population)pop;
+		AbstractEAIndividual indy = p.getBestEAIndividual();
+		return getIndySize(indy);
+	}
+	
+	/**
+	 * Return the number of nodes in an individual representing a program or null
+	 * if it is of an incompatible type.
+	 * 
+	 * @param indy
+	 * @return
+	 */
+	public static int getIndySize(AbstractEAIndividual indy) {
+		if (indy instanceof InterfaceDataTypeProgram) {
+			InterfaceProgram prog = ((InterfaceDataTypeProgram)indy).getProgramData()[0];
+			if (prog instanceof AbstractGPNode) {
+				AbstractGPNode gpNode = (AbstractGPNode)prog;
+				return gpNode.getNumberOfNodes();
+			} else return 0;
+		} else return 0;
+	}
+	
+	/**
+	 * Return the depth of an individual representing a program or null
+	 * if it is of an incompatible type.
+	 * 
+	 * @param indy
+	 * @return
+	 */
+	public static int getIndyDepth(AbstractEAIndividual indy) {
+		if (indy instanceof InterfaceDataTypeProgram) {
+			InterfaceProgram prog = ((InterfaceDataTypeProgram)indy).getProgramData()[0];
+			if (prog instanceof AbstractGPNode) {
+				AbstractGPNode gpNode = (AbstractGPNode)prog;
+				return gpNode.getMaxDepth();
+			} else return 0;
+		} else return 0;
+	}
 }

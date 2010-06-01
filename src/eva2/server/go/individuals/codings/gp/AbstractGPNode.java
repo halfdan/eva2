@@ -468,8 +468,8 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
      */
     public void repairMaxDepth(GPArea area, int depth) {
         if (this.m_Depth == depth-1) {
-            // in this case i need to check wether or not my
-            // followup nodes are terminals
+            // in this case i need to check whether or not my
+            // follow-up nodes are terminals
             for (int i = 0; i < this.m_Nodes.length; i++) {
                 if (this.m_Nodes[i].getArity() != 0) {
                     // replace this node with a new node
@@ -490,12 +490,6 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
      * @param obj   The other subtree.
      * @return boolean if equal true else false.
      */
-//    public abstract boolean equals(Object obj);
-    /** This method allows you to determine wehter or not two subtrees
-     * are actually the same.
-     * @param obj   The other subtree.
-     * @return boolean if equal true else false.
-     */
     public boolean equals(Object obj) {
         if (obj.getClass().equals(this.getClass())) {
         	AbstractGPNode node = (AbstractGPNode)obj;
@@ -509,5 +503,4 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
             return false;
         }
     }
-    
 }

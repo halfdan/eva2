@@ -27,7 +27,9 @@ public class RFKoza_GPI_7_3 implements InterfaceRegressionFunction, java.io.Seri
      */
     public double evaluateFunction(double[] x) {
         double result = 0;
-        for (int i = 0; i < x.length; i++) result += Math.pow(x[i], 4) + Math.pow(x[i], 3) + Math.pow(x[i], 2) + Math.pow(x[i], 1);
+        for (int i = 0; i < x.length; i++) {
+        	result += Math.pow(x[i], 4) + Math.pow(x[i], 3) + Math.pow(x[i], 2) + x[i];
+        }
         return result;
     }
 
@@ -46,6 +48,6 @@ public class RFKoza_GPI_7_3 implements InterfaceRegressionFunction, java.io.Seri
      * @return description
      */
     public static String globalInfo() {
-        return "This target function is given in Koza GP I chapter 7.3.";
+        return "This target function f(x)=x^4+x^3+x^2+x as given in Koza GP I chapter 7.3.";
     }
 }

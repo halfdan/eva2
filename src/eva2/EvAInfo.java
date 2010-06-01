@@ -10,7 +10,7 @@ import eva2.tools.BasicResourceLoader;
  * 
  * --- Changelog
  * 2.043: Added proper Population equality predicate.
- * 2.042: Some bugfixes. Removing dependecy on sun.beans.editors, replaced non-free jpeg-codec. There should
+ * 2.042: Some bugfixes. Removing dependency on sun.beans.editors, replaced non-free jpeg-codec. There should
  * 			be no more problems on OpenJDK. Added a simple initialization range, especially for use from Matlab.
  * 			Some restructurings (RNG and Mathematics is now in eva2.tools.math). Some cleanup.
  * 2.040: Several updates: The clustering interface has been changed for easier implementation of adaptive clustering

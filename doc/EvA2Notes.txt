@@ -14,7 +14,7 @@ The following method names are reserved:
 static globalInfo: return String, used to display information about a class. Should be static to allow tool tips in the combo box.
 getName: return String, used as short name replacing the class name
 hideHideable: void, set hide property of all properties which should not be displayed in the current object state
-customPropertyOrder: return String[], for the given properties the given ordering will be enforced
+customPropertyOrder: return String[], for the given properties the given ordering will be enforced. Check PropertySheetPanel.reorderProperties(Method) for functionality.
 getGOEPropertyUpdateLinks: return String[] which is interpreted in pairs indicating that on an update 
 		of the i-th property, the i+1-th property should be updated (for even i).
 		This is useful for changes within sub-classes of the target
