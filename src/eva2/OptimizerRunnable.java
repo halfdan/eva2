@@ -88,10 +88,7 @@ public class OptimizerRunnable implements Runnable {
 	public OptimizerRunnable(GOParameters params, InterfaceStatistics stats, boolean restart) {
 		rnblID = cntID;
 		cntID++;        
-		if (stats.getStatisticsParameter() instanceof InterfaceNotifyOnInformers) {
-			// addition for the statistics revision with selectable strings - make sure the go parameters are represented within the statistics
-			params.addInformableInstance((InterfaceNotifyOnInformers)(stats.getStatisticsParameter()));
-		}
+
 		proc = new Processor(stats, null, params);
 		if (proc.getStatistics() instanceof AbstractStatistics) ((AbstractStatistics)proc.getStatistics()).setSaveParams(false);
 		doRestart = restart;
@@ -126,10 +123,6 @@ public class OptimizerRunnable implements Runnable {
 		InterfaceGOParameters params = proc.getGOParams(); 
 		proc = new Processor(stats, null, params);
 		if (proc.getStatistics() instanceof AbstractStatistics) ((AbstractStatistics)proc.getStatistics()).setSaveParams(false);
-		if (stats.getStatisticsParameter() instanceof InterfaceNotifyOnInformers) {
-			// addition for the statistics revision with selectable strings - make sure the go parameters are represented within the statistics
-			params.addInformableInstance((InterfaceNotifyOnInformers)(stats.getStatisticsParameter()));
-		}
 	}
 	
 	public void setTextListener(InterfaceTextListener lsnr) {

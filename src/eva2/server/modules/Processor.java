@@ -6,13 +6,13 @@ import javax.swing.JOptionPane;
 
 import eva2.gui.BeanInspector;
 import eva2.server.go.InterfaceGOParameters;
+import eva2.server.go.InterfaceNotifyOnInformers;
 import eva2.server.go.InterfacePopulationChangedEventListener;
 import eva2.server.go.InterfaceProcessor;
 import eva2.server.go.InterfaceTerminator;
 import eva2.server.go.PopulationInterface;
 import eva2.server.go.operators.paramcontrol.ConstantParameters;
 import eva2.server.go.operators.paramcontrol.InterfaceParameterControl;
-import eva2.server.go.operators.paramcontrol.ParamAdaption;
 import eva2.server.go.operators.postprocess.PostProcess;
 import eva2.server.go.operators.postprocess.PostProcessParams;
 import eva2.server.go.operators.terminators.EvaluationTerminator;
@@ -26,7 +26,6 @@ import eva2.server.stat.InterfaceTextListener;
 import eva2.server.stat.StatisticsWithGUI;
 import eva2.tools.EVAERROR;
 import eva2.tools.EVAHELP;
-import eva2.tools.Pair;
 import eva2.tools.StringTools;
 import eva2.tools.jproxy.RemoteStateListener;
 import eva2.tools.math.RNG;
@@ -69,18 +68,23 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
     }
     
     /**
+     * Construct a Processor instance and make statistics instance informable of the parameters,
+     * such they can by dynamically show additional information.
+     * 
+     * @see InterfaceNotifyOnInformers
      */
     public Processor(InterfaceStatistics Stat, ModuleAdapter Adapter, InterfaceGOParameters params) {
         goParams    = params;
         m_Statistics        = Stat;
         m_ListenerModule      = Adapter;
-    }
-
-    /**
-     *
-     */
-    public Processor(InterfaceStatistics Stat) {
-        m_Statistics = Stat;
+        
+        // the statistics want to be informed if the strategy or the optimizer (which provide statistical data as InterfaceAdditionalInformer) change.
+        if (Stat!=null && (params != null)) {
+        	if (Stat.getStatisticsParameter() instanceof InterfaceNotifyOnInformers) {
+			// 	addition for the statistics revision with selectable strings - make sure the go parameters are represented within the statistics
+        		params.addInformableInstance((InterfaceNotifyOnInformers)(Stat.getStatisticsParameter()));
+        	}
+        }
     }
     
     public boolean isOptRunning() {
