@@ -21,9 +21,11 @@ import java.io.IOException;
 import java.io.InvalidClassException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
 import java.io.Serializable;
+
+import eva2.gui.SerializedObject;
+import eva2.server.go.problems.PSymbolicRegression;
+import eva2.server.modules.GOParameters;
 /*==========================================================================*
  * CLASS DECLARATION
  *==========================================================================*/
@@ -33,13 +35,23 @@ import java.io.Serializable;
 public class Serializer {
   /**
   * Serialize the object o (and any Serializable objects it refers to) and
-  * store its serialized state in File f.
+  * store its serialized state in File f. If serializeInMem is true, the object
+  * is wrapped in a SerializedObject first, which seems to be more efficient than
+  * writing a nested object directly to a file.
+  * 
+  * @param o the object to write
+  * @param f the file to write to
+  * @param serializeInMem flag whether to wrap the object in a SerializedObject
+  * @throws IOException
   **/
-  static public void store(Serializable o, File f) throws IOException {
+  static public void store(Serializable o, File f, boolean serializeInMem) throws IOException {
     FileOutputStream file = new FileOutputStream(f);
     ObjectOutputStream out = new ObjectOutputStream(file);
     try {
-    	out.writeObject(o);
+    	Object objToStore = o;
+    	if (serializeInMem) objToStore = new SerializedObject((Object)o);
+//    	System.out.println("Writing " + o.getClass());
+    	out.writeObject(objToStore);
     } catch (java.io.NotSerializableException e) {
     	System.err.println("Error: Object " + o.getClass() + " is not serializable - run settings cannot be stored.");
     	e.printStackTrace();
@@ -59,12 +71,14 @@ public class Serializer {
 //    }
 
   /**
-  * Deserialize the contents of File f and return the resulting object
+  * Deserialize the contents of File f and return the resulting object.
+  * A SerializedObject is unwrapped once.
   **/
   static public Object load(File f) throws IOException, ClassNotFoundException {
     FileInputStream file = new FileInputStream(f);
     ObjectInputStream in = new ObjectInputStream(file);
     Object ret = in.readObject();
+    if (ret instanceof SerializedObject) ret = ((SerializedObject)ret).getObject();
     in.close();
     file.close();
     return ret;
@@ -167,7 +181,7 @@ public class Serializer {
       // Output it to a file
       File f = new File("datastructure.ser");
       System.out.println("Storing to a file...");
-      Serializer.store(ds, f);
+      Serializer.store(ds, f, true);
       // Read it back from the file, and display it again
       ds = (DataStructure) Serializer.load(f);
       System.out.println("Read from the file: " + ds);
@@ -184,7 +198,7 @@ public class Serializer {
   **/
   public static void storeString (String Filename,String s) {
     try {
-      store(s, new File(Filename));
+      store(s, new File(Filename), false);
     } catch (Exception e) {
       System.out.println("ERROR writing string File "+Filename+ " String "+s);
     }
@@ -209,7 +223,7 @@ public class Serializer {
   public static File storeObject (String Filename,Serializable s) {
     File ret = new File(Filename);
     try {
-      store(s, ret);
+      store(s, ret, true);
     } catch (Exception e) {
       System.err.println("ERROR writing Object File "+Filename+ " String "+s);
       System.err.println(e.getMessage());

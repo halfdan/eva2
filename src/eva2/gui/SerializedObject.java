@@ -12,8 +12,21 @@ package eva2.gui;
 /*==========================================================================*
  * IMPORTS
  *==========================================================================*/
-import java.io.*;
-import java.util.zip.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.io.Serializable;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
+
+import eva2.server.modules.GOParameters;
+import eva2.tools.Serializer;
 /**
  * This class stores an object serialized in memory. It allows compression,
  * to be used to conserve memory (for example, when storing large strings
@@ -29,9 +42,10 @@ public class SerializedObject implements Serializable {
    * Serializes the supplied object into a byte array without compression.
    *
    * @param obj the Object to serialize.
+ * @throws IOException 
    * @exception Exception if the object is not Serializable.
    */
-  public SerializedObject(Object obj) throws Exception {
+  public SerializedObject(Object obj) throws IOException {
     this(obj, false);
   }
   /**
@@ -39,9 +53,10 @@ public class SerializedObject implements Serializable {
    *
    * @param obj the Object to serialize.
    * @param compress true if the object should be stored compressed.
+ * @throws IOException 
    * @exception Exception if the object is not Serializable.
    */
-  public SerializedObject(Object obj, boolean compress) throws Exception {
+  public SerializedObject(Object obj, boolean compress) throws IOException {
     //System.err.print("."); System.err.flush();
     m_Compressed = compress;
     m_Serialized = toByteArray(obj, m_Compressed);
@@ -52,9 +67,10 @@ public class SerializedObject implements Serializable {
    * @param obj the Object to serialize
    * @param compress true if the object should be compressed.
    * @return the byte array containing the serialized object.
+   * @throws IOException 
    * @exception Exception if the object is not Serializable.
    */
-  protected static byte [] toByteArray(Object obj, boolean compress) throws Exception {
+  protected static byte [] toByteArray(Object obj, boolean compress) throws IOException {
     ByteArrayOutputStream bo = new ByteArrayOutputStream();
     OutputStream os = bo;
     if (compress)

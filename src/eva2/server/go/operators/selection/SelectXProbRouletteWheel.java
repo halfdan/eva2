@@ -59,7 +59,7 @@ class treeElement implements java.io.Serializable {
  */
 public class SelectXProbRouletteWheel implements InterfaceSelection, java.io.Serializable {
 
-    private treeElement[]                   m_TreeRoot;
+    private transient treeElement[]         m_TreeRoot = null;
     private InterfaceSelectionProbability   m_SelProbCalculator = new SelProbStandard();
     private boolean                         m_ObeyDebsConstViolationPrinciple = true;
 
@@ -86,8 +86,9 @@ public class SelectXProbRouletteWheel implements InterfaceSelection, java.io.Ser
         this.m_TreeRoot = this.buildSelectionTree(population);
     }
 
-    /** This method will select a pool of individuals from the given
-     * Population in respect to the selection propability of the
+    /** 
+     * This method will select a pool of individuals from the given
+     * Population in respect to the selection probability of the
      * individuals.
      * @param population    The source population where to select from
      * @param size          The number of Individuals to select
@@ -97,21 +98,15 @@ public class SelectXProbRouletteWheel implements InterfaceSelection, java.io.Ser
         Population result = new Population();
         result.setTargetSize(size);
 
-        if (true) {
-            //this.m_TreeRoot = this.buildSelectionTree(population);
-            for (int i = 0; i < size; i++) {
-                result.add(this.selectTree(population));
-            }
-        } else {
-            for (int i = 0; i < size; i++) {
-                result.add(this.selectStandard(population));
-            }
+        for (int i = 0; i < size; i++) {
+        	result.add(this.selectTree(population));
         }
 
         return result;
     }
 
-    /** This method will build a selection tree
+    /** 
+     * This method will build a selection tree.
      * @param p     The population
      */
     private treeElement[] buildSelectionTree(Population p) {
@@ -155,6 +150,7 @@ public class SelectXProbRouletteWheel implements InterfaceSelection, java.io.Ser
     }
 
     private AbstractEAIndividual selectStandard(Population population) {
+    	// old version
         double                  sum = 1, random, tmpD;
         int                     currentCriteria = 0, critSize;
 

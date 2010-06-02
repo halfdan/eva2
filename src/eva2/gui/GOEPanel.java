@@ -75,7 +75,13 @@ public class GOEPanel extends JPanel implements ItemListener {
 		m_goe  = goe;
 		
 		//System.out.println("GOEPanel.Constructor !!");
+		try {
 		if (!(Proxy.isProxyClass(m_Object.getClass()))) m_Backup = copyObject(m_Object);
+		} catch(OutOfMemoryError err) {
+			m_Backup=null;
+			System.gc();
+			System.err.println("Could not create backup object: not enough memory (GOEPanel backup of " + m_Object + ")");
+		}
 		m_ObjectNames = new DefaultComboBoxModel(new String [0]);
 		m_ObjectChooser = new JComboBox(m_ObjectNames);
 		m_ObjectChooser.setEditable(false);
@@ -211,6 +217,7 @@ public class GOEPanel extends JPanel implements ItemListener {
 	protected Object copyObject(Object source) {
 		Object result = null;
 		try {
+//			System.out.println("Copying " + BeanInspector.toString(source));
 			SerializedObject so = new SerializedObject(source);
 			result = so.getObject();
 		} catch (Exception ex) {
