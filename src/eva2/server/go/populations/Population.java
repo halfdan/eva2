@@ -1456,7 +1456,10 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     }
     
     public boolean add(IndividualInterface o) {
-    	return addIndividual((IndividualInterface)o);
+    	if (o==null) {
+    		EVAERROR.errorMsgOnce("Warning: tried to add null as individual, skipping add... (Population.add(IndividualInterface)), possibly multiple cases.");
+    		return false;
+    	} else return addIndividual((IndividualInterface)o);
     }
 
     public Population addToPop(IndividualInterface o) {
@@ -1481,17 +1484,20 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     public Object set(int index, Object element, int fitIndex) {
     	Object prev = super.set(index, element);
     	modCount++;
-    	if (lastFitCrit==fitIndex && (lastQModCount==(modCount-1))) {
-    		// if nothing happend between this event and the last sorting by the same criterion...
-    		if (!sortedArr.remove(prev)) System.err.println("Error in Population.set!");
-    		int i=0;
-    		AbstractEAIndividualComparator comp = new AbstractEAIndividualComparator(fitIndex);
-    		while (i<sortedArr.size() && comp.compare(element, sortedArr.get(i))>0) {
-    			i++;
-    		}
-    		sortedArr.add(i, (AbstractEAIndividual)element);
-    		lastQModCount=modCount;
-    	}
+    	// Nelder Mead somehow managed to produce inconsistent sorted population - some hidden add/replace?
+//    	if (lastFitCrit==fitIndex && (lastQModCount==(modCount-1))) {
+//    		// if nothing happened between this event and the last sorting by the same criterion...
+//    		if (!sortedArr.remove(prev)) {
+//    			System.err.println("Error in Population.set!");
+//    		}
+//    		int i=0;
+//    		AbstractEAIndividualComparator comp = new AbstractEAIndividualComparator(fitIndex);
+//    		while (i<sortedArr.size() && comp.compare(element, sortedArr.get(i))>0) {
+//    			i++;
+//    		}
+//    		sortedArr.add(i, (AbstractEAIndividual)element);
+//    		lastQModCount=modCount;
+//    	}
     	return prev;
     }
     
@@ -1628,6 +1634,15 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
         return res;
     }
 
+    /**
+     * Returns the average, minimal and maximal individual distance as diversity measure for the population.
+     * If the given metric argument is null, the euclidian distance of individual positions is used, which
+     * presumes that {@link AbstractEAIndividual.getDoublePosition(indy)} returns a valid double position for the
+     * individuals of the population.
+     * This is of course rather expensive computationally. 
+     *
+     * @return the average, minimal and maximal mean distance of individuals in an array of three
+     */
 	public static double[] getPopulationMeasures(List<AbstractEAIndividual> pop, InterfaceDistanceMetric metric) {
 		double d;
     	double[] res = new double[3];
@@ -2190,6 +2205,51 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
 
 	public void clearHistory() {
 		m_History.clear();
+	}
+
+	/**
+	 * Checks if any individual entry is null. If so, false is returned, otherwise true.
+	 * 
+	 * @return
+	 */
+	public boolean checkNoNullIndy() {
+		for (int i=0; i<size(); i++) {
+			if (get(i)==null) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * Return a subset of (shallow cloned) individuals which have a lower (or equal) fitness in a given 
+	 * criterion.
+	 * 
+	 * @param upperBound
+	 * @param fitCrit
+	 * @return
+	 */
+	public Population filterByFitness(double upperBound, int fitCrit) {
+		Population res = this.cloneWithoutInds();
+		for (int i=0; i<size(); i++) {
+			if (getEAIndividual(i).getFitness(fitCrit)<=upperBound) res.add(get(i));
+		}
+		return res;
+	}
+
+	/**
+	 * Return a clone of the best historic individual or null if the history is empty.
+	 * 
+	 * @return the best historic individual or null if the history is empty 
+	 */
+    public AbstractEAIndividual getBestHistoric() {
+    	AbstractEAIndividual bestIndy = null;
+    	if (getHistory()!=null) {
+    		for (AbstractEAIndividual indy : getHistory()) {
+    			if (bestIndy==null || (indy.isDominating(bestIndy))) bestIndy=indy;
+    		}
+    	}
+    	return (bestIndy==null) ? null : (AbstractEAIndividual)bestIndy.clone();
 	}
 
 //	/**
