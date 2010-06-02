@@ -49,8 +49,9 @@ public class GenericModuleAdapter extends AbstractModuleAdapter implements Seria
         m_Processor         = new Processor(m_StatisticsModul,this, params);
         
         // the statistics want to be informed if the strategy or the optimizer (which provide statistical data as InterfaceAdditionalInformer) change.
-        if (m_StatisticsModul.getStatisticsParameter() instanceof InterfaceNotifyOnInformers) 
-        	params.addInformableInstance((InterfaceNotifyOnInformers)m_StatisticsModul.getStatisticsParameter());
+        // THIS is now done directly in the constructor of a Processor
+//        if (m_StatisticsModul.getStatisticsParameter() instanceof InterfaceNotifyOnInformers) 
+//        	params.addInformableInstance((InterfaceNotifyOnInformers)m_StatisticsModul.getStatisticsParameter());
         // this prevents the optimizer property to be shown by the GOE if optimizerExpert is true
     	GenericObjectEditor.setExpertProperty(params.getClass(), "optimizer", optimizerExpert);
        

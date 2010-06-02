@@ -64,7 +64,9 @@ public class Serializer {
 		FileInputStream file = new FileInputStream(f);
 		ObjectInputStream in = new ObjectInputStream(file);
 		Object ret = in.readObject();
-		if (ret instanceof SerializedObject) ret = ((SerializedObject)ret).getObject();
+		if (ret instanceof SerializedObject) {
+			ret = ((SerializedObject)ret).getObject();
+		}
 		in.close();
 		file.close();
 		return ret;
@@ -209,6 +211,9 @@ public class Serializer {
 				s=(Object)load(new File(Filename));
 			} catch (InvalidClassException e) {
 				System.err.println("WARNING: loading object File "+Filename+ " not possible, this may happen on source code changes.");
+				System.err.println(e.getMessage());
+			} catch (ClassNotFoundException e) {
+				System.err.println("ClassNotFoundException on loading object File " + Filename + ". This may happen on refactorings.");
 				System.err.println(e.getMessage());
 			} catch (Exception e) {
 				throw new RuntimeException("WARNING: loading object File "+Filename+ " not possible! ("+e.getMessage()+")");
