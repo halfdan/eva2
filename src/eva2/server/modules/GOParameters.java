@@ -3,7 +3,6 @@ package eva2.server.modules;
 import java.io.Serializable;
 
 import eva2.server.go.InterfaceGOParameters;
-import eva2.server.go.individuals.GAIndividualDoubleData;
 import eva2.server.go.operators.terminators.EvaluationTerminator;
 import eva2.server.go.problems.F1Problem;
 import eva2.server.go.strategies.GeneticAlgorithm;
