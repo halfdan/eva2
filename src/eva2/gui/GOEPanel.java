@@ -31,6 +31,7 @@ import javax.swing.plaf.basic.BasicComboBoxRenderer;
 
 import eva2.server.go.tools.FileTools;
 import eva2.tools.EVAHELP;
+import eva2.tools.SerializedObject;
 import eva2.tools.jproxy.RMIProxyLocal;
 /**
 *

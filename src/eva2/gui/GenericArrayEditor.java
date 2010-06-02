@@ -48,6 +48,7 @@ import javax.swing.event.ListSelectionListener;
 
 import eva2.tools.EVAHELP;
 import eva2.tools.SelectedTag;
+import eva2.tools.SerializedObject;
 /*==========================================================================*
  * CLASS DECLARATION
  *==========================================================================*/
