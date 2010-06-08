@@ -64,10 +64,12 @@ public class GraphPointSetLegend {
 		legendEntries = new TreeSet<Pair<String, Color>>(comparator);
 		for (int i = 0; i < pointSetContainer.size(); i++) {
 			GraphPointSet pointset = pointSetContainer.get(i);
-			String entryStr;
-			if (appendIndex) entryStr = StringTools.expandPrefixZeros(i, pointSetContainer.size()-1) + ": " + pointset.getInfoString();
-			else entryStr = pointset.getInfoString();
-			legendEntries.add(new Pair<String, Color>(entryStr,pointset.getColor()));
+			if (pointset.getPointSet().getSize()>0) {
+				String entryStr;
+				if (appendIndex) entryStr = StringTools.expandPrefixZeros(i, pointSetContainer.size()-1) + ": " + pointset.getInfoString();
+				else entryStr = pointset.getInfoString();
+				legendEntries.add(new Pair<String, Color>(entryStr,pointset.getColor()));
+			}
 		}
 	}
 
