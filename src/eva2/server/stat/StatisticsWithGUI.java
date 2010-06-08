@@ -132,7 +132,7 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
 //							+ m_StatsParams.GetInfoString()
 							+ "Mean_of_" + fullRuns + " ",
 							(float) 2.0);
-					if (normal && m_FitnessFrame[i].isValid()) {
+					if (normal && m_FitnessFrame[i].isValid() && (m_FitnessGraph[i][j].getPointCount()>0)) {
 						m_StatGraph[i][j].addGraph(m_FitnessGraph[i][j]);
 						m_FitnessGraph[i][j].clear();
 					}
