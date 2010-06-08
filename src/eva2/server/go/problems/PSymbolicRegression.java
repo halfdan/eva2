@@ -575,7 +575,7 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
 	 */
 	public static int getIndySize(AbstractEAIndividual indy) {
 		if (indy instanceof InterfaceDataTypeProgram) {
-			InterfaceProgram prog = ((InterfaceDataTypeProgram)indy).getProgramData()[0];
+			InterfaceProgram prog = ((InterfaceDataTypeProgram)indy).getProgramDataWithoutUpdate()[0];
 			if (prog instanceof AbstractGPNode) {
 				AbstractGPNode gpNode = (AbstractGPNode)prog;
 				return gpNode.getNumberOfNodes();
@@ -584,7 +584,7 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
 	}
 	
 	/**
-	 * Return the depth of an individual representing a program or null
+	 * Return the maximal depth of an individual representing a program or null
 	 * if it is of an incompatible type.
 	 * 
 	 * @param indy
@@ -592,10 +592,14 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
 	 */
 	public static int getIndyDepth(AbstractEAIndividual indy) {
 		if (indy instanceof InterfaceDataTypeProgram) {
-			InterfaceProgram prog = ((InterfaceDataTypeProgram)indy).getProgramData()[0];
+			InterfaceProgram prog = ((InterfaceDataTypeProgram)indy).getProgramDataWithoutUpdate()[0];
 			if (prog instanceof AbstractGPNode) {
 				AbstractGPNode gpNode = (AbstractGPNode)prog;
-				return gpNode.getMaxDepth();
+				int d = gpNode.getMaxDepth();
+				//if (!gpNode.checkDepth(0)) {
+				//	System.out.println(d + "\n" + gpNode.getStringRepresentation());
+				//}
+				return d;
 			} else return 0;
 		} else return 0;
 	}

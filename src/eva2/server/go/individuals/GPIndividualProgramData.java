@@ -27,7 +27,7 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
     protected GPArea[]                    m_Area;
     protected double                      m_InitFullGrowRatio   = 0.5;
     protected int                         m_InitDepth           = 4;
-    protected int                         m_maxDepth         = 8;
+    protected int                         m_maxAllowedDepth         = 8;
     protected boolean                     m_CheckMaxDepth    = true;
 
     public GPIndividualProgramData() {
@@ -58,7 +58,7 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
         }
         this.m_InitFullGrowRatio        = individual.m_InitFullGrowRatio;
         this.m_InitDepth                = individual.m_InitDepth;
-        this.m_maxDepth              = individual.m_maxDepth;
+        this.m_maxAllowedDepth              = individual.m_maxAllowedDepth;
         this.m_CheckMaxDepth         = individual.m_CheckMaxDepth;
 
         // cloning the members of AbstractEAIndividual
@@ -90,7 +90,7 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
         if (individual instanceof GPIndividualProgramData) {
             GPIndividualProgramData indy = (GPIndividualProgramData) individual;
             //@todo Eigendlich k�nnte ich noch die Areas vergleichen
-            if (this.m_maxDepth != indy.m_maxDepth)
+            if (this.m_maxAllowedDepth != indy.m_maxAllowedDepth)
                 return false;
             if ((this.m_Genotype == null) || (indy.m_Genotype == null))
                 return false;
@@ -134,9 +134,13 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
         this.m_Phenotype = new AbstractGPNode[this.m_Genotype.length];
         for (int i = 0; i < this.m_Genotype.length; i++) {
             this.m_Phenotype[i] = (AbstractGPNode)this.m_Genotype[i].clone();
-            if ((this.m_CheckMaxDepth) && (this.m_Phenotype[i].isMaxDepthViolated(this.m_maxDepth))) {
-                //System.out.println("Trying to meet the Target Depth!");
-                this.m_Phenotype[i].repairMaxDepth(this.m_Area[i], this.m_maxDepth);
+            // if (!m_Phenotype[0].checkDepth(0)) {
+            // 	System.err.println("error... " + m_Genotype[0].checkDepth(0));
+            // }
+
+            if ((this.m_CheckMaxDepth) && (this.m_Phenotype[i].isMaxDepthViolated(this.m_maxAllowedDepth))) {
+                System.err.println("Trying to meet the Target Depth! " + this.m_Phenotype[i].isMaxDepthViolated(this.m_maxAllowedDepth) + " "+ m_Phenotype[i].getMaxDepth());
+                this.m_Phenotype[i].repairMaxDepth(this.m_Area[i], this.m_maxAllowedDepth);
                 //System.out.println("TragetDepth: " + this.m_TargetDepth + " : " + this.m_Program.getMaxDepth());
             }
         }
@@ -148,7 +152,8 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
      * @return InterfaceProgram[] representing the Program.
      */
     public InterfaceProgram[] getProgramDataWithoutUpdate() {
-        return this.m_Phenotype;
+    	if (this.m_Phenotype==null) return getProgramData();
+    	else return this.m_Phenotype;
     }
 
     /** This method allows you to set the program phenotype.
@@ -244,6 +249,7 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
      */
     public void SetPGenotype(AbstractGPNode[] b) {
         this.m_Genotype = b;
+        this.m_Phenotype=null;
     }
 
     /** This method will allow the user to set the current program 'genotype'.
@@ -252,28 +258,41 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
      */
     public void SetPGenotype(AbstractGPNode b, int i) {
         this.m_Genotype[i] = b;
+        m_Genotype[i].updateDepth(0);
+//        System.out.println("Setting pheno of depth " + b.getMaxDepth() + " " + b.getStringRepresentation());
+        this.m_Phenotype=null;
     }
 
-    /** This method performs a simple one element mutation on the program
+    /** 
+     * This method performs a simple one element mutation on the program
      */
     public void defaultMutate() {
-        ArrayList allNodes = new ArrayList();
         for (int i = 0; i < this.m_Genotype.length; i++) {
-            this.m_Genotype[i].addNodesTo(allNodes);
-            AbstractGPNode nodeToMutate = (AbstractGPNode) allNodes.get(RNG.randomInt(0, allNodes.size()-1));
-            if (nodeToMutate.getParent() == null) {
+            AbstractGPNode nodeToMutate = this.m_Genotype[i].getRandomNode();
+            if (nodeToMutate.getParent() == null) { // mutate at root
                 this.defaultInit(null);
             } else {
                 AbstractGPNode parent = nodeToMutate.getParent();
-                AbstractGPNode newNode = (AbstractGPNode)(((AbstractGPNode)this.m_Area[i].getRandomNode().clone()));
-                newNode.setDepth(nodeToMutate.getDepth());
-                newNode.initGrow(this.m_Area[i], this.m_maxDepth);
-                parent.setNode(newNode, nodeToMutate);
+            	if (m_CheckMaxDepth && (nodeToMutate.getDepth()==m_maxAllowedDepth)) { // mutate with a constant
+            		AbstractGPNode newNode = (AbstractGPNode)(((AbstractGPNode)this.m_Area[i].getRandomNodeWithArity(0).clone()));
+            		newNode.setDepth(nodeToMutate.getDepth());
+            		parent.setNode(newNode, nodeToMutate);
+            	} else {
+            		AbstractGPNode newNode = (AbstractGPNode)(((AbstractGPNode)this.m_Area[i].getRandomNode().clone()));
+            		newNode.setDepth(nodeToMutate.getDepth());
+            		newNode.initGrow(this.m_Area[i], this.m_maxAllowedDepth);
+            		parent.setNode(newNode, nodeToMutate);
+            	}
+                //if (!m_Genotype[i].checkDepth(0) || (m_Genotype[i].isMaxDepthViolated(m_maxAllowedDepth))) {
+                //	System.err.println("Error in GPIndividualProgramData.defaultMutate!");
+                //}
             }
         }
+        m_Phenotype=null; // reset pheno
     }
 
     public void defaultInit(InterfaceOptimizationProblem prob) {
+        m_Phenotype=null; // reset pheno
         for (int i = 0; i < this.m_Area.length; i++) {
             if (this.m_Area[i] == null) {
             	EVAERROR.errorMsgOnce("Error in GPIndividualProgramData.defaultInit(): Area["+i+"] == null !!");
@@ -339,9 +358,9 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
      * @param b     The new init Depth of the GP Tree.
      */
     public void setInitDepth(int b) {
-        if (b > this.m_maxDepth) {
+        if (b > this.m_maxAllowedDepth) {
             System.out.println("Waring Init Depth will be set to Target Depth!");
-            b = this.m_maxDepth;
+            b = this.m_maxAllowedDepth;
         }
         this.m_InitDepth = b;
     }
@@ -355,17 +374,29 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
     /** This method set/get the target depth.
      * @param b     The new target Depth of the GP Tree.
      */
-    public void setMaxDepth(int b) {
-        this.m_maxDepth = b;
+    public void setMaxAllowedDepth(int b) {
+        this.m_maxAllowedDepth = b;
     }
-    public int getMaxDepth() {
-        return this.m_maxDepth;
+    public int getMaxAllowedDepth() {
+        return this.m_maxAllowedDepth;
     }
-    public String maxDepthTipText() {
-        return "The maximum depth of the GP tree.";
+    public String maxAllowedDepthTipText() {
+        return "The maximum depth allowed for the GP tree.";
     }
     
     public String[] customPropertyOrder() {
-    	return new String[] {"initDepth", "checkMaxDepth", "maxDepth"};
+    	return new String[] {"initDepth", "checkMaxDepth", "maxAllowedDepth"};
     }
+
+	public void updateDepth() {
+		for (int i=0; i<m_Genotype.length; i++) {
+			m_Genotype[i].updateDepth(0);
+		}
+	}
+	
+	public void checkDepth() {
+		for (int i=0; i<m_Genotype.length; i++) {
+			m_Genotype[i].checkDepth(0);
+		}
+	}
 }

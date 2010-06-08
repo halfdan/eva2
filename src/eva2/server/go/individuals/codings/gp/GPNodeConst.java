@@ -16,10 +16,7 @@ public class GPNodeConst extends AbstractGPNode implements java.io.Serializable 
 
     public GPNodeConst(GPNodeConst node) {
     	value = node.value;
-        this.m_Depth    = node.m_Depth;
-        this.m_Parent   = node.m_Parent;
-        this.m_Nodes    = new AbstractGPNode[node.m_Nodes.length];
-        for (int i = 0; i < node.m_Nodes.length; i++) this.m_Nodes[i] = (AbstractGPNode) node.m_Nodes[i].clone();
+    	this.cloneMembers(node);
     }
 
     @Override

@@ -9,10 +9,14 @@ public class GPNodeOne extends GPNodeConst implements java.io.Serializable {
     	super(1.);
     }
     
+    public GPNodeOne(GPNodeOne node) {
+    	super(node);
+	}
+    
     /** This method allows you to clone the Nodes
      * @return the clone
      */
     public Object clone() {
-        return (Object) new GPNodeOne();
+        return (Object) new GPNodeOne(this);
     }
 }

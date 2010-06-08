@@ -949,7 +949,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
                 if ((i+1) < b.length) sb.append(separator);
             }
         } else if (individual instanceof InterfaceDataTypeProgram) {
-            InterfaceProgram[] b = ((InterfaceDataTypeProgram)individual).getProgramData();
+            InterfaceProgram[] b = ((InterfaceDataTypeProgram)individual).getProgramDataWithoutUpdate();
             for (int i = 0; i < b.length; i++) {
                 sb.append(b[i].getStringRepresentation());
                 if ((i+1) < b.length) sb.append(separator);

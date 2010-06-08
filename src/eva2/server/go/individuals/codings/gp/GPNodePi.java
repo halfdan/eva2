@@ -9,11 +9,15 @@ public class GPNodePi extends GPNodeConst implements java.io.Serializable {
     	super(Math.PI);
     }
     
-    /** This method allows you to clone the Nodes
+    public GPNodePi(GPNodePi node) {
+    	super(node);
+	}
+
+	/** This method allows you to clone the Nodes
      * @return the clone
      */
     public Object clone() {
-        return (Object) new GPNodePi();
+        return (Object) new GPNodePi(this);
     }
     
     /** This method will be used to identify the node in the GPAreaEditor
