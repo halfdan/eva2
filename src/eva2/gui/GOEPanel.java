@@ -221,6 +221,7 @@ public class GOEPanel extends JPanel implements ItemListener {
 //			System.out.println("Copying " + BeanInspector.toString(source));
 			SerializedObject so = new SerializedObject(source);
 			result = so.getObject();
+			so=null;
 		} catch (Exception ex) {
 			System.err.println("GenericObjectEditor: Problem making backup object");
 			System.err.println(source.getClass().getName());

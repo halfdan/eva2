@@ -4,6 +4,7 @@ package eva2.server.go.operators.crossover;
 import java.util.ArrayList;
 
 import eva2.server.go.individuals.AbstractEAIndividual;
+import eva2.server.go.individuals.GPIndividualProgramData;
 import eva2.server.go.individuals.InterfaceGPIndividual;
 import eva2.server.go.individuals.codings.gp.AbstractGPNode;
 import eva2.server.go.populations.Population;
@@ -18,12 +19,18 @@ import eva2.tools.math.RNG;
  * To change this template use Options | File Templates.
  */
 public class CrossoverGPDefault implements InterfaceCrossover, java.io.Serializable {
-    private InterfaceOptimizationProblem    m_OptimizationProblem;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 8900427365914281930L;
+	private InterfaceOptimizationProblem    m_OptimizationProblem;
+    private boolean maintainMaxDepth = true;
+	private static final boolean TRACE=false;
 
     public CrossoverGPDefault() {
-
     }
     public CrossoverGPDefault(CrossoverGPDefault c) {
+    	this.maintainMaxDepth = c.maintainMaxDepth;
         this.m_OptimizationProblem      = c.m_OptimizationProblem;
     }
     /** This method will enable you to clone a given mutation operator
@@ -33,53 +40,67 @@ public class CrossoverGPDefault implements InterfaceCrossover, java.io.Serializa
         return new CrossoverGPDefault(this);
     }
 
-    /** This method performs crossover on two individuals. If the individuals do
-     * not implement InterfaceGAIndividual, then nothing will happen.
+    /** 
+     * Exchange subtrees of two GP nodes. Allows to keep the depth restriction.
+     * 
      * @param indy1 The first individual
      * @param partners The second individual
      */
     public AbstractEAIndividual[] mate(AbstractEAIndividual indy1, Population partners) {
+    	if (partners.size()>1) System.err.println("Warning, crossover may not work on more than one partner! " + this.getClass());
         AbstractEAIndividual[] result = null;
         result = new AbstractEAIndividual[partners.size()+1];
         result[0] = (AbstractEAIndividual) (indy1).clone();
         for (int i = 0; i < partners.size(); i++) result[i+1] = (AbstractEAIndividual) ((AbstractEAIndividual)partners.get(i)).clone();
-        //for (int i = 0; i < result.length; i++) System.out.println("Before Crossover: " +result[i].getSolutionRepresentationFor());
+        if (TRACE) for (int i = 0; i < result.length; i++) System.out.println("Before Crossover: " +result[i].getStringRepresentation());
         if (partners.size() == 0) return result;
         if ((indy1 instanceof InterfaceGPIndividual) && (partners.get(0) instanceof InterfaceGPIndividual)) {
-
-            //select node from 0 and memorize parent
-            ArrayList allNodes = new ArrayList();
+        	int allowedDepth = ((InterfaceGPIndividual)indy1).getMaxAllowedDepth();
+        	
             AbstractGPNode[] nodes = ((InterfaceGPIndividual)result[0]).getPGenotype();
-            for (int t = 0; t < nodes.length; t++) {
-                allNodes = new ArrayList();
-                ((InterfaceGPIndividual)result[0]).getPGenotype()[t].addNodesTo(allNodes);
-                AbstractGPNode oldNode     = (AbstractGPNode) allNodes.get(RNG.randomInt(0, allNodes.size()-1));
-                AbstractGPNode newNode, memorizingNode = oldNode, tmpNode;
-                AbstractGPNode oldParent, newParent;
-                oldParent = oldNode.getParent();
-                for (int i = 1; i < result.length; i++) {
-                    // choose Node from i and add it to i-1
-                    allNodes = new ArrayList();
-                    ((InterfaceGPIndividual)result[i]).getPGenotype()[t].addNodesTo(allNodes);
-                    newNode = (AbstractGPNode) allNodes.get(RNG.randomInt(0, allNodes.size()-1));
-                    tmpNode = newNode;
-                    newParent = tmpNode.getParent();
-                    if (oldParent == null) ((InterfaceGPIndividual)result[i-1]).SetPGenotype(newNode, t);
-                    else oldParent.setNode(newNode, oldNode);
-                    oldNode = tmpNode;
-                    oldParent = newParent;
+            for (int t = 0; t < nodes.length; t++) { // for each of the genotypes (multiploidy??)
+                ((InterfaceGPIndividual)result[0]).getPGenotype()[t].getRandomNode();
+                AbstractGPNode selNodeThis     = ((InterfaceGPIndividual)result[0]).getPGenotype()[t].getRandomNode();
+                AbstractGPNode selNodeOther = ((InterfaceGPIndividual)result[1]).getPGenotype()[t].getRandomNode();
+                if (maintainMaxDepth) {//System.err.print(".");
+                	int maxTries=10;
+                		// if the echange would violate the depth restriction, choose new nodes for a few times...
+                		while (maxTries>=0 && ((selNodeOther.getSubtreeDepth()+selNodeThis.getDepth()>allowedDepth) || 
+                				(selNodeThis.getSubtreeDepth()+selNodeOther.getDepth()>allowedDepth))) {
+                            if (RNG.flipCoin(0.5)) selNodeThis  = ((InterfaceGPIndividual)result[0]).getPGenotype()[t].getRandomNode();
+                            else selNodeOther = ((InterfaceGPIndividual)result[1]).getPGenotype()[t].getRandomNode();
+                            maxTries--;
+                		}
+                	if (maxTries<0) { // on a failure, at least exchange two leaves, which always works
+//                		System.err.println("Unable to select fitting nodes! Just switch leaves...");
+                        selNodeThis     = ((InterfaceGPIndividual)result[0]).getPGenotype()[t].getRandomLeaf();
+                        selNodeOther = ((InterfaceGPIndividual)result[1]).getPGenotype()[t].getRandomLeaf();
+                	}
                 }
-                // add node from 0 to result.length-1
-                if (oldParent == null) {
-                    ((InterfaceGPIndividual)result[result.length-1]).SetPGenotype(memorizingNode, t);
-                } else {
-                    oldParent.setNode(memorizingNode, oldNode);
+                if (TRACE) {
+                	System.out.println("Selected t " + selNodeThis.getStringRepresentation());
+                	System.out.println("Selected o " + selNodeOther.getStringRepresentation());
                 }
+                
+                AbstractGPNode selNodeThisParent, selNodeOtherParent;
+                selNodeThisParent = selNodeThis.getParent();
+                selNodeOtherParent = selNodeOther.getParent();
+                
+                // actually switch individuals!
+                if (selNodeThisParent == null) ((InterfaceGPIndividual)result[0]).SetPGenotype((AbstractGPNode)selNodeOther.clone(), t);
+                else selNodeThisParent.setNode((AbstractGPNode)selNodeOther.clone(), selNodeThis);
+//                for (int i = 0; i < result.length; i++) System.out.println("-- Betw Crossover: " +result[i].getStringRepresentation());
+                if (selNodeOtherParent == null) ((InterfaceGPIndividual)result[1]).SetPGenotype((AbstractGPNode)selNodeThis.clone(), t);
+                else selNodeOtherParent.setNode((AbstractGPNode)selNodeThis.clone(), selNodeOther);
+
             }
         }
         //in case the crossover was successfull lets give the mutation operators a chance to mate the strategy parameters
-        for (int i = 0; i < result.length; i++) result[i].getMutationOperator().crossoverOnStrategyParameters(indy1, partners);
-        //for (int i = 0; i < result.length; i++) System.out.println("After Crossover: " +result[i].getSolutionRepresentationFor());
+        for (int i = 0; i < result.length; i++) {
+        	((GPIndividualProgramData)result[i]).checkDepth();
+        	result[i].getMutationOperator().crossoverOnStrategyParameters(indy1, partners);
+        }
+        if (TRACE) for (int i = 0; i < result.length; i++) System.out.println("After Crossover: " +result[i].getStringRepresentation());
         return result;
     }
 

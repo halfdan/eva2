@@ -12,6 +12,7 @@ import eva2.server.go.problems.InterfaceProgramProblem;
 import eva2.tools.Pair;
 import eva2.tools.ReflectPackage;
 import eva2.tools.math.Mathematics;
+import eva2.tools.math.RNG;
 
 
 /** This gives an abstract node, with default functionality for get and set methods.
@@ -54,6 +55,18 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
     	StringBuffer sb = new StringBuffer();
     	AbstractGPNode.appendStringRepresentation(this, sb);
     	return sb.toString();
+    }
+    
+    /**
+     * Recursively perform deep cloning of the members of this instance and all sub-nodes.
+     *
+     * @param node the node to clone values from
+     **/
+    protected void cloneMembers(AbstractGPNode node) {
+        this.m_Depth    = node.m_Depth;
+        this.m_Parent   = node.m_Parent;
+        this.m_Nodes    = new AbstractGPNode[node.m_Nodes.length];
+        for (int i = 0; i < node.m_Nodes.length; i++) this.m_Nodes[i] = (AbstractGPNode) node.m_Nodes[i].clone();
     }
     
     private static void appendStringRepresentation(AbstractGPNode node, StringBuffer sbuf) {
@@ -350,14 +363,20 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
         this.m_Nodes[index] = node;
     }
 
-    /** This method allows you to set a node specified by the index
+    /** 
+     * This method allows you to set a node specified by the reference.
      * @param newnode      The new node.
      * @param oldnode      The old node.
      */
     public void setNode(AbstractGPNode newnode, AbstractGPNode oldnode) {
         newnode.setParent(this);
-        newnode.setDepth(this.m_Depth+1);
-        for (int i = 0; i < this.m_Nodes.length; i++) if (this.m_Nodes[i].equals(oldnode)) this.m_Nodes[i] = newnode;
+        newnode.updateDepth(this.m_Depth+1);
+        for (int i = 0; i < this.m_Nodes.length; i++) {
+        	if (this.m_Nodes[i] == oldnode) {
+        		this.m_Nodes[i] = newnode;
+//        		System.out.println("SWITCHED " + i);
+        	}
+        }
     }
     /** This method returns all nodes begining with the current node.
      * @param ListOfNodes   This ArrayList will contain all nodes
@@ -367,6 +386,27 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
         for (int i = 0; i < this.m_Nodes.length; i++) this.m_Nodes[i].addNodesTo(ListOfNodes);
     }
 
+    /**
+     * Return a shallow reference to a random node within this tree.
+     * @return
+     */
+    public AbstractGPNode getRandomNode() {
+    	ArrayList allNodes = new ArrayList(10);
+        addNodesTo(allNodes);
+        return (AbstractGPNode) allNodes.get(RNG.randomInt(allNodes.size()));
+    }
+    
+    /**
+     * Return a shallow reference to a random leaf of this tree.
+     * @return
+     */
+    public AbstractGPNode getRandomLeaf() {
+    	if (m_Nodes.length>0) {
+    		int k=RNG.randomInt(m_Nodes.length);
+    		return m_Nodes[k].getRandomLeaf();
+    	} else return this;
+    }
+    
     /** This method allows you to set the parent of the node
      * @param parent    The new parent
      */
@@ -435,7 +475,8 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
         return result;
     }
 
-    /** This method will return the max depth of the tree
+    /**
+     * Return the maximal depth of the tree starting here, but relating to the whole tree.
      * @return The max depth.
      */
     public int getMaxDepth() {
@@ -446,6 +487,16 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
         return result;
     }
 
+    /**
+     * Return the depth of the subtree only.
+     * 
+     * @return
+     */
+    public int getSubtreeDepth() {
+        int maxDepth = getMaxDepth();
+        return maxDepth-m_Depth;
+    }
+    
     /** This method will check if maxdepth is violated
      * @param maxDepth     The max depth.
      * @return True if MaxDepth is violated
@@ -503,4 +554,32 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
             return false;
         }
     }
+    
+    /**
+     * Update the depth of this node tree starting with the given initial depth of the root.
+     * 
+     * @param myDepth
+     */
+	public void updateDepth(int myDepth) {
+		m_Depth=myDepth;
+		for (int i=0; i<m_Nodes.length; i++) {
+			m_Nodes[i].updateDepth(myDepth+1);
+		}
+	}
+	
+    /**
+     * Check the depth of this node tree starting with the given initial depth of the root.
+     * 
+     * @param myDepth
+     */
+	public boolean checkDepth(int myDepth) {
+		if (m_Depth!=myDepth) {
+			System.err.println("Depth was wrong at level " + myDepth);
+			return false;
+		}
+		for (int i=0; i<m_Nodes.length; i++) {
+			if (!m_Nodes[i].checkDepth(myDepth+1)) return false;
+		}
+		return true;
+	}
 }

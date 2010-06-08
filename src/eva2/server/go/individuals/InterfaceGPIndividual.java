@@ -33,4 +33,9 @@ public interface InterfaceGPIndividual {
      */
     public Object[] getFunctionArea();
 
+    /**
+     * Return the maximal allowed depth of a GP tree (or -1 if it does not apply).
+     * @return
+     */
+    public int getMaxAllowedDepth();
 }

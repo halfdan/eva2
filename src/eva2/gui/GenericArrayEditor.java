@@ -114,6 +114,7 @@ implements PropertyEditor {
 				try {
 					SerializedObject so = new SerializedObject(addObj);
 					addObj = so.getObject();
+					so=null;
 					if (selected != -1) {
 						m_ListModel.insertElementAt(addObj, selected);
 					} else {

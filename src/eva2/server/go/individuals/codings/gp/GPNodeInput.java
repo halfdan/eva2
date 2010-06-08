@@ -30,10 +30,7 @@ public class GPNodeInput extends AbstractGPNode implements java.io.Serializable 
 
     public GPNodeInput(GPNodeInput node) {
         this.m_Identifier   = node.m_Identifier;
-        this.m_Depth    = node.m_Depth;
-        this.m_Parent   = node.m_Parent;
-        this.m_Nodes    = new AbstractGPNode[node.m_Nodes.length];
-        for (int i = 0; i < node.m_Nodes.length; i++) this.m_Nodes[i] = (AbstractGPNode) node.m_Nodes[i].clone();
+        this.cloneMembers(node);
     }
     
     public void setIdentifier(String str) {

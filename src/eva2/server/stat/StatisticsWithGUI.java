@@ -242,7 +242,7 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
 				// plot the column as indicated by the graph description
 				if (currentStatDoubleData[colIndex]!=null) plotFitnessPoint(0, subGraph++, functionCalls, currentStatDoubleData[colIndex]);
 				else {
-					EVAERROR.errorMsgOnce("Error, data field " + graphDesc.get(i).head + " does not contain primitive data and cannot be plotted.");
+//					EVAERROR.errorMsgOnce("Error, data field " + graphDesc.get(i).head + " does not contain primitive data and cannot be plotted.");
 					subGraph++; // increase index anyways or the name assignment gets inconsistent
 				}
 			}
