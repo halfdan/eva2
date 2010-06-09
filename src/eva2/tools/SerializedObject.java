@@ -72,22 +72,24 @@ public class SerializedObject implements Serializable {
 	 * will be a deep copy of the original stored object.
 	 *
 	 * @return the deserialized Object.
+	 * @throws IOException 
+	 * @throws ClassNotFoundException 
 	 */
-	public Object getObject() {
-		try {
-			InputStream is = new ByteArrayInputStream(m_Serialized);
-			if (m_Compressed) {
-				is = new GZIPInputStream(is);
-			}
-			is = new BufferedInputStream(is);
-			ObjectInputStream oi = new ObjectInputStream(is);
-			Object result = oi.readObject();
-			oi.close();
-			return result;
-		} catch (Exception ex) {
-			ex.printStackTrace();
+	public Object getObject() throws IOException, ClassNotFoundException {
+//		try {
+		InputStream is = new ByteArrayInputStream(m_Serialized);
+		if (m_Compressed) {
+			is = new GZIPInputStream(is);
 		}
-		return null;
+		is = new BufferedInputStream(is);
+		ObjectInputStream oi = new ObjectInputStream(is);
+		Object result = oi.readObject();
+		oi.close();
+		return result;
+//		} catch (Exception ex) {
+//			ex.printStackTrace();
+//		}
+//		return null;
 	}
 
 	/**

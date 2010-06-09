@@ -448,7 +448,6 @@
         <exclude name="CVS" />
       </fileset>
     </copy>
--->
 
     <tar tarfile="${distribution.directory}/eva2-bin-${DSTAMP}.tar">
       <tarfileset dir="${bin.dist.dir}">
@@ -465,7 +464,7 @@
         <include name="**" />
         <exclude name="*.tar*, *.zip" />
       </zipfileset>
-    </zip>
+    </zip>-->
   </target>
 
 <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
