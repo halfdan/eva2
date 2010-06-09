@@ -956,8 +956,6 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 		
 		lastSols  = (opt!=null) ? new Population(opt.getAllSolutions().getSolutions()) : pop;
 //		Pair<String,Double[]> addData = getOutputData(informerList, lastSols);
-//		System.out.println("lastSols size: " + 500*PSymbolicRegression.getAvgIndySize(lastSols));
-//		System.out.println("Mem use:  " + getMemoryUse());
 		Pair<String,Object[]> addData = getOutputData(informerList, lastSols);
 		if (doTextOutput()) { // this is where the text output is actually written
 			if (printLineByVerbosity(iterationCounter)) {
@@ -1008,32 +1006,6 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 		fireDataListeners();
 
 		iterationCounter++;
-	}
-	
-	private static long getMemoryUse(){
-		putOutTheGarbage();
-		long totalMemory = Runtime.getRuntime().totalMemory();
-
-		putOutTheGarbage();
-		long freeMemory = Runtime.getRuntime().freeMemory();
-
-		return (totalMemory - freeMemory);
-	}
-	private static void putOutTheGarbage() {
-		collectGarbage();
-		collectGarbage();
-	}
-
-	private static void collectGarbage() {
-		try {
-			System.gc();
-			Thread.currentThread().sleep(100);
-			System.runFinalization();
-			Thread.currentThread().sleep(100);
-		}
-		catch (InterruptedException ex){
-			ex.printStackTrace();
-		}
 	}
 
 	/**
