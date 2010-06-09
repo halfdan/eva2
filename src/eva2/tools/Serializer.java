@@ -208,7 +208,7 @@ public class Serializer {
 		File f = new File(Filename);
 		if (f.exists()) {    
 			try {
-				s=(Object)load(new File(Filename));
+				s=(Object)load(f);
 			} catch (InvalidClassException e) {
 				System.err.println("WARNING: loading object File "+Filename+ " not possible, this may happen on source code changes.");
 				System.err.println(e.getMessage());
@@ -216,7 +216,8 @@ public class Serializer {
 				System.err.println("ClassNotFoundException on loading object File " + Filename + ". This may happen on refactorings.");
 				System.err.println(e.getMessage());
 			} catch (Exception e) {
-				throw new RuntimeException("WARNING: loading object File "+Filename+ " not possible! ("+e.getMessage()+")");
+				if (!casually) throw new RuntimeException("WARNING: loading object File "+Filename+ " not possible! ("+e.getMessage()+")");
+				else return null;
 			}
 			return s;
 		} else {
