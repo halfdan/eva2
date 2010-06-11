@@ -33,6 +33,8 @@ public interface InterfaceStatistics {
 	 * Finalize statistics computations.
 	 */
 	public void stopOptPerformed(boolean normal, String stopMessage); // called from processor
+	public void addDataListener(InterfaceStatisticsListener listener);
+	public boolean removeDataListener(InterfaceStatisticsListener listener);
 	public void addTextListener(InterfaceTextListener listener);
 	public boolean removeTextListener(InterfaceTextListener listener);
 	public void printToTextListener(String s);
