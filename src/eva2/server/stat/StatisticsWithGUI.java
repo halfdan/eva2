@@ -37,7 +37,8 @@ import eva2.tools.jproxy.RMIProxyRemote;
 /**
  * A statistics class to plot fitness curves in client-server mode. Mainly, arrays of GraphWindows 
  * and Graphs are managed and the selected data fields are plotted.
- * 
+ * TODO: this could finally be cleanly reduced to an InterfaceStatisticsListener - without inheriting
+ * from AbstractStatistics.
  */
 public class StatisticsWithGUI extends AbstractStatistics implements Serializable, InterfaceStatistics {
 	private static final long serialVersionUID = 3213603978877954103L;

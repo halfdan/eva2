@@ -93,4 +93,12 @@ public class StatisticsDummy implements InterfaceStatistics, InterfaceTextListen
 		if (consoleOut) System.out.println(str);
 	}
 
+	public void addDataListener(InterfaceStatisticsListener l) {
+		System.err.println("addDataListener not provided!");
+	}
+	
+	public boolean removeDataListener(InterfaceStatisticsListener l) {
+		System.err.println("removeDataListener not provided!");
+		return false;
+	}
 }

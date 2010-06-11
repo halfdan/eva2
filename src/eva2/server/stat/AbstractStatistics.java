@@ -61,6 +61,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 	 */
 	private boolean refineMultiRuns = true;
 //	private ArrayList<double[][]> meanCollection;
+	private ArrayList<Object[]> finalObjectData;
 	private ArrayList<Double[]> sumDataCollection; // collect summed-up data of multiple runs indexed per iteration
 	protected Object[] currentStatObjectData = null; // the raw Object data collected in an iteration
 	protected Double[] currentStatDoubleData = null; // the parsed doubles collected in an iteration (or null for complex data fields)
@@ -140,13 +141,16 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 	 * Notify listeners on the start and stop of a run.
 	 * 
 	 * @param runNumber current run (started or stopped)
-	 * @param normal in case of stop: the stop was terminated normally (as opposted to manually)
+	 * @param normal in case of stop: the stop was terminated normally (as opposed to manually)
 	 * @param start if true, give the start signal, otherwise the stop signal
 	 */
 	private void fireDataListenersStartStop(int runNumber, boolean normal, boolean start) {
 		if (dataListeners!=null) for (InterfaceStatisticsListener l : dataListeners) {
 			if (start) l.notifyRunStarted(runNumber, m_StatsParams.getMultiRuns());
-			else l.notifyRunStopped(optRunsPerformed, normal);
+			else {
+				l.notifyRunStopped(optRunsPerformed, normal);
+				if (optRunsPerformed>1) l.finalMultiRunResults(currentHeaderData, finalObjectData);
+			}
 		}
 	}
 	
@@ -245,6 +249,8 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 			if (refineMultiRuns) sumDataCollection = new ArrayList<Double[]>();
 			else sumDataCollection = null;
 
+			finalObjectData = null;
+
 			statDataSumOverAll = null;
 //			lastAdditionalInfoSums = null;
 			feasibleFoundAfterSum=-1;
@@ -327,6 +333,9 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 				}
 			}
 		}
+		if (finalObjectData==null) finalObjectData = new ArrayList<Object[]>();
+		finalObjectData.add(currentStatObjectData);
+		
 		if (printFinalVerbosity()) printToTextListener(".");
 //		if (currentBestFit!= null) {
 //			if (printRunStoppedVerbosity()) printToTextListener(" Best Fitness: " + BeanInspector.toString(currentBestFit) + "\n");
@@ -425,6 +434,13 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 				// the summed-up values of the mean collection is divided by the number of runs
 				for (int i=0; i<sumDataCollection.size(); i++) divideMean(sumDataCollection.get(i), optRunsPerformed);
 				if (printFinalVerbosity()) printToTextListener(refineToText(sumDataCollection, showAvgIntervals));
+			}
+			if (printFinalVerbosity() && (finalObjectData!=null)) {
+				printToTextListener(" Last data line of " + finalObjectData.size() + " multi-runs:\n" );
+				for (int i=0; i<finalObjectData.size(); i++) {
+					printToTextListener(BeanInspector.toString(finalObjectData.get(i)));
+					printToTextListener("\n");
+				}
 			}
 		}
 
@@ -956,6 +972,8 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 		
 		lastSols  = (opt!=null) ? new Population(opt.getAllSolutions().getSolutions()) : pop;
 //		Pair<String,Double[]> addData = getOutputData(informerList, lastSols);
+//		System.out.println("lastSols size: " + 500*PSymbolicRegression.getAvgIndySize(lastSols));
+//		System.out.println("Mem use:  " + getMemoryUse());
 		Pair<String,Object[]> addData = getOutputData(informerList, lastSols);
 		if (doTextOutput()) { // this is where the text output is actually written
 			if (printLineByVerbosity(iterationCounter)) {
