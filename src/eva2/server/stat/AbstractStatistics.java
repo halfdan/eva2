@@ -397,9 +397,9 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 		}
 
 		if (printFinalVerbosity() && (statDataSumOverAll != null)) {
-			printToTextListener("     Averaged sum of run statistical data: ");
+			printToTextListener("     Averaged sum of run statistical data: (" +  optRunsPerformed + " runs):");
 			for (int i=0; i<statDataSumOverAll.length; i++) if (statDataSumOverAll[i]!=null) printToTextListener(textFieldDelimiter+(statDataSumOverAll[i]/optRunsPerformed));
-			printToTextListener("\n     Averaged last statistical data: ");
+			printToTextListener("\n     Averaged last statistical data (" +  optRunsPerformed + " runs):");
 			Double[] lastSum = sumDataCollection.get(sumDataCollection.size()-1);
 			for (int i=0; i<lastSum.length; i++) if (lastSum[i]!=null) printToTextListener(textFieldDelimiter+(lastSum[i]/optRunsPerformed));
 //			for (int i=0; i<lastAdditionalInfoSums.length; i++) if (lastAdditionalInfoSums[i]!=null) printToTextListener(" \t"+(lastAdditionalInfoSums[i]/optRunsPerformed));
