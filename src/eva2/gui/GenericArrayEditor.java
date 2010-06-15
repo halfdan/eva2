@@ -329,7 +329,9 @@ implements PropertyEditor {
 						if (m_ElementEditor instanceof GenericObjectEditor) {
 							((GenericObjectEditor)m_ElementEditor).setDefaultValue();
 						} else {
-							m_ElementEditor.setValue(m_ElementClass.newInstance());
+							if (m_ElementEditor.getValue()!=null) {
+								m_ElementEditor.setValue(m_ElementClass.newInstance());
+							}
 						}
 					}
 
@@ -354,6 +356,7 @@ implements PropertyEditor {
 					});
 				} catch (Exception ex) {
 					System.err.println(ex.getMessage());
+					ex.printStackTrace();
 					m_ElementEditor = null;
 				}
 			}
