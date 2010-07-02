@@ -36,6 +36,16 @@ public class GenericConstraint extends AbstractConstraint implements InterfaceDo
 		setRelation(relation);
 	}
 	
+	public GenericConstraint(String str, ConstraintRelationEnum relation, ConstraintHandlingEnum method) {
+		this(str, relation);
+		setHandlingMethod(method);
+	}
+	
+	public GenericConstraint(String str, ConstraintRelationEnum relation, ConstraintHandlingEnum method, double penFact) {
+		this(str, relation, method);
+		setPenaltyFactor(penFact);
+	}
+	
 	public GenericConstraint(GenericConstraint o) {
 		super(o);
 		constraintString = o.constraintString;

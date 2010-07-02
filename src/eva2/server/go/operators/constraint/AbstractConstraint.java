@@ -94,7 +94,7 @@ public abstract class AbstractConstraint implements InterfaceDoubleConstraint, S
 			if (v>0) {
 				indy.SetMarkPenalized(true);
 				for (int i=0; i<indy.getFitness().length; i++) {
-					indy.SetFitness(i, indy.getFitness(i)*(1+v));
+					indy.SetFitness(i, indy.getFitness(i)*(v+penaltyFactor));
 				}
 			}
 		case specificTag:
