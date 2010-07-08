@@ -14,11 +14,27 @@ import eva2.tools.math.Mathematics;
 import eva2.tools.math.RNG;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 03.12.2003
- * Time: 19:37:17
- * To change this template use Options | File Templates.
+ * This is the Unimodal Normal Distribution Crossover by Ono and Kobayashi, 1997. Cf.:
+ * 
+ * @INPROCEEDINGS{Ono1997,
+ * author = {Ono, Isao and Kobayashi, Shigenobu},
+ *   title = {{A Real Coded Genetic Algorithm for Function Optimization Using Unimodal Normal Distributed Crossover}},
+ *   booktitle = {ICGA},
+ *   year = {1997},
+ *   pages = {246--253},
+ *   abstract = {This paper presents a new genetic algorithm for function optimization. 
+ *   In function optimization, it is said to be difficult to optimize
+ *   functions that have strong epistasis among parameters. This is because
+ *   many of the conventional genetic algorithms work without adapting
+ *   to the landscape of functions. In this paper, we employ the real
+ *   number vector representation and propose a new crossover named the
+ *   unimodal normal distribution crossover (UNDX), considering epistasis
+ *   among parameters. The UNDX can optimize functions efficiently by
+ *   adapting the distribution of children to the landscape of functions.
+ *   By applying the proposed method to several benchmark problems, we
+ *   show its effectiveness.},
+ *   url = {http://garage.cse.msu.edu/icga97/Abstracts.html#092}
+ * } 
  */
 public class CrossoverESUNDX implements InterfaceCrossover, java.io.Serializable {
 
@@ -278,7 +294,7 @@ public class CrossoverESUNDX implements InterfaceCrossover, java.io.Serializable
      * @return description
      */
     public static String globalInfo() {
-        return "This is the Unimodal Normally Distributed crossover (UNDX), typically use more than two parents.";
+        return "This is the Unimodal Normally Distributed crossover (UNDX) by Ono and Kobayashi, 1997, typically uses more than two parents.";
     }
     public void setEta(double a) {
         if (a < 0) a = 0;
