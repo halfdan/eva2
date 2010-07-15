@@ -122,7 +122,7 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
         // set the fitness
         setEvalFitness(individual, x, fitness);
         if (isWithConstraints()) {
-        	individual.putData(rawFitKey, individual.getFitness());
+        	individual.putData(rawFitKey, individual.getFitness().clone());
         	addConstraints(individual, x);
         }
 	}
