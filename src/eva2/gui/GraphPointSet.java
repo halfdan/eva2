@@ -33,6 +33,18 @@ import eva2.tools.math.Mathematics;
   *
   */
 public class GraphPointSet {
+	// Color sequence of the plot graphs
+	public static Color[] colorSequence = 
+		new Color[]{
+		Color.black, Color.red, Color.blue, Color.pink, Color.green,
+			Color.gray, Color.magenta, Color.cyan, Color.orange, 
+			new Color(148, 0, 211), // dark violet,
+			new Color(72  ,	 209  	, 204), // turquoise
+			new Color(128  	 ,128  	 ,0), // olive
+	 		new Color(34  	 ,139  	 ,34), // forest green
+			new Color(100  	 ,149  	 ,237 ) // cornflower 
+	};
+	
 	/**
 	 * 
 	 */
@@ -404,41 +416,8 @@ public class GraphPointSet {
 	 * @return
 	 */
 	private Color indexToColor(int index) {
-		Color c = Color.black;
-		int k = index % 10;
-		switch (k) {
-		case 0:
-			c = Color.black;
-			break;
-		case 1:
-			c = Color.red;
-			break;
-		case 2:
-			c = Color.blue;
-			break;
-		case 3:
-			c = Color.pink;
-			break;
-		case 4:
-			c = Color.green;
-			break;
-		case 5:
-			c = Color.gray;
-			break;
-		case 6:
-			c = Color.magenta;
-			break;
-		case 7:
-			c = Color.cyan;
-			break;
-		case 8:
-			c = Color.orange;
-			break;
-		case 9:
-			c = Color.darkGray;
-			break;
-		}
-		return c;
+		int k = index % colorSequence.length;
+		return colorSequence[k];
 	}
 
 	/**

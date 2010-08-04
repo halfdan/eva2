@@ -490,6 +490,14 @@ public class Plot implements PlotInterface, Serializable {
 		setUnconnectedPoint(range[0][1], range[1][1], graphLabel);
 	}
 
+	public void setColorByIndex(int graphLabel, int index) {
+		getFunctionArea().setColorByIndex(graphLabel, index);
+	}
+
+	public void recolorAllGraphsByIndex() {
+		getFunctionArea().recolorAllGraphsByIndex();
+	}
+	
 	// /**
 	// * Just for testing the Plot class.
 	// */
