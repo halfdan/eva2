@@ -79,6 +79,11 @@ public class FunctionArea extends DArea implements Serializable {
 	 * 
 	 */
 	private boolean notifyNegLog = true;
+	
+	/**
+	 * Indicate whether graphs should be annotated with tool tips if pointed to with the mouse.
+	 */
+	private boolean doShowGraphToolTips = true;
 
 	/**
 	 *
@@ -114,25 +119,29 @@ public class FunctionArea extends DArea implements Serializable {
 
 	@Override
 	public String getToolTipText(MouseEvent event) {
-		int gIndex = getNearestGraphIndex(event.getX(), event.getY());
-		if (gIndex >= 0) {
-			StringBuffer sb = new StringBuffer(super.getToolTipText());
-			sb.append(gIndex);
-			sb.append(": ");
-			sb.append(getGraphInfo(gIndex));
-			return sb.toString();
+		if (isShowGraphToolTips()) {
+			int gIndex = getNearestGraphIndex(event.getX(), event.getY());
+			if (gIndex >= 0) {
+				StringBuffer sb = new StringBuffer(super.getToolTipText());
+				sb.append(gIndex);
+				sb.append(": ");
+				sb.append(getGraphInfo(gIndex));
+				return sb.toString();
+			} else return null;
 		} else return null;
 	}
 	
 	@Override
 	public Point getToolTipLocation(MouseEvent event) {
-		int gIndex = getNearestGraphIndex(event.getX(), event.getY());
-		if (gIndex >= 0) {
-			DPoint pt = ((GraphPointSet) (m_PointSetContainer.get(gIndex))).getMedPoint();
-			Point pt2 = getDMeasures().getPoint(pt.x, pt.y);
-			pt2.x+=(5*(gIndex%7)); // slight shift depending on index - easier distinction of very close graphs
-			pt2.y-=(10+(gIndex%3)*5);
-			return pt2;
+		if (isShowGraphToolTips()) {
+			int gIndex = getNearestGraphIndex(event.getX(), event.getY());
+			if (gIndex >= 0) {
+				DPoint pt = ((GraphPointSet) (m_PointSetContainer.get(gIndex))).getMedPoint();
+				Point pt2 = getDMeasures().getPoint(pt.x, pt.y);
+				pt2.x+=(5*(gIndex%7)); // slight shift depending on index - easier distinction of very close graphs
+				pt2.y-=(10+(gIndex%3)*5);
+				return pt2;
+			} else return null;
 		} else return null;
 	}
 
@@ -255,7 +264,17 @@ public class FunctionArea extends DArea implements Serializable {
 
 					}
 					if (FunctionArea.this.m_PointSetContainer.size() > 0) {
-						JMenuItem togLegend = new JMenuItem("Toggle legend");
+						String togGTTName = (isShowGraphToolTips() ? "Deactivate":"Activate") + " graph tool tips";
+						JMenuItem togGraphToolTips = new JMenuItem(togGTTName);
+						togGraphToolTips.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent ee) {
+								setShowGraphToolTips(!isShowGraphToolTips());
+							}
+						});
+						GraphMenu.add(togGraphToolTips);
+						
+						String togLName = (isShowLegend() ? "Hide" : "Show" ) + " legend";
+						JMenuItem togLegend = new JMenuItem(togLName);
 						togLegend.addActionListener(new ActionListener() {
 							public void actionPerformed(ActionEvent ee) {
 								toggleLegend();
@@ -1035,12 +1054,16 @@ public class FunctionArea extends DArea implements Serializable {
 		repaint();
 	}
 
+	public boolean isShowLegend() {
+		return m_legend;
+	}
+	
 	/**
 	 * Shows the legend or switches it off.
 	 * 
 	 * @param on
 	 */
-	public void showLegend(boolean on) {
+	public void setShowLegend(boolean on) {
 		m_legend = on;
 		if (!on)
 			legendBox = null;
@@ -1111,5 +1134,13 @@ public class FunctionArea extends DArea implements Serializable {
 	 */
 	public String getInfoString(int j) {
 		return getGraphPointSet(j).getInfoString();
+	}
+
+	public void setShowGraphToolTips(boolean doShowGraphToolTips) {
+		this.doShowGraphToolTips = doShowGraphToolTips;
+	}
+
+	public boolean isShowGraphToolTips() {
+		return doShowGraphToolTips;
 	}
 }
