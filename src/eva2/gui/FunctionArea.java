@@ -263,7 +263,7 @@ public class FunctionArea extends DArea implements Serializable {
 						}
 
 					}
-					if (FunctionArea.this.m_PointSetContainer.size() > 0) {
+					if (FunctionArea.this.m_PointSetContainer.size() > 0) { // there is at least one graph
 						String togGTTName = (isShowGraphToolTips() ? "Deactivate":"Activate") + " graph tool tips";
 						JMenuItem togGraphToolTips = new JMenuItem(togGTTName);
 						togGraphToolTips.addActionListener(new ActionListener() {
@@ -291,16 +291,22 @@ public class FunctionArea extends DArea implements Serializable {
 						});
 						GraphMenu.add(removeGraph);
 
-						JMenuItem changecolorGraph = new JMenuItem(
-								"Change color");
-						changecolorGraph
-								.addActionListener(new ActionListener() {
-									public void actionPerformed(ActionEvent ee) {
-										changeColorGraph(FunctionArea.this.m_x,
-												FunctionArea.this.m_y);
-									}
-								});
+						JMenuItem changecolorGraph = new JMenuItem("Change graph color");
+						changecolorGraph.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent ee) {
+								changeColorGraph(FunctionArea.this.m_x,
+										FunctionArea.this.m_y);
+							}
+						});
 						GraphMenu.add(changecolorGraph);
+
+						JMenuItem changeAllColors = new JMenuItem("Recolor all graphs");
+						changeAllColors.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent ee) {
+								recolorAllGraphsByIndex();
+							}
+						});
+						GraphMenu.add(changeAllColors);
 
 						JMenuItem removePoint = new JMenuItem("Remove point");
 						removePoint.addActionListener(new ActionListener() {
@@ -335,6 +341,10 @@ public class FunctionArea extends DArea implements Serializable {
 		getGraphPointSet(GraphLabel).incColor();
 		repaint();
 	}
+	
+	public void setColorByIndex(int graphLabel, int colorIndex) {
+		getGraphPointSet(graphLabel).setColorByIndex(colorIndex);
+	}
 
 	/**
 	  *
@@ -347,6 +357,21 @@ public class FunctionArea extends DArea implements Serializable {
 				.getGraphLabel();
 		changeColorGraph(GraphLabel);
 		updateLegend();
+	}
+
+	/**
+	 * Re-color all graphs which are nonempty by their index.
+	 * 
+	 */
+	public void recolorAllGraphsByIndex() {
+		int index=0;
+		for (int i=0; i<m_PointSetContainer.size(); i++) {
+			GraphPointSet gps = ((GraphPointSet) (this.m_PointSetContainer.get(i)));
+			if (gps.getPointCount()>0) {
+				gps.setColorByIndex(index);
+				index++;
+			}
+		}
 	}
 
 	/**

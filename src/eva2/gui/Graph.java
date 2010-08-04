@@ -102,6 +102,10 @@ public class Graph implements Serializable {
     m_Plotter.jump();
   }
   
+  public void setColorByIndex(int j) {
+	  ((Plot)m_Plotter).setColorByIndex(m_GraphLabel, j);
+  }
+  
 //  public boolean isValid() { // this was evil in RMI, use GraphWindow instead
 //	  //return true;
 //	  return (m_Plotter != null) && (m_Plotter.getFunctionArea() != null);
