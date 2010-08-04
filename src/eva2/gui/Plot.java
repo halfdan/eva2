@@ -244,7 +244,23 @@ public class Plot implements PlotInterface, Serializable {
 		m_Frame.pack();
 		m_Frame.setVisible(true);
 	}
-
+	
+	/**
+	 * Indicate whether the graphs are annotated by tool tip info strings.
+	 * @return true if the graphs are annotated by tool tip info strings
+	 */
+	public boolean isShowGraphToolTips() {
+		return m_PlotArea.isShowGraphToolTips();
+	}
+	
+	/**
+	 * Toggle whether the graphs should be annotated by tool tip info strings.
+	 * @param doShowGraphToolTips true if the graphs should be annotated by tool tip info strings
+	 */
+	public void setShowGraphToolTips(boolean doShowGraphToolTips) {
+		m_PlotArea.setShowGraphToolTips(doShowGraphToolTips);
+	}
+	
 	/**
 	 * Draw a population to the Plot instance. Each individual is annotated with
 	 * the given prefix and its fitness.
