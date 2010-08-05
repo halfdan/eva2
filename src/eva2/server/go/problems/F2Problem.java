@@ -60,9 +60,9 @@ public class F2Problem extends AbstractProblemDoubleOffset implements InterfaceL
         for (int i = 0; i < dim-1; i++) {
         	xi=x[i]-m_XOffSet;
         	xii=x[i+1]-m_XOffSet;
-        	
-            result[i] += (-200.*xii+200.*xi+2.*xi-2);
-            result[i+1] += (200.*xii-200*xi);
+
+        	result[i] += 400*xi*(xi*xi-xii) + 2*xi-2;
+        	result[i+1] += -200 * (xi*xi - xii);
         }
         return result;
 	}
