@@ -292,9 +292,9 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 		functionCallSum += functionCalls;
 		if (printRunStoppedVerbosity() && (stopMessage != null)) printToTextListener(" Termination message: " + stopMessage + "\n");
 		if (printRunStoppedVerbosity()) printToTextListener(" Function calls run: " + functionCalls + ", sum: " + functionCallSum + "\n");
-		// check for convergence
+		// check if target zero was reached
 		if (bestCurrentIndy != null) {
-			if (Mathematics.norm(bestCurrentIndy.getFitness()) < this.m_StatsParams.getConvergenceRateThreshold()) {
+			if (Mathematics.norm(bestOfRunIndy.getFitness()) < this.m_StatsParams.getConvergenceRateThreshold()) {
 				convergenceCnt++;
 			}
 			if (printRunStoppedVerbosity()) printIndy("Last best", bestCurrentIndy);
