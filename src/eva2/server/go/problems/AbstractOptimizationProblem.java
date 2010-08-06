@@ -239,8 +239,8 @@ implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serial
      * @return String
      */
     public String[] getAdditionalFileStringHeader(PopulationInterface pop) {
-    	if (this instanceof InterfaceInterestingHistogram) return new String[]{"Solution","Histogram","Score"};
-    	else return new String[]{"Solution"};
+    	if (this instanceof InterfaceInterestingHistogram) return new String[]{"solution","histogram","score"};
+    	else return new String[]{"solution"};
     }
     
     /** This method returns the header for the additional data that is to be written into a file
