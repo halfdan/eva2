@@ -18,25 +18,28 @@ import eva2.gui.BeanInspector;
 public class StringSelection implements Serializable {
 	private static final long serialVersionUID = -1512329288445831907L;
 	private String[] strObjects;
+	private String[] toolTips;
 	boolean[] selStates;
 	private transient HashMap<String,Integer> stringToIndexHash = null;
 	private transient Class<? extends Enum> enumClass = null;
 	
-	public StringSelection(String[] sArr) {
+	public StringSelection(String[] sArr, String[] tips) {
 		strObjects = sArr;
+		toolTips=tips;
 		selStates=new boolean[sArr.length];
 		stringToIndexHash = null;
 		enumClass = null;
 	}	
 	
-	public StringSelection(String[] sArr, int initialSel) {
-		this(sArr);
+	public StringSelection(String[] sArr, String[] tips, int initialSel) {
+		this(sArr, tips);
 		if (initialSel<getLength()) setSelected(initialSel, true);
 		enumClass = null;
 	}
 	
-	public StringSelection(Enum<?> e) {
+	public StringSelection(Enum<?> e, String[] tips) {
 		strObjects = new String[e.getClass().getEnumConstants().length];
+		toolTips=tips;
 		selStates = new boolean[strObjects.length];
 		for (int i = 0; i < strObjects.length; i++) {
 			strObjects[i] = e.getClass().getEnumConstants()[i].toString();
@@ -49,6 +52,7 @@ public class StringSelection implements Serializable {
 	public StringSelection(StringSelection stringSelection) {
 		strObjects = stringSelection.strObjects.clone();
 		selStates = stringSelection.selStates.clone();
+		toolTips = stringSelection.toolTips.clone();
 		stringToIndexHash = null;
 		enumClass = stringSelection.enumClass;
 	}
@@ -60,9 +64,10 @@ public class StringSelection implements Serializable {
 	 * @param e
 	 * @param headerFields
 	 */
-	public StringSelection(Enum<?> e,
-			List<String> headerFields) {
-		this(ToolBox.appendEnumAndArray(e, headerFields.toArray(new String[headerFields.size()])));
+	public StringSelection(Enum<?> e, String[] enumTips,
+			List<String> headerFields, String[] addTips) {
+		this(ToolBox.appendEnumAndArray(e, headerFields.toArray(new String[headerFields.size()])),
+				ToolBox.appendArrays(enumTips, addTips));
 		enumClass = e.getClass();
 	}
 
@@ -76,6 +81,11 @@ public class StringSelection implements Serializable {
 	
 	public String getElement(int i) {
 		return strObjects[i];
+	}
+	
+	public String getElementInfo(int i) {
+		if (toolTips!=null && (toolTips.length>i)) return toolTips[i];
+		else return null;
 	}
 	
 	public String[] getStrings() {
