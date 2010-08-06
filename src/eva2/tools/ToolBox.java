@@ -29,19 +29,44 @@ public class ToolBox {
 		return ret;
 	}
 	
+	/**
+	 * Append two String arrays. If both are null, null is returned.
+	 * 
+	 * @param strArr1
+	 * @param strArr2
+	 * @return
+	 */
 	public static String[] appendArrays(String[] strArr1,
 			String[] strArr2) {
+		if (strArr1==null) return strArr2;
+		if (strArr2==null) return strArr1;
 		String[] ret = new String[strArr1.length + strArr2.length];
 		System.arraycopy(strArr1, 0, ret, 0, strArr1.length);
 		System.arraycopy(strArr2, 0, ret, strArr1.length, strArr2.length);
 		return ret;
 	}	
 	
-	public static Object[] appendArrays(Object[] strArr1,
-			Object[] strArr2) {
-		Object[] ret = new Object[strArr1.length + strArr2.length];
+	public static String[] appendArrays(String[] strArr1,
+			String str) {
+		String[] ret = new String[strArr1.length+1];
 		System.arraycopy(strArr1, 0, ret, 0, strArr1.length);
-		System.arraycopy(strArr2, 0, ret, strArr1.length, strArr2.length);
+		ret[ret.length-1]=str;
+		return ret;
+	}
+
+	public static Object[] appendArrays(Object[] objArr1,
+			Object o) {
+		Object[] ret = new Object[objArr1.length + 1];
+		System.arraycopy(objArr1, 0, ret, 0, objArr1.length);
+		ret[ret.length-1]=o;
+		return ret;
+	}
+
+	public static Object[] appendArrays(Object[] objArr1,
+			Object[] objArr2) {
+		Object[] ret = new Object[objArr1.length + objArr2.length];
+		System.arraycopy(objArr1, 0, ret, 0, objArr1.length);
+		System.arraycopy(objArr2, 0, ret, objArr1.length, objArr2.length);
 		return ret;
 	}
 	
