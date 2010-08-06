@@ -19,6 +19,14 @@ public interface InterfaceAdditionalPopulationInformer {
 	 */
 	public String[] getAdditionalFileStringHeader(PopulationInterface pop);
 
+	/**
+	 * Optionally return informative descriptions of the data fields.
+	 * 
+	 * @param pop
+	 * @return
+	 */
+	public String[] getAdditionalFileStringInfo(PopulationInterface pop);
+	
 	/** 
 	 * This method returns additional statistical data.
 	 * @param pop   The population that is to be refined.

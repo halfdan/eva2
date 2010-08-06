@@ -419,9 +419,13 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
 	}
 
 	public String[] getAdditionalFileStringHeader(PopulationInterface pop) {
-		return new String[]{"#Indies"};
+		return new String[]{"numIndies"};
 	}
-
+	
+	public String[] getAdditionalFileStringInfo(PopulationInterface pop) {
+		return new String[]{"The current population size"};
+	}
+	
 	public Object[] getAdditionalFileStringValue(PopulationInterface pop) {
 		return new Object[]{m_Population.size()};
 	}

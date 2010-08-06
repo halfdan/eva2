@@ -32,7 +32,6 @@ import eva2.server.go.operators.terminators.EvaluationTerminator;
 import eva2.server.go.operators.terminators.PhenotypeConvergenceTerminator;
 import eva2.server.go.populations.Population;
 import eva2.server.go.strategies.InterfaceOptimizer;
-import eva2.tools.math.Mathematics;
 
 /**
  * Created by IntelliJ IDEA.
@@ -243,7 +242,19 @@ implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serial
     	if (this instanceof InterfaceInterestingHistogram) return new String[]{"Solution","Histogram","Score"};
     	else return new String[]{"Solution"};
     }
-
+    
+    /** This method returns the header for the additional data that is to be written into a file
+     * @param pop   The population that is to be refined.
+     * @return String
+     */
+    public String[] getAdditionalFileStringInfo(PopulationInterface pop) {
+    	if (this instanceof InterfaceInterestingHistogram) 
+    		return new String[]{"Representation of the current best individual",
+    			"Fitness histogram of the current population",
+    			"Fitness threshold based score of the current population"};
+    	else return new String[]{"Representation of the current best individual"};
+    }
+    
     /** This method returns the additional data that is to be written into a file
      * @param pop   The population that is to be refined.
      * @return String
@@ -251,8 +262,16 @@ implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serial
     public Object[] getAdditionalFileStringValue(PopulationInterface pop) {
     	String solStr = AbstractEAIndividual.getDefaultDataString(pop.getBestIndividual()); 
     	if (this instanceof InterfaceInterestingHistogram) {
+    		int fitCrit=0;
     		SolutionHistogram hist = ((InterfaceInterestingHistogram)this).getHistogram();
-    		Population sols = PostProcess.clusterBestUpdateHistogram((Population)pop, this, hist, 0, getDefaultAccuracy());
+    		if (pop.getBestFitness()[fitCrit] < hist.getUpperBound()) {
+        		Population maybeFiltered = (Population)pop; 
+        		if (pop.size()>100) { // for efficiency reasons...
+        			maybeFiltered = maybeFiltered.filterByFitness(hist.getUpperBound(), fitCrit);
+//        			System.out.println("Reduced " + pop.size() + " to " + maybeFiltered.size());
+        		}
+    			Population sols = PostProcess.clusterBestUpdateHistogram((Population)maybeFiltered, this, hist, fitCrit, getDefaultAccuracy());
+    		}
     		return new Object[]{solStr, hist, hist.getScore()};
     	} else return new Object[]{solStr}; 
     }
@@ -341,13 +360,15 @@ implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serial
      * @param epsilonPhenoSpace maximal allowed improvement of an individual before considered premature (given as distance in the search space)
      * @param epsilonFitConv if positive: additional absolute convergence criterion (fitness space) as termination criterion of the local search  
      * @param clusterSigma minimum cluster distance
-     * @param maxEvalsPerIndy 
+     * @param maxEvalsPerIndy maximum number of evaluations or -1 to take the maximum
      * @see #isPotentialOptimumNMS(AbstractEAIndividual, double, double, int)
      * @return 
      */
-    public static Population extractPotentialOptima(AbstractOptimizationProblem prob, Population pop, double epsilonPhenoSpace, double epsilonFitConv, double clusterSigma, int maxEvalsPerIndy) {
+    public static Population extractPotentialOptima(AbstractOptimizationProblem prob, Population pop, 
+    		double epsilonPhenoSpace, double epsilonFitConv, double clusterSigma, int maxEvalsPerIndy) {
     	Population potOptima = new Population();
     	for (int i = 0; i < pop.size(); ++i){
+    		//System.out.println("Refining " + i + " of " + pop.size());
     		AbstractEAIndividual indy = pop.getEAIndividual(i);
 //    		System.out.println("bef: " + indy.toString());
     		boolean isConverged = AbstractOptimizationProblem.isPotentialOptimumNMS(prob, indy, epsilonPhenoSpace, epsilonFitConv, maxEvalsPerIndy);
@@ -429,7 +450,8 @@ implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serial
      * distance from the original individual in phenotype space. The maxEvaluations parameter gives the maximum evaluations
      * for the local search. Using the epsilonFitConv parameter one may define a convergence criterion as PhenotypeConvergenceTerminator 
      * which is combined (using OR) with the evaluation counter.
-     * If maxEvaluations is smaller than zero, 100*dim is used. Be aware that this may cost quite some runtime depending on the target
+     * If maxEvaluations is smaller than zero, a maximum of 500*dim evaluations is employed. 
+     * Be aware that this may cost quite some runtime depending on the target
      * function.
      * A double value for the distance by which it was moved is added to the individual using the key PostProcess.movedDistanceKey.
      * 
@@ -452,7 +474,7 @@ implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serial
 //    		initPerturb = epsilonPhenoSpace/(2*(Mathematics.getAvgRange(((InterfaceDataTypeDouble)orig).getDoubleRange())));
     		initRelPerturb = epsilonPhenoSpace*0.5;
     		dim=((InterfaceDataTypeDouble)orig).getDoubleRange().length;
-        	if (maxEvaluations<0) maxEvaluations = 100*AbstractEAIndividual.getDoublePositionShallow(prob.m_Template).length; // scales the effort with the number of problem dimensions
+        	if (maxEvaluations<0) maxEvaluations = 500*AbstractEAIndividual.getDoublePositionShallow(prob.m_Template).length; // scales the effort with the number of problem dimensions
     	} else {
     		System.err.println("Cannot initialize NMS on non-double valued individuals!");
     		return false;
@@ -461,9 +483,10 @@ implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serial
     	Population pop = new Population(1);
     	pop.add(orig);
     	InterfaceTerminator term = new EvaluationTerminator(maxEvaluations); 
-    	if (epsilonFitConv > 0) term = new CombinedTerminator(new PhenotypeConvergenceTerminator(epsilonFitConv, 10*dim, true, true), term, false);
+    	if (epsilonFitConv > 0) term = new CombinedTerminator(new PhenotypeConvergenceTerminator(epsilonFitConv, 100*dim, true, true), term, false);
     	int evalsPerf = PostProcess.processSingleCandidatesNMCMA(PostProcessMethod.nelderMead, pop, term, initRelPerturb, prob);
     	overallDist = metric.distance(indy, pop.getBestEAIndividual());
+    	//System.out.println(System.currentTimeMillis() + " in " + evalsPerf + " evals moved by "+ overallDist);
 //    	System.out.println("aft: " + pop.getBestEAIndividual().toString() + ", evals performed: " + evalsPerf + ", opt moved by " + overallDist);
 //    	System.out.println("terminated because: " + term.lastTerminationMessage());
     	orig.putData(PostProcess.movedDistanceKey, overallDist);
@@ -471,6 +494,14 @@ implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serial
 //    	if (overallDist==0) {
 //    		PostProcess.processSingleCandidatesNMCMA(PostProcessMethod.nelderMead, pop, term, initPerturb, this);
 //    	}
+
+//    		System.out.println("Checked "+ indy.getStringRepresentation());
+//    		String msg = 								"----discarding ";
+//    		if (overallDist <= epsilonPhenoSpace) msg=	"++++keeping    ";
+//    		System.out.println(msg + BeanInspector.toString(indy.getDoublePosition()));
+//    		System.out.println("which moved to " + BeanInspector.toString(pop.getBestEAIndividual().getDoublePosition()));
+//    		System.out.println(" by " + overallDist + " > " + epsilonPhenoSpace);
+
     	return (overallDist < epsilonPhenoSpace);
     }
     

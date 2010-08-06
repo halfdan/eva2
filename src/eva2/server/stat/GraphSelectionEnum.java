@@ -11,7 +11,26 @@ import eva2.tools.StringSelection;
  */
 public enum GraphSelectionEnum {
 	// DONT change this order, or the relation to AbstractStatistics will be lost
-	currentBest, meanFit, currentWorst, runBest, currentBestFeasible, runBestFeasible, avgPopDistance, maxPopDistance;
+	currentBest, meanFit, currentWorst, runBest, currentBestFeasible, runBestFeasible, 
+	avgPopDistance, maxPopDistance;
+	
+	private static String[] toolTips = { 
+		"The current best fitness within the population",
+		"The mean fitness within the population",
+		"The current worst fitness within the population",
+		"The best fitness up to the current generation",
+		"The best feasible fitness within the population",
+		"The best feasible fitness up to the current generation",
+		"The average phenotypic distance of individuals in the population",
+		"The maximum phenotypic distance of individuals in the population"
+	};
+	
+	public static String[] getInfoStrings() {
+		if (GraphSelectionEnum.values().length != toolTips.length) {
+			System.err.println("Error, mismatching length of info strings in GraphSelectionEnum");
+			return null;
+		} else return toolTips;
+	}
 	
 //	public static boolean doPlotCurrentBest(StringSelection sel) {
 //		return sel.isSelected(GraphSelectionEnum.currentBest.ordinal());

@@ -6,7 +6,7 @@ public class StringSelectionEditor extends AbstractListSelectionEditor {
 	StringSelection strs;
 	
 	public StringSelectionEditor() {
-		strs = new StringSelection(new String[]{});
+		strs = new StringSelection(new String[]{}, null);
 	}
 	
 	@Override
@@ -25,6 +25,11 @@ public class StringSelectionEditor extends AbstractListSelectionEditor {
 	@Override
 	protected String getElementName(int i) {
 		return strs.getElement(i);
+	}
+	
+	@Override
+	protected String getElementToolTip(int i) {
+		return strs.getElementInfo(i);
 	}
 
 	@Override

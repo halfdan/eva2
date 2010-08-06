@@ -255,7 +255,8 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
 //		rotation = new Matrix(dim, dim);
 //		rotation = Mathematics.getRotationMatrix(vec).transpose();
 		rotation = Mathematics.getRotationMatrix((rotAngle*Math.PI/180.), dim).transpose();
-		//	System.out.println(BeanInspector.toString(eval(vec.getColumnPackedCopy())));
+		//double[] t= new double[dim]; Arrays.fill(t, 1.);
+		//System.out.println(BeanInspector.toString(rotation.times(t)));
 		return rotation;
 	}
 	
@@ -354,7 +355,9 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
     }
     
 	public double functionValue(double[] point) {
-		return eval(project2DPoint(point))[0];
+		double[] x=project2DPoint(point);
+		double v = eval(x)[0]; 
+		return v; 
 	}
 	
 	/**
@@ -497,7 +500,17 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
 		if (isWithConstraints()) return ToolBox.appendArrays(superHeader, new String[]{"rawFit","numViol","sumViol"});
 		else return superHeader;
 	}
-
+	
+	@Override
+	public String[] getAdditionalFileStringInfo(PopulationInterface pop) {
+		String[] superInfo = super.getAdditionalFileStringInfo(pop);
+		if (isWithConstraints()) 
+			return ToolBox.appendArrays(superInfo, new String[]{"Raw fitness (unpenalized) of the current best individual",
+				"The number of constraints violated by the current best individual",
+				"The sum of constraint violations of the current best individual"});
+		else return superInfo;
+	}
+	
 	@Override
 	public Object[] getAdditionalFileStringValue(PopulationInterface pop) {
 		Object[] superVal = super.getAdditionalFileStringValue(pop);
