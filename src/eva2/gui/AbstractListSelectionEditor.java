@@ -68,6 +68,16 @@ public abstract class AbstractListSelectionEditor extends JPanel implements Prop
     protected abstract String getElementName(int i);
     
     /**
+     * Get the tool tip of an element or null if none is available.
+     * 
+     * @param i
+     * @return
+     */
+    protected String getElementToolTip(int i) {
+    	return null;
+    }
+    
+    /**
      * Get the selection state of an element.
      * 
      * @param i
@@ -85,6 +95,7 @@ public abstract class AbstractListSelectionEditor extends JPanel implements Prop
             this.m_BlackCheck = new JCheckBox[getElementCount()];
             for (int i = 0; i < getElementCount(); i++) {
                  this.m_BlackCheck[i] = new JCheckBox(getElementName(i), isElementSelected(i));
+                 this.m_BlackCheck[i].setToolTipText(getElementToolTip(i));
                  this.m_BlackCheck[i].addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent ev) {
                         if (actionOnSelect()) m_Support.firePropertyChange("AbstractListSelectionEditor", null, this);

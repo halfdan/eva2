@@ -1143,19 +1143,40 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
 	}
 
 	public String[] getAdditionalFileStringHeader(PopulationInterface pop) {
-		return new String[]{"Undiff.","#Act.spec.","Avg.Spec.Meas.","#Archived."}; 
+		return new String[]{"numUndiff","numActSpec","avgSpecMeas","numArchived", 
+				"archivedMedCorr", "archivedMeanDist"
+//				, "numCollisions", "clustSig"
+				}; 
 	}
-
+	
+	public String[] getAdditionalFileStringInfo(PopulationInterface pop) { // TODO use these as Tool Tip Texts???
+		return new String[] {
+				"The number of exploring individuals in the main population",
+				"The number of active species (sub-populations)",
+				"The average of the mean distance of individuals within a species",
+				"The number of stored potential local optima",
+				"The median correlation of archived solutions",
+				"The mean distance of archived solutions",
+//				"The number of collisions events that happened so far",
+//				"The clustering distance"
+		};
+	}
+	
 	public Object[] getAdditionalFileStringValue(PopulationInterface pop) {
 //		int actives = countActiveSpec();
 		return new Object[] {
 				m_Undifferentiated.size(),
 				m_Species.size(),
 				getAvgSpeciesMeasures()[0],
-				m_Archive.size()};
+				m_Archive.size(),
+				m_Archive.getCorrelations()[3],
+				m_Archive.getPopulationMeasures()[0],
+//				collisions,
+//				getClusterDiffDist()
+				};
 //		return m_Undifferentiated.size() + " \t " + m_Species.size() + " \t " + BeanInspector.toString(getAvgSpeciesMeasures()[0]) + " \t " + (m_Archive.size());
 	}
-
+	
 	/**
 	 * Calculate average of Population measures (mean, minimal and maximal distance within a species)
 	 * @return average population measures
