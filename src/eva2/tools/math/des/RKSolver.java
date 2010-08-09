@@ -12,6 +12,7 @@ import eva2.tools.math.Mathematics;
  * @author Andreas Dr&auml;ger
  * @author Marcel Kronfeld
  * @version 1.0 Status: works, but numerical inaccurate
+ * @depend - <call> - Mathematics
  */
 public class RKSolver implements DESSolver, Serializable {
 	/**
@@ -90,109 +91,6 @@ public class RKSolver implements DESSolver, Serializable {
 	}
 
 	/**
-	 * @param DES
-	 * @param h
-	 * @param x
-	 * @param Ytemp
-	 * @return
-	 */
-	public double[] rkTerm(DESystem DES, double h, double x, double[] Ytemp) {
-		double[][] K = new double[4][];
-		K[0] = Mathematics.svMult(h, DES.getValue(x, Ytemp));
-		K[1] = Mathematics.svMult(h, DES.getValue(x + h / 2, Mathematics.vvAdd(
-				Ytemp, Mathematics.svMult(0.5, K[0]))));
-		K[2] = Mathematics.svMult(h, DES.getValue(x + h / 2, Mathematics.vvAdd(
-				Ytemp, Mathematics.svMult(0.5, K[1]))));
-		K[3] = Mathematics.svMult(h, DES.getValue(x + h, Mathematics.vvAdd(
-				Ytemp, K[2])));
-
-		double[] change = Mathematics.svDiv(6, Mathematics.vvAdd(K[0],
-				Mathematics.vvAdd(Mathematics.svMult(2, K[1]), Mathematics
-						.vvAdd(Mathematics.svMult(2, K[2]), K[3]))));
-		for (int k = 0; k < change.length; k++) {
-			if (Double.isNaN(change[k])) {
-				unstableFlag = true;
-				change[k] = 0;
-				// return result;
-			}
-		}
-		return change;
-	}
-
-	/**
-	 * Linearized code for speed-up (no allocations).
-	 * 
-	 * @param DES
-	 * @param h
-	 * @param x
-	 * @param Ytemp
-	 * @return
-	 */
-	public void rkTerm2(DESystem DES, double h, double x, double[] Ytemp,
-			double[] res) {
-		if (kVals == null) { // "static" vectors which are allocated only once
-			k0tmp = new double[DES.getDESystemDimension()];
-			k1tmp = new double[DES.getDESystemDimension()];
-			k2tmp = new double[DES.getDESystemDimension()];
-			kVals = new double[4][DES.getDESystemDimension()];
-		}
-
-		// double[][] K = new double[4][];
-		DES.getValue(x, Ytemp, kVals[0]);
-		Mathematics.svMult(h, kVals[0], kVals[0]);
-
-		// K[0] = svMult(h, DES.getValue(x, Ytemp));
-
-		Mathematics.svMult(0.5, kVals[0], k0tmp);
-		Mathematics.vvAdd(Ytemp, k0tmp, k0tmp);
-		DES.getValue(x + h / 2, k0tmp, kVals[1]);
-		Mathematics.svMult(h, kVals[1], kVals[1]);
-
-		// K[1] = svMult(h, DES.getValue(x + h / 2, vvAdd(Ytemp, svMult(0.5,
-		// K[0]))));
-
-		Mathematics.svMult(0.5, kVals[1], k1tmp);
-		Mathematics.vvAdd(Ytemp, k1tmp, k1tmp);
-		DES.getValue(x + h / 2, k1tmp, kVals[2]);
-		Mathematics.svMult(h, kVals[2], kVals[2]);
-
-		// K[2] = svMult(h, DES.getValue(x + h / 2, vvAdd(Ytemp, svMult(0.5,
-		// K[1]))));
-
-		Mathematics.vvAdd(Ytemp, kVals[2], k2tmp);
-		DES.getValue(x + h, k2tmp, k1tmp);
-		Mathematics.svMult(h, k1tmp, kVals[3]);
-
-		// K[3] = svMult(h, DES.getValue(x + h, vvAdd(Ytemp, K[2])));
-
-		Mathematics.svMult(2, kVals[2], k0tmp);
-		Mathematics.vvAdd(k0tmp, kVals[3], k0tmp);
-
-		Mathematics.svMult(2, kVals[1], k1tmp);
-		Mathematics.vvAdd(k1tmp, k0tmp, k2tmp);
-
-		Mathematics.vvAdd(kVals[0], k2tmp, k1tmp);
-		Mathematics.svDiv(6, k1tmp, res);
-
-		// double[] change = svDiv(6, vvAdd(K[0], vvAdd(svMult(2, K[1]),
-		// vvAdd(svMult(2, K[2]), K[3]))));
-		// for (int i=0; i<res.length; i++) {
-		// double diff = Math.abs(res[i]-change[i]);
-		// if (diff > 0.00000001) System.out.println("!!! ");
-		// }
-
-		// double[] change = svdiv(6, vvadd(kVals[0], vvadd(svmult(2, kVals[1]),
-		// vvadd(svmult(2, kVals[2]), kVals[3]))));
-		for (int k = 0; k < res.length; k++) {
-			if (Double.isNaN(res[k])) {
-				unstableFlag = true;
-				res[k] = 0;
-				// return result;
-			}
-		}
-	}
-
-	/**
 	 * @param stepSize
 	 */
 	public void setStepSize(double stepSize) {
@@ -254,9 +152,10 @@ public class RKSolver implements DESSolver, Serializable {
 		return solveAtTimePoints(DES, initialValues, timePoints, true);
 	}
 
-	/**
-   *
-   */
+	/*
+	 * (non-Javadoc)
+	 * @see eva2.tools.math.des.DESSolver#solveAtTimePointsWithInitialConditions(eva2.tools.math.des.DESystem, double[][], double[])
+	 */
 	public double[][] solveAtTimePointsWithInitialConditions(DESystem DES,
 			double[][] initConditions, double[] timePoints) {
 		int order = DES.getDESystemDimension();
@@ -317,6 +216,109 @@ public class RKSolver implements DESSolver, Serializable {
 	public double[][] solveByStepSizeIncludingTime(DESystem DES,
 			double[] initialValues, double timeBegin, double timeEnd) {
 		return solveByStepSize(DES, initialValues, timeBegin, timeEnd, true);
+	}
+
+	/**
+	 * @param DES
+	 * @param h
+	 * @param x
+	 * @param Ytemp
+	 * @return
+	 */
+	private double[] rkTerm(DESystem DES, double h, double x, double[] Ytemp) {
+		double[][] K = new double[4][];
+		K[0] = Mathematics.svMult(h, DES.getValue(x, Ytemp));
+		K[1] = Mathematics.svMult(h, DES.getValue(x + h / 2, Mathematics.vvAdd(
+				Ytemp, Mathematics.svMult(0.5, K[0]))));
+		K[2] = Mathematics.svMult(h, DES.getValue(x + h / 2, Mathematics.vvAdd(
+				Ytemp, Mathematics.svMult(0.5, K[1]))));
+		K[3] = Mathematics.svMult(h, DES.getValue(x + h, Mathematics.vvAdd(
+				Ytemp, K[2])));
+
+		double[] change = Mathematics.svDiv(6, Mathematics.vvAdd(K[0],
+				Mathematics.vvAdd(Mathematics.svMult(2, K[1]), Mathematics
+						.vvAdd(Mathematics.svMult(2, K[2]), K[3]))));
+		for (int k = 0; k < change.length; k++) {
+			if (Double.isNaN(change[k])) {
+				unstableFlag = true;
+				change[k] = 0;
+				// return result;
+			}
+		}
+		return change;
+	}
+
+	/**
+	 * Linearized code for speed-up (no allocations).
+	 * 
+	 * @param DES
+	 * @param h
+	 * @param x
+	 * @param Ytemp
+	 * @return
+	 */
+	private void rkTerm2(DESystem DES, double h, double x, double[] Ytemp,
+			double[] res) {
+		if (kVals == null) { // "static" vectors which are allocated only once
+			k0tmp = new double[DES.getDESystemDimension()];
+			k1tmp = new double[DES.getDESystemDimension()];
+			k2tmp = new double[DES.getDESystemDimension()];
+			kVals = new double[4][DES.getDESystemDimension()];
+		}
+
+		// double[][] K = new double[4][];
+		DES.getValue(x, Ytemp, kVals[0]);
+		Mathematics.svMult(h, kVals[0], kVals[0]);
+
+		// K[0] = svMult(h, DES.getValue(x, Ytemp));
+
+		Mathematics.svMult(0.5, kVals[0], k0tmp);
+		Mathematics.vvAdd(Ytemp, k0tmp, k0tmp);
+		DES.getValue(x + h / 2, k0tmp, kVals[1]);
+		Mathematics.svMult(h, kVals[1], kVals[1]);
+
+		// K[1] = svMult(h, DES.getValue(x + h / 2, vvAdd(Ytemp, svMult(0.5,
+		// K[0]))));
+
+		Mathematics.svMult(0.5, kVals[1], k1tmp);
+		Mathematics.vvAdd(Ytemp, k1tmp, k1tmp);
+		DES.getValue(x + h / 2, k1tmp, kVals[2]);
+		Mathematics.svMult(h, kVals[2], kVals[2]);
+
+		// K[2] = svMult(h, DES.getValue(x + h / 2, vvAdd(Ytemp, svMult(0.5,
+		// K[1]))));
+
+		Mathematics.vvAdd(Ytemp, kVals[2], k2tmp);
+		DES.getValue(x + h, k2tmp, k1tmp);
+		Mathematics.svMult(h, k1tmp, kVals[3]);
+
+		// K[3] = svMult(h, DES.getValue(x + h, vvAdd(Ytemp, K[2])));
+
+		Mathematics.svMult(2, kVals[2], k0tmp);
+		Mathematics.vvAdd(k0tmp, kVals[3], k0tmp);
+
+		Mathematics.svMult(2, kVals[1], k1tmp);
+		Mathematics.vvAdd(k1tmp, k0tmp, k2tmp);
+
+		Mathematics.vvAdd(kVals[0], k2tmp, k1tmp);
+		Mathematics.svDiv(6, k1tmp, res);
+
+		// double[] change = svDiv(6, vvAdd(K[0], vvAdd(svMult(2, K[1]),
+		// vvAdd(svMult(2, K[2]), K[3]))));
+		// for (int i=0; i<res.length; i++) {
+		// double diff = Math.abs(res[i]-change[i]);
+		// if (diff > 0.00000001) System.out.println("!!! ");
+		// }
+
+		// double[] change = svdiv(6, vvadd(kVals[0], vvadd(svmult(2, kVals[1]),
+		// vvadd(svmult(2, kVals[2]), kVals[3]))));
+		for (int k = 0; k < res.length; k++) {
+			if (Double.isNaN(res[k])) {
+				unstableFlag = true;
+				res[k] = 0;
+				// return result;
+			}
+		}
 	}
 
 	/**
