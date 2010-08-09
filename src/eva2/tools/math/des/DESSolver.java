@@ -18,7 +18,7 @@ import java.io.Serializable;
  * @version Copyright (c) ZBiT, University of T&uuml;bingen, Germany Compiler:
  *          JDK 1.6.0
  * @date Sep 10, 2007
- * 
+ * @depend - <call> - DESystem
  */
 public interface DESSolver extends Serializable {
 	
