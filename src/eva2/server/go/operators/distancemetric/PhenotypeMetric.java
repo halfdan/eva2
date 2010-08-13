@@ -191,7 +191,12 @@ public class PhenotypeMetric implements InterfaceDistanceMetric, java.io.Seriali
         System.err.println("error: unknown individual interface in PhenotypeMetric::norm " + BeanInspector.toString(indy));
         return 0;
     }
-     
+    
+    /**
+     * Calculates the 2 norm of a given vector.
+     * @param v1
+     * @return
+     */
     public static double norm(double[] v1) {
         double      result = 0;
         for (int i = 0; i < v1.length; i++) {

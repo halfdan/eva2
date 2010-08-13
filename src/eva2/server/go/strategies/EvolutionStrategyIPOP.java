@@ -156,8 +156,7 @@ public class EvolutionStrategyIPOP extends EvolutionStrategies implements Interf
     	bestList = new LinkedList<AbstractEAIndividual>();
     	best = getPopulation().getBestEAIndividual();
     	dim = AbstractEAIndividual.getDoublePositionShallow(getPopulation().getEAIndividual(0)).length;
-
-    	fitConvTerm = new FitnessConvergenceTerminator(stagThreshold, (isStagnationTimeUserDef()) ? stagTimeArbitrary : calcDefaultStagnationTime(), false, true); // gen. based, absolute
+    	fitConvTerm = new FitnessConvergenceTerminator(stagThreshold, (isStagnationTimeUserDef()) ? stagTimeArbitrary : calcDefaultStagnationTime(), false, true, true); // gen. based, absolute
     	getPopulation().addPopulationChangedEventListener(this);
     	getPopulation().setNotifyEvalInterval(initialLambda);
     }

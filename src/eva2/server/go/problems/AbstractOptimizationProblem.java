@@ -30,6 +30,7 @@ import eva2.server.go.operators.postprocess.SolutionHistogram;
 import eva2.server.go.operators.terminators.CombinedTerminator;
 import eva2.server.go.operators.terminators.EvaluationTerminator;
 import eva2.server.go.operators.terminators.PhenotypeConvergenceTerminator;
+import eva2.server.go.operators.terminators.PopulationMeasureTerminator.ChangeTypeEnum;
 import eva2.server.go.populations.Population;
 import eva2.server.go.strategies.InterfaceOptimizer;
 
@@ -483,7 +484,7 @@ implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serial
     	Population pop = new Population(1);
     	pop.add(orig);
     	InterfaceTerminator term = new EvaluationTerminator(maxEvaluations); 
-    	if (epsilonFitConv > 0) term = new CombinedTerminator(new PhenotypeConvergenceTerminator(epsilonFitConv, 100*dim, true, true), term, false);
+    	if (epsilonFitConv > 0) term = new CombinedTerminator(new PhenotypeConvergenceTerminator(epsilonFitConv, 100*dim, true, ChangeTypeEnum.absoluteChange, true), term, false);
     	int evalsPerf = PostProcess.processSingleCandidatesNMCMA(PostProcessMethod.nelderMead, pop, term, initRelPerturb, prob);
     	overallDist = metric.distance(indy, pop.getBestEAIndividual());
     	//System.out.println(System.currentTimeMillis() + " in " + evalsPerf + " evals moved by "+ overallDist);

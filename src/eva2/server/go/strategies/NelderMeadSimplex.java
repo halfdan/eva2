@@ -126,7 +126,7 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
 
 		// hole die n-1 besten individuen der fitness dimension fitIndex
 		subpop.setSortingFitnessCriterion(fitIndex);
-		Population bestpop = subpop.getBestNIndividuals(subpop.size()-1);
+		Population bestpop = subpop.getBestNIndividuals(subpop.size()-1, fitIndex);
 		// und das schlechteste
 		AbstractEAIndividual worst = subpop.getWorstEAIndividual(fitIndex);
 		AbstractEAIndividual best=subpop.getBestEAIndividual(fitIndex);

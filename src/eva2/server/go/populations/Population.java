@@ -70,7 +70,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     private int lastQModCount = -1;
     // a sorted queue (for efficiency)
     transient private ArrayList<AbstractEAIndividual> sortedArr = null;
-    private int lastFitCrit = -1;
+    private Comparator<Object> lastSortingComparator = null;
 //	private AbstractEAIndividualComparator historyComparator = null;
 
     public static final String funCallIntervalReached = "FunCallIntervalReached";
@@ -807,21 +807,39 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     
 	/** 
 	 * This method will return the index of the current best (worst) individual from the
-     * population. If indicated, only those are regarded which do not violate the constraints.
-     * If all violate the constraints, the smallest (largest) violation is selected.
-     * Comparisons are done multicriterial, but note that for incomparable sets (pareto fronts)
-     * this selection will not be fair (always the lowest index of incomparable sets will be returned).
+     * population. A given comparator is employed for individual comparisons.
      * 
-     * @param bBest if true, smallest fitness (regarded best) index is returned, else the highest one
-     * @param indicate whether constraints should be regarded
+     * @param bBest if true, the best (first) index is returned, else the worst (last) one
+     * @param comparator indicate whether constraints should be regarded
      * @return The index of the best (worst) individual.
      */
-    public int getIndexOfBestOrWorstIndividual(boolean bBest, AbstractEAIndividualComparator comparator) {
-    	ArrayList<AbstractEAIndividual> sorted = getSorted(comparator);
+    public int getIndexOfBestOrWorstIndividual(boolean bBest, Comparator<Object> comparator) {
+    	ArrayList<?> sorted = sortBy(comparator);
     	if (bBest) return indexOf(sorted.get(0));
     	else return indexOfInstance(sorted.get(sorted.size()-1));
     }
 
+    public int getIndexOfBestEAIndividual(AbstractEAIndividualComparator comparator) {
+    	return getIndexOfBestOrWorstIndividual(true, comparator);
+    }
+    
+    public AbstractEAIndividual getBestEAIndividual(Comparator<Object> comparator) {
+    	int index = getIndexOfBestOrWorstIndividual(true, comparator);
+    	return getEAIndividual(index);
+    }
+
+    /**
+     * Return the index of the best (or worst) indy using an AbstractEAIndividualComparator
+     * that checks the constraints first and then for the given fitness criterion (or 
+     * a pareto criterion if it is -1).
+     * 
+     * @param bBest  if true, the best (first) index is returned, else the worst (last) one
+     * @param checkConstraints
+     * @param fitIndex
+     * @see #getIndexOfBestOrWorstIndividual(boolean, Comparator)
+     * @see AbstractEAIndividualComparator
+     * @return
+     */
     public int getIndexOfBestOrWorstIndy(boolean bBest, boolean checkConstraints, int fitIndex) {
     	return getIndexOfBestOrWorstIndividual(bBest, new AbstractEAIndividualComparator(fitIndex, checkConstraints));
     }
@@ -981,20 +999,22 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      * @return The m best individuals, where m <= n
      * 
      */
-    public Population getBestNIndividuals(int n) {
-    	return getSortedNIndividuals(n, true);
+    public Population getBestNIndividuals(int n, int fitIndex) {
+    	Population pop = new Population(n);
+    	getSortedNIndividuals(n, true, pop, new AbstractEAIndividualComparator(fitIndex));
+    	return pop;
     }
     
     /** 
      * This method returns a clone of the population instance with sorted individuals, where
-     * the sorting criterion is delivered by an AbstractEAIndividualComparator.
-     * @see #getSortedNIndividuals(int, boolean, Population)
+     * the sorting criterion is delivered by a Comparator.
+     * @see #getSortedNIndividuals(int, boolean, Population, Comparator)
      * 
      * @return a clone of the population instance with sorted individuals, best fitness first
      */
-    public Population getSortedBestFirst() {
+    public Population getSortedBestFirst(Comparator<Object> comp) {
     	Population result = this.cloneWithoutInds();
-    	getSortedNIndividuals(size(), true, result);
+    	getSortedNIndividuals(size(), true, result, comp);
     	result.synchSize();
     	return result;
     }
@@ -1009,25 +1029,26 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      * @return The m sorted best or worst individuals, where m <= n
      * 
      */
-    public Population getSortedNIndividuals(int n, boolean bBestOrWorst) {
-    	Population result = new Population((n > 0) ? n : this.size());
-    	getSortedNIndividuals(n, bBestOrWorst, result);
-    	return result;
-    }
+//    public Population getSortedNIndividuals(int n, boolean bBestOrWorst) {
+//    	Population result = new Population((n > 0) ? n : this.size());
+//    	getSortedNIndividuals(n, bBestOrWorst, result);
+//    	return result;
+//    }
     
     /** 
      * This method returns the n current best individuals from the population, where
-     * the sorting criterion is delivered by an AbstractEAIndividualComparator.
+     * the sorting criterion is delivered by a Comparator instance.
      * There are less than n individuals returned if the population is smaller than n.
      * This does not check constraints!
      * 
      * @param n	number of individuals to look out for
      * @param bBestOrWorst if true, the best n are returned, else the worst n individuals
      * @param res	sorted result population, will be cleared
+     * @param comparator the Comparator to use with individuals
      * @return The m sorted best or worst individuals, where m <= n
      * 
      */
-    public void getSortedNIndividuals(int n, boolean bBestOrWorst, Population res) {
+    public void getSortedNIndividuals(int n, boolean bBestOrWorst, Population res, Comparator<Object> comp) {
     	if ((n < 0) || (n>super.size())) {
     		// this may happen, treat it gracefully
     		//System.err.println("invalid request to getSortedNIndividuals: n="+n + ", size is " + super.size());
@@ -1036,13 +1057,26 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     	int skip = 0;
     	if (!bBestOrWorst) skip = super.size()-n;
     	
-    	ArrayList<AbstractEAIndividual> sorted = getSorted(lastFitCrit);
+//    	hier getSorted aufrufen
+    	ArrayList<AbstractEAIndividual> sorted = getSorted(comp);
     	res.clear();
         for (int i = skip; i < skip+n; i++) {
         	res.add(sorted.get(i));
         }
         res.synchSize();
     }
+    
+//    /**
+//     * Get the n best (or worst) individuals from the population. The last comparator
+//     * is reused, or if none has been employed yet, a standard comparator is used.
+//     * 
+//     * @param n
+//     * @param bBestOrWorst
+//     * @param res
+//     */
+//    public void getSortedNIndividuals(int n, boolean bBestOrWorst, Population res) {
+//    	getSortedNIndividuals(n, bBestOrWorst, res, lastSortingComparator);
+//    }
     
     /**
      * From the given list, remove all but the first n elements.
@@ -1076,11 +1110,13 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     }
     
     /**
-     * Set a fitness criterion for sorting procedures. This also affects getBest
+     * Set a fitness criterion for sorting procedures. This sorts the
+     * population once and influences further getBest* methods if no
+     * specific comparator is given.
      * @param fitIndex
      */
     public void setSortingFitnessCriterion(int fitIndex) {
-    	getSorted(fitIndex);
+    	getSorted(new AbstractEAIndividualComparator(fitIndex));
     }
     
 //    /**
@@ -1100,7 +1136,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      * @param comp A comparator by which sorting is performed - it should work on AbstractEAIndividual instances.
      * @return
      */
-    public ArrayList<AbstractEAIndividual> getSorted(Comparator<Object> comp) {
+    protected ArrayList<AbstractEAIndividual> sortBy(Comparator<Object> comp) {
     	if (super.size()==0) return new ArrayList<AbstractEAIndividual>();
 		PriorityQueue<AbstractEAIndividual> sQueue = new PriorityQueue<AbstractEAIndividual>(super.size(), comp);
 		for (int i = 0; i < super.size(); i++) {
@@ -1114,26 +1150,43 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     }
     
     /**
-     * Avoids having to sort again in several calls without modifications in between.
-     * The returned array should not be modified!
+     * Return a sorted list of individuals. The order is based on the
+     * given comparator. Repeated calls do not resort the population every
+     * time as long as an equal comparator is used (implement the equals() method!)
+     * and the population has not been modified.
+     * The returned array must not be altered!
      * 
      * @param fitIndex the fitness criterion to be used or -1 for pareto dominance
      * @return
      */
-    protected ArrayList<AbstractEAIndividual> getSorted(int fitIndex) {
-    	if ((fitIndex != lastFitCrit) || (sortedArr == null) || (super.modCount != lastQModCount)) {
-    		lastFitCrit=fitIndex;
-    		ArrayList<AbstractEAIndividual> sArr = getSorted(new AbstractEAIndividualComparator(fitIndex));
+    public ArrayList<AbstractEAIndividual> getSorted(Comparator<Object> comp) {
+//    	Comparator<Object> comp = new AbstractEAIndividualComparator(fitIndex);
+//    	if (!comp.equals(lastSortingComparator)) return sortedArr;
+    	if (!comp.equals(lastSortingComparator) || (sortedArr == null) || (super.modCount != lastQModCount)) {
+//    		lastFitCrit=fitIndex;lastSortingComparator
+    		ArrayList<AbstractEAIndividual> sArr = sortBy(comp);
     		if (sortedArr==null) sortedArr = sArr;
     		else {
     			sortedArr.clear();
     			sortedArr.addAll(sArr);
-    		}    		
+    		}
+    		lastSortingComparator = (Comparator<Object>) Serializer.deepClone(comp);
     		lastQModCount = super.modCount;
     	}
     	return sortedArr;
     }
 
+    /**
+     * Returns the sorted population as a new population instance.
+     * @see getSorted(Comparator)
+     */
+    public Population getSortedPop(Comparator<Object> comp) {
+    	Population pop = this.cloneWithoutInds();
+    	ArrayList<AbstractEAIndividual> sortedIndies = getSorted(comp);
+    	pop.addAll(sortedIndies);
+    	return pop;
+    }
+    
     /** 
      * This method retrieves n random individuals from the population and
      * returns them within a new population.

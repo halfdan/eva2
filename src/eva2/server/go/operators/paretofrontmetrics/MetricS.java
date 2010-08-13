@@ -215,6 +215,6 @@ public class MetricS implements InterfaceParetoFrontMetric, java.io.Serializable
      * @return description
      */
     public static String globalInfo() {
-        return "Calculating the hybervolume UNDER the given Pareto-front.";
+        return "Calculating the hypervolume UNDER the given Pareto-front.";
     }
 }

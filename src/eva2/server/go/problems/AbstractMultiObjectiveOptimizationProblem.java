@@ -3,8 +3,6 @@ package eva2.server.go.problems;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Vector;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Semaphore;
 
 import javax.swing.JFrame;
@@ -21,7 +19,8 @@ import eva2.server.go.operators.moso.MOSONoConvert;
 import eva2.server.go.operators.paretofrontmetrics.InterfaceParetoFrontMetric;
 import eva2.server.go.operators.paretofrontmetrics.MetricS;
 import eva2.server.go.populations.Population;
-import eva2.server.go.problems.AbstractOptimizationProblem.EvalThread;
+import eva2.server.go.strategies.InterfaceOptimizer;
+import eva2.tools.ToolBox;
 import eva2.tools.chart2d.Chart2DDPointIconCircle;
 import eva2.tools.chart2d.Chart2DDPointIconText;
 import eva2.tools.chart2d.DPoint;
@@ -352,65 +351,6 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
             moProblem.drawAdditionalData(plot, p, 10);
         }
     }
-    
-//    /** This method will draw the current state of the optimization process
-//     * @param p     The current population
-//     */
-//    public static void drawProblem(Population p, Plot plot, AbstractMultiObjectiveOptimizationProblem moProblem) {
-//        ArchivingAllDominating  tmpArch = new ArchivingAllDominating();
-//        Population              tmpPop = null;
-//
-//        if (p.getGeneration() > 2) {
-////            m_Plot = new eva2.gui.Plot("Multiobjective Optimization", "Y1", "Y2");
-//            // i want to plot the pareto front for MOEA and other strategies
-//            // but i have to differentiate between the case where
-//            // there is a true MOEA at work and where the
-//            // MOOpt was converted into a SOOpt
-//            if (AbstractMultiObjectiveOptimizationProblem.isPopulationMultiObjective(p)) {
-//                // in this case i have to use my local archive
-//                tmpPop = moProblem.m_ParetoFront;
-//            } else {
-//                // in this case i use the population of the optimizer
-//                // and eventually the pop.archive if there is one
-//                tmpPop = new Population();
-//                tmpPop.addPopulation(p);
-//                if (p.getArchive() != null) tmpPop.addPopulation(p.getArchive());
-//                tmpArch.addElementsToArchive(tmpPop);
-//                tmpPop = tmpPop.getArchive();
-//            }
-//            if (tmpPop != null) {
-//                // i got either a multiobjective population or a multiobjective local population
-//            	plot.clearAll();
-//                tmpArch.plotParetoFront(tmpPop, plot);
-//                if ((true) && (p.getArchive() != null)) {
-//                    GraphPointSet   mySet = new GraphPointSet(10, plot.getFunctionArea());
-//                    DPoint          myPoint;
-//                    Chart2DDPointIconCircle      icon;
-//                    double[]        tmpD;
-//                    mySet.setConnectedMode(false);
-//                    tmpPop = p.getArchive();
-//                    for (int i = 0; i < tmpPop.size(); i++) {
-//                        icon    = new Chart2DDPointIconCircle();
-//                        tmpD    = ((AbstractEAIndividual)tmpPop.get(i)).getFitness();
-//                        myPoint = new DPoint(tmpD[0], tmpD[1]);
-//                        if (((AbstractEAIndividual)tmpPop.get(i)).getConstraintViolation() > 0) {
-//                            icon.setBorderColor(Color.RED);
-//                            icon.setFillColor(Color.RED);
-//                        } else {
-//                            icon.setBorderColor(Color.BLACK);
-//                            icon.setFillColor(Color.BLACK);
-//                        }
-//                        myPoint.setIcon(icon);
-//                        mySet.addDPoint(myPoint);
-//                    }
-//                }
-//            } else {
-////                // in this case i got a single objective optimization problem
-//            }
-//            // draw additional data
-//            moProblem.drawAdditionalData(plot, p, 10);
-//        }
-//    }
 
     /** 
      * This method will plot a reference solutions or something like it
@@ -536,25 +476,33 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
 
     @Override
     public String[] getAdditionalFileStringHeader(PopulationInterface pop) {
-        String[] result = new String[1];
-        if (AbstractMultiObjectiveOptimizationProblem.isPopulationMultiObjective((Population)pop))
-            result[0] = "SMetric";
-        else
-            result[0] = "BestFitness";
-        return result;
+		String[] superHd = super.getAdditionalFileStringHeader(pop);
+		return ToolBox.appendArrays(new String[]{"paretoMetricCurrent","paretoMetricFront"}, superHd);
     }
 
     @Override
     public Object[] getAdditionalFileStringValue(PopulationInterface pop) {
-        Object[] result = new Object[1];
-        if (AbstractMultiObjectiveOptimizationProblem.isPopulationMultiObjective((Population)pop))
-            result[0] = this.calculateMetric((Population)pop);
-        else
-            result[0] = ((Population)pop).getBestEAIndividual().getFitness()[0];
-        return result;
+    	Object[] result = new Object[2];
+    	result[0] = this.calculateMetric((Population)pop);
+    	result[1] = this.calculateMetric(getLocalParetoFront());
+		return ToolBox.appendArrays(result, super.getAdditionalFileStringValue(pop));
+    }
+    
+    @Override
+    public String[] getAdditionalFileStringInfo(PopulationInterface pop) {
+    	String[] superInfo = super.getAdditionalFileStringInfo(pop);
+    	return ToolBox.appendArrays(new String[]{"Pareto metric on the current population (per generation)",
+    			"Pareto metric on the collected pareto front"}, superInfo);
     }
 
-    public double calculateMetric(Population pop) {
+	@Override
+	public String getStringRepresentationForProblem(InterfaceOptimizer opt) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public double calculateMetric(Population pop) {
+    	if (pop==null) return Double.NaN;
         return this.m_Metric.calculateMetricOn(pop, this);
     }
 
