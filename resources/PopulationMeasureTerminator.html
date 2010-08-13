@@ -1,0 +1,31 @@
+<html>
+<head>
+<title>Population Measure Terminator</title>
+</head>
+<body>
+<h1 align="center">Population Measure Terminator</h1>
+<center>
+</center><br>
+ An abstract class giving the framework for terminators based on
+ a population measure converging for a given time (number of evaluations or 
+ generations).
+ The class detects changes of a population P using a measure m over time and may signal convergence 
+ if the measure m(P) behaved in a certain way for a given time. Convergence may
+ be signaled 
+ <ul>
+  <li>if the measure reached absolute values below convThresh (absolute value),</li>
+  <li>if the measure remained within m(P)+/-convThresh (absolute change),</li>
+  <li>if the measure remained above m(P)-convThresh (absolute change and regard improvement only),</li>
+  <li>if the measure remained within m(P)*[1-convThresh, 1+convThresh] (relative change),</li>
+  <li>if the measure remained above m(P)*(1-convThresh) (relative change and regard improvement only).</li>
+ </ul>
+The fitness convergence terminator stops the optimization, when there has been hardly 
+any change in the best fitness in the population (within percentual or absolute distance) for a certain 
+time, given in generations or fitness calls. In case of multi-objective optimization, the 2-norm of
+the fitness vector is
+currently used.<br>
+Be aware that, if the optimization is allowed to be non-monotonic, such as for (,)-ES strategies,
+and if the optimum is close to zero, it may happen that the fitness fluctuates due to numeric 
+issues and does not easily converge in a relative way.<br>
+</body>
+</html>
