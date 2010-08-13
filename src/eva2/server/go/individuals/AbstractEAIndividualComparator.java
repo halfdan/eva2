@@ -21,7 +21,6 @@ import java.util.Comparator;
  *
  */
 public class AbstractEAIndividualComparator implements Comparator<Object>, Serializable {
-
 	// flag whether a data field should be used.
 	private String indyDataKey = "";
 	private int fitCriterion = -1;
@@ -51,7 +50,7 @@ public class AbstractEAIndividualComparator implements Comparator<Object>, Seria
 	}
 	
 	/**
-	 * Constructor for a specific fitness criterion in the multiobjective case. 
+	 * Constructor for a specific fitness criterion in the multi-objective case. 
 	 * For comparison, only the given fitness criterion is used if it is >= 0.
 	 * 
 	 * @param fitnessCriterion
@@ -60,8 +59,32 @@ public class AbstractEAIndividualComparator implements Comparator<Object>, Seria
 		this("", fitnessCriterion, true);
 	}
 	
+	/**
+	 * Constructor for a specific fitness criterion in the multi-objective case. 
+	 * For comparison, only the given fitness criterion is used if it is >= 0.
+	 * If preferFeasible is true, feasible individuals will always be prefered.
+	 * 
+	 * @param fitIndex
+	 * @param preferFeasible
+	 */
 	public AbstractEAIndividualComparator(int fitIndex, boolean preferFeasible) {
 		this("", fitIndex, preferFeasible);
+	}
+	
+	@Override
+	public boolean equals(Object other) {
+		if (other instanceof AbstractEAIndividualComparator) {
+			AbstractEAIndividualComparator o = (AbstractEAIndividualComparator)other;
+			if ((indyDataKey==o.indyDataKey) || (indyDataKey!=null && (indyDataKey.equals(o.indyDataKey)))) {
+				if ((fitCriterion == o.fitCriterion) && (preferFeasible == o.preferFeasible)) return true;
+			}
+		}
+		return false;
+	}
+	
+	@Override
+	public int hashCode() {
+		return indyDataKey.hashCode()+100+fitCriterion+(preferFeasible ? 7 : 13);
 	}
 	
 	/**

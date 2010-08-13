@@ -8,6 +8,7 @@ import eva2.gui.GenericObjectEditor;
 import eva2.server.go.InterfacePopulationChangedEventListener;
 import eva2.server.go.enums.ESMutationInitialSigma;
 import eva2.server.go.individuals.AbstractEAIndividual;
+import eva2.server.go.individuals.AbstractEAIndividualComparator;
 import eva2.server.go.individuals.InterfaceDataTypeDouble;
 import eva2.server.go.operators.distancemetric.EuclideanMetric;
 import eva2.server.go.populations.Population;
@@ -306,7 +307,7 @@ public class MutateESRankMuCMA implements InterfaceMutationGenerational, Seriali
 	 * @param selectedP
 	 */
 	public void adaptAfterSelection(Population oldGen, Population selectedP) {
-		Population selectedSorted = selectedP.getSortedBestFirst();
+		Population selectedSorted = selectedP.getSortedBestFirst(new AbstractEAIndividualComparator(-1));
 		
 		int mu,lambda;
 		mu = selectedP.size();

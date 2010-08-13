@@ -2,6 +2,7 @@ package eva2.server.go.operators.cluster;
 
 import eva2.gui.BeanInspector;
 import eva2.server.go.individuals.AbstractEAIndividual;
+import eva2.server.go.individuals.AbstractEAIndividualComparator;
 import eva2.server.go.operators.distancemetric.InterfaceDistanceMetric;
 import eva2.server.go.operators.distancemetric.PhenotypeMetric;
 import eva2.server.go.populations.Population;
@@ -72,7 +73,8 @@ public class ClusteringDynPeakIdent implements InterfaceClustering, java.io.Seri
 	}
 
 	public Population[] cluster(Population pop, Population referenceSet) {
-		Population sorted = pop.getSortedBestFirst();
+		AbstractEAIndividualComparator eaComparator = new AbstractEAIndividualComparator(-1);
+		Population sorted = pop.getSortedBestFirst(eaComparator);
 		Population peaks = performDynPeakIdent(metric, sorted, numNiches, nicheRadius);
 		Population[] clusters = new Population[peaks.size()+1];
 		for (int i=0; i<clusters.length; i++) clusters[i]=new Population();
