@@ -25,7 +25,7 @@ import eva2.tools.chart2d.SlimRect;
  * GraphPointSets as used in FunctionArea. Painting is done in FunctionArea. As
  * an alternative, an own frame could be created.
  * 
- * @author mkron
+ * @author mkron, draeger
  * 
  */
 public class GraphPointSetLegend {
