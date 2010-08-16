@@ -571,9 +571,17 @@
   </target>
 	
 <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	        Copy documentation to web directory. tex2html must be updated manually beforehand!
+	        Perform tex-to-HTML of the short documentation. Export tex from lyx manually beforehand!!!
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
-	<target name="docToWWW" depends="init">
+	<target name="docLatexToHTML" depends="init">
+		<exec dir="${doc.directory}" executable="./tex2html" os="Linux">
+		</exec>
+	</target>
+		
+<!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	        Copy documentation to web directory. Note that the doc is not copied to the versioned directory here.
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+	<target name="docToWWW" depends="init, docLatexToHTML">
 	  	<delete>
 			<fileset dir="${web.documentation.directory}">
 				<include name="**" />
@@ -635,6 +643,11 @@
 	    <copy todir="${web.download.versionprefix}-${DSTAMP}">
 	    	<fileset refid="EvA2Stuff"/>
 	    </copy>
+		<!-- copy doc to versioned directory -->
+		<mkdir dir="${web.download.versionprefix}-${DSTAMP}/${doc.directory}"/>
+		<copy todir="${web.download.versionprefix}-${DSTAMP}/${doc.directory}">
+			<fileset dir="${web.documentation.directory}"/>
+		</copy>
 	</target>
 	
 <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

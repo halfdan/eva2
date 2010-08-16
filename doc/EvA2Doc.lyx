@@ -1,5 +1,5 @@
-#LyX 1.4.1 created this file. For more info see http://www.lyx.org/
-\lyxformat 245
+#LyX 1.5.6 created this file. For more info see http://www.lyx.org/
+\lyxformat 276
 \begin_document
 \begin_header
 \textclass amsbook
@@ -12,16 +12,25 @@
 \newcommand{\origttfamily}{}% sollte noch nicht definiert sein!
 \let\origttfamily=\ttfamily % alte Definition von \ttfamily sichern
 \renewcommand{\ttfamily}{\origttfamily \hyphenchar\font=`\-}
+\newcommand{\lyxdot}{.}
 \end_preamble
 \language english
 \inputencoding auto
-\fontscheme default
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
 \graphics default
 \paperfontsize 11
 \spacing single
 \papersize default
 \use_geometry false
 \use_amsmath 1
+\use_esint 0
 \cite_engine basic
 \use_bibtopic false
 \paperorientation portrait
@@ -35,36 +44,45 @@
 \paperpagestyle default
 \tracking_changes false
 \output_changes false
+\author "" 
+\author "" 
 \end_header
 
 \begin_body
 
 \begin_layout Title
-EvA 2 Short Documentation
+EvA2 Short Documentation
 \end_layout
 
 \begin_layout Author
 Marcel Kronfeld
 \end_layout
 
-\begin_layout Address
+\begin_layout Dedicatory
+\begin_inset ERT
+status open
+
+\begin_layout Standard
+
+~
+\backslash
+
+\backslash
+~
+\backslash
+
+\backslash
+~
+\backslash
+
+\backslash
+
+\end_layout
+
+\end_inset
+
 Dept.
  of Computer Architecture, 
-\end_layout
-
-\begin_layout Address
-Prof.
- Dr.
- Andreas Zell, 
-\end_layout
-
-\begin_layout Address
-University of Tübingen
-\end_layout
-
-\begin_layout Dedicatory
-\InsetSpace ~
-
 \begin_inset ERT
 status open
 
@@ -79,11 +97,80 @@ status open
 
 \end_inset
 
+Prof.
+ Dr.
+ Andreas Zell, 
+\begin_inset ERT
+status open
+
+\begin_layout Standard
+
+
+\backslash
+
+\backslash
+
+\end_layout
+
+\end_inset
+
+University of TÃ¼bingen
+\begin_inset ERT
+status open
+
+\begin_layout Standard
+
+
+\backslash
+
+\backslash
+~
+\backslash
+
+\backslash
+~
+\backslash
+
+\backslash
+
+\end_layout
+
+\end_inset
+
 URL: http://www.ra.cs.uni-tuebingen.de/software/EvA2
+\begin_inset ERT
+status open
+
+\begin_layout Standard
+
+
+\backslash
+
+\backslash
+~
+\backslash
+
+\backslash
+~
+\backslash
+
+\backslash
+
+\end_layout
+
+\end_inset
+
+Last updated: 2010-08-16
 \end_layout
 
 \begin_layout Standard
-\begin_inset LatexCommand \tableofcontents{}
+
+\newpage
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset LatexCommand tableofcontents
 
 \end_inset
 
@@ -99,7 +186,7 @@ We like to thank all former and current developers of
 \noun on
 EvA:
 \noun default
- Alexander Hasel, Roland Baumann, Karsten Jung, Jürgen Wakunda, Holger Ulmer,
+ Alexander Hasel, Roland Baumann, Karsten Jung, JÃ¼rgen Wakunda, Holger Ulmer,
  Felix Streichert, Christian Spieth, Hannes Planatscher, Michael de Paly,
  Marcel Kronfeld and all former students involved in the work.
 \end_layout
@@ -142,7 +229,7 @@ hyphenation{Ab-stract-Op-ti-mi-za-tion-Prob-lem Ab-stract-Prob-lem-Double
 
 \end_layout
 
-\begin_layout Section
+\begin_layout Chapter
 Introduction
 \end_layout
 
@@ -202,7 +289,8 @@ Java
 JavaEvA
 \noun default
  
-\begin_inset LatexCommand \cite{JOptDocumentation}
+\begin_inset LatexCommand cite
+key "JOptDocumentation"
 
 \end_inset
 
@@ -212,7 +300,8 @@ JavaEvA
 EvA
 \noun default
  software package 
-\begin_inset LatexCommand \cite{Wakunda97EvA}
+\begin_inset LatexCommand cite
+key "Wakunda97EvA"
 
 \end_inset
 
@@ -322,7 +411,8 @@ status collapsed
 \end_inset
 
 
-\begin_inset LatexCommand \ref{sec:Quick-Start}
+\begin_inset LatexCommand ref
+reference "sec:Quick-Start"
 
 \end_inset
 
@@ -338,7 +428,8 @@ status collapsed
 \end_inset
 
 
-\begin_inset LatexCommand \ref{sub:Quickly-Using-GUI}
+\begin_inset LatexCommand ref
+reference "sub:Quickly-Using-GUI"
 
 \end_inset
 
@@ -355,7 +446,8 @@ status collapsed
 \end_inset
 
 
-\begin_inset LatexCommand \ref{sec:External-Interfaces}
+\begin_inset LatexCommand ref
+reference "sec:External-Interfaces"
 
 \end_inset
 
@@ -400,7 +492,8 @@ status collapsed
 \end_inset
 
 
-\begin_inset LatexCommand \ref{sec:Quickly-Adding-Your-Problem}
+\begin_inset LatexCommand ref
+reference "sec:Quickly-Adding-Your-Problem"
 
 \end_inset
 
@@ -416,7 +509,8 @@ status collapsed
 \end_inset
 
 
-\begin_inset LatexCommand \ref{sec:Using-the-API}
+\begin_inset LatexCommand ref
+reference "sec:Using-the-API"
 
 \end_inset
 
@@ -434,7 +528,8 @@ status collapsed
 \end_inset
 
 
-\begin_inset LatexCommand \ref{sec:Further-Reading}
+\begin_inset LatexCommand ref
+reference "sec:Further-Reading"
 
 \end_inset
 
@@ -447,9 +542,10 @@ status collapsed
 
 \end_layout
 
-\begin_layout Section
+\begin_layout Chapter
 Quick Start
-\begin_inset LatexCommand \label{sec:Quick-Start}
+\begin_inset LatexCommand label
+name "sec:Quick-Start"
 
 \end_inset
 
@@ -492,13 +588,14 @@ status collapsed
  the concepts used in the framework.
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Section
 Running 
 \noun on
 EvA
 \noun default
  2
-\begin_inset LatexCommand \label{sub:Quickly-Running-JavaEvA}
+\begin_inset LatexCommand label
+name "sub:Quickly-Running-JavaEvA"
 
 \end_inset
 
@@ -554,7 +651,8 @@ http://www.ra.cs.uni-tuebingen.de/software/EvA2/
 \end_inset
 
  
-\begin_inset LatexCommand \cite{JE2HomePage}
+\begin_inset LatexCommand cite
+key "JE2HomePage"
 
 \end_inset
 
@@ -631,7 +729,8 @@ status collapsed
 \end_inset
 
 
-\begin_inset LatexCommand \ref{sec:Using-the-API}
+\begin_inset LatexCommand ref
+reference "sec:Using-the-API"
 
 \end_inset
 
@@ -640,7 +739,7 @@ status collapsed
  in the source code.
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Section
 Some Words on the Words
 \end_layout
 
@@ -755,7 +854,8 @@ status collapsed
 \end_inset
 
 
-\begin_inset LatexCommand \ref{sec:Further-Reading}
+\begin_inset LatexCommand ref
+reference "sec:Further-Reading"
 
 \end_inset
 
@@ -766,9 +866,10 @@ status collapsed
 
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Section
 Using the GUI
-\begin_inset LatexCommand \label{sub:Quickly-Using-GUI}
+\begin_inset LatexCommand label
+name "sub:Quickly-Using-GUI"
 
 \end_inset
 
@@ -837,7 +938,8 @@ status open
 \end_inset
 
 
-\begin_inset LatexCommand \ref{fig:Screenshots-workbench}
+\begin_inset LatexCommand ref
+reference "fig:Screenshots-workbench"
 
 \end_inset
 
@@ -871,10 +973,14 @@ status open
 
 \end_layout
 
-\begin_layout Caption
+\begin_layout Standard
+\begin_inset Caption
+
+\begin_layout Standard
 Screenshots of the workbench window, with optimization (left) and statistics
  (right) parameters.
-\begin_inset LatexCommand \label{fig:Screenshots-workbench}
+\begin_inset LatexCommand label
+name "fig:Screenshots-workbench"
 
 \end_inset
 
@@ -886,9 +992,15 @@ Screenshots of the workbench window, with optimization (left) and statistics
 
 \end_layout
 
-\begin_layout Subsubsection
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
 The Workbench Window
-\begin_inset LatexCommand \label{sub:The-Workbench-Window}
+\begin_inset LatexCommand label
+name "sub:The-Workbench-Window"
 
 \end_inset
 
@@ -936,9 +1048,9 @@ parameters
 \begin_layout Description
 
 \shape italic
-Problem 
+Problem
 \shape default
-The instance of the target function to be optimized is specified here.
+ The instance of the target function to be optimized is specified here.
  You can select from the benchmark problems delivered with the package or
  inherit from the problem class yourself (Sec.
 \begin_inset ERT
@@ -952,7 +1064,8 @@ status open
 \end_inset
 
 
-\begin_inset LatexCommand \ref{sec:Using-the-API}
+\begin_inset LatexCommand ref
+reference "sec:Using-the-API"
 
 \end_inset
 
@@ -1012,9 +1125,9 @@ status collapsed
 
 \end_inset
 
-Criterion 
+Criterion
 \shape default
-Set the criterion by which to stop an optimization run, e.g.
+ Set the criterion by which to stop an optimization run, e.g.
  stop after 
 \emph on
 n
@@ -1141,9 +1254,9 @@ status collapsed
 
 \end_inset
 
-To 
+To
 \shape default
-Textual information can be shown in a text box, or redirected to a file,
+ Textual information can be shown in a text box, or redirected to a file,
  or both.
  The output file will be stored to the current directory with a descriptive
  name containing the timestamp of the start of the run.
@@ -1277,9 +1390,9 @@ status collapsed
 
 \end_inset
 
-Plot 
+Plot
 \shape default
-Define which fitness values to be displayed in the plot window after every
+ Define which fitness values to be displayed in the plot window after every
  generation.
  Select 
 \begin_inset Quotes eld
@@ -1352,7 +1465,7 @@ Stop
  button can abort the (multi-)run.
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 The Plot Window
 \end_layout
 
@@ -1373,10 +1486,19 @@ status open
 
 \end_layout
 
-\begin_layout Caption
+\begin_layout Standard
+\begin_inset Caption
+
+\begin_layout Standard
 Plot window comparing a simple (5,20)-ES and PSO on Rastrigin's after 10
  runs each.
-\begin_inset LatexCommand \label{fig:The-plot-window}
+\begin_inset LatexCommand label
+name "fig:The-plot-window"
+
+\end_inset
+
+
+\end_layout
 
 \end_inset
 
@@ -1402,7 +1524,8 @@ status open
 \end_inset
 
 
-\begin_inset LatexCommand \ref{fig:The-plot-window}
+\begin_inset LatexCommand ref
+reference "fig:The-plot-window"
 
 \end_inset
 
@@ -1427,7 +1550,8 @@ status collapsed
 \end_inset
 
 
-\begin_inset LatexCommand \ref{fig:The-plot-window}
+\begin_inset LatexCommand ref
+reference "fig:The-plot-window"
 
 \end_inset
 
@@ -1528,13 +1652,14 @@ JPG
  Create a JPEG image of the plot window and save it to a file.
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 Basic Optimization using 
 \noun on
 EvA 2
 \noun default
 
-\begin_inset LatexCommand \label{sub:Basic-Optimization-GUI}
+\begin_inset LatexCommand label
+name "sub:Basic-Optimization-GUI"
 
 \end_inset
 
@@ -1622,9 +1747,10 @@ status collapsed
  are built to work on all types of indviduals.
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 Post-Processing
-\begin_inset LatexCommand \label{sub:Post-Processing}
+\begin_inset LatexCommand label
+name "sub:Post-Processing"
 
 \end_inset
 
@@ -1699,15 +1825,25 @@ status open
 
 \end_layout
 
-\begin_layout Caption
+\begin_layout Standard
+\begin_inset Caption
+
+\begin_layout Standard
 Examples for density based clustering (Streichert et al.
  
-\begin_inset LatexCommand \cite{streichertClustering03}
+\begin_inset LatexCommand cite
+key "streichertClustering03"
 
 \end_inset
 
 ).
-\begin_inset LatexCommand \label{fig:Density-based-clustering.}
+\begin_inset LatexCommand label
+name "fig:Density-based-clustering."
+
+\end_inset
+
+
+\end_layout
 
 \end_inset
 
@@ -1723,7 +1859,8 @@ Examples for density based clustering (Streichert et al.
 Of course the size of this filtered set depends on the degree of convergence
  in the original set and on the clustering criterion.
  We employ density based clustering 
-\begin_inset LatexCommand \cite{ester96density}
+\begin_inset LatexCommand cite
+key "ester96density"
 
 \end_inset
 
@@ -1744,7 +1881,8 @@ status open
 \end_inset
 
 
-\begin_inset LatexCommand \ref{fig:Density-based-clustering.}
+\begin_inset LatexCommand ref
+reference "fig:Density-based-clustering."
 
 \end_inset
 
@@ -1795,7 +1933,7 @@ If you set
  by the additional HC optimization.
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Section
 Additional Packages
 \end_layout
 
@@ -1867,7 +2005,8 @@ status open
 \end_inset
 
 
-\begin_inset LatexCommand \ref{sec:Quickly-Adding-Your-Problem}
+\begin_inset LatexCommand ref
+reference "sec:Quickly-Adding-Your-Problem"
 
 \end_inset
 
@@ -1953,7 +2092,8 @@ status collapsed
 \end_inset
 
 
-\begin_inset LatexCommand \ref{sec:Using-the-API}
+\begin_inset LatexCommand ref
+reference "sec:Using-the-API"
 
 \end_inset
 
@@ -1964,18 +2104,20 @@ status collapsed
 
 \end_layout
 
-\begin_layout Section
+\begin_layout Chapter
 External Interfaces
-\begin_inset LatexCommand \label{sec:External-Interfaces}
+\begin_inset LatexCommand label
+name "sec:External-Interfaces"
 
 \end_inset
 
 
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Section
 Optimizing Through an External Command
-\begin_inset LatexCommand \label{sub:Optimizing-external-cmd}
+\begin_inset LatexCommand label
+name "sub:Optimizing-external-cmd"
 
 \end_inset
 
@@ -1998,9 +2140,18 @@ status open
 
 \end_layout
 
-\begin_layout Caption
+\begin_layout Standard
+\begin_inset Caption
+
+\begin_layout Standard
 Screenshot of an external runtime problem configuration.
-\begin_inset LatexCommand \label{fig:Screenshot-external-runtime}
+\begin_inset LatexCommand label
+name "fig:Screenshot-external-runtime"
+
+\end_inset
+
+
+\end_layout
 
 \end_inset
 
@@ -2074,7 +2225,8 @@ status open
 \end_inset
 
 
-\begin_inset LatexCommand \ref{fig:Screenshot-external-runtime}
+\begin_inset LatexCommand ref
+reference "fig:Screenshot-external-runtime"
 
 \end_inset
 
@@ -2146,18 +2298,20 @@ status collapsed
  might do for you.
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Section
 Optimization from Matlab
-\begin_inset LatexCommand \label{sub:Optimization-from-Matlab}
+\begin_inset LatexCommand label
+name "sub:Optimization-from-Matlab"
 
 \end_inset
 
 
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 Quick Howto
-\begin_inset LatexCommand \label{sub:JEInterface-Quick-Intro}
+\begin_inset LatexCommand label
+name "sub:JEInterface-Quick-Intro"
 
 \end_inset
 
@@ -2338,7 +2492,7 @@ getResult(JI)
  to get the best solution found.
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 Details on JEInterface
 \end_layout
 
@@ -2516,21 +2670,12 @@ showOptimizers(JI)
 
 \family typewriter
 JI=optimize(JI,optType[,resultFilePrefix])
-\family roman
-\series medium
-\shape up
+\family default
 \size normal
-\emph off
-\bar no
 \noun off
 \color none
  
-\family default
-\series default
-\shape default
 \size default
-\emph default
-\bar default
 \noun default
 Start the optimization using the strategy indicated by the ID 
 \emph on
@@ -2543,13 +2688,15 @@ optType
 \bar no
 \noun off
 .
- Optionally write verbose results to an output file with prefix 
+ Optionally write verbose results to an output file with prefix
 \family default
 \series default
 \shape default
+\emph default
+\bar default
+ 
 \size default
 \emph on
-\bar default
 \noun default
 resultFilePrefix
 \family roman
@@ -2560,13 +2707,14 @@ resultFilePrefix
 \bar no
 \noun off
  in the working directory.
- 
+
 \family default
 \series default
 \shape default
-\size default
 \emph default
 \bar default
+ 
+\size default
 \noun default
 Returns the modified JEInterface instance.
  The method also opens a message box with a cancel button to stop the optimizati
@@ -2611,7 +2759,8 @@ status open
 \end_inset
 
 
-\begin_inset LatexCommand \ref{sub:Post-Processing}
+\begin_inset LatexCommand ref
+reference "sub:Post-Processing"
 
 \end_inset
 
@@ -2747,10 +2896,10 @@ optset
 \begin_layout Description
 
 \family typewriter
-getDesc(JI,optType) 
+getDesc(JI,optType)
 \family default
-Show information about an optimizer class together with the parameters that
- can be modified.
+ Show information about an optimizer class together with the parameters
+ that can be modified.
  The available settings are analogous to the optimizer options presented
  by the Java GUI.
 \end_layout
@@ -2758,9 +2907,9 @@ Show information about an optimizer class together with the parameters that
 \begin_layout Description
 
 \family typewriter
-optimizeWith(JI,optType[,outputFilePrefix][,memName,memVal]*) 
+optimizeWith(JI,optType[,outputFilePrefix][,memName,memVal]*)
 \family default
-Optimize using an optimizer by ID and specific settings for this optimizer.
+ Optimize using an optimizer by ID and specific settings for this optimizer.
  The settings given must conform to the options shown by 
 \family typewriter
 getDesc(JI,optType)
@@ -2920,7 +3069,8 @@ showOptimizers
 JavaEvA
 \noun default
  
-\begin_inset LatexCommand \cite{JOptDocumentation}
+\begin_inset LatexCommand cite
+key "JOptDocumentation"
 
 \end_inset
 
@@ -3233,9 +3383,13 @@ No.
 
 \end_layout
 
-\begin_layout Caption
+\begin_layout Standard
+\begin_inset Caption
+
+\begin_layout Standard
 JEInterface optimization options overview.
-\begin_inset LatexCommand \label{tab:JEInterface-optimization-options.}
+\begin_inset LatexCommand label
+name "tab:JEInterface-optimization-options."
 
 \end_inset
 
@@ -3247,7 +3401,12 @@ JEInterface optimization options overview.
 
 \end_layout
 
-\begin_layout Subsubsection
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
 Optimization Options
 \end_layout
 
@@ -3280,7 +3439,8 @@ status open
 \end_inset
 
 
-\begin_inset LatexCommand \ref{tab:JEInterface-optimization-options.}
+\begin_inset LatexCommand ref
+reference "tab:JEInterface-optimization-options."
 
 \end_inset
 
@@ -3428,7 +3588,7 @@ JI=setOptions(JI, makeOptions(JI, 'TolX', 0, 'TolFun', 0))
  
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 Usage Example
 \end_layout
 
@@ -3445,7 +3605,8 @@ status open
 \end_inset
 
 
-\begin_inset LatexCommand \ref{alg:Example-m-function}
+\begin_inset LatexCommand ref
+reference "alg:Example-m-function"
 
 \end_inset
 
@@ -3479,7 +3640,8 @@ status open
 \end_inset
 
 
-\begin_inset LatexCommand \ref{alg:Optimization-from-Matlab.}
+\begin_inset LatexCommand ref
+reference "alg:Optimization-from-Matlab."
 
 \end_inset
 
@@ -3642,9 +3804,18 @@ end{algorithmic}
 
 \end_layout
 
-\begin_layout Caption
+\begin_layout Standard
+\begin_inset Caption
+
+\begin_layout Standard
 Example m-function for optimization from Matlab
-\begin_inset LatexCommand \label{alg:Example-m-function}
+\begin_inset LatexCommand label
+name "alg:Example-m-function"
+
+\end_inset
+
+
+\end_layout
 
 \end_inset
 
@@ -3765,9 +3936,13 @@ end{algorithmic}
 
 \end_layout
 
-\begin_layout Caption
+\begin_layout Standard
+\begin_inset Caption
+
+\begin_layout Standard
 Optimization from the Matlab console
-\begin_inset LatexCommand \label{alg:Optimization-from-Matlab.}
+\begin_inset LatexCommand label
+name "alg:Optimization-from-Matlab."
 
 \end_inset
 
@@ -3779,9 +3954,15 @@ Optimization from the Matlab console
 
 \end_layout
 
-\begin_layout Section
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chapter
 Quickly Adding a Problem Class
-\begin_inset LatexCommand \label{sec:Quickly-Adding-Your-Problem}
+\begin_inset LatexCommand label
+name "sec:Quickly-Adding-Your-Problem"
 
 \end_inset
 
@@ -4041,9 +4222,10 @@ SimpleProblemWrapper
  Now select your prefered optimization method and start the optimization.
 \end_layout
 
-\begin_layout Section
+\begin_layout Chapter
 Using the EvA 2 API
-\begin_inset LatexCommand \label{sec:Using-the-API}
+\begin_inset LatexCommand label
+name "sec:Using-the-API"
 
 \end_inset
 
@@ -4069,9 +4251,10 @@ status collapsed
  into existing projects through the Java API.
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Section
 Accessing Standard Optimizers
-\begin_inset LatexCommand \label{sub:Accessing-Standard-Optimizers}
+\begin_inset LatexCommand label
+name "sub:Accessing-Standard-Optimizers"
 
 \end_inset
 
@@ -4113,7 +4296,8 @@ status collapsed
 \end_inset
 
 
-\begin_inset LatexCommand \ref{sec:Quickly-Adding-Your-Problem}
+\begin_inset LatexCommand ref
+reference "sec:Quickly-Adding-Your-Problem"
 
 \end_inset
 
@@ -4136,9 +4320,10 @@ AbstractProblemBinary
 .
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 The Abstract Problem Classes
-\begin_inset LatexCommand \label{sub:The-Abstract-Problem-classes}
+\begin_inset LatexCommand label
+name "sub:The-Abstract-Problem-classes"
 
 \end_inset
 
@@ -4407,7 +4592,8 @@ status open
 \end_inset
 
 
-\begin_inset LatexCommand \ref{sub:Setting-Evolutionary-Operators}
+\begin_inset LatexCommand ref
+reference "sub:Setting-Evolutionary-Operators"
 
 \end_inset
 
@@ -4869,13 +5055,14 @@ B1Problem
  class which realizes a simple minimize bits problem.
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 The 
 \family typewriter
 OptimizerFactory
 \family default
 
-\begin_inset LatexCommand \label{sub:The-OptimizerFactory}
+\begin_inset LatexCommand label
+name "sub:The-OptimizerFactory"
 
 \end_inset
 
@@ -4902,7 +5089,8 @@ optimizeToDouble(final int optType, AbstractOptimizationProblem problem,
 
 \begin_layout Standard
 Table 
-\begin_inset LatexCommand \ref{tab:Overview-OptimizerFactory}
+\begin_inset LatexCommand ref
+reference "tab:Overview-OptimizerFactory"
 
 \end_inset
 
@@ -4914,7 +5102,8 @@ showOptimizers()
  to get a string with a summary of the implemented algorithms with ID associatio
 ns.
  A short example is shown in Listing 
-\begin_inset LatexCommand \ref{alg:OptFact-Usage-example}
+\begin_inset LatexCommand ref
+reference "alg:OptFact-Usage-example"
 
 \end_inset
 
@@ -5085,13 +5274,22 @@ end{algorithmic}
 
 \end_layout
 
-\begin_layout Caption
+\begin_layout Standard
+\begin_inset Caption
+
+\begin_layout Standard
 Simple 
 \family typewriter
 OptimizerFactory
 \family default
  usage example.
-\begin_inset LatexCommand \label{alg:OptFact-Usage-example}
+\begin_inset LatexCommand label
+name "alg:OptFact-Usage-example"
+
+\end_inset
+
+
+\end_layout
 
 \end_inset
 
@@ -5342,9 +5540,13 @@ Clustering-based Niching ES
 
 \end_layout
 
-\begin_layout Caption
+\begin_layout Standard
+\begin_inset Caption
+
+\begin_layout Standard
 Overview over algorithms accessible through OptimizerFactory.
-\begin_inset LatexCommand \label{tab:Overview-OptimizerFactory}
+\begin_inset LatexCommand label
+name "tab:Overview-OptimizerFactory"
 
 \end_inset
 
@@ -5356,9 +5558,15 @@ Overview over algorithms accessible through OptimizerFactory.
 
 \end_layout
 
-\begin_layout Subsection
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
 Termination Criteria
-\begin_inset LatexCommand \label{sub:Termination-Criteria}
+\begin_inset LatexCommand label
+name "sub:Termination-Criteria"
 
 \end_inset
 
@@ -5485,9 +5693,9 @@ status collapsed
 
 \end_inset
 
-tor(50000) 
+tor(50000)
 \family default
-before starting the optimization, as in Alg.
+ before starting the optimization, as in Alg.
 \begin_inset ERT
 status open
 
@@ -5499,7 +5707,8 @@ status open
 \end_inset
 
 
-\begin_inset LatexCommand \ref{alg:OptFact-Usage-example}
+\begin_inset LatexCommand ref
+reference "alg:OptFact-Usage-example"
 
 \end_inset
 
@@ -5614,13 +5823,8 @@ tor(term)
 EvaluationTerminator
 \family default
 : Construct with a maximal number of evaluations.
- Constructor parameters:
-\family roman
-\series medium
-\shape up
+ Parameters:
 \size normal
-\emph off
-\bar no
 \noun off
 \color none
  
@@ -5646,13 +5850,8 @@ GenerationTerminator
 : Terminate after a given number of generations.
  As not all algorithms use constant population sizes, we suggest to use
  EvaluationTerminator preferably.
- Constructor parameters:
-\family roman
-\series medium
-\shape up
+ Parameters:
 \size normal
-\emph off
-\bar no
 \noun off
 \color none
  
@@ -5677,13 +5876,8 @@ FitnessValueTerminator
 \family default
 : A minimum fitness value (vector) must be reached to terminate.
  Construct with a double array representing the target fitness value.
- Constructor parameters:
-\family roman
-\series medium
-\shape up
+ Parameters:
 \size normal
-\emph off
-\bar no
 \noun off
 \color none
  
@@ -5697,281 +5891,6 @@ FitnessValueTerminator
 v
 \family default
 : double array fitness vector to be reached.
-\end_layout
-
-\end_deeper
-\begin_layout List
-\labelwidthstring 00.00.0000
-
-\family typewriter
-FitnessConvergenceTerminator
-\family default
-: Terminate as soon as there is hardly any improvement in fitness for a
- certain period of time (
-\emph on
-stagnation
-\emph default
- 
-\emph on
-period
-\emph default
-), defined by a number of evaluations or generations.
- 
-\begin_inset Quotes eld
-\end_inset
-
-Hardly any improvement
-\begin_inset Quotes erd
-\end_inset
-
- is defined by a threshold 
-\emph on
-th
-\emph default
-, which can be set as absolute or relative threshold.
- In the absolute case, termination occurs if the best fitness changes less
- than 
-\emph on
-th
-\emph default
- for a stagnation period 
-\emph on
-p
-\emph default
-, meaning 
-\begin_inset Formula $\forall\, i\in\{0,1,...p-1\}:|f(x_{t-i}^{*})-f(x_{t-p}^{*})|<th$
-\end_inset
-
-, where 
-\begin_inset Formula $f(x)$
-\end_inset
-
- stands for the fitness at position 
-\begin_inset Formula $x$
-\end_inset
-
-, while 
-\begin_inset Formula $x_{t}^{*}$
-\end_inset
-
- is the best solution found in iteration 
-\begin_inset Formula $t$
-\end_inset
-
-.
- In the relative case, termination occurs if the fitness changes less than
- a certain percentage for a stagnation period, meaning 
-\begin_inset Formula $\forall\, i\in\{0,1,..,p-1\}:|f(x_{t-i}^{*})-f(x_{t-p}^{*})|<|f(x_{t-p}^{*})|\cdot th$
-\end_inset
-
-.
- Constructor parameters:
-\family roman
-\series medium
-\shape up
-\size normal
-\emph off
-\bar no
-\noun off
-\color none
- 
-\end_layout
-
-\begin_deeper
-\begin_layout List
-\labelwidthstring 00.00.0000
-
-\family typewriter
-thresh
-\family roman
-\series medium
-\shape up
-\size normal
-\emph off
-\bar no
-\noun off
-\color none
-: double valued fitness threshold 
-\family default
-\series default
-\shape default
-\size default
-\emph on
-\bar default
-\noun default
-th.
-\end_layout
-
-\begin_layout List
-\labelwidthstring 00.00.0000
-
-\family typewriter
-stagnPeriod
-\family roman
-\series medium
-\shape up
-\size normal
-\emph off
-\bar no
-\noun off
-\color none
-: integer length of the stagnation period.
-\end_layout
-
-\begin_layout List
-\labelwidthstring 00.00.0000
-
-\family typewriter
-bFitCallBased
-\family roman
-\series medium
-\shape up
-\size normal
-\emph off
-\bar no
-\noun off
-\color none
-: boolean flag indicating evaluation-based or generation-based stagnation
- period.
-\end_layout
-
-\begin_layout List
-\labelwidthstring 00.00.0000
-
-\family typewriter
-bAbsolute
-\family roman
-\series medium
-\shape up
-\size normal
-\emph off
-\bar no
-\noun off
-\color none
-: boolean flag  indicating absolute or relative 
-\family default
-\series default
-\shape default
-\size default
-\emph on
-\bar default
-\noun default
-th.
-\end_layout
-
-\end_deeper
-\begin_layout List
-\labelwidthstring 00.00.0000
-
-\family typewriter
-PhenotypeConvergenceTerminator
-\family default
-: In analogy to the 
-\family typewriter
-FitnessConvergenceTerminator
-\family default
-, terminate as soon as there is hardly any change in the best phenotype,
- meaning that 
-\begin_inset Formula $\forall\, i\in\{0,1,...p-1\}:|x_{t-i}^{*}-x_{t-p}^{*}|<th$
-\end_inset
-
- for the absolute case and 
-\begin_inset Formula $\forall\, i\in\{0,1,..,p-1\}:|x_{t-i}^{*}-x_{t-p}^{*}|<|x_{t-p}^{*}|\cdot th$
-\end_inset
-
- in the relative case.
- Constructor parameters:
-\family roman
-\series medium
-\shape up
-\size normal
-\emph off
-\bar no
-\noun off
-\color none
- 
-\end_layout
-
-\begin_deeper
-\begin_layout List
-\labelwidthstring 00.00.0000
-
-\family typewriter
-thresh
-\family roman
-\series medium
-\shape up
-\size normal
-\emph off
-\bar no
-\noun off
-\color none
-: double valued phenotype norm threshold 
-\family default
-\series default
-\shape default
-\size default
-\emph on
-\bar default
-\noun default
-th.
-\end_layout
-
-\begin_layout List
-\labelwidthstring 00.00.0000
-
-\family typewriter
-stagnPeriod
-\family roman
-\series medium
-\shape up
-\size normal
-\emph off
-\bar no
-\noun off
-\color none
-: integer length of the stagnation period.
-\end_layout
-
-\begin_layout List
-\labelwidthstring 00.00.0000
-
-\family typewriter
-bFitCallBased
-\family roman
-\series medium
-\shape up
-\size normal
-\emph off
-\bar no
-\noun off
-\color none
-: boolean flag indicating evaluation-based or generation-based stagnation
- period.
-\end_layout
-
-\begin_layout List
-\labelwidthstring 00.00.0000
-
-\family typewriter
-bAbsolute
-\family roman
-\series medium
-\shape up
-\size normal
-\emph off
-\bar no
-\noun off
-\color none
-: boolean flag  indicating absolute or relative 
-\family default
-\series default
-\shape default
-\size default
-\emph on
-\bar default
-\noun default
-th.
 \end_layout
 
 \end_deeper
@@ -5999,7 +5918,7 @@ CombinedTerminator
 \family default
  class which just takes to terminator instances and combines them logically.
  Thus, terminators can be nested as required.
- Constructor parameters:
+ Parameters:
 \end_layout
 
 \begin_deeper
@@ -6033,7 +5952,454 @@ bAnd
 
 \end_deeper
 \begin_layout Standard
-Notes on terminators: 
+A specific class of terminators checks for convergence of a population measure,
+ such as the average distance of individuals within the population.
+ Common to these terminators is the required definition of convergence.
+ Generally, convergence is assumed if the measure 
+\begin_inset Formula $m(P(t))$
+\end_inset
+
+ has not changed more than a certain threshold 
+\begin_inset Formula $\theta$
+\end_inset
+
+ during a fixed time period 
+\begin_inset Formula $t_{S}$
+\end_inset
+
+.
+ The stagnation time 
+\begin_inset Formula $t_{S}$
+\end_inset
+
+ may either be taken as fitness calls (calls to the target function) or
+ generations (iterations of the optimizer), however the population measure
+ is calculated only after full generations.
+\end_layout
+
+\begin_layout Standard
+The convergence threshold may either be an absolute value, a change of the
+ absolute value compared to 
+\begin_inset Formula $m(P(t-t_{S}))$
+\end_inset
+
+ or a change of the relative ratio of the value 
+\begin_inset Formula $m(P(t-t_{S}))$
+\end_inset
+
+.
+ Additionally, stagnation may be determined if no decrease by more than
+ 
+\family typewriter
+
+\begin_inset Formula $\theta$
+\end_inset
+
+
+\family default
+ has occurred, or if no change occured (bidirectional: neither decrease
+ nor increase by more than 
+\family typewriter
+
+\begin_inset Formula $\theta$
+\end_inset
+
+
+\family default
+).
+ In the case of bidirectional check, termination occurs if the population
+ measure changes less than 
+\emph on
+
+\begin_inset Formula $\theta$
+\end_inset
+
+
+\emph default
+ for the stagnation period 
+\emph on
+
+\begin_inset Formula $t_{S}$
+\end_inset
+
+
+\emph default
+: 
+\begin_inset Formula $\forall\, i\in\{0,1,...p-1\}:m(x_{t-t_{S}})-\delta\le m(x_{t-i})\le m(x_{t-t_{S}})+\delta$
+\end_inset
+
+, where 
+\begin_inset Formula $m(x_{t})$
+\end_inset
+
+ stands for the population measure of individual 
+\begin_inset Formula $x$
+\end_inset
+
+ at generation 
+\begin_inset Formula $t$
+\end_inset
+
+.
+ The allowed boundary 
+\begin_inset Formula $\delta$
+\end_inset
+
+ is given with the fixed threshold in the absolute change case (
+\begin_inset Formula $\delta=\theta$
+\end_inset
+
+) or calculated from 
+\begin_inset Formula $m(x_{t-t_{S}})$
+\end_inset
+
+ in the relative change case: 
+\begin_inset Formula $\delta=\theta\cdot m(x_{t-t_{S}})$
+\end_inset
+
+.
+ In the absolute value case, 
+\begin_inset Formula $m(x_{t-i})$
+\end_inset
+
+ is directly compared to 
+\begin_inset Formula $\theta$
+\end_inset
+
+: 
+\begin_inset Formula $m(x_{t-i})\leq\theta$
+\end_inset
+
+ must hold for 
+\begin_inset Formula $t_{S}$
+\end_inset
+
+ iterations.
+\end_layout
+
+\begin_layout Standard
+The following Terminators are based on this convergence criterion:
+\end_layout
+
+\begin_layout List
+\labelwidthstring 00.00.0000
+
+\family typewriter
+FitnessConvergenceTerminator
+\family default
+: Terminate as soon as there is hardly any improvement (or change) in the
+ fitness of the best individual for a certain period of time.
+ In a multi-objective case, the 2-norm of the fitness vector is calculated
+ (however a pareto metric should be prefered in these cases).
+ Parameters:
+\size normal
+\noun off
+\color none
+ 
+\end_layout
+
+\begin_deeper
+\begin_layout List
+\labelwidthstring 00.00.0000
+
+\family typewriter
+checkType
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\noun off
+\color none
+: check for decrease only of the measure or bidirectional change, where
+ the measure may not leave in both directions to determine stagnation.
+\end_layout
+
+\begin_layout List
+\labelwidthstring 00.00.0000
+
+\family typewriter
+convergenceCondition
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\noun off
+\color none
+: 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\noun default
+\color inherit
+check for relative change, absolute change or absolute value reached along
+ the stagnation time.
+\end_layout
+
+\begin_layout List
+\labelwidthstring 00.00.0000
+
+\family typewriter
+convergenceThreshold
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\noun off
+\color none
+: double valued fitness threshold
+\family default
+\series default
+\shape default
+\emph default
+\bar default
+ 
+\size default
+\emph on
+\noun default
+
+\begin_inset Formula $\theta$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout List
+\labelwidthstring 00.00.0000
+
+\family typewriter
+stagnationMeasure
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\noun off
+\color none
+: interprete the stagnation time as number of function calls or generations.
+\end_layout
+
+\begin_layout List
+\labelwidthstring 00.00.0000
+
+\family typewriter
+stagnationTime
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\noun off
+\color none
+: integer length of the stagnation time.
+\end_layout
+
+\end_deeper
+\begin_layout List
+\labelwidthstring 00.00.0000
+
+\family typewriter
+PhenotypeConvergenceTerminator
+\family default
+: In analogy to the 
+\family typewriter
+FitnessConvergenceTerminator
+\family default
+, terminate as soon as there is hardly any change in the best phenotype,
+ meaning that 
+\begin_inset Formula $m(P)=x_{best}$
+\end_inset
+
+ for the best indiviual 
+\begin_inset Formula $x_{best}\in P(t)$
+\end_inset
+
+.
+ Parameters: see 
+\family typewriter
+FitnessConvergenceTerminator
+\family default
+.
+\end_layout
+
+\begin_layout List
+\labelwidthstring 00.00.0000
+
+\family typewriter
+DiversityTerminator
+\family default
+: Terminate as soon as 
+\size normal
+\noun off
+\color none
+the average/minimal/maximal distance of individuals in the population stagnates.
+ Thus, 
+\begin_inset Formula $m(P)$
+\end_inset
+
+ calculates distances on all individuals in 
+\begin_inset Formula $P$
+\end_inset
+
+ at every iteration, which may be time-consuming.
+ 
+\size default
+\noun default
+\color inherit
+Parameters
+\size normal
+\noun off
+\color none
+: see 
+\family typewriter
+\size default
+\noun default
+\color inherit
+FitnessConvergenceTerminator
+\family default
+\size normal
+\noun off
+\color none
+, with additions:
+\end_layout
+
+\begin_deeper
+\begin_layout List
+\labelwidthstring 00.00.0000
+
+\family typewriter
+criterion
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\noun off
+\color none
+: 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\noun default
+\color inherit
+Check the minimal, maximal or average distance as diversity measure on 
+\begin_inset Formula $P$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout List
+\labelwidthstring 00.00.0000
+
+\family typewriter
+metric
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\noun off
+\color none
+: The metric to use for distance calculation.
+\end_layout
+
+\end_deeper
+\begin_layout List
+\labelwidthstring 00.00.0000
+
+\family typewriter
+ParetoMetricTerminator:
+\family default
+ Terminate 
+\size normal
+\noun off
+\color none
+if the Pareto front of a multi-objective optimization problem stagnates.
+ To measure progress on pareto fronts, several metrics can be used.
+ Note that this only works with multi-objective problem instances.
+ 
+\size default
+\noun default
+\color inherit
+Parameters
+\size normal
+\noun off
+\color none
+: see 
+\family typewriter
+\size default
+\noun default
+\color inherit
+FitnessConvergenceTerminator
+\family default
+\size normal
+\noun off
+\color none
+, with additions:
+\end_layout
+
+\begin_deeper
+\begin_layout List
+\labelwidthstring 00.00.0000
+
+\family typewriter
+paretoMetric
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\noun off
+\color none
+: 
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\noun default
+\color inherit
+The metric to use to measure change of the Pareto front.
+\end_layout
+
+\begin_layout List
+\labelwidthstring 00.00.0000
+
+\family typewriter
+useCurrentPop
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\noun off
+\color none
+: Apply the measure to the current population or the current Pareto front
+ stored by the optimizer.
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+Some notes on terminators: 
 \end_layout
 
 \begin_layout Itemize
@@ -6054,6 +6420,9 @@ Concerning convergence terminators: Note that for flat plateaus in fitness
  in phenotype but still change considerably in fitness.
  When using convergence terminators, we suggest to set the stagnation period
  sufficiently high.
+ Also, take care when checking for relative convergence with measures tending
+ towards zero, since relative fluctuations with very small values may be
+ high without showing real progress.
 \end_layout
 
 \begin_layout Standard
@@ -6079,7 +6448,8 @@ status open
 \end_inset
 
 
-\begin_inset LatexCommand \ref{alg:Comb-terminator}
+\begin_inset LatexCommand ref
+reference "alg:Comb-terminator"
 
 \end_inset
 
@@ -6290,9 +6660,13 @@ end{lstlisting}
 
 \end_layout
 
-\begin_layout Caption
+\begin_layout Standard
+\begin_inset Caption
+
+\begin_layout Standard
 Terminator combination example.
-\begin_inset LatexCommand \label{alg:Comb-terminator}
+\begin_inset LatexCommand label
+name "alg:Comb-terminator"
 
 \end_inset
 
@@ -6304,7 +6678,12 @@ Terminator combination example.
 
 \end_layout
 
-\begin_layout Subsection
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
 Customizing the Optimization
 \end_layout
 
@@ -6335,7 +6714,8 @@ status collapsed
 \end_inset
 
 
-\begin_inset LatexCommand \ref{sub:The-Workbench-Window}
+\begin_inset LatexCommand ref
+reference "sub:The-Workbench-Window"
 
 \end_inset
 
@@ -6351,13 +6731,14 @@ OptimizerFactory
  and then start the optimization using this altered parameter instance.
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 Accessing Parameters
 \end_layout
 
 \begin_layout Standard
 Look at Listing 
-\begin_inset LatexCommand \ref{alg:Customizing-optimization.}
+\begin_inset LatexCommand ref
+reference "alg:Customizing-optimization."
 
 \end_inset
 
@@ -6592,9 +6973,18 @@ end{lstlisting}
 
 \end_layout
 
-\begin_layout Caption
+\begin_layout Standard
+\begin_inset Caption
+
+\begin_layout Standard
 Customized optimization example.
-\begin_inset LatexCommand \label{alg:Customizing-optimization.}
+\begin_inset LatexCommand label
+name "alg:Customizing-optimization."
+
+\end_inset
+
+
+\end_layout
 
 \end_inset
 
@@ -6608,7 +6998,8 @@ Customized optimization example.
 
 \begin_layout Standard
 Note that in example 
-\begin_inset LatexCommand \ref{alg:Customizing-optimization.}
+\begin_inset LatexCommand ref
+reference "alg:Customizing-optimization."
 
 \end_inset
 
@@ -6629,9 +7020,10 @@ Note that in example
  range.
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 Setting Evolutionary Operators
-\begin_inset LatexCommand \label{sub:Setting-Evolutionary-Operators}
+\begin_inset LatexCommand label
+name "sub:Setting-Evolutionary-Operators"
 
 \end_inset
 
@@ -6884,9 +7276,18 @@ end{lstlisting}
 
 \end_layout
 
-\begin_layout Caption
+\begin_layout Standard
+\begin_inset Caption
+
+\begin_layout Standard
 Setting up a (1+5) CMA-ES.
-\begin_inset LatexCommand \label{alg:(1+5)-CMA-ES.}
+\begin_inset LatexCommand label
+name "alg:(1+5)-CMA-ES."
+
+\end_inset
+
+
+\end_layout
 
 \end_inset
 
@@ -6911,7 +7312,8 @@ status open
 \end_inset
 
 
-\begin_inset LatexCommand \ref{alg:(1+5)-CMA-ES.}
+\begin_inset LatexCommand ref
+reference "alg:(1+5)-CMA-ES."
 
 \end_inset
 
@@ -6937,7 +7339,8 @@ status open
 \end_inset
 
 
-\begin_inset LatexCommand \ref{alg:(1+5)-CMA-ES.}
+\begin_inset LatexCommand ref
+reference "alg:(1+5)-CMA-ES."
 
 \end_inset
 
@@ -7028,9 +7431,10 @@ Operator(...)
  by definition.
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 A Multi-Modal Example with Post-Processing
-\begin_inset LatexCommand \label{sub:A-Multi-Modal-Example}
+\begin_inset LatexCommand label
+name "sub:A-Multi-Modal-Example"
 
 \end_inset
 
@@ -7039,7 +7443,8 @@ A Multi-Modal Example with Post-Processing
 
 \begin_layout Standard
 When looking at the last example in 
-\begin_inset LatexCommand \ref{sub:Setting-Evolutionary-Operators}
+\begin_inset LatexCommand ref
+reference "sub:Setting-Evolutionary-Operators"
 
 \end_inset
 
@@ -7073,12 +7478,14 @@ status open
 \end_inset
 
 
-\begin_inset LatexCommand \ref{alg:CBN-pp}
+\begin_inset LatexCommand ref
+reference "alg:CBN-pp"
 
 \end_inset
 
  shows an example using the clustering-based niching EA (CBN-EA) 
-\begin_inset LatexCommand \cite{streichertClustering03}
+\begin_inset LatexCommand cite
+key "streichertClustering03"
 
 \end_inset
 
@@ -7330,9 +7737,18 @@ end{lstlisting}
 
 \end_layout
 
-\begin_layout Caption
+\begin_layout Standard
+\begin_inset Caption
+
+\begin_layout Standard
 Solving a bimodal function with CBN and post-processing.
-\begin_inset LatexCommand \label{alg:CBN-pp}
+\begin_inset LatexCommand label
+name "alg:CBN-pp"
+
+\end_inset
+
+
+\end_layout
 
 \end_inset
 
@@ -7379,7 +7795,8 @@ status collapsed
 \end_inset
 
 
-\begin_inset LatexCommand \ref{fig:Exemplary-states-of-CBN}
+\begin_inset LatexCommand ref
+reference "fig:Exemplary-states-of-CBN"
 
 \end_inset
 
@@ -7412,9 +7829,18 @@ status open
 
 \end_layout
 
-\begin_layout Caption
+\begin_layout Standard
+\begin_inset Caption
+
+\begin_layout Standard
 Exemplary states of CBN on the simple bimodal FM0Problem.
-\begin_inset LatexCommand \label{fig:Exemplary-states-of-CBN}
+\begin_inset LatexCommand label
+name "fig:Exemplary-states-of-CBN"
+
+\end_inset
+
+
+\end_layout
 
 \end_inset
 
@@ -7442,9 +7868,10 @@ The FM0Problem is of course very simple, 2-dimensional and having only two
  set.
 \end_layout
 
-\begin_layout Section
+\begin_layout Chapter
 Further Reading
-\begin_inset LatexCommand \label{sec:Further-Reading}
+\begin_inset LatexCommand label
+name "sec:Further-Reading"
 
 \end_inset
 
@@ -7454,13 +7881,15 @@ Further Reading
 \begin_layout Standard
 As noted before, this introduction does not cover algorithmic basics.
  We recommend the introduction of Engelbrecht 
-\begin_inset LatexCommand \cite{Engelbrecht07CI}
+\begin_inset LatexCommand cite
+key "Engelbrecht07CI"
 
 \end_inset
 
- for newer strategies (DE, PSO) and Bäck et al.
+ for newer strategies (DE, PSO) and BÃ¤ck et al.
  
-\begin_inset LatexCommand \cite{Baeck99EC1}
+\begin_inset LatexCommand cite
+key "Baeck99EC1"
 
 \end_inset
 
@@ -7481,13 +7910,15 @@ status collapsed
 2
 \noun default
 , a look on the technical report of 2005 
-\begin_inset LatexCommand \cite{JOptDocumentation}
+\begin_inset LatexCommand cite
+key "JOptDocumentation"
 
 \end_inset
 
 , though slightly outdated, will still be helpful, as well as the thesis
  of Felix Streichert 
-\begin_inset LatexCommand \cite{Streichert07}
+\begin_inset LatexCommand cite
+key "Streichert07"
 
 \end_inset
 
@@ -7502,7 +7933,7 @@ JavaEvA
 \begin_inset Note Comment
 status collapsed
 
-\begin_layout Section
+\begin_layout Chapter
 General Hints on Optimization with 
 \noun on
 EvA 2
@@ -7557,7 +7988,8 @@ status open
 \end_inset
 
 
-\begin_inset LatexCommand \ref{sec:Quickly-Adding-Your-Problem}
+\begin_inset LatexCommand ref
+reference "sec:Quickly-Adding-Your-Problem"
 
 \end_inset
 
@@ -7588,7 +8020,8 @@ status open
 \end_inset
 
 
-\begin_inset LatexCommand \ref{sec:External-Interfaces}
+\begin_inset LatexCommand ref
+reference "sec:External-Interfaces"
 
 \end_inset
 
@@ -7631,7 +8064,8 @@ status open
 \end_inset
 
 
-\begin_inset LatexCommand \ref{sub:Accessing-Standard-Optimizers}
+\begin_inset LatexCommand ref
+reference "sub:Accessing-Standard-Optimizers"
 
 \end_inset
 
@@ -7679,7 +8113,8 @@ status open
 \end_inset
 
 
-\begin_inset LatexCommand \ref{sec:Using-the-API}
+\begin_inset LatexCommand ref
+reference "sec:Using-the-API"
 
 \end_inset
 
@@ -7697,31 +8132,31 @@ Which options can be changed at all for optimizer X? -> anhang with GOParameter
  Access optimizer directly.
 \end_layout
 
-\begin_layout Section
+\begin_layout Chapter
 Optimization Context
 \end_layout
 
-\begin_layout Section
+\begin_layout Chapter
 Architecture
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Section
 The JE2 Modules
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Section
 The Concepts
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Section
 The GUI Workbench
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Section
 The Configuration File
 \end_layout
 
-\begin_layout Section
+\begin_layout Chapter
 Advanced Use Cases
 \end_layout
 
@@ -7731,7 +8166,9 @@ Advanced Use Cases
 \end_layout
 
 \begin_layout Standard
-\begin_inset LatexCommand \bibtex[plain]{/afs/cs.uni-tuebingen.de/home/mkron/workspace/JE2Base/doc/EvA2DocCitations}
+\begin_inset LatexCommand bibtex
+options "plain"
+bibfiles "/afs/cs.uni-tuebingen.de/home/mkron/workspace/JE2Base/doc/EvA2DocCitations"
 
 \end_inset
 
