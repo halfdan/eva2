@@ -1,35 +1,19 @@
 package eva2.server.go.strategies;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Vector;
 
+import eva2.gui.GenericObjectEditor;
 import eva2.server.go.InterfacePopulationChangedEventListener;
 import eva2.server.go.individuals.AbstractEAIndividual;
-import eva2.server.go.individuals.InterfaceESIndividual;
-import eva2.server.go.operators.archiving.AbstractArchiving;
 import eva2.server.go.operators.archiving.ArchivingNSGAII;
 import eva2.server.go.operators.archiving.ArchivingNSGAIISMeasure;
-import eva2.server.go.operators.mutation.InterfaceMutationGenerational;
 import eva2.server.go.operators.mutation.MutateESCovarianceMatrixAdaptionPlus;
-import eva2.server.go.operators.selection.InterfaceSelection;
-import eva2.server.go.operators.selection.SelectBestIndividuals;
-import eva2.server.go.operators.selection.SelectMONSGAIICrowedTournament;
-import eva2.server.go.operators.selection.SelectMONonDominated;
 import eva2.server.go.populations.InterfaceSolutionSet;
 import eva2.server.go.populations.Population;
 import eva2.server.go.populations.SolutionSet;
 import eva2.server.go.problems.AbstractOptimizationProblem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-
-import eva2.tools.math.Mathematics;
-import eva2.tools.math.RNG;
-import eva2.tools.math.Jama.EigenvalueDecomposition;
-import eva2.tools.math.Jama.Matrix;
 
 public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
 
@@ -42,7 +26,7 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
 		public boolean seen = false;
 	}
 
-	private String m_Identifier = "NelderMeadSimplex";
+	private String m_Identifier = "MOCMAES";
 
 	private Population m_Population;
 	private AbstractOptimizationProblem m_Problem;
@@ -60,19 +44,22 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
 		m_Problem = (AbstractOptimizationProblem) a.m_Problem.clone();
 		setPopulation((Population) a.m_Population.clone());
 		m_lambda = a.m_lambda;
-		m_Identifier = a.m_Identifier;
 	}
 
 	public MultiObjectiveCMAES clone() {
 		return new MultiObjectiveCMAES(this);
 	}
 
-	// @Override
+	public void hideHideable() {
+		GenericObjectEditor.setHideProperty(this.getClass(), "population", true);
+	}
+	
+	 @Override
 	public void SetIdentifier(String name) {
 		m_Identifier = name;
 	}
 
-	// @Override
+	 @Override
 	public void SetProblem(InterfaceOptimizationProblem problem) {
 		m_Problem = (AbstractOptimizationProblem) problem;
 	}
@@ -87,38 +74,41 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
 		this.m_Listener = ea;
 	}
 
-	// @Override
+	 @Override
 	public void freeWilly() {
 	}
 
-	// @Override
+	 @Override
 	public InterfaceSolutionSet getAllSolutions() {
 		Population pop = getPopulation();
 		return new SolutionSet(pop, pop);
 	}
 
-	// @Override
+	 @Override
 	public String getIdentifier() {
-
 		return m_Identifier;
 	}
 
-	// @Override
+	 @Override
 	public String getName() {
 		return "(1+" + m_lambda + ") MO-CMA-ES";
 	}
 
-	// @Override
+	 public static String globalInfo() {
+		 return "A multi-objective CMA-ES variant after Igel, Hansen and Roth 2007 (EC 15(1),1-28).";
+	 }
+	 
+	 @Override
 	public Population getPopulation() {
 		return m_Population;
 	}
 
-	// @Override
+	 @Override
 	public InterfaceOptimizationProblem getProblem() {
 		return m_Problem;
 	}
 
-	// @Override
+	 @Override
 	public String getStringRepresentation() {
 		StringBuilder strB = new StringBuilder(200);
 		strB.append("(1+" + m_lambda + ") MO-CMA-ES:\nOptimization Problem: ");
@@ -128,7 +118,7 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
 		return strB.toString();
 	}
 
-	// @Override
+	 @Override
 	public void init() {
 		// initByPopulation(m_Population, true);
 		this.m_Population.setTargetSize(m_lambdamo);
@@ -139,7 +129,7 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
 
 	}
 
-	// @Override
+	 @Override
 	public void initByPopulation(Population pop, boolean reset) {
 		setPopulation(pop);
 		if (reset) {
@@ -159,7 +149,7 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
 		this.m_Problem.evaluate(population);
 	}
 
-	// @Override
+	 @Override
 	public void optimize() {
 
 		HashMap<Long, CounterClass> SuccessCounterMap = new HashMap<Long, CounterClass>();
@@ -291,13 +281,13 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
 
 	}
 
-	// @Override
+	 @Override
 	public boolean removePopulationChangedEventListener(
 			InterfacePopulationChangedEventListener ea) {
 		return false;
 	}
 
-	// @Override
+	 @Override
 	public void setPopulation(Population pop) {
 		m_Population = pop;
 		m_Population.setNotifyEvalInterval(1);
@@ -318,7 +308,6 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
 	public int getLambda() {
 		return m_lambda;
 	}
-
 	public void setLambda(int mLambda) {
 		m_lambda = mLambda;
 	}
