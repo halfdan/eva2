@@ -1006,6 +1006,24 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     }
     
     /** 
+     * This method returns the n current worst individuals from the population, where
+     * the sorting criterion is delivered by an AbstractEAIndividualComparator.
+     * There are less than n individuals returned if the population is smaller than n.
+     * If n is <= 0, then all individuals are returned and effectively just sorted
+     * by fitness.
+     * This does not check constraints!
+     * 
+     * @param n	number of individuals to look out for
+     * @return The m worst individuals, where m <= n
+     * 
+     */
+    public Population getWorstNIndividuals(int n, int fitIndex) {
+    	Population pop = new Population(n);
+    	getSortedNIndividuals(n, false, pop, new AbstractEAIndividualComparator(fitIndex));
+    	return pop;
+    }
+    
+    /** 
      * This method returns a clone of the population instance with sorted individuals, where
      * the sorting criterion is delivered by a Comparator.
      * @see #getSortedNIndividuals(int, boolean, Population, Comparator)
