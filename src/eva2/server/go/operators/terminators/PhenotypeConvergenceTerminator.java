@@ -16,8 +16,8 @@ public class PhenotypeConvergenceTerminator extends PopulationMeasureTerminator 
 		pMetric = new PhenotypeMetric();
 	}
 
-	public PhenotypeConvergenceTerminator(double thresh, int stagnTime, boolean bFitCallBased, ChangeTypeEnum changeType, boolean bImprovement) {
-		super(thresh, stagnTime, bFitCallBased, changeType, bImprovement);
+	public PhenotypeConvergenceTerminator(double thresh, int stagnTime, StagnationTypeEnum stagType, ChangeTypeEnum changeType, DirectionTypeEnum dirType) {
+		super(thresh, stagnTime, stagType, changeType, dirType);
 		pMetric = new PhenotypeMetric();
 	}
 	

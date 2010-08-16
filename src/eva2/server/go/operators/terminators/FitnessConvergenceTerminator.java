@@ -20,8 +20,8 @@ implements InterfaceTerminator, Serializable {
 		super();
 	}
 
-	public FitnessConvergenceTerminator(double thresh, int stagnPeriod, boolean bFitCallBased, boolean bAbsolute, boolean bImprovement) {
-		super(thresh, stagnPeriod, bFitCallBased, ChangeTypeEnum.absoluteChange, bImprovement);
+	public FitnessConvergenceTerminator(double thresh, int stagnPeriod, StagnationTypeEnum stagType, ChangeTypeEnum changeType, DirectionTypeEnum dirType) {
+		super(thresh, stagnPeriod, stagType, changeType, dirType);
 	}
 
 	public FitnessConvergenceTerminator(FitnessConvergenceTerminator other) {
