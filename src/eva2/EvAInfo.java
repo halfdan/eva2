@@ -9,6 +9,10 @@ import eva2.tools.BasicResourceLoader;
  * Main product and version information strings.
  * 
  * --- Changelog
+ * 2.045: Added MOOCMAES (de Paly); compatibility with Java 1.5 (Draeger); Revision of the statistics class
+ * 			with improved pipelining of data (InterfaceAdditionalPopulationInformer); improved FunctionArea
+ * 			concerning history, labels, legend and graph coloring; improved StringSelection; restructured
+ * 			Terminators, additional ParetoMetricTerminator. Further bugfixes and clean-ups.
  * 2.043: Added proper Population equality predicate.
  * 2.042: Some bugfixes. Removing dependency on sun.beans.editors, replaced non-free jpeg-codec. There should
  * 			be no more problems on OpenJDK. Added a simple initialization range, especially for use from Matlab.
