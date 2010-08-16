@@ -78,13 +78,6 @@
   <property name="check.libraries.ant"            value="ant/check.xml" />
   <property name="windows.libraries"              value="${library.directory}/windows" />
   <property name="unix.libraries"                 value="${library.directory}/linux" />
-  <!--
-  <property name="library.SNNS"                   value="SNNS_jkr" />
-  <property name="library.JMatLink"               value="JMatLink" />
-  <property name="library.WSI.ant"                value="../java" />
-  <property name="library.WSI.original"           value="${library.WSI.ant}/dist/wsi.jar" />
-  <property name="library.WSI"                    value="lib/wsi2.jar" />
-  -->
 
   <!-- SET THE JAVA BINARY LIBRARIES PROPERTIES -->
   <property name="ant.java.version"               value="1.5" />
@@ -260,7 +253,6 @@
      <exclude name="doc/**" />
      <exclude name="resources/**" />
      <exclude name="images/**" />
-     <exclude name="lib/**" />
      <exclude name="project/**" />
 	<classpath>
         <pathelement path="${project.class.path}" />
@@ -273,8 +265,8 @@
    </javac>
 
    <!-- GENERATE RMI STUB FILES -->
-   <rmic includes="wsi/ra/jproxy/RMIInvocationHandlerImpl.class"       stubversion="-v1.2" base="${build.directory}"/>
-   <rmic includes="wsi/ra/jproxy/RMIThreadInvocationHandlerImpl.class" stubversion="-v1.2" base="${build.directory}"/>
+   <rmic includes="eva2/tools/jproxy/RMIInvocationHandlerImpl.class"       stubversion="-v1.2" base="${build.directory}"/>
+   <rmic includes="eva2/tools/jproxy/RMIThreadInvocationHandlerImpl.class" stubversion="-v1.2" base="${build.directory}"/>
 
    <!-- COPY DATA FILES TO BUILD DIRECTORY -->
     <copy todir="${build.directory}/resources">
