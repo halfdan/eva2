@@ -23,20 +23,23 @@
 <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         Set properties
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
-
+	<!-- EvA2 PROPERTIES -->
+	
   <!-- SET THE DIRECTORY PROPERTIES -->
   <property name="source.directory"               value="src" />
-	  <property name="ant.directory"               value="ant" />
+  <property name="ant.directory"               	  value="ant" />
   <property name="build.directory"                value="build" />
   <property name="distribution.directory"         value="dist" />
   <property name="resources.directory"            value="resources" />
-  <property name="matlabinterface.basedir"            value="resources/MatlabInterface" />
-  <property name="matlabinterface.title"            value="JEInterface" />
-  <property name="web.download.directory"            value="/afs/cs.uni-tuebingen.de/ra/www/software/EvA2/downloads" />
-  <property name="doc.directory" 			value="doc" />
+  <property name="matlabinterface.basedir"        value="resources/MatlabInterface" />
+  <property name="matlabinterface.title"          value="JEInterface" />
+  <property file="${resources.directory}/EvA2.props"/>
+  
+	<property name="web.download.base"              value="/afs/cs.uni-tuebingen.de/ra/www/software/EvA2/downloads" />
+	<property name="web.download.versionprefix"			value="${web.download.base}/${EvA2Version}" />
+  <property name="doc.directory"					value="doc" />
   <property name="htmldoc.directory.name" 			value="EvA2Doc" />
   <property name="pdfdoc.name" 						value="EvA2Doc.pdf" />
-  <property name="web.documentation.directory" 		value="/afs/cs.uni-tuebingen.de/ra/www/software/EvA2/EvA2Doc/" />
 	<property name="source.distribution.directory"  value="${distribution.directory}/src-dist" />
   <property name="binary.distribution.directory"  value="${distribution.directory}/bin-dist" />
   <property name="javadoc.directory"              value="doc/api" />
@@ -45,11 +48,17 @@
 	  <property name="jar.name"						value="EvA2Base" />
 	  <property name="srcpack.name"					value="EvA2BaseSrc" />
    <!-- documentation -->
-	<property name="doc.directory" 			value="doc" />
-	  <property name="htmldoc.directory.name" 			value="EvA2Doc" />
-	  <property name="pdfdoc.name" 						value="EvA2Doc.pdf" />
-	  <property name="web.documentation.directory" 		value="/afs/cs.uni-tuebingen.de/ra/www/software/EvA2/EvA2Doc/" />
+    <property name="web.documentation.directory" 	value="/afs/cs.uni-tuebingen.de/ra/www/software/EvA2/EvA2Doc/" />
+	<property name="doc.directory" 					value="doc" />
+	<property name="htmldoc.directory.name" 		value="EvA2Doc" />
+	<property name="pdfdoc.name" 					value="EvA2Doc.pdf" />
 
+	<!-- 
+	Wanted to give a warning if a version is put online that already existed online. Ill leave it a TODO.
+	<condition property="web.currentVersionExists" else="false">
+	<available file="${web.download.base}/asdf.jar"/>
+	</condition> -->
+	
 	<!-- SET THESE PATHES IF YOU WANT TO COMPILE ADDITIONAL EvA2 PACKAGES -->
 	  <property name="JE2Probs.directory"			value="../JE2Probs" />	
 	  <property name="JE2ESModel.directory"			value="../JE2ESModel" />
@@ -108,12 +117,6 @@
   <!-- ENVIRNONMENT PROPERTIES -->
   <property environment="env"/>
   
-  <!-- EvA2 PROPERTIES -->
-  <property file="${resources.directory}/EvA2.props"/>
-	<condition property="web.currentVersionExists" else="false">
-	  <available file="${web.download.directory}/${jar.name}-${EvA2Version}.jar"/>
-	</condition>
-	
 <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         Usage
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
@@ -232,10 +235,13 @@
    </target>
 
   <target name="compileInfo" unless="silent">
-    <echo message="JE2Base Project"/>
+    <tstamp />
+    <echo message="*** JE2Base Project ***"/>
+  	<echo message="Timestamp: ${DSTAMP}-${TSTAMP}"/>
+  	<echo message="Version: ${EvA2Version}" />
     <echo message="ANT_HOME is set to = ${env.ANT_HOME}"/>
     <echo message="JAVA_HOME is set to = ${env.JAVA_HOME}"/>
-    <echo message="You are using JDK version ${ant.java.version}, currently JDK version 1.5 is recomended!"/>
+    <echo message="You are using JDK version ${ant.java.version}"/>
     <echo message=""/>
     <echo message="use 'ant compileAll' - to compile all java sources (+ WSI)."/>
     <echo message="use 'ant compile'    - to compile only the java sources (faster)."/>
@@ -589,10 +595,12 @@
 	<!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 		        Copy www distributed version to backup directory.
 	+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+	<!-- 
+	should not be necessary any more: each revision gets its own directory
 	<target name="backupWWW" depends="init">
-		<mkdir dir="${web.download.directory}/old-${DSTAMP}-${TSTAMP}" />
-		<copy todir="${web.download.directory}/old-${DSTAMP}-${TSTAMP}">
-	      <fileset dir="${web.download.directory}">
+		<mkdir dir="${web.download.base}/old-${DSTAMP}-${TSTAMP}" />
+		<copy todir="${web.download.base}/old-${DSTAMP}-${TSTAMP}">
+	      <fileset dir="${web.download.versioned}">
 	      	<include name="**Src.tar.gz" />
 	      	<include name="**.jar" />
 	      	<include name="${matlabinterface.title}.tar.gz" />
@@ -601,22 +609,31 @@
 	      	<include name="**" />
 	      </fileset>
 	    </copy>		
-	</target>
+	</target> -->
 	
 	<!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 		        Generate Distribution and put it online. This also replaces the 
 		        Probs and ESModel packages, so keep them synchronized.
 	+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
-	<target name="distToWWW" depends="init, backupWWW, docToWWW">
-	    <copy todir="${web.download.directory}">
-	      <fileset dir="${distribution.directory}">
+	<target name="distToWWW" depends="init, docToWWW">
+	      <fileset id="EvA2Stuff" dir="${distribution.directory}">
 	      	<include name="**Src.tar.gz" />
 	      	<include name="**.jar" />
 	      	<include name="${matlabinterface.title}.tar.gz" />
 	      </fileset>
-	      <fileset dir="${source.directory}/eva2">
+	      <fileset id="EvAInfo" dir="${source.directory}/eva2">
 	      	<include name="EvAInfo.java" />
 	      </fileset>
+		
+		<!-- force copy to base directory -->
+	    <copy todir="${web.download.base}" overwrite="true">
+	    	<fileset refid="EvA2Stuff"/>
+	    	<fileset refid="EvAInfo"/>
+	    </copy>
+		 <!-- copy to versioned directory -->
+	    <mkdir dir="${web.download.versionprefix}-${DSTAMP}"/>
+	    <copy todir="${web.download.versionprefix}-${DSTAMP}">
+	    	<fileset refid="EvA2Stuff"/>
 	    </copy>
 	</target>
 	
