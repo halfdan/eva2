@@ -30,8 +30,6 @@ public class ParetoMetricTerminator extends PopulationMeasureTerminator implemen
 		moProb=null;
 	}
 	
-	//public PopulationMeasureTerminator(double convergenceThreshold, int stagnationTime, boolean bFitCallBased, ChangeTypeEnum detectChangeType, boolean bImprovement) {
-
 	public ParetoMetricTerminator(InterfaceParetoFrontMetric metric, boolean useCurrentPop, double convergenceThreshold, int stagnationTime, StagnationTypeEnum stagType, ChangeTypeEnum changeType, DirectionTypeEnum dirType) {
 		super(convergenceThreshold, stagnationTime, stagType, changeType, dirType);
 		this.pMetric = metric;
@@ -78,6 +76,11 @@ public class ParetoMetricTerminator extends PopulationMeasureTerminator implemen
 		
 		if (metricName==null) return "ParetoMetric";
 		else return metricName;
+	}
+
+	public static String globalInfo() {
+		return "Terminate if the pareto front of a multi-objective optimization process converges " +
+				"with respect to a certain measure.";
 	}
 
 	public void setParetoMetric(InterfaceParetoFrontMetric pMetric) {
