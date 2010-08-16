@@ -12,26 +12,11 @@ import eva2.server.go.populations.Population;
  *
  */
 public class PopulationArchiveTerminator extends PopulationMeasureTerminator {
-	IndividualWeightedFitnessComparator wfComp = new IndividualWeightedFitnessComparator(null);
-	
-//	private boolean isStillConverged(PopulationInterface pop) {
-//		Population archive = ((Population)pop).getArchive();
-//		if (archive==null || (archive.size()<1)) {
-//			System.err.println("Error, population had no archive in " + this.getClass());
-//			return false;
-//		} else {
-//			double bestScore = Population.getScore(archive.getEAIndividual(0), fitWeights);
-//			for (int i=1; i<archive.size(); i++) {
-//				double tmpScore =  Population.getScore(archive.getEAIndividual(i), fitWeights);
-//				if (tmpScore<bestScore) bestScore=tmpScore;
-//			}
-//			if (bestScore>=oldScore) return true;
-//			else {
-//				oldScore=bestScore;
-//				return false;
-//			}
-//		}
-//	}
+	IndividualWeightedFitnessComparator wfComp = new IndividualWeightedFitnessComparator(new double[]{1.});
+
+	public static String globalInfo() {
+		return "Stop if a linear recombination of the best fitness stagnates for a certain period.";
+	}
 	
 	@Override
 	protected double calcInitialMeasure(PopulationInterface pop) {
