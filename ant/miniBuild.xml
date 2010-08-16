@@ -25,42 +25,44 @@
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
 
   <!-- SET THE DIRECTORY PROPERTIES -->
-  <property name="source.directory"               value="src" />
-  <property name="ant.directory"               value="ant" />
-  <property name="build.directory"                value="build" />
-  <property name="resources.directory"            value="resources" />
-  <property name="matlabinterface.basedir"            value="resources/MatlabInterface" />
-  <property name="matlabinterface.title"            value="JEInterface" />
-  <property name="source.distribution.directory"  value="${distribution.directory}/src-dist" />
-  <property name="binary.distribution.directory"  value="${distribution.directory}/bin-dist" />
-  <property name="javadoc.directory"              value="doc/api" />
-	  <property name="jar.name"						value="EvA2Base" />
-	  <property name="srcpack.name"					value="EvA2BaseSrc" />
+	<property name="source.directory"				value="src" />
+	<property name="ant.directory"					value="ant" />
+	<property name="build.directory"				value="build" />
+	<property name="resources.directory"			value="resources" />
+	<property name="library.directory"				value="lib" />
+	<property name="matlabinterface.basedir"		value="resources/MatlabInterface" />
+	<property name="matlabinterface.title"			value="JEInterface" />
+	<property name="distribution.directory"			value="dist" />
+	<property name="source.distribution.directory"	value="${distribution.directory}/src-dist" />
+	<property name="binary.distribution.directory"	value="${distribution.directory}/bin-dist" />
+	<property name="javadoc.directory"				value="doc/api" />
+	<property name="jar.name"						value="EvA2Base" />
+	<property name="srcpack.name"					value="EvA2BaseSrc" />
 	<!-- SET THESE PATHES IF YOU WANT TO COMPILE ADDITIONAL EvA2 PACKAGES -->
-	  <property name="JE2Probs.directory"			value="../JE2Probs" />	
-	  <property name="JE2ESModel.directory"			value="../JE2ESModel" />			
-	  <property name="JE2Research.directory"			value="../JE2Research" />
+	<property name="JE2Probs.directory"				value="../JE2Probs" />	
+	<property name="JE2ESModel.directory"			value="../JE2ESModel" />			
+	<property name="JE2Research.directory"			value="../JE2Research" />
 	
 	<condition property="JE2Probs.available" else="false">
-	  <available file="${JE2Probs.directory}"/>
+		<available file="${JE2Probs.directory}"/>
 	</condition>
 	<condition property="JE2ESModel.available" else="false">
-	  <available file="${JE2ESModel.directory}"/>
+		<available file="${JE2ESModel.directory}"/>
 	</condition>
 	<condition property="JE2Research.available" else="false">
-	  <available file="${JE2Research.directory}"/>
+		<available file="${JE2Research.directory}"/>
 	</condition>
 
-  <!-- SET THE JAVA BINARY LIBRARIES PROPERTIES -->
-  <property name="ant.java.version"               value="1.5" />
+	<!-- SET THE JAVA BINARY LIBRARIES PROPERTIES -->
+	<property name="ant.java.version"							 value="1.5" />
 
-  <!-- SET CLASSPATH -->
-  <path id="project.class.path">
-  	<pathelement location="." />
-  </path>
+	<!-- SET CLASSPATH -->
+	<path id="project.class.path">
+		<pathelement location="." />
+	</path>
 
 	<!-- ENVIRNONMENT PROPERTIES -->
-  <property environment="env"/>
+	<property environment="env"/>
 
 <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         Usage
@@ -159,7 +161,7 @@
     <echo message="JE2Base Project"/>
     <echo message="ANT_HOME is set to = ${env.ANT_HOME}"/>
     <echo message="JAVA_HOME is set to = ${env.JAVA_HOME}"/>
-    <echo message="You are using JDK version ${ant.java.version}, at least JDK version 1.5 is recomended!"/>
+    <echo message="You are using JDK version ${ant.java.version}."/>
     <echo message=""/>
     <echo message="use 'ant compileAll' - to compile all packages."/>
     <echo message="use 'ant compile'    - to compile only the base package."/>
@@ -218,7 +220,7 @@
 <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	      Compile JE2ESModel
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
-	<target name="compileESModel" depends="usage, init, compileInfo" description="Compiles the ESModel project." if="JE2ESModel.available">
+	<target name="compileESModel" depends="usage, init, compileInfo" description="Compiles the ESModel project (if available)." if="JE2ESModel.available">
 	  	<ant inheritAll="false" antfile="${ant.directory}/build.xml" dir="${JE2ESModel.directory}" target="compile">
 			<property name="silent" value="false"/>
 		</ant>
@@ -227,7 +229,7 @@
 <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	        Dist JE2ESModel
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
-	<target name="distESModel" depends="compileESModel" description="Build dist. of the ESModel project." if="JE2Probs.available">
+	<target name="distESModel" depends="compileESModel" description="Build dist. of the ESModel project (if available)." if="JE2Probs.available">
 	  	<ant inheritAll="false" antfile="${ant.directory}/build.xml" dir="${JE2ESModel.directory}" target="dist">
 			<property name="silent" value="true"/>
 		</ant>
@@ -236,7 +238,7 @@
 <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	      Compile JE2Research
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
-	<target name="compileResearch" depends="usage, init, compileInfo" description="Compiles the Research project." if="JE2Research.available">
+	<target name="compileResearch" depends="usage, init, compileInfo" description="Compiles the Research project (if available)." if="JE2Research.available">
 	 	<ant inheritAll="false" antfile="${ant.directory}/build.xml" dir="${JE2Research.directory}" target="compile">
 			<property name="silent" value="false"/>
 		</ant>
@@ -245,7 +247,7 @@
 <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         Binary Distribution
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
-<target name="binaryDist" depends="compile, JEInterface" description="Compiles the project and puts the whole stuff into a jar-file..">
+<target name="binaryDist" depends="compile, JEInterface" description="Compiles the project and builds a jar-file.">
     <property name="bin.dist.dir"  value="${binary.distribution.directory}/eva-${DSTAMP}" />
     <mkdir dir="${bin.dist.dir}" />
 	<delete>
@@ -261,23 +263,6 @@
         <include name="${jar.name}.jar" />
       </fileset>
     </copy>
-
-    <tar tarfile="${distribution.directory}/eva2-bin-${DSTAMP}.tar">
-      <tarfileset dir="${bin.dist.dir}">
-        <include name="**" />
-        <exclude name="*.tar*, *.zip" />
-      </tarfileset>
-    </tar>
-    <gzip zipfile="${distribution.directory}/eva2-bin-${DSTAMP}.tar.gz"
-        src="${distribution.directory}/eva2-bin-${DSTAMP}.tar" />
-    <delete file="${distribution.directory}/eva2-bin-${DSTAMP}.tar" />
-
-    <zip zipfile="${distribution.directory}/eva2-bin-${DSTAMP}.zip">
-      <zipfileset dir="${bin.dist.dir}">
-        <include name="**" />
-        <exclude name="*.tar*, *.zip" />
-      </zipfileset>
-    </zip>
   </target>
 
 <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -320,7 +305,7 @@
         Generate Distribution
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
 
-  <target name="dist" depends="distESModel, distProbs, binaryDist, sourceDist">
+  <target name="dist" depends="distESModel, distProbs, binaryDist, sourceDist" description="Builds all distributions if all packages are available.">
   </target>
 	
 	<!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
