@@ -28,7 +28,7 @@ import eva2.tools.SelectedTag;
 public abstract class PopulationMeasureTerminator implements InterfaceTerminator,
 Serializable {
 	public enum ChangeTypeEnum {relativeChange, absoluteChange, absoluteValue};
-	public enum DirectionTypeEnum {decreaseImprovement, bidirectional};
+	public enum DirectionTypeEnum {decrease, bidirectional};
 	public enum StagnationTypeEnum {fitnessCallBased, generationBased};
 	
 	protected static boolean TRACE = false;
@@ -41,7 +41,7 @@ Serializable {
 	private StagnationTypeEnum stagnationMeasure = StagnationTypeEnum.fitnessCallBased;
 //	private SelectedTag convCondition = new SelectedTag("Relative change", "Absolute change", "Absolute value");
 	private ChangeTypeEnum changeType = ChangeTypeEnum.relativeChange;
-	private DirectionTypeEnum condDirection = DirectionTypeEnum.decreaseImprovement;
+	private DirectionTypeEnum condDirection = DirectionTypeEnum.decrease;
 //	private SelectedTag condImprovementOrChange = new SelectedTag("Decrease", "Improvement and Deterioration");
 	protected String msg="Not terminated.";
 
@@ -243,7 +243,7 @@ Serializable {
 	}
 
 	public boolean doCheckImprovement() {
-		return (condDirection==DirectionTypeEnum.decreaseImprovement);
+		return (condDirection==DirectionTypeEnum.decrease);
 //		return condImprovementOrChange.isSelectedString("Improvement");
 	}
 
@@ -295,7 +295,7 @@ Serializable {
 		return stagTime;
 	}
 	public String stagnationTimeTipText() {
-		return "Terminate if the population has not improved for this time";
+		return "Terminate if the population has not improved/changed for this time";
 	}
 
 	public StagnationTypeEnum getStagnationMeasure() {
@@ -305,7 +305,7 @@ Serializable {
 		this.stagnationMeasure = stagnationTimeIn;
 	}
 	public String stagnationMeasureTipText() {
-		return "Stagnation time is measured in fitness calls or generations.";
+		return "Stagnation time is measured in fitness calls or generations";
 	}
 
 	public ChangeTypeEnum getConvergenceCondition() {
@@ -313,21 +313,18 @@ Serializable {
 	}
 	public void setConvergenceCondition(ChangeTypeEnum convergenceCondition) {
 		this.changeType = convergenceCondition;
-//		GenericObjectEditor.setHideProperty(this.getClass(), "convergenceThresholdUpper", isRelativeConvergence() || doCheckImprovement());
 	}
 	public String convergenceConditionTipText() {
-		return "Select between absolute and relative convergence condition";
+		return "Select absolute or relative convergence condition";
 	}
 	
 	public DirectionTypeEnum getCheckType() {
 		return condDirection;
-//		return condImprovementOrChange;
 	}
 	public void setCheckType(DirectionTypeEnum dt) {
 		this.condDirection = dt;
-//		GenericObjectEditor.setHideProperty(this.getClass(), "convergenceThresholdUpper", isRelativeConvergence() || doCheckImprovement());
 	}
 	public String checkTypeTipText() {
-		return "Detect improvement only (decreasing measure) or change in both directions (de- and increase).";
+		return "Detect improvement only (decreasing measure) or change in both directions (decrease and increase)";
 	}
 }

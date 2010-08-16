@@ -80,7 +80,8 @@ public class ParetoMetricTerminator extends PopulationMeasureTerminator implemen
 
 	public static String globalInfo() {
 		return "Terminate if the pareto front of a multi-objective optimization process converges " +
-				"with respect to a certain measure.";
+				"with respect to a certain measure. Note that this only works with " +
+				"AbstractMultiObjectiveOptimizationProblem instances.";
 	}
 
 	public void setParetoMetric(InterfaceParetoFrontMetric pMetric) {

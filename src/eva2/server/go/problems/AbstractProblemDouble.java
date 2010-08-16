@@ -399,7 +399,7 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
 		tmpIndy.SetDoubleGenotype(pos);
 		((AbstractEAIndividual)tmpIndy).SetFitness(prob.eval(pos));
 		pop.add(tmpIndy);
-		FitnessConvergenceTerminator convTerm = new FitnessConvergenceTerminator(1e-25, 10, StagnationTypeEnum.generationBased, ChangeTypeEnum.absoluteChange, DirectionTypeEnum.decreaseImprovement);
+		FitnessConvergenceTerminator convTerm = new FitnessConvergenceTerminator(1e-25, 10, StagnationTypeEnum.generationBased, ChangeTypeEnum.absoluteChange, DirectionTypeEnum.decrease);
 		int calls = PostProcess.processSingleCandidatesNMCMA(PostProcessMethod.nelderMead, pop, convTerm, 0.001, prob);
 		return ((InterfaceDataTypeDouble)pop.getBestEAIndividual()).getDoubleData();
 	}
