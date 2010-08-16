@@ -32,8 +32,8 @@ public class ParetoMetricTerminator extends PopulationMeasureTerminator implemen
 	
 	//public PopulationMeasureTerminator(double convergenceThreshold, int stagnationTime, boolean bFitCallBased, ChangeTypeEnum detectChangeType, boolean bImprovement) {
 
-	public ParetoMetricTerminator(InterfaceParetoFrontMetric metric, boolean useCurrentPop, double convergenceThreshold, int stagnationTime, boolean bFitCallBased, ChangeTypeEnum detectChangeType, boolean bImprovement) {
-		super(convergenceThreshold, stagnationTime, bFitCallBased, detectChangeType, bImprovement);
+	public ParetoMetricTerminator(InterfaceParetoFrontMetric metric, boolean useCurrentPop, double convergenceThreshold, int stagnationTime, StagnationTypeEnum stagType, ChangeTypeEnum changeType, DirectionTypeEnum dirType) {
+		super(convergenceThreshold, stagnationTime, stagType, changeType, dirType);
 		this.pMetric = metric;
 		this.useCurrentPop = useCurrentPop;
 	}

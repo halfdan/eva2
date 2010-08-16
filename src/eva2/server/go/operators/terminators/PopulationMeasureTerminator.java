@@ -28,6 +28,8 @@ import eva2.tools.SelectedTag;
 public abstract class PopulationMeasureTerminator implements InterfaceTerminator,
 Serializable {
 	public enum ChangeTypeEnum {relativeChange, absoluteChange, absoluteValue};
+	public enum DirectionTypeEnum {decreaseImprovement, bidirectional};
+	public enum StagnationTypeEnum {fitnessCallBased, generationBased};
 	
 	protected static boolean TRACE = false;
 	private double convThresh = 0.01; //, convThreshLower=0.02;
@@ -36,21 +38,23 @@ Serializable {
 	private int oldPopFitCalls = 1000;
 	private int oldPopGens = 1000;
 	private boolean firstTime = true;
-	private SelectedTag stagnationMeasure = new SelectedTag("Fitness calls", "Generations");
+	private StagnationTypeEnum stagnationMeasure = StagnationTypeEnum.fitnessCallBased;
 //	private SelectedTag convCondition = new SelectedTag("Relative change", "Absolute change", "Absolute value");
 	private ChangeTypeEnum changeType = ChangeTypeEnum.relativeChange;
-	private SelectedTag condImprovementOrChange = new SelectedTag("Improvement", "Improvement and Deterioration");
+	private DirectionTypeEnum condDirection = DirectionTypeEnum.decreaseImprovement;
+//	private SelectedTag condImprovementOrChange = new SelectedTag("Decrease", "Improvement and Deterioration");
 	protected String msg="Not terminated.";
 
 	public PopulationMeasureTerminator() {}
 	
-	public PopulationMeasureTerminator(double convergenceThreshold, int stagnationTime, boolean bFitCallBased, ChangeTypeEnum detectChangeType, boolean bImprovement) {
-		convThresh = convergenceThreshold;
-		stagTime = stagnationTime;
-		stagnationMeasure.setSelectedTag(bFitCallBased ? 0 : 1);
-//		convergenceCondition.setSelectedTag(bAbsolute ? 1 : 0);
-		changeType = detectChangeType;
-		condImprovementOrChange.setSelectedTag(bImprovement ? 0 : 1);
+	public PopulationMeasureTerminator(double convergenceThreshold, int stagnationTime, StagnationTypeEnum stagType, ChangeTypeEnum changeType, DirectionTypeEnum dirType) {
+		this.convThresh = convergenceThreshold;
+		this.stagTime = stagnationTime;
+		this.stagnationMeasure = stagType;
+//		this.convergenceCondition.setSelectedTag(bAbsolute ? 1 : 0);
+		this.changeType = changeType;
+		this.condDirection =  dirType;
+//		this.condImprovementOrChange.setSelectedTag(bImprovement ? 0 : 1);
 	}
 
 	public PopulationMeasureTerminator(PopulationMeasureTerminator o) {
@@ -62,10 +66,11 @@ Serializable {
 //		oldFit = o.oldFit.clone();
 //		oldNorm = o.oldNorm;
 		msg = o.msg;
-		this.stagnationMeasure.setSelectedTag(o.stagnationMeasure.getSelectedTagID());
+		this.stagnationMeasure = o.stagnationMeasure;
 //		this.convergenceCondition.setSelectedTag(o.convergenceCondition.getSelectedTagID());
 		this.changeType = o.changeType;
-		this.condImprovementOrChange.setSelectedTag(o.condImprovementOrChange.getSelectedTagID());
+		this.condDirection = o.condDirection;
+//		this.condImprovementOrChange.setSelectedTag(o.condImprovementOrChange.getSelectedTagID());
 	}
 	
 //	public void hideHideable() {
@@ -163,7 +168,7 @@ Serializable {
 		}
 		sb.append(" for ");
 		sb.append(stagTime);
-		if (stagnationMeasure.isSelectedString("Generations")) sb.append(" generations.");
+		if (stagnationMeasure == StagnationTypeEnum.generationBased) sb.append(" generations.");
 		else sb.append(" function calls.");
 		return sb.toString();
 	}
@@ -238,7 +243,8 @@ Serializable {
 	}
 
 	public boolean doCheckImprovement() {
-		return condImprovementOrChange.isSelectedString("Improvement");
+		return (condDirection==DirectionTypeEnum.decreaseImprovement);
+//		return condImprovementOrChange.isSelectedString("Improvement");
 	}
 
 	public boolean isRelativeConvergence() {
@@ -253,7 +259,7 @@ Serializable {
 	 * @return
 	 */
 	private boolean stagnationTimeHasPassed(PopulationInterface pop) {
-		if (stagnationMeasure.isSelectedString("Fitness calls")) { // by fitness calls
+		if (stagnationMeasure==StagnationTypeEnum.fitnessCallBased) { // by fitness calls
 //			System.out.println("stagnationTimeHasPassed returns " + ((pop.getFunctionCalls() - popFitCalls) >= m_stagTime) + " after " + (pop.getFunctionCalls() - popFitCalls));
 			return (pop.getFunctionCalls() - oldPopFitCalls) >= stagTime;
 		} else {// by generation
@@ -269,7 +275,7 @@ Serializable {
 		return convThresh;
 	}
 	public String convergenceThresholdTipText() {
-		return "Ratio of improvement or absolute value of improvement or change to determine convergence.";
+		return "Ratio of improvement/change or absolute value of improvement/change to determine convergence.";
 	}
 
 //	public void setConvergenceThresholdLower(double x) {
@@ -292,14 +298,14 @@ Serializable {
 		return "Terminate if the population has not improved for this time";
 	}
 
-	public SelectedTag getStagnationMeasure() {
+	public StagnationTypeEnum getStagnationMeasure() {
 		return stagnationMeasure;
 	}
-	public void setStagnationMeasure(SelectedTag stagnationTimeIn) {
+	public void setStagnationMeasure(StagnationTypeEnum stagnationTimeIn) {
 		this.stagnationMeasure = stagnationTimeIn;
 	}
 	public String stagnationMeasureTipText() {
-		return "Stagnation time is measured in fitness calls or generations, to be selected here.";
+		return "Stagnation time is measured in fitness calls or generations.";
 	}
 
 	public ChangeTypeEnum getConvergenceCondition() {
@@ -313,14 +319,15 @@ Serializable {
 		return "Select between absolute and relative convergence condition";
 	}
 	
-	public SelectedTag getCheckType() {
-		return condImprovementOrChange;
+	public DirectionTypeEnum getCheckType() {
+		return condDirection;
+//		return condImprovementOrChange;
 	}
-	public void setCheckType(SelectedTag ct) {
-		this.condImprovementOrChange = ct;
+	public void setCheckType(DirectionTypeEnum dt) {
+		this.condDirection = dt;
 //		GenericObjectEditor.setHideProperty(this.getClass(), "convergenceThresholdUpper", isRelativeConvergence() || doCheckImprovement());
 	}
 	public String checkTypeTipText() {
-		return "Detect improvement only (one-directional change) or improvement and deterioration (two-directional change).";
+		return "Detect improvement only (decreasing measure) or change in both directions (de- and increase).";
 	}
 }

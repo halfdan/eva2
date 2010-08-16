@@ -8,6 +8,9 @@ import eva2.server.go.InterfacePopulationChangedEventListener;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.operators.mutation.MutateESRankMuCMA;
 import eva2.server.go.operators.terminators.FitnessConvergenceTerminator;
+import eva2.server.go.operators.terminators.PopulationMeasureTerminator.ChangeTypeEnum;
+import eva2.server.go.operators.terminators.PopulationMeasureTerminator.DirectionTypeEnum;
+import eva2.server.go.operators.terminators.PopulationMeasureTerminator.StagnationTypeEnum;
 import eva2.server.go.populations.Population;
 import eva2.server.go.populations.SolutionSet;
 
@@ -156,7 +159,7 @@ public class EvolutionStrategyIPOP extends EvolutionStrategies implements Interf
     	bestList = new LinkedList<AbstractEAIndividual>();
     	best = getPopulation().getBestEAIndividual();
     	dim = AbstractEAIndividual.getDoublePositionShallow(getPopulation().getEAIndividual(0)).length;
-    	fitConvTerm = new FitnessConvergenceTerminator(stagThreshold, (isStagnationTimeUserDef()) ? stagTimeArbitrary : calcDefaultStagnationTime(), false, true, true); // gen. based, absolute
+    	fitConvTerm = new FitnessConvergenceTerminator(stagThreshold, (isStagnationTimeUserDef()) ? stagTimeArbitrary : calcDefaultStagnationTime(), StagnationTypeEnum.generationBased, ChangeTypeEnum.absoluteChange, DirectionTypeEnum.decreaseImprovement); // gen. based, absolute
     	getPopulation().addPopulationChangedEventListener(this);
     	getPopulation().setNotifyEvalInterval(initialLambda);
     }
