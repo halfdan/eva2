@@ -499,7 +499,15 @@
       </fileset>
     </copy>
   	
-    	
+  	<copy todir="${src.dist.dir}/${ant.directory}">
+  	  <fileset dir="${ant.directory}">
+  	  	<include name="miniBuild.xml" />
+  	  </fileset>
+  	</copy>
+    
+  	<!-- rename the mini build -->
+  	<move file="${src.dist.dir}/${ant.directory}/miniBuild.xml" tofile="${src.dist.dir}/${ant.directory}/build.xml"/>
+  	
     <mkdir dir="${src.dist.dir}/${library.directory}" />
     <copy todir="${src.dist.dir}/${library.directory}">
       <fileset dir="${library.directory}" includes="**jar" />
