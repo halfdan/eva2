@@ -161,7 +161,15 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem implemen
         System.arraycopy(((InterfaceDataTypeDouble) individual).getDoubleData(), 0, x, 0, x.length);
 		return x;
 	}
-    
+	
+	public static List<String> runProcess(String[] parameters, String workingDir) {
+		List<String> params = new ArrayList<String>(parameters.length);
+		for (String str : parameters) {
+			params.add(str);
+		}
+		return runProcess(params, workingDir);
+	}
+	
     public static List<String> runProcess(List<String> parameters, String workingDir) {
 		Process process;
         ProcessBuilder pb;
