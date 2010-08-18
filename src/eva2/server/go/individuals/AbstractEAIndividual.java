@@ -613,7 +613,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
     	boolean result = true;
     	int i=0;
     	while (result && (i < fit1.length) && (i < fit2.length)) {
-    		if (firstIsFiniteAndLargerOrEqual(fit1[i], fit2[i])) result = false;
+    		if (firstIsFiniteAndLargerNonEqual(fit1[i], fit2[i])) result = false;
     		i++;
     	}
     	return result;
@@ -624,6 +624,11 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
 		else return (a >= b);
 	}
 
+    private static boolean firstIsFiniteAndLargerNonEqual(double a, double b) {
+		if (Double.isNaN(a) || Double.isInfinite(a)) return false;
+		else return (a > b);
+	}
+    
 	/**
      * Returns true if the first fitness vector truly dominates the second one in every component.
      * 
