@@ -85,8 +85,8 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
     transient protected Population              m_ParetoFront       = new Population();
     public    ArrayList                         m_AreaConst4Parallelization = new ArrayList();
     protected int                               m_OutputDimension   = 2;
-    double			m_borderLow = 0;
-    double			m_borderHigh = 5;
+    double			m_defaultBorderLow = 0;
+    double			m_defaultBorderHigh = 5;
     
     transient protected   double[][]         	m_Border;
     transient protected Plot  					m_Plot;
@@ -95,9 +95,9 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
 
     public AbstractMultiObjectiveOptimizationProblem(double borderHigh) {
     	super();
-    	m_borderHigh=borderHigh;
+    	m_defaultBorderHigh=borderHigh;
         this.m_Template         = new ESIndividualDoubleData();
-        initBorder();
+        makeBorder();
         if (this.m_Show) this.initProblemFrame();
     }
     
@@ -136,24 +136,28 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
      * problem frame (i'll provide a default implementation here.
      */
     public void initProblem() {
-        initBorder();
+        makeBorder();
         this.m_ParetoFront = new Population();
         if (this.m_Show) this.initProblemFrame();
     }
-    
-    protected void initBorder() {
-    	initBorder(m_borderLow, m_borderHigh);
-    }
-    
-    protected void initBorder(double lower, double upper) {
-        if (this.m_Border == null) this.m_Border = new double[2][2];
+
+    protected void makeBorder() {
+        if (this.m_Border == null) this.m_Border = new double[m_OutputDimension][2];
         for (int i = 0; i < this.m_Border.length; i++) {
-            this.m_Border[i][0] = lower;
-            this.m_Border[i][1] = upper;
+            this.m_Border[i][0] = getLowerBorder(i);
+            this.m_Border[i][1] = getUpperBorder(i);
         }
     }
+    
+    protected double getUpperBorder(int i) {
+		return m_defaultBorderHigh;
+	}
 
-    /** This method checks whether the problem has truely evaluated
+    protected double getLowerBorder(int i) {
+		return m_defaultBorderLow;
+	}
+
+	/** This method checks whether the problem has truely evaluated
      * to a multiobjective problem
      * @return true if all individuals are multiobjective
      */
