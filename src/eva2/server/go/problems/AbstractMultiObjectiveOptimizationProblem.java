@@ -506,7 +506,7 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
 	}
 
 	public double calculateMetric(Population pop) {
-    	if (pop==null) return Double.NaN;
+    	if (pop==null || (pop.size()==0)) return Double.NaN;
         return this.m_Metric.calculateMetricOn(pop, this);
     }
 
