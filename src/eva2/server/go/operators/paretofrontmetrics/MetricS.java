@@ -1,5 +1,6 @@
 package eva2.server.go.operators.paretofrontmetrics;
 
+import eva2.gui.BeanInspector;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.ESIndividualDoubleData;
 import eva2.server.go.operators.archiving.ArchivingAllDominating;
@@ -16,6 +17,7 @@ import eva2.server.go.problems.AbstractMultiObjectiveOptimizationProblem;
 public class MetricS implements InterfaceParetoFrontMetric, java.io.Serializable {
 
     private double[][] m_ObjectiveSpaceRange;
+	private static boolean TRACE=false;
 
     public MetricS() {
 
@@ -54,13 +56,16 @@ public class MetricS implements InterfaceParetoFrontMetric, java.io.Serializable
      */
     public double calculateMetricOn(Population pop, AbstractMultiObjectiveOptimizationProblem problem) {
         this.m_ObjectiveSpaceRange = problem.getObjectiveSpaceRange();
+        if (TRACE) System.out.println("Border: " + BeanInspector.toString(m_ObjectiveSpaceRange));
         double smetric = this.calculateSMetric(pop, this.m_ObjectiveSpaceRange, this.m_ObjectiveSpaceRange.length);
         double reference = 1;
         for (int i = 0; i < this.m_ObjectiveSpaceRange.length; i++) {
             reference *= (this.m_ObjectiveSpaceRange[i][1] - this.m_ObjectiveSpaceRange[i][0]);
         }
         //System.out.println("SMetric: "+smetric +" Reference: " + reference);
-        return ((Math.abs(smetric)/Math.abs(reference))*100);
+        double res = ((Math.abs(smetric)/Math.abs(reference))*100);
+        if (TRACE) System.out.println("Res is " + res);
+        return res;
     }
 
 //    /** This method gives a metric how to evaluate
@@ -76,7 +81,7 @@ public class MetricS implements InterfaceParetoFrontMetric, java.io.Serializable
 //        return ((Math.abs(smetric)/Math.abs(reference))*100);
 //    }
 
-    /** This method will calucuate the s-metric from a double array of
+    /** This method will calculate the s-metric from a double array of
      * fitness cases
      * @param pop   Array of fitness cases
      * @param border    The border to use when calculating the s-metric.
@@ -98,6 +103,8 @@ public class MetricS implements InterfaceParetoFrontMetric, java.io.Serializable
         }
         // Now we have an archive, lets caluculate the s-metric
         // first extract the fitnesscases from the archive
+        if (dim==1) return pop.getBestFitness()[0];
+        
         if (dim > 2) smPop = new Population();
         double[][]  f = new double[archive.size()][dim];
         double[]    tmpF, redF;
