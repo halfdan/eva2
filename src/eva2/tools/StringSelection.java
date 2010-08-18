@@ -145,10 +145,57 @@ public class StringSelection implements Serializable {
 //		return false;
 	}
 	
+	/**
+	 * Return the ordinal of the given String within the StringSelection. If
+	 * the string could not be found, -1 is returned.
+	 * 
+	 * @param str
+	 * @return
+	 */
+	public int stringToIndex(String str) {
+		if (stringToIndexHash == null) { // for some time efficiency...
+			stringToIndexHash = new HashMap<String,Integer>(2*strObjects.length);
+			for (int i=0; i<strObjects.length; i++) {
+				stringToIndexHash.put(strObjects[i], i);
+			}
+		}
+		Integer selIndex = stringToIndexHash.get(str);
+		if (selIndex==null) return -1;
+		else return selIndex.intValue();
+	}
+	
+	/**
+	 * Set the selection state of a field denoted by a String value. If the
+	 * String is not represented within this instance, an error message is
+	 * printed.
+	 * 
+	 * @param str
+	 * @param v
+	 */
+	public void setSelected(String str, boolean v) {
+		int index = stringToIndex(str);
+		if (index>=0) {
+			setSelected(index,v);
+		} else {
+			System.err.println("Error, unknown string " + str + " cant be selected in " + this.getClass());
+		}
+	}
+	
+	/**
+	 * Set the selection state of a field. The index must be valid.
+	 * 
+	 * @param i
+	 * @param v
+	 */
 	public void setSelected(int i, boolean v) {
 		selStates[i]=v;
 	}	
 	
+	/**
+	 * Toggle the selection state of a field. The index must be valid.
+	 * 
+	 * @param i
+	 */
 	public void toggleSelected(int i) {
 		selStates[i]=!selStates[i];
 	}
