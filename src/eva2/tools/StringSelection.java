@@ -11,6 +11,8 @@ import eva2.gui.BeanInspector;
 
 /**
  * An array of Strings that can be selected and deselected. May be created directly from an Enum.
+ * An analogous set of descriptive strings may be added for each field, for example to produce
+ * tool tips in a GUI.
  * 
  * @author mkron
  *
@@ -23,6 +25,12 @@ public class StringSelection implements Serializable {
 	private transient HashMap<String,Integer> stringToIndexHash = null;
 	private transient Class<? extends Enum> enumClass = null;
 	
+	/**
+	 * Constructor with a String array of selectable strings and optional descriptions.
+	 * 
+	 * @param sArr a String array of selectable strings
+	 * @param tips descriptive strings of same length or null
+	 */
 	public StringSelection(String[] sArr, String[] tips) {
 		strObjects = sArr;
 		toolTips=tips;
@@ -31,12 +39,26 @@ public class StringSelection implements Serializable {
 		enumClass = null;
 	}	
 	
+	/**
+	 * Constructor with a String array of selectable strings and optional descriptions.
+	 * A single element is preselected by index, all others deselected.
+	 * 
+	 * @param sArr a String array of selectable strings
+	 * @param tips descriptive strings of same length or null
+	 * @param initialSel index of the preselected string
+	 */
 	public StringSelection(String[] sArr, String[] tips, int initialSel) {
 		this(sArr, tips);
 		if (initialSel<getLength()) setSelected(initialSel, true);
 		enumClass = null;
 	}
 	
+	/**
+	 * Constructor from an enum class and optional descriptions.
+	 * 
+	 * @param e an enum from which the selectable strings will be taken
+	 * @param tips descriptive strings of same length or null
+	 */
 	public StringSelection(Enum<?> e, String[] tips) {
 		strObjects = new String[e.getClass().getEnumConstants().length];
 		toolTips=tips;
@@ -49,6 +71,11 @@ public class StringSelection implements Serializable {
 		enumClass = e.getClass();
 	}
 	
+	/**
+	 * A copy constructor.
+	 * 
+	 * @param stringSelection
+	 */
 	public StringSelection(StringSelection stringSelection) {
 		strObjects = stringSelection.strObjects.clone();
 		selStates = stringSelection.selStates.clone();
@@ -83,15 +110,32 @@ public class StringSelection implements Serializable {
 		return strObjects[i];
 	}
 	
+	/**
+	 * Return a descriptive String for element i or null if none is provided.
+	 * 
+	 * @param i	index of the string element
+	 * @return a descriptive String for element i or null
+	 */
 	public String getElementInfo(int i) {
 		if (toolTips!=null && (toolTips.length>i)) return toolTips[i];
 		else return null;
 	}
 	
+	/**
+	 * Retrieve the array of all selectable strings.
+	 * 
+	 * @return
+	 */
 	public String[] getStrings() {
 		return strObjects;
 	}
 	
+	/**
+	 * Get the selection state at the indicated index.
+	 * 
+	 * @param i
+	 * @return
+	 */
 	public boolean isSelected(int i) {
 		return selStates[i];
 	}
