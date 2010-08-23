@@ -1000,6 +1000,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      * 
      */
     public Population getBestNIndividuals(int n, int fitIndex) {
+    	if (n<=0 || (n>super.size())) n=super.size();
     	Population pop = new Population(n);
     	getSortedNIndividuals(n, true, pop, new AbstractEAIndividualComparator(fitIndex));
     	return pop;
