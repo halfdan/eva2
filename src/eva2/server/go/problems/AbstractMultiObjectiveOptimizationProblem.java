@@ -35,6 +35,16 @@ import eva2.tools.chart2d.DPoint;
 public abstract class AbstractMultiObjectiveOptimizationProblem extends AbstractOptimizationProblem {
 
 	
+	/**
+	 * Generated serial version identifier
+	 */
+	private static final long serialVersionUID = -6882081673229946521L;
+	
+	/**
+	 * 
+	 * @author mkron
+	 *
+	 */
 	class MultiObjectiveEvalThread extends Thread{
 		AbstractMultiObjectiveOptimizationProblem prob;
 		AbstractEAIndividual ind;
@@ -492,6 +502,10 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
 		return ToolBox.appendArrays(result, super.getAdditionalFileStringValue(pop));
     }
     
+    /*
+     * (non-Javadoc)
+     * @see eva2.server.go.problems.AbstractOptimizationProblem#getAdditionalFileStringInfo(eva2.server.go.PopulationInterface)
+     */
     @Override
     public String[] getAdditionalFileStringInfo(PopulationInterface pop) {
     	String[] superInfo = super.getAdditionalFileStringInfo(pop);
@@ -499,12 +513,20 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
     			"Pareto metric on the collected pareto front"}, superInfo);
     }
 
-	@Override
+    /*
+     * (non-Javadoc)
+     * @see eva2.server.go.problems.InterfaceOptimizationProblem#getStringRepresentationForProblem(eva2.server.go.strategies.InterfaceOptimizer)
+     */
 	public String getStringRepresentationForProblem(InterfaceOptimizer opt) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	/**
+	 * 
+	 * @param pop
+	 * @return
+	 */
 	public double calculateMetric(Population pop) {
     	if (pop==null || (pop.size()==0)) return Double.NaN;
         return this.m_Metric.calculateMetricOn(pop, this);
