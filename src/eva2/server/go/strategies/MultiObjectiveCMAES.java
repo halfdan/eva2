@@ -15,8 +15,23 @@ import eva2.server.go.populations.SolutionSet;
 import eva2.server.go.problems.AbstractOptimizationProblem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 
+/**
+ * 
+ * @author mkron
+ *
+ */
 public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
 
+	/**
+	 * Generated serial version identifier
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
+	 * 
+	 * @author mkron
+	 *
+	 */
 	class CounterClass {
 		public CounterClass(int i) {
 			value = i;
@@ -51,15 +66,28 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
 	}
 
 	public void hideHideable() {
-		GenericObjectEditor.setHideProperty(this.getClass(), "population", true);
+		GenericObjectEditor
+				.setHideProperty(this.getClass(), "population", true);
 	}
-	
-	 @Override
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * eva2.server.go.strategies.InterfaceOptimizer#SetIdentifier(java.lang.
+	 * String)
+	 */
 	public void SetIdentifier(String name) {
 		m_Identifier = name;
 	}
 
-	 @Override
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * eva2.server.go.strategies.InterfaceOptimizer#SetProblem(eva2.server.go
+	 * .problems.InterfaceOptimizationProblem)
+	 */
 	public void SetProblem(InterfaceOptimizationProblem problem) {
 		m_Problem = (AbstractOptimizationProblem) problem;
 	}
@@ -74,41 +102,70 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
 		this.m_Listener = ea;
 	}
 
-	 @Override
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see eva2.server.go.strategies.InterfaceOptimizer#freeWilly()
+	 */
 	public void freeWilly() {
 	}
 
-	 @Override
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see eva2.server.go.strategies.InterfaceOptimizer#getAllSolutions()
+	 */
 	public InterfaceSolutionSet getAllSolutions() {
 		Population pop = getPopulation();
 		return new SolutionSet(pop, pop);
 	}
 
-	 @Override
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see eva2.server.go.strategies.InterfaceOptimizer#getIdentifier()
+	 */
 	public String getIdentifier() {
 		return m_Identifier;
 	}
 
-	 @Override
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see eva2.server.go.strategies.InterfaceOptimizer#getName()
+	 */
 	public String getName() {
 		return "(1+" + m_lambda + ") MO-CMA-ES";
 	}
 
-	 public static String globalInfo() {
-		 return "A multi-objective CMA-ES variant after Igel, Hansen and Roth 2007 (EC 15(1),1-28).";
-	 }
-	 
-	 @Override
+	public static String globalInfo() {
+		return "A multi-objective CMA-ES variant after Igel, Hansen and Roth 2007 (EC 15(1),1-28).";
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see eva2.server.go.strategies.InterfaceOptimizer#getPopulation()
+	 */
 	public Population getPopulation() {
 		return m_Population;
 	}
 
-	 @Override
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see eva2.server.go.strategies.InterfaceOptimizer#getProblem()
+	 */
 	public InterfaceOptimizationProblem getProblem() {
 		return m_Problem;
 	}
 
-	 @Override
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * eva2.server.go.strategies.InterfaceOptimizer#getStringRepresentation()
+	 */
 	public String getStringRepresentation() {
 		StringBuilder strB = new StringBuilder(200);
 		strB.append("(1+" + m_lambda + ") MO-CMA-ES:\nOptimization Problem: ");
@@ -118,7 +175,11 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
 		return strB.toString();
 	}
 
-	 @Override
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see eva2.server.go.strategies.InterfaceOptimizer#init()
+	 */
 	public void init() {
 		// initByPopulation(m_Population, true);
 		this.m_Population.setTargetSize(m_lambdamo);
@@ -129,7 +190,13 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
 
 	}
 
-	 @Override
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * eva2.server.go.strategies.InterfaceOptimizer#initByPopulation(eva2.server
+	 * .go.populations.Population, boolean)
+	 */
 	public void initByPopulation(Population pop, boolean reset) {
 		setPopulation(pop);
 		if (reset) {
@@ -149,7 +216,11 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
 		this.m_Problem.evaluate(population);
 	}
 
-	 @Override
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see eva2.server.go.strategies.InterfaceOptimizer#optimize()
+	 */
 	public void optimize() {
 
 		HashMap<Long, CounterClass> SuccessCounterMap = new HashMap<Long, CounterClass>();
@@ -190,8 +261,8 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
 			AbstractEAIndividual parent = (AbstractEAIndividual) m_Population
 					.getEAIndividual(j).getData("Parent");
 			if (m_Population.getEAIndividual(j) != parent) { // Eltern nicht mit
-																// sich selber
-																// vergleichen
+				// sich selber
+				// vergleichen
 				int parentParetoLevel = ((Integer) parent
 						.getData("ParetoLevel")).intValue();
 				double parentSMeasure = ((Double) parent.getData("HyperCube"))
@@ -214,10 +285,10 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
 		m_Population.clear();
 		for (int i = 0; i < store.length; i++) {
 			if (m_Population.size() + store[i].size() <= m_lambdamo) { // Die
-																		// Front
-																		// passt
-																		// noch
-																		// komplett
+				// Front
+				// passt
+				// noch
+				// komplett
 				m_Population.addPopulation(store[i]);
 
 			} else { // die besten aus der aktuellen Front heraussuchen bis voll
@@ -225,8 +296,8 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
 					AbstractEAIndividual indy = store[i].getEAIndividual(0);
 					double bestMeasure = ((Double) indy.getData("HyperCube"))
 							.doubleValue(); // TODO mal noch effizient machen
-											// (sortieren und die besten n
-											// herausholen)
+					// (sortieren und die besten n
+					// herausholen)
 					for (int j = 1; j < store[i].size(); j++) {
 						if (bestMeasure < ((Double) store[i].getEAIndividual(j)
 								.getData("HyperCube")).doubleValue()) {
@@ -247,15 +318,15 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
 
 			AbstractEAIndividual indy = m_Population.getEAIndividual(j);
 			if (indy.getMutationOperator() instanceof MutateESCovarianceMatrixAdaptionPlus) { // Das
-																								// geht
-																								// nur
-																								// wenn
-																								// wir
-																								// auch
-																								// die
-																								// richtige
-																								// Mutation
-																								// haben
+				// geht
+				// nur
+				// wenn
+				// wir
+				// auch
+				// die
+				// richtige
+				// Mutation
+				// haben
 				AbstractEAIndividual parent = (AbstractEAIndividual) indy
 						.getData("Parent");
 				MutateESCovarianceMatrixAdaptionPlus muta = (MutateESCovarianceMatrixAdaptionPlus) indy
@@ -281,13 +352,25 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
 
 	}
 
-	 @Override
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @seeeva2.server.go.strategies.InterfaceOptimizer#
+	 * removePopulationChangedEventListener
+	 * (eva2.server.go.InterfacePopulationChangedEventListener)
+	 */
 	public boolean removePopulationChangedEventListener(
 			InterfacePopulationChangedEventListener ea) {
 		return false;
 	}
 
-	 @Override
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * eva2.server.go.strategies.InterfaceOptimizer#setPopulation(eva2.server
+	 * .go.populations.Population)
+	 */
 	public void setPopulation(Population pop) {
 		m_Population = pop;
 		m_Population.setNotifyEvalInterval(1);
@@ -308,6 +391,7 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
 	public int getLambda() {
 		return m_lambda;
 	}
+
 	public void setLambda(int mLambda) {
 		m_lambda = mLambda;
 	}

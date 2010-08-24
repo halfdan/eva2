@@ -1274,9 +1274,7 @@ public class Mathematics {
 	 * @return
 	 */
 	public static double[] zeroes(int n) {
-		double[] result = new double[n];
-		Arrays.fill(result, 0, result.length - 1, 0.);
-		return result;
+		return makeVector(0, n);
 	}
 
 	/**
@@ -1299,8 +1297,8 @@ public class Mathematics {
 	 * @param vec
 	 */
 	public static void scale(double scale, double[] vec) {
-		for (double d : vec) {
-			d *= scale;
+		for (int i=0; i<vec.length; i++) {
+			vec[i] *= scale;
 		}
 	}
 }

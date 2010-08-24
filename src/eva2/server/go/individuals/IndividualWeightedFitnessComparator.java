@@ -12,12 +12,27 @@ import eva2.tools.EVAERROR;
  *
  */
 public class IndividualWeightedFitnessComparator implements Comparator<Object>, Serializable {
+	/**
+	 * Generated serial version identifier
+	 */
+	private static final long serialVersionUID = 3182129129041083881L;
+	/**
+	 * 
+	 */
 	private double [] fitWeights = null;
 	
+	/**
+	 * 
+	 * @param weights
+	 */
 	public IndividualWeightedFitnessComparator(double[] weights) {
 		setFitWeights(weights);
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof IndividualWeightedFitnessComparator) {
@@ -35,6 +50,10 @@ public class IndividualWeightedFitnessComparator implements Comparator<Object>, 
 		return false;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
 	@Override
 	public int hashCode() {
 		if (fitWeights==null) return super.hashCode();
@@ -45,7 +64,10 @@ public class IndividualWeightedFitnessComparator implements Comparator<Object>, 
 		return code;
 	}
 
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+	 */
 	public int compare(Object o1, Object o2) {
 		double[] f1 = ((AbstractEAIndividual) o1).getFitness();
 		double[] f2 = ((AbstractEAIndividual) o2).getFitness();
@@ -58,6 +80,11 @@ public class IndividualWeightedFitnessComparator implements Comparator<Object>, 
 		else return 0;
 	}
 
+	/**
+	 * 
+	 * @param f
+	 * @return
+	 */
 	private double calcScore(double[] f) {
 		if (f==null || fitWeights==null) throw new RuntimeException("Error, missing information in " + this.getClass());
 		if (f.length!=fitWeights.length) {
@@ -71,11 +98,21 @@ public class IndividualWeightedFitnessComparator implements Comparator<Object>, 
 		return s;
 	}
 	
+	/**
+	 * 
+	 * @param indy
+	 * @return
+	 */
 	public double calcScore(AbstractEAIndividual indy) {
 		double[] f = indy.getFitness();
 		return calcScore(f);
 	}
 
+	/**
+	 * 
+	 * @param dim
+	 * @param v
+	 */
 	public void setAllWeights(int dim, double v) {
 		fitWeights = new double[dim];
 		for (int i = 0; i < fitWeights.length; i++) {
