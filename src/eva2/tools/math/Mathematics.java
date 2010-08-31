@@ -1156,6 +1156,21 @@ public class Mathematics {
 			res[i] = s * v[i] + w[i];
 		}
 	}
+	
+	/**
+	 * Add vectors scaled: res[i] = s*(v[i] + w[i])
+	 * 
+	 * @param s
+	 * @param v
+	 * @param w
+	 * @return
+	 */
+	public static void svvAddAndScale(double s, double[] v, double[] w,
+			double[] res) {
+		for (int i = 0; i < v.length; i++) {
+			res[i] = s * (v[i] + w[i]);
+		}
+	}
 
 	/**
 	 * Add vectors returning a new vector c = a + b;
@@ -1297,7 +1312,7 @@ public class Mathematics {
 	 * @param vec
 	 */
 	public static void scale(double scale, double[] vec) {
-		for (int i=0; i<vec.length; i++) {
+		for (int i = 0; i < vec.length; i++) {
 			vec[i] *= scale;
 		}
 	}
