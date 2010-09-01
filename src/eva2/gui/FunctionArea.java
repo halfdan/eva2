@@ -84,6 +84,11 @@ public class FunctionArea extends DArea implements Serializable {
 	 * Indicate whether graphs should be annotated with tool tips if pointed to with the mouse.
 	 */
 	private boolean doShowGraphToolTips = true;
+	
+	/**
+	 * Indicate whether graph legend entries should show their unique number. 
+	 */
+	private boolean appendIndexInLegend = true;
 
 	/**
 	 *
@@ -1101,7 +1106,7 @@ public class FunctionArea extends DArea implements Serializable {
 		if (!on)
 			legendBox = null;
 		else
-			legendBox = new GraphPointSetLegend(m_PointSetContainer, true);
+			legendBox = new GraphPointSetLegend(m_PointSetContainer, isAppendIndexInLegend());
 		repaint();
 	}
 
@@ -1154,7 +1159,7 @@ public class FunctionArea extends DArea implements Serializable {
 	 * 
 	 */
 	public void updateLegend() {
-		GraphPointSetLegend lb = new GraphPointSetLegend(m_PointSetContainer, true);
+		GraphPointSetLegend lb = new GraphPointSetLegend(m_PointSetContainer, isAppendIndexInLegend() );
 		setLegend(lb);
 	}
 
@@ -1175,5 +1180,13 @@ public class FunctionArea extends DArea implements Serializable {
 
 	public boolean isShowGraphToolTips() {
 		return doShowGraphToolTips;
+	}
+
+	public void setAppendIndexInLegend(boolean appendIndexInLegend) {
+		this.appendIndexInLegend = appendIndexInLegend;
+	}
+
+	public boolean isAppendIndexInLegend() {
+		return appendIndexInLegend;
 	}
 }

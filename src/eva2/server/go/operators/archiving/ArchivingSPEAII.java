@@ -51,7 +51,7 @@ public class ArchivingSPEAII extends AbstractArchiving implements java.io.Serial
 
         ////////////////////////////////////////////////////////////////////////////////////
         if (this.m_Debug) {
-            this.m_Plot = new eva2.gui.Plot("Debug SPEAII", "Y1", "Y2");
+            this.m_Plot = new eva2.gui.Plot("Debug SPEAII", "Y1", "Y2", true);
             System.out.println("Population size: " + pop.size());
             // plot the population
             this.m_Plot.setUnconnectedPoint(0, 0, 11);
@@ -349,7 +349,7 @@ public class ArchivingSPEAII extends AbstractArchiving implements java.io.Serial
         }
         if (this.soutDebug) {
             for (int i = 0; i < result.length; i++) System.out.println("Result "+i+": "+result[i]);
-            this.m_Plot = new eva2.gui.Plot("Debug SPEAII", "Y1", "Y2");
+            this.m_Plot = new eva2.gui.Plot("Debug SPEAII", "Y1", "Y2", true);
             this.m_Plot.setUnconnectedPoint(0, 0, 11);
             this.m_Plot.setUnconnectedPoint(1.2, 2.0, 11);
             GraphPointSet   mySet = new GraphPointSet(10, this.m_Plot.getFunctionArea());

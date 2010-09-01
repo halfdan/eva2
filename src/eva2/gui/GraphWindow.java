@@ -83,7 +83,7 @@ public class GraphWindow {
 	  try {
 		  if ((client==null) || client.getHostName().equals(InetAddress.getLocalHost().getHostName())) {
 			  if (TRACE) System.out.println("no RMI");
-			  m_Plotter = new Plot(PlotName,strx,stry);
+			  m_Plotter = new Plot(PlotName, strx, stry, true);
 		  }
 		  else {
 			  m_Plotter = (PlotInterface) RMIProxyRemote.newInstance(new Plot(PlotName,strx,stry,false), m_MainAdapterClient);

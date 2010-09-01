@@ -41,7 +41,7 @@ public class TopoPlot extends Plot {
    *
    */
   public TopoPlot(String PlotName,String xname,String yname) {
-    super(PlotName, xname, yname);
+    super(PlotName, xname, yname, true);
     //if (TRACE) System.out.println("Constructor TopoPlot "+PlotName);
   }
   public TopoPlot(String PlotName,String xname,String yname,double[] a, double[] b) {
