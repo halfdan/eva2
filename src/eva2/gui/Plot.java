@@ -74,14 +74,8 @@ public class Plot implements PlotInterface, Serializable {
 	 * You might want to try to assign the x-range as x and y-range as y array
 	 * parameters.
 	 */
-	public Plot(String PlotName, String xname, String yname, double[] x,
-			double[] y) {
-		if (TRACE)
-			System.out.println("Constructor Plot " + PlotName);
-		m_xname = xname;
-		m_yname = yname;
-		m_PlotName = PlotName;
-		init();
+	public Plot(String PlotName, String xname, String yname, double[] x, double[] y) {
+		this(PlotName, xname, yname, true);
 		DPointSet points = new DPointSet();
 		for (int i = 0; i < x.length; i++) {
 			points.addDPoint(x[i], y[i]);
@@ -90,7 +84,12 @@ public class Plot implements PlotInterface, Serializable {
 	}
 
 	/**
-	 *
+	 * A basic constructor.
+	 * 
+	 * @param PlotName
+	 * @param xname
+	 * @param yname
+	 * @param init
 	 */
 	public Plot(String PlotName, String xname, String yname, boolean init) {
 		if (TRACE)
@@ -100,18 +99,6 @@ public class Plot implements PlotInterface, Serializable {
 		m_PlotName = PlotName;
 		if (init)
 			init();
-	}
-
-	/**
-	 *
-	 */
-	public Plot(String PlotName, String xname, String yname) {
-		if (TRACE)
-			System.out.println("Constructor Plot " + PlotName);
-		m_xname = xname;
-		m_yname = yname;
-		m_PlotName = PlotName;
-		init();
 	}
 
 	protected void installButtons(JPanel buttonPan) {
@@ -243,6 +230,20 @@ public class Plot implements PlotInterface, Serializable {
 		});
 		m_Frame.pack();
 		m_Frame.setVisible(true);
+	}
+	
+	/**
+	 * Indicate whether graph legend entries should show their unique number. 
+	 */
+	public void setAppendIndexInLegend(boolean appendIndexInLegend) {
+		this.m_PlotArea.setAppendIndexInLegend(appendIndexInLegend);
+	}
+	
+	/**
+	 * Indicates whether graph legend entries show their unique number. 
+	 */
+	public boolean isAppendIndexInLegend() {
+		return m_PlotArea.isAppendIndexInLegend();
 	}
 	
 	/**

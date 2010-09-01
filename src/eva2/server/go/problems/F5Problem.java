@@ -39,7 +39,7 @@ public class F5Problem extends AbstractProblemDoubleOffset implements java.io.Se
         double[]    result = new double[1];
         double      tmp;
         result[0]     = m_YOffSet;
-        for (int i = 0; i < x.length-1; i++) {
+        for (int i = 0; i < x.length; i++) {
             tmp = 0;
             for (int j = 0; j <= i; j++) {
                 tmp += x[j]-m_XOffSet;

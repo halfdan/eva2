@@ -1758,8 +1758,6 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
 	 * @return
 	 */
 	public static double[] getCorrelations(Population pop) {
-		double[] cors = new double[pop.size()*(pop.size()-1)/2]; 
-	
 		if (pop.size()<2) {
 			return new double[]{1.,1.,1.,1.};
 		}
@@ -1767,6 +1765,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
 			// EVAERROR.errorMsgOnce("Warning: population correlations can only be calculated for double valued data!");
 			return new double[]{Double.NaN,Double.NaN,Double.NaN,Double.NaN};
 		}
+		double[] cors = new double[pop.size()*(pop.size()-1)/2]; 
 		int index=0;
 		double corsSum=0, minCor = 10., maxCor=-10.;
         for (int i = 0; i < pop.size()-1; i++) {
