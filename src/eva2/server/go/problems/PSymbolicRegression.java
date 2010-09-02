@@ -510,8 +510,8 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
 	}
 
 	@Override
-	public String[] getAdditionalFileStringHeader(PopulationInterface pop) {
-		String[] superHd = super.getAdditionalFileStringHeader(pop);
+	public String[] getAdditionalFileStringHeader() {
+		String[] superHd = super.getAdditionalFileStringHeader();
 		return ToolBox.appendArrays(new String[]{"bestIndySize","avgIndySize","avgMaxIndyDepth"}, superHd);
 	}
 

@@ -1,5 +1,6 @@
 package eva2.server.modules;
 
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.JOptionPane;
@@ -228,7 +229,7 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
         String popLog = null; //"populationLog.txt";
 
         while (isOptRunning() && (runCounter<m_Statistics.getStatisticsParameter().getMultiRuns())) {
-        	m_Statistics.startOptPerformed(getInfoString(),runCounter, goParams);
+        	m_Statistics.startOptPerformed(getInfoString(),runCounter, goParams, getInformerList());
 
         	this.goParams.getProblem().initProblem();
         	this.goParams.getOptimizer().SetProblem(this.goParams.getProblem());
@@ -355,13 +356,10 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
     public void registerPopulationStateChanged(Object source, String name) {
     	if (name.equals(Population.nextGenerationPerformed)) {
 //    		System.out.println(getGOParams().getOptimizer().getPopulation().getFunctionCalls() + " " + getGOParams().getOptimizer().getPopulation().getBestFitness()[0]);
-    		Vector informerList = new Vector<InterfaceAdditionalPopulationInformer>(2);
-    		informerList.add(this.goParams.getProblem());
-    		if (this.goParams.getOptimizer() instanceof InterfaceAdditionalPopulationInformer) informerList.add(this.goParams.getOptimizer());
     		m_Statistics.createNextGenerationPerformed(
     				(PopulationInterface)this.goParams.getOptimizer().getPopulation(), 
     				this.goParams.getOptimizer(),
-    				informerList);
+    				getInformerList());
     		if (m_ListenerModule != null) {
     			m_ListenerModule.updateProgress(
     					getStatusPercent(
@@ -372,7 +370,14 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
     		}
     	}
     }
-
+    
+    protected List<InterfaceAdditionalPopulationInformer> getInformerList() {
+		Vector<InterfaceAdditionalPopulationInformer> informerList = new Vector<InterfaceAdditionalPopulationInformer>(2);
+		informerList.add(this.goParams.getProblem());
+		if (this.goParams.getOptimizer() instanceof InterfaceAdditionalPopulationInformer) informerList.add((InterfaceAdditionalPopulationInformer)this.goParams.getOptimizer());
+		return informerList;
+    }
+    
     /** This method writes Data to file.
      * @param line      The line that is to be added to the file
      */

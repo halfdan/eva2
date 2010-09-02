@@ -63,11 +63,11 @@ import eva2.gui.LogPanel;
 import eva2.server.EvAServer;
 import eva2.server.go.InterfaceGOParameters;
 import eva2.server.modules.AbstractModuleAdapter;
+import eva2.server.modules.GOParameters;
 import eva2.server.modules.GenericModuleAdapter;
 import eva2.server.modules.ModuleAdapter;
 import eva2.server.stat.AbstractStatistics;
 import eva2.server.stat.InterfaceStatisticsParameter;
-import eva2.server.stat.StatsParameter;
 import eva2.tools.BasicResourceLoader;
 import eva2.tools.EVAERROR;
 import eva2.tools.EVAHELP;
@@ -86,6 +86,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
 	public static boolean TRACE = false;
 
 	public JEFrame m_Frame;
+	Runnable initRnbl = null;
 
 	private EvAComAdapter m_ComAdapter;
 	private transient JMenuBar 		m_barMenu;
@@ -148,7 +149,9 @@ public class EvAClient implements RemoteStateListener, Serializable {
 	/**
 	 * Constructor of GUI of EvA2.
 	 * Works as client for the EvA2 server.
-	 *
+	 * Note that the EvAClient initialized multi-threaded for efficiency. Use {@link #awaitGuiInitialized()}
+	 * to await full initialization if necessary.
+	 * 
 	 */
 	public EvAClient(final String hostName) {
 		this(hostName, null, false, false);
@@ -156,6 +159,8 @@ public class EvAClient implements RemoteStateListener, Serializable {
 	
 	/**
 	 * A constructor. Splash screen is optional, Gui is activated, no parent window.
+	 * Note that the EvAClient initialized multi-threaded for efficiency. Use {@link #awaitGuiInitialized()}
+	 * to await full initialization if necessary.
 	 * 
 	 * @see #EvAClient(String, Window, String, boolean, boolean, boolean)
 	 * @param hostName
@@ -164,11 +169,13 @@ public class EvAClient implements RemoteStateListener, Serializable {
 	 * @param nosplash
 	 */
 	public EvAClient(final String hostName, final String paramsFile, boolean autorun, boolean nosplash) {
-		this(hostName, null, paramsFile, autorun, nosplash, false);
+		this(hostName, null, paramsFile, null, autorun, nosplash, false);
 	}
 	
 	/**
 	 * A constructor with optional spash screen.
+	 * Note that the EvAClient initialized multi-threaded for efficiency. Use {@link #awaitGuiInitialized()}
+	 * to await full initialization if necessary.
 	 * @see #EvAClient(String, String, boolean, boolean)
 	 * 
 	 * @param hostName
@@ -180,7 +187,26 @@ public class EvAClient implements RemoteStateListener, Serializable {
 	}
 	
 	/**
-	 * A constructor with optional spash screen.
+	 * A constructor with optional splash screen.
+	 * Note that the EvAClient initialized multi-threaded for efficiency. Use {@link #awaitGuiInitialized()}
+	 * to await full initialization if necessary.
+	 * 
+	 * @see #EvAClient(String, String, boolean, boolean)
+	 * @param hostName
+	 * @param paramsFile
+	 * @param autorun
+	 * @param noSplash
+	 * @param noGui
+	 */
+	public EvAClient(final String hostName, String paramsFile, boolean autorun, boolean noSplash, boolean noGui) {
+		this(hostName, null, paramsFile, null, autorun, noSplash, noGui);
+	}
+	
+	/**
+	 * A constructor with optional splash screen.
+	 * Note that the EvAClient initialized multi-threaded for efficiency. Use {@link #awaitGuiInitialized()}
+	 * to await full initialization if necessary.
+	 * 
 	 * @see #EvAClient(String, String, boolean, boolean)
 	 * 
 	 * @param hostName
@@ -189,11 +215,17 @@ public class EvAClient implements RemoteStateListener, Serializable {
 	 * @param noSplash
 	 * @param noGui
 	 */
-	public EvAClient(final String hostName, String paramsFile, boolean autorun, boolean noSplash, boolean noGui) {
-		this(hostName, null, paramsFile, autorun, noSplash, noGui);
+	public EvAClient(final String hostName, InterfaceGOParameters goParams, boolean autorun, boolean noSplash, boolean noGui) {
+		this(hostName, null, null, goParams, autorun, noSplash, noGui);
 	}
+	
 	/**
-	 * Constructor of GUI of EvA2. Works as client for the EvA2 server.
+	 * Constructor of GUI of EvA2. Works as client for the EvA2 server. GO parameters may be
+	 * loaded from a file (paramsFile) or given directly as a java instance. Both may be null
+	 * to start with standard parameters. If both are non null, the java instance has the
+	 * higher priority.
+	 * Note that the EvAClient initialized multi-threaded for efficiency. Use {@link #awaitGuiInitialized()}
+	 * to await full initialization if necessary.
 	 *
 	 * @param hostName
 	 * @param parent
@@ -202,8 +234,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
 	 * @param noSplash
 	 * @param noGui
 	 */
-
-	public EvAClient(final String hostName, final Window parent, final String paramsFile, final boolean autorun, final boolean noSplash, final boolean noGui) {
+	public EvAClient(final String hostName, final Window parent, final String paramsFile, final InterfaceGOParameters goParams, final boolean autorun, final boolean noSplash, final boolean noGui) {
 		final SplashScreenShell fSplashScreen = new SplashScreenShell(EvAInfo.splashLocation);
 
 		// preload some classes (into system cache) in a parallel thread
@@ -224,29 +255,51 @@ public class EvAClient implements RemoteStateListener, Serializable {
 		
 		m_ComAdapter = EvAComAdapter.getInstance();
 
-		SwingUtilities.invokeLater( new Runnable() {
+		SwingUtilities.invokeLater( initRnbl = new Runnable() {
 			public void run(){
-				long startTime = System.currentTimeMillis();
-				init(hostName, paramsFile, parent); // this takes a bit
-				long wait = System.currentTimeMillis() - startTime;
-				if (!autorun) {
-					if (!noSplash) try {
-						// if splashScreenTime has not passed, sleep some more 
-						if (wait < splashScreenTime) Thread.sleep(splashScreenTime - wait);
-					} catch (Exception e) {}
-				} else {
-					if (!withGUI && (currentModuleAdapter instanceof GenericModuleAdapter)) {
-						// do not save new parameters for an autorun without GUI - they werent changed manually anyways.
-						((GenericModuleAdapter)currentModuleAdapter).getStatistics().setSaveParams(false);
-						System.out.println("Autorun without GUI - not saving statistics parameters...");
+				synchronized (this) {
+					long startTime = System.currentTimeMillis();
+					init(hostName, paramsFile, goParams, parent); // this takes a bit
+
+					long wait = System.currentTimeMillis() - startTime;
+					if (!autorun) {
+						if (!noSplash) try {
+							// if splashScreenTime has not passed, sleep some more 
+							if (wait < splashScreenTime) Thread.sleep(splashScreenTime - wait);
+						} catch (Exception e) {}
+					} else {
+						if (!withGUI && (currentModuleAdapter instanceof GenericModuleAdapter)) {
+							// do not save new parameters for an autorun without GUI - they werent changed manually anyways.
+							((GenericModuleAdapter)currentModuleAdapter).getStatistics().setSaveParams(false);
+							System.out.println("Autorun without GUI - not saving statistics parameters...");
+						}
+						if (withGUI) frmMkr.onUserStart();
+						else currentModuleAdapter.startOpt();
 					}
-					if (withGUI) frmMkr.onUserStart();
-					else currentModuleAdapter.startOpt();
+					// close splash screen
+					if (!noSplash && withGUI) fSplashScreen.dispose();
+					notify();
 				}
-				// close splash screen
-				if (!noSplash && withGUI) fSplashScreen.dispose();
-		      }			
+			}
 		});
+	}
+	
+	/**
+	 * Since the constructor runs multi-threaded for efficiency, this method
+	 * may be called to await the full initialization of a client instance.
+	 * As soon as it returns, the EvAClient GUI is fully initialized. 
+	 */
+	public void awaitGuiInitialized() {
+		if (initRnbl!=null) {
+			synchronized (initRnbl) {
+				try {
+					initRnbl.wait();
+					initRnbl=null;
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 	
 	private void preloadClasses() {
@@ -270,7 +323,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
 	/**
 	 * Sets given hostname and tries to load GOParamsters from given file if non null.
 	 */
-	private void init(String hostName, String paramsFile, final Window parent) {
+	private void init(String hostName, String paramsFile, InterfaceGOParameters goParams, final Window parent) {
 		//EVA_EDITOR_PROPERTIES
 		useDefaultModule = EvAInfo.propDefaultModule();
 		
@@ -304,7 +357,10 @@ public class EvAClient implements RemoteStateListener, Serializable {
 			createActions();
 		}
 		if (useDefaultModule != null) {
-			loadModuleFromServer(useDefaultModule, paramsFile);//loadSpecificModule
+			// if goParams are not defined and a params file is defined
+			// try to load parameters from file 
+			if (goParams==null && (paramsFile!=null && (paramsFile.length()>0))) goParams = GOParameters.getInstance(paramsFile, false);
+			loadModuleFromServer(useDefaultModule, goParams);//loadSpecificModule
 		}
 		
 		if (withGUI) {
@@ -649,7 +705,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
 	/**
 	 *
 	 */
-	private void loadModuleFromServer(String selectedModule, String paramsFile) {
+	private void loadModuleFromServer(String selectedModule, InterfaceGOParameters goParams) {
 		if (m_ComAdapter.getHostName() == null) {
 			System.err.println("error in loadModuleFromServer!");
 			return;
@@ -691,7 +747,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
 		} else {
 			Serializer.storeString("lastmodule.ser", selectedModule);
 
-			loadSpecificModule(selectedModule, paramsFile);
+			loadSpecificModule(selectedModule, goParams);
 
 			if (withGUI) {
 				m_actHost.setEnabled(true);
@@ -735,11 +791,11 @@ public class EvAClient implements RemoteStateListener, Serializable {
 		} else return false;
 	}
 
-	private void loadSpecificModule(String selectedModule, String paramsFile) {
+	private void loadSpecificModule(String selectedModule, InterfaceGOParameters goParams) {
 		ModuleAdapter newModuleAdapter = null;
 		//
 		try {
-			newModuleAdapter = m_ComAdapter.getModuleAdapter(selectedModule, paramsFile, withGUI ? null : "EvA2");
+			newModuleAdapter = m_ComAdapter.getModuleAdapter(selectedModule, goParams, withGUI ? null : "EvA2");
 		} catch (Exception e) {
 			logMessage("Error while m_ComAdapter.GetModuleAdapter Host: " + e.getMessage());
 			e.printStackTrace();
@@ -755,7 +811,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
 				System.setProperty("java.class.path", cp + System.getProperty("path.separator") + baseDir.getPath());
 				ReflectPackage.resetDynCP();
 				m_ComAdapter.updateLocalMainAdapter();
-				loadSpecificModule(selectedModule, paramsFile); // end recursive call! handle with care!
+				loadSpecificModule(selectedModule, goParams); // end recursive call! handle with care!
 				return;
 			}
 			showLoadModules = true;

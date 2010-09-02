@@ -17,7 +17,7 @@ public interface InterfaceAdditionalPopulationInformer {
 	 * @param pop   The population of the optimization run.
 	 * @return String
 	 */
-	public String[] getAdditionalFileStringHeader(PopulationInterface pop);
+	public String[] getAdditionalFileStringHeader();
 
 	/**
 	 * Optionally return informative descriptions of the data fields.
@@ -25,7 +25,7 @@ public interface InterfaceAdditionalPopulationInformer {
 	 * @param pop
 	 * @return
 	 */
-	public String[] getAdditionalFileStringInfo(PopulationInterface pop);
+	public String[] getAdditionalFileStringInfo();
 	
 	/** 
 	 * This method returns additional statistical data.

@@ -12,6 +12,7 @@ package eva2.server;
  * IMPORTS
  *==========================================================================*/
 
+import eva2.server.go.InterfaceGOParameters;
 import eva2.server.modules.ModuleAdapter;
 import eva2.tools.jproxy.MainAdapter;
 import eva2.tools.jproxy.MainAdapterClient;
@@ -33,7 +34,7 @@ public interface EvAMainAdapter extends MainAdapter {
   public ModuleAdapter getModuleAdapter(String selectedModuleName,
 		  boolean withoutRMI,
 		  String hostAddress,
-		  String paramsFile,
+		  InterfaceGOParameters goParams,
 		  String noGuiStatsFile,
 		  MainAdapterClient client);
 }

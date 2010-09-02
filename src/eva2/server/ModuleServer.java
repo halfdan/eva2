@@ -18,6 +18,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Properties;
 
+import eva2.server.go.InterfaceGOParameters;
 import eva2.server.modules.GOModuleAdapter;
 import eva2.server.modules.ModuleAdapter;
 import eva2.tools.EVAERROR;
@@ -125,7 +126,7 @@ public class ModuleServer {
 	 */
 	public ModuleAdapter createModuleAdapter(String selectedModuleName,
 			MainAdapterClient Client, boolean runWithoutRMI,
-			String hostAddress, String paramsFile, String noGuiLogFile) {
+			String hostAddress, InterfaceGOParameters goParams, String noGuiLogFile) {
 		m_ModuleAdapterCounter++;
 		String adapterName = new String("ERROR MODULADAPTER !!");
 		if (TRACE) {
@@ -163,8 +164,8 @@ public class ModuleServer {
 
 					Constructor<?>[] constructorArr = module.getConstructors();
 					// create a module instance
-					if ((paramsFile==null && noGuiLogFile==null) || !module.equals(GOModuleAdapter.class)) {
-						if (paramsFile!=null) System.err.println("Cant load params - no matching constructor found for " + adapterName + " (ModuleServer)");
+					if ((goParams==null && noGuiLogFile==null) || !module.equals(GOModuleAdapter.class)) {
+						if (goParams!=null) System.err.println("Cant set params - no matching constructor found for " + adapterName + " (ModuleServer)");
 						if (noGuiLogFile!=null) System.err.println("Cant deactivate GUI - no matching constructor found for " + adapterName + " (ModuleServer)");
 						Object[] Para = new Object[2];
 						Class<?> paramTypes[] = (constructorArr[0]).getParameterTypes();
@@ -174,7 +175,7 @@ public class ModuleServer {
 					} else {
 						Object[] Para = new Object[4];
 						Para[0] = (String)adapterName;
-						Para[1] = (String)paramsFile;
+						Para[1] = (InterfaceGOParameters)goParams;
 						Para[2] = (String)noGuiLogFile;
 						Para[3] = (MainAdapterClient)Client;
 						int constrIndex=0;

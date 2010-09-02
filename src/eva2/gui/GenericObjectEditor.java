@@ -199,16 +199,42 @@ public class GenericObjectEditor implements PropertyEditor {
 	 * 
 	 * @param cls
 	 * @param hide
+	 * @return the original hidden states or null if an error occurred.
 	 */
-	public static void setHideAllProperties(Class<?> cls, boolean hide) {
+	public static boolean[] setHideAllProperties(Class<?> cls, boolean hide) {
 		try {
 			BeanInfo    bi      = Introspector.getBeanInfo(cls);
 			PropertyDescriptor[] props = bi.getPropertyDescriptors();
+			boolean[] orig = new boolean[props.length]; 
 			for (int i=0; i<props.length; i++) {
+				orig[i]=props[i].isHidden();
 				props[i].setHidden(hide);
 			}
+			return orig;
 		} catch (Exception e) {
 			System.err.println("exception in setHideProperty for " + cls.getName() + "/all : " + e.getMessage());
+			return null;
+		}
+	}
+	
+	public static void setHideProperties(Class<?> cls, boolean[] hideStates) {
+		if (hideStates!=null) {
+			BeanInfo bi;
+			try {
+				bi = Introspector.getBeanInfo(cls);
+			} catch (IntrospectionException e) {
+				System.err.println("Error on introspection of " + cls.getName() + ", " + e.getMessage());
+				e.printStackTrace();
+				return;
+			}
+			PropertyDescriptor[] props = bi.getPropertyDescriptors();
+			if (hideStates.length == props.length) {
+				for (int i=0; i<props.length; i++) {
+					props[i].setHidden(hideStates[i]);
+				}
+			} else {
+				System.err.println("Error, mismatching length of hide state array in GenericObjectEditor.setHideProperites");
+			}
 		}
 	}
 	

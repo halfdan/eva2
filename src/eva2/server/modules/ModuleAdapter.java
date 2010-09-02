@@ -13,9 +13,6 @@ package eva2.server.modules;
  * IMPORTS
  *==========================================================================*/
 import eva2.gui.EvATabbedFrameMaker;
-import eva2.gui.LogPanel;
-import eva2.server.go.operators.postprocess.PostProcessParams;
-import eva2.server.stat.InterfaceTextListener;
 import eva2.tools.jproxy.RemoteStateListener;
 /*==========================================================================*
 * INTERFACE DECLARATION

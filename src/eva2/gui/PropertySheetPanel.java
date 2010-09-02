@@ -204,7 +204,10 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
         // Look for a globalInfo method that returns a string
         // describing the target
         int methsFound = 0; // dont loop too long, so count until all found
-        GenericObjectEditor.setHideAllProperties(m_Target.getClass(), false);
+        // unhide all properties
+        // TODO this may be superfluous?
+        boolean[] hideStateBackup = GenericObjectEditor.setHideAllProperties(m_Target.getClass(), false); 
+//        System.out.println("hide stats were: " + BeanInspector.toString(hideStateBackup));
         for (int i = 0; i < m_Methods.length; i++) {
             String name = m_Methods[i].getDisplayName();
             Method meth = m_Methods[i].getMethod();
@@ -228,7 +231,9 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
             }
             if (methsFound == 3) break; // small speed-up
         } // end for (int i = 0; i < m_Methods.length; i++) {
-
+        // restore hide states of all properties
+        GenericObjectEditor.setHideProperties(m_Target.getClass(), hideStateBackup);
+        
         // Now lets search for the individual properties, their
         // values, views and editors...
         m_Editors   = new PropertyEditor[m_Properties.length];

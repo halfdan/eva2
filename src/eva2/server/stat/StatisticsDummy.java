@@ -79,7 +79,7 @@ public class StatisticsDummy implements InterfaceStatistics, InterfaceTextListen
 	}
 
 	public void startOptPerformed(String InfoString, int runnumber,
-			Object params) {
+			Object params, List<InterfaceAdditionalPopulationInformer> informerList) {
 		if (runnumber==0) bestIndividualAllover = null;
 		bestRunIndy = null;
 	}

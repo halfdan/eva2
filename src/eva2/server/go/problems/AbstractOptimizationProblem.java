@@ -241,7 +241,7 @@ implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serial
      * @param pop   The population that is to be refined.
      * @return String
      */
-    public String[] getAdditionalFileStringHeader(PopulationInterface pop) {
+    public String[] getAdditionalFileStringHeader() {
     	if (this instanceof InterfaceInterestingHistogram) return new String[]{"solution","histogram","score"};
     	else return new String[]{"solution"};
     }
@@ -250,7 +250,7 @@ implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serial
      * @param pop   The population that is to be refined.
      * @return String
      */
-    public String[] getAdditionalFileStringInfo(PopulationInterface pop) {
+    public String[] getAdditionalFileStringInfo() {
     	if (this instanceof InterfaceInterestingHistogram) 
     		return new String[]{"Representation of the current best individual",
     			"Fitness histogram of the current population",

@@ -122,11 +122,11 @@ abstract public class AbstractModuleAdapter implements ModuleAdapter, Serializab
 	  } else return null;
   }
   
-//  public void setGOParameters(InterfaceGOParameters params) {
-//	  if ((m_Processor != null) && (m_Processor instanceof Processor)) {
-//		  ((Processor)m_Processor).setGOParams(params);
-//	  }
-//  }
+  public void setGOParameters(InterfaceGOParameters goParams) {
+	  if ((m_Processor != null) && (m_Processor instanceof Processor)) {
+		  ((Processor)m_Processor).setGOParams(goParams);
+	  } 
+  }
   
 //  public void loadGOParameters(String serParamsFile) {
 //	  if ((m_Processor != null) && (m_Processor instanceof Processor)) {

@@ -158,8 +158,8 @@ public class F8Problem extends AbstractProblemDoubleOffset
 	}
 
 	@Override
-	public String[] getAdditionalFileStringHeader(PopulationInterface pop) {
-		String[] superHd = super.getAdditionalFileStringHeader(pop);
+	public String[] getAdditionalFileStringHeader() {
+		String[] superHd = super.getAdditionalFileStringHeader();
 		return ToolBox.appendArrays(new String[]{"numOptimaFound","maxPeakRatio"}, superHd);
 //		return "#Optima found \tMaximum Peak Ratio \t" + super.getAdditionalFileStringHeader(pop);
 	}

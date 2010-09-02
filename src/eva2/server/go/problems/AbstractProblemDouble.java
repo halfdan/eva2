@@ -574,8 +574,8 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem
 	}
 
 	@Override
-	public String[] getAdditionalFileStringHeader(PopulationInterface pop) {
-		String[] superHeader = super.getAdditionalFileStringHeader(pop);
+	public String[] getAdditionalFileStringHeader() {
+		String[] superHeader = super.getAdditionalFileStringHeader();
 		if (isWithConstraints())
 			return ToolBox.appendArrays(superHeader, new String[] { "rawFit",
 					"numViol", "sumViol" });
@@ -584,8 +584,8 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem
 	}
 
 	@Override
-	public String[] getAdditionalFileStringInfo(PopulationInterface pop) {
-		String[] superInfo = super.getAdditionalFileStringInfo(pop);
+	public String[] getAdditionalFileStringInfo() {
+		String[] superInfo = super.getAdditionalFileStringInfo();
 		if (isWithConstraints())
 			return ToolBox
 					.appendArrays(

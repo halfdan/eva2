@@ -26,8 +26,10 @@ public interface InterfaceStatisticsListener {
 	 * 
 	 * @param runNumber the number of the new run, starting with 0
 	 * @param plannedMultiRuns the number of planned multi-runs
+	 * @param header	field names of the data
+	 * @param metaInfo	additional meta information on the data fields
 	 */
-	public void notifyRunStarted(int runNumber, int plannedMultiRuns);
+	public void notifyRunStarted(int runNumber, int plannedMultiRuns, String[] header, String[] metaInfo);
 
 	/**
 	 * Method called at the end of a single run.
