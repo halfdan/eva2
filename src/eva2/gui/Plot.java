@@ -91,6 +91,18 @@ public class Plot implements PlotInterface, Serializable {
 	 * @param yname
 	 * @param init
 	 */
+	public Plot(String PlotName, String xname, String yname) {
+		this(PlotName, xname, yname, true);
+	}
+	
+	/**
+	 * A basic constructor.
+	 * 
+	 * @param PlotName
+	 * @param xname
+	 * @param yname
+	 * @param init
+	 */
 	public Plot(String PlotName, String xname, String yname, boolean init) {
 		if (TRACE)
 			System.out.println("Constructor Plot " + PlotName);
