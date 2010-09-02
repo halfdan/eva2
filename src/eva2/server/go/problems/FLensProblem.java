@@ -344,19 +344,6 @@ public class FLensProblem extends AbstractOptimizationProblem implements Interfa
 		result += "Y = " + individual.getFitness(0);
 		return result;
 	}
-
-	@Override
-	public String[] getAdditionalFileStringHeader(PopulationInterface pop) {
-		return new String[]{"Solution"};
-	}
-	@Override
-	public Object[] getAdditionalFileStringValue(PopulationInterface pop) {
-		String result ="{";
-		double[] data = ((InterfaceDataTypeDouble) pop.getBestIndividual()).getDoubleData();
-		for (int i = 0; i < data.length; i++) result += data[i] +"; ";
-		result += "}";
-		return new Object[]{result};
-	}
 	
 	/** This method allows you to output a string that describes a found solution
 	 * in a way that is most suiteable for a given problem.

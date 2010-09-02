@@ -28,7 +28,7 @@ public interface InterfaceStatistics {
 	/**
 	 * Initialize statistics computations.
 	 */
-	public void startOptPerformed(String InfoString,int runnumber, Object params); // called from processor
+	public void startOptPerformed(String InfoString,int runnumber, Object params, List<InterfaceAdditionalPopulationInformer> informerList); // called from processor
 	/**
 	 * Finalize statistics computations.
 	 */

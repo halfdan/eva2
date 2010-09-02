@@ -1142,14 +1142,14 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
 		return "If fitness improves less than this value within the halting window, convergence is assumed. May be set to zero.";
 	}
 
-	public String[] getAdditionalFileStringHeader(PopulationInterface pop) {
+	public String[] getAdditionalFileStringHeader() {
 		return new String[]{"numUndiff","numActSpec","avgSpecMeas","numArchived", 
 				"archivedMedCorr", "archivedMeanDist"
 //				, "numCollisions", "clustSig"
 				}; 
 	}
 	
-	public String[] getAdditionalFileStringInfo(PopulationInterface pop) { // TODO use these as Tool Tip Texts???
+	public String[] getAdditionalFileStringInfo() {
 		return new String[] {
 				"The number of exploring individuals in the main population",
 				"The number of active species (sub-populations)",

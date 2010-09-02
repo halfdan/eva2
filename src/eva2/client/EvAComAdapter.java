@@ -20,6 +20,7 @@ import eva2.EvAInfo;
 import eva2.gui.LogPanel;
 import eva2.server.EvAMainAdapter;
 import eva2.server.EvAMainAdapterImpl;
+import eva2.server.go.InterfaceGOParameters;
 import eva2.server.modules.ModuleAdapter;
 import eva2.tools.jproxy.ComAdapter;
 import eva2.tools.jproxy.MainAdapter;
@@ -59,11 +60,11 @@ public class EvAComAdapter extends ComAdapter {
 	 * Creates the ModulAdapters RMI Object on the server
 	 * @return
 	 */
-	public ModuleAdapter getModuleAdapter(String selectedModuleName, String paramsFile, String noGuiStatsFile) {
+	public ModuleAdapter getModuleAdapter(String selectedModuleName, InterfaceGOParameters goParams, String noGuiStatsFile) {
 		ModuleAdapter newModuleAdapter;
 		if ((m_RMIServer == null) && isRunLocally()) {
 			//ret = evaAdapter.getModuleAdapter(Modul, hostAdd, this.m_MainAdapterClient);
-			newModuleAdapter = getLocalMainAdapter().getModuleAdapter(selectedModuleName, true, getHostName(), paramsFile, noGuiStatsFile, null);
+			newModuleAdapter = getLocalMainAdapter().getModuleAdapter(selectedModuleName, true, getHostName(), goParams, noGuiStatsFile, null);
 		} else {
 			newModuleAdapter = ((RMIConnectionEvA)getConnection(getHostName())).getModuleAdapter(selectedModuleName);
 			if (newModuleAdapter == null) System.err.println("RMI Error for getting ModuleAdapterObject : " + selectedModuleName);

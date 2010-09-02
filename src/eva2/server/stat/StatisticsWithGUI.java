@@ -99,8 +99,8 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
 	/**
 	 *
 	 */
-	public synchronized void startOptPerformed(String infoString, int runNumber, Object goParams) {
-		super.startOptPerformed(infoString, runNumber, goParams);
+	public synchronized void startOptPerformed(String infoString, int runNumber, Object goParams, List<InterfaceAdditionalPopulationInformer> informerList) {
+		super.startOptPerformed(infoString, runNumber, goParams, informerList);
 		m_GraphInfoString = infoString;
 		
 //		m_TextCounter = m_StatisticsParameter.GetTextoutput();

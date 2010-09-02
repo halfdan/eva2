@@ -13,6 +13,7 @@ package eva2.server;
  * IMPORTS
  *==========================================================================*/
 import eva2.EvAInfo;
+import eva2.server.go.InterfaceGOParameters;
 import eva2.server.modules.ModuleAdapter;
 import eva2.tools.jproxy.MainAdapterClient;
 import eva2.tools.jproxy.MainAdapterImpl;
@@ -38,10 +39,10 @@ public class EvAMainAdapterImpl extends MainAdapterImpl implements EvAMainAdapte
     return getModuleAdapter(selectedModuleName, withoutRMI, hostAddress, null, null, client);
   }
   
- public ModuleAdapter getModuleAdapter(String selectedModuleName, boolean withoutRMI, String hostAddress, String paramsFile, String noGuiStatsFile, MainAdapterClient client) {
+ public ModuleAdapter getModuleAdapter(String selectedModuleName, boolean withoutRMI, String hostAddress, InterfaceGOParameters goParams,String noGuiStatsFile, MainAdapterClient client) {
    if (TRACE) System.out.println("MainAdapterImpl.GetModuleAdapter() for module " +
 		   selectedModuleName +" for Client: "+hostAddress+ " called");
-   return m_ModulServer.createModuleAdapter(selectedModuleName,client,withoutRMI,hostAddress, paramsFile, noGuiStatsFile);
+   return m_ModulServer.createModuleAdapter(selectedModuleName,client,withoutRMI,hostAddress, goParams, noGuiStatsFile);
  }
 }
 

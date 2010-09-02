@@ -279,5 +279,17 @@ public class StringTools {
 		}
 		return sb.toString();
 	}
+
+	public static String concatFields(String[] strs,
+			String delim) {
+		StringBuffer sb = new StringBuffer();
+		int cnt=0;
+		for (String str : strs) {
+			if (cnt>0) sb.append(delim);
+			sb.append(str);
+			cnt++;
+		}
+		return sb.toString();
+	}
 }
 

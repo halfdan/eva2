@@ -122,8 +122,8 @@ public abstract class AbstractMultiModalProblemKnown extends AbstractProblemDoub
 	public abstract double[] evalUnnormalized(double[] x);
 	
 	@Override
-	public String[] getAdditionalFileStringHeader(PopulationInterface pop) {
-		return ToolBox.appendArrays(new String[]{"numOptsFound", "maxPeakRatio"}, super.getAdditionalFileStringHeader(pop));
+	public String[] getAdditionalFileStringHeader() {
+		return ToolBox.appendArrays(new String[]{"numOptsFound", "maxPeakRatio"}, super.getAdditionalFileStringHeader());
 	}
 
 	@Override

@@ -384,9 +384,9 @@ public class StatsParameter implements InterfaceStatisticsParameter, InterfaceNo
 		ArrayList<String> infoFields = new ArrayList<String>();
 		// parse list of header elements, show additional Strings according to names.
 		for (InterfaceAdditionalPopulationInformer inf : informers) {
-			headerFields.addAll(Arrays.asList(inf.getAdditionalFileStringHeader(null)));
+			headerFields.addAll(Arrays.asList(inf.getAdditionalFileStringHeader()));
 			if (infoFields.size()<headerFields.size()) { // add info strings for tool tips - fill up with null if none have been returned.
-				String[] infos = inf.getAdditionalFileStringInfo(null);
+				String[] infos = inf.getAdditionalFileStringInfo();
 				if (infos!=null) infoFields.addAll(Arrays.asList(infos));
 				while (infoFields.size()<headerFields.size()) infoFields.add(null);
 			}
