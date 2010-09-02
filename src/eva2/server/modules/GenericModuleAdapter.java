@@ -81,20 +81,20 @@ public class GenericModuleAdapter extends AbstractModuleAdapter implements Seria
     		System.err.println("Error: Unable to create Frame when startet with noGUI option (GenericModuleAdapter)!");
     		return null;
     	}
-        ArrayList<PanelMaker> GUIContainer    = new ArrayList<PanelMaker>();
+        EvATabbedFrameMaker frmMkr = new EvATabbedFrameMaker();
+
         InterfaceStatisticsParameter Stat             = ((StatisticsWithGUI)m_StatisticsModul).getStatisticsParameter();
         EvAModuleButtonPanelMaker ButtonPanel      = new EvAModuleButtonPanelMaker(m_RemoteThis,((Processor)m_Processor).isOptRunning());
         ButtonPanel.setHelperFilename(helperFilename);
-        GUIContainer.add(ButtonPanel);
+        frmMkr.addPanelMaker(ButtonPanel);
         InterfaceGOParameters Para = ((Processor)m_Processor).getGOParams();
         if (TRACE) System.out.println("parameters are of type "+Para.getClass());
         // TODO do we really need proxies here?
-        if (m_RMI && !Proxy.isProxyClass(Para.getClass())) GUIContainer.add(new JParaPanel( RMIProxyLocal.newInstance(Para), Para.getName()));
-        else GUIContainer.add(new JParaPanel(Para, Para.getName()));
-        if (m_RMI && !Proxy.isProxyClass(Stat.getClass())) GUIContainer.add(new JParaPanel( RMIProxyLocal.newInstance(Stat), Stat.getName()));
-        else GUIContainer.add(new JParaPanel(Stat, Stat.getName()));
+        if (m_RMI && !Proxy.isProxyClass(Para.getClass())) frmMkr.addPanelMaker(new JParaPanel( RMIProxyLocal.newInstance(Para), Para.getName()));
+        else frmMkr.addPanelMaker(new JParaPanel(Para, Para.getName()));
+        if (m_RMI && !Proxy.isProxyClass(Stat.getClass())) frmMkr.addPanelMaker(new JParaPanel( RMIProxyLocal.newInstance(Stat), Stat.getName()));
+        else frmMkr.addPanelMaker(new JParaPanel(Stat, Stat.getName()));
 
-        EvATabbedFrameMaker frmMkr = new EvATabbedFrameMaker(GUIContainer);
         ((Processor)m_Processor).getGOParams().addInformableInstance(frmMkr);
         return frmMkr;
     }

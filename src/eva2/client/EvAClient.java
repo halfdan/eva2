@@ -400,7 +400,16 @@ public class EvAClient implements RemoteStateListener, Serializable {
 			m_LogPanel.logMessage("EvA2 ready"); // if this message is omitted, the stupid scroll pane runs to the end of the last line which is ugly for a long class path
 		}
 	}
-
+	
+	/**
+	 * Refresh the parameter panels (if settings have been changed outside
+	 * of the GUI which should be updated in the GUI.
+	 * 
+	 */
+	public void refreshMainPanels() {
+		frmMkr.refreshPanels();
+	}
+	
 	/**
 	 * The one and only main of the client program. Possible arguments:
 	 * --autorun immediately starts the optimization (with parameters loaded from current

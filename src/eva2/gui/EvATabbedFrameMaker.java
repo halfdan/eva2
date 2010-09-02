@@ -19,6 +19,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
@@ -31,12 +32,17 @@ import eva2.server.go.problems.InterfaceAdditionalPopulationInformer;
  */
 public class EvATabbedFrameMaker implements Serializable, PanelMaker, InterfaceNotifyOnInformers {
 	private static final long serialVersionUID = 2637376545826821423L;
-	private ArrayList<PanelMaker>         guiContainer;
+	private ArrayList<PanelMaker>         pmContainer = null;
 	private JExtToolBar       m_BarStandard;
 	EvAModuleButtonPanelMaker butPanelMkr=null;
 	
-	public EvATabbedFrameMaker(ArrayList<PanelMaker> GUIContainer) {
-		guiContainer = GUIContainer;
+	public EvATabbedFrameMaker() {
+		pmContainer = null;
+	}
+	
+	public void addPanelMaker(PanelMaker pm) {
+		if (pmContainer==null) pmContainer = new ArrayList<PanelMaker>(2);
+		pmContainer.add(pm);
 	}
 
 	public JPanel makePanel() {
@@ -69,14 +75,15 @@ public class EvATabbedFrameMaker implements Serializable, PanelMaker, InterfaceN
 		
 		m_BarStandard = new JExtToolBar();
 		m_BarStandard.setFloatable(false);
-
-		for (int i=0;i<guiContainer.size();i++) {
-			PanelMaker element = guiContainer.get(i);
+		
+		for (int i=0;i<pmContainer.size();i++) {
+			PanelMaker element = pmContainer.get(i);
+			JComponent panel = element.makePanel();
 			if (element instanceof EvAModuleButtonPanelMaker) {
-				m_BarStandard.add(element.makePanel());
+				m_BarStandard.add(panel);
 				butPanelMkr=(EvAModuleButtonPanelMaker)element;
 			} else if (element instanceof JParaPanel) {
-				m_MainPanel.addTab (((JParaPanel)element).getName(), element.makePanel());
+				m_MainPanel.addTab (((JParaPanel)element).getName(), panel);
 			}
 		}
 		m_SuperPanel.add(m_MainPanel, gbconst);
@@ -97,11 +104,17 @@ public class EvATabbedFrameMaker implements Serializable, PanelMaker, InterfaceN
 		} else System.err.println("Error: button panel was null (EvATabbedFrameMaker)");
 	}
 
+	public void refreshPanels() {
+		for (PanelMaker jpp : pmContainer) {
+			if (jpp instanceof JParaPanel) ((JParaPanel)jpp).m_Editor.setValue(((JParaPanel)jpp).m_Editor.getValue());
+		}
+	}
+	
 	public void setInformers(
 			List<InterfaceAdditionalPopulationInformer> informers) {
 		// if the informers have changed, update the GUI element which displays them
 		try {
-			JParaPanel statsPan = (JParaPanel) guiContainer.get(2);
+			JParaPanel statsPan = (JParaPanel) pmContainer.get(2);
 			if (statsPan.m_Editor!=null) {
 				statsPan.m_Editor.setValue(statsPan.m_Editor.getValue()); // really update the contents of the stats panel
 //				System.out.println("OOO setting informers to stats panel succeeded!");
