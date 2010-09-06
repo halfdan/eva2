@@ -86,4 +86,20 @@ public class Pair<S, T> implements Serializable {
 	public String toString() {
 		return "(" + head.toString() + "," + tail.toString() + ")";
 	}
+
+	/**
+	 * 
+	 * @param head
+	 */
+	public void setHead(S head) {
+		this.head = head;		
+	}
+
+	/**
+	 * 
+	 * @param tail
+	 */
+	public void setTail(T tail) {
+		this.tail = tail;
+	}
 }
