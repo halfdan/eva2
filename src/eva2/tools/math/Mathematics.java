@@ -1165,7 +1165,7 @@ public class Mathematics {
 	 * @param w
 	 * @return
 	 */
-	public static void svvAddAndScale(double s, double[] v, double[] w,
+	public static void  svvAddAndScale(double s, double[] v, double[] w,
 			double[] res) {
 		for (int i = 0; i < v.length; i++) {
 			res[i] = s * (v[i] + w[i]);
