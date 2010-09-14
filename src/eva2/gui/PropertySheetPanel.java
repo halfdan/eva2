@@ -89,6 +89,7 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
     /** Creates the property sheet panel.
      */
     public PropertySheetPanel() {
+    	if (m_support == null) m_support = new PropertyChangeSupport(this);
         //    setBorder(BorderFactory.createLineBorder(Color.red));
         setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
         if (TRACE) System.out.println("PropertySheetPanel(): NEW PropertySheetPanel");
@@ -113,14 +114,14 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
      * @param l a value of type 'PropertyChangeListener'
      */
     public void addPropertyChangeListener(PropertyChangeListener l) {
-        m_support.addPropertyChangeListener(l);
+        if (m_support!=null) m_support.addPropertyChangeListener(l);
     }
 
     /** Removes a PropertyChangeListener.
      * @param l a value of type 'PropertyChangeListener'
      */
     public void removePropertyChangeListener(PropertyChangeListener l) {
-        m_support.removePropertyChangeListener(l);
+    	 if (m_support!=null) m_support.removePropertyChangeListener(l);
     }
     
     /**
