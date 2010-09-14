@@ -490,13 +490,15 @@ public class GenericObjectEditor implements PropertyEditor {
 			m_EditorComponent = new GOEPanel(m_Object, m_Backup, m_Support, this);
 		m_EditorComponent.m_okBut.setEnabled(false);
 	}
-	public void addPropertyChangeListener(PropertyChangeListener l) {
-		m_Support.addPropertyChangeListener(l);
-	}
+	  public void addPropertyChangeListener(PropertyChangeListener l) {
+		  if (m_Support == null) m_Support = new PropertyChangeSupport(this);
+		  m_Support.addPropertyChangeListener(l);
+	  }
 
-	public void removePropertyChangeListener(PropertyChangeListener l) {
-		m_Support.removePropertyChangeListener(l);
-	}
+	  public void removePropertyChangeListener(PropertyChangeListener l) {
+		  if (m_Support == null) m_Support = new PropertyChangeSupport(this);
+		  m_Support.removePropertyChangeListener(l);
+	  }
 	/**
 	 *
 	 */

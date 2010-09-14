@@ -472,16 +472,14 @@ implements PropertyEditor {
 	public Component getCustomEditor() {
 		return this;
 	}
-	/**
-	 *
-	 */
+	
 	public void addPropertyChangeListener(PropertyChangeListener l) {
+		if (m_Support == null) m_Support = new PropertyChangeSupport(this);
 		m_Support.addPropertyChangeListener(l);
 	}
-	/**
-	 *
-	 */
+
 	public void removePropertyChangeListener(PropertyChangeListener l) {
+		if (m_Support == null) m_Support = new PropertyChangeSupport(this);
 		m_Support.removePropertyChangeListener(l);
 	}
 

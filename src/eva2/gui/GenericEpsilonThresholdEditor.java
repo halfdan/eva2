@@ -199,18 +199,14 @@ public class GenericEpsilonThresholdEditor extends JPanel implements PropertyEdi
         return null;
     }
 
-    /**
-     *
-     */
     public void addPropertyChangeListener(PropertyChangeListener l) {
-        m_Support.addPropertyChangeListener(l);
+  	  if (m_Support == null) m_Support = new PropertyChangeSupport(this);
+  	  m_Support.addPropertyChangeListener(l);
     }
 
-    /**
-     *
-     */
     public void removePropertyChangeListener(PropertyChangeListener l) {
-        m_Support.removePropertyChangeListener(l);
+  	  if (m_Support == null) m_Support = new PropertyChangeSupport(this);
+  	  m_Support.removePropertyChangeListener(l);
     }
 
     /** This is used to hook an action listener to the ok button
