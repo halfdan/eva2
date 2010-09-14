@@ -73,6 +73,8 @@ implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serial
 		
 	}
 	
+	public static final String STAT_SOLUTION_HEADER = "solution";
+	
 	int parallelthreads = 1;
 	
     protected 	AbstractEAIndividual      m_Template;
@@ -242,8 +244,8 @@ implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serial
      * @return String
      */
     public String[] getAdditionalFileStringHeader() {
-    	if (this instanceof InterfaceInterestingHistogram) return new String[]{"solution","histogram","score"};
-    	else return new String[]{"solution"};
+    	if (this instanceof InterfaceInterestingHistogram) return new String[]{STAT_SOLUTION_HEADER,"histogram","score"};
+    	else return new String[]{STAT_SOLUTION_HEADER};
     }
     
     /** This method returns the header for the additional data that is to be written into a file
