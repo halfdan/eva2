@@ -364,11 +364,13 @@ public class GenericOptimizationObjectivesEditor extends JPanel implements Prope
     /********************************* java.beans.PropertyChangeListener *************************/
 
     public void addPropertyChangeListener(PropertyChangeListener l) {
-        m_Support.addPropertyChangeListener(l);
+  	  if (m_Support == null) m_Support = new PropertyChangeSupport(this);
+  	  m_Support.addPropertyChangeListener(l);
     }
 
     public void removePropertyChangeListener(PropertyChangeListener l) {
-        m_Support.removePropertyChangeListener(l);
+  	  if (m_Support == null) m_Support = new PropertyChangeSupport(this);
+  	  m_Support.removePropertyChangeListener(l);
     }
     /** This will wait for the GenericObjectEditor to finish
      * editing an object.

@@ -110,18 +110,14 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
         m_support.addPropertyChangeListener(this);
     }
 
-    /** Adds a PropertyChangeListener.
-     * @param l a value of type 'PropertyChangeListener'
-     */
     public void addPropertyChangeListener(PropertyChangeListener l) {
-        if (m_support!=null) m_support.addPropertyChangeListener(l);
+  	  if (m_support == null) m_support = new PropertyChangeSupport(this);
+  	  m_support.addPropertyChangeListener(l);
     }
 
-    /** Removes a PropertyChangeListener.
-     * @param l a value of type 'PropertyChangeListener'
-     */
     public void removePropertyChangeListener(PropertyChangeListener l) {
-    	 if (m_support!=null) m_support.removePropertyChangeListener(l);
+  	  if (m_support == null) m_support = new PropertyChangeSupport(this);
+  	  m_support.removePropertyChangeListener(l);
     }
     
     /**

@@ -168,17 +168,14 @@ public class BigStringEditor implements PropertyEditor {
     return  m_Panel;
   }
 
-  /**
-   *
-   */
-  public void addPropertyChangeListener (PropertyChangeListener l) {
-    m_Support.addPropertyChangeListener(l);
+  public void addPropertyChangeListener(PropertyChangeListener l) {
+	  if (m_Support == null) m_Support = new PropertyChangeSupport(this);
+	  m_Support.addPropertyChangeListener(l);
   }
-  /**
-   *
-   */
-  public void removePropertyChangeListener (PropertyChangeListener l) {
-    m_Support.removePropertyChangeListener(l);
+
+  public void removePropertyChangeListener(PropertyChangeListener l) {
+	  if (m_Support == null) m_Support = new PropertyChangeSupport(this);
+	  m_Support.removePropertyChangeListener(l);
   }
 
   /**

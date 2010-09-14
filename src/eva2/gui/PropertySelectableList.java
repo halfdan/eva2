@@ -104,11 +104,13 @@ public class PropertySelectableList<T> implements java.io.Serializable {
 //		m_Support.firePropertyChange("PropertySelectableList", null, this);
 //	}
 	
-    public void addPropertyChangeListener(PropertyChangeListener l) {
-        m_Support.addPropertyChangeListener(l);
-    }
+	  public void addPropertyChangeListener(PropertyChangeListener l) {
+		  if (m_Support == null) m_Support = new PropertyChangeSupport(this);
+		  m_Support.addPropertyChangeListener(l);
+	  }
 
-    public void removePropertyChangeListener(PropertyChangeListener l) {
-        m_Support.removePropertyChangeListener(l);
-    }
+	  public void removePropertyChangeListener(PropertyChangeListener l) {
+		  if (m_Support == null) m_Support = new PropertyChangeSupport(this);
+		  m_Support.removePropertyChangeListener(l);
+	  }
 }

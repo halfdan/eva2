@@ -59,10 +59,14 @@ public class MultiLineStringEditor implements PropertyEditor {
   // This code uses the PropertyChangeSupport class to maintain a list of
   // listeners interested in the edits we make to the value.
   protected PropertyChangeSupport listeners = new PropertyChangeSupport(this);
+  
   public void addPropertyChangeListener(PropertyChangeListener l) {
-    listeners.addPropertyChangeListener(l);
+	  if (listeners == null) listeners = new PropertyChangeSupport(this);
+	  listeners.addPropertyChangeListener(l);
   }
+
   public void removePropertyChangeListener(PropertyChangeListener l) {
-    listeners.removePropertyChangeListener(l);
+	  if (listeners == null) listeners = new PropertyChangeSupport(this);
+	  listeners.removePropertyChangeListener(l);
   }
 }
