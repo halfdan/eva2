@@ -806,10 +806,10 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 		Iterator<String> hIter = headers.iterator();
 		Iterator<String> mIter = (metaInfo!=null) ? metaInfo.iterator() : null;  
 		if (!lastIsShowFull) while (hIter.hasNext()) {
-			if (mIter!=null) mIter.next();
+			if (mIter!=null && mIter.hasNext()) mIter.next();
 			if (!isRequestedAdditionalField(hIter.next())) {
 				hIter.remove();
-				if (mIter!=null) mIter.remove();
+				if (mIter!=null && mIter.hasNext()) mIter.remove();
 			}
 		}
 		return headers;
