@@ -137,7 +137,11 @@ public class StringSelection implements Serializable {
 	 * @return
 	 */
 	public boolean isSelected(int i) {
-		return selStates[i];
+		try {
+			return selStates[i];
+		} catch(ArrayIndexOutOfBoundsException e) {
+			throw new ArrayIndexOutOfBoundsException(e.getMessage()+" - inconsistent implementation of InterfaceAdditionalPopulationInformer?");
+		}
 	}
 	
 	/**
