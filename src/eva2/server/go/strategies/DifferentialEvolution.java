@@ -305,7 +305,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
         }
         double[] nX, vX, oX;
         oX = esIndy.getDoubleData();
-        vX = esIndy.getDoubleData();
+        vX = oX.clone();
         nX = new double[oX.length];
         switch (this.m_DEType) {
             case DE1_Rand_1: {
@@ -387,13 +387,14 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
                 break;
             }
         }
+        int k=RNG.randomInt(oX.length); // at least one position is changed
         for (int i =0; i < oX.length; i++) {
-            if (RNG.flipCoin(this.getCurrentK())) {
-                // it remains the same
-                nX[i] = oX[i];
-            } else {
+            if ((i==k) || RNG.flipCoin(this.getCurrentK())) {
                 // it is altered
                 nX[i] = vX[i];
+            } else {
+                // it remains the same
+                nX[i] = oX[i];
             }
         }
         // setting the new genotype and fitness
