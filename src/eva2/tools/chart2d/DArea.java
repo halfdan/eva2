@@ -214,6 +214,17 @@ public class DArea extends JComponent implements DParent, Printable {
 		return 0;
 	}
 
+	/**
+	 * method returns the maximal y-value which can be displayed in the DArea
+	 * 
+	 * @return the maximal y-value
+	 */
+	public double getMaxY() {
+		if (max_y != null)
+			return max_y.doubleValue();
+		return 0;
+	}
+
 	// /**
 	// * method sets the maximal rectangle whioch can be viewed with the
 	// * DArea. This method can be used if the area is used with scale functions
@@ -247,17 +258,6 @@ public class DArea extends JComponent implements DParent, Printable {
 	// setMaxX( rect.x + rect.width );
 	// setMaxY( rect.y + rect.height );
 	// }
-
-	/**
-	 * method returns the maximal y-value which can be displayed in the DArea
-	 * 
-	 * @return the maximal y-value
-	 */
-	public double getMaxY() {
-		if (max_y != null)
-			return max_y.doubleValue();
-		return 0;
-	}
 
 	/**
 	 * method returns the minimal rectangle which is set as the visible when all
@@ -310,6 +310,10 @@ public class DArea extends JComponent implements DParent, Printable {
 		return srect;
 	}
 
+	public DFunction getYScale() {
+		return measures.y_scale;
+	}
+
 	/**
 	 * returns if the auto grid is switched on
 	 * 
@@ -336,6 +340,16 @@ public class DArea extends JComponent implements DParent, Printable {
 	 */
 	public boolean isOnAutoFocus() {
 		return auto_focus;
+	}
+
+	/**
+	 * Method to check whether or not this {@link DArea} adds a grid to its
+	 * plot.
+	 * 
+	 * @return true if this {@link DArea} shows a grid and false otherwise.
+	 */
+	public boolean isShowGrid() {
+		return grid.isVisible();
 	}
 
 	/**
@@ -796,10 +810,6 @@ public class DArea extends JComponent implements DParent, Printable {
 			return;
 		measures.x_scale = x_s;
 		repaint();
-	}
-	
-	public DFunction getYScale() {
-		return measures.y_scale; 
 	}
 
 	/**

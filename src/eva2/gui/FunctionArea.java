@@ -122,6 +122,10 @@ public class FunctionArea extends DArea implements Serializable {
 		notifyNegLog = true;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see javax.swing.JComponent#getToolTipText(java.awt.event.MouseEvent)
+	 */
 	@Override
 	public String getToolTipText(MouseEvent event) {
 		if (isShowGraphToolTips()) {
@@ -136,6 +140,10 @@ public class FunctionArea extends DArea implements Serializable {
 		} else return null;
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see javax.swing.JComponent#getToolTipLocation(java.awt.event.MouseEvent)
+	 */
 	@Override
 	public Point getToolTipLocation(MouseEvent event) {
 		if (isShowGraphToolTips()) {
