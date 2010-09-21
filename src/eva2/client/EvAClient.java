@@ -25,6 +25,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.Serializable;
 import java.net.URL;
 import java.util.Set;
@@ -316,6 +317,26 @@ public class EvAClient implements RemoteStateListener, Serializable {
 			currentModuleAdapter.startOpt();
 			return true;
 		} else return false;
+	}
+	
+	/**
+	 * Add a window listener to the EvA2 JFrame instance.
+	 * 
+	 * @param l
+	 */
+	public void addWindowListener(WindowListener l) {
+		if (m_Frame!=null) m_Frame.addWindowListener(l);
+		else System.err.println("Error, no JFrame existent in " + this.getClass().getSimpleName());
+	}
+	
+	/**
+	 * Remove a window listener to the EvA2 JFrame instance.
+	 * 
+	 * @param l
+	 */
+	public void removeWindowListener(WindowListener l) {
+		if (m_Frame!=null) m_Frame.removeWindowListener(l);
+		else System.err.println("Error, no JFrame existent in " + this.getClass().getSimpleName());
 	}
 	
 	/**
