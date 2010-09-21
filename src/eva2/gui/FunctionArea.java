@@ -79,14 +79,15 @@ public class FunctionArea extends DArea implements Serializable {
 	 * 
 	 */
 	private boolean notifyNegLog = true;
-	
+
 	/**
-	 * Indicate whether graphs should be annotated with tool tips if pointed to with the mouse.
+	 * Indicate whether graphs should be annotated with tool tips if pointed to
+	 * with the mouse.
 	 */
 	private boolean doShowGraphToolTips = true;
-	
+
 	/**
-	 * Indicate whether graph legend entries should show their unique number. 
+	 * Indicate whether graph legend entries should show their unique number.
 	 */
 	private boolean appendIndexInLegend = true;
 
@@ -124,6 +125,7 @@ public class FunctionArea extends DArea implements Serializable {
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see javax.swing.JComponent#getToolTipText(java.awt.event.MouseEvent)
 	 */
 	@Override
@@ -136,12 +138,15 @@ public class FunctionArea extends DArea implements Serializable {
 				sb.append(": ");
 				sb.append(getGraphInfo(gIndex));
 				return sb.toString();
-			} else return null;
-		} else return null;
+			} else
+				return null;
+		} else
+			return null;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see javax.swing.JComponent#getToolTipLocation(java.awt.event.MouseEvent)
 	 */
 	@Override
@@ -149,13 +154,18 @@ public class FunctionArea extends DArea implements Serializable {
 		if (isShowGraphToolTips()) {
 			int gIndex = getNearestGraphIndex(event.getX(), event.getY());
 			if (gIndex >= 0) {
-				DPoint pt = ((GraphPointSet) (m_PointSetContainer.get(gIndex))).getMedPoint();
+				DPoint pt = ((GraphPointSet) (m_PointSetContainer.get(gIndex)))
+						.getMedPoint();
 				Point pt2 = getDMeasures().getPoint(pt.x, pt.y);
-				pt2.x+=(5*(gIndex%7)); // slight shift depending on index - easier distinction of very close graphs
-				pt2.y-=(10+(gIndex%3)*5);
+				pt2.x += (5 * (gIndex % 7)); // slight shift depending on index
+												// - easier distinction of very
+												// close graphs
+				pt2.y -= (10 + (gIndex % 3) * 5);
 				return pt2;
-			} else return null;
-		} else return null;
+			} else
+				return null;
+		} else
+			return null;
 	}
 
 	/**
@@ -185,14 +195,18 @@ public class FunctionArea extends DArea implements Serializable {
 					m_y = e.getY();
 
 					// General entries
-					String togGTTName = (isShowGraphToolTips() ? "Deactivate":"Activate") + " graph tool tips";
-					addMenuItem(graphPopupMenu, togGTTName, new ActionListener() {
-						public void actionPerformed(ActionEvent ee) {
-							setShowGraphToolTips(!isShowGraphToolTips());
-						}
-					});
-					
-					String togLName = (isShowLegend() ? "Hide" : "Show" ) + " legend";
+					String togGTTName = (isShowGraphToolTips() ? "Deactivate"
+							: "Activate")
+							+ " graph tool tips";
+					addMenuItem(graphPopupMenu, togGTTName,
+							new ActionListener() {
+								public void actionPerformed(ActionEvent ee) {
+									setShowGraphToolTips(!isShowGraphToolTips());
+								}
+							});
+
+					String togLName = (isShowLegend() ? "Hide" : "Show")
+							+ " legend";
 					addMenuItem(graphPopupMenu, togLName, new ActionListener() {
 						public void actionPerformed(ActionEvent ee) {
 							toggleLegend();
@@ -200,128 +214,156 @@ public class FunctionArea extends DArea implements Serializable {
 					});
 
 					if (FunctionArea.this.m_PointSetContainer.size() > 0) {
-						addMenuItem(graphPopupMenu, "Recolor all graphs", new ActionListener() {
+						addMenuItem(graphPopupMenu, "Recolor all graphs",
+								new ActionListener() {
 
-							public void actionPerformed(ActionEvent ee) {
-								recolorAllGraphsByIndex();
-							}
-						});
+									public void actionPerformed(ActionEvent ee) {
+										recolorAllGraphsByIndex();
+									}
+								});
 					}
 
 					if (m_RefPointListener != null) {
 						DPoint temp = getDMeasures().getDPoint(m_x, m_y);
-						addMenuItem(graphPopupMenu, "Select Reference Point:("+ temp.x + "/" + temp.y + ")", 
+						addMenuItem(graphPopupMenu, "Select Reference Point:("
+								+ temp.x + "/" + temp.y + ")",
 								new ActionListener() {
-							public void actionPerformed(ActionEvent ee) {
-								DPoint temp = getDMeasures()
-								.getDPoint(m_x, m_y);
-								double[] point = new double[2];
-								point[0] = temp.x;
-								point[1] = temp.y;
-								m_RefPointListener.refPointGiven(point);
-							}
-						});
+									public void actionPerformed(ActionEvent ee) {
+										DPoint temp = getDMeasures().getDPoint(
+												m_x, m_y);
+										double[] point = new double[2];
+										point[0] = temp.x;
+										point[1] = temp.y;
+										m_RefPointListener.refPointGiven(point);
+									}
+								});
 					}
 
 					// darn this point is an empty copy !!
 					DPoint point = getNearestDPoint(e.getX(), e.getY());
 					if (point != null) {
 						// the point info element
-						addMenuItem(graphPopupMenu, "Nearest point: (" + point.x + "/"+ point.y + ")", new ActionListener() {
-							public void actionPerformed(ActionEvent ee) {}
-						}, false);
+						addMenuItem(graphPopupMenu, "Nearest point: ("
+								+ point.x + "/" + point.y + ")",
+								new ActionListener() {
+									public void actionPerformed(ActionEvent ee) {
+									}
+								}, false);
 
-						addMenuItem(graphPopupMenu, "  Remove point", new ActionListener() {
-							public void actionPerformed(ActionEvent ee) {
-								removePoint(FunctionArea.this.m_x,
-										FunctionArea.this.m_y);
-							}
-						});
+						addMenuItem(graphPopupMenu, "  Remove point",
+								new ActionListener() {
+									public void actionPerformed(ActionEvent ee) {
+										removePoint(FunctionArea.this.m_x,
+												FunctionArea.this.m_y);
+									}
+								});
 
 						if (point.getIcon() instanceof InterfaceSelectablePointIcon) {
 							m_CurrentPointIcon = point.getIcon();
-							if (((InterfaceSelectablePointIcon) m_CurrentPointIcon).getSelectionListener() != null) {
-								AbstractEAIndividual indy = ((InterfaceSelectablePointIcon) m_CurrentPointIcon).getEAIndividual();
-								String selectTitle = indy.isMarked() ? "  Deselect individual" : "  Select individual";
-								addMenuItem(graphPopupMenu, selectTitle, new ActionListener() {
-									public void actionPerformed(ActionEvent ee) {
-										((InterfaceSelectablePointIcon) m_CurrentPointIcon)
-										.getSelectionListener()
-										.individualSelected(
+							if (((InterfaceSelectablePointIcon) m_CurrentPointIcon)
+									.getSelectionListener() != null) {
+								AbstractEAIndividual indy = ((InterfaceSelectablePointIcon) m_CurrentPointIcon)
+										.getEAIndividual();
+								String selectTitle = indy.isMarked() ? "  Deselect individual"
+										: "  Select individual";
+								addMenuItem(graphPopupMenu, selectTitle,
+										new ActionListener() {
+											public void actionPerformed(
+													ActionEvent ee) {
 												((InterfaceSelectablePointIcon) m_CurrentPointIcon)
-												.getEAIndividual());
-									}
-								});
+														.getSelectionListener()
+														.individualSelected(
+																((InterfaceSelectablePointIcon) m_CurrentPointIcon)
+																		.getEAIndividual());
+											}
+										});
 							}
 						}
 
 						if (point.getIcon() instanceof InterfaceDPointWithContent) {
 							m_CurrentPointIcon = point.getIcon();
-							addMenuItem(graphPopupMenu, "  Show individual", new ActionListener() {
-								public void actionPerformed(ActionEvent ee) {
-									((InterfaceDPointWithContent) m_CurrentPointIcon)
-											.showIndividual();
-								}
-							});
+							addMenuItem(graphPopupMenu, "  Show individual",
+									new ActionListener() {
+										public void actionPerformed(
+												ActionEvent ee) {
+											((InterfaceDPointWithContent) m_CurrentPointIcon)
+													.showIndividual();
+										}
+									});
 						}
 
 					}
-					if (FunctionArea.this.m_PointSetContainer.size() > 0) { // there is at least one graph
+					if (FunctionArea.this.m_PointSetContainer.size() > 0) { // there
+																			// is
+																			// at
+																			// least
+																			// one
+																			// graph
 						// The graph info element
-//						int gIndex = getNearestGraphIndex(e.getX(), e.getY());
-						addMenuItem(graphPopupMenu, "Graph Info: "+getGraphInfo(e.getX(), e.getY()), 
-							new ActionListener() {
-							public void actionPerformed(ActionEvent ee) {
-								DPoint temp = FunctionArea.this.getDMeasures().getDPoint(FunctionArea.this.m_x, FunctionArea.this.m_y);
-								DPointIcon icon1 = new DPointIcon() {
-									public DBorder getDBorder() {
-										return new DBorder(4, 4, 4, 4);
-									}
-									public void paint(Graphics g) {
-										g.drawLine(-2, 0, 2, 0);
-										g.drawLine(0, 0, 0, 4);
-									}
-								};
-								temp.setIcon(icon1);
-								FunctionArea.this.addDElement(temp);
-							}
-						}, false);
-						
-						addMenuItem(graphPopupMenu, "  Remove graph", new ActionListener() {
-							public void actionPerformed(ActionEvent ee) {
-								clearGraph(FunctionArea.this.m_x,
-										FunctionArea.this.m_y);
-							}
-						});
+						// int gIndex = getNearestGraphIndex(e.getX(),
+						// e.getY());
+						addMenuItem(graphPopupMenu, "Graph Info: "
+								+ getGraphInfo(e.getX(), e.getY()),
+								new ActionListener() {
+									public void actionPerformed(ActionEvent ee) {
+										DPoint temp = FunctionArea.this
+												.getDMeasures().getDPoint(
+														FunctionArea.this.m_x,
+														FunctionArea.this.m_y);
+										DPointIcon icon1 = new DPointIcon() {
+											public DBorder getDBorder() {
+												return new DBorder(4, 4, 4, 4);
+											}
 
-						addMenuItem(graphPopupMenu, "  Change graph color", new ActionListener() {
-							public void actionPerformed(ActionEvent ee) {
-								changeColorGraph(FunctionArea.this.m_x,
-										FunctionArea.this.m_y);
-							}
-						});
+											public void paint(Graphics g) {
+												g.drawLine(-2, 0, 2, 0);
+												g.drawLine(0, 0, 0, 4);
+											}
+										};
+										temp.setIcon(icon1);
+										FunctionArea.this.addDElement(temp);
+									}
+								}, false);
+
+						addMenuItem(graphPopupMenu, "  Remove graph",
+								new ActionListener() {
+									public void actionPerformed(ActionEvent ee) {
+										clearGraph(FunctionArea.this.m_x,
+												FunctionArea.this.m_y);
+									}
+								});
+
+						addMenuItem(graphPopupMenu, "  Change graph color",
+								new ActionListener() {
+									public void actionPerformed(ActionEvent ee) {
+										changeColorGraph(FunctionArea.this.m_x,
+												FunctionArea.this.m_y);
+									}
+								});
 					}
 					graphPopupMenu.show(FunctionArea.this, e.getX(), e.getY());
 				}
 			}
 		});
 	}
-	
+
 	/**
-	 * Create an enabled menu item with given title and listener, add it to the menu and return it.
+	 * Create an enabled menu item with given title and listener, add it to the
+	 * menu and return it.
 	 * 
 	 * @param menu
 	 * @param title
 	 * @param aListener
 	 * @return
 	 */
-	private JMenuItem addMenuItem(JPopupMenu menu, String title, ActionListener aListener) {
+	private JMenuItem addMenuItem(JPopupMenu menu, String title,
+			ActionListener aListener) {
 		return addMenuItem(menu, title, aListener, true);
 	}
-	
+
 	/**
-	 * Create a menu item with given title and listener, add it to the menu and return it. It may be 
-	 * enabled or disabled.
+	 * Create a menu item with given title and listener, add it to the menu and
+	 * return it. It may be enabled or disabled.
 	 * 
 	 * @param menu
 	 * @param title
@@ -329,9 +371,10 @@ public class FunctionArea extends DArea implements Serializable {
 	 * @param enabled
 	 * @return
 	 */
-	private JMenuItem addMenuItem(JPopupMenu menu, String title, ActionListener aListener, boolean enabled) {
+	private JMenuItem addMenuItem(JPopupMenu menu, String title,
+			ActionListener aListener, boolean enabled) {
 		JMenuItem item = new JMenuItem(title);
-//		if (bgColor!=null) item.setForeground(bgColor);
+		// if (bgColor!=null) item.setForeground(bgColor);
 		item.addActionListener(aListener);
 		item.setEnabled(enabled);
 		menu.add(item);
@@ -356,7 +399,7 @@ public class FunctionArea extends DArea implements Serializable {
 		getGraphPointSet(GraphLabel).incColor();
 		repaint();
 	}
-	
+
 	public void setColorByIndex(int graphLabel, int colorIndex) {
 		getGraphPointSet(graphLabel).setColorByIndex(colorIndex);
 	}
@@ -379,10 +422,11 @@ public class FunctionArea extends DArea implements Serializable {
 	 * 
 	 */
 	public void recolorAllGraphsByIndex() {
-		int index=0;
-		for (int i=0; i<m_PointSetContainer.size(); i++) {
-			GraphPointSet gps = ((GraphPointSet) (this.m_PointSetContainer.get(i)));
-			if (gps.getPointCount()>0) {
+		int index = 0;
+		for (int i = 0; i < m_PointSetContainer.size(); i++) {
+			GraphPointSet gps = ((GraphPointSet) (this.m_PointSetContainer
+					.get(i)));
+			if (gps.getPointCount() > 0) {
 				gps.setColorByIndex(index);
 				index++;
 			}
@@ -411,7 +455,8 @@ public class FunctionArea extends DArea implements Serializable {
 			DPointSet pSet = (m_PointSetContainer.get(i).getConnectedPointSet());
 			if (pSet.getSize() > 0) {
 				double tmpMinY = Math.min(minY, pSet.getMinPositiveYValue());
-				if (tmpMinY>0) minY=tmpMinY;
+				if (tmpMinY > 0)
+					minY = tmpMinY;
 			}
 		}
 		return minY;
@@ -441,7 +486,8 @@ public class FunctionArea extends DArea implements Serializable {
 		for (int i = 0; i < m_PointSetContainer.size(); i++)
 			((GraphPointSet) (m_PointSetContainer.get(i))).removeAllPoints();
 		m_PointSetContainer.clear();
-		if (getYScale() instanceof Exp) setYScale(new Exp()); // to remove smallest seen value
+		if (getYScale() instanceof Exp)
+			setYScale(new Exp()); // to remove smallest seen value
 		notifyNegLog = true;
 	}
 
@@ -452,7 +498,7 @@ public class FunctionArea extends DArea implements Serializable {
 		getGraphPointSet(graphLabel).removeAllPoints();
 		m_PointSetContainer.remove(getGraphPointSet(graphLabel));
 		if (getYScale() instanceof Exp) {
-			((Exp)getYScale()).setMinValue(getMinimalPositiveYValue());
+			((Exp) getYScale()).setMinValue(getMinimalPositiveYValue());
 		}
 		repaint();
 		notifyNegLog = true;
@@ -713,7 +759,7 @@ public class FunctionArea extends DArea implements Serializable {
 	public int getContainerSize() {
 		return m_PointSetContainer.size();
 	}
-	
+
 	/**
 	 * 
 	 * @param x
@@ -737,18 +783,20 @@ public class FunctionArea extends DArea implements Serializable {
 		if ((m_PointSetContainer == null) || (m_PointSetContainer.size() == 0))
 			return ret;
 
-		if (graphIndex >= 0 && (graphIndex <m_PointSetContainer.size()))
+		if (graphIndex >= 0 && (graphIndex < m_PointSetContainer.size()))
 			return ((GraphPointSet) (m_PointSetContainer.get(graphIndex)))
 					.getInfoString();
 		else
 			return "none";
 	}
-	
+
 	public Color getGraphColor(int graphIndex) {
-		if (graphIndex>=0) return m_PointSetContainer.get(graphIndex).getColor();
-		else return null;
+		if (graphIndex >= 0)
+			return m_PointSetContainer.get(graphIndex).getColor();
+		else
+			return null;
 	}
-	
+
 	/**
 	 * 
 	 * @param GraphLabel
@@ -944,9 +992,10 @@ public class FunctionArea extends DArea implements Serializable {
 
 	public void setConnectedPoint(double x, double y, int graphLabel) {
 		DFunction scF = getYScale();
-		if (scF instanceof Exp) ((Exp)scF).updateMinValue(y);
+		if (scF instanceof Exp)
+			((Exp) scF).updateMinValue(y);
 		if (!checkLogValidYValue(x, y, graphLabel)) {
-			//			 if (m_log) toggleLog();
+			// if (m_log) toggleLog();
 		}
 		getGraphPointSet(graphLabel).addDPoint(x, y);
 	}
@@ -1065,7 +1114,6 @@ public class FunctionArea extends DArea implements Serializable {
 			repaint();
 	}
 
-
 	/**
 	 * 
 	 * @param x
@@ -1074,9 +1122,10 @@ public class FunctionArea extends DArea implements Serializable {
 	 */
 	public void setUnconnectedPoint(double x, double y, int GraphLabel) {
 		DFunction scF = getYScale();
-		if (scF instanceof Exp) ((Exp)scF).updateMinValue(y);
+		if (scF instanceof Exp)
+			((Exp) scF).updateMinValue(y);
 		if (!checkLogValidYValue(x, y, GraphLabel)) {
-			//			 if (m_log) toggleLog();
+			// if (m_log) toggleLog();
 		}
 		this.getGraphPointSet(GraphLabel).addDPoint(x, y);
 		this.getGraphPointSet(GraphLabel).setConnectedMode(false);
@@ -1103,7 +1152,7 @@ public class FunctionArea extends DArea implements Serializable {
 	public boolean isShowLegend() {
 		return m_legend;
 	}
-	
+
 	/**
 	 * Shows the legend or switches it off.
 	 * 
@@ -1111,10 +1160,12 @@ public class FunctionArea extends DArea implements Serializable {
 	 */
 	public void setShowLegend(boolean on) {
 		m_legend = on;
-		if (!on)
+		if (!on) {
 			legendBox = null;
-		else
-			legendBox = new GraphPointSetLegend(m_PointSetContainer, isAppendIndexInLegend());
+		} else {
+			legendBox = new GraphPointSetLegend(m_PointSetContainer,
+					isAppendIndexInLegend());
+		}
 		repaint();
 	}
 
@@ -1123,20 +1174,22 @@ public class FunctionArea extends DArea implements Serializable {
 	 */
 	public void toggleLog() {
 		// System.out.println("ToggleLog log was: "+m_log);
-		boolean setMinPos=false;
+		boolean setMinPos = false;
 		if (!m_log && !checkLoggable()) {
-			 System.err.println("Warning: toggling logarithmics scale with values <= 0! Some points will not be displayed.");
-			 setMinPos=true;
+			System.err
+					.println("Warning: toggling logarithmics scale with values <= 0! Some points will not be displayed.");
+			setMinPos = true;
 		}
 		if (m_log == false) {
-			 setMinRectangle(0.001, 0.001, 1, 1);
-			 //setVisibleRectangle(  0.001, 0.001, 100000, 1000 );
-			 Exp exp = new Exp();
-			 if (setMinPos) exp.setMinValue(getMinimalPositiveYValue());
-			 setYScale(exp);
-			 m_Border.setSrcdY(Math.log(10));
-			 m_Border.applyPattern(false, "0.###E0");
-			 m_log = true;
+			setMinRectangle(0.001, 0.001, 1, 1);
+			// setVisibleRectangle( 0.001, 0.001, 100000, 1000 );
+			Exp exp = new Exp();
+			if (setMinPos)
+				exp.setMinValue(getMinimalPositiveYValue());
+			setYScale(exp);
+			m_Border.setSrcdY(Math.log(10));
+			m_Border.applyPattern(false, "0.###E0");
+			m_log = true;
 		} else {
 			m_log = false;
 			setYScale(null);
@@ -1167,7 +1220,8 @@ public class FunctionArea extends DArea implements Serializable {
 	 * 
 	 */
 	public void updateLegend() {
-		GraphPointSetLegend lb = new GraphPointSetLegend(m_PointSetContainer, isAppendIndexInLegend() );
+		GraphPointSetLegend lb = new GraphPointSetLegend(m_PointSetContainer,
+				isAppendIndexInLegend());
 		setLegend(lb);
 	}
 

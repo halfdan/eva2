@@ -325,8 +325,13 @@ public class EvAClient implements RemoteStateListener, Serializable {
 	 * @param l
 	 */
 	public void addWindowListener(WindowListener l) {
-		if (m_Frame!=null) m_Frame.addWindowListener(l);
-		else System.err.println("Error, no JFrame existent in " + this.getClass().getSimpleName());
+		if (m_Frame != null) {
+			m_Frame.setName(getClass().getSimpleName());
+			m_Frame.addWindowListener(l);
+		} else {
+			System.err.println("Error, no JFrame existent in "
+					+ this.getClass().getSimpleName());
+		}
 	}
 	
 	/**
@@ -335,8 +340,12 @@ public class EvAClient implements RemoteStateListener, Serializable {
 	 * @param l
 	 */
 	public void removeWindowListener(WindowListener l) {
-		if (m_Frame!=null) m_Frame.removeWindowListener(l);
-		else System.err.println("Error, no JFrame existent in " + this.getClass().getSimpleName());
+		if (m_Frame != null) {
+			m_Frame.removeWindowListener(l);
+		} else {
+			System.err.println("Error, no JFrame existent in "
+					+ this.getClass().getSimpleName());
+		}
 	}
 	
 	/**
