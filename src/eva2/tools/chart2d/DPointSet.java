@@ -19,6 +19,7 @@ package eva2.tools.chart2d;
 import java.awt.* ;
 
 import eva2.tools.IntegerArrayList;
+import eva2.tools.math.Mathematics;
 
 /*==========================================================================*
  * CLASS DECLARATION
@@ -312,7 +313,10 @@ public class DPointSet extends DComponent
            max_x = x.getMaxImageValue(),
            min_y = y.getMinImageValue(),
            max_y = y.getMaxImageValue();
-    rectangle = new DRectangle(min_x, min_y, max_x - min_x, max_y - min_y );
+    if (Mathematics.areFinite(min_x, max_x, min_y, max_y) == -1) 
+    	rectangle = new DRectangle(min_x, min_y, max_x - min_x, max_y - min_y );
+//    else 
+//    	System.err.println("Warning, rectangle not restored due to invalid (infinite/NaN) values.");
   }
 
   /**
