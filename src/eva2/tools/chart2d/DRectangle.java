@@ -18,6 +18,8 @@ package eva2.tools.chart2d;
 
 import java.awt.* ;
 
+import eva2.tools.EVAERROR;
+
 /*==========================================================================*
  * CLASS DECLARATION
  *==========================================================================*/
@@ -133,10 +135,9 @@ public class DRectangle extends DComponent
    }
   
   public DRectangle getIntersection( DRectangle r ){
+    if( status == EMPTY || (r.status == EMPTY) ) return DRectangle.getEmpty();
     if( status == ALL ) return (DRectangle)r.clone();
-    if( status == EMPTY ) return DRectangle.getEmpty();
     if( r.status == ALL ) return (DRectangle)clone();
-    if( r.status == EMPTY ) return DRectangle.getEmpty();
     DRectangle s = (DRectangle)this.clone();
     if( s.x < r.x ){
       s.x = r.x;
@@ -162,6 +163,7 @@ public class DRectangle extends DComponent
    */
   public boolean insert( DPoint p ){
     if( p.x == Double.NaN || p.y == Double.NaN || Double.isInfinite(p.x) || Double.isInfinite(p.y)) {
+    	EVAERROR.errorMsgOnce("Warning, inserted invalid point (NaN/infinity) in " + this.getClass().getSimpleName());
     	return false;
     }
     if( isAll() ) return false;

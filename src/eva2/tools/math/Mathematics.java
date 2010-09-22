@@ -371,6 +371,29 @@ public class Mathematics {
 	}
 
 	/**
+	 * Check if a number is valid (not NaN) and finite.
+	 * @param v
+	 * @return
+	 */
+	public static boolean isFinite(double v) {
+		return (!Double.isInfinite(v) && !Double.isNaN(v));
+	}
+	
+	/**
+	 * Check if all numbers are valid (not NaN) and finite. Returns
+	 * -1 if this is the case or the index of the first invalid number.
+	 * 
+	 * @param v
+	 * @return
+	 */
+	public static int areFinite(double ... v) {
+		for (int i=0; i<v.length; i++) {
+			if (Double.isInfinite(v[i]) || Double.isNaN(v[i])) return i;
+		}
+		return -1;
+	}
+	
+	/**
 	 * Check whether the given value lies within the interval in every
 	 * dimension.
 	 * 

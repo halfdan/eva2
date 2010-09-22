@@ -154,9 +154,9 @@ public class DArray implements DIntDoubleMap{
   }
 
   /**
-   * returns the minmal image value
+   * returns the minimal image value
    *
-   * @return the minmal image value
+   * @return the minimal image value
    */
   public double getMinImageValue(){
     if( size == 0 ) throw
