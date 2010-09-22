@@ -912,6 +912,30 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
     }
     
     /**
+     * This method returns the default data object of an individual containing the 
+     * individuals solution representation.
+     * 
+     * @param individual
+     * @return
+     */
+    public static Object getDefaultDataObject(IndividualInterface individual) {
+        if (individual instanceof InterfaceDataTypeBinary) {
+            return ((InterfaceDataTypeBinary)individual).getBinaryData().clone();
+        } else if (individual instanceof InterfaceDataTypeInteger) {
+        	return ((InterfaceDataTypeInteger)individual).getIntegerData().clone();
+        } else if (individual instanceof InterfaceDataTypeDouble) {
+            return ((InterfaceDataTypeDouble)individual).getDoubleData().clone();
+        } else if (individual instanceof InterfaceDataTypePermutation) {
+        	return ((InterfaceDataTypePermutation)individual).getPermutationData()[0].clone();
+        } else if (individual instanceof InterfaceDataTypeProgram) {
+        	return ((InterfaceDataTypeProgram)individual).getProgramDataWithoutUpdate().clone();
+        } else {
+        	System.err.println("error in AbstractEAIndividual.getDefaultDataObject: type " + individual.getClass() + " not implemented");
+        	return individual;
+        }
+    }
+    
+    /**
      * This method creates a default String representation for a number Individual interfaces
      * containing the genotype.
      * 

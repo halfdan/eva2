@@ -36,6 +36,9 @@ import eva2.tools.math.Mathematics;
  * list of Objects assembled in the getOutputValues method. This allows all simple data types which are
  * provided by the external informer instances to be handled uniformly to the internally collected data, and
  * thus they can be plotted and text-dumped in the same manner.
+ * Basic fields are identified by the enum GraphSelectionEnum and are available independently of additional
+ * informer instances.
+ *
  * Depending on the field selection state and the informers, the list of data fields is dynamically altered,
  * however changes during a multi-run are ignored, since the potential of inconsistencies is too high.  
  * 
@@ -641,12 +644,12 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 		List<String> metaStrings = getOutputMetaInfo(informerList);
 		return metaStrings.toArray( new String[metaStrings.size()]);
 	}
-
 	
 	/**
 	 * Collect the names of data fields which are collected internally.This must correspond to the
 	 * method {@link #getSimpleOutputValues()}.
-	 * 
+	 * Basic fields are identified by the enum GraphSelectionEnum and are available independently of additional
+	 * informer instances.
 	 * @see #getSimpleOutputValues() 
 	 * @return
 	 */
@@ -665,6 +668,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 	/**
 	 * Collect the info strings of data fields collected internally. This must correspond to
 	 * the method {@link #getSimpleOutputValues()}.
+	 * Basic meta info is defined by the enum GraphSelectionEnum.
 	 * 
 	 * @see #getSimpleOutputValues() 
 	 * @return 

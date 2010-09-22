@@ -265,7 +265,9 @@ implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serial
      * @return String
      */
     public Object[] getAdditionalFileStringValue(PopulationInterface pop) {
-    	String solStr = AbstractEAIndividual.getDefaultDataString(pop.getBestIndividual()); 
+    	Object solObj;
+//    	solObj = AbstractEAIndividual.getDefaultDataString(pop.getBestIndividual());
+    	solObj = AbstractEAIndividual.getDefaultDataObject(pop.getBestIndividual());
     	if (this instanceof InterfaceInterestingHistogram) {
     		int fitCrit=0;
     		SolutionHistogram hist = ((InterfaceInterestingHistogram)this).getHistogram();
@@ -277,8 +279,8 @@ implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serial
         		}
     			Population sols = PostProcess.clusterBestUpdateHistogram((Population)maybeFiltered, this, hist, fitCrit, getDefaultAccuracy());
     		}
-    		return new Object[]{solStr, hist, hist.getScore()};
-    	} else return new Object[]{solStr}; 
+    		return new Object[]{solObj, hist, hist.getScore()};
+    	} else return new Object[]{solObj}; 
     }
 
     /**
