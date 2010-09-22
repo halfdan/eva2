@@ -18,7 +18,8 @@ import java.awt.event.*;
 import java.awt.*;
 
 public class JEFrame extends JFrame {
-
+	private boolean closeAllOnClose=false;
+	
 	public JEFrame() {
 		super();
 		init();
@@ -27,6 +28,15 @@ public class JEFrame extends JFrame {
 	public JEFrame(String name) {
 		super(name);
 		init();
+	}
+	
+	/**
+	 * Set to true if all registered JEFrames should be closed if this frame is closed.
+	 * 
+	 * @param c
+	 */
+	public void setCloseAllOnClosed(boolean c) {
+		closeAllOnClose=c;
 	}
 	
 	@Override
@@ -42,6 +52,7 @@ public class JEFrame extends JFrame {
 			public void windowClosed(WindowEvent e) {
 				super.windowClosed(e);
 				JEFrameRegister.unregister((JEFrame) e.getWindow());
+				if (closeAllOnClose) JEFrameRegister.closeAll();
 				//       ((JFrame) e.getWindow()).dispose();
 			}
 			@Override

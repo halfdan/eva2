@@ -367,6 +367,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
 		
 		if (withGUI ) {
 			m_Frame = new JEFrame(EvAInfo.productName + " workbench");
+			m_Frame.setCloseAllOnClosed(true);
 			m_Frame.setName(this.getClass().getSimpleName()); // the name is set to recognize the client window
 
 			BasicResourceLoader loader = BasicResourceLoader.instance();
