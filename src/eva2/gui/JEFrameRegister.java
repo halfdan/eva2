@@ -68,10 +68,24 @@ public class JEFrameRegister {
 		return prefixes.toArray(new String[prefixes.size()]);
 	}
 
+	/**
+	 * Close (dispose) all frames whose title starts with a given prefix.
+	 * 
+	 * @param prefix
+	 */
 	public static void closeAllByPrefix(String prefix) {
 		for (int i=0; i<JEFrameList.size(); i++) {
 			String title = JEFrameList.get(i).getTitle();
 			if (title.startsWith(prefix)) JEFrameList.get(i).dispose();
+		}
+	}
+	
+	/**
+	 * Close (dispose) all frames registered in this list.
+	 */
+	public static void closeAll() {
+		for (int i=0; i<JEFrameList.size(); i++) {
+			JEFrameList.get(i).dispose();
 		}
 	}
 }
