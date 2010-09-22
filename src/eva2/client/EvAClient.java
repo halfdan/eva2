@@ -81,6 +81,7 @@ import eva2.tools.jproxy.RemoteStateListener;
 public class EvAClient implements RemoteStateListener, Serializable {
 	private final int splashScreenTime = 1500;
 	private final int maxWindowMenuLength = 30;
+	private boolean clientInited = false;
 	
 	public static boolean TRACE = false;
 
@@ -219,7 +220,8 @@ public class EvAClient implements RemoteStateListener, Serializable {
 	}
 	
 	/**
-	 * Constructor of GUI of EvA2. Works as client for the EvA2 server. GO parameters may be
+	 * Main constructor of the EvA2 client GUI. Works as standalone verson locally or
+	 * as client for the EvA2 server. GO parameters may be
 	 * loaded from a file (paramsFile) or given directly as a java instance. Both may be null
 	 * to start with standard parameters. If both are non null, the java instance has the
 	 * higher priority.
@@ -234,6 +236,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
 	 * @param noGui
 	 */
 	public EvAClient(final String hostName, final Window parent, final String paramsFile, final InterfaceGOParameters goParams, final boolean autorun, final boolean noSplash, final boolean noGui) {
+		clientInited = false;
 		final SplashScreenShell fSplashScreen = new SplashScreenShell(EvAInfo.splashLocation);
 
 		// preload some classes (into system cache) in a parallel thread
@@ -277,6 +280,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
 					}
 					// close splash screen
 					if (!noSplash && withGUI) fSplashScreen.dispose();
+					clientInited = true;
 					notify();
 				}
 			}
@@ -288,14 +292,16 @@ public class EvAClient implements RemoteStateListener, Serializable {
 	 * may be called to await the full initialization of a client instance.
 	 * As soon as it returns, the EvAClient GUI is fully initialized. 
 	 */
-	public void awaitGuiInitialized() {
+	public void awaitClientInitialized() {
 		if (initRnbl!=null) {
 			synchronized (initRnbl) {
-				try {
-					initRnbl.wait();
-					initRnbl=null;
-				} catch (InterruptedException e) {
-					e.printStackTrace();
+				if (!clientInited) {
+					try {
+						initRnbl.wait();
+						initRnbl=null;
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
 				}
 			}
 		}
@@ -326,7 +332,6 @@ public class EvAClient implements RemoteStateListener, Serializable {
 	 */
 	public void addWindowListener(WindowListener l) {
 		if (m_Frame != null) {
-			m_Frame.setName(getClass().getSimpleName());
 			m_Frame.addWindowListener(l);
 		} else {
 			System.err.println("Error, no JFrame existent in "
@@ -362,6 +367,8 @@ public class EvAClient implements RemoteStateListener, Serializable {
 		
 		if (withGUI ) {
 			m_Frame = new JEFrame(EvAInfo.productName + " workbench");
+			m_Frame.setName(this.getClass().getSimpleName()); // the name is set to recognize the client window
+
 			BasicResourceLoader loader = BasicResourceLoader.instance();
 			byte[] bytes = loader.getBytesFromResourceLocation(EvAInfo.iconLocation, true);
 			m_Frame.setIconImage(Toolkit.getDefaultToolkit().createImage(bytes));
