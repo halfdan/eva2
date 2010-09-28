@@ -317,6 +317,7 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
     			for (int i = 0; i < archive.size(); i++) {
     				icon    = new Chart2DDPointIconCircle();
     				tmpD    = ((AbstractEAIndividual)archive.get(i)).getFitness();
+    				if (tmpD.length<2) throw new RuntimeException("Error, problem seems not to be multi-objective, pareto front plot not possible!");
     				myPoint = new DPoint(tmpD[0], tmpD[1]);
     				if (((AbstractEAIndividual)archive.get(i)).getConstraintViolation() > 0) {
     					icon.setBorderColor(Color.RED);
@@ -496,9 +497,13 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
 
     @Override
     public Object[] getAdditionalFileStringValue(PopulationInterface pop) {
-    	Object[] result = new Object[2];
-    	result[0] = this.calculateMetric((Population)pop);
-    	result[1] = this.calculateMetric(getLocalParetoFront());
+		Object[] result = new Object[2];
+    	if (m_MOSOConverter!=null && !(m_MOSOConverter instanceof MOSONoConvert)) {
+    		result[0]=Double.NaN; result[1]=Double.NaN;
+    	} else {
+    		result[0] = this.calculateMetric((Population)pop);
+    		result[1] = this.calculateMetric(getLocalParetoFront());
+    	}
 		return ToolBox.appendArrays(result, super.getAdditionalFileStringValue(pop));
     }
     
@@ -510,7 +515,7 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
     public String[] getAdditionalFileStringInfo() {
     	String[] superInfo = super.getAdditionalFileStringInfo();
     	return ToolBox.appendArrays(new String[]{"Pareto metric on the current population (per generation)",
-    			"Pareto metric on the collected pareto front"}, superInfo);
+    		"Pareto metric on the collected pareto front"}, superInfo);
     }
 
     /*

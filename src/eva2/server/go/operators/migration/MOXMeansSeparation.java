@@ -120,7 +120,7 @@ public class MOXMeansSeparation implements InterfaceMigration, java.io.Serializa
 //        }
 
         // Now lets cluster this stuff
-        Population[]    archives    = this.m_NSGAII.getNonDomiatedSortedFronts(collector);
+        Population[]    archives    = this.m_NSGAII.getNonDominatedSortedFronts(collector);
         Population      toCluster   = new Population();
         int currentFront = 0;
         toCluster.addPopulation(archives[currentFront]);

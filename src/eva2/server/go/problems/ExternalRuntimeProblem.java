@@ -2,8 +2,8 @@ package eva2.server.go.problems;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -13,27 +13,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 import eva2.gui.BeanInspector;
+import eva2.gui.PropertyDoubleArray;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.ESIndividualDoubleData;
 import eva2.server.go.individuals.InterfaceDataTypeDouble;
+import eva2.server.go.operators.moso.InterfaceMOSOConverter;
+import eva2.server.go.operators.moso.MOSONoConvert;
 import eva2.server.go.populations.Population;
 import eva2.server.go.strategies.InterfaceOptimizer;
-
-
-
-import eva2.server.go.problems.Interface2DBorderProblem;
 import eva2.tools.math.Mathematics;
 
-public class ExternalRuntimeProblem extends AbstractOptimizationProblem implements Interface2DBorderProblem, InterfaceProblemDouble {
+public class ExternalRuntimeProblem extends AbstractOptimizationProblem 
+implements Interface2DBorderProblem, InterfaceProblemDouble, InterfaceHasInitRange {
 
 	protected AbstractEAIndividual      m_OverallBest       = null;
     protected int                       m_ProblemDimension  = 10;
 //    protected boolean                   m_UseTestConstraint = false;
     protected String					m_Command			= "";
     protected String					m_WorkingDir		= "";
-    protected double					m_upperBound		= 10;
-    protected double					m_lowerBound		= 0;
+//    protected double					m_upperBound		= 10;
+//    protected double					m_lowerBound		= 0;
+    PropertyDoubleArray m_Range = new PropertyDoubleArray(m_ProblemDimension, 2, -10,10);
+    PropertyDoubleArray m_initRange = new PropertyDoubleArray(m_ProblemDimension, 2, -10,10);
 	private String additionalArg="";
+	protected InterfaceMOSOConverter m_MosoConverter = new MOSONoConvert();
 
 	// Private Subclass to redirect Streams within an extra Thread to avoid dead
 	// locks
@@ -56,24 +59,26 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem implemen
 				}
 //				System.out.println("monitor-thread finished!");
 			} catch (IOException ioe) {
+				System.err.println("IOException in MonitorInputStreamThread/ExternalRuntimeProblem: " + ioe.getMessage());
 				ioe.printStackTrace(System.err);
 			} finally {
 				try {
 					reader.close();
 					writer.close();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
+					System.err.println("IOException in MonitorInputStreamThread/ExternalRuntimeProblem: " + e.getMessage());
 					e.printStackTrace();
 				}
 			}
 		}
 	}
-
+	
     public ExternalRuntimeProblem() {
         this.m_Template         = new ESIndividualDoubleData();
         ((ESIndividualDoubleData)this.m_Template).setDoubleDataLength(m_ProblemDimension);
         ((ESIndividualDoubleData)this.m_Template).SetDoubleRange(makeRange());
     }
+    
     public ExternalRuntimeProblem(ExternalRuntimeProblem b) {
         //AbstractOptimizationProblem
         if (b.m_Template != null)
@@ -82,10 +87,15 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem implemen
         if (b.m_OverallBest != null)
             this.m_OverallBest      = (AbstractEAIndividual)((AbstractEAIndividual)b.m_OverallBest).clone();
         this.m_ProblemDimension = b.m_ProblemDimension;
-//        this.m_UseTestConstraint = b.m_UseTestConstraint;
         m_Command = b.m_Command;
-        m_lowerBound = b.m_lowerBound;
-        m_upperBound = b.m_upperBound;
+        if (b.m_Range!=null) this.m_Range = (PropertyDoubleArray)b.m_Range.clone();
+        else this.m_Range=null;
+        
+        if (b.m_initRange!=null) this.m_initRange = (PropertyDoubleArray)b.m_initRange.clone();
+        else this.m_initRange=null;
+        
+        if (b.m_MosoConverter!=null) this.m_MosoConverter=(InterfaceMOSOConverter)b.m_MosoConverter.clone();
+        else this.m_MosoConverter=null;
         
     }
 
@@ -115,25 +125,41 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem implemen
     }
     
     public double[][] makeRange() {
-	    double[][] range = new double[this.m_ProblemDimension][2];
-	    for (int i = 0; i < range.length; i++) {
-	        range[i][0] = getRangeLowerBound(i);
-	        range[i][1] = getRangeUpperBound(i);
-	    }
-	    return range;
+    	if (m_Range==null) {
+    		System.err.println("Warning, range not set ExternalRuntimeProblem.makeRange!");
+    	} 
+    	if (m_Range.getNumRows()!=getProblemDimension()) System.err.println("Warning, problem dimension and range dimension dont match in ExternalRuntimeProblem.makeRange!");
+    	return m_Range.getDoubleArrayShallow().clone();
     }
-    
-    public double getRangeLowerBound(int dim) {
-    	return m_lowerBound;
+
+	public void setRange(double[][] range) {
+		PropertyDoubleArray pRange = new PropertyDoubleArray(range);
+		this.setRange(pRange);
+	}
+
+	/**
+     * Set the internal problem range to the given array.
+     * @param range
+     */
+    public void setRange(PropertyDoubleArray range) {
+    	if (range.getNumRows()<this.m_ProblemDimension) System.err.println("Warning, expected range of dimension " + m_ProblemDimension + " in setRange!");
+    	m_Range.setDoubleArray(range.getDoubleArrayShallow());
+    }
+    public PropertyDoubleArray getRange() {
+    	return m_Range;
+    }
+    public String rangeTipText() {
+    	return "The domain bounds for the problem";
+    }
+
+	public double getRangeLowerBound(int dim) {
+    	return m_Range.getValue(dim,0);
     }
     
     public double getRangeUpperBound(int dim) {
-    	return m_upperBound;
+    	return m_Range.getValue(dim,1);
     }
-    
-    protected double[][] getDoubleRange() {
-    	return ((InterfaceDataTypeDouble)this.m_Template).getDoubleRange();                             
-    }
+
 
     /** This method evaluate a single individual and sets the fitness values
      * @param individual    The individual that is to be evaluatated
@@ -155,6 +181,12 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem implemen
         }
     }
     
+    @Override
+    public void evaluatePopulationEnd(Population population) {
+    	super.evaluatePopulationEnd(population);
+    	if (m_MosoConverter!=null) m_MosoConverter.convertMultiObjective2SingleObjective(population);
+    }
+    
 	protected double[] getXVector(AbstractEAIndividual individual) {
 		double[] x;
 		x = new double[((InterfaceDataTypeDouble) individual).getDoubleData().length];
@@ -170,7 +202,16 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem implemen
 		return runProcess(params, workingDir);
 	}
 	
+	/**
+	 * Parse the output values of a process by line and by whitespace characters and some others
+	 * returning a string list.
+	 * 
+	 * @param parameters
+	 * @param workingDir
+	 * @return
+	 */
     public static List<String> runProcess(List<String> parameters, String workingDir) {
+		String colSepRegExp= "[\\s;:|]";  // \s for whitespaces, double quoting necessary!
 		Process process;
         ProcessBuilder pb;
 		List<String> results  = new ArrayList<String>(); 
@@ -184,19 +225,18 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem implemen
 			String line;
 			while ((line = br.readLine()) != null) {
 				line = line.trim();
-				if (line.contains(" ")) {
-					String[] parts = line.split(" ");
-					for (String str : parts) {
-						results.add(str);
-					}
-				} else {
-					results.add(line); 
+				String[] parts = line.split(colSepRegExp);
+				for (String str : parts) {
+					results.add(str);
 				}
+//				results.add(line); 
 			}
 			br.close();
 		} catch (IOException e) {
-			System.err.println("IO Error when calling external command!");
+			String msg="IO Error when calling external command! Invalid command for ExternalRuntimeProblem?";
+			System.err.println(msg);
 			e.printStackTrace();
+			throw new RuntimeException(msg);
 		}
 		return results;
 	}
@@ -272,19 +312,27 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem implemen
     public static String globalInfo() {
         return "Use an external command as target function.";
     }
+    
+    public String[] getGOEPropertyUpdateLinks() {
+    	return new String[] {"problemDimension", "initialRange", "problemDimension", "range"};
+    }
 
-
-    /** Length of the x vector at is to be optimized
-     * @param t Length of the x vector at is to be optimized
+    /** 
+     * Length of the x vector that is to be optimized. Be sure to keep
+     * the ranges fit in length.
+     * 
+     * @param t Length of the x vector that is to be optimized
      */
     public void setProblemDimension(int t) {
         this.m_ProblemDimension = t;
+        this.m_Range.adaptRowCount(t);
+        this.m_initRange.adaptRowCount(t);
     }
     public int getProblemDimension() {
         return this.m_ProblemDimension;
     }
     public String problemDimensionTipText() {
-        return "Length of the x vector at is to be optimized.";
+        return "Domain dimension of the problem";
     }
     
     /** Length of the x vector at is to be optimized
@@ -326,7 +374,17 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem implemen
 //        return "Just a simple test constraint of x[0] >= 1.";
 //    }
 
-    /** This method allows you to choose the EA individual
+    public InterfaceMOSOConverter getMosoConverter() {
+		return m_MosoConverter;
+	}
+	public void setMosoConverter(InterfaceMOSOConverter mMosoConverter) {
+		m_MosoConverter = mMosoConverter;
+	}
+	public String mosoConverterTipText() {
+		return "Possible conversion of multi-objective fitness to single objective fitness.";
+	}
+
+	/** This method allows you to choose the EA individual
      * @param indy The EAIndividual type
      */
     public void setEAIndividual(InterfaceDataTypeDouble indy) {
@@ -342,41 +400,41 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem implemen
     	return Mathematics.expandVector(point, getProblemDimension(), 0.);
     }
 	public double[][] get2DBorder() {
-		return getDoubleRange();
+		return getRange().getDoubleArrayShallow();
 	}
 	
-	/**
-	 * @return the m_upperBound
-	 */
-	public double getRangeUpperBound() {
-		return m_upperBound;
-	}
-	/**
-	 * @param bound the m_upperBound to set
-	 */
-	public void setRangeUpperBound(double bound) {
-		m_upperBound = bound;
-	}
-	
-	public String rangeUpperBoundTipText() {
-		return "Upper bound of the search space in any dimension.";
-	}
-	/**
-	 * @return the m_lowerBound
-	 */
-	public double getRangeLowerBound() {
-		return m_lowerBound;
-	}
-	/**
-	 * @param bound the m_lowerBound to set
-	 */
-	public void setRangeLowerBound(double bound) {
-		m_lowerBound = bound;
-	}	
-	
-	public String rangeLowerBoundTipText() {
-		return "Lower bound of the search space in any dimension.";
-	}
+//	/**
+//	 * @return the m_upperBound
+//	 */
+//	public double getRangeUpperBound() {
+//		return m_upperBound;
+//	}
+//	/**
+//	 * @param bound the m_upperBound to set
+//	 */
+//	public void setRangeUpperBound(double bound) {
+//		m_upperBound = bound;
+//	}
+//	
+//	public String rangeUpperBoundTipText() {
+//		return "Upper bound of the search space in any dimension.";
+//	}
+//	/**
+//	 * @return the m_lowerBound
+//	 */
+//	public double getRangeLowerBound() {
+//		return m_lowerBound;
+//	}
+//	/**
+//	 * @param bound the m_lowerBound to set
+//	 */
+//	public void setRangeLowerBound(double bound) {
+//		m_lowerBound = bound;
+//	}	
+//	
+//	public String rangeLowerBoundTipText() {
+//		return "Lower bound of the search space in any dimension.";
+//	}
 
 	public String additionalArgumentTipText() {
 		return "Optionally define an additional (first) argument for the command line command.";
@@ -388,4 +446,34 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem implemen
 	public void setAdditionalArgument(String additionalArg) {
 		this.additionalArg = additionalArg;
 	}
+
+//	@Override
+	public Object getInitRange() {
+		if (m_initRange==null) {
+			if (m_Range==null) System.err.println("Warning, neither range nor initRange has been set in ExternalRuntimeProblem!");
+			return m_Range.getDoubleArrayShallow();
+		} else {
+			return m_initRange.getDoubleArrayShallow();
+		}
+	}
+	public void setInitialRange(double[][] range) {
+		PropertyDoubleArray pRange = new PropertyDoubleArray(range);
+		this.setInitialRange(pRange);
+	}
+	
+    public void setInitialRange(PropertyDoubleArray range) {
+    	if (range.getNumRows()<this.m_ProblemDimension) System.err.println("Warning, expected range of dimension " + m_ProblemDimension + " in setInitRange!");
+    	m_initRange = new PropertyDoubleArray(range);
+    }
+    public PropertyDoubleArray getInitialRange() {
+    	return m_initRange;
+    }
+    public String initialRangeTipText() {
+    	return "Initialization range for the problem";
+    }
+    
+    public String[] customPropertyOrder() {
+    	return new String[] {"workingDirectory", "command", "additionalArgument", "problemDimension", "initialRange", "range"};
+    }
+    
 }

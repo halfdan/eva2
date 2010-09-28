@@ -198,7 +198,8 @@ public class BasicResourceLoader implements ResourceLoader
 					entries = rawData.get(i).split(colSplit);
 					if (i == 0) {	// at the first pass
 						dat = new double[rawData.size()][(selectedCols == null) ? entries.length : selectedCols.length];
-					}  
+					}
+					trimAll(entries);
 					fillLine(dat, i, entries, selectedCols);
 				}
 			} catch (Exception e) {
@@ -209,6 +210,10 @@ public class BasicResourceLoader implements ResourceLoader
 		return dat;
 	}
 	
+	private static void trimAll(String[] entries) {
+		for (int i=0; i<entries.length; i++) if (entries[i]!=null) entries[i]=entries[i].trim();
+	}
+
 	/**
 	 * Walk through a 2-d-array and retrieve the first bunch of lines for which the given column data lies
 	 * within start and end limits, both inclusively. The original array is not altered.
@@ -257,6 +262,8 @@ public class BasicResourceLoader implements ResourceLoader
 	 * Fill a line of an array with double values parsed from a String array. A subset of 
 	 * Columns may be selected by giving their indices in an integer array cols. If cols
 	 * is null, all are converted.
+	 * If data is missing from the string array, the double array is filled with NaN.
+	 * If more data is delivered, an error message will be printed and the superfluous data disregarded.
 	 *  
 	 * @param dest
 	 * @param lineCnt
@@ -264,23 +271,27 @@ public class BasicResourceLoader implements ResourceLoader
 	 * @param cols
 	 */
 	public static void fillLine(double[][] dest, int lineCnt, String[] entries, int[] cols) {
-		if (((cols == null) && (dest[lineCnt].length != entries.length)) || (cols != null && (dest[lineCnt].length != cols.length))) {
+		if (((cols == null) && (dest[lineCnt].length < entries.length)) || (cols != null && (dest[lineCnt].length != cols.length))) {
 			System.err.println("error, array dimensions dont match! (BasicResourceLoader)");
 		}
 		if (cols == null) {
-			for (int i=0; i<entries.length; i++) {
+			for (int i=0; i<dest[lineCnt].length; i++) {
 				try {
-					dest[lineCnt][i] = Double.valueOf(entries[i]);
+					if ((i>=entries.length) || (entries[i]==null || (entries[i].length()==0))) dest[lineCnt][i]=Double.NaN;
+					else dest[lineCnt][i] = Double.valueOf(entries[i]);
 				} catch(NumberFormatException ex) {
 					System.err.println("Invalid Double format in line " + lineCnt + ", data was " + entries[i]);
+					dest[lineCnt][i]=Double.NaN;
 				}
 			}
 		} else {
 			for (int i=0; i<cols.length; i++) {
 				try {
-					dest[lineCnt][i] = Double.valueOf(entries[cols[i]]);
+					if ((cols[i]>=entries.length) || (entries[cols[i]]==null || (entries[cols[i]].length()==0))) dest[lineCnt][i]=Double.NaN;
+					else dest[lineCnt][i] = Double.valueOf(entries[cols[i]]);
 				} catch(NumberFormatException ex) {
 					System.err.println("Invalid Double format in line " + lineCnt + ", data was " + entries[cols[i]]);
+					dest[lineCnt][i]=Double.NaN;
 				}
 			}
 		}

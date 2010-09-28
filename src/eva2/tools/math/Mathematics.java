@@ -1,5 +1,6 @@
 package eva2.tools.math;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -381,6 +382,20 @@ public class Mathematics {
 	
 	/**
 	 * Check if all numbers are valid (not NaN) and finite. Returns
+	 * -1 if this is the case or the index of the first row with an invalid number.
+	 * 
+	 * @param v
+	 * @return
+	 */
+	public static int areFinite(double[][] v) {
+		for (int i=0; i<v.length; i++) {
+			if (areFinite(v[i])>=0) return i;
+		}
+		return -1;
+	}
+	
+	/**
+	 * Check if all numbers are valid (not NaN) and finite. Returns
 	 * -1 if this is the case or the index of the first invalid number.
 	 * 
 	 * @param v
@@ -422,6 +437,19 @@ public class Mathematics {
 		return true;
 	}
 
+	/**
+	 * Returns false if a column vector contains NaN, its squared sum is NaN or the
+	 * absolute sum is smaller than 10^-18.
+	 * 
+	 * @param d
+	 * @return
+	 */
+	public static boolean isValidVec(double[][] d) {
+		for (int i=0; i<d.length; i++) {
+			if (!isValidVec(d[i])) return false;
+		}
+		return true;
+	}
 	/**
 	 * Returns false if a vector contains NaN, its squared sum is NaN or the
 	 * absolute sum is smaller than 10^-18.
@@ -1338,5 +1366,48 @@ public class Mathematics {
 		for (int i = 0; i < vec.length; i++) {
 			vec[i] *= scale;
 		}
+	}
+
+	/**
+	 * Return an array containing only those lines which have values within
+	 * lower and upper bound (included) in the indexed column.
+	 * 
+	 * @param dat
+	 * @param i
+	 * @param d
+	 * @param e
+	 * @return
+	 */
+	public static double[][] filterBy(double[][] dat, int i, double lower, double upper) {
+		if (dat==null||dat.length==0) return dat;
+		if (i >= dat[0].length) {
+			System.err.println("Error, invalid column index " + i + " for data array with " + dat[0].length + " columns!");
+		}
+		ArrayList<double[]> matching = new ArrayList<double[]>(5);
+		for (double[] row : dat) {
+			if (row[i]<=upper && row[i]>=lower) matching.add(row);
+		}
+		
+		return matching.toArray(new double[matching.size()][dat[0].length]);
+	}
+
+	/**
+	 * Retrieve a given number of columns from a double matrix. The given
+	 * data array must have valid matrix dimensions (equal number of columns per row).
+	 * 
+	 * @param filtered
+	 * @param i
+	 * @param j
+	 * @return
+	 */
+	public static double[][] getCols(double[][] data, int ... cols) {
+		if (data==null || (data[0]==null)) return null;
+		int nCols = cols.length;
+		if (nCols>data[0].length) System.err.println("Error, mismatching column count in Mathematics.getCols!");
+		double[][] ret = new double[data.length][cols.length];
+		for (int i=0; i<data.length; i++) {
+			for (int j=0; j<cols.length; j++) ret[i][j] = data[i][cols[j]];
+		}
+		return ret;
 	}
 }
