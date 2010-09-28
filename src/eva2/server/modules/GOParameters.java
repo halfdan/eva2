@@ -3,9 +3,12 @@ package eva2.server.modules;
 import java.io.Serializable;
 
 import eva2.server.go.InterfaceGOParameters;
+import eva2.server.go.InterfaceTerminator;
 import eva2.server.go.operators.terminators.EvaluationTerminator;
 import eva2.server.go.problems.F1Problem;
+import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.server.go.strategies.GeneticAlgorithm;
+import eva2.server.go.strategies.InterfaceOptimizer;
 import eva2.tools.Serializer;
 
 
@@ -63,7 +66,11 @@ public class GOParameters extends AbstractGOParameters implements InterfaceGOPar
     	super(new GeneticAlgorithm(), new F1Problem(), new EvaluationTerminator(1000));
 //    	((F1Problem)m_Problem).setEAIndividual(new GAIndividualDoubleData());
     }
-
+    
+    public GOParameters(InterfaceOptimizer opt, InterfaceOptimizationProblem prob, InterfaceTerminator term) {
+    	super(opt, prob, term);
+    }
+    
     /**
      *
      */

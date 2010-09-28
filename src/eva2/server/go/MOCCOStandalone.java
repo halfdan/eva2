@@ -259,11 +259,10 @@ public class MOCCOStandalone implements InterfaceGOStandalone, InterfacePopulati
         System.out.println(""+s);
         if (moso instanceof MOSOWeightedFitness) {
             PropertyDoubleArray prop = ((MOSOWeightedFitness)moso).getWeights();
-            double[] d = prop.getDoubleArray();
             s = "Weights   : {";
-            for (int i = 0; i < d.length; i++) {
-                s += d[i];
-                if (i < (d.length-1)) s += "; ";
+            for (int i = 0; i < prop.getNumRows(); i++) {
+                s += prop.getValue(i,0);
+                if (i < (prop.getNumRows()-1)) s += "; ";
             }
             s += "}";
             System.out.println(""+s);

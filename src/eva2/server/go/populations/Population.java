@@ -430,7 +430,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      * This method will allow you to increment the current number of function calls by a number > 1.
      * Notice that it might slightly disturb notification if a notifyEvalInterval is set. 
      * 
-     * @param d     The number of function calls to increment.
+     * @param d     The number of function calls to increment by.
      */
     public void incrFunctionCallsBy(int d) {
     	if (doEvalNotify()) {
@@ -1063,7 +1063,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      * @param n	number of individuals to look out for
      * @param bBestOrWorst if true, the best n are returned, else the worst n individuals
      * @param res	sorted result population, will be cleared
-     * @param comparator the Comparator to use with individuals
+     * @param comp the Comparator to use with individuals
      * @return The m sorted best or worst individuals, where m <= n
      * 
      */

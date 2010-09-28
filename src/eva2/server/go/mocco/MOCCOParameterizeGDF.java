@@ -215,7 +215,7 @@ public class MOCCOParameterizeGDF extends MOCCOPhase implements InterfaceProcess
             ((AbstractMultiObjectiveOptimizationProblem)m_Mocco.m_State.m_CurrentProblem).setMOSOConverter(wf);
             w = mapObjectives2Fitness(w);
             PropertyDoubleArray da = new PropertyDoubleArray(w);
-            wf.setOutputDimension(da.getDoubleArray().length);
+            wf.setOutputDimension(da.getNumRows());
             wf.setWeights(da);
             m_Opt.SetProblem(m_Mocco.m_State.m_CurrentProblem);
             m_Mocco.m_State.m_Optimizer = m_Opt;

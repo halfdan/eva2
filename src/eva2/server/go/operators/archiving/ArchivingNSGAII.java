@@ -68,7 +68,7 @@ public class ArchivingNSGAII extends ArchivingNSGA implements java.io.Serializab
         tmpPop.removeRedundantIndiesUsingFitness();
 
         // Now fetch the n pareto-fronts
-        Population[] fronts = this.getNonDomiatedSortedFronts(tmpPop);
+        Population[] fronts = this.getNonDominatedSortedFronts(tmpPop);
         tmpPop.clear();
         tmpPop = null;
 //        this.calculateCrowdingDistance(fronts);
@@ -100,12 +100,23 @@ public class ArchivingNSGAII extends ArchivingNSGA implements java.io.Serializab
         fronts = null;
         pop.SetArchive(archive);
     }
+    
+    /**
+     * Return the pareto front from a given population.
+     * @param pop
+     * @return
+     */
+    public static Population getNonDominatedSortedFront(Population pop) {
+    	ArchivingNSGAII arch = new ArchivingNSGAII();
+    	Population[] fronts = arch.getNonDominatedSortedFronts(pop);
+    	return fronts[0];
+    }
 
     /** This method will dissect a given population into n pareto-fronts
      * @param pop   The population to analyse
      * @return Population[] the n pareto-fronts
      */
-    public Population[] getNonDomiatedSortedFronts(Population pop) {
+    public Population[] getNonDominatedSortedFronts(Population pop) {
         Population      tmpPop, tmpDom, tmpNonDom;
         Population[]    result  = null;
         ArrayList       tmpResult = new ArrayList();

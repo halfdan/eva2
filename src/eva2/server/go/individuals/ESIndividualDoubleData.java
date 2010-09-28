@@ -204,7 +204,11 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
     public void init(InterfaceOptimizationProblem opt) {
         super.init(opt);
         // evil operators may not respect the range, so at least give some hint
-        if (!Mathematics.isInRange(m_Genotype, m_Range)) EVAERROR.errorMsgOnce("Warning: Individual out of range after initialization (and potential initial crossover/mutation)!");
+        if (!Mathematics.isInRange(m_Genotype, m_Range)) {
+        	EVAERROR.errorMsgOnce("Warning: Individual out of range after initialization (and potential initial crossover/mutation)!");
+//        	System.err.println("Indy was: " + BeanInspector.toString(m_Genotype));
+//        	System.err.println("Range was " + BeanInspector.toString(m_Range));
+        }
     }
 
     /** This method will init the individual with a given value for the

@@ -251,8 +251,8 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
 		// Ranking
 		ArchivingNSGAII dummyArchive = new ArchivingNSGAIISMeasure();
 		Population[] store = dummyArchive
-				.getNonDomiatedSortedFronts(m_Population);
-		store = dummyArchive.getNonDomiatedSortedFronts(m_Population);
+				.getNonDominatedSortedFronts(m_Population);
+		store = dummyArchive.getNonDominatedSortedFronts(m_Population);
 		dummyArchive.calculateCrowdingDistance(store);
 
 		// Vergleichen und den Successcounter hochz�hlen wenn wir besser als

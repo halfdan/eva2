@@ -28,7 +28,6 @@ import eva2.tools.math.RNG;
  * To change this template use File | Settings | File Templates.
  */
 public class TF1Problem extends AbstractMultiObjectiveOptimizationProblem implements java.io.Serializable {
-
     protected int                       m_ProblemDimension  = 30;
     protected int                       m_OutputDimension   = 2;
     protected double                    m_Noise             = 0.0;
@@ -359,11 +358,12 @@ public class TF1Problem extends AbstractMultiObjectiveOptimizationProblem implem
 //        return "Toggle application of constraint (works only for T1).";
 //    }
 
-    /** Since you can apply single objective optimization algorithms on
+    /** 
+     * Since you can apply single objective optimization algorithms on
      * multi-objective problems, the problem needs a way to log the pareto-
      * front for such algorithms. This is especially the case for the
      * dynamically weighted fitness MOSO.
-     * @param pop     The pareto-front archieve.
+     * @param pop     The pareto-front archive.
      */
     public void setParetoFront(Population pop) {
         this.m_ParetoFront = pop;

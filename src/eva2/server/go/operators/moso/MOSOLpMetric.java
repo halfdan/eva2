@@ -56,15 +56,15 @@ public class MOSOLpMetric implements InterfaceMOSOConverter, java.io.Serializabl
         if (m_P >= 1) {
             // standard Lp Metric
             resultFit[0] = 0;
-            for (int i = 0; (i < this.m_Reference.m_DoubleArray.length) && (i < tmpFit.length); i++) {
-                 resultFit[0] += Math.pow(Math.abs(tmpFit[i]-this.m_Reference.m_DoubleArray[i]), this.m_P);
+            for (int i = 0; (i < this.m_Reference.getNumRows()) && (i < tmpFit.length); i++) {
+                 resultFit[0] += Math.pow(Math.abs(tmpFit[i]-this.m_Reference.getValue(i,0)), this.m_P);
             }
             resultFit[0] = Math.pow(resultFit[0], 1/((double)this.m_P));
         } else {
             // Tchebycheff metric
             resultFit[0] = Double.NEGATIVE_INFINITY;
-            for (int i = 0; (i < this.m_Reference.m_DoubleArray.length) && (i < tmpFit.length); i++) {
-                 resultFit[0] += Math.max(Math.abs(tmpFit[i]-this.m_Reference.m_DoubleArray[i]), resultFit[0]);
+            for (int i = 0; (i < this.m_Reference.getNumRows()) && (i < tmpFit.length); i++) {
+                 resultFit[0] += Math.max(Math.abs(tmpFit[i]-this.m_Reference.getValue(i,0)), resultFit[0]);
             }
         }
 
@@ -80,7 +80,7 @@ public class MOSOLpMetric implements InterfaceMOSOConverter, java.io.Serializabl
         double[] newWeights = new double[dim];
 
         for (int i = 0; i < newWeights.length; i++) newWeights[i] = 0.0;
-        for (int i = 0; (i < this.m_Reference.m_DoubleArray.length) && (i < newWeights.length); i++) newWeights[i] = this.m_Reference.m_DoubleArray[i];
+        for (int i = 0; (i < this.m_Reference.getNumRows()) && (i < newWeights.length); i++) newWeights[i] = this.m_Reference.getValue(i,0);
 
         this.m_Reference.setDoubleArray(newWeights);
     }
@@ -92,10 +92,9 @@ public class MOSOLpMetric implements InterfaceMOSOConverter, java.io.Serializabl
         String result = "Lp Metric\n";
         result += " P           = "+this.m_P+"\n";
         result += " Ref.Fitness = (";
-        double[] p = this.m_Reference.m_DoubleArray;
-        for (int i = 0; i < p.length; i++) {
-            result += p[i];
-            if (i < (p.length-1)) result += "; ";
+        for (int i = 0; i < m_Reference.getNumRows(); i++) {
+            result += m_Reference.getValue(i,0);
+            if (i < (m_Reference.getNumRows()-1)) result += "; ";
         }
         result += ")\n";
         return result;

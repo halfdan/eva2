@@ -65,7 +65,7 @@ public class ReplacementNondominatedSortingDistanceCrowding implements Interface
         
     
     	pop.add(indy);
-    	Population []store=dummyArchive.getNonDomiatedSortedFronts(pop);
+    	Population []store=dummyArchive.getNonDominatedSortedFronts(pop);
 		dummyArchive.calculateCrowdingDistance(store);//TODO die f�r das gesamte Archiv am St�ck berechnen und nicht f�r die Einzelfronten!
 		for(int i=0;i<store.length;i++){
 			synchronized (store[i]) {

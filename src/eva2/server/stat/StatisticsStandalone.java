@@ -61,11 +61,12 @@ public class StatisticsStandalone extends AbstractStatistics implements Interfac
 		this(resultFileName, 1, resultFileName==null ? StatsParameter.VERBOSITY_NONE : StatsParameter.VERBOSITY_FINAL, false);
 	}
 	
-	public StatisticsStandalone(String resultFileName, int multiRuns, int verbosity, boolean showAdditionalInfo) {
+	public StatisticsStandalone(String resultFileName, int multiRuns, int verbosity, boolean outputAllFieldsAsText) {
 		this(StatsParameter.getInstance(false));
 		m_StatsParams.setMultiRuns(multiRuns);
 		m_StatsParams.setOutputVerbosity(m_StatsParams.getOutputVerbosity().setSelectedTag(verbosity));
 		m_StatsParams.SetResultFilePrefix(resultFileName);
+		m_StatsParams.setOutputAllFieldsAsText(outputAllFieldsAsText);
 		if (resultFileName==null) m_StatsParams.getOutputTo().setSelectedTag(StatsParameter.OUTPUT_WINDOW); 
 		else m_StatsParams.setOutputTo(m_StatsParams.getOutputTo().setSelectedTag(StatsParameter.OUTPUT_FILE));
 	}

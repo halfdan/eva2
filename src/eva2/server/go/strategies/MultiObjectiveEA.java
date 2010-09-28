@@ -2,6 +2,7 @@ package eva2.server.go.strategies;
 
 import eva2.server.go.InterfacePopulationChangedEventListener;
 import eva2.server.go.individuals.AbstractEAIndividual;
+import eva2.server.go.individuals.AbstractEAIndividualComparator;
 import eva2.server.go.operators.archiving.ArchivingNSGAII;
 import eva2.server.go.operators.archiving.InformationRetrievalInserting;
 import eva2.server.go.operators.archiving.InterfaceArchiving;
@@ -220,13 +221,13 @@ public class MultiObjectiveEA implements InterfaceOptimizer, java.io.Serializabl
      * @return description
      */
     public static String globalInfo() {
-        return "This is general Evolutionary Multi-Criteria Optimization Framework.";
+        return "This is a general Multi-objective Evolutionary Optimization Framework.";
     }
     /** This method will return a naming String
      * @return The name of the algorithm
      */
     public String getName() {
-        return "EMO";
+        return "MOEA";
     }
 
     /** Assuming that all optimizer will store thier data in a population
@@ -245,7 +246,7 @@ public class MultiObjectiveEA implements InterfaceOptimizer, java.io.Serializabl
     }
     
     public InterfaceSolutionSet getAllSolutions() {
-    	return new SolutionSet(getPopulation(), getPopulation().getArchive());
+    	return new SolutionSet(getPopulation(), ArchivingNSGAII.getNonDominatedSortedFront(getPopulation().getArchive()).getSortedPop(new AbstractEAIndividualComparator(0)));
     }
 
     /** This method allows you to set/get the optimizing technique to use.

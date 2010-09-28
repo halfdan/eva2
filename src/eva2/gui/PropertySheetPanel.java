@@ -274,7 +274,7 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
 	            if (value == null) {
 	                // If it's a user-defined property we give a warning.
 	                String getterClass = m_Properties[i].getReadMethod().getDeclaringClass().getName();
-	                if (getterClass.indexOf("java.") != 0) System.out.println("Warning: Property \"" + name+ "\" has null initial value.  Skipping.");
+	                if (getterClass.indexOf("java.") != 0) System.out.println("Warning: Property \"" + name+ "\" of class " + targ.getClass() + " has null initial value.  Skipping.");
 	                continue;
 	            }
                 editor.setValue(value);

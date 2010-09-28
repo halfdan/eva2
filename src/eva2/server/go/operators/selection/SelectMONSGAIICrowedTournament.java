@@ -41,7 +41,7 @@ public class SelectMONSGAIICrowedTournament implements InterfaceSelection, java.
      * @param population    The population that is to be processed.
      */
     public void prepareSelection(Population population) {
-        this.m_Fronts = this.m_NSGAII.getNonDomiatedSortedFronts(population);
+        this.m_Fronts = this.m_NSGAII.getNonDominatedSortedFronts(population);
         this.m_NSGAII.calculateCrowdingDistance(this.m_Fronts);
     }
 
