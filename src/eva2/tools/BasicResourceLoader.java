@@ -287,7 +287,7 @@ public class BasicResourceLoader implements ResourceLoader
 		} else {
 			for (int i=0; i<cols.length; i++) {
 				try {
-					if ((cols[i]>=entries.length) || (entries[cols[i]]==null || (entries[cols[i]].length()==0))) dest[lineCnt][i]=Double.NaN;
+					if ((cols[i]<0) || ((cols[i]>=entries.length) || (entries[cols[i]]==null || (entries[cols[i]].length()==0)))) dest[lineCnt][i]=Double.NaN;
 					else dest[lineCnt][i] = Double.valueOf(entries[cols[i]]);
 				} catch(NumberFormatException ex) {
 					System.err.println("Invalid Double format in line " + lineCnt + ", data was " + entries[cols[i]]);

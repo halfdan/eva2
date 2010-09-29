@@ -119,4 +119,46 @@ public class ToolBox {
 		}
 		return vals;
 	}
+	
+	/**
+	 * Return an array containing only those lines which have values within
+	 * lower and upper bound (included) in the indexed column.
+	 * 
+	 * @param dat a 2D double array
+	 * @param i	index of the column to look at
+	 * @param lower lower bound of values to filter rows for
+	 * @param upper upper bound of values to filter rows for
+	 * @return a filtered 2D double array where value[*][i] in [lower,upper]
+	 */
+	public static double[][] filterBy(double[][] dat, int i, double lower, double upper) {
+		if (dat==null||dat.length==0) return dat;
+		if (i >= dat[0].length) {
+			System.err.println("Error, invalid column index " + i + " for data array with " + dat[0].length + " columns!");
+		}
+		ArrayList<double[]> matching = new ArrayList<double[]>(5);
+		for (double[] row : dat) {
+			if (row[i]<=upper && row[i]>=lower) matching.add(row);
+		}
+		
+		return matching.toArray(new double[matching.size()][dat[0].length]);
+	}
+
+	/**
+	 * Retrieve a given number of columns from a double matrix. The given
+	 * data array must have valid matrix dimensions (equal number of columns per row).
+	 * 
+	 * @param data a 2D double array
+	 * @param cols	the indices of columns in data to return
+	 * @return	a 2D double array containing the indexed columns from data
+	 */
+	public static double[][] getCols(double[][] data, int ... cols) {
+		if (data==null || (data[0]==null)) return null;
+		int nCols = cols.length;
+		if (nCols>data[0].length) System.err.println("Error, mismatching column count in Mathematics.getCols!");
+		double[][] ret = new double[data.length][cols.length];
+		for (int i=0; i<data.length; i++) {
+			for (int j=0; j<cols.length; j++) ret[i][j] = data[i][cols[j]];
+		}
+		return ret;
+	}
 }
