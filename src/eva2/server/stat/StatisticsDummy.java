@@ -5,6 +5,7 @@ import java.util.List;
 import eva2.server.go.IndividualInterface;
 import eva2.server.go.PopulationInterface;
 import eva2.server.go.individuals.AbstractEAIndividual;
+import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceAdditionalPopulationInformer;
 import eva2.server.go.strategies.InterfaceOptimizer;
 
@@ -85,6 +86,7 @@ public class StatisticsDummy implements InterfaceStatistics, InterfaceTextListen
 	}
 
 	public void stopOptPerformed(boolean normal, String stopMessage) {}
+	public void postProcessingPerformed(Population resultPop) {}
 	
 	public void print(String str) {
 		if (consoleOut) System.out.print(str);

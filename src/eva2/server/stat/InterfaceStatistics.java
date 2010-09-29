@@ -16,6 +16,7 @@ import java.util.List;
 
 import eva2.server.go.IndividualInterface;
 import eva2.server.go.PopulationInterface;
+import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceAdditionalPopulationInformer;
 import eva2.server.go.strategies.InterfaceOptimizer;
 /*==========================================================================*
@@ -44,4 +45,5 @@ public interface InterfaceStatistics {
 	public IndividualInterface getRunBestSolution(); // return the best fitness of the last run (may not be equal to the last population)
 	public IndividualInterface getBestSolution(); // returns the best overall solution
 	public double[] getBestFitness(); // returns the best overall fitness
+	public void postProcessingPerformed(Population resultPop); // called from processor
 }
