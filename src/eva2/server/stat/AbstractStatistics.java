@@ -150,10 +150,15 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 	 */
 	private void fireDataListenersStartStop(int runNumber, boolean normal, boolean start) {
 		if (dataListeners!=null) for (InterfaceStatisticsListener l : dataListeners) {
-			if (start) l.notifyRunStarted(runNumber, m_StatsParams.getMultiRuns(), currentStatHeader, currentStatMetaInfo);
-			else {
-				l.notifyRunStopped(optRunsPerformed, normal);
-				if (optRunsPerformed>1) l.finalMultiRunResults(currentStatHeader, finalObjectData);
+				if (start) {
+					l.notifyRunStarted(runNumber, m_StatsParams.getMultiRuns(),
+							currentStatHeader, currentStatMetaInfo);
+				} else {
+					l.notifyRunStopped(optRunsPerformed, normal);
+					if (optRunsPerformed > 1) {
+						l.finalMultiRunResults(currentStatHeader,
+								finalObjectData);
+					}
 			}
 		}
 	}

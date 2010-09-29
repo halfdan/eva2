@@ -573,6 +573,10 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem
 		return "(De-)Activate constraints for the problem.";
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see eva2.server.go.problems.AbstractOptimizationProblem#getAdditionalFileStringHeader()
+	 */
 	@Override
 	public String[] getAdditionalFileStringHeader() {
 		String[] superHeader = super.getAdditionalFileStringHeader();
@@ -583,6 +587,10 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem
 			return superHeader;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see eva2.server.go.problems.AbstractOptimizationProblem#getAdditionalFileStringInfo()
+	 */
 	@Override
 	public String[] getAdditionalFileStringInfo() {
 		String[] superInfo = super.getAdditionalFileStringInfo();

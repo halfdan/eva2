@@ -38,10 +38,16 @@ class MyFocusListener implements FocusListener {
 		this.arrEditor = gdae;
 	}
 	
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see java.awt.event.FocusListener#focusLost(java.awt.event.FocusEvent)
+	 */
 	public void focusLost(FocusEvent e) { }
 	
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see java.awt.event.FocusListener#focusGained(java.awt.event.FocusEvent)
+	 */
 	public void focusGained(FocusEvent e) { arrEditor.notifyFocusID(myID);};
 };
 
