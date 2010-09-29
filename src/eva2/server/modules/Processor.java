@@ -262,6 +262,7 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
         			resultPop = goParams.getOptimizer().getAllSolutions().getSolutions();
         		}
         	} else resultPop = goParams.getOptimizer().getAllSolutions().getSolutions();
+        	m_Statistics.postProcessingPerformed(resultPop);
 
         }
         setOptRunning(false); // normal finish

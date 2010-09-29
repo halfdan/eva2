@@ -127,7 +127,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 		if (dataListeners==null) {
 			dataListeners=new LinkedList<InterfaceStatisticsListener>();
 		}
-		if (!dataListeners.contains(l)) dataListeners.add(l);
+		if (l!=null && !dataListeners.contains(l)) dataListeners.add(l);
 	}
 	
 	public boolean removeDataListener(InterfaceStatisticsListener l) {
@@ -349,17 +349,30 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 		if (finalObjectData==null) finalObjectData = new ArrayList<Object[]>();
 		finalObjectData.add(currentStatObjectData);
 		
-		if (printFinalVerbosity()) printToTextListener(".");
+		if (!printRunStoppedVerbosity() && printFinalVerbosity()) printToTextListener(".");
 //		if (currentBestFit!= null) {
 //			if (printRunStoppedVerbosity()) printToTextListener(" Best Fitness: " + BeanInspector.toString(currentBestFit) + "\n");
 //		}
-		if (optRunsPerformed >= m_StatsParams.getMultiRuns()) {
-			if (printFinalVerbosity()) printToTextListener("\n");
-			finalizeOutput();
-		}
+
 		fireDataListenersStartStop(optRunsPerformed, normal, false);
 	}
 
+	public void postProcessingPerformed(Population resultPop) { // called from processor
+		if (!printRunStoppedVerbosity() && printFinalVerbosity() && optRunsPerformed >= m_StatsParams.getMultiRuns()) printToTextListener("\n");
+		if (printRunStoppedVerbosity()) {
+			if (resultPop!=null && (resultPop.size()>0)) {
+				printToTextListener("Resulting population: \n");
+				for (int i=0; i<resultPop.size(); i++) {
+					printToTextListener(AbstractEAIndividual.getDefaultStringRepresentation(resultPop.getEAIndividual(i)));
+					printToTextListener("\n");
+				}
+			}
+		}
+		if (optRunsPerformed >= m_StatsParams.getMultiRuns()) {
+			finalizeOutput();
+		}
+	}
+	
 	private PopulationInterface makeStatsPop() {
 		Population pop = new Population(4);
 		
