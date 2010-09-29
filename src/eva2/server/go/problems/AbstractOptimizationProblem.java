@@ -73,6 +73,9 @@ implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serial
 		
 	}
 	
+	/**
+	 * 
+	 */
 	public static final String STAT_SOLUTION_HEADER = "solution";
 	
 	int parallelthreads = 1;
@@ -253,11 +256,12 @@ implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serial
      * @return String
      */
     public String[] getAdditionalFileStringInfo() {
-    	if (this instanceof InterfaceInterestingHistogram) 
+    	if (this instanceof InterfaceInterestingHistogram) {
     		return new String[]{"Representation of the current best individual",
     			"Fitness histogram of the current population",
     			"Fitness threshold based score of the current population"};
-    	else return new String[]{"Representation of the current best individual"};
+    	}
+    	return new String[]{"Representation of the current best individual"};
     }
     
     /** This method returns the additional data that is to be written into a file
