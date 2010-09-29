@@ -213,6 +213,12 @@ public class FunctionArea extends DArea implements Serializable {
 						}
 					});
 
+					addMenuItem(graphPopupMenu, "Toggle scientific format", new ActionListener() {
+						public void actionPerformed(ActionEvent ee) {
+							toggleScientificY(true);
+						}
+					});
+					
 					if (FunctionArea.this.m_PointSetContainer.size() > 0) {
 						addMenuItem(graphPopupMenu, "Recolor all graphs",
 								new ActionListener() {
@@ -1188,7 +1194,8 @@ public class FunctionArea extends DArea implements Serializable {
 				exp.setMinValue(getMinimalPositiveYValue());
 			setYScale(exp);
 			m_Border.setSrcdY(Math.log(10));
-			m_Border.applyPattern(false, "0.###E0");
+			m_Border.setScientificPattern(false); // scientific on y axis
+//			m_Border.applyPattern(false, "0.###E0"); // replaced by the former line
 			m_log = true;
 		} else {
 			m_log = false;
@@ -1198,11 +1205,22 @@ public class FunctionArea extends DArea implements Serializable {
 			m_Border.x_label = buffer.x_label; // "App. " + Name +
 			// " func. calls";
 			m_Border.y_label = buffer.y_label; // "fitness";
+			m_Border.setStandardPattern(false); // default decimal pattern on y axis
 			setBorder(m_Border);
 		}
 		repaint();
 	}
-
+	
+	/**
+	 * Toggle between different decimal patterns on the y-axis.
+	 * 
+	 * @param immediateRepaint if true, a repaint event is scheduled immediately
+	 */
+	public void toggleScientificY(boolean immediateRepaint) {
+		m_Border.toggleDecPattern(false);
+		if (immediateRepaint) repaint();
+	}
+	
 	/**
 	 * Allows setting whether or not to paint the y-axis in logarithmic scale.
 	 * 

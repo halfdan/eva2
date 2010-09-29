@@ -1,17 +1,25 @@
 package eva2.tools.chart2d;
 
-import java.awt.* ;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Insets;
+import java.awt.Point;
+import java.awt.geom.AffineTransform;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+
 import javax.swing.BorderFactory;
-import javax.swing.border.* ;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.Border;
 
 import eva2.tools.math.Mathematics;
 
-import java.awt.geom.AffineTransform ;
-import java.text.NumberFormat;
-import java.text.DecimalFormat;
-
 /**
- * ScaledBorder puts an border around Components
+ * ScaledBorder puts a border around Components
  * ( especially around DrawingAreas ) with scaled and labeled axes. 
  */
 public class ScaledBorder implements Border 
@@ -109,6 +117,17 @@ public class ScaledBorder implements Border
   private NumberFormat format_x = new DecimalFormat(),
                       format_y = new DecimalFormat();
 
+  /**
+   * Possible patterns for the number formats used by a border.
+   */
+  private String[] decPatterns = {"#,##0.###", "0.###E0"}; // standard decimal or scientific exponential
+  
+  /**
+   * Internal states of which decPatterns to switch to next.
+   */
+  private int nextYPattern = 1;
+  private int nextXPattern = 1;
+
   private double src_dX = -1, src_dY = -1;
 
   private boolean do_refresh,
@@ -194,6 +213,9 @@ public class ScaledBorder implements Border
   
   public void paintBorder(Component c, Graphics g, int x, int y, int width, int height){
     if( under_construction ) System.out.println("ScaledBorder.paintBorder()");
+
+//  Here one might know how much of the graph is taken by the border only and possibly switch to exponential numbering?
+    
     if( foreground == null ) foreground = c.getForeground();
     if( background == null ) background = c.getBackground();
     Color old_color = g.getColor();
@@ -210,9 +232,10 @@ public class ScaledBorder implements Border
     do_refresh = true;
     Insets inner_insets = getBorderInsets(c);
 
-    Dimension d = c.getSize(),
-              cd = new Dimension( d.width - inner_insets.left - inner_insets.right,
-                                  d.height - inner_insets.top - inner_insets.bottom );
+    Dimension 	d = c.getSize(),
+    			cd = new Dimension( d.width - inner_insets.left - inner_insets.right,
+                        d.height - inner_insets.top - inner_insets.bottom );
+
     FontMetrics fm = g.getFontMetrics();
     int fontAsc = fm.getAscent();
     do_refresh = false;
@@ -444,6 +467,57 @@ public class ScaledBorder implements Border
   }
 
   /**
+   * Toggle between different decimal patterns on the axes. Basically shifts
+   * to the next pattern specified for this border type.
+   * 
+   * @param xOrY if true toggle for the x axis otherwise for the y axis
+   */
+  public void toggleDecPattern(boolean xOrY) {
+//	  System.out.println("Next pattern: " + nextYPattern);
+	  int current;
+	  if (xOrY) {
+		  current = nextXPattern;
+		  nextXPattern = (nextXPattern+1) % decPatterns.length;
+	  } else {
+		  current = nextYPattern;
+		  nextYPattern = (nextYPattern+1) % decPatterns.length;
+	  }
+	  applyPattern(xOrY, decPatterns[current]);
+  }
+  
+  /**
+   * Switch between different decimal patterns on the axes.
+   * The next index gives the index within the pattern list of this border type
+   * to switch to.
+   * 
+   * @param xOrY if true toggle for the x axis otherwise for the y axis
+   * @param next	 index of the pattern to switch to
+   */
+  protected void setNextPattern(boolean xOrY, int next) {
+	  if (xOrY) nextXPattern=next;
+	  else nextYPattern=next;
+	  toggleDecPattern(xOrY);
+  }
+  
+  /**
+   * Set the standard decimal number pattern for the x or y axis.
+   * 
+   * @param xOrY if true, toggle for the x axis otherwise for the y axis
+   */
+  public void setStandardPattern(boolean xOrY) {
+	  setNextPattern(xOrY, 0);
+  }
+  
+  /**
+   * Set the exponential number pattern for the x or y axis.
+   * 
+   * @param xOrY if true, toggle for the x axis otherwise for the y axis
+   */
+  public void setScientificPattern(boolean xOrY) {
+	  setNextPattern(xOrY, 1);
+  }
+  
+  /**
    * Apply a decimal format pattern to x (bXorY true) or y (bXorY false) axis.
    * 
    * @see #java.text.DecimalFormat.applyPattern
@@ -456,6 +530,11 @@ public class ScaledBorder implements Border
 	  else ((java.text.DecimalFormat)format_y).applyPattern(pattern);
   }
 
+  /**
+   * This measures the space required for numberings on x and y axis and returns
+   * it. Depends on the decimal format applied and the FontMetrics of the 
+   * current Graphics instance.
+   */
   public Insets getBorderInsets(Component c){
     if( under_construction ) System.out.println("ScaledBorder.getBorderInsets()");
     if( !do_refresh && old_insets != null ) return old_insets;
@@ -525,7 +604,3 @@ public class ScaledBorder implements Border
     return insets;
   }
 }
-
-/****************************************************************************
- * END OF FILE
- ****************************************************************************/

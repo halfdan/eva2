@@ -66,6 +66,7 @@ import eva2.server.modules.GOParameters;
 import eva2.server.modules.GenericModuleAdapter;
 import eva2.server.modules.ModuleAdapter;
 import eva2.server.stat.AbstractStatistics;
+import eva2.server.stat.InterfaceStatisticsListener;
 import eva2.server.stat.InterfaceStatisticsParameter;
 import eva2.tools.BasicResourceLoader;
 import eva2.tools.EVAERROR;
@@ -489,6 +490,39 @@ public class EvAClient implements RemoteStateListener, Serializable {
 		}
 	}
 
+
+	/**
+	 * Initialize the client GUI with given parameters and set
+	 * listeners. This will return as soon as the GUI is visible and ready.
+	 * 
+	 * @param goParams	optimization parameters
+	 * @param statisticsListener	statistics listener receiving data during optimization
+	 * @param windowListener	additional window listener for client frame 
+	 */
+	public static EvAClient initClientGUI(GOParameters goParams,
+			InterfaceStatisticsListener statisticsListener,
+			WindowListener windowListener, final Window parent) {
+		EvAClient evaClient;
+		
+		evaClient = new EvAClient(null, parent, null, goParams,
+				false, true, false); // initializes GUI in the background
+		// important: wait for GUI initialization before accessing any internal
+		// settings:
+		evaClient.awaitClientInitialized(); // this returns as soon as the
+		// GUI is ready
+		evaClient.addWindowListener(windowListener);
+		// modify initial settings:
+		evaClient.getStatistics().getStatisticsParameter().setOutputAllFieldsAsText(true); // activate output of all data
+		// fields
+		// add a data listener instance:
+		evaClient.getStatistics().addDataListener(statisticsListener);
+
+		evaClient.refreshMainPanels(); // GUI update due to the changes made through the API
+
+		
+		return evaClient;
+	}
+	
 	public static String usage() {
 		StringBuffer sbuf = new StringBuffer();
 		sbuf.append(EvAInfo.productName);
