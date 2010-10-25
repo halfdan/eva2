@@ -679,20 +679,16 @@ public class FunctionArea extends DArea implements Serializable {
 	public boolean exportToAscii(File file) {
 		String[] s = null;
 		int maxSize = 0;
-		DPointSet maxSet = null;
 		for (int i = 0; i < m_PointSetContainer.size(); i++) {
 			// find maximum length of all point sets
 			if (m_PointSetContainer.get(i).getConnectedPointSet().getSize() > maxSize) {
-				maxSet = m_PointSetContainer.get(i).getConnectedPointSet();
-				maxSize = maxSet.getSize();
+				maxSize = m_PointSetContainer.get(i).getConnectedPointSet().getSize();
 			}
 		}
 		if (maxSize > 0) { // if there is any data, init string array and set x
 			// value column
-			s = new String[maxSize + 1];
-			s[0] = "calls";
-			for (int j = 1; j <= maxSize; j++)
-				s[j] = "" + maxSet.getDPoint(j - 1).x;
+			s = new String[maxSize+1];
+			for (int j = 0; j <= maxSize; j++) s[j] = "";
 		} else {
 			System.err.println("Error: no data to export");
 			return true;
@@ -701,16 +697,13 @@ public class FunctionArea extends DArea implements Serializable {
 			if (m_PointSetContainer.get(i) instanceof GraphPointSet) {
 				GraphPointSet set = (GraphPointSet) m_PointSetContainer.get(i);
 				DPointSet pset = set.getConnectedPointSet();
-				s[0] = s[0] + " " + cleanBlanks(set.getInfoString(), '_'); // add
-				// column
-				// name
+				// add column names
+				s[0] = s[0] + " t " + cleanBlanks(set.getInfoString(), '_'); 
 				for (int j = 1; j < s.length; j++) { // add column data of place
-					// holder if no value in
-					// this set
 					if ((j - 1) < pset.getSize())
-						s[j] = s[j] + " " + pset.getDPoint(j - 1).y;
+						s[j] = s[j] + " " + pset.getDPoint(j - 1).x + " " + pset.getDPoint(j - 1).y;
 					else
-						s[j] += " #";
+						s[j] += " ? ?"; // placeholder if no value in this set
 				}
 			} else
 				System.err.println("error in FunctionArea::exportToAscii");
