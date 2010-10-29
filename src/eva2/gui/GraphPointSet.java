@@ -547,6 +547,15 @@ public class GraphPointSet {
 		m_Stroke = stroke;
 		// setStroke(new BasicStroke( m_Stroke ));
 	}
+	
+	/**
+	 * Sets the info string without changing the stroke.
+	 * 
+	 * @param x
+	 */
+	public void setInfoString(String x) {
+		m_InfoString = x;
+	}
 
 	/**
 	 * Retrieve the median point of this point set.

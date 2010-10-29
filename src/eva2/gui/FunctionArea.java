@@ -36,6 +36,7 @@ import javax.swing.JPopupMenu;
 
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.mocco.paretofrontviewer.InterfaceRefPointListener;
+import eva2.tools.ToolBoxGui;
 import eva2.tools.chart2d.Chart2DDPointIconCircle;
 import eva2.tools.chart2d.Chart2DDPointIconContent;
 import eva2.tools.chart2d.Chart2DDPointIconCross;
@@ -194,6 +195,11 @@ public class FunctionArea extends DArea implements Serializable {
 					m_x = e.getX();
 					m_y = e.getY();
 
+					addMenuItem(graphPopupMenu, "Rename graph", new ActionListener() {
+						public void actionPerformed(ActionEvent ee) {
+							renameGraph(getNearestGraphIndex(FunctionArea.this.m_x, FunctionArea.this.m_y));
+						}
+					});
 					// General entries
 					String togGTTName = (isShowGraphToolTips() ? "Deactivate"
 							: "Activate")
@@ -1168,6 +1174,36 @@ public class FunctionArea extends DArea implements Serializable {
 		repaint();
 	}
 
+	private boolean renameGraph(int graphIndex) {
+		if ((m_PointSetContainer == null) || (m_PointSetContainer.size() == 0)) {
+			return false;
+		}
+		if (graphIndex >= 0 && (graphIndex <m_PointSetContainer.size())) {
+			String oldName = getGraphInfo(graphIndex);
+			String newName = ToolBoxGui.getInputPaneInitialVal(this, "Rename a graph", "Enter new name for graph " + graphIndex+ ":", oldName);
+		    if (newName!=null) {
+		    	return renameGraph(graphIndex, newName);
+		    }
+		    return true;
+		} else {
+			return false;
+		}
+	}
+	
+	private boolean renameGraph(int graphIndex, String newName) {
+		if ((m_PointSetContainer == null) || (m_PointSetContainer.size() == 0))
+			return false;
+
+		if (graphIndex >= 0 && (graphIndex <m_PointSetContainer.size())) {
+			GraphPointSet gps = ((GraphPointSet) (m_PointSetContainer.get(graphIndex)));
+			gps.setInfoString(newName);
+			updateLegend();
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 	/**
 	 * 
 	 */
