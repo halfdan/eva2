@@ -17,6 +17,11 @@ import eva2.server.go.individuals.InterfaceDataTypeInteger;
 import eva2.server.go.operators.postprocess.InterfacePostProcessParams;
 import eva2.server.go.operators.postprocess.PostProcess;
 import eva2.server.go.operators.postprocess.PostProcessParams;
+import eva2.server.go.operators.terminators.FitnessConvergenceTerminator;
+import eva2.server.go.operators.terminators.PhenotypeConvergenceTerminator;
+import eva2.server.go.operators.terminators.PopulationMeasureTerminator.ChangeTypeEnum;
+import eva2.server.go.operators.terminators.PopulationMeasureTerminator.DirectionTypeEnum;
+import eva2.server.go.operators.terminators.PopulationMeasureTerminator.StagnationTypeEnum;
 import eva2.server.go.populations.Population;
 import eva2.server.go.strategies.InterfaceOptimizer;
 import eva2.server.stat.InterfaceTextListener;
@@ -123,6 +128,16 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 		init(this.problemDimension, range, initialRange, defTestOut);
 	}
 
+	public static FitnessConvergenceTerminator makeFitConvTerm(double thresh, int stagnPeriod) {
+		FitnessConvergenceTerminator fct = new FitnessConvergenceTerminator(thresh, stagnPeriod, StagnationTypeEnum.fitnessCallBased, ChangeTypeEnum.absoluteValue, DirectionTypeEnum.decrease);
+		return fct;
+	}
+
+	public static PhenotypeConvergenceTerminator makePhenConvTerm(double thresh, int stagnPeriod) {
+		PhenotypeConvergenceTerminator pct = new PhenotypeConvergenceTerminator(thresh, stagnPeriod, StagnationTypeEnum.fitnessCallBased, ChangeTypeEnum.absoluteValue, DirectionTypeEnum.decrease);
+		return pct;
+	}
+	
 	/**
 	 * Make deep clones for the ranges, or there may be deadlocks in communicating with Matlab!
 	 *  
