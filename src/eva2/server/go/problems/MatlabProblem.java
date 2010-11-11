@@ -52,6 +52,7 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 
 	public MatlabProblem(MatlabProblem o) {
 //		this.matlab = o.matlab;
+		this.m_Template=null;
 		this.handler = o.handler;
 		this.runnable = o.runnable;
 		this.allowSingleRunnable = o.allowSingleRunnable;
@@ -99,7 +100,7 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 				((InterfaceDataTypeDouble)this.m_Template).SetDoubleRange(range);
 			}
 		} else {
-			m_Template         = new GAIndividualIntegerData();
+			if (m_Template == null) m_Template         = new GAIndividualIntegerData();
 			int intLen = 1+((getProblemDimension()-1)/32);
 			int lastIntCodingBits = getProblemDimension()-((intLen-1)*32);
 			if (lastIntCodingBits > 32) System.err.println("ERROR in MatlabProblem:initTemplate");

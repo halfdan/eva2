@@ -49,6 +49,16 @@ public class MutateEAMixer implements InterfaceMutation, java.io.Serializable  {
         this.m_Mutators.setWeightsLabel("Weigths");
 
     }
+    
+    /**
+     * Create a mutation mixer with equal weights of the given mutation operators.
+     * @param mutators
+     */
+    public MutateEAMixer(InterfaceMutation[] mutators) {
+        this.m_Mutators         = new PropertyMutationMixer(mutators);
+        this.m_UseSelfAdaption  = false;
+    }
+    
     public MutateEAMixer(MutateEAMixer mutator) {
         this.m_Mutators         = (PropertyMutationMixer)mutator.m_Mutators.clone();
         this.m_UseSelfAdaption  = mutator.m_UseSelfAdaption;
@@ -150,7 +160,7 @@ public class MutateEAMixer implements InterfaceMutation, java.io.Serializable  {
      * @return description
      */
     public static String globalInfo() {
-        return "This mmeta-mutation operator allows you to combine multiple alternative mutation operators.";
+        return "This meta-mutation operator allows you to combine multiple alternative mutation operators.";
     }
 
     /** Choose the set of mutators.
