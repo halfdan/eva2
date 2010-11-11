@@ -1725,10 +1725,15 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     	
         for (int i = 0; i < pop.size(); i++) {
         	for (int j = i+1; j < pop.size(); j++) {
-        		if (metric == null) d = EuclideanMetric.euclideanDistance(AbstractEAIndividual.getDoublePositionShallow(pop.get(i)), 
-                		AbstractEAIndividual.getDoublePositionShallow(pop.get(j)));
-        		else d = metric.distance((AbstractEAIndividual)pop.get(i), (AbstractEAIndividual)pop.get(j));
-                distSum += d;
+        		try {
+        			if (metric == null) d = EuclideanMetric.euclideanDistance(AbstractEAIndividual.getDoublePositionShallow(pop.get(i)), 
+        					AbstractEAIndividual.getDoublePositionShallow(pop.get(j)));
+        			else d = metric.distance((AbstractEAIndividual)pop.get(i), (AbstractEAIndividual)pop.get(j));
+        		} catch (Exception e) {
+        			EVAERROR.errorMsgOnce("Exception when calculating population measures ... possibly no double position available?");
+        			d = 0;
+        		}
+        		distSum += d;
                 if (d < minDist) minDist = d;
                 if (d > maxDist) maxDist = d;
             }

@@ -39,7 +39,7 @@ public class MutateEAMixer implements InterfaceMutation, java.io.Serializable  {
                 System.out.println("Illegal access exception for " +(String)mutators.get(i) );
             }
         }
-        this.m_Mutators = new PropertyMutationMixer(tmpList);
+        this.m_Mutators = new PropertyMutationMixer(tmpList, false);
         tmpList = new InterfaceMutation[2];
         tmpList[0] = new MutateGINominal();
         tmpList[1] = new MutateGIOrdinal();
@@ -55,7 +55,7 @@ public class MutateEAMixer implements InterfaceMutation, java.io.Serializable  {
      * @param mutators
      */
     public MutateEAMixer(InterfaceMutation ... mutators) {
-        this.m_Mutators         = new PropertyMutationMixer(mutators);
+        this.m_Mutators         = new PropertyMutationMixer(mutators, true);
         this.m_UseSelfAdaption  = false;
     }
     
