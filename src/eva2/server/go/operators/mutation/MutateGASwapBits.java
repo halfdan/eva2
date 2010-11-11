@@ -10,20 +10,25 @@ import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
+ * Swap two random bits of a GA individual. If preferPairs is true, unequal pairs
+ * are picked with some preference (by trying for l/2 times, where l is the binary
+ * individual length). 
+ * 
+ * User: streiche, mkron
  * Date: 05.08.2004
  * Time: 17:45:36
  * To change this template use File | Settings | File Templates.
  */
 public class MutateGASwapBits implements InterfaceMutation, java.io.Serializable {
 	private int         m_NumberOfMutations = 1;
+	private boolean 	preferPairs = true; // if true, pairs of (1,0) are swapped with higher probability
 
 	public MutateGASwapBits() {
 
 	}
 	public MutateGASwapBits(MutateGASwapBits mutator) {
 		this.m_NumberOfMutations     = mutator.m_NumberOfMutations;
+		this.setPreferTrueChange(mutator.isPreferTrueChange());
 	}
 
 	/** This method will enable you to clone a given mutation operator
@@ -73,8 +78,8 @@ public class MutateGASwapBits implements InterfaceMutation, java.io.Serializable
 			int[][]   mutationIndices = new int[this.m_NumberOfMutations][2];
             boolean tmpBit;
 			for (int i = 0; i < mutationIndices.length; i++) {
-                mutationIndices[i][0] = RNG.randomInt(0, ((InterfaceGAIndividual)individual).getGenotypeLength());;
-                mutationIndices[i][1] = RNG.randomInt(0, ((InterfaceGAIndividual)individual).getGenotypeLength());;
+                mutationIndices[i][0] = getRandomIndex(individual, true); // may prefer true bits
+                mutationIndices[i][1] = getRandomIndex(individual, false); // may prefer false bits
             }
 			// double instances of mutationIndices could be checked here... *sigh*
 			for (int i = 0; i < mutationIndices.length; i++) {
@@ -87,6 +92,24 @@ public class MutateGASwapBits implements InterfaceMutation, java.io.Serializable
 		//System.out.println("After Mutate:  " +((GAIndividual)individual).getSolutionRepresentationFor());
 	}
 
+	private int getRandomIndex(AbstractEAIndividual individual, boolean maybePrefered) {
+		int genoLen = ((InterfaceGAIndividual)individual).getGenotypeLength();
+		int k = RNG.randomInt(0, genoLen); 
+		if (isPreferTrueChange()) {
+			int maxTries=genoLen/2;
+			while (!(maybePrefered==((InterfaceGAIndividual)individual).getBGenotype().get(k)) && (maxTries>=0)) {
+				k=(k+RNG.randomInt(1,genoLen))%genoLen; // try next random position
+				maxTries--;
+			}
+		}
+		return k;
+	}
+	
+//	private int getRandomSecondIndex(int firstIndex, AbstractEAIndividual individual) {
+//		int genoLen = ((InterfaceGAIndividual)individual).getGenotypeLength();
+//		return RNG.randomInt(0, genoLen);
+//	}
+	
 	/** This method allows you to get a string representation of the mutation
 	 * operator
 	 * @return A descriptive string.
@@ -125,5 +148,14 @@ public class MutateGASwapBits implements InterfaceMutation, java.io.Serializable
 	}
 	public String numberOfMutationsTipText() {
 		return "The number of bits to be swapped.";
+	}
+	public void setPreferTrueChange(boolean preferPairs) {
+		this.preferPairs = preferPairs;
+	}
+	public boolean isPreferTrueChange() {
+		return preferPairs;
+	}
+	public String preferTrueChangeTipText() {
+		return "If set to true, mutation events will prefer swapping 1 and 0"; 
 	}
 }
