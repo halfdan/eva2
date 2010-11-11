@@ -54,7 +54,7 @@ public class MutateEAMixer implements InterfaceMutation, java.io.Serializable  {
      * Create a mutation mixer with equal weights of the given mutation operators.
      * @param mutators
      */
-    public MutateEAMixer(InterfaceMutation[] mutators) {
+    public MutateEAMixer(InterfaceMutation ... mutators) {
         this.m_Mutators         = new PropertyMutationMixer(mutators);
         this.m_UseSelfAdaption  = false;
     }
