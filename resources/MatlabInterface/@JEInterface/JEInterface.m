@@ -110,8 +110,10 @@ display(getOptions(int));
 if (isempty(int.initialRange))
     int.mp = eva2.server.go.problems.MatlabProblem(int.dim, int.range);
 else
-    if (eq(size(int.range), size(int.initialRange)))
+    if (isempty(int.range) || eq(size(int.range), size(int.initialRange)))
         int.mp = eva2.server.go.problems.MatlabProblem(int.dim, int.range, int.initialRange);
+        %int.mp.getIndividualTemplate().setMutationOperator( ...
+        %    eva2.server.go.operators.mutation.MutateEAMixer(eva2.server.go.operators.mutation.MutateGASwapBits, eva2.server.go.operators.mutation.MutateGAUniform));
     else 
         error('Mismatching dimensions of range and initial range!');
     end

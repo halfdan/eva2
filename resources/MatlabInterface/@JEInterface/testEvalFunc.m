@@ -2,7 +2,7 @@ function testEvalFunc(int)
 % Test the fitness function output format.
 wordwidth=32;
 
-if (isempty(int.range)==1)
+if (isempty(int.range))
     % binary problem
     s=sprintf('Binary problem of bitwidth %d', int.dim);
     disp(s);
@@ -21,8 +21,12 @@ else
     end
 end
 
-disp('Testing value: ')
-disp(x);
+if (isempty(int.range))
+    msg=sprintf('\nTesting value: %d, bin.: %s', x, dec2bin(x, int.dim));
+else
+    msg=sprintf('\nTesting value: %d', x);
+end
+disp(msg);
 
 try
     if (isempty(int.args))
