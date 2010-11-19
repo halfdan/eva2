@@ -11,7 +11,7 @@ public abstract class AbstractProblemDoubleOffset extends AbstractProblemDouble 
 
 //	protected AbstractEAIndividual      m_OverallBest       = null;
     protected int                       m_ProblemDimension  = 10;
-    protected double                    m_XOffSet           = 0.0;
+    protected double                    m_XOffSet           = 0.0; // TODO make them private, implement eval() and create abstract evalWithoutOffsets
     protected double                    m_YOffSet           = 0.0;
 //    protected boolean                   m_UseTestConstraint = false;
 
