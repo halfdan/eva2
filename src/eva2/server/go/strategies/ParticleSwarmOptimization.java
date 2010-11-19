@@ -997,6 +997,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 			for (int x = -this.m_TopologyRange; x <= this.m_TopologyRange; x++) {
 				for (int y = -this.m_TopologyRange; y <= this.m_TopologyRange; y++) {
 					tmpIndex = index + x + (y*corner);
+					if (wrapTopology) tmpIndex=(tmpIndex + pop.size())% pop.size(); // wrap the grid toroidal
 					if ((x != index) && (tmpIndex >= 0) && (tmpIndex < pop.size())) {
 						this.compareAndSetAttractor(localBestFitness, localBestPosition, (AbstractEAIndividual)pop.get(tmpIndex), useHistoric);
 					}
@@ -1820,7 +1821,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 		// tree, hpso
 //		GenericObjectEditor.setShowProperty(cls, "treeBranchDegree", (topology==PSOTopologyEnum.tree) || (topology==PSOTopologyEnum.hpso));
 		// linear
-		GenericObjectEditor.setShowProperty(cls, "wrapTopology", (topology==PSOTopologyEnum.linear));
+		GenericObjectEditor.setShowProperty(cls, "wrapTopology", (topology==PSOTopologyEnum.linear) || (topology==PSOTopologyEnum.grid));
 		// dms
 		GenericObjectEditor.setShowProperty(cls, "dmsRegroupGens", (topology==PSOTopologyEnum.dms));
 	}
@@ -1888,7 +1889,10 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 		m_Show = show;
 		if (!show) m_Plot = null;
 	}
-
+	public String showTipText() {
+		return "Activate for debugging in 2D";
+	}
+	
 	/**
 	 * @return the checkSpeedLimit
 	 **/
@@ -1929,7 +1933,10 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 	public void setSleepTime(int sleepTime) {
 		this.sleepTime = sleepTime;
 	}
-
+	public String sleepTimeTipText() {
+		return "Sleep for a time between iterations - to be used with debugging and the show option.";
+	}
+	
 	public double getSubSwarmRadius() {
 		return m_swarmRadius;
 	}
