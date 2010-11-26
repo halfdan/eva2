@@ -9,7 +9,12 @@ import eva2.server.go.individuals.InterfaceGAIndividual;
 import eva2.server.go.populations.Population;
 import eva2.server.go.strategies.InterfaceOptimizer;
 
-
+/**
+ * An abstract problem based on binary data.
+ * 
+ * @author mkron
+ *
+ */
 public abstract class AbstractProblemBinary extends AbstractOptimizationProblem {
 	
 	public AbstractProblemBinary() {
