@@ -829,12 +829,18 @@ public class OptimizerFactory {
 
 	// ///////////////////////////// Optimize using a default strategy
 	public static BitSet optimizeToBinary(final int optType,
+			AbstractOptimizationProblem problem) {
+		return optimizeToBinary(optType, problem, null);
+	}
+	
+	// ///////////////////////////// Optimize using a default strategy
+	public static BitSet optimizeToBinary(final int optType,
 			AbstractOptimizationProblem problem, String outputFilePrefix) {
 		OptimizerRunnable runnable = optimize(optType, problem,
 				outputFilePrefix);
 		return (runnable != null) ? runnable.getBinarySolution() : null;
 	}
-
+	
 	// ///////////////////////////// Optimize a given runnable
 	public static BitSet optimizeToBinary(OptimizerRunnable runnable) {
 		optimize(runnable);
@@ -861,6 +867,11 @@ public class OptimizerFactory {
 	}
 	
 	public static double[] optimizeToDouble(final int optType,
+			AbstractOptimizationProblem problem) {
+		return optimizeToDouble(optType, problem, null);
+	}
+	
+	public static double[] optimizeToDouble(final int optType,
 			AbstractOptimizationProblem problem, String outputFilePrefix) {
 		OptimizerRunnable runnable = optimize(optType, problem,
 				outputFilePrefix);
@@ -884,6 +895,11 @@ public class OptimizerFactory {
 		OptimizerRunnable runnable = optimize(new OptimizerRunnable(params,
 				outputFilePrefix));
 		return runnable.getResult();
+	}
+	
+	public static IndividualInterface optimizeToInd(final int optType,
+			AbstractOptimizationProblem problem) {
+		return optimizeToInd(optType, problem, null);
 	}
 
 	public static IndividualInterface optimizeToInd(final int optType,
