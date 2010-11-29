@@ -129,12 +129,12 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 	}
 
 	public static FitnessConvergenceTerminator makeFitConvTerm(double thresh, int stagnPeriod) {
-		FitnessConvergenceTerminator fct = new FitnessConvergenceTerminator(thresh, stagnPeriod, StagnationTypeEnum.fitnessCallBased, ChangeTypeEnum.absoluteValue, DirectionTypeEnum.decrease);
+		FitnessConvergenceTerminator fct = new FitnessConvergenceTerminator(thresh, stagnPeriod, StagnationTypeEnum.fitnessCallBased, ChangeTypeEnum.absoluteChange, DirectionTypeEnum.decrease);
 		return fct;
 	}
 
 	public static PhenotypeConvergenceTerminator makePhenConvTerm(double thresh, int stagnPeriod) {
-		PhenotypeConvergenceTerminator pct = new PhenotypeConvergenceTerminator(thresh, stagnPeriod, StagnationTypeEnum.fitnessCallBased, ChangeTypeEnum.absoluteValue, DirectionTypeEnum.decrease);
+		PhenotypeConvergenceTerminator pct = new PhenotypeConvergenceTerminator(thresh, stagnPeriod, StagnationTypeEnum.fitnessCallBased, ChangeTypeEnum.absoluteChange, DirectionTypeEnum.decrease);
 		return pct;
 	}
 	
