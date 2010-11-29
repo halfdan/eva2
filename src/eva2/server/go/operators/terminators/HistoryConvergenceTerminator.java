@@ -58,6 +58,8 @@ public class HistoryConvergenceTerminator implements InterfaceTerminator, Serial
         		}
         	} else { // look at improvements
               AbstractEAIndividual historicHWAgo = subHist.get(0);
+//              System.out.println("Ref indy: " + historicHWAgo);
+//              System.out.println("Best historic: " + ((Population)pop).getBestHistoric());
               res = true;
               for (int i = 1; i < haltingWindowLen; i++) {
               	// if historic[-hW] is worse than historic[-hW+i] return false
@@ -79,7 +81,7 @@ public class HistoryConvergenceTerminator implements InterfaceTerminator, Serial
         return res;
 	}
 
-    /**
+	/**
      * Define the criterion by which individual improvement is judged. The original version defined
      * improvement strictly, but for some EA this should be done more laxly. E.g. DE will hardly ever
      * stop improving slightly, so optionally use an epsilon-bound: improvement only counts if it is

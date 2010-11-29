@@ -211,7 +211,7 @@ Serializable {
 	 */
 	protected boolean isStillConverged(PopulationInterface pop) {
 		double measure = calcPopulationMeasure(pop);
-		double allowedLower=Double.MIN_VALUE, allowedUpper=Double.MAX_VALUE;
+		double allowedLower=Double.NEGATIVE_INFINITY, allowedUpper=Double.POSITIVE_INFINITY;
 		boolean ret;
 		switch (changeType) {
 		case absoluteChange:
@@ -219,7 +219,7 @@ Serializable {
 			if (!doCheckImprovement()) allowedUpper=oldMeasure+convThresh;
 			break;
 		case absoluteValue:
-			allowedLower=convThresh;
+			allowedUpper=convThresh;
 //			if (!doCheckImprovement()) allowedUpper = convThreshUpper;
 			break;
 		case relativeChange:
