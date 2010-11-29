@@ -54,7 +54,7 @@ if ((nargin == 2) || (nargin == 3))
     else if (xTol > 0)  % only phenotye convergence
             convTerm = MatlabProblem.makePhenConvTerm(xTol, int.opts.TolXEvals);
         else if (fTol > 0 )             % only fitness covnergence
-                convTerm = MatlabProbelm.makeFitConvTerm(fTol, int.opts.TolFunEvals);
+                convTerm = MatlabProblem.makeFitConvTerm(fTol, int.opts.TolFunEvals);
             else
                convTerm = 'undef'; % signal that there is no terminator yet
             end
