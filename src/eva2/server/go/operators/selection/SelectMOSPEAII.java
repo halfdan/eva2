@@ -149,7 +149,7 @@ public class SelectMOSPEAII implements InterfaceSelection, java.io.Serializable 
         return "Choose a method for selecting the reduced population.";
     }
 
-    /** Toggel the use of obeying the constraint violation principle
+    /** Toggle the use of obeying the constraint violation principle
      * of Deb
      * @param b     The new state
      */

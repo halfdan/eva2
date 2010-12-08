@@ -99,7 +99,7 @@ public class SelectAll implements InterfaceSelection, java.io.Serializable {
         return "This method selects all individuals.";
     }
 
-    /** Toggel the use of obeying the constraint violation principle
+    /** Toggle the use of obeying the constraint violation principle
      * of Deb
      * @param b     The new state
      */

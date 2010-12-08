@@ -49,7 +49,7 @@ public interface InterfaceSelection {
      */
     public Population findPartnerFor(AbstractEAIndividual dad, Population avaiablePartners, int size);
 
-    /** Toggel the use of obeying the constraint violation principle
+    /** Toggle the use of obeying the constraint violation principle
      * of Deb
      * @param b     The new state
      */

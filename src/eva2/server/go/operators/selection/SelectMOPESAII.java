@@ -143,7 +143,7 @@ public class SelectMOPESAII implements InterfaceSelection, java.io.Serializable 
         return "PESAII Selection";
     }
 
-    /** Toggel the use of obeying the constraint violation principle
+    /** Toggle the use of obeying the constraint violation principle
      * of Deb
      * @param b     The new state
      */

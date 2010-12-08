@@ -274,17 +274,17 @@ public class ESIndividualBinaryData extends AbstractEAIndividual implements Inte
         return "This is an ES individual adopted to optimize binary values.";
     }
 
-    /** This method will toggle between genotyp interpreation as bit probability and
+    /** This method will toggle between genotype interpretation as bit probability and
      * fixed switch.
      * @param b     the Switch.
      */
-    public void setToggelInterpretation(boolean b) {
+    public void setToggleInterpretation(boolean b) {
         this.m_UseHardSwitch = b;
     }
-    public boolean getToggelInterpretation() {
+    public boolean getToggleInterpretation() {
         return this.m_UseHardSwitch;
     }
-    public String toggelInterpretationTipText() {
-        return "Toggel between interpretation as probability or if(>0.5).";
+    public String toggleInterpretationTipText() {
+        return "Toggle between interpretation as probability or if(>0.5).";
     }
 }

@@ -398,6 +398,6 @@ public class MOClusteringSeparation implements InterfaceMigration, java.io.Seria
         this.m_KMeans.setReuseC(this.m_ReuseC);
     }
     public String reuseCTipText() {
-        return "Toggel reuse of previously found cluster centroids.";
+        return "Toggle reuse of previously found cluster centroids.";
     }
 }

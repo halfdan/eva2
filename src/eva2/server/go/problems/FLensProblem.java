@@ -483,10 +483,10 @@ public class FLensProblem extends AbstractOptimizationProblem implements Interfa
 		return this.m_Show;
 	}
 	public String showTipText() {
-		return "Toggel the visualization of the solution.";
+		return "Toggle the visualization of the solution.";
 	}
 
-	/** This method allows you to toggel the use of the material constraint.
+	/** This method allows you to toggle the use of the material constraint.
 	 * @param show  Whether to show the result or not
 	 */
 	public void setUseMaterialConst(boolean show) {
@@ -496,7 +496,7 @@ public class FLensProblem extends AbstractOptimizationProblem implements Interfa
 		return this.m_UseMaterialConst;
 	}
 	public String useMaterialConstTipText() {
-		return "Toggel the use of the material constraint.";
+		return "Toggle the use of the material constraint.";
 	}
 
     /** This method allows you to choose the EA individual

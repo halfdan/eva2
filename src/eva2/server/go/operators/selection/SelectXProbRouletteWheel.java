@@ -215,7 +215,7 @@ public class SelectXProbRouletteWheel implements InterfaceSelection, java.io.Ser
         return "Select the normation method.";
     }
 
-    /** Toggel the use of obeying the constraint violation principle
+    /** Toggle the use of obeying the constraint violation principle
      * of Deb
      * @param b     The new state
      */

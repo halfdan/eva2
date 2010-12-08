@@ -172,7 +172,7 @@ public class SelectBestIndividuals implements InterfaceSelection, java.io.Serial
         return "Elitist Selection";
     }
 
-    /** Toggel the use of obeying the constraint violation principle
+    /** Toggle the use of obeying the constraint violation principle
      * of Deb
      * @param b     The new state
      */

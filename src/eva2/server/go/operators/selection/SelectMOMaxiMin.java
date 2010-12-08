@@ -107,7 +107,7 @@ public class SelectMOMaxiMin implements InterfaceSelection, java.io.Serializable
         return "Choose the selection method (single-criteria ones please).";
     }
 
-    /** Toggel the use of obeying the constraint violation principle
+    /** Toggle the use of obeying the constraint violation principle
      * of Deb
      * @param b     The new state
      */

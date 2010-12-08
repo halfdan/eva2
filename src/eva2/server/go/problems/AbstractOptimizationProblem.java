@@ -246,7 +246,7 @@ implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serial
      * @param pop   The population that is to be refined.
      * @return String
      */
-    public String[] getAdditionalFileStringHeader() {
+    public String[] getAdditionalDataHeader() {
     	if (this instanceof InterfaceInterestingHistogram) return new String[]{STAT_SOLUTION_HEADER,"histogram","score"};
     	else return new String[]{STAT_SOLUTION_HEADER};
     }
@@ -255,7 +255,7 @@ implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serial
      * @param pop   The population that is to be refined.
      * @return String
      */
-    public String[] getAdditionalFileStringInfo() {
+    public String[] getAdditionalDataInfo() {
     	if (this instanceof InterfaceInterestingHistogram) {
     		return new String[]{"Representation of the current best individual",
     			"Fitness histogram of the current population",
@@ -268,7 +268,7 @@ implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serial
      * @param pop   The population that is to be refined.
      * @return String
      */
-    public Object[] getAdditionalFileStringValue(PopulationInterface pop) {
+    public Object[] getAdditionalDataValue(PopulationInterface pop) {
     	Object solObj;
 //    	solObj = AbstractEAIndividual.getDefaultDataString(pop.getBestIndividual());
     	solObj = AbstractEAIndividual.getDefaultDataObject(pop.getBestIndividual());

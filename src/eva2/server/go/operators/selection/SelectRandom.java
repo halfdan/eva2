@@ -113,7 +113,7 @@ public class SelectRandom implements InterfaceSelection, java.io.Serializable {
         return "This method selects randomly. Therefore, it even works fine on Multiobjective fitness cases.";
     }
 
-    /** Toggel the use of obeying the constraint violation principle
+    /** Toggle the use of obeying the constraint violation principle
      * of Deb
      * @param b     The new state
      */

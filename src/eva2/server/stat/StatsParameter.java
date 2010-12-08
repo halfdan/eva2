@@ -384,13 +384,13 @@ public class StatsParameter implements InterfaceStatisticsParameter, InterfaceNo
 		ArrayList<String> infoFields = new ArrayList<String>();
 		// parse list of header elements, show additional Strings according to names.
 		for (InterfaceAdditionalPopulationInformer inf : informers) {
-			headerFields.addAll(Arrays.asList(inf.getAdditionalFileStringHeader()));
+			headerFields.addAll(Arrays.asList(inf.getAdditionalDataHeader()));
 			if (infoFields.size()<headerFields.size()) { // add info strings for tool tips - fill up with null if none have been returned.
-				String[] infos = inf.getAdditionalFileStringInfo();
+				String[] infos = inf.getAdditionalDataInfo();
 				if (infos!=null) infoFields.addAll(Arrays.asList(infos));
 				while (infoFields.size()<headerFields.size()) infoFields.add(null);
 			}
-//			header += inf.getAdditionalFileStringHeader(null); // lets hope this works with a null 
+//			header += inf.getAdditionalDataHeader(null); // lets hope this works with a null 
 		}
 		// create additional fields to be selectable by the user, defined by the informer headers
 //		StringSelection ss = new StringSelection(GraphSelectionEnum.getAndAppendArray(headerFields.toArray(new String[headerFields.size()])));
