@@ -157,7 +157,7 @@ public class SelectParticleWheel implements InterfaceSelection, java.io.Serializ
                 "This is a single objective selecting method, it will select in respect to a random criterion.";
     }
 
-    /** Toggel the use of obeying the constraint violation principle
+    /** Toggle the use of obeying the constraint violation principle
      * of Deb
      * @param b     The new state
      */

@@ -2067,17 +2067,17 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 //	public void setDoLocalSearch(boolean doLocalSearch) {
 //		this.doLocalSearch = doLocalSearch;
 //	}
-	public String[] getAdditionalFileStringHeader() {
+	public String[] getAdditionalDataHeader() {
 		if (emaPeriods > 0) return new String[]{"meanEMASpeed", "meanCurSpeed"};
 		else return new String[]{"meanCurSpeed"};
 	}	
 	
-	public String[] getAdditionalFileStringInfo() {
+	public String[] getAdditionalDataInfo() {
 		if (emaPeriods > 0) return new String[]{"Exponential moving average of the (range-relative) speed of all particles", "The mean (range-relative) current speed of all particles"};
 		else return new String[]{"The mean (range-relative) current speed of all particles"};
 	}
 
-	public Object[] getAdditionalFileStringValue(PopulationInterface pop) {
+	public Object[] getAdditionalDataValue(PopulationInterface pop) {
 		AbstractEAIndividual indy = (AbstractEAIndividual)pop.get(0);
 		if (emaPeriods>0) {
 			double relSp;

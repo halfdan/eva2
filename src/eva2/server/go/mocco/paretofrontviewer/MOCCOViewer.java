@@ -405,14 +405,14 @@ public class MOCCOViewer extends JPanel implements InterfaceRefSolutionListener,
         if (this.m_RefSolutionListener != null) this.m_RefSolutionListener.individualSelected(indy);
     }
 
-    /** This method allows to toggel unique selection mode
+    /** This method allows to toggle unique selection mode
      * @param t
      */
     public void setUniquelySelectable(boolean t) {
         this.m_SelectUniqueSolution = t;
     }
 
-    /** This method allows to toggel selection mode
+    /** This method allows to toggle selection mode
      * @param t
      */
     public void setRefSolutionSelectable(boolean t) {
@@ -454,7 +454,7 @@ public class MOCCOViewer extends JPanel implements InterfaceRefSolutionListener,
         this.m_View.updateView();
     }
 
-    /** This method allows to toggel unique selection mode
+    /** This method allows to toggle unique selection mode
      * @param t
      */
     public void setRefPointSelectable(boolean t) {

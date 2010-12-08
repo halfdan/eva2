@@ -167,7 +167,7 @@ public class SelectMONSGAIICrowedTournament implements InterfaceSelection, java.
         m_TournamentSize = g;
     }
 
-    /** Toggel the use of obeying the constraint violation principle
+    /** Toggle the use of obeying the constraint violation principle
      * of Deb
      * @param b     The new state
      */

@@ -377,7 +377,7 @@ public class ClusteringXMeans implements InterfaceClustering, java.io.Serializab
         this.m_UseSearchSpace = m;
     }
     public String useSearchSpaceTipText() {
-        return "Toggel between search/objective space distance.";
+        return "Toggle between search/objective space distance.";
     }
 
 	public String initClustering(Population pop) {

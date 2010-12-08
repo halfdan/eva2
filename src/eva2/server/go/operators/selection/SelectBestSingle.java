@@ -133,7 +133,7 @@ public class SelectBestSingle implements InterfaceSelection, java.io.Serializabl
         return "Totalitarian Selection";
     }
 
-    /** Toggel the use of obeying the constraint violation principle
+    /** Toggle the use of obeying the constraint violation principle
      * of Deb
      * @param b     The new state
      */

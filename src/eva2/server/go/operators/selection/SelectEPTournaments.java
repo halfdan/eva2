@@ -196,7 +196,7 @@ public class SelectEPTournaments implements InterfaceSelection, java.io.Serializ
         m_Tournaments = g;
     }
 
-    /** Toggel the use of obeying the constraint violation principle
+    /** Toggle the use of obeying the constraint violation principle
      * of Deb
      * @param b     The new state
      */

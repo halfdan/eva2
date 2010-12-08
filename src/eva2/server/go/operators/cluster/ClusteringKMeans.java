@@ -368,7 +368,7 @@ public class ClusteringKMeans implements InterfaceClustering, java.io.Serializab
         this.m_UseSearchSpace = m;
     }
     public String useSearchSpaceTipText() {
-        return "Toggel between search/objective space distance.";
+        return "Toggle between search/objective space distance.";
     }
 
     /** This method allows you to toggle reuse of c.
@@ -381,7 +381,7 @@ public class ClusteringKMeans implements InterfaceClustering, java.io.Serializab
         this.m_ReuseC = m;
     }
     public String reuseCTipText() {
-        return "Toggel reuse of previously found cluster centroids.";
+        return "Toggle reuse of previously found cluster centroids.";
     }
 
 	public String initClustering(Population pop) {

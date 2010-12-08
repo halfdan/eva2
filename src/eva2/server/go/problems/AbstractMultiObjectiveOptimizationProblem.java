@@ -490,13 +490,13 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
     }
 
     @Override
-    public String[] getAdditionalFileStringHeader() {
-		String[] superHd = super.getAdditionalFileStringHeader();
+    public String[] getAdditionalDataHeader() {
+		String[] superHd = super.getAdditionalDataHeader();
 		return ToolBox.appendArrays(new String[]{"paretoMetricCurrent","paretoMetricFront"}, superHd);
     }
 
     @Override
-    public Object[] getAdditionalFileStringValue(PopulationInterface pop) {
+    public Object[] getAdditionalDataValue(PopulationInterface pop) {
 		Object[] result = new Object[2];
     	if (m_MOSOConverter!=null && !(m_MOSOConverter instanceof MOSONoConvert)) {
     		result[0]=Double.NaN; result[1]=Double.NaN;
@@ -504,16 +504,16 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
     		result[0] = this.calculateMetric((Population)pop);
     		result[1] = this.calculateMetric(getLocalParetoFront());
     	}
-		return ToolBox.appendArrays(result, super.getAdditionalFileStringValue(pop));
+		return ToolBox.appendArrays(result, super.getAdditionalDataValue(pop));
     }
     
     /*
      * (non-Javadoc)
-     * @see eva2.server.go.problems.AbstractOptimizationProblem#getAdditionalFileStringInfo(eva2.server.go.PopulationInterface)
+     * @see eva2.server.go.problems.AbstractOptimizationProblem#getAdditionalDataInfo(eva2.server.go.PopulationInterface)
      */
     @Override
-    public String[] getAdditionalFileStringInfo() {
-    	String[] superInfo = super.getAdditionalFileStringInfo();
+    public String[] getAdditionalDataInfo() {
+    	String[] superInfo = super.getAdditionalDataInfo();
     	return ToolBox.appendArrays(new String[]{"Pareto metric on the current population (per generation)",
     		"Pareto metric on the collected pareto front"}, superInfo);
     }

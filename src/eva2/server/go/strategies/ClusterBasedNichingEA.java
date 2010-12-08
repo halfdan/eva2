@@ -1142,14 +1142,14 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
 		return "If fitness improves less than this value within the halting window, convergence is assumed. May be set to zero.";
 	}
 
-	public String[] getAdditionalFileStringHeader() {
+	public String[] getAdditionalDataHeader() {
 		return new String[]{"numUndiff","numActSpec","avgSpecMeas","numArchived", 
 				"archivedMedCorr", "archivedMeanDist"
 //				, "numCollisions", "clustSig"
 				}; 
 	}
 	
-	public String[] getAdditionalFileStringInfo() {
+	public String[] getAdditionalDataInfo() {
 		return new String[] {
 				"The number of exploring individuals in the main population",
 				"The number of active species (sub-populations)",
@@ -1162,7 +1162,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
 		};
 	}
 	
-	public Object[] getAdditionalFileStringValue(PopulationInterface pop) {
+	public Object[] getAdditionalDataValue(PopulationInterface pop) {
 //		int actives = countActiveSpec();
 		return new Object[] {
 				m_Undifferentiated.size(),

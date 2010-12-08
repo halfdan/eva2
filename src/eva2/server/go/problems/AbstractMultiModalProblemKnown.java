@@ -122,17 +122,17 @@ public abstract class AbstractMultiModalProblemKnown extends AbstractProblemDoub
 	public abstract double[] evalUnnormalized(double[] x);
 	
 	@Override
-	public String[] getAdditionalFileStringHeader() {
-		return ToolBox.appendArrays(new String[]{"numOptsFound", "maxPeakRatio"}, super.getAdditionalFileStringHeader());
+	public String[] getAdditionalDataHeader() {
+		return ToolBox.appendArrays(new String[]{"numOptsFound", "maxPeakRatio"}, super.getAdditionalDataHeader());
 	}
 
 	@Override
-	public Object[] getAdditionalFileStringValue(PopulationInterface pop) {
+	public Object[] getAdditionalDataValue(PopulationInterface pop) {
 		Object[] result = new Object[2];
 //		result += AbstractEAIndividual.getDefaultDataString(pop.getBestIndividual()) +"\t";
 		result[0] = this.getNumberOfFoundOptima((Population)pop);
 		result[1] = this.getMaximumPeakRatio((Population)pop);
-		return ToolBox.appendArrays(result, super.getAdditionalFileStringValue(pop));
+		return ToolBox.appendArrays(result, super.getAdditionalDataValue(pop));
 	}
 //
 //	/** This method returns a string describing the optimization problem.

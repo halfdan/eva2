@@ -575,11 +575,11 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem
 
 	/*
 	 * (non-Javadoc)
-	 * @see eva2.server.go.problems.AbstractOptimizationProblem#getAdditionalFileStringHeader()
+	 * @see eva2.server.go.problems.AbstractOptimizationProblem#getAdditionalDataHeader()
 	 */
 	@Override
-	public String[] getAdditionalFileStringHeader() {
-		String[] superHeader = super.getAdditionalFileStringHeader();
+	public String[] getAdditionalDataHeader() {
+		String[] superHeader = super.getAdditionalDataHeader();
 		if (isWithConstraints())
 			return ToolBox.appendArrays(superHeader, new String[] { "rawFit",
 					"numViol", "sumViol" });
@@ -589,11 +589,11 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem
 
 	/*
 	 * (non-Javadoc)
-	 * @see eva2.server.go.problems.AbstractOptimizationProblem#getAdditionalFileStringInfo()
+	 * @see eva2.server.go.problems.AbstractOptimizationProblem#getAdditionalDataInfo()
 	 */
 	@Override
-	public String[] getAdditionalFileStringInfo() {
-		String[] superInfo = super.getAdditionalFileStringInfo();
+	public String[] getAdditionalDataInfo() {
+		String[] superInfo = super.getAdditionalDataInfo();
 		if (isWithConstraints())
 			return ToolBox
 					.appendArrays(
@@ -607,8 +607,8 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem
 	}
 
 	@Override
-	public Object[] getAdditionalFileStringValue(PopulationInterface pop) {
-		Object[] superVal = super.getAdditionalFileStringValue(pop);
+	public Object[] getAdditionalDataValue(PopulationInterface pop) {
+		Object[] superVal = super.getAdditionalDataValue(pop);
 		if (isWithConstraints()) {
 			AbstractEAIndividual indy = (AbstractEAIndividual) pop
 					.getBestIndividual();

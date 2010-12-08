@@ -366,7 +366,7 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
         return "Noise level on the fitness value.";
     }
 
-    /** This method toggels the use of inner constants.
+    /** This method toggles the use of inner constants.
      * @param b     The flag to use inner constants.
      */
     public void setUseInnerConst(boolean b) {
@@ -376,10 +376,10 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
         return this.m_UseInnerConst;
     }
     public String useInnerConstTipText() {
-        return "Toggel the use of inner constants.";
+        return "Toggle the use of inner constants.";
     }
 
-    /** This method toggels the use of local hill climbing for inner constants.
+    /** This method toggles the use of local hill climbing for inner constants.
      * @param b     The flag to use local hill climbing for inner constants.
      */
     public void setUseLocalHillClimbing(boolean b) {
@@ -510,14 +510,14 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
 	}
 
 	@Override
-	public String[] getAdditionalFileStringHeader() {
-		String[] superHd = super.getAdditionalFileStringHeader();
+	public String[] getAdditionalDataHeader() {
+		String[] superHd = super.getAdditionalDataHeader();
 		return ToolBox.appendArrays(new String[]{"bestIndySize","avgIndySize","avgMaxIndyDepth"}, superHd);
 	}
 
 	@Override
-	public Object[] getAdditionalFileStringValue(PopulationInterface pop) {
-		Object[] superDat = super.getAdditionalFileStringValue(pop);
+	public Object[] getAdditionalDataValue(PopulationInterface pop) {
+		Object[] superDat = super.getAdditionalDataValue(pop);
 		return ToolBox.appendArrays(new Object[]{getBestIndySize(pop), getAvgIndySize(pop), getAvgIndyDepth(pop)}, superDat);
 	}
 

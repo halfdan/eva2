@@ -791,7 +791,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 		values.addAll(Arrays.asList(getSimpleOutputValues())); 
 		if (informerList != null) {
 			for (InterfaceAdditionalPopulationInformer informer : informerList) {
-				List<Object> reqList = Arrays.asList(informer.getAdditionalFileStringValue(pop));
+				List<Object> reqList = Arrays.asList(informer.getAdditionalDataValue(pop));
 				values.addAll(reqList);
 			}
 		}
@@ -821,9 +821,9 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 		LinkedList<String> headers = new LinkedList<String>();
 		if (metaInfo!=null && (metaInfo.size()>0)) System.err.println("Warning, metaInfo list should be empty in AbstractStatistics.getAdditionalInfoInfo"); 
 		for (InterfaceAdditionalPopulationInformer informer : informerList) {
-			headers.addAll(Arrays.asList(informer.getAdditionalFileStringHeader()));
-			if (metaInfo!=null) metaInfo.addAll(Arrays.asList(informer.getAdditionalFileStringInfo()));
-//			hdr = hdr + "\t " + informer.getAdditionalFileStringHeader(pop);
+			headers.addAll(Arrays.asList(informer.getAdditionalDataHeader()));
+			if (metaInfo!=null) metaInfo.addAll(Arrays.asList(informer.getAdditionalDataInfo()));
+//			hdr = hdr + "\t " + informer.getAdditionalDataHeader(pop);
 		}
 		Iterator<String> hIter = headers.iterator();
 		Iterator<String> mIter = (metaInfo!=null) ? metaInfo.iterator() : null;  
@@ -866,7 +866,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 //			ArrayList<Object> additionalObjects = new ArrayList<Object>(5);
 //			
 //			for (InterfaceAdditionalPopulationInformer informer : informerList) {
-//				additionalObjects.addAll(Arrays.asList(informer.getAdditionalFileStringValue(pop)));
+//				additionalObjects.addAll(Arrays.asList(informer.getAdditionalDataValue(pop)));
 //			}
 //			String addInfo = StringTools.concatValues(additionalObjects, textFieldDelimiter);
 //			Double[] retVals = parseDoubles(additionalObjects);
@@ -876,7 +876,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 ////			StringBuffer addBuffer = new StringBuffer();
 ////			for (InterfaceAdditionalPopulationInformer informer : informerList) {
 ////				addBuffer.append(" \t ");
-////				addBuffer.append(informer.getAdditionalFileStringValue(pop));
+////				addBuffer.append(informer.getAdditionalDataValue(pop));
 ////			}
 ////			String addInfo = addBuffer.toString().trim();
 ////			if (addInfo.startsWith("\t")) addInfo.substring(2); // remove first separator to avoid returning empty field as double

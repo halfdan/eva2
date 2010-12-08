@@ -133,7 +133,7 @@ public class SelectMONonDominated implements InterfaceSelection, java.io.Seriali
         return "Non-Dominated Selection";
     }
 
-    /** Toggel the use of obeying the constraint violation principle
+    /** Toggle the use of obeying the constraint violation principle
      * of Deb
      * @param b     The new state
      */
