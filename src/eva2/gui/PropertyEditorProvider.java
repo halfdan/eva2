@@ -1,6 +1,5 @@
 package eva2.gui;
 
-import java.awt.Color;
 import java.beans.PropertyDescriptor;
 import java.beans.PropertyEditor;
 import java.beans.PropertyEditorManager;
@@ -108,6 +107,11 @@ public class PropertyEditorProvider {
 	        
 	        if (editor == null) editor = PropertyEditorManager.findEditor(type);
 	        if (TRACE)  System.out.println((editor == null ) ? "No editor from PEM by type" : ("Found " + editor.getClass()));
+	        
+	        if (editor == null && (BeanInspector.isJavaPrimitive(value.getClass()))) {
+	        	Class<?> prim = BeanInspector.getJavaPrimitive(value.getClass());
+	        	if (prim!=null) editor = PropertyEditorManager.findEditor(prim);
+	        }
 	        if ((editor == null) && useDefaultGOE ) {
 	        	if (type.isArray()) editor = new GenericArrayEditor();
 	        	else if (type.isEnum()) editor = new EnumEditor();

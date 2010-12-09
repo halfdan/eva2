@@ -17,6 +17,7 @@ import eva2.server.go.PopulationInterface;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.AbstractEAIndividualComparator;
 import eva2.server.go.individuals.InterfaceDataTypeDouble;
+import eva2.server.go.individuals.InterfaceGAIndividual;
 import eva2.server.go.operators.distancemetric.EuclideanMetric;
 import eva2.server.go.operators.distancemetric.InterfaceDistanceMetric;
 import eva2.server.go.operators.distancemetric.PhenotypeMetric;
@@ -55,6 +56,8 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     protected Population    m_Archive       = null;
     PopulationInitMethod initMethod = PopulationInitMethod.individualDefault;
 	private double[] seedPos = new double[10];
+	private Pair<Integer,Integer> seedCardinality=new Pair<Integer,Integer>(5,1);
+
 	private double aroundDist=0.1;
 	transient private ArrayList<InterfacePopulationChangedEventListener> listeners = null;
     // the evaluation interval at which listeners are notified
@@ -173,6 +176,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
         this.notifyEvalInterval = population.notifyEvalInterval;
         this.initMethod			= population.initMethod;
     	this.aroundDist			= population.aroundDist;
+    	this.seedCardinality	= population.seedCardinality.clone();
         if (population.seedPos!=null) this.seedPos = population.seedPos.clone();
 //        this.m_Listener			= population.m_Listener;
         if (population.listeners != null) this.listeners			= (ArrayList<InterfacePopulationChangedEventListener>)population.listeners.clone();
@@ -287,6 +291,9 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
         		PostProcess.createPopInSubRange(this, aroundDist, this.getTargetSize(), template);
         	} else System.err.println("Warning, skipping seed initialization: too small individual seed!");
         	break;
+        case binCardinality:
+        	createBinCardinality(this, true, seedCardinality.head(), seedCardinality.tail());
+        	break;
         }
         firePropertyChangedEvent(Population.populationInitialized);
     }
@@ -356,9 +363,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     		return;
     	}
     	AbstractEAIndividual template = pop.getEAIndividual(0);
-    	if (fillPop && (pop.size()<pop.getTargetSize())) {
-    		for (int i=pop.size(); i<pop.getTargetSize(); i++) pop.add((AbstractEAIndividual)template.clone());
-    	}
+    	if (fillPop) pop.fill(template);
     	if (template instanceof InterfaceDataTypeDouble) {
     		double[][] range = ((InterfaceDataTypeDouble)template).getDoubleRange();
 //    		Population pop = new Population(popSize);
@@ -372,6 +377,53 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     	}
     }
     
+    /**
+     * Initialize a population of GA individuals with a certain cardinality and possibly variation.
+     * At least one template individual must be contained in the population. All individuals must have
+     * binary genotypes. The bitsets are then initialized with the given cardinality (random no. bits set)
+     * and possibly gaussian variation defined by std.dev. which is truncated at zero and the genotype length.
+     *  
+     * @param pop the population instance
+     * @param fillPop if true, fill the population up to the target size
+     * @param cardinality an integer giving the number of (random) bits to set
+     * @param stdDev standard deviation of the cardinality variation (can be zero to fix the cardinality)
+     * @return
+     */     
+    public static void createBinCardinality(Population pop, boolean fillPop, int cardinality, int stdDev) {
+    	if (pop.size()<=0) {
+    		System.err.println("createBinCardinality needs at least one template individual in the population");
+    		return;
+    	}
+    	AbstractEAIndividual template = pop.getEAIndividual(0);
+    	if (fillPop) pop.fill(template);
+    	if (template instanceof InterfaceGAIndividual) {
+//    		InterfaceGAIndividual gaIndy = (InterfaceGAIndividual)template;
+    		for (int i=0; i<pop.size(); i++) {
+    			InterfaceGAIndividual gaIndy = (InterfaceGAIndividual)pop.getEAIndividual(i);
+    			int curCard = cardinality;
+    			if (stdDev>0) curCard += (int)Math.round(RNG.gaussianDouble((double)stdDev));
+    			curCard=Math.max(0, Math.min(curCard, gaIndy.getGenotypeLength()));
+//    			System.out.println("Current cardinality: " + curCard);
+    			gaIndy.SetBGenotype(RNG.randomBitSet(curCard, gaIndy.getGenotypeLength()));
+//    			System.out.println(pop.getEAIndividual(i));
+    		}
+    	} else {
+    		System.err.println("Error: InterfaceGAIndividual required for binary cardinality initialization!");
+    	}
+    }
+    
+    /**
+     * Fill the population up to the target size with clones of a template individual.
+     * 
+     * @param template	a template individual used to fill the population
+     */
+    public void fill(AbstractEAIndividual template) {
+    	if (this.size()<this.getTargetSize()) {
+    		for (int i=this.size(); i<this.getTargetSize(); i++) {
+    			this.add((AbstractEAIndividual)template.clone());
+    		}
+    	}
+    }
     /**
      * Activate or deactivate the history tracking, which stores the best individual in every
      * generation in the incrGeneration() method.
@@ -2139,6 +2191,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
 		this.initMethod = initMethod;
 		GenericObjectEditor.setShowProperty(this.getClass(), "initAround", initMethod==PopulationInitMethod.aroundSeed);
 		GenericObjectEditor.setShowProperty(this.getClass(), "initPos", initMethod==PopulationInitMethod.aroundSeed);
+		GenericObjectEditor.setShowProperty(this.getClass(), "seedCardinality", initMethod==PopulationInitMethod.binCardinality);
 	}
 	
 	public String initMethodTipText() {
@@ -2328,6 +2381,16 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     	return (bestIndy==null) ? null : (AbstractEAIndividual)bestIndy.clone();
 	}
 
+	public Pair<Integer, Integer> getSeedCardinality() {
+		return seedCardinality;
+	}
+	public void setSeedCardinality(Pair<Integer, Integer> seedCardinality) {
+		this.seedCardinality = seedCardinality;
+	}
+	public String seedCardinalityTipText() {
+		return "The initial cardinality for binary genotype individuals, given as pair of mean and std.dev.";
+	}
+    
 //	/**
 //	 * Mark the population at the current state as evaluated. Changes to the modCount or hashes of individuals
 //	 * will invalidate the mark.
