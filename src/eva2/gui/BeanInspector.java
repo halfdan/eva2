@@ -615,6 +615,24 @@ public class BeanInspector {
 	}
 	
 	/**
+	 * Get the primitive class of a Java primitive encapsulation, or null if not applicable.
+	 * E.g., returns int for Integer, long for Long, Boolean for Boolean etc.
+	 * 
+	 * @param cls
+	 * @return
+	 */
+	public static Class getJavaPrimitive(Class<?> cls) {
+		if (cls.isPrimitive()) return cls;
+		if (cls == Double.class) return double.class;
+		else if (cls == Integer.class) return int.class;
+		else if (cls == Boolean.class) return Boolean.class;
+		else if (cls == Byte.class) return byte.class;
+		else if (cls == Short.class) return short.class;
+		else if (cls == Long.class) return long.class;
+		else if (cls == Float.class) return float.class;
+		return null;
+	}
+	/**
 	 * Try to convert an object to a destination type, especially for primitive types (int, double etc.
 	 * but also Integer, Double etc.).
 	 *  

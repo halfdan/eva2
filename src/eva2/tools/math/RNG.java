@@ -1,6 +1,7 @@
 package eva2.tools.math;
 
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.Random;
 
 
@@ -94,32 +95,6 @@ public class RNG {
 					+ " in RNG.randomInt! boundaries were lo/hi: " + lo + " / "
 					+ hi);
 			result = Math.abs(random.nextInt() % (hi - lo + 1)) + lo;
-		}
-		return result;
-	}
-
-	/**
-	 * This method returns a random permutation of n int values
-	 * 
-	 * @param length
-	 *            The number of int values
-	 * @return The permutation [0-length-1]
-	 */
-	public static int[] randomPermutation(int length) {
-		boolean[] validList = new boolean[length];
-		int[] result = new int[length];
-		int index;
-		for (int i = 0; i < validList.length; i++)
-			validList[i] = true;
-		for (int i = 0; i < result.length; i++) {
-			index = randomInt(0, length - 1);
-			while (!validList[index]) {
-				index++;
-				if (index == length)
-					index = 0;
-			}
-			validList[index] = false;
-			result[i] = index;
 		}
 		return result;
 	}
@@ -310,6 +285,29 @@ public class RNG {
 		return randomInt();
 	}
 
+	/**
+	 * Create a random bitset with given cardinality and lengths, 
+	 */
+	public static BitSet randomBitSet(int cardinality, int length) {
+		BitSet bs = new BitSet(length);
+		int[] perm = randomPerm(length);
+		for (int i=0; i<cardinality; i++) {
+			bs.set(perm[i]);
+		}
+		return bs;
+	}
+	
+	/**
+	 * Create a random bitset with a given probability of 1 per bit. 
+	 */
+	public static BitSet randomBitSet(double pSet, int length) {
+		BitSet bs = new BitSet(length);
+		for (int i=0; i<length; i++) {
+			if (flipCoin(pSet)) bs.set(i);
+		}
+		return bs;
+	}
+	
 	/**
 	 * Returns true with probability p.
 	 * 

@@ -26,6 +26,8 @@ public class Pair<S, T> implements Serializable {
 		this.tail = tail;
 	}
 
+	public Pair() {
+	}
 	/**
 	 * 
 	 * @return
@@ -68,7 +70,19 @@ public class Pair<S, T> implements Serializable {
 	public S head() {
 		return head;
 	}
-
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public S getHead() {
+		return head;
+	}
+	
+	public String headTipText() {
+		return "First pair entry";
+	}
+	
 	/**
 	 * 
 	 * @return
@@ -77,6 +91,14 @@ public class Pair<S, T> implements Serializable {
 		return tail;
 	}
 
+	public T getTail() {
+		return tail;
+	}
+	
+	public String tailTipText() {
+		return "Last pair entry";
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -87,6 +109,10 @@ public class Pair<S, T> implements Serializable {
 		return "(" + head.toString() + "," + tail.toString() + ")";
 	}
 
+	public String getName() {
+		return this.toString();
+	}
+	
 	/**
 	 * 
 	 * @param head
