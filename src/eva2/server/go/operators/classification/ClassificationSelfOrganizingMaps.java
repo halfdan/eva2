@@ -20,7 +20,11 @@ import java.awt.*;
  */
 public class ClassificationSelfOrganizingMaps implements java.io.Serializable, InterfaceClassification {
 
-    private int                         m_Dim1 = 5, m_Dim2 = 15;
+    /**
+	 * Generated serial version identifer.
+	 */
+	private static final long serialVersionUID = 1447707947002269263L;
+	private int                         m_Dim1 = 5, m_Dim2 = 15;
     private int                         m_AlternativeClasses;
     private double[][][]                m_SOM;
     private int[][][]                   m_SOMClass;
@@ -155,7 +159,7 @@ public class ClassificationSelfOrganizingMaps implements java.io.Serializable, I
         int[]   winner;
         for (int t = 0; t < this.m_TrainingCycles; t++) {
             // train the full set
-            order = RNG.randomPermutation(space.length);
+            order = RNG.randomPerm(space.length);
             for (int i = 0; i < order.length; i++) {
                 winner = this.findWinningNeuron(space[order[i]]);
                 // now i got the winning neuron *puh*
