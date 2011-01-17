@@ -142,6 +142,19 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
 		}
 	}
 
+	/**
+	 * Initialize a population with a binCardinality initialization, meaning that
+	 * the individuals are initialized with N(binCard, binStdDev) bits set.
+	 * @param targetSize
+	 * @param binCard
+	 * @param binStdDev
+	 */
+	public Population(int targetSize, int binCard, int binStdDev) {
+		this(targetSize);
+		this.setSeedCardinality(new Pair<Integer,Integer>(binCard, binStdDev));
+		this.setInitMethod(PopulationInitMethod.binCardinality);
+	}
+	
 	public void hideHideable() {
 		setInitMethod(getInitMethod());
 	}

@@ -56,7 +56,14 @@ public class MutateEAMixer implements InterfaceMutation, java.io.Serializable  {
      */
     public MutateEAMixer(InterfaceMutation ... mutators) {
         this.m_Mutators         = new PropertyMutationMixer(mutators, true);
-        this.m_UseSelfAdaption  = false;
+    }
+    
+    public MutateEAMixer(InterfaceMutation m1, InterfaceMutation m2) {
+    	this(new InterfaceMutation[] {m1, m2});
+    }
+    
+    public MutateEAMixer(InterfaceMutation m1, InterfaceMutation m2, InterfaceMutation m3) {
+    	this(new InterfaceMutation[] {m1, m2, m3});
     }
     
     public MutateEAMixer(MutateEAMixer mutator) {

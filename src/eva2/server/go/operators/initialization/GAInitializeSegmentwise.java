@@ -49,7 +49,6 @@ public class GAInitializeSegmentwise implements InterfaceInitialization, java.io
 		return new GAInitializeSegmentwise(this);
 	}
 	
-	@Override
 	public void initialize(AbstractEAIndividual indy,
 			InterfaceOptimizationProblem problem) {
 		if (indy instanceof InterfaceGAIndividual) {

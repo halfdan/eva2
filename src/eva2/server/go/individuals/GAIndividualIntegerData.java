@@ -28,7 +28,7 @@ public class GAIndividualIntegerData extends AbstractEAIndividual implements Int
     private InterfaceGAIntegerCoding    m_IntegerCoding          = new GAStandardCodingInteger();
 
     public GAIndividualIntegerData() {
-        this.m_MutationProbability  = 0.1;
+        this.m_MutationProbability  = 0.2;
         this.m_MutationOperator     = new MutateGANBit();
         this.m_CrossoverProbability = 0.7;
         this.m_CrossoverOperator    = new CrossoverGANPoint();
