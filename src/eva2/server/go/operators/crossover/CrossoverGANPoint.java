@@ -23,6 +23,12 @@ public class CrossoverGANPoint implements InterfaceCrossover, java.io.Serializab
     public CrossoverGANPoint() {
 
     }
+    
+    public CrossoverGANPoint(int nPoints) {
+    	this();
+    	setNumberOfCrossovers(nPoints);
+    }
+    
     public CrossoverGANPoint(CrossoverGANPoint mutator) {
         this.m_OptimizationProblem    = mutator.m_OptimizationProblem;
         this.m_NumberOfCrossovers     = mutator.m_NumberOfCrossovers;

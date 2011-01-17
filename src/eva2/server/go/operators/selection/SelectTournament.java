@@ -22,6 +22,11 @@ public class SelectTournament implements InterfaceSelection, java.io.Serializabl
     public SelectTournament() {
     }
 
+    public SelectTournament(int tSize) {
+    	this();
+    	setTournamentSize(tSize);
+    }
+    
     public SelectTournament(SelectTournament a) {
         this.m_TournamentSize       = a.m_TournamentSize;
         this.m_ObeyDebsConstViolationPrinciple = a.m_ObeyDebsConstViolationPrinciple;

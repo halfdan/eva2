@@ -131,6 +131,7 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
         result += "})\n Value: ";
         result += "{";
         for (int i = 0; i < this.m_GenotypeLength; i++) {
+            if (i%10==0) result+="|";
             if (this.m_Genotype.get(i)) result += "1";
             else result += "0";
         }
