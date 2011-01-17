@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Random;
 
+import eva2.tools.EVAERROR;
+
 
 public class RNG {
 	private static Random random;
@@ -289,6 +291,10 @@ public class RNG {
 	 * Create a random bitset with given cardinality and lengths, 
 	 */
 	public static BitSet randomBitSet(int cardinality, int length) {
+		if (cardinality>length) {
+			EVAERROR.errorMsgOnce("Error, invalid cardinality " + cardinality + " requested for bit length "+ length +", cardinality will be reduced.");
+			cardinality=length;
+		}
 		BitSet bs = new BitSet(length);
 		int[] perm = randomPerm(length);
 		for (int i=0; i<cardinality; i++) {
