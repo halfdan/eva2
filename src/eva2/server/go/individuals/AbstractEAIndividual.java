@@ -13,6 +13,8 @@ import eva2.server.go.individuals.codings.gp.InterfaceProgram;
 import eva2.server.go.operators.constraint.InterfaceConstraint;
 import eva2.server.go.operators.crossover.InterfaceCrossover;
 import eva2.server.go.operators.crossover.NoCrossover;
+import eva2.server.go.operators.initialization.DefaultInitialization;
+import eva2.server.go.operators.initialization.InterfaceInitialization;
 import eva2.server.go.operators.mutation.InterfaceMutation;
 import eva2.server.go.operators.mutation.NoMutation;
 import eva2.server.go.populations.Population;
@@ -58,7 +60,9 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
     protected double                           m_MutationProbability   = 0.2;
     protected InterfaceMutation             m_MutationOperator      = new NoMutation();
     protected InterfaceCrossover            m_CrossoverOperator     = new NoCrossover();
-//    protected String[]                      m_Identifiers           = new String[m_ObjectIncrement];
+    protected InterfaceInitialization		m_InitOperator		= new DefaultInitialization();
+
+	//    protected String[]                      m_Identifiers           = new String[m_ObjectIncrement];
 //    protected Object[]                      m_Objects               = new Object[m_ObjectIncrement];
     protected HashMap<String,Object> 		m_dataHash 				= new HashMap<String,Object>();
     
@@ -148,6 +152,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
         m_Marked            = individual.m_Marked;
         m_isPenalized		= individual.m_isPenalized;
         individualIndex = individual.individualIndex;
+        m_InitOperator = individual.m_InitOperator.clone();
         if (individual.parentIDs != null) {
         	parentIDs = new Long[individual.parentIDs.length];
         	System.arraycopy(individual.parentIDs, 0, parentIDs, 0, parentIDs.length);
@@ -271,7 +276,8 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      * @param opt   The optimization problem that is to be solved.
      */
     public void init(InterfaceOptimizationProblem opt) {
-        this.defaultInit(opt);
+    	m_InitOperator.initialize(this, opt);
+//        this.defaultInit(opt);
         this.m_MutationOperator.init(this, opt);
         this.m_CrossoverOperator.init(this, opt);
     }
@@ -815,6 +821,16 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
         return "The chance that crossover occurs.";
     }
 
+    public InterfaceInitialization getInitOperator() {
+		return m_InitOperator;
+	}
+	public void setInitOperator(InterfaceInitialization mInitOperator) {
+		m_InitOperator = mInitOperator;
+	}
+    public String initOperatorTipText() {
+    	return "An initialization method for the individual";
+    }
+	
     /** This method allows you to store an arbitrary value under an arbitrary
      * name.
      * @param name      The identifying name.
