@@ -4,6 +4,7 @@ import java.util.BitSet;
 
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceGAIndividual;
+import eva2.server.go.individuals.InterfaceGIIndividual;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.tools.EVAERROR;
 import eva2.tools.math.RNG;
@@ -65,23 +66,25 @@ public class GAInitializeSegmentwise implements InterfaceInitialization, java.io
 						if (k<genotypeLen) genotype.set(k, nextSeg.get(k-i));
 					}
 				}
-				// write back the genotype (it may have been cloned, who knows...)
-				gaIndy.SetBGenotype(genotype);
 			} else { // the number of bits to set may vary from segment to segment.
 				if (bitsPerSegmentArray.length * segmentLength != genotypeLen) EVAERROR.errorMsgOnce("Warning, potential mismatch between segment lengths and genotype length in " + this.getClass());
 				if (bitsPerSegmentArray.length * segmentLength < genotypeLen) System.err.println("Warning, " + (genotypeLen - bitsPerSegmentArray.length * segmentLength) + " bits will not be initialized!");
 				for (int s=0; s<bitsPerSegmentArray.length; s++) {
 					// look at each segment individually
-					BitSet nextSeg=RNG.randomBitSet(bitsPerSegmentArray[s], bitsPerSegment);
-					for (int k=(s)*bitsPerSegment; k<(s+1)*bitsPerSegment; k++) {
-						if (k<genotypeLen) genotype.set(k, nextSeg.get(k-(s*bitsPerSegment)));
+					BitSet nextSeg=RNG.randomBitSet(bitsPerSegmentArray[s], segmentLength);
+					for (int k=(s)*segmentLength; k<(s+1)*segmentLength; k++) {
+						if (k<genotypeLen) genotype.set(k, nextSeg.get(k-(s*segmentLength)));
 					}
 				}
 			}
+			// write back the genotype (it may have been cloned, who knows...)
+			gaIndy.SetBGenotype(genotype);
+//			System.out.println(genotype.cardinality());
+		} else if (indy instanceof InterfaceGIIndividual) {
+			// TODO ADD INTEGER IMPLEMENTATION???
 		} else throw new RuntimeException("Error: "+ this.getClass() + " must be used with individuals of type " + InterfaceGAIndividual.class + "!");
 	}
 
-	
 	public int[] getBitsPerSegmentArray() {
 		return bitsPerSegmentArray;
 	}

@@ -10,14 +10,15 @@ import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 18.03.2003
- * Time: 12:45:06
- * To change this template use Options | File Templates.
+ * The famous n-point crossover operator on a binary genotype. Genotypes of
+ * parent individuals are recombined by exchanging subsegments within randomly
+ * selected points. Therefore, far-away allels (larger GA schemas) are more likely to be split
+ * between individuals.  
+ * 
+ * @author mkron, streiche
  */
 public class CrossoverGANPoint implements InterfaceCrossover, java.io.Serializable {
-    private InterfaceOptimizationProblem    m_OptimizationProblem;
+//    private InterfaceOptimizationProblem    m_OptimizationProblem;
     private int                             m_NumberOfCrossovers = 3;
 
     public CrossoverGANPoint() {
@@ -30,7 +31,7 @@ public class CrossoverGANPoint implements InterfaceCrossover, java.io.Serializab
     }
     
     public CrossoverGANPoint(CrossoverGANPoint mutator) {
-        this.m_OptimizationProblem    = mutator.m_OptimizationProblem;
+//        this.m_OptimizationProblem    = mutator.m_OptimizationProblem;
         this.m_NumberOfCrossovers     = mutator.m_NumberOfCrossovers;
     }
 
@@ -41,7 +42,7 @@ public class CrossoverGANPoint implements InterfaceCrossover, java.io.Serializab
         return new CrossoverGANPoint(this);
     }
 
-    /** This method performs crossover on two individuals. If the individuals do
+    /** This method performs crossover on multiple individuals. If the individuals do
      * not implement InterfaceGAIndividual, then nothing will happen.
      * @param indy1 The first individual
      * @param partners The second individual
@@ -58,7 +59,7 @@ public class CrossoverGANPoint implements InterfaceCrossover, java.io.Serializab
         if ((indy1 instanceof InterfaceGAIndividual) && (partners.get(0) instanceof InterfaceGAIndividual)) {
             int         length          =  ((InterfaceGAIndividual)indy1).getGenotypeLength();
             int         mixer           = RNG.randomInt(0, partners.size());
-            int[]       crossoverPoints = new int[this.m_NumberOfCrossovers];
+            int[]       crossoverPoints = null;
             BitSet[][]  tmpBitSet       = new BitSet[2][partners.size()+1];
 
             tmpBitSet[0][0]     = ((InterfaceGAIndividual)indy1).getBGenotype();
@@ -69,10 +70,8 @@ public class CrossoverGANPoint implements InterfaceCrossover, java.io.Serializab
                 length = Math.max(length, ((InterfaceGAIndividual)partners.get(i)).getGenotypeLength());
             }
 
-            for (int i = 0; i < this.m_NumberOfCrossovers; i++) {
-                crossoverPoints[i] = RNG.randomInt(0, length-1);
-                //System.out.println("crpoint: "+crossoverPoints[i]);
-            }
+            crossoverPoints=getCrossoverPoints(length, m_NumberOfCrossovers);
+
             for (int i = 0; i < length; i++) {
                 for (int j = 0; j < this.m_NumberOfCrossovers; j++) {
                     if (i == crossoverPoints[j]) mixer++;
@@ -88,13 +87,27 @@ public class CrossoverGANPoint implements InterfaceCrossover, java.io.Serializab
 
             for (int i = 0; i < result.length; i++) ((InterfaceGAIndividual)result[i]).SetBGenotype(tmpBitSet[1][i]);
         }
-        //in case the crossover was successfull lets give the mutation operators a chance to mate the strategy parameters
+        //in case the crossover was successful lets give the mutation operators a chance to mate the strategy parameters
         for (int i = 0; i < result.length; i++) result[i].getMutationOperator().crossoverOnStrategyParameters(indy1, partners);
         //for (int i = 0; i < result.length; i++) System.out.println("After Crossover: " +result[i].getSolutionRepresentationFor());
         return result;
     }
 
-    /** This method allows you to evaluate wether two crossover operators
+    /**
+     * Select the crossover points within the genotype of given length.
+     * @param length
+     * @param numberOfCrossovers
+     * @return
+     */
+    protected int[] getCrossoverPoints(int length, int numberOfCrossovers) {
+    	int[] crossoverPoints = new int[numberOfCrossovers];
+        for (int i = 0; i < numberOfCrossovers; i++) {
+            crossoverPoints[i] = RNG.randomInt(0, length-1);
+        }
+		return crossoverPoints;
+	}
+
+	/** This method allows you to evaluate wether two crossover operators
      * are actually the same.
      * @param crossover   The other crossover operator
      */
@@ -114,7 +127,7 @@ public class CrossoverGANPoint implements InterfaceCrossover, java.io.Serializab
      * @param opt           The optimization problem.
      */
     public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
-        this.m_OptimizationProblem = opt;
+//        this.m_OptimizationProblem = opt;
     }
 
     public String getStringRepresentation() {
