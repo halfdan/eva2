@@ -32,6 +32,11 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
         this.m_Genotype             = new BitSet();
     }
 
+    public GAIndividualBinaryData(int genotypeLen) {
+    	this();
+    	this.setBinaryDataLength(genotypeLen);
+    }
+    
     public GAIndividualBinaryData(GAIndividualBinaryData individual) {
         if (individual.m_Phenotype != null)
             this.m_Phenotype                = (BitSet) individual.m_Phenotype.clone();
@@ -131,7 +136,7 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
         result += "})\n Value: ";
         result += "{";
         for (int i = 0; i < this.m_GenotypeLength; i++) {
-            if (i%10==0) result+="|";
+            if (i%8==0) result+="|";
             if (this.m_Genotype.get(i)) result += "1";
             else result += "0";
         }

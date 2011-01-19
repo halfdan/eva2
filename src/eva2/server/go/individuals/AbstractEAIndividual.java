@@ -93,6 +93,23 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
     public abstract Object clone();
 
     /**
+     * Set the init/mutation/crossover operator and probabilities to the given values.
+     * 
+     * @param initOp
+     * @param mutOp
+     * @param pMut
+     * @param coOp
+     * @param pCross
+     */
+    public void setOperators(InterfaceInitialization initOp, InterfaceMutation mutOp, double pMut, InterfaceCrossover coOp, double pCross) {
+    	m_InitOperator = initOp;
+    	m_MutationProbability = pMut;
+    	m_MutationOperator = mutOp;
+    	m_CrossoverProbability = pCross;
+    	m_CrossoverOperator = coOp;
+    }
+    
+    /**
      * Set the mutation/crossover operator and probabilities to the given values.
      * 
      * @param mutOp
@@ -101,10 +118,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      * @param pCross
      */
     public void setOperators(InterfaceMutation mutOp, double pMut, InterfaceCrossover coOp, double pCross) {
-    	m_MutationProbability = pMut;
-    	m_MutationOperator = mutOp;
-    	m_CrossoverProbability = pCross;
-    	m_CrossoverOperator = coOp;
+    	setOperators(new DefaultInitialization(), mutOp, pMut, coOp, pCross);
     }
     
     /**
