@@ -5,15 +5,17 @@ import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.BitSet;
 
 import eva2.OptimizerFactory;
 import eva2.OptimizerRunnable;
 import eva2.gui.BeanInspector;
+import eva2.server.go.PopulationInterface;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.ESIndividualDoubleData;
-import eva2.server.go.individuals.GAIndividualIntegerData;
+import eva2.server.go.individuals.GAIndividualBinaryData;
+import eva2.server.go.individuals.InterfaceDataTypeBinary;
 import eva2.server.go.individuals.InterfaceDataTypeDouble;
-import eva2.server.go.individuals.InterfaceDataTypeInteger;
 import eva2.server.go.operators.postprocess.InterfacePostProcessParams;
 import eva2.server.go.operators.postprocess.PostProcess;
 import eva2.server.go.operators.postprocess.PostProcessParams;
@@ -25,6 +27,7 @@ import eva2.server.go.operators.terminators.PopulationMeasureTerminator.Stagnati
 import eva2.server.go.populations.Population;
 import eva2.server.go.strategies.InterfaceOptimizer;
 import eva2.server.stat.InterfaceTextListener;
+import eva2.tools.ToolBox;
 
 /**
  * Interface problem class for Matlab(TM). Towards EvA2 this behaves like any other double valued 
@@ -105,13 +108,18 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 				((InterfaceDataTypeDouble)this.m_Template).SetDoubleRange(range);
 			}
 		} else {
-			if (m_Template == null) m_Template         = new GAIndividualIntegerData();
+			///// binary alternative
+			if (m_Template == null) m_Template         = new GAIndividualBinaryData(getProblemDimension());
+
+			///// Integer alternative
+			/*if (m_Template == null) m_Template         = new GAIndividualIntegerData();
 			int intLen = 1+((getProblemDimension()-1)/32);
 			int lastIntCodingBits = getProblemDimension()-((intLen-1)*32);
 			if (lastIntCodingBits > 32) System.err.println("ERROR in MatlabProblem:initTemplate");
 			((GAIndividualIntegerData)m_Template).setIntegerDataLength(intLen);
 			((GAIndividualIntegerData)m_Template).SetIntRange(Integer.MIN_VALUE, Integer.MAX_VALUE);
 			if (lastIntCodingBits < 32) ((GAIndividualIntegerData)m_Template).SetIntRange(intLen-1, 0, (int)Math.pow(2, lastIntCodingBits)-1);
+			*/ 			/////
 //			System.err.println("integer length is "+((GAIndividualIntegerData)m_Template).getIntegerData().length);
 //			System.err.println("Range is " + BeanInspector.toString(((GAIndividualIntegerData)m_Template).getIntRange()));
 //			m_Template         = new GAIndividualBinaryData();
@@ -266,6 +274,17 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 		optimize(optType, outputFilePrefix, null, null);
 	}
 
+	/**
+	 * Start an optimization using the MatlabProblem. The optType references the standard
+	 * optimizer as in OptimizerFactory. An output file prefix is optional. In two arrays,
+	 * name-value mappings can be given as additional parameters to the optimizer.
+	 * 
+	 * @see OptimizerFactory.getOptRunnable
+	 * @param optType
+	 * @param outputFilePrefix
+	 * @param specParams
+	 * @param specValues
+	 */
 	public void optimize(final int optType, String outputFilePrefix, Object[] specParams, Object[] specValues) {
 		if (allowSingleRunnable && (runnable != null) && (!runnable.isFinished())) {
 			System.err.println("Please wait for the current optimization to finish");
@@ -399,21 +418,21 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 				}
 				handler.setSolutionSet(solSet);
 			} else {
-				int[][] solSet = new int[pop.size()][];
+				BitSet[] solSet = new BitSet[pop.size()];
 				for (int i=0; i<pop.size(); i++) {
-					solSet[i]=((InterfaceDataTypeInteger)pop.getEAIndividual(i)).getIntegerData();
+					solSet[i]=((InterfaceDataTypeBinary)pop.getEAIndividual(i)).getBinaryData();
 				}
 				handler.setSolutionSet(solSet);
 			}
 		} else {
 			if (isDouble) handler.setSolutionSet((double[][])null);
-			else handler.setSolutionSet((int[][])null);
+			else handler.setSolutionSet((BitSet[])null);
 		}
 	}
 
 	void exportResultToMatlab(OptimizerRunnable runnable) {
 		if (isDouble) handler.setSolution(runnable.getDoubleSolution());
-		else handler.setSolution(runnable.getIntegerSolution());
+		else handler.setSolution(runnable.getBinarySolution());
 	}
 
 //	void exportResultToMatlab(double[] result) {
@@ -503,5 +522,19 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 	public Object getInitRange() {
 		log("retrieving initial range..., first entry: " + ((initialRange==null) ? "null" : BeanInspector.toString(initialRange[0])));
 		return initialRange;
+	}
+
+	@Override
+	public String[] getAdditionalDataHeader() {
+		return ToolBox.appendArrays(super.getAdditionalDataHeader(), "matlabSol");
+	}
+	@Override
+	public String[] getAdditionalDataInfo() {
+		return ToolBox.appendArrays(super.getAdditionalDataInfo(), "Additional solution representation");
+	}
+	@Override
+	public Object[] getAdditionalDataValue(PopulationInterface pop) {
+		String addStr=((AbstractEAIndividual)pop.getBestIndividual()).getStringRepresentation();
+		return ToolBox.appendArrays(super.getAdditionalDataValue(pop), addStr);
 	}
 }

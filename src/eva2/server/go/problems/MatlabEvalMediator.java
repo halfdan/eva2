@@ -1,5 +1,7 @@
 package eva2.server.go.problems;
 
+import java.util.BitSet;
+
 import eva2.gui.BeanInspector;
 
 /**
@@ -240,7 +242,7 @@ public class MatlabEvalMediator {
 		optSolSet = solSet;
 	}
 	
-	void setSolutionSet(int[][] solSet) {
+	void setSolutionSet(BitSet[] solSet) {
 //		System.err.println("setting SolSet " + ((solSet != null) ? solSet.length : 0));
 		optSolSet = solSet;
 	}

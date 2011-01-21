@@ -78,7 +78,7 @@ try
  		% disp(sprintf('running mediator id %d',cnt));
         int.mediator.run(cnt);
  		% disp(sprintf('after running mediator id %d',cnt));
-	cnt=cnt+1;
+        cnt=cnt+1;
         if (~int.mediator.isFinished())
 		% disp('getting question');
             x = int.mediator.getQuestion();

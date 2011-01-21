@@ -6,11 +6,13 @@ if (isempty(int.range))
     % binary problem
     s=sprintf('Binary problem of bitwidth %d', int.dim);
     disp(s);
-    numInts=ceil(int.dim/wordwidth);
+    %numInts=ceil(int.dim/wordwidth);
     % generate trial vector
-    x=ceil(rand(1,numInts).*(2^wordwidth));
-    overheadBits=numInts*wordwidth-int.dim;
-    x(numInts)=bitshift(x(numInts),-overheadBits); % shift right by overhead
+    %x=ceil(rand(1,numInts).*(2^wordwidth));
+    %overheadBits=numInts*wordwidth-int.dim;
+    %x(numInts)=bitshift(x(numInts),-overheadBits); % shift right by overhead
+    bs=eva2.tools.math.RNG.randomBitSet(0.5, int.dim);
+    x=convertUnsignedJE(int, bs);
 else
     % double problem
     x=rand(1, int.dim);
@@ -35,9 +37,10 @@ try
         res = feval(int.f, x, int.args);
     end
 catch ME
-    disp('Function evaluation failed:');
+    disp('JEInterface: Test function evaluation failed:');
     disp(ME.message);
-    error(['Test failed! ' ME.message]);
+    rethrow(ME);
+    %error(['Test failed! ' ME.message]);
 end
             
 disp('Function returned: ');
