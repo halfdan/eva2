@@ -5,7 +5,7 @@ import java.util.BitSet;
 
 import eva2.server.go.individuals.codings.ga.GAStandardCodingDouble;
 import eva2.server.go.individuals.codings.ga.InterfaceGADoubleCoding;
-import eva2.server.go.operators.crossover.CrossoverGANPoint;
+import eva2.server.go.operators.crossover.CrossoverGAGINPoint;
 import eva2.server.go.operators.crossover.InterfaceCrossover;
 import eva2.server.go.operators.mutation.InterfaceMutation;
 import eva2.server.go.operators.mutation.MutateGAUniform;
@@ -33,7 +33,7 @@ public class GAIndividualDoubleData extends AbstractEAIndividual implements Inte
         this.m_MutationProbability  = 0.1;
         this.m_MutationOperator     = new MutateGAUniform();
         this.m_CrossoverProbability = 0.7;
-        this.m_CrossoverOperator    = new CrossoverGANPoint();
+        this.m_CrossoverOperator    = new CrossoverGAGINPoint();
         this.m_Range                = new double[1][2];
         this.m_Range[0][0]          = -10;
         this.m_Range[0][1]          = 10;

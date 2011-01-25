@@ -3,7 +3,7 @@ package eva2.server.go.individuals;
 
 import java.util.BitSet;
 
-import eva2.server.go.operators.crossover.CrossoverGANPoint;
+import eva2.server.go.operators.crossover.CrossoverGAGINPoint;
 import eva2.server.go.operators.crossover.InterfaceCrossover;
 import eva2.server.go.operators.mutation.InterfaceMutation;
 import eva2.server.go.operators.mutation.MutateGANBit;
@@ -27,7 +27,7 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
         this.m_MutationProbability  = 0.1;
         this.m_MutationOperator     = new MutateGANBit();
         this.m_CrossoverProbability = 1.0;
-        this.m_CrossoverOperator    = new CrossoverGANPoint();
+        this.m_CrossoverOperator    = new CrossoverGAGINPoint();
         this.m_GenotypeLength       = 20;
         this.m_Genotype             = new BitSet();
     }
