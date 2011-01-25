@@ -14,8 +14,10 @@ import eva2.server.go.PopulationInterface;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.ESIndividualDoubleData;
 import eva2.server.go.individuals.GAIndividualBinaryData;
+import eva2.server.go.individuals.GIIndividualIntegerData;
 import eva2.server.go.individuals.InterfaceDataTypeBinary;
 import eva2.server.go.individuals.InterfaceDataTypeDouble;
+import eva2.server.go.individuals.InterfaceDataTypeInteger;
 import eva2.server.go.operators.postprocess.InterfacePostProcessParams;
 import eva2.server.go.operators.postprocess.PostProcess;
 import eva2.server.go.operators.postprocess.PostProcessParams;
@@ -50,16 +52,16 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 //	transient PrintStream				resOutStream = null;
 	int 								verbosityLevel	= 0;
 	private MatlabEvalMediator 			handler = null;
-	private boolean isDouble = true;
+//	private boolean isDouble = true;
+	private MatlabProblemDataTypeEnum dataType = MatlabProblemDataTypeEnum.typeDouble;
 	private double[][] initialRange = null; // the initial range for double-valued problems
 
 	public static boolean hideFromGOE = true; 
-
+	
 //	transient private double[] currArray = null;
 //	private String mtCmd = null;
 
 	public MatlabProblem(MatlabProblem o) {
-//		this.matlab = o.matlab;
 		this.m_Template=null;
 		this.handler = o.handler;
 		this.runnable = o.runnable;
@@ -69,7 +71,7 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 //		this.res = new ResultArr();
 //		if (o.res != null) if (o.res.get() != null) res.set(o.res.get());
 		this.range = o.range;
-		this.isDouble = o.isDouble;
+		this.dataType = o.dataType;
 		this.initialRange = o.initialRange;
 //		this.mtCmd = o.mtCmd;
 //		currArray = null;
@@ -79,52 +81,95 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 		return new MatlabProblem(this);
 	}
 
+	/**
+	 * Constructor of a real valued problem.
+	 * @param dim
+	 * @param range
+	 */
+//	public MatlabProblem(int dim, double[][] range) {
+//		init(dim, ProblemDataTypeEnum.typeDouble, range, null, defTestOut);
+//	}
+	
+	/**
+	 * Constructor of a binary problem with given bit length.
+	 * @param dim
+	 */
 	public MatlabProblem(int dim) {
-		this(dim, (double[][])null);
-	}
-
-	public MatlabProblem(int dim, double[][] range) {
-		init(dim, range, null, defTestOut);
+		init(dim, MatlabProblemDataTypeEnum.typeBinary, null, null, defTestOut);
 	}
 	
-	public MatlabProblem(int dim, double[][] range, double[][] initRange) {
-		init(dim, range, initRange, defTestOut);
+	/**
+	 * Constructor of a real valued problem with initialization range.
+	 * @param dim
+	 * @param range
+	 * @param initRange
+	 */
+//	public MatlabProblem(int dim, double[][] range, double[][] initRange) {
+//		init(dim, ProblemDataTypeEnum.typeDouble, range, initRange, defTestOut);
+//	}
+
+	/**
+	 * Constructor of real or integer valued problem, the range will be converted
+	 * to integer in the latter case.
+	 * 
+	 * @param dim
+	 * @param datType
+	 * @param range
+	 */
+	public MatlabProblem(int dim, MatlabProblemDataTypeEnum datType, double[][] range) {
+		init(dim, datType, range, null, defTestOut);
+	}
+	
+	/**
+	 * Constructor of real or integer valued problem with initialization range. 
+	 * The ranges will be converted to integer in the latter case.
+	 * 
+	 * @param dim
+	 * @param datType
+	 * @param range
+	 */
+	public MatlabProblem(int dim, MatlabProblemDataTypeEnum datType, double[][] range, double[][] initRange) {
+		init(dim, datType, range, initRange, defTestOut);
 	}
 
-	public MatlabProblem(int dim, double lower, double upper) {
-		this(dim, null);
-		double[][] range = new double[dim][2];
-		for (int i=0; i<dim; i++) {
-			range[dim][0] = lower;
-			range[dim][1] = upper;
-		}
-	}
+	
+//	public MatlabProblem(int dim, double lower, double upper) {
+//		this(dim, null);
+//		double[][] range = new double[dim][2];
+//		for (int i=0; i<dim; i++) {
+//			range[dim][0] = lower;
+//			range[dim][1] = upper;
+//		}
+//	}
 
 	protected void initTemplate() {
-		if (isDouble) {
-			if (m_Template == null) m_Template         = new ESIndividualDoubleData();
+		switch (dataType) {
+		case typeDouble:
+			if (m_Template == null || !(m_Template instanceof ESIndividualDoubleData)) m_Template         = new ESIndividualDoubleData();
 			if (getProblemDimension() > 0) { // avoid evil case setting dim to 0 during object init
 				((InterfaceDataTypeDouble)this.m_Template).setDoubleDataLength(getProblemDimension());
 				((InterfaceDataTypeDouble)this.m_Template).SetDoubleRange(range);
 			}
-		} else {
+			break;
+		case typeBinary:
 			///// binary alternative
-			if (m_Template == null) m_Template         = new GAIndividualBinaryData(getProblemDimension());
-
-			///// Integer alternative
-			/*if (m_Template == null) m_Template         = new GAIndividualIntegerData();
-			int intLen = 1+((getProblemDimension()-1)/32);
-			int lastIntCodingBits = getProblemDimension()-((intLen-1)*32);
-			if (lastIntCodingBits > 32) System.err.println("ERROR in MatlabProblem:initTemplate");
-			((GAIndividualIntegerData)m_Template).setIntegerDataLength(intLen);
-			((GAIndividualIntegerData)m_Template).SetIntRange(Integer.MIN_VALUE, Integer.MAX_VALUE);
-			if (lastIntCodingBits < 32) ((GAIndividualIntegerData)m_Template).SetIntRange(intLen-1, 0, (int)Math.pow(2, lastIntCodingBits)-1);
-			*/ 			/////
-//			System.err.println("integer length is "+((GAIndividualIntegerData)m_Template).getIntegerData().length);
-//			System.err.println("Range is " + BeanInspector.toString(((GAIndividualIntegerData)m_Template).getIntRange()));
-//			m_Template         = new GAIndividualBinaryData();
-//			((GAIndividualBinaryData)m_Template).setBinaryDataLength(getProblemDimension());
+			if (m_Template == null || !(m_Template instanceof GAIndividualBinaryData)) m_Template         = new GAIndividualBinaryData(getProblemDimension());
+			break;
+		case typeInteger:
+			int[][] intRange=makeIntRange(range);
+			if (m_Template == null || !(m_Template instanceof GIIndividualIntegerData)) m_Template         = new GIIndividualIntegerData(intRange);
+			break;
 		}
+	}
+
+	private int[][] makeIntRange(double[][] r) {
+		int[][] intRange=new int[r.length][r[0].length];
+		for (int i=0; i<r.length; i++){
+			for (int j=0; j<r[0].length; j++) {
+				intRange[i][j]=(int)r[i][j];
+			}
+		}
+		return intRange;
 	}
 
 	public void setMediator(MatlabEvalMediator h) {
@@ -133,7 +178,7 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 	}
 
 	public void initProblem() {
-		init(this.problemDimension, range, initialRange, defTestOut);
+		init(this.problemDimension, dataType, range, initialRange, defTestOut);
 	}
 
 	public static FitnessConvergenceTerminator makeFitConvTerm(double thresh, int stagnPeriod) {
@@ -154,7 +199,7 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 	 * @param initRange
 	 * @param outFile
 	 */
-	private void init(int dim, double[][] globalRange, double[][] initRange, String outFile) {
+	private void init(int dim, MatlabProblemDataTypeEnum datType, double[][] globalRange, double[][] initRange, String outFile) {
 		this.problemDimension = dim;
 //		if ((rng != null) && (dim != rng.length)) throw new ArrayIndexOutOfBoundsException("Mismatching dimension and range!");
 		if (globalRange!=null) { // these may be Matlab objects, so I do it by foot, just to be sure not to clone them within Matlab instead of here 
@@ -173,8 +218,8 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 		
 		if (Arrays.deepEquals(initialRange, range)) initialRange=null;
 		
-		if (range==null) isDouble = false;
-		else isDouble = true;
+		dataType=datType; // store the data type
+		log("### Data type is " + dataType);
 
 //		System.err.println("isDouble: " + isDouble);
 //		System.err.println("range: " + BeanInspector.toString(range));
@@ -411,33 +456,41 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 
 	void exportResultPopulationToMatlab(Population pop) {
 		if ((pop != null) && (pop.size()>0)) {
-			if (isDouble) {
-				double[][] solSet = new double[pop.size()][];
+			switch(dataType) {
+			case typeDouble:
+				double[][] rsolSet = new double[pop.size()][];
 				for (int i=0; i<pop.size(); i++) {
-					solSet[i]=((InterfaceDataTypeDouble)pop.getEAIndividual(i)).getDoubleData();
+					rsolSet[i]=((InterfaceDataTypeDouble)pop.getEAIndividual(i)).getDoubleData();
 				}
-				handler.setSolutionSet(solSet);
-			} else {
-				BitSet[] solSet = new BitSet[pop.size()];
+				handler.setSolutionSet(rsolSet);
+				break;
+			case typeBinary:
+				BitSet[] bsolSet = new BitSet[pop.size()];
 				for (int i=0; i<pop.size(); i++) {
-					solSet[i]=((InterfaceDataTypeBinary)pop.getEAIndividual(i)).getBinaryData();
+					bsolSet[i]=((InterfaceDataTypeBinary)pop.getEAIndividual(i)).getBinaryData();
 				}
-				handler.setSolutionSet(solSet);
+				handler.setSolutionSet(bsolSet);
+				break;
+			case typeInteger: 
+				int[][] isolSet = new int[pop.size()][];
+				for (int i=0; i<pop.size(); i++) {
+					isolSet[i]=((InterfaceDataTypeInteger)pop.getEAIndividual(i)).getIntegerData();
+				}
+				handler.setSolutionSet(isolSet);
+				break;
 			}
 		} else {
-			if (isDouble) handler.setSolutionSet((double[][])null);
-			else handler.setSolutionSet((BitSet[])null);
+			switch(dataType) {
+			case typeDouble: handler.setSolutionSet((double[][])null); break;
+			case typeBinary: handler.setSolutionSet((BitSet[])null); break;
+			case typeInteger: handler.setSolutionSet((int[][])null); break;
+			}
 		}
 	}
 
-	void exportResultToMatlab(OptimizerRunnable runnable) {
-		if (isDouble) handler.setSolution(runnable.getDoubleSolution());
-		else handler.setSolution(runnable.getBinarySolution());
+	public void exportResultToMatlab(OptimizerRunnable runnable) {
+		handler.setSolution(getIntermediateResult());
 	}
-
-//	void exportResultToMatlab(double[] result) {
-//		handler.setSolution(result);
-//	}
 
 	/**
 	 * To be called by the executing thread to inform that the thread is finished.
@@ -448,10 +501,16 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 	}
 
 	public Object getIntermediateResult() {
-		if (runnable == null) return null;
-		else {
-			if (isDouble) return runnable.getDoubleSolution();
-			else return runnable.getIntegerSolution();
+		if (runnable == null) { 
+			System.err.println("Warning, runnable is null in MatlabProblem!");
+			return null;
+		} else {
+			switch(dataType) {
+			case typeDouble: return runnable.getDoubleSolution();
+			case typeBinary: return runnable.getBinarySolution();
+			case typeInteger: return runnable.getIntegerSolution();
+			default: System.err.println("Warning, incompatible data type in MatlabProblem!");return null;
+			}
 		}
 	}
 

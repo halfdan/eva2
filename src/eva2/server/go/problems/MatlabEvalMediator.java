@@ -233,17 +233,22 @@ public class MatlabEvalMediator {
 	}
 	
 	void setSolution(Object sol) {
-		//System.out.println("setting Sol");
+//		System.err.println("setting obj Sol " + BeanInspector.toString(sol));
 		optSolution = sol;
 	}
 	
 	void setSolutionSet(double[][] solSet) {
-//		System.err.println("setting SolSet " + ((solSet != null) ? solSet.length : 0));
+//		System.err.println("setting dbl SolSet " + ((solSet != null) ? solSet.length : 0));
 		optSolSet = solSet;
 	}
 	
 	void setSolutionSet(BitSet[] solSet) {
-//		System.err.println("setting SolSet " + ((solSet != null) ? solSet.length : 0));
+//		System.err.println("setting bs SolSet " + ((solSet != null) ? solSet.length : 0));
+		optSolSet = solSet;
+	}
+	
+	void setSolutionSet(int[][] solSet) {
+//		System.err.println("setting int SolSet " + ((solSet != null) ? solSet.length : 0));
 		optSolSet = solSet;
 	}
 	
@@ -252,7 +257,7 @@ public class MatlabEvalMediator {
 	 * @return
 	 */
 	public Object getSolution() {
-//		System.err.println("getting Sol");
+//		System.err.println("getting Sol " + BeanInspector.toString(optSolution));
 		return optSolution;
 	}
 	
