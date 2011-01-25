@@ -1,12 +1,14 @@
-function int = JEInterface(fhandle, range, varargin)
+function int = JEInterface(fhandle, datatype, range, varargin)
 % EvA2 Interface for Matlab
-%       JEInterface(fhandle, range)
-%       JEInterface(fhandle, range, initRange)
-%       JEInterface(fhandle, range, initRange, defaultargs)
-%       JEInterface(fhandle, range, initRange, defaultargs, options...)
+%       JEInterface(fhandle, datatype, range)
+%       JEInterface(fhandle, datatype, range, initRange)
+%       JEInterface(fhandle, datatype, range, initRange, defaultargs)
+%       JEInterface(fhandle, datatype, range, initRange, defaultargs, options...)
 %
 % Arguments: 
 %   fhandle: a function handle defining the optimization target.
+%   datatype: symbol 'int', 'double', or 'binary' denoting the problem data
+%       type
 %   range: a 2 x dim array defining the solution subspace with lower and
 %      upper bounds; or a scalar defining the bitwidth for binary
 %      problems.
@@ -52,11 +54,22 @@ int.mediator = '';
 int.optParams = [];
 int.optParamValues = [];
 int.hexMask=hex2dec('ffffffff');
+int.dataType=''; % to be set later!
 
 if (isa(fhandle, 'function_handle'))
     int.f = fhandle;
 else
-    error('Wrong second argument type, expected function_handle');
+    error('Wrong first argument type, expected function_handle');
+end
+
+if (strcmp(datatype,'double'))
+    int.dataType=eva2.server.go.problems.MatlabProblemDataTypeEnum.typeDouble;
+elseif strcmp(datatype, 'int')
+    int.dataType=eva2.server.go.problems.MatlabProblemDataTypeEnum.typeInteger;
+elseif strcmp(datatype, 'binary')
+    int.dataType=eva2.server.go.problems.MatlabProblemDataTypeEnum.typeBinary;
+else
+    error('Invalid data type, select double, int, or binary!');
 end
 
 disp('Setting up JEInterface...');
@@ -79,7 +92,7 @@ end
 int = class(int,'JEInterface');
 int.opts = makeOptions(int);
 
-if (nargin>2)
+if (nargin>3)
     int.initialRange=varargin{1};
     
     if (isa(varargin{1}, 'double') && (size(varargin{1},1) == 2))
@@ -91,15 +104,15 @@ if (nargin>2)
         disp(s);
     end
     
-    if (nargin>3)
+    if (nargin>4)
         int.args = varargin{2};
         disp('Fitness function argument: '); disp(int.args);
-        if (nargin > 4)
-            if (rem(nargin,2)==1)
+        if (nargin > 5)
+            if (rem(nargin,2)==0)
                 error('Invalid number of arguments!');
             end
             disp('Reading options:');
-            for i=3:2:nargin-2
+            for i=3:2:nargin-3
                 int=setOpt(int, varargin{i}, varargin{i+1});
             end
         end
@@ -107,11 +120,15 @@ if (nargin>2)
 end  
 display(getOptions(int));
 % finally create the java object
-if (isempty(int.initialRange))
-    int.mp = eva2.server.go.problems.MatlabProblem(int.dim, int.range);
+if (isempty(int.initialRange)) % binary case
+    int.mp = eva2.server.go.problems.MatlabProblem(int.dim, int.dataType, int.range);
 else
-    if (isempty(int.range) || eq(size(int.range), size(int.initialRange)))
-        int.mp = eva2.server.go.problems.MatlabProblem(int.dim, int.range, int.initialRange);
+%     size(int.range);
+%     size(int.initialRange);
+%     eq(size(int.range), size(int.initialRange))
+%     disp('-------');
+    if (isempty(int.range) || (sum(eq(size(int.range), size(int.initialRange)))==2))
+        int.mp = eva2.server.go.problems.MatlabProblem(int.dim, int.dataType, int.range, int.initialRange);
         %int.mp.getIndividualTemplate().setMutationOperator( ...
         %    eva2.server.go.operators.mutation.MutateEAMixer(eva2.server.go.operators.mutation.MutateGASwapBits, eva2.server.go.operators.mutation.MutateGAUniform));
     else 

@@ -2,7 +2,7 @@ function testEvalFunc(int)
 % Test the fitness function output format.
 wordwidth=32;
 
-if (isempty(int.range))
+if (strcmp(int.dataType,eva2.server.go.problems.MatlabProblemDataTypeEnum.typeBinary))
     % binary problem
     s=sprintf('Binary problem of bitwidth %d', int.dim);
     disp(s);
@@ -13,7 +13,7 @@ if (isempty(int.range))
     %x(numInts)=bitshift(x(numInts),-overheadBits); % shift right by overhead
     bs=eva2.tools.math.RNG.randomBitSet(0.5, int.dim);
     x=convertUnsignedJE(int, bs);
-else
+elseif strcmp(int.dataType,eva2.server.go.problems.MatlabProblemDataTypeEnum.typeDouble)
     % double problem
     x=rand(1, int.dim);
     s=sprintf('Real valued problem in %d dimensions and range %s ', int.dim, mat2str(int.range));
@@ -21,8 +21,16 @@ else
     for i=1:int.dim
         x(i)=int.range(i,1)+x(i)*(int.range(i,2)-int.range(i,1));
     end
+elseif strcmp(int.dataType,eva2.server.go.problems.MatlabProblemDataTypeEnum.typeInteger)
+    % integer problem
+    s=sprintf('Real valued problem in %d dimensions and range %s ', int.dim, mat2str(int.range));
+    disp(s);
+    size(int.range)
+    %x=int.range(1,:)+ceil(rand(1,int.dim).*int.range(2,:)-int.range(1,:));
+    x=(int.range(:,1)+ceil(rand(int.dim,1).*int.range(:,2)-int.range(:,1)))';
+else 
+    error('Invalid data type in testEvalFunc.m!'); 
 end
-
 if (isempty(int.range))
     msg=sprintf('\nTesting value: %d, bin.: %s', x, dec2bin(x, int.dim));
 else
