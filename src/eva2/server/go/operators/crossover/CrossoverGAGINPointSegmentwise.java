@@ -10,31 +10,31 @@ import eva2.tools.math.RNG;
  * @author mkron
  *
  */
-public class CrossoverGANPointSegmentwise extends CrossoverGANPoint {
+public class CrossoverGAGINPointSegmentwise extends CrossoverGAGINPoint {
 	int segmentLength=8;
 	
-	public CrossoverGANPointSegmentwise() {
+	public CrossoverGAGINPointSegmentwise() {
 		super();
 	}
 	
-	public CrossoverGANPointSegmentwise(CrossoverGANPointSegmentwise o) {
+	public CrossoverGAGINPointSegmentwise(CrossoverGAGINPointSegmentwise o) {
 		super(o);
 		this.segmentLength=o.segmentLength;
 	}
 	
-	public CrossoverGANPointSegmentwise(int nPoints, int segmentLen) {
+	public CrossoverGAGINPointSegmentwise(int nPoints, int segmentLen) {
     	super(nPoints);
     	setSegmentLength(segmentLen);
     }
 	
 	public Object clone() {
-		return new CrossoverGANPointSegmentwise(this);
+		return new CrossoverGAGINPointSegmentwise(this);
 	}
 	
 	@Override
 	public boolean equals(Object crossover) {
-		if (super.equals(crossover) && (crossover instanceof CrossoverGANPointSegmentwise)) {
-			return ((CrossoverGANPointSegmentwise)crossover).segmentLength==this.segmentLength;
+		if (super.equals(crossover) && (crossover instanceof CrossoverGAGINPointSegmentwise)) {
+			return ((CrossoverGAGINPointSegmentwise)crossover).segmentLength==this.segmentLength;
 		} else return false;
 	}
 
@@ -50,7 +50,7 @@ public class CrossoverGANPointSegmentwise extends CrossoverGANPoint {
 	}
 
 	public String getName() {
-        return "GA N-Point segment-wise crossover";
+        return "GA-GI N-Point segment-wise crossover";
     }
     
     public static String globalInfo() {

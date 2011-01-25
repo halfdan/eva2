@@ -20,7 +20,7 @@ public abstract class AbstractProblemInteger extends AbstractOptimizationProblem
     }
 
     protected void initTemplate() {
-    	this.m_Template         = new GAIndividualIntegerData();
+    	if (m_Template==null) m_Template = new GAIndividualIntegerData();
 		if (((InterfaceDataTypeInteger)this.m_Template).size()!=this.getProblemDimension()) {
 			((InterfaceDataTypeInteger)this.m_Template).setIntegerDataLength(this.getProblemDimension());
 		}

@@ -100,7 +100,7 @@ public class MutateGASwapBitsSegmentwise implements InterfaceMutation, java.io.S
 	 * @param individual    The individual that is to be mutated
 	 */
 	public void mutate(AbstractEAIndividual individual) {
-		//System.out.println("Before Mutate: " +((GAIndividual)individual).getSolutionRepresentationFor());
+//		System.out.println("Before Mutate: " +(individual).getStringRepresentation());
 		if (individual instanceof InterfaceGAIndividual) {
 			BitSet  tmpBitSet   = ((InterfaceGAIndividual)individual).getBGenotype();
 			int genLen=((InterfaceGAIndividual)individual).getGenotypeLength();
@@ -122,7 +122,7 @@ public class MutateGASwapBitsSegmentwise implements InterfaceMutation, java.io.S
 			}
 			((InterfaceGAIndividual)individual).SetBGenotype(tmpBitSet); // write back the genotype
 		}
-		//System.out.println("After Mutate:  " +((GAIndividual)individual).getSolutionRepresentationFor());
+//		System.out.println("After Mutate:  " +(individual).getStringRepresentation());
 	}
 
 	/**
@@ -180,7 +180,8 @@ public class MutateGASwapBitsSegmentwise implements InterfaceMutation, java.io.S
 	 * @return description
 	 */
 	public static String globalInfo() {
-		return "This mutation operator swaps bits in subsegments of the genotype.";
+		return "This mutation operator swaps bits in subsegments of the genotype. Each segment is mutated" +
+				" with a certain probability. Depending on the setting, multiple mutations per segment may occur.";
 	}
 
 	public void setPreferTrueChange(boolean preferPairs) {

@@ -23,7 +23,7 @@ public interface InterfaceGIIndividual {
 
     /** This method will set the range of the int attributes.
      * Note: range[d][0] gives the lower bound and range[d] gives the upper bound
-     * for dimension d.
+     * for dimension d where both are included.
      * @param range     The new range for the int data.
      */
     public void SetIntRange(int[][] range);

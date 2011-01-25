@@ -6,7 +6,7 @@ import java.util.BitSet;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceDataTypeBinary;
 import eva2.server.go.operators.mutation.MutateEAMixer;
-import eva2.server.go.operators.mutation.MutateGASwapBits;
+import eva2.server.go.operators.mutation.MutateGAGISwapBits;
 import eva2.server.go.operators.mutation.MutateGAUniform;
 import eva2.server.go.strategies.InterfaceOptimizer;
 
@@ -22,7 +22,7 @@ public class B1Problem extends AbstractProblemBinary implements java.io.Serializ
 
     public B1Problem() {
     	super();
-    	this.getIndividualTemplate().setMutationOperator(new MutateEAMixer(new MutateGASwapBits(), new MutateGAUniform()));
+    	this.getIndividualTemplate().setMutationOperator(new MutateEAMixer(new MutateGAGISwapBits(), new MutateGAUniform()));
     }
     
     public B1Problem(B1Problem b) {

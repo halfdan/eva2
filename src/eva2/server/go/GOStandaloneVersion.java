@@ -32,7 +32,7 @@ import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.ESIndividualDoubleData;
 import eva2.server.go.individuals.GAIndividualDoubleData;
 import eva2.server.go.individuals.InterfaceDataTypeDouble;
-import eva2.server.go.operators.crossover.CrossoverGANPoint;
+import eva2.server.go.operators.crossover.CrossoverGAGINPoint;
 import eva2.server.go.operators.mutation.InterfaceMutation;
 import eva2.server.go.operators.mutation.MutateESFixedStepSize;
 import eva2.server.go.operators.mutation.MutateESLocal;
@@ -322,7 +322,7 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
                 this.m_GO.getOptimizer().getPopulation().setTargetSize(100);
                 F1Problem problem = new F1Problem();
                 tmpIndy = new GAIndividualDoubleData();
-                ((GAIndividualDoubleData)tmpIndy).setCrossoverOperator(new CrossoverGANPoint());
+                ((GAIndividualDoubleData)tmpIndy).setCrossoverOperator(new CrossoverGAGINPoint());
                 ((GAIndividualDoubleData)tmpIndy).setCrossoverProbability(1.0);
                 ((GAIndividualDoubleData)tmpIndy).setMutationProbability(1.0);
                 ((F1Problem)problem).setEAIndividual(tmpIndy);

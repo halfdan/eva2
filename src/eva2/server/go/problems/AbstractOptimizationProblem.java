@@ -80,7 +80,7 @@ implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serial
 	
 	int parallelthreads = 1;
 	
-    protected 	AbstractEAIndividual      m_Template;
+    protected 	AbstractEAIndividual      m_Template = null;
 //    private transient ArrayList<ParamChangeListener> changeListeners = null;
 
 	private double defaultAccuracy = 0.01; // default accuracy for identifying optima.

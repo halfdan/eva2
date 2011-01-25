@@ -33,6 +33,11 @@ public class GIIndividualIntegerData extends AbstractEAIndividual implements Int
         this.m_Genotype             = new int[10];
     }
 
+    public GIIndividualIntegerData(int[][] theRange) {
+    	this();
+    	SetIntRange(theRange);
+    }
+    
     public GIIndividualIntegerData(GIIndividualIntegerData individual) {
         if (individual.m_Phenotype != null) {
             this.m_Phenotype            = new int[individual.m_Phenotype.length];
@@ -132,14 +137,12 @@ public class GIIndividualIntegerData extends AbstractEAIndividual implements Int
      */
     public void SetIntRange(int[][] range) {
         if (range.length != this.m_Range.length) {
-            System.out.println("Warning: Trying to set a range of length " + range.length + " to a vector of length "
-                    + this.m_Range.length + "!\n Use method setDoubleDataLength first!");
+        	this.setIntegerDataLength(range.length);
         }
         for (int i = 0; ((i < this.m_Range.length) && (i < range.length)); i++) {
             this.m_Range[i][0] = range[i][0];
             this.m_Range[i][1] = range[i][1];
         }
-        this.setIntegerDataLength(range.length);
     }
 
     /** This method will return the range for all double attributes.
