@@ -10,11 +10,12 @@ import eva2.tools.EVAERROR;
 import eva2.tools.math.RNG;
 
 /**
- * An initialization method which sets a fixed number of specified values per segment,
+ * An initialization method which sets a fixed number of specified target elements per segment,
  * where a segment is a connected subsequence of the genotype.
  * This is usable for binary and integer individuals only.
- * For binary individuals, this allows to control the number of bits per segment. For
- * integer individuals, it allows to control the number of occurences of a certain integer
+ * For binary individuals, this allows to control the number of bits per segment by
+ * setting the target element to '1'. For
+ * integer individuals, it allows to control the number of occurrences of a certain integer
  * per segment. It may also be used to initialize with subsets of integers (by setting 0 
  * elements to a certain type and all to a subset of the range).
  * 
@@ -27,7 +28,6 @@ import eva2.tools.math.RNG;
  * has strict priority over the fixed cardinality definition.  
  * 
  * @author mkron
- *
  */
 public class GAGIInitializeSegmentwise implements InterfaceInitialization, java.io.Serializable {
 	private static final long serialVersionUID = 1L;
@@ -178,24 +178,24 @@ public class GAGIInitializeSegmentwise implements InterfaceInitialization, java.
 		else return (targetElement!=1);
 	}
 	
-	public int[] getBitsPerSegmentArray() {
+	public int[] getTargetElementsPerSegmentArray() {
 		return bitsPerSegmentArray;
 	}
-	public void setBitsPerSegmentArray(int[] bitsPerSegmentArray) {
+	public void setTargetElementsPerSegmentArray(int[] bitsPerSegmentArray) {
 		this.bitsPerSegmentArray = bitsPerSegmentArray;
 	}
-	public String bitsPerSegmentArrayTipText() {
-		return "A value per segment defining the number of bits to set for that segment, or null if fixed";
+	public String targetElementsPerSegmentArrayTipText() {
+		return "A value per segment defining the number of target elements to set for that segment, or null if fixed";
 	}
 
-	public int getBitsPerSegment() {
+	public int getTargetElementsPerSegment() {
 		return bitsPerSegment;
 	}
-	public void setBitsPerSegment(int bitsPerSegment) {
+	public void setTargetElementsPerSegment(int bitsPerSegment) {
 		this.bitsPerSegment = bitsPerSegment;
 	}
-	public String bitsPerSegmentTipText() {
-		return "If not array-wise defined, this fixed number of bits is set per segment";
+	public String targetElementsPerSegmentTipText() {
+		return "If not defined as an array, this fixed number of target elements is set per segment";
 	}
 
 	public int getSegmentLength() {
