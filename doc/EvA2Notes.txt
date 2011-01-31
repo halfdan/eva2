@@ -9,6 +9,14 @@ EvAClient.loadSpecificModule -> EvAComAdapter.getModuleAdapter
 	-> ModuleServer.createModuleAdapter -> GenericModuleAdapter (GO/ES..) / AbstractModuleAdapter (starts Processor thread in constructor)
 	-> AbstractStatistics, GOParameters, Processor, LogPanel
 
+ToDo:
+- HasInitRange is respected by Individuals
+- initialSeed is respected by the Population - LHS for example needs
+	 to be done there because the no. individuals has a major influence. 
+This might need some clean up? Currently, the indy default init is called (which respects initialRanges)
+and after that pop.init is called which may override it by LHS or based on a seed. Thats ok so far assuming
+the user knows about it (e.g., because he reads it in the tool tip text).
+
 EvA2-Cheats:
 The following method names are reserved:
 static globalInfo: return String, used to display information about a class. Should be static to allow tool tips in the combo box.

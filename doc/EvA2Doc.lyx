@@ -7,12 +7,16 @@
 \usepackage{listings}
 \usepackage{url}
 \usepackage{a4wide}
+\usepackage{hyperref}
 
 %\declare@shorthand{english}{""}{\hskip\z@skip}
 \newcommand{\origttfamily}{}% sollte noch nicht definiert sein!
 \let\origttfamily=\ttfamily % alte Definition von \ttfamily sichern
 \renewcommand{\ttfamily}{\origttfamily \hyphenchar\font=`\-}
 \newcommand{\lyxdot}{.}
+
+%When using hyperref and referencing algorithms latex gives an error: ! Undefined control sequence. <argument> algorithm.\theHalgorithm This can be solved adding at the preamble:
+\newcommand{\theHalgorithm}{\arabic{algorithm}}
 \end_preamble
 \language english
 \inputencoding auto
@@ -7073,7 +7077,7 @@ import eva2.server.go.operators.crossover.CrossoverESDefault;
 
 \begin_layout Standard
 
-import eva2.server.go.operators.mutation.MutateESCovarianceMartixAdaption; 
+import eva2.server.go.operators.mutation.MutateESCovarianceMatrixAdaption; 
 \end_layout
 
 \begin_layout Standard
@@ -7175,7 +7179,7 @@ public class TestingPlusCMAES {
 
 \begin_layout Standard
 
-                     new MutateESCovarianceMartixAdaption(), 0.9,       
+                     new MutateESCovarianceMatrixAdaption(), 0.9,       
                      
 \end_layout
 
