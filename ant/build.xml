@@ -388,7 +388,13 @@
 	</delete>
 
 	<jar jarfile="${bin.dist.dir}/${jar.name}.jar"  basedir="${build.directory}" >
-	  <manifest> <attribute name="Main-Class" value="eva2.client.EvAClient"/> </manifest>
+	  <manifest> 
+	  	<attribute name="Main-Class" value="eva2.client.EvAClient"/>
+	  	<attribute name="Built-By" value="Center for Bioinformatics Tuebingen (ZBIT)"/>
+	  	<attribute name="SplashScreen-Image" value="resources/images/splashScreen2.png"/>
+	  	<attribute name="Xdock:name" value="EvA2"/>
+	  	<attribute name="Xdock:icon" value="resources/images/icon4.gif"/>
+	  </manifest>
 	</jar>
 	
     <copy todir="${distribution.directory}">
