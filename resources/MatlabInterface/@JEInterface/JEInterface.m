@@ -12,9 +12,12 @@ function int = JEInterface(fhandle, datatype, range, varargin)
 %   range: a 2 x dim array defining the solution subspace with lower and
 %      upper bounds; or a scalar defining the bitwidth for binary
 %      problems.
-%   defaultArgs: (optional) additional constant argument to the target
+%   initRange: in analogy to the range: a possibly different range for the
+%       initial solutions. It applies to double and int data types only.
+%       May be set equal to the range. 
+%   defaultArgs: additional constant argument to the target
 %       function, empty by default.
-%   options: (optional) options as name-value pairs defining optimization parameters,
+%   options: options as name-value pairs defining optimization parameters,
 %       especially tolerance and maximum function calls.
 %       Check makeOoptions for default settings.
 %

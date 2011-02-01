@@ -77,7 +77,9 @@ public class MatlabEvalMediator {
 //			Integer.decode()
 //			
 			if (question == null) System.err.println("Error: requesting evaluation for null array!");
-		} else System.err.println("Error, requesting evaluation for non array!"); 
+		} else { // if its not an array, it must be a BitSet
+			if (!(x instanceof BitSet)) System.err.println("Error, requesting evaluation for invalid data type! " + question.getClass()); 
+		}
 //		logMPAndSysOut("Synch requesting A requestEval " + getState());
 		synchronized(requesting) {
 //			logMPAndSysOut(" in synch requesting A requestEval " + getState());

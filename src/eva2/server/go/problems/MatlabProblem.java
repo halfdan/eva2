@@ -209,7 +209,7 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 			}
 		} else this.range=null;
 		
-		if (initialRange!=null) { // these may be Matlab objects, so I do it by foot, just to be sure not to clone them within Matlab instead of here
+		if (initRange!=null) { // these may be Matlab objects, so I do it by foot, just to be sure not to clone them within Matlab instead of here
 			this.initialRange = new double[initRange.length][initRange[0].length];
 			for (int i=0; i<this.initialRange.length; i++) {
 				for (int j=0; j<this.initialRange[0].length; j++) this.initialRange[i][j]=initRange[i][j]; 
@@ -217,7 +217,7 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 		} else this.initialRange=null;
 		
 		if (Arrays.deepEquals(initialRange, range)) initialRange=null;
-		
+
 		dataType=datType; // store the data type
 		log("### Data type is " + dataType);
 
@@ -582,18 +582,23 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 		log("retrieving initial range..., first entry: " + ((initialRange==null) ? "null" : BeanInspector.toString(initialRange[0])));
 		return initialRange;
 	}
+	
+	public String getName() {
+		return "MatlabProblem";
+	}
 
-	@Override
-	public String[] getAdditionalDataHeader() {
-		return ToolBox.appendArrays(super.getAdditionalDataHeader(), "matlabSol");
-	}
-	@Override
-	public String[] getAdditionalDataInfo() {
-		return ToolBox.appendArrays(super.getAdditionalDataInfo(), "Additional solution representation");
-	}
-	@Override
-	public Object[] getAdditionalDataValue(PopulationInterface pop) {
-		String addStr=((AbstractEAIndividual)pop.getBestIndividual()).getStringRepresentation();
-		return ToolBox.appendArrays(super.getAdditionalDataValue(pop), addStr);
-	}
+//	@Override
+//	public String[] getAdditionalDataHeader() {
+//		return ToolBox.appendArrays(super.getAdditionalDataHeader(), "matlabSol");
+//	}
+//	@Override
+//	public String[] getAdditionalDataInfo() {
+//		return ToolBox.appendArrays(super.getAdditionalDataInfo(), "Additional solution representation");
+//	}
+//	@Override
+//	public Object[] getAdditionalDataValue(PopulationInterface pop) {
+////		String addStr=((AbstractEAIndividual)pop.getBestIndividual()).getStringRepresentation();
+//		String addStr=BeanInspector.toString(pop.getBestIndividual());
+//		return ToolBox.appendArrays(super.getAdditionalDataValue(pop), addStr);
+//	}
 }

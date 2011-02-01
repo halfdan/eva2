@@ -25,16 +25,17 @@ elseif strcmp(int.dataType,eva2.server.go.problems.MatlabProblemDataTypeEnum.typ
     % integer problem
     s=sprintf('Real valued problem in %d dimensions and range %s ', int.dim, mat2str(int.range));
     disp(s);
-    size(int.range)
+    %size(int.range);
     %x=int.range(1,:)+ceil(rand(1,int.dim).*int.range(2,:)-int.range(1,:));
-    x=(int.range(:,1)+ceil(rand(int.dim,1).*int.range(:,2)-int.range(:,1)))';
+    x=(int.range(:,1)+floor(rand(int.dim,1).*(ones(size(int.range(:,2)))+int.range(:,2)-int.range(:,1))))';
 else 
     error('Invalid data type in testEvalFunc.m!'); 
 end
+
 if (isempty(int.range))
-    msg=sprintf('\nTesting value: %d, bin.: %s', x, dec2bin(x, int.dim));
+    msg=sprintf('\nTesting binary string %s', x);
 else
-    msg=sprintf('\nTesting value: %d', x);
+    msg=sprintf('\nTesting value: %s', num2str(x));
 end
 disp(msg);
 
