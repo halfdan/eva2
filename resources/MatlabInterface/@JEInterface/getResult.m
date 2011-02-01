@@ -5,9 +5,9 @@ function [sol, fit] = getResult(int)
 %       [sol, fit] = getResult(int)
 
 if (isFinished(int)) 
-    sol = int.result;
+    sol = int.result';
 else
-    sol = int.mp.getIntermediateResult();
+    sol = int.mp.getIntermediateResult()';
 end
 
 if (isempty(sol)) 
