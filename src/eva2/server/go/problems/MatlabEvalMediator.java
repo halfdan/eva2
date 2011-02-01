@@ -267,7 +267,7 @@ public class MatlabEvalMediator {
 	 * Matlab may retrieve result as Object[] containing either double[] or int[].
 	 * @return
 	 */
-	public Object[] getSolutionSet() {
+	public Object getSolutionSet() {
 //		System.err.println("getting SolSet " + ((optSolSet != null) ? optSolSet.length : 0));
 		return optSolSet;
 	}

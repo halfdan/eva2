@@ -8,6 +8,7 @@
 \usepackage{url}
 \usepackage{a4wide}
 \usepackage{hyperref}
+\usepackage{ae,aecompl}
 
 %\declare@shorthand{english}{""}{\hskip\z@skip}
 \newcommand{\origttfamily}{}% sollte noch nicht definiert sein!
@@ -2358,8 +2359,67 @@ status collapsed
 
 2
 \noun default
-, you can do this now directly from your Matlab console.
- To do so, follow these steps:
+, you can do this directly from your Matlab console.
+ 
+\end_layout
+
+\begin_layout Standard
+A Matlab function, e.g., 
+\family typewriter
+testfun.m
+\family default
+ , as in Alg.\InsetSpace ~
+
+\begin_inset LatexCommand ref
+reference "alg:Example-m-function"
+
+\end_inset
+
+ will be used to repeatedly evaluate candidate solutions.
+ Three basic data types are designated for use with the Matlab interface,
+ denoted by flags 
+\family typewriter
+'binary'
+\family default
+, 
+\family typewriter
+'int'
+\family default
+, or 
+\family typewriter
+'double'
+\family default
+.
+ Depending on the data type flag, a binary, integer, or real-valued individual
+ type will be used.
+ The matlab function will receive a char of symbols '0'/'1' or an integer
+ array or a double array, respectively.
+ 
+\end_layout
+
+\begin_layout Standard
+To run an optimization from Matlab, look at the following steps.
+ For explicit examples, look at Algs.\InsetSpace ~
+
+\begin_inset LatexCommand ref
+reference "alg:Optimization-from-Matlab-integer"
+
+\end_inset
+
+-
+\begin_inset LatexCommand ref
+reference "alg:Optimization-from-Matlab-int."
+
+\end_inset
+
+ and the exemplary target function listed in Alg.\InsetSpace ~
+
+\begin_inset LatexCommand ref
+reference "alg:Example-m-function"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Enumerate
@@ -2392,43 +2452,51 @@ Define the range of your search space using a
  matrix consisting of the lower and upper bounds of the allowed space, e.g.
  enter 
 \family typewriter
-R=[[-5 -5 -5];[5 5 5]]
+R=[-5 -5 -5;5 5 5]
 \family default
  to define a 3-dimensional real valued search space with bounds -5/5 in
- every dimension.
- If R is scalar and integer, a binary genotype will be assumed with R bits,
- delivered as a vector of 
-\emph on
-uint32
-\emph default
-'s which can be accessed, e.g., by the Matlab 
-\emph on
-bitget
-\emph default
- function within the target 
+ each dimension.
+ For binary problems, 
 \family typewriter
-fun
+R
 \family default
-.
+ should be a positive integer, e.g., 
+\family typewriter
+R=20
+\family default
+ for a binary problem with 20 bits.
 \end_layout
 
 \begin_layout Enumerate
 For a target function 
-\emph on
-fun
-\emph default
+\family typewriter
+testfun.m
+\family default
  to be minimized, create a JEInterface in Matlab by typing, for example:
  
 \family typewriter
-JI=JEInterface(@fun, R)
+JI=JEInterface(@testfun, 'double', R)
 \family default
 .
  Notice that 
-\emph on
-fun
-\emph default
+\family typewriter
+testfun.m
+\family default
  must be accessible from your working directory, it should not be placed
  in the @JEInterface directory.
+ For integer or binary target functions, replace '
+\family typewriter
+double'
+\family default
+ by 
+\family typewriter
+'int'
+\family default
+ or 
+\family typewriter
+'binary'
+\family default
+, respectively.
 \end_layout
 
 \begin_layout Enumerate
@@ -2552,18 +2620,7 @@ Some optimizers allow the solutions to get worse during the optimization
  iteration is not necessarily the best solution found during the whole run.
  Therefore, 
 \noun on
-EvA
-\begin_inset ERT
-status collapsed
-
-\begin_layout Standard
-
-~
-\end_layout
-
-\end_inset
-
-2
+EvA2
 \noun default
  saves the best solution found external to the optimizer, which is what
  is returned by the 
@@ -2601,6 +2658,193 @@ getDesc
 \end_layout
 
 \begin_layout Standard
+\begin_inset Float algorithm
+wide false
+sideways false
+status open
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Standard
+
+
+\backslash
+lstset{language=java, basicstyle=
+\backslash
+tiny, numbers=left, stepnumber=1, numbersep=5pt}
+\end_layout
+
+\begin_layout Standard
+
+
+\backslash
+begin{lstlisting}
+\end_layout
+
+\begin_layout Standard
+
+function z = testfun(x, y) 
+\end_layout
+
+\begin_layout Standard
+
+switch y     
+\end_layout
+
+\begin_layout Standard
+
+  case 1 % modulated parabola         
+\end_layout
+
+\begin_layout Standard
+
+    z(1)=sum(x.*x)+cos(x(1))*sin(x(2));     
+\end_layout
+
+\begin_layout Standard
+
+  case 2 % Branin         
+\end_layout
+
+\begin_layout Standard
+
+    z(1)=(x(2)-(5/(4*pi^2))*x(1)^2+5*x(1)/pi-6)^2+10*(1-1/(8*pi))*cos(x(1))+10;
+     
+\end_layout
+
+\begin_layout Standard
+
+  case 3 % Himmelblau         
+\end_layout
+
+\begin_layout Standard
+
+    z(1)=((x(1)^2 + x(2) - 11)^2 + (x(1) + x(2)^2 - 7)^2);     
+\end_layout
+
+\begin_layout Standard
+
+  case 4 % simple binary, minimize bits
+\end_layout
+
+\begin_layout Standard
+
+    z(1)=0;
+\end_layout
+
+\begin_layout Standard
+
+    for i=1:length(x)          
+\end_layout
+
+\begin_layout Standard
+
+      if (x(i)=='1') ; z(1)=z(1)+1; end         
+\end_layout
+
+\begin_layout Standard
+
+    end     
+\end_layout
+
+\begin_layout Standard
+
+  case 5 % simple parabola         
+\end_layout
+
+\begin_layout Standard
+
+    z(1)=sum(x.*x);
+\end_layout
+
+\begin_layout Standard
+
+end
+\end_layout
+
+\begin_layout Standard
+
+
+\backslash
+end{lstlisting}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+%
+\backslash
+begin{algorithmic}  
+\backslash
+IF {$i
+\backslash
+geq maxval$}          
+\backslash
+STATE $i
+\backslash
+gets 0$ 
+\backslash
+ELSE         
+\backslash
+IF {$i+k
+\backslash
+leq maxval$}                 
+\end_layout
+
+\begin_layout Standard
+
+%
+\backslash
+STATE $i
+\backslash
+gets i+k$          
+\backslash
+ENDIF 
+\backslash
+ENDIF  
+\backslash
+end{algorithmic}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Caption
+
+\begin_layout Standard
+Example m-function for optimization from Matlab
+\begin_inset LatexCommand label
+name "alg:Example-m-function"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 For further details, check the method overview in the list below.
  Each interface method (except the constructor) has at least a parameter
  
@@ -2613,16 +2857,22 @@ JI
 \begin_layout Description
 
 \family typewriter
-JI=JEInterface(fhandle,range[,fargs[,optionName,optionValue]*])
+JI=JEInterface(fHndl,datatype,R,[initR[,fArg[,optName,optValue]*]])
 \family default
  JEInterface constructor: 
 \emph on
-fhandle
+fHndl
 \emph default
 : handle of the target function.
  
 \emph on
-range
+datatype
+\emph default
+: give a char 'int', 'binary', or 'double' depending on the desired data
+ type.
+ 
+\emph on
+R
 \emph default
 : a 2
 \begin_inset Formula $\times$
@@ -2631,14 +2881,27 @@ range
 dim array defining the solution subspace with lower and upper bounds.
  
 \emph on
-fargs
+initR
 \emph default
-: (optional) additional static parameters to the target function as single
- list.
- Returns the new JEInterface instance.
+: For the integer and real valued case, an initialization range can optionally
+ be set, but must be a subset of 
+\emph on
+R
+\emph default
+ of same dimensions -- often it can be set equal to 
+\emph on
+R
+\emph default
+.
  
 \emph on
-optionName,optionValue
+fArg
+\emph default
+: additional static parameters to the target function as single object (scalar,
+ struct, or list).
+ 
+\emph on
+optName, optValue
 \emph default
 : optional name-value pairs defining 
 \emph on
@@ -2808,8 +3071,8 @@ JI=stopOptimize(JI)
 \family typewriter
 [sols,fits]=getMultipleResults(JI)
 \family default
- If a post processing step has been performed: retrieve the solution set
- in a matrix and calculate the corresponding fitness values.
+ After optimization or post-processing: retrieve the solution set in a matrix
+ and calculate the corresponding fitness values.
 \end_layout
 
 \begin_layout Description
@@ -3645,7 +3908,7 @@ status open
 
 
 \begin_inset LatexCommand ref
-reference "alg:Optimization-from-Matlab."
+reference "alg:Optimization-from-Matlab-integer"
 
 \end_inset
 
@@ -3687,68 +3950,33 @@ begin{lstlisting}
 
 \begin_layout Standard
 
-function z = exampleFun(x, y)
+javaaddpath '/home/username/workspace/EvA2Base.jar'
 \end_layout
 
 \begin_layout Standard
 
-switch y     
+initR=[-15 -15 -15 -15 -15; -5 -5 -5 -5 -5]; 
 \end_layout
 
 \begin_layout Standard
 
-  case 1  % modulated parabola   
+R=[-15 -15 -15 -15 -15; 15 15 15 15 15]; 
 \end_layout
 
 \begin_layout Standard
 
-    z(1)=sum(x.*x)+cos(x(1))*sin(x(2));
+JI=JEInterface(@testfun, 'int', R, initR, 5, 'Display', 'iter');  % "5"
+ indicates parabola
 \end_layout
 
 \begin_layout Standard
 
-  case 2  % Branin       
+JI=optimize(JI, 3);  % starts a Genetic Algorithm with integer-based individuals
 \end_layout
 
 \begin_layout Standard
 
-    z(1) = (x(2)-(5/(4*pi^2))*x(1)^2+5*x(1)/pi-6)^2+10*(1-1/(8*pi))*cos(x(1))+10
-;
-\end_layout
-
-\begin_layout Standard
-
-  case 3  % Himmelblau    
-\end_layout
-
-\begin_layout Standard
-
-    z(1) = ((x(1)^2 + x(2) - 11)^2 + (x(1) + x(2)^2 - 7)^2);
-\end_layout
-
-\begin_layout Standard
-
-  case 4  % simple binary
-\end_layout
-
-\begin_layout Standard
-
-    z(1)=abs(bitxor(x(1)+x(2), bin2dec('11001100')));
-\end_layout
-
-\begin_layout Standard
-
-  otherwise  % simple parabola
-\end_layout
-
-\begin_layout Standard
-
-    z(1)=sum(x.*x);
-\end_layout
-
-\begin_layout Standard
-
-end
+[sol, fit]=getResult(JI); 
 \end_layout
 
 \begin_layout Standard
@@ -3764,57 +3992,13 @@ end{lstlisting}
 \end_layout
 
 \begin_layout Standard
-\begin_inset ERT
-status collapsed
-
-\begin_layout Standard
-
-%
-\backslash
-begin{algorithmic}  
-\backslash
-IF {$i
-\backslash
-geq maxval$}          
-\backslash
-STATE $i
-\backslash
-gets 0$ 
-\backslash
-ELSE         
-\backslash
-IF {$i+k
-\backslash
-leq maxval$}                 
-\end_layout
-
-\begin_layout Standard
-
-%
-\backslash
-STATE $i
-\backslash
-gets i+k$          
-\backslash
-ENDIF 
-\backslash
-ENDIF  
-\backslash
-end{algorithmic}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
 \begin_inset Caption
 
 \begin_layout Standard
-Example m-function for optimization from Matlab
+Optimization from the Matlab console, integer example with specific initializati
+on range.
 \begin_inset LatexCommand label
-name "alg:Example-m-function"
+name "alg:Optimization-from-Matlab-integer"
 
 \end_inset
 
@@ -3864,18 +4048,110 @@ javaaddpath '/home/username/workspace/EvA2Base.jar'
 
 \begin_layout Standard
 
-R=[[-5 -5]; [5 5]];
+R=20; 
 \end_layout
 
 \begin_layout Standard
 
-JI=JEInterface(@exampleFun, R, 3, 'Display', 'iter', 'TolX', 1e-6, 'TolFun',
- 1e-6);
+JI=JEInterface(@testfun, 'binary', R, R, 4, 'Display', 'iter'); % "4" indicates
+ minimize bits
 \end_layout
 
 \begin_layout Standard
 
-JI=optimize(JI,4);
+JI=optimize(JI, 3);  % start a default Genetic Algorithm
+\end_layout
+
+\begin_layout Standard
+
+[sol, fit]=getResult(JI); 
+\end_layout
+
+\begin_layout Standard
+
+[finalPop, finalFit]=getMultipleResults(JI);
+\end_layout
+
+\begin_layout Standard
+
+
+\backslash
+end{lstlisting}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Caption
+
+\begin_layout Standard
+Optimization from the Matlab console, binary example.
+\begin_inset LatexCommand label
+name "alg:Optimization-from-Matlab-binary"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float algorithm
+wide false
+sideways false
+status open
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Standard
+
+
+\backslash
+lstset{language=java, basicstyle=
+\backslash
+tiny, numbers=left, stepnumber=1, numbersep=5pt}
+\end_layout
+
+\begin_layout Standard
+
+
+\backslash
+begin{lstlisting}
+\end_layout
+
+\begin_layout Standard
+
+javaaddpath '/home/username/workspace/EvA2Base.jar'
+\end_layout
+
+\begin_layout Standard
+
+R=[-5 -5 -5; 5 5 5];
+\end_layout
+
+\begin_layout Standard
+
+JI=JEInterface(@testfun, 'double', R, R, 1, 'Display', 'iter', 'TolX', 0,
+ 'TolFun', 0); 
+\end_layout
+
+\begin_layout Standard
+
+JI=optimize(JI, 4);  % starts a default Particle Swarm Optimization run
 \end_layout
 
 \begin_layout Standard
@@ -3896,57 +4172,12 @@ end{lstlisting}
 \end_layout
 
 \begin_layout Standard
-\begin_inset ERT
-status collapsed
-
-\begin_layout Standard
-
-%
-\backslash
-begin{algorithmic}  
-\backslash
-IF {$i
-\backslash
-geq maxval$}          
-\backslash
-STATE $i
-\backslash
-gets 0$ 
-\backslash
-ELSE         
-\backslash
-IF {$i+k
-\backslash
-leq maxval$}                 
-\end_layout
-
-\begin_layout Standard
-
-%
-\backslash
-STATE $i
-\backslash
-gets i+k$          
-\backslash
-ENDIF 
-\backslash
-ENDIF  
-\backslash
-end{algorithmic}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
 \begin_inset Caption
 
 \begin_layout Standard
-Optimization from the Matlab console
+Optimization from the Matlab console, real-valued example.
 \begin_inset LatexCommand label
-name "alg:Optimization-from-Matlab."
+name "alg:Optimization-from-Matlab-int."
 
 \end_inset
 
