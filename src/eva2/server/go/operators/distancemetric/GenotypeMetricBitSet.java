@@ -34,6 +34,10 @@ public class GenotypeMetricBitSet implements InterfaceDistanceMetric, java.io.Se
      * @return double
      */
     public double distance(AbstractEAIndividual indy1, AbstractEAIndividual indy2) {
+    	return GenotypeMetricBitSet.dist(indy1, indy2);
+    }
+    
+    public static double dist(AbstractEAIndividual indy1, AbstractEAIndividual indy2) {
         BitSet      dIndy1, dIndy2;
         double      result = 0;
         int         length = 0;

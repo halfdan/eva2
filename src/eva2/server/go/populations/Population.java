@@ -17,6 +17,7 @@ import eva2.server.go.PopulationInterface;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.AbstractEAIndividualComparator;
 import eva2.server.go.individuals.InterfaceDataTypeDouble;
+import eva2.server.go.individuals.InterfaceESIndividual;
 import eva2.server.go.individuals.InterfaceGAIndividual;
 import eva2.server.go.operators.distancemetric.EuclideanMetric;
 import eva2.server.go.operators.distancemetric.InterfaceDistanceMetric;
@@ -1788,19 +1789,27 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     	double maxDist = Double.MIN_VALUE;
     	double minDist = Double.MAX_VALUE;
     	
-        for (int i = 0; i < pop.size(); i++) {
-        	for (int j = i+1; j < pop.size(); j++) {
-        		try {
-        			if (metric == null) d = EuclideanMetric.euclideanDistance(AbstractEAIndividual.getDoublePositionShallow(pop.get(i)), 
-        					AbstractEAIndividual.getDoublePositionShallow(pop.get(j)));
-        			else d = metric.distance((AbstractEAIndividual)pop.get(i), (AbstractEAIndividual)pop.get(j));
-        		} catch (Exception e) {
-        			EVAERROR.errorMsgOnce("Exception when calculating population measures ... possibly no double position available?");
-        			d = 0;
-        		}
-        		distSum += d;
-                if (d < minDist) minDist = d;
-                if (d > maxDist) maxDist = d;
+    	for (int i = 0; i < pop.size(); i++) {
+    		for (int j = i+1; j < pop.size(); j++) {
+    			try {
+    				if (metric == null) {
+    					if (pop.get(i) instanceof InterfaceESIndividual) { 
+    						// short cut if the distance may directly work on the genotype 
+    						d = EuclideanMetric.euclideanDistance(AbstractEAIndividual.getDoublePositionShallow(pop.get(i)), 
+    	    						AbstractEAIndividual.getDoublePositionShallow(pop.get(j)));
+    					} else {
+    						d = PhenotypeMetric.dist(pop.get(i), pop.get(j));
+    					}
+    				} else {
+    					d = metric.distance((AbstractEAIndividual)pop.get(i), (AbstractEAIndividual)pop.get(j));
+    				}
+    			} catch (Exception e) {
+    				EVAERROR.errorMsgOnce("Exception when calculating population measures ... possibly no double position available?");
+    				d = 0;
+    			}
+    			distSum += d;
+    			if (d < minDist) minDist = d;
+    			if (d > maxDist) maxDist = d;
             }
         }
         res[1] = minDist;

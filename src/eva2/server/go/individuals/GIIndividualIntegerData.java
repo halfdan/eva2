@@ -21,7 +21,7 @@ public class GIIndividualIntegerData extends AbstractEAIndividual implements Int
     protected int[]                     m_Genotype;
 
     public GIIndividualIntegerData() {
-        this.m_MutationProbability  = 0.1;
+        this.m_MutationProbability  = 0.2;
         this.m_MutationOperator     = new MutateDefault();
         this.m_CrossoverProbability = 0.7;
         this.m_CrossoverOperator    = new CrossoverGIDefault();
@@ -276,7 +276,20 @@ public class GIIndividualIntegerData extends AbstractEAIndividual implements Int
 
     public void defaultInit(InterfaceOptimizationProblem prob) {
     	int[][] range = m_Range;
-        if ((prob != null) && (prob instanceof InterfaceHasInitRange) && (((InterfaceHasInitRange)prob).getInitRange()!=null)) range = (int[][])((InterfaceHasInitRange)prob).getInitRange();
+        if ((prob != null) && (prob instanceof InterfaceHasInitRange) && (((InterfaceHasInitRange)prob).getInitRange()!=null)) {
+        	Object rng = ((InterfaceHasInitRange)prob).getInitRange();
+        	if (rng instanceof double[][]) {
+        		double[][] dblRng = (double[][])rng;
+        		range = new int[dblRng.length][dblRng[0].length];
+        		for (int i=0; i<range.length; i++) {
+        			for (int j=0; j<range[0].length ; j++) {
+        				range[i][j]=(int)dblRng[i][j];
+        			}
+        		}
+        	} else if (rng instanceof int[][]){
+        		range = (int[][])rng;
+        	} else System.err.println("Error, invalid initial range provided by " + prob + ", expecting int[][] or double[][], disregarding initialization range");
+        }
     	
         for (int i = 0; i < this.m_Genotype.length; i++) {
             this.m_Genotype[i] = RNG.randomInt(range[i][0], range[i][1]);
