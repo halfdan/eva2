@@ -1,3 +1,7 @@
+%% Usage examples for the EvA2 to Matlab interface.
+%  Author: Marcel Kronfeld, Chair for Cognitive Systems, University of Tuebingen, Germany
+%  URL: http://www.ra.cs.uni-tuebingen.de/software/EvA2/
+
 function z = testfun(x, y)
 switch y
     case 1 % modulated parabola

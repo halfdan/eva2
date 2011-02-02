@@ -1,11 +1,12 @@
-clear all
-clear classes
+%% Usage examples for the EvA2 to Matlab interface.
+%  Author: Marcel Kronfeld, Chair for Cognitive Systems, University of Tuebingen, Germany
+%  URL: http://www.ra.cs.uni-tuebingen.de/software/EvA2/
 
 % adapt the path settings!
-addpath '/home/mkron/workspace/JE2Base/resources/MatlabInterface'
-javaaddpath '/home/mkron/workspace/JE2Base/build'
-addpath 'C:\Dokumente und Einstellungen\mkron\workspace\JE2Base\resources\MatlabInterface'
-javaaddpath 'C:\Dokumente und Einstellungen\mkron\workspace\JE2Base\build'
+addpath '/home/user/workspace/MatlabInterface' 	% .. directory containing @JEInterface
+javaaddpath '/home/user/workspace/EvA2Base.jar'  	% .. the EvA2 base package
+% addpath 'C:\Dokumente und Einstellungen\user\workspace\MatlabInterface'	% Windows will look differently
+% javaaddpath 'C:\Dokumente und Einstellungen\user\workspace\EvA2Base.jar'	% Windows will look differently
 
 % real valued case
 R=[-5 -5 -5; 5 5 5];
@@ -28,4 +29,3 @@ JI=JEInterface(@testfun, 'int', R, initR, 5, 'Display', 'iter');
 JI=optimize(JI, 3);
 [sol, fit]=getResult(JI);
 finalPop=getMultipleResults(JI);
-
