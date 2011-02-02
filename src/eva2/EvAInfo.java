@@ -9,6 +9,10 @@ import eva2.tools.BasicResourceLoader;
  * Main product and version information strings.
  * 
  * --- Changelog
+ * 2.046: Adaptions to the MatlabInterface: explicit data types are used now, added integer problem support.
+ * 			Additional Integer operators: segment-wise mutation and crossover. Added an abstraction over individual
+ * 			initialization methods. Added the ERPStarter class which is an example for running a csv-configured 
+ * 			optimization. Some bug-fixes and clean-ups.
  * 2.045: Added MOOCMAES (de Paly); compatibility with Java 1.5 (Draeger); Revision of the statistics class
  * 			with improved pipelining of data (InterfaceAdditionalPopulationInformer); improved FunctionArea
  * 			concerning history, labels, legend and graph coloring; improved StringSelection; restructured
