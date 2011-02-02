@@ -6,6 +6,7 @@
 \begin_preamble
 \usepackage{listings}
 \usepackage{url}
+\usepackage{datetime}
 \usepackage{a4wide}
 \usepackage{hyperref}
 \usepackage{ae,aecompl}
@@ -18,6 +19,18 @@
 
 %When using hyperref and referencing algorithms latex gives an error: ! Undefined control sequence. <argument> algorithm.\theHalgorithm This can be solved adding at the preamble:
 \newcommand{\theHalgorithm}{\arabic{algorithm}}
+
+\lstset{%
+language=java,
+numbers=left,
+stepnumber=1,
+numbersep=5pt,
+tabsize=3,
+breaklines=true,
+basicstyle=\tiny\ttfamily,
+framerule=0pt,
+columns=flexible
+}
 \end_preamble
 \language english
 \inputencoding auto
@@ -165,7 +178,22 @@ status open
 
 \end_inset
 
-Last updated: 2010-08-16
+Last updated: 
+\begin_inset ERT
+status open
+
+\begin_layout Standard
+
+
+\backslash
+ddmmyyyydate 
+\backslash
+today
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -192,8 +220,9 @@ We like to thank all former and current developers of
 EvA:
 \noun default
  Alexander Hasel, Roland Baumann, Karsten Jung, Jürgen Wakunda, Holger Ulmer,
- Felix Streichert, Christian Spieth, Hannes Planatscher, Michael de Paly,
- Marcel Kronfeld and all former students involved in the work.
+ Felix Streichert, Christian Spieth, Hannes Planatscher, Andreas Dräger,
+ Michael de Paly, Marcel Kronfeld and all former students involved in the
+ work.
 \end_layout
 
 \begin_layout Standard
@@ -228,12 +257,6 @@ hyphenation{Ab-stract-Op-ti-mi-za-tion-Prob-lem Ab-stract-Prob-lem-Double
 
 \end_layout
 
-\begin_layout Standard
-
-\newpage
-
-\end_layout
-
 \begin_layout Chapter
 Introduction
 \end_layout
@@ -242,22 +265,7 @@ Introduction
 
 \emph on
 \noun on
-EvA
-\emph default
-
-\begin_inset ERT
-status collapsed
-
-\begin_layout Standard
-
-~
-\end_layout
-
-\end_inset
-
-
-\emph on
-2
+EvA2
 \emph default
 \noun default
  (an 
@@ -275,7 +283,7 @@ lgorithms framework, revised version
 ) is a comprehensive heuristic optimization framework with emphasis on Evolution
 ary Algorithms implemented in Java
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Standard
 
@@ -316,18 +324,7 @@ key "Wakunda97EvA"
 \begin_layout Standard
 
 \noun on
-EvA
-\begin_inset ERT
-status collapsed
-
-\begin_layout Standard
-
-~
-\end_layout
-
-\end_inset
-
-2
+EvA2
 \noun default
  integrates several derivation free optimization methods, preferably population
  based, such as Evolution Strategies, Genetic Algorithms, Differential Evolution
@@ -338,18 +335,7 @@ rt Hill Climbing or Simulated Annealing.
 \begin_layout Standard
 
 \noun on
-EvA
-\begin_inset ERT
-status collapsed
-
-\begin_layout Standard
-
-~
-\end_layout
-
-\end_inset
-
-2
+EvA2
 \noun default
  aims at two groups of users.
  Firstly, the applying user who does not know much about the theory of Evolution
@@ -360,19 +346,30 @@ ary Algorithms, but wants to use them to solve a specific application problem.
  The latter usually knows more about evolutionary or heuristic optimization
  and is able to extend 
 \noun on
-EvA 2
+EvA2
 \noun default
  by adding specific optimization strategies or solution representations.
+ Explicit usage examples for 
+\noun on
+EvA2 
+\noun default
+are given in 
+\begin_inset LatexCommand cite
+key "Kron10EvA2"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
 This document is, as the title says, not an extensive manual on the 
 \noun on
-EvA 2
+EvA2
 \noun default
  framework, but instead a short introduction hoping to ease access to 
 \noun on
-EvA 2.
+EvA2.
 
 \noun default
  Thus, the document is mainly sketched along use-cases and tries to deliver
@@ -387,18 +384,7 @@ EvA
  We hope that this document will, anyways, be a valuable helper in working
  with 
 \noun on
-EvA
-\begin_inset ERT
-status collapsed
-
-\begin_layout Standard
-
-~
-\end_layout
-
-\end_inset
-
-2
+EvA2
 \noun default
 .
 \end_layout
@@ -458,18 +444,7 @@ reference "sec:External-Interfaces"
 
  contains hints on how to use 
 \noun on
-EvA
-\begin_inset ERT
-status collapsed
-
-\begin_layout Standard
-
-~
-\end_layout
-
-\end_inset
-
-2
+EvA2
 \noun default
  with external programs, e.g.
  MATLAB
@@ -561,31 +536,7 @@ name "sec:Quick-Start"
 The following sections give a short introduction in the main aspects of
  using
 \noun on
- EvA
-\begin_inset ERT
-status collapsed
-
-\begin_layout Standard
-
-~
-\end_layout
-
-\end_inset
-
-
-\begin_inset ERT
-status collapsed
-
-\begin_layout Standard
-
-
-\backslash
--
-\end_layout
-
-\end_inset
-
-2
+ EvA2
 \noun default
 , explaining the possibilities accessible by the GUI.
  Even if you want to use the API without the GUI, we recommend to try some
@@ -596,9 +547,9 @@ status collapsed
 \begin_layout Section
 Running 
 \noun on
-EvA
+EvA2
 \noun default
- 2
+
 \begin_inset LatexCommand label
 name "sub:Quickly-Running-JavaEvA"
 
@@ -630,24 +581,11 @@ EvA2Base.jar
  and start the GUI.
  The jar-file can be downloaded from the 
 \noun on
-EvA
-\begin_inset ERT
-status collapsed
-
-\begin_layout Standard
-
-
-\backslash
--
-\end_layout
-
-\end_inset
-
-2
+EvA2
 \noun default
  homepage
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Standard
 http://www.ra.cs.uni-tuebingen.de/software/EvA2/
@@ -657,7 +595,7 @@ http://www.ra.cs.uni-tuebingen.de/software/EvA2/
 
  
 \begin_inset LatexCommand cite
-key "JE2HomePage"
+key "EvA2HomePage"
 
 \end_inset
 
@@ -701,18 +639,7 @@ $
 \emph default
  is also possible with 
 \noun on
-EvA
-\begin_inset ERT
-status collapsed
-
-\begin_layout Standard
-
-~
-\end_layout
-
-\end_inset
-
-2
+EvA2
 \noun default
  base, but does not allow adding further jar-packages on the classpath.
  Therefore, we encourage using the method given above.
@@ -751,18 +678,7 @@ Some Words on the Words
 \begin_layout Standard
 As 
 \noun on
-EvA
-\begin_inset ERT
-status collapsed
-
-\begin_layout Standard
-
-~
-\end_layout
-
-\end_inset
-
-2
+EvA2
 \noun default
  is mainly about Evolutionary and Heuristic Optimization, some of the terms
  and notions are borrowed from the area and used in this document.
@@ -958,8 +874,10 @@ sideways false
 status open
 
 \begin_layout Standard
+\noindent
+\align center
 \begin_inset Graphics
-	filename /afs/cs.uni-tuebingen.de/home/mkron/workspace/JE2Base/doc/pics/screenshot-workb2.gif
+	filename /afs/cs.uni-tuebingen.de/home/mkron/workspace/JE2Base/doc/pics/screenshot-workb-2011.gif
 	lyxscale 60
 	width 45text%
 
@@ -969,7 +887,7 @@ status open
 \InsetSpace ~
 
 \begin_inset Graphics
-	filename /afs/cs.uni-tuebingen.de/home/mkron/workspace/JE2Base/doc/pics/screenshot-workb-stats2.gif
+	filename /afs/cs.uni-tuebingen.de/home/mkron/workspace/JE2Base/doc/pics/screenshot-stat-2011.gif
 	lyxscale 60
 	width 45text%
 
@@ -1095,18 +1013,7 @@ Seed
 \shape default
  As most algorithms in 
 \noun on
-EvA
-\begin_inset ERT
-status collapsed
-
-\begin_layout Standard
-
-~
-\end_layout
-
-\end_inset
-
-2
+EvA2
 \noun default
  incorporate stochastic components, the random seed is critical for the
  specific outcome of a run.
@@ -1179,6 +1086,33 @@ Threshold
 \begin_layout Description
 
 \shape italic
+Field
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+Selection
+\shape default
+ The data fields to be displayed can be selected.
+ Typically, the current and best fitness are of most important, but other
+ fields such as average distance of candidate solutions may be of interest.
+ Since some data fields are complex types, such as arrays, they are not
+ plotted in the graph window but dumped to the text window if marked.
+ Depending on the problem and optimizer in use, different data fields may
+ be available.
+ Specific information on the data fields is given by tool tips in the applicatio
+n.
+\end_layout
+
+\begin_layout Description
+
+\shape italic
 Number
 \begin_inset ERT
 status collapsed
@@ -1210,9 +1144,9 @@ Multi-runs
 \end_layout
 
 \begin_layout Description
-Additional
-\shape italic
 
+\shape italic
+Output
 \begin_inset ERT
 status collapsed
 
@@ -1223,11 +1157,7 @@ status collapsed
 
 \end_inset
 
-
-\shape default
-Information
-\shape italic
-
+All
 \begin_inset ERT
 status collapsed
 
@@ -1238,11 +1168,32 @@ status collapsed
 
 \end_inset
 
+Fields
+\begin_inset ERT
+status collapsed
 
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+As
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+~
+\end_layout
+
+\end_inset
+
+Text
 \shape default
-Output In addition to typical data output such as best and average fitness
- at a time, some problems may be requested to display additional information
- in textual form, usually a representation of the best individual.
+ In some cases it is helpful to show only selected data fields graphically
+ but dump all data fields to the text listeners, e.g., for external analysis.
 \end_layout
 
 \begin_layout Description
@@ -1268,9 +1219,9 @@ To
 \end_layout
 
 \begin_layout Description
-Output
-\shape italic
 
+\shape italic
+Output
 \begin_inset ERT
 status collapsed
 
@@ -1281,10 +1232,9 @@ status collapsed
 
 \end_inset
 
-
+Verbosity
 \shape default
-Verbosity Select the verbosity of the textual output, possible settings
- are 
+ Select the verbosity of the textual output, possible settings are 
 \begin_inset Quotes eld
 \end_inset
 
@@ -1329,9 +1279,9 @@ all iterations
 \end_layout
 
 \begin_layout Description
+
+\shape italic
 Verbosity
-\shape italic
-
 \begin_inset ERT
 status collapsed
 
@@ -1342,11 +1292,7 @@ status collapsed
 
 \end_inset
 
-
-\shape default
 Parameter
-\shape italic
-
 \begin_inset ERT
 status collapsed
 
@@ -1357,9 +1303,9 @@ status collapsed
 
 \end_inset
 
-
+k
 \shape default
-k Define the interval parameter for the 
+ Define the interval parameter for the 
 \begin_inset Quotes eld
 \end_inset
 
@@ -1368,54 +1314,6 @@ k-th iterations
 \end_inset
 
  setting of the output verbosity, by which intermediate data is printed.
-\end_layout
-
-\begin_layout Description
-
-\shape italic
-Fitness
-\begin_inset ERT
-status collapsed
-
-\begin_layout Standard
-
-~
-\end_layout
-
-\end_inset
-
-to
-\begin_inset ERT
-status collapsed
-
-\begin_layout Standard
-
-~
-\end_layout
-
-\end_inset
-
-Plot
-\shape default
- Define which fitness values to be displayed in the plot window after every
- generation.
- Select 
-\begin_inset Quotes eld
-\end_inset
-
-best
-\begin_inset Quotes erd
-\end_inset
-
-, 
-\begin_inset Quotes eld
-\end_inset
-
-worst
-\begin_inset Quotes erd
-\end_inset
-
- or both.
 \end_layout
 
 \begin_layout Standard
@@ -1481,10 +1379,12 @@ sideways false
 status open
 
 \begin_layout Standard
+\noindent
+\align center
 \begin_inset Graphics
 	filename pics/screenshot-plot-window.jpg
 	lyxscale 60
-	width 55text%
+	width 52text%
 
 \end_inset
 
@@ -1652,15 +1552,15 @@ status collapsed
 
 \shape italic
 \noun default
-JPG
+PNG
 \shape default
- Create a JPEG image of the plot window and save it to a file.
+ Create a PNG image of the plot window and save it to a file.
 \end_layout
 
 \begin_layout Subsection
 Basic Optimization using 
 \noun on
-EvA 2
+EvA2
 \noun default
 
 \begin_inset LatexCommand label
@@ -1674,18 +1574,7 @@ name "sub:Basic-Optimization-GUI"
 \begin_layout Standard
 To get a grip on 
 \noun on
-EvA
-\begin_inset ERT
-status collapsed
-
-\begin_layout Standard
-
-~
-\end_layout
-
-\end_inset
-
-2
+EvA2
 \noun default
  and what optimization means, it is best to run some experiments on the
  implemented standard benchmarks.
@@ -1736,18 +1625,7 @@ Notice, however, that by changing from the F1-problem to the B1-problem,
  are based on binary vectors, while F1 uses double vectors.
  Be aware, that not all optimizers in 
 \noun on
-EvA
-\begin_inset ERT
-status collapsed
-
-\begin_layout Standard
-
-~
-\end_layout
-
-\end_inset
-
-2
+EvA2
 \noun default
  are built to work on all types of indviduals.
 \end_layout
@@ -1820,6 +1698,8 @@ sideways false
 status open
 
 \begin_layout Standard
+\noindent
+\align center
 \begin_inset Graphics
 	filename pics/cluster-graph.eps
 	lyxscale 50
@@ -1945,18 +1825,7 @@ Additional Packages
 \begin_layout Standard
 To add additional packages to use them with the 
 \noun on
-EvA
-\begin_inset ERT
-status collapsed
-
-\begin_layout Standard
-
-~
-\end_layout
-
-\end_inset
-
-2
+EvA2
 \noun default
  base package, you can just add them to the class path.
  For instance, to use the additional 
@@ -1985,18 +1854,7 @@ You should now be able to select from a larger set of optimization problems
  (':' in GNU/Linux).
  To add your own classes to the 
 \noun on
-EvA
-\begin_inset ERT
-status collapsed
-
-\begin_layout Standard
-
-~
-\end_layout
-
-\end_inset
-
-2
+EvA2
 \noun default
  framework (see Sec.
 \begin_inset ERT
@@ -2037,18 +1895,7 @@ eva2.client.EvAClient
 \begin_layout Standard
 Note that 
 \noun on
-EvA
-\begin_inset ERT
-status collapsed
-
-\begin_layout Standard
-
-~
-\end_layout
-
-\end_inset
-
-2
+EvA2
 \noun default
  will search all classpath entries for compatible classes, so you should
  only add those packages which are really required.
@@ -2071,18 +1918,7 @@ status collapsed
 \noun default
  GUI, they have to be assigned the same package tree as the associated 
 \noun on
-EvA
-\begin_inset ERT
-status collapsed
-
-\begin_layout Standard
-
-~
-\end_layout
-
-\end_inset
-
-2
+EvA2
 \noun default
  operators.
  Check Sec.
@@ -2136,6 +1972,8 @@ sideways false
 status open
 
 \begin_layout Standard
+\noindent
+\align center
 \begin_inset Graphics
 	filename pics/screenshot-ExtRun.jpg
 	width 40col%
@@ -2268,18 +2106,7 @@ $ _
 \begin_layout Standard
 
 \noun on
-EvA
-\begin_inset ERT
-status collapsed
-
-\begin_layout Standard
-
-~
-\end_layout
-
-\end_inset
-
-2
+EvA2
 \noun default
  starts a system process to run the external program and converts input/output
  using String objects, which is by itself rather slow.
@@ -2287,18 +2114,7 @@ status collapsed
  be negligible if the runtime of the calculation is of higher order of magnitude.
  It may also just come in handy if you want to try what 
 \noun on
-EvA
-\begin_inset ERT
-status collapsed
-
-\begin_layout Standard
-
-~
-\end_layout
-
-\end_inset
-
-2
+EvA2
 \noun default
  might do for you.
 \end_layout
@@ -2326,38 +2142,12 @@ name "sub:JEInterface-Quick-Intro"
 \begin_layout Standard
 To tackle optimization problems already existing in Matlab, we provide a
  simple Matlab interface comprising in a Matlab class definition.
- The Matlab m-files are located in the EvA
-\noun on
-
-\begin_inset ERT
-status collapsed
-
-\begin_layout Standard
-
-~
-\end_layout
-
-\end_inset
-
-
-\noun default
-2 resources folder of the distributed binary jar or can be downloaded from
- the homepage.
+ The Matlab m-files are located in the EvA2 resources folder of the distributed
+ binary jar or can be downloaded from the homepage.
  If you have an existing Matlab function you want to optimize with some
  standard algorithms implemented in 
 \noun on
-EvA
-\begin_inset ERT
-status collapsed
-
-\begin_layout Standard
-
-~
-\end_layout
-
-\end_inset
-
-2
+EvA2
 \noun default
 , you can do this directly from your Matlab console.
  
@@ -2665,7 +2455,7 @@ status open
 
 \begin_layout Standard
 \begin_inset ERT
-status open
+status collapsed
 
 \begin_layout Standard
 
@@ -2769,51 +2559,6 @@ end
 
 \backslash
 end{lstlisting}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset ERT
-status collapsed
-
-\begin_layout Standard
-
-%
-\backslash
-begin{algorithmic}  
-\backslash
-IF {$i
-\backslash
-geq maxval$}          
-\backslash
-STATE $i
-\backslash
-gets 0$ 
-\backslash
-ELSE         
-\backslash
-IF {$i+k
-\backslash
-leq maxval$}                 
-\end_layout
-
-\begin_layout Standard
-
-%
-\backslash
-STATE $i
-\backslash
-gets i+k$          
-\backslash
-ENDIF 
-\backslash
-ENDIF  
-\backslash
-end{algorithmic}
 \end_layout
 
 \end_inset
@@ -3245,18 +2990,7 @@ setResultJE
 \family default
  (Internal) Write-back method required internally by 
 \noun on
-EvA
-\begin_inset ERT
-status collapsed
-
-\begin_layout Standard
-
-~
-\end_layout
-
-\end_inset
-
-2
+EvA2
 \noun default
 .
  Calling it by hand may interfere with optimization.
@@ -3269,18 +3003,7 @@ setResultArrayJE
 \family default
  (Internal) Write-back method required internally by 
 \noun on
-EvA
-\begin_inset ERT
-status collapsed
-
-\begin_layout Standard
-
-~
-\end_layout
-
-\end_inset
-
-2
+EvA2
 \noun default
 .
  Calling it by hand may interfere with optimization.
@@ -4207,18 +3930,7 @@ name "sec:Quickly-Adding-Your-Problem"
 \begin_layout Standard
 It is easy to integrate your own Java-coded problem in 
 \noun on
-EvA
-\begin_inset ERT
-status collapsed
-
-\begin_layout Standard
-
-~
-\end_layout
-
-\end_inset
-
-2
+EvA2
 \noun default
  and optimize it using the GUI.
  Preconditions for the quick way are only the two following ones:
@@ -4246,18 +3958,7 @@ Java-Power
 
  to implement a target function and optimize it in 
 \noun on
-EvA
-\begin_inset ERT
-status collapsed
-
-\begin_layout Standard
-
-~
-\end_layout
-
-\end_inset
-
-2
+EvA2
 \noun default
 .
  Just follow these steps:
@@ -4335,34 +4036,12 @@ Problem
 .
  Both base types can be used directly from the 
 \noun on
-EvA
-\begin_inset ERT
-status collapsed
-
-\begin_layout Standard
-
-~
-\end_layout
-
-\end_inset
-
-2
+EvA2
 \noun default
  jar-file (which of course needs to be on the java classpath - in Eclipse,
  for instance, add the 
 \noun on
-EvA
-\begin_inset ERT
-status collapsed
-
-\begin_layout Standard
-
-~
-\end_layout
-
-\end_inset
-
-2
+EvA2
 \noun default
  jar as 
 \begin_inset Quotes eld
@@ -4427,18 +4106,7 @@ bs)
 \begin_layout Itemize
 Start the 
 \noun on
-EvA
-\begin_inset ERT
-status collapsed
-
-\begin_layout Standard
-
-~
-\end_layout
-
-\end_inset
-
-2
+EvA2
 \noun default
  GUI.
  
@@ -4458,7 +4126,7 @@ SimpleProblemWrapper
 \end_layout
 
 \begin_layout Chapter
-Using the EvA 2 API
+Using the EvA2 API
 \begin_inset LatexCommand label
 name "sec:Using-the-API"
 
@@ -4470,18 +4138,7 @@ name "sec:Using-the-API"
 \begin_layout Standard
 This chapter describes how to incorporate 
 \noun on
-EvA
-\begin_inset ERT
-status collapsed
-
-\begin_layout Standard
-
-~
-\end_layout
-
-\end_inset
-
-2
+EvA2
 \noun default
  into existing projects through the Java API.
 \end_layout
@@ -4505,18 +4162,7 @@ e in general.
  Therefore we give two customization examples using the API.
  In any case, a necessary step is to extend a 
 \noun on
-EvA
-\begin_inset ERT
-status collapsed
-
-\begin_layout Standard
-
-~
-\end_layout
-
-\end_inset
-
-2
+EvA2
 \noun default
  base class constituting the target function.
  You may, again, use the simpleprobs package described in Sec.
@@ -4569,18 +4215,7 @@ name "sub:The-Abstract-Problem-classes"
 The problem class subtree encapsulates properties of target functions that
  can be directly optimized by the 
 \noun on
-EvA
-\begin_inset ERT
-status collapsed
-
-\begin_layout Standard
-
-~
-\end_layout
-
-\end_inset
-
-2
+EvA2
 \noun default
  framework and starts at the 
 \family typewriter
@@ -4606,18 +4241,7 @@ the problem evaluates a set of potential solutions.
 \begin_layout Standard
 To implement your own target function in 
 \noun on
-EvA
-\begin_inset ERT
-status collapsed
-
-\begin_layout Standard
-
-~
-\end_layout
-
-\end_inset
-
-2
+EvA2
 \noun default
 , we recommend inheriting from 
 \family typewriter
@@ -5360,7 +4984,7 @@ reference "alg:OptFact-Usage-example"
 \begin_inset Float algorithm
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Standard
 \begin_inset ERT
@@ -5370,93 +4994,7 @@ status open
 
 
 \backslash
-lstset{language=java, basicstyle=
-\backslash
-tiny, numbers=left, stepnumber=1, numbersep=5pt}
-\end_layout
-
-\begin_layout Standard
-
-
-\backslash
-begin{lstlisting}
-\end_layout
-
-\begin_layout Standard
-
-import eva2.OptimizerFactory;
-\end_layout
-
-\begin_layout Standard
-
-import eva2.server.go.problems.F1Problem;
-\end_layout
-
-\begin_layout Standard
-
-\end_layout
-
-\begin_layout Standard
-
-public class TestingF1PSO {
-\end_layout
-
-\begin_layout Standard
-
-  public static void main(String[] args) {
-\end_layout
-
-\begin_layout Standard
-
-    F1Problem f1 = new F1Problem(); 
-\end_layout
-
-\begin_layout Standard
-
-    double[] sol;
-\end_layout
-
-\begin_layout Standard
-
-    OptimizerFactory.setEvaluationTerminator(50000);
-\end_layout
-
-\begin_layout Standard
-
-    sol = OptimizerFactory.optimizeToDouble(OptimizerFactory.PSO, f1, null);
-\end_layout
-
-\begin_layout Standard
-
-    System.out.println("Found solution: ");
-\end_layout
-
-\begin_layout Standard
-
-    for (int i=0; i<f1.getProblemDimension(); i++) System.out.print(sol[i]
- + " ");
-\end_layout
-
-\begin_layout Standard
-
-    System.out.println();
-\end_layout
-
-\begin_layout Standard
-
-  };
-\end_layout
-
-\begin_layout Standard
-
-}
-\end_layout
-
-\begin_layout Standard
-
-
-\backslash
-end{lstlisting}
+lstinputlisting{../src/eva2/examples/TestingF1PSO.java}
 \end_layout
 
 \end_inset
@@ -6666,7 +6204,7 @@ For a usage example that creates and sets a terminator which stops if either
 \begin_inset Formula $20,000$
 \end_inset
 
- evaluations have been performed or both best fitness and phenotype converged
+ evaluations have been performed or both best fitness and phenotype stagnate
  for 
 \begin_inset Formula $1,000$
 \end_inset
@@ -6689,8 +6227,16 @@ reference "alg:Comb-terminator"
 \end_inset
 
 .
- After a combined termination, one might want to know why the run actually
- stopped.
+ Note that 
+\begin_inset Quotes eld
+\end_inset
+
+convergence
+\begin_inset Quotes erd
+\end_inset
+
+ in this context refers to stagnation After a combined termination, one
+ might want to know why the run actually stopped.
  The method 
 \family typewriter
 terminatedBecause()
@@ -6719,6 +6265,10 @@ sideways false
 status open
 
 \begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Standard
 \begin_inset ERT
 status collapsed
 
@@ -6740,17 +6290,22 @@ begin{lstlisting}
 
 \begin_layout Standard
 
-import eva2.OptimizerFactory;
+import eva2.OptimizerFactory; 
 \end_layout
 
 \begin_layout Standard
 
-import eva2.server.go.problems.F1Problem;
+import eva2.server.go.problems.F1Problem; 
 \end_layout
 
 \begin_layout Standard
 
-import eva2.server.go.operators.terminators.*;
+import eva2.server.go.operators.terminators.*; 
+\end_layout
+
+\begin_layout Standard
+
+import eva2.server.go.operators.terminators.PopulationMeasureTerminator.*;
 \end_layout
 
 \begin_layout Standard
@@ -6759,77 +6314,100 @@ import eva2.server.go.operators.terminators.*;
 
 \begin_layout Standard
 
-public class TestingTerminators {
+public class TermTest {
 \end_layout
 
 \begin_layout Standard
 
-  public static void main(String[] args) {
+  public static void main(String[] args) {     
 \end_layout
 
 \begin_layout Standard
 
-    F1Problem f1 = new F1Problem(); 
+    F1Problem f1 = new F1Problem();      
 \end_layout
 
 \begin_layout Standard
 
-    double[] sol;
+    double[] sol;     
 \end_layout
 
 \begin_layout Standard
 
-    // A combined terminator for fitness and phenotype convergence
+    // A combined terminator for fitness and phenotype convergence     
 \end_layout
 
 \begin_layout Standard
 
-    CombinedTerminator convT = new CombinedTerminator(
+    CombinedTerminator convT = new CombinedTerminator(             
 \end_layout
 
 \begin_layout Standard
 
-            // fitness-based stagnation period, absolute threshold
+        // fitness-based stagnation period, absolute threshold, ...
 \end_layout
 
 \begin_layout Standard
 
-            new FitnessConvergenceTerminator(0.0001, 1000, true, true),
+        new FitnessConvergenceTerminator(0.0001, 1000, StagnationTypeEnum.fitnessC
+allBased, 
 \end_layout
 
 \begin_layout Standard
 
-            new PhenotypeConvergenceTerminator(0.0001, 1000, true, true),
+            ChangeTypeEnum.absoluteChange, DirectionTypeEnum.decrease),  
+               
 \end_layout
 
 \begin_layout Standard
 
-            CombinedTerminator.AND);
+        // ...
+ consider stagnation in both direction (per dim.) or w.r.t.
+ minimization only                    
+\end_layout
+
+\begin_layout Standard
+
+        new PhenotypeConvergenceTerminator(0.0001, 1000, StagnationTypeEnum.fitnes
+sCallBased, 
+\end_layout
+
+\begin_layout Standard
+
+            ChangeTypeEnum.absoluteChange, DirectionTypeEnum.bidirectional),
+             
+\end_layout
+
+\begin_layout Standard
+
+        CombinedTerminator.AND);
 \end_layout
 
 \begin_layout Standard
 
     // Adding an evaluation terminator with OR to the convergence criterion
+     
 \end_layout
 
 \begin_layout Standard
 
-    OptimizerFactory.setTerminator(new CombinedTerminator(
+    OptimizerFactory.setTerminator(new CombinedTerminator(              
+ 
 \end_layout
 
 \begin_layout Standard
 
-              new EvaluationTerminator(20000),
+        new EvaluationTerminator(20000),               
 \end_layout
 
 \begin_layout Standard
 
-              convT,
+        convT,
 \end_layout
 
 \begin_layout Standard
 
-              CombinedTerminator.OR));
+        CombinedTerminator.OR));     
 \end_layout
 
 \begin_layout Standard
@@ -6839,38 +6417,35 @@ public class TestingTerminators {
 
 \begin_layout Standard
 
-    System.out.println(OptimizerFactory.terminatedBecause());
+    System.out.println(OptimizerFactory.lastEvalsPerformed()
 \end_layout
 
 \begin_layout Standard
 
-    System.out.println(OptimizerFactory.lastEvalsPerformed() 
+        + " evals performed.
+ "
 \end_layout
 
 \begin_layout Standard
 
-                             + " evals performed, found solution: "
+        + OptimizerFactory.terminatedBecause()                          
+    
 \end_layout
 
 \begin_layout Standard
 
-                             + OptimizerFactory.terminatedBecause()
-\end_layout
-
-\begin_layout Standard
-
-                             + " Found solution: ");
+        + " Found solution: ");     
 \end_layout
 
 \begin_layout Standard
 
     for (int i=0; i<f1.getProblemDimension(); i++) System.out.print(sol[i]
- + " ");
+ + " ");     
 \end_layout
 
 \begin_layout Standard
 
-    System.out.println();
+    System.out.println();   
 \end_layout
 
 \begin_layout Standard
@@ -6888,6 +6463,27 @@ public class TestingTerminators {
 
 \backslash
 end{lstlisting}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Standard
+
+
+\backslash
+lstinputlisting{../src/eva2/examples/TerminatorExample.java}
 \end_layout
 
 \end_inset
@@ -6987,220 +6583,17 @@ reference "alg:Customizing-optimization."
 \begin_inset Float algorithm
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Standard
 \begin_inset ERT
-status collapsed
+status open
 
 \begin_layout Standard
 
 
 \backslash
-lstset{language=java, basicstyle=
-\backslash
-tiny, numbers=left, stepnumber=1, numbersep=5pt}
-\end_layout
-
-\begin_layout Standard
-
-
-\backslash
-begin{lstlisting}
-\end_layout
-
-\begin_layout Standard
-
-import java.util.BitSet;
-\end_layout
-
-\begin_layout Standard
-
-import eva2.server.go.operators.selection.SelectXProbRouletteWheel;
-\end_layout
-
-\begin_layout Standard
-
-import eva2.server.go.operators.terminators.EvaluationTerminator;
-\end_layout
-
-\begin_layout Standard
-
-import eva2.server.go.populations.Population;
-\end_layout
-
-\begin_layout Standard
-
-import eva2.server.go.problems.B1Problem;
-\end_layout
-
-\begin_layout Standard
-
-import eva2.server.go.strategies.GeneticAlgorithm;
-\end_layout
-
-\begin_layout Standard
-
-import eva2.server.modules.GOParameters;
-\end_layout
-
-\begin_layout Standard
-
-\end_layout
-
-\begin_layout Standard
-
-public class TestingGAB1 {
-\end_layout
-
-\begin_layout Standard
-
-  public static void main(String[] args) {
-\end_layout
-
-\begin_layout Standard
-
-    B1Problem b1 = new B1Problem();
-\end_layout
-
-\begin_layout Standard
-
-    BitSet sol;
-\end_layout
-
-\begin_layout Standard
-
-    // default go-parameter instance with a GA
-\end_layout
-
-\begin_layout Standard
-
-    GOParameters gaParams = OptimizerFactory.standardGA(b1);            
-    
-\end_layout
-
-\begin_layout Standard
-
-    // add an evaluation terminator
-\end_layout
-
-\begin_layout Standard
-
-    gaParams.setTerminator(new EvaluationTerminator(1000));
-\end_layout
-
-\begin_layout Standard
-
-    // set a specific random seed
-\end_layout
-
-\begin_layout Standard
-
-    gaParams.setSeed(2342);
-\end_layout
-
-\begin_layout Standard
-
-\end_layout
-
-\begin_layout Standard
-
-    // access the GA
-\end_layout
-
-\begin_layout Standard
-
-    GeneticAlgorithm ga = (GeneticAlgorithm)gaParams.getOptimizer();
-\end_layout
-
-\begin_layout Standard
-
-    // set no elitism
-\end_layout
-
-\begin_layout Standard
-
-    ga.setElitism(false);
-\end_layout
-
-\begin_layout Standard
-
-    // set roulette wheel selection
-\end_layout
-
-\begin_layout Standard
-
-    ga.setParentSelection(new SelectXProbRouletteWheel());
-\end_layout
-
-\begin_layout Standard
-
-    // set population size 150
-\end_layout
-
-\begin_layout Standard
-
-    ga.setPopulation(new Population(150));
-\end_layout
-
-\begin_layout Standard
-
-\end_layout
-
-\begin_layout Standard
-
-    // run optimization and print intermediate results to a file with given
- prefix
-\end_layout
-
-\begin_layout Standard
-
-    sol = OptimizerFactory.optimizeToBinary(gaParams, "ga-opt-results");
-\end_layout
-
-\begin_layout Standard
-
-    System.out.println("Found solution: ");
-\end_layout
-
-\begin_layout Standard
-
-    for (int i=0; i<b1.getProblemDimension(); i++) System.out.print(sol.get(i)+"
- ");
-\end_layout
-
-\begin_layout Standard
-
-    System.out.println();
-\end_layout
-
-\begin_layout Standard
-
-  };
-\end_layout
-
-\begin_layout Standard
-
-}
-\end_layout
-
-\begin_layout Standard
-
-\end_layout
-
-\begin_layout Standard
-
-\end_layout
-
-\begin_layout Standard
-
-\end_layout
-
-\begin_layout Standard
-
-
-\backslash
-end{lstlisting}
+lstinputlisting{../src/eva2/examples/TestingGAB1.java}
 \end_layout
 
 \end_inset
@@ -7269,241 +6662,17 @@ name "sub:Setting-Evolutionary-Operators"
 \begin_inset Float algorithm
 wide false
 sideways false
-status open
-
-\begin_layout Standard
-\begin_inset ERT
 status collapsed
 
 \begin_layout Standard
-
-
-\backslash
-lstset{language=java, basicstyle=
-\backslash
-tiny, numbers=left, stepnumber=1, numbersep=5pt}
-\end_layout
+\begin_inset ERT
+status open
 
 \begin_layout Standard
 
 
 \backslash
-begin{lstlisting}
-\end_layout
-
-\begin_layout Standard
-
-import eva2.OptimizerFactory;
-\end_layout
-
-\begin_layout Standard
-
-import eva2.server.go.individuals.AbstractEAIndividual; 
-\end_layout
-
-\begin_layout Standard
-
-import eva2.server.go.operators.crossover.CrossoverESDefault; 
-\end_layout
-
-\begin_layout Standard
-
-import eva2.server.go.operators.mutation.MutateESCovarianceMatrixAdaption; 
-\end_layout
-
-\begin_layout Standard
-
-import eva2.server.go.operators.terminators.EvaluationTerminator; 
-\end_layout
-
-\begin_layout Standard
-
-import eva2.server.go.problems.FM0Problem; 
-\end_layout
-
-\begin_layout Standard
-
-import eva2.server.go.strategies.EvolutionStrategies; 
-\end_layout
-
-\begin_layout Standard
-
-import eva2.server.modules.GOParameters;
-\end_layout
-
-\begin_layout Standard
-
-\end_layout
-
-\begin_layout Standard
-
-public class TestingPlusCMAES {
-\end_layout
-
-\begin_layout Standard
-
-  public static void main(String[] args) {
-\end_layout
-
-\begin_layout Standard
-
-    // a simple bimodal target function, two optima
-\end_layout
-
-\begin_layout Standard
-
-    FM0Problem fm0 = new FM0Problem();              
-\end_layout
-
-\begin_layout Standard
-
-    AbstractEAIndividual bestIndy;          
-\end_layout
-
-\begin_layout Standard
-
-    // create standard ES parameters                
-\end_layout
-
-\begin_layout Standard
-
-    GOParameters esParams = OptimizerFactory.standardES(fm0);           
-    
-\end_layout
-
-\begin_layout Standard
-
-    esParams.setTerminator(new EvaluationTerminator(2000));             
-    
-\end_layout
-
-\begin_layout Standard
-
-    // set a random seed based on system time               
-\end_layout
-
-\begin_layout Standard
-
-    esParams.setSeed(0);
-\end_layout
-
-\begin_layout Standard
-
-                
-\end_layout
-
-\begin_layout Standard
-
-    // set evolutionary operators and probabilities                 
-\end_layout
-
-\begin_layout Standard
-
-    AbstractEAIndividual.setOperators(                              
-\end_layout
-
-\begin_layout Standard
-
-                     fm0.getIndividualTemplate(),                       
-     
-\end_layout
-
-\begin_layout Standard
-
-                     new MutateESCovarianceMatrixAdaption(), 0.9,       
-                     
-\end_layout
-
-\begin_layout Standard
-
-                     new CrossoverESDefault(), 0.1);         
-\end_layout
-
-\begin_layout Standard
-
-                
-\end_layout
-
-\begin_layout Standard
-
-    // access the ES                
-\end_layout
-
-\begin_layout Standard
-
-    EvolutionStrategies es = (EvolutionStrategies)esParams.getOptimizer();
-          
-\end_layout
-
-\begin_layout Standard
-
-    // set a (1+5) selection strategy               
-\end_layout
-
-\begin_layout Standard
-
-    es.setMu(1);            
-\end_layout
-
-\begin_layout Standard
-
-    es.setLambda(5);                
-\end_layout
-
-\begin_layout Standard
-
-    es.setPlusStrategy(true);       
-\end_layout
-
-\begin_layout Standard
-
-                
-\end_layout
-
-\begin_layout Standard
-
-    // run optimization and retrieve winner individual              
-\end_layout
-
-\begin_layout Standard
-
-    bestIndy = (AbstractEAIndividual)OptimizerFactory.optimizeToInd(esParams,
- null);    
-\end_layout
-
-\begin_layout Standard
-
-    System.out.println("Found solution: " 
-\end_layout
-
-\begin_layout Standard
-
-                     + AbstractEAIndividual.getDefaultDataString(bestIndy));
-\end_layout
-
-\begin_layout Standard
-
-  };
-\end_layout
-
-\begin_layout Standard
-
-}
-\end_layout
-
-\begin_layout Standard
-
-\end_layout
-
-\begin_layout Standard
-
-\end_layout
-
-\begin_layout Standard
-
-
-\backslash
-end{lstlisting}
+lstinputlisting{../src/eva2/examples/TestingPlusCmaEs.java}
 \end_layout
 
 \end_inset
@@ -7687,18 +6856,7 @@ reference "sub:Setting-Evolutionary-Operators"
  just one optimum of the target function.
  In 
 \noun on
-EvA
-\begin_inset ERT
-status open
-
-\begin_layout Standard
-
-~
-\end_layout
-
-\end_inset
-
-2
+EvA2
 \noun default
  there are some optimizers implemented which are specialized on this task.
  Listing
@@ -7735,236 +6893,13 @@ status open
 
 \begin_layout Standard
 \begin_inset ERT
-status collapsed
+status open
 
 \begin_layout Standard
 
 
 \backslash
-lstset{language=java, basicstyle=
-\backslash
-tiny, numbers=left, stepnumber=1, numbersep=5pt}
-\end_layout
-
-\begin_layout Standard
-
-
-\backslash
-begin{lstlisting}
-\end_layout
-
-\begin_layout Standard
-
-\end_layout
-
-\begin_layout Standard
-
-import java.util.Vector;
-\end_layout
-
-\begin_layout Standard
-
-import eva2.OptimizerFactory;
-\end_layout
-
-\begin_layout Standard
-
-import eva2.server.go.individuals.AbstractEAIndividual; 
-\end_layout
-
-\begin_layout Standard
-
-import eva2.server.go.operators.postprocess.PostProcessParams; 
-\end_layout
-
-\begin_layout Standard
-
-import eva2.server.go.operators.terminators.EvaluationTerminator; 
-\end_layout
-
-\begin_layout Standard
-
-import eva2.server.go.problems.FM0Problem; 
-\end_layout
-
-\begin_layout Standard
-
-import eva2.server.modules.GOParameters;
-\end_layout
-
-\begin_layout Standard
-
-\end_layout
-
-\begin_layout Standard
-
-public class TestingCBNPostProc {
-\end_layout
-
-\begin_layout Standard
-
-  public static void main(String[] args) {
-\end_layout
-
-\begin_layout Standard
-
-    FM0Problem fm0 = new FM0Problem();              
-\end_layout
-
-\begin_layout Standard
-
-    AbstractEAIndividual best;              
-\end_layout
-
-\begin_layout Standard
-
-    Vector<AbstractEAIndividual> ppSols;
-\end_layout
-
-\begin_layout Standard
-
-                
-\end_layout
-
-\begin_layout Standard
-
-    GOParameters esParams = OptimizerFactory.cbnES(fm0);            
-\end_layout
-
-\begin_layout Standard
-
-    esParams.setTerminator(new EvaluationTerminator(2000));             
-    
-\end_layout
-
-\begin_layout Standard
-
-    esParams.setSeed(0);
-\end_layout
-
-\begin_layout Standard
-
-                
-\end_layout
-
-\begin_layout Standard
-
-    best = (AbstractEAIndividual)OptimizerFactory.optimizeToInd(esParams,
- null);
-\end_layout
-
-\begin_layout Standard
-
-                
-\end_layout
-
-\begin_layout Standard
-
-    System.out.println("Found solution: "                           
-\end_layout
-
-\begin_layout Standard
-
-                + AbstractEAIndividual.getDefaultDataString(best));     
-\end_layout
-
-\begin_layout Standard
-
-                
-\end_layout
-
-\begin_layout Standard
-
-    // post-process with clustering only            
-\end_layout
-
-\begin_layout Standard
-
-    ppSols = OptimizerFactory.postProcessIndVec(new PostProcessParams(0,
- 0.1, 5));          
-\end_layout
-
-\begin_layout Standard
-
-    System.out.println("After clustering: ");               
-\end_layout
-
-\begin_layout Standard
-
-    for (AbstractEAIndividual indy : ppSols) {                      
-\end_layout
-
-\begin_layout Standard
-
-      System.out.println(AbstractEAIndividual.getDefaultDataString(indy));
-            
-\end_layout
-
-\begin_layout Standard
-
-    }       
-\end_layout
-
-\begin_layout Standard
-
-                
-\end_layout
-
-\begin_layout Standard
-
-    // post-process with clustering and hill climbing               
-\end_layout
-
-\begin_layout Standard
-
-    ppSols = OptimizerFactory.postProcessIndVec(new PostProcessParams(1000,
- 0.1, 5));               
-\end_layout
-
-\begin_layout Standard
-
-    System.out.println("After clustering / HC: ");          
-\end_layout
-
-\begin_layout Standard
-
-    for (AbstractEAIndividual indy : ppSols) {                      
-\end_layout
-
-\begin_layout Standard
-
-      System.out.println(AbstractEAIndividual.getDefaultDataString(indy));
-            
-\end_layout
-
-\begin_layout Standard
-
-    }
-\end_layout
-
-\begin_layout Standard
-
-  };
-\end_layout
-
-\begin_layout Standard
-
-}
-\end_layout
-
-\begin_layout Standard
-
-\end_layout
-
-\begin_layout Standard
-
-\end_layout
-
-\begin_layout Standard
-
-
-\backslash
-end{lstlisting}
+lstinputlisting{../src/eva2/examples/TestingCbnPostProc.java}
 \end_layout
 
 \end_inset
@@ -8129,22 +7064,19 @@ key "Baeck99EC1"
 \end_inset
 
  for classical Evolutionary Algorithms.
- To go into details of 
-\noun on
-EvA
-\begin_inset ERT
-status collapsed
-
-\begin_layout Standard
-
-~
-\end_layout
+ The applications note from 2010 gives some short and simple use cases for
+ the framework 
+\begin_inset LatexCommand cite
+key "Kron10EvA2"
 
 \end_inset
 
-2
+.
+ To go into details of
+\noun on
+ 
 \noun default
-, a look on the technical report of 2005 
+EvA2, a look on the technical report of 2005 
 \begin_inset LatexCommand cite
 key "JOptDocumentation"
 
@@ -8171,7 +7103,7 @@ status collapsed
 \begin_layout Chapter
 General Hints on Optimization with 
 \noun on
-EvA 2
+EvA2
 \end_layout
 
 \begin_layout Standard
