@@ -87,16 +87,14 @@ implements Interface2DBorderProblem, InterfaceProblemDouble, InterfaceHasInitRan
         if (b.m_OverallBest != null)
             this.m_OverallBest      = (AbstractEAIndividual)((AbstractEAIndividual)b.m_OverallBest).clone();
         this.m_ProblemDimension = b.m_ProblemDimension;
-        m_Command = b.m_Command;
+        this.m_Command = b.m_Command;
         if (b.m_Range!=null) this.m_Range = (PropertyDoubleArray)b.m_Range.clone();
         else this.m_Range=null;
-        
         if (b.m_initRange!=null) this.m_initRange = (PropertyDoubleArray)b.m_initRange.clone();
         else this.m_initRange=null;
-        
         if (b.m_MosoConverter!=null) this.m_MosoConverter=(InterfaceMOSOConverter)b.m_MosoConverter.clone();
         else this.m_MosoConverter=null;
-        
+        this.m_WorkingDir = b.m_WorkingDir;
     }
 
     /** This method returns a deep clone of the problem.
@@ -110,6 +108,17 @@ implements Interface2DBorderProblem, InterfaceProblemDouble, InterfaceHasInitRan
      */
     public void initProblem() {
         this.m_OverallBest = null;
+        File f = new File(m_Command);
+        if (f.exists()) m_Command = f.getAbsolutePath();
+        else {
+        	String sep = System.getProperty("file.separator");
+        	if (m_WorkingDir.endsWith(sep)) f = new File(m_WorkingDir+m_Command);
+        	else f = new File(m_WorkingDir+sep+m_Command);
+        	if (f.exists()) m_Command = f.getAbsolutePath();
+        	else {
+            	System.err.println("Warning, " + this.getClass() + " could not find command " + m_Command + " in " + m_WorkingDir);
+        	}
+        }
     }
 
     /** This method inits a given population
@@ -126,7 +135,7 @@ implements Interface2DBorderProblem, InterfaceProblemDouble, InterfaceHasInitRan
     
     public double[][] makeRange() {
     	if (m_Range==null) {
-    		System.err.println("Warning, range not set ExternalRuntimeProblem.makeRange!");
+    		System.err.println("Warning, range not set in ExternalRuntimeProblem.makeRange!");
     	} 
     	if (m_Range.getNumRows()!=getProblemDimension()) System.err.println("Warning, problem dimension and range dimension dont match in ExternalRuntimeProblem.makeRange!");
     	return m_Range.getDoubleArrayShallow().clone();
@@ -345,7 +354,7 @@ implements Interface2DBorderProblem, InterfaceProblemDouble, InterfaceHasInitRan
         return this.m_Command;
     }
     public String commandTipText() {
-        return "Command";
+        return "External command to be called for evaluation";
     }
     
     /** Working dir of the external runtime
@@ -358,7 +367,7 @@ implements Interface2DBorderProblem, InterfaceProblemDouble, InterfaceHasInitRan
         return this.m_WorkingDir;
     }
     public String workingDirectoryTipText() {
-        return "Working directory";
+        return "The working directory";
     }
     
 //    /** This method allows you to toggle the application of a simple test constraint.
