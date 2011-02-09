@@ -114,7 +114,7 @@ public class EvATabbedFrameMaker implements Serializable, PanelMaker, InterfaceN
 			List<InterfaceAdditionalPopulationInformer> informers) {
 		// if the informers have changed, update the GUI element which displays them
 		try {
-			JParaPanel statsPan = (JParaPanel) pmContainer.get(2);
+			JParaPanel statsPan = getStatsPanel();
 			if (statsPan.m_Editor!=null) {
 				statsPan.m_Editor.setValue(statsPan.m_Editor.getValue()); // really update the contents of the stats panel
 //				System.out.println("OOO setting informers to stats panel succeeded!");
@@ -124,5 +124,25 @@ public class EvATabbedFrameMaker implements Serializable, PanelMaker, InterfaceN
 			System.err.println(e.getMessage());
 			e.printStackTrace(System.err);
 		}
+	}
+
+	public JParaPanel getGOPanel() {
+		try {
+			JParaPanel sP = (JParaPanel) pmContainer.get(1);
+			return sP;
+		} catch(Exception e) {
+			System.err.println("Failed to get GO panel from " + this.getClass());
+		}
+		return null;
+	}
+	
+	public JParaPanel getStatsPanel() {
+		try {
+			JParaPanel sP = (JParaPanel) pmContainer.get(2);
+			return sP;
+		} catch(Exception e) {
+			System.err.println("Failed to get statistics panel from " + this.getClass());
+		}
+		return null;
 	}
 }

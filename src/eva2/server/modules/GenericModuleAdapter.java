@@ -3,15 +3,12 @@ package eva2.server.modules;
 
 import java.io.Serializable;
 import java.lang.reflect.Proxy;
-import java.util.ArrayList;
 
 import eva2.gui.EvAModuleButtonPanelMaker;
 import eva2.gui.EvATabbedFrameMaker;
 import eva2.gui.GenericObjectEditor;
 import eva2.gui.JParaPanel;
-import eva2.gui.PanelMaker;
 import eva2.server.go.InterfaceGOParameters;
-import eva2.server.go.InterfaceNotifyOnInformers;
 import eva2.server.stat.AbstractStatistics;
 import eva2.server.stat.InterfaceStatisticsParameter;
 import eva2.server.stat.StatisticsStandalone;
@@ -72,7 +69,16 @@ public class GenericModuleAdapter extends AbstractModuleAdapter implements Seria
     	this(adapterName, helperFName, Client, params, optimizerExpert, null);
     }
     
-    /** This method returns a GUI element
+    /** 
+     * This method returns a newly created GUI element containing the EvA button panel
+     * and two JParaPanel instances representing the module parameters (e.g. GO) 
+     * and the statistics parameters.
+     * If the statistics are not of type StatisticsWithGUI, it is assumed that no GUI is
+     * desired (and this method should not be called).
+     * 
+     * @see JParaPanel
+     * @see EvAModuleButtonPanelMaker
+     * @see StatisticsWithGUI
      * @return the EvATabbedFrameMaker
      */
     public EvATabbedFrameMaker getModuleFrame() {
