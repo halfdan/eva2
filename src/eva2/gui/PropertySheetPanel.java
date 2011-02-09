@@ -234,13 +234,12 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
         // Now lets search for the individual properties, their
         // values, views and editors...
         m_Editors   = new PropertyEditor[m_Properties.length];
-        m_Values    = new Object[m_Properties.length];
+        m_Values    = getValues(m_Target, m_Properties, true, false, true); // collect property values if possible
         m_Views     = new JComponent[m_Properties.length];
         m_ViewWrapper= new JComponent[m_Properties.length];
         m_Labels    = new JLabel[m_Properties.length];
         m_TipTexts  = new String[m_Properties.length];
 
-//        boolean     firstTip = true;
         for (int i = 0; i < m_Properties.length; i++) {
             // For each property do this
             // Don't display hidden or expert properties.
@@ -248,53 +247,19 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
         	// we now look at hidden properties, they can be shown or hidden dynamically (MK)
             String  name    = m_Properties[i].getDisplayName();
             if (TRACE) System.out.println("PSP looking at "+ name);
-
-            if (m_Properties[i].isExpert()) continue;
-            Method  getter  = m_Properties[i].getReadMethod();
-            Method  setter  = m_Properties[i].getWriteMethod();
-            // Only display read/write properties.
-            if (getter == null || setter == null) continue;
+            if (m_Values[i]==null) continue; // expert, hidden, or no getter/setter available
             JComponent newView = null;
             try {
-	            Object          args[]  = { };
-	            Object          value   = getter.invoke(m_Target, args);
-	            PropertyEditor  editor  = null;
-	            //Class           pec     = m_Properties[i].getPropertyEditorClass();
-	            m_Values[i]     = value;
-//	            ////////////////// refactored by MK
 
-	            editor = PropertyEditorProvider.findEditor(m_Properties[i], value);
-	            m_Editors[i] = editor;
-	            if (editor == null) continue;
-	            
-	            ////////////////////
+	            m_Editors[i] = makeEditor(m_Properties[i], name, m_Values[i]);
+	            if (m_Editors[i]==null) continue;
+	            m_TipTexts[i] = BeanInspector.getToolTipText(name, m_Methods, m_Target, stripToolTipToFirstPoint, tipTextLineLen);
 
-
-	            // Don't try to set null values:
-	            if (value == null) {
-	                // If it's a user-defined property we give a warning.
-	                String getterClass = m_Properties[i].getReadMethod().getDeclaringClass().getName();
-	                if (getterClass.indexOf("java.") != 0) System.out.println("Warning: Property \"" + name+ "\" of class " + targ.getClass() + " has null initial value.  Skipping.");
-	                continue;
+	            newView = getView(m_Editors[i]);
+	            if (newView==null) {
+	            	System.err.println("Warning: Property \"" + name + "\" has non-displayabale editor.  Skipping.");
+	            	continue;
 	            }
-                editor.setValue(value);
-                
-                m_TipTexts[i] = BeanInspector.getToolTipText(name, m_Methods, m_Target, stripToolTipToFirstPoint, tipTextLineLen);
-
-//                System.out.println("PSP editor class: " + editor.getClass());
-                newView = getView(editor);
-                if (newView==null) {
-                	System.err.println("Warning: Property \"" + name + "\" has non-displayabale editor.  Skipping.");
-                	continue;
-                }
-                
-                editor.addPropertyChangeListener(this);
-            } catch (InvocationTargetException ex) {
-	            System.out.println("InvocationTargetException " + name
-		            + " on target: "
-	                + ex.getTargetException());
-	            ex.getTargetException().printStackTrace();
-	            continue;
             } catch (Exception ex) {
 	            System.out.println("Skipping property "+name+" ; exception: " + ex);
 	            ex.printStackTrace();
@@ -304,65 +269,186 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
             // Add some specific display for some greeks here
             name = translateGreek(name);
 
-            m_Labels[i]         = new JLabel(name, SwingConstants.RIGHT);
-            m_Labels[i].setBorder(BorderFactory.createEmptyBorder(10,10,0,5));
-            m_Views[i]          = newView;
-            m_ViewWrapper[i]    = new JPanel();
-            m_ViewWrapper[i].setLayout(new BorderLayout());
-            GridBagConstraints gbConstraints = new GridBagConstraints();
-            gbConstraints.anchor    = GridBagConstraints.EAST;
-            gbConstraints.fill      = GridBagConstraints.HORIZONTAL;
-            gbConstraints.gridy     = i+componentOffset;
-            gbConstraints.gridx     = 0;
-            gbLayout.setConstraints(m_Labels[i], gbConstraints);
-            add(m_Labels[i]);
-            JPanel newPanel = new JPanel();
-            if (m_TipTexts[i] != null) {
-	            m_Views[i].setToolTipText(m_TipTexts[i]);
-                m_Labels[i].setToolTipText(m_TipTexts[i]);
-             }
-            newPanel.setBorder(BorderFactory.createEmptyBorder(10,5,0,10));
-            newPanel.setLayout(new BorderLayout());
-            // @todo: Streiche here i could add the ViewWrapper
-            m_ViewWrapper[i].add(m_Views[i], BorderLayout.CENTER);
-            newPanel.add(m_ViewWrapper[i], BorderLayout.CENTER);
-            gbConstraints           = new GridBagConstraints();
-            gbConstraints.anchor    = GridBagConstraints.WEST;
-            gbConstraints.fill      = GridBagConstraints.BOTH;
-            gbConstraints.gridy     = i+componentOffset;
-            gbConstraints.gridx     = 1;
-            gbConstraints.weightx   = 100;
-            gbLayout.setConstraints(newPanel, gbConstraints);
-            add(newPanel);
+            addLabelView(componentOffset, gbLayout, i, name, newView);
             m_NumEditable++;
             if (m_Properties[i].isHidden()) {
     			m_ViewWrapper[i].setVisible(false);
+    			m_Views[i].setVisible(false);
     			m_Labels[i].setVisible(false);
             }
-        }
+        } // end for each property
         if (m_NumEditable == 0) {
-            JLabel empty = new JLabel("No editable properties",SwingConstants.CENTER);
-            Dimension d = empty.getPreferredSize();
-            empty.setPreferredSize(new Dimension(d.width * 2, d.height * 2));
-            empty.setBorder(BorderFactory.createEmptyBorder(10, 5, 0, 10));
-            GridBagConstraints gbConstraints = new GridBagConstraints();
-            gbConstraints.anchor    = GridBagConstraints.CENTER;
-            gbConstraints.fill      = GridBagConstraints.HORIZONTAL;
-            gbConstraints.gridy     = componentOffset;
-            gbConstraints.gridx     = 0;
-            gbLayout.setConstraints(empty, gbConstraints);
-            add(empty);
+            add(createDummyLabel(componentOffset, gbLayout));
         }
-//    	Container p=this;
-//		while (p != null) {
-//			p.setSize(p.getPreferredSize());
-//			p = p.getParent();
-//		}
         validate();
         setVisible(true);
     }
-   
+
+    public static PropertyDescriptor[] getProperties(Object target) {
+        BeanInfo bi;
+		try {
+			bi = Introspector.getBeanInfo(target.getClass());
+		} catch (IntrospectionException e) {
+			e.printStackTrace();
+			return null;
+		}
+        return bi.getPropertyDescriptors();
+    }
+    
+    public static String[] getPropertyNames(Object target) {
+        return getNames(getProperties(target));
+    }
+    
+    public static Object[] getPropertyValues(Object target, boolean omitExpert, boolean omitHidden, boolean onlySetAndGettable) {
+    	return getValues(target, getProperties(target), omitExpert, omitHidden, onlySetAndGettable);
+    }
+    
+    public static String[] getNames(PropertyDescriptor[] props) {
+    	String[] names=new String[props.length];
+    	for (int i = 0; i <props.length; i++) {
+    		names[i]=props[i].getDisplayName();
+    	}
+    	return names;
+    }
+    
     /**
+     * Cycle the properties and request the value of each in an array. Null values may
+     * indicate missing getter/setter, expert flag or hidden flag set depending on the
+     * parameters. Note that to show hidden properties dynamically, views may need be constructed
+     * for them anyways, so do not omit them here.
+     * 
+     * @param props
+     * @param omitExpert
+     * @param omitHidden
+     * @param onlySetAndGettable
+     * @return
+     */
+    public static Object[] getValues(Object target, PropertyDescriptor[] props, boolean omitExpert, boolean omitHidden, boolean onlySetAndGettable) {
+    	Object[] values=new Object[props.length];
+    	for (int i = 0; i <props.length; i++) {
+            // For each property do this
+            // Don't display hidden or expert properties.
+            // if (m_Properties[i].isHidden() || m_Properties[i].isExpert()) continue;
+        	// we now look at hidden properties, they can be shown or hidden dynamically (MK)
+            String  name    = props[i].getDisplayName();
+            if (TRACE) System.out.println("PSP looking at "+ name);
+            if (props[i].isExpert() && omitExpert) continue;
+            if (props[i].isHidden() && omitHidden) continue; // TOOD this might be a problem - hidden values which can be shown dynamically will need a viewer even if hidden
+            Method  getter  = props[i].getReadMethod();
+            Method  setter  = props[i].getWriteMethod();
+            // Only display read/write properties.
+            if (onlySetAndGettable && (getter == null || setter == null)) continue;
+	            Object          args[]  = { };
+	            Object value = null;
+				try {
+					value = getter.invoke(target, args);
+				} catch (Exception ex) {
+		            System.out.println("Exception on getting value for property " + name + " on target " + target.toString());
+		            ex.printStackTrace();
+		            values[i]=null;
+				}
+//	            PropertyEditor  editor  = null;
+	            //Class           pec     = m_Properties[i].getPropertyEditorClass();
+	            values[i]     = value;
+
+        } // end for each property
+        return values;
+    }
+    
+    /**
+     * Create a label to be shown if no other properties are shown.
+     * 
+     * @param componentOffset
+     * @param gbLayout
+     * @return
+     */
+	private JLabel createDummyLabel(int componentOffset, GridBagLayout gbLayout) {
+		JLabel empty = new JLabel("No editable properties",SwingConstants.CENTER);
+		Dimension d = empty.getPreferredSize();
+		empty.setPreferredSize(new Dimension(d.width * 2, d.height * 2));
+		empty.setBorder(BorderFactory.createEmptyBorder(10, 5, 0, 10));
+		GridBagConstraints gbConstraints = new GridBagConstraints();
+		gbConstraints.anchor    = GridBagConstraints.CENTER;
+		gbConstraints.fill      = GridBagConstraints.HORIZONTAL;
+		gbConstraints.gridy     = componentOffset;
+		gbConstraints.gridx     = 0;
+		gbLayout.setConstraints(empty, gbConstraints);
+		return empty;
+	}
+
+    private PropertyEditor makeEditor(PropertyDescriptor property, String name, Object value ) {
+    	PropertyEditor editor = PropertyEditorProvider.findEditor(property, value);
+        if (editor == null) return null;
+        
+        // Don't try to set null values:
+        if (value == null) {
+            // If it's a user-defined property we give a warning.
+            String getterClass = property.getReadMethod().getDeclaringClass().getName();
+            if (getterClass.indexOf("java.") != 0) System.out.println("Warning: Property \"" + name+ "\" of class " + m_Target.getClass() + " has null initial value.  Skipping.");
+            return null;
+        }
+        editor.setValue(value);
+
+//        System.out.println("PSP editor class: " + editor.getClass());
+        
+        editor.addPropertyChangeListener(this);
+        return editor;
+    }
+    
+	private void addLabelView(int componentOffset, GridBagLayout gbLayout,
+			int i, String name, JComponent newView) {
+		m_Labels[i] = makeLabel(name);
+		m_Views[i]          = newView;
+		m_ViewWrapper[i]    = new JPanel();
+		m_ViewWrapper[i].setLayout(new BorderLayout());
+
+		gbLayout.setConstraints(m_Labels[i], makeLabelConstraints(i+componentOffset));
+		add(m_Labels[i]);
+		JPanel newPanel = makeViewPanel(m_TipTexts[i], m_Labels[i], m_Views[i], m_ViewWrapper[i]);
+		gbLayout.setConstraints(newPanel, makeViewConstraints(i+componentOffset));
+		add(newPanel);
+	}
+
+	private JLabel makeLabel(String name) {
+		JLabel label = new JLabel(name, SwingConstants.RIGHT);
+		label.setBorder(BorderFactory.createEmptyBorder(10,10,0,5));
+		return label;
+	}
+   
+	private static JPanel makeViewPanel(String tipText, JLabel label,
+			JComponent view, JComponent viewWrapper) {
+		JPanel newPanel = new JPanel();
+		if (tipText != null) {
+			view.setToolTipText(tipText);
+			view.setToolTipText(tipText);
+		}
+		newPanel.setBorder(BorderFactory.createEmptyBorder(10,5,0,10));
+		newPanel.setLayout(new BorderLayout());
+		// @todo: Streiche here i could add the ViewWrapper
+		viewWrapper.add(view, BorderLayout.CENTER);
+		newPanel.add(viewWrapper, BorderLayout.CENTER);
+		return newPanel;
+	}
+	
+	private GridBagConstraints makeLabelConstraints(int componentIndex) {
+		GridBagConstraints gbConstraints = new GridBagConstraints();
+		gbConstraints.anchor    = GridBagConstraints.EAST;
+		gbConstraints.fill      = GridBagConstraints.HORIZONTAL;
+		gbConstraints.gridy     = componentIndex;
+		gbConstraints.gridx     = 0;
+		return gbConstraints;
+	}
+	private GridBagConstraints makeViewConstraints(int componentIndex) {
+		GridBagConstraints gbConstraints = new GridBagConstraints();
+		gbConstraints.anchor    = GridBagConstraints.WEST;
+		gbConstraints.fill      = GridBagConstraints.BOTH;
+		gbConstraints.gridy     = componentIndex;
+		gbConstraints.gridx     = 1;
+		gbConstraints.weightx   = 100;
+		return gbConstraints;
+	}
+	
+	/**
      * Be sure to give a clone
      * @param oldProps
      * @param meth
@@ -836,6 +922,7 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
     		if ((m_Labels[i] != null) && (m_Labels[i].isVisible())) {
         		// something is set to hidden but was visible up to now
     			m_ViewWrapper[i].setVisible(false);
+    			m_Views[i].setVisible(false);
     			m_Labels[i].setVisible(false);
     			doRepaint = true;
     		}
@@ -844,6 +931,7 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
     		if ((m_Labels[i] != null) && !(m_Labels[i].isVisible())) {
     			 // something is invisible but set to not hidden in the mean time
     			m_ViewWrapper[i].setVisible(true);
+    			m_Views[i].setVisible(true);
     			m_Labels[i].setVisible(true);
     			doRepaint = true;
     		}

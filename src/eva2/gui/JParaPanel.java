@@ -11,11 +11,17 @@ package eva2.gui;
  * IMPORTS
  *==========================================================================*/
 
-import javax.swing.*;
-import java.awt.*;
-import java.beans.PropertyEditor;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridBagLayout;
 import java.beans.PropertyEditorManager;
 import java.io.Serializable;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.JComponent;
+import javax.swing.JPanel;
 
 public class JParaPanel implements Serializable, PanelMaker {
 
@@ -23,7 +29,7 @@ public class JParaPanel implements Serializable, PanelMaker {
     protected String m_Name = "undefined";
     protected Object m_LocalParameter;
     protected Object m_ProxyParameter;
-    protected PropertyEditor m_Editor;
+    protected GenericObjectEditor m_Editor;
     private JPanel m_Panel;
 
     public JParaPanel() {
@@ -47,7 +53,7 @@ public class JParaPanel implements Serializable, PanelMaker {
         ((GenericObjectEditor) (m_Editor)).setClassType(m_LocalParameter.
                 getClass());
         ((GenericObjectEditor) (m_Editor)).setValue(m_LocalParameter);
-        ((GenericObjectEditor) (m_Editor)).disableOK();
+        ((GenericObjectEditor) (m_Editor)).disableOKCancel();
 
         m_Panel.setLayout(new BorderLayout());
         m_Panel.add(m_Editor.getCustomEditor(), BorderLayout.CENTER);
@@ -65,6 +71,10 @@ public class JParaPanel implements Serializable, PanelMaker {
         return m_Name;
     }
 
+    public GenericObjectEditor getEditor() {
+    	return m_Editor;
+    }
+    
     /** This method will allow you to add a new Editor to a given class
      * @param object
      * @param editor

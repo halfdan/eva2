@@ -485,10 +485,10 @@ public class GenericObjectEditor implements PropertyEditor {
 	/**
 	 *
 	 */
-	public void disableOK() {
+	public void disableOKCancel() {
 		if (m_EditorComponent == null)
 			m_EditorComponent = new GOEPanel(m_Object, m_Backup, m_Support, this);
-		m_EditorComponent.m_okBut.setEnabled(false);
+		m_EditorComponent.setEnabledOkCancelButtons(false);
 	}
 	  public void addPropertyChangeListener(PropertyChangeListener l) {
 		  if (m_Support == null) m_Support = new PropertyChangeSupport(this);

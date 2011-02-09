@@ -33,6 +33,7 @@ import java.util.Vector;
 
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuBar;
@@ -41,7 +42,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JRadioButtonMenuItem;
+import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
+import javax.swing.JTree;
 import javax.swing.JWindow;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
@@ -49,15 +52,19 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
+import javax.swing.tree.DefaultMutableTreeNode;
 
 import eva2.EvAInfo;
 import eva2.gui.BeanInspector;
 import eva2.gui.EvATabbedFrameMaker;
+import eva2.gui.EvATreeNode;
+import eva2.gui.EvATreeSelectionListener;
 import eva2.gui.ExtAction;
 import eva2.gui.HtmlDemo;
 import eva2.gui.JEFrame;
 import eva2.gui.JEFrameRegister;
 import eva2.gui.JExtMenu;
+import eva2.gui.JParaPanel;
 import eva2.gui.LogPanel;
 import eva2.server.EvAServer;
 import eva2.server.go.InterfaceGOParameters;
@@ -133,7 +140,8 @@ public class EvAClient implements RemoteStateListener, Serializable {
 	private transient String currentModule = null;
 
 	Vector<RemoteStateListener> superListenerList = null;
-	private boolean withGUI = true	;
+	private boolean withGUI = true;
+	private boolean withTreeView = false;
 	private EvATabbedFrameMaker frmMkr = null;
 	
 	public void addRemoteStateListener(RemoteStateListener l) {
@@ -170,7 +178,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
 	 * @param nosplash
 	 */
 	public EvAClient(final String hostName, final String paramsFile, boolean autorun, boolean nosplash) {
-		this(hostName, null, paramsFile, null, autorun, nosplash, false);
+		this(hostName, null, paramsFile, null, autorun, nosplash, false, false);
 	}
 	
 	/**
@@ -199,8 +207,8 @@ public class EvAClient implements RemoteStateListener, Serializable {
 	 * @param noSplash
 	 * @param noGui
 	 */
-	public EvAClient(final String hostName, String paramsFile, boolean autorun, boolean noSplash, boolean noGui) {
-		this(hostName, null, paramsFile, null, autorun, noSplash, noGui);
+	public EvAClient(final String hostName, String paramsFile, boolean autorun, boolean noSplash, boolean noGui, boolean withTreeView) {
+		this(hostName, null, paramsFile, null, autorun, noSplash, noGui, withTreeView);
 	}
 	
 	/**
@@ -217,7 +225,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
 	 * @param noGui
 	 */
 	public EvAClient(final String hostName, InterfaceGOParameters goParams, boolean autorun, boolean noSplash, boolean noGui) {
-		this(hostName, null, null, goParams, autorun, noSplash, noGui);
+		this(hostName, null, null, goParams, autorun, noSplash, noGui, false);
 	}
 	
 	/**
@@ -236,7 +244,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
 	 * @param noSplash
 	 * @param noGui
 	 */
-	public EvAClient(final String hostName, final Window parent, final String paramsFile, final InterfaceGOParameters goParams, final boolean autorun, final boolean noSplash, final boolean noGui) {
+	public EvAClient(final String hostName, final Window parent, final String paramsFile, final InterfaceGOParameters goParams, final boolean autorun, final boolean noSplash, final boolean noGui, final boolean showTreeView) {
 		clientInited = false;
 		final SplashScreenShell fSplashScreen = new SplashScreenShell(EvAInfo.splashLocation);
 
@@ -244,6 +252,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
 		preloadClasses();
 
 	    withGUI = !noGui;
+	    withTreeView = showTreeView;
 		// activate the splash screen (show later using SwingUtilities)
 		if (!noSplash && withGUI) {
 			try {
@@ -370,7 +379,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
 			m_Frame = new JEFrame(EvAInfo.productName + " workbench");
 			m_Frame.setCloseAllOnClosed(true);
 			m_Frame.setName(this.getClass().getSimpleName()); // the name is set to recognize the client window
-
+	
 			BasicResourceLoader loader = BasicResourceLoader.instance();
 			byte[] bytes = loader.getBytesFromResourceLocation(EvAInfo.iconLocation, true);
 			m_Frame.setIconImage(Toolkit.getDefaultToolkit().createImage(bytes));
@@ -462,9 +471,9 @@ public class EvAClient implements RemoteStateListener, Serializable {
 			System.out.println(EVAHELP.getSystemPropertyString());
 		}
 
-		String[] keys= new String[]{"--help", "--autorun", "--nosplash", "--nogui", "--remotehost", "--params"};
-		int[] arities = new int[]{0, 0, 0, 0, 1, 1};
-		Object[] values = new Object[6];
+		String[] keys= new String[]{"--help", "--autorun", "--nosplash", "--nogui", "--remotehost", "--params", "--treeView"};
+		int[] arities = new int[]{0, 0, 0, 0, 1, 1, 0};
+		Object[] values = new Object[keys.length];
 		
 		Integer[] unknownArgs = StringTools.parseArguments(args, keys, arities, values, true);
 		
@@ -480,13 +489,14 @@ public class EvAClient implements RemoteStateListener, Serializable {
 			boolean autorun=(values[1]!=null);
 			boolean nosplash=(values[2]!=null);
 			boolean nogui=(values[3]!=null);
+			boolean treeView=(values[6]!=null);
 			String hostName=StringTools.checkSingleStringArg(keys[4], values[4], arities[4]-1);
 			String paramsFile=StringTools.checkSingleStringArg(keys[5], values[5], arities[5]-1);
 			
 			if (TRACE) System.out.println("Command line arguments were: ");
 			if (TRACE) System.out.println("	" + BeanInspector.toString(keys));
 			if (TRACE) System.out.println("	" + BeanInspector.toString(values));
-			EvAClient Client = new EvAClient(hostName, paramsFile, autorun, nosplash, nogui);
+			EvAClient Client = new EvAClient(hostName, paramsFile, autorun, nosplash, nogui, treeView);
 		}
 	}
 
@@ -505,7 +515,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
 		EvAClient evaClient;
 		
 		evaClient = new EvAClient(null, parent, null, goParams,
-				false, true, false); // initializes GUI in the background
+				false, true, false, false); // initializes GUI in the background
 		// important: wait for GUI initialization before accessing any internal
 		// settings:
 		evaClient.awaitClientInitialized(); // this returns as soon as the
@@ -917,7 +927,12 @@ public class EvAClient implements RemoteStateListener, Serializable {
 					infoPanel.setLayout(new BorderLayout());
 					infoPanel.add(m_ProgressBar, BorderLayout.SOUTH);
 					infoPanel.add(m_LogPanel, BorderLayout.NORTH);
+					JComponent  tree=null;
 					
+					if (withTreeView && (newModuleAdapter instanceof AbstractModuleAdapter)) {
+						tree = getEvATreeView(frmMkr.getGOPanel(), "GOParameters", ((AbstractModuleAdapter)newModuleAdapter).getGOParameters());
+						m_Frame.add(tree, BorderLayout.WEST);
+					}
 					m_Frame.add(frmMkr.getToolBar(), BorderLayout.NORTH);
 					m_Frame.add(moduleContainer, BorderLayout.CENTER);
 					//m_Frame.add(m_ProgressBar, BorderLayout.CENTER);
@@ -951,6 +966,26 @@ public class EvAClient implements RemoteStateListener, Serializable {
 		}
 	}
 
+	/**
+	 * Create a tree view of an object based on EvATreeNode. It is encapsulated
+	 * in a JScrollPane.
+	 * 
+	 * @see EvATreeNode
+	 * @param title
+	 * @param object
+	 * @return
+	 */
+	public JComponent getEvATreeView(JParaPanel goPanel, String title, Object object) {
+		EvATreeNode root = new EvATreeNode(title, object); // the root of the tree
+		JTree jtree = new JTree(root);
+		JScrollPane treeView = new JScrollPane(jtree);
+
+		EvATreeSelectionListener treeListener = new EvATreeSelectionListener(root, goPanel.getEditor(), jtree);
+		// hooks itself up as the tree listener. It reacts both to changes in the selection
+		// state of the tree (to update the parameter panel) and to changes in the 
+		// parameters to update the tree
+		return treeView;
+	}
 	/**
 	 *
 	 */
