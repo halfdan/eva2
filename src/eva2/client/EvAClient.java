@@ -229,6 +229,21 @@ public class EvAClient implements RemoteStateListener, Serializable {
 	}
 	
 	/**
+	 * Do not use the tree view by default.
+	 * 
+	 * @param hostName
+	 * @param parent
+	 * @param paramsFile
+	 * @param goParams
+	 * @param autorun
+	 * @param noSplash
+	 * @param noGui
+	 */
+	public EvAClient(final String hostName, final Window parent, final String paramsFile, final InterfaceGOParameters goParams, final boolean autorun, final boolean noSplash, final boolean noGui) {
+		this(hostName, parent, paramsFile, goParams, autorun, noSplash, noGui, false);
+	}
+	
+	/**
 	 * Main constructor of the EvA2 client GUI. Works as standalone verson locally or
 	 * as client for the EvA2 server. GO parameters may be
 	 * loaded from a file (paramsFile) or given directly as a java instance. Both may be null
