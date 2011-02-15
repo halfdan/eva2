@@ -51,6 +51,7 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 //	private static String				resOutFile = "matlabproblem-output.txt";
 //	transient PrintStream				resOutStream = null;
 	int 								verbosityLevel	= 0;
+	boolean								outputAllStatsField = true;
 	private MatlabEvalMediator 			handler = null;
 //	private boolean isDouble = true;
 	private MatlabProblemDataTypeEnum dataType = MatlabProblemDataTypeEnum.typeDouble;
@@ -345,7 +346,7 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 			runnable.setVerbosityLevel(verbosityLevel);
 			if (verbosityLevel>0) runnable.setOutputTo(2); // both file + window
 			else runnable.setOutputTo(1); // only window
-			runnable.setOutputFullStatsToText(true);
+			runnable.setOutputFullStatsToText(outputAllStatsField);
 
 //			log("in MP optimize C\n");
 			if ((specParams != null) && (specParams.length > 0)) {
@@ -383,6 +384,10 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 		}
 	}
 
+	public void setOutputAllStatFields(boolean showAll) {
+		outputAllStatsField=showAll;
+	}
+	
 	public void startPostProcess(InterfacePostProcessParams ppp) {
 		if (ppp.isDoPostProcessing()) {
 			if (allowSingleRunnable && (runnable != null) && (!runnable.isFinished())) {
