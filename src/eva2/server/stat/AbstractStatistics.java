@@ -1028,29 +1028,40 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 	public synchronized void createNextGenerationPerformed(PopulationInterface
 			pop, InterfaceOptimizer opt, List<InterfaceAdditionalPopulationInformer> informerList) {
 		lastInformerList  = informerList;
+		if (TRACE) printToTextListener(".. in createNextGenPerformed after " + pop.getFunctionCalls() + " evals.\n");
+		if (resultOut != null) resultOut.flush(); 
 		if (firstPlot) {
 			initPlots(pop, informerList);
 //			if (doTextOutput()) printToTextListener(getOutputHeader(informer, pop)+'\n');
 			firstPlot = false;
 			currentBestFeasibleFit=null;
 		}
-
+		if (TRACE) printToTextListener("A1\n");
 		if (pop.getSpecificData() != null) { // this is more or less deprecated. the standard population implementation will always return null. However the ES module wont 
 			plotSpecificData(pop, informerList);
 			return;
 		}
 
+		if (TRACE) printToTextListener("A2\n");
 		collectPopData(pop);
+		if (TRACE) printToTextListener("A3\n");
 
 		if (iterationCounter==0) {
+			if (TRACE) printToTextListener("A3.1 " + currentStatHeader.length + "\n");
+			
 			String headerLine = StringTools.concatFields(currentStatHeader, textFieldDelimiter);
+			if (TRACE) printToTextListener("A3.2\n");
 			if (printHeaderByVerbosity()) printToTextListener(headerLine+'\n');
+			if (TRACE) printToTextListener("A3.3\n");
 		}
-		
+		if (TRACE) printToTextListener("A4\n");
+
 		lastSols  = (opt!=null) ? new Population(opt.getAllSolutions().getSolutions()) : pop;
 //		Pair<String,Double[]> addData = getOutputData(informerList, lastSols);
 //		System.out.println("lastSols size: " + 500*PSymbolicRegression.getAvgIndySize(lastSols));
 //		System.out.println("Mem use:  " + getMemoryUse());
+		if (TRACE) printToTextListener("A5\n");
+
 		Pair<String,Object[]> addData = getOutputData(informerList, lastSols);
 		if (doTextOutput()) { // this is where the text output is actually written
 			if (printLineByVerbosity(iterationCounter)) {
@@ -1058,6 +1069,8 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 				printToTextListener(addData.head()+'\n');
 			}
 		}
+		if (TRACE) printToTextListener("A6\n");
+
 		currentStatObjectData = addData.tail();
 		currentStatDoubleData = ToolBox.parseDoubles(currentStatObjectData);
 		if (currentStatObjectData!=null) {
@@ -1065,6 +1078,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 		} else {
 			System.err.println("Warning in AbstractStatistics!");
 		}
+		if (TRACE) printToTextListener("A7\n");
 
 		if (sumDataCollection != null) {
 			// Collect average data
@@ -1085,7 +1099,8 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 				if (sumDataEntry != null) updateSum(sumDataEntry, currentStatDoubleData); // this adds up data of a single iteration across multiple runs
 			}
 		}
-		
+		if (TRACE) printToTextListener("A8\n");
+
 //		if (doTextOutput()) {
 //			Pair<String,Double[]> addInfo = getOutputLine(informerList, lastSols);
 //
@@ -1099,7 +1114,8 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 //		}
 		plotCurrentResults();
 		fireDataListeners();
-
+		if (TRACE) printToTextListener(".. done createNextGenPerformed after " + pop.getFunctionCalls() + " evals.\n");
+		if (resultOut != null) resultOut.flush(); 
 		iterationCounter++;
 	}
 

@@ -177,12 +177,12 @@ public class MatlabEvalMediator {
 	 * @return
 	 */
 	public Object getQuestion() {
-		logMP("-- Question: " + BeanInspector.toString(question) + "\n");
+		if (mp!=null) logMP("-- Question: " + BeanInspector.toString(question) + "\n");
 		return question;
 	}
 
 	double[] getAnswer() {
-		logMP("-- mediator delivering " + BeanInspector.toString(answer) + "\n");
+		if (mp!=null) logMP("-- mediator delivering " + BeanInspector.toString(answer) + "\n");
 		return answer;
 	}
 

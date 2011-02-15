@@ -77,6 +77,7 @@ if ((nargin == 2) || (nargin == 3))
             eva2.OptimizerFactory.addTerminator(EvaluationTerminator(maxEvals), 0);
         end
     end
+    int.mp.setOutputAllStatFields(int.outputAllStatsFields==1);
 
     % set display
     if (strcmp(int.opts.Display,'off') || isempty(int.opts.Display))
