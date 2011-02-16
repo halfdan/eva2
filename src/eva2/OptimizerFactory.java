@@ -115,6 +115,8 @@ public class OptimizerFactory {
 	
 	public final static int PBIL = 13;
 
+	public final static int MOGA = 14;
+	
 	public final static int defaultFitCalls = 10000;
 
 	public final static int randSeed = 0;
@@ -297,6 +299,14 @@ public class OptimizerFactory {
 				listener);
 	}
 
+	public static final GOParameters standardMOGA(AbstractOptimizationProblem problem) {
+		GOParameters gaParams=standardGA(problem);
+		int archiveSize=100;
+		int popSize=100;
+		MultiObjectiveEA moga = createMultiObjectiveEA(gaParams.getOptimizer(), archiveSize, problem, null);
+		return makeParams(moga, popSize, problem, randSeed, makeDefaultTerminator());
+	}
+	
 	/**
 	 * This method creates a multi-objective EA optimizer. Remember to set a
 	 * multi-objective selection method within the specific optimizer.
@@ -574,6 +584,8 @@ public class OptimizerFactory {
 			return standardCbnGA(problem);
 		case PBIL:
 			return standardPBIL(problem);
+		case MOGA:
+			return standardMOGA(problem);
 		default:
 			System.err.println("Error: optimizer type " + optType
 					+ " is unknown!");
@@ -588,9 +600,9 @@ public class OptimizerFactory {
 	 * @return a String listing the accessible optimizers
 	 */
 	public static String showOptimizers() {
-		return "1: Standard ES \n2: CMA-ES \n3: GA \n4: PSO \n5: DE \n6: Tribes \n7: Random (Monte Carlo) "
-				+ "\n8: Hill-Climbing \n9: Cluster-based niching ES \n10: Clustering Hill-Climbing \n11: IPOP-CMA-ES "
-				+ "\n12: Cluster-based niching GA \n13: PBIL";
+		return STD_ES+": Standard ES \n"+ CMA_ES+ ": CMA-ES \n"+ STD_GA+ ": GA \n"+ PSO + ": PSO \n"+ DE + ": DE \n"+ TRIBES + ": Tribes \n"+ RANDOM + ": Random (Monte Carlo) "
+				+ "\n"+ HILLCL + ": Hill-Climbing \n"+ CBN_ES + ": Cluster-based niching ES \n"+ CL_HILLCL + ": Clustering Hill-Climbing \n"+ CMA_ES_IPOP + ": IPOP-CMA-ES "
+				+ "\n"+ CBN_GA + ": Cluster-based niching GA \n"+ PBIL + ": PBIL \n"+ MOGA + ": MOGA, a Multi-Objective Genetic Algorithm";
 	}
 
 	/**
