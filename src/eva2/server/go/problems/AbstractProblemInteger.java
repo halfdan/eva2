@@ -1,7 +1,7 @@
 package eva2.server.go.problems;
 
 import eva2.server.go.individuals.AbstractEAIndividual;
-import eva2.server.go.individuals.GAIndividualIntegerData;
+import eva2.server.go.individuals.GIIndividualIntegerData;
 import eva2.server.go.individuals.InterfaceDataTypeInteger;
 import eva2.server.go.populations.Population;
 import eva2.server.go.strategies.InterfaceOptimizer;
@@ -20,7 +20,7 @@ public abstract class AbstractProblemInteger extends AbstractOptimizationProblem
     }
 
     protected void initTemplate() {
-    	if (m_Template==null) m_Template = new GAIndividualIntegerData();
+    	if (m_Template==null) m_Template = new GIIndividualIntegerData();
 		if (((InterfaceDataTypeInteger)this.m_Template).size()!=this.getProblemDimension()) {
 			((InterfaceDataTypeInteger)this.m_Template).setIntegerDataLength(this.getProblemDimension());
 		}

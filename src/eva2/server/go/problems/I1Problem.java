@@ -63,6 +63,6 @@ public class I1Problem extends AbstractProblemInteger implements java.io.Seriali
     }
 
     public static String globalInfo() {
-        return "I1(x) = x^2 is to be minimized.";
+        return "A hyper parabola on integer values x with I1(x) = x^2 is to be minimized.";
     }
 }
