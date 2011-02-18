@@ -41,6 +41,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
     private double                          m_Lambda            = 0.6;
     private double                          m_Mt                = 0.05;
     private int								maximumAge			= -1;
+    private boolean							reEvaluate			= false;
     // to log the parents of a newly created indy.
     private boolean							doLogParents		= false; // deactivate for better performance
     private transient Vector<AbstractEAIndividual> 	parents				= null; 
@@ -476,6 +477,19 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
         children.setGenerationTo(m_Population.getGeneration());
         m_Problem.evaluate(children);
        
+        /**
+         * MdP: added a reevalutation mechanism for dynamically changing problems
+         */
+        if(isReEvaluate()){
+        	for(int i=0;i<this.m_Population.size();i++){
+        	
+        		if (((AbstractEAIndividual)m_Population.get(i)).getAge() >= maximumAge) {
+        			this.m_Problem.evaluate(((AbstractEAIndividual)m_Population.get(i)));
+        			((AbstractEAIndividual)m_Population.get(i)).SetAge(0);
+        			m_Population.incrFunctionCalls();
+        		}
+        	}
+        }
         
         int nextDoomed = getNextDoomed(m_Population, 0);
         for (int i = 0; i < this.m_Population.size(); i++) {
@@ -510,6 +524,23 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
         
         // required for dynamic problems especially
         m_Problem.evaluatePopulationStart(m_Population);
+        
+        
+        /**
+         * MdP: added a reevalutation mechanism for dynamically changing problems
+         */
+        if(isReEvaluate()){
+        	nextDoomed=-1;
+        	for(int i=0;i<this.m_Population.size();i++){
+        	
+        		if (((AbstractEAIndividual)m_Population.get(i)).getAge() >= maximumAge) {
+        			this.m_Problem.evaluate(((AbstractEAIndividual)m_Population.get(i)));
+        			((AbstractEAIndividual)m_Population.get(i)).SetAge(0);
+        			m_Population.incrFunctionCalls();
+        		}
+        	}
+        }
+        
         
         for (int i = 0; i < this.m_Population.size(); i++) {
         	if (cyclePop) index=i;
@@ -654,7 +685,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
         return result;
     }
     /** This method allows you to set an identifier for the algorithm
-     * @param name      The indenifier
+     * @param name      The identifier
      */
      public void SetIdentifier(String name) {
         this.m_Identifier = name;
@@ -685,8 +716,8 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
         return "DE";
     }
 
-    /** Assuming that all optimizer will store thier data in a population
-     * we will allow acess to this population to query to current state
+    /** Assuming that all optimizer will store their data in a population
+     * we will allow access to this population to query to current state
      * of the optimizer.
      * @return The population of current solutions to a given problem.
      */
@@ -873,4 +904,23 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
 	public String cyclePopTipText() {
 		return "if true, individuals are used as parents in a cyclic sequence - otherwise randomly ";
 	}
+	
+	/**
+	 * @return the maximumAge
+	 **/
+	public boolean isReEvaluate() {
+		return reEvaluate;
+	}
+
+	/**
+	 * @param maximumAge the maximumAge to set
+	 **/
+	public void setReEvaluate(boolean reEvaluate) {
+		this.reEvaluate = reEvaluate;
+	}
+	
+	public String reEvaluateTipText() {
+		return "Reeavulates individuals which are older than maximum age instead of discarding them";
+	}
+
 }
