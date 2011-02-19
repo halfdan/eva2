@@ -43,7 +43,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
     private int								maximumAge			= -1;
     private boolean							reEvaluate			= false;
     // to log the parents of a newly created indy.
-    private boolean							doLogParents		= false; // deactivate for better performance
+    public boolean							doLogParents		= false; // deactivate for better performance
     private transient Vector<AbstractEAIndividual> 	parents				= null; 
 
     private boolean 						randomizeFKLambda	= false;
