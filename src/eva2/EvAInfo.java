@@ -8,7 +8,7 @@ import eva2.tools.BasicResourceLoader;
 /**
  * Main product and version information strings.
  * 
- * --- Changelog
+ * ---- Changelog
  * 2.046: Adaptions to the MatlabInterface: explicit data types are used now, added integer problem support.
  * 			Additional Integer operators: segment-wise mutation and crossover. Added an abstraction over individual
  * 			initialization methods. Added the ERPStarter class which is an example for running a csv-configured 
