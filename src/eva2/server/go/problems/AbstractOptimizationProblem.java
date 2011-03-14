@@ -74,9 +74,13 @@ implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serial
 	}
 	
 	/**
-	 * 
+	 * Tag for data fields concerning a solution to an abstract optimization problem.
 	 */
 	public static final String STAT_SOLUTION_HEADER = "solution";
+	/**
+	 * Store the old fitness array before evaluation.
+	 */
+	public static final String OLD_FITNESS_KEY = "oldFitness";
 	
 	int parallelthreads = 1;
 	
@@ -166,6 +170,7 @@ implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serial
 
 	        for (int i = 0; i < population.size(); i++) {
 	        	tmpIndy = (AbstractEAIndividual) population.get(i);
+	        	tmpIndy.putData(OLD_FITNESS_KEY, tmpIndy.getFitness());
 	        	synchronized (tmpIndy) {
 	            	tmpIndy.resetConstraintViolation();
 	            	this.evaluate(tmpIndy);
