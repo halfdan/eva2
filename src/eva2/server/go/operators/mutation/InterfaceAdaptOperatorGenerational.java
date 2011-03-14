@@ -10,7 +10,7 @@ import eva2.server.go.populations.Population;
  * @author mkron
  *
  */
-public interface InterfaceMutationGenerational extends InterfaceMutation {
+public interface InterfaceAdaptOperatorGenerational  {
 	
 	/**
 	 * Perform adaption of the operator based on the selection performed by an EA.

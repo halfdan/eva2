@@ -2,7 +2,7 @@ package eva2.server.go.strategies;
 
 import eva2.server.go.InterfacePopulationChangedEventListener;
 import eva2.server.go.individuals.AbstractEAIndividual;
-import eva2.server.go.operators.mutation.InterfaceMutationGenerational;
+import eva2.server.go.operators.mutation.InterfaceAdaptOperatorGenerational;
 import eva2.server.go.operators.selection.InterfaceSelection;
 import eva2.server.go.operators.selection.SelectRandom;
 import eva2.server.go.operators.selection.SelectXProbRouletteWheel;
@@ -115,8 +115,8 @@ public class GeneticAlgorithm implements InterfaceOptimizer, java.io.Serializabl
 //            System.out.println("Parents:"+parents.getStringRepresentation());
 //            double[] meas = parents.getPopulationMeasures();
 
-            if (parents.getEAIndividual(0).getMutationOperator() instanceof InterfaceMutationGenerational) {
-            	((InterfaceMutationGenerational)parents.getEAIndividual(0).getMutationOperator()).adaptAfterSelection(m_Population, parents);
+            if (parents.getEAIndividual(0).getMutationOperator() instanceof InterfaceAdaptOperatorGenerational) {
+            	((InterfaceAdaptOperatorGenerational)parents.getEAIndividual(0).getMutationOperator()).adaptAfterSelection(m_Population, parents);
             }
             
             for (int i = 0; i < parents.size(); i++) {
@@ -133,8 +133,8 @@ public class GeneticAlgorithm implements InterfaceOptimizer, java.io.Serializabl
             }
             this.evaluatePopulation(result);
             
-            if (parents.getEAIndividual(0).getMutationOperator() instanceof InterfaceMutationGenerational) {
-            	((InterfaceMutationGenerational)parents.getEAIndividual(0).getMutationOperator()).adaptGenerational(m_Population, parents, result, true);
+            if (parents.getEAIndividual(0).getMutationOperator() instanceof InterfaceAdaptOperatorGenerational) {
+            	((InterfaceAdaptOperatorGenerational)parents.getEAIndividual(0).getMutationOperator()).adaptGenerational(m_Population, parents, result, true);
             }
             return result;
         }

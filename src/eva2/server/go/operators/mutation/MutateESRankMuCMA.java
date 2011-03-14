@@ -243,7 +243,7 @@ class CMAParamSet implements InterfacePopulationChangedEventListener, Serializab
  * @author mkron
  *
  */
-public class MutateESRankMuCMA implements InterfaceMutationGenerational, Serializable {
+public class MutateESRankMuCMA implements InterfaceMutation, InterfaceAdaptOperatorGenerational, Serializable {
 //	int dim;
 	private double c_c, expRandStepLen;
 	

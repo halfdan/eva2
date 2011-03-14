@@ -3,7 +3,7 @@ package eva2.server.go.individuals;
 import java.util.BitSet;
 
 /** This interface gives access to a binary phenotype and except
- * for problemspecific operators should only be used by the
+ * for problem specific operators should only be used by the
  * optimization problem.
  * Created by IntelliJ IDEA.
  * User: streiche

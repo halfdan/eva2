@@ -14,7 +14,7 @@ import eva2.tools.math.RNG;
  * Time: 14:11:49
  * To change this template use File | Settings | File Templates.
  */
-public class MutateESSuccessRule extends MutateESFixedStepSize implements InterfaceMutationGenerational, java.io.Serializable {
+public class MutateESSuccessRule extends MutateESFixedStepSize implements InterfaceMutation, InterfaceAdaptOperatorGenerational, java.io.Serializable {
     // it would be quite nice to make this variable static, but in that case
     // no one could runs n independent ES runs in parallel anymore *sigh*
     // protected static double m_MutationStepSize    = 0.2;
