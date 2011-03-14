@@ -162,7 +162,9 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
         	// parents and result have the same size and correspond per individual        	
         	((InterfaceAdaptOperatorGenerational)parents.getEAIndividual(0).getMutationOperator()).adaptGenerational(fromPopulation, parents, result, m_UsePlusStrategy);
         }
-        
+        if (parents.getEAIndividual(0).getCrossoverOperator() instanceof InterfaceAdaptOperatorGenerational) {
+        	((InterfaceAdaptOperatorGenerational)parents.getEAIndividual(0).getCrossoverOperator()).adaptGenerational(fromPopulation, parents, result, m_UsePlusStrategy);
+        }
         return result;
     }
     
@@ -216,6 +218,9 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
         // m_Population / parents are of sizes lambda / mu 
         if (parents.getEAIndividual(0).getMutationOperator() instanceof InterfaceAdaptOperatorGenerational) {
         	((InterfaceAdaptOperatorGenerational)parents.getEAIndividual(0).getMutationOperator()).adaptAfterSelection(getPopulation(), parents);
+        }
+        if (parents.getEAIndividual(0).getCrossoverOperator() instanceof InterfaceAdaptOperatorGenerational) {
+        	((InterfaceAdaptOperatorGenerational)parents.getEAIndividual(0).getCrossoverOperator()).adaptAfterSelection(getPopulation(), parents);
         }
         
         // now generate the lambda offsprings
