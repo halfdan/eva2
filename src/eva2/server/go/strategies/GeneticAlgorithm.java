@@ -118,6 +118,9 @@ public class GeneticAlgorithm implements InterfaceOptimizer, java.io.Serializabl
             if (parents.getEAIndividual(0).getMutationOperator() instanceof InterfaceAdaptOperatorGenerational) {
             	((InterfaceAdaptOperatorGenerational)parents.getEAIndividual(0).getMutationOperator()).adaptAfterSelection(m_Population, parents);
             }
+            if (parents.getEAIndividual(0).getCrossoverOperator() instanceof InterfaceAdaptOperatorGenerational) {
+            	((InterfaceAdaptOperatorGenerational)parents.getEAIndividual(0).getCrossoverOperator()).adaptAfterSelection(m_Population, parents);
+            }
             
             for (int i = 0; i < parents.size(); i++) {
                 tmpIndy =  ((AbstractEAIndividual)parents.get(i));
@@ -135,6 +138,9 @@ public class GeneticAlgorithm implements InterfaceOptimizer, java.io.Serializabl
             
             if (parents.getEAIndividual(0).getMutationOperator() instanceof InterfaceAdaptOperatorGenerational) {
             	((InterfaceAdaptOperatorGenerational)parents.getEAIndividual(0).getMutationOperator()).adaptGenerational(m_Population, parents, result, true);
+            }
+            if (parents.getEAIndividual(0).getCrossoverOperator() instanceof InterfaceAdaptOperatorGenerational) {
+            	((InterfaceAdaptOperatorGenerational)parents.getEAIndividual(0).getCrossoverOperator()).adaptGenerational(m_Population, parents, result, true);
             }
             return result;
         }
