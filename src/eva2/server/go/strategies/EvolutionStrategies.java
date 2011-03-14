@@ -4,7 +4,7 @@ import eva2.gui.BeanInspector;
 import eva2.gui.GenericObjectEditor;
 import eva2.server.go.InterfacePopulationChangedEventListener;
 import eva2.server.go.individuals.AbstractEAIndividual;
-import eva2.server.go.operators.mutation.InterfaceMutationGenerational;
+import eva2.server.go.operators.mutation.InterfaceAdaptOperatorGenerational;
 import eva2.server.go.operators.mutation.MutateESSuccessRule;
 import eva2.server.go.operators.selection.InterfaceSelection;
 import eva2.server.go.operators.selection.SelectBestIndividuals;
@@ -157,10 +157,10 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
         
         this.evaluatePopulation(result);
         
-        if (result.getEAIndividual(0).getMutationOperator() instanceof InterfaceMutationGenerational) {
+        if (result.getEAIndividual(0).getMutationOperator() instanceof InterfaceAdaptOperatorGenerational) {
         	// this seems to be the right moment for the 1/5-success rule
         	// parents and result have the same size and correspond per individual        	
-        	((InterfaceMutationGenerational)parents.getEAIndividual(0).getMutationOperator()).adaptGenerational(fromPopulation, parents, result, m_UsePlusStrategy);
+        	((InterfaceAdaptOperatorGenerational)parents.getEAIndividual(0).getMutationOperator()).adaptGenerational(fromPopulation, parents, result, m_UsePlusStrategy);
         }
         
         return result;
@@ -214,8 +214,8 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
 //        System.out.println("-- selected avg fit " + BeanInspector.toString(parents.getMeanFitness()) + " from last gen " + BeanInspector.toString(m_Population.getMeanFitness()));
         
         // m_Population / parents are of sizes lambda / mu 
-        if (parents.getEAIndividual(0).getMutationOperator() instanceof InterfaceMutationGenerational) {
-        	((InterfaceMutationGenerational)parents.getEAIndividual(0).getMutationOperator()).adaptAfterSelection(getPopulation(), parents);
+        if (parents.getEAIndividual(0).getMutationOperator() instanceof InterfaceAdaptOperatorGenerational) {
+        	((InterfaceAdaptOperatorGenerational)parents.getEAIndividual(0).getMutationOperator()).adaptAfterSelection(getPopulation(), parents);
         }
         
         // now generate the lambda offsprings

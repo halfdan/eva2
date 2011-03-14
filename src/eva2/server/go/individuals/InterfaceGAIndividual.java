@@ -3,7 +3,7 @@ package eva2.server.go.individuals;
 import java.util.BitSet;
 
 /** This interface gives access to a binary genotype and should
- * only be used by mutation and crossover operators. Onyl exception are
+ * only be used by mutation and crossover operators. Exceptions are
  * data type specific optimization strategies like CHC or PBIL.
  * Created by IntelliJ IDEA.
  * User: streiche

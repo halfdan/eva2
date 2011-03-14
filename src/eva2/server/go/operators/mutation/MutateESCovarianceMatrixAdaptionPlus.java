@@ -7,8 +7,8 @@ import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.Jama.Matrix;
 
 public class MutateESCovarianceMatrixAdaptionPlus extends
-		MutateESCovarianceMatrixAdaption implements
-		InterfaceMutationGenerational {
+		MutateESCovarianceMatrixAdaption implements InterfaceMutation,
+		InterfaceAdaptOperatorGenerational {
 	protected double m_psuccess;
 	protected double m_cp;
 	protected double m_psuccesstarget = 0.44;
