@@ -2,7 +2,9 @@ package eva2.server.go.operators.initialization;
 
 import java.util.BitSet;
 
+import eva2.gui.BeanInspector;
 import eva2.server.go.individuals.AbstractEAIndividual;
+import eva2.server.go.individuals.GIIndividualIntegerData;
 import eva2.server.go.individuals.InterfaceGAIndividual;
 import eva2.server.go.individuals.InterfaceGIIndividual;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
@@ -36,6 +38,7 @@ public class GAGIInitializeSegmentwise implements InterfaceInitialization, java.
 	private int segmentLength=4;
 	private int targetElement=1;
 	private int[] otherElements=new int[]{};
+	private double disturbanceDegree=0.0;
 	
 	public GAGIInitializeSegmentwise() {}
 	
@@ -51,11 +54,24 @@ public class GAGIInitializeSegmentwise implements InterfaceInitialization, java.
 			bitsPerSegmentArray = new int[o.bitsPerSegmentArray.length];
 			System.arraycopy(o.bitsPerSegmentArray, 0, bitsPerSegmentArray, 0, bitsPerSegmentArray.length);
 		}
+		disturbanceDegree=o.disturbanceDegree;
+	}
+	
+	public GAGIInitializeSegmentwise(int segLen, int bitsPerSeg, double disturbanceRatio) {
+		segmentLength = segLen;
+		bitsPerSegmentArray = new int[0];
+		bitsPerSegment=bitsPerSeg;
+		disturbanceDegree=disturbanceRatio;
+	}
+	
+	public GAGIInitializeSegmentwise(int segLen, int[] bitsPerSegArr, double disturbanceRatio) {
+		segmentLength = segLen;
+		bitsPerSegmentArray = bitsPerSegArr;
+		disturbanceDegree=disturbanceRatio;
 	}
 	
 	public GAGIInitializeSegmentwise(int segLen, int[] bitsPerSeg) {
-		segmentLength = segLen;
-		bitsPerSegmentArray = bitsPerSeg;
+		this(segLen, bitsPerSeg, 0);
 	}
 	
 	/**
@@ -66,16 +82,25 @@ public class GAGIInitializeSegmentwise implements InterfaceInitialization, java.
 	 * @param targetElement
 	 * @param otherElements
 	 */
-	public GAGIInitializeSegmentwise(int segLen, int[] bitsPerSeg, int targetElement, int[] otherElements) {
+	public GAGIInitializeSegmentwise(int segLen, int[] bitsPerSeg, int targetElement, int[] otherElements, double disturbRatio) {
 		segmentLength = segLen;
 		bitsPerSegmentArray = bitsPerSeg;
 		this.targetElement = targetElement;
 		this.otherElements = otherElements;
+		this.disturbanceDegree = disturbRatio;
 	}
 	
 	public InterfaceInitialization clone() {
 		return new GAGIInitializeSegmentwise(this);
 	}
+//	
+//	public static void main(String[] args) {
+//		GAGIInitializeSegmentwise init = new GAGIInitializeSegmentwise(5, new int[]{5,0}, 0.5);
+//		GIIndividualIntegerData indy = new GIIndividualIntegerData();
+//		indy.setInitOperator(init);
+//		indy.init(null);
+//		System.out.println(indy.getStringRepresentation());
+//	}
 	
 	public void initialize(AbstractEAIndividual indy,
 			InterfaceOptimizationProblem problem) {
@@ -111,6 +136,10 @@ public class GAGIInitializeSegmentwise implements InterfaceInitialization, java.
 //					}
 				}
 			}
+			if (disturbanceDegree>0) {
+				disturb(indy, genotype, genotypeLen, intRange);
+			}
+			
 			// write back the genotype (it may have been cloned, who knows...)
 			if (indy instanceof InterfaceGAIndividual) {
 				((InterfaceGAIndividual)indy).SetBGenotype((BitSet)genotype);
@@ -119,6 +148,31 @@ public class GAGIInitializeSegmentwise implements InterfaceInitialization, java.
 			}
 //			System.out.println(BeanInspector.toString(genotype));
 		} else throw new RuntimeException("Error: "+ this.getClass() + " must be used with binary or integer individuals!");
+	}
+
+	private void disturb(AbstractEAIndividual indy, Object genotype, int genotypeLen, int[][] intRange) {
+		for (int i=0; i<genotypeLen; i++) {
+			if (RNG.flipCoin(disturbanceDegree)) {
+				setRandomValue(i, genotype, intRange);
+			}
+		}
+	}
+	
+	private void setRandomValue(int i, Object genotype, int[][] range) {
+		if (genotype instanceof BitSet) {
+			BitSet geno=(BitSet)genotype;
+			geno.set(i, RNG.randomBoolean());
+		} else if (genotype instanceof int[]) { 
+			int[] geno=(int[]) genotype;
+			if (otherElements.length>0) { // may choose between target and all other elements
+				int rnd=RNG.randomInt(0, otherElements.length); // between 0 and length (inclusively)
+				if (rnd==otherElements.length) geno[i]=targetElement;
+				else geno[i]=otherElements[rnd];
+			} else { // or choose a random int within the range
+				if (range==null) System.err.println("Error, missing int range to perform random disturbance in " + this.getClass());
+				geno[i]=RNG.randomInt(range[i][0], range[i][1]);
+			}
+		}
 	}
 
 	/**
