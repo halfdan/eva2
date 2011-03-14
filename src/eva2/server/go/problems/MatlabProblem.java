@@ -44,6 +44,7 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 	public static boolean 				TRACE = false; 
 	transient OptimizerRunnable			runnable = null;
 	protected boolean 					allowSingleRunnable = true;	
+	private transient Population		seedPopulation=null;
 	protected int 						problemDimension = 10;
 	transient PrintStream 				dos = null;
 	private double 						range[][] =	null;
@@ -320,6 +321,60 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 		optimize(optType, outputFilePrefix, null, null);
 	}
 
+	public void clearSeedPopulation() {
+		seedPopulation=null;
+	}
+	
+	public void setSeedPopulation(double[][] seedData, double[][] seedDataFit) {
+		if (seedData==null) seedPopulation=null;
+		else {
+			if ((seedData.length!=seedDataFit.length) 
+					|| (seedData[0].length!=getProblemDimension())) {
+				System.err.println("Error, unable to set seed population due to mismatching dimensions");
+				seedPopulation=null;
+			} else {
+				log("Setting seed population of size " + seedData.length + "\n");
+				seedPopulation=new Population(seedData.length);
+				for (int i=0; i<seedData.length; i++) {
+					AbstractEAIndividual indy = (AbstractEAIndividual)m_Template.clone();
+					setIndyGenotype(indy, seedData[i]);
+					indy.SetFitness(seedDataFit[i]);
+					seedPopulation.add(indy);
+				}
+			}
+		}
+	}
+	
+	private void setIndyGenotype(AbstractEAIndividual indy, double[] ds) {
+		switch (dataType) {
+		case typeDouble:
+			((InterfaceDataTypeDouble)indy).SetDoubleGenotype(ds);
+			break;
+		case typeBinary:
+			((InterfaceDataTypeBinary)indy).SetBinaryGenotype(toBinary(ds));
+			break;
+		case typeInteger:
+			((InterfaceDataTypeInteger)indy).SetIntGenotype(toInteger(ds));
+			break;
+		} 
+	}
+
+	private int[] toInteger(double[] ds) {
+		int[] a=new int[ds.length];
+		for (int i=0; i<ds.length; i++) {
+			a[i]=(int)Math.round(ds[i]);
+		}
+		return a;
+	}
+
+	private BitSet toBinary(double[] ds) {
+		BitSet bs=new BitSet(ds.length);
+		for (int i=0; i<ds.length; i++) {
+			bs.set(i, (ds[i]>0.5));
+		}
+		return bs;
+	}
+
 	/**
 	 * Start an optimization using the MatlabProblem. The optType references the standard
 	 * optimizer as in OptimizerFactory. An output file prefix is optional. In two arrays,
@@ -347,6 +402,14 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 			if (verbosityLevel>0) runnable.setOutputTo(2); // both file + window
 			else runnable.setOutputTo(1); // only window
 			runnable.setOutputFullStatsToText(outputAllStatsField);
+
+			if (seedPopulation!=null) {
+				runnable.getGOParams().getOptimizer().setPopulation(seedPopulation);
+				runnable.setDoRestart(true);
+				log("Setting seed population of size " + seedPopulation.size() + ", target size " + seedPopulation.getTargetSize() + "\n");
+				log(BeanInspector.toString(seedPopulation.getStringRepresentation())+"\n");
+				log("Restart of optimization targetted.\n");
+			}
 
 //			log("in MP optimize C\n");
 			if ((specParams != null) && (specParams.length > 0)) {
