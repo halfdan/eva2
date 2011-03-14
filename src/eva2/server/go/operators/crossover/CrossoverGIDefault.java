@@ -7,8 +7,9 @@ import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
+ * One-point crossover on integer individuals.
+ * 
+ * User: mkron, streiche
  * Date: 18.05.2005
  * Time: 17:10:28
  * To change this template use File | Settings | File Templates.
