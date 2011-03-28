@@ -9,6 +9,7 @@
 \usepackage{datetime}
 \usepackage{a4wide}
 \usepackage{hyperref}
+\usepackage{color}
 \usepackage{ae,aecompl}
 
 %\declare@shorthand{english}{""}{\hskip\z@skip}
@@ -19,18 +20,57 @@
 
 %When using hyperref and referencing algorithms latex gives an error: ! Undefined control sequence. <argument> algorithm.\theHalgorithm This can be solved adding at the preamble:
 \newcommand{\theHalgorithm}{\arabic{algorithm}}
+% Some nice colors
 
-\lstset{%
+\definecolor{royalblue}{cmyk}{.93, .79, 0, 0}
+\definecolor{lightblue}{cmyk}{.10, .017, 0, 0}
+\definecolor{darkgreen}{rgb}{0,.7,0}
+\definecolor{darkred}{rgb}{.7,0,0}
+\definecolor{gray}{gray}{0.5}
+\definecolor{lightgray}{gray}{0.97}
+\definecolor{forrestgreen}{cmyk}{.76, 0, .76, .45}
+
+\lstdefinestyle{mystyle}{ 
+basicstyle=\tiny\ttfamily\bfseries, 
+numbers=left, 
+numberstyle=\scriptsize,
+stepnumber=1, 
+columns=flexible,  
+numbersep=15pt, mathescape,emph={function,switch,case,while,for,do,done,if,begin,end,then,else,return}, emphstyle={\color{blue}\underline\ttfamily}, emph={[2]scheme,params}, emphstyle={[2]\textit},
+morecomment={[l]{//}},
+morecomment={[s]{/*}{*/}},
+morecomment=[l]{\%},
+commentstyle=\color{forrestgreen}\ttfamily\textit, 
+stringstyle=\color{gray}\ttfamily,
+morestring=[b]',
+} 
+\lstdefinestyle{myjavastyle}{ 
 language=java,
+basicstyle=\tiny,
 numbers=left,
 stepnumber=1,
-numbersep=5pt,
-tabsize=3,
-breaklines=true,
-basicstyle=\tiny\ttfamily,
-framerule=0pt,
-columns=flexible
-}
+columns=flexible,
+numbersep=15pt,
+mathescape,
+keywordstyle={\color{blue}\ttfamily},
+emphstyle={\color{blue}\underline\ttfamily}, emph={[2]scheme,params}, emphstyle={[2]\textit},
+morecomment={[l]{//}},
+commentstyle=\color{forrestgreen}\ttfamily\textit, 
+stringstyle=\color{gray}\ttfamily,
+} 
+
+\lstnewenvironment{mylstenv}[1][]{ 
+\lstset{ 
+style=mystyle, 
+#1 
+} }
+{}
+\lstnewenvironment{myjavalstenv}[1][]{ 
+\lstset{ 
+style=myjavastyle, 
+#1 
+} }
+{} 
 \end_preamble
 \language english
 \inputencoding auto
@@ -1800,7 +1840,7 @@ postProcessSteps
 status open
 
 \begin_layout Standard
-Question here: wft is a hill climber?
+Question here: what is a hill climber?
 \end_layout
 
 \end_inset
@@ -1975,7 +2015,7 @@ status open
 \noindent
 \align center
 \begin_inset Graphics
-	filename pics/screenshot-ExtRun.jpg
+	filename pics/screenshot-ExtRun.png
 	width 40col%
 
 \end_inset
@@ -2455,22 +2495,13 @@ status open
 
 \begin_layout Standard
 \begin_inset ERT
-status collapsed
+status open
 
 \begin_layout Standard
 
 
 \backslash
-lstset{language=java, basicstyle=
-\backslash
-tiny, numbers=left, stepnumber=1, numbersep=5pt}
-\end_layout
-
-\begin_layout Standard
-
-
-\backslash
-begin{lstlisting}
+begin{mylstenv}
 \end_layout
 
 \begin_layout Standard
@@ -2558,7 +2589,10 @@ end
 
 
 \backslash
-end{lstlisting}
+end{
+\lang english
+mylstenv
+}
 \end_layout
 
 \end_inset
@@ -3659,16 +3693,7 @@ status open
 
 
 \backslash
-lstset{language=java, basicstyle=
-\backslash
-tiny, numbers=left, stepnumber=1, numbersep=5pt}
-\end_layout
-
-\begin_layout Standard
-
-
-\backslash
-begin{lstlisting}
+begin{mylstenv}
 \end_layout
 
 \begin_layout Standard
@@ -3706,7 +3731,7 @@ JI=optimize(JI, 3);  % starts a Genetic Algorithm with integer-based individuals
 
 
 \backslash
-end{lstlisting}
+end{mylstenv}
 \end_layout
 
 \end_inset
@@ -3752,16 +3777,10 @@ status open
 
 
 \backslash
-lstset{language=java, basicstyle=
-\backslash
-tiny, numbers=left, stepnumber=1, numbersep=5pt}
-\end_layout
-
-\begin_layout Standard
-
-
-\backslash
-begin{lstlisting}
+begin{
+\lang english
+mylstenv
+}
 \end_layout
 
 \begin_layout Standard
@@ -3799,7 +3818,10 @@ JI=optimize(JI, 3);  % start a default Genetic Algorithm
 
 
 \backslash
-end{lstlisting}
+end{
+\lang english
+mylstenv
+}
 \end_layout
 
 \end_inset
@@ -3844,16 +3866,10 @@ status open
 
 
 \backslash
-lstset{language=java, basicstyle=
-\backslash
-tiny, numbers=left, stepnumber=1, numbersep=5pt}
-\end_layout
-
-\begin_layout Standard
-
-
-\backslash
-begin{lstlisting}
+begin{
+\lang english
+mylstenv
+}
 \end_layout
 
 \begin_layout Standard
@@ -3886,7 +3902,10 @@ JI=optimize(JI, 4);  % starts a default Particle Swarm Optimization run
 
 
 \backslash
-end{lstlisting}
+end{
+\lang english
+mylstenv
+}
 \end_layout
 
 \end_inset
@@ -4994,7 +5013,7 @@ status open
 
 
 \backslash
-lstinputlisting{../src/eva2/examples/TestingF1PSO.java}
+lstinputlisting[style=myjavastyle]{../src/eva2/examples/TestingF1PSO.java}
 \end_layout
 
 \end_inset
@@ -6266,7 +6285,7 @@ status open
 
 \begin_layout Standard
 \begin_inset Note Note
-status open
+status collapsed
 
 \begin_layout Standard
 \begin_inset ERT
@@ -6483,7 +6502,7 @@ status open
 
 
 \backslash
-lstinputlisting{../src/eva2/examples/TerminatorExample.java}
+lstinputlisting[style=myjavastyle]{../src/eva2/examples/TerminatorExample.java}
 \end_layout
 
 \end_inset
@@ -6593,7 +6612,7 @@ status open
 
 
 \backslash
-lstinputlisting{../src/eva2/examples/TestingGAB1.java}
+lstinputlisting[style=myjavastyle]{../src/eva2/examples/TestingGAB1.java}
 \end_layout
 
 \end_inset
@@ -6662,7 +6681,7 @@ name "sub:Setting-Evolutionary-Operators"
 \begin_inset Float algorithm
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Standard
 \begin_inset ERT
@@ -6672,7 +6691,7 @@ status open
 
 
 \backslash
-lstinputlisting{../src/eva2/examples/TestingPlusCmaEs.java}
+lstinputlisting[style=myjavastyle]{../src/eva2/examples/TestingPlusCmaEs.java}
 \end_layout
 
 \end_inset
@@ -6731,7 +6750,7 @@ reference "alg:(1+5)-CMA-ES."
 \end_layout
 
 \begin_layout Standard
-Lines 20-23 of Listing
+Lines 23-26 of Listing
 \begin_inset ERT
 status open
 
@@ -6899,7 +6918,7 @@ status open
 
 
 \backslash
-lstinputlisting{../src/eva2/examples/TestingCbnPostProc.java}
+lstinputlisting[style=myjavastyle]{../src/eva2/examples/TestingCbnPostProc.java}
 \end_layout
 
 \end_inset
