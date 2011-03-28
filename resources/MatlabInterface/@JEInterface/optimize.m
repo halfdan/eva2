@@ -95,6 +95,11 @@ if ((nargin == 2) || (nargin == 3))
         error('invalid Display option, only off/final/notify/iter are recognized');
     end
     
+    if isempty(int.seedPop) % set the seed data
+        int.mp.clearSeedPopulation;
+    else
+        int.mp.setSeedPopulation(int.seedPop, int.seedPopFit);
+    end
     int=runEvalLoopJE(int, 1, optType, outputFilePrefix, -1, -1, -1);
     
 else
