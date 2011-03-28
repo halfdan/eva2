@@ -344,7 +344,7 @@ public class ScaledBorder implements Border
 			  g.drawLine( insets.left - marker_length, p.y, insets.left, p.y );
 		  }
 		  if (v+src_dY<= v) {
-			  System.err.println("Overflow error B in ScaledBorder! v,src_dY:" + v + ", " + src_dY);
+//			  System.err.println("Overflow error B in ScaledBorder! v,src_dY:" + v + ", " + src_dY);
 			  v*=1.01;
 		  }
 		  v += src_dY;
@@ -569,10 +569,14 @@ public class ScaledBorder implements Border
     n=start;
     if ( n < src_rect.y ) n+=src_dY; 
     
-    if (((src_rect.y + src_rect.height)-start)>20) inc = ((src_rect.y + src_rect.height)- start)/20.;
+//    System.out.println("Steps approx: " + ((src_rect.y + src_rect.height)-start)/src_dY);
+    if (((src_rect.y + src_rect.height)-start)/src_dY>20) inc = ((src_rect.y + src_rect.height)- start)/20.;
     else inc = src_dY;
-    
+    if ((n+inc)==n) {
+    	System.err.println("Warning, too small increase step size!");
+    }
     for (; n <= src_rect.y + src_rect.height; n+=inc ){
+//    	System.out.println(n);
     	// TODO here might be a bug for mean values
       double v = n;
       if( y_scale != null ) v = y_scale.getImageOf( v );
