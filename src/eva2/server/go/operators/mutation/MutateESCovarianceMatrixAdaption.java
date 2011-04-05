@@ -23,7 +23,7 @@ public class MutateESCovarianceMatrixAdaption implements InterfaceMutation, java
     protected int                 m_D;
     protected double[]            m_Z;
     protected double              m_SigmaGlobal       = 1;
-    protected double              m_InitSigmaScalar   = 1;
+    protected double              m_InitSigmaScalar   = -1;
     protected double              m_c;
     protected double              cu;
     protected double              cov;
@@ -116,8 +116,14 @@ public class MutateESCovarianceMatrixAdaption implements InterfaceMutation, java
         if (!(individual instanceof InterfaceESIndividual)) return;
         double[]    x       = ((InterfaceESIndividual)individual).getDGenotype();
         double[][]  ranges  = ((InterfaceESIndividual)individual).getDoubleRange();
+
         this.m_Counter      = this.m_frequency;
-        this.m_SigmaGlobal  = this.m_InitSigmaScalar;
+        if (m_InitSigmaScalar>0) this.m_SigmaGlobal  = this.m_InitSigmaScalar;
+        else {
+        	double avgRange = Mathematics.getAvgRange(ranges);
+        	this.m_SigmaGlobal  = 0.25*avgRange;
+        }
+        System.out.println("Init sigma: " + m_SigmaGlobal);
         this.m_D            = x.length;
         this.m_C            = Matrix.identity(this.m_D, this.m_D);
         EigenvalueDecomposition helper = new EigenvalueDecomposition(this.m_C);
@@ -260,7 +266,7 @@ public class MutateESCovarianceMatrixAdaption implements InterfaceMutation, java
                     if (x[i] < range[i][0] || x[i] > range[i][1]) {
                     	// undo the step and try new Z
                         for (int j = 0; j < this.m_D; j++) x[j] = oldX[j] - this.m_SigmaGlobal * this.Bz[j];
-                        this.m_Z[i] = RNG.gaussianDouble(1.0); // TODO is this feasible? mal mit rank-mu testen
+                        this.m_SigmaGlobal*=0.5;
                         isNewPosFeasible = false;
                         counter++;
                         break;
@@ -326,6 +332,6 @@ public class MutateESCovarianceMatrixAdaption implements InterfaceMutation, java
         return this.m_InitSigmaScalar;
     }
     public String initSigmaScalarTipText() {
-        return "Set the initial sigma value.";
+        return "Set the initial sigma value, or -1 to use quarter average range of the problem.";
     }
 }
