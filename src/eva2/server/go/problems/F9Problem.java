@@ -26,9 +26,9 @@ public class F9Problem extends AbstractProblemDoubleOffset implements java.io.Se
     public double[] eval(double[] x) {
     	x = rotateMaybe(x);
         double[] result = new double[1];
-        result[0]     = m_YOffSet;
+        result[0]     = m_YOffset;
         for (int i = 0; i < x.length; i++) {
-            result[0]  += (i+1)*Math.pow(x[i]-m_XOffSet, 2);
+            result[0]  += (i+1)*Math.pow(x[i]-m_XOffset, 2);
         }
         return result;
     }

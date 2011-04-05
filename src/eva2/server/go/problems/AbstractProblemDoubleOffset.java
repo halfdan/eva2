@@ -11,8 +11,8 @@ public abstract class AbstractProblemDoubleOffset extends AbstractProblemDouble 
 
 //	protected AbstractEAIndividual      m_OverallBest       = null;
     protected int                       m_ProblemDimension  = 10;
-    protected double                    m_XOffSet           = 0.0; // TODO make them private, implement eval() and create abstract evalWithoutOffsets
-    protected double                    m_YOffSet           = 0.0;
+    protected double                    m_XOffset           = 0.0; // TODO make them private, implement eval() and create abstract evalWithoutOffsets
+    protected double                    m_YOffset           = 0.0;
 //    protected boolean                   m_UseTestConstraint = false;
 
     public AbstractProblemDoubleOffset() {
@@ -24,8 +24,8 @@ public abstract class AbstractProblemDoubleOffset extends AbstractProblemDouble 
     	super();
     	super.cloneObjects(b);
     	this.m_ProblemDimension = b.m_ProblemDimension;
-    	this.m_XOffSet          = b.m_XOffSet;
-    	this.m_YOffSet          = b.m_YOffSet;
+    	this.m_XOffset          = b.m_XOffset;
+    	this.m_YOffset          = b.m_YOffset;
 //    	this.m_UseTestConstraint = b.m_UseTestConstraint;
     }
     
@@ -51,29 +51,29 @@ public abstract class AbstractProblemDoubleOffset extends AbstractProblemDouble 
     }
 
     /** This method allows you to set/get an offset for decision variables.
-     * @param XOffSet     The offset for the decision variables.
+     * @param XOffset     The offset for the decision variables.
      */
-    public void setXOffSet(double XOffSet) {
-        this.m_XOffSet = XOffSet;
+    public void setXOffset(double XOffset) {
+        this.m_XOffset = XOffset;
     }
-    public double getXOffSet() {
-        return this.m_XOffSet;
+    public double getXOffset() {
+        return this.m_XOffset;
     }
-    public String xOffSetTipText() {
-        return "Choose an offset for the decision variable.";
+    public String XOffsetTipText() {
+        return "Choose an offset for the decision variables.";
     }
 
     /** This method allows you to set/get the offset for the
      * objective value.
-     * @param YOffSet     The offset for the objective value.
+     * @param YOffset     The offset for the objective value.
      */
-    public void setYOffSet(double YOffSet) {
-        this.m_YOffSet = YOffSet;
+    public void setYOffset(double YOffset) {
+        this.m_YOffset = YOffset;
     }
-    public double getYOffSet() {
-        return this.m_YOffSet;
+    public double getYOffset() {
+        return this.m_YOffset;
     }
-    public String yOffSetTipText() {
+    public String YOffsetTipText() {
         return "Choose an offset for the objective value.";
     }
     /** Length of the x vector at is to be optimized

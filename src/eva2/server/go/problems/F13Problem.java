@@ -52,10 +52,10 @@ public class F13Problem extends AbstractProblemDoubleOffset implements Interface
     public double[] eval(double[] x) {
     	x = rotateMaybe(x);
         double[] result = new double[1];
-        result[0] = m_YOffSet;
+        result[0] = m_YOffset;
         
         for (int i=0; i<x.length; i++) {
-        	double xi = (x[i]-m_XOffSet);
+        	double xi = (x[i]-m_XOffset);
         	result[0] -= xi*Math.sin(Math.sqrt(Math.abs(xi)));
         }
         result[0] += (418.9829 * m_ProblemDimension);

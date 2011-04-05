@@ -15,12 +15,12 @@ package eva2.gui;
 /*==========================================================================*
  * CLASS DECLARATION
  *==========================================================================*/
-import javax.swing.*;
-import java.awt.event.*;
-import java.beans.*;
-/**
- *
- */
+import java.beans.PropertyEditor;
+
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
+
 public class PropertyValueSelector extends JComboBox {
 	PropertyEditor m_Editor;
 	/**

@@ -44,9 +44,9 @@ implements InterfaceMultimodalProblem, InterfaceFirstOrderDerivableProblem, Inte
     public double[] eval(double[] x) {
     	x = rotateMaybe(x);
         double[] result = new double[1];
-        result[0]     = x.length * this.m_A + m_YOffSet;
+        result[0]     = x.length * this.m_A + m_YOffset;
         for (int i = 0; i < x.length; i++) {
-        	double xi = x[i]-m_XOffSet;
+        	double xi = x[i]-m_XOffset;
             result[0]  += Math.pow(xi, 2) - this.m_A * Math.cos(this.m_Omega*xi);
         }
         return result;
@@ -57,7 +57,7 @@ implements InterfaceMultimodalProblem, InterfaceFirstOrderDerivableProblem, Inte
         double[] result = new double[x.length];        
         for (int j=0; j<x.length; j++) {
         	result[j]=0;
-        	double xj = x[j]-m_XOffSet;
+        	double xj = x[j]-m_XOffset;
         	result[j]  += 2*xj + this.m_Omega * this.m_A * Math.sin(this.m_Omega*xj);
         }
         return result;

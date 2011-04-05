@@ -419,7 +419,7 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
 			JComponent view, JComponent viewWrapper) {
 		JPanel newPanel = new JPanel();
 		if (tipText != null) {
-			view.setToolTipText(tipText);
+			label.setToolTipText(tipText);
 			view.setToolTipText(tipText);
 		}
 		newPanel.setBorder(BorderFactory.createEmptyBorder(10,5,0,10));

@@ -43,11 +43,11 @@ public class F11Problem extends AbstractProblemDoubleOffset implements Interface
         double[] result = new double[1];
         double tmpProd = 1;
         for (int i = 0; i < x.length; i++) {
-        	double xi = x[i]-m_XOffSet;
+        	double xi = x[i]-m_XOffset;
             result[0]  += Math.pow(xi, 2);
             tmpProd *= Math.cos((xi)/Math.sqrt(i+1));
         }
-        result[0] = ((result[0]/this.m_D) - tmpProd + 1)+m_YOffSet;
+        result[0] = ((result[0]/this.m_D) - tmpProd + 1)+m_YOffset;
         return result;
     }
 

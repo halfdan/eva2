@@ -46,10 +46,10 @@ public class F1Problem extends AbstractProblemDoubleOffset implements Interface2
     public double[] eval(double[] x) {
     	x = rotateMaybe(x);
         double[] result = new double[1];
-        result[0]     = m_YOffSet;
+        result[0]     = m_YOffset;
         // add an offset in solution space
         for (int i = 0; i < x.length; i++) {
-            result[0]  += Math.pow(x[i] - this.m_XOffSet, 2);
+            result[0]  += Math.pow(x[i] - this.m_XOffset, 2);
         }
         return result;
     }
@@ -94,7 +94,7 @@ public class F1Problem extends AbstractProblemDoubleOffset implements Interface2
 		// first order partial derivation in direction x_i is 2*x_i
 		double[] grads=new double[x.length];
 		for (int i=0; i<x.length; i++) {
-			grads[i]=(2.*(x[i] - this.m_XOffSet));
+			grads[i]=(2.*(x[i] - this.m_XOffset));
 		}
 		return grads;
 	}

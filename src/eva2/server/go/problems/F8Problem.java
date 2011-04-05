@@ -63,13 +63,13 @@ public class F8Problem extends AbstractProblemDoubleOffset
         double          sum1 = 0, sum2 = 0, exp1, exp2;
 
         for (int i = 0; i < x.length; i++) {
-        	double xi = x[i]-m_XOffSet;
+        	double xi = x[i]-m_XOffset;
         	sum1 += (xi)*(xi);
         	sum2 += Math.cos(c * (xi));
         }
         exp1    = -b*Math.sqrt(sum1/(double)this.m_ProblemDimension);
         exp2    = sum2/(double)this.m_ProblemDimension;
-        result[0] = m_YOffSet + a +  Math.E  - a * Math.exp(exp1)- Math.exp(exp2);
+        result[0] = m_YOffset + a +  Math.E  - a * Math.exp(exp1)- Math.exp(exp2);
 
         return result;
     }
@@ -186,15 +186,15 @@ public class F8Problem extends AbstractProblemDoubleOffset
 			m_ListOfOptima=new Population();
 			// ingeniously avoid recursive calls during refinement!
 			double[] pos = new double[getProblemDimension()];
-			Arrays.fill(pos, getXOffSet());
+			Arrays.fill(pos, getXOffset());
 			addOptimum(pos); // the global optimum
 			double refinedX = 0;
 			if (getProblemDimension()<18) for (int i=0; i<getProblemDimension(); i++) {
 				// TODO what about dimensions higher than 18???
 				for (int k=-1; k<=1; k+=2) {
-					Arrays.fill(pos, getXOffSet());
+					Arrays.fill(pos, getXOffset());
 					if (refinedX == 0) { // we dont know the exact x-offset for the optima, so refine once
-						pos[i]=k+getXOffSet();
+						pos[i]=k+getXOffset();
 						double[] dir = pos.clone();
 						dir[i]-=0.05;
 						pos = inverseRotateMaybe(pos);
@@ -205,9 +205,9 @@ public class F8Problem extends AbstractProblemDoubleOffset
 							System.err.println("Warning, possibly converged to a wrong optimum in F8Problem.initListOfOptima!");
 						}
 						pos = rotateMaybe(pos);
-						refinedX = Math.abs(pos[i]-getXOffSet()); // store the refined position which is equal in any direction and dimension
+						refinedX = Math.abs(pos[i]-getXOffset()); // store the refined position which is equal in any direction and dimension
 					} else {
-						pos[i]=(k*refinedX)+getXOffSet();
+						pos[i]=(k*refinedX)+getXOffset();
 					}
 					addOptimum(pos);
 				}

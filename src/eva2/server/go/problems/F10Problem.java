@@ -40,9 +40,9 @@ public class F10Problem extends AbstractProblemDoubleOffset implements Interface
     	x = rotateMaybe(x);
         double[] result = new double[1];
         double c1 = this.calculateC(1);
-        result[0]     = m_YOffSet;
+        result[0]     = m_YOffset;
         for (int i = 0; i < x.length-1; i++) {
-        	double xi = x[i]-m_XOffSet;
+        	double xi = x[i]-m_XOffset;
             result[0]  += ((this.calculateC(xi))/(c1 * Math.pow(Math.abs(xi),2-this.m_D))) + Math.pow(xi, 2) -1;
         }
         return result;
