@@ -38,11 +38,11 @@ public class F5Problem extends AbstractProblemDoubleOffset implements java.io.Se
     	x = rotateMaybe(x);
         double[]    result = new double[1];
         double      tmp;
-        result[0]     = m_YOffSet;
+        result[0]     = m_YOffset;
         for (int i = 0; i < x.length; i++) {
             tmp = 0;
             for (int j = 0; j <= i; j++) {
-                tmp += x[j]-m_XOffSet;
+                tmp += x[j]-m_XOffset;
             }
             result[0] += Math.pow(tmp, 2);
         }

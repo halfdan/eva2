@@ -72,14 +72,14 @@ public class F7Problem extends AbstractProblemDoubleOffset implements java.io.Se
     public double[] eval(double[] x) {
     	x = rotateMaybe(x);
         double[] result = new double[1];
-        result[0]     = m_YOffSet;
+        result[0]     = m_YOffset;
         if ((Math.floor(this.m_CurrentTimeStamp / this.m_t)%2) == 0) {
             for (int i = 0; i < x.length-1; i++) {
-                result[0]  += Math.pow(x[i]-m_XOffSet, 2);
+                result[0]  += Math.pow(x[i]-m_XOffset, 2);
             }
         } else {
             for (int i = 0; i < x.length-1; i++) {
-                result[0]  += Math.pow(x[i]-m_XOffSet-this.m_Change, 2);
+                result[0]  += Math.pow(x[i]-m_XOffset-this.m_Change, 2);
             }
         }
         return result;

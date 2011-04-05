@@ -33,9 +33,9 @@ public class F3Problem extends AbstractProblemDoubleOffset implements java.io.Se
     public double[] eval(double[] x) {
     	x = rotateMaybe(x);
         double[] result = new double[1];
-        result[0]     = m_YOffSet+6*x.length;
+        result[0]     = m_YOffset+6*x.length;
         for (int i = 0; i < x.length-1; i++) {
-            result[0]  += Math.floor(x[i]- this.m_XOffSet);
+            result[0]  += Math.floor(x[i]- this.m_XOffset);
         }
         return result;
     }

@@ -40,14 +40,14 @@ public class F2Problem extends AbstractProblemDoubleOffset implements InterfaceL
     public double[] eval(double[] x) {
     	x = rotateMaybe(x);
         double[] result = new double[1];
-        result[0]     = m_YOffSet;
+        result[0]     = m_YOffset;
         double xi, xii;
         for (int i = 0; i < x.length-1; i++) {
-        	xi=x[i]-m_XOffSet;
-        	xii=x[i+1]-m_XOffSet;
+        	xi=x[i]-m_XOffset;
+        	xii=x[i+1]-m_XOffset;
             result[0]  += (100*(xii-xi*xi)*(xii-xi*xi)+(xi-1)*(xi-1));
         }
-        if (m_YOffSet==0 && (result[0]<=0)) result[0]=Math.sqrt(Double.MIN_VALUE); // guard for plots in log scale
+        if (m_YOffset==0 && (result[0]<=0)) result[0]=Math.sqrt(Double.MIN_VALUE); // guard for plots in log scale
         return result;
     }
     
@@ -58,8 +58,8 @@ public class F2Problem extends AbstractProblemDoubleOffset implements InterfaceL
         double xi, xii;
         
         for (int i = 0; i < dim-1; i++) {
-        	xi=x[i]-m_XOffSet;
-        	xii=x[i+1]-m_XOffSet;
+        	xi=x[i]-m_XOffset;
+        	xii=x[i+1]-m_XOffset;
 
         	result[i] += 400*xi*(xi*xi-xii) + 2*xi-2;
         	result[i+1] += -200 * (xi*xi - xii);
