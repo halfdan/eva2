@@ -2,7 +2,6 @@ package eva2.server.go.strategies;
 
 import eva2.server.go.InterfacePopulationChangedEventListener;
 import eva2.server.go.individuals.AbstractEAIndividual;
-import eva2.server.go.individuals.GAIndividualBinaryData;
 import eva2.server.go.operators.selection.InterfaceSelection;
 import eva2.server.go.operators.selection.SelectEPTournaments;
 import eva2.server.go.populations.InterfaceSolutionSet;
@@ -14,6 +13,8 @@ import eva2.server.go.problems.InterfaceOptimizationProblem;
 /** Evolutionary programming by Fogel. Works fine but is actually a quite greedy local search
  * strategy solely based on mutation. To prevent any confusion, the mutation rate is temporaily
  * set to 1.0.
+ * Potential citation: the PhD thesis of David B. Fogel (1992).
+ * 
  * Copyright:       Copyright (c) 2003
  * Company:         University of Tuebingen, Computer Architecture
  * @author          Felix Streichert
@@ -71,20 +72,6 @@ public class EvolutionaryProgramming implements InterfaceOptimizer, java.io.Seri
          */
         private void evaluatePopulation(Population population) {
             this.m_Problem.evaluate(population);
-            population.incrGeneration();
-        }
-
-        /** This method will assign fitness values to all individual in the
-         * current population.
-         * @param population The population that is to be evaluated
-         */
-        private void defaultEvaluatePopulation(Population population) {
-            GAIndividualBinaryData tmpIndy;
-            for (int i = 0; i < population.size(); i++) {
-                tmpIndy = (GAIndividualBinaryData) population.get(i);
-                tmpIndy.SetFitness(0, tmpIndy.defaultEvaulateAsMiniBits());
-                population.incrFunctionCalls();
-            }
             population.incrGeneration();
         }
 
