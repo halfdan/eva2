@@ -13,10 +13,15 @@ import eva2.server.go.problems.AbstractOptimizationProblem;
 import eva2.server.go.problems.B1Problem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 
-/** Population based increamental learning in the PSM by Mommarche
+/** Population based incremental learning in the PSM by Monmarche
  * version with also allows to simulate ant systems due to the flexible
- * update rule of V. But both are limited to binary gentypes.
+ * update rule of V. But both are limited to binary genotypes.
  * This is a simple implementation of Population Based Incremental Learning.
+ * 
+ * Nicolas Monmarché ,  Eric Ramat ,  Guillaume Dromel ,  Mohamed Slimane ,  Gilles Venturini:
+ * On the similarities between AS, BSC and PBIL: toward the birth of a new meta-heuristic. 
+ * TecReport 215. Univ. de Tours, 1999.
+ * 
  * Copyright:       Copyright (c) 2003
  * Company:         University of Tuebingen, Computer Architecture
  * @author          Felix Streichert

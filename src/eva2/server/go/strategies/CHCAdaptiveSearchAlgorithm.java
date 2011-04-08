@@ -16,11 +16,14 @@ import eva2.server.go.problems.B1Problem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
 
-/** This is an implementation of the CHC Adaptive Search Algorithm by Eselman. It is
- * limited to binary data and is based on massively distruptive crossover. I'm not
- * shure whether i've implemented this correctly, but i definetly wasn't able to make
+/** This is an implementation of the CHC Adaptive Search Algorithm by Eshelman. It is
+ * limited to binary data and is based on massively disruptive crossover. I'm not
+ * sure whether i've implemented this correctly, but i definitely wasn't able to make
  * it competitive to a standard GA.. *sigh*
- * This is a implementation of the CHC Apative Search Algorithm.
+ * This is a implementation of the CHC Adaptive Search Algorithm (Cross generational
+ * elitist selection, Heterogeneous recombination and Cataclysmic mutation). 
+ * Citation: 
+ * 
  * Copyright:       Copyright (c) 2003
  * Company:         University of Tuebingen, Computer Architecture
  * @author          Felix Streichert
