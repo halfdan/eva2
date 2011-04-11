@@ -170,7 +170,7 @@ public class StringTools {
     }
 	
 	/**
-	 * Check whether an object is a valid String array and if so return the i-th String.
+	 * Check whether an object is a valid String of String array and if so return the i-th String.
 	 * Returns null otherwise. 
 	 * 
 	 * @param key
@@ -180,6 +180,13 @@ public class StringTools {
 	 */
 	public static String checkSingleStringArg(String key, Object object, int i) {
 		if (object==null) return null;
+		if (object instanceof String) {
+			if (i==0) return (String)object;
+			else {
+				System.err.println("Invalid argument; cannot access element " + i + " for " + key + " as only one was given.");
+				return null;
+			}
+		}
 		if (object instanceof String[]) {
 			String[] arr = (String[])object;
 			if (i<arr.length) return arr[i];
@@ -188,7 +195,7 @@ public class StringTools {
 				return null;
 			}
 		} else {
-			System.err.println("Invalid argument: " + key + " " + BeanInspector.toString(object));
+			System.err.println("Invalid argument; " + key + " " + BeanInspector.toString(object));
 			return null;
 		}
 	}
