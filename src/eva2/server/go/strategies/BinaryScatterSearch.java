@@ -35,7 +35,7 @@ import eva2.tools.math.RNG;
  * Computers and Operations research, vol. 37, no. 11, pp. 1977-1986 (2010)
  */
 public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializable, InterfacePopulationChangedEventListener {
-	private static boolean 										TRACE = false;
+	private static boolean 										TRACE = true;
 	transient private InterfacePopulationChangedEventListener	m_Listener	 = null;
 	private String 												m_Identifier = "BinaryScatterSearch";
 
@@ -81,10 +81,10 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
 		this.g1				= b.g1;
 		this.g2				= b.g2;
 		this.firstTime 		= b.firstTime;
-		this.template 		= b.template;
-		this.problem		= b.problem;
-		this.pool 			= b.pool;
-		this.refSet 		= b.refSet;
+		this.template 		= (AbstractEAIndividual) b.template.clone();
+		this.problem		= (AbstractOptimizationProblem) b.problem.clone();
+		this.pool 			= (Population) b.pool.clone();
+		this.refSet 		= (Population) b.refSet.clone();
 		this.cross 			= b.cross;
 	}
 
@@ -165,9 +165,11 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
 	 */
 	private void evaluate(AbstractEAIndividual indy){
 		// evaluate the given individual if it is not null
-		if(indy != null){
-			this.problem.evaluate(indy);
+		if(indy == null){
+			System.err.println("tried to evaluate null");
+			return;
 		}
+		this.problem.evaluate(indy);
 		// increment the number of evaluations 
 		this.refSet.incrFunctionCalls();
 	}
@@ -218,22 +220,46 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
 	 * @return a diversified Population with all the Individuals in the initial Population
 	 */
 	private Population diversify(Population pop){
-		pop = generateG1(pop);
-		pop = generateG2(pop);
-		pop = generateG3(pop);
+		int numToInit = this.poolSize - pop.size();
+		if (numToInit>0) {
+			pop.addAll(generateG1((int)(numToInit * this.g1)));
+			if (TRACE) System.out.println("s1: " + pop.size());
+			generateG2(pop, (int)(numToInit * this.g2));
+			if (TRACE) System.out.println("s2: " + pop.size());
+			generateG3(pop, poolSize-pop.size());
+			if (TRACE) System.out.println("s3: " + pop.size());
+		}
 		return pop;
 	}
 
 	/**
-	 * generate a new Population with diverse Individuals starting with 000...000, then 010101...01, 101010...10, 001001001...001, 110110110...110 and so on
+	 * Generate a new Population with diverse Individuals starting with 000...000, 
+	 * then 010101...01, 101010...10, 001001001...001, 110110110...110 and so on
+	 * The returned population is evaluated.
 	 * @param pop	the initial Population
 	 * @return		the new Population
 	 */
-	private Population generateG1(Population pop){
+	private Population generateG1(int numToInit){
+		boolean method1 = true;
+		Population pop = generateG1Pop(numToInit, this.template);
+		for (int i=0; i<pop.size(); i++) {
+			evaluate(pop.getEAIndividual(i));
+		}
+		return pop;
+	}
+ 
+	/**
+	 * Generate a new Population with diverse Individuals starting with 000...000, then 010101...01, 
+	 * 101010...10, 001001001...001, 110110110...110 and so on
+	 * @param pop	the initial Population
+	 * @return		the new Population
+	 */
+	public static Population generateG1Pop(int targetSize, AbstractEAIndividual template){
 		boolean method1 = true;
 		int i=1;
-		while(pop.size() < ((double) this.poolSize) * this.g1){
-			AbstractEAIndividual indy = (AbstractEAIndividual) this.template.clone();
+		Population pop = new Population(targetSize);
+		while(pop.size() < targetSize) {
+			AbstractEAIndividual indy = (AbstractEAIndividual) template.clone();
 			BitSet data = getBinaryData(indy);
 			if(method1){
 				method1 = !method1;
@@ -258,18 +284,18 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
 				i++;
 			}
 			pop.add(indy);
-			evaluate((AbstractEAIndividual) indy);
 		}
 		return pop;
 	}
- 
+	
 	/**
 	 * Generate new Individuals that have the individuals of the given Population as a base
 	 * @param pop	the population
 	 * @return		the new Population
 	 */
-	private Population generateG2(Population pop){
-		while(pop.size() < ((double) this.poolSize) * (this.g1 + this.g2)){
+	private Population generateG2(Population pop, int numToInit){
+		int origSize = pop.size();
+		while(pop.size() < origSize+numToInit){
 			AbstractEAIndividual indy = (AbstractEAIndividual)template.clone();
 			InterfaceDataTypeBinary dblIndy = (InterfaceDataTypeBinary) indy;
 			BitSet data = dblIndy.getBinaryData();
@@ -293,8 +319,9 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
 	 * @param pop	the population
 	 * @return		the new Population
 	 */
-	private Population generateG3(Population pop){
-		while(pop.size() <= this.poolSize){
+	private Population generateG3(Population pop, int numToInit){
+		int origSize = pop.size();
+		while(pop.size() < origSize+numToInit){
 			AbstractEAIndividual indy = (AbstractEAIndividual)template.clone();
 			InterfaceDataTypeBinary dblIndy = (InterfaceDataTypeBinary)indy;
 			BitSet data = dblIndy.getBinaryData();
@@ -607,7 +634,6 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
 			}
 			this.cross.update(indy1, problem, refSet, indy1.getFitness(0));
 			result = this.cross.mate(indy1, pop)[0];
-			evaluate(null);
 			//result = indy1.mateWith(s)[0];
 		}else if(pop.size()>0){
 			result = pop.getBestEAIndividual();
@@ -656,7 +682,7 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
 			this.refSet.incrFunctionCallsBy(this.pool.size());
 			// increase the number of evaluations by the number of evaluations that are performed in the crossover-step
 			for(int i=0; i<this.cross.getEvaluations(); i++){
-				evaluate(null);
+				this.refSet.incrFunctionCalls();
 			}
 			// reset the extra evaluations
 			this.cross.resetEvaluations();
