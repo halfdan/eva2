@@ -126,9 +126,11 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
 	 */
 	private void evaluate(AbstractEAIndividual indy){
 		// evaluate the given individual if it is not null
-		if(indy != null){
-			this.problem.evaluate(indy);
+		if(indy == null){
+			System.err.println("tried to evaluate null");
+			return;
 		}
+		this.problem.evaluate(indy);
 		// increment the number of evaluations 
 		this.population.incrFunctionCalls();
 	}
