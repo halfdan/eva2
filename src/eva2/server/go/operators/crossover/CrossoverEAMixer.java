@@ -16,39 +16,53 @@ import eva2.tools.math.RNG;
  * Time: 11:36:38
  * To change this template use File | Settings | File Templates.
  */
-public class CrossoverEAMixer implements InterfaceCrossover, java.io.Serializable  {
-
-    private PropertyCrossoverMixer  m_Crossers;
-    private boolean                 m_UseSelfAdaption   = false;
+public class CrossoverEAMixer implements InterfaceCrossover, InterfaceEvaluatingCrossoverOperator, java.io.Serializable  {
+	public static final String CROSSOVER_EA_MIXER_OPERATOR_KEY = "CrossoverEAMixerOperatorKey";
+	
+    protected PropertyCrossoverMixer  m_Crossers;
+    protected boolean                 m_UseSelfAdaption   = false;
     protected double                m_Tau1              = 0.15;
     protected double                m_LowerLimitChance  = 0.05;
+	protected int lastOperatorIndex = -1;
 
-    public CrossoverEAMixer() {
-        InterfaceCrossover[] tmpList;
-        ArrayList<String> crossers = GenericObjectEditor.getClassesFromProperties(InterfaceCrossover.class.getCanonicalName(), null);
-        tmpList = new InterfaceCrossover[crossers.size()];
-         for (int i = 0; i < crossers.size(); i++) {
-        	 if (((String)crossers.get(i)).equals(this.getClass().getName())) continue;
-            try {
-                tmpList[i] = (InterfaceCrossover)Class.forName((String)crossers.get(i)).newInstance();
-            } catch (java.lang.ClassNotFoundException e) {
-                System.out.println("Could not find class for " +(String)crossers.get(i) );
-            }  catch (java.lang.InstantiationException k) {
-                System.out.println("Instantiation exception for " +(String)crossers.get(i) );
-            } catch (java.lang.IllegalAccessException a) {
-                System.out.println("Illegal access exception for " +(String)crossers.get(i) );
-            }
-        }
-        this.m_Crossers = new PropertyCrossoverMixer(tmpList);
-        tmpList = new InterfaceCrossover[2];
-        tmpList[0] = new CrossoverESArithmetical();
-        tmpList[1] = new CrossoverESSBX();
-        this.m_Crossers.setSelectedCrossers(tmpList);
-        this.m_Crossers.normalizeWeights();
-        this.m_Crossers.setDescriptiveString("Combining alternative mutation operators, please norm the weights!");
-        this.m_Crossers.setWeightsLabel("Weigths");
+	public CrossoverEAMixer() {
+		InterfaceCrossover[] tmpList;
+		ArrayList<String> crossers = GenericObjectEditor.getClassesFromProperties(InterfaceCrossover.class.getCanonicalName(), null);
+		tmpList = new InterfaceCrossover[crossers.size()];
+		for (int i = 0; i < crossers.size(); i++) {
+			Class clz=null;
+			try {
+				clz = (Class)Class.forName((String)crossers.get(i));
+			} catch (ClassNotFoundException e1) {
+				continue;
+			}
+			if (clz.isAssignableFrom(this.getClass())) {
+			// Do not instanciate this class or its subclasses or die of an infinite loop
+//				System.out.println("Skipping " + clz.getClass().getName());
+				continue;
+			} else {
+//				System.out.println("Taking " + clz.getClass().getName());
+			}
+			try {
+				tmpList[i] = (InterfaceCrossover)Class.forName((String)crossers.get(i)).newInstance();
+			} catch (java.lang.ClassNotFoundException e) {
+				System.out.println("Could not find class for " +(String)crossers.get(i) );
+			}  catch (java.lang.InstantiationException k) {
+				System.out.println("Instantiation exception for " +(String)crossers.get(i) );
+			} catch (java.lang.IllegalAccessException a) {
+				System.out.println("Illegal access exception for " +(String)crossers.get(i) );
+			}
+		}
+		this.m_Crossers = new PropertyCrossoverMixer(tmpList);
+		tmpList = new InterfaceCrossover[2];
+		tmpList[0] = new CrossoverESArithmetical();
+		tmpList[1] = new CrossoverESSBX();
+		this.m_Crossers.setSelectedCrossers(tmpList);
+		this.m_Crossers.normalizeWeights();
+		this.m_Crossers.setDescriptiveString("Combining alternative mutation operators, please norm the weights!");
+		this.m_Crossers.setWeightsLabel("Weigths");
+	}
 
-    }
     public CrossoverEAMixer(CrossoverEAMixer mutator) {
         this.m_Crossers         = (PropertyCrossoverMixer)mutator.m_Crossers.clone();
         this.m_UseSelfAdaption  = mutator.m_UseSelfAdaption;
@@ -63,7 +77,7 @@ public class CrossoverEAMixer implements InterfaceCrossover, java.io.Serializabl
         return new CrossoverEAMixer(this);
     }
 
-    /** This method allows you to evaluate wether two mutation operators
+    /** This method allows you to evaluate whether two mutation operators
      * are actually the same.
      * @param mutator   The other mutation operator
      */
@@ -75,13 +89,13 @@ public class CrossoverEAMixer implements InterfaceCrossover, java.io.Serializabl
         } else return false;
     }
 
-    /** This method allows you to init the mutation operator
+    /** This method allows you to init the crossover operator
      * @param individual      The individual that will be mutated.
      * @param opt               The optimization problem.
      */
     public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt){
-        InterfaceCrossover[] mutators    = this.m_Crossers.getSelectedCrossers();
-        for (int i = 0; i < mutators.length; i++) mutators[i].init(individual, opt);
+        InterfaceCrossover[] crossers    = this.m_Crossers.getSelectedCrossers();
+        for (int i = 0; i < crossers.length; i++) crossers[i].init(individual, opt);
     }
 
     /** This method performs crossover on two individuals. If the individuals do
@@ -104,21 +118,35 @@ public class CrossoverEAMixer implements InterfaceCrossover, java.io.Serializabl
         InterfaceCrossover[] crossover    = this.m_Crossers.getSelectedCrossers();
         double pointer                  = RNG.randomFloat(0, 1);
         double dum                      = probs[0];
-        int index                       = 0;
-        while ((pointer > dum) && (index < probs.length-1)) {
-            index++;
-            dum += probs[index];
+        lastOperatorIndex                       = 0;
+        while ((pointer > dum) && (lastOperatorIndex < probs.length-1)) {
+        	lastOperatorIndex++;
+            dum += probs[lastOperatorIndex];
         }
-        if (index == probs.length) index = RNG.randomInt(0, probs.length-1);
+        if (lastOperatorIndex == probs.length) lastOperatorIndex = RNG.randomInt(0, probs.length-1);
 //        System.out.println("Using : " + mutators[index].getStringRepresentation());
 //        for (int i = 0; i < probs.length; i++) {
 //            System.out.println(""+mutators[i].getStringRepresentation()+" : "+ probs[i]);
 //        }
 //        System.out.println("");
-        return crossover[index].mate(indy1, partners);
+        
+        indy1.putData(CROSSOVER_EA_MIXER_OPERATOR_KEY, lastOperatorIndex);
+        for (int i=0; i<partners.size(); i++) {
+        	partners.getEAIndividual(i).putData(CROSSOVER_EA_MIXER_OPERATOR_KEY, lastOperatorIndex);
+        }
+        AbstractEAIndividual[] indies = crossover[lastOperatorIndex].mate(indy1, partners);
+        
+        maybeAdaptWeights(indies);
+        return indies;
     }
 
-
+    protected void maybeAdaptWeights(AbstractEAIndividual[] indies) {
+	}
+    
+	public int getLastOperatorIndex() {
+    	return lastOperatorIndex;
+    }
+    
     /** This method allows you to get a string representation of the mutation
      * operator
      * @return A descriptive string.
@@ -197,4 +225,24 @@ public class CrossoverEAMixer implements InterfaceCrossover, java.io.Serializabl
     public String tau1TipText() {
         return "Set the value for tau1.";
     }
+
+	public int getEvaluations() {
+		int numEvals=0;
+        InterfaceCrossover[] crossers    = this.m_Crossers.getSelectedCrossers();
+        for (int i = 0; i < crossers.length; i++) {
+        	if (crossers[i] instanceof InterfaceEvaluatingCrossoverOperator) {
+        		numEvals += ((InterfaceEvaluatingCrossoverOperator)crossers[i]).getEvaluations();
+        	}
+        }
+        return numEvals;
+	}
+
+	public void resetEvaluations() {
+		InterfaceCrossover[] crossers    = this.m_Crossers.getSelectedCrossers();
+        for (int i = 0; i < crossers.length; i++) {
+        	if (crossers[i] instanceof InterfaceEvaluatingCrossoverOperator) {
+        		((InterfaceEvaluatingCrossoverOperator)crossers[i]).resetEvaluations();
+        	}
+        }
+	}
 }
