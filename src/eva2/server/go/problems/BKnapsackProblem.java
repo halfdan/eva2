@@ -359,8 +359,8 @@ public class BKnapsackProblem extends AbstractProblemBinary implements java.io.S
     public InterfaceDataTypeBinary getEAIndividual() {
         return (InterfaceDataTypeBinary) this.m_Template;
     }
-    public String eAIndividualTipText() {
-        return "Choose the EAIndividual to use.";
+    public String EAIndividualTipText() {
+        return "Choose the EA-individual to use.";
     }
     /** This method allows you to toggle the problemspecific
      * initialization method, gives the chance of problem
@@ -388,7 +388,7 @@ public class BKnapsackProblem extends AbstractProblemBinary implements java.io.S
         return this.m_LocalSearch;
     }
     public String localSearchTipText() {
-        return "Gives the chance of local search.";
+        return "Gives the chance of local search";
     }
     /** This method allows you to toggle the use of Lamarckism.
      * @param b toggles lamarckism.
@@ -400,6 +400,16 @@ public class BKnapsackProblem extends AbstractProblemBinary implements java.io.S
         return this.m_Lamarckism;
     }
     public String lamarckismTipText() {
-        return "Lamarckism alters the genotype after the local search.";
+        return "Lamarckism alters the genotype after the local search";
     }
+
+	public int getWeightLimit() {
+		return m_Limit;
+	}
+	public void setWeightLimit(int mLimit) {
+		m_Limit = mLimit;
+	}
+	public String weightLimitTipText() {
+		return "Weight limit for the knapsack problem";
+	}
 }
