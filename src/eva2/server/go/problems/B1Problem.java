@@ -124,7 +124,7 @@ public class B1Problem extends AbstractProblemBinary implements java.io.Serializ
     public InterfaceDataTypeBinary getEAIndividual() {
         return (InterfaceDataTypeBinary) this.m_Template;
     }
-    public String eAIndividualTipText() {
+    public String EAIndividualTipText() {
         return "Choose the EAIndividual to use.";
     }
 }

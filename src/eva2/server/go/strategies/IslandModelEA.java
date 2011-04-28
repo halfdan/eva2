@@ -26,7 +26,7 @@ import eva2.tools.jproxy.RMIServer;
  * evaluation and on the other hand the GUI based distribution scheme is rather prone
  * to config errors (the correct ssh version is required, the jar needs to be in
  * the working dir and possible problem data must be on the servers to) an implicit
- * island-model has been implemented too to allow fast and reliabel computation.
+ * island-model has been implemented too to allow fast and reliable computation.
  * This is still usefull, since it is less prone to premature convergence and also
  * an heterogenuous island model can be used.
  * 
