@@ -17,7 +17,7 @@ import eva2.tools.Pair;
  * Time: 15:17:53
  * To change this template use Options | File Templates.
  */
-public class ClusteringDensityBased implements InterfaceClustering, java.io.Serializable {
+public class ClusteringDensityBased implements InterfaceClusteringDistanceParam, InterfaceClusteringMetricBased, java.io.Serializable {
 
     private InterfaceDistanceMetric     m_Metric            = new PhenotypeMetric();
     private double                      m_ClusterDistance   = 0.1;
@@ -105,7 +105,10 @@ public class ClusteringDensityBased implements InterfaceClustering, java.io.Seri
             ConnectionMatrix[i][i] = true;
             for (int j = i+1; j < pop.size(); j++) {
                 tmpIndy2 = (AbstractEAIndividual)pop.get(j);
-                if (this.m_Metric.distance(tmpIndy1, tmpIndy2) < this.m_ClusterDistance) {
+                if (tmpIndy1==null || (tmpIndy2==null)) {
+                	System.err.println("Warning: Individual should not be null (ClusteringDensityBased)!");
+                }
+                if ((tmpIndy1!=null) && (tmpIndy2!=null) && (this.m_Metric.distance(tmpIndy1, tmpIndy2) < this.m_ClusterDistance)) {
                     ConnectionMatrix[i][j] = true;
                     ConnectionMatrix[j][i] = true;
                 } else {
@@ -241,19 +244,7 @@ public class ClusteringDensityBased implements InterfaceClustering, java.io.Seri
     public String metricTipText() {
         return "Choose the distance metric to use.";
     }
-    /** This method allows you to set/get the distance threshhold of the DBSCAN method.
-     * @return The currently used distance threshhold.
-     */
-    public double getClusterDistance() {
-        return this.m_ClusterDistance;
-    }
-    public void setClusterDistance(double m){
-        if (m < 0) m = 0;
-        this.m_ClusterDistance = m;
-    }
-    public String clusterDistanceTipText() {
-        return "Set the distance threshhold for the DBSCAN method.";
-    }
+
     /** This method allows you to set/get the minimal group size of the DBSCAN method.
      * @return The currently used minimal group size.
      */
@@ -271,6 +262,17 @@ public class ClusteringDensityBased implements InterfaceClustering, java.io.Seri
 	public String initClustering(Population pop) {
 		return null;
 	}
+
+	public double getClustDistParam() {
+		return this.m_ClusterDistance;
+	}
+	public void setClustDistParam(double m) {
+        if (m < 0) m = 0;
+        this.m_ClusterDistance = m;
+	}
+    public String clustDistTipText() {
+        return "Set the distance threshhold for the DBSCAN method.";
+    }
 
 
 //    /** For debuggy only
