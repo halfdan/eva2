@@ -3,6 +3,7 @@ package eva2.server.go.operators.distancemetric;
 import java.io.Serializable;
 
 import eva2.server.go.individuals.AbstractEAIndividual;
+import eva2.server.go.individuals.InterfaceDataTypeDouble;
 
 /**
  * The Euclidean metric just measures the Euclidean distance based on the default double representation
@@ -13,28 +14,38 @@ import eva2.server.go.individuals.AbstractEAIndividual;
  *
  */
 public class EuclideanMetric implements InterfaceDistanceMetric, Serializable {
-
+	private boolean normedByDblRange = false;
+	
 	public Object clone() {
 		return (Object) new EuclideanMetric(this);
 	}
 
 	public EuclideanMetric(EuclideanMetric a) {
+		this.setNormedByDblRange(a.isNormedByDblRange());
 	}
 
 	public EuclideanMetric() {
 	}
 
+	public EuclideanMetric(boolean normed) {
+		setNormedByDblRange(normed); 
+	}
+	
 	public double distance(AbstractEAIndividual indy1, AbstractEAIndividual indy2) {
 		double[]    dIndy1, dIndy2;
 		double      result = 0;
-
 		dIndy1 = AbstractEAIndividual.getDoublePositionShallow(indy1);
 		dIndy2 = AbstractEAIndividual.getDoublePositionShallow(indy2);
-
-		for (int i = 0; (i < dIndy1.length) && (i < dIndy2.length); i++) {
-			result += Math.pow((dIndy1[i] - dIndy2[i]), 2);
+		if (isNormedByDblRange()) {
+			double[][] range1 = ((InterfaceDataTypeDouble)indy1).getDoubleRange();
+			double[][] range2 = ((InterfaceDataTypeDouble)indy2).getDoubleRange();
+			return normedEuclideanDistance(dIndy1, range1, dIndy2, range2);
+		} else {
+			for (int i = 0; (i < dIndy1.length) && (i < dIndy2.length); i++) {
+				result += Math.pow((dIndy1[i] - dIndy2[i]), 2);
+			}
+			return Math.sqrt(result);
 		}
-		return Math.sqrt(result);
 	}
 	
     /**
@@ -86,6 +97,16 @@ public class EuclideanMetric implements InterfaceDistanceMetric, Serializable {
 	 */
 	public String getName() {
 		return "Euclidean Metric";
+	}
+
+	public void setNormedByDblRange(boolean normedByDblRange) {
+		this.normedByDblRange = normedByDblRange;
+	}
+	public boolean isNormedByDblRange() {
+		return normedByDblRange;
+	}
+	public String normedByDblRangeTipText() {
+		return "Set to true to norm the distance by the double range - only possible with InterfaceDataTypeDouble individuals.";
 	}
 }
 
