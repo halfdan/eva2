@@ -16,7 +16,7 @@ public interface ParamAdaption {
 	/**
 	 * Perform the adaption.
 	 * 
-	 * @param iteration
+	 * @param iteration iteration count at the time of the call, evaluations or generations, depending on the terminator
 	 * @param maxIteration
 	 * @return
 	 */
