@@ -26,10 +26,11 @@ public class PSOActivityFeedbackControl implements ParamAdaption, Serializable {
 	private double minInert=0.5;
 	private double maxInert=1;
 	private double startAct=0.17;
-	private double endAct=0;
+	private double endAct=0.01;
 	private double deltaInertness = 0.1;
 	private static boolean TRACE=false;
-	
+	private boolean exponentialSchedule = true;
+
 	private static String target = "inertnessOrChi";
 	
 	public PSOActivityFeedbackControl() {};
@@ -76,7 +77,8 @@ public class PSOActivityFeedbackControl implements ParamAdaption, Serializable {
 	}
 
 	private double desiredActivity(int iteration, int maxIteration) {
-		return Mathematics.linearInterpolation(iteration, 0, maxIteration, startAct, endAct);
+		if (exponentialSchedule) return startAct*Math.pow(endAct/startAct, iteration/(double)maxIteration);
+		else return Mathematics.linearInterpolation(iteration, 0, maxIteration, startAct, endAct);
 	}
 
 	private double calculateActivity(ParticleSwarmOptimization pso) {
@@ -118,6 +120,7 @@ public class PSOActivityFeedbackControl implements ParamAdaption, Serializable {
 	}
 	public void setFinalActivity(double endAct) {
 		this.endAct = endAct;
+		if (endAct==0 && isExponentialSchedule()) System.err.println("Warning: zero final activity will not work with exponential schedule, set it to small epsilon!");
 	}
 	public String finalActivityTipText() {
 		return "The final target activity (relative to the range), should be close to zero.";
@@ -140,4 +143,17 @@ public class PSOActivityFeedbackControl implements ParamAdaption, Serializable {
 	public void finish(Object obj, Population pop) {}
 
 	public void init(Object obj, Population pop, Object[] initialValues) {}
+	
+	public boolean isExponentialSchedule() {
+		return exponentialSchedule;
+	}
+
+	public void setExponentialSchedule(boolean exponentialSchedule) {
+		this.exponentialSchedule = exponentialSchedule;
+		if (getFinalActivity()==0) System.err.println("Warning: zero final activity will not work with exponential schedule, set it to small epsilon!");
+	}
+
+	public String exponentialScheduleTipText() {
+		return "Use linear or exponential activity decrease schedule.";
+	}
 }

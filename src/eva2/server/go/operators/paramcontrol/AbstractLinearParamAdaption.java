@@ -33,6 +33,9 @@ public abstract class AbstractLinearParamAdaption implements ParamAdaption, Seri
 	}
 
 	public abstract String getControlledParam();
+	public String controlledParamTipText() {
+		return "The name of the parameter to be controlled by this adaption scheme.";
+	}
 
 	public void init(Object obj, Population pop, Object[] initialValues) {
 		BeanInspector.setMem(obj, getControlledParam(), startV);
@@ -42,17 +45,21 @@ public abstract class AbstractLinearParamAdaption implements ParamAdaption, Seri
 	public double getStartV() {
 		return startV;
 	}
-
 	public void setStartV(double startV) {
 		this.startV = startV;
+	}
+	public String startVTipText() {
+		return "The initial value.";
 	}
 
 	public double getEndV() {
 		return endV;
 	}
-
 	public void setEndV(double endV) {
 		this.endV = endV;
+	}
+	public String endVTipText() {
+		return "The final value.";
 	}
 	
 	public String getName() {

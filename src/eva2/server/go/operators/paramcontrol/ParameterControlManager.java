@@ -2,6 +2,7 @@ package eva2.server.go.operators.paramcontrol;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 import eva2.gui.BeanInspector;
@@ -61,6 +62,18 @@ public class ParameterControlManager implements InterfaceParameterControl, Seria
 		}
 		for (ParamAdaption prm : singleAdapters) {
 			prm.init(obj, initialPop, initialValues);
+			// check if the prm itself has a ParameterControlManager:
+			tryRecursive(prm, "init", new Object[]{initialPop});
+		}
+	}
+	
+	protected void tryRecursive(ParamAdaption prm, String method, Object[] args) {
+		Object subManager=null;
+		if ((subManager=BeanInspector.callIfAvailable(prm, "getParamControl", null))!=null) {
+			if (subManager instanceof ParameterControlManager) {
+				BeanInspector.callIfAvailable(subManager, method, args);
+//				((ParameterControlManager)subManager).init(prm, initialPop);
+			}
 		}
 	}
 	
@@ -68,6 +81,7 @@ public class ParameterControlManager implements InterfaceParameterControl, Seria
 		String[] params = getControlledParameters();
 		for (ParamAdaption prm : singleAdapters) {
 			prm.finish(obj, finalPop);
+			tryRecursive(prm, "finish", new Object[]{finalPop});
 		}
 		if (params != null) {
 			for (int i=0; i<params.length; i++) BeanInspector.setMem(obj, params[i], initialValues[i]);
@@ -89,6 +103,11 @@ public class ParameterControlManager implements InterfaceParameterControl, Seria
 //					if (obj instanceof InterfaceParamControllable) ((InterfaceParamControllable)obj).notifyParamChanged(params[i], oldVal, vals[i]);
 //				}
 			}
+		}
+		Object[] args = new Object[] {null, pop, iteration, maxIteration}; 
+		for (ParamAdaption prm: singleAdapters) {
+			args[0]=prm;
+			tryRecursive(prm, "updateParameters", args);
 		}
 	}
 	
@@ -139,6 +158,21 @@ public class ParameterControlManager implements InterfaceParameterControl, Seria
 		this.singleAdapters = singleAdapters;
 	}
 
+	/**
+	 * Add a single ParamAdaption instance to the manager.
+	 * 
+	 * @param pa
+	 */
+	public void addSingleAdapter(ParamAdaption pa) {
+		if (singleAdapters==null) setSingleAdapters(new ParamAdaption[]{pa});
+		else {
+			ParamAdaption[] newP = new ParamAdaption[singleAdapters.length+1];
+			for (int i=0; i<singleAdapters.length; i++) newP[i]=singleAdapters[i];
+			newP[newP.length-1] = pa;
+			setSingleAdapters(newP);
+		}
+	}
+	
 	public static String globalInfo() {
 		return "Define a list of dynamically adapted parameters.";
 	}
@@ -155,10 +189,12 @@ public class ParameterControlManager implements InterfaceParameterControl, Seria
 	 * @param target
 	 * @return
 	 */
-	public static Object[] arrayOfControllables(
+	public static List<Object> listOfControllables(
 			Object target) {
-		Pair<String[],Object[]> propsNamesVals = BeanInspector.getPublicPropertiesOf(target, true);
+		Pair<String[],Object[]> propsNamesVals = BeanInspector.getPublicPropertiesOf(target, true, true);
 		ArrayList<Object> controllables = new ArrayList<Object>();
+//		Object ownParamCtrl = BeanInspector.callIfAvailable(target, "getParameterControl", null); // if the target itself has a ParameterControlManager, add it to the list of controllables.
+//		if (ownParamCtrl!=null) controllables.add(ownParamCtrl);
 		Object[] objs = propsNamesVals.tail;
 		for (int i=0; i<objs.length; i++) {
 			if (objs[i]!=null) {
@@ -166,6 +202,6 @@ public class ParameterControlManager implements InterfaceParameterControl, Seria
 				if (BeanInspector.hasMethod(objs[i], "getParamControl", null)!=null) controllables.add(objs[i]);
 			}
 		}
-		return controllables.toArray(new Object[controllables.size()]);
+		return controllables;
 	}
 }
