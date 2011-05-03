@@ -4,6 +4,8 @@ import java.util.Arrays;
 
 import eva2.gui.BeanInspector;
 import eva2.server.go.populations.Population;
+import eva2.server.go.problems.AbstractOptimizationProblem;
+import eva2.server.go.problems.InterfaceInterestingHistogram;
 import eva2.tools.math.Mathematics;
 
 public class SolutionHistogram {
@@ -100,11 +102,27 @@ public class SolutionHistogram {
 	 */
     public static void createFitNormHistogram(Population pop, SolutionHistogram hist, int crit) {
     	hist.reset();
-    	for (int i=0; i<hist.getNumBins(); i++) {
-    		hist.setEntry(i, PostProcess.filterFitnessIn(pop, hist.lowerBoundOfEntry(i), hist.upperBoundOfEntry(i), crit).size());
+    	if (pop.size()>0) {
+    		if (pop.getBestFitness()[crit]<hist.getLowerBound()) {
+    			System.err.println("Warning, population contains solution with lower fitness than lower bound of the histogram!");
+//    			System.err.println("Pop was " + pop.getStringRepresentation());
+    			System.err.println("Histogramm was " + hist.toString());
+    		}
+    		for (int i=0; i<hist.getNumBins(); i++) {
+    			hist.setEntry(i, PostProcess.filterFitnessIn(pop, hist.lowerBoundOfEntry(i), hist.upperBoundOfEntry(i), crit).size());
+    		}
     	}
     	hist.setSingularHist();
     }
+    
+	public static SolutionHistogram defaultEmptyHistogram(AbstractOptimizationProblem prob) {
+		if (prob instanceof InterfaceInterestingHistogram) {
+			return ((InterfaceInterestingHistogram)prob).getHistogram();
+		} else {
+//			System.err.println("Unknown problem to make histogram for, returning default...");
+			return new SolutionHistogram(0, 100, 10);
+		}
+	}
     
     /**
      * Notify that a single histogram has been created.

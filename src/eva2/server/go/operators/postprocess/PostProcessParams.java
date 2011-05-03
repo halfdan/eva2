@@ -13,6 +13,10 @@ public class PostProcessParams implements InterfacePostProcessParams, Serializab
 	protected double 			postProcessClusterSigma = 0.05;
 	protected int				printNBest = 10;
 	protected PostProcessMethod	method = PostProcessMethod.nelderMead;
+	protected double[]			accuracies = new double[]{0.01, 0.001, 0.0001};
+	protected double			accAssumeConv = 1e-8;
+	protected int				accMaxEval = -1;
+
 	private boolean 			withPlot = false;
 	
 	public PostProcessParams() {
@@ -77,6 +81,9 @@ public class PostProcessParams implements InterfacePostProcessParams, Serializab
 		GenericObjectEditor.setShowProperty(this.getClass(), "printNBest", postProcess);
 		GenericObjectEditor.setShowProperty(this.getClass(), "PPMethod", postProcess);
 		GenericObjectEditor.setShowProperty(this.getClass(), "withPlot", postProcess);
+		GenericObjectEditor.setShowProperty(this.getClass(), "accuracies", postProcess);
+		GenericObjectEditor.setShowProperty(this.getClass(), "accAssumeConv", postProcess);
+		GenericObjectEditor.setShowProperty(this.getClass(), "accMaxEval", postProcess);
 	}
 	public String doPostProcessingTipText() {
 		return "Toggle post processing of the solutions.";
@@ -123,17 +130,16 @@ public class PostProcessParams implements InterfacePostProcessParams, Serializab
 	}
 	
 	public static String globalInfo() {
-		return "Combined clustering and hill-climbing for post-processing of solutions.";
+		return "Combined clustering and local search post-processing of solutions. Additionally, accuracy checks can be performed on the " +
+				"returned solutions with different thresholds.";
 	}
 
 	public PostProcessMethod getPPMethod() {
 		return method;
 	}
-
 	public String PPMethodTipText() {
 		return "The method to use for post-processing.";
 	}
-
 	public void setPPMethod(PostProcessMethod meth) {
 		method=meth;
 	}
@@ -141,8 +147,39 @@ public class PostProcessParams implements InterfacePostProcessParams, Serializab
 	public boolean isWithPlot() {
 		return withPlot;
 	}
-
 	public void setWithPlot(boolean withPlot) {
 		this.withPlot = withPlot;
 	}
+
+	public double[] getAccuracies() {
+		return accuracies;
+	}
+	public void setAccuracies(double[] accuracies) {
+		this.accuracies = accuracies;
+	}
+	public String accuraciesTipText() {
+		return "The accuracy thresholds to be tested";
+	}
+	
+	public double getAccAssumeConv() {
+		return accAssumeConv;
+	}
+	public void setAccAssumeConv(double accAssumeConv) {
+		this.accAssumeConv = accAssumeConv;
+	}
+	public String accAssumeConvTipText() {
+		return "The local search refinement is stopped earlier if the fitness changes less than this value"; 
+	}
+
+	public int getAccMaxEval() {
+		return accMaxEval;
+	}
+	public void setAccMaxEval(int accMaxEval) {
+		this.accMaxEval = accMaxEval;
+	}
+	public String accMaxEvalTipText() {
+		return "The maximal number of evaluations (times dimension) for accuracy check or -1 to use the default.";
+	}
+	
+
 }

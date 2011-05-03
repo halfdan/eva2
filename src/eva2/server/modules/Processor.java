@@ -16,6 +16,7 @@ import eva2.server.go.operators.paramcontrol.ConstantParameters;
 import eva2.server.go.operators.paramcontrol.InterfaceParameterControl;
 import eva2.server.go.operators.postprocess.PostProcess;
 import eva2.server.go.operators.postprocess.PostProcessParams;
+import eva2.server.go.operators.postprocess.SolutionHistogram;
 import eva2.server.go.operators.terminators.EvaluationTerminator;
 import eva2.server.go.operators.terminators.GenerationTerminator;
 import eva2.server.go.populations.Population;
@@ -282,8 +283,9 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
     				// itself or (ii) sub-instances which have their own parameter controls. On these, the method
     				// is called recursively.
     				if (controllerOrSubControllable instanceof InterfaceParameterControl) {
-    	    			if (!((InterfaceParameterControl)paramCtrlReturn instanceof ConstantParameters))
-    	    				BeanInspector.callIfAvailable((InterfaceParameterControl)paramCtrlReturn, methodName, args);
+    					args[0]=instance;
+    	    			if (!((InterfaceParameterControl)controllerOrSubControllable instanceof ConstantParameters))
+    	    				BeanInspector.callIfAvailable((InterfaceParameterControl)controllerOrSubControllable, methodName, args);
     				}  else {	
     					args[0]=controllerOrSubControllable;
     					iterateParamCtrl(controllerOrSubControllable, methodName, args);
@@ -457,10 +459,17 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
 	//    		System.err.println("bad case in Processor::performNewPostProcessing ");
 	    		resultPop.SetFunctionCalls(goParams.getOptimizer().getPopulation().getFunctionCalls());
 	    	}
-	    	if (!resultPop.contains(m_Statistics.getBestSolution())) {
-	    		resultPop.add(m_Statistics.getBestSolution()); // this is a minor cheat but guarantees that the best solution ever found is contained in the final results
-	    		resultPop.synchSize();
-	    	}
+//	    	if (!resultPop.contains(m_Statistics.getBestSolution())) {
+//	    		resultPop.add(m_Statistics.getBestSolution()); 
+	    	// this is a minor cheat but guarantees that the best solution ever found is contained in the final results
+	    		// This was evil in case multiple runs were performed with PP, because the best of an earlier run is added which is confusing.
+	    		// the minor cheat should not be necessary anymore anyways, since the getAllSolutions() variant replaced the earlier getPopulation() call
+//	    		resultPop.synchSize();
+//	    	}
+			
+			PostProcess.checkAccuracy((AbstractOptimizationProblem)goParams.getProblem(), resultPop, ppp.getAccuracies(), ppp.getAccAssumeConv(), 
+					-1, ppp.getAccMaxEval(), (SolutionHistogram[]) null, true, listener);
+			
 	    	resultPop = PostProcess.postProcess(ppp, resultPop, (AbstractOptimizationProblem)goParams.getProblem(), listener);
 	    	resPop = resultPop;
 	    	return resultPop;
