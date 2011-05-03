@@ -35,8 +35,10 @@ import eva2.server.go.problems.AbstractMultiModalProblemKnown;
 import eva2.server.go.problems.AbstractOptimizationProblem;
 import eva2.server.go.problems.FM0Problem;
 import eva2.server.go.problems.Interface2DBorderProblem;
+import eva2.server.go.problems.InterfaceHasSolutionViewer;
 import eva2.server.go.problems.InterfaceInterestingHistogram;
 import eva2.server.go.problems.InterfaceMultimodalProblemKnown;
+import eva2.server.go.problems.InterfaceSolutionViewer;
 import eva2.server.go.strategies.EvolutionStrategies;
 import eva2.server.go.strategies.GradientDescentAlgorithm;
 import eva2.server.go.strategies.HillClimbing;
@@ -754,13 +756,12 @@ public class PostProcess {
 		if (indy instanceof InterfaceDataTypeDouble || (indy instanceof InterfaceESIndividual)) {
 			if (indy instanceof InterfaceESIndividual) ((InterfaceESIndividual)indy).SetDGenotype(data);
 			else ((InterfaceDataTypeDouble)indy).SetDoubleGenotype(data);
-		}
+		} else throw new RuntimeException("Error, unable to set double data to individual instance " + indy.getClass() + " in PostProcess.setDoubleData");
 	}
 	
 	/**
 	 * Create a population of clones of the given individual in a sub range around the individual.
-	 * The given individual must be double compliant. The population size is determined by the range dimension
-	 * using the formula for lambda=4+3*log(dim).
+	 * The given individual must be double compliant.
 	 * The individuals are randomly initialized in a box of side length searchBoxLen around indy holding the
 	 * problem constraints, meaning that the box may be smaller at the brim of the problem-defined search range.
 	 * 
@@ -769,8 +770,7 @@ public class PostProcess {
 	 * @return
 	 */
 	public static void createPopInSubRange(Population destPop, double searchBoxLen,
-			int targetSize,
-			AbstractEAIndividual indy) {
+			int targetSize, AbstractEAIndividual indy) {
 		if (isDoubleCompliant(indy)) {
 			double[][] range = getDoubleRange(indy);
 			double[] data = getDoubleData(indy);
@@ -783,11 +783,7 @@ public class PostProcess {
 //			Population pop = new Population();
 			destPop.clear();
 			for (int i=0; i<targetSize; i++) { 
-				AbstractEAIndividual tmpIndy = (AbstractEAIndividual)indy.clone();
-				data = getDoubleData(tmpIndy);
-				ESIndividualDoubleData.defaultInit(data, newRange);
-				setDoubleData(tmpIndy, data);
-				destPop.addIndividual(tmpIndy);
+				destPop.addIndividual(createRandomDoubleClone(indy, newRange));
 			}
 			destPop.synchSize();
 		} else {
@@ -795,6 +791,23 @@ public class PostProcess {
 		}
 	}
 
+	/**
+	 * Clone the given individual and initialize it randomly within the given range.
+	 * The individual must be double compliant.
+	 * 
+	 * @param indy
+	 * @param range
+	 * @return
+	 */
+	public static AbstractEAIndividual createRandomDoubleClone(AbstractEAIndividual indy, double[][] range) {
+		AbstractEAIndividual tmpIndy = (AbstractEAIndividual)indy.clone();
+		double[] data = getDoubleData(tmpIndy);
+		if (data==null) throw new RuntimeException("Error, given individual must be double compliant in PostProcess.createRandomDoubleClone");
+		ESIndividualDoubleData.defaultInit(data, range);
+		setDoubleData(tmpIndy, data);
+		return tmpIndy;
+	}
+	
 	/**
 	 * Just execute the runnable.
 	 */
@@ -1064,6 +1077,7 @@ public class PostProcess {
 //			PostProcessInterim.outputResult((AbstractOptimizationProblem)goParams.getProblem(), outputPop, 0.01, System.out, 0, 2000, 20, goParams.getPostProcessSteps());
 			if (outputPop.size()>1) {
 				if (listener != null) listener.println("measures: " + BeanInspector.toString(outputPop.getPopulationMeasures()));
+				if (listener != null) listener.println("pop.metric: " + BeanInspector.toString(outputPop.getPopMetric()));
 				if (listener != null) listener.println("solution histogram: " + solHist + ", score " + solHist.getScore());
 				if ((listener != null) && (problem instanceof InterfaceInterestingHistogram)) {
 					SolutionHistogram pSolHist = ((InterfaceInterestingHistogram)problem).getHistogram();
@@ -1075,17 +1089,118 @@ public class PostProcess {
 			//////////// multimodal data output
 			evaluateMultiModal(outputPop, problem, listener);
 
-			Population nBestPop = outputPop.getBestNIndividuals(params.getPrintNBest(), -1); // n individuals are returned and sorted, all of them if n<=0
-			if (listener != null) listener.println("Best after post process:" + ((outputPop.size()>nBestPop.size()) ? ( " (first " + nBestPop.size() + " of " + outputPop.size() + ")") : (" (" + nBestPop.size() + ")") ));
-			//////////// output some individual data
-			if (listener != null) for (int i=0; i<nBestPop.size(); i++) {
-				listener.println(AbstractEAIndividual.getDefaultStringRepresentation(nBestPop.getEAIndividual(i)));
+			Population nBestPop = outputPop.getBestNIndividuals(0, -1); // the individuals are returned and sorted, all of them if n<=0
+			if (params.getPrintNBest()!=0) {
+				int printK = ((params.getPrintNBest()>0) ? params.getPrintNBest() : nBestPop.size());
+				printK = Math.min(printK, nBestPop.size());
+				if (listener != null) listener.println("Best after post process:" + " (first " + printK + " of " + outputPop.size() + ")");
+//						((outputPop.size()>nBestPop.size()) 
+//								? ( " (first " + nBestPop.size() + " of " + outputPop.size() + ")") : 
+//								  (" (" + nBestPop.size() + ")") ));
+				//////////// output some individual data
+				if (listener != null) for (int i=0; i<printK; i++) {
+					listener.println(AbstractEAIndividual.getDefaultStringRepresentation(nBestPop.getEAIndividual(i)));
+				}
+//				for (int i=0; i<printK; i++) {
+//					System.out.println(AbstractEAIndividual.getDefaultStringRepresentation(nBestPop.getEAIndividual(i)));
+//				}
 			}
 //			System.out.println(nBestPop);
+			if (problem instanceof InterfaceHasSolutionViewer) {
+				InterfaceSolutionViewer viewer = ((InterfaceHasSolutionViewer)problem).getSolutionViewer();
+				if (viewer!=null) {
+					viewer.initView(problem);
+					viewer.updateView(outputPop, true);
+				}
+			}
 			return nBestPop;
 		} else return inputPop;
 	}
 
+	/**
+	 * Check the accuracy of a given set of solutions regarding an array of double-valued epsilon thresholds.
+	 * For each epsilon the solutions are post-processed and it is checked if the post-processing moves them
+	 * away from the originally indicated solution by more than epsilon. Post-processing will also pre-cluster
+	 * the solutions if the clustering parameter is positive.
+	 * If solutions are moved by the local search by more than epsilon[k], they are seen as 'inaccurate' by 
+	 * epsilon[k] and discarded. The number of solutions
+	 * which are accurate by epsilon[k] are returned in the integer array. Optionally, the refined solutions
+	 * are added to an array of histograms.
+	 * 
+	 * For refining, either known optima are used or {@link AbstractOptimizationProblem}.extractPotentialOptima()
+	 * is called.
+	 * 
+	 * @see  {@link AbstractOptimizationProblem.extractPotentialOptima}
+	 * @param prob
+	 * @param sols
+	 * @param epsilonPhenoSpace
+	 * @param extrOptEpsFitConf
+	 * @param extrOptClustSig clustering distance; if set negative, 0.1 times the respective epsilonPhenoSpace parameter is used for clustering
+	 * @param maxEvals
+	 * @param solHists
+	 * @param treatAsUnknown
+	 * @param listener
+	 * @see AbstractOptimizationProblem.isPotentialOptimumNMS(AbstractEAIndividual, double, double, int)
+	 * @return
+	 */
+	public static int[] checkAccuracy(AbstractOptimizationProblem prob, Population sols, double[] epsilonPhenoSpace,
+			double extrOptEpsFitConf, double extrOptClustSig, int maxEvals, SolutionHistogram[] solHists, boolean treatAsUnknown,
+			InterfaceTextListener listener) {
+		int[] foundOpts = new int[epsilonPhenoSpace.length];
+		Population extrOpts = null;
+		if (listener!=null) listener.println("Accuracy regarding epsilon thresholds " + BeanInspector.toString(epsilonPhenoSpace) + ", clustering with sigma=" + extrOptClustSig);
+//		System.out.println("unref: " + sols.getStringRepresentation());
+		// extract optima (known or estimated) for different epsilon criteria
+		for (int k=0; k<epsilonPhenoSpace.length; k++) {
+			if ((prob instanceof InterfaceMultimodalProblemKnown) && !treatAsUnknown) {
+				extrOpts = PostProcess.getFoundOptima((k==0) ? sols : extrOpts, ((InterfaceMultimodalProblemKnown)prob).getRealOptima(), epsilonPhenoSpace[k], true);	
+			} else {
+				double clustSig = (extrOptClustSig<0 ? (0.1*epsilonPhenoSpace[k]) : extrOptClustSig);
+				extrOpts = AbstractOptimizationProblem.extractPotentialOptima(prob, (k==0) ? sols : extrOpts, epsilonPhenoSpace[k], extrOptEpsFitConf, extrOptClustSig/* 2*epsilonPhenoSpace[k]*/, maxEvals);
+				// TODO should rather depend on the accuracy required than on a static cluster-distance ??
+			}
+//			System.out.println("ref "+k+":" + extrOpts.getStringRepresentation());
+			String prefix = "crit " + epsilonPhenoSpace[k];
+			if (listener!=null) listener.print(prefix + " found " + extrOpts.size());
+			foundOpts[k] = extrOpts.size();
+			if (treatAsUnknown || !(prob instanceof InterfaceMultimodalProblemKnown)) {
+				SolutionHistogram curHist = null, lastHist = SolutionHistogram.defaultEmptyHistogram(prob);
+				if (solHists!=null) curHist = solHists[k].cloneEmpty();
+				else curHist = SolutionHistogram.defaultEmptyHistogram(prob);
+				lastHist.updateFrom(sols, 0);
+				curHist.updateFrom(extrOpts, 0);
+				if (listener!=null) listener.println(", histogram: " + curHist);
+				if (solHists!=null) {
+					if (solHists[k]!=null) solHists[k].addHistogram(curHist);
+					else solHists[k]=curHist;
+				}
+			}
+			if (extrOpts.size() > 0) {
+				if (listener!=null) listener.print(" measures fit: ");
+				int critCnt = extrOpts.getEAIndividual(0).getFitness().length;
+				for (int i=0; i<critCnt; i++) if (listener!=null) listener.print(BeanInspector.toString(extrOpts.getFitnessMeasures(i)) + " ");
+				if (extrOpts.size()>1) {
+					if (listener!=null) listener.print("; phen: " + BeanInspector.toString(extrOpts.getPopulationMeasures(new PhenotypeMetric())));
+					if (listener!=null) listener.print("; eucl: " + BeanInspector.toString(extrOpts.getPopulationMeasures(new EuclideanMetric())));
+					if (listener!=null) listener.print("; popMetric: " + BeanInspector.toString(extrOpts.getPopulationMeasures()));
+				}
+				if (listener!=null) listener.println("");
+//				listener.println(" correlations of all (min,max,avg,med,var): "+ BeanInspector.toString(extrOpts.getCorrelations()));
+				for (int i=16; i>2; i/=2) {
+					Population bestN = extrOpts.getBestNIndividuals(i, -1);
+					listener.println(" phen. measures of top " + bestN.size() + ": " + BeanInspector.toString(bestN.getPopulationMeasures(new PhenotypeMetric())));
+//					ClusteringKMeans km = new ClusteringKMeans(); km.setK(2);
+//					km.initClustering(bestN);
+//					Population[] clusts = km.cluster(bestN, bestN);
+//					System.out.println("cluster sizes: " + clusts[0].size() + " " + clusts[1].size() + " " + clusts[2].size());
+//					listener.println(" correlations of top " + bestN.size() + ": " + BeanInspector.toString(bestN.getCorrelations()));
+				}
+			}
+		}
+
+		return foundOpts;
+	}
+	
 	/**
 	 * Select a local search range for a given method based on the clustering parameter. 
 	 * If clustering was deactivated (sigma <= 0), then the default mutation step size is used.
