@@ -13,7 +13,7 @@ public class PostProcessParams implements InterfacePostProcessParams, Serializab
 	protected double 			postProcessClusterSigma = 0.05;
 	protected int				printNBest = 10;
 	protected PostProcessMethod	method = PostProcessMethod.nelderMead;
-	protected double[]			accuracies = new double[]{0.01, 0.001, 0.0001};
+	protected double[]			accuracies = new double[]{0.01};//{0.01, 0.001, 0.0001};
 	protected double			accAssumeConv = 1e-8;
 	protected int				accMaxEval = -1;
 
