@@ -2589,10 +2589,7 @@ end
 
 
 \backslash
-end{
-\lang english
-mylstenv
-}
+end{mylstenv}
 \end_layout
 
 \end_inset
@@ -2942,12 +2939,21 @@ optset
 \begin_layout Description
 
 \family typewriter
-getDesc(JI,optType)
+getDesc(JI,optTypeOrObject[,showValues])
 \family default
- Show information about an optimizer class together with the parameters
- that can be modified.
+ Show information about an optimizer class (if 
+\family typewriter
+optType
+\family default
+ is an integer ID) or any other object together with the parameters that
+ can be modified in a standardized way.
  The available settings are analogous to the optimizer options presented
  by the Java GUI.
+ If 
+\family typewriter
+showValues==1
+\family default
+ holds, the current values of the given instance are displayed as well.
 \end_layout
 
 \begin_layout Description
@@ -3777,10 +3783,7 @@ status open
 
 
 \backslash
-begin{
-\lang english
-mylstenv
-}
+begin{mylstenv}
 \end_layout
 
 \begin_layout Standard
@@ -3818,10 +3821,7 @@ JI=optimize(JI, 3);  % start a default Genetic Algorithm
 
 
 \backslash
-end{
-\lang english
-mylstenv
-}
+end{mylstenv}
 \end_layout
 
 \end_inset
@@ -3866,10 +3866,7 @@ status open
 
 
 \backslash
-begin{
-\lang english
-mylstenv
-}
+begin{mylstenv}
 \end_layout
 
 \begin_layout Standard
@@ -3902,10 +3899,7 @@ JI=optimize(JI, 4);  % starts a default Particle Swarm Optimization run
 
 
 \backslash
-end{
-\lang english
-mylstenv
-}
+end{mylstenv}
 \end_layout
 
 \end_inset
