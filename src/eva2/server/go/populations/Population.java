@@ -75,6 +75,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     // a sorted queue (for efficiency)
     transient private ArrayList<AbstractEAIndividual> sortedArr = null;
     private Comparator<Object> lastSortingComparator = null;
+	private InterfaceDistanceMetric popDistMetric =  null; // an associated metric
 //	private AbstractEAIndividualComparator historyComparator = null;
 
     public static final String funCallIntervalReached = "FunCallIntervalReached";
@@ -190,7 +191,8 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
         this.notifyEvalInterval = population.notifyEvalInterval;
         this.initMethod			= population.initMethod;
     	this.aroundDist			= population.aroundDist;
-    	this.seedCardinality	= population.seedCardinality.clone();
+ 	    this.seedCardinality	= population.seedCardinality.clone();
+    	if (population.getPopMetric()!=null) this.popDistMetric	= (InterfaceDistanceMetric)population.popDistMetric.clone();
         if (population.seedPos!=null) this.seedPos = population.seedPos.clone();
 //        this.m_Listener			= population.m_Listener;
         if (population.listeners != null) this.listeners			= (ArrayList<InterfacePopulationChangedEventListener>)population.listeners.clone();
@@ -282,6 +284,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
         this.m_History = new LinkedList<AbstractEAIndividual>();
         this.m_Generation       = 0;
         this.m_FunctionCalls    = 0;
+        double[] popSeed = null;
 //    	evaluationTimeHashes = null;
 //    	evaluationTimeModCount = -1;
         if (this.m_Archive != null) {
@@ -295,22 +298,44 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
         	createRLHSampling(this, false);
         	break;
         case aroundSeed:
+        case aroundRandomSeed:
         	AbstractEAIndividual template = (AbstractEAIndividual) getEAIndividual(0).clone();
-        	if (template.getDoublePosition().length<=seedPos.length) {
-        		if (template.getDoublePosition().length<seedPos.length) {
+        	// use random initial position or the predefined one
+        	if (initMethod==PopulationInitMethod.aroundRandomSeed) popSeed=RNG.randomDoubleArray(PostProcess.getDoubleRange(template));
+        	else popSeed = seedPos;
+        	if (template.getDoublePosition().length<=popSeed.length) {
+        		if (template.getDoublePosition().length<popSeed.length) {
         			double[] smallerSeed = new double[template.getDoublePosition().length];
-        			System.arraycopy(seedPos, 0, smallerSeed, 0, smallerSeed.length);
+        			System.arraycopy(popSeed, 0, smallerSeed, 0, smallerSeed.length);
         			AbstractEAIndividual.setDoublePosition(template, smallerSeed);
-        		} else AbstractEAIndividual.setDoublePosition(template, seedPos);
+        		} else AbstractEAIndividual.setDoublePosition(template, popSeed);
         		PostProcess.createPopInSubRange(this, aroundDist, this.getTargetSize(), template);
         	} else System.err.println("Warning, skipping seed initialization: too small individual seed!");
         	break;
-        case binCardinality:
+      	case binCardinality:
         	createBinCardinality(this, true, seedCardinality.head(), seedCardinality.tail());
         	break;
         }
+        //System.out.println("After pop init: " + this.getStringRepresentation());
         firePropertyChangedEvent(Population.populationInitialized);
     }
+    
+    /**
+     * Reset all values changing during the "life" of a population (such as history,
+     * generation counter etc).
+     */
+	public void resetProperties() {
+	    m_Generation    = 0;
+	    m_FunctionCalls = 0;
+	    if (m_Archive!=null) {
+	    	m_Archive.clear();
+		    m_Archive.clearHistory();
+	    }
+	    clearHistory();
+		modCount++;
+	    // a sorted queue (for efficiency)
+	    sortedArr = null;
+	}
     
     public double[] getInitPos() {
     	return seedPos ;
@@ -438,6 +463,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     		}
     	}
     }
+    
     /**
      * Activate or deactivate the history tracking, which stores the best individual in every
      * generation in the incrGeneration() method.
@@ -1732,13 +1758,24 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     }
     
     /**
-     * Returns the average, minimal and maximal phenotypic individual distance as diversity measure for the population.
-     * Distances are thus scaled by the problem range.
+     * Returns the average, minimal and maximal individual distance as diversity measure for the population.
+     * This uses the default population metric of the instance.
      * 
      * @return the average, minimal and maximal mean distance of individuals in an array of three
      */
     public double[] getPopulationMeasures() {
-    	return getPopulationMeasures(new PhenotypeMetric());
+    	return getPopulationMeasures(getPopMetric());
+    }
+    
+    public InterfaceDistanceMetric getPopMetric() {
+    	if (popDistMetric==null) popDistMetric = new PhenotypeMetric();
+    	return popDistMetric;
+    }
+    public void setPopMetric(InterfaceDistanceMetric metric) {
+    	popDistMetric=metric;
+    }
+    public String popMetricTipText() {
+    	return "Set a default distance metric to be used with the population.";
     }
     
     /**
@@ -2093,7 +2130,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
 	 * @param normalizedPhenoMetric
 	 * @return a double array containing the average (or average and variance) of the distance of each individual to its closest neighbor
 	 */
-	public double[] getAvgDistToClosestNeighbor(boolean normalizedPhenoMetric, boolean calcVariance){
+	public double[] getAvgDistToClosestNeighbor(boolean normalizedPhenoMetric, boolean calcVariance) {
 		PhenotypeMetric metric = new PhenotypeMetric();
 		ArrayList<Double> distances = null;
 		if (calcVariance) distances = new ArrayList<Double>(size());
@@ -2103,7 +2140,10 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
 			AbstractEAIndividual neighbor, indy = getEAIndividual(i);
 			int neighborIndex = getNeighborIndex(i);
 			if (neighborIndex >= 0) neighbor = getEAIndividual(neighborIndex);
-			else return null;
+			else {
+				System.err.println("Warning, neigbhorIndex<0 in Population.getAvgDistToClosestNeighbor");
+				return null;
+			}
 			if (normalizedPhenoMetric){
 				d = metric.distance(indy, neighbor);
 			} else { 
@@ -2355,7 +2395,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
 	}
 
 	public void clearHistory() {
-		m_History.clear();
+		if (m_History!=null) m_History.clear();
 	}
 
 	/**
@@ -2412,7 +2452,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
 	public String seedCardinalityTipText() {
 		return "The initial cardinality for binary genotype individuals, given as pair of mean and std.dev.";
 	}
-    
+	
 //	/**
 //	 * Mark the population at the current state as evaluated. Changes to the modCount or hashes of individuals
 //	 * will invalidate the mark.
