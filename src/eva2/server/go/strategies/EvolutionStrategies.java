@@ -1,11 +1,8 @@
 package eva2.server.go.strategies;
 
-import eva2.gui.BeanInspector;
-import eva2.gui.GenericObjectEditor;
 import eva2.server.go.InterfacePopulationChangedEventListener;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.operators.mutation.InterfaceAdaptOperatorGenerational;
-import eva2.server.go.operators.mutation.MutateESSuccessRule;
 import eva2.server.go.operators.selection.InterfaceSelection;
 import eva2.server.go.operators.selection.SelectBestIndividuals;
 import eva2.server.go.operators.selection.SelectRandom;
@@ -43,13 +40,15 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
     private InterfaceSelection              m_PartnerSelection          = new SelectRandom();
     private InterfaceSelection              m_EnvironmentSelection      = new SelectBestIndividuals();
     private int                             m_NumberOfPartners          = 1;
-    private int								origPopSize					= -1; // especially for CBN
+    protected int								origPopSize					= -1; // especially for CBN
 //    private double[]                        m_FitnessOfParents          = null;
     private boolean						forceOrigPopSize			= true;// especially for CBN
 
     transient private String                m_Identifier = "";
     transient private InterfacePopulationChangedEventListener m_Listener;
+	private static final boolean TRACE = false;
     public static final String esMuParam = "EvolutionStrategyMuParameter";
+    public static final String esLambdaParam = "EvolutionStrategyLambdaParameter";
 
     public EvolutionStrategies() {
         this.m_Population.setTargetSize(this.m_Lambda);
@@ -63,15 +62,18 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
     }
     
     public EvolutionStrategies(EvolutionStrategies a) {
-        this.m_Population                   = (Population)a.m_Population.clone();
-        this.m_Problem                      = (InterfaceOptimizationProblem)a.m_Problem.clone();
         this.m_Mu                          = a.m_Mu;
         this.m_Lambda                       = a.m_Lambda;
         this.m_UsePlusStrategy              = a.m_UsePlusStrategy;
+        this.m_Population                   = (Population)a.m_Population.clone();
+        this.m_Problem                      = (InterfaceOptimizationProblem)a.m_Problem.clone();
         this.m_NumberOfPartners             = a.m_NumberOfPartners;
         this.m_ParentSelection              = (InterfaceSelection)a.m_ParentSelection.clone();
         this.m_PartnerSelection             = (InterfaceSelection)a.m_PartnerSelection.clone();
         this.m_EnvironmentSelection         = (InterfaceSelection)a.m_EnvironmentSelection.clone();
+        this.m_NumberOfPartners 			= a.m_NumberOfPartners;
+        this.origPopSize					= a.origPopSize;
+        this.forceOrigPopSize				= a.forceOrigPopSize;
     }
 
     /**
@@ -83,7 +85,7 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
     }
     
     public void hideHideable() {
-    	GenericObjectEditor.setHideProperty(this.getClass(), "population", true);
+//    	GenericObjectEditor.setHideProperty(this.getClass(), "population", true);
     }
 
     public Object clone() {
@@ -97,8 +99,10 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
 //            this.m_Population.setPopulationSize(this.m_InitialPopulationSize);
 //        }
         //System.out.println("init");
+    	    	
     	checkPopulationConstraints();
     	m_Population.putData(esMuParam, getMu());
+    	m_Population.putData(esLambdaParam, getLambda());
         this.m_Problem.initPopulation(this.m_Population);
         this.evaluatePopulation(this.m_Population);
 //        this.m_Population.setPopulationSize(orgPopSize);
@@ -128,6 +132,7 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
     protected void evaluatePopulation(Population population) {
         this.m_Problem.evaluate(population);
         population.incrGeneration();
+        if (TRACE) System.out.println("ES Evaluated " + population.size());
     }
 
 //    /** This method allows you to set myu and lambda
@@ -183,7 +188,7 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
         AbstractEAIndividual        tmpIndy;
         AbstractEAIndividual[]      offSprings;
         Population parents;
-
+        if (TRACE ) System.out.println("ES From pop size " + fromPopulation.size() + " selecting parents/creating children: " + lambda);
         this.m_ParentSelection.prepareSelection(fromPopulation);
         this.m_PartnerSelection.prepareSelection(fromPopulation);
         parents     = this.m_ParentSelection.selectFrom(fromPopulation, lambda);
@@ -198,6 +203,7 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
     }
     
     protected Population selectParents(Population fromPop, int mu) {
+    	if (TRACE) System.out.println("ES env selecting parents: " + mu + " of " + fromPop.size());
     	this.m_EnvironmentSelection.prepareSelection(fromPop);
     	return this.m_EnvironmentSelection.selectFrom(fromPop, mu);
     }
@@ -222,7 +228,7 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
         if (parents.getEAIndividual(0).getCrossoverOperator() instanceof InterfaceAdaptOperatorGenerational) {
         	((InterfaceAdaptOperatorGenerational)parents.getEAIndividual(0).getCrossoverOperator()).adaptAfterSelection(getPopulation(), parents);
         }
-        
+                
         // now generate the lambda offsprings
 		nextGeneration = this.generateEvalChildren(parents); // create lambda new ones from mu parents
         
@@ -428,10 +434,12 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
 
     // for internal usage
     protected void setPop(Population pop) {
+    	if (TRACE) System.out.println("ES Setting pop of " + pop.size());
     	m_Population = pop;
     }
     
     public void setPopulation(Population pop){
+    	if (TRACE) System.out.println("ES Setting pop of " + pop.size());
     	origPopSize = pop.size();
 //    	System.err.println("In ES: orig popsize is " + origPopSize);
         this.m_Population = pop;
