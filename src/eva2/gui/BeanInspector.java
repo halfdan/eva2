@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import eva2.server.go.populations.Population;
+import eva2.server.go.strategies.GeneticAlgorithm;
 import eva2.tools.Pair;
 import eva2.tools.SelectedTag;
 import eva2.tools.StringTools;
@@ -29,13 +30,13 @@ public class BeanInspector {
 	/**
 	 * Check for equality based on bean properties of two target objects.
 	 */
-	public static boolean equalProperties(Object Target_1, Object Target_2) {
-		if (Target_1 == null || Target_2 == null) {
+	public static boolean equalProperties(Object obj_1, Object obj_2) {
+		if (obj_1 == null || obj_2 == null) {
 			System.out.println("");
 			return false;
 		}
-		System.out.println("equalProperties: " + Target_1.getClass().getName() + " " + Target_2.getClass().getName());
-		if (Target_1.getClass().getName().equals(Target_2.getClass().getName()) == false) {
+		System.out.println("equalProperties: " + obj_1.getClass().getName() + " " + obj_2.getClass().getName());
+		if (obj_1.getClass().getName().equals(obj_2.getClass().getName()) == false) {
 			System.out.println("");
 			return false;
 		}
@@ -46,8 +47,8 @@ public class BeanInspector {
 		PropertyDescriptor[] Properties_2 = null;
 		try {
 
-			Info_1 = Introspector.getBeanInfo(Target_1.getClass());
-			Info_2 = Introspector.getBeanInfo(Target_2.getClass());
+			Info_1 = Introspector.getBeanInfo(obj_1.getClass());
+			Info_2 = Introspector.getBeanInfo(obj_2.getClass());
 			Properties_1 = Info_1.getPropertyDescriptors();
 			Properties_2 = Info_2.getPropertyDescriptors();
 			Info_1.getMethodDescriptors();
@@ -76,8 +77,8 @@ public class BeanInspector {
 			Object args_2[] = {};
 			//System.out.println("m_Target"+m_Target.toString());
 			try {
-				Object value_1 = getter_1.invoke(Target_1, args_1);
-				Object value_2 = getter_2.invoke(Target_2, args_2);
+				Object value_1 = getter_1.invoke(obj_1, args_1);
+				Object value_2 = getter_2.invoke(obj_2, args_2);
 				BeansInside = true;
 				if (BeanInspector.equalProperties(value_1, value_2) == false) {
 					BeansEqual = false;
@@ -90,46 +91,78 @@ public class BeanInspector {
 			return BeansEqual;
 		}
 		// here we have Integer or Double ...
-		if (Target_1 instanceof Integer ||
-				Target_1 instanceof Boolean ||
-				Target_1 instanceof Float ||
-				Target_1 instanceof Double ||
-				Target_1 instanceof Long ||
-				Target_1 instanceof String) {
-			return Target_1.equals(Target_2);
+		if (obj_1 instanceof Integer ||
+				obj_1 instanceof Boolean ||
+				obj_1 instanceof Float ||
+				obj_1 instanceof Double ||
+				obj_1 instanceof Long ||
+				obj_1 instanceof String) {
+			return obj_1.equals(obj_2);
 		}
 
-		System.out.println(" Attention no match !!!");
+		System.err.println(" Attention no match !!!");
 		return true;
 	}
 
-	public static String toString(Object Target) {
-		return toString(Target, ';', false);
+	/**
+	 * Produce a String representation of an arbitrary object.
+	 * 
+	 * @see #toString(Object, char, boolean, String)
+	 * @param obj
+	 * @return
+	 */
+	public static String toString(Object obj) {
+		return toString(obj, ';', false, "", 1, false);
 	}
+	
+	/**
+	 * Produce a string with newlines and indentation (easier readable for if an object has many properties). 
+	 * @param obj
+	 * @return
+	 */
+	public static String niceToString(Object obj) {
+		return toString(obj, ';', false, "    ", 1, true);
+	}
+	
+	/**
+	 * Collect the accessible properties of an object and their values in a string with indentations.
+	 * Special cases: Arrays and Lists are concatenations of their elements, Population is excepted from lists.
+	 * If the object has its own toString method, this one is preferred. Hidden or expert properties are not
+	 * shown.
+	 * 
+	 * @param  obj an arbitrary object
+	 * @return a String description of the object
+	 */
+	public static String toString(Object obj, char delim, boolean tight, String indentStr) {
+		return toString(obj, delim, tight, indentStr, 1, false);
+	}
+	
 	/**
 	 * Collect the accessible properties of an object and their values in a string.
 	 * Special cases: Arrays and Lists are concatenations of their elements, Population is excepted from lists.
 	 * If the object has its own toString method, this one is preferred. Hidden or expert properties are not
 	 * shown.
 	 * 
-	 * @param  Target  Description of the Parameter
+	 * @param  obj  Description of the Parameter
 	 * @return         Description of the Return Value
 	 */
-	public static String toString(Object Target, char delim, boolean tight) {
-		String ret = "";
-		if (Target == null) return "null";
+	private static String toString(Object obj, char delim, boolean tight, String indentStr, int indentDepth, boolean withNewlines) {
+		if (obj == null) return "null";
 		// try the object itself
-		if (Target instanceof String) return (String)Target; // directly return a string object
-		Class<? extends Object> type = Target.getClass();
+		if (obj instanceof String) return (String)obj; // directly return a string object
+		Class<? extends Object> type = obj.getClass();
 
 		if (type.isArray()) { // handle the array case
-			StringBuffer sbuf = new StringBuffer("[");
+			StringBuffer sbuf = new StringBuffer();
+			sbuf.append("[");
 			if (!tight) sbuf.append(" ");
-			int len = Array.getLength(Target);
+			int len = Array.getLength(obj);
 			for (int i=0; i<len; i++) {
-				sbuf.append(toString(Array.get(Target, i)));
+//				sbuf.append(toString(Array.get(obj, i)));
+				if (withNewlines) sbuf.append('\n');
+				sbuf.append(toString(Array.get(obj, i), delim, tight, indentStr, indentDepth, withNewlines));
 				if (i<len-1) {
-					sbuf.append(delim);
+//					sbuf.append(delim);
 					if (!tight) sbuf.append(" ");
 				}
 			}
@@ -139,13 +172,16 @@ public class BeanInspector {
 		}
 		
 		if (type.isEnum()) {
-			return Target.toString();
+			return makeIndent(indentStr, indentDepth) + obj.toString();
 		}
 
-		if (Target instanceof List && !(Target instanceof Population)) { // handle the list case
-			StringBuffer sbuf = new StringBuffer("[");
+		if (obj instanceof List && !(obj instanceof Population)) { // handle the list case
+			StringBuffer sbuf = new StringBuffer();
+			if (withNewlines) sbuf.append('\n');
+			addIndent(sbuf, indentStr, indentDepth);
+			sbuf.append("[");
 			if (!tight) sbuf.append(" ");
-			List<?> lst = (List<?>)Target;
+			List<?> lst = (List<?>)obj;
 			for (Object o : lst) {
 				sbuf.append(o.toString());
 				sbuf.append(delim);
@@ -156,16 +192,15 @@ public class BeanInspector {
 			return sbuf.toString();
 		}
 
-
-		Method[] methods = Target.getClass().getDeclaredMethods();
+		Method[] methods = obj.getClass().getDeclaredMethods();
 		for (int ii = 0; ii < methods.length; ii++) { // check if the object has its own toString method, in this case use it
 			if ((methods[ii].getName().equals("toString") /*|| (methods[ii].getName().equals("getStringRepresentation"))*/) && (methods[ii].getParameterTypes().length == 0)) {
 				Object[] args = new Object[0];
-				//args[0] = Target;
+				//args[0] = obj;
 				try {
-					ret = (String) methods[ii].invoke(Target, args);
-					if (TRACE) System.out.println("toString on "+ Target.getClass() + " gave me " + ret);
-					return ret;
+					String ret = (String) methods[ii].invoke(obj, args);
+					if (TRACE) System.out.println("toString on "+ obj.getClass() + " gave me " + ret);
+					return makeIndent(indentStr, indentDepth) + ret;
 				} catch (Exception e) {
 					System.err.println(" ERROR +"+ e.getMessage());
 				}
@@ -174,15 +209,20 @@ public class BeanInspector {
 
 		// otherwise try introspection and collect all public properties as strings
 
-		Pair<String[],Object[]> nameVals = getPublicPropertiesOf(Target, true); 
+		Pair<String[],Object[]> nameVals = getPublicPropertiesOf(obj, true, true); 
 
-		StringBuffer sbuf = new StringBuffer(type.getName());
+		StringBuffer sbuf = new StringBuffer();
+		if (withNewlines) sbuf.append('\n');
+		addIndent(sbuf, indentStr, indentDepth);
+		sbuf.append(type.getName());
 		sbuf.append("{");
 		for (int i=0; i<nameVals.head.length; i++) {
 			if (nameVals.head[i]!=null) {
+				if (withNewlines) sbuf.append('\n'); 
+				addIndent(sbuf, indentStr, indentDepth);
 				sbuf.append(nameVals.head[i]);
 				sbuf.append("=");
-				sbuf.append(toString(nameVals.tail[i]));
+				sbuf.append(toString(nameVals.tail[i], delim, tight, indentStr, indentDepth+1, withNewlines));
 				sbuf.append(delim);
 				if (!tight) sbuf.append(" ");
 			}
@@ -192,6 +232,38 @@ public class BeanInspector {
 		return sbuf.toString();
 	}
 
+	private static void addIndent(StringBuffer sbuf, String indentStr, int indentDepth) {
+		if (indentStr!=null && (indentDepth>0)) {
+			for (int i=0; i<indentDepth; i++) sbuf.append(indentStr);
+		}
+	}
+	
+	private static String makeIndent(String indentStr, int indentDepth) {
+		if (indentStr!=null) {
+			if (indentDepth<1) return "";
+			else {
+				StringBuffer sbuf = new StringBuffer(indentStr);
+				for (int i=2; i<=indentDepth; i++) sbuf.append(indentStr);
+				return sbuf.toString();
+			}
+		} else return "";
+	}
+
+	public static void main(String[] args) {
+		System.out.println(BeanInspector.toString(new String[]{"asdf", "jdksfl", "werljk"}));
+		
+		System.out.println(BeanInspector.toString(new Population()));
+		System.out.println(BeanInspector.toString(new GeneticAlgorithm()));
+		System.out.println("----");
+		System.out.println(BeanInspector.niceToString(new Population()));
+		System.out.println(BeanInspector.niceToString(new GeneticAlgorithm()));
+		System.out.println("----");
+		System.out.println(BeanInspector.toString(new Population(), ';', false, ">", 1, false));
+		System.out.println(BeanInspector.toString(new GeneticAlgorithm(), ';', false, ">", 1, false));
+		//		System.out.println(BeanInspector.toString(new Population(), ',', false, "\t"));
+//		System.out.println(BeanInspector.toString(new GeneticAlgorithm(), ',', false, "\t"));
+	}
+	
 	/**
 	 * Retrieve names and values of instance fields which are accessible by getter method, optionally
 	 * by both getter and setter method. The returned arrays may contain null entries.
@@ -200,7 +272,7 @@ public class BeanInspector {
 	 * @param target
 	 * @return
 	 */
-	public static Pair<String[],Object[]> getPublicPropertiesOf(Object target, boolean requireSetter) {
+	public static Pair<String[],Object[]> getPublicPropertiesOf(Object target, boolean requireSetter, boolean showHidden) {
 		BeanInfo Info = null;
 		PropertyDescriptor[] Properties = null;
 //		MethodDescriptor[] Methods = null;
@@ -216,7 +288,8 @@ public class BeanInspector {
 		String[] nameArray = new String[Properties.length];
 		Object[] valArray = new Object[Properties.length];
 		for (int i = 0; i < Properties.length; i++) {
-			if (Properties[i].isHidden() || Properties[i].isExpert()) {
+			if ((Properties[i].isHidden() && !showHidden) || Properties[i].isExpert()) {
+//				System.err.println(Properties[i].getDisplayName() + " is " + ( (Properties[i].isExpert())? "expert": "hidden"));
 				continue;
 			}
 			String name = Properties[i].getDisplayName();
@@ -232,7 +305,7 @@ public class BeanInspector {
 			//System.out.println("name = "+name );
 			//System.out.println("type = "+type.getName() );
 			Object args[] = {};
-			//System.out.println("m_Target"+m_Target.toString());
+			//System.out.println("m_obj"+m_obj.toString());
 
 			try {
 				nameArray[i]=name;
@@ -247,23 +320,23 @@ public class BeanInspector {
 	
 
 	/**
-	 *@param  Target  Description of the Parameter
+	 *@param  obj  Description of the Parameter
 	 */
-	public static void showInfo(Object Target) {
-		System.out.println("Inspecting " + Target.getClass().getName());
+	public static void showInfo(Object obj) {
+		System.out.println("Inspecting " + obj.getClass().getName());
 		// object itself
 		try {
-			if (Target instanceof java.lang.Integer) {
-				System.out.println(" Prop = Integer" + Target.toString());
+			if (obj instanceof java.lang.Integer) {
+				System.out.println(" Prop = Integer" + obj.toString());
 			}
-			if (Target instanceof java.lang.Boolean) {
-				System.out.println(" Prop = Boolean" + Target.toString());
+			if (obj instanceof java.lang.Boolean) {
+				System.out.println(" Prop = Boolean" + obj.toString());
 			}
-			if (Target instanceof java.lang.Long) {
-				System.out.println(" Prop = Long" + Target.toString());
+			if (obj instanceof java.lang.Long) {
+				System.out.println(" Prop = Long" + obj.toString());
 			}
-			if (Target instanceof java.lang.Double) {
-				System.out.println(" Prop = Long" + Target.toString());
+			if (obj instanceof java.lang.Double) {
+				System.out.println(" Prop = Long" + obj.toString());
 			}
 		} catch (Exception e) {
 			//System.out.println(" ERROR +"+ e.getMessage());
@@ -273,7 +346,7 @@ public class BeanInspector {
 		PropertyDescriptor[] Properties = null;
 //		MethodDescriptor[] Methods = null;
 		try {
-			Info = Introspector.getBeanInfo(Target.getClass());
+			Info = Introspector.getBeanInfo(obj.getClass());
 			Properties = Info.getPropertyDescriptors();
 			Info.getMethodDescriptors();
 		} catch (IntrospectionException ex) {
@@ -300,11 +373,11 @@ public class BeanInspector {
 			Object args[] = {};
 			//System.out.println("m_Target"+m_Target.toString());
 			try {
-				Object value = getter.invoke(Target, args);
+				Object value = getter.invoke(obj, args);
 				System.out.println("Inspecting name = " + name);
 				if (value instanceof Integer) {
 					Object args2[] = {new Integer(999)};
-					setter.invoke(Target, args2);
+					setter.invoke(obj, args2);
 				}
 				showInfo(value);
 			} catch (Exception e) {
@@ -390,7 +463,7 @@ public class BeanInspector {
 					if (paramTypes!=null && (methParamTypes.length==paramTypes.length)) {
 						boolean mismatch = false; int i=0;
 						while ((i<methParamTypes.length) && (!mismatch)) {
-							if (!methParamTypes[i].isAssignableFrom(paramTypes[i])) mismatch=true;
+							if (!methParamTypes[i].isAssignableFrom(paramTypes[i]) && !isBoxableFrom(methParamTypes[i], paramTypes[i])) mismatch=true;
 							i++;
 						} 
 						if (!mismatch) return method; // parameter match, otherwise search on
@@ -401,6 +474,41 @@ public class BeanInspector {
 		return null;
 	}
 	
+	/**
+	 * Check if the given first class is a primitive type and can be boxed to match the second class.
+	 * 
+	 * @param clz1
+	 * @param clz2
+	 * @return
+	 */
+	private static boolean isBoxableFrom(Class clz1, Class clz2) {
+		Class box = getBoxedType(clz1);
+		if (box!=null && (clz2.isAssignableFrom(box))) {
+			return true;
+		} else return false;
+	}
+
+	/**
+	 * For a primitive type, return the boxed referenced type.
+	 * Return null for any non-primitive type.
+	 * 
+	 * @param clz1
+	 * @return
+	 */
+	public static Class getBoxedType(Class cls) {
+		if (cls.isPrimitive()) {
+			if (cls == double.class) return Double.class;
+			else if (cls == char.class) return Character.class;  
+			else if (cls == int.class) return Integer.class;
+			else if (cls == boolean.class) return Boolean.class;
+			else if (cls == byte.class) return Byte.class; 
+			else if (cls == short.class) return Short.class;
+			else if (cls == long.class) return Long.class;
+			else if (cls == float.class) return Float.class;
+			else return Void.class;
+		} else return null;
+	}
+
 	/**
 	 * Just concatenates getClassDescription(obj) and getMemberDescriptions(obj, withValues).
 	 * 
@@ -602,14 +710,15 @@ public class BeanInspector {
 	}
 	
 	/**
-	 * Checks whether a type belongs to primitive (int, long, double, char etc.) or the Java encapsulations (Integer, Long etc.)
+	 * Checks whether a type belongs to primitive (int, long, double, char etc.) 
+	 * or the Java encapsulations (Integer, Long etc.)
 	 * 
 	 * @param cls
 	 * @return
 	 */
 	public static boolean isJavaPrimitive(Class<?> cls) {
 		if (cls.isPrimitive()) return true;
-		if ((cls == Double.class) || (cls == Integer.class) || (cls == Boolean.class) 
+		if ((cls == Double.class) || (cls == Integer.class) || (cls == Boolean.class) || (cls == Character.class) || (cls == Void.class)
 				|| (cls == Byte.class) || (cls == Short.class) || (cls == Long.class) || (cls == Float.class)) return true;
 		return false;
 	}
