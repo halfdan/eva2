@@ -45,6 +45,8 @@ import eva2.server.go.problems.AbstractOptimizationProblem;
 import eva2.server.go.strategies.ClusterBasedNichingEA;
 import eva2.server.go.strategies.ClusteringHillClimbing;
 import eva2.server.go.strategies.DifferentialEvolution;
+import eva2.server.go.strategies.EsDpiNiching;
+import eva2.server.go.strategies.EsDpiNichingCma;
 import eva2.server.go.strategies.EvolutionStrategies;
 import eva2.server.go.strategies.EvolutionStrategyIPOP;
 import eva2.server.go.strategies.GeneticAlgorithm;
@@ -362,7 +364,7 @@ public class OptimizerFactory {
 	}
 
 	/**
-	 * This method performs a Hill Climber algorithm.
+	 * This method creates a Hill Climber algorithm with a default fixed-size mutation.
 	 *
 	 * @param pop
 	 *            The size of the population
@@ -371,16 +373,33 @@ public class OptimizerFactory {
 	 * @param listener
 	 * @return An optimization procedure that performes hill climbing.
 	 */
-	public static final HillClimbing createHillClimber(int pop,
+	public static final HillClimbing createHillClimber(int popSize,
+			AbstractOptimizationProblem problem,
+			InterfacePopulationChangedEventListener listener) {
+		return createHillClimber(popSize, new MutateESFixedStepSize(0.2), problem, listener);
+	}
+
+	/**
+	 * This method creates a Hill Climber algorithm.
+	 *
+	 * @param pop
+	 *            The size of the population
+	 * @param problem
+	 *            The problem to be optimized
+	 * @param listener
+	 * @return An optimization procedure that performes hill climbing.
+	 */
+	public static final HillClimbing createHillClimber(int popSize, InterfaceMutation mutator,
 			AbstractOptimizationProblem problem,
 			InterfacePopulationChangedEventListener listener) {
 
 		problem.initProblem();
 
-		setTemplateOperators(problem, new MutateESFixedStepSize(0.2), 1., new NoCrossover(), 0);
+		setTemplateOperators(problem, mutator, 1., new NoCrossover(), 0);
 
 		HillClimbing hc = new HillClimbing();
-		hc.getPopulation().setTargetSize(pop);
+		hc.SetIdentifier("-"+popSize+"-"+mutator.getStringRepresentation());
+		hc.getPopulation().setTargetSize(popSize);
 		hc.addPopulationChangedEventListener(listener);
 		hc.SetProblem(problem);
 		hc.init();
@@ -672,8 +691,9 @@ public class OptimizerFactory {
 			AbstractOptimizationProblem problem, String outputFilePrefix) {
 		return getOptRunnable(optType, problem, getTerminator(), outputFilePrefix);
 	}
+	
 	/**
-	 * Return the current user-defined or, if none was set, the default terminator.
+	 * Return the current user-defined terminator or, if none was set, the default terminator.
 	 * 
 	 * @return the current default terminator
 	 */
@@ -702,7 +722,7 @@ public class OptimizerFactory {
 	 */
 	public static GOParameters makeESParams(EvolutionStrategies es,
 			AbstractOptimizationProblem problem) {
-		return makeParams(es, es.getLambda(), problem, randSeed, makeDefaultTerminator());
+		return makeParams(es, es.getLambda(), problem, randSeed, getTerminator());
 	}
 
 	/**
@@ -715,7 +735,7 @@ public class OptimizerFactory {
 	 * @return
 	 */
 	public static GOParameters makeParams(InterfaceOptimizer opt, int popSize, AbstractOptimizationProblem problem) {
-		return makeParams(opt, popSize, problem, randSeed, makeDefaultTerminator());
+		return makeParams(opt, popSize, problem, randSeed, getTerminator());
 	}
 	
 	/**
@@ -852,7 +872,7 @@ public class OptimizerFactory {
 				outputFilePrefix);
 		return (runnable != null) ? runnable.getBinarySolution() : null;
 	}
-	
+
 	// ///////////////////////////// Optimize a given runnable
 	public static BitSet optimizeToBinary(OptimizerRunnable runnable) {
 		optimize(runnable);
@@ -1175,12 +1195,12 @@ public class OptimizerFactory {
 	 */
 	public static final GOParameters hillClimbing(
 			AbstractOptimizationProblem problem, int popSize) {
-		return makeParams(new HillClimbing(), popSize, problem, randSeed, makeDefaultTerminator());
+		return makeParams(new HillClimbing(), popSize, problem, randSeed, getTerminator());
 	}
 	
 	public static final GOParameters monteCarlo(
 			AbstractOptimizationProblem problem) {
-		return makeParams(new MonteCarloSearch(), 50, problem, randSeed, makeDefaultTerminator());
+		return makeParams(new MonteCarloSearch(), 50, problem, randSeed, getTerminator());
 	}
 	
 	/**
@@ -1200,6 +1220,27 @@ public class OptimizerFactory {
 			double clusterSigma, int minClustSize, int maxSpecSize, int haltingWindowLength, double haltingWindowEpsilon, int popSize) {
 		return createCbn(problem, opt, new ClusteringDensityBased(clusterSigma, minClustSize), maxSpecSize,
 				new ClusteringDensityBased(clusterSigma, minClustSize), haltingWindowLength, haltingWindowEpsilon, popSize);
+	}
+	
+	/**
+	 * A standard CBNPSO with density based clustering working on personal best positions.
+	 * 
+	 * @param problem
+	 * @return
+	 */
+	public static final GOParameters standardCbnPSO(AbstractOptimizationProblem problem) {
+		return createCbnPSO(problem, cbnDefaultClusterSigma, cbnDefaultMinGroupSize, cbnDefaultMaxGroupSize,
+				cbnDefaultHaltingWindowLength , cbnDefaultHaltingWindowEpsilon, 100 );
+	}
+	
+	public static final GOParameters createCbnPSO(AbstractOptimizationProblem problem, double clusterSigma, int minClustSize, 
+			int maxSpecSize, int haltingWindowLength, double haltingWindowEpsilon, int popSize ) {
+		GOParameters psoParams = standardPSO(problem);
+		ParticleSwarmOptimization pso = (ParticleSwarmOptimization)psoParams.getOptimizer();
+		ClusteringDensityBased clust = new ClusteringDensityBased(clusterSigma, minClustSize, 
+				new IndividualDataMetric(ParticleSwarmOptimization.partBestPosKey));
+		return createCbn(problem, pso, clust, maxSpecSize, new ClusteringDensityBased(clust), 
+				haltingWindowLength, haltingWindowEpsilon, popSize);
 	}
 	
 	/**
@@ -1226,7 +1267,7 @@ public class OptimizerFactory {
 		cbn.setShowCycle(0); // don't do graphical output
 		cbn.setHaltingWindow(haltingWindowLength);
 		cbn.setEpsilonBound(haltingWindowEpsilon);
-		return makeParams(cbn, popSize, problem, randSeed, makeDefaultTerminator());
+		return makeParams(cbn, popSize, problem, randSeed, getTerminator());
 	}
 	
 	/**
@@ -1265,24 +1306,11 @@ public class OptimizerFactory {
 		return createCbn(problem, ga, cbnDefaultClusterSigma, cbnDefaultMinGroupSize, cbnDefaultMaxGroupSize, cbnDefaultHaltingWindowLength, cbnDefaultHaltingWindowEpsilon, 100);
 	}
 	
-	/**
-	 * A standard CBNPSO with density based clustering working on personal best positions.
-	 * 
-	 * @param problem
-	 * @return
-	 */
-	public static final GOParameters standardCbnPSO(AbstractOptimizationProblem problem) {
-		GOParameters psoParams = standardPSO(problem);
-		ParticleSwarmOptimization pso = (ParticleSwarmOptimization)psoParams.getOptimizer();
-		ClusteringDensityBased clust = new ClusteringDensityBased(cbnDefaultClusterSigma, cbnDefaultMinGroupSize, new IndividualDataMetric(ParticleSwarmOptimization.partBestPosKey));
-		return createCbn(problem, pso, clust, cbnDefaultMaxGroupSize, new ClusteringDensityBased(clust), cbnDefaultHaltingWindowLength, cbnDefaultHaltingWindowEpsilon, 100);
-	}
-	
 	public static final GOParameters standardPBIL(AbstractOptimizationProblem problem) {
 		PopulationBasedIncrementalLearning pbil = createPBIL(0.04, 0.01, 0.5, 1, 
 				new SelectBestIndividuals(), 50, problem, null);
 
-		return makeParams(pbil, pbil.getPopulation(), problem, randSeed, makeDefaultTerminator());
+		return makeParams(pbil, pbil.getPopulation(), problem, randSeed, getTerminator());
 	}
 	
 	/**
@@ -1347,7 +1375,7 @@ public class OptimizerFactory {
 		chc.setNotifyGuiEvery(0);
 		chc.setStepSizeThreshold(hcStepThresh);
 		chc.setSigmaClust(sigmaClust);
-		return makeParams(chc, popSize, problem, randSeed, makeDefaultTerminator());
+		return makeParams(chc, popSize, problem, randSeed, getTerminator());
 	}
 
 	
@@ -1410,7 +1438,7 @@ public class OptimizerFactory {
 	
 	public static final GOParameters standardNMS(AbstractOptimizationProblem problem) {
 		NelderMeadSimplex nms = NelderMeadSimplex.createNelderMeadSimplex(problem, null);
-		return makeParams(nms, 50, problem, randSeed, makeDefaultTerminator());
+		return makeParams(nms, 50, problem, randSeed, getTerminator());
 	}
 	
 	/**
@@ -1427,7 +1455,7 @@ public class OptimizerFactory {
 		de.setK(0.6);
 		de.setLambda(0.6);
 		de.setMt(0.05); // this is not really employed for currentToBest
-		return makeParams(de, 50, problem, randSeed, makeDefaultTerminator());
+		return makeParams(de, 50, problem, randSeed, getTerminator());
 	}
 
 	public static final GOParameters standardES(
@@ -1451,7 +1479,7 @@ public class OptimizerFactory {
 		GeneticAlgorithm ga = new GeneticAlgorithm();
 		ga.setElitism(true);
 
-		return makeParams(ga, 100, problem, randSeed, makeDefaultTerminator());
+		return makeParams(ga, 100, problem, randSeed, getTerminator());
 	}
 	
 	/**
@@ -1467,13 +1495,109 @@ public class OptimizerFactory {
 //		pso.getTopology().setSelectedTag("Grid");
 		pso.setTopology(PSOTopologyEnum.grid);
 		pso.setTopologyRange(1);
-		return makeParams(pso, 30, problem, randSeed, makeDefaultTerminator());
+		return makeParams(pso, 30, problem, randSeed, getTerminator());
 	}
 
 	public static final GOParameters tribes(AbstractOptimizationProblem problem) {
-		return makeParams(new Tribes(), 1, problem, randSeed, makeDefaultTerminator());
+		return makeParams(new Tribes(), 1, problem, randSeed, getTerminator());
 	}
 
+	/**
+	 * A standard niching ES which employs predefined values and standard ES variation operators.
+	 *  
+	 * @param problem
+	 * @return
+	 */
+	public static final GOParameters standardNichingEs(AbstractOptimizationProblem prob) {
+				// nichingEs(AbstractOptimizationProblem prob, double nicheRadius, int muPerPeak, int lambdaPerPeak, 
+		return createNichingEs(prob, -1, 100, 100, 
+				// int expectedPeaks, int rndImmigrants, int explorerPeaks, int resetExplInterval, int etaPresel) {
+				10, 200, 0, 100, 50);
+	}
+
+	/**
+	 * A niching ES.
+	 *  
+	 * @param problem
+	 * @return
+	 */
+	public static final GOParameters createNichingEs(AbstractOptimizationProblem prob, double nicheRadius, int muPerPeak, int lambdaPerPeak, int expectedPeaks, int rndImmigrants, int explorerPeaks, int resetExplInterval, int etaPresel) {
+		EsDpiNiching nes = new EsDpiNiching(nicheRadius, muPerPeak, lambdaPerPeak, expectedPeaks, rndImmigrants, explorerPeaks, resetExplInterval, etaPresel);
+		
+		if (assertIndyType(prob, InterfaceESIndividual.class)) {
+			setTemplateOperators(prob, new MutateESGlobal(0.2, MutateESCrossoverTypeEnum.intermediate), 0.9, new CrossoverESDefault(), 0.2);
+		} else {
+			System.err.println("Error, standard ES is implemented for ES individuals only (requires double data types)");
+			return null;
+		}
+		// pop. size will be ignored by nes
+		return makeParams(nes, 100, prob, randSeed, getTerminator());
+	}
+	
+	/**
+	 * This actually employs the rank-mu CMA operator.
+	 * 
+	 * @param prob
+	 * @return
+	 */
+	public static GOParameters standardNichingCmaEs(AbstractOptimizationProblem prob) {
+		return createNichingCmaEs(prob, -1, 10, 10, 0, 0, -1);
+	}
+	
+	/**
+	 * This actually employs the rank-mu CMA operator.
+	 * 
+	 * @param prob
+	 * @return
+	 */
+	public static GOParameters createNichingCmaEs(AbstractOptimizationProblem prob, double nicheRad) {
+		return createNichingCmaEs(prob, nicheRad, 10, 10, 0, 0, -1);
+	}
+	
+	/**
+	 * This actually employs the rank-mu CMA operator.
+	 * 
+	 * @param prob
+	 * @return
+	 */
+	public static GOParameters createNichingCmaEs(AbstractOptimizationProblem prob, double nicheRad, double stagnationEpsilon) {
+		return createNichingCmaEs(prob, nicheRad, 10, 10, 0, 0, stagnationEpsilon);
+	}
+	
+	/**
+	 * This actually employs the rank-mu CMA operator.
+	 * 
+	 * @param prob
+	 * @return
+	 */
+	public static GOParameters createNichingCmaEs(AbstractOptimizationProblem prob, double nicheRad, int nicheCount, double stagnationEpsilon) {
+		return createNichingCmaEs(prob, nicheRad, 10, nicheCount, 0, 0, stagnationEpsilon);
+	}
+	
+	/**
+	 * A generic niching CMA-ES using the rank-mu CMA operator
+	 * @param prob
+	 * @param nicheRadius
+	 * @param lambda
+	 * @param expectedPeaks
+	 * @param explorerPeaks
+	 * @param resetExplInterval
+	 * @return
+	 */
+	public static GOParameters createNichingCmaEs(AbstractOptimizationProblem prob, double nicheRadius, int lambda, int expectedPeaks, int explorerPeaks, int resetExplInterval, double stagnationEpsilon) {
+		EsDpiNiching nes = new EsDpiNichingCma(nicheRadius, lambda, expectedPeaks, explorerPeaks, resetExplInterval);
+		if (stagnationEpsilon>0) nes.setEpsilonBound(stagnationEpsilon);
+		
+		if (assertIndyType(prob, InterfaceESIndividual.class)) {
+			setTemplateOperators(prob, new MutateESRankMuCMA(), 1., new CrossoverESDefault(), 0.);
+		} else {
+			System.err.println("Error, standard ES is implemented for ES individuals only (requires double data types)");
+			return null;
+		}
+		// pop. size will be ignored by nes
+		return makeParams(nes, 100, prob, randSeed, getTerminator());
+	}
+	
 	/**
 	 * Check if a given problem instance has a template individual matching the given class.
 	 * 
