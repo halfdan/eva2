@@ -585,7 +585,8 @@
 	</target>
 		
 <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	        Copy documentation to web directory. Note that the doc is not copied to the versioned directory here.
+	        Copy documentation to web directory. 
+	        WARNING: Note that the latex file must be brought up to date manually and that the doc is not copied to the versioned directory here.
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
 	<target name="docToWWW" depends="init, docLatexToHTML">
 	  	<delete>
@@ -629,7 +630,7 @@
 		        Generate Distribution and put it online. This also replaces the 
 		        Probs and ESModel packages, so keep them synchronized.
 	+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
-	<target name="distToWWW" depends="init, docToWWW">
+	<target name="distToWWW" depends="init, dist, docToWWW">
 	      <fileset id="EvA2Stuff" dir="${distribution.directory}">
 	      	<include name="**Src.tar.gz" />
 	      	<include name="**.jar" />
