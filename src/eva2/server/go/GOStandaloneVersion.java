@@ -411,7 +411,7 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
                 if (Thread.interrupted())
                     throw new InterruptedException();
                 // write header to file
-                this.writeToFile(" FitnessCalls\t Best\t Mean\t Worst \t" + BeanInspector.toString(this.m_GO.getProblem().getAdditionalDataHeader(), '\t', false));
+                this.writeToFile(" FitnessCalls\t Best\t Mean\t Worst \t" + BeanInspector.toString(this.m_GO.getProblem().getAdditionalDataHeader(), '\t', false, ""));
                 if ((this.m_ContinueFlag) && (this.m_Backup != null)) {
                     this.m_RecentFC += this.m_Backup.getFunctionCalls();
                     this.m_GO.getOptimizer().getProblem().initProblem();
