@@ -13,7 +13,7 @@ import eva2.tools.math.Mathematics;
  *
  */
 public abstract class AbstractLinearParamAdaption implements ParamAdaption, Serializable {
-	private double startV=0.2, endV=0.7;
+	private double startV=0.7, endV=0.2;
 
 	public AbstractLinearParamAdaption(AbstractLinearParamAdaption o) {
 		startV=o.startV;

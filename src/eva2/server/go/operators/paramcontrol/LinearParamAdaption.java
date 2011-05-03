@@ -15,7 +15,7 @@ implements InterfaceHasUpperDoubleBound, GenericParamAdaption, Serializable {
 	String target = "undefinedParameter";
 	
 	public LinearParamAdaption() {
-		super(0.2,0.7);
+		super(0.7,0.2);
 		target = "undefinedParameter";
 	}
 	
