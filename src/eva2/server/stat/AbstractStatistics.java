@@ -284,10 +284,10 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
     	if (printRunIntroVerbosity()) printToTextListener("\n****** Multirun "+runNumber);
     	if (params != null) {
     		if (printRunIntroVerbosity()) printToTextListener("\nModule parameters: ");
-    		if (printRunIntroVerbosity()) printToTextListener(BeanInspector.toString(params));
+    		if (printRunIntroVerbosity()) printToTextListener(BeanInspector.niceToString(params));
     	}
     	if (printRunIntroVerbosity()) printToTextListener("\nStatistics parameters: ");
-    	if (printRunIntroVerbosity()) printToTextListener(BeanInspector.toString(getStatisticsParameter()) + '\n');
+    	if (printRunIntroVerbosity()) printToTextListener(BeanInspector.niceToString(getStatisticsParameter()) + '\n');
 		functionCalls = 0;
 		fireDataListenersStartStop(runNumber, true, true);
 	}
