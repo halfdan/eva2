@@ -1148,7 +1148,7 @@ public class PostProcess {
 			InterfaceTextListener listener) {
 		int[] foundOpts = new int[epsilonPhenoSpace.length];
 		Population extrOpts = null;
-		if (listener!=null) listener.println("Accuracy regarding epsilon thresholds " + BeanInspector.toString(epsilonPhenoSpace) + ", clustering with sigma=" + extrOptClustSig);
+		if (listener!=null) listener.println("Accuracy regarding epsilon thresholds " + BeanInspector.toString(epsilonPhenoSpace));
 //		System.out.println("unref: " + sols.getStringRepresentation());
 		// extract optima (known or estimated) for different epsilon criteria
 		for (int k=0; k<epsilonPhenoSpace.length; k++) {
@@ -1156,7 +1156,8 @@ public class PostProcess {
 				extrOpts = PostProcess.getFoundOptima((k==0) ? sols : extrOpts, ((InterfaceMultimodalProblemKnown)prob).getRealOptima(), epsilonPhenoSpace[k], true);	
 			} else {
 				double clustSig = (extrOptClustSig<0 ? (0.1*epsilonPhenoSpace[k]) : extrOptClustSig);
-				extrOpts = AbstractOptimizationProblem.extractPotentialOptima(prob, (k==0) ? sols : extrOpts, epsilonPhenoSpace[k], extrOptEpsFitConf, extrOptClustSig/* 2*epsilonPhenoSpace[k]*/, maxEvals);
+				if (listener!=null) listener.println("clustering with sigma=" + clustSig);
+				extrOpts = AbstractOptimizationProblem.extractPotentialOptima(prob, (k==0) ? sols : extrOpts, epsilonPhenoSpace[k], extrOptEpsFitConf, clustSig/* 2*epsilonPhenoSpace[k]*/, maxEvals);
 				// TODO should rather depend on the accuracy required than on a static cluster-distance ??
 			}
 //			System.out.println("ref "+k+":" + extrOpts.getStringRepresentation());
