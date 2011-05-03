@@ -160,6 +160,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 		this.m_Phi2                         = a.m_Phi2;
 		this.m_InertnessOrChi               = a.m_InertnessOrChi;
 		this.m_TopologyRange                = a.m_TopologyRange;
+		this.paramControl					= (ParameterControlManager) a.paramControl.clone();
 		//this.setCheckSpeedLimit(a.isCheckSpeedLimit());
 	}
 
