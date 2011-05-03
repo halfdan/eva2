@@ -465,7 +465,7 @@ implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serial
      * Refine a given individual using Nelder-Mead-Simplex local search. Return true, if the refined result is within a given
      * distance from the original individual in phenotype space. The maxEvaluations parameter gives the maximum evaluations
      * for the local search. Using the epsilonFitConv parameter one may define a convergence criterion as PhenotypeConvergenceTerminator 
-     * which is combined (using OR) with the evaluation counter.
+     * based on the given threshold and 100*dim evaluations, which is combined (using OR) with the evaluation counter.
      * If maxEvaluations is smaller than zero, a maximum of 500*dim evaluations is employed. 
      * Be aware that this may cost quite some runtime depending on the target
      * function.
