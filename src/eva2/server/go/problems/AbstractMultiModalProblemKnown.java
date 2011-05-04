@@ -14,7 +14,8 @@ import eva2.tools.EVAERROR;
 import eva2.tools.ToolBox;
 import eva2.tools.math.Mathematics;
 
-public abstract class AbstractMultiModalProblemKnown extends AbstractProblemDouble implements Interface2DBorderProblem, InterfaceMultimodalProblemKnown {
+public abstract class AbstractMultiModalProblemKnown extends AbstractProblemDouble 
+implements Interface2DBorderProblem, InterfaceMultimodalProblemKnown {
 	protected static InterfaceDistanceMetric   m_Metric = new PhenotypeMetric();
 	private double                    m_GlobalOpt = 0;
 	protected Population                  m_ListOfOptima;
@@ -126,6 +127,11 @@ public abstract class AbstractMultiModalProblemKnown extends AbstractProblemDoub
 		return ToolBox.appendArrays(new String[]{"numOptsFound", "maxPeakRatio"}, super.getAdditionalDataHeader());
 	}
 
+	@Override 
+	public String[] getAdditionalDataInfo() {
+		return ToolBox.appendArrays(new String[]{"The number of optima identified with default accuracy", "The maximum peak ratio measure in [0,1], best at 1, if multiple local optima are known."}, super.getAdditionalDataInfo());
+	}
+	
 	@Override
 	public Object[] getAdditionalDataValue(PopulationInterface pop) {
 		Object[] result = new Object[2];
@@ -333,7 +339,9 @@ public abstract class AbstractMultiModalProblemKnown extends AbstractProblemDoub
 	/**
 	 * Returns -1 if the full list is not available. Otherwise calculates the maximum peak ratio
 	 * based on the full list of known optima. Assumes that both realOpts and pop have fitness
-	 * values assigned as in a maximization problem. This is the standard formulation of MPR.
+	 * values assigned as in a minimization problem. Using a fitness value fitThreshold, they are inverted
+	 * and then treated as in maximization. An optimum which has not been found closely (by epsilon)
+	 * in the population is assumed to be covered with an individual of fitness fitThreshold.
 	 * 
 	 * @param mmProb
 	 * @param pop
@@ -348,13 +356,15 @@ public abstract class AbstractMultiModalProblemKnown extends AbstractProblemDoub
 		for (int i=0; i<realOpts.size(); i++) {
 			// store the optimal fitness values and remember the smallest one
 			realFits[i]=realOpts.getEAIndividual(i).getFitness(fitCrit);
-			if (realFits[i]>fitThreshold) System.err.println("Warning: The fitness threshold to turn minimization fitness values into " +
+			if (realFits[i]>fitThreshold) EVAERROR.errorMsgOnce("Warning: The fitness threshold to turn minimization fitness values into " +
 					"maximization values should be larger than any optimal fitness! (AbstractMultiModalProblemKnown)");
 			if (i==0 || (minOpt>realFits[i])) minOpt = realFits[i];
 			// check if the opt. was found and store the corr. found fitness
 			if (optsFound[i]!=null) {
 				foundFits[i] = new Double(optsFound[i].getFitness(fitCrit));
-			} else foundFits[i]=fitThreshold; // note that it wasnt found -- will result in zero
+			} else {
+				foundFits[i]=fitThreshold; // note that it wasnt found -- will result in zero
+			}
 		}
 		// now we mirror all values with the threshold - provided they are below the threshold...
 		for (int i=0; i<realOpts.size(); i++) {

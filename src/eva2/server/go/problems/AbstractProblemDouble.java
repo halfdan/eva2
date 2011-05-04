@@ -142,19 +142,18 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem
 		double[] x;
 		double[] fitness;
 
-		x = getEvalArray(individual);
-		((InterfaceDataTypeDouble) individual).SetDoublePhenotype(x);
-		// evaluate the vector
-		fitness = this.eval(x);
-		// if indicated, add Gaussian noise
-		if (m_Noise != 0)
-			RNG.addNoise(fitness, m_Noise);
-		// set the fitness
-		setEvalFitness(individual, x, fitness);
-		if (isWithConstraints()) {
-			individual.putData(rawFitKey, individual.getFitness().clone());
-			addConstraints(individual, x);
-		}
+        x = getEvalArray(individual);
+        ((InterfaceDataTypeDouble)individual).SetDoublePhenotype(x);
+        // evaluate the vector
+        fitness = this.eval(x);
+        // if indicated, add Gaussian noise
+        if (m_Noise != 0) RNG.addNoise(fitness, m_Noise); 
+        // set the fitness
+        setEvalFitness(individual, x, fitness);
+        if (isWithConstraints()) {
+        	individual.putData(rawFitKey, individual.getFitness().clone());
+        	addConstraints(individual, x);
+        }
 	}
 
 	protected double[] rotateMaybe(double[] x) {
@@ -573,10 +572,6 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem
 		return "(De-)Activate constraints for the problem.";
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see eva2.server.go.problems.AbstractOptimizationProblem#getAdditionalDataHeader()
-	 */
 	@Override
 	public String[] getAdditionalDataHeader() {
 		String[] superHeader = super.getAdditionalDataHeader();
@@ -587,10 +582,6 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem
 			return superHeader;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see eva2.server.go.problems.AbstractOptimizationProblem#getAdditionalDataInfo()
-	 */
 	@Override
 	public String[] getAdditionalDataInfo() {
 		String[] superInfo = super.getAdditionalDataInfo();

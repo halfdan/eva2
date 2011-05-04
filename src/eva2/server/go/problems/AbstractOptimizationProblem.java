@@ -35,6 +35,7 @@ import eva2.server.go.operators.terminators.PopulationMeasureTerminator.Directio
 import eva2.server.go.operators.terminators.PopulationMeasureTerminator.StagnationTypeEnum;
 import eva2.server.go.populations.Population;
 import eva2.server.go.strategies.InterfaceOptimizer;
+import eva2.tools.ToolBox;
 
 /**
  * Created by IntelliJ IDEA.
@@ -87,7 +88,7 @@ implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serial
     protected 	AbstractEAIndividual      m_Template = null;
 //    private transient ArrayList<ParamChangeListener> changeListeners = null;
 
-	private double defaultAccuracy = 0.01; // default accuracy for identifying optima.
+	private double defaultAccuracy = 0.001; // default accuracy for identifying optima.
 
     /** This method returns a deep clone of the problem.
      * @return  the clone
@@ -252,8 +253,39 @@ implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serial
      * @return String
      */
     public String[] getAdditionalDataHeader() {
-    	if (this instanceof InterfaceInterestingHistogram) return new String[]{STAT_SOLUTION_HEADER,"histogram","score"};
-    	else return new String[]{STAT_SOLUTION_HEADER};
+    	String[] header = null;
+    	if (this instanceof InterfaceInterestingHistogram) header = new String[]{STAT_SOLUTION_HEADER,"histogram","score"};
+    	else header = new String[]{STAT_SOLUTION_HEADER};
+    	
+    	header = (String[])checkAndAppendAdd(0, getIndividualTemplate(), header, null);
+    	header = (String[])checkAndAppendAdd(0, getIndividualTemplate().getCrossoverOperator(), header, null);
+    	header = (String[])checkAndAppendAdd(0, getIndividualTemplate().getMutationOperator(), header, null);
+    	return header;
+    }
+    
+    /**
+     * Generic method to append additional information of another object.
+     * 
+     * @param type indicate header (0), info (1), or value (2)
+     * @param o	the object to retrieve data from
+     * @param dat 	the data array to which to append to
+     * @param pop	the current population 
+     * @return
+     */
+    private static Object[] checkAndAppendAdd(int type, Object o, Object[] dat, PopulationInterface pop) {
+    	if (o instanceof InterfaceAdditionalPopulationInformer) {
+    		switch(type) {
+    		case 0: // header
+        		return ToolBox.appendArrays((String[])dat, (String[])((InterfaceAdditionalPopulationInformer)o).getAdditionalDataHeader());
+    		case 1: // info
+        		return ToolBox.appendArrays((String[])dat, (String[])((InterfaceAdditionalPopulationInformer)o).getAdditionalDataInfo());
+    		case 2: // value
+        		return ToolBox.appendArrays(dat, ((InterfaceAdditionalPopulationInformer)o).getAdditionalDataValue(pop));
+        	default: 
+        		System.err.println("Error, invalid type in AbstractOptimizationProblem.appendAdd");
+        		return dat;
+    		}
+    	} else return dat;
     }
     
     /** This method returns the header for the additional data that is to be written into a file
@@ -261,12 +293,17 @@ implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serial
      * @return String
      */
     public String[] getAdditionalDataInfo() {
-    	if (this instanceof InterfaceInterestingHistogram) {
-    		return new String[]{"Representation of the current best individual",
+    	String[] info=null;
+    	if (this instanceof InterfaceInterestingHistogram) 
+    		info = new String[]{"Representation of the current best individual",
     			"Fitness histogram of the current population",
     			"Fitness threshold based score of the current population"};
-    	}
-    	return new String[]{"Representation of the current best individual"};
+    	else info = new String[]{"Representation of the current best individual"};
+    	
+    	info = (String[])checkAndAppendAdd(1, getIndividualTemplate(), info, null);
+    	info = (String[])checkAndAppendAdd(1, getIndividualTemplate().getCrossoverOperator(), info, null);
+    	info = (String[])checkAndAppendAdd(1, getIndividualTemplate().getMutationOperator(), info, null);
+    	return info;
     }
     
     /** This method returns the additional data that is to be written into a file
@@ -274,9 +311,8 @@ implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serial
      * @return String
      */
     public Object[] getAdditionalDataValue(PopulationInterface pop) {
-    	Object solObj;
-//    	solObj = AbstractEAIndividual.getDefaultDataString(pop.getBestIndividual());
-    	solObj = AbstractEAIndividual.getDefaultDataObject(pop.getBestIndividual());
+    	String solStr = AbstractEAIndividual.getDefaultDataString(pop.getBestIndividual()); 
+    	Object[] vals = null;
     	if (this instanceof InterfaceInterestingHistogram) {
     		int fitCrit=0;
     		SolutionHistogram hist = ((InterfaceInterestingHistogram)this).getHistogram();
@@ -288,8 +324,13 @@ implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serial
         		}
     			Population sols = PostProcess.clusterBestUpdateHistogram((Population)maybeFiltered, this, hist, fitCrit, getDefaultAccuracy());
     		}
-    		return new Object[]{solObj, hist, hist.getScore()};
-    	} else return new Object[]{solObj}; 
+    		vals = new Object[]{solStr, hist, hist.getScore()};
+    	} else vals = new Object[]{solStr}; 
+    	
+    	vals = checkAndAppendAdd(2, pop.getBestIndividual(), vals, pop);
+    	vals = checkAndAppendAdd(2, ((AbstractEAIndividual)pop.getBestIndividual()).getCrossoverOperator(), vals, pop);
+    	vals = checkAndAppendAdd(2, ((AbstractEAIndividual)pop.getBestIndividual()).getMutationOperator(), vals, pop);
+    	return vals;
     }
 
     /**
