@@ -9,6 +9,7 @@ import eva2.gui.BeanInspector;
 import eva2.gui.GenericObjectEditor;
 import eva2.server.go.InterfaceNotifyOnInformers;
 import eva2.server.go.problems.InterfaceAdditionalPopulationInformer;
+import eva2.tools.EVAERROR;
 import eva2.tools.SelectedTag;
 import eva2.tools.Serializer;
 import eva2.tools.StringSelection;
@@ -384,10 +385,18 @@ public class StatsParameter implements InterfaceStatisticsParameter, InterfaceNo
 		ArrayList<String> infoFields = new ArrayList<String>();
 		// parse list of header elements, show additional Strings according to names.
 		for (InterfaceAdditionalPopulationInformer inf : informers) {
-			headerFields.addAll(Arrays.asList(inf.getAdditionalDataHeader()));
+			String[] dataHeader = inf.getAdditionalDataHeader();
+			headerFields.addAll(Arrays.asList(dataHeader));
 			if (infoFields.size()<headerFields.size()) { // add info strings for tool tips - fill up with null if none have been returned.
 				String[] infos = inf.getAdditionalDataInfo();
-				if (infos!=null) infoFields.addAll(Arrays.asList(infos));
+				if (infos!=null) {
+					if (infos.length!=dataHeader.length) {
+						System.out.println(BeanInspector.toString(infos));
+						System.out.println(BeanInspector.toString(dataHeader));
+						EVAERROR.errorMsgOnce("Warning, mismatching number of headers and additional data fields for " + inf.getClass() + " ("+dataHeader.length+ " vs. " + infos.length + ").");
+					}
+					infoFields.addAll(Arrays.asList(infos));
+				}
 				while (infoFields.size()<headerFields.size()) infoFields.add(null);
 			}
 //			header += inf.getAdditionalDataHeader(null); // lets hope this works with a null 
