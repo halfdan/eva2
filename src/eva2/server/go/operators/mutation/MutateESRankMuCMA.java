@@ -1,11 +1,9 @@
 package eva2.server.go.operators.mutation;
 
 import java.io.Serializable;
-import java.util.Arrays;
 
 import eva2.gui.BeanInspector;
 import eva2.gui.GenericObjectEditor;
-import eva2.server.go.InterfacePopulationChangedEventListener;
 import eva2.server.go.enums.ESMutationInitialSigma;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.AbstractEAIndividualComparator;
@@ -19,7 +17,6 @@ import eva2.tools.Pair;
 import eva2.tools.math.Mathematics;
 import eva2.tools.math.RNG;
 import eva2.tools.math.Jama.EigenvalueDecomposition;
-import eva2.tools.math.Jama.Matrix;
 
 /**
  * Implementing CMA ES with rank-mu-update and weighted recombination. More information can be found here:
@@ -36,7 +33,7 @@ import eva2.tools.math.Jama.Matrix;
  * @author mkron
  *
  */
-public class MutateESRankMuCMA implements InterfaceAdaptOperatorGenerational, Serializable {
+public class MutateESRankMuCMA implements InterfaceAdaptOperatorGenerational, InterfaceMutation, Serializable {
 //	int dim;
 	private double c_c, expRandStepLen;
 	
