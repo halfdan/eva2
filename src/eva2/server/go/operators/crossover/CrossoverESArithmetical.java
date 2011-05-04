@@ -7,6 +7,11 @@ import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
 
 /**
+ * The children are randomized intermediate combinations of the parents,
+ * namely c[i]=Sum_j (r_i * p_ji)
+ * where r_i are uniform random numbers normed to the sum of one and
+ * p_ji is the i-th component of parent j.
+ *  
  * Created by IntelliJ IDEA.
  * User: streiche
  * Date: 25.07.2003
@@ -75,7 +80,7 @@ public class CrossoverESArithmetical implements InterfaceCrossover, java.io.Seri
             // write the result back
             for (int i = 0; i < result.length; i++) ((InterfaceESIndividual)result[i]).SetDGenotype(children[i]);
         }
-        //in case the crossover was successfull lets give the mutation operators a chance to mate the strategy parameters
+        //in case the crossover was successful lets give the mutation operators a chance to mate the strategy parameters
         for (int i = 0; i < result.length; i++) result[i].getMutationOperator().crossoverOnStrategyParameters(indy1, partners);
         //for (int i = 0; i < result.length; i++) System.out.println("After Crossover: " +result[i].getSolutionRepresentationFor());
         return result;
