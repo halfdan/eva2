@@ -28,28 +28,36 @@ import eva2.server.go.strategies.InterfaceOptimizer;
 import eva2.server.modules.GOParameters;
 import eva2.tools.math.RNG;
 
-class MyLensViewer extends JPanel {
+class MyLensViewer extends JPanel implements InterfaceSolutionViewer {
 
     /**
 	 * 
 	 */
 	private static final long serialVersionUID = 7945150208043416139L;
-	private double[]                    m_BestVariables;
-    private double                      m_BestFitness;
+	Population indiesToPaint=new Population();
+//	private double[]                    m_BestVariables;
+//    private double                      m_BestFitness;
     private int                         m_Height, m_Width;
     FLensProblem                        m_LensProblem;
 
     public MyLensViewer (FLensProblem f) {
-        this.m_LensProblem      = f;
+        initView(f);
         Dimension d = new Dimension (280, 220);
         this.setPreferredSize(d);
         this.setMinimumSize(d);
-        resetBest();
+        resetView();
     }
 
-    public void resetBest() {
-    	this.m_BestFitness = Double.POSITIVE_INFINITY;
-    	this.m_BestVariables = new double[10];
+    public void initView(AbstractOptimizationProblem prob) {
+    	this.m_LensProblem = (FLensProblem)prob;
+    }
+    
+    public void resetView() {
+//    	this.m_BestFitness = Double.POSITIVE_INFINITY;
+//    	this.m_BestVariables = new double[10];
+    	ESIndividualDoubleData dummy = new ESIndividualDoubleData();
+    	dummy.SetFitness(new double[]{Double.POSITIVE_INFINITY});
+    	indiesToPaint = new Population();
     }
     
     public void paint(Graphics g) {
@@ -106,52 +114,84 @@ class MyLensViewer extends JPanel {
         g2D.drawLine(centerLens, this.m_Height/2+(int)this.m_LensProblem.m_Radius*10, centerLens, this.m_Height/2 -(int)this.m_LensProblem.m_Radius*10);
         g2D.drawLine(centerScreen, this.m_Height/2+(int)this.m_LensProblem.m_Radius*10+10, centerScreen, this.m_Height/2 -(int)this.m_LensProblem.m_Radius*10-10);
         g2D.setStroke(ds);
+//        System.out.println("indies to paint: " + indiesToPaint.size());
+        paintLens(m_LensProblem.m_ProblemDimension, m_Height, m_LensProblem.m_Radius, mag, centerLens, centerScreen, segment, g2D);
+        // Now put everything on the screen
+        g.drawImage(bufferedImage, 0, 0, this);
+    }
+
+    private void paintLens(int dim, int height, double radius, int mag, int centerLens, int centerScreen, int segment, Graphics2D g2D) {
+    	for (int i=0; i<indiesToPaint.size(); i++) {
+    		AbstractEAIndividual indy = indiesToPaint.getEAIndividual(i);
+    		paintLens(indy.getDoublePosition(), m_LensProblem.testLens(indy.getDoublePosition()), indy.getFitness(0), dim, height, radius, mag, centerLens, centerScreen, segment, g2D);
+    	}
+    }
+    
+    private void paintLens(AbstractEAIndividual indy, int dim, int height, double radius, int mag, int centerLens, int centerScreen, int segment, Graphics2D g2D) {
+    	if (indy!=null) paintLens(indy.getDoublePosition(), m_LensProblem.testLens(indy.getDoublePosition()), indy.getFitness(0), dim, height, radius, mag, centerLens, centerScreen, segment, g2D);
+    }
+
+	private static void paintLens(double[] variables, double[] dots, double fit, int dim, int height, double radius, int mag, int centerLens, int centerScreen,
+			int segment, Graphics2D g2D) {
         // top and bottom line
-        g2D.drawLine(centerLens-(int)(this.m_BestVariables[0]*mag), this.m_Height/2-(int)this.m_LensProblem.m_Radius*10, centerLens+(int)(this.m_BestVariables[0]*mag), this.m_Height/2 -(int)this.m_LensProblem.m_Radius*10);
-        g2D.drawLine(centerLens-(int)(this.m_BestVariables[this.m_LensProblem.m_ProblemDimension-1]*mag), this.m_Height/2+(int)this.m_LensProblem.m_Radius*10, centerLens+(int)(this.m_BestVariables[this.m_LensProblem.m_ProblemDimension-1]*mag), this.m_Height/2 +(int)this.m_LensProblem.m_Radius*10);
+		g2D.drawLine(centerLens-(int)(variables[0]*mag), height/2-(int)radius*10, centerLens+(int)(variables[0]*mag), height/2 -(int)radius*10);
+        g2D.drawLine(centerLens-(int)(variables[dim-1]*mag), height/2+(int)radius*10, centerLens+(int)(variables[dim-1]*mag), height/2 +(int)radius*10);
 
         // plot the fitness result
-        g2D.drawString("Fitness : "+ this.m_BestFitness, 5, 15);
+        g2D.drawString("Fitness : "+ fit, (int) (variables[0]*mag), 15);
 
-        int currentXPos = this.m_Height/2-(int)this.m_LensProblem.m_Radius*10;
-        double[] dots = this.m_LensProblem.testLens(this.m_BestVariables);
-        for (int i = 1; i < this.m_BestVariables.length; i++) {
-            ///System.out.println("X"+i+": " +  this.m_BestVariables[i]);
+        int currentXPos = height/2-(int)radius*10;
+        for (int i = 1; i < variables.length; i++) {
+            ///System.out.println("X"+i+": " +  variables[i]);
             // draw the line from the least one to the current on and use 10 as magnifier
             g2D.setPaint(Color.black);
-            g2D.drawLine(centerLens-(int)(this.m_BestVariables[i-1]*mag), currentXPos, centerLens-(int)(this.m_BestVariables[i]*mag), currentXPos+segment);
-            g2D.drawLine(centerLens+(int)(this.m_BestVariables[i-1]*mag), currentXPos, centerLens+(int)(this.m_BestVariables[i]*mag), currentXPos+segment);
+            g2D.drawLine(centerLens-(int)(variables[i-1]*mag), currentXPos, centerLens-(int)(variables[i]*mag), currentXPos+segment);
+            g2D.drawLine(centerLens+(int)(variables[i-1]*mag), currentXPos, centerLens+(int)(variables[i]*mag), currentXPos+segment);
 
             // paint the light rays
             g2D.setPaint(Color.red);
             g2D.drawLine(0, currentXPos + segment/2, centerLens, currentXPos + segment/2);
-            g2D.drawLine(centerLens, currentXPos + segment/2, centerScreen, this.m_Height/2 +(int)(dots[i-1]*mag));
+            g2D.drawLine(centerLens, currentXPos + segment/2, centerScreen, height/2 +(int)(dots[i-1]*mag));
 
             currentXPos += segment;
-//            tmpShape = new Rectangle(currentPos-width/2, this.m_Height/2, width, (int)(this.m_BestVariables[i]*10));
+//            tmpShape = new Rectangle(currentPos-width/2, this.m_Height/2, width, (int)(variables[i]*10));
 //            g2D.setPaint(Color.red);
 //            g2D.fill(tmpShape);
 //            g2D.setPaint(Color.black);
 //            g2D.draw(tmpShape);
 //            g2D.drawLine(currentPos, this.m_Height/2+5, currentPos, this.m_Height/2-5);
         }
-        // Now put everything on the screen
-        g.drawImage(bufferedImage, 0, 0, this);
-    }
+	}
 
     /** This method updates the painted stuff
      * @param pop   The population to use
      */
-    public void update(Population pop) {
-        InterfaceDataTypeDouble best = (InterfaceDataTypeDouble)pop.getBestIndividual();
-        //this.m_BestFitness      = ((AbstractEAIndividual)best).getFitness(0);
-        double curFit = ((AbstractEAIndividual)best).getFitness(0);
-        if (m_BestFitness > curFit) {
-            this.m_BestVariables    = best.getDoubleData();
-        	this.m_BestFitness 		= curFit;
-        	this.paint(this.getGraphics());
-        }
-    }
+	public void updateView(Population pop, boolean showAllIfPossible) {
+		if (showAllIfPossible) {
+//			indiesToPaint=pop;
+			for (int i=0; i<pop.size(); i++) {
+				MyLensViewer newView=new MyLensViewer(m_LensProblem);
+				
+				Population newPop = new Population();
+				newPop.add(pop.getEAIndividual(i));
+				newView.updateView(newPop, false);
+				
+				JFrame newFrame = new JFrame("Lens Problem Viewer");
+				newFrame.getContentPane().add(newView);
+				newFrame.pack();
+				newFrame.setVisible(true);
+			}
+//			this.paint(this.getGraphics());
+		} else {
+			InterfaceDataTypeDouble best = (InterfaceDataTypeDouble)pop.getBestIndividual();
+			//this.m_BestFitness      = ((AbstractEAIndividual)best).getFitness(0);
+			if (indiesToPaint.size()==0 || ((AbstractEAIndividual)best).isDominant(indiesToPaint.getBestIndividual())) {
+				if (indiesToPaint.size()==1) indiesToPaint.set(0, best);
+				else indiesToPaint.add(best);
+				this.paint(this.getGraphics());
+			}
+		}
+	}
 
 }
 /**
@@ -161,7 +201,8 @@ class MyLensViewer extends JPanel {
  * Time: 09:49:37
  * To change this template use File | Settings | File Templates.
  */
-public class FLensProblem extends AbstractOptimizationProblem implements InterfaceOptimizationProblem, java.io.Serializable  {
+public class FLensProblem extends AbstractOptimizationProblem 
+implements InterfaceOptimizationProblem, InterfaceHasSolutionViewer, java.io.Serializable  {
 
 	/**
 	 *  
@@ -217,7 +258,7 @@ public class FLensProblem extends AbstractOptimizationProblem implements Interfa
             this.m_ProblemFrame.pack();
             this.m_ProblemFrame.setVisible(true);
             //this.m_ProblemFrame.show();
-        } else this.m_Panel.resetBest();
+        } else this.m_Panel.resetView();
     }
 
     /** This method gets rid of the problem view frame
@@ -234,7 +275,7 @@ public class FLensProblem extends AbstractOptimizationProblem implements Interfa
      * @param population    The current population.
      */
     public void updateProblemFrame(Population population) {
-        if (this.m_Panel != null) this.m_Panel.update(population);
+        if (this.m_Panel != null) this.m_Panel.updateView(population, false);
     }
 
 	/** This method inits the Problem to log multiruns
@@ -515,5 +556,10 @@ public class FLensProblem extends AbstractOptimizationProblem implements Interfa
 	 */
 	public void setEAIndividualTrap(AbstractEAIndividual indy) {
 		if (indy instanceof InterfaceDataTypeDouble) this.setEAIndividual((InterfaceDataTypeDouble)indy);
+	}
+	
+	@Override
+	public InterfaceSolutionViewer getSolutionViewer() {
+		return m_Panel;
 	}
 }
