@@ -99,7 +99,7 @@ public class F20Problem extends AbstractProblemDouble implements Serializable, I
 
 	public SolutionHistogram getHistogram() {
 		if (getProblemDimension()==10) {
-			if (getYOffset()==0) return new SolutionHistogram(-5000, -3400, 16);
+			if (getYOffset()==0) return new SolutionHistogram(-5200, -3600, 16);
 			else return new SolutionHistogram(0, 1600, 16);
 		}
 		if (getProblemDimension()==30) {
