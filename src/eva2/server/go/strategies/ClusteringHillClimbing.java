@@ -33,7 +33,8 @@ import eva2.tools.Pair;
  * @author mkron
  *
  */
-public class ClusteringHillClimbing implements InterfacePopulationChangedEventListener, InterfaceOptimizer, Serializable, InterfaceAdditionalPopulationInformer {
+public class ClusteringHillClimbing implements InterfacePopulationChangedEventListener, 
+InterfaceOptimizer, Serializable, InterfaceAdditionalPopulationInformer {
     transient private InterfacePopulationChangedEventListener   m_Listener;
     public static final boolean TRACE = false;
     
@@ -58,6 +59,12 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
 
 	public ClusteringHillClimbing() {
 		hideHideable();
+	}
+	
+	public ClusteringHillClimbing(int initialPopSize, PostProcessMethod lsMethod) {
+		this();
+		setInitialPopSize(initialPopSize);
+		setLocalSearchMethod(lsMethod);
 	}
 	
 	public ClusteringHillClimbing(ClusteringHillClimbing other) {
@@ -270,7 +277,7 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
 	public void freeWilly() {}
 
 	public String getName() {
-		return "Clustering-HC";
+		return "ClustHC-"+initialPopSize+"-"+localSearchMethod;
 	}
 
 	public static String globalInfo() {
@@ -419,15 +426,15 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
 	}
 
 	public String[] getAdditionalDataHeader() {
-		return new String[]{"numIndies"};
+		return new String[]{"numIndies", "sigma", "numArchived", "archivedMeanDist"};
 	}
 	
 	public String[] getAdditionalDataInfo() {
-		return new String[]{"The current population size"};
+		return new String[]{"The current population size", "Current step size in case of stochastic HC", "Number of archived solutions", "Mean distance of archived solutions"};
 	}
 	
 	public Object[] getAdditionalDataValue(PopulationInterface pop) {
-		return new Object[]{m_Population.size()};
+		return new Object[]{m_Population.size(), mutator.getSigma(), archive.size(), archive.getPopulationMeasures()[0]};
 	}
 
 	public boolean isDoReinitialization() {
