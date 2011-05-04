@@ -11,7 +11,8 @@ import eva2.server.go.operators.mutation.MutateGAUniform;
 import eva2.server.go.strategies.InterfaceOptimizer;
 
 /**
- * Created by IntelliJ IDEA.
+ * The minimize bits problem for binary optimization.
+ * 
  * User: streiche
  * Date: 21.03.2003
  * Time: 13:05:33
