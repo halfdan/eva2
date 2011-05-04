@@ -1,6 +1,5 @@
 package eva2.server.go.operators.cluster;
 
-import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.populations.Population;
 
 /** 
@@ -32,7 +31,10 @@ public interface InterfaceClustering {
      * If the clustering depends on population measures, a reference set may be given
      * which is the reference population to consider the measures of. This is for cases
      * where, e.g., subsets of a Population are to be clustered using measures of the
-     * original population. 
+     * original population.
+     * Note that the clustered individuals should only be shallow instances of the members
+     * of the given population pop. The sum of sizes of all returned individuals must be
+     * equal to pop.size().
      * 
      * @param pop       The population of individuals that is to be clustered.
      * @param referenceSet a reference population for dynamic measures

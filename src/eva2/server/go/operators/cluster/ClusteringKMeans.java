@@ -7,6 +7,8 @@ import eva2.gui.Plot;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.ESIndividualDoubleData;
 import eva2.server.go.individuals.InterfaceDataTypeDouble;
+import eva2.server.go.operators.distancemetric.EuclideanMetric;
+import eva2.server.go.operators.distancemetric.InterfaceDistanceMetric;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.F1Problem;
 import eva2.tools.chart2d.Chart2DDPointIconCircle;
@@ -24,11 +26,15 @@ import eva2.tools.math.RNG;
  */
 public class ClusteringKMeans implements InterfaceClustering, java.io.Serializable {
 
-    public int                         m_K                 = 5;
-    public double[][]                  m_C                 = null;
-    public boolean                     m_UseSearchSpace    = true;
-    public boolean                     m_ReuseC            = false;
-    public boolean                     m_Debug             = false;
+    private int                         m_K                 = 5;
+    private double[][]                  m_C                 = null;
+	private	double 						mergeDist = 0.001;
+	private boolean                     m_UseSearchSpace    = true;
+    private boolean                     m_ReuseC            = false;
+    private boolean                     m_Debug             = false;
+    private int 						minClustSize = 1;
+    InterfaceDistanceMetric metric = new EuclideanMetric();
+    AbstractEAIndividual tmpIndy = null;
 
     public ClusteringKMeans() {
 
@@ -38,6 +44,9 @@ public class ClusteringKMeans implements InterfaceClustering, java.io.Serializab
         this.m_Debug            = a.m_Debug;
         this.m_K                = a.m_K;
         this.m_UseSearchSpace   = a.m_UseSearchSpace;
+        this.metric 			= a.metric;
+        this.minClustSize 		= a.minClustSize;
+        this.mergeDist			= a.mergeDist;
         if (a.m_C != null) {
             this.m_C = new double[a.m_C.length][a.m_C[0].length];
             for (int i = 0; i < this.m_C.length; i++) {
@@ -62,12 +71,23 @@ public class ClusteringKMeans implements InterfaceClustering, java.io.Serializab
      * @return Population[]
      */
     public Population[] cluster(Population pop, Population referencePop) {
-        double[][] data     = this.extractClusterDataFrom(pop);
+    	if (pop.size()<m_K) {
+    		// in this case, there arent enough indies to do anything, so we just return them as "unclustered"
+    		Population[] res = new Population[1];
+    		res[0]=pop.cloneShallowInds();
+    		return res;
+    	}
+    	tmpIndy = (AbstractEAIndividual)pop.getEAIndividual(0).clone();
+//        double[][] data     = this.extractClusterDataFrom(pop);
         if (!(this.m_ReuseC) || (this.m_C == null)) {
             this.m_C            = new double[this.m_K][];
             // now choose random initial Cs
-            for (int i = 0; i < this.m_C.length; i++) {
-                this.m_C[i] = data[RNG.randomInt(0, data.length-1)];
+            Population initialSeeds = pop.getRandNIndividuals(this.m_K);
+            for (int i = 0; i < this.m_K; i++) {
+            	if (m_UseSearchSpace) this.m_C[i] = initialSeeds.getEAIndividual(i).getDoublePosition().clone();
+            	else this.m_C[i] = initialSeeds.getEAIndividual(i).getFitness().clone();
+            	
+//                this.m_C[i] = data[RNG.randomInt(0, data.length-1)];
                 //this.m_C[i] = data[i];     // This works!!
                 // we won't check for double instances assuming that double instances
                 // will be ironed out during clustering and to prevent infinite loops
@@ -79,22 +99,23 @@ public class ClusteringKMeans implements InterfaceClustering, java.io.Serializab
         boolean     finished = false;
         double[][]  newC;
         int[]       numbOfAssigned;
-        int[]       assignment = new int[data.length];
+        int[]       assignment = new int[pop.size()];
         int         assign;
         while (!finished) {
             // first assign the data to the closes C
-            for (int i = 0; i < data.length; i++) {
+            for (int i = 0; i < pop.size(); i++) {
                 // check which C is closest
                 assign = 0;
                 for (int j = 1; j < this.m_C.length; j++) {
-                    if (this.distance(this.m_C[assign], data[i]) > this.distance(this.m_C[j], data[i]))
+                    if (this.distance(pop.getEAIndividual(i), this.m_C[assign]) > this.distance(pop.getEAIndividual(i), this.m_C[j]))
+//                    if (this.distance(this.m_C[assign], data[i]) > this.distance(this.m_C[j], data[i]))
                         assign = j;
                 }
                 assignment[i] = assign;
             }
 
             // now calcuate the mean of each cluster and calculate new C
-            newC            = new double[this.m_K][data[0].length];
+            newC            = new double[this.m_K][m_C[0].length];
             numbOfAssigned  = new int[this.m_K];
             for (int i = 0; i < newC.length; i++) {
                 numbOfAssigned[i] = 1;
@@ -103,7 +124,8 @@ public class ClusteringKMeans implements InterfaceClustering, java.io.Serializab
             for (int i = 0; i < assignment.length; i++) {
                 numbOfAssigned[assignment[i]]++;
                 for (int j = 0; j < newC[assignment[i]].length; j++) {
-                    newC[assignment[i]][j] += data[i][j];
+                	if (m_UseSearchSpace) newC[assignment[i]][j] += pop.getEAIndividual(i).getDoublePosition()[j];
+                	else newC[assignment[i]][j] += pop.getEAIndividual(i).getFitness(j);
                 }
             }
             for (int i = 0; i < newC.length; i++) {
@@ -153,10 +175,10 @@ public class ClusteringKMeans implements InterfaceClustering, java.io.Serializab
                 GraphPointSet           mySet;
                 DPoint                  myPoint;
                 Chart2DDPointIconText   tmp;
-                for (int i = 0; i < data.length; i++) {
+                for (int i = 0; i < pop.size(); i++) {
                     mySet = new GraphPointSet(10+1, plot.getFunctionArea());
                     mySet.setConnectedMode(false);
-                    double[] x  = data[i];
+                    double[] x  = pop.getEAIndividual(i).getDoublePosition();
                     myPoint = new DPoint(x[0], x[1]);
                     tmp = new Chart2DDPointIconText(""+assignment[i]);
                     if (assignment[i] % 2 == 0) tmp.setIcon(new Chart2DDPointIconCircle());
@@ -167,7 +189,7 @@ public class ClusteringKMeans implements InterfaceClustering, java.io.Serializab
             // finally let's check whether or not the C changed and if i can terminate k_Means
             finished = true;
             for (int i = 0; i < this.m_C.length; i++) {
-                if (this.distance(this.m_C[i], newC[i]) > 0.0001) finished = false;
+                if (EuclideanMetric.euclideanDistance(this.m_C[i], newC[i]) > 0.0001) finished = false;
                 this.m_C[i] = newC[i];
             }
         } // gosh now i'm done
@@ -200,18 +222,35 @@ public class ClusteringKMeans implements InterfaceClustering, java.io.Serializab
                 }
             }
         }
-
-        return result;
+        
+        // now expand to the expected format (unclustered indies at pop of index 0)
+        int largeEnough = 0;
+        // count clusters that are large enough
+        for (int i=0; i<result.length; i++) if (result[i].size()>=getMinClustSize()) largeEnough++;
+        Population[] resExpanded = new Population[largeEnough+1];
+        resExpanded[0]=pop.cloneWithoutInds();
+        int lastIndex = 1;
+        for (int i=0; i<result.length; i++) {
+        	if (result[i].size()>=getMinClustSize()) {
+        		resExpanded[lastIndex]=result[i];
+        		lastIndex++;
+        	} else resExpanded[0].addPopulation(result[i]);
+        }
+        tmpIndy=null;
+        return resExpanded;
     }
 
-    /** This method allows you to cluster a population using m_C
+    /** 
+     * This method allows you to cluster a population using m_C. The minimal cluster
+     * size is _not_ regarded here.
      * @param pop   The population
      * @param c     The centroids
      * @return The clusters as populations
      */
     public Population[] cluster(Population pop, double[][] c) {
+    	if (tmpIndy==null) tmpIndy=(AbstractEAIndividual)pop.getEAIndividual(0).clone(); // nec. only because the method is public...
         Population[]    result  = new Population[c.length];
-        double[][]      data    = this.extractClusterDataFrom(pop);
+//        double[][]      data    = this.extractClusterDataFrom(pop);
         int             clusterAssigned;
 
         try {
@@ -224,16 +263,15 @@ public class ClusteringKMeans implements InterfaceClustering, java.io.Serializab
         	e.printStackTrace();
         }
         // let's assign the elements of the population to a c
-        for (int i = 0; i < data.length; i++) {
+        for (int i = 0; i < pop.size(); i++) {
             // find the closest c
             clusterAssigned = 0;
             for (int j = 1; j < c.length; j++) {
-                if (this.distance(data[i], c[clusterAssigned]) > this.distance(data[i], c[j]))
+                if (this.distance(pop.getEAIndividual(i), c[clusterAssigned]) > this.distance(pop.getEAIndividual(i), c[j]))
                     clusterAssigned = j;
             }
             result[clusterAssigned].add(pop.get(i));
         }
-
         return result;
     }
 
@@ -242,16 +280,13 @@ public class ClusteringKMeans implements InterfaceClustering, java.io.Serializab
      * @param d2
      * @return The scalar distances between d1 and d2
      */
-    private double distance(double[] d1, double[] d2) {
-        double result = 0;
-
-        for (int i = 0; i < d1.length; i++) {
-            result += Math.pow(d1[i] - d2[i], 2);
-        }
-        result = Math.sqrt(result);
-        return result;
+    private double distance(AbstractEAIndividual indy, double[] p) {
+        if (m_UseSearchSpace) ((InterfaceDataTypeDouble)tmpIndy).SetDoubleGenotype(p);
+        else tmpIndy.SetFitness(p);
+        
+        return metric.distance(indy, tmpIndy);
     }
-
+    
     /** This method extracts the double data to cluster from the
      * population
      * @param pop   The population
@@ -281,8 +316,9 @@ public class ClusteringKMeans implements InterfaceClustering, java.io.Serializab
      * @return True if species converge, else False.
      */
     public boolean mergingSpecies(Population species1, Population species2, Population referencePop) {
-        // @todo i could use the BIC metric from X-means to calculate this
-        return false;
+        // TODO i could use the BIC metric from X-means to calculate this
+    	if (metric.distance(species1.getBestEAIndividual(), species2.getBestEAIndividual())<mergeDist) return true;
+    	else return false;
     }
 
 //    /** This method decides if a unclustered individual belongs to an already established species.
@@ -296,6 +332,7 @@ public class ClusteringKMeans implements InterfaceClustering, java.io.Serializab
 //    }
     
 	public int[] associateLoners(Population loners, Population[] species, Population referencePop) {
+//		tmpIndy = (AbstractEAIndividual)loners.getEAIndividual(0).clone();
 		int[] res=new int[loners.size()];
 		System.err.println("Warning, associateLoners not implemented for " + this.getClass());
 		Arrays.fill(res, -1);
@@ -368,7 +405,7 @@ public class ClusteringKMeans implements InterfaceClustering, java.io.Serializab
         this.m_UseSearchSpace = m;
     }
     public String useSearchSpaceTipText() {
-        return "Toggle between search/objective space distance.";
+        return "Toggel between search/objective space distance.";
     }
 
     /** This method allows you to toggle reuse of c.
@@ -381,10 +418,20 @@ public class ClusteringKMeans implements InterfaceClustering, java.io.Serializab
         this.m_ReuseC = m;
     }
     public String reuseCTipText() {
-        return "Toggle reuse of previously found cluster centroids.";
+        return "Toggel reuse of previously found cluster centroids.";
     }
 
 	public String initClustering(Population pop) {
 		return null;
+	}
+
+	public void setMinClustSize(int minClustSize) {
+		this.minClustSize = minClustSize;
+	}
+	public int getMinClustSize() {
+		return minClustSize;
+	}
+	public String minClustSizeTipText() {
+		return "Require a cluster to be at least of this size. Smaller ones are assigned to the unclustered set.";
 	}
 }
