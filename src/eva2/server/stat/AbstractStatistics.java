@@ -94,8 +94,8 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 	protected double[] currentMeanFit;
 	protected double[] currentWorstFit;
 //	protected double[] meanBestOfRunFitness;
-	protected double currentAvgPopDist;
-	protected double currentMaxPopDist;
+	protected double currentAvgEucDistInPop, currentMaxEucDistInPop;
+	protected double currentAvgPopDistMetric, currentMaxPopDistMetric;
 	protected IndividualInterface bestCurrentIndy, bestOfRunIndy, bestOfRunFeasibleIndy, bestFeasibleAllRuns, bestIndyAllRuns;
 
 		// collect feasible results of a run 
@@ -353,10 +353,13 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 //		if (currentBestFit!= null) {
 //			if (printRunStoppedVerbosity()) printToTextListener(" Best Fitness: " + BeanInspector.toString(currentBestFit) + "\n");
 //		}
-
+		if (optRunsPerformed >= m_StatsParams.getMultiRuns()) {
+			if (printFinalVerbosity()) printToTextListener("\n");
+			finalizeOutput();
+		}
 		fireDataListenersStartStop(optRunsPerformed, normal, false);
 	}
-
+	
 	public void postProcessingPerformed(Population resultPop) { // called from processor
 		if (!printRunStoppedVerbosity() && printFinalVerbosity() && optRunsPerformed >= m_StatsParams.getMultiRuns()) printToTextListener("\n");
 		if (printRunStoppedVerbosity()) {
@@ -374,11 +377,11 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 	}
 	
 	private PopulationInterface makeStatsPop() {
-		Population pop = new Population(4);
+		Population pop = new Population(1);
 		
-		if (bestCurrentIndy!=null) pop.add(bestCurrentIndy);
-		if (bestOfRunIndy!=null) pop.add(bestOfRunIndy);
-		if (bestOfRunFeasibleIndy!=null) pop.add(bestOfRunFeasibleIndy);
+//		if (bestCurrentIndy!=null) pop.add(bestCurrentIndy);
+//		if (bestOfRunIndy!=null) pop.add(bestOfRunIndy);
+//		if (bestOfRunFeasibleIndy!=null) pop.add(bestOfRunFeasibleIndy);
 		if (bestIndyAllRuns!=null) pop.add(bestIndyAllRuns);
 		return pop;
 	}
@@ -757,8 +760,10 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 			case runBest: ret[i] = bestOfRunIndy.getFitness()[defaultFitCriterion]; break;
 			case currentBestFeasible: ret[i] = (currentBestFeasibleFit==null) ? Double.NaN : currentBestFeasibleFit[defaultFitCriterion]; break;
 			case runBestFeasible: ret[i] = (bestOfRunFeasibleIndy==null) ? Double.NaN : bestOfRunFeasibleIndy.getFitness()[defaultFitCriterion]; break;
-			case avgPopDistance: ret[i] = currentAvgPopDist; break;
-			case maxPopDistance: ret[i] = currentMaxPopDist; break;
+			case avgEucPopDistance: ret[i] = currentAvgEucDistInPop; break;
+			case maxEucPopDistance: ret[i] = currentMaxEucDistInPop; break;
+			case avgPopMetricDist: ret[i] = currentAvgPopDistMetric; break;
+			case maxPopMetricDist: ret[i] = currentMaxPopDistMetric; break;
 			}
 		}
 		// all standard fields should be filled now
@@ -819,7 +824,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 	 */
 	protected List<String> getAdditionalHeaderMetaInfo(List<InterfaceAdditionalPopulationInformer> informerList, List<String> metaInfo) {
 		LinkedList<String> headers = new LinkedList<String>();
-		if (metaInfo!=null && (metaInfo.size()>0)) System.err.println("Warning, metaInfo list should be empty in AbstractStatistics.getAdditionalInfoInfo"); 
+		if (metaInfo!=null && (metaInfo.size()>0)) System.err.println("Warning, metaInfo list should be empty in AbstractStatistics.getAdditionalHeaderMetaInfo"); 
 		for (InterfaceAdditionalPopulationInformer informer : informerList) {
 			headers.addAll(Arrays.asList(informer.getAdditionalDataHeader()));
 			if (metaInfo!=null) metaInfo.addAll(Arrays.asList(informer.getAdditionalDataInfo()));
@@ -1011,12 +1016,21 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 		
 		functionCalls = pop.getFunctionCalls();
 		
-		if (lastIsShowFull || GraphSelectionEnum.doPlotAvgDist(lastFieldSelection) 
-				|| GraphSelectionEnum.doPlotMaxPopDist(lastFieldSelection))  {
+		if (lastIsShowFull || GraphSelectionEnum.doPlotAvgEucDist(lastFieldSelection) 
+				|| GraphSelectionEnum.doPlotMaxEucDist(lastFieldSelection))  {
 			double[] measures = ((Population)pop).getPopulationMeasures((InterfaceDistanceMetric)null);
 			if (measures != null) {
-				currentAvgPopDist = measures[0];
-				currentMaxPopDist = measures[2];
+				currentAvgEucDistInPop = measures[0];
+				currentMaxEucDistInPop = measures[2];
+			}
+		}
+		
+		if (lastIsShowFull || GraphSelectionEnum.doPlotAvgPopMetricDist(lastFieldSelection) 
+				|| GraphSelectionEnum.doPlotMaxPopMetricDist(lastFieldSelection))  {
+			double[] measures = ((Population)pop).getPopulationMeasures();
+			if (measures != null) {
+				currentAvgPopDistMetric = measures[0];
+				currentMaxPopDistMetric = measures[2];
 			}
 		}
 	}
@@ -1036,32 +1050,23 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 			firstPlot = false;
 			currentBestFeasibleFit=null;
 		}
-		if (TRACE) printToTextListener("A1\n");
+
 		if (pop.getSpecificData() != null) { // this is more or less deprecated. the standard population implementation will always return null. However the ES module wont 
 			plotSpecificData(pop, informerList);
 			return;
 		}
 
-		if (TRACE) printToTextListener("A2\n");
 		collectPopData(pop);
-		if (TRACE) printToTextListener("A3\n");
 
 		if (iterationCounter==0) {
-			if (TRACE) printToTextListener("A3.1 " + currentStatHeader.length + "\n");
-			
 			String headerLine = StringTools.concatFields(currentStatHeader, textFieldDelimiter);
-			if (TRACE) printToTextListener("A3.2\n");
 			if (printHeaderByVerbosity()) printToTextListener(headerLine+'\n');
-			if (TRACE) printToTextListener("A3.3\n");
 		}
-		if (TRACE) printToTextListener("A4\n");
-
+		
 		lastSols  = (opt!=null) ? new Population(opt.getAllSolutions().getSolutions()) : pop;
 //		Pair<String,Double[]> addData = getOutputData(informerList, lastSols);
 //		System.out.println("lastSols size: " + 500*PSymbolicRegression.getAvgIndySize(lastSols));
 //		System.out.println("Mem use:  " + getMemoryUse());
-		if (TRACE) printToTextListener("A5\n");
-
 		Pair<String,Object[]> addData = getOutputData(informerList, lastSols);
 		if (doTextOutput()) { // this is where the text output is actually written
 			if (printLineByVerbosity(iterationCounter)) {
@@ -1069,8 +1074,6 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 				printToTextListener(addData.head()+'\n');
 			}
 		}
-		if (TRACE) printToTextListener("A6\n");
-
 		currentStatObjectData = addData.tail();
 		currentStatDoubleData = ToolBox.parseDoubles(currentStatObjectData);
 		if (currentStatObjectData!=null) {
@@ -1078,7 +1081,6 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 		} else {
 			System.err.println("Warning in AbstractStatistics!");
 		}
-		if (TRACE) printToTextListener("A7\n");
 
 		if (sumDataCollection != null) {
 			// Collect average data
@@ -1099,8 +1101,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 				if (sumDataEntry != null) updateSum(sumDataEntry, currentStatDoubleData); // this adds up data of a single iteration across multiple runs
 			}
 		}
-		if (TRACE) printToTextListener("A8\n");
-
+		
 //		if (doTextOutput()) {
 //			Pair<String,Double[]> addInfo = getOutputLine(informerList, lastSols);
 //

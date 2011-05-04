@@ -12,7 +12,7 @@ import eva2.tools.StringSelection;
 public enum GraphSelectionEnum {
 	// DONT change this order, or the relation to AbstractStatistics will be lost
 	currentBest, meanFit, currentWorst, runBest, currentBestFeasible, runBestFeasible, 
-	avgPopDistance, maxPopDistance;
+	avgEucPopDistance, maxEucPopDistance, avgPopMetricDist, maxPopMetricDist;
 	
 	private static String[] toolTips = { 
 		"The current best fitness within the population",
@@ -21,8 +21,10 @@ public enum GraphSelectionEnum {
 		"The best fitness up to the current generation",
 		"The best feasible fitness within the population",
 		"The best feasible fitness up to the current generation",
-		"The average phenotypic distance of individuals in the population",
-		"The maximum phenotypic distance of individuals in the population"
+		"The average euclidean distance of individuals in the current population",
+		"The maximum euclidean distance of individuals in the current population",
+		"The average distance of individuals in the current population metric",
+		"The maximum distance of individuals in the current population metric",
 	};
 	
 	public static String[] getInfoStrings() {
@@ -55,11 +57,19 @@ public enum GraphSelectionEnum {
 //		return sel.isSelected(GraphSelectionEnum.runBestFeasible.ordinal()); 
 //	}
 //	
-	public static boolean doPlotAvgDist(StringSelection sel) {
-		return sel.isSelected(GraphSelectionEnum.avgPopDistance.ordinal());
+	public static boolean doPlotAvgEucDist(StringSelection sel) {
+		return sel.isSelected(GraphSelectionEnum.avgEucPopDistance.ordinal());
 	}
 	
-	public static boolean doPlotMaxPopDist(StringSelection sel) {
-		return sel.isSelected(GraphSelectionEnum.maxPopDistance.ordinal());
+	public static boolean doPlotMaxEucDist(StringSelection sel) {
+		return sel.isSelected(GraphSelectionEnum.maxEucPopDistance.ordinal());
+	}
+	
+	public static boolean doPlotAvgPopMetricDist(StringSelection sel) {
+		return sel.isSelected(GraphSelectionEnum.avgPopMetricDist.ordinal());
+	}
+	
+	public static boolean doPlotMaxPopMetricDist(StringSelection sel) {
+		return sel.isSelected(GraphSelectionEnum.maxPopMetricDist.ordinal());
 	}
 }
