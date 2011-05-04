@@ -2,10 +2,12 @@ package eva2.server.go.operators.mutation;
 
 import java.util.ArrayList;
 
+import eva2.server.go.PopulationInterface;
 import eva2.server.go.enums.MutateESCrossoverTypeEnum;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceESIndividual;
 import eva2.server.go.populations.Population;
+import eva2.server.go.problems.InterfaceAdditionalPopulationInformer;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.tools.SelectedTag;
 import eva2.tools.math.RNG;
@@ -18,7 +20,7 @@ import eva2.tools.math.RNG;
  * Time: 16:29:47
  * To change this template use Options | File Templates.
  */
-public class MutateESGlobal implements InterfaceMutation, java.io.Serializable {
+public class MutateESGlobal implements InterfaceMutation, java.io.Serializable, InterfaceAdditionalPopulationInformer {
     protected double      m_MutationStepSize    = 0.2;
     protected double      m_Tau1                = 0.15;
     protected double      m_LowerLimitStepSize  = 0.0000005;
@@ -214,4 +216,19 @@ public class MutateESGlobal implements InterfaceMutation, java.io.Serializable {
     public String crossoverTypeTipText() {
         return "Choose the crossover type for the strategy parameters.";
     }
+
+	@Override
+	public String[] getAdditionalDataHeader() {
+		return new String[] {"sigma"};
+	}
+
+	@Override
+	public String[] getAdditionalDataInfo() {
+		return new String[] {"The ES global mutation step size."};
+	}
+
+	@Override
+	public Object[] getAdditionalDataValue(PopulationInterface pop) {
+		return new Object[]{m_MutationStepSize};
+	}
 }
