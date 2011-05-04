@@ -10,6 +10,8 @@ import eva2.gui.GenericObjectEditor;
 import eva2.gui.JParaPanel;
 import eva2.server.go.InterfaceGOParameters;
 import eva2.server.stat.AbstractStatistics;
+import eva2.server.stat.EvAJob;
+import eva2.server.stat.EvAJobList;
 import eva2.server.stat.InterfaceStatisticsParameter;
 import eva2.server.stat.StatisticsStandalone;
 import eva2.server.stat.StatisticsWithGUI;
@@ -19,7 +21,9 @@ import eva2.tools.jproxy.RMIProxyLocal;
 public class GenericModuleAdapter extends AbstractModuleAdapter implements Serializable {
 
     private AbstractStatistics     m_StatisticsModul;
+    private EvAJobList	jobList = null;
     public String 				helperFilename;
+    JParaPanel jobPanel=null, paramPanel=null;
 
     /** 
      * Constructor of the ModuleAdapter
@@ -93,19 +97,41 @@ public class GenericModuleAdapter extends AbstractModuleAdapter implements Seria
         EvAModuleButtonPanelMaker ButtonPanel      = new EvAModuleButtonPanelMaker(m_RemoteThis,((Processor)m_Processor).isOptRunning());
         ButtonPanel.setHelperFilename(helperFilename);
         frmMkr.addPanelMaker(ButtonPanel);
-        InterfaceGOParameters Para = ((Processor)m_Processor).getGOParams();
-        if (TRACE) System.out.println("parameters are of type "+Para.getClass());
+        InterfaceGOParameters goParams = ((Processor)m_Processor).getGOParams();
+        if (TRACE) System.out.println("parameters are of type "+goParams.getClass());
         // TODO do we really need proxies here?
-        if (m_RMI && !Proxy.isProxyClass(Para.getClass())) frmMkr.addPanelMaker(new JParaPanel( RMIProxyLocal.newInstance(Para), Para.getName()));
-        else frmMkr.addPanelMaker(new JParaPanel(Para, Para.getName()));
+        if (m_RMI && !Proxy.isProxyClass(goParams.getClass())) frmMkr.addPanelMaker(paramPanel = new JParaPanel( RMIProxyLocal.newInstance(goParams), goParams.getName()));
+        else frmMkr.addPanelMaker(paramPanel = new JParaPanel(goParams, goParams.getName()));
         if (m_RMI && !Proxy.isProxyClass(Stat.getClass())) frmMkr.addPanelMaker(new JParaPanel( RMIProxyLocal.newInstance(Stat), Stat.getName()));
         else frmMkr.addPanelMaker(new JParaPanel(Stat, Stat.getName()));
 
+        jobList = new EvAJobList(new EvAJob[]{});
+        jobList.setModule(this);
+        jobList.addTextListener((AbstractStatistics) ((Processor)m_Processor).getStatistics());
+//        if (m_RMI && !Proxy.isProxyClass(Stat.getClass())) frmMkr.addPanelMaker(new JParaPanel( RMIProxyLocal.newInstance(jobList), jobList.getName()));
+//        else frmMkr.addPanelMaker(new JParaPanel(jobList, jobList.getName()));
+        if (m_RMI && !Proxy.isProxyClass(Stat.getClass())) jobPanel = new JParaPanel( RMIProxyLocal.newInstance(jobList), jobList.getName());
+        else jobPanel = new JParaPanel(jobList, jobList.getName());
+        
+        frmMkr.addPanelMaker(jobPanel);
+        
         ((Processor)m_Processor).getGOParams().addInformableInstance(frmMkr);
         return frmMkr;
     }
     
-    public static String getName() {
+    @Override
+	public void performedStart(String infoString) {
+		super.performedStart(infoString);
+		EvAJob job = scheduleJob();
+		((AbstractStatistics)(((Processor)m_Processor).getStatistics())).addDataListener(job);
+	}
+    
+    @Override
+	public void performedStop() {
+		super.performedStop();
+	}
+    
+	public static String getName() {
     	return null;
     }
 
@@ -116,4 +142,16 @@ public class GenericModuleAdapter extends AbstractModuleAdapter implements Seria
     public AbstractStatistics getStatistics() {
     	return m_StatisticsModul;
     }
+    
+	public EvAJob scheduleJob() {
+		EvAJob job = jobList.addJob(((Processor)m_Processor).getGOParams(), (AbstractStatistics)(((Processor)m_Processor).getStatistics()));
+		jobPanel.getEditor().setValue(jobList);
+		return job;
+	}
+
+	@Override
+	public void setGOParameters(InterfaceGOParameters goParams) {
+		super.setGOParameters(goParams);
+		paramPanel.getEditor().setValue(goParams);
+	}
 }

@@ -12,9 +12,9 @@ import java.beans.PropertyChangeSupport;
  */
 public class PropertySelectableList<T> implements java.io.Serializable {
 
-    private T[]     m_Objects;
-    private boolean[]    m_Selection;
-	private PropertyChangeSupport m_Support = new PropertyChangeSupport(this);
+    protected T[]     m_Objects;
+    protected boolean[]    m_Selection;
+	private transient PropertyChangeSupport m_Support = new PropertyChangeSupport(this);
 
 //    public PropertySelectableList() {
 //    }
@@ -44,10 +44,42 @@ public class PropertySelectableList<T> implements java.io.Serializable {
         m_Support.firePropertyChange("PropertySelectableList", null, this);
     }
     
+    public void setObjects(T[] o, boolean[] selection) {
+        this.m_Objects = o;
+        this.m_Selection = selection;
+        if (o.length != selection.length) throw new RuntimeException("Error, mismatching length of arrays in " + this.getClass());
+        m_Support.firePropertyChange("PropertySelectableList", null, this);
+    }
+    
     public T[] getObjects() {
         return this.m_Objects;
     }
-
+    
+    /**
+     * Returns the elements represented by this list where only the selected elements are non-null.
+     * @return
+     */
+    public T[] getSelectedObjects() {
+    	T[] selObjects = getObjects().clone();
+    	for (int i=0; i<selObjects.length; i++) {
+			if (!m_Selection[i]) selObjects[i]=null;
+		}
+    	return selObjects;
+    }
+    
+    /**
+     * Set the selection by giving a list of selected indices.
+     * 
+     * @param selection
+     */
+    public void setSelectionByIndices(int[] selection) {
+    	m_Selection = new boolean[getObjects().length];
+        for (int i=0; i<selection.length; i++) {
+        	m_Selection[selection[i]]=true;
+        }
+		m_Support.firePropertyChange("PropertySelectableList", null, this);
+    }
+    
     public void setSelection(boolean[] selection) {
         this.m_Selection = selection;
 		m_Support.firePropertyChange("PropertySelectableList", null, this);
