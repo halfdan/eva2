@@ -1,9 +1,6 @@
 package eva2.server.go.operators.crossover;
 
 
-import javax.swing.*;
-
-import eva2.gui.Plot;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceESIndividual;
 import eva2.server.go.populations.Population;
@@ -11,6 +8,13 @@ import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
 
 /**
+ * The flat crossover inits values randomly within the extreme values of
+ * all parents, namely
+ * c[i]=rand(min_j(p_ij), max_j(p_ij)).
+ * 
+ * where c[i] is the i-th child component and p_ij is the i-th component
+ * of parent j.
+ * 
  * Created by IntelliJ IDEA.
  * User: streiche
  * Date: 02.12.2003
