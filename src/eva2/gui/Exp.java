@@ -1,22 +1,12 @@
 package eva2.gui;
 
-/*
- * Title:        EvA2
- * Description:
- * Copyright:    Copyright (c) 2003
- * Company:      University of Tuebingen, Computer Architecture
- * @author Holger Ulmer, Felix Streichert, Hannes Planatscher
- * @version:  $Revision: 10 $
- *            $Date: 2006-01-18 11:02:22 +0100 (Wed, 18 Jan 2006) $
- *            $Author: streiche $
- */
-/*==========================================================================*
- * IMPORTS
- *==========================================================================*/
 import eva2.tools.chart2d.DFunction;
 
 /**
- *
+ * Represents an exponential scaling function. 
+ * MK: added a guard against undefined values: the smallest positive position can
+ * be stored and used instead of invalid points.
+ *  
  */
 public class Exp extends DFunction {
 	private double minValue = 1e-10; // think of a minimal value we want to show in case invalid (<=0) values are requested
