@@ -48,21 +48,21 @@ public class MutateOBGAFlip implements InterfaceMutation, java.io.Serializable {
         //nothing to init
     }
 
-  public void mutate(AbstractEAIndividual individual) {
+    public void mutate(AbstractEAIndividual individual) {
 
-      int[][] perm = ( (InterfaceOBGAIndividual) individual).
-          getOBGenotype();
-      for (int p = 0; p < perm.length; p++) {
-        for (int i = 0; i < times; i++) {
-        int p1 = RNG.randomInt(0, perm[p].length - 1);
-        int p2 = RNG.randomInt(0, perm[p].length - 1);
-        int temp = perm[p][p1];
-        perm[p][p1] = perm[p][p2];
-        perm[p][p2] = temp;
-      }
-      }
-      ( (InterfaceOBGAIndividual) individual).SetOBGenotype(perm);
-  }
+    	int[][] perm = ( (InterfaceOBGAIndividual) individual).
+    	getOBGenotype();
+    	for (int p = 0; p < perm.length; p++) {
+    		for (int i = 0; i < times; i++) {
+    			int p1 = RNG.randomInt(0, perm[p].length - 1);
+    			int p2 = RNG.randomInt(0, perm[p].length - 1);
+    			int temp = perm[p][p1];
+    			perm[p][p1] = perm[p][p2];
+    			perm[p][p2] = temp;
+    		}
+    	}
+    	( (InterfaceOBGAIndividual) individual).SetOBGenotype(perm);
+    }
 
     /** This method allows you to perform either crossover on the strategy parameters
      * or to deal in some other way with the crossover event.
