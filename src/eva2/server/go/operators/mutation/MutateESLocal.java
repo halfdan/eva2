@@ -3,10 +3,11 @@ package eva2.server.go.operators.mutation;
 
 import java.util.ArrayList;
 
+import eva2.server.go.PopulationInterface;
 import eva2.server.go.individuals.AbstractEAIndividual;
-import eva2.server.go.individuals.InterfaceDataTypeDouble;
 import eva2.server.go.individuals.InterfaceESIndividual;
 import eva2.server.go.populations.Population;
+import eva2.server.go.problems.InterfaceAdditionalPopulationInformer;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.tools.SelectedTag;
 import eva2.tools.Tag;
@@ -19,7 +20,7 @@ import eva2.tools.math.RNG;
  * Time: 17:58:30
  * To change this template use Options | File Templates.
  */
-public class MutateESLocal implements InterfaceMutation, java.io.Serializable {
+public class MutateESLocal implements InterfaceMutation, InterfaceAdditionalPopulationInformer, java.io.Serializable {
 
     protected double        m_MutationStepSize    = 0.2;
     protected double        m_Tau1                = 0.15;
@@ -114,7 +115,7 @@ public class MutateESLocal implements InterfaceMutation, java.io.Serializable {
         //System.out.println("After Mutate:  " +((GAIndividual)individual).getSolutionRepresentationFor());
     }
 
-    /** This method allows you to perform either crossover on the strategy parameters
+	/** This method allows you to perform either crossover on the strategy parameters
      * or to deal in some other way with the crossover event.
      * @param indy1     The original mother
      * @param partners  The original partners
@@ -259,4 +260,19 @@ public class MutateESLocal implements InterfaceMutation, java.io.Serializable {
     public String crossoverTypeTipText() {
         return "Choose the crossover type for the strategy parameters.";
     }
+
+	@Override
+	public String[] getAdditionalDataHeader() {
+		return new String[] {"sigma"};
+	}
+
+	@Override
+	public String[] getAdditionalDataInfo() {
+		return new String[] {"The ES local mutation step sizes."};
+	}
+
+	@Override
+	public Object[] getAdditionalDataValue(PopulationInterface pop) {
+		return new Object[]{m_Sigmas};
+	}
 }

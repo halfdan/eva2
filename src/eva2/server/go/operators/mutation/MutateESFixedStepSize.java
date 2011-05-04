@@ -88,7 +88,7 @@ public class MutateESFixedStepSize implements InterfaceMutation, java.io.Seriali
      * @return A descriptive string.
      */
     public String getStringRepresentation() {
-        return "ES fixed step size mutation";
+        return "ES fixed step size mutation "+getSigma();
     }
 
 /**********************************************************************************************************************
