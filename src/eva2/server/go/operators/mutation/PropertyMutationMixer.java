@@ -16,12 +16,11 @@ public class PropertyMutationMixer implements java.io.Serializable {
     public String                           m_WeightsLabel          = "-";
     public boolean                          m_NormalizationEnabled  = true;
 
-    public PropertyMutationMixer(InterfaceMutation[] d, boolean selectAllOrNone) {
+    public PropertyMutationMixer(InterfaceMutation[] d) {
         this.m_Weights = new double[d.length];
         for (int i = 0; i < d.length; i++) this.m_Weights[i] = 1/((double)d.length);
         this.m_AvailableTargets = d;
-        if (selectAllOrNone) this.m_SelectedTargets  = d.clone();
-        else this.m_SelectedTargets = null;
+        this.m_SelectedTargets  = null;
     }
     public PropertyMutationMixer(PropertyMutationMixer d) {
         this.m_DescriptiveString        = d.m_DescriptiveString;

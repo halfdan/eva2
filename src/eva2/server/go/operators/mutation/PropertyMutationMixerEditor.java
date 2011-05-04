@@ -401,13 +401,11 @@ public class PropertyMutationMixerEditor extends JPanel implements PropertyEdito
     /********************************* java.beans.PropertyChangeListener *************************/
 
     public void addPropertyChangeListener(PropertyChangeListener l) {
-  	  if (m_Support == null) m_Support = new PropertyChangeSupport(this);
-  	  m_Support.addPropertyChangeListener(l);
+        m_Support.addPropertyChangeListener(l);
     }
 
     public void removePropertyChangeListener(PropertyChangeListener l) {
-  	  if (m_Support == null) m_Support = new PropertyChangeSupport(this);
-  	  m_Support.removePropertyChangeListener(l);
+        m_Support.removePropertyChangeListener(l);
     }
     /** This will wait for the GenericObjectEditor to finish
      * editing an object.
