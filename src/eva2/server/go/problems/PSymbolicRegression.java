@@ -603,4 +603,26 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
 			} else return 0;
 		} else return 0;
 	}
+	
+	/**
+	 * Test method for an arbitrary string coded program.
+	 * 
+	 * @param nodeStr
+	 * @return
+	 */
+	public static double[] evalNodeString(String nodeStr) {
+    	AbstractGPNode node = AbstractGPNode.parseFromString(nodeStr);
+    	PSymbolicRegression regrProb = new PSymbolicRegression();
+    	GPIndividualProgramData indy = new GPIndividualProgramData();
+    	indy.SetPGenotype(node, 0);
+    	regrProb.evaluate(indy);
+    	System.out.println("Evaluated individual: " + indy);
+    	return indy.getFitness();
+	}
+	
+//	public static void main(String[] args) {
+//		String bestStudentSol = "-(abs(abs(-(-(X0, -(-(X0, X0), X0)), sin(abs(-(-(X0, X0), X0)))))), -(-(sin(-(abs(X0), -(-(-(X0, X0), X0), abs(abs(X0))))), -(-(abs(abs(abs(X0))), -(-(-(X0, X0), X0), abs(-(X0,X0)))), sin(-(abs(X0), sin(sin(X0)))))), X0))";
+////    	String bestStudentSol = "-(abs(-(sqrt(-(-(abs(1.0), X0), X0)), -(sqrt(-(sqrt(1.0), sqrt(pi))), X0))),-(-(sin(sqrt(-(-(sqrt(1.0), X0), pi))), abs(X0)), -(sqrt(pi), -(sqrt(sqrt(-(abs(1.0), X0))),X0))))";
+//		evalNodeString(bestStudentSol);
+//	}
 }
