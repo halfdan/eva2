@@ -117,6 +117,7 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
         }
         this.m_Genotype   = newDesPa;
         this.m_Range      = newRange;
+        this.m_Phenotype = null; // mark as invalid
 
 //        changed 28.08.03 by request of Spieth
 //        this.m_DecisionParameters   = new double[length];
@@ -162,9 +163,14 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
      * @return BitSet representing the double data.
      */
     public double[] getDoubleData() {
-        this.m_Phenotype = new double[this.m_Genotype.length];
-        System.arraycopy(this.m_Genotype, 0, this.m_Phenotype, 0, this.m_Genotype.length);
-        return this.m_Phenotype;
+    	// since the phenotype is set to null if the genotype is changed, 
+    	// it should now be save to only perform the copy if the phenotype is null 
+        if (this.m_Phenotype!=null) return m_Phenotype;
+        else {
+        	this.m_Phenotype = new double[this.m_Genotype.length];
+            System.arraycopy(this.m_Genotype, 0, this.m_Phenotype, 0, this.m_Genotype.length);
+            return this.m_Phenotype;
+        }
     }
     
     /** 
@@ -190,7 +196,8 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
      * @param doubleData    The new double data.
      */
     public void SetDoubleGenotype(double[] doubleData) {
-        this.SetDoublePhenotype(doubleData);
+//        this.SetDoublePhenotype(doubleData);
+    	this.SetDoublePhenotype(null); // tag it as invalid
         this.m_Genotype = new double[doubleData.length];
         System.arraycopy(doubleData, 0, this.m_Genotype, 0, doubleData.length);
     }
@@ -204,11 +211,7 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
     public void init(InterfaceOptimizationProblem opt) {
         super.init(opt);
         // evil operators may not respect the range, so at least give some hint
-        if (!Mathematics.isInRange(m_Genotype, m_Range)) {
-        	EVAERROR.errorMsgOnce("Warning: Individual out of range after initialization (and potential initial crossover/mutation)!");
-//        	System.err.println("Indy was: " + BeanInspector.toString(m_Genotype));
-//        	System.err.println("Range was " + BeanInspector.toString(m_Range));
-        }
+        if (!Mathematics.isInRange(m_Genotype, m_Range)) EVAERROR.errorMsgOnce("Warning: Individual out of range after initialization (and potential initial crossover/mutation)!");
     }
 
     /** This method will init the individual with a given value for the
@@ -270,6 +273,7 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
      */
     public void SetDGenotype(double[] b) {
         this.m_Genotype = b;
+        this.m_Phenotype=null; // mark it as invalid
         for (int i = 0; i < this.m_Genotype.length; i++) {
             if (this.m_Genotype[i] < this.m_Range[i][0]) this.m_Genotype[i] = this.m_Range[i][0];
             if (this.m_Genotype[i] > this.m_Range[i][1]) this.m_Genotype[i] = this.m_Range[i][1];
@@ -280,6 +284,7 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
      * @param b    The new genotype of the Individual
      */
     public void SetDGenotypeNocheck(double[] b) {
+    	this.m_Phenotype = null; // mark it as invalid
         this.m_Genotype = b;
     }
     
@@ -287,6 +292,7 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
      */
     public void defaultMutate() {
     	ESIndividualDoubleData.defaultMutate(this.m_Genotype, this.m_Range);
+    	m_Phenotype=null; // mark it as invalid
     }
 
     /**
@@ -307,6 +313,7 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
     public void defaultInit(InterfaceOptimizationProblem prob) {
     	if ((prob != null) && (prob instanceof InterfaceHasInitRange) && (((InterfaceHasInitRange)prob).getInitRange()!=null)) ESIndividualDoubleData.defaultInit(m_Genotype, (double[][])((InterfaceHasInitRange)prob).getInitRange());
     	else ESIndividualDoubleData.defaultInit(m_Genotype, m_Range);
+    	m_Phenotype = null; // mark as invalid
     }
     
     /**
