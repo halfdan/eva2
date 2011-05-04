@@ -31,12 +31,12 @@ public class F13Problem extends AbstractProblemDoubleOffset implements Interface
     
     @Override
     public double getRangeLowerBound(int dim) {
-    	return -512.03;
+    	return -500; //-512.03;
 	}
     
 	@Override
 	public double getRangeUpperBound(int dim) {
-		return 511.97;
+		return 500;// 511.97;
 	}
 	
 	@Override
@@ -79,8 +79,10 @@ public class F13Problem extends AbstractProblemDoubleOffset implements Interface
     }
 
 	public SolutionHistogram getHistogram() {
+//		EVAERROR.errorMsgOnce("Warning: Restore line in getHistogram for evaluation on F13Problem ???");
 		if (getProblemDimension() < 15) return new SolutionHistogram(0, 800, 16);
 		else if (getProblemDimension() < 25) return new SolutionHistogram(0, 1600, 16);
+//		else if (getProblemDimension() < 35) return new SolutionHistogram(0, 1600, 16);
 		else return new SolutionHistogram(0, 3200, 12);
 	}
 /**********************************************************************************************************************
@@ -98,7 +100,7 @@ public class F13Problem extends AbstractProblemDoubleOffset implements Interface
      * @return description
      */
     public static String globalInfo() {
-        return "Schwefels sine-root Function (multimodal, 1981). Remember to use range check!";
+        return "Schwefels sine-root Function (multimodal, 1981). Remember to use range check! Note that rotating the function may make it easier because new, and better, minima may enter the search space.";
     }
 
     public void setDefaultAccuracy(double v) {
