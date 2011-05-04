@@ -1723,7 +1723,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 	protected void setConstriction(double tau1, double tau2) {
 		double pSum = tau1+tau2;
 		if (pSum <= 4) {
-			System.err.println("error, invalid tauSum value in PSO::setWithConstriction");
+			System.err.println("error, invalid tauSum value in PSO::setConstriction");
 		} else {
 			if (!getAlgoType().isSelectedString("Constriction")) System.err.println("Warning, PSO algorithm variant constriction expected!");
 			m_Phi1=tau1;
@@ -1831,7 +1831,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 		return topology;
 	}
 	public String topologyTipText() {
-		return "Choose the topology type (preliminary).";
+		return "Choose the topology type";
 	}
 
 	/** This method allows you to choose the algorithm type.
@@ -1927,7 +1927,6 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 	public int getSleepTime() {
 		return sleepTime;
 	}
-
 	/**
 	 * @param sleepTime the sleepTime to set
 	 **/
@@ -1937,6 +1936,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 	public String sleepTimeTipText() {
 		return "Sleep for a time between iterations - to be used with debugging and the show option.";
 	}
+	
 	
 	public double getSubSwarmRadius() {
 		return m_swarmRadius;
@@ -2068,6 +2068,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 //	public void setDoLocalSearch(boolean doLocalSearch) {
 //		this.doLocalSearch = doLocalSearch;
 //	}
+
 	public String[] getAdditionalDataHeader() {
 		if (emaPeriods > 0) return new String[]{"meanEMASpeed", "meanCurSpeed"};
 		else return new String[]{"meanCurSpeed"};

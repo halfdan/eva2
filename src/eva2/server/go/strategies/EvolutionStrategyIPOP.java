@@ -5,6 +5,8 @@ import java.util.LinkedList;
 
 import eva2.gui.GenericObjectEditor;
 import eva2.server.go.InterfacePopulationChangedEventListener;
+import eva2.server.go.InterfaceTerminator;
+import eva2.server.go.PopulationInterface;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.operators.mutation.MutateESRankMuCMA;
 import eva2.server.go.operators.terminators.FitnessConvergenceTerminator;
@@ -13,6 +15,7 @@ import eva2.server.go.operators.terminators.PopulationMeasureTerminator.Directio
 import eva2.server.go.operators.terminators.PopulationMeasureTerminator.StagnationTypeEnum;
 import eva2.server.go.populations.Population;
 import eva2.server.go.populations.SolutionSet;
+import eva2.server.go.problems.InterfaceAdditionalPopulationInformer;
 
 /**
  * This implements the IPOP (increased population size restart) strategy ES, which increases
@@ -33,7 +36,7 @@ import eva2.server.go.populations.SolutionSet;
  * @author mkron
  *
  */
-public class EvolutionStrategyIPOP extends EvolutionStrategies implements InterfacePopulationChangedEventListener {
+public class EvolutionStrategyIPOP extends EvolutionStrategies implements InterfacePopulationChangedEventListener, InterfaceAdditionalPopulationInformer {
 	private static final long serialVersionUID = 4102736881931867818L;
 	int dim = -1;
 	int initialLambda = 10;
@@ -102,7 +105,7 @@ public class EvolutionStrategyIPOP extends EvolutionStrategies implements Interf
 		if ((best == null) || !best.isDominating(getPopulation().getBestEAIndividual())) {
 			best = getPopulation().getBestEAIndividual();
 		}
-    	if (testIPOPStopCrit(getPopulation())) {
+    	if (EvolutionStrategyIPOP.testIPOPStopCrit(fitConvTerm, getPopulation())) {
     		// reinitialize population with increased mu,lambda
     		boostPopSize();
     	}
@@ -178,7 +181,9 @@ public class EvolutionStrategyIPOP extends EvolutionStrategies implements Interf
      * @param population
      * @return
      */
-	private boolean testIPOPStopCrit(Population pop) {
+	public static boolean testIPOPStopCrit(InterfaceTerminator term, Population pop) {
+		boolean ret=false;
+		
 		int curGen = pop.getGeneration();
 		MutateESRankMuCMA rcmaMute = null;
 		if (pop.getEAIndividual(0).getMutationOperator() instanceof MutateESRankMuCMA) {
@@ -188,28 +193,28 @@ public class EvolutionStrategyIPOP extends EvolutionStrategies implements Interf
 		// stop if the range of the best fitness of the last 10 + flor(30 n /lambda) generations is zero 
 		// or if the range of these values and all fit values of the recent generation is below Tolfun = 10^-12
 		//// interpret it a bit differently using FitnessConvergenceTerminator
-		if (fitConvTerm.isTerminated(new SolutionSet(pop))) {
+		if (term.isTerminated(new SolutionSet(pop))) {
 //			System.out.println(fitConvTerm.lastTerminationMessage());
-			return true;
-		}
+			ret = true;
+		} else {
+			if (rcmaMute != null) {
+				// stop if the std dev of the normal distribution is smaller than TolX in all coords 
+				// and sigma p_c is smaller than TolX in all components; TolX = 10^-12 sigma_0
 
-		if (rcmaMute != null) {
-			// stop if the std dev of the normal distribution is smaller than TolX in all coords 
-			// and sigma p_c is smaller than TolX in all components; TolX = 10^-12 sigma_0
-	
-			if (rcmaMute.testAllDistBelow(pop, 10e-12*rcmaMute.getFirstSigma(pop))) return true;
-			
-			// stop if adding a 0.1 std dev vector in a principal axis dir. of C does not change <x>_w^g
-			if (rcmaMute.testNoChangeAddingDevAxis(pop, 0.1, curGen)) return true;
-			
-			// stop if adding a 0.2 std dev in each coordinate does (not???) change <x>_w^g
-			if (rcmaMute.testNoEffectCoord(pop, 0.2)) return true;
-	
-			// stop if the condition number of C exceeds 10^14
-			if (rcmaMute.testCCondition(pop, 10e14)) return true;		
-		}
-		
-		return false;
+				if (rcmaMute.testAllDistBelow(pop, 10e-12*rcmaMute.getFirstSigma(pop))) ret = true;
+
+				// stop if adding a 0.1 std dev vector in a principal axis dir. of C does not change <x>_w^g
+				if (!ret && (rcmaMute.testNoChangeAddingDevAxis(pop, 0.1, curGen))) ret = true;
+
+				// stop if adding a 0.2 std dev in each coordinate does (not???) change <x>_w^g
+				if (!ret && (rcmaMute.testNoEffectCoord(pop, 0.2))) ret =  true;
+
+				// stop if the condition number of C exceeds 10^14
+				if (!ret && (rcmaMute.testCCondition(pop, 10e14))) ret =  true;
+//				System.out.println("ret is " + ret);
+			}
+		} 
+		return ret;
 	}
 
 	/**
@@ -239,7 +244,7 @@ public class EvolutionStrategyIPOP extends EvolutionStrategies implements Interf
 	}
 	
 	public String getName() {
-		return "ES-IPOP";
+		return getIncPopSizeFact()+"-IPOP-ES";
 	}
 	
 	public static String globalInfo() {
@@ -341,5 +346,30 @@ public class EvolutionStrategyIPOP extends EvolutionStrategies implements Interf
 	}
 	public String stagnationTimeUserDefTipText() {
 		return "Set or unset the user defined stagnation time.";
+	}
+
+	private double getMeanArchivedDist() {
+		if (bestList==null) return 0.;
+		else {
+			Population tmpPop=new Population(bestList.size());
+			tmpPop.addAll(bestList);
+			tmpPop.synchSize();
+			return tmpPop.getPopulationMeasures()[0];
+		}
+	}
+	
+	@Override
+	public String[] getAdditionalDataHeader() {
+		return new String[] {"numArchived", "archivedMeanDist", "lambda"};
+	}
+
+	@Override
+	public String[] getAdditionalDataInfo() {
+		return new String[] {"Number of archived solutions", "Mean distance of archived solutions", "Current population size parameter lambda"};
+	}
+
+	@Override
+	public Object[] getAdditionalDataValue(PopulationInterface pop) {
+		return new Object[]{(bestList==null) ? ((int)0) : bestList.size(), (getMeanArchivedDist()), getLambda()};
 	}
 }
