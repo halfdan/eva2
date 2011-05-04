@@ -298,5 +298,60 @@ public class StringTools {
 		}
 		return sb.toString();
 	}
+
+	/**
+	 * Remove or replace blanks, braces, etc. from a string for use as a file name.
+	 * 
+	 * @param predefName
+	 * @return
+	 */
+	public static String simplifySymbols(String str) {
+		char[] toUnderscore = new char[] {' ', '\t', '\n'};
+		for (char c : toUnderscore) {
+			str = str.replace(c, '_');
+		}
+		char[] toDash = new char[] {',', ';', '/', '\\'};
+		for (char c : toDash) {
+			str = str.replace(c, '-');
+		}
+		char[] toRemove = new char[] {')', '(', '[', ']', '{', '}', '*'};
+		for (char c : toRemove)	{
+			str = deleteChar(c, str);
+		}
+		str = str.replaceAll("--", "-");
+		str = str.replaceAll("__", "_");
+		str = str.replaceAll("-_", "_");
+		str = str.replaceAll("_-", "_");
+
+		return str;
+	}
+
+	/**
+	 * Delete a certain character from a string.
+	 * 
+	 * @param c
+	 * @param str
+	 * @return
+	 */
+	public static String deleteChar(char c, String str) {
+		StringBuffer sb = new StringBuffer();
+		for (int i=0; i<str.length(); i++) {
+			if (c!=str.charAt(i)) sb.append(str.charAt(i));
+		}
+		return sb.toString();
+	}
+
+	/**
+	 * Return the substring after the last occurrence of a character. If the
+	 * character does not occur, the full string is returned.
+	 * 
+	 * @param str
+	 * @param c
+	 * @return
+	 */
+	public static String getSubstringAfterLast(String str, char c) {
+		int p = str.lastIndexOf(c);
+		return str.substring(p+1); // for -1 this just works as well
+	}
 }
 

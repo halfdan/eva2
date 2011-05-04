@@ -322,4 +322,15 @@ public class StringSelection implements Serializable {
 		}
 		return ret;
 	}
+
+	/**
+	 * Select all or deselect all items.
+	 * 
+	 * @param selState
+	 */
+	public void setAllSelectionStates(boolean selState) {
+		for (int i=0; i<selStates.length; i++) {
+			selStates[i]=selState;
+		}
+	}
 }
