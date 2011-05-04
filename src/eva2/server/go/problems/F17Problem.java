@@ -5,7 +5,7 @@ import eva2.server.go.operators.postprocess.SolutionHistogram;
  * Bohachevsky function, numerous optima on an oval hyperparabola with similar attractor sizes 
  * but decreasing fitness towards the bounds. Described e.g. in Shir&Bäck, PPSN 2006, 
  * "Niche radius adaption in the CMA-ES Niching Algorithm".
- * 
+ * f_B(\vec{x})=\sum_{i=1}^{n-1} x_i^2+2(x_{i+1}^2)+0.7-0.3 cos (3 \pi x_i)-0.4 cos (4 \pi x_{i+1})
  */
 public class F17Problem extends AbstractProblemDouble implements
 		InterfaceMultimodalProblem, InterfaceInterestingHistogram{

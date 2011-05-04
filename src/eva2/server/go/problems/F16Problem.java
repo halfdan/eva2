@@ -1,6 +1,15 @@
 package eva2.server.go.problems;
 
-public class F16Problem extends AbstractProblemDouble implements InterfaceMultimodalProblem, Interface2DBorderProblem {
+import eva2.server.go.operators.postprocess.SolutionHistogram;
+
+/**
+ * The Vincent function: Multiple optima with increasing density near the lower bounds, 
+ * therefore decreasing attractor size. All have an equal best fitness of zero.
+ * 
+ * @author mkron
+ *
+ */
+public class F16Problem extends AbstractProblemDouble implements InterfaceMultimodalProblem, Interface2DBorderProblem, InterfaceInterestingHistogram {
 	int dim = 10;
 	
 	public F16Problem() {
@@ -11,6 +20,10 @@ public class F16Problem extends AbstractProblemDouble implements InterfaceMultim
 		dim = other.dim;
 	}
 	
+	public F16Problem(int theDim) {
+		this.dim=theDim;
+	}
+
 	@Override
 	public double[] eval(double[] x) {
 		x = rotateMaybe(x);
@@ -47,10 +60,15 @@ public class F16Problem extends AbstractProblemDouble implements InterfaceMultim
 	}
 
 	public String getName() {
-		return "Vincent function";
+		return "Vincent";
 	}
 	
 	public static String globalInfo() {
-		return "Multiple optima with increasing densitiy near the lower bounds, therefore decreasing attractor size.";
+		return "The Vincent function: Multiple optima with increasing densitiy near the lower bounds, therefore decreasing attractor size. All have an equal best fitness of zero.";
+	}
+
+	public SolutionHistogram getHistogram() {
+		return new SolutionHistogram(-0.001, 0.599, 15);
+//		return new SolutionHistogram(-0.001, 0.099, 5);
 	}
 }
