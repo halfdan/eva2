@@ -353,10 +353,6 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 //		if (currentBestFit!= null) {
 //			if (printRunStoppedVerbosity()) printToTextListener(" Best Fitness: " + BeanInspector.toString(currentBestFit) + "\n");
 //		}
-		if (optRunsPerformed >= m_StatsParams.getMultiRuns()) {
-			if (printFinalVerbosity()) printToTextListener("\n");
-			finalizeOutput();
-		}
 		fireDataListenersStartStop(optRunsPerformed, normal, false);
 	}
 	
