@@ -86,10 +86,11 @@ public class HillClimbing implements InterfaceOptimizer, java.io.Serializable {
         this.m_Problem.evaluate(this.m_Population);
         for (int i = 0; i < this.m_Population.size(); i++) {
             if (((AbstractEAIndividual)original.get(i)).isDominatingDebConstraints(((AbstractEAIndividual)this.m_Population.get(i)))) {
-                this.m_Population.remove(i);
-                this.m_Population.add(i, original.get(i));
+//                this.m_Population.remove(i); 
+                // throw away mutated one and replace by old one 
+                this.m_Population.set(i, original.get(i));
             } else {
-            	// else: mutation improved the individual
+            	// else: mutation improved the individual, so leave the new one
             }
         }
         this.m_Population.incrGeneration();
@@ -233,7 +234,7 @@ public class HillClimbing implements InterfaceOptimizer, java.io.Serializable {
      * @return The name of the algorithm
      */
     public String getName() {
-        return "MS-HC";
+        return "MS-HC"+getIdentifier();
     }
     public Population getPopulation() {
         return this.m_Population;

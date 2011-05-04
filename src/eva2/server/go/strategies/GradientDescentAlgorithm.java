@@ -38,10 +38,10 @@ public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Ser
 	boolean               globalStepSizeAdaption = false;
 	private double        globalinitstepsize = 1;
 	double                globalmaxstepsize = 3.0;
-	double                globalminstepsize = 0.0001;
+	double                globalminstepsize = 1e-10;
 	boolean               manhattan = false;
 	double                localmaxstepsize = 10;
-	double                localminstepsize = 0.0001;
+	double                localminstepsize = 1e-10;
 	private boolean       momentumterm = false;
 	transient private InterfacePopulationChangedEventListener m_Listener;
 	public double         maximumabsolutechange = 0.2;
