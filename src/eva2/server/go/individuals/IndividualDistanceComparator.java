@@ -1,5 +1,6 @@
 package eva2.server.go.individuals;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 import eva2.server.go.operators.distancemetric.InterfaceDistanceMetric;
@@ -8,7 +9,7 @@ import eva2.server.go.operators.distancemetric.InterfaceDistanceMetric;
  * Compare two AbstractEAIndividuals by their distance to a reference individual.
  * Usable to sort by a distance.
  **/
-public class IndividualDistanceComparator implements Comparator<Object> {
+public class IndividualDistanceComparator implements Comparator<Object>, Serializable {
 
 	private AbstractEAIndividual refIndy=null;
 	private InterfaceDistanceMetric distMetric = null;
