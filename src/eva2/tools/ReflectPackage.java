@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.management.ManagementFactory;
+import java.lang.reflect.Constructor;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -17,6 +18,8 @@ import java.util.jar.JarInputStream;
 
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
+
+import eva2.gui.BeanInspector;
 
 
 /**
@@ -474,4 +477,80 @@ public class ReflectPackage {
 		}
 		return ret;
     }
+    
+	/**
+	 * Instantiate a class given by full name (with package) and try to set the member values given
+	 * in the pair-value list. Returns null if the instance could not be created or any name-value 
+	 * pair could not be set. Otherwise the created object is returned.
+	 * 
+	 * @param clsName
+	 * @param paramValuePairs
+	 * @return
+	 */
+	public static Object instantiateWithParams(String clsName, List<Pair<String,Object>> paramValuePairs) {
+		return instantiateWithParams(clsName, new Object[]{}, paramValuePairs);
+	}
+
+	/**
+	 * Instantiate a class given by full name (with package) and try to set the member values given
+	 * in the pair-value list. Returns null if the instance could not be created or any name-value 
+	 * pair could not be set. Otherwise the created object is returned.
+	 * 
+	 * @param clsName	name of the target class with full package path
+	 * @param args	constructor arguments
+	 * @param paramValuePairs	pairs of values to set using generic setter methods
+	 * @see BeanInspector.setMem(Object,String,Object)
+	 * @return
+	 */
+	public static Object instantiateWithParams(String clsName, Object[] args, List<Pair<String,Object>> paramValuePairs) {
+		Object o = getInstance(clsName, args);
+		if (o!=null) {
+			if (paramValuePairs!=null) for (Pair<String, Object> nameVal : paramValuePairs) {
+				boolean succ = BeanInspector.setMem(o, nameVal.head, nameVal.tail);
+				if (!succ) {
+					System.err.println("Error, unable to set " + nameVal.head + " to " + nameVal.tail + " in object " + o);
+					return null;
+				}
+				else if (TRACE) System.out.println("Successfully set " + nameVal.head + " to " + nameVal.tail + " in object " + o);
+			}
+			return o;		
+		} else {
+			System.err.println("Error in instantiateWithParams!");
+			return null;
+		}
+	}
+
+	/**
+	 * Retrieve an instance of a generic object with arbitrary arguments. Note that the
+	 * full package path must be given and the argument array must match a signature of
+	 * an existing constructor.
+	 * Returns null on a failure and the constructed object otherwise.
+	 *  
+	 * @param clsName
+	 * @param args
+	 * @return
+	 */
+	public static Object getInstance(String clsName, Object[] args)  {
+		Object o;
+		try {
+			Class<?> clz = Class.forName(clsName);
+			Class<?>[] argClz=new Class[args.length]; 
+			for (int i=0; i<args.length; i++) argClz[i]=args[i].getClass();
+			Constructor<?> ct;
+			try {
+				ct = clz.getConstructor(argClz);
+				o=ct.newInstance(args);
+			} catch (Exception e) {
+				System.err.println("Unable to retrieve constructor of " + clsName + ", arguments " + BeanInspector.toString(args)+"\n"+e.getClass());
+				System.err.println(e.getMessage());
+				e.printStackTrace();
+				o=null;
+			}
+		} catch (Exception e) {
+			System.err.println("Unable to create instance of " + clsName + ", arguments " + BeanInspector.toString(args) + "\n"+e.getMessage());
+			e.printStackTrace(System.err);
+			o=null;
+		}
+		return o;
+	}
 }

@@ -609,6 +609,71 @@ public class Mathematics {
 		}
 	}
 
+	
+	public static double median2(double[] vector, boolean clone){
+		double[] in;
+		if (clone){
+			in = (double[]) vector.clone();
+		}else{
+			in = vector;
+		}
+		if(in.length == 0){
+			return 0;
+		}
+		Arrays.sort(in);
+		return in[(int) Math.floor(((double) in.length) / 2.0)];
+	}
+	
+	public static double variance(double[] vector){
+		double mean = Mathematics.mean(vector);
+		double result = 0.0;
+		for(int i=0; i<vector.length; i++){
+			result += Math.pow(vector[i] - mean, 2);
+		}
+		return result;
+	}
+	
+	public static double stdDev(double[] vector){
+		double result = variance(vector);
+		result = Math.sqrt(result);
+		return result;
+	}
+	
+	public static double tTestEqSizeEqVar(double[] vector1, double[] vector2){
+		double n = (double) vector1.length;
+		double mean1 = mean(vector1);
+		double mean2 = mean(vector2);
+		double stdDev1 = stdDev(vector1);
+		double stdDev2 = stdDev(vector2);
+		double sX1X2 = Math.sqrt((Math.pow(stdDev1, 2) + Math.pow(stdDev2, 2)) / 2);
+		double result = (mean1 - mean2) / (Math.sqrt(2 / n) * sX1X2);
+		return result;
+	}
+	
+	public static double tTestUnEqSizeEqVar(double[] vector1, double[] vector2){
+		double n1 = (double) vector1.length;
+		double n2 = (double) vector2.length;
+		double mean1 = mean(vector1);
+		double mean2 = mean(vector2);
+		double stdDev1 = stdDev(vector1);
+		double stdDev2 = stdDev(vector2);
+		double sX1X2 = Math.sqrt(((n1 - 1) * Math.pow(stdDev1, 2) + (n2 - 1) * Math.pow(stdDev2, 2)) / (n1 + n2 - 2));
+		double result = (mean1 - mean2) / (sX1X2 * Math.sqrt(1/n1 + 1/n2));
+		return result;
+	}
+	
+	public static double tTestUnEqSizeUnEqVar(double[] vector1, double[] vector2){
+		double n1 = (double) vector1.length;
+		double n2 = (double) vector2.length;
+		double mean1 = mean(vector1);
+		double mean2 = mean(vector2);
+		double stdDev1 = stdDev(vector1);
+		double stdDev2 = stdDev(vector2);
+		double sX1X2 = Math.sqrt((Math.pow(stdDev1, 2) / n1) + (Math.pow(stdDev2, 2) / n2));
+		double result = (mean1 - mean2) / sX1X2;
+		return result;
+	}
+	
 	public static double min(double[] vals) {
 		double minVal = vals[0];
 		for (int i = 1; i < vals.length; i++)
@@ -1366,5 +1431,19 @@ public class Mathematics {
 		for (int i = 0; i < vec.length; i++) {
 			vec[i] *= scale;
 		}
+	}
+	
+	/**
+	 * Return true if an integer is contained in an integer list, otherwise false.
+	 * 
+	 * @param list
+	 * @param i
+	 * @return
+	 */
+	public static boolean contains(int[] list, int i) {
+		for (int k:list) {
+			if (k==i) return true;
+		}
+		return false;
 	}
 }

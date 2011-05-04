@@ -22,32 +22,38 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.LayoutManager;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.InputEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.beans.PropertyEditor;
 import java.lang.reflect.Array;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.ListCellRenderer;
+import javax.swing.ListModel;
 import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import eva2.tools.EVAHELP;
-import eva2.tools.SelectedTag;
 import eva2.tools.SerializedObject;
 /*==========================================================================*
  * CLASS DECLARATION
@@ -70,10 +76,22 @@ implements PropertyEditor {
 	private PropertySelectableList selectableList = null;
 	/** Click this to delete the selected array values */
 	private JButton m_DeleteBut = new JButton("Delete");
-	/** Click to add the current object configuration to the array */
+	/** list of additional buttons above the list */
+	private List<JButton> m_AdditionalUpperButtonList = new LinkedList<JButton>();
+	/** list of additional buttons below the list */
+	private List<JButton> m_AdditionalLowerButtonList = new LinkedList<JButton>();
+	
+	private JPanel additionalCenterPane = null;
+	
+	private List<JMenuItem> m_popupItemList = new LinkedList<JMenuItem>();
 	private JButton m_AddBut = new JButton("Add");
 	private JButton m_SetBut = new JButton("Set");
 	private JButton m_SetAllBut = new JButton("Set all");
+
+	private boolean withAddButton = true;
+	private boolean withSetButton = true;
+	private boolean withDeleteButton = true;
+	
 	private Component m_View = null;
 	/** Listens to buttons being pressed and taking the appropriate action */
 	private ActionListener m_InnerActionListener =
@@ -100,7 +118,7 @@ implements PropertyEditor {
 						m_ElementList.setModel(m_ListModel);
 					}
 
-					if (selectableList!=null) selectableList.setObjects(modelToArray(m_ListModel));
+					if (selectableList!=null) selectableList.setObjects(modelToArray(selectableList.getObjects(), m_ListModel));
 					m_Support.firePropertyChange("", null, null);
 				}
 				if (m_ElementList.getSelectedIndex() == -1) {
@@ -121,7 +139,7 @@ implements PropertyEditor {
 						m_ListModel.addElement(addObj);
 					}
 					m_ElementList.setModel(m_ListModel);
-					if (selectableList!=null) selectableList.setObjects(modelToArray(m_ListModel));
+					if (selectableList!=null) selectableList.setObjects(modelToArray(selectableList.getObjects(), m_ListModel));
 					m_Support.firePropertyChange("", null, null);
 				} catch (Exception ex) {
 					JOptionPane.showMessageDialog(GenericArrayEditor.this,"Could not create an object copy",null,JOptionPane.ERROR_MESSAGE);
@@ -151,8 +169,15 @@ implements PropertyEditor {
 		}
 	};
 	
-	private Object[] modelToArray(DefaultListModel listModel) {
-		Object[] os= new Object[listModel.size()];
+	public void setAdditionalCenterPane(JPanel panel) {
+		this.additionalCenterPane = panel;
+	}
+	
+	private Object[] modelToArray(Object[] origArray, DefaultListModel listModel) {
+		Class objClass = origArray.getClass().getComponentType();
+		Object[] os = (Object[]) java.lang.reflect.Array.newInstance(objClass, listModel.size());
+
+//		Object[] os= new Object[listModel.size()];
 		for (int i=0; i<listModel.size(); i++) {
 			os[i]=listModel.get(i);
 		}
@@ -176,7 +201,6 @@ implements PropertyEditor {
 		}
 	};
 
-
 	/**
 	 * Sets up the array editor.
 	 */
@@ -190,8 +214,63 @@ implements PropertyEditor {
 		m_ElementList.addListSelectionListener(m_InnerSelectionListener);
 		m_AddBut.setToolTipText("Add the current item to the list");
 		m_DeleteBut.setToolTipText("Delete the selected list item");
+		m_ElementList.addMouseListener(new ActionJList(m_ElementList, this));
 	}
 
+	public int[] getSelectedIndices() {
+		return m_ElementList.getSelectedIndices();
+	}
+
+	private class ActionJList extends MouseAdapter {
+		protected JList list;
+		GenericArrayEditor gae=null;
+//		PropertyPanel propPanel=null;
+		
+		
+		public ActionJList(JList l, GenericArrayEditor genAE){
+			list = l;
+			gae=genAE;
+//			if (pPan instanceof PropertyPanel ) propPanel = (PropertyPanel) pPan;
+//			else {
+//				System.err.println("Error, invalid property panel in " + this.getClass());
+//			}
+		}
+
+		public void mouseClicked(MouseEvent e){
+			if(e.getClickCount() == 2){
+				int index = list.locationToIndex(e.getPoint());
+				// Check if the index is valid and if the indexed cell really contains the clicked point
+				if (index>=0 && (list.getCellBounds(index, index).contains(e.getPoint()))) {
+					PropertyPanel propPanel=null;
+					Component comp = gae.m_View;
+					if (comp instanceof PropertyPanel ) propPanel = (PropertyPanel) comp;
+					else System.err.println("Error, invalid property panel in " + this.getClass());
+					ListModel dlm = list.getModel();
+					Object item = dlm.getElementAt(index);
+					list.ensureIndexIsVisible(index);
+//					System.out.println(e);
+//					System.out.println("Double clicked on " + item);
+					propPanel.getEditor().setValue(item);
+					propPanel.showDialog(e.getXOnScreen(), e.getYOnScreen());
+					propPanel=null;
+//					int x = getLocationOnScreen().x;
+//					int y = getLocationOnScreen().y;
+					
+//					if (m_PropertyDialog == null)
+//						m_PropertyDialog = new PropertyDialog(gae.m_ElementEditor, EVAHELP.cutClassName(gae.m_ElementEditor.getClass().getName()) , x, y);
+//					else {
+//						m_PropertyDialog.updateFrameTitle(gae.m_ElementEditor);
+//						m_PropertyDialog.set
+//						m_PropertyDialog.setVisible(false);
+//						m_PropertyDialog.setExtendedState(JFrame.NORMAL);
+//						m_PropertyDialog.setVisible(true);
+//						m_PropertyDialog.requestFocus();
+//					}
+
+				}
+			}
+		}
+	}
 	/* This class handles the creation of list cell renderers from the
 	 * property editors.
 	 */
@@ -232,7 +311,7 @@ implements PropertyEditor {
 					((GenericObjectEditor) e).setClassType(m_ValueClass);
 				}
 				e.setValue(value);
-				return new JPanel() {
+				JPanel cellPanel = new JPanel() {
 //					return new JCheckBox("", isSelected) {
 //						public void paintComponent(Graphics g) {
 //							String name = (String)BeanInspector.callIfAvailable(value, "getName", new Object[]{});
@@ -258,6 +337,7 @@ implements PropertyEditor {
 						return  newPref;
 					}
 				};
+				return cellPanel;
 			} catch (Exception ex) {
 				return null;
 			}
@@ -273,7 +353,9 @@ implements PropertyEditor {
 	private void updateEditorType(Object obj) {
 
 		// Determine if the current object is an array
-		m_ElementEditor = null; m_ListModel = null;
+		m_ElementEditor = null; 
+		m_ListModel = null;
+		m_View = null;
 		removeAll();
 
 		if ((obj != null) && (obj.getClass().isArray() || (obj instanceof PropertySelectableList))) {
@@ -341,19 +423,40 @@ implements PropertyEditor {
 //					panel.add(view, BorderLayout.CENTER);
 //					panel.add(m_AddBut, BorderLayout.EAST);
 //					JPanel buttonPanel=new JPanel(new FlowLayout());
-					JPanel combinedPanel = new JPanel(new GridLayout(1,3));
-					combinedPanel.add(m_View );
-					combinedPanel.add(m_AddBut);
-					combinedPanel.add(m_SetBut);
-					combinedPanel.add(m_SetAllBut);
-					add(combinedPanel, BorderLayout.NORTH);
-					add(new JScrollPane(m_ElementList), BorderLayout.CENTER);
-					add(m_DeleteBut, BorderLayout.SOUTH);
+					
+					if (withAddButton && !(m_AdditionalUpperButtonList.contains(m_AddBut))) m_AdditionalUpperButtonList.add(m_AddBut);
+					if (withSetButton && !(m_AdditionalUpperButtonList.contains(m_SetBut))) m_AdditionalUpperButtonList.add(m_SetBut);
+					if (withSetButton && !(m_AdditionalUpperButtonList.contains(m_SetAllBut))) m_AdditionalUpperButtonList.add(m_SetAllBut);
+					
+					JPanel combiUpperPanel = new JPanel(getButtonLayout(1, m_AdditionalUpperButtonList));
+					combiUpperPanel.add(m_View );
+
+					for (JButton but : m_AdditionalUpperButtonList) {
+						combiUpperPanel.add(but);
+					}
+					add(combiUpperPanel, BorderLayout.NORTH);
+					if (additionalCenterPane==null) add(new JScrollPane(m_ElementList), BorderLayout.CENTER);
+					else {
+						JPanel centerPane=new JPanel();
+						centerPane.setLayout(new GridLayout(2, 1));
+						centerPane.add(new JScrollPane(m_ElementList));
+						centerPane.add(additionalCenterPane);
+						add(centerPane, BorderLayout.CENTER);
+					}
+					
+					if (withDeleteButton && !m_AdditionalLowerButtonList.contains(m_DeleteBut)) m_AdditionalLowerButtonList.add(m_DeleteBut);
+					JPanel combiLowerPanel = new JPanel(getButtonLayout(0, m_AdditionalLowerButtonList));
+					for (JButton but : m_AdditionalLowerButtonList) {
+						combiLowerPanel.add(but);
+					}
+					add(combiLowerPanel, BorderLayout.SOUTH);
 					m_ElementEditor.addPropertyChangeListener(new PropertyChangeListener() {
 						public void propertyChange(PropertyChangeEvent e) {
 							repaint();
 						}
 					});
+					
+					addPopupMenu();
 				} catch (Exception ex) {
 					System.err.println(ex.getMessage());
 					ex.printStackTrace();
@@ -367,6 +470,71 @@ implements PropertyEditor {
 		m_Support.firePropertyChange("", null, null);
 		validate();
 	}
+	
+	/**
+	 * Make a fitting grid layout for a list of buttons. An additional offset may be given
+	 * if further components should be added besides the buttons.
+	 * 
+	 * @param additionalOffset
+	 * @param bList
+	 * @return
+	 */
+	private LayoutManager getButtonLayout(int additionalOffset, List<JButton> bList) {
+		int lines = 1+((bList.size()+additionalOffset-1)/3);
+		int cols = 3;
+		return new GridLayout(lines, cols);
+	}
+
+	public void removeUpperActionButton(String text) {
+		removeActionButton(m_AdditionalUpperButtonList, text);
+	}
+	
+	public void removeLowerActionButton(String text) {
+		removeActionButton(m_AdditionalLowerButtonList, text);
+	}
+	
+	protected void removeActionButton(List<JButton> bList, String text) {
+		JButton but = null;
+		for (JButton jb : bList) {
+			if (text.equals(jb.getText())) {
+				but = jb;
+				break;
+			}
+		}
+		if (but!=null) bList.remove(but);
+	}
+	
+	public void addUpperActionButton(String text, ActionListener al) {
+		addActionButton(m_AdditionalUpperButtonList, text, al);
+	}
+	
+	/**
+	 * Wrap an action listener such that the selection state will always be up to date
+	 * in the selectableList (if it exists).
+	 * @param al
+	 * @return
+	 */
+	private ActionListener makeSelectionKnownAL(final ActionListener al) {
+		return new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (selectableList!=null) {
+					selectableList.setSelectionByIndices(m_ElementList.getSelectedIndices());
+				}
+				al.actionPerformed(e);
+			}
+		};
+	}
+
+	public void addLowerActionButton(String text, ActionListener al) {
+		addActionButton(m_AdditionalLowerButtonList, text, al);
+	}
+	
+	public void addActionButton(List<JButton> bList, String text, ActionListener al) {
+		JButton but = new JButton(text);
+		but.addActionListener(makeSelectionKnownAL(al));
+		bList.add(but);
+	}
+		
 	/**
 	 * Sets the current object array.
 	 *
@@ -377,6 +545,21 @@ implements PropertyEditor {
 		updateEditorType(o);
 	}
 
+	/**
+	 * Select all items. If all are selected, then deselect all items.
+	 */
+	public void selectDeselectAll() {
+		if (areAllSelected()) m_ElementList.getSelectionModel().clearSelection();
+		else m_ElementList.setSelectionInterval(0, m_ElementList.getModel().getSize()-1);
+	}
+	
+	public boolean areAllSelected() {
+		for (int i=0; i<m_ElementList.getModel().getSize(); i++) {
+			if (!m_ElementList.isSelectedIndex(i)) return false;
+		}
+		return true;
+	}
+	
 	/**
 	 * Gets the current object array.
 	 *
@@ -399,6 +582,49 @@ implements PropertyEditor {
 		}
 	}
 
+	public void addPopupItem(String text, ActionListener al) {
+		JMenuItem item = createMenuItem(text, true, makeSelectionKnownAL(al));
+		m_popupItemList.add(item);
+	}
+	
+	public void addPopupMenu() {
+		if (m_popupItemList.size()>0) {
+			m_ElementList.addMouseListener(new MouseAdapter() {
+				public void mouseClicked(MouseEvent e) {
+					if (selectableList!=null) {
+						selectableList.setSelectionByIndices(m_ElementList.getSelectedIndices());
+					}
+					if ((e.getModifiers() & InputEvent.BUTTON1_MASK) == InputEvent.BUTTON1_MASK) {
+						// do nothing
+					} else { // right click released, so show popup
+						JPopupMenu popupMenu = new JPopupMenu();
+						for (JMenuItem item : m_popupItemList) popupMenu.add(item);
+						popupMenu.show(GenericArrayEditor.this, e.getX(), e.getY());
+					}
+				}
+			});
+		}
+	}
+
+	/**
+	 * Create a menu item with given title and listener, add it to the menu and
+	 * return it. It may be enabled or disabled.
+	 * 
+	 * @param menu
+	 * @param title
+	 * @param aListener
+	 * @param enabled
+	 * @return
+	 */
+	private JMenuItem createMenuItem(String title, boolean enabled,
+			ActionListener aListener) {
+		JMenuItem item = new JMenuItem(title);
+		// if (bgColor!=null) item.setForeground(bgColor);
+		item.addActionListener(aListener);
+		item.setEnabled(enabled);
+		return item;
+	}
+	
 	/**
 	 * Supposedly returns an initialization string to create a classifier
 	 * identical to the current one, including it's state, but this doesn't
@@ -486,30 +712,53 @@ implements PropertyEditor {
 	/**
 	 *
 	 */
-	public static void main(String [] args) {
-		try {
-			java.beans.PropertyEditorManager.registerEditor(SelectedTag.class,TagEditor.class);
-			java.beans.PropertyEditorManager.registerEditor(int [].class,GenericArrayEditor.class);
-			java.beans.PropertyEditorManager.registerEditor(double [].class,GenericArrayEditor.class);
-			GenericArrayEditor editor = new GenericArrayEditor();
-			
-
-			int[] initial = { 3,45, 7};
-			editor.setValue(initial);
-			PropertyDialog pd = new PropertyDialog(editor,EVAHELP.cutClassName(editor.getClass().getName())
-					, 100, 100);
-//			pd.setSize(200,200);
-			pd.addWindowListener(new WindowAdapter() {
-				public void windowClosing(WindowEvent e) {
-					System.exit(0);
-				}
-			});
-			editor.setValue(initial);
-			//ce.validate();
-		} catch (Exception ex) {
-			ex.printStackTrace();
-			System.err.println(ex.getMessage());
-		}
+//	public static void main(String [] args) {
+//		try {
+//			java.beans.PropertyEditorManager.registerEditor(SelectedTag.class,TagEditor.class);
+//			java.beans.PropertyEditorManager.registerEditor(int [].class,GenericArrayEditor.class);
+//			java.beans.PropertyEditorManager.registerEditor(double [].class,GenericArrayEditor.class);
+//			GenericArrayEditor editor = new GenericArrayEditor();
+//			
+//
+//			int[] initial = { 3,45, 7};
+//			editor.setValue(initial);
+//			PropertyDialog pd = new PropertyDialog(editor,EVAHELP.cutClassName(editor.getClass().getName())
+//					, 100, 100);
+////			pd.setSize(200,200);
+//			pd.addWindowListener(new WindowAdapter() {
+//				public void windowClosing(WindowEvent e) {
+//					System.exit(0);
+//				}
+//			});
+//			editor.setValue(initial);
+//			//ce.validate();
+//		} catch (Exception ex) {
+//			ex.printStackTrace();
+//			System.err.println(ex.getMessage());
+//		}
+//	}
+	public boolean isWithAddButton() {
+		return withAddButton;
+	}
+	public void setWithAddButton(boolean withAddButton) {
+		this.withAddButton = withAddButton;
+	}
+	public boolean isWithSetButton() {
+		return withSetButton;
+	}
+	public void setWithSetButton(boolean withSetButton) {
+		this.withSetButton = withSetButton;
+	}
+	
+	public boolean isWithDeleteButton() {
+		return withDeleteButton;
+	}
+	public void setWithDeleteButton(boolean wB) {
+		this.withDeleteButton = wB;
+	}
+	
+	public void removeNotify() {
+		super.removeNotify();
 	}
 }
 

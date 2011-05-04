@@ -49,4 +49,12 @@ public interface InterfaceStatisticsListener {
 	 * @param multiRunFinalObjectData
 	 */
 	public void finalMultiRunResults(String[] header, List<Object[]> multiRunFinalObjectData);
+	
+	/**
+	 * Called after the job is finished. Return true if the listener should be removed after this multi-run.
+	 * 
+	 * @param header
+	 * @param multiRunFinalObjectData
+	 */
+	public boolean notifyMultiRunFinished(String[] header, List<Object[]> multiRunFinalObjectData);
 }

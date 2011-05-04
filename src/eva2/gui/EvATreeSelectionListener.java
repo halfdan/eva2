@@ -3,6 +3,7 @@ package eva2.gui;
 import java.awt.Component;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.beans.PropertyEditor;
 
 import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
@@ -19,7 +20,7 @@ import javax.swing.tree.TreePath;
  *
  */
 public class EvATreeSelectionListener implements TreeSelectionListener, PropertyChangeListener {
-	private GenericObjectEditor goe=null;
+	private PropertyEditor goe=null;
 	private EvATreeNode root = null;
 	private JTree jtree = null;
 	public static final boolean TRACE = true;
@@ -32,7 +33,7 @@ public class EvATreeSelectionListener implements TreeSelectionListener, Property
 	 * @param goEditor the editor containing the parameter panel
 	 * @param jt the GUI view of the tree
 	 */
-	public EvATreeSelectionListener(EvATreeNode rootNode, GenericObjectEditor goEditor, JTree jt) {
+	public EvATreeSelectionListener(EvATreeNode rootNode, PropertyEditor goEditor, JTree jt) {
 		goe = goEditor;
 		root = rootNode;
 		jtree = jt;

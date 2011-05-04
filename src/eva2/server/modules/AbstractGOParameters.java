@@ -50,6 +50,20 @@ public abstract class AbstractGOParameters implements InterfaceGOParameters, Ser
 		opt.SetProblem(prob);
 	}
 
+	/**
+	 * Apply the given GO parameter settings to this instance. This maintains the listeners etc.
+	 * 
+	 * @param src
+	 */
+	public void setSameParams(AbstractGOParameters src) {
+		setOptimizer(src.m_Optimizer);
+		setProblem(src.m_Problem);
+		setTerminator(src.m_Terminator);
+		this.m_Optimizer.SetProblem(this.m_Problem);
+		setSeed(src.m_Seed);
+		setPostProcessParams(src.m_PostProc);
+	}
+	
 	/** 
 	 * Add a listener to the current optimizer.
 	 * 

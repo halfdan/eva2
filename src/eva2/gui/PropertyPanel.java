@@ -45,39 +45,52 @@ public class PropertyPanel extends JPanel {
 		addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent evt) {
 				if (m_PropertyEditor.getValue() != null) {
-					if (m_PropertyDialog == null) {
-						int x = getLocationOnScreen().x;
-						int y = getLocationOnScreen().y;
-						m_PropertyDialog = new PropertyDialog(m_PropertyEditor, EVAHELP.cutClassName(m_PropertyEditor.getClass().getName()) , x, y);
-					}
-					else {
-						m_PropertyDialog.updateFrameTitle(m_PropertyEditor);
-//						System.out.println("" + BeanInspector.toString(m_PropertyDialog));
-						m_PropertyDialog.setVisible(false);
-						m_PropertyDialog.setExtendedState(JFrame.NORMAL);
-						m_PropertyDialog.setVisible(true);
-						m_PropertyDialog.requestFocus();
-//						System.out.println("" + BeanInspector.toString(m_PropertyDialog));
-//						System.out.println("Aft: " + m_PropertyDialog.isShowing() + " " + m_PropertyDialog.isVisible() + " " + m_PropertyDialog.isActive() + " " + m_PropertyDialog.isFocused());
-					}
+					showDialog(getLocationOnScreen().x, getLocationOnScreen().y);
 				}
 			}
+
 		});
 		Dimension newPref = getPreferredSize();
 		newPref.height = getFontMetrics(getFont()).getHeight() * 6 / 4;  //6 / 4;
 		newPref.width = newPref.height * 6; //5
 		setPreferredSize(newPref);
 	}
+	
+	public void showDialog(int initX, int initY) {
+		if (m_PropertyDialog == null) {
+//			int x = getLocationOnScreen().x;
+//			int y = getLocationOnScreen().y;
+			m_PropertyDialog = new PropertyDialog(m_PropertyEditor, EVAHELP.cutClassName(m_PropertyEditor.getClass().getName()) , initX, initY);
+			m_PropertyDialog.setPreferredSize(new Dimension(500,300));
+		}
+		else {
+			m_PropertyDialog.updateFrameTitle(m_PropertyEditor);
+//				System.out.println("" + BeanInspector.toString(m_PropertyDialog));
+			m_PropertyDialog.setVisible(false);
+			m_PropertyDialog.setExtendedState(JFrame.NORMAL);
+			m_PropertyDialog.setVisible(true);
+			m_PropertyDialog.requestFocus();
+//				System.out.println("" + BeanInspector.toString(m_PropertyDialog));
+//				System.out.println("Aft: " + m_PropertyDialog.isShowing() + " " + m_PropertyDialog.isVisible() + " " + m_PropertyDialog.isActive() + " " + m_PropertyDialog.isFocused());
+		}
+	}	
+	
 	/**
 	 *
 	 */
 	public void removeNotify() {
 		if (m_PropertyDialog != null) {
-			//System.out.println("  m_PropertyDialog.dispose();");
-			m_PropertyDialog.dispose();
+//			System.out.println("  m_PropertyDialog.dispose();");
+//			System.out.println(m_PropertyDialog.isActive());
+//			System.out.println(m_PropertyDialog.isVisible());
+//			System.out.println(m_PropertyDialog.isValid());
+//			System.out.println(m_PropertyDialog.isDisplayable());
+//			if (m_PropertyDialog.isDisplayable()) m_PropertyDialog.dispose(); // this caused a deadlock!
+//			m_PropertyDialog.dispose(); // this also caused a deadlock!
 			m_PropertyDialog = null;
 		}
 	}
+	
 	/**
 	 *
 	 */

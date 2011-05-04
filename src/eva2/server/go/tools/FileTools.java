@@ -17,7 +17,9 @@ import java.util.ArrayList;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
+import eva2.gui.BeanInspector;
 import eva2.tools.BasicResourceLoader;
+import eva2.tools.StringTools;
 
 
 /**
@@ -202,5 +204,65 @@ public class FileTools {
 		JFileChooser fc = new JFileChooser(new File("resources"));
 		fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		return fc;
+	}
+	
+	public static boolean saveObjectToFolder(Object object, File folder, boolean forceOverwrite, Component parentComponent) {
+		String predefName = null;
+		try {
+			predefName = (String)BeanInspector.callIfAvailable(object, "getName", null);
+			predefName=StringTools.simplifySymbols(predefName)+".ser";
+		} catch(Exception e){
+			predefName=object.getClass().getName();
+			predefName=StringTools.simplifySymbols(predefName)+".ser";
+		}
+		
+		if (!folder.exists()) {
+			System.err.println("Error, folder " + folder + " does not exist, aborting saveObjectToFolder.");
+			return false;
+		} else {
+			File outFile = new File(folder,predefName);
+			if (outFile.exists() && !forceOverwrite) {
+				int opt = JOptionPane.showConfirmDialog(parentComponent, "File " + outFile.getName() + " exists! Overwrite?", "Confirm to overwrite file", JOptionPane.YES_NO_CANCEL_OPTION);
+				if (opt!=JOptionPane.OK_OPTION) return false;
+			}
+			// we may save the file
+			String msg;
+			if ((msg = saveObject(object, outFile))!=null) {
+				JOptionPane.showMessageDialog(parentComponent,
+						"Couldn't save object: "
+						+ object
+						+ "\n" + msg,
+						"Save object to folder",
+						JOptionPane.ERROR_MESSAGE);
+				return false;
+			} else return true;
+		}
+	}
+	
+	/**
+	 * Store the given object directly without any testing. Returns null on success, 
+	 * otherwise the error message of an exception that occurred.
+	 * 
+	 * @param object
+	 * @param target
+	 * @return
+	 */
+	public static String saveObject(Object object, File target) {
+		try {
+			if (object instanceof String) {
+				PrintWriter Out = new PrintWriter(new FileOutputStream(target));
+				Out.println((String)object);
+				Out.flush();
+				Out.close();
+			} else {
+				ObjectOutputStream oo = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(target)));
+				oo.writeObject(object);
+				oo.close();
+			}
+			return null;
+		} catch (Exception ex) {
+			System.err.println("Unable to write to file " + target.getAbsolutePath());
+			return ex.getMessage();
+		}
 	}
 }

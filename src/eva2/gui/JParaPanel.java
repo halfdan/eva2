@@ -15,6 +15,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagLayout;
+import java.beans.PropertyEditor;
 import java.beans.PropertyEditorManager;
 import java.io.Serializable;
 
@@ -23,13 +24,15 @@ import javax.swing.Box;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
+import eva2.server.stat.EvAJobList;
+
 public class JParaPanel implements Serializable, PanelMaker {
 
     public static boolean TRACE = false;
     protected String m_Name = "undefined";
     protected Object m_LocalParameter;
     protected Object m_ProxyParameter;
-    protected GenericObjectEditor m_Editor;
+    protected PropertyEditor m_Editor;
     private JPanel m_Panel;
 
     public JParaPanel() {
@@ -49,11 +52,14 @@ public class JParaPanel implements Serializable, PanelMaker {
         //m_Panel.setPreferredSize(new Dimension(200, 200)); // MK: this was evil, killing all the auto-layout mechanisms
         PropertyEditorProvider.installEditors();
         
-        m_Editor = new GenericObjectEditor();
-        ((GenericObjectEditor) (m_Editor)).setClassType(m_LocalParameter.
-                getClass());
-        ((GenericObjectEditor) (m_Editor)).setValue(m_LocalParameter);
-        ((GenericObjectEditor) (m_Editor)).disableOKCancel();
+        if (m_LocalParameter instanceof EvAJobList) {
+        	m_Editor = EvAJobList.makeEditor(m_Panel, (EvAJobList)m_LocalParameter);
+        } else {
+        	m_Editor = new GenericObjectEditor();
+	        ((GenericObjectEditor) (m_Editor)).setClassType(m_LocalParameter.getClass());
+	        ((GenericObjectEditor) (m_Editor)).setValue(m_LocalParameter);
+	        ((GenericObjectEditor) (m_Editor)).disableOKCancel();
+        }
 
         m_Panel.setLayout(new BorderLayout());
         m_Panel.add(m_Editor.getCustomEditor(), BorderLayout.CENTER);
@@ -71,7 +77,7 @@ public class JParaPanel implements Serializable, PanelMaker {
         return m_Name;
     }
 
-    public GenericObjectEditor getEditor() {
+    public PropertyEditor getEditor() {
     	return m_Editor;
     }
     

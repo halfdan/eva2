@@ -3,6 +3,7 @@ package eva2.server.stat;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -50,7 +51,7 @@ import eva2.tools.math.Mathematics;
  *
  */
 public abstract class AbstractStatistics implements InterfaceTextListener, InterfaceStatistics {
-	private PrintWriter resultOut;
+	private transient PrintWriter resultOut;
 	public final static boolean TRACE = false;
 	protected InterfaceStatisticsParameter m_StatsParams;
 	
@@ -141,6 +142,17 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 		}
 	}
 	
+	private void fireDataListenersFinalize() {
+		if (dataListeners!=null) {
+			LinkedList<InterfaceStatisticsListener> toRemove = new LinkedList<InterfaceStatisticsListener>();
+			for (InterfaceStatisticsListener l : dataListeners) {
+				boolean rm = l.notifyMultiRunFinished(currentStatHeader, finalObjectData);
+				if (rm) toRemove.add(l);
+			}
+			for (InterfaceStatisticsListener l : toRemove) dataListeners.remove(l); 
+		}
+	}
+	
 	/**
 	 * Notify listeners on the start and stop of a run.
 	 * 
@@ -155,10 +167,10 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 							currentStatHeader, currentStatMetaInfo);
 				} else {
 					l.notifyRunStopped(optRunsPerformed, normal);
-					if (optRunsPerformed > 1) {
+//					if (optRunsPerformed > 1) {
 						l.finalMultiRunResults(currentStatHeader,
 								finalObjectData);
-					}
+//					}
 			}
 		}
 	}
@@ -369,6 +381,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 		}
 		if (optRunsPerformed >= m_StatsParams.getMultiRuns()) {
 			finalizeOutput();
+			fireDataListenersFinalize();
 		}
 	}
 	
