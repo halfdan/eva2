@@ -34,7 +34,7 @@ public class F15Problem extends AbstractProblemDouble implements Serializable, I
 		x = rotateMaybe(x);
 		double t=0, s=0, sum=0;
 
-		for (int i=0; i<x.length-2; i++) {
+		for (int i=0; i<x.length-1; i++) {
 			s=(x[i]-1.);
 			t=Math.sin(Math.PI*x[i+1]);
 			sum += (s*s)*(1+10.*t*t);
