@@ -113,7 +113,7 @@ public class MutateGAInvertBits implements InterfaceMutation, java.io.Serializab
 	 * @return description
 	 */
 	public static String globalInfo() {
-		return "This mutation operator inverts n succesive bits.";
+		return "This mutation operator inverts n successive bits.";
 	}
 
 	/** This method allows you to set the number of mutations that occur in the
