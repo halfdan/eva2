@@ -1044,6 +1044,11 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 		}
 	}
 	
+	public String[] getCurrentFieldHeaders() {
+		StringSelection fSel = m_StatsParams.getFieldSelection();
+		return fSel.getSelected();
+	}
+	
 	/**
 	 * Do some data collection on the population.
 	 *
