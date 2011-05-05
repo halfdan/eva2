@@ -195,6 +195,14 @@ public class CBNPSO extends ClusterBasedNichingEA implements Serializable {
 		return ToolBox.appendArrays(super.getAdditionalDataHeader(), addVals);
 	}
 
+	@Override	
+	public String[] getAdditionalDataInfo() {
+		String[] addVals = {"Ratio of interesting solutions within all archived solutions"};
+		if (getCurrentPeriod()>=0) addVals = new String[]{"Ratio of interesting solutions within all archived solutions", 
+				"Current sigma adaptation period"}; 
+		return ToolBox.appendArrays(super.getAdditionalDataInfo(), addVals);
+	}
+	
 	/**
 	 * Retrieve the current period of the sinusoidal sigma adaption (in case it is controlled by a threshold adaption)
 	 * or -1 if this does not apply.

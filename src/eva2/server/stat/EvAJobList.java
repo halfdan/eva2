@@ -120,9 +120,11 @@ public class EvAJobList extends PropertySelectableList<EvAJob> implements Serial
 				File sFile = fc.getSelectedFile();
 				if (sFile.exists()) {
 					for (EvAJob job : selected) {
-						if (!FileTools.saveObjectToFolder(job, sFile, false, parentComponent)) {
-							System.err.println("Error on saving jobs...");
-							return false;
+						if (job!=null) {
+							if (!FileTools.saveObjectToFolder(job, sFile, false, parentComponent)) {
+								System.err.println("Error on saving jobs...");
+								return false;
+							}
 						}
 					}
 				} else return false; // invalid folder chosen
