@@ -8,10 +8,7 @@ import javax.swing.JButton;
 import eva2.tools.StringSelection;
 
 public class EvAStatisticalEvaluationParams implements Serializable {
-	
-//	private StatsOnDataSetPairEnum[] pairedStats = new StatsOnDataSetPairEnum[] {StatsOnDataSetPairEnum.tTestEqual, StatsOnDataSetPairEnum.tTestUnequal};
-//	private StatsOnSingleDataSetEnum[] singleStats = new StatsOnSingleDataSetEnum[] {StatsOnSingleDataSetEnum.mean, StatsOnSingleDataSetEnum.median};
-	
+
 	private StringSelection singleStats = new StringSelection(StatsOnSingleDataSetEnum.mean, StatsOnSingleDataSetEnum.getInfoStrings());
 	private StringSelection twoSampledStats = new StringSelection(StatsOnTwoSampledDataEnum.tTestUneqLenEqVar, StatsOnTwoSampledDataEnum.getInfoStrings());
 	private List<JButton> additionalButtons = null;
@@ -23,8 +20,8 @@ public class EvAStatisticalEvaluationParams implements Serializable {
 	public StringSelection getTwoSampledStats() {
 		return twoSampledStats;
 	}
-	public void setTwoSampledStats(StringSelection pairedStats) {
-		this.twoSampledStats = pairedStats;
+	public void setTwoSampledStats(StringSelection twoSStats) {
+		this.twoSampledStats = twoSStats;
 	}
 	public String twoSampledStatsTipText() {
 		return "Statistical tests on two-sampled data";
@@ -45,7 +42,7 @@ public class EvAStatisticalEvaluationParams implements Serializable {
 	}
 	
 	public String globalInfo() {
-		return "Select statistical values to be calculated and paired tests to be performed.";
+		return "Select statistical values to be calculated and tests to be performed.";
 	}
 	
 	public List<JButton> getAdditionalButtons() {
