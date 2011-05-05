@@ -13,6 +13,7 @@ package eva2.server.modules;
  * IMPORTS
  *==========================================================================*/
 import eva2.gui.EvATabbedFrameMaker;
+import eva2.server.stat.EvAJob;
 import eva2.tools.jproxy.RemoteStateListener;
 /*==========================================================================*
 * INTERFACE DECLARATION
@@ -23,6 +24,11 @@ import eva2.tools.jproxy.RemoteStateListener;
 public interface ModuleAdapter extends RemoteStateListener {
   public EvATabbedFrameMaker getModuleFrame();
   public void startOpt(); // called from client
+  
+  /**
+   * Schedule a certain job to a job list.
+   */
+  public EvAJob scheduleJob();
   public void restartOpt();
   public void stopOpt();
   public void runScript();
