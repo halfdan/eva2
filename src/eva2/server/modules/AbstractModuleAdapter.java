@@ -16,13 +16,8 @@ import java.io.Serializable;
 import java.net.InetAddress;
 import java.util.Vector;
 
-import eva2.gui.EvATabbedFrameMaker;
-import eva2.gui.LogPanel;
 import eva2.server.go.InterfaceGOParameters;
 import eva2.server.go.InterfaceProcessor;
-/*==========================================================================*
-* ABSTRACT CLASS DECLARATION
-*==========================================================================*/
 import eva2.tools.jproxy.MainAdapterClient;
 import eva2.tools.jproxy.RemoteStateListener;
 
@@ -43,7 +38,6 @@ abstract public class AbstractModuleAdapter implements ModuleAdapter, Serializab
   protected boolean m_RMI = true;
   protected MainAdapterClient m_MainAdapterClient; // connection to client
   private Vector<RemoteStateListener> m_RemoteStateListeners;
-  protected LogPanel	logPanel = null;
 
   protected AbstractModuleAdapter(MainAdapterClient Client) {
     if (TRACE) System.out.println("AbstractModuleAdapter.AbstractModuleAdapter()");
