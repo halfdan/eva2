@@ -38,8 +38,6 @@ public class EvAJobList extends PropertySelectableList<EvAJob> implements Serial
 	List<InterfaceTextListener> listeners = null;
 	
 	private ModuleAdapter module = null;
-//	private static transient LogPanel logPanel = null;
-//	private static transient JFrame statsFrame = null;
 
 	public EvAJobList(EvAJob[] initial) {
 		super(initial);
@@ -147,25 +145,6 @@ public class EvAJobList extends PropertySelectableList<EvAJob> implements Serial
 		return null;
 	}
 
-//	private static List<JButton> getActionButtons(final EvAJobList jobList, final GenericArrayEditor edi) {
-//		LinkedList<JButton> buts = new LinkedList<JButton>();
-//		buts.add(getRunButton(jobList, edi));
-//		return buts;
-//	}
-
-//	private static JButton getRunButton(final EvAJobList jobList, final GenericArrayEditor edi) {
-//		JButton runBut = new JButton("Exec");
-//		runBut.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//				System.out.println("PING!");
-//				System.out.println(BeanInspector.toString(edi.getSelectedIndices()));
-//				EvAStatisticalEvaluation.evaluate((InterfaceTextListener)jobList, jobList.getObjects(), edi.getSelectedIndices());		
-//				System.out.println(BeanInspector.toString(EvAStatisticalEvaluation.statsParams.getPairedStats().getSelected()));
-//			}
-//		});
-//		return runBut;
-//	}
-	
 	/**
 	 * Create a customized editor for the job list based on an array editor.
 	 * 
