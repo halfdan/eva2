@@ -40,6 +40,7 @@ public class EvAJob implements Serializable, InterfaceStatisticsListener {
 	public EvAJob(InterfaceGOParameters params, InterfaceStatistics sts) {
 		this();
 		this.params = params;
+		if (sts instanceof AbstractStatistics) fieldHeaders=((AbstractStatistics)sts).getCurrentFieldHeaders();
 		sts.addDataListener(this);
 	}	
 	
@@ -235,9 +236,11 @@ public class EvAJob implements Serializable, InterfaceStatisticsListener {
 		StringSelection newSel = (StringSelection) curSelection.clone();
 
 		curSelection.setAllSelectionStates(false);
-		for (String field : fieldHeaders) {
-			curSelection.setSelected(field, true);
-		}
+		if (fieldHeaders!=null) {
+			for (String field : fieldHeaders) {
+				curSelection.setSelected(field, true);
+			}
+		} else System.err.println("Warning, empty field selection in job " + this);
 		return newSel;
 	}
 }
