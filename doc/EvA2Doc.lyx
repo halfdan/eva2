@@ -917,7 +917,7 @@ status open
 \noindent
 \align center
 \begin_inset Graphics
-	filename /afs/cs.uni-tuebingen.de/home/mkron/workspace/JE2Base/doc/pics/screenshot-workb-2011.gif
+	filename pics/screenshot-workb-2011.gif
 	lyxscale 60
 	width 45text%
 
@@ -927,7 +927,7 @@ status open
 \InsetSpace ~
 
 \begin_inset Graphics
-	filename /afs/cs.uni-tuebingen.de/home/mkron/workspace/JE2Base/doc/pics/screenshot-stat-2011.gif
+	filename pics/screenshot-stat-2011.gif
 	lyxscale 60
 	width 45text%
 
