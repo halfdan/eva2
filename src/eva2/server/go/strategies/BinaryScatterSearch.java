@@ -35,7 +35,7 @@ import eva2.tools.math.RNG;
  * Computers and Operations research, vol. 37, no. 11, pp. 1977-1986 (2010)
  */
 public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializable, InterfacePopulationChangedEventListener {
-	private static boolean 										TRACE = true;
+	private static boolean 										TRACE = false;
 	transient private InterfacePopulationChangedEventListener	m_Listener	 = null;
 	private String 												m_Identifier = "BinaryScatterSearch";
 
