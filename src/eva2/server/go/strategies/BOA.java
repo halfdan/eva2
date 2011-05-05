@@ -33,7 +33,7 @@ import eva2.tools.math.RNG;
  */
 public class BOA implements InterfaceOptimizer, java.io.Serializable {
 
-	private static boolean 										TRACE = true;
+	private static boolean 										TRACE = false;
 	transient private InterfacePopulationChangedEventListener	m_Listener	 = null;
 	private String 												m_Identifier = "BOA";
 
