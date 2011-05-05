@@ -90,7 +90,7 @@ public class PropertyEditorProvider {
     	PropertyEditor  editor  = null;
     	Class pec = prop.getPropertyEditorClass();
     	Class type = prop.getPropertyType();
-
+    	if (TRACE) System.out.println("PropertyEditorProvider: Searching editor for " + value.getClass()); 
     	try {
     		if (pec != null) editor = (PropertyEditor)pec.newInstance();
     	} catch (Exception e) {
@@ -102,16 +102,30 @@ public class PropertyEditorProvider {
 
 	        //@todo Streiche: Here i'm looking for a specialized editor
 	        //if (TRACE) System.out.println("PropertySheetPanel.setTarget(): trying to find specialised editor for "+value.getClass()+".");
+	        if (TRACE) System.out.println("A PropertySheetPanel.makeEditor(): checking " + value.getClass());
 	        if (value != null) editor = PropertyEditorManager.findEditor(value.getClass());
 	        if (TRACE)  System.out.println((editor == null ) ? "No editor from PEM" : ("Found " + editor.getClass()));
-	        
-	        if (editor == null) editor = PropertyEditorManager.findEditor(type);
-	        if (TRACE)  System.out.println((editor == null ) ? "No editor from PEM by type" : ("Found " + editor.getClass()));
-	        
+
 	        if (editor == null && (BeanInspector.isJavaPrimitive(value.getClass()))) {
-	        	Class<?> prim = BeanInspector.getJavaPrimitive(value.getClass());
+	        	Class<?> prim = BeanInspector.getBoxedType(value.getClass());
+	        	if (TRACE) System.out.println("B1 PropertySheetPanel.makeEditor(): checking " + prim);
 	        	if (prim!=null) editor = PropertyEditorManager.findEditor(prim);
+	        	if (editor ==null) {
+	    	        if (TRACE)  System.out.println((editor == null ) ? "No editor from PEM by boxed type " : ("Found " + editor.getClass()));
+
+	        		prim = BeanInspector.getUnboxedType(value.getClass());
+	        		if (TRACE) System.out.println("B2 PropertySheetPanel.makeEditor(): checking " + prim);
+	        		if (prim!=null) editor = PropertyEditorManager.findEditor(prim);
+	    	        if (TRACE)  System.out.println((editor == null ) ? "No editor from PEM by unboxed type " : ("Found " + editor.getClass()));
+	        	}
 	        }
+
+	        if (editor == null) {
+	        	if (TRACE) System.out.println("C PropertySheetPanel.makeEditor(): checking " + type);
+	        	editor = PropertyEditorManager.findEditor(type);
+	        	if (TRACE)  System.out.println((editor == null ) ? "No editor from PEM by type" : ("Found " + editor.getClass()));
+	        }
+	        
 	        if ((editor == null) && useDefaultGOE ) {
 	        	if (type.isArray()) editor = new GenericArrayEditor();
 	        	else if (type.isEnum()) editor = new EnumEditor();
