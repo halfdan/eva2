@@ -510,6 +510,23 @@ public class BeanInspector {
 	}
 
 	/**
+	 * For a Java primitive wrapper class return the corresponding
+	 * primitive class.
+	 **/
+	public static Class getUnboxedType(Class cls) {
+		if (cls == Double.class) return double.class;
+		else if (cls == Character.class) return char.class;  
+		else if (cls == Integer.class) return int.class;
+		else if (cls == Boolean.class) return boolean.class;
+		else if (cls == Byte.class) return byte.class; 
+		else if (cls == Short.class) return short.class;
+		else if (cls == Long.class) return long.class;
+		else if (cls == Float.class) return float.class;
+		else if (cls == Void.class) return void.class;
+		else return null;
+	}
+	
+	/**
 	 * Just concatenates getClassDescription(obj) and getMemberDescriptions(obj, withValues).
 	 * 
 	 * @param obj	target object
