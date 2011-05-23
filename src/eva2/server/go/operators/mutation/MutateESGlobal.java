@@ -217,17 +217,26 @@ public class MutateESGlobal implements InterfaceMutation, java.io.Serializable, 
         return "Choose the crossover type for the strategy parameters.";
     }
 
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see eva2.server.go.problems.InterfaceAdditionalPopulationInformer#getAdditionalDataHeader()
+	 */
 	public String[] getAdditionalDataHeader() {
 		return new String[] {"sigma"};
 	}
 
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see eva2.server.go.problems.InterfaceAdditionalPopulationInformer#getAdditionalDataInfo()
+	 */
 	public String[] getAdditionalDataInfo() {
 		return new String[] {"The ES global mutation step size."};
 	}
 
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see eva2.server.go.problems.InterfaceAdditionalPopulationInformer#getAdditionalDataValue(eva2.server.go.PopulationInterface)
+	 */
 	public Object[] getAdditionalDataValue(PopulationInterface pop) {
 		return new Object[]{m_MutationStepSize};
 	}

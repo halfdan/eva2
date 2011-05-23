@@ -15,9 +15,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import eva2.gui.BeanInspector;
 import eva2.gui.GenericArrayEditor;
-import eva2.gui.JEFrame;
 import eva2.gui.JParaPanel;
 import eva2.gui.PropertySelectableList;
 import eva2.server.go.InterfaceGOParameters;
@@ -266,14 +264,20 @@ public class EvAJobList extends PropertySelectableList<EvAJob> implements Serial
 		} else return false;
 	}
 
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see eva2.server.stat.InterfaceTextListener#print(java.lang.String)
+	 */
 	public void print(String str) {
 		if (listeners!=null) for (InterfaceTextListener lst : listeners) {
 			lst.print(str);
 		}
 	}
 
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see eva2.server.stat.InterfaceTextListener#println(java.lang.String)
+	 */
 	public void println(String str) {
 		if (listeners!=null) for (InterfaceTextListener lst : listeners) {
 			lst.println(str);
