@@ -93,12 +93,18 @@ public class F21Problem extends AbstractProblemDouble implements InterfaceMultim
 		return "The problem dimension and number of optima.";
 	}
 	
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see eva2.server.go.problems.AbstractOptimizationProblem#clone()
+	 */
 	public Object clone() {
 		return new F21Problem(this);
 	}
 
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see eva2.server.go.problems.InterfaceInterestingHistogram#getHistogram()
+	 */
 	public SolutionHistogram getHistogram() {
 		return new SolutionHistogram(0, 0.5, 10);
 	}

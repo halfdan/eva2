@@ -53,12 +53,18 @@ public class CbpsoFitnessThresholdBasedAdaption implements ParamAdaption, Generi
 		maxInterestingRatio = o.maxInterestingRatio;
 	}
 
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Object#clone()
+	 */
 	public Object clone() {
 		return new CbpsoFitnessThresholdBasedAdaption(this);
 	}
 
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see eva2.server.go.operators.paramcontrol.ParamAdaption#calcValue(java.lang.Object, eva2.server.go.populations.Population, int, int)
+	 */
 	public Object calcValue(Object obj, Population pop, int iteration,
 			int maxIteration) {
 		if (obj instanceof CBNPSO) {
@@ -113,32 +119,52 @@ public class CbpsoFitnessThresholdBasedAdaption implements ParamAdaption, Generi
 		else return true;
 	}
 
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see eva2.server.go.operators.paramcontrol.ParamAdaption#finish(java.lang.Object, eva2.server.go.populations.Population)
+	 */
 	public void finish(Object obj, Population pop) {
 		
 	}
 
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see eva2.server.go.operators.paramcontrol.ParamAdaption#getControlledParam()
+	 */
 	public String getControlledParam() {
 		return paramName;
 	}
 
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see eva2.server.go.operators.paramcontrol.ParamAdaption#init(java.lang.Object, eva2.server.go.populations.Population, java.lang.Object[])
+	 */
 	public void init(Object obj, Population pop, Object[] initialValues) {
 		currentVal=initialVal;
 		lastAdaption=0;
 		adptIntervalGenerations = (int)(currentVal/pop.getTargetSize());
 	}
 
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see eva2.server.go.operators.paramcontrol.GenericParamAdaption#setControlledParam(java.lang.String)
+	 */
 	public void setControlledParam(String prm) {
 		paramName = prm;
 	}
 
+	/**
+	 * 
+	 * @param initialVal
+	 */
 	public void setInitialVal(double initialVal) {
 		this.initialVal = initialVal;
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public double getInitialVal() {
 		return initialVal;
 	}

@@ -358,17 +358,26 @@ public class EvolutionStrategyIPOP extends EvolutionStrategies implements Interf
 		}
 	}
 	
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see eva2.server.go.problems.InterfaceAdditionalPopulationInformer#getAdditionalDataHeader()
+	 */
 	public String[] getAdditionalDataHeader() {
 		return new String[] {"numArchived", "archivedMeanDist", "lambda"};
 	}
 
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see eva2.server.go.problems.InterfaceAdditionalPopulationInformer#getAdditionalDataInfo()
+	 */
 	public String[] getAdditionalDataInfo() {
 		return new String[] {"Number of archived solutions", "Mean distance of archived solutions", "Current population size parameter lambda"};
 	}
 
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see eva2.server.go.problems.InterfaceAdditionalPopulationInformer#getAdditionalDataValue(eva2.server.go.PopulationInterface)
+	 */
 	public Object[] getAdditionalDataValue(PopulationInterface pop) {
 		return new Object[]{(bestList==null) ? ((int)0) : bestList.size(), (getMeanArchivedDist()), getLambda()};
 	}

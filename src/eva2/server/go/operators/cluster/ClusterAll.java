@@ -35,7 +35,6 @@ public class ClusterAll implements InterfaceClustering, Serializable {
      * @param referenceSet a reference population for dynamic measures
      * @return associative list matching loners to species.
      */
-	@Override
 	public int[] associateLoners(Population loners, Population[] species,
 			Population referenceSet) {
 		if (loners!=null && (loners.size()>0)) {
@@ -46,18 +45,27 @@ public class ClusterAll implements InterfaceClustering, Serializable {
 		} else return null;
 	}
 
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see eva2.server.go.operators.cluster.InterfaceClustering#cluster(eva2.server.go.populations.Population, eva2.server.go.populations.Population)
+	 */
 	public Population[] cluster(Population pop, Population referenceSet) {
 		// first pop is empty (there are no loners), second pop is complete
 		return new Population[]{pop.cloneWithoutInds(), pop.cloneShallowInds()};
 	}
 
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see eva2.server.go.operators.cluster.InterfaceClustering#initClustering(eva2.server.go.populations.Population)
+	 */
 	public String initClustering(Population pop) {
 		return null;
 	}
 
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see eva2.server.go.operators.cluster.InterfaceClustering#mergingSpecies(eva2.server.go.populations.Population, eva2.server.go.populations.Population, eva2.server.go.populations.Population)
+	 */
 	public boolean mergingSpecies(Population species1, Population species2,
 			Population referenceSet) {
 		return true;

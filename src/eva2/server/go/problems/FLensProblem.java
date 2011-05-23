@@ -558,7 +558,10 @@ implements InterfaceOptimizationProblem, InterfaceHasSolutionViewer, java.io.Ser
 		if (indy instanceof InterfaceDataTypeDouble) this.setEAIndividual((InterfaceDataTypeDouble)indy);
 	}
 	
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see eva2.server.go.problems.InterfaceHasSolutionViewer#getSolutionViewer()
+	 */
 	public InterfaceSolutionViewer getSolutionViewer() {
 		return m_Panel;
 	}
