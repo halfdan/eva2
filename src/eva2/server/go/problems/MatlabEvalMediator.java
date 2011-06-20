@@ -1,6 +1,7 @@
 package eva2.server.go.problems;
 
 import java.util.BitSet;
+import java.util.concurrent.Semaphore;
 
 import eva2.gui.BeanInspector;
 
@@ -33,6 +34,7 @@ public class MatlabEvalMediator {
 	volatile boolean quit = false;
 	volatile Object optSolution = null;
 	volatile Object[] optSolSet = null;
+	volatile Semaphore requests;
 	int runID=-1;
 	volatile MatlabProblem mp = null;
 	// no good: even when waiting for only 1 ms the Matlab execution time increases by a factor of 5-10
@@ -46,6 +48,7 @@ public class MatlabEvalMediator {
 	 */
 	public MatlabEvalMediator(int threadSleepTime) {
 		sleepTime=threadSleepTime;
+		requests=new Semaphore(0);
 	}
 	
 	/**
@@ -53,6 +56,7 @@ public class MatlabEvalMediator {
 	 */
 	public MatlabEvalMediator() {
 		sleepTime=0;
+		requests=new Semaphore(0);
 	}
 	
 	public void setMatlabProblem(MatlabProblem theMP) {
@@ -81,7 +85,7 @@ public class MatlabEvalMediator {
 			if (!(x instanceof BitSet)) System.err.println("Error, requesting evaluation for invalid data type! " + question.getClass()); 
 		}
 //		logMPAndSysOut("Synch requesting A requestEval " + getState());
-		synchronized(requesting) {
+		synchronized(requesting) { //MdP
 //			logMPAndSysOut(" in synch requesting A requestEval " + getState());
 			if (requesting) {
 				String msg="Warning: already in requesting state when request arrived!";
@@ -91,8 +95,10 @@ public class MatlabEvalMediator {
 			requesting = true;
 //			logMPAndSysOut("-- Requesting eval for " + BeanInspector.toString(x) + ", req state is " + requesting + "\n"); 
 		}
+		
+		
 //		logMPAndSysOut("Synch requesting A done " + getState());
-		int k=0; int mod=25;
+		/*int k=0; int mod=25;
 		while (requesting && !quit) {
 			// 	wait for matlab to answer the question
 			if (sleepTime > 0) try { Thread.sleep(sleepTime); } catch(Exception e) {
@@ -106,6 +112,12 @@ public class MatlabEvalMediator {
 				if (mod <=0) mod=Integer.MAX_VALUE;
 				
 			}
+		}*/
+		try {
+			requests.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		logMP("-- Requesting done\n");
 		// matlab is finished, answer is here
@@ -207,6 +219,7 @@ public class MatlabEvalMediator {
 			}
 			answer = y;
 			requesting = false; // answer is finished, break request loop
+			requests.release();
 			logMP("-- setAnswer: " + BeanInspector.toString(y) + ", req state is " + requesting + "\n");
 		}
 //		logMPAndSysOut("Synch requesting B done " + getState());
