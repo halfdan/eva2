@@ -12,16 +12,21 @@ package eva2.gui;
 /*==========================================================================*
  * IMPORTS
  *==========================================================================*/
-import java.util.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.beans.*;
-import java.lang.reflect.*;
-import javax.swing.*;
-
-import eva2.tools.EVAHELP;
-import sun.beans.editors.*;
+import java.awt.BorderLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
+
+import javax.swing.BorderFactory;
+import javax.swing.JCheckBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
 /*==========================================================================*
 * CLASS DECLARATION
 *==========================================================================*/
