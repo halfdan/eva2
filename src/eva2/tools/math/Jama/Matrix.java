@@ -3,12 +3,14 @@ package eva2.tools.math.Jama;
 
 import java.io.BufferedReader;
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.io.StreamTokenizer;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.Arrays;
 import java.util.Locale;
+import java.util.Vector;
 
 import eva2.gui.BeanInspector;
 import eva2.tools.Pair;
@@ -59,13 +61,18 @@ import eva2.tools.math.Jama.util.Maths;
 @version 5 August 1998
 */
 
-public class Matrix implements Cloneable, java.io.Serializable {
+public class Matrix implements Cloneable, Serializable {
 
-/* ------------------------
-   Class variables
- * ------------------------ */
+  /**
+   * Generated serial version identifier. 
+   */
+  private static final long serialVersionUID = 3672826349694248499L;
 
-   /** Array for internal storage of elements.
+  /* ------------------------
+     Class variables
+   * ------------------------ */
+  
+  /** Array for internal storage of elements.
    @serial internal array storage.
    */
    private double[][] A;
@@ -114,13 +121,18 @@ public class Matrix implements Cloneable, java.io.Serializable {
    @see        #constructWithCopy
    */
 
-   public Matrix (double[][] A) {
+   public Matrix(double[][] A) {
       this(A, true);
    }
 
-   public Matrix (double[][] A, boolean checkDims) {
+   /**
+    * 
+    * @param A
+    * @param checkDims
+    */
+   public Matrix(double[][] A, boolean checkDims) {
 	   m = A.length;
-	   n = A[0].length;
+	   n = m == 0 ? 0 : A[0].length;
 	   if (checkDims) {
 		   for (int i = 0; i < m; i++) {
 			   if (A[i].length != n) {
@@ -355,7 +367,6 @@ public class Matrix implements Cloneable, java.io.Serializable {
    @return     A(i0:i1,j0:j1)
    @exception  ArrayIndexOutOfBoundsException Submatrix indices
    */
-
    public Matrix getMatrix (int i0, int i1, int j0, int j1) {
       Matrix X = new Matrix(i1-i0+1,j1-j0+1);
       double[][] B = X.getArray();
@@ -1202,7 +1213,7 @@ public class Matrix implements Cloneable, java.io.Serializable {
       tokenizer.wordChars(0,255);
       tokenizer.whitespaceChars(0, ' ');
       tokenizer.eolIsSignificant(true);
-      java.util.Vector v = new java.util.Vector();
+      Vector<Object> v = new Vector<Object>();
 
       // Ignore initial empty lines
       while (tokenizer.nextToken() == StreamTokenizer.TT_EOL);
