@@ -31,7 +31,6 @@ import java.net.URL;
 import java.util.Set;
 import java.util.Vector;
 
-import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -41,18 +40,14 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
-import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTree;
 import javax.swing.JWindow;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
-import javax.swing.tree.DefaultMutableTreeNode;
 
 import eva2.EvAInfo;
 import eva2.gui.BeanInspector;
@@ -87,6 +82,10 @@ import eva2.tools.jproxy.RemoteStateListener;
  *
  */
 public class EvAClient implements RemoteStateListener, Serializable {
+	/**
+	 * Generated serial version identifier.
+	 */
+	private static final long serialVersionUID = 8232856334379977970L;
 	private final int splashScreenTime = 1500;
 	private final int maxWindowMenuLength = 30;
 	private boolean clientInited = false;
@@ -511,7 +510,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
 			if (TRACE) System.out.println("Command line arguments were: ");
 			if (TRACE) System.out.println("	" + BeanInspector.toString(keys));
 			if (TRACE) System.out.println("	" + BeanInspector.toString(values));
-			EvAClient Client = new EvAClient(hostName, paramsFile, autorun, nosplash, nogui, treeView);
+			new EvAClient(hostName, paramsFile, autorun, nosplash, nogui, treeView);
 		}
 	}
 
@@ -660,54 +659,60 @@ public class EvAClient implements RemoteStateListener, Serializable {
 	private void buildMenu() {
 		m_barMenu = new JMenuBar();
 		m_Frame.setJMenuBar(m_barMenu);
-		////////////////////////////////////////////////////////////////////////////
-		JExtMenu mnuLookAndFeel = new JExtMenu("&Look and Feel");
-		ButtonGroup grpLookAndFeel = new ButtonGroup();
-		UIManager.LookAndFeelInfo laf[] = UIManager.getInstalledLookAndFeels();
-
-		String LAF = Serializer.loadString("LookAndFeel.ser");
-
-		boolean lafSelected = false;
-		for (int i = 0; i < laf.length; i++) {
-			JRadioButtonMenuItem mnuItem = new JRadioButtonMenuItem(laf[i].getName());
-			mnuItem.setActionCommand(laf[i].getClassName());
-			if (!lafSelected && laf[i].getClassName().equals(UIManager.getLookAndFeel().getClass().getName())) {
-//			if (!lafSelected && laf[i].getClassName().equals(UIManager.getSystemLookAndFeelClassName())) {
-//				if (LAF==null) {// do this only if no older selection one could be loaded
-//					LAF = laf[i].getClassName(); // set for later selection
-//				} // this causes problems with my gnome!
-				if (LAF == null) {
-					lafSelected = true;
-					mnuItem.setSelected(true);
-				}
-			}
-			mnuItem.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					try {
-						UIManager.setLookAndFeel(e.getActionCommand());
-						SwingUtilities.updateComponentTreeUI(m_Frame);
-						// TODO hier noch reinhacken dass alle frame geupdated werden.
-						m_Frame.pack();
-//						m_Frame.setSize(new Dimension(900, 700));
-//						m_Frame.setVisible(true);
-						Serializer.storeString("LookAndFeel.ser", e.getActionCommand());
-					} catch (ClassNotFoundException exc) {} catch (InstantiationException exc) {} catch (UnsupportedLookAndFeelException exc) {} catch (
-							IllegalAccessException exc) {}
-				}
-			});
-			mnuLookAndFeel.add(mnuItem);
-			grpLookAndFeel.add(mnuItem);
-		}
-		if (LAF != null) {
-			try {
-				UIManager.setLookAndFeel(LAF);
-				SwingUtilities.updateComponentTreeUI(m_Frame);
-//				m_Frame.pack();
-//				m_Frame.setSize(new Dimension(900, 700));
-//				m_Frame.setVisible(true);
-			} catch (ClassNotFoundException exc) {} catch (InstantiationException exc) {} catch (UnsupportedLookAndFeelException exc) {} catch (
-					IllegalAccessException exc) {}
-		}
+//		////////////////////////////////////////////////////////////////////////////
+		/*
+		 *  Really, nobody wants to use a Look And Feel from 1985!!!
+		 *  Which one of the professional programs allows changing the entire
+		 *  look and feel? At most, one can select a different skin.
+		 */
+		
+//		JExtMenu mnuLookAndFeel = new JExtMenu("&Look and Feel");
+//		ButtonGroup grpLookAndFeel = new ButtonGroup();
+//		UIManager.LookAndFeelInfo laf[] = UIManager.getInstalledLookAndFeels();
+//
+//		String LAF = Serializer.loadString("LookAndFeel.ser");
+//
+//		boolean lafSelected = false;
+//		for (int i = 0; i < laf.length; i++) {
+//			JRadioButtonMenuItem mnuItem = new JRadioButtonMenuItem(laf[i].getName());
+//			mnuItem.setActionCommand(laf[i].getClassName());
+//			if (!lafSelected && laf[i].getClassName().equals(UIManager.getLookAndFeel().getClass().getName())) {
+////			if (!lafSelected && laf[i].getClassName().equals(UIManager.getSystemLookAndFeelClassName())) {
+////				if (LAF==null) {// do this only if no older selection one could be loaded
+////					LAF = laf[i].getClassName(); // set for later selection
+////				} // this causes problems with my gnome!
+//				if (LAF == null) {
+//					lafSelected = true;
+//					mnuItem.setSelected(true);
+//				}
+//			}
+//			mnuItem.addActionListener(new ActionListener() {
+//				public void actionPerformed(ActionEvent e) {
+//					try {
+//						UIManager.setLookAndFeel(e.getActionCommand());
+//						SwingUtilities.updateComponentTreeUI(m_Frame);
+//						// TODO hier noch reinhacken dass alle frame geupdated werden.
+//						m_Frame.pack();
+////						m_Frame.setSize(new Dimension(900, 700));
+////						m_Frame.setVisible(true);
+//						Serializer.storeString("LookAndFeel.ser", e.getActionCommand());
+//					} catch (ClassNotFoundException exc) {} catch (InstantiationException exc) {} catch (UnsupportedLookAndFeelException exc) {} catch (
+//							IllegalAccessException exc) {}
+//				}
+//			});
+//			mnuLookAndFeel.add(mnuItem);
+//			grpLookAndFeel.add(mnuItem);
+//		}
+//		if (LAF != null) {
+//			try {
+//				UIManager.setLookAndFeel(LAF);
+//				SwingUtilities.updateComponentTreeUI(m_Frame);
+////				m_Frame.pack();
+////				m_Frame.setSize(new Dimension(900, 700));
+////				m_Frame.setVisible(true);
+//			} catch (ClassNotFoundException exc) {} catch (InstantiationException exc) {} catch (UnsupportedLookAndFeelException exc) {} catch (
+//					IllegalAccessException exc) {}
+//		}
 		m_mnuModule = new JExtMenu("&Module");
 		m_mnuModule.add(m_actModuleLoad);
 
@@ -783,7 +788,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
 		// m_barMenu.add(m_Desktop.getWindowMenu());
 		
 		m_mnuOptions = new JExtMenu("&Options");
-		m_mnuOptions.add(mnuLookAndFeel);
+//		m_mnuOptions.add(mnuLookAndFeel);
 		m_mnuOptions.add(m_mnuSelHosts);
 		//m_barMenu.add(m_mnuSelHosts);
 		// this is accessible if no default module is given
@@ -1037,11 +1042,11 @@ public class EvAClient implements RemoteStateListener, Serializable {
 		JOptionPane.showMessageDialog
 		(m_Frame,
 				EvAInfo.productName + " - " + EvAInfo.productLongName + 
-				"\n University of Tübingen\n Chair for Computer Architecture\n " +
-				"M. Kronfeld, H. Planatscher, M. de Paly, A. Dräger, F. Streichert, H. Ulmer\n " +
-//				"H. Ulmer & F. Streichert & H. Planatscher & M. de Paly & M. Kronfeld\n" +
-				"Prof. Dr. Andreas Zell \n (c) " + EvAInfo.copyrightYear + "\n Version " + EvAInfo.getVersion()+ 
-				"\n URL: " + EvAInfo.url, EvAInfo.infoTitle, 1);
+				"\nUniversity of Tuebingen, T\u00FCbingen, Germany\nChair for Cognitive Systems\n" +
+				"Dr. M. Kronfeld, H. Planatscher, M. de Paly, Dr. A. Dr\u00E4ger,\n" +
+				"Dr. F. Streichert, Dr. H. Ulmer, and Prof. Dr. A. Zell \nCoypright \u00A9 " + 
+				EvAInfo.copyrightYear + "\nVersion " + EvAInfo.getVersion()+ 
+				"\nSee: " + EvAInfo.url, EvAInfo.infoTitle, 1);
 	}
 	
 	private void showLicense() {
