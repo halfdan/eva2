@@ -84,12 +84,11 @@ import eva2.tools.BasicResourceLoader;
  * @author mkron
  *
  */
-
 public class EvAInfo {
 	public static final String productName = "EvA2";
 	public static final String productLongName = "Evolutionary Algorithms Workbench 2";
 	// public static final String fullVersion = "2.043"; // moved to EvA2.props!
-	public static final String url = "http://www.ra.cs.uni-tuebingen.de/software/EvA2";
+	public static final String url = "http://www.cogsys.cs.uni-tuebingen.de/software/EvA2";
 
 	public static final String propertyFile = "resources/EvA2.props";
 	public static final String LGPLFile = "lgpl-3.0.txt";
@@ -98,7 +97,7 @@ public class EvAInfo {
 
 	public static final String splashLocation = "resources/images/splashScreen2.png";
 	public static final String infoTitle = productName+" Information";
-	public static final String copyrightYear = "2010";
+	public static final String copyrightYear = "2010-2012";
 
 	////////////// Property handling...
 	
