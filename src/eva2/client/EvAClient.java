@@ -659,60 +659,6 @@ public class EvAClient implements RemoteStateListener, Serializable {
 	private void buildMenu() {
 		m_barMenu = new JMenuBar();
 		m_Frame.setJMenuBar(m_barMenu);
-//		////////////////////////////////////////////////////////////////////////////
-		/*
-		 *  Really, nobody wants to use a Look And Feel from 1985!!!
-		 *  Which one of the professional programs allows changing the entire
-		 *  look and feel? At most, one can select a different skin.
-		 */
-		
-//		JExtMenu mnuLookAndFeel = new JExtMenu("&Look and Feel");
-//		ButtonGroup grpLookAndFeel = new ButtonGroup();
-//		UIManager.LookAndFeelInfo laf[] = UIManager.getInstalledLookAndFeels();
-//
-//		String LAF = Serializer.loadString("LookAndFeel.ser");
-//
-//		boolean lafSelected = false;
-//		for (int i = 0; i < laf.length; i++) {
-//			JRadioButtonMenuItem mnuItem = new JRadioButtonMenuItem(laf[i].getName());
-//			mnuItem.setActionCommand(laf[i].getClassName());
-//			if (!lafSelected && laf[i].getClassName().equals(UIManager.getLookAndFeel().getClass().getName())) {
-////			if (!lafSelected && laf[i].getClassName().equals(UIManager.getSystemLookAndFeelClassName())) {
-////				if (LAF==null) {// do this only if no older selection one could be loaded
-////					LAF = laf[i].getClassName(); // set for later selection
-////				} // this causes problems with my gnome!
-//				if (LAF == null) {
-//					lafSelected = true;
-//					mnuItem.setSelected(true);
-//				}
-//			}
-//			mnuItem.addActionListener(new ActionListener() {
-//				public void actionPerformed(ActionEvent e) {
-//					try {
-//						UIManager.setLookAndFeel(e.getActionCommand());
-//						SwingUtilities.updateComponentTreeUI(m_Frame);
-//						// TODO hier noch reinhacken dass alle frame geupdated werden.
-//						m_Frame.pack();
-////						m_Frame.setSize(new Dimension(900, 700));
-////						m_Frame.setVisible(true);
-//						Serializer.storeString("LookAndFeel.ser", e.getActionCommand());
-//					} catch (ClassNotFoundException exc) {} catch (InstantiationException exc) {} catch (UnsupportedLookAndFeelException exc) {} catch (
-//							IllegalAccessException exc) {}
-//				}
-//			});
-//			mnuLookAndFeel.add(mnuItem);
-//			grpLookAndFeel.add(mnuItem);
-//		}
-//		if (LAF != null) {
-//			try {
-//				UIManager.setLookAndFeel(LAF);
-//				SwingUtilities.updateComponentTreeUI(m_Frame);
-////				m_Frame.pack();
-////				m_Frame.setSize(new Dimension(900, 700));
-////				m_Frame.setVisible(true);
-//			} catch (ClassNotFoundException exc) {} catch (InstantiationException exc) {} catch (UnsupportedLookAndFeelException exc) {} catch (
-//					IllegalAccessException exc) {}
-//		}
 		m_mnuModule = new JExtMenu("&Module");
 		m_mnuModule.add(m_actModuleLoad);
 
@@ -788,7 +734,6 @@ public class EvAClient implements RemoteStateListener, Serializable {
 		// m_barMenu.add(m_Desktop.getWindowMenu());
 		
 		m_mnuOptions = new JExtMenu("&Options");
-//		m_mnuOptions.add(mnuLookAndFeel);
 		m_mnuOptions.add(m_mnuSelHosts);
 		//m_barMenu.add(m_mnuSelHosts);
 		// this is accessible if no default module is given
