@@ -296,7 +296,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
 					} else {
 						if (!withGUI && (currentModuleAdapter instanceof GenericModuleAdapter)) {
 							// do not save new parameters for an autorun without GUI - they werent changed manually anyways.
-							((GenericModuleAdapter)currentModuleAdapter).getStatistics().setSaveParams(false);
+							((GenericModuleAdapter) currentModuleAdapter).getStatistics().setSaveParams(false);
 							System.out.println("Autorun without GUI - not saving statistics parameters...");
 						}
 						if (withGUI) frmMkr.onUserStart();
@@ -343,7 +343,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
 	 * @return
 	 */
 	public boolean startOptimization() {
-		if (currentModuleAdapter!=null) {
+		if (currentModuleAdapter != null) {
 			currentModuleAdapter.startOpt();
 			return true;
 		} else return false;
@@ -820,18 +820,18 @@ public class EvAClient implements RemoteStateListener, Serializable {
 	public InterfaceGOParameters getGOParameters() {
 		if (currentModuleAdapter != null) {
 			if (currentModuleAdapter instanceof AbstractModuleAdapter) {
-				return ((AbstractModuleAdapter)currentModuleAdapter).getGOParameters();
+				return ((AbstractModuleAdapter) currentModuleAdapter).getGOParameters();
 			}
 		}
 		return null;
 	}
 	
 	public AbstractStatistics getStatistics() {
-		return ((GenericModuleAdapter)currentModuleAdapter).getStatistics();
+		return ((GenericModuleAdapter) currentModuleAdapter).getStatistics();
 	}
 	
 	public InterfaceStatisticsParameter getStatsParams() {
-		return ((GenericModuleAdapter)currentModuleAdapter).getStatistics().getStatisticsParameter();
+		return ((GenericModuleAdapter) currentModuleAdapter).getStatistics().getStatisticsParameter();
 	}
 	
 	/**
@@ -840,8 +840,8 @@ public class EvAClient implements RemoteStateListener, Serializable {
 	 * @return
 	 */
 	public boolean isOptRunning() {
-		if (currentModuleAdapter != null && (currentModuleAdapter instanceof AbstractModuleAdapter)) {
-			return ((AbstractModuleAdapter)currentModuleAdapter).isOptRunning();
+		if ((currentModuleAdapter != null) && (currentModuleAdapter instanceof AbstractModuleAdapter)) {
+			return ((AbstractModuleAdapter) currentModuleAdapter).isOptRunning();
 		} else return false;
 	}
 
@@ -856,13 +856,19 @@ public class EvAClient implements RemoteStateListener, Serializable {
 			EVAERROR.EXIT("Error while m_ComAdapter.GetModuleAdapter Host: " + e.getMessage());
 		}
 		if (newModuleAdapter == null) {
-			URL baseDir = this.getClass().getClassLoader().getResource("");
+			// When launching a Java Web Start application, baseDir will always be null!
+			URL baseDir = getClass().getClassLoader().getResource("");
 			String cp = System.getProperty("java.class.path",".");
-			if (!cp.contains(baseDir.getPath())) {
+			String dir = (baseDir == null) ? System.getProperty("user.dir") : baseDir.getPath();
+			// System.err.println("Working dir: " + dir);
+			if (baseDir == null) {
+				throw new RuntimeException("Cannot launch EvA2 due to an access restriction. If you are using Java Web Start, please download the application and try again.");
+			}
+			if (!cp.contains(dir)) {
 				// this was added due to matlab not adding base dir to base path...
 				System.err.println("classpath does not contain base directory!");
 				System.err.println("adding base dir and trying again...");
-				System.setProperty("java.class.path", cp + System.getProperty("path.separator") + baseDir.getPath());
+				System.setProperty("java.class.path", cp + System.getProperty("path.separator") + dir);
 				ReflectPackage.resetDynCP();
 				m_ComAdapter.updateLocalMainAdapter();
 				loadSpecificModule(selectedModule, goParams); // end recursive call! handle with care!
