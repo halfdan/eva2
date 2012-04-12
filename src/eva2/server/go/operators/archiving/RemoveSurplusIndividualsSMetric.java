@@ -139,7 +139,7 @@ public class RemoveSurplusIndividualsSMetric implements InterfaceRemoveSurplusIn
             }
             
 
-           result[global[ sort[ 0 ] ]]=Double.MAX_VALUE; //die beiden auﬂen bekommen maximal wert als smeasure
+           result[global[ sort[ 0 ] ]]=Double.MAX_VALUE; //die beiden aussen bekommen maximal wert als smeasure
            result[global[ sort[ counter - 1 ] ]]=Double.MAX_VALUE;
 
             for (int e = 1; e < counter - 1; e++)

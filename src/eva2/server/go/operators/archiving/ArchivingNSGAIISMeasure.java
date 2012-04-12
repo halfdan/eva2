@@ -63,7 +63,7 @@ public class ArchivingNSGAIISMeasure extends ArchivingNSGAII {
 		Arrays.sort(frontArray,new AbstractEAIndividualComparator(0));
 
 
-		((AbstractEAIndividual)frontArray[0]).putData("HyperCube",Double.MAX_VALUE); //die beiden auﬂen bekommen maximal wert als smeasure
+		((AbstractEAIndividual)frontArray[0]).putData("HyperCube",Double.MAX_VALUE); //die beiden aussen bekommen maximal wert als smeasure
 		((AbstractEAIndividual)frontArray[frontArray.length-1]).putData("HyperCube",Double.MAX_VALUE);
 		v[0]=Double.MAX_VALUE;
 		v[frontArray.length-1]=Double.MAX_VALUE;
