@@ -163,22 +163,25 @@ public class ModuleServer {
 							selectedModuleName);
 
 					Constructor<?>[] constructorArr = module.getConstructors();
-					// create a module instance
+					// create a module instance                                        
+                                        int constrIndex=0;
 					if ((goParams==null && noGuiLogFile==null) || !module.equals(GOModuleAdapter.class)) {
 						if (goParams!=null) System.err.println("Cant set params - no matching constructor found for " + adapterName + " (ModuleServer)");
 						if (noGuiLogFile!=null) System.err.println("Cant deactivate GUI - no matching constructor found for " + adapterName + " (ModuleServer)");
 						Object[] Para = new Object[2];
-						Class<?> paramTypes[] = (constructorArr[0]).getParameterTypes();
+                                                while ((constructorArr[constrIndex].getParameterTypes().length!=2) && (constrIndex < constructorArr.length)) { 
+							constrIndex++;
+						}
+						Class<?> paramTypes[] = (constructorArr[constrIndex]).getParameterTypes();
 						Para[0] = paramTypes[0].cast(adapterName);
 						Para[1] = paramTypes[1].cast(Client);
-						m_ModuleAdapter = (ModuleAdapter) constructorArr[0].newInstance(Para);
+						m_ModuleAdapter = (ModuleAdapter) constructorArr[constrIndex].newInstance(Para);
 					} else {
 						Object[] Para = new Object[4];
 						Para[0] = (String)adapterName;
 						Para[1] = (InterfaceGOParameters)goParams;
 						Para[2] = (String)noGuiLogFile;
 						Para[3] = (MainAdapterClient)Client;
-						int constrIndex=0;
 						while ((constructorArr[constrIndex].getParameterTypes().length!=4) && (constrIndex < constructorArr.length)) { 
 							constrIndex++;
 						}
