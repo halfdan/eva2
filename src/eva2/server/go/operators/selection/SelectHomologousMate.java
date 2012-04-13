@@ -1,14 +1,11 @@
 package eva2.server.go.operators.selection;
 
-import java.util.ArrayList;
-
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.operators.distancemetric.InterfaceDistanceMetric;
 import eva2.server.go.operators.distancemetric.ObjectiveSpaceMetric;
 import eva2.server.go.populations.Population;
-import eva2.tools.math.RNG;
 
-/** An experimential implementation for mating restriction.
+/** An experimental implementation for mating restriction.
  * Possibly defunct.
  * Created by IntelliJ IDEA.
  * User: streiche

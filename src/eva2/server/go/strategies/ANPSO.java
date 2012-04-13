@@ -1,10 +1,5 @@
 package eva2.server.go.strategies;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-import java.util.Vector;
-
 import eva2.OptimizerFactory;
 import eva2.gui.GenericObjectEditor;
 import eva2.server.go.InterfaceTerminator;
@@ -24,6 +19,9 @@ import eva2.server.modules.GOParameters;
 import eva2.tools.ToolBox;
 import eva2.tools.chart2d.DPoint;
 import eva2.tools.chart2d.DPointSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 /**
  * The Adaptive Niching PSO(ANPSO)[1] extends the particle swarm optimizer (PSO) 

@@ -1,7 +1,6 @@
 package eva2.server.go.operators.constraint;
 
 import eva2.gui.GenericObjectEditor;
-import eva2.server.go.individuals.AbstractEAIndividual;
 
 /**
  * This constraint is always satisfied.

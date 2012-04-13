@@ -1,12 +1,7 @@
 package eva2;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.util.BitSet;
-
 import eva2.server.go.IndividualInterface;
 import eva2.server.go.InterfaceGOParameters;
-import eva2.server.go.InterfaceNotifyOnInformers;
 import eva2.server.go.InterfaceTerminator;
 import eva2.server.go.individuals.InterfaceDataTypeBinary;
 import eva2.server.go.individuals.InterfaceDataTypeDouble;
@@ -17,13 +12,11 @@ import eva2.server.go.populations.Population;
 import eva2.server.go.populations.SolutionSet;
 import eva2.server.modules.GOParameters;
 import eva2.server.modules.Processor;
-import eva2.server.stat.AbstractStatistics;
-import eva2.server.stat.InterfaceStatistics;
-import eva2.server.stat.InterfaceTextListener;
-import eva2.server.stat.StatisticsDummy;
-import eva2.server.stat.StatisticsStandalone;
-import eva2.server.stat.StatsParameter;
+import eva2.server.stat.*;
 import eva2.tools.jproxy.RemoteStateListener;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.BitSet;
 
 
 /**

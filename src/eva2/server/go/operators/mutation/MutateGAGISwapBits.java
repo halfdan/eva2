@@ -1,15 +1,12 @@
 package eva2.server.go.operators.mutation;
 
-
-import java.util.BitSet;
-
-import eva2.gui.BeanInspector;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceGAIndividual;
 import eva2.server.go.individuals.InterfaceGIIndividual;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
+import java.util.BitSet;
 
 /**
  * Swap random pairs of values of a GA/GI individual. If preferPairs is true, unequal pairs

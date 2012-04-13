@@ -1,21 +1,15 @@
 package eva2.server.go.mocco;
 
-
-import javax.swing.*;
-
-import eva2.gui.GenericObjectEditor;
 import eva2.gui.JParaPanel;
 import eva2.server.go.MOCCOStandalone;
-import eva2.server.go.problems.InterfaceMultiObjectiveDeNovoProblem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import eva2.server.go.tools.GeneralGOEProperty;
 import eva2.tools.ReflectPackage;
-
-import java.awt.event.ActionListener;
+import java.awt.BorderLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
-import java.awt.*;
-import java.beans.PropertyEditorManager;
-import java.util.Vector;
+import java.awt.event.ActionListener;
+import javax.swing.*;
 
 /**
  * Created by IntelliJ IDEA.

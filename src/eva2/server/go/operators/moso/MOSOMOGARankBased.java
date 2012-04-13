@@ -1,7 +1,6 @@
 package eva2.server.go.operators.moso;
 
 import eva2.server.go.individuals.AbstractEAIndividual;
-import eva2.server.go.operators.archiving.ArchivingNSGAII;
 import eva2.server.go.populations.Population;
 
 /**

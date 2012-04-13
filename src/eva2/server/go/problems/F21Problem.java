@@ -1,9 +1,7 @@
 package eva2.server.go.problems;
 
-import java.util.Random;
-
-import eva2.gui.BeanInspector;
 import eva2.server.go.operators.postprocess.SolutionHistogram;
+import java.util.Random;
 
 /**
  * Langerman function: A non-separable function built from random peaks each of which is surrounded by circular ridges.

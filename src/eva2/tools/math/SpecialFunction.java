@@ -1,7 +1,5 @@
 package eva2.tools.math;
 
-import java.lang.Math;
-import java.lang.ArithmeticException;
 
 /*
 **************************************************************************

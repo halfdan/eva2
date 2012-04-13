@@ -279,12 +279,10 @@ public class BayNet {
 		toCalculate.addAll(getChildren(this.nodes[next]));
 		int[] parId = calculateSortedParentIds(next);
 		int prob = 0;
-		int cnt = 0;
 		for(int j=parId.length-1; j>=0; j--){
 			if(data.get(parId[j])){
 				prob += (int) Math.pow(2, j);
 			}
-			cnt++;
 		}
 		return this.nodes[next].getProbability(prob);
 	}

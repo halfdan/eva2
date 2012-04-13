@@ -1,8 +1,5 @@
 package eva2.server.go.mocco;
 
-
-import javax.swing.*;
-
 import eva2.server.go.InterfaceTerminator;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.operators.archiving.ArchivingAllDominating;
@@ -12,14 +9,10 @@ import eva2.server.go.problems.AbstractMultiObjectiveOptimizationProblem;
 import eva2.server.go.problems.InterfaceMultiObjectiveDeNovoProblem;
 import eva2.server.go.problems.InterfaceOptimizationObjective;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import eva2.server.go.strategies.GeneticAlgorithm;
 import eva2.server.go.strategies.InterfaceOptimizer;
 import eva2.server.go.strategies.MultiObjectiveEA;
-
+import java.awt.Color;
 import java.util.ArrayList;
-import java.awt.*;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 /**
  * Created by IntelliJ IDEA.

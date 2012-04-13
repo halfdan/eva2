@@ -1,15 +1,11 @@
 package eva2.tools;
 
-import javax.swing.JDialog;
-import java.awt.HeadlessException;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Frame;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.*;
 import java.util.ResourceBundle;
-import java.util.Locale;
+import javax.swing.*;
 
 /**
  * A modal dialog that asks the user for a user name and password.

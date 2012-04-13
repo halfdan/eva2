@@ -12,12 +12,7 @@ package eva2.tools;
 /*==========================================================================*
  * IMPORTS
  *==========================================================================*/
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.InetAddress;
 import java.util.Enumeration;
 import java.util.Properties;
@@ -83,7 +78,7 @@ public class EVAHELP {
     try {
        in.readLine();
     } catch (Exception e) {
-      System.out.println(""+e.getMessage());
+      System.out.println(e.getMessage());
     }
   }
   /**
@@ -104,13 +99,16 @@ public class EVAHELP {
     return sBuf.toString();
   }
   /**
-   *
+   * @param longName The FQDN of a class
+   * @return Returns the class Name without package.
    */
-  public static String cutClassName (String longName) {
-    int dotPos = longName.lastIndexOf('.');
-    if (dotPos != -1)
-      longName = longName.substring(dotPos + 1);
-    return longName; // now is shortName
+  public static String cutClassName(final String longName) {
+    final int dotPos = longName.lastIndexOf('.');
+    String className = longName;
+    if (dotPos != -1) {
+      className = className.substring(dotPos + 1);
+    }
+    return className; // now is shortName
   }
   /**
    *
@@ -118,12 +116,12 @@ public class EVAHELP {
   public static void freeMemory() {
     Runtime currR = Runtime.getRuntime();
     long freeM = currR.freeMemory();
-    freeM = (long)(freeM /1024);
+    freeM = (long) (freeM / 1024);
     //System.out.println("Available memory : "+freeM+" Kbytes");
     System.gc();
     currR = Runtime.getRuntime();
     freeM = currR.freeMemory();
-    freeM = (long)(freeM /1024);
+    freeM = (long) (freeM / 1024);
     //System.out.println("after gc:Available memory : "+freeM+" bytes");
   }
   
@@ -135,24 +133,28 @@ public class EVAHELP {
    * @param fileName
    */
   public static void logString(String msg, String fileName) {
-	  File f = new File(fileName);
+	  final File logFile = new File(fileName);
 	  try {
-		  BufferedWriter bW = new BufferedWriter(new PrintWriter(new FileOutputStream(f, f.exists())));
+		  BufferedWriter bW = new BufferedWriter(
+                          new PrintWriter(new FileOutputStream(logFile, logFile.exists()))
+                  );
 		  bW.write(msg);
 		  bW.close();
-	  } catch (Exception ex) {
+	  } catch (IOException ex) {
 		  System.err.println("couldnt log to destination " + fileName + ": " + ex.getMessage());
 	  }
   }
   
   /**
-   * Deletes the given file in the current directory. If the file does not exist,
-   * nothing happens.
+   * Deletes the given file in the current directory.
+   * If the file does not exist nothing happens.
    * 
-   * @param fileName
+   * @param fileName The name of the log file
    */
   public static void clearLog(String fileName) {
-	  File f = new File(fileName);
-	  if (f.exists()) f.delete();
+	  File logFile = new File(fileName);
+	  if (logFile.exists()) {
+              logFile.delete();
+          }
   }
 }

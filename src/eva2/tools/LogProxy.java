@@ -1,29 +1,9 @@
 package eva2.tools;
 
-import java.io.Serializable;
-
-/**
- * Title:        EvA2
- * Description:
- * Copyright:    Copyright (c) 2003
- * Company:      University of Tuebingen, Computer Architecture
- * @author Holger Ulmer, Felix Streichert, Hannes Planatscher
- * @version:  $Revision: 255 $
- *            $Date: 2007-11-15 14:58:12 +0100 (Thu, 15 Nov 2007) $
- *            $Author: mkron $
- */
-
-/*==========================================================================*
- * IMPORTS
- *==========================================================================*/
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-
-import java.net.InetAddress;
-
-import java.util.ArrayList;
 
 
 /*==========================================================================*

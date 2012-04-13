@@ -2,11 +2,10 @@ package eva2.server.go.problems;
 
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.ESIndividualDoubleData;
-import eva2.server.go.individuals.InterfaceDataTypeDouble;
 import eva2.server.go.populations.Population;
 import eva2.tools.SelectedTag;
 import eva2.tools.Tag;
-import eva2.tools.math.RNG;
+import java.io.Serializable;
 
 /**
  * Created by IntelliJ IDEA.
@@ -15,7 +14,7 @@ import eva2.tools.math.RNG;
  * Time: 13:23:43
  * To change this template use File | Settings | File Templates.
  */
-public class F7Problem extends AbstractProblemDoubleOffset implements java.io.Serializable {
+public class F7Problem extends AbstractProblemDoubleOffset implements Serializable {
 
     private double              m_t         = 250;
     private double              m_Change    = 4;

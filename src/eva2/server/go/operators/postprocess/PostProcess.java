@@ -1,10 +1,5 @@
 package eva2.server.go.operators.postprocess;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Vector;
-
 import eva2.OptimizerFactory;
 import eva2.OptimizerRunnable;
 import eva2.gui.BeanInspector;
@@ -31,14 +26,7 @@ import eva2.server.go.operators.mutation.MutateESRankMuCMA;
 import eva2.server.go.operators.selection.SelectBestIndividuals;
 import eva2.server.go.operators.terminators.EvaluationTerminator;
 import eva2.server.go.populations.Population;
-import eva2.server.go.problems.AbstractMultiModalProblemKnown;
-import eva2.server.go.problems.AbstractOptimizationProblem;
-import eva2.server.go.problems.FM0Problem;
-import eva2.server.go.problems.Interface2DBorderProblem;
-import eva2.server.go.problems.InterfaceHasSolutionViewer;
-import eva2.server.go.problems.InterfaceInterestingHistogram;
-import eva2.server.go.problems.InterfaceMultimodalProblemKnown;
-import eva2.server.go.problems.InterfaceSolutionViewer;
+import eva2.server.go.problems.*;
 import eva2.server.go.strategies.EvolutionStrategies;
 import eva2.server.go.strategies.GradientDescentAlgorithm;
 import eva2.server.go.strategies.HillClimbing;
@@ -48,6 +36,10 @@ import eva2.server.stat.InterfaceTextListener;
 import eva2.server.stat.StatsParameter;
 import eva2.tools.Pair;
 import eva2.tools.math.Mathematics;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Vector;
 
 
 /**

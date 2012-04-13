@@ -1696,18 +1696,20 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
 	        if (withIDs){
 	        	for (int i = 0; i < getMainSwarm().getPopulation().size(); ++i){
 	        		AbstractEAIndividual currentindy = getMainSwarm().getPopulation().getEAIndividual(i);
-	        		int particleindex = currentindy.getIndividualIndex();//((Integer)currentindy.getData("particleIndex")).intValue(); // should be unique and constant
+	        		int particleindex = currentindy.getIndividualIndex(); // should be unique and constant
 	        		
 	        		AbstractEAIndividual leader = (AbstractEAIndividual)currentindy.getData("MultiSwarmType");
 	        		int leaderIndex = 0;
-	        		if (leader != null)  leaderIndex = leader.getIndividualIndex();
+	        		if (leader != null) {
+                                    leaderIndex = leader.getIndividualIndex();
+                                }
 	        		
-	        		if (currentindy.getData("newParticleFlag")!=null){
-	        			plotCircleForIndy(currentindy,String.valueOf(particleindex)+" reinit");
+	        		if (currentindy.getData("newParticleFlag") != null){
+	        			plotCircleForIndy(currentindy,particleindex + " reinit");
 	        			currentindy.putData("newParticleFlag", null);
 	        		}else{
-	        			String info = String.valueOf(particleindex)+" ("+String.valueOf(leaderIndex)+")";
-	        			plotCircleForIndy(currentindy,info);
+	        			String info = particleindex+ " (" + leaderIndex + ")";
+	        			plotCircleForIndy(currentindy, info);
 	        		}
 	        	}
 	        }
@@ -1857,8 +1859,8 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
 		// from merging
 		if (mergingOccurd){
 			for (int i = 0; i < borgbest.size(); ++i){
-				plotCircleForIndy(borgbest.get(i), "merging "+String.valueOf(i));
-				plotCircleForIndy(othersbest.get(i), "merging "+String.valueOf(i));
+				plotCircleForIndy(borgbest.get(i), "merging " + i);
+				plotCircleForIndy(othersbest.get(i), "merging " + i);
 			}
 		}
 		
@@ -1866,8 +1868,8 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
 		if (absorbtionOccurd){
 			for (int i = 0; i < indytoabsorb.size(); ++i){
 				AbstractEAIndividual indy = indytoabsorb.get(i);
-				int particleIndex = indy.getIndividualIndex();//((Integer)indy.getData("particleIndex")).intValue();
-				plotCircleForIndy(indy, String.valueOf(particleIndex)+" absorbed");
+				int particleIndex = indy.getIndividualIndex();
+				plotCircleForIndy(indy, particleIndex + " absorbed");
 			}
 		}
 		

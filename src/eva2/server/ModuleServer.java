@@ -10,14 +10,6 @@ package eva2.server;
  *            $Date: 2007-12-06 16:05:11 +0100 (Thu, 06 Dec 2007) $
  *            $Author: mkron $
  */
-/*==========================================================================*
- * IMPORTS
- *==========================================================================*/
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Properties;
-
 import eva2.server.go.InterfaceGOParameters;
 import eva2.server.modules.GOModuleAdapter;
 import eva2.server.modules.ModuleAdapter;
@@ -25,10 +17,11 @@ import eva2.tools.EVAERROR;
 import eva2.tools.ReflectPackage;
 import eva2.tools.jproxy.MainAdapterClient;
 import eva2.tools.jproxy.RMIProxyLocal;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Properties;
 
-/*==========================================================================*
- * CLASS DECLARATION
- *==========================================================================*/
 /**
  * Collect available ModuleAdapter implementations and load them on request.
  */

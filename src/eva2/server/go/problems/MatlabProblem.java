@@ -1,23 +1,9 @@
 package eva2.server.go.problems;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.PrintStream;
-import java.io.Serializable;
-import java.util.Arrays;
-import java.util.BitSet;
-
 import eva2.OptimizerFactory;
 import eva2.OptimizerRunnable;
 import eva2.gui.BeanInspector;
-import eva2.server.go.PopulationInterface;
-import eva2.server.go.individuals.AbstractEAIndividual;
-import eva2.server.go.individuals.ESIndividualDoubleData;
-import eva2.server.go.individuals.GAIndividualBinaryData;
-import eva2.server.go.individuals.GIIndividualIntegerData;
-import eva2.server.go.individuals.InterfaceDataTypeBinary;
-import eva2.server.go.individuals.InterfaceDataTypeDouble;
-import eva2.server.go.individuals.InterfaceDataTypeInteger;
+import eva2.server.go.individuals.*;
 import eva2.server.go.operators.postprocess.InterfacePostProcessParams;
 import eva2.server.go.operators.postprocess.PostProcess;
 import eva2.server.go.operators.postprocess.PostProcessParams;
@@ -29,7 +15,12 @@ import eva2.server.go.operators.terminators.PopulationMeasureTerminator.Stagnati
 import eva2.server.go.populations.Population;
 import eva2.server.go.strategies.InterfaceOptimizer;
 import eva2.server.stat.InterfaceTextListener;
-import eva2.tools.ToolBox;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
+import java.io.Serializable;
+import java.util.Arrays;
+import java.util.BitSet;
 
 /**
  * Interface problem class for Matlab(TM). Towards EvA2 this behaves like any other double valued 

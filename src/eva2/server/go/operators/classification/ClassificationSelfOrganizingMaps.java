@@ -275,7 +275,6 @@ public class ClassificationSelfOrganizingMaps implements java.io.Serializable, I
     public void drikelWinnerTo(int[] w, double[] d, double a) {
         double[] vec = new double[this.m_SOM[w[0]][w[1]].length];
         double[] nec = new double[this.m_SOM[w[0]][w[1]].length];
-        double   dist;
 
         for (int i = 0; i < this.m_SOM[w[0]][w[1]].length; i++) {
             vec[i] = (d[i] - this.m_Range[i][2])/(1+this.m_Range[i][3]) - this.m_SOM[w[0]][w[1]][i];
@@ -288,7 +287,6 @@ public class ClassificationSelfOrganizingMaps implements java.io.Serializable, I
                     // not outside the array
                     if ((this.m_SOM.length > w[0]+i) && (w[0]+i>= 0)
                       && (this.m_SOM[0].length > w[1]+j) && (w[1]+j>= 0)) {
-                        dist  = Math.sqrt(i*i + j*j);
                         for (int k = 0; k < this.m_SOM[0][0].length; k++) {
                             nec[k] += (d[k] - this.m_Range[k][2])/(1+this.m_Range[k][3]) - this.m_SOM[w[0]+i][w[1]+j][k];
                         }

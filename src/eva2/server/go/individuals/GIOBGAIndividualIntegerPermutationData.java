@@ -1,8 +1,5 @@
 package eva2.server.go.individuals;
 
-
-import java.util.BitSet;
-
 import eva2.server.go.operators.mutation.InterfaceMutation;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;

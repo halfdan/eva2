@@ -1,15 +1,15 @@
 package eva2.server.go.mocco;
 
-
-import javax.swing.*;
-
-import eva2.gui.JParaPanel;
 import eva2.server.go.MOCCOStandalone;
-import eva2.server.go.problems.InterfaceOptimizationProblem;
-
-import java.awt.*;
-import java.awt.event.ActionListener;
+import java.awt.BorderLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 /**
  * Created by IntelliJ IDEA.

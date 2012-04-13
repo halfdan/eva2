@@ -3,10 +3,7 @@
  */
 package eva2.server.go.problems;
 
-import eva2.server.go.individuals.AbstractEAIndividual;
-import eva2.server.go.individuals.InterfaceDataTypeDouble;
 import eva2.server.go.populations.Population;
-import eva2.server.go.strategies.InterfaceOptimizer;
 
 /** 
  * A synchronous problem changes in equal intervals. As the EA takes notice of the

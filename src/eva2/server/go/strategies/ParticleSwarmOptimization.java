@@ -1,41 +1,30 @@
 package eva2.server.go.strategies;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Vector;
-
 import eva2.gui.BeanInspector;
 import eva2.gui.GenericObjectEditor;
 import eva2.gui.TopoPlot;
 import eva2.server.go.InterfacePopulationChangedEventListener;
 import eva2.server.go.PopulationInterface;
 import eva2.server.go.enums.PSOTopologyEnum;
-import eva2.server.go.enums.PostProcessMethod;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.AbstractEAIndividualComparator;
 import eva2.server.go.individuals.InterfaceDataTypeDouble;
-import eva2.server.go.operators.distancemetric.EuclideanMetric;
 import eva2.server.go.operators.distancemetric.PhenotypeMetric;
 import eva2.server.go.operators.paramcontrol.ParamAdaption;
 import eva2.server.go.operators.paramcontrol.ParameterControlManager;
-import eva2.server.go.operators.postprocess.PostProcess;
 import eva2.server.go.populations.InterfaceSolutionSet;
 import eva2.server.go.populations.Population;
 import eva2.server.go.populations.SolutionSet;
-import eva2.server.go.problems.AbstractOptimizationProblem;
-import eva2.server.go.problems.F1Problem;
-import eva2.server.go.problems.Interface2DBorderProblem;
-import eva2.server.go.problems.InterfaceAdditionalPopulationInformer;
-import eva2.server.go.problems.InterfaceOptimizationProblem;
-import eva2.server.go.problems.InterfaceProblemDouble;
-import eva2.tools.EVAERROR;
+import eva2.server.go.problems.*;
 import eva2.tools.SelectedTag;
 import eva2.tools.chart2d.DPoint;
 import eva2.tools.chart2d.DPointSet;
+import eva2.tools.math.Jama.Matrix;
 import eva2.tools.math.Mathematics;
 import eva2.tools.math.RNG;
-import eva2.tools.math.Jama.Matrix;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Vector;
 
 
 /** 

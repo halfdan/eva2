@@ -9,14 +9,11 @@ package eva2.gui;
  *            $Date: 2007-10-25 16:11:23 +0200 (Thu, 25 Oct 2007) $
  *            $Author: mkron $
  */
-/*==========================================================================*
- * IMPORTS
- *==========================================================================*/
-import javax.swing.*;
-import javax.swing.tree.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Enumeration;
+import javax.swing.*;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreePath;
 
 /**
  *

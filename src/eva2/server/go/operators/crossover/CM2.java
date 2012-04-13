@@ -1,13 +1,11 @@
 package eva2.server.go.operators.crossover;
 
-import java.util.BitSet;
-
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceDataTypeBinary;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import eva2.server.go.strategies.BinaryScatterSearch;
 import eva2.tools.math.RNG;
+import java.util.BitSet;
 
 /**
  * This crossover-Method performs an \"intersection\" of the selected Individuals

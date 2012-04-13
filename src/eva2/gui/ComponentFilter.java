@@ -9,9 +9,6 @@ package eva2.gui;
  *            $Date: 2006-01-18 11:02:22 +0100 (Wed, 18 Jan 2006) $
  *            $Author: streiche $
  */
-/*==========================================================================*
- * IMPORTS
- *==========================================================================*/
-public interface ComponentFilter{
-  public boolean accept(java.awt.Component c);
+public interface ComponentFilter {
+  public boolean accept(java.awt.Component component);
 }
