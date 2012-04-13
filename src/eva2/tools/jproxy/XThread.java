@@ -1,8 +1,7 @@
 package eva2.tools.jproxy;
 
-import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.io.Serializable;
+import java.lang.reflect.Method;
 
 /*
  *  ==========================================================================*
@@ -17,7 +16,6 @@ public class XThread extends Thread implements Serializable {
   private static XThread[] m_Instances;
   private static int m_MAXinstances = 10;
   private static int m_index = 0;
-  public static boolean TRACE = false;
 
   public static void init(int x) {
     m_MAXinstances = x;
@@ -47,8 +45,7 @@ public class XThread extends Thread implements Serializable {
   /**
    *
    */
-  public static XThread getXThread(Object x, Method m, Object[] Para, int MAXinstances) {
-	  if (TRACE) System.out.println("getXThread2 CALLLED");
+  public static XThread getXThread(Object x, Method m, Object[] Para, int MAXinstances) {	  
     //System.out.println("waiting "+m_instances+ " on "+x.hashCode()+ " m "+m.getName()+" m_MAXinstances " +MAXinstances);
     XThread ret = null;
     if (m_Instances == null)
@@ -88,46 +85,12 @@ public class XThread extends Thread implements Serializable {
       }
 
     } // end of while true
-
-//    int i=1;
-//    while (m_instances >= MAXinstances) {
-//    //      if (i>200)
-//    //     System.out.println(i+ " waiting "+m_instances+ " on "+x.hashCode()+ " m "+m.getName()+" m_MAXinstances " +MAXinstances);
-//    //       pleasewait();
-//      try {
-//        Thread.sleep(i);
-//        i=2*i; //System.out.println(""+i);
-//      } catch (Exception e) {
-//        System.out.println("Error in sleep of XThread");
-//      }
-//    }
-//    instup();//m_instances++;
-//    if (
-//    XThread ret = new XThread(x, m, Para);
-//    //     m_ThreadContainer.add(ret);
-//    return ret;
-
   }
 
   /**
    *
    */
   public static XThread getXThread(Object x, String m, Object[] Para, int MAXinstances) {
-	  if (TRACE) System.out.println("getXThread1 CALLLED");
-//    while (m_instances >= MAXinstances) {
-//      //System.out.println("waiting "+m_instances);
-//      //pleasewait();
-//      try {
-//        Thread.sleep(50);
-//      } catch (Exception e) {
-//        System.out.println("Error in sleep of XThread");
-//      }
-//    }
-//    instup(); //m_instances++;
-//    //System.out.println("XThread ++"+m_instances+" m_MAXinstances " +m_MAXinstances);
-//    XThread ret = new XThread(x, Method, Para);
-//    //    m_ThreadContainer.add(ret);
-//    return ret;
     XThread ret = null;
      if (m_Instances == null)
        init(MAXinstances);
@@ -169,27 +132,10 @@ public class XThread extends Thread implements Serializable {
 
   }
 
-  /**
-   *
-   */
-//  public static synchronized void pleasewait() {
-//    for (int i = 0; i < m_ThreadContainer.size(); i++) {
-//      try {
-//        if (((Thread) m_ThreadContainer.get(i)).isAlive()==false)
-//          m_ThreadContainer.remove(i);
-//      } catch (InterruptedException e) {
-//        e.printStackTrace();
-//        System.out.println("Error");
-//      }
-//    }
-//  }
-
   private void removemyself() {
     for (int i = 0; i < m_Instances.length; i++) {
-//    	if (TRACE) System.out.println("TRYING TO REMOVE");
       if (this.m_Instances[i] == this) {
         this.m_Instances[i] = null;
-        if (TRACE) System.out.println("REMOVED THREAD");
         return;
       }
     }
@@ -199,7 +145,6 @@ public class XThread extends Thread implements Serializable {
    *
    */
   private XThread(Object object, Method method, Object[] Para) {
-	  if (TRACE) System.out.println("XTHREAD INSTANZIERT");
     m_Object = object;
     m_Para = Para;
     m_Method = method;
@@ -210,7 +155,6 @@ public class XThread extends Thread implements Serializable {
    *
    */
   private XThread(Object x, String method, Object[] Para) {
-	  if (TRACE)  System.out.println("XTHREAD INSTANZIERT");
     m_Object = x;
     m_Para = Para;
     try {
@@ -232,18 +176,10 @@ public class XThread extends Thread implements Serializable {
    *
    */
   public void run() {
-	  if (TRACE) System.out.println("XTHREAD CALLED RUN on " + this);
     if (m_Method != null) {
       //setPriority(Thread.MAX_PRIORITY);
       try {
-    	  if (TRACE) System.out.println("XTHREAD calling m_Method "+m_Method.getName());
-        //System.out.print("--->");
-        //this.setPriority(Thread.MAX_PRIORITY);
         m_Method.invoke(m_Object, m_Para);
-
-        //instdown(); //m_instances--;
-        //System.out.println("<--");
-        //System.out.println("XThread --"+m_instances+" m_MAXinstances " +m_MAXinstances);
       } catch (Exception e) {
         System.err.println("ERROR +" + e.getMessage());
         e.printStackTrace();
