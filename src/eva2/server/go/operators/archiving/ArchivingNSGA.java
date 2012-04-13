@@ -1,8 +1,5 @@
 package eva2.server.go.operators.archiving;
 
-
-import java.util.ArrayList;
-
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.populations.Population;
 
@@ -17,11 +14,11 @@ public class ArchivingNSGA extends AbstractArchiving implements java.io.Serializ
 
     public InterfaceRemoveSurplusIndividuals m_Cleaner = new RemoveSurplusIndividualsDynamicHyperCube();
 
-    public ArchivingNSGA() {     
+    public ArchivingNSGA() {
     }
 
     public ArchivingNSGA(ArchivingNSGA a) {
-        this.m_Cleaner  = (InterfaceRemoveSurplusIndividuals)a.m_Cleaner.clone();
+        this.m_Cleaner  = (InterfaceRemoveSurplusIndividuals) a.m_Cleaner.clone();
     }
 
     public Object clone() {

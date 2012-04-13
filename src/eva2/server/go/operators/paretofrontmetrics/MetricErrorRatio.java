@@ -1,17 +1,13 @@
 package eva2.server.go.operators.paretofrontmetrics;
 
 
-import java.io.ByteArrayInputStream;
-import java.util.Properties;
-import java.util.ArrayList;
-
 import eva2.gui.PropertyFilePath;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.operators.archiving.ArchivingAllDominating;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.AbstractMultiObjectiveOptimizationProblem;
 import eva2.server.go.tools.FileTools;
-import eva2.tools.ResourceLoader;
+import java.util.ArrayList;
 
 
 /** The error ratio metric only suited for small discrete

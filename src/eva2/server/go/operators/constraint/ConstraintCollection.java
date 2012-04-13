@@ -1,7 +1,5 @@
 package eva2.server.go.operators.constraint;
 
-import eva2.server.go.individuals.AbstractEAIndividual;
-
 /**
  * To handle a set of constraints with a single parameter adaption mechanism. 
  * Single constraints are 

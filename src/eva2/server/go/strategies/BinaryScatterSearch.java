@@ -240,7 +240,6 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
 	 * @return		the new Population
 	 */
 	private Population generateG1(int numToInit){
-		boolean method1 = true;
 		Population pop = generateG1Pop(numToInit, this.template);
 		for (int i=0; i<pop.size(); i++) {
 			evaluate(pop.getEAIndividual(i));

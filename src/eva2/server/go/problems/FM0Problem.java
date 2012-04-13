@@ -1,11 +1,7 @@
 package eva2.server.go.problems;
 
-import java.io.Serializable;
-
 import eva2.server.go.individuals.ESIndividualDoubleData;
-import eva2.server.go.strategies.InterfaceOptimizer;
-
-import eva2.server.go.problems.Interface2DBorderProblem;
+import java.io.Serializable;
 
 /**
  * Created by IntelliJ IDEA.

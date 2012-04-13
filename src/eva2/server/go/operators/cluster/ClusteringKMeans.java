@@ -1,7 +1,5 @@
 package eva2.server.go.operators.cluster;
 
-import java.util.Arrays;
-
 import eva2.gui.GraphPointSet;
 import eva2.gui.Plot;
 import eva2.server.go.individuals.AbstractEAIndividual;
@@ -14,7 +12,7 @@ import eva2.server.go.problems.F1Problem;
 import eva2.tools.chart2d.Chart2DDPointIconCircle;
 import eva2.tools.chart2d.Chart2DDPointIconText;
 import eva2.tools.chart2d.DPoint;
-import eva2.tools.math.RNG;
+import java.util.Arrays;
 
 /** The k-mean clustering algorithms. I guess it is not a hierachical
  * clustering method.

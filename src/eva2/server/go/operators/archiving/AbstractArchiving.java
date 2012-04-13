@@ -2,7 +2,6 @@ package eva2.server.go.operators.archiving;
 
 import eva2.gui.*;
 import eva2.server.go.individuals.AbstractEAIndividual;
-import eva2.server.go.individuals.ESIndividualDoubleData;
 import eva2.server.go.populations.Population;
 import eva2.tools.chart2d.Chart2DDPointIconCross;
 import eva2.tools.chart2d.DPoint;

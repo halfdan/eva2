@@ -1,8 +1,5 @@
 package eva2.server.go.operators.crossover;
 
-
-import java.util.ArrayList;
-
 import eva2.gui.Plot;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.ESIndividualDoubleData;

@@ -1,9 +1,6 @@
 package eva2.server.go.problems;
 
-import eva2.server.go.individuals.AbstractEAIndividual;
-import eva2.server.go.individuals.ESIndividualDoubleData;
-import eva2.server.go.individuals.InterfaceDataTypeDouble;
-import eva2.server.go.populations.Population;
+import java.io.Serializable;
 
 /**
  * Created by IntelliJ IDEA.
@@ -12,7 +9,7 @@ import eva2.server.go.populations.Population;
  * Time: 14:59:33
  * To change this template use File | Settings | File Templates.
  */
-public class F12Problem extends AbstractProblemDoubleOffset implements java.io.Serializable {
+public class F12Problem extends AbstractProblemDoubleOffset implements Serializable {
 	private final static double f12range = 5.;
 
     public F12Problem() {

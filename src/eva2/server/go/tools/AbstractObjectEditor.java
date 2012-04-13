@@ -3,20 +3,14 @@ package eva2.server.go.tools;
 
 import javax.swing.*;
 
-import eva2.client.EvAClient;
 import eva2.gui.*;
 import eva2.tools.EVAHELP;
 
 import java.beans.*;
-import java.io.File;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.StringTokenizer;
-import java.util.Vector;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.util.Hashtable;
 
 /**
  * TODO

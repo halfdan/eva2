@@ -1,12 +1,9 @@
 package eva2.server.go.operators.archiving;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Vector;
-
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.AbstractEAIndividualComparator;
 import eva2.server.go.populations.Population;
+import java.util.Arrays;
 
 public class ArchivingNSGAIISMeasure extends ArchivingNSGAII {
 

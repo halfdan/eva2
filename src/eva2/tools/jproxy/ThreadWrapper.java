@@ -9,18 +9,10 @@ package eva2.tools.jproxy;
  *            $Date: 2004/04/28 07:50:33 $
  *            $Author: ulmerh $
  */
-/*==========================================================================*
- * IMPORTS
- *==========================================================================*/
+
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.io.Serializable;
 
-/*
- *  ==========================================================================*
- *  CLASS DECLARATION
- *  ==========================================================================
- */
 public class ThreadWrapper extends ArrayList {
   private int m_counter = 0;
   private ArrayList m_ThreadContainer = new ArrayList();

@@ -9,16 +9,14 @@ package eva2.gui;
  *            $Date: 2007-10-23 16:58:12 +0200 (Tue, 23 Oct 2007) $
  *            $Author: mkron $
  */
-/*==========================================================================*
- * IMPORTS
- *==========================================================================*/
+import eva2.EvAInfo;
+import eva2.tools.BasicResourceLoader;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
@@ -27,10 +25,6 @@ import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLFrameHyperlinkEvent;
-
-import eva2.EvAInfo;
-import eva2.client.EvAClient;
-import eva2.tools.BasicResourceLoader;
 /**
  *
  */

@@ -1,8 +1,5 @@
 package eva2.server.go.operators.archiving;
 
-
-import java.util.ArrayList;
-
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.operators.moso.MOSOMaxiMin;
 import eva2.server.go.operators.selection.InterfaceSelection;

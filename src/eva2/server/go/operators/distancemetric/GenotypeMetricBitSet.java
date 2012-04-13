@@ -1,11 +1,9 @@
 package eva2.server.go.operators.distancemetric;
 
 
-import java.util.BitSet;
-
 import eva2.server.go.individuals.AbstractEAIndividual;
-import eva2.server.go.individuals.InterfaceDataTypeDouble;
 import eva2.server.go.individuals.InterfaceGAIndividual;
+import java.util.BitSet;
 
 /** Distance based on a bit-set if any.
  * Created by IntelliJ IDEA.

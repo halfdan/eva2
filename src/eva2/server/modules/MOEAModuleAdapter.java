@@ -1,16 +1,7 @@
 package eva2.server.modules;
 
-
-import java.io.Serializable;
-import java.util.ArrayList;
-
-import eva2.gui.JParaPanel;
-import eva2.server.EvAServer;
-import eva2.server.go.InterfaceGOParameters;
-import eva2.server.stat.InterfaceStatisticsParameter;
-import eva2.server.stat.StatisticsWithGUI;
 import eva2.tools.jproxy.MainAdapterClient;
-import eva2.tools.jproxy.RMIProxyLocal;
+import java.io.Serializable;
 
 
 /** This the MOEA module adapter necessary to access this implementation

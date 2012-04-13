@@ -1,17 +1,5 @@
 package eva2.server.stat;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.PrintWriter;
-import java.io.Serializable;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-
 import eva2.gui.BeanInspector;
 import eva2.server.go.IndividualInterface;
 import eva2.server.go.PopulationInterface;
@@ -25,6 +13,12 @@ import eva2.tools.StringSelection;
 import eva2.tools.StringTools;
 import eva2.tools.ToolBox;
 import eva2.tools.math.Mathematics;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * An abstract class handling statistics. Most important stuff happens in startOptPerformed, stopOptPerformed

@@ -1,17 +1,14 @@
 package eva2.server.go.operators.mutation;
 
-import java.io.Serializable;
-import java.util.Arrays;
-
-import eva2.gui.BeanInspector;
 import eva2.server.go.InterfacePopulationChangedEventListener;
 import eva2.server.go.individuals.InterfaceDataTypeDouble;
-import eva2.server.go.operators.selection.probability.SelProbNonLinearRanking;
 import eva2.server.go.populations.Population;
 import eva2.server.go.strategies.EvolutionStrategies;
 import eva2.tools.EVAERROR;
-import eva2.tools.math.Mathematics;
 import eva2.tools.math.Jama.Matrix;
+import eva2.tools.math.Mathematics;
+import java.io.Serializable;
+import java.util.Arrays;
 
 
 /**

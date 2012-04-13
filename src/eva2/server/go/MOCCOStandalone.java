@@ -1,43 +1,25 @@
 package eva2.server.go;
 
-
-import javax.swing.*;
-
-import eva2.gui.*;
+import eva2.gui.JParaPanel;
+import eva2.gui.PropertyDoubleArray;
 import eva2.server.go.individuals.AbstractEAIndividual;
-import eva2.server.go.mocco.InterfaceProcessElement;
-import eva2.server.go.mocco.MOCCOChooseMOStrategy;
-import eva2.server.go.mocco.MOCCOChooseReferencePoint;
-import eva2.server.go.mocco.MOCCOChooseReferenceSolution;
-import eva2.server.go.mocco.MOCCOInitialPopulationSize;
-import eva2.server.go.mocco.MOCCOParameterizeGDF;
-import eva2.server.go.mocco.MOCCOParameterizeMO;
-import eva2.server.go.mocco.MOCCOParameterizeRefPoint;
-import eva2.server.go.mocco.MOCCOParameterizeSO;
-import eva2.server.go.mocco.MOCCOParameterizeSTEP;
-import eva2.server.go.mocco.MOCCOParameterizeTchebycheff;
-import eva2.server.go.mocco.MOCCOProblemInitialization;
-import eva2.server.go.mocco.MOCCOProblemRedefinition;
-import eva2.server.go.mocco.MOCCOState;
+import eva2.server.go.mocco.*;
 import eva2.server.go.mocco.paretofrontviewer.MOCCOViewer;
 import eva2.server.go.operators.moso.InterfaceMOSOConverter;
 import eva2.server.go.operators.moso.MOSOWeightedFitness;
 import eva2.server.go.operators.terminators.EvaluationTerminator;
 import eva2.server.go.populations.Population;
-import eva2.server.go.problems.AbstractMultiObjectiveOptimizationProblem;
-import eva2.server.go.problems.InterfaceMultiObjectiveDeNovoProblem;
-import eva2.server.go.problems.InterfaceOptimizationObjective;
-import eva2.server.go.problems.InterfaceOptimizationProblem;
-import eva2.server.go.problems.TF1Problem;
+import eva2.server.go.problems.*;
 import eva2.server.go.strategies.InterfaceOptimizer;
 import eva2.server.go.strategies.IslandModelEA;
-import eva2.server.go.tools.GeneralGOEProperty;
-import eva2.tools.jproxy.ThreadProxy;
-
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.Serializable;
 import java.io.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.util.ArrayList;
+import javax.swing.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -46,7 +28,7 @@ import java.util.ArrayList;
  * Time: 14:31:56
  * To change this template use File | Settings | File Templates.
  */
-public class MOCCOStandalone implements InterfaceGOStandalone, InterfacePopulationChangedEventListener, java.io.Serializable {
+public class MOCCOStandalone implements InterfaceGOStandalone, InterfacePopulationChangedEventListener, Serializable {
 
     public volatile MOCCOState  m_State;
     private SwingWorker         worker;

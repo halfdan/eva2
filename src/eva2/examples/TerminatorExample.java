@@ -1,8 +1,14 @@
 package eva2.examples;
+
 import eva2.OptimizerFactory;
+import eva2.server.go.operators.terminators.CombinedTerminator;
+import eva2.server.go.operators.terminators.EvaluationTerminator;
+import eva2.server.go.operators.terminators.FitnessConvergenceTerminator;
+import eva2.server.go.operators.terminators.PhenotypeConvergenceTerminator;
+import eva2.server.go.operators.terminators.PopulationMeasureTerminator.ChangeTypeEnum;
+import eva2.server.go.operators.terminators.PopulationMeasureTerminator.DirectionTypeEnum;
+import eva2.server.go.operators.terminators.PopulationMeasureTerminator.StagnationTypeEnum;
 import eva2.server.go.problems.F1Problem;
-import eva2.server.go.operators.terminators.*;
-import eva2.server.go.operators.terminators.PopulationMeasureTerminator.*;
 
 public class TerminatorExample {
 	public static void main(String[] args) {

@@ -1,22 +1,14 @@
 package eva2.server.go.mocco;
 
+import eva2.server.go.MOCCOStandalone;
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-
-import eva2.gui.PropertyBoolSelector;
-import eva2.gui.PropertyPanel;
-import eva2.gui.PropertyText;
-import eva2.gui.PropertyValueSelector;
-import eva2.server.go.MOCCOStandalone;
-import eva2.server.go.tools.GeneralGOEProperty;
 
 /**
  * Created by IntelliJ IDEA.

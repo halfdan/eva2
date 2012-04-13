@@ -1,9 +1,6 @@
 package eva2.server.modules;
 
-import java.io.Serializable;
-
 import eva2.server.go.InterfaceGOParameters;
-import eva2.server.go.InterfacePopulationChangedEventListener;
 import eva2.server.go.operators.selection.InterfaceSelection;
 import eva2.server.go.operators.terminators.EvaluationTerminator;
 import eva2.server.go.populations.Population;
@@ -11,6 +8,7 @@ import eva2.server.go.problems.B1Problem;
 import eva2.server.go.strategies.InterfaceOptimizer;
 import eva2.server.go.strategies.PopulationBasedIncrementalLearning;
 import eva2.tools.Serializer;
+import java.io.Serializable;
 
 
 /** The class gives access to all PBIL parameters for the EvA

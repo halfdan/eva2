@@ -1,11 +1,9 @@
 package eva2.server.go.operators.distancemetric;
 
-import java.io.Serializable;
-
 import eva2.server.go.individuals.AbstractEAIndividual;
-import eva2.server.go.strategies.ParticleSwarmOptimization;
 import eva2.tools.EVAERROR;
 import eva2.tools.math.Mathematics;
+import java.io.Serializable;
 
 /**
  * Calculate the euclidean difference between discrete integrals, which is 
@@ -19,13 +17,13 @@ import eva2.tools.math.Mathematics;
  *
  */
 public class DoubleIntegralMetric implements InterfaceDistanceMetric, Serializable {
-	boolean oneNormed=true; // if true, the vectors are normed to unity sum before comparison.
+	boolean oneNormed = true; // if true, the vectors are normed to unity sum before comparison.
 //	String indyDataKey=null;
 	
 	public DoubleIntegralMetric() {}
 	
 	public DoubleIntegralMetric(boolean normed) {
-		oneNormed=normed;
+		oneNormed = normed;
 	}
 	
     public Object clone() {

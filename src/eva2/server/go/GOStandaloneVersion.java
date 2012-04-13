@@ -1,31 +1,5 @@
 package eva2.server.go;
 
-import java.awt.BorderLayout;
-import java.awt.List;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.net.InetAddress;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JProgressBar;
-import javax.swing.JTabbedPane;
-import javax.swing.SwingUtilities;
-
-import eva2.client.EvAClient;
 import eva2.gui.BeanInspector;
 import eva2.gui.JParaPanel;
 import eva2.server.go.individuals.AbstractEAIndividual;
@@ -47,6 +21,18 @@ import eva2.server.modules.GOParameters;
 import eva2.tools.TokenHolder;
 import eva2.tools.jproxy.ThreadProxy;
 import eva2.tools.math.RNG;
+import java.awt.BorderLayout;
+import java.awt.List;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.*;
+import java.net.InetAddress;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import javax.swing.*;
 
 /**
  * Created by IntelliJ IDEA.

@@ -1,3 +1,4 @@
+package eva2.tools.math;
 ///////////////////////////////////////////////////////////////////////////////
 //  Filename: $RCSfile: StatisticUtils.java,v $
 //  Purpose:  Interface definition for calling external programs from JOELib.
@@ -11,15 +12,10 @@
 //  Copyright (c) Dept. Computer Architecture, University of Tuebingen, Germany
 //
 ///////////////////////////////////////////////////////////////////////////////
-
-package eva2.tools.math;
-
-import java.util.ArrayList;
-import java.util.Collections;
-
-import eva2.gui.BeanInspector;
 import eva2.server.go.problems.AbstractProblemDouble;
 import eva2.tools.math.Jama.Matrix;
+import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Statistic utils.

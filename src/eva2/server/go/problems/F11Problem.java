@@ -1,9 +1,6 @@
 package eva2.server.go.problems;
 
-import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.ESIndividualDoubleData;
-import eva2.server.go.individuals.InterfaceDataTypeDouble;
-import eva2.server.go.populations.Population;
 
 /**
  * Created by IntelliJ IDEA.

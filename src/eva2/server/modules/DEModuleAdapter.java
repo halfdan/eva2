@@ -1,6 +1,5 @@
 package eva2.server.modules;
 
-import eva2.gui.GenericObjectEditor;
 import eva2.tools.jproxy.MainAdapterClient;
 
 

@@ -1,23 +1,15 @@
 package eva2.server.modules;
 
-
-import java.io.Serializable;
-
 import eva2.server.go.InterfaceGOParameters;
-import eva2.server.go.InterfacePopulationChangedEventListener;
-import eva2.server.go.InterfaceTerminator;
 import eva2.server.go.operators.archiving.InterfaceArchiving;
 import eva2.server.go.operators.archiving.InterfaceInformationRetrieval;
 import eva2.server.go.operators.terminators.EvaluationTerminator;
 import eva2.server.go.populations.Population;
-import eva2.server.go.problems.F1Problem;
-import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.server.go.problems.TF1Problem;
-import eva2.server.go.strategies.DifferentialEvolution;
 import eva2.server.go.strategies.InterfaceOptimizer;
 import eva2.server.go.strategies.MultiObjectiveEA;
-import eva2.tools.SelectedTag;
 import eva2.tools.Serializer;
+import java.io.Serializable;
 
 /** The class gives access to all MOEA parameters for the EvA
  * top level GUI.

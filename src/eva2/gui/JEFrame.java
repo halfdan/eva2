@@ -14,8 +14,10 @@ import javax.swing.JFrame;
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.ActionEvent;
+import java.awt.event.WindowListener;
 
 public class JEFrame extends JFrame {
 	private boolean closeAllOnClose=false;

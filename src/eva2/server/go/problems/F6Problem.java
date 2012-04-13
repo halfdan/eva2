@@ -1,18 +1,17 @@
 package eva2.server.go.problems;
 
 import eva2.server.go.individuals.ESIndividualDoubleData;
-import eva2.tools.math.Mathematics;
 import eva2.server.go.operators.postprocess.SolutionHistogram;
 import eva2.server.go.populations.Population;
 import eva2.server.go.strategies.GradientDescentAlgorithm;
-import eva2.tools.math.Jama.Matrix;
+import java.io.Serializable;
 
 /**
  * Generalized Rastrigin's function.
  * 
  */
 public class F6Problem extends AbstractProblemDoubleOffset
-implements InterfaceMultimodalProblem, InterfaceFirstOrderDerivableProblem, InterfaceLocalSearchable, java.io.Serializable, InterfaceInterestingHistogram {
+implements InterfaceMultimodalProblem, InterfaceFirstOrderDerivableProblem, InterfaceLocalSearchable, Serializable, InterfaceInterestingHistogram {
     private double          m_A     = 10;
     private double          m_Omega = 2*Math.PI;
 	private transient GradientDescentAlgorithm localSearchOptimizer=null;
