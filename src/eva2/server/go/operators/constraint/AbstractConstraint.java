@@ -1,17 +1,11 @@
 package eva2.server.go.operators.constraint;
 
-import java.io.Serializable;
-
 import eva2.gui.GenericObjectEditor;
 import eva2.server.go.individuals.AbstractEAIndividual;
-import eva2.server.go.operators.paramcontrol.ConstantParameters;
-import eva2.server.go.operators.paramcontrol.GenericParamAdaption;
-import eva2.server.go.operators.paramcontrol.InterfaceParameterControl;
-import eva2.server.go.operators.paramcontrol.NoParamAdaption;
-import eva2.server.go.operators.paramcontrol.ParamAdaption;
-import eva2.server.go.operators.paramcontrol.ParameterControlManager;
+import eva2.server.go.operators.paramcontrol.*;
 import eva2.server.go.problems.AbstractProblemDouble;
 import eva2.tools.EVAERROR;
+import java.io.Serializable;
 
 /**
  * An abstract constraint contains a penalty factor with control strategy (for dynamic penalties)
