@@ -49,11 +49,11 @@ public class EvAModuleButtonPanelMaker implements RemoteStateListener, Serializa
 	/**
 	 *
 	 */
-	public EvAModuleButtonPanelMaker(ModuleAdapter Adapter, boolean state) {
+	public EvAModuleButtonPanelMaker(ModuleAdapter adapter, boolean state) {
 		m_Name = "GENERAL";
 		m_StateRunning = state;
 		if (TRACE) System.out.println("Constructor EvAModuleButtonPanelMaker:");
-		m_Adapter = Adapter;
+		m_Adapter = adapter;
 	}
 
 	public JComponent makePanel() {

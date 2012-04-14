@@ -9,9 +9,6 @@ package eva2.gui;
  *            $Date: 2007-10-23 12:56:51 +0200 (Tue, 23 Oct 2007) $
  *            $Author: mkron $
  */
-/*==========================================================================*
- * IMPORTS
- *==========================================================================*/
 import java.awt.BorderLayout;
 import java.awt.Point;
 import java.awt.Toolkit;
@@ -31,46 +28,41 @@ import javax.swing.event.ChangeListener;
 
 import eva2.EvAInfo;
 import eva2.tools.BasicResourceLoader;
-/*==========================================================================*
- * CLASS DECLARATION
- *==========================================================================*/
 /**
  *
  */
 public class LogPanel extends JPanel {
 //	protected JLabel m_Message = new JLabel("OK");
-	protected JTextArea m_LogText = new JTextArea(10,20);
+	protected JTextArea loggingTextArea = new JTextArea(10,20);
 	protected boolean m_first = true;
 	/**
 	 *
 	 */
 	public LogPanel() {
-		m_LogText.setEditable(false);
-		m_LogText.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));
-//		m_Message.setBorder(BorderFactory.createCompoundBorder(
-//		BorderFactory.createTitledBorder("Message"),
-//		BorderFactory.createEmptyBorder(0,4,4,4)));
-		JPanel panel_1 = new JPanel();
-		panel_1.setBorder(BorderFactory.createTitledBorder("Info"));
-		panel_1.setLayout(new BorderLayout());
-		final JScrollPane scrollpane = new JScrollPane(m_LogText);
+		loggingTextArea.setEditable(false);
+		loggingTextArea.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));
+
+		JPanel mainPanel = new JPanel();
+		mainPanel.setBorder(BorderFactory.createTitledBorder("Info"));
+		mainPanel.setLayout(new BorderLayout());
+		final JScrollPane scrollpane = new JScrollPane(loggingTextArea);
 //		scrollpane.setAutoscrolls(false);
-		panel_1.add(scrollpane, BorderLayout.CENTER);
+		mainPanel.add(scrollpane, BorderLayout.CENTER);
 		scrollpane.getViewport().addChangeListener(new ChangeListener() {
 			private int lastHeight;
 			//
 			public void stateChanged(ChangeEvent e) {
 				JViewport viewport = (JViewport)e.getSource();
-				int Height = viewport.getViewSize().height;
-				if (Height != lastHeight) {
-					lastHeight = Height;
-					int x = Height - viewport.getExtentSize().height;
+				int height = viewport.getViewSize().height;
+				if (height != lastHeight) {
+					lastHeight = height;
+					int x = height - viewport.getExtentSize().height;
 					viewport.setViewPosition(new Point(0, x));
 				}
 			}
 		});
 		setLayout(new BorderLayout());
-		add(panel_1, BorderLayout.CENTER);
+		add(mainPanel, BorderLayout.CENTER);
 		JPanel panel_2 = new JPanel();
 		panel_2.setLayout(new BorderLayout());
 //		panel_2.add(m_Message,BorderLayout.CENTER);
@@ -88,15 +80,11 @@ public class LogPanel extends JPanel {
 	public void logMessage(String message) {
 		if (m_first)
 			m_first = false;
-		m_LogText.append("\n");
-		m_LogText.append(LogPanel.getTimestamp() + ' ' + message);
+		loggingTextArea.append("\n");
+		loggingTextArea.append(LogPanel.getTimestamp() + ' ' + message);
 	}
-//	/**
-//	*
-//	*/
-//	public void statusMessage(String message) {
-//	m_Message.setText(message);
-//	}
+
+        
 	/**
 	 *
 	 */
