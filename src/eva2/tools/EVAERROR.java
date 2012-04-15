@@ -11,12 +11,7 @@ import java.util.HashMap;
  *            $Date: 2007-11-08 17:24:53 +0100 (Thu, 08 Nov 2007) $
  *            $Author: mkron $
  */
-/*==========================================================================*
- * IMPORTS
- *==========================================================================*/
-/*==========================================================================*
- * CLASS DECLARATION
- *==========================================================================*/
+
 /**
  *
  */
@@ -55,6 +50,7 @@ public class EVAERROR {
   static public void WARNING(String Message) {
 //     if (MAIL_ON_WARNING)
 //      EVAMail.SendMail("EvA EXIT on ERROR !! ",Message,"ulmerh@informatik.uni-tuebingen.de");
+      
     System.err.println("WARNING: "+Message);
     System.out.flush();
     System.err.flush();
@@ -71,7 +67,7 @@ public class EVAERROR {
 	  
 	  if (!errMap.containsKey(msg)) {
 		  System.err.println(msg);
-		  errMap.put(msg, new Boolean(true));
+		  errMap.put(msg, true);
 	  }
   }
   
