@@ -101,11 +101,11 @@ public class EvAInfo {
 
 	////////////// Property handling...
 	
-	private static Properties EVA_PROPERTIES;
+	private static Properties evaProperties;
 	static {
 		try {
-			EVA_PROPERTIES = BasicResourceLoader.readProperties(EvAInfo.propertyFile);
-		} catch (Exception ex) {
+			evaProperties = BasicResourceLoader.readProperties(EvAInfo.propertyFile);
+		} catch (Exception ex) {                    
 			System.err.println(resourceNotFoundErrorMessage(EvAInfo.propertyFile));
 			System.err.println(ex.getMessage());
 			System.exit(1);
@@ -132,16 +132,16 @@ public class EvAInfo {
     }
     
 	public static String getProperty(String key) {
-		String myVal = EVA_PROPERTIES.getProperty(key);
+		String myVal = evaProperties.getProperty(key);
 		return myVal;
 	}
 
 	public static Properties getProperties() {
-		return EVA_PROPERTIES;
+		return evaProperties;
 	}
 	
 	private static void setProperty(String key, String value) {
-		EVA_PROPERTIES.setProperty(key, value);
+		evaProperties.setProperty(key, value);
 	}
 
 	public static String getVersion() {
