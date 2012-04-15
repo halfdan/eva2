@@ -442,8 +442,6 @@ public class EvAClient implements RemoteStateListener, Serializable {
                 }
                 
             });
-            logger.info("EvAClient Loggin enabled");
-            logger.warning("Logging could still die.");
             
             m_ProgressBar = new JProgressBar();
             evaFrame.getContentPane().add(m_ProgressBar, BorderLayout.SOUTH);
@@ -469,7 +467,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
             evaFrame.addWindowListener(new WindowAdapter() {
 
                 public void windowClosing(WindowEvent e) {
-                    System.out.println("Closing EvA2 Client. Bye!");
+                    logger.info("Closing EvA2 Client. Bye!");
                     evaFrame.dispose();
                     Set<String> keys = System.getenv().keySet();
                     if (keys.contains("MATLAB")) {
@@ -488,14 +486,14 @@ public class EvAClient implements RemoteStateListener, Serializable {
                 selectHost(hostName);
             }
             m_ComAdapter.setLogPanel(logPanel);
-            logMessage("Selected Host: " + m_ComAdapter.getHostName());
+            logger.log(Level.INFO, "Selected Host: {0}", m_ComAdapter.getHostName());
         }
 //		m_mnuModule.setText("Select module");
 //		m_mnuModule.repaint();
 
         if (withGUI) {
-            logPanel.logMessage("Working directory is: " + System.getProperty("user.dir"));
-            logPanel.logMessage("Class path is: " + System.getProperty("java.class.path", "."));
+            logger.log(Level.INFO, "Working directory is: {0}", System.getProperty("user.dir"));
+            logger.log(Level.INFO, "Class path is: {0}", System.getProperty("java.class.path", "."));
 
             if (!(evaFrame.isVisible())) {
                 Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -503,7 +501,9 @@ public class EvAClient implements RemoteStateListener, Serializable {
                 evaFrame.pack();
                 evaFrame.setVisible(true);
             }
-            logPanel.logMessage("EvA2 ready"); // if this message is omitted, the stupid scroll pane runs to the end of the last line which is ugly for a long class path
+            // if this message is omitted, the stupid scroll pane runs to 
+            // the end of the last line which is ugly for a long class path
+            logger.info("EvA2 ready"); 
         }
     }
 
@@ -635,7 +635,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                logMessage(e.getActionCommand());
+                logger.info(e.getActionCommand());
                 showAboutDialog();
             }
         };
@@ -644,7 +644,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                logMessage(e.getActionCommand());
+                logger.info(e.getActionCommand());
                 showLicense();
             }
         };
@@ -653,7 +653,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                logMessage(e.getActionCommand());
+                logger.info(e.getActionCommand());
                 selectAvailableHost(m_ComAdapter.getHostNameList());
             }
         };
@@ -662,7 +662,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                logMessage(e.getActionCommand());
+                logger.info(e.getActionCommand());
                 showPleaseWaitDialog();
                 Thread xx = new Thread() {
 
@@ -679,7 +679,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                logMessage(e.getActionCommand());
+                logger.info(e.getActionCommand());
                 showPleaseWaitDialog();
                 Thread xx = new Thread() {
 
@@ -695,7 +695,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                logMessage(e.getActionCommand());
+                logger.info(e.getActionCommand());
                 showPleaseWaitDialog();
                 Thread xx = new Thread() {
 
@@ -835,10 +835,10 @@ public class EvAClient implements RemoteStateListener, Serializable {
             if (useLocalRMI) {
                 EvAServer Server = new EvAServer(true, false);
                 m_ComAdapter.setLocalRMIServer(Server.getRMIServer());
-                logMessage("Local EvAServer started");
+                logger.info("Local EvAServer started");
                 m_ComAdapter.setRunLocally(false); // this is not quite true but should have the desired effect
             } else {
-                logMessage("Working locally");
+                logger.info("Working locally");
                 m_ComAdapter.setLocalRMIServer(null);
                 m_ComAdapter.setRunLocally(true);
             }
@@ -874,7 +874,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
                 m_actHost.setEnabled(true);
                 m_actAvailableHost.setEnabled(true);
             }
-            logMessage("Selected Module: " + selectedModule);
+            logger.info("Selected Module: " + selectedModule);
 //			m_LogPanel.statusMessage("Selected Module: " + selectedModule);
         }
     }
@@ -921,8 +921,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
         try {
             newModuleAdapter = m_ComAdapter.getModuleAdapter(selectedModule, goParams, withGUI ? null : "EvA2");
         } catch (Exception e) {
-            logMessage("Error while m_ComAdapter.GetModuleAdapter Host: " + e.getMessage());
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "Error while m_ComAdapter.GetModuleAdapter Host: " + e.getMessage(), e);
             EVAERROR.EXIT("Error while m_ComAdapter.GetModuleAdapter Host: " + e.getMessage());
         }
         if (newModuleAdapter == null) {
@@ -1044,9 +1043,9 @@ public class EvAClient implements RemoteStateListener, Serializable {
 
     private void selectHost(String hostName) {
         m_ComAdapter.setHostName(hostName);
-        logMessage("Selected Host: " + hostName);
+        logger.info("Selected Host: " + hostName);
         if (currentModule != null) {
-            logMessage("Reloading module from server...");
+            logger.info("Reloading module from server...");
             loadModuleFromServer(currentModule, null);
         }
     }
@@ -1094,14 +1093,14 @@ public class EvAClient implements RemoteStateListener, Serializable {
         if (HostName == null) {
             return;
         }
-        logMessage("Kill host process on = " + HostName);
+        logger.info("Kill host process on = " + HostName);
         m_ComAdapter.killServer(HostName);
 //		m_LogPanel.statusMessage("");
     }
 
-    private void selectAllAvailableHostToKill(String[] HostNames) {
+    private void selectAllAvailableHostToKill(String[] hostNames) {
         System.out.println("SelectAllAvailableHostToKill");
-        if (HostNames == null || HostNames.length == 0) {
+        if (hostNames == null || hostNames.length == 0) {
             System.out.println("no host is running");
             return;
         }
@@ -1114,7 +1113,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
                 l.performedRestart(infoString);
             }
         }
-        logMessage("Restarted processing " + infoString);
+        logger.log(Level.INFO, "Restarted processing {0}", infoString);
         startTime = System.currentTimeMillis();
     }
 
@@ -1124,7 +1123,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
                 l.performedStart(infoString);
             }
         }
-        logMessage("Started processing " + infoString);
+        logger.log(Level.INFO, "Started processing {0}", infoString);
         startTime = System.currentTimeMillis();
     }
 
@@ -1135,7 +1134,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
             }
         }
         long t = (System.currentTimeMillis() - startTime);
-        logMessage(String.format("Stopped after %1$d.%2$tL s", (t / 1000), (t % 1000)));
+        logger.info(String.format("Stopped after %1$d.%2$tL s", (t / 1000), (t % 1000)));
         if (!withGUI) {
             System.exit(0);
         }
@@ -1153,7 +1152,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
             }
         }
         if (msg != null) {
-            logMessage(msg);
+            logger.info(msg);
         }
         if (this.m_ProgressBar != null) {
             Runnable doSetProgressBarValue = new Runnable() {
