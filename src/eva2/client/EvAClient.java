@@ -99,7 +99,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
     private transient JProgressBar m_ProgressBar;
     // LogPanel
     private LogPanel logPanel;
-    private Logger logger;
+    private static final Logger logger = Logger.getLogger("EvAClient");
     // Module:
     private ExtAction m_actModuleLoad;
     // GUI:
@@ -253,17 +253,18 @@ public class EvAClient implements RemoteStateListener, Serializable {
      */
     public EvAClient(final String hostName, final Window parent, final String paramsFile, final InterfaceGOParameters goParams, final boolean autorun, final boolean noSplash, final boolean noGui, final boolean showTreeView) {
         clientInited = false;
-        final SplashScreenShell fSplashScreen = new SplashScreenShell(EvAInfo.splashLocation);
+        final SplashScreen splashScreen = new SplashScreen(EvAInfo.splashLocation);
 
         // preload some classes (into system cache) in a parallel thread
-        preloadClasses();
+        preloadClasses();        
+        
 
         withGUI = !noGui;
         withTreeView = showTreeView;
         // activate the splash screen (show later using SwingUtilities)
         if (!noSplash && withGUI) {
             try {
-                fSplashScreen.splash();
+                splashScreen.splash();
             } catch (HeadlessException e) {
                 System.err.println("Error: no xserver present - deactivating GUI.");
                 withGUI = false;
@@ -306,7 +307,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
                     }
                     // close splash screen
                     if (!noSplash && withGUI) {
-                        fSplashScreen.dispose();
+                        splashScreen.dispose();
                     }
                     clientInited = true;
                     notify();
@@ -416,7 +417,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
             logPanel = new LogPanel();
             evaFrame.getContentPane().add(logPanel, BorderLayout.CENTER);
             
-            logger = Logger.getLogger("EvAClient");
+            
             logger.addHandler(new Handler() {
 
                 @Override
@@ -589,7 +590,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
     }
 
     public static String usage() {
-        StringBuffer sbuf = new StringBuffer();
+        StringBuilder sbuf = new StringBuilder();
         sbuf.append(EvAInfo.productName);
         sbuf.append(" - ");
         sbuf.append(EvAInfo.productLongName);
@@ -623,6 +624,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
         m_actModuleLoad = new ExtAction("&Load", "Load Module",
                 KeyStroke.getKeyStroke(KeyEvent.VK_L, Event.CTRL_MASK)) {
 
+            @Override
             public void actionPerformed(ActionEvent e) {
                 loadModuleFromServer(null, null);
             }
@@ -631,6 +633,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
         m_actAbout = new ExtAction("&About...", "Product Information",
                 KeyStroke.getKeyStroke(KeyEvent.VK_A, Event.CTRL_MASK)) {
 
+            @Override
             public void actionPerformed(ActionEvent e) {
                 logMessage(e.getActionCommand());
                 showAboutDialog();
@@ -639,6 +642,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
         m_actLicense = new ExtAction("&License...", "View License",
                 KeyStroke.getKeyStroke(KeyEvent.VK_L, Event.CTRL_MASK)) {
 
+            @Override
             public void actionPerformed(ActionEvent e) {
                 logMessage(e.getActionCommand());
                 showLicense();
@@ -647,6 +651,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
         m_actHost = new ExtAction("&List of all servers", "All servers in list",
                 KeyStroke.getKeyStroke(KeyEvent.VK_A, Event.CTRL_MASK)) {
 
+            @Override
             public void actionPerformed(ActionEvent e) {
                 logMessage(e.getActionCommand());
                 selectAvailableHost(m_ComAdapter.getHostNameList());
@@ -655,11 +660,13 @@ public class EvAClient implements RemoteStateListener, Serializable {
         m_actAvailableHost = new ExtAction("Available &Server", "Available server",
                 KeyStroke.getKeyStroke(KeyEvent.VK_H, Event.CTRL_MASK)) {
 
+            @Override
             public void actionPerformed(ActionEvent e) {
                 logMessage(e.getActionCommand());
                 showPleaseWaitDialog();
                 Thread xx = new Thread() {
 
+                    @Override
                     public void run() {
                         selectAvailableHost(m_ComAdapter.getAvailableHostNameList());
                     }
@@ -670,6 +677,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
         m_actKillHost = new ExtAction("&Kill server", "Kill server process on selected host",
                 KeyStroke.getKeyStroke(KeyEvent.VK_K, Event.CTRL_MASK)) {
 
+            @Override
             public void actionPerformed(ActionEvent e) {
                 logMessage(e.getActionCommand());
                 showPleaseWaitDialog();
@@ -685,6 +693,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
         m_actKillAllHosts = new ExtAction("Kill &all servers", "Kill all servers",
                 KeyStroke.getKeyStroke(KeyEvent.VK_K, Event.CTRL_MASK)) {
 
+            @Override
             public void actionPerformed(ActionEvent e) {
                 logMessage(e.getActionCommand());
                 showPleaseWaitDialog();
@@ -978,8 +987,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
                 //			m_ModulGUIContainer.add(Temp);
             } catch (Exception e) {
                 currentModule = null;
-                e.printStackTrace();
-                logMessage("Error while newModulAdapter.getModulFrame(): " + e.getMessage());
+                logger.log(Level.SEVERE, "Error while newModulAdapter.getModulFrame(): " + e.getMessage(), e);
                 EVAERROR.EXIT("Error while newModulAdapter.getModulFrame(): " + e.getMessage());
             }
 //			try { TODO whats this?
@@ -1021,15 +1029,15 @@ public class EvAClient implements RemoteStateListener, Serializable {
     /**
      *
      */
-    private void selectAvailableHost(String[] HostNames) {
-        if (HostNames == null || HostNames.length == 0) {
+    private void selectAvailableHost(String[] hostNames) {
+        if (hostNames == null || hostNames.length == 0) {
             showNoHostFoundDialog();
         } else {
-            String HostName = (String) JOptionPane.showInputDialog(evaFrame.getContentPane(),
+            String hostName = (String) JOptionPane.showInputDialog(evaFrame.getContentPane(),
                     "Which active host do you want to connect to?", "Host", JOptionPane.QUESTION_MESSAGE, null,
-                    HostNames, m_ComAdapter.getHostName());
-            if (HostName != null) {
-                selectHost(HostName);
+                    hostNames, m_ComAdapter.getHostName());
+            if (hostName != null) {
+                selectHost(hostName);
             }
         }
     }
@@ -1048,13 +1056,20 @@ public class EvAClient implements RemoteStateListener, Serializable {
     }
 
     private void showAboutDialog() {
-        JOptionPane.showMessageDialog(evaFrame,
-                EvAInfo.productName + " - " + EvAInfo.productLongName
-                + "\nUniversity of Tuebingen, T\u00FCbingen, Germany\nChair for Cognitive Systems\n"
-                + "Dr. M. Kronfeld, H. Planatscher, M. de Paly, Dr. A. Dr\u00E4ger,\n"
-                + "Dr. F. Streichert, Dr. H. Ulmer, and Prof. Dr. A. Zell \nCoypright \u00A9 "
-                + EvAInfo.copyrightYear + "\nVersion " + EvAInfo.getVersion()
-                + "\nSee: " + EvAInfo.url, EvAInfo.infoTitle, 1);
+        StringBuilder aboutMessage = new StringBuilder();
+        aboutMessage.append(EvAInfo.productName);
+        aboutMessage.append(" - ");
+        aboutMessage.append(EvAInfo.productLongName);
+        aboutMessage.append("\nUniversity of T\u00FCbingen, T\u00FCbingen, Germany\nChair for Cognitive Systems\n");
+        aboutMessage.append("Dr. M. Kronfeld, H. Planatscher, M. de Paly, Dr. A. Dr\u00E4ger,\n");
+        aboutMessage.append("Dr. F. Streichert, Dr. H. Ulmer and Prof. Dr. A. Zell \nCoypright \u00A9 ");
+        aboutMessage.append(EvAInfo.copyrightYear);
+        aboutMessage.append("\nVersion ");
+        aboutMessage.append(EvAInfo.getVersion());
+        aboutMessage.append("\nSee: ");
+        aboutMessage.append(EvAInfo.url);
+        
+        JOptionPane.showMessageDialog(evaFrame, aboutMessage, EvAInfo.infoTitle, 1);
     }
 
     private void showLicense() {
@@ -1152,29 +1167,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
     }
 }
 
-final class SplashScreenShell {
-
-    SplashScreen splScr = null;
-    String imgLoc = null;
-
-    public SplashScreenShell(String imageLoc) {
-        imgLoc = imageLoc;
-    }
-
-    public void splash() {
-        splScr = new SplashScreen(imgLoc);
-        splScr.splash();
-    }
-
-    public void dispose() {
-        if (splScr != null) {
-            splScr.dispose();
-            splScr = null;
-        }
-    }
-}
-
-class SplashScreen extends Frame {
+final class SplashScreen extends Frame {
 
     private static final long serialVersionUID = 1281793825850423095L;
     String imgLocation;
