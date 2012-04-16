@@ -427,7 +427,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
                     sBuilder.append(record.getLevel().toString());
                     sBuilder.append("] ");
                     sBuilder.append(record.getMessage());
-                    
+                    // Show message on LogPanel
                     EvAClient.this.logPanel.logMessage(sBuilder.toString());
                 }
 
