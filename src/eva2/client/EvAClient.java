@@ -624,7 +624,9 @@ public class EvAClient implements RemoteStateListener, Serializable {
         m_actModuleLoad = new ExtAction("&Load", "Load Module",
                 KeyStroke.getKeyStroke(KeyEvent.VK_L, Event.CTRL_MASK)) {
 
-            @Override
+            /* (non-Javadoc)
+             * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+             */
             public void actionPerformed(ActionEvent e) {
                 loadModuleFromServer(null, null);
             }
@@ -633,7 +635,9 @@ public class EvAClient implements RemoteStateListener, Serializable {
         m_actAbout = new ExtAction("&About...", "Product Information",
                 KeyStroke.getKeyStroke(KeyEvent.VK_A, Event.CTRL_MASK)) {
 
-            @Override
+            /* (non-Javadoc)
+             * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+             */
             public void actionPerformed(ActionEvent e) {
                 logger.info(e.getActionCommand());
                 showAboutDialog();
@@ -642,7 +646,9 @@ public class EvAClient implements RemoteStateListener, Serializable {
         m_actLicense = new ExtAction("&License...", "View License",
                 KeyStroke.getKeyStroke(KeyEvent.VK_L, Event.CTRL_MASK)) {
 
-            @Override
+            /* (non-Javadoc)
+             * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+             */
             public void actionPerformed(ActionEvent e) {
                 logger.info(e.getActionCommand());
                 showLicense();
@@ -651,7 +657,9 @@ public class EvAClient implements RemoteStateListener, Serializable {
         m_actHost = new ExtAction("&List of all servers", "All servers in list",
                 KeyStroke.getKeyStroke(KeyEvent.VK_A, Event.CTRL_MASK)) {
 
-            @Override
+            /* (non-Javadoc)
+             * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+             */
             public void actionPerformed(ActionEvent e) {
                 logger.info(e.getActionCommand());
                 selectAvailableHost(m_ComAdapter.getHostNameList());
@@ -660,7 +668,9 @@ public class EvAClient implements RemoteStateListener, Serializable {
         m_actAvailableHost = new ExtAction("Available &Server", "Available server",
                 KeyStroke.getKeyStroke(KeyEvent.VK_H, Event.CTRL_MASK)) {
 
-            @Override
+            /* (non-Javadoc)
+             * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+             */
             public void actionPerformed(ActionEvent e) {
                 logger.info(e.getActionCommand());
                 showPleaseWaitDialog();
@@ -677,7 +687,9 @@ public class EvAClient implements RemoteStateListener, Serializable {
         m_actKillHost = new ExtAction("&Kill server", "Kill server process on selected host",
                 KeyStroke.getKeyStroke(KeyEvent.VK_K, Event.CTRL_MASK)) {
 
-            @Override
+            /* (non-Javadoc)
+             * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+             */
             public void actionPerformed(ActionEvent e) {
                 logger.info(e.getActionCommand());
                 showPleaseWaitDialog();
@@ -693,7 +705,9 @@ public class EvAClient implements RemoteStateListener, Serializable {
         m_actKillAllHosts = new ExtAction("Kill &all servers", "Kill all servers",
                 KeyStroke.getKeyStroke(KeyEvent.VK_K, Event.CTRL_MASK)) {
 
-            @Override
+            /* (non-Javadoc)
+             * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+             */
             public void actionPerformed(ActionEvent e) {
                 logger.info(e.getActionCommand());
                 showPleaseWaitDialog();
