@@ -2,9 +2,9 @@ package eva2.gui;
 /*
  * Title:        EvA2
  * Description:
- * Copyright:    Copyright (c) 2003
+ * Copyright:    Copyright (c) 2012
  * Company:      University of Tuebingen, Computer Architecture
- * @author Holger Ulmer, Felix Streichert, Hannes Planatscher
+ * @author Holger Ulmer, Felix Streichert, Hannes Planatscher, Fabian Becker
  * @version:  $Revision: 266 $
  *            $Date: 2007-11-20 14:33:48 +0100 (Tue, 20 Nov 2007) $
  *            $Author: mkron $
@@ -29,32 +29,30 @@ import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import eva2.EvAInfo;
-import eva2.client.EvAClient;
 import eva2.tools.ReflectPackage;
 import eva2.tools.jproxy.RMIProxyLocal;
 
 
 
-/*==========================================================================*
- * CLASS DECLARATION
- *==========================================================================*/
 public class GenericObjectEditor implements PropertyEditor {
-	static final public boolean TRACE = false;
+	private static final Logger logger = Logger.getLogger(EvAInfo.defaultLogger);
 
 	private Object m_Object;
 	private Object m_Backup;
-	private PropertyChangeSupport m_Support = new PropertyChangeSupport(this);
-	private Class<?> m_ClassType;
-	private GOEPanel m_EditorComponent;
-	private boolean m_Enabled = true;
+	private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
+	private Class<?> classType;
+	private GOEPanel editorComponent;
+	private boolean isEnabled = true;
 	
 	/**
 	 * Read the classes available for user selection from the properties or the classpath respectively
 	 */
 	public static ArrayList<String> getClassesFromProperties(String className, ArrayList<Class<?>> instances) {
-		if (TRACE) System.out.println("getClassesFromProperties - requesting className: "+className);
+		logger.log(Level.FINEST, "Requesting className: {0}", className);
 		
 		// Try to read the predefined classes from the props file.
 		String typeOptions = EvAInfo.getProperty(className);
@@ -66,15 +64,15 @@ public class GenericObjectEditor implements PropertyEditor {
 			ArrayList<String> classes = new ArrayList<String>();
 			while (st.hasMoreTokens()) {
 				String current = st.nextToken().trim();
-				//System.out.println("current ="+current);
 				try {
 					Class<?> clz = Class.forName(current); // test for instantiability
-					if (instances!=null) instances.add(clz);
+					if (instances != null) {
+						instances.add(clz);
+					}
 					classes.add(current);
-				} catch (Exception ex) {
-					System.err.println("Couldn't load class with name: " + current);
-					System.err.println("ex:"+ex.getMessage());
-					ex.printStackTrace();
+				} catch (ClassNotFoundException ex) {
+					logger.log(Level.WARNING, 
+							String.format("Requesting className: %1$s, Couldn't load: %2%s", className, current), ex);
 				}
 			}
 			return classes;
@@ -93,37 +91,42 @@ public class GenericObjectEditor implements PropertyEditor {
 	 */
 	public static ArrayList<String> getClassesFromClassPath(String className, ArrayList<Class<?>> instances) { 
 		ArrayList<String> classes = new ArrayList<String>();
-		Class<?>[] clsArr;
-		clsArr=ReflectPackage.getAssignableClasses(className, true, true);
-		if (clsArr == null) {
-			System.err.println("Warning: No assignable classes found in property file or on classpath: "
-					+EvAInfo.propertyFile + " for "+className);
+		Class<?>[] classArray;
+		classArray=ReflectPackage.getAssignableClasses(className, true, true);
+		if (classArray == null) {
+			logger.log(Level.WARNING, String.format("No assignable classes found in property file or on classpath: %1$s for %2$s", EvAInfo.propertyFile, className));			
 			classes.add(className);
 		} else {
-			for (Class<?> class1 : clsArr) {
-				int m = class1.getModifiers();
+			for (Class<?> clazz : classArray) {
+				int m = clazz.getModifiers();
 				try {
 					// a field allowing a class to indicate it doesnt want to be displayed
-					Field f = class1.getDeclaredField("hideFromGOE");
-					if (f.getBoolean(class1) == true) {
-						if (TRACE) System.out.println("Class " + class1 + " wants to be hidden from GOE, skipping...");
+					Field f = clazz.getDeclaredField("hideFromGOE");					
+					if (f.getBoolean(clazz) == true) {
+						logger.log(Level.FINEST, "Class {0} wants to be hidden from GOE.", clazz);
 						continue;
 					}
-				} catch (Exception e) {
-
-				} catch (Error e) {
-					System.err.println("Error on checking fields of " + class1 + ": " + e);
-					continue;
+				} catch (NoSuchFieldException e) {
+					/*
+					 * We are just logging this exception here. It is expected that
+					 * most classes do not have this field.
+					 */
+					logger.log(Level.FINER, String.format("%1$s does not have a hideFromGOE field", clazz.toString()), e);					
+				} catch (IllegalArgumentException e) {
+					logger.log(Level.FINER, e.getMessage(), e);
+				} catch (IllegalAccessException e) {
+					logger.log(Level.FINER, e.getMessage(), e);
 				}
-				//					if (f)
-				if (!Modifier.isAbstract(m) && !class1.isInterface()) {	// dont take abstract classes or interfaces
+				
+				
+				if (!Modifier.isAbstract(m) && !clazz.isInterface()) {	// dont take abstract classes or interfaces
 					try {
 						Class<?>[] params = new Class[0];
-						class1.getConstructor(params);
-						if (instances!=null) instances.add(class1);
-						classes.add(class1.getName());
+						clazz.getConstructor(params);
+						if (instances!=null) instances.add(clazz);
+						classes.add(clazz.getName());
 					} catch (NoSuchMethodException e) {
-						System.err.println("GOE warning: Class " + class1.getName() + " has no default constructor, skipping...");
+						logger.log(Level.WARNING, String.format("GOE warning: Class %1$s has no default constructor", clazz.getName()), e);
 					}
 				}
 			}
@@ -155,7 +158,7 @@ public class GenericObjectEditor implements PropertyEditor {
 			}
 			return true;
 		} catch (Exception e) {
-			System.err.println("exception in setHideProperty for " + cls.getName() + "/" + property + " : " + e.getMessage());
+			logger.log(Level.WARNING, String.format("Couldn't set expert property for %1$s/%2$s", cls.getName(), property), e);
 			return false;
 		}
 	}
@@ -175,7 +178,7 @@ public class GenericObjectEditor implements PropertyEditor {
 	 */
 	public static boolean setHideProperty(Class<?> cls, String property, boolean hide) {
 		try {
-			BeanInfo    bi      = Introspector.getBeanInfo(cls);
+			BeanInfo bi = Introspector.getBeanInfo(cls);
 			PropertyDescriptor[] props = bi.getPropertyDescriptors();
 			for (int i=0; i<props.length; i++) {
 				if ((props[i].getName().equals(property))) { 
@@ -185,10 +188,11 @@ public class GenericObjectEditor implements PropertyEditor {
 					return true;
 				}
 			}
-			System.err.println("Error: property " + property + " not found!");
+			
+			logger.log(Level.WARNING, "Property {0} not found", property);
 			return false;
-		} catch (Exception e) {
-			System.err.println("exception in setHideProperty for " + cls.getName() + "/" + property + " : " + e.getMessage());
+		} catch (IntrospectionException e) {
+			logger.log(Level.WARNING, String.format("Couldn't set hide property for %1$s/%2$s", cls.getName(), property), e);
 			return false;
 		}
 	}
@@ -211,8 +215,8 @@ public class GenericObjectEditor implements PropertyEditor {
 				props[i].setHidden(hide);
 			}
 			return orig;
-		} catch (Exception e) {
-			System.err.println("exception in setHideProperty for " + cls.getName() + "/all : " + e.getMessage());
+		} catch (IntrospectionException e) {
+			logger.log(Level.WARNING, String.format("Couldn't hide all properties for %1$s/all", cls.getName()), e);
 			return null;
 		}
 	}
@@ -223,8 +227,7 @@ public class GenericObjectEditor implements PropertyEditor {
 			try {
 				bi = Introspector.getBeanInfo(cls);
 			} catch (IntrospectionException e) {
-				System.err.println("Error on introspection of " + cls.getName() + ", " + e.getMessage());
-				e.printStackTrace();
+				logger.log(Level.WARNING, String.format("Error on introspection of %1$s", cls.getName()), e);
 				return;
 			}
 			PropertyDescriptor[] props = bi.getPropertyDescriptors();
@@ -257,8 +260,8 @@ public class GenericObjectEditor implements PropertyEditor {
 	 * @param newVal a value of type 'boolean'
 	 */
 	public void setEnabled(boolean newVal) {
-		if (newVal != m_Enabled) {
-			m_Enabled = newVal;
+		if (newVal != isEnabled) {
+			isEnabled = newVal;
 		}
 	}
 
@@ -268,15 +271,15 @@ public class GenericObjectEditor implements PropertyEditor {
 	 * @param type a value of type 'Class'
 	 */
 	public void setClassType(Class<?> type) {
-		if (TRACE) System.out.println("GOE setClassType("+ (type == null? "<null>" : type.getName()) + ")");
-		m_ClassType = type;
-		if (m_EditorComponent != null)
-			m_EditorComponent.updateClassType();
+		//if (TRACE) System.out.println("GOE setClassType("+ (type == null? "<null>" : type.getName()) + ")");
+		classType = type;
+		if (editorComponent != null)
+			editorComponent.updateClassType();
 
 	}
 
 	public Class<?> getClassType() {
-		return m_ClassType;
+		return classType;
 	}
 	
 	/**
@@ -284,17 +287,17 @@ public class GenericObjectEditor implements PropertyEditor {
 	 * the chooser
 	 */
 	public void setDefaultValue() {
-		if (m_ClassType == null) {
-			System.err.println("No ClassType set up for GenericObjectEditor!!");
+		if (classType == null) {
+			logger.log(Level.WARNING, "No ClassType set up for GenericObjectEditor!");
 			return;
 		}
 		
 		Vector<String> v=null;
-		if (Proxy.isProxyClass(m_ClassType)) {
-			if (TRACE) System.out.println("PROXY! original was " + ((RMIProxyLocal)Proxy.getInvocationHandler(((Proxy)m_Object))).getOriginalClass().getName());
+		if (Proxy.isProxyClass(classType)) {
+			//if (TRACE) System.out.println("PROXY! original was " + ((RMIProxyLocal)Proxy.getInvocationHandler(((Proxy)m_Object))).getOriginalClass().getName());
 			v = new Vector<String>(getClassesFromProperties(((RMIProxyLocal)Proxy.getInvocationHandler(((Proxy)m_Object))).getOriginalClass().getName(), null));
 		} else {		
-			v = new Vector<String>(getClassesFromProperties(m_ClassType.getName(), null));
+			v = new Vector<String>(getClassesFromProperties(classType.getName(), null));
 		}
 				
 //		v = new Vector<String>(getClassesFromProperties(m_ClassType.getName()));
@@ -316,25 +319,25 @@ public class GenericObjectEditor implements PropertyEditor {
 	public void setValue(Object o) {
 		//System.err.println("setValue()" + m_ClassType.toString());
 
-		if (o==null || m_ClassType == null) {
-			System.err.println("No ClassType set up for GenericObjectEditor!!");
+		if (o==null || classType == null) {
+			logger.log(Level.WARNING, "No ClassType set up for GenericObjectEditor!");
 			return;
 		}
-		if (!m_ClassType.isAssignableFrom(o.getClass())) {
-			if (m_ClassType.isPrimitive()) {
-				System.err.println("setValue object not of correct type! Expected "+m_ClassType.getName()+", got " + o.getClass().getName());
+		if (!classType.isAssignableFrom(o.getClass())) {
+			if (classType.isPrimitive()) {
+				System.err.println("setValue object not of correct type! Expected "+classType.getName()+", got " + o.getClass().getName());
 				System.err.println("setting primitive type");
 				setObject((Object)o);
 				//throw new NullPointerException("ASDF");
 			} else {
-				System.err.println("setValue object not of correct type! Expected "+m_ClassType.getName()+", got " + o.getClass().getName());
+				System.err.println("setValue object not of correct type! Expected "+classType.getName()+", got " + o.getClass().getName());
 			}
 			return;
 		}
 
 		setObject((Object)o);
-		if (m_EditorComponent != null)
-			m_EditorComponent.updateChooser();
+		if (editorComponent != null)
+			editorComponent.updateChooser();
 
 	}
 
@@ -346,16 +349,16 @@ public class GenericObjectEditor implements PropertyEditor {
 	 */
 	private void setObject(Object c) {
 		// This should really call equals() for comparison.
-		if (TRACE) System.out.println("setObject "+ c.getClass().getName() + " " + c);
+		//if (TRACE) System.out.println("setObject "+ c.getClass().getName() + " " + c);
 		boolean trueChange = (c != getValue());
 
 		m_Backup = m_Object;
 		m_Object = c;
 
-		if (m_EditorComponent != null) {
-			m_EditorComponent.updateChildPropertySheet();
+		if (editorComponent != null) {
+			editorComponent.updateChildPropertySheet();
 			if (trueChange)
-				m_Support.firePropertyChange("", m_Backup, m_Object);
+				propertyChangeSupport.firePropertyChange("", m_Backup, m_Object);
 		}
 	}
 
@@ -397,7 +400,7 @@ public class GenericObjectEditor implements PropertyEditor {
 	 * @param box the area we are allowed to paint into
 	 */
 	public void paintValue(Graphics gfx,Rectangle box) {
-		if (m_Enabled && m_Object != null) {
+		if (isEnabled && m_Object != null) {
 			int getNameMethod = -1;
 			MethodDescriptor[]  methods;
 			String rep = "";
@@ -478,50 +481,29 @@ public class GenericObjectEditor implements PropertyEditor {
 	 * @return a value of type 'java.awt.Component'
 	 */
 	public Component getCustomEditor() {
-		if (m_EditorComponent == null)
-			m_EditorComponent = new GOEPanel(m_Object, m_Backup, m_Support, this);
-		return m_EditorComponent;
+		if (editorComponent == null)
+			editorComponent = new GOEPanel(m_Object, m_Backup, propertyChangeSupport, this);
+		return editorComponent;
 	}
 	/**
 	 *
 	 */
 	public void disableOKCancel() {
-		if (m_EditorComponent == null)
-			m_EditorComponent = new GOEPanel(m_Object, m_Backup, m_Support, this);
-		m_EditorComponent.setEnabledOkCancelButtons(false);
+		if (editorComponent == null)
+			editorComponent = new GOEPanel(m_Object, m_Backup,
+					propertyChangeSupport, this);
+		editorComponent.setEnabledOkCancelButtons(false);
 	}
-	  public void addPropertyChangeListener(PropertyChangeListener l) {
-		  if (m_Support == null) m_Support = new PropertyChangeSupport(this);
-		  m_Support.addPropertyChangeListener(l);
-	  }
 
-	  public void removePropertyChangeListener(PropertyChangeListener l) {
-		  if (m_Support == null) m_Support = new PropertyChangeSupport(this);
-		  m_Support.removePropertyChangeListener(l);
-	  }
-	/**
-	 *
-	 */
-//	public static void main(String [] args) {
-//		try {
-//			PropertyEditorManager.registerEditor(SelectedTag.class,TagEditor.class);
-//			PropertyEditorManager.registerEditor(double[].class,GenericArrayEditor.class);
-//			GenericObjectEditor editor = new GenericObjectEditor();
-//			editor.setClassType(StatisticsParameter.class);
-//			editor.setValue(new StatisticsParameterImpl());
-//			PropertyDialog pd = new PropertyDialog(editor,EVAHELP.cutClassName(editor.getClass().getName()),110, 120);
-//			pd.addWindowListener(new WindowAdapter() {
-//				public void windowClosing(WindowEvent e) {
-//					PropertyEditor pe = ((PropertyDialog)e.getSource()).getEditor();
-//					Object c = (Object)pe.getValue();
-//					String options = "";
-//					if (TRACE) System.out.println(c.getClass().getName() + " " + options);
-//					System.exit(0);
-//				}
-//			});
-//		} catch (Exception ex) {
-//			ex.printStackTrace();
-//			System.out.println(ex.getMessage());
-//		}
-//	}
+	public void addPropertyChangeListener(PropertyChangeListener l) {
+		if (propertyChangeSupport == null)
+			propertyChangeSupport = new PropertyChangeSupport(this);
+		propertyChangeSupport.addPropertyChangeListener(l);
+	}
+
+	public void removePropertyChangeListener(PropertyChangeListener l) {
+		if (propertyChangeSupport == null)
+			propertyChangeSupport = new PropertyChangeSupport(this);
+		propertyChangeSupport.removePropertyChangeListener(l);
+	}
 }

@@ -15,6 +15,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Event;
 import java.awt.Frame;
+import java.awt.Graphics;
 import java.awt.HeadlessException;
 import java.awt.Toolkit;
 import java.awt.Window;
@@ -24,12 +25,19 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.net.URL;
+import java.text.MessageFormat;
 import java.util.Set;
 import java.util.Vector;
 import java.util.logging.*;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -88,37 +96,40 @@ public class EvAClient implements RemoteStateListener, Serializable {
     private final int maxWindowMenuLength = 30;
     private boolean clientInited = false;
     private JEFrame evaFrame;
-    private Runnable initRnbl = null;
-    private EvAComAdapter m_ComAdapter;
-    private transient JMenuBar m_barMenu;
-    private transient JExtMenu m_mnuAbout;
-    private transient JExtMenu m_mnuSelHosts;
-    private transient JExtMenu m_mnuModule;
-    private transient JExtMenu m_mnuWindow;
-    private transient JExtMenu m_mnuOptions;
-    private transient JProgressBar m_ProgressBar;
+    private Runnable initRnbl = null;    
+    
+    private EvAComAdapter comAdapter;
+    private transient JMenuBar menuBar;
+    private transient JExtMenu menuAbout;
+    private transient JExtMenu menuSelHosts;
+    private transient JExtMenu menuModule;
+    private transient JExtMenu menuWindow;
+    private transient JExtMenu menuOptions;
+    private transient JProgressBar progressBar;
+    
     // LogPanel
     private LogPanel logPanel;
-    private static final Logger logger = Logger.getLogger("EvAClient");
+    private static final Logger logger = Logger.getLogger(EvAInfo.defaultLogger);
+    
     // Module:
-    private ExtAction m_actModuleLoad;
-    // GUI:
+    private ExtAction actModuleLoad;
+
     // Hosts:
-    private ExtAction m_actHost;
-    private ExtAction m_actAvailableHost;
-    private ExtAction m_actKillHost;
-    private ExtAction m_actKillAllHosts;
+    
+    private ExtAction actHost;
+    private ExtAction actAvailableHost;
+    private ExtAction actKillHost;
+    private ExtAction actKillAllHosts;
     private ModuleAdapter currentModuleAdapter = null;
     // About:
-    private ExtAction m_actAbout;
-    private ExtAction m_actLicense;
-//	private JPanel m_panelTool;
-//	private FrameCloseListener m_frameCloseListener;
-//	private JFileChooser m_FileChooser;
-//	if not null, the module is loaded automatically and no other can be selected
-    private String useDefaultModule = null;//"Genetic_Optimization";
+    private ExtAction actAbout;
+    private ExtAction actLicense;
+    
+    //	if not null, the module is loaded automatically and no other can be selected
+    private String useDefaultModule = null;	//"Genetic_Optimization";
     private boolean showLoadModules = false;
     private boolean localMode = false;
+    
     // This variable says whether, if running locally, a local server should be addressed by RMI.
     // False should be preferred here to avoid overhead
     private boolean useLocalRMI = false;
@@ -273,7 +284,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
 
         currentModule = null;
 
-        m_ComAdapter = EvAComAdapter.getInstance();
+        comAdapter = EvAComAdapter.getInstance();
 
         SwingUtilities.invokeLater(initRnbl = new Runnable() {
 
@@ -426,7 +437,8 @@ public class EvAClient implements RemoteStateListener, Serializable {
                     sBuilder.append("[");
                     sBuilder.append(record.getLevel().toString());
                     sBuilder.append("] ");
-                    sBuilder.append(record.getMessage());
+                    MessageFormat messageFormat = new MessageFormat(record.getMessage());                    
+                    sBuilder.append(messageFormat.format(record.getParameters()));
                     // Show message on LogPanel
                     EvAClient.this.logPanel.logMessage(sBuilder.toString());
                 }
@@ -443,8 +455,8 @@ public class EvAClient implements RemoteStateListener, Serializable {
                 
             });
             
-            m_ProgressBar = new JProgressBar();
-            evaFrame.getContentPane().add(m_ProgressBar, BorderLayout.SOUTH);
+            progressBar = new JProgressBar();
+            evaFrame.getContentPane().add(progressBar, BorderLayout.SOUTH);
 
             if (EvAInfo.propShowModules() != null) {
                 showLoadModules = true;
@@ -481,12 +493,12 @@ public class EvAClient implements RemoteStateListener, Serializable {
             });
         }
 
-        if (m_ComAdapter != null) {
+        if (comAdapter != null) {
             if (hostName != null) {
                 selectHost(hostName);
             }
-            m_ComAdapter.setLogPanel(logPanel);
-            logger.log(Level.INFO, "Selected Host: {0}", m_ComAdapter.getHostName());
+            comAdapter.setLogPanel(logPanel);
+            logger.log(Level.INFO, "Selected Host: {0}", comAdapter.getHostName());
         }
 //		m_mnuModule.setText("Select module");
 //		m_mnuModule.repaint();
@@ -621,7 +633,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
         //////////////////////////////////////////////////////////////
         // Module:
         /////////////////////////////////////////////////////////////
-        m_actModuleLoad = new ExtAction("&Load", "Load Module",
+        actModuleLoad = new ExtAction("&Load", "Load Module",
                 KeyStroke.getKeyStroke(KeyEvent.VK_L, Event.CTRL_MASK)) {
 
             /* (non-Javadoc)
@@ -632,7 +644,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
             }
         };
 
-        m_actAbout = new ExtAction("&About...", "Product Information",
+        actAbout = new ExtAction("&About...", "Product Information",
                 KeyStroke.getKeyStroke(KeyEvent.VK_A, Event.CTRL_MASK)) {
 
             /* (non-Javadoc)
@@ -643,7 +655,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
                 showAboutDialog();
             }
         };
-        m_actLicense = new ExtAction("&License...", "View License",
+        actLicense = new ExtAction("&License...", "View License",
                 KeyStroke.getKeyStroke(KeyEvent.VK_L, Event.CTRL_MASK)) {
 
             /* (non-Javadoc)
@@ -654,7 +666,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
                 showLicense();
             }
         };
-        m_actHost = new ExtAction("&List of all servers", "All servers in list",
+        actHost = new ExtAction("&List of all servers", "All servers in list",
                 KeyStroke.getKeyStroke(KeyEvent.VK_A, Event.CTRL_MASK)) {
 
             /* (non-Javadoc)
@@ -662,10 +674,10 @@ public class EvAClient implements RemoteStateListener, Serializable {
              */
             public void actionPerformed(ActionEvent e) {
                 logger.info(e.getActionCommand());
-                selectAvailableHost(m_ComAdapter.getHostNameList());
+                selectAvailableHost(comAdapter.getHostNameList());
             }
         };
-        m_actAvailableHost = new ExtAction("Available &Server", "Available server",
+        actAvailableHost = new ExtAction("Available &Server", "Available server",
                 KeyStroke.getKeyStroke(KeyEvent.VK_H, Event.CTRL_MASK)) {
 
             /* (non-Javadoc)
@@ -678,13 +690,13 @@ public class EvAClient implements RemoteStateListener, Serializable {
 
                     @Override
                     public void run() {
-                        selectAvailableHost(m_ComAdapter.getAvailableHostNameList());
+                        selectAvailableHost(comAdapter.getAvailableHostNameList());
                     }
                 };
                 xx.start();
             }
         };
-        m_actKillHost = new ExtAction("&Kill server", "Kill server process on selected host",
+        actKillHost = new ExtAction("&Kill server", "Kill server process on selected host",
                 KeyStroke.getKeyStroke(KeyEvent.VK_K, Event.CTRL_MASK)) {
 
             /* (non-Javadoc)
@@ -696,13 +708,13 @@ public class EvAClient implements RemoteStateListener, Serializable {
                 Thread xx = new Thread() {
 
                     public void run() {
-                        selectAvailableHostToKill(m_ComAdapter.getAvailableHostNameList());
+                        selectAvailableHostToKill(comAdapter.getAvailableHostNameList());
                     }
                 };
                 xx.start();
             }
         };
-        m_actKillAllHosts = new ExtAction("Kill &all servers", "Kill all servers",
+        actKillAllHosts = new ExtAction("Kill &all servers", "Kill all servers",
                 KeyStroke.getKeyStroke(KeyEvent.VK_K, Event.CTRL_MASK)) {
 
             /* (non-Javadoc)
@@ -714,7 +726,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
                 Thread xx = new Thread() {
 
                     public void run() {
-                        selectAllAvailableHostToKill(m_ComAdapter.getAvailableHostNameList());
+                        selectAllAvailableHostToKill(comAdapter.getAvailableHostNameList());
                     }
                 };
                 xx.start();
@@ -730,20 +742,20 @@ public class EvAClient implements RemoteStateListener, Serializable {
     }
 
     private void buildMenu() {
-        m_barMenu = new JMenuBar();
-        evaFrame.setJMenuBar(m_barMenu);
-        m_mnuModule = new JExtMenu("&Module");
-        m_mnuModule.add(m_actModuleLoad);
+        menuBar = new JMenuBar();
+        evaFrame.setJMenuBar(menuBar);
+        menuModule = new JExtMenu("&Module");
+        menuModule.add(actModuleLoad);
 
         ////////////////////////////////////////////////////////////////
 
-        m_mnuWindow = new JExtMenu("&Window");
-        m_mnuWindow.addMenuListener(new MenuListener() {
+        menuWindow = new JExtMenu("&Window");
+        menuWindow.addMenuListener(new MenuListener() {
 
             public void menuSelected(MenuEvent e) {
                 //				System.out.println("Selected");
-                m_mnuWindow.removeAll();
-                JExtMenu curMenu = m_mnuWindow;
+                menuWindow.removeAll();
+                JExtMenu curMenu = menuWindow;
 //				JScrollPane jsp = new JScrollPane();
                 Object[] framelist = JEFrameRegister.getFrameList();
                 for (int i = 0; i < framelist.length; i++) {
@@ -772,7 +784,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
                 }
                 String[] commonPrefixes = JEFrameRegister.getCommonPrefixes(10);
                 if (commonPrefixes.length > 0) {
-                    m_mnuWindow.add(new JSeparator());
+                    menuWindow.add(new JSeparator());
                 }
                 for (int i = 0; i < commonPrefixes.length; i++) {
                     final String prefix = commonPrefixes[i];
@@ -783,7 +795,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
                             JEFrameRegister.closeAllByPrefix(prefix);
                         }
                     }));
-                    m_mnuWindow.add(act);
+                    menuWindow.add(act);
                 }
 
             }
@@ -796,33 +808,33 @@ public class EvAClient implements RemoteStateListener, Serializable {
         });
 
         ////////////////////////////////////////////////////////////////
-        m_mnuSelHosts = new JExtMenu("&Select Hosts");
-        m_mnuSelHosts.setToolTipText("Select a host for the server application");
+        menuSelHosts = new JExtMenu("&Select Hosts");
+        menuSelHosts.setToolTipText("Select a host for the server application");
         //if (EvAClient.LITE_VERSION == false)
-        m_mnuSelHosts.add(m_actHost);
-        m_mnuSelHosts.add(m_actAvailableHost);
-        m_mnuSelHosts.addSeparator();
-        m_mnuSelHosts.add(m_actKillHost);
-        m_mnuSelHosts.add(m_actKillAllHosts);
+        menuSelHosts.add(actHost);
+        menuSelHosts.add(actAvailableHost);
+        menuSelHosts.addSeparator();
+        menuSelHosts.add(actKillHost);
+        menuSelHosts.add(actKillAllHosts);
 //		m_mnuOptions.add(m_actStartServerManager);
         ////////////////////////////////////////////////////////////////
-        m_mnuAbout = new JExtMenu("&About");
-        m_mnuAbout.add(m_actAbout);
-        m_mnuAbout.add(m_actLicense);
+        menuAbout = new JExtMenu("&About");
+        menuAbout.add(actAbout);
+        menuAbout.add(actLicense);
         //////////////////////////////////////////////////////////////
         // m_barMenu.add(m_Desktop.getWindowMenu());
 
-        m_mnuOptions = new JExtMenu("&Options");
-        m_mnuOptions.add(m_mnuSelHosts);
+        menuOptions = new JExtMenu("&Options");
+        menuOptions.add(menuSelHosts);
         //m_barMenu.add(m_mnuSelHosts);
         // this is accessible if no default module is given
         if (showLoadModules) {
-            m_barMenu.add(m_mnuModule);
+            menuBar.add(menuModule);
         }
 
-        m_barMenu.add(m_mnuOptions);
-        m_barMenu.add(m_mnuWindow);
-        m_barMenu.add(m_mnuAbout);
+        menuBar.add(menuOptions);
+        menuBar.add(menuWindow);
+        menuBar.add(menuAbout);
 
     }
 
@@ -840,37 +852,37 @@ public class EvAClient implements RemoteStateListener, Serializable {
      *
      */
     private void loadModuleFromServer(String selectedModule, InterfaceGOParameters goParams) {
-        if (m_ComAdapter.getHostName() == null) {
+        if (comAdapter.getHostName() == null) {
             System.err.println("error in loadModuleFromServer!");
             return;
         }
-        if (m_ComAdapter.getHostName().equals("localhost")) {
+        if (comAdapter.getHostName().equals("localhost")) {
             localMode = true;
             if (useLocalRMI) {
                 EvAServer Server = new EvAServer(true, false);
-                m_ComAdapter.setLocalRMIServer(Server.getRMIServer());
+                comAdapter.setLocalRMIServer(Server.getRMIServer());
                 logger.info("Local EvAServer started");
-                m_ComAdapter.setRunLocally(false); // this is not quite true but should have the desired effect
+                comAdapter.setRunLocally(false); // this is not quite true but should have the desired effect
             } else {
                 logger.info("Working locally");
-                m_ComAdapter.setLocalRMIServer(null);
-                m_ComAdapter.setRunLocally(true);
+                comAdapter.setLocalRMIServer(null);
+                comAdapter.setRunLocally(true);
             }
         } else {
             localMode = false;
-            m_ComAdapter.setRunLocally(false);
+            comAdapter.setRunLocally(false);
         }
         if (selectedModule == null) { // show a dialog and ask for a module
-            String[] ModuleNameList = m_ComAdapter.getModuleNameList();
+            String[] ModuleNameList = comAdapter.getModuleNameList();
             if (ModuleNameList == null) {
-                JOptionPane.showMessageDialog(evaFrame.getContentPane(), "No modules available on " + m_ComAdapter.getHostName(), EvAInfo.infoTitle, 1);
+                JOptionPane.showMessageDialog(evaFrame.getContentPane(), "No modules available on " + comAdapter.getHostName(), EvAInfo.infoTitle, 1);
             } else {
                 String LastModuleName = Serializer.loadString("lastmodule.ser");
                 if (LastModuleName == null) {
                     LastModuleName = ModuleNameList[0];
                 }
                 selectedModule = (String) JOptionPane.showInputDialog(evaFrame.getContentPane(),
-                        "Which module do you want \n to load on host: " + m_ComAdapter.getHostName() + " ?", "Load optimization module on host",
+                        "Which module do you want \n to load on host: " + comAdapter.getHostName() + " ?", "Load optimization module on host",
                         JOptionPane.QUESTION_MESSAGE,
                         null,
                         ModuleNameList,
@@ -885,8 +897,8 @@ public class EvAClient implements RemoteStateListener, Serializable {
             loadSpecificModule(selectedModule, goParams);
 
             if (withGUI) {
-                m_actHost.setEnabled(true);
-                m_actAvailableHost.setEnabled(true);
+                actHost.setEnabled(true);
+                actAvailableHost.setEnabled(true);
             }
             logger.info("Selected Module: " + selectedModule);
 //			m_LogPanel.statusMessage("Selected Module: " + selectedModule);
@@ -933,7 +945,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
         ModuleAdapter newModuleAdapter = null;
         //
         try {
-            newModuleAdapter = m_ComAdapter.getModuleAdapter(selectedModule, goParams, withGUI ? null : "EvA2");
+            newModuleAdapter = comAdapter.getModuleAdapter(selectedModule, goParams, withGUI ? null : "EvA2");
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Error while m_ComAdapter.GetModuleAdapter Host: " + e.getMessage(), e);
             EVAERROR.EXIT("Error while m_ComAdapter.GetModuleAdapter Host: " + e.getMessage());
@@ -953,14 +965,14 @@ public class EvAClient implements RemoteStateListener, Serializable {
                 System.err.println("adding base dir and trying again...");
                 System.setProperty("java.class.path", cp + System.getProperty("path.separator") + dir);
                 ReflectPackage.resetDynCP();
-                m_ComAdapter.updateLocalMainAdapter();
+                comAdapter.updateLocalMainAdapter();
                 loadSpecificModule(selectedModule, goParams); // end recursive call! handle with care!
                 return;
             }
             showLoadModules = true;
         } else {
             newModuleAdapter.setConnection(!localMode);
-            if (m_ComAdapter.isRunLocally()) {
+            if (comAdapter.isRunLocally()) {
                 // TODO in rmi-mode this doesnt work yet! meaning e.g. that theres no content in the info log
                 newModuleAdapter.addRemoteStateListener((RemoteStateListener) this);
             }
@@ -978,7 +990,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
                     // nested info-panel so that we can stay with simple borderlayouts
                     JPanel infoPanel = new JPanel();
                     infoPanel.setLayout(new BorderLayout());
-                    infoPanel.add(m_ProgressBar, BorderLayout.SOUTH);
+                    infoPanel.add(progressBar, BorderLayout.SOUTH);
                     infoPanel.add(logPanel, BorderLayout.NORTH);
                     JComponent tree = null;
 
@@ -1048,7 +1060,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
         } else {
             String hostName = (String) JOptionPane.showInputDialog(evaFrame.getContentPane(),
                     "Which active host do you want to connect to?", "Host", JOptionPane.QUESTION_MESSAGE, null,
-                    hostNames, m_ComAdapter.getHostName());
+                    hostNames, comAdapter.getHostName());
             if (hostName != null) {
                 selectHost(hostName);
             }
@@ -1056,7 +1068,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
     }
 
     private void selectHost(String hostName) {
-        m_ComAdapter.setHostName(hostName);
+        comAdapter.setHostName(hostName);
         logger.info("Selected Host: " + hostName);
         if (currentModule != null) {
             logger.info("Reloading module from server...");
@@ -1103,12 +1115,12 @@ public class EvAClient implements RemoteStateListener, Serializable {
         }
         String HostName = (String) JOptionPane.showInputDialog(evaFrame.getContentPane(),
                 "Which server do you want to be killed ?", "Host", JOptionPane.QUESTION_MESSAGE, null,
-                HostNames, m_ComAdapter.getHostName());
+                HostNames, comAdapter.getHostName());
         if (HostName == null) {
             return;
         }
         logger.info("Kill host process on = " + HostName);
-        m_ComAdapter.killServer(HostName);
+        comAdapter.killServer(HostName);
 //		m_LogPanel.statusMessage("");
     }
 
@@ -1118,7 +1130,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
             System.out.println("no host is running");
             return;
         }
-        m_ComAdapter.killAllServers();
+        comAdapter.killAllServers();
     }
 
     public void performedRestart(String infoString) {
@@ -1168,11 +1180,11 @@ public class EvAClient implements RemoteStateListener, Serializable {
         if (msg != null) {
             logger.info(msg);
         }
-        if (this.m_ProgressBar != null) {
+        if (this.progressBar != null) {
             Runnable doSetProgressBarValue = new Runnable() {
 
                 public void run() {
-                    m_ProgressBar.setValue(percent);
+                    progressBar.setValue(percent);
                 }
             };
             SwingUtilities.invokeLater(doSetProgressBarValue);
@@ -1202,12 +1214,13 @@ final class SplashScreen extends Frame {
         JWindow splashWindow = new JWindow(this);
         BasicResourceLoader loader = BasicResourceLoader.instance();
         byte[] bytes = loader.getBytesFromResourceLocation(imgLocation, true);
-        ImageIcon ii = new ImageIcon(Toolkit.getDefaultToolkit().createImage(bytes));
+        ImageIcon ii = new ImageIcon(Toolkit.getDefaultToolkit().createImage(bytes));        
         JLabel splashLabel = new JLabel(ii);
+        
         splashWindow.add(splashLabel);
         splashWindow.pack();
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         splashWindow.setLocation(screenSize.width / 2 - splashWindow.getSize().width / 2, screenSize.height / 2 - splashWindow.getSize().height / 2);
-        splashWindow.setVisible(true);
+        splashWindow.setVisible(true);        
     }
 }
