@@ -267,7 +267,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
         final SplashScreen splashScreen = new SplashScreen(EvAInfo.splashLocation);
 
         // preload some classes (into system cache) in a parallel thread
-        preloadClasses();        
+        preloadClasses();
         
 
         withGUI = !noGui;
@@ -1195,7 +1195,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
 final class SplashScreen extends Frame {
 
     private static final long serialVersionUID = 1281793825850423095L;
-    String imgLocation;
+    private String imgLocation;
 
     public SplashScreen(String imgLoc) {
         imgLocation = imgLoc;
