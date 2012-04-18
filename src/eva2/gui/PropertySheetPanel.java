@@ -268,7 +268,7 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
 
             // Add some specific display for some greeks here
             name = translateGreek(name);
-
+            name = eva2.tools.StringTools.humaniseCamelCase(name);
             addLabelView(componentOffset, gbLayout, i, name, newView);
             m_NumEditable++;
             if (m_Properties[i].isHidden()) {
@@ -397,6 +397,7 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
     
 	private void addLabelView(int componentOffset, GridBagLayout gbLayout,
 			int i, String name, JComponent newView) {
+                        
 		m_Labels[i] = makeLabel(name);
 		m_Views[i]          = newView;
 		m_ViewWrapper[i]    = new JPanel();

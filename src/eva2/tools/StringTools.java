@@ -1,14 +1,22 @@
 package eva2.tools;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.StringTokenizer;
-
 import eva2.gui.BeanInspector;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-public class StringTools {
+/**
+ * Utility class to provide simplification functions
+ * for working with Strings.
+ *
+ * @author Fabian Becker, Marcel Kronfeld
+ */
+public final class StringTools {
+    
+    /**
+     * Private constructor to prevent instantiation.
+     */
+    private StringTools() { }
 
     /**
      * Returns a HTML formated String, in which each line is at most lineBreak
@@ -19,23 +27,27 @@ public class StringTools {
      * @return
      */
     public static String toHTML(String string, int lineBreak) {
-        StringTokenizer st = new StringTokenizer(string, " ");
-        if (!st.hasMoreTokens()) return "<html><body></body></html>";
-        StringBuffer sbuf = new StringBuffer(st.nextToken());
-        
-        int length = sbuf.length();
-        while (st.hasMoreElements()) {
-            if (length >= lineBreak) {
-                sbuf.append("<br>");
-                length = 0;
-            } else sbuf.append(" ");
-            String tmp = st.nextToken();
-            length += tmp.length() + 1;
-            sbuf.append(tmp);
+        StringTokenizer sTok = new StringTokenizer(string, " ");
+        if (!sTok.hasMoreTokens()) {
+            return "<html><body></body></html>";
         }
-        sbuf.insert(0, "<html><body>");
-        sbuf.append("</body></html>");
-        return sbuf.toString();
+        StringBuilder sBuf = new StringBuilder(sTok.nextToken());
+        
+        int length = sBuf.length();
+        while (sTok.hasMoreElements()) {
+            if (length >= lineBreak) {
+                sBuf.append("<br>");
+                length = 0;
+            } else {
+                sBuf.append(" ");
+            }
+            String tmp = sTok.nextToken();
+            length += tmp.length() + 1;
+            sBuf.append(tmp);
+        }
+        sBuf.insert(0, "<html><body>");
+        sBuf.append("</body></html>");
+        return sBuf.toString();
     }
     
     public static boolean arrayContains(String[] arr, String key, boolean ignoreCase) {
@@ -251,20 +263,22 @@ public class StringTools {
 	/**
 	 * Concatenate a list of Strings using a given delimiter string.
 	 * 
-	 * @param headlineFields
-	 * @param delim
-	 * @return
+	 * @param strings List of Strings to concatenate
+	 * @param delim Delimiter for concatenation
+	 * @return String representation
 	 */
-	public static String concatFields(List<String> strings,
-			String delim) {
-		StringBuffer sb = new StringBuffer();
-		int cnt=0;
+	public static String concatFields(final List<String> strings,
+			final String delim) {
+		StringBuilder sBuilder = new StringBuilder();
+		int cnt = 0;
 		for (String field : strings) {
-			if (cnt>0) sb.append(delim);
-			sb.append(field);
+			if (cnt > 0) {
+                            sBuilder.append(delim);
+                        }
+			sBuilder.append(field);
 			cnt++;
 		}
-		return sb.toString();
+		return sBuilder.toString();
 	}
 	
 	/**
@@ -276,11 +290,13 @@ public class StringTools {
 	 * @return
 	 */
 	public static String concatValues(List<Object> objects,
-			String delim) {
-		StringBuffer sb = new StringBuffer();
-		int cnt=0;
+			final String delim) {
+		StringBuilder sb = new StringBuilder();
+		int cnt = 0;
 		for (Object v : objects) {
-			if (cnt>0) sb.append(delim);
+			if (cnt > 0) {
+                            sb.append(delim);
+                        }
 			sb.append(BeanInspector.toString(v));
 			cnt++;
 		}
@@ -289,10 +305,12 @@ public class StringTools {
 
 	public static String concatFields(String[] strs,
 			String delim) {
-		StringBuffer sb = new StringBuffer();
-		int cnt=0;
+		StringBuilder sb = new StringBuilder();
+		int cnt = 0;
 		for (String str : strs) {
-			if (cnt>0) sb.append(delim);
+			if (cnt > 0) { 
+                            sb.append(delim);
+                        }
 			sb.append(str);
 			cnt++;
 		}
@@ -329,16 +347,18 @@ public class StringTools {
 	/**
 	 * Delete a certain character from a string.
 	 * 
-	 * @param c
-	 * @param str
-	 * @return
+	 * @param c Character to delete
+	 * @param str String to remove c from.
+	 * @return String with character c removed.
 	 */
-	public static String deleteChar(char c, String str) {
-		StringBuffer sb = new StringBuffer();
-		for (int i=0; i<str.length(); i++) {
-			if (c!=str.charAt(i)) sb.append(str.charAt(i));
+	public static String deleteChar(final char c, final String str) {
+		StringBuilder sBuilder = new StringBuilder();
+		for (int i = 0; i < str.length(); i++) {
+			if (c != str.charAt(i)) {
+                            sBuilder.append(str.charAt(i));
+                        }
 		}
-		return sb.toString();
+		return sBuilder.toString();
 	}
 
 	/**
@@ -353,5 +373,54 @@ public class StringTools {
 		int p = str.lastIndexOf(c);
 		return str.substring(p+1); // for -1 this just works as well
 	}
+        
+        /**
+        * Converts a camelCase to a more human form, with spaces.
+        * E.g. 'Camel Case'.
+        *
+        * @param word Word to convert to a readable String
+        * @return Readable String representation of input word
+        */
+        public static String humaniseCamelCase(final String word) {
+            Pattern pattern = Pattern.compile("([A-Z]|[a-z])[a-z]*");
+
+            List<String> tokens = new ArrayList<String>();
+            Matcher matcher = pattern.matcher(word);
+            String acronym = "";
+            while (matcher.find()) {
+                String found = matcher.group();
+                if (found.matches("^[A-Z]$")) {
+                    acronym += found;
+                } else {
+                    if (acronym.length() > 0) {
+                        //we have an acronym to add before we continue
+                        tokens.add(acronym);
+                        acronym = "";
+                    }
+                    tokens.add(upcaseFirst(found));
+                }
+            }
+
+            if (acronym.length() > 0) {
+                tokens.add(acronym);
+            }
+
+            if (!tokens.isEmpty()) {
+                return concatFields(tokens, " ");                
+            }
+
+            return upcaseFirst(word);
+        }
+
+        /**
+         * Takes a string and returns it with the first character
+         * converted to uppercase.
+         *
+         * @param word Word to modify
+         * @return Parameter with its first character converted to uppercase
+         */
+        public static String upcaseFirst(final String word) {
+            return word.substring(0, 1).toUpperCase() + word.substring(1);
+        }
 }
 
