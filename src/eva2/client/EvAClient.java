@@ -83,6 +83,7 @@ import eva2.tools.Serializer;
 import eva2.tools.StringTools;
 import eva2.tools.jproxy.RemoteStateListener;
 
+
 /**
  *
  */
@@ -107,6 +108,9 @@ public class EvAClient implements RemoteStateListener, Serializable {
     private transient JExtMenu menuOptions;
     private transient JProgressBar progressBar;
     
+    // Option
+    private ExtAction actQuit;
+    
     // LogPanel
     private LogPanel logPanel;
     private static final Logger logger = Logger.getLogger(EvAInfo.defaultLogger);
@@ -114,13 +118,13 @@ public class EvAClient implements RemoteStateListener, Serializable {
     // Module:
     private ExtAction actModuleLoad;
 
-    // Hosts:
-    
+    // Hosts:    
     private ExtAction actHost;
     private ExtAction actAvailableHost;
     private ExtAction actKillHost;
     private ExtAction actKillAllHosts;
     private ModuleAdapter currentModuleAdapter = null;
+    
     // About:
     private ExtAction actAbout;
     private ExtAction actLicense;
@@ -141,6 +145,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
     private boolean withGUI = true;
     private boolean withTreeView = false;
     private EvATabbedFrameMaker frameMaker = null;
+    private Window parentWindow;
 
     public void addRemoteStateListener(RemoteStateListener l) {
         if (superListenerList == null) {
@@ -401,7 +406,8 @@ public class EvAClient implements RemoteStateListener, Serializable {
      */
     private void init(String hostName, String paramsFile, InterfaceGOParameters goParams, final Window parent) {        
         useDefaultModule = EvAInfo.propDefaultModule();
-
+        this.parentWindow = parent;
+        
         if (useDefaultModule != null) {
             useDefaultModule = useDefaultModule.trim();
             if (useDefaultModule.length() < 1) {
@@ -479,16 +485,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
             evaFrame.addWindowListener(new WindowAdapter() {
 
                 public void windowClosing(WindowEvent e) {
-                    logger.info("Closing EvA2 Client. Bye!");
-                    evaFrame.dispose();
-                    Set<String> keys = System.getenv().keySet();
-                    if (keys.contains("MATLAB")) {
-                        System.out.println("Seems like Ive been started from Matlab: not killing JVM");
-                    } else {
-                        if (parent == null) {
-                            System.exit(1);
-                        }
-                    }
+                    EvAClient.this.close();
                 }
             });
         }
@@ -500,8 +497,6 @@ public class EvAClient implements RemoteStateListener, Serializable {
             comAdapter.setLogPanel(logPanel);
             logger.log(Level.INFO, "Selected Host: {0}", comAdapter.getHostName());
         }
-//		m_mnuModule.setText("Select module");
-//		m_mnuModule.repaint();
 
         if (withGUI) {
             logger.log(Level.INFO, "Working directory is: {0}", System.getProperty("user.dir"));
@@ -513,9 +508,26 @@ public class EvAClient implements RemoteStateListener, Serializable {
                 evaFrame.pack();
                 evaFrame.setVisible(true);
             }
-            // if this message is omitted, the stupid scroll pane runs to 
+            // if this message is omitted, the stupid scroll pane runs to
             // the end of the last line which is ugly for a long class path
-            logger.info("EvA2 ready"); 
+            logger.info("EvA2 ready");
+        }
+    }
+    
+    /**
+     * Closes EvA2 workbench. Will not kill the JVM iff
+     * the MATLAB environment variable has been set.
+     */
+    public void close() {
+        logger.info("Closing EvA2 Client. Bye!");
+        evaFrame.dispose();
+        Set<String> keys = System.getenv().keySet();
+        if (keys.contains("MATLAB")) {
+            logger.info("EvA2 workbench has been started from Matlab: not killing JVM");
+        } else {
+            if (parentWindow == null) {
+                System.exit(1);
+            }
         }
     }
 
@@ -595,12 +607,18 @@ public class EvAClient implements RemoteStateListener, Serializable {
         // add a data listener instance:
         evaClient.getStatistics().addDataListener(statisticsListener);
 
-        evaClient.refreshMainPanels(); // GUI update due to the changes made through the API
+        // GUI update due to the changes made through the API
+        evaClient.refreshMainPanels();
 
 
         return evaClient;
     }
 
+    /**
+     * This method returns a readable usage string.
+     *
+     * @return Returns usage message
+     */
     public static String usage() {
         StringBuilder sbuf = new StringBuilder();
         sbuf.append(EvAInfo.productName);
@@ -630,9 +648,6 @@ public class EvAClient implements RemoteStateListener, Serializable {
      *
      */
     private void createActions() {
-        //////////////////////////////////////////////////////////////
-        // Module:
-        /////////////////////////////////////////////////////////////
         actModuleLoad = new ExtAction("&Load", "Load Module",
                 KeyStroke.getKeyStroke(KeyEvent.VK_L, Event.CTRL_MASK)) {
 
@@ -732,6 +747,17 @@ public class EvAClient implements RemoteStateListener, Serializable {
                 xx.start();
             }
         };
+        
+        actQuit = new ExtAction("&Quit", "Quit EvA2 workbench",
+                KeyStroke.getKeyStroke(KeyEvent.VK_Q, Event.CTRL_MASK)) {
+
+            /* (non-Javadoc)
+             * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+             */
+            public void actionPerformed(ActionEvent e) {
+                EvAClient.this.close();
+            }
+        };
         /*
          * m_actStartServerManager = new ExtAction("Start &Server Manager",
          * "Start &Server Manager", KeyStroke.getKeyStroke(KeyEvent.VK_S,
@@ -760,20 +786,21 @@ public class EvAClient implements RemoteStateListener, Serializable {
                 Object[] framelist = JEFrameRegister.getFrameList();
                 for (int i = 0; i < framelist.length; i++) {
                     JMenuItem act = new JMenuItem((i + 1) + ". " + ((JEFrame) framelist[i]).getTitle());
-                    final JFrame x = ((JEFrame) framelist[i]);
+                    final JFrame selectedFrame = ((JEFrame) framelist[i]);
 
-                    act.addActionListener((new ActionListener() {
+                    act.addActionListener(new ActionListener() {
 
                         public void actionPerformed(ActionEvent e) {
-                            if (!x.isActive()) {
-                                x.setExtendedState(JFrame.NORMAL);
-                                x.setVisible(false);
-                                x.setVisible(true); // it seems to be quite a fuss to bring something to the front and actually mean it...
-                                x.toFront();		// this seems useless
-                                x.requestFocus();	// this seems useless too
+                            if (!selectedFrame.isActive()) {
+                                selectedFrame.setExtendedState(JFrame.NORMAL);
+                                selectedFrame.setVisible(false);
+                                selectedFrame.setVisible(true); // it seems to be quite a fuss to bring something to the front and actually mean it...
+                                selectedFrame.toFront();		// this seems useless
+                                selectedFrame.requestFocus();	// this seems useless too
                             }
                         }
-                    }));
+                    });
+                    
                     if (curMenu.getItemCount() >= maxWindowMenuLength) {
                         JExtMenu subMenu = new JExtMenu("&More...");
                         curMenu.add(new JSeparator());
@@ -810,23 +837,20 @@ public class EvAClient implements RemoteStateListener, Serializable {
         ////////////////////////////////////////////////////////////////
         menuSelHosts = new JExtMenu("&Select Hosts");
         menuSelHosts.setToolTipText("Select a host for the server application");
-        //if (EvAClient.LITE_VERSION == false)
         menuSelHosts.add(actHost);
         menuSelHosts.add(actAvailableHost);
         menuSelHosts.addSeparator();
         menuSelHosts.add(actKillHost);
         menuSelHosts.add(actKillAllHosts);
-//		m_mnuOptions.add(m_actStartServerManager);
         ////////////////////////////////////////////////////////////////
         menuAbout = new JExtMenu("&About");
         menuAbout.add(actAbout);
         menuAbout.add(actLicense);
         //////////////////////////////////////////////////////////////
-        // m_barMenu.add(m_Desktop.getWindowMenu());
 
         menuOptions = new JExtMenu("&Options");
         menuOptions.add(menuSelHosts);
-        //m_barMenu.add(m_mnuSelHosts);
+        menuOptions.add(actQuit);
         // this is accessible if no default module is given
         if (showLoadModules) {
             menuBar.add(menuModule);
@@ -1191,7 +1215,6 @@ public class EvAClient implements RemoteStateListener, Serializable {
         }
     }
 }
-
 final class SplashScreen extends Frame {
 
     private static final long serialVersionUID = 1281793825850423095L;
