@@ -17,7 +17,7 @@ package eva2.client;
 import java.rmi.RemoteException;
 
 import eva2.EvAInfo;
-import eva2.gui.LogPanel;
+import eva2.gui.LoggingPanel;
 import eva2.server.EvAMainAdapter;
 import eva2.server.EvAMainAdapterImpl;
 import eva2.server.go.InterfaceGOParameters;
@@ -35,14 +35,14 @@ import eva2.tools.jproxy.RMIInvocationHandler;
  *
  */
 public class EvAComAdapter extends ComAdapter {
-	private LogPanel m_LogPanel;
+	private LoggingPanel m_LogPanel;
 	private EvAMainAdapterImpl localMainAdapter;
 	private boolean runLocally = false;
 	
 	/**
 	 *
 	 */
-	public void setLogPanel(LogPanel OutputFrame) {
+	public void setLogPanel(LoggingPanel OutputFrame) {
 		m_LogPanel = OutputFrame;
 	}
 	/**

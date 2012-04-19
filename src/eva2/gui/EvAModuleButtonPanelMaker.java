@@ -9,10 +9,6 @@ package eva2.gui;
  *            $Date: 2007-11-27 14:37:05 +0100 (Tue, 27 Nov 2007) $
  *            $Author: mkron $
  */
-
-/*==========================================================================*
- * IMPORTS
- *==========================================================================*/
 import eva2.EvAInfo;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -176,25 +172,25 @@ public class EvAModuleButtonPanelMaker implements RemoteStateListener, Serializa
 	
 	private void makeHelpButton() {
 		///////////////////////////////////////////////////////////////
-		if (helpFileName!=null && (!helpFileName.equals(""))) {
-			helpButton= new JButton("Description");
+		if (helpFileName != null && (!helpFileName.equals(""))) {
+			helpButton = new JButton("Description");
 			helpButton.setToolTipText("Description of the current optimization algorithm.");
 			helpButton.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e){
+
+				public void actionPerformed(ActionEvent e) {
 					//System.out.println("Run Opt pressed !!!!!!!!!!!!!!!!======================!!");
 					try {
-						if (helpFileName!=null) {
+						if (helpFileName != null) {
 							HtmlDemo temp = new HtmlDemo(helpFileName);
 							temp.show();
 						}
 						helpButton.setEnabled(true);
 					} catch (Exception ee) {
 						ee.printStackTrace();
-						System.out.print ("Error in run: " +ee +" : " + ee.getMessage() );
+						System.out.print("Error in run: " + ee + " : " + ee.getMessage());
 					}
 				}
-			}
-			);
+			});
 			toolBar.add(helpButton);
 		}
 	}

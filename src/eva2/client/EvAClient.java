@@ -36,8 +36,10 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
+import javax.swing.plaf.basic.BasicBorders;
 
 
 /**
@@ -68,7 +70,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
     private ExtAction actQuit;
     
     // LogPanel
-    private LogPanel logPanel;
+    private LoggingPanel logPanel;
     private static final Logger logger = Logger.getLogger(EvAInfo.defaultLogger);
     
     // Module:
@@ -385,40 +387,17 @@ public class EvAClient implements RemoteStateListener, Serializable {
             } catch (Exception e) {
                 System.out.println("Error" + e.getMessage());
             }
-
+			
+			progressBar = new JProgressBar();
+			progressBar.setBorder(new TitledBorder("Progress"));
+			progressBar.setValue(0);
+			progressBar.setStringPainted(true);
+            evaFrame.getContentPane().add(progressBar, BorderLayout.NORTH);
+			
             evaFrame.getContentPane().setLayout(new BorderLayout());
-            logPanel = new LogPanel();
-            evaFrame.getContentPane().add(logPanel, BorderLayout.CENTER);
-            
-            
-            logger.addHandler(new Handler() {
-
-                @Override
-                public void publish(LogRecord record) {
-                    StringBuilder sBuilder = new StringBuilder();
-                    sBuilder.append("[");
-                    sBuilder.append(record.getLevel().toString());
-                    sBuilder.append("] ");
-                    MessageFormat messageFormat = new MessageFormat(record.getMessage());                    
-                    sBuilder.append(messageFormat.format(record.getParameters()));
-                    // Show message on LogPanel
-                    EvAClient.this.logPanel.logMessage(sBuilder.toString());
-                }
-
-                @Override
-                public void flush() {
-                    /* We do nothing here as we don't buffer the entries */
-                }
-
-                @Override
-                public void close() throws SecurityException {
-                    /* Nothing to close */
-                }
-                
-            });
-            
-            progressBar = new JProgressBar();
-            evaFrame.getContentPane().add(progressBar, BorderLayout.SOUTH);
+            logPanel = new LoggingPanel(logger);
+            evaFrame.getContentPane().add(logPanel, BorderLayout.SOUTH);
+           
 
             if (EvAInfo.propShowModules() != null) {
                 showLoadModules = true;
@@ -927,7 +906,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
         try {
             newModuleAdapter = comAdapter.getModuleAdapter(selectedModule, goParams, withGUI ? null : "EvA2");
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Error while m_ComAdapter.GetModuleAdapter Host: " + e.getMessage(), e);
+            logger.log(Level.SEVERE, "Error loading module.", e);
             EVAERROR.EXIT("Error while m_ComAdapter.GetModuleAdapter Host: " + e.getMessage());
         }
         if (newModuleAdapter == null) {

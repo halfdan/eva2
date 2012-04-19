@@ -28,22 +28,39 @@ import javax.swing.event.ChangeListener;
 
 import eva2.EvAInfo;
 import eva2.tools.BasicResourceLoader;
+import java.awt.FlowLayout;
+import java.awt.event.*;
+import java.beans.PropertyChangeListener;
+import java.text.MessageFormat;
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
+import java.util.logging.Logger;
+import javax.swing.*;
+
 /**
  *
  */
-public class LogPanel extends JPanel {
-//	protected JLabel m_Message = new JLabel("OK");
+public class LoggingPanel extends JPanel {
+	protected static Logger logger;
 	protected JTextArea loggingTextArea = new JTextArea(10,20);
-	protected boolean m_first = true;
+	protected boolean firstMessage = true;
+	protected Handler loggingHandler;
+	protected JPopupMenu loggingLevelMenu;
 	/**
 	 *
 	 */
-	public LogPanel() {
+	public LoggingPanel(Logger logger) {
+		this.logger = logger;
 		loggingTextArea.setEditable(false);
 		loggingTextArea.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));
-
+		loggingTextArea.setLineWrap(true);
+				
 		JPanel mainPanel = new JPanel();
 		mainPanel.setBorder(BorderFactory.createTitledBorder("Info"));
+		
+		this.loggingHandler = new LoggingHandler(this);
+		logger.addHandler(loggingHandler);
+		
 		mainPanel.setLayout(new BorderLayout());
 		final JScrollPane scrollpane = new JScrollPane(loggingTextArea);
 //		scrollpane.setAutoscrolls(false);
@@ -63,10 +80,6 @@ public class LogPanel extends JPanel {
 		});
 		setLayout(new BorderLayout());
 		add(mainPanel, BorderLayout.CENTER);
-		JPanel panel_2 = new JPanel();
-		panel_2.setLayout(new BorderLayout());
-//		panel_2.add(m_Message,BorderLayout.CENTER);
-		add(panel_2, BorderLayout.SOUTH);
 	}
 	/**
 	 *
@@ -78,39 +91,41 @@ public class LogPanel extends JPanel {
 	 *
 	 */
 	public void logMessage(String message) {
-		if (m_first)
-			m_first = false;
+		loggingTextArea.append(LoggingPanel.getTimestamp() + ' ' + message);
 		loggingTextArea.append("\n");
-		loggingTextArea.append(LogPanel.getTimestamp() + ' ' + message);
+	}
+}
+
+class LoggingHandler extends Handler {
+	protected LoggingPanel loggingPanel;
+	
+	public LoggingHandler(LoggingPanel loggingPanel) {
+		this.loggingPanel = loggingPanel;
 	}
 
-        
-	/**
-	 *
-	 */
-	public static void main(String [] args) {
-		try {
-			final JFrame frame = new JFrame("Log_Panel_Test");
-			frame.getContentPane().setLayout(new BorderLayout());
-			BasicResourceLoader  loader  = BasicResourceLoader.instance();
-			byte[] bytes   = loader.getBytesFromResourceLocation(EvAInfo.iconLocation, true);
-			frame.setIconImage(Toolkit.getDefaultToolkit().createImage(bytes));
-			LogPanel panel = new LogPanel();
-			frame.getContentPane().add(panel, BorderLayout.CENTER);
-			frame.addWindowListener(new WindowAdapter() {
-				public void windowClosing(WindowEvent e) {
-					frame.dispose();
-					System.exit(0);
-				}
-			});
-			frame.pack();
-			frame.setVisible(true);
-			panel.logMessage("HI!");
-			panel.logMessage("Test ------------------------------------------------------------------------");
+	@Override
+	public void publish(LogRecord record) {
+		StringBuilder sBuilder = new StringBuilder();
+		sBuilder.append("[");
+		sBuilder.append(record.getLevel().toString());
+		sBuilder.append("] ");
+		MessageFormat messageFormat = new MessageFormat(record.getMessage());
+		sBuilder.append(messageFormat.format(record.getParameters()));
+		// Show message on LogPanel
+		this.loggingPanel.logMessage(sBuilder.toString());
+	}
 
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println(e.getMessage());
-		}
+	@Override
+	public void flush() {
+		/*
+		 * We do nothing here as we don't buffer the entries
+		 */
+	}
+
+	@Override
+	public void close() throws SecurityException {
+		/*
+		 * Nothing to close
+		 */
 	}
 }
