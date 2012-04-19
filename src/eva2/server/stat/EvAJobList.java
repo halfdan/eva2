@@ -150,14 +150,14 @@ public class EvAJobList extends PropertySelectableList<EvAJob> implements Serial
 	 * @return
 	 */
 	public static PropertyEditor makeEditor(final Component parent, final EvAJobList jobList) {
-		final GenericArrayEditor edi = new GenericArrayEditor();
-    	edi.setWithAddButton(false);
-    	edi.setWithSetButton(false);
+		final GenericArrayEditor genericArrayEditor = new GenericArrayEditor();
+    	genericArrayEditor.setWithAddButton(false);
+    	genericArrayEditor.setWithSetButton(false);
     	ActionListener al=new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 //				System.out.println("PING!");
 //				System.out.println(BeanInspector.toString(edi.getSelectedIndices()));
-				EvAStatisticalEvaluation.evaluate((InterfaceTextListener)jobList, jobList.getObjects(), edi.getSelectedIndices(),
+				EvAStatisticalEvaluation.evaluate((InterfaceTextListener)jobList, jobList.getObjects(), genericArrayEditor.getSelectedIndices(),
 						(StatsOnSingleDataSetEnum[])EvAStatisticalEvaluation.statsParams.getOneSampledStats().getSelectedEnum(StatsOnSingleDataSetEnum.values()),
 						(StatsOnTwoSampledDataEnum[])EvAStatisticalEvaluation.statsParams.getTwoSampledStats().getSelectedEnum(StatsOnTwoSampledDataEnum.values()));		
 //				System.out.println(BeanInspector.toString(EvAStatisticalEvaluation.statsParams.getPairedStats().getSelected()));
@@ -177,47 +177,34 @@ public class EvAJobList extends PropertySelectableList<EvAJob> implements Serial
     	};
     	ActionListener sl=new ActionListener() {
     		public void actionPerformed(ActionEvent e) {
-    			edi.selectDeselectAll();			
+    			genericArrayEditor.selectDeselectAll();			
     		}
     	};
     	ActionListener sal=new ActionListener() {
     		public void actionPerformed(ActionEvent e) {
-    			jobList.saveSelectedJobs(edi);		
+    			jobList.saveSelectedJobs(genericArrayEditor);		
     		}
     	};
-		edi.addUpperActionButton("(De-)Sel. all", sl);
-    	edi.addUpperActionButton("Test Stats", al);
-    	edi.addLowerActionButton("Save selected", sal);
+		genericArrayEditor.addUpperActionButton("(De-)Sel. all", sl);
+    	genericArrayEditor.addUpperActionButton("Test Stats", al);
+    	genericArrayEditor.addLowerActionButton("Save selected", sal);
 
 //    	edi.addPopupItem("Reset selected", getClearSelectedActionListener(parent, jobList)); // this option does not make much sense - instead of deleting data, taking over the settings for a new run is more plausible
-    	edi.addPopupItem("Reuse as current settings", getReuseActionListener(parent, jobList));
-    	edi.setAdditionalCenterPane(createStatsPanel(jobList, edi));
-    	edi.setValue(jobList);
-    	return edi;
+    	genericArrayEditor.addPopupItem("Reuse as current settings", getReuseActionListener(parent, jobList));
+    	genericArrayEditor.setAdditionalCenterPane(createStatsPanel(jobList, genericArrayEditor));
+    	genericArrayEditor.setValue(jobList);
+		
+    	return genericArrayEditor;
 	}
 
 	private static JPanel createStatsPanel(final EvAJobList jobList, final GenericArrayEditor edi) {
-//		if (logPanel != null) System.err.println("Error: logPanel should be null!!!");
-//		logPanel  = new LogPanel();
-//		EvAStatisticalEvaluation.statsParams.setGenericAdditionalButtons(getActionButtons(lPan, jobList, edi));
 		JParaPanel pan = new JParaPanel(EvAStatisticalEvaluation.statsParams, "Statistics");
-		//    			GOEPanel pan = new GOEPanel(EvAStatisticalEvaluation.selectedSingleStats, jobList, null, new GenericObjectEditor());
 		JComponent paraPan = pan.makePanel();
 		JPanel tmpPan = new JPanel();
-//		tmpPan.setPreferredSize(new Dimension(1200,1200));
 		tmpPan.add(paraPan);
-//		tmpPan.add(logPanel);
 		return tmpPan;
 	}
-	
-//	public static void main(String[] args) {
-//		JEFrame frm = new JEFrame("Test", true);
-//		EvAJobList jl = new EvAJobList(new EvAJob[]{});
-//		frm.add((GenericArrayEditor)makeEditor(null, jl));
-//		frm.pack();
-//		frm.setVisible(true);
-//	}
-	
+		
 	private static ActionListener getReuseActionListener(final Component parent, final EvAJobList jobList) {
 		ActionListener al = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

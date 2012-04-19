@@ -48,18 +48,18 @@ public class GOEPanel extends JPanel implements ItemListener {
 	/** The model containing the list of names to select from */
 	private DefaultComboBoxModel m_ObjectNames;
 	/** Open object from disk */
-	private JButton m_OpenBut;
+	private JButton openButton;
 	/** Save object to disk */
-	private JButton m_SaveBut;
+	private JButton saveButton;
 	/** ok button */
-	private JButton m_okBut;
+	private JButton okayButton;
 	/** cancel button */
-	private JButton m_cancelBut;
+	private JButton cancelButton;
 	/** edit source button */
 //	private JButton m_editSourceBut;
 	/** Creates the GUI editor component */
 //	private Vector<String> m_ClassesLongName;
-	private GenericObjectEditor m_goe = null;
+	private GenericObjectEditor genericObjectEditor = null;
 	private boolean withComboBoxToolTips = true; // should tool tips for the combo box be created?
 	private int tipMaxLen = 100; // maximum length of tool tip
 
@@ -77,7 +77,7 @@ public class GOEPanel extends JPanel implements ItemListener {
 		Object m_Object = target;
 		m_Backup = backup;
 		m_Support = support;
-		m_goe  = goe;
+		genericObjectEditor  = goe;
 		
 //		System.out.println("GOEPanel.Constructor !! " + this);
 		try {
@@ -95,42 +95,42 @@ public class GOEPanel extends JPanel implements ItemListener {
 				new PropertyChangeListener() {
 					public void propertyChange(PropertyChangeEvent evt) {
 						if (TRACE) System.out.println("GOE Property Change Listener: " + evt);
-						m_Support.firePropertyChange("", m_Backup, m_goe.getValue());
+						m_Support.firePropertyChange("", m_Backup, genericObjectEditor.getValue());
 					}
 				});
-		m_OpenBut = new JButton("Open");
-		m_OpenBut.setToolTipText("Load a configured object");
-		m_OpenBut.setEnabled(true);
-		m_OpenBut.addActionListener(new ActionListener() {
+		openButton = new JButton("Open");
+		openButton.setToolTipText("Load a configured object");
+		openButton.setEnabled(true);
+		openButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Object object = FileTools.openObject(m_OpenBut, m_goe.getClassType());
+				Object object = FileTools.openObject(openButton, genericObjectEditor.getClassType());
 //				Object object = openObject();
 				if (object != null) {
 					// setValue takes care of: Making sure obj is of right type,
 					// and firing property change.
-					m_goe.setValue(object);
+					genericObjectEditor.setValue(object);
 					// Need a second setValue to get property values filled in OK.
 					// Not sure why.
-					m_goe.setValue(object); // <- Hannes ?!?!?
+					genericObjectEditor.setValue(object); // <- Hannes ?!?!?
 				}
 			}
 		});
 
-		m_SaveBut = new JButton("Save");
-		m_SaveBut.setToolTipText("Save the current configured object");
-		m_SaveBut.setEnabled(true);
-		m_SaveBut.addActionListener(new ActionListener() {
+		saveButton = new JButton("Save");
+		saveButton.setToolTipText("Save the current configured object");
+		saveButton.setEnabled(true);
+		saveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				FileTools.saveObjectWithFileChooser(m_SaveBut, m_goe.getValue());
+				FileTools.saveObjectWithFileChooser(saveButton, genericObjectEditor.getValue());
 //				saveObject(m_goe.getValue());
 			}
 		});
 
-		m_okBut = new JButton("OK");
-		m_okBut.setEnabled(true);
-		m_okBut.addActionListener(new ActionListener() {
+		okayButton = new JButton("OK");
+		okayButton.setEnabled(true);
+		okayButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				m_Backup = copyObject(m_goe.getValue());
+				m_Backup = copyObject(genericObjectEditor.getValue());
 //				System.out.println("Backup is now " + BeanInspector.toString(m_Backup));
 				if ((getTopLevelAncestor() != null) && (getTopLevelAncestor() instanceof Window)) {
 					Window w = (Window) getTopLevelAncestor();
@@ -139,15 +139,15 @@ public class GOEPanel extends JPanel implements ItemListener {
 			}
 		});
 
-		m_cancelBut = new JButton("Cancel");
-		m_cancelBut.setEnabled(true);
-		m_cancelBut.addActionListener(new ActionListener() {
+		cancelButton = new JButton("Cancel");
+		cancelButton.setEnabled(true);
+		cancelButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (m_Backup != null) {
 //					m_Object = copyObject(m_Backup);
 					// TODO m_goe.setObject(m_Object);
 //					System.out.println("Backup was " + BeanInspector.toString(m_Backup));
-					m_goe.setValue(copyObject(m_Backup));
+					genericObjectEditor.setValue(copyObject(m_Backup));
 					updateClassType();
 					updateChooser();
 					updateChildPropertySheet();
@@ -175,15 +175,15 @@ public class GOEPanel extends JPanel implements ItemListener {
 		JPanel okcButs = new JPanel();
 		okcButs.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		okcButs.setLayout(new GridLayout(1, 4, 5, 5));
-		okcButs.add(m_OpenBut);
-		okcButs.add(m_SaveBut);
+		okcButs.add(openButton);
+		okcButs.add(saveButton);
 //		okcButs.add(m_editSourceBut);
-		if (withCancel) okcButs.add(m_cancelBut);
-		okcButs.add(m_okBut);
+		if (withCancel) okcButs.add(cancelButton);
+		okcButs.add(okayButton);
 
 		add(okcButs, BorderLayout.SOUTH);
 
-		if (m_goe.getClassType() != null) {
+		if (genericObjectEditor.getClassType() != null) {
 			updateClassType();
 			updateChooser();
 			updateChildPropertySheet();
@@ -192,8 +192,8 @@ public class GOEPanel extends JPanel implements ItemListener {
 	}
 
 	public void setEnabledOkCancelButtons(boolean enabled) {
-		m_okBut.setEnabled(enabled);
-		m_cancelBut.setEnabled(enabled);
+		okayButton.setEnabled(enabled);
+		cancelButton.setEnabled(enabled);
 	}
 	
 	/**
@@ -221,7 +221,7 @@ public class GOEPanel extends JPanel implements ItemListener {
 	 * @param a The action listener.
 	 */
 	public void addOkListener(ActionListener a) {
-		m_okBut.addActionListener(a);
+		okayButton.addActionListener(a);
 	}
 
 	/**
@@ -229,7 +229,7 @@ public class GOEPanel extends JPanel implements ItemListener {
 	 * @param a The action listener.
 	 */
 	public void addCancelListener(ActionListener a) {
-		m_cancelBut.addActionListener(a);
+		cancelButton.addActionListener(a);
 	}
 
 	/**
@@ -237,7 +237,7 @@ public class GOEPanel extends JPanel implements ItemListener {
 	 * @param a The action listener
 	 */
 	public void removeOkListener(ActionListener a) {
-		m_okBut.removeActionListener(a);
+		okayButton.removeActionListener(a);
 	}
 
 	/**
@@ -245,7 +245,7 @@ public class GOEPanel extends JPanel implements ItemListener {
 	 * @param a The action listener
 	 */
 	public void removeCancelListener(ActionListener a) {
-		m_cancelBut.removeActionListener(a);
+		cancelButton.removeActionListener(a);
 	}
 	
 	public void setTarget(Object o) {
@@ -256,21 +256,21 @@ public class GOEPanel extends JPanel implements ItemListener {
 	 *
 	 */
 	protected void updateClassType() {
-		if (TRACE) System.out.println("# updating class "+m_goe.getClassType().getName());
+		if (TRACE) System.out.println("# updating class "+genericObjectEditor.getClassType().getName());
 		Vector<String> classesLongNames;
 		ArrayList<Class<?>> instances = new ArrayList<Class<?>>(5);
-		if (Proxy.isProxyClass(m_goe.getClassType())) {
-			if (TRACE) System.out.println("PROXY! original was " + ((RMIProxyLocal)Proxy.getInvocationHandler(((Proxy)m_goe.getValue()))).getOriginalClass().getName());
-			classesLongNames = new Vector<String>(GenericObjectEditor.getClassesFromProperties(((RMIProxyLocal)Proxy.getInvocationHandler(((Proxy)m_goe.getValue()))).getOriginalClass().getName(), null));
+		if (Proxy.isProxyClass(genericObjectEditor.getClassType())) {
+			if (TRACE) System.out.println("PROXY! original was " + ((RMIProxyLocal)Proxy.getInvocationHandler(((Proxy)genericObjectEditor.getValue()))).getOriginalClass().getName());
+			classesLongNames = new Vector<String>(GenericObjectEditor.getClassesFromProperties(((RMIProxyLocal)Proxy.getInvocationHandler(((Proxy)genericObjectEditor.getValue()))).getOriginalClass().getName(), null));
 		} else {		
-			classesLongNames = new Vector<String>(GenericObjectEditor.getClassesFromProperties(m_goe.getClassType().getName(), instances));
+			classesLongNames = new Vector<String>(GenericObjectEditor.getClassesFromProperties(genericObjectEditor.getClassType().getName(), instances));
 		}
 		if (classesLongNames.size() > 1) {
 			m_ObjectChooser.setModel(new DefaultComboBoxModel(classesLongNames));
 			if (withComboBoxToolTips) m_ObjectChooser.setRenderer(new ToolTipComboBoxRenderer(collectComboToolTips(instances, tipMaxLen) ));
 			add(m_ObjectChooser, BorderLayout.NORTH);
 		} else remove(m_ObjectChooser);
-		if (TRACE) System.out.println("# done updating class "+m_goe.getClassType().getName());
+		if (TRACE) System.out.println("# done updating class "+genericObjectEditor.getClassType().getName());
 	}
 
 	private String[] collectComboToolTips(List<Class<?>> instances, int maxLen) {
@@ -294,7 +294,7 @@ public class GOEPanel extends JPanel implements ItemListener {
 	}
 
 	protected void updateChooser() {
-		String objectName =  /*EVAHELP.cutClassName*/ (m_goe.getValue().getClass().getName());
+		String objectName =  /*EVAHELP.cutClassName*/ (genericObjectEditor.getValue().getClass().getName());
 		boolean found = false;
 		for (int i = 0; i < m_ObjectNames.getSize(); i++) {
 			if (TRACE) System.out.println("in updateChooser: looking at "+(String)m_ObjectNames.getElementAt(i));
@@ -313,7 +313,7 @@ public class GOEPanel extends JPanel implements ItemListener {
 	public void updateChildPropertySheet() {
 		//System.err.println("GOE::updateChildPropertySheet()");
 		// Set the object as the target of the propertysheet
-		m_ChildPropertySheet.setTarget(m_goe.getValue());
+		m_ChildPropertySheet.setTarget(genericObjectEditor.getValue());
 		// Adjust size of containing window if possible
 		if ((getTopLevelAncestor() != null)
 				&& (getTopLevelAncestor() instanceof Window)) {
@@ -338,7 +338,7 @@ public class GOEPanel extends JPanel implements ItemListener {
 				if (TRACE) System.out.println(className);
 //				Object n = (Object)Class.forName(className, true, this.getClass().getClassLoader()).newInstance();
 				Object n = (Object)Class.forName(className).newInstance();
-				m_goe.setValue(n);
+				genericObjectEditor.setValue(n);
 				// TODO ? setObject(n);
 			} catch (Exception ex) {
 				System.err.println("Exeption in itemStateChanged "+ex.getMessage());
