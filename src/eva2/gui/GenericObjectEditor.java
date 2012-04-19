@@ -405,8 +405,8 @@ public class GenericObjectEditor implements PropertyEditor {
 			MethodDescriptor[]  methods;
 			String rep = "";
 			try {
-				BeanInfo            bi      = Introspector.getBeanInfo(m_Object.getClass());
-				methods = bi.getMethodDescriptors();
+				BeanInfo beanInfo = Introspector.getBeanInfo(m_Object.getClass());
+				methods = beanInfo.getMethodDescriptors();
 				for (int i = 0; i < methods.length; i++) {
 					if (methods[i].getName().equalsIgnoreCase("getName")) getNameMethod = i;
 				}

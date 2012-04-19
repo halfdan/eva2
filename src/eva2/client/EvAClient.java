@@ -11,62 +11,8 @@ package eva2.client;
  * @version: $Revision: 322 $ $Date: 2007-12-11 17:24:07 +0100 (Tue, 11 Dec 2007)$ 
  * $Author: mkron $
  */
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.Event;
-import java.awt.Frame;
-import java.awt.Graphics;
-import java.awt.HeadlessException;
-import java.awt.Toolkit;
-import java.awt.Window;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Serializable;
-import java.net.URL;
-import java.text.MessageFormat;
-import java.util.Set;
-import java.util.Vector;
-import java.util.logging.*;
-
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JProgressBar;
-import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
-import javax.swing.JTree;
-import javax.swing.JWindow;
-import javax.swing.KeyStroke;
-import javax.swing.SwingUtilities;
-import javax.swing.event.MenuEvent;
-import javax.swing.event.MenuListener;
-
 import eva2.EvAInfo;
-import eva2.gui.EvATabbedFrameMaker;
-import eva2.gui.EvATreeNode;
-import eva2.gui.EvATreeSelectionListener;
-import eva2.gui.ExtAction;
-import eva2.gui.HtmlDemo;
-import eva2.gui.JEFrame;
-import eva2.gui.JEFrameRegister;
-import eva2.gui.JExtMenu;
-import eva2.gui.JParaPanel;
-import eva2.gui.LogPanel;
+import eva2.gui.*;
 import eva2.server.EvAServer;
 import eva2.server.go.InterfaceGOParameters;
 import eva2.server.modules.AbstractModuleAdapter;
@@ -76,12 +22,22 @@ import eva2.server.modules.ModuleAdapter;
 import eva2.server.stat.AbstractStatistics;
 import eva2.server.stat.InterfaceStatisticsListener;
 import eva2.server.stat.InterfaceStatisticsParameter;
-import eva2.tools.BasicResourceLoader;
-import eva2.tools.EVAERROR;
-import eva2.tools.ReflectPackage;
-import eva2.tools.Serializer;
-import eva2.tools.StringTools;
+import eva2.tools.*;
 import eva2.tools.jproxy.RemoteStateListener;
+import java.awt.*;
+import java.awt.event.*;
+import java.io.Serializable;
+import java.net.URL;
+import java.text.MessageFormat;
+import java.util.Set;
+import java.util.Vector;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
+import java.util.logging.Logger;
+import javax.swing.*;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
 
 
 /**
@@ -326,7 +282,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
                         splashScreen.dispose();
                     }
                     clientInited = true;
-                    notify();
+                    notifyAll();
                 }
             }
         });
