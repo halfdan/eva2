@@ -13,6 +13,7 @@ package eva2.gui;
 /*==========================================================================*
  * IMPORTS
  *==========================================================================*/
+import eva2.EvAInfo;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.Serializable;
@@ -25,163 +26,146 @@ import javax.swing.JPanel;
 
 import eva2.server.modules.ModuleAdapter;
 import eva2.server.stat.EvAJob;
+import eva2.tools.BasicResourceLoader;
 import eva2.tools.jproxy.RMIProxyLocal;
 import eva2.tools.jproxy.RemoteStateListener;
+import java.awt.Toolkit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.*;
 
 /**
  * Contains the GUI elements of start and stop buttons and optionally a help button.
  */
 public class EvAModuleButtonPanelMaker implements RemoteStateListener, Serializable, PanelMaker  {
-	public static boolean TRACE = false;
-	private String m_Name ="undefined";
-	private ModuleAdapter m_Adapter;
-	private boolean m_StateRunning;
-	private JButton m_RunButton;
-	private JButton m_PPButton;
-	private JButton m_StopButton;
-	private JButton m_ScheduleButton;
+	private static final Logger logger = Logger.getLogger(EvAInfo.defaultLogger);
+	private String m_Name = "undefined";
+	private ModuleAdapter moduleAdapter;
+	private boolean runningState;
+	private JButton runButton;
+	private JButton postProcessButton;
+	private JButton stopButton;
+	private JButton scheduleButton;
 //	private JButton m_actExitMod;
-	private JButton m_JHelpButton;
+	private JButton helpButton;
 //	private JButton m_ShowSolButton;
-	private JPanel m_Panel;
-	private String m_HelperFileName;
+	private JToolBar toolBar;
+	private String helpFileName;
 
 	/**
 	 *
 	 */
 	public EvAModuleButtonPanelMaker(ModuleAdapter adapter, boolean state) {
 		m_Name = "GENERAL";
-		m_StateRunning = state;
-		if (TRACE) System.out.println("Constructor EvAModuleButtonPanelMaker:");
-		m_Adapter = adapter;
+		runningState = state;
+		moduleAdapter = adapter;
 	}
 
-	public JComponent makePanel() {
+	public JToolBar makePanel() {
 		String myhostname = null;
 
-		m_Panel= new JPanel();
-		if(TRACE) System.out.println("JModuleGeneral.installAction()");
-		if (m_Adapter.hasConnection()) { // we might be in rmi mode
+		toolBar = new JToolBar();
+		toolBar.setFloatable(false);
+		
+		if (moduleAdapter.hasConnection()) { // we might be in rmi mode
 			try {
 				myhostname  =  InetAddress.getLocalHost().getHostName();
-			} catch (Exception e) {
-				System.err.println("ERROR getting myhostname "+e.getMessage());
+			} catch (Exception e) {                 
+				logger.log(Level.WARNING, "Could not get hostname", e);
 			}
 		}
-		if (!m_Adapter.hasConnection()) {
-			m_Adapter.addRemoteStateListener((RemoteStateListener)(this));
+		if (!moduleAdapter.hasConnection()) {
+			moduleAdapter.addRemoteStateListener((RemoteStateListener)(this));
 		} else {// there is a network RMI connection
-			m_Adapter.addRemoteStateListener((RemoteStateListener)RMIProxyLocal.newInstance(this));
+			moduleAdapter.addRemoteStateListener((RemoteStateListener)RMIProxyLocal.newInstance(this));
 		}
 
 		//////////////////////////////////////////////////////////////
-		m_RunButton= new JButton("Start");
-		m_RunButton.setToolTipText("Start the current optimization run.");
-		//System.out.println("Start tm_RunButton.addActionListener Run Opt pressed ====================!!!!!!!!!!!!!!!!!!");
-		m_RunButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e){
+		runButton = makeIconButton("resources/images/Play24.gif", "Start");
+		runButton.setToolTipText("Start the current optimization run.");
+		runButton.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent event) {
 				//Run Opt pressed !
 				onUserStart();
 			}
-		}
-		);
+		});
 
-		m_RunButton.setEnabled(!m_StateRunning); // enabled if not running
-		
-		m_Panel.add(m_RunButton);
-//		m_Panel.setBorder(BorderFactory.createTitledBorder("general action buttons"));
+		runButton.setEnabled(!runningState); // enabled if not running
 
-		//////////////////////////////////////////////////////////////
-		m_StopButton= new JButton("Stop");
-		m_StopButton.setToolTipText("Stop the current optimization run.");
-		m_StopButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e){
+		toolBar.add(runButton);
+
+		stopButton = makeIconButton("resources/images/Stop24.gif", "Stop");
+		stopButton.setToolTipText("Stop the current optimization run.");
+		stopButton.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent event) {
 				try {
-					m_Adapter.stopOpt();	// this means user break
-				} catch (Exception ee) { System.err.print ("Error in stop: " + ee.getMessage() ); }
-			}
-		}
-		);
-//		if (m_State == false )
-//			m_RestartButton.setEnabled(false);
-//		else
-//			m_RestartButton.setEnabled(true);
-		m_StopButton.setEnabled(m_StateRunning);
-		m_Panel.add(m_StopButton);
-//		//////////////////////////////////////////////////////////////
-		m_PPButton= new JButton("Post Process");
-		m_PPButton.setToolTipText("Start post processing according to available parameters.");
-		m_PPButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e){
-				try {
-					if (!m_Adapter.startPostProcessing()) JOptionPane.showMessageDialog(null, "Post processing seems deactivated! Check the settings.", "Warning", JOptionPane.WARNING_MESSAGE);
-//					m_actStop.setEnabled(true);
-//					m_RunButton.setEnabled(false);
+					// this means user break
+					moduleAdapter.stopOpt();
 				} catch (Exception ee) {
-					ee.printStackTrace();
-					System.err.println("Error in run: " +ee +" : " + ee.getMessage() );
+					logger.log(Level.WARNING, "Error while stopping job.", ee);
 				}
 			}
-		}
-		);
-		m_PPButton.setEnabled(m_StateRunning && m_Adapter.hasPostProcessing());
-		m_Panel.add(m_PPButton);
+		});
+
+		stopButton.setEnabled(runningState);
+		toolBar.add(stopButton);
+
+		postProcessButton = makeIconButton("resources/images/History24.gif", "Post Process");
+		postProcessButton.setToolTipText("Start post processing according to available parameters.");
+		postProcessButton.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				try {
+					if (!moduleAdapter.startPostProcessing()) {
+						JOptionPane.showMessageDialog(null, "Post processing seems deactivated! Check the settings.", "Warning", JOptionPane.WARNING_MESSAGE);
+					}
+				} catch (Exception ee) {
+					logger.log(Level.WARNING, "Error in run", ee);
+				}
+			}
+		});
+		postProcessButton.setEnabled(runningState && moduleAdapter.hasPostProcessing());
+		toolBar.add(postProcessButton);
 //		//////////////////////////////////////////////////////////////
-		m_ScheduleButton= new JButton("Schedule");
-		m_ScheduleButton.setToolTipText("Schedule the currently configured optimization as a job.");
-		m_ScheduleButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e){
-				EvAJob job = m_Adapter.scheduleJob();
-				if (job==null) {
-					System.err.println("Something went wrong on scheduling!");
+		scheduleButton= makeIconButton("resources/images/Server24.gif", "Schedule");
+		scheduleButton.setToolTipText("Schedule the currently configured optimization as a job.");
+		scheduleButton.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				EvAJob job = moduleAdapter.scheduleJob();
+				if (job == null) {
+					logger.log(Level.WARNING, "There was an error on scheduling your job");
 				}
 			}
-		}
-		);
-		m_ScheduleButton.setEnabled(true);
-		m_Panel.add(m_ScheduleButton);
-		
+		});
+		scheduleButton.setEnabled(true);
+		toolBar.add(scheduleButton);
+
 		makeHelpButton();
-		
-//		if (m_Adapter instanceof AbstractModuleAdapter && (m_Adapter != null)) {
-//		    /** This action listener, called by the "show" button will show the
-//		     * currently best solution in a frame.
-//		     */
-//			m_ShowSolButton = new JButton("Show Solution");
-//			m_ShowSolButton.addActionListener(new ActionListener() {
-//		        public void actionPerformed(ActionEvent event) {
-//					InterfaceGOParameters goParams = ((AbstractModuleAdapter)m_Adapter).getGOParameters();
-//					InterfaceOptimizationProblem goProblem = goParams.getProblem();
-//					InterfaceOptimizer opt = goParams.getOptimizer();
-//					AbstractEAIndividual indy = opt.getPopulation().getBestEAIndividual();
-//					if (indy != null) {
-//			            JFrame frame = new JFrame();
-//			            frame.setTitle("The current best solution for "+goProblem.getName());
-//			            frame.setSize(400, 300);
-//			            frame.setLocation(450, 250);
-//						Population pop = opt.getPopulation();
-//			            frame.getContentPane().add(goProblem.drawIndividual(pop.getGeneration(), pop.getFunctionCalls(), indy));
-//			            frame.validate();
-//			            frame.setVisible(true);
-//					} else System.out.println("No current solution available.");
-//		        }
-//			}
-//					);
-//			m_ShowSolButton.setEnabled(false);
-//			m_Panel.add(m_ShowSolButton);
-//		}
-		
-//		m_actExitMod = new JButton("Exit Module");
-//		m_actExitMod.setToolTipText("todo !!.");// TODO
-		return m_Panel;
+
+		return toolBar;
+	}
+	
+	private JButton makeIconButton(final String iconSrc, final String title) {
+		JButton newButton;
+		byte[] bytes;
+		bytes = BasicResourceLoader.instance().getBytesFromResourceLocation(iconSrc, false);
+		if (bytes == null) {
+			newButton = new JButton(title);			
+		} else {
+			newButton = new JButton(title, new ImageIcon(Toolkit.getDefaultToolkit().createImage(bytes)));
+		}
+		return newButton;
 	}
 	
 	public void onUserStart() {
 		try {
-			m_Adapter.startOpt();
-			m_StopButton.setEnabled(true);
-			m_RunButton.setEnabled(false);
-			m_PPButton.setEnabled(false);
+			moduleAdapter.startOpt();
+			stopButton.setEnabled(true);
+			runButton.setEnabled(false);
+			postProcessButton.setEnabled(false);
 //			m_RestartButton.setEnabled(false);
 //			m_JHelpButton.setEnabled(true);
 		} catch (Exception ee) {
@@ -192,18 +176,18 @@ public class EvAModuleButtonPanelMaker implements RemoteStateListener, Serializa
 	
 	private void makeHelpButton() {
 		///////////////////////////////////////////////////////////////
-		if (m_HelperFileName!=null && (!m_HelperFileName.equals(""))) {
-			m_JHelpButton= new JButton("Description");
-			m_JHelpButton.setToolTipText("Description of the current optimization algorithm.");
-			m_JHelpButton.addActionListener(new ActionListener() {
+		if (helpFileName!=null && (!helpFileName.equals(""))) {
+			helpButton= new JButton("Description");
+			helpButton.setToolTipText("Description of the current optimization algorithm.");
+			helpButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e){
 					//System.out.println("Run Opt pressed !!!!!!!!!!!!!!!!======================!!");
 					try {
-						if (m_HelperFileName!=null) {
-							HtmlDemo temp = new HtmlDemo(m_HelperFileName);
+						if (helpFileName!=null) {
+							HtmlDemo temp = new HtmlDemo(helpFileName);
 							temp.show();
 						}
-						m_JHelpButton.setEnabled(true);
+						helpButton.setEnabled(true);
 					} catch (Exception ee) {
 						ee.printStackTrace();
 						System.out.print ("Error in run: " +ee +" : " + ee.getMessage() );
@@ -211,7 +195,7 @@ public class EvAModuleButtonPanelMaker implements RemoteStateListener, Serializa
 				}
 			}
 			);
-			m_Panel.add(m_JHelpButton);
+			toolBar.add(helpButton);
 		}
 	}
     
@@ -219,12 +203,11 @@ public class EvAModuleButtonPanelMaker implements RemoteStateListener, Serializa
 	 *
 	 */
 	public void performedStop() {
-		if (TRACE) System.out.println("EvAModuleButtonPanelMaker.stopOptPerformed");
-		m_RunButton.setEnabled(true);
-		m_PPButton.setEnabled(true);
-		m_RunButton.repaint();
-		m_StopButton.setEnabled(false);
-		m_Panel.repaint();
+		runButton.setEnabled(true);
+		postProcessButton.setEnabled(true);
+		runButton.repaint();
+		stopButton.setEnabled(false);
+		toolBar.repaint();
 	}
 
 	public void performedStart(String infoString) {
@@ -247,22 +230,25 @@ public class EvAModuleButtonPanelMaker implements RemoteStateListener, Serializa
 	/**
 	 *
 	 */
-	public void setHelperFilename (String s) {
-		if ((s==null) && (s==m_HelperFileName)) return; // both are null, do nothing
-		if (s!=null) {
-			if (m_HelperFileName != null) {
-				if (!m_HelperFileName.equals(s)) {
-					m_Panel.remove(m_JHelpButton);
-					m_HelperFileName = s;
-					makeHelpButton();					
-				} //else // both are equal, do nothing
-			} else { // only old is null, nothing to be removed
-				m_HelperFileName = s;
+	public void setHelperFilename(String fileName) {
+		if ((fileName == null) && (fileName == helpFileName)) {
+			return; // both are null, do nothing
+		}
+		if (fileName != null) {
+			if (helpFileName == null) {
+				// only old is null, nothing to be removed
+				helpFileName = fileName;
 				makeHelpButton();
+			} else {
+				if (!helpFileName.equals(fileName)) {
+					toolBar.remove(helpButton);
+					helpFileName = fileName;
+					makeHelpButton();
+				} //else // both are equal, do nothing				
 			}
 		} else { // s is null, so just remove
-			m_Panel.remove(m_JHelpButton);
-			m_HelperFileName=s;
+			toolBar.remove(helpButton);
+			helpFileName = fileName;
 		}
 	}
 }
