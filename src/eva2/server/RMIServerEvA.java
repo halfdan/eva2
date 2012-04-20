@@ -13,6 +13,7 @@ package eva2.server;
  *==========================================================================*/
 import eva2.tools.jproxy.RMIProxyLocal;
 import eva2.tools.jproxy.RMIServer;
+import java.util.logging.Level;
 
 /**
  *
@@ -20,22 +21,22 @@ import eva2.tools.jproxy.RMIServer;
 public class RMIServerEvA extends RMIServer {
 
 	public static RMIServerEvA getInstance() {
-		if (m_instance==null) {
-			m_instance = new RMIServerEvA();
+		if (instance==null) {
+			instance = new RMIServerEvA();
 		}
-		return (RMIServerEvA)m_instance;
+		return (RMIServerEvA)instance;
 	}
 	
 	protected void createMainRemoteObject(String mainAdapterName) {
 		try {
-			m_MainRemoteObject = new EvAMainAdapterImpl();
-			m_MainRemoteObject =
+			mainRemoteObject = new EvAMainAdapterImpl();
+			mainRemoteObject =
 				(EvAMainAdapter) RMIProxyLocal.newInstance(
-						m_MainRemoteObject,
-						mainAdapterName + "_" + m_NumberOfVM);
-			m_MainRemoteObject.setRemoteThis(m_MainRemoteObject);
-		} catch (Exception e) {
-			e.printStackTrace();
+						mainRemoteObject,
+						mainAdapterName + "_" + numberOfVM);
+			mainRemoteObject.setRemoteThis(mainRemoteObject);
+		} catch (Exception ex) {
+			logger.log(Level.WARNING, "Could not create main remote object!", ex);
 		}
 	}
 }
