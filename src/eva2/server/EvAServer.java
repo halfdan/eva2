@@ -10,6 +10,8 @@ import eva2.EvAInfo;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -24,16 +26,15 @@ public class EvAServer {
     public static String m_UserName;
     public static int m_NumberOfVM = 0;
     private RMIServerEvA m_RMIServer;
+	private static final Logger logger = Logger.getLogger(EvAInfo.defaultLogger);
 
     /**
      * Constructor of EvAServer. Calls RMIConnection().
      */
     public EvAServer(boolean insideClient, boolean Restart) {
-        System.out.println("Number of CPUs :" + Runtime.getRuntime().availableProcessors());
-        System.out.println("*******************************************************************************");
-        System.out.println("This is EvA Server Version: " + EvAInfo.getVersion());
-        //System.out.println ("Java Version: " + System.getProperty("java.version") );
-        System.out.println("*******************************************************************************");
+		logger.log(Level.INFO, "Number of CPUs :" + Runtime.getRuntime().availableProcessors());        
+        logger.log(Level.INFO, "This is EvA Server Version: " + EvAInfo.getVersion());
+        logger.log(Level.INFO, "Java Version: " + System.getProperty("java.version"));
         m_UserName = System.getProperty("user.name");
 //    RMIConnection();
 //    m_ComAdapter = new EvAComAdapter();
