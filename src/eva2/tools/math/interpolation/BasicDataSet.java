@@ -14,65 +14,36 @@
 
 package eva2.tools.math.interpolation;
 
-import eva2.tools.sort.XYDoubleArray;
-
-/*==========================================================================*
- * IMPORTS
- *==========================================================================*/
-
 /**
  * The minimum wrapper class for an <code>AbstractDataSet</code>.
  */
-public class BasicDataSet extends AbstractDataSet
-{
-	/*-------------------------------------------------------------------------*
-	 * protected member variables
-	 *-------------------------------------------------------------------------*/
+public class BasicDataSet extends AbstractDataSet {
 	protected int dataType = -1;
 	protected String xLabel = null;
 	protected String yLabel = null;
 
-	/*------------------------------------------------------------------------*
-	 * constructor
-	 *------------------------------------------------------------------------*/
 	public BasicDataSet()
 	{
 		this(null, null, null, null);
 	}
 
-	public BasicDataSet(XYDoubleArray data)
-	{
-		this(data.x, data.y, null, null);
-	}
-
-	public BasicDataSet(XYDoubleArray data, String xLabel, String yLabel)
-	{
-		this(data.x, data.y, xLabel, yLabel);
-	}
-
 	public BasicDataSet(
-		double[] xDoubleData,
-		double[] yDoubleData,
-		int dataType)
-	{
+			double[] xDoubleData,
+			double[] yDoubleData,
+			int dataType) {
 		this(xDoubleData, yDoubleData, null, null);
 	}
 
 	public BasicDataSet(
-		double[] xDoubleData,
-		double[] yDoubleData,
-		String xLabel,
-		String yLabel)
-	{
+			double[] xDoubleData,
+			double[] yDoubleData,
+			String xLabel,
+			String yLabel) {
 		this.xDoubleData = xDoubleData;
 		this.yDoubleData = yDoubleData;
 		this.xLabel = xLabel;
 		this.yLabel = yLabel;
 	}
-
-	/*-------------------------------------------------------------------------*
-	* public methods
-	*-------------------------------------------------------------------------*/
 
 	public int getDataType()
 	{
@@ -94,7 +65,3 @@ public class BasicDataSet extends AbstractDataSet
 		return new String();
 	}
 }
-
-/****************************************************************************
- * END OF FILE
- ****************************************************************************/
