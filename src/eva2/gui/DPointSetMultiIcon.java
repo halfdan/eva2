@@ -8,7 +8,6 @@ import java.awt.Point;
 import java.awt.Stroke;
 import java.util.ArrayList;
 
-import eva2.tools.IntegerArrayList;
 import eva2.tools.chart2d.DArray;
 import eva2.tools.chart2d.DBorder;
 import eva2.tools.chart2d.DComponent;
@@ -37,7 +36,7 @@ public class DPointSetMultiIcon extends DComponent
     class JumpManager
     {
         protected int index = -1;
-        protected IntegerArrayList jumps = new IntegerArrayList();
+        protected ArrayList<Integer> jumps = new ArrayList<Integer>();
 
         public void addJump()
         {
