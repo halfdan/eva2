@@ -87,7 +87,6 @@ public class EvAComAdapter extends ComAdapter {
 	 */
 	public String[] getModuleNameList() {
 		String[] list;
-		if (TRACE) System.out.println("ComAdapter.GetModuleNameList()");
 		
 		if ((m_RMIServer == null) && isRunLocally()) {
 			list = getLocalMainAdapter().getModuleNameList();
@@ -117,12 +116,7 @@ public class EvAComAdapter extends ComAdapter {
 		}
 		return (MainAdapter) invocHandler.getWrapper();
 	}
-
-	protected void logInfo(String msg) {
-		if (m_LogPanel != null) {
-			m_LogPanel.logMessage(msg);
-		} else super.logInfo(msg);
-	}
+	
 	
 	protected RMIConnection createRMIConnection(String Host, MainAdapter mainRemoteObject, MainAdapterClient client) { 
 		return new RMIConnectionEvA(Host, mainRemoteObject, client);

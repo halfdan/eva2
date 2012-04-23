@@ -814,25 +814,26 @@ public class Mathematics {
 	 * @return the closest value to v within [min,max]
 	 */
 	public static double projectValue(double v, double min, double max) {
+		double value;
 		if (v < min) {
-			return min;
+			value = min;
 		} else if (v > max) {
-			return max;
-		} else
-			return v;
+			value = max;
+		} else {
+			value = v;
+		}
+		return value;
 	}
 
 	/**
-	 * Create a random vector, the components will be set to gaussian
+	 * Create a random vector, the components will be set to Gaussian
 	 * distributed values with mean zero and the given standard deviation.
-	 * 
-	 * @param dim
-	 *            the desired dimension
-	 * @param stdDev
-	 *            the gaussian standard deviation
+	 *
+	 * @param dim The desired dimension
+	 * @param stdDev The Gaussian standard deviation
 	 * @return random vector
 	 */
-	public static double[] randomVector(int dim, double stdDev) {
+	public static double[] randomVector(final int dim, final double stdDev) {
 		double[] vect = new double[dim];
 		for (int j = 0; j < vect.length; j++) {
 			vect[j] = RNG.gaussianDouble(stdDev);
@@ -843,10 +844,10 @@ public class Mathematics {
 	/**
 	 * Reflect the entries of x which violate the bounds to within the range.
 	 * Return the number of violating dimensions.
-	 * 
+	 *
 	 * @param x
 	 * @param range
-	 * @return the number of violating dimensions
+	 * @return The number of violating dimensions
 	 */
 	public static int reflectBounds(double[] x, double[][] range) {
 		int viols = 0;
@@ -854,8 +855,7 @@ public class Mathematics {
 		for (int i = 0; i < x.length; i++) {
 			double dimLen = range[i][1] - range[i][0];
 			if (dimLen <= 0.) {
-				EVAERROR
-						.errorMsgOnce("Error in reflectBounds: empty range! (possibly multiple errors)");
+				EVAERROR.errorMsgOnce("Error in reflectBounds: empty range! (possibly multiple errors)");
 			} else {
 				if (x[i] < range[i][0]) {
 					viols++;
@@ -867,8 +867,9 @@ public class Mathematics {
 				} else if (x[i] > range[i][1]) {
 					viols++;
 					d = x[i] - range[i][1];
-					while (d > dimLen)
+					while (d > dimLen) {
 						d -= dimLen; // avoid violating the other bound
+					}
 					// immediately
 					x[i] = range[i][1] - d;
 				}
@@ -890,12 +891,15 @@ public class Mathematics {
 	 */
 	public static double reflectValue(double val, double step, double min,
 			double max) {
-		while (step > (max - min))
+		while (step > (max - min)) {
 			step -= (max - min);
-		if ((val + step) > max)
+		}
+		if ((val + step) > max) {
 			return (2 * max - val - step);
-		if ((val + step) < min)
+		}
+		if ((val + step) < min) {
 			return (2 * min - val - step);
+		}
 		return (val += step);
 	}
 
@@ -916,15 +920,17 @@ public class Mathematics {
 	 */
 	public static double relDist(double[] x, double[] y, double def)
 			throws Exception {
-		if (x.length != y.length)
-			throw new Exception(
-					"The vectors x and y must have the same dimension");
+		if (x.length != y.length) {
+			throw new Exception("The vectors x and y must have the same dimension");
+		}
 		double d = 0;
-		for (int i = 0; i < x.length; i++)
-			if (y[i] != 0)
+		for (int i = 0; i < x.length; i++) {
+			if (y[i] != 0) {
 				d += Math.pow(((x[i] - y[i]) / y[i]), 2);
-			else
+			} else {
 				d += def;
+			}
+		}
 		return d;
 	}
 
@@ -943,8 +949,9 @@ public class Mathematics {
 			for (int i = 0; i < src.length; i++) {
 				dst[src.length - i - 1] = src[i];
 			}
-		} else
+		} else {
 			System.err.println("Mismatching array lengths!");
+		}			
 	}
 
 	/**
@@ -1015,7 +1022,7 @@ public class Mathematics {
 
 	/**
 	 * Scale a range by the given factor, meaning that the interval in each
-	 * dimension is extended (fact>1) or reduced (fact<1) by the defined ratio
+	 * dimension is extended (fact>1) or reduced (fact < 1) by the defined ratio
 	 * around the center.
 	 * 
 	 * @param rangeScaleFact
@@ -1059,33 +1066,6 @@ public class Mathematics {
 		}
 	}
 
-	// <<<<<<< .working
-	// /**
-	// * Computes a spline interpolation of the two point (x0,f0) and (x1,f1).
-	// *
-	// * @param x
-	// * @param x0
-	// * @param x1
-	// * @param f0
-	// * @param f1
-	// * @return If an error with the spline occurs, a linear interpolation will
-	// be
-	// * returned.
-	// */
-	// /* public static double splineInterpolation(double x, double x0, double
-	// x1,
-	// double f0, double f1) {
-	// try {
-	// double[] t = { x0, x1 }, f = { f0, f1 };
-	// SplineInterpolation spline = new SplineInterpolation(new BasicDataSet(t,
-	// f, 1));
-	// return spline.getY(x);
-	// } catch (InterpolationException e) {
-	// e.printStackTrace();
-	// }
-	// return linearInterpolation(x, x0, x1, f0, f1);
-	// }*/
-	// =======
 	/**
 	 * Computes a spline interpolation of the two point (x0,f0) and (x1,f1).
 	 * 

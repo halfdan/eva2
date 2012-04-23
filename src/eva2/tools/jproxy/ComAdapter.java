@@ -22,24 +22,27 @@ import java.util.Properties;
 import java.util.StringTokenizer;
 
 import eva2.tools.Serializer;
+import java.security.AccessControlException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
  *
  */
 public class ComAdapter {
-	static final public boolean TRACE = false;
-	static final public int PORT = 1099;
-	static final public String SEP = "_";
+	private static final Logger logger = Logger.getLogger(eva2.EvAInfo.defaultLogger);
+	public static final int PORT = 1099;
+	public static final String SEP = "_";
 	static protected ComAdapter m_instance = null;
 
 	public Registry m_Registry = null;
 	private ArrayList<RMIConnection> m_Connections = new ArrayList<RMIConnection>();
-	private String m_ownHostName;
+	private String hostName;
 	private ArrayList<String> m_HostNameList = new ArrayList<String>();
 	private ArrayList<String> m_AvailableHostNameList = new ArrayList<String>();
 //	private String m_RemoteAdapterName;
-	private String m_UserName;
+	private String userName;
 	private int m_ownHostIndex = 0;
 	protected RMIServer m_RMIServer;
 	private String serverListSeparator = ",";
@@ -59,12 +62,22 @@ public class ComAdapter {
 	 *
 	 */
 	protected ComAdapter() {
-		if (TRACE) System.out.println("constructor ComAdapter");
-		m_UserName = System.getProperty("user.name");
-		
-		m_ownHostName = "localhost"; //"192.168.0.1";
+		try {
+			userName = System.getProperty("user.name");			
+		} catch(SecurityException ex) {
+			/* This exception is expected to happen when
+			 * we are using Java WebStart.
+			 */			
+			logger.log(Level.INFO, "Username set to: WebStart", ex);
+			userName = "Webstart";
+		}
+		hostName = "localhost"; //"192.168.0.1";
 
-		System.setProperty("java.security.policy", "server.policy");
+		try {
+			System.setProperty("java.security.policy", "server.policy");
+		} catch(AccessControlException ex) {
+			// ToDo: This happens using webstart - what to do now?
+		}
 		launchRMIRegistry(false);
 		if (!m_HostNameList.contains("localhost")) {
 			// make sure localhost is in the list
@@ -85,10 +98,9 @@ public class ComAdapter {
 			while (st.hasMoreTokens()) {
 				String current = st.nextToken().trim();
 				if (!m_HostNameList.contains(current)) {
-					if (TRACE) System.out.println("adding server " + current);
 					m_HostNameList.add(current);
 				} else {
-					if (TRACE) System.out.println("server " + current + " was already in list");
+					logger.log(Level.FINER, "Server " + current + " was already in list");
 				}
 			}
 		}
@@ -107,7 +119,7 @@ public class ComAdapter {
 	/**
 	 * Set the separator for the server list string.
 	 * 
-	 * @return
+	 * @param sep List separator
 	 */
 	public void setServerListSeparator(String sep) {
 		serverListSeparator = sep;
@@ -116,7 +128,7 @@ public class ComAdapter {
 	/**
 	 * The separator for the server list string.
 	 * 
-	 * @return
+	 * @return The list separator
 	 */
 	public String getServerListSeparator() {
 		return serverListSeparator;
@@ -124,9 +136,7 @@ public class ComAdapter {
 	
 	/**
 	 *
-	 * @param c
-	 * @param host
-	 * @return
+	 * @param server An array of servers
 	 */
 	public void setServerList(String[] server){
 		m_HostNameList.clear();
@@ -140,10 +150,10 @@ public class ComAdapter {
 	 */
 	public RMIInvocationHandler getRMIHandler(Object c, String host) {
 		System.out.println("ComAdapter.getRMIHandler() for host " + host);
-		m_ownHostName = host;
+		hostName = host;
 		RMIInvocationHandler ret = null;
 		while (ret == null) {
-			ret = getConnection(m_ownHostName).getRMIHandler(c);
+			ret = getConnection(hostName).getRMIHandler(c);
 			if (ret == null)
 				System.out.println("Error in getRMIHandler");
 		}
@@ -155,16 +165,15 @@ public class ComAdapter {
 	 *
 	 */
 	public RMIThreadInvocationHandler getRMIThreadHandler(Object c, String host) {
-		if (TRACE)
-			System.out.println("ComAdapter.getRMIThreadHandler()");
 		int cnt=0;
-		m_ownHostName = host;
+		hostName = host;
 		RMIThreadInvocationHandler ret = null;
 		while (cnt<100) { //ret == null) {
 			cnt++;
-			ret = getConnection(m_ownHostName).getRMIThreadHandler(c);
-			if (ret == null)
-				System.err.println("Error in getRMIThreadHandler");
+			ret = getConnection(hostName).getRMIThreadHandler(c);
+			if (ret == null) {
+				logger.log(Level.WARNING, "Error in getRMIThreadHandler");
+			}
 		}
 		return ret;
 	}
@@ -174,18 +183,17 @@ public class ComAdapter {
 	 *
 	 */
 	public RMIThreadInvocationHandler getRMIThreadHandler(Object c) {
-		if (TRACE)
-			System.out.println("RMIThreadInvokationHandler getRMIThreadHandler");
 		RMIThreadInvocationHandler ret = null;
 		if (m_AvailableHostNameList.size() == 0) {
 			evalAvailableHostNameList();
 			m_ownHostIndex = 0;
 		}
 		m_ownHostIndex++;
-		if (m_ownHostIndex >= m_AvailableHostNameList.size())
+		if (m_ownHostIndex >= m_AvailableHostNameList.size()) {
 			m_ownHostIndex = 0;
-		m_ownHostName = (String) m_AvailableHostNameList.get(m_ownHostIndex);
-		ret = getRMIThreadHandler(c, m_ownHostName);
+		}			
+		hostName = (String) m_AvailableHostNameList.get(m_ownHostIndex);
+		ret = getRMIThreadHandler(c, hostName);
 		return ret;
 	}
 
@@ -194,20 +202,20 @@ public class ComAdapter {
 	 *
 	 */
 	public RMIInvocationHandler getRMIHandler(Object c) {
-		if (TRACE)
-			System.out.println("RMIThreadInvokationHandler getRMIHandler");
 		RMIInvocationHandler ret = null;
 		while (m_AvailableHostNameList.size() == 0) {
 			evalAvailableHostNameList();
-			if (m_AvailableHostNameList.size() == 0)
-				System.err.println("no host availabe waiting !!");
+			if (m_AvailableHostNameList.size() == 0) {
+				logger.log(Level.WARNING, "No host availabe waiting..");
+			}
 			m_ownHostIndex = 0;
 		}
 		m_ownHostIndex++;
-		if (m_ownHostIndex >= m_AvailableHostNameList.size())
+		if (m_ownHostIndex >= m_AvailableHostNameList.size()) {
 			m_ownHostIndex = 0;
-		m_ownHostName = (String) m_AvailableHostNameList.get(m_ownHostIndex);
-		ret = getRMIHandler(c, m_ownHostName);
+		}
+		hostName = (String) m_AvailableHostNameList.get(m_ownHostIndex);
+		ret = getRMIHandler(c, hostName);
 		return ret;
 	}
 
@@ -251,22 +259,20 @@ public class ComAdapter {
 	 */
 	public void evalAvailableHostNameList() {
 		long time = System.currentTimeMillis();
-		if (TRACE)
-			System.out.println("ComAdapter.getAvailableHostNameList()");
 		m_AvailableHostNameList.clear();
 		for (int i = 0; i < m_HostNameList.size(); i++) {
-			if (rmiPing((String) m_HostNameList.get(i)) == true)
+			if (rmiPing((String) m_HostNameList.get(i)) == true) {
 				m_AvailableHostNameList.add((String) m_HostNameList.get(i));
+			}
 			String testurl = (String) m_HostNameList.get(i);
 			for (int j = 1; j < 3; j++) {
 				if (rmiPing(testurl + "_" + j) == true) {
-					if (TRACE) System.out.println("found EvAServer on: " + testurl);
+					logger.log(Level.INFO, "Found EvAServer on: " + testurl);
 					m_AvailableHostNameList.add(testurl + "_" + j);
 				}
 			}
 		}
-		time = System.currentTimeMillis() - time;
-		if (TRACE) System.out.println("getAvailableHostNameList: " + m_AvailableHostNameList.size() + " found time " + time);
+		time = System.currentTimeMillis() - time;		
 
 	}
 
@@ -294,15 +300,15 @@ public class ComAdapter {
 	 *
 	 */
 	public String getHostName() {
-		return m_ownHostName;
+		return hostName;
 	}
 
 	/**
 	 *
 	 */
 	public void setHostName(String newHost) {
-		m_ownHostName = newHost;
-		Serializer.storeString("hostname.ser", m_ownHostName);
+		hostName = newHost;
+		Serializer.storeString("hostname.ser", hostName);
 	}
 
 
@@ -311,8 +317,6 @@ public class ComAdapter {
 	 *  @return
 	 */
 	protected MainAdapter createRMIMainConnect(String HostToConnect) {
-		if (TRACE)
-			System.out.println("RMIMainConnect.RMIMainConnect() =" + HostToConnect);
 		int len = HostToConnect.indexOf(SEP);
 		String Host = HostToConnect;
 		String Number = SEP + "0";
@@ -321,48 +325,24 @@ public class ComAdapter {
 			Host = st.nextToken().trim();
 			Number = SEP + st.nextToken().trim();
 		}
-		String MainAdapterName = m_UserName + MainAdapterImpl.MAIN_ADAPTER_NAME + Number; // attention
+		String MainAdapterName = userName + MainAdapterImpl.MAIN_ADAPTER_NAME + Number; // attention
 		
-		logInfo(" RMIConnect to " + HostToConnect);
+		logger.info("RMIConnect to " + HostToConnect);
 		MainAdapter MainRemoteObject = null;
 		try {
-			try {
-				try {
-					//System.out.println("--> ComAdapter: "+"rmi://"+Host+":"+MainAdapterImpl.PORT+"/"+MainAdapterName);
-//					String[] list = Naming.list("rmi://" + Host + ":" +
-//							MainAdapterImpl.PORT);
-					//for (int i=0;i<list.length;i++)
-					//  System.out.println("RMIName: "+list[i]);
-					//m_NumberOfVM = getNumberOfVM(list);
-					if (TRACE) System.out.println("getMain:" + "rmi://" + Host + ":" +
-							MainAdapterImpl.PORT + "/" + MainAdapterName);
-					RMIInvocationHandler invocHandler = (RMIInvocationHandler) Naming.lookup(
-							"rmi://" + Host + ":" + MainAdapterImpl.PORT + "/" +
-							MainAdapterName);
-					//System.out.println(" x ="+x.getClass().getName());
-					MainRemoteObject = getMainAdapter(invocHandler);
+			RMIInvocationHandler invocHandler = (RMIInvocationHandler) Naming.lookup(
+					"rmi://" + Host + ":" + MainAdapterImpl.PORT + "/"
+					+ MainAdapterName);
+			MainRemoteObject = getMainAdapter(invocHandler);
 
-					//MainRemoteObject = (MainAdapter)Naming.lookup("rmi://"+HostToConnect+":"+MainAdapterImpl.PORT+"/"+MainAdapterImpl.MAIN_ADAPTER_NAME);
-					//MainRemoteObject = (MainAdapter)LogProxy.newInstance(MainRemoteObject);
-					MainRemoteObject.setBuf("Ok.");
-					logInfo(" RMIConnect " + MainRemoteObject.getBuf());
-				} catch (MalformedURLException ex) {
-					System.err.println("MalformedURLException: Error while looking up " +
-							ex.getMessage());
-				}
-			} catch (NotBoundException ex) {
-				System.err.println("NotBoundException: Error while looking up " +
-						ex.getMessage());
-				ex.printStackTrace();
-
-			}
-			if (TRACE)
-				System.out.println("Connect to " + HostToConnect + " works fine");
-		} catch (RemoteException e) {
-			logInfo("Error while connecting Host: " + HostToConnect +
-					" \n ERROR: " + e.getMessage());
-			System.err.println("Error while connecting Host: " + HostToConnect +
-					" \n ERROR: " + e.getMessage());
+			MainRemoteObject.setBuf("Ok.");
+			logger.info("RMIConnect " + MainRemoteObject.getBuf());
+		} catch (MalformedURLException ex) {
+			logger.log(Level.WARNING, "MalformedURLException: Error while looking up " + ex.getMessage(), ex);
+		} catch (NotBoundException ex) {
+			logger.log(Level.WARNING, "NotBoundException: Error while looking up " + ex.getMessage(), ex);
+		} catch (RemoteException ex) {
+			logger.log(Level.WARNING, "Error while connecting Host: " + HostToConnect, ex);
 			return null;
 		}
 		return MainRemoteObject;
@@ -370,10 +350,6 @@ public class ComAdapter {
 
 	protected MainAdapter getMainAdapter(RMIInvocationHandler invocHandler) throws RemoteException {
 		return (MainAdapter) invocHandler.getWrapper();
-	}
-
-	protected void logInfo(String msg) {
-		System.out.println("ComAdapter-Log: " + msg);
 	}
 
 	/**
@@ -385,8 +361,6 @@ public class ComAdapter {
 		try {
 			list = Naming.list("rmi://" + testurl + ":" + MainAdapterImpl.PORT);
 		} catch (Exception e) {
-			//if (TRACE && m_LogPanel!=null) m_LogPanel.logMessage ("No connecting to : "+testurl  );
-			//if (TRACE) System.out.println ("No connecting to : "+testurl  );
 			System.err.println ("Exception : "+testurl  );
 			return 0;
 		}
@@ -404,10 +378,7 @@ public class ComAdapter {
 	 *
 	 */
 	private boolean rmiPing(String testurl) {
-		if (TRACE)
-			System.out.println("ComAdapter.rmiPing " + testurl);
 		MainAdapter Test = null;
-//		String Load = null;
 		int len = testurl.indexOf(SEP);
 		String Host = testurl;
 		String Number = "_0";
@@ -416,30 +387,16 @@ public class ComAdapter {
 			Host = st.nextToken().trim();
 			Number = SEP + st.nextToken().trim();
 		}
-		String MainAdapterName = m_UserName + MainAdapterImpl.MAIN_ADAPTER_NAME +
+		String mainAdapterName = userName + MainAdapterImpl.MAIN_ADAPTER_NAME +
 		Number;
 		try {
-			if (TRACE)
-				System.out.println("ping:" + "rmi://" + Host + ":" +
-						MainAdapterImpl.PORT + "/" + MainAdapterName);
 			RMIInvocationHandler x = (RMIInvocationHandler) Naming.lookup("rmi://" +
-					Host + ":" + MainAdapterImpl.PORT + "/" + MainAdapterName); // attention !!
+					Host + ":" + MainAdapterImpl.PORT + "/" + mainAdapterName); // attention !!
 			Test = (MainAdapter) x.getWrapper();
-//			if (Test != null) {
-//				Load = Test.getExecOutput("rup " + testurl);
-//			}
-		} catch (Exception e) {
-			if (TRACE) {
-				logInfo("No connection to : " + testurl);
-				System.out.println("ComAdapter.rmiPing false " + e.getMessage());
-			}
+		} catch (Exception ex) {
+			logger.log(Level.INFO, "No connection to : " + testurl, ex);
 			return false;
 		}
-		if (Test != null) {
-			if (TRACE) logInfo("ping succeeded");
-		}
-		if (TRACE)
-			System.out.println("ComAdapter.rmiPing true");
 		return true;
 	}
 
@@ -447,8 +404,6 @@ public class ComAdapter {
 	 *
 	 */
 	public void killServer(String ServerToKill) {
-		if (TRACE)
-			System.out.println("ComAdapter.Killing Server :" + ServerToKill);
 		RMIConnection myConnection = getConnection(ServerToKill);
 		myConnection.killServer();
 		this.m_Connections.remove(myConnection);
@@ -458,8 +413,6 @@ public class ComAdapter {
 	 *
 	 */
 	public void killAllServers() {
-		if (TRACE)
-			System.out.println("ComAdapter.Killing All Servers :");
 		for (int i = 0; i < m_AvailableHostNameList.size(); i++) {
 			RMIConnection myConnection = getConnection((String)
 					m_AvailableHostNameList.get(i));
@@ -472,7 +425,6 @@ public class ComAdapter {
 	 *
 	 */
 	public void restartServerAllServer() {
-		if (TRACE) System.out.println("ComAdapter.restartServerAllServer :");
 		for (int i = 0; i < m_AvailableHostNameList.size(); i++) {
 			RMIConnection myConnection = getConnection((String)
 					m_AvailableHostNameList.get(i));
@@ -485,7 +437,7 @@ public class ComAdapter {
 	 *
 	 */
 	public void restartServer(String host) {
-		m_ownHostName = host;
+		hostName = host;
 		restartServer();
 	}
 
@@ -493,17 +445,10 @@ public class ComAdapter {
 	 *
 	 */
 	public void restartServer() {
-		if (TRACE)
-			System.out.println("ComAdapter.restartServer");
-		if (TRACE)
-			System.out.println("m_ActualHostName = " + m_ownHostName);
-//		System.out.println("m_ActualHostName = " + m_ActualHostName);
-		if (m_ownHostName.equals("localhost")) { // TODO whats this?
+		if (hostName.equals("localhost")) { // TODO whats this?
 			return;
 		}
-		if (TRACE == true)
-			System.out.println("ComAdapter.restartServer Server :" + m_ownHostName);
-		RMIConnection x = getConnection(m_ownHostName);
+		RMIConnection x = getConnection(hostName);
 		x.restartServer();
 		m_Connections.remove(x);
 		try {
@@ -553,7 +498,6 @@ public class ComAdapter {
 	 *
 	 */
 	protected RMIConnection getConnection(String Host) {
-		if (TRACE) System.out.println("ComAdapter.getConnection for host :" + Host);
 		for (int i = 0; i < this.m_Connections.size(); i++) {
 			// search for an already established connection to the given host
 			// and return it if found
