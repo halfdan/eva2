@@ -11,22 +11,27 @@ import eva2.gui.GenericObjectEditor;
  *
  */
 public class ClassPreloader implements Runnable {
-	String[] clsNames = null;
-	private static boolean TRACE=false;
+    /**
+     * List of classes to load when ClassPreloader is started.
+     */
+    private String[] classNames = null;
 	
-	public ClassPreloader(String ... strs) {
-		setClassNames(strs);
-	}
-	
-	private void setClassNames(String[] strs) {
-		clsNames = strs;
+    /* Creates a new ClassPreloader and sets the
+     * list of classes to load.
+     *
+     * @param classes List of classes to load
+     */
+	public ClassPreloader(final String ... classes) {
+		this.classNames = classes;
 	}
 
+    /**
+     * Load classes via GenericObjectEditor in a thread.
+     */
 	public void run() {
-		if (clsNames !=null) {
-			for (int i = 0; i < clsNames.length; i++) {
-				if (TRACE) System.out.println("Preloading " + clsNames[i]);
-				GenericObjectEditor.getClassesFromClassPath(clsNames[i], null);
+		if (classNames != null) {
+			for (int i = 0; i < classNames.length; i++) {
+				GenericObjectEditor.getClassesFromClassPath(classNames[i], null);
 			}
 		}
 	}

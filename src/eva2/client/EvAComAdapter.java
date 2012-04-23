@@ -10,27 +10,15 @@ package eva2.client;
  *            $Date: 2007-12-06 16:05:11 +0100 (Thu, 06 Dec 2007) $
  *            $Author: mkron $
  */
-/*==========================================================================*
- * IMPORTS
- *==========================================================================*/
-
-import java.rmi.RemoteException;
-
 import eva2.EvAInfo;
 import eva2.gui.LoggingPanel;
 import eva2.server.EvAMainAdapter;
 import eva2.server.EvAMainAdapterImpl;
 import eva2.server.go.InterfaceGOParameters;
 import eva2.server.modules.ModuleAdapter;
-import eva2.tools.jproxy.ComAdapter;
-import eva2.tools.jproxy.MainAdapter;
-import eva2.tools.jproxy.MainAdapterClient;
-import eva2.tools.jproxy.RMIConnection;
-import eva2.tools.jproxy.RMIInvocationHandler;
+import eva2.tools.jproxy.*;
+import java.rmi.RemoteException;
 
-/*==========================================================================*
- * CLASS DECLARATION
- *==========================================================================*/
 /**
  *
  */
@@ -134,5 +122,3 @@ public class EvAComAdapter extends ComAdapter {
 		this.runLocally = runLocally;
 	}
 }
-//
-

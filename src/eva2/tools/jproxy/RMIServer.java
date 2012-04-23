@@ -39,9 +39,9 @@ public class RMIServer {
   
   protected static final Logger logger = Logger.getLogger(EvAInfo.defaultLogger);
   
-  /**
-   *
-   */
+	/**
+	 *
+	 */
 	public static RMIServer getInstance() {
 		if (instance == null) {
 			instance = new RMIServer();
@@ -68,7 +68,7 @@ public class RMIServer {
 
 
   /**
-   * Launchs the RMIRegistry and makes the registration
+   * Launches the RMIRegistry and makes the registration
    * of the MainAdapterImpl class at the rmiregistry.
    * @param
    */

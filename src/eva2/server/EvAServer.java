@@ -21,32 +21,37 @@ public class EvAServer {
      * MainAdapterImp object. This is need for the first connection between the
      * server and the client program.
      */
-    public EvAMainAdapter m_MainRemoteObject;
+    private EvAMainAdapter mainRemoteObject;
     //private EvAComAdapter m_ComAdapter;
-    public static String m_UserName;
-    public static int m_NumberOfVM = 0;
-    private RMIServerEvA m_RMIServer;
-	private static final Logger logger = Logger.getLogger(EvAInfo.defaultLogger);
+    private static String userName;
+    private RMIServerEvA rmiServer;
+    private static final Logger LOGGER = Logger.getLogger(EvAInfo.defaultLogger);
 
     /**
      * Constructor of EvAServer. Calls RMIConnection().
      */
-    public EvAServer(boolean insideClient, boolean Restart) {
-		logger.log(Level.INFO, "Number of CPUs :" + Runtime.getRuntime().availableProcessors());        
-        logger.log(Level.INFO, "This is EvA Server Version: " + EvAInfo.getVersion());
-        logger.log(Level.INFO, "Java Version: " + System.getProperty("java.version"));
-        m_UserName = System.getProperty("user.name");
-//    RMIConnection();
-//    m_ComAdapter = new EvAComAdapter();
-//    RMIProxyRemote.setComAdaper(m_ComAdapter);
-        m_RMIServer = RMIServerEvA.getInstance();
+    public EvAServer(boolean insideClient, boolean restart) {
+        LOGGER.log(Level.INFO, "Number of CPUs :{0}", Runtime.getRuntime().availableProcessors());
+        LOGGER.log(Level.INFO, "This is EvA Server Version: {0}", EvAInfo.getVersion());
+        LOGGER.log(Level.INFO, "Java Version: {0}", System.getProperty("java.version"));
+        try {
+            userName = System.getProperty("user.name");
+        } catch (SecurityException ex) {
+            /*
+             * This exception is expected to happen in Java WebStart
+             */
+            LOGGER.log(Level.WARNING, "Could not fetch username property. Setting username to 'WebStart'", ex);
+            userName = "WebStart";
+        }
+
+        rmiServer = RMIServerEvA.getInstance();
     }
 
     /**
      * Main method of this class. Is the starting point of the server
      * application.
      */
-    static public void main(String[] args) {
+    public static void main(String[] args) {
         boolean restart = false;
         boolean noMulti = false;
         for (int i = 0; i < args.length; i++) {
@@ -121,7 +126,7 @@ public class EvAServer {
      *
      */
     public RMIServerEvA getRMIServer() {
-        return m_RMIServer;
+        return rmiServer;
     }
 
     /**

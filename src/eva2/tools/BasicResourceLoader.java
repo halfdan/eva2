@@ -44,6 +44,8 @@ import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
 
 import eva2.EvAInfo;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -64,8 +66,7 @@ public class BasicResourceLoader implements ResourceLoader
     /**
      *  Obtain a suitable logger.
      */
-    private static DummyCategory logger = DummyCategory.getInstance(
-            BasicResourceLoader.class.getName());
+    private static Logger logger = Logger.getLogger(eva2.EvAInfo.defaultLogger);
     private static BasicResourceLoader resourceLoader;
 
     //~ Constructors ///////////////////////////////////////////////////////////
@@ -158,21 +159,19 @@ public class BasicResourceLoader implements ResourceLoader
             {
 				line = line.trim();
 				if (strStartsWithPrefix(line, ignorePrefix) < 0) {
-					if (lineCnt >= lOffset) lineData.add(line);
+					if (lineCnt >= lOffset) {
+						lineData.add(line);
+					}
 					lineCnt++;
-					if ((lCnt > 0) && (lineData.size() == lCnt)) break; 
+					if ((lCnt > 0) && (lineData.size() == lCnt)) {
+						break;
+					}
 				}
-//                if (line.trim().length() > 0) {
-//	            	if ((ignorePrefix == null) || (strStartsWithPrefix(line, ignorePrefix) < 0)) {
-//	            		// if there are no prefixes given or none of them fits, add the line
-//                        lineData.add(line);
-//	                }
-//                }
             }
         }
         catch (IOException ex)
         {
-            logger.error(ex.getMessage());
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
 
         return lineData;
@@ -183,7 +182,7 @@ public class BasicResourceLoader implements ResourceLoader
 	 * indices in an int array. If selectedCols is null, all columns are selected. All selected columns
 	 * are expected to contain double data and to be of same length. If rawData is null, null is returned.
 	 * 
-	 * @param rawData 	Strings containing an array with double data columns 
+	 * @param rawData 	Strings containing an array with double data columns
 	 * @param colSplit	String regexp for the splitting of a line
 	 * @param selectedCols		indices of the columns to retrieve, null for all.
 	 * @see java.util.regex.Pattern
@@ -363,11 +362,12 @@ public class BasicResourceLoader implements ResourceLoader
 //        	in = getStreamFromClassPath(resourceLocation);
         }
         
-        if (logger.isDebugEnabled())
-        {
-            if (in == null) logger.debug("Unable to open stream for " + resourceLocation);
-            else logger.debug("Stream opened for " + resourceLocation);
-        }
+		if (in == null) {
+			logger.log(Level.FINER, "Unable to open stream for " + resourceLocation);
+		}
+		else { 
+			logger.log(Level.FINER, "Stream opened for " + resourceLocation);
+		}
         return in;
     }
     
@@ -499,10 +499,9 @@ public class BasicResourceLoader implements ResourceLoader
                 }
             }
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            logger.error(e.getMessage());
-
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
             return null;
         }
 
@@ -524,10 +523,7 @@ public class BasicResourceLoader implements ResourceLoader
                 fileName.substring(length + 1);
         }
 
-        if (logger.isDebugEnabled())
-        {
-            logger.debug("Trying to get file from " + fileName);
-        }
+        logger.log(Level.FINER, "Trying to get file from " + fileName);
 
         File file = new File(fileName);
         FileInputStream fis = null;
@@ -537,10 +533,9 @@ public class BasicResourceLoader implements ResourceLoader
             fis = new FileInputStream(file);
             return fis;
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-        	if (logger.isDebugEnabled()) logger.error(e.getMessage());
-
+        	logger.log(Level.SEVERE, ex.getMessage(), ex);
             return null;
         }
 
@@ -581,9 +576,9 @@ public class BasicResourceLoader implements ResourceLoader
                 rb += chunk;
             }
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            logger.error(e.getMessage());
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
 
             return null;
         }
@@ -602,11 +597,6 @@ public class BasicResourceLoader implements ResourceLoader
         if (stream == null)
         {
             return null;
-        }
-
-        if (logger.isDebugEnabled())
-        {
-            logger.debug("Trying to get file from stream.");
         }
 
         BufferedInputStream bis = new BufferedInputStream(stream);
@@ -632,10 +622,9 @@ public class BasicResourceLoader implements ResourceLoader
 
             return b;
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            logger.error(e.getMessage());
-
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
             return null;
         }
     }
