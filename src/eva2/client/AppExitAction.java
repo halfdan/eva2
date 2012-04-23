@@ -1,13 +1,9 @@
 package eva2.client;
 
-
-import javax.swing.*;
-
 import eva2.gui.ExtAction;
-
-import java.awt.event.WindowListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 /**
  * Created by IntelliJ IDEA.
@@ -20,18 +16,18 @@ import java.awt.event.WindowEvent;
  *
  */
 class AppExitAction extends ExtAction implements WindowListener{
-  public AppExitAction(String s, String toolTip, KeyStroke key){
+  public AppExitAction(String s, String toolTip, javax.swing.KeyStroke key) {
     super(s, toolTip, key);
   }
   private void exit(){
     System.exit(1);
   }
-  public void actionPerformed(ActionEvent e){exit();}
-  public void windowOpened(WindowEvent e){}
-  public void windowClosed(WindowEvent e){}
-  public void windowIconified(WindowEvent e){ }
-  public void windowDeiconified(WindowEvent e){ }
-  public void windowActivated(WindowEvent e){ }
-  public void windowDeactivated(WindowEvent e){ }
-  public void windowClosing(WindowEvent e){exit();}
+  public void actionPerformed(ActionEvent e) { exit(); }
+  public void windowOpened(WindowEvent e) { }
+  public void windowClosed(WindowEvent e) { }
+  public void windowIconified(WindowEvent e) { }
+  public void windowDeiconified(WindowEvent e) { }
+  public void windowActivated(WindowEvent e) { }
+  public void windowDeactivated(WindowEvent e) { }
+  public void windowClosing(WindowEvent e) { exit(); }
 }

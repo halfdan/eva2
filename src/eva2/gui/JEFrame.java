@@ -20,7 +20,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.WindowListener;
 
 public class JEFrame extends JFrame {
-	private boolean closeAllOnClose=false;
+	private boolean closeAllOnClose = false;
 	
 	public JEFrame() {
 		super();
@@ -34,18 +34,18 @@ public class JEFrame extends JFrame {
 	
 	/**
 	 * Set to true if all registered JEFrames should be closed if this frame is closed.
-	 * 
+	 *
 	 * @param c
 	 */
 	public void setCloseAllOnClosed(boolean c) {
-		closeAllOnClose=c;
+		closeAllOnClose = c;
 	}
-	
+
 	@Override
 	public void addWindowListener(WindowListener l) {
 		super.addWindowListener(l);
 	}
-	
+
 	private void init() {
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		
@@ -54,14 +54,18 @@ public class JEFrame extends JFrame {
 			public void windowClosed(WindowEvent e) {
 				super.windowClosed(e);
 				JEFrameRegister.unregister((JEFrame) e.getWindow());
-				if (closeAllOnClose) JEFrameRegister.closeAll();
+				if (closeAllOnClose) {
+                    JEFrameRegister.closeAll();
+                }
 				//       ((JFrame) e.getWindow()).dispose();
 			}
+            
 			@Override
 			public void windowOpened(WindowEvent e) {
 				super.windowOpened(e);
 				JEFrameRegister.register((JEFrame) e.getWindow());
 			}
+            
 			@Override
 			public void windowActivated(WindowEvent e) {
 				JEFrameRegister.register((JEFrame) e.getWindow());
@@ -70,26 +74,26 @@ public class JEFrame extends JFrame {
 			
 		});
 		this.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-				KeyStroke.getKeyStroke(KeyEvent.VK_F,Event.CTRL_MASK),
+				KeyStroke.getKeyStroke(KeyEvent.VK_F, Event.CTRL_MASK),
 				"ctrlFpressed"
 		);
 		this.getRootPane().getActionMap().put(
 				"ctrlFpressed",
 				new AbstractAction("ctrlFpressed") {
-					public void actionPerformed( ActionEvent actionEvent ) {
+					public void actionPerformed(ActionEvent actionEvent) {
 						((JEFrame) JEFrameRegister.getFrameList()[0]).setExtendedState(JEFrame.NORMAL);
 						((JEFrame) JEFrameRegister.getFrameList()[0]).toFront();
 					}
 				}
 		);
 		this.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-				KeyStroke.getKeyStroke(KeyEvent.VK_O,Event.CTRL_MASK),
+				KeyStroke.getKeyStroke(KeyEvent.VK_O, Event.CTRL_MASK),
 				"ctrlOpressed"
 		);
 		this.getRootPane().getActionMap().put(
 				"ctrlOpressed",
 				new AbstractAction("ctrlOpressed") {
-					public void actionPerformed( ActionEvent actionEvent ) {
+					public void actionPerformed(ActionEvent actionEvent) {
 						Object[] fl = JEFrameRegister.getFrameList();
 						for (int i = 0; i < fl.length; i++) {
 							((JEFrame) JEFrameRegister.getFrameList()[i]).setExtendedState(JEFrame.NORMAL);
@@ -107,7 +111,7 @@ public class JEFrame extends JFrame {
 		this.getRootPane().getActionMap().put(
 				"ctrlSmallerpressed",
 				new AbstractAction("ctrlSmallerpressed") {
-					public void actionPerformed( ActionEvent actionEvent ) {
+					public void actionPerformed(ActionEvent actionEvent) {
 						JEFrameRegister.setFocusToNext(self);
 					}
 				}
