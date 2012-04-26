@@ -99,35 +99,38 @@ public class Serializer {
 	}
 
 	/**
-	 * Serialize the string s and
-	 * store its serialized state in File with name Filename.
-     *
-     * @param filename  The file
+	 * Serialize the string data and write it to the OutputStream.
+	 *
+     * @param outStream The output stream
      * @param data      The string data
 	 **/
 	public static void storeString(final OutputStream outStream, final String data) {
 		try {
-			store(data, outStream, false);
+			outStream.write(data.getBytes());
 		} catch (Exception ex) {
             LOGGER.log(Level.SEVERE, "Could not write string to stream", ex);
 		}
 	}
 
 	/**
-	 * Deserialize the contents of File filename containing
+	 * Deserialize the contents of the InputStream containing
 	 * a string and return the resulting string.
      *
-     * @param filename  The file
-     * @return The deserialized data from the file
+     * @param inputStream The input stream to read from
+     * @return The deserialized data from the stream
 	 **/
 	public static String loadString(final InputStream inputStream) {
-		String data = null;
+		StringBuilder sBuilder = new StringBuilder();
 		try {
-			data = (String) load(inputStream);
+            int data = inputStream.read();
+            while (data != -1) {
+                sBuilder.append((char) data);
+                data = inputStream.read();
+            }
 		} catch (Exception ex) {
-			LOGGER.log(Level.SEVERE, "Could not load string from file!", ex);
+			LOGGER.log(Level.SEVERE, "Could not load string from stream!", ex);
 		}
-		return data;
+		return sBuilder.toString();
 	}
 
 	/**
