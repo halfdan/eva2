@@ -847,7 +847,8 @@ public class EvAClient implements RemoteStateListener, Serializable {
                 }
                 
                 selectedModule = (String) JOptionPane.showInputDialog(evaFrame.getContentPane(),
-                        "Which module do you want \n to load on host: " + comAdapter.getHostName() + " ?", "Load optimization module on host",
+                        "Which module do you want \n to load on host: " + comAdapter.getHostName() + " ?",
+                        "Load optimization module on host",
                         JOptionPane.QUESTION_MESSAGE,
                         null,
                         ModuleNameList,
