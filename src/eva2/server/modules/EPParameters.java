@@ -9,7 +9,11 @@ import eva2.server.go.problems.F1Problem;
 import eva2.server.go.strategies.EvolutionaryProgramming;
 import eva2.server.go.strategies.InterfaceOptimizer;
 import eva2.tools.Serializer;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.Serializable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /** The class gives access to all EP parameters for the EvA
  * top level GUI.
@@ -21,31 +25,34 @@ import java.io.Serializable;
  */
 public class EPParameters extends AbstractGOParameters implements InterfaceGOParameters, Serializable {
 
-    public static boolean   TRACE   = false;
+    private static final Logger LOGGER = Logger.getLogger(eva2.EvAInfo.defaultLogger);
 
+    
     /**
-     *
+     * Load or create a new instance of the class.
+     * 
+     * @return A loaded (from file) or new instance of the class.
      */
     public static EPParameters getInstance() {
-        if (TRACE) System.out.println("EPParameters getInstance 1");
-        EPParameters Instance = (EPParameters) Serializer.loadObject("EPParameters.ser");
-        if (TRACE) System.out.println("EPParameters getInstance 2");
-        if (Instance == null) Instance = new EPParameters();
-        return Instance;
+        EPParameters instance = null;
+        try {
+            FileInputStream fileStream = new FileInputStream("EPParameters.ser");
+            instance = (EPParameters) Serializer.loadObject(fileStream);
+        } catch (FileNotFoundException ex) {
+            LOGGER.log(Level.WARNING, "Could not load instance object.", ex);
+        }
+
+        if (instance == null) {
+            instance = new EPParameters();
+        }
+        return instance;
     }
 
-    /**
-     *
-     */
-    public void saveInstance() {
-        Serializer.storeObject("EPParameters.ser",this);
-    }
     /**
      *
      */
     public EPParameters() {
     	super(new EvolutionaryProgramming(), new F1Problem(), new EvaluationTerminator());
-        if (TRACE) System.out.println("EPParameters Constructor start");
     }
 
     /**

@@ -10,7 +10,10 @@ import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.server.go.strategies.InterfaceOptimizer;
 import eva2.server.go.strategies.SimulatedAnnealing;
 import eva2.tools.Serializer;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.Serializable;
+import java.util.logging.Level;
 
 /** The class gives access to all SA parameters for the EvA
  * top level GUI.
@@ -21,9 +24,6 @@ import java.io.Serializable;
  * To change this template use File | Settings | File Templates.
  */
 public class SAParameters extends AbstractGOParameters implements InterfaceGOParameters, Serializable {
-
-    public static boolean   TRACE   = false;
-
     // Opt. Algorithms and Parameters
     private InterfaceOptimizer              m_Optimizer         = new SimulatedAnnealing();
     private InterfaceOptimizationProblem    m_Problem           = new B1Problem();
@@ -33,22 +33,25 @@ public class SAParameters extends AbstractGOParameters implements InterfaceGOPar
     transient private InterfacePopulationChangedEventListener m_Listener;
 
     /**
-     *
+     * Load or create a new instance of the class.
+     * 
+     * @return A loaded (from file) or new instance of the class.
      */
     public static SAParameters getInstance() {
-        if (TRACE) System.out.println("SAParameters getInstance 1");
-        SAParameters Instance = (SAParameters) Serializer.loadObject("SAParameters.ser");
-        if (TRACE) System.out.println("SAParameters getInstance 2");
-        if (Instance == null) Instance = new SAParameters();
-        return Instance;
-    }
+        SAParameters instance = null;
+        try {
+            FileInputStream fileStream = new FileInputStream("SAParameters.ser");
+            instance = (SAParameters) Serializer.loadObject(fileStream);
+        } catch (FileNotFoundException ex) {
+            LOGGER.log(Level.WARNING, "Could not load instance object.", ex);
+        }
 
-    /**
-     *
-     */
-    public void saveInstance() {
-        Serializer.storeObject("SAParameters.ser",this);
+        if (instance == null) {
+            instance = new SAParameters();
+        }
+        return instance;
     }
+    
     /**
      *
      */

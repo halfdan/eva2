@@ -7,7 +7,10 @@ import eva2.server.go.problems.B1Problem;
 import eva2.server.go.strategies.InterfaceOptimizer;
 import eva2.server.go.strategies.MonteCarloSearch;
 import eva2.tools.Serializer;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.Serializable;
+import java.util.logging.Level;
 
 /** The class gives access to all HC parameters for the EvA
  * top level GUI.
@@ -18,25 +21,27 @@ import java.io.Serializable;
  * To change this template use File | Settings | File Templates.
  */
 public class MCParameters extends AbstractGOParameters implements InterfaceGOParameters, Serializable {
-    public static boolean   TRACE   = false;
-
+    
     /**
-     *
+     * Load or create a new instance of the class.
+     * 
+     * @return A loaded (from file) or new instance of the class.
      */
     public static MCParameters getInstance() {
-        if (TRACE) System.out.println("MCParameters getInstance 1");
-        MCParameters Instance = (MCParameters) Serializer.loadObject("MCParameters.ser");
-        if (TRACE) System.out.println("MCParameters getInstance 2");
-        if (Instance == null) Instance = new MCParameters();
-        return Instance;
-    }
+        MCParameters instance = null;
+        try {
+            FileInputStream fileStream = new FileInputStream("MCParameters.ser");
+            instance = (MCParameters) Serializer.loadObject(fileStream);
+        } catch (FileNotFoundException ex) {
+            LOGGER.log(Level.WARNING, "Could not load instance object.", ex);
+        }
 
-    /**
-     *
-     */
-    public void saveInstance() {
-        Serializer.storeObject("MCParameters.ser",this);
+        if (instance == null) {
+            instance = new MCParameters();
+        }
+        return instance;
     }
+    
     /**
      *
      */

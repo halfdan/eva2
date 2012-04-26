@@ -9,7 +9,10 @@ import eva2.server.go.problems.TF1Problem;
 import eva2.server.go.strategies.InterfaceOptimizer;
 import eva2.server.go.strategies.MultiObjectiveEA;
 import eva2.tools.Serializer;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.Serializable;
+import java.util.logging.Level;
 
 /** The class gives access to all MOEA parameters for the EvA
  * top level GUI.
@@ -21,18 +24,24 @@ import java.io.Serializable;
  */
 public class MOEAParameters extends AbstractGOParameters implements InterfaceGOParameters, Serializable {
 
-    public static boolean   TRACE   = false;
-
+    /**
+     * Load or create a new instance of the class.
+     * 
+     * @return A loaded (from file) or new instance of the class.
+     */
     public static MOEAParameters getInstance() {
-        if (TRACE) System.out.println("MOEAParameters getInstance 1");
-        MOEAParameters Instance = (MOEAParameters) Serializer.loadObject("MOEAParameters.ser");
-        if (TRACE) System.out.println("MOEAParameters getInstance 2");
-        if (Instance == null) Instance = new MOEAParameters();
-        return Instance;
-    }
+        MOEAParameters instance = null;
+        try {
+            FileInputStream fileStream = new FileInputStream("MOEAParameters.ser");
+            instance = (MOEAParameters) Serializer.loadObject(fileStream);
+        } catch (FileNotFoundException ex) {
+            LOGGER.log(Level.WARNING, "Could not load instance object.", ex);
+        }
 
-    public void saveInstance() {
-        Serializer.storeObject("MOEAParameters.ser",this);
+        if (instance == null) {
+            instance = new MOEAParameters();
+        }
+        return instance;
     }
 
     public MOEAParameters() {

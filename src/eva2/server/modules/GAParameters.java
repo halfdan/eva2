@@ -8,7 +8,11 @@ import eva2.server.go.problems.B1Problem;
 import eva2.server.go.strategies.GeneticAlgorithm;
 import eva2.server.go.strategies.InterfaceOptimizer;
 import eva2.tools.Serializer;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.Serializable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /** The class gives access to all GA parameters for the EvA
  * top level GUI.
@@ -19,23 +23,29 @@ import java.io.Serializable;
  * To change this template use File | Settings | File Templates.
  */
 public class GAParameters extends AbstractGOParameters implements InterfaceGOParameters, Serializable {
-
-    public static boolean   TRACE   = false;
-
-    public static GAParameters getInstance() {
-        if (TRACE) System.out.println("GAParameters getInstance 1");
-        GAParameters Instance = (GAParameters) Serializer.loadObject("GAParameters.ser");
-        if (TRACE) System.out.println("GAParameters getInstance 2");
-        if (Instance == null) Instance = new GAParameters();
-        return Instance;
-    }
-
+    
+    private static final Logger LOGGER = Logger.getLogger(eva2.EvAInfo.defaultLogger);
+    
     /**
-     *
+     * Load or create a new instance of the class.
+     * 
+     * @return A loaded (from file) or new instance of the class.
      */
-    public void saveInstance() {
-        Serializer.storeObject("GAParameters.ser",this);
+    public static GAParameters getInstance() {
+        GAParameters instance = null;
+        try {
+            FileInputStream fileStream = new FileInputStream("GAParameters.ser");
+            instance = (GAParameters) Serializer.loadObject(fileStream);
+        } catch (FileNotFoundException ex) {
+            LOGGER.log(Level.WARNING, "Could not load instance object.", ex);
+        }
+
+        if (instance == null) {
+            instance = new GAParameters();
+        }
+        return instance;
     }
+
     /**
      *
      */
