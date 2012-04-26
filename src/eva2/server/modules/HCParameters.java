@@ -7,7 +7,11 @@ import eva2.server.go.problems.B1Problem;
 import eva2.server.go.strategies.HillClimbing;
 import eva2.server.go.strategies.InterfaceOptimizer;
 import eva2.tools.Serializer;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.Serializable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /** The class gives access to all HC parameters for the EvA
@@ -19,23 +23,27 @@ import java.io.Serializable;
  * To change this template use File | Settings | File Templates.
  */
 public class HCParameters extends AbstractGOParameters implements InterfaceGOParameters, Serializable {
-    /**
-     *
-     */
-    public static HCParameters getInstance() {
-        if (TRACE) System.out.println("HCParameters getInstance 1");
-        HCParameters Instance = (HCParameters) Serializer.loadObject("HCParameters.ser");
-        if (TRACE) System.out.println("HCParameters getInstance 2");
-        if (Instance == null) Instance = new HCParameters();
-        return Instance;
-    }
 
     /**
-     *
+     * Load or create a new instance of the class.
+     * 
+     * @return A loaded (from file) or new instance of the class.
      */
-    public void saveInstance() {
-        Serializer.storeObject("HCParameters.ser",this);
+    public static HCParameters getInstance() {
+        HCParameters instance = null;
+        try {
+            FileInputStream fileStream = new FileInputStream("HCParameters.ser");
+            instance = (HCParameters) Serializer.loadObject(fileStream);
+        } catch (FileNotFoundException ex) {
+            LOGGER.log(Level.WARNING, "Could not load instance object.", ex);
+        }
+
+        if (instance == null) {
+            instance = new HCParameters();
+        }
+        return instance;
     }
+    
     /**
      *
      */
@@ -73,10 +81,10 @@ public class HCParameters extends AbstractGOParameters implements InterfaceGOPar
      * @return The population of current solutions to a given problem.
      */
     public Population getPopulation() {
-        return ((HillClimbing)this.m_Optimizer).getPopulation();
+        return ((HillClimbing) this.m_Optimizer).getPopulation();
     }
     public void setPopulation(Population pop){
-        ((HillClimbing)this.m_Optimizer).setPopulation(pop);
+        ((HillClimbing) this.m_Optimizer).setPopulation(pop);
     }
     public String populationTipText() {
         return "Edit the properties of the population used.";

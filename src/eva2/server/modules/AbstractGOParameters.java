@@ -14,11 +14,17 @@ import eva2.server.go.operators.postprocess.PostProcessParams;
 import eva2.server.go.problems.InterfaceAdditionalPopulationInformer;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.server.go.strategies.InterfaceOptimizer;
+import eva2.tools.Serializer;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
-public abstract class AbstractGOParameters implements InterfaceGOParameters, Serializable {
-	public static boolean   TRACE   = false;
-	protected long            m_Seed  = (long)0.0;
+public abstract class AbstractGOParameters implements InterfaceGOParameters, Serializable {	
+    protected static final Logger LOGGER = Logger.getLogger(eva2.EvAInfo.defaultLogger);
+	protected long randomSeed  = (long)0.0;
 
 	// Opt. Algorithms and Parameters
 	protected InterfaceOptimizer              m_Optimizer;
@@ -31,14 +37,14 @@ public abstract class AbstractGOParameters implements InterfaceGOParameters, Ser
 	protected AbstractGOParameters() {
 	}
 
-	protected AbstractGOParameters(AbstractGOParameters Source) {
+	protected AbstractGOParameters(AbstractGOParameters goParameters) {
 		this();
-		this.m_Optimizer        = Source.m_Optimizer;
-		this.m_Problem          = Source.m_Problem;
-		this.m_Terminator       = Source.m_Terminator;
+		this.m_Optimizer        = goParameters.m_Optimizer;
+		this.m_Problem          = goParameters.m_Problem;
+		this.m_Terminator       = goParameters.m_Terminator;
 		this.m_Optimizer.SetProblem(this.m_Problem);
-		this.m_Seed             = Source.m_Seed;
-		this.m_PostProc			= Source.m_PostProc;
+		this.randomSeed             = goParameters.randomSeed;
+		this.m_PostProc			= goParameters.m_PostProc;
 	}
 	
 	public AbstractGOParameters(InterfaceOptimizer opt, InterfaceOptimizationProblem prob, InterfaceTerminator term) {
@@ -60,7 +66,7 @@ public abstract class AbstractGOParameters implements InterfaceGOParameters, Ser
 		setProblem(src.m_Problem);
 		setTerminator(src.m_Terminator);
 		this.m_Optimizer.SetProblem(this.m_Problem);
-		setSeed(src.m_Seed);
+		setSeed(src.randomSeed);
 		setPostProcessParams(src.m_PostProc);
 	}
 	
@@ -81,20 +87,37 @@ public abstract class AbstractGOParameters implements InterfaceGOParameters, Ser
 			return true;
 		} else return false;
 	}
+    
+    /**
+     *
+     */
+    public void saveInstance(String fileName) {
+        try {
+            FileOutputStream fileStream = new FileOutputStream(fileName);
+            Serializer.storeObject(fileStream, this);
+        } catch (FileNotFoundException ex) {
+            LOGGER.log(Level.WARNING, "Could not store instance object.", ex);
+        }
+    }
+    
+    public void saveInstance() {
+        String fileName = this.getClass().getSimpleName() + ".ser";
+        saveInstance(fileName);
+    }
 	
 	public String toString() {
-		StringBuffer sb = new StringBuffer(getName());
-		sb.append("\n");
-		sb.append("seed=");
-		sb.append(m_Seed);
-		sb.append("\nProblem: ");
-		sb.append(BeanInspector.toString(m_Problem));
-		sb.append("\nOptimizer: ");
-		sb.append(BeanInspector.toString(m_Optimizer));
-		sb.append("\nTerminator: ");
-		sb.append(BeanInspector.toString(m_Terminator));
-		sb.append("\n");
-		return sb.toString();
+		StringBuilder sBuilder = new StringBuilder(getName());
+		sBuilder.append("\n");
+		sBuilder.append("seed=");
+		sBuilder.append(randomSeed);
+		sBuilder.append("\nProblem: ");
+		sBuilder.append(BeanInspector.toString(m_Problem));
+		sBuilder.append("\nOptimizer: ");
+		sBuilder.append(BeanInspector.toString(m_Optimizer));
+		sBuilder.append("\nTerminator: ");
+		sBuilder.append(BeanInspector.toString(m_Terminator));
+		sBuilder.append("\n");
+		return sBuilder.toString();
 	}
 
 	public void addInformableInstance(InterfaceNotifyOnInformers o) {
@@ -160,11 +183,18 @@ public abstract class AbstractGOParameters implements InterfaceGOParameters, Ser
 	 * @param x     Long seed.
 	 */
 	public void setSeed(long x) {
-		m_Seed = x;
+		randomSeed = x;
 	}
+    
+    /** 
+     * Returns the current seed for the random number generator.
+     * 
+	 * @return The current seed for the random number generator.
+	 */
 	public long getSeed() {
-		return m_Seed;
+		return randomSeed;
 	}
+    
 	public String seedTipText() {
 		return "Random number seed, set to zero to use current system time.";
 	}

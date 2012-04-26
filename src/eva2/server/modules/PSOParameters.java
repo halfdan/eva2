@@ -13,6 +13,9 @@ import eva2.server.go.strategies.InterfaceOptimizer;
 import eva2.server.go.strategies.ParticleSwarmOptimization;
 import eva2.tools.SelectedTag;
 import eva2.tools.Serializer;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.logging.Level;
 
 /** The class gives access to all PSO parameters for the EvA
  * top level GUI.
@@ -24,25 +27,26 @@ import eva2.tools.Serializer;
  */
 public class PSOParameters extends AbstractGOParameters implements InterfaceGOParameters, Serializable {
 
-    public static boolean   TRACE   = false;
-    
-	/**
-     *
+    /**
+     * Load or create a new instance of the class.
+     * 
+     * @return A loaded (from file) or new instance of the class.
      */
     public static PSOParameters getInstance() {
-        if (TRACE) System.out.println("PSOParameters getInstance 1");
-        PSOParameters Instance = (PSOParameters) Serializer.loadObject("PSOParameters.ser");
-        if (TRACE) System.out.println("PSOParameters getInstance 2");
-        if (Instance == null) Instance = new PSOParameters();
-        return Instance;
-    }
+        PSOParameters instance = null;
+        try {
+            FileInputStream fileStream = new FileInputStream("PSOParameters.ser");
+            instance = (PSOParameters) Serializer.loadObject(fileStream);
+        } catch (FileNotFoundException ex) {
+            LOGGER.log(Level.WARNING, "Could not load instance object.", ex);
+        }
 
-    /**
-     *
-     */
-    public void saveInstance() {
-        Serializer.storeObject("PSOParameters.ser",this);
+        if (instance == null) {
+            instance = new PSOParameters();
+        }
+        return instance;
     }
+    
     /**
      *
      */

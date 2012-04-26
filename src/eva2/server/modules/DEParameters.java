@@ -11,6 +11,11 @@ import eva2.server.go.problems.F1Problem;
 import eva2.server.go.strategies.DifferentialEvolution;
 import eva2.server.go.strategies.InterfaceOptimizer;
 import eva2.tools.Serializer;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /** The class gives access to all DE parameters for the EvA
  * top level GUI.
@@ -22,25 +27,27 @@ import eva2.tools.Serializer;
  */
 public class DEParameters extends AbstractGOParameters implements InterfaceGOParameters, Serializable {
 
-    public static boolean   TRACE   = false;
 
     /**
-     *
+     * Load or create a new instance of the class.
+     * 
+     * @return A loaded (from file) or new instance of the class.
      */
     public static DEParameters getInstance() {
-        if (TRACE) System.out.println("DEParameters getInstance 1");
-        DEParameters Instance = (DEParameters) Serializer.loadObject("DEParameters.ser");
-        if (TRACE) System.out.println("DEParameters getInstance 2");
-        if (Instance == null) Instance = new DEParameters();
-        return Instance;
+        DEParameters instance = null;
+        try {
+            FileInputStream fileStream = new FileInputStream("DEParameters.ser");
+            instance = (DEParameters) Serializer.loadObject(fileStream);
+        } catch (FileNotFoundException ex) {
+            LOGGER.log(Level.WARNING, "Could not load instance object.", ex);
+        }
+
+        if (instance == null) {
+            instance = new DEParameters();
+        }
+        return instance;
     }
 
-    /**
-     *
-     */
-    public void saveInstance() {
-        Serializer.storeObject("DEParameters.ser",this);
-    }
     /**
      *
      */
@@ -76,23 +83,25 @@ public class DEParameters extends AbstractGOParameters implements InterfaceGOPar
      * @return The population of current solutions to a given problem.
      */
     public Population getPopulation() {
-        return ((DifferentialEvolution)this.m_Optimizer).getPopulation();
+        return ((DifferentialEvolution) this.m_Optimizer).getPopulation();
     }
+    
     public void setPopulation(Population pop){
-        ((DifferentialEvolution)this.m_Optimizer).setPopulation(pop);
+        ((DifferentialEvolution) this.m_Optimizer).setPopulation(pop);
     }
+    
     public String populationTipText() {
         return "Edit the properties of the population used.";
     }
 
-    /** This method will set the amplication factor f
+    /** This method will set the amplication factor f.
      * @param f
      */
     public void setF (double f) {
-        ((DifferentialEvolution)this.m_Optimizer).setF(f);
+        ((DifferentialEvolution) this.m_Optimizer).setF(f);
     }
     public double getF() {
-        return ((DifferentialEvolution)this.m_Optimizer).getF();
+        return ((DifferentialEvolution) this.m_Optimizer).getF();
     }
     public String fTipText() {
         return "F is a real and constant factor which controlls the ampllification of the differential variation.";
@@ -102,10 +111,10 @@ public class DEParameters extends AbstractGOParameters implements InterfaceGOPar
      * @param k
      */
     public void setK(double k) {
-        ((DifferentialEvolution)this.m_Optimizer).setK(k);
+        ((DifferentialEvolution) this.m_Optimizer).setK(k);
     }
     public double getK() {
-        return ((DifferentialEvolution)this.m_Optimizer).getK();
+        return ((DifferentialEvolution) this.m_Optimizer).getK();
     }
     public String kTipText() {
         return "Probability of alteration through DE1.";
@@ -115,10 +124,10 @@ public class DEParameters extends AbstractGOParameters implements InterfaceGOPar
      * @param l
      */
     public void setLambda (double l) {
-        ((DifferentialEvolution)this.m_Optimizer).setLambda(l);
+        ((DifferentialEvolution) this.m_Optimizer).setLambda(l);
     }
     public double getLambda() {
-        return ((DifferentialEvolution)this.m_Optimizer).getLambda();
+        return ((DifferentialEvolution) this.m_Optimizer).getLambda();
     }
     public String lambdaTipText() {
         return "Enhance greediness through amplification of the differential vector to the best individual for DE2.";
@@ -128,10 +137,10 @@ public class DEParameters extends AbstractGOParameters implements InterfaceGOPar
      * @param s  The type.
      */
     public void setDEType(DETypeEnum s) {
-        ((DifferentialEvolution)this.m_Optimizer).setDEType(s);
+        ((DifferentialEvolution) this.m_Optimizer).setDEType(s);
     }
     public DETypeEnum getDEType() {
-        return ((DifferentialEvolution)this.m_Optimizer).getDEType();
+        return ((DifferentialEvolution) this.m_Optimizer).getDEType();
     }
     public String dETypeTipText() {
         return "Choose the type of Differential Evolution.";

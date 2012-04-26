@@ -13,6 +13,11 @@ import eva2.tools.EVAERROR;
 import eva2.tools.SelectedTag;
 import eva2.tools.Serializer;
 import eva2.tools.StringSelection;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * A set of parameters for statistics in EvA2. Several data entries are provided by the AbstractStatistics class,
@@ -29,6 +34,7 @@ public class StatsParameter implements InterfaceStatisticsParameter, InterfaceNo
 	private static final long serialVersionUID = -8681061379203108390L;
 
 	private static boolean TRACE = false;
+    private static final Logger LOGGER = Logger.getLogger(eva2.EvAInfo.defaultLogger);
 	
 	public final static int VERBOSITY_NONE = 0;
 	public final static int VERBOSITY_FINAL = 1;
@@ -59,22 +65,32 @@ public class StatsParameter implements InterfaceStatisticsParameter, InterfaceNo
 	 *
 	 */
 	public static StatsParameter getInstance(boolean loadDefaultSerFile) {
-		if (loadDefaultSerFile) return getInstance("Statistics.ser");
-		else return new StatsParameter();
+		if (loadDefaultSerFile) {
+            return getInstance("Statistics.ser");
+        } else {
+            return new StatsParameter();
+        }
 	}
-	
-	/**
-	 * Try to load instance from serialized file. If impossible, instantiate a new one.
-	 */
-	public static StatsParameter getInstance(String serFileName) {
-		if (TRACE ) System.out.println("Loading serialized stats..");
-		StatsParameter Instance = (StatsParameter) Serializer.loadObject(serFileName);
-		if (Instance == null) {
-			Instance = new StatsParameter();
-			if (TRACE) System.out.println("Loading failed!");
-		}
-		return Instance;
-	}
+
+    /**
+     * Load or create a new instance of the class.
+     * 
+     * @return A loaded (from file) or new instance of the class.
+     */
+    public static StatsParameter getInstance(String serFileName) {
+        StatsParameter instance = null;
+        try {
+            FileInputStream fileStream = new FileInputStream(serFileName);
+            instance = (StatsParameter) Serializer.loadObject(fileStream);
+        } catch (FileNotFoundException ex) {
+            LOGGER.log(Level.WARNING, "Could not store instance object.", ex);
+        }
+
+        if (instance == null) {
+            instance = new StatsParameter();
+        }
+        return instance;
+    }
 
 	/**
 	 *
@@ -98,28 +114,17 @@ public class StatsParameter implements InterfaceStatisticsParameter, InterfaceNo
 		return ret;
 	}
 
-//	/**
-//	 * Return a list of String arrays describing the selected plot options, e.g. {"Best"} or {"Best", "Worst"}.
-//	 * For now, only one array is returned.
-//	 * 
-//	 * @return a list of String arrays describing the selected plot options
-//	 */
-//	public ArrayList<String[]> getPlotDescriptions() {
-//		ArrayList<String> desc = new ArrayList<String>();
-//		for (int i=0; i<graphSel.getLength(); i++) {
-//			if (graphSel.isSelected(i)) desc.add(graphSel.getElement(i));
-//		}
-//		ArrayList<String[]> alist = new ArrayList<String[]>();
-//		alist.add(desc.toArray(new String[desc.size()]));
-//		return alist;
-//	}
-
 	/**
 	 *
 	 */
 	public void saveInstance() {
-		Serializer.storeObject("Statistics.ser", this);
-	}
+        try {
+            FileOutputStream fileStream = new FileOutputStream("Statistics.ser");
+            Serializer.storeObject(fileStream, this);
+        } catch (FileNotFoundException ex) {
+            LOGGER.log(Level.WARNING, "Could not store instance object.", ex);
+        }
+    }
 
 	/**
 	 *

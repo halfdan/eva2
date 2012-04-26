@@ -10,6 +10,9 @@ import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.server.go.strategies.GeneticAlgorithm;
 import eva2.server.go.strategies.InterfaceOptimizer;
 import eva2.tools.Serializer;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.logging.Level;
 
 
 /**
@@ -23,10 +26,8 @@ import eva2.tools.Serializer;
  */
 public class GOParameters extends AbstractGOParameters implements InterfaceGOParameters, Serializable {
 
-    public static boolean   TRACE   = false;
-
     public static GOParameters getInstance() {
-    	return getInstance("GOParameters.ser", true);
+        return getInstance("GOParameters.ser", true);
     }
 
     /**
@@ -36,35 +37,23 @@ public class GOParameters extends AbstractGOParameters implements InterfaceGOPar
      * @param casually if true, standard parameters are used quietly if the params cannot be loaded
      * @return a GOParameters instance
      */
-    public static GOParameters getInstance(String serParamFile, boolean casually) {
-    	if (TRACE) System.out.println("GOParameters getInstance 1 - " + serParamFile + " , " + casually);
-    	GOParameters Instance = null;
-    	if (serParamFile!=null) {
-	    	try {
-	    		Instance = (GOParameters) Serializer.loadObject(serParamFile, casually);
-	    		if (TRACE) System.out.println("Loading succeded.");
-	    	} catch(Exception e) {
-	    		System.err.println("Error loading GOParameters from " + serParamFile);
-	    		Instance = null;
-	    	}
-    	} else if (!casually) System.err.println("Error: null argument for noncasual param file loading! (GOParameters)");
-    	if (TRACE) System.out.println("GOParameters getInstance 2");
-    	if (Instance == null) Instance = new GOParameters();
-    	return Instance;
-    }
-    
-    public void saveInstance(String serParamFile) {
-    	if (TRACE) System.out.println("GOParameters: saveInstance to " + serParamFile);
-    	Serializer.storeObject(serParamFile,this);
-    }
-    
-    public void saveInstance() {
-    	saveInstance("GOParameters.ser");
+    public static GOParameters getInstance(String serParamFile, final boolean casually) {
+        GOParameters instance = null;
+        try {
+            FileInputStream fileStream = new FileInputStream(serParamFile);
+            instance = (GOParameters) Serializer.loadObject(fileStream, casually);
+        } catch (FileNotFoundException ex) {
+            LOGGER.log(Level.WARNING, "Could not load instance object.", ex);
+        }
+
+        if (instance == null) {
+            instance = new GOParameters();
+        }
+        return instance;
     }
 
     public GOParameters() {
     	super(new GeneticAlgorithm(), new F1Problem(), new EvaluationTerminator(1000));
-//    	((F1Problem)m_Problem).setEAIndividual(new GAIndividualDoubleData());
     }
     
     public GOParameters(InterfaceOptimizer opt, InterfaceOptimizationProblem prob, InterfaceTerminator term) {
@@ -89,7 +78,8 @@ public class GOParameters extends AbstractGOParameters implements InterfaceGOPar
     public Object clone() {
         return new GOParameters(this);
     }
-    /** This method returns a global info string
+    
+    /** This method returns a global info string.
      * @return description
      */
     public static String globalInfo() {

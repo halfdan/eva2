@@ -8,7 +8,10 @@ import eva2.server.go.problems.B1Problem;
 import eva2.server.go.strategies.InterfaceOptimizer;
 import eva2.server.go.strategies.PopulationBasedIncrementalLearning;
 import eva2.tools.Serializer;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.Serializable;
+import java.util.logging.Level;
 
 
 /** The class gives access to all PBIL parameters for the EvA
@@ -21,18 +24,24 @@ import java.io.Serializable;
  */
 public class PBILParameters extends AbstractGOParameters implements InterfaceGOParameters, Serializable {
 
-    public static boolean   TRACE   = false;
-
+    /**
+     * Load or create a new instance of the class.
+     * 
+     * @return A loaded (from file) or new instance of the class.
+     */
     public static PBILParameters getInstance() {
-        if (TRACE) System.out.println("PBILParameters getInstance 1");
-        PBILParameters Instance = (PBILParameters) Serializer.loadObject("PBILParameters.ser");
-        if (TRACE) System.out.println("PBILParameters getInstance 2");
-        if (Instance == null) Instance = new PBILParameters();
-        return Instance;
-    }
+        PBILParameters instance = null;
+        try {
+            FileInputStream fileStream = new FileInputStream("PBILParameters.ser");
+            instance = (PBILParameters) Serializer.loadObject(fileStream);
+        } catch (FileNotFoundException ex) {
+            LOGGER.log(Level.WARNING, "Could not load instance object.", ex);
+        }
 
-    public void saveInstance() {
-        Serializer.storeObject("PBILParameters.ser",this);
+        if (instance == null) {
+            instance = new PBILParameters();
+        }
+        return instance;
     }
 
     public PBILParameters() {

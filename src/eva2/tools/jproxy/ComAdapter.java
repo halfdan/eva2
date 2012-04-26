@@ -22,6 +22,9 @@ import java.util.Properties;
 import java.util.StringTokenizer;
 
 import eva2.tools.Serializer;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.security.AccessControlException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,7 +34,7 @@ import java.util.logging.Logger;
  *
  */
 public class ComAdapter {
-	private static final Logger logger = Logger.getLogger(eva2.EvAInfo.defaultLogger);
+	private static final Logger LOGGER = Logger.getLogger(eva2.EvAInfo.defaultLogger);
 	public static final int PORT = 1099;
 	public static final String SEP = "_";
 	static protected ComAdapter m_instance = null;
@@ -68,7 +71,7 @@ public class ComAdapter {
 			/* This exception is expected to happen when
 			 * we are using Java WebStart.
 			 */			
-			logger.log(Level.INFO, "Username set to: WebStart", ex);
+			LOGGER.log(Level.INFO, "Username set to: WebStart", ex);
 			userName = "Webstart";
 		}
 		hostName = "localhost"; //"192.168.0.1";
@@ -100,7 +103,7 @@ public class ComAdapter {
 				if (!m_HostNameList.contains(current)) {
 					m_HostNameList.add(current);
 				} else {
-					logger.log(Level.FINER, "Server " + current + " was already in list");
+					LOGGER.log(Level.FINER, "Server " + current + " was already in list");
 				}
 			}
 		}
@@ -172,7 +175,7 @@ public class ComAdapter {
 			cnt++;
 			ret = getConnection(hostName).getRMIThreadHandler(c);
 			if (ret == null) {
-				logger.log(Level.WARNING, "Error in getRMIThreadHandler");
+				LOGGER.log(Level.WARNING, "Error in getRMIThreadHandler");
 			}
 		}
 		return ret;
@@ -206,7 +209,7 @@ public class ComAdapter {
 		while (m_AvailableHostNameList.size() == 0) {
 			evalAvailableHostNameList();
 			if (m_AvailableHostNameList.size() == 0) {
-				logger.log(Level.WARNING, "No host availabe waiting..");
+				LOGGER.log(Level.WARNING, "No host availabe waiting..");
 			}
 			m_ownHostIndex = 0;
 		}
@@ -267,7 +270,7 @@ public class ComAdapter {
 			String testurl = (String) m_HostNameList.get(i);
 			for (int j = 1; j < 3; j++) {
 				if (rmiPing(testurl + "_" + j) == true) {
-					logger.log(Level.INFO, "Found EvAServer on: " + testurl);
+					LOGGER.log(Level.INFO, "Found EvAServer on: " + testurl);
 					m_AvailableHostNameList.add(testurl + "_" + j);
 				}
 			}
@@ -297,18 +300,30 @@ public class ComAdapter {
 	}
 
 	/**
-	 *
+	 * Returns the current hostName set for the adapter.
+     * 
+     * @return The current hostName.
 	 */
 	public String getHostName() {
 		return hostName;
 	}
 
 	/**
-	 *
+	 * Sets hostName and writes it to a file.
+     * 
+     * @param newHost The new hostName.
 	 */
-	public void setHostName(String newHost) {
+	public void setHostName(final String newHost) {
 		hostName = newHost;
-		Serializer.storeString("hostname.ser", hostName);
+        try {
+            FileOutputStream fileStream = new FileOutputStream("hostname.ser");
+            Serializer.storeString(fileStream, hostName);
+            fileStream.close();
+        } catch (FileNotFoundException ex) {
+            LOGGER.log(Level.WARNING, "Could not write hostname to file.", ex);
+        } catch (IOException ex) {
+            LOGGER.log(Level.WARNING, "Error writing hostname to file.", ex);
+        }
 	}
 
 
@@ -327,7 +342,7 @@ public class ComAdapter {
 		}
 		String MainAdapterName = userName + MainAdapterImpl.MAIN_ADAPTER_NAME + Number; // attention
 		
-		logger.info("RMIConnect to " + HostToConnect);
+		LOGGER.info("RMIConnect to " + HostToConnect);
 		MainAdapter MainRemoteObject = null;
 		try {
 			RMIInvocationHandler invocHandler = (RMIInvocationHandler) Naming.lookup(
@@ -336,13 +351,13 @@ public class ComAdapter {
 			MainRemoteObject = getMainAdapter(invocHandler);
 
 			MainRemoteObject.setBuf("Ok.");
-			logger.info("RMIConnect " + MainRemoteObject.getBuf());
+			LOGGER.info("RMIConnect " + MainRemoteObject.getBuf());
 		} catch (MalformedURLException ex) {
-			logger.log(Level.WARNING, "MalformedURLException: Error while looking up " + ex.getMessage(), ex);
+			LOGGER.log(Level.WARNING, "MalformedURLException: Error while looking up " + ex.getMessage(), ex);
 		} catch (NotBoundException ex) {
-			logger.log(Level.WARNING, "NotBoundException: Error while looking up " + ex.getMessage(), ex);
+			LOGGER.log(Level.WARNING, "NotBoundException: Error while looking up " + ex.getMessage(), ex);
 		} catch (RemoteException ex) {
-			logger.log(Level.WARNING, "Error while connecting Host: " + HostToConnect, ex);
+			LOGGER.log(Level.WARNING, "Error while connecting Host: " + HostToConnect, ex);
 			return null;
 		}
 		return MainRemoteObject;
@@ -394,7 +409,7 @@ public class ComAdapter {
 					Host + ":" + MainAdapterImpl.PORT + "/" + mainAdapterName); // attention !!
 			Test = (MainAdapter) x.getWrapper();
 		} catch (Exception ex) {
-			logger.log(Level.INFO, "No connection to : " + testurl, ex);
+			LOGGER.log(Level.INFO, "No connection to : " + testurl, ex);
 			return false;
 		}
 		return true;
