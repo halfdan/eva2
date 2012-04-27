@@ -18,7 +18,6 @@ import eva2.server.go.strategies.EvolutionStrategies;
 import eva2.server.go.strategies.GeneticAlgorithm;
 import eva2.server.go.strategies.InterfaceOptimizer;
 import eva2.server.modules.GOParameters;
-import eva2.tools.TokenHolder;
 import eva2.tools.jproxy.ThreadProxy;
 import eva2.tools.math.RNG;
 import java.awt.BorderLayout;
@@ -524,7 +523,6 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
     public static void main(String[] args) {
         if (false) {
             InterfaceGOStandalone app = (InterfaceGOStandalone)ThreadProxy.newInstance(new GOStandaloneVersion());
-            new TokenHolder("streiche", "");
             app.startExperiment();
             app.setShow(false);
         } else {
