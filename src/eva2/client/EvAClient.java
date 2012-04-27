@@ -833,13 +833,13 @@ public class EvAClient implements RemoteStateListener, Serializable {
                 JOptionPane.showMessageDialog(evaFrame.getContentPane(), "No modules available on " + comAdapter.getHostName(), EvAInfo.infoTitle, 1);
             } else {
                 String lastModule = null;
+                
                 try {
-                    FileInputStream inputStream = new FileInputStream("lastmodule.ser");
-                    lastModule = Serializer.loadString(inputStream);
-                    inputStream.close();
-                } catch (Exception ex) {
-                    LOGGER.log(Level.WARNING, "Could not load last loaded module.", ex);
-                } 
+                    java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userRoot();
+                    lastModule = prefs.get("lastModule", null);
+                } catch (SecurityException ex) {
+                    LOGGER.log(Level.WARNING, "Can't write user preference.", ex);
+                }
                 
                 if (lastModule == null) {
                     lastModule = ModuleNameList[0];
@@ -858,15 +858,12 @@ public class EvAClient implements RemoteStateListener, Serializable {
 
         if (selectedModule == null) {
             System.err.println("not loading any module");
-        } else {
+        } else {            
             try {
-                FileOutputStream outStream = new FileOutputStream("lastmodule.ser");
-                Serializer.storeString(outStream, selectedModule);
-                outStream.close();
-            } catch (FileNotFoundException ex) {
-                LOGGER.log(Level.WARNING, "Could not store selected module.", ex);
-            } catch (IOException ex) {
-                LOGGER.log(Level.WARNING, "Could not close file stream.", ex);
+                java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userRoot();
+                prefs.put("lastModule", selectedModule);
+            } catch (SecurityException ex) {
+                LOGGER.log(Level.WARNING, "Can't write user preference.", ex);
             }
 
             loadSpecificModule(selectedModule, goParams);
