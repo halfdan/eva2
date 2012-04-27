@@ -316,13 +316,10 @@ public class ComAdapter {
 	public void setHostName(final String newHost) {
 		hostName = newHost;
         try {
-            FileOutputStream fileStream = new FileOutputStream("hostname.ser");
-            Serializer.storeString(fileStream, hostName);
-            fileStream.close();
-        } catch (FileNotFoundException ex) {
-            LOGGER.log(Level.WARNING, "Could not write hostname to file.", ex);
-        } catch (IOException ex) {
-            LOGGER.log(Level.WARNING, "Error writing hostname to file.", ex);
+            java.util.prefs.Preferences prefs = java.util.prefs.Preferences.userRoot();
+            prefs.put("hostname", hostName);
+        } catch (SecurityException ex) {
+            LOGGER.log(Level.WARNING, "Can't write user preference.", ex);
         }
 	}
 
