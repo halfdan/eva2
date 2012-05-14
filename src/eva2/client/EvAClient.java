@@ -393,6 +393,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
             
             BasicResourceLoader loader = BasicResourceLoader.instance();
             byte[] bytes = loader.getBytesFromResourceLocation(EvAInfo.iconLocation, true);
+            // TODO: use setIconImages (for better support of multiple icons when changing programs etc.)
             mainFrame.setIconImage(Toolkit.getDefaultToolkit().createImage(bytes));
 
             try {
@@ -549,6 +550,27 @@ public class EvAClient implements RemoteStateListener, Serializable {
      * @param args command line parameters
      */
     public static void main(String[] args) {
+    	/*============================COPIED FROM SYSBIO==============================*/
+    	// Properties for Mac OS X support.
+    	if ((System.getProperty("mrj.version") != null)
+    		|| (System.getProperty("os.name").toLowerCase().indexOf("mac") != -1)) {
+    			/* 
+    			 * Note: the xDock name property must be set before parsing 
+    			 * command-line arguments! See above!
+    			 */
+    			System.setProperty("com.apple.mrj.application.apple.menu.about.name", EvAInfo.productName);
+
+    			System.setProperty("apple.awt.graphics.EnableQ2DX", "true");
+    			System.setProperty("apple.laf.useScreenMenuBar", "true");
+    			System.setProperty("com.apple.macos.smallTabs", "true");
+    			System.setProperty("com.apple.macos.useScreenMenuBar", "true");
+
+    			System.setProperty("com.apple.mrj.application.growbox.intrudes", "false");
+    			System.setProperty("com.apple.mrj.application.live-resize", "true");
+    		}
+    	/*==========================================================================*/
+    	
+    	
         /* Available command-line parameters */
         String[] keys = new String[]{
             "--help", "--autorun", "--nosplash", "--nogui", 
