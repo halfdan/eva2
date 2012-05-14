@@ -10,16 +10,18 @@ package eva2.gui;
  *            $Author: streiche $
  */
 
-import javax.swing.JFrame;
-import javax.swing.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.*;
-import java.awt.event.KeyEvent;
+import java.awt.Event;
 import java.awt.event.ActionEvent;
-import java.awt.event.WindowListener;
+import java.awt.event.KeyEvent;
+import javax.swing.AbstractAction;
+import javax.swing.JComponent;
+import javax.swing.JInternalFrame;
+import javax.swing.KeyStroke;
+import javax.swing.event.InternalFrameAdapter;
+import javax.swing.event.InternalFrameEvent;
+import javax.swing.event.InternalFrameListener;
 
-public class JEFrame extends JFrame {
+public class JEFrame extends JInternalFrame {
 	private boolean closeAllOnClose = false;
 	
 	public JEFrame() {
@@ -42,36 +44,35 @@ public class JEFrame extends JFrame {
 	}
 
 	@Override
-	public void addWindowListener(WindowListener l) {
-		super.addWindowListener(l);
+	public void addInternalFrameListener(InternalFrameListener l) {
+		super.addInternalFrameListener(l);
 	}
 
 	private void init() {
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		
-		this.addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosed(WindowEvent e) {
-				super.windowClosed(e);
-				JEFrameRegister.unregister((JEFrame) e.getWindow());
+		this.addInternalFrameListener(new InternalFrameAdapter() {
+
+            @Override
+            public void internalFrameClosed(InternalFrameEvent e) {
+                super.internalFrameClosed(e);
+				JEFrameRegister.getInstance().unregister((JEFrame) e.getInternalFrame());
 				if (closeAllOnClose) {
-                    JEFrameRegister.closeAll();
+                    JEFrameRegister.getInstance().closeAll();
                 }
-				//       ((JFrame) e.getWindow()).dispose();
-			}
-            
-			@Override
-			public void windowOpened(WindowEvent e) {
-				super.windowOpened(e);
-				JEFrameRegister.register((JEFrame) e.getWindow());
-			}
-            
-			@Override
-			public void windowActivated(WindowEvent e) {
-				JEFrameRegister.register((JEFrame) e.getWindow());
-				super.windowActivated(e);
-			}
-			
+            }
+
+            @Override
+            public void internalFrameOpened(InternalFrameEvent e) {
+                super.internalFrameOpened(e);
+                JEFrameRegister.getInstance().register((JEFrame) e.getInternalFrame());
+            }
+
+            @Override
+            public void internalFrameActivated(InternalFrameEvent e) {
+            	JEFrameRegister.getInstance().register((JEFrame) e.getInternalFrame());
+			    super.internalFrameActivated(e);
+            }
 		});
 		this.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
 				KeyStroke.getKeyStroke(KeyEvent.VK_F, Event.CTRL_MASK),
@@ -81,8 +82,7 @@ public class JEFrame extends JFrame {
 				"ctrlFpressed",
 				new AbstractAction("ctrlFpressed") {
 					public void actionPerformed(ActionEvent actionEvent) {
-						((JEFrame) JEFrameRegister.getFrameList()[0]).setExtendedState(JEFrame.NORMAL);
-						((JEFrame) JEFrameRegister.getFrameList()[0]).toFront();
+                        JEFrameRegister.getInstance().getFrameList().get(0).toFront();
 					}
 				}
 		);
@@ -94,12 +94,10 @@ public class JEFrame extends JFrame {
 				"ctrlOpressed",
 				new AbstractAction("ctrlOpressed") {
 					public void actionPerformed(ActionEvent actionEvent) {
-						Object[] fl = JEFrameRegister.getFrameList();
-						for (int i = 0; i < fl.length; i++) {
-							((JEFrame) JEFrameRegister.getFrameList()[i]).setExtendedState(JEFrame.NORMAL);
-							((JEFrame) JEFrameRegister.getFrameList()[i]).toFront();
-						}
-
+						java.util.List<JEFrame> frameList = JEFrameRegister.getInstance().getFrameList();
+						for (JEFrame frame : frameList) {
+                            frame.toFront();
+                        }
 					}
 				}
 		);
@@ -112,9 +110,16 @@ public class JEFrame extends JFrame {
 				"ctrlSmallerpressed",
 				new AbstractAction("ctrlSmallerpressed") {
 					public void actionPerformed(ActionEvent actionEvent) {
-						JEFrameRegister.setFocusToNext(self);
+						JEFrameRegister.getInstance().setFocusToNext(self);
 					}
 				}
 		);
+        
+        this.setMaximizable(true);
+        this.setResizable(true);
+        this.setIconifiable(true);
+        this.setClosable(true);
+        
+        
 	}
 }

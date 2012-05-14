@@ -29,10 +29,9 @@ import java.util.logging.Logger;
  * Collect available ModuleAdapter implementations and load them on request.
  */
 public class ModuleServer {
-	private static final Logger logger = Logger.getLogger(eva2.EvAInfo.defaultLogger);
-	private int m_InstanceCounter = 0;
+	private static final Logger LOGGER = Logger.getLogger(eva2.EvAInfo.defaultLogger);
+	private static int instanceCounter = 0;
 	private List<Class<?>> moduleClassList;
-//	private ArrayList m_RunnungModules;
 	private ModuleAdapter moduleAdapter;
 	private int moduleAdapterCounter = 0;
 
@@ -40,7 +39,7 @@ public class ModuleServer {
 	 *
 	 */
 	public ModuleServer(Properties EvAProps) {
-		if (m_InstanceCounter > 0) {
+		if (instanceCounter > 0) {
 			EVAERROR.EXIT("ModuleServer created twice");
 		}
 		moduleClassList = new ArrayList<Class<?>>();
@@ -48,13 +47,14 @@ public class ModuleServer {
 		String modulePckg = null;
 		Class<?> filterBy = null;
 		try {
+            /* Fetch the name of the package containing the modules */
 			modulePckg = EvAProps.getProperty("ModulePackage");
+            /* Fetch the the super class for all modules */
 			filterBy = Class.forName(EvAProps.getProperty("ModuleFilterClass"));
-		} catch(Exception e) {
-			System.err.println("Creating ModuleServer failed: couldnt load modules:" + e.getMessage());
+		} catch (Exception ex) {
+			System.err.println("Creating ModuleServer failed: couldnt load modules:" + ex.getMessage());
 			System.err.println("module path was " + modulePckg + ", is it valid?");
-			System.err.println("filter class path was " + ((filterBy==null) ? "null" : filterBy.getName()));
-//			e.printStackTrace();
+			System.err.println("filter class path was " + ((filterBy == null) ? "null" : filterBy.getName()));
 		}
 
 		// this gets a list of all valid modules from the package
@@ -63,35 +63,39 @@ public class ModuleServer {
 			moduleClassList.add((Class<?>) cls);
 		}
 
-		m_InstanceCounter++;
+		instanceCounter++;
 	}
 
 	/**
-	 *
+	 * Iterates over the list of available modules and fetches
+     * the name of the module by calling the static getName() 
+     * method.
+     * 
+     * @return Array of available modules
 	 */
-	public String[] getModuleNameList() {
-		List<String> moduleNameList = new ArrayList<String>();
-		for (int i = 0; i < moduleClassList.size(); i++) {
-			try {
-				Class<?> Modul = (Class<?>) moduleClassList.get(i);
-				Method[] methods = Modul.getDeclaredMethods();
-				for (int ii = 0; ii < methods.length; ii++) {
-					if (methods[ii].getName().equals("getName") == true) {
-						//System.out.println("name is =="+methods[ii].invoke(null,null));
-						String name = (String)methods[ii].invoke((Object[])null, (Object[])null);
-						if (name != null) moduleNameList.add(name);
-						break;
-					}
-				}
-				//ModuleNameList.add ( Modul.getName());
-			}
-			catch (Exception e) {
-				System.err.println("ModuleServer.getModuleNameList() " + e.getMessage());
-			}
+    public String[] getModuleNameList() {
+        List<String> moduleNameList = new ArrayList<String>();
+        for (Class<?> module : moduleClassList) {
+            try {
+                Method[] methods = module.getDeclaredMethods();
+                for (Method method : methods) {
+                    if (method.getName().equals("getName")) {
+                        String name = (String) method.invoke((Object[]) null, (Object[]) null);
+                        if (name != null) {
+                            moduleNameList.add(name);
+                        } else {
+                            LOGGER.log(Level.FINE, "Module {0} does not specify a diplayable name.", module.getCanonicalName());
+                        }
+                        break;
+                    }
+                }
+            } catch (Exception ex) {
+                LOGGER.log(Level.WARNING, "Error while fetching name from module.", ex);
+            }
 
-		}
-		// and the running modules
-		// @todo running modules sind abgeschaltet
+        }
+        // and the running modules
+        // @todo running modules sind abgeschaltet
 
 //		for (int i = 0; i < m_RunnungModules.size(); i++) {
 //			String AdapterName = null;
@@ -104,10 +108,10 @@ public class ModuleServer {
 //			ModuleNameList.add(AdapterName);
 //		}
 
-		String[] x = new String[moduleNameList.size()];
-		moduleNameList.toArray(x);
-		return x;
-	}
+        String[] x = new String[moduleNameList.size()];
+        moduleNameList.toArray(x);
+        return x;
+    }
 
 	/**
 	 * Load the module indicated by the selectedModuleName from all available
@@ -122,21 +126,19 @@ public class ModuleServer {
 		moduleAdapterCounter++;
 		String adapterName = "ERROR MODULADAPTER !!";
 		String moduleName = null;
-		Class<?> module;
 		Method[] methods;
-		for (int i = 0; i < moduleClassList.size(); i++) {
-			module = moduleClassList.get(i);
+        for (Class<?> module : moduleClassList) {
 			try {
 				methods = module.getDeclaredMethods();
 
-				for (int ii = 0; ii < methods.length; ii++) {
-					if (methods[ii].getName().equals("getName") == true) {
-						moduleName = (String) methods[ii].invoke((Object[]) null, (Object[]) null);
+                for (Method method : methods) {
+					if (method.getName().equals("getName")) {
+						moduleName = (String) method.invoke((Object[]) null, (Object[]) null);
 					}
 				}
 			}
 			catch (Exception ex) {
-				logger.log(Level.WARNING, ex.getMessage(), ex);
+				LOGGER.log(Level.WARNING, ex.getMessage(), ex);
 			}
 			if ((moduleName != null) && (selectedModuleName.equals(moduleName))) {
 				try {
@@ -154,7 +156,7 @@ public class ModuleServer {
 							System.err.println("Cant deactivate GUI - no matching constructor found for " + adapterName + " (ModuleServer)");
 						}
 						Object[] Para = new Object[2];
-                                                while ((constructorArr[constrIndex].getParameterTypes().length!=2) && (constrIndex < constructorArr.length)) { 
+                        while ((constructorArr[constrIndex].getParameterTypes().length!=2) && (constrIndex < constructorArr.length)) { 
 							constrIndex++;
 						}
 						Class<?> paramTypes[] = (constructorArr[constrIndex]).getParameterTypes();
@@ -163,10 +165,10 @@ public class ModuleServer {
 						moduleAdapter = (ModuleAdapter) constructorArr[constrIndex].newInstance(Para);
 					} else {
 						Object[] param = new Object[4];
-						param[0] = (String)adapterName;
-						param[1] = (InterfaceGOParameters)goParams;
-						param[2] = (String)noGuiLogFile;
-						param[3] = (MainAdapterClient)Client;
+						param[0] = (String) adapterName;
+						param[1] = (InterfaceGOParameters) goParams;
+						param[2] = (String) noGuiLogFile;
+						param[3] = (MainAdapterClient) Client;
 						while ((constructorArr[constrIndex].getParameterTypes().length!=4) && (constrIndex < constructorArr.length)) { 
 							constrIndex++;
 						}
@@ -178,13 +180,13 @@ public class ModuleServer {
 						 * implement the ModuleAdapter interface for a strange reason,
 						 * it is _not_ enough if a superclass implements the same interface!
 						 */
-						moduleAdapter = (ModuleAdapter)RMIProxyLocal.newInstance(moduleAdapter, adapterName);
+						moduleAdapter = (ModuleAdapter) RMIProxyLocal.newInstance(moduleAdapter, adapterName);
 						(moduleAdapter).setRemoteThis(moduleAdapter);
 					}
 					//  m_RunnungModules.add(m_ModuleAdapter);
 				}
 				catch (Exception ex) {
-					logger.log(Level.SEVERE, "Error in RMI-Moduladapter initialization", ex);
+					LOGGER.log(Level.SEVERE, "Error in RMI-Moduladapter initialization", ex);
 					EVAERROR.EXIT("Error in RMI-Moduladapter initialization: " + ex.getMessage());
 					return null;
 				}				
@@ -207,7 +209,7 @@ public class ModuleServer {
 //			}
 //		}
 
-		logger.log(Level.SEVERE, "No valid module defined: {0}", selectedModuleName);
+		LOGGER.log(Level.SEVERE, "No valid module defined: {0}", selectedModuleName);
 		return null;
 	}
 }

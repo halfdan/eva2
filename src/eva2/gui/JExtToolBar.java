@@ -9,13 +9,11 @@ package eva2.gui;
  *            $Date: 2006-01-18 11:02:22 +0100 (Wed, 18 Jan 2006) $
  *            $Author: streiche $
  */
-/*==========================================================================*
- * IMPORTS
- *==========================================================================*/
-import javax.swing.*;
-import java.awt.event.KeyEvent;
 import java.awt.Insets;
-import java.beans.*;
+import java.awt.event.KeyEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import javax.swing.*;
 /**
  *
  */

@@ -9,40 +9,33 @@ package eva2.server;
  *            $Date: 2007-12-04 15:23:57 +0100 (Tue, 04 Dec 2007) $
  *            $Author: mkron $
  */
-/*==========================================================================*
- * IMPORTS
- *==========================================================================*/
 import eva2.EvAInfo;
 import eva2.server.go.InterfaceGOParameters;
 import eva2.server.modules.ModuleAdapter;
 import eva2.tools.jproxy.MainAdapterClient;
 import eva2.tools.jproxy.MainAdapterImpl;
-/*==========================================================================*
-* CLASS DECLARATION
-*==========================================================================*/
 /**
  *
  */
 public class EvAMainAdapterImpl extends MainAdapterImpl implements EvAMainAdapter {
-  private ModuleServer m_ModulServer=null;
 
-  public EvAMainAdapterImpl() {
-	  super();
-	  m_ModulServer = new ModuleServer(EvAInfo.getProperties());
-  }
+    private ModuleServer moduleServer = null;
 
-  public String[] getModuleNameList() {
-    return m_ModulServer.getModuleNameList();
-  }
+    public EvAMainAdapterImpl() {
+        super();
+        moduleServer = new ModuleServer(EvAInfo.getProperties());
+    }
 
-  public ModuleAdapter getModuleAdapter(String selectedModuleName, boolean withoutRMI, String hostAddress, MainAdapterClient client) {
-    return getModuleAdapter(selectedModuleName, withoutRMI, hostAddress, null, null, client);
-  }
-  
- public ModuleAdapter getModuleAdapter(String selectedModuleName, boolean withoutRMI, String hostAddress, InterfaceGOParameters goParams,String noGuiStatsFile, MainAdapterClient client) {
-   if (TRACE) System.out.println("MainAdapterImpl.GetModuleAdapter() for module " +
-		   selectedModuleName +" for Client: "+hostAddress+ " called");
-   return m_ModulServer.createModuleAdapter(selectedModuleName,client,withoutRMI,hostAddress, goParams, noGuiStatsFile);
- }
+    public String[] getModuleNameList() {
+        return moduleServer.getModuleNameList();
+    }
+
+    public ModuleAdapter getModuleAdapter(String selectedModule, boolean withoutRMI, String hostAddress, MainAdapterClient client) {
+        return getModuleAdapter(selectedModule, withoutRMI, hostAddress, null, null, client);
+    }
+
+    public ModuleAdapter getModuleAdapter(String selectedModule, boolean withoutRMI, String hostAddress, InterfaceGOParameters goParams, String noGuiStatsFile, MainAdapterClient client) {
+        return moduleServer.createModuleAdapter(selectedModule, client, withoutRMI, hostAddress, goParams, noGuiStatsFile);
+    }
 }
 

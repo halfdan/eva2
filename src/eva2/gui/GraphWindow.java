@@ -1,163 +1,164 @@
 package eva2.gui;
 /*
- * Title:        EvA2
- * Description:
- * Copyright:    Copyright (c) 2003
- * Company:      University of Tuebingen, Computer Architecture
- * @author Holger Ulmer, Felix Streichert, Hannes Planatscher
- * @version:  $Revision: 320 $
- *            $Date: 2007-12-06 16:05:11 +0100 (Thu, 06 Dec 2007) $
- *            $Author: mkron $
+ * Title: EvA2 Description: Copyright: Copyright (c) 2003 Company: University of Tuebingen, Computer
+ * Architecture @author Holger Ulmer, Felix Streichert, Hannes Planatscher @version: $Revision: 320
+ * $ $Date: 2007-12-06 16:05:11 +0100 (Thu, 06 Dec 2007) $ $Author: mkron $
  */
-/*==========================================================================*
- * IMPORTS
- *==========================================================================*/
+
 import java.net.InetAddress;
 import java.util.ArrayList;
 
 import eva2.tools.jproxy.MainAdapterClient;
 import eva2.tools.jproxy.RMIProxyRemote;
 
-/*==========================================================================*
- * CLASS DECLARATION
- *==========================================================================*/
 /**
  * It represents one plot window in the client GUI.
  */
 public class GraphWindow {
-  public static boolean TRACE = false;
 
-  static private int m_GraphCounter = -1;
-  static private PlotContainer m_PlotContainer;
-  private MainAdapterClient m_MainAdapterClient;
-  private PlotInterface m_Plotter;
-  private String m_Name;
-  /**
-   *
-   */
-  public static GraphWindow getInstance (MainAdapterClient client,String GraphWindowName,
-    String strx,String stry) {
-    if (m_PlotContainer == null)
-      m_PlotContainer = new PlotContainer();
-    GraphWindow ret =null;
-    try {
-//      if (!m_PlotContainer.containsName(GraphWindowName)) {
-//        ret = new GraphWindow(client,GraphWindowName,strx,stry);
-//        m_PlotContainer.add(ret);
-//      }
-//      else {
-//        ret = m_PlotContainer.getPlot(GraphWindowName);
-//      }
-        if (m_PlotContainer.containsName(GraphWindowName)) {
-            ret = m_PlotContainer.getPlot(GraphWindowName);
+    public static boolean TRACE = false;
+    static private int graphCounter = -1;
+    static private PlotContainer plotContainer;
+    private MainAdapterClient mainAdapterClient;
+    private PlotInterface plotter;
+    private String name;
+
+    /**
+     *
+     */
+    public static GraphWindow getInstance(MainAdapterClient client, String graphWindowName,
+            String strx, String stry) {
+        if (plotContainer == null) {
+            plotContainer = new PlotContainer();
         }
-        if ((ret == null) || !(ret.isValid())) {
-        	if (ret != null) {
-        		m_PlotContainer.remove(ret); // remove if not valid any more
-        	}
-            ret = new GraphWindow(client,GraphWindowName,strx,stry);
-            m_PlotContainer.add(ret);
+        GraphWindow ret = null;
+        try {
+            if (plotContainer.containsName(graphWindowName)) {
+                ret = plotContainer.getPlot(graphWindowName);
+            }
+            if ((ret == null) || !(ret.isValid())) {
+                if (ret != null) {
+                    plotContainer.remove(ret); // remove if not valid any more
+                }
+                ret = new GraphWindow(client, graphWindowName, strx, stry);
+                plotContainer.add(ret);
+            }
+        } catch (Exception ee) {
+            System.out.println("GraphWindow ERROR : " + ee.getMessage());
+            ee.printStackTrace();
         }
-    } catch (Exception ee) {
-      System.out.println("GraphWindow ERROR : "+ee.getMessage());
-      ee.printStackTrace();
+        return ret;
     }
-    return ret;
-  }
-  
-  public boolean isValid() {
-	  return (m_Plotter != null) && (m_Plotter.isValid());
-  }
 
-  public PlotInterface getPlotter() {
-	  return m_Plotter;
-  }
-  
-  /**
-   *
-   */
-  private GraphWindow(MainAdapterClient client,String PlotName,String strx,String stry){
-	  if (TRACE) System.out.println("Constructor GraphWindow");
-	  m_MainAdapterClient = client;
-	  m_Name = PlotName;
-	  try {
-		  if ((client==null) || client.getHostName().equals(InetAddress.getLocalHost().getHostName())) {
-			  if (TRACE) System.out.println("no RMI");
-			  m_Plotter = new Plot(PlotName, strx, stry, true);
-		  }
-		  else {
-			  m_Plotter = (PlotInterface) RMIProxyRemote.newInstance(new Plot(PlotName,strx,stry,false), m_MainAdapterClient);
-			  m_Plotter.init();
-			  if (TRACE) System.out.println("with RMI");
-		  }
-	  } catch (Exception e) {
-		  System.err.println("InetAddress.getLocalHost().getHostAddress() --> ERROR" + e.getMessage());
-	  }
-  }
+    public boolean isValid() {
+        return (plotter != null) && (plotter.isValid());
+    }
 
-  /**
-   *
-   */
-  public String getName () {
-    return m_Name;
-  }
-  /**
-   *
-   */
-  public Graph getNewGraph(String InfoString) {
-    m_GraphCounter++;
-    if (TRACE) System.out.println("Graph.getNewGraph No:"+m_GraphCounter + " - " + InfoString);
-    return new Graph (InfoString,m_Plotter,m_GraphCounter);
-  }
+    public PlotInterface getPlotter() {
+        return plotter;
+    }
+
+    /**
+     *
+     */
+    private GraphWindow(MainAdapterClient client, String plotName, String strx, String stry) {
+        if (TRACE) {
+            System.out.println("Constructor GraphWindow");
+        }
+        mainAdapterClient = client;
+        name = plotName;
+        try {
+            if ((client == null) || client.getHostName().equals(InetAddress.getLocalHost().getHostName())) {
+                if (TRACE) {
+                    System.out.println("no RMI");
+                }
+                plotter = new Plot(plotName, strx, stry, true);
+            } else {
+                plotter = (PlotInterface) RMIProxyRemote.newInstance(new Plot(plotName, strx, stry, false), mainAdapterClient);
+                plotter.init();
+                if (TRACE) {
+                    System.out.println("with RMI");
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("InetAddress.getLocalHost().getHostAddress() --> ERROR" + e.getMessage());
+        }
+    }
+
+    /**
+     *
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     *
+     */
+    public Graph getNewGraph(String infoString) {
+        graphCounter++;
+        if (TRACE) {
+            System.out.println("Graph.getNewGraph No:" + graphCounter + " - " + infoString);
+        }
+        return new Graph(infoString, plotter, graphCounter);
+    }
 }
+
 /**
  *
  */
 class PlotContainer extends ArrayList<GraphWindow> {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 4194675772084989958L;
-	private GraphWindow m_actualPlot;
-  /**
-   *
-   */
-  public PlotContainer() {}
-  /**
-   *
-   */
-  public boolean containsName (String name) {
-    GraphWindow temp = null;
-    for (int i=0;i<size();i++) {
-      temp = (GraphWindow)(get(i));
-      if (name.equals(temp.getName())) {
-	return true;
-      }
+
+    /**
+     *
+     */
+    private static final long serialVersionUID = 4194675772084989958L;
+    private GraphWindow actualPlot;
+
+    /**
+     *
+     */
+    public PlotContainer() {
     }
-    return false;
-  }
-  
-  public void remove(GraphWindow gw) {
-	  super.remove(gw);
-	  if (m_actualPlot == gw) m_actualPlot=null;
-  }
-  
-  /**
-   *
-   */
-  public GraphWindow getPlot (String name) {
-    if ((m_actualPlot!=null) && m_actualPlot.isValid()) {
-      if (m_actualPlot.getName().equals(name))
-        return m_actualPlot;
+
+    /**
+     *
+     */
+    public boolean containsName(String name) {
+        GraphWindow temp = null;
+        for (int i = 0; i < size(); i++) {
+            temp = (GraphWindow) (get(i));
+            if (name.equals(temp.getName())) {
+                return true;
+            }
+        }
+        return false;
     }
-    GraphWindow temp = null;
-    for (int i=0;i<size();i++) {
-      temp = (GraphWindow)(get(i));
-      if (name.equals(temp.getName())) {
-	m_actualPlot = temp;
-	return m_actualPlot;
-      }
+
+    public void remove(GraphWindow gw) {
+        super.remove(gw);
+        if (actualPlot == gw) {
+            actualPlot = null;
+        }
     }
-    return null;
-  }  
+
+    /**
+     *
+     */
+    public GraphWindow getPlot(String name) {
+        if ((actualPlot != null) && actualPlot.isValid()) {
+            if (actualPlot.getName().equals(name)) {
+                return actualPlot;
+            }
+        }
+        GraphWindow temp = null;
+        for (int i = 0; i < size(); i++) {
+            temp = (GraphWindow) (get(i));
+            if (name.equals(temp.getName())) {
+                actualPlot = temp;
+                return actualPlot;
+            }
+        }
+        return null;
+    }
 }

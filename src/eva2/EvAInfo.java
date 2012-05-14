@@ -95,7 +95,7 @@ public class EvAInfo {
 	public static final String GPLFile= "gpl-3.0.txt";
 	public static final String iconLocation = "resources/images/icon4.gif";
 
-	public static final String splashLocation = "resources/images/splashScreen2.png";
+	public static final String splashLocation = "resources/images/EvASplashScreen.png";
 	public static final String infoTitle = productName+" Information";
 	public static final String copyrightYear = "2010-2012";
         

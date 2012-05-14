@@ -5,7 +5,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.beans.PropertyEditor;
-
+import javax.swing.BorderFactory;
 import javax.swing.JTextField;
 
 /**
@@ -13,13 +13,14 @@ import javax.swing.JTextField;
  * 
  */
 public class PropertyText extends JTextField {
-	private PropertyEditor m_Editor;
+	private PropertyEditor propertyEditor;
 	/**
 	 *
 	 */
 	public PropertyText(PropertyEditor pe) {
 		super(pe.getAsText());
-		m_Editor = pe;
+        this.setBorder(BorderFactory.createEmptyBorder());        
+		propertyEditor = pe;
 		//    m_Editor.addPropertyChangeListener(new PropertyChangeListener() {
 		//      public void propertyChange(PropertyChangeEvent evt) {
 		//	updateUs();
@@ -44,8 +45,8 @@ public class PropertyText extends JTextField {
 	protected void updateEditor() {
 		try {
 			String x = getText();
-			if (!m_Editor.getAsText().equals(x)) {
-				m_Editor.setAsText(x);
+			if (!propertyEditor.getAsText().equals(x)) {
+				propertyEditor.setAsText(x);
 //				setText(m_Editor.getAsText());
 			}
 		} catch (IllegalArgumentException ex) {
@@ -55,10 +56,10 @@ public class PropertyText extends JTextField {
 	
 	public boolean checkConsistency() {
 		String x = getText();
-		return x.equals(m_Editor.getAsText());
+		return x.equals(propertyEditor.getAsText());
 	}
 	
 	public void updateFromEditor() {
-		setText(m_Editor.getAsText());
+		setText(propertyEditor.getAsText());
 	}
 }

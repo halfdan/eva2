@@ -28,6 +28,7 @@ import javax.swing.event.ChangeListener;
 
 import eva2.EvAInfo;
 import eva2.tools.BasicResourceLoader;
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.*;
 import java.beans.PropertyChangeListener;
@@ -51,20 +52,21 @@ public class LoggingPanel extends JPanel {
 	 */
 	public LoggingPanel(Logger logger) {
 		this.logger = logger;
-		loggingTextArea.setEditable(false);
-		loggingTextArea.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));
+		loggingTextArea.setEditable(false);		
 		loggingTextArea.setLineWrap(true);
+        loggingTextArea.setBorder(BorderFactory.createEmptyBorder());
 				
-		JPanel mainPanel = new JPanel();
-		mainPanel.setBorder(BorderFactory.createTitledBorder("Info"));
+		setLayout(new BorderLayout());
+		
+        add(new JLabel("Info"), BorderLayout.PAGE_START);
 		
 		this.loggingHandler = new LoggingHandler(this);
 		logger.addHandler(loggingHandler);
 		
-		mainPanel.setLayout(new BorderLayout());
 		final JScrollPane scrollpane = new JScrollPane(loggingTextArea);
+        scrollpane.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
 //		scrollpane.setAutoscrolls(false);
-		mainPanel.add(scrollpane, BorderLayout.CENTER);
+		add(scrollpane, BorderLayout.CENTER);
 		scrollpane.getViewport().addChangeListener(new ChangeListener() {
 			private int lastHeight;
 			//
@@ -78,8 +80,6 @@ public class LoggingPanel extends JPanel {
 				}
 			}
 		});
-		setLayout(new BorderLayout());
-		add(mainPanel, BorderLayout.CENTER);
 	}
 	/**
 	 *

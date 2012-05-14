@@ -20,6 +20,7 @@ import javax.swing.JOptionPane;
 import eva2.gui.BeanInspector;
 import eva2.tools.BasicResourceLoader;
 import eva2.tools.StringTools;
+import java.beans.XMLEncoder;
 
 
 /**
@@ -201,9 +202,9 @@ public class FileTools {
 	}
 	
 	public static JFileChooser createFileChooser() {
-		JFileChooser fc = new JFileChooser(new File("resources"));
-		fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
-		return fc;
+		JFileChooser fileChooser = new JFileChooser(new File("resources"));
+		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		return fileChooser;
 	}
 	
 	public static boolean saveObjectToFolder(Object object, File folder, boolean forceOverwrite, Component parentComponent) {

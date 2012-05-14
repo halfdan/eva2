@@ -15,6 +15,8 @@ import eva2.tools.SelectedTag;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.JCheckBox;
+import javax.swing.event.InternalFrameAdapter;
+import javax.swing.event.InternalFrameEvent;
 
 public class GenericSelectableArrayEditor extends GenericArrayEditor {
     protected JCheckBox[]             m_BlackCheck;
@@ -32,10 +34,13 @@ public class GenericSelectableArrayEditor extends GenericArrayEditor {
 			PropertyDialog pd = new PropertyDialog(editor,EVAHELP.cutClassName(editor.getClass().getName())
 					, 100, 100);
 			pd.setSize(200,200);
-			pd.addWindowListener(new WindowAdapter() {
-				public void windowClosing(WindowEvent e) {
-					System.exit(0);
-				}
+			pd.addInternalFrameListener(new InternalFrameAdapter() {
+
+                @Override
+                public void internalFrameClosing(InternalFrameEvent e) {
+                    super.internalFrameClosing(e);
+                    System.exit(0);
+                }
 			});
 			editor.setValue(initial);
 			//ce.validate();

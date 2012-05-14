@@ -153,7 +153,7 @@ public class GeneralGenericObjectEditorPanel extends JPanel implements ItemListe
         // add(new JScrollPane(m_ChildPropertySheet), BorderLayout.CENTER);
 
         JPanel okcButs = new JPanel();
-        okcButs.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        okcButs.setBorder(BorderFactory.createEmptyBorder());
         okcButs.setLayout(new GridLayout(1, 4, 5, 5));
         okcButs.add(m_OpenBut);
         okcButs.add(m_SaveBut);

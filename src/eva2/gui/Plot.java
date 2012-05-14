@@ -48,6 +48,9 @@ import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.populations.Population;
 import eva2.tools.BasicResourceLoader;
 import eva2.tools.chart2d.DPointSet;
+import javax.swing.*;
+import javax.swing.event.InternalFrameAdapter;
+import javax.swing.event.InternalFrameEvent;
 
 /*==========================================================================*
  * CLASS DECLARATION
@@ -68,7 +71,7 @@ public class Plot implements PlotInterface, Serializable {
 	private String m_xname;
 	private String m_yname;
 	protected FunctionArea m_PlotArea;
-	protected JFrame m_Frame;
+	protected JInternalFrame m_Frame;
 
 	/**
 	 * You might want to try to assign the x-range as x and y-range as y array
@@ -221,7 +224,7 @@ public class Plot implements PlotInterface, Serializable {
 		m_Frame = new JEFrame("Plot: " + m_PlotName);
 		BasicResourceLoader loader = BasicResourceLoader.instance();
 		byte[] bytes = loader.getBytesFromResourceLocation(EvAInfo.iconLocation, true);
-			m_Frame.setIconImage(Toolkit.getDefaultToolkit().createImage(bytes));
+//			m_Frame.setIconImage(Toolkit.getDefaultToolkit().createImage(bytes));
 
 		m_ButtonPanel = new JPanel();
 		m_PlotArea = new FunctionArea(m_xname, m_yname);
@@ -233,12 +236,15 @@ public class Plot implements PlotInterface, Serializable {
 		m_Frame.getContentPane().add(m_ButtonPanel, "South");
 		m_Frame.getContentPane().add(m_PlotArea, "Center"); // north was not so
 															// nice
-		m_Frame.addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent e) {
-				m_PlotArea.clearAll(); // this was a memory leak
+		m_Frame.addInternalFrameListener(new InternalFrameAdapter() {
+
+            @Override
+            public void internalFrameClosing(InternalFrameEvent e) {
+                super.internalFrameClosing(e);
+                m_PlotArea.clearAll(); // this was a memory leak
 				m_PlotArea = null;
 				m_Frame.dispose();
-			}
+            }
 		});
 		m_Frame.pack();
 		m_Frame.setVisible(true);

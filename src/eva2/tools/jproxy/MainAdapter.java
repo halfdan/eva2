@@ -8,24 +8,26 @@ package eva2.tools.jproxy;
  *            $Date: 2004/04/15 09:12:29 $
  *            $Author: ulmerh $
  */
-/*==========================================================================*
- * IMPORTS
- *==========================================================================*/
 
-/*==========================================================================*
-* INTERFACE DECLARATION
-*==========================================================================*/
 /**
  *
  */
 public interface MainAdapter {
-  public String getExecOutput(String command);
-  public void setBuf(String s);
-  public void killServer();
-  public void restartServer();
-  public String getBuf();
-  public RMIInvocationHandler getRMIHandler(Object obj);
-  public RMIThreadInvocationHandler getRMIThreadHandler(Object obj);
-  public void setRemoteThis (MainAdapter x);
+
+    public String getExecOutput(String command);
+
+    public void setBuf(String s);
+
+    public void killServer();
+
+    public void restartServer();
+
+    public String getBuf();
+
+    public RMIInvocationHandler getRMIHandler(Object obj);
+
+    public RMIThreadInvocationHandler getRMIThreadHandler(Object obj);
+
+    public void setRemoteThis(MainAdapter x);
 }
 

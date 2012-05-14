@@ -9,50 +9,46 @@ package eva2.tools;
  *            $Date: 2007-11-15 14:58:12 +0100 (Thu, 15 Nov 2007) $
  *            $Author: mkron $
  */
-/*==========================================================================*
- * IMPORTS
- *==========================================================================*/
 import java.io.*;
 import java.net.InetAddress;
 import java.util.Enumeration;
 import java.util.Properties;
 
-
 /**
  *
  */
 public class EVAHELP {
+
   private static long m_TimeStamp;
-  /**
-   *
-   */
 
   /**
    *
    */
+  /**
+   *
+   */
   public static String getmyRUP() {
-   String Out= new String();
+        String Out = new String();
    String HostName = "";
       try {
         HostName = InetAddress.getLocalHost().getHostName();
-      }
-      catch (Exception e) {
+        } catch (Exception e) {
         System.out.println("ERROR getting HostName EVAHELP " + e.getMessage());
       }
 
    try {
      BufferedReader in = null;
      Process pro = null;
-     String command = "rup "+HostName;
+            String command = "rup " + HostName;
      pro = Runtime.getRuntime().exec(command);
-     in = new  BufferedReader ( new InputStreamReader (pro.getInputStream()));
+            in = new BufferedReader(new InputStreamReader(pro.getInputStream()));
      String line = null;
-     while((line = in.readLine()) != null ) {
+            while ((line = in.readLine()) != null) {
        //System.out.println(line);
        Out = Out + line;
      }
    } catch (Exception e) {
-     System.out.println("Error in calling the command:"+e.getMessage());
+            System.out.println("Error in calling the command:" + e.getMessage());
    }
    return Out;
  }
@@ -63,17 +59,19 @@ public class EVAHELP {
   public static void setTimeStamp() {
     m_TimeStamp = System.currentTimeMillis();
   }
+
   /**
    *
    */
   public static long getTimeStamp() {
      return System.currentTimeMillis() - m_TimeStamp;
   }
+
   /**
    *
    */
   public static void returnForExit() {
-    BufferedReader in = new BufferedReader (new InputStreamReader(System.in));
+        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
     System.out.println("return for exit:");
     try {
        in.readLine();
@@ -81,6 +79,7 @@ public class EVAHELP {
       System.out.println(e.getMessage());
     }
   }
+
   /**
    *
    */
@@ -98,6 +97,7 @@ public class EVAHELP {
     }
     return sBuf.toString();
   }
+
   /**
    * @param longName The FQDN of a class
    * @return Returns the class Name without package.
@@ -110,6 +110,7 @@ public class EVAHELP {
     }
     return className; // now is shortName
   }
+
   /**
    *
    */
@@ -126,8 +127,8 @@ public class EVAHELP {
   }
   
   /**
-   * Log a String to a log-file indicated by the file name.
-   * If the file exists, the String is appended.
+     * Log a String to a log-file indicated by the file name. If the file
+     * exists, the String is appended.
    * 
    * @param msg
    * @param fileName
@@ -136,8 +137,7 @@ public class EVAHELP {
 	  final File logFile = new File(fileName);
 	  try {
 		  BufferedWriter bW = new BufferedWriter(
-                          new PrintWriter(new FileOutputStream(logFile, logFile.exists()))
-                  );
+                    new PrintWriter(new FileOutputStream(logFile, logFile.exists())));
 		  bW.write(msg);
 		  bW.close();
 	  } catch (IOException ex) {
@@ -146,8 +146,8 @@ public class EVAHELP {
   }
   
   /**
-   * Deletes the given file in the current directory.
-   * If the file does not exist nothing happens.
+     * Deletes the given file in the current directory. If the file does not
+     * exist nothing happens.
    * 
    * @param fileName The name of the log file
    */

@@ -9,9 +9,6 @@ package eva2.server.modules;
  *            $Date: 2007-12-04 14:22:52 +0100 (Tue, 04 Dec 2007) $
  *            $Author: mkron $
  */
-/*==========================================================================*
- * IMPORTS
- *==========================================================================*/
 import java.io.Serializable;
 import java.net.InetAddress;
 import java.util.Vector;
@@ -20,6 +17,8 @@ import eva2.server.go.InterfaceGOParameters;
 import eva2.server.go.InterfaceProcessor;
 import eva2.tools.jproxy.MainAdapterClient;
 import eva2.tools.jproxy.RemoteStateListener;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The module server expects a constructor with two arguments: String adapterName and MainAdapterClient client.
@@ -27,176 +26,183 @@ import eva2.tools.jproxy.RemoteStateListener;
  * 
  */
 abstract public class AbstractModuleAdapter implements ModuleAdapter, Serializable {
-  public static boolean TRACE = false;
-  private static int m_InstanceCounter;
-  protected int m_Instance;
-  protected String m_AdapterName;
-  protected InterfaceProcessor m_Processor;
-  protected String m_myHostName = "not defined";
-  protected boolean m_Connection = true;
-  protected ModuleAdapter m_RemoteThis = null;
-  protected boolean m_RMI = true;
-  protected MainAdapterClient m_MainAdapterClient; // connection to client
-  private Vector<RemoteStateListener> m_RemoteStateListeners;
 
-  protected AbstractModuleAdapter(MainAdapterClient Client) {
-    if (TRACE) System.out.println("AbstractModuleAdapter.AbstractModuleAdapter()");
-    m_InstanceCounter++;
-    m_Instance = m_InstanceCounter;
-    if (TRACE) System.out.println ("AbstractModuleAdapter Nr. "+m_InstanceCounter +" on EvAServer");
+    private static int instanceCounter;
+    protected int instanceNumber;
+    protected String adapterName;
+    protected InterfaceProcessor processor;
+    protected String hostName = "not defined";
+    protected boolean hasConnection = true;
+    protected ModuleAdapter remoteModuleAdapter = null;
+    protected boolean useRMI = true;
+    protected MainAdapterClient mainAdapterClient; // connection to client
+    private List<RemoteStateListener> remoteStateListeners;
 
-    if (Client != null) {
-		try {
-			m_myHostName = InetAddress.getLocalHost().getHostName();
-		} catch (Exception e) {
-			System.out.println("InetAddress.getLocalHost().getHostAddress() --> ERROR" + e.getMessage());
-		}
-    } else m_myHostName = "localhost";
-    
-    if ((Client==null) || Client.getHostName().equals(m_myHostName)) {
-        m_RMI = false;
-    } else {// we use RMI
-    	m_RMI = true;
+    protected AbstractModuleAdapter(MainAdapterClient client) {
+        instanceCounter++;
+        instanceNumber = instanceCounter;
+
+        if (client != null) {
+            try {
+                hostName = InetAddress.getLocalHost().getHostName();
+            } catch (Exception e) {
+                System.out.println("InetAddress.getLocalHost().getHostAddress() --> ERROR" + e.getMessage());
+            }
+        } else {
+            hostName = "localhost";
+        }
+
+        if ((client == null) || client.getHostName().equals(hostName)) {
+            useRMI = false;
+        } else {
+            /* we use RMI */
+            useRMI = true;
+        }
+        remoteStateListeners = new ArrayList<RemoteStateListener>();
     }
-    m_RemoteStateListeners = new Vector<RemoteStateListener>();
-  }
-  
-  /**
-   * From the interface RemoteStateListener. Added this method to make progress bar possible.
-   */
-  public void updateProgress(final int percent, String msg) {
-	  if (TRACE) System.out.println("AbstractModuleAdapter::updateProgress");
-	  for (RemoteStateListener listener : m_RemoteStateListeners) {
-		  listener.updateProgress(percent, msg);
-	  }
-  }
-  
-  /**
-   *
-   */
-  public String getAdapterName() {
-    return m_AdapterName;
-  }
-  /**
-   *
-   */
-  public void startOpt() {
-    if (TRACE) System.out.println("Module AbstractModuleAdapter on EvA-Server StartOpt called:" );
-    m_Processor.startOpt();
-  }
-  /**
-   *
-   */
-  public void restartOpt() {
-    if (TRACE) System.out.println("Module AbstractModuleAdapter on EvA-Server ReStartOpt called:" );
-    m_Processor.restartOpt();
-  }
-  /**
-   *
-   */
-  public void stopOpt() {
-    if (TRACE) System.out.println("Module AbstractModuleAdapter on EvA-Server StopOpt called:" );
-    m_Processor.stopOpt();	// This means user break
-  }
-  
-  public boolean hasPostProcessing() {
-	  return ((m_Processor instanceof Processor) && ((Processor)m_Processor).getGOParams().getPostProcessParams().isDoPostProcessing());
-  }
-  
-  public boolean startPostProcessing() {
-	  if (hasPostProcessing() && ((Processor)m_Processor).getGOParams().getPostProcessParams().isDoPostProcessing()) {
-		  ((Processor)m_Processor).performPostProcessing();
-		  return true;
-	  } else return false;
-  }
-  
-  public InterfaceGOParameters getGOParameters() {
-	  if ((m_Processor != null) && (m_Processor instanceof Processor)) {
-		  return ((Processor)m_Processor).getGOParams();
-	  } else return null;
-  }
-  
-  public void setGOParameters(InterfaceGOParameters goParams) {
-	  if ((m_Processor != null) && (m_Processor instanceof Processor)) {
-		  ((Processor)m_Processor).setGOParams(goParams);
-	  } 
-  }
-  
-//  public void loadGOParameters(String serParamsFile) {
-//	  if ((m_Processor != null) && (m_Processor instanceof Processor)) {
-//		  ((Processor)m_Processor).setGOParams(GOParameters.getInstance(serParamsFile, false));
-//	  }
-//  }
-  
-  public boolean isOptRunning() {
-	  if ((m_Processor != null) && (m_Processor instanceof Processor)) {
-		  return ((Processor)m_Processor).isOptRunning();
-	  } else return false;
-  }
-  
-  /**
-   *
-   */
-  public void runScript() {
 
-  }
-  /**
-   *
-   */
-  public void addRemoteStateListener(RemoteStateListener x) {
-    if (TRACE) System.out.println("module adapter on Server addRemoteStateListener called:" );
-    m_RemoteStateListeners.add(x);
-  }
-  /**
-   *
-   */
-  public void setConnection (boolean flag)  {
-    if (TRACE) System.out.println("module adapter on Server setConnection "+flag+" called:" );
-    m_Connection = flag;
-  }
-  
-  public boolean hasConnection() {
-	  return m_Connection;
-  }
-  /**
-   *
-   */
-  public void setRemoteThis (ModuleAdapter x) {
-  if (TRACE) System.out.println("module adapter on Server setRemoteThis called:" );
-    m_RemoteThis = x;
-  }
-  /**
-   *
-   */
-  public String getHostName () {
-    if (TRACE) System.out.println("module adapter on Server getHostName called:"+m_myHostName );
-    return m_myHostName;
-  }
-  /**
-   *
-   */
-  public void performedStop () {
-	  if (TRACE) System.out.println("AbstractModuleAdapter::performedStop");
-	  for (RemoteStateListener listener : m_RemoteStateListeners) {
-		  listener.performedStop();
-	  }
-//	  if (logPanel != null) logPanel.logMessage("Stopped optimization run");
-  }
+    /**
+     * From the interface RemoteStateListener. Added this method to make progress bar possible.
+     */
+    public void updateProgress(final int percent, String msg) {
+        for (RemoteStateListener listener : remoteStateListeners) {
+            listener.updateProgress(percent, msg);
+        }
+    }
 
-  public void performedStart(String infoString) {
-	  if (TRACE) System.out.println("AbstractModuleAdapter::performedStart");
-	  for (RemoteStateListener listener : m_RemoteStateListeners) {
-		  listener.performedStart(infoString);
-	  }
-//	  if (logPanel != null) logPanel.logMessage("Started optimization " + m_Processor.getInfoString());
-  }
+    /**
+     * Get the name of the current adapter.
+     * 
+     * @return The adapter name
+     */
+    public String getAdapterName() {
+        return adapterName;
+    }
 
-  public void performedRestart(String infoString) {
-	  if (TRACE) System.out.println("AbstractModuleAdapter::performedRestart");
-	  for (RemoteStateListener listener : m_RemoteStateListeners) {
-		  listener.performedRestart(infoString);
-	  }
-//	  if (logPanel != null) logPanel.logMessage("Restarted optimization run");
-  }
-  
+    /**
+     * Start optimization on processor.
+     */
+    public void startOpt() {
+        processor.startOpt();
+    }
+
+    /**
+     * Restart optimization on processor.
+     */
+    public void restartOpt() {
+        processor.restartOpt();
+    }
+
+    /**
+     * Stop optimization on processor.
+     */
+    public void stopOpt() {
+        // This means user break
+        processor.stopOpt();
+    }
+
+    /**
+     * Returns whether the current optimization provides post processing.
+     * 
+     * @return true if post processing is available
+     */
+    public boolean hasPostProcessing() {
+        return ((processor instanceof Processor) && ((Processor) processor).getGOParams().getPostProcessParams().isDoPostProcessing());
+    }
+
+    /**
+     * Starts post processing if available.
+     * 
+     * @return true if post processing was performed, false otherwise.
+     */
+    public boolean startPostProcessing() {
+        if (hasPostProcessing() && ((Processor) processor).getGOParams().getPostProcessParams().isDoPostProcessing()) {
+            ((Processor) processor).performPostProcessing();
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public InterfaceGOParameters getGOParameters() {
+        if ((processor != null) && (processor instanceof Processor)) {
+            return ((Processor) processor).getGOParams();
+        } else {
+            return null;
+        }
+    }
+
+    public void setGOParameters(InterfaceGOParameters goParams) {
+        if ((processor != null) && (processor instanceof Processor)) {
+            ((Processor) processor).setGOParams(goParams);
+        }
+    }
+
+    public boolean isOptRunning() {
+        if ((processor != null) && (processor instanceof Processor)) {
+            return ((Processor) processor).isOptRunning();
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Adds a remote state listener.
+     */
+    public void addRemoteStateListener(RemoteStateListener remoteListener) {
+        remoteStateListeners.add(remoteListener);
+    }
+
+    /**
+     *
+     */
+    public void setConnection(boolean flag) {
+        hasConnection = flag;
+    }
+
+    /**
+     * Returns whether the module has a connection.
+     * 
+     * @return true if the adapter has a connection.
+     */
+    public boolean hasConnection() {
+        return hasConnection;
+    }
+
+    /**
+     *
+     */
+    public void setRemoteThis(ModuleAdapter x) {
+        remoteModuleAdapter = x;
+    }
+
+    /**
+     * Returns the host name.
+     * 
+     * @return The host name
+     */
+    public String getHostName() {
+        return hostName;
+    }
+
+    /**
+     *
+     */
+    public void performedStop() {
+        for (RemoteStateListener listener : remoteStateListeners) {
+            listener.performedStop();
+        }
+    }
+
+    public void performedStart(String infoString) {
+        for (RemoteStateListener listener : remoteStateListeners) {
+            listener.performedStart(infoString);
+        }
+    }
+
+    public void performedRestart(String infoString) {
+        for (RemoteStateListener listener : remoteStateListeners) {
+            listener.performedRestart(infoString);
+        }
+    }
 }

@@ -889,31 +889,36 @@ public class BeanInspector {
 	 * @param target    The target object
 	 * @return String for the tooltip.
 	 */
-	public static String getToolTipText(String name, MethodDescriptor[] methods, Object target, boolean stripToolTipToFirstPoint, int toHTMLLen) {
-	    String result   = "";
-	    String tipName  = name + "TipText";
-	    for (int j = 0; j < methods.length; j++) {
-	        String mname    = methods[j].getDisplayName();
-	        Method meth     = methods[j].getMethod();
-	        if (mname.equals(tipName)) {
-	            if (meth.getReturnType().equals(String.class)) {
-	                try {
-	                    Object  args[]  = { };
-		                String  tempTip = (String)(meth.invoke(target, args));
-		                result = tempTip;
-		                if (stripToolTipToFirstPoint) {
-		                	int     ci      = tempTip.indexOf('.');
-		                	if (ci > 0) result = tempTip.substring(0, ci);
-		                }
-	                } catch (Exception ex) {
-	                }
-	                break;
-	            }
-	        }
-	    } // end for looking for tiptext
-	    if (toHTMLLen > 0) return StringTools.toHTML(result, toHTMLLen);
-	    else return result;
-	}
+    public static String getToolTipText(String name, MethodDescriptor[] methods, Object target, boolean stripToolTipToFirstPoint, int toHTMLLen) {
+        String result = "";
+        String tipName = name + "TipText";
+        for (int j = 0; j < methods.length; j++) {
+            String mname = methods[j].getDisplayName();
+            Method meth = methods[j].getMethod();
+            if (mname.equals(tipName)) {
+                if (meth.getReturnType().equals(String.class)) {
+                    try {
+                        Object args[] = {};
+                        String tempTip = (String) (meth.invoke(target, args));
+                        result = tempTip;
+                        if (stripToolTipToFirstPoint) {
+                            int ci = tempTip.indexOf('.');
+                            if (ci > 0) {
+                                result = tempTip.substring(0, ci);
+                            }
+                        }
+                    } catch (Exception ex) {
+                    }
+                    break;
+                }
+            }
+        } // end for looking for tiptext
+        if (toHTMLLen > 0) {
+            return StringTools.toHTML(result, toHTMLLen);
+        } else {
+            return result;
+        }
+    }
 
 	/** 
 	 * This method simply looks for an appropriate tool tip text
