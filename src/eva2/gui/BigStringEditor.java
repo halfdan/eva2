@@ -40,16 +40,46 @@ public class BigStringEditor implements PropertyEditor {
       m_finished=false;
       BigStringEditor editor = new BigStringEditor();
 
-      PropertyDialog frame = new PropertyDialog(editor,file, 50, 50);
+      PropertyDialog dialog = new PropertyDialog(editor,file, 50, 50);
       //frame.setSize(200, 200);
-      frame.addInternalFrameListener(new InternalFrameAdapter() {
+      dialog.addWindowListener(new WindowListener() {
 
-            @Override
-            public void internalFrameClosing(InternalFrameEvent e) {
-                super.internalFrameClosing(e);
-                m_finished = true;
+                @Override
+                public void windowOpened(WindowEvent e) {
+                    
+                }
+
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    
+                }
+
+                @Override
+                public void windowClosed(WindowEvent e) {                    
+                    m_finished = true;
+                }
+
+                @Override
+                public void windowIconified(WindowEvent e) {
+                    
+                }
+
+                @Override
+                public void windowDeiconified(WindowEvent e) {
+                    
+                }
+
+                @Override
+                public void windowActivated(WindowEvent e) {
+                    
+                }
+
+                @Override
+                public void windowDeactivated(WindowEvent e) {
+                    
+                }
             }
-        });
+        );
       while (m_finished==false) {
         try {Thread.sleep(1000);}
         catch (Exception e) {
@@ -181,30 +211,6 @@ public class BigStringEditor implements PropertyEditor {
   public void removePropertyChangeListener(PropertyChangeListener l) {
 	  if (m_Support == null) m_Support = new PropertyChangeSupport(this);
 	  m_Support.removePropertyChangeListener(l);
-  }
-
-  /**
-   *
-   */
-  public static void main (String[] args) {
-    try {
-      BigStringEditor editor = new BigStringEditor();
-
-      PropertyDialog frame = new PropertyDialog(editor, "test", 50, 50);
-      frame.setSize(200, 200);
-      frame.addInternalFrameListener(new InternalFrameAdapter() {
-
-            @Override
-            public void internalFrameClosing(InternalFrameEvent e) {
-                super.internalFrameClosing(e);
-                System.exit(0);
-            }
-        });
-//       editor.setValue(so);
-    } catch (Exception e) {
-        e.printStackTrace();
-        System.out.println(e.getMessage());
-    }
   }
 }
 
