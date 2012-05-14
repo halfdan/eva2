@@ -8,17 +8,15 @@ package eva2.tools.jproxy;
  *            $Date: 2004/04/15 09:12:30 $
  *            $Author: ulmerh $
  */
-/*==========================================================================*
- * IMPORTS
- *==========================================================================*/
 
 /**
  * This exception will be thrown when no
- * RMIServer con be found by the ComAdapter.
+ * RMIServer can be found by the ComAdapter.
  */
-public class NO_RMIServerAvailable extends Exception {
-  NO_RMIServerAvailable() {
-    printStackTrace();
-  }
+public final class RMIServerNotAvailableException extends Exception {
 
+    @Override
+    public String getMessage() {
+        return "There is no RMI Server available.";
+    }
 }

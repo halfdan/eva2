@@ -16,6 +16,8 @@ import  java.beans.*;
 import  java.awt.*;
 import  java.awt.event.*;
 import  javax.swing.*;
+import javax.swing.event.InternalFrameAdapter;
+import javax.swing.event.InternalFrameEvent;
 
 /*==========================================================================*
  * CLASS DECLARATION
@@ -40,11 +42,14 @@ public class BigStringEditor implements PropertyEditor {
 
       PropertyDialog frame = new PropertyDialog(editor,file, 50, 50);
       //frame.setSize(200, 200);
-      frame.addWindowListener(new WindowAdapter() {
-        public void windowClosing (WindowEvent e) {
-          m_finished=true;
-        }
-      });
+      frame.addInternalFrameListener(new InternalFrameAdapter() {
+
+            @Override
+            public void internalFrameClosing(InternalFrameEvent e) {
+                super.internalFrameClosing(e);
+                m_finished = true;
+            }
+        });
       while (m_finished==false) {
         try {Thread.sleep(1000);}
         catch (Exception e) {
@@ -187,11 +192,14 @@ public class BigStringEditor implements PropertyEditor {
 
       PropertyDialog frame = new PropertyDialog(editor, "test", 50, 50);
       frame.setSize(200, 200);
-      frame.addWindowListener(new WindowAdapter() {
-        public void windowClosing (WindowEvent e) {
-          System.exit(0);
-        }
-      });
+      frame.addInternalFrameListener(new InternalFrameAdapter() {
+
+            @Override
+            public void internalFrameClosing(InternalFrameEvent e) {
+                super.internalFrameClosing(e);
+                System.exit(0);
+            }
+        });
 //       editor.setValue(so);
     } catch (Exception e) {
         e.printStackTrace();

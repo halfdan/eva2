@@ -9,57 +9,48 @@ package eva2.gui;
  *            $Date: 2007-11-15 14:58:12 +0100 (Thu, 15 Nov 2007) $
  *            $Author: mkron $
  */
-/*==========================================================================*
- * IMPORTS
- *==========================================================================*/
 import eva2.EvAInfo;
 import eva2.server.go.tools.FileTools;
 import eva2.tools.BasicResourceLoader;
 import java.awt.BorderLayout;
-import java.awt.Frame;
 import java.awt.Point;
-import java.awt.Toolkit;
 import java.awt.event.*;
 import java.io.Serializable;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-/*==========================================================================*
- * CLASS DECLARATION
- *==========================================================================*/
+import javax.swing.event.InternalFrameAdapter;
+import javax.swing.event.InternalFrameEvent;
+
 /**
  *
  */
-public class JTextoutputFrame implements JTextoutputFrameInterface,
-ActionListener,
-Serializable {
-	private JMenuItem clearItem, saveItem;
-	public static boolean TRACE = false;
-	protected String m_Name ="undefined";
-	private transient JTextArea m_TextArea = null;
-//	private boolean m_firstprint = true;
-	private final JFrame frame;
-
-	JPopupMenu popup;
+public class JTextoutputFrame implements JTextoutputFrameInterface, ActionListener, Serializable {
+    private JMenuItem clearItem, saveItem;
+    public static boolean TRACE = false;
+    protected String frameTitle = "undefined";
+    private transient JTextArea textArea = null;
+    private final JInternalFrame frame;
+    private JPopupMenu popup;
 	/**
 	 *
 	 */
-	public JTextoutputFrame(String Title) {
+	public JTextoutputFrame(String title) {
 		if (TRACE) System.out.println("JTextoutputFrame Constructor");
-		m_Name = Title;
-		frame = new JEFrame(m_Name);
-		m_TextArea = null;
+		frameTitle = title;
+		frame = new JEFrame(frameTitle);
+		textArea = null;
 	}
 	/**
 	 *
 	 */
-	public void print(String Text) {
+	public void print(String text) {
 		//System.out.println("Print:"+Text);
-		if (m_TextArea == null) {
+		if (textArea == null) {
 			createFrame();
 		}
-		m_TextArea.append(Text);
-		m_TextArea.repaint();
+		textArea.append(text);
+		textArea.repaint();
 	}
 
 	public void println(String txt) {
@@ -70,9 +61,9 @@ Serializable {
 		if (frame.isVisible() != bShow) {
 			if (frame.isVisible()) {
 				frame.dispose();
-				m_TextArea.setText(null);
+				textArea.setText(null);
 			} else {
-				if (m_TextArea == null) createFrame();
+				if (textArea == null) createFrame();
 				else frame.setVisible(true);
 				frame.setEnabled(true);
 			}
@@ -84,26 +75,29 @@ Serializable {
 	 */
 	private void createFrame() {
 		if (TRACE) System.out.println("JTextoutputFrame createFrame");
-		m_TextArea = new JTextArea(10,80);
-		m_TextArea.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-		m_TextArea.setLineWrap(true);
-		m_TextArea.setWrapStyleWord(true);
-		m_TextArea.setEditable(false);
-		m_TextArea.setCaretPosition(0);
+		textArea = new JTextArea(10,80);
+		textArea.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+		textArea.setLineWrap(true);
+		textArea.setWrapStyleWord(true);
+		textArea.setEditable(false);
+		textArea.setCaretPosition(0);
 
 		BasicResourceLoader  loader  = BasicResourceLoader.instance();
 		byte[] bytes   = loader.getBytesFromResourceLocation(EvAInfo.iconLocation, true);
-		frame.setIconImage(Toolkit.getDefaultToolkit().createImage(bytes));
+		//frame.setIconImage(Toolkit.getDefaultToolkit().createImage(bytes));
 		 
-		frame.addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent e) {
-				frame.dispose();
+		frame.addInternalFrameListener(new InternalFrameAdapter() {
+
+            @Override
+            public void internalFrameClosing(InternalFrameEvent e) {
+                super.internalFrameClosing(e);
+                frame.dispose();
 				frame.setEnabled(false);
-			}
+            }
 		});
 		frame.getContentPane().setLayout(new BorderLayout());
 		//frame.getContentPane().add(new JScrollPane(m_TextArea), BorderLayout.CENTER);
-		final JScrollPane scrollpane = new JScrollPane(m_TextArea);
+		final JScrollPane scrollpane = new JScrollPane(textArea);
 		frame.getContentPane().add(scrollpane, BorderLayout.CENTER);
 		scrollpane.getViewport().addChangeListener(new ChangeListener() {
 			private int lastHeight;
@@ -122,23 +116,7 @@ Serializable {
 		frame.pack();
 		frame.setSize(800, 400);
 		frame.setVisible(true);
-		frame.setState(Frame.ICONIFIED);
-	}
-	
-	/**
-	 *output
-	 */
-	public static void main( String[] args ){
-		JTextoutputFrame test = new JTextoutputFrame("hi");
-		while (test.frame.isEnabled()) {
-			test.print("Test 12345");
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-		System.out.println("Done!");
+//		frame.setState(Frame.ICONIFIED);
 	}
 
 
@@ -158,7 +136,7 @@ Serializable {
 		//Add listener to components that can bring up popup menus.
 		MouseListener popupListener = new PopupListener(popup);
 //		frame.addMouseListener(popupListener);
-		m_TextArea.addMouseListener(popupListener);
+		textArea.addMouseListener(popupListener);
 //		menuBar.addMouseListener(popupListener);
 
 
@@ -167,9 +145,9 @@ Serializable {
 	public void actionPerformed(ActionEvent e) {
 		JMenuItem src = (JMenuItem)e.getSource();
 		if (src == clearItem) {
-			m_TextArea.setText(null);
+			textArea.setText(null);
 		} else if (src == saveItem) {
-			FileTools.saveObjectWithFileChooser(frame, m_TextArea.getText());
+			FileTools.saveObjectWithFileChooser(frame, textArea.getText());
 //			File outfile = FileTools.writeString("TextOutput.txt", m_TextArea.getText());
 		} else System.err.println("Unknown popup component (JTextoutputFrame)!");
 	}

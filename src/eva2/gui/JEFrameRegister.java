@@ -1,5 +1,7 @@
 package eva2.gui;
 import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JDesktopPane;
 /*
  * Title:        EvA2
  * Description:
@@ -12,80 +14,114 @@ import java.util.ArrayList;
  */
 
 
-public class JEFrameRegister {
-	private static ArrayList<JEFrame> JEFrameList;
+public final class JEFrameRegister {
+    /**
+     * Singleton instance.
+     */
+    private static JEFrameRegister instance = null;
 
-	static {
-		JEFrameList = new ArrayList<JEFrame>();
-	}
+    /**
+     * List of all frames maintained.
+     */
+    private List<JEFrame> frameList;
 
-	public static void register(JEFrame jf) {
-		if (!JEFrameList.contains(jf)) JEFrameList.add(jf);
-//		System.out.println("reg  " + jf.getTitle() + "/" + (jf.hashCode()) + ", list size: " + JEFrameList.size());
-	}
+    private JDesktopPane desktopPane;
 
-	public static void unregister(JEFrame jf) {
-		JEFrameList.remove(jf); // Plot windows produce double closing events, so ignore it
-//		if (!JEFrameList.remove(jf)) System.err.println("Warning: tried to unregister frame " + jf.getTitle() + " which was not registered! (JEFrameRegister)");
-//		System.out.println("unreg " + jf.getTitle() + "/" + jf.hashCode() + ", list size:" + JEFrameList.size());
-	}
+    private JEFrameRegister() {
+        this.frameList = new ArrayList<JEFrame>();
+    }
 
-	public static Object[] getFrameList() {
-		return JEFrameList.toArray();
-	}
+    public static JEFrameRegister getInstance() {
+        if (instance == null) {
+            instance = new JEFrameRegister();
+        }
+        return instance;
+    }
 
-	public static void setFocusToNext(JEFrame jf) {
-		int idx = JEFrameList.indexOf(jf);
-		idx = (idx + 1) % JEFrameList.size();
-		JEFrame toset =    ((JEFrame) JEFrameList.get(idx));
-		toset.setExtendedState(JEFrame.NORMAL);
-		toset.toFront();
-	}
+    public void setDesktopPane(JDesktopPane desktopPane) {
+        this.desktopPane = desktopPane;
+        if (!frameList.isEmpty()) {
+            for (JEFrame frame : frameList) {
+                this.desktopPane.add(frame);
+            }
+        }
+    }
 
-	/**
-	 * Return all prefixes which occur at least twice in the registered frame list.
-	 * @param prefLen
-	 * @return
-	 */
-	public static String[] getCommonPrefixes(int prefLen) {
-		ArrayList<String> prefixes = new ArrayList<String>();
-		ArrayList<Integer> count = new ArrayList<Integer>();
-		for (int i=0; i<JEFrameList.size(); i++) {
-			String title = JEFrameList.get(i).getTitle();
-			String titPref = title.substring(0, Math.min(prefLen, title.length()));
-			int earlierIndex = prefixes.indexOf(titPref);
-			if (earlierIndex<0) {
-				prefixes.add(titPref);
-				count.add(1);
-			} else count.set(earlierIndex, 1+count.get(earlierIndex));
-		}
-		for (int i=prefixes.size()-1; i>=0; i--) {
-			if (count.get(i)<=1) {
-				prefixes.remove(i);
-				count.remove(i);
-			}
-		}
-		return prefixes.toArray(new String[prefixes.size()]);
-	}
+    public void register(JEFrame jeFrame) {
+        if (!frameList.contains(jeFrame)) {
+            frameList.add(jeFrame);
 
-	/**
-	 * Close (dispose) all frames whose title starts with a given prefix.
-	 * 
-	 * @param prefix
-	 */
-	public static void closeAllByPrefix(String prefix) {
-		for (int i=0; i<JEFrameList.size(); i++) {
-			String title = JEFrameList.get(i).getTitle();
-			if (title.startsWith(prefix)) JEFrameList.get(i).dispose();
-		}
-	}
-	
-	/**
-	 * Close (dispose) all frames registered in this list.
-	 */
-	public static void closeAll() {
-		for (int i=0; i<JEFrameList.size(); i++) {
-			JEFrameList.get(i).dispose();
-		}
-	}
+            if (desktopPane != null) {
+                desktopPane.add(jeFrame);
+            }
+        }
+    }
+
+    public void unregister(JEFrame jeFrame) {
+        // Plot windows produce double closing events, so ignore it
+        frameList.remove(jeFrame);
+    }
+
+    public List<JEFrame> getFrameList() {
+        return frameList;
+    }
+
+    public void setFocusToNext(JEFrame jeFrame) {
+        int idx = frameList.indexOf(jeFrame);
+        idx = (idx + 1) % frameList.size();
+        JEFrame toset = ((JEFrame) frameList.get(idx));
+        toset.toFront();
+    }
+
+    /**
+     * Return all prefixes which occur at least twice in the registered frame list.
+     *
+     * @param prefLen Preferred length of prefixes
+     * @return List of prefixes
+     */
+    public String[] getCommonPrefixes(final int prefLen) {
+        List<String> prefixes = new ArrayList<String>();
+        List<Integer> count = new ArrayList<Integer>();
+        for (int i = 0; i < frameList.size(); i++) {
+            String title = frameList.get(i).getTitle();
+            String titPref = title.substring(0, Math.min(prefLen, title.length()));
+            int earlierIndex = prefixes.indexOf(titPref);
+            if (earlierIndex < 0) {
+                prefixes.add(titPref);
+                count.add(1);
+            } else {
+                count.set(earlierIndex, 1 + count.get(earlierIndex));
+            }
+        }
+        for (int i = prefixes.size() - 1; i >= 0; i--) {
+            if (count.get(i) <= 1) {
+                prefixes.remove(i);
+                count.remove(i);
+            }
+        }
+        return prefixes.toArray(new String[prefixes.size()]);
+    }
+
+    /**
+     * Close (dispose) all frames whose title starts with a given prefix.
+     *
+     * @param prefix The prefix
+     */
+    public void closeAllByPrefix(final String prefix) {
+        for (int i = 0; i < frameList.size(); i++) {
+            String title = frameList.get(i).getTitle();
+            if (title.startsWith(prefix)) {
+                frameList.get(i).dispose();
+            }
+        }
+    }
+
+    /**
+     * Close (dispose) all frames registered in this list.
+     */
+    public void closeAll() {
+        for (int i = 0; i < frameList.size(); i++) {
+            frameList.get(i).dispose();
+        }
+    }
 }

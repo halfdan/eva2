@@ -2,9 +2,8 @@ package eva2.tools;
 
 import java.awt.Component;
 
-import javax.swing.Icon;
-import javax.swing.JDialog;
-import javax.swing.JOptionPane;
+import java.awt.Toolkit;
+import javax.swing.*;
 
 /**
  * Some helper methods connected to the GUI.
@@ -17,7 +16,7 @@ public class ToolBoxGui {
 	/**
 	 * Create a modal dialog similar to JOptionPane.showInputDialog, with the difference that an initial
 	 * value can be set.
-	 * 
+	 *
 	 * @see JOptionPane
 	 * @param parent	the parent component
 	 * @param title		title of the dialog
@@ -28,7 +27,7 @@ public class ToolBoxGui {
 	public static String getInputPaneInitialVal(Component parent, String title, String message, String initialVal) {
 		return getInputPaneInitialVal(parent, title, message, initialVal, JOptionPane.QUESTION_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
 	}
-	
+
 	/**
 	 * Create a modal dialog similar to JOptionPane.showInputDialog, with the difference that an initial
 	 * value can be set.
@@ -50,11 +49,24 @@ public class ToolBoxGui {
 		jop.setInitialValue(initialVal); // this I expected to work next
 		jop.setInitialSelectionValue(initialVal); // this actually seems to work...
 		JDialog dialog = jop.createDialog(parent, title);
-	    dialog.show();
+	    dialog.setVisible(true);
 	    Object value = jop.getValue();
-	    if (value!=null && (value instanceof Integer) && ((Integer)value)==JOptionPane.OK_OPTION) {
-	    	String newStr=(String)jop.getInputValue();
-	    	return newStr;
-	    } else return null;
+	    if (value != null && (value instanceof Integer) && ((Integer) value) == JOptionPane.OK_OPTION) {
+            return (String) jop.getInputValue();
+        } else {
+            return null;
+        }
 	}
+
+    public static JButton createIconifiedButton(final String iconSrc, final String title, final boolean withTitle) {
+        JButton newButton;
+        byte[] bytes;
+        bytes = BasicResourceLoader.instance().getBytesFromResourceLocation(iconSrc, false);
+        if (bytes == null) {
+            newButton = new JButton(title);
+        } else {
+            newButton = new JButton(title, new ImageIcon(Toolkit.getDefaultToolkit().createImage(bytes)));
+        }
+        return newButton;
+    }
 }

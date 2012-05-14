@@ -23,15 +23,15 @@ import java.rmi.RemoteException;
  *
  */
 public class EvAComAdapter extends ComAdapter {
-	private LoggingPanel m_LogPanel;
+	private LoggingPanel loggingPanel;
 	private EvAMainAdapterImpl localMainAdapter;
 	private boolean runLocally = false;
 	
 	/**
 	 *
 	 */
-	public void setLogPanel(LoggingPanel OutputFrame) {
-		m_LogPanel = OutputFrame;
+	public void setLogPanel(LoggingPanel loggingPanel) {
+		this.loggingPanel = loggingPanel;
 	}
 	/**
 	 *
@@ -51,12 +51,14 @@ public class EvAComAdapter extends ComAdapter {
 	public ModuleAdapter getModuleAdapter(String selectedModuleName, InterfaceGOParameters goParams, String noGuiStatsFile) {
 		ModuleAdapter newModuleAdapter;
 		if ((m_RMIServer == null) && isRunLocally()) {
-			//ret = evaAdapter.getModuleAdapter(Modul, hostAdd, this.m_MainAdapterClient);
-			newModuleAdapter = getLocalMainAdapter().getModuleAdapter(selectedModuleName, true, getHostName(), goParams, noGuiStatsFile, null);
-		} else {
-			newModuleAdapter = ((RMIConnectionEvA)getConnection(getHostName())).getModuleAdapter(selectedModuleName);
-			if (newModuleAdapter == null) System.err.println("RMI Error for getting ModuleAdapterObject : " + selectedModuleName);
-		}
+            //ret = evaAdapter.getModuleAdapter(Modul, hostAdd, this.m_MainAdapterClient);
+            newModuleAdapter = getLocalMainAdapter().getModuleAdapter(selectedModuleName, true, getHostName(), goParams, noGuiStatsFile, null);
+        } else {
+            newModuleAdapter = ((RMIConnectionEvA) getConnection(getHostName())).getModuleAdapter(selectedModuleName);
+            if (newModuleAdapter == null) {
+                System.err.println("RMI Error for getting ModuleAdapterObject : " + selectedModuleName);
+            }
+        }
 		return newModuleAdapter;
 	}
 	
@@ -86,12 +88,12 @@ public class EvAComAdapter extends ComAdapter {
 			}
 			list = ((EvAMainAdapter)Connection.getMainAdapter()).getModuleNameList();
 		}
-		if (m_LogPanel != null)
-			m_LogPanel.logMessage("List of modules on server:");
+		if (loggingPanel != null)
+			loggingPanel.logMessage("List of modules on server:");
 		if (list != null)
 			for (int i = 0; i < list.length; i++) {
-				if ( (String) list[i] != null && m_LogPanel != null)
-					m_LogPanel.logMessage( (String) list[i]);
+				if ( (String) list[i] != null && loggingPanel != null)
+					loggingPanel.logMessage( (String) list[i]);
 			}
 		return list;
 	}

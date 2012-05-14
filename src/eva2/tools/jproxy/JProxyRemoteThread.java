@@ -8,24 +8,15 @@ package eva2.tools.jproxy;
  *            $Date: 2004/04/15 09:12:29 $
  *            $Author: ulmerh $
  */
-/*==========================================================================*
- * IMPORTS
- *==========================================================================*/
+import java.io.Serializable;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Proxy;
-import java.io.Serializable;
-import java.util.ArrayList;
 
-/*==========================================================================*
- * CLASS DECLARATION
- *==========================================================================*/
 /**
  *
  */
-public class JProxyRemoteThread implements InvocationHandler,
-        Serializable {
+public class JProxyRemoteThread implements InvocationHandler, Serializable {
   private static ComAdapter m_ComAdapter;
   private Object m_Object;
   private RMIThreadInvocationHandler m_RMIThreadHandler;
@@ -33,7 +24,7 @@ public class JProxyRemoteThread implements InvocationHandler,
   /**
    *
    */
-  public static Object newInstance(Serializable object, String host) throws NO_RMIServerAvailable {
+  public static Object newInstance(Serializable object, String host) throws RMIServerNotAvailableException {
     return Proxy.newProxyInstance(
             object.getClass().getClassLoader(),
             object.getClass().getInterfaces(),
@@ -43,7 +34,7 @@ public class JProxyRemoteThread implements InvocationHandler,
   /**
    *
    */
-  public static Object newInstance(Serializable object) throws NO_RMIServerAvailable {
+  public static Object newInstance(Serializable object) throws RMIServerNotAvailableException {
     return Proxy.newProxyInstance(
             object.getClass().getClassLoader(),
             object.getClass().getInterfaces(),
@@ -80,7 +71,7 @@ public class JProxyRemoteThread implements InvocationHandler,
   /**
    *
    */
-  private JProxyRemoteThread(Serializable object, String host) throws NO_RMIServerAvailable {
+  private JProxyRemoteThread(Serializable object, String host) throws RMIServerNotAvailableException {
     if (m_ComAdapter == null)
       m_ComAdapter = ComAdapter.getInstance();
     m_RMIThreadHandler = m_ComAdapter.getRMIThreadHandler(object, host);
@@ -89,7 +80,7 @@ public class JProxyRemoteThread implements InvocationHandler,
   /**
    *
    */
-  private JProxyRemoteThread(Serializable object) throws NO_RMIServerAvailable {
+  private JProxyRemoteThread(Serializable object) throws RMIServerNotAvailableException {
     if (m_ComAdapter == null)
       m_ComAdapter = ComAdapter.getInstance();
     m_RMIThreadHandler = m_ComAdapter.getRMIThreadHandler(object);

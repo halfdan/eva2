@@ -2,30 +2,29 @@ package eva2.server.modules;
 
 import eva2.tools.jproxy.MainAdapterClient;
 
-/** This the MC module adapter necessary to access this implementation
- * from the EvA top level.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 08.06.2004
- * Time: 21:00:48
- * To change this template use File | Settings | File Templates.
+/**
+ * This the MC module adapter necessary to access this implementation from the EvA top level.
  */
 public class MCModuleAdapter extends GenericModuleAdapter implements ModuleAdapter {
-    public static String          m_Name = "Monte_Carlo_Search";
 
-    /** Constructor of the Moduladapter
-     * @param AdapterName   The AdapterName
-     * @param Client        The client to serve
+    private static final String moduleName = "Monte_Carlo_Search";
+
+    /**
+     * Constructor of the ModuleAdapter.
+     *
+     * @param adapterName The AdapterName
+     * @param client The client to serve
      */
     public MCModuleAdapter(String adapterName, MainAdapterClient client) {
-        super (adapterName, "MC.html", client, MCParameters.getInstance(), true);
+        super(adapterName, "MC.html", client, MCParameters.getInstance(), true);
     }
 
-
-    /** This method returns the name of the ModulAdapters
+    /**
+     * This method returns the name of the ModulAdapters
+     *
      * @return The name
      */
     public static String getName() {
-        return m_Name;
+        return moduleName;
     }
 }

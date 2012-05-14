@@ -33,6 +33,7 @@ import eva2.server.go.problems.InterfaceOptimizationTarget;
 import eva2.server.go.tools.AbstractObjectEditor;
 import eva2.server.go.tools.GeneralGOEProperty;
 import eva2.tools.BasicResourceLoader;
+import java.awt.Color;
 
 
 /**
@@ -127,7 +128,6 @@ public class GenericOptimizationObjectivesEditor extends JPanel implements Prope
         p2.add(help, BorderLayout.NORTH);
         jp.add(p2, BorderLayout.EAST);
 	    GridBagConstraints gbConstraints = new GridBagConstraints();
-
         this.m_Editor.add(jp, BorderLayout.NORTH);
 
        this.updateEditor();

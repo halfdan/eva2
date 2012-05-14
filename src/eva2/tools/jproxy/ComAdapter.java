@@ -17,15 +17,10 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.Registry;
+import java.security.AccessControlException;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.StringTokenizer;
-
-import eva2.tools.Serializer;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.security.AccessControlException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

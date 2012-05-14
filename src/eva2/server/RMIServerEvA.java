@@ -36,7 +36,7 @@ public class RMIServerEvA extends RMIServer {
 						mainAdapterName + "_" + numberOfVM);
 			mainRemoteObject.setRemoteThis(mainRemoteObject);
 		} catch (Exception ex) {
-			logger.log(Level.WARNING, "Could not create main remote object!", ex);
+			LOGGER.log(Level.WARNING, "Could not create main remote object!", ex);
 		}
 	}
 }

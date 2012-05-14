@@ -27,29 +27,28 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
-/*==========================================================================*
-* CLASS DECLARATION
-*==========================================================================*/
 /**
  *
  */
 public class PropertySheetPanelStat extends JPanel implements Serializable {
+
   public final static boolean TRACE = false;
   private Object[] m_Values;
   private JCheckBoxFlag[] m_Views;
   private JLabel[] m_Labels;
   private boolean[] m_flag;
+
   /**
    * Creates the property sheet panel.
    */
   public PropertySheetPanelStat() {
     //    setBorder(BorderFactory.createLineBorder(Color.red));
-    setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
+        setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
   }
-  /** A support object for handling property change listeners */
+    /**
+     * A support object for handling property change listeners
+     */
   private PropertyChangeSupport m_support = new PropertyChangeSupport(this);
-
-
 
   public synchronized void setTarget(String[] names, boolean[] flag) {
     int componentOffset = 0;
@@ -60,8 +59,6 @@ public class PropertySheetPanelStat extends JPanel implements Serializable {
     setVisible(false);
 
     int rowHeight = 12;
-    JTextArea jt = new JTextArea();
-    JScrollPane js = null;
 
     m_Values = new Object[flag.length];
     m_Views = new JCheckBoxFlag[flag.length];
@@ -69,23 +66,25 @@ public class PropertySheetPanelStat extends JPanel implements Serializable {
 
     for (int i = 0; i < names.length; i++) {
       m_Labels[i] = new JLabel(names[i], SwingConstants.RIGHT);
-      m_Labels[i].setBorder(BorderFactory.createEmptyBorder(10,10,0,5));
+            m_Labels[i].setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 5));
       m_Views[i] = new JCheckBoxFlag(flag[i]);
       GridBagConstraints gbConstraints = new GridBagConstraints();
       gbConstraints.anchor = GridBagConstraints.EAST;
       gbConstraints.fill = GridBagConstraints.HORIZONTAL;
-      gbConstraints.gridy = i+componentOffset;     gbConstraints.gridx = 0;
+            gbConstraints.gridy = i + componentOffset;
+            gbConstraints.gridx = 0;
       gbLayout.setConstraints(m_Labels[i], gbConstraints);
       add(m_Labels[i]);
       JPanel newPanel = new JPanel();
-      newPanel.setBorder(BorderFactory.createEmptyBorder(10,5,0,10));
+            newPanel.setBorder(BorderFactory.createEmptyBorder(10, 5, 0, 10));
 
       newPanel.setLayout(new BorderLayout());
       newPanel.add(m_Views[i], BorderLayout.CENTER);
       gbConstraints = new GridBagConstraints();
       gbConstraints.anchor = GridBagConstraints.WEST;
       gbConstraints.fill = GridBagConstraints.BOTH;
-      gbConstraints.gridy = i+componentOffset;     gbConstraints.gridx = 1;
+            gbConstraints.gridy = i + componentOffset;
+            gbConstraints.gridx = 1;
       gbConstraints.weightx = 100;
       gbLayout.setConstraints(newPanel, gbConstraints);
       add(newPanel);
@@ -93,28 +92,32 @@ public class PropertySheetPanelStat extends JPanel implements Serializable {
     validate();
     setVisible(true);
   }
+
   /**
    *
    */
   public boolean[] getState() {
     boolean[] ret = new boolean[this.m_Views.length];
-    for (int i=0;i<ret.length;i++) {
+        for (int i = 0; i < ret.length; i++) {
       ret[i] = m_Views[i].isSelected();
     }
     return ret;
   }
-
 }
+
 /**
  *
  */
 class JCheckBoxFlag extends JCheckBox {
+
   private boolean m_Flag = true;
-  public JCheckBoxFlag (boolean flag) {
+
+    public JCheckBoxFlag(boolean flag) {
     super();
     m_Flag = flag;
-    addItemListener(new ItemListener () {
-        public void itemStateChanged (ItemEvent evt) {
+        addItemListener(new ItemListener() {
+
+            public void itemStateChanged(ItemEvent evt) {
           if (evt.getStateChange() == evt.SELECTED) {
             m_Flag = true;
           }
@@ -126,5 +129,3 @@ class JCheckBoxFlag extends JCheckBox {
 
   }
 }
-
-

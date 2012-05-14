@@ -150,7 +150,9 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
 	}
 	
 	public void maybeShowProxyPrinter() {
-		if (proxyPrinter != null) proxyPrinter.setShow(m_StatsParams.isShowTextOutput());
+		if (proxyPrinter != null) {
+            proxyPrinter.setShow(m_StatsParams.isShowTextOutput());
+        }
 	}
 	
 	protected void initPlots(PopulationInterface pop, List<InterfaceAdditionalPopulationInformer> informerList) {
