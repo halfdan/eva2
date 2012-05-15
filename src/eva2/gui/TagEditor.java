@@ -9,9 +9,6 @@ package eva2.gui;
  *            $Date: 2006-12-18 16:32:23 +0100 (Mon, 18 Dec 2006) $
  *            $Author: marcekro $
  */
-/*==========================================================================*
- * IMPORTS
- *==========================================================================*/
 
 import java.awt.BorderLayout;
 import java.awt.Toolkit;
@@ -26,9 +23,6 @@ import eva2.EvAInfo;
 import eva2.tools.BasicResourceLoader;
 import eva2.tools.SelectedTag;
 import eva2.tools.Tag;
-/*==========================================================================*
-* CLASS DECLARATION
-*==========================================================================*/
 /**
  *
  */

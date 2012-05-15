@@ -56,9 +56,9 @@ public class ExtDesktopManager extends DefaultDesktopManager {
         super.closeFrame(internalFrame);
         int index = ((Integer) internalFrame.getClientProperty(INDEX)).intValue() + WINDOW_LIST_START - 1;
         int i;
-        desktop.m_mnuWindow.remove(index);
-        for (i = index; i < Math.min(WINDOW_LIST_START + 9, desktop.m_mnuWindow.getItemCount()); i++) {
-            JMenuItem m = desktop.m_mnuWindow.getItem(i);
+        desktop.getWindowMenu().remove(index);
+        for (i = index; i < Math.min(WINDOW_LIST_START + 9, desktop.getWindowMenu().getItemCount()); i++) {
+            JMenuItem m = desktop.getWindowMenu().getItem(i);
             JInternalFrame frame = (JInternalFrame) m.getClientProperty(FRAME);
             frame.putClientProperty(INDEX, new Integer(((Integer) frame.getClientProperty(INDEX)).intValue() - 1));
             int winIndex = i - WINDOW_LIST_START + 1;

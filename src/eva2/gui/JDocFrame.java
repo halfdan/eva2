@@ -9,13 +9,10 @@ package eva2.gui;
  *            $Date: 2006-01-18 11:02:22 +0100 (Wed, 18 Jan 2006) $
  *            $Author: streiche $
  */
-/*==========================================================================*
- * IMPORTS
- *==========================================================================*/
+import java.io.File;
 import javax.swing.JInternalFrame;
 import javax.swing.JMenu;
 import javax.swing.JToolBar;
-import java.io.File;
 /**
  *
  */

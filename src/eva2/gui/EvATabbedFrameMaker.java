@@ -62,7 +62,7 @@ public class EvATabbedFrameMaker implements Serializable, PanelMaker, InterfaceN
 
         tabbedPane = new JTabbedPane();
         tabbedPane.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
-        //tabbedPane.setUI(new eva2.gui.utils.CustomTabbedPaneUI());
+        tabbedPane.setUI(new eva2.gui.utils.CustomTabbedPaneUI());
         tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 
         

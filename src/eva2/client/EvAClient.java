@@ -1,21 +1,20 @@
 package eva2.client;
 
 /*
- * Title: EvA2 
+ * Title: EvA2
  * Description: The main client class of the EvA framework.
- * Copyright: Copyright (c) 2008 
+ * Copyright: Copyright (c) 2008
  * Company: University of Tuebingen, Computer
  * Architecture 
  * 
  * @author Holger Ulmer, Felix Streichert, Hannes Planatscher
- * @version: $Revision: 322 $ $Date: 2007-12-11 17:24:07 +0100 (Tue, 11 Dec 2007)$ 
+ * @version: $Revision: 322 $ $Date: 2007-12-11 17:24:07 +0100 (Tue, 11 Dec 2007)$
  * $Author: mkron $
  */
 import eva2.EvAInfo;
 import eva2.gui.*;
 import eva2.server.EvAServer;
 import eva2.server.go.InterfaceGOParameters;
-import eva2.server.go.strategies.GradientDescentAlgorithm;
 import eva2.server.modules.AbstractModuleAdapter;
 import eva2.server.modules.GOParameters;
 import eva2.server.modules.GenericModuleAdapter;
@@ -23,11 +22,14 @@ import eva2.server.modules.ModuleAdapter;
 import eva2.server.stat.AbstractStatistics;
 import eva2.server.stat.InterfaceStatisticsListener;
 import eva2.server.stat.InterfaceStatisticsParameter;
-import eva2.tools.*;
+import eva2.tools.BasicResourceLoader;
+import eva2.tools.EVAERROR;
+import eva2.tools.ReflectPackage;
+import eva2.tools.StringTools;
 import eva2.tools.jproxy.RemoteStateListener;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.*;
+import java.io.Serializable;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,9 +51,10 @@ public class EvAClient implements RemoteStateListener, Serializable {
      * Generated serial version identifier.
      */
     private static final long serialVersionUID = 8232856334379977970L;
-    private final int splashScreenTime = 1500;
+    private final int splashScreenTime = 2500;
     private final int maxWindowMenuLength = 30;
     private boolean clientInited = false;
+    private JExtDesktopPaneToolBar desktopToolBar;
     private JDesktopPane desktopPane;
     private JFrame mainFrame;
     private JPanel configurationPane;
@@ -60,10 +63,9 @@ public class EvAClient implements RemoteStateListener, Serializable {
     
     private EvAComAdapter comAdapter;
     private transient JMenuBar menuBar;
-    private transient JExtMenu menuAbout;
+    private transient JExtMenu menuHelp;
     private transient JExtMenu menuSelHosts;
     private transient JExtMenu menuModule;
-    private transient JExtMenu menuWindow;
     private transient JExtMenu menuOptions;
     private transient JProgressBar progressBar;
     
@@ -379,18 +381,35 @@ public class EvAClient implements RemoteStateListener, Serializable {
             
             /* Set Look and Feel */
             try {
-                //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             } catch (Exception ex) {
                 LOGGER.log(Level.INFO, "Could not set Look&Feel", ex);
             }
-            mainFrame = new JFrame(EvAInfo.productName + " Workbench");
+            
+            /* Create main frame with GridBagLayout */
+            mainFrame = new JFrame(EvAInfo.productName);
             mainFrame.setLayout(new GridBagLayout());
             mainFrame.setMinimumSize(new Dimension(800, 600));
-            desktopPane = new JExtDesktopPane();
-            
+
+            /* Creates the desktopPane for Plot/Text Output */
+            desktopPane = new JExtDesktopPane();            
             JEFrameRegister.getInstance().setDesktopPane(desktopPane);
-            horizontalSplit = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true);
+            /* Creates desktopPane ToolBar to show tiling buttons */
+            desktopToolBar = new JExtDesktopPaneToolBar((JExtDesktopPane) desktopPane);
             
+            /* Pane to hold ToolBar + DesktopPane */
+            JPanel desktopPanel = new JPanel(new GridBagLayout());
+            GridBagConstraints desktopConst = new GridBagConstraints();
+            desktopConst.gridx = 0;
+            desktopConst.gridy = 0;
+            desktopConst.fill = GridBagConstraints.HORIZONTAL;
+            desktopConst.weightx = 1.0;
+            desktopPanel.add(desktopToolBar, desktopConst);
+            desktopConst.gridy = 1;
+            desktopConst.fill = GridBagConstraints.BOTH;
+            desktopConst.weighty = 1.0;
+            desktopPanel.add(desktopPane, desktopConst);
+                        
             BasicResourceLoader loader = BasicResourceLoader.instance();
             byte[] bytes = loader.getBytesFromResourceLocation(EvAInfo.iconLocation, true);
             // TODO: use setIconImages (for better support of multiple icons when changing programs etc.)
@@ -428,10 +447,14 @@ public class EvAClient implements RemoteStateListener, Serializable {
             gbConstraints.gridheight = GridBagConstraints.RELATIVE;
             mainFrame.add(configurationPane, gbConstraints);
             
-            /* SplitPane for desktopPane and loggingPanel */
-            horizontalSplit.setTopComponent(desktopPane);
+            /* SplitPane for desktopPanel and loggingPanel */
+            horizontalSplit = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true);
+            horizontalSplit.setTopComponent(desktopPanel);
             horizontalSplit.setBottomComponent(logPanel);
-            horizontalSplit.setDividerLocation(0.25);            
+            horizontalSplit.setDividerLocation(0.25);  
+            horizontalSplit.setDividerSize(8);            
+            horizontalSplit.setOneTouchExpandable(true);
+            horizontalSplit.setResizeWeight(1.0);
             horizontalSplit.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
             horizontalSplit.setContinuousLayout(true);
             /* Add horizontal split pane at 1,1 */
@@ -682,7 +705,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
             }
         };
 
-        actAbout = new ExtAction("&About...", "Product Information",
+        actAbout = new ExtAction("&About", "Product Information",
                 KeyStroke.getKeyStroke(KeyEvent.VK_A, Event.CTRL_MASK)) {
 
             @Override
@@ -691,7 +714,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
                 showAboutDialog();
             }
         };
-        actLicense = new ExtAction("&License...", "View License",
+        actLicense = new ExtAction("&License", "View License",
                 KeyStroke.getKeyStroke(KeyEvent.VK_L, Event.CTRL_MASK)) {
 
             @Override
@@ -774,75 +797,6 @@ public class EvAClient implements RemoteStateListener, Serializable {
         menuModule = new JExtMenu("&Module");
         menuModule.add(actModuleLoad);
 
-
-        menuWindow = new JExtMenu("&Window");
-        menuWindow.addMenuListener(new MenuListener() {
-
-            @Override
-            public void menuSelected(final MenuEvent event) {
-                menuWindow.removeAll();
-                JExtMenu curMenu = menuWindow;
-                List<JEFrame> frameList = JEFrameRegister.getInstance().getFrameList();
-                int frameIndex = 1;
-                for (JEFrame frame : frameList) {
-
-                    JMenuItem act = new JMenuItem(frameIndex + ". " + frame.getTitle());
-                    final JInternalFrame selectedFrame = frame;
-
-                    act.addActionListener(new ActionListener() {
-
-                        @Override
-                        public void actionPerformed(final ActionEvent event) {
-                            if (!selectedFrame.isFocusOwner()) {
-                                //selectedFrame..setExtendedState(JFrame.NORMAL);
-                                selectedFrame.setVisible(false);
-                                // it seems to be quite a fuss to bring something to the front and actually mean it...
-                                selectedFrame.setVisible(true);
-                                // this seems useless
-                                selectedFrame.toFront();
-                                // this seems useless too
-                                selectedFrame.requestFocus();
-                            }
-                        }
-                    });
-                    
-                    if (curMenu.getItemCount() >= maxWindowMenuLength) {
-                        JExtMenu subMenu = new JExtMenu("&More...");
-                        curMenu.add(new JSeparator());
-                        curMenu.add(subMenu);
-                        curMenu = subMenu;
-                    }
-                    curMenu.add(act);
-                    
-                    /* Next frame index */
-                    frameIndex++;
-                }
-                String[] commonPrefixes = JEFrameRegister.getInstance().getCommonPrefixes(10);
-                if (commonPrefixes.length > 0) {
-                    menuWindow.add(new JSeparator());
-                }
-                for (int i = 0; i < commonPrefixes.length; i++) {
-                    final String prefix = commonPrefixes[i];
-                    JMenuItem act = new JMenuItem("Close all of " + prefix + "...");
-                    act.addActionListener(new ActionListener() {
-
-                        @Override
-                        public void actionPerformed(final ActionEvent event) {
-                            JEFrameRegister.getInstance().closeAllByPrefix(prefix);
-                        }
-                    });
-                    menuWindow.add(act);
-                }
-
-            }
-
-            public void menuCanceled(MenuEvent e) {
-            }
-
-            public void menuDeselected(MenuEvent e) {
-            }
-        });
-
         menuSelHosts = new JExtMenu("&Select Hosts");
         menuSelHosts.setToolTipText("Select a host for the server application");
         menuSelHosts.add(actHost);
@@ -851,9 +805,9 @@ public class EvAClient implements RemoteStateListener, Serializable {
         menuSelHosts.add(actKillHost);
         menuSelHosts.add(actKillAllHosts);
 
-        menuAbout = new JExtMenu("&About");
-        menuAbout.add(actAbout);
-        menuAbout.add(actLicense);
+        menuHelp = new JExtMenu("&Help");
+        menuHelp.add(actAbout);
+        menuHelp.add(actLicense);
 
         menuOptions = new JExtMenu("&Options");
         menuOptions.add(menuSelHosts);
@@ -864,11 +818,8 @@ public class EvAClient implements RemoteStateListener, Serializable {
         }
 
         menuBar.add(menuOptions);
-        menuBar.add(menuWindow);
-        menuBar.add(menuAbout);
-        
         menuBar.add(((JExtDesktopPane) desktopPane).getWindowMenu());
-
+        menuBar.add(menuHelp);
     }
 
 
@@ -897,9 +848,9 @@ public class EvAClient implements RemoteStateListener, Serializable {
             comAdapter.setRunLocally(false);
         }
         if (selectedModule == null) { // show a dialog and ask for a module
-            String[] ModuleNameList = comAdapter.getModuleNameList();
-            if (ModuleNameList == null) {
-                JOptionPane.showMessageDialog(configurationPane, "No modules available on " + comAdapter.getHostName(), EvAInfo.infoTitle, 1);
+            String[] moduleNameList = comAdapter.getModuleNameList();
+            if (moduleNameList == null) {
+                JOptionPane.showMessageDialog(mainFrame, "No modules available on " + comAdapter.getHostName(), EvAInfo.infoTitle, 1);
             } else {
                 String lastModule = null;
                 
@@ -911,16 +862,16 @@ public class EvAClient implements RemoteStateListener, Serializable {
                 }
                 
                 if (lastModule == null) {
-                    lastModule = ModuleNameList[0];
+                    lastModule = moduleNameList[0];
                     LOGGER.log(Level.INFO, "Defaulting to module: {0}", lastModule);
                 }
                 
-                selectedModule = (String) JOptionPane.showInputDialog(configurationPane,
+                selectedModule = (String) JOptionPane.showInputDialog(mainFrame,
                         "Which module do you want \n to load on host: " + comAdapter.getHostName() + " ?",
                         "Load optimization module on host",
                         JOptionPane.QUESTION_MESSAGE,
                         null,
-                        ModuleNameList,
+                        moduleNameList,
                         lastModule);
             }
         }
@@ -1028,13 +979,21 @@ public class EvAClient implements RemoteStateListener, Serializable {
                     configurationPane.setVisible(false);
                     configurationPane.removeAll();
 
-                    JComponent tree = null;
+                    GridBagConstraints gbConstraints = new GridBagConstraints();
+                    
+                    /* ToDo: Find a way to properly add the TreeView to the GOPanel */
                     if (withTreeView && (newModuleAdapter instanceof AbstractModuleAdapter)) {
+                        JComponent tree = null;
                         tree = getEvATreeView(frameMaker.getGOPanel(), "GOParameters", ((AbstractModuleAdapter) newModuleAdapter).getGOParameters());
-                        configurationPane.add(tree, BorderLayout.LINE_START);
+                        gbConstraints.gridx = 0;
+                        gbConstraints.gridy = 0;
+                        gbConstraints.fill = GridBagConstraints.BOTH;
+                        gbConstraints.weightx = 1.0;
+                        gbConstraints.weighty = 1.0;
+                        configurationPane.add(tree, gbConstraints);
                     }
                     
-                    GridBagConstraints gbConstraints = new GridBagConstraints();
+                    
                     gbConstraints.weightx = 1.0;
                     gbConstraints.weighty = 0.0;
                     gbConstraints.gridx = 0;
@@ -1048,7 +1007,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
                     gbConstraints2.gridx = 0;
                     gbConstraints2.gridy = 0;                    
                     gbConstraints2.fill = GridBagConstraints.VERTICAL;                    
-                    gbConstraints2.gridheight = GridBagConstraints.REMAINDER;
+                    //gbConstraints2.gridheight = GridBagConstraints.REMAINDER;
                     gbConstraints2.weighty = 1.0;                    
                     configurationPane.add(moduleContainer, gbConstraints2);
                     configurationPane.validate();
@@ -1126,20 +1085,10 @@ public class EvAClient implements RemoteStateListener, Serializable {
     }
 
     private void showAboutDialog() {
-        StringBuilder aboutMessage = new StringBuilder();
-        aboutMessage.append(EvAInfo.productName);
-        aboutMessage.append(" - ");
-        aboutMessage.append(EvAInfo.productLongName);
-        aboutMessage.append("\nUniversity of T\u00FCbingen, T\u00FCbingen, Germany\nChair for Cognitive Systems\n");
-        aboutMessage.append("Dr. M. Kronfeld, H. Planatscher, M. de Paly, Dr. A. Dr\u00E4ger,\n");
-        aboutMessage.append("Dr. F. Streichert, Dr. H. Ulmer and Prof. Dr. A. Zell \nCoypright \u00A9 ");
-        aboutMessage.append(EvAInfo.copyrightYear);
-        aboutMessage.append("\nVersion ");
-        aboutMessage.append(EvAInfo.getVersion());
-        aboutMessage.append("\nSee: ");
-        aboutMessage.append(EvAInfo.url);
-        
-        JOptionPane.showMessageDialog(configurationPane, aboutMessage, EvAInfo.infoTitle, 1);
+        AboutDialog aboutDialog = new AboutDialog(mainFrame);
+        aboutDialog.setLocationRelativeTo(mainFrame);
+        aboutDialog.setVisible(true);
+        aboutDialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
     }
 
     private void showLicense() {
@@ -1258,7 +1207,7 @@ final class SplashScreen extends Frame {
         JWindow splashWindow = new JWindow(this);
         BasicResourceLoader loader = BasicResourceLoader.instance();
         byte[] bytes = loader.getBytesFromResourceLocation(imgLocation, true);
-        ImageIcon ii = new ImageIcon(Toolkit.getDefaultToolkit().createImage(bytes));        
+        ImageIcon ii = new ImageIcon(Toolkit.getDefaultToolkit().createImage(bytes));
         JLabel splashLabel = new JLabel(ii);
         
         splashWindow.add(splashLabel);

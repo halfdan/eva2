@@ -1,14 +1,10 @@
 package eva2.gui;
 /*
- * Title:        EvA2
- * Description:
- * Copyright:    Copyright (c) 2003
- * Company:      University of Tuebingen, Computer Architecture
- * @author Holger Ulmer, Felix Streichert, Hannes Planatscher
- * @version:  $Revision: 255 $
- *            $Date: 2007-11-15 14:58:12 +0100 (Thu, 15 Nov 2007) $
- *            $Author: mkron $
+ * Title: EvA2 Description: Copyright: Copyright (c) 2003 Company: University of Tuebingen, Computer
+ * Architecture @author Holger Ulmer, Felix Streichert, Hannes Planatscher @version: $Revision: 255
+ * $ $Date: 2007-11-15 14:58:12 +0100 (Thu, 15 Nov 2007) $ $Author: mkron $
  */
+
 import eva2.EvAInfo;
 import eva2.server.go.tools.FileTools;
 import eva2.tools.BasicResourceLoader;
@@ -26,156 +22,153 @@ import javax.swing.event.InternalFrameEvent;
  *
  */
 public class JTextoutputFrame implements JTextoutputFrameInterface, ActionListener, Serializable {
+
     private JMenuItem clearItem, saveItem;
-    public static boolean TRACE = false;
     protected String frameTitle = "undefined";
     private transient JTextArea textArea = null;
     private final JInternalFrame frame;
     private JPopupMenu popup;
-	/**
-	 *
-	 */
-	public JTextoutputFrame(String title) {
-		if (TRACE) System.out.println("JTextoutputFrame Constructor");
-		frameTitle = title;
-		frame = new JEFrame(frameTitle);
-		textArea = null;
-	}
-	/**
-	 *
-	 */
-	public void print(String text) {
-		//System.out.println("Print:"+Text);
-		if (textArea == null) {
-			createFrame();
-		}
-		textArea.append(text);
-		textArea.repaint();
-	}
 
-	public void println(String txt) {
-		print(txt+'\n');
-	}
+    /**
+     *
+     */
+    public JTextoutputFrame(String title) {
+        frameTitle = title;
+        frame = new JEFrame(frameTitle);
+        textArea = null;
+    }
 
-	public void setShow(boolean bShow) {
-		if (frame.isVisible() != bShow) {
-			if (frame.isVisible()) {
-				frame.dispose();
-				textArea.setText(null);
-			} else {
-				if (textArea == null) createFrame();
-				else frame.setVisible(true);
-				frame.setEnabled(true);
-			}
-		}
-	}
+    /**
+     *
+     */
+    public void print(String text) {
+        if (textArea == null) {
+            createFrame();
+        }
+        textArea.append(text);
+        textArea.repaint();
+    }
 
-	/**
-	 *
-	 */
-	private void createFrame() {
-		if (TRACE) System.out.println("JTextoutputFrame createFrame");
-		textArea = new JTextArea(10,80);
-		textArea.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-		textArea.setLineWrap(true);
-		textArea.setWrapStyleWord(true);
-		textArea.setEditable(false);
-		textArea.setCaretPosition(0);
+    public void println(String txt) {
+        print(txt + '\n');
+    }
 
-		BasicResourceLoader  loader  = BasicResourceLoader.instance();
-		byte[] bytes   = loader.getBytesFromResourceLocation(EvAInfo.iconLocation, true);
-		//frame.setIconImage(Toolkit.getDefaultToolkit().createImage(bytes));
-		 
-		frame.addInternalFrameListener(new InternalFrameAdapter() {
+    public void setShow(boolean bShow) {
+        if (frame.isVisible() != bShow) {
+            if (frame.isVisible()) {
+                frame.dispose();
+                textArea.setText(null);
+            } else {
+                if (textArea == null) {
+                    createFrame();
+                } else {
+                    frame.setVisible(true);
+                }
+                frame.setEnabled(true);
+            }
+        }
+    }
+
+    /**
+     *
+     */
+    private void createFrame() {
+        textArea = new JTextArea(10, 80);
+        textArea.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        textArea.setLineWrap(true);
+        textArea.setWrapStyleWord(true);
+        textArea.setEditable(false);
+        textArea.setCaretPosition(0);
+
+        BasicResourceLoader loader = BasicResourceLoader.instance();
+        byte[] bytes = loader.getBytesFromResourceLocation(EvAInfo.iconLocation, true);
+
+        frame.addInternalFrameListener(new InternalFrameAdapter() {
 
             @Override
-            public void internalFrameClosing(InternalFrameEvent e) {
-                super.internalFrameClosing(e);
+            public void internalFrameClosing(final InternalFrameEvent event) {
+                super.internalFrameClosing(event);
                 frame.dispose();
-				frame.setEnabled(false);
+                frame.setEnabled(false);
             }
-		});
-		frame.getContentPane().setLayout(new BorderLayout());
-		//frame.getContentPane().add(new JScrollPane(m_TextArea), BorderLayout.CENTER);
-		final JScrollPane scrollpane = new JScrollPane(textArea);
-		frame.getContentPane().add(scrollpane, BorderLayout.CENTER);
-		scrollpane.getViewport().addChangeListener(new ChangeListener() {
-			private int lastHeight;
-			//
-			public void stateChanged(ChangeEvent e) {
-				JViewport viewport = (JViewport)e.getSource();
-				int Height = viewport.getViewSize().height;
-				if (Height != lastHeight) {
-					lastHeight = Height;
-					int x = Height - viewport.getExtentSize().height;
-					viewport.setViewPosition(new Point(0, x));
-				}
-			}
-		});
-		makePopupMenu();
-		frame.pack();
-		frame.setSize(800, 400);
-		frame.setVisible(true);
-//		frame.setState(Frame.ICONIFIED);
-	}
+        });
+        frame.getContentPane().setLayout(new BorderLayout());
+        final JScrollPane scrollpane = new JScrollPane(textArea);
+        frame.getContentPane().add(scrollpane, BorderLayout.CENTER);
+        scrollpane.getViewport().addChangeListener(new ChangeListener() {
 
+            private int lastHeight;
+            //
 
-	void makePopupMenu() {
-		//Create the popup menu.
-		popup = new JPopupMenu();
-		clearItem = new JMenuItem("Clear");
-		clearItem.addActionListener(this);
-		popup.add(clearItem);
-		saveItem = new JMenuItem("Save as...");
-		saveItem.addActionListener(this);
-		popup.add(saveItem);
-//		menuItem = new JMenuItem("Refine Multiruns");
-//		menuItem.addActionListener(this);
-//		popup.add(menuItem);
+            public void stateChanged(ChangeEvent e) {
+                JViewport viewport = (JViewport) e.getSource();
+                int Height = viewport.getViewSize().height;
+                if (Height != lastHeight) {
+                    lastHeight = Height;
+                    int x = Height - viewport.getExtentSize().height;
+                    viewport.setViewPosition(new Point(0, x));
+                }
+            }
+        });
+        makePopupMenu();
+        frame.pack();
+        frame.setSize(800, 400);
+        frame.setVisible(true);
+    }
 
-		//Add listener to components that can bring up popup menus.
-		MouseListener popupListener = new PopupListener(popup);
-//		frame.addMouseListener(popupListener);
-		textArea.addMouseListener(popupListener);
-//		menuBar.addMouseListener(popupListener);
+    void makePopupMenu() {
+        //Create the popup menu.
+        popup = new JPopupMenu();
+        clearItem = new JMenuItem("Clear");
+        clearItem.addActionListener(this);
+        popup.add(clearItem);
+        saveItem = new JMenuItem("Save as...");
+        saveItem.addActionListener(this);
+        popup.add(saveItem);
 
+        //Add listener to components that can bring up popup menus.
+        MouseListener popupListener = new PopupListener(popup);
+        textArea.addMouseListener(popupListener);
+    }
 
-	}
-
-	public void actionPerformed(ActionEvent e) {
-		JMenuItem src = (JMenuItem)e.getSource();
-		if (src == clearItem) {
-			textArea.setText(null);
-		} else if (src == saveItem) {
-			FileTools.saveObjectWithFileChooser(frame, textArea.getText());
+    public void actionPerformed(ActionEvent e) {
+        JMenuItem src = (JMenuItem) e.getSource();
+        if (src == clearItem) {
+            textArea.setText(null);
+        } else if (src == saveItem) {
+            FileTools.saveObjectWithFileChooser(frame, textArea.getText());
 //			File outfile = FileTools.writeString("TextOutput.txt", m_TextArea.getText());
-		} else System.err.println("Unknown popup component (JTextoutputFrame)!");
-	}
+        } else {
+            System.err.println("Unknown popup component (JTextoutputFrame)!");
+        }
+    }
 }
 
 /**
  * A popup listener opening a popup menu on right clicks.
- * 
+ *
  * @author mkron
  */
 class PopupListener extends MouseAdapter {
-	JPopupMenu popup;
 
-	public PopupListener(JPopupMenu pm) {
-		popup = pm;
-	}
-	public void mousePressed(MouseEvent e) {
-		maybeShowPopup(e);
-	}
+    JPopupMenu popup;
 
-	public void mouseReleased(MouseEvent e) {
-		maybeShowPopup(e);
-	}
+    public PopupListener(JPopupMenu pm) {
+        popup = pm;
+    }
 
-	private void maybeShowPopup(MouseEvent e) {
-		if (e.isPopupTrigger()) {
-			popup.show(e.getComponent(),
-					e.getX(), e.getY());
-		}
-	}
+    public void mousePressed(MouseEvent e) {
+        maybeShowPopup(e);
+    }
+
+    public void mouseReleased(MouseEvent e) {
+        maybeShowPopup(e);
+    }
+
+    private void maybeShowPopup(MouseEvent e) {
+        if (e.isPopupTrigger()) {
+            popup.show(e.getComponent(),
+                    e.getX(), e.getY());
+        }
+    }
 }
