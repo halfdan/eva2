@@ -17,6 +17,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 import javax.swing.*;
@@ -61,10 +62,11 @@ public class GOEPanel extends JPanel implements ItemListener {
     /**
      * Creates the GUI editor component
      */
-//	private Vector<String> m_ClassesLongName;
     private GenericObjectEditor genericObjectEditor = null;
     private boolean withComboBoxToolTips = true; // should tool tips for the combo box be created?
     private int tipMaxLen = 100; // maximum length of tool tip
+    
+    private HashMap<String, String> classNameMap;
 
     /**
      *
@@ -312,15 +314,19 @@ public class GOEPanel extends JPanel implements ItemListener {
      *
      */
     protected void updateClassType() {
-        Vector<String> classesLongNames;
+        List<String> classesLongNames;
         ArrayList<Class<?>> instances = new ArrayList<Class<?>>(5);
         if (Proxy.isProxyClass(genericObjectEditor.getClassType())) {
-            classesLongNames = new Vector<String>(GenericObjectEditor.getClassesFromProperties(((RMIProxyLocal) Proxy.getInvocationHandler(((Proxy) genericObjectEditor.getValue()))).getOriginalClass().getName(), null));
+            classesLongNames = GenericObjectEditor.getClassesFromProperties(((RMIProxyLocal) Proxy.getInvocationHandler(((Proxy) genericObjectEditor.getValue()))).getOriginalClass().getName(), null);
         } else {
-            classesLongNames = new Vector<String>(GenericObjectEditor.getClassesFromProperties(genericObjectEditor.getClassType().getName(), instances));
+            classesLongNames = GenericObjectEditor.getClassesFromProperties(genericObjectEditor.getClassType().getName(), instances);
         }
         if (classesLongNames.size() > 1) {
-            objectChooser.setModel(new DefaultComboBoxModel(classesLongNames));
+            classNameMap = new HashMap<String, String>();
+            for (String className : classesLongNames) {
+                classNameMap.put(EVAHELP.cutClassName(className), className);
+            }
+            objectChooser.setModel(new DefaultComboBoxModel(classNameMap.keySet().toArray()));            
             if (withComboBoxToolTips) {
                 objectChooser.setRenderer(new ToolTipComboBoxRenderer(collectComboToolTips(instances, tipMaxLen)));
             }
@@ -364,9 +370,6 @@ public class GOEPanel extends JPanel implements ItemListener {
                  */ (genericObjectEditor.getValue().getClass().getName());
         boolean found = false;
         for (int i = 0; i < comboBoxModel.getSize(); i++) {
-            if (TRACE) {
-                System.out.println("in updateChooser: looking at " + (String) comboBoxModel.getElementAt(i));
-            }
             if (objectName.equals((String) comboBoxModel.getElementAt(i))) {
                 found = true;
                 break;
@@ -396,11 +399,13 @@ public class GOEPanel extends JPanel implements ItemListener {
      *
      * @param e a value of type 'ItemEvent'
      */
+    @Override
     public void itemStateChanged(ItemEvent e) {
         String className;
 
         if ((e.getSource() == objectChooser) && (e.getStateChange() == ItemEvent.SELECTED)) {
             className = (String) objectChooser.getSelectedItem();
+            className = classNameMap.get(className);
             try {
                 Object n = (Object) Class.forName(className).newInstance();
                 genericObjectEditor.setValue(n);

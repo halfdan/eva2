@@ -38,21 +38,18 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
-import javax.swing.event.MenuEvent;
-import javax.swing.event.MenuListener;
 
 
 /**
  *
  */
-public class EvAClient implements RemoteStateListener, Serializable {
+public class EvAClient implements RemoteStateListener {
 
     /**
      * Generated serial version identifier.
      */
     private static final long serialVersionUID = 8232856334379977970L;
     private final int splashScreenTime = 2500;
-    private final int maxWindowMenuLength = 30;
     private boolean clientInited = false;
     private JExtDesktopPaneToolBar desktopToolBar;
     private JDesktopPane desktopPane;
@@ -67,6 +64,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
     private transient JExtMenu menuSelHosts;
     private transient JExtMenu menuModule;
     private transient JExtMenu menuOptions;
+    private JPanel statusBar;
     private transient JProgressBar progressBar;
     
     // Option
@@ -234,7 +232,6 @@ public class EvAClient implements RemoteStateListener, Serializable {
 
         // preload some classes (into system cache) in a parallel thread
         preloadClasses();
-        
 
         withGUI = !noGui;
         withTreeView = showTreeView;
@@ -360,6 +357,22 @@ public class EvAClient implements RemoteStateListener, Serializable {
                     + this.getClass().getSimpleName());
         }
     }
+    
+    /**
+     * Set UI Font for all controls.
+     * 
+     * @param fontResource The FontUIResource for the controls
+     */    
+    private static void setUIFont(javax.swing.plaf.FontUIResource fontResource) {
+        java.util.Enumeration keys = UIManager.getDefaults().keys();
+        while (keys.hasMoreElements()) {
+            Object key = keys.nextElement();
+            Object value = UIManager.get(key);
+            if (value != null && value instanceof javax.swing.plaf.FontUIResource) {
+                UIManager.put(key, fontResource);
+            }
+        }
+    }
 
     /**
      * Sets given hostname and tries to load GOParamsters from given file if non
@@ -368,6 +381,8 @@ public class EvAClient implements RemoteStateListener, Serializable {
     private void init(String hostName, String paramsFile, InterfaceGOParameters goParams, final Window parent) {        
         useDefaultModule = EvAInfo.propDefaultModule();
         this.parentWindow = parent;
+        
+        setUIFont(new javax.swing.plaf.FontUIResource(Font.SANS_SERIF, 0, 11));
         
         if (useDefaultModule != null) {
             useDefaultModule = useDefaultModule.trim();
@@ -381,13 +396,14 @@ public class EvAClient implements RemoteStateListener, Serializable {
             
             /* Set Look and Feel */
             try {
-                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
             } catch (Exception ex) {
                 LOGGER.log(Level.INFO, "Could not set Look&Feel", ex);
             }
             
             /* Create main frame with GridBagLayout */
-            mainFrame = new JFrame(EvAInfo.productName);
+            mainFrame = new JFrame(EvAInfo.productName);            
             mainFrame.setLayout(new GridBagLayout());
             mainFrame.setMinimumSize(new Dimension(800, 600));
 
@@ -465,12 +481,15 @@ public class EvAClient implements RemoteStateListener, Serializable {
             gbConstraints.gridheight = GridBagConstraints.RELATIVE;
             mainFrame.add(horizontalSplit, gbConstraints);
             
+            /* StatusBar of the main frame */
+            statusBar = new JPanel(new FlowLayout(FlowLayout.RIGHT));            
+            statusBar.add(new JLabel("Progress"));
             
-            /* Create ProgressBar and add it to the bottom */
-            progressBar = new JProgressBar();
-			progressBar.setBorder(new TitledBorder("Progress"));
-			progressBar.setValue(0);
-			progressBar.setStringPainted(true);
+            /* Create ProgressBar and add it to the status bar */
+            progressBar = new JProgressBar();            
+            progressBar.setValue(0);            
+            progressBar.setStringPainted(true);
+            statusBar.add(progressBar);            
             
             gbConstraints.gridx = 0;
             gbConstraints.gridy = 2;
@@ -478,8 +497,8 @@ public class EvAClient implements RemoteStateListener, Serializable {
             gbConstraints.weighty = 0.0;
             gbConstraints.fill = GridBagConstraints.HORIZONTAL;
             gbConstraints.anchor = GridBagConstraints.PAGE_END;
-            mainFrame.add(progressBar, gbConstraints);
-            
+            mainFrame.add(statusBar, gbConstraints);
+
             mainFrame.pack();
             mainFrame.setVisible(true);
         }
@@ -498,6 +517,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
             buildMenu();
             mainFrame.addWindowListener(new WindowAdapter() {
 
+                @Override
                 public void windowClosing(final WindowEvent event) {
                     EvAClient.this.close();
                 }
@@ -517,10 +537,7 @@ public class EvAClient implements RemoteStateListener, Serializable {
             LOGGER.log(Level.INFO, "Class path is: {0}", System.getProperty("java.class.path", "."));
 
             if (!(configurationPane.isVisible())) {
-                Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-                //evaFrame.setLocation((int) ((screenSize.width - evaFrame.getWidth()) / 2), (int) ((screenSize.height - evaFrame.getHeight()) / 2.5));
                 configurationPane.setVisible(true);
-                
             }
             
             if (!(mainFrame.isVisible())) {
@@ -575,22 +592,22 @@ public class EvAClient implements RemoteStateListener, Serializable {
     public static void main(String[] args) {
     	/*============================COPIED FROM SYSBIO==============================*/
     	// Properties for Mac OS X support.
-    	if ((System.getProperty("mrj.version") != null)
-    		|| (System.getProperty("os.name").toLowerCase().indexOf("mac") != -1)) {
-    			/* 
-    			 * Note: the xDock name property must be set before parsing 
-    			 * command-line arguments! See above!
-    			 */
-    			System.setProperty("com.apple.mrj.application.apple.menu.about.name", EvAInfo.productName);
-
-    			System.setProperty("apple.awt.graphics.EnableQ2DX", "true");
-    			System.setProperty("apple.laf.useScreenMenuBar", "true");
-    			System.setProperty("com.apple.macos.smallTabs", "true");
-    			System.setProperty("com.apple.macos.useScreenMenuBar", "true");
-
-    			System.setProperty("com.apple.mrj.application.growbox.intrudes", "false");
-    			System.setProperty("com.apple.mrj.application.live-resize", "true");
-    		}
+        if ((System.getProperty("mrj.version") != null)
+                || (System.getProperty("os.name").toLowerCase().indexOf("mac") != -1)) {
+            /*
+             * Note: the xDock name property must be set before parsing
+             * command-line arguments! See above!
+             */
+            System.setProperty("com.apple.mrj.application.apple.menu.about.name", EvAInfo.productName);
+            
+            System.setProperty("apple.awt.graphics.EnableQ2DX", "true");
+            System.setProperty("apple.laf.useScreenMenuBar", "true");
+            System.setProperty("com.apple.macos.smallTabs", "true");
+            System.setProperty("com.apple.macos.useScreenMenuBar", "true");
+            
+            System.setProperty("com.apple.mrj.application.growbox.intrudes", "false");
+            System.setProperty("com.apple.mrj.application.live-resize", "true");
+        }
     	/*==========================================================================*/
     	
     	

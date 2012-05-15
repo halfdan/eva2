@@ -4,7 +4,6 @@
  */
 package eva2.gui;
 
-import com.sun.javaws.ui.JavawsSysRun;
 import eva2.EvAInfo;
 import eva2.tools.BasicResourceLoader;
 import java.awt.*;

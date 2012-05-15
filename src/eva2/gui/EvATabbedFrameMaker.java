@@ -4,29 +4,16 @@ package eva2.gui;
  * Architecture @author Holger Ulmer, Felix Streichert, Hannes Planatscher @version: $Revision: 272
  * $ $Date: 2007-11-21 18:06:36 +0100 (Wed, 21 Nov 2007) $ $Author: mkron $
  */
-/*
- * ==========================================================================* IMPORTS
- *==========================================================================
- */
-
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.JComponent;
-import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
 
 import eva2.server.go.InterfaceNotifyOnInformers;
 import eva2.server.go.problems.InterfaceAdditionalPopulationInformer;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.logging.Level;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 import javax.swing.*;
-import javax.swing.plaf.TabbedPaneUI;
 import javax.swing.plaf.basic.BasicButtonUI;
 
 /**
@@ -62,7 +49,7 @@ public class EvATabbedFrameMaker implements Serializable, PanelMaker, InterfaceN
 
         tabbedPane = new JTabbedPane();
         tabbedPane.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
-        tabbedPane.setUI(new eva2.gui.utils.CustomTabbedPaneUI());
+        //tabbedPane.setUI(new eva2.gui.utils.CustomTabbedPaneUI());
         tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 
         
