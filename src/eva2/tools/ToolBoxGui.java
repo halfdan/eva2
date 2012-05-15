@@ -64,8 +64,11 @@ public class ToolBoxGui {
         bytes = BasicResourceLoader.instance().getBytesFromResourceLocation(iconSrc, false);
         if (bytes == null) {
             newButton = new JButton(title);
-        } else {
+        } else if (withTitle) {
             newButton = new JButton(title, new ImageIcon(Toolkit.getDefaultToolkit().createImage(bytes)));
+        } else {
+            newButton = new JButton(new ImageIcon(Toolkit.getDefaultToolkit().createImage(bytes)));
+            newButton.setToolTipText(title);
         }
         return newButton;
     }

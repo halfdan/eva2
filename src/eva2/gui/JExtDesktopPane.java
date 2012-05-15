@@ -1,14 +1,11 @@
 package eva2.gui;
 /*
- * Title:        EvA2
- * Description:
- * Copyright:    Copyright (c) 2003
- * Company:      University of Tuebingen, Computer Architecture
- * @author Holger Ulmer, Felix Streichert, Hannes Planatscher
- * @version:  $Revision: 10 $
- *            $Date: 2006-01-18 11:02:22 +0100 (Wed, 18 Jan 2006) $
- *            $Author: streiche $
+ * Title: EvA2 Description: Copyright: Copyright (c) 2003 Company: University of Tuebingen, Computer
+ * Architecture @author Holger Ulmer, Felix Streichert, Hannes Planatscher @version: $Revision: 10 $
+ * $Date: 2006-01-18 11:02:22 +0100 (Wed, 18 Jan 2006) $ $Author: streiche $
  */
+
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Event;
@@ -24,14 +21,12 @@ import javax.swing.*;
  */
 public class JExtDesktopPane extends JDesktopPane {
 
-    private ActionListener m_actMenuFrame;
-    private ExtDesktopManager m_manager;
-    public JExtMenu m_mnuWindow;
+    private ActionListener actMenuFrame;
+    private ExtDesktopManager desktopManager;
+    private JExtMenu windowMenu;
     private ExtAction actWindowTileVert;
     private ExtAction actWindowTileHorz;
     private ExtAction actWindowOverlap;
-    private ExtAction actWindowArrangeIcons;
-    private ExtAction actWindowList;
     public final static int WINDOW_TILEVERT = 0;
     public final static int WINDOW_TILEHORZ = 1;
     public final static int WINDOW_OVERLAP = 2;
@@ -44,76 +39,58 @@ public class JExtDesktopPane extends JDesktopPane {
      */
     public JExtDesktopPane() {
         super();
-        m_mnuWindow = new JExtMenu("&Windows");
-        m_manager = new ExtDesktopManager(this);
-        setDesktopManager(m_manager);
+        
+        windowMenu = new JExtMenu("&Windows");
+        desktopManager = new ExtDesktopManager(this);
+        setDesktopManager(desktopManager);
 
-        m_actMenuFrame = new ActionListener() {
+        actMenuFrame = new ActionListener() {
 
-            public void actionPerformed(ActionEvent e) {
-                if (!(e.getSource() instanceof JMenuItem)) {
+            @Override
+            public void actionPerformed(final ActionEvent event) {
+                if (!(event.getSource() instanceof JMenuItem)) {
                     return;
                 }
-                JInternalFrame frame = (JInternalFrame) ((JMenuItem) e.getSource()).getClientProperty(ExtDesktopManager.FRAME);
+                JInternalFrame frame = (JInternalFrame) ((JMenuItem) event.getSource()).getClientProperty(ExtDesktopManager.FRAME);
                 selectFrame(frame);
             }
         };
 
-        m_mnuWindow.add(actWindowTileVert = new ExtAction("&Nebeneinander", "Ordnet die Fenster nebeneinander an") {
+        windowMenu.add(actWindowTileVert = new ExtAction("Tile &Vertically", "Tiles all windows vertically") {
 
-            public void actionPerformed(ActionEvent e) {
+            @Override
+            public void actionPerformed(final ActionEvent event) {
                 tileWindows(SwingConstants.HORIZONTAL);
             }
         });
 
-        m_mnuWindow.add(actWindowTileHorz = new ExtAction("&Untereinander", "Ordnet die Fenster untereinander an") {
+        windowMenu.add(actWindowTileHorz = new ExtAction("Tile &Horizontally", "Tiles all windows horizontically") {
 
-            public void actionPerformed(ActionEvent e) {
+            @Override
+            public void actionPerformed(final ActionEvent event) {
                 tileWindows(SwingConstants.VERTICAL);
             }
         });
 
-        m_mnuWindow.add(actWindowOverlap = new ExtAction("Ü&berlappend", "Ordnet die Fenster Überlappend an") {
+        windowMenu.add(actWindowOverlap = new ExtAction("&Cascade Windows", "Cascades all visible windows") {
 
-            public void actionPerformed(ActionEvent e) {
+            @Override
+            public void actionPerformed(final ActionEvent event) {
                 overlapWindows();
             }
         });
 
-        m_mnuWindow.add(actWindowArrangeIcons = new ExtAction("&Symbole anordnen", "Ordnet die Symbole auf dem Desktop an") {
-
-            public void actionPerformed(ActionEvent e) {
-            }
-        });
-
-        m_mnuWindow.add(actWindowList = new ExtAction("Fenster&liste...", "Zeigt eine Liste aller Fenster an", KeyStroke.getKeyStroke(KeyEvent.VK_0, Event.ALT_MASK)) {
-
-            public void actionPerformed(ActionEvent e) {
-                Vector l = new Vector();
-                JInternalFrame frames[] = getAllFrames();
-
-                for (int i = 0; i < frames.length; i++) {
-                    l.add(frames[i].getTitle());
-                }
-
-                JList list = new JList(l);
-                list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-                JScrollPane pane = new JScrollPane(list);
-                pane.setPreferredSize(new Dimension(pane.getPreferredSize().width, 150));
-
-                if (JOptionPane.showOptionDialog(JExtDesktopPane.this, pane, "Fenster auswählen", JOptionPane.OK_CANCEL_OPTION,
-                        JOptionPane.PLAIN_MESSAGE, null, null, null) == JOptionPane.OK_OPTION) {
-                    if (list.getSelectedIndex() != -1) {
-                        selectFrame(frames[list.getSelectedIndex()]);
-                    }
-                }
-            }
-        });
-
-        m_mnuWindow.addSeparator();
-        m_manager.WINDOW_LIST_START = 6;
+        windowMenu.addSeparator();
+        desktopManager.WINDOW_LIST_START = 4;
     }
 
+    /**
+     * Method to access the window actions.
+     * 
+     * @deprecated 
+     * @param action The desired action (use JExtDesktopPane constants). Default is null
+     * @return The ExtAction
+     */
     public ExtAction getWindowAction(int action) {
         switch (action) {
             case WINDOW_TILEVERT:
@@ -122,10 +99,6 @@ public class JExtDesktopPane extends JDesktopPane {
                 return actWindowTileHorz;
             case WINDOW_OVERLAP:
                 return actWindowOverlap;
-            case WINDOW_ARRANGEICONS:
-                return actWindowArrangeIcons;
-            case WINDOW_LIST:
-                return actWindowList;
         }
         return null;
     }
@@ -264,41 +237,26 @@ public class JExtDesktopPane extends JDesktopPane {
     public void addImpl(Component comp, Object constraints, int index) {
         super.addImpl(comp, constraints, index);
         //System.out.println("JExtDesktopPane.addImpl");
-        if (comp instanceof JDocFrame) {
-            JDocFrame f = (JDocFrame) comp;
-            int frameIndex = m_mnuWindow.getItemCount() - m_manager.WINDOW_LIST_START + 1;
-            if (f.getClientProperty(ExtDesktopManager.INDEX) != null) {
+        if (comp instanceof JInternalFrame) {
+            JInternalFrame docFrame = (JInternalFrame) comp;
+            int frameIndex = windowMenu.getItemCount() - desktopManager.WINDOW_LIST_START + 1;
+            if (docFrame.getClientProperty(ExtDesktopManager.INDEX) != null) {
                 return;
             }
-            f.putClientProperty(ExtDesktopManager.INDEX, new Integer(frameIndex));
-            JMenuItem m = new JMenuItem((frameIndex < 10 ? frameIndex + " " : "") + f.getTitle());
+            docFrame.putClientProperty(ExtDesktopManager.INDEX, new Integer(frameIndex));
+            JMenuItem m = new JMenuItem((frameIndex < 10 ? frameIndex + " " : "") + docFrame.getTitle());
             if (frameIndex < 10) {
                 m.setMnemonic((char) (0x30 + frameIndex));
                 m.setAccelerator(KeyStroke.getKeyStroke(0x30 + frameIndex, Event.ALT_MASK));
             }
-            m.setToolTipText("Shows the window " + f.getTitle() + " an");
-            m.putClientProperty(ExtDesktopManager.FRAME, f);
-            m.addActionListener(m_actMenuFrame);
-            m_mnuWindow.add(m);
+            m.setToolTipText("Shows the window " + docFrame.getTitle());
+            m.putClientProperty(ExtDesktopManager.FRAME, docFrame);
+            m.addActionListener(actMenuFrame);
+            windowMenu.add(m);
         }
-//    if(comp instanceof Plot){
-//      Plot f = (Plot)comp;
-//      int frameIndex = m_mnuWindow.getItemCount() - m_manager.WINDOW_LIST_START + 1;
-//      if(f.getClientProperty(ExtDesktopManager.INDEX) != null) return;
-//      f.putClientProperty(ExtDesktopManager.INDEX, new Integer(frameIndex));
-//      JMenuItem m = new JMenuItem((frameIndex < 10 ? frameIndex + " " : "") + f.getTitle());
-//      if(frameIndex < 10){
-//        m.setMnemonic((char)(0x30 + frameIndex));
-//        m.setAccelerator(KeyStroke.getKeyStroke(0x30 + frameIndex, Event.ALT_MASK));
-//      }
-//      m.setToolTipText("Shows the window " + f.getTitle() + " an");
-//      m.putClientProperty(ExtDesktopManager.FRAME, f);
-//      m.addActionListener(m_actMenuFrame);
-//      m_mnuWindow.add(m);
-//    }
     }
 
     public JMenu getWindowMenu() {
-        return m_mnuWindow;
+        return windowMenu;
     }
 }

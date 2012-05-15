@@ -12,15 +12,12 @@ import eva2.server.stat.InterfaceTextListener;
  *            $Date: 2006-01-18 11:02:22 +0100 (Wed, 18 Jan 2006) $
  *            $Author: streiche $
  */
-/*==========================================================================*
- * IMPORTS
- *==========================================================================*/
-/*==========================================================================*
-* INTERFACE DECLARATION
-*==========================================================================*/
-/**
- *
- */
 public interface JTextoutputFrameInterface extends InterfaceTextListener {
-  public void setShow(boolean bShow);
+
+    /**
+     * Set the show property to define whether the Output Frame should be shown.
+     *
+     * @param bShow Whether the frame should be shown or not
+     */
+    void setShow(boolean bShow);
 }
