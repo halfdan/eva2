@@ -373,8 +373,10 @@ public class GenericArrayEditor extends JPanel implements PropertyEditor {
                 for (int i = 0; i < Array.getLength(arrayInstance); i++) {
                     m_ListModel.addElement(Array.get(arrayInstance, i));
                 }
+                
                 m_ElementList.setCellRenderer(lcr);
                 m_ElementList.setModel(m_ListModel);
+                
                 if (m_ListModel.getSize() > 0) {
                     m_ElementList.setSelectedIndex(0);
                     m_DeleteBut.setEnabled(true);
@@ -425,7 +427,9 @@ public class GenericArrayEditor extends JPanel implements PropertyEditor {
                     
                     // Job List
                     gbConstraints.gridy++;
-                    gbConstraints.fill = GridBagConstraints.HORIZONTAL;
+                    gbConstraints.fill = GridBagConstraints.BOTH;
+                    gbConstraints.weightx = 1.0;
+                    gbConstraints.weighty = 1.0;
                     add(new JScrollPane(m_ElementList), gbConstraints);
                     
                     // Lower Button Panel
@@ -437,6 +441,9 @@ public class GenericArrayEditor extends JPanel implements PropertyEditor {
                         combiLowerPanel.add(but);
                     }
                     gbConstraints.gridy++;
+                    gbConstraints.fill = GridBagConstraints.HORIZONTAL;
+                    gbConstraints.weightx = 1.0;
+                    gbConstraints.weighty = 0.0;
                     add(combiLowerPanel, gbConstraints);
                     
                     // Additional Center Panel (e.g. PropertySheetPanel)
