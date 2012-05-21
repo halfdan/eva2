@@ -498,8 +498,7 @@ public class EvAClient implements RemoteStateListener {
             gbConstraints.fill = GridBagConstraints.HORIZONTAL;
             gbConstraints.anchor = GridBagConstraints.PAGE_END;
             mainFrame.add(statusBar, gbConstraints);
-
-            mainFrame.pack();
+            
             mainFrame.setVisible(true);
         }
         if (useDefaultModule != null) {
