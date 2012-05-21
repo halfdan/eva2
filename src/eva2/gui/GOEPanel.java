@@ -326,7 +326,8 @@ public class GOEPanel extends JPanel implements ItemListener {
             for (String className : classesLongNames) {
                 classNameMap.put(EVAHELP.cutClassName(className), className);
             }
-            objectChooser.setModel(new DefaultComboBoxModel(classNameMap.keySet().toArray()));            
+            Vector<String> classesList = new Vector<String>(classesLongNames);
+            objectChooser.setModel(new DefaultComboBoxModel(classesList));
             if (withComboBoxToolTips) {
                 objectChooser.setRenderer(new ToolTipComboBoxRenderer(collectComboToolTips(instances, tipMaxLen)));
             }
@@ -405,7 +406,7 @@ public class GOEPanel extends JPanel implements ItemListener {
 
         if ((e.getSource() == objectChooser) && (e.getStateChange() == ItemEvent.SELECTED)) {
             className = (String) objectChooser.getSelectedItem();
-            className = classNameMap.get(className);
+            //className = classNameMap.get(className);
             try {
                 Object n = (Object) Class.forName(className).newInstance();
                 genericObjectEditor.setValue(n);

@@ -1,13 +1,12 @@
 package eva2.server.go.populations;
 
-
-import java.util.BitSet;
-
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceGAIndividual;
 import eva2.tools.math.RNG;
+import java.util.BitSet;
 
-/** This implementation of Population Based Incremental Learning is only
+/** 
+ * This implementation of Population Based Incremental Learning is only
  * suited for a BitString based genotype representation.
  * Copyright:       Copyright (c) 2003
  * Company:         University of Tuebingen, Computer Architecture
@@ -45,8 +44,8 @@ public class PBILPopulation extends Population implements Cloneable, java.io.Ser
      * have been inited by a problem
      */
     public void init() {
-        this.m_Generation       = 0;
-        this.m_FunctionCalls    = 0;
+        this.generationCount       = 0;
+        this.functionCallCount    = 0;
         if (!(this.get(0) instanceof InterfaceGAIndividual)) {
             System.err.println("Members of the population are not instance of InterfaceGAIndividual!");
             return;
@@ -149,8 +148,8 @@ public class PBILPopulation extends Population implements Cloneable, java.io.Ser
         }
         result += "}\n";
         result += "Population size: " + this.size() + "\n";
-        result += "Function calls : " + this.m_FunctionCalls + "\n";
-        result += "Generations    : " + this.m_Generation;
+        result += "Function calls : " + this.functionCallCount + "\n";
+        result += "Generations    : " + this.generationCount;
         //for (int i = 0; i < this.size(); i++) {
             //result += ((AbstractEAIndividual)this.get(i)).getSolutionRepresentationFor()+"\n";
         //}
