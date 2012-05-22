@@ -36,6 +36,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.help.*;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 
@@ -68,6 +69,7 @@ public class EvAClient implements RemoteStateListener {
     private transient JProgressBar progressBar;
     
     // Option
+    private ExtAction actPreferences;
     private ExtAction actQuit;
     
     // LogPanel
@@ -84,7 +86,8 @@ public class EvAClient implements RemoteStateListener {
     private ExtAction actKillAllHosts;
     private ModuleAdapter currentModuleAdapter = null;
     
-    // About:
+    // Help:
+    private ExtAction actHelp;
     private ExtAction actAbout;
     private ExtAction actLicense;
     
@@ -721,8 +724,7 @@ public class EvAClient implements RemoteStateListener {
             }
         };
 
-        actAbout = new ExtAction("&About", "Product Information",
-                KeyStroke.getKeyStroke(KeyEvent.VK_A, Event.CTRL_MASK)) {
+        actAbout = new ExtAction("&About", "Product Information") {
 
             @Override
             public void actionPerformed(final ActionEvent event) {
@@ -730,8 +732,7 @@ public class EvAClient implements RemoteStateListener {
                 showAboutDialog();
             }
         };
-        actLicense = new ExtAction("&License", "View License",
-                KeyStroke.getKeyStroke(KeyEvent.VK_L, Event.CTRL_MASK)) {
+        actLicense = new ExtAction("&License", "View License") {
 
             @Override
             public void actionPerformed(final ActionEvent event) {
@@ -802,6 +803,42 @@ public class EvAClient implements RemoteStateListener {
                 EvAClient.this.close();
             }
         };
+        
+        actPreferences = new ExtAction("&Preferences", "Show preferences dialog",
+                KeyStroke.getKeyStroke(KeyEvent.VK_P, Event.CTRL_MASK)) {
+
+            @Override
+            public void actionPerformed(final ActionEvent event) {
+                // ToDo
+            }
+        };
+        
+        actHelp = new ExtAction("&Help", "Show help contents",
+                KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0)) {
+
+            @Override
+            public void actionPerformed(final ActionEvent event) {
+                // ToDo
+                String helpHS = "resources/EvA2Help/EvA2Help.hs";
+                ClassLoader cl = EvAClient.class.getClassLoader();
+                JHelpContentViewer helpPane;
+                try {
+                    URL hsURL = HelpSet.findHelpSet(cl, helpHS);
+                    HelpSet helpSet = new HelpSet(null, hsURL);
+                    // Trigger the help viewer:
+                    helpPane = new JHelpContentViewer(helpSet);
+                    JHelpNavigator helpNavigator = (JHelpNavigator) helpSet.getNavigatorView("TOC").createNavigator(helpPane.getModel());
+                    JEFrame helpFrame = new JEFrame("Help contents");
+                    JSplitPane helpSplit = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, helpNavigator, helpPane);
+                    helpFrame.add(helpSplit);
+                    helpFrame.setVisible(true);
+                    helpFrame.setMaximum(true);
+                } catch (Exception ee) {
+                    // Say what the exception really is
+                    LOGGER.log(Level.WARNING, "Could not open application help", ee);
+                }                
+            }
+        };
     }
 
     /**
@@ -822,11 +859,15 @@ public class EvAClient implements RemoteStateListener {
         menuSelHosts.add(actKillAllHosts);
 
         menuHelp = new JExtMenu("&Help");
+        menuHelp.add(actHelp);
+        menuHelp.addSeparator();
         menuHelp.add(actAbout);
         menuHelp.add(actLicense);
 
         menuOptions = new JExtMenu("&Options");
+        menuOptions.add(actPreferences);
         menuOptions.add(menuSelHosts);
+        menuOptions.addSeparator();
         menuOptions.add(actQuit);
         // this is accessible if no default module is given
         if (showLoadModules) {
@@ -1078,7 +1119,7 @@ public class EvAClient implements RemoteStateListener {
         if (hostNames == null || hostNames.length == 0) {
             showNoHostFoundDialog();
         } else {
-            String hostName = (String) JOptionPane.showInputDialog(configurationPane,
+            String hostName = (String) JOptionPane.showInputDialog(mainFrame,
                     "Which active host do you want to connect to?", "Host", JOptionPane.QUESTION_MESSAGE, null,
                     hostNames, comAdapter.getHostName());
             if (hostName != null) {
@@ -1115,7 +1156,7 @@ public class EvAClient implements RemoteStateListener {
     }
 
     private void showNoHostFoundDialog() {
-        JOptionPane.showMessageDialog(configurationPane, "No host with running EVASERVER found. Please start one or \nadd the correct address to the properties list.", EvAInfo.infoTitle, 1);
+        JOptionPane.showMessageDialog(mainFrame, "No host with running EVASERVER found. Please start one or \nadd the correct address to the properties list.", EvAInfo.infoTitle, 1);
     }
 
     private void selectAvailableHostToKill(String[] HostNames) {
@@ -1123,7 +1164,7 @@ public class EvAClient implements RemoteStateListener {
             showNoHostFoundDialog();
             return;
         }
-        String HostName = (String) JOptionPane.showInputDialog(configurationPane,
+        String HostName = (String) JOptionPane.showInputDialog(mainFrame,
                 "Which server do you want to be killed ?", "Host", JOptionPane.QUESTION_MESSAGE, null,
                 HostNames, comAdapter.getHostName());
         if (HostName == null) {
@@ -1131,7 +1172,6 @@ public class EvAClient implements RemoteStateListener {
         }
         LOGGER.info("Kill host process on = " + HostName);
         comAdapter.killServer(HostName);
-//		m_LogPanel.statusMessage("");
     }
 
     private void selectAllAvailableHostToKill(String[] hostNames) {

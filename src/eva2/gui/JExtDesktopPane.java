@@ -56,7 +56,8 @@ public class JExtDesktopPane extends JDesktopPane {
             }
         };
 
-        windowMenu.add(actWindowTileVert = new ExtAction("Tile &Vertically", "Tiles all windows vertically") {
+        windowMenu.add(actWindowTileVert = new ExtAction("Tile &Vertically", "Tiles all windows vertically",
+                KeyStroke.getKeyStroke(KeyEvent.VK_COMMA, Event.CTRL_MASK)) {
 
             @Override
             public void actionPerformed(final ActionEvent event) {
@@ -64,7 +65,8 @@ public class JExtDesktopPane extends JDesktopPane {
             }
         });
 
-        windowMenu.add(actWindowTileHorz = new ExtAction("Tile &Horizontally", "Tiles all windows horizontically") {
+        windowMenu.add(actWindowTileHorz = new ExtAction("Tile &Horizontally", "Tiles all windows horizontically", 
+                KeyStroke.getKeyStroke(KeyEvent.VK_PERIOD, Event.CTRL_MASK)) {
 
             @Override
             public void actionPerformed(final ActionEvent event) {
@@ -72,7 +74,8 @@ public class JExtDesktopPane extends JDesktopPane {
             }
         });
 
-        windowMenu.add(actWindowOverlap = new ExtAction("&Cascade Windows", "Cascades all visible windows") {
+        windowMenu.add(actWindowOverlap = new ExtAction("&Cascade Windows", "Cascades all visible windows",
+                KeyStroke.getKeyStroke(KeyEvent.VK_M, Event.CTRL_MASK)) {
 
             @Override
             public void actionPerformed(final ActionEvent event) {
