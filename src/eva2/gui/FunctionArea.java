@@ -185,179 +185,186 @@ public class FunctionArea extends DArea implements Serializable {
 	/**
 	 * Add a popup menu for displaying certain information.
 	 */
-	private void addPopup() {
-		addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e) {
-				if ((e.getModifiers() & InputEvent.BUTTON1_MASK) == InputEvent.BUTTON1_MASK) {
-					// do nothing
-				} else {
-					JPopupMenu graphPopupMenu = new JPopupMenu();
-					m_x = e.getX();
-					m_y = e.getY();
+	   private void addPopup() {
+        addMouseListener(new MouseAdapter() {
 
-					addMenuItem(graphPopupMenu, "Rename graph", new ActionListener() {
-						public void actionPerformed(ActionEvent ee) {
-							renameGraph(getNearestGraphIndex(FunctionArea.this.m_x, FunctionArea.this.m_y));
-						}
-					});
-					// General entries
-					String togGTTName = (isShowGraphToolTips() ? "Deactivate"
-							: "Activate")
-							+ " graph tool tips";
-					addMenuItem(graphPopupMenu, togGTTName,
-							new ActionListener() {
-								public void actionPerformed(ActionEvent ee) {
-									setShowGraphToolTips(!isShowGraphToolTips());
-								}
-							});
+            public void mouseClicked(MouseEvent e) {
+                if ((e.getModifiers() & InputEvent.BUTTON1_MASK) == InputEvent.BUTTON1_MASK) {
+                    // do nothing
+                } else {
+                    JPopupMenu graphPopupMenu = new JPopupMenu();
+                    m_x = e.getX();
+                    m_y = e.getY();
 
-					String togLName = (isShowLegend() ? "Hide" : "Show")
-							+ " legend";
-					addMenuItem(graphPopupMenu, togLName, new ActionListener() {
-						public void actionPerformed(ActionEvent ee) {
-							toggleLegend();
-						}
-					});
+                    addMenuItem(graphPopupMenu, "Rename graph", new ActionListener() {
 
-					addMenuItem(graphPopupMenu, "Toggle scientific format", new ActionListener() {
-						public void actionPerformed(ActionEvent ee) {
-							toggleScientificY(true);
-						}
-					});
-					
-					if (FunctionArea.this.m_PointSetContainer.size() > 0) {
-						addMenuItem(graphPopupMenu, "Recolor all graphs",
-								new ActionListener() {
+                        public void actionPerformed(ActionEvent ee) {
+                            renameGraph(getNearestGraphIndex(FunctionArea.this.m_x, FunctionArea.this.m_y));
+                        }
+                    });
+                    // General entries
+                    String togGTTName = (isShowGraphToolTips() ? "Deactivate"
+                            : "Activate")
+                            + " graph tool tips";
+                    addMenuItem(graphPopupMenu, togGTTName,
+                            new ActionListener() {
 
-									public void actionPerformed(ActionEvent ee) {
-										recolorAllGraphsByIndex();
-									}
-								});
-					}
+                                public void actionPerformed(ActionEvent ee) {
+                                    setShowGraphToolTips(!isShowGraphToolTips());
+                                }
+                            });
 
-					if (m_RefPointListener != null) {
-						DPoint temp = getDMeasures().getDPoint(m_x, m_y);
-						addMenuItem(graphPopupMenu, "Select Reference Point:("
-								+ temp.x + "/" + temp.y + ")",
-								new ActionListener() {
-									public void actionPerformed(ActionEvent ee) {
-										DPoint temp = getDMeasures().getDPoint(
-												m_x, m_y);
-										double[] point = new double[2];
-										point[0] = temp.x;
-										point[1] = temp.y;
-										m_RefPointListener.refPointGiven(point);
-									}
-								});
-					}
+                    String togLName = (isShowLegend() ? "Hide" : "Show")
+                            + " legend";
+                    addMenuItem(graphPopupMenu, togLName, new ActionListener() {
 
-					// darn this point is an empty copy !!
-					DPoint point = getNearestDPoint(e.getX(), e.getY());
-					if (point != null) {
-						// the point info element
-						addMenuItem(graphPopupMenu, "Nearest point: ("
-								+ point.x + "/" + point.y + ")",
-								new ActionListener() {
-									public void actionPerformed(ActionEvent ee) {
-									}
-								}, false);
+                        public void actionPerformed(ActionEvent ee) {
+                            toggleLegend();
+                        }
+                    });
 
-						addMenuItem(graphPopupMenu, "  Remove point",
-								new ActionListener() {
-									public void actionPerformed(ActionEvent ee) {
-										removePoint(FunctionArea.this.m_x,
-												FunctionArea.this.m_y);
-									}
-								});
+                    addMenuItem(graphPopupMenu, "Toggle scientific format", new ActionListener() {
 
-						if (point.getIcon() instanceof InterfaceSelectablePointIcon) {
-							m_CurrentPointIcon = point.getIcon();
-							if (((InterfaceSelectablePointIcon) m_CurrentPointIcon)
-									.getSelectionListener() != null) {
-								AbstractEAIndividual indy = ((InterfaceSelectablePointIcon) m_CurrentPointIcon)
-										.getEAIndividual();
-								String selectTitle = indy.isMarked() ? "  Deselect individual"
-										: "  Select individual";
-								addMenuItem(graphPopupMenu, selectTitle,
-										new ActionListener() {
-											public void actionPerformed(
-													ActionEvent ee) {
-												((InterfaceSelectablePointIcon) m_CurrentPointIcon)
-														.getSelectionListener()
-														.individualSelected(
-																((InterfaceSelectablePointIcon) m_CurrentPointIcon)
-																		.getEAIndividual());
-											}
-										});
-							}
-						}
+                        public void actionPerformed(ActionEvent ee) {
+                            toggleScientificY(true);
+                        }
+                    });
 
-						if (point.getIcon() instanceof InterfaceDPointWithContent) {
-							m_CurrentPointIcon = point.getIcon();
-							addMenuItem(graphPopupMenu, "  Show individual",
-									new ActionListener() {
-										public void actionPerformed(
-												ActionEvent ee) {
-											((InterfaceDPointWithContent) m_CurrentPointIcon)
-													.showIndividual();
-										}
-									});
-						}
+                    if (FunctionArea.this.m_PointSetContainer.size() > 0) {
+                        addMenuItem(graphPopupMenu, "Recolor all graphs",
+                                new ActionListener() {
 
-					}
-					if (FunctionArea.this.m_PointSetContainer.size() > 0) { // there
-																			// is
-																			// at
-																			// least
-																			// one
-																			// graph
-						// The graph info element
-						// int gIndex = getNearestGraphIndex(e.getX(),
-						// e.getY());
-						addMenuItem(graphPopupMenu, "Graph Info: "
-								+ getGraphInfo(e.getX(), e.getY()),
-								new ActionListener() {
-									public void actionPerformed(ActionEvent ee) {
-										DPoint temp = FunctionArea.this
-												.getDMeasures().getDPoint(
-														FunctionArea.this.m_x,
-														FunctionArea.this.m_y);
-										DPointIcon icon1 = new DPointIcon() {
-											public DBorder getDBorder() {
-												return new DBorder(4, 4, 4, 4);
-											}
+                                    public void actionPerformed(ActionEvent ee) {
+                                        recolorAllGraphsByIndex();
+                                    }
+                                });
+                    }
 
-											public void paint(Graphics g) {
-												g.drawLine(-2, 0, 2, 0);
-												g.drawLine(0, 0, 0, 4);
-											}
-										};
-										temp.setIcon(icon1);
-										FunctionArea.this.addDElement(temp);
-									}
-								}, false);
+                    if (m_RefPointListener != null) {
+                        DPoint temp = getDMeasures().getDPoint(m_x, m_y);
+                        addMenuItem(graphPopupMenu, "Select Reference Point:("
+                                + temp.x + "/" + temp.y + ")",
+                                new ActionListener() {
 
-						addMenuItem(graphPopupMenu, "  Remove graph",
-								new ActionListener() {
-									public void actionPerformed(ActionEvent ee) {
-										clearGraph(FunctionArea.this.m_x,
-												FunctionArea.this.m_y);
-									}
-								});
+                                    public void actionPerformed(ActionEvent ee) {
+                                        DPoint temp = getDMeasures().getDPoint(
+                                                m_x, m_y);
+                                        double[] point = new double[2];
+                                        point[0] = temp.x;
+                                        point[1] = temp.y;
+                                        m_RefPointListener.refPointGiven(point);
+                                    }
+                                });
+                    }
 
-						addMenuItem(graphPopupMenu, "  Change graph color",
-								new ActionListener() {
-									public void actionPerformed(ActionEvent ee) {
-										changeColorGraph(FunctionArea.this.m_x,
-												FunctionArea.this.m_y);
-									}
-								});
-					}
-					graphPopupMenu.show(FunctionArea.this, e.getX(), e.getY());
-				}
-			}
-		});
-	}
+                    // darn this point is an empty copy !!
+                    DPoint point = getNearestDPoint(e.getX(), e.getY());
+                    if (point != null) {
+                        // the point info element
+                        addMenuItem(graphPopupMenu, "Nearest point: ("
+                                + point.x + "/" + point.y + ")",
+                                new ActionListener() {
+
+                                    public void actionPerformed(ActionEvent ee) {
+                                    }
+                                }, false);
+
+                        addMenuItem(graphPopupMenu, "  Remove point",
+                                new ActionListener() {
+
+                                    public void actionPerformed(ActionEvent ee) {
+                                        removePoint(FunctionArea.this.m_x,
+                                                FunctionArea.this.m_y);
+                                    }
+                                });
+
+                        if (point.getIcon() instanceof InterfaceSelectablePointIcon) {
+                            m_CurrentPointIcon = point.getIcon();
+                            if (((InterfaceSelectablePointIcon) m_CurrentPointIcon).getSelectionListener() != null) {
+                                AbstractEAIndividual indy = ((InterfaceSelectablePointIcon) m_CurrentPointIcon).getEAIndividual();
+                                String selectTitle = indy.isMarked() ? "  Deselect individual"
+                                        : "  Select individual";
+                                addMenuItem(graphPopupMenu, selectTitle,
+                                        new ActionListener() {
+
+                                            public void actionPerformed(
+                                                    ActionEvent ee) {
+                                                ((InterfaceSelectablePointIcon) m_CurrentPointIcon).getSelectionListener().individualSelected(
+                                                        ((InterfaceSelectablePointIcon) m_CurrentPointIcon).getEAIndividual());
+                                            }
+                                        });
+                            }
+                        }
+
+                        if (point.getIcon() instanceof InterfaceDPointWithContent) {
+                            m_CurrentPointIcon = point.getIcon();
+                            addMenuItem(graphPopupMenu, "  Show individual",
+                                    new ActionListener() {
+
+                                        public void actionPerformed(
+                                                ActionEvent ee) {
+                                            ((InterfaceDPointWithContent) m_CurrentPointIcon).showIndividual();
+                                        }
+                                    });
+                        }
+
+                    }
+                    if (FunctionArea.this.m_PointSetContainer.size() > 0) { // there
+                        // is
+                        // at
+                        // least
+                        // one
+                        // graph
+                        // The graph info element
+                        // int gIndex = getNearestGraphIndex(e.getX(),
+                        // e.getY());
+                        addMenuItem(graphPopupMenu, "Graph Info: "
+                                + getGraphInfo(e.getX(), e.getY()),
+                                new ActionListener() {
+
+                                    public void actionPerformed(ActionEvent ee) {
+                                        DPoint temp = FunctionArea.this.getDMeasures().getDPoint(
+                                                FunctionArea.this.m_x,
+                                                FunctionArea.this.m_y);
+                                        DPointIcon icon1 = new DPointIcon() {
+
+                                            public DBorder getDBorder() {
+                                                return new DBorder(4, 4, 4, 4);
+                                            }
+
+                                            public void paint(Graphics g) {
+                                                g.drawLine(-2, 0, 2, 0);
+                                                g.drawLine(0, 0, 0, 4);
+                                            }
+                                        };
+                                        temp.setIcon(icon1);
+                                        FunctionArea.this.addDElement(temp);
+                                    }
+                                }, false);
+
+                        addMenuItem(graphPopupMenu, "  Remove graph",
+                                new ActionListener() {
+
+                                    public void actionPerformed(ActionEvent ee) {
+                                        clearGraph(FunctionArea.this.m_x,
+                                                FunctionArea.this.m_y);
+                                    }
+                                });
+
+                        addMenuItem(graphPopupMenu, "  Change graph color",
+                                new ActionListener() {
+
+                                    public void actionPerformed(ActionEvent ee) {
+                                        changeColorGraph(FunctionArea.this.m_x,
+                                                FunctionArea.this.m_y);
+                                    }
+                                });
+                    }
+                    graphPopupMenu.show(FunctionArea.this, e.getX(), e.getY());
+                }
+            }
+        });
+    }
 
 	/**
 	 * Create an enabled menu item with given title and listener, add it to the
