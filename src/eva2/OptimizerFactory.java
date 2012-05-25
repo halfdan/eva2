@@ -1,10 +1,4 @@
-/*
- * Copyright (c) ZBiT, University of T&uuml;bingen, Germany
- */
 package eva2;
-
-import java.util.BitSet;
-import java.util.Vector;
 
 import eva2.server.go.IndividualInterface;
 import eva2.server.go.InterfacePopulationChangedEventListener;
@@ -27,12 +21,7 @@ import eva2.server.go.operators.crossover.CrossoverESDefault;
 import eva2.server.go.operators.crossover.InterfaceCrossover;
 import eva2.server.go.operators.crossover.NoCrossover;
 import eva2.server.go.operators.distancemetric.IndividualDataMetric;
-import eva2.server.go.operators.mutation.InterfaceMutation;
-import eva2.server.go.operators.mutation.MutateESCovarianceMatrixAdaption;
-import eva2.server.go.operators.mutation.MutateESFixedStepSize;
-import eva2.server.go.operators.mutation.MutateESGlobal;
-import eva2.server.go.operators.mutation.MutateESRankMuCMA;
-import eva2.server.go.operators.mutation.NoMutation;
+import eva2.server.go.operators.mutation.*;
 import eva2.server.go.operators.postprocess.InterfacePostProcessParams;
 import eva2.server.go.operators.postprocess.PostProcessParams;
 import eva2.server.go.operators.selection.InterfaceSelection;
@@ -42,27 +31,13 @@ import eva2.server.go.operators.terminators.EvaluationTerminator;
 import eva2.server.go.populations.PBILPopulation;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.AbstractOptimizationProblem;
-import eva2.server.go.strategies.ClusterBasedNichingEA;
-import eva2.server.go.strategies.ClusteringHillClimbing;
-import eva2.server.go.strategies.DifferentialEvolution;
-import eva2.server.go.strategies.EsDpiNiching;
-import eva2.server.go.strategies.EsDpiNichingCma;
-import eva2.server.go.strategies.EvolutionStrategies;
-import eva2.server.go.strategies.EvolutionStrategyIPOP;
-import eva2.server.go.strategies.GeneticAlgorithm;
-import eva2.server.go.strategies.GradientDescentAlgorithm;
-import eva2.server.go.strategies.HillClimbing;
-import eva2.server.go.strategies.InterfaceOptimizer;
-import eva2.server.go.strategies.MonteCarloSearch;
-import eva2.server.go.strategies.MultiObjectiveEA;
-import eva2.server.go.strategies.NelderMeadSimplex;
-import eva2.server.go.strategies.ParticleSwarmOptimization;
-import eva2.server.go.strategies.PopulationBasedIncrementalLearning;
-import eva2.server.go.strategies.SimulatedAnnealing;
-import eva2.server.go.strategies.Tribes;
+import eva2.server.go.strategies.*;
 import eva2.server.modules.GOParameters;
 import eva2.server.stat.InterfaceStatistics;
 import eva2.tools.math.RNG;
+import java.util.ArrayList;
+import java.util.BitSet;
+import java.util.List;
 
 /**
  * <p>
@@ -1011,19 +986,19 @@ public class OptimizerFactory {
 		return runnable.getResultPopulation();
 	}
 
-	public static Vector<BitSet> postProcessBinVec(int steps, double sigma,
+	public static List<BitSet> postProcessBinVec(int steps, double sigma,
 			int nBest) {
 		return (lastRunnable != null) ? postProcessBinVec(lastRunnable,
 				new PostProcessParams(steps, sigma, nBest)) : null;
 	}
 
-	public static Vector<BitSet> postProcessBinVec(
+	public static List<BitSet> postProcessBinVec(
 			InterfacePostProcessParams ppp) {
 		return (lastRunnable != null) ? postProcessBinVec(lastRunnable, ppp)
 				: null;
 	}
 
-	public static Vector<BitSet> postProcessBinVec(OptimizerRunnable runnable,
+	public static List<BitSet> postProcessBinVec(OptimizerRunnable runnable,
 			int steps, double sigma, int nBest) {
 		return postProcessBinVec(runnable, new PostProcessParams(steps, sigma,
 				nBest));
@@ -1037,10 +1012,10 @@ public class OptimizerFactory {
 	 * @param ppp
 	 * @return
 	 */
-	public static Vector<BitSet> postProcessBinVec(OptimizerRunnable runnable,
+	public static List<BitSet> postProcessBinVec(OptimizerRunnable runnable,
 			InterfacePostProcessParams ppp) {
 		Population resPop = postProcess(runnable, ppp);
-		Vector<BitSet> ret = new Vector<BitSet>(resPop.size());
+		List<BitSet> ret = new ArrayList<BitSet>(resPop.size());
 		for (Object o : resPop) {
 			if (o instanceof InterfaceDataTypeBinary) {
 				InterfaceDataTypeBinary indy = (InterfaceDataTypeBinary) o;
@@ -1050,19 +1025,19 @@ public class OptimizerFactory {
 		return ret;
 	}
 
-	public static Vector<double[]> postProcessDblVec(int steps, double sigma,
+	public static List<double[]> postProcessDblVec(int steps, double sigma,
 			int nBest) {
 		return (lastRunnable == null) ? null : postProcessDblVec(lastRunnable,
 				new PostProcessParams(steps, sigma, nBest));
 	}
 
-	public static Vector<double[]> postProcessDblVec(
+	public static List<double[]> postProcessDblVec(
 			InterfacePostProcessParams ppp) {
 		return (lastRunnable != null) ? postProcessDblVec(lastRunnable, ppp)
 				: null;
 	}
 
-	public static Vector<double[]> postProcessDblVec(
+	public static List<double[]> postProcessDblVec(
 			OptimizerRunnable runnable, int steps, double sigma, int nBest) {
 		return postProcessDblVec(runnable, new PostProcessParams(steps, sigma,
 				nBest));
@@ -1076,10 +1051,10 @@ public class OptimizerFactory {
 	 * @param ppp
 	 * @return
 	 */
-	public static Vector<double[]> postProcessDblVec(
+	public static List<double[]> postProcessDblVec(
 			OptimizerRunnable runnable, InterfacePostProcessParams ppp) {
 		Population resPop = postProcess(runnable, ppp);
-		Vector<double[]> ret = new Vector<double[]>(resPop.size());
+		List<double[]> ret = new ArrayList<double[]>(resPop.size());
 		for (Object o : resPop) {
 			if (o instanceof InterfaceDataTypeDouble) {
 				InterfaceDataTypeDouble indy = (InterfaceDataTypeDouble) o;
@@ -1089,19 +1064,19 @@ public class OptimizerFactory {
 		return ret;
 	}
 
-	public static Vector<AbstractEAIndividual> postProcessIndVec(int steps,
+	public static List<AbstractEAIndividual> postProcessIndVec(int steps,
 			double sigma, int nBest) {
 		return (lastRunnable != null) ? postProcessIndVec(lastRunnable,
 				new PostProcessParams(steps, sigma, nBest)) : null;
 	}
 
-	public static Vector<AbstractEAIndividual> postProcessIndVec(
+	public static List<AbstractEAIndividual> postProcessIndVec(
 			InterfacePostProcessParams ppp) {
 		return (lastRunnable != null) ? postProcessIndVec(lastRunnable, ppp)
 				: null;
 	}
 
-	public static Vector<AbstractEAIndividual> postProcessIndVec(
+	public static List<AbstractEAIndividual> postProcessIndVec(
 			OptimizerRunnable runnable, int steps, double sigma, int nBest) {
 		return postProcessIndVec(runnable, new PostProcessParams(steps, sigma,
 				nBest));
@@ -1115,10 +1090,10 @@ public class OptimizerFactory {
 	 * @param ppp
 	 * @return
 	 */
-	public static Vector<AbstractEAIndividual> postProcessIndVec(
+	public static List<AbstractEAIndividual> postProcessIndVec(
 			OptimizerRunnable runnable, InterfacePostProcessParams ppp) {
 		Population resPop = postProcess(runnable, ppp);
-		Vector<AbstractEAIndividual> ret = new Vector<AbstractEAIndividual>(
+		List<AbstractEAIndividual> ret = new ArrayList<AbstractEAIndividual>(
 				resPop.size());
 		for (Object o : resPop) {
 			if (o instanceof AbstractEAIndividual) {
@@ -1428,8 +1403,7 @@ public class OptimizerFactory {
 			MutateESRankMuCMA cmaMut = new MutateESRankMuCMA();
 			AbstractEAIndividual.setOperators(indy, cmaMut, 1., new CrossoverESDefault(), 0.);
 		} else {
-			System.err
-					.println("Error, CMA-ES is implemented for ES individuals only (requires double data types)");
+			System.err.println("Error, CMA-ES is implemented for ES individuals only (requires double data types)");
 			return null;
 		}
 

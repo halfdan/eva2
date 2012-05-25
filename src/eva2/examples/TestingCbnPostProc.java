@@ -1,18 +1,18 @@
 package eva2.examples;
-import java.util.Vector;
 import eva2.OptimizerFactory;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.operators.postprocess.PostProcessParams;
 import eva2.server.go.operators.terminators.EvaluationTerminator;
 import eva2.server.go.problems.FM0Problem;
 import eva2.server.modules.GOParameters;
+import java.util.List;
 
 public class TestingCbnPostProc {
 	public static void main(String[] args) {
 		// a simple bimodal target function, two optima near (1.7,0) and (-1.44/0)
 		FM0Problem fm0 = new FM0Problem();              
 		AbstractEAIndividual best;              
-		Vector<AbstractEAIndividual> ppSols;
+		List<AbstractEAIndividual> ppSols;
 
 		GOParameters esParams = OptimizerFactory.standardCbnES(fm0);            
 		esParams.setTerminator(new EvaluationTerminator(2000));                 

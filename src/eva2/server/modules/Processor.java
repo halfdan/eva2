@@ -1,18 +1,8 @@
 package eva2.server.modules;
 
 import eva2.EvAInfo;
-import java.util.List;
-import java.util.Vector;
-
-import javax.swing.JOptionPane;
-
 import eva2.gui.BeanInspector;
-import eva2.server.go.InterfaceGOParameters;
-import eva2.server.go.InterfaceNotifyOnInformers;
-import eva2.server.go.InterfacePopulationChangedEventListener;
-import eva2.server.go.InterfaceProcessor;
-import eva2.server.go.InterfaceTerminator;
-import eva2.server.go.PopulationInterface;
+import eva2.server.go.*;
 import eva2.server.go.operators.paramcontrol.ConstantParameters;
 import eva2.server.go.operators.paramcontrol.InterfaceParameterControl;
 import eva2.server.go.operators.postprocess.PostProcess;
@@ -32,8 +22,11 @@ import eva2.tools.EVAHELP;
 import eva2.tools.StringTools;
 import eva2.tools.jproxy.RemoteStateListener;
 import eva2.tools.math.RNG;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  * The Processor may run as a thread permanently (GenericModuleAdapter) and is then stopped and started
@@ -400,7 +393,7 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
     }
 
     protected List<InterfaceAdditionalPopulationInformer> getInformerList() {
-        Vector<InterfaceAdditionalPopulationInformer> informerList = new Vector<InterfaceAdditionalPopulationInformer>(2);
+        List<InterfaceAdditionalPopulationInformer> informerList = new ArrayList<InterfaceAdditionalPopulationInformer>(2);
         informerList.add(this.goParams.getProblem());
         if (this.goParams.getOptimizer() instanceof InterfaceAdditionalPopulationInformer) {
             informerList.add((InterfaceAdditionalPopulationInformer) this.goParams.getOptimizer());
