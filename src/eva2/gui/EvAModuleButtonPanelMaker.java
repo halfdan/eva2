@@ -71,7 +71,7 @@ public class EvAModuleButtonPanelMaker implements RemoteStateListener, Serializa
         }
 
         //////////////////////////////////////////////////////////////
-        runButton = ToolBoxGui.createIconifiedButton("resources/images/Play24.gif", "Start", true);
+        runButton = ToolBoxGui.createIconifiedButton("images/Play24.gif", "Start", true);
         runButton.setToolTipText("Start the current optimization run.");
 
         runButton.addActionListener(new ActionListener() {
@@ -87,7 +87,7 @@ public class EvAModuleButtonPanelMaker implements RemoteStateListener, Serializa
 
         toolBar.add(runButton);
 
-        stopButton = ToolBoxGui.createIconifiedButton("resources/images/Stop24.gif", "Stop", true);
+        stopButton = ToolBoxGui.createIconifiedButton("images/Stop24.gif", "Stop", true);
         stopButton.setToolTipText("Stop the current optimization run.");
         //stopButton.setBorderPainted(false);
         stopButton.addActionListener(new ActionListener() {
@@ -106,7 +106,7 @@ public class EvAModuleButtonPanelMaker implements RemoteStateListener, Serializa
         stopButton.setEnabled(runningState);
         toolBar.add(stopButton);
 
-        postProcessButton = ToolBoxGui.createIconifiedButton("resources/images/History24.gif", "Post Process", true);
+        postProcessButton = ToolBoxGui.createIconifiedButton("images/History24.gif", "Post Process", true);
         postProcessButton.setToolTipText("Start post processing according to available parameters.");
         //postProcessButton.setBorderPainted(false);
         postProcessButton.addActionListener(new ActionListener() {
@@ -125,7 +125,7 @@ public class EvAModuleButtonPanelMaker implements RemoteStateListener, Serializa
         postProcessButton.setEnabled(runningState && moduleAdapter.hasPostProcessing());
         toolBar.add(postProcessButton);
         
-        scheduleButton = ToolBoxGui.createIconifiedButton("resources/images/Server24.gif", "Schedule", true);
+        scheduleButton = ToolBoxGui.createIconifiedButton("images/Server24.gif", "Schedule", true);
         scheduleButton.setToolTipText("Schedule the currently configured optimization as a job.");
         //scheduleButton.setBorderPainted(false);
         scheduleButton.addActionListener(new ActionListener() {

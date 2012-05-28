@@ -409,7 +409,7 @@ public class ReflectPackage {
 		System.out.println("1: " + cld.getResource("/eva2/server"));
 		System.out.println("2: " + cld.getResource("eva2/server"));
 //		BasicResourceLoader rld = BasicResourceLoader.instance();
-//		byte[] b = rld.getBytesFromResourceLocation("resources/images/Sub24.gif");
+//		byte[] b = rld.getBytesFromResourceLocation("images/Sub24.gif");
 //		System.out.println((b == null) ? "null" : b.toString());
 //		b = rld.getBytesFromResourceLocation("src/eva2/client/EvAClient.java");
 //		System.out.println((b == null) ? "null" : b.toString());

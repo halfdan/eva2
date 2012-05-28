@@ -104,7 +104,7 @@ public class GOEPanel extends JPanel implements ItemListener {
                         propChangeSupport.firePropertyChange("", backupObject, genericObjectEditor.getValue());
                     }
                 });
-        openButton = makeIconButton("resources/images/Open16.gif", "Open");
+        openButton = makeIconButton("images/Open16.gif", "Open");
         openButton.setToolTipText("Load a configured object");
         openButton.setEnabled(true);
         openButton.addActionListener(new ActionListener() {
@@ -123,7 +123,7 @@ public class GOEPanel extends JPanel implements ItemListener {
             }
         });
 
-        saveButton = makeIconButton("resources/images/Save16.gif", "Save");
+        saveButton = makeIconButton("images/Save16.gif", "Save");
         saveButton.setToolTipText("Save the current configured object");
         saveButton.setEnabled(true);
         saveButton.addActionListener(new ActionListener() {

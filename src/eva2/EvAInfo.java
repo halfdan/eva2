@@ -14,12 +14,12 @@ public class EvAInfo {
 	// public static final String fullVersion = "2.043"; // moved to EvA2.props!
 	public static final String url = "http://www.cogsys.cs.uni-tuebingen.de/software/EvA2";
 
-	public static final String propertyFile = "resources/EvA2.props";
+	public static final String propertyFile = "META-INF/EvA2.props";
 	public static final String LGPLFile = "lgpl-3.0.txt";
 	public static final String GPLFile= "gpl-3.0.txt";
-	public static final String iconLocation = "resources/images/icon4.gif";
+	public static final String iconLocation = "images/icon4.gif";
 
-	public static final String splashLocation = "resources/images/EvASplashScreen.png";
+	public static final String splashLocation = "images/EvASplashScreen.png";
 	public static final String infoTitle = productName+" Information";
 	public static final String copyrightYear = "2010-2012";
         

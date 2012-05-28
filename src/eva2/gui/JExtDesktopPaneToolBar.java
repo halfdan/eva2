@@ -27,7 +27,7 @@ public class JExtDesktopPaneToolBar extends JToolBar {
         setFloatable(false);
         
         /* Add Buttons to tile the desktopPane */
-        JButton verticalButton = ToolBoxGui.createIconifiedButton("resources/images/TileVertical16.png", "Tile vertically", false);
+        JButton verticalButton = ToolBoxGui.createIconifiedButton("images/TileVertical16.png", "Tile vertically", false);
         verticalButton.addActionListener(new ActionListener() {
 
             @Override
@@ -38,7 +38,7 @@ public class JExtDesktopPaneToolBar extends JToolBar {
         });
         add(verticalButton);        
         
-        JButton horizontalButton = ToolBoxGui.createIconifiedButton("resources/images/TileHorizontal16.png", "Tile horizontally", false);
+        JButton horizontalButton = ToolBoxGui.createIconifiedButton("images/TileHorizontal16.png", "Tile horizontally", false);
         horizontalButton.addActionListener(new ActionListener() {
 
             @Override
@@ -49,7 +49,7 @@ public class JExtDesktopPaneToolBar extends JToolBar {
         });
         add(horizontalButton);
         
-        JButton cascadeButton = ToolBoxGui.createIconifiedButton("resources/images/Cascade16.png", "Cascade windows", false);
+        JButton cascadeButton = ToolBoxGui.createIconifiedButton("images/Cascade16.png", "Cascade windows", false);
         cascadeButton.addActionListener(new ActionListener() {
 
             @Override

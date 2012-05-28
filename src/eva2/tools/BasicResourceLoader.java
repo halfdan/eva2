@@ -649,7 +649,7 @@ public class BasicResourceLoader implements ResourceLoader
 		if (slInd != -1) planBResName = resourceName.substring(slInd + 1);
 		else planBResName = resourceName;
 		Properties userProps = new Properties();
-		File propFile = new File(File.separatorChar + "resources" + File.separatorChar + planBResName);
+		File propFile = new File(File.separatorChar + planBResName);
 		if (propFile.exists()) {
 			try {
 				userProps.load(new FileInputStream(propFile));

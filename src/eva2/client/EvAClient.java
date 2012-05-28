@@ -44,7 +44,7 @@ import javax.swing.border.TitledBorder;
 /**
  *
  */
-public class EvAClient implements RemoteStateListener {
+public class EvAClient extends JFrame implements RemoteStateListener {
 
     /**
      * Generated serial version identifier.
@@ -54,7 +54,7 @@ public class EvAClient implements RemoteStateListener {
     private boolean clientInited = false;
     private JExtDesktopPaneToolBar desktopToolBar;
     private JDesktopPane desktopPane;
-    private JFrame mainFrame;
+    //private JFrame mainFrame;
     private JPanel configurationPane;
     private JSplitPane horizontalSplit;
     private Runnable initRnbl = null;    
@@ -333,33 +333,6 @@ public class EvAClient implements RemoteStateListener {
         }
     }
 
-    /**
-     * Add a window listener to the EvA2 JFrame instance.
-     *
-     * @param l
-     */
-    public void addWindowListener(WindowListener l) {
-        if (mainFrame != null) {
-            mainFrame.addWindowListener(l);
-        } else {
-            System.err.println("Error, no JFrame existent in "
-                    + this.getClass().getSimpleName());
-        }
-    }
-
-    /**
-     * Remove a window listener to the EvA2 JFrame instance.
-     *
-     * @param l
-     */
-    public void removeWindowListener(WindowListener l) {
-        if (mainFrame != null) {
-            mainFrame.removeWindowListener(l);
-        } else {
-            System.err.println("Error, no JFrame existent in "
-                    + this.getClass().getSimpleName());
-        }
-    }
     
     /**
      * Set UI Font for all controls.
@@ -406,9 +379,9 @@ public class EvAClient implements RemoteStateListener {
             }
             
             /* Create main frame with GridBagLayout */
-            mainFrame = new JFrame(EvAInfo.productName);            
-            mainFrame.setLayout(new GridBagLayout());
-            mainFrame.setMinimumSize(new Dimension(800, 600));
+            setTitle(EvAInfo.productName);
+            setLayout(new GridBagLayout());
+            setMinimumSize(new Dimension(800, 600));
 
             /* Creates the desktopPane for Plot/Text Output */
             desktopPane = new JExtDesktopPane();            
@@ -432,7 +405,7 @@ public class EvAClient implements RemoteStateListener {
             BasicResourceLoader loader = BasicResourceLoader.instance();
             byte[] bytes = loader.getBytesFromResourceLocation(EvAInfo.iconLocation, true);
             // TODO: use setIconImages (for better support of multiple icons when changing programs etc.)
-            mainFrame.setIconImage(Toolkit.getDefaultToolkit().createImage(bytes));
+            setIconImage(Toolkit.getDefaultToolkit().createImage(bytes));
 
             try {
                 Thread.sleep(200);
@@ -451,7 +424,7 @@ public class EvAClient implements RemoteStateListener {
             }
             createActions();
             
-            mainFrame.setSize(800, 600);
+            setSize(800, 600);
   
             /* Create a new ConfigurationPanel (left side) */
             configurationPane = new JPanel(new GridBagLayout());
@@ -464,7 +437,7 @@ public class EvAClient implements RemoteStateListener {
             gbConstraints.fill = GridBagConstraints.VERTICAL;
             gbConstraints.gridwidth = GridBagConstraints.RELATIVE;
             gbConstraints.gridheight = GridBagConstraints.RELATIVE;
-            mainFrame.add(configurationPane, gbConstraints);
+            add(configurationPane, gbConstraints);
             
             /* SplitPane for desktopPanel and loggingPanel */
             horizontalSplit = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true);
@@ -482,7 +455,7 @@ public class EvAClient implements RemoteStateListener {
             gbConstraints.fill = GridBagConstraints.BOTH;
             gbConstraints.gridwidth = GridBagConstraints.REMAINDER;
             gbConstraints.gridheight = GridBagConstraints.RELATIVE;
-            mainFrame.add(horizontalSplit, gbConstraints);
+            add(horizontalSplit, gbConstraints);
             
             /* StatusBar of the main frame */
             statusBar = new JPanel(new FlowLayout(FlowLayout.RIGHT));            
@@ -500,9 +473,9 @@ public class EvAClient implements RemoteStateListener {
             gbConstraints.weighty = 0.0;
             gbConstraints.fill = GridBagConstraints.HORIZONTAL;
             gbConstraints.anchor = GridBagConstraints.PAGE_END;
-            mainFrame.add(statusBar, gbConstraints);
+            add(statusBar, gbConstraints);
             
-            mainFrame.setVisible(true);
+            setVisible(true);
         }
         if (useDefaultModule != null) {
             /* 
@@ -517,11 +490,18 @@ public class EvAClient implements RemoteStateListener {
 
         if (withGUI) {
             buildMenu();
-            mainFrame.addWindowListener(new WindowAdapter() {
+            addWindowListener(new WindowAdapter() {
 
                 @Override
                 public void windowClosing(final WindowEvent event) {
-                    EvAClient.this.close();
+                    int result = JOptionPane.showConfirmDialog(
+                            EvAClient.this,
+                            "Do you really want to exit EvA2?",
+                            "Exit Application",
+                            JOptionPane.YES_NO_OPTION);
+                    if (result == JOptionPane.YES_OPTION) {
+                        EvAClient.this.close();
+                    }
                 }
             });
         }
@@ -542,13 +522,13 @@ public class EvAClient implements RemoteStateListener {
                 configurationPane.setVisible(true);
             }
             
-            if (!(mainFrame.isVisible())) {
+            if (!(this.isVisible())) {
                 Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-                mainFrame.setLocation((int) ((screenSize.width - mainFrame.getWidth()) / 2), (int) ((screenSize.height - mainFrame.getHeight()) / 2.5));
-                mainFrame.pack();
-                mainFrame.setSize(screenSize);
-                mainFrame.setVisible(true);
-                mainFrame.setVisible(true);
+                this.setLocation((int) ((screenSize.width - this.getWidth()) / 2), (int) ((screenSize.height - this.getHeight()) / 2.5));
+                this.pack();
+                this.setSize(screenSize);
+                this.setVisible(true);
+                this.setVisible(true);
             }
             
             // if this message is omitted, the stupid scroll pane runs to
@@ -819,7 +799,7 @@ public class EvAClient implements RemoteStateListener {
             @Override
             public void actionPerformed(final ActionEvent event) {
                 // ToDo
-                String helpHS = "resources/EvA2Help/EvA2Help.hs";
+                String helpHS = "EvA2Help/EvA2Help.hs";
                 ClassLoader cl = EvAClient.class.getClassLoader();
                 JHelpContentViewer helpPane;
                 try {
@@ -846,7 +826,7 @@ public class EvAClient implements RemoteStateListener {
      */
     private void buildMenu() {
         menuBar = new JMenuBar();
-        mainFrame.setJMenuBar(menuBar);
+        setJMenuBar(menuBar);
         menuModule = new JExtMenu("&Module");
         menuModule.add(actModuleLoad);
 
@@ -907,7 +887,7 @@ public class EvAClient implements RemoteStateListener {
         if (selectedModule == null) { // show a dialog and ask for a module
             String[] moduleNameList = comAdapter.getModuleNameList();
             if (moduleNameList == null) {
-                JOptionPane.showMessageDialog(mainFrame, "No modules available on " + comAdapter.getHostName(), EvAInfo.infoTitle, 1);
+                JOptionPane.showMessageDialog(this, "No modules available on " + comAdapter.getHostName(), EvAInfo.infoTitle, 1);
             } else {
                 String lastModule = null;
                 
@@ -923,7 +903,7 @@ public class EvAClient implements RemoteStateListener {
                     LOGGER.log(Level.INFO, "Defaulting to module: {0}", lastModule);
                 }
                 
-                selectedModule = (String) JOptionPane.showInputDialog(mainFrame,
+                selectedModule = (String) JOptionPane.showInputDialog(this,
                         "Which module do you want \n to load on host: " + comAdapter.getHostName() + " ?",
                         "Load optimization module on host",
                         JOptionPane.QUESTION_MESSAGE,
@@ -1058,7 +1038,7 @@ public class EvAClient implements RemoteStateListener {
                     gbConstraints.gridwidth = 2;
                     gbConstraints.fill = GridBagConstraints.HORIZONTAL;
                     gbConstraints.anchor = GridBagConstraints.PAGE_START;
-                    mainFrame.add(frameMaker.getToolBar(), gbConstraints);
+                    add(frameMaker.getToolBar(), gbConstraints);
                     
                     GridBagConstraints gbConstraints2 = new GridBagConstraints();
                     gbConstraints2.gridx = 0;
@@ -1119,7 +1099,7 @@ public class EvAClient implements RemoteStateListener {
         if (hostNames == null || hostNames.length == 0) {
             showNoHostFoundDialog();
         } else {
-            String hostName = (String) JOptionPane.showInputDialog(mainFrame,
+            String hostName = (String) JOptionPane.showInputDialog(this,
                     "Which active host do you want to connect to?", "Host", JOptionPane.QUESTION_MESSAGE, null,
                     hostNames, comAdapter.getHostName());
             if (hostName != null) {
@@ -1138,12 +1118,12 @@ public class EvAClient implements RemoteStateListener {
     }
 
     private void showPleaseWaitDialog() {
-        JOptionPane.showMessageDialog(configurationPane, "Please wait one moment.", EvAInfo.infoTitle, 1);
+        JOptionPane.showMessageDialog(this, "Please wait one moment.", EvAInfo.infoTitle, 1);
     }
 
     private void showAboutDialog() {
-        AboutDialog aboutDialog = new AboutDialog(mainFrame);
-        aboutDialog.setLocationRelativeTo(mainFrame);
+        AboutDialog aboutDialog = new AboutDialog(this);
+        aboutDialog.setLocationRelativeTo(this);
         aboutDialog.setVisible(true);
         aboutDialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
     }
@@ -1156,7 +1136,7 @@ public class EvAClient implements RemoteStateListener {
     }
 
     private void showNoHostFoundDialog() {
-        JOptionPane.showMessageDialog(mainFrame, "No host with running EVASERVER found. Please start one or \nadd the correct address to the properties list.", EvAInfo.infoTitle, 1);
+        JOptionPane.showMessageDialog(this, "No host with running EVASERVER found. Please start one or \nadd the correct address to the properties list.", EvAInfo.infoTitle, 1);
     }
 
     private void selectAvailableHostToKill(String[] HostNames) {
@@ -1164,7 +1144,7 @@ public class EvAClient implements RemoteStateListener {
             showNoHostFoundDialog();
             return;
         }
-        String HostName = (String) JOptionPane.showInputDialog(mainFrame,
+        String HostName = (String) JOptionPane.showInputDialog(this,
                 "Which server do you want to be killed ?", "Host", JOptionPane.QUESTION_MESSAGE, null,
                 HostNames, comAdapter.getHostName());
         if (HostName == null) {

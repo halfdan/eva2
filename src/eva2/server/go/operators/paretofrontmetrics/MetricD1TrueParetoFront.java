@@ -23,7 +23,7 @@ public class MetricD1TrueParetoFront implements eva2.server.go.operators.paretof
 
 //    private String              base                    = System.getProperty("user.dir");
 //    private String              FS                      = System.getProperty("file.separator");
-    private PropertyFilePath    m_InputFilePath         = PropertyFilePath.getFilePathFromResource("resources/MOPReference/T1_250.txt");
+    private PropertyFilePath    m_InputFilePath         = PropertyFilePath.getFilePathFromResource("MOPReference/T1_250.txt");
     private String[]            m_Titles;
     private double[][]          m_Reference;
 
