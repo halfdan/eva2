@@ -1,1 +1,0 @@
-Class-Path: lib/activation.jar lib/j2ssh-common.jar lib/jmatlink.jar lib/mail.jar lib/commons-logging.jar lib/j2ssh-core.jar lib/libJMatLink.so pop3.jar lib/wsi2.jar lib/imap.jar lib/j2ssh-dameon.jar lib/log4j.jar lib/smtp.jar lib/xalan2.jar lib/j2ssh-ant.jar lib/jdom.jar lib/mailapi.jar lib/sshfactory.jar lib/libJMatLink.so lib/windows/JMatLink.dll lib/windows/SNNS_jkr.dll

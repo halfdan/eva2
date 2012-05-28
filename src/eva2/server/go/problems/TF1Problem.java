@@ -197,7 +197,7 @@ public class TF1Problem extends AbstractMultiObjectiveOptimizationProblem implem
         int points = 500;
         String              base        = System.getProperty("user.dir");
         String              FS          = System.getProperty("file.separator");
-        PropertyFilePath    fileOutPath = PropertyFilePath.getFilePathFromResource("resources/MOPReference"+FS+"T1_"+points+".txt");
+        PropertyFilePath    fileOutPath = PropertyFilePath.getFilePathFromResource("MOPReference"+FS+"T1_"+points+".txt");
         BufferedWriter      writer      = null;
         try {
             writer = new BufferedWriter(new FileWriter(fileOutPath.getCompleteFilePath()));

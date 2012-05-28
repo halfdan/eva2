@@ -20,7 +20,7 @@ import eva2.server.go.tools.FileTools;
  * To change this template use File | Settings | File Templates.
  */
 public class MetricD1ApproxParetoFront implements eva2.server.go.operators.paretofrontmetrics.InterfaceParetoFrontMetric, java.io.Serializable {
-    private PropertyFilePath    m_InputFilePath         = PropertyFilePath.getFilePathFromResource("resources/MOPReference/T1_250.txt");
+    private PropertyFilePath    m_InputFilePath         = PropertyFilePath.getFilePathFromResource("MOPReference/T1_250.txt");
     private String[]            m_Titles;
     private double[][]          m_Reference;
 

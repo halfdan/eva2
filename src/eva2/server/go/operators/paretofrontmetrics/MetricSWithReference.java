@@ -21,7 +21,7 @@ import eva2.server.go.tools.FileTools;
  */
 public class MetricSWithReference implements InterfaceParetoFrontMetric, java.io.Serializable {
     private double[][]          m_ObjectiveSpaceRange;
-    private PropertyFilePath    m_InputFilePath         = PropertyFilePath.getFilePathFromResource("resources/MOPReference/T1_250.txt");
+    private PropertyFilePath    m_InputFilePath         = PropertyFilePath.getFilePathFromResource("MOPReference/T1_250.txt");
     private String[]            m_Titles;
     private double[][]          m_Reference;
     private double              m_ReferenceSMetric      = -1;

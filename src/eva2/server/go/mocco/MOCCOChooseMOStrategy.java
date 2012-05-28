@@ -55,7 +55,7 @@ public class MOCCOChooseMOStrategy extends MOCCOPhase implements InterfaceProces
     	gbc.fill      = GridBagConstraints.BOTH;
     	gbc.weightx   = 100;
     	tmpB = new JButton();
-    	bytes = loader.getBytesFromResourceLocation("resources/MOCCO/MOCCO_MOEA.gif", true);
+    	bytes = loader.getBytesFromResourceLocation("images/MOCCO/MOCCO_MOEA.gif", true);
     	tmpB.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(bytes)));
     	tmpB.setBackground(Color.WHITE);
     	gbc.gridy     = 0;
@@ -73,7 +73,7 @@ public class MOCCOChooseMOStrategy extends MOCCOPhase implements InterfaceProces
     	" objectives."), gbc);
 
     	tmpB = new JButton();
-    	bytes = loader.getBytesFromResourceLocation("resources/MOCCO/MOCCO_GDF.gif", true);
+    	bytes = loader.getBytesFromResourceLocation("images/MOCCO/MOCCO_GDF.gif", true);
     	tmpB.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(bytes)));
     	tmpB.setBackground(Color.WHITE);
     	gbc.gridy     = 1;
@@ -89,7 +89,7 @@ public class MOCCOChooseMOStrategy extends MOCCOPhase implements InterfaceProces
     	this.m_Mocco.m_JPanelParameters.add(tmpP, BorderLayout.CENTER);
 
     	tmpB = new JButton();
-    	bytes = loader.getBytesFromResourceLocation("resources/MOCCO/MOCCO_STEP.gif", true);
+    	bytes = loader.getBytesFromResourceLocation("images/MOCCO/MOCCO_STEP.gif", true);
     	tmpB.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(bytes)));
     	tmpB.setBackground(Color.WHITE);
     	gbc.gridy     = 2;
@@ -106,7 +106,7 @@ public class MOCCOChooseMOStrategy extends MOCCOPhase implements InterfaceProces
     	" into a single objectives. The individual weights are also to be given by the DM."), gbc);
 
     	tmpB = new JButton();
-    	bytes = loader.getBytesFromResourceLocation("resources/MOCCO/MOCCO_REFP.gif", true);
+    	bytes = loader.getBytesFromResourceLocation("images/MOCCO/MOCCO_REFP.gif", true);
     	tmpB.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(bytes)));
     	tmpB.setBackground(Color.WHITE);
     	gbc.gridy     = 3;
@@ -123,7 +123,7 @@ public class MOCCOChooseMOStrategy extends MOCCOPhase implements InterfaceProces
     	" same time."), gbc);
 
     	tmpB = new JButton();
-    	bytes = loader.getBytesFromResourceLocation("resources/MOCCO/MOCCO_TBCH.gif", true);
+    	bytes = loader.getBytesFromResourceLocation("images/MOCCO/MOCCO_TBCH.gif", true);
     	tmpB.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(bytes)));
     	tmpB.setBackground(Color.WHITE);
     	gbc.gridy     = 4;

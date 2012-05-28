@@ -71,27 +71,27 @@ public class GenericRemoteServersEditor extends JPanel implements PropertyEditor
     	this.m_ParameterPanel.add(this.m_Password, gbc);
 
     	JButton tmpB;
-    	tmpB = makeButtonWith("resources/images/Add24.gif", "add");
+    	tmpB = makeButtonWith("images/Add24.gif", "add");
     	tmpB.addActionListener(addServer);
     	setGBC(gbc, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, 1, 0, 1, 1);
     	this.m_ParameterPanel.add(tmpB, gbc);
-    	tmpB = makeButtonWith("resources/images/Export24.gif", "Load");
+    	tmpB = makeButtonWith("images/Export24.gif", "Load");
     	tmpB.addActionListener(loadServers);
     	setGBC(gbc, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, 1, 1, 1, 1);
     	this.m_ParameterPanel.add(tmpB, gbc);
-    	tmpB = makeButtonWith("resources/images/Import24.gif", "Save");
+    	tmpB = makeButtonWith("images/Import24.gif", "Save");
     	tmpB.addActionListener(saveServers);
     	setGBC(gbc, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, 1, 2, 1, 1);
     	this.m_ParameterPanel.add(tmpB, gbc);
-    	tmpB = makeButtonWith("resources/images/Refresh24.gif", "Update Status");
+    	tmpB = makeButtonWith("images/Refresh24.gif", "Update Status");
     	tmpB.addActionListener(updateServers);
     	setGBC(gbc, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, 1, 3, 1, 1);
     	this.m_ParameterPanel.add(tmpB, gbc);
-    	tmpB = makeButtonWith("resources/images/Play24.gif", "Start Server");
+    	tmpB = makeButtonWith("images/Play24.gif", "Start Server");
     	tmpB.addActionListener(startServers);
     	setGBC(gbc, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, 1, 4, 1, 1);
     	this.m_ParameterPanel.add(tmpB, gbc);
-    	tmpB = makeButtonWith("resources/images/Stop24.gif", "Stop Server");
+    	tmpB = makeButtonWith("images/Stop24.gif", "Stop Server");
     	tmpB.addActionListener(killServers);
     	setGBC(gbc, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, 1, 5, 1, 1);
     	this.m_ParameterPanel.add(tmpB, gbc);
@@ -168,7 +168,7 @@ public class GenericRemoteServersEditor extends JPanel implements PropertyEditor
             this.m_ServerList.add(this.m_CPUs[i], gbc);
             // The delete button
             setGBC(gbc, GridBagConstraints.WEST, GridBagConstraints.REMAINDER, 3, 10);
-            bytes = BasicResourceLoader.instance().getBytesFromResourceLocation("resources/images/Sub24.gif", true);
+            bytes = BasicResourceLoader.instance().getBytesFromResourceLocation("images/Sub24.gif", true);
             this.m_Delete[i] = new JButton("", new ImageIcon(Toolkit.getDefaultToolkit().createImage(bytes)));
             this.m_Delete[i].addActionListener(deleteServer);
             this.m_ServerList.add(this.m_Delete[i], gbc);

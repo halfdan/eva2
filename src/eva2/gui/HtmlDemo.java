@@ -52,12 +52,12 @@ public class HtmlDemo {
     }
     
     public boolean resourceExists() {
-    	URL url = ClassLoader.getSystemResource("resources/"+m_name);
+    	URL url = ClassLoader.getSystemResource("html/"+m_name);
     	return (url != null);
     }
     
     public static boolean resourceExists(String mname) {
-    	URL url = ClassLoader.getSystemResource("resources/"+mname);
+    	URL url = ClassLoader.getSystemResource("html/"+mname);
     	return (url != null);
     }
     /**
@@ -66,12 +66,12 @@ public class HtmlDemo {
     public void show() {
         try {
             URL url = null;
-            url = this.getClass().getClassLoader().getSystemResource("resources/"+m_name);
+            url = this.getClass().getClassLoader().getSystemResource("html/"+m_name);
 
             try {
                 m_html = new JEditorPane(url);
             } catch (java.io.IOException ioe) {
-                url = this.getClass().getClassLoader().getSystemResource("resources/Default.html");
+                url = this.getClass().getClassLoader().getSystemResource("html/Default.html");
                 m_html = new JEditorPane(url);
             }
             //m_html = new JEditorPane(htmlDescription);

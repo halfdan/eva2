@@ -174,7 +174,7 @@ public class GenericOptimizationObjectivesEditor extends JPanel implements Prope
             gbc.fill        = GridBagConstraints.REMAINDER;
             gbc.gridx       = 1;
             gbc.weightx     = 1;
-            bytes = loader.getBytesFromResourceLocation("resources/images/Sub24.gif", true);
+            bytes = loader.getBytesFromResourceLocation("images/Sub24.gif", true);
             this.m_Delete[i] = new JButton("", new ImageIcon(Toolkit.getDefaultToolkit().createImage(bytes)));
             this.m_Delete[i].addActionListener(deleteTarget);
             this.m_TargetList.add(this.m_Delete[i], gbc);
