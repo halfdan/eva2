@@ -13,24 +13,26 @@ import java.util.logging.Logger;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
-import javax.swing.JSeparator;
-import javax.swing.event.PopupMenuEvent;
-import javax.swing.event.PopupMenuListener;
 
 /**
+ * This is a JLabel that shows the current logging level
+ * depending on the Logger provided. It creates a popup
+ * menu on left-click to change the logging level. Logging
+ * levels are as specified by "java.util.logging.Level.*"
  *
  * @author becker
  */
 public final class LoggingLevelLabel extends JLabel {
     private JPopupMenu menu;
     private String[] options;
-    private String selected;
     private Logger logger;
     
-    public LoggingLevelLabel(Logger logger) {
+    public LoggingLevelLabel(final Logger logger) {
         options = new String[]{"Info", "Warning", "Severe", "Fine", "Finer", "Finest", "All"};
-        
+
         this.logger = logger;
+
+        setToolTipText("Click to change current logging level");
         createPopupMenu();
         updateText();
     }
@@ -61,13 +63,18 @@ public final class LoggingLevelLabel extends JLabel {
             }
         });
 
+        JMenuItem menuItem;
+        ActionListener menuAction = new MenuActionListener();
         for (String option : options) {
-            JMenuItem menuItem = new JMenuItem(option);
-            menuItem.addActionListener(new MenuActionListener());
+            menuItem = new JMenuItem(option);
+            menuItem.addActionListener(menuAction);
             menu.add(menuItem);
         }
     }
-    
+
+    /**
+     * Updates the visible text on the label.
+     */
     private void updateText() {
         /* Get the current logging Level */
         Level lvl = logger.getLevel();
@@ -79,6 +86,11 @@ public final class LoggingLevelLabel extends JLabel {
         setText("<html><b>Level</b>: " + lvl.getName());
     }
     
+    /**
+     * Sets the level of the logger to a new level.
+     * 
+     * @param level The new level for the logger
+     */
     private void setLoggerLevel(Level level) {        
         logger.setLevel(level);
         logger.log(Level.INFO, "Logging Level changed to {0}", level.getName());
@@ -93,17 +105,15 @@ public final class LoggingLevelLabel extends JLabel {
         public void actionPerformed(final ActionEvent ev) {
             JMenuItem menuItem = (JMenuItem) ev.getSource();
             String levelName = menuItem.getText();
-            
+
             try {
                 Level level = Level.parse(levelName.toUpperCase());
                 LoggingLevelLabel.this.setLoggerLevel(level);
             } catch (IllegalArgumentException ex) {
                 logger.log(Level.INFO, "Could not determine new logging level!", ex);
             }
-            
+
             LoggingLevelLabel.this.updateText();
-        }
-        
+        }   
     }
-    
 }
