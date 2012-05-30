@@ -18,4 +18,4 @@ ModulePackage = eva2.server.modules
 ModuleFilterClass = eva2.server.modules.AbstractModuleAdapter
 
 # Full EvA2 version number
-EvA2Version = 2.050
+EvA2Version = 3.0-rc1

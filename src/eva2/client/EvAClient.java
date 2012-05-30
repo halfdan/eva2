@@ -39,6 +39,7 @@ import java.util.logging.Logger;
 import javax.help.*;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
+import javax.swing.plaf.SeparatorUI;
 
 
 /**
@@ -458,14 +459,30 @@ public class EvAClient extends JFrame implements RemoteStateListener {
             add(horizontalSplit, gbConstraints);
             
             /* StatusBar of the main frame */
-            statusBar = new JPanel(new FlowLayout(FlowLayout.RIGHT));            
-            statusBar.add(new JLabel("Progress"));
+            statusBar = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+            JPanel statusBarControls = new JPanel();
+            statusBarControls.setLayout(new BoxLayout(statusBarControls, BoxLayout.LINE_AXIS));
+            
+            statusBarControls.add(Box.createHorizontalGlue());
+            /* Logging settings drop down */
+            LoggingLevelLabel loggingOption = new LoggingLevelLabel(LOGGER);
+            
+            statusBarControls.add(loggingOption);
+            
+            statusBarControls.add(Box.createHorizontalStrut(5));
+            statusBarControls.add(new JSeparator(JSeparator.VERTICAL));
+            statusBarControls.add(Box.createHorizontalStrut(5));
             
             /* Create ProgressBar and add it to the status bar */
-            progressBar = new JProgressBar();            
-            progressBar.setValue(0);            
+            statusBarControls.add(new JLabel("Progress"));
+            statusBarControls.add(Box.createHorizontalStrut(5));
+            
+            progressBar = new JProgressBar();
+            progressBar.setValue(0);
             progressBar.setStringPainted(true);
-            statusBar.add(progressBar);            
+            statusBarControls.add(progressBar);
+            
+            statusBar.add(statusBarControls);
             
             gbConstraints.gridx = 0;
             gbConstraints.gridy = 2;
