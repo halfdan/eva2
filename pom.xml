@@ -80,4 +80,18 @@
     <!-- Default file encoding is UTF-8 -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
+  
+  <licenses>
+    <license>
+      <name>GNU LGPL v2.1</name>
+      <url>http://www.gnu.org/licenses/lgpl-2.1.txt</url>
+      <distribution>repo</distribution>
+      <comments>GNU Lesser General Public License, version 2.1</comments>
+    </license>
+  </licenses>
+  
+  <organization>
+    <name>Department for Cognitive Systems, University of Tuebingen, Germany</name>
+    <url>http://www.cogsys.cs.uni-tuebingen.de/</url>
+  </organization>
 </project>

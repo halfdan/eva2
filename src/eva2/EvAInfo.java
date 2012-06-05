@@ -9,16 +9,39 @@ import java.util.Properties;
  *
  */
 public class EvAInfo {
+    /**
+     * Product Name.
+     */
 	public static final String productName = "EvA2";
+    
+    /**
+     * Long product name.
+     */
 	public static final String productLongName = "Evolutionary Algorithms Workbench 2";
+    
+    /**
+     * Website URL of EvA2.
+     */
 	public static final String url = "http://www.cogsys.cs.uni-tuebingen.de/software/EvA2";
 
+    /**
+     * Relative path to default properties.
+     */
 	public static final String propertyFile = "META-INF/EvA2.props";
+    
 	public static final String LGPLFile = "lgpl-3.0.txt";
 	public static final String GPLFile= "gpl-3.0.txt";
+    
+    /**
+     * Relative path to application icon.
+     */
 	public static final String iconLocation = "images/icon4.gif";
 
+    /**
+     * Relative path to splash screen image.
+     */
 	public static final String splashLocation = "images/EvASplashScreen.png";
+    
 	public static final String infoTitle = productName+" Information";
 	public static final String copyrightYear = "2010-2012";
     
@@ -38,7 +61,6 @@ public class EvAInfo {
 		InputStream istr = BasicResourceLoader.instance().getStreamFromResourceLocation(EvAInfo.iconLocation);
 		if (istr==null) {
 			throw new RuntimeException(resourceNotFoundErrorMessage(EvAInfo.iconLocation) + " (EvAInfo.static)");
-//			System.exit(2); // dont be as harsh right here - there will be plenty of exceptions later in the bad case...
 		}
 	}
 	
