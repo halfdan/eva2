@@ -260,8 +260,8 @@ public class GenericArrayEditor extends JPanel implements PropertyEditor {
          * @param valueClass The class of the array values
          */
         public EditorListCellRenderer(Class editorClass, Class valueClass) {
-            editorClass = editorClass;
-            valueClass = valueClass;
+            this.editorClass = editorClass;
+            this.valueClass = valueClass;
         }
 
         /**
@@ -282,12 +282,12 @@ public class GenericArrayEditor extends JPanel implements PropertyEditor {
             try {
                 final PropertyEditor e = (PropertyEditor) editorClass.newInstance();
                 if (e instanceof GenericObjectEditor) {
-                    //	  ((GenericObjectEditor) e).setDisplayOnly(true);
                     ((GenericObjectEditor) e).setClassType(valueClass);
                 }
                 e.setValue(value);
                 JPanel cellPanel = new JPanel() {
 
+                    @Override
                     public void paintComponent(Graphics g) {
                         Insets i = this.getInsets();
                         Rectangle box = new Rectangle(i.left, i.top,
@@ -299,6 +299,7 @@ public class GenericArrayEditor extends JPanel implements PropertyEditor {
                         e.paintValue(g, box);
                     }
 
+                    @Override
                     public Dimension getPreferredSize() {
                         Font f = this.getFont();
                         FontMetrics fm = this.getFontMetrics(f);
@@ -364,7 +365,7 @@ public class GenericArrayEditor extends JPanel implements PropertyEditor {
 
                 // Create the ListModel and populate it
                 listModel = new DefaultListModel();
-                elementClass = elementClass;
+                this.elementClass = elementClass;
                 for (int i = 0; i < Array.getLength(arrayInstance); i++) {
                     listModel.addElement(Array.get(arrayInstance, i));
                 }
