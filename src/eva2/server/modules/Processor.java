@@ -43,7 +43,7 @@ import javax.swing.JOptionPane;
  */
 public class Processor extends Thread implements InterfaceProcessor, InterfacePopulationChangedEventListener {
 
-    private static final Logger logger = Logger.getLogger(EvAInfo.defaultLogger);
+    private static final Logger LOGGER = Logger.getLogger(Processor.class.getName());
     private volatile boolean m_optRunning;
     private InterfaceStatistics m_Statistics;
     private InterfaceGOParameters goParams;
@@ -56,7 +56,7 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
     private boolean userAborted = false;
 
     public void addListener(RemoteStateListener module) {
-        logger.log(
+        LOGGER.log(
                 Level.FINEST,
                 "Processor: setting module as listener: " + ((module == null)
                 ? "null" : module.toString()));
@@ -107,7 +107,7 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
     public void startOpt() {
         m_createInitialPopulations = true;        
         if (isOptRunning()) {
-            logger.log(Level.SEVERE, "Processor is already running.");
+            LOGGER.log(Level.SEVERE, "Processor is already running.");
             return;
         }
         resPop = null;
@@ -132,7 +132,7 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
     public void restartOpt() {
         m_createInitialPopulations = false;        
         if (isOptRunning()) {
-            logger.log(Level.SEVERE, "Processor is already running.");
+            LOGGER.log(Level.SEVERE, "Processor is already running.");
             return;
         }
         userAborted = false;
@@ -183,13 +183,12 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
                 errMsg = "check console output for error messages.";
             }
             errMsg = "Exception in Processor: " + errMsg;
-            System.err.println(errMsg);
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             try {
                 JOptionPane.showMessageDialog(null, StringTools.wrapLine(errMsg, 60, 0.2), "Error in Optimization", JOptionPane.ERROR_MESSAGE);
             } catch (Exception ex) {
-            } catch (Error er) {
-            };
+            } catch (Error error) {
+            }
             //m_Statistics.stopOptPerformed(false);
             setOptRunning(false); // normal finish
             if (m_ListenerModule != null) {
