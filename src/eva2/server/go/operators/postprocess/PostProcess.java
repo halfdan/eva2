@@ -33,7 +33,7 @@ import eva2.server.go.strategies.HillClimbing;
 import eva2.server.go.strategies.NelderMeadSimplex;
 import eva2.server.modules.GOParameters;
 import eva2.server.stat.InterfaceTextListener;
-import eva2.server.stat.StatsParameter;
+import eva2.server.stat.StatisticsParameter;
 import eva2.tools.Pair;
 import eva2.tools.math.Mathematics;
 import java.util.ArrayList;
@@ -805,7 +805,7 @@ public class PostProcess {
 	 */
 	private static void runPP(OptimizerRunnable rnbl) {
 		rnbl.getGOParams().setDoPostProcessing(false);
-		rnbl.setVerbosityLevel(StatsParameter.VERBOSITY_NONE);
+		rnbl.setVerbosityLevel(StatisticsParameter.VERBOSITY_NONE);
 		ppRunnables.add(rnbl);
 //		System.err.println("Starting runbl " + rnbl);
 		rnbl.run();

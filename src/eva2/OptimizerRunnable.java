@@ -246,7 +246,7 @@ public class OptimizerRunnable implements Runnable {
 	 * @param outp
 	 */
 	public void setOutputTo(int outp) {
-		((StatsParameter)proc.getStatistics().getStatisticsParameter()).setOutputTo(outp);
+		((StatisticsParameter)proc.getStatistics().getStatisticsParameter()).setOutputTo(outp);
 	}
 	
 	/**

@@ -58,21 +58,21 @@ public class StatisticsStandalone extends AbstractStatistics implements Interfac
 	}
 
 	public StatisticsStandalone(String resultFileName) {
-		this(resultFileName, 1, resultFileName==null ? StatsParameter.VERBOSITY_NONE : StatsParameter.VERBOSITY_FINAL, false);
+		this(resultFileName, 1, resultFileName==null ? StatisticsParameter.VERBOSITY_NONE : StatisticsParameter.VERBOSITY_FINAL, false);
 	}
 	
 	public StatisticsStandalone(String resultFileName, int multiRuns, int verbosity, boolean outputAllFieldsAsText) {
-		this(StatsParameter.getInstance(false));
+		this(StatisticsParameter.getInstance(false));
 		m_StatsParams.setMultiRuns(multiRuns);
 		m_StatsParams.setOutputVerbosity(m_StatsParams.getOutputVerbosity().setSelectedTag(verbosity));
-		m_StatsParams.SetResultFilePrefix(resultFileName);
+		m_StatsParams.setResultFilePrefix(resultFileName);
 		m_StatsParams.setOutputAllFieldsAsText(outputAllFieldsAsText);
-		if (resultFileName==null) m_StatsParams.getOutputTo().setSelectedTag(StatsParameter.OUTPUT_WINDOW); 
-		else m_StatsParams.setOutputTo(m_StatsParams.getOutputTo().setSelectedTag(StatsParameter.OUTPUT_FILE));
+		if (resultFileName==null) m_StatsParams.getOutputTo().setSelectedTag(StatisticsParameter.OUTPUT_WINDOW); 
+		else m_StatsParams.setOutputTo(m_StatsParams.getOutputTo().setSelectedTag(StatisticsParameter.OUTPUT_FILE));
 	}
 	
 	public StatisticsStandalone() {
-		this(new StatsParameter());
+		this(new StatisticsParameter());
 	}
 
 	protected void initPlots(PopulationInterface pop, List<InterfaceAdditionalPopulationInformer> informerList) {

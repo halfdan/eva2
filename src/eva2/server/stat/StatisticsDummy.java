@@ -18,19 +18,19 @@ import eva2.server.go.strategies.InterfaceOptimizer;
  */
 public class StatisticsDummy implements InterfaceStatistics, InterfaceTextListener {
 	boolean consoleOut = false;
-	StatsParameter sParams = null;
+	StatisticsParameter sParams = null;
 	AbstractEAIndividual bestCurrentIndividual, bestRunIndy, bestIndividualAllover;
 	
 	public StatisticsDummy() {
 		bestIndividualAllover = null;
-		sParams = new StatsParameter();
-		sParams.setOutputVerbosityK(StatsParameter.VERBOSITY_NONE);
+		sParams = new StatisticsParameter();
+		sParams.setOutputVerbosityK(StatisticsParameter.VERBOSITY_NONE);
 	}
 	
 	public StatisticsDummy(boolean doConsoleOut) {
 		bestIndividualAllover = null;
-		sParams = new StatsParameter();
-		sParams.setOutputVerbosityK(StatsParameter.VERBOSITY_NONE);
+		sParams = new StatisticsParameter();
+		sParams.setOutputVerbosityK(StatisticsParameter.VERBOSITY_NONE);
 		consoleOut = doConsoleOut;
 	}
 	
