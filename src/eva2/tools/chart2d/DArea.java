@@ -786,7 +786,7 @@ public class DArea extends JComponent implements DParent, Printable {
 			System.out.println("DArea.setVisibleRectangle(DRectangle)");
 		if (rect.isEmpty())
 			throw new IllegalArgumentException(
-					"You shopuld never try to set an empty rectangle\n"
+					"You should never try to set an empty rectangle\n"
 							+ "as the visible rectangle of an DArea");
 
 		if (!rect.equals(visible_rect) && rect.getWidth() > 0

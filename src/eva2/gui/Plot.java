@@ -121,8 +121,8 @@ public class Plot implements PlotInterface, Serializable {
                 m_PlotArea.toggleLog();
             }
         });
-        JButton ExportButton = new JButton("Export...");
-        ExportButton.setToolTipText("Exports the graph data to a simple ascii file.");
+        JButton ExportButton = new JButton("Export to TSV");
+        ExportButton.setToolTipText("Exports the graph data to a simple TSV file.");
         ExportButton.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {

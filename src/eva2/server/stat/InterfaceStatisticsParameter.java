@@ -9,51 +9,48 @@ import eva2.tools.StringSelection;
  * @see StatsParameter
  */
 public interface InterfaceStatisticsParameter {
-  public String getName();
-  public void saveInstance();
-//  public String globalInfo();
-//  public void setTextoutput(int i);
-//  public void setPlotoutput(int i); // noone knows what these were useful for...
-//  public int GetPlotoutput();
-//  public int GetTextoutput();
-//  public String textoutputTipText();
-//  public String plotFrequencyTipText();
-  public void setMultiRuns(int x);
-  public int getMultiRuns();
-  public String multiRunsTipText();
+  String getName();
+  void saveInstance();
+  void setMultiRuns(int x);
+  int getMultiRuns();
+  String multiRunsTipText();
 
-//  public String GetInfoString();
-//  public void setInfoString(String s);
   
-  public boolean GetUseStatPlot(); // use averaged graph for multi-run plots or not
-  public void setUseStatPlot(boolean x); // activate averaged graph for multi-run plots
+  /**
+   * Use averaged graph for multi-run plots or not.
+   * 
+   * @return If an average graph is used or not
+   */
+  boolean getUseStatPlot();
   
-//  public List<String[]> getPlotDescriptions();
+  /**
+   * Activate averaged graph for multi-run plots.
+   * 
+   * @param x If averaged graph should be activated.
+   */
+  void setUseStatPlot(boolean x);
+  
+  StringSelection getFieldSelection();
+  void setFieldSelection(StringSelection v);
+  
+  String getResultFilePrefix();
+  void setResultFilePrefix(String x);
+  
+  void setConvergenceRateThreshold(double x);
+  double getConvergenceRateThreshold();
 
-//  public SelectedTag getPlotData();
-//  public void setPlotData(SelectedTag newMethod);
+  void setShowTextOutput(boolean show);
+  boolean isShowTextOutput();
   
-  public StringSelection getFieldSelection();
-  public void setFieldSelection(StringSelection v);
+  boolean isOutputAllFieldsAsText();
+  void setOutputAllFieldsAsText(boolean bShowFullText);
   
-  public String getResultFilePrefix();
-  public void SetResultFilePrefix(String x);
+  void setOutputVerbosity(SelectedTag sTag);
+  SelectedTag getOutputVerbosity();
   
-  public void setConvergenceRateThreshold(double x);
-  public double getConvergenceRateThreshold();
-
-  public void SetShowTextOutput(boolean show);
-  public boolean isShowTextOutput();
+  int getOutputVerbosityK();
+  void setOutputVerbosityK(int k);
   
-  public boolean isOutputAllFieldsAsText();
-  public void setOutputAllFieldsAsText(boolean bShowFullText);
-  
-  public void setOutputVerbosity(SelectedTag sTag);
-  public SelectedTag getOutputVerbosity();
-  
-  public int getOutputVerbosityK();
-  public void setOutputVerbosityK(int k);
-  
-  public void setOutputTo(SelectedTag sTag);
-  public SelectedTag getOutputTo();
+  void setOutputTo(SelectedTag sTag);
+  SelectedTag getOutputTo();
 }
