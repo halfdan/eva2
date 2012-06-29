@@ -47,6 +47,7 @@ import eva2.tools.chart2d.DPoint;
 import eva2.tools.chart2d.DPointIcon;
 import eva2.tools.chart2d.DPointSet;
 import eva2.tools.chart2d.ScaledBorder;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /*
@@ -740,8 +741,8 @@ public class FunctionArea extends DArea implements Serializable {
                 out.flush();
                 out.close();
                 return true;
-            } catch (Exception e) {
-                System.err.println("Error on data export:" + e.getMessage());
+            } catch (Exception ex) {
+                LOGGER.log(Level.WARNING, "Error while writing to file.", ex);
                 return false;
             }
         }
