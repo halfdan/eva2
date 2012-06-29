@@ -356,6 +356,9 @@ public class GenericArrayEditor extends JPanel implements PropertyEditor {
                     view = new PropertyValueSelector(editor);
                 } else if (editor.getAsText() != null) {
                     view = new PropertyText(editor);
+                } else if (view == null) {
+                    /* Dirty hack to view PropertyDoubleArray component */
+                    view = new PropertyText(editor);
                 }
             }
             if (view == null) {

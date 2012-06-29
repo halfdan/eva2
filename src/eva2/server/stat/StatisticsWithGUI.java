@@ -159,13 +159,8 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
     }
 
     protected void initPlots(PopulationInterface pop, List<InterfaceAdditionalPopulationInformer> informerList) {
-        if (TRACE) {
-            System.out.println("initPlots");
-        }
         if (m_StatsParams instanceof StatisticsParameter) {
-//			StringSelection ss = ((StatsParameter)m_StatsParams).getGraphSelection();
             graphDesc = lastFieldSelection.getSelectedWithIndex();
-//			for (int i=0; i<description.get(0).length; i++) graphDesc.add(description.get(0)[i]);
         } else {
             graphDesc = null;
             System.err.println("Error in StatisticsWithGUI.initPlots()!");

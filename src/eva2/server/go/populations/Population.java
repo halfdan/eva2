@@ -215,6 +215,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      * considered functional are omitted, such as archive, history and the
      * listeners.
      */
+    @Override
     public boolean equals(Object o) {
         if (!super.equals(o)) {
             return false;

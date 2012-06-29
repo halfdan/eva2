@@ -13,12 +13,14 @@ import java.util.BitSet;
  */
 public interface InterfaceGAIndividual  {
 
-    /** This method will allow the user to read the GA genotype
+    /** 
+     * This method will allow the user to read the GA genotype.
      * @return BitSet
      */
     public BitSet getBGenotype();
 
-    /** This method will allow the user to set the current GA genotype.
+    /** 
+     * This method will allow the user to set the current GA genotype.
      * Use this method with care, since the object is returned when using
      * getBinaryData() you can directly alter the genotype without using
      * this method.
