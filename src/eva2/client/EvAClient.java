@@ -9,7 +9,7 @@ package eva2.client;
  * 
  * @author Holger Ulmer, Felix Streichert, Hannes Planatscher
  * @version: $Revision: 322 $ $Date: 2007-12-11 17:24:07 +0100 (Tue, 11 Dec 2007)$
- * $Author: mkron $
+ * $Author: mkron $  
  */
 import eva2.EvAInfo;
 import eva2.gui.*;
