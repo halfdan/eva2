@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.logging.Level;
+import java.util.logging.LogManager;
 import java.util.logging.Logger;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
@@ -91,8 +92,9 @@ public final class LoggingLevelLabel extends JLabel {
      * 
      * @param level The new level for the logger
      */
-    private void setLoggerLevel(Level level) {        
-        logger.setLevel(level);
+    private void setLoggerLevel(Level level) {  
+        // Recursively set logging level for all classes under eva2
+        Logger.getLogger("eva2").setLevel(level);
         logger.log(Level.INFO, "Logging Level changed to {0}", level.getName());
     }
     

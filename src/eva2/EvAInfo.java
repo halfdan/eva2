@@ -45,7 +45,7 @@ public class EvAInfo {
 	public static final String infoTitle = productName+" Information";
 	public static final String copyrightYear = "2010-2012";
     
-    public static final String defaultLogger = "EvA2";
+    public static final String defaultLogger = "eva2";
 
 	////////////// Property handling...
 	
