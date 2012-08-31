@@ -19,7 +19,7 @@ import javax.swing.event.ListSelectionListener;
 
 public class GenericArrayEditor extends JPanel implements PropertyEditor {
 
-    private final static Logger LOGGER = Logger.getLogger(eva2.EvAInfo.defaultLogger);
+    private final static Logger LOGGER = Logger.getLogger(GenericArrayEditor.class.getName());
     /**
      * Handles property change notification
      */
@@ -283,7 +283,7 @@ public class GenericArrayEditor extends JPanel implements PropertyEditor {
                 final PropertyEditor e = (PropertyEditor) editorClass.newInstance();
                 if (e instanceof GenericObjectEditor) {
                     ((GenericObjectEditor) e).setClassType(valueClass);
-                }
+                }                
                 e.setValue(value);
                 JPanel cellPanel = new JPanel() {
 

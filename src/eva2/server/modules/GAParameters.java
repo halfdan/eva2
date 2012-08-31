@@ -24,7 +24,7 @@ import java.util.logging.Logger;
  */
 public class GAParameters extends AbstractGOParameters implements InterfaceGOParameters, Serializable {
     
-    private static final Logger LOGGER = Logger.getLogger(eva2.EvAInfo.defaultLogger);
+    private static final Logger LOGGER = Logger.getLogger(GAParameters.class.getName());
     
     /**
      * Load or create a new instance of the class.

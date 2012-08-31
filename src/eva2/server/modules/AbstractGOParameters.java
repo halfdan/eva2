@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 
 
 public abstract class AbstractGOParameters implements InterfaceGOParameters, Serializable {	
-    protected static final Logger LOGGER = Logger.getLogger(eva2.EvAInfo.defaultLogger);
+    protected static final Logger LOGGER = Logger.getLogger(AbstractGOParameters.class.getName());
 	protected long randomSeed  = (long)0.0;
 
 	// Opt. Algorithms and Parameters

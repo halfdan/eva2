@@ -47,7 +47,7 @@ public class RMIServer {
     protected static String userName;
     protected static int numberOfVM = 0;
     private Registry myRegistry = null;
-    protected static final Logger LOGGER = Logger.getLogger(EvAInfo.defaultLogger);
+    protected static final Logger LOGGER = Logger.getLogger(RMIServer.class.getName());
 
     /**
      *

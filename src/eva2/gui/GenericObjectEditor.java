@@ -32,7 +32,7 @@ import eva2.tools.jproxy.RMIProxyLocal;
 
 public class GenericObjectEditor implements PropertyEditor {
 
-    private static final Logger logger = Logger.getLogger(EvAInfo.defaultLogger);
+    private static final Logger logger = Logger.getLogger(GenericObjectEditor.class.getName());
     private Object m_Object;
     private Object m_Backup;
     private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);

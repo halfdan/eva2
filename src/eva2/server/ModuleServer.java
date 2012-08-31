@@ -29,7 +29,7 @@ import java.util.logging.Logger;
  * Collect available ModuleAdapter implementations and load them on request.
  */
 public class ModuleServer {
-	private static final Logger LOGGER = Logger.getLogger(eva2.EvAInfo.defaultLogger);
+	private static final Logger LOGGER = Logger.getLogger(ModuleServer.class.getName());
 	private static int instanceCounter = 0;
 	private List<Class<?>> moduleClassList;
 	private ModuleAdapter moduleAdapter;

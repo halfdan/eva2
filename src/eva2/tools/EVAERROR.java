@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  *
  */
 public class EVAERROR {
-	private static final Logger logger = Logger.getLogger(eva2.EvAInfo.defaultLogger);
+	private static final Logger logger = Logger.getLogger(EVAERROR.class.getName());
 	private static transient HashMap<String, Boolean> errorMap = null;
 	/**
 	 *
