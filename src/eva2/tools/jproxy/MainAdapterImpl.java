@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  */
 public class MainAdapterImpl implements MainAdapter {
 
-    private static final Logger LOGGER = Logger.getLogger(eva2.EvAInfo.defaultLogger);
+    private static final Logger LOGGER = Logger.getLogger(MainAdapterImpl.class.getName());
     public static final String MAIN_ADAPTER_NAME = "MainRemoteObjectName";
     public static final int PORT = 1099;
     private String m_Buf = "";

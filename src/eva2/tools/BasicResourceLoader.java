@@ -26,6 +26,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 package eva2.tools;
 
+import eva2.EvAInfo;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -39,13 +40,11 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
-
-import eva2.EvAInfo;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 
 /**
@@ -61,15 +60,11 @@ import java.util.logging.Logger;
  */
 public class BasicResourceLoader implements ResourceLoader
 {
-    //~ Static fields/initializers /////////////////////////////////////////////
-
     /**
      *  Obtain a suitable logger.
      */
-    private static Logger logger = Logger.getLogger(eva2.EvAInfo.defaultLogger);
+    private static Logger logger = Logger.getLogger(BasicResourceLoader.class.getName());
     private static BasicResourceLoader resourceLoader;
-
-    //~ Constructors ///////////////////////////////////////////////////////////
 
     /**
      *  Constructor for the ResourceLoader object
@@ -77,8 +72,6 @@ public class BasicResourceLoader implements ResourceLoader
     private BasicResourceLoader()
     {
     }
-
-    //~ Methods ////////////////////////////////////////////////////////////////
 
     /**
      *  Description of the Method

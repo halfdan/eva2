@@ -29,7 +29,6 @@ import eva2.tools.StringTools;
 import eva2.tools.jproxy.RemoteStateListener;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.Serializable;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,8 +37,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.help.*;
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
-import javax.swing.plaf.SeparatorUI;
 
 
 /**
@@ -75,7 +72,7 @@ public class EvAClient extends JFrame implements RemoteStateListener {
     
     // LogPanel
     private LoggingPanel logPanel;
-    private static final Logger LOGGER = Logger.getLogger(EvAInfo.defaultLogger);
+    private static final Logger LOGGER = Logger.getLogger(EvAClient.class.getName());
     
     // Module:
     private ExtAction actModuleLoad;

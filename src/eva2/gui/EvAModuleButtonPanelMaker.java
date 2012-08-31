@@ -31,7 +31,7 @@ import javax.swing.JToolBar;
  */
 public class EvAModuleButtonPanelMaker implements RemoteStateListener, Serializable, PanelMaker {
 
-    private static final Logger LOGGER = Logger.getLogger(EvAInfo.defaultLogger);
+    private static final Logger LOGGER = Logger.getLogger(EvAModuleButtonPanelMaker.class.getName());
     private String m_Name = "undefined";
     private ModuleAdapter moduleAdapter;
     private boolean runningState;

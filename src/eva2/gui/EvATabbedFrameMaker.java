@@ -22,7 +22,7 @@ import javax.swing.plaf.basic.BasicButtonUI;
  */
 public class EvATabbedFrameMaker implements Serializable, PanelMaker, InterfaceNotifyOnInformers {
 
-    private static final Logger LOGGER = Logger.getLogger(eva2.EvAInfo.defaultLogger);
+    private static final Logger LOGGER = Logger.getLogger(EvATabbedFrameMaker.class.getName());
     private static final long serialVersionUID = 2637376545826821423L;
     private ArrayList<PanelMaker> pmContainer = null;
     private JExtToolBar extToolBar;

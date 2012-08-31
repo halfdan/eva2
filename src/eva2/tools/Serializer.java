@@ -15,7 +15,7 @@ public class Serializer {
     /**
      * The logging instance for this class.
      */
-    private static final Logger LOGGER = Logger.getLogger(eva2.EvAInfo.defaultLogger);
+    private static final Logger LOGGER = Logger.getLogger(Serializer.class.getName());
     
     /**
      * Private constructor to prevent instantiating module class.

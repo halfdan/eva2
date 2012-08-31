@@ -9,9 +9,6 @@ package eva2.tools.jproxy;
  *            $Date: 2004/04/28 07:50:32 $
  *            $Author: ulmerh $
  */
-/*==========================================================================*
- * IMPORTS
- *==========================================================================*/
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
@@ -29,7 +26,7 @@ import java.util.logging.Logger;
  *
  */
 public class ComAdapter {
-	private static final Logger LOGGER = Logger.getLogger(eva2.EvAInfo.defaultLogger);
+	private static final Logger LOGGER = Logger.getLogger(ComAdapter.class.getName());
 	public static final int PORT = 1099;
 	public static final String SEP = "_";
 	static protected ComAdapter m_instance = null;

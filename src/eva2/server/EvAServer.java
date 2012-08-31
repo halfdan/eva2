@@ -25,7 +25,7 @@ public class EvAServer {
     //private EvAComAdapter m_ComAdapter;
     private static String userName;
     private RMIServerEvA rmiServer;
-    private static final Logger LOGGER = Logger.getLogger(EvAInfo.defaultLogger);
+    private static final Logger LOGGER = Logger.getLogger(EvAServer.class.getName());
 
     /**
      * Constructor of EvAServer. Calls RMIConnection().

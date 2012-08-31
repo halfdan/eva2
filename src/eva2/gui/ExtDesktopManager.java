@@ -23,7 +23,7 @@ import javax.swing.KeyStroke;
  */
 public class ExtDesktopManager extends DefaultDesktopManager {
     
-    private static final Logger LOGGER = Logger.getLogger(eva2.EvAInfo.defaultLogger);
+    private static final Logger LOGGER = Logger.getLogger(ExtDesktopManager.class.getName());
 
     int WINDOW_LIST_START;
     public final static String INDEX = "Index";

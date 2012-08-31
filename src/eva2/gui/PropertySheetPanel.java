@@ -30,7 +30,7 @@ import javax.swing.table.TableModel;
  */
 public class PropertySheetPanel extends JPanel implements PropertyChangeListener {
 
-    public final static Logger LOGGER = Logger.getLogger(eva2.EvAInfo.defaultLogger);
+    public final static Logger LOGGER = Logger.getLogger(PropertySheetPanel.class.getName());
     /**
      * The target object being edited.
      */

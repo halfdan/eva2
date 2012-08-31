@@ -40,7 +40,7 @@ import java.util.logging.Logger;
 
 public class Population extends ArrayList implements PopulationInterface, Cloneable, java.io.Serializable {
 
-    private static final Logger LOGGER = Logger.getLogger(eva2.EvAInfo.defaultLogger);
+    private static final Logger LOGGER = Logger.getLogger(Population.class.getName());
     protected int generationCount = 0;
     protected int functionCallCount = 0;
     protected int targetPopSize = 50;
