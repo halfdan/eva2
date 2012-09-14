@@ -143,7 +143,6 @@ public class GOEPanel extends JPanel implements ItemListener {
                 backupObject = copyObject(genericObjectEditor.getValue());
 
                 updateClassType();
-//                updateChooser();
                 updateChildPropertySheet();
                 
                 /*
