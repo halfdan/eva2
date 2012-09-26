@@ -3,12 +3,13 @@ package eva2.tools.math;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.BitSet;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
 import eva2.gui.BeanInspector;
+import eva2.server.go.enums.BOAScoringMethods;
 import eva2.server.go.individuals.AbstractEAIndividual;
-import eva2.server.go.individuals.GAIndividualBinaryData;
 import eva2.server.go.individuals.InterfaceDataTypeBinary;
 import eva2.server.go.individuals.InterfaceGAIndividual;
 import eva2.server.go.populations.Population;
@@ -16,12 +17,15 @@ import eva2.tools.Pair;
 
 public class BayNet {
 
-	private boolean[][]		network 		= null;
-	private int 			dimension		= 5;
-	private BayNode[]		nodes			= null;
-	private List<BayNode>	rootNodes		= new LinkedList<BayNode>();
-	private double 			upperProbLimit	= 0.9;
-	private double 			lowerProbLimit	= 0.1;
+	private boolean[][]			network 		= null;
+	private int 				dimension		= 3;
+	private BayNode[]			nodes			= null;
+	private List<Integer>		rootNodes		= new LinkedList<Integer>();
+	private double 				upperProbLimit	= 0.9;
+	private double 				lowerProbLimit	= 0.1;
+	private BOAScoringMethods	scoringMethod	= BOAScoringMethods.BDM;
+	private	double[]			scoreArray		= null;
+//	private String			tables			= "";
 
 	public BayNet(int dimension, double upperLimit, double lowerLimit){
 		this.dimension = dimension;
@@ -37,9 +41,9 @@ public class BayNet {
 		for(int i=0; i<this.nodes.length; i++){
 			this.nodes[i] = (BayNode) b.nodes[i].clone();
 		}
-		this.rootNodes = new LinkedList<BayNode>();
-		for(BayNode node: b.rootNodes){
-			this.rootNodes.add(this.nodes[node.getId()]);
+		this.rootNodes = new LinkedList<Integer>();
+		for(Integer node: b.rootNodes){
+			this.rootNodes.add(node);
 		}
 		this.upperProbLimit = b.upperProbLimit;
 		this.lowerProbLimit = b.lowerProbLimit;
@@ -69,8 +73,10 @@ public class BayNet {
 		this.nodes = new BayNode[this.dimension];
 		for(int i=0; i<this.dimension; i++){
 			this.nodes[i] = new BayNode(i);
-			this.rootNodes.add(this.nodes[i]);
+			this.rootNodes.add(i);
 		}
+		this.scoreArray = new double[this.dimension];
+		Arrays.fill(scoreArray, -1.0);
 	}
 
 	private static BitSet getBinaryData(AbstractEAIndividual indy) {
@@ -101,7 +107,11 @@ public class BayNet {
 //			}
 //		}
 //		return result;
-		return this.rootNodes;
+		LinkedList<BayNode> result = new LinkedList<BayNode>();
+		for(Integer i: this.rootNodes){
+			result.add(this.nodes[i]);
+		}
+		return result;
 	}
 
 	/**
@@ -183,7 +193,7 @@ public class BayNet {
 	 * @param i	the node from which the edge comes
 	 * @param j	the node to which the edge points
 	 */
-	public void removeEdge(int i, int j){
+	public void removeEdge(Integer i, Integer j){
 		if(this.network[i][j]){
 			this.network[i][j] = false;
 			this.nodes[j].decrNumberOfParents();
@@ -191,7 +201,7 @@ public class BayNet {
 			this.nodes[j].removeParent(i);
 			this.nodes[j].generateNewPTable();
 			if(this.nodes[j].getNumberOfParents() == 0){
-				this.rootNodes.add(nodes[j]);
+				this.rootNodes.add(j);
 			}
 		}
 	}
@@ -201,15 +211,40 @@ public class BayNet {
 	 * @param i	edge from this node
 	 * @param j	edge to this node
 	 */
-	public void addEdge(int i, int j){
-		if(!this.network[i][j]){
-			this.network[i][j] = true;
-			this.nodes[j].incrNumberOfParents();
-			this.nodes[j].generateNewPTable();
-			this.rootNodes.remove(this.nodes[j]);
-			this.nodes[i].addChild(j);
-			this.nodes[j].addParent(i);
+	public void addEdge(Integer i, Integer j){
+		if(i!=j){
+			if(!this.network[i][j]){
+				this.network[i][j] = true;
+				this.rootNodes.remove(j);
+				this.nodes[j].incrNumberOfParents();
+				this.nodes[j].generateNewPTable();
+				this.nodes[i].addChild(j);
+				this.nodes[j].addParent(i);
+			}
 		}
+	}
+	
+	private int findNext(double[] probabilities){
+		int result = -1;
+		for(int i=0; i<probabilities.length; i++){
+			if(probabilities[i] != -1){
+				continue;
+			}
+			BayNode currentNode = nodes[i];
+			List<BayNode> parents = getParents(currentNode);
+			boolean possible = true;
+			for(BayNode node: parents){
+				if(probabilities[node.getId()]==-1){
+					possible = false;
+				}
+			}
+			if(!possible){
+				continue;
+			}
+			result = i;
+			break;
+		}
+		return result;
 	}
 
 	/**
@@ -218,7 +253,12 @@ public class BayNet {
 	 * @return
 	 */
 	private int findNext(double[] probabilities, List<BayNode> nodes){
+		nodes = removeDuplicate(nodes);
 		for(BayNode node: nodes){
+			if(node.getCalculated()){
+				continue;
+			}
+			node.setCalculated(true);
 			List<BayNode> parents = getParents(node);
 			boolean possible = false;
 			for(BayNode p: parents){
@@ -230,10 +270,21 @@ public class BayNet {
 				}
 			}
 			if(possible){
+				resetCalculated();
 				return node.getId();
 			}
 		}
+		resetCalculated();
 		return -1;
+	}
+
+	private List<BayNode> removeDuplicate(List<BayNode> nodes) {
+		//Create a HashSet which allows no duplicates
+		  HashSet<BayNode> hashSet = new HashSet<BayNode>(nodes);
+
+		  //Assign the HashSet to a new ArrayList
+		  ArrayList<BayNode> arrayList2 = new ArrayList<BayNode>(hashSet) ;
+		  return arrayList2;
 	}
 
 	/**
@@ -254,17 +305,48 @@ public class BayNet {
 			int id = node.getId();
 			probabilities[id] = node.getProbability(0);
 			data.set(id, RNG.flipCoin(probabilities[id]));
+			node.setCalculated(true);
 		}
 		// find the next node that can be evaluated
-		List<BayNode> toCalculate = getChildren(nodes);
-		int next = findNext(probabilities, toCalculate);
+//		List<BayNode> toCalculate = getChildren(nodes);
+//		int next = findNext(probabilities, toCalculate);
+		int next = findNext(probabilities);
 		while(next != -1){
-			toCalculate.remove(this.nodes[next]);
-			probabilities[next] = calculateNextProbability(data, toCalculate, next);
+//			toCalculate.remove(this.nodes[next]);
+			this.nodes[next].setCalculated(true);
+//			toCalculate = addToToCalculate(toCalculate, this.nodes[next]);
+//			toCalculate.addAll(getChildren(this.nodes[next]));
+//			probabilities[next] = calculateNextProbability(data, toCalculate, next);
+			probabilities[next] = calculateNextProbability(data, next);
 			data.set(next, RNG.flipCoin(probabilities[next]));
-			next = findNext(probabilities, toCalculate);
+//			next = findNext(probabilities, toCalculate);
+			next = findNext(probabilities);
 		}
+		resetCalculated();
 		return data;
+	}
+
+	private List<BayNode> addToToCalculate(List<BayNode> toCalculate,
+			BayNode next) {
+		List<BayNode> toAdd = getChildren(next);
+		for(int i=0; i<toAdd.size(); i++){
+			BayNode node = toAdd.get(i);
+			if(!toCalculate.contains(node) && !node.getCalculated()){
+				toCalculate.add(node);
+			}
+		}
+		return toCalculate;
+	}
+	
+	private double calculateNextProbability(BitSet data, int next){
+		int[] parId = calculateSortedParentIds(next);
+		int par = 0;
+		for(int i=parId.length-1; i>=0; i--){
+			if(data.get(parId[i])){
+				par += Math.pow(2, i);
+			}
+		}
+		return this.nodes[next].getProbability(par);
 	}
 
 	/**
@@ -279,10 +361,12 @@ public class BayNet {
 		toCalculate.addAll(getChildren(this.nodes[next]));
 		int[] parId = calculateSortedParentIds(next);
 		int prob = 0;
+		int cnt = 0;
 		for(int j=parId.length-1; j>=0; j--){
 			if(data.get(parId[j])){
 				prob += (int) Math.pow(2, j);
 			}
+			cnt++;
 		}
 		return this.nodes[next].getProbability(prob);
 	}
@@ -304,23 +388,23 @@ public class BayNet {
 		return parId;
 	}
 
-	/**
-	 * generate an array of the parents plus the given node, sorted by there id
-	 * @param id	the id of the node
-	 * @return		the sorted parent-ids
-	 */
-	private int[] calculateSortedParentPlusNodeIds(int id) {
-		List<BayNode> nodes = getParents(this.nodes[id]);
-		nodes.add(this.nodes[id]);
-		int[] sortedIds = new int[nodes.size()];
-		int i=0;
-		for(BayNode nod: nodes){
-			sortedIds[i] = nod.getId();
-			i++;
-		}
-		Arrays.sort(sortedIds);
-		return sortedIds;
-	}
+//	/**
+//	 * generate an array of the parents plus the given node, sorted by there id
+//	 * @param id	the id of the node
+//	 * @return		the sorted parent-ids
+//	 */
+//	private int[] calculateSortedParentPlusNodeIds(int id) {
+//		List<BayNode> nodes = getParents(this.nodes[id]);
+//		nodes.add(this.nodes[id]);
+//		int[] sortedIds = new int[nodes.size()];
+//		int i=0;
+//		for(BayNode nod: nodes){
+//			sortedIds[i] = nod.getId();
+//			i++;
+//		}
+//		Arrays.sort(sortedIds);
+//		return sortedIds;
+//	}
 	
 	private void resetCalculated(){
 		for(int i=0; i<this.dimension; i++){
@@ -394,7 +478,6 @@ public class BayNet {
 				break;
 			}
 		}
-//		System.out.println("Deleted edges: " + BeanInspector.toString(deletedEdges));
 		for (Pair<Integer,Integer> edge : deletedEdges) {
 			this.network[edge.head][edge.tail] = true;
 		}
@@ -402,28 +485,21 @@ public class BayNet {
 	}
 
 	private double getPrior(List<BayNode> parents, Population pop){
-		return (double) pop.size() / Math.pow(2.0, (double) parents.size());
+		double result = 1.0;
+		switch(this.scoringMethod){
+		case BDM: result = ((double) pop.size()) / Math.pow(2.0, (double) parents.size()); break;
+		case K2: result = 2.0;
+		}
+		return result;
 	}
 
 	private double getPrior(List<BayNode> parents, BayNode current, Population pop){
-		return getPrior(parents, pop) / 2.0;
-	}
-	
-	private void setRootPTables(Population pop){
-		List<BayNode> rootNodes = getRootNodes();
-		for(BayNode node: rootNodes){
-			int id = node.getId();
-			double count = 0;
-			for(int i=0; i<pop.size(); i++){
-				BitSet data = getBinaryData(pop.getEAIndividual(i));
-				if(data.get(id)){
-					count++;
-				}
-			}
-			double prob = count / (double) pop.size();
-			setProbability(node, 0, prob);
-//			node.setPTable(0, count / (double) pop.size());
+		double result = 1.0;
+		switch(this.scoringMethod){
+		case BDM: result = getPrior(parents, pop) / 2.0; break;
+		case K2: result = 1.0;
 		}
+		return result;
 	}
 
 	public void setUpperProbLimit(double upperProbLimit) {
@@ -433,45 +509,54 @@ public class BayNet {
 	public void setLowerProbLimit(double lowerProbLimit) {
 		this.lowerProbLimit = lowerProbLimit;
 	}
+	
+	
+	private double gamma(double x){
+		double result = 1.0;
+		result = SpecialFunction.gamma(x);
+		return result;
+	}
 
 	/**
-	 * calculate the bayesian Dirichlet Metric
+	 * calculate the score, either BDM, K2 or BIC
 	 * @param pop	the population on which the metric is based on
 	 * @return		the metric
 	 */
-	public double bayesianDirichletMetric(Population pop){
-		double result = 1.0;
+	public double getScore(Population pop){
+		double result = 0.0;
 		//for every node
-		setRootPTables(pop);
 		for(int i=0; i<this.dimension; i++){
 			BayNode currentNode = this.nodes[i];
 			//get the parents
 			List<BayNode> parents = getParents(currentNode);
-//			System.out.println("parents: "+parents.size());
 			// get the parentIds sorted (for the lookup)
+			int[] parId = new int[0];
 			if(!parents.isEmpty()){
-				int[] parId = calculateSortedParentIds(i);
-				// the parentIds plus the id of the current node sorted (for the lookup
-				int[] nodeIds = calculateSortedParentPlusNodeIds(i);
-				double[] pTable = currentNode.getPTable();
-				for(int j=0; j<pTable.length; j++){
-					Population pop2 = numberSetCorrectly(pop, j, parId);
-					double count = (double) pop2.size();
-					double numeratorFirstFraction = SpecialFunction.gamma(getPrior(parents, pop));
-					double denominatorFirstFraction = SpecialFunction.gamma(getPrior(parents, pop)+count);
-					double firstFraction = numeratorFirstFraction / denominatorFirstFraction;
-					result = result * firstFraction;
-//					currentNode.setPTable(j, count / (double) pop.size());
-					count = 0;
+				parId = calculateSortedParentIds(i);
+			}
+			double[] pTable = currentNode.getPTable();
+			switch(this.scoringMethod){
+			case BIC: result = result - (Math.log(pop.size()) * pTable.length * 2)/2;break;
+			default: break;
+			}
+			for(int j=0; j<pTable.length; j++){
+				Population pop2 = numberSetCorrectly(pop, j, parId);
+//				double firstFraction = 0.0;
+				switch(this.scoringMethod){
+				case BDM: result = result + Math.log(firstFractionBDM(pop, parents, pop2)); break;
+				case K2: result = result + Math.log(firstFractionBDM(pop, parents, pop2)); break;
+				case BIC: result = result - firstFractionBIC(pop2); break;
+				}
+//				result = result + Math.log(firstFraction);
+				if(pop2.size() > 0){
 					for(int k=0; k<2; k++){
-						double cnt = numberSetCorrectly(pop2, j, k, nodeIds, parId);
-						double numeratorSecondFraction = SpecialFunction.gamma(getPrior(parents, currentNode, pop) + cnt);
-						double denumeratorSecondFraction = SpecialFunction.gamma(getPrior(parents, currentNode, pop));
-						double secondFraction = numeratorSecondFraction / denumeratorSecondFraction;
-						result = result * secondFraction;
-						double prob = cnt / (double) pop2.size();
-						setProbability(currentNode, j, prob);
-						cnt = 0;
+//						double secondFraction = 0.0;
+						switch(this.scoringMethod){
+						case BDM: result = result +  Math.log(secondFractionBDM(pop, currentNode, parents, j, pop2, k)); break;
+						case K2: result = result + Math.log(secondFractionBDM(pop, currentNode, parents, j, pop2, k)); break;
+						case BIC: result = result + secondFractionBIC(pop2, currentNode, k, j); break;
+						}
+//						result = result + Math.log(secondFraction);
 					}
 				}
 			}
@@ -479,46 +564,239 @@ public class BayNet {
 		return result;
 	}
 	
+	public void initScoreArray(Population pop){
+		//for every node
+		for(int i=0; i<this.dimension; i++){
+			double result = 0.0;
+			BayNode currentNode = this.nodes[i];
+			//get the parents
+			List<BayNode> parents = getParents(currentNode);
+			// get the parentIds sorted (for the lookup)
+			int[] parId = new int[0];
+			if(!parents.isEmpty()){
+				parId = calculateSortedParentIds(i);
+			}
+			double[] pTable = currentNode.getPTable();
+			switch(this.scoringMethod){
+			case BIC: result = result - (Math.log(pop.size()) * pTable.length * 2)/2;break;
+			default: break;
+			}
+			for(int j=0; j<pTable.length; j++){
+				Population pop2 = numberSetCorrectly(pop, j, parId);
+//				double firstFraction = 0.0;
+				switch(this.scoringMethod){
+				case BDM: result = result + Math.log(firstFractionBDM(pop, parents, pop2)); break;
+				case K2: result = result + Math.log(firstFractionBDM(pop, parents, pop2)); break;
+				case BIC: result = result - firstFractionBIC(pop2); break;
+				}
+//				result = result + Math.log(firstFraction);
+				if(pop2.size() > 0){
+					for(int k=0; k<2; k++){
+//						double secondFraction = 0.0;
+						switch(this.scoringMethod){
+						case BDM: result = result +  Math.log(secondFractionBDM(pop, currentNode, parents, j, pop2, k)); break;
+						case K2: result = result + Math.log(secondFractionBDM(pop, currentNode, parents, j, pop2, k)); break;
+						case BIC: result = result + secondFractionBIC(pop2, currentNode, k, j); break;
+						}
+//						result = result + Math.log(secondFraction);
+					}
+				}
+			}
+			scoreArray[i] = result;
+		}
+	}
+	
+	public void updateScoreArray(Population pop, int i){
+		//for every node
+		double result = 0.0;
+		BayNode currentNode = this.nodes[i];
+		//get the parents
+		List<BayNode> parents = getParents(currentNode);
+		// get the parentIds sorted (for the lookup)
+		int[] parId = new int[0];
+		if(!parents.isEmpty()){
+			parId = calculateSortedParentIds(i);
+		}
+		double[] pTable = currentNode.getPTable();
+		switch(this.scoringMethod){
+		case BIC: result = result - (Math.log(pop.size()) * pTable.length * 2)/2;break;
+		default: break;
+		}
+		for(int j=0; j<pTable.length; j++){
+			Population pop2 = numberSetCorrectly(pop, j, parId);
+			switch(this.scoringMethod){
+			case BDM: result = result + Math.log(firstFractionBDM(pop, parents, pop2)); break;
+			case K2: result = result + Math.log(firstFractionBDM(pop, parents, pop2)); break;
+			case BIC: result = result - firstFractionBIC(pop2); break;
+			}
+			if(pop2.size() > 0){
+				for(int k=0; k<2; k++){
+					switch(this.scoringMethod){
+					case BDM: result = result +  Math.log(secondFractionBDM(pop, currentNode, parents, j, pop2, k)); break;
+					case K2: result = result + Math.log(secondFractionBDM(pop, currentNode, parents, j, pop2, k)); break;
+					case BIC: result = result + secondFractionBIC(pop2, currentNode, k, j); break;
+					}
+				}
+			}
+		}
+		scoreArray[i] = result;
+	}
+	
+	public double getNewScore(Population pop, int i){
+		double result = 0;
+		for(int j=0; j<this.dimension; j++){
+			if(j==i){
+				result += getSingleScore(pop, i);
+			}else{
+				result += scoreArray[j];
+			}
+		}
+		return result;
+	}
+	
+	private double getSingleScore(Population pop, int i){
+		//for every node
+		double result = 0.0;
+		BayNode currentNode = this.nodes[i];
+		//get the parents
+		List<BayNode> parents = getParents(currentNode);
+		// get the parentIds sorted (for the lookup)
+		int[] parId = new int[0];
+		if(!parents.isEmpty()){
+			parId = calculateSortedParentIds(i);
+		}
+		double[] pTable = currentNode.getPTable();
+		switch(this.scoringMethod){
+		case BIC: result = result - (Math.log(pop.size()) * pTable.length * 2)/2;break;
+		default: break;
+		}
+		for(int j=0; j<pTable.length; j++){
+			Population pop2 = numberSetCorrectly(pop, j, parId);
+			switch(this.scoringMethod){
+			case BDM: result = result + Math.log(firstFractionBDM(pop, parents, pop2)); break;
+			case K2: result = result + Math.log(firstFractionBDM(pop, parents, pop2)); break;
+			case BIC: result = result - firstFractionBIC(pop2); break;
+			}
+			if(pop2.size() > 0){
+				for(int k=0; k<2; k++){
+					switch(this.scoringMethod){
+					case BDM: result = result +  Math.log(secondFractionBDM(pop, currentNode, parents, j, pop2, k)); break;
+					case K2: result = result + Math.log(secondFractionBDM(pop, currentNode, parents, j, pop2, k)); break;
+					case BIC: result = result + secondFractionBIC(pop2, currentNode, k, j); break;
+					}
+				}
+			}
+		}
+		return result;
+	}
+	
+	private double secondFractionBIC(Population pop2, BayNode currentNode, int k, int j){
+		double result = 0.0;
+		double Nijk = numberSetCorrectly(pop2, k, currentNode.getId());
+		if(Nijk>0){
+			result = (double)Nijk * Math.log((double) Nijk);
+		}
+		if(k==1){
+			double prob = Nijk / (double) pop2.size();
+			setProbability(currentNode, j, prob);
+		}
+		return result;
+	}
+	
+	private double firstFractionBIC(Population pop2){
+		double result = 0.0;
+		if(pop2.size()>0){
+			result = ((double) pop2.size()) * Math.log((double) pop2.size());
+		}
+		return result;
+	}
+
+	private double secondFractionBDM(Population pop, BayNode currentNode,
+			List<BayNode> parents, int j, Population pop2, int k) {
+		double mXiPiXi = numberSetCorrectly(pop2, k, currentNode.getId());
+		double mDashXiPiXi = getPrior(parents, currentNode, pop);
+		double numeratorSecondFraction = gamma(mDashXiPiXi + mXiPiXi);
+		double denumeratorSecondFraction = gamma(mDashXiPiXi);
+		double secondFraction = numeratorSecondFraction / denumeratorSecondFraction;
+		if(k==1){
+			double prob = mXiPiXi / (double) pop2.size();
+			setProbability(currentNode, j, prob);
+		}
+		return secondFraction;
+	}
+
+	private double firstFractionBDM(Population pop, List<BayNode> parents,
+			Population pop2) {
+		double mPiXi = (double) pop2.size();
+		double mDashPiXi = getPrior(parents, pop);
+		double numeratorFirstFraction = gamma(mDashPiXi);
+		double denominatorFirstFraction = gamma(mDashPiXi + mPiXi);
+		double firstFraction = numeratorFirstFraction / denominatorFirstFraction;
+		return firstFraction;
+	}
+	
+//	public String getTables(){
+//		return this.tables;
+//	}
+	
+//	public void setTables(String s){
+//		this.tables = "";
+//		this.tables = s;
+//	}
+	
 	private void setProbability(BayNode n, int j, double prob){
 		n.setPTable(j, Math.min(upperProbLimit, Math.max(lowerProbLimit, prob)));
 	}
 
-	private double numberSetCorrectly(Population pop, int j, int k, int[] Ids, int[] parIds){
+	private double numberSetCorrectly(Population pop, int k, int Id){
 		double result = 0.0;
-		String binaryString = Integer.toBinaryString(j);
-		while(binaryString.length() < parIds.length){
-			binaryString = "0"+binaryString;
-		}
-		boolean found = false;
-		boolean end = false;
-		int different = 0;
-		for(int i=0; i<parIds.length; i++){
-			if(parIds[i] != Ids[i]){
-				different = i;
-				found = true;
-				break;
-			}
-		}
-		if(!found){
-			different = Ids.length;
-			end = true;
-		}
-		if(end){
-			binaryString = binaryString+k;
-		}else{
-			binaryString = binaryString.substring(0, different)+k+binaryString.substring(different);
-		}
-		int l = Integer.parseInt(binaryString);
-//		binary = getBinaryArray(Ids, binaryString);
 		for(int i=0; i<pop.size(); i++){
 			AbstractEAIndividual indy = pop.getEAIndividual(i);
-			BitSet data = ((InterfaceDataTypeBinary) indy).getBinaryData();
-			boolean setCorrectly = isSetCorrectly(Ids, data, l);
-			if(setCorrectly){
-				result ++;
+			BitSet data = getBinaryData(indy);
+			int val = 0;
+			if(data.get(Id)){
+				val = 1;
+			}
+			if(val == k){
+				result++;
 			}
 		}
 		return result;
+//		double result = 0.0;
+//		String binaryString = Integer.toBinaryString(j);
+//		while(binaryString.length() < parIds.length){
+//			binaryString = "0"+binaryString;
+//		}
+//		boolean found = false;
+//		boolean end = false;
+//		int different = 0;
+//		for(int i=0; i<parIds.length; i++){
+//			if(parIds[i] != Ids[i]){
+//				different = i;
+//				found = true;
+//				break;
+//			}
+//		}
+//		if(!found){
+//			different = Ids.length;
+//			end = true;
+//		}
+//		if(end){
+//			binaryString = binaryString+k;
+//		}else{
+//			binaryString = binaryString.substring(0, different)+k+binaryString.substring(different);
+//		}
+//		int l = Integer.parseInt(binaryString,2);
+////		binary = getBinaryArray(Ids, binaryString);
+//		for(int i=0; i<pop.size(); i++){
+//			AbstractEAIndividual indy = pop.getEAIndividual(i);
+//			BitSet data = ((InterfaceDataTypeBinary) indy).getBinaryData();
+//			boolean setCorrectly = isSetCorrectly(Ids, data, l);
+//			if(setCorrectly){
+//				result ++;
+//			}
+//		}
+//		return result;
 	}
 	
 	private Population numberSetCorrectly(Population pop, int j, int[] Ids){
@@ -537,6 +815,50 @@ public class BayNet {
 		}
 		return result;
 	}
+	
+	/**
+	 * Encodes the given integer value in the <tt>BitSet</tt> from the position offset by the
+	 * given amount of bits.
+	 * 
+	 * @param bitSet the <tt>BitSet</tt> to operate on
+	 * @param offset the offset in the bit set
+	 * @param length the length of the bit string that should represent the given value
+	 * @param value the value to encode in the bit set
+	 * @return the modified bit set
+	 * @throws RuntimeException if <tt>length</tt> is greater than the amount of bits in an
+	 *         integer value
+	 * @throws RuntimeException if <tt>value</tt> is greather than the value encodeable by the
+	 *         given amount of bits or if value == Integer.MIN_VALUE (no absolute value awailable as
+	 *         int)
+	 */
+	public static BitSet intToBitSet(BitSet bitSet, int offset, int length, int value)
+	{
+		// checking the bit length
+		if (length > Integer.SIZE)
+			throw new RuntimeException("You can not set a higher length than " + Integer.SIZE
+					+ " bits.");
+		length += 1;
+		// checking whether the value fits into the bit string of length - 1
+		int absValue = Math.abs(value);
+		if (absValue > Math.pow(2.0, length - 1 - 1) * 2 - 1 || value == Integer.MIN_VALUE)
+			throw new RuntimeException("The value of " + value
+					+ " does not fit into a bit string of " + (length - 1) + " bits.");
+
+		// setting all bits to zero
+		bitSet.clear(offset, offset + length - 1);
+
+		// setting up the number in reverse order
+		int mask = 1;
+		for (int i = 0; i < length; ++i, mask <<= 1)
+			if ((mask & absValue) > 0)
+				bitSet.set(offset + i);
+
+		// setting up the sign
+		if (value < 0)
+			bitSet.set(offset + length - 1);
+
+		return bitSet;
+	}
 
 	/**
 	 * is the BitSet of the individual set correctly corresponding to the binary String and the parId
@@ -546,18 +868,14 @@ public class BayNet {
 	 * @return			is the data set correctly
 	 */
 	private boolean isSetCorrectly(int[] ids, BitSet data, int j) {
-		boolean setCorrectly = false;
-		for(int m=0; m<ids.length; m++){
-			if(((j & (1<<m))>0) && (data.get(ids[m]))){
-				setCorrectly = true;
-			}else if(!((j & (1<<m))>0) && (!data.get(ids[m]))){
-				setCorrectly = true;
-			}else{
-				setCorrectly = false;
-				m = j+10;
+		int value = 0;
+//		BitSet toTest = new BitSet(length);
+		for(int i=0; i<ids.length; i++){
+			if(data.get(ids[i])){
+				value += Math.pow(2, ids.length-i-1);
 			}
 		}
-		return setCorrectly;
+		return value == j;
 	}
 	
 	public void print(){
@@ -575,6 +893,90 @@ public class BayNet {
 			System.out.println(BeanInspector.toString(nodes[i].getPTable()));
 		}
 	}
+	
+	public String generateYFilesCode(){
+		String result = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n";
+		result = result + "<graphml xmlns=\"http://graphml.graphdrawing.org/xmlns\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:y=\"http://www.yworks.com/xml/graphml\" xmlns:yed=\"http://www.yworks.com/xml/yed/3\" xsi:schemaLocation=\"http://graphml.graphdrawing.org/xmlns http://www.yworks.com/xml/schema/graphml/1.1/ygraphml.xsd\">\n";
+		result = result + "  <!--Created by yFiles for Java HEAD-Current-->\n";
+		result = result + "  <key for=\"graphml\" id=\"d0\" yfiles.type=\"resources\"/>\n";
+		result = result + "  <key for=\"port\" id=\"d1\" yfiles.type=\"portgraphics\"/>\n";
+		result = result + "  <key for=\"port\" id=\"d2\" yfiles.type=\"portgeometry\"/>\n";
+		result = result + "  <key for=\"port\" id=\"d3\" yfiles.type=\"portuserdata\"/>\n";
+		result = result + "  <key attr.name=\"url\" attr.type=\"string\" for=\"node\" id=\"d4\"/>\n";
+		result = result + "  <key attr.name=\"description\" attr.type=\"string\" for=\"node\" id=\"d5\"/>\n";
+		result = result + "  <key for=\"node\" id=\"d6\" yfiles.type=\"nodegraphics\"/>\n";
+		result = result + "  <key attr.name=\"Beschreibung\" attr.type=\"string\" for=\"graph\" id=\"d7\"/>\n";
+		result = result + "  <key attr.name=\"url\" attr.type=\"string\" for=\"edge\" id=\"d8\"/>\n";
+		result = result + "  <key attr.name=\"description\" attr.type=\"string\" for=\"edge\" id=\"d9\"/>\n";
+		result = result + "  <key for=\"edge\" id=\"d10\" yfiles.type=\"edgegraphics\"/>\n";
+		result = result + "  <graph edgedefault=\"directed\" id=\"G\">\n";
+		result = result + "    <data key=\"d7\"/>\n";
+		for(int i=0; i<this.nodes.length; i++){
+			Pair<Integer, String> pair = generateTable(i);
+			Integer length = pair.getHead();
+			String table = pair.getTail();
+			int x = 40+100*(i % 20);
+			int y = (int) (40+100*Math.floor(((double)i) / 20));
+			Double height = 40+11*Math.pow(2, length-1);
+			Double width = (double) (40+10*length);
+		    result = result + "    <node id=\"n" + i + "\">\n";
+		    result = result + "      <data key=\"d5\"/>\n";
+		    result = result + "      <data key=\"d6\">\n";
+		    result = result + "        <y:ShapeNode>\n";
+		    result = result + "          <y:Geometry height=\""+ height +"\" width=\""+ width +"\" x=\"" + x + "\" y=\"" + y + "\"/>\n";
+		    result = result + "          <y:Fill color=\"#FFCC00\" transparent=\"false\"/>\n";
+		    result = result + "          <y:BorderStyle color=\"#000000\" type=\"line\" width=\"1.0\"/>\n";
+		    result = result + "          <y:NodeLabel alignment=\"center\" autoSizePolicy=\"content\" fontFamily=\"Dialog\" fontSize=\"12\" fontStyle=\"plain\" hasBackgroundColor=\"false\" hasLineColor=\"false\" height=\"18.701171875\" modelName=\"internal\" modelPosition=\"c\" textColor=\"#000000\" visible=\"true\" width=\"10.673828125\" x=\"9.6630859375\" y=\"5.6494140625\">" + i + table + "</y:NodeLabel>\n";
+		    result = result + "          <y:Shape type=\"roundrectangle\"/>\n";
+		    result = result + "        </y:ShapeNode>\n";
+		    result = result + "      </data>\n";
+		    result = result + "    </node>\n";
+		}
+		int cnt = 0;
+		for(int i=0; i<this.network.length; i++){
+			for(int j=0; j<this.network[i].length; j++){
+				if(this.network[i][j]){
+					result = result + "    <edge id=\"e" + cnt + "\" source=\"n" + i + "\" target=\"n" + j + "\">\n";
+					result = result + "      <data key=\"d9\"/>\n";
+					result = result + "      <data key=\"d10\">\n";
+					result = result + "        <y:PolyLineEdge>\n";
+					result = result + "          <y:Path sx=\"0.0\" sy=\"0.0\" tx=\"0.0\" ty=\"0.0\"/>\n";
+					result = result + "          <y:LineStyle color=\"#000000\" type=\"line\" width=\"1.0\"/>\n";
+					result = result + "          <y:Arrows source=\"none\" target=\"standard\"/>\n";
+					result = result + "          <y:BendStyle smoothed=\"false\"/>\n";
+					result = result + "        </y:PolyLineEdge>\n";
+					result = result + "      </data>\n";
+					result = result + "    </edge>\n";
+					cnt++;
+				}
+			}
+		}
+		result = result + "  </graph>\n";
+		result = result + "  <data key=\"d0\">\n";
+		result = result + "    <y:Resources/>\n";
+		result = result + "  </data>\n";
+		result = result + "</graphml>\n";
+		return result;
+	}
+
+	private Pair<Integer, String> generateTable(int i) {
+		String result = "";
+		double [] pTable = nodes[i].getPTable();
+		int length = Integer.toBinaryString(pTable.length).length();
+		for(int j=0; j<pTable.length; j++){
+			result = result + "\n";
+			String line = Integer.toBinaryString(j);
+			while(line.length() < length-1){
+				line = "0" + line;
+			}
+			line = line + ": "+pTable[j];
+			result = result + line;
+		}
+		Pair<Integer, String> p = new Pair<Integer, String>();
+		p.setHead(length);
+		p.setTail(result);
+		return p;
+	}
 
 	/**
 	 * has the network already an edge from node i to node j
@@ -587,51 +989,82 @@ public class BayNet {
 	}
 
 	public static void main(String[] args){
-		BayNet b = new BayNet(3, 0.9, 0.1);
-		b.addEdge(0, 2);
-		b.addEdge(1, 2);
-		Population pop = new Population();
-		GAIndividualBinaryData indy1 = new GAIndividualBinaryData();
-		indy1.setBinaryDataLength(3);
-		GAIndividualBinaryData indy2 = (GAIndividualBinaryData) indy1.clone();
-		GAIndividualBinaryData indy3 = (GAIndividualBinaryData) indy1.clone();
-		GAIndividualBinaryData indy4 = (GAIndividualBinaryData) indy1.clone();
-		GAIndividualBinaryData indy5 = (GAIndividualBinaryData) indy1.clone();
-		BitSet data1 = indy1.getBinaryData();
-		BitSet data2 = indy2.getBinaryData();
-		BitSet data3 = indy3.getBinaryData();
-		BitSet data4 = indy4.getBinaryData();
-		BitSet data5 = indy5.getBinaryData();
-		data1.set(0, true);
-		data1.set(1, true);
-		data1.set(2, false);
-		data2.set(0, true);
-		data2.set(1, true);
-		data2.set(2, true);
-		data3.set(0, false);
-		data3.set(1, true);
-		data3.set(2, false);
-		data4.set(0, false);
-		data4.set(1, true);
-		data4.set(2, true);
-		data5.set(0, true);
-		data5.set(1, false);
-		data5.set(2, false);
-		indy1.SetBinaryGenotype(data1);
-		indy2.SetBinaryGenotype(data2);
-		indy3.SetBinaryGenotype(data3);
-		indy4.SetBinaryGenotype(data4);
-		indy5.SetBinaryGenotype(data5);
-		pop.add(indy1);
-		pop.add(indy2);
-		pop.add(indy3);
-		pop.add(indy4);
-		pop.add(indy5);
-		
-//		System.out.println("-----");
+//		BayNet b = new BayNet(3, 0.9, 0.1);
+////		b.addEdge(0, 2);
+//		b.addEdge(1, 2);
+//		Population pop = new Population();
+//		GAIndividualBinaryData indy1 = new GAIndividualBinaryData();
+//		indy1.setBinaryDataLength(3);
+//		GAIndividualBinaryData indy2 = (GAIndividualBinaryData) indy1.clone();
+//		GAIndividualBinaryData indy3 = (GAIndividualBinaryData) indy1.clone();
+//		GAIndividualBinaryData indy4 = (GAIndividualBinaryData) indy1.clone();
+//		GAIndividualBinaryData indy5 = (GAIndividualBinaryData) indy1.clone();
+//		BitSet data1 = indy1.getBinaryData();
+//		BitSet data2 = indy2.getBinaryData();
+//		BitSet data3 = indy3.getBinaryData();
+//		BitSet data4 = indy4.getBinaryData();
+//		BitSet data5 = indy5.getBinaryData();
+//		data1.set(0, false);
+//		data1.set(1, true);
+//		data1.set(2, true);
+//		
+//		data2.set(0, true);
+//		data2.set(1, false);
+//		data2.set(2, true);
+//		
+//		data3.set(0, true);
+//		data3.set(1, true);
+//		data3.set(2, true);
+//
+//		data4.set(0, true);
+//		data4.set(1, true);
+//		data4.set(2, true);
+//		
+//		data5.set(0, true);
+//		data5.set(1, true);
+//		data5.set(2, true);
+//		indy1.SetBinaryGenotype(data1);
+//		indy2.SetBinaryGenotype(data2);
+//		indy3.SetBinaryGenotype(data3);
+//		indy4.SetBinaryGenotype(data4);
+//		indy5.SetBinaryGenotype(data5);
+//		pop.add(indy1);
+//		pop.add(indy2);
+//		pop.add(indy3);
+//		pop.add(indy4);
+//		pop.add(indy5);
+//		
+////		System.out.println("-----");
 //		System.out.println(pop.getStringRepresentation());
 //		System.out.println("-----");
-		System.out.println(b.bayesianDirichletMetric(pop));
+//		System.out.println(b.bayesianDirichletMetric(pop));
+//		b.print();
+		double val = SpecialFunction.gamma(26);
+		double val2 = SpecialFunction.gamma(51);
+		double val3 = (SpecialFunction.gamma(12+12.5))/SpecialFunction.gamma(12.5);
+		double val4 = (SpecialFunction.gamma(13+12.5))/SpecialFunction.gamma(12.5);
+		double erg = val/val2;
+		erg = erg * val3 * val4;
+		System.out.println(erg);
+	}
+	
+	public void setScoringMethod(BOAScoringMethods method){
+		this.scoringMethod = method;
+	}
+	
+	public BOAScoringMethods getScoringMethod(){
+		return this.scoringMethod;
+	}
+
+	public int[][] adaptEdgeRate(int[][] edgeRate) {
+		for(int i=0; i<edgeRate.length; i++){
+			for(int j=0; j<edgeRate.length; j++){
+				if(this.network[i][j]){
+					edgeRate[i][j]++;
+				}
+			}
+		}
+		return edgeRate;
 	}
 
 }

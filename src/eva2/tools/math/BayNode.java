@@ -42,7 +42,7 @@ public class BayNode {
 	public void generateNewPTable(){
 		this.pTable = new double[(int) Math.pow(2, this.numberOfParents)];
 		for(int i=0; i<this.pTable.length; i++){
-			this.pTable[i] = 0.5;
+			this.pTable[i] = 0.50001;
 		}
 	}
 	
