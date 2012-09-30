@@ -29,6 +29,8 @@ import eva2.tools.Pair;
 import eva2.tools.math.BayNet;
 import eva2.tools.math.RNG;
 import java.io.BufferedWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Basic implementation of the Bayesian Optimization Algorithm
@@ -43,7 +45,8 @@ import java.io.BufferedWriter;
  */
 public class BOA implements InterfaceOptimizer, java.io.Serializable {
 
-	private static boolean TRACE = false;
+//	private static boolean TRACE = false;
+        private static final Logger LOGGER = Logger.getLogger(BOA.class.getName()); 
 	transient private InterfacePopulationChangedEventListener m_Listener = null;
 	private String m_Identifier = "BOA";
 
@@ -163,7 +166,7 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
 		File theDir = new File(directoryName);
 		// if the directory does not exist, create it
 		if (!theDir.exists()) {
-			System.out.println("creating directory: " + directoryName);
+                        LOGGER.log(Level.INFO, "creating directory: "+directoryName);
 			theDir.mkdir();
 		}
 	}
@@ -199,7 +202,7 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
 	private void evaluate(AbstractEAIndividual indy) {
 		// evaluate the given individual if it is not null
 		if (indy == null) {
-			System.err.println("tried to evaluate null");
+                        LOGGER.log(Level.WARNING, "tried to evaluate null");
 			return;
 		}
 		this.problem.evaluate(indy);
@@ -224,12 +227,12 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
 		}
 		this.template = this.problem.getIndividualTemplate();
 		if (!(template instanceof InterfaceDataTypeBinary)) {
-			System.err.println("Requiring binary data!");
+                        LOGGER.log(Level.WARNING, "Requiring binary data!");
 		} else {
 			Object dim = BeanInspector.callIfAvailable(problem,
 					"getProblemDimension", null);
 			if (dim == null)
-				System.err.println("Couldnt get problem dimension!");
+                                LOGGER.log(Level.WARNING, "Coudn't get problem dimension!");
 			probDim = (Integer) dim;
 			((InterfaceDataTypeBinary) this.template)
 					.SetBinaryGenotype(new BitSet(probDim));
@@ -347,8 +350,7 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
 	 */
 	private Population generateNewIndys(int sampleSetSize) {
 		Population pop = new Population(sampleSetSize);
-		if (TRACE)
-			System.out.println("Resampling " + sampleSetSize + " indies...");
+                LOGGER.log(Level.CONFIG, "Resampling " + sampleSetSize + " indies...");
 		while (pop.size() < sampleSetSize) {
 			AbstractEAIndividual indy = (AbstractEAIndividual) this.template
 					.clone();
@@ -469,7 +471,7 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
 				// Close the output stream
 				out.close();
 			} catch (Exception e) {// Catch exception if any
-				System.err.println("Error: " + e.getMessage());
+				LOGGER.log(Level.WARNING, "Error: ", e);
 			}
 
 		} else {
@@ -483,7 +485,7 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
 				// Close the output stream
 				out.close();
 			} catch (Exception e) {// Catch exception if any
-				System.err.println("Error: " + e.getMessage());
+                                LOGGER.log(Level.WARNING, "Error: ", e);
 			}
 		}
 	}
@@ -510,7 +512,7 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
 				// Close the output stream
 				out.close();
 			} catch (Exception e) {// Catch exception if any
-				System.err.println("Error: " + e.getMessage());
+                                LOGGER.log(Level.WARNING, "Error: ", e);
 			}
 
 		} else {
@@ -525,7 +527,7 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
 				// Close the output stream
 				out.close();
 			} catch (Exception e) {// Catch exception if any
-				System.err.println("Error: " + e.getMessage());
+                                LOGGER.log(Level.WARNING, "Error: ", e);
 			}
 		}
 	}
