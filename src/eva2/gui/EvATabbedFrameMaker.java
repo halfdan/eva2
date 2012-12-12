@@ -183,6 +183,7 @@ class ClosableTabComponent extends JPanel {
         label.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5));
         //tab button
         JButton button = new TabButton();
+        
         add(button);
         //add more space to the top of the component
         setBorder(BorderFactory.createEmptyBorder(2, 0, 2, 0));
@@ -215,6 +216,7 @@ class ClosableTabComponent extends JPanel {
                 final String tabTitle = pane.getTitleAt(i);
                 final Component tabPane = pane.getComponentAt(i);
                 final int tabPosition = i;
+                
                 pane.remove(i);
                 if(pane.getTabCount() == 0) {
                     pane.setVisible(false);
@@ -227,8 +229,11 @@ class ClosableTabComponent extends JPanel {
 
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        /* Add the Tab Panel again */
-                        pane.insertTab(tabTitle, null, tabPane, "", tabPosition);
+                        /* Add the Tab Panel again */                                                
+                        // ToDo: Fix indexing problem                        
+                        pane.insertTab(tabTitle, null, tabPane, "", tabPosition);                        
+                        /* Set the tab component (closable) */
+                        pane.setTabComponentAt(tabPosition, ClosableTabComponent.this);
                         pane.setVisible(true);
                         /* Remove the Button */
                         toolBar.remove((Component)e.getSource());
