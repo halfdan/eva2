@@ -148,6 +148,18 @@ public final class SpecialFunction extends Object {
          if( x <= 0.0 ) throw new ArithmeticException("range exception");
          return Math.log(x)/2.30258509299404568401;
     }
+    
+    /**
+     * 
+     * @param b Base of the logarithm
+     * @param x a double value
+     * @return The log<sub>b</sub>
+     * @throws ArithmeticException
+     */
+    static public double logb(double b, double x) throws ArithmeticException {
+    	if( x <= 0.0 ) throw new ArithmeticException("range exception");
+        return Math.log(x)/Math.log(b);
+    }
 
 
   /**
