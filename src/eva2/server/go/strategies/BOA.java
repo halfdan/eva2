@@ -71,7 +71,7 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
 	private boolean printEdgeRate = false;
 	private boolean printTimestamps = false;
 	private boolean printMetrics = false;
-	private boolean printExtraOutput = false;
+//	private boolean printExtraOutput = false;
 
 	public BOA() {
 
@@ -88,16 +88,16 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
 		this.learningSetRatio = learningSetRatio;
 		this.resampleRatio = resampleRatio;
 		this.netFolder = outputFolder;
-		this.printExtraOutput = printExtraOutput;
+//		this.printExtraOutput = printExtraOutput;
 		this.upperProbLimit = upperProbLimit;
 		this.lowerProbLimit = lowerProbLimit;
 		this.printEdgeRate = printEdgeRate;
 		this.printNetworks = printNetworks;
 		this.printMetrics = printMetrics;
 		this.printTimestamps = printTimestamps;
-		if (printEdgeRate || printNetworks || printMetrics || printTimestamps) {
-			this.printExtraOutput = true;
-		}
+//		if (printEdgeRate || printNetworks || printMetrics || printTimestamps) {
+//			this.printExtraOutput = true;
+//		}
 	}
 
 	public BOA(BOA b) {
@@ -125,7 +125,7 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
 			}
 		}
 		this.scoringMethod = b.scoringMethod;
-		this.printExtraOutput = b.printExtraOutput;
+//		this.printExtraOutput = b.printExtraOutput;
 		this.printNetworks = b.printNetworks;
 		this.printMetrics = b.printMetrics;
 		this.printEdgeRate = b.printEdgeRate;
@@ -145,16 +145,16 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
 	}
 
 	public void hideHideable() {
-		GenericObjectEditor
-				.setHideProperty(this.getClass(), "population", true);
-		GenericObjectEditor.setHideProperty(getClass(), "printNetworks",
-				!printExtraOutput);
-		GenericObjectEditor.setHideProperty(getClass(), "printEdgeRate",
-				!printExtraOutput);
-		GenericObjectEditor.setHideProperty(getClass(), "printMetrics",
-				!printExtraOutput);
-		GenericObjectEditor.setHideProperty(getClass(), "printTimestamps",
-				!printExtraOutput);
+//		GenericObjectEditor
+//				.setHideProperty(this.getClass(), "population", true);
+//		GenericObjectEditor.setHideProperty(getClass(), "printNetworks",
+//				!printExtraOutput);
+//		GenericObjectEditor.setHideProperty(getClass(), "printEdgeRate",
+//				!printExtraOutput);
+//		GenericObjectEditor.setHideProperty(getClass(), "printMetrics",
+//				!printExtraOutput);
+//		GenericObjectEditor.setHideProperty(getClass(), "printTimestamps",
+//				!printExtraOutput);
 	}
 
 	public void addPopulationChangedEventListener(
@@ -215,11 +215,11 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
 	 */
 	private void defaultInit() {
 		this.count = 0;
-		if (printExtraOutput) {
+//		if (printExtraOutput) {
 			if (printTimestamps) {
 				printTimeStamp();
 			}
-		}
+//		}
 		if (population == null) {
 			this.population = new Population(this.PopSize);
 		} else {
@@ -539,7 +539,8 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
 				calcLearningSetSize(), this.fitCrit);
 		// generate the network with these individuals
 		constructNetwork(best);
-		if(this.printExtraOutput && this.printEdgeRate){
+//		if(this.printExtraOutput && this.printEdgeRate){
+		if(this.printEdgeRate){
 			this.edgeRate = this.network.adaptEdgeRate(this.edgeRate);
 		}
 		// sample new individuals from the network
@@ -555,7 +556,7 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
 		this.firePropertyChangedEvent(Population.nextGenerationPerformed);
 		this.problem.evaluatePopulationEnd(this.population);
 		// print output if desired
-		if (this.printExtraOutput) {
+//		if (this.printExtraOutput) {
 			if (printNetworks) {
 				printNetworkToFile("" + this.count);
 			}
@@ -568,7 +569,7 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
 			if (printTimestamps) {
 				printTimeStamp();
 			}
-		}
+//		}
 	}
 
 	/**
@@ -711,25 +712,25 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
 		return new String[] { "learningRatio", "resamplingRatio" };
 	}
 
-	public boolean isPrintExtraOutput() {
-		return this.printExtraOutput;
-	}
+//	public boolean isPrintExtraOutput() {
+//		return this.printExtraOutput;
+//	}
 
-	public void setPrintExtraOutput(boolean b) {
-		this.printExtraOutput = b;
-		GenericObjectEditor.setHideProperty(getClass(), "printNetworks",
-				!printExtraOutput);
-		GenericObjectEditor.setHideProperty(getClass(), "printEdgeRate",
-				!printExtraOutput);
-		GenericObjectEditor.setHideProperty(getClass(), "printMetrics",
-				!printExtraOutput);
-		GenericObjectEditor.setHideProperty(getClass(), "printTimestamps",
-				!printExtraOutput);
-	}
+//	public void setPrintExtraOutput(boolean b) {
+//		this.printExtraOutput = b;
+//		GenericObjectEditor.setHideProperty(getClass(), "printNetworks",
+//				!printExtraOutput);
+//		GenericObjectEditor.setHideProperty(getClass(), "printEdgeRate",
+//				!printExtraOutput);
+//		GenericObjectEditor.setHideProperty(getClass(), "printMetrics",
+//				!printExtraOutput);
+//		GenericObjectEditor.setHideProperty(getClass(), "printTimestamps",
+//				!printExtraOutput);
+//	}
 
-	public String printExtraOutputTipText() {
-		return "do you want to print extra output files";
-	}
+//	public String printExtraOutputTipText() {
+//		return "do you want to print extra output files";
+//	}
 
 	public boolean isPrintNetworks() {
 		return this.printNetworks;
