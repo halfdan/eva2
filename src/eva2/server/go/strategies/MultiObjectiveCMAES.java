@@ -74,10 +74,10 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * eva2.server.go.strategies.InterfaceOptimizer#SetIdentifier(java.lang.
+	 * eva2.server.go.strategies.InterfaceOptimizer#setIdentifier(java.lang.
 	 * String)
 	 */
-	public void SetIdentifier(String name) {
+	public void setIdentifier(String name) {
 		m_Identifier = name;
 	}
 

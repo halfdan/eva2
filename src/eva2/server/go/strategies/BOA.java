@@ -592,7 +592,7 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
 		return new SolutionSet(this.population);
 	}
 
-	public void SetIdentifier(String name) {
+	public void setIdentifier(String name) {
 		this.m_Identifier = name;
 	}
 

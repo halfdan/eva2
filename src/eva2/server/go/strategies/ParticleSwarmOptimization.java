@@ -1712,7 +1712,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
      *
      * @param name The indenifier
      */
-    public void SetIdentifier(String name) {
+    public void setIdentifier(String name) {
         this.m_Identifier = name;
     }
 

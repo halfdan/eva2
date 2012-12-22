@@ -97,7 +97,7 @@ InterfaceOptimizer, Serializable, InterfaceAdditionalPopulationInformer {
 		setLocalSearchMethod(getLocalSearchMethod());
 	}
 	
-     public void SetIdentifier(String name) {
+     public void setIdentifier(String name) {
         this.m_Identifier = name;
     }
      public String getIdentifier() {

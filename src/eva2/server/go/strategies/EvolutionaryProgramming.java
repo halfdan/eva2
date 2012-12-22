@@ -153,7 +153,7 @@ public class EvolutionaryProgramming implements InterfaceOptimizer, java.io.Seri
     /** This method allows you to set an identifier for the algorithm
      * @param name      The indenifier
      */
-    public void SetIdentifier(String name) {
+    public void setIdentifier(String name) {
         this.m_Identifier = name;
     }
     public String getIdentifier() {

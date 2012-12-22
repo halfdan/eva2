@@ -664,7 +664,7 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
 
 ///////////// Trivials...
 
-	public void SetIdentifier(String name) {
+	public void setIdentifier(String name) {
 		m_Identifier = name;
 	}
 

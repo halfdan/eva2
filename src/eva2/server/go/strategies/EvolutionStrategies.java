@@ -323,7 +323,7 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
      *
      * @param name The indenifier
      */
-    public void SetIdentifier(String name) {
+    public void setIdentifier(String name) {
         this.identifier = name;
     }
 
