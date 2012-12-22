@@ -1062,7 +1062,7 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
         return identifier;
     }
 
-    public void SetIdentifier(String name) {
+    public void setIdentifier(String name) {
         identifier = name;
     }
 

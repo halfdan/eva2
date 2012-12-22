@@ -109,7 +109,7 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
             this.m_Islands = new InterfaceOptimizer[this.m_numLocalCPUs];
             for (int i = 0; i < this.m_numLocalCPUs; i++) {
                 this.m_Islands[i] = (InterfaceOptimizer) this.m_Optimizer.clone();
-                this.m_Islands[i].SetIdentifier(""+i);
+                this.m_Islands[i].setIdentifier(""+i);
                 this.m_Islands[i].init();
                 if (this.m_LogLocalChanges)
                     this.m_Islands[i].addPopulationChangedEventListener(this);
@@ -129,7 +129,7 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
             this.m_Islands = new InterfaceOptimizer[nodesList.length];
             for (int i = 0; i < nodesList.length; i++) {
                 this.m_Islands[i] = (InterfaceOptimizer) RMIProxyRemoteThread.newInstance(this.m_Optimizer, nodesList[i]);
-                this.m_Islands[i].SetIdentifier(""+i);
+                this.m_Islands[i].setIdentifier(""+i);
                 this.m_Islands[i].init();
                 if (this.m_LogLocalChanges)
                     this.m_Islands[i].addPopulationChangedEventListener(myLocal);
@@ -178,7 +178,7 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
             this.m_Islands = new InterfaceOptimizer[this.m_numLocalCPUs];
             for (int i = 0; i < this.m_numLocalCPUs; i++) {
                 this.m_Islands[i] = (InterfaceOptimizer) this.m_Optimizer.clone();
-                this.m_Islands[i].SetIdentifier(""+i);
+                this.m_Islands[i].setIdentifier(""+i);
                 this.m_Islands[i].init();
                 if (this.m_LogLocalChanges)
                     this.m_Islands[i].addPopulationChangedEventListener(this);
@@ -196,7 +196,7 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
             this.m_Islands = new InterfaceOptimizer[nodesList.length];
             for (int i = 0; i < nodesList.length; i++) {
                 this.m_Islands[i] = (InterfaceOptimizer) RMIProxyRemoteThread.newInstance(this.m_Optimizer, nodesList[i]);
-                this.m_Islands[i].SetIdentifier(""+i);
+                this.m_Islands[i].setIdentifier(""+i);
                 this.m_Islands[i].init();
                 if (this.m_LogLocalChanges)
                     this.m_Islands[i].addPopulationChangedEventListener(myLocal);
@@ -390,7 +390,7 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
     /** This method allows you to set an identifier for the algorithm
      * @param name      The indenifier
      */
-     public void SetIdentifier(String name) {
+     public void setIdentifier(String name) {
         this.m_Identifier = name;
     }
      public String getIdentifier() {

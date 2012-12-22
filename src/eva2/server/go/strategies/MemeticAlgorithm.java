@@ -255,7 +255,7 @@ public class MemeticAlgorithm implements InterfaceOptimizer,
 	 * @param name
 	 *          The indenifier
 	 */
-	public void SetIdentifier(String name) {
+	public void setIdentifier(String name) {
 		this.m_Identifier = name;
 	}
 

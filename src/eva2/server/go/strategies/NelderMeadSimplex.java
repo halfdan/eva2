@@ -58,7 +58,7 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
 		return new NelderMeadSimplex(this);
 	}
 
-	public void SetIdentifier(String name) {
+	public void setIdentifier(String name) {
 		m_Identifier = name;
 	}
 
