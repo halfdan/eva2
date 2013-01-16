@@ -54,7 +54,7 @@ public class MOSOGoalProgramming implements InterfaceMOSOConverter, java.io.Seri
         resultFit[0] = 0;
         for (int i = 0; (i < this.m_Goals.getNumRows()) && (i < tmpFit.length) ; i++)
             resultFit[0] += tmpFit[i]-this.m_Goals.getValue(i, 0);
-        indy.SetFitness(resultFit);
+        indy.setFitness(resultFit);
     }
 
     /** This method allows the problem to set the current output size of

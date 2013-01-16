@@ -36,7 +36,7 @@ public interface IndividualInterface {
 	 * 
 	 * @param fit new fitness of the individual
 	 */
-	void SetFitness (double[] fit);
+	void setFitness (double[] fit);
 
 	/**
 	 * Check whether the instance is dominating the given other individual and return

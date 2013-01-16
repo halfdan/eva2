@@ -59,7 +59,7 @@ public class MOSODynamicallyWeightedFitness implements InterfaceMOSOConverter, j
 
         for (int i = 0; (i <2) && (i < tmpFit.length); i++)
             resultFit[0] += tmpFit[i]*weights[i];
-        indy.SetFitness(resultFit);
+        indy.setFitness(resultFit);
     }
 
     /** This method allows the problem to set the current output size of

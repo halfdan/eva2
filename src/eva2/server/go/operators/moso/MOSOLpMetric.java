@@ -68,7 +68,7 @@ public class MOSOLpMetric implements InterfaceMOSOConverter, java.io.Serializabl
             }
         }
 
-        indy.SetFitness(resultFit);
+        indy.setFitness(resultFit);
     }
 
     /** This method allows the problem to set the current output size of

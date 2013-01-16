@@ -57,7 +57,7 @@ public class MOSORandomWeight implements InterfaceMOSOConverter, java.io.Seriali
         }
         for (int i = 0; (i < tmpWeight.length) && (i < tmpFit.length) ; i++)
             resultFit[0] += tmpFit[i]*tmpWeight[i];
-        indy.SetFitness(resultFit);
+        indy.setFitness(resultFit);
     }
 
     /** This method allows the problem to set the current output size of

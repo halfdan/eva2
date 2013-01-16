@@ -60,7 +60,7 @@ public class SimpleProblemWrapper extends AbstractOptimizationProblem {
 	        // if indicated, add Gaussian noise
 	        if (m_Noise != 0) RNG.addNoise(fitness, m_Noise); 
 	        // set the fitness 
-	        individual.SetFitness(fitness);
+	        individual.setFitness(fitness);
 		} else if (simProb instanceof SimpleProblemBinary) {
 	        BitSet          tmpBitSet;
 	        double[]        result;
@@ -69,7 +69,7 @@ public class SimpleProblemWrapper extends AbstractOptimizationProblem {
 	        // evaluate the fitness
 	        result = ((SimpleProblemBinary)simProb).eval(tmpBitSet);
 	        // set the fitness
-	        individual.SetFitness(result);
+	        individual.setFitness(result);
 		} else {
 			System.err.println("Error in SimpleProblemWrapper: " + simProb.getClass().getName() + " is unknown type!");
 		}

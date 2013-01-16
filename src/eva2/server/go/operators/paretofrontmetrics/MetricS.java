@@ -115,7 +115,7 @@ public class MetricS implements InterfaceParetoFrontMetric, java.io.Serializable
                 redF = new double[tmpF.length -1];
                 for (int j = 0; j < redF.length; j++) redF[j] = tmpF[j];
                 tmpIndy = new ESIndividualDoubleData();
-                tmpIndy.SetFitness(redF);
+                tmpIndy.setFitness(redF);
                 smPop.add(i, tmpIndy);
             }
         }

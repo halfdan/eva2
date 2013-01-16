@@ -180,7 +180,7 @@ implements Interface2DBorderProblem, InterfaceMultimodalProblemKnown {
 		InterfaceDataTypeDouble tmpIndy;
 		tmpIndy = (InterfaceDataTypeDouble)((AbstractEAIndividual)this.m_Template).clone();
 		tmpIndy.SetDoubleGenotype(point);
-		((AbstractEAIndividual)tmpIndy).SetFitness(evalUnnormalized(point));
+		((AbstractEAIndividual)tmpIndy).setFitness(evalUnnormalized(point));
 		if (((AbstractEAIndividual)tmpIndy).getFitness(0)>=m_GlobalOpt) {
 			m_GlobalOpt = ((AbstractEAIndividual)tmpIndy).getFitness(0);
 			if (makeGlobalOptUnreachable) {

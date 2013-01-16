@@ -204,7 +204,7 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem
 	 */
 	protected void setEvalFitness(AbstractEAIndividual individual, double[] x,
 			double[] fit) {
-		individual.SetFitness(fit);
+		individual.setFitness(fit);
 	}
 
 	/**
@@ -441,7 +441,7 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem
 												// required
 			tmpIndy.SetDoubleGenotype(pos);
 		}
-		((AbstractEAIndividual) tmpIndy).SetFitness(prob.eval(pos));
+		((AbstractEAIndividual) tmpIndy).setFitness(prob.eval(pos));
 		if (!Mathematics.isInRange(pos, prob.makeRange())) {
 			System.err.println("Warning, add optimum which is out of range!");
 		}
@@ -462,7 +462,7 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem
 		tmpIndy = (InterfaceDataTypeDouble) prob.getIndividualTemplate()
 				.clone();
 		tmpIndy.SetDoubleGenotype(pos);
-		((AbstractEAIndividual) tmpIndy).SetFitness(prob.eval(pos));
+		((AbstractEAIndividual) tmpIndy).setFitness(prob.eval(pos));
 		pop.add(tmpIndy);
 		FitnessConvergenceTerminator convTerm = new FitnessConvergenceTerminator(
 				1e-25, 10, StagnationTypeEnum.generationBased,

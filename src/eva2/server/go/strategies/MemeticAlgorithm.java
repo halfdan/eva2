@@ -172,7 +172,7 @@ public class MemeticAlgorithm implements InterfaceOptimizer,
 					try {
 						AbstractEAIndividual newindy = (AbstractEAIndividual) antilamarckismcache
 						    .get(indy);
-						indy.SetFitness(newindy.getFitness());
+						indy.setFitness(newindy.getFitness());
 					} catch (Exception ex) {
 						System.err.println("individual not found in antilamarckismcache");
 					}

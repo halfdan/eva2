@@ -77,11 +77,11 @@ public class SelectMOMAIIDominanceCounter implements InterfaceSelection, java.io
                 malta.m_SizeDominantSolutions = domCount;
                 double[] fitness = new double[1];
                 fitness[0] = 1/((double)(domCount+1));
-                tmpIndy1.SetFitness(fitness);
+                tmpIndy1.setFitness(fitness);
             } else {
                 double[] fitness = new double[1];
                 fitness[0] = 2;
-                tmpIndy1.SetFitness(fitness);
+                tmpIndy1.setFitness(fitness);
             }
         }
     }

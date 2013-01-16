@@ -405,7 +405,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
         indy.resetConstraintViolation();
         double[] fit = new double[1];
         fit[0] = 0;
-        indy.SetFitness(fit);
+        indy.setFitness(fit);
         if (parents != null) indy.setParents(parents);
         return indy;
     }

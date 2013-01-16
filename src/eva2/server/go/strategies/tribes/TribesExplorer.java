@@ -94,9 +94,9 @@ public class TribesExplorer extends AbstractEAIndividual implements InterfaceDat
      * Be aware that for a TribesExplorer, an objective value might be taken into account
      * by reducing the fitness (in the first dimension).
      */
-    public void SetFitness(double[] fitness) {
+    public void setFitness(double[] fitness) {
     	position.fitness = fitness;
-    	super.SetFitness(fitness);
+    	super.setFitness(fitness);
     	fitness[0] -= objectiveValueFirstDim;
     	position.setTotalError();
     }

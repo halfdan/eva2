@@ -48,7 +48,7 @@ public abstract class AbstractDynTransProblem extends AbstractSynchronousOptimiz
 		AbstractEAIndividual tussy = (AbstractEAIndividual)individual.clone();
 		transform(tussy, time);
         getProblem().evaluate(tussy);
-        individual.SetFitness(tussy.getFitness());       
+        individual.setFitness(tussy.getFitness());       
 	}
 
 	/**

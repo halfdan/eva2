@@ -64,7 +64,7 @@ public class SelectMOSPEAII implements InterfaceSelection, java.io.Serializable 
             orgFit[i]   = ((AbstractEAIndividual)population.get(i)).getFitness();
             newFit      = new double[1];
             newFit[0]   = this.m_SPEAFitness[i];
-            ((AbstractEAIndividual)population.get(i)).SetFitness(newFit);
+            ((AbstractEAIndividual)population.get(i)).setFitness(newFit);
         }
 
         // then select
@@ -72,7 +72,7 @@ public class SelectMOSPEAII implements InterfaceSelection, java.io.Serializable 
 
         // finally replace the fitness with the original
         for (int i = 0; i < population.size(); i++) {
-            ((AbstractEAIndividual)population.get(i)).SetFitness(orgFit[i]);
+            ((AbstractEAIndividual)population.get(i)).setFitness(orgFit[i]);
         }
 
         if (false) {

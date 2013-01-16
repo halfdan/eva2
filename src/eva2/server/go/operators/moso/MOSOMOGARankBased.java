@@ -57,7 +57,7 @@ public class MOSOMOGARankBased implements InterfaceMOSOConverter, java.io.Serial
         tmpFit = indy.getFitness();
         indy.putData("MOFitness", tmpFit);
         resultFit[0] = ((Integer)indy.getData("MOGARank")).doubleValue();
-        indy.SetFitness(resultFit);
+        indy.setFitness(resultFit);
     }
 
     /** This method allows the problem to set the current output size of

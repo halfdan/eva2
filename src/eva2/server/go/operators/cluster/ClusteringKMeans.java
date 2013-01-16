@@ -280,7 +280,7 @@ public class ClusteringKMeans implements InterfaceClustering, java.io.Serializab
      */
     private double distance(AbstractEAIndividual indy, double[] p) {
         if (m_UseSearchSpace) ((InterfaceDataTypeDouble)tmpIndy).SetDoubleGenotype(p);
-        else tmpIndy.SetFitness(p);
+        else tmpIndy.setFitness(p);
         
         return metric.distance(indy, tmpIndy);
     }

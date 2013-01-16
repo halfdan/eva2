@@ -109,7 +109,7 @@ public class MetricSWithReference implements InterfaceParetoFrontMetric, java.io
             tmpPop.clear();
             for (int i = 0; i < this.m_Reference.length; i++) {
                 tmpIndy = new ESIndividualDoubleData();
-                tmpIndy.SetFitness(this.m_Reference[i]);
+                tmpIndy.setFitness(this.m_Reference[i]);
                 tmpPop.addIndividual(tmpIndy);
             }
             this.m_ReferenceSMetric = this.calculateSMetric(tmpPop, this.m_ObjectiveSpaceRange, this.m_ObjectiveSpaceRange.length);
@@ -149,7 +149,7 @@ public class MetricSWithReference implements InterfaceParetoFrontMetric, java.io
                 redF = new double[tmpF.length -1];
                 for (int j = 0; j < redF.length; j++) redF[j] = tmpF[j];
                 tmpIndy = new ESIndividualDoubleData();
-                tmpIndy.SetFitness(redF);
+                tmpIndy.setFitness(redF);
                 smPop.add(i, tmpIndy);
             }
         }
