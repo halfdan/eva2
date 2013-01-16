@@ -329,7 +329,7 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 				for (int i=0; i<seedData.length; i++) {
 					AbstractEAIndividual indy = (AbstractEAIndividual)m_Template.clone();
 					setIndyGenotype(indy, seedData[i]);
-					indy.SetFitness(seedDataFit[i]);
+					indy.setFitness(seedDataFit[i]);
 					seedPopulation.add(indy);
 				}
 			}
@@ -620,7 +620,7 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 		double[] res = handler.requestEval(this, AbstractEAIndividual.getIndyData(indy));
 		log("evaluated to " + BeanInspector.toString(res) + "\n");
 		log("Free mem is " + Runtime.getRuntime().freeMemory() + ", time is " + System.currentTimeMillis() + "\n");
-		indy.SetFitness(res);
+		indy.setFitness(res);
 	}
 
 	@Override

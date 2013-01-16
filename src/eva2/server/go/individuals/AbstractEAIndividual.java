@@ -618,7 +618,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      * @param fitness The new fitness array
      * @deprecated
      */
-    public void SetFitness(double[] fitness) {
+    public void setFitness(double[] fitness) {
         this.m_Fitness = fitness;
     }
 

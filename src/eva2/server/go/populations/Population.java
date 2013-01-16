@@ -680,7 +680,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
         AbstractEAIndividual indy;
         for (int i = 0; i < size(); i++) {
             indy = getEAIndividual(i);
-            indy.SetFitness(f.clone());
+            indy.setFitness(f.clone());
         }
     }
 
@@ -882,7 +882,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     public void resetFitness(IndividualInterface indy) {
         double[] tmpFit = indy.getFitness();
         java.util.Arrays.fill(tmpFit, Double.MAX_VALUE);
-        indy.SetFitness(tmpFit);
+        indy.setFitness(tmpFit);
     }
 
     /**
@@ -2150,7 +2150,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
         AbstractEAIndividual indy = (AbstractEAIndividual) getEAIndividual(0).clone();
         double[] center = getCenter();
         AbstractEAIndividual.setDoublePosition(indy, center);
-        indy.SetFitness(null);
+        indy.setFitness(null);
         return indy;
     }
 

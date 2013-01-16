@@ -59,7 +59,7 @@ public class MOSOUtilityFunction implements InterfaceMOSOConverter, java.io.Seri
         /**********************************************************************************************
          * and don't forget to set the reduced fitness to the individual
          */
-        indy.SetFitness(resultFit);
+        indy.setFitness(resultFit);
     }
 
     /** This method allows the problem to set the current output size of

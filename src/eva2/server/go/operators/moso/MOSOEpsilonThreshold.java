@@ -78,7 +78,7 @@ public class MOSOEpsilonThreshold implements InterfaceMOSOConverter, java.io.Ser
             if (new Double(tmpFit[i]).isNaN()) System.out.println("-Fitness is NaN");
             if (new Double(tmpFit[i]).isInfinite()) System.out.println("-Fitness is Infinite");
         }
-        indy.SetFitness(resultFit);
+        indy.setFitness(resultFit);
     }
 
     /** This method allows the problem to set the current output size of

@@ -2228,7 +2228,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
                 throw new RuntimeException("Mismatching best fitness!! " + personalBestfit[0] + " vs. " + ((InterfaceProblemDouble) m_Problem).eval(personalBestPos)[0]);
             }
             ((InterfaceDataTypeDouble) indy).SetDoubleGenotype(personalBestPos);
-            indy.SetFitness(personalBestfit);
+            indy.setFitness(personalBestfit);
             bests.add((AbstractEAIndividual) indy.clone());
         }
         return bests;

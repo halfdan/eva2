@@ -56,7 +56,7 @@ class MyLensViewer extends JPanel implements InterfaceSolutionViewer {
 //    	this.m_BestFitness = Double.POSITIVE_INFINITY;
 //    	this.m_BestVariables = new double[10];
     	ESIndividualDoubleData dummy = new ESIndividualDoubleData();
-    	dummy.SetFitness(new double[]{Double.POSITIVE_INFINITY});
+    	dummy.setFitness(new double[]{Double.POSITIVE_INFINITY});
     	indiesToPaint = new Population();
     }
     

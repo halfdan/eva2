@@ -62,7 +62,7 @@ public class ArchivingMaxiMin implements InterfaceArchiving, java.io.Serializabl
         // now unconvert from SO to MO
         for (int i = 0; i < archive.size(); i++) {
             tmpD = (double[])((AbstractEAIndividual)archive.get(i)).getData("MOFitness");
-            ((AbstractEAIndividual)archive.get(i)).SetFitness(tmpD);
+            ((AbstractEAIndividual)archive.get(i)).setFitness(tmpD);
         }
 
         pop.SetArchive(archive);

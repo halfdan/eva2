@@ -124,7 +124,7 @@ public class ImpactOfDimensionOnMOEAs {
                 if (j < x.length) fitness[j] =1/((double)fitness[j]) + x[j];
                 else  fitness[j] =1/((double)fitness[j]) + x[j%objectives] + x[(j+1)%objectives];
             }
-            ((AbstractEAIndividual)pop.get(i)).SetFitness(fitness);
+            ((AbstractEAIndividual)pop.get(i)).setFitness(fitness);
         }
     }
 

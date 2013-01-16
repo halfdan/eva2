@@ -63,7 +63,7 @@ public class DeNovofilter {
                     tmpD[i-2] = new Double(tmpS[i]).doubleValue();
                 }
                 indy = new ESIndividualDoubleData();
-                indy.SetFitness(tmpD);
+                indy.setFitness(tmpD);
                 pop.add(indy);
             }
             reader.close();

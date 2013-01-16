@@ -41,7 +41,7 @@ public abstract class AbstractProblemBinary extends AbstractOptimizationProblem 
         // evaluate the fitness
         result = eval(tmpBitSet);
         // set the fitness
-        individual.SetFitness(result);
+        individual.setFitness(result);
 	}
 	
 	/**

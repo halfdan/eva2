@@ -61,7 +61,7 @@ public class MOSOWeightedFitness implements InterfaceMOSOConverter, java.io.Seri
         indy.putData("MOFitness", tmpFit);
         for (int i = 0; (i < this.m_Weights.getNumRows()) && (i < tmpFit.length) ; i++)
             resultFit[0] += tmpFit[i]*this.m_Weights.getValue(i,0);
-        indy.SetFitness(resultFit);
+        indy.setFitness(resultFit);
     }
 
     private void checkingWeights() {

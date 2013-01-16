@@ -59,7 +59,7 @@ public class MOSOEpsilonConstraint implements InterfaceMOSOConverter, java.io.Se
                 indy.addConstraintViolation(Math.max(0, tmpFit[i] - this.m_EpsilonConstraint.m_TargetValue[i]));
             }
         }
-        indy.SetFitness(resultFit);
+        indy.setFitness(resultFit);
     }
 
     /** This method allows the problem to set the current output size of

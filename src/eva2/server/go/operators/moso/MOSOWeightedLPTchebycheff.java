@@ -65,7 +65,7 @@ public class MOSOWeightedLPTchebycheff implements InterfaceMOSOConverter, java.i
             }
         }
         if (this.m_WLPT.m_P > 0) resultFit[0] = Math.pow(resultFit[0], 1/((double)this.m_WLPT.m_P));
-        indy.SetFitness(resultFit);
+        indy.setFitness(resultFit);
     }
 
     /** This method allows the problem to set the current output size of

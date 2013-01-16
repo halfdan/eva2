@@ -46,7 +46,7 @@ public class MOSORankbased implements InterfaceMOSOConverter, java.io.Serializab
         tmpFit = indy.getFitness();
         indy.putData("MOFitness", tmpFit);
         resultFit[0] = ((Integer)indy.getData("ParetoLevel")).doubleValue();
-        indy.SetFitness(resultFit);
+        indy.setFitness(resultFit);
     }
 
     /** This method allows the problem to set the current output size of

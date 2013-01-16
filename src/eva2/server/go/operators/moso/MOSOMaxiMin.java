@@ -65,7 +65,7 @@ public class MOSOMaxiMin implements InterfaceMOSOConverter, java.io.Serializable
             tmpIndy.putData("MOFitness", tmpFit);
             resultFit   = new double[1];
             resultFit[0] = result[i];
-            tmpIndy.SetFitness(resultFit);
+            tmpIndy.setFitness(resultFit);
         }
         ////////////////////////////////////////////////////////////////////////////////////
 //        if (false) {
@@ -106,7 +106,7 @@ public class MOSOMaxiMin implements InterfaceMOSOConverter, java.io.Serializable
         indy.putData("MOFitness", tmpFit);
         System.err.println("The MaxiMin MOSO can not be applied to single individuals! I default to random criterion.");
         resultFit[0]    = tmpFit[RNG.randomInt(0, tmpFit.length)];
-        indy.SetFitness(resultFit);
+        indy.setFitness(resultFit);
     }
 
     /** This method allows the problem to set the current output size of

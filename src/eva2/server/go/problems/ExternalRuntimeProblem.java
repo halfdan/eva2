@@ -180,7 +180,7 @@ implements Interface2DBorderProblem, InterfaceProblemDouble, InterfaceHasInitRan
         x = getXVector(individual);
 
         double[] fit = eval(x);
-        individual.SetFitness(fit);
+        individual.setFitness(fit);
 		        
 //        if (this.m_UseTestConstraint) {
 //            if (x[0] < 1) individual.addConstraintViolation(1-x[0]);
