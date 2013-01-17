@@ -35,6 +35,7 @@ public class LTGA implements InterfaceOptimizer, java.io.Serializable, Interface
     private AbstractOptimizationProblem problem = new BKnapsackProblem();
     private AbstractEAIndividual template = null;
     private int generationCycle = 500;
+    private boolean elitism = true;
 
     public LTGA() {
     }
@@ -248,7 +249,15 @@ public class LTGA implements InterfaceOptimizer, java.io.Serializable, Interface
         this.problem.evaluatePopulationStart(this.population);
         Stack<Set<Integer>> linkageTree = buildLinkageTree();
         Population newPop = new Population(this.popSize);
+        if(elitism){
+            Population firstIndies = this.population.getBestNIndividuals(2, fitCrit);
+            Population firstNewIndies = buildNewIndies(firstIndies, linkageTree);
+            newPop.addAll(firstNewIndies);
+        }
         for (int i = 0; i < (this.popSize / 2); i++) {
+            if(this.elitism && i==0){
+                continue;
+            }
             Population indies = this.population.getRandNIndividuals(2);
             Population newIndies = buildNewIndies(indies, linkageTree);
             newPop.addAll(newIndies);
@@ -334,6 +343,18 @@ public class LTGA implements InterfaceOptimizer, java.io.Serializable, Interface
     @Override
     public void SetProblem(InterfaceOptimizationProblem problem) {
         this.problem = (AbstractOptimizationProblem) problem;
+    }
+    
+    public boolean getElitism(){
+        return this.elitism;
+    }
+    
+    public void setElitism(boolean b){
+        this.elitism = b;
+    }
+    
+    public String elitismTipText(){
+        return "use elitism?";
     }
 
     @Override
