@@ -161,7 +161,7 @@ public class LTGA implements InterfaceOptimizer, java.io.Serializable, Interface
         // the final tree
         Stack<Set<Integer>> linkageTree = new Stack<Set<Integer>>();
         // the stack to cluster here clusters can be removed
-        Stack<Set<Integer>> workingStack = new Stack<Set<Integer>>();
+        Stack<Set<Integer>> workingTree = new Stack<Set<Integer>>();
         // add the problem variables to the stacks
         for (int i = 0; i < this.probDim; i++) {
             Set<Integer> s1 = new HashSet<Integer>();
@@ -169,16 +169,16 @@ public class LTGA implements InterfaceOptimizer, java.io.Serializable, Interface
             s1.add(i);
             s2.add(i);
             linkageTree.add(s1);
-            workingStack.add(s2);
+            workingTree.add(s2);
         }
 //		double[] probMass = calculateProbabilityMassFunction();
         // until there is only one cluster left
-        while (workingStack.size() > 1) {
-            Pair<Set<Integer>, Set<Integer>> toCluster = findNearestClusters(workingStack);
-            // remove the second cluster from the working set
-            workingStack.remove(toCluster.tail);
+        while (workingTree.size() > 1) {
+            Pair<Set<Integer>, Set<Integer>> toCluster = findNearestClusters(workingTree);
             // add all elements from the second cluster to the first one
             toCluster.head.addAll(toCluster.tail);
+            // remove the second cluster from the working set
+            workingTree.remove(toCluster.tail);
             // add the combined cluster to the linkage tree
             linkageTree.add(toCluster.head);
         }
