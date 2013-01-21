@@ -274,9 +274,9 @@ public class LTGA implements InterfaceOptimizer, java.io.Serializable, Interface
         }
         AbstractEAIndividual indy1 = indies.getEAIndividual(0);
         AbstractEAIndividual indy2 = indies.getEAIndividual(1);
-        BitSet gen1 = getBinaryData(indy1);
-        BitSet gen2 = getBinaryData(indy2);
         for (Set<Integer> mask : linkageTree) {
+        	BitSet gen1 = getBinaryData(indy1);
+        	BitSet gen2 = getBinaryData(indy2);
             BitSet newGene1 = (BitSet) gen1.clone();
             BitSet newGene2 = (BitSet) gen2.clone();
             boolean same = true;
