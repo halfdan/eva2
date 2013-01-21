@@ -79,8 +79,7 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
 
 	public BOA(int numberOfParents, int popSize, BOAScoringMethods method,
 			double learningSetRatio, double resampleRatio, String outputFolder,
-			boolean printExtraOutput, double upperProbLimit,
-			double lowerProbLimit, boolean printNetworks,
+			double upperProbLimit, double lowerProbLimit, boolean printNetworks,
 			boolean printEdgeRate, boolean printMetrics, boolean printTimestamps) {
 		this.numberOfParents = numberOfParents;
 		this.PopSize = popSize;
