@@ -386,7 +386,7 @@ public class PostProcess {
 	public static void processWithHC(Population pop, AbstractOptimizationProblem problem, InterfaceTerminator term, InterfaceMutation mute) {
 		HillClimbing hc = new HillClimbing();
 		// HC depends heavily on the selected mutation operator!
-		hc.SetProblem(problem);
+		hc.setProblem(problem);
 		mute.init(problem.getIndividualTemplate(), problem);
 		hc.SetMutationOperator(mute);
 		if (pop.size() != pop.getTargetSize()) {
@@ -405,7 +405,7 @@ public class PostProcess {
 	public static int processWithGDA(Population pop, AbstractOptimizationProblem problem, InterfaceTerminator term, int baseEvals, double minStepSize, double maxStepSize) {
 		GradientDescentAlgorithm gda = new GradientDescentAlgorithm();
 		gda.setAdaptStepSizeLocally(true);
-		gda.SetProblem(problem);
+		gda.setProblem(problem);
 		gda.setLocalMinStepSize(minStepSize);
 		gda.setLocalMaxStepSize(maxStepSize);
 		gda.setRecovery(false);

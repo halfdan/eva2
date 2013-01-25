@@ -66,7 +66,7 @@ public class WingedMultiObjectiveEA implements InterfaceOptimizer, java.io.Seria
             int         dim = this.m_OutputDimension;
             double[]    weights;
             // dim = tmpProb.getOutputDimension();
-            this.m_MOOptimizer.SetProblem((InterfaceOptimizationProblem)this.m_Problem.clone());
+            this.m_MOOptimizer.setProblem((InterfaceOptimizationProblem)this.m_Problem.clone());
             this.m_MOOptimizer.init();
             this.m_SOOptimizers = new InterfaceOptimizer[dim];
             for (int i = 0; i < dim; i++) {
@@ -79,11 +79,11 @@ public class WingedMultiObjectiveEA implements InterfaceOptimizer, java.io.Seria
                 tmpWF.setWeights(tmpDA);
                 tmpP.setMOSOConverter(tmpWF);
                 this.m_SOOptimizers[i] = (InterfaceOptimizer)this.m_SOOptimizer.clone();
-                this.m_SOOptimizers[i].SetProblem(tmpP);
+                this.m_SOOptimizers[i].setProblem(tmpP);
                 this.m_SOOptimizers[i].init();
             }
         } else {
-            this.m_SOOptimizer.SetProblem(this.m_Problem);
+            this.m_SOOptimizer.setProblem(this.m_Problem);
             this.m_SOOptimizer.init();
         }
         this.communicate();
@@ -104,7 +104,7 @@ public class WingedMultiObjectiveEA implements InterfaceOptimizer, java.io.Seria
             int         dim = 2;
             double[]    weights;
             // dim = tmpProb.getOutputDimension();
-            this.m_MOOptimizer.SetProblem((InterfaceOptimizationProblem)this.m_Problem.clone());
+            this.m_MOOptimizer.setProblem((InterfaceOptimizationProblem)this.m_Problem.clone());
             this.m_MOOptimizer.initByPopulation(pop, reset);
             this.m_SOOptimizers = new InterfaceOptimizer[dim];
             for (int i = 0; i < dim; i++) {
@@ -117,11 +117,11 @@ public class WingedMultiObjectiveEA implements InterfaceOptimizer, java.io.Seria
                 tmpWF.setWeights(tmpDA);
                 tmpP.setMOSOConverter(tmpWF);
                 this.m_SOOptimizers[i] = (InterfaceOptimizer)this.m_SOOptimizer.clone();
-                this.m_SOOptimizers[i].SetProblem(tmpP);
+                this.m_SOOptimizers[i].setProblem(tmpP);
                 this.m_SOOptimizers[i].initByPopulation(pop, reset);
             }
         } else {
-            this.m_SOOptimizer.SetProblem(this.m_Problem);
+            this.m_SOOptimizer.setProblem(this.m_Problem);
             this.m_SOOptimizer.initByPopulation(pop, reset);
         }
         this.communicate();
@@ -224,7 +224,7 @@ public class WingedMultiObjectiveEA implements InterfaceOptimizer, java.io.Seria
     /** This method will set the problem that is to be optimized
      * @param problem
      */
-    public void SetProblem (InterfaceOptimizationProblem problem) {
+    public void setProblem (InterfaceOptimizationProblem problem) {
         this.m_Problem = problem;
     }
     public InterfaceOptimizationProblem getProblem () {

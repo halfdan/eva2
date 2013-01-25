@@ -207,7 +207,7 @@ public class MOXMeansSeparation implements InterfaceMigration, java.io.Serializa
 //                        else out += "\n Using objective space.";
 //                        System.out.println(""+out);
 //                    }
-                    islands[i].SetProblem(prob);
+                    islands[i].setProblem(prob);
                 }
             }
         }

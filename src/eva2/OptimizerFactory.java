@@ -127,7 +127,7 @@ public class OptimizerFactory {
 		setTemplateOperators(problem, new NoMutation(), 0, new NoCrossover(), 0);
 
 		DifferentialEvolution de = new DifferentialEvolution();
-		de.SetProblem(problem);
+		de.setProblem(problem);
 		de.getPopulation().setTargetSize(popsize);
 		de.setDEType(DETypeEnum.DE2_CurrentToBest);
 		de.setF(f);
@@ -208,7 +208,7 @@ public class OptimizerFactory {
 //		theES.setParentSelection(selection);
 //		theES.setPartnerSelection(selection);
 		theES.setEnvironmentSelection(selection);
-		theES.SetProblem(problem);
+		theES.setProblem(problem);
 		theES.init();
 
 		if (listener != null) listener.registerPopulationStateChanged(theES.getPopulation(), "");
@@ -240,7 +240,7 @@ public class OptimizerFactory {
 		setTemplateOperators(problem, mut, pm, cross, pc);
 
 		GeneticAlgorithm ga = new GeneticAlgorithm();
-		ga.SetProblem(problem);
+		ga.setProblem(problem);
 		ga.getPopulation().setTargetSize(popsize);
 		ga.setParentSelection(select);
 		ga.setPartnerSelection(select);
@@ -308,7 +308,7 @@ public class OptimizerFactory {
 			InterfacePopulationChangedEventListener listener) {
 
 		problem.initProblem();
-		subOpt.SetProblem(problem);
+		subOpt.setProblem(problem);
 
 		return new MultiObjectiveEA(subOpt, archiving, archiveSize,
 				infoRetrieval, problem);
@@ -376,7 +376,7 @@ public class OptimizerFactory {
 		hc.setIdentifier("-"+popSize+"-"+mutator.getStringRepresentation());
 		hc.getPopulation().setTargetSize(popSize);
 		hc.addPopulationChangedEventListener(listener);
-		hc.SetProblem(problem);
+		hc.setProblem(problem);
 		hc.init();
 
 		if (listener != null) listener.registerPopulationStateChanged(hc.getPopulation(), "");
@@ -403,7 +403,7 @@ public class OptimizerFactory {
 		MonteCarloSearch mc = new MonteCarloSearch();
 		mc.getPopulation().setTargetSize(popsize);
 		mc.addPopulationChangedEventListener(listener);
-		mc.SetProblem(problem);
+		mc.setProblem(problem);
 		mc.init();
 
 		if (listener != null) listener.registerPopulationStateChanged(mc.getPopulation(), "");
@@ -437,7 +437,7 @@ public class OptimizerFactory {
 		setTemplateOperators(problem, new NoMutation(), 0, new NoCrossover(), 0);
 
 		ParticleSwarmOptimization pso = new ParticleSwarmOptimization();
-		pso.SetProblem(problem);
+		pso.setProblem(problem);
 		pso.getPopulation().setTargetSize(popsize);
 		pso.setPhi1(phi1);
 		pso.setPhi2(phi2);
@@ -480,7 +480,7 @@ public class OptimizerFactory {
 		SimulatedAnnealing sa = new SimulatedAnnealing();
 		sa.setAlpha(alpha);
 		sa.setInitialTemperature(temperature);
-		sa.SetProblem(problem);
+		sa.setProblem(problem);
 		sa.getPopulation().setTargetSize(popsize);
 		sa.addPopulationChangedEventListener(listener);
 		sa.init();
@@ -518,7 +518,7 @@ public class OptimizerFactory {
 		pbil.setPositiveSamples(positiveSamples);
 		
 		pbil.addPopulationChangedEventListener(listener);
-		pbil.SetProblem(problem);
+		pbil.setProblem(problem);
 
 		if (listener != null) listener.registerPopulationStateChanged(pbil.getPopulation(), "");
 
@@ -763,7 +763,7 @@ public class OptimizerFactory {
 			InterfaceTerminator term) {
 		GOParameters params = new GOParameters();
 		params.setProblem(problem);
-		opt.SetProblem(problem);
+		opt.setProblem(problem);
 		opt.setPopulation(pop);
 		params.setOptimizer(opt);
 		params.setTerminator(term);
@@ -1340,7 +1340,7 @@ public class OptimizerFactory {
 			AbstractOptimizationProblem problem, int evalCycle, int popSize, double minImprovement, 
 			PostProcessMethod method, double hcInitialStep, double hcStepThresh, double sigmaClust) {
 		ClusteringHillClimbing chc = new ClusteringHillClimbing();
-		chc.SetProblem(problem);
+		chc.setProblem(problem);
 
 		chc.setEvalCycle(evalCycle);
 		chc.setInitialPopSize(popSize);

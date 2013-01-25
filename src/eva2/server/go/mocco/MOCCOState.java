@@ -56,14 +56,14 @@ public class MOCCOState {
             this.m_BackupOptimizer = null;
         }
         this.m_Optimizer.setPopulation(pop);
-        this.m_Optimizer.SetProblem(this.m_CurrentProblem);
+        this.m_Optimizer.setProblem(this.m_CurrentProblem);
         this.m_CurrentProblem.evaluate(this.m_Optimizer.getPopulation());
     }
 
     public void makeBackup() {
         this.m_BackupProblem    = (InterfaceOptimizationProblem)this.m_CurrentProblem.clone();
         this.m_BackupOptimizer  = (InterfaceOptimizer)this.m_Optimizer.clone();
-        this.m_BackupOptimizer.SetProblem(null);
+        this.m_BackupOptimizer.setProblem(null);
     }
 
     public void addPopulation2History(Population pop) {

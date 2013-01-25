@@ -142,7 +142,7 @@ implements InterfaceMultimodalProblem, InterfaceFirstOrderDerivableProblem, Inte
 
     private void initLS() {
 		localSearchOptimizer = new GradientDescentAlgorithm();
-	    localSearchOptimizer.SetProblem(this);
+	    localSearchOptimizer.setProblem(this);
 	    localSearchOptimizer.init();
     }
 

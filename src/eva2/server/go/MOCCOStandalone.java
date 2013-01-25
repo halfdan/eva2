@@ -363,7 +363,7 @@ public class MOCCOStandalone implements InterfaceGOStandalone, InterfacePopulati
         if (this.m_JFrame != null) {
         }
         this.m_StillWorking = true;
-        this.m_State.m_Optimizer.SetProblem(this.m_State.m_CurrentProblem);
+        this.m_State.m_Optimizer.setProblem(this.m_State.m_CurrentProblem);
         if (this.m_Debug) System.out.println(""+this.m_State.m_Optimizer.getStringRepresentation());
         this.m_State.m_CurrentProblem.evaluate(this.m_State.m_Optimizer.getPopulation());
         this.m_State.m_Optimizer.getPopulation().SetFunctionCalls(0);

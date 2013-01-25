@@ -137,7 +137,7 @@ public class MOCCOParameterizeRefPoint extends MOCCOPhase implements InterfacePr
         this.m_Island.setMigrationRate(2);
         this.m_Island.setMigrationStrategy(new SOBestMigration());
         this.m_Island.setNumberLocalCPUs(this.m_Perturbations);
-        this.m_Island.SetProblem(this.m_Mocco.m_State.m_CurrentProblem);
+        this.m_Island.setProblem(this.m_Mocco.m_State.m_CurrentProblem);
         this.m_Mocco.m_State.m_Optimizer = this.m_Island;
         this.m_EIMEA.m_Name               = "Island Model EA";
         try {
@@ -234,7 +234,7 @@ public class MOCCOParameterizeRefPoint extends MOCCOPhase implements InterfacePr
 //                m_Island.setNumberLocalCPUs(m_Perturbations);
 //            }
             m_Mocco.m_State.m_Optimizer = m_Island;
-            m_Mocco.m_State.m_Optimizer.SetProblem(m_Mocco.m_State.m_CurrentProblem);
+            m_Mocco.m_State.m_Optimizer.setProblem(m_Mocco.m_State.m_CurrentProblem);
             m_Island.init();
             double[] tmpD;
             MOSOLpMetric[] tmpLPs = new MOSOLpMetric[m_Perturbations];

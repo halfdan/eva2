@@ -257,7 +257,7 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
     /** This method will set the problem that is to be optimized
      * @param problem
      */
-    public void SetProblem (InterfaceOptimizationProblem problem) {
+    public void setProblem (InterfaceOptimizationProblem problem) {
         this.m_Problem = problem;
     	if (problem instanceof AbstractOptimizationProblem) {
     		((AbstractOptimizationProblem)problem).informAboutOptimizer(this);

@@ -731,7 +731,7 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
 		return this.m_Identifier;
 	}
 
-	public void SetProblem(InterfaceOptimizationProblem problem) {
+	public void setProblem(InterfaceOptimizationProblem problem) {
 		this.problem = (AbstractOptimizationProblem) problem;
 	}
 

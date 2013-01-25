@@ -201,7 +201,7 @@ public class MOClusteringSeparation implements InterfaceMigration, java.io.Seria
 //                        else out += "\n Using objective space.";
 //                        System.out.println(""+out);
 //                    }
-                    islands[i].SetProblem(prob);
+                    islands[i].setProblem(prob);
                 }
             }
         }

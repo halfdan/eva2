@@ -256,7 +256,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
 	protected void initMainSwarm(){
 		// pass NichePSO parameter on to the mainswarmoptimzer
 		setMainSwarmSize(mainSwarmSize); // (particles are initialized later via init)
-		getMainSwarm().SetProblem(m_Problem);
+		getMainSwarm().setProblem(m_Problem);
 		getMainSwarm().SetMaxAllowedSwarmRadius(maxAllowedSwarmRadius);
 		getMainSwarm().getPopulation().setGenerationTo(0);
 		
@@ -285,7 +285,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
 	 */
 	protected void initSubswarmOptimizerTemplate(){
 		// pass on the parameters set via NichePSO (done in the analogous nichePSO-Setters as well -> no init() necessary)
-		getSubswarmOptimizerTemplate().SetProblem(m_Problem);
+		getSubswarmOptimizerTemplate().setProblem(m_Problem);
 		getSubswarmOptimizerTemplate().SetMaxAllowedSwarmRadius(maxAllowedSwarmRadius);
 	
 		// choose PSO-type for the subswarmoptimizer
@@ -311,7 +311,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
 	public ParticleSubSwarmOptimization getNewSubSwarmOptimizer(){
 		//initSubswarmOptimizerTemplate();
 		ParticleSubSwarmOptimization template = (ParticleSubSwarmOptimization)getSubswarmOptimizerTemplate().clone(); // this implicitely clones the problem but does not initialize it again...
-		template.SetProblem(this.m_Problem); //... let all subswarms use the same correct initialised problem instance
+		template.setProblem(this.m_Problem); //... let all subswarms use the same correct initialised problem instance
 		return template;
 	}
 	
@@ -1219,15 +1219,15 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
 	 * This method will set the problem that is to be optimized
 	 * @param problem
 	 */
-	public void SetProblem(InterfaceOptimizationProblem problem) {
+	public void setProblem(InterfaceOptimizationProblem problem) {
 		// set member
 		this.m_Problem = problem;
 		// pass on to the main- and subswarm optimizers
-		getMainSwarm().SetProblem(problem);
+		getMainSwarm().setProblem(problem);
 		for (int i = 0; i < getSubSwarms().size(); ++i){
-			getSubSwarms().get(i).SetProblem(problem);
+			getSubSwarms().get(i).setProblem(problem);
 		}
-		getSubswarmOptimizerTemplate().SetProblem(problem);
+		getSubswarmOptimizerTemplate().setProblem(problem);
 	}
 	
 	/** @tested nn 

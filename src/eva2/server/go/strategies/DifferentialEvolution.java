@@ -665,7 +665,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
     /** This method will set the problem that is to be optimized
      * @param problem
      */
-    public void SetProblem (InterfaceOptimizationProblem problem) {
+    public void setProblem (InterfaceOptimizationProblem problem) {
         this.m_Problem = (AbstractOptimizationProblem)problem;
     }
     public InterfaceOptimizationProblem getProblem () {

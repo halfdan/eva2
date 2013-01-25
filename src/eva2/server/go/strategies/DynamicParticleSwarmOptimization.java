@@ -487,8 +487,8 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
     }
 
 	
-    public void SetProblem (InterfaceOptimizationProblem problem) {
-    	super.SetProblem(problem);
+    public void setProblem (InterfaceOptimizationProblem problem) {
+    	super.setProblem(problem);
     	if (problem instanceof AbstractOptimizationProblem) {
     		((AbstractOptimizationProblem)problem).informAboutOptimizer(this);
     	}

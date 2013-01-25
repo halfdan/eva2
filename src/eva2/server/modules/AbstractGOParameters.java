@@ -42,7 +42,7 @@ public abstract class AbstractGOParameters implements InterfaceGOParameters, Ser
 		this.m_Optimizer        = goParameters.m_Optimizer;
 		this.m_Problem          = goParameters.m_Problem;
 		this.m_Terminator       = goParameters.m_Terminator;
-		this.m_Optimizer.SetProblem(this.m_Problem);
+		this.m_Optimizer.setProblem(this.m_Problem);
 		this.randomSeed             = goParameters.randomSeed;
 		this.m_PostProc			= goParameters.m_PostProc;
 	}
@@ -53,7 +53,7 @@ public abstract class AbstractGOParameters implements InterfaceGOParameters, Ser
 		m_Problem = prob;
 		m_Terminator = term;
 		m_PostProc = new PostProcessParams(false);
-		opt.SetProblem(prob);
+		opt.setProblem(prob);
 	}
 
 	/**
@@ -65,7 +65,7 @@ public abstract class AbstractGOParameters implements InterfaceGOParameters, Ser
 		setOptimizer(src.m_Optimizer);
 		setProblem(src.m_Problem);
 		setTerminator(src.m_Terminator);
-		this.m_Optimizer.SetProblem(this.m_Problem);
+		this.m_Optimizer.setProblem(this.m_Problem);
 		setSeed(src.randomSeed);
 		setPostProcessParams(src.m_PostProc);
 	}
@@ -139,7 +139,7 @@ public abstract class AbstractGOParameters implements InterfaceGOParameters, Ser
 
 	public void setOptimizer(InterfaceOptimizer optimizer) {
 		this.m_Optimizer = optimizer;
-		this.m_Optimizer.SetProblem(this.m_Problem);
+		this.m_Optimizer.setProblem(this.m_Problem);
 		if (this.m_Listener != null) this.m_Optimizer.addPopulationChangedEventListener(this.m_Listener);
 		fireNotifyOnInformers();
 	}
@@ -168,7 +168,7 @@ public abstract class AbstractGOParameters implements InterfaceGOParameters, Ser
 	 */
 	public void setProblem (InterfaceOptimizationProblem problem) {
 		this.m_Problem = problem;
-		this.m_Optimizer.SetProblem(this.m_Problem);
+		this.m_Optimizer.setProblem(this.m_Problem);
 		fireNotifyOnInformers();
 	}
 	

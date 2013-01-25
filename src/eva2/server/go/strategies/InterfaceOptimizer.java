@@ -94,7 +94,7 @@ public interface InterfaceOptimizer {
      *
      * @param problem
      */
-    public void SetProblem (InterfaceOptimizationProblem problem);
+    public void setProblem (InterfaceOptimizationProblem problem);
     public InterfaceOptimizationProblem getProblem ();
 
     /** This method will return a string describing all properties of the optimizer

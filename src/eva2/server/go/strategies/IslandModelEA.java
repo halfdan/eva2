@@ -101,7 +101,7 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
         this.m_Population.clear();
         this.m_Population.init();
         this.m_Optimizer.init();
-        this.m_Optimizer.SetProblem(this.m_Problem);
+        this.m_Optimizer.setProblem(this.m_Problem);
         this.m_Optimizer.setPopulation((Population)m_Population.clone());
         InterfacePopulationChangedEventListener myLocal = null;
         if (this.m_localOnly) {
@@ -171,7 +171,7 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
             this.m_Population.incrGeneration();
         }
         this.m_Optimizer.init();
-        this.m_Optimizer.SetProblem(this.m_Problem);
+        this.m_Optimizer.setProblem(this.m_Problem);
         InterfacePopulationChangedEventListener myLocal = null;
         if (this.m_localOnly) {
             // this is running on the local machine
@@ -297,9 +297,9 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
     /** This method will set the problem that is to be optimized
      * @param problem
      */
-    public void SetProblem (InterfaceOptimizationProblem problem) {
+    public void setProblem (InterfaceOptimizationProblem problem) {
         this.m_Problem = problem;
-        this.m_Optimizer.SetProblem(problem);
+        this.m_Optimizer.setProblem(problem);
     }
     public InterfaceOptimizationProblem getProblem () {
         return this.m_Problem;
