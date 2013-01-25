@@ -103,7 +103,7 @@ public class MutateGANBit implements InterfaceMutation, java.io.Serializable {
      */
     @Override
     public String getStringRepresentation() {
-        return "GA n-Bit mutation";
+        return "GA n-Bit mutation (n="+this.numberOfMutations+")";
     }
 
     /**

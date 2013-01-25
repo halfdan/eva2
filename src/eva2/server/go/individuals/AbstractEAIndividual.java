@@ -178,6 +178,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      * @param obj The individual to compare to.
      * @return boolean if equal true else false
      */
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
@@ -272,6 +273,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      * Returns a hash code value for the object. This method is supported for
      * the benefit of hashtables such as those provided by java.util.Hashtable
      */
+    @Override
     public int hashCode() {
         String t = AbstractEAIndividual.getDefaultStringRepresentation(this);
         return t.hashCode();
