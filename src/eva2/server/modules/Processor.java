@@ -230,7 +230,7 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
             m_Statistics.startOptPerformed(getInfoString(), runCounter, goParams, getInformerList());
 
             this.goParams.getProblem().initProblem();
-            this.goParams.getOptimizer().SetProblem(this.goParams.getProblem());
+            this.goParams.getOptimizer().setProblem(this.goParams.getProblem());
             this.goParams.getTerminator().init(this.goParams.getProblem());
             maybeInitParamCtrl(goParams);
             if (this.m_createInitialPopulations) {

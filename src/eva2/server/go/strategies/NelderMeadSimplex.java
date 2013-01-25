@@ -62,12 +62,12 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
 		m_Identifier = name;
 	}
 
-	public void SetProblem(InterfaceOptimizationProblem problem) {
+	public void setProblem(InterfaceOptimizationProblem problem) {
 		m_Problem = (AbstractOptimizationProblem)problem;
 	}
 	
 	public boolean setProblemAndPopSize(InterfaceOptimizationProblem problem) {
-		SetProblem(problem);
+		setProblem(problem);
 		if (m_Problem instanceof AbstractProblemDouble) {
 			setPopulationSize(((AbstractProblemDouble)problem).getProblemDimension()+1);
 			return true;

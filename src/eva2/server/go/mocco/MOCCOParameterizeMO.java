@@ -138,7 +138,7 @@ public class MOCCOParameterizeMO extends MOCCOPhase implements InterfaceProcessE
             //m_Mocco.m_State.m_Optimizer = (InterfaceOptimizer)m_Optimizer.clone();
             m_Mocco.m_JPanelControl.removeAll();
             m_Mocco.m_JPanelParameters.removeAll();
-            m_Mocco.m_State.m_Optimizer.SetProblem(m_Mocco.m_State.m_CurrentProblem);
+            m_Mocco.m_State.m_Optimizer.setProblem(m_Mocco.m_State.m_CurrentProblem);
             Population pop = m_Mocco.m_State.m_Optimizer.getPopulation();
             pop.clear();
             if (pop.getArchive() != null)  pop.getArchive().clear();

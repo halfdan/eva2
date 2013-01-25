@@ -131,7 +131,7 @@ public class EvolutionaryProgramming implements InterfaceOptimizer, java.io.Seri
     /** This method will set the problem that is to be optimized
      * @param problem
      */
-    public void SetProblem (InterfaceOptimizationProblem problem) {
+    public void setProblem (InterfaceOptimizationProblem problem) {
         this.m_Problem = problem;
     }
     public InterfaceOptimizationProblem getProblem () {

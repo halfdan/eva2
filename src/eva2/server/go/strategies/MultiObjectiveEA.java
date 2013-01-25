@@ -67,7 +67,7 @@ public class MultiObjectiveEA implements InterfaceOptimizer, java.io.Serializabl
         setArchivingStrategy(archiving);
         setArchiveSize(archiveSize);
         setInformationRetrieval(infoRetrieval);
-        SetProblem(problem);
+        setProblem(problem);
     }
     
     public Object clone() {
@@ -171,9 +171,9 @@ public class MultiObjectiveEA implements InterfaceOptimizer, java.io.Serializabl
     /** This method will set the problem that is to be optimized
      * @param problem
      */
-    public void SetProblem (InterfaceOptimizationProblem problem) {
+    public void setProblem (InterfaceOptimizationProblem problem) {
         this.m_Problem = problem;
-        this.m_Optimizer.SetProblem(problem);
+        this.m_Optimizer.setProblem(problem);
     }
     public InterfaceOptimizationProblem getProblem () {
         return this.m_Problem;

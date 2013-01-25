@@ -599,7 +599,7 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
 		return this.m_Identifier;
 	}
 
-	public void SetProblem(InterfaceOptimizationProblem problem) {
+	public void setProblem(InterfaceOptimizationProblem problem) {
 		this.problem = (AbstractOptimizationProblem) problem;
 	}
 

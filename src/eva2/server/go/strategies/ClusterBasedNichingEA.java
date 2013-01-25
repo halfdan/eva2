@@ -972,9 +972,9 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
     /** This method will set the problem that is to be optimized
      * @param problem
      */
-    public void SetProblem (InterfaceOptimizationProblem problem) {
+    public void setProblem (InterfaceOptimizationProblem problem) {
         this.m_Problem = problem;
-        this.m_Optimizer.SetProblem(this.m_Problem);
+        this.m_Optimizer.setProblem(this.m_Problem);
     }
     public InterfaceOptimizationProblem getProblem () {
         return this.m_Problem;

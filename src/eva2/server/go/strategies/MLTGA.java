@@ -320,7 +320,7 @@ public class MLTGA implements InterfaceOptimizer, java.io.Serializable, Interfac
     }
 
     @Override
-    public void SetProblem(InterfaceOptimizationProblem problem) {
+    public void setProblem(InterfaceOptimizationProblem problem) {
         this.problem = (AbstractOptimizationProblem) problem;
     }
     

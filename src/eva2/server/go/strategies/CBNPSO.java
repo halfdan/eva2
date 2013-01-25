@@ -67,8 +67,8 @@ public class CBNPSO extends ClusterBasedNichingEA implements Serializable {
 	}
 	
 	@Override
-	public void SetProblem(InterfaceOptimizationProblem problem) {
-		super.SetProblem(problem);
+	public void setProblem(InterfaceOptimizationProblem problem) {
+		super.setProblem(problem);
 		if (problem instanceof AbstractProblemDouble) {
 			AbstractProblemDouble dblProb = ((AbstractProblemDouble)problem);
 			adaptMinMaxSwarmSizeByDim(dblProb);

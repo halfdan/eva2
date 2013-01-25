@@ -184,7 +184,7 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
 	}
 
 	public Tribes(Tribes other) {
-		this.SetProblem(other.getProblem());
+		this.setProblem(other.getProblem());
 		iter = other.iter;
 		setObjectiveFirstDim(other.getObjectiveFirstDim());
 		setDimension(other.range.length);
@@ -202,7 +202,7 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
 		hideHideable();
 	}
 
-	public void SetProblem(InterfaceOptimizationProblem problem) {
+	public void setProblem(InterfaceOptimizationProblem problem) {
 //		System.out.println("TRIBES.SetProblem()");
 		m_problem = (AbstractOptimizationProblem)problem;
 		range = null;

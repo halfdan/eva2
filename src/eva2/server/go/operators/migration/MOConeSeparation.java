@@ -266,7 +266,7 @@ public class MOConeSeparation implements InterfaceMigration, java.io.Serializabl
 
                         ((AbstractMultiObjectiveOptimizationProblem)prob).m_AreaConst4Parallelization.add(b);
                     }
-                    islands[i].SetProblem(prob);
+                    islands[i].setProblem(prob);
                 }
             }
         }
@@ -360,7 +360,7 @@ public class MOConeSeparation implements InterfaceMigration, java.io.Serializabl
                     ((AbstractMultiObjectiveOptimizationProblem)prob).m_AreaConst4Parallelization.add(sts);
                     ((AbstractMultiObjectiveOptimizationProblem)prob).m_AreaConst4Parallelization.add(bts);
                 }
-                islands[i].SetProblem(prob);
+                islands[i].setProblem(prob);
 //                if (true) {
 //                    prob.evaluate(newIPOP[i]);
 //                    System.out.println("Invalid Individual in Island "+i+" ("+newIPOP[i].size()+"): ");

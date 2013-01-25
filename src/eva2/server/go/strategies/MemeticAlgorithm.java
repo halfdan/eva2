@@ -98,7 +98,7 @@ public class MemeticAlgorithm implements InterfaceOptimizer,
 
 	public void init() {
 		// counter = 0;
-		this.m_GlobalOptimizer.SetProblem(this.m_Problem);
+		this.m_GlobalOptimizer.setProblem(this.m_Problem);
 		this.m_GlobalOptimizer.init();
 		this.evaluatePopulation(this.m_GlobalOptimizer.getPopulation());
 		this.firePropertyChangedEvent(Population.nextGenerationPerformed);
@@ -225,9 +225,9 @@ public class MemeticAlgorithm implements InterfaceOptimizer,
 	 *
 	 * @param problem
 	 */
-	public void SetProblem(InterfaceOptimizationProblem problem) {
+	public void setProblem(InterfaceOptimizationProblem problem) {
 		this.m_Problem = problem;
-		this.m_GlobalOptimizer.SetProblem(this.m_Problem);
+		this.m_GlobalOptimizer.setProblem(this.m_Problem);
 	}
 
 	public InterfaceOptimizationProblem getProblem() {
@@ -320,7 +320,7 @@ public class MemeticAlgorithm implements InterfaceOptimizer,
 	 */
 	public void setGlobalOptimizer(InterfaceOptimizer m_GlobalOptimizer) {
 		this.m_GlobalOptimizer = m_GlobalOptimizer;
-		this.m_GlobalOptimizer.SetProblem(this.getProblem());
+		this.m_GlobalOptimizer.setProblem(this.getProblem());
 		this.init();
 	}
 

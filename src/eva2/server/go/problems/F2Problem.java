@@ -111,7 +111,7 @@ public class F2Problem extends AbstractProblemDoubleOffset implements InterfaceL
 
     private void initLS() {
 		localSearchOptimizer = new GradientDescentAlgorithm();
-	    localSearchOptimizer.SetProblem(this);
+	    localSearchOptimizer.setProblem(this);
 	    localSearchOptimizer.init();
     }
 

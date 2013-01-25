@@ -268,7 +268,7 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
      *
      * @param problem
      */
-    public void SetProblem(InterfaceOptimizationProblem problem) {
+    public void setProblem(InterfaceOptimizationProblem problem) {
         this.optimizationProblem = problem;
     }
 

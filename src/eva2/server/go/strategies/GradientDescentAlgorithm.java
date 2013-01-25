@@ -324,7 +324,7 @@ public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Ser
     return this.m_Identifier;
   }
 
-  public void SetProblem(InterfaceOptimizationProblem problem) {
+  public void setProblem(InterfaceOptimizationProblem problem) {
 
     m_Problem = problem;
   }
@@ -350,7 +350,7 @@ public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Ser
   public static void main(String[] args) {
     GradientDescentAlgorithm program = new GradientDescentAlgorithm();
     InterfaceOptimizationProblem problem = new F1Problem();
-    program.SetProblem(problem);
+    program.setProblem(problem);
     program.init();
     for (int i = 0; i < 100; i++) {
       program.optimize();

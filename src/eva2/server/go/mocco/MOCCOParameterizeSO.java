@@ -66,7 +66,7 @@ public class MOCCOParameterizeSO extends MOCCOPhase implements InterfaceProcessE
                 "a Genetic Algorithms, please parameterize accordingly.",
                 "Warning", JOptionPane.WARNING_MESSAGE);
             this.m_Mocco.m_State.m_Optimizer = new GeneticAlgorithm();
-            this.m_Mocco.m_State.m_Optimizer.SetProblem(this.m_Mocco.m_State.m_CurrentProblem);
+            this.m_Mocco.m_State.m_Optimizer.setProblem(this.m_Mocco.m_State.m_CurrentProblem);
         }
         this.m_Mocco.m_JPanelParameters.removeAll();
         this.m_Mocco.m_JPanelParameters.setLayout(new BorderLayout());

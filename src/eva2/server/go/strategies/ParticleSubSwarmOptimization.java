@@ -456,7 +456,7 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
         ///////////
 		
 		ParticleSubSwarmOptimization tmpopt = new ParticleSubSwarmOptimization();
-		tmpopt.SetProblem(this.m_Problem);
+		tmpopt.setProblem(this.m_Problem);
 		tmpopt.evaluatePopulation(tmp);
 		tmpopt.initByPopulation(tmp, false); // + size FCs
 		
@@ -558,7 +558,7 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
 	 * This method will set the problem that is to be optimized
 	 * @param problem
 	 */
-	public void SetProblem (InterfaceOptimizationProblem problem) {
+	public void setProblem (InterfaceOptimizationProblem problem) {
 		this.m_Problem = problem;
 		updateMaxPosDist();  
 	}

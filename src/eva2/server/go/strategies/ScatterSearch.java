@@ -104,7 +104,7 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
 		GenericObjectEditor.setHideProperty(this.getClass(), "population", true);
 	}
 
-	public void SetProblem(InterfaceOptimizationProblem problem) {
+	public void setProblem(InterfaceOptimizationProblem problem) {
 		this.problem = (AbstractOptimizationProblem)problem;
 	}
 
@@ -818,7 +818,7 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
 			AbstractOptimizationProblem problem, InterfaceTerminator term) {
 		ScatterSearch ss = new ScatterSearch();
 		problem.initProblem();
-		ss.SetProblem(problem);
+		ss.setProblem(problem);
 		ss.setRefSetSize(refSetSize);
 		ss.setNelderMeadInitPerturbation(nmInitPerturb);
 		ss.setLocalSearchRelativeFilter(relativeFitCrit);

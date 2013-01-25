@@ -312,7 +312,7 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
                 ((GAIndividualDoubleData)tmpIndy).setMutationProbability(1.0);
                 ((F1Problem)problem).setEAIndividual(tmpIndy);
                 //((FGRNInferringProblem)this.m_Problem).setStructreSkelInterval(1);
-                this.m_GO.getOptimizer().SetProblem(problem);
+                this.m_GO.getOptimizer().setProblem(problem);
                 this.m_GO.getOptimizer().addPopulationChangedEventListener(this);
                 this.doWork();
                 break;
@@ -329,7 +329,7 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
                 ((F1Problem)problem).setEAIndividual(tmpIndy);
                 //((FGRNInferringProblem)this.m_Problem).setUseHEigenMatrix(true);
                 //((FGRNInferringProblem)this.m_Problem).setUseOnlyPositiveNumbers(true);
-                this.m_GO.getOptimizer().SetProblem(problem);
+                this.m_GO.getOptimizer().setProblem(problem);
                 this.m_GO.getOptimizer().addPopulationChangedEventListener(this);
                 this.doWork();
                 break;
@@ -375,7 +375,7 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
 
             // init problem 
             this.m_GO.getProblem().initProblem();
-            this.m_GO.getOptimizer().SetProblem(this.m_GO.getProblem());
+            this.m_GO.getOptimizer().setProblem(this.m_GO.getProblem());
             // int optimizer and population
             //this.m_GO.getOptimizer().init();
 

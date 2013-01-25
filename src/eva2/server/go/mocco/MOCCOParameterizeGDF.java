@@ -125,7 +125,7 @@ public class MOCCOParameterizeGDF extends MOCCOPhase implements InterfaceProcess
         gbc.gridwidth   = 1;        
         this.m_EOpt    = new GeneralGOEProperty();
         this.m_Opt   = new GeneticAlgorithm();
-        this.m_Opt.SetProblem(this.m_Mocco.m_State.m_CurrentProblem);
+        this.m_Opt.setProblem(this.m_Mocco.m_State.m_CurrentProblem);
         this.m_Mocco.m_State.m_Optimizer = this.m_Opt;
         this.m_EOpt.m_Name               = "Island Model EA";
         try {
@@ -217,7 +217,7 @@ public class MOCCOParameterizeGDF extends MOCCOPhase implements InterfaceProcess
             PropertyDoubleArray da = new PropertyDoubleArray(w);
             wf.setOutputDimension(da.getNumRows());
             wf.setWeights(da);
-            m_Opt.SetProblem(m_Mocco.m_State.m_CurrentProblem);
+            m_Opt.setProblem(m_Mocco.m_State.m_CurrentProblem);
             m_Mocco.m_State.m_Optimizer = m_Opt;
             m_Mocco.m_JPanelControl.removeAll();
             m_Mocco.m_JPanelControl.validate();

@@ -88,7 +88,7 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
 	 * eva2.server.go.strategies.InterfaceOptimizer#SetProblem(eva2.server.go
 	 * .problems.InterfaceOptimizationProblem)
 	 */
-	public void SetProblem(InterfaceOptimizationProblem problem) {
+	public void setProblem(InterfaceOptimizationProblem problem) {
 		m_Problem = (AbstractOptimizationProblem) problem;
 	}
 

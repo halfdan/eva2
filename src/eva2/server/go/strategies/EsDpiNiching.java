@@ -243,7 +243,7 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
             // Trying to come close to the selection scheme of Shir&Bäck'05:
             peakOpts[i].setParentSelection(parentSel);
             peakOpts[i].setPartnerSelection(new SelectBestSingle(true));
-            peakOpts[i].SetProblem(problem);
+            peakOpts[i].setProblem(problem);
             peakOpts[i].init();
             peakOpts[i].setLambda(lambdaPerPeak); // set lambda after initialization
             peakOpts[i].setForceOrigPopSize(false);
@@ -1079,7 +1079,7 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
         return problem;
     }
 
-    public void SetProblem(InterfaceOptimizationProblem prob) {
+    public void setProblem(InterfaceOptimizationProblem prob) {
         this.problem = prob;
     }
 

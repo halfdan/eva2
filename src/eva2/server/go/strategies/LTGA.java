@@ -118,7 +118,7 @@ public class LTGA implements InterfaceOptimizer, java.io.Serializable, Interface
 
     @Override
     public void init() {
-        defaultInit();
+        this.defaultInit();
         this.problem.initPopulation(this.population);
         this.evaluatePopulation(this.population);
         this.firePropertyChangedEvent(Population.nextGenerationPerformed);
@@ -150,7 +150,7 @@ public class LTGA implements InterfaceOptimizer, java.io.Serializable, Interface
     @Override
     public void initByPopulation(Population pop, boolean reset) {
         if (reset) {
-            init();
+            this.init();
         } else {
             defaultInit();
             this.population = pop;
@@ -247,7 +247,7 @@ public class LTGA implements InterfaceOptimizer, java.io.Serializable, Interface
     @Override
     public void optimize() {
         this.problem.evaluatePopulationStart(this.population);
-        Stack<Set<Integer>> linkageTree = buildLinkageTree();
+        Stack<Set<Integer>> linkageTree = this.buildLinkageTree();
         Population newPop = new Population(this.popSize);
         if(elitism){
             Population firstIndies = this.population.getBestNIndividuals(2, fitCrit);
@@ -259,7 +259,7 @@ public class LTGA implements InterfaceOptimizer, java.io.Serializable, Interface
                 continue;
             }
             Population indies = this.population.getRandNIndividuals(2);
-            Population newIndies = buildNewIndies(indies, linkageTree);
+            Population newIndies = this.buildNewIndies(indies, linkageTree);
             newPop.addAll(newIndies);
         }
         this.population.clear();
@@ -341,7 +341,7 @@ public class LTGA implements InterfaceOptimizer, java.io.Serializable, Interface
     }
 
     @Override
-    public void SetProblem(InterfaceOptimizationProblem problem) {
+    public void setProblem(InterfaceOptimizationProblem problem) {
         this.problem = (AbstractOptimizationProblem) problem;
     }
     

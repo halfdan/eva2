@@ -1684,7 +1684,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
      *
      * @param problem
      */
-    public void SetProblem(InterfaceOptimizationProblem problem) {
+    public void setProblem(InterfaceOptimizationProblem problem) {
         this.m_Problem = problem;
     }
 
