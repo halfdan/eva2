@@ -133,8 +133,9 @@ public class JMatLink extends Thread {
    */
 	public static JMatLink getInstance() {
 		// System.out.println("JMatLink getInstance () {");
-		if (m_Instance == null)
-			m_Instance = new JMatLink();
+		if (m_Instance == null) {
+                m_Instance = new JMatLink();
+            }
 		return m_Instance;
 	}
 
@@ -312,8 +313,9 @@ public class JMatLink extends Thread {
 
 	private JMatLink() {
 
-		if (debugB)
-			System.out.println("JMatLink constructor");
+		if (debugB) {
+                System.out.println("JMatLink constructor");
+            }
 
 		runner = new Thread(this);
 
@@ -664,8 +666,9 @@ public class JMatLink extends Thread {
 
 		// evaluate expression "evalS" in specified engine Ep
 
-		if (debugB)
-			System.out.println("eval(ep,String) in  " + epI + " " + evalS);
+		if (debugB) {
+                System.out.println("eval(ep,String) in  " + epI + " " + evalS);
+            }
 
 		lockEngineLock();
 
@@ -681,8 +684,9 @@ public class JMatLink extends Thread {
 
 		releaseEngineLock();
 
-		if (debugB)
-			System.out.println("eval(ep,String) out " + epI + " " + evalS);
+		if (debugB) {
+                System.out.println("eval(ep,String) out " + epI + " " + evalS);
+            }
 
 		// return retValI; Return value indicates success
 
@@ -1197,8 +1201,9 @@ public class JMatLink extends Thread {
 
 		double[][] vDD = new double[1][valuesD.length]; // 1xn array
 
-		if (debugB)
-			System.out.println("length  = " + valuesD.length);
+		if (debugB) {
+                System.out.println("length  = " + valuesD.length);
+            }
 
 		vDD[0] = valuesD; // copy row
 
@@ -1414,9 +1419,10 @@ public class JMatLink extends Thread {
 
 		// get the output buffer from MATLAB
 
-		if (debugB)
-			System.out
-					.println("Thread in: " + Thread.currentThread().getName());
+		if (debugB) {
+                System.out
+                                .println("Thread in: " + Thread.currentThread().getName());
+            }
 
 		lockEngineLock();
 
@@ -1432,9 +1438,10 @@ public class JMatLink extends Thread {
 
 		releaseEngineLock();
 
-		if (debugB)
-			System.out.println("Thread out: "
-					+ Thread.currentThread().getName());
+		if (debugB) {
+                System.out.println("Thread out: "
+                                + Thread.currentThread().getName());
+            }
 
 		return engOutputBufferS;
 
@@ -1513,8 +1520,9 @@ public class JMatLink extends Thread {
 
 		int tempRetVal;
 
-		if (debugB)
-			System.out.println("JMatLink: thread is running");
+		if (debugB) {
+                System.out.println("JMatLink: thread is running");
+            }
 
 		while (true) {
 
@@ -1623,13 +1631,15 @@ public class JMatLink extends Thread {
 
 			// System.out.println("JMatLink: thread awoke and passed lock");
 
-			if (destroyJMatLinkB == true)
-				break;
+			if (destroyJMatLinkB == true) {
+                        break;
+                    }
 
 		} // end while
 
-		if (debugB)
-			System.out.println("JMatLink: thread terminated");
+		if (debugB) {
+                System.out.println("JMatLink: thread terminated");
+            }
 
 	} // end run
 

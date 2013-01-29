@@ -119,12 +119,17 @@ public class MOCCOParameterizeTchebycheff extends MOCCOPhase implements Interfac
         try {
             this.m_EIMEA.m_Value      = this.m_Island;
             this.m_EIMEA.m_Editor     = PropertyEditorProvider.findEditor(this.m_EIMEA.m_Value.getClass());
-            if (this.m_EIMEA.m_Editor == null) this.m_EIMEA.m_Editor = PropertyEditorProvider.findEditor(IslandModelEA.class);
-            if (this.m_EIMEA.m_Editor instanceof GenericObjectEditor)
+            if (this.m_EIMEA.m_Editor == null) {
+                this.m_EIMEA.m_Editor = PropertyEditorProvider.findEditor(IslandModelEA.class);
+            }
+            if (this.m_EIMEA.m_Editor instanceof GenericObjectEditor) {
                 ((GenericObjectEditor) this.m_EIMEA.m_Editor).setClassType(IslandModelEA.class);
+            }
             this.m_EIMEA.m_Editor.setValue(this.m_EIMEA.m_Value);
             AbstractObjectEditor.findViewFor(this.m_EIMEA);
-            if (this.m_EIMEA.m_View != null) this.m_EIMEA.m_View.repaint();
+            if (this.m_EIMEA.m_View != null) {
+                this.m_EIMEA.m_View.repaint();
+            }
         } catch (Exception e) {
             System.out.println("Darn can't read the value...");
         }
@@ -142,12 +147,17 @@ public class MOCCOParameterizeTchebycheff extends MOCCOPhase implements Interfac
         try {
             editor.m_Value      = this.m_Mocco.m_State.m_Terminator;
             editor.m_Editor     = PropertyEditorProvider.findEditor(editor.m_Value.getClass());
-            if (editor.m_Editor == null) editor.m_Editor = PropertyEditorProvider.findEditor(InterfaceTerminator.class);
-            if (editor.m_Editor instanceof GenericObjectEditor)
+            if (editor.m_Editor == null) {
+                editor.m_Editor = PropertyEditorProvider.findEditor(InterfaceTerminator.class);
+            }
+            if (editor.m_Editor instanceof GenericObjectEditor) {
                 ((GenericObjectEditor) editor.m_Editor).setClassType(InterfaceTerminator.class);
+            }
             editor.m_Editor.setValue(editor.m_Value);
             AbstractObjectEditor.findViewFor(editor);
-            if (editor.m_View != null) editor.m_View.repaint();
+            if (editor.m_View != null) {
+                editor.m_View.repaint();
+            }
         } catch (Exception e) {
             System.out.println("Darn can't read the value...");
         }
@@ -256,17 +266,29 @@ public class MOCCOParameterizeTchebycheff extends MOCCOPhase implements Interfac
                     try {
                         u = new Double(m_UpperLimit[j].getText()).doubleValue();
                     } catch (NumberFormatException e) {}
-                    if (l < 0) l = 0;
-                    if (u > 1) u = 1;
-                    if (u < 0) u = 0;
-                    if (l > 1) l = 1;
+                    if (l < 0) {
+                        l = 0;
+                    }
+                    if (u > 1) {
+                        u = 1;
+                    }
+                    if (u < 0) {
+                        u = 0;
+                    }
+                    if (l > 1) {
+                        l = 1;
+                    }
                     if (u < l) {
                         double t = u;
                         u = l; l = t;
                     }
 
-                    if (i > 0) tmpD[j] = RNG.randomDouble(l,u);
-                    else tmpD[j] = 1;
+                    if (i > 0) {
+                        tmpD[j] = RNG.randomDouble(l,u);
+                    }
+                    else {
+                        tmpD[j] = 1;
+                    }
                     sum += tmpD[j];
                 }
                 for (int j = 0; j < tmpD.length; j++) {

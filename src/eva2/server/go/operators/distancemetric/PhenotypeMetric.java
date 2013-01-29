@@ -49,8 +49,12 @@ public class PhenotypeMetric implements InterfaceDistanceMetric, java.io.Seriali
         // Step 1
         n = s.length ();
         m = t.length ();
-        if (n == 0) return m;
-        if (m == 0) return n;
+        if (n == 0) {
+            return m;
+        }
+        if (m == 0) {
+            return n;
+        }
         d = new int[n+1][m+1];
 
         // Step 2
@@ -68,7 +72,9 @@ public class PhenotypeMetric implements InterfaceDistanceMetric, java.io.Seriali
             for (j = 1; j <= m; j++) {
                 t_j = t.charAt (j - 1);
                 // Step 5
-                if (s_i == t_j) cost = 0;
+                if (s_i == t_j) {
+                    cost = 0;
+                }
                 else {
                     // @todo
                     cost = 1;
@@ -94,7 +100,9 @@ public class PhenotypeMetric implements InterfaceDistanceMetric, java.io.Seriali
         double      result = 0;
         // results are added up because individuals can implement several data types!
         if ((indy1 instanceof InterfaceDataTypeBinary) && (indy2 instanceof InterfaceDataTypeBinary)) {
-            if (bitMetric == null) bitMetric = new GenotypeMetricBitSet();
+            if (bitMetric == null) {
+                bitMetric = new GenotypeMetricBitSet();
+            }
             result += bitMetric.distance(indy1, indy2);
         }
         if ((indy1 instanceof InterfaceDataTypeInteger) && (indy2 instanceof InterfaceDataTypeInteger)) {
@@ -162,7 +170,9 @@ public class PhenotypeMetric implements InterfaceDistanceMetric, java.io.Seriali
      * @return double
      */
     public static double dist(AbstractEAIndividual indy1, AbstractEAIndividual indy2) {
-    	if (pMetric == null) pMetric = new PhenotypeMetric();
+    	if (pMetric == null) {
+            pMetric = new PhenotypeMetric();
+        }
     	return pMetric.distance(indy1, indy2);
     }
 
@@ -171,7 +181,9 @@ public class PhenotypeMetric implements InterfaceDistanceMetric, java.io.Seriali
         if (indy instanceof InterfaceDataTypeBinary) {
         	BitSet bs = (BitSet)((InterfaceDataTypeBinary)indy).getBinaryData();
         	for (int i = 0; (i < ((InterfaceDataTypeBinary)indy).size()) ; i++) {
-                if (bs.get(i)) result += 1;
+                if (bs.get(i)) {
+                        result += 1;
+                    }
             }
         	result /= ((InterfaceDataTypeBinary)indy).size();
         	return result;

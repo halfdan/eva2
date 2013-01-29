@@ -92,13 +92,25 @@ public class ESIndividualPermutationData extends AbstractEAIndividual implements
 	public boolean equalGenotypes(AbstractEAIndividual individual) {
 		if (individual instanceof ESIndividualPermutationData) {
 			ESIndividualPermutationData indy = (ESIndividualPermutationData) individual;
-			if ((this.m_Genotype == null) || (indy.m_Genotype == null)) return false;
-			if ((this.m_Range == null) || (indy.m_Range == null)) return false;
-			if (this.m_Range.length != indy.m_Range.length) return false;
+			if ((this.m_Genotype == null) || (indy.m_Genotype == null)) {
+                        return false;
+                    }
+			if ((this.m_Range == null) || (indy.m_Range == null)) {
+                        return false;
+                    }
+			if (this.m_Range.length != indy.m_Range.length) {
+                        return false;
+                    }
 			for (int i = 0; i < this.m_Range.length; i++) {
-				if (this.m_Genotype[i] != indy.m_Genotype[i]) return false;
-				if (this.m_Range[i][0] != indy.m_Range[i][0]) return false;
-				if (this.m_Range[i][1] != indy.m_Range[i][1]) return false;
+				if (this.m_Genotype[i] != indy.m_Genotype[i]) {
+                                return false;
+                            }
+				if (this.m_Range[i][0] != indy.m_Range[i][0]) {
+                                return false;
+                            }
+				if (this.m_Range[i][1] != indy.m_Range[i][1]) {
+                                return false;
+                            }
 			}
 			return true;
 		} else {
@@ -163,8 +175,12 @@ public class ESIndividualPermutationData extends AbstractEAIndividual implements
 			int smallest        = Integer.MAX_VALUE;
 			this.m_Range[p] = new double[perm[p].length][2];
 			for (int i = 0; i < perm[p].length;  i++) {
-				if (perm[p][i] > biggest) biggest = perm[p][i];
-				if (perm[p][i] < smallest) smallest = perm[p][i];
+				if (perm[p][i] > biggest) {
+                                biggest = perm[p][i];
+                            }
+				if (perm[p][i] < smallest) {
+                                smallest = perm[p][i];
+                            }
 				this.m_Range[p][i][0] = 0;
 				this.m_Range[p][i][1] = 1;
 			}
@@ -196,7 +212,9 @@ public class ESIndividualPermutationData extends AbstractEAIndividual implements
 			}
 			for (int i = 0; i < this.m_Genotype[p].length; i++) {
 				for (int j = 0; j < this.m_Genotype[p].length; j++) {
-					if (this.m_Genotype[p][i] > this.m_Genotype[p][j]) this.m_Phenotype[p][i]++;
+					if (this.m_Genotype[p][i] > this.m_Genotype[p][j]) {
+                                        this.m_Phenotype[p][i]++;
+                                    }
 				}
 			}
 		}
@@ -233,7 +251,9 @@ public class ESIndividualPermutationData extends AbstractEAIndividual implements
 	public void initByValue(Object obj, InterfaceOptimizationProblem opt) {
 		if (obj instanceof int[][]) {
 			int[][]  bs = (int[][]) obj;
-			if (bs.length != this.m_Genotype.length) System.out.println("Init value and requested length doesn't match!");
+			if (bs.length != this.m_Genotype.length) {
+                        System.out.println("Init value and requested length doesn't match!");
+                    }
 			this.SetPermutationGenotype(bs);
 		} else {
 			this.defaultInit(opt);
@@ -318,8 +338,12 @@ public class ESIndividualPermutationData extends AbstractEAIndividual implements
 		 this.m_Genotype = mapVectorToMatrix(b, this.sizePermutation());
 		 for (int i = 0; i < this.m_Genotype.length; i++) {
 			 for (int j = 0; j < this.m_Genotype[i].length; j++) {
-				 if (this.m_Genotype[i][j] < this.m_Range[i][j][0]) this.m_Genotype[i][j] = this.m_Range[i][j][0];
-				 if (this.m_Genotype[i][j] > this.m_Range[i][j][1]) this.m_Genotype[i][j] = this.m_Range[i][j][1];
+				 if (this.m_Genotype[i][j] < this.m_Range[i][j][0]) {
+                                 this.m_Genotype[i][j] = this.m_Range[i][j][0];
+                             }
+				 if (this.m_Genotype[i][j] > this.m_Range[i][j][1]) {
+                                 this.m_Genotype[i][j] = this.m_Range[i][j][1];
+                             }
 			 }
 		 }
 
@@ -338,7 +362,9 @@ public class ESIndividualPermutationData extends AbstractEAIndividual implements
     @Override
 	 public void defaultInit(InterfaceOptimizationProblem prob) {
 		 double[][][] range = m_Range;
-		 if ((prob != null) && (prob instanceof InterfaceHasInitRange) && (((InterfaceHasInitRange)prob).getInitRange()!=null)) range = (double[][][])((InterfaceHasInitRange)prob).getInitRange();
+		 if ((prob != null) && (prob instanceof InterfaceHasInitRange) && (((InterfaceHasInitRange)prob).getInitRange()!=null)) {
+                 range = (double[][][])((InterfaceHasInitRange)prob).getInitRange();
+             }
 	    	
 		 for (int i = 0; i < this.m_Genotype.length; i++) {
 			 ESIndividualDoubleData.defaultInit(m_Genotype[i], range[i]);

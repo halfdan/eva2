@@ -135,7 +135,9 @@ public class ParetoFrontLocalTester {
      */
     private void writeToFile(String line) {
         String write = line + "\n";
-        if (this.m_OutputFile == null) return;
+        if (this.m_OutputFile == null) {
+            return;
+        }
         try {
             this.m_OutputFile.write(write, 0, write.length());
             this.m_OutputFile.flush();

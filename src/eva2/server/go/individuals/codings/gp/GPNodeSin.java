@@ -50,7 +50,9 @@ public class GPNodeSin extends AbstractGPNode implements java.io.Serializable {
         double result = 1;
 
         tmpObj = this.m_Nodes[0].evaluate(environment);
-        if (tmpObj instanceof Double) result = Math.sin(((Double)tmpObj).doubleValue());
+        if (tmpObj instanceof Double) {
+            result = Math.sin(((Double)tmpObj).doubleValue());
+        }
         return new Double(result);
     }
 

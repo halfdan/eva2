@@ -41,7 +41,9 @@ public class GPNodeInput extends AbstractGPNode implements java.io.Serializable 
     public boolean equals(Object obj) {
         if (obj instanceof GPNodeInput) {
             GPNodeInput node = (GPNodeInput)obj;
-            if (!this.m_Identifier.equalsIgnoreCase(node.m_Identifier)) return false;
+            if (!this.m_Identifier.equalsIgnoreCase(node.m_Identifier)) {
+                return false;
+            }
             return true;
         } else {
             return false;
@@ -85,13 +87,17 @@ public class GPNodeInput extends AbstractGPNode implements java.io.Serializable 
      */
     @Override
     public String getOpIdentifier() {
-        if (this.lastValue == null) return this.m_Identifier;
+        if (this.lastValue == null) {
+            return this.m_Identifier;
+        }
         else {
             if (this.lastValue instanceof Double) {
                 double tmpD = ((Double)this.lastValue).doubleValue();
                 tmpD = ((long)(tmpD*10000.0 + ((tmpD>=0.0)?0.5:-0.5)))/10000.0;
                 return ("S:" +this.m_Identifier + " = " + tmpD);
-            } else return ("S:" +this.m_Identifier + " = " + this.lastValue.toString());
+            } else {
+                return ("S:" +this.m_Identifier + " = " + this.lastValue.toString());
+            }
         }
     }
 }

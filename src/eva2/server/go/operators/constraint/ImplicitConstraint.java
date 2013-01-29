@@ -44,8 +44,12 @@ public class ImplicitConstraint extends AbstractConstraint {
 	}
 
 	public void setIndex(int index) {
-		if (index>0) this.index = index;
-		else System.err.println("Error, invalid index (<=0) in ImplicitConstraint.");
+		if (index>0) {
+                this.index = index;
+            }
+		else {
+                System.err.println("Error, invalid index (<=0) in ImplicitConstraint.");
+            }
 	}
 	
 	public String indexTipText() {

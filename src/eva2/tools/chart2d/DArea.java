@@ -181,14 +181,18 @@ public class DArea extends JComponent implements DParent, Printable {
 	 */
 	public DRectangle getDRectangle() {
 		DRectangle rect = (DRectangle) visible_rect.clone();
-		if (min_x != null)
-			rect.setX(Math.max(rect.getX(), getMinX()));
-		if (min_y != null)
-			rect.setY(Math.max(rect.getY(), getMinY()));
-		if (max_x != null)
-			rect.setWidth(Math.min(rect.getWidth(), getMaxX() - getMinX()));
-		if (max_y != null)
-			rect.setHeight(Math.min(rect.getHeight(), getMaxY() - getMinY()));
+		if (min_x != null) {
+                rect.setX(Math.max(rect.getX(), getMinX()));
+            }
+		if (min_y != null) {
+                rect.setY(Math.max(rect.getY(), getMinY()));
+            }
+		if (max_x != null) {
+                rect.setWidth(Math.min(rect.getWidth(), getMaxX() - getMinX()));
+            }
+		if (max_y != null) {
+                rect.setHeight(Math.min(rect.getHeight(), getMaxY() - getMinY()));
+            }
 		return rect;
 	}
 
@@ -211,8 +215,9 @@ public class DArea extends JComponent implements DParent, Printable {
 	 * @return the maxmal x-value
 	 */
 	public double getMaxX() {
-		if (max_x != null)
-			return max_x.doubleValue();
+		if (max_x != null) {
+                return max_x.doubleValue();
+            }
 		return 0;
 	}
 
@@ -222,8 +227,9 @@ public class DArea extends JComponent implements DParent, Printable {
 	 * @return the maximal y-value
 	 */
 	public double getMaxY() {
-		if (max_y != null)
-			return max_y.doubleValue();
+		if (max_y != null) {
+                return max_y.doubleValue();
+            }
 		return 0;
 	}
 
@@ -277,8 +283,9 @@ public class DArea extends JComponent implements DParent, Printable {
 	 * @return the minmal x-value
 	 */
 	public double getMinX() {
-		if (min_x != null)
-			return min_x.doubleValue();
+		if (min_x != null) {
+                return min_x.doubleValue();
+            }
 		return 0;
 	}
 
@@ -288,8 +295,9 @@ public class DArea extends JComponent implements DParent, Printable {
 	 * @return the minmal y-value
 	 */
 	public double getMinY() {
-		if (min_y != null)
-			return min_y.doubleValue();
+		if (min_y != null) {
+                return min_y.doubleValue();
+            }
 		return 0;
 	}
 
@@ -301,14 +309,18 @@ public class DArea extends JComponent implements DParent, Printable {
 	public SlimRect getSlimRectangle() {
 		SlimRect srect = new SlimRect(visible_rect.getX(), visible_rect.getY(),
 				visible_rect.getWidth(), visible_rect.getHeight());
-		if (min_x != null)
-			srect.x = Math.max(srect.x, getMinX());
-		if (min_y != null)
-			srect.y = Math.max(srect.y, getMinY());
-		if (max_x != null)
-			srect.width = Math.min(srect.width, getMaxX() - getMinX());
-		if (max_y != null)
-			srect.height = Math.min(srect.height, getMaxY() - getMinY());
+		if (min_x != null) {
+                srect.x = Math.max(srect.x, getMinX());
+            }
+		if (min_y != null) {
+                srect.y = Math.max(srect.y, getMinY());
+            }
+		if (max_x != null) {
+                srect.width = Math.min(srect.width, getMaxX() - getMinX());
+            }
+		if (max_y != null) {
+                srect.height = Math.min(srect.height, getMaxY() - getMinY());
+            }
 		return srect;
 	}
 
@@ -362,8 +374,9 @@ public class DArea extends JComponent implements DParent, Printable {
 	 */
     @Override
 	public void paint(Graphics g) {
-		if (TRACE)
-			System.out.println("DArea.paint(Graphics)");
+		if (TRACE) {
+                System.out.println("DArea.paint(Graphics)");
+            }
 		if (auto_focus) {
 			container.restore();
 			visible_rect = (DRectangle) container.getRectangle().clone();
@@ -376,11 +389,13 @@ public class DArea extends JComponent implements DParent, Printable {
 		super.paint(g);
 
 		measures.setGraphics(g);
-		if (grid.isVisible() && !grid_to_front)
-			paintGrid(measures);
+		if (grid.isVisible() && !grid_to_front) {
+                paintGrid(measures);
+            }
 		container.paint(measures);
-		if (grid.isVisible() && grid_to_front)
-			paintGrid(measures);
+		if (grid.isVisible() && grid_to_front) {
+                paintGrid(measures);
+            }
 	}
 
 	/**
@@ -389,8 +404,9 @@ public class DArea extends JComponent implements DParent, Printable {
 	 * auto_grid option
 	 */
 	private void paintGrid(DMeasures m) {
-		if (TRACE)
-			System.out.println("DArea.paintGrid(DMeasures)");
+		if (TRACE) {
+                System.out.println("DArea.paintGrid(DMeasures)");
+            }
 		grid.rectangle = getDRectangle();
 		if (auto_grid) {
 			Border b = getBorder();
@@ -419,14 +435,16 @@ public class DArea extends JComponent implements DParent, Printable {
 	 *            the measures of the area
 	 */
 	private void paintGrid(ScaledBorder sb, DMeasures m) {
-		if (TRACE)
-			System.out.println("DArea.paintGrid(ScaledBorder, DMeasures)");
+		if (TRACE) {
+                System.out.println("DArea.paintGrid(ScaledBorder, DMeasures)");
+            }
 		Dimension d = getSize();
 		FontMetrics fm = m.getGraphics().getFontMetrics();
 		grid.setDistances(sb.getSrcdX(fm, d), sb.getSrcdY(fm, d));
 
-		if (m.x_scale == null && m.y_scale == null)
-			grid.paint(m);
+		if (m.x_scale == null && m.y_scale == null) {
+                grid.paint(m);
+            }
 
 		else {// selber malen
 			Graphics g = m.g;
@@ -437,10 +455,12 @@ public class DArea extends JComponent implements DParent, Printable {
 
 			int x = (int) (src_rect.x / grid.getHorDist()), y = (int) (src_rect.y / grid
 					.getVerDist());
-			if (x * grid.getHorDist() < src_rect.x)
-				x++;
-			if (y * grid.getVerDist() < src_rect.y)
-				y++;
+			if (x * grid.getHorDist() < src_rect.x) {
+                        x++;
+                    }
+			if (y * grid.getVerDist() < src_rect.y) {
+                        y++;
+                    }
 
 			// DPoint min = new DPoint( rect.x, rect.y ),
 			// max = new DPoint( min.x + rect.width, min.y + rect.height );
@@ -450,15 +470,17 @@ public class DArea extends JComponent implements DParent, Printable {
 			double pos;
 
 			for (; (pos = x * grid.getHorDist()) < src_rect.x + src_rect.width; x++) {
-				if (m.x_scale != null)
-					pos = m.x_scale.getImageOf(pos);
+				if (m.x_scale != null) {
+                                pos = m.x_scale.getImageOf(pos);
+                            }
 				Point p1 = m.getPoint(pos, miny), p2 = m.getPoint(pos, maxy);
 				g.drawLine(p1.x, p1.y, p2.x, p2.y);
 			}
 
 			for (; (pos = y * grid.getVerDist()) < src_rect.y + src_rect.height; y++) {
-				if (m.y_scale != null)
-					pos = m.y_scale.getImageOf(pos);
+				if (m.y_scale != null) {
+                                pos = m.y_scale.getImageOf(pos);
+                            }
 				Point p1 = m.getPoint(minx, pos), p2 = m.getPoint(maxx, pos);
 				g.drawLine(p1.x, p1.y, p2.x, p2.y);
 			}
@@ -482,20 +504,25 @@ public class DArea extends JComponent implements DParent, Printable {
 	 */
     @Override
 	public int print(Graphics g, PageFormat pf, int pi) {
-		if (TRACE)
-			System.out.println("DArea.print(...)");
-		if (pi > 0)
-			return Printable.NO_SUCH_PAGE;
+		if (TRACE) {
+                System.out.println("DArea.print(...)");
+            }
+		if (pi > 0) {
+                return Printable.NO_SUCH_PAGE;
+            }
 
 		Border sb = getBorder();
-		if (!(sb instanceof ScaledBorder))
-			sb = null;
-		else
-			((ScaledBorder) sb).show_outer_border = false;
+		if (!(sb instanceof ScaledBorder)) {
+                sb = null;
+            }
+		else {
+                ((ScaledBorder) sb).show_outer_border = false;
+            }
 		PagePrinter printer = new PagePrinter(this, g, pf);
 		int ret = printer.print();
-		if (sb != null)
-			((ScaledBorder) sb).show_outer_border = true;
+		if (sb != null) {
+                ((ScaledBorder) sb).show_outer_border = true;
+            }
 		return ret;
 	}
 
@@ -554,20 +581,24 @@ public class DArea extends JComponent implements DParent, Printable {
 	 */
     @Override
 	public void repaint(DRectangle r) {
-		if (TRACE)
-			System.out.println("DArea.repaint(DRectangle)" + r);
-		if (r == null)
-			throw new IllegalArgumentException(
-					"Cannot repaint a null DRectangle");
-		if (r.isAll() || auto_focus)
-			repaint();
+		if (TRACE) {
+                System.out.println("DArea.repaint(DRectangle)" + r);
+            }
+		if (r == null) {
+                throw new IllegalArgumentException(
+                                "Cannot repaint a null DRectangle");
+            }
+		if (r.isAll() || auto_focus) {
+                repaint();
+            }
 		else {
 			Point p1 = measures.getPoint(r.getX(), r.getY()), p2 = measures
 					.getPoint(r.getX() + r.getWidth(), r.getY() + r.getHeight());
 			// Point p1 = measures.getPoint( r.x, r.y ),
 			// p2 = measures.getPoint( r.x + r.width, r.y + r.height);
-			if (p1 == null || p2 == null)
-				repaint();
+			if (p1 == null || p2 == null) {
+                        repaint();
+                    }
 			else {
 				DBorder b = getDBorder();
 				repaint(p1.x - b.left, p2.y - b.top, p2.x - p1.x + 1 + b.left
@@ -579,8 +610,9 @@ public class DArea extends JComponent implements DParent, Printable {
     @Override
 	public void restoreBorder() {
 		dborder = container.getDBorder();
-		if (TRACE)
-			System.out.println("DArea.restoreBorder -> " + dborder);
+		if (TRACE) {
+                System.out.println("DArea.restoreBorder -> " + dborder);
+            }
 	}
 
 	/**
@@ -592,8 +624,9 @@ public class DArea extends JComponent implements DParent, Printable {
 	public void setAutoFocus(boolean b) {
 		boolean old = auto_focus;
 		auto_focus = b;
-		if (old != b)
-			repaint();
+		if (old != b) {
+                repaint();
+            }
 	}
 
 	/**
@@ -608,8 +641,9 @@ public class DArea extends JComponent implements DParent, Printable {
 			grid.rectangle = getDRectangle();
 			grid.setVisible(true);
 		}
-		if (b == auto_grid)
-			return;
+		if (b == auto_grid) {
+                return;
+            }
 		auto_grid = b;
 		repaint();
 	}
@@ -650,8 +684,9 @@ public class DArea extends JComponent implements DParent, Printable {
 	public void setGridToFront(boolean aFlag) {
 		boolean old = grid_to_front;
 		grid_to_front = aFlag;
-		if (old != aFlag && grid.isVisible())
-			repaint();
+		if (old != aFlag && grid.isVisible()) {
+                repaint();
+            }
 	}
 
 	/**
@@ -661,8 +696,9 @@ public class DArea extends JComponent implements DParent, Printable {
 	 *            visible or not
 	 */
 	public void setGridVisible(boolean aFlag) {
-		if (TRACE)
-			System.out.println("DArea.setGridVisisble: " + aFlag);
+		if (TRACE) {
+                System.out.println("DArea.setGridVisisble: " + aFlag);
+            }
 		grid.rectangle = getDRectangle();
 		grid.setVisible(aFlag);
 	}
@@ -674,12 +710,14 @@ public class DArea extends JComponent implements DParent, Printable {
 	 *            maximal number of grid lines
 	 */
 	public void setMaxGrid(int no) {
-		if (no < 1)
-			return;
+		if (no < 1) {
+                return;
+            }
 		int old = max_grid;
 		max_grid = no;
-		if (old != no)
-			repaint();
+		if (old != no) {
+                repaint();
+            }
 	}
 
 	/**
@@ -690,9 +728,10 @@ public class DArea extends JComponent implements DParent, Printable {
 	 *            the maximal x-value
 	 */
 	public void setMaxX(double max) {
-		if (max < min_rect.getX() + min_rect.getWidth())
-			throw new IllegalArgumentException(
-					"Maximal x-value axes intersects minmal rectangle.");
+		if (max < min_rect.getX() + min_rect.getWidth()) {
+                throw new IllegalArgumentException(
+                                "Maximal x-value axes intersects minmal rectangle.");
+            }
 		max_x = new Double(max);
 	}
 
@@ -705,9 +744,10 @@ public class DArea extends JComponent implements DParent, Printable {
 	 *            the maximal y-value
 	 */
 	public void setMaxY(double may) {
-		if (may < min_rect.getY() + min_rect.getHeight())
-			throw new IllegalArgumentException(
-					"Maximal y-value axes intersects minmal rectangle.");
+		if (may < min_rect.getY() + min_rect.getHeight()) {
+                throw new IllegalArgumentException(
+                                "Maximal y-value axes intersects minmal rectangle.");
+            }
 		max_y = new Double(may);
 	}
 
@@ -730,10 +770,12 @@ public class DArea extends JComponent implements DParent, Printable {
 	 *            the visible <code>DRectangle</code> in DArea coordinates
 	 */
 	public void setMinRectangle(DRectangle rect) {
-		if (rect.isEmpty())
-			min_rect = DEFAULT_MIN_RECT;
-		else
-			min_rect = (DRectangle) rect.clone();
+		if (rect.isEmpty()) {
+                min_rect = DEFAULT_MIN_RECT;
+            }
+		else {
+                min_rect = (DRectangle) rect.clone();
+            }
 	}
 
 	/**
@@ -744,9 +786,10 @@ public class DArea extends JComponent implements DParent, Printable {
 	 *            the minimal x-value
 	 */
 	public void setMinX(double mix) {
-		if (mix > min_rect.getX())
-			throw new IllegalArgumentException(
-					"Mimimal y-value axes intersects minmal rectangle.");
+		if (mix > min_rect.getX()) {
+                throw new IllegalArgumentException(
+                                "Mimimal y-value axes intersects minmal rectangle.");
+            }
 		min_x = new Double(mix);
 	}
 
@@ -758,9 +801,10 @@ public class DArea extends JComponent implements DParent, Printable {
 	 *            the minimal y-value
 	 */
 	public void setMinY(double miy) {
-		if (miy > min_rect.getY())
-			throw new IllegalArgumentException(
-					"Mimimal y-value axes intersects minmal rectangle.");
+		if (miy > min_rect.getY()) {
+                throw new IllegalArgumentException(
+                                "Mimimal y-value axes intersects minmal rectangle.");
+            }
 		min_y = new Double(miy);
 	}
 
@@ -789,12 +833,14 @@ public class DArea extends JComponent implements DParent, Printable {
 	 *            the visible <code>DRectangle</code> in DArea coordinates
 	 */
 	public void setVisibleRectangle(DRectangle rect) {
-		if (TRACE)
-			System.out.println("DArea.setVisibleRectangle(DRectangle)");
-		if (rect.isEmpty())
-			throw new IllegalArgumentException(
-					"You should never try to set an empty rectangle\n"
-							+ "as the visible rectangle of an DArea");
+		if (TRACE) {
+                System.out.println("DArea.setVisibleRectangle(DRectangle)");
+            }
+		if (rect.isEmpty()) {
+                throw new IllegalArgumentException(
+                                "You should never try to set an empty rectangle\n"
+                                                + "as the visible rectangle of an DArea");
+            }
 
 		if (!rect.equals(visible_rect) && rect.getWidth() > 0
 				&& rect.getHeight() > 0) {
@@ -813,8 +859,9 @@ public class DArea extends JComponent implements DParent, Printable {
 	 *            the scale function for the x-axis
 	 */
 	public void setXScale(DFunction x_s) {
-		if (x_s == null && measures.x_scale == null)
-			return;
+		if (x_s == null && measures.x_scale == null) {
+                return;
+            }
 		measures.x_scale = x_s;
 		repaint();
 	}
@@ -828,8 +875,9 @@ public class DArea extends JComponent implements DParent, Printable {
 	 *            the scale function for the y-axis
 	 */
 	public void setYScale(DFunction y_s) {
-		if (y_s == null && measures.y_scale == null)
-			return;
+		if (y_s == null && measures.y_scale == null) {
+                return;
+            }
 		measures.y_scale = y_s;
 		repaint();
 	}

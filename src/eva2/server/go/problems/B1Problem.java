@@ -51,7 +51,9 @@ public class B1Problem extends AbstractProblemBinary implements java.io.Serializ
         int                     fitness = 0;
 
         for (int i = 0; i < getProblemDimension(); i++) {
-            if (b.get(i)) fitness++;
+            if (b.get(i)) {
+                fitness++;
+            }
         }
         result[0] = fitness;
         return result;

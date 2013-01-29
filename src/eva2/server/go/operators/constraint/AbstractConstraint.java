@@ -94,7 +94,9 @@ public abstract class AbstractConstraint implements InterfaceDoubleConstraint, S
 				}
 			}
 		case specificTag:
-			if (v>0) indy.addConstraintViolation(v);
+			if (v>0) {
+                indy.addConstraintViolation(v);
+            }
 			break;
 		}
 		currentIndy=null;
@@ -120,7 +122,9 @@ public abstract class AbstractConstraint implements InterfaceDoubleConstraint, S
 	protected double[] getIndyDblData(String key) {
 		if (currentIndy!=null) {
 			Object dat = currentIndy.getData(key);
-			if (dat!=null && (dat instanceof double[])) return (double[])dat;
+			if (dat!=null && (dat instanceof double[])) {
+                        return (double[])dat;
+                    }
 			else {
 				System.err.println("Error, invalid call to AbstractConstraint.getRawFitness(). Individual had no raw fitness set.");
 				return null;
@@ -156,8 +160,12 @@ public abstract class AbstractConstraint implements InterfaceDoubleConstraint, S
 			 return (val <= 0.) ? 0 : val;
 		case eqZero:
 			val = Math.abs(val);
-			if (val<=equalityEpsilon) return 0.;
-			else return val;
+			if (val<=equalityEpsilon) {
+                return 0.;
+            }
+			else {
+                return val;
+            }
 		case greaterEqZero:
 			return (val >= 0.) ? 0. : -val;
 		}
@@ -193,7 +201,9 @@ public abstract class AbstractConstraint implements InterfaceDoubleConstraint, S
 			if (penaltyAdaption instanceof GenericParamAdaption) {
 				((GenericParamAdaption)penaltyAdaption).setControlledParam(penaltyPropName);
 			} else {
-				if (!penaltyPropName.equals(penaltyAdaption.getControlledParam())) System.err.println("Warning: penalty factor control may have different target");
+				if (!penaltyPropName.equals(penaltyAdaption.getControlledParam())) {
+                                System.err.println("Warning: penalty factor control may have different target");
+                            }
 			}
 		}
 		paramCtrl.setSingleAdapters(new ParamAdaption[]{penaltyAdaption});
@@ -210,7 +220,9 @@ public abstract class AbstractConstraint implements InterfaceDoubleConstraint, S
 	public void setPenaltyFactor(double penaltyFactor) {
 		if (penaltyFactor<0) {
 			EVAERROR.errorMsgOnce("Error: a negative penalty factor is not allowed!");
-		} else this.penaltyFactor = penaltyFactor;
+		} else {
+                this.penaltyFactor = penaltyFactor;
+            }
 	}
 	
 	public String penaltyFactorTipText() {

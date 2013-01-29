@@ -56,23 +56,33 @@ public class ClusteringDensityBased implements InterfaceClusteringDistanceParam,
     }
     
     public ClusteringDensityBased(ClusteringDensityBased a) {
-        if (a.m_Metric != null) this.m_Metric           = (InterfaceDistanceMetric)a.m_Metric.clone();
+        if (a.m_Metric != null) {
+            this.m_Metric           = (InterfaceDistanceMetric)a.m_Metric.clone();
+        }
         this.m_TestConvergingSpeciesOnBestOnly  = a.m_TestConvergingSpeciesOnBestOnly;
         this.m_ClusterDistance                  = a.m_ClusterDistance;
         this.m_MinimumGroupSize                 = a.m_MinimumGroupSize;
         if (a.Clustered != null) {
             this.Clustered = new boolean[a.Clustered.length];
             for (int i = 0; i < this.Clustered.length; i++) {
-                if (a.Clustered[i]) this.Clustered[i] = true;
-                else this.Clustered[i] = false;
+                if (a.Clustered[i]) {
+                    this.Clustered[i] = true;
+                }
+                else {
+                    this.Clustered[i] = false;
+                }
             }
         }
         if (a.ConnectionMatrix != null) {
             this.ConnectionMatrix = new boolean[a.ConnectionMatrix.length][a.ConnectionMatrix[0].length];
             for (int i = 0; i < this.ConnectionMatrix.length; i++) {
                 for (int j = 0; j < this.ConnectionMatrix[i].length; j++) {
-                    if (a.ConnectionMatrix[i][j]) this.ConnectionMatrix[i][j] = true;
-                    else this.ConnectionMatrix[i][j] = false;
+                    if (a.ConnectionMatrix[i][j]) {
+                        this.ConnectionMatrix[i][j] = true;
+                    }
+                    else {
+                        this.ConnectionMatrix[i][j] = false;
+                    }
                 }
             }
         }
@@ -128,8 +138,12 @@ public class ClusteringDensityBased implements InterfaceClusteringDistanceParam,
             if (!Clustered[i]) {
                 Cluster                 = (Population)template.clone();
                 this.addRowToPopulation(i, Cluster, pop);
-                if (Cluster.size() >= this.m_MinimumGroupSize) ClusteredPopulations.add(Cluster);
-                else PopulationOfUnclustered.addPopulation(Cluster);
+                if (Cluster.size() >= this.m_MinimumGroupSize) {
+                    ClusteredPopulations.add(Cluster);
+                }
+                else {
+                    PopulationOfUnclustered.addPopulation(Cluster);
+                }
             }
         }
 
@@ -173,8 +187,12 @@ public class ClusteringDensityBased implements InterfaceClusteringDistanceParam,
             Population tmpPop = new Population(species1.size()+species2.size());
             tmpPop.addPopulation(species1);
             tmpPop.addPopulation(species2);
-            if (this.cluster(tmpPop, referencePop).length <= 2) return true;
-            else return false;
+            if (this.cluster(tmpPop, referencePop).length <= 2) {
+                return true;
+            }
+            else {
+                return false;
+            }
         }
     }
 
@@ -216,7 +234,9 @@ public class ClusteringDensityBased implements InterfaceClusteringDistanceParam,
     			Pair<Integer,Double> iDist = Population.getClosestFarthestIndy(loners.getEAIndividual(l), species[spI], m_Metric, true);
     			if (iDist.tail() < m_ClusterDistance) { // its close enough to be added
     				// set SP ID only if its the closest species which is still below cluster distance
-    				if (minDist<0 || (iDist.tail() < minDist)) res[l]=spI;
+    				if (minDist<0 || (iDist.tail() < minDist)) {
+                                res[l]=spI;
+                            }
     			}
     		} // end for all species
     	} // end for all loners
@@ -261,7 +281,9 @@ public class ClusteringDensityBased implements InterfaceClusteringDistanceParam,
         return this.m_MinimumGroupSize;
     }
     public void setMinimumGroupSize(int m){
-        if (m < 1) m = 1;
+        if (m < 1) {
+            m = 1;
+        }
         this.m_MinimumGroupSize = m;
     }
     public String minimumGroupSizeTipText() {
@@ -279,7 +301,9 @@ public class ClusteringDensityBased implements InterfaceClusteringDistanceParam,
 	}
     @Override
 	public void setClustDistParam(double m) {
-        if (m < 0) m = 0;
+        if (m < 0) {
+                m = 0;
+            }
         this.m_ClusterDistance = m;
 	}
     public String clustDistTipText() {

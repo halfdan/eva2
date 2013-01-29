@@ -99,7 +99,9 @@ public class MutateGISubset implements InterfaceMutation, Serializable {
 	 */
 	private int randomValidElement(int[][] range, int index, int oldVal) {
 		int v = mutableSet[RNG.randomInt(mutableSet.length)];
-		if (v>=range[index][0] && (v<=range[index][1])) return v;
+		if (v>=range[index][0] && (v<=range[index][1])) {
+                return v;
+            }
 		else {
 			EVAERROR.errorMsgOnce("Warning, mutation subset violates range definition!");
 			return oldVal;
@@ -113,7 +115,9 @@ public class MutateGISubset implements InterfaceMutation, Serializable {
 	 */
 	private boolean isMutable(int v) {
 		for (int i=0; i<mutableSet.length; i++) {
-			if (mutableSet[i]==v) return true;
+			if (mutableSet[i]==v) {
+                        return true;
+                    }
 		}
 		return false;
 	}

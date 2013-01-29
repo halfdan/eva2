@@ -86,12 +86,22 @@ public class GAIndividualDoubleData extends AbstractEAIndividual implements Inte
         if (individual instanceof GAIndividualDoubleData) {
             GAIndividualDoubleData indy = (GAIndividualDoubleData) individual;
             //@todo Eigendlich k�nnte ich noch das Koding vergleichen
-            if (this.m_GenotypeLength != indy.m_GenotypeLength) return false;
-            if ((this.m_Genotype == null) || (indy.m_Genotype == null)) return false;            
-            if (!this.m_Genotype.equals(indy.m_Genotype)) return false;
+            if (this.m_GenotypeLength != indy.m_GenotypeLength) {
+                return false;
+            }
+            if ((this.m_Genotype == null) || (indy.m_Genotype == null)) {
+                return false;
+            }            
+            if (!this.m_Genotype.equals(indy.m_Genotype)) {
+                return false;
+            }
             for (int i = 0; i < this.m_Range.length; i++) {
-                if (this.m_Range[i][0] != indy.m_Range[i][0]) return false;
-                if (this.m_Range[i][1] != indy.m_Range[i][1]) return false;
+                if (this.m_Range[i][0] != indy.m_Range[i][0]) {
+                    return false;
+                }
+                if (this.m_Range[i][1] != indy.m_Range[i][1]) {
+                    return false;
+                }
             }
             return true;
         } else {
@@ -227,7 +237,9 @@ public class GAIndividualDoubleData extends AbstractEAIndividual implements Inte
     public void initByValue(Object obj, InterfaceOptimizationProblem opt) {
         if (obj instanceof double[]) {
             double[]  bs = (double[]) obj;
-            if (bs.length != this.m_Range.length) System.out.println("Init value and requested length doesn't match!");
+            if (bs.length != this.m_Range.length) {
+                System.out.println("Init value and requested length doesn't match!");
+            }
             this.SetDoubleGenotype(bs);
         } else {
             this.defaultInit(opt);
@@ -262,8 +274,12 @@ public class GAIndividualDoubleData extends AbstractEAIndividual implements Inte
         result += "]\n";
         result += "{";
         for (int i = 0; i < this.m_GenotypeLength; i++) {
-            if (this.m_Genotype.get(i)) result += "1";
-            else result += "0";
+            if (this.m_Genotype.get(i)) {
+                result += "1";
+            }
+            else {
+                result += "0";
+            }
         }
         result += "}";
         return result;
@@ -303,8 +319,12 @@ public class GAIndividualDoubleData extends AbstractEAIndividual implements Inte
     @Override
     public void defaultInit(InterfaceOptimizationProblem prob) {
         for (int i = 0; i < this.m_GenotypeLength; i++) {
-            if (RNG.flipCoin(0.5)) this.m_Genotype.set(i);
-            else this.m_Genotype.clear(i);
+            if (RNG.flipCoin(0.5)) {
+                this.m_Genotype.set(i);
+            }
+            else {
+                this.m_Genotype.clear(i);
+            }
         }
     }
 
@@ -313,8 +333,12 @@ public class GAIndividualDoubleData extends AbstractEAIndividual implements Inte
     @Override
     public void defaultMutate() {
         int mutationIndex = RNG.randomInt(0, this.m_GenotypeLength);
-        if (this.m_Genotype.get(mutationIndex)) this.m_Genotype.clear(mutationIndex);
-        else this.m_Genotype.set(mutationIndex);
+        if (this.m_Genotype.get(mutationIndex)) {
+            this.m_Genotype.clear(mutationIndex);
+        }
+        else {
+            this.m_Genotype.set(mutationIndex);
+        }
     }
 /**********************************************************************************************************************
  * These are for GUI

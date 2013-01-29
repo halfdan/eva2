@@ -116,7 +116,9 @@ public class SAParameters extends AbstractGOParameters implements InterfaceGOPar
         return ((SimulatedAnnealing)this.m_Optimizer).getAlpha();
     }
     public void setAlpha(double a){
-        if (a > 1) a = 1.0;
+        if (a > 1) {
+            a = 1.0;
+        }
         ((SimulatedAnnealing)this.m_Optimizer).setAlpha(a);
     }
     public String alphaTipText() {

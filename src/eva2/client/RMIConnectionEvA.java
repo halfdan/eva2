@@ -27,7 +27,9 @@ class RMIConnectionEvA extends RMIConnection {
 		if (m_MainAdapter instanceof EvAMainAdapter) {
 			EvAMainAdapter evaAdapter = (EvAMainAdapter)m_MainAdapter;
 			ModuleAdapter ret = null;
-			if (TRACE) System.out.println("ComAdapter.getModuleAdapter(" + Modul + ")");
+			if (TRACE) {
+                        System.out.println("ComAdapter.getModuleAdapter(" + Modul + ")");
+                    }
 			String hostAdd = "";
 			try {
 				hostAdd = InetAddress.getLocalHost().getHostAddress();

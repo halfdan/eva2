@@ -39,9 +39,15 @@ public class ConstObjectivesInEqualityBiggerThanLinear implements InterfaceConst
     @Override
     public boolean isValid(AbstractEAIndividual indy) {
         double[] d = indy.getFitness();
-        if (d.length != 2) return true;
-        if ((this.m*d[0] + this.b) < d[1]) return true;
-        else return false;
+        if (d.length != 2) {
+            return true;
+        }
+        if ((this.m*d[0] + this.b) < d[1]) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 }
 

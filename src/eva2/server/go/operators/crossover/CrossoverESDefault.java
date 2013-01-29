@@ -96,8 +96,12 @@ public class CrossoverESDefault implements InterfaceCrossover, java.io.Serializa
      */
     @Override
     public boolean equals(Object crossover) {
-        if (crossover instanceof CrossoverESDefault) return true;
-        else return false;
+        if (crossover instanceof CrossoverESDefault) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     /** This method will allow the crossover operator to be initialized depending on the

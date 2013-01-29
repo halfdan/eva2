@@ -91,7 +91,9 @@ public class DGrid extends DComponent
     @Override
   public void paint( DMeasures m ){
     Graphics g = m.getGraphics();
-    if( color != null ) g.setColor( color );
+    if( color != null ) {
+          g.setColor( color );
+      }
     double minX, minY, pos;
     DPoint p1, p2;
     DLine l;
@@ -123,7 +125,9 @@ public class DGrid extends DComponent
       if (pos+ver_dist<=pos) {
     	  System.err.println("Overflow error in DGrid!");
     	  pos *= 1.01;
-      } else pos += ver_dist;
+      } else {
+            pos += ver_dist;
+        }
 //      System.out.println("pos is " + pos + ", loop until " + rectangle.y + rectangle.height);
     }
   }

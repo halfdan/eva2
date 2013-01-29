@@ -49,7 +49,9 @@ public class RemoveSurplusIndividualsDynamicHyperCube implements InterfaceRemove
             // now find the individual with the smallest hypervolume
             indexSmallHyperCube = 0;
             for (int i = 1; i < archive.size(); i++) {
-                if (space[i] < space[indexSmallHyperCube]) indexSmallHyperCube = i;
+                if (space[i] < space[indexSmallHyperCube]) {
+                    indexSmallHyperCube = i;
+                }
                 else {
                     // if they are equal give them a fair chance to exchange between them
                     if ((space[i] == space[indexSmallHyperCube]) && (RNG.flipCoin(0.5))) {
@@ -94,8 +96,12 @@ public class RemoveSurplusIndividualsDynamicHyperCube implements InterfaceRemove
                     }
                 }
                 // now i should have the lower and the upperbound
-                if ((upperI == -1) || (lowerI == -1)) result[i] *= Double.POSITIVE_INFINITY;
-                else result[i] *= Math.abs(Math.abs(fitness[upperI][y] - fitness[lowerI][y]));
+                if ((upperI == -1) || (lowerI == -1)) {
+                    result[i] *= Double.POSITIVE_INFINITY;
+                }
+                else {
+                    result[i] *= Math.abs(Math.abs(fitness[upperI][y] - fitness[lowerI][y]));
+                }
             }
         }
         return result;

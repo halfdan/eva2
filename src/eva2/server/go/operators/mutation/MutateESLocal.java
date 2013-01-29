@@ -65,19 +65,33 @@ public class MutateESLocal implements InterfaceMutation, InterfaceAdditionalPopu
      */
     @Override
     public boolean equals(Object mutator) {
-    	if (mutator==this) return true;
+    	if (mutator==this) {
+            return true;
+        }
         if (mutator instanceof MutateESLocal) {
             MutateESLocal mut = (MutateESLocal)mutator;
-            if (this.m_Tau1 != mut.m_Tau1) return false;
-            if (this.m_Tau2 != mut.m_Tau2) return false;
-            if (this.m_LowerLimitStepSize != mut.m_LowerLimitStepSize) return false;
+            if (this.m_Tau1 != mut.m_Tau1) {
+                return false;
+            }
+            if (this.m_Tau2 != mut.m_Tau2) {
+                return false;
+            }
+            if (this.m_LowerLimitStepSize != mut.m_LowerLimitStepSize) {
+                return false;
+            }
             if (this.m_Sigmas != null) {
                 for (int i = 0; i < this.m_Sigmas.length; i++) {
-                    if (this.m_Sigmas[i] != mut.m_Sigmas[i]) return false;
+                    if (this.m_Sigmas[i] != mut.m_Sigmas[i]) {
+                        return false;
+                    }
                 }
-            } else return false;
+            } else {
+                return false;
+            }
             return true;
-        } else return false;
+        } else {
+            return false;
+        }
     }
 
     /** This method allows you to init the mutation operator
@@ -110,10 +124,16 @@ public class MutateESLocal implements InterfaceMutation, InterfaceAdditionalPopu
 
             for (int i = 0; i < x.length; i++) {
                 this.m_Sigmas[i] *= Math.exp(this.m_Tau1 * tmpR + this.m_Tau2 * RNG.gaussianDouble(1));
-                if (this.m_Sigmas[i] < this.m_LowerLimitStepSize) this.m_Sigmas[i] = this.m_LowerLimitStepSize;
+                if (this.m_Sigmas[i] < this.m_LowerLimitStepSize) {
+                    this.m_Sigmas[i] = this.m_LowerLimitStepSize;
+                }
                 x[i] += ((range[i][1] -range[i][0])/2)*RNG.gaussianDouble(this.m_Sigmas[i]);
-                if (range[i][0] > x[i]) x[i] = range[i][0];
-                if (range[i][1] < x[i]) x[i] = range[i][1];
+                if (range[i][0] > x[i]) {
+                    x[i] = range[i][0];
+                }
+                if (range[i][1] < x[i]) {
+                    x[i] = range[i][1];
+                }
             }
             ((InterfaceESIndividual)individual).SetDGenotype(x);
         }
@@ -145,7 +165,9 @@ public class MutateESLocal implements InterfaceMutation, InterfaceAdditionalPopu
             listA[i] = ((Double)tmpListA.get(i)).doubleValue();
             listB[i] = (double[])tmpListB.get(i);
         }
-        if (listA.length <= 1) return;
+        if (listA.length <= 1) {
+            return;
+        }
         switch (this.m_CrossoverType.getSelectedTag().getID()) {
             case 1 : {
                 this.m_MutationStepSize = 0;
@@ -209,7 +231,9 @@ public class MutateESLocal implements InterfaceMutation, InterfaceAdditionalPopu
      * @param d   The mutation operator.
      */
     public void setMutationStepSize(double d) {
-        if (d < 0) d = this.m_LowerLimitStepSize;
+        if (d < 0) {
+            d = this.m_LowerLimitStepSize;
+        }
         this.m_MutationStepSize = d;
     }
     public double getMutationStepSize() {
@@ -223,7 +247,9 @@ public class MutateESLocal implements InterfaceMutation, InterfaceAdditionalPopu
      * @param d   The mutation operator.
      */
     public void setLowerLimitStepSize(double d) {
-        if (d < 0) d = 0;
+        if (d < 0) {
+            d = 0;
+        }
         this.m_LowerLimitStepSize = d;
     }
     public double getLowerLimitStepSize() {
@@ -237,7 +263,9 @@ public class MutateESLocal implements InterfaceMutation, InterfaceAdditionalPopu
      * @param d   The mutation operator.
      */
     public void setTau1(double d) {
-        if (d < 0) d = 0;
+        if (d < 0) {
+            d = 0;
+        }
         this.m_Tau1 = d;
     }
     public double getTau1() {
@@ -251,7 +279,9 @@ public class MutateESLocal implements InterfaceMutation, InterfaceAdditionalPopu
      * @param d   The mutation operator.
      */
     public void setTau2(double d) {
-        if (d < 0) d = 0;
+        if (d < 0) {
+            d = 0;
+        }
         this.m_Tau2 = d;
     }
     public double getTau2() {

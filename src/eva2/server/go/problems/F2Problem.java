@@ -49,7 +49,9 @@ public class F2Problem extends AbstractProblemDoubleOffset implements InterfaceL
         	xii=x[i+1]-m_XOffset;
             result[0]  += (100*(xii-xi*xi)*(xii-xi*xi)+(xi-1)*(xi-1));
         }
-        if (m_YOffset==0 && (result[0]<=0)) result[0]=Math.sqrt(Double.MIN_VALUE); // guard for plots in log scale
+        if (m_YOffset==0 && (result[0]<=0)) {
+            result[0]=Math.sqrt(Double.MIN_VALUE);
+        } // guard for plots in log scale
         return result;
     }
     

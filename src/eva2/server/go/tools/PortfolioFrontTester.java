@@ -185,9 +185,15 @@ public class PortfolioFrontTester {
 
     private int exceedingLimit(double limit, double x1, double x2, double x3) {
         int result = 0;
-        if (x1 > limit) result++;
-        if (x2 > limit) result++;
-        if (x3 > limit) result++;
+        if (x1 > limit) {
+            result++;
+        }
+        if (x2 > limit) {
+            result++;
+        }
+        if (x3 > limit) {
+            result++;
+        }
         return result;
     }
 
@@ -303,7 +309,9 @@ public class PortfolioFrontTester {
      */
     private void writeToFile(String line) {
         String write = line + "\n";
-        if (this.m_OutputFile == null) return;
+        if (this.m_OutputFile == null) {
+            return;
+        }
         try {
             this.m_OutputFile.write(write, 0, write.length());
             this.m_OutputFile.flush();

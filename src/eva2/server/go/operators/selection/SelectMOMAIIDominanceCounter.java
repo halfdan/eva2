@@ -73,7 +73,9 @@ public class SelectMOMAIIDominanceCounter implements InterfaceSelection, java.io
                 // lets count the number of dominant solutions
                 int     domCount = 0;
                 for (int j = 0; j < malta.size(); j++) {
-                    if (malta.get(i).isDominant) domCount++;
+                    if (malta.get(i).isDominant) {
+                        domCount++;
+                    }
                 }
                 malta.m_SizeDominantSolutions = domCount;
                 double[] fitness = new double[1];

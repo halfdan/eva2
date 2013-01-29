@@ -339,7 +339,9 @@ public class DPointSetMultiIcon extends DComponent
                     {
                         p = m.getPoint(xMI.getImage(i), yMI.getImage(i));
 
-                        if (p==null) continue;
+                        if (p==null) {
+                            continue;
+                        }
                         if (this.m_IconsMI.get(i) != null)
                         {
                             g.setStroke(new BasicStroke());

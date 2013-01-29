@@ -34,7 +34,9 @@ public class RMIProxyLocalThread implements InvocationHandler,Serializable {
       c.getClass().getInterfaces(),
       Proxy);
     Proxy.setWrapper(ret);
-    if (TRACE) System.out.println("RMIProxyLocalThread "+c.getClass() + " ret " + ret.getClass());
+    if (TRACE) {
+          System.out.println("RMIProxyLocalThread "+c.getClass() + " ret " + ret.getClass());
+      }
     return ret;
   }
   /**
@@ -47,7 +49,9 @@ public class RMIProxyLocalThread implements InvocationHandler,Serializable {
       c.getClass().getInterfaces(),
       Proxy);
     Proxy.setWrapper(ret);
-    if (TRACE) System.out.println("RMIProxyLocalThread "+c.getClass() + " ret " + ret.getClass());
+    if (TRACE) {
+          System.out.println("RMIProxyLocalThread "+c.getClass() + " ret " + ret.getClass());
+      }
     return ret;
   }
   /**

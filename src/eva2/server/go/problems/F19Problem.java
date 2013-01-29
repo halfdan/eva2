@@ -124,8 +124,12 @@ InterfaceMultimodalProblem, InterfaceInterestingHistogram, InterfaceFirstOrderDe
 
     @Override
 	public SolutionHistogram getHistogram() {
-		if (getProblemDimension()<15) return new SolutionHistogram(0, 8, 16);
-		else return new SolutionHistogram(0, 40000, 16);
+		if (getProblemDimension()<15) {
+                return new SolutionHistogram(0, 8, 16);
+            }
+		else {
+                return new SolutionHistogram(0, 40000, 16);
+            }
 	}
 
     @Override

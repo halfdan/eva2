@@ -91,7 +91,9 @@ public class EvAInfo {
 
 	public static String getVersion() {
 		String version = getProperty("EvA2Version");
-		if (version==null) System.err.println("ERROR, missing property EvA2Version!");
+		if (version==null) {
+                System.err.println("ERROR, missing property EvA2Version!");
+            }
 		return version;
 	}
 

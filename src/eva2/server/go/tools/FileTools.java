@@ -109,7 +109,9 @@ public class FileTools {
 					f = new File(filename+"."+i);
 				} while (!f.createNewFile());
 				return f;
-			} else return f;
+			} else {
+                        return f;
+                    }
 		} catch(IOException e) {
 			System.err.println("IOException when trying to create new file!");
 			System.err.println(e.getMessage());
@@ -136,10 +138,18 @@ public class FileTools {
 				sFile = fc.getSelectedFile();
 				if (sFile.exists()) {
 					int opt = JOptionPane.showConfirmDialog(parentComponent, "File " + sFile.getName() + " exists! Overwrite?", "Confirm to overwrite file", JOptionPane.YES_NO_CANCEL_OPTION);
-					if (opt==JOptionPane.OK_OPTION) finished=true;
-					if (opt==JOptionPane.CANCEL_OPTION) return false;
-				} else finished=true;
-			} else return false; // user break
+					if (opt==JOptionPane.OK_OPTION) {
+                                        finished=true;
+                                    }
+					if (opt==JOptionPane.CANCEL_OPTION) {
+                                        return false;
+                                    }
+				} else {
+                                finished=true;
+                            }
+			} else {
+                        return false;
+                    } // user break
 		} while (!finished); // wait until user selected valid file
 
 		if (returnVal==JFileChooser.APPROVE_OPTION) {
@@ -164,7 +174,9 @@ public class FileTools {
 						JOptionPane.ERROR_MESSAGE);
 				return false;
 			}
-		} else return false;
+		} else {
+                return false;
+            }
 	}
 	
 	/**
@@ -194,7 +206,9 @@ public class FileTools {
 						JOptionPane.ERROR_MESSAGE);
 			}
 		}
-		if (fc!=null) fc=null;
+		if (fc!=null) {
+                fc=null;
+            }
 		return obj;
 	}
 	
@@ -221,7 +235,9 @@ public class FileTools {
 			File outFile = new File(folder,predefName);
 			if (outFile.exists() && !forceOverwrite) {
 				int opt = JOptionPane.showConfirmDialog(parentComponent, "File " + outFile.getName() + " exists! Overwrite?", "Confirm to overwrite file", JOptionPane.YES_NO_CANCEL_OPTION);
-				if (opt!=JOptionPane.OK_OPTION) return false;
+				if (opt!=JOptionPane.OK_OPTION) {
+                                return false;
+                            }
 			}
 			// we may save the file
 			String msg;
@@ -233,7 +249,9 @@ public class FileTools {
 						"Save object to folder",
 						JOptionPane.ERROR_MESSAGE);
 				return false;
-			} else return true;
+			} else {
+                        return true;
+                    }
 		}
 	}
 	

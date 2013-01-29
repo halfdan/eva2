@@ -22,10 +22,12 @@ public class Mathematics {
 	 * @return
 	 */
 	public static double[][] adjoint(double[][] a) {
-		if (a == null)
-			return null;
-		if (a.length != a[0].length)
-			return null;
+		if (a == null) {
+                return null;
+            }
+		if (a.length != a[0].length) {
+                return null;
+            }
 		double[][] b = new double[a.length][a.length];
 		for (int i = 0; i < a.length; i++) {
             for (int j = 0; j < a.length; j++) {
@@ -55,25 +57,31 @@ public class Mathematics {
 	 *         is not square).
 	 */
 	public static double determinant(double[][] matrix) {
-		if (matrix == null)
-			return 0;
-		if (matrix.length != matrix[0].length)
-			return 0;
-		if (matrix.length == 1)
-			return matrix[0][0];
-		if (matrix.length == 2)
-			return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0];
-		if (matrix.length == 3)
-			return matrix[0][0] * matrix[1][1] * matrix[2][2] + matrix[0][1]
-					* matrix[1][2] * matrix[2][0] + matrix[0][2] * matrix[1][0]
-					* matrix[2][1] - matrix[2][0] * matrix[1][1] * matrix[0][2]
-					- matrix[2][1] * matrix[1][2] * matrix[0][0] - matrix[2][2]
-					* matrix[1][0] * matrix[0][1];
+		if (matrix == null) {
+                return 0;
+            }
+		if (matrix.length != matrix[0].length) {
+                return 0;
+            }
+		if (matrix.length == 1) {
+                return matrix[0][0];
+            }
+		if (matrix.length == 2) {
+                return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0];
+            }
+		if (matrix.length == 3) {
+                return matrix[0][0] * matrix[1][1] * matrix[2][2] + matrix[0][1]
+                                * matrix[1][2] * matrix[2][0] + matrix[0][2] * matrix[1][0]
+                                * matrix[2][1] - matrix[2][0] * matrix[1][1] * matrix[0][2]
+                                - matrix[2][1] * matrix[1][2] * matrix[0][0] - matrix[2][2]
+                                * matrix[1][0] * matrix[0][1];
+            }
 
 		double det = 0;
 		for (int k = 0; k < matrix.length; k++) {
-			if (matrix[0][k] != 0)
-				det += matrix[0][k] * adjoint(matrix, 0, k);
+			if (matrix[0][k] != 0) {
+                        det += matrix[0][k] * adjoint(matrix, 0, k);
+                    }
 		}
 		return det;
 	}
@@ -93,11 +101,13 @@ public class Mathematics {
 	 *             if x and y have different dimensions an exception is thrown.
 	 */
 	public static double dist(double[] x, double[] y, int root) {
-		if (x.length != y.length)
-			throw new RuntimeException(
-					"The vectors x and y must have the same dimension");
-		if (root == 0)
-			throw new RuntimeException("There is no 0-root!");
+		if (x.length != y.length) {
+                throw new RuntimeException(
+                                "The vectors x and y must have the same dimension");
+            }
+		if (root == 0) {
+                throw new RuntimeException("There is no 0-root!");
+            }
 		double d = 0;
 		for (int i = 0; i < x.length; i++) {
             d += Math.pow(Math.abs(x[i] - y[i]), root);
@@ -119,9 +129,10 @@ public class Mathematics {
 	 *             if x and y have different dimensions an exception is thrown.
 	 */
 	public static double euclidianDist(double[] x, double[] y) {
-		if (x.length != y.length)
-			throw new RuntimeException(
-					"The vectors x and y must have the same dimension");
+		if (x.length != y.length) {
+                throw new RuntimeException(
+                                "The vectors x and y must have the same dimension");
+            }
 		double d = 0;
 		for (int i = 0; i < x.length; i++) {
             d += Math.pow(Math.abs(x[i] - y[i]), 2);
@@ -329,11 +340,13 @@ public class Mathematics {
 	 */
 	public static double hyperbolicInterpolation(double x, double x0,
 			double x1, double f0, double f1) {
-		if (x1 == 0)
-			return lerp(f0, f1, (x - x0) / (-x0));
+		if (x1 == 0) {
+                                return lerp(f0, f1, (x - x0) / (-x0));
+                            }
 		double l = lerp(x0 / x1, 1, x);
-		if (l == 0)
-			return linearInterpolation(x, x0, x1, f0, f1);
+		if (l == 0) {
+                                return linearInterpolation(x, x0, x1, f0, f1);
+                            }
 		return lerp(f0, f1, x / l);
 	}
 
@@ -360,14 +373,17 @@ public class Mathematics {
 	 * @return
 	 */
 	public static double[][] inverse(double[][] a) {
-		if (a == null)
-			return null;
-		if (a.length != a[0].length)
-			return null;
+		if (a == null) {
+                return null;
+            }
+		if (a.length != a[0].length) {
+                return null;
+            }
 		double det = determinant(a);
 
-		if (det == 0)
-			return null;
+		if (det == 0) {
+                return null;
+            }
 		double[][] b = adjoint(a);
 		for (int i = 0; i < a.length; i++) {
             for (int j = 0; j < a.length; j++) {
@@ -395,7 +411,9 @@ public class Mathematics {
 	 */
 	public static int areFinite(double[][] v) {
 		for (int i=0; i<v.length; i++) {
-			if (areFinite(v[i])>=0) return i;
+			if (areFinite(v[i])>=0) {
+                        return i;
+                    }
 		}
 		return -1;
 	}
@@ -409,7 +427,9 @@ public class Mathematics {
 	 */
 	public static int areFinite(double ... v) {
 		for (int i=0; i<v.length; i++) {
-			if (Double.isInfinite(v[i]) || Double.isNaN(v[i])) return i;
+			if (Double.isInfinite(v[i]) || Double.isNaN(v[i])) {
+                        return i;
+                    }
 		}
 		return -1;
 	}
@@ -423,8 +443,9 @@ public class Mathematics {
 	 * @return true if the vector lies within the range, else false
 	 */
 	public static boolean isInRange(double v, double lower, double upper) {
-		if (v < lower || (v > upper))
-			return false;
+		if (v < lower || (v > upper)) {
+                return false;
+            }
 		return true;
 	}
 
@@ -437,8 +458,9 @@ public class Mathematics {
 	 */
 	public static boolean isInRange(double[] x, double[][] range) {
 		for (int i = 0; i < x.length; i++) {
-			if (x[i] < range[i][0] || (x[i] > range[i][1]))
-				return false;
+			if (x[i] < range[i][0] || (x[i] > range[i][1])) {
+                        return false;
+                    }
 		}
 		return true;
 	}
@@ -452,7 +474,9 @@ public class Mathematics {
 	 */
 	public static boolean isValidVec(double[][] d) {
 		for (int i=0; i<d.length; i++) {
-			if (!isValidVec(d[i])) return false;
+			if (!isValidVec(d[i])) {
+                        return false;
+                    }
 		}
 		return true;
 	}
@@ -466,14 +490,17 @@ public class Mathematics {
 	public static boolean isValidVec(double[] d) {
 		double sum = 0;
 		for (int i = 0; i < d.length; i++) {
-			if (Double.isNaN(d[i]))
-				return false;
+			if (Double.isNaN(d[i])) {
+                        return false;
+                    }
 			sum += Math.pow(d[i], 2);
 		}
-		if (Double.isNaN(sum))
-			return false;
-		if (Math.abs(sum) < 0.000000000000000001)
-			return false;
+		if (Double.isNaN(sum)) {
+                return false;
+            }
+		if (Math.abs(sum) < 0.000000000000000001) {
+                return false;
+            }
 		return true;
 	}
 
@@ -505,8 +532,9 @@ public class Mathematics {
 	 */
 	public static double linearInterpolation(double x, double x0, double x1,
 			double f0, double f1) {
-		if (x1 == x0)
-			return f0;
+		if (x1 == x0) {
+                                return f0;
+                            }
 		return lerp(f0, f1, (x - x0) / (x1 - x0));
 	}
 
@@ -563,21 +591,27 @@ public class Mathematics {
 	 */
 	public static double median(double[] x, boolean cloneX) {
 		double[] in;
-		if (cloneX)
-			in = (double[]) x.clone();
-		else
-			in = x;
+		if (cloneX) {
+                in = (double[]) x.clone();
+            }
+		else {
+                in = x;
+            }
 
-		if (in.length == 1)
-			return in[0];
-		else if (in.length == 2)
-			return (in[0] + in[1]) / 2.;
+		if (in.length == 1) {
+                return in[0];
+            }
+		else if (in.length == 2) {
+                return (in[0] + in[1]) / 2.;
+            }
 		else {
 			Arrays.sort(in);
-			if (in.length % 2 != 0)
-				return in[(in.length - 1) / 2];
-			else
-				return (in[in.length / 2] + in[(in.length / 2) + 1]) / 2.;
+			if (in.length % 2 != 0) {
+                        return in[(in.length - 1) / 2];
+                    }
+			else {
+                        return (in[in.length / 2] + in[(in.length / 2) + 1]) / 2.;
+                    }
 		}
 	}
 
@@ -604,8 +638,9 @@ public class Mathematics {
 		// dominance
 
 		int len = dblArrList.size();
-		if (len % 2 != 0)
-			return dblArrList.get((len - 1) / 2);
+		if (len % 2 != 0) {
+                return dblArrList.get((len - 1) / 2);
+            }
 		else {
 			double[] med = dblArrList.get(len / 2).clone();
 			if (interpolate) {
@@ -799,9 +834,10 @@ public class Mathematics {
 	 */
 	public static int projectToRange(double[] x, double[][] range) {
 		int viols = 0;
-		if (x.length > range.length)
-			System.err
-					.println("Invalid vector length, x is longer than range! (Mathematics.projectToRange)");
+		if (x.length > range.length) {
+                System.err
+                                .println("Invalid vector length, x is longer than range! (Mathematics.projectToRange)");
+            }
 		for (int i = 0; i < x.length; i++) {
 			if (x[i] < range[i][0]) {
 				viols++;
@@ -991,8 +1027,9 @@ public class Mathematics {
 			Matrix resVec = rotMatrix.times(new Matrix(x, x.length));
 			x = resVec.getColumnPackedCopy();
 			return x;
-		} else
-			return x;
+		} else {
+                return x;
+            }
 	}
 
 	/**
@@ -1007,10 +1044,12 @@ public class Mathematics {
 			boolean randomize) {
 		for (int i = 0; i < vect.length - 1; i++) {
 			for (int j = i + 1; j < vect.length; j++) {
-				if (randomize)
-					rotate(vect, RNG.randomDouble(-alpha, alpha), i, j);
-				else
-					rotate(vect, alpha, i, j);
+				if (randomize) {
+                                rotate(vect, RNG.randomDouble(-alpha, alpha), i, j);
+                            }
+				else {
+                                rotate(vect, alpha, i, j);
+                            }
 			}
 		}
 	}
@@ -1113,11 +1152,13 @@ public class Mathematics {
 		int i, j, m = 0, n = 0;
 
 		for (i = 0; i < a.length; i++) {
-			if (i == k)
-				continue;
+			if (i == k) {
+                        continue;
+                    }
 			for (j = 0; j < a[0].length; j++) {
-				if (j == l)
-					continue;
+				if (j == l) {
+                                continue;
+                            }
 				b[m][n++] = a[i][j];
 			}
 			m++;
@@ -1430,7 +1471,9 @@ public class Mathematics {
 	 */
 	public static boolean contains(int[] list, int i) {
 		for (int k:list) {
-			if (k==i) return true;
+			if (k==i) {
+                        return true;
+                    }
 		}
 		return false;
 	}

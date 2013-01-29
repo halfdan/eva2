@@ -98,7 +98,9 @@ public abstract class AbstractListSelectionEditor extends JPanel implements Prop
                  this.m_BlackCheck[i].addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent ev) {
-                        if (actionOnSelect()) m_Support.firePropertyChange("AbstractListSelectionEditor", null, this);
+                        if (actionOnSelect()) {
+                            m_Support.firePropertyChange("AbstractListSelectionEditor", null, this);
+                        }
                     }
                 });
                 this.m_NodePanel.add(this.m_BlackCheck[i]);
@@ -125,7 +127,9 @@ public abstract class AbstractListSelectionEditor extends JPanel implements Prop
      */
     @Override
     public void setValue(Object o) {
-    	if (setObject(o)) updateEditor();
+    	if (setObject(o)) {
+            updateEditor();
+        }
     }
 
     /** 
@@ -157,13 +161,17 @@ public abstract class AbstractListSelectionEditor extends JPanel implements Prop
 
     @Override
     public void addPropertyChangeListener(PropertyChangeListener l) {
-        if (m_Support == null) m_Support = new PropertyChangeSupport(this);
+        if (m_Support == null) {
+            m_Support = new PropertyChangeSupport(this);
+        }
         m_Support.addPropertyChangeListener(l);
     }
 
     @Override
     public void removePropertyChangeListener(PropertyChangeListener l) {
-        if (m_Support == null) m_Support = new PropertyChangeSupport(this);
+        if (m_Support == null) {
+            m_Support = new PropertyChangeSupport(this);
+        }
     	m_Support.removePropertyChangeListener(l);
     }
     
@@ -202,7 +210,9 @@ public abstract class AbstractListSelectionEditor extends JPanel implements Prop
     */
     @Override
     public Component getCustomEditor() {
-        if (this.m_CustomEditor == null) this.initCustomEditor();
+        if (this.m_CustomEditor == null) {
+            this.initCustomEditor();
+        }
         return m_CustomEditor;
     }
     

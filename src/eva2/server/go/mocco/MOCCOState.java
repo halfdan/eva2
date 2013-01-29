@@ -118,7 +118,9 @@ public class MOCCOState {
             fitness.add(((AbstractEAIndividual)newPop[newPop.length-1].get(j)).getFitness());
             constraint.add(new Double(((AbstractEAIndividual)newPop[newPop.length-1].get(j)).getConstraintViolation()));
         }
-        if (this.m_ObjectiveCache != null) this.m_ObjectiveCache.add(objectives);
+        if (this.m_ObjectiveCache != null) {
+            this.m_ObjectiveCache.add(objectives);
+        }
         this.m_FitnessCache.add(fitness);
         this.m_ConstraintCache.add(constraint);
     }
@@ -153,7 +155,9 @@ public class MOCCOState {
     public Population getSelectedPopulations() {
         Population result = new Population();
         for (int i = 0; i < this.m_PopulationHistory.length; i++) {
-            if (this.m_Use[i]) result.addPopulation(this.m_PopulationHistory[i]);
+            if (this.m_Use[i]) {
+                result.addPopulation(this.m_PopulationHistory[i]);
+            }
         }
         this.m_CurrentProblem.evaluate(result);
         return result;
@@ -201,8 +205,12 @@ public class MOCCOState {
                 if (tmpObj != null) {
                     double[] tmoF = new double[tmpObj.length];
                     for (int k = 0; k < tmpObj.length; k++) {
-                        if (this.m_PopulationHistory[i].get(j) == null) System.out.println("Individual "+i+" == null!");
-                        if (tmpObj[k] == null) System.out.println("Objective "+k+" == null!");
+                        if (this.m_PopulationHistory[i].get(j) == null) {
+                            System.out.println("Individual "+i+" == null!");
+                        }
+                        if (tmpObj[k] == null) {
+                            System.out.println("Objective "+k+" == null!");
+                        }
                         if (((AbstractEAIndividual)this.m_PopulationHistory[i].get(j)).getData(tmpObj[k].getIdentName()) == null) {
                             System.out.println("User Data "+k+" "+tmpObj[k].getIdentName()+" == null!");
                         }
@@ -213,7 +221,9 @@ public class MOCCOState {
                 fitness.add(((AbstractEAIndividual)this.m_PopulationHistory[i].get(j)).getFitness());
                 constraint.add(new Double(((AbstractEAIndividual)this.m_PopulationHistory[i].get(j)).getConstraintViolation()));
             }
-            if (this.m_ObjectiveCache != null) this.m_ObjectiveCache.add(objectives);
+            if (this.m_ObjectiveCache != null) {
+                this.m_ObjectiveCache.add(objectives);
+            }
             this.m_FitnessCache.add(fitness);
             this.m_ConstraintCache.add(constraint);
         }

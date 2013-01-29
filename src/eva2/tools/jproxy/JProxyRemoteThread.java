@@ -72,8 +72,9 @@ public class JProxyRemoteThread implements InvocationHandler, Serializable {
    *
    */
   private JProxyRemoteThread(Serializable object, String host) throws RMIServerNotAvailableException {
-    if (m_ComAdapter == null)
-      m_ComAdapter = ComAdapter.getInstance();
+    if (m_ComAdapter == null) {
+          m_ComAdapter = ComAdapter.getInstance();
+      }
     m_RMIThreadHandler = m_ComAdapter.getRMIThreadHandler(object, host);
   }
 
@@ -81,8 +82,9 @@ public class JProxyRemoteThread implements InvocationHandler, Serializable {
    *
    */
   private JProxyRemoteThread(Serializable object) throws RMIServerNotAvailableException {
-    if (m_ComAdapter == null)
-      m_ComAdapter = ComAdapter.getInstance();
+    if (m_ComAdapter == null) {
+          m_ComAdapter = ComAdapter.getInstance();
+      }
     m_RMIThreadHandler = m_ComAdapter.getRMIThreadHandler(object);
   }
 

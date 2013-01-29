@@ -159,7 +159,9 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
 		if (m_Listener==ea) {
 			m_Listener=null;
 			return true;
-		} else return false;
+		} else {
+                                return false;
+                            }
 	}
 
 	/**
@@ -187,7 +189,9 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
 			System.err.println("Requiring binary data!");
 		}else{
 			Object dim = BeanInspector.callIfAvailable(problem, "getProblemDimension", null);
-			if (dim==null) System.err.println("Couldnt get problem dimension!");
+			if (dim==null) {
+                        System.err.println("Couldnt get problem dimension!");
+                    }
 			probDim = (Integer)dim;
 			((InterfaceDataTypeBinary)this.template).SetBinaryGenotype(new BitSet(probDim));
 		}
@@ -228,11 +232,17 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
 		int numToInit = this.poolSize - pop.size();
 		if (numToInit>0) {
 			pop.addAll(generateG1((int)(numToInit * this.g1)));
-			if (TRACE) System.out.println("s1: " + pop.size());
+			if (TRACE) {
+                        System.out.println("s1: " + pop.size());
+                    }
 			generateG2(pop, (int)(numToInit * this.g2));
-			if (TRACE) System.out.println("s2: " + pop.size());
+			if (TRACE) {
+                        System.out.println("s2: " + pop.size());
+                    }
 			generateG3(pop, poolSize-pop.size());
-			if (TRACE) System.out.println("s3: " + pop.size());
+			if (TRACE) {
+                        System.out.println("s3: " + pop.size());
+                    }
 		}
 		return pop;
 	}
@@ -381,8 +391,12 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
 	}
 
 	private static BitSet getBinaryData(AbstractEAIndividual indy) {
-		if (indy instanceof InterfaceGAIndividual) return ((InterfaceGAIndividual)indy).getBGenotype();
-		else if (indy instanceof InterfaceDataTypeBinary) return ((InterfaceDataTypeBinary)indy).getBinaryData();
+		if (indy instanceof InterfaceGAIndividual) {
+                return ((InterfaceGAIndividual)indy).getBGenotype();
+            }
+		else if (indy instanceof InterfaceDataTypeBinary) {
+                return ((InterfaceDataTypeBinary)indy).getBinaryData();
+            }
 		else {
 			throw new RuntimeException("Unable to get binary representation for " + indy.getClass());
 		}
@@ -764,7 +778,9 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
 	}
 
 	protected void firePropertyChangedEvent (String name) {
-		if (this.m_Listener != null) this.m_Listener.registerPopulationStateChanged(this, name);
+		if (this.m_Listener != null) {
+                this.m_Listener.registerPopulationStateChanged(this, name);
+            }
 	}
 
     @Override

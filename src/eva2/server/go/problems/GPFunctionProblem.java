@@ -112,14 +112,18 @@ public class GPFunctionProblem extends AbstractProblemDouble implements Interfac
 	 * @return
 	 */
 	public double scaleFit(double v) {
-		if (scalingLimit==0.) return v;
+		if (scalingLimit==0.) {
+                return v;
+            }
 		else {
 			double aV = Math.abs(v);
 			if (aV > scalingStart) {
 				double logVal=Math.log(aV)/Math.log(scalingStart);
 				double tmp=1./(logVal);
 				return (scalingLimit - tmp)*Math.signum(v);
-			} else return v;
+			} else {
+                        return v;
+                    }
 		}
 	}
 

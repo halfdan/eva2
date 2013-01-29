@@ -61,13 +61,18 @@ public class PropertyMutationMixerEditor extends JPanel implements PropertyEdito
             try {
                 this.m_Editors[i].m_Value      = list[i];
                 this.m_Editors[i].m_Editor     = PropertyEditorProvider.findEditor(this.m_Editors[i].m_Value.getClass());
-                if (this.m_Editors[i].m_Editor == null) this.m_Editors[i].m_Editor = PropertyEditorProvider.findEditor(InterfaceMutation.class);
-                if (this.m_Editors[i].m_Editor instanceof GenericObjectEditor)
+                if (this.m_Editors[i].m_Editor == null) {
+                    this.m_Editors[i].m_Editor = PropertyEditorProvider.findEditor(InterfaceMutation.class);
+                }
+                if (this.m_Editors[i].m_Editor instanceof GenericObjectEditor) {
                     ((GenericObjectEditor) this.m_Editors[i].m_Editor).setClassType(InterfaceMutation.class);
+                }
                 this.m_Editors[i].m_Editor.setValue(this.m_Editors[i].m_Value);
                 this.m_Editors[i].m_Editor.addPropertyChangeListener(this);
                 AbstractObjectEditor.findViewFor(this.m_Editors[i]);
-                if (this.m_Editors[i].m_View != null) this.m_Editors[i].m_View.repaint();
+                if (this.m_Editors[i].m_View != null) {
+                    this.m_Editors[i].m_View.repaint();
+                }
             } catch (Exception e) {
                 System.out.println("Darn can't read the value...");
             }
@@ -220,13 +225,18 @@ public class PropertyMutationMixerEditor extends JPanel implements PropertyEdito
             try {
                 newEdit[l].m_Value      = list[l];
                 newEdit[l].m_Editor     = PropertyEditorProvider.findEditor(newEdit[l].m_Value.getClass());
-                if (newEdit[l].m_Editor == null) newEdit[l].m_Editor = PropertyEditorProvider.findEditor(InterfaceMutation.class);
-                if (newEdit[l].m_Editor instanceof GenericObjectEditor)
+                if (newEdit[l].m_Editor == null) {
+                    newEdit[l].m_Editor = PropertyEditorProvider.findEditor(InterfaceMutation.class);
+                }
+                if (newEdit[l].m_Editor instanceof GenericObjectEditor) {
                     ((GenericObjectEditor) newEdit[l].m_Editor).setClassType(InterfaceMutation.class);
+                }
                 newEdit[l].m_Editor.setValue(newEdit[l].m_Value);
                 newEdit[l].m_Editor.addPropertyChangeListener(m_self);
                 AbstractObjectEditor.findViewFor(newEdit[l]);
-                if (newEdit[l].m_View != null) newEdit[l].m_View.repaint();
+                if (newEdit[l].m_View != null) {
+                    newEdit[l].m_View.repaint();
+                }
             } catch (Exception e) {
                 System.out.println("Darn can't read the value...");
             }
@@ -243,7 +253,9 @@ public class PropertyMutationMixerEditor extends JPanel implements PropertyEdito
             int l = m_MutatorsWithWeights.getSelectedMutators().length, j = 0;
             GeneralGOEProperty[] newEdit = new GeneralGOEProperty[l-1];
             for (int i = 0; i < m_Delete.length; i++) {
-                if (event.getSource().equals(m_Delete[i])) m_MutatorsWithWeights.removeMutator(i);
+                if (event.getSource().equals(m_Delete[i])) {
+                    m_MutatorsWithWeights.removeMutator(i);
+                }
                 else {
                     newEdit[j] = m_Editors[i];
                     j++;
@@ -442,13 +454,18 @@ public class PropertyMutationMixerEditor extends JPanel implements PropertyEdito
                 try {
                     this.m_Editors[i].m_Value      = list[i];
                     this.m_Editors[i].m_Editor     = PropertyEditorProvider.findEditor(this.m_Editors[i].m_Value.getClass());
-                    if (this.m_Editors[i].m_Editor == null) this.m_Editors[i].m_Editor = PropertyEditorProvider.findEditor(InterfaceMutation.class);
-                    if (this.m_Editors[i].m_Editor instanceof GenericObjectEditor)
+                    if (this.m_Editors[i].m_Editor == null) {
+                        this.m_Editors[i].m_Editor = PropertyEditorProvider.findEditor(InterfaceMutation.class);
+                    }
+                    if (this.m_Editors[i].m_Editor instanceof GenericObjectEditor) {
                         ((GenericObjectEditor) this.m_Editors[i].m_Editor).setClassType(InterfaceMutation.class);
+                    }
                     this.m_Editors[i].m_Editor.setValue(this.m_Editors[i].m_Value);
                     this.m_Editors[i].m_Editor.addPropertyChangeListener(this);
                     AbstractObjectEditor.findViewFor(this.m_Editors[i]);
-                    if (this.m_Editors[i].m_View != null) this.m_Editors[i].m_View.repaint();
+                    if (this.m_Editors[i].m_View != null) {
+                        this.m_Editors[i].m_View.repaint();
+                    }
                 } catch (Exception e) {
                     System.out.println("Darn can't read the value...");
                 }

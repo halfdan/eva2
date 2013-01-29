@@ -41,7 +41,9 @@ public class DContainer extends DComponent implements DParent{
     @Override
   public void repaint( DRectangle r ){
     DParent parent = getDParent();
-    if( parent != null ) parent.repaint( r );
+    if( parent != null ) {
+          parent.repaint( r );
+      }
   }
 
   /**
@@ -68,18 +70,27 @@ public class DContainer extends DComponent implements DParent{
    * @param e   the new DElement to add
    */
   public void addDElement( String key, DElement e ){
-    if( elements.contains( e ) ) return;
+    if( elements.contains( e ) ) {
+          return;
+      }
     if( e instanceof DParent ){
       DParent he = (DParent)e, me = (DParent)this;
-      if( he == me ) throw new
-        IllegalArgumentException("Adding DParent to itself");
+      if( he == me ) {
+            throw new
+IllegalArgumentException("Adding DParent to itself");
+        }
       me = getDParent();
       while( me != null ){
-        if( he == me )throw new
-          IllegalArgumentException("Adding DContainer's parent to itself");
-        if( me instanceof DElement )
-          me = ((DElement)me).getDParent();
-        else me = null;
+        if( he == me ) {
+              throw new
+  IllegalArgumentException("Adding DContainer's parent to itself");
+          }
+        if( me instanceof DElement ) {
+              me = ((DElement)me).getDParent();
+          }
+        else {
+              me = null;
+          }
       }
     }
     elements.add( e );
@@ -88,7 +99,9 @@ public class DContainer extends DComponent implements DParent{
     e.setDParent( this );
     DRectangle r = e.getRectangle();
     rectangle.insert( r );
-    if( e.isVisible() ) repaint( r );
+    if( e.isVisible() ) {
+          repaint( r );
+      }
   }
 
   /**
@@ -144,7 +157,9 @@ public class DContainer extends DComponent implements DParent{
   public DElement getDElement( String key ){
     int index = -1;
     for( int i=0; index == -1 && i < keys.size(); i++ ) {
-          if( ((String)keys.get(i)).equals( key ) ) index = i;
+          if( ((String)keys.get(i)).equals( key ) ) {
+            index = i;
+        }
       }
     return (index<keys.size())? (DElement)elements.get(index):(DElement)null;
   }
@@ -200,7 +215,9 @@ public class DContainer extends DComponent implements DParent{
    */
     @Override
   public void addDBorder(DBorder b){
-    if( getDBorder().insert(b) && parent != null ) parent.addDBorder(b);
+    if( getDBorder().insert(b) && parent != null ) {
+          parent.addDBorder(b);
+      }
   }
 
     @Override

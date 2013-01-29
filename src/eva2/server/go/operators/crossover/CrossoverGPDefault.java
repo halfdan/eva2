@@ -48,17 +48,22 @@ public class CrossoverGPDefault implements InterfaceCrossover, java.io.Serializa
      */
     @Override
     public AbstractEAIndividual[] mate(AbstractEAIndividual indy1, Population partners) {
-    	if (partners.size()>1) System.err.println("Warning, crossover may not work on more than one partner! " + this.getClass());
+    	if (partners.size()>1) {
+            System.err.println("Warning, crossover may not work on more than one partner! " + this.getClass());
+        }
         AbstractEAIndividual[] result = null;
         result = new AbstractEAIndividual[partners.size()+1];
         result[0] = (AbstractEAIndividual) (indy1).clone();
         for (int i = 0; i < partners.size(); i++) {
             result[i+1] = (AbstractEAIndividual) ((AbstractEAIndividual)partners.get(i)).clone();
         }
-        if (TRACE) for (int i = 0; i < result.length; i++) {
-            System.out.println("Before Crossover: " +result[i].getStringRepresentation());
+        if (TRACE) {
+            for (int i = 0; i < result.length; i++) {
+     System.out.println("Before Crossover: " +result[i].getStringRepresentation());
+ }      }
+        if (partners.size() == 0) {
+            return result;
         }
-        if (partners.size() == 0) return result;
         if ((indy1 instanceof InterfaceGPIndividual) && (partners.get(0) instanceof InterfaceGPIndividual)) {
         	int allowedDepth = ((InterfaceGPIndividual)indy1).getMaxAllowedDepth();
         	
@@ -72,8 +77,12 @@ public class CrossoverGPDefault implements InterfaceCrossover, java.io.Serializa
                 		// if the echange would violate the depth restriction, choose new nodes for a few times...
                 		while (maxTries>=0 && ((selNodeOther.getSubtreeDepth()+selNodeThis.getDepth()>allowedDepth) || 
                 				(selNodeThis.getSubtreeDepth()+selNodeOther.getDepth()>allowedDepth))) {
-                            if (RNG.flipCoin(0.5)) selNodeThis  = ((InterfaceGPIndividual)result[0]).getPGenotype()[t].getRandomNode();
-                            else selNodeOther = ((InterfaceGPIndividual)result[1]).getPGenotype()[t].getRandomNode();
+                            if (RNG.flipCoin(0.5)) {
+                                                        selNodeThis  = ((InterfaceGPIndividual)result[0]).getPGenotype()[t].getRandomNode();
+                                                    }
+                            else {
+                                                        selNodeOther = ((InterfaceGPIndividual)result[1]).getPGenotype()[t].getRandomNode();
+                                                    }
                             maxTries--;
                 		}
                 	if (maxTries<0) { // on a failure, at least exchange two leaves, which always works
@@ -92,11 +101,19 @@ public class CrossoverGPDefault implements InterfaceCrossover, java.io.Serializa
                 selNodeOtherParent = selNodeOther.getParent();
                 
                 // actually switch individuals!
-                if (selNodeThisParent == null) ((InterfaceGPIndividual)result[0]).SetPGenotype((AbstractGPNode)selNodeOther.clone(), t);
-                else selNodeThisParent.setNode((AbstractGPNode)selNodeOther.clone(), selNodeThis);
+                if (selNodeThisParent == null) {
+                    ((InterfaceGPIndividual)result[0]).SetPGenotype((AbstractGPNode)selNodeOther.clone(), t);
+                }
+                else {
+                    selNodeThisParent.setNode((AbstractGPNode)selNodeOther.clone(), selNodeThis);
+                }
 //                for (int i = 0; i < result.length; i++) System.out.println("-- Betw Crossover: " +result[i].getStringRepresentation());
-                if (selNodeOtherParent == null) ((InterfaceGPIndividual)result[1]).SetPGenotype((AbstractGPNode)selNodeThis.clone(), t);
-                else selNodeOtherParent.setNode((AbstractGPNode)selNodeThis.clone(), selNodeOther);
+                if (selNodeOtherParent == null) {
+                    ((InterfaceGPIndividual)result[1]).SetPGenotype((AbstractGPNode)selNodeThis.clone(), t);
+                }
+                else {
+                    selNodeOtherParent.setNode((AbstractGPNode)selNodeThis.clone(), selNodeOther);
+                }
 
             }
         }
@@ -105,9 +122,10 @@ public class CrossoverGPDefault implements InterfaceCrossover, java.io.Serializa
         	((GPIndividualProgramData)result[i]).checkDepth();
         	result[i].getMutationOperator().crossoverOnStrategyParameters(indy1, partners);
         }
-        if (TRACE) for (int i = 0; i < result.length; i++) {
-            System.out.println("After Crossover: " +result[i].getStringRepresentation());
-        }
+        if (TRACE) {
+            for (int i = 0; i < result.length; i++) {
+     System.out.println("After Crossover: " +result[i].getStringRepresentation());
+ }      }
         return result;
     }
 
@@ -117,8 +135,12 @@ public class CrossoverGPDefault implements InterfaceCrossover, java.io.Serializa
      */
     @Override
     public boolean equals(Object crossover) {
-        if (crossover instanceof CrossoverGPDefault) return true;
-        else return false;
+        if (crossover instanceof CrossoverGPDefault) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     /** This method will allow the crossover operator to be initialized depending on the

@@ -169,7 +169,9 @@ public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Ser
           double[] oldchange = null;
 
           double[] gradient = ((InterfaceFirstOrderDerivableProblem) m_Problem).getFirstOrderGradients(params);
-          if (TRACE) System.out.println("GDA: " + BeanInspector.toString(params) + ", grad: " + BeanInspector.toString(gradient));
+          if (TRACE) {
+                System.out.println("GDA: " + BeanInspector.toString(params) + ", grad: " + BeanInspector.toString(gradient));
+            }
           if ((oldgradient != null) && (wstepsize != null)) { // LOCAL adaption
             for (int li = 0; li < wstepsize.length; li++) {
               double prod = gradient[li] * oldgradient[li];
@@ -196,16 +198,26 @@ public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Ser
           for (int j = 0; j < newparams.length; j++) {
             if (lock[j] == 0) {
               double tempstepsize = 1;
-              if (this.localStepSizeAdaption) tempstepsize *= wstepsize[j];
-              if (this.globalStepSizeAdaption) tempstepsize *= indystepsize;
+              if (this.localStepSizeAdaption) {
+                    tempstepsize *= wstepsize[j];
+                }
+              if (this.globalStepSizeAdaption) {
+                    tempstepsize *= indystepsize;
+                }
               double wchange = signum(tempstepsize * gradient[j]) * Math.min(maximumabsolutechange,Math.abs(tempstepsize * gradient[j])); //indystepsize * gradient[j];
-              if (this.manhattan) wchange = this.signum(wchange) * tempstepsize;
+              if (this.manhattan) {
+                    wchange = this.signum(wchange) * tempstepsize;
+                }
               if (dograddesc)  {
                   wchange += this.momentumweigth * oldchange[j];
               }
               newparams[j] = params[j] - wchange;
-              if (newparams[j] < range[j][0]) newparams[j] = range[j][0];
-              if (newparams[j] > range[j][1]) newparams[j] = range[j][1];
+              if (newparams[j] < range[j][0]) {
+                    newparams[j] = range[j][0];
+                }
+              if (newparams[j] > range[j][1]) {
+                    newparams[j] = range[j][1];
+                }
 //              for (int g = 0; g < newparams.length; g++) {
 //                System.out.println("Param " + g +": " + newparams[g]);
 //              }
@@ -244,7 +256,9 @@ public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Ser
         indy = ((AbstractEAIndividual)this.m_Population.get(i));
 //        Hashtable history = (Hashtable) indyhash.get(indy);
         if (indy.getFitness()[0] > recoverythreshold) {
-          if (TRACE) System.out.println("Gradient Descent: Fitness critical:" + indy.getFitness()[0]);
+          if (TRACE) {
+                System.out.println("Gradient Descent: Fitness critical:" + indy.getFitness()[0]);
+            }
           ((InterfaceDataTypeDouble) indy).SetDoublePhenotype((double[]) indy.getData(oldParamsKey));
           double[] changes = (double[]) indy.getData(changesKey);
           int[] lock = (int[]) indy.getData(lockKey);
@@ -301,7 +315,9 @@ public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Ser
   private double momentumweigth = 0.1;
 
   protected void firePropertyChangedEvent(String name) {
-    if (this.m_Listener != null)this.m_Listener.registerPopulationStateChanged(this, name);
+    if (this.m_Listener != null) {
+          this.m_Listener.registerPopulationStateChanged(this, name);
+      }
   }
 
     @Override
@@ -364,7 +380,9 @@ public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Ser
 	  if (m_Listener==ea) {
 		  m_Listener=null;
 		  return true;
-	  } else return false;
+	  } else {
+                          return false;
+                      }
   }
   public static void main(String[] args) {
     GradientDescentAlgorithm program = new GradientDescentAlgorithm();
@@ -393,7 +411,9 @@ public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Ser
   }
   public void setAdaptStepSizeGlobally(boolean globalstepsizeadaption) {
     this.globalStepSizeAdaption = globalstepsizeadaption;
-    if (globalstepsizeadaption && localStepSizeAdaption) setAdaptStepSizeLocally(false);
+    if (globalstepsizeadaption && localStepSizeAdaption) {
+          setAdaptStepSizeLocally(false);
+      }
   }
   public String adaptStepSizeGloballyTipText() {
 	  return "Use a single step size per individual - (priority over local step size).";
@@ -435,7 +455,9 @@ public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Ser
   }
   public void setAdaptStepSizeLocally(boolean stepsizeadaption) {
 	  this.localStepSizeAdaption = stepsizeadaption;
-	  if (globalStepSizeAdaption && localStepSizeAdaption) setAdaptStepSizeGlobally(false);
+	  if (globalStepSizeAdaption && localStepSizeAdaption) {
+          setAdaptStepSizeGlobally(false);
+      }
   }
   public String adaptStepSizeLocallyTipText() {
 	  return "Use a step size parameter in any dimension.";

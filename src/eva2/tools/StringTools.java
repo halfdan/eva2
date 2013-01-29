@@ -64,8 +64,12 @@ public final class StringTools {
 	 * @return
 	 */
 	public static String expandPrefixZeros(int index, int maxSize) {
-		if (maxSize<10) return ""+index;
-		else if (maxSize<100) return ((index<10) ? "0" : "")+index;
+		if (maxSize<10) {
+                return ""+index;
+            }
+		else if (maxSize<100) {
+                return ((index<10) ? "0" : "")+index;
+            }
 		else {
 			int lenZeros = (int)Math.log10(maxSize)-(int)Math.log10(index);
 			char[] zerArr = new char[lenZeros];
@@ -87,9 +91,13 @@ public final class StringTools {
     public static int searchStringArray(String[] arr, String key, int startIndex, boolean ignoreCase) {
     	for (int i=startIndex; i<arr.length; i++) {
     		if (ignoreCase) {
-    			if (arr[i].equalsIgnoreCase(key)) return i;
+    			if (arr[i].equalsIgnoreCase(key)) {
+                        return i;
+                    }
     		} else {
-    			if (arr[i].equals(key)) return i;
+    			if (arr[i].equals(key)) {
+                        return i;
+                    }
     		}
     	}
     	return -1;
@@ -123,11 +131,15 @@ public final class StringTools {
     	for (int i=0; i<args.length; i++) { // loop all arguments
     		boolean found=false;
     		for (int k=0; k<keys.length; k++) { // loop all keys
-    			if (found || (i>=args.length)) break; // if a key was found look at next argument
+    			if (found || (i>=args.length)) {
+                        break;
+                    } // if a key was found look at next argument
 	    		if ((ignoreCase && (args[i].equalsIgnoreCase(keys[k]))) 
 	    				|| (!ignoreCase && (args[i].equals(keys[k])))) { // if the key was found
 	    			found=true;
-	    			if (arities[k]==0) values[k]=new String("true"); // and its zero-arity, just return true as its value
+	    			if (arities[k]==0) {
+                                                values[k]=new String("true");
+                                            } // and its zero-arity, just return true as its value
 	    			else { // else return an array of size arity with following strings
 	    				try {
 	    				if (arities[k]==1) {
@@ -150,7 +162,9 @@ public final class StringTools {
 	    			}
 	    		}
     		}
-    		if (!found) unrecogs.add(i);
+    		if (!found) {
+                unrecogs.add(i);
+            }
     	}
     	return unrecogs.toArray(new Integer[unrecogs.size()]);
     }
@@ -193,9 +207,13 @@ public final class StringTools {
 	 * @return
 	 */
 	public static String checkSingleStringArg(String key, Object object, int i) {
-		if (object==null) return null;
+		if (object==null) {
+                return null;
+            }
 		if (object instanceof String) {
-			if (i==0) return (String)object;
+			if (i==0) {
+                        return (String)object;
+                    }
 			else {
 				System.err.println("Invalid argument; cannot access element " + i + " for " + key + " as only one was given.");
 				return null;
@@ -203,7 +221,9 @@ public final class StringTools {
 		}
 		if (object instanceof String[]) {
 			String[] arr = (String[])object;
-			if (i<arr.length) return arr[i];
+			if (i<arr.length) {
+                        return arr[i];
+                    }
 			else {
 				System.err.println("Not enough arguments for " + key);
 				return null;
@@ -243,9 +263,13 @@ public final class StringTools {
 				nextBreak = rest.length()-1;
 			} else {
 				nextBreak = getNextBreak(minLen, maxLen, breakChars, rest); // search for a break character in a certain interval
-				if (nextBreak<0) nextBreak = len; // if none found force the break at the intended length
+				if (nextBreak<0) {
+                                nextBreak = len;
+                            } // if none found force the break at the intended length
 			}
-			if (res.length()>0) res.append("\n"); // insert newline
+			if (res.length()>0) {
+                        res.append("\n");
+                    } // insert newline
 			res.append(rest.substring(0, nextBreak+1));
 			rest = rest.substring(nextBreak+1);
 		}
@@ -257,7 +281,9 @@ public final class StringTools {
 		for (int i=0; i<brkChars.length; i++) {
 			//indices[i] = str.indexOf(""+brkChars[i], startIndex);
 			index =str.indexOf(""+brkChars[i], startIndex);
-			if (index>=0 && (index <= endIndex)) return index;
+			if (index>=0 && (index <= endIndex)) {
+                        return index;
+                    }
 		}
 		return -1;
 	}

@@ -68,7 +68,9 @@ public class CrossoverESNPointDiscrete implements InterfaceCrossover, java.io.Se
             }
             for (int i = 0; i < length; i++) {
                 for (int j = 0; j < this.m_NumberOfCrossovers; j++) {
-                    if (i == crossoverPoints[j]) mixer++;
+                    if (i == crossoverPoints[j]) {
+                        mixer++;
+                    }
                 }
                 for (int j = 0; j < children.length; j++) {
                         children[j][i] = parents[(j + mixer) % parents.length][i];
@@ -96,10 +98,14 @@ public class CrossoverESNPointDiscrete implements InterfaceCrossover, java.io.Se
     public boolean equals(Object crossover) {
         if (crossover instanceof CrossoverESNPointDiscrete) {
             CrossoverESNPointDiscrete cross = (CrossoverESNPointDiscrete)crossover;
-            if (this.m_NumberOfCrossovers != cross.m_NumberOfCrossovers) return false;
+            if (this.m_NumberOfCrossovers != cross.m_NumberOfCrossovers) {
+                return false;
+            }
             return true;
         }
-        else return false;
+        else {
+            return false;
+        }
     }
 
     /** This method will allow the crossover operator to be initialized depending on the
@@ -141,7 +147,9 @@ public class CrossoverESNPointDiscrete implements InterfaceCrossover, java.io.Se
      * @param crossovers   The number of crossovers.
      */
     public void setNumberOfCrossovers(int crossovers) {
-        if (crossovers < 0) crossovers = 0;
+        if (crossovers < 0) {
+            crossovers = 0;
+        }
         this.m_NumberOfCrossovers = crossovers;
     }
     public int getNumberOfCrossovers() {

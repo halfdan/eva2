@@ -119,24 +119,28 @@ public class MemeticAlgorithm implements InterfaceOptimizer,
     @Override
 	public void optimize() {
 
-		if (TRACE) System.out.println("global search");
+		if (TRACE) {
+                System.out.println("global search");
+            }
 		this.m_GlobalOptimizer.optimize();
 
 		if ((globalSearchIterations>0) && (((this.m_GlobalOptimizer.getPopulation().getGeneration() % this.globalSearchIterations) == 0))
 		    && (this.localSearchSteps > 0)
 		    && (this.m_Problem instanceof InterfaceLocalSearchable)) {
 			// here the local search is performed
-			if (TRACE)
-			  System.out.println("Performing local search on " + subsetsize
-			      + " individuals.");
+			if (TRACE) {
+                            System.out.println("Performing local search on " + subsetsize
+                                + " individuals.");
+                        }
 			Population gop = this.m_GlobalOptimizer.getPopulation();
 			Population subset = selectorPlug.selectFrom(gop, subsetsize);
 			Population subsetclone = new Population();
 			for (int i = 0; i < subset.size(); i++) {
 				subsetclone.add(((AbstractEAIndividual) subset.get(i)).clone());
 			}
-			if (subset.size() != subsetsize)
-			  System.err.println("ALERT! identical individual instances in subset");
+			if (subset.size() != subsetsize) {
+                            System.err.println("ALERT! identical individual instances in subset");
+                        }
 			Hashtable antilamarckismcache = new Hashtable();
 			if (!this.lamarckism) {
 				for (int i = 0; i < subset.size(); i++) {
@@ -184,15 +188,17 @@ public class MemeticAlgorithm implements InterfaceOptimizer,
 			gop.SetFunctionCalls(gop.getFunctionCalls()
 			    + (int) Math.round(localSearchSteps * cost * subset.size()));
 
-			if (TRACE)
-			  System.out.println("Population size after local search:" + gop.size());
+			if (TRACE) {
+                            System.out.println("Population size after local search:" + gop.size());
+                        }
 
 			this.setPopulation(gop);
 		}
 
-		if (TRACE)
-		  System.out.println("function calls"
-		      + this.m_GlobalOptimizer.getPopulation().getFunctionCalls());
+		if (TRACE) {
+                System.out.println("function calls"
+                    + this.m_GlobalOptimizer.getPopulation().getFunctionCalls());
+            }
 		this.firePropertyChangedEvent(Population.nextGenerationPerformed);
 	}
 
@@ -212,14 +218,18 @@ public class MemeticAlgorithm implements InterfaceOptimizer,
 		if (m_Listener==ea) {
 			m_Listener=null;
 			return true;
-		} else return false;
+		} else {
+                                return false;
+                            }
 	}
 	/**
 	 * Something has changed
 	 */
 	protected void firePropertyChangedEvent(String name) {
 		if (this.m_Listener != null) {
-			if (TRACE) System.out.println("firePropertyChangedEvent MA");
+			if (TRACE) {
+                        System.out.println("firePropertyChangedEvent MA");
+                    }
 			this.m_Listener.registerPopulationStateChanged(this, name);
 		}
 	}

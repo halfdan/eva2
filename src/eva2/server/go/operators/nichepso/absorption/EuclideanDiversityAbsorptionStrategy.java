@@ -58,7 +58,9 @@ public class EuclideanDiversityAbsorptionStrategy extends StandardAbsorptionStra
 		double meanDistanceFromGBestPos = subswarm.getEuclideanDiversity();
 		if (meanDistanceFromGBestPos < getEpsilon()){
 			return true;
-		} else return false;
+		} else {
+                return false;
+            }
 	}
 
 /**********************************************************************************************************************

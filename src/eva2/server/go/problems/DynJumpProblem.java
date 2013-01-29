@@ -54,7 +54,9 @@ public class DynJumpProblem extends AbstractDynTransProblem {
 		super.changeProblemAt(problemTime);
 		makeTranslation();
 		/* prooving results */
-		if (TRACE) writeFile();
+		if (TRACE) {
+                writeFile();
+            }
 		++changeCounter;
 	}
 	
@@ -233,8 +235,9 @@ public class DynJumpProblem extends AbstractDynTransProblem {
 			} 
 			catch ( IOException e ) { } 
 			finally { 
-				if ( fw != null ) 
-					try { fw.flush(); } catch ( IOException e ) { } 
+				if ( fw != null ) {
+                                try { fw.flush(); } catch ( IOException e ) { }
+                            } 
 			}
 		}
 	}
@@ -242,8 +245,9 @@ public class DynJumpProblem extends AbstractDynTransProblem {
 	public String myPrints(double[][] toPrint) {
 		for (int i = 0; i < toPrint.length; i ++){
 			for (int j = 0; j < toPrint[i].length; ++j){
-				if (j != getProblemDimension())
-					s += toPrint[i][j] + "\t";
+				if (j != getProblemDimension()) {
+                                s += toPrint[i][j] + "\t";
+                            }
 			}
 			s += "\n";
 		}

@@ -83,7 +83,9 @@ public class GAStandardCodingDouble implements InterfaceGADoubleCoding, java.io.
     	
         for (int i=1+locus[0]; i<locus[0]+locus[1]; i++) {
     		val *= 2.;
-    		if (refBitSet.get(i)) val+=1.;
+    		if (refBitSet.get(i)) {
+                val+=1.;
+            }
     	}
 
     	return range[0]+((range[1]-range[0])*val)/lastMaxVal;
@@ -134,8 +136,12 @@ public class GAStandardCodingDouble implements InterfaceGADoubleCoding, java.io.
         //System.out.print("FLOAT Value coded : " + value + " " + this.printBitSet(tmpBitSet, m_length));
         //System.out.println(tmpV + "/" + m_max + "*(" + u_max + "-" + u_min + ")+" + u_min +"\n");
         for (int i = 0; i < m_length; i++) {
-            if (tmpBitSet.get(i)) refBitSet.set(m_start + m_length - 1 - i);
-            else refBitSet.clear(m_start + m_length - 1 - i);
+            if (tmpBitSet.get(i)) {
+                refBitSet.set(m_start + m_length - 1 - i);
+            }
+            else {
+                refBitSet.clear(m_start + m_length - 1 - i);
+            }
         }
     }
 
@@ -157,8 +163,12 @@ public class GAStandardCodingDouble implements InterfaceGADoubleCoding, java.io.
         range[0]          = -110;
         range[1]          = 1000;
         for (int i = 0; i < test.length(); i++) {
-            if (test.charAt(i) == '1') tmpBitSet.set(i);
-            else tmpBitSet.clear(i);
+            if (test.charAt(i) == '1') {
+                tmpBitSet.set(i);
+            }
+            else {
+                tmpBitSet.clear(i);
+            }
         }
 //        value = t.decodeValue(tmpBitSet, range, locus, false);
 //        System.out.println("Value: " + value);
@@ -195,8 +205,12 @@ public class GAStandardCodingDouble implements InterfaceGADoubleCoding, java.io.
         String  output = "{";
 
         for (int i = 0; i < length; i++) {
-            if (b.get(i)) output += "1";
-            else output += "0";
+            if (b.get(i)) {
+                output += "1";
+            }
+            else {
+                output += "0";
+            }
         }
         output += "}\n";
         return output;

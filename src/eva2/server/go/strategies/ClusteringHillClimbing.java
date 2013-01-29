@@ -128,7 +128,9 @@ InterfaceOptimizer, Serializable, InterfaceAdditionalPopulationInformer {
 		if (m_Listener==ea) {
 			m_Listener=null;
 			return true;
-		} else return false;
+		} else {
+                                return false;
+                            }
 	}
     @Override
     public void init() {
@@ -162,7 +164,9 @@ InterfaceOptimizer, Serializable, InterfaceAdditionalPopulationInformer {
     /** Something has changed
      */
     protected void firePropertyChangedEvent (String name) {
-        if (this.m_Listener != null) this.m_Listener.registerPopulationStateChanged(this, name);
+        if (this.m_Listener != null) {
+            this.m_Listener.registerPopulationStateChanged(this, name);
+        }
     }
     
     @Override
@@ -175,10 +179,16 @@ InterfaceOptimizer, Serializable, InterfaceAdditionalPopulationInformer {
 		Pair<Population, Double> popD;
 		int funCallsBefore=m_Population.getFunctionCalls();
 		int evalsNow, lastOverhead = (m_Population.getFunctionCalls() % hcEvalCycle); 
-		if (lastOverhead>0) evalsNow = (2*hcEvalCycle - (m_Population.getFunctionCalls() % hcEvalCycle));
-		else evalsNow = hcEvalCycle;
+		if (lastOverhead>0) {
+                evalsNow = (2*hcEvalCycle - (m_Population.getFunctionCalls() % hcEvalCycle));
+            }
+		else {
+                evalsNow = hcEvalCycle;
+            }
 		do {
-			if (TRACE) System.out.println("evalCycle: " + hcEvalCycle + ", evals now: " + evalsNow);
+			if (TRACE) {
+                        System.out.println("evalCycle: " + hcEvalCycle + ", evals now: " + evalsNow);
+                    }
 			popD = PostProcess.clusterLocalSearch(localSearchMethod, m_Population, (AbstractOptimizationProblem)m_Problem, sigmaClust, evalsNow, 0.5, mutator);
 			//		(m_Population, (AbstractOptimizationProblem)m_Problem, sigmaClust, hcEvalCycle - (m_Population.getFunctionCalls() % hcEvalCycle), 0.5);
 			if (popD.head().getFunctionCalls()==funCallsBefore) {
@@ -188,17 +198,25 @@ InterfaceOptimizer, Serializable, InterfaceAdditionalPopulationInformer {
 		} while (popD.head().getFunctionCalls()==funCallsBefore);
 		improvement = popD.tail();
 		m_Population = popD.head();
-		if (TRACE) System.out.println("num inds after clusterLS: " + m_Population.size());
+		if (TRACE) {
+                System.out.println("num inds after clusterLS: " + m_Population.size());
+            }
 
 		popD.head().setGenerationTo(m_Population.getGeneration()+1);
 		
 		if (doReinitialization  && (improvement < minImprovement)) {
-			if (TRACE) System.out.println("improvement below " + minImprovement);
+			if (TRACE) {
+                        System.out.println("improvement below " + minImprovement);
+                    }
 			if ((localSearchMethod != PostProcessMethod.hillClimber) || (mutator.getSigma() < stepSizeThreshold)) { // reinit!
 				// is performed for nm and cma, and if hc has too low sigma
-				if (TRACE) System.out.println("REINIT!!");
+				if (TRACE) {
+                                System.out.println("REINIT!!");
+                            }
 		        
-				if (localSearchMethod == PostProcessMethod.hillClimber) mutator.setSigma(initialStepSize);
+				if (localSearchMethod == PostProcessMethod.hillClimber) {
+                                mutator.setSigma(initialStepSize);
+                            }
 				
 				// store results
 				archive.SetFunctionCalls(m_Population.getFunctionCalls());
@@ -218,9 +236,13 @@ InterfaceOptimizer, Serializable, InterfaceAdditionalPopulationInformer {
 				m_Population.incrFunctionCallsBy(tmpPop.size());
 		
 			} else  {  // decrease step size for hc
-				if (localSearchMethod != PostProcessMethod.hillClimber) System.err.println("Invalid case in ClusteringHillClimbing!");
+				if (localSearchMethod != PostProcessMethod.hillClimber) {
+                                System.err.println("Invalid case in ClusteringHillClimbing!");
+                            }
 				mutator.setSigma(mutator.getSigma()*reduceFactor);
-				if (TRACE) System.out.println("mutation stepsize reduced to " + mutator.getSigma());
+				if (TRACE) {
+                                System.out.println("mutation stepsize reduced to " + mutator.getSigma());
+                            }
 			}
 		}
 //		System.out.println("funcalls: " + evalCnt);

@@ -113,12 +113,15 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
                 this.m_Islands[i] = (InterfaceOptimizer) this.m_Optimizer.clone();
                 this.m_Islands[i].setIdentifier(""+i);
                 this.m_Islands[i].init();
-                if (this.m_LogLocalChanges)
+                if (this.m_LogLocalChanges) {
                     this.m_Islands[i].addPopulationChangedEventListener(this);
+                }
             }
         } else {
             // this is running on remote machines
-            if (this.m_LocalServer == null) this.m_LocalServer = RMIServer.getInstance();
+            if (this.m_LocalServer == null) {
+                this.m_LocalServer = RMIServer.getInstance();
+            }
             try {
                 myLocal = (InterfacePopulationChangedEventListener) RMIProxyLocal.newInstance(this);
             } catch(Exception e) {
@@ -133,8 +136,9 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
                 this.m_Islands[i] = (InterfaceOptimizer) RMIProxyRemoteThread.newInstance(this.m_Optimizer, nodesList[i]);
                 this.m_Islands[i].setIdentifier(""+i);
                 this.m_Islands[i].init();
-                if (this.m_LogLocalChanges)
+                if (this.m_LogLocalChanges) {
                     this.m_Islands[i].addPopulationChangedEventListener(myLocal);
+                }
             }
         }
 
@@ -183,26 +187,32 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
                 this.m_Islands[i] = (InterfaceOptimizer) this.m_Optimizer.clone();
                 this.m_Islands[i].setIdentifier(""+i);
                 this.m_Islands[i].init();
-                if (this.m_LogLocalChanges)
+                if (this.m_LogLocalChanges) {
                     this.m_Islands[i].addPopulationChangedEventListener(this);
+                }
             }
         } else {
             // this is running on remote machines
-            if (this.m_LocalServer == null) this.m_LocalServer = RMIServer.getInstance();
+            if (this.m_LocalServer == null) {
+                this.m_LocalServer = RMIServer.getInstance();
+            }
             try {
                 myLocal = (InterfacePopulationChangedEventListener) RMIProxyLocal.newInstance(this);
             } catch(Exception e) {
                 System.err.println("Island Model EA warning on local RMIServer... but i'll try to start anyway!");
             }
             String[] nodesList = this.m_Servers.getCheckedServerNodes();
-            if ((nodesList == null) || (nodesList.length == 0)) return;
+            if ((nodesList == null) || (nodesList.length == 0)) {
+                return;
+            }
             this.m_Islands = new InterfaceOptimizer[nodesList.length];
             for (int i = 0; i < nodesList.length; i++) {
                 this.m_Islands[i] = (InterfaceOptimizer) RMIProxyRemoteThread.newInstance(this.m_Optimizer, nodesList[i]);
                 this.m_Islands[i].setIdentifier(""+i);
                 this.m_Islands[i].init();
-                if (this.m_LogLocalChanges)
+                if (this.m_LogLocalChanges) {
                     this.m_Islands[i].addPopulationChangedEventListener(myLocal);
+                }
             }
         }
 
@@ -223,9 +233,15 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
         for (int i = 0; i < this.m_Islands.length; i++) {
             if (this.m_Islands[i].getPopulation().size() > 0) {
             	this.m_Islands[i].optimize();
-            	if (TRACE ) System.out.println(BeanInspector.toString(m_Islands[i].getPopulation()));
-            } else this.m_Islands[i].getPopulation().incrGeneration();
-            if (TRACE) System.out.println("----");
+            	if (TRACE ) {
+                    System.out.println(BeanInspector.toString(m_Islands[i].getPopulation()));
+                }
+            } else {
+                this.m_Islands[i].getPopulation().incrGeneration();
+            }
+            if (TRACE) {
+                System.out.println("----");
+            }
         }
         this.m_Population.incrGeneration();
         if ((this.m_Population.getGeneration() % this.m_MigrationRate) == 0) {
@@ -252,7 +268,9 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
             String gen = "[";
             for (int i = 0; i < this.m_Islands.length; i++) {
                 gen += this.m_Islands[i].getPopulation().getGeneration()+"; ";
-                if (this.m_Islands[i].getPopulation().getGeneration() != G) allReachedG = false;
+                if (this.m_Islands[i].getPopulation().getGeneration() != G) {
+                    allReachedG = false;
+                }
             }
             if (!allReachedG) {
                 System.out.println("Waiting...."+gen+"] ?= " + G);
@@ -274,7 +292,9 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
 //        System.out.println("Fitnesscalls :" + this.m_Population.getFunctionCalls());
         this.firePropertyChangedEvent(Population.nextGenerationPerformed, this.m_Optimizer.getPopulation());
         double plotValue = (this.m_Problem.getDoublePlotValue(this.m_Population)).doubleValue();
-        if (this.m_Show) this.m_Plot.setConnectedPoint(this.m_Population.getFunctionCalls(), plotValue, 0);
+        if (this.m_Show) {
+            this.m_Plot.setConnectedPoint(this.m_Population.getFunctionCalls(), plotValue, 0);
+        }
         // now they are synchronized
         this.m_Migration.migrate(this.m_Islands);
     }
@@ -292,12 +312,16 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
 		if (m_Listener==ea) {
 			m_Listener=null;
 			return true;
-		} else return false;
+		} else {
+                                return false;
+                            }
 	}
     /** Something has changed
      */
     protected void firePropertyChangedEvent (String name, Population population) {     
-        if (this.m_Listener != null) this.m_Listener.registerPopulationStateChanged(this, name);
+        if (this.m_Listener != null) {
+            this.m_Listener.registerPopulationStateChanged(this, name);
+        }
     }
 
     /** This method will set the problem that is to be optimized
@@ -447,7 +471,9 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
         double              cFCOpt = opt.getPopulation().getFunctionCalls();
         double              plotValue = (this.m_Problem.getDoublePlotValue(opt.getPopulation())).doubleValue();
 
-        if (this.m_Show) this.m_Plot.setConnectedPoint(cFCOpt, plotValue, (sourceID+1));
+        if (this.m_Show) {
+            this.m_Plot.setConnectedPoint(cFCOpt, plotValue, (sourceID+1));
+        }
 
         //System.out.println("Someone has finished, ("+this.m_Generation+"/"+this.m_Performed+")");
         //System.out.println(sourceID + " is at generation "+ opt.getPopulation().getGeneration() +" i'm at " +this.m_Generation);
@@ -578,8 +604,12 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
      * @param n     Number of processors.
      */
     public void setNumberLocalCPUs(int n) {
-    	if (n>=1) this.m_numLocalCPUs = n;
-    	else System.err.println("Number of CPUs must be at least 1!");
+    	if (n>=1) {
+            this.m_numLocalCPUs = n;
+        }
+    	else {
+            System.err.println("Number of CPUs must be at least 1!");
+        }
     }
     // TODO Deactivated from GUI because the current implementation does not really parallelize on a multicore. 
     // Instead, the new direct problem parallelization can be used.

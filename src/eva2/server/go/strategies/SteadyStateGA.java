@@ -129,10 +129,14 @@ public class SteadyStateGA implements InterfaceOptimizer, java.io.Serializable {
     		if (m_Listener==ea) {
     			m_Listener=null;
     			return true;
-    		} else return false;
+    		} else {
+                                return false;
+                            }
     	}
         protected void firePropertyChangedEvent (String name) {
-            if (this.m_Listener != null) this.m_Listener.registerPopulationStateChanged(this, name);
+            if (this.m_Listener != null) {
+                this.m_Listener.registerPopulationStateChanged(this, name);
+            }
         }
 
         /** This method will set the problem that is to be optimized
@@ -235,7 +239,9 @@ public class SteadyStateGA implements InterfaceOptimizer, java.io.Serializable {
      * @param partners
      */
     public void setNumberOfPartners(int partners) {
-        if (partners < 0) partners = 0;
+        if (partners < 0) {
+            partners = 0;
+        }
         this.m_NumberOfPartners = partners;
     }
     public int getNumberOfPartners() {

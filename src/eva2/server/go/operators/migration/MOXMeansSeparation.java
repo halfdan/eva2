@@ -88,7 +88,9 @@ public class MOXMeansSeparation implements InterfaceMigration, java.io.Serializa
         // collect the populations
         for (int i = 0; i < islands.length; i++) {
             oldIPOP[i] = islands[i].getPopulation();
-            if (this.m_Debug) System.out.println("Got population from "+i+" of size "+oldIPOP[i].size());
+            if (this.m_Debug) {
+                System.out.println("Got population from "+i+" of size "+oldIPOP[i].size());
+            }
             collector.addPopulation((Population)oldIPOP[i].clone());
             //if (oldIPOP[i].getArchive() != null) collector.addPopulation((Population)oldIPOP[i].getArchive().clone());
             newIPOP[i] = new Population();
@@ -185,7 +187,9 @@ public class MOXMeansSeparation implements InterfaceMigration, java.io.Serializa
                     double[][] myOtherClass = new double[c.length -1][];
                     int index = 0;
                     for (int j = 0; j < myOtherClass.length; j++) {
-                        if (index == i) index++;
+                        if (index == i) {
+                            index++;
+                        }
                         myOtherClass[j] = c[index];
                         index++;
                     }
@@ -221,7 +225,9 @@ public class MOXMeansSeparation implements InterfaceMigration, java.io.Serializa
             if (!oldIPOP[i].targetSizeReached()) {
                 oldIPOP[i].addPopulation(this.m_Selection.selectFrom(memory, oldIPOP[i].getFreeSlots()));
             }
-            if (this.m_Debug) System.out.println("Setting "+i+" to population size " + oldIPOP[i].size());
+            if (this.m_Debug) {
+                System.out.println("Setting "+i+" to population size " + oldIPOP[i].size());
+            }
             islands[i].setPopulation(oldIPOP[i]);
             islands[i].getPopulation().setTargetSize(oldIPOP[i].size());
         }
@@ -335,7 +341,9 @@ public class MOXMeansSeparation implements InterfaceMigration, java.io.Serializa
     private void writeToFile(BufferedWriter out, String line) {
         String write = line + "\n";
         write.replaceAll(",",".");
-        if (out == null) return;
+        if (out == null) {
+            return;
+        }
         try {
             out.write(write, 0, write.length());
             out.flush();

@@ -39,8 +39,9 @@ public class DBorder extends Insets{
 
     @Override
   public boolean equals( Object o ){
-    if( o instanceof DBorder )
-      return super.equals( o );
+    if( o instanceof DBorder ) {
+          return super.equals( o );
+      }
     return false;
   }
 

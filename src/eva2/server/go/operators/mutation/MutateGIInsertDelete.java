@@ -40,10 +40,14 @@ public class MutateGIInsertDelete implements InterfaceMutation, java.io.Serializ
     public boolean equals(Object mutator) {
         if (mutator instanceof MutateGIInsertDelete) {
             MutateGIInsertDelete mut = (MutateGIInsertDelete)mutator;
-            if (this.m_MaxLengthOfInsDel != mut.m_MaxLengthOfInsDel) return false;
+            if (this.m_MaxLengthOfInsDel != mut.m_MaxLengthOfInsDel) {
+                return false;
+            }
             return true;
         }
-        else return false;
+        else {
+            return false;
+        }
     }
 
     /** This method allows you to init the mutation operator
@@ -80,7 +84,9 @@ public class MutateGIInsertDelete implements InterfaceMutation, java.io.Serializ
             //this.pintInt("Before ", x);
             length = RNG.randomInt(1, this.m_MaxLengthOfInsDel);
             boolean insert = RNG.flipCoin(0.5);
-            if ((!insert) && (length >= x.length-1)) insert = true;
+            if ((!insert) && (length >= x.length-1)) {
+                insert = true;
+            }
             if (insert) {
                 // insert
                 position = RNG.randomInt(0, x.length-1);
@@ -104,7 +110,9 @@ public class MutateGIInsertDelete implements InterfaceMutation, java.io.Serializ
                 position = RNG.randomInt(0, x.length-1-length);
                 newX        = new int[x.length - length];
                 newRange    = new int[range.length - length][2];
-                if (newX.length <=1) return;
+                if (newX.length <=1) {
+                    return;
+                }
                 for (int i = 0; i < position; i++) {
                     newX[i]         = x[i];
                     newRange[i]     = range[i];
@@ -114,12 +122,16 @@ public class MutateGIInsertDelete implements InterfaceMutation, java.io.Serializ
                     newRange[i-length]  = range[i];
                 }
             }
-            if (newX.length <= 1) System.out.println("newX " + newX.length);
+            if (newX.length <= 1) {
+                System.out.println("newX " + newX.length);
+            }
             ((InterfaceGIIndividual)individual).setIntegerDataLength(newX.length);
             ((InterfaceGIIndividual)individual).SetIGenotype(newX);
             ((InterfaceGIIndividual)individual).SetIntRange(newRange);
             newX = ((InterfaceGIIndividual)individual).getIGenotype();
-            if (newX.length <= 1) System.out.println("newX " + newX.length);            
+            if (newX.length <= 1) {
+                System.out.println("newX " + newX.length);
+            }            
         }
     }
 

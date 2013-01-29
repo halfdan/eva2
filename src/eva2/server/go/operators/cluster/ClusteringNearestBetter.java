@@ -69,8 +69,12 @@ public class ClusteringNearestBetter implements InterfaceClustering, Serializabl
      */
     public ClusteringNearestBetter(boolean adaptive, double thresholdOrFactor) {
     	setAdaptiveThreshold(adaptive);
-    	if (adaptive) setMeanDistFactor(thresholdOrFactor);
-    	else setDistThreshold(thresholdOrFactor);
+    	if (adaptive) {
+            setMeanDistFactor(thresholdOrFactor);
+        }
+    	else {
+            setDistThreshold(thresholdOrFactor);
+        }
 	}
 
 	public void hideHideable() {
@@ -152,7 +156,9 @@ public class ClusteringNearestBetter implements InterfaceClustering, Serializabl
     		if (nearestBetterDist < currentDistThreshold()) {
 //    			System.out.println("dist is " + nearestBetterDist + ", assigning spec " + nearestBetterSpeciesID);
     			res[l]=nearestBetterSpeciesID;
-    		} else res[l]=-1;
+    		} else {
+                res[l]=-1;
+            }
     	} // end for all loners
     	return res;
     }
@@ -195,38 +201,64 @@ public class ClusteringNearestBetter implements InterfaceClustering, Serializabl
     public String initClustering(Population pop) {
     	if (this.isAdaptiveThreshold()) {
 	    	ArrayList<AbstractEAIndividual> sorted = pop.getSorted(comparator);
-	    	if (uplink==null || (uplink.length!=pop.size())) uplink = new int[pop.size()]; // parent index of all indys
-	    	if (uplinkDist==null || (uplinkDist.length!=pop.size())) uplinkDist = new double[pop.size()]; // parent distance for all indys
-	    	if (children==null || (children.length!=pop.size())) children = new Vector[pop.size()]; // list of children for all indies
-	    	else if (children.length==pop.size()) for (int i=0; i<pop.size(); i++) {
-                children[i]=null;
-            }
+	    	if (uplink==null || (uplink.length!=pop.size())) {
+                uplink = new int[pop.size()];
+            } // parent index of all indys
+	    	if (uplinkDist==null || (uplinkDist.length!=pop.size())) {
+                uplinkDist = new double[pop.size()];
+            } // parent distance for all indys
+	    	if (children==null || (children.length!=pop.size())) {
+                children = new Vector[pop.size()];
+            } // list of children for all indies
+	    	else if (children.length==pop.size()) {
+                for (int i=0; i<pop.size(); i++) {
+children[i]=null;
+}           }
 	    	currentMeanDistance = createClusterTreeFromSortedPop(sorted);
-	    	if (TRACE) pop.putData(initializedForKey, pop.hashCode());
+	    	if (TRACE) {
+                pop.putData(initializedForKey, pop.hashCode());
+            }
 	    	pop.putData(initializedRefData, currentMeanDistance);
 	    	return initializedRefData;
-    	} else return null;
+    	} else {
+            return null;
+        }
     }
     
     @Override
 	public Population[] cluster(Population pop, Population referenceSet) {
-		if (pop.isEmpty()) return new Population[]{pop.cloneWithoutInds()};
+		if (pop.isEmpty()) {
+                return new Population[]{pop.cloneWithoutInds()};
+            }
 		ArrayList<AbstractEAIndividual> sorted = pop.getSorted(comparator);
-		if (uplink==null || (uplink.length!=pop.size())) uplink = new int[pop.size()]; // parent index of all indys
-		if (uplinkDist==null || (uplinkDist.length!=pop.size())) uplinkDist = new double[pop.size()]; // parent distance for all indys
-		if (children==null || (children.length!=pop.size())) children = new Vector[pop.size()]; // list of children for all indies
-		else if (children.length==pop.size()) for (int i=0; i<pop.size(); i++) {
-            children[i]=null;
-        }
+		if (uplink==null || (uplink.length!=pop.size())) {
+                uplink = new int[pop.size()];
+            } // parent index of all indys
+		if (uplinkDist==null || (uplinkDist.length!=pop.size())) {
+                uplinkDist = new double[pop.size()];
+            } // parent distance for all indys
+		if (children==null || (children.length!=pop.size())) {
+                children = new Vector[pop.size()];
+            } // list of children for all indies
+		else if (children.length==pop.size()) {
+                for (int i=0; i<pop.size(); i++) {
+children[i]=null;
+}           }
  		
 		if (TRACE) {
 			System.out.println("Current pop measures: " + BeanInspector.toString(pop.getPopulationMeasures(metric)[0]));
 			System.out.println("Current threshold: " + currentDistThreshold());
 		}
 		if (isAdaptiveThreshold()) { // test if there was a valid initialization step
-			if (!getRefData(referenceSet, pop)) currentMeanDistance=createClusterTreeFromSortedPop(sorted);
-			else createClusterTreeFromSortedPop(sorted);
-		} else createClusterTreeFromSortedPop(sorted);
+			if (!getRefData(referenceSet, pop)) {
+                        currentMeanDistance=createClusterTreeFromSortedPop(sorted);
+                    }
+			else {
+                        createClusterTreeFromSortedPop(sorted);
+                    }
+		} else {
+                createClusterTreeFromSortedPop(sorted);
+            }
 		
 		// now go through indies starting with best. 
 		// Add all children which are closer than threshold and recursively their children to a cluster.
@@ -266,7 +298,9 @@ public class ClusteringNearestBetter implements InterfaceClustering, Serializabl
 	 * @param backup
 	 */
 	private boolean getRefData(Population referenceSet, Population backup) {
-		if (referenceSet==null) referenceSet=backup;
+		if (referenceSet==null) {
+                referenceSet=backup;
+            }
 		Double refDat = (Double)referenceSet.getData(initializedRefData);
 		if (refDat!=null) {
 			if (TRACE) { // check hash
@@ -299,7 +333,9 @@ public class ClusteringNearestBetter implements InterfaceClustering, Serializabl
 				}
 			}
 			// the closest best for indy i is now known. connect them in the graph.
-			if (children[uplink[i]]==null) children[uplink[i]]=new Vector<Integer>();
+			if (children[uplink[i]]==null) {
+                        children[uplink[i]]=new Vector<Integer>();
+                    }
 			children[uplink[i]].add(i);
 			edgeLengthSum+=uplinkDist[i];
 			edgeCnt++;
@@ -324,10 +360,14 @@ public class ClusteringNearestBetter implements InterfaceClustering, Serializabl
 					// so add it to the cluster, mark it, and proceed recursively.
 					currentClust.add(sorted.get(children[current].get(i)));
 					clustered[children[current].get(i)]=true;
-					if (TRACE) System.out.println("Assigned " + current);
+					if (TRACE) {
+                                        System.out.println("Assigned " + current);
+                                    }
 					addChildren(children[current].get(i), clustered, sorted, currentClust);
 				} else {
-					if (TRACE) System.out.println("Not assigned " + current);
+					if (TRACE) {
+                                        System.out.println("Not assigned " + current);
+                                    }
 				}
 			}
 		} else {
@@ -336,8 +376,12 @@ public class ClusteringNearestBetter implements InterfaceClustering, Serializabl
 	}
 
 	private double currentDistThreshold() {
-		if (thresholdMultipleOfMeanDist) return meanDistFactor*currentMeanDistance;
-		else return absoluteDistThreshold;
+		if (thresholdMultipleOfMeanDist) {
+                return meanDistFactor*currentMeanDistance;
+            }
+		else {
+                return absoluteDistThreshold;
+            }
 	}
 
     /** This method allows you to decide if two species converge.
@@ -349,14 +393,22 @@ public class ClusteringNearestBetter implements InterfaceClustering, Serializabl
     public boolean mergingSpecies(Population species1, Population species2, Population referenceSet) {
     	getRefData(referenceSet, species1);
         if (testConvergingSpeciesOnBestOnly) {
-            if (this.metric.distance(species1.getBestEAIndividual(), species2.getBestEAIndividual()) < this.currentDistThreshold()) return true;
-            else return false;
+            if (this.metric.distance(species1.getBestEAIndividual(), species2.getBestEAIndividual()) < this.currentDistThreshold()) {
+                return true;
+            }
+            else {
+                return false;
+            }
         } else {
             Population tmpPop = new Population(species1.size()+species2.size());
             tmpPop.addPopulation(species1);
             tmpPop.addPopulation(species2);
-            if (this.cluster(tmpPop, referenceSet).length <= 2) return true;
-            else return false;
+            if (this.cluster(tmpPop, referenceSet).length <= 2) {
+                return true;
+            }
+            else {
+                return false;
+            }
         }
     }
     

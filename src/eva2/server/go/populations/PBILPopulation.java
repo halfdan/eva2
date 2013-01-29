@@ -73,7 +73,9 @@ public class PBILPopulation extends Population implements Cloneable, java.io.Ser
             tmpBitSet = tmpIndy.getBGenotype();
             for (int j = 0; j < this.m_ProbabilityVector.length; j++) {
                 this.m_ProbabilityVector[j] *= (1.0 - learnRate);
-                if (tmpBitSet.get(j)) this.m_ProbabilityVector[j] += learnRate;
+                if (tmpBitSet.get(j)) {
+                    this.m_ProbabilityVector[j] += learnRate;
+                }
             }
         }
     }
@@ -90,8 +92,12 @@ public class PBILPopulation extends Population implements Cloneable, java.io.Ser
             tmpIndy = (InterfaceGAIndividual)((AbstractEAIndividual)template).clone();
             tmpBitSet = tmpIndy.getBGenotype();
             for (int j = 0; j < this.m_ProbabilityVector.length; j++) {
-                if (RNG.flipCoin(this.m_ProbabilityVector[j])) tmpBitSet.set(j);
-                else tmpBitSet.clear(j);
+                if (RNG.flipCoin(this.m_ProbabilityVector[j])) {
+                    tmpBitSet.set(j);
+                }
+                else {
+                    tmpBitSet.clear(j);
+                }
             }
             tmpIndy.SetBGenotype(tmpBitSet);
             super.add(tmpIndy);
@@ -104,9 +110,15 @@ public class PBILPopulation extends Population implements Cloneable, java.io.Ser
      */
     public void mutateProbabilityVector(double mutationRate, double sigma) {
         for (int j = 0; j < this.m_ProbabilityVector.length; j++) {
-            if (RNG.flipCoin(mutationRate)) this.m_ProbabilityVector[j] += RNG.gaussianDouble(sigma);
-            if (this.m_ProbabilityVector[j] > 1) this.m_ProbabilityVector[j] = 1;
-            if (this.m_ProbabilityVector[j] < 0) this.m_ProbabilityVector[j] = 0;
+            if (RNG.flipCoin(mutationRate)) {
+                this.m_ProbabilityVector[j] += RNG.gaussianDouble(sigma);
+            }
+            if (this.m_ProbabilityVector[j] > 1) {
+                this.m_ProbabilityVector[j] = 1;
+            }
+            if (this.m_ProbabilityVector[j] < 0) {
+                this.m_ProbabilityVector[j] = 0;
+            }
         }
     }
 
@@ -125,7 +137,9 @@ public class PBILPopulation extends Population implements Cloneable, java.io.Ser
         for (int i = 0; i < this.size(); i++) {
             tmpSet = ((InterfaceGAIndividual)this.get(i)).getBGenotype();
             for (int j = 0; j < dim; j++) {
-                if (tmpSet.get(j)) this.m_ProbabilityVector[j] += 1;
+                if (tmpSet.get(j)) {
+                    this.m_ProbabilityVector[j] += 1;
+                }
             }
         }
         // now normalize

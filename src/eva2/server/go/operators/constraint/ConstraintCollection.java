@@ -42,11 +42,15 @@ public class ConstraintCollection extends AbstractConstraint {
 	@Override
 	protected double getRawViolationValue(double[] indyX) {
 		double v, sum=0;
-		if (TRACE) System.out.println("Viol (pen "+getPenaltyFactor()+")");
+		if (TRACE) {
+                System.out.println("Viol (pen "+getPenaltyFactor()+")");
+            }
 		for (AbstractConstraint constr : constraintArray) {
 			v=constr.getViolation(indyX);
 			sum += v; 
-			if (TRACE) System.out.println(constr.getClass().getSimpleName() + " " + v);
+			if (TRACE) {
+                        System.out.println(constr.getClass().getSimpleName() + " " + v);
+                    }
 		}
 		return sum;
 	}

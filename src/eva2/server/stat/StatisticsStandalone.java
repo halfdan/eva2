@@ -66,8 +66,12 @@ public class StatisticsStandalone extends AbstractStatistics implements Interfac
 		m_StatsParams.setOutputVerbosity(m_StatsParams.getOutputVerbosity().setSelectedTag(verbosity));
 		m_StatsParams.setResultFilePrefix(resultFileName);
 		m_StatsParams.setOutputAllFieldsAsText(outputAllFieldsAsText);
-		if (resultFileName==null) m_StatsParams.getOutputTo().setSelectedTag(StatisticsParameter.OUTPUT_WINDOW); 
-		else m_StatsParams.setOutputTo(m_StatsParams.getOutputTo().setSelectedTag(StatisticsParameter.OUTPUT_FILE));
+		if (resultFileName==null) {
+                m_StatsParams.getOutputTo().setSelectedTag(StatisticsParameter.OUTPUT_WINDOW);
+            } 
+		else {
+                m_StatsParams.setOutputTo(m_StatsParams.getOutputTo().setSelectedTag(StatisticsParameter.OUTPUT_FILE));
+            }
 	}
 	
 	public StatisticsStandalone() {
@@ -101,7 +105,9 @@ public class StatisticsStandalone extends AbstractStatistics implements Interfac
 
     @Override
 	public void plotSpecificData(PopulationInterface pop, List<InterfaceAdditionalPopulationInformer> informerList) {
-		if (TRACE) System.out.println(" m_SpecificData !!");
+		if (TRACE) {
+                System.out.println(" m_SpecificData !!");
+            }
 		double[] specificData = pop.getSpecificData();
 		if (specificData != null) {
 			for (int i = 0; i < specificData.length; i++) {

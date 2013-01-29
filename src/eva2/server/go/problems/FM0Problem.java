@@ -27,8 +27,12 @@ public class FM0Problem extends AbstractMultiModalProblemKnown implements Interf
 
     @Override
 	public double getRangeUpperBound(int dim) {
-    	if (dim == 0) return 2.0;
-    	else return 2.8;
+    	if (dim == 0) {
+                return 2.0;
+            }
+    	else {
+                return 2.8;
+            }
     }
     
     @Override

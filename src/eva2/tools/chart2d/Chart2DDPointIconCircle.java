@@ -27,7 +27,9 @@ public class Chart2DDPointIconCircle implements DPointIcon {
             g.setColor(m_Fill);
             g.fillOval(-this.m_Size, -this.m_Size, 2*this.m_Size +1, 2*this.m_Size +1);
         }
-        if (this.m_Border != null) g.setColor(m_Border);
+        if (this.m_Border != null) {
+            g.setColor(m_Border);
+        }
         g.drawOval(-this.m_Size, -this.m_Size, 2*this.m_Size, 2*this.m_Size);
         g.setColor(prev);
     }

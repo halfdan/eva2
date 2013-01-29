@@ -47,7 +47,9 @@ public class MetricOverallNonDominatedVectors implements InterfaceParetoFrontMet
         Population tmpPop = new Population();
         Population tmpPPO = new Population();
         tmpPPO.addPopulation(pop);
-        if (pop.getArchive() != null) tmpPPO.addPopulation(pop.getArchive());
+        if (pop.getArchive() != null) {
+            tmpPPO.addPopulation(pop.getArchive());
+        }
         for (int i = 0; i < tmpPPO.size(); i++) {
             if (this.m_Dom.isDominant((AbstractEAIndividual)tmpPPO.get(i), tmpPop)) {
                 this.m_Dom.addIndividualToArchive((AbstractEAIndividual)tmpPPO.get(i), tmpPop);

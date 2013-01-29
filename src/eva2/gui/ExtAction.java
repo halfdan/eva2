@@ -38,8 +38,9 @@ public abstract class ExtAction extends AbstractAction {
    */
   public ExtAction(String s, Icon i, String toolTip, KeyStroke key){
     this(s, i, toolTip);
-    if (i==null)
-      System.out.println("Icon == null");
+    if (i==null) {
+          System.out.println("Icon == null");
+      }
     putValue(KEYSTROKE, key);
   }
   /**
@@ -47,8 +48,9 @@ public abstract class ExtAction extends AbstractAction {
    */
   public ExtAction(String s, Icon i, String toolTip){
     super(null, i);
-    if (i==null)
-      System.out.println("Icon == null");
+    if (i==null) {
+          System.out.println("Icon == null");
+      }
     setValues(s, toolTip);
   }
   /**

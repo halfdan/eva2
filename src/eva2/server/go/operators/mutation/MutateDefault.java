@@ -26,8 +26,12 @@ public class MutateDefault implements InterfaceMutation, java.io.Serializable  {
      */
     @Override
     public boolean equals(Object mutator) {
-        if (mutator instanceof MutateDefault) return true;
-        else return false;
+        if (mutator instanceof MutateDefault) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     /** This method allows you to init the mutation operator
@@ -45,7 +49,9 @@ public class MutateDefault implements InterfaceMutation, java.io.Serializable  {
      */
     @Override
     public void mutate(AbstractEAIndividual individual) {
-    	if (individual instanceof IndividualInterface)  ((IndividualInterface)individual).defaultMutate();
+    	if (individual instanceof IndividualInterface) {
+            ((IndividualInterface)individual).defaultMutate();
+        }
     }
 
     /** This method allows you to perform either crossover on the strategy parameters

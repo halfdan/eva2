@@ -80,7 +80,9 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
     		sbuf.append("(");
     		for (int i = 0; i < node.m_Nodes.length; i++) {
     			sbuf.append(node.m_Nodes[i].getStringRepresentation());
-    			if (i<node.m_Nodes.length-1) sbuf.append(", ");
+    			if (i<node.m_Nodes.length-1) {
+                        sbuf.append(", ");
+                    }
     		}
     		sbuf.append(")");
     	}
@@ -119,10 +121,14 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
         			System.err.println("String has unknown prefix: " + str);
     			}
     		}
-    		else if (matchSet.size()>1) System.err.println("String has ambiguous prefix: " + str + " -- " + BeanInspector.toString(matchSet));
+    		else if (matchSet.size()>1) {
+                System.err.println("String has ambiguous prefix: " + str + " -- " + BeanInspector.toString(matchSet));
+            }
     		else { // exactly one match:
     			AbstractGPNode currentNode = (AbstractGPNode)matchSet.get(0).clone();
-    			if (TRACE) System.out.println("Found match: " + currentNode.getOpIdentifier() + "/" + currentNode.getArity());
+    			if (TRACE) {
+                        System.out.println("Found match: " + currentNode.getOpIdentifier() + "/" + currentNode.getArity());
+                    }
     			int cutFront=currentNode.getOpIdentifier().length();
     			String restStr;
     			if (currentNode.getArity()==0) {
@@ -151,7 +157,9 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
     						e.printStackTrace();
     					}
     				}
-    				if (TRACE) System.out.println("read " + currentNode.getName() + ", rest: " + restStr);
+    				if (TRACE) {
+                                System.out.println("read " + currentNode.getName() + ", rest: " + restStr);
+                            }
     				return new Pair<AbstractGPNode,String>(currentNode, restStr);
     			}
     		}
@@ -182,18 +190,28 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
     private static Pair<Double, String> readDouble(String str, boolean expect) {
 		String firstArg;
 		int argLen = str.indexOf(',');
-		if (argLen<0) argLen = str.indexOf(')');
+		if (argLen<0) {
+            argLen = str.indexOf(')');
+        }
 		else {
 			int firstBrace = str.indexOf(')');
-			if ((firstBrace >= 0) && (firstBrace<argLen)) argLen = firstBrace;
+			if ((firstBrace >= 0) && (firstBrace<argLen)) {
+                        argLen = firstBrace;
+                    }
 		}
-		if (argLen>0) firstArg=str.substring(0,argLen);
-		else firstArg=str.trim();
+		if (argLen>0) {
+            firstArg=str.substring(0,argLen);
+        }
+		else {
+            firstArg=str.trim();
+        }
 		try {
 			Double d=Double.parseDouble(firstArg);
 			return new Pair<Double,String>(d, str.substring(firstArg.length()));
 		} catch(NumberFormatException e) {
-			if (expect) System.err.println("String has unknown prefix: " + str);
+			if (expect) {
+                        System.err.println("String has unknown prefix: " + str);
+                    }
 			return null;
 		}
 	}
@@ -203,8 +221,12 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
      * @return string
      */
     public static String makeStringRepresentation(AbstractGPNode[] nodes, String op) {
-    	if (nodes.length==0) return op;
-    	else if (nodes.length==1) return op+"(" + nodes[0].getStringRepresentation()+")";
+    	if (nodes.length==0) {
+            return op;
+        }
+    	else if (nodes.length==1) {
+            return op+"(" + nodes[0].getStringRepresentation()+")";
+        }
     	else {
     		String result = "( "+nodes[0].getStringRepresentation();
     		for (int i = 1; i < nodes.length; i++) {
@@ -229,9 +251,15 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
     	Vector<AbstractGPNode> matching = new Vector<AbstractGPNode>();
 		for (int i=0; i<nodeTypes.size(); i++) {
 			String reqPrefix=nodeTypes.get(i).getOpIdentifier();
-			if (nodeTypes.get(i).getArity()>0) reqPrefix+="(";
-			if (str.startsWith(reqPrefix)) matching.add(nodeTypes.get(i));
-			else if (ignoreCase && str.toLowerCase().startsWith(reqPrefix.toLowerCase())) matching.add(nodeTypes.get(i));
+			if (nodeTypes.get(i).getArity()>0) {
+                        reqPrefix+="(";
+                    }
+			if (str.startsWith(reqPrefix)) {
+                        matching.add(nodeTypes.get(i));
+                    }
+			else if (ignoreCase && str.toLowerCase().startsWith(reqPrefix.toLowerCase())) {
+                        matching.add(nodeTypes.get(i));
+                    }
 		}
 		if (matching.size()>1 && firstLongestOnly) { // allow only the longest match (or first longest)
 			int maxLen = matching.get(0).getOpIdentifier().length();
@@ -244,7 +272,9 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
 					maxLen = longest.getOpIdentifier().length();
 					longestList.clear();
 					longestList.add(longest);
-				} else if (matching.get(i).getOpIdentifier().length()==maxLen) longestList.add(matching.get(i));
+				} else if (matching.get(i).getOpIdentifier().length()==maxLen) {
+                                longestList.add(matching.get(i));
+                            }
 			}
 			matching.clear();
 			matching.addAll(longestList);
@@ -316,7 +346,9 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
 		Class<?> cls = AbstractGPNode.class;
 		Class<?>[] nodes = ReflectPackage.getAssignableClassesInPackage(cls.getPackage().getName(), AbstractGPNode.class, true, false);
 		for (Class<?> c : nodes) {
-			if (Modifier.isAbstract(c.getModifiers()) || c.isInterface()) continue;
+			if (Modifier.isAbstract(c.getModifiers()) || c.isInterface()) {
+                        continue;
+                    }
 			AbstractGPNode node;
 			try {
 				node = (AbstractGPNode)c.newInstance();
@@ -412,7 +444,9 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
     	if (m_Nodes.length>0) {
     		int k=RNG.randomInt(m_Nodes.length);
     		return m_Nodes[k].getRandomLeaf();
-    	} else return this;
+    	} else {
+            return this;
+        }
     }
     
     /** This method allows you to set the parent of the node
@@ -433,8 +467,12 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
      */
     public void connect(AbstractGPNode parent) {
         this.m_Parent = parent;
-        if (parent != null) this.m_Depth = this.m_Parent.getDepth()+1;
-        else this.m_Depth = 0;
+        if (parent != null) {
+            this.m_Depth = this.m_Parent.getDepth()+1;
+        }
+        else {
+            this.m_Depth = 0;
+        }
         for (int i = 0; i < this.m_Nodes.length; i++) {
             this.m_Nodes[i].connect(this);
         }
@@ -453,8 +491,12 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
     public void initFull(GPArea area, int depth) {
         this.m_Nodes = new AbstractGPNode[this.getArity()];
         for (int i = 0; i < this.m_Nodes.length; i++) {
-            if (this.m_Depth+1 >= depth) this.m_Nodes[i] = (AbstractGPNode)area.getRandomNodeWithArity(0).clone();
-            else this.m_Nodes[i] = (AbstractGPNode)area.getRandomNonTerminal().clone();
+            if (this.m_Depth+1 >= depth) {
+                this.m_Nodes[i] = (AbstractGPNode)area.getRandomNodeWithArity(0).clone();
+            }
+            else {
+                this.m_Nodes[i] = (AbstractGPNode)area.getRandomNonTerminal().clone();
+            }
             this.m_Nodes[i].setDepth(this.m_Depth+1);
             this.m_Nodes[i].setParent(this);
             this.m_Nodes[i].initFull(area, depth);
@@ -468,8 +510,12 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
     public void initGrow(GPArea area, int depth) {
         this.m_Nodes = new AbstractGPNode[this.getArity()];
         for (int i = 0; i < this.m_Nodes.length; i++) {
-            if (this.m_Depth+1 >= depth) this.m_Nodes[i] = (AbstractGPNode)area.getRandomNodeWithArity(0).clone();
-            else this.m_Nodes[i] = (AbstractGPNode)area.getRandomNode().clone();
+            if (this.m_Depth+1 >= depth) {
+                this.m_Nodes[i] = (AbstractGPNode)area.getRandomNodeWithArity(0).clone();
+            }
+            else {
+                this.m_Nodes[i] = (AbstractGPNode)area.getRandomNode().clone();
+            }
             this.m_Nodes[i].setDepth(this.m_Depth+1);
             this.m_Nodes[i].setParent(this);
             this.m_Nodes[i].initGrow(area, depth);
@@ -494,7 +540,9 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
     public int getMaxDepth() {
         int result = this.m_Depth;
         for (int i = 0; i < this.m_Nodes.length; i++) {
-            if (this.m_Nodes[i] != null) result = Math.max(result, this.m_Nodes[i].getMaxDepth());
+            if (this.m_Nodes[i] != null) {
+                result = Math.max(result, this.m_Nodes[i].getMaxDepth());
+            }
         }
         return result;
     }
@@ -514,8 +562,12 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
      * @return True if MaxDepth is violated
      */
     public boolean isMaxDepthViolated(int maxDepth) {
-        if (maxDepth < this.getMaxDepth()) return true;
-        else return false;
+        if (maxDepth < this.getMaxDepth()) {
+            return true;
+        }
+        else {
+            return false;
+        }
 //        if (depth > this.m_Depth) return false;
 //        else {
 //            boolean result = true;
@@ -559,10 +611,16 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
     public boolean equals(Object obj) {
         if (obj.getClass().equals(this.getClass())) {
         	AbstractGPNode node = (AbstractGPNode)obj;
-        	if (this.getArity()!=node.getArity()) return false;
-            if (this.m_Nodes.length != node.m_Nodes.length) return false;
+        	if (this.getArity()!=node.getArity()) {
+                return false;
+            }
+            if (this.m_Nodes.length != node.m_Nodes.length) {
+                return false;
+            }
             for (int i = 0; i < this.m_Nodes.length; i++) {
-                if (!this.m_Nodes[i].equals(node.m_Nodes[i])) return false;
+                if (!this.m_Nodes[i].equals(node.m_Nodes[i])) {
+                    return false;
+                }
             }
             return true;
         } else {
@@ -593,7 +651,9 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
 			return false;
 		}
 		for (int i=0; i<m_Nodes.length; i++) {
-			if (!m_Nodes[i].checkDepth(myDepth+1)) return false;
+			if (!m_Nodes[i].checkDepth(myDepth+1)) {
+                        return false;
+                    }
 		}
 		return true;
 	}

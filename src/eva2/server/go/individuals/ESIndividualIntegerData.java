@@ -74,12 +74,22 @@ public class ESIndividualIntegerData extends AbstractEAIndividual implements Int
     public boolean equalGenotypes(AbstractEAIndividual individual) {
         if (individual instanceof ESIndividualIntegerData) {
             ESIndividualIntegerData indy = (ESIndividualIntegerData) individual;
-            if ((this.m_Genotype == null) || (indy.m_Genotype == null)) return false;
-            if ((this.m_Range == null) || (indy.m_Range == null)) return false;            
+            if ((this.m_Genotype == null) || (indy.m_Genotype == null)) {
+                return false;
+            }
+            if ((this.m_Range == null) || (indy.m_Range == null)) {
+                return false;
+            }            
             for (int i = 0; i < this.m_Range.length; i++) {
-                if (this.m_Genotype[i] != indy.m_Genotype[i]) return false;
-                if (this.m_Range[i][0] != indy.m_Range[i][0]) return false;
-                if (this.m_Range[i][1] != indy.m_Range[i][1]) return false;
+                if (this.m_Genotype[i] != indy.m_Genotype[i]) {
+                    return false;
+                }
+                if (this.m_Range[i][0] != indy.m_Range[i][0]) {
+                    return false;
+                }
+                if (this.m_Range[i][1] != indy.m_Range[i][1]) {
+                    return false;
+                }
             }
             return true;
         } else {
@@ -156,8 +166,12 @@ public class ESIndividualIntegerData extends AbstractEAIndividual implements Int
         this.m_Phenotype = new int[this.m_Genotype.length];
         for (int i = 0; i < this.m_Phenotype.length; i++) {
             this.m_Phenotype[i] = (int) this.m_Genotype[i];
-            if (this.m_Phenotype[i] < this.m_Range[i][0]) this.m_Phenotype[i] = this.m_Range[i][0];
-            if (this.m_Phenotype[i] > this.m_Range[i][1]) this.m_Phenotype[i] = this.m_Range[i][1];
+            if (this.m_Phenotype[i] < this.m_Range[i][0]) {
+                this.m_Phenotype[i] = this.m_Range[i][0];
+            }
+            if (this.m_Phenotype[i] > this.m_Range[i][1]) {
+                this.m_Phenotype[i] = this.m_Range[i][1];
+            }
         }
         return this.m_Phenotype;
     }
@@ -204,7 +218,9 @@ public class ESIndividualIntegerData extends AbstractEAIndividual implements Int
     public void initByValue(Object obj, InterfaceOptimizationProblem opt) {
         if (obj instanceof int[]) {
             int[]  bs = (int[]) obj;
-            if (bs.length != this.m_Genotype.length) System.out.println("Init value and requested length doesn't match!");
+            if (bs.length != this.m_Genotype.length) {
+                System.out.println("Init value and requested length doesn't match!");
+            }
             this.SetIntGenotype(bs);
         } else {
             this.defaultInit(opt);
@@ -257,8 +273,12 @@ public class ESIndividualIntegerData extends AbstractEAIndividual implements Int
     public void SetDGenotype(double[] b) {
         this.m_Genotype = b;
         for (int i = 0; i < this.m_Genotype.length; i++) {
-            if (this.m_Genotype[i] < this.m_Range[i][0]) this.m_Genotype[i] = this.m_Range[i][0];
-            if (this.m_Genotype[i] > this.m_Range[i][1]) this.m_Genotype[i] = this.m_Range[i][1];
+            if (this.m_Genotype[i] < this.m_Range[i][0]) {
+                this.m_Genotype[i] = this.m_Range[i][0];
+            }
+            if (this.m_Genotype[i] > this.m_Range[i][1]) {
+                this.m_Genotype[i] = this.m_Range[i][1];
+            }
         }
     }
 
@@ -268,8 +288,12 @@ public class ESIndividualIntegerData extends AbstractEAIndividual implements Int
     public void defaultMutate() {
         int mutationIndex = RNG.randomInt(0, this.m_Genotype.length-1);
         this.m_Genotype[mutationIndex] += ((this.m_Range[mutationIndex][1] - this.m_Range[mutationIndex][0])/2)*RNG.gaussianDouble(0.05f);
-        if (this.m_Genotype[mutationIndex] < this.m_Range[mutationIndex][0]) this.m_Genotype[mutationIndex] = this.m_Range[mutationIndex][0];
-        if (this.m_Genotype[mutationIndex] > this.m_Range[mutationIndex][1]) this.m_Genotype[mutationIndex] = this.m_Range[mutationIndex][1];
+        if (this.m_Genotype[mutationIndex] < this.m_Range[mutationIndex][0]) {
+            this.m_Genotype[mutationIndex] = this.m_Range[mutationIndex][0];
+        }
+        if (this.m_Genotype[mutationIndex] > this.m_Range[mutationIndex][1]) {
+            this.m_Genotype[mutationIndex] = this.m_Range[mutationIndex][1];
+        }
     }
 
     /** This method will return the range for all double attributes.
@@ -288,7 +312,9 @@ public class ESIndividualIntegerData extends AbstractEAIndividual implements Int
     @Override
     public void defaultInit(InterfaceOptimizationProblem prob) {
     	int[][] range = m_Range;
-        if ((prob != null) && (prob instanceof InterfaceHasInitRange) && (((InterfaceHasInitRange)prob).getInitRange()!=null)) range = (int[][])((InterfaceHasInitRange)prob).getInitRange();
+        if ((prob != null) && (prob instanceof InterfaceHasInitRange) && (((InterfaceHasInitRange)prob).getInitRange()!=null)) {
+            range = (int[][])((InterfaceHasInitRange)prob).getInitRange();
+        }
     	for (int i = 0; i < this.m_Genotype.length; i++) {
             this.m_Genotype[i] = RNG.randomInt(range[i][0], range[i][1]);
         }

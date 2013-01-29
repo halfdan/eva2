@@ -158,20 +158,28 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
 		refSet = null;
 		combinations = null;
 		template = problem.getIndividualTemplate();
-		if (!(template instanceof InterfaceDataTypeDouble)) System.err.println("Requiring double data!");
+		if (!(template instanceof InterfaceDataTypeDouble)) {
+                System.err.println("Requiring double data!");
+            }
 		else {
 			Object dim = BeanInspector.callIfAvailable(problem, "getProblemDimension", null);
-			if (dim==null) System.err.println("Couldnt get problem dimension!");
+			if (dim==null) {
+                        System.err.println("Couldnt get problem dimension!");
+                    }
 			probDim = (Integer)dim;
 			range = ((InterfaceDataTypeDouble)template).getDoubleRange();
-			if (TRACE) System.out.println("Range is " + BeanInspector.toString(range));
+			if (TRACE) {
+                        System.out.println("Range is " + BeanInspector.toString(range));
+                    }
 		}
 	}
 
 	/** Something has changed
 	 */
 	protected void firePropertyChangedEvent (String name) {
-		if (this.m_Listener != null) this.m_Listener.registerPopulationStateChanged(this, name);
+		if (this.m_Listener != null) {
+                this.m_Listener.registerPopulationStateChanged(this, name);
+            }
 	}
 
 //	public double eval(double[] x) {
@@ -212,7 +220,9 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
 		// refset regeneration
 		// goto L
 		if (!firstTime) {
-			if (lastImprovementCount == 0) refSet = regenerateRefSet();
+			if (lastImprovementCount == 0) {
+                        refSet = regenerateRefSet();
+                    }
 		}
 		firstTime = false;
 
@@ -228,7 +238,9 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
 				oldRefSet = (Population) refSet.clone();
 				lastImprovementCount = 0;
 			}
-			if (TRACE) System.out.println("No combinations: " + combinations.size());
+			if (TRACE) {
+                        System.out.println("No combinations: " + combinations.size());
+                    }
 			if (combinations.size()>0) {
 				updateRefSet(refSet, combinations, oldRefSet);
 			}
@@ -252,18 +264,24 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
 				// absolute fitness criterion
 				return (cand.getFitness(0) < localSearchFitnessFilter);
 			}
-		} else return false;
+		} else {
+                return false;
+            }
 	}
 
 	private Population regenerateRefSet() {
 		Population diversifiedPop = diversify();
 		int keep = refSetSize/2;
 		Population newRefSet = refSet.cloneWithoutInds();
-		if (TRACE) System.out.println("regen after " + refSet.getFunctionCalls() + ", best is " + refSet.getBestEAIndividual().getFitness(0));
+		if (TRACE) {
+                System.out.println("regen after " + refSet.getFunctionCalls() + ", best is " + refSet.getBestEAIndividual().getFitness(0));
+            }
 
 		newRefSet.addAll(refSet.getBestNIndividuals(keep, fitCrit));
 
-		if (TRACE) System.out.println("keeping " + keep + " indies from former ref set, best is " + newRefSet.getBestEAIndividual().getFitness(0));
+		if (TRACE) {
+                System.out.println("keeping " + keep + " indies from former ref set, best is " + newRefSet.getBestEAIndividual().getFitness(0));
+            }
 		
 		int h=newRefSet.size();
 		ArrayList<double[]> distVects = new ArrayList<double[]>();
@@ -353,7 +371,9 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
 		
 		if (isDoLocalSolver(bestCand, refSet)) {
 			Pair<AbstractEAIndividual, Integer> lsRet = localSolver(bestCand, localSearchSteps);
-			if ((Math.abs(lsRet.tail() - localSearchSteps)/localSearchSteps) > 0.05) System.err.println("Warning, more than 5% difference in local search step");
+			if ((Math.abs(lsRet.tail() - localSearchSteps)/localSearchSteps) > 0.05) {
+                        System.err.println("Warning, more than 5% difference in local search step");
+                    }
 			bestCand = lsRet.head();
 			refSet.incrFunctionCallsBy(lsRet.tail());
 			if (TRACE) {
@@ -362,7 +382,9 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
 		}
 		
 		if (bestCand.isDominatingEqual(worstRef)) {
-			if (TRACE) System.out.println("cand is dominating worst ref!");
+			if (TRACE) {
+                        System.out.println("cand is dominating worst ref!");
+                    }
 			if (diversityCriterionFulfilled(bestCand, refSet, oldRefSet)) {
 //				System.out.println("diversity criterion is fulfilled! replacing fit " + worstRef.getFitness(0));
 				int replIndex = refSet.indexOf(worstRef);
@@ -378,17 +400,27 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
 //			System.out.println("Improvements: " + lastImprovementCount);
 			candidates.remove(bestIndex);
 		} else {
-			if (TRACE) System.out.println("cand is too bad!");
+			if (TRACE) {
+                        System.out.println("cand is too bad!");
+                    }
 			// if the best candidate is worse and no local search is performed, all following will be worse - at least in the uni-criterial case
 			// so we can just clear the rest of the candidates
-			if (!doLocalSearch && (bestCand.getFitness().length == 1)) candidates.clear();
-			else candidates.remove(bestIndex);
+			if (!doLocalSearch && (bestCand.getFitness().length == 1)) {
+                        candidates.clear();
+                    }
+			else {
+                        candidates.remove(bestIndex);
+                    }
 		}
 	}
 
 	private Pair<AbstractEAIndividual, Integer> localSolver(AbstractEAIndividual cand, int hcSteps) {
-		if (localSearchMethod.getSelectedTagID()==0) return localSolverHC(cand, hcSteps);
-		else return PostProcess.localSolverNMS(cand, hcSteps, nelderMeadInitPerturbation, problem);
+		if (localSearchMethod.getSelectedTagID()==0) {
+                return localSolverHC(cand, hcSteps);
+            }
+		else {
+                return PostProcess.localSolverNMS(cand, hcSteps, nelderMeadInitPerturbation, problem);
+            }
 	}
 	
 	private Pair<AbstractEAIndividual, Integer>  localSolverHC(AbstractEAIndividual cand, int hcSteps) {
@@ -436,7 +468,9 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
 		if (minDistFulfilled && (improvementEpsilon > 0)) {
 			boolean minImprovementFulfilled = (cand.getFitness(0) < ((1.-improvementEpsilon) * popComPheno.getBestEAIndividual().getFitness(0)));
 			return minImprovementFulfilled;
-		} else return minDistFulfilled;
+		} else {
+                return minDistFulfilled;
+            }
 	}
 
 	/**
@@ -478,12 +512,18 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
 //				if (TRACE) System.out.println("combi T ww, " + i+ "/" + j);
 				AbstractEAIndividual indy2 = refSorted.getEAIndividual(j);
 				combs.add(combineTypeTwo(indy1, indy2));
-				if (RNG.flipCoin(0.5)) combs.add(combineTypeOne(indy1, indy2));
-				else combs.add(combineTypeThree(indy1, indy2));
+				if (RNG.flipCoin(0.5)) {
+                                combs.add(combineTypeOne(indy1, indy2));
+                            }
+				else {
+                                combs.add(combineTypeThree(indy1, indy2));
+                            }
 			}
 		}
 
-		if (TRACE) System.out.println("created combinations " + combs.size() + " best is " + combs.getBestEAIndividual().getFitness(0) );
+		if (TRACE) {
+                System.out.println("created combinations " + combs.size() + " best is " + combs.getBestEAIndividual().getFitness(0) );
+            }
 		return combs;
 	}
 
@@ -508,7 +548,9 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
         }
 		double[] candidate = bFirst ? v1 : v2;
 		double[] combi = bAdd ? Mathematics.vvAdd(candidate, dVect) : Mathematics.vvSub(candidate, dVect);
-		if (checkRange) Mathematics.projectToRange(combi, range);
+		if (checkRange) {
+                Mathematics.projectToRange(combi, range);
+            }
 		((InterfaceDataTypeDouble)resIndy).SetDoubleGenotype(combi);
 		problem.evaluate(resIndy);
 		refSet.incrFunctionCalls();
@@ -554,7 +596,9 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
 
 	private double getMinInCol(int col, int maxRow, double[][] vals) {
 		double dmin = vals[col][0];
-		if (dmin < 0) return dmin; // tweak for trick
+		if (dmin < 0) {
+                return dmin;
+            } // tweak for trick
 		for (int j=1; j<maxRow; j++) {
 			if (vals[col][j] < dmin) {
 				dmin = vals[col][j];
@@ -589,7 +633,9 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
 				double[] params = ((InterfaceDataTypeDouble)pop.getEAIndividual(k)).getDoubleData();
 				for (int j=0; j<probDim; j++) {
 					for (int iv = 0; iv<intervals; iv++) {
-                        if (isInRangeInterval(params[j], j, iv)) freq[j][iv]++;
+                        if (isInRangeInterval(params[j], j, iv)) {
+                                                freq[j][iv]++;
+                                            }
                     }
 				}
 			}
@@ -648,7 +694,9 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
 			sel++;
 			sum+=probs[sel];
 		}
-		if (sum >= 1.0000001) System.err.println("Check this: sum>=1 in selectInterv");
+		if (sum >= 1.0000001) {
+                System.err.println("Check this: sum>=1 in selectInterv");
+            }
 		return sel;
 	}
 
@@ -716,7 +764,9 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
 		if (m_Listener==ea) {
 			m_Listener=null;
 			return true;
-		} else return false;
+		} else {
+                                return false;
+                            }
 	}
     @Override
 	public void freeWilly() {}
@@ -860,7 +910,9 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
 			ss.setDoLocalSearch(true);
 			ss.setLocalSearchSteps(localSearchSteps);
 			ss.setLocalSearchFitnessFilter(localSearchFitnessFilter);
-		} else ss.setDoLocalSearch(false);
+		} else {
+                                ss.setDoLocalSearch(false);
+                            }
 		Population pop = new Population();
 		pop.setTargetSize(refSetSize);
 		pop.init();

@@ -47,7 +47,9 @@ public class SelProbBoltzman extends AbstractSelProb implements java.io.Serializ
             // first check if anyone holds the constraints
             boolean isFeasible = false;
             for (int i = 0; i < population.size(); i++) {
-                if (!((AbstractEAIndividual)population.get(i)).violatesConstraint()) isFeasible = true;
+                if (!((AbstractEAIndividual)population.get(i)).violatesConstraint()) {
+                    isFeasible = true;
+                }
             }
             if (isFeasible) {
                 // at least one is feasible
@@ -59,13 +61,17 @@ public class SelProbBoltzman extends AbstractSelProb implements java.io.Serializ
                     // first find the worst, to be able to default
                     double worst = Double.NEGATIVE_INFINITY;
                     for (int i = 0; i < data.length; i++) {
-                        if (data[i][x] > worst) worst = data[i][x];
+                        if (data[i][x] > worst) {
+                            worst = data[i][x];
+                        }
                     }
                     for (int i = 0; i < data.length; i++) {
-                        if (!((AbstractEAIndividual)population.get(i)).violatesConstraint())
+                        if (!((AbstractEAIndividual)population.get(i)).violatesConstraint()) {
                             result[i]   = -data[i][x];
-                        else
+                        }
+                        else {
                             result[i]   = -worst;
+                        }
                         sum         += result[i];
                     }
 
@@ -74,26 +80,34 @@ public class SelProbBoltzman extends AbstractSelProb implements java.io.Serializ
                         dev += Math.pow((result[i]-mean), 2);
                     }
                     dev = Math.sqrt(dev/(data.length-1));
-                    if (dev < 0.0000001) dev = 0.0000001;
+                    if (dev < 0.0000001) {
+                        dev = 0.0000001;
+                    }
                     sum = 0;
                     for (int i = 0; i < data.length; i++) {
-                        if (!((AbstractEAIndividual)population.get(i)).violatesConstraint())
+                        if (!((AbstractEAIndividual)population.get(i)).violatesConstraint()) {
                             result[i] = Math.exp((this.m_Q*-data[i][x])/dev);
-                        else
+                        }
+                        else {
                             result[i] = Math.exp((this.m_Q*-worst)/dev);
+                        }
                         sum += result[i];
                     }
 
-                    if (sum == 0) for (int i = 0; i < data.length; i++) {
-                        result[i] = 1/result.length;
-                    }
-                    else for (int i = 0; i < data.length; i++) {
-                        result[i] /= sum;
-                    }
+                    if (sum == 0) {
+                        for (int i = 0; i < data.length; i++) {
+              result[i] = 1/result.length;
+          }         }
+                    else {
+                        for (int i = 0; i < data.length; i++) {
+                       result[i] /= sum;
+                   }}
 
                     boolean check = true;
                     for (int i = 0; i < data.length; i++) {
-                        if (Double.isNaN(result[i])) check = false;
+                        if (Double.isNaN(result[i])) {
+                            check = false;
+                        }
                     }
                     if (!check) {
                         System.out.println("Boltzman Normation created major error (const+feasible)!");
@@ -124,23 +138,29 @@ public class SelProbBoltzman extends AbstractSelProb implements java.io.Serializ
                     dev += Math.pow((result[i]-mean), 2);
                 }
                 dev = Math.sqrt(dev/(data.length-1));
-                if (dev < 0.0000001) dev = 0.0000001;
+                if (dev < 0.0000001) {
+                    dev = 0.0000001;
+                }
                 sum = 0;
                 for (int i = 0; i < data.length; i++) {
                     result[i] = Math.exp((this.m_Q*-((AbstractEAIndividual)population.get(i)).getConstraintViolation())/dev);
                     sum += result[i];
                 }
 
-                if (sum == 0) for (int i = 0; i < data.length; i++) {
-                    result[i] = 1/result.length;
-                }
-                else for (int i = 0; i < data.length; i++) {
-                    result[i] /= sum;
-                }
+                if (sum == 0) {
+                    for (int i = 0; i < data.length; i++) {
+          result[i] = 1/result.length;
+      }         }
+                else {
+                    for (int i = 0; i < data.length; i++) {
+                   result[i] /= sum;
+               }}
 
                 boolean check = true;
                 for (int i = 0; i < data.length; i++) {
-                    if (Double.isNaN(result[i])) check = false;
+                    if (Double.isNaN(result[i])) {
+                        check = false;
+                    }
                 }
                 if (!check) {
                     System.out.println("Boltzman Normation created major error (const, but no feasible)!");
@@ -167,23 +187,29 @@ public class SelProbBoltzman extends AbstractSelProb implements java.io.Serializ
                     dev += Math.pow((result[i]-mean), 2);
                 }
                 dev = Math.sqrt(dev/(data.length-1));
-                if (dev < 0.0000001) dev = 0.0000001;
+                if (dev < 0.0000001) {
+                    dev = 0.0000001;
+                }
                 sum = 0;
                 for (int i = 0; i < data.length; i++) {
                     result[i] = Math.exp((this.m_Q*-data[i][x])/dev);
                     sum += result[i];
                 }
 
-                if (sum == 0) for (int i = 0; i < data.length; i++) {
-                    result[i] = 1/result.length;
-                }
-                else for (int i = 0; i < data.length; i++) {
-                    result[i] /= sum;
-                }
+                if (sum == 0) {
+                    for (int i = 0; i < data.length; i++) {
+          result[i] = 1/result.length;
+      }         }
+                else {
+                    for (int i = 0; i < data.length; i++) {
+                   result[i] /= sum;
+               }}
 
                 boolean check = true;
                 for (int i = 0; i < data.length; i++) {
-                    if (Double.isNaN(result[i])) check = false;
+                    if (Double.isNaN(result[i])) {
+                        check = false;
+                    }
                 }
                 if (!check) {
                     System.out.println("Boltzman Normation created major error (no const)!");

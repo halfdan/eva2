@@ -62,7 +62,9 @@ Serializable {
 	public boolean isTerminated(PopulationInterface Pop) {
 		double[] fit = Pop.getBestFitness();
 		for (int i = 0; i < fit.length; i++) {
-			if (m_FitnessValue[i]<fit[i]) return false;
+			if (m_FitnessValue[i]<fit[i]) {
+                        return false;
+                    }
 		}
 		msg = "Fitness value reached " + BeanInspector.toString(m_FitnessValue);	
 		return true;

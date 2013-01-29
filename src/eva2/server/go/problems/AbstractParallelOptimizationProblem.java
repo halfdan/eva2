@@ -24,7 +24,9 @@ public abstract class AbstractParallelOptimizationProblem extends AbstractOptimi
         if (this.m_Parallelize) {
             // this is running on remote maschines
             String[] nodesList = this.m_Servers.getCheckedServerNodes();
-            if ((nodesList == null) || (nodesList.length == 0)) return;
+            if ((nodesList == null) || (nodesList.length == 0)) {
+                return;
+            }
             this.m_Slaves = new AbstractOptimizationProblem[nodesList.length];
             for (int i = 0; i < nodesList.length; i++) {
                 this.m_Slaves[i] = (AbstractOptimizationProblem) RMIProxyRemoteThread.newInstance(this, nodesList[i]);

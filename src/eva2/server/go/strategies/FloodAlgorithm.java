@@ -147,9 +147,13 @@ public class FloodAlgorithm implements InterfaceOptimizer, java.io.Serializable 
         for (int i = 0; i < m_FitnessCalls; i++) {
             this.m_Test = (GAIndividualBinaryData)((this.m_Best).clone());
             this.m_Test.defaultMutate();
-            if (this.m_Test.defaultEvaulateAsMiniBits() < this.m_Best.defaultEvaulateAsMiniBits()) this.m_Best = this.m_Test;
+            if (this.m_Test.defaultEvaulateAsMiniBits() < this.m_Best.defaultEvaulateAsMiniBits()) {
+                this.m_Best = this.m_Test;
+            }
             this.m_FitnessCallsNeeded = i;
-            if (this.m_Best.defaultEvaulateAsMiniBits() == 0) i = this.m_FitnessCalls +1;
+            if (this.m_Best.defaultEvaulateAsMiniBits() == 0) {
+                i = this.m_FitnessCalls +1;
+            }
         }
     }
 
@@ -184,12 +188,16 @@ public class FloodAlgorithm implements InterfaceOptimizer, java.io.Serializable 
 		if (m_Listener==ea) {
 			m_Listener=null;
 			return true;
-		} else return false;
+		} else {
+                                return false;
+                            }
 	}
     /** Something has changed
      */
     protected void firePropertyChangedEvent (String name) {
-        if (this.m_Listener != null) this.m_Listener.registerPopulationStateChanged(this, name);
+        if (this.m_Listener != null) {
+            this.m_Listener.registerPopulationStateChanged(this, name);
+        }
     }
 
     /** This method will return a string describing all properties of the optimizer
@@ -199,8 +207,12 @@ public class FloodAlgorithm implements InterfaceOptimizer, java.io.Serializable 
     @Override
     public String getStringRepresentation() {
         String result = "";
-        if (this.m_Population.size() > 1) result += "Multi(" + this.m_Population.size() + ")-Start Hill Climbing:\n";
-        else result += "Simulated Annealing:\n";
+        if (this.m_Population.size() > 1) {
+            result += "Multi(" + this.m_Population.size() + ")-Start Hill Climbing:\n";
+        }
+        else {
+            result += "Simulated Annealing:\n";
+        }
         result += "Optimization Problem: ";
         result += this.m_Problem.getStringRepresentationForProblem(this) +"\n";
         result += this.m_Population.getStringRepresentation();
@@ -287,7 +299,9 @@ public class FloodAlgorithm implements InterfaceOptimizer, java.io.Serializable 
     }
     public void setDrainRate(double a){
         this.m_DrainRate = a;
-        if (this.m_DrainRate < 0) this.m_DrainRate = 0.0;
+        if (this.m_DrainRate < 0) {
+            this.m_DrainRate = 0.0;
+        }
     }
     public String drainRateTipText() {
         return "Set the drain rate that reduces the current flood level each generation.";

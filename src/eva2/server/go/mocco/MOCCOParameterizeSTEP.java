@@ -129,8 +129,12 @@ public class MOCCOParameterizeSTEP extends MOCCOPhase implements InterfaceProces
             gbc.gridx       = 1;
             gbc.gridy       = i+1;
             gbc.weightx     = 1;
-            if (obj[i].is2BMinimized()) panelSTEP.add(new JLabel("min"), gbc);
-            else panelSTEP.add(new JLabel("max"), gbc);
+            if (obj[i].is2BMinimized()) {
+                panelSTEP.add(new JLabel("min"), gbc);
+            }
+            else {
+                panelSTEP.add(new JLabel("max"), gbc);
+            }
             gbc.gridx       = 2;
             gbc.gridy       = i+1;
             this.m_RefSol[i] = new JTextField(""+((Double)m_RefSolution.getData(obj[i].getIdentName())).doubleValue());
@@ -144,8 +148,12 @@ public class MOCCOParameterizeSTEP extends MOCCOPhase implements InterfaceProces
             gbc.gridx       = 4;
             gbc.gridy       = i+1;
             this.m_Weight[i] = new JTextField("1.0");
-            if (obj[i].getOptimizationMode().contains("Objective")) this.m_Weight[i].setEditable(true);
-            else this.m_Weight[i].setEditable(false);
+            if (obj[i].getOptimizationMode().contains("Objective")) {
+                this.m_Weight[i].setEditable(true);
+            }
+            else {
+                this.m_Weight[i].setEditable(false);
+            }
             //this.m_Satisfied[i].addActionListener(valueChanged);
             panelSTEP.add(this.m_Weight[i], gbc);
             gbc.gridx       = 5;
@@ -172,12 +180,17 @@ public class MOCCOParameterizeSTEP extends MOCCOPhase implements InterfaceProces
         try {
             this.m_EOpt.m_Value      = this.m_Opt;
             this.m_EOpt.m_Editor     = PropertyEditorProvider.findEditor(this.m_EOpt.m_Value.getClass());
-            if (this.m_EOpt.m_Editor == null) this.m_EOpt.m_Editor = PropertyEditorProvider.findEditor(InterfaceOptimizer.class);
-            if (this.m_EOpt.m_Editor instanceof GenericObjectEditor)
+            if (this.m_EOpt.m_Editor == null) {
+                this.m_EOpt.m_Editor = PropertyEditorProvider.findEditor(InterfaceOptimizer.class);
+            }
+            if (this.m_EOpt.m_Editor instanceof GenericObjectEditor) {
                 ((GenericObjectEditor) this.m_EOpt.m_Editor).setClassType(InterfaceOptimizer.class);
+            }
             this.m_EOpt.m_Editor.setValue(this.m_EOpt.m_Value);
             AbstractObjectEditor.findViewFor(this.m_EOpt);
-            if (this.m_EOpt.m_View != null) this.m_EOpt.m_View.repaint();
+            if (this.m_EOpt.m_View != null) {
+                this.m_EOpt.m_View.repaint();
+            }
         } catch (Exception e) {
             System.out.println("Darn can't read the value...");
         }
@@ -195,12 +208,17 @@ public class MOCCOParameterizeSTEP extends MOCCOPhase implements InterfaceProces
         try {
             editor.m_Value      = this.m_Mocco.m_State.m_Terminator;
             editor.m_Editor     = PropertyEditorProvider.findEditor(editor.m_Value.getClass());
-            if (editor.m_Editor == null) editor.m_Editor = PropertyEditorProvider.findEditor(InterfaceTerminator.class);
-            if (editor.m_Editor instanceof GenericObjectEditor)
+            if (editor.m_Editor == null) {
+                editor.m_Editor = PropertyEditorProvider.findEditor(InterfaceTerminator.class);
+            }
+            if (editor.m_Editor instanceof GenericObjectEditor) {
                 ((GenericObjectEditor) editor.m_Editor).setClassType(InterfaceTerminator.class);
+            }
             editor.m_Editor.setValue(editor.m_Value);
             AbstractObjectEditor.findViewFor(editor);
-            if (editor.m_View != null) editor.m_View.repaint();
+            if (editor.m_View != null) {
+                editor.m_View.repaint();
+            }
         } catch (Exception e) {
             System.out.println("Darn can't read the value...");
         }
@@ -318,7 +336,9 @@ public class MOCCOParameterizeSTEP extends MOCCOPhase implements InterfaceProces
         System.out.println("obj.length = " + obj.length);
         System.out.println("d.length   = " + d.length);
         for (int i = 0; i < obj.length; i++) {
-            if (obj[i].getOptimizationMode().contains("Objective")) tmpA.add(new Double(d[i]));
+            if (obj[i].getOptimizationMode().contains("Objective")) {
+                tmpA.add(new Double(d[i]));
+            }
         }
 
         double[] result = new double[tmpA.size()];

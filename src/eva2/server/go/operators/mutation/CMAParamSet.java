@@ -134,7 +134,9 @@ class CMAParamSet implements InterfacePopulationChangedEventListener, Serializab
 		params.d_sig = params.c_sig+1+2*Math.max(0, Math.sqrt((muEff-1)/(dim+1)) - 1);
 		
 		if (initialSigma<0) { // this means we scale the average range
-			if (initialSigma!=-0.25 && (initialSigma!=-0.5)) EVAERROR.errorMsgOnce("Warning, unexpected initial sigma in CMAParamSet!");
+			if (initialSigma!=-0.25 && (initialSigma!=-0.5)) {
+                        EVAERROR.errorMsgOnce("Warning, unexpected initial sigma in CMAParamSet!");
+                    }
 			initialSigma = -initialSigma*Mathematics.getAvgRange(params.range);
 		}
 		if (initialSigma <= 0) {
@@ -167,7 +169,9 @@ class CMAParamSet implements InterfacePopulationChangedEventListener, Serializab
 		for (int i=0; i<mu; i++) {
 			if (type == 0) {
 				theWeights[i] = (Math.log((lambda+1)/2.)-Math.log(i+1));
-			} else theWeights[i] = 1.;
+			} else {
+                        theWeights[i] = 1.;
+                    }
 			sum+=theWeights[i];
 		}
 		for (int i=0; i<mu; i++) {
@@ -214,7 +218,9 @@ class CMAParamSet implements InterfacePopulationChangedEventListener, Serializab
 	public void registerPopulationStateChanged(Object source, String name) {
 		if (name.equals(Population.populationInitialized)) {
 			Population pop = (Population)source;
-			if (MutateESRankMuCMA.TRACE_1) System.out.println("Event " + name + " arrived in CMAParamSet!!!");
+			if (MutateESRankMuCMA.TRACE_1) {
+                        System.out.println("Event " + name + " arrived in CMAParamSet!!!");
+                    }
 			CMAParamSet params = (CMAParamSet)(pop.getData(MutateESRankMuCMA.cmaParamsKey));
 			int mu;
 			if (pop.hasData(EvolutionStrategies.esMuParam)) {

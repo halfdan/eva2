@@ -93,7 +93,9 @@ public class StandardDeactivationStrategy implements InterfaceDeactivationStrate
 		if (!subswarm.isActive()){
 			return false;
 		}
-		if (subswarm.getFitnessArchiveSize()<stdDevHorizon) EVAERROR.errorMsgOnce("Warning: halting window length " + stdDevHorizon + " too long for sub swarm template, which stores only " + subswarm.getFitnessArchiveSize() + " fitness values!");
+		if (subswarm.getFitnessArchiveSize()<stdDevHorizon) {
+                EVAERROR.errorMsgOnce("Warning: halting window length " + stdDevHorizon + " too long for sub swarm template, which stores only " + subswarm.getFitnessArchiveSize() + " fitness values!");
+            }
 		return (areAllConverged(subswarm.getPopulation()));
 	}
 	

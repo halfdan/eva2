@@ -33,8 +33,12 @@ public class MutateGPSingleNode implements InterfaceMutation, java.io.Serializab
      */
     @Override
     public boolean equals(Object mutator) {
-        if (mutator instanceof MutateGPSingleNode) return true;
-        else return false;
+        if (mutator instanceof MutateGPSingleNode) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     /** This method allows you to init the mutation operator

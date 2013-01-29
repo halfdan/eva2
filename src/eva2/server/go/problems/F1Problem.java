@@ -121,6 +121,8 @@ public class F1Problem extends AbstractProblemDoubleOffset implements Interface2
 			}
 //			System.out.println(BeanInspector.toString(initR));
 			return initR;
-		} else return makeRange();
+		} else {
+                return makeRange();
+            }
 	}
 }

@@ -41,8 +41,12 @@ public class ParameterControlManager implements InterfaceParameterControl, Seria
 	}
 	
 	public ParameterControlManager(ParameterControlManager o) {
-		if (o.initialValues!=null) initialValues = o.initialValues.clone();
-		else initialValues=null;
+		if (o.initialValues!=null) {
+                initialValues = o.initialValues.clone();
+            }
+		else {
+                initialValues=null;
+            }
 		if (o.singleAdapters != null) {
 			singleAdapters = new ParamAdaption[o.singleAdapters.length];
 			for (int i=0; i<singleAdapters.length; i++) {
@@ -102,12 +106,16 @@ public class ParameterControlManager implements InterfaceParameterControl, Seria
 		Object[] vals = getValues(obj, pop, iteration, maxIteration);
 		for (int i=0; i<params.length; i++) {
 			Object oldVal=BeanInspector.getMem(obj, params[i]);
-			if (oldVal==null) System.err.println("Error, unable to compare old and new value (ParameterControlManager");
+			if (oldVal==null) {
+                        System.err.println("Error, unable to compare old and new value (ParameterControlManager");
+                    }
 			if (!BeanInspector.setMem(obj, params[i], vals[i])) {
 				System.err.println("Error: failed to set parameter from parameter control " + this.getClass().getName());;
 				System.err.println("  Tried to set name/val: " + params[i] + " / " + BeanInspector.toString(vals[i]));
 			} else {
-				if (TRACE) System.out.println("Successfully set " + params[i] + " / " + BeanInspector.toString(vals[i]) + " at " + iteration);
+				if (TRACE) {
+                                System.out.println("Successfully set " + params[i] + " / " + BeanInspector.toString(vals[i]) + " at " + iteration);
+                            }
 //				if (!oldVal.equals(vals[i])) {
 //					if (obj instanceof InterfaceParamControllable) ((InterfaceParamControllable)obj).notifyParamChanged(params[i], oldVal, vals[i]);
 //				}
@@ -135,10 +143,14 @@ public class ParameterControlManager implements InterfaceParameterControl, Seria
 			Vector<String> names = new Vector<String>(singleAdapters.length);
 			for (int i = 0; i < singleAdapters.length; i++) {
 				String prm=singleAdapters[i].getControlledParam();
-				if (prm!=null) names.add(prm);
+				if (prm!=null) {
+                                names.add(prm);
+                            }
 			}
 			return names.toArray(new String[names.size()]);
-		} else return null;
+		} else {
+                return null;
+            }
 	}
 
 	/**
@@ -157,7 +169,9 @@ public class ParameterControlManager implements InterfaceParameterControl, Seria
 				vals[i]=singleAdapters[i].calcValue(obj, pop, iteration, maxIteration);
 			}
 			return vals;
-		} else return null;
+		} else {
+                return null;
+            }
 	}
 
 	public ParamAdaption[] getSingleAdapters() {
@@ -174,7 +188,9 @@ public class ParameterControlManager implements InterfaceParameterControl, Seria
 	 * @param pa
 	 */
 	public void addSingleAdapter(ParamAdaption pa) {
-		if (singleAdapters==null) setSingleAdapters(new ParamAdaption[]{pa});
+		if (singleAdapters==null) {
+                setSingleAdapters(new ParamAdaption[]{pa});
+            }
 		else {
 			ParamAdaption[] newP = new ParamAdaption[singleAdapters.length+1];
 			for (int i=0; i<singleAdapters.length; i++) {
@@ -211,7 +227,9 @@ public class ParameterControlManager implements InterfaceParameterControl, Seria
 		for (int i=0; i<objs.length; i++) {
 			if (objs[i]!=null) {
 				// TODO avoid hasMethod recreate some interface for this??
-				if (BeanInspector.hasMethod(objs[i], "getParamControl", null)!=null) controllables.add(objs[i]);
+				if (BeanInspector.hasMethod(objs[i], "getParamControl", null)!=null) {
+                                controllables.add(objs[i]);
+                            }
 			}
 		}
 		return controllables;

@@ -70,7 +70,9 @@ public class PopulationBasedIncrementalLearning implements InterfaceOptimizer, j
         if ((m_initialProbabilities!=null) && (m_initialProbabilities.length==((PBILPopulation)m_Population).getProbabilityVector().length)) {
         	((PBILPopulation)m_Population).setProbabilityVector(m_initialProbabilities);
         } else {
-        	if (m_initialProbabilities!=null) System.err.println("Warning: initial probability vector doesnt match in length!");
+        	if (m_initialProbabilities!=null) {
+                System.err.println("Warning: initial probability vector doesnt match in length!");
+            }
         }
         this.evaluatePopulation(this.m_Population);
         this.firePropertyChangedEvent(Population.nextGenerationPerformed);
@@ -165,12 +167,16 @@ public class PopulationBasedIncrementalLearning implements InterfaceOptimizer, j
 		if (m_Listener==ea) {
 			m_Listener=null;
 			return true;
-		} else return false;
+		} else {
+                                return false;
+                            }
 	}
     /** Something has changed
      */
     protected void firePropertyChangedEvent (String name) {
-        if (this.m_Listener != null) this.m_Listener.registerPopulationStateChanged(this, name);
+        if (this.m_Listener != null) {
+            this.m_Listener.registerPopulationStateChanged(this, name);
+        }
     }
 
     /** This method will return a string describing all properties of the optimizer
@@ -287,7 +293,9 @@ public class PopulationBasedIncrementalLearning implements InterfaceOptimizer, j
      */
     public void setLearningRate (double LearningRate) {
         this.m_LearningRate = LearningRate;
-        if (this.m_LearningRate < 0) this.m_LearningRate = 0;
+        if (this.m_LearningRate < 0) {
+            this.m_LearningRate = 0;
+        }
     }
     public double getLearningRate() {
         return this.m_LearningRate;
@@ -301,8 +309,12 @@ public class PopulationBasedIncrementalLearning implements InterfaceOptimizer, j
      */
     public void setMutationRate (double m) {
         this.m_MutationRate = m;
-        if (this.m_MutationRate < 0) this.m_MutationRate = 0;
-        if (this.m_MutationRate > 1) this.m_MutationRate = 1;
+        if (this.m_MutationRate < 0) {
+            this.m_MutationRate = 0;
+        }
+        if (this.m_MutationRate > 1) {
+            this.m_MutationRate = 1;
+        }
      }
     public double getMutationRate() {
         return this.m_MutationRate;
@@ -316,7 +328,9 @@ public class PopulationBasedIncrementalLearning implements InterfaceOptimizer, j
      */
     public void setMutateSigma (double m) {
         this.m_MutateSigma = m;
-        if (this.m_MutateSigma < 0) this.m_MutateSigma = 0;
+        if (this.m_MutateSigma < 0) {
+            this.m_MutateSigma = 0;
+        }
     }
     public double getMutateSigma() {
         return this.m_MutateSigma;
@@ -330,7 +344,9 @@ public class PopulationBasedIncrementalLearning implements InterfaceOptimizer, j
      */
     public void setPositiveSamples (int PositiveSamples) {
         this.m_NumberOfPositiveSamples = PositiveSamples;
-        if (this.m_NumberOfPositiveSamples < 1) this.m_NumberOfPositiveSamples = 1;
+        if (this.m_NumberOfPositiveSamples < 1) {
+            this.m_NumberOfPositiveSamples = 1;
+        }
     }
     public int getPositiveSamples() {
         return this.m_NumberOfPositiveSamples;

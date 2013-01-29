@@ -73,8 +73,12 @@ public class MutateESRankMuCMA implements InterfaceAdaptOperatorGenerational, In
 	
 	public static double[] getMeanXOfPop(Population pop) {
 		CMAParamSet params = (CMAParamSet)pop.getData(MutateESRankMuCMA.cmaParamsKey);
-		if (params==null) return null;
-		else return params.meanX;
+		if (params==null) {
+                return null;
+            }
+		else {
+                return params.meanX;
+            }
 	}
 
 	/**
@@ -117,8 +121,12 @@ public class MutateESRankMuCMA implements InterfaceAdaptOperatorGenerational, In
 		int generation = oldGen.getGeneration();
 		if (mu >= lambda) {
 			// try to override by oldGen additional data:
-			if (oldGen.hasData(EvolutionStrategies.esMuParam)) mu=(Integer) oldGen.getData(EvolutionStrategies.esMuParam);
-			if (oldGen.hasData(EvolutionStrategies.esLambdaParam)) lambda=(Integer) oldGen.getData(EvolutionStrategies.esLambdaParam);
+			if (oldGen.hasData(EvolutionStrategies.esMuParam)) {
+                        mu=(Integer) oldGen.getData(EvolutionStrategies.esMuParam);
+                    }
+			if (oldGen.hasData(EvolutionStrategies.esLambdaParam)) {
+                        lambda=(Integer) oldGen.getData(EvolutionStrategies.esLambdaParam);
+                    }
 		}
 		if (mu >= lambda) {
 			mu = Math.max(1,lambda/2);
@@ -126,13 +134,21 @@ public class MutateESRankMuCMA implements InterfaceAdaptOperatorGenerational, In
 		}
 		CMAParamSet params;
 		if (oldGen.getGeneration() <= 1) { // init new param set. At gen < 1 we shouldnt be called, but better do it once too often
-			if (oldGen.hasData(cmaParamsKey)) params = CMAParamSet.initCMAParams((CMAParamSet)oldGen.getData(cmaParamsKey), mu, lambda, oldGen, getInitSigma(oldGen));
-			else params = CMAParamSet.initCMAParams(mu, lambda, oldGen, getInitSigma(oldGen));			
+			if (oldGen.hasData(cmaParamsKey)) {
+                        params = CMAParamSet.initCMAParams((CMAParamSet)oldGen.getData(cmaParamsKey), mu, lambda, oldGen, getInitSigma(oldGen));
+                    }
+			else {
+                        params = CMAParamSet.initCMAParams(mu, lambda, oldGen, getInitSigma(oldGen));
+                    }			
 		} else {
 			if (!oldGen.hasData(cmaParamsKey)) {
-				if (oldGen.getGeneration() > 1) EVAERROR.errorMsgOnce("Error: population lost cma parameters. Incompatible optimizer?");
+				if (oldGen.getGeneration() > 1) {
+                                EVAERROR.errorMsgOnce("Error: population lost cma parameters. Incompatible optimizer?");
+                            }
 				params = CMAParamSet.initCMAParams(mu, lambda, oldGen, getInitSigma(oldGen));
-			} else params = (CMAParamSet)oldGen.getData(cmaParamsKey);
+			} else {
+                        params = (CMAParamSet)oldGen.getData(cmaParamsKey);
+                    }
 		}
 
 		if (lambda==1 && (oldGen.size()==1) && (selectedP.size()==1) && (oldGen.getEAIndividual(0).equals(selectedP.getEAIndividual(0)))) {
@@ -152,7 +168,9 @@ public class MutateESRankMuCMA implements InterfaceAdaptOperatorGenerational, In
 		}
 
 		double[] newMeanX = calcMeanX(params.weights, selectedSorted);
-		if (TRACE_1) System.out.println("newMeanX:  " + BeanInspector.toString(newMeanX));
+		if (TRACE_1) {
+                System.out.println("newMeanX:  " + BeanInspector.toString(newMeanX));
+            }
 		
 		int dim=params.meanX.length;
         double[] BDz = new double[dim];
@@ -219,19 +237,29 @@ public class MutateESRankMuCMA implements InterfaceAdaptOperatorGenerational, In
 			System.out.println("newPathS: " + BeanInspector.toString(newPathS));
 		}
 
-		if (TRACE_1) System.out.println("Bef: C is \n" + params.mC.toString());
-		if (params.meanX == null) params.meanX = newMeanX;
+		if (TRACE_1) {
+                System.out.println("Bef: C is \n" + params.mC.toString());
+            }
+		if (params.meanX == null) {
+                params.meanX = newMeanX;
+            }
 		
 		updateCov(params, newPathC, newMeanX, hsig, mu, selectedSorted);
 		updateBD(params);
 			
-		if (TRACE_2) System.out.println("Aft: C is " + params.mC.toString());
+		if (TRACE_2) {
+                System.out.println("Aft: C is " + params.mC.toString());
+            }
 
         /* update of sigma */
 		double sigFact = Math.exp(((psNorm / expRandStepLen) - 1) * params.c_sig
                 / params.d_sig);
-		if (Double.isInfinite(sigFact)) params.sigma *= 10.; // in larger search spaces sigma tends to explode after init.  
-		else params.sigma *= sigFact;
+		if (Double.isInfinite(sigFact)) {
+                params.sigma *= 10.;
+            } // in larger search spaces sigma tends to explode after init.  
+		else {
+                params.sigma *= sigFact;
+            }
 
 		if (!testAndCorrectNumerics(params, generation, selectedSorted)) {
 			// parameter seemingly exploded...
@@ -264,8 +292,12 @@ public class MutateESRankMuCMA implements InterfaceAdaptOperatorGenerational, In
 			Population newPop, boolean updateSelected) {
 		// nothing to do? Oh yes, we can easily transfer the cma-params from the old to the new population. 
 		if (!newPop.hasData(cmaParamsKey)) {
-			if (!oldPop.hasData(cmaParamsKey)) System.err.println("warning: no cma param set found (MutateESRankMuCMA!");
-			else newPop.putData(cmaParamsKey, oldPop.getData(cmaParamsKey));
+			if (!oldPop.hasData(cmaParamsKey)) {
+                        System.err.println("warning: no cma param set found (MutateESRankMuCMA!");
+                    }
+			else {
+                        newPop.putData(cmaParamsKey, oldPop.getData(cmaParamsKey));
+                    }
 		}
 		//newPop.addData(cmaParamsKey, oldPop.getData(cmaParamsKey));
 		//newPop.addPopulationChangedEventListener(this); // listen to every population to be informed about reinit events
@@ -285,7 +317,9 @@ public class MutateESRankMuCMA implements InterfaceAdaptOperatorGenerational, In
     	if (iterations > 1 && (selected.size()>1)) {
     		// selected pop is sorted
     		if (nearlySame(selected.getEAIndividual(0).getFitness(),selected.getEAIndividual(selected.size()-1).getFitness())) {
-    			if (TRACE_1) System.err.println("flat fitness landscape, consider reformulation of fitness, step-size increased");
+    			if (TRACE_1) {
+                        System.err.println("flat fitness landscape, consider reformulation of fitness, step-size increased");
+                    }
     			params.sigma *= Math.exp(0.2+params.c_sig/params.d_sig);
 //    			sigma=0.1;
     		}
@@ -304,10 +338,12 @@ public class MutateESRankMuCMA implements InterfaceAdaptOperatorGenerational, In
     	double fac = 1.;
     	double minEig = 1e-12;
     	double maxEig = 1e8;
-    	if (Mathematics.max(params.eigenvalues) < minEig) 
-    		fac = 1./Math.sqrt(Mathematics.max(params.eigenvalues));
-    	else if (Mathematics.min(params.eigenvalues) > maxEig)
-    		fac = 1./Math.sqrt(Mathematics.min(params.eigenvalues));
+    	if (Mathematics.max(params.eigenvalues) < minEig) {
+            fac = 1./Math.sqrt(Mathematics.max(params.eigenvalues));
+        }
+    	else if (Mathematics.min(params.eigenvalues) > maxEig) {
+            fac = 1./Math.sqrt(Mathematics.min(params.eigenvalues));
+        }
 
     	if (fac != 1.) {
 //    		System.err.println("Scaling by " + fac);
@@ -317,7 +353,9 @@ public class MutateESRankMuCMA implements InterfaceAdaptOperatorGenerational, In
     			params.eigenvalues[i] *= fac*fac;
     			for (int j = 0; j <= i; ++j) {
     				params.mC.set(i, j, params.mC.get(i,j)*fac*fac);
-    				if (i!=j) params.mC.set(j, i, params.mC.get(i,j));
+    				if (i!=j) {
+                                params.mC.set(j, i, params.mC.get(i,j));
+                            }
     			}
     		}
     	}
@@ -327,7 +365,9 @@ public class MutateESRankMuCMA implements InterfaceAdaptOperatorGenerational, In
 	private boolean nearlySame(double[] bestFitness, double[] worstFitness) {
 		double epsilon = 1e-14;
 		for (int i=0; i<bestFitness.length; i++) {
-            if (Math.abs(bestFitness[i]-worstFitness[i])>epsilon) return false;
+            if (Math.abs(bestFitness[i]-worstFitness[i])>epsilon) {
+                        return false;
+                    }
         }
 		return true;
 	}
@@ -571,7 +611,9 @@ public class MutateESRankMuCMA implements InterfaceAdaptOperatorGenerational, In
 			((InterfaceDataTypeDouble)individual).SetDoubleGenotype(mutate(lastParams, x, range, 0));
 			
 //			if (TRACE) System.out.println("WCMA mutate, aft: " + BeanInspector.toString(x));
-		} else System.err.println("Error, expecting InterfaceDataTypeDouble");
+		} else {
+                System.err.println("Error, expecting InterfaceDataTypeDouble");
+            }
 	}
 
 	private double[] mutate(CMAParamSet params, double[] x, double[][] range, int count) {
@@ -585,7 +627,9 @@ public class MutateESRankMuCMA implements InterfaceAdaptOperatorGenerational, In
 			double[] sampl = new double[dim]; // generate scaled random vector (D * z)
 			for (int i = 0; i < dim; ++i) {
 				sampl[i] = Math.sqrt(params.eigenvalues[i]) * RNG.gaussianDouble(1.);
-				if (Double.isNaN(sampl[i])) sampl[i]=0;
+				if (Double.isNaN(sampl[i])) {
+                                sampl[i]=0;
+                            }
 			}
 			//			System.out.println("Sampling around " + BeanInspector.toString(meanX));
 			/* add mutation (sigma * B * (D*z)) */
@@ -609,7 +653,9 @@ public class MutateESRankMuCMA implements InterfaceAdaptOperatorGenerational, In
 					r=0;
 				} else {
 					r=RNG.randomDouble(-0.5, 0.5);
-					if (Math.abs(r)<0.5) r+=Math.signum(r)*0.5; // r is in [-1,-0.5] or [0.5,1]
+					if (Math.abs(r)<0.5) {
+                                        r+=Math.signum(r)*0.5;
+                                    } // r is in [-1,-0.5] or [0.5,1]
 				}
 //				System.out.println("Reducing step by " + r + " for " + BeanInspector.toString(params.meanX));
 				Mathematics.svMult(r, sampl, sampl);
@@ -627,7 +673,9 @@ public class MutateESRankMuCMA implements InterfaceAdaptOperatorGenerational, In
 		if (!Mathematics.isInRange(params.meanX, range)) {
 			System.err.println("Error B in MutateESRankMuCMA.mutate !");
 		}
-		if (TRACE_1) System.out.println("mutated indy: " + BeanInspector.toString(x));
+		if (TRACE_1) {
+                System.out.println("mutated indy: " + BeanInspector.toString(x));
+            }
 		return x;
 	}
 	
@@ -647,14 +695,20 @@ public class MutateESRankMuCMA implements InterfaceAdaptOperatorGenerational, In
 		int dim = range.length;
 		int maxRetries;
 
-		if (checkRange) maxRetries = 100*dim;
-		else maxRetries = 0; // take the first sample, not matter in or out of range
+		if (checkRange) {
+                maxRetries = 100*dim;
+            }
+		else {
+                maxRetries = 0;
+            } // take the first sample, not matter in or out of range
 		do { // this is a loop in case that the range needs to be checked and the current sampling fails to keep the range
 			if (params!=null && (params.firstAdaptionDone)) {
 				double[] sampl = new double[dim]; // generate scaled random vector (D * z)
 				for (int i = 0; i < dim; ++i) {
 					sampl[i] = Math.sqrt(params.eigenvalues[i]) * RNG.gaussianDouble(1.);
-					if (Double.isNaN(sampl[i])) sampl[i]=0;
+					if (Double.isNaN(sampl[i])) {
+                                        sampl[i]=0;
+                                    }
 				}
 				//			System.out.println("Sampling around " + BeanInspector.toString(meanX));
 				/* add mutation (sigma * B * (D*z)) */
@@ -676,8 +730,12 @@ public class MutateESRankMuCMA implements InterfaceAdaptOperatorGenerational, In
 				}
 			}
 		} while ((maxRetries--)>0 && !(Mathematics.isInRange(x, range)));
-		if (checkRange && !(Mathematics.isInRange(x, range))) return repairMutation(x, range); // allow some nice tries before using brute force
-		else return x;
+		if (checkRange && !(Mathematics.isInRange(x, range))) {
+                return repairMutation(x, range);
+            } // allow some nice tries before using brute force
+		else {
+                return x;
+            }
 	}
 	
 	private double[] repairMutation(double[] x, double[][] range) {
@@ -734,7 +792,11 @@ public class MutateESRankMuCMA implements InterfaceAdaptOperatorGenerational, In
 			res = res && (getSigma(params, i)*Math.max(Math.abs(params.pathC[i]), Math.sqrt(params.mC.get(i,i))) < tolX);
 			i++;
 		}
-		if (TRACE_TEST) if (res) System.out.println("testAllDistBelow hit");
+		if (TRACE_TEST) {
+                if (res) {
+                    System.out.println("testAllDistBelow hit");
+                }
+            }
 		return res;
 	}
 
@@ -760,7 +822,11 @@ public class MutateESRankMuCMA implements InterfaceAdaptOperatorGenerational, In
 			res = res && (params.meanX[i] == (params.meanX[i] + d*getSigma(params, i)*ev_k[i]));
 			i++;
 		}
-		if (TRACE_TEST) if (res) System.out.println("testNoChangeAddingDevAxis hit");
+		if (TRACE_TEST) {
+                if (res) {
+                    System.out.println("testNoChangeAddingDevAxis hit");
+                }
+            }
 		return res;
 	}
 
@@ -779,7 +845,11 @@ public class MutateESRankMuCMA implements InterfaceAdaptOperatorGenerational, In
 			ret = ret || (params.meanX[i]==(params.meanX[i] + d*getSigma(params, i)*Math.sqrt(params.mC.get(i, i))));
 			i++;
 		}
-		if (TRACE_TEST) if (ret) System.out.println("testNoEffectCoord hit");
+		if (TRACE_TEST) {
+                if (ret) {
+                    System.out.println("testNoEffectCoord hit");
+                }
+            }
 		return ret;
 	}
 
@@ -796,9 +866,13 @@ public class MutateESRankMuCMA implements InterfaceAdaptOperatorGenerational, In
 		CMAParamSet params = (CMAParamSet)pop.getData(cmaParamsKey);
 		Pair<Double,Double> minMax = params.mC.getMinMaxDiag();
 		if ((minMax.head <= 0) || (minMax.tail >= d)) {		
-			if (TRACE_TEST) System.out.println("testCCondition hit");
+			if (TRACE_TEST) {
+                        System.out.println("testCCondition hit");
+                    }
 			return true;
-		} else return false;
+		} else {
+                return false;
+            }
 	}
 
 	/**

@@ -69,7 +69,9 @@ class SimpleView extends JComponent implements InterfaceRefPointListener {
             } else {
                 int index = 0;
                 for (int i = 0; i < this.m_Obj1; i++) {
-                    if (!tmpObj[i].getOptimizationMode().equalsIgnoreCase("Constraint")) index++;
+                    if (!tmpObj[i].getOptimizationMode().equalsIgnoreCase("Constraint")) {
+                        index++;
+                    }
 
                 }
 //                System.out.println("obj 1 is accessing fitness of " + tmpObj[this.m_Obj1].getIdentName() + " using " +index);
@@ -81,7 +83,9 @@ class SimpleView extends JComponent implements InterfaceRefPointListener {
             } else {
                 int index = 0;
                 for (int i = 0; i < this.m_Obj2; i++) {
-                    if (!tmpObj[i].getOptimizationMode().equalsIgnoreCase("Constraint")) index++;
+                    if (!tmpObj[i].getOptimizationMode().equalsIgnoreCase("Constraint")) {
+                        index++;
+                    }
                 }
 //                System.out.println("obj 2 is accessing fitness of " + tmpObj[this.m_Obj2].getIdentName() + " using " +index);
 //                System.out.println(" fitness.length = " + indy.getFitness().length);
@@ -123,21 +127,35 @@ class SimpleView extends JComponent implements InterfaceRefPointListener {
                     plotValue = this.fetchPlotValueFor((AbstractEAIndividual)pf.get(i));
                     point = new DPoint(plotValue[0], plotValue[1]);
                     icon = new Chart2DDPointContentSelectable();
-                    if (this.m_Dad.m_MOCCOViewer.m_RefSolutionSelectable) ((Chart2DDPointContentSelectable)icon).addSelectionListener(this.m_Dad.m_MOCCOViewer);
+                    if (this.m_Dad.m_MOCCOViewer.m_RefSolutionSelectable) {
+                        ((Chart2DDPointContentSelectable)icon).addSelectionListener(this.m_Dad.m_MOCCOViewer);
+                    }
                     ((InterfaceDPointWithContent)icon).setProblem(this.m_Dad.m_MOCCOViewer.m_MOCCO.m_State.m_CurrentProblem);
                     ((InterfaceDPointWithContent)icon).setEAIndividual((AbstractEAIndividual)pf.get(i));
                     point.setIcon(icon);
                     mySet.addDPoint(point);
-                    if (plotValue[0] < xmin) xmin = plotValue[0];
-                    if (plotValue[0] > xmax) xmax = plotValue[0];
-                    if (plotValue[1] < ymin) ymin = plotValue[1];
-                    if (plotValue[1] > ymax) ymax = plotValue[1];
+                    if (plotValue[0] < xmin) {
+                        xmin = plotValue[0];
+                    }
+                    if (plotValue[0] > xmax) {
+                        xmax = plotValue[0];
+                    }
+                    if (plotValue[1] < ymin) {
+                        ymin = plotValue[1];
+                    }
+                    if (plotValue[1] > ymax) {
+                        ymax = plotValue[1];
+                    }
                 }
                 mySet = new GraphPointSet(0, this.m_Area);
                 mySet.setConnectedMode(false);
                 double xrange = (xmax - xmin), yrange = (ymax - ymin);
-                if (xrange < 0.0000001) xrange = 0.0000001;
-                if (yrange < 0.0000001) yrange = 0.0000001;
+                if (xrange < 0.0000001) {
+                    xrange = 0.0000001;
+                }
+                if (yrange < 0.0000001) {
+                    yrange = 0.0000001;
+                }
                 if ((new Double(xrange)).isNaN()) {
                     mySet.addDPoint(0, 0);
                     mySet.addDPoint(1, 1);
@@ -335,8 +353,12 @@ public class ParetoFrontViewScatterPlot extends JPanel implements InterfaceParet
 
         // first set the names of the objectives
         InterfaceOptimizationObjective[] tmp = ((InterfaceMultiObjectiveDeNovoProblem)this.m_MOCCOViewer.m_MOCCO.m_State.m_CurrentProblem).getProblemObjectives();
-        if (this.m_Scatter == null) this.makeScatter();
-        if (this.m_Scatter.length != tmp.length) this.makeScatter();
+        if (this.m_Scatter == null) {
+            this.makeScatter();
+        }
+        if (this.m_Scatter.length != tmp.length) {
+            this.makeScatter();
+        }
         if (this.m_Scatter != null) {
             for (int i = 0; i < tmp.length; i++) {
                 for (int j = 0; j < tmp.length; j++) {

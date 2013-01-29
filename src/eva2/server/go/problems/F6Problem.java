@@ -133,9 +133,15 @@ implements InterfaceMultimodalProblem, InterfaceFirstOrderDerivableProblem, Inte
 
     @Override
 	public SolutionHistogram getHistogram() {
-		if (getProblemDimension() < 15) return new SolutionHistogram(-0.5, 15.5, 16);
-		else if (getProblemDimension() < 25) return new SolutionHistogram(-0.5, 39.5, 16);
-		else return new SolutionHistogram(0, 80, 16);
+		if (getProblemDimension() < 15) {
+                return new SolutionHistogram(-0.5, 15.5, 16);
+            }
+		else if (getProblemDimension() < 25) {
+                return new SolutionHistogram(-0.5, 39.5, 16);
+            }
+		else {
+                return new SolutionHistogram(0, 80, 16);
+            }
 	}
 	
     @Override

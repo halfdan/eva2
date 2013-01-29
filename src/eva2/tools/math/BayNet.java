@@ -80,8 +80,12 @@ public class BayNet {
 	}
 
 	private static BitSet getBinaryData(AbstractEAIndividual indy) {
-		if (indy instanceof InterfaceGAIndividual) return ((InterfaceGAIndividual)indy).getBGenotype();
-		else if (indy instanceof InterfaceDataTypeBinary) return ((InterfaceDataTypeBinary)indy).getBinaryData();
+		if (indy instanceof InterfaceGAIndividual) {
+                return ((InterfaceGAIndividual)indy).getBGenotype();
+            }
+		else if (indy instanceof InterfaceDataTypeBinary) {
+                return ((InterfaceDataTypeBinary)indy).getBinaryData();
+            }
 		else {
 			throw new RuntimeException("Unable to get binary representation for " + indy.getClass());
 		}
@@ -834,15 +838,17 @@ public class BayNet {
 	public static BitSet intToBitSet(BitSet bitSet, int offset, int length, int value)
 	{
 		// checking the bit length
-		if (length > Integer.SIZE)
-			throw new RuntimeException("You can not set a higher length than " + Integer.SIZE
-					+ " bits.");
+		if (length > Integer.SIZE) {
+                throw new RuntimeException("You can not set a higher length than " + Integer.SIZE
+                                + " bits.");
+            }
 		length += 1;
 		// checking whether the value fits into the bit string of length - 1
 		int absValue = Math.abs(value);
-		if (absValue > Math.pow(2.0, length - 1 - 1) * 2 - 1 || value == Integer.MIN_VALUE)
-			throw new RuntimeException("The value of " + value
-					+ " does not fit into a bit string of " + (length - 1) + " bits.");
+		if (absValue > Math.pow(2.0, length - 1 - 1) * 2 - 1 || value == Integer.MIN_VALUE) {
+                throw new RuntimeException("The value of " + value
+                                + " does not fit into a bit string of " + (length - 1) + " bits.");
+            }
 
 		// setting all bits to zero
 		bitSet.clear(offset, offset + length - 1);
@@ -850,13 +856,15 @@ public class BayNet {
 		// setting up the number in reverse order
 		int mask = 1;
 		for (int i = 0; i < length; ++i, mask <<= 1) {
-            if ((mask & absValue) > 0)
-                    bitSet.set(offset + i);
+            if ((mask & absValue) > 0) {
+                        bitSet.set(offset + i);
+                    }
         }
 
 		// setting up the sign
-		if (value < 0)
-			bitSet.set(offset + length - 1);
+		if (value < 0) {
+                bitSet.set(offset + length - 1);
+            }
 
 		return bitSet;
 	}

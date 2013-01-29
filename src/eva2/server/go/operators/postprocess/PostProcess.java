@@ -133,7 +133,9 @@ public class PostProcess {
     	AbstractEAIndividual[] optsFound = getFoundOptimaArray(pop, optima, epsilon, bTakeFitter);
     	
     	for (int i=0; i<optsFound.length; i++) {
-			if (optsFound[i] != null) result.add(optsFound[i]);
+			if (optsFound[i] != null) {
+                result.add(optsFound[i]);
+            }
 		}
     	result.synchSize();
     	return result;
@@ -181,20 +183,28 @@ public class PostProcess {
     		int sum=0;
     		for (int j=0; j<clusters.length; j++) {
     			sum += clusters[j].size();
-    			if (TRACE) System.out.print(j + " w " + clusters[j].size() + ", ");
+    			if (TRACE) {
+                        System.out.print(j + " w " + clusters[j].size() + ", ");
+                    }
     		}
     		System.out.println("\nsum was "+sum);
     	}
         for (int j = 0; j < clusters.length; j++) {
         	if (j==0) { // cluster 0 contains non-assigned individuals 
-        		if (lonerMode == DISCARD_LONERS) continue; // loners are discarded
+        		if (lonerMode == DISCARD_LONERS) {
+                        continue;
+                    } // loners are discarded
         		else if (lonerMode == KEEP_LONERS) {
         			result.addAll(clusters[j]); // loners are all kept
         			continue;
         		} // default case: treat loners just as the rest
-        		if (lonerMode != LONERS_AS_CLUSTERS) System.err.println("invalid loner mode in (), default is treating them like clusters");
+        		if (lonerMode != LONERS_AS_CLUSTERS) {
+                        System.err.println("invalid loner mode in (), default is treating them like clusters");
+                    }
         	}
-        	if (returnQuota >= 1) result.addAll((Collection<AbstractEAIndividual>)clusters[j]); // easy case
+        	if (returnQuota >= 1) {
+                result.addAll((Collection<AbstractEAIndividual>)clusters[j]);
+            } // easy case
         	else {
         		int n = Math.max(1, (int)(returnQuota*clusters[j].size())); // return at least one per cluster!
         		switch (takeOverMode) {
@@ -251,8 +261,12 @@ public class PostProcess {
     	Population result = new Population();
     	for (int i=0; i<pop.size(); i++) {
 			indy = pop.getEAIndividual(i);
-			if (bSmallerEq && (PhenotypeMetric.norm(indy.getFitness())<=fitNorm)) result.add(indy);
-			else if (!bSmallerEq && (PhenotypeMetric.norm(indy.getFitness())>fitNorm)) result.add(indy);
+			if (bSmallerEq && (PhenotypeMetric.norm(indy.getFitness())<=fitNorm)) {
+                result.add(indy);
+            }
+			else if (!bSmallerEq && (PhenotypeMetric.norm(indy.getFitness())>fitNorm)) {
+                result.add(indy);
+            }
 		}
     	return result;
     }
@@ -276,11 +290,19 @@ public class PostProcess {
     	Population result = new Population();
     	for (int i=0; i<pop.size(); i++) {
 			indy = pop.getEAIndividual(i);
-			if ((crit>=0) && (crit<indy.getFitness().length)) curFit = indy.getFitness(crit);
-			else curFit = PhenotypeMetric.norm(indy.getFitness());
+			if ((crit>=0) && (crit<indy.getFitness().length)) {
+                curFit = indy.getFitness(crit);
+            }
+			else {
+                curFit = PhenotypeMetric.norm(indy.getFitness());
+            }
 			
-			if (bSmallerEq && (curFit<=fitThresh)) result.add(indy);
-			else if (!bSmallerEq && (curFit>fitThresh)) result.add(indy);
+			if (bSmallerEq && (curFit<=fitThresh)) {
+                result.add(indy);
+            }
+			else if (!bSmallerEq && (curFit>fitThresh)) {
+                result.add(indy);
+            }
 		}
     	return result;
     }
@@ -573,7 +595,9 @@ public class PostProcess {
 		case nelderMead:
 			double[][] range = ((InterfaceDataTypeDouble)candidates.getEAIndividual(index)).getDoubleRange();
 			double perturb = findNMSPerturb(candidates, index, relToAbsPerturb(maxRelativePerturbation, range));
-			if (TRACE) System.out.println("perturb " + index + " is " + perturb);
+			if (TRACE) {
+                System.out.println("perturb " + index + " is " + perturb);
+            }
 			subPop = NelderMeadSimplex.createNMSPopulation(candidates.getEAIndividual(index), absToRelPerturb(perturb, range), range, false); 
 		}
 //		subPop.setSameParams(candidates);
@@ -628,7 +652,9 @@ public class PostProcess {
 			return evalsDone;
 		} else {
 			int stepsPerCand = (steps-(candCnt*(dim-1)))/candCnt;
-			if (TRACE) System.out.println("employing " + stepsPerCand + " steps per cand.");
+			if (TRACE) {
+                        System.out.println("employing " + stepsPerCand + " steps per cand.");
+                    }
 			if (stepsPerCand < dim) {
 				System.err.println("Too few steps allowed in processSingleCandidates!");
 				System.err.println("Method: " + method + ", cands: " + candidates.size() + ", steps: " + steps);
@@ -679,7 +705,9 @@ public class PostProcess {
 		
 		if (term==null) {
 			int stepsPerCand = 10*(nmPops.get(0).size()-1); // == 10*dim for NM
-			if (TRACE) System.out.println("employing " + stepsPerCand + " per candidate.");
+			if (TRACE) {
+                        System.out.println("employing " + stepsPerCand + " per candidate.");
+                    }
 			if (stepsPerCand < 1) {
 				System.err.println("Too few steps allowed!");
 				return 0;
@@ -699,7 +727,9 @@ public class PostProcess {
 			break;
 			default: System.err.println("Invalid pp method in processSingleCandidatesNMCMA!");
 			}
-			if (stepsAbortedFlag==null) System.err.println("Error in processSingleCandidatesNMCMA!");
+			if (stepsAbortedFlag==null) {
+                        System.err.println("Error in processSingleCandidatesNMCMA!");
+                    }
 			stepsPerf += stepsAbortedFlag.head;
 			if (stepsAbortedFlag.tail) { // user aborted post processing
 				System.err.println("Warning: Post processing interrupted after " + i + " of " + candidates.size() + " candidates were processed.");
@@ -734,23 +764,41 @@ public class PostProcess {
 	
 	public static double[][] getDoubleRange(AbstractEAIndividual indy) {
 		if (indy instanceof InterfaceDataTypeDouble || (indy instanceof InterfaceESIndividual)) {
-			if (indy instanceof InterfaceESIndividual) return ((InterfaceESIndividual)indy).getDoubleRange();
-			else return ((InterfaceDataTypeDouble)indy).getDoubleRange();
-		} else return null;
+			if (indy instanceof InterfaceESIndividual) {
+                        return ((InterfaceESIndividual)indy).getDoubleRange();
+                    }
+			else {
+                        return ((InterfaceDataTypeDouble)indy).getDoubleRange();
+                    }
+		} else {
+                return null;
+            }
 	}
 	
 	public static double[] getDoubleData(AbstractEAIndividual indy) {
 		if (indy instanceof InterfaceDataTypeDouble || (indy instanceof InterfaceESIndividual)) {
-			if (indy instanceof InterfaceESIndividual) return ((InterfaceESIndividual)indy).getDGenotype();
-			else return ((InterfaceDataTypeDouble)indy).getDoubleData();
-		} else return null;
+			if (indy instanceof InterfaceESIndividual) {
+                        return ((InterfaceESIndividual)indy).getDGenotype();
+                    }
+			else {
+                        return ((InterfaceDataTypeDouble)indy).getDoubleData();
+                    }
+		} else {
+                return null;
+            }
 	}
 	
 	public static void setDoubleData(AbstractEAIndividual indy, double[] data) {
 		if (indy instanceof InterfaceDataTypeDouble || (indy instanceof InterfaceESIndividual)) {
-			if (indy instanceof InterfaceESIndividual) ((InterfaceESIndividual)indy).SetDGenotype(data);
-			else ((InterfaceDataTypeDouble)indy).SetDoubleGenotype(data);
-		} else throw new RuntimeException("Error, unable to set double data to individual instance " + indy.getClass() + " in PostProcess.setDoubleData");
+			if (indy instanceof InterfaceESIndividual) {
+                        ((InterfaceESIndividual)indy).SetDGenotype(data);
+                    }
+			else {
+                        ((InterfaceDataTypeDouble)indy).SetDoubleGenotype(data);
+                    }
+		} else {
+                throw new RuntimeException("Error, unable to set double data to individual instance " + indy.getClass() + " in PostProcess.setDoubleData");
+            }
 	}
 	
 	/**
@@ -796,7 +844,9 @@ public class PostProcess {
 	public static AbstractEAIndividual createRandomDoubleClone(AbstractEAIndividual indy, double[][] range) {
 		AbstractEAIndividual tmpIndy = (AbstractEAIndividual)indy.clone();
 		double[] data = getDoubleData(tmpIndy);
-		if (data==null) throw new RuntimeException("Error, given individual must be double compliant in PostProcess.createRandomDoubleClone");
+		if (data==null) {
+                throw new RuntimeException("Error, given individual must be double compliant in PostProcess.createRandomDoubleClone");
+            }
 		ESIndividualDoubleData.defaultInit(data, range);
 		setDoubleData(tmpIndy, data);
 		return tmpIndy;
@@ -828,7 +878,9 @@ public class PostProcess {
 	private static OptimizerRunnable getRunnable(int rnblID) {
 		synchronized (ppRunnables) {
 			for (int i=0; i<ppRunnables.size(); i++) {
-				if (rnblID == ppRunnables.get(i).getID()) return ppRunnables.get(i);
+				if (rnblID == ppRunnables.get(i).getID()) {
+                                return ppRunnables.get(i);
+                            }
 			}
 		}
 		return null; // no runnable with that ID was found
@@ -839,9 +891,10 @@ public class PostProcess {
 	 */
 	public static void stopPP(OptimizerRunnable rnbl) {
 //		System.err.println("Stopping rnbl " + rnbl);
-		if (rnbl != null) synchronized (rnbl) {
-			rnbl.stopOpt();
-		}
+		if (rnbl != null) {
+                synchronized (rnbl) {
+      rnbl.stopOpt();
+}           }
 	}
 	
 	/**
@@ -866,7 +919,9 @@ public class PostProcess {
 		    	plot.setTopology((Interface2DBorderProblem)prob);
 		    }
 		}
-		else plot.clearAll();
+		else {
+                plot.clearAll();
+            }
 		
         InterfaceDataTypeDouble tmpIndy1;
         for (int i = 0; i < popBef.size(); i++) {
@@ -942,14 +997,18 @@ public class PostProcess {
 		//clust.addPopulationChangedEventListener()
 		double[] meanFit = clust.getMeanFitness();
 		
-		if (TRACE) System.out.println("BEF: funcalls done: " + pop.getFunctionCalls() + ", now allowed: " + funCalls);
+		if (TRACE) {
+                System.out.println("BEF: funcalls done: " + pop.getFunctionCalls() + ", now allowed: " + funCalls);
+            }
 		
 		int evalsDone = processSingleCandidates(method, clust, funCalls, sigmaCluster/2., problem, mute);
 		
 		clust.SetFunctionCalls(evalsBefore + evalsDone);
 		
 		double improvement = EuclideanMetric.euclideanDistance(meanFit, clust.getMeanFitness());
-		if (TRACE) System.out.println("improvement by " + improvement + " funcalls done: " + evalsDone);
+		if (TRACE) {
+                System.out.println("improvement by " + improvement + " funcalls done: " + evalsDone);
+            }
 		return new Pair<Population, Double>(clust, improvement);
 	}
 	
@@ -958,17 +1017,20 @@ public class PostProcess {
 	 * This may be expensive computationally.
 	 */
 	public static void evaluateMultiModal(Population solutions, AbstractOptimizationProblem prob, InterfaceTextListener listener) {
-		if (listener == null) return;
+		if (listener == null) {
+                return;
+            }
 		if (prob instanceof InterfaceMultimodalProblemKnown) {
 			InterfaceMultimodalProblemKnown mmkProb = (InterfaceMultimodalProblemKnown)prob;
 			listener.println("number of known optima is " + mmkProb.getRealOptima().size());
 			listener.println("default epsilon is " + mmkProb.getDefaultAccuracy());
 			listener.println("optima found with default epsilon: " + getFoundOptima(solutions, mmkProb.getRealOptima(), mmkProb.getDefaultAccuracy(), true).size());
 			listener.println("max peak ratio is " + mmkProb.getMaximumPeakRatio(getFoundOptima(solutions, mmkProb.getRealOptima(), mmkProb.getDefaultAccuracy(), true)));
-			if (mmkProb.fullListAvailable()) for (double epsilon=0.1; epsilon > 0.00000001; epsilon/=10.) {
-				//	out.println("no optima found: " + ((InterfaceMultimodalProblemKnown)mmProb).getNumberOfFoundOptima(pop));
-				listener.println("found " + getFoundOptima(solutions, mmkProb.getRealOptima(), epsilon, true).size() + " for epsilon = " + epsilon + ", maxPeakRatio: " + mmkProb.getMaximumPeakRatio(solutions));
-			}
+			if (mmkProb.fullListAvailable()) {
+                        for (double epsilon=0.1; epsilon > 0.00000001; epsilon/=10.) {
+//	out.println("no optima found: " + ((InterfaceMultimodalProblemKnown)mmProb).getNumberOfFoundOptima(pop));
+listener.println("found " + getFoundOptima(solutions, mmkProb.getRealOptima(), epsilon, true).size() + " for epsilon = " + epsilon + ", maxPeakRatio: " + mmkProb.getMaximumPeakRatio(solutions));
+}                   }
 		} else {
 			// TODO in this form it may cost a lot of time and cant be stopped, which is bad
 //			double epsilonPhenoSpace = 0.01, epsilonFitConv = 1e-10, clusterSigma = 0.;
@@ -1025,9 +1087,15 @@ public class PostProcess {
 				// ##### pre clustering
 				clusteredPop = (Population)PostProcess.clusterBest(inputPop, params.getPostProcessClusterSigma(), 0, PostProcess.KEEP_LONERS, PostProcess.BEST_ONLY).clone();
 				if (clusteredPop.size() < inputPop.size()) {
-					if (listener != null) listener.println("Initial clustering reduced population size from " + inputPop.size() + " to " + clusteredPop.size());
-				} else if (listener != null) listener.println("Initial clustering yielded no size reduction.");
-			} else clusteredPop = inputPop;
+					if (listener != null) {
+                                        listener.println("Initial clustering reduced population size from " + inputPop.size() + " to " + clusteredPop.size());
+                                    }
+				} else if (listener != null) {
+                                listener.println("Initial clustering yielded no size reduction.");
+                            }
+			} else {
+                        clusteredPop = inputPop;
+                    }
 						
 			int stepsDone = 0;
 			if (params.getPostProcessSteps() > 0) {
@@ -1044,7 +1112,9 @@ public class PostProcess {
 				// #### Actuall call to post processing
 				stepsDone = processSingleCandidates(params.getPPMethod(), clusteredPop, params.getPostProcessSteps(), stepSize, problem, mutator);
 
-				if (listener != null) listener.println("Post processing: " + stepsDone + " steps done.");
+				if (listener != null) {
+                                listener.println("Post processing: " + stepsDone + " steps done.");
+                            }
 				if (params.isWithPlot()) {
 					plot = draw("After " + stepsDone + " steps ("+ params.getPPMethod() + ")", null, stateBeforeLS, clusteredPop, problem);
 				}
@@ -1054,10 +1124,18 @@ public class PostProcess {
 					// so if wished, cluster again.
 					outputPop = (Population)PostProcess.clusterBest(clusteredPop, params.getPostProcessClusterSigma(), 0, PostProcess.KEEP_LONERS, PostProcess.BEST_ONLY).clone();
 					if (outputPop.size() < clusteredPop.size()) {
-						if (listener != null) listener.println("Second clustering reduced population size from " + clusteredPop.size() + " to " + outputPop.size());
-					} else if (listener != null) listener.println("Second clustering yielded no size reduction.");
-				} else outputPop = clusteredPop;
-			} else outputPop = clusteredPop;
+						if (listener != null) {
+                                                listener.println("Second clustering reduced population size from " + clusteredPop.size() + " to " + outputPop.size());
+                                            }
+					} else if (listener != null) {
+                                        listener.println("Second clustering yielded no size reduction.");
+                                    }
+				} else {
+                                outputPop = clusteredPop;
+                            }
+			} else {
+                        outputPop = clusteredPop;
+                    }
 
 			if (params.isWithPlot()) {
 				plot = draw("After " + stepsDone + " steps (" + params.getPPMethod() + ")" + ((params.getPostProcessClusterSigma()>0) ? " and second clustering" : ""), null, outputPop, null, problem);
@@ -1070,9 +1148,15 @@ public class PostProcess {
 			SolutionHistogram solHist = SolutionHistogram.createFitNormHistogram(outputPop, lowBnd, upBnd, 20, fitCrit);
 //			PostProcessInterim.outputResult((AbstractOptimizationProblem)goParams.getProblem(), outputPop, 0.01, System.out, 0, 2000, 20, goParams.getPostProcessSteps());
 			if (outputPop.size()>1) {
-				if (listener != null) listener.println("measures: " + BeanInspector.toString(outputPop.getPopulationMeasures()));
-				if (listener != null) listener.println("pop.metric: " + BeanInspector.toString(outputPop.getPopMetric()));
-				if (listener != null) listener.println("solution histogram: " + solHist + ", score " + solHist.getScore());
+				if (listener != null) {
+                                listener.println("measures: " + BeanInspector.toString(outputPop.getPopulationMeasures()));
+                            }
+				if (listener != null) {
+                                listener.println("pop.metric: " + BeanInspector.toString(outputPop.getPopMetric()));
+                            }
+				if (listener != null) {
+                                listener.println("solution histogram: " + solHist + ", score " + solHist.getScore());
+                            }
 				if ((listener != null) && (problem instanceof InterfaceInterestingHistogram)) {
 					SolutionHistogram pSolHist = ((InterfaceInterestingHistogram)problem).getHistogram();
 					pSolHist.updateFrom(outputPop, fitCrit);
@@ -1087,14 +1171,17 @@ public class PostProcess {
 			if (params.getPrintNBest()!=0) {
 				int printK = ((params.getPrintNBest()>0) ? params.getPrintNBest() : nBestPop.size());
 				printK = Math.min(printK, nBestPop.size());
-				if (listener != null) listener.println("Best after post process:" + " (first " + printK + " of " + outputPop.size() + ")");
+				if (listener != null) {
+                                listener.println("Best after post process:" + " (first " + printK + " of " + outputPop.size() + ")");
+                            }
 //						((outputPop.size()>nBestPop.size()) 
 //								? ( " (first " + nBestPop.size() + " of " + outputPop.size() + ")") : 
 //								  (" (" + nBestPop.size() + ")") ));
 				//////////// output some individual data
-				if (listener != null) for (int i=0; i<printK; i++) {
-					listener.println(AbstractEAIndividual.getDefaultStringRepresentation(nBestPop.getEAIndividual(i)));
-				}
+				if (listener != null) {
+                                for (int i=0; i<printK; i++) {
+                  listener.println(AbstractEAIndividual.getDefaultStringRepresentation(nBestPop.getEAIndividual(i)));
+          }                 }
 //				for (int i=0; i<printK; i++) {
 //					System.out.println(AbstractEAIndividual.getDefaultStringRepresentation(nBestPop.getEAIndividual(i)));
 //				}
@@ -1108,7 +1195,9 @@ public class PostProcess {
 				}
 			}
 			return nBestPop;
-		} else return inputPop;
+		} else {
+                return inputPop;
+            }
 	}
 
 	/**
@@ -1142,7 +1231,9 @@ public class PostProcess {
 			InterfaceTextListener listener) {
 		int[] foundOpts = new int[epsilonPhenoSpace.length];
 		Population extrOpts = null;
-		if (listener!=null) listener.println("Accuracy regarding epsilon thresholds " + BeanInspector.toString(epsilonPhenoSpace));
+		if (listener!=null) {
+                                listener.println("Accuracy regarding epsilon thresholds " + BeanInspector.toString(epsilonPhenoSpace));
+                            }
 //		System.out.println("unref: " + sols.getStringRepresentation());
 		// extract optima (known or estimated) for different epsilon criteria
 		for (int k=0; k<epsilonPhenoSpace.length; k++) {
@@ -1150,38 +1241,64 @@ public class PostProcess {
 				extrOpts = PostProcess.getFoundOptima((k==0) ? sols : extrOpts, ((InterfaceMultimodalProblemKnown)prob).getRealOptima(), epsilonPhenoSpace[k], true);	
 			} else {
 				double clustSig = (extrOptClustSig<0 ? (0.1*epsilonPhenoSpace[k]) : extrOptClustSig);
-				if (listener!=null) listener.println("clustering with sigma=" + clustSig);
+				if (listener!=null) {
+                                listener.println("clustering with sigma=" + clustSig);
+                            }
 				extrOpts = AbstractOptimizationProblem.extractPotentialOptima(prob, (k==0) ? sols : extrOpts, epsilonPhenoSpace[k], extrOptEpsFitConf, clustSig/* 2*epsilonPhenoSpace[k]*/, maxEvals);
 				// TODO should rather depend on the accuracy required than on a static cluster-distance ??
 			}
 //			System.out.println("ref "+k+":" + extrOpts.getStringRepresentation());
 			String prefix = "crit " + epsilonPhenoSpace[k];
-			if (listener!=null) listener.print(prefix + " found " + extrOpts.size());
+			if (listener!=null) {
+                        listener.print(prefix + " found " + extrOpts.size());
+                    }
 			foundOpts[k] = extrOpts.size();
 			if (treatAsUnknown || !(prob instanceof InterfaceMultimodalProblemKnown)) {
 				SolutionHistogram curHist = null, lastHist = SolutionHistogram.defaultEmptyHistogram(prob);
-				if (solHists!=null) curHist = solHists[k].cloneEmpty();
-				else curHist = SolutionHistogram.defaultEmptyHistogram(prob);
+				if (solHists!=null) {
+                                curHist = solHists[k].cloneEmpty();
+                            }
+				else {
+                                curHist = SolutionHistogram.defaultEmptyHistogram(prob);
+                            }
 				lastHist.updateFrom(sols, 0);
 				curHist.updateFrom(extrOpts, 0);
-				if (listener!=null) listener.println(", histogram: " + curHist);
+				if (listener!=null) {
+                                listener.println(", histogram: " + curHist);
+                            }
 				if (solHists!=null) {
-					if (solHists[k]!=null) solHists[k].addHistogram(curHist);
-					else solHists[k]=curHist;
+					if (solHists[k]!=null) {
+                                        solHists[k].addHistogram(curHist);
+                                    }
+					else {
+                                        solHists[k]=curHist;
+                                    }
 				}
 			}
 			if (extrOpts.size() > 0) {
-				if (listener!=null) listener.print(" measures fit: ");
+				if (listener!=null) {
+                                listener.print(" measures fit: ");
+                            }
 				int critCnt = extrOpts.getEAIndividual(0).getFitness().length;
 				for (int i=0; i<critCnt; i++) {
-                                if (listener!=null) listener.print(BeanInspector.toString(extrOpts.getFitnessMeasures(i)) + " ");
+                                if (listener!=null) {
+                                        listener.print(BeanInspector.toString(extrOpts.getFitnessMeasures(i)) + " ");
+                                    }
                             }
 				if (extrOpts.size()>1) {
-					if (listener!=null) listener.print("; phen: " + BeanInspector.toString(extrOpts.getPopulationMeasures(new PhenotypeMetric())));
-					if (listener!=null) listener.print("; eucl: " + BeanInspector.toString(extrOpts.getPopulationMeasures(new EuclideanMetric())));
-					if (listener!=null) listener.print("; popMetric: " + BeanInspector.toString(extrOpts.getPopulationMeasures()));
+					if (listener!=null) {
+                                        listener.print("; phen: " + BeanInspector.toString(extrOpts.getPopulationMeasures(new PhenotypeMetric())));
+                                    }
+					if (listener!=null) {
+                                        listener.print("; eucl: " + BeanInspector.toString(extrOpts.getPopulationMeasures(new EuclideanMetric())));
+                                    }
+					if (listener!=null) {
+                                        listener.print("; popMetric: " + BeanInspector.toString(extrOpts.getPopulationMeasures()));
+                                    }
 				}
-				if (listener!=null) listener.println("");
+				if (listener!=null) {
+                                listener.println("");
+                            }
 //				listener.println(" correlations of all (min,max,avg,med,var): "+ BeanInspector.toString(extrOpts.getCorrelations()));
 				for (int i=16; i>2; i/=2) {
 					Population bestN = extrOpts.getBestNIndividuals(i, -1);
@@ -1210,7 +1327,9 @@ public class PostProcess {
 	private static double selectMaxSearchRange(PostProcessMethod method,
 			double postProcessClusterSigma) {
 		double resolution = defaultMutationStepSize*2; // somewhat keep the ratio between mutation and resolution
-		if (postProcessClusterSigma > 0.) resolution = postProcessClusterSigma;
+		if (postProcessClusterSigma > 0.) {
+                                resolution = postProcessClusterSigma;
+                            }
 		switch (method) {
 		case hillClimber:
 			return resolution/2.;
@@ -1251,14 +1370,20 @@ public class PostProcess {
 		}
 		if (!found) {
 //			System.err.println("warning, equal candidates in PostProcess.findNMSPerturb - converged population?!");
-			if (maxAbsPerturb>0) return maxAbsPerturb;
+			if (maxAbsPerturb>0) {
+                        return maxAbsPerturb;
+                    }
 			else {
 				System.err.println("error, unable to select perturbance value in PostProcess.findNMSPerturb since all candidates are equal. Converged population?!");
 				return 0.01;
 			}
 		}
-		if (maxAbsPerturb>0) return Math.min(maxAbsPerturb, minDistNeighbour/3.);
-		else return minDistNeighbour/3.;
+		if (maxAbsPerturb>0) {
+                return Math.min(maxAbsPerturb, minDistNeighbour/3.);
+            }
+		else {
+                return minDistNeighbour/3.;
+            }
 	}
 	
 	/**
@@ -1322,11 +1447,15 @@ public class PostProcess {
 	public static double getAvgDistToNeighbor(int index, Population pop) {
 		double distSum = 0;
 		int cnt = pop.size()-1;
-		if (cnt == 0) return 0.;
+		if (cnt == 0) {
+                return 0.;
+            }
 		else {
 			double[] indyPos = AbstractEAIndividual.getDoublePositionShallow(pop.getEAIndividual(index));
 			for (int i=0; i<pop.size(); i++) {
-				if (i!=index) distSum += EuclideanMetric.euclideanDistance(AbstractEAIndividual.getDoublePositionShallow(pop.getEAIndividual(i)), indyPos); 
+				if (i!=index) {
+                                distSum += EuclideanMetric.euclideanDistance(AbstractEAIndividual.getDoublePositionShallow(pop.getEAIndividual(i)), indyPos);
+                            } 
 			}
 			return distSum/((double)cnt);
 		}

@@ -68,7 +68,9 @@ public class MOClusteringSeparation implements InterfaceMigration, java.io.Seria
     @Override
     public void initMigration(InterfaceOptimizer[] islands) {
         // pff at a later stage i could initialize a topology here
-        if (this.m_ReuseC) this.m_KMeans.resetC();
+        if (this.m_ReuseC) {
+            this.m_KMeans.resetC();
+        }
     }
 
     /** The migrate method can be called asychnronously or
@@ -91,7 +93,9 @@ public class MOClusteringSeparation implements InterfaceMigration, java.io.Seria
         // collect the populations
         for (int i = 0; i < islands.length; i++) {
             oldIPOP[i] = islands[i].getPopulation();
-            if (this.m_Debug) System.out.println("Got population from "+i+" of size "+oldIPOP[i].size());
+            if (this.m_Debug) {
+                System.out.println("Got population from "+i+" of size "+oldIPOP[i].size());
+            }
             collector.addPopulation((Population)oldIPOP[i].clone());
             newIPOP[i] = new Population();
         }
@@ -182,7 +186,9 @@ public class MOClusteringSeparation implements InterfaceMigration, java.io.Seria
                     double[][] myOtherClass = new double[c.length -1][];
                     int index = 0;
                     for (int j = 0; j < myOtherClass.length; j++) {
-                        if (index == i) index++;
+                        if (index == i) {
+                            index++;
+                        }
                         myOtherClass[j] = c[index];
                         index++;
                     }
@@ -217,7 +223,9 @@ public class MOClusteringSeparation implements InterfaceMigration, java.io.Seria
             if (!oldIPOP[i].targetSizeReached()) {
                 oldIPOP[i].addPopulation(this.m_Selection.selectFrom(memory, oldIPOP[i].getTargetSize()-oldIPOP[i].size()));
             }
-            if (this.m_Debug) System.out.println("Setting "+i+" to population size " + oldIPOP[i].size());
+            if (this.m_Debug) {
+                System.out.println("Setting "+i+" to population size " + oldIPOP[i].size());
+            }
             islands[i].setPopulation(oldIPOP[i]);
         }
     }
@@ -330,7 +338,9 @@ public class MOClusteringSeparation implements InterfaceMigration, java.io.Seria
     private void writeToFile(BufferedWriter out, String line) {
         String write = line + "\n";
         write.replaceAll(",",".");
-        if (out == null) return;
+        if (out == null) {
+            return;
+        }
         try {
             out.write(write, 0, write.length());
             out.flush();

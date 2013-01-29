@@ -33,11 +33,16 @@ public class XThread extends Thread implements Serializable {
 
   public static int get() {
     int ret =0;
-    if (m_Instances==null) return ret;
+    if (m_Instances==null) {
+          return ret;
+      }
     for (int i=0;i<m_Instances.length;i++) {
-      if (m_Instances[i]==null) continue;
-      if (m_Instances[i].isAlive() == true)
-        ret++;
+      if (m_Instances[i]==null) {
+            continue;
+        }
+      if (m_Instances[i].isAlive() == true) {
+            ret++;
+        }
     }
     return ret;
   }
@@ -48,10 +53,12 @@ public class XThread extends Thread implements Serializable {
   public static XThread getXThread(Object x, Method m, Object[] Para, int MAXinstances) {	  
     //System.out.println("waiting "+m_instances+ " on "+x.hashCode()+ " m "+m.getName()+" m_MAXinstances " +MAXinstances);
     XThread ret = null;
-    if (m_Instances == null)
-      init(MAXinstances);
-    if (m_index >= m_Instances.length)
-      m_index = 0;
+    if (m_Instances == null) {
+          init(MAXinstances);
+      }
+    if (m_index >= m_Instances.length) {
+          m_index = 0;
+      }
     if (m_Instances[m_index] == null) {
       ret = new XThread(x, m, Para);
       m_Instances[m_index] = ret;
@@ -92,10 +99,12 @@ public class XThread extends Thread implements Serializable {
    */
   public static XThread getXThread(Object x, String m, Object[] Para, int MAXinstances) {
     XThread ret = null;
-     if (m_Instances == null)
-       init(MAXinstances);
-     if (m_index >= m_Instances.length)
-       m_index = 0;
+     if (m_Instances == null) {
+          init(MAXinstances);
+      }
+     if (m_index >= m_Instances.length) {
+          m_index = 0;
+      }
      if (m_Instances[m_index] == null) {
        ret = new XThread(x, m, Para);
        m_Instances[m_index] = ret;

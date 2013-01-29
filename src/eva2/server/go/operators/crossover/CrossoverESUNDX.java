@@ -145,7 +145,9 @@ public class CrossoverESUNDX implements InterfaceCrossover, java.io.Serializable
                         toro = Mathematics.svMult(tmpD, toro);
                         tmpVec = Mathematics.vvSub(tmpVec, toro);
                     }
-                    if (Mathematics.isValidVec(tmpVec)) result.add(tmpVec);
+                    if (Mathematics.isValidVec(tmpVec)) {
+                        result.add(tmpVec);
+                    }
                 }
             }
         }
@@ -191,8 +193,12 @@ public class CrossoverESUNDX implements InterfaceCrossover, java.io.Serializable
      */
     @Override
     public boolean equals(Object crossover) {
-        if (crossover instanceof CrossoverESUNDX) return true;
-        else return false;
+        if (crossover instanceof CrossoverESUNDX) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     /** This method will allow the crossover operator to be initialized depending on the
@@ -280,7 +286,9 @@ public class CrossoverESUNDX implements InterfaceCrossover, java.io.Serializable
             offsprings = cross.mate(indy1, pop);
             for (int j = 0; j < offsprings.length; j++) {
                 tmpD = ((ESIndividualDoubleData)offsprings[j]).getDoubleData();
-                if (plotFlag) plot.setUnconnectedPoint(tmpD[0], tmpD[1], 1);
+                if (plotFlag) {
+                    plot.setUnconnectedPoint(tmpD[0], tmpD[1], 1);
+                }
                 //range = ((ESIndividualDoubleData)offsprings[j]).getDoubleRange();
                 //System.out.println("["+range[0][0]+"/"+range[0][1]+";"+range[1][0]+"/"+range[1][1]+"]");
             }
@@ -309,7 +317,9 @@ public class CrossoverESUNDX implements InterfaceCrossover, java.io.Serializable
         return "This is the Unimodal Normally Distributed crossover (UNDX) by Ono and Kobayashi, 1997, typically uses more than two parents.";
     }
     public void setEta(double a) {
-        if (a < 0) a = 0;
+        if (a < 0) {
+            a = 0;
+        }
         this.m_Eta = a;
     }
     public double getEta() {
@@ -319,7 +329,9 @@ public class CrossoverESUNDX implements InterfaceCrossover, java.io.Serializable
         return "The Eta of UNDX (=0,35/Math,sqrt(n-l-2)).";
     }
     public void setZeta(double a) {
-        if (a < 0) a = 0;
+        if (a < 0) {
+            a = 0;
+        }
         this.m_Zeta = a;
     }
     public double getZeta() {

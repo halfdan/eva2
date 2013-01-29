@@ -44,7 +44,9 @@ public class ArchivingSPEAII extends AbstractArchiving implements java.io.Serial
     @Override
     public void addElementsToArchive(Population pop) {
 
-        if (pop.getArchive() == null) pop.SetArchive(new Population());
+        if (pop.getArchive() == null) {
+            pop.SetArchive(new Population());
+        }
 
         ////////////////////////////////////////////////////////////////////////////////////
         if (this.m_Debug) {
@@ -197,7 +199,9 @@ public class ArchivingSPEAII extends AbstractArchiving implements java.io.Serial
             highestLevel    = 0;
             RawFitness      = this.calculateRawFitness(archive);
             for (int i = 0; i < RawFitness.length; i++) {
-                if (RawFitness[i] > highestLevel) highestLevel = RawFitness[i];
+                if (RawFitness[i] > highestLevel) {
+                    highestLevel = RawFitness[i];
+                }
             }
             kthDistance     = this.calculateKthDistance(archive, Math.max(2,(int)Math.sqrt(archive.size())));
             ICurSma         = -1;
@@ -282,7 +286,9 @@ public class ArchivingSPEAII extends AbstractArchiving implements java.io.Serial
     private double[][] showMay(Population pop) {
         Population tmp = new Population();
         tmp.addPopulation(pop);
-        if (pop.getArchive() != null) tmp.addPopulation(pop.getArchive());
+        if (pop.getArchive() != null) {
+            tmp.addPopulation(pop.getArchive());
+        }
 
         double[][] fitness = new double[tmp.size()][];
         for (int i = 0; i < tmp.size(); i++) {
@@ -292,8 +298,12 @@ public class ArchivingSPEAII extends AbstractArchiving implements java.io.Serial
         minY = fitness[0];
         maxY = fitness[0];
         for (int i = 1; i < fitness.length; i++) {
-            if (minY[0] > fitness[i][0]) minY = fitness[i];
-            if (maxY[1] > fitness[i][1]) maxY = fitness[i];
+            if (minY[0] > fitness[i][0]) {
+                minY = fitness[i];
+            }
+            if (maxY[1] > fitness[i][1]) {
+                maxY = fitness[i];
+            }
         }
         double[][] result = new double[2][];
         result[0] = minY;
@@ -382,7 +392,9 @@ public class ArchivingSPEAII extends AbstractArchiving implements java.io.Serial
         f1 = a1.getFitness();
         f2 = a2.getFitness();
         for (int i = 0; i < f1.length; i++) {
-            if (Math.abs(f1[i]- f2[i]) > 0.00000001) return false;
+            if (Math.abs(f1[i]- f2[i]) > 0.00000001) {
+                return false;
+            }
         }
         return false;
     }
@@ -420,8 +432,12 @@ public class ArchivingSPEAII extends AbstractArchiving implements java.io.Serial
                         currentSmallest = distMatrix[i][n];
                     }
                 }
-                if (current >= 0) result[i] = distMatrix[i][current];
-                else System.out.println("Error no smallest found in calculateKthDistance().");
+                if (current >= 0) {
+                    result[i] = distMatrix[i][current];
+                }
+                else {
+                    System.out.println("Error no smallest found in calculateKthDistance().");
+                }
                 distMatrix[i][current]  = Double.MAX_VALUE;
             }
         }
@@ -515,7 +531,9 @@ public class ArchivingSPEAII extends AbstractArchiving implements java.io.Serial
 
         // now set the SPEAFitness
         for (int i = 0; i < SPEAResult.length; i++) {
-            if (1/(2+D[i]) >= 1) System.out.println("d " +1/(2+D[i]));
+            if (1/(2+D[i]) >= 1) {
+                System.out.println("d " +1/(2+D[i]));
+            }
             SPEAResult[i] = SPEAFitness[i] + (1/(2+D[i]));
             ((AbstractEAIndividual)pop.get(i)).putData("RawFit", new Double(SPEAFitness[i]));
             ((AbstractEAIndividual)pop.get(i)).putData("SPEAFit", new Double(SPEAResult[i]));

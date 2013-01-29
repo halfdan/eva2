@@ -50,7 +50,9 @@ public class GPNodePow2 extends AbstractGPNode implements java.io.Serializable {
         double result = 1;
 
         tmpObj = this.m_Nodes[0].evaluate(environment);
-        if (tmpObj instanceof Double) result = Math.pow(((Double)tmpObj).doubleValue(), 2);
+        if (tmpObj instanceof Double) {
+            result = Math.pow(((Double)tmpObj).doubleValue(), 2);
+        }
         return new Double(result);
     }
 

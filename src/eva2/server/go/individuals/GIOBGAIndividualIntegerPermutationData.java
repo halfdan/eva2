@@ -58,8 +58,12 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
     public boolean equalGenotypes(AbstractEAIndividual individual) {
         if (individual instanceof GIOBGAIndividualIntegerPermutationData) {
             GIOBGAIndividualIntegerPermutationData indy = (GIOBGAIndividualIntegerPermutationData)individual;
-            if (!((AbstractEAIndividual)this.m_Integer).equalGenotypes((AbstractEAIndividual)indy.m_Integer)) return false;
-            if (!((AbstractEAIndividual)this.m_Permutation).equalGenotypes((AbstractEAIndividual)indy.m_Permutation)) return false;
+            if (!((AbstractEAIndividual)this.m_Integer).equalGenotypes((AbstractEAIndividual)indy.m_Integer)) {
+                return false;
+            }
+            if (!((AbstractEAIndividual)this.m_Permutation).equalGenotypes((AbstractEAIndividual)indy.m_Permutation)) {
+                return false;
+            }
             return true;
         } else {
             return false;
@@ -107,8 +111,12 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
      */
     @Override
     public void mutate() {
-        if (RNG.flipCoin(this.m_MutationProbability))((AbstractEAIndividual)this.m_Integer).mutate();
-        if (RNG.flipCoin(this.m_MutationProbability))((AbstractEAIndividual)this.m_Permutation).mutate();
+        if (RNG.flipCoin(this.m_MutationProbability)) {
+            ((AbstractEAIndividual)this.m_Integer).mutate();
+        }
+        if (RNG.flipCoin(this.m_MutationProbability)) {
+            ((AbstractEAIndividual)this.m_Permutation).mutate();
+        }
     }
 
     @Override

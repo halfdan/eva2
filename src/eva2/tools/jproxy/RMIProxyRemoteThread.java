@@ -44,8 +44,9 @@ public class RMIProxyRemoteThread implements InvocationHandler,
   }
   
   private static void maybeLoadAdapter() {
-	  if (m_Adapter==null) 
-		  m_Adapter = ComAdapter.getInstance();
+	  if (m_Adapter==null) {
+          m_Adapter = ComAdapter.getInstance();
+      }
   }
   
   /**

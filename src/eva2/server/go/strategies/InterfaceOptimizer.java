@@ -83,7 +83,6 @@ public interface InterfaceOptimizer {
     /** 
      * This method allows you to set an identifier for the algorithm
      * @param name      The identifier
-     * @deprecated
      */
      public void setIdentifier(String name);
      public String getIdentifier();

@@ -55,7 +55,9 @@ public class RMIThreadInvocationHandlerImpl extends UnicastRemoteObject implemen
     try {
       m_Object = ThreadProxy.newInstance(obj);
       m_list = m_Object.getClass().getMethods();
-       if (TRACE) System.out.println(" --> rebind : "+m_AdapterName+" RMIThreadInvokationHandlerImpl of object "+obj.getClass().getName());
+       if (TRACE) {
+            System.out.println(" --> rebind : "+m_AdapterName+" RMIThreadInvokationHandlerImpl of object "+obj.getClass().getName());
+        }
       Naming.rebind(m_AdapterName,this);
     } catch (Exception e) {
       System.out.println(" Naming.rebind --> ERROR" + e.getMessage());
@@ -77,7 +79,9 @@ public class RMIThreadInvocationHandlerImpl extends UnicastRemoteObject implemen
     try {
        m_Object = ThreadProxy.newInstance(obj);
        m_list = m_Object.getClass().getMethods();
-      if (TRACE) System.out.println(" -----> rebind : "+m_AdapterName+" "+this.getClass().getName()+" of object "+obj.getClass().getName());
+      if (TRACE) {
+            System.out.println(" -----> rebind : "+m_AdapterName+" "+this.getClass().getName()+" of object "+obj.getClass().getName());
+        }
       Naming.rebind(m_AdapterName,this);
     } catch (Exception e) {
       System.out.println(" Naming.rebind --> ERROR" + e.getMessage());
@@ -104,9 +108,13 @@ public class RMIThreadInvocationHandlerImpl extends UnicastRemoteObject implemen
   public Object invoke (String m, Object[] args) throws RemoteException {
     Object ret=null;
     String Name = "";
-    if (TRACE) Name = Thread.currentThread().getName();
+    if (TRACE) {
+          Name = Thread.currentThread().getName();
+      }
     try {
-      if (TRACE) System.out.println( Name+" Before invoke on server :" +m);
+      if (TRACE) {
+            System.out.println( Name+" Before invoke on server :" +m);
+        }
       //Method[] list = m_Object.getClass().getMethods();
       boolean invoked = false;
       for (int i=0;i<m_list.length;i++) {
@@ -136,7 +144,9 @@ public class RMIThreadInvocationHandlerImpl extends UnicastRemoteObject implemen
           break;
         }
       }
-      if (invoked==false) System.out.println(Name+ " No memberfunction found !!!!!!!!!!!!!!!!!");
+      if (invoked==false) {
+            System.out.println(Name+ " No memberfunction found !!!!!!!!!!!!!!!!!");
+        }
     }
     catch ( InvocationTargetException e) {
       e.printStackTrace();

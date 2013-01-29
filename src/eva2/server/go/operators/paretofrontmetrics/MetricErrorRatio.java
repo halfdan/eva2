@@ -67,7 +67,9 @@ public class MetricErrorRatio implements eva2.server.go.operators.paretofrontmet
      */
     private void loadReferenceData() {
         String[]    tmpS, lines = FileTools.loadStringsFromFile(this.m_InputFilePath.getCompleteFilePath());
-        if (lines == null) System.out.println("Failed to read "+this.m_InputFilePath.getCompleteFilePath());
+        if (lines == null) {
+            System.out.println("Failed to read "+this.m_InputFilePath.getCompleteFilePath());
+        }
         lines[0].trim();
         this.m_Titles = lines[0].split("\t");
         ArrayList   tmpA = new ArrayList();
@@ -96,7 +98,9 @@ public class MetricErrorRatio implements eva2.server.go.operators.paretofrontmet
         Population  tmpPop = new Population();
         Population  tmpPPO = new Population();
         tmpPPO.addPopulation(pop);
-        if (pop.getArchive() != null) tmpPPO.addPopulation(pop.getArchive());
+        if (pop.getArchive() != null) {
+            tmpPPO.addPopulation(pop.getArchive());
+        }
         if (this.m_Reference == null) {
             this.loadReferenceData();
             if (this.m_Reference == null) {
@@ -126,7 +130,9 @@ public class MetricErrorRatio implements eva2.server.go.operators.paretofrontmet
             for (int j = 0; (j < fitness.length) && (j < this.m_Reference[i].length); j++) {
                 result += Math.pow((fitness[j]-this.m_Reference[i][j]), 2);
             }
-            if (Math.sqrt(result) < this.m_Epsilon) return true;
+            if (Math.sqrt(result) < this.m_Epsilon) {
+                return true;
+            }
         }
         return false;
     }

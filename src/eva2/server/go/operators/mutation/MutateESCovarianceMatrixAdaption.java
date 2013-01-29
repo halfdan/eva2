@@ -55,13 +55,27 @@ public class MutateESCovarianceMatrixAdaption implements InterfaceMutation, java
         this.cov                = mutator.cov;
         this.Beta               = mutator.Beta;
         this.xi_dach            = mutator.xi_dach;
-        if (mutator.s_N != null)    this.s_N    = (double[]) mutator.s_N.clone();
-        if (mutator.m_PathS != null)  this.m_PathS  = (double[]) mutator.m_PathS.clone();
-        if (mutator.Bz != null)     this.Bz     = (double[]) mutator.Bz.clone();
-        if (mutator.m_C != null)    this.m_C    = (Matrix) mutator.m_C.clone();
-        if (mutator.B != null)      this.B      = (Matrix) mutator.B.clone();
-        if (mutator.m_Z != null)    this.m_Z    = (double[]) mutator.m_Z.clone();
-        if (mutator.m_Eigenvalues != null) this.m_Eigenvalues = (double[]) mutator.m_Eigenvalues.clone();
+        if (mutator.s_N != null) {
+            this.s_N    = (double[]) mutator.s_N.clone();
+        }
+        if (mutator.m_PathS != null) {
+            this.m_PathS  = (double[]) mutator.m_PathS.clone();
+        }
+        if (mutator.Bz != null) {
+            this.Bz     = (double[]) mutator.Bz.clone();
+        }
+        if (mutator.m_C != null) {
+            this.m_C    = (Matrix) mutator.m_C.clone();
+        }
+        if (mutator.B != null) {
+            this.B      = (Matrix) mutator.B.clone();
+        }
+        if (mutator.m_Z != null) {
+            this.m_Z    = (double[]) mutator.m_Z.clone();
+        }
+        if (mutator.m_Eigenvalues != null) {
+            this.m_Eigenvalues = (double[]) mutator.m_Eigenvalues.clone();
+        }
     }
 
     /**
@@ -87,18 +101,26 @@ public class MutateESCovarianceMatrixAdaption implements InterfaceMutation, java
      */
     @Override
     public boolean equals(Object mutator) {
-    	if (mutator==this) return true;
+    	if (mutator==this) {
+            return true;
+        }
         if (mutator instanceof MutateESCovarianceMatrixAdaption) {
             MutateESCovarianceMatrixAdaption mut = (MutateESCovarianceMatrixAdaption)mutator;
             // i assume if the C Matrix is equal then the mutation operators are equal
             try {
-            	if (this.m_C==mut.m_C) return true;
+            	if (this.m_C==mut.m_C) {
+                    return true;
+                }
                 double[][] c1 = this.m_C.getArray();
                 double[][] c2 = mut.m_C.getArray();
-                if (c1==c2) return true;
+                if (c1==c2) {
+                    return true;
+                }
                 for (int i = 0; i < c1.length; i++) {
                     for(int j = 0; j < c1[i].length; j++) {
-                        if (c1[i][j] != c2[i][j]) return false;
+                        if (c1[i][j] != c2[i][j]) {
+                            return false;
+                        }
                     }
                 }
             } catch (java.lang.NullPointerException e) {
@@ -106,7 +128,9 @@ public class MutateESCovarianceMatrixAdaption implements InterfaceMutation, java
             }
             return true;
         }
-        else return false;
+        else {
+            return false;
+        }
     }
 
     /** This method allows you to init the mutation operator
@@ -115,12 +139,16 @@ public class MutateESCovarianceMatrixAdaption implements InterfaceMutation, java
      */
     @Override
     public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
-        if (!(individual instanceof InterfaceESIndividual)) return;
+        if (!(individual instanceof InterfaceESIndividual)) {
+            return;
+        }
         double[]    x       = ((InterfaceESIndividual)individual).getDGenotype();
         double[][]  ranges  = ((InterfaceESIndividual)individual).getDoubleRange();
 
         this.m_Counter      = this.m_frequency;
-        if (m_InitSigmaScalar>0) this.m_SigmaGlobal  = this.m_InitSigmaScalar;
+        if (m_InitSigmaScalar>0) {
+            this.m_SigmaGlobal  = this.m_InitSigmaScalar;
+        }
         else {
         	double avgRange = Mathematics.getAvgRange(ranges);
         	this.m_SigmaGlobal  = 0.25*avgRange;
@@ -160,8 +188,12 @@ public class MutateESCovarianceMatrixAdaption implements InterfaceMutation, java
             this.adaptStrategy();
             this.evaluateNewObjectX(x, ranges);
             for (int i = 0; i < x.length; i++) {
-                if (x[i]  < ranges[i][0]) x[i] = ranges[i][0];
-                if (x[i]  > ranges[i][1]) x[i] = ranges[i][1];
+                if (x[i]  < ranges[i][0]) {
+                    x[i] = ranges[i][0];
+                }
+                if (x[i]  > ranges[i][1]) {
+                    x[i] = ranges[i][1];
+                }
             }
             ((InterfaceESIndividual)individual).SetDGenotype(x);
         }

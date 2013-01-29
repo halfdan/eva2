@@ -54,7 +54,9 @@ public class MutateGAUniform implements InterfaceMutation, Serializable {
     @Override
 	public void init(AbstractEAIndividual individual,
 			InterfaceOptimizationProblem opt) {
-		if (useInvertedLength && (individual instanceof InterfaceGAIndividual)) setBitwiseProb(1./((double)((InterfaceGAIndividual)individual).getGenotypeLength()));
+		if (useInvertedLength && (individual instanceof InterfaceGAIndividual)) {
+                                setBitwiseProb(1./((double)((InterfaceGAIndividual)individual).getGenotypeLength()));
+                            }
 	}
 
 	/**
@@ -65,16 +67,22 @@ public class MutateGAUniform implements InterfaceMutation, Serializable {
 		if (individual instanceof InterfaceGAIndividual) {
 			InterfaceGAIndividual indy = (InterfaceGAIndividual)individual;
 			for (int i=0; i<indy.getGenotypeLength(); i++) {
-				if (RNG.flipCoin(bitwiseProb)) indy.getBGenotype().flip(i);
+				if (RNG.flipCoin(bitwiseProb)) {
+                                indy.getBGenotype().flip(i);
+                            }
 			}
-		} else EVAERROR.errorMsgOnce("Error: Skipped mutation since " + this.getClass() + " is applicable for InterfaceGAIndividual individuals only! (pot. multiple occ.)");
+		} else {
+                EVAERROR.errorMsgOnce("Error: Skipped mutation since " + this.getClass() + " is applicable for InterfaceGAIndividual individuals only! (pot. multiple occ.)");
+            }
 	}
 
 	public double getBitwiseProb() {
 		return bitwiseProb;
 	}
 	public void setBitwiseProb(double bitwiseProb) {
-		if (bitwiseProb <0. && (bitwiseProb > 1.)) System.err.println("Warning, probability should be within [0,1], given: " + bitwiseProb); 
+		if (bitwiseProb <0. && (bitwiseProb > 1.)) {
+                System.err.println("Warning, probability should be within [0,1], given: " + bitwiseProb);
+            } 
 		this.bitwiseProb = bitwiseProb;
 	}
 	public String bitwiseProbTipText() {

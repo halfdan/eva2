@@ -60,8 +60,12 @@ public class GAPIndividualProgramData extends AbstractEAIndividual implements In
     public boolean equalGenotypes(AbstractEAIndividual individual) {
         if (individual instanceof GAPIndividualProgramData) {
             GAPIndividualProgramData indy = (GAPIndividualProgramData)individual;
-            if (!((AbstractEAIndividual)this.m_Numbers).equalGenotypes((AbstractEAIndividual)indy.m_Numbers)) return false;
-            if (!((AbstractEAIndividual)this.m_Program).equalGenotypes((AbstractEAIndividual)indy.m_Program)) return false;
+            if (!((AbstractEAIndividual)this.m_Numbers).equalGenotypes((AbstractEAIndividual)indy.m_Numbers)) {
+                return false;
+            }
+            if (!((AbstractEAIndividual)this.m_Program).equalGenotypes((AbstractEAIndividual)indy.m_Program)) {
+                return false;
+            }
             return true;
         } else {
             return false;
@@ -109,8 +113,12 @@ public class GAPIndividualProgramData extends AbstractEAIndividual implements In
      */
     @Override
     public void mutate() {
-        if (RNG.flipCoin(this.m_MutationProbability))((AbstractEAIndividual)this.m_Numbers).mutate();
-        if (RNG.flipCoin(this.m_MutationProbability))((AbstractEAIndividual)this.m_Program).mutate();
+        if (RNG.flipCoin(this.m_MutationProbability)) {
+            ((AbstractEAIndividual)this.m_Numbers).mutate();
+        }
+        if (RNG.flipCoin(this.m_MutationProbability)) {
+            ((AbstractEAIndividual)this.m_Program).mutate();
+        }
     }
 
     @Override

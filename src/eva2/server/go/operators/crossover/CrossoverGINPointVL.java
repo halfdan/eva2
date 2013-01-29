@@ -47,7 +47,9 @@ public class CrossoverGINPointVL implements InterfaceCrossover, java.io.Serializ
         for (int i = 0; i < partners.size(); i++) {
             result[i+1] = (AbstractEAIndividual) ((AbstractEAIndividual)partners.get(i)).clone();
         }
-        if (partners.size() == 0) return result;
+        if (partners.size() == 0) {
+            return result;
+        }
         //for (int i = 0; i < result.length; i++) System.out.println("Before Crossover: " +result[i].getSolutionRepresentationFor());
         if ((indy1 instanceof InterfaceGIIndividual) && (partners.get(0) instanceof InterfaceGIIndividual)) {
             int[]       length          =  new int[partners.size()+1];
@@ -153,9 +155,13 @@ public class CrossoverGINPointVL implements InterfaceCrossover, java.io.Serializ
     public boolean equals(Object crossover) {
         if (crossover instanceof CrossoverGINPointVL) {
             CrossoverGINPointVL cross = (CrossoverGINPointVL)crossover;
-            if (this.m_NumberOfCrossovers != cross.m_NumberOfCrossovers) return false;
+            if (this.m_NumberOfCrossovers != cross.m_NumberOfCrossovers) {
+                return false;
+            }
             return true;
-        } else return false;
+        } else {
+            return false;
+        }
     }
 
     /** This method will allow the crossover operator to be initialized depending on the
@@ -197,7 +203,9 @@ public class CrossoverGINPointVL implements InterfaceCrossover, java.io.Serializ
      * @param crossovers   The number of crossovers.
      */
     public void setNumberOfCrossovers(int crossovers) {
-        if (crossovers < 0) crossovers = 0;
+        if (crossovers < 0) {
+            crossovers = 0;
+        }
         this.m_NumberOfCrossovers = crossovers;
     }
     public int getNumberOfCrossovers() {

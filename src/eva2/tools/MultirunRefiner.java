@@ -42,13 +42,17 @@ public class MultirunRefiner {
     
     public MultirunRefiner(File f) {
     	starter();
-    	if (!readFile(f)) System.err.println("Error, couldnt open file " + f);
+    	if (!readFile(f)) {
+            System.err.println("Error, couldnt open file " + f);
+        }
     }
     
     public MultirunRefiner(String fileName) {
     	starter();
     	File f=new File(fileName);
-    	if (!readFile(f)) System.err.println("Error, couldnt open file " + f);
+    	if (!readFile(f)) {
+            System.err.println("Error, couldnt open file " + f);
+        }
     }
 
     public MultirunRefiner(String text, int numRuns) {
@@ -255,11 +259,15 @@ public class MultirunRefiner {
         			if (numExp==1) {
         				mean = new double[3];
         				result.add(iteration, mean);
-        			} else mean = result.get(iteration);
+        			} else {
+                                mean = result.get(iteration);
+                            }
         			mean[0] += tmp[1];
         			mean[1] += tmp[2];
         			mean[2] += tmp[3];
-        		} else System.err.println("Error in MultiRunRefiner!");
+        		} else {
+                        System.err.println("Error in MultiRunRefiner!");
+                    }
         		iteration++;
         	}
         }
@@ -349,7 +357,9 @@ public class MultirunRefiner {
                 to++;
             }
             if (to < searchme.length()) {
-                if (to == searchme.length()-1) to = searchme.length();
+                if (to == searchme.length()-1) {
+                    to = searchme.length();
+                }
                 tmpString = searchme.substring(from, to);
                 try {
                     tmpOutput.add(i, new Double(tmpString));

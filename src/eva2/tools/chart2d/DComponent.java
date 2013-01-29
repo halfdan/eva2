@@ -87,7 +87,9 @@ public abstract class DComponent implements DElement
       if( border.insert(b) ) { parent.addDBorder( b ); repaint(); }
       else { border = b; parent.restoreBorder(); }
     }
-    else border = b;
+    else {
+          border = b;
+      }
   }
 
   /**
@@ -125,7 +127,9 @@ public abstract class DComponent implements DElement
     @Override
   public void repaint(){
     //System.out.println("DComponent.repaint()");
-    if( parent != null ) parent.repaint( getRectangle() );
+    if( parent != null ) {
+          parent.repaint( getRectangle() );
+      }
   }
 
   /**
@@ -152,7 +156,9 @@ public abstract class DComponent implements DElement
   public void setVisible( boolean aFlag ){
     boolean changed = ( aFlag != visible );
     visible = aFlag;
-    if( changed ) repaint();
+    if( changed ) {
+          repaint();
+      }
   }
 
   /**

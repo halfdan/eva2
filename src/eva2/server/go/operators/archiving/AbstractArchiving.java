@@ -39,11 +39,15 @@ public abstract class AbstractArchiving implements InterfaceArchiving, java.io.S
     public boolean isDominant(AbstractEAIndividual indy, Population pop) {
         if (this.m_ObeyDebsConstViolationPrinciple) {
             for (int i = 0; i < pop.size(); i++) {
-                if (!(indy.equals(pop.get(i))) && (((AbstractEAIndividual)pop.get(i)).isDominatingDebConstraints(indy))) return false;
+                if (!(indy.equals(pop.get(i))) && (((AbstractEAIndividual)pop.get(i)).isDominatingDebConstraints(indy))) {
+                    return false;
+                }
             }
         } else {
             for (int i = 0; i < pop.size(); i++) {
-                if (!(indy.equals(pop.get(i))) && (((AbstractEAIndividual)pop.get(i)).isDominating(indy))) return false;
+                if (!(indy.equals(pop.get(i))) && (((AbstractEAIndividual)pop.get(i)).isDominating(indy))) {
+                    return false;
+                }
             }
         }
         return true;
@@ -63,8 +67,12 @@ public abstract class AbstractArchiving implements InterfaceArchiving, java.io.S
             tmpFitness = ((AbstractEAIndividual)archive.get(i)).getFitness();
             try {
                 for (int j = 0; j < indyFitness.length; j++) {
-                    if (indyFitness[j] <= tmpFitness[j]) isDominating &= true;
-                    else isDominating &= false;
+                    if (indyFitness[j] <= tmpFitness[j]) {
+                        isDominating &= true;
+                    }
+                    else {
+                        isDominating &= false;
+                    }
                 }
             } catch (java.lang.ArrayIndexOutOfBoundsException e) {
                 //System.out.println("-------addIndividualToArchive-------("+indyFitness.length+"/"+tmpFitness.length+")");
@@ -144,7 +152,9 @@ public abstract class AbstractArchiving implements InterfaceArchiving, java.io.S
             myPoint.setIcon(icons[index]);
             mySet.addDPoint(myPoint);
        }
-       if (lastValue != null) plot.setConnectedPoint(lastValue[0], lastValue[1], 20000+p);
+       if (lastValue != null) {
+            plot.setConnectedPoint(lastValue[0], lastValue[1], 20000+p);
+        }
         p++;
     }
 

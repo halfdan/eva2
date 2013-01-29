@@ -43,9 +43,13 @@ public class MutateESFixedStepSize implements InterfaceMutation, java.io.Seriali
     public boolean equals(Object mutator) {
         if (mutator instanceof MutateESFixedStepSize) {
             MutateESFixedStepSize mut = (MutateESFixedStepSize)mutator;
-            if (this.m_Sigma != mut.m_Sigma) return false;
+            if (this.m_Sigma != mut.m_Sigma) {
+                return false;
+            }
             return true;
-        } else return false;
+        } else {
+            return false;
+        }
     }
 
     /** This method allows you to init the mutation operator
@@ -69,8 +73,12 @@ public class MutateESFixedStepSize implements InterfaceMutation, java.io.Seriali
             double[][]  range   = ((InterfaceESIndividual)individual).getDoubleRange();
             for (int i = 0; i < x.length; i++) {
                 x[i] += ((range[i][1] -range[i][0])/2)*RNG.gaussianDouble(this.m_Sigma);
-                if (range[i][0] > x[i]) x[i] = range[i][0];
-                if (range[i][1] < x[i]) x[i] = range[i][1];
+                if (range[i][0] > x[i]) {
+                    x[i] = range[i][0];
+                }
+                if (range[i][1] < x[i]) {
+                    x[i] = range[i][1];
+                }
             }
             ((InterfaceESIndividual)individual).SetDGenotype(x);
 
@@ -118,7 +126,9 @@ public class MutateESFixedStepSize implements InterfaceMutation, java.io.Seriali
      * @param d   The mutation operator.
      */
     public void setSigma(double d) {
-        if (d < 0) d = 0;
+        if (d < 0) {
+            d = 0;
+        }
         this.m_Sigma = d;
     }
     public double getSigma() {

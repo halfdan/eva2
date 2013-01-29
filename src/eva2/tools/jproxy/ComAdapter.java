@@ -47,8 +47,9 @@ public class ComAdapter {
 	 *
 	 */
 	public static ComAdapter getInstance() {
-		if (m_instance != null)
-			return m_instance;
+		if (m_instance != null) {
+                return m_instance;
+            }
 		m_instance = new ComAdapter();
 		return m_instance;
 	}
@@ -150,8 +151,9 @@ public class ComAdapter {
 		RMIInvocationHandler ret = null;
 		while (ret == null) {
 			ret = getConnection(hostName).getRMIHandler(c);
-			if (ret == null)
-				System.out.println("Error in getRMIHandler");
+			if (ret == null) {
+                        System.out.println("Error in getRMIHandler");
+                    }
 		}
 		return ret;
 	}
@@ -276,8 +278,9 @@ public class ComAdapter {
 	 *
 	 */
 	public String[] getAvailableHostNameList() {
-		if (m_AvailableHostNameList.size() == 0)
-			evalAvailableHostNameList();
+		if (m_AvailableHostNameList.size() == 0) {
+                evalAvailableHostNameList();
+            }
 		String[] ret = new String[m_AvailableHostNameList.size()];
 		m_AvailableHostNameList.toArray(ret);
 		return ret;
@@ -371,8 +374,9 @@ public class ComAdapter {
 		}
 		int ret = 0;
 		for (int i = 0; i < list.length; i++) {
-			if (list[i].indexOf(MainAdapterImpl.MAIN_ADAPTER_NAME) != -1)
-				ret++;
+			if (list[i].indexOf(MainAdapterImpl.MAIN_ADAPTER_NAME) != -1) {
+                        ret++;
+                    }
 		}
 		System.err.println("error in ComAdapter.getNumberOfServersonHost");
 		//System.out.println(" ret ===        "+ret);
@@ -507,7 +511,9 @@ public class ComAdapter {
 			// search for an already established connection to the given host
 			// and return it if found
 			RMIConnection ret = (RMIConnection) m_Connections.get(i);
-			if (Host.equals(ret.getHostName())) return ret;
+			if (Host.equals(ret.getHostName())) {
+                        return ret;
+                    }
 		}
 		// else create and add new RMIConnection
 		RMIConnection ret = null;
@@ -517,12 +523,17 @@ public class ComAdapter {
 					new MainAdapterClientImpl("localhost"));
 		} else {
 			MainAdapter Adapter = (MainAdapter)createRMIMainConnect(Host);
-			if (Adapter != null)
-				ret = createRMIConnection(Host, Adapter,
-						(MainAdapterClient) RMIProxyLocal.newInstance(new MainAdapterClientImpl(Host)));
+			if (Adapter != null) {
+                        ret = createRMIConnection(Host, Adapter,
+                                        (MainAdapterClient) RMIProxyLocal.newInstance(new MainAdapterClientImpl(Host)));
+                    }
 		}
-		if (ret != null) m_Connections.add(ret);
-		else System.err.println("Warning no valid connection !!");
+		if (ret != null) {
+                m_Connections.add(ret);
+            }
+		else {
+                System.err.println("Warning no valid connection !!");
+            }
 		return ret;
 	}	
 	
@@ -566,26 +577,35 @@ class RMIRegistration implements Runnable {
 
     @Override
 	public void run() {
-		if (TRACE)
-			System.out.println("LaunchRMIRegistry on Client on PORT " + ComAdapter.PORT);
+		if (TRACE) {
+                System.out.println("LaunchRMIRegistry on Client on PORT " + ComAdapter.PORT);
+            }
 		try {
 			reg = java.rmi.registry.LocateRegistry.createRegistry(ComAdapter.PORT);
 		}
 		catch (Throwable e) {
-			if (TRACE) System.out.println("Registry notcreated !!" + e.getMessage());
+			if (TRACE) {
+                        System.out.println("Registry notcreated !!" + e.getMessage());
+                    }
 			reg = null;
 		}
 		if (reg == null) {
-			if (TRACE) System.out.println("Try to get registry with getRegistry on PORT " + ComAdapter.PORT);
+			if (TRACE) {
+                        System.out.println("Try to get registry with getRegistry on PORT " + ComAdapter.PORT);
+                    }
 			try {
 				reg = java.rmi.registry.LocateRegistry.getRegistry(ComAdapter.PORT);
 			}
 			catch (Throwable e) {
-				if (TRACE) System.out.println("registry not created !!" + e.getMessage());
+				if (TRACE) {
+                                System.out.println("registry not created !!" + e.getMessage());
+                            }
 				reg = null;
 			}
 		}
-		if (reg != null && TRACE) System.out.println("--> got RMIREGISTRY");
+		if (reg != null && TRACE) {
+                System.out.println("--> got RMIREGISTRY");
+            }
 		comAd.setRMIRegistry(reg);
 	}
 	

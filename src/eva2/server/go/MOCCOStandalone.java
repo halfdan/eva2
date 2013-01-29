@@ -212,15 +212,27 @@ public class MOCCOStandalone implements InterfaceGOStandalone, InterfacePopulati
     private void checkForObjectives(String w) {
         System.out.println("I'm currently "+w);
         System.out.print("Original Problem is ");
-        if (this.m_State.m_OriginalProblem.isMultiObjective()) System.out.println("multi-objective.");
-        else System.out.println("single-objective.");
+        if (this.m_State.m_OriginalProblem.isMultiObjective()) {
+            System.out.println("multi-objective.");
+        }
+        else {
+            System.out.println("single-objective.");
+        }
         System.out.print("Current Problem is ");
-        if (this.m_State.m_CurrentProblem.isMultiObjective()) System.out.println("multi-objective.");
-        else System.out.println("single-objective.");
+        if (this.m_State.m_CurrentProblem.isMultiObjective()) {
+            System.out.println("multi-objective.");
+        }
+        else {
+            System.out.println("single-objective.");
+        }
         if (this.m_State.m_BackupProblem != null) {
             System.out.print("Backup Problem is ");
-            if (this.m_State.m_BackupProblem.isMultiObjective()) System.out.println("multi-objective.");
-            else System.out.println("single-objective.");
+            if (this.m_State.m_BackupProblem.isMultiObjective()) {
+                System.out.println("multi-objective.");
+            }
+            else {
+                System.out.println("single-objective.");
+            }
         } else {
             System.out.println("No Backup Problem");
         }
@@ -235,7 +247,9 @@ public class MOCCOStandalone implements InterfaceGOStandalone, InterfacePopulati
         s = "Objectives: {";
         for (int i = 0; i < obj.length; i++) {
             s += obj[i].getIdentName();
-            if (i < (obj.length-1)) s += "; ";
+            if (i < (obj.length-1)) {
+                s += "; ";
+            }
         }
         s += "}";
         System.out.println(""+s);
@@ -244,7 +258,9 @@ public class MOCCOStandalone implements InterfaceGOStandalone, InterfacePopulati
             s = "Weights   : {";
             for (int i = 0; i < prop.getNumRows(); i++) {
                 s += prop.getValue(i,0);
-                if (i < (prop.getNumRows()-1)) s += "; ";
+                if (i < (prop.getNumRows()-1)) {
+                    s += "; ";
+                }
             }
             s += "}";
             System.out.println(""+s);
@@ -328,10 +344,12 @@ public class MOCCOStandalone implements InterfaceGOStandalone, InterfacePopulati
                 throw new Exception("Object not of type MOCCOState");
             } return obj;
 	    } catch (Exception ex) {
-            if (this.m_JFrame != null)
-	            JOptionPane.showMessageDialog(this.m_JFrame, "Couldn't read object: " + selected.getName() + "\n" + ex.getMessage(), "Open object file", JOptionPane.ERROR_MESSAGE);
-            else
-                System.out.println("Couldn't read object: " + selected.getName() + "\n" + ex.getMessage());
+            if (this.m_JFrame != null) {
+                    JOptionPane.showMessageDialog(this.m_JFrame, "Couldn't read object: " + selected.getName() + "\n" + ex.getMessage(), "Open object file", JOptionPane.ERROR_MESSAGE);
+                }
+            else {
+                    System.out.println("Couldn't read object: " + selected.getName() + "\n" + ex.getMessage());
+                }
 	    }
         return null;
     }
@@ -346,10 +364,12 @@ public class MOCCOStandalone implements InterfaceGOStandalone, InterfacePopulati
             oo.writeObject(this.m_State);
             oo.close();
 	    } catch (Exception ex) {
-            if (this.m_JFrame != null)
-	            JOptionPane.showMessageDialog(this.m_JFrame, "Couldn't write to file: " + sFile.getName() + "\n" + ex.getMessage(), "Save object", JOptionPane.ERROR_MESSAGE);
-            else
-                System.out.println("Couldn't write to file: " + sFile.getName() + "\n" + ex.getMessage());
+            if (this.m_JFrame != null) {
+                    JOptionPane.showMessageDialog(this.m_JFrame, "Couldn't write to file: " + sFile.getName() + "\n" + ex.getMessage(), "Save object", JOptionPane.ERROR_MESSAGE);
+                }
+            else {
+                    System.out.println("Couldn't write to file: " + sFile.getName() + "\n" + ex.getMessage());
+                }
 	    }
     }
 
@@ -365,10 +385,14 @@ public class MOCCOStandalone implements InterfaceGOStandalone, InterfacePopulati
         }
         this.m_StillWorking = true;
         this.m_State.m_Optimizer.setProblem(this.m_State.m_CurrentProblem);
-        if (this.m_Debug) System.out.println(""+this.m_State.m_Optimizer.getStringRepresentation());
+        if (this.m_Debug) {
+            System.out.println(""+this.m_State.m_Optimizer.getStringRepresentation());
+        }
         this.m_State.m_CurrentProblem.evaluate(this.m_State.m_Optimizer.getPopulation());
         this.m_State.m_Optimizer.getPopulation().SetFunctionCalls(0);
-        if (this.m_State.m_Optimizer.getPopulation().size() == 0) this.m_State.m_Optimizer.init();
+        if (this.m_State.m_Optimizer.getPopulation().size() == 0) {
+            this.m_State.m_Optimizer.init();
+        }
         this.m_State.m_Optimizer.addPopulationChangedEventListener(this);
         worker = new SwingWorker() {
             @Override
@@ -394,7 +418,9 @@ public class MOCCOStandalone implements InterfaceGOStandalone, InterfacePopulati
                         m_State.addPopulation2History(pop[i]);
                     }
                 }
-                if (m_View != null) m_View.problemChanged(true);
+                if (m_View != null) {
+                    m_View.problemChanged(true);
+                }
                 m_StillWorking = false;
             }
         };
@@ -427,9 +453,13 @@ public class MOCCOStandalone implements InterfaceGOStandalone, InterfacePopulati
      */
     Object doWork() {
         try {
-            if (Thread.interrupted()) throw new InterruptedException();
+            if (Thread.interrupted()) {
+                throw new InterruptedException();
+            }
             while (!this.m_State.m_Terminator.isTerminated(this.m_State.m_Optimizer.getPopulation())) {
-                if (Thread.interrupted()) throw new InterruptedException();
+                if (Thread.interrupted()) {
+                    throw new InterruptedException();
+                }
                 this.m_State.m_Optimizer.optimize();
             }
             System.gc();

@@ -100,8 +100,12 @@ public class ParticleSwarmOptimizationGCPSO extends ParticleSwarmOptimization {
 		if (useAlternative) {
 			accel	= getAccelerationAlternative(index, personalBestPos, neighbourBestPos, curPosition, range);
 		} else {
-			if (index == gbestParticleIndex && isGcpso()) accel = getAccelerationForGlobalBestParticle(personalBestPos, neighbourBestPos, curPosition, range);
-			else accel = getAcceleration(personalBestPos, neighbourBestPos, curPosition, range);
+			if (index == gbestParticleIndex && isGcpso()) {
+                        accel = getAccelerationForGlobalBestParticle(personalBestPos, neighbourBestPos, curPosition, range);
+                    }
+			else {
+                        accel = getAcceleration(personalBestPos, neighbourBestPos, curPosition, range);
+                    }
 		}
 		for (int i = 0; i < lastVelocity.length; i++) {
 			curVelocity[i]  = this.m_InertnessOrChi * lastVelocity[i];
@@ -172,7 +176,9 @@ public class ParticleSwarmOptimizationGCPSO extends ParticleSwarmOptimization {
 		{
 			gbestParticleHasChanged = true;
 			gbestParticleIndex = index;
-		} else gbestParticleHasChanged = false;
+		} else {
+                gbestParticleHasChanged = false;
+            }
 
 		/**  numOfSuccesses,numOfFailures */
 		// check if the gbestParticle improved over the last iteration

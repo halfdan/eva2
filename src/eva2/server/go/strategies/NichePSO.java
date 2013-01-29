@@ -181,7 +181,9 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
 	 * 
 	 */
 	public NichePSO(){
-		if (log) initLogFile();
+		if (log) {
+                initLogFile();
+            }
 		initMainSwarm(); // not really necessary if init is called before optimization but this way init doesnt change the parameters of a newly constructed object
 		initSubswarmOptimizerTemplate();
 				
@@ -338,7 +340,9 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
 		indicesToReinit=null;
 		// show in plot
 		//MainSwarm.setShow(true);
-		if (isPlot()) initPlotSwarm();
+		if (isPlot()) {
+                initPlotSwarm();
+            }
 	}
 	
 	/** @tested  
@@ -372,20 +376,26 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
 		}
 		// main swarm:
 		if (getMainSwarm().getPopulation().size() == 0){// || mainSwarm.getPopulation().size() == 1){
-			if (isVerbose()) System.out.print("MainSwarm size is 0\n");
+			if (isVerbose()) {
+                        System.out.print("MainSwarm size is 0\n");
+                    }
 			// increment the generationcount for the terminator: 
 			// 1 generation equals one optimize call including the optimization of the 
 			// (possibly empty) mainswarm and all subswarms
 			getMainSwarm().getPopulation().incrGeneration();
 		}
-		else getMainSwarm().optimize();
+		else {
+                getMainSwarm().optimize();
+            }
 		
 		maybeReinitIndies();
 
 		// subswarms:
 		for (int i = 0; i < getSubSwarms().size(); ++i) {
 			ParticleSubSwarmOptimization subswarm = getSubSwarms().get(i);
-			if (subswarm.isActive()) subswarm.optimize();
+			if (subswarm.isActive()) {
+                        subswarm.optimize();
+                    }
 //			System.out.println(i + " " + subswarm.getPopulation().getFunctionCalls());
 		}
 		
@@ -452,7 +462,9 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
 	 */
 	public void scheduleNewParticlesToPopulation(int[] particleIndices) {
 		if (particleIndices != null) {
-			if (indicesToReinit==null) indicesToReinit = new Vector<int[]>();
+			if (indicesToReinit==null) {
+                        indicesToReinit = new Vector<int[]>();
+                    }
 			indicesToReinit.add(particleIndices);
 		}
 	}
@@ -500,7 +512,9 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
  * Deactivation
  */	
 	protected void deactivationEventFor(ParticleSubSwarmOptimization subswarm) {
-		if (isVerbose()) System.out.println("deactivating subswarm");
+		if (isVerbose()) {
+                System.out.println("deactivating subswarm");
+            }
 		deactivatedSwarm.add(subswarm); // only for plotting
 		deactivationOccured  = true;
 	}
@@ -514,7 +528,9 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
 			ParticleSubSwarmOptimization currentsubswarm = getSubSwarms().get(i);
 			//.. if it meets the criterion of the deactivation strategy
 			if (getDeactivationStrategy().shouldDeactivateSubswarm(currentsubswarm)){ 
-				if (isVerbose()) System.out.println("deactivation in NPSO!");
+				if (isVerbose()) {
+                                System.out.println("deactivation in NPSO!");
+                            }
 				deactivationEventFor(currentsubswarm);
 				scheduleNewParticlesToPopulation(getDeactivationStrategy().deactivateSubswarm(currentsubswarm, getMainSwarm()));
 			}
@@ -532,8 +548,12 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
 				avgSize+=currentsubswarm.m_Population.size();
 			}
 		}
-		if (actCnt>0) return (avgSize/actCnt);
-		else return 0;
+		if (actCnt>0) {
+                return (avgSize/actCnt);
+            }
+		else {
+                return 0;
+            }
 	}
 	
 	protected int countActiveSubswarms(){
@@ -541,7 +561,9 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
 		// check for every subswarm...
 		for (int i = 0; i < getSubSwarms().size(); ++i){
 			ParticleSubSwarmOptimization currentsubswarm = getSubSwarms().get(i);
-			if (currentsubswarm.isActive()) actCnt++;
+			if (currentsubswarm.isActive()) {
+                        actCnt++;
+                    }
 		}
 		return actCnt;
 	}
@@ -549,7 +571,9 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
  * Merging
  */	
 	protected void mergingEventFor(int i, int j){
-		if (isVerbose()) System.out.print("merge condition \n");
+		if (isVerbose()) {
+                System.out.print("merge condition \n");
+            }
 		ParticleSubSwarmOptimization borg = getSubSwarms().get(i);
 		ParticleSubSwarmOptimization others= getSubSwarms().get(j);
 		this.borg.add((ParticleSubSwarmOptimization)borg.clone()); // for plotting only
@@ -564,14 +588,18 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
 	 */
 	protected void mergeSubswarmsIfPossible(){
 		boolean runagain = false;
-		if (isVerbose()) System.out.println("possibly merging " + getSubSwarms().size() + " subswarms...");
+		if (isVerbose()) {
+                System.out.println("possibly merging " + getSubSwarms().size() + " subswarms...");
+            }
 		// check for every two subswarms...
 		for (int i = 0; i < getSubSwarms().size(); ++i){
 //			System.out.print(" " + getSubSwarms().get(i).getPopulation().size());
 			for (int j = i+1; j < getSubSwarms().size(); ++j){
 				//...  if they should be merged according to the merging strategy
 				if (getMergingStrategy().shouldMergeSubswarms(getSubSwarms().get(i), getSubSwarms().get(j))){
-					if (isVerbose()) System.out.println("Merging in NPSO!");
+					if (isVerbose()) {
+                                        System.out.println("Merging in NPSO!");
+                                    }
 					mergingEventFor(i,j); // for plotting
 					getMergingStrategy().mergeSubswarms(i, j, getSubSwarms(), getMainSwarm());
 					runagain = true; //  merged subswarm may overlap with another swarm now. This might not have been considered in this run...
@@ -580,7 +608,9 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
 			}
 		}
 //		System.out.println();
-		if (runagain) mergeSubswarmsIfPossible();
+		if (runagain) {
+                mergeSubswarmsIfPossible();
+            }
 	}
 	
 /**********************************************************************************************************************
@@ -593,7 +623,9 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
 	 * @return 
 	 */
 	protected void absorbtionEventFor(AbstractEAIndividual indy, ParticleSubSwarmOptimization subswarm){
-		if (isVerbose()) System.out.print("Absorbtion \n");
+		if (isVerbose()) {
+                System.out.print("Absorbtion \n");
+            }
 		absorbtionOccurd = true;
 		this.indytoabsorb.add(indy);  
 	}
@@ -610,7 +642,9 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
 			for (int j = 0; j < getSubSwarms().size(); ++j){
 				ParticleSubSwarmOptimization currentsubwarm = getSubSwarms().get(j);
 				if (getAbsorptionStrategy().shouldAbsorbParticleIntoSubswarm(currentindy, currentsubwarm, this.getMainSwarm())){
-					if (isVerbose()) System.out.println("Absorbing particle (NPSO)");
+					if (isVerbose()) {
+                                        System.out.println("Absorbing particle (NPSO)");
+                                    }
 					absorbtionEventFor(currentindy, currentsubwarm);
 					getAbsorptionStrategy().absorbParticle(currentindy, currentsubwarm, this.getMainSwarm());
 					--i; // ith particle is removed, all indizes shift one position to the left
@@ -619,14 +653,18 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
 				}
 			}
 		}
-		if (runagain) absorbParticlesIfPossible();
+		if (runagain) {
+                absorbParticlesIfPossible();
+            }
 	}
 	
 /**********************************************************************************************************************
  * Subswarm Creation
  */		
 	protected void subswarmCreationEventFor(AbstractEAIndividual currentindy, ParticleSubSwarmOptimization subswarm) {
-		if (isVerbose()) System.out.print("creating subswarm\n");
+		if (isVerbose()) {
+                System.out.print("creating subswarm\n");
+            }
 		creationOccurd = true;
 		this.indyconverged.add(currentindy);
 		for (int i = 0; i < subswarm.getPopulation().size(); ++i){
@@ -646,7 +684,9 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
 			AbstractEAIndividual currentindy = getMainSwarm().getPopulation().getEAIndividual(i);
 			//... that meets the convergence-criteria of the creation strategie
 			if (getSubswarmCreationStrategy().shouldCreateSubswarm(currentindy,getMainSwarm())){ 
-				if (isVerbose()) System.out.println("Creating sub swarm (NPSO)");
+				if (isVerbose()) {
+                                System.out.println("Creating sub swarm (NPSO)");
+                            }
 				// use an optimizer according to the template
 				ParticleSubSwarmOptimization newSubswarm = getNewSubSwarmOptimizer();
 				// and create a subswarm from the given particle
@@ -666,7 +706,9 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
 	 * Something has changed
 	 */
 	protected void firePropertyChangedEvent (String name) {
-		if (this.m_Listener != null) this.m_Listener.registerPopulationStateChanged(this, name);
+		if (this.m_Listener != null) {
+                this.m_Listener.registerPopulationStateChanged(this, name);
+            }
 	}
 
 	/** @tested  
@@ -684,7 +726,9 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
 		if (m_Listener==ea) {
 			m_Listener=null;
 			return true;
-		} else return false;
+		} else {
+                                return false;
+                            }
 	}
 	/** @tested nn 
 	 * This method is required to free the memory on a RMIServer,
@@ -764,7 +808,9 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
 			}
 		}
 
-		if (isVerbose()) System.out.println("Active populations: " + activeCnt);
+		if (isVerbose()) {
+                System.out.println("Active populations: " + activeCnt);
+            }
 		// set correct number of generations
 		metapop.setGenerationTo(getMainSwarm().getPopulation().getGeneration());
 		
@@ -852,8 +898,9 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
 		Vector<ParticleSubSwarmOptimization> subSwarms = getSubSwarms();
 //		AbstractEAIndividual[] representatives = new AbstractEAIndividual[getSubSwarms().size()+1];
 		for (int i = 0; i < getSubSwarms().size(); ++i){
-			if (!onlyInactive || (!subSwarms.get(i).isActive()))
-				representatives.add((AbstractEAIndividual)(subSwarms.get(i)).m_BestIndividual.clone());
+			if (!onlyInactive || (!subSwarms.get(i).isActive())) {
+                        representatives.add((AbstractEAIndividual)(subSwarms.get(i)).m_BestIndividual.clone());
+                    }
 		}
 		if (!onlyInactive && (getMainSwarm().getPopulation().size() != 0)) {
 			representatives.add((AbstractEAIndividual)getMainSwarm().m_BestIndividual.clone()); // assures at least one solution, even if no subswarm has been created 
@@ -995,7 +1042,9 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
 	}
 	
 	public SelectedTag getMainSwarmAlgoType() {
-		if (mainSwarmAlgoType != getMainSwarm().getAlgoType().getSelectedTagID()) System.err.println("Error in NichePSO:getMainSwarmAlgoType() !!"); 
+		if (mainSwarmAlgoType != getMainSwarm().getAlgoType().getSelectedTagID()) {
+                System.err.println("Error in NichePSO:getMainSwarmAlgoType() !!");
+            } 
 		return getMainSwarm().getAlgoType();
 	}
 	
@@ -1294,7 +1343,9 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
 	}
 	
 	public double getMedianSubswarmSize() {
-		if (getSubSwarms().size() == 0) return 0;
+		if (getSubSwarms().size() == 0) {
+                return 0;
+            }
 		double[] size = new double[getSubSwarms().size()];
 		for (int i = 0; i < getSubSwarms().size(); ++i){
 			if (getSubSwarms().get(i) == null) { // happend once - cant reproduce...
@@ -1450,7 +1501,9 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
     	
     	// path
     	File outputPath = new File(getDirForCurrentExperiment()+"\\NichePSO-LogFiles\\"); 
-    	if (!outputPath.exists()) outputPath.mkdirs();
+    	if (!outputPath.exists()) {
+            outputPath.mkdirs();
+        }
     	
     	//String outputPath = getDirForCurrentExperiment()+"/NichePSO-LogFiles/";
     	//OutputPath = OutputPath + dirForCurrentExperiment+"\\NichePSO-LogFiles\\"; 
@@ -1463,7 +1516,9 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
     	File f = new File(outputPath,name); // plattform independent representation...
     	
     	try {
-    		if (outputFile != null) outputFile.close(); // close old file
+    		if (outputFile != null) {
+                outputFile.close();
+            } // close old file
     		outputFile = new BufferedWriter(new OutputStreamWriter (new FileOutputStream (f)));
     	} catch (FileNotFoundException e) {
     		System.out.println("Could not open output file! Filename: " + name);
@@ -1478,7 +1533,9 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
      */
     protected void writeToLogFile(String line) {
     	String write = line + "\n";
-    	if (outputFile == null) return;
+    	if (outputFile == null) {
+            return;
+        }
     	try {
     		outputFile.write(write, 0, write.length());
     		outputFile.flush();
@@ -1502,7 +1559,9 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
     		AbstractEAIndividual indy = pop.getEAIndividual(i);
     		//Integer tmp = (Integer)indy.getData("particleIndex"); // here getData was a cpu-time hotspot ->  AbstractEAIndividual now has an index as "direct member"
     		//if (index.equals(tmp)) return indy;
-    		if (index.intValue() == indy.getIndividualIndex()) return indy;
+    		if (index.intValue() == indy.getIndividualIndex()) {
+                return indy;
+            }
     	}
     	return null;
     }
@@ -1515,11 +1574,15 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
     	AbstractEAIndividual indy = null;
     	Population pop = getMainSwarm().getPopulation();
     	indy = getIndyByParticleIndexAndPopulation(pop, index);
-    	if (indy != null) return indy;
+    	if (indy != null) {
+            return indy;
+        }
     	for (int i = 0; i < getSubSwarms().size(); ++i){
     		pop = getSubSwarms().get(i).getPopulation();
     		indy = getIndyByParticleIndexAndPopulation(pop, index);
-    		if (indy != null) return indy;
+    		if (indy != null) {
+                return indy;
+            }
     	}
     	return null;
     }
@@ -1529,7 +1592,9 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
      */
     protected AbstractEAIndividual getIndyWithMinStdDev(){
     	Population mainpop = getMainSwarm().getPopulation();
-    	if (mainpop.size() == 0) return null;
+    	if (mainpop.size() == 0) {
+            return null;
+        }
     	
     	double min = Double.POSITIVE_INFINITY;
         int minindex = 0;
@@ -1558,7 +1623,9 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
         a[1] = 0.0;
         this.m_TopologySwarm = new TopoPlot("NichePSO-MainSwarm","x","y",a,a);
         this.m_TopologySwarm.setParams(60,60);
-        if (m_Problem instanceof Interface2DBorderProblem) this.m_TopologySwarm.setTopology((Interface2DBorderProblem)this.m_Problem); // draws colored plot
+        if (m_Problem instanceof Interface2DBorderProblem) {
+            this.m_TopologySwarm.setTopology((Interface2DBorderProblem)this.m_Problem);
+        } // draws colored plot
     }
 
     /** @tested 
@@ -1656,7 +1723,9 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
             DPointIcon icon = new Chart2DDPointIconText(id+ds);
             ((Chart2DDPointIconText)icon).setIcon(new Chart2DDPointIconCircle());
             point.setIcon(icon);	      
-            if (d < boundary) this.m_TopologySwarm.getFunctionArea().addDElement(point);         
+            if (d < boundary) {
+                this.m_TopologySwarm.getFunctionArea().addDElement(point);
+            }         
         }
     }
 
@@ -1780,8 +1849,9 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
 		//...draw circle for best 
 		if (!swarm.isActive()){
 			plotCircleForIndy((AbstractEAIndividual)best,"[I]-Merging "+String.valueOf(index));
-		}else
-		plotCircleForIndy((AbstractEAIndividual)best,getMaxStdDevFromSwarmAsString(swarm)+"-Merging "+String.valueOf(index));
+		}else {
+            plotCircleForIndy((AbstractEAIndividual)best,getMaxStdDevFromSwarmAsString(swarm)+"-Merging "+String.valueOf(index));
+        }
 		
 		//...draw SubSwarm as connected lines to best
 		popRep  = new DPointSet();
@@ -2068,7 +2138,9 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
 	 * @return
 	 */
 	public static final GOParameters stdNPSO(NichePSO npso, AbstractOptimizationProblem problem, long randSeed, int evalCnt) {
-		if (npso == null) npso = new NichePSO();
+		if (npso == null) {
+                npso = new NichePSO();
+            }
 		int popSize = 100;
 		npso.setMainSwarmSize(popSize);
 //		double avgRange = Mathematics.getAvgRange(((InterfaceDataTypeDouble)problem.getIndividualTemplate()).getDoubleRange());
@@ -2120,7 +2192,9 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
 	}
 	
 	public static final NichePSO starNPSO(NichePSO npso, int evalCnt) {
-		if (npso == null) npso = new NichePSO();
+		if (npso == null) {
+                npso = new NichePSO();
+            }
 		int popSize = 200;
 		npso.setMainSwarmSize(popSize);
 //		double avgRange = Mathematics.getAvgRange(((InterfaceDataTypeDouble)problem.getIndividualTemplate()).getDoubleRange());

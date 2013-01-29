@@ -44,10 +44,16 @@ public class MutateGAShiftSubstring implements InterfaceMutation, java.io.Serial
     public boolean equals(Object mutator) {
         if (mutator instanceof MutateGAShiftSubstring) {
             MutateGAShiftSubstring mut = (MutateGAShiftSubstring)mutator;
-            if (this.m_subStringLength != mut.m_subStringLength) return false;
-            if (this.m_shiftDistance != mut.m_shiftDistance) return false;
+            if (this.m_subStringLength != mut.m_subStringLength) {
+                return false;
+            }
+            if (this.m_shiftDistance != mut.m_shiftDistance) {
+                return false;
+            }
             return true;
-        } else return false;
+        } else {
+            return false;
+        }
     }
 
 	/** This method allows you to init the mutation operator
@@ -92,8 +98,12 @@ public class MutateGAShiftSubstring implements InterfaceMutation, java.io.Serial
 	}
 
     private int selectShiftDist(int len) {
-    	if (m_shiftDistance<=0) return RNG.randomInt(len);
-    	else return m_shiftDistance;
+    	if (m_shiftDistance<=0) {
+            return RNG.randomInt(len);
+        }
+    	else {
+            return m_shiftDistance;
+        }
 	}
     
 	private int[] selectSubstring(BitSet tmpBitSet, int len) {

@@ -32,11 +32,15 @@ public class ArchivingNSGAIISMeasure extends ArchivingNSGAII {
 	public boolean isDominant(AbstractEAIndividual indy, Population pop) {
 		if (this.m_ObeyDebsConstViolationPrinciple) {
 			for (int i = 0; i < pop.size(); i++) {
-				if (!(indy.equals(pop.get(i))||indy.equalFitness((AbstractEAIndividual) pop.get(i))) && (((AbstractEAIndividual)pop.get(i)).isDominatingDebConstraints(indy))) return false;
+				if (!(indy.equals(pop.get(i))||indy.equalFitness((AbstractEAIndividual) pop.get(i))) && (((AbstractEAIndividual)pop.get(i)).isDominatingDebConstraints(indy))) {
+                                return false;
+                            }
 			}
 		} else {
 			for (int i = 0; i < pop.size(); i++) {
-				if (!(indy.equals(pop.get(i))||indy.equalFitness((AbstractEAIndividual) pop.get(i))) && (((AbstractEAIndividual)pop.get(i)).isDominating(indy))) return false;
+				if (!(indy.equals(pop.get(i))||indy.equalFitness((AbstractEAIndividual) pop.get(i))) && (((AbstractEAIndividual)pop.get(i)).isDominating(indy))) {
+                                return false;
+                            }
 			}
 		}
 		return true;
@@ -87,12 +91,13 @@ public class ArchivingNSGAIISMeasure extends ArchivingNSGAII {
 			double min=v[minIndex];
 			for (int f = 1; f <  frontArray.length - 1; f++)
 			{
-				if (!assigned[  f  ])
-					if (v[f] < min)
-					{
-						min = v[f];
-						minIndex = f;
-					}
+				if (!assigned[  f  ]) {
+                                if (v[f] < min)
+                                {
+                                        min = v[f];
+                                        minIndex = f;
+                                }
+                            }
 			}
 			assigned[  minIndex  ] = true;
 			((AbstractEAIndividual)frontArray[ minIndex]).putData("HyperCube",new Double(e));

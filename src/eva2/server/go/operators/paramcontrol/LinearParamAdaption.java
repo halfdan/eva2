@@ -72,10 +72,14 @@ implements InterfaceHasUpperDoubleBound, GenericParamAdaption, Serializable {
 			setEndV(u);
 			setStartV(u);
 		} else if (getEndV()>getStartV()) { // end value is larger
-			if (u<getStartV()) System.err.println("Warning, changing direction of linear adaption!");
+			if (u<getStartV()) {
+                        System.err.println("Warning, changing direction of linear adaption!");
+                    }
 			setEndV(u);
 		} else { // start value is larger
-			if (u<getEndV()) System.err.println("Warning, changing direction of linear adaption!");
+			if (u<getEndV()) {
+                        System.err.println("Warning, changing direction of linear adaption!");
+                    }
 			setStartV(u);
 		}
 	}

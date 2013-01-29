@@ -36,8 +36,9 @@ public class ESIndividualBinaryData extends AbstractEAIndividual implements Inte
     }
 
     public ESIndividualBinaryData(ESIndividualBinaryData individual) {
-        if (individual.m_Phenotype != null)
+        if (individual.m_Phenotype != null) {
             this.m_Phenotype                = (BitSet) individual.m_Phenotype.clone();
+        }
         this.m_Genotype                 = new double[individual.m_Genotype.length];
         this.m_Range                    = new double[individual.m_Genotype.length][2];
         for (int i = 0; i < this.m_Genotype.length; i++) {
@@ -77,12 +78,22 @@ public class ESIndividualBinaryData extends AbstractEAIndividual implements Inte
     public boolean equalGenotypes(AbstractEAIndividual individual) {
         if (individual instanceof ESIndividualBinaryData) {
             ESIndividualBinaryData indy = (ESIndividualBinaryData) individual;
-            if ((this.m_Genotype == null) || (indy.m_Genotype == null)) return false;
-            if ((this.m_Range == null) || (indy.m_Range == null)) return false;
+            if ((this.m_Genotype == null) || (indy.m_Genotype == null)) {
+                return false;
+            }
+            if ((this.m_Range == null) || (indy.m_Range == null)) {
+                return false;
+            }
             for (int i = 0; i < this.m_Range.length; i++) {
-                if (this.m_Genotype[i] != indy.m_Genotype[i]) return false;
-                if (this.m_Range[i][0] != indy.m_Range[i][0]) return false;
-                if (this.m_Range[i][1] != indy.m_Range[i][1]) return false;
+                if (this.m_Genotype[i] != indy.m_Genotype[i]) {
+                    return false;
+                }
+                if (this.m_Range[i][0] != indy.m_Range[i][0]) {
+                    return false;
+                }
+                if (this.m_Range[i][1] != indy.m_Range[i][1]) {
+                    return false;
+                }
             }
             return true;
         } else {
@@ -166,11 +177,19 @@ public class ESIndividualBinaryData extends AbstractEAIndividual implements Inte
         this.SetBinaryPhenotype(binaryData);
         for (int i = 0; i < this.m_Genotype.length; i++) {
             if (this.m_UseHardSwitch) {
-                if (binaryData.get(i)) this.m_Genotype[i] = RNG.randomDouble(0.55,1.0);
-                else this.m_Genotype[i] = RNG.randomDouble(0.0,0.45);
+                if (binaryData.get(i)) {
+                    this.m_Genotype[i] = RNG.randomDouble(0.55,1.0);
+                }
+                else {
+                    this.m_Genotype[i] = RNG.randomDouble(0.0,0.45);
+                }
             } else {
-                if (binaryData.get(i)) this.m_Genotype[i] = 0.9;
-                else this.m_Genotype[i] = 0.1;
+                if (binaryData.get(i)) {
+                    this.m_Genotype[i] = 0.9;
+                }
+                else {
+                    this.m_Genotype[i] = 0.1;
+                }
             }
         }
     }
@@ -240,8 +259,12 @@ public class ESIndividualBinaryData extends AbstractEAIndividual implements Inte
     public void SetDGenotype(double[] b) {
         this.m_Genotype = b;
         for (int i = 0; i < this.m_Genotype.length; i++) {
-            if (this.m_Genotype[i] < this.m_Range[i][0]) this.m_Genotype[i] = this.m_Range[1][0];
-            if (this.m_Genotype[i] > this.m_Range[i][1]) this.m_Genotype[i] = this.m_Range[1][1];
+            if (this.m_Genotype[i] < this.m_Range[i][0]) {
+                this.m_Genotype[i] = this.m_Range[1][0];
+            }
+            if (this.m_Genotype[i] > this.m_Range[i][1]) {
+                this.m_Genotype[i] = this.m_Range[1][1];
+            }
         }
     }
 
@@ -271,8 +294,12 @@ public class ESIndividualBinaryData extends AbstractEAIndividual implements Inte
 
     @Override
     public void defaultInit(InterfaceOptimizationProblem prob) {
-    	if ((prob != null) && (prob instanceof InterfaceHasInitRange) && (((InterfaceHasInitRange)prob).getInitRange()!=null)) ESIndividualDoubleData.defaultInit(m_Genotype, (double[][])((InterfaceHasInitRange)prob).getInitRange());
-    	else ESIndividualDoubleData.defaultInit(m_Genotype, m_Range);
+    	if ((prob != null) && (prob instanceof InterfaceHasInitRange) && (((InterfaceHasInitRange)prob).getInitRange()!=null)) {
+            ESIndividualDoubleData.defaultInit(m_Genotype, (double[][])((InterfaceHasInitRange)prob).getInitRange());
+        }
+    	else {
+            ESIndividualDoubleData.defaultInit(m_Genotype, m_Range);
+        }
     }
 /**********************************************************************************************************************
  * These are for GUI

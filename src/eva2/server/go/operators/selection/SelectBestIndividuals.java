@@ -104,7 +104,9 @@ public class SelectBestIndividuals implements InterfaceSelection, java.io.Serial
                     bestProb    = indy.getFitness(crit);
                 }
             }
-            if (index >= 0) return pop.get(index);
+            if (index >= 0) {
+                return pop.get(index);
+            }
             else {
                 // darn all individuals seem to violate the constraints
                 // so lets select the guy with the least worst constraint violation
@@ -123,8 +125,12 @@ public class SelectBestIndividuals implements InterfaceSelection, java.io.Serial
                         bestProb    = indy.getConstraintViolation();
                     }
                 }
-                if (index >= 0) return pop.get(index);
-                else return pop.get(RNG.randomInt(0, pop.size()-1));
+                if (index >= 0) {
+                    return pop.get(index);
+                }
+                else {
+                    return pop.get(RNG.randomInt(0, pop.size()-1));
+                }
             }
         } else {
             for (int i = 0; i < pop.size(); i++) {
@@ -142,8 +148,12 @@ public class SelectBestIndividuals implements InterfaceSelection, java.io.Serial
                     bestProb    = indy.getFitness(crit);
                 }
             }
-            if (index >= 0) return pop.get(index);
-            else return pop.get(RNG.randomInt(0, pop.size()-1));
+            if (index >= 0) {
+                return pop.get(index);
+            }
+            else {
+                return pop.get(RNG.randomInt(0, pop.size()-1));
+            }
         }
     }
 

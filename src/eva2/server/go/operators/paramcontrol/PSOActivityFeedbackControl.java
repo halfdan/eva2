@@ -70,17 +70,25 @@ public class PSOActivityFeedbackControl implements ParamAdaption, Serializable {
 
 	private double calcNewInertness(double currentInertness, double currentAct,
 			double desiredActivity) {
-		if (TRACE) System.out.println("Activity was " + currentAct + ", desired: " + desiredActivity);
+		if (TRACE) {
+                                System.out.println("Activity was " + currentAct + ", desired: " + desiredActivity);
+                            }
 		if (currentAct < desiredActivity) { // increase inertness
 			return Math.min(maxInert, currentInertness + deltaInertness);
 		} else if (currentAct > desiredActivity) { // too high act, so decrease inertness
 			return Math.max(minInert, currentInertness - deltaInertness);
-		} else return currentInertness;
+		} else {
+                                return currentInertness;
+                            }
 	}
 
 	private double desiredActivity(int iteration, int maxIteration) {
-		if (exponentialSchedule) return startAct*Math.pow(endAct/startAct, iteration/(double)maxIteration);
-		else return Mathematics.linearInterpolation(iteration, 0, maxIteration, startAct, endAct);
+		if (exponentialSchedule) {
+                return startAct*Math.pow(endAct/startAct, iteration/(double)maxIteration);
+            }
+		else {
+                return Mathematics.linearInterpolation(iteration, 0, maxIteration, startAct, endAct);
+            }
 	}
 
 	private double calculateActivity(ParticleSwarmOptimization pso) {
@@ -122,7 +130,9 @@ public class PSOActivityFeedbackControl implements ParamAdaption, Serializable {
 	}
 	public void setFinalActivity(double endAct) {
 		this.endAct = endAct;
-		if (endAct==0 && isExponentialSchedule()) System.err.println("Warning: zero final activity will not work with exponential schedule, set it to small epsilon!");
+		if (endAct==0 && isExponentialSchedule()) {
+                System.err.println("Warning: zero final activity will not work with exponential schedule, set it to small epsilon!");
+            }
 	}
 	public String finalActivityTipText() {
 		return "The final target activity (relative to the range), should be close to zero.";
@@ -154,7 +164,9 @@ public class PSOActivityFeedbackControl implements ParamAdaption, Serializable {
 
 	public void setExponentialSchedule(boolean exponentialSchedule) {
 		this.exponentialSchedule = exponentialSchedule;
-		if (getFinalActivity()==0) System.err.println("Warning: zero final activity will not work with exponential schedule, set it to small epsilon!");
+		if (getFinalActivity()==0) {
+                System.err.println("Warning: zero final activity will not work with exponential schedule, set it to small epsilon!");
+            }
 	}
 
 	public String exponentialScheduleTipText() {

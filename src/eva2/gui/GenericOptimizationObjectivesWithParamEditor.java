@@ -83,13 +83,18 @@ public class GenericOptimizationObjectivesWithParamEditor extends JPanel impleme
             try {
                 this.m_Editors[i].m_Value      = list[i];
                 this.m_Editors[i].m_Editor     = PropertyEditorProvider.findEditor(this.m_Editors[i].m_Value.getClass());
-                if (this.m_Editors[i].m_Editor == null) this.m_Editors[i].m_Editor = PropertyEditorProvider.findEditor(InterfaceOptimizationObjective.class);
-                if (this.m_Editors[i].m_Editor instanceof GenericObjectEditor)
+                if (this.m_Editors[i].m_Editor == null) {
+                    this.m_Editors[i].m_Editor = PropertyEditorProvider.findEditor(InterfaceOptimizationObjective.class);
+                }
+                if (this.m_Editors[i].m_Editor instanceof GenericObjectEditor) {
                     ((GenericObjectEditor) this.m_Editors[i].m_Editor).setClassType(InterfaceOptimizationObjective.class);
+                }
                 this.m_Editors[i].m_Editor.setValue(this.m_Editors[i].m_Value);
                 this.m_Editors[i].m_Editor.addPropertyChangeListener(this);
                 AbstractObjectEditor.findViewFor(this.m_Editors[i]);
-                if (this.m_Editors[i].m_View != null) this.m_Editors[i].m_View.repaint();
+                if (this.m_Editors[i].m_View != null) {
+                    this.m_Editors[i].m_View.repaint();
+                }
             } catch (Exception e) {
                 System.out.println("Darn can't read the value...");
             }
@@ -242,13 +247,18 @@ public class GenericOptimizationObjectivesWithParamEditor extends JPanel impleme
             try {
                 newEdit[l].m_Value      = list[l];
                 newEdit[l].m_Editor     = PropertyEditorProvider.findEditor(newEdit[l].m_Value.getClass());
-                if (newEdit[l].m_Editor == null) newEdit[l].m_Editor = PropertyEditorProvider.findEditor(InterfaceOptimizationObjective.class);
-                if (newEdit[l].m_Editor instanceof GenericObjectEditor)
+                if (newEdit[l].m_Editor == null) {
+                    newEdit[l].m_Editor = PropertyEditorProvider.findEditor(InterfaceOptimizationObjective.class);
+                }
+                if (newEdit[l].m_Editor instanceof GenericObjectEditor) {
                     ((GenericObjectEditor) newEdit[l].m_Editor).setClassType(InterfaceOptimizationObjective.class);
+                }
                 newEdit[l].m_Editor.setValue(newEdit[l].m_Value);
                 newEdit[l].m_Editor.addPropertyChangeListener(m_self);
                 AbstractObjectEditor.findViewFor(newEdit[l]);
-                if (newEdit[l].m_View != null) newEdit[l].m_View.repaint();
+                if (newEdit[l].m_View != null) {
+                    newEdit[l].m_View.repaint();
+                }
             } catch (Exception e) {
                 System.out.println("Darn can't read the value...");
             }
@@ -265,7 +275,9 @@ public class GenericOptimizationObjectivesWithParamEditor extends JPanel impleme
             int l = m_OptimizationObjectivesWithWeights.getSelectedTargets().length, j = 0;
             GeneralGOEProperty[] newEdit = new GeneralGOEProperty[l-1];
             for (int i = 0; i < m_Delete.length; i++) {
-                if (event.getSource().equals(m_Delete[i])) m_OptimizationObjectivesWithWeights.removeTarget(i);
+                if (event.getSource().equals(m_Delete[i])) {
+                    m_OptimizationObjectivesWithWeights.removeTarget(i);
+                }
                 else {
                     newEdit[j] = m_Editors[i];
                     j++;
@@ -432,7 +444,9 @@ public class GenericOptimizationObjectivesWithParamEditor extends JPanel impleme
     */
     @Override
     public Component getCustomEditor() {
-        if (this.m_Editor == null) this.initCustomEditor();
+        if (this.m_Editor == null) {
+            this.initCustomEditor();
+        }
         return m_Editor;
     }
 
@@ -448,13 +462,17 @@ public class GenericOptimizationObjectivesWithParamEditor extends JPanel impleme
 
     @Override
     public void addPropertyChangeListener(PropertyChangeListener l) {
-  	  if (m_Support == null) m_Support = new PropertyChangeSupport(this);
+  	  if (m_Support == null) {
+            m_Support = new PropertyChangeSupport(this);
+        }
   	  m_Support.addPropertyChangeListener(l);
     }
 
     @Override
     public void removePropertyChangeListener(PropertyChangeListener l) {
-  	  if (m_Support == null) m_Support = new PropertyChangeSupport(this);
+  	  if (m_Support == null) {
+            m_Support = new PropertyChangeSupport(this);
+        }
   	  m_Support.removePropertyChangeListener(l);
     }
     /** This will wait for the GenericObjectEditor to finish
@@ -473,13 +491,18 @@ public class GenericOptimizationObjectivesWithParamEditor extends JPanel impleme
                 try {
                     this.m_Editors[i].m_Value      = list[i];
                     this.m_Editors[i].m_Editor     = PropertyEditorProvider.findEditor(this.m_Editors[i].m_Value.getClass());
-                    if (this.m_Editors[i].m_Editor == null) this.m_Editors[i].m_Editor = PropertyEditorProvider.findEditor(InterfaceOptimizationObjective.class);
-                    if (this.m_Editors[i].m_Editor instanceof GenericObjectEditor)
+                    if (this.m_Editors[i].m_Editor == null) {
+                        this.m_Editors[i].m_Editor = PropertyEditorProvider.findEditor(InterfaceOptimizationObjective.class);
+                    }
+                    if (this.m_Editors[i].m_Editor instanceof GenericObjectEditor) {
                         ((GenericObjectEditor) this.m_Editors[i].m_Editor).setClassType(InterfaceOptimizationObjective.class);
+                    }
                     this.m_Editors[i].m_Editor.setValue(this.m_Editors[i].m_Value);
                     this.m_Editors[i].m_Editor.addPropertyChangeListener(this);
                     AbstractObjectEditor.findViewFor(this.m_Editors[i]);
-                    if (this.m_Editors[i].m_View != null) this.m_Editors[i].m_View.repaint();
+                    if (this.m_Editors[i].m_View != null) {
+                        this.m_Editors[i].m_View.repaint();
+                    }
                 } catch (Exception e) {
                     System.out.println("Darn can't read the value...");
                 }

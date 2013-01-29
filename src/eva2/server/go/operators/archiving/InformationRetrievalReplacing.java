@@ -31,7 +31,9 @@ public class InformationRetrievalReplacing implements InterfaceInformationRetrie
     @Override
     public void retrieveInformationFrom(Population pop) {
         Population archive = pop.getArchive();
-        if (archive == null) return;
+        if (archive == null) {
+            return;
+        }
         Population tmp = new Population();
 
         tmp.addPopulation(archive);

@@ -12,8 +12,12 @@ public class Exp extends DFunction {
 	private double minValue = 1e-10; // think of a minimal value we want to show in case invalid (<=0) values are requested
 	
 	public void setMinValue(double v) {
-		if (v>0) minValue = v;
-		else System.err.println("Error, minimal value for Exp must be positive!");
+		if (v>0) {
+                minValue = v;
+            }
+		else {
+                System.err.println("Error, minimal value for Exp must be positive!");
+            }
 	}
 	/*
 	 * (non-Javadoc)
@@ -58,6 +62,8 @@ public class Exp extends DFunction {
 	}
 	
 	public void updateMinValue(double y) {
-		if (y<minValue && (y>0)) minValue=y;
+		if (y<minValue && (y>0)) {
+                minValue=y;
+            }
 	}
 }

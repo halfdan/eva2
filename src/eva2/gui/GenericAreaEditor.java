@@ -52,7 +52,9 @@ public class GenericAreaEditor extends AbstractListSelectionEditor {
             this.m_AreaObject = (GPArea) o;
             m_AreaObject.addPropertyChangeListener(this);
             return true;
-        } else return false;
+        } else {
+                return false;
+            }
 	}
 	
 	@Override

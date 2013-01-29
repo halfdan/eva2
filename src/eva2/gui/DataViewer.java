@@ -37,8 +37,9 @@ public class DataViewer implements DataViewerInterface {
    *
    */
   public static DataViewerInterface getInstance (MainAdapterClient client,String GraphWindowName) {
-    if (m_ViewContainer == null)
-      m_ViewContainer = new ViewContainer();
+    if (m_ViewContainer == null) {
+          m_ViewContainer = new ViewContainer();
+      }
     DataViewerInterface ret =null;
     try {
       if (!m_ViewContainer.containsName(GraphWindowName)) {
@@ -50,13 +51,17 @@ public class DataViewer implements DataViewerInterface {
           e.printStackTrace();
         }
         if (client != null && client.getHostName().equals(m_MyHostName)== true) {
-          if (TRACE) System.out.println("no RMI");
+          if (TRACE) {
+                System.out.println("no RMI");
+            }
           ret = new DataViewer(GraphWindowName,true);
         }
         else {
           ret = (DataViewerInterface) RMIProxyRemote.newInstance(new DataViewer(GraphWindowName,false), client);
           ret.init();
-          if (TRACE) System.out.println("with RMI");
+          if (TRACE) {
+                System.out.println("with RMI");
+            }
         }
 
 
@@ -76,10 +81,13 @@ public class DataViewer implements DataViewerInterface {
    *
    */
   private DataViewer(String PlotName,boolean initflag){
-    if (TRACE) System.out.println("Constructor DataViewer");
+    if (TRACE) {
+          System.out.println("Constructor DataViewer");
+      }
     m_Name = PlotName;
-    if(initflag)
-      this.init();
+    if(initflag) {
+          this.init();
+      }
   }
   /**
    *
@@ -93,7 +101,9 @@ public class DataViewer implements DataViewerInterface {
     @Override
   public Graph getNewGraph(String InfoString) {
     m_GraphCounter++;
-    if (TRACE) System.out.println("Graph.getNewGraph No:"+m_GraphCounter);
+    if (TRACE) {
+          System.out.println("Graph.getNewGraph No:"+m_GraphCounter);
+      }
     return new Graph (InfoString,m_Plot,m_GraphCounter);
   }
   /**
@@ -131,9 +141,11 @@ class ViewContainer extends ArrayList {
    *
    */
   public DataViewer getPlot (String name) {
-    if (m_actualPlot!=null)
-      if (m_actualPlot.getName().equals(name))
-        return m_actualPlot;
+    if (m_actualPlot!=null) {
+          if (m_actualPlot.getName().equals(name)) {
+              return m_actualPlot;
+          }
+      }
     DataViewer temp = null;
     for (int i=0;i<size();i++) {
       temp = (DataViewer)(get(i));

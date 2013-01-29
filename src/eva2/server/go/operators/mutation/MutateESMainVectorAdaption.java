@@ -45,10 +45,18 @@ public class MutateESMainVectorAdaption implements InterfaceMutation, java.io.Se
         this.xi_dach        = mutator.xi_dach;
         this.Z1             = mutator.Z1;
         this.w_v            = mutator.w_v;
-        if (mutator.m_main_v != null)   this.m_main_v   = (double[]) mutator.m_main_v.clone();
-        if (mutator.m_Z != null)        this.m_Z        = (double[]) mutator.m_Z.clone();
-        if (mutator.s_N != null)        this.s_N        = (double[]) mutator.s_N.clone();
-        if (mutator.s_d_N != null)      this.s_d_N      = (double[]) mutator.s_d_N.clone();
+        if (mutator.m_main_v != null) {
+            this.m_main_v   = (double[]) mutator.m_main_v.clone();
+        }
+        if (mutator.m_Z != null) {
+            this.m_Z        = (double[]) mutator.m_Z.clone();
+        }
+        if (mutator.s_N != null) {
+            this.s_N        = (double[]) mutator.s_N.clone();
+        }
+        if (mutator.s_d_N != null) {
+            this.s_d_N      = (double[]) mutator.s_d_N.clone();
+        }
     }
 
     /** This method will enable you to clone a given mutation operator
@@ -65,19 +73,29 @@ public class MutateESMainVectorAdaption implements InterfaceMutation, java.io.Se
      */
     @Override
     public boolean equals(Object mutator) {
-    	if (this==mutator) return true;
+    	if (this==mutator) {
+            return true;
+        }
         if (mutator instanceof MutateESMainVectorAdaption) {
             MutateESMainVectorAdaption mut = (MutateESMainVectorAdaption)mutator;
             // i assume if the main_V is equal then the mutation operators are equal
-            if (this.m_main_v==mut.m_main_v) return true;
+            if (this.m_main_v==mut.m_main_v) {
+                return true;
+            }
             if (this.m_main_v != null) {
                 for (int i = 0; i < this.m_main_v.length; i++) {
-                    if (this.m_main_v[i] != mut.m_main_v[i]) return false;
+                    if (this.m_main_v[i] != mut.m_main_v[i]) {
+                        return false;
+                    }
                 }
-            } else return false;
+            } else {
+                return false;
+            }
             return true;
         }
-        else return false;
+        else {
+            return false;
+        }
     }
 
     /** This method allows you to init the mutation operator
@@ -86,7 +104,9 @@ public class MutateESMainVectorAdaption implements InterfaceMutation, java.io.Se
      */
     @Override
     public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
-        if (!(individual instanceof InterfaceESIndividual)) return;
+        if (!(individual instanceof InterfaceESIndividual)) {
+            return;
+        }
         double[]    x       = ((InterfaceESIndividual)individual).getDGenotype();
         double[][]  ranges  = ((InterfaceESIndividual)individual).getDoubleRange();
         this.m_SigmaScalar  = this.m_InitSigmaScalar;
@@ -155,8 +175,12 @@ public class MutateESMainVectorAdaption implements InterfaceMutation, java.io.Se
         for (int i = 0; i < this.N; i++) {
             Product += this.s_N[i] * this.m_main_v[i];
         }
-        if (Product < 0.0)  Product = -1.0;
-        else                Product = 1.0;
+        if (Product < 0.0) {
+            Product = -1.0;
+        }
+        else {
+            Product = 1.0;
+        }
         for (int i = 0; i < this.N; i++) { // ADAPT MAIN VECTOR
             this.s_N[i]       = (1.0 - this.m_c) * this.s_N[i] + Math.sqrt(this.m_c*(2.0-this.m_c)) * (this.m_Z[i] + this.Z1 * this.w_v * this.m_main_v[i]); // PATH MAIN VECTOR
             this.m_main_v[i]  = (1.0 - this.m_cov) * Product * this.m_main_v[i] + this.m_cov * this.s_N[i];
@@ -164,7 +188,9 @@ public class MutateESMainVectorAdaption implements InterfaceMutation, java.io.Se
     }
 
     private void evaluateNewObjectX(double[] x, double[][] range) {
-        if (Double.isNaN((x[0]))) System.err.println("treffer in mva "+ x[0]);
+        if (Double.isNaN((x[0]))) {
+            System.err.println("treffer in mva "+ x[0]);
+        }
 
 //        boolean constraint = false;
 //        int counter = 0;

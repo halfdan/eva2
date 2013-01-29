@@ -64,7 +64,11 @@ public class F17Problem extends AbstractProblemDouble implements
 
     @Override
 	public SolutionHistogram getHistogram() {
-		if (getProblemDimension()<15) return new SolutionHistogram(-0.5, 7.5, 16);
-		else return new SolutionHistogram(-0.5, 15.5, 16);
+		if (getProblemDimension()<15) {
+                return new SolutionHistogram(-0.5, 7.5, 16);
+            }
+		else {
+                return new SolutionHistogram(-0.5, 15.5, 16);
+            }
 	}
 }

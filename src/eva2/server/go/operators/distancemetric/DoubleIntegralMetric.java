@@ -51,7 +51,9 @@ public class DoubleIntegralMetric implements InterfaceDistanceMetric, Serializab
 			double l1 = Mathematics.sum(dIndy1);
 			double l2 = Mathematics.sum(dIndy2);
 			if (l1!=1. || l2!=1.) { // norming really necessary
-				if (l1==0 || l2==0) EVAERROR.errorMsgOnce("Warning, double vector with zero sum will yield infinite distances in " + this.getClass());
+				if (l1==0 || l2==0) {
+                                EVAERROR.errorMsgOnce("Warning, double vector with zero sum will yield infinite distances in " + this.getClass());
+                            }
 				dIndy1 = Mathematics.svDiv(l1, dIndy1);
 				dIndy2 = Mathematics.svDiv(l2, dIndy2);
 			}

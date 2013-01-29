@@ -42,13 +42,17 @@ public class GPNodeProd extends AbstractGPNode implements java.io.Serializable {
 
         for (int i = 0; i < this.m_Nodes.length; i++) {
             tmpObj = this.m_Nodes[i].evaluate(environment);
-            if (tmpObj instanceof double[]) result*=Mathematics.product((double[])tmpObj);
+            if (tmpObj instanceof double[]) {
+                result*=Mathematics.product((double[])tmpObj);
+            }
             else if (tmpObj instanceof Double[]) {
             	Double[] vals = (Double[])tmpObj;
             	for (int j=0; j<vals.length; j++) {
                     result*=vals[j];
                 }
-            } else if (tmpObj instanceof Double) result=(Double)tmpObj;
+            } else if (tmpObj instanceof Double) {
+                result=(Double)tmpObj;
+            }
         }
         return new Double(result);
     }

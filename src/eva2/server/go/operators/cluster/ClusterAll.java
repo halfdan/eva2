@@ -40,10 +40,16 @@ public class ClusterAll implements InterfaceClustering, Serializable {
 			Population referenceSet) {
 		if (loners!=null && (loners.size()>0)) {
 			int[] indices = new int[loners.size()]; 
-			if (assignLoners) Arrays.fill(indices, 0);
-			else Arrays.fill(indices, -1);
+			if (assignLoners) {
+                        Arrays.fill(indices, 0);
+                    }
+			else {
+                        Arrays.fill(indices, -1);
+                    }
 			return indices;
-		} else return null;
+		} else {
+                                return null;
+                            }
 	}
 
 	/*

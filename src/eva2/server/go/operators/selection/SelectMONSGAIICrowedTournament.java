@@ -78,9 +78,15 @@ public class SelectMONSGAIICrowedTournament implements InterfaceSelection, java.
             for (int i = 0; i < this.m_TournamentSize; i++) {
                 tmpIndy = (AbstractEAIndividual) population.get(RNG.randomInt(0, population.size()-1));
                 tmpL = ((Integer)tmpIndy.getData("ParetoLevel")).intValue();
-                if (tmpL < smallestLevel) smallestLevel = tmpL;
-                if (tmpIndy.getConstraintViolation() > 0) infeasiblePop.add(tmpIndy);
-                else feasiblePop.add(tmpIndy);
+                if (tmpL < smallestLevel) {
+                    smallestLevel = tmpL;
+                }
+                if (tmpIndy.getConstraintViolation() > 0) {
+                    infeasiblePop.add(tmpIndy);
+                }
+                else {
+                    feasiblePop.add(tmpIndy);
+                }
             }
             if (feasiblePop.size() == 0) {
                 // choose the least infeasible one
@@ -97,7 +103,9 @@ public class SelectMONSGAIICrowedTournament implements InterfaceSelection, java.
             for (int i = 0; i < feasiblePop.size(); i++) {
                 tmpIndy = (AbstractEAIndividual) feasiblePop.get(i);
                 tmpL = ((Integer)tmpIndy.getData("ParetoLevel")).intValue();
-                if (tmpL < smallestLevel) smallestLevel = tmpL;
+                if (tmpL < smallestLevel) {
+                    smallestLevel = tmpL;
+                }
             }
             // first remove all individual from tmpPop which are not of smallestLevel
             for (int i = 0; i < feasiblePop.size(); i++) {
@@ -106,7 +114,9 @@ public class SelectMONSGAIICrowedTournament implements InterfaceSelection, java.
                     i--;
                 }
             }
-            if (feasiblePop.size() == 1) return (AbstractEAIndividual)feasiblePop.get(0);
+            if (feasiblePop.size() == 1) {
+                return (AbstractEAIndividual)feasiblePop.get(0);
+            }
             else {
                 // now find the one with the biggest crowding distance
                 result = (AbstractEAIndividual)feasiblePop.get(0);

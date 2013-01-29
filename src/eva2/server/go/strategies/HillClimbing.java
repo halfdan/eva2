@@ -82,8 +82,12 @@ public class HillClimbing implements InterfaceOptimizer, java.io.Serializable {
             indy = ((AbstractEAIndividual) this.m_Population.get(i));
             tmpD = indy.getMutationProbability();
             indy.setMutationProbability(1.0);
-            if (mutator == null) indy.mutate();
-            else mutator.mutate(indy);
+            if (mutator == null) {
+                indy.mutate();
+            }
+            else {
+                mutator.mutate(indy);
+            }
             indy.setMutationProbability(tmpD);            
         }
         this.m_Problem.evaluate(this.m_Population);
@@ -191,12 +195,16 @@ public class HillClimbing implements InterfaceOptimizer, java.io.Serializable {
 		if (m_Listener==ea) {
 			m_Listener=null;
 			return true;
-		} else return false;
+		} else {
+                                return false;
+                            }
 	}
     /** Something has changed
      */
     protected void firePropertyChangedEvent (String name) {
-        if (this.m_Listener != null) this.m_Listener.registerPopulationStateChanged(this, name);
+        if (this.m_Listener != null) {
+            this.m_Listener.registerPopulationStateChanged(this, name);
+        }
     }
 
     /** This method will return a string describing all properties of the optimizer
@@ -206,8 +214,12 @@ public class HillClimbing implements InterfaceOptimizer, java.io.Serializable {
     @Override
     public String getStringRepresentation() {
         String result = "";
-        if (this.m_Population.size() > 1) result += "Multi(" + this.m_Population.size() + ")-Start Hill Climbing:\n";
-        else result += "Hill Climbing:\n";
+        if (this.m_Population.size() > 1) {
+            result += "Multi(" + this.m_Population.size() + ")-Start Hill Climbing:\n";
+        }
+        else {
+            result += "Hill Climbing:\n";
+        }
         result += "Optimization Problem: ";
         result += this.m_Problem.getStringRepresentationForProblem(this) +"\n";
         result += this.m_Population.getStringRepresentation();

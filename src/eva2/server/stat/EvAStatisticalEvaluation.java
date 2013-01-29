@@ -48,68 +48,73 @@ public class EvAStatisticalEvaluation {
 	public static void evaluate(InterfaceTextListener textout, EvAJob[] jobList, int[] selectedIndices,
 			StatsOnSingleDataSetEnum[] singleStats,
 			StatsOnTwoSampledDataEnum[] twoSampledStats ) {
-		if (TRACE) System.out.println("Job list: " + BeanInspector.toString(jobList));
+		if (TRACE) {
+                                System.out.println("Job list: " + BeanInspector.toString(jobList));
+                            }
 //		JTextoutputFrame textout = new JTextoutputFrame("Statistics");
 //		textout.setShow(true);
 		ArrayList<EvAJob> jobsToWorkWith = new ArrayList<EvAJob>();
 		for (int i=0; i<jobList.length; i++) {
 			// remove jobs which are not finished or not selected
-			if (jobList[i]!=null && (Mathematics.contains(selectedIndices, i)) && (jobList[i].isFinishedAndComplete())) jobsToWorkWith.add(jobList[i]);
+			if (jobList[i]!=null && (Mathematics.contains(selectedIndices, i)) && (jobList[i].isFinishedAndComplete())) {
+                        jobsToWorkWith.add(jobList[i]);
+                    }
 		}
 		List<String> commonFields = getCommonFields(jobsToWorkWith);
-		if (commonFields!=null && !commonFields.isEmpty()) for (String field : commonFields) {
-			textout.println("###\t"+ field + " statistical evaluation");
+		if (commonFields!=null && !commonFields.isEmpty()) {
+                                for (String field : commonFields) {
+textout.println("###\t"+ field + " statistical evaluation");
 
-			if(singleStats.length > 0){
-				textout.println("one-sampled statistics");
-				for (int j=-1; j<singleStats.length; j++) {
-					if(j<0){
-						textout.print("method");
-					}else{
-						textout.print("\t" + singleStats[j]);
-					}
-				}
-				textout.println("");			
-				for(int i=0; i<jobsToWorkWith.size(); i++){
-					textout.print(jobsToWorkWith.get(i).getParams().getOptimizer().getName());
-					for(int j=0; j<singleStats.length; j++){
-						switch(singleStats[j]){
-						case mean: textout.print("\t" + calculateMean(field, jobsToWorkWith.get(i))); break;
-						case median: textout.print("\t" + calculateMedian(field, jobsToWorkWith.get(i))); break;
-						case variance: textout.print("\t" + calculateVariance(field, jobsToWorkWith.get(i))); break;
-						case stdDev: textout.print("\t" + calculateStdDev(field, jobsToWorkWith.get(i))); break;
-						default: textout.println("");
-						}
-					}
-					textout.println("");
-				}
-			}
-			if(twoSampledStats.length > 0){
-				textout.println("two-sampled stats:");
-				for(int i=0; i<twoSampledStats.length; i++){
-					switch(twoSampledStats[i]){
-					case tTestEqLenEqVar: 		textout.println(StatsOnTwoSampledDataEnum.getInfoStrings()[twoSampledStats[i].ordinal()]);
-												writeTwoSampleFirstLine(textout, jobsToWorkWith);
-												writeTTestEqSizeEqVar(textout, jobsToWorkWith, field);
-												break;
-					case tTestUneqLenEqVar: 	textout.println(StatsOnTwoSampledDataEnum.getInfoStrings()[twoSampledStats[i].ordinal()]);
-												writeTwoSampleFirstLine(textout, jobsToWorkWith);
-												writeUnEqSizeEqVar(textout, jobsToWorkWith, field);
-												break;
-					case tTestUneqLenUneqVar:	textout.println(StatsOnTwoSampledDataEnum.getInfoStrings()[twoSampledStats[i].ordinal()]);
-												writeTwoSampleFirstLine(textout, jobsToWorkWith);
-												writeTTestUnEqSizeUnEqVar(textout, jobsToWorkWith, field);
-												break;
-					case mannWhitney:			textout.println(StatsOnTwoSampledDataEnum.getInfoStrings()[twoSampledStats[i].ordinal()]);
-												writeTwoSampleFirstLine(textout, jobsToWorkWith);
-												writeMannWhitney(textout, jobsToWorkWith, field);
-					default: 					textout.println("");
-												break;
-					}
-					textout.println("");
-				}
-			}
-		}
+if(singleStats.length > 0){
+textout.println("one-sampled statistics");
+for (int j=-1; j<singleStats.length; j++) {
+     if(j<0){
+             textout.print("method");
+     }else{
+             textout.print("\t" + singleStats[j]);
+     }
+}
+textout.println("");			
+for(int i=0; i<jobsToWorkWith.size(); i++){
+     textout.print(jobsToWorkWith.get(i).getParams().getOptimizer().getName());
+     for(int j=0; j<singleStats.length; j++){
+             switch(singleStats[j]){
+             case mean: textout.print("\t" + calculateMean(field, jobsToWorkWith.get(i))); break;
+             case median: textout.print("\t" + calculateMedian(field, jobsToWorkWith.get(i))); break;
+             case variance: textout.print("\t" + calculateVariance(field, jobsToWorkWith.get(i))); break;
+             case stdDev: textout.print("\t" + calculateStdDev(field, jobsToWorkWith.get(i))); break;
+             default: textout.println("");
+             }
+     }
+     textout.println("");
+}
+}
+if(twoSampledStats.length > 0){
+textout.println("two-sampled stats:");
+for(int i=0; i<twoSampledStats.length; i++){
+     switch(twoSampledStats[i]){
+     case tTestEqLenEqVar: 		textout.println(StatsOnTwoSampledDataEnum.getInfoStrings()[twoSampledStats[i].ordinal()]);
+                                                             writeTwoSampleFirstLine(textout, jobsToWorkWith);
+                                                             writeTTestEqSizeEqVar(textout, jobsToWorkWith, field);
+                                                             break;
+     case tTestUneqLenEqVar: 	textout.println(StatsOnTwoSampledDataEnum.getInfoStrings()[twoSampledStats[i].ordinal()]);
+                                                             writeTwoSampleFirstLine(textout, jobsToWorkWith);
+                                                             writeUnEqSizeEqVar(textout, jobsToWorkWith, field);
+                                                             break;
+     case tTestUneqLenUneqVar:	textout.println(StatsOnTwoSampledDataEnum.getInfoStrings()[twoSampledStats[i].ordinal()]);
+                                                             writeTwoSampleFirstLine(textout, jobsToWorkWith);
+                                                             writeTTestUnEqSizeUnEqVar(textout, jobsToWorkWith, field);
+                                                             break;
+     case mannWhitney:			textout.println(StatsOnTwoSampledDataEnum.getInfoStrings()[twoSampledStats[i].ordinal()]);
+                                                             writeTwoSampleFirstLine(textout, jobsToWorkWith);
+                                                             writeMannWhitney(textout, jobsToWorkWith, field);
+     default: 					textout.println("");
+                                                             break;
+     }
+     textout.println("");
+}
+}
+}                           }
 	}
 
 	/**
@@ -279,7 +284,9 @@ public class EvAStatisticalEvaluation {
 //				System.out.println(BeanInspector.niceToString(obj));
 //				System.out.println("SP val is " + sp);
 				t = (Double) sp;
-			} else System.err.println("For the MannWhitney test, the JSC package is required on the class path!");
+			} else {
+                        System.err.println("For the MannWhitney test, the JSC package is required on the class path!");
+                    }
 		}
 		return ""+t;
 	}
@@ -288,15 +295,27 @@ public class EvAStatisticalEvaluation {
 //		TODO do some statistical test
 		int numRuns1 = job1.getNumRuns();
 		int numRuns2 = job2.getNumRuns();
-		if (TRACE) System.out.println("Run 1: " + numRuns1 + " runs, Run 2: " + numRuns2);
-		if (TRACE) System.out.println("Data of run 1: " + BeanInspector.toString(job1.getDataColumn(field)));
-		if (TRACE) System.out.println("Data of run 2: " + BeanInspector.toString(job2.getDataColumn(field)));
+		if (TRACE) {
+                System.out.println("Run 1: " + numRuns1 + " runs, Run 2: " + numRuns2);
+            }
+		if (TRACE) {
+                System.out.println("Data of run 1: " + BeanInspector.toString(job1.getDataColumn(field)));
+            }
+		if (TRACE) {
+                System.out.println("Data of run 2: " + BeanInspector.toString(job2.getDataColumn(field)));
+            }
 		double avg1=Mathematics.mean(job1.getDoubleDataColumn(field));
 		double avg2=Mathematics.mean(job2.getDoubleDataColumn(field));
 		
-		if (avg1<avg2) return "-1";
-		else if (avg1>avg2) return "1";
-		else return "0";
+		if (avg1<avg2) {
+                return "-1";
+            }
+		else if (avg1>avg2) {
+                return "1";
+            }
+		else {
+                return "0";
+            }
 	}
 
 	/**
@@ -314,13 +333,17 @@ public class EvAStatisticalEvaluation {
                 }
 			} else {
 				for (String f : lSoFar) {
-					if (j.getFieldIndex(f)>=0) tmpL.add(f);
+					if (j.getFieldIndex(f)>=0) {
+                                        tmpL.add(f);
+                                    }
 				}
 				lSoFar=tmpL;
 				tmpL = new LinkedList<String>();
 			}
 		}
-		if (TRACE) System.out.println("Common fields are " + BeanInspector.toString(lSoFar));
+		if (TRACE) {
+                System.out.println("Common fields are " + BeanInspector.toString(lSoFar));
+            }
 		return lSoFar;
 	}
 

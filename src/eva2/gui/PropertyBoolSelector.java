@@ -15,10 +15,12 @@ public class PropertyBoolSelector extends JCheckBox {
 	public PropertyBoolSelector(PropertyEditor pe) {
 		super();
 		m_Editor = pe;
-		if (m_Editor.getAsText().equals("True"))
-			setSelected(true);
-		else
-			setSelected(false);
+		if (m_Editor.getAsText().equals("True")) {
+                setSelected(true);
+            }
+		else {
+                setSelected(false);
+            }
 
 		addItemListener(new ItemListener () {
             @Override

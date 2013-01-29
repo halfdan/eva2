@@ -59,8 +59,9 @@ public class SerializedObject implements Serializable {
 	protected static byte [] toByteArray(Object obj, boolean compress) throws IOException {
 		ByteArrayOutputStream bo = new ByteArrayOutputStream();
 		OutputStream os = bo;
-		if (compress)
-			os = new GZIPOutputStream(os);
+		if (compress) {
+                os = new GZIPOutputStream(os);
+            }
 		os = new BufferedOutputStream(os);
 		ObjectOutputStream oo = new ObjectOutputStream(os);
 		oo.writeObject(obj);

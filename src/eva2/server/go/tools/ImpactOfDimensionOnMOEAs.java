@@ -79,7 +79,9 @@ public class ImpactOfDimensionOnMOEAs {
                 tmpS = ""+i+";";
                 for (int j = 0; j < log[i].length; j++) {
                     tmpS += log[i][j];
-                    if (j < log[i].length-1) tmpS += ";";
+                    if (j < log[i].length-1) {
+                        tmpS += ";";
+                    }
                 }
                 tmpS += "\n";
                 m_OutputFile.write(tmpS);
@@ -120,8 +122,12 @@ public class ImpactOfDimensionOnMOEAs {
                         fitness[j] += x[k];
                     }
                 }
-                if (j < x.length) fitness[j] =1/((double)fitness[j]) + x[j];
-                else  fitness[j] =1/((double)fitness[j]) + x[j%objectives] + x[(j+1)%objectives];
+                if (j < x.length) {
+                    fitness[j] =1/((double)fitness[j]) + x[j];
+                }
+                else {
+                    fitness[j] =1/((double)fitness[j]) + x[j%objectives] + x[(j+1)%objectives];
+                }
             }
             ((AbstractEAIndividual)pop.get(i)).setFitness(fitness);
         }

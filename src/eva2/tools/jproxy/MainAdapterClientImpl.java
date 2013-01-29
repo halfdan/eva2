@@ -40,7 +40,9 @@ public class MainAdapterClientImpl implements MainAdapterClient {
    */
     @Override
   public RMIInvocationHandler getRMIHandler(Object obj) {
-    if (TRACE) System.out.println("MainAdapterClientImpl.getRMIHandler");
+    if (TRACE) {
+          System.out.println("MainAdapterClientImpl.getRMIHandler");
+      }
     RMIInvocationHandler ret = null;
     try {
       ret = new RMIInvocationHandlerImpl(obj);
@@ -54,7 +56,9 @@ public class MainAdapterClientImpl implements MainAdapterClient {
    */
     @Override
   public RMIThreadInvocationHandler getRMIThreadHandler(Object obj) {
-    if (TRACE) System.out.println("MainAdapterClientImpl.getRMIThreadHandler");
+    if (TRACE) {
+          System.out.println("MainAdapterClientImpl.getRMIThreadHandler");
+      }
     RMIThreadInvocationHandler ret = null;
     try {
       ret = new RMIThreadInvocationHandlerImpl(obj);

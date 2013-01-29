@@ -79,9 +79,13 @@ public class MatlabEvalMediator {
 //			BitSet b = (BitSet)x;
 //			Integer.decode()
 //			
-			if (question == null) System.err.println("Error: requesting evaluation for null array!");
+			if (question == null) {
+                        System.err.println("Error: requesting evaluation for null array!");
+                    }
 		} else { // if its not an array, it must be a BitSet
-			if (!(x instanceof BitSet)) System.err.println("Error, requesting evaluation for invalid data type! " + question.getClass()); 
+			if (!(x instanceof BitSet)) {
+                        System.err.println("Error, requesting evaluation for invalid data type! " + question.getClass());
+                    } 
 		}
 //		logMPAndSysOut("Synch requesting A requestEval " + getState());
 		synchronized(requesting) { //MdP
@@ -138,16 +142,24 @@ public class MatlabEvalMediator {
 		int k=0;int mod=25;
 		while (!requesting && !isFinished() && !quit) {
 			// wait for JE to pose a question or finish all
-			if (sleepTime > 0) try { Thread.sleep(sleepTime); } catch(Exception e) {};
+			if (sleepTime > 0) {
+                        try { Thread.sleep(sleepTime); } catch(Exception e) {}
+                    };
 			k++;
 			if ((k%mod)==0) {
 				logMPOrSysOut("MEM waiting for JE to ask... (" + mod +") "  + getState());
 				mod*=2;
-				if (mod<=0) mod = Integer.MAX_VALUE;
+				if (mod<=0) {
+                                mod = Integer.MAX_VALUE;
+                            }
 			}
 		}
-		if (requesting) logMPOrSysOut("-- MEM Request arrived in MP thread " + runID);
-		else logMPOrSysOut("-- MEM finished or quit " + runID); 
+		if (requesting) {
+                logMPOrSysOut("-- MEM Request arrived in MP thread " + runID);
+            }
+		else {
+                logMPOrSysOut("-- MEM finished or quit " + runID);
+            } 
 		// requesting is true, now finish and let Matlab work
 	}
 	
@@ -172,7 +184,9 @@ public class MatlabEvalMediator {
 	}
 
 	private void logMP(String msg) {
-		if (mp!=null) mp.log(msg + "\n");
+		if (mp!=null) {
+                mp.log(msg + "\n");
+            }
 	}
 	
 	/**
@@ -188,12 +202,16 @@ public class MatlabEvalMediator {
 	 * @return
 	 */
 	public Object getQuestion() {
-		if (mp!=null) logMP("-- Question: " + BeanInspector.toString(question) + "\n");
+		if (mp!=null) {
+                logMP("-- Question: " + BeanInspector.toString(question) + "\n");
+            }
 		return question;
 	}
 
 	double[] getAnswer() {
-		if (mp!=null) logMP("-- mediator delivering " + BeanInspector.toString(answer) + "\n");
+		if (mp!=null) {
+                logMP("-- mediator delivering " + BeanInspector.toString(answer) + "\n");
+            }
 		return answer;
 	}
 

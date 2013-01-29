@@ -45,7 +45,9 @@ public class CrossoverGABitSimulated implements InterfaceCrossover, java.io.Seri
         for (int i = 0; i < partners.size(); i++) {
             result[i+1] = (AbstractEAIndividual) ((AbstractEAIndividual)partners.get(i)).clone();
         }
-        if (partners.size() == 0) return result;
+        if (partners.size() == 0) {
+            return result;
+        }
         //for (int i = 0; i < result.length; i++) System.out.println("Before Crossover: " +result[i].getSolutionRepresentationFor());
         if ((indy1 instanceof InterfaceGAIndividual) && (partners.get(0) instanceof InterfaceGAIndividual)) {
             int         length          =  ((InterfaceGAIndividual)indy1).getGenotypeLength();
@@ -63,12 +65,18 @@ public class CrossoverGABitSimulated implements InterfaceCrossover, java.io.Seri
             for (int i = 0; i < length; i++) {
                 current = 0;
                 for (int j = 0; j < tmpBitSet[0].length; j++) {
-                    if (tmpBitSet[0][j].get(i)) current++;
+                    if (tmpBitSet[0][j].get(i)) {
+                        current++;
+                    }
                 }
                 current /= (double)(tmpBitSet[0].length);
                 for (int j = 0; j < tmpBitSet[0].length; j++) {
-                    if (RNG.flipCoin(current)) tmpBitSet[1][j].set(i);
-                    else tmpBitSet[1][j].clear(i);
+                    if (RNG.flipCoin(current)) {
+                        tmpBitSet[1][j].set(i);
+                    }
+                    else {
+                        tmpBitSet[1][j].clear(i);
+                    }
                 }
             }
 
@@ -90,8 +98,12 @@ public class CrossoverGABitSimulated implements InterfaceCrossover, java.io.Seri
      */
     @Override
     public boolean equals(Object crossover) {
-        if (crossover instanceof CrossoverGABitSimulated) return true;
-        else return false;
+        if (crossover instanceof CrossoverGABitSimulated) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     /** This method will allow the crossover operator to be initialized depending on the

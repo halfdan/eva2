@@ -19,10 +19,12 @@ public class MOSolution {
     }
 
     public void testDominace(MOSolution p) {
-        if ((p.fitness[0] < this.fitness[0]) && (p.fitness[1] < this.fitness[1]))
+        if ((p.fitness[0] < this.fitness[0]) && (p.fitness[1] < this.fitness[1])) {
             this.isDominant &= false;
-        if ((this.fitness[0] < p.fitness[0]) && (this.fitness[1] < p.fitness[1]))
+        }
+        if ((this.fitness[0] < p.fitness[0]) && (this.fitness[1] < p.fitness[1])) {
             p.isDominant &= false;
+        }
     }
 
 

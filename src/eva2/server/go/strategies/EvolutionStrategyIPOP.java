@@ -71,7 +71,9 @@ public class EvolutionStrategyIPOP extends EvolutionStrategies implements Interf
 		stagThreshold 	= other.stagThreshold;
 //		stagTime 		= other.stagTime;
 		
-		if (other.fitConvTerm != null) fitConvTerm = new FitnessConvergenceTerminator(other.fitConvTerm);
+		if (other.fitConvTerm != null) {
+                fitConvTerm = new FitnessConvergenceTerminator(other.fitConvTerm);
+            }
 	}
 	
     @Override
@@ -205,16 +207,24 @@ public class EvolutionStrategyIPOP extends EvolutionStrategies implements Interf
 				// stop if the std dev of the normal distribution is smaller than TolX in all coords 
 				// and sigma p_c is smaller than TolX in all components; TolX = 10^-12 sigma_0
 
-				if (rcmaMute.testAllDistBelow(pop, 10e-12*rcmaMute.getFirstSigma(pop))) ret = true;
+				if (rcmaMute.testAllDistBelow(pop, 10e-12*rcmaMute.getFirstSigma(pop))) {
+                                ret = true;
+                            }
 
 				// stop if adding a 0.1 std dev vector in a principal axis dir. of C does not change <x>_w^g
-				if (!ret && (rcmaMute.testNoChangeAddingDevAxis(pop, 0.1, curGen))) ret = true;
+				if (!ret && (rcmaMute.testNoChangeAddingDevAxis(pop, 0.1, curGen))) {
+                                ret = true;
+                            }
 
 				// stop if adding a 0.2 std dev in each coordinate does (not???) change <x>_w^g
-				if (!ret && (rcmaMute.testNoEffectCoord(pop, 0.2))) ret =  true;
+				if (!ret && (rcmaMute.testNoEffectCoord(pop, 0.2))) {
+                                ret =  true;
+                            }
 
 				// stop if the condition number of C exceeds 10^14
-				if (!ret && (rcmaMute.testCCondition(pop, 10e14))) ret =  true;
+				if (!ret && (rcmaMute.testCCondition(pop, 10e14))) {
+                                ret =  true;
+                            }
 //				System.out.println("ret is " + ret);
 			}
 		} 
@@ -231,9 +241,15 @@ public class EvolutionStrategyIPOP extends EvolutionStrategies implements Interf
     @Override
 	public SolutionSet getAllSolutions() {
 		Population sols = getPopulation().cloneWithoutInds();
-		if (bestList != null) sols.addAll(bestList);
-	    if (best != null) sols.add(best);
-	    else sols.add(getPopulation().getBestEAIndividual());
+		if (bestList != null) {
+                sols.addAll(bestList);
+            }
+	    if (best != null) {
+                sols.add(best);
+            }
+	    else {
+                sols.add(getPopulation().getBestEAIndividual());
+            }
 	    
 	    SolutionSet solSet = new SolutionSet(getPopulation(), sols);
 	    return solSet;
@@ -309,7 +325,9 @@ public class EvolutionStrategyIPOP extends EvolutionStrategies implements Interf
 	 */
 	public void setStagThreshold(double stagThreshold) {
 		this.stagThreshold = stagThreshold;
-		if (fitConvTerm != null) fitConvTerm.setConvergenceThreshold(stagThreshold);
+		if (fitConvTerm != null) {
+                fitConvTerm.setConvergenceThreshold(stagThreshold);
+            }
 	}
 	public String getStagThresholdTipText() {
 		return "Trigger new aera if the fitness does not change more than this threshold within certain no. iterations."; 
@@ -327,7 +345,9 @@ public class EvolutionStrategyIPOP extends EvolutionStrategies implements Interf
 	public void setStagnationGenerations(int stagTime) {
 		this.stagTimeArbitrary = stagTime;
 		if (isStagnationTimeUserDef()) {
-			if (fitConvTerm != null) fitConvTerm.setStagnationTime(stagTime);
+			if (fitConvTerm != null) {
+                        fitConvTerm.setStagnationTime(stagTime);
+                    }
 		}
 	}
 	public String stagnationGenerationsTipText() {
@@ -347,8 +367,12 @@ public class EvolutionStrategyIPOP extends EvolutionStrategies implements Interf
 		this.useArbitraryStagTime = useArbitraryStagTime;
     	GenericObjectEditor.setShowProperty(this.getClass(), "stagnationGenerations", useArbitraryStagTime);
     	if (fitConvTerm != null) {
-    		if (useArbitraryStagTime) fitConvTerm.setStagnationTime(getStagnationGenerations());
-    		else fitConvTerm.setStagnationTime(calcDefaultStagnationTime());
+    		if (useArbitraryStagTime) {
+                fitConvTerm.setStagnationTime(getStagnationGenerations());
+            }
+    		else {
+                fitConvTerm.setStagnationTime(calcDefaultStagnationTime());
+            }
     	}
 	}
 	public String stagnationTimeUserDefTipText() {
@@ -356,7 +380,9 @@ public class EvolutionStrategyIPOP extends EvolutionStrategies implements Interf
 	}
 
 	private double getMeanArchivedDist() {
-		if (bestList==null) return 0.;
+		if (bestList==null) {
+                return 0.;
+            }
 		else {
 			Population tmpPop=new Population(bestList.size());
 			tmpPop.addAll(bestList);

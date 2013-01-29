@@ -105,7 +105,9 @@ public class MOSOLpMetric implements InterfaceMOSOConverter, java.io.Serializabl
         result += " Ref.Fitness = (";
         for (int i = 0; i < m_Reference.getNumRows(); i++) {
             result += m_Reference.getValue(i,0);
-            if (i < (m_Reference.getNumRows()-1)) result += "; ";
+            if (i < (m_Reference.getNumRows()-1)) {
+                result += "; ";
+            }
         }
         result += ")\n";
         return result;

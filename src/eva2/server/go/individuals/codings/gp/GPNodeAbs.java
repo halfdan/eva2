@@ -48,11 +48,17 @@ public class GPNodeAbs extends AbstractGPNode implements java.io.Serializable {
         double result = 0;
 
         tmpObj = this.m_Nodes[0].evaluate(environment);
-        if (tmpObj instanceof Double) result += ((Double)tmpObj).doubleValue();
+        if (tmpObj instanceof Double) {
+            result += ((Double)tmpObj).doubleValue();
+        }
         Double ret = new Double(result);
         
-        if (ret<0) return -ret; 
-        else return ret;
+        if (ret<0) {
+            return -ret;
+        } 
+        else {
+            return ret;
+        }
     }
 
     @Override

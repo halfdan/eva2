@@ -60,7 +60,9 @@ public class ConstBelongsToDifferentClass implements InterfaceConstraint, java.i
         }
         double distanceToMyClass = this.distance(data, this.m_Class);
         for (int i = 0; i < this.m_OtherClasses.length; i++) {
-            if (distanceToMyClass > this.distance(data, this.m_OtherClasses[i])) return false;
+            if (distanceToMyClass > this.distance(data, this.m_OtherClasses[i])) {
+                return false;
+            }
         }
         return true;
     }

@@ -91,8 +91,12 @@ public class GAStandardCodingInteger implements InterfaceGAIntegerCoding, java.i
         m_min       = 0;
         tmpV        = value - u_min;
         long tmpOut = tmpV;// damit ist tmpV im range m_Min m_Max
-        if (tmpV > m_max) tmpV = m_max;
-        if (tmpV < m_min) tmpV = m_min;
+        if (tmpV > m_max) {
+            tmpV = m_max;
+        }
+        if (tmpV < m_min) {
+            tmpV = m_min;
+        }
         tmpBitSet = new BitSet(m_length);
         while (tmpV >= 1) {
             //System.out.println(tmpV);
@@ -111,12 +115,20 @@ public class GAStandardCodingInteger implements InterfaceGAIntegerCoding, java.i
         //System.out.println("tmpV " + tmpOut + " Range("+m_min+";"+m_max+") "+m_length+" "+this.printBitSet(tmpBitSet,m_length));
         // Das sieht bis hierher richtig toll aus, nur jetzt wirds scheisse m_Length war im Arsch
         for (int i = 0; i < m_length; i++) {
-            if (tmpBitSet.get(i)) refBitSet.set(m_start + m_length - 1 - i);
-            else refBitSet.clear(m_start + m_length - 1 - i);
+            if (tmpBitSet.get(i)) {
+                refBitSet.set(m_start + m_length - 1 - i);
+            }
+            else {
+                refBitSet.clear(m_start + m_length - 1 - i);
+            }
         }
         for (int i = 0; i < m_length; i++) {
-            if (refBitSet.get(m_start + m_length - 1 - i)) tmpBitSet.set(m_length - 1 - i);
-            else tmpBitSet.clear(m_start + m_length - 1 - i);
+            if (refBitSet.get(m_start + m_length - 1 - i)) {
+                tmpBitSet.set(m_length - 1 - i);
+            }
+            else {
+                tmpBitSet.clear(m_start + m_length - 1 - i);
+            }
         }
         //System.out.println("INT Value coded : " + value + " " + this.printBitSet(tmpBitSet, m_length));
     }
@@ -150,8 +162,12 @@ public class GAStandardCodingInteger implements InterfaceGAIntegerCoding, java.i
         String  output = "{";
 
         for (int i = 0; i < length; i++) {
-            if (b.get(i)) output += "1";
-            else output += "0";
+            if (b.get(i)) {
+                output += "1";
+            }
+            else {
+                output += "0";
+            }
         }
         output += "}\n";
         return output;

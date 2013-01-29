@@ -60,7 +60,9 @@ Serializable {
     @Override
 	public boolean isTerminated(PopulationInterface pop) {
 		//System.out.println("m_FitnessCalls="+m_FitnessCalls);
-		if (m_FitnessCalls>pop.getFunctionCalls()) return false;
+		if (m_FitnessCalls>pop.getFunctionCalls()) {
+                return false;
+            }
 		else {
 			msg = m_FitnessCalls + " fitness calls were reached.";
 			return true;

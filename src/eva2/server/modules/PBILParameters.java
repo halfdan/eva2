@@ -114,7 +114,9 @@ public class PBILParameters extends AbstractGOParameters implements InterfaceGOP
      * @param LearningRate
      */
     public void setLearningRate (double LearningRate) {
-        if (LearningRate < 0) LearningRate = 0;
+        if (LearningRate < 0) {
+            LearningRate = 0;
+        }
         ((PopulationBasedIncrementalLearning)this.m_Optimizer).setLearningRate(LearningRate);
     }
     public double getLearningRate() {
@@ -128,8 +130,12 @@ public class PBILParameters extends AbstractGOParameters implements InterfaceGOP
      * @param m
      */
     public void setMutationRate (double m) {
-        if (m < 0) m = 0;
-        if (m > 1) m = 1;
+        if (m < 0) {
+            m = 0;
+        }
+        if (m > 1) {
+            m = 1;
+        }
         ((PopulationBasedIncrementalLearning)this.m_Optimizer).setMutationRate(m);
 
      }
@@ -144,7 +150,9 @@ public class PBILParameters extends AbstractGOParameters implements InterfaceGOP
      * @param m
      */
     public void setMutateSigma (double m) {
-        if (m < 0) m = 0;
+        if (m < 0) {
+            m = 0;
+        }
         ((PopulationBasedIncrementalLearning)this.m_Optimizer).setMutateSigma(m);
     }
     public double getMutateSigma() {
@@ -158,7 +166,9 @@ public class PBILParameters extends AbstractGOParameters implements InterfaceGOP
      * @param PositiveSamples
      */
     public void setPositiveSamples (int PositiveSamples) {
-        if (PositiveSamples < 1) PositiveSamples = 1;
+        if (PositiveSamples < 1) {
+            PositiveSamples = 1;
+        }
         ((PopulationBasedIncrementalLearning)this.m_Optimizer).setPositiveSamples(PositiveSamples);
     }
     public int getPositiveSamples() {

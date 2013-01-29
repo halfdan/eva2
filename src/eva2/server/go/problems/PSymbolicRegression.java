@@ -67,15 +67,19 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
 
     public PSymbolicRegression(PSymbolicRegression b) {
         //AbstractOptimizationProblem
-        if (b.m_Template != null)
+        if (b.m_Template != null) {
             this.m_Template         = (AbstractEAIndividual)((AbstractEAIndividual)b.m_Template).clone();
+        }
         //F1Problem
-        if (b.m_OverallBest != null)
+        if (b.m_OverallBest != null) {
             this.m_OverallBest      = (AbstractEAIndividual)((AbstractEAIndividual)b.m_OverallBest).clone();
-        if (b.m_GPArea != null)
+        }
+        if (b.m_GPArea != null) {
             this.m_GPArea           = (GPArea)b.m_GPArea.clone();
-        if (b.m_TargetFunction != null)
+        }
+        if (b.m_TargetFunction != null) {
             this.m_TargetFunction   = (InterfaceRegressionFunction)b.m_TargetFunction.clone();
+        }
         if (b.m_X != null) {
             this.m_X = new double[b.m_X.length];
             for (int i = 0; i < this.m_X.length; i++) {
@@ -110,7 +114,9 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
      */
     @Override
     public void initProblem() {
-        if (m_TargetFunction == null) m_TargetFunction = new RFKoza_GPI_7_3();
+        if (m_TargetFunction == null) {
+            m_TargetFunction = new RFKoza_GPI_7_3();
+        }
         this.m_OverallBest  = null;
         this.m_C            = new double[this.m_NumberOfConstants];
         for (int i = 0; i < this.m_C.length; i++) {
@@ -182,7 +188,9 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
     /** This method init the enviroment panel if necessary.
      */
     private void initEnvironmentPanel() {
-        if (this.m_Plot == null) this.m_Plot = new Plot("Symbolic Regression", "x", "y", true);
+        if (this.m_Plot == null) {
+            this.m_Plot = new Plot("Symbolic Regression", "x", "y", true);
+        }
     }
 
     /** This method evaluates a given population and set the fitness values
@@ -210,12 +218,16 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
             		this.evaluate(tmpIndy);
             		tmpConst.SetFitness(0, tmpIndy.getFitness(0));
             		population.incrFunctionCalls();
-            		if (tmpBestConst.getFitness(0) > tmpConst.getFitness(0)) tmpBestConst = (AbstractEAIndividual)tmpConst.clone();
+            		if (tmpBestConst.getFitness(0) > tmpConst.getFitness(0)) {
+                        tmpBestConst = (AbstractEAIndividual)tmpConst.clone();
+                    }
             	}
             	((GAPIndividualProgramData)tmpIndy).setNumbers((InterfaceDataTypeDouble)tmpBestConst);
             	tmpIndy.SetFitness(0, tmpBestConst.getFitness(0));
             } else {
-            	if (m_UseLocalHillClimbing) EVAERROR.errorMsgOnce("Error: local hill climbing only works on GAPIndividualProgramData individuals!");
+            	if (m_UseLocalHillClimbing) {
+                    EVAERROR.errorMsgOnce("Error: local hill climbing only works on GAPIndividualProgramData individuals!");
+                }
                 this.evaluate(tmpIndy);
                 population.incrFunctionCalls();
             }
@@ -237,8 +249,9 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
 
         tmpIndy     = (InterfaceDataTypeProgram) individual;
         program     = tmpIndy.getProgramData()[0];
-        if ((tmpIndy instanceof GAPIndividualProgramData) && (this.m_UseInnerConst))
+        if ((tmpIndy instanceof GAPIndividualProgramData) && (this.m_UseInnerConst)) {
             this.m_C = ((GAPIndividualProgramData)tmpIndy).getDoubleData();
+        }
         fitness     = 0;
 
         for (int j = 0; j < this.m_NumberOfCheckPoints; j++) {
@@ -252,11 +265,15 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
         fitness += RNG.gaussianDouble(this.m_Noise);
         // set the fitness of the individual
         individual.SetFitness(0, fitness);
-        if ((this.m_Plot != null) && (this.m_Plot.getFunctionArea().getContainerSize() ==0)) this.m_OverallBest = null;
+        if ((this.m_Plot != null) && (this.m_Plot.getFunctionArea().getContainerSize() ==0)) {
+            this.m_OverallBest = null;
+        }
         if ((this.m_OverallBest == null) || (this.m_OverallBest.getFitness(0) > individual.getFitness(0))) {
             this.m_OverallBest = (AbstractEAIndividual)individual.clone();
             if (this.m_Show) {
-            	if (m_Plot==null) this.initEnvironmentPanel();
+            	if (m_Plot==null) {
+                    this.initEnvironmentPanel();
+                }
                 this.m_Plot.clearAll();
                 program     = ((InterfaceDataTypeProgram)this.m_OverallBest).getProgramData()[0];
                 for (int i = 0; i < this.m_NumberOfCheckPoints; i++) {
@@ -323,7 +340,9 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
     public static Object getSensorValue(String sensor, double[] vars, double[] consts) {
     	if (sensor.charAt(0)=='X') {
     		try {
-    			if (sensor.length()==1) return vars;
+    			if (sensor.length()==1) {
+                        return vars;
+                    }
     			int index=Integer.parseInt(sensor.substring(1));
         		return new Double(vars[index]);
     		} catch(Exception e) {
@@ -335,7 +354,9 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
     		return new Double(consts[index]);
     	} else if (sensor.charAt(0)=='N') {
     		return (double)vars.length;
-    	} else return new Double(0);
+    	} else {
+            return new Double(0);
+        }
 //        for (int i = 0; i < this.m_X.length; i++) if (sensor.equalsIgnoreCase("X"+i)) return new Double(this.m_X[i]);
 //        for (int i = 0; i < this.m_C.length; i++) if (sensor.equalsIgnoreCase("C"+i)) return new Double(this.m_C[i]);
 //        return new Double(0);
@@ -374,7 +395,9 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
      * @param noise     The sigma for a gaussian random number.
      */
     public void setNoise(double noise) {
-        if (noise < 0) noise = 0;
+        if (noise < 0) {
+            noise = 0;
+        }
         this.m_Noise = noise;
     }
     public double getNoise() {
@@ -430,7 +453,9 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
      * @param b     The new number of check points.
      */
     public void setNumberOfCheckPoints(int b) {
-        if (b < 0) b  = 1;
+        if (b < 0) {
+            b  = 1;
+        }
         this.m_NumberOfCheckPoints = b;
     }
     public int getNumberOfCheckPoints() {
@@ -452,7 +477,9 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
     }
     @Override
     public GPArea getArea() {
-    	if (m_GPArea==null) initProblem();
+    	if (m_GPArea==null) {
+            initProblem();
+        }
         return this.m_GPArea;
     }
     public String areaTipText() {
@@ -464,7 +491,9 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
      */
     public void setShowResult(boolean b) {
         this.m_Show = b;
-        if (this.m_Show) this.initEnvironmentPanel();
+        if (this.m_Show) {
+            this.initEnvironmentPanel();
+        }
         else if (this.m_Plot != null) {
             this.m_Plot.dispose();
             this.m_Plot = null;
@@ -484,7 +513,9 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
         this.m_TargetFunction = b;
     }
     public InterfaceRegressionFunction getTargetFunction() {
-    	if (m_TargetFunction==null) initProblem();
+    	if (m_TargetFunction==null) {
+            initProblem();
+        }
         return this.m_TargetFunction;
     }
     public String targetFunctionTipText() {
@@ -598,8 +629,12 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
 			if (prog instanceof AbstractGPNode) {
 				AbstractGPNode gpNode = (AbstractGPNode)prog;
 				return gpNode.getNumberOfNodes();
-			} else return 0;
-		} else return 0;
+			} else {
+                        return 0;
+                    }
+		} else {
+                return 0;
+            }
 	}
 	
 	/**
@@ -619,8 +654,12 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
 				//	System.out.println(d + "\n" + gpNode.getStringRepresentation());
 				//}
 				return d;
-			} else return 0;
-		} else return 0;
+			} else {
+                        return 0;
+                    }
+		} else {
+                return 0;
+            }
 	}
 	
 	/**

@@ -58,7 +58,9 @@ public abstract class AbstractParameterControl implements InterfaceParameterCont
 				System.err.println("Error: failed to set parameter from parameter control " + this.getClass().getName());;
 				System.err.println("  Tried to set name/val: " + params[i] + " / " + BeanInspector.toString(vals[i]));
 			} else {
-				if (TRACE) System.out.println("Successfully set " + params[i] + " / " + BeanInspector.toString(vals[i]) + " at " + iteration);
+				if (TRACE) {
+                                System.out.println("Successfully set " + params[i] + " / " + BeanInspector.toString(vals[i]) + " at " + iteration);
+                            }
 			}
 		}
 	}

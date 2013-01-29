@@ -40,8 +40,12 @@ GenericParamAdaption, Serializable {
 		if (obj instanceof InterfaceOptimizer) {
 			SolutionSet sols = (SolutionSet) ((InterfaceOptimizer)obj).getAllSolutions();
 			double curSuccRate = getSuccessRate(sols.getSolutions());
-			if (curSuccRate<targetRate) decrease(); // higher exploitation
-			else increase(); // higher exploration
+			if (curSuccRate<targetRate) {
+                        decrease();
+                    } // higher exploitation
+			else {
+                        increase();
+                    } // higher exploration
 			System.out.println("Succ rate is " + curSuccRate + ", setting val " + curValue);
 			return curValue;
 		} else {

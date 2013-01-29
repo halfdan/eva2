@@ -75,15 +75,21 @@ public abstract class AbstractGOParameters implements InterfaceGOParameters, Ser
 	 */
 	public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
 		this.m_Listener = ea;
-		if (this.m_Optimizer != null) this.m_Optimizer.addPopulationChangedEventListener(this.m_Listener);
+		if (this.m_Optimizer != null) {
+                this.m_Optimizer.addPopulationChangedEventListener(this.m_Listener);
+            }
 	}	
 	public boolean removePopulationChangedEventListener(
 			InterfacePopulationChangedEventListener ea) {
 		if (m_Listener==ea) {
 			m_Listener=null;
-			if (this.m_Optimizer!=null) this.m_Optimizer.removePopulationChangedEventListener(ea);
+			if (this.m_Optimizer!=null) {
+                        this.m_Optimizer.removePopulationChangedEventListener(ea);
+                    }
 			return true;
-		} else return false;
+		} else {
+                                return false;
+                            }
 	}
     
     /**
@@ -122,35 +128,50 @@ public abstract class AbstractGOParameters implements InterfaceGOParameters, Ser
 
     @Override
 	public void addInformableInstance(InterfaceNotifyOnInformers o) {
-		if (toInformAboutInformers==null) toInformAboutInformers=new LinkedList<InterfaceNotifyOnInformers>();
-		if (!toInformAboutInformers.contains(o)) toInformAboutInformers.add(o);
+		if (toInformAboutInformers==null) {
+                toInformAboutInformers=new LinkedList<InterfaceNotifyOnInformers>();
+            }
+		if (!toInformAboutInformers.contains(o)) {
+                toInformAboutInformers.add(o);
+            }
 		o.setInformers(getInformerList());
 	}
 	
     @Override
 	public boolean removeInformableInstance(InterfaceNotifyOnInformers o) {
-		if (toInformAboutInformers==null) return false;
-		else return toInformAboutInformers.remove(o);
+		if (toInformAboutInformers==null) {
+                return false;
+            }
+		else {
+                return toInformAboutInformers.remove(o);
+            }
 	}
 	
 	private void fireNotifyOnInformers() {
-		if (toInformAboutInformers!=null) for (InterfaceNotifyOnInformers listener : toInformAboutInformers) {
-			listener.setInformers(getInformerList());
-		}
+		if (toInformAboutInformers!=null) {
+                for (InterfaceNotifyOnInformers listener : toInformAboutInformers) {
+listener.setInformers(getInformerList());
+}           }
 	}
 
     @Override
 	public void setOptimizer(InterfaceOptimizer optimizer) {
 		this.m_Optimizer = optimizer;
 		this.m_Optimizer.setProblem(this.m_Problem);
-		if (this.m_Listener != null) this.m_Optimizer.addPopulationChangedEventListener(this.m_Listener);
+		if (this.m_Listener != null) {
+                this.m_Optimizer.addPopulationChangedEventListener(this.m_Listener);
+            }
 		fireNotifyOnInformers();
 	}
 	
 	private List<InterfaceAdditionalPopulationInformer> getInformerList() {
 		LinkedList<InterfaceAdditionalPopulationInformer> ret = new LinkedList<InterfaceAdditionalPopulationInformer>();
-		if (m_Problem instanceof InterfaceAdditionalPopulationInformer) ret.add(m_Problem);
-		if (m_Optimizer instanceof InterfaceAdditionalPopulationInformer) ret.add((InterfaceAdditionalPopulationInformer)m_Optimizer);
+		if (m_Problem instanceof InterfaceAdditionalPopulationInformer) {
+                ret.add(m_Problem);
+            }
+		if (m_Optimizer instanceof InterfaceAdditionalPopulationInformer) {
+                ret.add((InterfaceAdditionalPopulationInformer)m_Optimizer);
+            }
 		return ret;
 	}
 

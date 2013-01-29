@@ -42,8 +42,12 @@ public class GAGrayCodingDouble implements InterfaceGADoubleCoding, java.io.Seri
             for (int j = 1; j <= i; j++) {
                 tmpB ^= refBitSet.get(locus[0] + j);
             }
-            if (tmpB) tmpBitSet.set(i);
-            else tmpBitSet.clear(i);
+            if (tmpB) {
+                tmpBitSet.set(i);
+            }
+            else {
+                tmpBitSet.clear(i);
+            }
         }
         return this.m_HelpingHand.decodeValue(tmpBitSet, range, tmpLocus, correction);
     }
@@ -66,11 +70,19 @@ public class GAGrayCodingDouble implements InterfaceGADoubleCoding, java.io.Seri
         tmpLocus[1]     = locus[1];
         tmpBitSet       = new BitSet(tmpLocus.length);
         this.m_HelpingHand.codeValue(value, range, tmpBitSet, tmpLocus);
-        if (tmpBitSet.get(0)) refBitSet.set(locus[0]);
-        else refBitSet.clear(locus[0]);
+        if (tmpBitSet.get(0)) {
+            refBitSet.set(locus[0]);
+        }
+        else {
+            refBitSet.clear(locus[0]);
+        }
         for (int i = 1; i < locus[1]; i++) {
-            if (tmpBitSet.get(i)^tmpBitSet.get(i-1)) refBitSet.set(locus[0] + i);
-            else refBitSet.clear(locus[0] + i);
+            if (tmpBitSet.get(i)^tmpBitSet.get(i-1)) {
+                refBitSet.set(locus[0] + i);
+            }
+            else {
+                refBitSet.clear(locus[0] + i);
+            }
         }
     }
 
@@ -115,8 +127,12 @@ public class GAGrayCodingDouble implements InterfaceGADoubleCoding, java.io.Seri
         String  output = "{";
 
         for (int i = 0; i < length; i++) {
-            if (b.get(i)) output += "1";
-            else output += "0";
+            if (b.get(i)) {
+                output += "1";
+            }
+            else {
+                output += "0";
+            }
         }
         output += "}\n";
         return output;

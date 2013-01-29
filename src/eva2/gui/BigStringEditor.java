@@ -214,13 +214,17 @@ public class BigStringEditor implements PropertyEditor {
 
     @Override
   public void addPropertyChangeListener(PropertyChangeListener l) {
-	  if (m_Support == null) m_Support = new PropertyChangeSupport(this);
+	  if (m_Support == null) {
+          m_Support = new PropertyChangeSupport(this);
+      }
 	  m_Support.addPropertyChangeListener(l);
   }
 
     @Override
   public void removePropertyChangeListener(PropertyChangeListener l) {
-	  if (m_Support == null) m_Support = new PropertyChangeSupport(this);
+	  if (m_Support == null) {
+          m_Support = new PropertyChangeSupport(this);
+      }
 	  m_Support.removePropertyChangeListener(l);
   }
 }

@@ -87,8 +87,12 @@ public class CrossoverOBGAPMX implements InterfaceCrossover, java.io.Serializabl
      */
     @Override
     public boolean equals(Object crossover) {
-        if (crossover instanceof CrossoverOBGAPMX) return true;
-        else return false;
+        if (crossover instanceof CrossoverOBGAPMX) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     @Override

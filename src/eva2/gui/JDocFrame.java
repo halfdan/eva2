@@ -50,7 +50,9 @@ public abstract class JDocFrame extends JInternalFrame{
    *
    */
   public void save(){
-    if(m_file != null) save(m_file);
+    if(m_file != null) {
+          save(m_file);
+      }
   }
   /**
    *
@@ -67,14 +69,20 @@ public abstract class JDocFrame extends JInternalFrame{
    */
   private void setChangedImpl(boolean value){
     changed = value;
-    if(changed) setTitle(titleStr + " *");
-    else setTitle(titleStr);
+    if(changed) {
+          setTitle(titleStr + " *");
+      }
+    else {
+          setTitle(titleStr);
+      }
   }
   /**
    *
    */
   protected void setChanged(boolean value){
-    if(changed != value) setChangedImpl(value);
+    if(changed != value) {
+          setChangedImpl(value);
+      }
   }
   /**
    *

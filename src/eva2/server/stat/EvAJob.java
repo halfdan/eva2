@@ -39,7 +39,9 @@ public class EvAJob implements Serializable, InterfaceStatisticsListener {
 	public EvAJob(InterfaceGOParameters params, InterfaceStatistics sts) {
 		this();
 		this.params = params;
-		if (sts instanceof AbstractStatistics) fieldHeaders=((AbstractStatistics)sts).getCurrentFieldHeaders();
+		if (sts instanceof AbstractStatistics) {
+                fieldHeaders=((AbstractStatistics)sts).getCurrentFieldHeaders();
+            }
 		sts.addDataListener(this);
 	}	
 	
@@ -70,18 +72,24 @@ public class EvAJob implements Serializable, InterfaceStatisticsListener {
 		// the parameters will be evil, so avoid that case.
 		if (state==StateEnum.complete) {
 			System.err.println("Warning, ignoring changed parameters for finished job!");
-		} else this.params = params;
+		} else {
+                this.params = params;
+            }
 	}
 
 	public String getName() {
-		if (params==null) return "Invalid Job ("+jobID+")";
+		if (params==null) {
+                return "Invalid Job ("+jobID+")";
+            }
 		else {
 			String name=getStateTag();
 			name = name+" Job ("+jobID+"), "; // +params.getName();
 			name=name+params.getOptimizer().getName()+"/"+params.getProblem().getName();
 //			name=name+( (onlineData==null) ? ", empty" : (onlineData.size()+" records"));
 			name += (", " + numRuns + " runs");
-			if (fieldHeaders!=null) name += (", " + fieldHeaders.length + " fields");
+			if (fieldHeaders!=null) {
+                        name += (", " + fieldHeaders.length + " fields");
+                    }
 //			if (jobFinished) name=name+", finished";
 //			if (lastRunIncompl) name=name+", incomplete";
 			return name;
@@ -141,7 +149,9 @@ public class EvAJob implements Serializable, InterfaceStatisticsListener {
 	public void notifyGenerationPerformed(String[] header,
 			Object[] statObjects, Double[] statDoubles) {
 		fieldHeaders=header;
-		if (state!=StateEnum.running) throw new RuntimeException("Sent data to job with invalid state!");
+		if (state!=StateEnum.running) {
+                                throw new RuntimeException("Sent data to job with invalid state!");
+                            }
 //		if (onlineData==null) onlineData = new ArrayList<Object[]>(10);
 //		onlineData.add(statObjects);
 	}
@@ -158,17 +168,25 @@ public class EvAJob implements Serializable, InterfaceStatisticsListener {
 	public void notifyRunStopped(int runsPerformed, boolean completedLastRun) {
 		numRuns=runsPerformed;
 		lastRunIncompl = !completedLastRun;
-		if (TRACE) System.out.println("EvAJob.notifyRunStopped, " + runsPerformed + " " + completedLastRun);
+		if (TRACE) {
+                System.out.println("EvAJob.notifyRunStopped, " + runsPerformed + " " + completedLastRun);
+            }
 	}
 	
     @Override
 	public boolean notifyMultiRunFinished(String[] header, List<Object[]> multiRunFinalObjDat) {
 		fieldHeaders=header;
 		multiRunFinalObjectData = multiRunFinalObjDat;
-		if (lastRunIncompl) state=StateEnum.incomplete;
-		else state=StateEnum.complete;
+		if (lastRunIncompl) {
+                state=StateEnum.incomplete;
+            }
+		else {
+                state=StateEnum.complete;
+            }
 //		jobFinished=true;
-		if (TRACE) System.out.println("multi run finished!");
+		if (TRACE) {
+                System.out.println("multi run finished!");
+            }
 		return true;
 	}
 
@@ -182,15 +200,21 @@ public class EvAJob implements Serializable, InterfaceStatisticsListener {
 	public int getFieldIndex(String field) {
 		if (fieldHeaders!=null) {
 			for (int i=0; i<fieldHeaders.length; i++) {
-				if (fieldHeaders[i].equals(field)) return i;
+				if (fieldHeaders[i].equals(field)) {
+                                return i;
+                            }
 			}
 		}
 		return -1;
 	}
 
 	public int getNumRuns() {
-		if (multiRunFinalObjectData!=null) return multiRunFinalObjectData.size();
-		else return -1;
+		if (multiRunFinalObjectData!=null) {
+                return multiRunFinalObjectData.size();
+            }
+		else {
+                return -1;
+            }
 	}
 
 	/**
@@ -209,13 +233,17 @@ public class EvAJob implements Serializable, InterfaceStatisticsListener {
 				try {
 					if ((o instanceof Double)) {
 						data[i]=(Double)o;
-					} else data[i]=Double.parseDouble(o+"");
+					} else {
+                                        data[i]=Double.parseDouble(o+"");
+                                    }
 				} catch(Exception e) {
 					return null;
 				}
 			}
 			return data;
-		} else return null;
+		} else {
+                return null;
+            }
 	}
 	
 	/**
@@ -233,7 +261,9 @@ public class EvAJob implements Serializable, InterfaceStatisticsListener {
 				data[i]=multiRunFinalObjectData.get(i)[index];
 			}
 			return data;
-		} else return null;
+		} else {
+                return null;
+            }
 	}
 
 	public StringSelection getFieldSelection(StringSelection curSelection) {
@@ -244,7 +274,9 @@ public class EvAJob implements Serializable, InterfaceStatisticsListener {
 			for (String field : fieldHeaders) {
 				curSelection.setSelected(field, true);
 			}
-		} else System.err.println("Warning, empty field selection in job " + this);
+		} else {
+                System.err.println("Warning, empty field selection in job " + this);
+            }
 		return newSel;
 	}
 }

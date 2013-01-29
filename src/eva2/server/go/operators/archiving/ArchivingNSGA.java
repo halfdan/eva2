@@ -34,7 +34,9 @@ public class ArchivingNSGA extends AbstractArchiving implements java.io.Serializ
     @Override
     public void addElementsToArchive(Population pop) {
 
-        if (pop.getArchive() == null) pop.SetArchive(new Population());     
+        if (pop.getArchive() == null) {
+            pop.SetArchive(new Population());
+        }     
 
         // test for each element in population if it
         // is dominating a element in the archive

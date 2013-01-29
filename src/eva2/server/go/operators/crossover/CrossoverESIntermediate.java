@@ -86,8 +86,12 @@ public class CrossoverESIntermediate implements InterfaceCrossover, java.io.Seri
      */
     @Override
     public boolean equals(Object crossover) {
-        if (crossover instanceof CrossoverESIntermediate) return true;
-        else return false;
+        if (crossover instanceof CrossoverESIntermediate) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     /** This method will allow the crossover operator to be initialized depending on the

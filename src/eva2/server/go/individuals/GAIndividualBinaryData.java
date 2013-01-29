@@ -37,11 +37,13 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
     }
     
     public GAIndividualBinaryData(GAIndividualBinaryData individual) {
-        if (individual.m_Phenotype != null)
+        if (individual.m_Phenotype != null) {
             this.m_Phenotype                = (BitSet) individual.m_Phenotype.clone();
+        }
         this.m_GenotypeLength           = individual.m_GenotypeLength;
-        if (individual.m_Genotype != null)
+        if (individual.m_Genotype != null) {
             this.m_Genotype                 = (BitSet)individual.m_Genotype.clone();
+        }
 
         // cloning the members of AbstractEAIndividual
         this.m_Age                      = individual.m_Age;
@@ -73,9 +75,15 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
     public boolean equalGenotypes(AbstractEAIndividual individual) {
         if (individual instanceof GAIndividualBinaryData) {
             GAIndividualBinaryData indy = (GAIndividualBinaryData) individual;
-            if (this.m_GenotypeLength != indy.m_GenotypeLength) return false;
-            if ((this.m_Genotype == null) || (indy.m_Genotype == null)) return false;            
-            if (!this.m_Genotype.equals(indy.m_Genotype)) return false;
+            if (this.m_GenotypeLength != indy.m_GenotypeLength) {
+                return false;
+            }
+            if ((this.m_Genotype == null) || (indy.m_Genotype == null)) {
+                return false;
+            }            
+            if (!this.m_Genotype.equals(indy.m_Genotype)) {
+                return false;
+            }
             return true;
         } else {
             return false;
@@ -89,7 +97,9 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
     public double defaultEvaulateAsMiniBits() {
         double  result = 0;
         for (int i = 0; i < this.m_GenotypeLength; i++) {
-            if (this.m_Genotype.get(i)) result++;
+            if (this.m_Genotype.get(i)) {
+                result++;
+            }
         }
         return result;
     }
@@ -146,9 +156,15 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
         result += "})\n Value: ";
         result += "{";
         for (int i = 0; i < this.m_GenotypeLength; i++) {
-            if (i%8==0) result+="|";
-            if (this.m_Genotype.get(i)) result += "1";
-            else result += "0";
+            if (i%8==0) {
+                result+="|";
+            }
+            if (this.m_Genotype.get(i)) {
+                result += "1";
+            }
+            else {
+                result += "0";
+            }
         }
         result += "}";
         result += "\n Mutation ("+this.m_MutationProbability+"):" + this.m_MutationOperator.getStringRepresentation();
@@ -187,8 +203,12 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
     @Override
     public void defaultInit(InterfaceOptimizationProblem prob) {
         for (int i = 0; i < this.m_GenotypeLength; i++) {
-            if (RNG.flipCoin(0.5)) this.m_Genotype.set(i);
-            else this.m_Genotype.clear(i);
+            if (RNG.flipCoin(0.5)) {
+                this.m_Genotype.set(i);
+            }
+            else {
+                this.m_Genotype.clear(i);
+            }
         }
     }
 
@@ -198,8 +218,12 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
     public void defaultMutate() {
         int mutationIndex = RNG.randomInt(0, this.m_GenotypeLength);
         //if (mutationIndex > 28) System.out.println("Mutate: " + this.getSolutionRepresentationFor());
-        if (this.m_Genotype.get(mutationIndex)) this.m_Genotype.clear(mutationIndex);
-        else this.m_Genotype.set(mutationIndex);
+        if (this.m_Genotype.get(mutationIndex)) {
+            this.m_Genotype.clear(mutationIndex);
+        }
+        else {
+            this.m_Genotype.set(mutationIndex);
+        }
         //if (mutationIndex > 28) System.out.println(this.getSolutionRepresentationFor());
     }
 

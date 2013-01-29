@@ -87,7 +87,9 @@ public class CrossoverEAMixer implements InterfaceCrossover, InterfaceEvaluating
             CrossoverEAMixer mut = (CrossoverEAMixer)mutator;
 
             return true;
-        } else return false;
+        } else {
+            return false;
+        }
     }
 
     /** This method allows you to init the crossover operator
@@ -114,8 +116,12 @@ public class CrossoverEAMixer implements InterfaceCrossover, InterfaceEvaluating
         if (this.m_UseSelfAdaption) {
             for (int i = 0; i < probs.length; i++) {
                 probs[i] *= Math.exp(this.m_Tau1 * RNG.gaussianDouble(1));
-                if (probs[i] <= this.m_LowerLimitChance) probs[i] = this.m_LowerLimitChance;
-                if (probs[i] >= 1) probs[i] = 1;
+                if (probs[i] <= this.m_LowerLimitChance) {
+                    probs[i] = this.m_LowerLimitChance;
+                }
+                if (probs[i] >= 1) {
+                    probs[i] = 1;
+                }
             }
             this.m_Crossers.normalizeWeights();
         }
@@ -128,7 +134,9 @@ public class CrossoverEAMixer implements InterfaceCrossover, InterfaceEvaluating
         	lastOperatorIndex++;
             dum += probs[lastOperatorIndex];
         }
-        if (lastOperatorIndex == probs.length) lastOperatorIndex = RNG.randomInt(0, probs.length-1);
+        if (lastOperatorIndex == probs.length) {
+            lastOperatorIndex = RNG.randomInt(0, probs.length-1);
+        }
 //        System.out.println("Using : " + mutators[index].getStringRepresentation());
 //        for (int i = 0; i < probs.length; i++) {
 //            System.out.println(""+mutators[i].getStringRepresentation()+" : "+ probs[i]);
@@ -208,7 +216,9 @@ public class CrossoverEAMixer implements InterfaceCrossover, InterfaceEvaluating
      * @param d   The mutation operator.
      */
     public void setLowerLimitChance(double d) {
-        if (d < 0) d = 0;
+        if (d < 0) {
+            d = 0;
+        }
         this.m_LowerLimitChance = d;
     }
     public double getLowerLimitChance() {
@@ -222,7 +232,9 @@ public class CrossoverEAMixer implements InterfaceCrossover, InterfaceEvaluating
      * @param d   The mutation operator.
      */
     public void setTau1(double d) {
-        if (d < 0) d = 0;
+        if (d < 0) {
+            d = 0;
+        }
         this.m_Tau1 = d;
     }
     public double getTau1() {

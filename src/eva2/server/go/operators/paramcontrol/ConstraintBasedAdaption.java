@@ -54,12 +54,20 @@ public class ConstraintBasedAdaption implements ParamAdaption, Serializable {
     @Override
 	public Object calcValue(Object obj, Population pop, int iteration, int maxIteration) {
 		boolean changed = false;
-		if (!(obj instanceof AbstractConstraint)) System.err.println(this.getClass().getSimpleName() + " cant control " + obj.getClass().getSimpleName() + " ! ");
+		if (!(obj instanceof AbstractConstraint)) {
+                System.err.println(this.getClass().getSimpleName() + " cant control " + obj.getClass().getSimpleName() + " ! ");
+            }
 		else {
-			if (TRACE) System.out.println("calc value at it " + iteration + " of " + maxIteration);
-			if (lastBestSatisfactionState.size()==genGap) lastBestSatisfactionState.poll();
+			if (TRACE) {
+                        System.out.println("calc value at it " + iteration + " of " + maxIteration);
+                    }
+			if (lastBestSatisfactionState.size()==genGap) {
+                        lastBestSatisfactionState.poll();
+                    }
 			boolean bestIsFeasible = ((AbstractConstraint)obj).isSatisfied(((InterfaceDataTypeDouble)pop.getBestEAIndividual()).getDoubleDataWithoutUpdate());
-			if (!lastBestSatisfactionState.offer(bestIsFeasible)) System.err.println("Error, could not push best indy state!"); 
+			if (!lastBestSatisfactionState.offer(bestIsFeasible)) {
+                        System.err.println("Error, could not push best indy state!");
+                    } 
 		
 			changed=maybeAdaptFactor((AbstractConstraint)obj);
 		}
@@ -71,7 +79,9 @@ public class ConstraintBasedAdaption implements ParamAdaption, Serializable {
 			currentFactor = maxPenalty/initialPenalty;
 			curPen=maxPenalty;
 		}
-		if (TRACE && changed) System.out.println("NEW penalty: " + curPen);
+		if (TRACE && changed) {
+                System.out.println("NEW penalty: " + curPen);
+            }
 		return curPen;
 	}
 
@@ -81,19 +91,29 @@ public class ConstraintBasedAdaption implements ParamAdaption, Serializable {
 			boolean allValid=true;
 			boolean allInvalid=true;
 			for (Boolean isFeasible : lastBestSatisfactionState) {
-				if (isFeasible) allInvalid=false;
-				else allValid=false;
+				if (isFeasible) {
+                                allInvalid=false;
+                            }
+				else {
+                                allValid=false;
+                            }
 			}
 			if (allValid) {
 				currentFactor*=betaDec;
 				changed=true;
-				if (TRACE) System.out.println("all valid, new fact is " + currentFactor + " times " + initialPenalty);
+				if (TRACE) {
+                                System.out.println("all valid, new fact is " + currentFactor + " times " + initialPenalty);
+                            }
 			} else if (allInvalid) {
 				changed=true;
 				currentFactor*=betaInc;
-				if (TRACE) System.out.println("all invalid, new fact is " + currentFactor + " times " + initialPenalty);
+				if (TRACE) {
+                                System.out.println("all invalid, new fact is " + currentFactor + " times " + initialPenalty);
+                            }
 			}
-		} else if (TRACE) System.out.println("not yet looking at " + genGap + " individuals...");
+		} else if (TRACE) {
+                System.out.println("not yet looking at " + genGap + " individuals...");
+            }
 		return changed;
 	}
 

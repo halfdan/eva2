@@ -356,8 +356,12 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
 		if (metapop.size()<2) {
 			// this might happen if all but a single individual are scheduled to be reinitialized after species convergence
 //			System.err.println("Warning, active population of size " + metapop.size() +", radius will not be updated...");
-		} else updateRadius  = metapop.getAvgDistToClosestNeighbor(false, false)[0]; // use all particles not mainswarm particles only...
-		if (isVerbose()) System.out.print(" radius is " + updateRadius);
+		} else {
+                updateRadius  = metapop.getAvgDistToClosestNeighbor(false, false)[0];
+            } // use all particles not mainswarm particles only...
+		if (isVerbose()) {
+                System.out.print(" radius is " + updateRadius);
+            }
 			
 		// build the s matrix and add edges to the niche graph:
 		// get particles i and j (unique in all swarms)...
@@ -365,11 +369,15 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
 //		System.out.println("metapop size is " + metapop.size());
 		for (int i = 0; i < s.length-1; ++i){
 			AbstractEAIndividual indy_i = sortedPop[i];
-			if (indy_i==null) continue; // may happen is some sub swarm was deactivated and the indies are scheduled for reinit
+			if (indy_i==null) {
+                        continue;
+                    } // may happen is some sub swarm was deactivated and the indies are scheduled for reinit
 			for (int j = i+1; j < s[i].length; ++j){ 
 				// call hotspot  
 				AbstractEAIndividual indy_j = sortedPop[j];
-				if (indy_j==null) continue; // may happen is some sub swarm was deactivated and the indies are scheduled for reinit
+				if (indy_j==null) {
+                                continue;
+                            } // may happen is some sub swarm was deactivated and the indies are scheduled for reinit
 				if (indy_i == null || indy_j == null){
 					System.out.println("updateSMatrixAndNicheGraph: indices problem");
 				}
@@ -383,7 +391,9 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
 
 					// values must not exceed 4 to allow a particle to leave a niche 
 					// in case it is further than r for two consecutive steps
-					if (s[i][j]>maxNeighborCntNicheGraph) s[i][j]=maxNeighborCntNicheGraph;
+					if (s[i][j]>maxNeighborCntNicheGraph) {
+                                        s[i][j]=maxNeighborCntNicheGraph;
+                                    }
 
 					// if i and j had been close to each other for at least two generations 
 					// they are connected by an edge
@@ -396,7 +406,9 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
 					// decrement entry that counts the number of generations 
 					// i and j have been close to each other 
 					--s[i][j];
-					if (s[i][j] < minNeighborCntNicheGraph) s[i][j] = minNeighborCntNicheGraph;
+					if (s[i][j] < minNeighborCntNicheGraph) {
+                                        s[i][j] = minNeighborCntNicheGraph;
+                                    }
 				}
 			}
 		}
@@ -432,7 +444,9 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
     		if (sorted[indy.getIndividualIndex()]!=null) {
     			System.err.println("error in sortByParticleIndex!");
     		}
-    		if (sorted[indy.getIndividualIndex()]!=null) throw new RuntimeException("Error, inconsistency in ANPSO! (index wrong)");
+    		if (sorted[indy.getIndividualIndex()]!=null) {
+                throw new RuntimeException("Error, inconsistency in ANPSO! (index wrong)");
+            }
     		sorted[indy.getIndividualIndex()] = indy;
     	}
 		return sorted;
@@ -503,7 +517,9 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
 		boolean TRACEMTHD = false;
 		
 		// ... and use the corresponding particles to create the subswarms
-		if (TRACEMTHD) System.out.println("---------");
+		if (TRACEMTHD) {
+                System.out.println("---------");
+            }
 		for (Set<String> connSet : connectedComps){
 			if (connSet.size() > 1){// create niche
 				Population pop = new Population(connSet.size());
@@ -515,9 +531,13 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
 					}
 					pop.add(indy);
 				}
-				if (TRACEMTHD) System.out.print(" subswarm size ssize " + pop.size());
+				if (TRACEMTHD) {
+                                System.out.print(" subswarm size ssize " + pop.size());
+                            }
 				if (maxInitialSubSwarmSize > 0 && (pop.size() > maxInitialSubSwarmSize)) {
-					if (TRACEMTHD) System.out.print(" removing " + (pop.size()-maxInitialSubSwarmSize));
+					if (TRACEMTHD) {
+                                        System.out.print(" removing " + (pop.size()-maxInitialSubSwarmSize));
+                                    }
 					tmpPop = pop.getWorstNIndividuals(pop.size()-maxInitialSubSwarmSize, -1);
 					tmpPop.synchSize();
 //					Population testPop=(Population)pop.clone();
@@ -536,7 +556,9 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
 					pop.synchSize();
 				}
 				setOfSubswarms.add(pop);
-				if (TRACEMTHD) System.out.print("\nNew subswarm of size: " + pop.size());
+				if (TRACEMTHD) {
+                                System.out.print("\nNew subswarm of size: " + pop.size());
+                            }
 			} else{ // move particles corresponding to unconnected vertices to the mainswarm
 				Iterator<String> it = connSet.iterator();
 				Integer index = Integer.valueOf(it.next());
@@ -549,7 +571,9 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
 //				System.err.println("Wrong subswarm " + i);
 //			}
 //		}
-		if (TRACEMTHD) System.out.println();
+		if (TRACEMTHD) {
+                System.out.println();
+            }
 		newMainPop.synchSize();
 		for (int i=0; i<setOfSubswarms.size(); i++) {
                 setOfSubswarms.get(i).synchSize();
@@ -569,25 +593,33 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
 //		System.out.println(BeanInspector.toString(getMainSwarm()));
 		// main swarm:
 		if (getMainSwarm().getPopulation().size() == 0){// || mainSwarm.getPopulation().size() == 1){
-			if (isVerbose()) System.out.print("MainSwarm size is 0\n");
+			if (isVerbose()) {
+                        System.out.print("MainSwarm size is 0\n");
+                    }
 			// increment the generationcount for the Terminator: 
 			// 1 Generation equals one optimize call including the optimization of the 
 			// (possibly empty) mainSwarm and all subSwarms
 			getMainSwarm().getPopulation().incrGeneration();
 		}
-		else getMainSwarm().optimize();
+		else {
+                getMainSwarm().optimize();
+            }
 		maybeReinitIndies();
 		
 		// sub swarms:
 		for (int i = 0; i < getSubSwarms().size(); ++i) {
 			ParticleSubSwarmOptimization subswarm = getSubSwarms().get(i);
-			if (subswarm.isActive()) subswarm.optimize();
+			if (subswarm.isActive()) {
+                        subswarm.optimize();
+                    }
 		}
 		
 		// deactivation:
 		deactivateSubSwarmsIfPossible();
 		
-		if (isVerbose()) System.out.print("active swarms: " + countActiveSubswarms() + " of " + getSubSwarms().size());
+		if (isVerbose()) {
+                System.out.print("active swarms: " + countActiveSubswarms() + " of " + getSubSwarms().size());
+            }
 		
 		// build the s matrix and the niche graph 
 		// these data structures represent particles that have been close to each other 
@@ -1077,7 +1109,9 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
 			Vector<ParticleSubSwarmOptimization> swarms) {
 		Population pop = new Population(swarms.size());
 		for (int i=0; i<swarms.size(); i++) {
-			if (swarms.get(i)!=null) pop.addIndividual(swarms.get(i).getBestIndividual());
+			if (swarms.get(i)!=null) {
+                        pop.addIndividual(swarms.get(i).getBestIndividual());
+                    }
 		}
 		return pop.getCorrelations()[3];
 	}
@@ -1092,7 +1126,9 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
 			Vector<ParticleSubSwarmOptimization> swarms) {
 		Population pop = new Population(swarms.size());
 		for (int i=0; i<swarms.size(); i++) {
-			if (swarms.get(i)!=null) pop.addIndividual(swarms.get(i).getBestIndividual());
+			if (swarms.get(i)!=null) {
+                        pop.addIndividual(swarms.get(i).getBestIndividual());
+                    }
 		}
 		return pop.getPopulationMeasures()[0];
 	}

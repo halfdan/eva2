@@ -31,8 +31,9 @@ public class MOSOWeightedLPTchebycheff implements InterfaceMOSOConverter, java.i
     }
 
     public MOSOWeightedLPTchebycheff(MOSOWeightedLPTchebycheff b) {
-        if (b.m_WLPT != null)
+        if (b.m_WLPT != null) {
             this.m_WLPT = (PropertyWeightedLPTchebycheff)b.m_WLPT.clone();
+        }
     }
     @Override
     public Object clone() {
@@ -71,7 +72,9 @@ public class MOSOWeightedLPTchebycheff implements InterfaceMOSOConverter, java.i
                 resultFit[0] += this.m_WLPT.m_Weights[i]*Math.pow(tmpFit[i] - this.m_WLPT.m_IdealValue[i], this.m_WLPT.m_P);
             }
         }
-        if (this.m_WLPT.m_P > 0) resultFit[0] = Math.pow(resultFit[0], 1/((double)this.m_WLPT.m_P));
+        if (this.m_WLPT.m_P > 0) {
+            resultFit[0] = Math.pow(resultFit[0], 1/((double)this.m_WLPT.m_P));
+        }
         indy.setFitness(resultFit);
     }
 
@@ -108,14 +111,18 @@ public class MOSOWeightedLPTchebycheff implements InterfaceMOSOConverter, java.i
         double[] p = this.m_WLPT.m_IdealValue;
         for (int i = 0; i < p.length; i++) {
             result += p[i];
-            if (i < (p.length-1)) result += "; ";
+            if (i < (p.length-1)) {
+                result += "; ";
+            }
         }
         result += ")\n";
         result += " Weights     = (";
         p = this.m_WLPT.m_Weights;
         for (int i = 0; i < p.length; i++) {
             result += p[i];
-            if (i < (p.length-1)) result += "; ";
+            if (i < (p.length-1)) {
+                result += "; ";
+            }
         }
         result += ")\n";
         return result;

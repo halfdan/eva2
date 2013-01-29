@@ -113,7 +113,9 @@ public class MOBestMigration implements InterfaceMigration, java.io.Serializable
         return this.m_N;
     }
     public void setN(int b){
-        if (b < 1) b = 1;
+        if (b < 1) {
+            b = 1;
+        }
         this.m_N = b;
     }
     public String nTipText() {

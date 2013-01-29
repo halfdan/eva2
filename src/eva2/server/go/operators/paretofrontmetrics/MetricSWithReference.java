@@ -75,7 +75,9 @@ public class MetricSWithReference implements InterfaceParetoFrontMetric, java.io
      */
     private void loadReferenceData() {
         String[]    tmpS, lines = FileTools.loadStringsFromFile(this.m_InputFilePath.getCompleteFilePath());
-        if (lines == null) System.out.println("Failed to read "+this.m_InputFilePath.getCompleteFilePath());
+        if (lines == null) {
+            System.out.println("Failed to read "+this.m_InputFilePath.getCompleteFilePath());
+        }
         lines[0].trim();
         this.m_Titles = lines[0].split("\t");
         ArrayList   tmpA = new ArrayList();
@@ -140,7 +142,9 @@ public class MetricSWithReference implements InterfaceParetoFrontMetric, java.io
         }
         // Now we have an archive, lets caluculate the s-metric
         // first extract the fitnesscases from the archive
-        if (dim > 2) smPop = new Population();
+        if (dim > 2) {
+            smPop = new Population();
+        }
         double[][]  f = new double[archive.size()][dim];
         double[]    tmpF, redF;
         for (int i = 0; i < f.length; i++) {
@@ -189,7 +193,9 @@ public class MetricSWithReference implements InterfaceParetoFrontMetric, java.io
                 // now i should have identified the current smallest
                 // here i found the very first individual, therefore
                 // no lastValue has been set... set it to border
-                if (lastValue[dim-1] < border[dim-1][0]) lastValue[dim-1] = border[dim-1][0];
+                if (lastValue[dim-1] < border[dim-1][0]) {
+                    lastValue[dim-1] = border[dim-1][0];
+                }
                 if (dim == 2) {
                     result += lastValue[0] * (f[tmpIndex][1]-lastValue[1]);
                 } else {

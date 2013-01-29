@@ -66,9 +66,13 @@ public class RMIProxyRemote implements InvocationHandler,Serializable {
    */
   private RMIProxyRemote (Object c, String host) {
     m_ObjectName = c.getClass().getName();
-    if (m_Adapter==null) m_Adapter = ComAdapter.getInstance();
+    if (m_Adapter==null) {
+          m_Adapter = ComAdapter.getInstance();
+      }
     m_RMIHandler = m_Adapter.getRMIHandler(c,host);
-    if (TRACE) System.out.println("creating RMIProxyRemote " + c.getClass() + " " + host);
+    if (TRACE) {
+          System.out.println("creating RMIProxyRemote " + c.getClass() + " " + host);
+      }
   }
   /**
    *
@@ -81,14 +85,18 @@ public class RMIProxyRemote implements InvocationHandler,Serializable {
       System.out.println("RMIProxyRemote error ex "+e.getMessage());
       e.printStackTrace();
     }
-    if (TRACE) System.out.println("creating RMIProxyRemote " + c.getClass() + " " + Client.getClass());
+    if (TRACE) {
+          System.out.println("creating RMIProxyRemote " + c.getClass() + " " + Client.getClass());
+      }
   }
   /**
    *
    */
   private RMIProxyRemote (Object c) {
     m_ObjectName = c.getClass().getName();
-    if (m_Adapter==null) m_Adapter = ComAdapter.getInstance();
+    if (m_Adapter==null) {
+          m_Adapter = ComAdapter.getInstance();
+      }
     m_RMIHandler = m_Adapter.getRMIHandler(c);
   }
   /**

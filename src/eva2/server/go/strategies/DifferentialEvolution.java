@@ -151,7 +151,9 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
         AbstractEAIndividual x1Indy = getRandomIndy(pop);
         x1 = getGenotype(x1Indy);
         
-        if (parents != null) parents.add(x1Indy);
+        if (parents != null) {
+            parents.add(x1Indy);
+        }
         
         result = new double[x1.length];
         isEmpty = true;
@@ -166,15 +168,20 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
             }
             iterations++;
         }
-        if (!isEmpty && (parents != null)) parents.add(x2Indy); 
+        if (!isEmpty && (parents != null)) {
+            parents.add(x2Indy);
+        } 
         
         while (isEmpty) {
         	// for n (popSize) iterations there were only zero vectors found
         	// so now the hard way: construct a random vector
             for (int i = 0; i < x1.length; i++) {
-                if (RNG.flipCoin(1/(double)x1.length))
+                if (RNG.flipCoin(1/(double)x1.length)) {
                     result[i] = 0.01*RNG.gaussianDouble(0.1);
-                else result[i] = 0;
+                }
+                else {
+                    result[i] = 0;
+                }
                 isEmpty = (isEmpty && (result[i]==0));
             }
             // single parent! dont add another one
@@ -200,7 +207,9 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
         x1 = indy.getDoubleData();
         
         
-        if (parents != null) parents.add((AbstractEAIndividual)indy);
+        if (parents != null) {
+            parents.add((AbstractEAIndividual)indy);
+        }
         
         result = new double[x1.length];
         isEmpty = true;
@@ -215,15 +224,20 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
             }
             iterations++;
         }
-        if (!isEmpty && (parents != null)) parents.add(x2Indy); 
+        if (!isEmpty && (parents != null)) {
+            parents.add(x2Indy);
+        } 
         
         while (isEmpty) {
         	// for n (popSize) iterations there were only zero vectors found
         	// so now the hard way: construct a random vector
             for (int i = 0; i < x1.length; i++) {
-                if (RNG.flipCoin(1/(double)x1.length))
+                if (RNG.flipCoin(1/(double)x1.length)) {
                     result[i] = 0.01*RNG.gaussianDouble(0.1);
-                else result[i] = 0;
+                }
+                else {
+                    result[i] = 0;
+                }
                 isEmpty = (isEmpty && (result[i]==0));
             }
             // single parent! dont add another one
@@ -258,7 +272,9 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
         }
 
         double[] xb = getGenotype(xbIndy);
-        if (parents != null) parents.add(xbIndy); // given indy argument is already listed
+        if (parents != null) {
+            parents.add(xbIndy);
+        } // given indy argument is already listed
         
         for (int i = 0; i < x1.length; i++) {
             result[i] = xb[i] - x1[i];
@@ -295,11 +311,17 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
         AbstractEAIndividual        indy;
         InterfaceDataTypeDouble       esIndy;
         
-        if (doLogParents) parents = new Vector<AbstractEAIndividual>();
-        else parents = null;
+        if (doLogParents) {
+            parents = new Vector<AbstractEAIndividual>();
+        }
+        else {
+            parents = null;
+        }
         try {
         	// select one random indy as starting individual. its a parent in any case.
-        	if (parentIndex<0) parentIndex = RNG.randomInt(0, pop.size()-1);
+        	if (parentIndex<0) {
+                parentIndex = RNG.randomInt(0, pop.size()-1);
+            }
             indy = (AbstractEAIndividual)(pop.getEAIndividual(parentIndex)).getClone();
             esIndy = (InterfaceDataTypeDouble)indy;
         } catch (java.lang.ClassCastException e) {
@@ -314,7 +336,9 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
             case DE1_Rand_1: {
                 // this is DE1 or DE/rand/1
                 double[] delta = this.fetchDeltaRandom(pop);
-                if (parents != null) parents.add(pop.getEAIndividual(parentIndex));  // Add wherever oX is used directly
+                if (parents != null) {
+                    parents.add(pop.getEAIndividual(parentIndex));
+                }  // Add wherever oX is used directly
                 for (int i = 0; i < oX.length; i++) {
                     vX[i] = oX[i] + this.getCurrentF()*delta[i];
                 }
@@ -324,7 +348,9 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
                 // this is DE/current-to-rand/1
                 double[] rndDelta = this.fetchDeltaRandom(pop);
                 double[] bestDelta = this.fetchDeltaCurrentRandom(pop, esIndy);
-                if (parents != null) parents.add(pop.getEAIndividual(parentIndex));  // Add wherever oX is used directly
+                if (parents != null) {
+                    parents.add(pop.getEAIndividual(parentIndex));
+                }  // Add wherever oX is used directly
                 for (int i = 0; i < oX.length; i++) {
                     vX[i] = oX[i] + this.getCurrentLambda() * bestDelta[i] + this.getCurrentF() * rndDelta[i];
                 }
@@ -334,7 +360,9 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
                 // this is DE2 or DE/current-to-best/1
                 double[] rndDelta = this.fetchDeltaRandom(pop);
                 double[] bestDelta = this.fetchDeltaBest(pop, esIndy);
-                if (parents != null) parents.add(pop.getEAIndividual(parentIndex));  // Add wherever oX is used directly
+                if (parents != null) {
+                    parents.add(pop.getEAIndividual(parentIndex));
+                }  // Add wherever oX is used directly
                 for (int i = 0; i < oX.length; i++) {
                     vX[i] = oX[i] + this.getCurrentLambda() * bestDelta[i] + this.getCurrentF() * rndDelta[i];
                 }
@@ -344,7 +372,9 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
             	// DE/best/2
             	AbstractEAIndividual bestIndy = getBestIndy(pop);
             	oX = getGenotype(bestIndy);
-                if (parents != null) parents.add(bestIndy);  // Add best instead of preselected
+                if (parents != null) {
+                    parents.add(bestIndy);
+                }  // Add best instead of preselected
                 double[] delta1 = this.fetchDeltaRandom(pop);
             	double[] delta2 = this.fetchDeltaRandom(pop);
                 for (int i = 0; i < oX.length; i++) {
@@ -354,7 +384,9 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
             }
             case TrigonometricDE : {
                 // this is trigonometric mutation
-            	if (parents != null) parents.add(pop.getEAIndividual(parentIndex));  // Add wherever oX is used directly
+            	if (parents != null) {
+                    parents.add(pop.getEAIndividual(parentIndex));
+                }  // Add wherever oX is used directly
                 if (RNG.flipCoin(this.m_Mt)) {
                     double[]    xk, xl;
                     double      p, pj, pk, pl;
@@ -382,7 +414,9 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
                 } else {
                     // this is DE1
                     double[] delta = this.fetchDeltaRandom(pop);
-                    if (parents != null) parents.add(pop.getEAIndividual(parentIndex));  // Add wherever oX is used directly
+                    if (parents != null) {
+                        parents.add(pop.getEAIndividual(parentIndex));
+                    }  // Add wherever oX is used directly
                     for (int i = 0; i < oX.length; i++) {
                         vX[i] = oX[i] + this.getCurrentF()*delta[i];
                     }
@@ -401,30 +435,46 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
             }
         }
         // setting the new genotype and fitness
-        if (forceRange) Mathematics.projectToRange(nX, esIndy.getDoubleRange()); // why did this never happen before?
+        if (forceRange) {
+            Mathematics.projectToRange(nX, esIndy.getDoubleRange());
+        } // why did this never happen before?
         esIndy.SetDoubleGenotype(nX);
         indy.SetAge(0);
         indy.resetConstraintViolation();
         double[] fit = new double[1];
         fit[0] = 0;
         indy.setFitness(fit);
-        if (parents != null) indy.setParents(parents);
+        if (parents != null) {
+            indy.setParents(parents);
+        }
         return indy;
     }
 
     private double getCurrentK() {
-    	if (randomizeFKLambda) return RNG.randomDouble(m_k*0.8, m_k * 1.2); 
-    	else return m_k;
+    	if (randomizeFKLambda) {
+            return RNG.randomDouble(m_k*0.8, m_k * 1.2);
+        } 
+    	else {
+            return m_k;
+        }
 	}
 
 	private double getCurrentLambda() {
-    	if (randomizeFKLambda) return RNG.randomDouble(m_Lambda*0.8, m_Lambda * 1.2); 
-    	else return m_Lambda;
+    	if (randomizeFKLambda) {
+                return RNG.randomDouble(m_Lambda*0.8, m_Lambda * 1.2);
+            } 
+    	else {
+                return m_Lambda;
+            }
 	}
 
 	private double getCurrentF() {
-    	if (randomizeFKLambda) return RNG.randomDouble(m_F*0.8, m_F * 1.2); 
-    	else return m_F;
+    	if (randomizeFKLambda) {
+                return RNG.randomDouble(m_F*0.8, m_F * 1.2);
+            } 
+    	else {
+                return m_F;
+            }
 	}
 
 	private AbstractEAIndividual getBestIndy(Population pop) {
@@ -452,8 +502,12 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
 
     @Override
     public void optimize() {
-    	if (generational) optimizeGenerational();
-    	else optimizeSteadyState();
+    	if (generational) {
+            optimizeGenerational();
+        }
+    	else {
+            optimizeSteadyState();
+        }
     }
     
     /**
@@ -468,11 +522,19 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
         int parentIndex;        
         // required for dynamic problems especially
 //        m_Problem.evaluatePopulationStart(m_Population);
-        if (children==null) children = new Population(m_Population.size());
-        else children.clear();
+        if (children==null) {
+                children = new Population(m_Population.size());
+            }
+        else {
+                children.clear();
+            }
         for (int i = 0; i < this.m_Population.size(); i++) {
-        	if (cyclePop) parentIndex=i;
-        	else parentIndex=RNG.randomInt(0, this.m_Population.size()-1);
+        	if (cyclePop) {
+                parentIndex=i;
+            }
+        	else {
+                parentIndex=RNG.randomInt(0, this.m_Population.size()-1);
+            }
         	AbstractEAIndividual indy = generateNewIndividual(m_Population, parentIndex);
         	children.add(indy);
         }
@@ -497,8 +559,12 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
         int nextDoomed = getNextDoomed(m_Population, 0);
         for (int i = 0; i < this.m_Population.size(); i++) {
         	AbstractEAIndividual indy = children.getEAIndividual(i);
-        	if (cyclePop) parentIndex=i;
-        	else parentIndex=RNG.randomInt(0, this.m_Population.size()-1);
+        	if (cyclePop) {
+                parentIndex=i;
+            }
+        	else {
+                parentIndex=RNG.randomInt(0, this.m_Population.size()-1);
+            }
         	if (nextDoomed >= 0) {	// this one is lucky, may replace an 'old' one
         		m_Population.replaceIndividualAt(nextDoomed, indy);
         		nextDoomed = getNextDoomed(m_Population, nextDoomed+1);	
@@ -508,9 +574,13 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
 					repl.insertIndividual(indy, m_Population, null);
 				} else {
 //					index   = RNG.randomInt(0, this.m_Population.size()-1);
-					if (!compareToParent) parentIndex = RNG.randomInt(0, this.m_Population.size()-1);
+					if (!compareToParent) {
+                                        parentIndex = RNG.randomInt(0, this.m_Population.size()-1);
+                                    }
 					AbstractEAIndividual orig     = (AbstractEAIndividual)this.m_Population.get(parentIndex);
-					if (indy.isDominatingDebConstraints(orig)) this.m_Population.replaceIndividualAt(parentIndex, indy);
+					if (indy.isDominatingDebConstraints(orig)) {
+                                        this.m_Population.replaceIndividualAt(parentIndex, indy);
+                                    }
 				}
         	}
         }
@@ -546,8 +616,12 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
         
         
         for (int i = 0; i < this.m_Population.size(); i++) {
-        	if (cyclePop) index=i;
-        	else index=RNG.randomInt(0, this.m_Population.size()-1);
+        	if (cyclePop) {
+                index=i;
+            }
+        	else {
+                index=RNG.randomInt(0, this.m_Population.size()-1);
+            }
         	indy = generateNewIndividual(m_Population, index);
 //        	if (cyclePop) indy = this.generateNewIndividual(this.m_Population, i);
 //        	else indy = this.generateNewIndividual(this.m_Population, -1);
@@ -571,9 +645,13 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
             	
             	} else {
 //					index   = RNG.randomInt(0, this.m_Population.size()-1);
-					if (!compareToParent) index = RNG.randomInt(0, this.m_Population.size()-1);
+					if (!compareToParent) {
+                        index = RNG.randomInt(0, this.m_Population.size()-1);
+                    }
 					orig     = (AbstractEAIndividual)this.m_Population.get(index);
-					if (indy.isDominatingDebConstraints(orig)) this.m_Population.replaceIndividualAt(index, indy);
+					if (indy.isDominatingDebConstraints(orig)) {
+                        this.m_Population.replaceIndividualAt(index, indy);
+                    }
 				}
         	}
         }
@@ -632,7 +710,9 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
     protected int getNextDoomed(Population pop, int startIndex) {
     	if (maximumAge > 0) {
     		for (int i=startIndex; i<pop.size(); i++) {
-    			if (((AbstractEAIndividual)pop.get(i)).getAge() >= maximumAge) return i;
+    			if (((AbstractEAIndividual)pop.get(i)).getAge() >= maximumAge) {
+                        return i;
+                    }
     		}
     	}
     	return -1;
@@ -654,7 +734,9 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
 		if (m_Listener!=null&&m_Listener.removeElement(ea)) {
 			
 			return true;
-		} else return false;
+		} else {
+                                return false;
+                            }
 	}
     /** Something has changed
      * @param name
@@ -768,8 +850,12 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
      * @param k
      */
     public void setK(double k) {
-        if (k < 0) k = 0;
-        if (k > 1) k = 1;        
+        if (k < 0) {
+            k = 0;
+        }
+        if (k > 1) {
+            k = 1;
+        }        
         this.m_k = k;
     }
     public double getK() {
@@ -797,8 +883,12 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
      */
     public void setMt (double l) {
         this.m_Mt = l;
-        if (this.m_Mt < 0) this.m_Mt = 0;
-        if (this.m_Mt > 1) this.m_Mt = 1;
+        if (this.m_Mt < 0) {
+            this.m_Mt = 0;
+        }
+        if (this.m_Mt > 1) {
+            this.m_Mt = 1;
+        }
     }
     public double getMt() {
         return this.m_Mt;

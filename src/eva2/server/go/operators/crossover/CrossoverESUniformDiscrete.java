@@ -88,8 +88,12 @@ public class CrossoverESUniformDiscrete implements InterfaceCrossover, java.io.S
      */
     @Override
     public boolean equals(Object crossover) {
-        if (crossover instanceof CrossoverESUniformDiscrete) return true;
-        else return false;
+        if (crossover instanceof CrossoverESUniformDiscrete) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     /** This method will allow the crossover operator to be initialized depending on the

@@ -116,8 +116,12 @@ public class CbpsoFitnessThresholdBasedAdaption implements ParamAdaption, Generi
 	}
 
 	private boolean isPossibleAdaptionTime(Population pop) {
-		if (lastAdaption+adptIntervalGenerations>pop.getGeneration()) return false;
-		else return true;
+		if (lastAdaption+adptIntervalGenerations>pop.getGeneration()) {
+                return false;
+            }
+		else {
+                return true;
+            }
 	}
 
 	/*

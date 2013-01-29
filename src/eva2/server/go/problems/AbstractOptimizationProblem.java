@@ -261,8 +261,12 @@ implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serial
     @Override
     public String[] getAdditionalDataHeader() {
     	String[] header = null;
-    	if (this instanceof InterfaceInterestingHistogram) header = new String[]{STAT_SOLUTION_HEADER,"histogram","score"};
-    	else header = new String[]{STAT_SOLUTION_HEADER};
+    	if (this instanceof InterfaceInterestingHistogram) {
+            header = new String[]{STAT_SOLUTION_HEADER,"histogram","score"};
+        }
+    	else {
+            header = new String[]{STAT_SOLUTION_HEADER};
+        }
     	
     	header = (String[])checkAndAppendAdd(0, getIndividualTemplate(), header, null);
     	header = (String[])checkAndAppendAdd(0, getIndividualTemplate().getCrossoverOperator(), header, null);
@@ -292,7 +296,9 @@ implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serial
         		System.err.println("Error, invalid type in AbstractOptimizationProblem.appendAdd");
         		return dat;
     		}
-    	} else return dat;
+    	} else {
+            return dat;
+        }
     }
     
     /** This method returns the header for the additional data that is to be written into a file
@@ -302,11 +308,14 @@ implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serial
     @Override
     public String[] getAdditionalDataInfo() {
     	String[] info=null;
-    	if (this instanceof InterfaceInterestingHistogram) 
-    		info = new String[]{"Representation of the current best individual",
-    			"Fitness histogram of the current population",
-    			"Fitness threshold based score of the current population"};
-    	else info = new String[]{"Representation of the current best individual"};
+    	if (this instanceof InterfaceInterestingHistogram) {
+            info = new String[]{"Representation of the current best individual",
+                    "Fitness histogram of the current population",
+                    "Fitness threshold based score of the current population"};
+        }
+    	else {
+            info = new String[]{"Representation of the current best individual"};
+        }
     	
     	info = (String[])checkAndAppendAdd(1, getIndividualTemplate(), info, null);
     	info = (String[])checkAndAppendAdd(1, getIndividualTemplate().getCrossoverOperator(), info, null);
@@ -334,7 +343,9 @@ implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serial
     			Population sols = PostProcess.clusterBestUpdateHistogram((Population)maybeFiltered, this, hist, fitCrit, getDefaultAccuracy());
     		}
     		vals = new Object[]{solStr, hist, hist.getScore()};
-    	} else vals = new Object[]{solStr}; 
+    	} else {
+            vals = new Object[]{solStr};
+        } 
     	
     	vals = checkAndAppendAdd(2, pop.getBestIndividual(), vals, pop);
     	vals = checkAndAppendAdd(2, ((AbstractEAIndividual)pop.getBestIndividual()).getCrossoverOperator(), vals, pop);
@@ -369,8 +380,12 @@ implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serial
         JTextArea   area    = new JTextArea();
         JScrollPane scroll  = new JScrollPane(area);
         String text = "Best Solution:\n";
-        if (generation >= 0) text+=" Generation: " + generation + "\n";
-        if (funCalls >= 0) text+=" Evaluations: " + funCalls + "\n";
+        if (generation >= 0) {
+            text+=" Generation: " + generation + "\n";
+        }
+        if (funCalls >= 0) {
+            text+=" Evaluations: " + funCalls + "\n";
+        }
         text += this.getSolutionRepresentationFor(indy);
         area.setLineWrap(true);
         area.setText(text);
@@ -450,8 +465,12 @@ implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serial
     	// cluster by the converged-to positions instead of the original ones
     	InterfaceClustering clustering = new ClusteringDensityBased(clusterSigma, 2, new IndividualDataMetric(PostProcess.movedToPositionKey));
     	clustering = new ClusteringDensityBased(clusterSigma, 2);
-    	if (clusterSigma > 0) return (Population)PostProcess.clusterBest(potOptima, clustering, 0, PostProcess.KEEP_LONERS, PostProcess.BEST_ONLY).clone();
-    	else return potOptima;
+    	if (clusterSigma > 0) {
+                        return (Population)PostProcess.clusterBest(potOptima, clustering, 0, PostProcess.KEEP_LONERS, PostProcess.BEST_ONLY).clone();
+                    }
+    	else {
+                        return potOptima;
+                    }
     }
    
   /**
@@ -473,8 +492,12 @@ implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serial
     	int stepsCounter = 0; // could be used to limit the maximal number of steps overall
     	
     	// if not provided reasonable values use defaults:
-    	if (mutationStepSize<0) mutationStepSize = 0.0001; 
-    	if (numOfFailures<0) numOfFailures = 100*AbstractEAIndividual.getDoublePositionShallow(this.m_Template).length; // scales the effort with the number of problem dimensions
+    	if (mutationStepSize<0) {
+            mutationStepSize = 0.0001;
+        } 
+    	if (numOfFailures<0) {
+            numOfFailures = 100*AbstractEAIndividual.getDoublePositionShallow(this.m_Template).length;
+        } // scales the effort with the number of problem dimensions
     	
     	AbstractEAIndividual indy = (AbstractEAIndividual)orig.clone();
     	this.evaluate(indy); // indy may be evaluated in a normalised way...
@@ -510,7 +533,9 @@ implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serial
         if (overallDist < epsilon) {
         	return true;
         }
-        else return false; 
+        else {
+            return false;
+        } 
     }
     
     /**
@@ -542,7 +567,9 @@ implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serial
 //    		initPerturb = epsilonPhenoSpace/(2*(Mathematics.getAvgRange(((InterfaceDataTypeDouble)orig).getDoubleRange())));
     		initRelPerturb = epsilonPhenoSpace*0.5;
     		dim=((InterfaceDataTypeDouble)orig).getDoubleRange().length;
-        	if (maxEvaluations<0) maxEvaluations = 500*AbstractEAIndividual.getDoublePositionShallow(prob.m_Template).length; // scales the effort with the number of problem dimensions
+        	if (maxEvaluations<0) {
+                maxEvaluations = 500*AbstractEAIndividual.getDoublePositionShallow(prob.m_Template).length;
+            } // scales the effort with the number of problem dimensions
     	} else {
     		System.err.println("Cannot initialize NMS on non-double valued individuals!");
     		return false;
@@ -551,7 +578,9 @@ implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serial
     	Population pop = new Population(1);
     	pop.add(orig);
     	InterfaceTerminator term = new EvaluationTerminator(maxEvaluations); 
-    	if (epsilonFitConv > 0) term = new CombinedTerminator(new PhenotypeConvergenceTerminator(epsilonFitConv, 100*dim, StagnationTypeEnum.fitnessCallBased, ChangeTypeEnum.absoluteChange, DirectionTypeEnum.decrease), term, false);
+    	if (epsilonFitConv > 0) {
+            term = new CombinedTerminator(new PhenotypeConvergenceTerminator(epsilonFitConv, 100*dim, StagnationTypeEnum.fitnessCallBased, ChangeTypeEnum.absoluteChange, DirectionTypeEnum.decrease), term, false);
+        }
     	int evalsPerf = PostProcess.processSingleCandidatesNMCMA(PostProcessMethod.nelderMead, pop, term, initRelPerturb, prob);
     	overallDist = metric.distance(indy, pop.getBestEAIndividual());
     	//System.out.println(System.currentTimeMillis() + " in " + evalsPerf + " evals moved by "+ overallDist);

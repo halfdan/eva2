@@ -87,7 +87,9 @@ public class SelectTournament implements InterfaceSelection, java.io.Serializabl
                 result = (AbstractEAIndividual) population.get(RNG.randomInt(0, population.size()-1));
                 for (int i = 1; i < this.m_TournamentSize; i++) {
                     tmpIndy = (AbstractEAIndividual) population.get(RNG.randomInt(0, population.size()-1));
-                    if (tmpIndy.getFitness(currentCriteria) < result.getFitness(currentCriteria)) result = tmpIndy;
+                    if (tmpIndy.getFitness(currentCriteria) < result.getFitness(currentCriteria)) {
+                        result = tmpIndy;
+                    }
                 }
             }
         } catch (java.lang.IndexOutOfBoundsException e) {

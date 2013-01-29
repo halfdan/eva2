@@ -104,12 +104,18 @@ public class JTextEditorInternalFrame extends JDocFrame{
   private JToolBar barEdit;
     @Override
   public JMenu getMenu(String group){
-    if(GROUP_EDIT.equals(group)) return mnuEdit;
-    else return null;
+    if(GROUP_EDIT.equals(group)) {
+          return mnuEdit;
+      }
+    else {
+          return null;
+      }
   }
     @Override
   public JToolBar getToolBar(String group){
-    if(GROUP_EDIT.equals(group)) return barEdit;
+    if(GROUP_EDIT.equals(group)) {
+          return barEdit;
+      }
     return null;
   }
 
@@ -156,7 +162,9 @@ public class JTextEditorInternalFrame extends JDocFrame{
 
     a = (Action)hashActions.get(DefaultEditorKit.cutAction);
     keyActions = keys.getKeyStrokesForAction(a);
-    if(keyActions != null && keyActions.length > 0) a.putValue(ExtAction.KEYSTROKE, keyActions[0]);
+    if(keyActions != null && keyActions.length > 0) {
+          a.putValue(ExtAction.KEYSTROKE, keyActions[0]);
+      }
     a.putValue(Action.SMALL_ICON, new ImageIcon("images/EditCut.gif"));
     a.putValue(ExtAction.CAPTION, "Ausschneiden");
     a.putValue(ExtAction.MNEMONIC, new Character('a'));
@@ -166,7 +174,9 @@ public class JTextEditorInternalFrame extends JDocFrame{
 
     a = (Action)hashActions.get(DefaultEditorKit.copyAction);
     keyActions = keys.getKeyStrokesForAction(a);
-    if(keyActions != null && keyActions.length > 0) a.putValue(ExtAction.KEYSTROKE, keyActions[0]);
+    if(keyActions != null && keyActions.length > 0) {
+          a.putValue(ExtAction.KEYSTROKE, keyActions[0]);
+      }
     a.putValue(Action.SMALL_ICON, new ImageIcon("images/EditCopy.gif"));
     a.putValue(ExtAction.CAPTION, "Kopieren");
     a.putValue(ExtAction.MNEMONIC, new Character('k'));
@@ -176,7 +186,9 @@ public class JTextEditorInternalFrame extends JDocFrame{
 
     a = (Action)hashActions.get(DefaultEditorKit.pasteAction);
     keyActions = keys.getKeyStrokesForAction(a);
-    if(keyActions != null && keyActions.length > 0) a.putValue(ExtAction.KEYSTROKE, keyActions[0]);
+    if(keyActions != null && keyActions.length > 0) {
+          a.putValue(ExtAction.KEYSTROKE, keyActions[0]);
+      }
     a.putValue(Action.SMALL_ICON, new ImageIcon("images/EditPaste.gif"));
     a.putValue(ExtAction.CAPTION, "Einf�gen");
     a.putValue(ExtAction.MNEMONIC, new Character('e'));
@@ -188,7 +200,9 @@ public class JTextEditorInternalFrame extends JDocFrame{
 
     a = (Action)hashActions.get(DefaultEditorKit.selectAllAction);
     keyActions = keys.getKeyStrokesForAction(a);
-    if(keyActions != null && keyActions.length > 0) a.putValue(ExtAction.KEYSTROKE, keyActions[0]);
+    if(keyActions != null && keyActions.length > 0) {
+          a.putValue(ExtAction.KEYSTROKE, keyActions[0]);
+      }
     a.putValue(ExtAction.CAPTION, "Alles markieren");
     a.putValue(ExtAction.MNEMONIC, new Character('m'));
     a.putValue(ExtAction.TOOLTIP, "Markiert das ganze Dokument");
@@ -259,10 +273,12 @@ public class JTextEditorInternalFrame extends JDocFrame{
       }
       catch(IOException exc){}
       finally{
-        if(in != null) try{
-          in.close();
-        }
-        catch(IOException exc){}
+        if(in != null) {
+              try{
+ in.close();
+}
+catch(IOException exc){}
+          }
       }
     }
 
@@ -279,10 +295,12 @@ public class JTextEditorInternalFrame extends JDocFrame{
     }
     catch(IOException exc){}
     finally{
-      if(out != null) try{
-        out.close();
-      }
-      catch(IOException exc){}
+      if(out != null) {
+            try{
+out.close();
+}
+catch(IOException exc){}
+        }
     }
 
     super.save(f);
@@ -292,6 +310,8 @@ public class JTextEditorInternalFrame extends JDocFrame{
   public void setSelected(boolean value) throws java.beans.PropertyVetoException{
     super.setSelected(value);
 
-    if(value) textArea.requestFocus();
+    if(value) {
+          textArea.requestFocus();
+      }
   }
 }

@@ -73,7 +73,9 @@ public class PropertyRemoteServers implements java.io.Serializable {
         // first check for double instances
         for (int i = 0; i < this.m_AvailableNodes.length; i++)  {
             if (this.m_AvailableNodes[i].m_ServerName.equalsIgnoreCase(name)) {
-                if (cpus > this.m_AvailableNodes[i].m_CPUs) this.m_AvailableNodes[i].m_CPUs = cpus;
+                if (cpus > this.m_AvailableNodes[i].m_CPUs) {
+                    this.m_AvailableNodes[i].m_CPUs = cpus;
+                }
                 return;
             }
         }
@@ -165,8 +167,12 @@ public class PropertyRemoteServers implements java.io.Serializable {
     public boolean isServerOnline(String name) {
         try {
             String[] list = Naming.list("rmi://" + name + ":" + 1099);
-            if (list == null) return false;
-            else return true;
+            if (list == null) {
+                return false;
+            }
+            else {
+                return true;
+            }
         } catch (Exception et) {
             return false;
         }
@@ -231,10 +237,12 @@ public class PropertyRemoteServers implements java.io.Serializable {
     }
 
     public ServerNode get(int i) {
-        if ((i >= 0) && (i < this.m_AvailableNodes.length))
+        if ((i >= 0) && (i < this.m_AvailableNodes.length)) {
             return this.m_AvailableNodes[i];
-        else
+        }
+        else {
             return null;
+        }
     }
 
     public String writeToText() {
@@ -246,11 +254,15 @@ public class PropertyRemoteServers implements java.io.Serializable {
     }
 
     public void setNameFor(int i, String name) {
-        if ((i >= 0) && (i < this.m_AvailableNodes.length)) this.m_AvailableNodes[i].m_ServerName = name;
+        if ((i >= 0) && (i < this.m_AvailableNodes.length)) {
+            this.m_AvailableNodes[i].m_ServerName = name;
+        }
     }
 
     public void setCPUsFor(int i, int c) {
-        if ((i >= 0) && (i < this.m_AvailableNodes.length)) this.m_AvailableNodes[i].m_CPUs = c;
+        if ((i >= 0) && (i < this.m_AvailableNodes.length)) {
+            this.m_AvailableNodes[i].m_CPUs = c;
+        }
     }
 
     public void readFromText(String text) {

@@ -42,8 +42,12 @@ public class CombinedTerminator implements InterfaceTerminator, Serializable {
 	
     @Override
 	public void init(InterfaceOptimizationProblem prob) {
-		if (t1 != null) t1.init(prob);
-		if (t2 != null) t2.init(prob);
+		if (t1 != null) {
+                t1.init(prob);
+            }
+		if (t2 != null) {
+                t2.init(prob);
+            }
 		msg = "Not terminated.";
 	}
 
@@ -58,8 +62,12 @@ public class CombinedTerminator implements InterfaceTerminator, Serializable {
 	}
 
 	private boolean getTermState(InterfaceTerminator term, Object curPopOrSols) {
-		if (curPopOrSols instanceof InterfaceSolutionSet) return term.isTerminated((InterfaceSolutionSet)curPopOrSols);
-		else return term.isTerminated((PopulationInterface)curPopOrSols);
+		if (curPopOrSols instanceof InterfaceSolutionSet) {
+                return term.isTerminated((InterfaceSolutionSet)curPopOrSols);
+            }
+		else {
+                return term.isTerminated((PopulationInterface)curPopOrSols);
+            }
 	}
 	
 	/** 
@@ -92,7 +100,9 @@ public class CombinedTerminator implements InterfaceTerminator, Serializable {
 			ret = getTermState(t1, curPopOrSols);
 			boolean ret2 = getTermState(t2, curPopOrSols);
 			ret=ret && ret2;
-			if (ret) msg = "Terminated because both: " + t1.lastTerminationMessage() + " And " + t2.lastTerminationMessage();
+			if (ret) {
+                        msg = "Terminated because both: " + t1.lastTerminationMessage() + " And " + t2.lastTerminationMessage();
+                    }
 		} else { // OR
 			// make sure that both terminators are triggered on every call, because some judge
 			// time-dependently and store information on the population.
@@ -102,7 +112,9 @@ public class CombinedTerminator implements InterfaceTerminator, Serializable {
 				getTermState(t2, curPopOrSols); // just so that the second one is triggered, result is ignored.
 			} else {
 				ret = getTermState(t2, curPopOrSols);  // trigger and really look at the result
-				if (ret) msg = t2.lastTerminationMessage();
+				if (ret) {
+                                msg = t2.lastTerminationMessage();
+                            }
 			}
 		}
 		return ret;

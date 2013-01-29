@@ -174,7 +174,9 @@ public class GeneralGenericObjectEditorPanel extends JPanel implements ItemListe
      * @return the loaded object, or null if the operation was cancelled
      */
     protected Object openObject() {
-        if (m_FileChooser == null) createFileChooser();
+        if (m_FileChooser == null) {
+            createFileChooser();
+        }
 
         int returnVal = m_FileChooser.showOpenDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -203,7 +205,9 @@ public class GeneralGenericObjectEditorPanel extends JPanel implements ItemListe
      * @param object the object to save.
      */
     protected void saveObject(Object object) {
-        if (m_FileChooser == null) createFileChooser();
+        if (m_FileChooser == null) {
+            createFileChooser();
+        }
         int returnVal = m_FileChooser.showSaveDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
 	        File sFile = m_FileChooser.getSelectedFile();
@@ -261,8 +265,12 @@ public class GeneralGenericObjectEditorPanel extends JPanel implements ItemListe
     protected void updateClassType() {
         m_ClassesLongName = GenericObjectEditor.getClassesFromProperties(m_ObjectEditor.getClassType().getName(), null);
         m_ObjectChooser.setModel(new DefaultComboBoxModel(m_ClassesLongName.toArray()));
-        if (m_ClassesLongName.size() > 1) add(m_ObjectChooser, BorderLayout.NORTH);
-        else remove(m_ObjectChooser);
+        if (m_ClassesLongName.size() > 1) {
+            add(m_ObjectChooser, BorderLayout.NORTH);
+        }
+        else {
+            remove(m_ObjectChooser);
+        }
     }
 
     protected void updateChooser() {
@@ -274,7 +282,9 @@ public class GeneralGenericObjectEditorPanel extends JPanel implements ItemListe
 	            break;
 	        }
         }
-        if (!found) m_ObjectNames.addElement(objectName);
+        if (!found) {
+            m_ObjectNames.addElement(objectName);
+        }
         m_ObjectChooser.getModel().setSelectedItem(objectName);
     }
 

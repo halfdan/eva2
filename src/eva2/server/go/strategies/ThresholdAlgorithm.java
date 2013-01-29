@@ -144,9 +144,13 @@ public class ThresholdAlgorithm implements InterfaceOptimizer, java.io.Serializa
         for (int i = 0; i < m_FitnessCalls; i++) {
             this.m_Test = (GAIndividualBinaryData)((this.m_Best).clone());
             this.m_Test.defaultMutate();
-            if (this.m_Test.defaultEvaulateAsMiniBits() < this.m_Best.defaultEvaulateAsMiniBits()) this.m_Best = this.m_Test;
+            if (this.m_Test.defaultEvaulateAsMiniBits() < this.m_Best.defaultEvaulateAsMiniBits()) {
+                this.m_Best = this.m_Test;
+            }
             this.m_FitnessCallsNeeded = i;
-            if (this.m_Best.defaultEvaulateAsMiniBits() == 0) i = this.m_FitnessCalls +1;
+            if (this.m_Best.defaultEvaulateAsMiniBits() == 0) {
+                i = this.m_FitnessCalls +1;
+            }
         }
     }
 
@@ -177,10 +181,14 @@ public class ThresholdAlgorithm implements InterfaceOptimizer, java.io.Serializa
 		if (m_Listener==ea) {
 			m_Listener=null;
 			return true;
-		} else return false;
+		} else {
+                                return false;
+                            }
 	}
     protected void firePropertyChangedEvent (String name) {
-        if (this.m_Listener != null) this.m_Listener.registerPopulationStateChanged(this, name);
+        if (this.m_Listener != null) {
+            this.m_Listener.registerPopulationStateChanged(this, name);
+        }
     }
 
     /** This method will return a string describing all properties of the optimizer
@@ -190,8 +198,12 @@ public class ThresholdAlgorithm implements InterfaceOptimizer, java.io.Serializa
     @Override
     public String getStringRepresentation() {
         String result = "";
-        if (this.m_Population.size() > 1) result += "Multi(" + this.m_Population.size() + ")-Start Hill Climbing:\n";
-        else result += "Threshold Algorithm:\n";
+        if (this.m_Population.size() > 1) {
+            result += "Multi(" + this.m_Population.size() + ")-Start Hill Climbing:\n";
+        }
+        else {
+            result += "Threshold Algorithm:\n";
+        }
         result += "Optimization Problem: ";
         result += this.m_Problem.getStringRepresentationForProblem(this) +"\n";
         result += this.m_Population.getStringRepresentation();
@@ -274,7 +286,9 @@ public class ThresholdAlgorithm implements InterfaceOptimizer, java.io.Serializa
     }
     public void setAlpha(double a){
         this.m_Alpha = a;
-        if (this.m_Alpha > 1) this.m_Alpha = 1.0;
+        if (this.m_Alpha > 1) {
+            this.m_Alpha = 1.0;
+        }
     }
     public String alphaTipText() {
         return "Set alpha, which is used to degrade the threshold.";

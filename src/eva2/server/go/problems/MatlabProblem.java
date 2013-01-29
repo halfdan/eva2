@@ -139,7 +139,9 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 	protected void initTemplate() {
 		switch (dataType) {
 		case typeDouble:
-			if (m_Template == null || !(m_Template instanceof ESIndividualDoubleData)) m_Template         = new ESIndividualDoubleData();
+			if (m_Template == null || !(m_Template instanceof ESIndividualDoubleData)) {
+                m_Template         = new ESIndividualDoubleData();
+            }
 			if (getProblemDimension() > 0) { // avoid evil case setting dim to 0 during object init
 				((InterfaceDataTypeDouble)this.m_Template).setDoubleDataLength(getProblemDimension());
 				((InterfaceDataTypeDouble)this.m_Template).SetDoubleRange(range);
@@ -147,11 +149,15 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 			break;
 		case typeBinary:
 			///// binary alternative
-			if (m_Template == null || !(m_Template instanceof GAIndividualBinaryData)) m_Template         = new GAIndividualBinaryData(getProblemDimension());
+			if (m_Template == null || !(m_Template instanceof GAIndividualBinaryData)) {
+                m_Template         = new GAIndividualBinaryData(getProblemDimension());
+            }
 			break;
 		case typeInteger:
 			int[][] intRange=makeIntRange(range);
-			if (m_Template == null || !(m_Template instanceof GIIndividualIntegerData)) m_Template         = new GIIndividualIntegerData(intRange);
+			if (m_Template == null || !(m_Template instanceof GIIndividualIntegerData)) {
+                m_Template         = new GIIndividualIntegerData(intRange);
+            }
 			break;
 		}
 	}
@@ -204,7 +210,9 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
                                 this.range[i][j]=globalRange[i][j];
                             } 
 			}
-		} else this.range=null;
+		} else {
+                this.range=null;
+            }
 		
 		if (initRange!=null) { // these may be Matlab objects, so I do it by foot, just to be sure not to clone them within Matlab instead of here
 			this.initialRange = new double[initRange.length][initRange[0].length];
@@ -213,9 +221,13 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
                                 this.initialRange[i][j]=initRange[i][j];
                             } 
 			}
-		} else this.initialRange=null;
+		} else {
+                this.initialRange=null;
+            }
 		
-		if (Arrays.deepEquals(initialRange, range)) initialRange=null;
+		if (Arrays.deepEquals(initialRange, range)) {
+                initialRange=null;
+            }
 
 		dataType=datType; // store the data type
 		log("### Data type is " + dataType);
@@ -248,7 +260,9 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 			dos = null;
 		} else if (swtch && (dos == null)) {
 			try {
-				if (fname==null || (fname.length()==0)) fname = defTestOut;
+				if (fname==null || (fname.length()==0)) {
+                                fname = defTestOut;
+                            }
 //				System.err.println("Opening "+fname);
 				dos = new PrintStream(new FileOutputStream(fname));
 			} catch (FileNotFoundException e) {
@@ -261,7 +275,9 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 		if ((verboLevel >= 0) && (verboLevel <= 3)) {
 			verbosityLevel = verboLevel;
 		}
-		else System.err.println("Error, invalid verbosity level for statistics output!");
+		else {
+                System.err.println("Error, invalid verbosity level for statistics output!");
+            }
 	}
 
 	public String jmiInterfaceNameTipText() {
@@ -323,7 +339,9 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 	}
 	
 	public void setSeedPopulation(double[][] seedData, double[][] seedDataFit) {
-		if (seedData==null) seedPopulation=null;
+		if (seedData==null) {
+                seedPopulation=null;
+            }
 		else {
 			if ((seedData.length!=seedDataFit.length) 
 					|| (seedData[0].length!=getProblemDimension())) {
@@ -396,8 +414,12 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 			log("Setting text listener, verbo " + verbosityLevel + "\n");
 			runnable.setTextListener(this);
 			runnable.setVerbosityLevel(verbosityLevel);
-			if (verbosityLevel>0) runnable.setOutputTo(2); // both file + window
-			else runnable.setOutputTo(1); // only window
+			if (verbosityLevel>0) {
+                        runnable.setOutputTo(2);
+                    } // both file + window
+			else {
+                        runnable.setOutputTo(1);
+                    } // only window
 			runnable.setOutputFullStatsToText(outputAllStatsField);
 
 			if (seedPopulation!=null) {
@@ -428,12 +450,18 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 							}
 						}
 						Object specVal = null; // avoid giving chars to the converter method here - the ascii value would be assigned instead of the string 
-						if (specValues[i] instanceof Character) specVal = ""+specValues[i];
-						else specVal = specValues[i];
+						if (specValues[i] instanceof Character) {
+                                                specVal = ""+specValues[i];
+                                            }
+						else {
+                                                specVal = specValues[i];
+                                            }
 						if ((paramName == null) || (!BeanInspector.setMem(opt, paramName, specVal))) {
 							log("... Fail!\n");
 							System.err.println("Unable to set parameter " + paramName + ", skipping...");
-						} else log("... Ok.\n");
+						} else {
+                                                log("... Ok.\n");
+                                            }
 					}
 					log(BeanInspector.toString(BeanInspector.getMemberDescriptions(opt, true)));
 				}
@@ -463,7 +491,9 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 				//			log("\nppp are "  + BeanInspector.toString(runnable.getGOParams().getPostProcessParams()));
 				new Thread(new WaitForEvARunnable(runnable, this)).start();
 			}
-		} else System.err.println("Nothing to be done.");
+		} else {
+                System.err.println("Nothing to be done.");
+            }
 	}
 
 	/**
@@ -504,14 +534,18 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 	}
 
 	public String getInfoString() {
-		if (runnable == null) return "";
+		if (runnable == null) {
+                return "";
+            }
 		StringBuffer sb = new StringBuffer("");
 		sb.append(runnable.terminatedBecause());
 		return sb.toString();
 	}
 
 	public int getFunctionCalls() {
-		if (runnable == null) return 0;
+		if (runnable == null) {
+                return 0;
+            }
 		return runnable.getGOParams().getOptimizer().getPopulation().getFunctionCalls();
 	}
 
@@ -584,8 +618,12 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 	 * @return
 	 */
 	public int getProgress() {
-		if (runnable == null) return 0;
-		else return runnable.getProgress();
+		if (runnable == null) {
+                return 0;
+            }
+		else {
+                return runnable.getProgress();
+            }
 	}
 
 	public static String globalInfo() {

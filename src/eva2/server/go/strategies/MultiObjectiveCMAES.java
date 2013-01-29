@@ -399,8 +399,9 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
 	 * @param name
 	 */
 	protected void firePropertyChangedEvent(String name) {
-		if (this.m_Listener != null)
-			this.m_Listener.registerPopulationStateChanged(this, name);
+		if (this.m_Listener != null) {
+                this.m_Listener.registerPopulationStateChanged(this, name);
+            }
 	}
 
 	public int getLambda() {

@@ -118,9 +118,15 @@ public class F8Problem extends AbstractProblemDoubleOffset
     }
     @Override
 	public SolutionHistogram getHistogram() {
-		if (getProblemDimension() < 15) return new SolutionHistogram(-0.1, 7.9, 16);
-		else if (getProblemDimension() < 25) return new SolutionHistogram(-0.5, 15.5, 16);
-		else return new SolutionHistogram(0, 16, 16);
+		if (getProblemDimension() < 15) {
+                return new SolutionHistogram(-0.1, 7.9, 16);
+            }
+		else if (getProblemDimension() < 25) {
+                return new SolutionHistogram(-0.5, 15.5, 16);
+            }
+		else {
+                return new SolutionHistogram(0, 16, 16);
+            }
 	}
 	
 //	public double[] getFirstOrderGradients(double[] x) {
@@ -197,29 +203,30 @@ public class F8Problem extends AbstractProblemDoubleOffset
 			Arrays.fill(pos, getXOffset());
 			addOptimum(pos); // the global optimum
 			double refinedX = 0;
-			if (getProblemDimension()<18) for (int i=0; i<getProblemDimension(); i++) {
-				// TODO what about dimensions higher than 18???
-				for (int k=-1; k<=1; k+=2) {
-					Arrays.fill(pos, getXOffset());
-					if (refinedX == 0) { // we dont know the exact x-offset for the optima, so refine once
-						pos[i]=k+getXOffset();
-						double[] dir = pos.clone();
-						dir[i]-=0.05;
-						pos = inverseRotateMaybe(pos);
+			if (getProblemDimension()<18) {
+                        for (int i=0; i<getProblemDimension(); i++) {
+  // TODO what about dimensions higher than 18???
+  for (int k=-1; k<=1; k+=2) {
+          Arrays.fill(pos, getXOffset());
+          if (refinedX == 0) { // we dont know the exact x-offset for the optima, so refine once
+                  pos[i]=k+getXOffset();
+                  double[] dir = pos.clone();
+                  dir[i]-=0.05;
+                  pos = inverseRotateMaybe(pos);
 //						ab dim 18/20 oder so finde ich plötzlich keine optima bei x[i]<1 mehr???
-						dir = inverseRotateMaybe(dir);
-						pos = refineSolution(this, pos, dir, 0.0005, 1e-20, 0);
-						if (EuclideanMetric.euclideanDistance(pos, m_ListOfOptima.getEAIndividual(0).getDoublePosition())<0.5) {
-							System.err.println("Warning, possibly converged to a wrong optimum in F8Problem.initListOfOptima!");
-						}
-						pos = rotateMaybe(pos);
-						refinedX = Math.abs(pos[i]-getXOffset()); // store the refined position which is equal in any direction and dimension
-					} else {
-						pos[i]=(k*refinedX)+getXOffset();
-					}
-					addOptimum(pos);
-				}
-			}
+                  dir = inverseRotateMaybe(dir);
+                  pos = refineSolution(this, pos, dir, 0.0005, 1e-20, 0);
+                  if (EuclideanMetric.euclideanDistance(pos, m_ListOfOptima.getEAIndividual(0).getDoublePosition())<0.5) {
+                          System.err.println("Warning, possibly converged to a wrong optimum in F8Problem.initListOfOptima!");
+                  }
+                  pos = rotateMaybe(pos);
+                  refinedX = Math.abs(pos[i]-getXOffset()); // store the refined position which is equal in any direction and dimension
+          } else {
+                  pos[i]=(k*refinedX)+getXOffset();
+          }
+          addOptimum(pos);
+  }
+}                   }
 //			System.out.println("Inited " + m_ListOfOptima.size() + " optima, measures: " + BeanInspector.toString(m_ListOfOptima.getPopulationMeasures(new PhenotypeMetric())));
 //			System.out.println("Inited " + m_ListOfOptima.size() + " optima, measures: " + BeanInspector.toString(m_ListOfOptima.getPopulationMeasures(new EuclideanMetric())));
 //			System.out.println(m_ListOfOptima.getStringRepresentation());
@@ -257,7 +264,9 @@ public class F8Problem extends AbstractProblemDoubleOffset
 	}
 	
 	private boolean listOfOptimaNeedsUpdate() { 
-		if (state_initializing_optima) return false; // avoid recursive call during refining with GDA
+		if (state_initializing_optima) {
+                return false;
+            } // avoid recursive call during refining with GDA
 		if (m_ListOfOptima==null || (m_ListOfOptima.size() != (1+2*getProblemDimension()))) {
 			return true; 
 		} else { // the number of optima is corret - now check different offset or rotation by comparing one fitness value
@@ -265,7 +274,9 @@ public class F8Problem extends AbstractProblemDoubleOffset
 			double[] curFit = eval(indy.getDoublePosition());
 			if (Math.abs(Mathematics.dist(curFit, indy.getFitness(), 2))>1e-10) {
 				return true;
-			} else return false;
+			} else {
+                        return false;
+                    }
 		}
 //		else {
 //			if (m_ListOfOptima.isEmpty()) return true;

@@ -84,8 +84,12 @@ public class ClusteringKMeans implements InterfaceClustering, java.io.Serializab
             // now choose random initial Cs
             Population initialSeeds = pop.getRandNIndividuals(this.m_K);
             for (int i = 0; i < this.m_K; i++) {
-            	if (m_UseSearchSpace) this.m_C[i] = initialSeeds.getEAIndividual(i).getDoublePosition().clone();
-            	else this.m_C[i] = initialSeeds.getEAIndividual(i).getFitness().clone();
+            	if (m_UseSearchSpace) {
+                    this.m_C[i] = initialSeeds.getEAIndividual(i).getDoublePosition().clone();
+                }
+            	else {
+                    this.m_C[i] = initialSeeds.getEAIndividual(i).getFitness().clone();
+                }
             	
 //                this.m_C[i] = data[RNG.randomInt(0, data.length-1)];
                 //this.m_C[i] = data[i];     // This works!!
@@ -107,9 +111,9 @@ public class ClusteringKMeans implements InterfaceClustering, java.io.Serializab
                 // check which C is closest
                 assign = 0;
                 for (int j = 1; j < this.m_C.length; j++) {
-                    if (this.distance(pop.getEAIndividual(i), this.m_C[assign]) > this.distance(pop.getEAIndividual(i), this.m_C[j]))
-//                    if (this.distance(this.m_C[assign], data[i]) > this.distance(this.m_C[j], data[i]))
+                    if (this.distance(pop.getEAIndividual(i), this.m_C[assign]) > this.distance(pop.getEAIndividual(i), this.m_C[j])) {
                         assign = j;
+                    }
                 }
                 assignment[i] = assign;
             }
@@ -126,13 +130,19 @@ public class ClusteringKMeans implements InterfaceClustering, java.io.Serializab
             for (int i = 0; i < assignment.length; i++) {
                 numbOfAssigned[assignment[i]]++;
                 for (int j = 0; j < newC[assignment[i]].length; j++) {
-                	if (m_UseSearchSpace) newC[assignment[i]][j] += pop.getEAIndividual(i).getDoublePosition()[j];
-                	else newC[assignment[i]][j] += pop.getEAIndividual(i).getFitness(j);
+                	if (m_UseSearchSpace) {
+                        newC[assignment[i]][j] += pop.getEAIndividual(i).getDoublePosition()[j];
+                    }
+                	else {
+                        newC[assignment[i]][j] += pop.getEAIndividual(i).getFitness(j);
+                    }
                 }
             }
             for (int i = 0; i < newC.length; i++) {
                 for (int j = 0; j < newC[i].length; j++) {
-                    if (numbOfAssigned[i] > 1) newC[i][j] /= (double)numbOfAssigned[i];
+                    if (numbOfAssigned[i] > 1) {
+                        newC[i][j] /= (double)numbOfAssigned[i];
+                    }
                     //else System.out.println("Someone was not assigned any data!? "+ i +" "+numbOfAssigned[i] + ": Data.size()="+data.length);
                 }
             }
@@ -183,7 +193,9 @@ public class ClusteringKMeans implements InterfaceClustering, java.io.Serializab
                     double[] x  = pop.getEAIndividual(i).getDoublePosition();
                     myPoint = new DPoint(x[0], x[1]);
                     tmp = new Chart2DDPointIconText(""+assignment[i]);
-                    if (assignment[i] % 2 == 0) tmp.setIcon(new Chart2DDPointIconCircle());
+                    if (assignment[i] % 2 == 0) {
+                        tmp.setIcon(new Chart2DDPointIconCircle());
+                    }
                     myPoint.setIcon(tmp);
                     mySet.addDPoint(myPoint);
                 }
@@ -191,7 +203,9 @@ public class ClusteringKMeans implements InterfaceClustering, java.io.Serializab
             // finally let's check whether or not the C changed and if i can terminate k_Means
             finished = true;
             for (int i = 0; i < this.m_C.length; i++) {
-                if (EuclideanMetric.euclideanDistance(this.m_C[i], newC[i]) > 0.0001) finished = false;
+                if (EuclideanMetric.euclideanDistance(this.m_C[i], newC[i]) > 0.0001) {
+                    finished = false;
+                }
                 this.m_C[i] = newC[i];
             }
         } // gosh now i'm done
@@ -218,7 +232,9 @@ public class ClusteringKMeans implements InterfaceClustering, java.io.Serializab
                     double[] x  = ((InterfaceDataTypeDouble)result[i].get(j)).getDoubleData();
                     myPoint = new DPoint(x[0], x[1]);
                     tmp = new Chart2DDPointIconText(""+i);
-                    if (i % 2 == 0) tmp.setIcon(new Chart2DDPointIconCircle());
+                    if (i % 2 == 0) {
+                        tmp.setIcon(new Chart2DDPointIconCircle());
+                    }
                     myPoint.setIcon(tmp);
                     mySet.addDPoint(myPoint);
                 }
@@ -229,7 +245,9 @@ public class ClusteringKMeans implements InterfaceClustering, java.io.Serializab
         int largeEnough = 0;
         // count clusters that are large enough
         for (int i=0; i<result.length; i++) {
-            if (result[i].size()>=getMinClustSize()) largeEnough++;
+            if (result[i].size()>=getMinClustSize()) {
+                largeEnough++;
+            }
         }
         Population[] resExpanded = new Population[largeEnough+1];
         resExpanded[0]=pop.cloneWithoutInds();
@@ -238,7 +256,9 @@ public class ClusteringKMeans implements InterfaceClustering, java.io.Serializab
         	if (result[i].size()>=getMinClustSize()) {
         		resExpanded[lastIndex]=result[i];
         		lastIndex++;
-        	} else resExpanded[0].addPopulation(result[i]);
+        	} else {
+                resExpanded[0].addPopulation(result[i]);
+            }
         }
         tmpIndy=null;
         return resExpanded;
@@ -252,7 +272,9 @@ public class ClusteringKMeans implements InterfaceClustering, java.io.Serializab
      * @return The clusters as populations
      */
     public Population[] cluster(Population pop, double[][] c) {
-    	if (tmpIndy==null) tmpIndy=(AbstractEAIndividual)pop.getEAIndividual(0).clone(); // nec. only because the method is public...
+    	if (tmpIndy==null) {
+            tmpIndy=(AbstractEAIndividual)pop.getEAIndividual(0).clone();
+        } // nec. only because the method is public...
         Population[]    result  = new Population[c.length];
 //        double[][]      data    = this.extractClusterDataFrom(pop);
         int             clusterAssigned;
@@ -271,8 +293,9 @@ public class ClusteringKMeans implements InterfaceClustering, java.io.Serializab
             // find the closest c
             clusterAssigned = 0;
             for (int j = 1; j < c.length; j++) {
-                if (this.distance(pop.getEAIndividual(i), c[clusterAssigned]) > this.distance(pop.getEAIndividual(i), c[j]))
+                if (this.distance(pop.getEAIndividual(i), c[clusterAssigned]) > this.distance(pop.getEAIndividual(i), c[j])) {
                     clusterAssigned = j;
+                }
             }
             result[clusterAssigned].add(pop.get(i));
         }
@@ -285,8 +308,12 @@ public class ClusteringKMeans implements InterfaceClustering, java.io.Serializab
      * @return The scalar distances between d1 and d2
      */
     private double distance(AbstractEAIndividual indy, double[] p) {
-        if (m_UseSearchSpace) ((InterfaceDataTypeDouble)tmpIndy).SetDoubleGenotype(p);
-        else tmpIndy.setFitness(p);
+        if (m_UseSearchSpace) {
+            ((InterfaceDataTypeDouble)tmpIndy).SetDoubleGenotype(p);
+        }
+        else {
+            tmpIndy.setFitness(p);
+        }
         
         return metric.distance(indy, tmpIndy);
     }
@@ -322,8 +349,12 @@ public class ClusteringKMeans implements InterfaceClustering, java.io.Serializab
     @Override
     public boolean mergingSpecies(Population species1, Population species2, Population referencePop) {
         // TODO i could use the BIC metric from X-means to calculate this
-    	if (metric.distance(species1.getBestEAIndividual(), species2.getBestEAIndividual())<mergeDist) return true;
-    	else return false;
+    	if (metric.distance(species1.getBestEAIndividual(), species2.getBestEAIndividual())<mergeDist) {
+            return true;
+        }
+    	else {
+            return false;
+        }
     }
 
 //    /** This method decides if a unclustered individual belongs to an already established species.
@@ -393,7 +424,9 @@ public class ClusteringKMeans implements InterfaceClustering, java.io.Serializab
         return this.m_K;
     }
     public void setK(int m){
-        if (m < 1) m = 1;
+        if (m < 1) {
+            m = 1;
+        }
         this.m_K = m;
     }
     public String kTipText() {
