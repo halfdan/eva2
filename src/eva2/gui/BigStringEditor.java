@@ -12,10 +12,10 @@ package eva2.gui;
 /*==========================================================================*
  * IMPORTS
  *==========================================================================*/
-import  java.beans.*;
 import  java.awt.*;
-import  java.awt.event.*;
-import  javax.swing.*;
+import java.awt.event.*;
+import java.beans.*;
+import javax.swing.*;
 
 /*==========================================================================*
  * CLASS DECLARATION

@@ -1,8 +1,7 @@
 package eva2.server.go.operators.paramcontrol;
 
-import java.io.Serializable;
-
 import eva2.gui.GenericObjectEditor;
+import java.io.Serializable;
 
 /**
  * Adapt PSO inertness linearly by time, from given start to end value.

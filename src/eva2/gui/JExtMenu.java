@@ -12,12 +12,12 @@ package eva2.gui;
 /*==========================================================================*
  * IMPORTS
  *==========================================================================*/
+import java.beans.*;
+import javax.swing.Action;
+import javax.swing.Icon;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
-import javax.swing.Icon;
-import javax.swing.Action;
-import java.beans.*;
 /**
  *
  */

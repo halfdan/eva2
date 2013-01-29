@@ -1,7 +1,5 @@
 package eva2.server.go.problems;
 
-import java.util.Vector;
-
 import eva2.gui.GenericObjectEditor;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.operators.constraint.AbstractConstraint;
@@ -9,6 +7,7 @@ import eva2.server.go.operators.constraint.ConstraintCollection;
 import eva2.server.go.operators.constraint.ConstraintHandlingEnum;
 import eva2.server.go.operators.constraint.ConstraintRelationEnum;
 import eva2.server.go.operators.constraint.GenericConstraint;
+import java.util.Vector;
 
 public class ConstrPressureVessel extends AbstractProblemDouble {
 	private boolean discreteThickness = true;

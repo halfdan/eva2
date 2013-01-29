@@ -1,20 +1,18 @@
 package eva2.server.go.tools;
 
 
-import javax.swing.*;
-
 import eva2.gui.GenericObjectEditor;
 import eva2.tools.EVAHELP;
-
-import java.awt.event.ItemListener;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.ItemEvent;
 import java.awt.*;
-import java.util.ArrayList;
-import java.beans.PropertyChangeListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.*;
+import java.util.ArrayList;
+import javax.swing.*;
 
 /**
  * Created by IntelliJ IDEA.

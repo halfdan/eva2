@@ -2,7 +2,6 @@ package eva2.server.go;
 
 import eva2.gui.JParaPanel;
 import eva2.gui.PropertyDoubleArray;
-import eva2.server.go.SwingWorker;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.mocco.*;
 import eva2.server.go.mocco.paretofrontviewer.MOCCOViewer;

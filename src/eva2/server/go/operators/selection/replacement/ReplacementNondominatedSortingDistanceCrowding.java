@@ -1,12 +1,11 @@
 package eva2.server.go.operators.selection.replacement;
 
-import java.util.Collections;
-import java.util.Comparator;
-
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.operators.archiving.ArchivingNSGAII;
 import eva2.server.go.operators.selection.SelectRandom;
 import eva2.server.go.populations.Population;
+import java.util.Collections;
+import java.util.Comparator;
 
 
 /** This crowding method replaces the most similar individual from a random group if better.

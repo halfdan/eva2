@@ -1,7 +1,5 @@
 package eva2.server.go.operators.mutation;
 
-import java.util.ArrayList;
-
 import eva2.server.go.PopulationInterface;
 import eva2.server.go.enums.MutateESCrossoverTypeEnum;
 import eva2.server.go.individuals.AbstractEAIndividual;
@@ -10,6 +8,7 @@ import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceAdditionalPopulationInformer;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
+import java.util.ArrayList;
 
 
 /**

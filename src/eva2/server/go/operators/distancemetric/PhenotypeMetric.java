@@ -2,8 +2,6 @@ package eva2.server.go.operators.distancemetric;
 
 
 
-import java.util.BitSet;
-
 import eva2.gui.BeanInspector;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceDataTypeBinary;
@@ -11,6 +9,7 @@ import eva2.server.go.individuals.InterfaceDataTypeDouble;
 import eva2.server.go.individuals.InterfaceDataTypeInteger;
 import eva2.server.go.individuals.InterfaceDataTypePermutation;
 import eva2.server.go.individuals.InterfaceDataTypeProgram;
+import java.util.BitSet;
 
 /** 
  * A phenotype metric suited for the most common data types.

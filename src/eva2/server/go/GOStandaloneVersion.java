@@ -2,7 +2,6 @@ package eva2.server.go;
 
 import eva2.gui.BeanInspector;
 import eva2.gui.JParaPanel;
-import eva2.server.go.SwingWorker;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.ESIndividualDoubleData;
 import eva2.server.go.individuals.GAIndividualDoubleData;

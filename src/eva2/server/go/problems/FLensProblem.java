@@ -1,6 +1,14 @@
 package eva2.server.go.problems;
 
 
+import eva2.server.go.GOStandaloneVersion;
+import eva2.server.go.individuals.AbstractEAIndividual;
+import eva2.server.go.individuals.ESIndividualDoubleData;
+import eva2.server.go.individuals.InterfaceDataTypeDouble;
+import eva2.server.go.populations.Population;
+import eva2.server.go.strategies.InterfaceOptimizer;
+import eva2.server.modules.GOParameters;
+import eva2.tools.math.RNG;
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -11,21 +19,11 @@ import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.image.BufferedImage;
-
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-
-import eva2.server.go.GOStandaloneVersion;
-import eva2.server.go.individuals.AbstractEAIndividual;
-import eva2.server.go.individuals.ESIndividualDoubleData;
-import eva2.server.go.individuals.InterfaceDataTypeDouble;
-import eva2.server.go.populations.Population;
-import eva2.server.go.strategies.InterfaceOptimizer;
-import eva2.server.modules.GOParameters;
-import eva2.tools.math.RNG;
 
 class MyLensViewer extends JPanel implements InterfaceSolutionViewer {
 

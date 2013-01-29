@@ -1,8 +1,6 @@
 package eva2.server.go.mocco.paretofrontviewer;
 
 
-import javax.swing.*;
-
 import eva2.gui.*;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.populations.Population;
@@ -12,11 +10,10 @@ import eva2.tools.chart2d.Chart2DDPointContentSelectable;
 import eva2.tools.chart2d.DPoint;
 import eva2.tools.chart2d.DPointIcon;
 import eva2.tools.chart2d.ScaledBorder;
-
-
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.*;
 
 /**
  * Created by IntelliJ IDEA.

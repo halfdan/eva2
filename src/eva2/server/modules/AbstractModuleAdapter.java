@@ -9,13 +9,12 @@ package eva2.server.modules;
  *            $Date: 2007-12-04 14:22:52 +0100 (Tue, 04 Dec 2007) $
  *            $Author: mkron $
  */
-import java.io.Serializable;
-import java.net.InetAddress;
-
 import eva2.server.go.InterfaceGOParameters;
 import eva2.server.go.InterfaceProcessor;
 import eva2.tools.jproxy.MainAdapterClient;
 import eva2.tools.jproxy.RemoteStateListener;
+import java.io.Serializable;
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 

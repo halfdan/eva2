@@ -1,10 +1,9 @@
 package eva2.server.go.operators.distancemetric;
 
-import java.io.Serializable;
-
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.strategies.ParticleSwarmOptimization;
 import eva2.tools.EVAERROR;
+import java.io.Serializable;
 
 /**
  * Define a metric on data stored within individuals, such as the personal best position

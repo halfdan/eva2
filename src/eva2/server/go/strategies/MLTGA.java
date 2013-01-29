@@ -1,12 +1,5 @@
 package eva2.server.go.strategies;
 
-import java.util.BitSet;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.Stack;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import eva2.gui.BeanInspector;
 import eva2.server.go.InterfacePopulationChangedEventListener;
 import eva2.server.go.individuals.AbstractEAIndividual;
@@ -20,6 +13,12 @@ import eva2.server.go.problems.BKnapsackProblem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.tools.Pair;
 import eva2.tools.math.SpecialFunction;
+import java.util.BitSet;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.Stack;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class MLTGA implements InterfaceOptimizer, java.io.Serializable, InterfacePopulationChangedEventListener {
 

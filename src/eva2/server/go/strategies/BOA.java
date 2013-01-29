@@ -1,16 +1,5 @@
 package eva2.server.go.strategies;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.Writer;
-import java.text.DateFormat;
-import java.util.BitSet;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-
 import eva2.gui.BeanInspector;
 import eva2.server.go.InterfacePopulationChangedEventListener;
 import eva2.server.go.enums.BOAScoringMethods;
@@ -28,6 +17,16 @@ import eva2.tools.Pair;
 import eva2.tools.math.BayNet;
 import eva2.tools.math.RNG;
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.Writer;
+import java.text.DateFormat;
+import java.util.BitSet;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
