@@ -177,15 +177,18 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
 		if (m_Listener == ea) {
 			m_Listener = null;
 			return true;
-		} else
-			return false;
+		} else {
+                                return false;
+                            }
 	}
 
 	private static BitSet getBinaryData(AbstractEAIndividual indy) {
-		if (indy instanceof InterfaceGAIndividual)
-			return ((InterfaceGAIndividual) indy).getBGenotype();
-		else if (indy instanceof InterfaceDataTypeBinary)
-			return ((InterfaceDataTypeBinary) indy).getBinaryData();
+		if (indy instanceof InterfaceGAIndividual) {
+                return ((InterfaceGAIndividual) indy).getBGenotype();
+            }
+		else if (indy instanceof InterfaceDataTypeBinary) {
+                return ((InterfaceDataTypeBinary) indy).getBinaryData();
+            }
 		else {
 			throw new RuntimeException(
 					"Unable to get binary representation for "
@@ -232,8 +235,9 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
 		} else {
 			Object dim = BeanInspector.callIfAvailable(problem,
 					"getProblemDimension", null);
-			if (dim == null)
-                                LOGGER.log(Level.WARNING, "Coudn't get problem dimension!");
+			if (dim == null) {
+                        LOGGER.log(Level.WARNING, "Coudn't get problem dimension!");
+                    }
 			probDim = (Integer) dim;
 			((InterfaceDataTypeBinary) this.template)
 					.SetBinaryGenotype(new BitSet(probDim));
@@ -578,8 +582,9 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
 	 * Something has changed
 	 */
 	protected void firePropertyChangedEvent(String name) {
-		if (this.m_Listener != null)
-			this.m_Listener.registerPopulationStateChanged(this, name);
+		if (this.m_Listener != null) {
+                this.m_Listener.registerPopulationStateChanged(this, name);
+            }
 	}
 
     @Override

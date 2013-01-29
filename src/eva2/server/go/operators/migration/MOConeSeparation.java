@@ -86,7 +86,9 @@ public class MOConeSeparation implements InterfaceMigration, java.io.Serializabl
         // collect the populations
         for (int i = 0; i < islands.length; i++) {
             oldIPOP[i] = islands[i].getPopulation();
-            if (this.m_Debug) System.out.println("Got population from "+i+" of size "+oldIPOP[i].size());
+            if (this.m_Debug) {
+                System.out.println("Got population from "+i+" of size "+oldIPOP[i].size());
+            }
             collector.addPopulation((Population)oldIPOP[i].clone());
             newIPOP[i] = new Population();
         }
@@ -111,7 +113,9 @@ public class MOConeSeparation implements InterfaceMigration, java.io.Serializabl
             if (!oldIPOP[i].targetSizeReached()) {
                 oldIPOP[i].addPopulation(this.m_Selection.selectFrom(memory, oldIPOP[i].getTargetSize()-oldIPOP[i].size()));
             }
-            if (this.m_Debug) System.out.println("Setting island "+i+" to population size " + oldIPOP[i].size());
+            if (this.m_Debug) {
+                System.out.println("Setting island "+i+" to population size " + oldIPOP[i].size());
+            }
             allDom.addElementsToArchive(oldIPOP[i]);
             islands[i].setPopulation(oldIPOP[i]);
         }
@@ -159,8 +163,12 @@ public class MOConeSeparation implements InterfaceMigration, java.io.Serializabl
         Population  archive = collector.getArchive();
         Population  ref;
 
-        if (this.m_UseAllToDetermineR)  ref = collector;
-        else                            ref = archive;
+        if (this.m_UseAllToDetermineR) {
+            ref = collector;
+        }
+        else {
+            ref = archive;
+        }
 
         for (int i = 1; i < ref.size(); i++) {
             if (((AbstractEAIndividual)ref.get(i)).getFitness()[0] > ((AbstractEAIndividual)ref.get(y1Big)).getFitness()[0]) {
@@ -221,7 +229,9 @@ public class MOConeSeparation implements InterfaceMigration, java.io.Serializabl
                     indy = (AbstractEAIndividual)newIPOP[i].get(j);
                     myPoint = new DPoint(indy.getFitness()[0], indy.getFitness()[1]);
                     tmp = new Chart2DDPointIconText(""+i);
-                    if (i % 2 == 0) tmp.setIcon(new Chart2DDPointIconCircle());
+                    if (i % 2 == 0) {
+                        tmp.setIcon(new Chart2DDPointIconCircle());
+                    }
                     myPoint.setIcon(tmp);
                     mySet.addDPoint(myPoint);
                 }
@@ -290,8 +300,12 @@ public class MOConeSeparation implements InterfaceMigration, java.io.Serializabl
         Population  archive = collector.getArchive();
         Population  ref;
 
-        if (this.m_UseAllToDetermineR)  ref = collector;
-        else                            ref = archive;
+        if (this.m_UseAllToDetermineR) {
+            ref = collector;
+        }
+        else {
+            ref = archive;
+        }
 
         for (int i = 1; i < ref.size(); i++) {
             if (((AbstractEAIndividual)ref.get(i)).getFitness()[0] > ((AbstractEAIndividual)ref.get(y1Big)).getFitness()[0]) {
@@ -379,7 +393,9 @@ public class MOConeSeparation implements InterfaceMigration, java.io.Serializabl
             lastBoundingPlane[0] = curBoundingPlane[0];
             lastBoundingPlane[1] = curBoundingPlane[1];
             curBoundingPlane[0]  = distopian;
-            if (i+1 < normals.length) curBoundingPlane[1]     = normals[i+1];
+            if (i+1 < normals.length) {
+                curBoundingPlane[1]     = normals[i+1];
+            }
 //            else curBoundingPlane[1]     = normals[0];
         }
 //        System.out.println("collector.size() "+ collector.size());
@@ -699,7 +715,9 @@ public class MOConeSeparation implements InterfaceMigration, java.io.Serializabl
     private void writeToFile(BufferedWriter out, String line) {
         String write = line + "\n";
         write.replaceAll(",",".");
-        if (out == null) return;
+        if (out == null) {
+            return;
+        }
         try {
             out.write(write, 0, write.length());
             out.flush();

@@ -74,10 +74,16 @@ public class IntervalConstraint extends AbstractConstraint implements InterfaceD
 	
 	public String getName() {
 		String clsName=this.getClass().getSimpleName();
-		if (genericConstr!=null) return clsName+"/"+genericConstr.getConstraintString()+ " in ["+lower+","+upper+"]";
+		if (genericConstr!=null) {
+                return clsName+"/"+genericConstr.getConstraintString()+ " in ["+lower+","+upper+"]";
+            }
 		else {
-			if (index<0) return clsName+"/x_i in ["+lower+","+upper+"]";
-			else return clsName+"/x_" + index + " in ["+lower+","+upper+"]";
+			if (index<0) {
+                        return clsName+"/x_i in ["+lower+","+upper+"]";
+                    }
+			else {
+                        return clsName+"/x_" + index + " in ["+lower+","+upper+"]";
+                    }
 		}
 	}
 
@@ -107,13 +113,21 @@ public class IntervalConstraint extends AbstractConstraint implements InterfaceD
 	public void setGenericFunction(String str) {
 		if (str!=null && (str.length()>0)) {
 			genericConstr = new GenericConstraint(str);
-			if (!genericConstr.checkValid()) genericConstr=null;
-		} else genericConstr=null;
+			if (!genericConstr.checkValid()) {
+                        genericConstr=null;
+                    }
+		} else {
+                genericConstr=null;
+            }
 	}
 
 	public String getGenericFunction() {
-		if (genericConstr==null) return "";
-		else return genericConstr.getConstraintString();
+		if (genericConstr==null) {
+                return "";
+            }
+		else {
+                return genericConstr.getConstraintString();
+            }
 	}
 	
 	public String genericConstrTipText() {

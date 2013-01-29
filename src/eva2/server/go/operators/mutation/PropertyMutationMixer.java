@@ -22,8 +22,12 @@ public class PropertyMutationMixer implements java.io.Serializable {
             this.m_Weights[i] = 1/((double)d.length);
         }
         this.m_AvailableTargets = d;
-        if (selectAllOrNone) this.m_SelectedTargets  = d.clone();
-        else this.m_SelectedTargets = null;
+        if (selectAllOrNone) {
+            this.m_SelectedTargets  = d.clone();
+        }
+        else {
+            this.m_SelectedTargets = null;
+        }
     }
     public PropertyMutationMixer(PropertyMutationMixer d) {
         this.m_DescriptiveString        = d.m_DescriptiveString;
@@ -63,7 +67,9 @@ public class PropertyMutationMixer implements java.io.Serializable {
             return;
         }
 
-        if (d.length == this.m_Weights.length) return;
+        if (d.length == this.m_Weights.length) {
+            return;
+        }
 
         if (d.length > this.m_Weights.length) {
             double[] newWeights = new double[d.length];
@@ -143,7 +149,9 @@ public class PropertyMutationMixer implements java.io.Serializable {
      * @param index     The index of the target to be removed.
      */
     public void removeMutator(int index) {
-        if ((index < 0) || (index >= this.m_SelectedTargets.length)) return;
+        if ((index < 0) || (index >= this.m_SelectedTargets.length)) {
+            return;
+        }
 
         InterfaceMutation[]   newList = new InterfaceMutation[this.m_SelectedTargets.length-1];
         double[]                        newWeights = new double[this.m_Weights.length - 1];

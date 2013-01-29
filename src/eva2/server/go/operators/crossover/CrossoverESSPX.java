@@ -109,8 +109,12 @@ public class CrossoverESSPX implements InterfaceCrossover, java.io.Serializable 
      */
     @Override
     public boolean equals(Object crossover) {
-        if (crossover instanceof CrossoverESSPX) return true;
-        else return false;
+        if (crossover instanceof CrossoverESSPX) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     /** This method will allow the crossover operator to be initialized depending on the
@@ -197,7 +201,9 @@ public class CrossoverESSPX implements InterfaceCrossover, java.io.Serializable 
             offsprings = cross.mate(indy1, pop);
             for (int j = 0; j < offsprings.length; j++) {
                 tmpD = ((ESIndividualDoubleData)offsprings[j]).getDoubleData();
-                if (plotFlag) plot.setUnconnectedPoint(tmpD[0], tmpD[1], 1);
+                if (plotFlag) {
+                    plot.setUnconnectedPoint(tmpD[0], tmpD[1], 1);
+                }
                 //range = ((ESIndividualDoubleData)offsprings[j]).getDoubleRange();
                 //System.out.println("["+range[0][0]+"/"+range[0][1]+";"+range[1][0]+"/"+range[1][1]+"]");
             }
@@ -227,7 +233,9 @@ public class CrossoverESSPX implements InterfaceCrossover, java.io.Serializable 
     }
 
     public void setEpsilon(double a) {
-        if (a < 0) a = 0;
+        if (a < 0) {
+            a = 0;
+        }
         this.m_Epsilon = a;
     }
     public double getEpsilon() {

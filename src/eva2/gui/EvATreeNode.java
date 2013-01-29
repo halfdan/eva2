@@ -48,7 +48,9 @@ public class EvATreeNode extends DefaultMutableTreeNode  {
 		childrenNames = PropertySheetPanel.getPropertyNames(target);
 		childrenValues = PropertySheetPanel.getPropertyValues(target, true, true, true);
 		super.removeAllChildren();
-		if (expand) initChildren();
+		if (expand) {
+                initChildren();
+            }
 	}
 
 	public void setName(String name) {
@@ -65,8 +67,9 @@ public class EvATreeNode extends DefaultMutableTreeNode  {
 	private void initChildren() {
 		for (int i=0; i<childrenValues.length; i++) {
 			if (childrenValues[i]!=null) {
-				if (doListPrimitives || !(BeanInspector.isJavaPrimitive(childrenValues[i].getClass()))) 
-					super.add(new EvATreeNode(childrenNames[i], childrenValues[i]));
+				if (doListPrimitives || !(BeanInspector.isJavaPrimitive(childrenValues[i].getClass()))) {
+                                super.add(new EvATreeNode(childrenNames[i], childrenValues[i]));
+                            }
 			}
 		}
 	}
@@ -79,7 +82,11 @@ public class EvATreeNode extends DefaultMutableTreeNode  {
 		} catch (Exception e) {
 			extendedInfo=null;
 		}
-		if (extendedInfo != null) return myName + " - "+ extendedInfo;
-		else return myName;
+		if (extendedInfo != null) {
+                return myName + " - "+ extendedInfo;
+            }
+		else {
+                return myName;
+            }
 	}
 }

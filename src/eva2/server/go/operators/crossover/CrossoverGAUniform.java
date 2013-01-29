@@ -45,7 +45,9 @@ public class CrossoverGAUniform implements InterfaceCrossover, java.io.Serializa
         for (int i = 0; i < partners.size(); i++) {
             result[i+1] = (AbstractEAIndividual) ((AbstractEAIndividual)partners.get(i)).clone();
         }
-        if (partners.size() == 0) return result;
+        if (partners.size() == 0) {
+            return result;
+        }
         //for (int i = 0; i < result.length; i++) System.out.println("Before Crossover: " +result[i].getSolutionRepresentationFor());
         if ((indy1 instanceof InterfaceGAIndividual) && (partners.get(0) instanceof InterfaceGAIndividual)) {
             int         length          =  ((InterfaceGAIndividual)indy1).getGenotypeLength();
@@ -63,8 +65,12 @@ public class CrossoverGAUniform implements InterfaceCrossover, java.io.Serializa
             for (int i = 0; i < length; i++) {
                 mixer = RNG.randomInt(0, partners.size());
                 for (int j = 0; j < tmpBitSet[0].length; j++) {
-                    if (tmpBitSet[0][(j + mixer) % tmpBitSet[0].length].get(i)) tmpBitSet[1][j].set(i);
-                    else tmpBitSet[1][j].clear(i);
+                    if (tmpBitSet[0][(j + mixer) % tmpBitSet[0].length].get(i)) {
+                        tmpBitSet[1][j].set(i);
+                    }
+                    else {
+                        tmpBitSet[1][j].clear(i);
+                    }
                 }
             }
 
@@ -86,8 +92,12 @@ public class CrossoverGAUniform implements InterfaceCrossover, java.io.Serializa
      */
     @Override
     public boolean equals(Object crossover) {
-        if (crossover instanceof CrossoverGAUniform) return true;
-        else return false;
+        if (crossover instanceof CrossoverGAUniform) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     /** This method will allow the crossover operator to be initialized depending on the

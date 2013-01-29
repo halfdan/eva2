@@ -60,7 +60,9 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
     public static final boolean TRACE = false;
 
     public ParticleFilterOptimization() {
-        if (withShow) setWithShow(true);
+        if (withShow) {
+            setWithShow(true);
+        }
     }
     
     public ParticleFilterOptimization(double vInit, double mute, double immiQuote, double rotDeg, double selScaling) {
@@ -69,7 +71,9 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
     	randomImmigrationQuota = immiQuote;
     	rotationDeg = rotDeg;
     	m_ParentSelection = new SelectParticleWheel(selScaling);
-        if (withShow) setWithShow(true);
+        if (withShow) {
+            setWithShow(true);
+        }
     }
     
     public ParticleFilterOptimization(ParticleFilterOptimization a) {
@@ -80,7 +84,9 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
         //this.m_NumberOfPartners             = a.m_NumberOfPartners;
         //this.m_UseElitism                   = a.m_UseElitism;
         this.m_ParentSelection              = (InterfaceSelection)a.m_ParentSelection.clone();
-        if (a.withShow) setWithShow(true);
+        if (a.withShow) {
+            setWithShow(true);
+        }
     }
 
     public void hideHideable() {
@@ -149,11 +155,15 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
         // DONT forget cloning -> selection does only shallow copies!
         int targetSize = this.m_Population.getTargetSize();
         if (randomImmigrationQuota>0) {
-        	if (randomImmigrationQuota>1.) System.err.println("Error, invalid immigration quota!");
+        	if (randomImmigrationQuota>1.) {
+                System.err.println("Error, invalid immigration quota!");
+            }
         	else {
         		targetSize = (int)(this.m_Population.getTargetSize() * (1.-randomImmigrationQuota));
         		targetSize = Math.max(1, targetSize); // guarantee at least one to be selected 
-        		if (targetSize < this.m_Population.getTargetSize()) doImmigr=true;
+        		if (targetSize < this.m_Population.getTargetSize()) {
+                        doImmigr=true;
+                    }
         	}
         }
 
@@ -169,13 +179,17 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
         		parents.add(immi);
         	}
         	parents.synchSize();
-        	if (TRACE) System.out.println("Added " + i + " random individuals");
+        	if (TRACE) {
+                System.out.println("Added " + i + " random individuals");
+            }
         }
 
         parents.SetFunctionCalls(pop.getFunctionCalls());
         parents.setGenerationTo(pop.getGeneration());
         
-        if (withShow) drawPop(parents, 3, true);
+        if (withShow) {
+            drawPop(parents, 3, true);
+        }
         return parents;
     }
     
@@ -188,18 +202,26 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
         	applyMotionModel((AbstractEAIndividual)((AbstractEAIndividual)pop.get(i)), 0.);
         	indCount++;
         }
-        if (withShow) drawPop(pop, 1, false);
+        if (withShow) {
+            drawPop(pop, 1, false);
+        }
     }
 
     private void drawPop(Population pop, int graphLabel, boolean useCircles) {
     	if (myPlot != null) {
-    		if (graphLabel < 0) graphLabel = indCount;
+    		if (graphLabel < 0) {
+                graphLabel = indCount;
+            }
     		for (int i=0; i<pop.size(); i++) {
     			InterfaceDataTypeDouble endy = (InterfaceDataTypeDouble) pop.getEAIndividual(i);
     			double[] curPosition    = endy.getDoubleData();
     			
-    			if (useCircles) myPlot.getFunctionArea().drawCircle("", curPosition, graphLabel);
-    			else myPlot.setUnconnectedPoint(curPosition[0], curPosition[1], graphLabel);
+    			if (useCircles) {
+                        myPlot.getFunctionArea().drawCircle("", curPosition, graphLabel);
+                    }
+    			else {
+                        myPlot.setUnconnectedPoint(curPosition[0], curPosition[1], graphLabel);
+                    }
 //    			myPlot.setConnectedPoint(curPosition[0], curPosition[1], graphLabel);
 //    			if ( !useCircles && (pop.getEAIndividual(i).hasData(MutateESCorrVector.vectorKey))) {
 //    				double[] v=(double[])pop.getEAIndividual(i).getData(MutateESCorrVector.vectorKey);
@@ -229,12 +251,18 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
         // resample using selection
         nextGeneration = resample(m_Population);
 
-		if (sleepTime > 0 ) try { Thread.sleep(sleepTime); } catch(Exception e) {}
-        if (withShow) clearPlot();
+		if (sleepTime > 0 ) {
+            try { Thread.sleep(sleepTime); } catch(Exception e) {}
+        }
+        if (withShow) {
+            clearPlot();
+        }
 
         // predict step
         predict(nextGeneration);
-        if (TRACE) System.out.println("Speed is  " + BeanInspector.toString(ParticleSwarmOptimization.getPopulationVelSpeed(m_Population, 3, MutateESCorrVector.vectorKey, null, null)) + " popM " + BeanInspector.toString(m_Population.getPopulationMeasures(new EuclideanMetric())));
+        if (TRACE) {
+            System.out.println("Speed is  " + BeanInspector.toString(ParticleSwarmOptimization.getPopulationVelSpeed(m_Population, 3, MutateESCorrVector.vectorKey, null, null)) + " popM " + BeanInspector.toString(m_Population.getPopulationMeasures(new EuclideanMetric())));
+        }
         
         m_Population = evaluatePopulation(nextGeneration);
         
@@ -254,10 +282,14 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
 		if (m_Listener==ea) {
 			m_Listener=null;
 			return true;
-		} else return false;
+		} else {
+                                return false;
+                            }
 	}
     protected void firePropertyChangedEvent (String name) {
-        if (this.m_Listener != null) this.m_Listener.registerPopulationStateChanged(this, name);
+        if (this.m_Listener != null) {
+            this.m_Listener.registerPopulationStateChanged(this, name);
+        }
     }
 
     /** This method will set the problem that is to be optimized
@@ -373,7 +405,9 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
 		if (myPlot!=null) {
 			myPlot.clearAll();
 		    double[][] range = null;
-			if ((m_Population != null) && (m_Population.size() > 0)) range = ((InterfaceDataTypeDouble)this.m_Population.get(0)).getDoubleRange();
+			if ((m_Population != null) && (m_Population.size() > 0)) {
+                        range = ((InterfaceDataTypeDouble)this.m_Population.get(0)).getDoubleRange();
+                    }
 			if (range != null) {
 				myPlot.setCornerPoints(range, 0);
 			}
@@ -385,10 +419,14 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
 	 **/
 	public void setWithShow(boolean wShow) {
 		this.withShow = wShow;
-		if (!withShow) myPlot = null;
+		if (!withShow) {
+                myPlot = null;
+            }
 		else {
 		    double[][] range;
-			if ((m_Population != null) && (m_Population.size() > 0)) range = ((InterfaceDataTypeDouble)this.m_Population.get(0)).getDoubleRange();
+			if ((m_Population != null) && (m_Population.size() > 0)) {
+                        range = ((InterfaceDataTypeDouble)this.m_Population.get(0)).getDoubleRange();
+                    }
 			else {
 				range = new double[2][];
 				range[0] = new double[2];

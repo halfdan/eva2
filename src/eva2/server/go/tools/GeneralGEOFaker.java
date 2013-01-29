@@ -114,7 +114,9 @@ public class GeneralGEOFaker extends JPanel {
      * @return the loaded object, or null if the operation was cancelled
      */
     protected Object openObject() {
-        if (m_FileChooser == null) createFileChooser();
+        if (m_FileChooser == null) {
+            createFileChooser();
+        }
         int returnVal = m_FileChooser.showOpenDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
 	        File selected = m_FileChooser.getSelectedFile();
@@ -137,7 +139,9 @@ public class GeneralGEOFaker extends JPanel {
      * @param object    The object to save.
      */
     protected void saveObject(Object object) {
-        if (m_FileChooser == null) createFileChooser();
+        if (m_FileChooser == null) {
+            createFileChooser();
+        }
         int returnVal = m_FileChooser.showSaveDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
 	        File sFile = m_FileChooser.getSelectedFile();

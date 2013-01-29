@@ -59,7 +59,9 @@ public class GenericConstraint extends AbstractConstraint implements InterfaceDo
 	private void compileConstraint() {
 		func=null;
 		constraintProgram = AbstractGPNode.parseFromString(constraintString);
-		if (constraintProgram==null) System.err.println("Error: invalid expression: " + constraintString);
+		if (constraintProgram==null) {
+                System.err.println("Error: invalid expression: " + constraintString);
+            }
 		if (TRACE) {
 			System.out.println("Compiled constraint " + constraintString);
 			System.out.println("Program: " + constraintProgram.getStringRepresentation());
@@ -71,7 +73,9 @@ public class GenericConstraint extends AbstractConstraint implements InterfaceDo
 	 * @return
 	 */
 	public boolean checkValid() {
-		if (constraintProgram==null) compileConstraint();
+		if (constraintProgram==null) {
+                compileConstraint();
+            }
 		return (constraintProgram!=null);
 	}
 	
@@ -81,11 +85,17 @@ public class GenericConstraint extends AbstractConstraint implements InterfaceDo
 		case eqZero:
 		case greaterEqZero:
 		case lessEqZero:
-			if (constraintProgram==null) compileConstraint();
+			if (constraintProgram==null) {
+                compileConstraint();
+            }
 			if (constraintProgram!=null) {
-				if (func==null) func = new GPFunctionProblem(constraintProgram, null, indyX.length, 0., 0.);
+				if (func==null) {
+                                func = new GPFunctionProblem(constraintProgram, null, indyX.length, 0., 0.);
+                            }
 				return func.eval(indyX)[0];
-			} else return 0.;
+			} else {
+                return 0.;
+            }
 //		case linearLessEqZero:
 //			return getViolation(evalLinearConstr(indy));
 		}
@@ -100,7 +110,9 @@ public class GenericConstraint extends AbstractConstraint implements InterfaceDo
 	public void setConstraintString(String constraintString) {
 		this.constraintString = constraintString;
 		constraintProgram = null;
-		if (TRACE) System.out.println(" NEW CONSTRAINT STRING SET! in " + this);
+		if (TRACE) {
+                System.out.println(" NEW CONSTRAINT STRING SET! in " + this);
+            }
 	}
 	
 	public String getName() {

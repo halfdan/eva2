@@ -31,7 +31,9 @@ public enum GraphSelectionEnum {
 		if (GraphSelectionEnum.values().length != toolTips.length) {
 			System.err.println("Error, mismatching length of info strings in GraphSelectionEnum");
 			return null;
-		} else return toolTips;
+		} else {
+                return toolTips;
+            }
 	}
 	
 //	public static boolean doPlotCurrentBest(StringSelection sel) {

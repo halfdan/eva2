@@ -107,8 +107,12 @@ public class GenericRemoteServersEditor extends JPanel implements PropertyEditor
 		JButton tmpB;
 		byte[]  bytes;
 		bytes = BasicResourceLoader.instance().getBytesFromResourceLocation(iconSrc, false);
-	    if (bytes!=null) tmpB = new JButton(title, new ImageIcon(Toolkit.getDefaultToolkit().createImage(bytes)));
-	    else tmpB = new JButton(title);
+	    if (bytes!=null) {
+                tmpB = new JButton(title, new ImageIcon(Toolkit.getDefaultToolkit().createImage(bytes)));
+            }
+	    else {
+                tmpB = new JButton(title);
+            }
 		return tmpB;
 	}
 
@@ -148,8 +152,12 @@ public class GenericRemoteServersEditor extends JPanel implements PropertyEditor
             setGBC(gbc, GridBagConstraints.WEST, GridBagConstraints.BOTH, 0, 1);
             this.m_Status[i] = new JButton(" ");
             this.m_Status[i].setEnabled(false);
-            if (this.m_RemoteServers.isServerOnline(t.m_ServerName)) this.m_Status[i].setBackground(Color.GREEN);
-            else this.m_Status[i].setBackground(Color.RED);
+            if (this.m_RemoteServers.isServerOnline(t.m_ServerName)) {
+                this.m_Status[i].setBackground(Color.GREEN);
+            }
+            else {
+                this.m_Status[i].setBackground(Color.RED);
+            }
             this.m_ServerList.add(this.m_Status[i], gbc);
             // the server name
             gbc             = new GridBagConstraints();
@@ -263,7 +271,9 @@ public class GenericRemoteServersEditor extends JPanel implements PropertyEditor
         @Override
         public void actionPerformed(ActionEvent event) {
             for (int i = 0; i < m_Delete.length; i++) {
-                if (event.getSource().equals(m_Delete[i])) m_RemoteServers.removeServerNode(m_RemoteServers.get(i).m_ServerName);
+                if (event.getSource().equals(m_Delete[i])) {
+                    m_RemoteServers.removeServerNode(m_RemoteServers.get(i).m_ServerName);
+                }
             }
             updateServerList();
             updateEditor();
@@ -343,7 +353,9 @@ public class GenericRemoteServersEditor extends JPanel implements PropertyEditor
         @Override
         public void keyReleased(KeyEvent event) {
             for (int i = 0; i < m_Names.length; i++) {
-                if (event.getSource().equals(m_Names[i])) m_RemoteServers.setNameFor(i, m_Names[i].getText());
+                if (event.getSource().equals(m_Names[i])) {
+                    m_RemoteServers.setNameFor(i, m_Names[i].getText());
+                }
             }
         }
     };
@@ -354,7 +366,9 @@ public class GenericRemoteServersEditor extends JPanel implements PropertyEditor
         @Override
         public void itemStateChanged(ItemEvent event) {
             for (int i = 0; i < m_CPUs.length; i++) {
-                if (event.getSource().equals(m_CPUs[i])) m_RemoteServers.setCPUsFor(i, m_CPUs[i].getSelectedIndex()+1);
+                if (event.getSource().equals(m_CPUs[i])) {
+                    m_RemoteServers.setCPUsFor(i, m_CPUs[i].getSelectedIndex()+1);
+                }
             }
         }
     };
@@ -419,13 +433,17 @@ public class GenericRemoteServersEditor extends JPanel implements PropertyEditor
 
     @Override
     public void addPropertyChangeListener(PropertyChangeListener l) {
-  	  if (m_Support == null) m_Support = new PropertyChangeSupport(this);
+  	  if (m_Support == null) {
+            m_Support = new PropertyChangeSupport(this);
+        }
   	  m_Support.addPropertyChangeListener(l);
     }
 
     @Override
     public void removePropertyChangeListener(PropertyChangeListener l) {
-  	  if (m_Support == null) m_Support = new PropertyChangeSupport(this);
+  	  if (m_Support == null) {
+            m_Support = new PropertyChangeSupport(this);
+        }
   	  m_Support.removePropertyChangeListener(l);
     }
 
@@ -477,7 +495,9 @@ public class GenericRemoteServersEditor extends JPanel implements PropertyEditor
     */
     @Override
     public Component getCustomEditor() {
-        if (this.m_Editor == null) this.initCustomEditor();
+        if (this.m_Editor == null) {
+            this.initCustomEditor();
+        }
         return m_Editor;
     }
 }

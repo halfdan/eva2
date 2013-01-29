@@ -100,10 +100,14 @@ public class CrossoverESSBX implements InterfaceCrossover, java.io.Serializable 
     public boolean equals(Object crossover) {
         if (crossover instanceof CrossoverESSBX) {
             CrossoverESSBX cross = (CrossoverESSBX)crossover;
-            if (this.m_Eta != cross.m_Eta) return false;
+            if (this.m_Eta != cross.m_Eta) {
+                return false;
+            }
             return true;
         }
-        else return false;
+        else {
+            return false;
+        }
     }
 
     /** This method will allow the crossover operator to be initialized depending on the
@@ -210,7 +214,9 @@ public class CrossoverESSBX implements InterfaceCrossover, java.io.Serializable 
      * @param a   The number of crossovers.
      */
     public void setEta(double a) {
-        if (a < 0) a = 0;
+        if (a < 0) {
+            a = 0;
+        }
         this.m_Eta = a;
     }
     public double getEta() {

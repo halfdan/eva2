@@ -40,10 +40,14 @@ public class MutateGINominal implements InterfaceMutation, java.io.Serializable 
     public boolean equals(Object mutator) {
         if (mutator instanceof MutateGINominal) {
             MutateGINominal mut = (MutateGINominal)mutator;
-            if (this.m_NumberOfMutations != mut.m_NumberOfMutations) return false;
+            if (this.m_NumberOfMutations != mut.m_NumberOfMutations) {
+                return false;
+            }
             return true;
         }
-        else return false;
+        else {
+            return false;
+        }
     }
 
     /** This method allows you to init the mutation operator

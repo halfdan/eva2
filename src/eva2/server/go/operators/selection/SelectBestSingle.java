@@ -59,7 +59,9 @@ public class SelectBestSingle implements InterfaceSelection, java.io.Serializabl
         int                     currentCriteria = 0, critSize;
         double                  currentBestValue;
 
-        if (population.size()==0) return population; // trivial
+        if (population.size()==0) {
+            return population;
+        } // trivial
         critSize = ((AbstractEAIndividual)population.get(0)).getFitness().length;
         result.setTargetSize(size);
         if (this.m_ObeyDebsConstViolationPrinciple) {
@@ -118,7 +120,9 @@ public class SelectBestSingle implements InterfaceSelection, java.io.Serializabl
     			return newPartners;
     		}
     		return this.selectFrom(newPartners, size);
-    	} else return this.selectFrom(availablePartners, size);
+    	} else {
+            return this.selectFrom(availablePartners, size);
+        }
     }
 /**********************************************************************************************************************
  * These are for GUI

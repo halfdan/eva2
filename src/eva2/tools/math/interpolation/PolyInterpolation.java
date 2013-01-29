@@ -145,8 +145,9 @@ public class PolyInterpolation
 	public double[] getYandDerivatives(double x, int ndDerivateNumber)
 		throws InterpolationException
 	{
-		if (ndDerivateNumber < 0)
-			throw new InterpolationException("Negative derivative numbers make no sense.");
+		if (ndDerivateNumber < 0) {
+                throw new InterpolationException("Negative derivative numbers make no sense.");
+            }
 		else if (ndDerivateNumber == 0)
 		{
 			double[] pd = new double[1];
@@ -202,9 +203,10 @@ public class PolyInterpolation
 	public PolynomialInterpolationResult polynomialInterpolation(double x)
 		throws InterpolationException
 	{
-		if (abstractDataSet == null)
-			throw new InterpolationException(
-				"No data." + " The AbstractDataSet was not defined.");
+		if (abstractDataSet == null) {
+                throw new InterpolationException(
+                        "No data." + " The AbstractDataSet was not defined.");
+            }
 		return polynomialInterpolation(
 			abstractDataSet.getXData(),
 			abstractDataSet.getYData(),
@@ -236,9 +238,10 @@ public class PolyInterpolation
 		double x)
 		throws InterpolationException
 	{
-		if (abstractDataSet == null)
-			throw new InterpolationException(
-				"No data." + " The AbstractDataSet was not defined.");
+		if (abstractDataSet == null) {
+                throw new InterpolationException(
+                        "No data." + " The AbstractDataSet was not defined.");
+            }
 		return polynomialInterpolation(
 			abstractDataSet.getXData(),
 			abstractDataSet.getYData(),
@@ -272,8 +275,9 @@ public class PolyInterpolation
 		double x)
 		throws InterpolationException
 	{
-		if (xa == null || ya == null)
-			throw new InterpolationException("No data.");
+		if (xa == null || ya == null) {
+                throw new InterpolationException("No data.");
+            }
 		int i, m, ns = 1;
 		double den, dif, dift, ho, hp, w;
 		double[] c = new double[xa.length + 1];
@@ -311,8 +315,9 @@ public class PolyInterpolation
 							"Two identical x values. The values must be distinct.");
 						den = 1.0;
 					}
-					else
-						throw new InterpolationException("Two identical x values.");
+					else {
+                                        throw new InterpolationException("Two identical x values.");
+                                    }
 				}
 				den = w / den;
 				d[i] = hp * den;
@@ -348,9 +353,10 @@ public class PolyInterpolation
 	public double[] calculatePolynomialCoefficients()
 		throws InterpolationException
 	{
-		if (abstractDataSet == null)
-			throw new InterpolationException(
-				"No data." + " The AbstractDataSet was not defined.");
+		if (abstractDataSet == null) {
+                throw new InterpolationException(
+                        "No data." + " The AbstractDataSet was not defined.");
+            }
 		return calculatePolynomialCoefficients(
 			abstractDataSet.getXData(),
 			abstractDataSet.getYData());
@@ -380,9 +386,10 @@ public class PolyInterpolation
 	public double[] calculatePolynomialCoefficients(AbstractDataSet abstractDataSet)
 		throws InterpolationException
 	{
-		if (abstractDataSet == null)
-			throw new InterpolationException(
-				"No data." + " The AbstractDataSet was not defined.");
+		if (abstractDataSet == null) {
+                throw new InterpolationException(
+                        "No data." + " The AbstractDataSet was not defined.");
+            }
 		return calculatePolynomialCoefficients(
 			abstractDataSet.getXData(),
 			abstractDataSet.getYData());

@@ -51,7 +51,9 @@ public class CrossoverGIDefault implements InterfaceCrossover, java.io.Serializa
         //for (int i = 0; i < result.length; i++) System.out.println("Before Crossover: " +result[i].getSolutionRepresentationFor());
 
         if ((indy1 instanceof InterfaceGIIndividual) && (partners.get(0) instanceof InterfaceGIIndividual)) {
-            if (((InterfaceGIIndividual)indy1).getIGenotype().length <= 1) return result;
+            if (((InterfaceGIIndividual)indy1).getIGenotype().length <= 1) {
+                return result;
+            }
             int     crossoverpoint = RNG.randomInt(0,((InterfaceGIIndividual)indy1).getIGenotype().length-1);
             boolean switcher = RNG.randomBoolean();
             parents     = new int[partners.size()+1][];
@@ -69,11 +71,13 @@ public class CrossoverGIDefault implements InterfaceCrossover, java.io.Serializa
                 } else {
                     // exchange
                     for (int j = 0; j < children.length-1; j++) {
-                         if ((i < children[j].length) && (i < parents[j+1].length))
-                             children[j][i] = parents[j+1][i];
+                         if ((i < children[j].length) && (i < parents[j+1].length)) {
+                            children[j][i] = parents[j+1][i];
+                        }
                     }
-                    if ((i < children[children.length-1].length) && (i < parents[0].length))
+                    if ((i < children[children.length-1].length) && (i < parents[0].length)) {
                         children[children.length-1][i] = parents[0][i];
+                    }
                 }
             }
             // write the result back
@@ -95,8 +99,12 @@ public class CrossoverGIDefault implements InterfaceCrossover, java.io.Serializa
      */
     @Override
     public boolean equals(Object crossover) {
-        if (crossover instanceof CrossoverESDefault) return true;
-        else return false;
+        if (crossover instanceof CrossoverESDefault) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     /** This method will allow the crossover operator to be initialized depending on the

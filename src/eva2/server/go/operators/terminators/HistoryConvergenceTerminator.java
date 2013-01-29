@@ -77,7 +77,9 @@ public class HistoryConvergenceTerminator implements InterfaceTerminator, Serial
               }
         	}
         } else {
-        	if (haltingWindowLen > ((Population)pop).getMaxHistLength()) System.err.println("Warning, population history length not long enough for window length " + haltingWindowLen + " (HistoryConvergenceTerminator)");
+        	if (haltingWindowLen > ((Population)pop).getMaxHistLength()) {
+                System.err.println("Warning, population history length not long enough for window length " + haltingWindowLen + " (HistoryConvergenceTerminator)");
+            }
         }
         return res;
 	}

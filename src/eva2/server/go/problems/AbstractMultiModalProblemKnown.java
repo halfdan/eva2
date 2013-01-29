@@ -36,8 +36,9 @@ implements Interface2DBorderProblem, InterfaceMultimodalProblemKnown {
 
 	protected void cloneObjects(AbstractMultiModalProblemKnown b) {
 		super.cloneObjects(b);
-		if (b.m_ListOfOptima != null)
-			this.m_ListOfOptima           = (Population)((Population)b.m_ListOfOptima).clone();
+		if (b.m_ListOfOptima != null) {
+                this.m_ListOfOptima           = (Population)((Population)b.m_ListOfOptima).clone();
+            }
 //		if (b.m_Range != null) {
 //			this.m_Range          = new double[b.m_Range.length][b.m_Range[0].length];
 //			for (int i = 0; i < this.m_Range.length; i++) {
@@ -101,7 +102,9 @@ implements Interface2DBorderProblem, InterfaceMultimodalProblemKnown {
 		this.m_GlobalOpt = Double.NEGATIVE_INFINITY;
 		m_ListOfOptima = new Population();
 		this.initListOfOptima();
-		if (!fullListAvailable() && (Double.isInfinite(m_GlobalOpt))) m_GlobalOpt=0;
+		if (!fullListAvailable() && (Double.isInfinite(m_GlobalOpt))) {
+                m_GlobalOpt=0;
+            }
 	}
 
 	/** Ths method allows you to evaluate a simple bit string to determine the fitness
@@ -258,8 +261,12 @@ implements Interface2DBorderProblem, InterfaceMultimodalProblemKnown {
 	 */
     @Override
 	public double getMaximumPeakRatio(Population pop) {
-		if (!this.fullListAvailable()) return -1;
-		else return getMaximumPeakRatio(this.getRealOptima(), pop, m_Epsilon);
+		if (!this.fullListAvailable()) {
+                return -1;
+            }
+		else {
+                return getMaximumPeakRatio(this.getRealOptima(), pop, m_Epsilon);
+            }
 	}
 	
 	/**
@@ -277,7 +284,9 @@ implements Interface2DBorderProblem, InterfaceMultimodalProblemKnown {
 	 */
 	public static double getMaximumPeakRatio(Population realOpts, Population pop, double epsilon) {
 		double          foundInvertedSum = 0, sumRealMaxima = 0;
-		if (realOpts==null || (realOpts.size()==0)) return -1;
+		if (realOpts==null || (realOpts.size()==0)) {
+                return -1;
+            }
 //		if (!mmProb.fullListAvailable()) return -1;
 //		Population realOpts = mmProb.getRealOptima();
 		double 			tmp, maxOpt = realOpts.getEAIndividual(0).getFitness(0);
@@ -287,14 +296,18 @@ implements Interface2DBorderProblem, InterfaceMultimodalProblemKnown {
 			// also sum up the fitness values
 			maxOpt = Math.max(maxOpt, realOpts.getEAIndividual(i).getFitness(0));
 			sumRealMaxima += realOpts.getEAIndividual(i).getFitness(0);
-			if (realOpts.getEAIndividual(i).getFitness(0)<0) EVAERROR.errorMsgOnce("Warning: avoid negative maxima in AbstractMultiModalProblemKnown!");
+			if (realOpts.getEAIndividual(i).getFitness(0)<0) {
+                        EVAERROR.errorMsgOnce("Warning: avoid negative maxima in AbstractMultiModalProblemKnown!");
+                    }
 		}
 		AbstractEAIndividual[] optsFound = PostProcess.getFoundOptimaArray(pop, realOpts, epsilon, true);
 		for (int i=0; i<realOpts.size(); i++) {
 			// sum up the found optimal fitness values
 			if (optsFound[i] != null) {
 				tmp = (maxOpt - optsFound[i].getFitness(0));
-				if (tmp < 0) EVAERROR.errorMsgOnce("warning: for the MPR calculation, negative fitness values may disturb the allover result (AbstractMultiModalProblemKnown)");
+				if (tmp < 0) {
+                                EVAERROR.errorMsgOnce("warning: for the MPR calculation, negative fitness values may disturb the allover result (AbstractMultiModalProblemKnown)");
+                            }
 				foundInvertedSum += Math.max(0., tmp);
 //				System.out.println("foundInvertedSum = " + foundInvertedSum);
 			}
@@ -320,7 +333,9 @@ implements Interface2DBorderProblem, InterfaceMultimodalProblemKnown {
 			// sum up the specific optimal fitness values relative to optimal fitness
 			if (optsFound[i] != null) {
 				double tmp = optsFound[i].getFitness(fitCrit);
-				if (tmp < 0) EVAERROR.errorMsgOnce("warning: for the MPR calculation, negative fitness values may disturb the allover result (AbstractMultiModalProblemKnown)");
+				if (tmp < 0) {
+                                EVAERROR.errorMsgOnce("warning: for the MPR calculation, negative fitness values may disturb the allover result (AbstractMultiModalProblemKnown)");
+                            }
 				mpr += (Math.max(0., tmp)/realOpts.getEAIndividual(i).getFitness(fitCrit));
 			}
 		}
@@ -363,9 +378,13 @@ implements Interface2DBorderProblem, InterfaceMultimodalProblemKnown {
 		for (int i=0; i<realOpts.size(); i++) {
 			// store the optimal fitness values and remember the smallest one
 			realFits[i]=realOpts.getEAIndividual(i).getFitness(fitCrit);
-			if (realFits[i]>fitThreshold) EVAERROR.errorMsgOnce("Warning: The fitness threshold to turn minimization fitness values into " +
-					"maximization values should be larger than any optimal fitness! (AbstractMultiModalProblemKnown)");
-			if (i==0 || (minOpt>realFits[i])) minOpt = realFits[i];
+			if (realFits[i]>fitThreshold) {
+                        EVAERROR.errorMsgOnce("Warning: The fitness threshold to turn minimization fitness values into " +
+          "maximization values should be larger than any optimal fitness! (AbstractMultiModalProblemKnown)");
+                    }
+			if (i==0 || (minOpt>realFits[i])) {
+                        minOpt = realFits[i];
+                    }
 			// check if the opt. was found and store the corr. found fitness
 			if (optsFound[i]!=null) {
 				foundFits[i] = new Double(optsFound[i].getFitness(fitCrit));
@@ -382,7 +401,9 @@ implements Interface2DBorderProblem, InterfaceMultimodalProblemKnown {
 				// be counted for actually inferior optima    
 				System.err.println("Warning: found fitness is better than real fitness - wrong predefined solution or suboptimal epsilon-criterion? Diff was: " + (foundFits[i]-realFits[i]));
 			}
-			if ((realFits[i] < 0) || (foundFits[i] < 0)) EVAERROR.errorMsgOnce("warning: for the MPR calculation, negative fitness values may disturb the allover result (AbstractMultiModalProblemKnown)");
+			if ((realFits[i] < 0) || (foundFits[i] < 0)) {
+                        EVAERROR.errorMsgOnce("warning: for the MPR calculation, negative fitness values may disturb the allover result (AbstractMultiModalProblemKnown)");
+                    }
 		}
 		// now we can call the standard calculation method
 		return getMaximumPeakRatioMaximization(realFits, foundFits);

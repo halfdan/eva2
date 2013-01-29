@@ -61,8 +61,12 @@ public class DMeasures implements Serializable
     	return null;
     }
     try{
-      if( x_scale != null ) x = x_scale.getSourceOf( x );
-      if( y_scale != null ) y = y_scale.getSourceOf( y );
+      if( x_scale != null ) {
+            x = x_scale.getSourceOf( x );
+        }
+      if( y_scale != null ) {
+            y = y_scale.getSourceOf( y );
+        }
     }
     catch( IllegalArgumentException e ){ return null; }
     Point dp = new Point();
@@ -94,8 +98,12 @@ public class DMeasures implements Serializable
     dx = rect.x + rect.width * x/(double)dim.width;
     dy = rect.y + rect.height * (1 - y/(double)dim.height );
     try{
-      if( x_scale != null ) dx = x_scale.getImageOf( dx );
-      if( y_scale != null ) dy = y_scale.getImageOf( dy );
+      if( x_scale != null ) {
+            dx = x_scale.getImageOf( dx );
+        }
+      if( y_scale != null ) {
+            dy = y_scale.getImageOf( dy );
+        }
     }
     catch( IllegalArgumentException nde ){ return null; }
     return new DPoint( dx, dy );
@@ -119,7 +127,9 @@ public class DMeasures implements Serializable
    */
   public SlimRect getSlimRectangle(){
 //	    if( under_construction ) System.out.println("DMeasures.getDRectangle");
-	    if( sb != null ) return getImageOf(sb.src_rect.x, sb.src_rect.y, sb.src_rect.width, sb.src_rect.height);
+	    if( sb != null ) {
+          return getImageOf(sb.src_rect.x, sb.src_rect.y, sb.src_rect.width, sb.src_rect.height);
+      }
 	    return ((DArea)comp).getSlimRectangle();
 	  }
   /**
@@ -131,7 +141,9 @@ public class DMeasures implements Serializable
    * @return the Graphics object ( or null if no object was set )
    */
   public Graphics getGraphics(){
-    if( under_construction ) System.out.println("DMeasures.getGraphics");
+    if( under_construction ) {
+          System.out.println("DMeasures.getGraphics");
+      }
     if( g != null ){
       Dimension d = comp.getSize();
       Insets insets = getInsets();
@@ -147,7 +159,9 @@ public class DMeasures implements Serializable
    * used by DArea to set a new Graphics object
    */
   void setGraphics( Graphics g ){
-    if( under_construction ) System.out.println("DMeasures.setGraphics");
+    if( under_construction ) {
+          System.out.println("DMeasures.setGraphics");
+      }
     this.g = g;
   }
 
@@ -212,7 +226,9 @@ public class DMeasures implements Serializable
   SlimRect getImageOf(double xpos, double ypos, double width, double height){
 //    if( under_construction ) System.out.println("DMeasures.getImageOf: "+rect);
 
-    if( x_scale == null && y_scale == null ) return new SlimRect(xpos, ypos, width, height);
+    if( x_scale == null && y_scale == null ) {
+          return new SlimRect(xpos, ypos, width, height);
+      }
     double x1 = xpos, y1=ypos, x2=xpos + width, y2=ypos + height;
     
     try{
@@ -328,7 +344,9 @@ public class DMeasures implements Serializable
   }
   
   private Insets getInsets(){
-    if( sb != null ) return insets;
+    if( sb != null ) {
+          return insets;
+      }
     return ((DArea)comp).getInsets();
   }
 }

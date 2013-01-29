@@ -146,26 +146,38 @@ public class BeanInspector {
 	 * @return         Description of the Return Value
 	 */
 	private static String toString(Object obj, char delim, boolean tight, String indentStr, int indentDepth, boolean withNewlines) {
-		if (obj == null) return "null";
+		if (obj == null) {
+                return "null";
+            }
 		// try the object itself
-		if (obj instanceof String) return (String)obj; // directly return a string object
+		if (obj instanceof String) {
+                return (String)obj;
+            } // directly return a string object
 		Class<? extends Object> type = obj.getClass();
 
 		if (type.isArray()) { // handle the array case
 			StringBuffer sbuf = new StringBuffer();
 			sbuf.append("[");
-			if (!tight) sbuf.append(" ");
+			if (!tight) {
+                        sbuf.append(" ");
+                    }
 			int len = Array.getLength(obj);
 			for (int i=0; i<len; i++) {
 //				sbuf.append(toString(Array.get(obj, i)));
-				if (withNewlines) sbuf.append('\n');
+				if (withNewlines) {
+                                sbuf.append('\n');
+                            }
 				sbuf.append(toString(Array.get(obj, i), delim, tight, indentStr, indentDepth, withNewlines));
 				if (i<len-1) {
 //					sbuf.append(delim);
-					if (!tight) sbuf.append(" ");
+					if (!tight) {
+                                        sbuf.append(" ");
+                                    }
 				}
 			}
-			if (!tight) sbuf.append(" ");
+			if (!tight) {
+                        sbuf.append(" ");
+                    }
 			sbuf.append("]");
 			return sbuf.toString();
 		}
@@ -176,17 +188,25 @@ public class BeanInspector {
 
 		if (obj instanceof List && !(obj instanceof Population)) { // handle the list case
 			StringBuffer sbuf = new StringBuffer();
-			if (withNewlines) sbuf.append('\n');
+			if (withNewlines) {
+                        sbuf.append('\n');
+                    }
 			addIndent(sbuf, indentStr, indentDepth);
 			sbuf.append("[");
-			if (!tight) sbuf.append(" ");
+			if (!tight) {
+                        sbuf.append(" ");
+                    }
 			List<?> lst = (List<?>)obj;
 			for (Object o : lst) {
 				sbuf.append(o.toString());
 				sbuf.append(delim);
-				if (!tight) sbuf.append(" ");
+				if (!tight) {
+                                sbuf.append(" ");
+                            }
 			}
-			if (!tight && (sbuf.charAt(sbuf.length()-2) == delim)) sbuf.setCharAt(sbuf.length()-2, ' '); // delete the delim
+			if (!tight && (sbuf.charAt(sbuf.length()-2) == delim)) {
+                        sbuf.setCharAt(sbuf.length()-2, ' ');
+                    } // delete the delim
 			sbuf.setCharAt(sbuf.length()-1, ']');
 			return sbuf.toString();
 		}
@@ -198,7 +218,9 @@ public class BeanInspector {
 				//args[0] = obj;
 				try {
 					String ret = (String) methods[ii].invoke(obj, args);
-					if (TRACE) System.out.println("toString on "+ obj.getClass() + " gave me " + ret);
+					if (TRACE) {
+                                        System.out.println("toString on "+ obj.getClass() + " gave me " + ret);
+                                    }
 					return makeIndent(indentStr, indentDepth) + ret;
 				} catch (Exception e) {
 					System.err.println(" ERROR +"+ e.getMessage());
@@ -211,19 +233,25 @@ public class BeanInspector {
 		Pair<String[],Object[]> nameVals = getPublicPropertiesOf(obj, true, true); 
 
 		StringBuffer sbuf = new StringBuffer();
-		if (withNewlines) sbuf.append('\n');
+		if (withNewlines) {
+                sbuf.append('\n');
+            }
 		addIndent(sbuf, indentStr, indentDepth);
 		sbuf.append(type.getName());
 		sbuf.append("{");
 		for (int i=0; i<nameVals.head.length; i++) {
 			if (nameVals.head[i]!=null) {
-				if (withNewlines) sbuf.append('\n'); 
+				if (withNewlines) {
+                                sbuf.append('\n');
+                            } 
 				addIndent(sbuf, indentStr, indentDepth);
 				sbuf.append(nameVals.head[i]);
 				sbuf.append("=");
 				sbuf.append(toString(nameVals.tail[i], delim, tight, indentStr, indentDepth+1, withNewlines));
 				sbuf.append(delim);
-				if (!tight) sbuf.append(" ");
+				if (!tight) {
+                                sbuf.append(" ");
+                            }
 			}
 		}
 
@@ -241,7 +269,9 @@ public class BeanInspector {
 	
 	private static String makeIndent(String indentStr, int indentDepth) {
 		if (indentStr!=null) {
-			if (indentDepth<1) return "";
+			if (indentDepth<1) {
+                        return "";
+                    }
 			else {
 				StringBuffer sbuf = new StringBuffer(indentStr);
 				for (int i=2; i<=indentDepth; i++) {
@@ -249,7 +279,9 @@ public class BeanInspector {
                 }
 				return sbuf.toString();
 			}
-		} else return "";
+		} else {
+                return "";
+            }
 	}
 
 	public static void main(String[] args) {
@@ -412,7 +444,9 @@ public class BeanInspector {
 				e.printStackTrace();
 				return null;
 			}
-		} else return null;
+		} else {
+                return null;
+            }
 	}
 
 	/**
@@ -423,7 +457,9 @@ public class BeanInspector {
 	 * @return
 	 */
 	public static Class[] toClassArray(Object[] o) {
-		if (o==null) return null;
+		if (o==null) {
+                return null;
+            }
 		Class[] clz = new Class[o.length];
 		for (int i=0; i<o.length; i++) {
 			clz[i]=o[i].getClass();
@@ -461,15 +497,21 @@ public class BeanInspector {
 		for (Method method : meths) {
 			if (method.getName().equals(mName)) { // name match
 				Class[] methParamTypes = method.getParameterTypes();
-				if (paramTypes==null && methParamTypes.length==0) return method; // full match
+				if (paramTypes==null && methParamTypes.length==0) {
+                                return method;
+                            } // full match
 				else {
 					if (paramTypes!=null && (methParamTypes.length==paramTypes.length)) {
 						boolean mismatch = false; int i=0;
 						while ((i<methParamTypes.length) && (!mismatch)) {
-							if (!methParamTypes[i].isAssignableFrom(paramTypes[i]) && !isBoxableFrom(methParamTypes[i], paramTypes[i])) mismatch=true;
+							if (!methParamTypes[i].isAssignableFrom(paramTypes[i]) && !isBoxableFrom(methParamTypes[i], paramTypes[i])) {
+                                                        mismatch=true;
+                                                    }
 							i++;
 						} 
-						if (!mismatch) return method; // parameter match, otherwise search on
+						if (!mismatch) {
+                                                return method;
+                                            } // parameter match, otherwise search on
 					} // parameter mismatch, search on
 				}
 			}
@@ -488,7 +530,9 @@ public class BeanInspector {
 		Class box = getBoxedType(clz1);
 		if (box!=null && (clz2.isAssignableFrom(box))) {
 			return true;
-		} else return false;
+		} else {
+                return false;
+            }
 	}
 
 	/**
@@ -500,16 +544,36 @@ public class BeanInspector {
 	 */
 	public static Class getBoxedType(Class cls) {
 		if (cls.isPrimitive()) {
-			if (cls == double.class) return Double.class;
-			else if (cls == char.class) return Character.class;  
-			else if (cls == int.class) return Integer.class;
-			else if (cls == boolean.class) return Boolean.class;
-			else if (cls == byte.class) return Byte.class; 
-			else if (cls == short.class) return Short.class;
-			else if (cls == long.class) return Long.class;
-			else if (cls == float.class) return Float.class;
-			else return Void.class;
-		} else return null;
+			if (cls == double.class) {
+                        return Double.class;
+                    }
+			else if (cls == char.class) {  
+                        return Character.class;
+                    }  
+			else if (cls == int.class) {
+                        return Integer.class;
+                    }
+			else if (cls == boolean.class) {
+                        return Boolean.class;
+                    }
+			else if (cls == byte.class) { 
+                        return Byte.class;
+                    } 
+			else if (cls == short.class) {
+                        return Short.class;
+                    }
+			else if (cls == long.class) {
+                        return Long.class;
+                    }
+			else if (cls == float.class) {
+                        return Float.class;
+                    }
+			else {
+                        return Void.class;
+                    }
+		} else {
+                return null;
+            }
 	}
 
 	/**
@@ -517,16 +581,36 @@ public class BeanInspector {
 	 * primitive class.
 	 **/
 	public static Class getUnboxedType(Class cls) {
-		if (cls == Double.class) return double.class;
-		else if (cls == Character.class) return char.class;  
-		else if (cls == Integer.class) return int.class;
-		else if (cls == Boolean.class) return boolean.class;
-		else if (cls == Byte.class) return byte.class; 
-		else if (cls == Short.class) return short.class;
-		else if (cls == Long.class) return long.class;
-		else if (cls == Float.class) return float.class;
-		else if (cls == Void.class) return void.class;
-		else return null;
+		if (cls == Double.class) {
+                return double.class;
+            }
+		else if (cls == Character.class) {  
+                return char.class;
+            }  
+		else if (cls == Integer.class) {
+                return int.class;
+            }
+		else if (cls == Boolean.class) {
+                return boolean.class;
+            }
+		else if (cls == Byte.class) { 
+                return byte.class;
+            } 
+		else if (cls == Short.class) {
+                return short.class;
+            }
+		else if (cls == Long.class) {
+                return long.class;
+            }
+		else if (cls == Float.class) {
+                return float.class;
+            }
+		else if (cls == Void.class) {
+                return void.class;
+            }
+		else {
+                return null;
+            }
 	}
 	
 	/**
@@ -594,15 +678,21 @@ public class BeanInspector {
 		ArrayList<String> 				memberInfoList  = new ArrayList<String>();
 		
 		for (int i = 0; i < m_Properties.length; i++) {
-			if (m_Properties[i].isExpert()) continue;
+			if (m_Properties[i].isExpert()) {
+                        continue;
+                    }
 			
 			String  name    = m_Properties[i].getDisplayName();
-			if (TRACE) System.out.println("PSP looking at "+ name);
+			if (TRACE) {
+                        System.out.println("PSP looking at "+ name);
+                    }
 
 			Method  getter  = m_Properties[i].getReadMethod();
 			Method  setter  = m_Properties[i].getWriteMethod();
 			// Only display read/write properties.
-			if (getter == null || setter == null) continue;
+			if (getter == null || setter == null) {
+                        continue;
+                    }
 			
 			try {
 				Object          args[]  = { };
@@ -612,7 +702,9 @@ public class BeanInspector {
 				if (value == null) {
 					// If it's a user-defined property we give a warning.
 					String getterClass = m_Properties[i].getReadMethod().getDeclaringClass().getName();
-					if (getterClass.indexOf("java.") != 0) System.err.println("Warning: Property \"" + name+ "\" has null initial value.  Skipping.");
+					if (getterClass.indexOf("java.") != 0) {
+                                        System.err.println("Warning: Property \"" + name+ "\" has null initial value.  Skipping.");
+                                    }
 					continue;
 				}
 
@@ -633,10 +725,14 @@ public class BeanInspector {
 					memberInfoBf.append("String in {");
 					for (int k=0; k<tags.length; k++) {
 						memberInfoBf.append(tags[k].getString());
-						if (k+1<tags.length) memberInfoBf.append(", ");
+						if (k+1<tags.length) {
+                                                memberInfoBf.append(", ");
+                                            }
 					}
 					memberInfoBf.append("}");
-				} else memberInfoBf.append(typeName);
+				} else {
+                                memberInfoBf.append(typeName);
+                            }
 				
 				if (withValues) {
 					memberInfoBf.append('\t');
@@ -671,15 +767,33 @@ public class BeanInspector {
 	 * @throws IllegalArgumentException
 	 */
 	public static double toDouble(Object val) throws IllegalArgumentException {
-		if (val instanceof Integer) return ((Integer)val).doubleValue();
-		else if (val instanceof Double) return ((Double)val).doubleValue();
-		else if (val instanceof Boolean) return (((Boolean)val) ? 1. : 0.); 
-		else if (val instanceof Character) return ((Character)val).charValue(); 
-		else if (val instanceof Byte) return ((Byte)val).doubleValue(); 
-		else if (val instanceof Short) return ((Short)val).doubleValue(); 
-		else if (val instanceof Long) return ((Long)val).doubleValue(); 
-		else if (val instanceof Float) return ((Float)val).doubleValue(); 
-		else if (val instanceof Void) return 0;
+		if (val instanceof Integer) {
+                return ((Integer)val).doubleValue();
+            }
+		else if (val instanceof Double) {
+                return ((Double)val).doubleValue();
+            }
+		else if (val instanceof Boolean) { 
+                return (((Boolean)val) ? 1. : 0.);
+            } 
+		else if (val instanceof Character) { 
+                return ((Character)val).charValue();
+            } 
+		else if (val instanceof Byte) { 
+                return ((Byte)val).doubleValue();
+            } 
+		else if (val instanceof Short) { 
+                return ((Short)val).doubleValue();
+            } 
+		else if (val instanceof Long) { 
+                return ((Long)val).doubleValue();
+            } 
+		else if (val instanceof Float) { 
+                return ((Float)val).doubleValue();
+            } 
+		else if (val instanceof Void) {
+                return 0;
+            }
 		throw new IllegalArgumentException("Illegal type, cant convert " + val.getClass() + " to double.");
 	}
 	
@@ -691,14 +805,30 @@ public class BeanInspector {
 	 * @return
 	 */
 	public static Object stringToPrimitive(String str, Class<?> destType) throws NumberFormatException {
-		if ((destType == Integer.class) || (destType == int.class)) return Integer.valueOf(str);
-		else if ((destType == Double.class) || (destType == double.class)) return Double.valueOf(str);
-		else if ((destType == Boolean.class) || (destType == boolean.class)) return Boolean.valueOf(str); 
-		else if ((destType == Byte.class) || (destType == byte.class)) return Byte.valueOf(str);
-		else if ((destType == Short.class) || (destType == short.class)) return Short.valueOf(str);
-		else if ((destType == Long.class) || (destType == long.class)) return Long.valueOf(str);
-		else if ((destType == Float.class) || (destType == float.class)) return Float.valueOf(str);
-		else if ((destType == Character.class) || (destType == char.class)) return str.charAt(0);
+		if ((destType == Integer.class) || (destType == int.class)) {
+                return Integer.valueOf(str);
+            }
+		else if ((destType == Double.class) || (destType == double.class)) {
+                return Double.valueOf(str);
+            }
+		else if ((destType == Boolean.class) || (destType == boolean.class)) { 
+                return Boolean.valueOf(str);
+            } 
+		else if ((destType == Byte.class) || (destType == byte.class)) {
+                return Byte.valueOf(str);
+            }
+		else if ((destType == Short.class) || (destType == short.class)) {
+                return Short.valueOf(str);
+            }
+		else if ((destType == Long.class) || (destType == long.class)) {
+                return Long.valueOf(str);
+            }
+		else if ((destType == Float.class) || (destType == float.class)) {
+                return Float.valueOf(str);
+            }
+		else if ((destType == Character.class) || (destType == char.class)) {
+                return str.charAt(0);
+            }
 		else {
 			// if (destType == Void.class)
 			System.err.println("warning, value interpreted as void type");
@@ -714,18 +844,35 @@ public class BeanInspector {
 	 * @return
 	 */
 	public static Object doubleToPrimitive(Double d, Class<?> destType) {
-		if ((destType == Double.class) || (destType == double.class)) return d;
-		if ((destType == Integer.class) || (destType == int.class)) return new Integer(d.intValue());
-		else if ((destType == Boolean.class) || (destType == boolean.class)) return (d!=0) ? Boolean.TRUE : Boolean.FALSE; 
-		else if ((destType == Byte.class) || (destType == byte.class)) return new Byte(d.byteValue());
-		else if ((destType == Short.class) || (destType == short.class)) return new Short(d.shortValue());
-		else if ((destType == Long.class) || (destType == long.class)) return new Long(d.longValue());
-		else if ((destType == Float.class) || (destType == float.class)) return new Float(d.floatValue());
+		if ((destType == Double.class) || (destType == double.class)) {
+                return d;
+            }
+		if ((destType == Integer.class) || (destType == int.class)) {
+                return new Integer(d.intValue());
+            }
+		else if ((destType == Boolean.class) || (destType == boolean.class)) { 
+                return (d!=0) ? Boolean.TRUE : Boolean.FALSE;
+            } 
+		else if ((destType == Byte.class) || (destType == byte.class)) {
+                return new Byte(d.byteValue());
+            }
+		else if ((destType == Short.class) || (destType == short.class)) {
+                return new Short(d.shortValue());
+            }
+		else if ((destType == Long.class) || (destType == long.class)) {
+                return new Long(d.longValue());
+            }
+		else if ((destType == Float.class) || (destType == float.class)) {
+                return new Float(d.floatValue());
+            }
 		else { // this makes hardly sense...
 			System.err.println("warning: converting from double to character or void...");
-			if ((destType == Character.class) || (destType == char.class)) return new Character(d.toString().charAt(0));
-			else //if (destType == Void.class) return 0;
-				return 0;
+			if ((destType == Character.class) || (destType == char.class)) {
+                        return new Character(d.toString().charAt(0));
+                    }
+			else {
+                        return 0;
+                    }
 		}
 	}
 	
@@ -737,9 +884,13 @@ public class BeanInspector {
 	 * @return
 	 */
 	public static boolean isJavaPrimitive(Class<?> cls) {
-		if (cls.isPrimitive()) return true;
+		if (cls.isPrimitive()) {
+                return true;
+            }
 		if ((cls == Double.class) || (cls == Integer.class) || (cls == Boolean.class) || (cls == Character.class) || (cls == Void.class)
-				|| (cls == Byte.class) || (cls == Short.class) || (cls == Long.class) || (cls == Float.class)) return true;
+				|| (cls == Byte.class) || (cls == Short.class) || (cls == Long.class) || (cls == Float.class)) {
+                return true;
+            }
 		return false;
 	}
 	
@@ -751,14 +902,30 @@ public class BeanInspector {
 	 * @return
 	 */
 	public static Class getJavaPrimitive(Class<?> cls) {
-		if (cls.isPrimitive()) return cls;
-		if (cls == Double.class) return double.class;
-		else if (cls == Integer.class) return int.class;
-		else if (cls == Boolean.class) return Boolean.class;
-		else if (cls == Byte.class) return byte.class;
-		else if (cls == Short.class) return short.class;
-		else if (cls == Long.class) return long.class;
-		else if (cls == Float.class) return float.class;
+		if (cls.isPrimitive()) {
+                return cls;
+            }
+		if (cls == Double.class) {
+                return double.class;
+            }
+		else if (cls == Integer.class) {
+                return int.class;
+            }
+		else if (cls == Boolean.class) {
+                return Boolean.class;
+            }
+		else if (cls == Byte.class) {
+                return byte.class;
+            }
+		else if (cls == Short.class) {
+                return short.class;
+            }
+		else if (cls == Long.class) {
+                return long.class;
+            }
+		else if (cls == Float.class) {
+                return float.class;
+            }
 		return null;
 	}
 	/**
@@ -776,8 +943,12 @@ public class BeanInspector {
 			return value;
 		}
 		if (destType == String.class || destType == SelectedTag.class) {
-			if (value.getClass() == String.class) return value;
-			else return value.toString();
+			if (value.getClass() == String.class) {
+                        return value;
+                    }
+			else {
+                        return value.toString();
+                    }
 		} else if (isJavaPrimitive(destType)) {
 			try {
 				if (value.getClass() == String.class) {

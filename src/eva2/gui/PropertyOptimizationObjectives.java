@@ -58,7 +58,9 @@ public class PropertyOptimizationObjectives implements java.io.Serializable {
      * @param index     The index of the target to be removed.
      */
     public void removeTarget(int index) {
-        if ((index < 0) || (index >= this.m_SelectedObjectives.length)) return;
+        if ((index < 0) || (index >= this.m_SelectedObjectives.length)) {
+            return;
+        }
 
         InterfaceOptimizationObjective[] newList = new InterfaceOptimizationObjective[this.m_SelectedObjectives.length-1];
         int j = 0;

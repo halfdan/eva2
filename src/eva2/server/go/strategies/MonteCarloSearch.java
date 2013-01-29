@@ -130,9 +130,13 @@ public class MonteCarloSearch implements InterfaceOptimizer, java.io.Serializabl
         for (int i = 0; i < m_FitnessCalls; i++) {
             this.m_Test = new GAIndividualBinaryData();
             this.m_Test.defaultInit(m_Problem);
-            if (this.m_Test.defaultEvaulateAsMiniBits() < this.m_Best.defaultEvaulateAsMiniBits()) this.m_Best = this.m_Test;
+            if (this.m_Test.defaultEvaulateAsMiniBits() < this.m_Best.defaultEvaulateAsMiniBits()) {
+                this.m_Best = this.m_Test;
+            }
             this.m_FitnessCallsNeeded = i;
-            if (this.m_Best.defaultEvaulateAsMiniBits() == 0) i = this.m_FitnessCalls +1;
+            if (this.m_Best.defaultEvaulateAsMiniBits() == 0) {
+                i = this.m_FitnessCalls +1;
+            }
         }
     }
 
@@ -167,12 +171,16 @@ public class MonteCarloSearch implements InterfaceOptimizer, java.io.Serializabl
 		if (m_Listener==ea) {
 			m_Listener=null;
 			return true;
-		} else return false;
+		} else {
+                                return false;
+                            }
 	}
     /** Something has changed
      */
     protected void firePropertyChangedEvent (String name) {
-        if (this.m_Listener != null) this.m_Listener.registerPopulationStateChanged(this, name);
+        if (this.m_Listener != null) {
+            this.m_Listener.registerPopulationStateChanged(this, name);
+        }
     }
 
     /** This method will return a string describing all properties of the optimizer

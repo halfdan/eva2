@@ -48,7 +48,9 @@ public class StringSelectionEditor extends AbstractListSelectionEditor {
             strs = (StringSelection) o;
 //            m_AreaObject.addPropertyChangeListener(this);
             return true;
-        } else return false;
+        } else {
+                return false;
+            }
 	}
 
 	@Override
@@ -62,7 +64,9 @@ public class StringSelectionEditor extends AbstractListSelectionEditor {
 		boolean first = true;
 		for (int i=0; i<getElementCount(); i++) {
 			if (isElementSelected(i)) {
-				if (!first) sbuf.append(", ");
+				if (!first) {
+                                sbuf.append(", ");
+                            }
 				sbuf.append(getElementName(i));
 				first=false;
 			}

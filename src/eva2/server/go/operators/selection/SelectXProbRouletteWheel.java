@@ -33,16 +33,24 @@ class treeElement implements java.io.Serializable {
     }
 
     public int getIndexFor(double d) {
-        if (this.m_Index >= 0) return this.m_Index-1;
+        if (this.m_Index >= 0) {
+            return this.m_Index-1;
+        }
         else {
-            if (d < this.separator) return this.m_Left.getIndexFor(d);
-            else return this.m_Right.getIndexFor(d);
+            if (d < this.separator) {
+                return this.m_Left.getIndexFor(d);
+            }
+            else {
+                return this.m_Right.getIndexFor(d);
+            }
         }
     }
 
     @Override
     public String toString() {
-        if (this.m_Index >= 0) return "Ind:"+this.m_Index;
+        if (this.m_Index >= 0) {
+            return "Ind:"+this.m_Index;
+        }
         else {
             return "{"+this.m_Left.toString()+"} X<"+this.separator+" {"+this.m_Right.toString()+"}";
         }
@@ -167,8 +175,12 @@ public class SelectXProbRouletteWheel implements InterfaceSelection, java.io.Ser
             for (int i = 0; i < population.size(); i++) {
                 tmpD = ((AbstractEAIndividual)(population.get(i))).getSelectionProbability(currentCriteria);
                 logger += tmpD + "; ";
-                if (random < (sum + tmpD)) return ((AbstractEAIndividual)(population.get(i)));
-                else sum += tmpD;
+                if (random < (sum + tmpD)) {
+                    return ((AbstractEAIndividual)(population.get(i)));
+                }
+                else {
+                    sum += tmpD;
+                }
             }
         }
         System.out.println("Selection returns null, while computing: " + logger);

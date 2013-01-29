@@ -62,7 +62,9 @@ public class PropertyCrossoverMixer implements java.io.Serializable {
             return;
         }
 
-        if (d.length == this.m_Weights.length) return;
+        if (d.length == this.m_Weights.length) {
+            return;
+        }
 
         if (d.length > this.m_Weights.length) {
             double[] newWeights = new double[d.length];
@@ -142,7 +144,9 @@ public class PropertyCrossoverMixer implements java.io.Serializable {
      * @param index     The index of the target to be removed.
      */
     public void removeCrosser(int index) {
-        if ((index < 0) || (index >= this.m_SelectedTargets.length)) return;
+        if ((index < 0) || (index >= this.m_SelectedTargets.length)) {
+            return;
+        }
 
         InterfaceCrossover[]   newList = new InterfaceCrossover[this.m_SelectedTargets.length-1];
         double[]                        newWeights = new double[this.m_Weights.length - 1];

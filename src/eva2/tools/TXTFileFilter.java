@@ -27,11 +27,17 @@ public class TXTFileFilter extends FileFilter {
 
     @Override
     public boolean accept(java.io.File file) {
-        if (file.isDirectory()) return true;
+        if (file.isDirectory()) {
+            return true;
+        }
         String fileName = file.getName();
         if ((fileName.substring(fileName.lastIndexOf('.')+1, fileName.length()).equals("TXT")) ||
-            (fileName.substring(fileName.lastIndexOf('.')+1, fileName.length()).equals("txt"))) return true;
-        else return false;
+            (fileName.substring(fileName.lastIndexOf('.')+1, fileName.length()).equals("txt"))) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     @Override

@@ -53,7 +53,9 @@ public class SelectedTag implements java.io.Serializable {
 				m_Selected = i;
 			}
 		}
-		if (m_Selected == -1) throw new IllegalArgumentException("Selected tag is not valid");
+		if (m_Selected == -1) {
+                throw new IllegalArgumentException("Selected tag is not valid");
+            }
 	}
 
 	private void init(int selID, String[] tagStrings) {
@@ -61,9 +63,13 @@ public class SelectedTag implements java.io.Serializable {
 		m_Selected = -1;
 		for (int i = 0; i < m_Tags.length; i++) {
 			m_Tags[i] = new Tag(i, tagStrings[i]);
-			if (selID == i) m_Selected = i;
+			if (selID == i) {
+                        m_Selected = i;
+                    }
 		}
-		if (m_Selected == -1) throw new IllegalArgumentException("Selected tag is not valid");		
+		if (m_Selected == -1) {
+                throw new IllegalArgumentException("Selected tag is not valid");
+            }		
 	}
 	
 	//~ Methods ////////////////////////////////////////////////////////////////
@@ -75,7 +81,9 @@ public class SelectedTag implements java.io.Serializable {
 	 * @param i     The new selected tag index
 	 */
 	public SelectedTag setSelectedTag(int i) {
-		if ((i >= 0) && (i < this.m_Tags.length)) this.m_Selected = i;
+		if ((i >= 0) && (i < this.m_Tags.length)) {
+                this.m_Selected = i;
+            }
 		return this;
 	}
 	
@@ -127,7 +135,9 @@ public class SelectedTag implements java.io.Serializable {
 	
 	public int getTagIDByString(String str) {
 		for (int i=0; i<m_Tags.length; i++) {
-			if (m_Tags[i].equals(str)) return m_Tags[i].getID();
+			if (m_Tags[i].equals(str)) {
+                        return m_Tags[i].getID();
+                    }
 		} 
 		return -1;
 	}
@@ -179,7 +189,9 @@ public class SelectedTag implements java.io.Serializable {
 			return false;
 		} else {
 			for (int i=0;i<oTags.length; i++) {
-				if (oTags[i].getString().compareTo(m_Tags[i].getString()) != 0) return false;
+				if (oTags[i].getString().compareTo(m_Tags[i].getString()) != 0) {
+                                return false;
+                            }
 			}
 			return true;
 		}

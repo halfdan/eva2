@@ -138,7 +138,9 @@ public class MultiObjectiveEA implements InterfaceOptimizer, java.io.Serializabl
     private double[][] showMay(Population pop) {
         Population tmp = new Population();
         tmp.addPopulation(pop);
-        if (pop.getArchive() != null) tmp.addPopulation(pop.getArchive());
+        if (pop.getArchive() != null) {
+            tmp.addPopulation(pop.getArchive());
+        }
 
         double[][] fitness = new double[tmp.size()][];
         for (int i = 0; i < tmp.size(); i++) {
@@ -148,8 +150,12 @@ public class MultiObjectiveEA implements InterfaceOptimizer, java.io.Serializabl
         minY = fitness[0];
         maxY = fitness[0];
         for (int i = 1; i < fitness.length; i++) {
-            if (minY[0] > fitness[i][0]) minY = fitness[i];
-            if (maxY[1] > fitness[i][1]) maxY = fitness[i];
+            if (minY[0] > fitness[i][0]) {
+                minY = fitness[i];
+            }
+            if (maxY[1] > fitness[i][1]) {
+                maxY = fitness[i];
+            }
         }
         double[][] result = new double[2][];
         result[0] = minY;
@@ -169,11 +175,15 @@ public class MultiObjectiveEA implements InterfaceOptimizer, java.io.Serializabl
 		if (m_Listener==ea) {
 			m_Listener=null;
 			return true;
-		} else return false;
+		} else {
+                                return false;
+                            }
 	}
 
     protected void firePropertyChangedEvent (String name) {
-        if (this.m_Listener != null) this.m_Listener.registerPopulationStateChanged(this, name);
+        if (this.m_Listener != null) {
+            this.m_Listener.registerPopulationStateChanged(this, name);
+        }
     }
 
     /** This method will set the problem that is to be optimized

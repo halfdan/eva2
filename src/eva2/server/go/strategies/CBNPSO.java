@@ -53,7 +53,9 @@ public class CBNPSO extends ClusterBasedNichingEA implements Serializable {
 		setOptimizer(new ParticleSwarmOptimization(popSize, 2.05, 2.05, PSOTopologyEnum.grid, 2));
 		ParamAdaption[] defAdpt = new ParamAdaption[]{getDefaultSinusoidalAdaption()};
 		setParameterControl(defAdpt);
-		if (threshAdaption) addParameterControl(getDefaultThreshAdaption());
+		if (threshAdaption) {
+                addParameterControl(getDefaultThreshAdaption());
+            }
 		setPopulationSize(popSize);
 	}
 	
@@ -83,7 +85,9 @@ public class CBNPSO extends ClusterBasedNichingEA implements Serializable {
 		ParamAdaption[] prmAd = getParameterControl();
 		for (int i=0; i<prmAd.length; i++) {
 			if (prmAd[i] instanceof SinusoidalParamAdaption) {
-				if (prmAd[i].getControlledParam().equals("clusterDiffDist")) return ((SinusoidalParamAdaption)prmAd[i]).getIterationPeriod();
+				if (prmAd[i].getControlledParam().equals("clusterDiffDist")) {
+                                return ((SinusoidalParamAdaption)prmAd[i]).getIterationPeriod();
+                            }
 			}
 		}
 		return -1;
@@ -129,18 +133,28 @@ public class CBNPSO extends ClusterBasedNichingEA implements Serializable {
 	public void init() {
 		super.init();
 		if (getProblem() instanceof InterfaceProblemDouble) {
-			if (isForceUpperClustDist()) setUpperBoundClustDiff((InterfaceProblemDouble)getProblem());
-		} else System.err.println("Can set upper bound of clustering parameter only for AbstractProblemDouble types, not for " + getProblem().getClass().getName());
+			if (isForceUpperClustDist()) {
+                        setUpperBoundClustDiff((InterfaceProblemDouble)getProblem());
+                    }
+		} else {
+                System.err.println("Can set upper bound of clustering parameter only for AbstractProblemDouble types, not for " + getProblem().getClass().getName());
+            }
 	}
 	
 	@Override
 	public String getName() {
 		if (getParameterControl().length>0) {
 			String addInfo="adpt";
-			if (getParameterControl()[0] instanceof SinusoidalParamAdaption) addInfo="SinT"+((SinusoidalParamAdaption)getParameterControl()[0]).getIterationPeriod();
-			else if (getParameterControl()[0] instanceof LinearParamAdaption) addInfo="Lin"+((LinearParamAdaption)getParameterControl()[0]).getStartV()+"-"+((LinearParamAdaption)getParameterControl()[0]).getEndV();
+			if (getParameterControl()[0] instanceof SinusoidalParamAdaption) {
+                        addInfo="SinT"+((SinusoidalParamAdaption)getParameterControl()[0]).getIterationPeriod();
+                    }
+			else if (getParameterControl()[0] instanceof LinearParamAdaption) {
+                        addInfo="Lin"+((LinearParamAdaption)getParameterControl()[0]).getStartV()+"-"+((LinearParamAdaption)getParameterControl()[0]).getEndV();
+                    }
 			return "CBN-PSO-"+addInfo;
-		} else return "CBN-PSO";
+		} else {
+                return "CBN-PSO";
+            }
 	}
 	
 	public static String globalInfo() {
@@ -173,7 +187,9 @@ public class CBNPSO extends ClusterBasedNichingEA implements Serializable {
 		double fitThres = 100; 
 		if (prob instanceof InterfaceInterestingHistogram) {
 			fitThres = ((InterfaceInterestingHistogram)prob).getHistogram().getUpperBound();
-		} else EVAERROR.errorMsgOnce("Warning, problem does not define a fitness threshold!");
+		} else {
+                EVAERROR.errorMsgOnce("Warning, problem does not define a fitness threshold!");
+            }
 		
 		SolutionSet solSet = getAllSolutions();
 		Population archived = solSet.getSolutions();
@@ -184,21 +200,27 @@ public class CBNPSO extends ClusterBasedNichingEA implements Serializable {
 		
 		if (archived.size()>0) {
 			return ((double)interesting.size())/((double)archived.size());
-		} else return -1;
+		} else {
+                return -1;
+            }
 	}
 
 	@Override
 	public String[] getAdditionalDataHeader() {
 		String[] addVals = {"interestingRatio"};
-		if (getCurrentPeriod()>=0) addVals = new String[]{"interestingRatio", "adaptPeriod"}; 
+		if (getCurrentPeriod()>=0) {
+                addVals = new String[]{"interestingRatio", "adaptPeriod"};
+            } 
 		return ToolBox.appendArrays(super.getAdditionalDataHeader(), addVals);
 	}
 
 	@Override	
 	public String[] getAdditionalDataInfo() {
 		String[] addVals = {"Ratio of interesting solutions within all archived solutions"};
-		if (getCurrentPeriod()>=0) addVals = new String[]{"Ratio of interesting solutions within all archived solutions", 
-				"Current sigma adaptation period"}; 
+		if (getCurrentPeriod()>=0) {
+                addVals = new String[]{"Ratio of interesting solutions within all archived solutions", 
+     "Current sigma adaptation period"};
+            } 
 		return ToolBox.appendArrays(super.getAdditionalDataInfo(), addVals);
 	}
 	
@@ -212,20 +234,33 @@ public class CBNPSO extends ClusterBasedNichingEA implements Serializable {
 		ParamAdaption[] adaptors = super.getParameterControl();
 		SinusoidalParamAdaption sinA=null;
 		CbpsoFitnessThresholdBasedAdaption ftA=null;
-		if (adaptors!=null) for (int i=0; i<adaptors.length; i++) {
-			if (adaptors[i] instanceof SinusoidalParamAdaption) sinA = (SinusoidalParamAdaption)adaptors[i];
-			else if (adaptors[i] instanceof CbpsoFitnessThresholdBasedAdaption) ftA = (CbpsoFitnessThresholdBasedAdaption)adaptors[i];
-		}
-		if (sinA!=null && (ftA!=null)) return sinA.getIterationPeriod();
-		else return -1;
+		if (adaptors!=null) {
+                for (int i = 0; i<adaptors.length; i++) {
+                    if (adaptors[i] instanceof SinusoidalParamAdaption) {
+                        sinA = (SinusoidalParamAdaption)adaptors[i];
+                    } else if (adaptors[i] instanceof CbpsoFitnessThresholdBasedAdaption) {
+                        ftA = (CbpsoFitnessThresholdBasedAdaption)adaptors[i];
+                    }
+                }
+            }
+		if (sinA!=null && (ftA!=null)) {
+                return sinA.getIterationPeriod();
+            }
+		else {
+                return -1;
+            }
 	}
 
 	@Override
 	public Object[] getAdditionalDataValue(PopulationInterface pop) {
 		Object[] addVals = null;
 		double freq = getCurrentPeriod();
-		if (freq>=0) addVals = new Object[]{getInterestingSolutionRatio(), freq};
-		else addVals = new Object[]{getInterestingSolutionRatio()};
+		if (freq>=0) {
+                addVals = new Object[]{getInterestingSolutionRatio(), freq};
+            }
+		else {
+                addVals = new Object[]{getInterestingSolutionRatio()};
+            }
 		return ToolBox.appendArrays(super.getAdditionalDataValue(pop), addVals);
 	}
 }

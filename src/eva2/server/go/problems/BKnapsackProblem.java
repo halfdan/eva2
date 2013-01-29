@@ -192,7 +192,9 @@ public class BKnapsackProblem extends AbstractProblemBinary implements java.io.S
                             weakest = i;
                         }
                         if ( ((-items[i][1])/((double)items[i][0])) == ((-items[weakest][1])/((double)items[weakest][0])) ) {
-                            if (RNG.flipCoin(0.5)) weakest = i;
+                            if (RNG.flipCoin(0.5)) {
+                                weakest = i;
+                            }
                         }
                     }
                 }
@@ -210,7 +212,9 @@ public class BKnapsackProblem extends AbstractProblemBinary implements java.io.S
                             weakest = i;
                         }
                         if ( ((-items[i][1])/((double)items[i][0])) == ((-items[weakest][1])/((double)items[weakest][0])) ) {
-                            if (RNG.flipCoin(0.5)) weakest = i;
+                            if (RNG.flipCoin(0.5)) {
+                                weakest = i;
+                            }
                         }
                     }
                 }
@@ -219,19 +223,27 @@ public class BKnapsackProblem extends AbstractProblemBinary implements java.io.S
                 result = this.eval(tmpBitSet);
                 int weight = 0;
                 for (int i = 0; i < items.length; i++) {
-                    if (tmpBitSet.get(i)) weight  += items[i][0];
+                    if (tmpBitSet.get(i)) {
+                        weight  += items[i][0];
+                    }
                 }
 
                 for (int i = 0; i < items.length; i++) {
                     if (items[i][0] < this.m_Limit - weight) {
                         // possible candidate
-                        if (stronger < 0) stronger = i;
+                        if (stronger < 0) {
+                            stronger = i;
+                        }
                         else {
-                            if (items[i][1] < items[stronger][1]) stronger = i;
+                            if (items[i][1] < items[stronger][1]) {
+                                stronger = i;
+                            }
                         }
                     }
                 }
-                if (stronger >= 0) tmpBitSet.set(stronger);
+                if (stronger >= 0) {
+                    tmpBitSet.set(stronger);
+                }
                 result = this.eval(tmpBitSet);
             }
 
@@ -254,7 +266,9 @@ public class BKnapsackProblem extends AbstractProblemBinary implements java.io.S
         double[]                result = new double[3];
 
         int l = items.length; 
-        if (getProblemDimension() != l) System.err.println("Error in BKnapsack!");
+        if (getProblemDimension() != l) {
+            System.err.println("Error in BKnapsack!");
+        }
         result[0] = 0;
         result[1] = 0; // the weight exceed
         result[2] = 0; // net worth
@@ -262,7 +276,9 @@ public class BKnapsackProblem extends AbstractProblemBinary implements java.io.S
             if (b.get(i)) {
                 result[1]  += items[i][0];
                 result[2]  += items[i][1];
-            } else b.clear(i);
+            } else {
+                b.clear(i);
+            }
         }
         // write the solution
         result[1] = Math.max(0, result[1]- this.m_Limit);
@@ -287,8 +303,12 @@ public class BKnapsackProblem extends AbstractProblemBinary implements java.io.S
         report = this.eval(tmpBitSet);
         result += individual.getStringRepresentation() + "\n";
         result += "Is worth: " + Math.abs(report[2]) + " and ";
-        if (report[1] == 0) result += "does not exceed the weight limit!";
-        else result += "exceeds the weight limit by " + report[1];
+        if (report[1] == 0) {
+            result += "does not exceed the weight limit!";
+        }
+        else {
+            result += "exceeds the weight limit by " + report[1];
+        }
         result += "\n";
         return result;
     }

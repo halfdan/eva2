@@ -41,7 +41,9 @@ public class StatisticUtils
 		int i;
 		double av1 = 0.0, av2 = 0.0, y11 = 0.0, y22 = 0.0, y12 = 0.0, c;
 		int n=y1.length;
-		if (n!=y2.length) throw new RuntimeException("Error, mismatching vectors for correlation calculation in StatisticUtils.correlation(double[], double[])");
+		if (n!=y2.length) {
+                throw new RuntimeException("Error, mismatching vectors for correlation calculation in StatisticUtils.correlation(double[], double[])");
+            }
 
 		if (n <= 1) {
 			return 1.0;
@@ -245,8 +247,12 @@ public class StatisticUtils
 			sumSquared += (vector[i] * vector[i]);
 		}
 		double denom;
-		if (finiteSet) denom=n;
-		else denom=(n-1);
+		if (finiteSet) {
+                denom=n;
+            }
+		else {
+                denom=(n-1);
+            }
 		double result = (sumSquared - (sum * sum / (double) n)) / denom;
 
 		// We don't like negative variance

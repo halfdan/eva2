@@ -41,7 +41,9 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
         if (individual.m_Phenotype != null) {
             this.m_Phenotype = new AbstractGPNode[individual.m_Phenotype.length];
             for (int i = 0; i < individual.m_Phenotype.length; i++) {
-                if (individual.m_Phenotype[i] != null) this.m_Phenotype[i] = (AbstractGPNode)individual.m_Phenotype[i].clone();
+                if (individual.m_Phenotype[i] != null) {
+                    this.m_Phenotype[i] = (AbstractGPNode)individual.m_Phenotype[i].clone();
+                }
             }
         }        
         if (individual.m_Genotype != null) {
@@ -52,7 +54,9 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
                     this.m_Genotype[i]   = (AbstractGPNode)individual.m_Genotype[i].clone();
                     this.m_Genotype[i].connect(null);
                 }
-                if (individual.m_Area[i] != null) this.m_Area[i]       = (GPArea)individual.m_Area[i].clone();
+                if (individual.m_Area[i] != null) {
+                    this.m_Area[i]       = (GPArea)individual.m_Area[i].clone();
+                }
             }
         }
         this.m_InitFullGrowRatio        = individual.m_InitFullGrowRatio;
@@ -91,14 +95,17 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
         if (individual instanceof GPIndividualProgramData) {
             GPIndividualProgramData indy = (GPIndividualProgramData) individual;
             //@todo Eigendlich k�nnte ich noch die Areas vergleichen
-            if (this.m_maxAllowedDepth != indy.m_maxAllowedDepth)
+            if (this.m_maxAllowedDepth != indy.m_maxAllowedDepth) {
                 return false;
-            if ((this.m_Genotype == null) || (indy.m_Genotype == null))
+            }
+            if ((this.m_Genotype == null) || (indy.m_Genotype == null)) {
                 return false;
+            }
             else {
                 for (int i = 0; i < this.m_Genotype.length; i++) {
-                    if ((this.m_Genotype[i] == null) || (indy.m_Genotype[i] == null) || (!this.m_Genotype[i].equals(indy.m_Genotype[i])))
+                    if ((this.m_Genotype[i] == null) || (indy.m_Genotype[i] == null) || (!this.m_Genotype[i].equals(indy.m_Genotype[i]))) {
                         return false;
+                    }
                 }
             }
             return true;
@@ -156,8 +163,12 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
      */
     @Override
     public InterfaceProgram[] getProgramDataWithoutUpdate() {
-    	if (this.m_Phenotype==null) return getProgramData();
-    	else return this.m_Phenotype;
+    	if (this.m_Phenotype==null) {
+            return getProgramData();
+        }
+    	else {
+            return this.m_Phenotype;
+        }
     }
 
     /** This method allows you to set the program phenotype.
@@ -243,7 +254,9 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
         }
         result += "})\n Value: ";
         for (int i = 0; i < this.m_Genotype.length; i++) {
-            if (this.m_Genotype[i] != null) result += this.m_Genotype[i].getStringRepresentation();
+            if (this.m_Genotype[i] != null) {
+                result += this.m_Genotype[i].getStringRepresentation();
+            }
             result += "\nUsing " + this.m_Genotype[i].getNumberOfNodes() + " nodes.";
         }
         return result;
@@ -321,10 +334,12 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
                 this.m_Genotype[i] = (AbstractGPNode)(this.m_Area[i].getRandomNonTerminal()).clone();
                 this.m_Genotype[i].setDepth(0);
                 int targetDepth = RNG.randomInt(1, this.m_InitDepth);
-                if (RNG.flipCoin(this.m_InitFullGrowRatio))
+                if (RNG.flipCoin(this.m_InitFullGrowRatio)) {
                     this.m_Genotype[i].initFull(this.m_Area[i], targetDepth);
-                else
+                }
+                else {
                     this.m_Genotype[i].initGrow(this.m_Area[i], targetDepth);
+                }
             }
         }
     }
@@ -365,8 +380,12 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
      * @param b     The new init Full Grow Ratio of the GP Tree.
      */
     public void setInitFullGrowRatio(double b) {
-        if (b < 0) b = 0;
-        if (b > 1) b = 1;
+        if (b < 0) {
+            b = 0;
+        }
+        if (b > 1) {
+            b = 1;
+        }
         this.m_InitFullGrowRatio = b;
     }
     public double getInitFullGrowRatio() {

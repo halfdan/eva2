@@ -59,7 +59,9 @@ public class PropertyOptimizationObjectivesWithParam implements java.io.Serializ
             return;
         }
 
-        if (d.length == this.m_Weights.length) return;
+        if (d.length == this.m_Weights.length) {
+            return;
+        }
         
         if (d.length > this.m_Weights.length) {
             double[] newWeights = new double[d.length];
@@ -134,7 +136,9 @@ public class PropertyOptimizationObjectivesWithParam implements java.io.Serializ
      * @param index     The index of the target to be removed.
      */
     public void removeTarget(int index) {
-        if ((index < 0) || (index >= this.m_SelectedObjectives.length)) return;
+        if ((index < 0) || (index >= this.m_SelectedObjectives.length)) {
+            return;
+        }
 
         InterfaceOptimizationObjective[]   newList = new InterfaceOptimizationObjective[this.m_SelectedObjectives.length-1];
         double[]                        newWeights = new double[this.m_Weights.length - 1];

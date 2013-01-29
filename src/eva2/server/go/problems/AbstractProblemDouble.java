@@ -80,8 +80,9 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem
 	}
 
 	protected void initTemplate() {
-		if (m_Template == null)
-			m_Template = new ESIndividualDoubleData();
+		if (m_Template == null) {
+                m_Template = new ESIndividualDoubleData();
+            }
 		if (getProblemDimension() > 0) { // avoid evil case setting dim to 0
 											// during object init
 			((InterfaceDataTypeDouble) this.m_Template)
@@ -99,8 +100,9 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem
 		this.m_DefaultRange = o.m_DefaultRange;
 		this.m_Noise = o.m_Noise;
 		this.SetDefaultAccuracy(o.getDefaultAccuracy());
-		if (o.m_Template != null)
-			this.m_Template = (AbstractEAIndividual) o.m_Template.clone();
+		if (o.m_Template != null) {
+                this.m_Template = (AbstractEAIndividual) o.m_Template.clone();
+            }
 		if (o.constraintArray != null) {
 			this.constraintArray = o.constraintArray.clone();
 			for (int i = 0; i < constraintArray.length; i++) {
@@ -149,7 +151,9 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem
         // evaluate the vector
         fitness = this.eval(x);
         // if indicated, add Gaussian noise
-        if (m_Noise != 0) RNG.addNoise(fitness, m_Noise); 
+        if (m_Noise != 0) {
+                RNG.addNoise(fitness, m_Noise);
+            } 
         // set the fitness
         setEvalFitness(individual, x, fitness);
         if (isWithConstraints()) {
@@ -160,8 +164,9 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem
 
 	protected double[] rotateMaybe(double[] x) {
 		if (isDoRotation()) {
-			if (rotation == null)
-				initProblem();
+			if (rotation == null) {
+                        initProblem();
+                    }
 			x = Mathematics.rotate(x, rotation);
 		}
 		return x;
@@ -169,8 +174,9 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem
 
 	protected double[] inverseRotateMaybe(double[] x) {
 		if (isDoRotation()) {
-			if (rotation == null)
-				initProblem();
+			if (rotation == null) {
+                        initProblem();
+                    }
 			x = Mathematics.rotate(x, rotation.inverse());
 		}
 		return x;
@@ -288,8 +294,9 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem
 		if (isDoRotation()) {
 			rotation = initDefaultRotationMatrix(rotAngle,
 					getProblemDimension());
-		} else
-			rotation = null;
+		} else {
+                rotation = null;
+            }
 	}
 
 	/**
@@ -323,8 +330,9 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem
 	 *            The sigma for a gaussian random number.
 	 */
 	public void setNoise(double noise) {
-		if (noise < 0)
-			noise = 0;
+		if (noise < 0) {
+                noise = 0;
+            }
 		this.m_Noise = noise;
 	}
 
@@ -390,8 +398,9 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem
 
 	public void setDoRotation(boolean doRotation) {
 		this.doRotation = doRotation;
-		if (!doRotation)
-			rotation = null;
+		if (!doRotation) {
+                rotation = null;
+            }
 	}
 
 	public boolean isDoRotation() {
@@ -409,8 +418,9 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem
 		if (isWithConstraints()) {
 			return constraintArray;
 			// return constraintList.getObjects();
-		} else
-			return null;
+		} else {
+                return null;
+            }
 	}
 
 	/**********************************************************************************************************************
@@ -588,26 +598,30 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem
 	@Override
 	public String[] getAdditionalDataHeader() {
 		String[] superHeader = super.getAdditionalDataHeader();
-		if (isWithConstraints())
-			return ToolBox.appendArrays(superHeader, new String[] { "rawFit",
-					"numViol", "sumViol" });
-		else
-			return superHeader;
+		if (isWithConstraints()) {
+                return ToolBox.appendArrays(superHeader, new String[] { "rawFit",
+                                "numViol", "sumViol" });
+            }
+		else {
+                return superHeader;
+            }
 	}
 
 	@Override
 	public String[] getAdditionalDataInfo() {
 		String[] superInfo = super.getAdditionalDataInfo();
-		if (isWithConstraints())
-			return ToolBox
-					.appendArrays(
-							superInfo,
-							new String[] {
-									"Raw fitness (unpenalized) of the current best individual",
-									"The number of constraints violated by the current best individual",
-									"The sum of constraint violations of the current best individual" });
-		else
-			return superInfo;
+		if (isWithConstraints()) {
+                return ToolBox
+                                .appendArrays(
+                                                superInfo,
+                                                new String[] {
+                                                                "Raw fitness (unpenalized) of the current best individual",
+                                                                "The number of constraints violated by the current best individual",
+                                                                "The sum of constraint violations of the current best individual" });
+            }
+		else {
+                return superInfo;
+            }
 	}
 
 	@Override
@@ -623,8 +637,9 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem
 			// return superVal + " \t" +
 			// BeanInspector.toString(indy.getData(rawFitKey)) + " \t" +
 			// violation.head() + " \t" + violation.tail();
-		} else
-			return superVal;
+		} else {
+                return superVal;
+            }
 	}
 
 	protected Pair<Integer, Double> getConstraintViolation(
@@ -633,8 +648,9 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem
 		int numViol = 0;
 		for (AbstractConstraint constr : constraintArray) {
 			double v = constr.getViolation(getEvalArray(indy));
-			if (v > 0)
-				numViol++;
+			if (v > 0) {
+                        numViol++;
+                    }
 			sum += v;
 		}
 		return new Pair<Integer, Double>(numViol, sum);

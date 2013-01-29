@@ -42,8 +42,12 @@ public class MutateOBGAInversion implements java.io.Serializable, InterfaceMutat
      */
     @Override
     public boolean equals(Object mutator) {
-        if (mutator instanceof MutateOBGAInversion) return true;
-        else return false;
+        if (mutator instanceof MutateOBGAInversion) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     @Override

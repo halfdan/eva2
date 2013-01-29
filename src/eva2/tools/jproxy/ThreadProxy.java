@@ -85,8 +85,9 @@ public class ThreadProxy implements InvocationHandler,
           return rret;
         }
       }
-      if (m_ThreadWrapper != null)
-        m_ThreadWrapper.pleasewait();
+      if (m_ThreadWrapper != null) {
+            m_ThreadWrapper.pleasewait();
+        }
       ret = method.invoke(m_Object, args);
     } catch (Exception e) {
       System.out.println("ERROR +" + e.getMessage());

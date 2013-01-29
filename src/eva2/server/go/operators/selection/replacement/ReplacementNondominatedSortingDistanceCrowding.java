@@ -25,7 +25,9 @@ public class ReplacementNondominatedSortingDistanceCrowding implements Interface
 			Double a1=(Double) arg1.getData("HyperCube");
 			if(a0!=null&a1!=null){
 				return a1.compareTo(a0);
-			}else return 0;		
+			}else {
+                        return 0;
+                    }		
 		}	
 	}
 	

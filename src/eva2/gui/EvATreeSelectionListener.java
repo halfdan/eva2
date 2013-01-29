@@ -37,17 +37,24 @@ public class EvATreeSelectionListener implements TreeSelectionListener, Property
 		root = rootNode;
 		jtree = jt;
 		
-		if (jtree!=null) jtree.addTreeSelectionListener(this); // listen to tree selection changes
-		if (goEditor!=null) goEditor.addPropertyChangeListener(this); // listen to changes to the parameters
+		if (jtree!=null) {
+                jtree.addTreeSelectionListener(this);
+            } // listen to tree selection changes
+		if (goEditor!=null) {
+                goEditor.addPropertyChangeListener(this);
+            } // listen to changes to the parameters
 	}
 
     @Override
 	public void valueChanged(TreeSelectionEvent e) {
-		if (TRACE) System.out.println("valueChanged to " + BeanInspector.toString(e.getPath()));
+		if (TRACE) {
+                System.out.println("valueChanged to " + BeanInspector.toString(e.getPath()));
+            }
 		TreePath tp = e.getPath();
-		if (TRACE) for (int i=tp.getPathCount()-1; i>=0; i--) {
-			System.out.println("* " + i + " " + tp.getPathComponent(i));
-		}
+		if (TRACE) {
+                for (int i=tp.getPathCount()-1; i>=0; i--) {
+             System.out.println("* " + i + " " + tp.getPathComponent(i));
+     }      }
 		EvATreeNode leafNode = (EvATreeNode)tp.getLastPathComponent();
 //		goe.setValue(leafNode.getUserObject());
 		Component editComp = goe.getCustomEditor();
@@ -61,8 +68,12 @@ public class EvATreeSelectionListener implements TreeSelectionListener, Property
 
     @Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		if (TRACE) System.out.println("EvATreeNode received change event " + evt);
+		if (TRACE) {
+                System.out.println("EvATreeNode received change event " + evt);
+            }
 		root.setObject(evt.getNewValue(), true);
-		if (jtree !=null) jtree.setModel(new DefaultTreeModel(root)); // TODO this should be done differently so that the tree is not collapsed on each change!
+		if (jtree !=null) {
+                jtree.setModel(new DefaultTreeModel(root));
+            } // TODO this should be done differently so that the tree is not collapsed on each change!
 	}
 }

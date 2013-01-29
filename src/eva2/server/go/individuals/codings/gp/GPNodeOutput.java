@@ -36,7 +36,9 @@ public class GPNodeOutput extends AbstractGPNode implements java.io.Serializable
     public boolean equals(Object obj) {
         if (obj instanceof GPNodeOutput) {
             GPNodeOutput node = (GPNodeOutput)obj;
-            if (!this.m_Identifier.equalsIgnoreCase(node.m_Identifier)) return false;
+            if (!this.m_Identifier.equalsIgnoreCase(node.m_Identifier)) {
+                return false;
+            }
             return true;
         } else {
             return false;

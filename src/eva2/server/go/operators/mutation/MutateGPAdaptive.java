@@ -47,12 +47,22 @@ public class MutateGPAdaptive implements InterfaceMutation, java.io.Serializable
     public boolean equals(Object mutator) {
         if (mutator instanceof MutateGPAdaptive) {
             MutateGPAdaptive mut = (MutateGPAdaptive)mutator;
-            if (this.m_MutationStep != mut.m_MutationStep) return false;
-            if (this.m_Tau1 != mut.m_Tau1) return false;
-            if (this.m_Tau2 != mut.m_Tau2) return false;
-            if (this.m_LowerLimitStepSize != mut.m_LowerLimitStepSize) return false;
+            if (this.m_MutationStep != mut.m_MutationStep) {
+                return false;
+            }
+            if (this.m_Tau1 != mut.m_Tau1) {
+                return false;
+            }
+            if (this.m_Tau2 != mut.m_Tau2) {
+                return false;
+            }
+            if (this.m_LowerLimitStepSize != mut.m_LowerLimitStepSize) {
+                return false;
+            }
             return true;
-        } else return false;
+        } else {
+            return false;
+        }
     }
 
     /** This method allows you to init the mutation operator
@@ -73,9 +83,15 @@ public class MutateGPAdaptive implements InterfaceMutation, java.io.Serializable
         //System.out.println("Before Mutate: " +((GAIndividual)individual).getSolutionRepresentationFor());
         if (individual instanceof InterfaceGPIndividual) {
             this.m_MutationStep *= Math.exp(this.m_Tau1 * RNG.gaussianDouble(1) + this.m_Tau2 * RNG.gaussianDouble(1));
-            if (this.m_MutationStep < this.m_LowerLimitStepSize) this.m_MutationStep = this.m_LowerLimitStepSize;
-            if (this.m_MutationStep > 1) this.m_MutationStep = 1;
-            if (RNG.flipCoin(this.m_MutationStep)) ((IndividualInterface)individual).defaultMutate();
+            if (this.m_MutationStep < this.m_LowerLimitStepSize) {
+                this.m_MutationStep = this.m_LowerLimitStepSize;
+            }
+            if (this.m_MutationStep > 1) {
+                this.m_MutationStep = 1;
+            }
+            if (RNG.flipCoin(this.m_MutationStep)) {
+                ((IndividualInterface)individual).defaultMutate();
+            }
         }
         //System.out.println("After Mutate:  " +((GAIndividual)individual).getSolutionRepresentationFor());
     }
@@ -120,7 +136,9 @@ public class MutateGPAdaptive implements InterfaceMutation, java.io.Serializable
      * @param d   The mutation operator.
      */
     public void setMutationStep(double d) {
-        if (d < 0) d = this.m_LowerLimitStepSize;
+        if (d < 0) {
+            d = this.m_LowerLimitStepSize;
+        }
         this.m_MutationStep = d;
     }
     public double getMutationStepSize() {
@@ -134,7 +152,9 @@ public class MutateGPAdaptive implements InterfaceMutation, java.io.Serializable
      * @param d   The mutation operator.
      */
     public void setLowerLimitStepSize(double d) {
-        if (d < 0) d = 0;
+        if (d < 0) {
+            d = 0;
+        }
         this.m_LowerLimitStepSize = d;
     }
     public double getLowerLimitStepSize() {
@@ -148,7 +168,9 @@ public class MutateGPAdaptive implements InterfaceMutation, java.io.Serializable
      * @param d   The mutation operator.
      */
     public void setTau1(double d) {
-        if (d < 0) d = 0;
+        if (d < 0) {
+            d = 0;
+        }
         this.m_Tau1 = d;
     }
     public double getTau1() {
@@ -162,7 +184,9 @@ public class MutateGPAdaptive implements InterfaceMutation, java.io.Serializable
      * @param d   The mutation operator.
      */
     public void setTau2(double d) {
-        if (d < 0) d = 0;
+        if (d < 0) {
+            d = 0;
+        }
         this.m_Tau2 = d;
     }
     public double getTau2() {

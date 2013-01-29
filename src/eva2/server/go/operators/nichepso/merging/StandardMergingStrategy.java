@@ -54,8 +54,12 @@ public class StandardMergingStrategy implements InterfaceMergingStrategy, java.i
     @Override
 	public boolean shouldMergeSubswarms(ParticleSubSwarmOptimization subswarm1,	ParticleSubSwarmOptimization subswarm2) {
 		// check for equal state
-		if (subswarm1.isActive() && !subswarm2.isActive()) return false;
-		if (!subswarm1.isActive() && subswarm2.isActive()) return false;
+		if (subswarm1.isActive() && !subswarm2.isActive()) {
+                return false;
+            }
+		if (!subswarm1.isActive() && subswarm2.isActive()) {
+                return false;
+            }
 		
 		if (!subswarmsOverlapOrAreVeryClose(subswarm1,subswarm2)){
 			return false;
@@ -77,8 +81,12 @@ public class StandardMergingStrategy implements InterfaceMergingStrategy, java.i
 			i2=(InterfaceESIndividual)gbestj;
 		}
 		
-		if (i1 != null) dist = EuclideanMetric.euclideanDistance(i1.getDGenotype(), i2.getDGenotype()); 
-		else dist = subswarm1.distance(gbesti, gbestj); // euclidean distance
+		if (i1 != null) {
+                dist = EuclideanMetric.euclideanDistance(i1.getDGenotype(), i2.getDGenotype());
+            } 
+		else {
+                dist = subswarm1.distance(gbesti, gbestj);
+            } // euclidean distance
 //		System.out.println("dist is " + dist);
 		
 		if (dist < (subswarm1.getMaxAllowedSwarmRadiusAbs() + subswarm2.getMaxAllowedSwarmRadiusAbs())) {
@@ -96,7 +104,9 @@ public class StandardMergingStrategy implements InterfaceMergingStrategy, java.i
 		if (i1 != null) {
 			dist_norm = EuclideanMetric.normedEuclideanDistance(i1.getDGenotype(), i1.getDoubleRange(),
 					i2.getDGenotype(), i2.getDoubleRange());
-		} else dist_norm = PhenotypeMetric.dist(gbesti, gbestj); // normalised distance
+		} else {
+                dist_norm = PhenotypeMetric.dist(gbesti, gbestj);
+            } // normalised distance
 		
 		//if (Ri == 0 && Rj == 0 && dist_norm < getEpsilon()){ // see "Enhancing the NichePSO" paper
 		if (dist_norm < getMu()){ // Ri und Rj auf null testen sinvoll ?

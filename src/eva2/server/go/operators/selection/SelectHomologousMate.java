@@ -60,8 +60,12 @@ public class SelectHomologousMate extends SelectTournament implements java.io.Se
             }
         }
         //System.out.println("Partners Size: " + possibleMates.size());
-        if (possibleMates.size() <=1) return this.selectFrom(availablePartners, size);
-        else return this.selectFrom(possibleMates, size);
+        if (possibleMates.size() <=1) {
+            return this.selectFrom(availablePartners, size);
+        }
+        else {
+            return this.selectFrom(possibleMates, size);
+        }
     }
 
 /**********************************************************************************************************************

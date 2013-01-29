@@ -60,8 +60,12 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
     public boolean equalGenotypes(AbstractEAIndividual individual) {
         if (individual instanceof GAESIndividualBinaryDoubleData) {
             GAESIndividualBinaryDoubleData indy = (GAESIndividualBinaryDoubleData)individual;
-            if (!((AbstractEAIndividual)this.m_Numbers).equalGenotypes((AbstractEAIndividual)indy.m_Numbers)) return false;
-            if (!((AbstractEAIndividual)this.m_BitSet).equalGenotypes((AbstractEAIndividual)indy.m_BitSet)) return false;
+            if (!((AbstractEAIndividual)this.m_Numbers).equalGenotypes((AbstractEAIndividual)indy.m_Numbers)) {
+                return false;
+            }
+            if (!((AbstractEAIndividual)this.m_BitSet).equalGenotypes((AbstractEAIndividual)indy.m_BitSet)) {
+                return false;
+            }
             return true;
         } else {
             return false;
@@ -109,8 +113,12 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
      */
     @Override
     public void mutate() {
-        if (RNG.flipCoin(this.m_MutationProbability))((AbstractEAIndividual)this.m_Numbers).mutate();
-        if (RNG.flipCoin(this.m_MutationProbability))((AbstractEAIndividual)this.m_BitSet).mutate();
+        if (RNG.flipCoin(this.m_MutationProbability)) {
+            ((AbstractEAIndividual)this.m_Numbers).mutate();
+        }
+        if (RNG.flipCoin(this.m_MutationProbability)) {
+            ((AbstractEAIndividual)this.m_BitSet).mutate();
+        }
     }
 
     @Override

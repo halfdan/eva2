@@ -57,8 +57,12 @@ public class StatisticsDummy implements InterfaceStatistics, InterfaceTextListen
 
     @Override
 	public double[] getBestFitness() {
-		if (bestIndividualAllover != null) return bestCurrentIndividual.getFitness();
-		else return null;
+		if (bestIndividualAllover != null) {
+                return bestCurrentIndividual.getFitness();
+            }
+		else {
+                return null;
+            }
 	}
 
     @Override
@@ -78,7 +82,9 @@ public class StatisticsDummy implements InterfaceStatistics, InterfaceTextListen
 
     @Override
 	public void printToTextListener(String s) {
-		if (consoleOut) System.out.println(s);
+		if (consoleOut) {
+                System.out.println(s);
+            }
 	}
 
     @Override
@@ -90,7 +96,9 @@ public class StatisticsDummy implements InterfaceStatistics, InterfaceTextListen
     @Override
 	public void startOptPerformed(String InfoString, int runnumber,
 			Object params, List<InterfaceAdditionalPopulationInformer> informerList) {
-		if (runnumber==0) bestIndividualAllover = null;
+		if (runnumber==0) {
+                                bestIndividualAllover = null;
+                            }
 		bestRunIndy = null;
 	}
 
@@ -101,11 +109,15 @@ public class StatisticsDummy implements InterfaceStatistics, InterfaceTextListen
 	
     @Override
 	public void print(String str) {
-		if (consoleOut) System.out.print(str);
+		if (consoleOut) {
+                System.out.print(str);
+            }
 	}
     @Override
 	public void println(String str) {
-		if (consoleOut) System.out.println(str);
+		if (consoleOut) {
+                System.out.println(str);
+            }
 	}
 
     @Override

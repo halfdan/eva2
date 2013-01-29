@@ -28,7 +28,9 @@ public class RMIProxyLocal implements InvocationHandler, Serializable {
 	 *
 	 */
 	public static Object newInstance (Object c, String RMIName) {
-		if (TRACE) System.out.println("RMIProxyLocal:"+c.getClass().getName());
+		if (TRACE) {
+                System.out.println("RMIProxyLocal:"+c.getClass().getName());
+            }
 		RMIProxyLocal proxyLocal = new RMIProxyLocal(c,RMIName);
 		Object ret = java.lang.reflect.Proxy.newProxyInstance (
 				c.getClass().getClassLoader(),
@@ -36,14 +38,18 @@ public class RMIProxyLocal implements InvocationHandler, Serializable {
 				proxyLocal);
 		proxyLocal.setWrapper(ret); 
 		proxyLocal.setOriginalClass(c.getClass());
-		if (TRACE) System.out.println(" --> " + ret.getClass());
+		if (TRACE) {
+                System.out.println(" --> " + ret.getClass());
+            }
 		return ret;
 	}
 	/**
 	 *
 	 */
 	public static Object newInstance (Object c) {
-		if (TRACE) System.out.println("RMIProxyLocal:"+c.getClass().getName());
+		if (TRACE) {
+                System.out.println("RMIProxyLocal:"+c.getClass().getName());
+            }
 		RMIProxyLocal proxyLocal = new RMIProxyLocal(c);
 		Object ret = java.lang.reflect.Proxy.newProxyInstance (
 				c.getClass().getClassLoader(),
@@ -51,14 +57,18 @@ public class RMIProxyLocal implements InvocationHandler, Serializable {
 				proxyLocal);
 		proxyLocal.setWrapper(ret);
 		proxyLocal.setOriginalClass(c.getClass());
-		if (TRACE) System.out.println(" --> " + ret.getClass());
+		if (TRACE) {
+                System.out.println(" --> " + ret.getClass());
+            }
 		return ret;
 	}
 	/**
 	 *
 	 */
 	private RMIProxyLocal (Object c) {
-		if (TRACE) System.out.println("RMIProxyLocal:"+c.getClass().getName());
+		if (TRACE) {
+                System.out.println("RMIProxyLocal:"+c.getClass().getName());
+            }
 		try {
 			m_RMIHandler = new RMIInvocationHandlerImpl(c);
 		} catch (Exception e) {
@@ -105,7 +115,9 @@ public class RMIProxyLocal implements InvocationHandler, Serializable {
 	 * @param originalClass the originalClass to set
 	 */
 	public void setOriginalClass(Class originalClass) {
-		if (TRACE) System.out.println("setting original proxy class "+originalClass.getName());
+		if (TRACE) {
+                System.out.println("setting original proxy class "+originalClass.getName());
+            }
 		this.originalClass = originalClass;
 	}
 }

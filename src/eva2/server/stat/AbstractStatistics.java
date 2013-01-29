@@ -122,19 +122,26 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 		if (dataListeners==null) {
 			dataListeners=new LinkedList<InterfaceStatisticsListener>();
 		}
-		if (l!=null && !dataListeners.contains(l)) dataListeners.add(l);
+		if (l!=null && !dataListeners.contains(l)) {
+                dataListeners.add(l);
+            }
 	}
 	
     @Override
 	public boolean removeDataListener(InterfaceStatisticsListener l) {
-		if (dataListeners==null) return false;
-		else return dataListeners.remove(l);
+		if (dataListeners==null) {
+                return false;
+            }
+		else {
+                return dataListeners.remove(l);
+            }
 	}
 	
 	private void fireDataListeners() {
-		if (dataListeners!=null) for (InterfaceStatisticsListener l : dataListeners) {
-			l.notifyGenerationPerformed(currentStatHeader, currentStatObjectData, currentStatDoubleData);
-		}
+		if (dataListeners!=null) {
+                for (InterfaceStatisticsListener l : dataListeners) {
+l.notifyGenerationPerformed(currentStatHeader, currentStatObjectData, currentStatDoubleData);
+}           }
 	}
 	
 	private void fireDataListenersFinalize() {
@@ -142,7 +149,9 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 			LinkedList<InterfaceStatisticsListener> toRemove = new LinkedList<InterfaceStatisticsListener>();
 			for (InterfaceStatisticsListener l : dataListeners) {
 				boolean rm = l.notifyMultiRunFinished(currentStatHeader, finalObjectData);
-				if (rm) toRemove.add(l);
+				if (rm) {
+                                toRemove.add(l);
+                            }
 			}
 			for (InterfaceStatisticsListener l : toRemove) { 
                 dataListeners.remove(l);
@@ -158,18 +167,19 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 	 * @param start if true, give the start signal, otherwise the stop signal
 	 */
 	private void fireDataListenersStartStop(int runNumber, boolean normal, boolean start) {
-		if (dataListeners!=null) for (InterfaceStatisticsListener l : dataListeners) {
-				if (start) {
-					l.notifyRunStarted(runNumber, m_StatsParams.getMultiRuns(),
-							currentStatHeader, currentStatMetaInfo);
-				} else {
-					l.notifyRunStopped(optRunsPerformed, normal);
+		if (dataListeners!=null) {
+                for (InterfaceStatisticsListener l : dataListeners) {
+       if (start) {
+               l.notifyRunStarted(runNumber, m_StatsParams.getMultiRuns(),
+                               currentStatHeader, currentStatMetaInfo);
+       } else {
+               l.notifyRunStopped(optRunsPerformed, normal);
 //					if (optRunsPerformed > 1) {
-						l.finalMultiRunResults(currentStatHeader,
-								finalObjectData);
+                       l.finalMultiRunResults(currentStatHeader,
+                                       finalObjectData);
 //					}
-			}
-		}
+}
+}           }
 	}
 	
     @Override
@@ -202,7 +212,9 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 				cnt++;
 				fname=fnameBase+"."+cnt;
 			}
-			if (TRACE) System.out.println("FileName =" + fname);
+			if (TRACE) {
+                                        System.out.println("FileName =" + fname);
+                                    }
 			try {
 				resultOut = new PrintWriter(new FileOutputStream(fname));
 			} catch (Exception e) {
@@ -211,7 +223,9 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 			}
 			resultOut.println("StartDate:" + startDate);
 			resultOut.println("On Host:" + getHostName());
-		} else resultOut = null;
+		} else {
+                resultOut = null;
+            }
 	}
 	
 	/**
@@ -264,7 +278,9 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 			firstPlot = true;
 			optRunsPerformed = 0;
 			convergenceCnt = 0;
-			if (saveParams) m_StatsParams.saveInstance();
+			if (saveParams) {
+                        m_StatsParams.saveInstance();
+                    }
 			initOutput(infoString);
 			bestIndyAllRuns = null;
 			bestFeasibleAllRuns = null;
@@ -274,8 +290,12 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 			runBestFitList = new ArrayList<IndividualInterface>();
 //			if (refineMultiRuns) meanCollection = new ArrayList<double[][]>();
 //			else meanCollection = null;
-			if (refineMultiRuns) sumDataCollection = new ArrayList<Double[]>();
-			else sumDataCollection = null;
+			if (refineMultiRuns) {
+                        sumDataCollection = new ArrayList<Double[]>();
+                    }
+			else {
+                        sumDataCollection = null;
+                    }
 
 			finalObjectData = null;
 
@@ -293,51 +313,79 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 		lastInformerList = null;
 		lastSols = null;
 		iterationCounter = 0;
-    	if (printRunIntroVerbosity()) printToTextListener("\n****** Multirun "+runNumber);
+    	if (printRunIntroVerbosity()) {
+                printToTextListener("\n****** Multirun "+runNumber);
+            }
     	if (params != null) {
-    		if (printRunIntroVerbosity()) printToTextListener("\nModule parameters: ");
-    		if (printRunIntroVerbosity()) printToTextListener(BeanInspector.niceToString(params));
+    		if (printRunIntroVerbosity()) {
+                printToTextListener("\nModule parameters: ");
+            }
+    		if (printRunIntroVerbosity()) {
+                printToTextListener(BeanInspector.niceToString(params));
+            }
     	}
-    	if (printRunIntroVerbosity()) printToTextListener("\nStatistics parameters: ");
-    	if (printRunIntroVerbosity()) printToTextListener(BeanInspector.niceToString(getStatisticsParameter()) + '\n');
+    	if (printRunIntroVerbosity()) {
+                printToTextListener("\nStatistics parameters: ");
+            }
+    	if (printRunIntroVerbosity()) {
+                printToTextListener(BeanInspector.niceToString(getStatisticsParameter()) + '\n');
+            }
 		functionCalls = 0;
 		fireDataListenersStartStop(runNumber, true, true);
 	}
 	
     @Override
 	public void stopOptPerformed(boolean normal, String stopMessage) {
-		if (TRACE) System.out.println("AbstractStatistics.stopOptPerformed");
-		if (lastSols==null) System.err.println("WARNING, possibly there was no call to createNextGenerationPerformed before calling stopOptPerformed (AnstractStatistics).");
+		if (TRACE) {
+                System.out.println("AbstractStatistics.stopOptPerformed");
+            }
+		if (lastSols==null) {
+                System.err.println("WARNING, possibly there was no call to createNextGenerationPerformed before calling stopOptPerformed (AnstractStatistics).");
+            }
 
 		if (iterationCounter < sumDataCollection.size()) {
 			// no good: later run was shorter than the first one. What to do? Discard the longer one:
-			if (TRACE) System.err.println("Error in AbstractStatistics: later run was shorter than earlier one... discarding rest...");
+			if (TRACE) {
+                        System.err.println("Error in AbstractStatistics: later run was shorter than earlier one... discarding rest...");
+                    }
 			for (int i=sumDataCollection.size()-1; i>=iterationCounter; i--) {
                 sumDataCollection.remove(i);
             }
 		}
 		optRunsPerformed++;
 		functionCallSum += functionCalls;
-		if (printRunStoppedVerbosity() && (stopMessage != null)) printToTextListener(" Termination message: " + stopMessage + "\n");
-		if (printRunStoppedVerbosity()) printToTextListener(" Function calls run: " + functionCalls + ", sum: " + functionCallSum + "\n");
+		if (printRunStoppedVerbosity() && (stopMessage != null)) {
+                printToTextListener(" Termination message: " + stopMessage + "\n");
+            }
+		if (printRunStoppedVerbosity()) {
+                printToTextListener(" Function calls run: " + functionCalls + ", sum: " + functionCallSum + "\n");
+            }
 		// check if target zero was reached
 		if (bestCurrentIndy != null) {
 			if (Mathematics.norm(bestOfRunIndy.getFitness()) < this.m_StatsParams.getConvergenceRateThreshold()) {
 				convergenceCnt++;
 			}
-			if (printRunStoppedVerbosity()) printIndy("Last best", bestCurrentIndy);
+			if (printRunStoppedVerbosity()) {
+                        printIndy("Last best", bestCurrentIndy);
+                    }
 		}		
 		if (bestOfRunIndy != null) {
 			runBestFitList.add(bestOfRunIndy);
-			if (printRunStoppedVerbosity()) printIndy("Run best", bestOfRunIndy);
+			if (printRunStoppedVerbosity()) {
+                        printIndy("Run best", bestOfRunIndy);
+                    }
 //			if (meanBestOfRunFitness==null) {
 //				meanBestOfRunFitness=bestRunIndividual.getFitness().clone();
 //			} else addSecond(meanBestOfRunFitness, bestRunIndividual.getFitness());
 		}
 		if (feasibleFoundAfter>0) {
-			if (printRunStoppedVerbosity()) printToTextListener(" Feasible ind. found after " + feasibleFoundAfter + " evaluations.\n");
+			if (printRunStoppedVerbosity()) {
+                        printToTextListener(" Feasible ind. found after " + feasibleFoundAfter + " evaluations.\n");
+                    }
 		} else {
-			if (printRunStoppedVerbosity()) printToTextListener(" NO feasible individual found.\n");
+			if (printRunStoppedVerbosity()) {
+                        printToTextListener(" NO feasible individual found.\n");
+                    }
 		}
 		if (printRunStoppedVerbosity()) {
 			printToTextListener(" Solution correlations (min,max,avg,med,var): " + BeanInspector.toString(((Population)lastSols).getCorrelations((Population)lastSols)) + "\n");
@@ -352,19 +400,25 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 					printToTextListener("* Run best feasible individual equals best individual.\n");
 				} else {
 					if (bestOfRunIndy instanceof AbstractEAIndividual) {
-						if (((AbstractEAIndividual)bestOfRunIndy).violatesConstraint())
-							printToTextListener(" Run best individual violates constraints by " + ((AbstractEAIndividual)bestOfRunIndy).getConstraintViolation() + "\n");
-						if (((AbstractEAIndividual)bestOfRunIndy).isMarkedPenalized())
-							printToTextListener(" Run best individual is penalized.\n");
+						if (((AbstractEAIndividual)bestOfRunIndy).violatesConstraint()) {
+                                                printToTextListener(" Run best individual violates constraints by " + ((AbstractEAIndividual)bestOfRunIndy).getConstraintViolation() + "\n");
+                                            }
+						if (((AbstractEAIndividual)bestOfRunIndy).isMarkedPenalized()) {
+                                                printToTextListener(" Run best individual is penalized.\n");
+                                            }
 					}
 					printIndy("Run best feasible", bestOfRunFeasibleIndy);
 				}
 			}
 		}
-		if (finalObjectData==null) finalObjectData = new ArrayList<Object[]>();
+		if (finalObjectData==null) {
+                finalObjectData = new ArrayList<Object[]>();
+            }
 		finalObjectData.add(currentStatObjectData);
 		
-		if (!printRunStoppedVerbosity() && printFinalVerbosity()) printToTextListener(".");
+		if (!printRunStoppedVerbosity() && printFinalVerbosity()) {
+                printToTextListener(".");
+            }
 //		if (currentBestFit!= null) {
 //			if (printRunStoppedVerbosity()) printToTextListener(" Best Fitness: " + BeanInspector.toString(currentBestFit) + "\n");
 //		}
@@ -373,7 +427,9 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 	
     @Override
 	public void postProcessingPerformed(Population resultPop) { // called from processor
-		if (!printRunStoppedVerbosity() && printFinalVerbosity() && optRunsPerformed >= m_StatsParams.getMultiRuns()) printToTextListener("\n");
+		if (!printRunStoppedVerbosity() && printFinalVerbosity() && optRunsPerformed >= m_StatsParams.getMultiRuns()) {
+                printToTextListener("\n");
+            }
 		if (printRunStoppedVerbosity()) {
 			if (resultPop!=null && (resultPop.size()>0)) {
 				printToTextListener("Resulting population: \n");
@@ -395,7 +451,9 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 //		if (bestCurrentIndy!=null) pop.add(bestCurrentIndy);
 //		if (bestOfRunIndy!=null) pop.add(bestOfRunIndy);
 //		if (bestOfRunFeasibleIndy!=null) pop.add(bestOfRunFeasibleIndy);
-		if (bestIndyAllRuns!=null) pop.add(bestIndyAllRuns);
+		if (bestIndyAllRuns!=null) {
+                pop.add(bestIndyAllRuns);
+            }
 		return pop;
 	}
 
@@ -403,10 +461,16 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 		printToTextListener("* " + prefix + " ind.: " + BeanInspector.toString(indy) + '\n');
 		printToTextListener("         solution data	: " + AbstractEAIndividual.getDefaultDataString(indy) + '\n');
 		printToTextListener("         solution fit	: " + BeanInspector.toString(indy.getFitness()));
-		if (!(indy instanceof AbstractEAIndividual)) printToTextListener(" - feasibility unknown\n");
+		if (!(indy instanceof AbstractEAIndividual)) {
+                printToTextListener(" - feasibility unknown\n");
+            }
 		else {
-			if (((AbstractEAIndividual)indy).isMarkedPenalized() || ((AbstractEAIndividual)indy).violatesConstraint()) printToTextListener(" - infeasible\n");
-			else printToTextListener("\n");
+			if (((AbstractEAIndividual)indy).isMarkedPenalized() || ((AbstractEAIndividual)indy).violatesConstraint()) {
+                        printToTextListener(" - infeasible\n");
+                    }
+			else {
+                        printToTextListener("\n");
+                    }
 		}
 
 	}
@@ -430,8 +494,12 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 	}
 	
 	protected void finalizeOutput() {
-		if (printFinalVerbosity()) printToTextListener("*******\n Runs performed: " + optRunsPerformed + ", reached target " + convergenceCnt + " times with threshold " + m_StatsParams.getConvergenceRateThreshold() + ", rate " + convergenceCnt/(double)m_StatsParams.getMultiRuns() + '\n');
-		if (printFinalVerbosity()) printToTextListener(" Average function calls: " + (functionCallSum/optRunsPerformed) + "\n");
+		if (printFinalVerbosity()) {
+                printToTextListener("*******\n Runs performed: " + optRunsPerformed + ", reached target " + convergenceCnt + " times with threshold " + m_StatsParams.getConvergenceRateThreshold() + ", rate " + convergenceCnt/(double)m_StatsParams.getMultiRuns() + '\n');
+            }
+		if (printFinalVerbosity()) {
+                printToTextListener(" Average function calls: " + (functionCallSum/optRunsPerformed) + "\n");
+            }
 		
 		if (printFinalVerbosity() && (feasibleFoundAfterSum>=0.)) {
 			printToTextListener("     Feasible solution found in " + numOfRunsFeasibleFound + " of " + optRunsPerformed + " runs \n");
@@ -441,19 +509,27 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 		if (printFinalVerbosity() && (statDataSumOverAll != null)) {
 			printToTextListener("     Averaged sum of run statistical data: (" +  optRunsPerformed + " runs):");
 			for (int i=0; i<statDataSumOverAll.length; i++) {
-                if (statDataSumOverAll[i]!=null) printToTextListener(textFieldDelimiter+(statDataSumOverAll[i]/optRunsPerformed));
+                if (statDataSumOverAll[i]!=null) {
+                                printToTextListener(textFieldDelimiter+(statDataSumOverAll[i]/optRunsPerformed));
+                            }
             }
 			printToTextListener("\n     Averaged last statistical data (" +  optRunsPerformed + " runs):");
 			Double[] lastSum = sumDataCollection.get(sumDataCollection.size()-1);
 			for (int i=0; i<lastSum.length; i++) {
-                if (lastSum[i]!=null) printToTextListener(textFieldDelimiter+(lastSum[i]/optRunsPerformed));
+                if (lastSum[i]!=null) {
+                                printToTextListener(textFieldDelimiter+(lastSum[i]/optRunsPerformed));
+                            }
             }
 //			for (int i=0; i<lastAdditionalInfoSums.length; i++) if (lastAdditionalInfoSums[i]!=null) printToTextListener(" \t"+(lastAdditionalInfoSums[i]/optRunsPerformed));
 			printToTextListener("\n");
 		}
 
-		if (printFinalVerbosity() && (bestIndyAllRuns != null)) printIndy("Overall best", bestIndyAllRuns);
-		if (printFinalVerbosity()) printToTextListener(getFinalAdditionalInfo()+'\n');
+		if (printFinalVerbosity() && (bestIndyAllRuns != null)) {
+                printIndy("Overall best", bestIndyAllRuns);
+            }
+		if (printFinalVerbosity()) {
+                printToTextListener(getFinalAdditionalInfo()+'\n');
+            }
 
 		if (optRunsPerformed>1) {
 			if (runBestFitList.size()>0) {
@@ -461,27 +537,37 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 				if (printFinalVerbosity()) {
 					double[] meanBestFit=getMeanBestFit(false);
 					printToTextListener(" MultiRun stats: Mean best fitness: " + BeanInspector.toString(meanBestFit)+"\n");
-					if (meanBestFit.length==1) printToTextListener(" MultiRun stats: Variance/Std.Dev.: " + BeanInspector.toString(calcStdDevVar(runBestFitList, meanBestFit[0])) + "\n");
+					if (meanBestFit.length==1) {
+                                        printToTextListener(" MultiRun stats: Variance/Std.Dev.: " + BeanInspector.toString(calcStdDevVar(runBestFitList, meanBestFit[0])) + "\n");
+                                    }
 					printToTextListener(" MultiRun stats: Median best fitn.: " + BeanInspector.toString(getMedianBestFit(false))+"\n");
 				}
 			}
-			if (printFinalVerbosity() && (bestFeasibleAllRuns != null)) printIndy("Overall best feasible", bestFeasibleAllRuns);
+			if (printFinalVerbosity() && (bestFeasibleAllRuns != null)) {
+                        printIndy("Overall best feasible", bestFeasibleAllRuns);
+                    }
 //			if ((runBestFeasibleList.size()>0) && (!equalLists(runBestFeasibleList, runBestFitList))) { // is there a difference between best feasibles and best fit?
 			if (runBestFeasibleList.size()>0) { // always output feasible stats even if theyre equal
 				if (printFinalVerbosity()) {
 					double[] meanBestFeasibleFit=getMeanBestFit(true);
 					printToTextListener(" MultiRun stats: Mean best feasible fitness (" + numOfRunsFeasibleFound + " runs): " + BeanInspector.toString(meanBestFeasibleFit)+"\n");
-					if (meanBestFeasibleFit.length==1) printToTextListener(" MultiRun stats: Variance/Std.Dev.: " + BeanInspector.toString(calcStdDevVar(runBestFeasibleList, meanBestFeasibleFit[0])) + "\n");
+					if (meanBestFeasibleFit.length==1) {
+                                        printToTextListener(" MultiRun stats: Variance/Std.Dev.: " + BeanInspector.toString(calcStdDevVar(runBestFeasibleList, meanBestFeasibleFit[0])) + "\n");
+                                    }
 					printToTextListener(" MultiRun stats: Median best feasible fitn. (: " + numOfRunsFeasibleFound + " runs): " + BeanInspector.toString(getMedianBestFit(true))+"\n");
 				}
 			}
 			if (refineMultiRuns && (sumDataCollection != null)) {
-				if (printFinalVerbosity()) printToTextListener(" Averaged performance:\n");
+				if (printFinalVerbosity()) {
+                                printToTextListener(" Averaged performance:\n");
+                            }
 				// the summed-up values of the mean collection is divided by the number of runs
 				for (int i=0; i<sumDataCollection.size(); i++) {
                     divideMean(sumDataCollection.get(i), optRunsPerformed);
                 }
-				if (printFinalVerbosity()) printToTextListener(refineToText(sumDataCollection, showAvgIntervals));
+				if (printFinalVerbosity()) {
+                                printToTextListener(refineToText(sumDataCollection, showAvgIntervals));
+                            }
 			}
 			if (printFinalVerbosity() && (finalObjectData!=null)) {
 				printToTextListener(" Last data line of " + finalObjectData.size() + " multi-runs:\n" );
@@ -492,8 +578,9 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 			}
 		}
 
-		if (TRACE)
-			System.out.println("End of run");
+		if (TRACE) {
+                System.out.println("End of run");
+            }
 		if (resultOut != null) {
 			String StopDate = getDateString();
 			resultOut.println("StopDate:" + StopDate);
@@ -612,9 +699,13 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 
     @Override
 	public void printToTextListener(String s) {
-		if ((resultOut != null)) resultOut.print(s);
+		if ((resultOut != null)) {
+                resultOut.print(s);
+            }
 		for (InterfaceTextListener l : textListeners) {
-			if (m_StatsParams.getOutputTo().getSelectedTagID() >= 1) l.print(s);
+			if (m_StatsParams.getOutputTo().getSelectedTagID() >= 1) {
+                        l.print(s);
+                    }
 		}
 	}
 	
@@ -707,7 +798,9 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 		ArrayList<String>headerEntries = new ArrayList<String>();
 		headerEntries.add("FunctionCalls");
 		for (int i=0; i<vals.length; i++) {
-			if (isRequestedField(vals[i])) headerEntries.add(vals[i].toString());
+			if (isRequestedField(vals[i])) {
+                        headerEntries.add(vals[i].toString());
+                    }
 		}
 //		return new String[]{"Fun.calls","Best","Mean", "Worst"};
 		return headerEntries.toArray(new String[headerEntries.size()]);
@@ -726,7 +819,9 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 		ArrayList<String> headerInfo = new ArrayList<String>();
 		headerInfo.add("The number of function evaluations");
 		for (int i=0; i<vals.length; i++) {
-			if (isRequestedField(vals[i])) headerInfo.add(GraphSelectionEnum.getInfoStrings()[i]);
+			if (isRequestedField(vals[i])) {
+                        headerInfo.add(GraphSelectionEnum.getInfoStrings()[i]);
+                    }
 		}
 //		return new String[]{"Fun.calls","Best","Mean", "Worst"};
 		return headerInfo.toArray(new String[headerInfo.size()]);
@@ -831,11 +926,14 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 		Iterator<Object> iter = values.iterator();
 		int cnt=0;
 		iter.next(); // skip the first field (function calls) which is not regarded here
-		if (!lastIsShowFull) while (iter.hasNext()) {
-			iter.next();
-			if (!isRequestedField(cnt++)) iter.remove(); 
-			// the cnt variable is one behind the index in the values list, because of the function calls field. 
-		}
+		if (!lastIsShowFull) {
+                while (iter.hasNext()) {
+                    iter.next();
+                    if (!isRequestedField(cnt++)) {
+                        iter.remove();
+                    }
+                }
+            }
 		return values;
 //		return StringTools.concatValues(values, textFieldDelimiter);
 	}
@@ -851,21 +949,31 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 	 */
 	protected List<String> getAdditionalHeaderMetaInfo(List<InterfaceAdditionalPopulationInformer> informerList, List<String> metaInfo) {
 		LinkedList<String> headers = new LinkedList<String>();
-		if (metaInfo!=null && (metaInfo.size()>0)) System.err.println("Warning, metaInfo list should be empty in AbstractStatistics.getAdditionalHeaderMetaInfo"); 
+		if (metaInfo!=null && (metaInfo.size()>0)) {
+                System.err.println("Warning, metaInfo list should be empty in AbstractStatistics.getAdditionalHeaderMetaInfo");
+            } 
 		for (InterfaceAdditionalPopulationInformer informer : informerList) {
 			headers.addAll(Arrays.asList(informer.getAdditionalDataHeader()));
-			if (metaInfo!=null) metaInfo.addAll(Arrays.asList(informer.getAdditionalDataInfo()));
+			if (metaInfo!=null) {
+                        metaInfo.addAll(Arrays.asList(informer.getAdditionalDataInfo()));
+                    }
 //			hdr = hdr + "\t " + informer.getAdditionalDataHeader(pop);
 		}
 		Iterator<String> hIter = headers.iterator();
 		Iterator<String> mIter = (metaInfo!=null) ? metaInfo.iterator() : null;  
-		if (!lastIsShowFull) while (hIter.hasNext()) {
-			if (mIter!=null && mIter.hasNext()) mIter.next();
-			if (!isRequestedAdditionalField(hIter.next())) {
-				hIter.remove();
-				if (mIter!=null && mIter.hasNext()) mIter.remove();
-			}
-		}
+		if (!lastIsShowFull) {
+                while (hIter.hasNext()) {
+                    if (mIter!=null && mIter.hasNext()) {
+                        mIter.next();
+                    }
+                    if (!isRequestedAdditionalField(hIter.next())) {
+                        hIter.remove();
+                        if (mIter!=null && mIter.hasNext()) {
+                            mIter.remove();
+                        }
+                    }
+                }
+            }
 		return headers;
 	}
 	
@@ -936,7 +1044,9 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 //			if (doTextOutput()) printToTextListener(getOutputHeader(null, null)+'\n');
 			firstPlot = false;
 		}
-		if ((iterationCounter == 0) && printHeaderByVerbosity()) printToTextListener(getOutputHeaderFieldNamesAsString(null)+'\n');
+		if ((iterationCounter == 0) && printHeaderByVerbosity()) {
+                                printToTextListener(getOutputHeaderFieldNamesAsString(null)+'\n');
+                            }
 
 		if (doTextOutput() && printLineByVerbosity(calls)) {
 			Pair<String,Object[]> addInfo = getOutputData(null, null);
@@ -964,8 +1074,12 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 				System.err.println("Error in AbstractStatistics.updateAdditionalInfo: mismatching info arrays!");
 			} else {
 				for (int i=0; i<curInfo.length; i++) {
-					if (resultSum[i]==null || (curInfo[i]==null)) resultSum[i]=null; 
-					else resultSum[i]+=curInfo[i];
+					if (resultSum[i]==null || (curInfo[i]==null)) {
+                                        resultSum[i]=null;
+                                    } 
+					else {
+                                        resultSum[i]+=curInfo[i];
+                                    }
 				}
 			}
 		}
@@ -1022,7 +1136,9 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 				if (currentBestFeasibleFit==null) { // feasible indy found for the first time 
 					numOfRunsFeasibleFound++;
 					feasibleFoundAfter=((Population)pop).getFunctionCalls();
-					if (feasibleFoundAfterSum<0) feasibleFoundAfterSum=0.; // initial signaling value was -1.
+					if (feasibleFoundAfterSum<0) {
+                                        feasibleFoundAfterSum=0.;
+                                    } // initial signaling value was -1.
 					feasibleFoundAfterSum+=feasibleFoundAfter;
 				}
 				currentBestFeasibleFit = curBestFeasible.getFitness().clone();
@@ -1034,13 +1150,23 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 					bestFeasibleAllRuns = bestOfRunFeasibleIndy;
 				}
 			}
-		} else System.err.println("INVALID POPULATION (AbstractStatistics)");
+		} else {
+                System.err.println("INVALID POPULATION (AbstractStatistics)");
+            }
 		
 		// collect these data fields only if requested by the user
-		if (lastIsShowFull || GraphSelectionEnum.doPlotMean(lastFieldSelection)) currentMeanFit = pop.getMeanFitness().clone();
-		else currentMeanFit = null;
-		if (lastIsShowFull || GraphSelectionEnum.doPlotWorst(lastFieldSelection)) currentWorstFit = pop.getWorstIndividual().getFitness().clone();
-		else currentWorstFit = null;
+		if (lastIsShowFull || GraphSelectionEnum.doPlotMean(lastFieldSelection)) {
+                currentMeanFit = pop.getMeanFitness().clone();
+            }
+		else {
+                currentMeanFit = null;
+            }
+		if (lastIsShowFull || GraphSelectionEnum.doPlotWorst(lastFieldSelection)) {
+                currentWorstFit = pop.getWorstIndividual().getFitness().clone();
+            }
+		else {
+                currentWorstFit = null;
+            }
 		
 		functionCalls = pop.getFunctionCalls();
 		
@@ -1076,8 +1202,12 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 	public synchronized void createNextGenerationPerformed(PopulationInterface
 			pop, InterfaceOptimizer opt, List<InterfaceAdditionalPopulationInformer> informerList) {
 		lastInformerList  = informerList;
-		if (TRACE) printToTextListener(".. in createNextGenPerformed after " + pop.getFunctionCalls() + " evals.\n");
-		if (resultOut != null) resultOut.flush(); 
+		if (TRACE) {
+                                printToTextListener(".. in createNextGenPerformed after " + pop.getFunctionCalls() + " evals.\n");
+                            }
+		if (resultOut != null) {
+                                resultOut.flush();
+                            } 
 		if (firstPlot) {
 			initPlots(pop, informerList);
 //			if (doTextOutput()) printToTextListener(getOutputHeader(informer, pop)+'\n');
@@ -1094,7 +1224,9 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 
 		if (iterationCounter==0) {
 			String headerLine = StringTools.concatFields(currentStatHeader, textFieldDelimiter);
-			if (printHeaderByVerbosity()) printToTextListener(headerLine+'\n');
+			if (printHeaderByVerbosity()) {
+                        printToTextListener(headerLine+'\n');
+                    }
 		}
 		
 		lastSols  = (opt!=null) ? new Population(opt.getAllSolutions().getSolutions()) : pop;
@@ -1131,8 +1263,12 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 					// "generation performed" event the same number of times. 
 					// thus: dont do an update for events that are "too late"
 					sumDataEntry = null;
-				} else sumDataEntry = sumDataCollection.get(iterationCounter);
-				if (sumDataEntry != null) updateSum(sumDataEntry, currentStatDoubleData); // this adds up data of a single iteration across multiple runs
+				} else {
+                                sumDataEntry = sumDataCollection.get(iterationCounter);
+                            }
+				if (sumDataEntry != null) {
+                                updateSum(sumDataEntry, currentStatDoubleData);
+                            } // this adds up data of a single iteration across multiple runs
 			}
 		}
 		
@@ -1149,8 +1285,12 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 //		}
 		plotCurrentResults();
 		fireDataListeners();
-		if (TRACE) printToTextListener(".. done createNextGenPerformed after " + pop.getFunctionCalls() + " evals.\n");
-		if (resultOut != null) resultOut.flush(); 
+		if (TRACE) {
+                                printToTextListener(".. done createNextGenPerformed after " + pop.getFunctionCalls() + " evals.\n");
+                            }
+		if (resultOut != null) {
+                                resultOut.flush();
+                            } 
 		iterationCounter++;
 	}
 
@@ -1184,10 +1324,16 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 		// ingeniously shifting i by two since the stats counter starts at 0
 		// after two evaluations have already happened: initialization and first optimization
 		// this allows the last iteration to be within the displayed set if k is a divisor of whole iterations as expected 
-		if ((i==0) || (k==0)) return true;
+		if ((i==0) || (k==0)) {
+                return true;
+            }
 		else {
-			if (i<=2) return (i % k) == 0; // show more at the beginning (always first time)
-			else return ((i+2) % k) == 0;
+			if (i<=2) {
+                        return (i % k) == 0;
+                    } // show more at the beginning (always first time)
+			else {
+                        return ((i+2) % k) == 0;
+                    }
 		}
 	}
 	
@@ -1197,7 +1343,9 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 	
 	private static void divideMean(Double[] mean, double d) {
 		for (int j=0; j<mean.length; j++) {
-            if (mean[j]!=null) mean[j] /= d;
+            if (mean[j]!=null) {
+                        mean[j] /= d;
+                    }
         }
 //		for (int i=0; i<mean.length; i++) {
 //			for (int j=0; j<mean[i].length; j++) mean[i][j] /= d;
@@ -1212,9 +1360,15 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 	 * @return true if the second individual is dominant, else false
 	 */
 	public static boolean secondIsBetter(IndividualInterface indy1, IndividualInterface indy2) {
-		if (indy1 == null) return true;
-		if (indy2 == null) return false;
-		if (indy1 instanceof AbstractEAIndividual) return ((AbstractEAIndividual)indy2).isDominatingDebConstraints((AbstractEAIndividual)indy1);
+		if (indy1 == null) {
+                return true;
+            }
+		if (indy2 == null) {
+                return false;
+            }
+		if (indy1 instanceof AbstractEAIndividual) {
+                return ((AbstractEAIndividual)indy2).isDominatingDebConstraints((AbstractEAIndividual)indy1);
+            }
 		return (indy2.isDominant(indy1));
 	}
 	

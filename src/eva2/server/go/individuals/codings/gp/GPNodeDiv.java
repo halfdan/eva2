@@ -59,14 +59,21 @@ public class GPNodeDiv extends AbstractGPNode implements java.io.Serializable {
         double tmpValue = 0;
 
         tmpObj = this.m_Nodes[0].evaluate(environment);
-        if (tmpObj instanceof Double) result = ((Double)tmpObj).doubleValue();
+        if (tmpObj instanceof Double) {
+            result = ((Double)tmpObj).doubleValue();
+        }
         for (int i = 1; i < this.m_Nodes.length; i++) {
             tmpObj = this.m_Nodes[i].evaluate(environment);
-            if (tmpObj instanceof Double)
+            if (tmpObj instanceof Double) {
                 tmpValue = ((Double)tmpObj).doubleValue();
+            }
                 if (Math.abs(tmpValue) < this.m_LowerBorderForSec) {
-                    if (tmpValue < 0) tmpValue = -this.m_LowerBorderForSec;
-                    else tmpValue = this.m_LowerBorderForSec;
+                    if (tmpValue < 0) {
+                        tmpValue = -this.m_LowerBorderForSec;
+                    }
+                    else {
+                        tmpValue = this.m_LowerBorderForSec;
+                    }
                 }
                 result /= tmpValue;
         }

@@ -35,7 +35,9 @@ public class ArchivingNSGAII extends ArchivingNSGA implements java.io.Serializab
     @Override
     public void addElementsToArchive(Population pop) {
 
-        if (pop.getArchive() == null) pop.SetArchive(new Population());
+        if (pop.getArchive() == null) {
+            pop.SetArchive(new Population());
+        }
 
         //////////////////////////////////////////////////////////////////////////////////////////////
         if (this.m_Debug && false) {

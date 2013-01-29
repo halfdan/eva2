@@ -120,7 +120,9 @@ public class SelProbFitnessSharing extends AbstractSelProb implements java.io.Se
         return this.m_SharingDistance;
     }
     public void setSharingDistance(double b){
-        if (b < 0.000001) b = 0.000001;
+        if (b < 0.000001) {
+            b = 0.000001;
+        }
         this.m_SharingDistance = b;
     }
     public String sharingDistanceTipText() {

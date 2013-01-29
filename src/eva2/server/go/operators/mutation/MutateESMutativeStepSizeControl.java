@@ -61,12 +61,22 @@ public class MutateESMutativeStepSizeControl implements InterfaceMutation, java.
     public boolean equals(Object mutator) {
         if (mutator instanceof MutateESMutativeStepSizeControl) {
             MutateESMutativeStepSizeControl mut = (MutateESMutativeStepSizeControl)mutator;
-            if (this.m_MutationStepSize != mut.m_MutationStepSize) return false;
-            if (this.m_Alpha != mut.m_Alpha) return false;
-            if (this.m_LowerLimitStepSize != mut.m_LowerLimitStepSize) return false;
-            if (this.m_UpperLimitStepSize != mut.m_UpperLimitStepSize) return false;
+            if (this.m_MutationStepSize != mut.m_MutationStepSize) {
+                return false;
+            }
+            if (this.m_Alpha != mut.m_Alpha) {
+                return false;
+            }
+            if (this.m_LowerLimitStepSize != mut.m_LowerLimitStepSize) {
+                return false;
+            }
+            if (this.m_UpperLimitStepSize != mut.m_UpperLimitStepSize) {
+                return false;
+            }
             return true;
-        } else return false;
+        } else {
+            return false;
+        }
     }
 
     /** This method allows you to init the mutation operator
@@ -88,16 +98,26 @@ public class MutateESMutativeStepSizeControl implements InterfaceMutation, java.
         if (individual instanceof InterfaceESIndividual) {
             double[] x = ((InterfaceESIndividual)individual).getDGenotype();
             double[][] range = ((InterfaceESIndividual)individual).getDoubleRange();
-            if (RNG.flipCoin(0.5))
+            if (RNG.flipCoin(0.5)) {
                 this.m_MutationStepSize *= this.m_Alpha;
-            else
+            }
+            else {
                 this.m_MutationStepSize /= this.m_Alpha;
-            if (this.m_MutationStepSize < this.m_LowerLimitStepSize) this.m_MutationStepSize = this.m_LowerLimitStepSize;
-            if (this.m_MutationStepSize > this.m_UpperLimitStepSize) this.m_MutationStepSize = this.m_UpperLimitStepSize;
+            }
+            if (this.m_MutationStepSize < this.m_LowerLimitStepSize) {
+                this.m_MutationStepSize = this.m_LowerLimitStepSize;
+            }
+            if (this.m_MutationStepSize > this.m_UpperLimitStepSize) {
+                this.m_MutationStepSize = this.m_UpperLimitStepSize;
+            }
             for (int i = 0; i < x.length; i++) {
                 x[i] += ((range[i][1] -range[i][0])/2)*RNG.gaussianDouble(this.m_MutationStepSize);
-                if (range[i][0] > x[i]) x[i] = range[i][0];
-                if (range[i][1] < x[i]) x[i] = range[i][1];
+                if (range[i][0] > x[i]) {
+                    x[i] = range[i][0];
+                }
+                if (range[i][1] < x[i]) {
+                    x[i] = range[i][1];
+                }
             }
             ((InterfaceESIndividual)individual).SetDGenotype(x);
             // System.out.println("new step size: " + m_MutationStepSize);
@@ -145,7 +165,9 @@ public class MutateESMutativeStepSizeControl implements InterfaceMutation, java.
      * @param d   The mutation operator.
      */
     public void setMutationStepSize(double d) {
-        if (d < 0) d = this.m_LowerLimitStepSize;
+        if (d < 0) {
+            d = this.m_LowerLimitStepSize;
+        }
         this.m_MutationStepSize = d;
     }
     public double getMutationStepSize() {
@@ -185,7 +207,9 @@ public class MutateESMutativeStepSizeControl implements InterfaceMutation, java.
      * @param d   The mutation operator.
      */
     public void setAlpha(double d) {
-        if (d < 0) d = 0;
+        if (d < 0) {
+            d = 0;
+        }
         this.m_Alpha = d;
     }
     public double getAlpha() {

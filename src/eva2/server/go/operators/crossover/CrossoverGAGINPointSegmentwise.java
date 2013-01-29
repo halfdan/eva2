@@ -36,7 +36,9 @@ public class CrossoverGAGINPointSegmentwise extends CrossoverGAGINPoint {
 	public boolean equals(Object crossover) {
 		if (super.equals(crossover) && (crossover instanceof CrossoverGAGINPointSegmentwise)) {
 			return ((CrossoverGAGINPointSegmentwise)crossover).segmentLength==this.segmentLength;
-		} else return false;
+		} else {
+                return false;
+            }
 	}
 
 	@Override

@@ -54,7 +54,9 @@ public class StandardAbsorptionStrategy implements	InterfaceAbsorptionStrategy, 
 		double dist = subswarm.distance(indy,gbest); // euclidean distance
 		if (dist <= R){
 			return true;
-		}else return false;
+		}else {
+                return false;
+            }
 	}
 
 

@@ -45,10 +45,14 @@ public class DArray implements DIntDoubleMap{
    * @param capacity_multiplier the capacity multiplier when the array overflows
    */
   public DArray(int initial_capacity, double capacity_multiplier){
-    if( initial_capacity < 1 ) throw
-      new IllegalArgumentException("The initial capacity has to be at least 1");
-    if( capacity_multiplier <= 1 ) throw
-      new IllegalArgumentException("The capacity multiplier has to be bigger than 1");
+    if( initial_capacity < 1 ) {
+          throw
+new IllegalArgumentException("The initial capacity has to be at least 1");
+      }
+    if( capacity_multiplier <= 1 ) {
+          throw
+new IllegalArgumentException("The capacity multiplier has to be bigger than 1");
+      }
     this.initial_capacity = initial_capacity;
     value = new double[initial_capacity];
     this.capacity_multiplier = capacity_multiplier;
@@ -62,14 +66,20 @@ public class DArray implements DIntDoubleMap{
    */
     @Override
   public boolean setImage(int source, double image){
-    if(source<0 || source>=size) throw
-      new ArrayIndexOutOfBoundsException(source);
+    if(source<0 || source>=size) {
+          throw
+new ArrayIndexOutOfBoundsException(source);
+      }
     boolean min_max_changed = false, restore = false;
     if( image < min ){ min = image; min_max_changed = true; }
     else if( image > max ){ max = image; min_max_changed = true; }
-    if( value[source] == min || value[source] == max || (value[source]==minPositive)) restore = true;
+    if( value[source] == min || value[source] == max || (value[source]==minPositive)) {
+          restore = true;
+      }
     value[source] = image;
-    if( restore ) min_max_changed = restore() || min_max_changed;
+    if( restore ) {
+          min_max_changed = restore() || min_max_changed;
+      }
     return min_max_changed;
   }
 
@@ -86,8 +96,12 @@ public class DArray implements DIntDoubleMap{
 //  }
     @Override
     public double getImage(int source){
-    if(source<0) new ArrayIndexOutOfBoundsException(source);
-    if(source>=size && size > 1) return value[size-1];
+    if(source<0) {
+            new ArrayIndexOutOfBoundsException(source);
+        }
+    if(source>=size && size > 1) {
+            return value[size-1];
+        }
     return value[source];
   }
 
@@ -103,13 +117,17 @@ public class DArray implements DIntDoubleMap{
   public boolean addImage(double image){
     if( size >= value.length ){
       int new_length = (int)(value.length * capacity_multiplier);
-      if( !(new_length > value.length) ) new_length++;
+      if( !(new_length > value.length) ) {
+            new_length++;
+        }
       double[] new_val = new double[new_length];
       System.arraycopy(value,0,new_val,0,value.length);
       value = new_val;
     }
     boolean min_max_changed = false;
-    if( size == 0 ){ min = image; max = image; min_max_changed = true; if (image>0) minPositive=image;}
+    if( size == 0 ){ min = image; max = image; min_max_changed = true; if (image>0) {
+            minPositive=image;
+        }}
     else {
       if ((image >0) && ((image<minPositive) || (minPositive<0))) { minPositive=image; min_max_changed=true;}
       if( image > max ) { max = image; min_max_changed = true; }
@@ -136,17 +154,27 @@ public class DArray implements DIntDoubleMap{
    */
     @Override
   public boolean restore(){
-    if( size == 0 ) return false;
+    if( size == 0 ) {
+          return false;
+      }
     double old_min = min, old_max = max;
     min = value[0];
     max = value[0];
     minPositive=Double.POSITIVE_INFINITY;
     for( int i=1; i<size; i++ ) {
-      if (value[i]>0 && (value[i]<minPositive)) minPositive=value[i];
-      if( value[i] < min ) min = value[i];
-      else if( value[i] > max ) max = value[i];
+      if (value[i]>0 && (value[i]<minPositive)) {
+            minPositive=value[i];
+        }
+      if( value[i] < min ) {
+            min = value[i];
+        }
+      else if( value[i] > max ) {
+            max = value[i];
+        }
     }
-    if (Double.isInfinite(minPositive)) minPositive=-1;
+    if (Double.isInfinite(minPositive)) {
+          minPositive=-1;
+      }
     return (old_min != min) || (old_max != max);
   }
 
@@ -166,8 +194,10 @@ public class DArray implements DIntDoubleMap{
    */
     @Override
   public double getMinImageValue(){
-    if( size == 0 ) throw
-      new IllegalArgumentException("DArray is empty. No minimal value exists");
+    if( size == 0 ) {
+          throw
+new IllegalArgumentException("DArray is empty. No minimal value exists");
+      }
     return min;
   }
 
@@ -177,8 +207,10 @@ public class DArray implements DIntDoubleMap{
    */
     @Override
   public double getMinPositiveImageValue() {
-	  if ( size==0) throw
-	  	new IllegalArgumentException("DArray is empty. No minimal value exists");
+	  if ( size==0) {
+          throw
+    new IllegalArgumentException("DArray is empty. No minimal value exists");
+      }
 	  return (minPositive < 0) ? max : minPositive;
   }
   /**
@@ -188,8 +220,10 @@ public class DArray implements DIntDoubleMap{
    */
     @Override
   public double getMaxImageValue(){
-    if( size == 0 ) throw
-      new IllegalArgumentException("DArray is empty. No maximal value exists");
+    if( size == 0 ) {
+          throw
+new IllegalArgumentException("DArray is empty. No maximal value exists");
+      }
     return max;
   }
 
@@ -203,14 +237,26 @@ public class DArray implements DIntDoubleMap{
    */
     @Override
   public boolean equals(Object o){
-    if( !(o instanceof DArray) ) return false;
+    if( !(o instanceof DArray) ) {
+          return false;
+      }
     DArray comp = (DArray)o;
-    if( comp.size != size ) return false;
-    if( comp.max != max ) return false;
-    if( comp.min != min ) return false;
-    if( comp.minPositive != minPositive) return false;
+    if( comp.size != size ) {
+          return false;
+      }
+    if( comp.max != max ) {
+          return false;
+      }
+    if( comp.min != min ) {
+          return false;
+      }
+    if( comp.minPositive != minPositive) {
+          return false;
+      }
     for( int i=0; i<size; i++ ) {
-          if( comp.value[i] != value[i] ) return false;
+          if( comp.value[i] != value[i] ) {
+            return false;
+        }
       }
     return true;
   }
@@ -218,16 +264,19 @@ public class DArray implements DIntDoubleMap{
     @Override
   public String toString(){
     String text = "eva2.tools.chart2d.DArray[size:"+size;
-    if( size < 11 )
-      for( int i=0; i<size; i++ ) {
-          text += ", "+value[i];
+    if( size < 11 ) {
+          for( int i=0; i<size; i++ ) {
+              text += ", "+value[i];
+          }
       }
     text += "]";
     return text;
   }
 
   public double[] toArray(double[] v){
-    if( v == null || v.length < size ) v = new double[size];
+    if( v == null || v.length < size ) {
+          v = new double[size];
+      }
     System.arraycopy(value,0,v,0,size);
     return v;
   }

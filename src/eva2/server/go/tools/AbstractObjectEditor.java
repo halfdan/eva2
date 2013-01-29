@@ -34,13 +34,17 @@ public abstract class AbstractObjectEditor implements PropertyEditor, java.beans
 
     @Override
     public void addPropertyChangeListener(PropertyChangeListener l) {
-  	  if (m_Support == null) m_Support = new PropertyChangeSupport(this);
+  	  if (m_Support == null) {
+            m_Support = new PropertyChangeSupport(this);
+        }
   	  m_Support.addPropertyChangeListener(l);
     }
 
     @Override
     public void removePropertyChangeListener(PropertyChangeListener l) {
-  	  if (m_Support == null) m_Support = new PropertyChangeSupport(this);
+  	  if (m_Support == null) {
+            m_Support = new PropertyChangeSupport(this);
+        }
   	  m_Support.removePropertyChangeListener(l);
     }
     /** This will wait for the GenericObjectEditor to finish
@@ -238,15 +242,20 @@ public abstract class AbstractObjectEditor implements PropertyEditor, java.beans
 //                    result.m_Editor.setValue(result.m_Value);
 //                    result.m_Editor.addPropertyChangeListener(this);
                   result.m_Editor     = PropertyEditorProvider.findEditor(props[i], result.m_Value);
-                  if (result.m_Editor == null) result.m_Editor = PropertyEditorProvider.findEditor(result.m_PropertyType);
-                  if (result.m_Editor instanceof GenericObjectEditor)
-                      ((GenericObjectEditor) result.m_Editor).setClassType(result.m_PropertyType);
+                  if (result.m_Editor == null) {
+                        result.m_Editor = PropertyEditorProvider.findEditor(result.m_PropertyType);
+                    }
+                  if (result.m_Editor instanceof GenericObjectEditor) {
+                        ((GenericObjectEditor) result.m_Editor).setClassType(result.m_PropertyType);
+                    }
                   
                   
                   result.m_Editor.setValue(result.m_Value);
                   result.m_Editor.addPropertyChangeListener(this);
                     this.findViewFor(result);
-                    if (result.m_View != null) result.m_View.repaint();
+                    if (result.m_View != null) {
+                        result.m_View.repaint();
+                    }
                 } catch (Exception e) {
                     System.out.println("Darn cant read the value...");
                 }
@@ -264,7 +273,9 @@ public abstract class AbstractObjectEditor implements PropertyEditor, java.beans
      */
     public static void findViewFor(GeneralGOEProperty editor) {
     	editor.m_View = PropertySheetPanel.getView(editor.m_Editor);
-    	if (editor.m_View==null) System.out.println("Warning: Property \"" + editor.m_Name
-                                 + "\" has non-displayabale editor.  Skipping.");
+    	if (editor.m_View==null) {
+            System.out.println("Warning: Property \"" + editor.m_Name
+        + "\" has non-displayabale editor.  Skipping.");
+        }
     }
 }

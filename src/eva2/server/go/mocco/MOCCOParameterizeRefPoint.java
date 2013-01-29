@@ -111,12 +111,17 @@ public class MOCCOParameterizeRefPoint extends MOCCOPhase implements InterfacePr
         try {
             this.m_EMOSO.m_Value      = this.m_LpMetric;
             this.m_EMOSO.m_Editor     = PropertyEditorProvider.findEditor(this.m_EMOSO.m_Value.getClass());
-            if (this.m_EMOSO.m_Editor == null) this.m_EMOSO.m_Editor = PropertyEditorProvider.findEditor(MOSOLpMetric.class);
-            if (this.m_EMOSO.m_Editor instanceof GenericObjectEditor)
+            if (this.m_EMOSO.m_Editor == null) {
+                this.m_EMOSO.m_Editor = PropertyEditorProvider.findEditor(MOSOLpMetric.class);
+            }
+            if (this.m_EMOSO.m_Editor instanceof GenericObjectEditor) {
                 ((GenericObjectEditor) this.m_EMOSO.m_Editor).setClassType(MOSOLpMetric.class);
+            }
             this.m_EMOSO.m_Editor.setValue(this.m_EMOSO.m_Value);
             AbstractObjectEditor.findViewFor(this.m_EMOSO);
-            if (this.m_EMOSO.m_View != null) this.m_EMOSO.m_View.repaint();
+            if (this.m_EMOSO.m_View != null) {
+                this.m_EMOSO.m_View.repaint();
+            }
         } catch (Exception e) {
             System.out.println("Darn can't read the value...");
         }
@@ -142,12 +147,17 @@ public class MOCCOParameterizeRefPoint extends MOCCOPhase implements InterfacePr
         try {
             this.m_EIMEA.m_Value      = this.m_Island;
             this.m_EIMEA.m_Editor     = PropertyEditorProvider.findEditor(this.m_EIMEA.m_Value.getClass());
-            if (this.m_EIMEA.m_Editor == null) this.m_EIMEA.m_Editor = PropertyEditorProvider.findEditor(IslandModelEA.class);
-            if (this.m_EIMEA.m_Editor instanceof GenericObjectEditor)
+            if (this.m_EIMEA.m_Editor == null) {
+                this.m_EIMEA.m_Editor = PropertyEditorProvider.findEditor(IslandModelEA.class);
+            }
+            if (this.m_EIMEA.m_Editor instanceof GenericObjectEditor) {
                 ((GenericObjectEditor) this.m_EIMEA.m_Editor).setClassType(IslandModelEA.class);
+            }
             this.m_EIMEA.m_Editor.setValue(this.m_EIMEA.m_Value);
             AbstractObjectEditor.findViewFor(this.m_EIMEA);
-            if (this.m_EIMEA.m_View != null) this.m_EIMEA.m_View.repaint();
+            if (this.m_EIMEA.m_View != null) {
+                this.m_EIMEA.m_View.repaint();
+            }
         } catch (Exception e) {
             System.out.println("Darn can't read the value...");
         }
@@ -165,12 +175,17 @@ public class MOCCOParameterizeRefPoint extends MOCCOPhase implements InterfacePr
         try {
             editor.m_Value      = this.m_Mocco.m_State.m_Terminator;
             editor.m_Editor     = PropertyEditorProvider.findEditor(editor.m_Value.getClass());
-            if (editor.m_Editor == null) editor.m_Editor = PropertyEditorProvider.findEditor(InterfaceTerminator.class);
-            if (editor.m_Editor instanceof GenericObjectEditor)
+            if (editor.m_Editor == null) {
+                editor.m_Editor = PropertyEditorProvider.findEditor(InterfaceTerminator.class);
+            }
+            if (editor.m_Editor instanceof GenericObjectEditor) {
                 ((GenericObjectEditor) editor.m_Editor).setClassType(InterfaceTerminator.class);
+            }
             editor.m_Editor.setValue(editor.m_Value);
             AbstractObjectEditor.findViewFor(editor);
-            if (editor.m_View != null) editor.m_View.repaint();
+            if (editor.m_View != null) {
+                editor.m_View.repaint();
+            }
         } catch (Exception e) {
             System.out.println("Darn can't read the value...");
         }
@@ -242,8 +257,12 @@ public class MOCCOParameterizeRefPoint extends MOCCOPhase implements InterfacePr
             for (int i = 0; i < m_Perturbations; i++) {
                 tmpD = new double[m_RefPoint.length];
                 for (int j = 0; j < tmpD.length; j++) {
-                    if (i > 0) tmpD[j] = m_RefPoint[j] + RNG.gaussianDouble(m_Perturbation);
-                    else tmpD[j] = m_RefPoint[j];
+                    if (i > 0) {
+                        tmpD[j] = m_RefPoint[j] + RNG.gaussianDouble(m_Perturbation);
+                    }
+                    else {
+                        tmpD[j] = m_RefPoint[j];
+                    }
                 }
                 tmpLPs[i] = (MOSOLpMetric)m_LpMetric.clone();
                 // I've to set this before I change the parameters, because the problem sets the

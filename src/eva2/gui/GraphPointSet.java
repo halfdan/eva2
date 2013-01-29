@@ -264,10 +264,11 @@ public class GraphPointSet {
 		int[] GraphSize = new int[m_PointSetContainer.size()];
 		for (int i = 0; i < m_PointSetContainer.size(); i++) {
 			GraphSize[i] = ((PointSet) m_PointSetContainer.get(i)).getSize();
-			if (GraphSize[i] <= 0)
-				System.err.println("Warning: invalid graph size of "
-						+ GraphSize[i] + " at " + i
-						+ "!  (GraphPointSet.addGraph)");
+			if (GraphSize[i] <= 0) {
+                        System.err.println("Warning: invalid graph size of "
+                                        + GraphSize[i] + " at " + i
+                                        + "!  (GraphPointSet.addGraph)");
+                    }
 		}
 		if (Mathematics.sum(GraphSize) == 0) {
 			System.err
@@ -309,8 +310,9 @@ public class GraphPointSet {
 					y[i] = m_PointSetContainer.get(i).m_Y[index[i]];
 					index[i]++;
 					numberofpoints++;
-				} else
-					y[i] = 0;
+				} else {
+                                y[i] = 0;
+                            }
 			}
 			double ymean = Mathematics.sum(y) / numberofpoints;
 			// compute median double median = getMedian(y);
@@ -499,10 +501,12 @@ public class GraphPointSet {
 		}
 		m_ConnectedPointSet.removeAllPoints();
 		for (int i = 0; i < buf.length; i++) {
-			if (buf[i].x == x.x && buf[i].y == x.y)
-				System.out.println("point found");
-			else
-				m_ConnectedPointSet.addDPoint(buf[i]);
+			if (buf[i].x == x.x && buf[i].y == x.y) {
+                        System.out.println("point found");
+                    }
+			else {
+                        m_ConnectedPointSet.addDPoint(buf[i]);
+                    }
 
 		}
 	}
@@ -563,7 +567,9 @@ public class GraphPointSet {
 	 * @return the median point of this point set or null if it is empty
 	 */
 	public DPoint getMedPoint() {
-		if (m_ConnectedPointSet==null) return null;
+		if (m_ConnectedPointSet==null) {
+                return null;
+            }
 		int medX = m_ConnectedPointSet.getSize()/2;
 		return m_ConnectedPointSet.getDPoint(medX);
 	}

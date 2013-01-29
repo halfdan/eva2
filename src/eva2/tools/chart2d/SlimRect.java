@@ -31,8 +31,12 @@ public class SlimRect {
 	 * @return true if the given point lies within the rectangle, else false
 	 */
 	public boolean contains( double ox, double oy ){
-		if (( ox < x ) || ( oy < y ) || ( ox > x + width ) || ( oy > y + height )) return false;
-		else return true;
+		if (( ox < x ) || ( oy < y ) || ( ox > x + width ) || ( oy > y + height )) {
+                return false;
+            }
+		else {
+                return true;
+            }
 	}
 
 	/**
@@ -92,12 +96,18 @@ public class SlimRect {
 			s.y = ry;
 			s.height -= ry - s.y;
 		}
-		if( s.x + s.width > rx + rwidth )
-			s.width = rx + rwidth - s.x;
-		if( s.y + s.height > ry + rheight )
-			s.height = ry + rheight - s.y;
-		if( s.width < 0 || s.height < 0 ) return null;
-		else return s;
+		if( s.x + s.width > rx + rwidth ) {
+                s.width = rx + rwidth - s.x;
+            }
+		if( s.y + s.height > ry + rheight ) {
+                s.height = ry + rheight - s.y;
+            }
+		if( s.width < 0 || s.height < 0 ) {
+                return null;
+            }
+		else {
+                return s;
+            }
 	}
 	
 	/**

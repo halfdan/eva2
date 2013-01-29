@@ -53,10 +53,12 @@ public class TopoPlot extends Plot {
    * @param color_scale the topologies color coding. Values (0-3) are valid. @See ColorBarCalculator.
    */
   public void setParams(int gridX, int gridY, int color_scale) {
-    if (gridX>m_Frame.getWidth())
-       gridX = m_Frame.getWidth();
-    if (gridY>m_Frame.getHeight())
-       gridY = m_Frame.getHeight();
+    if (gridX>m_Frame.getWidth()) {
+          gridX = m_Frame.getWidth();
+      }
+    if (gridY>m_Frame.getHeight()) {
+          gridY = m_Frame.getHeight();
+      }
     gridx = gridX;
     gridy = gridY;
     colorScale = color_scale;
@@ -114,9 +116,15 @@ public class TopoPlot extends Plot {
     		pos[0] = border[0][0]+x*deltaX;
     		pos[1] = border[1][0]+y*deltaY;
     		tmp = (float)(problem.functionValue(pos));
-    		if (TRACEMETH) System.out.println(pos[0] + " " + pos[1] + " " + tmp);
-    		if (tmp < min) min = tmp;
-    		if (tmp > max) max = tmp;
+    		if (TRACEMETH) {
+                System.out.println(pos[0] + " " + pos[1] + " " + tmp);
+            }
+    		if (tmp < min) {
+                min = tmp;
+            }
+    		if (tmp > max) {
+                max = tmp;
+            }
     		if (withGradientsIfAvailable && (problem instanceof InterfaceFirstOrderDerivableProblem)) {
     			double[] deriv = ((InterfaceFirstOrderDerivableProblem)problem).getFirstOrderGradients(problem.project2DPoint(pos));
     			for (int i=0; i<2;i++) {

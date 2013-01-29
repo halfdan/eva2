@@ -31,8 +31,12 @@ public class KnownOptimaFoundTerminator implements InterfaceTerminator, Serializ
 		if (prob != null) {
 			if (prob instanceof InterfaceMultimodalProblemKnown) {
 				mProblem = (InterfaceMultimodalProblemKnown)prob;
-			} else System.err.println("KnownOptimaFoundTerminator only works with InterfaceMultimodalProblemKnown instances!");
-		} else System.err.println("KnownOptimaFoundTerminator wont work with null problem!");
+			} else {
+                        System.err.println("KnownOptimaFoundTerminator only works with InterfaceMultimodalProblemKnown instances!");
+                    }
+		} else {
+                System.err.println("KnownOptimaFoundTerminator wont work with null problem!");
+            }
 		msg = "Not terminated.";
 	}
 
@@ -52,7 +56,9 @@ public class KnownOptimaFoundTerminator implements InterfaceTerminator, Serializ
 		if (found >= reqOptima) {
 			msg = "There were " + reqOptima + " optima found.";
 			return true;
-		} else return false;
+		} else {
+                return false;
+            }
 	}
 	
     @Override

@@ -42,11 +42,17 @@ public class MutateGIOrdinal implements InterfaceMutation, java.io.Serializable 
     public boolean equals(Object mutator) {
         if (mutator instanceof MutateGIOrdinal) {
             MutateGIOrdinal mut = (MutateGIOrdinal)mutator;
-            if (this.m_StepSize != mut.m_StepSize) return false;
-            if (this.m_NumberOfMutations != mut.m_NumberOfMutations) return false;
+            if (this.m_StepSize != mut.m_StepSize) {
+                return false;
+            }
+            if (this.m_NumberOfMutations != mut.m_NumberOfMutations) {
+                return false;
+            }
             return true;
         }
-        else return false;
+        else {
+            return false;
+        }
     }
 
     /** This method allows you to init the mutation operator
@@ -75,12 +81,20 @@ public class MutateGIOrdinal implements InterfaceMutation, java.io.Serializable 
                 mutate *= (range[mutInd][1] - range[mutInd][1]);
                 mut = (int)Math.round(mutate);
                 if (mut == 0) {
-                    if (RNG.flipCoin(0.5)) mut = -1;
-                    else mut = 1;
+                    if (RNG.flipCoin(0.5)) {
+                        mut = -1;
+                    }
+                    else {
+                        mut = 1;
+                    }
                 }
                 x[mutInd] += mut;
-                if (x[mutInd] < range[mutInd][0]) x[mutInd] = range[mutInd][0];
-                if (x[mutInd] > range[mutInd][1]) x[mutInd] = range[mutInd][1];
+                if (x[mutInd] < range[mutInd][0]) {
+                    x[mutInd] = range[mutInd][0];
+                }
+                if (x[mutInd] > range[mutInd][1]) {
+                    x[mutInd] = range[mutInd][1];
+                }
             }
             ((InterfaceGIIndividual)individual).SetIGenotype(x);
         }

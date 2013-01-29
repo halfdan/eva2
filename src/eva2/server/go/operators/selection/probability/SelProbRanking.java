@@ -48,8 +48,12 @@ public class SelProbRanking extends AbstractSelProb implements java.io.Serializa
                     for (int j = i + 1; j < data.length; j++) {
                         if (!(((AbstractEAIndividual)population.get(i)).violatesConstraint()) && (!((AbstractEAIndividual)population.get(j)).violatesConstraint())) {
                             // no one violates, therefore it is up to the data to decied
-                            if (data[j][x] < data[i][x]) result[i]++;
-                            else result[j]++;
+                            if (data[j][x] < data[i][x]) {
+                                result[i]++;
+                            }
+                            else {
+                                result[j]++;
+                            }
                         } else {
                             // at least one violates, so the constraint violation is to decide
                             if (((AbstractEAIndividual)population.get(j)).getConstraintViolation() < ((AbstractEAIndividual)population.get(i)).getConstraintViolation()) {
@@ -80,8 +84,12 @@ public class SelProbRanking extends AbstractSelProb implements java.io.Serializa
                 }
                 for (int i = 0; i < data.length; i++) {
                     for (int j = i + 1; j < data.length; j++) {
-                        if (data[j][x] < data[i][x]) result[i]++;
-                        else result[j]++;
+                        if (data[j][x] < data[i][x]) {
+                            result[i]++;
+                        }
+                        else {
+                            result[j]++;
+                        }
                     }
                 }
 

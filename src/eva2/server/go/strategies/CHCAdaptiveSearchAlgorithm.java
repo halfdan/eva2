@@ -87,7 +87,9 @@ public class CHCAdaptiveSearchAlgorithm implements InterfaceOptimizer, java.io.S
     @Override
     public void initByPopulation(Population pop, boolean reset) {
         this.m_Population = (Population)pop.clone();
-        if (reset) this.m_Population.init();
+        if (reset) {
+            this.m_Population.init();
+        }
         AbstractEAIndividual tmpIndy = ((AbstractEAIndividual)(this.m_Population.get(0)));
         if (tmpIndy instanceof InterfaceGAIndividual) {
             this.m_DifferenceThreshold = (int)(((InterfaceGAIndividual)tmpIndy).getGenotypeLength()*this.m_InitialDifferenceThreshold);
@@ -128,8 +130,12 @@ public class CHCAdaptiveSearchAlgorithm implements InterfaceOptimizer, java.io.S
 
         for (int i = 0; i < parents.size(); i++) {
             tmpIndy =  ((AbstractEAIndividual)parents.get(i));
-            if (tmpIndy == null) System.out.println("Individual null "+i);
-            if (this.m_Population == null) System.out.println("population null "+i);
+            if (tmpIndy == null) {
+                System.out.println("Individual null "+i);
+            }
+            if (this.m_Population == null) {
+                System.out.println("population null "+i);
+            }
 
             partners = this.m_RecombSelectionOperator.findPartnerFor(tmpIndy, this.m_Population, this.m_NumberOfPartners);
             if (this.computeHammingDistance(tmpIndy, partners) > this.m_DifferenceThreshold) {
@@ -157,7 +163,9 @@ public class CHCAdaptiveSearchAlgorithm implements InterfaceOptimizer, java.io.S
             tmpB2 = ((InterfaceGAIndividual) partners.get(i)).getBGenotype();
             tmpDist = 0;
             for (int j = 0; j < ((InterfaceGAIndividual)dad).getGenotypeLength(); j++) {
-                if (tmpB1.get(j) == tmpB2.get(j)) tmpDist++;
+                if (tmpB1.get(j) == tmpB2.get(j)) {
+                    tmpDist++;
+                }
             }
             result = Math.max(result, tmpDist);
         }
@@ -179,8 +187,12 @@ public class CHCAdaptiveSearchAlgorithm implements InterfaceOptimizer, java.io.S
             tmpBitSet   = mutant.getBGenotype();
             for (int j = 0; j < mutant.getGenotypeLength(); j++) {
                 if (RNG.flipCoin(this.m_DivergenceRate)) {
-                    if (tmpBitSet.get(j)) tmpBitSet.clear(j);
-                    else tmpBitSet.set(j);
+                    if (tmpBitSet.get(j)) {
+                        tmpBitSet.clear(j);
+                    }
+                    else {
+                        tmpBitSet.set(j);
+                    }
                 }
             }
             mutant.SetBGenotype(tmpBitSet);
@@ -231,13 +243,17 @@ public class CHCAdaptiveSearchAlgorithm implements InterfaceOptimizer, java.io.S
 		if (m_Listener==ea) {
 			m_Listener=null;
 			return true;
-		} else return false;
+		} else {
+                                return false;
+                            }
 	}
 	
     /** Something has changed
      */
     protected void firePropertyChangedEvent (String name) {
-        if (this.m_Listener != null) this.m_Listener.registerPopulationStateChanged(this, name);
+        if (this.m_Listener != null) {
+            this.m_Listener.registerPopulationStateChanged(this, name);
+        }
     }
 
     /** This method will set the problem that is to be optimized
@@ -355,7 +371,9 @@ public class CHCAdaptiveSearchAlgorithm implements InterfaceOptimizer, java.io.S
      * @param partners
      */
     public void setNumberOfPartners(int partners) {
-        if (partners < 0) partners = 0;
+        if (partners < 0) {
+            partners = 0;
+        }
         this.m_NumberOfPartners = partners;
     }
     public int getNumberOfPartners() {

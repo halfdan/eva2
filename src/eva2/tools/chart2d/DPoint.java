@@ -43,7 +43,9 @@ public class DPoint extends DComponent
     @Override
   public void paint( DMeasures m ){
     Graphics g = m.getGraphics();
-    if( color != null ) g.setColor( color );
+    if( color != null ) {
+          g.setColor( color );
+      }
     Point dp = m.getPoint( this.x, this.y );
     if( label != null ){
       FontMetrics fm = g.getFontMetrics();
@@ -52,8 +54,9 @@ public class DPoint extends DComponent
                     dp.y + fm.getAscent()
       );
     }
-    if( icon == null )
-      g.drawRect( dp.x, dp.y, 1, 1 );
+    if( icon == null ) {
+          g.drawRect( dp.x, dp.y, 1, 1 );
+      }
     else{
       g.translate( dp.x, dp.y );
       icon.paint( g );
@@ -68,8 +71,12 @@ public class DPoint extends DComponent
    */
   public void setIcon( DPointIcon icon ){
     this.icon = icon;
-    if( icon == null ) setDBorder(new DBorder(1,1,1,1));
-    else setDBorder( icon.getDBorder() );
+    if( icon == null ) {
+          setDBorder(new DBorder(1,1,1,1));
+      }
+    else {
+          setDBorder( icon.getDBorder() );
+      }
   }
 
   /**
@@ -91,7 +98,9 @@ public class DPoint extends DComponent
     @Override
   public String toString(){
     String text = "DPoint[";
-    if( label != null ) text += label+", ";
+    if( label != null ) {
+          text += label+", ";
+      }
     text += "x: "+x+", y: "+y+", color: "+color+"]";
     return text;
   }

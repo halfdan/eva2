@@ -21,15 +21,23 @@ public class PopulationArchiveTerminator extends PopulationMeasureTerminator {
 	@Override
 	protected double calcInitialMeasure(PopulationInterface pop) {
 		Population archive = ((Population)pop).getArchive();
-		if (archive==null || (archive.size()<1)) return Double.MAX_VALUE;
-		else return wfComp.calcScore(archive.getBestEAIndividual(wfComp));
+		if (archive==null || (archive.size()<1)) {
+                return Double.MAX_VALUE;
+            }
+		else {
+                return wfComp.calcScore(archive.getBestEAIndividual(wfComp));
+            }
 	}
 
 	@Override
 	protected double calcPopulationMeasure(PopulationInterface pop) {
 		Population archive = ((Population)pop).getArchive();
-		if (archive==null || (archive.size()<1)) return Double.MAX_VALUE;
-		else return wfComp.calcScore(archive.getBestEAIndividual(wfComp));
+		if (archive==null || (archive.size()<1)) {
+                return Double.MAX_VALUE;
+            }
+		else {
+                return wfComp.calcScore(archive.getBestEAIndividual(wfComp));
+            }
 	}
 
 	@Override

@@ -85,12 +85,22 @@ public class GIIndividualIntegerData extends AbstractEAIndividual implements Int
     public boolean equalGenotypes(AbstractEAIndividual individual) {
         if (individual instanceof GIIndividualIntegerData) {
             GIIndividualIntegerData indy = (GIIndividualIntegerData) individual;
-            if ((this.m_Genotype == null) || (indy.m_Genotype == null)) return false;
-            if (this.m_Genotype.length != indy.m_Genotype.length) return false;
+            if ((this.m_Genotype == null) || (indy.m_Genotype == null)) {
+                return false;
+            }
+            if (this.m_Genotype.length != indy.m_Genotype.length) {
+                return false;
+            }
             for (int i = 0; i < this.m_Range.length; i++) {
-                if (this.m_Genotype[i] != indy.m_Genotype[i]) return false;
-                if (this.m_Range[i][0] != indy.m_Range[i][0]) return false;
-                if (this.m_Range[i][1] != indy.m_Range[i][1]) return false;
+                if (this.m_Genotype[i] != indy.m_Genotype[i]) {
+                    return false;
+                }
+                if (this.m_Range[i][0] != indy.m_Range[i][0]) {
+                    return false;
+                }
+                if (this.m_Range[i][1] != indy.m_Range[i][1]) {
+                    return false;
+                }
             }
             return true;
         } else {
@@ -212,7 +222,9 @@ public class GIIndividualIntegerData extends AbstractEAIndividual implements Int
     public void initByValue(Object obj, InterfaceOptimizationProblem opt) {
         if (obj instanceof int[]) {
             int[]  bs = (int[]) obj;
-            if (bs.length != this.m_Range.length) System.out.println("Init value and requested length doesn't match!");
+            if (bs.length != this.m_Range.length) {
+                System.out.println("Init value and requested length doesn't match!");
+            }
             this.SetIntGenotype(bs);
         } else {
             this.defaultInit(opt);
@@ -309,7 +321,9 @@ public class GIIndividualIntegerData extends AbstractEAIndividual implements Int
         		}
         	} else if (rng instanceof int[][]){
         		range = (int[][])rng;
-        	} else System.err.println("Error, invalid initial range provided by " + prob + ", expecting int[][] or double[][], disregarding initialization range");
+        	} else {
+                System.err.println("Error, invalid initial range provided by " + prob + ", expecting int[][] or double[][], disregarding initialization range");
+            }
         }
     	
         for (int i = 0; i < this.m_Genotype.length; i++) {

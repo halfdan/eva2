@@ -157,12 +157,18 @@ public class ParetoFrontView2D extends JPanel implements InterfaceParetoFrontVie
         this.m_Area.removeAll();
         // first set the names of the objectives
         String[] tmpS = this.getAvailableObjectiveNames();
-        if (tmpS.length != this.m_JCObjective1.getItemCount()) updateObjectiveComboBoxes();
+        if (tmpS.length != this.m_JCObjective1.getItemCount()) {
+            updateObjectiveComboBoxes();
+        }
         boolean equal = true;
         for (int i = 0; i < tmpS.length; i++) {
-            if (!tmpS[i].equalsIgnoreCase((String)this.m_JCObjective1.getItemAt(i))) equal = false;
+            if (!tmpS[i].equalsIgnoreCase((String)this.m_JCObjective1.getItemAt(i))) {
+                equal = false;
+            }
         }
-        if (!equal) updateObjectiveComboBoxes();
+        if (!equal) {
+            updateObjectiveComboBoxes();
+        }
         if (this.m_MOCCOViewer.m_MOCCO.m_State.m_CurrentProblem instanceof InterfaceMultiObjectiveDeNovoProblem) {
             //InterfaceOptimizationObjective[] tmp = ((InterfaceMultiObjectiveDeNovoProblem)this.m_MOCCOViewer.m_MOCCO.m_State.m_CurrentProblem).getProblemObjectives();
             String[] objectives = this.getAvailableObjectiveNames();
@@ -201,29 +207,49 @@ public class ParetoFrontView2D extends JPanel implements InterfaceParetoFrontVie
                         for (int j = 0; j < ((ArrayList)this.m_MOCCOViewer.m_MOCCO.m_State.m_FitnessCache.get(i)).size(); j++) {
                             fitness = (double[])((ArrayList)this.m_MOCCOViewer.m_MOCCO.m_State.m_FitnessCache.get(i)).get(j);
                             myPoint = new DPoint(fitness[indexX], fitness[indexY]);
-                            if (((Double)((ArrayList)this.m_MOCCOViewer.m_MOCCO.m_State.m_ConstraintCache.get(i)).get(j)).doubleValue() == 0)
+                            if (((Double)((ArrayList)this.m_MOCCOViewer.m_MOCCO.m_State.m_ConstraintCache.get(i)).get(j)).doubleValue() == 0) {
                                 myPoint.setIcon(new Chart2DDPointIconCross());
-                            else
+                            }
+                            else {
                                 myPoint.setIcon(new Chart2DDPointIconPoint());
+                            }
                             mySet.addDPoint(myPoint);
-                            if (fitness[indexX] < xmin) xmin = fitness[indexX];
-                            if (fitness[indexX] > xmax) xmax = fitness[indexX];
-                            if (fitness[indexY] < ymin) ymin = fitness[indexY];
-                            if (fitness[indexY] > ymax) ymax = fitness[indexY];
+                            if (fitness[indexX] < xmin) {
+                                xmin = fitness[indexX];
+                            }
+                            if (fitness[indexX] > xmax) {
+                                xmax = fitness[indexX];
+                            }
+                            if (fitness[indexY] < ymin) {
+                                ymin = fitness[indexY];
+                            }
+                            if (fitness[indexY] > ymax) {
+                                ymax = fitness[indexY];
+                            }
                         }
                     } else {
                         for (int j = 0; j < ((ArrayList)this.m_MOCCOViewer.m_MOCCO.m_State.m_ObjectiveCache.get(i)).size(); j++) {
                             fitness = (double[])((ArrayList)this.m_MOCCOViewer.m_MOCCO.m_State.m_ObjectiveCache.get(i)).get(j);
                             myPoint = new DPoint(fitness[indexX], fitness[indexY]);
-                            if (((Double)((ArrayList)this.m_MOCCOViewer.m_MOCCO.m_State.m_ConstraintCache.get(i)).get(j)).doubleValue() == 0)
+                            if (((Double)((ArrayList)this.m_MOCCOViewer.m_MOCCO.m_State.m_ConstraintCache.get(i)).get(j)).doubleValue() == 0) {
                                 myPoint.setIcon(new Chart2DDPointIconCross());
-                            else
+                            }
+                            else {
                                 myPoint.setIcon(new Chart2DDPointIconPoint());
+                            }
                             mySet.addDPoint(myPoint);
-                            if (fitness[indexX] < xmin) xmin = fitness[indexX];
-                            if (fitness[indexX] > xmax) xmax = fitness[indexX];
-                            if (fitness[indexY] < ymin) ymin = fitness[indexY];
-                            if (fitness[indexY] > ymax) ymax = fitness[indexY];
+                            if (fitness[indexX] < xmin) {
+                                xmin = fitness[indexX];
+                            }
+                            if (fitness[indexX] > xmax) {
+                                xmax = fitness[indexX];
+                            }
+                            if (fitness[indexY] < ymin) {
+                                ymin = fitness[indexY];
+                            }
+                            if (fitness[indexY] > ymax) {
+                                ymax = fitness[indexY];
+                            }
                         }
                     }
                 }
@@ -249,15 +275,25 @@ public class ParetoFrontView2D extends JPanel implements InterfaceParetoFrontVie
                 }              
                 point = new DPoint(fitness[indexX], fitness[indexY]);
                 icon = new Chart2DDPointContentSelectable();
-                if (this.m_MOCCOViewer.m_RefSolutionSelectable) ((Chart2DDPointContentSelectable)icon).addSelectionListener(this.m_MOCCOViewer);
+                if (this.m_MOCCOViewer.m_RefSolutionSelectable) {
+                    ((Chart2DDPointContentSelectable)icon).addSelectionListener(this.m_MOCCOViewer);
+                }
                 ((InterfaceDPointWithContent)icon).setProblem(this.m_MOCCOViewer.m_MOCCO.m_State.m_CurrentProblem);
                 ((InterfaceDPointWithContent)icon).setEAIndividual((AbstractEAIndividual)pf.get(i));
                 point.setIcon(icon);
                 mySet.addDPoint(point);
-                if (fitness[indexX] < xmin) xmin = fitness[indexX];
-                if (fitness[indexX] > xmax) xmax = fitness[indexX];
-                if (fitness[indexY] < ymin) ymin = fitness[indexY];
-                if (fitness[indexY] > ymax) ymax = fitness[indexY];
+                if (fitness[indexX] < xmin) {
+                    xmin = fitness[indexX];
+                }
+                if (fitness[indexX] > xmax) {
+                    xmax = fitness[indexX];
+                }
+                if (fitness[indexY] < ymin) {
+                    ymin = fitness[indexY];
+                }
+                if (fitness[indexY] > ymax) {
+                    ymax = fitness[indexY];
+                }
             }
         }
 

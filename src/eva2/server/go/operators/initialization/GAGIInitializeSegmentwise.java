@@ -124,8 +124,12 @@ public class GAGIInitializeSegmentwise implements InterfaceInitialization, java.
 
 				}
 			} else { // the number of bits to set may vary from segment to segment.
-				if (bitsPerSegmentArray.length * segmentLength != genotypeLen) EVAERROR.errorMsgOnce("Warning, potential mismatch between segment lengths and genotype length in " + this.getClass());
-				if (bitsPerSegmentArray.length * segmentLength < genotypeLen) System.err.println("Warning, " + (genotypeLen - bitsPerSegmentArray.length * segmentLength) + " bits will not be initialized!");
+				if (bitsPerSegmentArray.length * segmentLength != genotypeLen) {
+                                EVAERROR.errorMsgOnce("Warning, potential mismatch between segment lengths and genotype length in " + this.getClass());
+                            }
+				if (bitsPerSegmentArray.length * segmentLength < genotypeLen) {
+                                System.err.println("Warning, " + (genotypeLen - bitsPerSegmentArray.length * segmentLength) + " bits will not be initialized!");
+                            }
 				for (int s=0; s<bitsPerSegmentArray.length; s++) {
 					// look at each segment individually
 					BitSet nextSeg=RNG.randomBitSet(bitsPerSegmentArray[s], segmentLength);
@@ -146,7 +150,9 @@ public class GAGIInitializeSegmentwise implements InterfaceInitialization, java.
 				((InterfaceGIIndividual)indy).SetIGenotype((int[])genotype);
 			}
 //			System.out.println(BeanInspector.toString(genotype));
-		} else throw new RuntimeException("Error: "+ this.getClass() + " must be used with binary or integer individuals!");
+		} else {
+                                throw new RuntimeException("Error: "+ this.getClass() + " must be used with binary or integer individuals!");
+                            }
 	}
 
 	private void disturb(AbstractEAIndividual indy, Object genotype, int genotypeLen, int[][] intRange) {
@@ -165,10 +171,16 @@ public class GAGIInitializeSegmentwise implements InterfaceInitialization, java.
 			int[] geno=(int[]) genotype;
 			if (otherElements.length>0) { // may choose between target and all other elements
 				int rnd=RNG.randomInt(0, otherElements.length); // between 0 and length (inclusively)
-				if (rnd==otherElements.length) geno[i]=targetElement;
-				else geno[i]=otherElements[rnd];
+				if (rnd==otherElements.length) {
+                                geno[i]=targetElement;
+                            }
+				else {
+                                geno[i]=otherElements[rnd];
+                            }
 			} else { // or choose a random int within the range
-				if (range==null) System.err.println("Error, missing int range to perform random disturbance in " + this.getClass());
+				if (range==null) {
+                                System.err.println("Error, missing int range to perform random disturbance in " + this.getClass());
+                            }
 				geno[i]=RNG.randomInt(range[i][0], range[i][1]);
 			}
 		}
@@ -208,12 +220,16 @@ public class GAGIInitializeSegmentwise implements InterfaceInitialization, java.
 	private int getIntVal(boolean initBit, int pos, int[][] range) {
 		// if true, the target value is returned, otherwise the non-target value
 		// or a random value in range
-		if (initBit) return targetElement;
+		if (initBit) {
+                return targetElement;
+            }
 		else {
 			if ((otherElements==null) || (otherElements.length==0)) { // all but the one to set
 				int rangeLenMinusOne = range[pos][1]-range[pos][0]; // bounds are included, so one is missing
 				int newVal=RNG.randomInt(rangeLenMinusOne); // a random integer with one missing (the largest)
-				if (newVal>=targetElement) newVal++; // make sure the elementToSet is not returned but all others may be, including the largest
+				if (newVal>=targetElement) {
+                                newVal++;
+                            } // make sure the elementToSet is not returned but all others may be, including the largest
 				return newVal;
 			} else {
 				// select one randomly from the array
@@ -227,8 +243,12 @@ public class GAGIInitializeSegmentwise implements InterfaceInitialization, java.
 		// the new value is TRUE if the nextSeg-bit is set and 1 is set as target value, 
 		// otherwise FALSE (if target value is 0) -- thus target value=1 and
 		// bitsPerSegment=k is equivalent to target value=0 and bitsPerSegment=segmentLength-k 
-		if (initBit) return (targetElement==1);
-		else return (targetElement!=1);
+		if (initBit) {
+                return (targetElement==1);
+            }
+		else {
+                return (targetElement!=1);
+            }
 	}
 	
 	public int[] getTargetElementsPerSegmentArray() {

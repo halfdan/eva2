@@ -43,7 +43,9 @@ public class ArchivingPESAII extends AbstractArchiving implements java.io.Serial
     @Override
     public void addElementsToArchive(Population pop) {
 
-        if (pop.getArchive() == null) pop.SetArchive(new Population());
+        if (pop.getArchive() == null) {
+            pop.SetArchive(new Population());
+        }
         Population  archive = pop.getArchive();
 
         ////////////////////////////////////////////////////////////////////////////////////
@@ -99,8 +101,12 @@ public class ArchivingPESAII extends AbstractArchiving implements java.io.Serial
             for (int i = 0; i < archive.size(); i++) {
                 trueFitness[i] = ((AbstractEAIndividual)archive.get(i)).getFitness();
                 for (int j = 0; j < trueFitness[i].length; j++) {
-                    if (trueFitness[i][j] < bounds[j][0]) bounds[j][0] = trueFitness[i][j];
-                    if (trueFitness[i][j] > bounds[j][1]) bounds[j][1] = trueFitness[i][j];
+                    if (trueFitness[i][j] < bounds[j][0]) {
+                        bounds[j][0] = trueFitness[i][j];
+                    }
+                    if (trueFitness[i][j] > bounds[j][1]) {
+                        bounds[j][1] = trueFitness[i][j];
+                    }
                 }
             }
             double  gridx, gridy;
@@ -145,7 +151,9 @@ public class ArchivingPESAII extends AbstractArchiving implements java.io.Serial
                     bigSqueeze = squeezeFactor[i];
                     index = i;
                 }
-                if ((bigSqueeze == squeezeFactor[i]) && RNG.flipCoin(0.5)) index = i;
+                if ((bigSqueeze == squeezeFactor[i]) && RNG.flipCoin(0.5)) {
+                    index = i;
+                }
             }
             archive.remove(index);
         }
@@ -196,8 +204,12 @@ public class ArchivingPESAII extends AbstractArchiving implements java.io.Serial
 //            if (debug) System.out.println("Individual "+i+": "+tmpFit[0] +"/"+tmpFit[1]);
             result[i]   = 0;
             for (int j = 0; j < tmpFit.length; j++) {
-                if (tmpFit[j] < bounds[j][0]) bounds[j][0] = tmpFit[j];
-                if (tmpFit[j] > bounds[j][1]) bounds[j][1] = tmpFit[j];
+                if (tmpFit[j] < bounds[j][0]) {
+                    bounds[j][0] = tmpFit[j];
+                }
+                if (tmpFit[j] > bounds[j][1]) {
+                    bounds[j][1] = tmpFit[j];
+                }
             }
         }
 //        if (debug) {
@@ -235,10 +247,16 @@ public class ArchivingPESAII extends AbstractArchiving implements java.io.Serial
                         sameGrid = true;
                         for (int k = 0; k < tmpFit.length; k++) {
                             tmpGrid[k] = (int)((tmpFit[k]-bounds[k][0])/grid[k]);
-                            if (curGrid[k] == tmpGrid[k]) sameGrid &= true;
-                            else sameGrid &= false;
+                            if (curGrid[k] == tmpGrid[k]) {
+                                sameGrid &= true;
+                            }
+                            else {
+                                sameGrid &= false;
+                            }
                         }
-                        if (sameGrid) coll.add(new Integer(j));
+                        if (sameGrid) {
+                            coll.add(new Integer(j));
+                        }
 //                        if (debug) {
 //                            System.out.println("Checking indy "+j+" ("+tmpFit[0] +"/"+tmpFit[1]+") in grid ["+tmpGrid[0]+"/"+tmpGrid[1]+"]");
 //                        }

@@ -24,7 +24,9 @@ public class GPNodeConst extends AbstractGPNode implements java.io.Serializable 
 		if (obj instanceof GPNodeConst) {
 			GPNodeConst node = (GPNodeConst)obj;
 			return (node.value==this.value);
-		} else return false;
+		} else {
+                return false;
+            }
 	}
 
 	/** This method will be used to identify the node in the GPAreaEditor

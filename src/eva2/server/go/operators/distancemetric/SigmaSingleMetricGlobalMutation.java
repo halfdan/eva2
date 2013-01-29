@@ -55,9 +55,13 @@ public class SigmaSingleMetricGlobalMutation implements InterfaceDistanceMetric,
             }
             // this is the normalized distance
             result = Math.sqrt(result);
-            if (result < Math.max(mutator1.getMutationStepSize(),mutator2.getMutationStepSize())) return 0.0;
+            if (result < Math.max(mutator1.getMutationStepSize(),mutator2.getMutationStepSize())) {
+                return 0.0;
+            }
             return 1.0;
-        } else return 1.0;
+        } else {
+            return 1.0;
+        }
     }
 /**********************************************************************************************************************
  * These are for GUI

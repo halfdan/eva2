@@ -73,13 +73,17 @@ public class MultiLineStringEditor implements PropertyEditor {
   
     @Override
   public void addPropertyChangeListener(PropertyChangeListener l) {
-	  if (listeners == null) listeners = new PropertyChangeSupport(this);
+	  if (listeners == null) {
+          listeners = new PropertyChangeSupport(this);
+      }
 	  listeners.addPropertyChangeListener(l);
   }
 
     @Override
   public void removePropertyChangeListener(PropertyChangeListener l) {
-	  if (listeners == null) listeners = new PropertyChangeSupport(this);
+	  if (listeners == null) {
+          listeners = new PropertyChangeSupport(this);
+      }
 	  listeners.removePropertyChangeListener(l);
   }
 }

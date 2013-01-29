@@ -86,12 +86,22 @@ public class GAIndividualIntegerData extends AbstractEAIndividual implements Int
         if (individual instanceof GAIndividualIntegerData) {
             GAIndividualIntegerData indy = (GAIndividualIntegerData) individual;
             //@todo Eigendlich k�nnte ich noch das Koding vergleichen
-            if ((this.m_Genotype == null) || (indy.m_Genotype == null)) return false;
-            if (!this.m_Genotype.equals(indy.m_Genotype)) return false;
-            if (this.m_Range.length != indy.m_Range.length) return false;
+            if ((this.m_Genotype == null) || (indy.m_Genotype == null)) {
+                return false;
+            }
+            if (!this.m_Genotype.equals(indy.m_Genotype)) {
+                return false;
+            }
+            if (this.m_Range.length != indy.m_Range.length) {
+                return false;
+            }
             for (int i = 0; i < this.m_Range.length; i++) {
-                if (this.m_Range[i][0] != indy.m_Range[i][0]) return false;
-                if (this.m_Range[i][1] != indy.m_Range[i][1]) return false;
+                if (this.m_Range[i][0] != indy.m_Range[i][0]) {
+                    return false;
+                }
+                if (this.m_Range[i][1] != indy.m_Range[i][1]) {
+                    return false;
+                }
             }
             return true;
         } else {
@@ -253,7 +263,9 @@ public class GAIndividualIntegerData extends AbstractEAIndividual implements Int
     public void initByValue(Object obj, InterfaceOptimizationProblem opt) {
         if (obj instanceof int[]) {
             int[]  bs = (int[]) obj;
-            if (bs.length != this.m_Range.length) System.out.println("Init value and requested length doesn't match!");
+            if (bs.length != this.m_Range.length) {
+                System.out.println("Init value and requested length doesn't match!");
+            }
             this.SetIntGenotype(bs);
         } else {
             this.defaultInit(opt);
@@ -302,8 +314,12 @@ public class GAIndividualIntegerData extends AbstractEAIndividual implements Int
             overallLength += this.m_CodingLenghts[i];
         }
         for (int i = 0; i < overallLength; i++) {
-            if (this.m_Genotype.get(i)) result += "1";
-            else result += "0";
+            if (this.m_Genotype.get(i)) {
+                result += "1";
+            }
+            else {
+                result += "0";
+            }
         }
         result += "}";
         return result;
@@ -351,8 +367,12 @@ public class GAIndividualIntegerData extends AbstractEAIndividual implements Int
             overallLength += this.m_CodingLenghts[i];
         }
         for (int i = 0; i < overallLength; i++) {
-            if (RNG.flipCoin(0.5)) this.m_Genotype.set(i);
-            else this.m_Genotype.clear(i);
+            if (RNG.flipCoin(0.5)) {
+                this.m_Genotype.set(i);
+            }
+            else {
+                this.m_Genotype.clear(i);
+            }
         }
     }
 
@@ -365,8 +385,12 @@ public class GAIndividualIntegerData extends AbstractEAIndividual implements Int
             overallLength += this.m_CodingLenghts[i];
         }
         int mutationIndex = RNG.randomInt(0, overallLength);
-        if (this.m_Genotype.get(mutationIndex)) this.m_Genotype.clear(mutationIndex);
-        else this.m_Genotype.set(mutationIndex);
+        if (this.m_Genotype.get(mutationIndex)) {
+            this.m_Genotype.clear(mutationIndex);
+        }
+        else {
+            this.m_Genotype.set(mutationIndex);
+        }
     }
 
     public static void main(String[] args) {

@@ -204,7 +204,9 @@ public class BasicResourceLoader implements ResourceLoader
 	
 	private static void trimAll(String[] entries) {
 		for (int i=0; i<entries.length; i++) {
-                if (entries[i]!=null) entries[i]=entries[i].trim();
+                if (entries[i]!=null) {
+                        entries[i]=entries[i].trim();
+                    }
             }
 	}
 
@@ -223,9 +225,13 @@ public class BasicResourceLoader implements ResourceLoader
 		int startIndex = 0;
 		for (int i=0; i<data.length; i++) { 
 			if ((data[i][col] >= start) && (data[i][col] <= end)) {
-				if (cnt == 0) startIndex = i;
+				if (cnt == 0) {
+                                startIndex = i;
+                            }
 				cnt++;
-			} else if (cnt > 0) break;
+			} else if (cnt > 0) {
+                        break;
+                    }
 		}
 		
 		double[][] selData = new double[cnt][data[0].length];
@@ -271,8 +277,12 @@ public class BasicResourceLoader implements ResourceLoader
 		if (cols == null) {
 			for (int i=0; i<dest[lineCnt].length; i++) {
 				try {
-					if ((i>=entries.length) || (entries[i]==null || (entries[i].length()==0))) dest[lineCnt][i]=Double.NaN;
-					else dest[lineCnt][i] = Double.valueOf(entries[i]);
+					if ((i>=entries.length) || (entries[i]==null || (entries[i].length()==0))) {
+                                        dest[lineCnt][i]=Double.NaN;
+                                    }
+					else {
+                                        dest[lineCnt][i] = Double.valueOf(entries[i]);
+                                    }
 				} catch(NumberFormatException ex) {
 					System.err.println("Invalid Double format in line " + lineCnt + ", data was " + entries[i]);
 					dest[lineCnt][i]=Double.NaN;
@@ -281,8 +291,12 @@ public class BasicResourceLoader implements ResourceLoader
 		} else {
 			for (int i=0; i<cols.length; i++) {
 				try {
-					if ((cols[i]<0) || ((cols[i]>=entries.length) || (entries[cols[i]]==null || (entries[cols[i]].length()==0)))) dest[lineCnt][i]=Double.NaN;
-					else dest[lineCnt][i] = Double.valueOf(entries[cols[i]]);
+					if ((cols[i]<0) || ((cols[i]>=entries.length) || (entries[cols[i]]==null || (entries[cols[i]].length()==0)))) {
+                                        dest[lineCnt][i]=Double.NaN;
+                                    }
+					else {
+                                        dest[lineCnt][i] = Double.valueOf(entries[cols[i]]);
+                                    }
 				} catch(NumberFormatException ex) {
 					System.err.println("Invalid Double format in line " + lineCnt + ", data was " + entries[cols[i]]);
 					dest[lineCnt][i]=Double.NaN;
@@ -302,7 +316,9 @@ public class BasicResourceLoader implements ResourceLoader
 		int i=0;
 		if (pref != null) { 
 			for (String prefix : pref) {
-				if (str.startsWith(prefix)) return i;
+				if (str.startsWith(prefix)) {
+                                return i;
+                            }
 				i++;
 			}
 		}
@@ -636,14 +652,20 @@ public class BasicResourceLoader implements ResourceLoader
 		if (bytes != null) {
 			ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
 			prop.load(bais);
-			if (prop != null) return prop;
+			if (prop != null) {
+                        return prop;
+                    }
 		}
 		/////////////
 
 		int slInd = resourceName.lastIndexOf('/');
 		String planBResName;
-		if (slInd != -1) planBResName = resourceName.substring(slInd + 1);
-		else planBResName = resourceName;
+		if (slInd != -1) {
+                planBResName = resourceName.substring(slInd + 1);
+            }
+		else {
+                planBResName = resourceName;
+            }
 		Properties userProps = new Properties();
 		File propFile = new File(File.separatorChar + planBResName);
 		if (propFile.exists()) {
@@ -652,7 +674,9 @@ public class BasicResourceLoader implements ResourceLoader
 			} catch (Exception ex) {
 				System.err.println("Problem reading user properties: " + propFile);
 			}
-		} else System.err.println("Warning in readProperties: neither " + resourceName + " nor " + planBResName + " could be read.");
+		} else {
+                System.err.println("Warning in readProperties: neither " + resourceName + " nor " + planBResName + " could be read.");
+            }
 		return userProps;
 	}
 	

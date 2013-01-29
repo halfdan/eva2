@@ -56,10 +56,16 @@ public class MutateGAGISwapBits implements InterfaceMutation, java.io.Serializab
 	public boolean equals(Object mutator) {
 		if (mutator instanceof MutateGAGISwapBits) {
 			MutateGAGISwapBits mut = (MutateGAGISwapBits)mutator;
-			if (this.minNumMutations != mut.minNumMutations) return false;
-			if (this.maxNumMutations != mut.maxNumMutations) return false;
+			if (this.minNumMutations != mut.minNumMutations) {
+                        return false;
+                    }
+			if (this.maxNumMutations != mut.maxNumMutations) {
+                        return false;
+                    }
 			return true;
-		} else return false;
+		} else {
+                return false;
+            }
 	}
 
 	/** This method allows you to init the mutation operator
@@ -109,8 +115,12 @@ public class MutateGAGISwapBits implements InterfaceMutation, java.io.Serializab
 //				tmpBitSet.set(mutationIndices[i][1], tmpBitSet.get(mutationIndices[i][0]));
 //				tmpBitSet.set(mutationIndices[i][0], tmpBit);
 			}
-			if (genotype instanceof BitSet) ((InterfaceGAIndividual)individual).SetBGenotype((BitSet)genotype);
-			else ((InterfaceGIIndividual)individual).SetIGenotype((int[])genotype);
+			if (genotype instanceof BitSet) {
+                        ((InterfaceGAIndividual)individual).SetBGenotype((BitSet)genotype);
+                    }
+			else {
+                        ((InterfaceGIIndividual)individual).SetIGenotype((int[])genotype);
+                    }
 		}
 //		System.err.println("After Mutate:  " +(individual.getStringRepresentation()));
 	}
@@ -133,8 +143,12 @@ public class MutateGAGISwapBits implements InterfaceMutation, java.io.Serializab
 	}
 	
 	private void setValueAt(Object genotype, int i, Object val) {
-		if (genotype instanceof BitSet) ((BitSet)genotype).set(i, (Boolean)val);
-		else ((int[])genotype)[i]=(Integer)val;
+		if (genotype instanceof BitSet) {
+                ((BitSet)genotype).set(i, (Boolean)val);
+            }
+		else {
+                ((int[])genotype)[i]=(Integer)val;
+            }
 	}
 	
 	protected int getRandomIndex(int genoLen, Object genotype, int lastIndex) {
@@ -170,8 +184,12 @@ public class MutateGAGISwapBits implements InterfaceMutation, java.io.Serializab
 //	}
 
 	protected Object valueAt(Object genotype, int k) {
-		if (genotype instanceof BitSet) return ((BitSet)genotype).get(k);
-		else return ((int[])genotype)[k];
+		if (genotype instanceof BitSet) {
+                return ((BitSet)genotype).get(k);
+            }
+		else {
+                return ((int[])genotype)[k];
+            }
 	}
 	/** This method allows you to get a string representation of the mutation
 	 * operator
@@ -205,7 +223,9 @@ public class MutateGAGISwapBits implements InterfaceMutation, java.io.Serializab
 	 * @param mutations   The number of mutations.
 	 */
 	public void setMinNumberOfMutations(int mutations) {
-		if (mutations < 0) mutations = 0;
+		if (mutations < 0) {
+                mutations = 0;
+            }
 		this.minNumMutations = mutations;
 	}
 	public int getMinNumberOfMutations() {
@@ -216,7 +236,9 @@ public class MutateGAGISwapBits implements InterfaceMutation, java.io.Serializab
 	}
 	
 	public void setMaxNumberOfMutations(int mutations) {
-		if (mutations < 0) mutations = 0;
+		if (mutations < 0) {
+                mutations = 0;
+            }
 		this.maxNumMutations = mutations;
 	}
 	public int getMaxNumberOfMutations() {

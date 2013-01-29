@@ -141,7 +141,9 @@ public class CrossoverESPCX implements InterfaceCrossover, java.io.Serializable 
                         toro = Mathematics.svMult(tmpD, toro);
                         tmpVec = Mathematics.vvSub(tmpVec, toro);
                     }
-                    if (this.isValidVec(tmpVec)) result.add(tmpVec);
+                    if (this.isValidVec(tmpVec)) {
+                        result.add(tmpVec);
+                    }
                 }
             }
         }
@@ -168,11 +170,17 @@ public class CrossoverESPCX implements InterfaceCrossover, java.io.Serializable 
     private boolean isValidVec(double[] d) {
         double sum = 0;
         for (int i = 0; i < d.length; i++) {
-            if (Double.isNaN(d[i])) return false;
+            if (Double.isNaN(d[i])) {
+                return false;
+            }
             sum += Math.pow(d[i],2);
         }
-        if (Double.isNaN(sum)) return false;
-        if (Math.abs(sum) < 0.000000000000000001) return false;
+        if (Double.isNaN(sum)) {
+            return false;
+        }
+        if (Math.abs(sum) < 0.000000000000000001) {
+            return false;
+        }
         return true;
     }
 
@@ -182,8 +190,12 @@ public class CrossoverESPCX implements InterfaceCrossover, java.io.Serializable 
      */
     @Override
     public boolean equals(Object crossover) {
-        if (crossover instanceof CrossoverESUNDX) return true;
-        else return false;
+        if (crossover instanceof CrossoverESUNDX) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     /** This method will allow the crossover operator to be initialized depending on the
@@ -271,7 +283,9 @@ public class CrossoverESPCX implements InterfaceCrossover, java.io.Serializable 
             offsprings = cross.mate(indy1, pop);
             for (int j = 0; j < offsprings.length; j++) {
                 tmpD = ((ESIndividualDoubleData)offsprings[j]).getDoubleData();
-                if (plotFlag) plot.setUnconnectedPoint(tmpD[0], tmpD[1], 1);
+                if (plotFlag) {
+                    plot.setUnconnectedPoint(tmpD[0], tmpD[1], 1);
+                }
                 //range = ((ESIndividualDoubleData)offsprings[j]).getDoubleRange();
                 //System.out.println("["+range[0][0]+"/"+range[0][1]+";"+range[1][0]+"/"+range[1][1]+"]");
             }
@@ -300,7 +314,9 @@ public class CrossoverESPCX implements InterfaceCrossover, java.io.Serializable 
         return "This is the Parent Centric Crossover (PCX).";
     }
     public void setEta(double a) {
-        if (a < 0) a = 0;
+        if (a < 0) {
+            a = 0;
+        }
         this.m_Eta = a;
     }
     public double getEta() {
@@ -310,7 +326,9 @@ public class CrossoverESPCX implements InterfaceCrossover, java.io.Serializable 
         return "The Eta of PCX.";
     }
     public void setZeta(double a) {
-        if (a < 0) a = 0;
+        if (a < 0) {
+            a = 0;
+        }
         this.m_Zeta = a;
     }
     public double getZeta() {

@@ -33,8 +33,14 @@ public class PairComparator implements Comparator<Pair<?,?>> {
 			return 0;
 		}
 		
-		if (d1==d2) return 0;
-		else if (d1 > d2) return 1;
-		else return -1;
+		if (d1==d2) {
+                return 0;
+            }
+		else if (d1 > d2) {
+                return 1;
+            }
+		else {
+                return -1;
+            }
 	}
 }

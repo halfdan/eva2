@@ -54,10 +54,12 @@ public class SelProbStandard extends AbstractSelProb implements java.io.Serializ
                     sum = 0;
                     // iterating over the individuals
                     for (int i = 0; i < data.length; i++) {
-                        if (!((AbstractEAIndividual)population.get(i)).violatesConstraint())
+                        if (!((AbstractEAIndividual)population.get(i)).violatesConstraint()) {
                             result[i] = Math.exp(-data[i][x]);
-                        else
+                        }
+                        else {
                             result[i] = 0;
+                        }
                         sum += result[i];
                     }
                     for (int i = 0; i < population.size(); i++) {

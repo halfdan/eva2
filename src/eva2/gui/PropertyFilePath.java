@@ -48,8 +48,12 @@ public class PropertyFilePath implements java.io.Serializable {
      */
     public static PropertyFilePath getFilePathFromResource(String relPath) {
     	String fName = ReflectPackage.getResourcePathFromCP(relPath);
-    	if (fName == null) return null;
-    	else return new PropertyFilePath(fName);
+    	if (fName == null) {
+            return null;
+        }
+    	else {
+            return new PropertyFilePath(fName);
+        }
     }
 
     @Override
@@ -67,16 +71,26 @@ public class PropertyFilePath implements java.io.Serializable {
 
         String old = this.getCompleteFilePath();
         try {
-            if (trace) System.out.println("Complete Filename: " +s);
+            if (trace) {
+                System.out.println("Complete Filename: " +s);
+            }
             filesep         = System.getProperty("file.separator");
-            if (trace) System.out.println("File.Separator: " +filesep);
+            if (trace) {
+                System.out.println("File.Separator: " +filesep);
+            }
             this.FileName   = s.substring(s.lastIndexOf(filesep)+1);
             this.FileExtension = this.FileName.substring(this.FileName.lastIndexOf("."));
             this.FilePath   = s.substring(0, s.lastIndexOf(filesep)+1);
 
-            if (trace) System.out.println("FilePath: " +this.FilePath);
-            if (trace) System.out.println("Filename: " + this.FileName);
-            if (trace) System.out.println("Fileext.: " + this.FileExtension);
+            if (trace) {
+                System.out.println("FilePath: " +this.FilePath);
+            }
+            if (trace) {
+                System.out.println("Filename: " + this.FileName);
+            }
+            if (trace) {
+                System.out.println("Fileext.: " + this.FileExtension);
+            }
         } catch (Exception e) {
             this.setCompleteFilePath(old);
         }

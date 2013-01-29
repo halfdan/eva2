@@ -87,12 +87,17 @@ public class MOCCOParameterizeMO extends MOCCOPhase implements InterfaceProcessE
         try {
             editor.m_Value      = this.m_Mocco.m_State.m_Optimizer;
             editor.m_Editor     = PropertyEditorProvider.findEditor(editor.m_Value.getClass());
-            if (editor.m_Editor == null) editor.m_Editor = PropertyEditorProvider.findEditor(InterfaceOptimizer.class);
-            if (editor.m_Editor instanceof GenericObjectEditor)
+            if (editor.m_Editor == null) {
+                editor.m_Editor = PropertyEditorProvider.findEditor(InterfaceOptimizer.class);
+            }
+            if (editor.m_Editor instanceof GenericObjectEditor) {
                 ((GenericObjectEditor) editor.m_Editor).setClassType(InterfaceOptimizer.class);
+            }
             editor.m_Editor.setValue(editor.m_Value);
             AbstractObjectEditor.findViewFor(editor);
-            if (editor.m_View != null) editor.m_View.repaint();
+            if (editor.m_View != null) {
+                editor.m_View.repaint();
+            }
         } catch (Exception e) {
             System.out.println("Darn can't read the value...");
         }
@@ -110,12 +115,17 @@ public class MOCCOParameterizeMO extends MOCCOPhase implements InterfaceProcessE
         try {
             editor.m_Value      = this.m_Mocco.m_State.m_Terminator;
             editor.m_Editor     = PropertyEditorProvider.findEditor(editor.m_Value.getClass());
-            if (editor.m_Editor == null) editor.m_Editor = PropertyEditorProvider.findEditor(InterfaceTerminator.class);
-            if (editor.m_Editor instanceof GenericObjectEditor)
+            if (editor.m_Editor == null) {
+                editor.m_Editor = PropertyEditorProvider.findEditor(InterfaceTerminator.class);
+            }
+            if (editor.m_Editor instanceof GenericObjectEditor) {
                 ((GenericObjectEditor) editor.m_Editor).setClassType(InterfaceTerminator.class);
+            }
             editor.m_Editor.setValue(editor.m_Value);
             AbstractObjectEditor.findViewFor(editor);
-            if (editor.m_View != null) editor.m_View.repaint();
+            if (editor.m_View != null) {
+                editor.m_View.repaint();
+            }
         } catch (Exception e) {
             System.out.println("Darn can't read the value...");
         }
@@ -141,11 +151,15 @@ public class MOCCOParameterizeMO extends MOCCOPhase implements InterfaceProcessE
             m_Mocco.m_State.m_Optimizer.setProblem(m_Mocco.m_State.m_CurrentProblem);
             Population pop = m_Mocco.m_State.m_Optimizer.getPopulation();
             pop.clear();
-            if (pop.getArchive() != null)  pop.getArchive().clear();
+            if (pop.getArchive() != null) {
+                pop.getArchive().clear();
+            }
             if (m_Mocco.m_State.m_PopulationHistory.length > 0) {
                 pop = m_Mocco.m_State.getSelectedPopulations();
                 m_Mocco.m_State.m_Optimizer.initByPopulation(pop, false);
-            if (pop.size() == 0) m_Mocco.m_State.m_Optimizer.init();
+            if (pop.size() == 0) {
+                    m_Mocco.m_State.m_Optimizer.init();
+                }
             }
             m_Finished = true;
         }

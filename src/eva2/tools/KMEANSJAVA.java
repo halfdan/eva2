@@ -48,8 +48,12 @@ public class KMEANSJAVA {
    */
   public KMEANSJAVA(double[][] samples, int K, int iterations) {
     //System.out.print("in");
-    if (TRACE) System.out.println("K"+K);
-    if (K>samples.length) K = samples.length;
+    if (TRACE) {
+          System.out.println("K"+K);
+      }
+    if (K>samples.length) {
+          K = samples.length;
+      }
     int counter=0;
     m_C = new double[K][];
     for (int i=0;i<K;i++) {
@@ -140,10 +144,12 @@ class ClusterComp implements Comparator {
   public int compare (Object p1,Object p2) {
     int x1 = ((Cluster) p1).m_SamplesInCluster;
     int x2 = ((Cluster) p2).m_SamplesInCluster;
-    if (x1 > x2 )
-      return -1;
-    if (x1 <= x2 )
-      return 1;
+    if (x1 > x2 ) {
+          return -1;
+      }
+    if (x1 <= x2 ) {
+          return 1;
+      }
     return 0;
   }
   /**

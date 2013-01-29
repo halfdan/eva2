@@ -67,7 +67,9 @@ public class ImprovementDeactivationStrategy implements InterfaceDeactivationStr
 				for (int k = 0; k < haltingWindow; k++) {
 					Vector<Double> fitArch  = (Vector<Double>)pop.getEAIndividual(i).getData(NichePSO.fitArchiveKey);
 					int archIndex=fitArch.size()-haltingWindow+k; // index within the fitness archive of the current particle, which may be larger than the bests list - the tail is important
-					if (archIndex>=0 && (fitArch.get(archIndex)<bests.get(k))) bests.set(k, fitArch.get(archIndex));
+					if (archIndex>=0 && (fitArch.get(archIndex)<bests.get(k))) {
+                                        bests.set(k, fitArch.get(archIndex));
+                                    }
 				}
 			}
 		}
@@ -97,7 +99,9 @@ public class ImprovementDeactivationStrategy implements InterfaceDeactivationStr
 		if (!subswarm.isActive()){
 			return false;
 		}
-		if (subswarm.getFitnessArchiveSize()<haltingWindow) EVAERROR.errorMsgOnce("Warning: halting window length " + haltingWindow + " too long for sub swarm template, which stores only " + subswarm.getFitnessArchiveSize() + " fitness values!");
+		if (subswarm.getFitnessArchiveSize()<haltingWindow) {
+                EVAERROR.errorMsgOnce("Warning: halting window length " + haltingWindow + " too long for sub swarm template, which stores only " + subswarm.getFitnessArchiveSize() + " fitness values!");
+            }
 		return (isConverged(subswarm.getPopulation()));
 	}
 	

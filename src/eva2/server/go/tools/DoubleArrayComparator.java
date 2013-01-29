@@ -56,10 +56,18 @@ public class DoubleArrayComparator implements Comparator<Object> {
 			o1domO2 = AbstractEAIndividual.isDominatingFitness(fit1, fit2);
 			o2domO1 = AbstractEAIndividual.isDominatingFitness(fit2, fit1);
 		} else {
-			if (fit1[fitCriterion] == fit2[fitCriterion]) return 0;
-			else return (fit1[fitCriterion] < fit2[fitCriterion]) ? -1 : 1;
+			if (fit1[fitCriterion] == fit2[fitCriterion]) {
+                        return 0;
+                    }
+			else {
+                        return (fit1[fitCriterion] < fit2[fitCriterion]) ? -1 : 1;
+                    }
 		}
-		if (o1domO2 ^ o2domO1) return (o1domO2 ? -1 : 1);
-		else return 0; // these are not comparable
+		if (o1domO2 ^ o2domO1) {
+                return (o1domO2 ? -1 : 1);
+            }
+		else {
+                return 0;
+            } // these are not comparable
 	}
 }

@@ -45,8 +45,12 @@ public class F20Problem extends AbstractProblemDouble implements Serializable, I
 	}
 
 	private double getYOffset() {
-		if (isShiftFit()) return (getProblemDimension() - 1)*getDefaultRange();
-		else return 0;
+		if (isShiftFit()) {
+                return (getProblemDimension() - 1)*getDefaultRange();
+            }
+		else {
+                return 0;
+            }
 	}
 	
 	private double g(double x, double y) {
@@ -100,19 +104,29 @@ public class F20Problem extends AbstractProblemDouble implements Serializable, I
     @Override
 	public SolutionHistogram getHistogram() {
 		if (getProblemDimension()==10) {
-			if (getYOffset()==0) return new SolutionHistogram(-5200, -3600, 16);
-			else return new SolutionHistogram(0, 1600, 16);
+			if (getYOffset()==0) {
+                        return new SolutionHistogram(-5200, -3600, 16);
+                    }
+			else {
+                        return new SolutionHistogram(0, 1600, 16);
+                    }
 		}
 		if (getProblemDimension()==30) {
-			if (getYOffset()==0) return new SolutionHistogram(-15000, -8600, 16); 
+			if (getYOffset()==0) { 
+                        return new SolutionHistogram(-15000, -8600, 16);
+                    } 
 //			das passst wohl nicht für Multimodales... Also nochmal für 30D.
-			else return new SolutionHistogram(0, 6400, 16);
+			else {
+                        return new SolutionHistogram(0, 6400, 16);
+                    }
 		}
 		if (getProblemDimension() <= 5) {
 			double lower = getYOffset()-((getProblemDimension()-1)*getDefaultRange());
 			return new SolutionHistogram(lower, lower+160, 16);
 		} else if (getProblemDimension() < 15) {
 			return new SolutionHistogram(getYOffset()-5000, getYOffset()-3400, 16);
-		} else return new SolutionHistogram(getYOffset()-15000, getYOffset()-13400, 16);
+		} else {
+                return new SolutionHistogram(getYOffset()-15000, getYOffset()-13400, 16);
+            }
 	}
 }

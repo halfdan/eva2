@@ -13,7 +13,9 @@ public class SimpleB1 extends SimpleProblemBinary {
 		int                     fitness = 0;
 
 		for (int i = 0; i < getProblemDimension(); i++) {
-                if (b.get(i)) fitness++;
+                if (b.get(i)) {
+                        fitness++;
+                    }
             }
 		result[0] = fitness;
 		return result;

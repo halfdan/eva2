@@ -49,7 +49,9 @@ public class EnumEditor extends PropertyEditorSupport {
 	
 	@Override
 	public String[] getTags() {
-		if (getValue()==null) return null;
+		if (getValue()==null) {
+                return null;
+            }
 		String[] tags = new String[enumConstants.length];
 		for (int i=0; i<tags.length; i++) {
             tags[i]=enumConstants[i].toString();

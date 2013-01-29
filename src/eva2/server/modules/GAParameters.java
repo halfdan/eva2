@@ -138,7 +138,9 @@ public class GAParameters extends AbstractGOParameters implements InterfaceGOPar
      * @param partners
      */
     public void setNumberOfPartners(int partners) {
-        if (partners < 0) partners = 0;
+        if (partners < 0) {
+            partners = 0;
+        }
         ((GeneticAlgorithm)this.m_Optimizer).setNumberOfPartners(partners);
     }
     public int getNumberOfPartners() {

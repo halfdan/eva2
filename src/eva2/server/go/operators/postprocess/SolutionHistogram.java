@@ -60,8 +60,12 @@ public class SolutionHistogram {
 	}
 	
 	public boolean isCompatible(SolutionHistogram o) {
-		if (lBound==o.getLowerBound() && (uBound==o.getUpperBound()) && (numBins==o.getNumBins())) return true;
-		else return false;
+		if (lBound==o.getLowerBound() && (uBound==o.getUpperBound()) && (numBins==o.getNumBins())) {
+                return true;
+            }
+		else {
+                return false;
+            }
 	}
 	
 	/**
@@ -69,7 +73,9 @@ public class SolutionHistogram {
 	 * @param o
 	 */
 	public void addHistogram(SolutionHistogram o) {
-		if (o.isEmtpy()) System.err.println("Warning, adding empty histogram... (SolutionHistogram)");
+		if (o.isEmtpy()) {
+                System.err.println("Warning, adding empty histogram... (SolutionHistogram)");
+            }
 		if (isCompatible(o)) {
 			arity+=o.arity;
 			for (int i=0; i<numBins; i++) {
@@ -179,7 +185,9 @@ public class SolutionHistogram {
 				sc += getScalingFactor(i)*((double)getEntry(i));
 			}
 			return sc;
-		} else return 0;
+		} else {
+                return 0;
+            }
 	}
 
 	private double getScalingFactor(int i) {

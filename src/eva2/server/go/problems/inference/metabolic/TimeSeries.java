@@ -112,11 +112,13 @@ public class TimeSeries implements Serializable {
 				j = 0;
 				st = new StringTokenizer(dataFile[i]);
 				while (st.hasMoreElements())
-					if (i > 0)
-						data[i - 1][j++] = st.nextElement().toString();
-					else
-						names.put(st.nextElement().toString().replaceAll("\"",
-								""), new Integer(j++));
+					if (i > 0) {
+                                data[i - 1][j++] = st.nextElement().toString();
+                            }
+					else {
+                                names.put(st.nextElement().toString().replaceAll("\"",
+                                                ""), new Integer(j++));
+                            }
 			}
 
 			/*
@@ -140,8 +142,9 @@ public class TimeSeries implements Serializable {
 					j = ((Integer) names.get(name)).intValue();
 					for (i = 0; i < data.length; i++) {
                     if (!data[i][j].equals("-1")
-                                    && !data[i][j].equals("NaN"))
-                            count++;
+                                    && !data[i][j].equals("NaN")) {
+                                                count++;
+                                            }
                 }
 					values = new double[2][count];
 					// /*
@@ -184,12 +187,15 @@ public class TimeSeries implements Serializable {
 	 *             thrown.
 	 */
 	public double[] getTimes(String metabolite) throws Exception {
-		if (names == null)
-			System.err.println("getTimes: names is null");
-		if (!names.containsKey(metabolite))
-			throw new Exception("No data measured for this metabolite");
-		if (names.get(metabolite) == null)
-			System.err.println("get(metabolite) is null");
+		if (names == null) {
+                System.err.println("getTimes: names is null");
+            }
+		if (!names.containsKey(metabolite)) {
+                throw new Exception("No data measured for this metabolite");
+            }
+		if (names.get(metabolite) == null) {
+                System.err.println("get(metabolite) is null");
+            }
 		return ((double[][]) names.get(metabolite))[0];
 	}
 
@@ -218,8 +224,9 @@ public class TimeSeries implements Serializable {
 	 *             thrown.
 	 */
 	public double[] getValues(String metabolite) throws Exception {
-		if (!names.containsKey(metabolite))
-			throw new Exception("No data measured for this metabolite");
+		if (!names.containsKey(metabolite)) {
+                throw new Exception("No data measured for this metabolite");
+            }
 		return ((double[][]) names.get(metabolite))[1];
 	}
 

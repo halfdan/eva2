@@ -166,7 +166,9 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
         } catch(java.lang.ClassNotFoundException e) {
             System.out.println("No Class found for " + tmp);
         }
-        if ((object != null) && (editor != null)) paraPanel.registerEditor(object, editor);
+        if ((object != null) && (editor != null)) {
+            paraPanel.registerEditor(object, editor);
+        }
         this.m_O1 = (paraPanel.makePanel());
         // TODO this is defunct anyways... (MK, 2010-03)
 //        EvAClient.setProperty("eva2.server.oa.go.Tools.InterfaceTest", "eva2.server.oa.go.Tools.Test1,eva2.server.oa.go.Tools.Test2");
@@ -367,7 +369,9 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
     public Object doWork() {
         try {
         	this.m_GO.saveInstance();
-            if (this.show) this.m_StatusField.setText("Optimizing...");
+            if (this.show) {
+                this.m_StatusField.setText("Optimizing...");
+            }
 
             RNG.setRandomSeed(m_GO.getSeed());
             // opening output file...
@@ -403,10 +407,12 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
                 this.m_GO.getProblem().initProblem(); // in the loop as well, dynamic probs may need that (MK)
             	this.m_TmpData  = new ArrayList();
                 this.currentRun = j;
-                if (this.show)
+                if (this.show) {
                     this.m_StatusField.setText("Optimizing Run " + (j+1) + " of " + this.m_MultiRuns + " Multi Runs...");
-                if (Thread.interrupted())
+                }
+                if (Thread.interrupted()) {
                     throw new InterruptedException();
+                }
                 // write header to file
                 this.writeToFile(" FitnessCalls\t Best\t Mean\t Worst \t" + BeanInspector.toString(this.m_GO.getProblem().getAdditionalDataHeader(), '\t', false, ""));
                 if ((this.m_ContinueFlag) && (this.m_Backup != null)) {
@@ -426,7 +432,9 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
                 //while (this.m_GO.getOptimizer().getPopulation().getFunctionCalls() < this.m_FunctionCalls) {
                 while (!this.m_GO.getTerminator().isTerminated(this.m_GO.getOptimizer().getPopulation())) {
                     //System.out.println("Simulated Function calls "+ this.m_Optimizer.getPopulation().getFunctionCalls());
-                    if (Thread.interrupted()) throw new InterruptedException();
+                    if (Thread.interrupted()) {
+                        throw new InterruptedException();
+                    }
                     m_GO.getOptimizer().optimize();
                 }
                 System.gc();
@@ -434,13 +442,19 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
                 //this.writeToFile(this.m_GO.getProblem().getStringRepresentationForProblem(this.m_GO.getOptimizer()));
                 tmpMultiRun.add(this.m_TmpData);
             }
-            if (this.show) this.m_Plot.setInfoString(this.currentExperiment, this.m_ExperimentName, 0.5f);
-            if (this.show) this.draw();
+            if (this.show) {
+                this.m_Plot.setInfoString(this.currentExperiment, this.m_ExperimentName, 0.5f);
+            }
+            if (this.show) {
+                this.draw();
+            }
             this.m_ExperimentName = this.m_GO.getOptimizer().getName()+"-"+this.m_PerformedRuns.size();
         }
         catch (InterruptedException e) {
             updateStatus(0);
-            if (this.show) this.m_StatusField.setText("Interrupted...");
+            if (this.show) {
+                this.m_StatusField.setText("Interrupted...");
+            }
             return "Interrupted";
         }
         if (this.m_OutputFile != null) {
@@ -450,11 +464,14 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
                 System.out.println("Failed to close output file!");
             }
         }
-        if (this.show) for (int i = 0; i < this.m_MultiRuns; i++) {
-            this.m_Plot.clearGraph(1000 +i);
-        }
+        if (this.show) {
+            for (int i = 0; i < this.m_MultiRuns; i++) {
+ this.m_Plot.clearGraph(1000 +i);
+}       }
         updateStatus(0);
-        if (this.show) this.m_StatusField.setText("Finished...");
+        if (this.show) {
+            this.m_StatusField.setText("Finished...");
+        }
         return "All Done";
     }
 
@@ -506,8 +523,12 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
 //            if (this.m_GO.getOptimizer().getName().equalsIgnoreCase("CBN-EA")) tmpColor = Color.black;
 
             for (int j = 0; j < data.length; j++) {
-                if (this.m_ContinueFlag) this.m_Plot.setConnectedPoint(data[j][0]+this.m_RecentFC, data[j][1], this.currentExperiment);
-                else this.m_Plot.setConnectedPoint(data[j][0], data[j][1], this.currentExperiment);
+                if (this.m_ContinueFlag) {
+                    this.m_Plot.setConnectedPoint(data[j][0]+this.m_RecentFC, data[j][1], this.currentExperiment);
+                }
+                else {
+                    this.m_Plot.setConnectedPoint(data[j][0], data[j][1], this.currentExperiment);
+                }
             }
             this.currentExperiment++;
         }
@@ -593,8 +614,12 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
     		// instead of adding simply the best fitness value i'll ask the problem what to show
     		tmpData[1] = this.m_GO.getProblem().getDoublePlotValue(population);
     		if (this.m_Plot != null) {
-    			if (this.m_ContinueFlag) this.m_Plot.setConnectedPoint(tmpData[0].doubleValue()+this.m_RecentFC, tmpData[1].doubleValue(), 1000+this.currentRun);
-    			else this.m_Plot.setConnectedPoint(tmpData[0].doubleValue(), tmpData[1].doubleValue(), 1000+this.currentRun);
+    			if (this.m_ContinueFlag) {
+                        this.m_Plot.setConnectedPoint(tmpData[0].doubleValue()+this.m_RecentFC, tmpData[1].doubleValue(), 1000+this.currentRun);
+                    }
+    			else {
+                        this.m_Plot.setConnectedPoint(tmpData[0].doubleValue(), tmpData[1].doubleValue(), 1000+this.currentRun);
+                    }
     		}
     		this.m_TmpData.add(tmpData);
     	}
@@ -605,7 +630,9 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
      */
     private void writeToFile(String line) {
         String write = line + "\n";
-        if (this.m_OutputFile == null) return;
+        if (this.m_OutputFile == null) {
+            return;
+        }
         try {
             this.m_OutputFile.write(write, 0, write.length());
             this.m_OutputFile.flush();

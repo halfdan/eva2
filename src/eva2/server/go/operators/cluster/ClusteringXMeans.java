@@ -97,7 +97,9 @@ public class ClusteringXMeans implements InterfaceClustering, java.io.Serializab
                         x  = ((InterfaceDataTypeDouble)tmpResults[i][k].get(l)).getDoubleData();
                         myPoint = new DPoint(x[0], x[1]);
                         tmp = new Chart2DDPointIconText(""+k);
-                        if (k % 2 == 0) tmp.setIcon(new Chart2DDPointIconCircle());
+                        if (k % 2 == 0) {
+                            tmp.setIcon(new Chart2DDPointIconCircle());
+                        }
                         myPoint.setIcon(tmp);
                         mySet.addDPoint(myPoint);
                     }
@@ -107,7 +109,9 @@ public class ClusteringXMeans implements InterfaceClustering, java.io.Serializab
                 for (int k = 0; k < tmpC[i].length; k++) {
                     myPoint = new DPoint(tmpC[i][k][0], tmpC[i][k][1]);
                     tmp = new Chart2DDPointIconText("C/"+k);
-                    if (k % 2 == 0) tmp.setIcon(new Chart2DDPointIconCircle());
+                    if (k % 2 == 0) {
+                        tmp.setIcon(new Chart2DDPointIconCircle());
+                    }
                     myPoint.setIcon(tmp);
                     mySet.addDPoint(myPoint);
                 }
@@ -172,7 +176,9 @@ public class ClusteringXMeans implements InterfaceClustering, java.io.Serializab
 
     private double calculateSigma(double[][] data, double[] mean) {
         double result = 0;
-        if (data.length == 1) return 1.0;
+        if (data.length == 1) {
+            return 1.0;
+        }
 
         for (int i = 0; i < data.length; i++) {
             result += Math.pow(this.distance(data[i], mean), 2);
@@ -275,8 +281,9 @@ public class ClusteringXMeans implements InterfaceClustering, java.io.Serializab
             // find the closest c
             clusterAssigned = 0;
             for (int j = 1; j < c.length; j++) {
-                if (this.distance(data[i], c[clusterAssigned]) > this.distance(data[i], c[j]))
+                if (this.distance(data[i], c[clusterAssigned]) > this.distance(data[i], c[j])) {
                     clusterAssigned = j;
+                }
             }
             result[clusterAssigned].add(pop.get(i));
         }
@@ -366,7 +373,9 @@ public class ClusteringXMeans implements InterfaceClustering, java.io.Serializab
         return this.m_MaxK;
     }
     public void setMaxK(int m){
-        if (m < 1) m = 1;
+        if (m < 1) {
+            m = 1;
+        }
         this.m_MaxK = m;
     }
     public String maxKTipText() {

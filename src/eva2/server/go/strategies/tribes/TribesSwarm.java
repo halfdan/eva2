@@ -611,10 +611,14 @@ public class TribesSwarm implements java.io.Serializable{
     	TribesPosition posTemp = new TribesPosition(range.length);
     	double[] rand_i;
 
-		if (Tribes.TRACE) System.out.println("+ generateExplorer option " + option);
+		if (Tribes.TRACE) {
+                        System.out.println("+ generateExplorer option " + option);
+                    }
     	switch (option) {
     	case 3: // around a "center"
-    		if (Tribes.TRACE) System.out.println("+ around center ");
+    		if (Tribes.TRACE) {
+                        System.out.println("+ around center ");
+                    }
     		if (radius < 0) {
     			// Choose at random a memory
     			m = RNG.randomInt(this.tribes[fromTribe].memoryNb);
@@ -643,7 +647,9 @@ public class TribesSwarm implements java.io.Serializable{
              In order to do that all memorizez positions are used, including de "dead" ones
                See SunnySpell
     	 */
-    		if (Tribes.TRACE) System.out.println("+ sunny spell ");
+    		if (Tribes.TRACE) {
+                        System.out.println("+ sunny spell ");
+                    }
 
     		// if only initRange should be used for initialization, give that one to the sspell
     		expl.position = expl.position.maxIsolated((initRange == null) ? range : initRange, this);
@@ -659,14 +665,20 @@ public class TribesSwarm implements java.io.Serializable{
     	default:
 	    	// For pure random (0) method, or option 1 (on the bounds)
     		if (initType==1) {	// use initRange
-        		if (Tribes.TRACE) System.out.println("+ in initRange ");
-        		if (initRange == null) System.err.println("unexpected null initRange!");
+        		if (Tribes.TRACE) {
+                        System.out.println("+ in initRange ");
+                    }
+        		if (initRange == null) {
+                        System.err.println("unexpected null initRange!");
+                    }
     			// this allows for a random position plus a random (but valid) last velocity
     			expl.initExplorerSpace(initRange);
     			posTemp = expl.position.clone();
     			expl.initExplorerSpace(initRange);
     		} else {	// use default range
-        		if (Tribes.TRACE) System.out.println("+ in whole range ");
+        		if (Tribes.TRACE) {
+                        System.out.println("+ in whole range ");
+                    }
     			//default: // In the whole search space
     			expl.initExplorerSpace(range);
     			posTemp = expl.position.clone();
@@ -701,7 +713,9 @@ public class TribesSwarm implements java.io.Serializable{
 
     	// Complete the explorer
     	prob.evaluate(expl);
-    	if (notify) masterTribe.incEvalCnt();
+    	if (notify) {
+                        masterTribe.incEvalCnt();
+                    }
     	/* necessary for initialization when not all explorers have a valid fitness
     	 * to avoid zero fitness plot from population.getBest.
     	 */

@@ -92,8 +92,12 @@ public class MOCCOChooseReferenceSolution extends MOCCOPhase implements Interfac
                 gbc.gridx       = 1;
                 gbc.gridy       = i+1;
                 gbc.weightx     = 1;
-                if (obj[i].is2BMinimized()) textA = new JTextField("min");
-                else textA = new JTextField("max");
+                if (obj[i].is2BMinimized()) {
+                    textA = new JTextField("min");
+                }
+                else {
+                    textA = new JTextField("max");
+                }
                 textA.setEditable(false);
                 tmpP.add(textA, gbc);
                 gbc.gridx       = 2;

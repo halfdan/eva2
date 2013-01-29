@@ -46,7 +46,9 @@ public class SelProbStandardScaling extends AbstractSelProb implements java.io.S
             boolean isFeasible = false;
             int k=0;
             while ((k < population.size()) && !isFeasible) {
-                if (!((AbstractEAIndividual)population.get(k)).violatesConstraint()) isFeasible = true;
+                if (!((AbstractEAIndividual)population.get(k)).violatesConstraint()) {
+                    isFeasible = true;
+                }
                 k++;
             }
             if (isFeasible) {
@@ -58,20 +60,32 @@ public class SelProbStandardScaling extends AbstractSelProb implements java.io.S
                     // first find the worst, to be able to default
                     double worst = Double.POSITIVE_INFINITY;
                     for (int i = 0; i < data.length; i++) {
-                        if (data[i][x] > worst) worst = data[i][x];
+                        if (data[i][x] > worst) {
+                            worst = data[i][x];
+                        }
                     }
                     for (int i = 0; i < data.length; i++) {
-                        if (!((AbstractEAIndividual)population.get(i)).violatesConstraint())
+                        if (!((AbstractEAIndividual)population.get(i)).violatesConstraint()) {
                             result[i] = -data[i][x];
-                        else
+                        }
+                        else {
                             result[i] = -worst;
+                        }
                     }
                     for (int i = 0; i < data.length; i++) {
-                        if (result[i] < min) min = result[i];
-                        if (result[i] > max) max = result[i];
+                        if (result[i] < min) {
+                            min = result[i];
+                        }
+                        if (result[i] > max) {
+                            max = result[i];
+                        }
                     }
-                    if (max != min) delta = max -min;
-                    else delta = 1;
+                    if (max != min) {
+                        delta = max -min;
+                    }
+                    else {
+                        delta = 1;
+                    }
 
                     for (int i = 0; i < data.length; i++) {
                         result[i] = ((result[i] - min)/delta) + this.m_Q;
@@ -90,11 +104,19 @@ public class SelProbStandardScaling extends AbstractSelProb implements java.io.S
                     result[i] = -((AbstractEAIndividual)population.get(i)).getConstraintViolation();
                 }
                 for (int i = 0; i < data.length; i++) {
-                    if (result[i] < min) min = result[i];
-                    if (result[i] > max) max = result[i];
+                    if (result[i] < min) {
+                        min = result[i];
+                    }
+                    if (result[i] > max) {
+                        max = result[i];
+                    }
                 }
-                if (max != min) delta = max - min;
-                else delta = 1;
+                if (max != min) {
+                    delta = max - min;
+                }
+                else {
+                    delta = 1;
+                }
 
                 for (int i = 0; i < data.length; i++) {
                     result[i] = ((result[i] - min)/delta) + this.m_Q;
@@ -114,11 +136,19 @@ public class SelProbStandardScaling extends AbstractSelProb implements java.io.S
                     result[i] = -data[i][x];
                 }
                 for (int i = 0; i < data.length; i++) {
-                    if (result[i] < min) min = result[i];
-                    if (result[i] > max) max = result[i];
+                    if (result[i] < min) {
+                        min = result[i];
+                    }
+                    if (result[i] > max) {
+                        max = result[i];
+                    }
                 }
-                if (max != min) delta = max -min;
-                else delta = 1;
+                if (max != min) {
+                    delta = max -min;
+                }
+                else {
+                    delta = 1;
+                }
 
                 for (int i = 0; i < data.length; i++) {
                     result[i] = ((result[i] - min)/delta) + this.m_Q;

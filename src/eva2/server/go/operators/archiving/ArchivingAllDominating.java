@@ -35,7 +35,9 @@ public class ArchivingAllDominating extends AbstractArchiving implements java.io
     @Override
     public void addElementsToArchive(Population pop) {
 
-        if (pop.getArchive() == null) pop.SetArchive(new Population());
+        if (pop.getArchive() == null) {
+            pop.SetArchive(new Population());
+        }
 //        System.out.println("addElementsToArchive");
         if (this.m_ObeyDebsConstViolationPrinciple) {
             for (int i = 0; i < pop.size(); i++) {

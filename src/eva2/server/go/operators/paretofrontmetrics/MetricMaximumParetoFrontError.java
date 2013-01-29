@@ -63,7 +63,9 @@ public class MetricMaximumParetoFrontError implements eva2.server.go.operators.p
      */
     private void loadReferenceData() {
         String[]    tmpS, lines = FileTools.loadStringsFromFile(this.m_InputFilePath.getCompleteFilePath());
-        if (lines == null) System.out.println("Failed to read "+this.m_InputFilePath.getCompleteFilePath());
+        if (lines == null) {
+            System.out.println("Failed to read "+this.m_InputFilePath.getCompleteFilePath());
+        }
         lines[0].trim();
         this.m_Titles = lines[0].split("\t");
         ArrayList   tmpA = new ArrayList();
@@ -91,7 +93,9 @@ public class MetricMaximumParetoFrontError implements eva2.server.go.operators.p
         double      result = 0, min, dist;
         Population  tmpPPO = new Population();
         tmpPPO.addPopulation(pop);
-        if (pop.getArchive() != null) tmpPPO.addPopulation(pop.getArchive());
+        if (pop.getArchive() != null) {
+            tmpPPO.addPopulation(pop.getArchive());
+        }
         if (this.m_Reference == null) {
             this.loadReferenceData();
             if (this.m_Reference == null) {

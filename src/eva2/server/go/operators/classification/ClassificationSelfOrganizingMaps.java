@@ -176,7 +176,9 @@ public class ClassificationSelfOrganizingMaps implements java.io.Serializable, I
             winner = this.findWinningNeuron(space[i]);
             this.m_SOMClass[winner[0]][winner[1]][type[i]]++;
         }
-        if (this.debug) this.drawSOM(space, type);
+        if (this.debug) {
+            this.drawSOM(space, type);
+        }
     }
 
     /** This method updates a given winner neuron and it's neighbours
@@ -491,7 +493,9 @@ public class ClassificationSelfOrganizingMaps implements java.io.Serializable, I
      * @param t    The number of neurons in x dimension
      */
     public void setSizeX(int t) {
-        if (t < 1) t = 1;
+        if (t < 1) {
+            t = 1;
+        }
         this.m_Dim1 = t;
     }
     public int getSizeX() {
@@ -505,7 +509,9 @@ public class ClassificationSelfOrganizingMaps implements java.io.Serializable, I
      * @param t    The number of neurons in y dimension
      */
     public void setSizeY(int t) {
-        if (t < 1) t = 1;
+        if (t < 1) {
+            t = 1;
+        }
         this.m_Dim2 = t;
     }
     public int getSizeY() {
@@ -518,7 +524,9 @@ public class ClassificationSelfOrganizingMaps implements java.io.Serializable, I
      * @param t    The number of training cycles
      */
     public void setTrainingCycles(int t) {
-        if (t < 1) t = 1;
+        if (t < 1) {
+            t = 1;
+        }
         this.m_TrainingCycles = t;
     }
     public int getTrainingCycles() {
@@ -531,7 +539,9 @@ public class ClassificationSelfOrganizingMaps implements java.io.Serializable, I
      * @param t    The size of the neighborhood
      */
     public void setNeighborhoodSize(int t) {
-        if (t < 0) t = 0;
+        if (t < 0) {
+            t = 0;
+        }
         this.m_NeighborhoodSize = t;
     }
     public int getNeighborhoodSize() {
@@ -544,8 +554,12 @@ public class ClassificationSelfOrganizingMaps implements java.io.Serializable, I
      * @param t    The initial alpha value
      */
     public void setAlpha(double t) {
-        if (t < 0) t = 0;
-        if (t > 0.5) t = 0.5;
+        if (t < 0) {
+            t = 0;
+        }
+        if (t > 0.5) {
+            t = 0.5;
+        }
         this.m_Alpha = t;
     }
     public double getAlpha() {

@@ -64,7 +64,9 @@ public class CrossoverGAGINPoint implements InterfaceCrossover, java.io.Serializ
             result[i+1] = (AbstractEAIndividual) ((AbstractEAIndividual)partners.get(i)).clone();
         }
 
-        if (partners.size() == 0) return result;
+        if (partners.size() == 0) {
+            return result;
+        }
         
 		if (individual instanceof InterfaceGAIndividual || (individual instanceof InterfaceGIIndividual)) {
 			int         length          =  getGenotypeLength(individual);
@@ -80,13 +82,19 @@ public class CrossoverGAGINPoint implements InterfaceCrossover, java.io.Serializ
             	newGenotypes[i+1] = getGenotype(result[i+1]);
                 length = Math.max(length, getGenotypeLength(partners.getEAIndividual(i)));
             }
-            if (TRACE) System.out.println("Before CO: " + BeanInspector.toString(newGenotypes));
+            if (TRACE) {
+                        System.out.println("Before CO: " + BeanInspector.toString(newGenotypes));
+                    }
             int         mixer           = RNG.randomInt(0, partners.size()); // partner index with which to exchange genes
             int[] crossoverPoints=getCrossoverPoints(length, m_NumberOfCrossovers);
-            if (TRACE)  System.out.println("CO points: " + BeanInspector.toString(crossoverPoints));
+            if (TRACE) {
+                        System.out.println("CO points: " + BeanInspector.toString(crossoverPoints));
+                    }
             for (int i = 0; i < length; i++) { // loop positions
                 for (int j = 0; j < this.m_NumberOfCrossovers; j++) {
-                    if (i == crossoverPoints[j]) mixer++; // possibly switch partner to exchange with
+                    if (i == crossoverPoints[j]) {
+                        mixer++;
+                    } // possibly switch partner to exchange with
                 }
                 for (int j = 0; j < origGenotypes.length; j++) { // loop individuals
                 	// exchange values at position i between indies 
@@ -97,7 +105,9 @@ public class CrossoverGAGINPoint implements InterfaceCrossover, java.io.Serializ
             for (int i = 0; i < result.length; i++) {
             	writeBack(result[i], newGenotypes[i]);
             }
-            if (TRACE) System.out.println("After CO: " + BeanInspector.toString(newGenotypes));
+            if (TRACE) {
+                        System.out.println("After CO: " + BeanInspector.toString(newGenotypes));
+                    }
 		}
 		return result;
     }
@@ -214,9 +224,13 @@ public class CrossoverGAGINPoint implements InterfaceCrossover, java.io.Serializ
     public boolean equals(Object crossover) {
         if (crossover instanceof CrossoverGAGINPoint) {
             CrossoverGAGINPoint cross = (CrossoverGAGINPoint)crossover;
-            if (this.m_NumberOfCrossovers != cross.m_NumberOfCrossovers) return false;
+            if (this.m_NumberOfCrossovers != cross.m_NumberOfCrossovers) {
+                return false;
+            }
             return true;
-        } else return false;
+        } else {
+            return false;
+        }
     }
 
     /** This method will allow the crossover operator to be initialized depending on the
@@ -258,7 +272,9 @@ public class CrossoverGAGINPoint implements InterfaceCrossover, java.io.Serializ
      * @param crossovers   The number of crossovers.
      */
     public void setNumberOfCrossovers(int crossovers) {
-        if (crossovers < 0) crossovers = 0;
+        if (crossovers < 0) {
+            crossovers = 0;
+        }
         this.m_NumberOfCrossovers = crossovers;
     }
     public int getNumberOfCrossovers() {

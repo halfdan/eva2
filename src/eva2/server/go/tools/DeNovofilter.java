@@ -36,7 +36,9 @@ public class DeNovofilter {
             double[] d = ((AbstractEAIndividual)a.get(i)).getFitness();
             for (int j = 0; j < d.length; j++) {
                 s += ""+d[j];
-                if (j < d.length-1) s += "; ";
+                if (j < d.length-1) {
+                    s += "; ";
+                }
             }
             System.out.println(""+s);
         }

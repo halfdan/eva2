@@ -290,13 +290,17 @@ public class GenericDoubleArrayEditor extends JPanel implements PropertyEditor {
 
     @Override
     public void addPropertyChangeListener(PropertyChangeListener l) {
-  	  if (m_Support == null) m_Support = new PropertyChangeSupport(this);
+  	  if (m_Support == null) {
+            m_Support = new PropertyChangeSupport(this);
+        }
   	  m_Support.addPropertyChangeListener(l);
     }
 
     @Override
     public void removePropertyChangeListener(PropertyChangeListener l) {
-  	  if (m_Support == null) m_Support = new PropertyChangeSupport(this);
+  	  if (m_Support == null) {
+            m_Support = new PropertyChangeSupport(this);
+        }
   	  m_Support.removePropertyChangeListener(l);
     }
 
@@ -348,7 +352,9 @@ public class GenericDoubleArrayEditor extends JPanel implements PropertyEditor {
     */
     @Override
     public Component getCustomEditor() {
-        if (this.m_CustomEditor == null) this.initCustomEditor();
+        if (this.m_CustomEditor == null) {
+            this.initCustomEditor();
+        }
         return m_CustomEditor;
     }
 }

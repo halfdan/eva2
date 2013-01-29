@@ -57,7 +57,9 @@ public class CrossoverGADefault implements InterfaceCrossover,
         }
 		// for (int i = 0; i < result.length; i++) System.out.println("Before
 		// Crossover: " +result[i].getSolutionRepresentationFor());
-		if (partners.size() == 0) return result;
+		if (partners.size() == 0) {
+                    return result;
+                }
 		if ((indy1 instanceof InterfaceGAIndividual)
 		    && (partners.get(0) instanceof InterfaceGAIndividual)) {
 			// Currently we will only handle two parents
@@ -69,15 +71,24 @@ public class CrossoverGADefault implements InterfaceCrossover,
 			tmpBitSets[1] = ((InterfaceGAIndividual) result[1]).getBGenotype();
 			for (int i = crossoverpoint; i < ((InterfaceGAIndividual) result[0])
 			    .getGenotypeLength(); i++) {
-				if (tmpBitSets[0].get(i))
-					tmpValue = true;
-				else tmpValue = false;
-				if (tmpBitSets[1].get(i))
-					tmpBitSets[0].set(i);
-				else tmpBitSets[0].clear(i);
-				if (tmpValue)
-					tmpBitSets[1].set(i);
-				else tmpBitSets[1].clear(i);
+				if (tmpBitSets[0].get(i)) {
+                                    tmpValue = true;
+                                }
+				else {
+                                    tmpValue = false;
+                                }
+				if (tmpBitSets[1].get(i)) {
+                                    tmpBitSets[0].set(i);
+                                }
+				else {
+                                    tmpBitSets[0].clear(i);
+                                }
+				if (tmpValue) {
+                                    tmpBitSets[1].set(i);
+                                }
+				else {
+                                    tmpBitSets[1].clear(i);
+                                }
 			}
 			((InterfaceGAIndividual) result[0]).SetBGenotype(tmpBitSets[0]);
 			((InterfaceGAIndividual) result[1]).SetBGenotype(tmpBitSets[1]);
@@ -102,9 +113,12 @@ public class CrossoverGADefault implements InterfaceCrossover,
 	 */
     @Override
 	public boolean equals(Object crossover) {
-		if (crossover instanceof CrossoverGADefault)
-			return true;
-		else return false;
+		if (crossover instanceof CrossoverGADefault) {
+                return true;
+            }
+		else {
+                return false;
+            }
 	}
 
 	/**

@@ -41,15 +41,19 @@ public class TF1Problem extends AbstractMultiObjectiveOptimizationProblem implem
     
     public TF1Problem(TF1Problem b) {
         //AbstractOptimizationProblem
-        if (b.m_Template != null)
+        if (b.m_Template != null) {
             this.m_Template         = (AbstractEAIndividual)((AbstractEAIndividual)b.m_Template).clone();
+        }
         //AbstractMultiObjectiveOptimizationProblem
-        if (b.m_MOSOConverter != null)
+        if (b.m_MOSOConverter != null) {
             this.m_MOSOConverter    = (InterfaceMOSOConverter)b.m_MOSOConverter.clone();
-        if (b.m_Metric != null)
+        }
+        if (b.m_Metric != null) {
             this.m_Metric           = (InterfaceParetoFrontMetric)b.m_Metric.clone();
-        if (b.m_ParetoFront != null)
+        }
+        if (b.m_ParetoFront != null) {
             this.m_ParetoFront      = (Population)b.m_ParetoFront.clone();
+        }
         if (b.m_Border != null) {
             this.m_Border = new double[b.m_Border.length][2];
             for (int i = 0; i < this.m_Border.length; i++) {
@@ -130,10 +134,18 @@ public class TF1Problem extends AbstractMultiObjectiveOptimizationProblem implem
             individual.SetFitness(i, fitness[i]);
         }     
         if (this.m_ApplyConstraints) {
-            if (fitness[0] > 0.5) individual.addConstraintViolation(fitness[0]-0.5);
-            if (x[1] > 0.1) individual.addConstraintViolation(x[1]-0.1);
-            if (x[2] > 0.1) individual.addConstraintViolation(x[2]-0.1);
-            if (x[3] > 0.1) individual.addConstraintViolation(x[3]-0.1);
+            if (fitness[0] > 0.5) {
+                individual.addConstraintViolation(fitness[0]-0.5);
+            }
+            if (x[1] > 0.1) {
+                individual.addConstraintViolation(x[1]-0.1);
+            }
+            if (x[2] > 0.1) {
+                individual.addConstraintViolation(x[2]-0.1);
+            }
+            if (x[3] > 0.1) {
+                individual.addConstraintViolation(x[3]-0.1);
+            }
         }
         individual.checkAreaConst4Parallelization(this.m_AreaConst4Parallelization);
     }
@@ -257,7 +269,9 @@ public class TF1Problem extends AbstractMultiObjectiveOptimizationProblem implem
      * @param noise     The sigma for a gaussian random number.
      */
     public void setNoise(double noise) {
-        if (noise < 0) noise = 0;
+        if (noise < 0) {
+            noise = 0;
+        }
         this.m_Noise = noise;
     }
     public double getNoise() {

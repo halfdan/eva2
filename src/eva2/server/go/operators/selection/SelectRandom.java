@@ -29,7 +29,9 @@ public class SelectRandom implements InterfaceSelection, java.io.Serializable {
 
     public SelectRandom(boolean withRepl) {
     	withReplacement=withRepl;
-    	if (m_ObeyDebsConstViolationPrinciple) System.err.println("Error, replacement selection not supported for constrained selection (SelectRandom)");
+    	if (m_ObeyDebsConstViolationPrinciple) {
+            System.err.println("Error, replacement selection not supported for constrained selection (SelectRandom)");
+        }
     }
     
     @Override
@@ -63,8 +65,9 @@ public class SelectRandom implements InterfaceSelection, java.io.Serializable {
             int index = 0, rand;
             while (result.size() < size) {
                 rand = RNG.randomInt(0, population.size()-1);
-                if (!((AbstractEAIndividual)population.get(rand)).violatesConstraint())
+                if (!((AbstractEAIndividual)population.get(rand)).violatesConstraint()) {
                     result.add(population.get(rand));
+                }
                 index++;
                 if ((index > 0) && (result.size() == 0 )) {
                     // darn there seems to be no feasible solution
@@ -80,7 +83,9 @@ public class SelectRandom implements InterfaceSelection, java.io.Serializable {
         			result.add(population.get(RNG.randomInt(0, population.size()-1)));
         		}
         	} else {
-        		if (size > population.size()) throw new RuntimeException("Error, invalid selection: trying to select more individuals (without replacement) than available in SelectRandom.");
+        		if (size > population.size()) {
+                        throw new RuntimeException("Error, invalid selection: trying to select more individuals (without replacement) than available in SelectRandom.");
+                    }
         		int[] perm = RNG.randomPerm(size);
         		for (int i=0; i<size; i++) {
                         result.add(population.getEAIndividual(perm[i]));

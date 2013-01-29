@@ -44,7 +44,9 @@ public class SelProbLinearRanking extends AbstractSelProb implements java.io.Ser
             // first check if anyone holds the constraints
             boolean isFeasible = false;
             for (int i = 0; i < population.size(); i++) {
-                if (!((AbstractEAIndividual)population.get(i)).violatesConstraint()) isFeasible = true;
+                if (!((AbstractEAIndividual)population.get(i)).violatesConstraint()) {
+                    isFeasible = true;
+                }
             }
             if (isFeasible) {
                 // at least one is feasible
@@ -52,7 +54,9 @@ public class SelProbLinearRanking extends AbstractSelProb implements java.io.Ser
                     // first find the worst, to be able to default
                     double worst = Double.POSITIVE_INFINITY;
                     for (int i = 0; i < data.length; i++) {
-                        if (data[i][x] > worst) worst = data[i][x];
+                        if (data[i][x] > worst) {
+                            worst = data[i][x];
+                        }
                     }
                     int[]       rank_index = new int[data.length];
                     double[]    fitness    = new double[data.length];
@@ -72,7 +76,9 @@ public class SelProbLinearRanking extends AbstractSelProb implements java.io.Ser
                     for (int index = 0; index < fitness.length; index++) {
                         int min = index;
                         for(int i = index; i < fitness.length; i++) {
-                            if(fitness[min] > fitness[i])  min = i;
+                            if(fitness[min] > fitness[i]) {
+                                min = i;
+                            }
                         }
                         if(fitness[index] != fitness[min]) {
                             temp                = fitness[index];
@@ -105,7 +111,9 @@ public class SelProbLinearRanking extends AbstractSelProb implements java.io.Ser
                 for (int index = 0; index < fitness.length; index++) {
                     int min = index;
                     for(int i = index; i < fitness.length; i++) {
-                        if(fitness[min] > fitness[i])  min = i;
+                        if(fitness[min] > fitness[i]) {
+                            min = i;
+                        }
                     }
                     if(fitness[index] != fitness[min]) {
                         temp                = fitness[index];
@@ -139,7 +147,9 @@ public class SelProbLinearRanking extends AbstractSelProb implements java.io.Ser
                 for (int index = 0; index < fitness.length; index++) {
                     int min = index;
                     for(int i = index; i < fitness.length; i++) {
-                        if(fitness[min] > fitness[i])  min = i;
+                        if(fitness[min] > fitness[i]) {
+                            min = i;
+                        }
                     }
                     if(fitness[index] != fitness[min]) {
                         temp                = fitness[index];
@@ -178,8 +188,12 @@ public class SelProbLinearRanking extends AbstractSelProb implements java.io.Ser
      * @param x     Long seed.
      */
     public void setNappa(double x) {
-        if (x < 1) x = 1;
-        if (x > 2) x = 2;
+        if (x < 1) {
+            x = 1;
+        }
+        if (x > 2) {
+            x = 2;
+        }
         nappaPlus = x;
         this.nappaMinus = 2 - this.nappaPlus;
     }

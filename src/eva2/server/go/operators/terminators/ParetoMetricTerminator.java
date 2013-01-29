@@ -45,7 +45,9 @@ public class ParetoMetricTerminator extends PopulationMeasureTerminator implemen
 	@Override
 	public void init(InterfaceOptimizationProblem prob) {
 		super.init(prob);
-		if (prob instanceof AbstractMultiObjectiveOptimizationProblem) moProb = (AbstractMultiObjectiveOptimizationProblem)prob;
+		if (prob instanceof AbstractMultiObjectiveOptimizationProblem) {
+                moProb = (AbstractMultiObjectiveOptimizationProblem)prob;
+            }
 		else {
 			moProb = null;
 			EVAERROR.errorMsgOnce("Error, " + this.getClass() + " works only with problems inheriting from " + AbstractMultiObjectiveOptimizationProblem.class + "!");
@@ -54,10 +56,16 @@ public class ParetoMetricTerminator extends PopulationMeasureTerminator implemen
 
 	@Override
 	protected double calcInitialMeasure(PopulationInterface pop) {
-		if (moProb==null) return Double.MAX_VALUE;
+		if (moProb==null) {
+                return Double.MAX_VALUE;
+            }
 		else {
-			if (isUseCurrentPop()) return getParetoMetric().calculateMetricOn((Population)pop, moProb);
-			else return getParetoMetric().calculateMetricOn(moProb.getLocalParetoFront(), moProb);
+			if (isUseCurrentPop()) {
+                        return getParetoMetric().calculateMetricOn((Population)pop, moProb);
+                    }
+			else {
+                        return getParetoMetric().calculateMetricOn(moProb.getLocalParetoFront(), moProb);
+                    }
 		}
 	}
 
@@ -73,8 +81,12 @@ public class ParetoMetricTerminator extends PopulationMeasureTerminator implemen
 			metricName = (String)BeanInspector.callIfAvailable(getParetoMetric(), "getName", null);
 		} catch(ClassCastException e) {metricName=null;}
 		
-		if (metricName==null) return "ParetoMetric";
-		else return metricName;
+		if (metricName==null) {
+                return "ParetoMetric";
+            }
+		else {
+                return metricName;
+            }
 	}
 
 	public static String globalInfo() {

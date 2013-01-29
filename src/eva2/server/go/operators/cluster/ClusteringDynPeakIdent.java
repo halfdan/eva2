@@ -50,8 +50,12 @@ public class ClusteringDynPeakIdent implements InterfaceClustering, java.io.Seri
 		this.maxNicheCount = numIndiesPerPeak;
 		this.nicheRadius = nicheRad;
 		this.strictNicheRadius = strictRad;
-		if (metric==null && (alternativeMetric==null)) metric=new PhenotypeMetric();
-		else if (alternativeMetric!=null) metric=alternativeMetric;
+		if (metric==null && (alternativeMetric==null)) {
+                metric=new PhenotypeMetric();
+            }
+		else if (alternativeMetric!=null) {
+                metric=alternativeMetric;
+            }
 	}
 
 	public ClusteringDynPeakIdent(ClusteringDynPeakIdent o) {
@@ -91,7 +95,9 @@ public class ClusteringDynPeakIdent implements InterfaceClustering, java.io.Seri
 			// we have now the info about the closest best individual. If its closer than the threshold, we can assign the loner to that index
 			if (!strictNicheRadius || (closestInfo.tail()<nicheRadius)) {
 				assoc[i]=closestInfo.head();
-			} else assoc[i]=-1;
+			} else {
+                        assoc[i]=-1;
+                    }
 		}
 		return assoc;
 	}
@@ -109,7 +115,9 @@ public class ClusteringDynPeakIdent implements InterfaceClustering, java.io.Seri
 		Population[] clusters = new Population[peaks.size()+1];
 		for (int i=0; i<clusters.length; i++) {
 			clusters[i]=referenceSet.cloneWithoutInds();
-			if (i>0) clusters[i].add(peaks.getEAIndividual(i-1)); // add peaks to clusters!
+			if (i>0) {
+                        clusters[i].add(peaks.getEAIndividual(i-1));
+                    } // add peaks to clusters!
 		}
 //		if (TRACE_METH) System.out.println("A4 " + System.currentTimeMillis());
 		Population rest = pop.filter(peaks);
@@ -185,11 +193,15 @@ public class ClusteringDynPeakIdent implements InterfaceClustering, java.io.Seri
 	public static Population performDynPeakIdent(InterfaceDistanceMetric metric, Population sortedPop, int q, double rho) {
 		int i=0;
 		Population peaks = new Population(q);
-		if (TRACE) System.out.print("Adding peaks: ");
+		if (TRACE) {
+                System.out.print("Adding peaks: ");
+            }
 		while (i<sortedPop.size() && (peaks.size() < q)) {
 			if ((peaks.size()==0) || (!peaks.isWithinPopDist((AbstractEAIndividual)sortedPop.get(i), rho, metric))) {
 				peaks.add(sortedPop.get(i));
-				if (TRACE) System.out.print(" " + sortedPop.getEAIndividual(i).getFitness(0));
+				if (TRACE) {
+                                System.out.print(" " + sortedPop.getEAIndividual(i).getFitness(0));
+                            }
 			}
 			i++;
 		}

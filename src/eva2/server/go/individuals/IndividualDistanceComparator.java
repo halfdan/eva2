@@ -33,9 +33,15 @@ public class IndividualDistanceComparator implements Comparator<Object>, Seriali
 		double d1 = distMetric.distance((AbstractEAIndividual)o1, refIndy);
 		double d2 = distMetric.distance((AbstractEAIndividual)o2, refIndy);
 
-		if (d1==d2) return 0;
-		if (closerMeansLess) return ((d1<d2) ? -1 : 1);
-		else return ((d1<d2) ? 1 : -1);
+		if (d1==d2) {
+                return 0;
+            }
+		if (closerMeansLess) {
+                return ((d1<d2) ? -1 : 1);
+            }
+		else {
+                return ((d1<d2) ? 1 : -1);
+            }
 	}
 
 }

@@ -57,7 +57,9 @@ public class SimpleProblemWrapper extends AbstractOptimizationProblem {
 	        // evaluate the vector
 	        fitness = ((SimpleProblemDouble)simProb).eval(x);
 	        // if indicated, add Gaussian noise
-	        if (m_Noise != 0) RNG.addNoise(fitness, m_Noise); 
+	        if (m_Noise != 0) {
+                        RNG.addNoise(fitness, m_Noise);
+                    } 
 	        // set the fitness 
 	        individual.setFitness(fitness);
 		} else if (simProb instanceof SimpleProblemBinary) {
@@ -128,7 +130,9 @@ public class SimpleProblemWrapper extends AbstractOptimizationProblem {
 			((InterfaceDataTypeDouble)this.m_Template).SetDoubleRange(makeRange());
 		} else if (m_Template instanceof InterfaceDataTypeBinary) {
 			((InterfaceDataTypeBinary)this.m_Template).setBinaryDataLength(simProb.getProblemDimension());
-		} else System.err.println("Individual type not valid!");
+		} else {
+                System.err.println("Individual type not valid!");
+            }
 	}
 	
     protected double[][] makeRange() {
@@ -168,12 +172,16 @@ public class SimpleProblemWrapper extends AbstractOptimizationProblem {
 		GenericObjectEditor.setShowProperty(getClass(), "noise", (simProb instanceof SimpleProblemDouble));
 		GenericObjectEditor.setShowProperty(getClass(), "defaultRange", (simProb instanceof SimpleProblemDouble));
 		if (BeanInspector.hasMethod(simProb, plotFunc, plotFuncSig) != null) {
-			if (m_plot == null) openPlot();
+			if (m_plot == null) {
+                        openPlot();
+                    }
 			else {
 				if (!m_plot.isValid()) {
 					m_plot.dispose();
 					openPlot();
-				} else m_plot.clearAll();
+				} else {
+                                m_plot.clearAll();
+                            }
 			}
 		} else if (m_plot != null) {
 			m_plot.dispose();
@@ -193,7 +201,9 @@ public class SimpleProblemWrapper extends AbstractOptimizationProblem {
      * @param noise     The sigma for a gaussian random number.
      */
     public void setNoise(double noise) {
-        if (noise < 0) noise = 0;
+        if (noise < 0) {
+            noise = 0;
+        }
         this.m_Noise = noise;
     }
     public double getNoise() {

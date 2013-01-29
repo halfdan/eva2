@@ -37,8 +37,12 @@ public class MutateESPathLengthAdaption implements InterfaceMutation, java.io.Se
         this.dampening 			= mutator.dampening;
         this.expectedPathLen 	= mutator.expectedPathLen;
         this.m_cu				= mutator.m_cu;
-        if (mutator.m_randZ != null)    this.m_randZ        = (double[]) mutator.m_randZ.clone();
-        if (mutator.m_Path != null) this.m_Path     = (double[]) mutator.m_Path.clone();
+        if (mutator.m_randZ != null) {
+            this.m_randZ        = (double[]) mutator.m_randZ.clone();
+        }
+        if (mutator.m_Path != null) {
+            this.m_Path     = (double[]) mutator.m_Path.clone();
+        }
     }
 
     /** This method will enable you to clone a given mutation operator
@@ -58,20 +62,34 @@ public class MutateESPathLengthAdaption implements InterfaceMutation, java.io.Se
         if (mutator instanceof MutateESPathLengthAdaption) {
             MutateESPathLengthAdaption mut = (MutateESPathLengthAdaption)mutator;
             // i assume if the C Matrix is equal then the mutation operators are equal
-            if (this.m_dim != mut.m_dim) return false;
-            if (this.m_SigmaGlobal != mut.m_SigmaGlobal) return false;
-            if (this.m_c != mut.m_c) return false;
-            if ((this.m_randZ != null) && (mut.m_randZ != null))
-                for (int i = 0; i < this.m_randZ.length; i++) {
-                if (this.m_randZ[i] != mut.m_randZ[i]) return false;
+            if (this.m_dim != mut.m_dim) {
+                return false;
             }
-            if ((this.m_Path != null) && (mut.m_Path != null))
+            if (this.m_SigmaGlobal != mut.m_SigmaGlobal) {
+                return false;
+            }
+            if (this.m_c != mut.m_c) {
+                return false;
+            }
+            if ((this.m_randZ != null) && (mut.m_randZ != null)) {
+                for (int i = 0; i < this.m_randZ.length; i++) {
+                    if (this.m_randZ[i] != mut.m_randZ[i]) {
+                        return false;
+                    }
+                }
+            }
+            if ((this.m_Path != null) && (mut.m_Path != null)) {
                 for (int i = 0; i < this.m_Path.length; i++) {
-                if (this.m_Path[i] != mut.m_Path[i]) return false;
+                    if (this.m_Path[i] != mut.m_Path[i]) {
+                        return false;
+                    }
+                }
             }
             return true;
         }
-        else return false;
+        else {
+            return false;
+        }
     }
 
     /** This method allows you to init the mutation operator
@@ -80,7 +98,9 @@ public class MutateESPathLengthAdaption implements InterfaceMutation, java.io.Se
      */
     @Override
     public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
-        if (!(individual instanceof InterfaceESIndividual)) return;
+        if (!(individual instanceof InterfaceESIndividual)) {
+            return;
+        }
         double[]    x       = ((InterfaceESIndividual)individual).getDGenotype();
         double[][]  ranges  = ((InterfaceESIndividual)individual).getDoubleRange();
         this.m_dim    = x.length;
@@ -93,8 +113,12 @@ public class MutateESPathLengthAdaption implements InterfaceMutation, java.io.Se
 //            this.m_Path[i]=1;
         }
 
-        if (this.m_UsePath) this.m_c = 4./(m_dim+4);
-        else this.m_c = 1.0;
+        if (this.m_UsePath) {
+            this.m_c = 4./(m_dim+4);
+        }
+        else {
+            this.m_c = 1.0;
+        }
         
         expectedPathLen = Math.sqrt(m_dim)*(1-(1./(4*m_dim))+(1./(21*m_dim*m_dim)));
         dampening = (1./m_c)+1;
@@ -127,8 +151,12 @@ public class MutateESPathLengthAdaption implements InterfaceMutation, java.io.Se
     
 	private void checkRange(double[] x, double[][] ranges) {
 		for (int i = 0; i < x.length; i++) {
-		    if (x[i]  < ranges[i][0]) x[i] = ranges[i][0];
-		    if (x[i]  > ranges[i][1]) x[i] = ranges[i][1];
+		    if (x[i]  < ranges[i][0]) {
+                        x[i] = ranges[i][0];
+                    }
+		    if (x[i]  > ranges[i][1]) {
+                        x[i] = ranges[i][1];
+                    }
 		}
 	}
 
@@ -166,7 +194,9 @@ public class MutateESPathLengthAdaption implements InterfaceMutation, java.io.Se
         for (int i = 0; i < x.length; i++) {
             x[i] += m_SigmaGlobal * m_randZ[i];
         }
-        if (checkRange) checkRange(x, range);
+        if (checkRange) {
+            checkRange(x, range);
+        }
     }
 
     /** This method allows you to get a string representation of the mutation

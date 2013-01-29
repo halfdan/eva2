@@ -72,13 +72,20 @@ public class OBGAIndividualPermutationData extends AbstractEAIndividual implemen
     public boolean equalGenotypes(AbstractEAIndividual individual) {
         if (individual instanceof OBGAIndividualPermutationData) {
             OBGAIndividualPermutationData indy = (OBGAIndividualPermutationData) individual;
-            if ((this.m_Genotype == null) || (indy.m_Genotype == null)) return false;
-            if (m_Genotype.length != indy.m_Genotype.length) return false;
+            if ((this.m_Genotype == null) || (indy.m_Genotype == null)) {
+                return false;
+            }
+            if (m_Genotype.length != indy.m_Genotype.length) {
+                return false;
+            }
             for (int i = 0; i < this.m_Genotype.length; i++) {
-              if (this.m_Genotype[i].length != indy.m_Genotype[i].length)
-              for (int j = 0; j < this.m_Genotype[i].length; j++) {
-                if (this.m_Genotype[i][j] != indy.m_Genotype[i][j]) return false;
-              }
+              if (this.m_Genotype[i].length != indy.m_Genotype[i].length) {
+                    for (int j = 0; j < this.m_Genotype[i].length; j++) {
+                        if (this.m_Genotype[i][j] != indy.m_Genotype[i][j]) {
+                            return false;
+                        }
+                    }
+                }
             }
 
             return true;

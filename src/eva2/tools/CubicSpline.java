@@ -32,7 +32,9 @@ public class CubicSpline{
     	// Constructor with data arrays initialised to arrays x and y
     	public CubicSpline(double[] x, double[] y){
         	this.npoints=x.length;
-        	if(this.npoints!=y.length)throw new IllegalArgumentException("Arrays x and y are of different length");
+        	if(this.npoints!=y.length) {
+                throw new IllegalArgumentException("Arrays x and y are of different length");
+            }
         	this.x = new double[npoints];
         	this.y = new double[npoints];
         	this.y2 = new double[npoints];
@@ -58,8 +60,12 @@ public class CubicSpline{
     	//  METHODS
     	// Resets the x y data arrays - primarily for use in BiCubicSpline
     	public void resetData(double[] x, double[] y){
-        	if(x.length!=y.length)throw new IllegalArgumentException("Arrays x and y are of different length");
-        	if(this.npoints!=x.length)throw new IllegalArgumentException("Original array length not matched by new array length");
+        	if(x.length!=y.length) {
+                throw new IllegalArgumentException("Arrays x and y are of different length");
+            }
+        	if(this.npoints!=x.length) {
+                throw new IllegalArgumentException("Original array length not matched by new array length");
+            }
         	for(int i=0; i<this.npoints; i++){
             		this.x[i]=x[i];
             		this.y[i]=y[i];

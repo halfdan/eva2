@@ -237,7 +237,9 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
         population.addAll(swarm.toPopulation());
         population.init();	// necessary to allow for multi-runs
         
-        if (m_Show) show();
+        if (m_Show) {
+                show();
+            }
 
 	}
 
@@ -259,7 +261,9 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
 			indy.setFitness(bestMemPos.getFitness());
 			((InterfaceDataTypeDouble)indy).SetDoubleGenotype(bestMemPos.getPos());
 			return indy;
-		} else return bestExp;
+		} else {
+                return bestExp;
+            }
 	}
 	
     @Override
@@ -317,7 +321,9 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
 		}
 		population.clear();
 		population.addAll(swarm.toPopulation());
-		if (m_Show) plotAll(population);
+		if (m_Show) {
+                plotAll(population);
+            }
 		m_problem.evaluatePopulationEnd(population);
 
 //		this.population.incrFunctionCallsby(evals);
@@ -638,7 +644,9 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
 	 */
     @Override
 	public void setPopulation(Population pop) {
-		if (pop == null) return;
+		if (pop == null) {
+                return;
+            }
 		population = pop;
 		if (population.get(0) instanceof InterfaceDataTypeDouble) {
 			range = ((InterfaceDataTypeDouble)population.get(0)).getDoubleRange();
@@ -691,7 +699,9 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
     
     protected TribesExplorer positionToExplorer(TribesPosition pos) {
     	TribesExplorer tmp = (TribesExplorer)population.get(0);
-    	if (tmp == null) System.err.println("Error in Tribes::positionToExplorer!");
+    	if (tmp == null) {
+            System.err.println("Error in Tribes::positionToExplorer!");
+        }
     	TribesExplorer indy = tmp.clone();
     	indy.clearPosVel();
     	indy.SetDoubleGenotype(pos.getPos());
@@ -712,10 +722,14 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
 		if (m_Listener==ea) {
 			m_Listener=null;
 			return true;
-		} else return false;
+		} else {
+                                return false;
+                            }
 	}
 	protected void firePropertyChangedEvent(String name) {
-		if (this.m_Listener != null) this.m_Listener.registerPopulationStateChanged(this, name);
+		if (this.m_Listener != null) {
+                this.m_Listener.registerPopulationStateChanged(this, name);
+            }
 	}
 
 	public boolean notifyAfter(int evals) {
@@ -820,6 +834,8 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
 	 */
 	public void setShow(boolean show) {
 		m_Show = show;
-		if (!show) m_Plot = null;
+		if (!show) {
+                m_Plot = null;
+            }
 	}
 }

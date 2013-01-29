@@ -85,13 +85,17 @@ public class GenericFilePathEditor extends JPanel implements PropertyEditor {
 
     @Override
     public void addPropertyChangeListener(PropertyChangeListener l) {
-  	  if (m_Support == null) m_Support = new PropertyChangeSupport(this);
+  	  if (m_Support == null) {
+            m_Support = new PropertyChangeSupport(this);
+        }
   	  m_Support.addPropertyChangeListener(l);
     }
 
     @Override
     public void removePropertyChangeListener(PropertyChangeListener l) {
-  	  if (m_Support == null) m_Support = new PropertyChangeSupport(this);
+  	  if (m_Support == null) {
+            m_Support = new PropertyChangeSupport(this);
+        }
   	  m_Support.removePropertyChangeListener(l);
     }
 
@@ -156,7 +160,9 @@ public class GenericFilePathEditor extends JPanel implements PropertyEditor {
                 m_FilePath.setCompleteFilePath(m_FileChooser.getSelectedFile().getAbsolutePath());
                 m_Support.firePropertyChange("", m_FilePath, null);
                 Window w = (Window) m_FileChooser.getTopLevelAncestor();
-                if (w != null) w.dispose();
+                if (w != null) {
+                    w.dispose();
+                }
                 m_Panel = null;
             }
         }

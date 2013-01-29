@@ -148,7 +148,9 @@ public class ERPStarter {
 		ExternalRuntimeProblem erp = new ExternalRuntimeProblem();
 		if (filteredObjectives!=null && (filteredObjectives.length>1)) {
 			double[][] weights = ToolBox.getCols(filteredObjectives, 6);
-			if (Mathematics.areFinite(weights)<0) erp.setMosoConverter(new MOSOWeightedFitness(weights));
+			if (Mathematics.areFinite(weights)<0) {
+                        erp.setMosoConverter(new MOSOWeightedFitness(weights));
+                    }
 		}
 		erp.setProblemDimension(filteredVars.length);
 		erp.setRange(range);
@@ -158,8 +160,12 @@ public class ERPStarter {
 		for (int i=0; i<filteredVars.length; i++) {
 			if (Mathematics.isFinite(initPos[i][0])) { // if the init pos is valid (non NaN)...
 				double dv = defaultInitialBoxLenRatio*(range[i][1]-range[i][0]); // default box length for initial interval
-				if (Mathematics.isFinite(initBoxLen[i][0])) dv = initBoxLen[i][0]; // or box length defined in the file
-				if (!Mathematics.isInRange(initPos[i][0], range[i][0], range[i][1])) System.err.println("Warning: initial seed is not in range in dim. " + i + " when parsing from " + fname);
+				if (Mathematics.isFinite(initBoxLen[i][0])) {
+                                dv = initBoxLen[i][0];
+                            } // or box length defined in the file
+				if (!Mathematics.isInRange(initPos[i][0], range[i][0], range[i][1])) {
+                                System.err.println("Warning: initial seed is not in range in dim. " + i + " when parsing from " + fname);
+                            }
 				initialRange[i][0]=initPos[i][0]-dv;
 				initialRange[i][1]=initPos[i][0]+dv;
 			} else {

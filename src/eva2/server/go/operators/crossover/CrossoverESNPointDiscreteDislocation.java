@@ -81,10 +81,14 @@ public class CrossoverESNPointDiscreteDislocation implements InterfaceCrossover,
                     parIndex++;
                     chiIndex++;
                     for (int j = 0; j < crossoverPoints.length; j++) {
-                        if ((parIndex == crossoverPoints[j]) || (parIndex == length) || (chiIndex == length)) bol = true;
+                        if ((parIndex == crossoverPoints[j]) || (parIndex == length) || (chiIndex == length)) {
+                            bol = true;
+                        }
                     }
                 }
-                if (chiIndex == length) i = crossoverPoints.length;
+                if (chiIndex == length) {
+                    i = crossoverPoints.length;
+                }
                 mixer++;
             }
 
@@ -109,9 +113,13 @@ public class CrossoverESNPointDiscreteDislocation implements InterfaceCrossover,
     public boolean equals(Object crossover) {
         if (crossover instanceof CrossoverESNPointDiscreteDislocation) {
             CrossoverESNPointDiscreteDislocation cross = (CrossoverESNPointDiscreteDislocation)crossover;
-            if (this.m_NumberOfCrossovers != cross.m_NumberOfCrossovers) return false;
+            if (this.m_NumberOfCrossovers != cross.m_NumberOfCrossovers) {
+                return false;
+            }
             return true;
-        } else return false;
+        } else {
+            return false;
+        }
     }
 
     /** This method will allow the crossover operator to be initialized depending on the
@@ -153,7 +161,9 @@ public class CrossoverESNPointDiscreteDislocation implements InterfaceCrossover,
      * @param crossovers   The number of crossovers.
      */
     public void setNumberOfCrossovers(int crossovers) {
-        if (crossovers < 0) crossovers = 0;
+        if (crossovers < 0) {
+            crossovers = 0;
+        }
         this.m_NumberOfCrossovers = crossovers;
     }
     public int getNumberOfCrossovers() {

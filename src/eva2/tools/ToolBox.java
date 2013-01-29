@@ -144,13 +144,17 @@ public final class ToolBox {
 	 * @return a filtered 2D double array where value[*][i] in [lower,upper]
 	 */
 	public static double[][] filterBy(double[][] dat, int i, double lower, double upper) {
-		if (dat==null||dat.length==0) return dat;
+		if (dat==null||dat.length==0) {
+                return dat;
+            }
 		if (i >= dat[0].length) {
 			System.err.println("Error, invalid column index " + i + " for data array with " + dat[0].length + " columns!");
 		}
 		ArrayList<double[]> matching = new ArrayList<double[]>(5);
 		for (double[] row : dat) {
-			if (row[i]<=upper && row[i]>=lower) matching.add(row);
+			if (row[i]<=upper && row[i]>=lower) {
+                        matching.add(row);
+                    }
 		}
 		
 		return matching.toArray(new double[matching.size()][dat[0].length]);

@@ -87,16 +87,24 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
 	public void addPopulationChangedEventListener(
 			InterfacePopulationChangedEventListener ea) {
 		if (ea!=null) {
-			if (m_Listener == null) m_Listener = new Vector<InterfacePopulationChangedEventListener>();
-			if (!m_Listener.contains(ea)) m_Listener.add(ea);
+			if (m_Listener == null) {
+                        m_Listener = new Vector<InterfacePopulationChangedEventListener>();
+                    }
+			if (!m_Listener.contains(ea)) {
+                        m_Listener.add(ea);
+                    }
 		}
 	}
 	
     @Override
 	public boolean removePopulationChangedEventListener(
 			InterfacePopulationChangedEventListener ea) {
-		if (m_Listener==null) return false;
-		else return m_Listener.remove(ea);
+		if (m_Listener==null) {
+                                return false;
+                            }
+		else {
+                                return m_Listener.remove(ea);
+                            }
 	}
 	
     @Override
@@ -174,7 +182,9 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
 			for (int i=0; i<dim; i++) {
                 e[i] = 3*centroid[i] - 2*x_worst[i];
             }
-			if (checkConstraints && !Mathematics.isInRange(e, range)) Mathematics.projectToRange(e, range);
+			if (checkConstraints && !Mathematics.isInRange(e, range)) {
+                        Mathematics.projectToRange(e, range);
+                    }
 			
 			AbstractEAIndividual e_ind = createEvalIndy(bestpop, e);
 			this.m_Population.incrFunctionCalls();
@@ -190,7 +200,9 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
 			for (int i=0; i<dim; i++) {
                 c[i] = 0.5*centroid[i] + 0.5*x_worst[i];
             }
-			if (checkConstraints && !Mathematics.isInRange(c, range)) Mathematics.projectToRange(c, range);
+			if (checkConstraints && !Mathematics.isInRange(c, range)) {
+                        Mathematics.projectToRange(c, range);
+                    }
 			
 //			AbstractEAIndividual c_ind = (AbstractEAIndividual)((AbstractEAIndividual)bestpop.getIndividual(1)).clone(); 
 //			((InterfaceDataTypeDouble)c_ind).SetDoubleGenotype(c);
@@ -372,10 +384,14 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
 		NelderMeadSimplex nms = new NelderMeadSimplex();
 		nms.setProblemAndPopSize(problem);
 		
-		if (listener!=null) nms.addPopulationChangedEventListener(listener);
+		if (listener!=null) {
+                    nms.addPopulationChangedEventListener(listener);
+                }
 		nms.init();
 
-		if (listener!=null) listener.registerPopulationStateChanged(nms.getPopulation(), "");
+		if (listener!=null) {
+                    listener.registerPopulationStateChanged(nms.getPopulation(), "");
+                }
 
 		return nms;
 	}
@@ -410,10 +426,14 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
 			initialPop.set(0, candidate);
 		} else { 
 			double[][] range = ((InterfaceDataTypeDouble)candidate).getDoubleRange();
-			if (range.length != nms.getPopulationSize()-1) System.err.println("Unexpected population size for nelder mead!");
+			if (range.length != nms.getPopulationSize()-1) {
+                        System.err.println("Unexpected population size for nelder mead!");
+                    }
 			initialPop = createNMSPopulation(candidate, perturbationRatio, range, true);
 		}
-		if (listener != null) nms.addPopulationChangedEventListener(listener);
+		if (listener != null) {
+                    nms.addPopulationChangedEventListener(listener);
+                }
 		nms.initByPopulation(initialPop, false);
 		//nms.setPopulation(initialPop);
 
@@ -435,7 +455,9 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
 	 */
 	public static Population createNMSPopulation(AbstractEAIndividual candidate, double perturbRelative, double[][] range, boolean includeCand) {
 		Population initPop = new Population();
-		if (includeCand) initPop.add(candidate);
+		if (includeCand) {
+                initPop.add(candidate);
+            }
 		if (perturbRelative >= 1. || (perturbRelative <= 0.)) {
 			System.err.println("Warning: perturbation ratio should lie between 0 and 1! (NelderMeadSimplex:createNMSPopulation)");
 		}
@@ -453,7 +475,9 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
 			double[] dat = ((InterfaceDataTypeDouble)indy).getDoubleData();
 			if (dat[i]==range[i][1]) { // in this case the bound is said to be too close 
 				dat[i]=Math.max(dat[i]-curPerturb, range[i][0]);
-			} else dat[i] = Math.min(dat[i]+curPerturb, range[i][1]);
+			} else {
+                        dat[i] = Math.min(dat[i]+curPerturb, range[i][1]);
+                    }
 			((InterfaceDataTypeDouble)indy).SetDoubleGenotype(dat);
 			indy.resetConstraintViolation();
 			initialPop.add((AbstractEAIndividual)indy.clone());

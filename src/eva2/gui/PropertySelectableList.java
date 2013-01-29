@@ -48,7 +48,9 @@ public class PropertySelectableList<T> implements java.io.Serializable {
     public void setObjects(T[] o, boolean[] selection) {
         this.m_Objects = o;
         this.m_Selection = selection;
-        if (o.length != selection.length) throw new RuntimeException("Error, mismatching length of arrays in " + this.getClass());
+        if (o.length != selection.length) {
+            throw new RuntimeException("Error, mismatching length of arrays in " + this.getClass());
+        }
         m_Support.firePropertyChange("PropertySelectableList", null, this);
     }
     
@@ -63,7 +65,9 @@ public class PropertySelectableList<T> implements java.io.Serializable {
     public T[] getSelectedObjects() {
     	T[] selObjects = getObjects().clone();
     	for (int i=0; i<selObjects.length; i++) {
-			if (!m_Selection[i]) selObjects[i]=null;
+			if (!m_Selection[i]) {
+                selObjects[i]=null;
+            }
 		}
     	return selObjects;
     }
@@ -98,8 +102,12 @@ public class PropertySelectableList<T> implements java.io.Serializable {
     }
     
     public int size() {
-    	if (m_Objects == null) return 0;
-    	else return m_Objects.length;
+    	if (m_Objects == null) {
+            return 0;
+        }
+    	else {
+            return m_Objects.length;
+        }
     }
     
     public T get(int i) {
@@ -138,12 +146,16 @@ public class PropertySelectableList<T> implements java.io.Serializable {
 //	}
 	
 	  public void addPropertyChangeListener(PropertyChangeListener l) {
-		  if (m_Support == null) m_Support = new PropertyChangeSupport(this);
+		  if (m_Support == null) {
+                  m_Support = new PropertyChangeSupport(this);
+              }
 		  m_Support.addPropertyChangeListener(l);
 	  }
 
 	  public void removePropertyChangeListener(PropertyChangeListener l) {
-		  if (m_Support == null) m_Support = new PropertyChangeSupport(this);
+		  if (m_Support == null) {
+                  m_Support = new PropertyChangeSupport(this);
+              }
 		  m_Support.removePropertyChangeListener(l);
 	  }
 }

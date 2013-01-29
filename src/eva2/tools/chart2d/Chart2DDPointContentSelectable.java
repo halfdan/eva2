@@ -33,11 +33,17 @@ public class Chart2DDPointContentSelectable implements InterfaceDPointWithConten
     @Override
     public void paint( Graphics g ){
         Color prev = g.getColor();
-        if (this.m_Indy.isMarked()) this.m_Fill = Color.RED;
-        else this.m_Fill = Color.LIGHT_GRAY;
+        if (this.m_Indy.isMarked()) {
+            this.m_Fill = Color.RED;
+        }
+        else {
+            this.m_Fill = Color.LIGHT_GRAY;
+        }
         g.setColor(m_Fill);
         g.fillOval(-this.m_Size, -this.m_Size, 2*this.m_Size +1, 2*this.m_Size +1);
-        if (this.m_Border != null) g.setColor(m_Border);
+        if (this.m_Border != null) {
+            g.setColor(m_Border);
+        }
         g.drawOval(-this.m_Size, -this.m_Size, 2*this.m_Size, 2*this.m_Size);
         g.setColor(prev);
     }

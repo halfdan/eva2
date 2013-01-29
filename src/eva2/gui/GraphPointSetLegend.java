@@ -65,8 +65,12 @@ public class GraphPointSetLegend {
 			GraphPointSet pointset = pointSetContainer.get(i);
 			if (pointset.getPointSet().getSize()>0) {
 				String entryStr;
-				if (appendIndex) entryStr = StringTools.expandPrefixZeros(i, pointSetContainer.size()-1) + ": " + pointset.getInfoString();
-				else entryStr = pointset.getInfoString();
+				if (appendIndex) {
+                                entryStr = StringTools.expandPrefixZeros(i, pointSetContainer.size()-1) + ": " + pointset.getInfoString();
+                            }
+				else {
+                                entryStr = pointset.getInfoString();
+                            }
 				legendEntries.add(new Pair<String, Color>(entryStr,pointset.getColor()));
 			}
 		}

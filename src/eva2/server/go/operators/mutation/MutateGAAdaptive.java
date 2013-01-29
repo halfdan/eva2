@@ -49,11 +49,19 @@ public class MutateGAAdaptive implements InterfaceMutation, java.io.Serializable
     public boolean equals(Object mutator) {
         if (mutator instanceof MutateGAAdaptive) {
             MutateGAAdaptive mut = (MutateGAAdaptive)mutator;
-            if (this.m_MutationStep != mut.m_MutationStep) return false;
-            if (this.m_Tau1 != mut.m_Tau1) return false;
-            if (this.m_LowerLimitStepSize != mut.m_LowerLimitStepSize) return false;
+            if (this.m_MutationStep != mut.m_MutationStep) {
+                return false;
+            }
+            if (this.m_Tau1 != mut.m_Tau1) {
+                return false;
+            }
+            if (this.m_LowerLimitStepSize != mut.m_LowerLimitStepSize) {
+                return false;
+            }
             return true;
-        } else return false;
+        } else {
+            return false;
+        }
     }
 
     /** This method allows you to init the mutation operator
@@ -75,7 +83,9 @@ public class MutateGAAdaptive implements InterfaceMutation, java.io.Serializable
         if (individual instanceof InterfaceGAIndividual) {
             BitSet  tmpBitSet   = ((InterfaceGAIndividual)individual).getBGenotype();
             this.m_MutationStep *= Math.exp(this.m_Tau1 * RNG.gaussianDouble(1));
-            if (this.m_MutationStep < this.m_LowerLimitStepSize) this.m_MutationStep = this.m_LowerLimitStepSize;
+            if (this.m_MutationStep < this.m_LowerLimitStepSize) {
+                this.m_MutationStep = this.m_LowerLimitStepSize;
+            }
             for (int i = 0; i < ((InterfaceGAIndividual)individual).getGenotypeLength(); i++) {
                 if (RNG.flipCoin(this.m_MutationStep/((InterfaceGAIndividual)individual).getGenotypeLength())) {
                     tmpBitSet.flip(i);
@@ -126,7 +136,9 @@ public class MutateGAAdaptive implements InterfaceMutation, java.io.Serializable
      * @param d   The mutation operator.
      */
     public void setMutationStep(double d) {
-        if (d < 0) d = this.m_LowerLimitStepSize;
+        if (d < 0) {
+            d = this.m_LowerLimitStepSize;
+        }
         this.m_MutationStep = d;
     }
     public double getMutationStepSize() {
@@ -140,7 +152,9 @@ public class MutateGAAdaptive implements InterfaceMutation, java.io.Serializable
      * @param d   The mutation operator.
      */
     public void setLowerLimitStepSize(double d) {
-        if (d < 0) d = 0;
+        if (d < 0) {
+            d = 0;
+        }
         this.m_LowerLimitStepSize = d;
     }
     public double getLowerLimitStepSize() {
@@ -154,7 +168,9 @@ public class MutateGAAdaptive implements InterfaceMutation, java.io.Serializable
      * @param d   The mutation operator.
      */
     public void setTau1(double d) {
-        if (d < 0) d = 0;
+        if (d < 0) {
+            d = 0;
+        }
         this.m_Tau1 = d;
     }
     public double getTau1() {

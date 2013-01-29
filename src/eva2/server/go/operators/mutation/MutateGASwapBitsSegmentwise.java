@@ -71,12 +71,22 @@ public class MutateGASwapBitsSegmentwise implements InterfaceMutation, java.io.S
     public boolean equals(Object mutator) {
         if (mutator instanceof MutateGASwapBitsSegmentwise) {
             MutateGASwapBitsSegmentwise mut = (MutateGASwapBitsSegmentwise)mutator;
-            if (this.mutationProbPerSegment != mut.mutationProbPerSegment) return false;
-            if (this.segmentLength != mut.segmentLength) return false;
-            if (this.multiplesPerSegment != mut.multiplesPerSegment) return false;
-            if (this.preferPairs != mut.preferPairs) return false;
+            if (this.mutationProbPerSegment != mut.mutationProbPerSegment) {
+                return false;
+            }
+            if (this.segmentLength != mut.segmentLength) {
+                return false;
+            }
+            if (this.multiplesPerSegment != mut.multiplesPerSegment) {
+                return false;
+            }
+            if (this.preferPairs != mut.preferPairs) {
+                return false;
+            }
             return true;
-        } else return false;
+        } else {
+            return false;
+        }
     }
 
 	/** This method allows you to init the mutation operator

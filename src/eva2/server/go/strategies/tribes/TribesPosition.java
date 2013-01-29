@@ -692,7 +692,9 @@ public class TribesPosition implements java.io.Serializable {
                  No need of a very precise solution
          */
 
-        if (TRACE) System.out.println("sunny start");
+        if (TRACE) {
+            System.out.println("sunny start");
+        }
         // INITIALISATION
 
         for (n = 0; n < swarm.size; n++) {
@@ -830,7 +832,9 @@ public class TribesPosition implements java.io.Serializable {
              System.out.print(swarm.Best.position.x[d]+" ");
          */
         swarm.bestMem.getPos().isolation=swarm.bestMem.getPos().fitness[0];
-        if (TRACE) System.out.println("sunny end, ret " + swarm.bestMem.getPos().toString());
+        if (TRACE) {
+            System.out.println("sunny end, ret " + swarm.bestMem.getPos().toString());
+        }
         return swarm.bestMem.getPos();
     }
 
@@ -853,7 +857,9 @@ public class TribesPosition implements java.io.Serializable {
             return true;
         }
         else { // Total error approach
-            if(calcTotalError(f1)<calcTotalError(f2)) return true;
+            if(calcTotalError(f1)<calcTotalError(f2)) {
+                return true;
+            }
             return false;
         }
     }

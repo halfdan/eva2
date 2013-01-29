@@ -27,7 +27,9 @@ public class MutateEAMixer implements InterfaceMutation, java.io.Serializable  {
         ArrayList<String> mutators = GenericObjectEditor.getClassesFromProperties(InterfaceMutation.class.getCanonicalName(), null);
         tmpList = new InterfaceMutation[mutators.size()];
          for (int i = 0; i < mutators.size(); i++) {
-        	 if (((String)mutators.get(i)).equals(this.getClass().getName())) continue;
+        	 if (((String)mutators.get(i)).equals(this.getClass().getName())) {
+                 continue;
+             }
             try {
                 tmpList[i] = (InterfaceMutation)Class.forName((String)mutators.get(i)).newInstance();
             } catch (java.lang.ClassNotFoundException e) {
@@ -90,7 +92,9 @@ public class MutateEAMixer implements InterfaceMutation, java.io.Serializable  {
             MutateEAMixer mut = (MutateEAMixer)mutator;
 
             return true;
-        } else return false;
+        } else {
+            return false;
+        }
     }
 
     /** This method allows you to init the mutation operator
@@ -116,8 +120,12 @@ public class MutateEAMixer implements InterfaceMutation, java.io.Serializable  {
         if (this.m_UseSelfAdaption) {
             for (int i = 0; i < probs.length; i++) {
                 probs[i] *= Math.exp(this.m_Tau1 * RNG.gaussianDouble(1));
-                if (probs[i] <= this.m_LowerLimitChance) probs[i] = this.m_LowerLimitChance;
-                if (probs[i] >= 1) probs[i] = 1;
+                if (probs[i] <= this.m_LowerLimitChance) {
+                    probs[i] = this.m_LowerLimitChance;
+                }
+                if (probs[i] >= 1) {
+                    probs[i] = 1;
+                }
             }
             this.m_Mutators.normalizeWeights();
         }
@@ -130,7 +138,9 @@ public class MutateEAMixer implements InterfaceMutation, java.io.Serializable  {
             index++;
             dum += probs[index];
         }
-        if (index == probs.length) index = RNG.randomInt(0, probs.length-1);
+        if (index == probs.length) {
+            index = RNG.randomInt(0, probs.length-1);
+        }
         //System.out.println("Using : " + mutators[index].getStringRepresentation());
 //        for (int i = 0; i < probs.length; i++) {
 //            System.out.println(""+mutators[i].getStringRepresentation()+" : "+ probs[i]);
@@ -207,7 +217,9 @@ public class MutateEAMixer implements InterfaceMutation, java.io.Serializable  {
      * @param d   The mutation operator.
      */
     public void setLowerLimitChance(double d) {
-        if (d < 0) d = 0;
+        if (d < 0) {
+            d = 0;
+        }
         this.m_LowerLimitChance = d;
     }
     public double getLowerLimitChance() {
@@ -221,7 +233,9 @@ public class MutateEAMixer implements InterfaceMutation, java.io.Serializable  {
      * @param d   The mutation operator.
      */
     public void setTau1(double d) {
-        if (d < 0) d = 0;
+        if (d < 0) {
+            d = 0;
+        }
         this.m_Tau1 = d;
     }
     public double getTau1() {

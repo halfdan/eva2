@@ -21,14 +21,18 @@ public abstract class AbstractProblemBinary extends AbstractOptimizationProblem 
 	}
 	
 	protected void initTemplate() {
-		if (m_Template == null) this.m_Template         = new GAIndividualBinaryData();
+		if (m_Template == null) {
+                this.m_Template         = new GAIndividualBinaryData();
+            }
 		if (((InterfaceGAIndividual)this.m_Template).getGenotypeLength()!=this.getProblemDimension()) {
 			((InterfaceDataTypeBinary)this.m_Template).setBinaryDataLength(this.getProblemDimension());
 		}
 	}
 	
 	public void cloneObjects(AbstractProblemBinary o) {
-		if (o.m_Template != null) m_Template = (AbstractEAIndividual)o.m_Template.clone();
+		if (o.m_Template != null) {
+                m_Template = (AbstractEAIndividual)o.m_Template.clone();
+            }
 	}
 	
 	@Override

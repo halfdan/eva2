@@ -65,9 +65,13 @@ public class SelectEPTournaments implements InterfaceSelection, java.io.Serializ
                     tmpIndy = ((AbstractEAIndividual)population.get(rand));
                     for (int l = 0; l < best.length; l++) {
                         if (this.m_ObeyDebsConstViolationPrinciple) {
-                             if ((!tmpIndy.violatesConstraint()) && (tmpIndy.getFitness(l) < ((AbstractEAIndividual)population.get(best[l])).getFitness(l))) best[l] = rand;
+                             if ((!tmpIndy.violatesConstraint()) && (tmpIndy.getFitness(l) < ((AbstractEAIndividual)population.get(best[l])).getFitness(l))) {
+                                best[l] = rand;
+                            }
                         } else {
-                            if (tmpIndy.getFitness(l) < ((AbstractEAIndividual)population.get(best[l])).getFitness(l)) best[l] = rand;
+                            if (tmpIndy.getFitness(l) < ((AbstractEAIndividual)population.get(best[l])).getFitness(l)) {
+                                best[l] = rand;
+                            }
                         }
                     }
                 }
@@ -140,8 +144,12 @@ public class SelectEPTournaments implements InterfaceSelection, java.io.Serializ
                 mostVictories    = this.m_Victories[i][crit];
             }
         }
-        if (index >= 0) return pop.get(index);
-        else return pop.get(RNG.randomInt(0, pop.size()-1));
+        if (index >= 0) {
+            return pop.get(index);
+        }
+        else {
+            return pop.get(RNG.randomInt(0, pop.size()-1));
+        }
     }
 
     /** This method allows you to select partners for a given Individual

@@ -98,8 +98,12 @@ public class F10Problem extends AbstractProblemDoubleOffset implements Interface
      * @param d     The d.
      */
     public void setD(double d) {
-        if (d < 1) d = 1;
-        if (d > 2) d = 2;
+        if (d < 1) {
+            d = 1;
+        }
+        if (d > 2) {
+            d = 2;
+        }
         this.m_D = d;
     }
     public double getD() {
@@ -113,7 +117,9 @@ public class F10Problem extends AbstractProblemDoubleOffset implements Interface
      * @param b     The b.
      */
     public void setb(double b) {
-        if (b < 1.000001) b = 1.000001;
+        if (b < 1.000001) {
+            b = 1.000001;
+        }
         this.m_b = b;
     }
     public double getb() {
@@ -127,7 +133,9 @@ public class F10Problem extends AbstractProblemDoubleOffset implements Interface
      * @param iters     The Iterations.
      */
     public void setIterations(int iters) {
-        if (iters < 2) iters = 2;
+        if (iters < 2) {
+            iters = 2;
+        }
         this.m_Iterations = iters;
     }
     public int getIterations() {

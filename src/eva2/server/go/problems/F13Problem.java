@@ -83,10 +83,16 @@ public class F13Problem extends AbstractProblemDoubleOffset implements Interface
     @Override
 	public SolutionHistogram getHistogram() {
 //		EVAERROR.errorMsgOnce("Warning: Restore line in getHistogram for evaluation on F13Problem ???");
-		if (getProblemDimension() < 15) return new SolutionHistogram(0, 800, 16);
-		else if (getProblemDimension() < 25) return new SolutionHistogram(0, 1600, 16);
+		if (getProblemDimension() < 15) {
+                return new SolutionHistogram(0, 800, 16);
+            }
+		else if (getProblemDimension() < 25) {
+                return new SolutionHistogram(0, 1600, 16);
+            }
 //		else if (getProblemDimension() < 35) return new SolutionHistogram(0, 1600, 16);
-		else return new SolutionHistogram(0, 3200, 12);
+		else {
+                return new SolutionHistogram(0, 3200, 12);
+            }
 	}
 /**********************************************************************************************************************
  * These are for GUI

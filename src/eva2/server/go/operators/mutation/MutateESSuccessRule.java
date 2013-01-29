@@ -44,11 +44,19 @@ public class MutateESSuccessRule extends MutateESFixedStepSize implements Interf
     public boolean equals(Object mutator) {
         if (mutator instanceof MutateESSuccessRule) {
             MutateESSuccessRule mut = (MutateESSuccessRule)mutator;
-            if (this.m_Sigma != mut.m_Sigma) return false;
-            if (this.m_SuccessRate != mut.m_SuccessRate) return false;
-            if (this.m_Alpha != mut.m_Alpha) return false;
+            if (this.m_Sigma != mut.m_Sigma) {
+                return false;
+            }
+            if (this.m_SuccessRate != mut.m_SuccessRate) {
+                return false;
+            }
+            if (this.m_Alpha != mut.m_Alpha) {
+                return false;
+            }
             return true;
-        } else return false;
+        } else {
+            return false;
+        }
     }
     
     /** This method allows you to get a string representation of the mutation
@@ -97,8 +105,12 @@ public class MutateESSuccessRule extends MutateESFixedStepSize implements Interf
      * @param d   The mutation operator.
      */
     public void setSuccessRate(double d) {
-        if (d < 0) d = 0;
-        if (d > 1) d = 1;
+        if (d < 0) {
+            d = 0;
+        }
+        if (d > 1) {
+            d = 1;
+        }
         this.m_SuccessRate = d;
     }
     public double getSuccessRate() {
@@ -112,7 +124,9 @@ public class MutateESSuccessRule extends MutateESFixedStepSize implements Interf
      * @param d   The mutation operator.
      */
     public void setAlpha(double d) {
-        if (d < 1) d = 1;
+        if (d < 1) {
+            d = 1;
+        }
         this.m_Alpha = d;
     }
     public double getAlpha() {
@@ -138,15 +152,18 @@ public class MutateESSuccessRule extends MutateESFixedStepSize implements Interf
         for (int i = 0; i < parentPop.size(); i++) {
         	// calculate success rate
 //            System.out.println("new fit / old fit: " + BeanInspector.toString(newPop.getEAIndividual(i).getFitness()) + " , " + BeanInspector.toString(parentPop.getEAIndividual(i).getFitness()));
-            if (newPop.getEAIndividual(i).getFitness(0) < parentPop.getEAIndividual(i).getFitness(0)) rate++;
+            if (newPop.getEAIndividual(i).getFitness(0) < parentPop.getEAIndividual(i).getFitness(0)) {
+                rate++;
+            }
         }
         rate /= parentPop.size(); 
         
-        if (updateSelected) for (int i = 0; i < selectedPop.size(); i++) { // applied to the old population as well in case of plus strategy
-            MutateESSuccessRule mutator =  (MutateESSuccessRule)((AbstractEAIndividual)selectedPop.get(i)).getMutationOperator();
-            updateMutator(rate, mutator);
+        if (updateSelected) {
+                for (int i = 0; i < selectedPop.size(); i++) { // applied to the old population as well in case of plus strategy
+MutateESSuccessRule mutator =  (MutateESSuccessRule)((AbstractEAIndividual)selectedPop.get(i)).getMutationOperator();
+updateMutator(rate, mutator);
 //            System.out.println("old pop step size " + mutator.getSigma()+ " (" + mutator+ ")");
-        }
+}           }
         for (int i = 0; i < newPop.size(); i++) {
             MutateESSuccessRule mutator =  (MutateESSuccessRule)((AbstractEAIndividual)newPop.get(i)).getMutationOperator();
             updateMutator(rate, mutator);
@@ -155,7 +172,11 @@ public class MutateESSuccessRule extends MutateESFixedStepSize implements Interf
 	}
 
 	private void updateMutator(double rate, MutateESSuccessRule mutator) {
-        if (rate < mutator.getSuccessRate()) mutator.decreaseMutationStepSize();
-        else mutator.increaseMutationStepSize();
+        if (rate < mutator.getSuccessRate()) {
+                mutator.decreaseMutationStepSize();
+            }
+        else {
+                mutator.increaseMutationStepSize();
+            }
 	}
 }

@@ -119,7 +119,9 @@ Serializable {
     @Override
 	public boolean isTerminated(PopulationInterface pop) {
 		if (!firstTime && isStillConverged(pop)) {
-			if (TRACE) System.out.println("Converged at " + pop.getGeneration() + "/" + pop.getFunctionCalls() + ", measure " + calcPopulationMeasure(pop));
+			if (TRACE) {
+                        System.out.println("Converged at " + pop.getGeneration() + "/" + pop.getFunctionCalls() + ", measure " + calcPopulationMeasure(pop));
+                    }
 			if (stagnationTimeHasPassed(pop)) {
 				// population hasnt changed much for max time, criterion is met
 				msg = getTerminationMessage();
@@ -170,8 +172,12 @@ Serializable {
 		}
 		sb.append(" for ");
 		sb.append(stagTime);
-		if (stagnationMeasure == StagnationTypeEnum.generationBased) sb.append(" generations.");
-		else sb.append(" function calls.");
+		if (stagnationMeasure == StagnationTypeEnum.generationBased) {
+                sb.append(" generations.");
+            }
+		else {
+                sb.append(" function calls.");
+            }
 		return sb.toString();
 	}
 
@@ -218,7 +224,9 @@ Serializable {
 		switch (changeType) {
 		case absoluteChange:
 			allowedLower=oldMeasure-convThresh;
-			if (!doCheckImprovement()) allowedUpper=oldMeasure+convThresh;
+			if (!doCheckImprovement()) {
+                allowedUpper=oldMeasure+convThresh;
+            }
 			break;
 		case absoluteValue:
 			allowedUpper=convThresh;
@@ -227,7 +235,9 @@ Serializable {
 		case relativeChange:
 			double delta = oldMeasure*convThresh;
 			allowedLower = oldMeasure-delta;
-			if (!doCheckImprovement()) allowedUpper = oldMeasure+delta;
+			if (!doCheckImprovement()) {
+                allowedUpper = oldMeasure+delta;
+            }
 			break;
 		}
 		ret = (measure <= allowedUpper) && (measure >= allowedLower);
@@ -240,7 +250,9 @@ Serializable {
 //			if (doCheckImprovement()) ret = (measure < oldMeasure+convThresh); // absolute improvement below fixed number
 //			else ret = ((measure < oldMeasure+convThresh) && (measure > oldMeasure-convThresh)); // absolute change within fixed range
 //		}
-		if (TRACE) System.out.println("isStillConverged returns " + ret + ", measure " + measure + ", old measure " + BeanInspector.toString(oldMeasure) + ", bounds: [" + allowedLower + " , " + allowedUpper + "]");
+		if (TRACE) {
+                System.out.println("isStillConverged returns " + ret + ", measure " + measure + ", old measure " + BeanInspector.toString(oldMeasure) + ", bounds: [" + allowedLower + " , " + allowedUpper + "]");
+            }
 		return ret;
 	}
 

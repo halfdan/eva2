@@ -111,8 +111,12 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
 		double normEmaSpd = getRelativeEMASpeed(range);
 		double spdLim = getSpeedLimit();
 		
-		if (normEmaSpd > (upperChgLim*spdLim)) setSpeedLimit(Math.min(maxSpeedLimit, incFact * spdLim));
-		else if (normEmaSpd < (lowerChgLim*spdLim)) setSpeedLimit(Math.max(minSpeedLimit, decFact*spdLim));
+		if (normEmaSpd > (upperChgLim*spdLim)) {
+            setSpeedLimit(Math.min(maxSpeedLimit, incFact * spdLim));
+        }
+		else if (normEmaSpd < (lowerChgLim*spdLim)) {
+            setSpeedLimit(Math.max(minSpeedLimit, decFact*spdLim));
+        }
     }
     
     /**
@@ -155,8 +159,12 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
         		Mathematics.projectToRange(newPos, range);
         	}
         	
-            if (indy instanceof InterfaceDataTypeDouble) ((InterfaceDataTypeDouble)indy).SetDoubleGenotype(newPos);
-            else endy.SetDoubleGenotype(newPos); 
+            if (indy instanceof InterfaceDataTypeDouble) {
+            ((InterfaceDataTypeDouble)indy).SetDoubleGenotype(newPos);
+        }
+            else {
+            endy.SetDoubleGenotype(newPos);
+        } 
             
             resetFitness(indy);
             
@@ -172,7 +180,9 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
     	if (m_Plot != null) {
     		double[] curPosition = ((InterfaceDataTypeDouble)m_Population.getBestEAIndividual()).getDoubleData();
     	
-    		if (lastBestPlot != null) this.m_Plot.setConnectedPoint(lastBestPlot[0], lastBestPlot[1], 0);
+    		if (lastBestPlot != null) {
+                this.m_Plot.setConnectedPoint(lastBestPlot[0], lastBestPlot[1], 0);
+            }
     		this.m_Plot.setConnectedPoint(curPosition[0], curPosition[1], 0);
     		lastBestPlot = curPosition.clone();
     	}
@@ -182,7 +192,9 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
 	protected void plotIndy(double[] curPosition, double[] curVelocity, int index) {
 		if (this.m_Show) {
 			if (plotBestOnly) {
-				if (index != ((Integer)(m_Population.getBestEAIndividual().getData(indexKey)))) return;
+				if (index != ((Integer)(m_Population.getBestEAIndividual().getData(indexKey)))) {
+                                return;
+                            }
 				else {
 //					if (lastBestPlot != null) this.m_Plot.setConnectedPoint(lastBestPlot[0], lastBestPlot[1], index);
 //					this.m_Plot.setConnectedPoint(curPosition[0], curPosition[1], index);
@@ -304,8 +316,12 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
 	        for (int i = 0; i < lastVelocity.length; i++) {
 	            // the component from the old velocity
 	            curVelocity[i]  = this.m_InertnessOrChi * lastVelocity[i];
-			    if (algType.getSelectedTag().getID()==1) chi=m_InertnessOrChi;
-			    else chi = 1.;
+			    if (algType.getSelectedTag().getID()==1) {
+                        chi=m_InertnessOrChi;
+                    }
+			    else {
+                        chi = 1.;
+                    }
 			    // random perturbation
 	            //curVelocity[i]  += (this.phi0 * chi * RNG.randomDouble(-1., 1.) * (range[i][1] - range[i][0]));
 	            curVelocity[i]  += (this.phi0 * chi * getSpeedLimit(index) * RNG.randomDouble(-1., 1.) * (range[i][1] - range[i][0]));
@@ -315,7 +331,9 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
 	            curVelocity[i]  += (getIndySocialModifier(index, chi) * (localBestPos[i]-curPosition[i]));
 	        }
 			return curVelocity;
-		} else return super.updateVelocity(index, lastVelocity, bestPosition, curPosition, localBestPos, range);
+		} else {
+                return super.updateVelocity(index, lastVelocity, bestPosition, curPosition, localBestPos, range);
+            }
 	}
 	
 	protected double getProblemSpecificAttraction(int i, double chi) {
@@ -350,10 +368,16 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
      */
     @Override
     protected double getSpeedLimit(int index) {
-    	if (index >= ((double)(m_Population.size() * highEnergyRatio))) return m_SpeedLimit;
+    	if (index >= ((double)(m_Population.size() * highEnergyRatio))) {
+            return m_SpeedLimit;
+        }
     	else {
-    		if (highEnergyRaise == 0.) return maxSpeedLimit; 
-    		else return m_SpeedLimit * highEnergyRaise; 
+    		if (highEnergyRaise == 0.) {
+                return maxSpeedLimit;
+            } 
+    		else {
+                return m_SpeedLimit * highEnergyRaise;
+            } 
     	}
     }
     
@@ -363,8 +387,12 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
     	super.startOptimize();
     	if (detectAnchor >= 0) {	// set the new detection anchor individual
     		detectAnchor = RNG.randomInt(0, m_Population.size()-1);
-    		if (detectFit == null) detectFit = (m_Population.getIndividual(detectAnchor).getFitness()).clone();
-    		else System.arraycopy(m_Population.getIndividual(detectAnchor).getFitness(), 0, detectFit, 0, detectFit.length);
+    		if (detectFit == null) {
+                detectFit = (m_Population.getIndividual(detectAnchor).getFitness()).clone();
+            }
+    		else {
+                System.arraycopy(m_Population.getIndividual(detectAnchor).getFitness(), 0, detectFit, 0, detectFit.length);
+            }
     	}
     }
     
@@ -424,7 +452,9 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
 	protected void evaluatePopulation(Population population) {
     	envHasChanged = false;
         super.evaluatePopulation(population);
-	    if (m_Show && plotBestOnly) plotBestIndy();
+	    if (m_Show && plotBestOnly) {
+                plotBestIndy();
+            }
 	    
 	    envHasChanged = detectChange(m_Population);
 	    
@@ -469,7 +499,9 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
     protected boolean detectChange(Population population) {
     	switch (changeDetectStrategy.getSelectedTag().getID()) {
     	case 0:
-        	if (detectAnchor >= 0) return !(java.util.Arrays.equals(detectFit, m_Population.getIndividual(detectAnchor).getFitness()));
+        	if (detectAnchor >= 0) {
+            return !(java.util.Arrays.equals(detectFit, m_Population.getIndividual(detectAnchor).getFitness()));
+        }
         	else {
         		System.err.println("warning, inconsistency in detectChange");
         	}
@@ -486,14 +518,18 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
     @Override
 	public void setPopulation(Population pop) {
 		super.setPopulation(pop);
-		if (detectAnchor>=pop.size()) detectAnchor=0;
+		if (detectAnchor>=pop.size()) {
+                detectAnchor=0;
+            }
 	}
 
     @Override
 	public void init() {
     	super.init();
     	setEmaPeriods(15);
-    	if (doSpeedAdaptation) setSpeedLimit(2*getInitialVelocity());
+    	if (doSpeedAdaptation) {
+                setSpeedLimit(2*getInitialVelocity());
+            }
     }
 
 	
@@ -563,8 +599,12 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
 	 **/
 	public void setQuantumRatio(double quantumRatio) {
 		this.quantumRatio = quantumRatio;
-		if (quantumRatio == 0.) GenericObjectEditor.setHideProperty(this.getClass(), "quantumCloudDia", true);
-		else GenericObjectEditor.setHideProperty(this.getClass(), "quantumCloudDia", false);
+		if (quantumRatio == 0.) {
+                GenericObjectEditor.setHideProperty(this.getClass(), "quantumCloudDia", true);
+            }
+		else {
+                GenericObjectEditor.setHideProperty(this.getClass(), "quantumCloudDia", false);
+            }
 	}
 
 	/**
@@ -593,8 +633,12 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
 	 **/
 	public void setHighEnergyRatio(double highEnergyRatio) {
 		this.highEnergyRatio = highEnergyRatio;
-		if (highEnergyRatio == 0.) GenericObjectEditor.setHideProperty(this.getClass(), "highEnergyRaise", true);
-		else GenericObjectEditor.setHideProperty(this.getClass(), "highEnergyRaise", false);
+		if (highEnergyRatio == 0.) {
+                GenericObjectEditor.setHideProperty(this.getClass(), "highEnergyRaise", true);
+            }
+		else {
+                GenericObjectEditor.setHideProperty(this.getClass(), "highEnergyRaise", false);
+            }
 	}
 
 	/**
@@ -660,7 +704,9 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
 		this.changeDetectStrategy = changeDetectStrategy;
 		if (changeDetectStrategy.getSelectedTag().getID() == 0) { // random anchor
 			detectAnchor = 0; // this will be set to a random individual
-		} else detectAnchor = -1;
+		} else {
+                detectAnchor = -1;
+            }
 	}
 
 	public String phi0TipText() {

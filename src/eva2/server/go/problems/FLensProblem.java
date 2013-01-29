@@ -128,7 +128,9 @@ class MyLensViewer extends JPanel implements InterfaceSolutionViewer {
     }
     
     private void paintLens(AbstractEAIndividual indy, int dim, int height, double radius, int mag, int centerLens, int centerScreen, int segment, Graphics2D g2D) {
-    	if (indy!=null) paintLens(indy.getDoublePosition(), m_LensProblem.testLens(indy.getDoublePosition()), indy.getFitness(0), dim, height, radius, mag, centerLens, centerScreen, segment, g2D);
+    	if (indy!=null) {
+            paintLens(indy.getDoublePosition(), m_LensProblem.testLens(indy.getDoublePosition()), indy.getFitness(0), dim, height, radius, mag, centerLens, centerScreen, segment, g2D);
+        }
     }
 
 	private static void paintLens(double[] variables, double[] dots, double fit, int dim, int height, double radius, int mag, int centerLens, int centerScreen,
@@ -187,8 +189,12 @@ class MyLensViewer extends JPanel implements InterfaceSolutionViewer {
 			InterfaceDataTypeDouble best = (InterfaceDataTypeDouble)pop.getBestIndividual();
 			//this.m_BestFitness      = ((AbstractEAIndividual)best).getFitness(0);
 			if (indiesToPaint.size()==0 || ((AbstractEAIndividual)best).isDominant(indiesToPaint.getBestIndividual())) {
-				if (indiesToPaint.size()==1) indiesToPaint.set(0, best);
-				else indiesToPaint.add(best);
+				if (indiesToPaint.size()==1) {
+                                indiesToPaint.set(0, best);
+                            }
+				else {
+                                indiesToPaint.add(best);
+                            }
 				this.paint(this.getGraphics());
 			}
 		}
@@ -226,15 +232,19 @@ implements InterfaceOptimizationProblem, InterfaceHasSolutionViewer, java.io.Ser
 
 	public FLensProblem() {
         this.m_Template         = new ESIndividualDoubleData();
-        if (this.m_Show) this.initProblemFrame();
+        if (this.m_Show) {
+                this.initProblemFrame();
+            }
 	}
 	public FLensProblem(FLensProblem b) {
         //AbstractOptimizationProblem
-        if (b.m_Template != null)
-            this.m_Template         = (AbstractEAIndividual)((AbstractEAIndividual)b.m_Template).clone();
+        if (b.m_Template != null) {
+                this.m_Template         = (AbstractEAIndividual)((AbstractEAIndividual)b.m_Template).clone();
+            }
         //FLensProblem
-        if (b.m_OverallBest != null)
-            this.m_OverallBest      = (AbstractEAIndividual)((AbstractEAIndividual)b.m_OverallBest).clone();
+        if (b.m_OverallBest != null) {
+                this.m_OverallBest      = (AbstractEAIndividual)((AbstractEAIndividual)b.m_OverallBest).clone();
+            }
         this.m_ProblemDimension = b.m_ProblemDimension;
         this.m_Noise            = b.m_Noise;
         this.m_XOffSet          = b.m_XOffSet;
@@ -260,14 +270,18 @@ implements InterfaceOptimizationProblem, InterfaceHasSolutionViewer, java.io.Ser
             this.m_ProblemFrame.pack();
             this.m_ProblemFrame.setVisible(true);
             //this.m_ProblemFrame.show();
-        } else this.m_Panel.resetView();
+        } else {
+            this.m_Panel.resetView();
+        }
     }
 
     /** This method gets rid of the problem view frame
      *
      */
     public void disposeProblemFrame() {
-        if (this.m_ProblemFrame != null) this.m_ProblemFrame.dispose();
+        if (this.m_ProblemFrame != null) {
+            this.m_ProblemFrame.dispose();
+        }
         this.m_ProblemFrame = null;
         this.m_Panel = null;
     }
@@ -277,7 +291,9 @@ implements InterfaceOptimizationProblem, InterfaceHasSolutionViewer, java.io.Ser
      * @param population    The current population.
      */
     public void updateProblemFrame(Population population) {
-        if (this.m_Panel != null) this.m_Panel.updateView(population, false);
+        if (this.m_Panel != null) {
+            this.m_Panel.updateView(population, false);
+        }
     }
 
 	/** This method inits the Problem to log multiruns
@@ -285,7 +301,9 @@ implements InterfaceOptimizationProblem, InterfaceHasSolutionViewer, java.io.Ser
     @Override
 	public void initProblem() {
 		this.m_OverallBest = null;
-        if (this.m_Show) this.initProblemFrame();
+        if (this.m_Show) {
+                this.initProblemFrame();
+            }
 	}
 
 	/** This method inits a given population
@@ -304,12 +322,16 @@ implements InterfaceOptimizationProblem, InterfaceHasSolutionViewer, java.io.Ser
        ((InterfaceDataTypeDouble)this.m_Template).SetDoubleRange(range);
 
 		AbstractOptimizationProblem.defaultInitPopulation(population, m_Template, this);
-        if (this.m_Show) this.initProblemFrame();
+        if (this.m_Show) {
+                this.initProblemFrame();
+            }
 	}
 
     @Override
 	public void evaluatePopulationEnd(Population pop) {
-		if (this.m_Show) this.updateProblemFrame(pop);
+		if (this.m_Show) {
+                this.updateProblemFrame(pop);
+            }
 	}
 
 	/** This method evaluate a single individual and sets the fitness values
@@ -348,7 +370,9 @@ implements InterfaceOptimizationProblem, InterfaceHasSolutionViewer, java.io.Ser
 
         // set a minimum value for the thickness of the lens
         for (int i = 0; i < x.length; i++) {
-            if (x[i] < 0.1) x[i] = 0.1;
+            if (x[i] < 0.1) {
+                x[i] = 0.1;
+            }
         }
 
         double[] tmpFit = this.testLens(x);
@@ -364,7 +388,9 @@ implements InterfaceOptimizationProblem, InterfaceHasSolutionViewer, java.io.Ser
 
         // Here the thickness of the middle segment of the lens	is added to the fitness
         // to permit the optimization to reduce the overall thickness of the lens
-        if (this.m_UseMaterialConst) fitness += x[(int)(x.length/2)];
+        if (this.m_UseMaterialConst) {
+                fitness += x[(int)(x.length/2)];
+            }
 
         ret[0] = fitness;
         return ret;
@@ -480,7 +506,9 @@ implements InterfaceOptimizationProblem, InterfaceHasSolutionViewer, java.io.Ser
 	 * @param noise     The sigma for a gaussian random number.
 	 */
 	public void setNoise(double noise) {
-		if (noise < 0) noise = 0;
+		if (noise < 0) {
+                noise = 0;
+            }
 		this.m_Noise = noise;
 	}
 	public double getNoise() {
@@ -534,8 +562,12 @@ implements InterfaceOptimizationProblem, InterfaceHasSolutionViewer, java.io.Ser
 	 */
 	public void setShow(boolean show) {
 		this.m_Show = show;
-        if (this.m_Show) this.initProblemFrame();
-        else this.disposeProblemFrame();
+        if (this.m_Show) {
+                this.initProblemFrame();
+            }
+        else {
+                this.disposeProblemFrame();
+            }
 	}
 	public boolean getShow() {
 		return this.m_Show;
@@ -572,7 +604,9 @@ implements InterfaceOptimizationProblem, InterfaceHasSolutionViewer, java.io.Ser
 	 * @param indy  The new EA individual type.
 	 */
 	public void setEAIndividualTrap(AbstractEAIndividual indy) {
-		if (indy instanceof InterfaceDataTypeDouble) this.setEAIndividual((InterfaceDataTypeDouble)indy);
+		if (indy instanceof InterfaceDataTypeDouble) {
+                this.setEAIndividual((InterfaceDataTypeDouble)indy);
+            }
 	}
 	
 	/*

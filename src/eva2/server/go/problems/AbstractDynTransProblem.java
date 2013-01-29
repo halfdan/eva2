@@ -63,7 +63,9 @@ public abstract class AbstractDynTransProblem extends AbstractSynchronousOptimiz
 				//	myplot.addGraph(0, 1);
 				myplot.jump();
 			} else {
-				if (TRACE) System.out.println("creating myplot instance");
+				if (TRACE) {
+                                System.out.println("creating myplot instance");
+                            }
 				double[] tmpD = new double[2];
 				tmpD[0] = 0;
 				tmpD[1] = 0;
@@ -73,8 +75,9 @@ public abstract class AbstractDynTransProblem extends AbstractSynchronousOptimiz
 			myplot.setConnectedPoint(population.getFunctionCalls(), delta, 0);
 			//myplot.setUnconnectedPoint(population.getFunctionCalls(), population.getPopulationMeasures()[2], 2);
 		}
-		else
-			myplot = null;
+		else {
+                myplot = null;
+            }
 	}
 	
 	private double transLength(double time) {
@@ -122,8 +125,9 @@ public abstract class AbstractDynTransProblem extends AbstractSynchronousOptimiz
      */
     @Override
 	public void resetProblem(double severity) {
-		if ((prob != null) && (bestIndividual != null))
-			this.evaluateAt(bestIndividual, getCurrentProblemTime());
+		if ((prob != null) && (bestIndividual != null)) {
+                this.evaluateAt(bestIndividual, getCurrentProblemTime());
+            }
 	}
 	
 	/* inits the population in the problem itself
@@ -131,7 +135,9 @@ public abstract class AbstractDynTransProblem extends AbstractSynchronousOptimiz
 	 */
     @Override
 	public void initPopulationAt(Population population, double time) {
-		if (TRACE) System.out.println("DynTransProblem at " + this + " initPop, problem is " + getProblem());
+		if (TRACE) {
+                System.out.println("DynTransProblem at " + this + " initPop, problem is " + getProblem());
+            }
 		getProblem().initPopulation(population);
 		for (int i = 0; i < population.size(); i++) {
             ((AbstractEAIndividual)population.get(i)).SetAge(0);

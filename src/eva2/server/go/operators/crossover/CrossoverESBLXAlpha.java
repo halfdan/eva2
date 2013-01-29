@@ -97,10 +97,14 @@ public class CrossoverESBLXAlpha implements InterfaceCrossover, java.io.Serializ
     public boolean equals(Object crossover) {
         if (crossover instanceof CrossoverESBLXAlpha) {
             CrossoverESBLXAlpha cross = (CrossoverESBLXAlpha)crossover;
-            if (this.m_Alpha != cross.m_Alpha) return false;
+            if (this.m_Alpha != cross.m_Alpha) {
+                return false;
+            }
             return true;
         }
-        else return false;
+        else {
+            return false;
+        }
     }
 
     /** This method will allow the crossover operator to be initialized depending on the
@@ -142,7 +146,9 @@ public class CrossoverESBLXAlpha implements InterfaceCrossover, java.io.Serializ
      * @param a   The number of crossovers.
      */
     public void setAlpha(double a) {
-        if (a < 0) a = 0;
+        if (a < 0) {
+            a = 0;
+        }
         this.m_Alpha = a;
     }
     public double getAlpha() {

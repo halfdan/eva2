@@ -31,8 +31,9 @@ public class MOSOEpsilonThreshold implements InterfaceMOSOConverter, java.io.Ser
     }
 
     public MOSOEpsilonThreshold(MOSOEpsilonThreshold b) {
-        if (b.m_EpsilonThreshold != null)
+        if (b.m_EpsilonThreshold != null) {
             this.m_EpsilonThreshold = (PropertyEpsilonThreshold)b.m_EpsilonThreshold.clone();
+        }
     }
     @Override
     public Object clone() {
@@ -64,8 +65,12 @@ public class MOSOEpsilonThreshold implements InterfaceMOSOConverter, java.io.Ser
         tmpFit = indy.getFitness();
         indy.putData("MOFitness", tmpFit);
         for (int i = 0; i < tmpFit.length; i++) {
-            if (new Double(tmpFit[i]).isNaN()) System.out.println("Fitness is NaN");
-            if (new Double(tmpFit[i]).isInfinite()) System.out.println("Fitness is Infinite");
+            if (new Double(tmpFit[i]).isNaN()) {
+                System.out.println("Fitness is NaN");
+            }
+            if (new Double(tmpFit[i]).isInfinite()) {
+                System.out.println("Fitness is Infinite");
+            }
         }
         resultFit[0] = tmpFit[this.m_EpsilonThreshold.m_OptimizeObjective];
 
@@ -81,8 +86,12 @@ public class MOSOEpsilonThreshold implements InterfaceMOSOConverter, java.io.Ser
         }
         tmpFit = (double[]) indy.getData("MOFitness");
         for (int i = 0; i < tmpFit.length; i++) {
-            if (new Double(tmpFit[i]).isNaN()) System.out.println("-Fitness is NaN");
-            if (new Double(tmpFit[i]).isInfinite()) System.out.println("-Fitness is Infinite");
+            if (new Double(tmpFit[i]).isNaN()) {
+                System.out.println("-Fitness is NaN");
+            }
+            if (new Double(tmpFit[i]).isInfinite()) {
+                System.out.println("-Fitness is Infinite");
+            }
         }
         indy.setFitness(resultFit);
     }
@@ -105,7 +114,9 @@ public class MOSOEpsilonThreshold implements InterfaceMOSOConverter, java.io.Ser
             newPunish[i] = this.m_EpsilonThreshold.m_Punishment[i];
             newTarget[i] = this.m_EpsilonThreshold.m_TargetValue[i];
         }
-        if (this.m_EpsilonThreshold.m_OptimizeObjective >= dim) this.m_EpsilonThreshold.m_OptimizeObjective = dim-1;
+        if (this.m_EpsilonThreshold.m_OptimizeObjective >= dim) {
+            this.m_EpsilonThreshold.m_OptimizeObjective = dim-1;
+        }
 
         this.m_EpsilonThreshold.m_Punishment = newPunish;
         this.m_EpsilonThreshold.m_TargetValue = newTarget;

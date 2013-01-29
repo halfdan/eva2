@@ -145,7 +145,9 @@ public final class SpecialFunction extends Object {
    * @return The log<sub>10</sub>
    */
     static public double log10(double x) throws ArithmeticException {
-         if( x <= 0.0 ) throw new ArithmeticException("range exception");
+         if( x <= 0.0 ) {
+            throw new ArithmeticException("range exception");
+        }
          return Math.log(x)/2.30258509299404568401;
     }
     
@@ -157,7 +159,9 @@ public final class SpecialFunction extends Object {
      * @throws ArithmeticException
      */
     static public double logb(double b, double x) throws ArithmeticException {
-    	if( x <= 0.0 ) throw new ArithmeticException("range exception");
+    	if( x <= 0.0 ) {
+            throw new ArithmeticException("range exception");
+        }
         return Math.log(x)/Math.log(b);
     }
 
@@ -170,7 +174,9 @@ public final class SpecialFunction extends Object {
     static public double cosh(double x) throws ArithmeticException {
       double a;
       a = x;
-      if( a < 0.0 ) a = Math.abs(x);
+      if( a < 0.0 ) {
+            a = Math.abs(x);
+        }
       a = Math.exp(a);
       return 0.5*(a+1/a);
     }
@@ -181,12 +187,20 @@ public final class SpecialFunction extends Object {
    */
     static public double sinh(double x) throws ArithmeticException {
       double a;
-      if(x == 0.0) return x;
+      if(x == 0.0) {
+            return x;
+        }
       a = x;
-      if( a < 0.0 ) a = Math.abs(x);
+      if( a < 0.0 ) {
+            a = Math.abs(x);
+        }
       a = Math.exp(a);
-      if( x < 0.0 )  return -0.5*(a-1/a);
-      else           return  0.5*(a-1/a);
+      if( x < 0.0 ) {
+            return -0.5*(a-1/a);
+        }
+      else {
+            return  0.5*(a-1/a);
+        }
     }
 
   /**
@@ -195,12 +209,20 @@ public final class SpecialFunction extends Object {
    */
     static public double tanh(double x) throws ArithmeticException {
       double a;
-      if( x == 0.0 ) return x;
+      if( x == 0.0 ) {
+            return x;
+        }
       a = x;
-      if( a < 0.0 ) a = Math.abs(x);
+      if( a < 0.0 ) {
+            a = Math.abs(x);
+        }
       a = Math.exp(2.0*a);
-      if(x < 0.0 ) return -( 1.0-2.0/(a+1.0) );
-      else         return  ( 1.0-2.0/(a+1.0) );
+      if(x < 0.0 ) {
+            return -( 1.0-2.0/(a+1.0) );
+        }
+      else {
+            return  ( 1.0-2.0/(a+1.0) );
+        }
     }
 
   /**
@@ -209,7 +231,9 @@ public final class SpecialFunction extends Object {
    */
 
     static public double acosh(double x) throws ArithmeticException {
-      if( x < 1.0 ) throw new ArithmeticException("range exception");
+      if( x < 1.0 ) {
+            throw new ArithmeticException("range exception");
+        }
       return Math.log( x + Math.sqrt(x*x-1));
     }
 
@@ -220,7 +244,9 @@ public final class SpecialFunction extends Object {
     static public double asinh(double xx) throws ArithmeticException {
       double x;
       int sign;
-      if(xx == 0.0) return xx;
+      if(xx == 0.0) {
+            return xx;
+        }
       if( xx < 0.0 ) {
                       sign = -1;
                       x = -xx;
@@ -236,8 +262,10 @@ public final class SpecialFunction extends Object {
    * @return the hyperbolic arc tangent of the argument
    */
     static public double atanh(double x) throws ArithmeticException {
-      if( x > 1.0 || x < -1.0 ) throw
-                         new ArithmeticException("range exception");
+      if( x > 1.0 || x < -1.0 ) {
+            throw
+     new ArithmeticException("range exception");
+        }
       return 0.5 * Math.log( (1.0+x)/(1.0-x) );
     }
 
@@ -302,7 +330,9 @@ public final class SpecialFunction extends Object {
               +y*0.105787412e-6)));
          double ans=Math.sqrt(0.636619772/ax)*
                    (Math.cos(xx)*ans1-z*Math.sin(xx)*ans2);
-         if (x < 0.0) ans = -ans;
+         if (x < 0.0) {
+               ans = -ans;
+           }
          return ans;
        }
     }
@@ -321,11 +351,17 @@ public final class SpecialFunction extends Object {
        double BIGNO = 1.0e+10;
        double BIGNI = 1.0e-10;
 
-       if(n == 0) return j0(x);
-       if(n == 1) return j1(x);
+       if(n == 0) {
+            return j0(x);
+        }
+       if(n == 1) {
+            return j1(x);
+        }
 
        ax=Math.abs(x);
-       if(ax == 0.0)  return 0.0;
+       if(ax == 0.0) {
+            return 0.0;
+        }
        else
        if (ax > (double)n) {
          tox=2.0/ax;
@@ -353,9 +389,13 @@ public final class SpecialFunction extends Object {
                ans *= BIGNI;
                sum *= BIGNI;
             }
-            if (jsum) sum += bj;
+            if (jsum) {
+                 sum += bj;
+             }
             jsum=!jsum;
-            if (j == n) ans=bjp;
+            if (j == n) {
+                 ans=bjp;
+             }
           }
           sum=2.0*sum-bj;
           ans /= sum;
@@ -432,8 +472,12 @@ public final class SpecialFunction extends Object {
     static public double yn(int n, double x) throws ArithmeticException {
        double by,bym,byp,tox;
 
-       if(n == 0) return y0(x);
-       if(n == 1) return y1(x);
+       if(n == 0) {
+            return y0(x);
+        }
+       if(n == 1) {
+            return y1(x);
+        }
 
        tox=2.0/x;
        by=y1(x);
@@ -454,8 +498,12 @@ public final class SpecialFunction extends Object {
    */
      static public double fac(double x) throws ArithmeticException {
         double d = Math.abs(x);
-        if(Math.floor(d) == d) return (double)fac( (int)x );
-        else                   return gamma(x+1.0);
+        if(Math.floor(d) == d) {
+             return (double)fac( (int)x );
+         }
+        else {
+             return gamma(x+1.0);
+         }
      }
 
   /**
@@ -465,10 +513,16 @@ public final class SpecialFunction extends Object {
      static public int fac(int j) throws ArithmeticException {
         int i = j;
         int d = 1;
-        if(j < 0) i = Math.abs(j);
+        if(j < 0) {
+             i = Math.abs(j);
+         }
         while( i > 1) { d *= i--; }
-        if(j < 0) return -d;
-        else      return d;
+        if(j < 0) {
+             return -d;
+         }
+        else {
+             return d;
+         }
      }
 
 
@@ -517,7 +571,9 @@ public final class SpecialFunction extends Object {
      if( q > 33.0 ) {
        if( x < 0.0 ) {
             p = Math.floor(q);
-	    if( p == q ) throw new ArithmeticException("gamma: overflow");
+	    if( p == q ) {
+               throw new ArithmeticException("gamma: overflow");
+           }
 	    i = (int)p;
 	    z = q - p;
 	    if( z > 0.5 ) {
@@ -525,7 +581,9 @@ public final class SpecialFunction extends Object {
 			z = q - p;
 	    }
 	    z = q * Math.sin( Math.PI * z );
-	    if( z == 0.0 ) throw new ArithmeticException("gamma: overflow");
+	    if( z == 0.0 ) {
+               throw new ArithmeticException("gamma: overflow");
+           }
 	    z = Math.abs(z);
 	    z = Math.PI/(z * stirf(q) );
 
@@ -563,7 +621,9 @@ public final class SpecialFunction extends Object {
 	     x += 1.0;
 	}
 
-        if( (x == 2.0) || (x == 3.0) ) 	return z;
+        if( (x == 2.0) || (x == 3.0) ) {
+            return z;
+        }
 
         x -= 2.0;
         p = polevl( x, P, 6 );
@@ -624,12 +684,18 @@ Direct inquiries to 30 Frost Street, Cambridge, MA 02140
         double ans, ax, c, yc, r, t, y, z;
         double pk, pkm1, pkm2, qk, qkm1, qkm2;
 
-        if( x <= 0 || a <= 0 ) return 1.0;
+        if( x <= 0 || a <= 0 ) {
+                                 return 1.0;
+                             }
 
-        if( x < 1.0 || x < a ) return 1.0 - igam(a,x);
+        if( x < 1.0 || x < a ) {
+                                 return 1.0 - igam(a,x);
+                             }
 
         ax = a * Math.log(x) - x - lgamma(a);
-        if( ax < -MAXLOG ) return 0.0;
+        if( ax < -MAXLOG ) {
+                                 return 0.0;
+                             }
 
         ax = Math.exp(ax);
 
@@ -654,8 +720,9 @@ Direct inquiries to 30 Frost Street, Cambridge, MA 02140
 		r = pk/qk;
 		t = Math.abs( (ans - r)/r );
 		ans = r;
-	    } else
-		t = 1.0;
+	    } else {
+                t = 1.0;
+            }
 
 	    pkm2 = pkm1;
 	    pkm1 = pk;
@@ -690,13 +757,19 @@ Direct inquiries to 30 Frost Street, Cambridge, MA 02140
 
         double ans, ax, c, r;
 
-        if( x <= 0 || a <= 0 ) return 0.0;
+        if( x <= 0 || a <= 0 ) {
+                                 return 0.0;
+                             }
 
-        if( x > 1.0 && x > a ) return 1.0 - igamc(a,x);
+        if( x > 1.0 && x > a ) {
+                                 return 1.0 - igamc(a,x);
+                             }
 
        /* Compute  x**a * exp(-x) / gamma(a)  */
         ax = a * Math.log(x) - x - lgamma(a);
-        if( ax < -MAXLOG ) return( 0.0 );
+        if( ax < -MAXLOG ) {
+                                 return( 0.0 );
+                             }
 
         ax = Math.exp(ax);
 
@@ -729,7 +802,9 @@ Direct inquiries to 30 Frost Street, Cambridge, MA 02140
    static public double chisq(double df, double x)
                        throws ArithmeticException {
 
-        if( x < 0.0 || df < 1.0 ) return 0.0;
+        if( x < 0.0 || df < 1.0 ) {
+                               return 0.0;
+                           }
 
         return igam( df/2.0, x/2.0 );
 
@@ -749,7 +824,9 @@ Direct inquiries to 30 Frost Street, Cambridge, MA 02140
    static public double chisqc(double df, double x)
                        throws ArithmeticException {
 
-        if( x < 0.0 || df < 1.0 ) return 0.0;
+        if( x < 0.0 || df < 1.0 ) {
+                               return 0.0;
+                           }
 
         return igamc( df/2.0, x/2.0 );
 
@@ -766,7 +843,9 @@ Direct inquiries to 30 Frost Street, Cambridge, MA 02140
                        throws ArithmeticException {
 
 
-    if( k < 0 || x < 0 ) return 0.0;
+    if( k < 0 || x < 0 ) {
+                               return 0.0;
+                           }
 
     return igamc((double)(k+1) ,x);
    }
@@ -782,7 +861,9 @@ Direct inquiries to 30 Frost Street, Cambridge, MA 02140
                        throws ArithmeticException {
 
 
-    if( k < 0 || x < 0 ) return 0.0;
+    if( k < 0 || x < 0 ) {
+                               return 0.0;
+                           }
 
     return igam((double)(k+1),x);
    }
@@ -802,10 +883,14 @@ Direct inquiries to 30 Frost Street, Cambridge, MA 02140
       x = a * SQRTH;
       z = Math.abs(x);
 
-      if( z < SQRTH )   y = 0.5 + 0.5 * erf(x);
+      if( z < SQRTH ) {
+                               y = 0.5 + 0.5 * erf(x);
+                           }
       else {
                         y = 0.5 * erfc(z);
-                        if( x > 0 )  y = 1.0 - y;
+                        if( x > 0 ) {
+              y = 1.0 - y;
+          }
       }
 
       return y;
@@ -868,16 +953,26 @@ Direct inquiries to 30 Frost Street, Cambridge, MA 02140
                       3.36907645100081516050E0
                      };
 
-        if( a < 0.0 )   x = -a;
-        else            x = a;
+        if( a < 0.0 ) {
+                               x = -a;
+                           }
+        else {
+                               x = a;
+                           }
 
-        if( x < 1.0 )   return 1.0 - erf(a);
+        if( x < 1.0 ) {
+                               return 1.0 - erf(a);
+                           }
 
         z = -a * a;
 
         if( z < -MAXLOG ) {
-             if( a < 0 )  return( 2.0 );
-             else         return( 0.0 );
+             if( a < 0 ) {
+                return( 2.0 );
+            }
+             else {
+                return( 0.0 );
+            }
         }
 
         z = Math.exp(z);
@@ -892,11 +987,17 @@ Direct inquiries to 30 Frost Street, Cambridge, MA 02140
 
         y = (z * p)/q;
 
-        if( a < 0 ) y = 2.0 - y;
+        if( a < 0 ) {
+                               y = 2.0 - y;
+                           }
 
         if( y == 0.0 ) {
-                if( a < 0 ) return 2.0;
-                else        return( 0.0 );
+                if( a < 0 ) {
+                return 2.0;
+            }
+                else {
+                return( 0.0 );
+            }
          }
 
 
@@ -933,7 +1034,9 @@ Direct inquiries to 30 Frost Street, Cambridge, MA 02140
                      4.92673942608635921086E4
                     };
 
-       if( Math.abs(x) > 1.0 ) return( 1.0 - erfc(x) );
+       if( Math.abs(x) > 1.0 ) {
+                               return( 1.0 - erfc(x) );
+                           }
        z = x * x;
        y = x * polevl( z, T, 4 ) / p1evl( z, U, 5 );
        return y;
@@ -1011,15 +1114,19 @@ Direct inquiries to 30 Frost Street, Cambridge, MA 02140
   	   q = -x;
 	   w = lgamma(q);
 	   p = Math.floor(q);
-	   if( p == q ) throw new ArithmeticException("lgam: Overflow");
+	   if( p == q ) {
+                 throw new ArithmeticException("lgam: Overflow");
+             }
 	   z = q - p;
 	   if( z > 0.5 ) {
 		p += 1.0;
 		z = p - q;
  	   }
 	   z = q * Math.sin( Math.PI * z );
-	   if( z == 0.0 ) throw new
-                               ArithmeticException("lgamma: Overflow");
+	   if( z == 0.0 ) {
+                 throw new
+                      ArithmeticException("lgamma: Overflow");
+             }
 	   z = LOGPI - Math.log( z ) - w;
 	   return z;
 	 }
@@ -1031,31 +1138,43 @@ Direct inquiries to 30 Frost Street, Cambridge, MA 02140
 		z *= x;
 	   }
 	   while( x < 2.0 ) {
-		if( x == 0.0 ) throw new
-                                ArithmeticException("lgamma: Overflow");
+		if( x == 0.0 ) {
+                   throw new
+                    ArithmeticException("lgamma: Overflow");
+               }
 		z /= x;
 		x += 1.0;
 	   }
-	   if( z < 0.0 ) z = -z;
-	   if( x == 2.0 ) return Math.log(z);
+	   if( z < 0.0 ) {
+                 z = -z;
+             }
+	   if( x == 2.0 ) {
+                 return Math.log(z);
+             }
 	   x -= 2.0;
 	   p = x * polevl( x, B, 5 ) / p1evl( x, C, 6);
  	   return( Math.log(z) + p );
 	 }
 
-         if( x > 2.556348e305 ) throw new
-                          ArithmeticException("lgamma: Overflow");
+         if( x > 2.556348e305 ) {
+                                      throw new
+                                ArithmeticException("lgamma: Overflow");
+                                  }
 
          q = ( x - 0.5 ) * Math.log(x) - x + 0.91893853320467274178;
-         if( x > 1.0e8 ) return( q );
+         if( x > 1.0e8 ) {
+                                      return( q );
+                                  }
 
          p = 1.0/(x*x);
-         if( x >= 1000.0 )
-	     q += ((   7.9365079365079365079365e-4 * p
-		      - 2.7777777777777777777778e-3) *p
-		     + 0.0833333333333333333333) / x;
-         else
-	     q += polevl( p, A, 4 ) / x;
+         if( x >= 1000.0 ) {
+                                      q += ((   7.9365079365079365079365e-4 * p
+                                               - 2.7777777777777777777778e-3) *p
+                                              + 0.0833333333333333333333) / x;
+                                  }
+         else {
+                                      q += polevl( p, A, 4 ) / x;
+                                  }
          return q;
      }
 
@@ -1079,12 +1198,18 @@ Direct inquiries to 30 Frost Street, Cambridge, MA 02140
         double a, b, t, x, xc, w, y;
         boolean flag;
 
-        if( aa <= 0.0 || bb <= 0.0 ) throw new
-                          ArithmeticException("ibeta: Domain error!");
+        if( aa <= 0.0 || bb <= 0.0 ) {
+                                      throw new
+                           ArithmeticException("ibeta: Domain error!");
+                                  }
 
         if( (xx <= 0.0) || ( xx >= 1.0) ) {
-  	       if( xx == 0.0 ) return 0.0;
-   	       if( xx == 1.0 ) return 1.0;
+  	       if( xx == 0.0 ) {
+                return 0.0;
+            }
+   	       if( xx == 1.0 ) {
+                return 1.0;
+            }
            throw new ArithmeticException("ibeta: Domain error!");
 	    }
 
@@ -1112,17 +1237,23 @@ Direct inquiries to 30 Frost Street, Cambridge, MA 02140
 
         if( flag  && (b * x) <= 1.0 && x <= 0.95) {
  	       t = pseries(a, b, x);
-	       if( t <= MACHEP ) 	t = 1.0 - MACHEP;
-	       else  		        t = 1.0 - t;
+	       if( t <= MACHEP ) {
+                t = 1.0 - MACHEP;
+            }
+	       else {
+                t = 1.0 - t;
+            }
            return t;
 	    }
 
         /* Choose expansion for better convergence. */
         y = x * (a+b-2.0) - (a-1.0);
-        if( y < 0.0 )
-	                  w = incbcf( a, b, x );
-        else
-	                  w = incbd( a, b, x ) / xc;
+        if( y < 0.0 ) {
+                                      w = incbcf( a, b, x );
+                                  }
+        else {
+                                      w = incbd( a, b, x ) / xc;
+                                  }
 
         /* Multiply w by the factor
            a      b   _             _     _
@@ -1137,22 +1268,32 @@ Direct inquiries to 30 Frost Street, Cambridge, MA 02140
 	        t *= w;
 	        t *= gamma(a+b) / (gamma(a) * gamma(b));
             if( flag ) {
- 	           if( t <= MACHEP ) 	t = 1.0 - MACHEP;
-	           else  		        t = 1.0 - t;
+ 	           if( t <= MACHEP ) {
+                    t = 1.0 - MACHEP;
+                }
+	           else {
+                    t = 1.0 - t;
+                }
 	        }
             return t;
 	    }
         /* Resort to logarithms.  */
         y += t + lgamma(a+b) - lgamma(a) - lgamma(b);
         y += Math.log(w/a);
-        if( y < MINLOG )
-	                    t = 0.0;
-        else
-	                    t = Math.exp(y);
+        if( y < MINLOG ) {
+                                      t = 0.0;
+                                  }
+        else {
+                                      t = Math.exp(y);
+                                  }
 
         if( flag ) {
- 	           if( t <= MACHEP ) 	t = 1.0 - MACHEP;
-	           else  		        t = 1.0 - t;
+ 	           if( t <= MACHEP ) {
+                t = 1.0 - MACHEP;
+            }
+	           else {
+                t = 1.0 - t;
+            }
 	    }
         return t;
    }
@@ -1204,14 +1345,19 @@ Direct inquiries to 30 Frost Street, Cambridge, MA 02140
 	      qkm2 = qkm1;
 	      qkm1 = qk;
 
-	      if( qk != 0 )		r = pk/qk;
+	      if( qk != 0 ) {
+               r = pk/qk;
+           }
 	      if( r != 0 ) {
 		       t = Math.abs( (ans - r)/r );
 		       ans = r;
-		  }	else
-		       t = 1.0;
+		  }	else {
+               t = 1.0;
+           }
 
-	      if( t < thresh ) return ans;
+	      if( t < thresh ) {
+               return ans;
+           }
 
 	      k1 += 1.0;
           k2 += 1.0;
@@ -1286,14 +1432,19 @@ Direct inquiries to 30 Frost Street, Cambridge, MA 02140
 	         qkm2 = qkm1;
 	         qkm1 = qk;
 
-	         if( qk != 0 )  r = pk/qk;
+	         if( qk != 0 ) {
+                 r = pk/qk;
+             }
 	         if( r != 0 ) {
 		         t = Math.abs( (ans - r)/r );
 		         ans = r;
-		     } else
-		         t = 1.0;
+		     } else {
+                 t = 1.0;
+             }
 
-	         if( t < thresh ) return ans;
+	         if( t < thresh ) {
+                 return ans;
+             }
 
 	         k1 += 1.0;
 	         k2 -= 1.0;
@@ -1351,8 +1502,12 @@ Direct inquiries to 30 Frost Street, Cambridge, MA 02140
 	        s = s * t * Math.pow(x,a);
 	    } else {
 	       t = lgamma(a+b) - lgamma(a) - lgamma(b) + u + Math.log(s);
-	       if( t < MINLOG ) 	s = 0.0;
-	       else  	            s = Math.exp(t);
+	       if( t < MINLOG ) {
+                    s = 0.0;
+                }
+	       else {
+                    s = Math.exp(t);
+                }
 	    }
         return s;
      }

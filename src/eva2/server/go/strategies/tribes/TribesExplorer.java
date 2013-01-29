@@ -977,7 +977,9 @@ v[d] = cmin * v[d];
 	public void initByValue(Object obj, InterfaceOptimizationProblem opt) {
         if (obj instanceof double[]) {
             double[]  x = (double[]) obj;
-            if (x.length != position.x.length) System.err.println("Init value and requested length doesn't match!");
+            if (x.length != position.x.length) {
+                System.err.println("Init value and requested length doesn't match!");
+            }
             this.SetDoubleGenotype(x);
         } else {
             this.init(opt);

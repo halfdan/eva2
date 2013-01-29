@@ -26,8 +26,9 @@ public class MOSOEpsilonConstraint implements InterfaceMOSOConverter, java.io.Se
     }
 
     public MOSOEpsilonConstraint(MOSOEpsilonConstraint b) {
-        if (b.m_EpsilonConstraint != null)
+        if (b.m_EpsilonConstraint != null) {
             this.m_EpsilonConstraint = (PropertyEpsilonConstraint)b.m_EpsilonConstraint.clone();
+        }
     }
     @Override
     public Object clone() {
@@ -82,7 +83,9 @@ public class MOSOEpsilonConstraint implements InterfaceMOSOConverter, java.io.Se
         for (int i = 0; (i < this.m_EpsilonConstraint.m_TargetValue.length) && (i < newTarget.length); i++) {
             newTarget[i] = this.m_EpsilonConstraint.m_TargetValue[i];
         }
-        if (this.m_EpsilonConstraint.m_OptimizeObjective >= dim) this.m_EpsilonConstraint.m_OptimizeObjective = dim-1;
+        if (this.m_EpsilonConstraint.m_OptimizeObjective >= dim) {
+            this.m_EpsilonConstraint.m_OptimizeObjective = dim-1;
+        }
 
         this.m_EpsilonConstraint.m_TargetValue = newTarget;
     }

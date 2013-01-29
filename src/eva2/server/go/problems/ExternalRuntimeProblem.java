@@ -81,19 +81,33 @@ implements Interface2DBorderProblem, InterfaceProblemDouble, InterfaceHasInitRan
     
     public ExternalRuntimeProblem(ExternalRuntimeProblem b) {
         //AbstractOptimizationProblem
-        if (b.m_Template != null)
+        if (b.m_Template != null) {
             this.m_Template         = (AbstractEAIndividual)((AbstractEAIndividual)b.m_Template).clone();
+        }
         //ExternalRuntimeProblem
-        if (b.m_OverallBest != null)
+        if (b.m_OverallBest != null) {
             this.m_OverallBest      = (AbstractEAIndividual)((AbstractEAIndividual)b.m_OverallBest).clone();
+        }
         this.m_ProblemDimension = b.m_ProblemDimension;
         this.m_Command = b.m_Command;
-        if (b.m_Range!=null) this.m_Range = (PropertyDoubleArray)b.m_Range.clone();
-        else this.m_Range=null;
-        if (b.m_initRange!=null) this.m_initRange = (PropertyDoubleArray)b.m_initRange.clone();
-        else this.m_initRange=null;
-        if (b.m_MosoConverter!=null) this.m_MosoConverter=(InterfaceMOSOConverter)b.m_MosoConverter.clone();
-        else this.m_MosoConverter=null;
+        if (b.m_Range!=null) {
+            this.m_Range = (PropertyDoubleArray)b.m_Range.clone();
+        }
+        else {
+            this.m_Range=null;
+        }
+        if (b.m_initRange!=null) {
+            this.m_initRange = (PropertyDoubleArray)b.m_initRange.clone();
+        }
+        else {
+            this.m_initRange=null;
+        }
+        if (b.m_MosoConverter!=null) {
+            this.m_MosoConverter=(InterfaceMOSOConverter)b.m_MosoConverter.clone();
+        }
+        else {
+            this.m_MosoConverter=null;
+        }
         this.m_WorkingDir = b.m_WorkingDir;
     }
 
@@ -111,12 +125,20 @@ implements Interface2DBorderProblem, InterfaceProblemDouble, InterfaceHasInitRan
     public void initProblem() {
         this.m_OverallBest = null;
         File f = new File(m_Command);
-        if (f.exists()) m_Command = f.getAbsolutePath();
+        if (f.exists()) {
+            m_Command = f.getAbsolutePath();
+        }
         else {
         	String sep = System.getProperty("file.separator");
-        	if (m_WorkingDir.endsWith(sep)) f = new File(m_WorkingDir+m_Command);
-        	else f = new File(m_WorkingDir+sep+m_Command);
-        	if (f.exists()) m_Command = f.getAbsolutePath();
+        	if (m_WorkingDir.endsWith(sep)) {
+                f = new File(m_WorkingDir+m_Command);
+            }
+        	else {
+                f = new File(m_WorkingDir+sep+m_Command);
+            }
+        	if (f.exists()) {
+                m_Command = f.getAbsolutePath();
+            }
         	else {
             	System.err.println("Warning, " + this.getClass() + " could not find command " + m_Command + " in " + m_WorkingDir);
         	}
@@ -141,7 +163,9 @@ implements Interface2DBorderProblem, InterfaceProblemDouble, InterfaceHasInitRan
     	if (m_Range==null) {
     		System.err.println("Warning, range not set in ExternalRuntimeProblem.makeRange!");
     	} 
-    	if (m_Range.getNumRows()!=getProblemDimension()) System.err.println("Warning, problem dimension and range dimension dont match in ExternalRuntimeProblem.makeRange!");
+    	if (m_Range.getNumRows()!=getProblemDimension()) {
+            System.err.println("Warning, problem dimension and range dimension dont match in ExternalRuntimeProblem.makeRange!");
+        }
     	return m_Range.getDoubleArrayShallow().clone();
     }
 
@@ -155,7 +179,9 @@ implements Interface2DBorderProblem, InterfaceProblemDouble, InterfaceHasInitRan
      * @param range
      */
     public void setRange(PropertyDoubleArray range) {
-    	if (range.getNumRows()<this.m_ProblemDimension) System.err.println("Warning, expected range of dimension " + m_ProblemDimension + " in setRange!");
+    	if (range.getNumRows()<this.m_ProblemDimension) {
+            System.err.println("Warning, expected range of dimension " + m_ProblemDimension + " in setRange!");
+        }
     	m_Range.setDoubleArray(range.getDoubleArrayShallow());
     }
     public PropertyDoubleArray getRange() {
@@ -200,7 +226,9 @@ implements Interface2DBorderProblem, InterfaceProblemDouble, InterfaceHasInitRan
     @Override
     public void evaluatePopulationEnd(Population population) {
     	super.evaluatePopulationEnd(population);
-    	if (m_MosoConverter!=null) m_MosoConverter.convertMultiObjective2SingleObjective(population);
+    	if (m_MosoConverter!=null) {
+            m_MosoConverter.convertMultiObjective2SingleObjective(population);
+        }
     }
     
 	protected double[] getXVector(AbstractEAIndividual individual) {
@@ -259,12 +287,16 @@ implements Interface2DBorderProblem, InterfaceProblemDouble, InterfaceHasInitRan
 
     @Override
     public double[] eval(double[] x) {
-    	if (x==null) throw new RuntimeException("Error, x=null value received in ExternalRuntimeProblem.eval");
+    	if (x==null) {
+            throw new RuntimeException("Error, x=null value received in ExternalRuntimeProblem.eval");
+        }
     	ArrayList<Double> fitList = new ArrayList<Double>();
 
     	List<String> parameters=new ArrayList<String>();
     	parameters.add(this.m_Command);
-    	if (additionalArg!=null && (additionalArg.length()>0)) parameters.add(additionalArg);
+    	if (additionalArg!=null && (additionalArg.length()>0)) {
+            parameters.add(additionalArg);
+        }
     	for(int i=0;i<this.m_ProblemDimension;i++){
     		String p = prepareParameter(x, i);
     		parameters.add(p);
@@ -475,7 +507,9 @@ implements Interface2DBorderProblem, InterfaceProblemDouble, InterfaceHasInitRan
     @Override
 	public Object getInitRange() {
 		if (m_initRange==null) {
-			if (m_Range==null) System.err.println("Warning, neither range nor initRange has been set in ExternalRuntimeProblem!");
+			if (m_Range==null) {
+                        System.err.println("Warning, neither range nor initRange has been set in ExternalRuntimeProblem!");
+                    }
 			return m_Range.getDoubleArrayShallow();
 		} else {
 			return m_initRange.getDoubleArrayShallow();
@@ -487,7 +521,9 @@ implements Interface2DBorderProblem, InterfaceProblemDouble, InterfaceHasInitRan
 	}
 	
     public void setInitialRange(PropertyDoubleArray range) {
-    	if (range.getNumRows()<this.m_ProblemDimension) System.err.println("Warning, expected range of dimension " + m_ProblemDimension + " in setInitRange!");
+    	if (range.getNumRows()<this.m_ProblemDimension) {
+            System.err.println("Warning, expected range of dimension " + m_ProblemDimension + " in setInitRange!");
+        }
     	m_initRange = new PropertyDoubleArray(range);
     }
     public PropertyDoubleArray getInitialRange() {

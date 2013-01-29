@@ -63,24 +63,42 @@ public class MutateESCorrolated implements InterfaceMutation, java.io.Serializab
      */
     @Override
     public boolean equals(Object mutator) {
-    	if (mutator==this) return true;
+    	if (mutator==this) {
+            return true;
+        }
         if (mutator instanceof MutateESCorrolated) {
             MutateESCorrolated mut = (MutateESCorrolated)mutator;
-            if (this.m_Tau1 != mut.m_Tau1) return false;
-            if (this.m_Tau2 != mut.m_Tau2) return false;
-            if (this.m_LowerLimitStepSize != mut.m_LowerLimitStepSize) return false;
+            if (this.m_Tau1 != mut.m_Tau1) {
+                return false;
+            }
+            if (this.m_Tau2 != mut.m_Tau2) {
+                return false;
+            }
+            if (this.m_LowerLimitStepSize != mut.m_LowerLimitStepSize) {
+                return false;
+            }
             if (this.m_Sigmas != null) {
                 for (int i = 0; i < this.m_Sigmas.length; i++) {
-                    if (this.m_Sigmas[i] != mut.m_Sigmas[i]) return false;
+                    if (this.m_Sigmas[i] != mut.m_Sigmas[i]) {
+                        return false;
+                    }
                 }
-            } else return false;
+            } else {
+                return false;
+            }
             if (this.m_Alphas != null) {
                 for (int i = 0; i < this.m_Alphas.length; i++) {
-                    if (this.m_Alphas[i] != mut.m_Alphas[i]) return false;
+                    if (this.m_Alphas[i] != mut.m_Alphas[i]) {
+                        return false;
+                    }
                 }
-            } else return false;
+            } else {
+                return false;
+            }
             return true;
-        } else return false;
+        } else {
+            return false;
+        }
     }
 
     /** This method allows you to init the mutation operator
@@ -182,14 +200,20 @@ public class MutateESCorrolated implements InterfaceMutation, java.io.Serializab
           //Mutate Sigmas
           for (int i = 0; i < x.length; i++) {
               this.m_Sigmas[i] *= Math.exp(this.m_Tau1 * tmpR + this.m_Tau2 * RNG.gaussianDouble(1));
-            if (this.m_Sigmas[i] < this.m_LowerLimitStepSize) this.m_Sigmas[i] = this.m_LowerLimitStepSize;
+            if (this.m_Sigmas[i] < this.m_LowerLimitStepSize) {
+                  this.m_Sigmas[i] = this.m_LowerLimitStepSize;
+              }
           }
 
           //Mutate Alphas
           for (int i = 0; i < this.m_Alphas.length; i++) {
           	this.m_Alphas[i] += RNG.gaussianDouble(0.2);
-          	if (this.m_Alphas[i] < -Math.PI/2) this.m_Alphas[i] = -Math.PI/2;
-          	if (this.m_Alphas[i] > Math.PI/2) this.m_Alphas[i] = Math.PI/2;
+          	if (this.m_Alphas[i] < -Math.PI/2) {
+                  this.m_Alphas[i] = -Math.PI/2;
+              }
+          	if (this.m_Alphas[i] > Math.PI/2) {
+                  this.m_Alphas[i] = Math.PI/2;
+              }
           }
           
           //Generate mutationvector in unitspace modified by sigmas
@@ -211,8 +235,12 @@ public class MutateESCorrolated implements InterfaceMutation, java.io.Serializab
           //modify genotype
           for (int i = 0; i < x.length; i++) {
         	x[i] += ((range[i][1] -range[i][0])/2)*xCopy[i]; 
-        	if (range[i][0] > x[i]) x[i] = range[i][0];
-        	if (range[i][1] < x[i]) x[i] = range[i][1];
+        	if (range[i][0] > x[i]) {
+                  x[i] = range[i][0];
+              }
+        	if (range[i][1] < x[i]) {
+                  x[i] = range[i][1];
+              }
           }
 
           ((InterfaceESIndividual)individual).SetDGenotype(x);
@@ -277,7 +305,9 @@ public class MutateESCorrolated implements InterfaceMutation, java.io.Serializab
      * @param d   The mutation operator.
      */
     public void setTau2(double d) {
-        if (d < 0) d = 0;
+        if (d < 0) {
+            d = 0;
+        }
         this.m_Tau2 = d;
     }
     public double getTau2() {
@@ -291,7 +321,9 @@ public class MutateESCorrolated implements InterfaceMutation, java.io.Serializab
      * @param d   The mutation operator.
      */
     public void setMutationStepSize(double d) {
-        if (d < 0) d = this.m_LowerLimitStepSize;
+        if (d < 0) {
+            d = this.m_LowerLimitStepSize;
+        }
         this.m_MutationStepSize = d;
     }
     public double getMutationStepSize() {
@@ -305,7 +337,9 @@ public class MutateESCorrolated implements InterfaceMutation, java.io.Serializab
      * @param d   The mutation operator.
      */
     public void setLowerLimitStepSize(double d) {
-        if (d < 0) d = 0;
+        if (d < 0) {
+            d = 0;
+        }
         this.m_LowerLimitStepSize = d;
     }
     public double getLowerLimitStepSize() {
@@ -319,7 +353,9 @@ public class MutateESCorrolated implements InterfaceMutation, java.io.Serializab
      * @param d   The mutation operator.
      */
     public void setTau1(double d) {
-        if (d < 0) d = 0;
+        if (d < 0) {
+            d = 0;
+        }
         this.m_Tau1 = d;
     }
     public double getTau1() {

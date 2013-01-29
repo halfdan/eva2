@@ -145,17 +145,19 @@ public class SplineInterpolation
 	public double[] spline(double[] x, double[] y, double yp0, double ypn)
 		throws InterpolationException
 	{
-		if (x[0] > x[1])
-			throw new InterpolationException(
-				"The x values must be" + " in ascending order.");
+		if (x[0] > x[1]) {
+                throw new InterpolationException(
+                        "The x values must be" + " in ascending order.");
+            }
 		int n = x.length;
 		double[] y2 = new double[n];
 		double[] u = new double[n - 1];
 		int i, k;
 		double p, qn, sig, un;
 
-		if (yp0 > 0.99e30)
-			y2[0] = u[0] = 0.0;
+		if (yp0 > 0.99e30) {
+                y2[0] = u[0] = 0.0;
+            }
 		else
 		{
 			y2[0] = -0.5;
@@ -224,15 +226,18 @@ public class SplineInterpolation
 		while (khi - klo > 1)
 		{
 			k = (khi + klo) >> 1;
-			if (xa[k] > x)
-				khi = k;
-			else
-				klo = k;
+			if (xa[k] > x) {
+                        khi = k;
+                    }
+			else {
+                        klo = k;
+                    }
 		}
 		h = xa[khi] - xa[klo];
 		//System.out.println(""+x+" between "+xa[khi]+" "+xa[klo]);
-		if (h == 0.0)
-			throw new InterpolationException("Two identical x values. The values must be distinct.");
+		if (h == 0.0) {
+                throw new InterpolationException("Two identical x values. The values must be distinct.");
+            }
 		a = (xa[khi] - x) / h;
 		b = (x - xa[klo]) / h;
 		y =
@@ -275,15 +280,18 @@ public class SplineInterpolation
 		while (khi - klo > 1)
 		{
 			k = (khi + klo) >> 1;
-			if (xa[k] > x)
-				khi = k;
-			else
-				klo = k;
+			if (xa[k] > x) {
+                        khi = k;
+                    }
+			else {
+                        klo = k;
+                    }
 		}
 		h = xa[khi] - xa[klo];
 		//System.out.println(""+x+" between "+xa[khi]+" "+xa[klo]);
-		if (h == 0.0)
-			throw new InterpolationException("Two identical x values. The values must be distinct.");
+		if (h == 0.0) {
+                throw new InterpolationException("Two identical x values. The values must be distinct.");
+            }
 		a = (xa[khi] - x) / h;
 		b = (x - xa[klo]) / h;
 		dydx =

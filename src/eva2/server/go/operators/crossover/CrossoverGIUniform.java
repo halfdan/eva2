@@ -46,7 +46,9 @@ public class CrossoverGIUniform implements InterfaceCrossover, java.io.Serializa
         for (int i = 0; i < partners.size(); i++) {
             result[i+1] = (AbstractEAIndividual) ((AbstractEAIndividual)partners.get(i)).clone();
         }
-        if (partners.size() == 0) return result;
+        if (partners.size() == 0) {
+            return result;
+        }
         //for (int i = 0; i < result.length; i++) System.out.println("Before Crossover: " +result[i].getSolutionRepresentationFor());
         if ((indy1 instanceof InterfaceGIIndividual) && (partners.get(0) instanceof InterfaceGIIndividual)) {
             int         length          =  ((InterfaceGIIndividual)indy1).getGenotypeLength();
@@ -90,8 +92,12 @@ public class CrossoverGIUniform implements InterfaceCrossover, java.io.Serializa
      */
     @Override
     public boolean equals(Object crossover) {
-        if (crossover instanceof CrossoverGIUniform) return true;
-        else return false;
+        if (crossover instanceof CrossoverGIUniform) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     /** This method will allow the crossover operator to be initialized depending on the

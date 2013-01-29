@@ -54,9 +54,13 @@ public class PagePrinter
       if( ( old.width > old.height && h > w ) ||
           ( old.width < old.height && h < w ) ) {
         rec_turn = true;
-        if( old.width > h || old.height > w ) rec_fit_in = true;
+        if( old.width > h || old.height > w ) {
+                  rec_fit_in = true;
+              }
       }
-      else rec_fit_in = true;
+      else {
+            rec_fit_in = true;
+        }
 
       JLabel[] text = new JLabel[4];
       text[0] = new JLabel("The component which should be printed");
@@ -108,8 +112,9 @@ public class PagePrinter
                                     JOptionPane.QUESTION_MESSAGE,
                                     null, null, null );
 
-      if( choice == JOptionPane.CANCEL_OPTION || choice == JOptionPane.CLOSED_OPTION )
-        return Printable.NO_SUCH_PAGE;
+      if( choice == JOptionPane.CANCEL_OPTION || choice == JOptionPane.CLOSED_OPTION ) {
+            return Printable.NO_SUCH_PAGE;
+        }
 
       else if( choice == JOptionPane.OK_OPTION ){
 
@@ -142,11 +147,15 @@ public class PagePrinter
             c.paint( g );
             c.setSize( old );
           }
-          else c.paint( g );
+          else {
+                c.paint( g );
+            }
         }
       }
     }
-    else  c.paint( g );
+    else {
+          c.paint( g );
+      }
     return Printable.PAGE_EXISTS;
   }
 }

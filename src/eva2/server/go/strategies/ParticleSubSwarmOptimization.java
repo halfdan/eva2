@@ -204,7 +204,9 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
     		AbstractEAIndividual indy = pop.getEAIndividual(i);
 //    		Integer tmp = (Integer)indy.getData("particleIndex"); // CPU-Time Hotspot
 //    		if (index.equals(tmp)) return indy;
-    		if (index.intValue() == indy.getIndividualIndex()) return indy;
+    		if (index.intValue() == indy.getIndividualIndex()) {
+                return indy;
+            }
     	}
     	return null;
     }
@@ -244,7 +246,9 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
 	 * on the other side: if a particle leaves the swarm its knowledge leaves the swarm as well.
 	 */
 	protected void updateMBestIndividual(){
-		if (getPopulation().size() == 0) return;
+		if (getPopulation().size() == 0) {
+                return;
+            }
 		// First: set m_BestIndividual to any personal best position in the swarm  (-> bestindypbest).
 		// This is necessary because the current m_BestIndividual my came from 
 		// an individual that left the swarm and would never be replaced if it 
@@ -277,7 +281,9 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
 			Vector<Double> fitArchive_new = new Vector<Double>();
 			int end = fitArchive_old.size();
 			int start = 0;
-			if (end >= fitnessArchiveSize) start = end-fitnessArchiveSize;
+			if (end >= fitnessArchiveSize) {
+                        start = end-fitnessArchiveSize;
+                    }
 			
 			for (int j = start; j < end; ++j){
 				fitArchive_new.add(fitArchive_old.get(j));
@@ -342,8 +348,12 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
 //		ESIndividualDoubleData max = (ESIndividualDoubleData)template.clone();
 
 		double[][] range = null;
-		if (template instanceof ESIndividualDoubleData) range = ((ESIndividualDoubleData)template).getDoubleRange();
-		else range = ((InterfaceDataTypeDouble)template).getDoubleRange();
+		if (template instanceof ESIndividualDoubleData) {
+                range = ((ESIndividualDoubleData)template).getDoubleRange();
+            }
+		else {
+                range = ((InterfaceDataTypeDouble)template).getDoubleRange();
+            }
 		double[] minValInDim = new double[range.length]; 
 		double[] maxValInDim = new double[range.length];
 		for (int i = 0; i < minValInDim.length; ++i){
@@ -383,7 +393,9 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
 	 * @return 
 	 */
 	protected static double mean(Vector<Double> vec,int range){
-		if (vec.size() < range) range = vec.size();
+		if (vec.size() < range) {
+                range = vec.size();
+            }
 		double sum = 0;
 		for (int i = vec.size()-range; i < vec.size(); ++i){
 			sum += vec.get(i).doubleValue();
@@ -399,7 +411,9 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
 	 */
 	public static double stdDev(Vector<Double> vec, int range){
 		double ssum = 0;
-		if (vec.size()-range < 0 || range < 2) return Double.POSITIVE_INFINITY; // not enough values, dont risk early convergence
+		if (vec.size()-range < 0 || range < 2) {
+                return Double.POSITIVE_INFINITY;
+            } // not enough values, dont risk early convergence
 		double mean = mean(vec,range);
 		for (int i = vec.size()-range; i < vec.size(); ++i){
 			ssum += Math.pow(vec.get(i).doubleValue()-mean,2);
@@ -442,7 +456,9 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
 	 * @param particleIndices set of indices that should be used for the added particles, if null new indices are created
 	 */
 	private void addNewParticlesToPopulation(int[] particleIndices) {
-		if (particleIndices == null) throw new RuntimeException("Error, unable to use null index array (ParticleSubSwarmOptimization.addNewParticlesToPOpulation)");
+		if (particleIndices == null) {
+                throw new RuntimeException("Error, unable to use null index array (ParticleSubSwarmOptimization.addNewParticlesToPOpulation)");
+            }
 
 		Population tmp = new Population();
 		tmp.setTargetSize(particleIndices.length);
@@ -572,7 +588,9 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
 	 * @return the maximal euclidean distance between the swarms gbest and any other particle in the swarm.
 	 */
 	public double getSwarmRadius(){
-		if (getPopulation().size() == 0 || getPopulation().size() == 1) return 0;
+		if (getPopulation().size() == 0 || getPopulation().size() == 1) {
+                return 0;
+            }
 		
 		double max = Double.NEGATIVE_INFINITY;
 		//PhenotypeMetric metric = new PhenotypeMetric();
@@ -617,7 +635,9 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
 		for (int i = 0; i < pop.size(); ++i){
 			AbstractEAIndividual indy = pop.getEAIndividual(i);
 			AbstractEAIndividual neigbor = getMemberNeighbor(indy);		
-			if (neigbor == null) return -1;
+			if (neigbor == null) {
+                        return -1;
+                    }
 			sum += distance(indy, neigbor);
 		}
 		return sum/(double)pop.size();
@@ -709,10 +729,14 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
 					mindist = dist;
 					index = i;
 				}
-			} else found=true;
+			} else {
+                        found=true;
+                    }
 		}
 		
-		if (!found) System.err.println("getNeighbor: particle searching for neighbor is not part of the swarm");
+		if (!found) {
+                System.err.println("getNeighbor: particle searching for neighbor is not part of the swarm");
+            }
 		return getPopulation().getEAIndividual(index);
 	}
 	

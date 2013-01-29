@@ -43,8 +43,12 @@ public class GAGrayCodingInteger implements InterfaceGAIntegerCoding,java.io.Ser
             for (int j = 1; j <= i; j++) {
                 tmpB ^= refBitSet.get(locus[0] + j);
             }
-            if (tmpB) tmpBitSet.set(i);
-            else tmpBitSet.clear(i);
+            if (tmpB) {
+                tmpBitSet.set(i);
+            }
+            else {
+                tmpBitSet.clear(i);
+            }
         }
         return this.m_HelpingHand.decodeValue(tmpBitSet, range, tmpLocus, correction);
     }
@@ -74,11 +78,19 @@ public class GAGrayCodingInteger implements InterfaceGAIntegerCoding,java.io.Ser
 //            if (tmpBitSet.get(i)^tmpBitSet.get(i-1)) refBitSet.set(locus[1] + i);
 //            else refBitSet.clear(locus[1] + i);
 //        }
-        if (tmpBitSet.get(0)) refBitSet.set(locus[0]);
-        else refBitSet.clear(locus[0]);
+        if (tmpBitSet.get(0)) {
+            refBitSet.set(locus[0]);
+        }
+        else {
+            refBitSet.clear(locus[0]);
+        }
         for (int i = 1; i < locus[1]; i++) {
-            if (tmpBitSet.get(i)^tmpBitSet.get(i-1)) refBitSet.set(locus[0] + i);
-            else refBitSet.clear(locus[0] + i);
+            if (tmpBitSet.get(i)^tmpBitSet.get(i-1)) {
+                refBitSet.set(locus[0] + i);
+            }
+            else {
+                refBitSet.clear(locus[0] + i);
+            }
         }
     }
     
@@ -106,8 +118,12 @@ public class GAGrayCodingInteger implements InterfaceGAIntegerCoding,java.io.Ser
         String  output = "{";
 
         for (int i = 0; i < length; i++) {
-            if (b.get(i)) output += "1";
-            else output += "0";
+            if (b.get(i)) {
+                output += "1";
+            }
+            else {
+                output += "0";
+            }
         }
         output += "}\n";
         return output;

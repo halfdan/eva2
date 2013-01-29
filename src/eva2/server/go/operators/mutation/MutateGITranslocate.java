@@ -52,10 +52,14 @@ public class MutateGITranslocate implements InterfaceMutation, java.io.Serializa
     public boolean equals(Object mutator) {
         if (mutator instanceof MutateGITranslocate) {
             MutateGITranslocate mut = (MutateGITranslocate)mutator;
-            if (this.m_MaxLengthOfTranslocate != mut.m_MaxLengthOfTranslocate) return false;
+            if (this.m_MaxLengthOfTranslocate != mut.m_MaxLengthOfTranslocate) {
+                return false;
+            }
             return true;
         }
-        else return false;
+        else {
+            return false;
+        }
     }
 
     /** This method allows you to init the mutation operator
@@ -77,7 +81,9 @@ public class MutateGITranslocate implements InterfaceMutation, java.io.Serializa
     		int[]       x = ((InterfaceGIIndividual)individual).getIGenotype();
     		int         from, to, length;
     		length = RNG.randomInt(1, this.m_MaxLengthOfTranslocate);
-    		if (x.length < length+2) return;
+    		if (x.length < length+2) {
+                return;
+            }
     		from = RNG.randomInt(0, x.length - 1 - length);
     		if (m_maxTransLocDistance<=0) {
     			to = RNG.randomInt(0, x.length - 1 - length);
@@ -96,8 +102,12 @@ public class MutateGITranslocate implements InterfaceMutation, java.io.Serializa
                 insert[i] = x[i+from];
             }
     		for (int i = 0; i < without.length; i++) {
-    			if (i < from) without[i] = x[i];
-    			else without[i] = x[i+length];
+    			if (i < from) {
+                        without[i] = x[i];
+                    }
+    			else {
+                        without[i] = x[i+length];
+                    }
     		}
     		for (int i = 0; i < to; i++) {
     			tmp[i] = without[i];

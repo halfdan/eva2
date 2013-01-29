@@ -373,7 +373,9 @@ public class MOCCOViewer extends JPanel implements InterfaceRefSolutionListener,
     public void plot1DFitnessPlot() {
         double xmin = 0, ymin = Double.POSITIVE_INFINITY, xmax = Double.NEGATIVE_INFINITY, ymax = Double.NEGATIVE_INFINITY, fitness;
         Population[] pops = this.m_MOCCO.m_State.m_PopulationHistory;
-        if ((pops == null) || (pops.length < 1)) return;
+        if ((pops == null) || (pops.length < 1)) {
+            return;
+        }
         GraphPointSet           mySet;
         DPoint                  myPoint;
         DPointIcon              icon;
@@ -390,13 +392,19 @@ public class MOCCOViewer extends JPanel implements InterfaceRefSolutionListener,
             ((InterfaceDPointWithContent)icon).setEAIndividual(pops[i].getBestEAIndividual());
             myPoint.setIcon(icon);
             mySet.addDPoint(myPoint);
-            if (fitness < ymin) ymin = fitness;
-            if (fitness > ymax) ymax = fitness;
+            if (fitness < ymin) {
+                ymin = fitness;
+            }
+            if (fitness > ymax) {
+                ymax = fitness;
+            }
         }
         mySet = new GraphPointSet(2, this.m_1DView);
         mySet.setConnectedMode(false);
         double yrange = ymax - ymin;
-        if (yrange < 0.00001) yrange = 0.00001;
+        if (yrange < 0.00001) {
+            yrange = 0.00001;
+        }
         mySet.addDPoint(0, ymin - 0.1 * yrange);
         mySet.addDPoint(pops.length+2, ymax + 0.1 * yrange);
         this.m_ViewPanel.validate();
@@ -413,13 +421,19 @@ public class MOCCOViewer extends JPanel implements InterfaceRefSolutionListener,
      */
     @Override
     public void individualSelected(AbstractEAIndividual indy) {
-        if (indy.isMarked()) indy.unmark();
+        if (indy.isMarked()) {
+            indy.unmark();
+        }
         else {
-            if (this.m_SelectUniqueSolution) this.m_MOCCO.m_State.m_ParetoFront.unmarkAllIndividuals();
+            if (this.m_SelectUniqueSolution) {
+                this.m_MOCCO.m_State.m_ParetoFront.unmarkAllIndividuals();
+            }
             indy.mark();
         }
         this.m_View.updateView();
-        if (this.m_RefSolutionListener != null) this.m_RefSolutionListener.individualSelected(indy);
+        if (this.m_RefSolutionListener != null) {
+            this.m_RefSolutionListener.individualSelected(indy);
+        }
     }
 
     /** This method allows to toggle unique selection mode
@@ -468,7 +482,9 @@ public class MOCCOViewer extends JPanel implements InterfaceRefSolutionListener,
     @Override
     public void refPointGiven(double[] point) {
         this.m_ReferencePoint = point;
-        if (this.m_RefPointListener != null) this.m_RefPointListener.refPointGiven(point);
+        if (this.m_RefPointListener != null) {
+            this.m_RefPointListener.refPointGiven(point);
+        }
         this.m_View.updateView();
     }
 

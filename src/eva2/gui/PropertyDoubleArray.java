@@ -29,15 +29,21 @@ public class PropertyDoubleArray implements java.io.Serializable {
      * @param d
      */
     public PropertyDoubleArray(int rows, int cols, double ... d) {
-    	if (rows>0 && cols>0) this.m_DoubleArray = new double[rows][cols];
-    	else this.m_DoubleArray=null;
+    	if (rows>0 && cols>0) {
+            this.m_DoubleArray = new double[rows][cols];
+        }
+    	else {
+            this.m_DoubleArray=null;
+        }
     	this.m_numCols=cols;
     	int index=0;
     	for (int i=0; i<rows; i++) {
     		for (int j=0; j<cols; j++) {
     			m_DoubleArray[i][j]=d[index];
     			index++;
-    			if (index>=d.length) index=0;
+    			if (index>=d.length) {
+                        index=0;
+                    }
     		}
     	}
 	}
@@ -63,8 +69,12 @@ public class PropertyDoubleArray implements java.io.Serializable {
      */
     public void setDoubleArray(double[][] d) {
     	this.m_DoubleArray = d;
-    	if (d.length>0) m_numCols=d[0].length;
-    	else m_numCols=1;
+    	if (d.length>0) {
+            m_numCols=d[0].length;
+        }
+    	else {
+            m_numCols=1;
+        }
     }
     
     /** 
@@ -109,8 +119,12 @@ public class PropertyDoubleArray implements java.io.Serializable {
 			double[][] newDD = new double[k][m_numCols];
 			for (int i=0; i<k; i++) {
 				for (int j=0; j<m_numCols; j++) {
-					if (i<m_DoubleArray.length) newDD[i][j]=m_DoubleArray[i][j];
-					else newDD[i][j]=m_DoubleArray[m_DoubleArray.length-1][j];
+					if (i<m_DoubleArray.length) {
+                                        newDD[i][j]=m_DoubleArray[i][j];
+                                    }
+					else {
+                                        newDD[i][j]=m_DoubleArray[m_DoubleArray.length-1][j];
+                                    }
 				}
 			}
 			setDoubleArray(newDD);
@@ -118,11 +132,15 @@ public class PropertyDoubleArray implements java.io.Serializable {
 	}
 	
 	public void deleteRow(int k) {
-		if (k<0 || k>=getNumRows()) throw new IllegalArgumentException("Invalid index to deleteRow: " + k + " is not a valid row.");
+		if (k<0 || k>=getNumRows()) {
+                throw new IllegalArgumentException("Invalid index to deleteRow: " + k + " is not a valid row.");
+            }
 		double[][] newDD = new double[getNumRows()-1][getNumCols()];
 		int inc=0;
 		for (int i = 0; i < newDD.length; i++) {
-			if (i==k) inc=1;
+			if (i==k) {
+                        inc=1;
+                    }
 			for (int j=0; j<getNumCols(); j++) {
                         newDD[i][j] = m_DoubleArray[i+inc][j];
                     }
@@ -137,7 +155,9 @@ public class PropertyDoubleArray implements java.io.Serializable {
 	 * @param k
 	 */
 	public void addRowCopy(int k) {
-		if (k<0 || k>= getNumRows()) k=getNumRows()-1;
+		if (k<0 || k>= getNumRows()) {
+                k=getNumRows()-1;
+            }
 		double[][] newDD = new double[getNumRows()+1][getNumCols()];
 
 		for (int i = 0; i < getNumRows(); i++) {
@@ -145,12 +165,14 @@ public class PropertyDoubleArray implements java.io.Serializable {
                     newDD[i][j] = m_DoubleArray[i][j];
                 }
             }
-		if (k>=0) for (int j=0; j<getNumCols(); j++) {
-                newDD[newDD.length-1][j] = newDD[k][j];
-            }
-		else for (int j=0; j<getNumCols(); j++) {
-                newDD[newDD.length-1][j] = 1.;
-            } // if the array was empty
+		if (k>=0) {
+                for (int j=0; j<getNumCols(); j++) {
+      newDD[newDD.length-1][j] = newDD[k][j];
+  }         }
+		else {
+                for (int j=0; j<getNumCols(); j++) {
+           newDD[newDD.length-1][j] = 1.;
+       }    } // if the array was empty
 		setDoubleArray(newDD);
 	}
 	
@@ -164,9 +186,10 @@ public class PropertyDoubleArray implements java.io.Serializable {
 			for (int i = 0; i < getNumRows(); i++) {
 				colSum += m_DoubleArray[i][j];
 			}
-			if (colSum!=0) for (int i = 0; i < getNumRows(); i++) {
-				m_DoubleArray[i][j]/=colSum;
-			}
+			if (colSum!=0) {
+                        for (int i = 0; i < getNumRows(); i++) {
+                 m_DoubleArray[i][j]/=colSum;
+         }          }
 		}
 	}
 

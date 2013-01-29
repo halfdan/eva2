@@ -67,8 +67,9 @@ public class ThreadWrapper extends ArrayList {
   public synchronized boolean isAlive() {
     for (int i = 0; i < m_ThreadContainer.size(); i++) {
       boolean alive = ((Thread) m_ThreadContainer.get(i)).isAlive();
-      if (alive == true)
-        return true;
+      if (alive == true) {
+            return true;
+        }
     }
     return false;
   }

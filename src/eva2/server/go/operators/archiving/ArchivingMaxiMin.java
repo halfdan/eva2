@@ -46,7 +46,9 @@ public class ArchivingMaxiMin implements InterfaceArchiving, java.io.Serializabl
     public void addElementsToArchive(Population pop) {
         Population      archive;
         double[]        tmpD;
-        if (pop.getArchive() == null) pop.SetArchive(new Population());
+        if (pop.getArchive() == null) {
+            pop.SetArchive(new Population());
+        }
 
         // First merge the current population and the archive
         Population tmpPop = new Population();

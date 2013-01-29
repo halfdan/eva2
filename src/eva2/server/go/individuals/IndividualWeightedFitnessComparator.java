@@ -36,12 +36,18 @@ public class IndividualWeightedFitnessComparator implements Comparator<Object>, 
 	public boolean equals(Object obj) {
 		if (obj instanceof IndividualWeightedFitnessComparator) {
 			IndividualWeightedFitnessComparator o = (IndividualWeightedFitnessComparator)obj;
-			if (fitWeights==null && (o.fitWeights==null)) return true;
-			if (fitWeights==null || o.fitWeights==null) return false;
+			if (fitWeights==null && (o.fitWeights==null)) {
+                        return true;
+                    }
+			if (fitWeights==null || o.fitWeights==null) {
+                        return false;
+                    }
 			// now both are non null:
 			if (fitWeights.length==o.fitWeights.length) {
 				for (int i=0; i<fitWeights.length; i++) {
-					if (fitWeights[i]!=o.fitWeights[i]) return false;
+					if (fitWeights[i]!=o.fitWeights[i]) {
+                                        return false;
+                                    }
 				}
 				return true;
 			}
@@ -55,7 +61,9 @@ public class IndividualWeightedFitnessComparator implements Comparator<Object>, 
 	 */
 	@Override
 	public int hashCode() {
-		if (fitWeights==null) return super.hashCode();
+		if (fitWeights==null) {
+                return super.hashCode();
+            }
 		int code=0;
 		for (int i=0; i<fitWeights.length; i++) {
 			code+=(int)(fitWeights[i]*10000)%(10000*(i+1));
@@ -75,9 +83,15 @@ public class IndividualWeightedFitnessComparator implements Comparator<Object>, 
 		double score1 = calcScore(f1);
 		double score2 = calcScore(f2);
 		
-		if (score1 < score2) return  -1;
-		else if (score1 > score2) return 1;
-		else return 0;
+		if (score1 < score2) {
+                return  -1;
+            }
+		else if (score1 > score2) {
+                return 1;
+            }
+		else {
+                return 0;
+            }
 	}
 
 	/**
@@ -86,10 +100,16 @@ public class IndividualWeightedFitnessComparator implements Comparator<Object>, 
 	 * @return
 	 */
 	private double calcScore(double[] f) {
-		if (f==null || fitWeights==null) throw new RuntimeException("Error, missing information in " + this.getClass());
+		if (f==null || fitWeights==null) {
+                throw new RuntimeException("Error, missing information in " + this.getClass());
+            }
 		if (f.length!=fitWeights.length) {
-			if (f.length<fitWeights.length) EVAERROR.errorMsgOnce("Warning, fitness vector has less dimensions than the weights... some weights are ignored, in " + this.getClass());
-			else EVAERROR.errorMsgOnce("Warning, fitness vector has more dimensions than the weights... some fitness values are ignored, in " + this.getClass());
+			if (f.length<fitWeights.length) {
+                        EVAERROR.errorMsgOnce("Warning, fitness vector has less dimensions than the weights... some weights are ignored, in " + this.getClass());
+                    }
+			else {
+                        EVAERROR.errorMsgOnce("Warning, fitness vector has more dimensions than the weights... some fitness values are ignored, in " + this.getClass());
+                    }
 		}
 		double s = 0;
 		for (int i=0; i<Math.min(f.length, fitWeights.length); i++) {

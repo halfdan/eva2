@@ -46,7 +46,9 @@ public class IndividualDataMetric implements InterfaceDistanceMetric, Serializab
     
     @Override
 	public double distance(AbstractEAIndividual indy1, AbstractEAIndividual indy2) {
-		if (dataKey==null) throw new RuntimeException("Error, no data key defined in " + this.getClass().getName() + "::distance()");
+		if (dataKey==null) {
+                throw new RuntimeException("Error, no data key defined in " + this.getClass().getName() + "::distance()");
+            }
 		else {
 			Object data1 = indy1.getData(dataKey);
 			Object data2 = indy2.getData(dataKey);

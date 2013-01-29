@@ -46,7 +46,9 @@ public class CrossoverGINPoint implements InterfaceCrossover, java.io.Serializab
         for (int i = 0; i < partners.size(); i++) {
             result[i+1] = (AbstractEAIndividual) ((AbstractEAIndividual)partners.get(i)).clone();
         }
-        if (partners.size() == 0) return result;
+        if (partners.size() == 0) {
+            return result;
+        }
         //for (int i = 0; i < result.length; i++) System.out.println("Before Crossover: " +result[i].getSolutionRepresentationFor());
         if ((indy1 instanceof InterfaceGIIndividual) && (partners.get(0) instanceof InterfaceGIIndividual)) {
             int         length          =  ((InterfaceGIIndividual)indy1).getGenotypeLength();
@@ -69,7 +71,9 @@ public class CrossoverGINPoint implements InterfaceCrossover, java.io.Serializab
             }
             for (int i = 0; i < length; i++) {
                 for (int j = 0; j < this.m_NumberOfCrossovers; j++) {
-                    if (i == crossoverPoints[j]) mixer++;
+                    if (i == crossoverPoints[j]) {
+                        mixer++;
+                    }
                 }
                 for (int j = 0; j < tmpInts[0].length; j++) {
                     if ((tmpInts[0][(j + mixer) % tmpInts[0].length].length > i) &&
@@ -99,9 +103,13 @@ public class CrossoverGINPoint implements InterfaceCrossover, java.io.Serializab
     public boolean equals(Object crossover) {
         if (crossover instanceof CrossoverGINPoint) {
             CrossoverGINPoint cross = (CrossoverGINPoint)crossover;
-            if (this.m_NumberOfCrossovers != cross.m_NumberOfCrossovers) return false;
+            if (this.m_NumberOfCrossovers != cross.m_NumberOfCrossovers) {
+                return false;
+            }
             return true;
-        } else return false;
+        } else {
+            return false;
+        }
     }
 
     /** This method will allow the crossover operator to be initialized depending on the
@@ -143,7 +151,9 @@ public class CrossoverGINPoint implements InterfaceCrossover, java.io.Serializab
      * @param crossovers   The number of crossovers.
      */
     public void setNumberOfCrossovers(int crossovers) {
-        if (crossovers < 0) crossovers = 0;
+        if (crossovers < 0) {
+            crossovers = 0;
+        }
         this.m_NumberOfCrossovers = crossovers;
     }
     public int getNumberOfCrossovers() {

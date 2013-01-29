@@ -74,7 +74,9 @@ public abstract class AbstractSelProb implements InterfaceSelectionProbability, 
             tmpList = new ArrayList();
             for (int j = 0; j < inputs.length; j++) {
                 obj = tmpIndy.getData(inputs[j]);
-                if (obj==null) EVAERROR.errorMsgOnce("Error: could not get data by key " + inputs[j] + " from individual in AbstractSelProb");
+                if (obj==null) {
+                    EVAERROR.errorMsgOnce("Error: could not get data by key " + inputs[j] + " from individual in AbstractSelProb");
+                }
                 if (obj instanceof double[]) {
                     for (int m = 0; m < ((double[])obj).length; m++) {
                         tmpList.add(new Double(((double[])obj)[m]));
@@ -130,10 +132,16 @@ public abstract class AbstractSelProb implements InterfaceSelectionProbability, 
             min     = Double.MAX_VALUE;
             max     = Double.MIN_VALUE;
             for (int j = 0; j < result[i].length; j++) {
-                if (Double.isInfinite(result[i][j])) result[i][j] = Double.NaN;
+                if (Double.isInfinite(result[i][j])) {
+                    result[i][j] = Double.NaN;
+                }
                 if (!Double.isNaN(result[i][j])) {
-                    if (result[i][j] < min) min = result[i][j];
-                    if (result[i][j] > max) max = result[i][j];
+                    if (result[i][j] < min) {
+                        min = result[i][j];
+                    }
+                    if (result[i][j] > max) {
+                        max = result[i][j];
+                    }
                 }
             }
             for (int j = 0; j < result[i].length; j++) {

@@ -49,7 +49,9 @@ public class RemoveSurplusIndividualsSMetric implements InterfaceRemoveSurplusIn
             // now find the individual with the smallest hypervolume
             indexSmallHyperCube = 0;
             for (int i = 1; i < archive.size(); i++) {
-                if (space[i] < space[indexSmallHyperCube]) indexSmallHyperCube = i;
+                if (space[i] < space[indexSmallHyperCube]) {
+                    indexSmallHyperCube = i;
+                }
                 else {
                     // if they are equal give them a fair chance to exchange between them
                     if ((space[i] == space[indexSmallHyperCube]) && (RNG.flipCoin(0.5))) {
@@ -167,12 +169,13 @@ public class RemoveSurplusIndividualsSMetric implements InterfaceRemoveSurplusIn
                 double min = result[ global[ sort[ minIndex ] ]];
                 for (int f = 1; f < counter - 1; f++)
                 {
-                    if (!assigned[ sort[ f ] ])
+                    if (!assigned[ sort[ f ] ]) {
                         if (result[global[ sort[ f ] ]] < min)
                         {
                             min = result[global[ sort[ f ] ]];
                             minIndex = f;
                         }
+                    }
                 }
                 assigned[ sort[ minIndex ] ] = true;
                 result[ global[ sort[ minIndex ] ]]=e;

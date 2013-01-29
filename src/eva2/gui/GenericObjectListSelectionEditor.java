@@ -42,7 +42,9 @@ public class GenericObjectListSelectionEditor extends AbstractListSelectionEdito
             this.objList = (PropertySelectableList) o;
             objList.addPropertyChangeListener(this);
             return true;
-        } else return false;
+        } else {
+                return false;
+            }
 	}
 
     /** Retruns the current object.

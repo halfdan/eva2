@@ -76,7 +76,9 @@ public class AbstractEAIndividualComparator implements Comparator<Object>, Seria
 		if (other instanceof AbstractEAIndividualComparator) {
 			AbstractEAIndividualComparator o = (AbstractEAIndividualComparator)other;
 			if ((indyDataKey==o.indyDataKey) || (indyDataKey!=null && (indyDataKey.equals(o.indyDataKey)))) {
-				if ((fitCriterion == o.fitCriterion) && (preferFeasible == o.preferFeasible)) return true;
+				if ((fitCriterion == o.fitCriterion) && (preferFeasible == o.preferFeasible)) {
+                                return true;
+                            }
 			}
 		}
 		return false;
@@ -127,32 +129,48 @@ public class AbstractEAIndividualComparator implements Comparator<Object>, Seria
 		
 		if (preferFeasible) { // check constraint violation first?
 			int constrViolComp = ((AbstractEAIndividual) o1).compareConstraintViolation((AbstractEAIndividual) o2);
-			if (constrViolComp>0) return -1;
-			else if (constrViolComp < 0) return 1;
+			if (constrViolComp>0) {
+                        return -1;
+                    }
+			else if (constrViolComp < 0) {
+                        return 1;
+                    }
 			// otherwise both do not violate, so regard fitness
 		}
 		if (indyDataKey != null && (indyDataKey.length()>0)) { // check specific key
 			double[] fit1 = (double[])((AbstractEAIndividual)o1).getData(indyDataKey);
 			double[] fit2 = (double[])((AbstractEAIndividual)o2).getData(indyDataKey);
-			if ((fit1==null) || (fit2==null)) throw new RuntimeException("Unknown individual data key " + indyDataKey + ", unable to compare individuals ("+this.getClass().getSimpleName()+")");
+			if ((fit1==null) || (fit2==null)) {
+                        throw new RuntimeException("Unknown individual data key " + indyDataKey + ", unable to compare individuals ("+this.getClass().getSimpleName()+")");
+                    }
 			if (fitCriterion < 0) {
 				o1domO2 = AbstractEAIndividual.isDominatingFitness(fit1, fit2);
 				o2domO1 = AbstractEAIndividual.isDominatingFitness(fit2, fit1);
 			} else {
-				if (fit1[fitCriterion] == fit2[fitCriterion]) return 0;
-				else return (fit1[fitCriterion] < fit2[fitCriterion]) ? -1 : 1;
+				if (fit1[fitCriterion] == fit2[fitCriterion]) {
+                                return 0;
+                            }
+				else {
+                                return (fit1[fitCriterion] < fit2[fitCriterion]) ? -1 : 1;
+                            }
 			}
 		} else {
 			if (fitCriterion < 0) {
 				o1domO2 = ((AbstractEAIndividual) o1).isDominating((AbstractEAIndividual) o2);
 				o2domO1 = ((AbstractEAIndividual) o2).isDominating((AbstractEAIndividual) o1);
 			} else {
-				if (((AbstractEAIndividual) o1).getFitness()[fitCriterion] == ((AbstractEAIndividual) o2).getFitness()[fitCriterion]) return 0;
+				if (((AbstractEAIndividual) o1).getFitness()[fitCriterion] == ((AbstractEAIndividual) o2).getFitness()[fitCriterion]) {
+                                return 0;
+                            }
 				return (((AbstractEAIndividual) o1).getFitness()[fitCriterion] < ((AbstractEAIndividual) o2).getFitness()[fitCriterion]) ? -1 : 1;
 			}
 		}
-		if (o1domO2 ^ o2domO1) return (o1domO2 ? -1 : 1); // they are comparable
-		else return 0; // they are not comparable
+		if (o1domO2 ^ o2domO1) {
+                return (o1domO2 ? -1 : 1);
+            } // they are comparable
+		else {
+                return 0;
+            } // they are not comparable
 	}
 
 	public String getIndyDataKey() {

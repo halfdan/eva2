@@ -63,7 +63,9 @@ public class ReflectPackage {
 				}
 				dir = path + "/" + pckgname.replace(".","/");
 
-				if (TRACE) System.out.println(".. opening " + path);
+				if (TRACE) {
+                                System.out.println(".. opening " + path);
+                            }
 
 				directory = new File(dir);
 
@@ -78,7 +80,9 @@ public class ReflectPackage {
 				// Get the list of the files contained in the package
 				return getClassesFromDirFltr(set, directory, pckgname, includeSubs, reqSuperCls);
 			} else {
-				if (TRACE) System.err.println(directory.getPath() + " doesnt exist in " + path + ", dir was " + dir);
+				if (TRACE) {
+                                System.err.println(directory.getPath() + " doesnt exist in " + path + ", dir was " + dir);
+                            }
 				return 0;
 			}
 		} catch(ClassNotFoundException e) {
@@ -136,7 +140,9 @@ public class ReflectPackage {
 	}
 	
 	private static int addClass(HashSet<Class> set, Class cls) {
-		if (TRACE) System.out.println("adding class " + cls.getName());
+		if (TRACE) {
+                System.out.println("adding class " + cls.getName());
+            }
 		if (set.contains(cls)) {
 			System.err.println("warning, Class " + cls.getName() + " not added twice!");
 			return 0;
@@ -150,7 +156,9 @@ public class ReflectPackage {
 		ArrayList<Class> assClasses = new ArrayList<Class>();
 		for (int i=0; i<classes.size(); i++) {
 			if (reqSuperCls.isAssignableFrom(classes.get(i))) {
-				if (TRACE) System.out.println(" taking over "+classes.get(i));
+				if (TRACE) {
+                                System.out.println(" taking over "+classes.get(i));
+                            }
 				assClasses.add(classes.get(i));
 			}
 		}
@@ -169,7 +177,9 @@ public class ReflectPackage {
 		int cntAdded = 0;
 		
 		packageName = packageName.replaceAll("\\." , "/");
-		if (TRACE) System.out.println("Jar " + jarName + " looking for " + packageName);
+		if (TRACE) {
+                System.out.println("Jar " + jarName + " looking for " + packageName);
+            }
 		try{
 			JarInputStream jarFile = new JarInputStream
 			(new FileInputStream (jarName));
@@ -183,8 +193,12 @@ public class ReflectPackage {
 //					subpackages are hit here as well!
 					if (!includeSubs) { // check if the class belongs to a subpackage
 						int lastDash = jarEntryName.lastIndexOf('/');
-						if (lastDash > packageName.length()+1) isInSubPackage = true;
-						else isInSubPackage = false;
+						if (lastDash > packageName.length()+1) {
+                                                isInSubPackage = true;
+                                            }
+						else {
+                                                isInSubPackage = false;
+                                            }
 					}
 					if (includeSubs || !isInSubPackage) { // take the right ones
 						String clsName = jarEntryName.replace("/", ".");
@@ -195,7 +209,9 @@ public class ReflectPackage {
 								if (reqSuperCls.isAssignableFrom(cls)) {
 									cntAdded += addClass(set, cls);
 								}
-							} else cntAdded += addClass(set, cls);
+							} else {
+                                                        cntAdded += addClass(set, cls);
+                                                    }
 						} catch(Exception e) {
 							System.err.println("ReflectPackage: Couldnt get Class from jar for "+clsName+": "+e.getMessage());
 						} catch(Error e) {
@@ -211,7 +227,9 @@ public class ReflectPackage {
 			if (missedJarsOnClassPath == 0) {
 				System.err.println("Couldnt open jar from class path: " + e.getMessage());
 				System.err.println("Dirty class path?");
-			} else if (missedJarsOnClassPath == 2) System.err.println("Couldnt open jar from class path more than once...");
+			} else if (missedJarsOnClassPath == 2) {
+                        System.err.println("Couldnt open jar from class path more than once...");
+                    }
 			//e.printStackTrace();
 		}
 		return cntAdded;
@@ -249,16 +267,24 @@ public class ReflectPackage {
 				} catch (Exception e) {
 					System.err.println(e.getMessage());
 				}
-			} else dynCP = getClassPathElements();
+			} else {
+                        dynCP = getClassPathElements();
+                    }
 		}
 
-		if (TRACE) System.out.println("classpath is " + classPath);
+		if (TRACE) {
+                System.out.println("classpath is " + classPath);
+            }
 		for (int i=0; i<dynCP.length; i++) {
-			if (TRACE) System.out.println("reading element "+dynCP[i]);
+			if (TRACE) {
+                        System.out.println("reading element "+dynCP[i]);
+                    }
 			if (dynCP[i].endsWith(".jar")) {
 				getClassesFromJarFltr(set, dynCP[i], pckg, includeSubs, reqSuperCls);
 			} else {
-				if (TRACE) System.out.println("reading from files: "+dynCP[i]+" "+pckg);
+				if (TRACE) {
+                                System.out.println("reading from files: "+dynCP[i]+" "+pckg);
+                            }
 				getClassesFromFilesFltr(set, dynCP[i], pckg, includeSubs, reqSuperCls);
 			}
 		}
@@ -280,7 +306,9 @@ public class ReflectPackage {
 	public static String getResourcePathFromCP(String res) {
 		String[] cpEntries = getClassPathElements();
 		URL url = ClassLoader.getSystemResource(res);
-		if (TRACE) System.out.println(res + ((url == null) ? " not" : " was") + " found by classloader.");
+		if (TRACE) {
+                System.out.println(res + ((url == null) ? " not" : " was") + " found by classloader.");
+            }
 		if (url != null) {
 			File f;
 			try {
@@ -293,15 +321,25 @@ public class ReflectPackage {
 		
 		File f;
 		String fNameSep;
-		if (res.startsWith(System.getProperty("file.separator"))) fNameSep = res;
-		else fNameSep = System.getProperty("file.separator")+res;
+		if (res.startsWith(System.getProperty("file.separator"))) {
+                fNameSep = res;
+            }
+		else {
+                fNameSep = System.getProperty("file.separator")+res;
+            }
 
 		for (int i=0; i<cpEntries.length; i++) {
 			if (!cpEntries[i].endsWith(".jar")) { // its a fs directory (hopefully)
-				if (TRACE) System.out.println("reading element "+cpEntries[i]);
+				if (TRACE) {
+                                System.out.println("reading element "+cpEntries[i]);
+                            }
 				f = new File(cpEntries[i]+fNameSep);
-				if (TRACE) System.out.println(res + ((!f.exists()) ? " not" : " was") + " found in " + cpEntries[i]);
-				if (f.exists()) return f.getAbsolutePath();
+				if (TRACE) {
+                                System.out.println(res + ((!f.exists()) ? " not" : " was") + " found in " + cpEntries[i]);
+                            }
+				if (f.exists()) {
+                                return f.getAbsolutePath();
+                            }
 			}
 		}
 		return null;
@@ -315,21 +353,33 @@ public class ReflectPackage {
 	public static InputStream getResourceStreamFromCP(String res) {
 		
 		InputStream in = BasicResourceLoader.instance().getStreamFromResourceLocation(res);
-		if (TRACE) System.out.println(res + ((in == null) ? " not" : " was") + " found by classloader.");
-		if (in != null) return in;
+		if (TRACE) {
+                System.out.println(res + ((in == null) ? " not" : " was") + " found by classloader.");
+            }
+		if (in != null) {
+                return in;
+            }
 		
 		String[] cpEntries = getClassPathElements();
 		
 		File f;
 		String fNameSep;
-		if (res.startsWith(System.getProperty("file.separator"))) fNameSep = res;
-		else fNameSep = System.getProperty("file.separator")+res;
+		if (res.startsWith(System.getProperty("file.separator"))) {
+                fNameSep = res;
+            }
+		else {
+                fNameSep = System.getProperty("file.separator")+res;
+            }
 
 		for (int i=0; i<cpEntries.length; i++) {
 			if (!cpEntries[i].endsWith(".jar")) { // its a fs directory (hopefully)
-				if (TRACE) System.out.println("reading element "+cpEntries[i]);
+				if (TRACE) {
+                                System.out.println("reading element "+cpEntries[i]);
+                            }
 				f = new File(cpEntries[i]+fNameSep);
-				if (TRACE) System.out.println(res + ((!f.exists()) ? " not" : " was") + " found in " + cpEntries[i]);
+				if (TRACE) {
+                                System.out.println(res + ((!f.exists()) ? " not" : " was") + " found in " + cpEntries[i]);
+                            }
 				if (f.exists()) {
 					try {
 						return new FileInputStream(f);
@@ -375,7 +425,9 @@ public class ReflectPackage {
 	 * @return
 	 */
 	public static Class<?>[] getAssignableClassesInPackage(String pckg, Class reqSuperCls, boolean includeSubs, boolean bSort) {
-		if (TRACE) System.out.println("requesting classes assignable from " + reqSuperCls.getName());
+		if (TRACE) {
+                System.out.println("requesting classes assignable from " + reqSuperCls.getName());
+            }
 		return getClassesInPackageFltr(new HashSet<Class>(), pckg, includeSubs, bSort, reqSuperCls);
 	}
 	
@@ -506,14 +558,17 @@ public class ReflectPackage {
 	public static Object instantiateWithParams(String clsName, Object[] args, List<Pair<String,Object>> paramValuePairs) {
 		Object o = getInstance(clsName, args);
 		if (o!=null) {
-			if (paramValuePairs!=null) for (Pair<String, Object> nameVal : paramValuePairs) {
-				boolean succ = BeanInspector.setMem(o, nameVal.head, nameVal.tail);
-				if (!succ) {
-					System.err.println("Error, unable to set " + nameVal.head + " to " + nameVal.tail + " in object " + o);
-					return null;
-				}
-				else if (TRACE) System.out.println("Successfully set " + nameVal.head + " to " + nameVal.tail + " in object " + o);
-			}
+			if (paramValuePairs!=null) {
+                        for (Pair<String, Object> nameVal : paramValuePairs) {
+                            boolean succ = BeanInspector.setMem(o, nameVal.head, nameVal.tail);
+                            if (!succ) {
+                                System.err.println("Error, unable to set " + nameVal.head + " to " + nameVal.tail + " in object " + o);
+                                return null;
+                            } else if (TRACE) {
+                                System.out.println("Successfully set " + nameVal.head + " to " + nameVal.tail + " in object " + o);
+                            }
+                        }
+                    }
 			return o;		
 		} else {
 			System.err.println("Error in instantiateWithParams!");

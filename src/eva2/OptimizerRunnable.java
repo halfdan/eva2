@@ -83,7 +83,9 @@ public class OptimizerRunnable implements Runnable {
 		cntID++;        
 
 		proc = new Processor(stats, null, params);
-		if (proc.getStatistics() instanceof AbstractStatistics) ((AbstractStatistics)proc.getStatistics()).setSaveParams(false);
+		if (proc.getStatistics() instanceof AbstractStatistics) {
+                ((AbstractStatistics)proc.getStatistics()).setSaveParams(false);
+            }
 		doRestart = restart;
 	}
 	
@@ -112,20 +114,28 @@ public class OptimizerRunnable implements Runnable {
 	}
 	
 	public void setStats(InterfaceStatistics stats) {
-		if (proc.isOptRunning()) throw new RuntimeException("Error - cannot change statistics instance during optimization.");
+		if (proc.isOptRunning()) {
+                throw new RuntimeException("Error - cannot change statistics instance during optimization.");
+            }
 		InterfaceGOParameters params = proc.getGOParams(); 
 		proc = new Processor(stats, null, params);
-		if (proc.getStatistics() instanceof AbstractStatistics) ((AbstractStatistics)proc.getStatistics()).setSaveParams(false);
+		if (proc.getStatistics() instanceof AbstractStatistics) {
+                ((AbstractStatistics)proc.getStatistics()).setSaveParams(false);
+            }
 	}
 	
 	public void setTextListener(InterfaceTextListener lsnr) {
 		proc.getStatistics().removeTextListener(listener);
 		this.listener = lsnr;
-		if (listener != null) proc.getStatistics().addTextListener(listener);
+		if (listener != null) {
+                proc.getStatistics().addTextListener(listener);
+            }
 	}
 
 	public void addRemoteStateListener(RemoteStateListener rsl) {
-   		if (proc != null) proc.addListener(rsl);
+   		if (proc != null) {
+                proc.addListener(rsl);
+            }
     }
 	
 	public void setDoRestart(boolean restart) {
@@ -140,8 +150,12 @@ public class OptimizerRunnable implements Runnable {
 			if (postProcessOnly) {
 				proc.performPostProcessing((PostProcessParams)proc.getGOParams().getPostProcessParams(), listener);
 			} else {
-				if (doRestart) proc.restartOpt();
-				else proc.startOpt();
+				if (doRestart) {
+                                proc.restartOpt();
+                            }
+				else {
+                                proc.startOpt();
+                            }
 				proc.runOptOnce();
 			}
 		} catch(Exception e) {
@@ -204,28 +218,36 @@ public class OptimizerRunnable implements Runnable {
 				InterfaceTerminator term = proc.getGOParams().getTerminator();
 				return term.lastTerminationMessage();
 			}
-		} else return "Not yet terminated";
+		} else {
+                return "Not yet terminated";
+            }
 	}
 	
 	public double[] getDoubleSolution() {
 		IndividualInterface indy = getResult();
 		if (indy instanceof InterfaceDataTypeDouble) {
 			return ((InterfaceDataTypeDouble)indy).getDoubleData();
-		} else return null;
+		} else {
+                return null;
+            }
 	}
 	
 	public BitSet getBinarySolution() {
 		IndividualInterface indy = getResult();
 		if (indy instanceof InterfaceDataTypeBinary) {
 			return ((InterfaceDataTypeBinary)indy).getBinaryData();
-		} else return null;
+		} else {
+                return null;
+            }
 	}
 	
 	public int[] getIntegerSolution() {
 		IndividualInterface indy = getResult();
 		if (indy instanceof InterfaceDataTypeInteger) {
 			return ((InterfaceDataTypeInteger)indy).getIntegerData();
-		} else return null;
+		} else {
+                return null;
+            }
 	}
 	
 	/**
@@ -237,7 +259,9 @@ public class OptimizerRunnable implements Runnable {
 	public void setVerbosityLevel(int vLev) {
 		if (vLev >= 0 && vLev < proc.getStatistics().getStatisticsParameter().getOutputVerbosity().getTags().length) {
 			proc.getStatistics().getStatisticsParameter().getOutputVerbosity().setSelectedTag(vLev);
-		} else System.err.println("Invalid verbosity leveln in OptimizerRunnable.setVerbosityLevel!");
+		} else {
+                System.err.println("Invalid verbosity leveln in OptimizerRunnable.setVerbosityLevel!");
+            }
 	}
 	
 	/**

@@ -125,7 +125,9 @@ public class F7Problem extends AbstractProblemDoubleOffset implements Serializab
      * @param d   The mutation operator.
      */
     public void sett(double d) {
-        if (d < 1) d = 1;
+        if (d < 1) {
+            d = 1;
+        }
         this.m_t = d;
     }
     public double gett() {

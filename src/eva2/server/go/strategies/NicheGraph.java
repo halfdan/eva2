@@ -50,7 +50,9 @@ public class NicheGraph implements java.io.Serializable {
 	 * @param v
 	 */
 	public void addVertex(String v){
-		if (!containsVertex(v)) graphTable.put(v, new TreeSet<String>());
+		if (!containsVertex(v)) {
+                graphTable.put(v, new TreeSet<String>());
+            }
 	}
 	
 	/**
@@ -59,8 +61,12 @@ public class NicheGraph implements java.io.Serializable {
 	 * @param v2
 	 */
 	public void addEdge(String v1, String v2){
-		if (!containsVertex(v1)) addVertex(v1);
-		if (!containsVertex(v2)) addVertex(v2);
+		if (!containsVertex(v1)) {
+                addVertex(v1);
+            }
+		if (!containsVertex(v2)) {
+                addVertex(v2);
+            }
 		// mutually add the vertices as neighbors
 		graphTable.get(v1).add(v2);
 		graphTable.get(v2).add(v1);
@@ -123,7 +129,9 @@ public class NicheGraph implements java.io.Serializable {
 	
     private boolean isComponent(String v, ArrayList<Set<String>> l) {
     	for (Set<String> set : l){
-    		if (set.contains(v)) return true;
+    		if (set.contains(v)) {
+                return true;
+            }
     	}
 		return false;
 	}

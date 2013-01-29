@@ -28,12 +28,15 @@ public class GPArea implements java.io.Serializable {
     }
 
     public GPArea(GPArea g) {
-        if (g.m_BlackList != null)
+        if (g.m_BlackList != null) {
             this.m_BlackList    = (ArrayList<Boolean>)g.m_BlackList.clone();
-        if (g.m_ReducedList != null)
+        }
+        if (g.m_ReducedList != null) {
             this.m_ReducedList  = (ArrayList<AbstractGPNode>)g.m_ReducedList.clone();
-        if (g.m_CompleteList != null)
+        }
+        if (g.m_CompleteList != null) {
             this.m_CompleteList = (ArrayList<AbstractGPNode>)g.m_CompleteList.clone();
+        }
     }
 
     @Override
@@ -118,17 +121,27 @@ public class GPArea implements java.io.Serializable {
     public AbstractGPNode getRandomNodeWithArity(int targetarity) {
         ArrayList<AbstractGPNode>   tmpArray = new ArrayList<AbstractGPNode>();
         for (int i = 0; i < this.m_ReducedList.size(); i++) {
-            if (((AbstractGPNode)this.m_ReducedList.get(i)).getArity() == targetarity) tmpArray.add(this.m_ReducedList.get(i));
+            if (((AbstractGPNode)this.m_ReducedList.get(i)).getArity() == targetarity) {
+                tmpArray.add(this.m_ReducedList.get(i));
+            }
         }
-        if (tmpArray.size() == 0) return null;
-        else return (AbstractGPNode)tmpArray.get(RNG.randomInt(0, tmpArray.size()-1));
+        if (tmpArray.size() == 0) {
+            return null;
+        }
+        else {
+            return (AbstractGPNode)tmpArray.get(RNG.randomInt(0, tmpArray.size()-1));
+        }
     }
 
     /** This method will return a random node.
      */
     public AbstractGPNode getRandomNode() {
-        if (this.m_ReducedList.size() == 0) return null;
-        else return (AbstractGPNode)this.m_ReducedList.get(RNG.randomInt(0, this.m_ReducedList.size()-1));
+        if (this.m_ReducedList.size() == 0) {
+            return null;
+        }
+        else {
+            return (AbstractGPNode)this.m_ReducedList.get(RNG.randomInt(0, this.m_ReducedList.size()-1));
+        }
     }
 
     /** This method will return a non terminal
@@ -136,10 +149,16 @@ public class GPArea implements java.io.Serializable {
     public AbstractGPNode getRandomNonTerminal() {
         ArrayList<AbstractGPNode>   tmpArray = new ArrayList<AbstractGPNode>();
         for (int i = 0; i < this.m_ReducedList.size(); i++) {
-            if (((AbstractGPNode)this.m_ReducedList.get(i)).getArity() > 0) tmpArray.add(this.m_ReducedList.get(i));
+            if (((AbstractGPNode)this.m_ReducedList.get(i)).getArity() > 0) {
+                tmpArray.add(this.m_ReducedList.get(i));
+            }
         }
-        if (tmpArray.size() == 0) return null;
-        else return (AbstractGPNode)tmpArray.get(RNG.randomInt(0, tmpArray.size()-1));
+        if (tmpArray.size() == 0) {
+            return null;
+        }
+        else {
+            return (AbstractGPNode)tmpArray.get(RNG.randomInt(0, tmpArray.size()-1));
+        }
     }
 
 	public boolean isEmpty() {
@@ -154,14 +173,18 @@ public class GPArea implements java.io.Serializable {
 	}
 	
     public void addPropertyChangeListener(PropertyChangeListener l) {
-    	if (m_Support==null) m_Support = new PropertyChangeSupport(this);
+    	if (m_Support==null) {
+            m_Support = new PropertyChangeSupport(this);
+        }
         m_Support.addPropertyChangeListener(l);
     }
     /**
      *
      */
     public void removePropertyChangeListener(PropertyChangeListener l) {
-    	if (m_Support==null) m_Support = new PropertyChangeSupport(this);
+    	if (m_Support==null) {
+            m_Support = new PropertyChangeSupport(this);
+        }
         m_Support.removePropertyChangeListener(l);
     }
 }

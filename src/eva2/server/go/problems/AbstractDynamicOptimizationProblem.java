@@ -78,17 +78,20 @@ public abstract class AbstractDynamicOptimizationProblem extends AbstractOptimiz
 		setSeverity(sev);
 		setFrequency(freq);
 		
-		if (bExtraPlot) makePlot();
+		if (bExtraPlot) {
+            makePlot();
+        }
     }
     
     @Override
     public void initProblem() {
     	setCurrentProblemTime(getStartTime());
-    	if (myplot != null) try {
-    		myplot.jump();
-    	} catch(NullPointerException e) {
-    		makePlot();
-    	}
+    	if (myplot != null) {
+            try {
+myplot.jump();
+} catch(NullPointerException e) {
+makePlot();
+}       }
     }
     
     /**
@@ -140,7 +143,9 @@ public abstract class AbstractDynamicOptimizationProblem extends AbstractOptimiz
     protected void setCurrentProblemTime(double newTime) {
     	double sev = newTime - currentProblemTime;
     	currentProblemTime = newTime;
-    	if (sev != 0.) resetProblem(sev);
+    	if (sev != 0.) {
+            resetProblem(sev);
+        }
     }
     
     /**
@@ -161,7 +166,9 @@ public abstract class AbstractDynamicOptimizationProblem extends AbstractOptimiz
      */
     public void setSeverity(double sev) {
     	severity = sev;
-    	if (TRACE) System.out.println("severity to " + sev);
+    	if (TRACE) {
+            System.out.println("severity to " + sev);
+        }
 	}
 	
 	/** 
@@ -218,7 +225,9 @@ public abstract class AbstractDynamicOptimizationProblem extends AbstractOptimiz
     protected void incProblemTime(double dt) {
     	currentProblemTime += dt;
     	resetProblem(dt);
-    	if (TRACE) System.out.println("new problem time is " + currentProblemTime);
+    	if (TRACE) {
+            System.out.println("new problem time is " + currentProblemTime);
+        }
     }
 
     /**
@@ -315,7 +324,9 @@ public abstract class AbstractDynamicOptimizationProblem extends AbstractOptimiz
 		} else if (!bExtraPlot && doPlot) {
     		if (myplot != null) {
 				myplot.jump();
-			} else makePlot();
+			} else {
+                        makePlot();
+                    }
 		}
 		bExtraPlot = doPlot;
 	}
@@ -325,7 +336,9 @@ public abstract class AbstractDynamicOptimizationProblem extends AbstractOptimiz
 	}
     
 	private void makePlot() {
-		if (TRACE) System.out.println("creating myplot instance");
+		if (TRACE) {
+                System.out.println("creating myplot instance");
+            }
         double[] tmpD = new double[2];
         tmpD[0] = 0;
         tmpD[1] = 0;

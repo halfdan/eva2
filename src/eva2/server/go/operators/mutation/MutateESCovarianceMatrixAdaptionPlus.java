@@ -53,8 +53,9 @@ public class MutateESCovarianceMatrixAdaptionPlus extends
 	public void init(AbstractEAIndividual individual,
 			InterfaceOptimizationProblem opt) {
 
-		if (!(individual instanceof InterfaceESIndividual))
-			return;
+		if (!(individual instanceof InterfaceESIndividual)) {
+                                return;
+                            }
 		super.init(individual, opt);
 		m_psuccesstarget = 1.0 / (5 + Math.sqrt(m_lambda) / 2);
 		m_psuccess = m_psuccesstarget;
@@ -162,27 +163,29 @@ public class MutateESCovarianceMatrixAdaptionPlus extends
 			// " , " +
 			// BeanInspector.toString(parentPop.getEAIndividual(i).getFitness()));
 			if (newPop.getEAIndividual(i).getFitness(0) < parentPop
-					.getEAIndividual(i).getFitness(0))
-				rate++;
+					.getEAIndividual(i).getFitness(0)) {
+                        rate++;
+                    }
 		}
 		            rate /= parentPop.size();
 
-		if (updateSelected)
-			for (int i = 0; i < selectedPop.size(); i++) { // applied to the old
-															// population as
-															// well in case of
-															// plus strategy
-				MutateESCovarianceMatrixAdaptionPlus mutator = (MutateESCovarianceMatrixAdaptionPlus) ((AbstractEAIndividual) selectedPop
-						.get(i)).getMutationOperator();
-				updateMutator(rate, mutator);
-				if (selectedPop.getEAIndividual(i).getFitness(0) <= parentPop
-						.getEAIndividual(0).getFitness(0)) {
-					mutator.adaptStrategyGen(selectedPop.getEAIndividual(i),
-							parentPop.getEAIndividual(0));
-				}
-				// System.out.println("old pop step size " + mutator.getSigma()+
-				// " (" + mutator+ ")");
-			}
+		if (updateSelected) {
+                                for (int i = 0; i < selectedPop.size(); i++) { // applied to the old
+                                                                                                                                // population as
+                                                                                                                                // well in case of
+                                                                                                                                // plus strategy
+                                        MutateESCovarianceMatrixAdaptionPlus mutator = (MutateESCovarianceMatrixAdaptionPlus) ((AbstractEAIndividual) selectedPop
+                                                        .get(i)).getMutationOperator();
+                                        updateMutator(rate, mutator);
+                                        if (selectedPop.getEAIndividual(i).getFitness(0) <= parentPop
+                                                        .getEAIndividual(0).getFitness(0)) {
+                                                mutator.adaptStrategyGen(selectedPop.getEAIndividual(i),
+                                                                parentPop.getEAIndividual(0));
+                                        }
+                                        // System.out.println("old pop step size " + mutator.getSigma()+
+                                        // " (" + mutator+ ")");
+                                }
+                            }
 		for (int i = 0; i < newPop.size(); i++) {
 			MutateESCovarianceMatrixAdaptionPlus mutator = (MutateESCovarianceMatrixAdaptionPlus) ((AbstractEAIndividual) newPop
 					.get(i)).getMutationOperator();

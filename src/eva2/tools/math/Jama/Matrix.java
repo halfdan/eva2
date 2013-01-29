@@ -184,9 +184,13 @@ public class Matrix implements Cloneable, Serializable {
     int nn = 0;
     int mm = 0;
     for ( int im=0;im<m*Am;im++) {
-      if(mm==Am) mm=0;
+      if(mm==Am) {
+            mm=0;
+        }
       for ( int in=0;in<n*An;in++) {
-        if(nn==An) nn=0;
+        if(nn==An) {
+              nn=0;
+          }
         Ret.set(im,in,A.get(mm,nn));
         nn++;
       }
@@ -1116,7 +1120,9 @@ public class Matrix implements Cloneable, Serializable {
     * @return
     */
    public Pair<Double,Double> getMinMaxDiag() {
-	   if (m<1 || n<1) return null;
+	   if (m<1 || n<1) {
+           return null;
+       }
 	   
 	   double v = get(0,0);
 	   Pair<Double,Double> ret = new Pair<Double,Double>(v,v);
@@ -1225,8 +1231,9 @@ public class Matrix implements Cloneable, Serializable {
 
       // Ignore initial empty lines
       while (tokenizer.nextToken() == StreamTokenizer.TT_EOL);
-      if (tokenizer.ttype == StreamTokenizer.TT_EOF)
-	throw new java.io.IOException("Unexpected EOF on matrix read.");
+      if (tokenizer.ttype == StreamTokenizer.TT_EOF) {
+           throw new java.io.IOException("Unexpected EOF on matrix read.");
+       }
       do {
          v.addElement(Double.valueOf(tokenizer.sval)); // Read & store 1st row.
       } while (tokenizer.nextToken() == StreamTokenizer.TT_WORD);
@@ -1243,12 +1250,16 @@ public class Matrix implements Cloneable, Serializable {
          v.addElement(row = new double[n]);
          int j = 0;
          do {
-            if (j >= n) throw new java.io.IOException
-               ("Row " + v.size() + " is too long.");
+            if (j >= n) {
+                 throw new java.io.IOException
+        ("Row " + v.size() + " is too long.");
+             }
             row[j++] = Double.valueOf(tokenizer.sval).doubleValue();
          } while (tokenizer.nextToken() == StreamTokenizer.TT_WORD);
-         if (j < n) throw new java.io.IOException
-            ("Row " + v.size() + " is too short.");
+         if (j < n) {
+              throw new java.io.IOException
+      ("Row " + v.size() + " is too short.");
+          }
       }
       int m = v.size();  // Now we've got the number of rows.
       double[][] A = new double[m][];
@@ -1280,7 +1291,9 @@ public class Matrix implements Cloneable, Serializable {
     * @param B
     */
    public void rowSubtract(int rowIndex, double[] v) {
-	   if ((v.length != n) || (rowIndex<0) || (rowIndex>=m)) throw new IllegalArgumentException("Invalid matrix dimensions for rowMinus!");
+	   if ((v.length != n) || (rowIndex<0) || (rowIndex>=m)) {
+           throw new IllegalArgumentException("Invalid matrix dimensions for rowMinus!");
+       }
 	   rowSubtract(rowIndex, rowIndex, v);
    }
    
@@ -1291,7 +1304,9 @@ public class Matrix implements Cloneable, Serializable {
     * @param B
     */
    public void rowSubtract(double[] v) {
-	   if ((v.length != n)) throw new IllegalArgumentException("Invalid matrix dimensions for rowMinus!");
+	   if ((v.length != n)) {
+           throw new IllegalArgumentException("Invalid matrix dimensions for rowMinus!");
+       }
 	   rowSubtract(0, m-1, v);
    }
    

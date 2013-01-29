@@ -37,7 +37,9 @@ public abstract class DFunction extends DComponent
     @Override
   public void paint( DMeasures m ){
     Graphics g = m.getGraphics();
-    if( color != null ) g.setColor( color );
+    if( color != null ) {
+          g.setColor( color );
+      }
 
     SlimRect rect = m.getSlimRectangle(),
                src_rect = m.getSourceOf( rect );
@@ -47,13 +49,19 @@ public abstract class DFunction extends DComponent
     Point last = null, next;
     for( int i = 0; i < int_w; i++ ){
       double x_val = src_rect.x + i / (double)int_w * src_rect.width ;
-      if( m.x_scale != null ) x_val = m.x_scale.getImageOf( x_val );
+      if( m.x_scale != null ) {
+            x_val = m.x_scale.getImageOf( x_val );
+        }
       if( isDefinedAt( x_val ) ){
         next = m.getPoint( x_val, getImageOf( x_val ) );
-        if( last != null ) g.drawLine( last.x, last.y, next.x, next.y );
+        if( last != null ) {
+              g.drawLine( last.x, last.y, next.x, next.y );
+          }
         last = next;
       }
-      else last = null;
+      else {
+            last = null;
+        }
     }
   }
 }

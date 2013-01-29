@@ -20,15 +20,21 @@ public abstract class AbstractProblemInteger extends AbstractOptimizationProblem
     }
 
     protected void initTemplate() {
-    	if (m_Template==null) m_Template = new GIIndividualIntegerData();
+    	if (m_Template==null) {
+            m_Template = new GIIndividualIntegerData();
+        }
 		if (((InterfaceDataTypeInteger)this.m_Template).size()!=this.getProblemDimension()) {
 			((InterfaceDataTypeInteger)this.m_Template).setIntegerDataLength(this.getProblemDimension());
 		}
     }
 
 	public void cloneObjects(AbstractProblemInteger o) {
-		if (o.m_Template != null) m_Template = (AbstractEAIndividual)o.m_Template.clone();
-        if (o.m_OverallBest != null) m_OverallBest      = (AbstractEAIndividual)((AbstractEAIndividual)o.m_OverallBest).clone();
+		if (o.m_Template != null) {
+                m_Template = (AbstractEAIndividual)o.m_Template.clone();
+            }
+        if (o.m_OverallBest != null) {
+                m_OverallBest      = (AbstractEAIndividual)((AbstractEAIndividual)o.m_OverallBest).clone();
+            }
         this.m_ProblemDimension = o.m_ProblemDimension;
 	}
 

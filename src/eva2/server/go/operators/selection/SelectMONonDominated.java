@@ -55,7 +55,9 @@ public class SelectMONonDominated implements InterfaceSelection, java.io.Seriali
         if (this.m_ObeyDebsConstViolationPrinciple) {
             boolean feasible = false;
             for (int i = 0; i < population.size(); i++) {
-                if (((AbstractEAIndividual)population.get(i)).getConstraintViolation() == 0) feasible = true;
+                if (((AbstractEAIndividual)population.get(i)).getConstraintViolation() == 0) {
+                    feasible = true;
+                }
             }
             if (feasible) {
                 while (result.size() < size) {
@@ -111,11 +113,15 @@ public class SelectMONonDominated implements InterfaceSelection, java.io.Seriali
     public boolean isDominant(AbstractEAIndividual indy, Population pop) {
         if (this.m_ObeyDebsConstViolationPrinciple) {
             for (int i = 0; i < pop.size(); i++) {
-                if (!(indy.equals(pop.get(i))) && (((AbstractEAIndividual)pop.get(i)).isDominatingDebConstraintsEqual(indy))) return false;
+                if (!(indy.equals(pop.get(i))) && (((AbstractEAIndividual)pop.get(i)).isDominatingDebConstraintsEqual(indy))) {
+                    return false;
+                }
             }
         } else {
             for (int i = 0; i < pop.size(); i++) {
-                if (!(indy.equals(pop.get(i))) && (((AbstractEAIndividual)pop.get(i)).isDominatingEqual(indy))) return false;
+                if (!(indy.equals(pop.get(i))) && (((AbstractEAIndividual)pop.get(i)).isDominatingEqual(indy))) {
+                    return false;
+                }
             }
         }
         return true;

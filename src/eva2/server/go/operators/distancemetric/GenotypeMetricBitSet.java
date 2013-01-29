@@ -46,11 +46,17 @@ public class GenotypeMetricBitSet implements InterfaceDistanceMetric, java.io.Se
             dIndy1 = ((InterfaceGAIndividual) indy1).getBGenotype();
             dIndy2 = ((InterfaceGAIndividual) indy2).getBGenotype();
             length = Math.min(((InterfaceGAIndividual) indy1).getGenotypeLength(), ((InterfaceGAIndividual) indy2).getGenotypeLength());
-        } else return 1.0;
+        } else {
+            return 1.0;
+        }
 
         for (int i = 0; i < length; i++) {
-            if (dIndy1.get(i) == dIndy2.get(i)) result += 0;
-            else result += 1;
+            if (dIndy1.get(i) == dIndy2.get(i)) {
+                result += 0;
+            }
+            else {
+                result += 1;
+            }
         }
         return result/(double)length;
     }

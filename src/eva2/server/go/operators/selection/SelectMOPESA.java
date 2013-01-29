@@ -72,7 +72,9 @@ public class SelectMOPESA implements InterfaceSelection, java.io.Serializable {
             winner = RNG.randomInt(0, population.size()-1);
             for (int i = 1; i < this.m_TournamentSize; i++) {
                 tmp = RNG.randomInt(0, population.size()-1);
-                if (this.m_Squeeze[tmp] < this.m_Squeeze[winner]) winner = tmp;
+                if (this.m_Squeeze[tmp] < this.m_Squeeze[winner]) {
+                    winner = tmp;
+                }
             }
             resultIndy = (AbstractEAIndividual) population.get(winner);
         } catch (java.lang.IndexOutOfBoundsException e) {

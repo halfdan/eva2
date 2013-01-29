@@ -14,8 +14,9 @@ public class Maths {
       } else if (b != 0) {
          r = a/b;
          r = bb*Math.sqrt(1+r*r);
-      } else
-         r = 0.0;
+      } else {
+           r = 0.0;
+       }
       return r;
    }
 }

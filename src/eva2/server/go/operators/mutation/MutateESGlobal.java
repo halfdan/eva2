@@ -69,11 +69,19 @@ public class MutateESGlobal implements InterfaceMutation, java.io.Serializable, 
     public boolean equals(Object mutator) {
         if (mutator instanceof MutateESGlobal) {
             MutateESGlobal mut = (MutateESGlobal)mutator;
-            if (this.m_MutationStepSize != mut.m_MutationStepSize) return false;
-            if (this.m_Tau1 != mut.m_Tau1) return false;
-            if (this.m_LowerLimitStepSize != mut.m_LowerLimitStepSize) return false;
+            if (this.m_MutationStepSize != mut.m_MutationStepSize) {
+                return false;
+            }
+            if (this.m_Tau1 != mut.m_Tau1) {
+                return false;
+            }
+            if (this.m_LowerLimitStepSize != mut.m_LowerLimitStepSize) {
+                return false;
+            }
             return true;
-        } else return false;
+        } else {
+            return false;
+        }
     }
 
     /** This method allows you to init the mutation operator
@@ -96,11 +104,17 @@ public class MutateESGlobal implements InterfaceMutation, java.io.Serializable, 
             double[] x = ((InterfaceESIndividual)individual).getDGenotype();
             double[][] range = ((InterfaceESIndividual)individual).getDoubleRange();
             this.m_MutationStepSize *= Math.exp(this.m_Tau1 * RNG.gaussianDouble(1));
-            if (this.m_MutationStepSize < this.m_LowerLimitStepSize) this.m_MutationStepSize = this.m_LowerLimitStepSize;
+            if (this.m_MutationStepSize < this.m_LowerLimitStepSize) {
+                this.m_MutationStepSize = this.m_LowerLimitStepSize;
+            }
             for (int i = 0; i < x.length; i++) {
                 x[i] += ((range[i][1] -range[i][0])/2)*RNG.gaussianDouble(this.m_MutationStepSize);
-                if (range[i][0] > x[i]) x[i] = range[i][0];
-                if (range[i][1] < x[i]) x[i] = range[i][1];
+                if (range[i][0] > x[i]) {
+                    x[i] = range[i][0];
+                }
+                if (range[i][1] < x[i]) {
+                    x[i] = range[i][1];
+                }
             }
             ((InterfaceESIndividual)individual).SetDGenotype(x);
 
@@ -117,15 +131,21 @@ public class MutateESGlobal implements InterfaceMutation, java.io.Serializable, 
     public void crossoverOnStrategyParameters(AbstractEAIndividual indy1, Population partners) {
     	if (m_CrossoverType!=MutateESCrossoverTypeEnum.none) {
     		ArrayList<Double> tmpList = new ArrayList<Double>();
-    		if (indy1.getMutationOperator() instanceof MutateESGlobal) tmpList.add(new Double(((MutateESGlobal)indy1.getMutationOperator()).m_MutationStepSize));
+    		if (indy1.getMutationOperator() instanceof MutateESGlobal) {
+                tmpList.add(new Double(((MutateESGlobal)indy1.getMutationOperator()).m_MutationStepSize));
+            }
     		for (int i = 0; i < partners.size(); i++) {
-    			if (((AbstractEAIndividual)partners.get(i)).getMutationOperator() instanceof MutateESGlobal) tmpList.add(new Double(((MutateESGlobal)((AbstractEAIndividual)partners.get(i)).getMutationOperator()).m_MutationStepSize));
+    			if (((AbstractEAIndividual)partners.get(i)).getMutationOperator() instanceof MutateESGlobal) {
+                        tmpList.add(new Double(((MutateESGlobal)((AbstractEAIndividual)partners.get(i)).getMutationOperator()).m_MutationStepSize));
+                    }
     		}
     		double[] list = new double[tmpList.size()];
     		for (int i = 0; i < tmpList.size(); i++) {
                 list[i] = ((Double)tmpList.get(i)).doubleValue();
             }
-    		if (list.length <= 1) return;
+    		if (list.length <= 1) {
+                return;
+            }
 
     		switch (this.m_CrossoverType) {
     		case intermediate : 
@@ -174,7 +194,9 @@ public class MutateESGlobal implements InterfaceMutation, java.io.Serializable, 
      * @param d   The mutation operator.
      */
     public void setMutationStepSize(double d) {
-        if (d < 0) d = this.m_LowerLimitStepSize;
+        if (d < 0) {
+            d = this.m_LowerLimitStepSize;
+        }
         this.m_MutationStepSize = d;
     }
     public double getMutationStepSize() {
@@ -188,7 +210,9 @@ public class MutateESGlobal implements InterfaceMutation, java.io.Serializable, 
      * @param d   The mutation operator.
      */
     public void setLowerLimitStepSize(double d) {
-        if (d < 0) d = 0;
+        if (d < 0) {
+            d = 0;
+        }
         this.m_LowerLimitStepSize = d;
     }
     public double getLowerLimitStepSize() {
@@ -202,7 +226,9 @@ public class MutateESGlobal implements InterfaceMutation, java.io.Serializable, 
      * @param d   The mutation operator.
      */
     public void setTau1(double d) {
-        if (d < 0) d = 0;
+        if (d < 0) {
+            d = 0;
+        }
         this.m_Tau1 = d;
     }
     public double getTau1() {

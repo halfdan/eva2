@@ -56,7 +56,9 @@ public class DLine extends DComponent
   public void paint( DMeasures m ){
     //System.out.println("DLine.paint(Measures): "+this);
     Graphics g = m.getGraphics();
-    if( color != null ) g.setColor( color );
+    if( color != null ) {
+          g.setColor( color );
+      }
     Point p1 = m.getPoint( start.x, start.y ),
           p2 = m.getPoint( end.x, end.y ) ;
     if ((p1!=null) && (p2!=null)) {

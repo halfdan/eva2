@@ -40,10 +40,14 @@ public class MutateGIInvert implements InterfaceMutation, java.io.Serializable {
     public boolean equals(Object mutator) {
         if (mutator instanceof MutateGIInvert) {
             MutateGIInvert mut = (MutateGIInvert)mutator;
-            if (this.m_MaxLengthOfInvert != mut.m_MaxLengthOfInvert) return false;
+            if (this.m_MaxLengthOfInvert != mut.m_MaxLengthOfInvert) {
+                return false;
+            }
             return true;
         }
-        else return false;
+        else {
+            return false;
+        }
     }
 
     /** This method allows you to init the mutation operator
@@ -66,7 +70,9 @@ public class MutateGIInvert implements InterfaceMutation, java.io.Serializable {
             int         range, center, index = 0;
             //this.pintInt("Before ", x);
             range = RNG.randomInt(1, this.m_MaxLengthOfInvert);
-            if (2*range >= x.length) return;
+            if (2*range >= x.length) {
+                return;
+            }
             center = RNG.randomInt(0+range, x.length-1-range);
             //System.out.println("Range: " + range + " Center: " + center);
             int[] tmp = new int[x.length];

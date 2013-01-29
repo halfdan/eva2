@@ -37,7 +37,9 @@ public class ConsiderPBestAbsorptionStrategy extends StandardAbsorptionStrategy{
 	private boolean absorbtionConstraintViolation(AbstractEAIndividual indy, ParticleSubSwarmOptimization subswarm) {
 		AbstractEAIndividual indysPBest = (AbstractEAIndividual)indy.getData("PersonalBestKey");
 		AbstractEAIndividual subswarmsGBest = subswarm.getGBestIndividual();
-		if (indysPBest.isDominating(subswarmsGBest)) return true;
+		if (indysPBest.isDominating(subswarmsGBest)) {
+                return true;
+            }
 		return false;
 	}
 }
