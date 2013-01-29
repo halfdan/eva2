@@ -48,10 +48,12 @@ class MyLensViewer extends JPanel implements InterfaceSolutionViewer {
         resetView();
     }
 
+    @Override
     public void initView(AbstractOptimizationProblem prob) {
     	this.m_LensProblem = (FLensProblem)prob;
     }
     
+    @Override
     public void resetView() {
 //    	this.m_BestFitness = Double.POSITIVE_INFINITY;
 //    	this.m_BestVariables = new double[10];
@@ -60,6 +62,7 @@ class MyLensViewer extends JPanel implements InterfaceSolutionViewer {
     	indiesToPaint = new Population();
     }
     
+    @Override
     public void paint(Graphics g) {
         Shape               tmpShape;
         BufferedImage       bufferedImage;
@@ -166,6 +169,7 @@ class MyLensViewer extends JPanel implements InterfaceSolutionViewer {
     /** This method updates the painted stuff
      * @param pop   The population to use
      */
+    @Override
 	public void updateView(Population pop, boolean showAllIfPossible) {
 		if (showAllIfPossible) {
 //			indiesToPaint=pop;
@@ -243,6 +247,7 @@ implements InterfaceOptimizationProblem, InterfaceHasSolutionViewer, java.io.Ser
         this.m_Epsilon          = b.m_Epsilon;
         this.m_UseMaterialConst = b.m_UseMaterialConst;
 	}
+    @Override
     public Object clone() {
         return (Object) new FLensProblem(this);
     }
@@ -280,6 +285,7 @@ implements InterfaceOptimizationProblem, InterfaceHasSolutionViewer, java.io.Ser
 
 	/** This method inits the Problem to log multiruns
 	 */
+    @Override
 	public void initProblem() {
 		this.m_OverallBest = null;
         if (this.m_Show) this.initProblemFrame();
@@ -288,6 +294,7 @@ implements InterfaceOptimizationProblem, InterfaceHasSolutionViewer, java.io.Ser
 	/** This method inits a given population
 	 * @param population    The populations that is to be inited
 	 */
+    @Override
 	public void initPopulation(Population population) {
 		this.m_OverallBest = null;
 		((InterfaceDataTypeDouble)this.m_Template).setDoubleDataLength(this.m_ProblemDimension);
@@ -303,6 +310,7 @@ implements InterfaceOptimizationProblem, InterfaceHasSolutionViewer, java.io.Ser
         if (this.m_Show) this.initProblemFrame();
 	}
 
+    @Override
 	public void evaluatePopulationEnd(Population pop) {
 		if (this.m_Show) this.updateProblemFrame(pop);
 	}
@@ -310,6 +318,7 @@ implements InterfaceOptimizationProblem, InterfaceHasSolutionViewer, java.io.Ser
 	/** This method evaluate a single individual and sets the fitness values
 	 * @param individual    The individual that is to be evalutated
 	 */
+    @Override
 	public void evaluate(AbstractEAIndividual individual) {
 		double[]            x;
 		double[]            fitness;
@@ -378,6 +387,7 @@ implements InterfaceOptimizationProblem, InterfaceHasSolutionViewer, java.io.Ser
 	 * @param individual    The individual that is to be shown.
 	 * @return The description.
 	 */
+    @Override
 	public String getSolutionRepresentationFor(AbstractEAIndividual individual) {
 		this.evaluate(individual);
 		String result = "FX problem:\n";
@@ -401,6 +411,7 @@ implements InterfaceOptimizationProblem, InterfaceHasSolutionViewer, java.io.Ser
      * @param opt       The Optimizer that is used or had been used.
      * @return The description.
      */
+    @Override
     public String getStringRepresentationForProblem(InterfaceOptimizer opt) {
 		String result = "";
 
@@ -417,6 +428,7 @@ implements InterfaceOptimizationProblem, InterfaceHasSolutionViewer, java.io.Ser
 	/** This method allows you to request a graphical representation for a given
 	 * individual.
 	 */
+    @Override
 	public JComponent drawIndividual(AbstractEAIndividual indy) {
 		JTextArea tindy = new JTextArea(indy.getStringRepresentation());
 		JScrollPane pindy = new JScrollPane(tindy);
@@ -447,6 +459,7 @@ implements InterfaceOptimizationProblem, InterfaceHasSolutionViewer, java.io.Ser
 	 * name to the current object.
 	 * @return The name.
 	 */
+    @Override
 	public String getName() {
 		return "Lens Problem";
 	}
@@ -562,6 +575,7 @@ implements InterfaceOptimizationProblem, InterfaceHasSolutionViewer, java.io.Ser
 	 * (non-Javadoc)
 	 * @see eva2.server.go.problems.InterfaceHasSolutionViewer#getSolutionViewer()
 	 */
+    @Override
 	public InterfaceSolutionViewer getSolutionViewer() {
 		return m_Panel;
 	}

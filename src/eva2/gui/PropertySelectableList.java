@@ -34,6 +34,7 @@ public class PropertySelectableList<T> implements java.io.Serializable {
         }
     }
     
+    @Override
     public Object clone() {
         return (Object) new PropertySelectableList<T>(this);
     }

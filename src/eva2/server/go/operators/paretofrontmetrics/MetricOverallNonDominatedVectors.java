@@ -27,6 +27,7 @@ public class MetricOverallNonDominatedVectors implements InterfaceParetoFrontMet
     /** This method returns a deep clone of the problem.
      * @return  the clone
      */
+    @Override
     public Object clone() {
         return (Object) new MetricOverallNonDominatedVectors(this);
     }
@@ -41,6 +42,7 @@ public class MetricOverallNonDominatedVectors implements InterfaceParetoFrontMet
     /** This method gives a metric how to evaluate
      * an achieved Pareto-Front
      */
+    @Override
     public double calculateMetricOn(Population pop, AbstractMultiObjectiveOptimizationProblem problem) {
         Population tmpPop = new Population();
         Population tmpPPO = new Population();

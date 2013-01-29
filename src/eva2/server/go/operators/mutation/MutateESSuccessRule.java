@@ -34,6 +34,7 @@ public class MutateESSuccessRule extends MutateESFixedStepSize implements Interf
     /** This method will enable you to clone a given mutation operator
      * @return The clone
      */
+    @Override
     public Object clone() {
         return new MutateESSuccessRule(this);
     }
@@ -42,6 +43,7 @@ public class MutateESSuccessRule extends MutateESFixedStepSize implements Interf
      * are actually the same.
      * @param mutator   The other mutation operator
      */
+    @Override
     public boolean equals(Object mutator) {
         if (mutator instanceof MutateESSuccessRule) {
             MutateESSuccessRule mut = (MutateESSuccessRule)mutator;
@@ -56,6 +58,7 @@ public class MutateESSuccessRule extends MutateESFixedStepSize implements Interf
      * operator
      * @return A descriptive string.
      */
+    @Override
     public String getStringRepresentation() {
         return "ES 1/5 Success Rule mutation";
     }
@@ -78,6 +81,7 @@ public class MutateESSuccessRule extends MutateESFixedStepSize implements Interf
      * name to the current object.
      * @return The name.
      */
+    @Override
     public String getName() {
         return "ES 1/5 Success Rule mutation";
     }
@@ -126,10 +130,12 @@ public class MutateESSuccessRule extends MutateESFixedStepSize implements Interf
     	return "The initial step size.";
     }
 
+    @Override
 	public void adaptAfterSelection(Population oldGen, Population selected) {
 		// nothing to do here		
 	}
 
+    @Override
 	public void adaptGenerational(Population selectedPop, Population parentPop, Population newPop, boolean updateSelected) {
 		double rate = 0.;
         for (int i = 0; i < parentPop.size(); i++) {

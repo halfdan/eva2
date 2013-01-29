@@ -27,6 +27,7 @@ public class MOSOLpMetric implements InterfaceMOSOConverter, java.io.Serializabl
             this.m_Reference = (PropertyDoubleArray)b.m_Reference.clone();
         }
     }
+    @Override
     public Object clone() {
         return (Object) new MOSOLpMetric(this);
     }
@@ -38,6 +39,7 @@ public class MOSOLpMetric implements InterfaceMOSOConverter, java.io.Serializabl
      * if you still want to access the original fitness values.
      * @param pop       The population to process.
      */
+    @Override
     public void convertMultiObjective2SingleObjective(Population pop) {
         for (int i = 0; i < pop.size(); i++) {
              this.convertSingleIndividual((AbstractEAIndividual)pop.get(i));
@@ -47,6 +49,7 @@ public class MOSOLpMetric implements InterfaceMOSOConverter, java.io.Serializabl
     /** This method processes a single individual
      * @param indy      The individual to process.
      */
+    @Override
     public void convertSingleIndividual(AbstractEAIndividual indy) {
         double[]    resultFit = new double[1];
         double[]    tmpFit;
@@ -76,6 +79,7 @@ public class MOSOLpMetric implements InterfaceMOSOConverter, java.io.Serializabl
      * value of one
      * @param dim       Outputdimension of the problem
      */
+    @Override
     public void setOutputDimension(int dim) {
         double[] newWeights = new double[dim];
 
@@ -88,6 +92,7 @@ public class MOSOLpMetric implements InterfaceMOSOConverter, java.io.Serializabl
     /** This method returns a description of the objective
      * @return A String
      */
+    @Override
     public String getStringRepresentation() {
         String result = "Lp Metric\n";
         result += " P           = "+this.m_P+"\n";
@@ -107,6 +112,7 @@ public class MOSOLpMetric implements InterfaceMOSOConverter, java.io.Serializabl
      * name to the current object.
      * @return The name.
      */
+    @Override
     public String getName() {
         return "Lp Metric";
     }

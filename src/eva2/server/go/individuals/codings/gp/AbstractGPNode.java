@@ -31,6 +31,7 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
     /** This method allows you to clone the Nodes
      * @return the clone
      */
+    @Override
     public abstract Object clone();
 
     /** This method will be used to identify the node in the GPAreaEditor
@@ -41,6 +42,7 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
     /** This method will evaluate a given node
      * @param environment
      */
+    @Override
     public abstract Object evaluate(InterfaceProgramProblem environment);
 
     /** This method will return the current arity
@@ -51,6 +53,7 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
     /** This method returns a string representation
      * @return string
      */
+    @Override
     public String getStringRepresentation() {
     	StringBuffer sb = new StringBuffer();
     	AbstractGPNode.appendStringRepresentation(this, sb);
@@ -541,6 +544,7 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
      * @param obj   The other subtree.
      * @return boolean if equal true else false.
      */
+    @Override
     public boolean equals(Object obj) {
         if (obj.getClass().equals(this.getClass())) {
         	AbstractGPNode node = (AbstractGPNode)obj;

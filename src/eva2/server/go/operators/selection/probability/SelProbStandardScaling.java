@@ -25,6 +25,7 @@ public class SelProbStandardScaling extends AbstractSelProb implements java.io.S
         this.m_Q    = a.m_Q;
     }
 
+    @Override
     public Object clone() {
         return (Object) new SelProbStandardScaling(this);
     }
@@ -35,6 +36,7 @@ public class SelProbStandardScaling extends AbstractSelProb implements java.io.S
      * @param population    The population to compute.
      * @param data         The input data as double[][].
      */
+    @Override
     public void computeSelectionProbability(Population population, double[][] data, boolean obeyConst) {
         double      sum = 0, min = Double.POSITIVE_INFINITY, max = Double.NEGATIVE_INFINITY, delta;
         double[]    result = new double[data.length];

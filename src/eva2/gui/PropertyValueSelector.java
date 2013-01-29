@@ -31,6 +31,7 @@ public class PropertyValueSelector extends JComboBox {
             /**
              *
              */
+            @Override
             public Object getSelectedItem() {
                 return propertyEditor.getAsText();
             }
@@ -38,6 +39,7 @@ public class PropertyValueSelector extends JComboBox {
             /**
              *
              */
+            @Override
             public void setSelectedItem(Object o) {
                 propertyEditor.setAsText((String) o);
             }

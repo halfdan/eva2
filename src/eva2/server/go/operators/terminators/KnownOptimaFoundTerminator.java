@@ -27,6 +27,7 @@ public class KnownOptimaFoundTerminator implements InterfaceTerminator, Serializ
 	public KnownOptimaFoundTerminator() {		
 	}
 	
+    @Override
 	public void init(InterfaceOptimizationProblem prob) {
 		if (prob != null) {
 			if (prob instanceof InterfaceMultimodalProblemKnown) {
@@ -36,10 +37,12 @@ public class KnownOptimaFoundTerminator implements InterfaceTerminator, Serializ
 		msg = "Not terminated.";
 	}
 
+    @Override
 	public boolean isTerminated(InterfaceSolutionSet solSet) {
 		return isTerm(solSet.getSolutions());
 	}
 	
+    @Override
 	public boolean isTerminated(PopulationInterface pop) {
 		EVAERROR.errorMsgOnce("Warning, the KnownOptimaFoundTerminator is supposed to work on a final population.");
 		return isTerm((Population)pop);
@@ -53,6 +56,7 @@ public class KnownOptimaFoundTerminator implements InterfaceTerminator, Serializ
 		} else return false;
 	}
 	
+    @Override
 	public String lastTerminationMessage() {
 		return msg;
 	}
@@ -75,6 +79,7 @@ public class KnownOptimaFoundTerminator implements InterfaceTerminator, Serializ
 		return "The number of optima that need to be found to terminate the optimization."; 
 	}
 	
+    @Override
 	public String toString() {
 		return "KnownOptimaFoundTerminator requiring " + reqOptima + " optima.";
 	}

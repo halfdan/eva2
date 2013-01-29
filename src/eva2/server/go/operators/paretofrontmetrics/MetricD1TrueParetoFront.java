@@ -49,6 +49,7 @@ public class MetricD1TrueParetoFront implements eva2.server.go.operators.paretof
     /** This method returns a deep clone of the problem.
      * @return  the clone
      */
+    @Override
     public Object clone() {
         return (Object) new MetricD1TrueParetoFront(this);
     }
@@ -88,6 +89,7 @@ public class MetricD1TrueParetoFront implements eva2.server.go.operators.paretof
     /** This method gives a metric how to evaluate
      * an achieved Pareto-Front
      */
+    @Override
     public double calculateMetricOn(Population pop, AbstractMultiObjectiveOptimizationProblem problem) {
         double      result = 0, min;
         Population  tmpPPO = new Population();

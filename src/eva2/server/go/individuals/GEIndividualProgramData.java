@@ -108,6 +108,7 @@ public class GEIndividualProgramData extends AbstractEAIndividual implements Int
         cloneAEAObjects((AbstractEAIndividual) individual);
     }
 
+    @Override
     public Object clone() {
         return (Object) new GEIndividualProgramData(this);
     }
@@ -116,6 +117,7 @@ public class GEIndividualProgramData extends AbstractEAIndividual implements Int
      * @param individual      The individual to compare to.
      * @return boolean if equal true else false.
      */
+    @Override
     public boolean equalGenotypes(AbstractEAIndividual individual) {
         if (individual instanceof GEIndividualProgramData) {
             GEIndividualProgramData indy = (GEIndividualProgramData) individual;
@@ -302,6 +304,7 @@ public class GEIndividualProgramData extends AbstractEAIndividual implements Int
     /** This method allows you to request a certain amount of double data
      * @param length    The lenght of the double[] that is to be optimized
      */
+    @Override
     public void setProgramDataLength (int length) {
         GPArea[] oldArea    = this.m_Area;
         Object[][] oldRulz  = this.m_Rules;
@@ -417,6 +420,7 @@ public class GEIndividualProgramData extends AbstractEAIndividual implements Int
     /** This method allows you to read the program stored as Koza style node tree
      * @return GPNode representing the binary data.
      */
+    @Override
     public InterfaceProgram[] getProgramData() {
 //        if (true) {
 //            String test ="GE decoding:\n";
@@ -453,6 +457,7 @@ public class GEIndividualProgramData extends AbstractEAIndividual implements Int
      * an update from the genotype
      * @return InterfaceProgram[] representing the Program.
      */
+    @Override
     public InterfaceProgram[] getProgramDataWithoutUpdate() {
         return this.m_Phenotype;
     }
@@ -460,6 +465,7 @@ public class GEIndividualProgramData extends AbstractEAIndividual implements Int
     /** This method allows you to set the program phenotype.
      * @param program    The new program.
      */
+    @Override
     public void SetProgramPhenotype(InterfaceProgram[] program) {
         if (program instanceof AbstractGPNode[]) {
             this.m_Phenotype = new AbstractGPNode[program.length];
@@ -473,6 +479,7 @@ public class GEIndividualProgramData extends AbstractEAIndividual implements Int
      * Warning - this is not implemented, it only sets the phenotype using SetProgramData.
      * @param program    The new program.
      */
+    @Override
     public void SetProgramGenotype(InterfaceProgram[] program) {
         this.SetProgramPhenotype(program);
         if (program instanceof AbstractGPNode[]) System.err.println("Warning setProgram() for GEIndividualProgramData not implemented!");
@@ -481,6 +488,7 @@ public class GEIndividualProgramData extends AbstractEAIndividual implements Int
     /** This method allows you to set the function area
      * @param area  The area contains functions and terminals
      */
+    @Override
     public void SetFunctionArea(Object[] area) {
         if (area instanceof GPArea[]) {
             this.m_Area     = new GPArea[area.length];
@@ -494,6 +502,7 @@ public class GEIndividualProgramData extends AbstractEAIndividual implements Int
     /** This method allows you to set the function area
      * @return The function area
      */
+    @Override
     public Object[] getFunctionArea() {
         return this.m_Area;
     }
@@ -506,6 +515,7 @@ public class GEIndividualProgramData extends AbstractEAIndividual implements Int
      * @param obj   The initial value for the phenotype
      * @param opt   The optimization problem that is to be solved.
      */
+    @Override
     public void initByValue(Object obj, InterfaceOptimizationProblem opt) {
         if (obj instanceof InterfaceProgram) {
             this.SetProgramGenotype((InterfaceProgram[])obj);
@@ -521,6 +531,7 @@ public class GEIndividualProgramData extends AbstractEAIndividual implements Int
      * noteably the Genotype.
      * @return A descriptive string
      */
+    @Override
     public String getStringRepresentation() {
         String result = "";
         result += "GEIndividual coding program:\n";
@@ -544,6 +555,7 @@ public class GEIndividualProgramData extends AbstractEAIndividual implements Int
         /** This method allows you to read the binary data
          * @return BitSet representing the binary data.
          */
+    @Override
         public BitSet getBGenotype() {
             return this.m_Genotype;
         }
@@ -552,6 +564,7 @@ public class GEIndividualProgramData extends AbstractEAIndividual implements Int
          * memetic algorithms.
          * @param binaryData    The new binary data.
          */
+    @Override
         public void SetBGenotype(BitSet binaryData) {
             this.m_Genotype = binaryData;
         }
@@ -561,10 +574,12 @@ public class GEIndividualProgramData extends AbstractEAIndividual implements Int
          * of the last significat bit.
          * @return The length of the genotype.
          */
+    @Override
         public int getGenotypeLength() {
             return this.m_GenotypeLengthPerProgram*this.m_Area.length;
         }
 
+    @Override
         public void defaultInit(InterfaceOptimizationProblem prob) {
             for (int i = 0; i < this.m_GenotypeLengthPerProgram*this.m_Area.length; i++) {
                 if (RNG.flipCoin(0.5)) this.m_Genotype.set(i);
@@ -574,6 +589,7 @@ public class GEIndividualProgramData extends AbstractEAIndividual implements Int
 
         /** This method performs a simple one point mutation in the genotype
          */
+    @Override
         public void defaultMutate() {
             int mutationIndex = RNG.randomInt(0, this.m_GenotypeLengthPerProgram*this.m_Area.length);
             //if (mutationIndex > 28) System.out.println("Mutate: " + this.getSolutionRepresentationFor());
@@ -589,6 +605,7 @@ public class GEIndividualProgramData extends AbstractEAIndividual implements Int
      * name to the current object.
      * @return The name.
      */
+    @Override
     public String getName() {
         return "GE individual";
     }

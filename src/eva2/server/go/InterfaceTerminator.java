@@ -19,6 +19,7 @@ public interface InterfaceTerminator {
 	public boolean isTerminated(PopulationInterface pop);
 	public boolean isTerminated(InterfaceSolutionSet pop);
 
+    @Override
 	public String toString();
 	public String lastTerminationMessage();
 	public void init(InterfaceOptimizationProblem prob);

@@ -170,6 +170,7 @@ public class EvAJobList extends PropertySelectableList<EvAJob> implements Serial
         genericArrayEditor.setWithSetButton(false);
         ActionListener al = new ActionListener() {
 
+            @Override
             public void actionPerformed(ActionEvent e) {
                 EvAStatisticalEvaluation.evaluate((InterfaceTextListener) jobList, jobList.getObjects(), genericArrayEditor.getSelectedIndices(),
                         (StatsOnSingleDataSetEnum[]) EvAStatisticalEvaluation.statsParams.getOneSampledStats().getSelectedEnum(StatsOnSingleDataSetEnum.values()),
@@ -178,12 +179,14 @@ public class EvAJobList extends PropertySelectableList<EvAJob> implements Serial
         };
         ActionListener sl = new ActionListener() {
 
+            @Override
             public void actionPerformed(ActionEvent e) {
                 genericArrayEditor.selectDeselectAll();
             }
         };
         ActionListener sal = new ActionListener() {
 
+            @Override
             public void actionPerformed(ActionEvent e) {
                 jobList.saveSelectedJobs(genericArrayEditor);
             }
@@ -209,6 +212,7 @@ public class EvAJobList extends PropertySelectableList<EvAJob> implements Serial
     private static ActionListener getReuseActionListener(final Component parent, final EvAJobList jobList) {
         ActionListener al = new ActionListener() {
 
+            @Override
             public void actionPerformed(ActionEvent e) {
                 List<EvAJob> jobs = jobList.getSelectedJobs();
                 if (jobs.size() == 1) {
@@ -229,6 +233,7 @@ public class EvAJobList extends PropertySelectableList<EvAJob> implements Serial
     private static ActionListener getClearSelectedActionListener(final Component parent, final EvAJobList jobList) {
         ActionListener al = new ActionListener() {
 
+            @Override
             public void actionPerformed(ActionEvent e) {
                 List<EvAJob> jobs = jobList.getSelectedJobs();
                 for (EvAJob j : jobs) {
@@ -268,6 +273,7 @@ public class EvAJobList extends PropertySelectableList<EvAJob> implements Serial
     /*
      * (non-Javadoc) @see eva2.server.stat.InterfaceTextListener#print(java.lang.String)
      */
+    @Override
     public void print(String str) {
         if (listeners != null) {
             for (InterfaceTextListener lst : listeners) {
@@ -279,6 +285,7 @@ public class EvAJobList extends PropertySelectableList<EvAJob> implements Serial
     /*
      * (non-Javadoc) @see eva2.server.stat.InterfaceTextListener#println(java.lang.String)
      */
+    @Override
     public void println(String str) {
         if (listeners != null) {
             for (InterfaceTextListener lst : listeners) {

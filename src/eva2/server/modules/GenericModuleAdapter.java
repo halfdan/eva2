@@ -86,6 +86,7 @@ public class GenericModuleAdapter extends AbstractModuleAdapter implements Seria
      * @see StatisticsWithGUI
      * @return the EvATabbedFrameMaker
      */
+    @Override
     public EvATabbedFrameMaker getModuleFrame() {
     	if (!(statisticsModule instanceof StatisticsWithGUI)) {
     		System.err.println("Error: Unable to create Frame when startet with noGUI option (GenericModuleAdapter)!");
@@ -151,6 +152,7 @@ public class GenericModuleAdapter extends AbstractModuleAdapter implements Seria
         return statisticsModule;
     }
 
+    @Override
     public EvAJob scheduleJob() {
         EvAJob job = jobList.addJob(((Processor) processor).getGOParams(), (AbstractStatistics) (((Processor) processor).getStatistics()));
         jobPanel.getEditor().setValue(jobList);

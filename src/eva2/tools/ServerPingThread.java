@@ -26,6 +26,7 @@ public class ServerPingThread extends Thread {
     this.hostname = hostname;
   }
 
+    @Override
   public void run() {
     while (true) {
       try {

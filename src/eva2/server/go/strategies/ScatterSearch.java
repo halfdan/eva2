@@ -95,6 +95,7 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
 		this.lastImprovementCount = o.lastImprovementCount;
 	}
 	
+    @Override
 	public Object clone() {
 		return new ScatterSearch(this);
 	}
@@ -104,23 +105,28 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
 		GenericObjectEditor.setHideProperty(this.getClass(), "population", true);
 	}
 
+    @Override
 	public void setProblem(InterfaceOptimizationProblem problem) {
 		this.problem = (AbstractOptimizationProblem)problem;
 	}
 
+    @Override
 	public InterfaceSolutionSet getAllSolutions() {
 		return new SolutionSet(refSet);
 	}
 
+    @Override
 	public Population getPopulation() {
 		return refSet;
 	}
 
+    @Override
 	public void init() {
 		defaultInit();
 		initRefSet(diversify());
 	}
 
+    @Override
 	public void initByPopulation(Population pop, boolean reset) {
 		defaultInit();
 		
@@ -176,6 +182,7 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
 //		return indy.getFitness(0);
 //	}
 	
+    @Override
 	public void registerPopulationStateChanged(Object source, String name) {
 		// The events of the interim hill climbing population will be caught here 
 		if (name.compareTo(Population.funCallIntervalReached) == 0) {
@@ -193,6 +200,7 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
 		//else System.err.println("ERROR, event was " + name);
 	}
 
+    @Override
 	public void optimize() {
 		// Diversification
 		// Refset Formation
@@ -504,6 +512,7 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
 		return resIndy;
 	}
 
+    @Override
 	public void setPopulation(Population pop) {
 		refSet = pop;
 	}
@@ -664,22 +673,27 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
 
 ///////////// Trivials...
 
+    @Override
 	public void setIdentifier(String name) {
 		m_Identifier = name;
 	}
 
+    @Override
 	public InterfaceOptimizationProblem getProblem() {
 		return problem;
 	}
 
+    @Override
 	public String getStringRepresentation() {
 		return "ScatterSearch";
 	}
 
+    @Override
 	public void addPopulationChangedEventListener(
 			InterfacePopulationChangedEventListener ea) {
 		m_Listener = ea;
 	}
+    @Override
 	public boolean removePopulationChangedEventListener(
 			InterfacePopulationChangedEventListener ea) {
 		if (m_Listener==ea) {
@@ -687,12 +701,15 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
 			return true;
 		} else return false;
 	}
+    @Override
 	public void freeWilly() {}
 	
+    @Override
 	public String getIdentifier() {
 		return m_Identifier;
 	}
 
+    @Override
 	public String getName() {
 		return "ScatterSearch";
 	}

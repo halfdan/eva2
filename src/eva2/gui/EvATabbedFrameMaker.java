@@ -40,6 +40,7 @@ public class EvATabbedFrameMaker implements Serializable, PanelMaker, InterfaceN
         pmContainer.add(pm);
     }
 
+    @Override
     public JPanel makePanel() {
         JPanel tabControlPanel = new JPanel(new GridBagLayout());
 
@@ -111,6 +112,7 @@ public class EvATabbedFrameMaker implements Serializable, PanelMaker, InterfaceN
         }
     }
 
+    @Override
     public void setInformers(List<InterfaceAdditionalPopulationInformer> informers) {
         // if the informers have changed, update the GUI element which displays them
         try {
@@ -169,6 +171,7 @@ class ClosableTabComponent extends JPanel {
          
         //make JLabel read titles from JTabbedPane
         JLabel label = new JLabel() {
+            @Override
             public String getText() {
                 int index = pane.indexOfTabComponent(ClosableTabComponent.this);
                 if (index != -1) {
@@ -210,6 +213,7 @@ class ClosableTabComponent extends JPanel {
             addActionListener(this);
         }
  
+        @Override
         public void actionPerformed(ActionEvent e) {
             int i = pane.indexOfTabComponent(ClosableTabComponent.this);
             if (i != -1) {
@@ -252,10 +256,12 @@ class ClosableTabComponent extends JPanel {
         }
  
         //we don't want to update UI for this button
+        @Override
         public void updateUI() {
         }
  
         //paint the cross
+        @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
             Graphics2D g2 = (Graphics2D) g.create();
@@ -273,6 +279,7 @@ class ClosableTabComponent extends JPanel {
     }
  
     private final static MouseListener buttonMouseListener = new MouseAdapter() {
+        @Override
         public void mouseEntered(MouseEvent e) {
             Component component = e.getComponent();
             if (component instanceof AbstractButton) {
@@ -281,6 +288,7 @@ class ClosableTabComponent extends JPanel {
             }
         }
  
+        @Override
         public void mouseExited(MouseEvent e) {
             Component component = e.getComponent();
             if (component instanceof AbstractButton) {

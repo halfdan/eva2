@@ -44,10 +44,12 @@ public class PSOActivityFeedbackControl implements ParamAdaption, Serializable {
 		deltaInertness = o.deltaInertness;
 	}
 
+    @Override
 	public Object clone() {
 		return new PSOActivityFeedbackControl(this);
 	}
 
+    @Override
 	public Object calcValue(Object obj, Population pop, int iteration, int maxIteration) {
 		if (obj instanceof ParticleSwarmOptimization) {
 			ParticleSwarmOptimization pso = (ParticleSwarmOptimization)obj;
@@ -62,6 +64,7 @@ public class PSOActivityFeedbackControl implements ParamAdaption, Serializable {
 		}
 	}
 
+    @Override
 	public String getControlledParam() {
 		return target;
 	}
@@ -140,8 +143,10 @@ public class PSOActivityFeedbackControl implements ParamAdaption, Serializable {
 		return "Controls the inertness factor based on the average velocity.";
 	}
 
+    @Override
 	public void finish(Object obj, Population pop) {}
 
+    @Override
 	public void init(Object obj, Population pop, Object[] initialValues) {}
 	
 	public boolean isExponentialSchedule() {

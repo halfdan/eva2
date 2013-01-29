@@ -40,6 +40,7 @@ public class StandardMergingStrategy implements InterfaceMergingStrategy, java.i
 		this.mu = other.mu;
 	}
 	
+    @Override
 	public Object clone(){
 		return (Object) new StandardMergingStrategy(this);
 	}
@@ -51,6 +52,7 @@ public class StandardMergingStrategy implements InterfaceMergingStrategy, java.i
 	 * the subswarms are merged, if they overlap (or are very close) and if they are of equal state
 	 * (non-Javadoc) @see javaeva.server.oa.go.Operators.NichePSO.InterfaceMergingStrategie#shouldMergeSubswarms(javaeva.server.oa.go.Strategies.ParticleSubSwarmOptimization, javaeva.server.oa.go.Strategies.ParticleSubSwarmOptimization)
 	 */
+    @Override
 	public boolean shouldMergeSubswarms(ParticleSubSwarmOptimization subswarm1,	ParticleSubSwarmOptimization subswarm2) {
 		// check for equal state
 		if (subswarm1.isActive() && !subswarm2.isActive()) return false;
@@ -113,6 +115,7 @@ public class StandardMergingStrategy implements InterfaceMergingStrategy, java.i
 	 * @param i
 	 * @param j
 	 */
+    @Override
 	public void mergeSubswarms(
 			int i,
 			int j,

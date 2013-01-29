@@ -89,6 +89,7 @@ public class JProxyRemoteThread implements InvocationHandler, Serializable {
   /**
    *
    */
+    @Override
   public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
     Object ret = null;
     if (method.getName().equals("getServerName")) {

@@ -18,10 +18,12 @@ public class EnumEditor extends PropertyEditorSupport {
 	/** The Enum values that may be chosen */
 	private Enum[] 	enumConstants;
 
+    @Override
 	public String getAsText() {
 		return getValue().toString();
 	}
 	
+    @Override
 	public void setValue(Object value) {
 		if (value instanceof Enum) {
 			enumConstants = ((Enum)value).getClass().getEnumConstants();
@@ -67,6 +69,7 @@ public class EnumEditor extends PropertyEditorSupport {
 			PropertyValueSelector ps = new PropertyValueSelector(ed);
 			JFrame f = new JFrame();
 			f.addWindowListener(new WindowAdapter() {
+                @Override
 				public void windowClosing(WindowEvent e) {
 					System.exit(0);
 				}

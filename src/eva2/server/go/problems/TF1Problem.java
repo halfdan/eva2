@@ -75,6 +75,7 @@ public class TF1Problem extends AbstractMultiObjectiveOptimizationProblem implem
     /** This method returns a deep clone of the problem.
      * @return  the clone
      */
+    @Override
     public Object clone() {
         return (Object) new TF1Problem(this);
     }
@@ -82,6 +83,7 @@ public class TF1Problem extends AbstractMultiObjectiveOptimizationProblem implem
     /** This method inits a given population
      * @param population    The populations that is to be inited
      */
+    @Override
     public void initPopulation(Population population) {
         this.m_ParetoFront = new Population();
 
@@ -109,6 +111,7 @@ public class TF1Problem extends AbstractMultiObjectiveOptimizationProblem implem
     /** This method evaluate a single individual and sets the fitness values
      * @param individual    The individual that is to be evalutated
      */
+    @Override
     public void evaluate(AbstractEAIndividual individual) {
         double[]        x;
         double[]        fitness;
@@ -172,6 +175,7 @@ public class TF1Problem extends AbstractMultiObjectiveOptimizationProblem implem
         return result;
     }
 
+    @Override
     public void drawAdditionalData(Plot plot, Population pop, int index) {
 		AbstractMultiObjectiveOptimizationProblem.drawWithConstraints(plot, pop, m_Border, index);
 	}
@@ -180,6 +184,7 @@ public class TF1Problem extends AbstractMultiObjectiveOptimizationProblem implem
      * @param opt       The Optimizer that is used or had been used.
      * @return The description.
      */
+    @Override
     public String getStringRepresentationForProblem(InterfaceOptimizer opt) {
         String result = "";
 
@@ -231,6 +236,7 @@ public class TF1Problem extends AbstractMultiObjectiveOptimizationProblem implem
      * name to the current object.
      * @return The name.
      */
+    @Override
     public String getName() {
         return "T1 Problem";
     }
@@ -328,13 +334,16 @@ public class TF1Problem extends AbstractMultiObjectiveOptimizationProblem implem
      * Singleobjective converter if you choose to.
      * @param b     The new MO2SO converter.
      */
+    @Override
     public void setMOSOConverter(InterfaceMOSOConverter b) {
         this.m_MOSOConverter = b;
         this.m_MOSOConverter.setOutputDimension(this.m_OutputDimension);
     }
+    @Override
     public InterfaceMOSOConverter getMOSOConverter() {
         return this.m_MOSOConverter;
     }
+    @Override
     public String mOSOConverterTipText() {
         return "Choose a Multiobjective to Singleobjective converter.";
     }

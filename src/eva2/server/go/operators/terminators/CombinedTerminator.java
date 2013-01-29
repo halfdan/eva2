@@ -41,16 +41,19 @@ public class CombinedTerminator implements InterfaceTerminator, Serializable {
 		return "Boolean combination of two terminators.";
 	}
 	
+    @Override
 	public void init(InterfaceOptimizationProblem prob) {
 		if (t1 != null) t1.init(prob);
 		if (t2 != null) t2.init(prob);
 		msg = "Not terminated.";
 	}
 
+    @Override
 	public boolean isTerminated(InterfaceSolutionSet solSet) {
 		return isTerm(solSet);
 	}
 
+    @Override
 	public boolean isTerminated(PopulationInterface pop) {
 		return isTerm(pop);
 	}
@@ -106,6 +109,7 @@ public class CombinedTerminator implements InterfaceTerminator, Serializable {
 		return ret;
 	}
 	
+    @Override
 	public String lastTerminationMessage() {
 		return msg;
 	}

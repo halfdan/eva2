@@ -48,6 +48,7 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
         cloneAEAObjects((AbstractEAIndividual) individual);
     }
 
+    @Override
     public Object clone() {
         return (Object) new GAESIndividualBinaryDoubleData(this);
     }
@@ -56,6 +57,7 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
      * @param individual      The individual to compare to.
      * @return boolean if equal true else false.
      */
+    @Override
     public boolean equalGenotypes(AbstractEAIndividual individual) {
         if (individual instanceof GAESIndividualBinaryDoubleData) {
             GAESIndividualBinaryDoubleData indy = (GAESIndividualBinaryDoubleData)individual;
@@ -70,11 +72,13 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
     /** This method will allow a default initialisation of the individual
      * @param opt   The optimization problem that is to be solved.
      */
+    @Override
     public void init(InterfaceOptimizationProblem opt) {
         ((AbstractEAIndividual)this.m_Numbers).init(opt);
         ((AbstractEAIndividual)this.m_BitSet).init(opt);
     }
 
+    @Override
     public void defaultInit(InterfaceOptimizationProblem prob) {
         ((AbstractEAIndividual)this.m_Numbers).defaultInit(prob);
         ((AbstractEAIndividual)this.m_BitSet).defaultInit(prob);   	
@@ -85,6 +89,7 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
      * @param obj   The initial value for the phenotype
      * @param opt   The optimization problem that is to be solved.
      */
+    @Override
     public void initByValue(Object obj, InterfaceOptimizationProblem opt) {
         if (obj instanceof Object[]) {
             if (((Object[])obj)[0] instanceof double[]) {
@@ -103,11 +108,13 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
 
     /** This method will mutate the individual randomly
      */
+    @Override
     public void mutate() {
         if (RNG.flipCoin(this.m_MutationProbability))((AbstractEAIndividual)this.m_Numbers).mutate();
         if (RNG.flipCoin(this.m_MutationProbability))((AbstractEAIndividual)this.m_BitSet).mutate();
     }
 
+    @Override
     public void defaultMutate() {
     	((AbstractEAIndividual)this.m_Numbers).defaultMutate();
     	((AbstractEAIndividual)this.m_BitSet).defaultMutate();
@@ -118,6 +125,7 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
      * @param partners  The possible partners
      * @return offsprings
      */
+    @Override
     public AbstractEAIndividual[] mateWith(Population partners) {
         AbstractEAIndividual[] result;
         if (RNG.flipCoin(this.m_CrossoverProbability)) {
@@ -172,6 +180,7 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
      * noteably the Genotype.
      * @return A descriptive string
      */
+    @Override
     public String getStringRepresentation() {
         String result = "This is a hybrid Individual:\n";
         result += "The Numbers Part:\n"+((AbstractEAIndividual)this.m_Numbers).getStringRepresentation();
@@ -185,6 +194,7 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
     /** This method allows you to request a certain amount of double data
      * @param length    The lenght of the double[] that is to be optimized
      */
+    @Override
     public void setDoubleDataLength (int length) {
         this.m_Numbers.setDoubleDataLength(length);
         this.m_BitSet.setBinaryDataLength(length);
@@ -193,6 +203,7 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
     /** This method returns the length of the double data set
      * @return The number of bits stored
      */
+    @Override
     public int size() {
         return this.m_Numbers.size();
     }
@@ -202,6 +213,7 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
      * for dimension d.
      * @param range     The new range for the double data.
      */
+    @Override
     public void SetDoubleRange(double[][] range) {
         this.m_Numbers.SetDoubleRange(range);
     }
@@ -209,6 +221,7 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
     /** This method will return the range for all double attributes.
      * @return The range array.
      */
+    @Override
     public double[][] getDoubleRange() {
         return this.m_Numbers.getDoubleRange();
     }
@@ -216,6 +229,7 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
     /** This method allows you to read the double data
      * @return BitSet representing the double data.
      */
+    @Override
     public double[] getDoubleData() {
         return this.m_Numbers.getDoubleData();
     }
@@ -224,6 +238,7 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
      * an update from the genotype
      * @return double[] representing the double data.
      */
+    @Override
     public double[] getDoubleDataWithoutUpdate() {
         return this.m_Numbers.getDoubleDataWithoutUpdate();
     }
@@ -232,6 +247,7 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
      * @param doubleData    The new double data.
      * @see InterfaceDataTypeDouble.SetDoubleData()
      */
+    @Override
     public void SetDoublePhenotype(double[] doubleData) {
         this.m_Numbers.SetDoublePhenotype(doubleData);
     }
@@ -241,6 +257,7 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
      * @param doubleData    The new double data.
      * @see InterfaceDataTypeDouble.SetDoubleDataLamarckian()
      */
+    @Override
     public void SetDoubleGenotype(double[] doubleData) {
         this.m_Numbers.SetDoubleGenotype(doubleData);
     }
@@ -251,6 +268,7 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
     /** This method allows you to request a certain amount of binary data
      * @param length    The lenght of the BitSet that is to be optimized
      */
+    @Override
     public void setBinaryDataLength (int length) {
         this.m_Numbers.setDoubleDataLength(length);
         this.m_BitSet.setBinaryDataLength(length);
@@ -266,6 +284,7 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
     /** This method allows you to read the binary data
      * @return BitSet representing the binary data.
      */
+    @Override
     public BitSet getBinaryData() {
         return this.m_BitSet.getBinaryData();
     }
@@ -274,6 +293,7 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
      * an update from the genotype
      * @return BitSet representing the binary data.
      */
+    @Override
     public BitSet getBinaryDataWithoutUpdate() {
         return this.m_BitSet.getBinaryDataWithoutUpdate();
     }
@@ -282,6 +302,7 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
      * @param binaryData    The new binary data.
      * @see InterfaceDataTypeBinary.SetBinaryData()
      */
+    @Override
     public void SetBinaryPhenotype(BitSet binaryData) {
         this.m_BitSet.SetBinaryPhenotype(binaryData);
     }
@@ -291,6 +312,7 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
      * @param binaryData    The new binary data.
      * @see InterfaceBinaryData.SetBinaryDataLamarckian()
      */
+    @Override
     public void SetBinaryGenotype(BitSet binaryData) {
         this.m_BitSet.SetBinaryGenotype(binaryData);
     }
@@ -302,6 +324,7 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
      * name to the current object.
      * @return The name.
      */
+    @Override
     public String getName() {
         return "GA/ES individual";
     }

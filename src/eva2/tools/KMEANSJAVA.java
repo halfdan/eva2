@@ -134,6 +134,7 @@ class ClusterComp implements Comparator {
   /**
    *
    */
+    @Override
   public int compare (Object p1,Object p2) {
     int x1 = ((Cluster) p1).m_SamplesInCluster;
     int x2 = ((Cluster) p2).m_SamplesInCluster;
@@ -146,6 +147,7 @@ class ClusterComp implements Comparator {
   /**
    *
    */
+    @Override
   public boolean equals (Object x) {
     return false;
   }

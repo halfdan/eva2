@@ -44,6 +44,7 @@ public class DLine extends DComponent
     this.color = color;
   }
 
+    @Override
   public DRectangle getRectangle(){
     double x = start.x, y = start.y, width = end.x - x, height = end.y - y;
     if( width < 0 ) { x += width; width *= -1; }
@@ -51,6 +52,7 @@ public class DLine extends DComponent
     return new DRectangle( x, y, width, height );
   }
 
+    @Override
   public void paint( DMeasures m ){
     //System.out.println("DLine.paint(Measures): "+this);
     Graphics g = m.getGraphics();
@@ -64,6 +66,7 @@ public class DLine extends DComponent
     }
   }
 
+    @Override
   public String toString(){
     return "DLine[("+start.x+","+start.y+") --> ("+end.x+","+end.y+", color: "+color+"]";
   }

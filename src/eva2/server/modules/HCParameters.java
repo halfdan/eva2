@@ -60,6 +60,7 @@ public class HCParameters extends AbstractGOParameters implements InterfaceGOPar
     /**
      *
      */
+    @Override
     public Object clone() {
         return new HCParameters(this);
     }
@@ -70,6 +71,7 @@ public class HCParameters extends AbstractGOParameters implements InterfaceGOPar
         return "This is a Hill-Climber, use a population size > 1 for a Multi-Start Hill-Climber.";
     }
 
+    @Override
     public void setOptimizer(InterfaceOptimizer optimizer) {
         // i'm a Monte Carlo Search Algorithm
         // *pff* i'll ignore that!

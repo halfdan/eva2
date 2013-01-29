@@ -25,8 +25,10 @@ public abstract class AbstractParameterControl implements InterfaceParameterCont
 		initialValues = o.initialValues.clone();
 	}
 	
+    @Override
 	public abstract Object clone();
 	
+    @Override
 	public void init(Object obj, Population initialPop) {
 		String[] params = getControlledParameters();
 		if (params != null) {
@@ -35,6 +37,7 @@ public abstract class AbstractParameterControl implements InterfaceParameterCont
 		}
 	}
 	
+    @Override
 	public void finish(Object obj, Population finalPop) {
 		String[] params = getControlledParameters();
 		if (params != null) {
@@ -42,6 +45,7 @@ public abstract class AbstractParameterControl implements InterfaceParameterCont
 		}
 	}
 
+    @Override
 	public void updateParameters(Object obj, Population pop, int iteration, int maxIteration) {
 		String[] params = getControlledParameters();
 		Object[] vals = getValues(obj, pop, iteration, maxIteration);
@@ -55,6 +59,7 @@ public abstract class AbstractParameterControl implements InterfaceParameterCont
 		}
 	}
 	
+    @Override
 	public void updateParameters(Object obj) {
 		updateParameters(obj, null, -1, -1);
 	}

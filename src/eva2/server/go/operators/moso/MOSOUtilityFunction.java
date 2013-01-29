@@ -21,6 +21,7 @@ public class MOSOUtilityFunction implements InterfaceMOSOConverter, java.io.Seri
         System.out.println("Warning no source!");
         this.m_OutputDimension  = b.m_OutputDimension;
     }
+    @Override
     public Object clone() {
         return (Object) new MOSOUtilityFunction(this);
     }
@@ -32,6 +33,7 @@ public class MOSOUtilityFunction implements InterfaceMOSOConverter, java.io.Seri
      * if you still want to access the original fitness values.
      * @param pop       The population to process.
      */
+    @Override
     public void convertMultiObjective2SingleObjective(Population pop) {
         for (int i = 0; i < pop.size(); i++) {
              this.convertSingleIndividual((AbstractEAIndividual)pop.get(i));
@@ -41,6 +43,7 @@ public class MOSOUtilityFunction implements InterfaceMOSOConverter, java.io.Seri
     /** This method processes a single individual
      * @param indy      The individual to process.
      */
+    @Override
     public void convertSingleIndividual(AbstractEAIndividual indy) {
         double[]    resultFit = new double[1];
         double[]    tmpFit;
@@ -66,6 +69,7 @@ public class MOSOUtilityFunction implements InterfaceMOSOConverter, java.io.Seri
      * the optimization problem.
      * @param dim       Outputdimension of the problem
      */
+    @Override
     public void setOutputDimension(int dim) {
         this.m_OutputDimension = dim;
     }
@@ -73,6 +77,7 @@ public class MOSOUtilityFunction implements InterfaceMOSOConverter, java.io.Seri
     /** This method returns a description of the objective
      * @return A String
      */
+    @Override
     public String getStringRepresentation() {
         return this.getName()+"\n";
     }
@@ -84,6 +89,7 @@ public class MOSOUtilityFunction implements InterfaceMOSOConverter, java.io.Seri
      * name to the current object.
      * @return The name.
      */
+    @Override
     public String getName() {
         return "Utility Function";
     }

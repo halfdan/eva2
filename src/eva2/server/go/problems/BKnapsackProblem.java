@@ -140,6 +140,7 @@ public class BKnapsackProblem extends AbstractProblemBinary implements java.io.S
         this.m_Lamarckism        = b.m_Lamarckism;
     }
 
+    @Override
     public int getProblemDimension() {
     	return items.length;
     }
@@ -147,12 +148,14 @@ public class BKnapsackProblem extends AbstractProblemBinary implements java.io.S
     /** This method returns a deep clone of the problem.
      * @return  the clone
      */
+    @Override
     public Object clone() {
         return (Object) new BKnapsackProblem(this);
     }
 
     /** This method inits the Problem to log multiruns
      */
+    @Override
     public void initProblem() {
         // nothing to init here
     }
@@ -173,6 +176,7 @@ public class BKnapsackProblem extends AbstractProblemBinary implements java.io.S
     /** This method evaluates a single individual and sets the fitness values
      * @param individual    The individual that is to be evalutated
      */
+    @Override
     public void evaluate(AbstractEAIndividual individual) {
         BitSet          tmpBitSet;
         double[]        result;
@@ -247,6 +251,7 @@ public class BKnapsackProblem extends AbstractProblemBinary implements java.io.S
      * @param l         The length of the BitSet.
      * @return          Double[]
      */
+    @Override
     public double[] eval(BitSet b) {
         double[]                result = new double[3];
 
@@ -272,6 +277,7 @@ public class BKnapsackProblem extends AbstractProblemBinary implements java.io.S
      * @param individual    The individual that is to be shown.
      * @return The description.
      */
+    @Override
     public String getSolutionRepresentationFor(AbstractEAIndividual individual) {
         BitSet          tmpBitSet;
         double[]        report;
@@ -293,6 +299,7 @@ public class BKnapsackProblem extends AbstractProblemBinary implements java.io.S
      * @param opt       The Optimizer that is used or had been used.
      * @return The description.
      */
+    @Override
     public String getStringRepresentationForProblem(InterfaceOptimizer opt) {
         StringBuffer result = new StringBuffer(100);
 
@@ -326,6 +333,7 @@ public class BKnapsackProblem extends AbstractProblemBinary implements java.io.S
      * name to the current object.
      * @return The name.
      */
+    @Override
     public String getName() {
         return "Single Knapsack Problem";
     }

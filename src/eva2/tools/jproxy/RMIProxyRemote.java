@@ -94,6 +94,7 @@ public class RMIProxyRemote implements InvocationHandler,Serializable {
   /**
    *
    */
+    @Override
    public Object invoke (Object proxy, Method m, Object[] args) throws Throwable {
     long start = System.currentTimeMillis();
     ++m_counter;

@@ -176,10 +176,12 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
         this.m_maxSpeciesSize				= a.m_maxSpeciesSize;
     }
 
+    @Override
     public Object clone() {
         return (Object) new ClusterBasedNichingEA(this);
     }
 
+    @Override
     public void init() {
     	if (m_Undifferentiated==null) this.m_Undifferentiated = new Population(m_PopulationSize);
     	else {
@@ -235,6 +237,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
      * @param pop       The initial population
      * @param reset     If true the population is reset.
      */
+    @Override
     public void initByPopulation(Population pop, boolean reset) {
         this.m_Undifferentiated = (Population)pop.clone();
         if (reset) this.m_Undifferentiated.init();
@@ -513,6 +516,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
     	return retPop;
     }
     
+    @Override
     public void optimize() {
     	Population reinitPop = null;
     	if (TRACE_STATE) {
@@ -951,13 +955,16 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
      * @param source        The source of the event.
      * @param name          Could be used to indicate the nature of the event.
      */
+    @Override
     public void registerPopulationStateChanged(Object source, String name) {
         //Population population = ((InterfaceOptimizer)source).getPopulation();
     }
 
+    @Override
     public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
         this.m_Listener = ea;
     }
+    @Override
 	public boolean removePopulationChangedEventListener(
 			InterfacePopulationChangedEventListener ea) {
 		if (m_Listener==ea) {
@@ -972,10 +979,12 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
     /** This method will set the problem that is to be optimized
      * @param problem
      */
+    @Override
     public void setProblem (InterfaceOptimizationProblem problem) {
         this.m_Problem = problem;
         this.m_Optimizer.setProblem(this.m_Problem);
     }
+    @Override
     public InterfaceOptimizationProblem getProblem () {
         return this.m_Problem;
     }
@@ -984,6 +993,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
      * and the applied methods.
      * @return A descriptive string
      */
+    @Override
     public String getStringRepresentation() {
         String result = "";
         result += "Genetic Algorithm:\n";
@@ -996,9 +1006,11 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
     /** This method allows you to set an identifier for the algorithm
      * @param name      The indenifier
      */
+    @Override
      public void setIdentifier(String name) {
         this.m_Identifier = name;
     }
+    @Override
      public String getIdentifier() {
          return this.m_Identifier;
      }
@@ -1006,6 +1018,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
     /** This method is required to free the memory on a RMIServer,
      * but there is nothing to implement.
      */
+    @Override
     public void freeWilly() {
 
     }
@@ -1022,10 +1035,12 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
     /** This method will return a naming String
      * @return The name of the algorithm
      */
+    @Override
     public String getName() {
         return "CBN-EA";
     }
 
+    @Override
     public Population getPopulation() {
 //        this.m_Population = (Population)m_Undifferentiated.clone();
 //        for (int i = 0; i < this.m_Species.size(); i++) this.m_Population.addPopulation((Population)this.m_Species.get(i));
@@ -1033,6 +1048,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
         return this.m_Population;
     }
     
+    @Override
     public void setPopulation(Population pop){
         this.m_Undifferentiated = pop;
         if (m_Archive==null) m_Archive = new Population();
@@ -1057,6 +1073,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
     	return (Population)m_Archive.clone();
     }
     
+    @Override
     public SolutionSet getAllSolutions() {
     	// return inactive species
     	Population sols = getArchivedSolutions();
@@ -1290,11 +1307,13 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
 		return "If fitness improves less than this value within the halting window, convergence is assumed. May be set to zero.";
 	}
 
+    @Override
 	public String[] getAdditionalDataHeader() {
 		return new String[]{"numUndiff","numActSpec","avgSpecMeas","numArchived", 
 				"archivedMedCorr", "archivedMeanDist", "numCollisions", "clustSig"}; 
 	}
 	
+    @Override
 	public String[] getAdditionalDataInfo() {
 		return new String[] {
 				"The number of exploring individuals in the main population",
@@ -1308,6 +1327,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
 		};
 	}
 	
+    @Override
 	public Object[] getAdditionalDataValue(PopulationInterface pop) {
 //		int actives = countActiveSpec();
 		return new Object[] {

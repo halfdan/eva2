@@ -48,5 +48,6 @@ public interface InterfaceMutation {
      * are actually the same.
      * @param mutator   The other mutation operator
      */
+    @Override
     public boolean equals(Object mutator);
 }

@@ -211,6 +211,7 @@ public class ScaledBorder implements Border
 	  return rect;
   }
   
+    @Override
   public void paintBorder(Component c, Graphics g, int x, int y, int width, int height){
     if( under_construction ) System.out.println("ScaledBorder.paintBorder()");
 
@@ -462,6 +463,7 @@ public class ScaledBorder implements Border
     return d;
   }
 
+    @Override
   public boolean isBorderOpaque(){
     return outer_border.isBorderOpaque();
   }
@@ -535,6 +537,7 @@ public class ScaledBorder implements Border
    * it. Depends on the decimal format applied and the FontMetrics of the 
    * current Graphics instance.
    */
+    @Override
   public Insets getBorderInsets(Component c){
     if( under_construction ) System.out.println("ScaledBorder.getBorderInsets()");
     if( !do_refresh && old_insets != null ) return old_insets;

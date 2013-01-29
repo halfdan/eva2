@@ -22,6 +22,7 @@ public class PropertyBoolSelector extends JCheckBox {
 			setSelected(false);
 
 		addItemListener(new ItemListener () {
+            @Override
 			public void itemStateChanged (ItemEvent evt) {
 				if (evt.getStateChange() == ItemEvent.SELECTED) {
 					m_Editor.setValue(Boolean.TRUE);

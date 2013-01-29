@@ -18,6 +18,7 @@ public class GPNodeAbs extends AbstractGPNode implements java.io.Serializable {
     /** This method will be used to identify the node in the GPAreaEditor
      * @return The name.
      */
+    @Override
     public String getName() {
         return "Abs";
     }
@@ -25,6 +26,7 @@ public class GPNodeAbs extends AbstractGPNode implements java.io.Serializable {
     /** This method allows you to clone the Nodes
      * @return the clone
      */
+    @Override
     public Object clone() {
         return (Object) new GPNodeAbs(this);
     }
@@ -32,6 +34,7 @@ public class GPNodeAbs extends AbstractGPNode implements java.io.Serializable {
     /** This method will return the current arity
      * @return Arity.
      */
+    @Override
     public int getArity() {
         return 1;
     }
@@ -39,6 +42,7 @@ public class GPNodeAbs extends AbstractGPNode implements java.io.Serializable {
     /** This method will evaluate a given node
      * @param environment
      */
+    @Override
     public Object evaluate(InterfaceProgramProblem environment) {
         Object tmpObj;
         double result = 0;

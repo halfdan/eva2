@@ -44,6 +44,7 @@ public class MOCCOParameterizeGDF extends MOCCOPhase implements InterfaceProcess
 
     /** This method will call the init method and will go to stall
      */
+    @Override
     public void initProcessElementParametrization() {
         this.m_Mocco.m_JPanelControl.removeAll();
 
@@ -183,6 +184,7 @@ public class MOCCOParameterizeGDF extends MOCCOPhase implements InterfaceProcess
     }
 
     ActionListener weightListener = new ActionListener() {
+        @Override
         public void actionPerformed(ActionEvent event) {
             double[]    w = new double [m_TradeOff.length];
             double      sum = 0;
@@ -203,6 +205,7 @@ public class MOCCOParameterizeGDF extends MOCCOPhase implements InterfaceProcess
     };
 
     ActionListener continue2 = new ActionListener() {
+        @Override
         public void actionPerformed(ActionEvent event) {
             double[]    w = new double [m_TradeOff.length];
             for (int i = 0; i < m_TradeOff.length; i++) {

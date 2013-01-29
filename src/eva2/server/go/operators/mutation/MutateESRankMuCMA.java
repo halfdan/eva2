@@ -66,6 +66,7 @@ public class MutateESRankMuCMA implements InterfaceAdaptOperatorGenerational, In
 		this.doRankMuUpdate = mutator.doRankMuUpdate;
 	}
 
+    @Override
 	public Object clone() {
 //		if (TRACE) System.out.println("WCMA clone");
 		return new MutateESRankMuCMA(this);
@@ -107,6 +108,7 @@ public class MutateESRankMuCMA implements InterfaceAdaptOperatorGenerational, In
 	 * @param oldGen
 	 * @param selectedP
 	 */
+    @Override
 	public void adaptAfterSelection(Population oldGen, Population selectedP) {
 		Population selectedSorted = selectedP.getSortedBestFirst(new AbstractEAIndividualComparator(-1));
 		
@@ -256,6 +258,7 @@ public class MutateESRankMuCMA implements InterfaceAdaptOperatorGenerational, In
 	/**
 	 * Expects newPop to have correct number of generations set.
 	 */
+    @Override
 	public void adaptGenerational(Population oldPop, Population selectedPop, 
 			Population newPop, boolean updateSelected) {
 		// nothing to do? Oh yes, we can easily transfer the cma-params from the old to the new population. 
@@ -497,6 +500,7 @@ public class MutateESRankMuCMA implements InterfaceAdaptOperatorGenerational, In
 		return selectedPop.getCenterWeighted(weights);
 	}
 	
+    @Override
 	public void crossoverOnStrategyParameters(AbstractEAIndividual indy1,
 			Population partners) {
 		// nothing to do
@@ -507,6 +511,7 @@ public class MutateESRankMuCMA implements InterfaceAdaptOperatorGenerational, In
 		return "Rank-Mu-CMA-Mutator";
 	}
 
+    @Override
 	public String getStringRepresentation() {
 		return "Rank-Mu-CMA-Mutator";
 	}
@@ -515,6 +520,7 @@ public class MutateESRankMuCMA implements InterfaceAdaptOperatorGenerational, In
 		return "The CMA mutator scheme with static cov. matrix, rank-mu update and weighted recombination.";
 	}
 	
+    @Override
 	public void init(AbstractEAIndividual individual,
 			InterfaceOptimizationProblem opt) {
 //		firstAdaptionDone = false;
@@ -544,6 +550,7 @@ public class MutateESRankMuCMA implements InterfaceAdaptOperatorGenerational, In
 
 	}
 
+    @Override
 	public void mutate(AbstractEAIndividual individual) {
 //		if (!firstAdaptionDone) {
 //			if (TRACE) System.out.println("No mutation before first adaptions step");

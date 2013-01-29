@@ -40,6 +40,7 @@ class treeElement implements java.io.Serializable {
         }
     }
 
+    @Override
     public String toString() {
         if (this.m_Index >= 0) return "Ind:"+this.m_Index;
         else {
@@ -71,6 +72,7 @@ public class SelectXProbRouletteWheel implements InterfaceSelection, java.io.Ser
         this.m_SelProbCalculator    = (InterfaceSelectionProbability)a.m_SelProbCalculator.clone();
     }
 
+    @Override
     public Object clone() {
         return (Object) new SelectXProbRouletteWheel(this);
     }
@@ -81,6 +83,7 @@ public class SelectXProbRouletteWheel implements InterfaceSelection, java.io.Ser
      * before hand...
      * @param population    The population that is to be processed.
      */
+    @Override
     public void prepareSelection(Population population) {
         this.m_SelProbCalculator.computeSelectionProbability(population, "Fitness", this.m_ObeyDebsConstViolationPrinciple);
         this.m_TreeRoot = this.buildSelectionTree(population);
@@ -94,6 +97,7 @@ public class SelectXProbRouletteWheel implements InterfaceSelection, java.io.Ser
      * @param size          The number of Individuals to select
      * @return The selected population.
      */
+    @Override
     public Population selectFrom(Population population, int size) {
         Population result = new Population();
         result.setTargetSize(size);
@@ -179,6 +183,7 @@ public class SelectXProbRouletteWheel implements InterfaceSelection, java.io.Ser
      * @param size              The number of partners needed.
      * @return The selected partners.
      */
+    @Override
     public Population findPartnerFor(AbstractEAIndividual dad, Population avaiablePartners, int size) {
         return this.selectFrom(avaiablePartners, size);
     }
@@ -219,6 +224,7 @@ public class SelectXProbRouletteWheel implements InterfaceSelection, java.io.Ser
      * of Deb
      * @param b     The new state
      */
+    @Override
     public void setObeyDebsConstViolationPrinciple(boolean b) {
         this.m_ObeyDebsConstViolationPrinciple = b;
     }

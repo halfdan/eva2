@@ -16,6 +16,7 @@ import eva2.server.go.individuals.InterfaceDataTypeDouble;
 public class EuclideanMetric implements InterfaceDistanceMetric, Serializable {
 	private boolean normedByDblRange = false;
 	
+    @Override
 	public Object clone() {
 		return (Object) new EuclideanMetric(this);
 	}
@@ -31,6 +32,7 @@ public class EuclideanMetric implements InterfaceDistanceMetric, Serializable {
 		setNormedByDblRange(normed); 
 	}
 	
+    @Override
 	public double distance(AbstractEAIndividual indy1, AbstractEAIndividual indy2) {
 		double[]    dIndy1, dIndy2;
 		double      result = 0;

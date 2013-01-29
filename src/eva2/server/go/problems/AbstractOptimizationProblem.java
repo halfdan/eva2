@@ -61,6 +61,7 @@ implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serial
 			this.m_Semaphore=sema;
 		}
 		
+        @Override
 		public void run() {
 //			System.out.println("Running ET " + this);
 //			long time=System.nanoTime();
@@ -93,6 +94,7 @@ implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serial
     /** This method returns a deep clone of the problem.
      * @return  the clone
      */
+    @Override
     public abstract Object clone();
 
     public int getParallelThreads() {
@@ -111,6 +113,7 @@ implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serial
 	 * This method initializes the problem instance.
 	 * If you override it, make sure to call the super method!
      */
+    @Override
     public abstract void initProblem();
 
     /******************** The most important methods ****************************************/
@@ -118,12 +121,14 @@ implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serial
     /** This method inits a given population
      * @param population    The populations that is to be inited
      */
+    @Override
     public abstract void initPopulation(Population population);
 
     /** This method evaluates a given population and set the fitness values
      * accordingly
      * @param population    The population that is to be evaluated.
      */
+    @Override
     public void evaluate(Population population) {
         AbstractEAIndividual    tmpIndy;
         evaluatePopulationStart(population);
@@ -204,6 +209,7 @@ implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serial
     /** This method evaluate a single individual and sets the fitness values
      * @param individual    The individual that is to be evaluated
      */
+    @Override
     public abstract void evaluate(AbstractEAIndividual individual);
 
     /**
@@ -234,6 +240,7 @@ implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serial
      * @param individual    The individual that is to be shown.
      * @return The description.
      */
+    @Override
     public String getSolutionRepresentationFor(AbstractEAIndividual individual) {
     	return AbstractEAIndividual.getDefaultStringRepresentation(individual);
     }
@@ -244,6 +251,7 @@ implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serial
      * @param pop   The population that is to be refined.
      * @return Double value
      */
+    @Override
     public Double getDoublePlotValue(Population pop) {
         return new Double(pop.getBestEAIndividual().getFitness(0));
     }
@@ -252,6 +260,7 @@ implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serial
      * @param pop   The population that is to be refined.
      * @return String
      */
+    @Override
     public String[] getAdditionalDataHeader() {
     	String[] header = null;
     	if (this instanceof InterfaceInterestingHistogram) header = new String[]{STAT_SOLUTION_HEADER,"histogram","score"};
@@ -292,6 +301,7 @@ implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serial
      * @param pop   The population that is to be refined.
      * @return String
      */
+    @Override
     public String[] getAdditionalDataInfo() {
     	String[] info=null;
     	if (this instanceof InterfaceInterestingHistogram) 
@@ -310,6 +320,7 @@ implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serial
      * @param pop   The population that is to be refined.
      * @return String
      */
+    @Override
     public Object[] getAdditionalDataValue(PopulationInterface pop) {
     	String solStr = AbstractEAIndividual.getDefaultDataString(pop.getBestIndividual()); 
     	Object[] vals = null;
@@ -353,6 +364,7 @@ implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serial
      * @param indy	the individual to display
      * @return JComponent
      */
+    @Override
     public JComponent drawIndividual(int generation, int funCalls, AbstractEAIndividual indy) {
         JPanel      result  = new JPanel();
         result.setLayout(new BorderLayout());
@@ -373,6 +385,7 @@ implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serial
      * multi-objective
      * @return True if multi-objective, else false.
      */
+    @Override
     public boolean isMultiObjective() {
         if (this instanceof AbstractMultiObjectiveOptimizationProblem) {
             if (((AbstractMultiObjectiveOptimizationProblem)this).getMOSOConverter() instanceof MOSONoConvert) {
@@ -604,6 +617,7 @@ implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serial
      * name to the current object.
      * @return The name.
      */
+    @Override
     public String getName() {
         return "AbstractOptimizationProblem";
     }

@@ -27,6 +27,7 @@ public class CrossoverGAGINPointSegmentwise extends CrossoverGAGINPoint {
     	setSegmentLength(segmentLen);
     }
 	
+    @Override
 	public Object clone() {
 		return new CrossoverGAGINPointSegmentwise(this);
 	}
@@ -49,6 +50,7 @@ public class CrossoverGAGINPointSegmentwise extends CrossoverGAGINPoint {
 		return cPoints;
 	}
 
+    @Override
 	public String getName() {
         return "GA-GI N-Point segment-wise crossover";
     }

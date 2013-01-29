@@ -81,6 +81,7 @@ public class JEFrame extends JInternalFrame {
 		this.getRootPane().getActionMap().put(
 				"ctrlFpressed",
 				new AbstractAction("ctrlFpressed") {
+            @Override
 					public void actionPerformed(ActionEvent actionEvent) {
                         JEFrameRegister.getInstance().getFrameList().get(0).toFront();
 					}
@@ -93,6 +94,7 @@ public class JEFrame extends JInternalFrame {
 		this.getRootPane().getActionMap().put(
 				"ctrlOpressed",
 				new AbstractAction("ctrlOpressed") {
+            @Override
 					public void actionPerformed(ActionEvent actionEvent) {
 						java.util.List<JEFrame> frameList = JEFrameRegister.getInstance().getFrameList();
 						for (JEFrame frame : frameList) {
@@ -109,6 +111,7 @@ public class JEFrame extends JInternalFrame {
 		this.getRootPane().getActionMap().put(
 				"ctrlSmallerpressed",
 				new AbstractAction("ctrlSmallerpressed") {
+            @Override
 					public void actionPerformed(ActionEvent actionEvent) {
 						JEFrameRegister.getInstance().setFocusToNext(self);
 					}

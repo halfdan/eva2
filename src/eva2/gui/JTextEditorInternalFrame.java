@@ -34,6 +34,7 @@ public class JTextEditorInternalFrame extends JDocFrame{
       setEnabled(false);
     }
 
+        @Override
     public void actionPerformed(ActionEvent e){
       try{
 	undo.undo();
@@ -64,6 +65,7 @@ public class JTextEditorInternalFrame extends JDocFrame{
       setEnabled(false);
     }
 
+        @Override
     public void actionPerformed(ActionEvent e) {
       try{
 	undo.redo();
@@ -93,16 +95,19 @@ public class JTextEditorInternalFrame extends JDocFrame{
   ///////////////////////////////////////////
   //
   /////////////////////////////////////////
+    @Override
   public String[] getActionGroups(){
     return actionGroups;
   }
 
   private JMenu mnuEdit;
   private JToolBar barEdit;
+    @Override
   public JMenu getMenu(String group){
     if(GROUP_EDIT.equals(group)) return mnuEdit;
     else return null;
   }
+    @Override
   public JToolBar getToolBar(String group){
     if(GROUP_EDIT.equals(group)) return barEdit;
     return null;
@@ -203,20 +208,24 @@ public class JTextEditorInternalFrame extends JDocFrame{
         setChanged(true);
       }
 
+            @Override
       public void changedUpdate(DocumentEvent e){
         changed();
       }
 
+            @Override
       public void insertUpdate(DocumentEvent e){
         changed();
       }
 
+            @Override
       public void removeUpdate(DocumentEvent e){
         changed();
       }
     });
 
     textArea.getDocument().addUndoableEditListener(new UndoableEditListener(){
+            @Override
       public void undoableEditHappened(UndoableEditEvent e){
 	undo.addEdit(e.getEdit());
 	actUndo.update();
@@ -259,6 +268,7 @@ public class JTextEditorInternalFrame extends JDocFrame{
     createActions();
   }
 
+    @Override
   public void save(File f){
     FileWriter out = null;
     try{
@@ -276,6 +286,7 @@ public class JTextEditorInternalFrame extends JDocFrame{
     super.save(f);
   }
 
+    @Override
   public void setSelected(boolean value) throws java.beans.PropertyVetoException{
     super.setSelected(value);
 

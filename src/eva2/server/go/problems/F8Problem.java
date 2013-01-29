@@ -49,6 +49,7 @@ public class F8Problem extends AbstractProblemDoubleOffset
 	/** This method returns a deep clone of the problem.
      * @return  the clone
      */
+    @Override
     public Object clone() {
         return (Object) new F8Problem(this);
     }
@@ -57,6 +58,7 @@ public class F8Problem extends AbstractProblemDoubleOffset
      * @param x     The n-dimensional input vector
      * @return  The m-dimensional output vector.
      */
+    @Override
     public double[] eval(double[] x) {
     	x = rotateMaybe(x);
         double[]        result = new double[1];
@@ -104,6 +106,7 @@ public class F8Problem extends AbstractProblemDoubleOffset
      * name to the current object.
      * @return The name.
      */
+    @Override
     public String getName() {
         return "F8-Problem";
     }
@@ -114,6 +117,7 @@ public class F8Problem extends AbstractProblemDoubleOffset
     public static String globalInfo() {
         return "Ackley's function.";
     }
+    @Override
 	public SolutionHistogram getHistogram() {
 		if (getProblemDimension() < 15) return new SolutionHistogram(-0.1, 7.9, 16);
 		else if (getProblemDimension() < 25) return new SolutionHistogram(-0.5, 15.5, 16);
@@ -141,18 +145,22 @@ public class F8Problem extends AbstractProblemDoubleOffset
 //        return derivs;
 //	}
 	
+    @Override
 	public boolean fullListAvailable() {
 		return true;
 	}
 	
+    @Override
 	public double getMaximumPeakRatio(Population pop) {
 		return AbstractMultiModalProblemKnown.getMaximumPeakRatioMinimization(m_ListOfOptima, pop, getDefaultAccuracy(), 0, 5);
 	}
 
+    @Override
 	public int getNumberOfFoundOptima(Population pop) {
 		return AbstractMultiModalProblemKnown.getNoFoundOptimaOf(this, pop);
 	}
 	
+    @Override
 	public Population getRealOptima() {
 		return m_ListOfOptima;
 	}
@@ -180,6 +188,7 @@ public class F8Problem extends AbstractProblemDoubleOffset
 	 * This is unfortunately not mentioned in the papers by Shir
 	 * and Bäck who still seemed to be able to find 2*n+1...
 	 */
+    @Override
 	public void initListOfOptima() {
 		if (listOfOptimaNeedsUpdate()) {
 			state_initializing_optima=true;

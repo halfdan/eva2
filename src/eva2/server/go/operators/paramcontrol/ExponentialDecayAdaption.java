@@ -36,14 +36,17 @@ public class ExponentialDecayAdaption implements ParamAdaption, GenericParamAdap
 		setSaturation(o.getSaturation());
 	}
 
+    @Override
 	public Object clone() {
 		return new ExponentialDecayAdaption(this);
 	}
 	
+    @Override
 	public Object calcValue(Object obj, Population pop, int iteration, int maxIteration) {
 		return getSaturation()+(startValue-getSaturation())*Math.pow(0.5, (iteration/(double)maxIteration)*100/halvingTimePerCent);
 //		return startValue*Math.pow(0.5, (iteration/(double)maxIteration)*100/halvingTimePerCent);
 	}
+    @Override
 	public String getControlledParam() {
 		return target;
 	}
@@ -68,6 +71,7 @@ public class ExponentialDecayAdaption implements ParamAdaption, GenericParamAdap
 		return "The number of iterations (usually generations) within which the respecitve value will be halved.";
 	}
 
+    @Override
 	public void setControlledParam(String target) {
 		this.target = target;
 	}
@@ -80,8 +84,10 @@ public class ExponentialDecayAdaption implements ParamAdaption, GenericParamAdap
 		return "Exponential decay with a percentual halving time.";
 	}
 
+    @Override
 	public void finish(Object obj, Population pop) {}
 
+    @Override
 	public void init(Object obj, Population pop, Object[] initialValues) {}
 	
 	public static void main(String[] args) {

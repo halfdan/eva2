@@ -131,12 +131,14 @@ public class EvAJob implements Serializable, InterfaceStatisticsListener {
 		return params;
 	}
 	
+    @Override
 	public void finalMultiRunResults(String[] header,
 			List<Object[]> multiRunFinalObjDat) {
 		fieldHeaders=header;
 		multiRunFinalObjectData = multiRunFinalObjDat;
 	}
 
+    @Override
 	public void notifyGenerationPerformed(String[] header,
 			Object[] statObjects, Double[] statDoubles) {
 		fieldHeaders=header;
@@ -145,6 +147,7 @@ public class EvAJob implements Serializable, InterfaceStatisticsListener {
 //		onlineData.add(statObjects);
 	}
 
+    @Override
 	public void notifyRunStarted(int runNumber, int plannedMultiRuns,
 			String[] header, String[] metaInfo) {
 		state=StateEnum.running;
@@ -152,12 +155,14 @@ public class EvAJob implements Serializable, InterfaceStatisticsListener {
 //		multiRunFinalObjectData = null;
 	}
 
+    @Override
 	public void notifyRunStopped(int runsPerformed, boolean completedLastRun) {
 		numRuns=runsPerformed;
 		lastRunIncompl = !completedLastRun;
 		if (TRACE) System.out.println("EvAJob.notifyRunStopped, " + runsPerformed + " " + completedLastRun);
 	}
 	
+    @Override
 	public boolean notifyMultiRunFinished(String[] header, List<Object[]> multiRunFinalObjDat) {
 		fieldHeaders=header;
 		multiRunFinalObjectData = multiRunFinalObjDat;

@@ -39,6 +39,7 @@ public class GeneralGEOFaker extends JPanel {
         open.setToolTipText("Load a configured object");
         open.setEnabled(true);
         open.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 Object object = openObject();
                 if (object != null) {
@@ -56,6 +57,7 @@ public class GeneralGEOFaker extends JPanel {
         save.setToolTipText("Save the current configured object");
         save.setEnabled(true);
         save.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 saveObject(m_Editor.getValue());
             }
@@ -89,6 +91,7 @@ public class GeneralGEOFaker extends JPanel {
         ok = new JButton("OK");
         ok.setEnabled(true);
         ok.addActionListener(new ActionListener() {
+            @Override
 	    public void actionPerformed(ActionEvent e) {
 	        if ((getTopLevelAncestor() != null) && (getTopLevelAncestor() instanceof Window)) {
 	            Window w = (Window) getTopLevelAncestor();

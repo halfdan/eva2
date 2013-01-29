@@ -28,6 +28,7 @@ public class CrossoverESBLXAlpha implements InterfaceCrossover, java.io.Serializ
     /** This method will enable you to clone a given mutation operator
      * @return The clone
      */
+    @Override
     public Object clone() {
         return new CrossoverESBLXAlpha(this);
     }
@@ -37,6 +38,7 @@ public class CrossoverESBLXAlpha implements InterfaceCrossover, java.io.Serializ
      * @param indy1 The first individual
      * @param partners The second individual
      */
+    @Override
     public AbstractEAIndividual[] mate(AbstractEAIndividual indy1, Population partners) {
         AbstractEAIndividual[]  result = null;
         double[][]              parents, children;
@@ -87,6 +89,7 @@ public class CrossoverESBLXAlpha implements InterfaceCrossover, java.io.Serializ
      * are actually the same.
      * @param crossover   The other crossover operator
      */
+    @Override
     public boolean equals(Object crossover) {
         if (crossover instanceof CrossoverESBLXAlpha) {
             CrossoverESBLXAlpha cross = (CrossoverESBLXAlpha)crossover;
@@ -103,10 +106,12 @@ public class CrossoverESBLXAlpha implements InterfaceCrossover, java.io.Serializ
      * @param individual    The individual that will be mutated.
      * @param opt           The optimization problem.
      */
+    @Override
     public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
         this.m_OptimizationProblem = opt;
     }
 
+    @Override
     public String getStringRepresentation() {
         return this.getName();
     }

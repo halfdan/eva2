@@ -26,6 +26,7 @@ public class MutateGAUniform implements InterfaceMutation, Serializable {
 		setBitwiseProb(o.getBitwiseProb());
 	}
 
+    @Override
 	public void crossoverOnStrategyParameters(AbstractEAIndividual indy1,
 			Population partners) {
 		if (indy1.getMutationOperator() instanceof MutateGAUniform) {
@@ -37,6 +38,7 @@ public class MutateGAUniform implements InterfaceMutation, Serializable {
 		}
 	}
 
+    @Override
 	public Object clone() {
 		return new MutateGAUniform(this);
 	}
@@ -45,10 +47,12 @@ public class MutateGAUniform implements InterfaceMutation, Serializable {
 		setUseInvertedLength(isUseInvertedLength());
 	}
 	
+    @Override
 	public String getStringRepresentation() {
 		return "Uniform GA mutation (" + getBitwiseProb() + ")";
 	}
 
+    @Override
 	public void init(AbstractEAIndividual individual,
 			InterfaceOptimizationProblem opt) {
 		if (useInvertedLength && (individual instanceof InterfaceGAIndividual)) setBitwiseProb(1./((double)((InterfaceGAIndividual)individual).getGenotypeLength()));
@@ -57,6 +61,7 @@ public class MutateGAUniform implements InterfaceMutation, Serializable {
 	/**
 	 * Flip every bit with a certain probability.
 	 */
+    @Override
 	public void mutate(AbstractEAIndividual individual) {
 		if (individual instanceof InterfaceGAIndividual) {
 			InterfaceGAIndividual indy = (InterfaceGAIndividual)individual;

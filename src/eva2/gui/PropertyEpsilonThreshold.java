@@ -28,6 +28,7 @@ public class PropertyEpsilonThreshold implements java.io.Serializable {
         this.m_OptimizeObjective = e.m_OptimizeObjective;
     }
 
+    @Override
     public Object clone() {
         return (Object) new PropertyEpsilonThreshold(this);
     }

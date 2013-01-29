@@ -65,6 +65,7 @@ public class ESIndividualBinaryData extends AbstractEAIndividual implements Inte
         cloneAEAObjects((AbstractEAIndividual) individual);
     }
 
+    @Override
     public Object clone() {
         return (Object) new ESIndividualBinaryData(this);
     }
@@ -73,6 +74,7 @@ public class ESIndividualBinaryData extends AbstractEAIndividual implements Inte
      * @param individual      The individual to compare to.
      * @return boolean if equal true else false.
      */
+    @Override
     public boolean equalGenotypes(AbstractEAIndividual individual) {
         if (individual instanceof ESIndividualBinaryData) {
             ESIndividualBinaryData indy = (ESIndividualBinaryData) individual;
@@ -95,6 +97,7 @@ public class ESIndividualBinaryData extends AbstractEAIndividual implements Inte
     /** This method allows you to request a certain amount of binary data
      * @param length    The lenght of the BitSet that is to be optimized
      */
+    @Override
     public void setBinaryDataLength(int length) {
         this.m_Genotype         = new double[length];
         this.m_Range            = new double[length][2];
@@ -107,6 +110,7 @@ public class ESIndividualBinaryData extends AbstractEAIndividual implements Inte
     /** This method returns the length of the binary data set
      * @return The number of bits stored
      */
+    @Override
     public int size() {
         return this.m_Genotype.length;
     }
@@ -114,6 +118,7 @@ public class ESIndividualBinaryData extends AbstractEAIndividual implements Inte
     /** This method allows you to read the binary data
      * @return BitSet representing the binary data.
      */
+    @Override
     public BitSet getBinaryData() {
         if (this.m_UseHardSwitch) {
             // In this case it is only tested if the genotyp is bigger than 0.5
@@ -141,6 +146,7 @@ public class ESIndividualBinaryData extends AbstractEAIndividual implements Inte
      * an update from the genotype
      * @return BitSet representing the binary data.
      */
+    @Override
     public BitSet getBinaryDataWithoutUpdate() {
         return this.m_Phenotype;
     }
@@ -148,6 +154,7 @@ public class ESIndividualBinaryData extends AbstractEAIndividual implements Inte
     /** This method allows you to set the binary data.
      * @param binaryData    The new binary data.
      */
+    @Override
     public void SetBinaryPhenotype(BitSet binaryData) {
         this.m_Phenotype = binaryData;
     }
@@ -155,6 +162,7 @@ public class ESIndividualBinaryData extends AbstractEAIndividual implements Inte
      * memetic algorithms.
      * @param binaryData    The new binary data.
      */
+    @Override
     public void SetBinaryGenotype(BitSet binaryData) {
         this.SetBinaryPhenotype(binaryData);
         for (int i = 0; i < this.m_Genotype.length; i++) {
@@ -176,6 +184,7 @@ public class ESIndividualBinaryData extends AbstractEAIndividual implements Inte
      * @param obj   The initial value for the phenotype
      * @param opt   The optimization problem that is to be solved.
      */
+    @Override
     public void initByValue(Object obj, InterfaceOptimizationProblem opt) {
         if (obj instanceof BitSet) {
             BitSet  bs = (BitSet) obj;
@@ -192,6 +201,7 @@ public class ESIndividualBinaryData extends AbstractEAIndividual implements Inte
      * noteably the Genotype.
      * @return A descriptive string
      */
+    @Override
     public String getStringRepresentation() {
         String result = "";
         result += "ESIndividual coding double: (";
@@ -215,6 +225,7 @@ public class ESIndividualBinaryData extends AbstractEAIndividual implements Inte
     /** This method will allow the user to read the ES 'genotype'
      * @return BitSet
      */
+    @Override
     public double[] getDGenotype() {
         return this.m_Genotype;
     }
@@ -222,6 +233,7 @@ public class ESIndividualBinaryData extends AbstractEAIndividual implements Inte
     /** This method will allow the user to set the current ES 'genotype'.
      * @param b    The new genotype of the Individual
      */
+    @Override
     public void SetDGenotype(double[] b) {
         this.m_Genotype = b;
         for (int i = 0; i < this.m_Genotype.length; i++) {
@@ -242,16 +254,19 @@ public class ESIndividualBinaryData extends AbstractEAIndividual implements Inte
     /** This method will return the range for all double attributes.
      * @return The range array.
      */
+    @Override
     public double[][] getDoubleRange() {
         return this.m_Range;
     }
 
     /** This method performs a simple one element mutation on the double vector
      */
+    @Override
     public void defaultMutate() {
     	ESIndividualDoubleData.defaultMutate(m_Genotype, m_Range);
     }
 
+    @Override
     public void defaultInit(InterfaceOptimizationProblem prob) {
     	if ((prob != null) && (prob instanceof InterfaceHasInitRange) && (((InterfaceHasInitRange)prob).getInitRange()!=null)) ESIndividualDoubleData.defaultInit(m_Genotype, (double[][])((InterfaceHasInitRange)prob).getInitRange());
     	else ESIndividualDoubleData.defaultInit(m_Genotype, m_Range);
@@ -263,6 +278,7 @@ public class ESIndividualBinaryData extends AbstractEAIndividual implements Inte
      * name to the current object.
      * @return The name.
      */
+    @Override
     public String getName() {
         return "ES individual";
     }

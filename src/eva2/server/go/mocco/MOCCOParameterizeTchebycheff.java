@@ -50,6 +50,7 @@ public class MOCCOParameterizeTchebycheff extends MOCCOPhase implements Interfac
 
     /** This method will call the init method and will go to stall
      */
+    @Override
     public void initProcessElementParametrization() {
         this.m_Mocco.m_JPanelControl.removeAll();
 
@@ -217,6 +218,7 @@ public class MOCCOParameterizeTchebycheff extends MOCCOPhase implements Interfac
     }
 
     ActionListener continue2 = new ActionListener() {
+        @Override
         public void actionPerformed(ActionEvent event) {
             // first read the values
             try {

@@ -36,6 +36,7 @@ public class MetricS implements InterfaceParetoFrontMetric, java.io.Serializable
     /** This method returns a deep clone of the problem.
      * @return  the clone
      */
+    @Override
     public Object clone() {
         return (Object) new MetricS(this);
     }
@@ -54,6 +55,7 @@ public class MetricS implements InterfaceParetoFrontMetric, java.io.Serializable
     /** This method gives a metric how to evaluate
      * an achieved Pareto-Front
      */
+    @Override
     public double calculateMetricOn(Population pop, AbstractMultiObjectiveOptimizationProblem problem) {
         this.m_ObjectiveSpaceRange = problem.getObjectiveSpaceRange();
         if (TRACE) System.out.println("Border: " + BeanInspector.toString(m_ObjectiveSpaceRange));

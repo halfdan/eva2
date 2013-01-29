@@ -33,6 +33,7 @@ public class MutateGAGISwapBitsSegmentwise extends MutateGAGISwapBits implements
 		this.segmentLength = segmentLen;
 	}
 	
+    @Override
 	public Object clone() {
 		return new MutateGAGISwapBitsSegmentwise(this);
 	}

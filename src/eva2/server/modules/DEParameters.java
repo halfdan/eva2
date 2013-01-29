@@ -59,6 +59,7 @@ public class DEParameters extends AbstractGOParameters implements InterfaceGOPar
     	super(Source);
     }
 
+    @Override
     public Object clone() {
         return new DEParameters(this);
     }
@@ -73,6 +74,7 @@ public class DEParameters extends AbstractGOParameters implements InterfaceGOPar
     /** This method allows you to set the current optimizing algorithm
      * @param optimizer The new optimizing algorithm
      */
+    @Override
     public void setOptimizer(InterfaceOptimizer optimizer) {
         // *pff* i'll ignore that!
     }

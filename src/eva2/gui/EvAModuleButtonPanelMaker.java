@@ -52,6 +52,7 @@ public class EvAModuleButtonPanelMaker implements RemoteStateListener, Serializa
         moduleAdapter = adapter;
     }
 
+    @Override
     public JToolBar makePanel() {
         toolBar = new JToolBar();
         toolBar.setFloatable(false);
@@ -165,6 +166,7 @@ public class EvAModuleButtonPanelMaker implements RemoteStateListener, Serializa
             helpButton.setToolTipText("Description of the current optimization algorithm.");
             helpButton.addActionListener(new ActionListener() {
 
+                @Override
                 public void actionPerformed(ActionEvent e) {
                     //System.out.println("Run Opt pressed !!!!!!!!!!!!!!!!======================!!");
                     try {
@@ -186,6 +188,7 @@ public class EvAModuleButtonPanelMaker implements RemoteStateListener, Serializa
     /**
      *
      */
+    @Override
     public void performedStop() {
         runButton.setEnabled(true);
         postProcessButton.setEnabled(true);

@@ -91,6 +91,7 @@ public class SolutionHistogram {
 		return Mathematics.sum(histogram);
 	}
 	
+    @Override
 	public String toString() {
 		return "Hist("+arity+"):"+lBound+"/"+uBound+","+BeanInspector.toString(histogram) + ",Sc:"+getScore()+(arity>1 ? (",Avg.Sc:"+(getScore()/arity)) : (""));
 	}

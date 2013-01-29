@@ -32,6 +32,7 @@ public class TagEditor extends PropertyEditorSupport {
    *
    * @return a value of type 'String'
    */
+    @Override
   public String getJavaInitializationString() {
 
     SelectedTag s = (SelectedTag)getValue();
@@ -56,6 +57,7 @@ public class TagEditor extends PropertyEditorSupport {
    *
    * @return a value of type 'String'
    */
+    @Override
   public String getAsText() {
     SelectedTag s = (SelectedTag)getValue();
     return s.getSelectedTag().getString();
@@ -67,6 +69,7 @@ public class TagEditor extends PropertyEditorSupport {
    * @param text the text of the selected tag.
    * @exception java.lang.IllegalArgumentException if an error occurs
    */
+    @Override
   public void setAsText(String text) throws java.lang.IllegalArgumentException {
     SelectedTag s = (SelectedTag)getValue();
     Tag [] tags = s.getTags();
@@ -87,6 +90,7 @@ public class TagEditor extends PropertyEditorSupport {
    *
    * @return an array of string tags.
    */
+    @Override
   public String[] getTags() {
 
     SelectedTag s = (SelectedTag)getValue();
@@ -123,6 +127,7 @@ public class TagEditor extends PropertyEditorSupport {
       byte[] bytes   = loader.getBytesFromResourceLocation(EvAInfo.iconLocation, true);
       f.setIconImage(Toolkit.getDefaultToolkit().createImage(bytes));
       f.addWindowListener(new WindowAdapter() {
+                @Override
 	public void windowClosing(WindowEvent e) {
 	  System.exit(0);
 	}

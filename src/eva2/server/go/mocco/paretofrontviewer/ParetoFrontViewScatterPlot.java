@@ -230,6 +230,7 @@ class SimpleView extends JComponent implements InterfaceRefPointListener {
      * a full vector since it is only 2d
      * @param point  The selected point, most likely 2d
      */
+    @Override
     public void refPointGiven(double[] point) {
         if (this.m_Dad.m_JCFitObj.getSelectedIndex() == 1) {
             JOptionPane.showMessageDialog(this.m_Dad.m_MOCCOViewer.m_MOCCO.m_JFrame,
@@ -303,6 +304,7 @@ public class ParetoFrontViewScatterPlot extends JPanel implements InterfaceParet
         this.updateView();
     }
     ActionListener jcomboboxListener = new ActionListener() {
+        @Override
         public void actionPerformed(ActionEvent event) {
             updateView();
         }
@@ -325,6 +327,7 @@ public class ParetoFrontViewScatterPlot extends JPanel implements InterfaceParet
      * the data has changed most likely due to changes in
      * the problem definition
      */
+    @Override
     public void updateView() {
         if (this.m_MOCCOViewer.m_MOCCO.m_State.m_CurrentProblem == null) {
             this.m_Scatter = null;

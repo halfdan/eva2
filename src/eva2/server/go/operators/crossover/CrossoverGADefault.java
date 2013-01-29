@@ -32,6 +32,7 @@ public class CrossoverGADefault implements InterfaceCrossover,
 	 *
 	 * @return The clone
 	 */
+    @Override
 	public Object clone() {
 		return new CrossoverGADefault(this);
 	}
@@ -45,6 +46,7 @@ public class CrossoverGADefault implements InterfaceCrossover,
 	 * @param partners
 	 *          The second individual
 	 */
+    @Override
 	public AbstractEAIndividual[] mate(AbstractEAIndividual indy1,
 	    Population partners) {
 		AbstractEAIndividual[] result = null;
@@ -97,6 +99,7 @@ public class CrossoverGADefault implements InterfaceCrossover,
 	 * @param crossover
 	 *          The other crossover operator
 	 */
+    @Override
 	public boolean equals(Object crossover) {
 		if (crossover instanceof CrossoverGADefault)
 			return true;
@@ -114,11 +117,13 @@ public class CrossoverGADefault implements InterfaceCrossover,
 	 * @param opt
 	 *          The optimization problem.
 	 */
+    @Override
 	public void init(AbstractEAIndividual individual,
 	    InterfaceOptimizationProblem opt) {
 		this.m_OptimizationProblem = opt;
 	}
 
+    @Override
 	public String getStringRepresentation() {
 		return this.getName();
 	}

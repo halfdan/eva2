@@ -19,6 +19,7 @@ public class SelProbRanking extends AbstractSelProb implements java.io.Serializa
     public SelProbRanking(SelProbRanking a) {
     }
 
+    @Override
     public Object clone() {
         return (Object) new SelProbRanking(this);
     }
@@ -29,6 +30,7 @@ public class SelProbRanking extends AbstractSelProb implements java.io.Serializa
      * @param population    The population to compute.
      * @param data          The input as double[][]
      */
+    @Override
     public void computeSelectionProbability(Population population, double[][] data, boolean obeyConst) {
         double                  sum = 0;
         double[]                result = new double[data.length];

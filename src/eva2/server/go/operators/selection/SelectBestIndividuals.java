@@ -27,6 +27,7 @@ public class SelectBestIndividuals implements InterfaceSelection, java.io.Serial
         this.m_ObeyDebsConstViolationPrinciple  = a.m_ObeyDebsConstViolationPrinciple;
     }
 
+    @Override
     public Object clone() {
         return (Object) new SelectBestIndividuals(this);
     }
@@ -37,6 +38,7 @@ public class SelectBestIndividuals implements InterfaceSelection, java.io.Serial
      * before hand...
      * @param population    The population that is to be processed.
      */
+    @Override
     public void prepareSelection(Population population) {
         // nothing to prepare here
     }
@@ -48,6 +50,7 @@ public class SelectBestIndividuals implements InterfaceSelection, java.io.Serial
      * @param size          The number of Individuals to select
      * @return The selected population.
      */
+    @Override
     public Population selectFrom(Population population, int size) {
         Population              result = new Population();
         int                     currentCriteria = 0, critSize;
@@ -151,6 +154,7 @@ public class SelectBestIndividuals implements InterfaceSelection, java.io.Serial
      * @param size              The number of partners needed.
      * @return The selected partners.
      */
+    @Override
     public Population findPartnerFor(AbstractEAIndividual dad, Population avaiablePartners, int size) {
         return this.selectFrom(avaiablePartners, size);
     }
@@ -176,6 +180,7 @@ public class SelectBestIndividuals implements InterfaceSelection, java.io.Serial
      * of Deb
      * @param b     The new state
      */
+    @Override
     public void setObeyDebsConstViolationPrinciple(boolean b) {
         this.m_ObeyDebsConstViolationPrinciple = b;
     }

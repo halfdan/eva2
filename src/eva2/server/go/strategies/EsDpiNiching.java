@@ -220,10 +220,12 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
         GenericObjectEditor.setHideProperty(this.getClass(), "population", true);
     }
 
+    @Override
     public Object clone() {
         return new EsDpiNiching(this);
     }
 
+    @Override
     public void init() {
         convCount = 0; // reset number of converged species (found peaks)
         collisions = 0; // reset the number of collisions
@@ -372,6 +374,7 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
         return "Activate online adaption of the number of expected peaks";
     }
 
+    @Override
     public void optimize() {
         Population peakPopSet[];
         if (increaseExpectedPeaksCriterion() > 0) {
@@ -1018,6 +1021,7 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
         return "The number of additional explorer peaks.";
     }
 
+    @Override
     public String getName() {
         return identifier + "_" + getExpectedPeaks() + "_" + getNicheRadius();
     }
@@ -1028,11 +1032,13 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
                 + "in parallel, which are reclustered in each iteration based on the dynamic peak set.";
     }
 
+    @Override
     public void addPopulationChangedEventListener(
             InterfacePopulationChangedEventListener ea) {
         m_Listener = ea;
     }
 
+    @Override
     public boolean removePopulationChangedEventListener(
             InterfacePopulationChangedEventListener ea) {
         if (ea.equals(m_Listener)) {
@@ -1043,9 +1049,11 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
         }
     }
 
+    @Override
     public void freeWilly() {
     }
 
+    @Override
     public InterfaceSolutionSet getAllSolutions() {
         Population peaks = new Population(peakOpts.length);
         for (int i = 0; i < peakOpts.length; i++) {
@@ -1058,31 +1066,38 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
         return new SolutionSet(getPopulation(), peaks);
     }
 
+    @Override
     public String getIdentifier() {
         return identifier;
     }
 
+    @Override
     public void setIdentifier(String name) {
         identifier = name;
     }
 
+    @Override
     public void setPopulation(Population pop) {
         // this might cause problems if the pop.size() does not fit the EsDpiNiching parameters mu/lamba per peak
         this.population = pop;
     }
 
+    @Override
     public Population getPopulation() {
         return population;
     }
 
+    @Override
     public InterfaceOptimizationProblem getProblem() {
         return problem;
     }
 
+    @Override
     public void setProblem(InterfaceOptimizationProblem prob) {
         this.problem = prob;
     }
 
+    @Override
     public String getStringRepresentation() {
         StringBuffer sb = new StringBuffer("EsDpiNiching:\n");
         sb.append("Optimization Problem: ");
@@ -1092,6 +1107,7 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
         return sb.toString();
     }
 
+    @Override
     public void initByPopulation(Population pop, boolean reset) {
 //		int pSize = pop.size();
         this.population = (Population) pop.clone();
@@ -1240,16 +1256,19 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
         return "If fitness std. dev. changes less than this value within the halting window, convergence is assumed.";
     }
 
+    @Override
     public String[] getAdditionalDataHeader() {
         return new String[]{"nicheRadius", "numExpectedPeaks", "numArchived", "archivedMeanDist", "numCollisions"};
     }
 
+    @Override
     public String[] getAdditionalDataInfo() {
         return new String[]{"The niche radius employed for Dynamic Peak Identificatio", "The number of expected peaks",
                     "The number of stored potential local optima", "Mean distance of archived solutions",
                     "The number of collisions detected so far"};
     }
 
+    @Override
     public Object[] getAdditionalDataValue(PopulationInterface pop) {
         return new Object[]{getNicheRadius(), getExpectedPeaks(), archive.size(), archive.getPopulationMeasures()[0], collisions};
     }
@@ -1287,6 +1306,7 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
         return "Indicate whether already known (archived) peaks should trigger a reset of close-by species (corresp. to niche radius).";
     }
 
+    @Override
     public void registerPopulationStateChanged(Object source, String name) {
         if (getPopulation() != source) {
             System.err.println("Warning, mismatching population in " + this.getClass().getName());

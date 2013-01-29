@@ -52,13 +52,16 @@ public class F16Problem extends AbstractProblemDouble implements InterfaceMultim
 		return new F16Problem(this);
 	}
 	
+    @Override
 	public double getRangeLowerBound(int n) {
 		return 0.25;
 	}
+    @Override
 	public double getRangeUpperBound(int n) {
 		return 10.;
 	}
 
+    @Override
 	public String getName() {
 		return "Vincent";
 	}
@@ -67,6 +70,7 @@ public class F16Problem extends AbstractProblemDouble implements InterfaceMultim
 		return "The Vincent function: Multiple optima with increasing densitiy near the lower bounds, therefore decreasing attractor size. All have an equal best fitness of zero.";
 	}
 
+    @Override
 	public SolutionHistogram getHistogram() {
 		return new SolutionHistogram(-0.001, 0.599, 15);
 //		return new SolutionHistogram(-0.001, 0.099, 5);

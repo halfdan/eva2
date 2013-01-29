@@ -79,6 +79,7 @@ public class ESIndividualPermutationData extends AbstractEAIndividual implements
 
 	}
 
+    @Override
 	public Object clone() {
 		return (Object) new ESIndividualPermutationData(this);
 	}
@@ -87,6 +88,7 @@ public class ESIndividualPermutationData extends AbstractEAIndividual implements
 	 * @param individual      The individual to compare to.
 	 * @return boolean if equal true else false.
 	 */
+    @Override
 	public boolean equalGenotypes(AbstractEAIndividual individual) {
 		if (individual instanceof ESIndividualPermutationData) {
 			ESIndividualPermutationData indy = (ESIndividualPermutationData) individual;
@@ -108,6 +110,7 @@ public class ESIndividualPermutationData extends AbstractEAIndividual implements
 	 *  InterfaceDataTypePermutation methods
 	 */
 
+    @Override
 	public void setPermutationDataLength(int[] length){
 
 		this.m_Genotype     = new double[length.length][];
@@ -126,6 +129,7 @@ public class ESIndividualPermutationData extends AbstractEAIndividual implements
 		}
 	}
 
+    @Override
 	public int[] sizePermutation() {
 		int[] res = new int[m_Genotype.length];
 		for (int i = 0; i < m_Genotype.length; i++) {
@@ -134,6 +138,7 @@ public class ESIndividualPermutationData extends AbstractEAIndividual implements
 		return res;
 	}
 
+    @Override
 	public void SetPermutationPhenotype(int[][] perm){
 		this.m_Phenotype = perm;
 		this.m_Range        = new double[perm.length][][];
@@ -147,6 +152,7 @@ public class ESIndividualPermutationData extends AbstractEAIndividual implements
 
 	}
 
+    @Override
 	public void SetPermutationGenotype(int[][] perm){
 		this.SetPermutationPhenotype(perm);
 
@@ -170,6 +176,7 @@ public class ESIndividualPermutationData extends AbstractEAIndividual implements
 
 	}
 
+    @Override
 	public int[][] getPermutationData() {
 		this.m_Phenotype = new int[this.m_Genotype.length][];
 		for (int p = 0; p < m_Genotype.length; p++) {
@@ -200,6 +207,7 @@ public class ESIndividualPermutationData extends AbstractEAIndividual implements
 	 * an update from the genotype
 	 * @return int[] representing the permutation.
 	 */
+    @Override
 	 public int[][] getPermutationDataWithoutUpdate() {
 		return this.m_Phenotype;
 	}
@@ -207,6 +215,7 @@ public class ESIndividualPermutationData extends AbstractEAIndividual implements
 	public int[] getFirstindex() {
 		return firstindex;
 	}
+    @Override
 	public void setFirstindex(int[] firstindex) {
 		this.firstindex = firstindex;
 	}
@@ -220,6 +229,7 @@ public class ESIndividualPermutationData extends AbstractEAIndividual implements
 	 * @param obj   The initial value for the phenotype
 	 * @param opt   The optimization problem that is to be solved.
 	 */
+    @Override
 	public void initByValue(Object obj, InterfaceOptimizationProblem opt) {
 		if (obj instanceof int[][]) {
 			int[][]  bs = (int[][]) obj;
@@ -237,6 +247,7 @@ public class ESIndividualPermutationData extends AbstractEAIndividual implements
 	 * noteably the Genotype.
 	 * @return A descriptive string
 	 */
+    @Override
 	public String getStringRepresentation() {
 		String result = "";
 		result += "ESIndividual coding permutation: (";
@@ -259,6 +270,7 @@ public class ESIndividualPermutationData extends AbstractEAIndividual implements
 	/** This method will allow the user to read the ES 'genotype'
 	 * @return BitSet
 	 */
+    @Override
 	public double[] getDGenotype() {
 		return mapMatrixToVector(m_Genotype);
 	}
@@ -297,6 +309,7 @@ public class ESIndividualPermutationData extends AbstractEAIndividual implements
 	/** This method will allow the user to set the current ES 'genotype'.
 	 * @param b    The new genotype of the Individual
 	 */
+    @Override
 	 public void SetDGenotype(double[] b) {
 		 this.m_Genotype = mapVectorToMatrix(b, this.sizePermutation());
 		 for (int i = 0; i < this.m_Genotype.length; i++) {
@@ -311,12 +324,14 @@ public class ESIndividualPermutationData extends AbstractEAIndividual implements
 
 	 /** This method performs a one element mutation on every permutation coded by a double vector.
 	  */
+    @Override
 	 public void defaultMutate() {
 		 for (int i = 0; i < m_Genotype.length; i++) {
 			 ESIndividualDoubleData.defaultMutate(m_Genotype[i], m_Range[i]);
 		 }
 	 }
 
+    @Override
 	 public void defaultInit(InterfaceOptimizationProblem prob) {
 		 double[][][] range = m_Range;
 		 if ((prob != null) && (prob instanceof InterfaceHasInitRange) && (((InterfaceHasInitRange)prob).getInitRange()!=null)) range = (double[][][])((InterfaceHasInitRange)prob).getInitRange();
@@ -329,6 +344,7 @@ public class ESIndividualPermutationData extends AbstractEAIndividual implements
 	 /** This method will return the range for all double attributes.
 	  * @return The range array.
 	  */
+    @Override
 	 public double[][] getDoubleRange() {
 		 int sumentries = 0;
 		 for (int i = 0; i < this.m_Range.length; i++) {
@@ -353,6 +369,7 @@ public class ESIndividualPermutationData extends AbstractEAIndividual implements
 	  * name to the current object.
 	  * @return The name.
 	  */
+    @Override
 	 public String getName() {
 		 return "ES individual";
 	 }

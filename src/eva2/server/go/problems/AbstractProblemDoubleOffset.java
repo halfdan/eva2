@@ -46,6 +46,7 @@ public abstract class AbstractProblemDoubleOffset extends AbstractProblemDouble 
      * name to the current object.
      * @return The name.
      */
+    @Override
     public String getName() {
         return "Double-valued-Problem+Offsets";
     }
@@ -82,6 +83,7 @@ public abstract class AbstractProblemDoubleOffset extends AbstractProblemDouble 
     public void setProblemDimension(int t) {
         this.m_ProblemDimension = t;
     }
+    @Override
     public int getProblemDimension() {
         return this.m_ProblemDimension;
     }

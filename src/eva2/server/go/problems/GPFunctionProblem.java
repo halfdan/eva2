@@ -134,18 +134,22 @@ public class GPFunctionProblem extends AbstractProblemDouble implements Interfac
 		return dim;
 	}
 
+    @Override
 	public String getStringRepresentationForProblem(InterfaceOptimizer opt) {
 		return "GP find a function problem";
 	}
 
+    @Override
 	public Object getSensorValue(String sensor) {
 		return PSymbolicRegression.getSensorValue(sensor, pos, null);
 	}
 
+    @Override
 	public void setActuatorValue(String actuator, Object parameter) {
 		// nothing to do here
 	}
 
+    @Override
 	public GPArea getArea() {
 		return gpArea;
 	}

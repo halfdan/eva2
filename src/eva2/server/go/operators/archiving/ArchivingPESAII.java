@@ -30,6 +30,7 @@ public class ArchivingPESAII extends AbstractArchiving implements java.io.Serial
         this.m_GridSize     = a.m_GridSize;
     }
 
+    @Override
     public Object clone() {
         return (Object) new ArchivingPESAII(this);
     }
@@ -39,6 +40,7 @@ public class ArchivingPESAII extends AbstractArchiving implements java.io.Serial
      *  remove elements from the archive if the archive target size is exceeded.
      * @param pop       The population that may add Individuals to the archive.
      */
+    @Override
     public void addElementsToArchive(Population pop) {
 
         if (pop.getArchive() == null) pop.SetArchive(new Population());

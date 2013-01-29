@@ -14,6 +14,7 @@ public class DummyConstraint extends AbstractConstraint {
 		return new DummyConstraint();
 	}
 
+    @Override
 	public void hideHideable() {
 		GenericObjectEditor.setHideAllProperties(this.getClass(), true);
 	}

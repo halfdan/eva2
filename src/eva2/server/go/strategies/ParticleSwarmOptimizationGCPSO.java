@@ -84,6 +84,7 @@ public class ParticleSwarmOptimizationGCPSO extends ParticleSwarmOptimization {
 	/**  @tested 
 	 * (non-Javadoc) @see javaeva.server.go.strategies.ParticleSwarmOptimization#optimize()
 	 */
+    @Override
 	public void optimize() {
 		super.optimize(); //updatePopulation->updateIndividual->updateVelocity (s.u.)
 		updateGCPSOMember();
@@ -93,6 +94,7 @@ public class ParticleSwarmOptimizationGCPSO extends ParticleSwarmOptimization {
 	 * (non-Javadoc) @see javaeva.server.go.strategies.ParticleSwarmOptimization#updateVelocity(int, double[], double[], double[], double[], double[][])
 	 * uses a special velocity update strategy for the gobal best particle.
 	 */
+    @Override
 	protected double[] updateVelocity(int index, double[] lastVelocity, double[] personalBestPos, double[] curPosition, double[] neighbourBestPos, double[][] range) {
 		double[] accel, curVelocity    = new double[lastVelocity.length];
 

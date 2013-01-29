@@ -44,12 +44,14 @@ class PropertySlider extends JPanel {
         this.add(slider);
         propertyEditor.addPropertyChangeListener(new PropertyChangeListener() {
 
+            @Override
             public void propertyChange(PropertyChangeEvent evt) {
                 updateUs();
             }
         });
         addKeyListener(new KeyAdapter() {
 
+            @Override
             public void keyReleased(KeyEvent e) {
                 // if (e.getKeyCode() == KeyEvent.VK_ENTER)
                 updateEditor();
@@ -57,6 +59,7 @@ class PropertySlider extends JPanel {
         });
         addFocusListener(new FocusAdapter() {
 
+            @Override
             public void focusLost(FocusEvent e) {
                 updateEditor();
             }
@@ -95,6 +98,7 @@ class PropertySlider extends JPanel {
         public SliderListener() {
         }
 
+        @Override
         public void stateChanged(ChangeEvent e) {
             JSlider s1 = (JSlider) e.getSource();
             System.out.println("slider" + s1.getValue());

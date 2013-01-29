@@ -60,6 +60,7 @@ public class DArray implements DIntDoubleMap{
    * @param source the source value
    * @param image  the image value
    */
+    @Override
   public boolean setImage(int source, double image){
     if(source<0 || source>=size) throw
       new ArrayIndexOutOfBoundsException(source);
@@ -83,6 +84,7 @@ public class DArray implements DIntDoubleMap{
 //      new ArrayIndexOutOfBoundsException(source);
 //    return value[source];
 //  }
+    @Override
     public double getImage(int source){
     if(source<0) new ArrayIndexOutOfBoundsException(source);
     if(source>=size && size > 1) return value[size-1];
@@ -97,6 +99,7 @@ public class DArray implements DIntDoubleMap{
    *          has been changed by this method call, else it returns
    *          <code>false</code> @see #getMinImageValue(), #getMaxImageValue()
    */
+    @Override
   public boolean addImage(double image){
     if( size >= value.length ){
       int new_length = (int)(value.length * capacity_multiplier);
@@ -121,6 +124,7 @@ public class DArray implements DIntDoubleMap{
    *
    * @return the size of the source value set
    */
+    @Override
   public int getSize(){
     return size;
   }
@@ -130,6 +134,7 @@ public class DArray implements DIntDoubleMap{
    *
    * @return <code>true</code> if one of them changed
    */
+    @Override
   public boolean restore(){
     if( size == 0 ) return false;
     double old_min = min, old_max = max;
@@ -148,6 +153,7 @@ public class DArray implements DIntDoubleMap{
   /**
    * throws all information away
    */
+    @Override
   public void reset(){
     size = 0;
     value = new double[initial_capacity];
@@ -158,6 +164,7 @@ public class DArray implements DIntDoubleMap{
    *
    * @return the minimal image value
    */
+    @Override
   public double getMinImageValue(){
     if( size == 0 ) throw
       new IllegalArgumentException("DArray is empty. No minimal value exists");
@@ -168,6 +175,7 @@ public class DArray implements DIntDoubleMap{
    * Return the minimal positive image value or the maximal value if none is positive. 
    * @return
    */
+    @Override
   public double getMinPositiveImageValue() {
 	  if ( size==0) throw
 	  	new IllegalArgumentException("DArray is empty. No minimal value exists");
@@ -178,6 +186,7 @@ public class DArray implements DIntDoubleMap{
    *
    * @return the maxmal image value
    */
+    @Override
   public double getMaxImageValue(){
     if( size == 0 ) throw
       new IllegalArgumentException("DArray is empty. No maximal value exists");
@@ -192,6 +201,7 @@ public class DArray implements DIntDoubleMap{
    * @return <code>true</code> when the object is an DArray object, containing
    *          the same values
    */
+    @Override
   public boolean equals(Object o){
     if( !(o instanceof DArray) ) return false;
     DArray comp = (DArray)o;
@@ -204,6 +214,7 @@ public class DArray implements DIntDoubleMap{
     return true;
   }
 
+    @Override
   public String toString(){
     String text = "eva2.tools.chart2d.DArray[size:"+size;
     if( size < 11 )

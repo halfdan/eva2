@@ -26,10 +26,12 @@ public class F14Problem extends AbstractProblemDoubleOffset implements Interface
     /** This method returns a deep clone of the problem.
      * @return  the clone
      */
+    @Override
     public Object clone() {
         return (Object) new F14Problem(this);
     }
 
+    @Override
     public double[] eval(double[] x) {
         double[] result = new double[1];
         double x0 = x[0]-rotationDX-m_XOffset;
@@ -80,6 +82,7 @@ public class F14Problem extends AbstractProblemDoubleOffset implements Interface
      * name to the current object.
      * @return The name.
      */
+    @Override
     public String getName() {
         return "F14-Problem";
     }

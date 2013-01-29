@@ -22,6 +22,7 @@ public class F12Problem extends AbstractProblemDoubleOffset implements Serializa
     /** This method returns a deep clone of the problem.
      * @return  the clone
      */
+    @Override
     public Object clone() {
         return (Object) new F12Problem(this);
     }
@@ -30,6 +31,7 @@ public class F12Problem extends AbstractProblemDoubleOffset implements Serializa
      * @param x     The n-dimensional input vector
      * @return  The m-dimensional output vector.
      */
+    @Override
     public double[] eval(double[] x) {
     	x = rotateMaybe(x);
         double[] result = new double[1];
@@ -64,6 +66,7 @@ public class F12Problem extends AbstractProblemDoubleOffset implements Serializa
      * name to the current object.
      * @return The name.
      */
+    @Override
     public String getName() {
         return "F12 Problem";
     }

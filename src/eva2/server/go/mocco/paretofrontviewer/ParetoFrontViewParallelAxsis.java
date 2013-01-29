@@ -21,6 +21,7 @@ public class ParetoFrontViewParallelAxsis extends JPanel implements InterfacePar
      * the data has changed most likely due to changes in
      * the problem definition
      */
+    @Override
     public void updateView() {
 
     }

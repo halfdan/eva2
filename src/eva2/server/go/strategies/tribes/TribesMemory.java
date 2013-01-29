@@ -51,6 +51,7 @@ public class TribesMemory implements java.io.Serializable {
     	return positionPrev;
     }
     
+    @Override
     public TribesMemory clone() {
     	TribesMemory clone = new TribesMemory(position.x.length);
         clone.status = status;

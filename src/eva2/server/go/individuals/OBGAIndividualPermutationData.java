@@ -69,6 +69,7 @@ public class OBGAIndividualPermutationData extends AbstractEAIndividual implemen
      * @param individual      The individual to compare to.
      * @return boolean if equal true else false.
      */
+    @Override
     public boolean equalGenotypes(AbstractEAIndividual individual) {
         if (individual instanceof OBGAIndividualPermutationData) {
             OBGAIndividualPermutationData indy = (OBGAIndividualPermutationData) individual;
@@ -96,6 +97,7 @@ public class OBGAIndividualPermutationData extends AbstractEAIndividual implemen
   * @param obj   The initial value for the phenotype
   * @param opt   The optimization problem that is to be solved.
   */
+    @Override
  public void initByValue(Object obj, InterfaceOptimizationProblem opt) {
    if (obj instanceof int[]) {
     this.SetPermutationGenotype((int[][]) obj);
@@ -112,6 +114,7 @@ public class OBGAIndividualPermutationData extends AbstractEAIndividual implemen
   * double[] is used instead of a single double.
   * @return The complete fitness array
   */
+    @Override
  public double[] getFitness() {
    return this.m_Fitness;
  }
@@ -120,6 +123,7 @@ public class OBGAIndividualPermutationData extends AbstractEAIndividual implemen
   * noteably the Genotype.
   * @return A descriptive string
   */
+    @Override
  public String getStringRepresentation() {
    String result = "";
            result += "OBGAIndividual: (";
@@ -144,6 +148,7 @@ public class OBGAIndividualPermutationData extends AbstractEAIndividual implemen
 
  }
 
+    @Override
  public Object clone() {
    return new OBGAIndividualPermutationData(this);
  }
@@ -152,14 +157,17 @@ public class OBGAIndividualPermutationData extends AbstractEAIndividual implemen
   *  InterfaceOBGAIndividual methods
   */
 
+    @Override
     public int[][] getOBGenotype() {
         return this.m_Genotype;
     }
 
+    @Override
     public void SetOBGenotype(int[][] g) {
         this.m_Genotype = g;
     }
 
+    @Override
   public void defaultMutate(){
     int[][] permmatrix = this.getPermutationData();
     for (int i = 0; i < permmatrix.length; i++) {
@@ -174,6 +182,7 @@ public class OBGAIndividualPermutationData extends AbstractEAIndividual implemen
     this.SetPermutationGenotype(permmatrix);
   }
 
+    @Override
   public void defaultInit(InterfaceOptimizationProblem prob){
     //System.out.println("Default Init!");
     int[][] perm = new int[this.m_Genotype.length][];
@@ -200,6 +209,7 @@ public class OBGAIndividualPermutationData extends AbstractEAIndividual implemen
    */
 
 
+    @Override
     public void setPermutationDataLength(int[] length){
       this.m_Genotype     = new int[length.length][];
       for (int i = 0; i < length.length; i++) {
@@ -208,6 +218,7 @@ public class OBGAIndividualPermutationData extends AbstractEAIndividual implemen
 
     }
 
+    @Override
     public int[] sizePermutation() {
        int[]  res = new int[m_Genotype.length];
        for (int i = 0; i <m_Genotype.length; i++) {
@@ -216,10 +227,12 @@ public class OBGAIndividualPermutationData extends AbstractEAIndividual implemen
        return res;
     }
 
+    @Override
     public void SetPermutationPhenotype(int[][] perm){
         this.m_Phenotype = perm;
     }
 
+    @Override
     public void SetPermutationGenotype(int[][] perm){
         this.SetPermutationPhenotype(perm);
         this.m_Genotype = new int[perm.length][];
@@ -230,6 +243,7 @@ public class OBGAIndividualPermutationData extends AbstractEAIndividual implemen
 
     }
 
+    @Override
     public int[][] getPermutationData() {
       this.m_Phenotype = new int[this.m_Genotype.length][];
       for (int i = 0; i < this.m_Genotype.length; i++) {
@@ -243,6 +257,7 @@ public class OBGAIndividualPermutationData extends AbstractEAIndividual implemen
      * an update from the genotype
      * @return int[] representing the permutation.
      */
+    @Override
     public int[][] getPermutationDataWithoutUpdate() {
         return this.m_Phenotype;
     }
@@ -250,6 +265,7 @@ public class OBGAIndividualPermutationData extends AbstractEAIndividual implemen
     public int[] getFirstindex() {
         return firstindex;
     }
+    @Override
     public void setFirstindex(int[] firstindex) {
         this.firstindex = firstindex;
     }
@@ -258,6 +274,7 @@ public class OBGAIndividualPermutationData extends AbstractEAIndividual implemen
      * name to the current object.
      * @return The name.
      */
+    @Override
     public String getName() {
         return "OBGA individual";
     }

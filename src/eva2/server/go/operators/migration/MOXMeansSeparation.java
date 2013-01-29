@@ -58,6 +58,7 @@ public class MOXMeansSeparation implements InterfaceMigration, java.io.Serializa
 
     /** The ever present clone method
      */
+    @Override
     public Object clone() {
         return new MOXMeansSeparation(this);
     }
@@ -65,6 +66,7 @@ public class MOXMeansSeparation implements InterfaceMigration, java.io.Serializa
     /** Typically i'll need some initialization method for
      * every bit of code i write....
      */
+    @Override
     public void initMigration(InterfaceOptimizer[] islands) {
         // pff at a later stage i could initialize a topology here
     }
@@ -79,6 +81,7 @@ public class MOXMeansSeparation implements InterfaceMigration, java.io.Serializa
      * you call getPopulation() on an island it is not a reference
      * to the population but a serialized copy of the population!!
      */
+    @Override
     public void migrate(InterfaceOptimizer[] islands) {
         Population[]            oldIPOP = new Population[islands.length];
         Population[]            newIPOP = new Population[islands.length];

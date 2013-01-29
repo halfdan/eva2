@@ -19,6 +19,7 @@ public class InformationRetrievalReplacing implements InterfaceInformationRetrie
     public InformationRetrievalReplacing(InformationRetrievalReplacing a) {
     }
 
+    @Override
     public Object clone() {
         return (Object) new InformationRetrievalReplacing(this);
     }
@@ -27,6 +28,7 @@ public class InformationRetrievalReplacing implements InterfaceInformationRetrie
      * an already existing population.
      * @param pop           The population.
      */
+    @Override
     public void retrieveInformationFrom(Population pop) {
         Population archive = pop.getArchive();
         if (archive == null) return;

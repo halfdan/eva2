@@ -25,6 +25,7 @@ public class NoCrossover implements InterfaceCrossover, java.io.Serializable {
     /** This method will enable you to clone a given mutation operator
      * @return The clone
      */
+    @Override
     public Object clone() {
         return new NoCrossover();
     }
@@ -34,6 +35,7 @@ public class NoCrossover implements InterfaceCrossover, java.io.Serializable {
      * @param indy1 The first individual
      * @param partners The partner individuals
      */
+    @Override
     public AbstractEAIndividual[] mate(AbstractEAIndividual indy1, Population partners) {
         AbstractEAIndividual[] result = null;
         //result = new AbstractEAIndividual[2]; /// by MK
@@ -51,6 +53,7 @@ public class NoCrossover implements InterfaceCrossover, java.io.Serializable {
      * are actually the same.
      * @param crossover   The other crossover operator
      */
+    @Override
     public boolean equals(Object crossover) {
         if (crossover instanceof NoCrossover) return true;
         else return false;
@@ -63,10 +66,12 @@ public class NoCrossover implements InterfaceCrossover, java.io.Serializable {
      * @param individual    The individual that will be mutated.
      * @param opt           The optimization problem.
      */
+    @Override
     public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
         this.m_OptimizationProblem = opt;
     }
 
+    @Override
     public String getStringRepresentation() {
         return this.getName();
     }

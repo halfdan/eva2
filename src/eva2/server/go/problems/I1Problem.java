@@ -21,6 +21,7 @@ public class I1Problem extends AbstractProblemInteger implements java.io.Seriali
 	/** This method returns a deep clone of the problem.
      * @return  the clone
      */
+    @Override
     public Object clone() {
         return (Object) new I1Problem(this);
     }
@@ -29,6 +30,7 @@ public class I1Problem extends AbstractProblemInteger implements java.io.Seriali
      * @param x     The n-dimensional input vector
      * @return  The m-dimensional output vector.
      */
+    @Override
     public double[] eval(int[] x) {
         double[] result = new double[1];
         result[0]     = 0;
@@ -43,6 +45,7 @@ public class I1Problem extends AbstractProblemInteger implements java.io.Seriali
      * @param opt       The Optimizer that is used or had been used.
      * @return The description.
      */
+    @Override
     public String getStringRepresentationForProblem(InterfaceOptimizer opt) {
         String result = "";
 
@@ -58,6 +61,7 @@ public class I1Problem extends AbstractProblemInteger implements java.io.Seriali
  * These are for GUI
  */
 
+    @Override
     public String getName() {
         return "I1 Problem";
     }

@@ -41,6 +41,7 @@ public class StandardDeactivationStrategy implements InterfaceDeactivationStrate
 		this.epsilon = eps;
 	}
 	
+    @Override
 	public Object clone(){
 		return (Object) new StandardDeactivationStrategy(this);
 	}
@@ -88,6 +89,7 @@ public class StandardDeactivationStrategy implements InterfaceDeactivationStrate
 	 * (i.e. the stddev over the past 3 iterations is < epsilson)
 	 * (non-Javadoc) @see javaeva.server.oa.go.Operators.NichePSO.InterfaceDeactivationStrategy#shouldDeactivateSubswarm(javaeva.server.oa.go.Strategies.ParticleSubSwarmOptimization)
 	 */
+    @Override
 	public boolean shouldDeactivateSubswarm(ParticleSubSwarmOptimization subswarm) {
 		if (!subswarm.isActive()){
 			return false;
@@ -105,6 +107,7 @@ public class StandardDeactivationStrategy implements InterfaceDeactivationStrate
 	 * to be reinitialized into the mainswarm.
 	 * (non-Javadoc) @see javaeva.server.oa.go.Operators.NichePSO.InterfaceDeactivationStrategy#deactivateSubswarm(javaeva.server.oa.go.Strategies.ParticleSubSwarmOptimization, javaeva.server.oa.go.Strategies.ParticleSubSwarmOptimization)
 	 */
+    @Override
 	public int[] deactivateSubswarm(ParticleSubSwarmOptimization subswarm, ParticleSubSwarmOptimization mainswarm) {
 		if (!subswarm.isActive()){
 			System.out.println("deactivateSubSwarm: try to deactivate inactive subswarm");

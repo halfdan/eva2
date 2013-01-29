@@ -20,6 +20,7 @@ import eva2.server.go.populations.Population;
 public class ReplacementNondominatedSortingDistanceCrowding implements InterfaceReplacement, java.io.Serializable {
 
 	public class HypervolumeComperator implements Comparator<AbstractEAIndividual>{
+        @Override
 		public int compare(AbstractEAIndividual arg0, AbstractEAIndividual arg1) {
 			// TODO Auto-generated method stub
 			Double a0=(Double) arg0.getData("HyperCube");
@@ -48,6 +49,7 @@ public class ReplacementNondominatedSortingDistanceCrowding implements Interface
     
     /** The ever present clone method
      */
+    @Override
     public Object clone() {
         return new ReplaceRandom();
     }
@@ -61,6 +63,7 @@ public class ReplacementNondominatedSortingDistanceCrowding implements Interface
      * @param sub       The subset
      */
     @SuppressWarnings("unchecked")
+    @Override
 	public void insertIndividual(AbstractEAIndividual indy, Population pop, Population sub) {
         
     

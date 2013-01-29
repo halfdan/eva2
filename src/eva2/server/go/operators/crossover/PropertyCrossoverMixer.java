@@ -41,6 +41,7 @@ public class PropertyCrossoverMixer implements java.io.Serializable {
         }
     }
 
+    @Override
     public Object clone() {
         return (Object) new PropertyCrossoverMixer(this);
     }

@@ -30,6 +30,7 @@ public class SelectBestSingle implements InterfaceSelection, java.io.Serializabl
         this.m_ObeyDebsConstViolationPrinciple = a.m_ObeyDebsConstViolationPrinciple;
     }
 
+    @Override
     public Object clone() {
         return (Object) new SelectBestSingle(this);
     }
@@ -40,6 +41,7 @@ public class SelectBestSingle implements InterfaceSelection, java.io.Serializabl
      * before hand...
      * @param population    The population that is to be processed.
      */
+    @Override
     public void prepareSelection(Population population) {
         // nothing to prepare here
     }
@@ -50,6 +52,7 @@ public class SelectBestSingle implements InterfaceSelection, java.io.Serializabl
      * @param size          The number of Individuals to select
      * @return The selected population.
      */
+    @Override
     public Population selectFrom(Population population, int size) {
         Population              result = new Population();
         AbstractEAIndividual    tmpIndy = null;
@@ -104,6 +107,7 @@ public class SelectBestSingle implements InterfaceSelection, java.io.Serializabl
      * @param size              The number of partners needed.
      * @return The selected partners.
      */
+    @Override
     public Population findPartnerFor(AbstractEAIndividual dad, Population availablePartners, int size) {
     	if (excludeSelfAsPartner) {
     		Population newPartners = availablePartners.filter(new Population().addToPop(dad));
@@ -137,6 +141,7 @@ public class SelectBestSingle implements InterfaceSelection, java.io.Serializabl
      * of Deb
      * @param b     The new state
      */
+    @Override
     public void setObeyDebsConstViolationPrinciple(boolean b) {
         this.m_ObeyDebsConstViolationPrinciple = b;
     }

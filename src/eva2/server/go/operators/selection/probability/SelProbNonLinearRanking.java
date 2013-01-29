@@ -26,6 +26,7 @@ public class SelProbNonLinearRanking extends AbstractSelProb implements java.io.
         this.m_C    = a.m_C;
     }
 
+    @Override
     public Object clone() {
         return (Object) new SelProbNonLinearRanking(this);
     }
@@ -36,6 +37,7 @@ public class SelProbNonLinearRanking extends AbstractSelProb implements java.io.
      * @param population    The population to compute.
      * @param data          The input as double[][]
      */
+    @Override
     public void computeSelectionProbability(Population population, double[][] data, boolean obeyConst) {
         double                  temp, sum;
         double[]                result = new double[data.length];

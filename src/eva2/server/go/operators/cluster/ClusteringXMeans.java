@@ -44,6 +44,7 @@ public class ClusteringXMeans implements InterfaceClustering, java.io.Serializab
      * the object
      * @return the deep clone
      */
+    @Override
     public Object clone() {
         return (Object) new ClusteringXMeans(this);
     }
@@ -55,6 +56,7 @@ public class ClusteringXMeans implements InterfaceClustering, java.io.Serializab
      * @param pop       The population of individuals that is to be clustered.
      * @return Population[]
      */
+    @Override
     public Population[] cluster(Population pop, Population referencePop) {
         ClusteringKMeans    kmeans      = new ClusteringKMeans();
         Population[][]      tmpResults  = new Population[this.m_MaxK][];
@@ -223,6 +225,7 @@ public class ClusteringXMeans implements InterfaceClustering, java.io.Serializab
      * @param species2  The second species.
      * @return True if species converge, else False.
      */
+    @Override
     public boolean mergingSpecies(Population species1, Population species2, Population referencePop) {
         // @todo i could use the BIC metric from X-means to calculate this
         return false;
@@ -238,6 +241,7 @@ public class ClusteringXMeans implements InterfaceClustering, java.io.Serializab
 //        return false;
 //    }
 
+    @Override
 	public int[] associateLoners(Population loners, Population[] species, Population referencePop) {
 		int[] res=new int[loners.size()];
 		System.err.println("Warning, associateLoners not implemented for " + this.getClass());
@@ -380,6 +384,7 @@ public class ClusteringXMeans implements InterfaceClustering, java.io.Serializab
         return "Toggle between search/objective space distance.";
     }
 
+    @Override
 	public String initClustering(Population pop) {
 		return null;
 	}

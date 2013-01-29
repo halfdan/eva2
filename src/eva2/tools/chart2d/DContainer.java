@@ -38,6 +38,7 @@ public class DContainer extends DComponent implements DParent{
     keys = new Vector<String>(initial_capacity);
   }
 
+    @Override
   public void repaint( DRectangle r ){
     DParent parent = getDParent();
     if( parent != null ) parent.repaint( r );
@@ -51,6 +52,7 @@ public class DContainer extends DComponent implements DParent{
    *
    * @param e the new DElement to add
    */
+    @Override
   public void addDElement( DElement e ){
     addDElement( null, e );
   }
@@ -96,6 +98,7 @@ public class DContainer extends DComponent implements DParent{
    * @param e the DElement to remove
    * @return if this was possible
    */
+    @Override
   public boolean removeDElement( DElement e ){
     int index = elements.indexOf( e );
     if( index > -1 ){
@@ -124,6 +127,7 @@ public class DContainer extends DComponent implements DParent{
    *
    * @return the elements of the container
    */
+    @Override
   public DElement[] getDElements(){
     DElement[] es = new DElement[ elements.size() ];
     elements.toArray(es);
@@ -151,6 +155,7 @@ public class DContainer extends DComponent implements DParent{
    *
    * @param m the DMeasures object
    */
+    @Override
   public void paint( DMeasures m ){
     DElement e;
     for( int i=0; i<elements.size(); i++ ){
@@ -167,6 +172,7 @@ public class DContainer extends DComponent implements DParent{
    * @param e the element
    * @return if it is contained
    */
+    @Override
   public boolean contains( DElement e ){
     return elements.contains( e );
   }
@@ -176,6 +182,7 @@ public class DContainer extends DComponent implements DParent{
    *
    * @param c the new Color of the elements
    */
+    @Override
   public void setColor(Color c){
     for( int i=0; i<elements.size(); i++ )
       ((DElement)elements.get(i)).setColor(c);
@@ -189,10 +196,12 @@ public class DContainer extends DComponent implements DParent{
    *
    * @param b the border to add
    */
+    @Override
   public void addDBorder(DBorder b){
     if( getDBorder().insert(b) && parent != null ) parent.addDBorder(b);
   }
 
+    @Override
   public void restoreBorder(){
     DBorder b = new DBorder();
     for( int i=0; i<elements.size(); i++ )

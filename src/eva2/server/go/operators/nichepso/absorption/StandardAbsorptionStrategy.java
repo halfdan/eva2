@@ -17,6 +17,7 @@ public class StandardAbsorptionStrategy implements	InterfaceAbsorptionStrategy, 
 /**********************************************************************************************************************
  * ctors, init, clone
  */	
+    @Override
 	public Object clone(){
 		return (Object) new StandardAbsorptionStrategy();
 	}
@@ -35,6 +36,7 @@ public class StandardAbsorptionStrategy implements	InterfaceAbsorptionStrategy, 
 	 * the particle lies in the radius of the subswarm 
 	 * (non-Javadoc) @see javaeva.server.oa.go.Operators.NichePSO.InterfaceAbsorptionStrategy#shouldAbsorbParticleIntoSubswarm(javaeva.server.oa.go.EAIndividuals.AbstractEAIndividual, javaeva.server.oa.go.Strategies.ParticleSubSwarmOptimization)
 	 */
+    @Override
 	public boolean shouldAbsorbParticleIntoSubswarm(AbstractEAIndividual indy, ParticleSubSwarmOptimization subswarm, ParticleSubSwarmOptimization mainswarm) {
 		if (!subswarm.isActive()){
 			return false; // no interaction between active mainswarmparticle and inactive subswarm
@@ -64,6 +66,7 @@ public class StandardAbsorptionStrategy implements	InterfaceAbsorptionStrategy, 
 	 * adds indy to an active subswarm, then removes indy from the mainswarm.
 	 * (non-Javadoc) @see javaeva.server.oa.go.Operators.NichePSO.InterfaceAbsorptionStrategy#absorbParticle(javaeva.server.oa.go.EAIndividuals.AbstractEAIndividual, javaeva.server.oa.go.Strategies.ParticleSubSwarmOptimization, javaeva.server.oa.go.Strategies.ParticleSubSwarmOptimization)
 	 */
+    @Override
 	public void absorbParticle(AbstractEAIndividual indy, ParticleSubSwarmOptimization subswarm, ParticleSubSwarmOptimization mainswarm) {
 		if (!subswarm.isActive()){
 			System.out.println("absorbParticle: trying to absorb a particle into an inactive subswarm.");

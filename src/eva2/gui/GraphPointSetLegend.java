@@ -43,6 +43,7 @@ public class GraphPointSetLegend {
 		 * 
 		 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
 		 */
+        @Override
 		public int compare(Pair<String, Color> o1, Pair<String, Color> o2) {
 			int comp = o1.car().compareTo(o2.car());
 			// Same text; let us see if the color is also identical.

@@ -83,10 +83,12 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
         this.m_localOnly                  = a.m_localOnly;
     }
 
+    @Override
     public Object clone() {
         return (Object) new IslandModelEA(this);
     }
 
+    @Override
     public void init() {
         if (this.m_Show) {
             if (this.m_Plot == null) {
@@ -154,6 +156,7 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
     /** This method will init the optimizer with a given population
      * @param reset     If true the population is reset.
      */
+    @Override
     public void initByPopulation(Population tpop, boolean reset) {
     	// TODO this is again evil copy&paste style
         if (this.m_Show) {
@@ -215,6 +218,7 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
 
     /** The optimize method will compute an 'improved' and evaluated population
      */
+    @Override
     public void optimize() {
         for (int i = 0; i < this.m_Islands.length; i++) {
             if (this.m_Islands[i].getPopulation().size() > 0) {
@@ -278,9 +282,11 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
     /** This method allows you to add the LectureGUI as listener to the Optimizer
      * @param ea
      */
+    @Override
     public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
         this.m_Listener = ea;
     }
+    @Override
 	public boolean removePopulationChangedEventListener(
 			InterfacePopulationChangedEventListener ea) {
 		if (m_Listener==ea) {
@@ -297,10 +303,12 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
     /** This method will set the problem that is to be optimized
      * @param problem
      */
+    @Override
     public void setProblem (InterfaceOptimizationProblem problem) {
         this.m_Problem = problem;
         this.m_Optimizer.setProblem(problem);
     }
+    @Override
     public InterfaceOptimizationProblem getProblem () {
         return this.m_Problem;
     }
@@ -309,6 +317,7 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
      * and the applied methods.
      * @return A descriptive string
      */
+    @Override
     public String getStringRepresentation() {
         String result = "";
         result += "Island Model Evolutionary Algorithm:\n";
@@ -390,9 +399,11 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
     /** This method allows you to set an identifier for the algorithm
      * @param name      The indenifier
      */
+    @Override
      public void setIdentifier(String name) {
         this.m_Identifier = name;
     }
+    @Override
      public String getIdentifier() {
          return this.m_Identifier;
      }
@@ -415,6 +426,7 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
     /** This method is required to free the memory on a RMIServer,
      * but there is nothing to implement.
      */
+    @Override
     public void freeWilly() {
         for (int i = 0; i < this.m_Islands.length; i++) {
             this.m_Islands[i].freeWilly();
@@ -428,6 +440,7 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
      * @param source        The source of the event.
      * @param name          Could be used to indicate the nature of the event.
      */
+    @Override
     public void registerPopulationStateChanged(Object source, String name) {
         InterfaceOptimizer  opt = (InterfaceOptimizer)source;
         int                 sourceID = new Integer(opt.getIdentifier()).intValue();
@@ -452,6 +465,7 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
     /** This method will return a naming String
      * @return The name of the algorithm
      */
+    @Override
     public String getName() {
         return "IslandEA";
     }
@@ -543,9 +557,11 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
      * of the optimizer.
      * @return The population of current solutions to a given problem.
      */
+    @Override
     public Population getPopulation() {
         return this.m_Population;
     }
+    @Override
     public void setPopulation(Population pop) {
         // @todo Jetzt m�sste ich die pop auch auf die Rechner verteilen...
         this.m_Population = pop;
@@ -554,6 +570,7 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
         return "(Defunct)";
     }
     
+    @Override
     public InterfaceSolutionSet getAllSolutions() {
     	return new SolutionSet(getPopulation());
     }

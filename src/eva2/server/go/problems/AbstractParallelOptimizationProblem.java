@@ -19,6 +19,7 @@ public abstract class AbstractParallelOptimizationProblem extends AbstractOptimi
     private boolean                                 m_Parallelize       = false;
     private AbstractOptimizationProblem[]           m_Slaves;
 
+    @Override
     public void initProblem() {
         if (this.m_Parallelize) {
             // this is running on remote maschines
@@ -63,6 +64,7 @@ public abstract class AbstractParallelOptimizationProblem extends AbstractOptimi
     /** This method will return a naming String
      * @return The name of the algorithm
      */
+    @Override
     public String getName() {
         return "Parallel Optimization Problem";
     }

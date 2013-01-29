@@ -47,6 +47,7 @@ public class GAPIndividualProgramData extends AbstractEAIndividual implements In
         cloneAEAObjects((AbstractEAIndividual) individual);
     }
 
+    @Override
     public Object clone() {
         return (Object) new GAPIndividualProgramData(this);
     }
@@ -55,6 +56,7 @@ public class GAPIndividualProgramData extends AbstractEAIndividual implements In
      * @param individual      The individual to compare to.
      * @return boolean if equal true else false.
      */
+    @Override
     public boolean equalGenotypes(AbstractEAIndividual individual) {
         if (individual instanceof GAPIndividualProgramData) {
             GAPIndividualProgramData indy = (GAPIndividualProgramData)individual;
@@ -69,11 +71,13 @@ public class GAPIndividualProgramData extends AbstractEAIndividual implements In
     /** This method will allow a default initialisation of the individual
      * @param opt   The optimization problem that is to be solved.
      */
+    @Override
     public void init(InterfaceOptimizationProblem opt) {
         ((AbstractEAIndividual)this.m_Numbers).init(opt);
         ((AbstractEAIndividual)this.m_Program).init(opt);
     }
     
+    @Override
     public void defaultInit(InterfaceOptimizationProblem prob) {
         ((AbstractEAIndividual)this.m_Numbers).defaultInit(prob);
         ((AbstractEAIndividual)this.m_Program).defaultInit(prob);   	
@@ -84,6 +88,7 @@ public class GAPIndividualProgramData extends AbstractEAIndividual implements In
      * @param obj   The initial value for the phenotype
      * @param opt   The optimization problem that is to be solved.
      */
+    @Override
     public void initByValue(Object obj, InterfaceOptimizationProblem opt) {
         if (obj instanceof Object[]) {
             if (((Object[])obj)[0] instanceof double[]) {
@@ -102,11 +107,13 @@ public class GAPIndividualProgramData extends AbstractEAIndividual implements In
 
     /** This method will mutate the individual randomly
      */
+    @Override
     public void mutate() {
         if (RNG.flipCoin(this.m_MutationProbability))((AbstractEAIndividual)this.m_Numbers).mutate();
         if (RNG.flipCoin(this.m_MutationProbability))((AbstractEAIndividual)this.m_Program).mutate();
     }
 
+    @Override
     public void defaultMutate() {
         ((AbstractEAIndividual)this.m_Numbers).defaultMutate();
         ((AbstractEAIndividual)this.m_Program).defaultMutate();  	
@@ -117,6 +124,7 @@ public class GAPIndividualProgramData extends AbstractEAIndividual implements In
      * @param partners  The possible partners
      * @return offsprings
      */
+    @Override
     public AbstractEAIndividual[] mateWith(Population partners) {
         AbstractEAIndividual[] result;
         if (RNG.flipCoin(this.m_CrossoverProbability)) {
@@ -156,6 +164,7 @@ public class GAPIndividualProgramData extends AbstractEAIndividual implements In
      * noteably the Genotype.
      * @return A descriptive string
      */
+    @Override
     public String getStringRepresentation() {
         String result = "This is a hybrid Individual:\n";
         result += "The Numbers Part:\n"+((AbstractEAIndividual)this.m_Numbers).getStringRepresentation();
@@ -169,6 +178,7 @@ public class GAPIndividualProgramData extends AbstractEAIndividual implements In
     /** This method allows you to request a certain amount of double data
      * @param length    The lenght of the double[] that is to be optimized
      */
+    @Override
     public void setDoubleDataLength (int length) {
         this.m_Numbers.setDoubleDataLength(length);
     }
@@ -176,6 +186,7 @@ public class GAPIndividualProgramData extends AbstractEAIndividual implements In
     /** This method returns the length of the double data set
      * @return The number of bits stored
      */
+    @Override
     public int size() {
         return this.m_Numbers.size();
     }
@@ -185,6 +196,7 @@ public class GAPIndividualProgramData extends AbstractEAIndividual implements In
      * for dimension d.
      * @param range     The new range for the double data.
      */
+    @Override
     public void SetDoubleRange(double[][] range) {
         this.m_Numbers.SetDoubleRange(range);
     }
@@ -192,6 +204,7 @@ public class GAPIndividualProgramData extends AbstractEAIndividual implements In
     /** This method will return the range for all double attributes.
      * @return The range array.
      */
+    @Override
     public double[][] getDoubleRange() {
         return this.m_Numbers.getDoubleRange();
     }
@@ -199,6 +212,7 @@ public class GAPIndividualProgramData extends AbstractEAIndividual implements In
     /** This method allows you to read the double data
      * @return BitSet representing the double data.
      */
+    @Override
     public double[] getDoubleData() {
         return this.m_Numbers.getDoubleData();
     }
@@ -207,6 +221,7 @@ public class GAPIndividualProgramData extends AbstractEAIndividual implements In
      * an update from the genotype
      * @return double[] representing the double data.
      */
+    @Override
     public double[] getDoubleDataWithoutUpdate() {
         return this.m_Numbers.getDoubleDataWithoutUpdate();
     }
@@ -215,6 +230,7 @@ public class GAPIndividualProgramData extends AbstractEAIndividual implements In
      * SetDoubleDataLamarckian().
      * @param doubleData    The new double data.
      */
+    @Override
     public void SetDoublePhenotype(double[] doubleData) {
         this.m_Numbers.SetDoublePhenotype(doubleData);
     }
@@ -223,6 +239,7 @@ public class GAPIndividualProgramData extends AbstractEAIndividual implements In
      * memetic algorithms.
      * @param doubleData    The new double data.
      */
+    @Override
     public void SetDoubleGenotype(double[] doubleData) {
         this.m_Numbers.SetDoubleGenotype(doubleData);
     }
@@ -233,6 +250,7 @@ public class GAPIndividualProgramData extends AbstractEAIndividual implements In
     /** This method allows you to request a certain amount of double data
      * @param length    The lenght of the double[] that is to be optimized
      */
+    @Override
     public void setProgramDataLength (int length) {
         this.m_Program.setProgramDataLength(length);
     }
@@ -240,6 +258,7 @@ public class GAPIndividualProgramData extends AbstractEAIndividual implements In
     /** This method allows you to read the program stored as Koza style node tree
      * @return AbstractGPNode representing the binary data.
      */
+    @Override
     public InterfaceProgram[] getProgramData() {
         return this.m_Program.getProgramData();
     }
@@ -248,6 +267,7 @@ public class GAPIndividualProgramData extends AbstractEAIndividual implements In
      * an update from the genotype
      * @return InterfaceProgram[] representing the Program.
      */
+    @Override
     public InterfaceProgram[] getProgramDataWithoutUpdate() {
         return this.m_Program.getProgramDataWithoutUpdate();
     }
@@ -255,6 +275,7 @@ public class GAPIndividualProgramData extends AbstractEAIndividual implements In
     /** This method allows you to set the program.
      * @param program    The new program.
      */
+    @Override
     public void SetProgramPhenotype(InterfaceProgram[] program) {
         this.m_Program.SetProgramPhenotype(program);
     }
@@ -262,6 +283,7 @@ public class GAPIndividualProgramData extends AbstractEAIndividual implements In
     /** This method allows you to set the program.
      * @param program    The new program.
      */
+    @Override
     public void SetProgramGenotype(InterfaceProgram[] program) {
         this.m_Program.SetProgramGenotype(program);
     }
@@ -269,6 +291,7 @@ public class GAPIndividualProgramData extends AbstractEAIndividual implements In
     /** This method allows you to set the function area
      * @param area  The area contains functions and terminals
      */
+    @Override
     public void SetFunctionArea(Object[] area) {
         this.m_Program.SetFunctionArea(area);
     }
@@ -276,6 +299,7 @@ public class GAPIndividualProgramData extends AbstractEAIndividual implements In
     /** This method allows you to set the function area
      * @return The function area
      */
+    @Override
     public Object[] getFunctionArea() {
         return this.m_Program.getFunctionArea();
     }
@@ -287,6 +311,7 @@ public class GAPIndividualProgramData extends AbstractEAIndividual implements In
      * name to the current object.
      * @return The name.
      */
+    @Override
     public String getName() {
         return "GAP individual";
     }

@@ -34,6 +34,7 @@ public class MainAdapterImpl implements MainAdapter {
     /**
      *
      */
+    @Override
     public void setBuf(String s) {
         m_Buf = s;
     }
@@ -41,6 +42,7 @@ public class MainAdapterImpl implements MainAdapter {
     /**
      *
      */
+    @Override
     public void restartServer() {
         LOGGER.log(Level.INFO, "Received a Message to restart the server.");
         try {
@@ -58,6 +60,7 @@ public class MainAdapterImpl implements MainAdapter {
     /**
      *
      */
+    @Override
     public void killServer() {
         LOGGER.log(Level.INFO, "Received a Message to kill the server.");
         KillThread x = new KillThread();
@@ -67,6 +70,7 @@ public class MainAdapterImpl implements MainAdapter {
     /**
      *
      */
+    @Override
     public String getBuf() {
         return m_Buf;
     }
@@ -74,6 +78,7 @@ public class MainAdapterImpl implements MainAdapter {
     /**
      *
      */
+    @Override
     public String getExecOutput(String command) {
         StringBuffer output = new StringBuffer();
         try {
@@ -94,6 +99,7 @@ public class MainAdapterImpl implements MainAdapter {
     /**
      *
      */
+    @Override
     public RMIInvocationHandler getRMIHandler(Object obj) {
         System.out.println("getRMIHandler");
         RMIInvocationHandler ret = null;
@@ -108,6 +114,7 @@ public class MainAdapterImpl implements MainAdapter {
     /**
      *
      */
+    @Override
     public RMIThreadInvocationHandler getRMIThreadHandler(Object obj) {
         RMIThreadInvocationHandler ret = null;
         try {
@@ -122,6 +129,7 @@ public class MainAdapterImpl implements MainAdapter {
     /**
      *
      */
+    @Override
     public void setRemoteThis(MainAdapter x) {
         remoteThis = x;
     }
@@ -135,6 +143,7 @@ class KillThread extends Thread {
     /**
      *
      */
+    @Override
     public void run() {
         try {
             sleep(3000);

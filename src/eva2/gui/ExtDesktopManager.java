@@ -35,11 +35,13 @@ public class ExtDesktopManager extends DefaultDesktopManager {
         this.desktop = desktop;
     }
 
+    @Override
     public void activateFrame(JInternalFrame f) {
         super.activateFrame(f);
         activeFrame = f;
     }
 
+    @Override
     public void deactivateFrame(JInternalFrame f) {
         super.deactivateFrame(f);
         if (activeFrame == f) {
@@ -51,6 +53,7 @@ public class ExtDesktopManager extends DefaultDesktopManager {
         return activeFrame;
     }
 
+    @Override
     public void closeFrame(JInternalFrame internalFrame) {
         LOGGER.log(Level.FINE, "Closing Internal Frame: {0}", internalFrame.getTitle());
         super.closeFrame(internalFrame);

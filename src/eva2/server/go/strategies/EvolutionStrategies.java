@@ -85,10 +85,12 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
 //    	GenericObjectEditor.setHideProperty(this.getClass(), "population", true);
     }
 
+    @Override
     public Object clone() {
         return (Object) new EvolutionStrategies(this);
     }
 
+    @Override
     public void init() {
         checkPopulationConstraints();
         population.putData(esMuParam, getMu());
@@ -103,6 +105,7 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
      * @param pop The initial population
      * @param reset If true the population is reset.
      */
+    @Override
     public void initByPopulation(Population pop, boolean reset) {
         origPopSize = pop.getTargetSize();
         this.population = (Population) pop.clone();
@@ -268,10 +271,12 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
      *
      * @param problem
      */
+    @Override
     public void setProblem(InterfaceOptimizationProblem problem) {
         this.optimizationProblem = problem;
     }
 
+    @Override
     public InterfaceOptimizationProblem getProblem() {
         return this.optimizationProblem;
     }
@@ -282,6 +287,7 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
      *
      * @return A descriptive string
      */
+    @Override
     public String getStringRepresentation() {
         String result = "";
         result += "Evolution Strategies:\n";
@@ -323,10 +329,12 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
      *
      * @param name The indenifier
      */
+    @Override
     public void setIdentifier(String name) {
         this.identifier = name;
     }
 
+    @Override
     public String getIdentifier() {
         return this.identifier;
     }
@@ -335,6 +343,7 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
      * This method is required to free the memory on a RMIServer, but there is
      * nothing to implement.
      */
+    @Override
     public void freeWilly() {
     }
 
@@ -360,6 +369,7 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
      *
      * @return The name of the algorithm
      */
+    @Override
     public String getName() {
         return "(" + getMu() + (isPlusStrategy() ? "+" : ",") + getLambda() + ")-ES";
     }
@@ -371,6 +381,7 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
      *
      * @return The population of current solutions to a given problem.
      */
+    @Override
     public Population getPopulation() {
         return this.population;
     }
@@ -380,6 +391,7 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
         this.population = pop;
     }
 
+    @Override
     public void setPopulation(Population pop) {
         origPopSize = pop.size();
         this.population = pop;
@@ -389,6 +401,7 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
         return "Edit the properties of the population used.";
     }
 
+    @Override
     public InterfaceSolutionSet getAllSolutions() {
         return new SolutionSet(getPopulation());
     }

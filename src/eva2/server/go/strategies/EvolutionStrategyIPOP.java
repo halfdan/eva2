@@ -75,10 +75,12 @@ public class EvolutionStrategyIPOP extends EvolutionStrategies implements Interf
 		if (other.fitConvTerm != null) fitConvTerm = new FitnessConvergenceTerminator(other.fitConvTerm);
 	}
 	
+    @Override
 	public Object clone() {
 		return new EvolutionStrategyIPOP(this);
 	}
 	
+    @Override
     public void optimize() {
 //        Population  nextGeneration, parents;
 //
@@ -111,6 +113,7 @@ public class EvolutionStrategyIPOP extends EvolutionStrategies implements Interf
     	}
     }
 
+    @Override
     public void hideHideable() {
     	GenericObjectEditor.setHideProperty(this.getClass(), "population", true);
     	setStagnationTimeUserDef(isStagnationTimeUserDef());
@@ -141,12 +144,14 @@ public class EvolutionStrategyIPOP extends EvolutionStrategies implements Interf
 		getProblem().evaluate(getPopulation());
 	}
     
+    @Override
     protected void firePropertyChangedEvent(String name) {
     	if (name.equals(Population.funCallIntervalReached)) {
     		super.firePropertyChangedEvent(Population.nextGenerationPerformed);
     	} else {} // nothing, evt is produced in #registerPopulationStateChanged, dont forward original due to changing pop size
     }
     
+    @Override
     public void init() {
 //    	setMu(initialMu);
     	if (getMu()>initialLambda) {
@@ -224,6 +229,7 @@ public class EvolutionStrategyIPOP extends EvolutionStrategies implements Interf
 	 * 
 	 * @return A solution set of the current population and possibly earlier solutions
 	 */
+    @Override
 	public SolutionSet getAllSolutions() {
 		Population sols = getPopulation().cloneWithoutInds();
 		if (bestList != null) sols.addAll(bestList);
@@ -234,6 +240,7 @@ public class EvolutionStrategyIPOP extends EvolutionStrategies implements Interf
 	    return solSet;
 	}
 	
+    @Override
 	public void registerPopulationStateChanged(Object source, String name) {
 		if (name.equals(Population.funCallIntervalReached)) {
     		getPopulation().SetFunctionCalls(((Population)source).getFunctionCalls()); // TODO this is ugly
@@ -243,6 +250,7 @@ public class EvolutionStrategyIPOP extends EvolutionStrategies implements Interf
 		}
 	}
 	
+    @Override
 	public String getName() {
 		return getIncPopSizeFact()+"-IPOP-ES";
 	}
@@ -362,6 +370,7 @@ public class EvolutionStrategyIPOP extends EvolutionStrategies implements Interf
 	 * (non-Javadoc)
 	 * @see eva2.server.go.problems.InterfaceAdditionalPopulationInformer#getAdditionalDataHeader()
 	 */
+    @Override
 	public String[] getAdditionalDataHeader() {
 		return new String[] {"numArchived", "archivedMeanDist", "lambda"};
 	}
@@ -370,6 +379,7 @@ public class EvolutionStrategyIPOP extends EvolutionStrategies implements Interf
 	 * (non-Javadoc)
 	 * @see eva2.server.go.problems.InterfaceAdditionalPopulationInformer#getAdditionalDataInfo()
 	 */
+    @Override
 	public String[] getAdditionalDataInfo() {
 		return new String[] {"Number of archived solutions", "Mean distance of archived solutions", "Current population size parameter lambda"};
 	}
@@ -378,6 +388,7 @@ public class EvolutionStrategyIPOP extends EvolutionStrategies implements Interf
 	 * (non-Javadoc)
 	 * @see eva2.server.go.problems.InterfaceAdditionalPopulationInformer#getAdditionalDataValue(eva2.server.go.PopulationInterface)
 	 */
+    @Override
 	public Object[] getAdditionalDataValue(PopulationInterface pop) {
 		return new Object[]{(bestList==null) ? ((int)0) : bestList.size(), (getMeanArchivedDist()), getLambda()};
 	}

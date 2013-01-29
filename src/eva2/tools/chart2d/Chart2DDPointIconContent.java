@@ -28,6 +28,7 @@ public class Chart2DDPointIconContent implements InterfaceDPointWithContent, DPo
      * this method has to be overridden to paint the icon. The point itself lies
      * at coordinates (0, 0)
      */
+    @Override
     public void paint( Graphics g ){
         g.drawOval(-4, -4, 8, 8);
         g.drawLine(-2, 2, 2,-2);
@@ -40,6 +41,7 @@ public class Chart2DDPointIconContent implements InterfaceDPointWithContent, DPo
      *
      * @return the border
      */
+    @Override
     public DBorder getDBorder() {
         return new DBorder(4, 4, 4, 4);
     }
@@ -47,9 +49,11 @@ public class Chart2DDPointIconContent implements InterfaceDPointWithContent, DPo
     /** This method allows you to set the according individual
      * @param indy  AbstractEAIndividual
      */
+    @Override
     public void setEAIndividual(AbstractEAIndividual indy) {
         this.m_Indy = indy;
     }
+    @Override
     public AbstractEAIndividual getEAIndividual() {
         return this.m_Indy;
     }
@@ -57,15 +61,18 @@ public class Chart2DDPointIconContent implements InterfaceDPointWithContent, DPo
     /** This method allows you to set the according optimization problem
      * @param problem  InterfaceOptimizationProblem
      */
+    @Override
     public void setProblem(InterfaceOptimizationProblem problem) {
         this.m_Problem = problem;
     }
+    @Override
     public InterfaceOptimizationProblem getProblem() {
         return this.m_Problem;
     }
 
     /** This method allows you to draw additional data of the individual
      */
+    @Override
     public void showIndividual() {
         JFrame newFrame = new JFrame();
         if (this.m_Indy == null) {
@@ -74,6 +81,7 @@ public class Chart2DDPointIconContent implements InterfaceDPointWithContent, DPo
         }
         newFrame.setTitle(this.m_Indy.getName()+": "+this.m_Indy);
         newFrame.addWindowListener(new WindowAdapter() {
+            @Override
             public void windowClosing(WindowEvent ev) {
                 System.gc();
             }

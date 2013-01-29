@@ -48,6 +48,7 @@ public class SlimRect {
 		return (contains(xpos,ypos) && contains(xpos+wd, ypos+ht));
 	}
 	
+    @Override
 	public String toString() {
 		return "SlimRect["+x+","+y+"/"+width+","+height+"]";
 	}

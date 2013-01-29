@@ -41,6 +41,7 @@ public class CrossoverGAGINPoint implements InterfaceCrossover, java.io.Serializ
     /** This method will enable you to clone a given crossover operator
      * @return The clone
      */
+    @Override
     public Object clone() {
         return new CrossoverGAGINPoint(this);
     }
@@ -55,6 +56,7 @@ public class CrossoverGAGINPoint implements InterfaceCrossover, java.io.Serializ
 		return genotype;
     }
 
+    @Override
     public AbstractEAIndividual[] mate(AbstractEAIndividual individual, Population partners) {
         AbstractEAIndividual[] result = null;
         result = new AbstractEAIndividual[partners.size()+1];
@@ -209,6 +211,7 @@ public class CrossoverGAGINPoint implements InterfaceCrossover, java.io.Serializ
      * are actually the same.
      * @param crossover   The other crossover operator
      */
+    @Override
     public boolean equals(Object crossover) {
         if (crossover instanceof CrossoverGAGINPoint) {
             CrossoverGAGINPoint cross = (CrossoverGAGINPoint)crossover;
@@ -224,10 +227,12 @@ public class CrossoverGAGINPoint implements InterfaceCrossover, java.io.Serializ
      * @param individual    The individual that will be mutated.
      * @param opt           The optimization problem.
      */
+    @Override
     public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
 //        this.m_OptimizationProblem = opt;
     }
 
+    @Override
     public String getStringRepresentation() {
         return this.getName();
     }    

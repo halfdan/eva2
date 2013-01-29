@@ -16,6 +16,7 @@ public class MOSOMOGARankBased implements InterfaceMOSOConverter, java.io.Serial
     }
     public MOSOMOGARankBased(MOSOMOGARankBased b) {
     }
+    @Override
     public Object clone() {
         return (Object) new MOSOMOGARankBased(this);
     }
@@ -27,6 +28,7 @@ public class MOSOMOGARankBased implements InterfaceMOSOConverter, java.io.Serial
      * if you still want to access the original fitness values.
      * @param pop       The population to process.
      */
+    @Override
     public void convertMultiObjective2SingleObjective(Population pop) {
         int[] MOGARank = new int[pop.size()];
         for (int i = 0; i < MOGARank.length; i++) MOGARank[i] = 1;
@@ -50,6 +52,7 @@ public class MOSOMOGARankBased implements InterfaceMOSOConverter, java.io.Serial
     /** This method processes a single individual
      * @param indy      The individual to process.
      */
+    @Override
     public void convertSingleIndividual(AbstractEAIndividual indy) {
         double[]    resultFit = new double[1];
         double[]    tmpFit;
@@ -65,6 +68,7 @@ public class MOSOMOGARankBased implements InterfaceMOSOConverter, java.io.Serial
      * value of one
      * @param dim       Outputdimension of the problem
      */
+    @Override
     public void setOutputDimension(int dim) {
 
     }
@@ -72,6 +76,7 @@ public class MOSOMOGARankBased implements InterfaceMOSOConverter, java.io.Serial
     /** This method returns a description of the objective
      * @return A String
      */
+    @Override
     public String getStringRepresentation() {
         return this.getName()+"\n";
     }
@@ -84,6 +89,7 @@ public class MOSOMOGARankBased implements InterfaceMOSOConverter, java.io.Serial
      * name to the current object.
      * @return The name.
      */
+    @Override
     public String getName() {
         return "MOGA Rank Based";
     }

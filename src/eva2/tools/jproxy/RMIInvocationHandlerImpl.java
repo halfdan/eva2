@@ -65,12 +65,14 @@ public class RMIInvocationHandlerImpl extends UnicastRemoteObject implements RMI
   /**
    *
    */
+    @Override
   public void setWrapper(Object Wrapper)  throws RemoteException {
     m_Wrapper = Wrapper;
   }
   /**
    *
    */
+    @Override
   public Object getWrapper () throws RemoteException {
     return m_Wrapper;
   }
@@ -78,6 +80,7 @@ public class RMIInvocationHandlerImpl extends UnicastRemoteObject implements RMI
   /**
    *
    */
+    @Override
   public Object invoke (String m, Object[] args) throws RemoteException {
     Object ret=null;
     String Name = "";

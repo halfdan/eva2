@@ -89,6 +89,7 @@ public class DGrid extends DComponent
    *
    * @param m the <code>DMeasures</code> object to paint the grid
    */
+    @Override
   public void paint( DMeasures m ){
     Graphics g = m.getGraphics();
     if( color != null ) g.setColor( color );
@@ -128,6 +129,7 @@ public class DGrid extends DComponent
     }
   }
 
+    @Override
   public String toString(){
     return "chart2d.DGrid[ hor: "+hor_dist+", ver: "+ver_dist+" ]";
   }

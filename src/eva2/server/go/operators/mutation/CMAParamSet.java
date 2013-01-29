@@ -52,10 +52,12 @@ class CMAParamSet implements InterfacePopulationChangedEventListener, Serializab
 	
 	public CMAParamSet() {}
 	
+    @Override
 	public Object clone() {
 		return new CMAParamSet(this);
 	}
 	
+    @Override
 	public String toString() {
 		return "d_sig " + d_sig + ", c_sig " + c_sig + ", sigma " + sigma + ", firstSigma " + firstSigma+ ", firstAdaptionDone " + firstAdaptionDone 
 			+ ",\n meanX " + Arrays.toString(meanX) + ", pathC " + Arrays.toString(pathC)+ ", pathS " + Arrays.toString(pathS)+ ", eigenvalues " + Arrays.toString(eigenvalues)
@@ -206,6 +208,7 @@ class CMAParamSet implements InterfacePopulationChangedEventListener, Serializab
 	 * 
 	 * @see InterfacePopulationChangedEventListener
 	 */
+    @Override
 	public void registerPopulationStateChanged(Object source, String name) {
 		if (name.equals(Population.populationInitialized)) {
 			Population pop = (Population)source;

@@ -27,6 +27,7 @@ public abstract class AbstractArchiving implements InterfaceArchiving, java.io.S
      * the object
      * @return the deep clone
      */
+    @Override
     public abstract Object clone();
 
     /** This mehtod will test if a given individual is dominant within

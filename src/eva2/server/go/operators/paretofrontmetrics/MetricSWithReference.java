@@ -55,6 +55,7 @@ public class MetricSWithReference implements InterfaceParetoFrontMetric, java.io
     /** This method returns a deep clone of the problem.
      * @return  the clone
      */
+    @Override
     public Object clone() {
         return (Object) new MetricSWithReference(this);
     }
@@ -99,6 +100,7 @@ public class MetricSWithReference implements InterfaceParetoFrontMetric, java.io
     /** This method gives a metric how to evaluate
      * an achieved Pareto-Front
      */
+    @Override
     public double calculateMetricOn(Population pop, AbstractMultiObjectiveOptimizationProblem problem) {
         this.m_ObjectiveSpaceRange = problem.getObjectiveSpaceRange();
         double smetric = this.calculateSMetric(pop, this.m_ObjectiveSpaceRange, this.m_ObjectiveSpaceRange.length);

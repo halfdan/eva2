@@ -39,6 +39,7 @@ public class JParaPanel implements Serializable, PanelMaker {
 
     /**
      */
+    @Override
     public JComponent makePanel() {
         PropertyEditorProvider.installEditors();
 

@@ -41,10 +41,12 @@ public class IndividualDataMetric implements InterfaceDistanceMetric, Serializab
      * the object
      * @return the deep clone
      */
+    @Override
     public Object clone() {
     	return new IndividualDataMetric(this);
     }
     
+    @Override
 	public double distance(AbstractEAIndividual indy1, AbstractEAIndividual indy2) {
 		if (dataKey==null) throw new RuntimeException("Error, no data key defined in " + this.getClass().getName() + "::distance()");
 		else {

@@ -22,6 +22,7 @@ public class GAGrayCodingInteger implements InterfaceGAIntegerCoding,java.io.Ser
      * @param correction            Enable automatic correction is enabled.
      * @return The int value.
      */
+    @Override
     public int decodeValue(BitSet refBitSet, int[] range, int[] locus, boolean correction) {
         BitSet              tmpBitSet;
         int[]               tmpLocus;
@@ -54,6 +55,7 @@ public class GAGrayCodingInteger implements InterfaceGAIntegerCoding,java.io.Ser
      * @param refBitSet         The BitSet where the questioned value is stored.
      * @param locus             The position and length on the BitSet that is to be coded.
      */
+    @Override
     public void codeValue(int value, int[] range, BitSet refBitSet, int[] locus) {
         BitSet              tmpBitSet;
         int[]               tmpLocus;
@@ -81,6 +83,7 @@ public class GAGrayCodingInteger implements InterfaceGAIntegerCoding,java.io.Ser
     /** This method will calculate how many bits are to be used to code a given value
      * @param range     The range for the value.
      */
+    @Override
     public int calculateNecessaryBits(int[] range) {
         return this.m_HelpingHand.calculateNecessaryBits(range);
     }

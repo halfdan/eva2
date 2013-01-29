@@ -167,6 +167,7 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
 	 * Take care that all properties which may be hidden (and currently are) send a "hide" message to the Java Bean properties.   
 	 * This is called by PropertySheetPanel in use with the GenericObjectEditor.
 	 */
+    @Override
 	public void hideHideable() {
 		// hide the following unused properties from the GUI
 		GenericObjectEditor.setHideProperty(getClass(), "subswarmCreationStrategy", true);
@@ -195,6 +196,7 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
 		this.neighborCntNicheGraphForEdge = o.neighborCntNicheGraphForEdge;
 	}
 	
+    @Override
 	public Object clone(){
 		return (Object) new ANPSO(this);
 	}
@@ -202,6 +204,7 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
 /**********************************************************************************************************************
  * inits
  */		
+    @Override
 	public void init() { //  MOE: wird vor Optimierung / n�chstem multirun 1x aufgerufen
 		super.init();
 		initMainSwarm();
@@ -557,6 +560,7 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
 	/**  @tested 
 	 * (non-Javadoc) @see javaeva.server.oa.go.Strategies.InterfaceOptimizer#optimize()
 	 */
+    @Override
 	public void optimize() {
 //		System.out.println(BeanInspector.toString(getMainSwarm()));
 		// main swarm:
@@ -639,6 +643,7 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
  * Deactivation
  */	
 	
+    @Override
 	protected void deactivationEventFor(ParticleSubSwarmOptimization subswarm) {
 		super.deactivationEventFor(subswarm);
 		resetSMatrixEntriesFor(subswarm);
@@ -653,6 +658,7 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
 	 * use this instead of getPopulation.setPopulationSize()
 	 * @param size
 	 */
+    @Override
 	public void setMainSwarmSize(int size){
 		// set member
 		this.mainSwarmSize = size;
@@ -689,6 +695,7 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
 	 * the actual size of the complete population is accessed via getPopulation().size()
 	 * @return a population consisting of copies from the mainswarm and all subswarms.
 	 */
+    @Override
 	public Population getPopulation() { 
 		// construct a metapop with clones from the mainswarm and all subswarms
 		Population metapop = (Population)getMainSwarm().getPopulation().clone();
@@ -772,6 +779,7 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
 	/** @tested 
 	 * plots all subswarms as connected lines to their respective best individual
 	 */
+    @Override
     protected void plotSubSwarms() {
 		if (this.m_Problem instanceof Interface2DBorderProblem) {
 			//DPointSet               popRep  = new DPointSet();
@@ -858,6 +866,7 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
 	 * This method will return a naming String
 	 * @return The name of the algorithm
 	 */
+    @Override
 	public String getName() {
 		return "ANPSO-"+getMainSwarmSize();
 	}

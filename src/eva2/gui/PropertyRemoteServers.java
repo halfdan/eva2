@@ -26,6 +26,7 @@ class ServerNode implements java.io.Serializable {
         this.m_CPUs         = a.m_CPUs;
         this.m_ServerName   = a.m_ServerName;
     }
+    @Override
     public Object clone() {
         return (Object) new ServerNode(this);
     }
@@ -57,6 +58,7 @@ public class PropertyRemoteServers implements java.io.Serializable {
         }
     }
 
+    @Override
     public Object clone() {
         return (Object) new PropertyRemoteServers(this);
     }

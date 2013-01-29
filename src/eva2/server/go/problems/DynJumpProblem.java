@@ -44,11 +44,13 @@ public class DynJumpProblem extends AbstractDynTransProblem {
 		other.clone();
 	}
 
+    @Override
 	protected double getTranslation(int dim, double time) {
 		return translation[dim];
 	}
 	
 	
+    @Override
 	protected void changeProblemAt(double problemTime) {
 		super.changeProblemAt(problemTime);
 		makeTranslation();
@@ -57,6 +59,7 @@ public class DynJumpProblem extends AbstractDynTransProblem {
 		++changeCounter;
 	}
 	
+    @Override
 	protected void countEvaluation() {
 		super.countEvaluation();
 		evaluations += 1.;
@@ -114,6 +117,7 @@ public class DynJumpProblem extends AbstractDynTransProblem {
 		}
 	}
 
+    @Override
 	public void initProblem() {
 		super.initProblem();
 		translation = new double[getProblemDimension()];
@@ -150,10 +154,12 @@ public class DynJumpProblem extends AbstractDynTransProblem {
 		
 			
 
+    @Override
 	public Object clone() {
 		return new DynJumpProblem(this);
 	}
 
+    @Override
 	public AbstractEAIndividual getCurrentOptimum() {
 		return null;
 	}
@@ -163,9 +169,11 @@ public class DynJumpProblem extends AbstractDynTransProblem {
  * 
  */
 
+    @Override
 	public String getStringRepresentationForProblem(InterfaceOptimizer opt) {
 		return "DynJumpProblem";
 	}
+    @Override
 	public String getName() {
 		return "DynJumpProblem";
 	}

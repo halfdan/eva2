@@ -18,6 +18,7 @@ import javax.swing.*;
  *
  */
 public class JExtToolBar extends JToolBar{
+    @Override
   public JButton add(Action a){
     JButton button = super.add(a);
     button.setText(null);
@@ -49,8 +50,10 @@ public class JExtToolBar extends JToolBar{
     return result.toString();
   }
 
+    @Override
   protected PropertyChangeListener createActionChangeListener(JButton b){
     return new ExtActionChangedListener(b){
+            @Override
       public void propertyChange(PropertyChangeEvent e){
         JButton button = (JButton)component;
 

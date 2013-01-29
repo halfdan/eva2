@@ -44,6 +44,7 @@ public abstract class AbstractSynchronousOptimizationProblem extends
 	}
 	
 	
+    @Override
     public void initProblem() {
     	super.initProblem();
     	evalsSinceChange = 0.;
@@ -97,6 +98,7 @@ public abstract class AbstractSynchronousOptimizationProblem extends
 		return constantProblemEvals;
 	}
 	
+    @Override
 	public void setFrequency(double frequency) {
 		super.setFrequency(frequency);
 		//if (frequency > 1.) System.out.println("warning, frequency should be <= 1 (setFrequency)");
@@ -120,6 +122,7 @@ public abstract class AbstractSynchronousOptimizationProblem extends
 	}
 	
 	
+    @Override
 	public void evaluatePopulationStart(Population population) {
 		if (isFrequencyRelative()) {
 		// sets the number of evaluations without change when depending on the population size 

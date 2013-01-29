@@ -191,6 +191,7 @@ public class FunctionArea extends DArea implements Serializable {
     private void addPopup() {
         addMouseListener(new MouseAdapter() {
 
+            @Override
             public void mouseClicked(MouseEvent e) {
                 if ((e.getModifiers() & InputEvent.BUTTON1_MASK) == InputEvent.BUTTON1_MASK) {
                     // do nothing
@@ -201,6 +202,7 @@ public class FunctionArea extends DArea implements Serializable {
 
                     addMenuItem(graphPopupMenu, "Rename graph", new ActionListener() {
 
+                        @Override
                         public void actionPerformed(ActionEvent ee) {
                             renameGraph(getNearestGraphIndex(FunctionArea.this.xPos, FunctionArea.this.yPos));
                         }
@@ -212,6 +214,7 @@ public class FunctionArea extends DArea implements Serializable {
                     addMenuItem(graphPopupMenu, togGTTName,
                             new ActionListener() {
 
+                        @Override
                                 public void actionPerformed(ActionEvent ee) {
                                     setShowGraphToolTips(!isShowGraphToolTips());
                                 }
@@ -221,6 +224,7 @@ public class FunctionArea extends DArea implements Serializable {
                             + " legend";
                     addMenuItem(graphPopupMenu, togLName, new ActionListener() {
 
+                        @Override
                         public void actionPerformed(ActionEvent ee) {
                             toggleLegend();
                         }
@@ -228,6 +232,7 @@ public class FunctionArea extends DArea implements Serializable {
 
                     addMenuItem(graphPopupMenu, "Toggle scientific format", new ActionListener() {
 
+                        @Override
                         public void actionPerformed(ActionEvent ee) {
                             toggleScientificY(true);
                         }
@@ -237,6 +242,7 @@ public class FunctionArea extends DArea implements Serializable {
                         addMenuItem(graphPopupMenu, "Recolor all graphs",
                                 new ActionListener() {
 
+                            @Override
                                     public void actionPerformed(ActionEvent ee) {
                                         recolorAllGraphsByIndex();
                                     }
@@ -249,6 +255,7 @@ public class FunctionArea extends DArea implements Serializable {
                                 + temp.x + "/" + temp.y + ")",
                                 new ActionListener() {
 
+                            @Override
                                     public void actionPerformed(ActionEvent ee) {
                                         DPoint temp = getDMeasures().getDPoint(
                                                 xPos, yPos);
@@ -268,6 +275,7 @@ public class FunctionArea extends DArea implements Serializable {
                                 + point.x + "/" + point.y + ")",
                                 new ActionListener() {
 
+                            @Override
                                     public void actionPerformed(ActionEvent ee) {
                                     }
                                 }, false);
@@ -275,6 +283,7 @@ public class FunctionArea extends DArea implements Serializable {
                         addMenuItem(graphPopupMenu, "  Remove point",
                                 new ActionListener() {
 
+                            @Override
                                     public void actionPerformed(ActionEvent ee) {
                                         removePoint(FunctionArea.this.xPos,
                                                 FunctionArea.this.yPos);
@@ -290,6 +299,7 @@ public class FunctionArea extends DArea implements Serializable {
                                 addMenuItem(graphPopupMenu, selectTitle,
                                         new ActionListener() {
 
+                                    @Override
                                             public void actionPerformed(
                                                     ActionEvent ee) {
                                                 ((InterfaceSelectablePointIcon) currentPointIcon).getSelectionListener().individualSelected(
@@ -304,6 +314,7 @@ public class FunctionArea extends DArea implements Serializable {
                             addMenuItem(graphPopupMenu, "  Show individual",
                                     new ActionListener() {
 
+                                @Override
                                         public void actionPerformed(
                                                 ActionEvent ee) {
                                             ((InterfaceDPointWithContent) currentPointIcon).showIndividual();
@@ -325,16 +336,19 @@ public class FunctionArea extends DArea implements Serializable {
                                 + getGraphInfo(e.getX(), e.getY()),
                                 new ActionListener() {
 
+                            @Override
                                     public void actionPerformed(ActionEvent ee) {
                                         DPoint temp = FunctionArea.this.getDMeasures().getDPoint(
                                                 FunctionArea.this.xPos,
                                                 FunctionArea.this.yPos);
                                         DPointIcon icon1 = new DPointIcon() {
 
+                                    @Override
                                             public DBorder getDBorder() {
                                                 return new DBorder(4, 4, 4, 4);
                                             }
 
+                                    @Override
                                             public void paint(Graphics g) {
                                                 g.drawLine(-2, 0, 2, 0);
                                                 g.drawLine(0, 0, 0, 4);
@@ -348,6 +362,7 @@ public class FunctionArea extends DArea implements Serializable {
                         addMenuItem(graphPopupMenu, "  Remove graph",
                                 new ActionListener() {
 
+                            @Override
                                     public void actionPerformed(ActionEvent ee) {
                                         clearGraph(FunctionArea.this.xPos,
                                                 FunctionArea.this.yPos);
@@ -357,6 +372,7 @@ public class FunctionArea extends DArea implements Serializable {
                         addMenuItem(graphPopupMenu, "  Change graph color",
                                 new ActionListener() {
 
+                            @Override
                                     public void actionPerformed(ActionEvent ee) {
                                         changeColorGraph(FunctionArea.this.xPos,
                                                 FunctionArea.this.yPos);

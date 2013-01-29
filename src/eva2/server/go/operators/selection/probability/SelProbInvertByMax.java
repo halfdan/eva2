@@ -28,6 +28,7 @@ public class SelProbInvertByMax extends AbstractSelProb {
 		this.maxFit    = a.maxFit;
 	}
 
+    @Override
 	public Object clone() {
 		return (Object) new SelProbInvertByMax(this);
 	}
@@ -38,6 +39,7 @@ public class SelProbInvertByMax extends AbstractSelProb {
 	 * @param population    The population to compute.
 	 * @param data         The input data as double[][].
 	 */
+    @Override
 	public void computeSelectionProbability(Population population, double[][] data, boolean obeyConst) {
 		double      sum = 0;
 		double[]    result = new double[data.length];

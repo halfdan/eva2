@@ -47,10 +47,12 @@ public class ConstraintBasedAdaption implements ParamAdaption, Serializable {
 //		deltaInertness = o.deltaInertness;
 	}
 
+    @Override
 	public Object clone() {
 		return new ConstraintBasedAdaption(this);
 	}
 
+    @Override
 	public Object calcValue(Object obj, Population pop, int iteration, int maxIteration) {
 		boolean changed = false;
 		if (!(obj instanceof AbstractConstraint)) System.err.println(this.getClass().getSimpleName() + " cant control " + obj.getClass().getSimpleName() + " ! ");
@@ -96,6 +98,7 @@ public class ConstraintBasedAdaption implements ParamAdaption, Serializable {
 		return changed;
 	}
 
+    @Override
 	public String getControlledParam() {
 		return target;
 	}
@@ -134,11 +137,13 @@ public class ConstraintBasedAdaption implements ParamAdaption, Serializable {
 		return "Adapt a constraint's penalty factor (esp. fitness based) if the population contained only valid or only invalid individuals for some generations."; 
 	}
 	
+    @Override
 	public void finish(Object obj, Population pop) {
 		lastBestSatisfactionState.clear();
 		((AbstractConstraint) obj).setPenaltyFactor(initialPenalty);
 	}
 
+    @Override
 	public void init(Object obj, Population pop, Object[] initialValues) {
 		initialPenalty = ((AbstractConstraint) obj).getPenaltyFactor();
 		if (minPenalty > maxPenalty) {

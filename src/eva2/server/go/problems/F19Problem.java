@@ -35,6 +35,7 @@ InterfaceMultimodalProblem, InterfaceInterestingHistogram, InterfaceFirstOrderDe
 		setProblemDimension(d);
 	}
 
+    @Override
 	public void initProblem() {
 		super.initProblem();
 //		if (alphas==null) {
@@ -80,6 +81,7 @@ InterfaceMultimodalProblem, InterfaceInterestingHistogram, InterfaceFirstOrderDe
 		return M[i*dim+j];
 	}
 	
+    @Override
 	public double[] eval(double[] x) {
 		x = rotateMaybe(x);
 		double[] res = new double[1];
@@ -93,6 +95,7 @@ InterfaceMultimodalProblem, InterfaceInterestingHistogram, InterfaceFirstOrderDe
 		return res;
 	}
 
+    @Override
 	public int getProblemDimension() {
 		return dim;
 	}
@@ -106,10 +109,12 @@ InterfaceMultimodalProblem, InterfaceInterestingHistogram, InterfaceFirstOrderDe
 		}
 	}
 
+    @Override
 	public Object clone() {
 		return new F19Problem(this);
 	}
 
+    @Override
 	public String getName() {
 		return "F19-Problem";
 	}
@@ -118,11 +123,13 @@ InterfaceMultimodalProblem, InterfaceInterestingHistogram, InterfaceFirstOrderDe
 		return "Fletcher-Powell function with up to 2^n optima from Shir&Baeck, PPSN 2006, after Bäck 1996. Alphas and Matrices A and B are randomly created with a fixed seed.";
 	}
 
+    @Override
 	public SolutionHistogram getHistogram() {
 		if (getProblemDimension()<15) return new SolutionHistogram(0, 8, 16);
 		else return new SolutionHistogram(0, 40000, 16);
 	}
 
+    @Override
 	public double[] getFirstOrderGradients(double[] x) {
 		x = rotateMaybe(x);
 		double[] res = new double[x.length];

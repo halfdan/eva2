@@ -354,6 +354,7 @@ public class StatisticsParameter implements InterfaceStatisticsParameter, Interf
      *
      * @see InterfaceAdditionalPopulationInformer
      */
+    @Override
     public void setInformers(List<InterfaceAdditionalPopulationInformer> informers) {
         ArrayList<String> headerFields = new ArrayList<String>();
         ArrayList<String> infoFields = new ArrayList<String>();

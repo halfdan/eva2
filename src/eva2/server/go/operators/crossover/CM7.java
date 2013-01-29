@@ -27,10 +27,12 @@ public class CM7 implements InterfaceCrossover, java.io.Serializable, InterfaceE
 		this.evaluations = c.evaluations;
 	}
 	
+    @Override
 	public Object clone(){
 		return new CM7(this);
 	}
 	
+    @Override
 	public AbstractEAIndividual[] mate(AbstractEAIndividual indy1,
 			Population partners) {
 		AbstractEAIndividual[]  result = null;
@@ -71,15 +73,18 @@ public class CM7 implements InterfaceCrossover, java.io.Serializable, InterfaceE
 		return result;
 	}
 
+    @Override
 	public void init(AbstractEAIndividual individual,
 			InterfaceOptimizationProblem opt) {
 		this.m_OptimizationProblem = opt;
 	}
 
+    @Override
 	public String getStringRepresentation() {
 		return getName();
 	}
 	
+    @Override
 	public int getEvaluations(){
 		return this.evaluations;
 	}
@@ -97,6 +102,7 @@ public class CM7 implements InterfaceCrossover, java.io.Serializable, InterfaceE
         return "";
     }
 
+    @Override
 	public void resetEvaluations() {
 		this.evaluations = 0;
 	}

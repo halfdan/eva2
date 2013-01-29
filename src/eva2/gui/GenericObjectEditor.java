@@ -311,6 +311,7 @@ public class GenericObjectEditor implements PropertyEditor {
      *
      * @param o an object that must be a Object.
      */
+    @Override
     public void setValue(Object o) {
         //System.err.println("setValue()" + m_ClassType.toString());
 
@@ -363,6 +364,7 @@ public class GenericObjectEditor implements PropertyEditor {
      *
      * @return the current Object
      */
+    @Override
     public Object getValue() {
         return m_Object;
     }
@@ -374,6 +376,7 @@ public class GenericObjectEditor implements PropertyEditor {
      *
      * @return the java source code initialization string
      */
+    @Override
     public String getJavaInitializationString() {
         return "new " + m_Object.getClass().getName() + "()";
     }
@@ -383,6 +386,7 @@ public class GenericObjectEditor implements PropertyEditor {
      *
      * @return true
      */
+    @Override
     public boolean isPaintable() {
         return true;
     }
@@ -393,6 +397,7 @@ public class GenericObjectEditor implements PropertyEditor {
      * @param gfx the graphics context to use
      * @param box the area we are allowed to paint into
      */
+    @Override
     public void paintValue(Graphics gfx, Rectangle box) {
         if (isEnabled && m_Object != null) {
             int getNameMethod = -1;
@@ -435,6 +440,7 @@ public class GenericObjectEditor implements PropertyEditor {
      *
      * @return null
      */
+    @Override
     public String getAsText() {
         return null;
     }
@@ -445,6 +451,7 @@ public class GenericObjectEditor implements PropertyEditor {
      * @param text the text value
      * @exception IllegalArgumentException as we don't support getting/setting values as text.
      */
+    @Override
     public void setAsText(String text) throws IllegalArgumentException {
         throw new IllegalArgumentException(text);
     }
@@ -454,6 +461,7 @@ public class GenericObjectEditor implements PropertyEditor {
      *
      * @return null
      */
+    @Override
     public String[] getTags() {
         return null;
     }
@@ -463,6 +471,7 @@ public class GenericObjectEditor implements PropertyEditor {
      *
      * @return true
      */
+    @Override
     public boolean supportsCustomEditor() {
         return true;
     }
@@ -472,6 +481,7 @@ public class GenericObjectEditor implements PropertyEditor {
      *
      * @return a value of type 'java.awt.Component'
      */
+    @Override
     public Component getCustomEditor() {
         if (editorComponent == null) {
             editorComponent = new GOEPanel(m_Object, m_Backup, propertyChangeSupport, this);
@@ -490,6 +500,7 @@ public class GenericObjectEditor implements PropertyEditor {
         editorComponent.setEnabledOkCancelButtons(false);
     }
 
+    @Override
     public void addPropertyChangeListener(PropertyChangeListener l) {
         if (propertyChangeSupport == null) {
             propertyChangeSupport = new PropertyChangeSupport(this);
@@ -497,6 +508,7 @@ public class GenericObjectEditor implements PropertyEditor {
         propertyChangeSupport.addPropertyChangeListener(l);
     }
 
+    @Override
     public void removePropertyChangeListener(PropertyChangeListener l) {
         if (propertyChangeSupport == null) {
             propertyChangeSupport = new PropertyChangeSupport(this);

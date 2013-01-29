@@ -32,6 +32,7 @@ public class SelectTournament implements InterfaceSelection, java.io.Serializabl
         this.m_ObeyDebsConstViolationPrinciple = a.m_ObeyDebsConstViolationPrinciple;
     }
 
+    @Override
     public Object clone() {
         return (Object) new SelectTournament(this);
     }
@@ -42,6 +43,7 @@ public class SelectTournament implements InterfaceSelection, java.io.Serializabl
      * before hand...
      * @param population    The population that is to be processed.
      */
+    @Override
     public void prepareSelection(Population population) {
         // nothing to prepare here
     }
@@ -53,6 +55,7 @@ public class SelectTournament implements InterfaceSelection, java.io.Serializabl
      * @param size          The number of Individuals to select
      * @return The selected population.
      */
+    @Override
     public Population selectFrom(Population population, int size) {
         Population result = new Population();
         result.setTargetSize(size);
@@ -102,6 +105,7 @@ public class SelectTournament implements InterfaceSelection, java.io.Serializabl
      * @param size              The number of partners needed.
      * @return The selected partners.
      */
+    @Override
     public Population findPartnerFor(AbstractEAIndividual dad, Population avaiablePartners, int size) {
         return this.selectFrom(avaiablePartners, size);
     }
@@ -141,6 +145,7 @@ public class SelectTournament implements InterfaceSelection, java.io.Serializabl
      * of Deb
      * @param b     The new state
      */
+    @Override
     public void setObeyDebsConstViolationPrinciple(boolean b) {
         this.m_ObeyDebsConstViolationPrinciple = b;
     }

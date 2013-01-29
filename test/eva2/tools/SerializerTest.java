@@ -101,6 +101,7 @@ class ExampleDataStruct implements Serializable {
     int[] data;
     ExampleDataStruct other;
 
+    @Override
     public String toString() {
         String msg = message;
         for (int i = 0; i < data.length; i++) {

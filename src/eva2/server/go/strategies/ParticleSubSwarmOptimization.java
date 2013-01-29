@@ -68,6 +68,7 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
 	/**  @tested 
 	 * (non-Javadoc) @see javaeva.server.oa.go.Strategies.ParticleSwarmOptimization#clone()
 	 */
+    @Override
 	public Object clone() {
 		return (Object) new ParticleSubSwarmOptimization(this);
 	}
@@ -79,6 +80,7 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
 	/**  @tested ps
 	 * (non-Javadoc) @see javaeva.server.oa.go.Strategies.ParticleSwarmOptimization#init()
 	 */
+    @Override
 	public void init(){
 		super.init();
 		
@@ -93,6 +95,7 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
 	/**  @tested ps
 	 * (non-Javadoc) @see javaeva.server.oa.go.Strategies.ParticleSwarmOptimization#initByPopulation(javaeva.server.oa.go.Populations.Population, boolean)
 	 */
+    @Override
 	public void initByPopulation(Population pop, boolean reset){
 		super.initByPopulation(pop, reset);
 		initIndividuals();
@@ -156,6 +159,7 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
 	/**  @tested ps
 	 * (non-Javadoc) @see javaeva.server.oa.go.Strategies.ParticleSwarmOptimization#optimize()
 	 */
+    @Override
 	public void optimize(){
 		super.optimize();
 		updateFitnessArchives();
@@ -209,6 +213,7 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
 	/* (non-Javadoc)
 	 * @see eva2.server.go.strategies.ParticleSwarmOptimization#addSortedIndizesTo(eva2.server.go.populations.Population)
 	 */ 
+    @Override
 	protected void addSortedIndicesTo(Object[] sortedPopulation, Population pop) {
 		int origIndex;
 		for (int i=0; i<pop.size(); i++) {
@@ -558,6 +563,7 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
 	 * This method will set the problem that is to be optimized
 	 * @param problem
 	 */
+    @Override
 	public void setProblem (InterfaceOptimizationProblem problem) {
 		this.m_Problem = problem;
 		updateMaxPosDist();  

@@ -61,6 +61,7 @@ public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Ser
 	private static final String changesKey = "gdaChangesDataKey";
 	private static final String oldParamsKey = "gdaOldParamsDataKey";
 
+    @Override
   public void initByPopulation(Population pop, boolean reset) {
     this.setPopulation((Population) pop.clone());
     if (reset) {
@@ -95,15 +96,18 @@ public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Ser
 	  maximumabsolutechange = maxAbsoluteChange;
   }
 
+    @Override
   public Object clone() {
     /**@todo Implement InterfaceOptimizer method*/
     throw new java.lang.UnsupportedOperationException("Method clone() not yet implemented.");
   }
 
+    @Override
   public String getName() {
     return "GradientDescentAlgorithm";
   }
 
+    @Override
   public void init() {
     //System.out.println("init() called ");
 //    indyhash = new Hashtable();
@@ -115,6 +119,7 @@ public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Ser
     return (val < 0) ? -1 : 1;
   }
 
+    @Override
   public void optimize() {
    //  System.out.println("opt. called");
     AbstractEAIndividual indy;
@@ -295,14 +300,17 @@ public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Ser
     if (this.m_Listener != null)this.m_Listener.registerPopulationStateChanged(this, name);
   }
 
+    @Override
   public Population getPopulation() {
     return this.m_Population;
   }
   
+    @Override
   public InterfaceSolutionSet getAllSolutions() {
   	return new SolutionSet(getPopulation());
   }
 
+    @Override
   public void setPopulation(Population pop) {
 //    Hashtable newindyhash = new Hashtable();
 //    for (int i = 0; i < pop.size(); i++) {
@@ -316,30 +324,37 @@ public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Ser
   /** This method allows you to set an identifier for the algorithm
    * @param name      The indenifier
    */
+    @Override
   public void setIdentifier(String name) {
     this.m_Identifier = name;
   }
 
+    @Override
   public String getIdentifier() {
     return this.m_Identifier;
   }
 
+    @Override
   public void setProblem(InterfaceOptimizationProblem problem) {
 
     m_Problem = problem;
   }
 
+    @Override
   public InterfaceOptimizationProblem getProblem() {
     return m_Problem;
   }
 
+    @Override
   public String getStringRepresentation() {
     return "GradientDescentAlgorithm";
   }
 
+    @Override
   public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
     this.m_Listener = ea;
   }
+    @Override
   public boolean removePopulationChangedEventListener(
 		  InterfacePopulationChangedEventListener ea) {
 	  if (m_Listener==ea) {
@@ -362,6 +377,7 @@ public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Ser
     }
   }
 
+    @Override
   public void freeWilly() {  }
 
   public static String globalInfo() {

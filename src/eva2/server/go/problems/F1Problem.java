@@ -35,6 +35,7 @@ public class F1Problem extends AbstractProblemDoubleOffset implements Interface2
     /** This method returns a deep clone of the problem.
      * @return  the clone
      */
+    @Override
     public Object clone() {
         return (Object) new F1Problem(this);
     }
@@ -43,6 +44,7 @@ public class F1Problem extends AbstractProblemDoubleOffset implements Interface2
      * @param x     The n-dimensional input vector
      * @return  The m-dimensional output vector.
      */
+    @Override
     public double[] eval(double[] x) {
     	x = rotateMaybe(x);
         double[] result = new double[1];
@@ -58,6 +60,7 @@ public class F1Problem extends AbstractProblemDoubleOffset implements Interface2
      * @param opt       The Optimizer that is used or had been used.
      * @return The description.
      */
+    @Override
     public String getStringRepresentationForProblem(InterfaceOptimizer opt) {
         StringBuffer sb = new StringBuffer(200);
         sb.append("F1 Sphere model:\n");
@@ -78,6 +81,7 @@ public class F1Problem extends AbstractProblemDoubleOffset implements Interface2
      * name to the current object.
      * @return The name.
      */
+    @Override
     public String getName() {
         return "F1-Problem";
     }
@@ -89,6 +93,7 @@ public class F1Problem extends AbstractProblemDoubleOffset implements Interface2
         return "F1: multidimensional parabola problem";
     }
 
+    @Override
 	public double[] getFirstOrderGradients(double[] x) {
 		x = rotateMaybe(x);
 		// first order partial derivation in direction x_i is 2*x_i
@@ -102,6 +107,7 @@ public class F1Problem extends AbstractProblemDoubleOffset implements Interface2
 	/**
 	 * If initialRangeRatio<1, produce a reduced initial range in the negative corner of the range.
 	 */
+    @Override
 	public Object getInitRange() {
 		if (initialRangeRatio<1.) {
 			double[][] gR=makeRange();

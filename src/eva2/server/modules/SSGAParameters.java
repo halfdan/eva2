@@ -55,6 +55,7 @@ public class SSGAParameters extends AbstractGOParameters implements InterfaceGOP
         super(Source);
     }
 
+    @Override
     public Object clone() {
         return new SSGAParameters(this);
     }
@@ -67,6 +68,7 @@ public class SSGAParameters extends AbstractGOParameters implements InterfaceGOP
         return "This is a steady-state GA.";
     }
 
+    @Override
     public void setOptimizer(InterfaceOptimizer optimizer) {
         // *pff* i'll ignore that!
     }

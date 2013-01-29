@@ -29,6 +29,7 @@ public class IndividualDistanceComparator implements Comparator<Object>, Seriali
 		closerMeansLess = closerIsLess;
 	}
 
+    @Override
 	public int compare(Object o1, Object o2) {
 		double d1 = distMetric.distance((AbstractEAIndividual)o1, refIndy);
 		double d2 = distMetric.distance((AbstractEAIndividual)o2, refIndy);

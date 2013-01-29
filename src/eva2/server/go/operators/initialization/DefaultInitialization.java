@@ -14,10 +14,12 @@ public class DefaultInitialization implements InterfaceInitialization, java.io.S
 
 	public DefaultInitialization() {}
 	
+    @Override
 	public void initialize(AbstractEAIndividual indy, InterfaceOptimizationProblem problem) {
 		indy.defaultInit(problem);
 	}
 	
+    @Override
 	public InterfaceInitialization clone() {
 		return new DefaultInitialization();
 	}

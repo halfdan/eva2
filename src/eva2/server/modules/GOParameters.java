@@ -69,12 +69,14 @@ public class GOParameters extends AbstractGOParameters implements InterfaceGOPar
     /**
      *
      */
+    @Override
     public String getName() {
         return "Optimization parameters";
     }
     /**
      *
      */
+    @Override
     public Object clone() {
         return new GOParameters(this);
     }

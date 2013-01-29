@@ -26,6 +26,7 @@ public class ConstObjectivesInEqualityBiggerThanLinear implements InterfaceConst
         this.m      = a.m;
     }
 
+    @Override
     public Object clone() {
         return (Object) new ConstObjectivesInEqualityBiggerThanLinear(this);
     }
@@ -35,6 +36,7 @@ public class ConstObjectivesInEqualityBiggerThanLinear implements InterfaceConst
      * @param indy  The individual to check.
      * @return true if valid false else.
      */
+    @Override
     public boolean isValid(AbstractEAIndividual indy) {
         double[] d = indy.getFitness();
         if (d.length != 2) return true;

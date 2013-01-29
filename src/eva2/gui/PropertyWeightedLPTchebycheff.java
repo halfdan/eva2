@@ -28,6 +28,7 @@ public class PropertyWeightedLPTchebycheff implements java.io.Serializable {
         this.m_P            = e.m_P;
     }
 
+    @Override
     public Object clone() {
         return (Object) new PropertyWeightedLPTchebycheff(this);
     }

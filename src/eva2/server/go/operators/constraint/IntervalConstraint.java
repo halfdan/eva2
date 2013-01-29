@@ -23,6 +23,7 @@ public class IntervalConstraint extends AbstractConstraint implements InterfaceD
 		genericConstr = null;
 	}
 	
+    @Override
 	public void hideHideable() {
 		GenericObjectEditor.setHideProperty(this.getClass(), "relation", true);
 	}

@@ -26,6 +26,7 @@ public class CM3 implements InterfaceCrossover, java.io.Serializable {
 		this.m_OptimizationProblem = c.m_OptimizationProblem;
 	}
 
+    @Override
 	public Object clone(){
 		return new CM3(this);
 	}
@@ -44,6 +45,7 @@ public class CM3 implements InterfaceCrossover, java.io.Serializable {
 		return result;
 	}
 
+    @Override
 	public AbstractEAIndividual[] mate(AbstractEAIndividual indy1,
 			Population partners) {
 		AbstractEAIndividual[]  result = null;
@@ -65,11 +67,13 @@ public class CM3 implements InterfaceCrossover, java.io.Serializable {
 		return result;
 	}
 
+    @Override
 	public void init(AbstractEAIndividual individual,
 			InterfaceOptimizationProblem opt) {
 		this.m_OptimizationProblem = opt;
 	}
 
+    @Override
 	public String getStringRepresentation() {
 		return this.getName();
 	}

@@ -23,6 +23,7 @@ public class SigmaSingleMetricGlobalMutation implements InterfaceDistanceMetric,
     public SigmaSingleMetricGlobalMutation(SigmaSingleMetricGlobalMutation a) {
     }
 
+    @Override
     public Object clone() {
         return (Object) new SigmaSingleMetricGlobalMutation(this);
     }
@@ -34,6 +35,7 @@ public class SigmaSingleMetricGlobalMutation implements InterfaceDistanceMetric,
      * @param indy2     The second individual.
      * @return double
      */
+    @Override
     public double distance(AbstractEAIndividual indy1, AbstractEAIndividual indy2) {
         double[]    dIndy1, dIndy2;
         double[][]  range1, range2;

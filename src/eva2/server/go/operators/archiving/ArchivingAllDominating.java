@@ -22,6 +22,7 @@ public class ArchivingAllDominating extends AbstractArchiving implements java.io
         this.m_ObeyDebsConstViolationPrinciple  = a.m_ObeyDebsConstViolationPrinciple;
     }
 
+    @Override
     public Object clone() {
         return (Object) new ArchivingAllDominating(this);
     }
@@ -31,6 +32,7 @@ public class ArchivingAllDominating extends AbstractArchiving implements java.io
      *  remove elements from the archive if the archive target size is exceeded.
      * @param pop       The population that may add Individuals to the archive.
      */
+    @Override
     public void addElementsToArchive(Population pop) {
 
         if (pop.getArchive() == null) pop.SetArchive(new Population());

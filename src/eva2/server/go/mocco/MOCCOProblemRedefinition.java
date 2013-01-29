@@ -29,6 +29,7 @@ public class MOCCOProblemRedefinition extends MOCCOPhase implements InterfacePro
 
     /** This method will call the init method and will go to stall
      */
+    @Override
     public void initProcessElementParametrization() {
         this.m_Mocco.m_JPanelControl.removeAll();
 
@@ -72,6 +73,7 @@ public class MOCCOProblemRedefinition extends MOCCOPhase implements InterfacePro
     }
 
     ActionListener continue2 = new ActionListener() {
+        @Override
         public void actionPerformed(ActionEvent event) {
             m_Mocco.m_State.m_CurrentProblem = (InterfaceOptimizationProblem)m_Problem.clone();
             m_Mocco.m_JPanelParameters.removeAll();
@@ -81,6 +83,7 @@ public class MOCCOProblemRedefinition extends MOCCOPhase implements InterfacePro
         }
     };
     ActionListener reevaluate = new ActionListener() {
+        @Override
         public void actionPerformed(ActionEvent event) {
             m_Mocco.m_State.m_CurrentProblem = (InterfaceOptimizationProblem)m_Problem.clone();
             m_Mocco.m_State.m_CurrentProblem = m_Problem;

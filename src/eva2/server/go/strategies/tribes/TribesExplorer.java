@@ -82,10 +82,12 @@ public class TribesExplorer extends AbstractEAIndividual implements InterfaceDat
 //        output.out.append(string);
 //    }
     
+    @Override
     public double[] getFitness() {
     	return position.getFitness();
     }
     
+    @Override
     public double getFitness(int index) {
     	return position.getFitness()[index];
     }
@@ -94,6 +96,7 @@ public class TribesExplorer extends AbstractEAIndividual implements InterfaceDat
      * Be aware that for a TribesExplorer, an objective value might be taken into account
      * by reducing the fitness (in the first dimension).
      */
+    @Override
     public void setFitness(double[] fitness) {
     	position.fitness = fitness;
     	super.setFitness(fitness);
@@ -105,6 +108,7 @@ public class TribesExplorer extends AbstractEAIndividual implements InterfaceDat
      * Be aware that for a TribesExplorer, an objective value might be taken into account
      * by reducing the fitness (in the first dimension).
      */
+    @Override
     public void SetFitness(int index, double fitness) {
     	super.SetFitness(index, fitness);
     	if (index > position.fitness.length) {
@@ -120,6 +124,7 @@ public class TribesExplorer extends AbstractEAIndividual implements InterfaceDat
     	position.setTotalError();
     }
 
+    @Override
     public TribesExplorer clone() {
     	return new TribesExplorer(this);
     }
@@ -956,6 +961,7 @@ v[d] = cmin * v[d];
         }
 	}
 
+    @Override
 	public void defaultInit(InterfaceOptimizationProblem prob) {
 		// shouldnt be called as we are beyond the EvA framework in this class
         for (int i = 0; i < this.position.x.length; i++) {
@@ -963,6 +969,7 @@ v[d] = cmin * v[d];
         }
 	}
 	
+    @Override
 	public void defaultMutate() {
 		// shouldnt be called as we are beyond the EvA framework in this class
 	}
@@ -990,14 +997,17 @@ v[d] = cmin * v[d];
 		System.err.println("TRIBES: mutation is not available!");
 	}
 
+    @Override
 	public void SetDoublePhenotype(double[] doubleData) {
 		position.setDoubleArray(doubleData);
 	}
 
+    @Override
 	public void SetDoubleGenotype(double[] doubleData) {
 		position.setDoubleArray(doubleData);
 	}
 
+    @Override
 	public void SetDoubleRange(double[][] range) {
 	    if (position.x.length != range.length) {	// we will need to fully reinit the particle
 	    	initPositions(range.length);
@@ -1005,6 +1015,7 @@ v[d] = cmin * v[d];
 	    this.range = range;
 	}
 
+    @Override
 	public double[] getDoubleData() {
 		return position.x;
 	}
@@ -1013,20 +1024,24 @@ v[d] = cmin * v[d];
 		return velocity.x;
 	}		
 
+    @Override
 	public double[] getDoubleDataWithoutUpdate() {
 		return position.x;
 	}
 
+    @Override
 	public double[][] getDoubleRange() {
 		return range;
 	}
 
+    @Override
 	public void setDoubleDataLength(int length) {
 	    if (position.x.length != length) {	// we will need to fully reinit the particle
 	    	initPositions(length);
 	    }
 	}
 
+    @Override
 	public int size() {
 		return position.x.length;
 	}

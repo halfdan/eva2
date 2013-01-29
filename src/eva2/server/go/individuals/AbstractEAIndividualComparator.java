@@ -108,6 +108,7 @@ public class AbstractEAIndividualComparator implements Comparator<Object>, Seria
 		preferFeasible = other.preferFeasible;
 	}
 
+    @Override
 	public Object clone() {
 		return new AbstractEAIndividualComparator(this);
 	}
@@ -120,6 +121,7 @@ public class AbstractEAIndividualComparator implements Comparator<Object>, Seria
 	 * @param o2 the second AbstractEAIndividual to compare
 	 * @return -1 if the first is dominant, 1 if the second is dominant, otherwise 0
 	 */
+    @Override
 	public int compare(Object o1, Object o2) {
 		boolean o1domO2, o2domO1;
 		

@@ -82,6 +82,7 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
     	changeDetectStrategy.setSelectedAs(a.changeDetectStrategy);
     }
 
+    @Override
     public Object clone() {
         return (Object) new DynamicParticleSwarmOptimization(this);
     }
@@ -89,6 +90,7 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
     /**
      * Call all methods that may hide anything, cf. PSO
      */
+    @Override
     public void hideHideable() {
     	super.hideHideable();
     	setQuantumRatio(quantumRatio);
@@ -177,6 +179,7 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
     	}
     }
     
+    @Override
 	protected void plotIndy(double[] curPosition, double[] curVelocity, int index) {
 		if (this.m_Show) {
 			if (plotBestOnly) {
@@ -346,6 +349,7 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
      * @param popSize	the size of the population
      * @return the speed limit of the individual
      */
+    @Override
     protected double getSpeedLimit(int index) {
     	if (index >= ((double)(m_Population.size() * highEnergyRatio))) return m_SpeedLimit;
     	else {
@@ -355,6 +359,7 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
     }
     
     /////////////////////////////////////////// these are called from the optimize loop
+    @Override
     protected void startOptimize() {
     	super.startOptimize();
     	if (detectAnchor >= 0) {	// set the new detection anchor individual
@@ -368,6 +373,7 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
 	 * @param pop       The initial population
 	 * @param reset     If true the population is reset.
 	 */
+    @Override
 	public void initByPopulation(Population pop, boolean reset) {
 		super.initByPopulation(pop, reset);
 		double quantumCount = 0.;
@@ -389,6 +395,7 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
 	 * @param pop       The current population.
 	 * @param best      The best individual found so far.
 	 */
+    @Override
 	protected void updateIndividual(int index, AbstractEAIndividual indy, Population pop) {
 		if (index != detectAnchor) { // only for non anchor individuals (its -1 if other detect strategy is used)
 			if (indy instanceof InterfaceDataTypeDouble) {
@@ -414,6 +421,7 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
      * given problem.
      * @param population The population that is to be evaluated
      */
+    @Override
 	protected void evaluatePopulation(Population population) {
     	envHasChanged = false;
         super.evaluatePopulation(population);
@@ -433,10 +441,12 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
 //        }
     }
     
+    @Override
 	protected boolean isIndividualToUpdate(AbstractEAIndividual indy) {
 		return (envHasChanged || super.isIndividualToUpdate(indy));
 	}
 
+    @Override
 	protected void logBestIndividual() { 
 	    // log the best individual of the population
 	    if (envHasChanged || (this.m_Population.getBestEAIndividual().isDominatingDebConstraints(this.m_BestIndividual))) {
@@ -480,6 +490,7 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
 		if (detectAnchor>=pop.size()) detectAnchor=0;
 	}
 
+    @Override
 	public void init() {
     	super.init();
     	setEmaPeriods(15);
@@ -487,6 +498,7 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
     }
 
 	
+    @Override
     public void setProblem (InterfaceOptimizationProblem problem) {
     	super.setProblem(problem);
     	if (problem instanceof AbstractOptimizationProblem) {
@@ -498,6 +510,7 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
      * and the applied methods.
      * @return A descriptive string
      */
+    @Override
     public String getStringRepresentation() {
     	StringBuilder strB = new StringBuilder(200);
     	strB.append("Dynamic Particle Swarm Optimization:\nOptimization Problem: ");
@@ -520,6 +533,7 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
     /** This method will return a naming String
      * @return The name of the algorithm
      */
+    @Override
     public String getName() {
         return "DynPSO";
     }

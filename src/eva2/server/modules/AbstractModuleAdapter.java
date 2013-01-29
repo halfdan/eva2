@@ -64,6 +64,7 @@ abstract public class AbstractModuleAdapter implements ModuleAdapter, Serializab
     /**
      * From the interface RemoteStateListener. Added this method to make progress bar possible.
      */
+    @Override
     public void updateProgress(final int percent, String msg) {
         for (RemoteStateListener listener : remoteStateListeners) {
             listener.updateProgress(percent, msg);
@@ -75,6 +76,7 @@ abstract public class AbstractModuleAdapter implements ModuleAdapter, Serializab
      * 
      * @return The adapter name
      */
+    @Override
     public String getAdapterName() {
         return adapterName;
     }
@@ -82,6 +84,7 @@ abstract public class AbstractModuleAdapter implements ModuleAdapter, Serializab
     /**
      * Start optimization on processor.
      */
+    @Override
     public void startOpt() {
         processor.startOpt();
     }
@@ -89,6 +92,7 @@ abstract public class AbstractModuleAdapter implements ModuleAdapter, Serializab
     /**
      * Restart optimization on processor.
      */
+    @Override
     public void restartOpt() {
         processor.restartOpt();
     }
@@ -96,6 +100,7 @@ abstract public class AbstractModuleAdapter implements ModuleAdapter, Serializab
     /**
      * Stop optimization on processor.
      */
+    @Override
     public void stopOpt() {
         // This means user break
         processor.stopOpt();
@@ -106,6 +111,7 @@ abstract public class AbstractModuleAdapter implements ModuleAdapter, Serializab
      * 
      * @return true if post processing is available
      */
+    @Override
     public boolean hasPostProcessing() {
         return ((processor instanceof Processor) && ((Processor) processor).getGOParams().getPostProcessParams().isDoPostProcessing());
     }
@@ -115,6 +121,7 @@ abstract public class AbstractModuleAdapter implements ModuleAdapter, Serializab
      * 
      * @return true if post processing was performed, false otherwise.
      */
+    @Override
     public boolean startPostProcessing() {
         if (hasPostProcessing() && ((Processor) processor).getGOParams().getPostProcessParams().isDoPostProcessing()) {
             ((Processor) processor).performPostProcessing();
@@ -149,6 +156,7 @@ abstract public class AbstractModuleAdapter implements ModuleAdapter, Serializab
     /**
      * Adds a remote state listener.
      */
+    @Override
     public void addRemoteStateListener(RemoteStateListener remoteListener) {
         remoteStateListeners.add(remoteListener);
     }
@@ -156,6 +164,7 @@ abstract public class AbstractModuleAdapter implements ModuleAdapter, Serializab
     /**
      *
      */
+    @Override
     public void setConnection(boolean flag) {
         hasConnection = flag;
     }
@@ -165,6 +174,7 @@ abstract public class AbstractModuleAdapter implements ModuleAdapter, Serializab
      * 
      * @return true if the adapter has a connection.
      */
+    @Override
     public boolean hasConnection() {
         return hasConnection;
     }
@@ -172,6 +182,7 @@ abstract public class AbstractModuleAdapter implements ModuleAdapter, Serializab
     /**
      *
      */
+    @Override
     public void setRemoteThis(ModuleAdapter x) {
         remoteModuleAdapter = x;
     }
@@ -181,6 +192,7 @@ abstract public class AbstractModuleAdapter implements ModuleAdapter, Serializab
      * 
      * @return The host name
      */
+    @Override
     public String getHostName() {
         return hostName;
     }
@@ -188,18 +200,21 @@ abstract public class AbstractModuleAdapter implements ModuleAdapter, Serializab
     /**
      *
      */
+    @Override
     public void performedStop() {
         for (RemoteStateListener listener : remoteStateListeners) {
             listener.performedStop();
         }
     }
 
+    @Override
     public void performedStart(String infoString) {
         for (RemoteStateListener listener : remoteStateListeners) {
             listener.performedStart(infoString);
         }
     }
 
+    @Override
     public void performedRestart(String infoString) {
         for (RemoteStateListener listener : remoteStateListeners) {
             listener.performedRestart(infoString);

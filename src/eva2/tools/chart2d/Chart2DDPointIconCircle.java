@@ -20,6 +20,7 @@ public class Chart2DDPointIconCircle implements DPointIcon {
      * this method has to be overridden to paint the icon. The point itself lies
      * at coordinates (0, 0)
      */
+    @Override
     public void paint( Graphics g ){
         Color prev = g.getColor();
         if (m_Fill != null) {
@@ -37,6 +38,7 @@ public class Chart2DDPointIconCircle implements DPointIcon {
      *
      * @return the border
      */
+    @Override
     public DBorder getDBorder() {
         return new DBorder(4, 4, 4, 4);
     }

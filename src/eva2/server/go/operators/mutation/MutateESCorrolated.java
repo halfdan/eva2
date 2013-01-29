@@ -52,6 +52,7 @@ public class MutateESCorrolated implements InterfaceMutation, java.io.Serializab
     /** This method will enable you to clone a given mutation operator
      * @return The clone
      */
+    @Override
     public Object clone() {
         return new MutateESCorrolated(this);
     }
@@ -60,6 +61,7 @@ public class MutateESCorrolated implements InterfaceMutation, java.io.Serializab
      * are actually the same.
      * @param mutator   The other mutation operator
      */
+    @Override
     public boolean equals(Object mutator) {
     	if (mutator==this) return true;
         if (mutator instanceof MutateESCorrolated) {
@@ -85,6 +87,7 @@ public class MutateESCorrolated implements InterfaceMutation, java.io.Serializab
      * @param individual      The individual that will be mutated.
      * @param opt               The optimization problem.
      */
+    @Override
     public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
         if (individual instanceof InterfaceESIndividual) {
             double[]    x       = ((InterfaceESIndividual)individual).getDGenotype();
@@ -164,6 +167,7 @@ public class MutateESCorrolated implements InterfaceMutation, java.io.Serializab
 //        }
 //    }
 
+    @Override
     public void mutate(AbstractEAIndividual individual) {
         if (individual instanceof InterfaceESIndividual) {
           double[]    x       = ((InterfaceESIndividual)individual).getDGenotype();
@@ -216,6 +220,7 @@ public class MutateESCorrolated implements InterfaceMutation, java.io.Serializab
      * @param indy1     The original mother
      * @param partners  The original partners
      */
+    @Override
     public void crossoverOnStrategyParameters(AbstractEAIndividual indy1, Population partners) {
         // nothing to do here
     }
@@ -242,6 +247,7 @@ public class MutateESCorrolated implements InterfaceMutation, java.io.Serializab
      * operator
      * @return A descriptive string.
      */
+    @Override
     public String getStringRepresentation() {
         return "ES local correlated mutation";
     }

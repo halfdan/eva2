@@ -59,10 +59,12 @@ public class PopulationBasedIncrementalLearning implements InterfaceOptimizer, j
         this.m_SelectionOperator            = (InterfaceSelection)a.m_SelectionOperator.clone();
     }
 
+    @Override
     public Object clone() {
         return (Object) new PopulationBasedIncrementalLearning(this);
     }
 
+    @Override
     public void init() {
         this.m_Problem.initPopulation(this.m_Population);
         if ((m_initialProbabilities!=null) && (m_initialProbabilities.length==((PBILPopulation)m_Population).getProbabilityVector().length)) {
@@ -78,6 +80,7 @@ public class PopulationBasedIncrementalLearning implements InterfaceOptimizer, j
      * @param pop       The initial population
      * @param reset     If true the population is reset.
      */
+    @Override
     public void initByPopulation(Population pop, boolean reset) {
         if (!(pop.getEAIndividual(0) instanceof InterfaceGAIndividual)) {
         	System.err.println("Error: PBIL only works with GAIndividuals!");
@@ -119,6 +122,7 @@ public class PopulationBasedIncrementalLearning implements InterfaceOptimizer, j
         return result;
     }
 
+    @Override
     public void optimize() {
         Population nextGeneration;
         AbstractEAIndividual   elite;
@@ -138,6 +142,7 @@ public class PopulationBasedIncrementalLearning implements InterfaceOptimizer, j
     /** This method will set the problem that is to be optimized
      * @param problem
      */
+    @Override
     public void setProblem (InterfaceOptimizationProblem problem) {
         this.m_Problem = problem;
         if (m_Problem instanceof AbstractOptimizationProblem) {
@@ -146,12 +151,15 @@ public class PopulationBasedIncrementalLearning implements InterfaceOptimizer, j
         	}
         }
     }
+    @Override
     public InterfaceOptimizationProblem getProblem () {
         return this.m_Problem;
     }
+    @Override
     public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
         this.m_Listener = ea;
     }
+    @Override
 	public boolean removePopulationChangedEventListener(
 			InterfacePopulationChangedEventListener ea) {
 		if (m_Listener==ea) {
@@ -169,6 +177,7 @@ public class PopulationBasedIncrementalLearning implements InterfaceOptimizer, j
      * and the applied methods.
      * @return A descriptive string
      */
+    @Override
     public String getStringRepresentation() {
         String result = "";
         result += "Population Based Incremental Learning:\n";
@@ -180,9 +189,11 @@ public class PopulationBasedIncrementalLearning implements InterfaceOptimizer, j
     /** This method allows you to set an identifier for the algorithm
      * @param name      The indenifier
      */
+    @Override
      public void setIdentifier(String name) {
         this.m_Identifier = name;
     }
+    @Override
      public String getIdentifier() {
          return this.m_Identifier;
      }
@@ -190,6 +201,7 @@ public class PopulationBasedIncrementalLearning implements InterfaceOptimizer, j
     /** This method is required to free the memory on a RMIServer,
      * but there is nothing to implement.
      */
+    @Override
     public void freeWilly() {
 
     }    
@@ -205,6 +217,7 @@ public class PopulationBasedIncrementalLearning implements InterfaceOptimizer, j
     /** This method will return a naming String
      * @return The name of the algorithm
      */
+    @Override
     public String getName() {
         return "PBIL";
     }
@@ -214,9 +227,11 @@ public class PopulationBasedIncrementalLearning implements InterfaceOptimizer, j
      * of the optimizer.
      * @return The population of current solutions to a given problem.
      */
+    @Override
     public Population getPopulation() {
         return this.m_Population;
     }
+    @Override
     public void setPopulation(Population pop){
         this.m_Population = pop;
     }
@@ -224,6 +239,7 @@ public class PopulationBasedIncrementalLearning implements InterfaceOptimizer, j
         return "Edit the properties of the PBIL population used.";
     }
     
+    @Override
     public InterfaceSolutionSet getAllSolutions() {
     	return new SolutionSet(getPopulation());
     }

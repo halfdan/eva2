@@ -29,6 +29,7 @@ public class SelectMOPESA implements InterfaceSelection, java.io.Serializable {
         this.m_ObeyDebsConstViolationPrinciple = a.m_ObeyDebsConstViolationPrinciple;
     }
 
+    @Override
     public Object clone() {
         return (Object) new SelectMOPESA(this);
     }
@@ -39,6 +40,7 @@ public class SelectMOPESA implements InterfaceSelection, java.io.Serializable {
      * before hand...
      * @param population    The population that is to be processed.
      */
+    @Override
     public void prepareSelection(Population population) {
         this.m_Squeeze = this.m_PESAII.calculateSqueezeFactor(population);
     }
@@ -50,6 +52,7 @@ public class SelectMOPESA implements InterfaceSelection, java.io.Serializable {
      * @param size          The number of Individuals to select
      * @return The selected population.
      */
+    @Override
     public Population selectFrom(Population population, int size) {
         Population result = new Population();
         result.setTargetSize(size);
@@ -86,6 +89,7 @@ public class SelectMOPESA implements InterfaceSelection, java.io.Serializable {
      * @param size              The number of partners needed.
      * @return The selected partners.
      */
+    @Override
     public Population findPartnerFor(AbstractEAIndividual dad, Population avaiablePartners, int size) {
         return this.selectFrom(avaiablePartners, size);
     }
@@ -122,6 +126,7 @@ public class SelectMOPESA implements InterfaceSelection, java.io.Serializable {
      * of Deb
      * @param b     The new state
      */
+    @Override
     public void setObeyDebsConstViolationPrinciple(boolean b) {
         this.m_ObeyDebsConstViolationPrinciple = b;
     }

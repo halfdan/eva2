@@ -26,6 +26,7 @@ public class ScatterMergingStrategy extends StandardMergingStrategy{
 		super(theMu);
 	}
 	
+    @Override
 	public String globalInfo(){
 		return "Strategy to merge subswarms";
 	}
@@ -40,6 +41,7 @@ public class ScatterMergingStrategy extends StandardMergingStrategy{
 	 * @param i
 	 * @param j
 	 */
+    @Override
 	public void mergeSubswarms(
 			int i,
 			int j,

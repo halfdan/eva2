@@ -30,6 +30,7 @@ public class SelectMONSGAIICrowedTournament implements InterfaceSelection, java.
         this.m_ObeyDebsConstViolationPrinciple  = a.m_ObeyDebsConstViolationPrinciple;
     }
 
+    @Override
     public Object clone() {
         return (Object) new SelectMONSGAIICrowedTournament(this);
     }
@@ -40,6 +41,7 @@ public class SelectMONSGAIICrowedTournament implements InterfaceSelection, java.
      * before hand...
      * @param population    The population that is to be processed.
      */
+    @Override
     public void prepareSelection(Population population) {
         this.m_Fronts = this.m_NSGAII.getNonDominatedSortedFronts(population);
         this.m_NSGAII.calculateCrowdingDistance(this.m_Fronts);
@@ -52,6 +54,7 @@ public class SelectMONSGAIICrowedTournament implements InterfaceSelection, java.
      * @param size          The number of Individuals to select
      * @return The selected population.
      */
+    @Override
     public Population selectFrom(Population population, int size) {
         Population result = new Population();
         result.setTargetSize(size);
@@ -132,6 +135,7 @@ public class SelectMONSGAIICrowedTournament implements InterfaceSelection, java.
      * @param size              The number of partners needed.
      * @return The selected partners.
      */
+    @Override
     public Population findPartnerFor(AbstractEAIndividual dad, Population avaiablePartners, int size) {
         return this.selectFrom(avaiablePartners, size);
     }
@@ -171,6 +175,7 @@ public class SelectMONSGAIICrowedTournament implements InterfaceSelection, java.
      * of Deb
      * @param b     The new state
      */
+    @Override
     public void setObeyDebsConstViolationPrinciple(boolean b) {
         this.m_ObeyDebsConstViolationPrinciple = b;
     }

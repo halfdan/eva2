@@ -46,12 +46,14 @@ public class ThresholdAlgorithm implements InterfaceOptimizer, java.io.Serializa
         this.m_Alpha                        = a.m_Alpha;
     }
 
+    @Override
     public Object clone() {
         return (Object) new ThresholdAlgorithm(this);
     }
 
     /** This method will init the HillClimber
      */
+    @Override
     public void init() {
         this.m_Problem.initPopulation(this.m_Population);
         this.m_Problem.evaluate(this.m_Population);
@@ -63,6 +65,7 @@ public class ThresholdAlgorithm implements InterfaceOptimizer, java.io.Serializa
      * @param pop       The initial population
      * @param reset     If true the population is reset.
      */
+    @Override
     public void initByPopulation(Population pop, boolean reset) {
         this.m_Population = (Population)pop.clone();
         this.m_CurrentT = this.m_InitialT;
@@ -75,6 +78,7 @@ public class ThresholdAlgorithm implements InterfaceOptimizer, java.io.Serializa
 
     /** This method will optimize
      */
+    @Override
     public void optimize() {
         AbstractEAIndividual    indy;
         Population              original = (Population)this.m_Population.clone();
@@ -118,9 +122,11 @@ public class ThresholdAlgorithm implements InterfaceOptimizer, java.io.Serializa
     /** This method will set the problem that is to be optimized
      * @param problem
      */
+    @Override
     public void setProblem (InterfaceOptimizationProblem problem) {
         this.m_Problem = problem;
     }
+    @Override
     public InterfaceOptimizationProblem getProblem () {
         return this.m_Problem;
     }
@@ -162,9 +168,11 @@ public class ThresholdAlgorithm implements InterfaceOptimizer, java.io.Serializa
         TmpMeanFitness = TmpMeanFitness/program.m_MultiRuns;
         System.out.println("("+program.m_MultiRuns+"/"+program.m_FitnessCalls+") Mean Fitness : " + TmpMeanFitness + " Mean Calls needed: " + TmpMeanCalls);
     }
+    @Override
     public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
         this.m_Listener = ea;
     }
+    @Override
 	public boolean removePopulationChangedEventListener(
 			InterfacePopulationChangedEventListener ea) {
 		if (m_Listener==ea) {
@@ -180,6 +188,7 @@ public class ThresholdAlgorithm implements InterfaceOptimizer, java.io.Serializa
      * and the applied methods.
      * @return A descriptive string
      */
+    @Override
     public String getStringRepresentation() {
         String result = "";
         if (this.m_Population.size() > 1) result += "Multi(" + this.m_Population.size() + ")-Start Hill Climbing:\n";
@@ -192,9 +201,11 @@ public class ThresholdAlgorithm implements InterfaceOptimizer, java.io.Serializa
     /** This method allows you to set an identifier for the algorithm
      * @param name      The indenifier
      */
+    @Override
      public void setIdentifier(String name) {
         this.m_Identifier = name;
     }
+    @Override
      public String getIdentifier() {
          return this.m_Identifier;
      }
@@ -202,6 +213,7 @@ public class ThresholdAlgorithm implements InterfaceOptimizer, java.io.Serializa
     /** This method is required to free the memory on a RMIServer,
      * but there is nothing to implement.
      */
+    @Override
     public void freeWilly() {
 
     }
@@ -217,6 +229,7 @@ public class ThresholdAlgorithm implements InterfaceOptimizer, java.io.Serializa
     /** This method will return a naming String
      * @return The name of the algorithm
      */
+    @Override
     public String getName() {
         return "MS-TA";
     }
@@ -225,9 +238,11 @@ public class ThresholdAlgorithm implements InterfaceOptimizer, java.io.Serializa
      * of the optimizer.
      * @return The population of current solutions to a given problem.
      */
+    @Override
     public Population getPopulation() {
         return this.m_Population;
     }
+    @Override
     public void setPopulation(Population pop){
         this.m_Population = pop;
     }
@@ -235,6 +250,7 @@ public class ThresholdAlgorithm implements InterfaceOptimizer, java.io.Serializa
         return "Change the number of best individuals stored (MS-TA).";
     }
     
+    @Override
     public InterfaceSolutionSet getAllSolutions() {
     	return new SolutionSet(getPopulation());
     }

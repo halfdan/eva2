@@ -28,6 +28,7 @@ public class PropertyOptimizationObjectives implements java.io.Serializable {
         }
     }
 
+    @Override
     public Object clone() {
         return (Object) new PropertyOptimizationObjectives(this);
     }

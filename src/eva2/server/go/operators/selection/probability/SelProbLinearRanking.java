@@ -23,6 +23,7 @@ public class SelProbLinearRanking extends AbstractSelProb implements java.io.Ser
         this.nappaMinus = a.nappaMinus;
     }
 
+    @Override
     public Object clone() {
         return (Object) new SelProbLinearRanking(this);
     }
@@ -33,6 +34,7 @@ public class SelProbLinearRanking extends AbstractSelProb implements java.io.Ser
      * @param population    The population to compute.
      * @param data          The input as double[][]
      */
+    @Override
     public void computeSelectionProbability(Population population, double[][] data, boolean obeyConst) {
         double                  temp;
         double[]                result = new double[data.length];

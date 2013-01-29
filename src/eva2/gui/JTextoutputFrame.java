@@ -41,6 +41,7 @@ public class JTextoutputFrame implements JTextoutputFrameInterface, ActionListen
     /**
      *
      */
+    @Override
     public void print(String text) {
         if (textArea == null) {
             createFrame();
@@ -49,10 +50,12 @@ public class JTextoutputFrame implements JTextoutputFrameInterface, ActionListen
         textArea.repaint();
     }
 
+    @Override
     public void println(String txt) {
         print(txt + '\n');
     }
 
+    @Override
     public void setShow(boolean bShow) {
         if (frame.isVisible() != bShow) {
             if (frame.isVisible()) {
@@ -100,6 +103,7 @@ public class JTextoutputFrame implements JTextoutputFrameInterface, ActionListen
             private int lastHeight;
             //
 
+            @Override
             public void stateChanged(ChangeEvent e) {
                 JViewport viewport = (JViewport) e.getSource();
                 int Height = viewport.getViewSize().height;
@@ -131,6 +135,7 @@ public class JTextoutputFrame implements JTextoutputFrameInterface, ActionListen
         textArea.addMouseListener(popupListener);
     }
 
+    @Override
     public void actionPerformed(ActionEvent e) {
         JMenuItem src = (JMenuItem) e.getSource();
         if (src == clearItem) {
@@ -157,10 +162,12 @@ class PopupListener extends MouseAdapter {
         popup = pm;
     }
 
+    @Override
     public void mousePressed(MouseEvent e) {
         maybeShowPopup(e);
     }
 
+    @Override
     public void mouseReleased(MouseEvent e) {
         maybeShowPopup(e);
     }

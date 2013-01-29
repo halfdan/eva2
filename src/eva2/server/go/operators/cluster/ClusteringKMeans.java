@@ -57,6 +57,7 @@ public class ClusteringKMeans implements InterfaceClustering, java.io.Serializab
      * the object
      * @return the deep clone
      */
+    @Override
     public Object clone() {
         return (Object) new ClusteringKMeans(this);
     }
@@ -68,6 +69,7 @@ public class ClusteringKMeans implements InterfaceClustering, java.io.Serializab
      * @param pop       The population of individuals that is to be clustered.
      * @return Population[]
      */
+    @Override
     public Population[] cluster(Population pop, Population referencePop) {
     	if (pop.size()<m_K) {
     		// in this case, there arent enough indies to do anything, so we just return them as "unclustered"
@@ -313,6 +315,7 @@ public class ClusteringKMeans implements InterfaceClustering, java.io.Serializab
      * @param species2  The second species.
      * @return True if species converge, else False.
      */
+    @Override
     public boolean mergingSpecies(Population species1, Population species2, Population referencePop) {
         // TODO i could use the BIC metric from X-means to calculate this
     	if (metric.distance(species1.getBestEAIndividual(), species2.getBestEAIndividual())<mergeDist) return true;
@@ -329,6 +332,7 @@ public class ClusteringKMeans implements InterfaceClustering, java.io.Serializab
 //        return false;
 //    }
     
+    @Override
 	public int[] associateLoners(Population loners, Population[] species, Population referencePop) {
 //		tmpIndy = (AbstractEAIndividual)loners.getEAIndividual(0).clone();
 		int[] res=new int[loners.size()];
@@ -419,6 +423,7 @@ public class ClusteringKMeans implements InterfaceClustering, java.io.Serializab
         return "Toggel reuse of previously found cluster centroids.";
     }
 
+    @Override
 	public String initClustering(Population pop) {
 		return null;
 	}

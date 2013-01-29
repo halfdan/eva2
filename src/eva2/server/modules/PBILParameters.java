@@ -51,6 +51,7 @@ public class PBILParameters extends AbstractGOParameters implements InterfaceGOP
     private PBILParameters(PBILParameters Source) {
     	super(Source);
     }
+    @Override
     public Object clone() {
         return new PBILParameters(this);
     }
@@ -62,6 +63,7 @@ public class PBILParameters extends AbstractGOParameters implements InterfaceGOP
 //    	return ((PopulationBasedIncrementalLearning)this.m_Optimizer).globalInfo();
 //    }
 
+    @Override
     public void setOptimizer(InterfaceOptimizer optimizer) {
         // i'm a Monte Carlo Search Algorithm
         // *pff* i'll ignore that!

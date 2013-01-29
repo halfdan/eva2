@@ -22,6 +22,7 @@ public class ArchivingNSGAII extends ArchivingNSGA implements java.io.Serializab
     public ArchivingNSGAII(ArchivingNSGAII a) {
     }
 
+    @Override
     public Object clone() {
         return (Object) new ArchivingNSGAII(this);
     }
@@ -31,6 +32,7 @@ public class ArchivingNSGAII extends ArchivingNSGA implements java.io.Serializab
      *  remove elements from the archive if the archive target size is exceeded.
      * @param pop       The population that may add Individuals to the archive.
      */
+    @Override
     public void addElementsToArchive(Population pop) {
 
         if (pop.getArchive() == null) pop.SetArchive(new Population());
@@ -188,6 +190,7 @@ public class ArchivingNSGAII extends ArchivingNSGA implements java.io.Serializab
     /** This method will return a naming String
      * @return The name of the algorithm
      */
+    @Override
     public String getName() {
         return "NSGA II";
     }

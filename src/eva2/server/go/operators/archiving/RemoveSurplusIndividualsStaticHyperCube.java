@@ -23,6 +23,7 @@ public class RemoveSurplusIndividualsStaticHyperCube extends RemoveSurplusIndivi
     public RemoveSurplusIndividualsStaticHyperCube(RemoveSurplusIndividualsStaticHyperCube a) {
     }
 
+    @Override
     public Object clone() {
         return (Object) new RemoveSurplusIndividualsStaticHyperCube(this);
     }
@@ -31,6 +32,7 @@ public class RemoveSurplusIndividualsStaticHyperCube extends RemoveSurplusIndivi
      * from a given archive. Note archive will be altered!
      * @param archive
      */
+    @Override
     public void removeSurplusIndividuals(Population archive) {
         double[][]  fitness;
         double[]    space;

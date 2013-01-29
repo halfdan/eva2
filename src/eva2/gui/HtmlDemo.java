@@ -104,6 +104,7 @@ public class HtmlDemo {
    */
   public HyperlinkListener createHyperLinkListener() {
     return new HyperlinkListener() {
+            @Override
       public void hyperlinkUpdate(HyperlinkEvent e) {
         if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
           if (e instanceof HTMLFrameHyperlinkEvent) {

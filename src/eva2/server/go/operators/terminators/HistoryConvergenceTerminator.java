@@ -41,10 +41,12 @@ public class HistoryConvergenceTerminator implements InterfaceTerminator, Serial
 		return "Converge based on a halting window on a population history.";
 	}
 	
+    @Override
 	public void init(InterfaceOptimizationProblem prob) {
 		msg = "Not terminated.";
 	}
 
+    @Override
 	public boolean isTerminated(PopulationInterface pop) {
         int     histLen = (((Population)pop).getHistory()).size();
         boolean res = false;
@@ -102,10 +104,12 @@ public class HistoryConvergenceTerminator implements InterfaceTerminator, Serial
     	}
     }
     
+    @Override
 	public boolean isTerminated(InterfaceSolutionSet sols) {
 		return isTerminated(sols.getCurrentPopulation());
 	}
 
+    @Override
 	public String lastTerminationMessage() {
 		return msg;
 	}

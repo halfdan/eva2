@@ -28,6 +28,7 @@ public class CrossoverGAUniform implements InterfaceCrossover, java.io.Serializa
     /** This method will enable you to clone a given mutation operator
      * @return The clone
      */
+    @Override
     public Object clone() {
         return new CrossoverGAUniform(this);
     }
@@ -37,6 +38,7 @@ public class CrossoverGAUniform implements InterfaceCrossover, java.io.Serializa
      * @param indy1 The first individual
      * @param partners The second individual
      */
+    @Override
     public AbstractEAIndividual[] mate(AbstractEAIndividual indy1, Population partners) {
         AbstractEAIndividual[] result = null;
         result = new AbstractEAIndividual[partners.size()+1];
@@ -79,6 +81,7 @@ public class CrossoverGAUniform implements InterfaceCrossover, java.io.Serializa
      * are actually the same.
      * @param crossover   The other crossover operator
      */
+    @Override
     public boolean equals(Object crossover) {
         if (crossover instanceof CrossoverGAUniform) return true;
         else return false;
@@ -91,10 +94,12 @@ public class CrossoverGAUniform implements InterfaceCrossover, java.io.Serializa
      * @param individual    The individual that will be mutated.
      * @param opt           The optimization problem.
      */
+    @Override
     public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
         this.m_OptimizationProblem = opt;
     }
 
+    @Override
     public String getStringRepresentation() {
         return this.getName();
     }    

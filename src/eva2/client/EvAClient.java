@@ -252,6 +252,7 @@ public class EvAClient extends JFrame implements RemoteStateListener {
 
         SwingUtilities.invokeLater(initRnbl = new Runnable() {
 
+            @Override
             public void run() {
                 synchronized (this) {
                     long startTime = System.currentTimeMillis();
@@ -1177,6 +1178,7 @@ public class EvAClient extends JFrame implements RemoteStateListener {
         comAdapter.killAllServers();
     }
 
+    @Override
     public void performedRestart(String infoString) {
         if (superListenerList != null) {
             for (RemoteStateListener l : superListenerList) {
@@ -1187,6 +1189,7 @@ public class EvAClient extends JFrame implements RemoteStateListener {
         startTime = System.currentTimeMillis();
     }
 
+    @Override
     public void performedStart(String infoString) {
         if (superListenerList != null) {
             for (RemoteStateListener l : superListenerList) {
@@ -1197,6 +1200,7 @@ public class EvAClient extends JFrame implements RemoteStateListener {
         startTime = System.currentTimeMillis();
     }
 
+    @Override
     public void performedStop() {
         if (superListenerList != null) {
             for (RemoteStateListener l : superListenerList) {
@@ -1215,6 +1219,7 @@ public class EvAClient extends JFrame implements RemoteStateListener {
      * for the event dispatching thread with SwingUtilities.invokeLater(). In
      * this case we're just changing the progress bars value.
      */
+    @Override
     public void updateProgress(final int percent, String msg) {
         if (superListenerList != null) {
             for (RemoteStateListener l : superListenerList) {
@@ -1227,6 +1232,7 @@ public class EvAClient extends JFrame implements RemoteStateListener {
         if (this.progressBar != null) {
             Runnable doSetProgressBarValue = new Runnable() {
 
+                @Override
                 public void run() {
                     progressBar.setValue(percent);
                 }

@@ -31,6 +31,7 @@ public class MOCCOChooseReferencePoint extends MOCCOPhase implements InterfacePr
 
     /** This method will call the init method and will go to stall
      */
+    @Override
     public void initProcessElementParametrization() {
         this.m_Mocco.m_JPanelControl.removeAll();
 
@@ -97,6 +98,7 @@ public class MOCCOChooseReferencePoint extends MOCCOPhase implements InterfacePr
     }
 
     ActionListener refPointEdited = new ActionListener() {
+        @Override
         public void actionPerformed(ActionEvent event) {
             for (int i = 0; i < m_JTextField.length; i++) {
                 m_Mocco.m_View.m_ReferencePoint[i] = new Double(m_JTextField[i].getText()).doubleValue();
@@ -106,6 +108,7 @@ public class MOCCOChooseReferencePoint extends MOCCOPhase implements InterfacePr
     };
 
     ActionListener continue2 = new ActionListener() {
+        @Override
         public void actionPerformed(ActionEvent event) {
             m_ReferencePoint = m_Mocco.m_View.m_ReferencePoint;
             m_Mocco.m_View.setRefPointSelectable(false);
@@ -126,6 +129,7 @@ public class MOCCOChooseReferencePoint extends MOCCOPhase implements InterfacePr
      * a full vector since it is only 2d
      * @param point  The selected point, most likely 2d
      */
+    @Override
     public void refPointGiven(double[] point) {
         this.m_ReferencePoint = point;
         this.updateSelected();

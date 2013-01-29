@@ -48,6 +48,7 @@ public class GenericObjectListSelectionEditor extends AbstractListSelectionEdito
     /** Retruns the current object.
      * @return the current object
      */
+    @Override
     public Object getValue() {
         return objList;
     }

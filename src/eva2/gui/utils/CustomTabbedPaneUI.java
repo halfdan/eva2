@@ -68,10 +68,12 @@ public class CustomTabbedPaneUI extends BasicTabbedPaneUI {
         contentInsets = new Insets(i, i, i, i);
     }
 
+    @Override
     public int getTabRunCount(JTabbedPane pane) {
         return 1;
     }
 
+    @Override
     protected void installDefaults() {
         super.installDefaults();
 
@@ -87,15 +89,18 @@ public class CustomTabbedPaneUI extends BasicTabbedPaneUI {
         return false;
     }
 
+    @Override
     protected Insets getContentBorderInsets(int tabPlacement) {
         return contentInsets;
     }
 
+    @Override
     protected int calculateTabHeight(int tabPlacement, int tabIndex,
             int fontHeight) {
         return 21;
     }
 
+    @Override
     protected int calculateTabWidth(int tabPlacement, int tabIndex,
             FontMetrics metrics) {
         int w = super.calculateTabWidth(tabPlacement, tabIndex, metrics);
@@ -104,10 +109,12 @@ public class CustomTabbedPaneUI extends BasicTabbedPaneUI {
         return w;
     }
 
+    @Override
     protected int calculateMaxTabHeight(int tabPlacement) {
         return 21;
     }
 
+    @Override
     protected void paintTabArea(Graphics g, int tabPlacement, int selectedIndex) {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setPaint(new GradientPaint(0, 0, defaultColorSet.topGradColor1, 0,
@@ -125,6 +132,7 @@ public class CustomTabbedPaneUI extends BasicTabbedPaneUI {
         }
     }
 
+    @Override
     protected void paintTabBackground(Graphics g, int tabPlacement,
             int tabIndex, int x, int y, int w, int h, boolean isSelected) {
         Graphics2D g2d = (Graphics2D) g;
@@ -164,6 +172,7 @@ public class CustomTabbedPaneUI extends BasicTabbedPaneUI {
         }
     }
 
+    @Override
     protected void paintTabBorder(Graphics g, int tabPlacement, int tabIndex,
             int x, int y, int w, int h, boolean isSelected) {
         Rectangle rect = getTabBounds(tabIndex, new Rectangle(x, y, w, h));
@@ -171,31 +180,37 @@ public class CustomTabbedPaneUI extends BasicTabbedPaneUI {
         g.drawLine(rect.x + rect.width, 0, rect.x + rect.width, 20);
     }
 
+    @Override
     protected void paintContentBorderTopEdge(Graphics g, int tabPlacement,
             int selectedIndex, int x, int y, int w, int h) {
     }
 
+    @Override
     protected void paintContentBorderRightEdge(Graphics g, int tabPlacement,
             int selectedIndex, int x, int y, int w, int h) {
         // Do nothing
     }
 
+    @Override
     protected void paintContentBorderLeftEdge(Graphics g, int tabPlacement,
             int selectedIndex, int x, int y, int w, int h) {
         // Do nothing
     }
 
+    @Override
     protected void paintContentBorderBottomEdge(Graphics g, int tabPlacement,
             int selectedIndex, int x, int y, int w, int h) {
         // Do nothing
     }
 
+    @Override
     protected void paintFocusIndicator(Graphics g, int tabPlacement,
             Rectangle[] rects, int tabIndex, Rectangle iconRect,
             Rectangle textRect, boolean isSelected) {
         // Do nothing
     }
 
+    @Override
     protected int getTabLabelShiftY(int tabPlacement, int tabIndex,
             boolean isSelected) {
         return 0;
@@ -212,26 +227,33 @@ public class CustomTabbedPaneUI extends BasicTabbedPaneUI {
     private class RollOverListener implements MouseMotionListener,
             MouseListener {
 
+        @Override
         public void mouseDragged(MouseEvent e) {
         }
 
+        @Override
         public void mouseMoved(MouseEvent e) {
             checkRollOver();
         }
 
+        @Override
         public void mouseClicked(MouseEvent e) {
         }
 
+        @Override
         public void mousePressed(MouseEvent e) {
         }
 
+        @Override
         public void mouseReleased(MouseEvent e) {
         }
 
+        @Override
         public void mouseEntered(MouseEvent e) {
             checkRollOver();
         }
 
+        @Override
         public void mouseExited(MouseEvent e) {
             tabPane.repaint();
         }

@@ -52,6 +52,7 @@ public class PropertyFilePath implements java.io.Serializable {
     	else return new PropertyFilePath(fName);
     }
 
+    @Override
     public Object clone() {
         return (Object) new PropertyFilePath(this);
     }

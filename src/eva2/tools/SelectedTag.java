@@ -9,6 +9,7 @@ public class SelectedTag implements java.io.Serializable {
 	protected int m_Selected;
 	protected Tag[] m_Tags;
 
+    @Override
 	public Object clone() {
 		SelectedTag result = new SelectedTag(this.m_Selected, this.m_Tags);
 		return (Object) result;
@@ -151,6 +152,7 @@ public class SelectedTag implements java.io.Serializable {
 	/**
 	 *
 	 */
+    @Override
 	public boolean equals(Object o) {
 		if ((o == null) || !(o.getClass().equals(this.getClass()))) {
 			return false;
@@ -183,6 +185,7 @@ public class SelectedTag implements java.io.Serializable {
 		}
 	}
 	
+    @Override
 	public String toString() {
 		return m_Tags[m_Selected].getString();
 //		Character selSign = '*';

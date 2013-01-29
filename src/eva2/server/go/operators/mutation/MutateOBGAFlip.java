@@ -31,6 +31,7 @@ public class MutateOBGAFlip implements InterfaceMutation, java.io.Serializable {
   public MutateOBGAFlip() {
   }
 
+    @Override
   public Object clone() {
     return this;
   }
@@ -39,15 +40,18 @@ public class MutateOBGAFlip implements InterfaceMutation, java.io.Serializable {
      * are actually the same.
      * @param mutator   The other mutation operator
      */
+    @Override
     public boolean equals(Object mutator) {
         if (mutator instanceof MutateOBGAFlip) return true;
         else return false;
     }
 
+    @Override
     public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
         //nothing to init
     }
 
+    @Override
     public void mutate(AbstractEAIndividual individual) {
 
     	int[][] perm = ( (InterfaceOBGAIndividual) individual).
@@ -69,6 +73,7 @@ public class MutateOBGAFlip implements InterfaceMutation, java.io.Serializable {
      * @param indy1     The original mother
      * @param partners  The original partners
      */
+    @Override
     public void crossoverOnStrategyParameters(AbstractEAIndividual indy1, Population partners) {
         // nothing to do here
     }
@@ -77,6 +82,7 @@ public class MutateOBGAFlip implements InterfaceMutation, java.io.Serializable {
      * operator
      * @return A descriptive string.
      */
+    @Override
     public String getStringRepresentation() {
         return "OBGA flip mutation";
     }

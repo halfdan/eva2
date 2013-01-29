@@ -34,10 +34,12 @@ public class StatisticsDummy implements InterfaceStatistics, InterfaceTextListen
 		consoleOut = doConsoleOut;
 	}
 	
+    @Override
 	public void addTextListener(InterfaceTextListener listener) {
 		System.err.println("addTextListener not provided!");
 	}
 
+    @Override
 	public void createNextGenerationPerformed(PopulationInterface pop, InterfaceOptimizer opt,
 			List<InterfaceAdditionalPopulationInformer> informerList) {
 		bestCurrentIndividual = (AbstractEAIndividual)pop.getBestIndividual();
@@ -49,56 +51,70 @@ public class StatisticsDummy implements InterfaceStatistics, InterfaceTextListen
 		}
 	}
 
+    @Override
 	public void createNextGenerationPerformed(double[] bestfit,
 			double[] worstfit, int calls) {
 	}
 
+    @Override
 	public double[] getBestFitness() {
 		if (bestIndividualAllover != null) return bestCurrentIndividual.getFitness();
 		else return null;
 	}
 
+    @Override
 	public IndividualInterface getBestSolution() {
 		return bestIndividualAllover;
 	}
 	
+    @Override
 	public IndividualInterface getRunBestSolution() {
 		return bestRunIndy;
 	}
 	
+    @Override
 	public InterfaceStatisticsParameter getStatisticsParameter() {
 		return sParams;
 	}
 
+    @Override
 	public void printToTextListener(String s) {
 		if (consoleOut) System.out.println(s);
 	}
 
+    @Override
 	public boolean removeTextListener(InterfaceTextListener listener) {
 		System.err.println("removeTextListener not provided!");
 		return false;
 	}
 
+    @Override
 	public void startOptPerformed(String InfoString, int runnumber,
 			Object params, List<InterfaceAdditionalPopulationInformer> informerList) {
 		if (runnumber==0) bestIndividualAllover = null;
 		bestRunIndy = null;
 	}
 
+    @Override
 	public void stopOptPerformed(boolean normal, String stopMessage) {}
+    @Override
 	public void postProcessingPerformed(Population resultPop) {}
 	
+    @Override
 	public void print(String str) {
 		if (consoleOut) System.out.print(str);
 	}
+    @Override
 	public void println(String str) {
 		if (consoleOut) System.out.println(str);
 	}
 
+    @Override
 	public void addDataListener(InterfaceStatisticsListener l) {
 		System.err.println("addDataListener not provided!");
 	}
 	
+    @Override
 	public boolean removeDataListener(InterfaceStatisticsListener l) {
 		System.err.println("removeDataListener not provided!");
 		return false;

@@ -138,19 +138,23 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
 	/**
 	 * @return a copy of the current BinaryScatterSearch
 	 */
+    @Override
 	public Object clone(){
 		return new BinaryScatterSearch(this);
 	}
 
+    @Override
 	public String getName() {
 		return "BSS";
 	}
 
+    @Override
 	public void addPopulationChangedEventListener(
 			InterfacePopulationChangedEventListener ea) {
 		this.m_Listener = ea;
 	}
 
+    @Override
 	public boolean removePopulationChangedEventListener(
 			InterfacePopulationChangedEventListener ea) {
 		if (m_Listener==ea) {
@@ -194,12 +198,14 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
 		this.refSet.setNotifyEvalInterval(this.generationCycle);
 	}
 
+    @Override
 	public void init() {
 		defaultInit();
 		initRefSet(diversify());
 		this.firePropertyChangedEvent(Population.nextGenerationPerformed);
 	}
 
+    @Override
 	public void initByPopulation(Population pop, boolean reset) {
 		defaultInit();
 		initRefSet(diversify(pop));
@@ -664,6 +670,7 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
 		}
 	}
 
+    @Override
 	public void optimize() {
 		problem.evaluatePopulationStart(refSet);
 		int funCallsStart = this.refSet.getFunctionCalls();
@@ -706,10 +713,12 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
 		problem.evaluatePopulationEnd(refSet);
 	}
 
+    @Override
 	public Population getPopulation() {
 		return this.refSet;
 	}
 
+    @Override
 	public void setPopulation(Population pop) {
 		this.refSet = pop;
 		this.refSetSize = pop.getTargetSize();
@@ -719,30 +728,37 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
 		return "The Population";
 	}
 
+    @Override
 	public InterfaceSolutionSet getAllSolutions() {
 		return new SolutionSet(this.refSet);
 	}
 
+    @Override
 	public void setIdentifier(String name) {
 		this.m_Identifier = name;
 	}
 
+    @Override
 	public String getIdentifier() {
 		return this.m_Identifier;
 	}
 
+    @Override
 	public void setProblem(InterfaceOptimizationProblem problem) {
 		this.problem = (AbstractOptimizationProblem) problem;
 	}
 
+    @Override
 	public InterfaceOptimizationProblem getProblem() {
 		return this.problem;
 	}
 
+    @Override
 	public String getStringRepresentation() {
 		return "BinaryScatterSearch";
 	}
 
+    @Override
 	public void freeWilly() {
 		// TODO Auto-generated method stub
 
@@ -752,6 +768,7 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
 		if (this.m_Listener != null) this.m_Listener.registerPopulationStateChanged(this, name);
 	}
 
+    @Override
 	public void registerPopulationStateChanged(Object source, String name) {
 		// The events of the interim hill climbing population will be caught here 
 		if (name.compareTo(Population.funCallIntervalReached) == 0) {

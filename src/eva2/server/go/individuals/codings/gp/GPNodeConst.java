@@ -30,6 +30,7 @@ public class GPNodeConst extends AbstractGPNode implements java.io.Serializable 
 	/** This method will be used to identify the node in the GPAreaEditor
      * @return The name.
      */
+    @Override
     public String getName() {
         return ""+value;
     }
@@ -37,6 +38,7 @@ public class GPNodeConst extends AbstractGPNode implements java.io.Serializable 
     /** This method will return the current arity
      * @return Arity.
      */
+    @Override
     public int getArity() {
         return 0;
     }
@@ -44,6 +46,7 @@ public class GPNodeConst extends AbstractGPNode implements java.io.Serializable 
     /** This method will evaluate a given node
      * @param environment
      */
+    @Override
     public Object evaluate(InterfaceProgramProblem environment) {
         return new Double(value);
     }

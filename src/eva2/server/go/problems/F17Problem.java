@@ -26,6 +26,7 @@ public class F17Problem extends AbstractProblemDouble implements
 		dim=other.dim;
 	}
 
+    @Override
 	public double[] eval(double[] x) {
 		x = rotateMaybe(x);
 		double[] res = new double[1];
@@ -38,6 +39,7 @@ public class F17Problem extends AbstractProblemDouble implements
 		return res;
 	}
 
+    @Override
 	public int getProblemDimension() {
 		return dim;
 	}
@@ -46,10 +48,12 @@ public class F17Problem extends AbstractProblemDouble implements
 		dim = newDim;
 	}
 	
+    @Override
 	public Object clone() {
 		return new F17Problem(this);
 	}
 
+    @Override
 	public String getName() {
 		return "F17-Problem";
 	}
@@ -58,6 +62,7 @@ public class F17Problem extends AbstractProblemDouble implements
 		return "Bohachevsky function, numerous optima on an oval hyperparabola with similar attractor sizes but decreasing fitness towards the bounds.";
 	}
 
+    @Override
 	public SolutionHistogram getHistogram() {
 		if (getProblemDimension()<15) return new SolutionHistogram(-0.5, 7.5, 16);
 		else return new SolutionHistogram(-0.5, 15.5, 16);

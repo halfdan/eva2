@@ -27,6 +27,7 @@ public class GAGrayCodingDouble implements InterfaceGADoubleCoding, java.io.Seri
      * @param correction            Enable automatic correction is enabled.
      * @return                      The float value.
      */
+    @Override
     public double decodeValue(BitSet refBitSet, double[] range, int[] locus, boolean correction) {
         BitSet              tmpBitSet;
         int[]               tmpLocus;
@@ -54,6 +55,7 @@ public class GAGrayCodingDouble implements InterfaceGADoubleCoding, java.io.Seri
      * @param refBitSet         The BitSet where the questioned value is stored.
      * @param locus             The position and length on the BitSet that is to be coded.
      */
+    @Override
     public void codeValue(double value, double[] range, BitSet refBitSet, int[] locus) {
         BitSet              tmpBitSet;
         int[]               tmpLocus;

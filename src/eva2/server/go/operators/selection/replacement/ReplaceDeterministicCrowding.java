@@ -17,6 +17,7 @@ public class ReplaceDeterministicCrowding implements InterfaceReplacement, java.
 
     /** The ever present clone method
      */
+    @Override
     public Object clone() {
         return new ReplaceRandom();
     }
@@ -29,6 +30,7 @@ public class ReplaceDeterministicCrowding implements InterfaceReplacement, java.
      * @param pop       The population
      * @param sub       The subset
      */
+    @Override
     public void insertIndividual(AbstractEAIndividual indy, Population pop, Population sub) {
         int index = 0;
 

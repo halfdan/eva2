@@ -25,6 +25,7 @@ public class MOSOGoalProgramming implements InterfaceMOSOConverter, java.io.Seri
             this.m_Goals = (PropertyDoubleArray)b.m_Goals;
         }
     }
+    @Override
     public Object clone() {
         return (Object) new MOSOGoalProgramming(this);
     }
@@ -36,6 +37,7 @@ public class MOSOGoalProgramming implements InterfaceMOSOConverter, java.io.Seri
      * if you still want to access the original fitness values.
      * @param pop       The population to process.
      */
+    @Override
     public void convertMultiObjective2SingleObjective(Population pop) {
         for (int i = 0; i < pop.size(); i++) {
              this.convertSingleIndividual((AbstractEAIndividual)pop.get(i));
@@ -45,6 +47,7 @@ public class MOSOGoalProgramming implements InterfaceMOSOConverter, java.io.Seri
     /** This method processes a single individual
      * @param indy      The individual to process.
      */
+    @Override
     public void convertSingleIndividual(AbstractEAIndividual indy) {
         double[]    resultFit = new double[1];
         double[]    tmpFit;
@@ -62,6 +65,7 @@ public class MOSOGoalProgramming implements InterfaceMOSOConverter, java.io.Seri
      * value of one
      * @param dim       Outputdimension of the problem
      */
+    @Override
     public void setOutputDimension(int dim) {
         double[] newWeights = new double[dim];
 
@@ -74,6 +78,7 @@ public class MOSOGoalProgramming implements InterfaceMOSOConverter, java.io.Seri
     /** This method returns a description of the objective
      * @return A String
      */
+    @Override
     public String getStringRepresentation() {
         return this.getName()+"\n";
     }
@@ -86,6 +91,7 @@ public class MOSOGoalProgramming implements InterfaceMOSOConverter, java.io.Seri
      * name to the current object.
      * @return The name.
      */
+    @Override
     public String getName() {
         return "Goal Programming";
     }

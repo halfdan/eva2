@@ -83,10 +83,12 @@ public class ClusteringDensityBased implements InterfaceClusteringDistanceParam,
      * the object
      * @return the deep clone
      */
+    @Override
     public Object clone() {
         return (Object) new ClusteringDensityBased(this);
     }
 
+    @Override
     public Population[] cluster(Population pop, Population referencePop) {
         ConnectionMatrix    = new boolean[pop.size()][pop.size()];
         Clustered           = new boolean[pop.size()];
@@ -158,6 +160,7 @@ public class ClusteringDensityBased implements InterfaceClusteringDistanceParam,
      * @param species2  The second species.
      * @return True if species converge, else False.
      */
+    @Override
     public boolean mergingSpecies(Population species1, Population species2, Population referencePop) {
         if (m_TestConvergingSpeciesOnBestOnly) {
         	double specDist = this.m_Metric.distance(species1.getBestEAIndividual(), species2.getBestEAIndividual());
@@ -200,6 +203,7 @@ public class ClusteringDensityBased implements InterfaceClusteringDistanceParam,
      * @param species
      * @return associative list matching loners to species.
      */
+    @Override
     public int[] associateLoners(Population loners, Population[] species, Population referencePop) {
     	int[] res = new int[loners.size()];
     	for (int l=0; l<loners.size(); l++) {
@@ -235,9 +239,11 @@ public class ClusteringDensityBased implements InterfaceClusteringDistanceParam,
     /** This method allows you to set/get the distance metric used by the DBSCAN method.
      * @return The currently used distance metric.
      */
+    @Override
     public InterfaceDistanceMetric getMetric() {
         return this.m_Metric;
     }
+    @Override
     public void setMetric(InterfaceDistanceMetric m){
         this.m_Metric = m;
     }
@@ -259,13 +265,16 @@ public class ClusteringDensityBased implements InterfaceClusteringDistanceParam,
         return "Set the minimum group size for the DBSCAN method.";
     }
 
+    @Override
 	public String initClustering(Population pop) {
 		return null;
 	}
 
+    @Override
 	public double getClustDistParam() {
 		return this.m_ClusterDistance;
 	}
+    @Override
 	public void setClustDistParam(double m) {
         if (m < 0) m = 0;
         this.m_ClusterDistance = m;

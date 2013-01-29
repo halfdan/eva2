@@ -27,6 +27,7 @@ public class F11Problem extends AbstractProblemDoubleOffset implements Interface
     /** This method returns a deep clone of the problem.
      * @return  the clone
      */
+    @Override
     public Object clone() {
         return (Object) new F11Problem(this);
     }
@@ -35,6 +36,7 @@ public class F11Problem extends AbstractProblemDoubleOffset implements Interface
      * @param x     The n-dimensional input vector
      * @return  The m-dimensional output vector.
      */
+    @Override
     public double[] eval(double[] x) {
     	x = rotateMaybe(x);
         double[] result = new double[1];
@@ -70,6 +72,7 @@ public class F11Problem extends AbstractProblemDoubleOffset implements Interface
      * name to the current object.
      * @return The name.
      */
+    @Override
     public String getName() {
         return "F11-Problem";
     }

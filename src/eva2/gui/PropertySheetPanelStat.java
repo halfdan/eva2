@@ -117,6 +117,7 @@ class JCheckBoxFlag extends JCheckBox {
     m_Flag = flag;
         addItemListener(new ItemListener() {
 
+            @Override
             public void itemStateChanged(ItemEvent evt) {
           if (evt.getStateChange() == evt.SELECTED) {
             m_Flag = true;

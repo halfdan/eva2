@@ -31,6 +31,7 @@ public class BayNode {
 		this.calculated = b.calculated;
 	}
 	
+    @Override
 	public Object clone(){
 		return new BayNode(this);
 	}

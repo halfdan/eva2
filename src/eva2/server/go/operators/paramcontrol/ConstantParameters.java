@@ -22,6 +22,7 @@ public class ConstantParameters extends AbstractParameterControl implements Seri
 		return new ConstantParameters(this);
 	}
 	
+    @Override
 	public String[] getControlledParameters() {
 		return null;
 	}
@@ -31,6 +32,7 @@ public class ConstantParameters extends AbstractParameterControl implements Seri
 		return null;
 	}
 
+    @Override
 	public void updateParameters(Object obj) {
 	}
 	
