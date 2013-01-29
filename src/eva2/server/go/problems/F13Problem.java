@@ -25,6 +25,7 @@ public class F13Problem extends AbstractProblemDoubleOffset implements Interface
     /** This method returns a deep clone of the problem.
      * @return  the clone
      */
+    @Override
     public Object clone() {
         return (Object) new F13Problem(this);
     }
@@ -49,6 +50,7 @@ public class F13Problem extends AbstractProblemDoubleOffset implements Interface
      * @param x     The n-dimensional input vector
      * @return  The m-dimensional output vector.
      */
+    @Override
     public double[] eval(double[] x) {
     	x = rotateMaybe(x);
         double[] result = new double[1];
@@ -78,6 +80,7 @@ public class F13Problem extends AbstractProblemDoubleOffset implements Interface
         return result;
     }
 
+    @Override
 	public SolutionHistogram getHistogram() {
 //		EVAERROR.errorMsgOnce("Warning: Restore line in getHistogram for evaluation on F13Problem ???");
 		if (getProblemDimension() < 15) return new SolutionHistogram(0, 800, 16);
@@ -92,6 +95,7 @@ public class F13Problem extends AbstractProblemDoubleOffset implements Interface
      * name to the current object.
      * @return The name.
      */
+    @Override
     public String getName() {
         return "F13-Problem";
     }
@@ -103,6 +107,7 @@ public class F13Problem extends AbstractProblemDoubleOffset implements Interface
         return "Schwefels sine-root Function (multimodal, 1981). Remember to use range check! Note that rotating the function may make it easier because new, and better, minima may enter the search space.";
     }
 
+    @Override
     public void setDefaultAccuracy(double v) {
     	super.SetDefaultAccuracy(v);
     }

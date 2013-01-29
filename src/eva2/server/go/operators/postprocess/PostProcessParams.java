@@ -68,12 +68,14 @@ public class PostProcessParams implements InterfacePostProcessParams, Serializab
 	/**
 	 * @return the postProcess
 	 */
+    @Override
 	public boolean isDoPostProcessing() {
 		return postProcess;
 	}
 	/**
 	 * @param postProcess the postProcess to set
 	 */
+    @Override
 	public void setDoPostProcessing(boolean postProcess) {
 		this.postProcess = postProcess;
 		GenericObjectEditor.setShowProperty(this.getClass(), "postProcessSteps", postProcess);
@@ -85,41 +87,51 @@ public class PostProcessParams implements InterfacePostProcessParams, Serializab
 		GenericObjectEditor.setShowProperty(this.getClass(), "accAssumeConv", postProcess);
 		GenericObjectEditor.setShowProperty(this.getClass(), "accMaxEval", postProcess);
 	}
+    @Override
 	public String doPostProcessingTipText() {
 		return "Toggle post processing of the solutions.";
 	}
 	/**
 	 * @return the postProcessClusterSigma
 	 */
+    @Override
 	public double getPostProcessClusterSigma() {
 		return postProcessClusterSigma;
 	}
 	/**
 	 * @param postProcessClusterSigma the postProcessClusterSigma to set
 	 */
+    @Override
 	public void setPostProcessClusterSigma(double postProcessClusterSigma) {
 		this.postProcessClusterSigma = postProcessClusterSigma;
 	}
+    @Override
 	public String postProcessClusterSigmaTipText() {
 		return "Set the sigma parameter for clustering during post processing; set to 0 for no clustering.";
 	}
 	
+    @Override
 	public String postProcessStepsTipText() {
 		return "The number of HC post processing steps in fitness evaluations.";
 	}
+    @Override
 	public int getPostProcessSteps() {
 		return postProcessSteps;
 	}
+    @Override
 	public void setPostProcessSteps(int ppSteps) {
 		postProcessSteps = ppSteps;
 	}
 	
+    @Override
 	public int getPrintNBest() {
 		return printNBest;
 	}
+    @Override
 	public void setPrintNBest(int nBest) {
 		printNBest = nBest;
 	}
+    @Override
 	public String printNBestTipText() {
 		return "Print as many solutions at max; set to -1 to print all";  
 	}
@@ -134,19 +146,24 @@ public class PostProcessParams implements InterfacePostProcessParams, Serializab
 				"returned solutions with different thresholds.";
 	}
 
+    @Override
 	public PostProcessMethod getPPMethod() {
 		return method;
 	}
+    @Override
 	public String PPMethodTipText() {
 		return "The method to use for post-processing.";
 	}
+    @Override
 	public void setPPMethod(PostProcessMethod meth) {
 		method=meth;
 	}
 
+    @Override
 	public boolean isWithPlot() {
 		return withPlot;
 	}
+    @Override
 	public void setWithPlot(boolean withPlot) {
 		this.withPlot = withPlot;
 	}

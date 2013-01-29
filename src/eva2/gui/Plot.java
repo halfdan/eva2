@@ -109,6 +109,7 @@ public class Plot implements PlotInterface, Serializable {
         JButton ClearButton = new JButton("Clear");
         ClearButton.addActionListener(new ActionListener() {
 
+            @Override
             public void actionPerformed(ActionEvent e) {
                 clearAll();
             }
@@ -117,6 +118,7 @@ public class Plot implements PlotInterface, Serializable {
         LOGButton.setToolTipText("Toggle between a linear and a log scale on the y-axis.");
         LOGButton.addActionListener(new ActionListener() {
 
+            @Override
             public void actionPerformed(ActionEvent e) {
                 m_PlotArea.toggleLog();
             }
@@ -125,6 +127,7 @@ public class Plot implements PlotInterface, Serializable {
         ExportButton.setToolTipText("Exports the graph data to a simple TSV file.");
         ExportButton.addActionListener(new ActionListener() {
 
+            @Override
             public void actionPerformed(ActionEvent e) {
                 exportPlot();
             }
@@ -133,6 +136,7 @@ public class Plot implements PlotInterface, Serializable {
         DumpButton.setToolTipText("Dump the graph data to standard output");
         DumpButton.addActionListener(new ActionListener() {
 
+            @Override
             public void actionPerformed(ActionEvent e) {
                 m_PlotArea.exportToAscii();
             }
@@ -141,6 +145,7 @@ public class Plot implements PlotInterface, Serializable {
         JButton saveImageButton = new JButton("Save as PNG...");
         saveImageButton.addActionListener(new ActionListener() {
 
+            @Override
             public void actionPerformed(ActionEvent e) {
                 try {
                     Robot robot = new Robot();
@@ -211,6 +216,7 @@ public class Plot implements PlotInterface, Serializable {
     /**
      *
      */
+    @Override
     public void init() {
         m_Frame = new JEFrame("Plot: " + plotName);
         BasicResourceLoader loader = BasicResourceLoader.instance();
@@ -315,6 +321,7 @@ public class Plot implements PlotInterface, Serializable {
      *
      * @return true if the Plot object is valid
      */
+    @Override
     public boolean isValid() {
         return (m_Frame != null) && (m_PlotArea != null);
     }
@@ -322,10 +329,12 @@ public class Plot implements PlotInterface, Serializable {
     /**
      *
      */
+    @Override
     public void setConnectedPoint(double x, double y, int func) {
         m_PlotArea.setConnectedPoint(x, y, func);
     }
 
+    @Override
     public int getPointCount(int graphLabel) {
         return m_PlotArea.getPointCount(graphLabel);
     }
@@ -333,6 +342,7 @@ public class Plot implements PlotInterface, Serializable {
     /**
      *
      */
+    @Override
     public void addGraph(int g1, int g2, boolean forceAdd) {
         m_PlotArea.addGraph(g1, g2, forceAdd);
     }
@@ -340,6 +350,7 @@ public class Plot implements PlotInterface, Serializable {
     /**
      *
      */
+    @Override
     public void setUnconnectedPoint(double x, double y, int GraphLabel) {
         m_PlotArea.setUnconnectedPoint(x, y, GraphLabel);
     }
@@ -347,6 +358,7 @@ public class Plot implements PlotInterface, Serializable {
     /**
      *
      */
+    @Override
     public void clearAll() {
         m_PlotArea.clearAll();
         m_PlotArea.removeAllDElements();
@@ -357,6 +369,7 @@ public class Plot implements PlotInterface, Serializable {
     /**
      *
      */
+    @Override
     public void clearGraph(int GraphNumber) {
         m_PlotArea.clearGraph(GraphNumber);
     }
@@ -364,6 +377,7 @@ public class Plot implements PlotInterface, Serializable {
     /**
      *
      */
+    @Override
     public void setInfoString(int GraphLabel, String Info, float stroke) {
         m_PlotArea.setInfoString(GraphLabel, Info, stroke);
     }
@@ -371,6 +385,7 @@ public class Plot implements PlotInterface, Serializable {
     /**
      *
      */
+    @Override
     public void jump() {
         m_PlotArea.jump();
     }
@@ -471,6 +486,7 @@ public class Plot implements PlotInterface, Serializable {
     /**
      *
      */
+    @Override
     public String getName() {
         return this.plotName;
     }

@@ -104,6 +104,7 @@ public abstract class AbstractDynamicOptimizationProblem extends AbstractOptimiz
      *    
      * @param population    The populations that is to be inited
      */
+    @Override
     public void initPopulation(Population population) {
     	//initProblem();	// this shouldnt be necessary
     	this.initPopulationAt(population, getCurrentProblemTime());
@@ -232,6 +233,7 @@ public abstract class AbstractDynamicOptimizationProblem extends AbstractOptimiz
     /** This method evaluates a single individual and sets the fitness value at default time stamp 0.
      * @param individual    The individual that is to be evalutated
      */
+    @Override
     public void evaluate(AbstractEAIndividual individual) {
     	if (problemToChangeAt(getCurrentProblemTime())) {
     		changeProblemAt(getCurrentProblemTime());
@@ -283,6 +285,7 @@ public abstract class AbstractDynamicOptimizationProblem extends AbstractOptimiz
 	 * 
 	 * @param population	the population whi  
 	 */
+    @Override
 	public void evaluatePopulationEnd(Population population) {
 		//System.out.println(">> mean distance at " + population.getFunctionCalls() + " / " + getProblemTime() + " is " + population.getMeanDistance());
 		//System.out.println("> current best is " + population.getBestFitness()[0]);
@@ -334,6 +337,7 @@ public abstract class AbstractDynamicOptimizationProblem extends AbstractOptimiz
      * name to the current object.
      * @return The name.
      */
+    @Override
     public String getName() {
         return "AbstractDynamicOptimizationProblem";
     }

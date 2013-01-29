@@ -59,10 +59,12 @@ public class ClusteringDynPeakIdent implements InterfaceClustering, java.io.Seri
 		this(o.numNiches, o.maxNicheCount, o.nicheRadius, o.strictNicheRadius, o.metric);
 	}
 
+    @Override
 	public Object clone() {
 		return new ClusteringDynPeakIdent(this);
 	}
 	
+    @Override
 	public int[] associateLoners(Population loners, Population[] species,
 			Population referenceSet) {
 		Population bests = new Population(species.length);
@@ -93,6 +95,7 @@ public class ClusteringDynPeakIdent implements InterfaceClustering, java.io.Seri
 		return assoc;
 	}
 
+    @Override
 	public Population[] cluster(Population pop, Population referenceSet) {
 //		boolean TRACE_METH=false;
 //		if (TRACE_METH) System.out.println("A1 " + System.currentTimeMillis());
@@ -155,10 +158,12 @@ public class ClusteringDynPeakIdent implements InterfaceClustering, java.io.Seri
 		return clusters;
 	}
 
+    @Override
 	public String initClustering(Population pop) {
 		return null;
 	}
 
+    @Override
 	public boolean mergingSpecies(Population species1, Population species2,
 			Population referenceSet) {
 		// in our case just return true if the leaders are close enough

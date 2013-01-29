@@ -24,11 +24,13 @@ public abstract class MOCCOPhase implements InterfaceProcessElement {
 
     /** This method will call the init method and will go to stall
      */
+    @Override
     public abstract void initProcessElementParametrization();
 
     /** This method will wait for the parametrisation result
      * @return boolean  Result
      */
+    @Override
     public boolean isFinished() {
         return this.m_Finished;
     }
@@ -37,6 +39,7 @@ public abstract class MOCCOPhase implements InterfaceProcessElement {
      *
      */
     ActionListener saveState2FileForOfflineOptimization = new ActionListener() {
+        @Override
         public void actionPerformed(ActionEvent event) {
             // @todo
         }

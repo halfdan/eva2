@@ -26,6 +26,7 @@ public class SelectHomologousMate extends SelectTournament implements java.io.Se
         this.m_Metric               = (InterfaceDistanceMetric)a.m_Metric.clone();
     }
 
+    @Override
     public Object clone() {
         return (Object) new SelectHomologousMate(this);
     }
@@ -36,6 +37,7 @@ public class SelectHomologousMate extends SelectTournament implements java.io.Se
      * before hand...
      * @param population    The population that is to be processed.
      */
+    @Override
     public void prepareSelection(Population population) {
         // nothing to prepare here
     }
@@ -46,6 +48,7 @@ public class SelectHomologousMate extends SelectTournament implements java.io.Se
      * @param size              The number of partners needed.
      * @return The selected partners.
      */
+    @Override
     public Population findPartnerFor(AbstractEAIndividual dad, Population availablePartners, int size) {
         Population      possibleMates = new Population();
 
@@ -68,6 +71,7 @@ public class SelectHomologousMate extends SelectTournament implements java.io.Se
      * name to the current object.
      * @return The name.
      */
+    @Override
     public String getName() {
         return "Homologous Mating Selection";
     }

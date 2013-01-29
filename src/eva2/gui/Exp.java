@@ -19,6 +19,7 @@ public class Exp extends DFunction {
 	 * (non-Javadoc)
 	 * @see eva2.tools.chart2d.DFunction#isDefinedAt(double)
 	 */
+    @Override
 	public boolean isDefinedAt(double source) {
 		return true;
 	}
@@ -27,6 +28,7 @@ public class Exp extends DFunction {
 	 * (non-Javadoc)
 	 * @see eva2.tools.chart2d.DFunction#isInvertibleAt(double)
 	 */
+    @Override
 	public boolean isInvertibleAt(double image) {
 		return image > 0;
 	}
@@ -35,6 +37,7 @@ public class Exp extends DFunction {
 	 * (non-Javadoc)
 	 * @see eva2.tools.chart2d.DFunction#getImageOf(double)
 	 */
+    @Override
 	public double getImageOf(double source) {
 		return Math.exp(source);
 	}
@@ -43,6 +46,7 @@ public class Exp extends DFunction {
 	 * (non-Javadoc)
 	 * @see eva2.tools.chart2d.DFunction#getSourceOf(double)
 	 */
+    @Override
 	public double getSourceOf(double target) {
 		if (target <= 0) {
 			return Math.log(minValue); // think of a minimal value we want to show in case invalid values are requested

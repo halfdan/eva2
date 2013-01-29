@@ -131,10 +131,12 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
 		this.printTimestamps = b.printTimestamps;
 	}
 
+    @Override
 	public Object clone() {
 		return new BOA(this);
 	}
 
+    @Override
 	public String getName() {
 		return "Bayesian Optimization Algorithm";
 	}
@@ -156,6 +158,7 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
 //				!printExtraOutput);
 	}
 
+    @Override
 	public void addPopulationChangedEventListener(
 			InterfacePopulationChangedEventListener ea) {
 		this.m_Listener = ea;
@@ -170,6 +173,7 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
 		}
 	}
 
+    @Override
 	public boolean removePopulationChangedEventListener(
 			InterfacePopulationChangedEventListener ea) {
 		if (m_Listener == ea) {
@@ -241,6 +245,7 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
 		this.edgeRate = new int[this.probDim][this.probDim];
 	}
 
+    @Override
 	public void init() {
 		defaultInit();
 		this.problem.initPopulation(this.population);
@@ -254,6 +259,7 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
 		}
 	}
 
+    @Override
 	public void initByPopulation(Population pop, boolean reset) {
 		if (reset) {
 			init();
@@ -531,6 +537,7 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
 		}
 	}
 
+    @Override
 	public void optimize() {
 		this.problem.evaluatePopulationStart(this.population);
 		// get the best individuals from the population
@@ -579,38 +586,47 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
 			this.m_Listener.registerPopulationStateChanged(this, name);
 	}
 
+    @Override
 	public Population getPopulation() {
 		return this.population;
 	}
 
+    @Override
 	public void setPopulation(Population pop) {
 		this.population = pop;
 	}
 
+    @Override
 	public InterfaceSolutionSet getAllSolutions() {
 		return new SolutionSet(this.population);
 	}
 
+    @Override
 	public void setIdentifier(String name) {
 		this.m_Identifier = name;
 	}
 
+    @Override
 	public String getIdentifier() {
 		return this.m_Identifier;
 	}
 
+    @Override
 	public void setProblem(InterfaceOptimizationProblem problem) {
 		this.problem = (AbstractOptimizationProblem) problem;
 	}
 
+    @Override
 	public InterfaceOptimizationProblem getProblem() {
 		return this.problem;
 	}
 
+    @Override
 	public String getStringRepresentation() {
 		return "Bayesian Network";
 	}
 
+    @Override
 	public void freeWilly() {
 
 	}

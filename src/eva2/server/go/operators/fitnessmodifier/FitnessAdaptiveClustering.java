@@ -22,6 +22,7 @@ public class FitnessAdaptiveClustering implements java.io.Serializable, Interfac
      * your problem to store the unaltered fitness somewhere else so that
      * you may still fetch it!
      */
+    @Override
     public void modifyFitness(Population population) {
         // prepare the calculation
         double[][]  data = new double[population.size()][];

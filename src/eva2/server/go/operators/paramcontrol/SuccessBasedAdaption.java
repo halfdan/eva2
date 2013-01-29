@@ -30,10 +30,12 @@ GenericParamAdaption, Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
+    @Override
 	public Object clone() {
 		return new SuccessBasedAdaption(this);
 	}
 
+    @Override
 	public Object calcValue(Object obj, Population pop, int iteration,
 			int maxIteration) {
 		if (obj instanceof InterfaceOptimizer) {
@@ -69,24 +71,30 @@ GenericParamAdaption, Serializable {
 		return ((double)numSucc)/solutions.size();
 	}
 
+    @Override
 	public void finish(Object obj, Population pop) {}
 
+    @Override
 	public String getControlledParam() {
 		return paramStr;
 	}
 
+    @Override
 	public void init(Object obj, Population pop, Object[] initialValues) {
 		curValue = 0.5*(upperBnd+lowerBnd);
 	}
 
+    @Override
 	public void setControlledParam(String prm) {
 		paramStr = prm;
 	}
 
+    @Override
 	public void SetUpperBnd(double u) {
 		upperBnd = u;
 	}
 
+    @Override
 	public double getUpperBnd() {
 		return upperBnd;
 	}

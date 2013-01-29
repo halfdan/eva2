@@ -23,6 +23,7 @@ public class MOSODynamicallyWeightedFitness implements InterfaceMOSOConverter, j
         this.m_F                        = b.m_F;
         this.m_OutputDimension          = b.m_OutputDimension;
     }
+    @Override
     public Object clone() {
         return (Object) new MOSODynamicallyWeightedFitness(this);
     }
@@ -34,6 +35,7 @@ public class MOSODynamicallyWeightedFitness implements InterfaceMOSOConverter, j
      * if you still want to access the original fitness values.
      * @param pop       The population to process.
      */
+    @Override
     public void convertMultiObjective2SingleObjective(Population pop) {
         this.m_CurrentGeneration = pop.getGeneration();
         for (int i = 0; i < pop.size(); i++) {
@@ -44,6 +46,7 @@ public class MOSODynamicallyWeightedFitness implements InterfaceMOSOConverter, j
     /** This method processes a single individual
      * @param indy      The individual to process.
      */
+    @Override
     public void convertSingleIndividual(AbstractEAIndividual indy) {
         double[]    resultFit = new double[1];
         double[]    tmpFit;
@@ -67,6 +70,7 @@ public class MOSODynamicallyWeightedFitness implements InterfaceMOSOConverter, j
      * value of one
      * @param dim       Outputdimension of the problem
      */
+    @Override
     public void setOutputDimension(int dim) {
         this.m_OutputDimension = dim;
         // i think as far as i got not solution for the (n>2) dimensional case
@@ -75,6 +79,7 @@ public class MOSODynamicallyWeightedFitness implements InterfaceMOSOConverter, j
     /** This method returns a description of the objective
      * @return A String
      */
+    @Override
     public String getStringRepresentation() {
         return this.getName()+"\n";
     }
@@ -86,6 +91,7 @@ public class MOSODynamicallyWeightedFitness implements InterfaceMOSOConverter, j
      * name to the current object.
      * @return The name.
      */
+    @Override
     public String getName() {
         return "Dynamic Weighted Sum";
     }

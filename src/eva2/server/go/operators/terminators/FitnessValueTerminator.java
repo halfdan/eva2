@@ -37,6 +37,7 @@ Serializable {
 		m_FitnessValue = new double []{0.1};
 	}
 
+    @Override
 	public void init(InterfaceOptimizationProblem prob){
 		msg = "Not terminated.";
 	}
@@ -53,10 +54,12 @@ Serializable {
 		m_FitnessValue = (double[])v.clone();
 	}
 	
+    @Override
 	public boolean isTerminated(InterfaceSolutionSet solSet) {
 		return isTerminated(solSet.getCurrentPopulation());
 	}
 	
+    @Override
 	public boolean isTerminated(PopulationInterface Pop) {
 		double[] fit = Pop.getBestFitness();
 		for (int i = 0; i < fit.length; i++) {
@@ -66,6 +69,7 @@ Serializable {
 		return true;
 	}
 
+    @Override
 	public String lastTerminationMessage() {
 		return msg;
 	}
@@ -73,6 +77,7 @@ Serializable {
 	/**
 	 *
 	 */
+    @Override
 	public String toString() {
 		String ret = "FitnessValueTerminator,m_FitnessValue="+m_FitnessValue;
 		return ret;

@@ -27,6 +27,7 @@ public class RMIServerEvA extends RMIServer {
 		return (RMIServerEvA)instance;
 	}
 	
+    @Override
 	protected void createMainRemoteObject(String mainAdapterName) {
 		try {
 			mainRemoteObject = new EvAMainAdapterImpl();

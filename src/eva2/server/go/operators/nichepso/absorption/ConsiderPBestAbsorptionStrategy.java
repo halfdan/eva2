@@ -18,6 +18,7 @@ public class ConsiderPBestAbsorptionStrategy extends StandardAbsorptionStrategy{
 	 * the particles pbest is not better than the subswarms gbest (this would "pull the subswarm away")
 	 * (non-Javadoc) @see javaeva.server.oa.go.Operators.NichePSO.StandardAbsorptionStrategy#shouldAbsorbParticleIntoSubswarm(javaeva.server.oa.go.EAIndividuals.AbstractEAIndividual, javaeva.server.oa.go.Strategies.ParticleSubSwarmOptimization)
 	 */
+    @Override
 	public boolean shouldAbsorbParticleIntoSubswarm(AbstractEAIndividual indy, ParticleSubSwarmOptimization subswarm, ParticleSubSwarmOptimization mainswarm) {
 		if (!super.shouldAbsorbParticleIntoSubswarm(indy, subswarm, mainswarm)){
 			return false;

@@ -59,6 +59,7 @@ public class GenericEpsilonThresholdEditor extends JPanel implements PropertyEdi
         this.m_OKButton         = new JButton("OK");
         this.m_OKButton.setEnabled(true);
         this.m_OKButton.addActionListener(new ActionListener() {
+            @Override
 	        public void actionPerformed(ActionEvent e) {
 	            //m_Backup = copyObject(m_Object);
 	            if ((m_CustomEditor.getTopLevelAncestor() != null) && (m_CustomEditor.getTopLevelAncestor() instanceof Window)) {
@@ -75,6 +76,7 @@ public class GenericEpsilonThresholdEditor extends JPanel implements PropertyEdi
     /** This action listener adds an element to DoubleArray
      */
     ItemListener objectiveAction = new ItemListener() {
+        @Override
         public void itemStateChanged(ItemEvent event) {
             m_EpsilonThreshhold.m_OptimizeObjective =  m_Objective.getSelectedIndex();
             updateEditor();
@@ -84,11 +86,14 @@ public class GenericEpsilonThresholdEditor extends JPanel implements PropertyEdi
     /** This action listener reads all values
      */
     KeyListener readDoubleArrayAction = new KeyListener() {
+        @Override
         public void keyPressed(KeyEvent event) {
         }
+        @Override
         public void keyTyped(KeyEvent event) {
         }
 
+        @Override
         public void keyReleased(KeyEvent event) {
             double[] tmpT   = m_EpsilonThreshhold.m_TargetValue;
             double[] tmpP   = m_EpsilonThreshhold.m_Punishment;
@@ -160,6 +165,7 @@ public class GenericEpsilonThresholdEditor extends JPanel implements PropertyEdi
     /** This method will set the value of object that is to be edited.
      * @param o an object that must be an array.
      */
+    @Override
     public void setValue(Object o) {
         if (o instanceof PropertyEpsilonThreshold) {
             this.m_EpsilonThreshhold = (PropertyEpsilonThreshold) o;
@@ -170,10 +176,12 @@ public class GenericEpsilonThresholdEditor extends JPanel implements PropertyEdi
     /** Returns the current object.
      * @return the current object
      */
+    @Override
     public Object getValue() {
         return this.m_EpsilonThreshhold;
     }
 
+    @Override
     public String getJavaInitializationString() {
         return "TEST";
     }
@@ -181,6 +189,7 @@ public class GenericEpsilonThresholdEditor extends JPanel implements PropertyEdi
     /**
      *
      */
+    @Override
     public String getAsText() {
         return null;
     }
@@ -188,6 +197,7 @@ public class GenericEpsilonThresholdEditor extends JPanel implements PropertyEdi
     /**
      *
      */
+    @Override
     public void setAsText(String text) throws IllegalArgumentException {
         throw new IllegalArgumentException(text);
     }
@@ -195,15 +205,18 @@ public class GenericEpsilonThresholdEditor extends JPanel implements PropertyEdi
     /**
      *
      */
+    @Override
     public String[] getTags() {
         return null;
     }
 
+    @Override
     public void addPropertyChangeListener(PropertyChangeListener l) {
   	  if (m_Support == null) m_Support = new PropertyChangeSupport(this);
   	  m_Support.addPropertyChangeListener(l);
     }
 
+    @Override
     public void removePropertyChangeListener(PropertyChangeListener l) {
   	  if (m_Support == null) m_Support = new PropertyChangeSupport(this);
   	  m_Support.removePropertyChangeListener(l);
@@ -226,6 +239,7 @@ public class GenericEpsilonThresholdEditor extends JPanel implements PropertyEdi
     /** Returns true since the Object can be shown
      * @return true
      */
+    @Override
     public boolean isPaintable() {
         return true;
     }
@@ -235,6 +249,7 @@ public class GenericEpsilonThresholdEditor extends JPanel implements PropertyEdi
      * @param gfx the graphics context to use
      * @param box the area we are allowed to paint into
      */
+    @Override
     public void paintValue(Graphics gfx, Rectangle box) {
         FontMetrics fm = gfx.getFontMetrics();
         int vpad = (box.height - fm.getAscent()) / 2;
@@ -245,6 +260,7 @@ public class GenericEpsilonThresholdEditor extends JPanel implements PropertyEdi
     /** Returns true because we do support a custom editor.
     * @return true
     */
+    @Override
     public boolean supportsCustomEditor() {
         return true;
     }
@@ -252,6 +268,7 @@ public class GenericEpsilonThresholdEditor extends JPanel implements PropertyEdi
     /** Returns the array editing component.
     * @return a value of type 'java.awt.Component'
     */
+    @Override
     public Component getCustomEditor() {
         if (this.m_CustomEditor == null) this.initCustomEditor();
         return m_CustomEditor;

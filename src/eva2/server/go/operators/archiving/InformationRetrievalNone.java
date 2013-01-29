@@ -18,6 +18,7 @@ public class InformationRetrievalNone implements InterfaceInformationRetrieval, 
     public InformationRetrievalNone(InformationRetrievalNone a) {
     }
 
+    @Override
     public Object clone() {
         return (Object) new InformationRetrievalNone(this);
     }
@@ -26,6 +27,7 @@ public class InformationRetrievalNone implements InterfaceInformationRetrieval, 
      * an already existing population.
      * @param pop           The population.
      */
+    @Override
     public void retrieveInformationFrom(Population pop) {
         // no InterfaceInformation Retrieval is performed
         return;

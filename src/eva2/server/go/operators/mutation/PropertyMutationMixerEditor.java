@@ -196,6 +196,7 @@ public class PropertyMutationMixerEditor extends JPanel implements PropertyEdito
     /** This action listener,...
      */
     ActionListener updateTargets = new ActionListener() {
+        @Override
         public void actionPerformed(ActionEvent event) {
             updateTargetList();
         }
@@ -204,6 +205,7 @@ public class PropertyMutationMixerEditor extends JPanel implements PropertyEdito
     /** This action listener,...
      */
     ActionListener addTarget = new ActionListener() {
+        @Override
         public void actionPerformed(ActionEvent event) {
             m_MutatorsWithWeights.addMutator((InterfaceMutation)m_MutatorsWithWeights.getAvailableMutators()[0].clone());
             int l = m_MutatorsWithWeights.getSelectedMutators().length;
@@ -236,6 +238,7 @@ public class PropertyMutationMixerEditor extends JPanel implements PropertyEdito
     /** This action listener,...
      */
     ActionListener deleteTarget = new ActionListener() {
+        @Override
         public void actionPerformed(ActionEvent event) {
             int l = m_MutatorsWithWeights.getSelectedMutators().length, j = 0;
             GeneralGOEProperty[] newEdit = new GeneralGOEProperty[l-1];
@@ -254,6 +257,7 @@ public class PropertyMutationMixerEditor extends JPanel implements PropertyEdito
     /** This action listener,...
      */
     ActionListener normalizeWeights = new ActionListener() {
+        @Override
         public void actionPerformed(ActionEvent event) {
             m_MutatorsWithWeights.normalizeWeights();
             updateTargetList();
@@ -263,11 +267,14 @@ public class PropertyMutationMixerEditor extends JPanel implements PropertyEdito
     /** This action listener reads all values
      */
     KeyListener readDoubleArrayAction = new KeyListener() {
+        @Override
         public void keyPressed(KeyEvent event) {
         }
+        @Override
         public void keyTyped(KeyEvent event) {
         }
 
+        @Override
         public void keyReleased(KeyEvent event) {
             double[] newW   = m_MutatorsWithWeights.getWeights();
 
@@ -300,6 +307,7 @@ public class PropertyMutationMixerEditor extends JPanel implements PropertyEdito
     /** This method will set the value of object that is to be edited.
      * @param o an object that must be an array.
      */
+    @Override
     public void setValue(Object o) {
         if (o instanceof PropertyMutationMixer) {
             this.m_MutatorsWithWeights= (PropertyMutationMixer) o;
@@ -310,10 +318,12 @@ public class PropertyMutationMixerEditor extends JPanel implements PropertyEdito
     /** Returns the current object.
      * @return the current object
      */
+    @Override
     public Object getValue() {
         return this.m_MutatorsWithWeights;
     }
 
+    @Override
     public String getJavaInitializationString() {
         return "TEST";
     }
@@ -321,6 +331,7 @@ public class PropertyMutationMixerEditor extends JPanel implements PropertyEdito
     /**
      *
      */
+    @Override
     public String getAsText() {
         return null;
     }
@@ -328,6 +339,7 @@ public class PropertyMutationMixerEditor extends JPanel implements PropertyEdito
     /**
      *
      */
+    @Override
     public void setAsText(String text) throws IllegalArgumentException {
         throw new IllegalArgumentException(text);
     }
@@ -335,6 +347,7 @@ public class PropertyMutationMixerEditor extends JPanel implements PropertyEdito
     /**
      *
      */
+    @Override
     public String[] getTags() {
         return null;
     }
@@ -356,6 +369,7 @@ public class PropertyMutationMixerEditor extends JPanel implements PropertyEdito
     /** Returns true since the Object can be shown
      * @return true
      */
+    @Override
     public boolean isPaintable() {
         return true;
     }
@@ -365,6 +379,7 @@ public class PropertyMutationMixerEditor extends JPanel implements PropertyEdito
      * @param gfx the graphics context to use
      * @param box the area we are allowed to paint into
      */
+    @Override
     public void paintValue(Graphics gfx, Rectangle box) {
         FontMetrics fm = gfx.getFontMetrics();
         int vpad = (box.height - fm.getAscent()) / 2;
@@ -375,6 +390,7 @@ public class PropertyMutationMixerEditor extends JPanel implements PropertyEdito
     /** Returns true because we do support a custom editor.
     * @return true
     */
+    @Override
     public boolean supportsCustomEditor() {
         return true;
     }
@@ -382,6 +398,7 @@ public class PropertyMutationMixerEditor extends JPanel implements PropertyEdito
     /** Returns the array editing component.
     * @return a value of type 'java.awt.Component'
     */
+    @Override
     public Component getCustomEditor() {
         if (this.m_Component == null) {
             this.initCustomEditor();
@@ -400,10 +417,12 @@ public class PropertyMutationMixerEditor extends JPanel implements PropertyEdito
 
     /********************************* java.beans.PropertyChangeListener *************************/
 
+    @Override
     public void addPropertyChangeListener(PropertyChangeListener l) {
         m_Support.addPropertyChangeListener(l);
     }
 
+    @Override
     public void removePropertyChangeListener(PropertyChangeListener l) {
         m_Support.removePropertyChangeListener(l);
     }
@@ -411,6 +430,7 @@ public class PropertyMutationMixerEditor extends JPanel implements PropertyEdito
      * editing an object.
      * @param evt
      */
+    @Override
      public void propertyChange(PropertyChangeEvent evt) {
         Object newVal = evt.getNewValue();
         Object oldVal = evt.getOldValue();

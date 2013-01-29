@@ -32,6 +32,7 @@ public class StatisticsEditor implements PropertyEditor {
     m_StatPanel.addPropertyChangeListener(
         new PropertyChangeListener() {
 
+            @Override
 	  public void propertyChange(PropertyChangeEvent evt) {
 	    m_Support.firePropertyChange("", null, null);
 	}
@@ -47,6 +48,7 @@ public class StatisticsEditor implements PropertyEditor {
   /**
    *
    */
+    @Override
     public void setValue(Object value) {
     if (value instanceof GenericStatistics) {
             m_Value = (GenericStatistics) value;
@@ -58,6 +60,7 @@ public class StatisticsEditor implements PropertyEditor {
   /**
    *
    */
+    @Override
     public Object getValue() {
     System.out.println("getValue !!!!!!!!!!!!");
     m_Value.setState(m_StatPanel.getState());
@@ -67,6 +70,7 @@ public class StatisticsEditor implements PropertyEditor {
   /**
   *
   */
+    @Override
     public String getJavaInitializationString() {
         return "null";
   }
@@ -74,6 +78,7 @@ public class StatisticsEditor implements PropertyEditor {
   /**
    *
    */
+    @Override
     public boolean isPaintable() {
         return true;
   }
@@ -81,6 +86,7 @@ public class StatisticsEditor implements PropertyEditor {
   /**
    *
    */
+    @Override
     public void paintValue(Graphics gfx, Rectangle box) {
     FontMetrics fm = gfx.getFontMetrics();
         int vpad = (box.height - fm.getAscent()) / 2;
@@ -91,6 +97,7 @@ public class StatisticsEditor implements PropertyEditor {
   /**
    *
    */
+    @Override
     public String getAsText() {
         return null;
   }
@@ -98,6 +105,7 @@ public class StatisticsEditor implements PropertyEditor {
   /**
    *
    */
+    @Override
     public void setAsText(String text) throws IllegalArgumentException {
         throw new IllegalArgumentException(text);
   }
@@ -105,6 +113,7 @@ public class StatisticsEditor implements PropertyEditor {
   /**
    *
    */
+    @Override
     public String[] getTags() {
         return null;
   }
@@ -112,6 +121,7 @@ public class StatisticsEditor implements PropertyEditor {
   /**
    *
    */
+    @Override
     public boolean supportsCustomEditor() {
         return true;
   }
@@ -119,10 +129,12 @@ public class StatisticsEditor implements PropertyEditor {
   /**
    *
    */
+    @Override
     public Component getCustomEditor() {
         return m_Panel;
   }
 
+    @Override
   public void addPropertyChangeListener(PropertyChangeListener l) {
         if (m_Support == null) {
             m_Support = new PropertyChangeSupport(this);
@@ -130,6 +142,7 @@ public class StatisticsEditor implements PropertyEditor {
 	  m_Support.addPropertyChangeListener(l);
   }
 
+    @Override
   public void removePropertyChangeListener(PropertyChangeListener l) {
         if (m_Support == null) {
             m_Support = new PropertyChangeSupport(this);

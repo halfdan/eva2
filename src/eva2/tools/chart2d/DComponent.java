@@ -70,6 +70,7 @@ public abstract class DComponent implements DElement
   /**
    * returns the rectangle in which the object lies
    */
+    @Override
   public DRectangle getRectangle(){
     return (DRectangle)rectangle.clone();
   }
@@ -80,6 +81,7 @@ public abstract class DComponent implements DElement
    *
    * @param b the new DBorder
    */
+    @Override
   public void setDBorder( DBorder b ){
     if( parent != null ) {
       if( border.insert(b) ) { parent.addDBorder( b ); repaint(); }
@@ -93,6 +95,7 @@ public abstract class DComponent implements DElement
    *
    * @return the DBorder of the DComponent
    */
+    @Override
   public DBorder getDBorder(){
     return border;
   }
@@ -101,6 +104,7 @@ public abstract class DComponent implements DElement
    * sets the parent of the component, which should take care of painting the
    * component to the right time
    */
+    @Override
   public void setDParent( DParent parent ){
     if( this.parent != null && this.parent != parent ){
       this.parent.removeDElement( this );
@@ -112,11 +116,13 @@ public abstract class DComponent implements DElement
   /**
    * returns the parent of the component
    */
+    @Override
   public DParent getDParent(){ return parent; }
 
   /**
    * invoces the parent to repaint the rectangle in which the component lies
    */
+    @Override
   public void repaint(){
     //System.out.println("DComponent.repaint()");
     if( parent != null ) parent.repaint( getRectangle() );
@@ -125,6 +131,7 @@ public abstract class DComponent implements DElement
   /**
    * sets the color of the component
    */
+    @Override
   public void setColor( Color color ){
     if( this.color == null || !this.color.equals( color ) ) {
       this.color = color;
@@ -135,11 +142,13 @@ public abstract class DComponent implements DElement
   /**
    * returns the color of the component
    */
+    @Override
   public Color getColor(){ return color; }
 
   /**
    * sets the component visible or not
    */
+    @Override
   public void setVisible( boolean aFlag ){
     boolean changed = ( aFlag != visible );
     visible = aFlag;
@@ -150,6 +159,7 @@ public abstract class DComponent implements DElement
    * returns if the component should be visible when the parent shows the right
    * area
    */
+    @Override
   public boolean isVisible(){ return visible; }
 
 }

@@ -26,14 +26,17 @@ public class EvAMainAdapterImpl extends MainAdapterImpl implements EvAMainAdapte
         moduleServer = new ModuleServer(EvAInfo.getProperties());
     }
 
+    @Override
     public String[] getModuleNameList() {
         return moduleServer.getModuleNameList();
     }
 
+    @Override
     public ModuleAdapter getModuleAdapter(String selectedModule, boolean withoutRMI, String hostAddress, MainAdapterClient client) {
         return getModuleAdapter(selectedModule, withoutRMI, hostAddress, null, null, client);
     }
 
+    @Override
     public ModuleAdapter getModuleAdapter(String selectedModule, boolean withoutRMI, String hostAddress, InterfaceGOParameters goParams, String noGuiStatsFile, MainAdapterClient client) {
         return moduleServer.createModuleAdapter(selectedModule, client, withoutRMI, hostAddress, goParams, noGuiStatsFile);
     }

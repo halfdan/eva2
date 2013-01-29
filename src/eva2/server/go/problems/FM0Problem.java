@@ -25,11 +25,13 @@ public class FM0Problem extends AbstractMultiModalProblemKnown implements Interf
 //        this.m_Extrema[1]       = 6;
     }
 
+    @Override
 	public double getRangeUpperBound(int dim) {
     	if (dim == 0) return 2.0;
     	else return 2.8;
     }
     
+    @Override
 	public double getRangeLowerBound(int dim) {
     	return -1*getRangeUpperBound(dim);
     }
@@ -41,6 +43,7 @@ public class FM0Problem extends AbstractMultiModalProblemKnown implements Interf
     /** This method returns a deep clone of the problem.
      * @return  the clone
      */
+    @Override
     public Object clone() {
         return (Object) new FM0Problem(this);
     }
@@ -49,6 +52,7 @@ public class FM0Problem extends AbstractMultiModalProblemKnown implements Interf
      * @param x     The n-dimensional input vector
      * @return  The m-dimensional output vector.
      */
+    @Override
     public double[] evalUnnormalized(double[] x) {
         double[] result = new double[1];
         result[0]   = Math.sin(2*x[0] - 0.5*Math.PI) + 1 + 2*Math.cos(x[1]) + 0.5*x[0];
@@ -59,6 +63,7 @@ public class FM0Problem extends AbstractMultiModalProblemKnown implements Interf
      * if possible and to return quality measures like NumberOfOptimaFound and
      * the MaximumPeakRatio. This method should be called by the user.
      */
+    @Override
     public void initListOfOptima() {
         //this.add2DOptimum((Math.PI - (Math.PI - Math.acos(-1/4.0)) + Math.PI/2.0)/2.0, 0);
         //this.add2DOptimum((-Math.PI - (Math.PI - Math.acos(-1/4.0)) + Math.PI/2.0)/2.0, 0);
@@ -76,6 +81,7 @@ public class FM0Problem extends AbstractMultiModalProblemKnown implements Interf
      * name to the current object.
      * @return The name.
      */
+    @Override
     public String getName() {
         return "M0 Problem";
     }

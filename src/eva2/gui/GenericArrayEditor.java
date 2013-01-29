@@ -75,6 +75,7 @@ public class GenericArrayEditor extends JPanel implements PropertyEditor {
     private ActionListener innerActionListener = new ActionListener() {
         //
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             boolean consistentView = true; // be optimistic...
             if (view instanceof PropertyText) { // check consistency!
@@ -171,6 +172,7 @@ public class GenericArrayEditor extends JPanel implements PropertyEditor {
             new ListSelectionListener() {
                 //
 
+        @Override
                 public void valueChanged(ListSelectionEvent e) {
 
                     if (e.getSource() == elementList) {
@@ -216,6 +218,7 @@ public class GenericArrayEditor extends JPanel implements PropertyEditor {
             gae = genAE;
         }
 
+        @Override
         public void mouseClicked(MouseEvent e) {
             if (e.getClickCount() == 2) {
                 int index = list.locationToIndex(e.getPoint());
@@ -274,6 +277,7 @@ public class GenericArrayEditor extends JPanel implements PropertyEditor {
          * @param boolean true if the cell has the focus
          * @return the rendering component
          */
+        @Override
         public Component getListCellRendererComponent(final JList list,
                 final Object value,
                 final int index,
@@ -526,6 +530,7 @@ public class GenericArrayEditor extends JPanel implements PropertyEditor {
     private ActionListener makeSelectionKnownAL(final ActionListener al) {
         return new ActionListener() {
 
+            @Override
             public void actionPerformed(ActionEvent e) {
                 if (selectableList != null) {
                     selectableList.setSelectionByIndices(elementList.getSelectedIndices());
@@ -550,6 +555,7 @@ public class GenericArrayEditor extends JPanel implements PropertyEditor {
      *
      * @param o an object that must be an array.
      */
+    @Override
     public void setValue(Object o) {
         // Create a new list model, put it in the list and resize?
         updateEditorType(o);
@@ -580,6 +586,7 @@ public class GenericArrayEditor extends JPanel implements PropertyEditor {
      *
      * @return the current object array
      */
+    @Override
     public Object getValue() {
         if (listModel == null) {
             return null;
@@ -606,6 +613,7 @@ public class GenericArrayEditor extends JPanel implements PropertyEditor {
         if (m_popupItemList.size() > 0) {
             elementList.addMouseListener(new MouseAdapter() {
 
+                @Override
                 public void mouseClicked(MouseEvent e) {
                     if (selectableList != null) {
                         selectableList.setSelectionByIndices(elementList.getSelectedIndices());
@@ -650,6 +658,7 @@ public class GenericArrayEditor extends JPanel implements PropertyEditor {
      *
      * @return the java source code initialisation string
      */
+    @Override
     public String getJavaInitializationString() {
         return "null";
     }
@@ -659,6 +668,7 @@ public class GenericArrayEditor extends JPanel implements PropertyEditor {
      *
      * @return true
      */
+    @Override
     public boolean isPaintable() {
         return true;
     }
@@ -669,6 +679,7 @@ public class GenericArrayEditor extends JPanel implements PropertyEditor {
      * @param gfx the graphics context to use
      * @param box the area we are allowed to paint into
      */
+    @Override
     public void paintValue(Graphics gfx, Rectangle box) {
         FontMetrics fm = gfx.getFontMetrics();
         int vpad = (box.height - fm.getAscent()) / 2;
@@ -689,6 +700,7 @@ public class GenericArrayEditor extends JPanel implements PropertyEditor {
     /**
      *
      */
+    @Override
     public String getAsText() {
         return null;
     }
@@ -696,6 +708,7 @@ public class GenericArrayEditor extends JPanel implements PropertyEditor {
     /**
      *
      */
+    @Override
     public void setAsText(String text) throws IllegalArgumentException {
         throw new IllegalArgumentException(text);
     }
@@ -703,6 +716,7 @@ public class GenericArrayEditor extends JPanel implements PropertyEditor {
     /**
      *
      */
+    @Override
     public String[] getTags() {
         return null;
     }
@@ -710,6 +724,7 @@ public class GenericArrayEditor extends JPanel implements PropertyEditor {
     /**
      *
      */
+    @Override
     public boolean supportsCustomEditor() {
         return true;
     }
@@ -717,10 +732,12 @@ public class GenericArrayEditor extends JPanel implements PropertyEditor {
     /**
      *
      */
+    @Override
     public Component getCustomEditor() {
         return this;
     }
 
+    @Override
     public void addPropertyChangeListener(PropertyChangeListener l) {
         if (propChangeSupport == null) {
             propChangeSupport = new PropertyChangeSupport(this);
@@ -728,6 +745,7 @@ public class GenericArrayEditor extends JPanel implements PropertyEditor {
         propChangeSupport.addPropertyChangeListener(l);
     }
 
+    @Override
     public void removePropertyChangeListener(PropertyChangeListener l) {
         if (propChangeSupport == null) {
             propChangeSupport = new PropertyChangeSupport(this);
@@ -759,6 +777,7 @@ public class GenericArrayEditor extends JPanel implements PropertyEditor {
         this.withDeleteButton = wB;
     }
 
+    @Override
     public void removeNotify() {
         super.removeNotify();
     }

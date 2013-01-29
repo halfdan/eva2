@@ -65,6 +65,7 @@ public class EPParameters extends AbstractGOParameters implements InterfaceGOPar
     /**
      *
      */
+    @Override
     public Object clone() {
         return new EPParameters(this);
     }
@@ -76,6 +77,7 @@ public class EPParameters extends AbstractGOParameters implements InterfaceGOPar
         return "This is a Evolutionary Programming optimization method, limit EP to mutation operators only.";
     }
 
+    @Override
     public void setOptimizer(InterfaceOptimizer optimizer) {
         // i'm a Monte Carlo Search Algorithm
         // *pff* i'll ignore that!

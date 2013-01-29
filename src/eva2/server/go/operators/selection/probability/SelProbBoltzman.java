@@ -27,6 +27,7 @@ public class SelProbBoltzman extends AbstractSelProb implements java.io.Serializ
         this.m_Q    = a.m_Q;
     }
 
+    @Override
     public Object clone() {
         return (Object) new SelProbBoltzman(this);
     }
@@ -37,6 +38,7 @@ public class SelProbBoltzman extends AbstractSelProb implements java.io.Serializ
      * @param population    The population to compute.
      * @param data         The input data as double[][].
      */
+    @Override
     public void computeSelectionProbability(Population population, double[][] data, boolean obeyConst) {
         double      sum = 0, mean = 0, dev = 0;
         double[]    result = new double[data.length];

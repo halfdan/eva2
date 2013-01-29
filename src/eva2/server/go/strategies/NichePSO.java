@@ -242,6 +242,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
 	/**  @tested 
 	 * (non-Javadoc) @see java.lang.Object#clone()
 	 */
+    @Override
 	public Object clone(){
 		return (Object) new NichePSO(this);	
 	}
@@ -318,6 +319,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
 	/**  @tested junit, junit&, emp, ...
 	 * (non-Javadoc) @see javaeva.server.oa.go.Strategies.InterfaceOptimizer#init()
 	 */
+    @Override
 	public void init() { // (called right before next optimize/mutltirun)
 		// initialize main swarm
 		initMainSwarm(); // MOE: auch bei multirun: m�gliche �nderungen an Gr��e, AlgoType, maxrad, delta etc. aus letzter Optimierung zur�cksetzen
@@ -344,6 +346,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
 	 * (non-Javadoc)
 	 * uses the given population and basically sets rnd velocity vectors (if reset == false)
 	 */
+    @Override
 	public void initByPopulation(Population pop, boolean reset) { 
 		// initByPopulation(...):
 			// - use indys from pop 
@@ -361,6 +364,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
 	/**  @tested 
 	 * (non-Javadoc) @see javaeva.server.oa.go.Strategies.InterfaceOptimizer#optimize()
 	 */
+    @Override
 	public void optimize() {
 //		System.out.println(BeanInspector.toString(getMainSwarm()));
 		if (isVerbose()) {
@@ -670,10 +674,12 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
 	 * This method allows you to add the LectureGUI as listener to the Optimizer
 	 * @param ea
 	 */
+    @Override
 	public void addPopulationChangedEventListener(
 			InterfacePopulationChangedEventListener ea) {
 		this.m_Listener = ea;
 	}
+    @Override
 	public boolean removePopulationChangedEventListener(
 			InterfacePopulationChangedEventListener ea) {
 		if (m_Listener==ea) {
@@ -685,6 +691,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
 	 * This method is required to free the memory on a RMIServer,
 	 * but there is nothing to implement.
 	 */
+    @Override
 	public void freeWilly() {
 
 	}		
@@ -695,6 +702,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
 	/**  @tested nn
 	 * (non-Javadoc) @see eva2.server.go.strategies.InterfaceOptimizer#setPopulation(javaeva.server.oa.go.Populations.Population)
 	 */
+    @Override
 	public void setPopulation(Population pop) {
 		//pass on to mainswarm optimizer
 		getMainSwarm().setPopulation(pop);
@@ -738,6 +746,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
 	 * the actual size of the complete population is accessed via getPopulation().size()
 	 * @return a population consisting of copies from the mainswarm and all subswarms.
 	 */
+    @Override
 	public Population getPopulation() { 
 		boolean activeOnly = true; // true makes problems if all subswarms are deactivated at the same time!
 		// construct a metapop with clones from the mainswarm and all subswarms
@@ -790,6 +799,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
 	 * @see eva2.server.go.strategies.InterfaceOptimizer#getAllSolutions()
 	 * @return a population consisting of the personal best solutions of every particle in the mainswarm and all subswarms
 	 */
+    @Override
 	public SolutionSet getAllSolutions() {
 		// hier kann dasselbe geliefert werden wie bei getPopulation
 		// speziell fuer multi-modale optimierung kann aber noch "mehr" als die aktuelle Population zurueckgeliefert werden
@@ -1211,6 +1221,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
 	/**  @tested nn
 	 * (non-Javadoc) @see javaeva.server.oa.go.Strategies.InterfaceOptimizer#getProblem()
 	 */
+    @Override
 	public InterfaceOptimizationProblem getProblem() {
 		return this.m_Problem;
 	}
@@ -1219,6 +1230,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
 	 * This method will set the problem that is to be optimized
 	 * @param problem
 	 */
+    @Override
 	public void setProblem(InterfaceOptimizationProblem problem) {
 		// set member
 		this.m_Problem = problem;
@@ -1234,6 +1246,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
 	 * This method allows you to set an identifier for the algorithm
 	 * @param name      The indenifier
 	 */
+    @Override
 	public void setIdentifier(String name) {
 		this.m_Identifier = name;
 	}
@@ -1241,6 +1254,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
 	/**  @tested nn
 	 * (non-Javadoc) @see javaeva.server.oa.go.Strategies.InterfaceOptimizer#getIdentifier()
 	 */
+    @Override
 	public String getIdentifier() {
 		return this.m_Identifier;
 	}
@@ -1346,6 +1360,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
 	 * This method will return a naming String
 	 * @return The name of the algorithm
 	 */
+    @Override
 	public String getName() {
 		return "NichePSO-"+getMainSwarmSize();
 	}
@@ -1355,6 +1370,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
 	 * and the applied methods.
 	 * @return A descriptive string
 	 */
+    @Override
 	public String getStringRepresentation() {
 		String result = ""; 
 		result += "niching particle swarm optimization." +
@@ -2141,10 +2157,12 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
 		return npso;		
 	}
 	
+    @Override
 	public String[] getAdditionalDataHeader() {
 		return new String[]{"mainSwarmSize","numActSpec","avgSpecSize", "numArchived", "archivedMedCorr", "archivedMeanDist", "mainSwarmInertness"};
 	}
 	
+    @Override
 	public String[] getAdditionalDataInfo() {
 		return new String[]{"Size of the main swarm of explorers",
 				"Number of sub-swarms currently active",
@@ -2155,6 +2173,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
 				"Current inertness of the main swarm"};
 	}
 	
+    @Override
 	public Object[] getAdditionalDataValue(PopulationInterface pop) {
 		int actSwarms = countActiveSubswarms();
 		double avgSpSize = getAvgActiveSubSwarmSize();

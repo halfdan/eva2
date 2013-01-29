@@ -17,6 +17,7 @@ public class RFRaidl_F2 implements InterfaceRegressionFunction, java.io.Serializ
 
     }
 
+    @Override
     public Object clone() {
         return (Object) new RFRaidl_F2(this);
     }
@@ -25,6 +26,7 @@ public class RFRaidl_F2 implements InterfaceRegressionFunction, java.io.Serializ
      * @param x     Input vector.
      * @return y the function result.
      */
+    @Override
     public double evaluateFunction(double[] x) {
         double result = 0;
         for (int i = 0; i < x.length; i++) result += Math.exp(x[i]/3)*Math.cos(3*x[i])/2;

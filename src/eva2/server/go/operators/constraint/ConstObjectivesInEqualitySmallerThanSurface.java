@@ -26,6 +26,7 @@ public class ConstObjectivesInEqualitySmallerThanSurface implements InterfaceCon
         this.norm      = a.norm;
     }
 
+    @Override
     public Object clone() {
         return (Object) new ConstObjectivesInEqualitySmallerThanSurface(this);
     }
@@ -35,6 +36,7 @@ public class ConstObjectivesInEqualitySmallerThanSurface implements InterfaceCon
      * @param indy  The individual to check.
      * @return true if valid false else.
      */
+    @Override
     public boolean isValid(AbstractEAIndividual indy) {
         double[] d = indy.getFitness();
         if (this.getScalarProduct(norm, this.getSubstraction(d, base)) < 0) return true;

@@ -27,6 +27,7 @@ public class MutateGIInvert implements InterfaceMutation, java.io.Serializable {
     /** This method will enable you to clone a given mutation operator
      * @return The clone
      */
+    @Override
     public Object clone() {
         return new MutateGIInvert();
     }
@@ -35,6 +36,7 @@ public class MutateGIInvert implements InterfaceMutation, java.io.Serializable {
      * are actually the same.
      * @param mutator   The other mutation operator
      */
+    @Override
     public boolean equals(Object mutator) {
         if (mutator instanceof MutateGIInvert) {
             MutateGIInvert mut = (MutateGIInvert)mutator;
@@ -48,6 +50,7 @@ public class MutateGIInvert implements InterfaceMutation, java.io.Serializable {
      * @param individual      The individual that will be mutated.
      * @param opt               The optimization problem.
      */
+    @Override
     public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt){
 
     }
@@ -56,6 +59,7 @@ public class MutateGIInvert implements InterfaceMutation, java.io.Serializable {
      * doesn't implement InterfaceGAIndividual nothing happens.
      * @param individual    The individual that is to be mutated
      */
+    @Override
     public void mutate(AbstractEAIndividual individual) {
         if (individual instanceof InterfaceGIIndividual) {
             int[]       x = ((InterfaceGIIndividual)individual).getIGenotype();
@@ -82,6 +86,7 @@ public class MutateGIInvert implements InterfaceMutation, java.io.Serializable {
      * @param indy1     The original mother
      * @param partners  The original partners
      */
+    @Override
     public void crossoverOnStrategyParameters(AbstractEAIndividual indy1, Population partners) {
         // nothing to do here
     }
@@ -96,6 +101,7 @@ public class MutateGIInvert implements InterfaceMutation, java.io.Serializable {
      * operator
      * @return A descriptive string.
      */
+    @Override
     public String getStringRepresentation() {
         return "GI invert mutation";
     }

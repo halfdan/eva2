@@ -489,6 +489,7 @@ public class LinearInterpolation
 		return a + b * x;
 	}
 
+    @Override
 	public String toString()
 	{
 		StringBuffer sb = new StringBuffer(1000);

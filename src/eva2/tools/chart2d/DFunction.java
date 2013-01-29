@@ -34,6 +34,7 @@ public abstract class DFunction extends DComponent
   public abstract double getSourceOf( double image ) throws IllegalArgumentException;
   public abstract double getImageOf( double source ) throws IllegalArgumentException;
 
+    @Override
   public void paint( DMeasures m ){
     Graphics g = m.getGraphics();
     if( color != null ) g.setColor( color );

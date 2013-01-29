@@ -43,6 +43,7 @@ public class EuclideanDiversityAbsorptionStrategy extends StandardAbsorptionStra
 	 * the diversity (mean distance from the gbest) of the subswarm < epsilon
 	 * (non-Javadoc) @see javaeva.server.oa.go.Operators.NichePSO.StandardAbsorptionStrategy#shouldAbsorbParticleIntoSubswarm(javaeva.server.oa.go.EAIndividuals.AbstractEAIndividual, javaeva.server.oa.go.Strategies.ParticleSubSwarmOptimization)
 	 */
+    @Override
 	public boolean shouldAbsorbParticleIntoSubswarm(AbstractEAIndividual indy, ParticleSubSwarmOptimization subswarm, ParticleSubSwarmOptimization mainswarm) {
 		if (!super.shouldAbsorbParticleIntoSubswarm(indy, subswarm, mainswarm)){
 			return false; //

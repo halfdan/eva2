@@ -81,6 +81,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      *
      * @return The clone
      */
+    @Override
     public abstract Object clone();
 
     /**
@@ -595,6 +596,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      *
      * @return The complete fitness array
      */
+    @Override
     public double[] getFitness() {
         return this.m_Fitness;
     }
@@ -620,6 +622,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      * @param fitness The new fitness array
      * @deprecated
      */
+    @Override
     public void setFitness(double[] fitness) {
         this.m_Fitness = fitness;
     }

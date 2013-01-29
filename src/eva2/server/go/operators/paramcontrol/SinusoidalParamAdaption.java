@@ -55,6 +55,7 @@ public class SinusoidalParamAdaption implements InterfaceHasUpperDoubleBound, Pa
 		updateMed();
 	}
 
+    @Override
 	public Object calcValue(Object obj, Population pop, int iteration, int maxIteration) {
 		double res=0;
 		double t = (2*Math.PI/iterationPeriod)*(iteration-initialShift);
@@ -88,19 +89,24 @@ public class SinusoidalParamAdaption implements InterfaceHasUpperDoubleBound, Pa
 		return Math.pow(t+1, dampeningExp)-1;
 	}
 
+    @Override
 	public Object clone() {
 		return new SinusoidalParamAdaption(this);
 	}
 	
+    @Override
 	public void finish(Object obj, Population pop) {
 	}
 
+    @Override
 	public String getControlledParam() {
 		return paramName ;
 	}
 
+    @Override
 	public void init(Object obj, Population pop, Object[] initialValues) {
 	}
+    @Override
 	public void setControlledParam(String prm) {
 		paramName = prm;
 	}
@@ -123,6 +129,7 @@ public class SinusoidalParamAdaption implements InterfaceHasUpperDoubleBound, Pa
 //		}
 //	}
 
+    @Override
 	public double getUpperBnd() {
 		return upperBnd;
 	}
@@ -130,6 +137,7 @@ public class SinusoidalParamAdaption implements InterfaceHasUpperDoubleBound, Pa
 		this.upperBnd = upperBnd;
 		updateMed();
 	}
+    @Override
 	public void SetUpperBnd(double u) {
 		this.setUpperBnd(u);
 	}

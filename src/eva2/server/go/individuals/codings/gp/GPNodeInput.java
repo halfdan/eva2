@@ -51,12 +51,14 @@ public class GPNodeInput extends AbstractGPNode implements java.io.Serializable 
     /** This method will be used to identify the node in the GPAreaEditor
      * @return The name.
      */
+    @Override
     public String getName() {
         return "Sensor:"+this.m_Identifier;
     }
     /** This method allows you to clone the Nodes
      * @return the clone
      */
+    @Override
     public Object clone() {
         return (Object) new GPNodeInput(this);
     }
@@ -64,6 +66,7 @@ public class GPNodeInput extends AbstractGPNode implements java.io.Serializable 
     /** This method will return the current arity
      * @return Arity.
      */
+    @Override
     public int getArity() {
         return 0;
     }
@@ -71,6 +74,7 @@ public class GPNodeInput extends AbstractGPNode implements java.io.Serializable 
     /** This method will evaluate a given node
      * @param environment
      */
+    @Override
     public Object evaluate(InterfaceProgramProblem environment) {
         lastValue = environment.getSensorValue(this.m_Identifier);
         return lastValue;
@@ -79,6 +83,7 @@ public class GPNodeInput extends AbstractGPNode implements java.io.Serializable 
     /** This method returns a string representation
      * @return string
      */
+    @Override
     public String getOpIdentifier() {
         if (this.lastValue == null) return this.m_Identifier;
         else {

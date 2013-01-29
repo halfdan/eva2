@@ -45,6 +45,7 @@ public abstract class AbstractConstraint implements InterfaceDoubleConstraint, S
 		setRelation(getRelation());
 	}
 	
+    @Override
 	public abstract Object clone();
 	
 	public InterfaceParameterControl getParamControl() {
@@ -59,6 +60,7 @@ public abstract class AbstractConstraint implements InterfaceDoubleConstraint, S
 	/**
 	 * Return the absolute (positive) degree of violation or zero if the constraint is fulfilled.
 	 */
+    @Override
 	public double getViolation(double[] indyX) {
 		double viol = getRawViolationValue(indyX);
 		return getViolationConsideringRelation(viol);
@@ -167,6 +169,7 @@ public abstract class AbstractConstraint implements InterfaceDoubleConstraint, S
 		return (getViolation(pos)>0);
 	}
 
+    @Override
 	public boolean isSatisfied(double[] pos) {
 		return (getViolation(pos)==0.);
 	}

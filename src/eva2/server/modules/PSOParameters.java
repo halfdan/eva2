@@ -58,6 +58,7 @@ public class PSOParameters extends AbstractGOParameters implements InterfaceGOPa
     	super(Source);
     }
 
+    @Override
     public Object clone() {
         return new PSOParameters(this);
     }
@@ -78,6 +79,7 @@ public class PSOParameters extends AbstractGOParameters implements InterfaceGOPa
 		setTopology(getTopology());
 	}
 
+    @Override
     public void setOptimizer(InterfaceOptimizer optimizer) {
         // *pff* i'll ignore that!
     }

@@ -75,6 +75,7 @@ public class StatisticsStandalone extends AbstractStatistics implements Interfac
 		this(new StatisticsParameter());
 	}
 
+    @Override
 	protected void initPlots(PopulationInterface pop, List<InterfaceAdditionalPopulationInformer> informerList) {
 		if (collectData) {
 			m_ResultData = new ArrayList<ArrayList<Object[]>>(m_StatsParams.getMultiRuns());
@@ -89,12 +90,14 @@ public class StatisticsStandalone extends AbstractStatistics implements Interfac
 		}
 	}
 	
+    @Override
 	protected void plotCurrentResults() {
 		if (collectData && (m_ResultData!=null)) {
 			m_ResultData.get(optRunsPerformed).add(currentStatObjectData);
 		}
 	}
 
+    @Override
 	public void plotSpecificData(PopulationInterface pop, List<InterfaceAdditionalPopulationInformer> informerList) {
 		if (TRACE) System.out.println(" m_SpecificData !!");
 		double[] specificData = pop.getSpecificData();
@@ -260,6 +263,7 @@ public class StatisticsStandalone extends AbstractStatistics implements Interfac
 //		return m_FitnessMedianofALL;
 //	}
 	
+    @Override
 	public String getHostName() {
 		return m_MyHostName;
 	}

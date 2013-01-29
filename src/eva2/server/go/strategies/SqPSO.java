@@ -39,6 +39,7 @@ public class SqPSO extends ClusterBasedNichingEA {
 
 //	public void hideHideable() 
 	
+    @Override
 	public String getName() {
 		return "SqPSO";
 	}

@@ -100,6 +100,7 @@ public class GOEPanel extends JPanel implements ItemListener {
         propertySheetPanel.addPropertyChangeListener(
                 new PropertyChangeListener() {
 
+            @Override
                     public void propertyChange(final PropertyChangeEvent event) {
                         propChangeSupport.firePropertyChange("", backupObject, genericObjectEditor.getValue());
                     }

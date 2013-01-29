@@ -35,6 +35,7 @@ public class B1Problem extends AbstractProblemBinary implements java.io.Serializ
     /** This method returns a deep clone of the problem.
      * @return  the clone
      */
+    @Override
     public Object clone() {
         return (Object) new B1Problem(this);
     }
@@ -45,6 +46,7 @@ public class B1Problem extends AbstractProblemBinary implements java.io.Serializ
      * @param l         The length of the BitSet.
      * @return          Double[]
      */
+    @Override
     public double[] eval(BitSet b) {
         double[]                result = new double[1];
         int                     fitness = 0;
@@ -59,6 +61,7 @@ public class B1Problem extends AbstractProblemBinary implements java.io.Serializ
      * @param individual    The individual that is to be shown.
      * @return The description.
      */
+    @Override
     public String getSolutionRepresentationFor(AbstractEAIndividual individual) {
         this.evaluate(individual);
         String result = "Minimize Number of Bits problem:\n";
@@ -71,6 +74,7 @@ public class B1Problem extends AbstractProblemBinary implements java.io.Serializ
      * @param opt       The Optimizer that is used or had been used.
      * @return The description.
      */
+    @Override
     public String getStringRepresentationForProblem(InterfaceOptimizer opt) {
         String result = "";
 
@@ -90,6 +94,7 @@ public class B1Problem extends AbstractProblemBinary implements java.io.Serializ
      * name to the current object.
      * @return The name.
      */
+    @Override
     public String getName() {
         return "Maximize number of bits";
     }
@@ -109,6 +114,7 @@ public class B1Problem extends AbstractProblemBinary implements java.io.Serializ
     public void setProblemDimension(int dim) {
         this.m_ProblemDimension = dim;
     }
+    @Override
     public int getProblemDimension() {
         return this.m_ProblemDimension;
     }

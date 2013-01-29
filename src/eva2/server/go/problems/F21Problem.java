@@ -24,6 +24,7 @@ public class F21Problem extends AbstractProblemDouble implements InterfaceMultim
 		this();
 	}
 
+    @Override
 	public String getName() {
 		return "Langerman-Function";
 	}
@@ -95,6 +96,7 @@ public class F21Problem extends AbstractProblemDouble implements InterfaceMultim
 	 * (non-Javadoc)
 	 * @see eva2.server.go.problems.AbstractOptimizationProblem#clone()
 	 */
+    @Override
 	public Object clone() {
 		return new F21Problem(this);
 	}
@@ -103,6 +105,7 @@ public class F21Problem extends AbstractProblemDouble implements InterfaceMultim
 	 * (non-Javadoc)
 	 * @see eva2.server.go.problems.InterfaceInterestingHistogram#getHistogram()
 	 */
+    @Override
 	public SolutionHistogram getHistogram() {
 		return new SolutionHistogram(0, 0.5, 10);
 	}

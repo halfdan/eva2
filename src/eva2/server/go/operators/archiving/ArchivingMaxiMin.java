@@ -32,6 +32,7 @@ public class ArchivingMaxiMin implements InterfaceArchiving, java.io.Serializabl
         this.m_ObeyDebsConstViolationPrinciple   = a.m_ObeyDebsConstViolationPrinciple;
     }
 
+    @Override
     public Object clone() {
         return (Object) new ArchivingMaxiMin(this);
     }
@@ -41,6 +42,7 @@ public class ArchivingMaxiMin implements InterfaceArchiving, java.io.Serializabl
      *  remove elements from the archive if the archive target size is exceeded.
      * @param pop       The population that may add Individuals to the archive.
      */
+    @Override
     public void addElementsToArchive(Population pop) {
         Population      archive;
         double[]        tmpD;

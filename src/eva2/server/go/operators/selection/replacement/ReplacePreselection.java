@@ -15,6 +15,7 @@ public class ReplacePreselection implements InterfaceReplacement, java.io.Serial
 
     /** The ever present clone method
      */
+    @Override
     public Object clone() {
         return new ReplaceRandom();
     }
@@ -26,6 +27,7 @@ public class ReplacePreselection implements InterfaceReplacement, java.io.Serial
      * @param pop       The population
      * @param sub       The subset
      */
+    @Override
     public void insertIndividual(AbstractEAIndividual indy, Population pop, Population sub) {
         AbstractEAIndividual worst = sub.getWorstEAIndividual();
         if ((indy.isDominatingDebConstraints(worst)) && (pop.remove(worst))) {

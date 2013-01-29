@@ -42,12 +42,14 @@ class MyFocusListener implements FocusListener {
 	 * (non-Javadoc)
 	 * @see java.awt.event.FocusListener#focusLost(java.awt.event.FocusEvent)
 	 */
+    @Override
 	public void focusLost(FocusEvent e) { }
 	
 	/*
 	 * (non-Javadoc)
 	 * @see java.awt.event.FocusListener#focusGained(java.awt.event.FocusEvent)
 	 */
+    @Override
 	public void focusGained(FocusEvent e) { arrEditor.notifyFocusID(myID);};
 };
 
@@ -100,6 +102,7 @@ public class GenericDoubleArrayEditor extends JPanel implements PropertyEditor {
         this.m_OKButton         = new JButton("OK");
         this.m_OKButton.setEnabled(true);
         this.m_OKButton.addActionListener(new ActionListener() {
+            @Override
 	        public void actionPerformed(ActionEvent e) {
 	            //m_Backup = copyObject(m_Object);
 	            if ((m_CustomEditor.getTopLevelAncestor() != null) && (m_CustomEditor.getTopLevelAncestor() instanceof Window)) {
@@ -119,6 +122,7 @@ public class GenericDoubleArrayEditor extends JPanel implements PropertyEditor {
     /** This action listener adds an element to DoubleArray
      */
     ActionListener addAction = new ActionListener() {
+        @Override
         public void actionPerformed(ActionEvent event) {
         	m_DoubleArray.addRowCopy(lastFocussedRow); // copy the last focussed row
             updateEditor();
@@ -128,6 +132,7 @@ public class GenericDoubleArrayEditor extends JPanel implements PropertyEditor {
     /** This action listener removes an element from the DoubleArray.
      */
     ActionListener deleteAction = new ActionListener() {
+        @Override
         public void actionPerformed(ActionEvent event) {
         	if (!m_DoubleArray.isValidRow(lastFocussedRow)) {
         		m_DoubleArray.deleteRow(m_DoubleArray.getNumRows()-1);
@@ -142,6 +147,7 @@ public class GenericDoubleArrayEditor extends JPanel implements PropertyEditor {
      * This action listener nomalizes each columng of the values of the DoubleArray.
      */
     ActionListener normalizeAction = new ActionListener() {
+        @Override
         public void actionPerformed(ActionEvent event) {
         	m_DoubleArray.normalizeColumns();
             updateEditor();
@@ -151,11 +157,14 @@ public class GenericDoubleArrayEditor extends JPanel implements PropertyEditor {
     /** This action listener reads all values
      */
     KeyListener readDoubleArrayAction = new KeyListener() {
+        @Override
     	public void keyPressed(KeyEvent event) {
         }
+        @Override
         public void keyTyped(KeyEvent event) {
         }
 
+        @Override
         public void keyReleased(KeyEvent event) {
             double[][]    tmpDD    = new double[m_InputTextFields.length][m_InputTextFields[0].length];
 
@@ -235,6 +244,7 @@ public class GenericDoubleArrayEditor extends JPanel implements PropertyEditor {
     /** This method will set the value of object that is to be edited.
      * @param o an object that must be an array.
      */
+    @Override
     public void setValue(Object o) {
         if (o instanceof PropertyDoubleArray) {
             this.m_DoubleArray = (PropertyDoubleArray) o;
@@ -245,10 +255,12 @@ public class GenericDoubleArrayEditor extends JPanel implements PropertyEditor {
     /** Returns the current object.
      * @return the current object
      */
+    @Override
     public Object getValue() {
         return this.m_DoubleArray;
     }
 
+    @Override
     public String getJavaInitializationString() {
         return "TEST";
     }
@@ -256,6 +268,7 @@ public class GenericDoubleArrayEditor extends JPanel implements PropertyEditor {
     /**
      *
      */
+    @Override
     public String getAsText() {
         return null;
     }
@@ -263,6 +276,7 @@ public class GenericDoubleArrayEditor extends JPanel implements PropertyEditor {
     /**
      *
      */
+    @Override
     public void setAsText(String text) throws IllegalArgumentException {
         throw new IllegalArgumentException(text);
     }
@@ -270,15 +284,18 @@ public class GenericDoubleArrayEditor extends JPanel implements PropertyEditor {
     /**
      *
      */
+    @Override
     public String[] getTags() {
         return null;
     }
 
+    @Override
     public void addPropertyChangeListener(PropertyChangeListener l) {
   	  if (m_Support == null) m_Support = new PropertyChangeSupport(this);
   	  m_Support.addPropertyChangeListener(l);
     }
 
+    @Override
     public void removePropertyChangeListener(PropertyChangeListener l) {
   	  if (m_Support == null) m_Support = new PropertyChangeSupport(this);
   	  m_Support.removePropertyChangeListener(l);
@@ -301,6 +318,7 @@ public class GenericDoubleArrayEditor extends JPanel implements PropertyEditor {
     /** Returns true since the Object can be shown
      * @return true
      */
+    @Override
     public boolean isPaintable() {
         return true;
     }
@@ -310,6 +328,7 @@ public class GenericDoubleArrayEditor extends JPanel implements PropertyEditor {
      * @param gfx the graphics context to use
      * @param box the area we are allowed to paint into
      */
+    @Override
     public void paintValue(Graphics gfx, Rectangle box) {
         FontMetrics fm = gfx.getFontMetrics();
         int vpad = (box.height - fm.getAscent()) / 2;
@@ -320,6 +339,7 @@ public class GenericDoubleArrayEditor extends JPanel implements PropertyEditor {
     /** Returns true because we do support a custom editor.
     * @return true
     */
+    @Override
     public boolean supportsCustomEditor() {
         return true;
     }
@@ -327,6 +347,7 @@ public class GenericDoubleArrayEditor extends JPanel implements PropertyEditor {
     /** Returns the array editing component.
     * @return a value of type 'java.awt.Component'
     */
+    @Override
     public Component getCustomEditor() {
         if (this.m_CustomEditor == null) this.initCustomEditor();
         return m_CustomEditor;

@@ -43,6 +43,7 @@ public class MutateGAGISwapBits implements InterfaceMutation, java.io.Serializab
 	/** This method will enable you to clone a given mutation operator
 	 * @return The clone
 	 */
+    @Override
 	public Object clone() {
 		return new MutateGAGISwapBits(this);
 	}
@@ -51,6 +52,7 @@ public class MutateGAGISwapBits implements InterfaceMutation, java.io.Serializab
 	 * are actually the same.
 	 * @param mutator   The other mutation operator
 	 */
+    @Override
 	public boolean equals(Object mutator) {
 		if (mutator instanceof MutateGAGISwapBits) {
 			MutateGAGISwapBits mut = (MutateGAGISwapBits)mutator;
@@ -64,6 +66,7 @@ public class MutateGAGISwapBits implements InterfaceMutation, java.io.Serializab
 	 * @param individual      The individual that will be mutated.
 	 * @param opt               The optimization problem.
 	 */
+    @Override
 	public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
 
 	}
@@ -73,6 +76,7 @@ public class MutateGAGISwapBits implements InterfaceMutation, java.io.Serializab
 	 * @param indy1     The original mother
 	 * @param partners  The original partners
 	 */
+    @Override
 	public void crossoverOnStrategyParameters(AbstractEAIndividual indy1, Population partners) {
 		// nothing to do here
 	}
@@ -81,6 +85,7 @@ public class MutateGAGISwapBits implements InterfaceMutation, java.io.Serializab
 	 * doesn't implement InterfaceGAIndividual or InterfaceGIIndividual nothing happens.
 	 * @param individual    The individual that is to be mutated
 	 */
+    @Override
 	public void mutate(AbstractEAIndividual individual) {
 //		System.err.println("Before Mutate: " +(individual.getStringRepresentation()));
 		if (individual instanceof InterfaceGAIndividual || (individual instanceof InterfaceGIIndividual)) {
@@ -172,6 +177,7 @@ public class MutateGAGISwapBits implements InterfaceMutation, java.io.Serializab
 	 * operator
 	 * @return A descriptive string.
 	 */
+    @Override
 	public String getStringRepresentation() {
 		return "GA/GI swap values mutation";
 	}

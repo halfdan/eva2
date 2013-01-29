@@ -394,6 +394,7 @@ public class BasicResourceLoader implements ResourceLoader
      * @param  rawResrcLoc  Description of the Parameter
      * @return                   the byte array of file.
      */
+    @Override
     public byte[] getBytesFromResourceLocation(String rawResrcLoc) {
     	return getBytesFromResourceLocation(rawResrcLoc, false);
     }

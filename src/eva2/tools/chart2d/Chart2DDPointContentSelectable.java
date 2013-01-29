@@ -32,6 +32,7 @@ public class Chart2DDPointContentSelectable implements InterfaceDPointWithConten
     /** this method has to be overridden to paint the icon. The point itself lies
      * at coordinates (0, 0)
      */
+    @Override
     public void paint( Graphics g ){
         Color prev = g.getColor();
         if (this.m_Indy.isMarked()) this.m_Fill = Color.RED;
@@ -47,6 +48,7 @@ public class Chart2DDPointContentSelectable implements InterfaceDPointWithConten
      * icon is visible
      * @return the border
      */
+    @Override
     public DBorder getDBorder() {
         return new DBorder(4, 4, 4, 4);
     }
@@ -69,6 +71,7 @@ public class Chart2DDPointContentSelectable implements InterfaceDPointWithConten
      * it should need more than one listener to this abstruse event
      * @param a The selection listener
      */
+    @Override
     public void addSelectionListener(InterfaceRefSolutionListener a) {
         this.m_Listener = a;
     }
@@ -76,12 +79,14 @@ public class Chart2DDPointContentSelectable implements InterfaceDPointWithConten
     /** This method returns the selection listner to the PointIcon
      * @return InterfaceSelectionListener
      */
+    @Override
     public InterfaceRefSolutionListener getSelectionListener() {
         return this.m_Listener;
     }
 
     /** This method allows to remove the selection listner to the PointIcon
      */
+    @Override
     public void removeSelectionListeners() {
         this.m_Listener = null;
     }
@@ -89,9 +94,11 @@ public class Chart2DDPointContentSelectable implements InterfaceDPointWithConten
     /** This method allows you to set the according individual
      * @param indy  AbstractEAIndividual
      */
+    @Override
     public void setEAIndividual(AbstractEAIndividual indy) {
         this.m_Indy = indy;
     }
+    @Override
     public AbstractEAIndividual getEAIndividual() {
         return this.m_Indy;
     }
@@ -99,19 +106,23 @@ public class Chart2DDPointContentSelectable implements InterfaceDPointWithConten
     /** This method allows you to set the according optimization problem
      * @param problem  InterfaceOptimizationProblem
      */
+    @Override
     public void setProblem(InterfaceOptimizationProblem problem) {
         this.m_Problem = problem;
     }
+    @Override
     public InterfaceOptimizationProblem getProblem() {
         return this.m_Problem;
     }
 
     /** This method allows you to draw additional data of the individual
      */
+    @Override
     public void showIndividual() {
         JFrame newFrame = new JFrame();
         newFrame.setTitle(this.m_Indy.getName()+": "+this.m_Indy);
         newFrame.addWindowListener(new WindowAdapter() {
+            @Override
             public void windowClosing(WindowEvent ev) {
                 System.gc();
             }

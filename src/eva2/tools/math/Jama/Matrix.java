@@ -240,6 +240,7 @@ public class Matrix implements Cloneable, Serializable {
    /** Clone the Matrix object.
    */
 
+    @Override
    public Object clone () {
       return this.copy();
    }
@@ -890,6 +891,7 @@ public class Matrix implements Cloneable, Serializable {
 	   }
    }
 
+    @Override
    public String toString() {
 	   StringBuffer sb = new StringBuffer();
 	   for (int i=0; i<m; i++) {

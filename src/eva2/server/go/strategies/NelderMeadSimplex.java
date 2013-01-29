@@ -54,14 +54,17 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
 		m_Identifier = a.m_Identifier;
 	}
 
+    @Override
 	public NelderMeadSimplex clone() {
 		return new NelderMeadSimplex(this);
 	}
 
+    @Override
 	public void setIdentifier(String name) {
 		m_Identifier = name;
 	}
 
+    @Override
 	public void setProblem(InterfaceOptimizationProblem problem) {
 		m_Problem = (AbstractOptimizationProblem)problem;
 	}
@@ -81,6 +84,7 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
 		return false;
 	}
 
+    @Override
 	public void addPopulationChangedEventListener(
 			InterfacePopulationChangedEventListener ea) {
 		if (ea!=null) {
@@ -89,12 +93,14 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
 		}
 	}
 	
+    @Override
 	public boolean removePopulationChangedEventListener(
 			InterfacePopulationChangedEventListener ea) {
 		if (m_Listener==null) return false;
 		else return m_Listener.remove(ea);
 	}
 	
+    @Override
 	public void freeWilly() {}
 
 	protected double[] calcChallengeVect(double[] centroid, double[] refX) {
@@ -204,10 +210,12 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
 		return e_ind;
 	}
 
+    @Override
 	public String getIdentifier() {
 		return m_Identifier;
 	}
 
+    @Override
 	public String getName() {
 		return m_Identifier;
 	}
@@ -216,14 +224,17 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
 		return "The Nelder-Mead simplex search algorithm for local search. Reflection on bounds may be used for constraint handling.";
 	}
 
+    @Override
 	public Population getPopulation() {
 		return m_Population;
 	}
 
+    @Override
 	public InterfaceOptimizationProblem getProblem() {
 		return m_Problem;
 	}
 
+    @Override
 	public String getStringRepresentation() {
     	StringBuilder strB = new StringBuilder(200);
     	strB.append("Nelder-Mead-Simplex Strategy:\nOptimization Problem: ");
@@ -233,10 +244,12 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
         return strB.toString();
 	}
 
+    @Override
 	public void init() {
 		initByPopulation(m_Population, true);
 	}
 
+    @Override
 	public void initByPopulation(Population pop, boolean reset) {
 		setPopulation(pop);
 		pop.addPopulationChangedEventListener(this);
@@ -254,6 +267,7 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
 		}
 	}
 
+    @Override
 	public void optimize() {
 		// make at least as many calls as there are individuals within the population.
 		// this simulates the generational loop expected by some other modules
@@ -291,12 +305,14 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
 		this.m_Population.incrGeneration();
 	}
 
+    @Override
 	public void setPopulation(Population pop) {
 		m_Population = pop;
 		m_Population.addPopulationChangedEventListener(this);
 		m_Population.setNotifyEvalInterval(populationSize);
 	}
 
+    @Override
 	public InterfaceSolutionSet getAllSolutions() {
 		Population pop = getPopulation();
 		return new SolutionSet(pop, pop);
@@ -324,6 +340,7 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
 		return "The population size should be adapted to the dimensions of the problem (e.g. n+1)";
 	}
 
+    @Override
 	public void registerPopulationStateChanged(Object source, String name) {
 		if (name.compareTo(Population.funCallIntervalReached) == 0) {
 			fireNextGenerationPerformed();

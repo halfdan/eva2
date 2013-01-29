@@ -31,6 +31,7 @@ public class SelProbFitnessSharing extends AbstractSelProb implements java.io.Se
         this.m_SharingDistance = a.m_SharingDistance;
     }
 
+    @Override
     public Object clone() {
         return (Object) new SelProbFitnessSharing(this);
     }
@@ -42,6 +43,7 @@ public class SelProbFitnessSharing extends AbstractSelProb implements java.io.Se
      * @param population    The population to compute.
      * @param data          The input data as double[][].
      */
+    @Override
     public void computeSelectionProbability(Population population, double[][] data, boolean obeyConst) {
         this.m_BasicNormationMethod.computeSelectionProbability(population, data, obeyConst);
         // now perform fitness sharing

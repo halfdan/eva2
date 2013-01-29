@@ -26,10 +26,12 @@ public class DoubleIntegralMetric implements InterfaceDistanceMetric, Serializab
 		oneNormed = normed;
 	}
 	
+    @Override
     public Object clone() {
     	return new DoubleIntegralMetric(oneNormed);
     }
 
+    @Override
     public double distance(AbstractEAIndividual indy1, AbstractEAIndividual indy2) {
 		double[]    dIndy1=null, dIndy2=null;
 //		String indyDataKey = ParticleSwarmOptimization.partBestPosKey;

@@ -31,6 +31,7 @@ public class MOSOEpsilonThreshold implements InterfaceMOSOConverter, java.io.Ser
         if (b.m_EpsilonThreshold != null)
             this.m_EpsilonThreshold = (PropertyEpsilonThreshold)b.m_EpsilonThreshold.clone();
     }
+    @Override
     public Object clone() {
         return (Object) new MOSOEpsilonThreshold(this);
     }
@@ -42,6 +43,7 @@ public class MOSOEpsilonThreshold implements InterfaceMOSOConverter, java.io.Ser
      * if you still want to access the original fitness values.
      * @param pop       The population to process.
      */
+    @Override
     public void convertMultiObjective2SingleObjective(Population pop) {
         for (int i = 0; i < pop.size(); i++) {
              this.convertSingleIndividual((AbstractEAIndividual)pop.get(i));
@@ -51,6 +53,7 @@ public class MOSOEpsilonThreshold implements InterfaceMOSOConverter, java.io.Ser
     /** This method processes a single individual
      * @param indy      The individual to process.
      */
+    @Override
     public void convertSingleIndividual(AbstractEAIndividual indy) {
         double[]    resultFit = new double[1];
         double[]    tmpFit;
@@ -86,6 +89,7 @@ public class MOSOEpsilonThreshold implements InterfaceMOSOConverter, java.io.Ser
      * value of one
      * @param dim       Outputdimension of the problem
      */
+    @Override
     public void setOutputDimension(int dim) {
         double[] newPunish = new double[dim];
         double[] newTarget = new double[dim];
@@ -107,6 +111,7 @@ public class MOSOEpsilonThreshold implements InterfaceMOSOConverter, java.io.Ser
     /** This method returns a description of the objective
      * @return A String
      */
+    @Override
     public String getStringRepresentation() {
         return this.getName()+"\n";
     }
@@ -119,6 +124,7 @@ public class MOSOEpsilonThreshold implements InterfaceMOSOConverter, java.io.Ser
      * name to the current object.
      * @return The name.
      */
+    @Override
     public String getName() {
         return "Epsilon Threshold";
     }

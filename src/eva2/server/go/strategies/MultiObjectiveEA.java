@@ -70,10 +70,12 @@ public class MultiObjectiveEA implements InterfaceOptimizer, java.io.Serializabl
         setProblem(problem);
     }
     
+    @Override
     public Object clone() {
         return (Object) new MultiObjectiveEA(this);
     }
 
+    @Override
     public void init() {
         this.m_Optimizer.init();
         this.m_Archiver.addElementsToArchive(this.m_Optimizer.getPopulation());
@@ -85,6 +87,7 @@ public class MultiObjectiveEA implements InterfaceOptimizer, java.io.Serializabl
      * @param pop       The initial population
      * @param reset     If true the population is reset.
      */
+    @Override
     public void initByPopulation(Population pop, boolean reset) {
         this.m_Optimizer.initByPopulation(pop, reset);
         this.m_Archiver.addElementsToArchive(this.m_Optimizer.getPopulation());
@@ -93,6 +96,7 @@ public class MultiObjectiveEA implements InterfaceOptimizer, java.io.Serializabl
 
     /** The optimize method will compute a 'improved' and evaluated population
      */
+    @Override
     public void optimize() {
 //        double[][] may = this.showMay(this.m_Optimizer.getPopulation());
         // This is in total compliance with Koch's framework nice isn't it?
@@ -152,10 +156,12 @@ public class MultiObjectiveEA implements InterfaceOptimizer, java.io.Serializabl
         return result;
     }
 
+    @Override
     public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
         this.m_Listener = ea;
     }
     
+    @Override
 	public boolean removePopulationChangedEventListener(
 			InterfacePopulationChangedEventListener ea) {
 		if (m_Listener==ea) {
@@ -171,10 +177,12 @@ public class MultiObjectiveEA implements InterfaceOptimizer, java.io.Serializabl
     /** This method will set the problem that is to be optimized
      * @param problem
      */
+    @Override
     public void setProblem (InterfaceOptimizationProblem problem) {
         this.m_Problem = problem;
         this.m_Optimizer.setProblem(problem);
     }
+    @Override
     public InterfaceOptimizationProblem getProblem () {
         return this.m_Problem;
     }
@@ -183,6 +191,7 @@ public class MultiObjectiveEA implements InterfaceOptimizer, java.io.Serializabl
      * and the applied methods.
      * @return A descriptive string
      */
+    @Override
     public String getStringRepresentation() {
         String result = "";
         result += "Multi-Objective Evolutionary Algorithm:\n";
@@ -201,9 +210,11 @@ public class MultiObjectiveEA implements InterfaceOptimizer, java.io.Serializabl
     /** This method allows you to set an identifier for the algorithm
      * @param name      The indenifier
      */
+    @Override
      public void setIdentifier(String name) {
         this.m_Identifier = name;
     }
+    @Override
      public String getIdentifier() {
          return this.m_Identifier;
      }
@@ -211,6 +222,7 @@ public class MultiObjectiveEA implements InterfaceOptimizer, java.io.Serializabl
     /** This method is required to free the memory on a RMIServer,
      * but there is nothing to implement.
      */
+    @Override
     public void freeWilly() {
 
     }    
@@ -226,6 +238,7 @@ public class MultiObjectiveEA implements InterfaceOptimizer, java.io.Serializabl
     /** This method will return a naming String
      * @return The name of the algorithm
      */
+    @Override
     public String getName() {
         return "MOEA";
     }
@@ -235,9 +248,11 @@ public class MultiObjectiveEA implements InterfaceOptimizer, java.io.Serializabl
      * of the optimizer.
      * @return The population of current solutions to a given problem.
      */
+    @Override
     public Population getPopulation() {
         return this.m_Optimizer.getPopulation();
     }
+    @Override
     public void setPopulation(Population pop){
         this.m_Optimizer.setPopulation(pop);
     }
@@ -245,6 +260,7 @@ public class MultiObjectiveEA implements InterfaceOptimizer, java.io.Serializabl
         return "Edit the properties of the Population used.";
     }
     
+    @Override
     public InterfaceSolutionSet getAllSolutions() {
     	return new SolutionSet(getPopulation(), ArchivingNSGAII.getNonDominatedSortedFront(getPopulation().getArchive()).getSortedPop(new AbstractEAIndividualComparator(0)));
     }

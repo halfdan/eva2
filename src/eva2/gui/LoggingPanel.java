@@ -70,6 +70,7 @@ public class LoggingPanel extends JPanel {
 		scrollpane.getViewport().addChangeListener(new ChangeListener() {
 			private int lastHeight;
 			//
+            @Override
 			public void stateChanged(ChangeEvent e) {
 				JViewport viewport = (JViewport)e.getSource();
 				int height = viewport.getViewSize().height;

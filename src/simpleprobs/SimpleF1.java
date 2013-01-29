@@ -6,6 +6,7 @@ public class SimpleF1 extends SimpleProblemDouble {
 		return "A simple F1 implementation, find the minimum of a hyper parabola.";
 	}
 
+    @Override
 	public double[] eval(double[] x) {
 		double res[] = new double[1]; 
 		// this defines the dimension of the fitness vector, which should be always the same
@@ -21,6 +22,7 @@ public class SimpleF1 extends SimpleProblemDouble {
 		return res;
 	}
 
+    @Override
 	public int getProblemDimension() {
 		return 20;
 	}

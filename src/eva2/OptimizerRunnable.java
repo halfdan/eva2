@@ -132,6 +132,7 @@ public class OptimizerRunnable implements Runnable {
 		doRestart = restart;
 	}
 	
+    @Override
 	public void run() {
 		isFinished = false;
 		try {

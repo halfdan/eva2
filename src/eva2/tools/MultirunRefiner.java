@@ -65,6 +65,7 @@ public class MultirunRefiner {
         this.m_LoadExpItem  = new JMenuItem("Load");
             this.m_LoadExpItem.setEnabled(true);
             this.m_LoadExpItem.addActionListener(new ActionListener() {
+            @Override
                  public void actionPerformed(ActionEvent ev) {
                      loadFile();
                  }
@@ -72,6 +73,7 @@ public class MultirunRefiner {
         this.m_SaveExpItem  = new JMenuItem("Save");
             this.m_SaveExpItem.setEnabled(true);
             this.m_SaveExpItem.addActionListener (new java.awt.event.ActionListener () {
+            @Override
                 public void actionPerformed (java.awt.event.ActionEvent evt) {
                     writeFile();
                 }
@@ -79,6 +81,7 @@ public class MultirunRefiner {
         this.m_ExitItem     = new JMenuItem("Exit");
             this.m_ExitItem.setEnabled(true);
             this.m_ExitItem.addActionListener (new java.awt.event.ActionListener () {
+            @Override
                 public void actionPerformed (java.awt.event.ActionEvent evt) {
                     System.exit(0);
                 }
@@ -93,6 +96,7 @@ public class MultirunRefiner {
         this.m_Frame.setSize(300,300);
         this.m_Frame.setLocation(0, 150);
         this.m_Frame.addWindowListener(new WindowAdapter() {
+            @Override
                 public void windowClosing(WindowEvent ev) {
                     System.exit(0);
                 }
@@ -114,6 +118,7 @@ public class MultirunRefiner {
 
         refineJButton = new JButton("Refine Multiruns");
         refineJButton.addMouseListener (new java.awt.event.MouseAdapter () {
+            @Override
             public void mouseClicked (java.awt.event.MouseEvent evt) {
                 m_OutputText.setText(refineToText(refine(m_InputText.getText())));
             }
@@ -126,6 +131,7 @@ public class MultirunRefiner {
 //        });
         exitJButton = new JButton("EXIT");
         exitJButton.addMouseListener (new java.awt.event.MouseAdapter () {
+            @Override
             public void mouseClicked (java.awt.event.MouseEvent evt) {
                 System.exit (0);
             }

@@ -24,10 +24,12 @@ public class PSOInertnessAdaption extends LinearParamAdaption implements Seriali
 		GenericObjectEditor.setHideProperty(this.getClass(), "controlledParam", true);
 	}
 	
+    @Override
 	public String startVTipText() {
 		return "Start value for the inertness";
 	}
 
+    @Override
 	public String endVTipText() {
 		return "End value for the inertness";
 	}

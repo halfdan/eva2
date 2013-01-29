@@ -61,6 +61,7 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
         cloneAEAObjects((AbstractEAIndividual) individual);
     }
 
+    @Override
     public Object clone() {
         return (Object) new GAIndividualBinaryData(this);
     }
@@ -69,6 +70,7 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
      * @param individual      The individual to compare to.
      * @return boolean if equal true else false.
      */
+    @Override
     public boolean equalGenotypes(AbstractEAIndividual individual) {
         if (individual instanceof GAIndividualBinaryData) {
             GAIndividualBinaryData indy = (GAIndividualBinaryData) individual;
@@ -101,6 +103,7 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
      * @param obj   The initial value for the phenotype
      * @param opt   The optimization problem that is to be solved.
      */
+    @Override
     public void initByValue(Object obj, InterfaceOptimizationProblem opt) {
         if (obj instanceof BitSet) {
             BitSet  bs = (BitSet) obj;
@@ -118,6 +121,7 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
      * double[] is used instead of a single double.
      * @return The complete fitness array
      */
+    @Override
     public double[] getFitness() {
         return this.m_Fitness;
     }
@@ -126,6 +130,7 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
      * noteably the Genotype.
      * @return A descriptive string
      */
+    @Override
     public String getStringRepresentation() {
         String result = "";
         result += "GAIndividual: (";
@@ -151,6 +156,7 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
     /** This method allows you to read the binary data
      * @return BitSet representing the binary data.
      */
+    @Override
     public BitSet getBGenotype() {
         return this.m_Genotype;
     }
@@ -159,6 +165,7 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
      * memetic algorithms.
      * @param binaryData    The new binary data.
      */
+    @Override
     public void SetBGenotype(BitSet binaryData) {
         this.m_Genotype = binaryData;
     }
@@ -168,10 +175,12 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
      * of the last significant bit.
      * @return The length of the genotype.
      */
+    @Override
     public int getGenotypeLength() {
         return this.m_GenotypeLength;
     }
 
+    @Override
     public void defaultInit(InterfaceOptimizationProblem prob) {
         for (int i = 0; i < this.m_GenotypeLength; i++) {
             if (RNG.flipCoin(0.5)) this.m_Genotype.set(i);
@@ -181,6 +190,7 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
 
     /** This method performs a simple one point mutation in the genotype
      */
+    @Override
     public void defaultMutate() {
         int mutationIndex = RNG.randomInt(0, this.m_GenotypeLength);
         //if (mutationIndex > 28) System.out.println("Mutate: " + this.getSolutionRepresentationFor());
@@ -195,6 +205,7 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
     /** This method allows you to request a certain amount of binary data
      * @param length    The lenght of the BitSet that is to be optimized
      */
+    @Override
     public void setBinaryDataLength(int length) {
         this.m_GenotypeLength = length;
     }
@@ -202,6 +213,7 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
     /** This method returns the length of the binary data set
      * @return The number of bits stored
      */
+    @Override
     public int size() {
         return this.m_GenotypeLength;
     }
@@ -209,6 +221,7 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
     /** This method allows you to read the binary data
      * @return BitSet representing the binary data.
      */
+    @Override
     public BitSet getBinaryData() {
         this.m_Phenotype = (BitSet)this.m_Genotype.clone();
         return this.m_Phenotype;
@@ -218,6 +231,7 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
      * an update from the genotype
      * @return BitSet representing the binary data.
      */
+    @Override
     public BitSet getBinaryDataWithoutUpdate() {
         return this.m_Phenotype;
     }
@@ -225,6 +239,7 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
     /** This method allows you to set the binary data.
      * @param binaryData    The new binary data.
      */
+    @Override
     public void SetBinaryPhenotype(BitSet binaryData) {
         this.m_Phenotype = binaryData;
     }
@@ -233,6 +248,7 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
      * memetic algorithms.
      * @param binaryData    The new binary data.
      */
+    @Override
     public void SetBinaryGenotype(BitSet binaryData) {
         this.SetBinaryPhenotype(binaryData);
         this.m_Genotype =(BitSet)binaryData.clone();
@@ -245,6 +261,7 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
      * name to the current object.
      * @return The name.
      */
+    @Override
     public String getName() {
         return "GA binary individual";
     }

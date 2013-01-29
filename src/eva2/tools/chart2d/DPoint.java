@@ -40,6 +40,7 @@ public class DPoint extends DComponent
     rectangle = new DRectangle( x, y, 0, 0 );
   }
 
+    @Override
   public void paint( DMeasures m ){
     Graphics g = m.getGraphics();
     if( color != null ) g.setColor( color );
@@ -80,12 +81,14 @@ public class DPoint extends DComponent
     return icon;
   }
 
+    @Override
   public Object clone(){
     DPoint copy = new DPoint( x, y );
     copy.color = color;
     return copy;
   }
 
+    @Override
   public String toString(){
     String text = "DPoint[";
     if( label != null ) text += label+", ";

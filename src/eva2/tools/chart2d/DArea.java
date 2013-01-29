@@ -118,6 +118,7 @@ public class DArea extends JComponent implements DParent, Printable {
 	 * @param clip
 	 *            the java.awt.Insets object of the new clip
 	 */
+    @Override
 	public void addDBorder(DBorder b) {
 		dborder.insert(b);
 	}
@@ -128,6 +129,7 @@ public class DArea extends JComponent implements DParent, Printable {
 	 * @param e
 	 *            the new DElement
 	 */
+    @Override
 	public void addDElement(DElement e) {
 		container.addDElement(e);
 	}
@@ -139,6 +141,7 @@ public class DArea extends JComponent implements DParent, Printable {
 	 *            the element
 	 * @return if it is contained
 	 */
+    @Override
 	public boolean contains(DElement e) {
 		return container.contains(e);
 	}
@@ -157,6 +160,7 @@ public class DArea extends JComponent implements DParent, Printable {
 	 * 
 	 * @return the elements of the container
 	 */
+    @Override
 	public DElement[] getDElements() {
 		return container.getDElements();
 	}
@@ -358,6 +362,7 @@ public class DArea extends JComponent implements DParent, Printable {
 	 * @param g
 	 *            the java.awt.Graphics object
 	 */
+    @Override
 	public void paint(Graphics g) {
 		if (TRACE)
 			System.out.println("DArea.paint(Graphics)");
@@ -477,6 +482,7 @@ public class DArea extends JComponent implements DParent, Printable {
 	 * 
 	 * @return int @see java.awt.print.Printable
 	 */
+    @Override
 	public int print(Graphics g, PageFormat pf, int pi) {
 		if (TRACE)
 			System.out.println("DArea.print(...)");
@@ -537,6 +543,7 @@ public class DArea extends JComponent implements DParent, Printable {
 	 * @param e
 	 *            the element to remove
 	 */
+    @Override
 	public boolean removeDElement(DElement e) {
 		return container.removeDElement(e);
 	}
@@ -547,6 +554,7 @@ public class DArea extends JComponent implements DParent, Printable {
 	 * @param r
 	 *            the rectangle to repaint
 	 */
+    @Override
 	public void repaint(DRectangle r) {
 		if (TRACE)
 			System.out.println("DArea.repaint(DRectangle)" + r);
@@ -570,6 +578,7 @@ public class DArea extends JComponent implements DParent, Printable {
 		}
 	}
 
+    @Override
 	public void restoreBorder() {
 		dborder = container.getDBorder();
 		if (TRACE)

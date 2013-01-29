@@ -118,6 +118,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 		textListeners = new ArrayList<InterfaceTextListener>();
 	}
 	
+    @Override
 	public void addDataListener(InterfaceStatisticsListener l) {
 		if (dataListeners==null) {
 			dataListeners=new LinkedList<InterfaceStatisticsListener>();
@@ -125,6 +126,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 		if (l!=null && !dataListeners.contains(l)) dataListeners.add(l);
 	}
 	
+    @Override
 	public boolean removeDataListener(InterfaceStatisticsListener l) {
 		if (dataListeners==null) return false;
 		else return dataListeners.remove(l);
@@ -169,12 +171,14 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 		}
 	}
 	
+    @Override
 	public void addTextListener(InterfaceTextListener listener) {
 		if (!textListeners.contains(listener)) {
 			textListeners.add(listener);
 		}
 	}
 	
+    @Override
 	public boolean removeTextListener(InterfaceTextListener listener) {
 		return textListeners.remove(listener);
 	}
@@ -236,6 +240,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 		saveParams = doSave;
 	}
 
+    @Override
 	public void startOptPerformed(String infoString, int runNumber, Object params, List<InterfaceAdditionalPopulationInformer> informerList) {
 		if (TRACE) {
 			System.out.println("AbstractStatistics.startOptPerformed " + runNumber);
@@ -298,6 +303,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 		fireDataListenersStartStop(runNumber, true, true);
 	}
 	
+    @Override
 	public void stopOptPerformed(boolean normal, String stopMessage) {
 		if (TRACE) System.out.println("AbstractStatistics.stopOptPerformed");
 		if (lastSols==null) System.err.println("WARNING, possibly there was no call to createNextGenerationPerformed before calling stopOptPerformed (AnstractStatistics).");
@@ -362,6 +368,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 		fireDataListenersStartStop(optRunsPerformed, normal, false);
 	}
 	
+    @Override
 	public void postProcessingPerformed(Population resultPop) { // called from processor
 		if (!printRunStoppedVerbosity() && printFinalVerbosity() && optRunsPerformed >= m_StatsParams.getMultiRuns()) printToTextListener("\n");
 		if (printRunStoppedVerbosity()) {
@@ -590,6 +597,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 	
 	public abstract String getHostName();
 
+    @Override
 	public void printToTextListener(String s) {
 		if ((resultOut != null)) resultOut.print(s);
 		for (InterfaceTextListener l : textListeners) {
@@ -598,15 +606,18 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 	}
 	
 	////////////// InterfaceTextListener
+    @Override
 	public void print(String str) {
 		printToTextListener(str);
 	}
 	////////////// InterfaceTextListener
+    @Override
 	public void println(String str) {
 		printToTextListener(str);
 		printToTextListener("\n");
 	}
 	
+    @Override
 	public InterfaceStatisticsParameter getStatisticsParameter() {
 		return m_StatsParams;
 	}
@@ -898,6 +909,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 	/**
 	 * @deprecated The method {@link #createNextGenerationPerformed(PopulationInterface, List)} should be used instead.
 	 */
+    @Override
 	public synchronized void createNextGenerationPerformed(double[] bestfit,
 			double[] worstfit, int calls) {
 		functionCalls = calls;
@@ -1047,6 +1059,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 	 * Do some data collection on the population.
 	 *
 	 */
+    @Override
 	public synchronized void createNextGenerationPerformed(PopulationInterface
 			pop, InterfaceOptimizer opt, List<InterfaceAdditionalPopulationInformer> informerList) {
 		lastInformerList  = informerList;
@@ -1190,14 +1203,17 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 		return (indy2.isDominant(indy1));
 	}
 	
+    @Override
 	public double[] getBestFitness() {
 		return currentBestFit;
 	}
 	
+    @Override
 	public IndividualInterface getBestSolution() {
 		return bestIndyAllRuns;
 	}
 	
+    @Override
 	public IndividualInterface getRunBestSolution() {
 		return bestOfRunIndy;
 	}

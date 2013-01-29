@@ -118,6 +118,7 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
         this.m_Frame.setSize(500, 400);
         this.m_Frame.setLocation(530, 50);
         this.m_Frame.addWindowListener(new WindowAdapter() {
+            @Override
             public void windowClosing(WindowEvent ev) {
                 System.exit(0);
             }
@@ -197,11 +198,14 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
     /** This action listener, called by the "Run/Restart" button, will init the problem and start the computation.
      */
     ActionListener runListener = new ActionListener() {
+        @Override
         public void actionPerformed(ActionEvent event) {
             worker = new SwingWorker() {
+                @Override
                 public Object construct() {
                     return doWork();
                 }
+                @Override
                 public void finished() {
                     m_RunButton.setEnabled(true);
                     m_Continue.setEnabled(true);
@@ -221,6 +225,7 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
      * the doWork() method handles InterruptedExceptions cleanly.
      */
     ActionListener stopListener = new ActionListener() {
+        @Override
         public void actionPerformed(ActionEvent event) {
             m_RunButton.setEnabled(true);
             m_Continue.setEnabled(true);
@@ -235,12 +240,15 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
      * the doWork() method handles InterruptedExceptions cleanly.
      */
     ActionListener continueListener = new ActionListener() {
+        @Override
         public void actionPerformed(ActionEvent event) {
             // todo something need to be done here...
             worker = new SwingWorker() {
+                @Override
                 public Object construct() {
                     return doWork();
                 }
+                @Override
                 public void finished() {
                     m_RunButton.setEnabled(true);
                     m_Continue.setEnabled(true);
@@ -264,6 +272,7 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
      * currently best solution in a frame.
      */
     ActionListener showSolListener = new ActionListener() {
+        @Override
         public void actionPerformed(ActionEvent event) {
             JFrame frame = new JFrame();
             frame.setTitle("The current best solution for "+m_GO.getProblem().getName());
@@ -278,6 +287,7 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
 
     /** This method gives the experimental settings and starts the work.
      */
+    @Override
     public void startExperiment() {
         // This is for the CBN-TEST RUNS
         this.m_GO.setOptimizer(new EvolutionStrategies());
@@ -508,6 +518,7 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
     void updateStatus(final int i) {
         if (this.m_ProgressBar != null) {
             Runnable doSetProgressBarValue = new Runnable() {
+                @Override
                 public void run() {
                     m_ProgressBar.setValue(i);
                 }
@@ -533,6 +544,7 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
         }
     }
 
+    @Override
     public void setShow(boolean t) {
         this.show = t;
     }
@@ -541,6 +553,7 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
      * @param source        The source of the event.
      * @param name          Could be used to indicate the nature of the event.
      */
+    @Override
     public void registerPopulationStateChanged(Object source, String name) {
     	if (name.equals(Population.nextGenerationPerformed)) {
     		Population population = ((InterfaceOptimizer)source).getPopulation();

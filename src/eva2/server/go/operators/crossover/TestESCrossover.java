@@ -53,6 +53,7 @@ public class TestESCrossover implements java.io.Serializable {
         this.m_Frame.setSize(300, 400);
         this.m_Frame.setLocation(530, 50);
         this.m_Frame.addWindowListener(new WindowAdapter() {
+            @Override
             public void windowClosing(WindowEvent ev) {
                 System.exit(0);
             }
@@ -94,6 +95,7 @@ public class TestESCrossover implements java.io.Serializable {
     }
 
     ActionListener initListener = new ActionListener() {
+        @Override
         public void actionPerformed(ActionEvent event) {
             m_Partners = new Population();
             m_Partners.setTargetSize(m_NumberOfPartners);
@@ -132,6 +134,7 @@ public class TestESCrossover implements java.io.Serializable {
     };
 
     ActionListener init2Listener = new ActionListener() {
+        @Override
         public void actionPerformed(ActionEvent event) {
             m_Partners = new Population();
             m_Partners.setTargetSize(2);
@@ -175,6 +178,7 @@ public class TestESCrossover implements java.io.Serializable {
     };
 
     ActionListener init3Listener = new ActionListener() {
+        @Override
         public void actionPerformed(ActionEvent event) {
             m_Partners = new Population();
             m_Partners.setTargetSize(3);
@@ -224,6 +228,7 @@ public class TestESCrossover implements java.io.Serializable {
     };
 
     ActionListener XListener = new ActionListener() {
+        @Override
         public void actionPerformed(ActionEvent event) {
             double[]                x;
             AbstractEAIndividual[]  result;

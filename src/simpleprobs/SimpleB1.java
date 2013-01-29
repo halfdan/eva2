@@ -7,6 +7,7 @@ public class SimpleB1 extends SimpleProblemBinary {
 		return "A simple B1 implementation, minimize bits in a binary vector.";
 	}
 	
+    @Override
 	public double[] eval(BitSet b) {
 		double[]                result = new double[1];
 		int                     fitness = 0;
@@ -16,6 +17,7 @@ public class SimpleB1 extends SimpleProblemBinary {
 		return result;
 	}
 
+    @Override
 	public int getProblemDimension() {
 		return 20;
 	}

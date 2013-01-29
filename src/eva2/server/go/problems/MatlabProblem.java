@@ -70,6 +70,7 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 //		currArray = null;
 	}
 
+    @Override
 	public Object clone() {
 		return new MatlabProblem(this);
 	}
@@ -170,6 +171,7 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 		handler.setMatlabProblem(this);
 	}
 
+    @Override
 	public void initProblem() {
 		init(this.problemDimension, dataType, range, initialRange, defTestOut);
 	}
@@ -586,6 +588,7 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 		return "Interface problem class for optimization in Matlab, only usable from within Matlab";
 	}
 
+    @Override
 	public void print(String str) {
 //		System.err.println("MP print: " + str);
 //		if (resOutStream==null) {
@@ -603,6 +606,7 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 		log(str);		
 	}
 
+    @Override
 	public void println(String str) {
 		print(str);
 		print("\n");		
@@ -629,6 +633,7 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 		AbstractOptimizationProblem.defaultInitPopulation(population, m_Template, this);
 	}
 
+    @Override
 	public String getStringRepresentationForProblem(InterfaceOptimizer opt) {
         StringBuffer sb = new StringBuffer(200);
         sb.append("A general Matlab problem");
@@ -637,11 +642,13 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
         return sb.toString();
 	}
 
+    @Override
 	public Object getInitRange() {
 		log("retrieving initial range..., first entry: " + ((initialRange==null) ? "null" : BeanInspector.toString(initialRange[0])));
 		return initialRange;
 	}
 	
+    @Override
 	public String getName() {
 		return "MatlabProblem";
 	}

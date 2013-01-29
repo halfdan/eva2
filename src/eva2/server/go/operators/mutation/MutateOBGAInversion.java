@@ -31,6 +31,7 @@ public class MutateOBGAInversion implements java.io.Serializable, InterfaceMutat
   public MutateOBGAInversion() {
   }
 
+    @Override
   public Object clone() {
     return this;
   }
@@ -39,15 +40,18 @@ public class MutateOBGAInversion implements java.io.Serializable, InterfaceMutat
      * are actually the same.
      * @param mutator   The other mutation operator
      */
+    @Override
     public boolean equals(Object mutator) {
         if (mutator instanceof MutateOBGAInversion) return true;
         else return false;
     }
 
+    @Override
     public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
     //nothing to init
   }
 
+    @Override
   public void mutate(AbstractEAIndividual individual) {
     int[][] permnew = (int[][]) ((InterfaceOBGAIndividual) individual). getOBGenotype().clone();
     int[][] perm = ((InterfaceDataTypePermutation) individual).getPermutationData();
@@ -66,6 +70,7 @@ public class MutateOBGAInversion implements java.io.Serializable, InterfaceMutat
      * @param indy1     The original mother
      * @param partners  The original partners
      */
+    @Override
     public void crossoverOnStrategyParameters(AbstractEAIndividual indy1, Population partners) {
         // nothing to do here
     }
@@ -74,6 +79,7 @@ public class MutateOBGAInversion implements java.io.Serializable, InterfaceMutat
      * operator
      * @return A descriptive string.
      */
+    @Override
     public String getStringRepresentation() {
         return "OBGA inversion mutation";
     }

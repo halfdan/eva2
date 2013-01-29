@@ -23,6 +23,7 @@ public class RemoveSurplusIndividualsDynamicHyperCube implements InterfaceRemove
     public RemoveSurplusIndividualsDynamicHyperCube(RemoveSurplusIndividualsDynamicHyperCube a) {
     }
 
+    @Override
     public Object clone() {
         return (Object) new RemoveSurplusIndividualsDynamicHyperCube(this);
     }
@@ -31,6 +32,7 @@ public class RemoveSurplusIndividualsDynamicHyperCube implements InterfaceRemove
      * from a given archive. Note archive will be altered!
      * @param archive
      */
+    @Override
     public void removeSurplusIndividuals(Population archive) {
         double[][]  fitness;
         double[]    space;

@@ -28,6 +28,7 @@ public class CrossoverESNPointDiscrete implements InterfaceCrossover, java.io.Se
     /** This method will enable you to clone a given crossover operator
      * @return The clone
      */
+    @Override
     public Object clone() {
         return new CrossoverESNPointDiscrete(this);
     }
@@ -37,6 +38,7 @@ public class CrossoverESNPointDiscrete implements InterfaceCrossover, java.io.Se
      * @param indy1 The first individual
      * @param partners The second individual
      */
+    @Override
     public AbstractEAIndividual[] mate(AbstractEAIndividual indy1, Population partners) {
         AbstractEAIndividual[]  result = null;
         double[][]              parents, children;
@@ -86,6 +88,7 @@ public class CrossoverESNPointDiscrete implements InterfaceCrossover, java.io.Se
      * are actually the same.
      * @param crossover   The other crossover operator
      */
+    @Override
     public boolean equals(Object crossover) {
         if (crossover instanceof CrossoverESNPointDiscrete) {
             CrossoverESNPointDiscrete cross = (CrossoverESNPointDiscrete)crossover;
@@ -102,10 +105,12 @@ public class CrossoverESNPointDiscrete implements InterfaceCrossover, java.io.Se
      * @param individual    The individual that will be mutated.
      * @param opt           The optimization problem.
      */
+    @Override
     public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
         this.m_OptimizationProblem = opt;
     }
 
+    @Override
     public String getStringRepresentation() {
         return this.getName();
     }

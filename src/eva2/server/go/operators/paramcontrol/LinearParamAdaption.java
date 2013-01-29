@@ -29,13 +29,16 @@ implements InterfaceHasUpperDoubleBound, GenericParamAdaption, Serializable {
 		this.target = target;
 	}
 	
+    @Override
 	public Object clone() {
 		return new LinearParamAdaption(this);
 	}
 
+    @Override
 	public String getControlledParam() {
 		return target;
 	}
+    @Override
 	public void setControlledParam(String target) {
 		this.target = target;
 	}
@@ -53,6 +56,7 @@ implements InterfaceHasUpperDoubleBound, GenericParamAdaption, Serializable {
 	 *  
 	 * @return
 	 */
+    @Override
 	public double getUpperBnd() {
 		return Math.max(getEndV(), getStartV());
 	}
@@ -63,6 +67,7 @@ implements InterfaceHasUpperDoubleBound, GenericParamAdaption, Serializable {
 	 * 
 	 * @param u
 	 */
+    @Override
 	public void SetUpperBnd(double u) {
 		if (getEndV()==getStartV()) {
 			setEndV(u);

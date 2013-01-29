@@ -100,6 +100,7 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
     /**
      *
      */
+    @Override
     public synchronized void startOptPerformed(String infoString, int runNumber, Object goParams, List<InterfaceAdditionalPopulationInformer> informerList) {
         super.startOptPerformed(infoString, runNumber, goParams, informerList);
         graphInfoString = infoString;
@@ -114,6 +115,7 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
         }
     }
 
+    @Override
     public void stopOptPerformed(boolean normal, String stopMessage) {
         super.stopOptPerformed(normal, stopMessage);
 
@@ -158,6 +160,7 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
         }
     }
 
+    @Override
     protected void initPlots(PopulationInterface pop, List<InterfaceAdditionalPopulationInformer> informerList) {
         if (m_StatsParams instanceof StatisticsParameter) {
             graphDesc = lastFieldSelection.getSelectedWithIndex();
@@ -228,6 +231,7 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
     /**
      * Plots the selected data to the fitness graphs.
      */
+    @Override
     protected void plotCurrentResults() {
 //		m_PlotCounter--;
 
@@ -256,6 +260,7 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
      * does not define specific data. However its used by the ES module
      * implementation.
      */
+    @Override
     public void plotSpecificData(PopulationInterface pop, List<InterfaceAdditionalPopulationInformer> informer) {
         double[] specificData = pop.getSpecificData();
         int calls = pop.getFunctionCalls();
@@ -301,6 +306,7 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
 //		}
     }
 
+    @Override
     public String getHostName() {
         return hostName;
     }

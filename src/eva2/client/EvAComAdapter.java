@@ -23,35 +23,37 @@ import java.rmi.RemoteException;
  *
  */
 public class EvAComAdapter extends ComAdapter {
-	private LoggingPanel loggingPanel;
-	private EvAMainAdapterImpl localMainAdapter;
-	private boolean runLocally = false;
-	
-	/**
-	 *
-	 */
-	public void setLogPanel(LoggingPanel loggingPanel) {
-		this.loggingPanel = loggingPanel;
-	}
-	/**
-	 *
-	 */
-	public static EvAComAdapter getInstance() {
-		if (m_instance==null) {
-			m_instance = new EvAComAdapter();
-			m_instance.addServersFromProperties(EvAInfo.getProperties());
-		}
-		return (EvAComAdapter)m_instance;
-	}
 
-	/**
-	 * Creates the ModulAdapters RMI Object on the server
-	 * @return
-	 */
-	public ModuleAdapter getModuleAdapter(String selectedModuleName, InterfaceGOParameters goParams, String noGuiStatsFile) {
-		ModuleAdapter newModuleAdapter;
-		if ((m_RMIServer == null) && isRunLocally()) {
-            //ret = evaAdapter.getModuleAdapter(Modul, hostAdd, this.m_MainAdapterClient);
+    private LoggingPanel loggingPanel;
+    private EvAMainAdapterImpl localMainAdapter;
+    private boolean runLocally = false;
+
+    /**
+     *
+     */
+    public void setLogPanel(LoggingPanel loggingPanel) {
+        this.loggingPanel = loggingPanel;
+    }
+
+    /**
+     *
+     */
+    public static EvAComAdapter getInstance() {
+        if (m_instance == null) {
+            m_instance = new EvAComAdapter();
+            m_instance.addServersFromProperties(EvAInfo.getProperties());
+        }
+        return (EvAComAdapter) m_instance;
+    }
+
+    /**
+     * Creates the ModulAdapters RMI Object on the server
+     *
+     * @return
+     */
+    public ModuleAdapter getModuleAdapter(String selectedModuleName, InterfaceGOParameters goParams, String noGuiStatsFile) {
+        ModuleAdapter newModuleAdapter;
+        if ((m_RMIServer == null) && isRunLocally()) {
             newModuleAdapter = getLocalMainAdapter().getModuleAdapter(selectedModuleName, true, getHostName(), goParams, noGuiStatsFile, null);
         } else {
             newModuleAdapter = ((RMIConnectionEvA) getConnection(getHostName())).getModuleAdapter(selectedModuleName);
@@ -59,68 +61,77 @@ public class EvAComAdapter extends ComAdapter {
                 System.err.println("RMI Error for getting ModuleAdapterObject : " + selectedModuleName);
             }
         }
-		return newModuleAdapter;
-	}
-	
-	public void updateLocalMainAdapter() {
-		localMainAdapter = new EvAMainAdapterImpl();
-	}
-	
-	private EvAMainAdapter getLocalMainAdapter() { 
-		if (localMainAdapter == null) localMainAdapter = new EvAMainAdapterImpl();
-		return localMainAdapter;
-	}
-	
-	/**
-	 *  Returns a list of modules available on the server.
-	 *  @return
-	 */
-	public String[] getModuleNameList() {
-		String[] list;
-		
-		if ((m_RMIServer == null) && isRunLocally()) {
-			list = getLocalMainAdapter().getModuleNameList();
-		} else { 
-			RMIConnectionEvA Connection = (RMIConnectionEvA)getConnection(getHostName());
-			if (Connection == null) {
-				System.err.println("Couldnt create RMIConnection in EvAComAdapter.getModuleNameList");
-				return null;
-			}
-			list = ((EvAMainAdapter)Connection.getMainAdapter()).getModuleNameList();
-		}
-		if (loggingPanel != null)
-			loggingPanel.logMessage("List of modules on server:");
-		if (list != null)
-			for (int i = 0; i < list.length; i++) {
-				if ( (String) list[i] != null && loggingPanel != null)
-					loggingPanel.logMessage( (String) list[i]);
-			}
-		return list;
-	}
-		
-	protected MainAdapter getMainAdapter(RMIInvocationHandler invocHandler) throws RemoteException {
-		try {
-			return (EvAMainAdapter) invocHandler.getWrapper();
-		} catch (ClassCastException e) {
-			System.err.println("Warning: cannot cast to EvAMainAdapter in EvAComAdapter.. trying MainAdapter...");
-		}
-		return (MainAdapter) invocHandler.getWrapper();
-	}
-	
-	
-	protected RMIConnection createRMIConnection(String Host, MainAdapter mainRemoteObject, MainAdapterClient client) { 
-		return new RMIConnectionEvA(Host, mainRemoteObject, client);
-	}
-	/**
-	 * @return the runLocally
-	 */
-	public boolean isRunLocally() {
-		return runLocally;
-	}
-	/**
-	 * @param runLocally the runLocally to set
-	 */
-	public void setRunLocally(boolean runLocally) {
-		this.runLocally = runLocally;
-	}
+        return newModuleAdapter;
+    }
+
+    public void updateLocalMainAdapter() {
+        localMainAdapter = new EvAMainAdapterImpl();
+    }
+
+    private EvAMainAdapter getLocalMainAdapter() {
+        if (localMainAdapter == null) {
+            localMainAdapter = new EvAMainAdapterImpl();
+        }
+        return localMainAdapter;
+    }
+
+    /**
+     * Returns a list of modules available on the server.
+     *
+     * @return
+     */
+    public String[] getModuleNameList() {
+        String[] list;
+
+        if ((m_RMIServer == null) && isRunLocally()) {
+            list = getLocalMainAdapter().getModuleNameList();
+        } else {
+            RMIConnectionEvA Connection = (RMIConnectionEvA) getConnection(getHostName());
+            if (Connection == null) {
+                System.err.println("Couldnt create RMIConnection in EvAComAdapter.getModuleNameList");
+                return null;
+            }
+            list = ((EvAMainAdapter) Connection.getMainAdapter()).getModuleNameList();
+        }
+        if (loggingPanel != null) {
+            loggingPanel.logMessage("List of modules on server:");
+        }
+        if (list != null) {
+            for (int i = 0; i < list.length; i++) {
+                if ((String) list[i] != null && loggingPanel != null) {
+                    loggingPanel.logMessage((String) list[i]);
+                }
+            }
+        }
+        return list;
+    }
+
+    @Override
+    protected MainAdapter getMainAdapter(RMIInvocationHandler invocHandler) throws RemoteException {
+        try {
+            return (EvAMainAdapter) invocHandler.getWrapper();
+        } catch (ClassCastException e) {
+            System.err.println("Warning: cannot cast to EvAMainAdapter in EvAComAdapter.. trying MainAdapter...");
+        }
+        return (MainAdapter) invocHandler.getWrapper();
+    }
+
+    @Override
+    protected RMIConnection createRMIConnection(String Host, MainAdapter mainRemoteObject, MainAdapterClient client) {
+        return new RMIConnectionEvA(Host, mainRemoteObject, client);
+    }
+
+    /**
+     * @return the runLocally
+     */
+    public boolean isRunLocally() {
+        return runLocally;
+    }
+
+    /**
+     * @param runLocally the runLocally to set
+     */
+    public void setRunLocally(boolean runLocally) {
+        this.runLocally = runLocally;
+    }
 }

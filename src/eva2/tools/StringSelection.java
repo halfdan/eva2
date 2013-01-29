@@ -104,6 +104,7 @@ public class StringSelection implements Serializable {
         enumClass = e.getClass();
     }
 
+    @Override
     public Object clone() {
         return new StringSelection(this);
     }

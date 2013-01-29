@@ -53,6 +53,7 @@ public class GenericIntArrayEditor extends JPanel implements PropertyEditor {
         this.m_OKButton         = new JButton("OK");
         this.m_OKButton.setEnabled(true);
         this.m_OKButton.addActionListener(new ActionListener() {
+            @Override
 	        public void actionPerformed(ActionEvent e) {
 	            //m_Backup = copyObject(m_Object);
 	            if ((m_CustomEditor.getTopLevelAncestor() != null) && (m_CustomEditor.getTopLevelAncestor() instanceof Window)) {
@@ -69,11 +70,14 @@ public class GenericIntArrayEditor extends JPanel implements PropertyEditor {
     /** This action listener reads all values
      */
     KeyListener readIntArrayAction = new KeyListener() {
+        @Override
         public void keyPressed(KeyEvent event) {
         }
+        @Override
         public void keyTyped(KeyEvent event) {
         }
 
+        @Override
         public void keyReleased(KeyEvent event) {
             int[]    tmpD    = new int[m_InputTextField.length];
 
@@ -122,6 +126,7 @@ public class GenericIntArrayEditor extends JPanel implements PropertyEditor {
     /** This method will set the value of object that is to be edited.
      * @param o an object that must be an array.
      */
+    @Override
     public void setValue(Object o) {
         if (o instanceof PropertyIntArray) {
             this.m_IntArray = (PropertyIntArray) o;
@@ -132,10 +137,12 @@ public class GenericIntArrayEditor extends JPanel implements PropertyEditor {
     /** Returns the current object.
      * @return the current object
      */
+    @Override
     public Object getValue() {
         return this.m_IntArray;
     }
 
+    @Override
     public String getJavaInitializationString() {
         return "TEST";
     }
@@ -143,6 +150,7 @@ public class GenericIntArrayEditor extends JPanel implements PropertyEditor {
     /**
      *
      */
+    @Override
     public String getAsText() {
         return null;
     }
@@ -150,6 +158,7 @@ public class GenericIntArrayEditor extends JPanel implements PropertyEditor {
     /**
      *
      */
+    @Override
     public void setAsText(String text) throws IllegalArgumentException {
         throw new IllegalArgumentException(text);
     }
@@ -157,15 +166,18 @@ public class GenericIntArrayEditor extends JPanel implements PropertyEditor {
     /**
      *
      */
+    @Override
     public String[] getTags() {
         return null;
     }
 
+    @Override
     public void addPropertyChangeListener(PropertyChangeListener l) {
   	  if (m_Support == null) m_Support = new PropertyChangeSupport(this);
   	  m_Support.addPropertyChangeListener(l);
     }
 
+    @Override
     public void removePropertyChangeListener(PropertyChangeListener l) {
   	  if (m_Support == null) m_Support = new PropertyChangeSupport(this);
   	  m_Support.removePropertyChangeListener(l);
@@ -188,6 +200,7 @@ public class GenericIntArrayEditor extends JPanel implements PropertyEditor {
     /** Returns true since the Object can be shown
      * @return true
      */
+    @Override
     public boolean isPaintable() {
         return true;
     }
@@ -197,6 +210,7 @@ public class GenericIntArrayEditor extends JPanel implements PropertyEditor {
      * @param gfx the graphics context to use
      * @param box the area we are allowed to paint into
      */
+    @Override
     public void paintValue(Graphics gfx, Rectangle box) {
         FontMetrics fm = gfx.getFontMetrics();
         int vpad = (box.height - fm.getAscent()) / 2;
@@ -207,6 +221,7 @@ public class GenericIntArrayEditor extends JPanel implements PropertyEditor {
     /** Returns true because we do support a custom editor.
     * @return true
     */
+    @Override
     public boolean supportsCustomEditor() {
         return true;
     }
@@ -214,6 +229,7 @@ public class GenericIntArrayEditor extends JPanel implements PropertyEditor {
     /** Returns the array editing component.
     * @return a value of type 'java.awt.Component'
     */
+    @Override
     public Component getCustomEditor() {
         if (this.m_CustomEditor == null) this.initCustomEditor();
         return m_CustomEditor;

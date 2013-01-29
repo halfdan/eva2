@@ -18,6 +18,7 @@ public class MOSORandomWeight implements InterfaceMOSOConverter, java.io.Seriali
     }
     public MOSORandomWeight(MOSORandomWeight b) {
     }
+    @Override
     public Object clone() {
         return (Object) new MOSORandomWeight(this);
     }
@@ -29,6 +30,7 @@ public class MOSORandomWeight implements InterfaceMOSOConverter, java.io.Seriali
      * if you still want to access the original fitness values.
      * @param pop       The population to process.
      */
+    @Override
     public void convertMultiObjective2SingleObjective(Population pop) {
         for (int i = 0; i < pop.size(); i++) {
              this.convertSingleIndividual((AbstractEAIndividual)pop.get(i));
@@ -38,6 +40,7 @@ public class MOSORandomWeight implements InterfaceMOSOConverter, java.io.Seriali
     /** This method processes a single individual
      * @param indy      The individual to process.
      */
+    @Override
     public void convertSingleIndividual(AbstractEAIndividual indy) {
         double[]    resultFit = new double[1];
         double[]    tmpFit, tmpWeight;
@@ -65,6 +68,7 @@ public class MOSORandomWeight implements InterfaceMOSOConverter, java.io.Seriali
      * value of one
      * @param dim       Outputdimension of the problem
      */
+    @Override
     public void setOutputDimension(int dim) {
 
     }
@@ -72,6 +76,7 @@ public class MOSORandomWeight implements InterfaceMOSOConverter, java.io.Seriali
     /** This method returns a description of the objective
      * @return A String
      */
+    @Override
     public String getStringRepresentation() {
         return this.getName()+"\n";
     }
@@ -84,6 +89,7 @@ public class MOSORandomWeight implements InterfaceMOSOConverter, java.io.Seriali
      * name to the current object.
      * @return The name.
      */
+    @Override
     public String getName() {
         return "Randomly Weighted Sum";
     }

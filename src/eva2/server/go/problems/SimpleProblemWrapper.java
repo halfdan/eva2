@@ -75,12 +75,14 @@ public class SimpleProblemWrapper extends AbstractOptimizationProblem {
 		}
 	}
 
+    @Override
 	public void evaluatePopulationStart(Population population) {
 		if (m_plot != null && (!m_plot.isValid())) {
 			openPlot();
 		}
 	}
 	
+    @Override
 	public void evaluatePopulationEnd(Population population) {
 		super.evaluatePopulationEnd(population);
 		repaintCnt += population.size();
@@ -237,6 +239,7 @@ public class SimpleProblemWrapper extends AbstractOptimizationProblem {
 		m_Template = indy;
 	}
     
+    @Override
 	public String individualTemplateTipText() {
 		return "Set the individual properties for the optimization";
 	}
@@ -247,6 +250,7 @@ public class SimpleProblemWrapper extends AbstractOptimizationProblem {
      * @param opt       The Optimizer that is used or had been used.
      * @return The description.
      */
+    @Override
     public String getStringRepresentationForProblem(InterfaceOptimizer opt) {
         StringBuffer sb = new StringBuffer(200);
         sb.append("A wrapped simple problem based on ");
@@ -260,6 +264,7 @@ public class SimpleProblemWrapper extends AbstractOptimizationProblem {
      * name to the current object.
      * @return The name.
      */
+    @Override
     public String getName() {
     	return "SimpleProblemWrapper";
     }

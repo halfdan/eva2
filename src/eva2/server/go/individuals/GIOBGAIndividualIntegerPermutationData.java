@@ -45,6 +45,7 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
         cloneAEAObjects((AbstractEAIndividual) individual);
     }
 
+    @Override
     public Object clone() {
         return (Object) new GIOBGAIndividualIntegerPermutationData(this);
     }
@@ -53,6 +54,7 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
      * @param individual      The individual to compare to.
      * @return boolean if equal true else false.
      */
+    @Override
     public boolean equalGenotypes(AbstractEAIndividual individual) {
         if (individual instanceof GIOBGAIndividualIntegerPermutationData) {
             GIOBGAIndividualIntegerPermutationData indy = (GIOBGAIndividualIntegerPermutationData)individual;
@@ -67,11 +69,13 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
     /** This method will allow a default initialisation of the individual
      * @param opt   The optimization problem that is to be solved.
      */
+    @Override
     public void init(InterfaceOptimizationProblem opt) {
         ((AbstractEAIndividual)this.m_Integer).init(opt);
         ((AbstractEAIndividual)this.m_Permutation).init(opt);
     }
     
+    @Override
     public void defaultInit(InterfaceOptimizationProblem prob) {
         ((AbstractEAIndividual)this.m_Integer).defaultInit(prob);
         ((AbstractEAIndividual)this.m_Permutation).defaultInit(prob);
@@ -82,6 +86,7 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
      * @param obj   The initial value for the phenotype
      * @param opt   The optimization problem that is to be solved.
      */
+    @Override
     public void initByValue(Object obj, InterfaceOptimizationProblem opt) {
         if (obj instanceof Object[]) {
             if (((Object[])obj)[0] instanceof double[]) {
@@ -100,11 +105,13 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
 
     /** This method will mutate the individual randomly
      */
+    @Override
     public void mutate() {
         if (RNG.flipCoin(this.m_MutationProbability))((AbstractEAIndividual)this.m_Integer).mutate();
         if (RNG.flipCoin(this.m_MutationProbability))((AbstractEAIndividual)this.m_Permutation).mutate();
     }
 
+    @Override
     public void defaultMutate() {
         ((AbstractEAIndividual)this.m_Integer).defaultMutate();
         ((AbstractEAIndividual)this.m_Permutation).defaultMutate();
@@ -115,6 +122,7 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
      * @param partners  The possible partners
      * @return offsprings
      */
+    @Override
     public AbstractEAIndividual[] mateWith(Population partners) {
         AbstractEAIndividual[] result;
         if (RNG.flipCoin(this.m_CrossoverProbability)) {
@@ -169,6 +177,7 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
      * noteably the Genotype.
      * @return A descriptive string
      */
+    @Override
     public String getStringRepresentation() {
         String result = "This is a hybrid Individual:\n";
         result += "The Integer Part:\n"+((AbstractEAIndividual)this.m_Integer).getStringRepresentation();
@@ -182,6 +191,7 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
     /** This method allows you to request a certain amount of int data
      * @param length    The lenght of the int[] that is to be optimized
      */
+    @Override
     public void setIntegerDataLength (int length) {
         this.m_Integer.setIntegerDataLength(length);
     }
@@ -189,6 +199,7 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
     /** This method returns the length of the int data set
      * @return The number of integers stored
      */
+    @Override
     public int size() {
         return this.m_Integer.size();
     }
@@ -198,6 +209,7 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
      * for dimension d.
      * @param range     The new range for the int data.
      */
+    @Override
     public void SetIntRange(int[][] range) {
         this.m_Integer.SetIntRange(range);
     }
@@ -205,6 +217,7 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
     /** This method will return the range for all int attributes.
      * @return The range array.
      */
+    @Override
     public int[][] getIntRange() {
         return this.m_Integer.getIntRange();
     }
@@ -212,6 +225,7 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
     /** This method allows you to read the int data
      * @return int[] representing the int data.
      */
+    @Override
     public int[] getIntegerData() {
         return this.m_Integer.getIntegerData();
     }
@@ -220,6 +234,7 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
      * an update from the genotype
      * @return int[] representing the int data.
      */
+    @Override
     public int[] getIntegerDataWithoutUpdate() {
         return this.m_Integer.getIntegerDataWithoutUpdate();
     }
@@ -227,6 +242,7 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
     /** This method allows you to set the int data.
      * @param intData    The new int data.
      */
+    @Override
     public void SetIntPhenotype(int[] intData) {
         this.m_Integer.SetIntPhenotype(intData);
     }
@@ -235,6 +251,7 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
      * memetic algorithms.
      * @param intData    The new int data.
      */
+    @Override
     public void SetIntGenotype(int[] intData) {
         this.m_Integer.SetIntGenotype(intData);
     }
@@ -245,6 +262,7 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
     /** setLength sets the length of the permutation.
      * @param length int new length
      */
+    @Override
     public void setPermutationDataLength(int[] length) {
         this.m_Permutation.setPermutationDataLength(length);
         this.m_Integer.setIntegerDataLength(length.length);
@@ -253,6 +271,7 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
     /** size returns the size of the permutation.
      * @return int
      */
+    @Override
     public int[] sizePermutation() {
         return this.m_Permutation.sizePermutation();
     }
@@ -260,6 +279,7 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
     /** This method allows you to read the permutation data
      * @return int[] represent the permutation.
      */
+    @Override
     public int[][] getPermutationData() {
         return this.m_Permutation.getPermutationData();
     }
@@ -268,6 +288,7 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
      * an update from the genotype
      * @return int[] representing the permutation.
      */
+    @Override
     public int[][] getPermutationDataWithoutUpdate() {
         return this.m_Permutation.getPermutationDataWithoutUpdate();
     }
@@ -275,6 +296,7 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
     /** This method allows you to set the permutation.
      * @param perm   The new permutation data.
      */
+    @Override
     public void SetPermutationPhenotype(int[][] perm) {
         this.SetPermutationPhenotype(perm);
     }
@@ -283,10 +305,12 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
      * memetic algorithms.
      * @param perm     The new permutation data.
      */
+    @Override
     public void SetPermutationGenotype(int[][] perm) {
         this.SetPermutationGenotype(perm);
     }
 
+    @Override
     public void setFirstindex(int[] firstindex) {
         this.m_Permutation.setFirstindex(firstindex);
     }
@@ -298,6 +322,7 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
      * name to the current object.
      * @return The name.
      */
+    @Override
     public String getName() {
         return "GA/ES individual";
     }

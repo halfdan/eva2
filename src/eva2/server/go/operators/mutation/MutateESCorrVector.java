@@ -61,6 +61,7 @@ public class MutateESCorrVector implements InterfaceMutation, java.io.Serializab
     /** This method will enable you to clone a given mutation operator
      * @return The clone
      */
+    @Override
     public Object clone() {
         return new MutateESCorrVector(this);
     }
@@ -69,6 +70,7 @@ public class MutateESCorrVector implements InterfaceMutation, java.io.Serializab
      * are actually the same.
      * @param mutator   The other mutation operator
      */
+    @Override
     public boolean equals(Object mutator) {
         if (mutator instanceof MutateESCorrVector) {
             MutateESCorrVector mut = (MutateESCorrVector)mutator;
@@ -83,6 +85,7 @@ public class MutateESCorrVector implements InterfaceMutation, java.io.Serializab
      * @param individual      The individual that will be mutated.
      * @param opt               The optimization problem.
      */
+    @Override
     public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
     	double[] initVelocity = calcInitialVel(m_initialVelocity, ((InterfaceESIndividual)individual).getDoubleRange());
     	individual.putData(vectorKey, initVelocity);
@@ -111,6 +114,7 @@ public class MutateESCorrVector implements InterfaceMutation, java.io.Serializab
      * doesn't implement InterfaceESIndividual nothing happens.
      * @param individual    The individual that is to be mutated
      */
+    @Override
     public void mutate(AbstractEAIndividual individual) {
 //        if (TRACE) System.out.println("Before Mutate: " + AbstractEAIndividual.getDefaultDataString(individual));
         if (individual instanceof InterfaceESIndividual) {
@@ -160,6 +164,7 @@ public class MutateESCorrVector implements InterfaceMutation, java.io.Serializab
      * @param indy1     The original mother
      * @param partners  The original partners
      */
+    @Override
     public void crossoverOnStrategyParameters(AbstractEAIndividual indy1, Population partners) {
         ArrayList<Double> tmpList = new ArrayList<Double>();
         if (indy1.getMutationOperator() instanceof MutateESCorrVector) tmpList.add(new Double(((MutateESCorrVector)indy1.getMutationOperator()).m_scalingDev));
@@ -177,6 +182,7 @@ public class MutateESCorrVector implements InterfaceMutation, java.io.Serializab
      * operator
      * @return A descriptive string.
      */
+    @Override
     public String getStringRepresentation() {
         return "ES global mutation";
     }

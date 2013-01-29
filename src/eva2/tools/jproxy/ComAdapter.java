@@ -563,6 +563,7 @@ class RMIRegistration implements Runnable {
 		comAd = comAdapter;
 	}
 
+    @Override
 	public void run() {
 		if (TRACE)
 			System.out.println("LaunchRMIRegistry on Client on PORT " + ComAdapter.PORT);

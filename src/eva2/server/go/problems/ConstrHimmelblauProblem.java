@@ -62,6 +62,7 @@ public class ConstrHimmelblauProblem extends AbstractProblemDouble implements Se
 		return 5;
 	}
 	
+    @Override
 	public String getName() {
 		return "Constrained Himmelblau Problem";
 	}

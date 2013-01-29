@@ -61,6 +61,7 @@ public class ESIndividualIntegerData extends AbstractEAIndividual implements Int
         cloneAEAObjects((AbstractEAIndividual) individual);
     }
 
+    @Override
     public Object clone() {
         return (Object) new ESIndividualIntegerData(this);
     }
@@ -69,6 +70,7 @@ public class ESIndividualIntegerData extends AbstractEAIndividual implements Int
      * @param individual      The individual to compare to.
      * @return boolean if equal true else false.
      */
+    @Override
     public boolean equalGenotypes(AbstractEAIndividual individual) {
         if (individual instanceof ESIndividualIntegerData) {
             ESIndividualIntegerData indy = (ESIndividualIntegerData) individual;
@@ -91,6 +93,7 @@ public class ESIndividualIntegerData extends AbstractEAIndividual implements Int
     /** This method allows you to request a certain amount of int data
      * @param length    The lenght of the int[] that is to be optimized
      */
+    @Override
     public void setIntegerDataLength (int length) {
         double[]     newDesPa = new double[length];
         int[][]      newRange = new int[length][2];
@@ -115,6 +118,7 @@ public class ESIndividualIntegerData extends AbstractEAIndividual implements Int
     /** This method returns the length of the int data set
      * @return The number of ints stored
      */
+    @Override
     public int size() {
         return this.m_Genotype.length;
     }
@@ -124,6 +128,7 @@ public class ESIndividualIntegerData extends AbstractEAIndividual implements Int
      * ranges.
      * @param range     The new range for the int data.
      */
+    @Override
     public void SetIntRange(int[][] range) {
         if (range.length != this.m_Range.length) {
             System.out.println("Warning: Trying to set a range of length " + range.length + " to a vector of length "
@@ -138,6 +143,7 @@ public class ESIndividualIntegerData extends AbstractEAIndividual implements Int
     /** This method will return the range for all int attributes.
      * @return The range array.
      */
+    @Override
     public int[][] getIntRange() {
         return this.m_Range;
     }
@@ -145,6 +151,7 @@ public class ESIndividualIntegerData extends AbstractEAIndividual implements Int
     /** This method allows you to read the int data
      * @return int[] representing the int data.
      */
+    @Override
     public int[] getIntegerData() {
         this.m_Phenotype = new int[this.m_Genotype.length];
         for (int i = 0; i < this.m_Phenotype.length; i++) {
@@ -159,6 +166,7 @@ public class ESIndividualIntegerData extends AbstractEAIndividual implements Int
      * an update from the genotype
      * @return int[] representing the int data.
      */
+    @Override
     public int[] getIntegerDataWithoutUpdate() {
         return this.m_Phenotype;
     }
@@ -166,6 +174,7 @@ public class ESIndividualIntegerData extends AbstractEAIndividual implements Int
     /** This method allows you to set the int data.
      * @param intData    The new int data.
      */
+    @Override
     public void SetIntPhenotype(int[] intData) {
         this.m_Phenotype = intData;
     }
@@ -174,6 +183,7 @@ public class ESIndividualIntegerData extends AbstractEAIndividual implements Int
      * memetic algorithms.
      * @param intData    The new int data.
      */
+    @Override
     public void SetIntGenotype(int[] intData) {
     	for (int i = 0; i < this.m_Genotype.length; i++) {
     		m_Genotype[i]=(double)intData[i];
@@ -190,6 +200,7 @@ public class ESIndividualIntegerData extends AbstractEAIndividual implements Int
      * @param obj   The initial value for the phenotype
      * @param opt   The optimization problem that is to be solved.
      */
+    @Override
     public void initByValue(Object obj, InterfaceOptimizationProblem opt) {
         if (obj instanceof int[]) {
             int[]  bs = (int[]) obj;
@@ -207,6 +218,7 @@ public class ESIndividualIntegerData extends AbstractEAIndividual implements Int
      * noteably the Genotype.
      * @return A descriptive string
      */
+    @Override
     public String getStringRepresentation() {
         String result = "";
         result += "ESIndividual coding int: (";
@@ -229,6 +241,7 @@ public class ESIndividualIntegerData extends AbstractEAIndividual implements Int
     /** This method will allow the user to read the ES 'genotype'
      * @return BitSet
      */
+    @Override
     public double[] getDGenotype() {
         return this.m_Genotype;
     }
@@ -236,6 +249,7 @@ public class ESIndividualIntegerData extends AbstractEAIndividual implements Int
     /** This method will allow the user to set the current ES 'genotype'.
      * @param b    The new genotype of the Individual
      */
+    @Override
     public void SetDGenotype(double[] b) {
         this.m_Genotype = b;
         for (int i = 0; i < this.m_Genotype.length; i++) {
@@ -246,6 +260,7 @@ public class ESIndividualIntegerData extends AbstractEAIndividual implements Int
 
     /** This method performs a simple one element mutation on the double vector
      */
+    @Override
     public void defaultMutate() {
         int mutationIndex = RNG.randomInt(0, this.m_Genotype.length-1);
         this.m_Genotype[mutationIndex] += ((this.m_Range[mutationIndex][1] - this.m_Range[mutationIndex][0])/2)*RNG.gaussianDouble(0.05f);
@@ -256,6 +271,7 @@ public class ESIndividualIntegerData extends AbstractEAIndividual implements Int
     /** This method will return the range for all double attributes.
      * @return The range array.
      */
+    @Override
     public double[][] getDoubleRange() {
         double[][] result = new double[this.m_Range.length][2];
         for (int i = 0; i < this.m_Range.length; i++) {
@@ -265,6 +281,7 @@ public class ESIndividualIntegerData extends AbstractEAIndividual implements Int
         return result;
     }
 
+    @Override
     public void defaultInit(InterfaceOptimizationProblem prob) {
     	int[][] range = m_Range;
         if ((prob != null) && (prob instanceof InterfaceHasInitRange) && (((InterfaceHasInitRange)prob).getInitRange()!=null)) range = (int[][])((InterfaceHasInitRange)prob).getInitRange();
@@ -279,6 +296,7 @@ public class ESIndividualIntegerData extends AbstractEAIndividual implements Int
      * name to the current object.
      * @return The name.
      */
+    @Override
     public String getName() {
         return "ES individual";
     }

@@ -32,6 +32,7 @@ public class SelectEPTournaments implements InterfaceSelection, java.io.Serializ
         this.m_ObeyDebsConstViolationPrinciple = a.m_ObeyDebsConstViolationPrinciple;
     }
 
+    @Override
     public Object clone() {
         return (Object) new SelectEPTournaments(this);
     }
@@ -42,6 +43,7 @@ public class SelectEPTournaments implements InterfaceSelection, java.io.Serializ
      * before hand...
      * @param population    The population that is to be processed.
      */
+    @Override
     public void prepareSelection(Population population) {
         int[]   best = new int[population.getBestEAIndividual().getFitness().length];
         int     rand;
@@ -85,6 +87,7 @@ public class SelectEPTournaments implements InterfaceSelection, java.io.Serializ
      * @param size          The number of Individuals to select
      * @return The selected population.
      */
+    @Override
     public Population selectFrom(Population population, int size) {
         Population              result          = new Population();
         int                     currentCriteria = 0, critSize;
@@ -148,6 +151,7 @@ public class SelectEPTournaments implements InterfaceSelection, java.io.Serializ
      * @param size              The number of partners needed.
      * @return The selected partners.
      */
+    @Override
     public Population findPartnerFor(AbstractEAIndividual dad, Population avaiablePartners, int size) {
         return this.selectFrom(avaiablePartners, size);
     }
@@ -200,6 +204,7 @@ public class SelectEPTournaments implements InterfaceSelection, java.io.Serializ
      * of Deb
      * @param b     The new state
      */
+    @Override
     public void setObeyDebsConstViolationPrinciple(boolean b) {
         this.m_ObeyDebsConstViolationPrinciple = b;
     }

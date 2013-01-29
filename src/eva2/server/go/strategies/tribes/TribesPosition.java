@@ -39,6 +39,7 @@ public class TribesPosition implements java.io.Serializable {
 //        return Clone;
 //    }
 
+    @Override
     public TribesPosition clone() {
         // Pour remplacer "implements Cloneable"
         TribesPosition Clone = new TribesPosition(x.length);
@@ -895,6 +896,7 @@ public class TribesPosition implements java.io.Serializable {
     	return t;
     }
 
+    @Override
     public String toString() {
     	StringBuffer sb = new StringBuffer("TribesMemory at [");
     	for (int i=0; i<x.length; i++) {

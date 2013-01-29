@@ -45,6 +45,7 @@ public class MetricMaximumParetoFrontError implements eva2.server.go.operators.p
     /** This method returns a deep clone of the problem.
      * @return  the clone
      */
+    @Override
     public Object clone() {
         return (Object) new MetricMaximumParetoFrontError(this);
     }
@@ -84,6 +85,7 @@ public class MetricMaximumParetoFrontError implements eva2.server.go.operators.p
     /** This method gives a metric how to evaluate
      * an achieved Pareto-Front
      */
+    @Override
     public double calculateMetricOn(Population pop, AbstractMultiObjectiveOptimizationProblem problem) {
         double      result = 0, min, dist;
         Population  tmpPPO = new Population();

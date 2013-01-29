@@ -175,6 +175,7 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
    	transient protected eva2.gui.Plot      m_Plot = null;
 //	private int useAnchors = 0;	// use anchors to detect environment changes? 
 
+    @Override
 	public Object clone() {
 		return new Tribes(this);
 	}
@@ -202,6 +203,7 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
 		hideHideable();
 	}
 
+    @Override
 	public void setProblem(InterfaceOptimizationProblem problem) {
 //		System.out.println("TRIBES.SetProblem()");
 		m_problem = (AbstractOptimizationProblem)problem;
@@ -214,6 +216,7 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
 		setPopulation(pop);
 	}
 
+    @Override
 	public void init() {
 //		System.out.println("TRIBES.init()");
 		// Generate a swarm
@@ -244,6 +247,7 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
 	 * and memories), the setPopulation method is only telling Tribes the range
 	 * of the indiviuals in the beginning of the run, the individuals will be discarded.
 	 */
+    @Override
 	public void initByPopulation(Population pop, boolean reset) {
 		setPopulation(pop);
 	}
@@ -259,6 +263,7 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
 		} else return bestExp;
 	}
 	
+    @Override
 	public void optimize() {
 		
 		int initOption = 0;
@@ -632,6 +637,7 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
 	 * and memories), the setPopulation method is only telling Tribes the range
 	 * of the indiviuals in the beginning of the run, the individuals will be discarded.
 	 */
+    @Override
 	public void setPopulation(Population pop) {
 		if (pop == null) return;
 		population = pop;
@@ -658,6 +664,7 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
 	 * in the returned population. This, however, means that the best found solution might not
 	 * be inluded as well at several if not most stages of the search.
 	 */
+    @Override
 	public Population getPopulation() {
 		return population;
 	}
@@ -668,6 +675,7 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
 	 * 
 	 * @return a population of possible solutions. 
 	 */
+    @Override
     public InterfaceSolutionSet getAllSolutions() {
     	// return population and memories?
     	Population all = (Population)population.clone();
@@ -695,9 +703,11 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
     /** This method allows you to add the LectureGUI as listener to the Optimizer
 	 * @param ea
 	 */
+    @Override
 	public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
 		this.m_Listener = ea;
 	}
+    @Override
 	public boolean removePopulationChangedEventListener(
 			InterfacePopulationChangedEventListener ea) {
 		if (m_Listener==ea) {
@@ -713,23 +723,29 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
 		return (evals % notifyGenChangedEvery) == 0;
 	}
 
+    @Override
 	public void freeWilly() {}
 
+    @Override
 	public void setIdentifier(String name) {
 		this.m_Identifier = name;
 	}
+    @Override
 	public String getIdentifier() {
 		return m_Identifier;
 	}
 
+    @Override
 	public String getName() {
 		return "TRIBES";
 	}
 
+    @Override
 	public InterfaceOptimizationProblem getProblem() {
 		return m_problem;
 	}
 
+    @Override
 	public String getStringRepresentation() {
 		return globalInfo();
 	}

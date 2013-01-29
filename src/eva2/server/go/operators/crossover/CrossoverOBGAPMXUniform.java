@@ -26,10 +26,12 @@ public class CrossoverOBGAPMXUniform implements InterfaceCrossover, java.io.Seri
     /** This method will enable you to clone a given mutation operator
      * @return The clone
      */
+    @Override
     public Object clone() {
         return new CrossoverOBGAPMXUniform(this);
     }
 
+    @Override
     public AbstractEAIndividual[] mate(AbstractEAIndividual indy1, Population partners) {
       AbstractEAIndividual[] result = null;
       result = new AbstractEAIndividual[partners.size() + 1];
@@ -76,16 +78,19 @@ public class CrossoverOBGAPMXUniform implements InterfaceCrossover, java.io.Seri
      * are actually the same.
      * @param crossover   The other crossover operator
      */
+    @Override
     public boolean equals(Object crossover) {
         if (crossover instanceof CrossoverOBGAPMXUniform) return true;
         else return false;
     }
 
 
+    @Override
   public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
     // nothing to init!
   }
 
+    @Override
     public String getStringRepresentation() {
         return this.getName();
     }

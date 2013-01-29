@@ -15,6 +15,7 @@ public class ReplaceWorst implements InterfaceReplacement, java.io.Serializable 
 
     /** The ever present clone method
      */
+    @Override
     public Object clone() {
         return new ReplaceRandom();
     }
@@ -26,6 +27,7 @@ public class ReplaceWorst implements InterfaceReplacement, java.io.Serializable 
      * @param pop       The population
      * @param sub       The subset
      */
+    @Override
     public void insertIndividual(AbstractEAIndividual indy, Population pop, Population sub) {
         AbstractEAIndividual worst = pop.getWorstEAIndividual();
         if (pop.remove(worst)) {

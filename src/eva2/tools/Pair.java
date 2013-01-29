@@ -49,6 +49,7 @@ public class Pair<S, T> implements Serializable {
 	 * 
 	 * @see java.lang.Object#clone()
 	 */
+    @Override
 	public Pair<S, T> clone() {
 		return new Pair<S, T>(head, tail);
 	}

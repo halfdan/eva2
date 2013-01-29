@@ -49,6 +49,7 @@ public class BayNet {
 		this.lowerProbLimit = b.lowerProbLimit;
 	}
 
+    @Override
 	public Object clone(){
 		return new BayNet(this);
 	}

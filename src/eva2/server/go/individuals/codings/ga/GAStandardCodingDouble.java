@@ -71,6 +71,7 @@ public class GAStandardCodingDouble implements InterfaceGADoubleCoding, java.io.
      * @param correction            Enable automatic correction is enabled.
      * @return                      The decoded value.
      */
+    @Override
     public double decodeValue(BitSet refBitSet, double[] range, int[] locus, boolean correction) {
     	long val = (refBitSet.get(locus[0]) ? 1 : 0);
     	int m_length = locus[1];
@@ -96,6 +97,7 @@ public class GAStandardCodingDouble implements InterfaceGADoubleCoding, java.io.
      * @param refBitSet         The BitSet where the questioned value is stored.
      * @param locus             The position and length on the BitSet that is to be coded.
      */
+    @Override
     public void codeValue(double value, double[] range, BitSet refBitSet, int[] locus) {
         double   u_max, u_min, m_max, m_min;
         int     m_start, m_length, counter = 0;

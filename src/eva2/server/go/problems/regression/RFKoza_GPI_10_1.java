@@ -17,6 +17,7 @@ public class RFKoza_GPI_10_1 implements InterfaceRegressionFunction, java.io.Ser
 
     }
 
+    @Override
     public Object clone() {
         return (Object) new RFKoza_GPI_10_1(this);
     }
@@ -25,6 +26,7 @@ public class RFKoza_GPI_10_1 implements InterfaceRegressionFunction, java.io.Ser
      * @param x     Input vector.
      * @return y the function result.
      */
+    @Override
     public double evaluateFunction(double[] x) {
         double result = 0;
         for (int i = 0; i < x.length; i++) result += Math.cos(2*x[i]);

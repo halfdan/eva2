@@ -43,6 +43,7 @@ public abstract class AbstractDynTransProblem extends AbstractSynchronousOptimiz
 	 * @param individual	the individual to be evaluated
 	 * @param t				timestamp of the evaluation
 	 */
+    @Override
 	public void evaluateAt(AbstractEAIndividual individual, double time) {
 		/* the fitness ist set by the evaluate function */
 		AbstractEAIndividual tussy = (AbstractEAIndividual)individual.clone();
@@ -55,6 +56,7 @@ public abstract class AbstractDynTransProblem extends AbstractSynchronousOptimiz
 	 * Override population evaluation to do some data output.
 	 * 
 	 */
+    @Override
 	public void evaluatePopulationEnd(Population population) {
 		double delta = transLength(getCurrentProblemTime());
 		if (isExtraPlot() == true) {
@@ -104,6 +106,7 @@ public abstract class AbstractDynTransProblem extends AbstractSynchronousOptimiz
 	/*
 	 * Initializes the underlying problem in the problem class 
 	 */
+    @Override
 	public void initProblem() {
 		super.initProblem();
 		bestIndividual = null;
@@ -117,6 +120,7 @@ public abstract class AbstractDynTransProblem extends AbstractSynchronousOptimiz
      * 
      * @param severity the severity of the change (time measure)
      */
+    @Override
 	public void resetProblem(double severity) {
 		if ((prob != null) && (bestIndividual != null))
 			this.evaluateAt(bestIndividual, getCurrentProblemTime());
@@ -125,6 +129,7 @@ public abstract class AbstractDynTransProblem extends AbstractSynchronousOptimiz
 	/* inits the population in the problem itself
 	 * 
 	 */
+    @Override
 	public void initPopulationAt(Population population, double time) {
 		if (TRACE) System.out.println("DynTransProblem at " + this + " initPop, problem is " + getProblem());
 		getProblem().initPopulation(population);
@@ -139,6 +144,7 @@ public abstract class AbstractDynTransProblem extends AbstractSynchronousOptimiz
 /******************************************************************************
  * These are for the GUI
  */
+    @Override
 	public String getStringRepresentationForProblem(InterfaceOptimizer opt) {
 		return "DynTransProblem";
 	}

@@ -60,6 +60,7 @@ public class DPointSet extends DComponent {
 	 * -------------------------------------------------------------------------* public methods
    *-------------------------------------------------------------------------
 	 */
+    @Override
 	public void paint(DMeasures m) {
 		Graphics2D g = (Graphics2D) m.getGraphics();
 		g.setStroke(stroke);
@@ -244,6 +245,7 @@ public class DPointSet extends DComponent {
 		rectangle = DRectangle.getEmpty();
 	}
 
+    @Override
 	public String toString() {
 		String text = "eva2.tools.chart2d.DPointSet[size:" + getSize();
 		for (int i = 0; i < x.getSize(); i++) {

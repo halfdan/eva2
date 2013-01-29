@@ -36,6 +36,7 @@ Serializable {
 	public EvaluationTerminator() {
 	}
 	
+    @Override
 	public void init(InterfaceOptimizationProblem prob){
 		msg = "Not terminated.";
 	}
@@ -52,10 +53,12 @@ Serializable {
 		m_FitnessCalls = x;
 	}
 
+    @Override
 	public boolean isTerminated(InterfaceSolutionSet solSet) {
 		return isTerminated(solSet.getCurrentPopulation());
 	}
 
+    @Override
 	public boolean isTerminated(PopulationInterface pop) {
 		//System.out.println("m_FitnessCalls="+m_FitnessCalls);
 		if (m_FitnessCalls>pop.getFunctionCalls()) return false;
@@ -65,10 +68,12 @@ Serializable {
 		}
 	}
 
+    @Override
 	public String lastTerminationMessage() {
 		return msg;
 	}
 
+    @Override
 	public String toString() {
 		String ret = "EvaluationTerminator,calls="+m_FitnessCalls;
 		return ret;

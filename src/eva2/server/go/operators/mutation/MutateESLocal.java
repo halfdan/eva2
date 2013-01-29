@@ -55,6 +55,7 @@ public class MutateESLocal implements InterfaceMutation, InterfaceAdditionalPopu
     /** This method will enable you to clone a given mutation operator
      * @return The clone
      */
+    @Override
     public Object clone() {
         return new MutateESLocal(this);
     }
@@ -63,6 +64,7 @@ public class MutateESLocal implements InterfaceMutation, InterfaceAdditionalPopu
      * are actually the same.
      * @param mutator   The other mutation operator
      */
+    @Override
     public boolean equals(Object mutator) {
     	if (mutator==this) return true;
         if (mutator instanceof MutateESLocal) {
@@ -83,6 +85,7 @@ public class MutateESLocal implements InterfaceMutation, InterfaceAdditionalPopu
      * @param individual      The individual that will be mutated.
      * @param opt               The optimization problem.
      */
+    @Override
     public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
         if (individual instanceof InterfaceESIndividual) {
             // init the Sigmas
@@ -95,6 +98,7 @@ public class MutateESLocal implements InterfaceMutation, InterfaceAdditionalPopu
      * doesn't implement InterfaceESIndividual nothing happens.
      * @param individual    The individual that is to be mutated
      */
+    @Override
     public void mutate(AbstractEAIndividual individual) {
         //System.out.println("Before Mutate: " +((GAIndividual)individual).getSolutionRepresentationFor());
 
@@ -120,6 +124,7 @@ public class MutateESLocal implements InterfaceMutation, InterfaceAdditionalPopu
      * @param indy1     The original mother
      * @param partners  The original partners
      */
+    @Override
     public void crossoverOnStrategyParameters(AbstractEAIndividual indy1, Population partners) {
         ArrayList tmpListA = new ArrayList();
         ArrayList tmpListB = new ArrayList();
@@ -171,6 +176,7 @@ public class MutateESLocal implements InterfaceMutation, InterfaceAdditionalPopu
      * operator
      * @return A descriptive string.
      */
+    @Override
     public String getStringRepresentation() {
         return "ES local mutation";
     }
@@ -265,6 +271,7 @@ public class MutateESLocal implements InterfaceMutation, InterfaceAdditionalPopu
 	 * (non-Javadoc)
 	 * @see eva2.server.go.problems.InterfaceAdditionalPopulationInformer#getAdditionalDataHeader()
 	 */
+    @Override
 	public String[] getAdditionalDataHeader() {
 		return new String[] {"sigma"};
 	}
@@ -273,6 +280,7 @@ public class MutateESLocal implements InterfaceMutation, InterfaceAdditionalPopu
 	 * (non-Javadoc)
 	 * @see eva2.server.go.problems.InterfaceAdditionalPopulationInformer#getAdditionalDataInfo()
 	 */
+    @Override
 	public String[] getAdditionalDataInfo() {
 		return new String[] {"The ES local mutation step sizes."};
 	}
@@ -281,6 +289,7 @@ public class MutateESLocal implements InterfaceMutation, InterfaceAdditionalPopu
 	 * (non-Javadoc)
 	 * @see eva2.server.go.problems.InterfaceAdditionalPopulationInformer#getAdditionalDataValue(eva2.server.go.PopulationInterface)
 	 */
+    @Override
 	public Object[] getAdditionalDataValue(PopulationInterface pop) {
 		return new Object[]{m_Sigmas};
 	}

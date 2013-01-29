@@ -52,6 +52,7 @@ public class MOEAParameters extends AbstractGOParameters implements InterfaceGOP
     	super(Source);
     }
 
+    @Override
     public Object clone() {
         return new MOEAParameters(this);
     }
@@ -81,12 +82,15 @@ public class MOEAParameters extends AbstractGOParameters implements InterfaceGOP
     /** This method allows you to set/get the optimizing technique to use.
      * @return The current optimizing method
      */
+    @Override
     public InterfaceOptimizer getOptimizer() {
         return ((MultiObjectiveEA)this.m_Optimizer).getOptimizer();
     }
+    @Override
     public void setOptimizer(InterfaceOptimizer b){
         ((MultiObjectiveEA)this.m_Optimizer).setOptimizer(b);
     }
+    @Override
     public String optimizerTipText() {
         return "Choose a population based optimizing technique to use.";
     }

@@ -63,6 +63,7 @@ public class AboutDialog extends JDialog {
         infoEditorPane.setOpaque(false);
         infoEditorPane.addHyperlinkListener(new HyperlinkListener() {
 
+            @Override
             public void hyperlinkUpdate(HyperlinkEvent hle) {
                 if (HyperlinkEvent.EventType.ACTIVATED.equals(hle.getEventType())) {
                     java.awt.Desktop desktop = java.awt.Desktop.getDesktop();

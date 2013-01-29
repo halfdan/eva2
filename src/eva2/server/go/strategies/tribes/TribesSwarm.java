@@ -55,6 +55,7 @@ public class TribesSwarm implements java.io.Serializable{
     	queen = other.queen.clone();
     }
 
+    @Override
     public TribesSwarm clone() {
     	return new TribesSwarm(this);
     }

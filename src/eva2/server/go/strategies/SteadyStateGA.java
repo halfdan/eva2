@@ -47,10 +47,12 @@ public class SteadyStateGA implements InterfaceOptimizer, java.io.Serializable {
             this.m_ReplacementSelection         = (InterfaceReplacement)a.m_ReplacementSelection.clone();
         }
 
+    @Override
         public Object clone() {
             return (Object) new SteadyStateGA(this);
         }
 
+    @Override
         public void init() {
             this.m_Problem.initPopulation(this.m_Population);
             this.evaluatePopulation(this.m_Population);
@@ -60,6 +62,7 @@ public class SteadyStateGA implements InterfaceOptimizer, java.io.Serializable {
         /** This method will init the optimizer with a given population
          * @param reset     If true the population is reset.
          */
+    @Override
         public void initByPopulation(Population pop, boolean reset) {
             this.m_Population = (Population)pop.clone();
             if (reset) {
@@ -107,15 +110,18 @@ public class SteadyStateGA implements InterfaceOptimizer, java.io.Serializable {
             this.m_ReplacementSelection.insertIndividual(offSprings[0], this.m_Population, parents);
         }
 
+    @Override
         public void optimize() {
             for (int i = 0; i < this.m_Population.size(); i++) this.generateChildren();
             this.m_Population.incrFunctionCallsBy(this.m_Population.size());
             this.m_Population.incrGeneration();
             this.firePropertyChangedEvent(Population.nextGenerationPerformed);
         }
+    @Override
         public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
             this.m_Listener = ea;
         }
+    @Override
     	public boolean removePopulationChangedEventListener(
     			InterfacePopulationChangedEventListener ea) {
     		if (m_Listener==ea) {
@@ -130,9 +136,11 @@ public class SteadyStateGA implements InterfaceOptimizer, java.io.Serializable {
         /** This method will set the problem that is to be optimized
          * @param problem
          */
+    @Override
         public void setProblem (InterfaceOptimizationProblem problem) {
             this.m_Problem = problem;
         }
+    @Override
         public InterfaceOptimizationProblem getProblem () {
             return this.m_Problem;
         }
@@ -141,6 +149,7 @@ public class SteadyStateGA implements InterfaceOptimizer, java.io.Serializable {
          * and the applied methods.
          * @return A descriptive string
          */
+    @Override
         public String getStringRepresentation() {
             String result = "";
             result += "Genetic Algorithm:\n";
@@ -152,9 +161,11 @@ public class SteadyStateGA implements InterfaceOptimizer, java.io.Serializable {
         /** This method allows you to set an identifier for the algorithm
          * @param name      The indenifier
          */
+    @Override
          public void setIdentifier(String name) {
             this.m_Identifier = name;
         }
+    @Override
          public String getIdentifier() {
              return this.m_Identifier;
          }
@@ -162,6 +173,7 @@ public class SteadyStateGA implements InterfaceOptimizer, java.io.Serializable {
         /** This method is required to free the memory on a RMIServer,
          * but there is nothing to implement.
          */
+    @Override
         public void freeWilly() {
 
         }
@@ -177,6 +189,7 @@ public class SteadyStateGA implements InterfaceOptimizer, java.io.Serializable {
     /** This method will return a naming String
      * @return The name of the algorithm
      */
+    @Override
     public String getName() {
         return "SS-GA";
     }
@@ -186,9 +199,11 @@ public class SteadyStateGA implements InterfaceOptimizer, java.io.Serializable {
      * of the optimizer.
      * @return The population of current solutions to a given problem.
      */
+    @Override
     public Population getPopulation() {
         return this.m_Population;
     }
+    @Override
     public void setPopulation(Population pop){
         this.m_Population = pop;
     }
@@ -196,6 +211,7 @@ public class SteadyStateGA implements InterfaceOptimizer, java.io.Serializable {
         return "Edit the properties of the population used.";
     }
     
+    @Override
     public InterfaceSolutionSet getAllSolutions() {
     	return new SolutionSet(getPopulation());
     }

@@ -72,6 +72,7 @@ implements Interface2DBorderProblem, InterfaceMultimodalProblemKnown {
 	/** This method inits a given population
 	 * @param population    The populations that is to be inited
 	 */
+    @Override
 	public void initPopulation(Population population) {
 		AbstractEAIndividual tmpIndy;
 
@@ -95,6 +96,7 @@ implements Interface2DBorderProblem, InterfaceMultimodalProblemKnown {
 		}
 	}
 	
+    @Override
 	public void initProblem() {
 		super.initProblem();
 		this.m_GlobalOpt = Double.NEGATIVE_INFINITY;
@@ -107,6 +109,7 @@ implements Interface2DBorderProblem, InterfaceMultimodalProblemKnown {
 	 * @param x     The n-dimensional input vector
 	 * @return  The m-dimensional output vector.
 	 */
+    @Override
 	public double[] eval(double[] x) {
 		x = rotateMaybe(x);
 		double[] result = new double[1];
@@ -209,11 +212,13 @@ implements Interface2DBorderProblem, InterfaceMultimodalProblemKnown {
 	 * method for every optimum, as it keeps track the global optimum.
 	 * This method will be called on initialization.
 	 */
+    @Override
 	public abstract void initListOfOptima();
 
 	/** This method returns a list of all optima as population
 	 * @return population
 	 */
+    @Override
 	public Population getRealOptima() {
 		return this.m_ListOfOptima;
 	}
@@ -222,6 +227,7 @@ implements Interface2DBorderProblem, InterfaceMultimodalProblemKnown {
      * Return true if the full list of optima is available, else false.
      * @return
      */
+    @Override
     public boolean fullListAvailable() {
     	return ((getRealOptima()!=null) && (getRealOptima().size()>0));
     }
@@ -230,6 +236,7 @@ implements Interface2DBorderProblem, InterfaceMultimodalProblemKnown {
 	 * @param pop       A population of possible solutions.
 	 * @return int
 	 */
+    @Override
 	public int getNumberOfFoundOptima(Population pop) {
 		return getNoFoundOptimaOf(this, pop);
 	}
@@ -250,6 +257,7 @@ implements Interface2DBorderProblem, InterfaceMultimodalProblemKnown {
 	 * @param pop       A population of possible solutions.
 	 * @return double
 	 */
+    @Override
 	public double getMaximumPeakRatio(Population pop) {
 		if (!this.fullListAvailable()) return -1;
 		else return getMaximumPeakRatio(this.getRealOptima(), pop, m_Epsilon);
@@ -430,6 +438,7 @@ implements Interface2DBorderProblem, InterfaceMultimodalProblemKnown {
 	/**
 	 * @param epsilon the m_Epsilon to set
 	 */
+    @Override
 	public void setDefaultAccuracy(double epsilon) {
 		super.SetDefaultAccuracy(epsilon);
 	}

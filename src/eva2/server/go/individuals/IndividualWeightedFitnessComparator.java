@@ -68,6 +68,7 @@ public class IndividualWeightedFitnessComparator implements Comparator<Object>, 
 	 * (non-Javadoc)
 	 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
 	 */
+    @Override
 	public int compare(Object o1, Object o2) {
 		double[] f1 = ((AbstractEAIndividual) o1).getFitness();
 		double[] f2 = ((AbstractEAIndividual) o2).getFitness();

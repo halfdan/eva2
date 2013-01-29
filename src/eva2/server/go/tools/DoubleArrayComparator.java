@@ -33,6 +33,7 @@ public class DoubleArrayComparator implements Comparator<Object> {
 		fitCriterion = o.fitCriterion;
 	}
 
+    @Override
 	public Object clone() {
 		return new DoubleArrayComparator(this);
 	}
@@ -46,6 +47,7 @@ public class DoubleArrayComparator implements Comparator<Object> {
 	 * @param o2 the second double[] to compare
 	 * @return -1 if the first is dominant, 1 if the second is dominant, otherwise 0
 	 */
+    @Override
 	public int compare(Object o1, Object o2) {
 		boolean o1domO2, o2domO1;
 		

@@ -73,6 +73,7 @@ public class CrossoverEAMixer implements InterfaceCrossover, InterfaceEvaluating
     /** This method will enable you to clone a given mutation operator
      * @return The clone
      */
+    @Override
     public Object clone() {
         return new CrossoverEAMixer(this);
     }
@@ -81,6 +82,7 @@ public class CrossoverEAMixer implements InterfaceCrossover, InterfaceEvaluating
      * are actually the same.
      * @param mutator   The other mutation operator
      */
+    @Override
     public boolean equals(Object mutator) {
         if (mutator instanceof CrossoverEAMixer) {
             CrossoverEAMixer mut = (CrossoverEAMixer)mutator;
@@ -93,6 +95,7 @@ public class CrossoverEAMixer implements InterfaceCrossover, InterfaceEvaluating
      * @param individual      The individual that will be mutated.
      * @param opt               The optimization problem.
      */
+    @Override
     public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt){
         InterfaceCrossover[] crossers    = this.m_Crossers.getSelectedCrossers();
         for (int i = 0; i < crossers.length; i++) crossers[i].init(individual, opt);
@@ -103,6 +106,7 @@ public class CrossoverEAMixer implements InterfaceCrossover, InterfaceEvaluating
      * @param indy1 The first individual
      * @param partners The second individual
      */
+    @Override
     public AbstractEAIndividual[] mate(AbstractEAIndividual indy1, Population partners) {
         this.m_Crossers.normalizeWeights();
         double[]            probs       = this.m_Crossers.getWeights();
@@ -151,6 +155,7 @@ public class CrossoverEAMixer implements InterfaceCrossover, InterfaceEvaluating
      * operator
      * @return A descriptive string.
      */
+    @Override
     public String getStringRepresentation() {
         return "EA mutation mixer";
     }
@@ -226,6 +231,7 @@ public class CrossoverEAMixer implements InterfaceCrossover, InterfaceEvaluating
         return "Set the value for tau1.";
     }
 
+    @Override
 	public int getEvaluations() {
 		int numEvals=0;
         InterfaceCrossover[] crossers    = this.m_Crossers.getSelectedCrossers();
@@ -237,6 +243,7 @@ public class CrossoverEAMixer implements InterfaceCrossover, InterfaceEvaluating
         return numEvals;
 	}
 
+    @Override
 	public void resetEvaluations() {
 		InterfaceCrossover[] crossers    = this.m_Crossers.getSelectedCrossers();
         for (int i = 0; i < crossers.length; i++) {

@@ -21,6 +21,7 @@ public class SelProbStandard extends AbstractSelProb implements java.io.Serializ
     public SelProbStandard(SelProbStandard a) {
     }
 
+    @Override
     public Object clone() {
         return (Object) new SelProbStandard(this);
     }
@@ -32,6 +33,7 @@ public class SelProbStandard extends AbstractSelProb implements java.io.Serializ
      * @param population    The population to compute.
      * @param data          The input data as double[][].
      */
+    @Override
     public void computeSelectionProbability(Population population, double[][] data, boolean obeyConst) {
         double      sum = 0;
         double[]    result = new double[data.length];

@@ -323,6 +323,7 @@ public class JMatLink extends Thread {
 
 	// **** terminate running thread ****
 
+    @Override
 	public void destroy() {
 
 		destroyJMatLinkB = true;
@@ -1505,6 +1506,7 @@ public class JMatLink extends Thread {
 
 	// method as long as one command needs to get executed.
 
+    @Override
 	public synchronized void run()
 
 	{

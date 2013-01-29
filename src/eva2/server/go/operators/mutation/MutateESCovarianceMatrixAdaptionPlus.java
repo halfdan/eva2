@@ -36,6 +36,7 @@ public class MutateESCovarianceMatrixAdaptionPlus extends
 	 * 
 	 * @return The clone
 	 */
+    @Override
 	public Object clone() {
 		return new MutateESCovarianceMatrixAdaptionPlus(this);
 	}
@@ -48,6 +49,7 @@ public class MutateESCovarianceMatrixAdaptionPlus extends
 	 * @param opt
 	 *            The optimization problem.
 	 */
+    @Override
 	public void init(AbstractEAIndividual individual,
 			InterfaceOptimizationProblem opt) {
 
@@ -122,6 +124,7 @@ public class MutateESCovarianceMatrixAdaptionPlus extends
 		}
 	}
 
+    @Override
 	protected void adaptStrategy() {
 	}
 
@@ -141,12 +144,14 @@ public class MutateESCovarianceMatrixAdaptionPlus extends
 	}
 
 	// @Override
+    @Override
 	public void adaptAfterSelection(Population oldPop, Population selectedPop) {
 		// TODO Auto-generated method stub
 
 	}
 
 	// @Override
+    @Override
 	public void adaptGenerational(Population selectedPop, Population parentPop,
 			Population newPop, boolean updateSelected) {
 		double rate = 0.;
@@ -208,6 +213,7 @@ public class MutateESCovarianceMatrixAdaptionPlus extends
 						/ (1 - m_psuccesstarget));
 	}
 
+    @Override
 	public String getName() {
 		return "CMA mutation for plus Strategies";
 	}

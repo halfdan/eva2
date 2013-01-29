@@ -37,6 +37,7 @@ public class GPArea implements java.io.Serializable {
             this.m_CompleteList = (ArrayList<AbstractGPNode>)g.m_CompleteList.clone();
     }
 
+    @Override
     public Object clone() {
         return new GPArea(this);
     }

@@ -78,6 +78,7 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
         cloneAEAObjects((AbstractEAIndividual) individual);
     }
 
+    @Override
     public Object clone() {
         return (Object) new GPIndividualProgramData(this);
     }
@@ -86,6 +87,7 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
      * @param individual      The individual to compare to.
      * @return boolean if equal true else false.
      */
+    @Override
     public boolean equalGenotypes(AbstractEAIndividual individual) {
         if (individual instanceof GPIndividualProgramData) {
             GPIndividualProgramData indy = (GPIndividualProgramData) individual;
@@ -112,6 +114,7 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
     /** This method allows you to request a certain amount of double data
      * @param length    The lenght of the double[] that is to be optimized
      */
+    @Override
     public void setProgramDataLength (int length) {
         GPArea[] oldArea            = this.m_Area;
         AbstractGPNode[] oldProg    = this.m_Genotype;
@@ -130,6 +133,7 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
     /** This method allows you to read the program stored as Koza style node tree
      * @return AbstractGPNode representing the binary data.
      */
+    @Override
     public InterfaceProgram[] getProgramData() {
         this.m_Phenotype = new AbstractGPNode[this.m_Genotype.length];
         for (int i = 0; i < this.m_Genotype.length; i++) {
@@ -151,6 +155,7 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
      * an update from the genotype
      * @return InterfaceProgram[] representing the Program.
      */
+    @Override
     public InterfaceProgram[] getProgramDataWithoutUpdate() {
     	if (this.m_Phenotype==null) return getProgramData();
     	else return this.m_Phenotype;
@@ -159,6 +164,7 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
     /** This method allows you to set the program phenotype.
      * @param program    The new program.
      */
+    @Override
     public void SetProgramPhenotype(InterfaceProgram[] program) {
         if (program instanceof AbstractGPNode[]) {
             this.m_Phenotype = new AbstractGPNode[program.length];
@@ -170,6 +176,7 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
     /** This method allows you to set the program genotype.
      * @param program    The new program.
      */
+    @Override
     public void SetProgramGenotype(InterfaceProgram[] program) {
         this.SetProgramPhenotype(program);
         if (program instanceof AbstractGPNode[]) {
@@ -182,6 +189,7 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
     /** This method allows you to set the function area
      * @param area  The area contains functions and terminals
      */
+    @Override
     public void SetFunctionArea(Object[] area) {
         if (area instanceof GPArea[]) {
             this.m_Area = (GPArea[]) area;
@@ -191,6 +199,7 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
     /** This method allows you to set the function area
      * @return The function area
      */
+    @Override
     public Object[] getFunctionArea() {
         return this.m_Area;
     }
@@ -203,6 +212,7 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
      * @param obj   The initial value for the phenotype
      * @param opt   The optimization problem that is to be solved.
      */
+    @Override
     public void initByValue(Object obj, InterfaceOptimizationProblem opt) {
         if (obj instanceof InterfaceProgram[]) {
             this.SetProgramGenotype((InterfaceProgram[])obj);
@@ -218,6 +228,7 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
      * noteably the Genotype.
      * @return A descriptive string
      */
+    @Override
     public String getStringRepresentation() {
         String result = "";
         result += "GPIndividual coding program: (";
@@ -240,6 +251,7 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
     /** This method will allow the user to read the program genotype
      * @return AbstractGPNode
      */
+    @Override
     public AbstractGPNode[] getPGenotype() {
         return this.m_Genotype;
     }
@@ -247,6 +259,7 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
     /** This method will allow the user to set the current program 'genotype'.
      * @param b    The new programgenotype of the Individual
      */
+    @Override
     public void SetPGenotype(AbstractGPNode[] b) {
         this.m_Genotype = b;
         this.m_Phenotype=null;
@@ -256,6 +269,7 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
      * @param b     The new program genotype of the Individual
      * @param i     The index where to insert the new program
      */
+    @Override
     public void SetPGenotype(AbstractGPNode b, int i) {
         this.m_Genotype[i] = b;
         m_Genotype[i].updateDepth(0);
@@ -266,6 +280,7 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
     /** 
      * This method performs a simple one element mutation on the program
      */
+    @Override
     public void defaultMutate() {
         for (int i = 0; i < this.m_Genotype.length; i++) {
             AbstractGPNode nodeToMutate = this.m_Genotype[i].getRandomNode();
@@ -291,6 +306,7 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
         m_Phenotype=null; // reset pheno
     }
 
+    @Override
     public void defaultInit(InterfaceOptimizationProblem prob) {
         m_Phenotype=null; // reset pheno
         for (int i = 0; i < this.m_Area.length; i++) {
@@ -315,6 +331,7 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
      * name to the current object.
      * @return The name.
      */
+    @Override
     public String getName() {
         return "GP individual";
     }
@@ -377,6 +394,7 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
     public void setMaxAllowedDepth(int b) {
         this.m_maxAllowedDepth = b;
     }
+    @Override
     public int getMaxAllowedDepth() {
         return this.m_maxAllowedDepth;
     }

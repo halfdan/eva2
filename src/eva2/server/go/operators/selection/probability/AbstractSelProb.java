@@ -21,6 +21,7 @@ public abstract class AbstractSelProb implements InterfaceSelectionProbability, 
      * the object
      * @return the deep clone
      */
+    @Override
     public abstract Object clone();
 
     /** This method computes the selection probability for each individual
@@ -29,6 +30,7 @@ public abstract class AbstractSelProb implements InterfaceSelectionProbability, 
      * @param population    The population to compute.
      * @param input         The name of the input.
      */
+    @Override
     public void computeSelectionProbability(Population population, String[] input, boolean obeyConst) {
         this.computeSelectionProbability(population, this.preprocess(population, input), obeyConst);
     }
@@ -39,6 +41,7 @@ public abstract class AbstractSelProb implements InterfaceSelectionProbability, 
      * @param population    The population to compute.
      * @param input         The name of the input.
      */
+    @Override
     public void computeSelectionProbability(Population population, String input, boolean obeyConst) {
         String[] tmp = new String[1];
         tmp[0] = input;
@@ -51,6 +54,7 @@ public abstract class AbstractSelProb implements InterfaceSelectionProbability, 
      * @param population    The population to compute.
      * @param data         The input data as double[][].
      */
+    @Override
     public abstract void computeSelectionProbability(Population population, double[][] data, boolean obeyConst);
 
     /** This method converts all inputs to a list of double values

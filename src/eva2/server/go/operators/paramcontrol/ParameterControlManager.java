@@ -50,10 +50,12 @@ public class ParameterControlManager implements InterfaceParameterControl, Seria
 		}
 	}
 	
+    @Override
 	public Object clone() {
 		return new ParameterControlManager(this);
 	}
 	
+    @Override
 	public void init(Object obj, Population initialPop) {
 		String[] params = getControlledParameters();
 		if (params != null) {
@@ -77,6 +79,7 @@ public class ParameterControlManager implements InterfaceParameterControl, Seria
 		}
 	}
 	
+    @Override
 	public void finish(Object obj, Population finalPop) {
 		String[] params = getControlledParameters();
 		for (ParamAdaption prm : singleAdapters) {
@@ -88,6 +91,7 @@ public class ParameterControlManager implements InterfaceParameterControl, Seria
 		}
 	}
 
+    @Override
 	public void updateParameters(Object obj, Population pop, int iteration, int maxIteration) {
 		String[] params = getControlledParameters();
 		Object[] vals = getValues(obj, pop, iteration, maxIteration);
@@ -111,6 +115,7 @@ public class ParameterControlManager implements InterfaceParameterControl, Seria
 		}
 	}
 	
+    @Override
 	public void updateParameters(Object obj) {
 		updateParameters(obj, null, -1, -1);
 	}

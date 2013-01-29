@@ -98,12 +98,14 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
     /** This method returns a deep clone of the problem.
      * @return  the clone
      */
+    @Override
     public Object clone() {
         return (Object) new PSymbolicRegression(this);
     }
 
     /** This method inits the Problem to log multiruns
      */
+    @Override
     public void initProblem() {
         if (m_TargetFunction == null) m_TargetFunction = new RFKoza_GPI_7_3();
         this.m_OverallBest  = null;
@@ -146,6 +148,7 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
     /** This method inits a given population
      * @param population    The populations that is to be inited
      */
+    @Override
     public void initPopulation(Population population) {
     	initPopulation(population, this, m_UseInnerConst, m_NumberOfConstants);
     }
@@ -177,6 +180,7 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
      * accordingly
      * @param population    The population that is to be evaluated.
      */
+    @Override
     public void evaluate(Population population) {
         AbstractEAIndividual    tmpIndy;
 
@@ -216,6 +220,7 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
      * 
      * @param individual    The individual that is to be evaluated
      */
+    @Override
     public void evaluate(AbstractEAIndividual individual) {
         InterfaceProgram            program;
         double                      fitness = 0, tmpValue;
@@ -272,6 +277,7 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
      * @param opt       The Optimizer that is used or had been used.
      * @return The description.
      */
+    @Override
     public String getStringRepresentationForProblem(InterfaceOptimizer opt) {
         String result = "Symbolic Regression Problem";
         return result;
@@ -285,6 +291,7 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
      * @param sensor    The identifier for the sensor.
      * @return Sensor value
      */
+    @Override
     public Object getSensorValue(String sensor) {
     	return PSymbolicRegression.getSensorValue(sensor, m_X, m_C);
 //        for (int i = 0; i < this.m_X.length; i++) if (sensor.equalsIgnoreCase("X"+i)) return new Double(this.m_X[i]);
@@ -329,6 +336,7 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
      * @param actuator      The identifier for the actuator.
      * @param parameter     The actuator parameter.
      */
+    @Override
     public void setActuatorValue(String actuator, Object parameter) {
         // no actuators in this problem
     }
@@ -340,6 +348,7 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
      * name to the current object.
      * @return The name.
      */
+    @Override
     public String getName() {
         return "Symbolic Regression problem";
     }
@@ -432,6 +441,7 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
         ((InterfaceDataTypeProgram)this.m_Template).setProgramDataLength(1);
         ((InterfaceDataTypeProgram)this.m_Template).SetFunctionArea(tmpArea);
     }
+    @Override
     public GPArea getArea() {
     	if (m_GPArea==null) initProblem();
         return this.m_GPArea;

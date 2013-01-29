@@ -19,6 +19,7 @@ public class PropertyIntArray implements java.io.Serializable {
         System.arraycopy(d.m_IntArray, 0, this.m_IntArray, 0, this.m_IntArray.length);
     }
 
+    @Override
     public Object clone() {
         return (Object) new PropertyIntArray(this);
     }

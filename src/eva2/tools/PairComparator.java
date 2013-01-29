@@ -21,6 +21,7 @@ public class PairComparator implements Comparator<Pair<?,?>> {
 	 * Return 1 if the first is larger, -1 if the second is larger, 0 if they
 	 * are equal or not comparable.
 	 */
+    @Override
 	public int compare(Pair<?,?> o1, Pair<?,?> o2) {
 		Pair<?,?> p1=(Pair<?,?>)o1;
 		Pair<?,?> p2=(Pair<?,?>)o2;

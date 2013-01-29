@@ -38,6 +38,7 @@ public class NicheGraph implements java.io.Serializable {
 		this.set = (HashSet<String>)o.set.clone();
 	}
 
+    @Override
 	public Object clone(){
 		return (Object) new NicheGraph(this);
 	}

@@ -90,6 +90,7 @@ public class GAGIInitializeSegmentwise implements InterfaceInitialization, java.
 		this.disturbanceDegree = disturbRatio;
 	}
 	
+    @Override
 	public InterfaceInitialization clone() {
 		return new GAGIInitializeSegmentwise(this);
 	}
@@ -102,6 +103,7 @@ public class GAGIInitializeSegmentwise implements InterfaceInitialization, java.
 //		System.out.println(indy.getStringRepresentation());
 //	}
 	
+    @Override
 	public void initialize(AbstractEAIndividual indy,
 			InterfaceOptimizationProblem problem) {
 		if (indy instanceof InterfaceGAIndividual || indy instanceof InterfaceGIIndividual) {

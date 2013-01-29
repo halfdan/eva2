@@ -109,6 +109,7 @@ public class BigStringEditor implements PropertyEditor {
     m_Panel.setLayout(new BorderLayout());
     m_SetButton = new JButton("SET");
     m_SetButton.addActionListener(new ActionListener() {
+            @Override
       public void actionPerformed(ActionEvent e) {
         setValue(m_TextArea.getText());
       }
@@ -119,6 +120,7 @@ public class BigStringEditor implements PropertyEditor {
   /**
    *
    */
+    @Override
   public void setValue (Object value) {
     m_ElementEditor = null;
     if (value instanceof String) {
@@ -135,6 +137,7 @@ public class BigStringEditor implements PropertyEditor {
   /**
    *
    */
+    @Override
   public Object getValue () {
     // m_Source.setString(m_TextArea.getText());
     return null;
@@ -142,6 +145,7 @@ public class BigStringEditor implements PropertyEditor {
   /**
   *
   */
+    @Override
   public String getJavaInitializationString () {
       return  "null";
   }
@@ -152,6 +156,7 @@ public class BigStringEditor implements PropertyEditor {
    *
    * @return true
    */
+    @Override
   public boolean isPaintable () {
       return  true;
   }
@@ -162,6 +167,7 @@ public class BigStringEditor implements PropertyEditor {
    * @param gfx the graphics context to use
    * @param box the area we are allowed to paint into
    */
+    @Override
   public void paintValue (Graphics gfx, Rectangle box) {
     FontMetrics fm = gfx.getFontMetrics();
     int vpad = (box.height - fm.getAscent())/2;
@@ -172,6 +178,7 @@ public class BigStringEditor implements PropertyEditor {
   /**
    *
    */
+    @Override
   public String getAsText () {
     return  null;
   }
@@ -179,6 +186,7 @@ public class BigStringEditor implements PropertyEditor {
   /**
    *
    */
+    @Override
   public void setAsText (String text) throws IllegalArgumentException {
     throw  new IllegalArgumentException(text);
   }
@@ -186,6 +194,7 @@ public class BigStringEditor implements PropertyEditor {
   /**
    *
    */
+    @Override
   public String[] getTags () {
     return  null;
   }
@@ -193,21 +202,25 @@ public class BigStringEditor implements PropertyEditor {
   /**
    *
    */
+    @Override
   public boolean supportsCustomEditor () {
     return  true;
   }
   /**
    *
    */
+    @Override
   public Component getCustomEditor () {
     return  m_Panel;
   }
 
+    @Override
   public void addPropertyChangeListener(PropertyChangeListener l) {
 	  if (m_Support == null) m_Support = new PropertyChangeSupport(this);
 	  m_Support.addPropertyChangeListener(l);
   }
 
+    @Override
   public void removePropertyChangeListener(PropertyChangeListener l) {
 	  if (m_Support == null) m_Support = new PropertyChangeSupport(this);
 	  m_Support.removePropertyChangeListener(l);

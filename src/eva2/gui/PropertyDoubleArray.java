@@ -42,6 +42,7 @@ public class PropertyDoubleArray implements java.io.Serializable {
     	}
 	}
 
+    @Override
 	public Object clone() {
         return (Object) new PropertyDoubleArray(this);
     }
@@ -165,6 +166,7 @@ public class PropertyDoubleArray implements java.io.Serializable {
 		return (k>=0) && (k<getNumRows());
 	}
 	
+    @Override
 	public String toString() {
 		return BeanInspector.toString(m_DoubleArray);
 	}

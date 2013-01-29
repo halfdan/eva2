@@ -72,6 +72,7 @@ public class GAIndividualIntegerData extends AbstractEAIndividual implements Int
         cloneAEAObjects((AbstractEAIndividual) individual);
     }
 
+    @Override
     public Object clone() {
         return (Object) new GAIndividualIntegerData(this);
     }
@@ -81,6 +82,7 @@ public class GAIndividualIntegerData extends AbstractEAIndividual implements Int
      * @param individual      The individual to compare to.
      * @return boolean if equal true else false.
      */
+    @Override
     public boolean equalGenotypes(AbstractEAIndividual individual) {
         if (individual instanceof GAIndividualIntegerData) {
             GAIndividualIntegerData indy = (GAIndividualIntegerData) individual;
@@ -104,6 +106,7 @@ public class GAIndividualIntegerData extends AbstractEAIndividual implements Int
     /** This method allows you to request a certain amount of double data
      * @param length    The lenght of the double[] that is to be optimized
      */
+    @Override
     public void setIntegerDataLength (int length) {
         int[]        newDesPa = new int[length];
         int[][]      newRange = new int[length][2];
@@ -129,6 +132,7 @@ public class GAIndividualIntegerData extends AbstractEAIndividual implements Int
     /** This method returns the length of the double data set
      * @return The number of bits stored
      */
+    @Override
     public int size() {
         return this.m_Range.length;
     }
@@ -138,6 +142,7 @@ public class GAIndividualIntegerData extends AbstractEAIndividual implements Int
      * ranges.
      * @param range     The new range for the double data.
      */
+    @Override
     public void SetIntRange(int[][] range) {
         if (range.length != this.m_Range.length) {
             System.out.println("Warning: Trying to set a range of length " + range.length + " to a vector of length "
@@ -179,6 +184,7 @@ public class GAIndividualIntegerData extends AbstractEAIndividual implements Int
     /** This method will return the range for all double attributes.
      * @return The range array.
      */
+    @Override
     public int[][] getIntRange() {
         return this.m_Range;
     }
@@ -186,6 +192,7 @@ public class GAIndividualIntegerData extends AbstractEAIndividual implements Int
     /** This method allows you to read the double data
      * @return BitSet representing the double data.
      */
+    @Override
     public int[] getIntegerData() {
         int[] locus = new int[2];
         locus[0] = 0;
@@ -203,6 +210,7 @@ public class GAIndividualIntegerData extends AbstractEAIndividual implements Int
      * an update from the genotype
      * @return int[] representing the int data.
      */
+    @Override
     public int[] getIntegerDataWithoutUpdate() {
         return this.m_Phenotype;
     }
@@ -210,6 +218,7 @@ public class GAIndividualIntegerData extends AbstractEAIndividual implements Int
     /** This method allows you to set the double data.
      * @param doubleData    The new double data.
      */
+    @Override
     public void SetIntPhenotype(int[] doubleData) {
         this.m_Phenotype = doubleData;
     }
@@ -218,6 +227,7 @@ public class GAIndividualIntegerData extends AbstractEAIndividual implements Int
      * memetic algorithms.
      * @param doubleData    The new double data.
      */
+    @Override
     public void SetIntGenotype(int[] doubleData) {
         this.SetIntPhenotype(doubleData);
         if (doubleData != null) {
@@ -240,6 +250,7 @@ public class GAIndividualIntegerData extends AbstractEAIndividual implements Int
      * @param obj   The initial value for the phenotype
      * @param opt   The optimization problem that is to be solved.
      */
+    @Override
     public void initByValue(Object obj, InterfaceOptimizationProblem opt) {
         if (obj instanceof int[]) {
             int[]  bs = (int[]) obj;
@@ -257,6 +268,7 @@ public class GAIndividualIntegerData extends AbstractEAIndividual implements Int
      * noteably the Genotype.
      * @return A descriptive string
      */
+    @Override
     public String getStringRepresentation() {
         String result = "";
         result += "GAIndividual coding int: (";
@@ -299,6 +311,7 @@ public class GAIndividualIntegerData extends AbstractEAIndividual implements Int
     /** This method allows you to read the binary data
      * @return BitSet representing the binary data.
      */
+    @Override
     public BitSet getBGenotype() {
         return this.m_Genotype;
     }
@@ -307,6 +320,7 @@ public class GAIndividualIntegerData extends AbstractEAIndividual implements Int
      * memetic algorithms.
      * @param binaryData    The new binary data.
      */
+    @Override
     public void SetBGenotype(BitSet binaryData) {
         this.m_Genotype = binaryData;
     }
@@ -316,12 +330,14 @@ public class GAIndividualIntegerData extends AbstractEAIndividual implements Int
      * of the last significat bit.
      * @return The length of the genotype.
      */
+    @Override
     public int getGenotypeLength() {
         int overallLength = 0;
         for (int i = 0; i < this.m_CodingLenghts.length; i++) overallLength += this.m_CodingLenghts[i];
         return overallLength;
     }
 
+    @Override
     public void defaultInit(InterfaceOptimizationProblem prob) {
         int overallLength = 0;
         for (int i = 0; i < this.m_CodingLenghts.length; i++) overallLength += this.m_CodingLenghts[i];
@@ -333,6 +349,7 @@ public class GAIndividualIntegerData extends AbstractEAIndividual implements Int
 
     /** This method performs a simple one point mutation in the genotype
      */
+    @Override
     public void defaultMutate() {
         int overallLength = 0;
         for (int i = 0; i < this.m_CodingLenghts.length; i++) overallLength += this.m_CodingLenghts[i];
@@ -383,6 +400,7 @@ public class GAIndividualIntegerData extends AbstractEAIndividual implements Int
      * name to the current object.
      * @return The name.
      */
+    @Override
     public String getName() {
         return "GA individual";
     }

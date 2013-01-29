@@ -27,6 +27,7 @@ public class StandardSubswarmCreationStrategy implements InterfaceSubswarmCreati
 		delta = 0.0001;
 	}
 	
+    @Override
 	public Object clone(){
 		return (Object) new StandardSubswarmCreationStrategy(delta);
 	}
@@ -43,6 +44,7 @@ public class StandardSubswarmCreationStrategy implements InterfaceSubswarmCreati
 	 * @param indy main swarm particle
 	 * @return
 	 */
+    @Override
 	public boolean shouldCreateSubswarm(AbstractEAIndividual indy, ParticleSubSwarmOptimization mainswarm) {
 		if (createSubswarmConstraintViolation(indy, mainswarm)){
 			return false;
@@ -87,6 +89,7 @@ public class StandardSubswarmCreationStrategy implements InterfaceSubswarmCreati
 	 * then deletes the two particles from the mainswarm.
 	 * (non-Javadoc) @see javaeva.server.oa.go.Operators.NichePSO.InterfaceSubswarmCreationStrategy#createSubswarm(javaeva.server.oa.go.Strategies.ParticleSubSwarmOptimization, javaeva.server.oa.go.EAIndividuals.AbstractEAIndividual, javaeva.server.oa.go.Strategies.ParticleSubSwarmOptimization)
 	 */
+    @Override
 	public void createSubswarm(ParticleSubSwarmOptimization preparedSubswarm, AbstractEAIndividual indy, ParticleSubSwarmOptimization mainSwarm) {
 		
 		// get the neighbor to create the subswarm

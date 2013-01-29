@@ -62,6 +62,7 @@ public class SAParameters extends AbstractGOParameters implements InterfaceGOPar
     private SAParameters(SAParameters Source) {
     	super(Source);
     }
+    @Override
     public Object clone() {
         return new SAParameters(this);
     }
@@ -73,6 +74,7 @@ public class SAParameters extends AbstractGOParameters implements InterfaceGOPar
         return "This is a simple Simulated Annealing algorithm.";
     }
 
+    @Override
     public void setOptimizer(InterfaceOptimizer optimizer) {
         // *pff* i'll ignore that!
     }

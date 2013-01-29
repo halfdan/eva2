@@ -20,18 +20,22 @@ public class GPNodeProd extends AbstractGPNode implements java.io.Serializable {
     /** This method will be used to identify the node in the GPAreaEditor
      * @return The name.
      */
+    @Override
     public String getName() {
         return "Prod";
     }
 
+    @Override
     public Object clone() {
         return (Object) new GPNodeProd(this);
     }
 
+    @Override
     public int getArity() {
         return 1;
     }
 
+    @Override
     public Object evaluate(InterfaceProgramProblem environment) {
         Object tmpObj;
         double result = 1;

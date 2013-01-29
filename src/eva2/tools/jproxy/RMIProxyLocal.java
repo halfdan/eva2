@@ -91,6 +91,7 @@ public class RMIProxyLocal implements InvocationHandler, Serializable {
 	/**
 	 *
 	 */
+    @Override
 	public Object invoke (Object proxy, Method m, Object[] args) throws Throwable {
 		return m_RMIHandler.invoke(m.getName(),args);
 	}

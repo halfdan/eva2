@@ -21,6 +21,7 @@ public class MOSOMaxiMin implements InterfaceMOSOConverter, java.io.Serializable
     public MOSOMaxiMin(MOSOMaxiMin b) {
         this.m_OutputDimension          = b.m_OutputDimension;
     }
+    @Override
     public Object clone() {
         return (Object) new MOSOMaxiMin(this);
     }
@@ -32,6 +33,7 @@ public class MOSOMaxiMin implements InterfaceMOSOConverter, java.io.Serializable
      * if you still want to access the original fitness values.
      * @param pop       The population to process.
      */
+    @Override
     public void convertMultiObjective2SingleObjective(Population pop) {
         AbstractEAIndividual tmpIndy;
         double[][]  fitnessArray, minArray;
@@ -98,6 +100,7 @@ public class MOSOMaxiMin implements InterfaceMOSOConverter, java.io.Serializable
     /** This method processes a single individual
      * @param indy      The individual to process.
      */
+    @Override
     public void convertSingleIndividual(AbstractEAIndividual indy) {
         double[]    resultFit = new double[1];
         double[]    tmpFit;
@@ -114,6 +117,7 @@ public class MOSOMaxiMin implements InterfaceMOSOConverter, java.io.Serializable
      * value of one
      * @param dim       Outputdimension of the problem
      */
+    @Override
     public void setOutputDimension(int dim) {
         this.m_OutputDimension = dim;
     }
@@ -121,6 +125,7 @@ public class MOSOMaxiMin implements InterfaceMOSOConverter, java.io.Serializable
     /** This method returns a description of the objective
      * @return A String
      */
+    @Override
     public String getStringRepresentation() {
         return this.getName()+"\n";
     }
@@ -133,6 +138,7 @@ public class MOSOMaxiMin implements InterfaceMOSOConverter, java.io.Serializable
      * name to the current object.
      * @return The name.
      */
+    @Override
     public String getName() {
         return "MaxiMin Criterium";
     }

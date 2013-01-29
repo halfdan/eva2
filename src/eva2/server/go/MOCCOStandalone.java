@@ -58,6 +58,7 @@ public class MOCCOStandalone implements InterfaceGOStandalone, InterfacePopulati
         this.m_JFrame.setSize(1200, 750);
         this.m_JFrame.setLocation(50, 50);
         this.m_JFrame.addWindowListener(new WindowAdapter() {
+            @Override
             public void windowClosing(WindowEvent ev) {
                 System.exit(0);
             }
@@ -359,6 +360,7 @@ public class MOCCOStandalone implements InterfaceGOStandalone, InterfacePopulati
 
     /** This method starts the actual optimization procedure
      */
+    @Override
     public void startExperiment() {
         if (this.m_JFrame != null) {
         }
@@ -370,9 +372,11 @@ public class MOCCOStandalone implements InterfaceGOStandalone, InterfacePopulati
         if (this.m_State.m_Optimizer.getPopulation().size() == 0) this.m_State.m_Optimizer.init();
         this.m_State.m_Optimizer.addPopulationChangedEventListener(this);
         worker = new SwingWorker() {
+            @Override
             public Object construct() {
                 return doWork();
             }
+            @Override
             public void finished() {
                 Population[] pop = null;
                 if (m_State.m_Optimizer instanceof IslandModelEA) {
@@ -406,6 +410,7 @@ public class MOCCOStandalone implements InterfaceGOStandalone, InterfacePopulati
     void updateStatus(final String t, final int i) {
         if (this.m_ProgressBar != null) {
             Runnable doSetProgressBarValue = new Runnable() {
+                @Override
                 public void run() {
                     m_ProgressBar.setValue(i);
                 }
@@ -438,6 +443,7 @@ public class MOCCOStandalone implements InterfaceGOStandalone, InterfacePopulati
         return "All Done";
     }
 
+    @Override
     public void setShow(boolean t) {
         // i guess this is not necessary in this environment
     }
@@ -449,6 +455,7 @@ public class MOCCOStandalone implements InterfaceGOStandalone, InterfacePopulati
      * @param source        The source of the event.
      * @param name          Could be used to indicate the nature of the event.
      */
+    @Override
     public void registerPopulationStateChanged(Object source, String name) {
     	int currentProgress;
     	if (name.equals(Population.nextGenerationPerformed)) {

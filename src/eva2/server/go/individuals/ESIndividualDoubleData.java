@@ -66,6 +66,7 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
         cloneAEAObjects((AbstractEAIndividual) individual);
     }
 
+    @Override
     public Object clone() {
         return (Object) new ESIndividualDoubleData(this);
     }
@@ -74,6 +75,7 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
      * @param individual      The individual to compare to.
      * @return boolean if equal true else false.
      */
+    @Override
     public boolean equalGenotypes(AbstractEAIndividual individual) {
         if (individual instanceof ESIndividualDoubleData) {
             ESIndividualDoubleData indy = (ESIndividualDoubleData) individual;
@@ -98,6 +100,7 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
     /** This method allows you to request a certain amount of double data
      * @param length    The lenght of the double[] that is to be optimized
      */
+    @Override
     public void setDoubleDataLength (int length) {
         double[]        newDesPa = new double[length];
         double[][]      newRange = new double[length][2];
@@ -131,6 +134,7 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
     /** This method returns the length of the double data set
      * @return The number of bits stored
      */
+    @Override
     public int size() {
         return this.m_Genotype.length;
     }
@@ -140,6 +144,7 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
      * ranges.
      * @param range     The new range for the double data.
      */
+    @Override
     public void SetDoubleRange(double[][] range) {
         if (range.length != this.m_Range.length) {
             System.out.println("Warning: Trying to set a range of length " + range.length + " to a vector of length "
@@ -154,6 +159,7 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
     /** This method will return the range for all double attributes.
      * @return The range array.
      */
+    @Override
     public double[][] getDoubleRange() {
         return this.m_Range;
     }
@@ -162,6 +168,7 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
      * and the genotype copied.
      * @return BitSet representing the double data.
      */
+    @Override
     public double[] getDoubleData() {
     	// since the phenotype is set to null if the genotype is changed, 
     	// it should now be save to only perform the copy if the phenotype is null 
@@ -178,6 +185,7 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
      * an update from the genotype.
      * @return double[] representing the double data.
      */
+    @Override
     public double[] getDoubleDataWithoutUpdate() {
     	if (m_Phenotype==null) return getDoubleData();
     	else return this.m_Phenotype;
@@ -187,6 +195,7 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
      * use SetDoubleDataLamarckian().
      * @param doubleData    The new double data.
      */
+    @Override
     public void SetDoublePhenotype(double[] doubleData) {
         this.m_Phenotype = doubleData;
     }
@@ -195,6 +204,7 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
      * memetic algorithms.
      * @param doubleData    The new double data.
      */
+    @Override
     public void SetDoubleGenotype(double[] doubleData) {
 //        this.SetDoublePhenotype(doubleData);
     	this.SetDoublePhenotype(null); // tag it as invalid
@@ -208,6 +218,7 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
     /** This method will allow a default initialisation of the individual
      * @param opt   The optimization problem that is to be solved.
      */
+    @Override
     public void init(InterfaceOptimizationProblem opt) {
         super.init(opt);
         // evil operators may not respect the range, so at least give some hint
@@ -219,6 +230,7 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
      * @param obj   The initial value for the phenotype
      * @param opt   The optimization problem that is to be solved.
      */
+    @Override
     public void initByValue(Object obj, InterfaceOptimizationProblem opt) {
         if (obj instanceof double[]) {
             double[]  bs = (double[]) obj;
@@ -236,6 +248,7 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
      * noteably the Genotype.
      * @return A descriptive string
      */
+    @Override
     public String getStringRepresentation() {
     	StringBuilder strB = new StringBuilder(200);
     	strB.append("ESIndividual coding double: (Fitness {");
@@ -264,6 +277,7 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
     /** This method will allow the user to read the ES 'genotype'
      * @return BitSet
      */
+    @Override
     public double[] getDGenotype() {
         return this.m_Genotype;
     }
@@ -271,6 +285,7 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
     /** This method will allow the user to set the current ES 'genotype'.
      * @param b    The new genotype of the Individual
      */
+    @Override
     public void SetDGenotype(double[] b) {
         this.m_Genotype = b;
         this.m_Phenotype=null; // mark it as invalid
@@ -290,6 +305,7 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
     
     /** This method performs a simple one element mutation on the double vector
      */
+    @Override
     public void defaultMutate() {
     	ESIndividualDoubleData.defaultMutate(this.m_Genotype, this.m_Range);
     	m_Phenotype=null; // mark it as invalid
@@ -310,6 +326,7 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
         if (genotype[mutationIndex] > range[mutationIndex][1]) genotype[mutationIndex] = range[mutationIndex][1];
     }
     
+    @Override
     public void defaultInit(InterfaceOptimizationProblem prob) {
     	if ((prob != null) && (prob instanceof InterfaceHasInitRange) && (((InterfaceHasInitRange)prob).getInitRange()!=null)) ESIndividualDoubleData.defaultInit(m_Genotype, (double[][])((InterfaceHasInitRange)prob).getInitRange());
     	else ESIndividualDoubleData.defaultInit(m_Genotype, m_Range);
@@ -336,6 +353,7 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
      * name to the current object.
      * @return The name.
      */
+    @Override
     public String getName() {
         return "ES individual";
     }

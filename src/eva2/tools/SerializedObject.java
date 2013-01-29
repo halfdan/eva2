@@ -98,6 +98,7 @@ public class SerializedObject implements Serializable {
 	 * @param other the other Object.
 	 * @return true if the objects are equal.
 	 */
+    @Override
 	public final boolean equals(Object other) {
 
 		// Check class type
@@ -123,6 +124,7 @@ public class SerializedObject implements Serializable {
 	 *
 	 * @return the hashcode for this object.
 	 */
+    @Override
 	public final int hashCode() {
 		return m_Serialized.length;
 	}
@@ -132,6 +134,7 @@ public class SerializedObject implements Serializable {
 	 *
 	 * @return a String representing this object.
 	 */
+    @Override
 	public String toString() {
 		return (m_Compressed ? "Compressed object: " : "Uncompressed object: ")
 		+ m_Serialized.length + " bytes";

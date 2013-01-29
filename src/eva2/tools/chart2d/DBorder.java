@@ -37,12 +37,14 @@ public class DBorder extends Insets{
     return changed;
   }
 
+    @Override
   public boolean equals( Object o ){
     if( o instanceof DBorder )
       return super.equals( o );
     return false;
   }
 
+    @Override
   public String toString(){
     return "eva2.tools.chart2d.DBorder[top="+top+",left="+left
            +",bottom="+bottom+",right="+right+"]";

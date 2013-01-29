@@ -60,6 +60,7 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
 			this.m_Semaphore=sema;
 		}
 	
+        @Override
 		public void run() {
 			double[]                fitness;
 			prob.evaluate(ind);
@@ -138,6 +139,7 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
     /** This method returns a deep clone of the problem.
      * @return  the clone
      */
+    @Override
     public abstract Object clone();
 
     /** This method inits the Problem to log multiruns for the s-Metric it
@@ -145,6 +147,7 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
      * also it is necessary to init the local Pareto-Front and the
      * problem frame (i'll provide a default implementation here.
      */
+    @Override
     public void initProblem() {
         makeBorder();
         this.m_ParetoFront = new Population();
@@ -196,11 +199,13 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
         this.m_ParetoFront = new Population();
     }
     
+    @Override
     public void evaluatePopulationStart(Population population) {
     	super.evaluatePopulationStart(population);
     	if (this.m_Show && (this.m_Plot==null)) this.initProblemFrame();
     }
     
+    @Override
     public void evaluatePopulationEnd(Population population) {
     	super.evaluatePopulationEnd(population);
     	double[]                fitness;
@@ -469,6 +474,7 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
      * plot. A fitness that is to be minimized with a global min of zero
      * would be best, since log y can be used. But the value can depend on the problem.
      */
+    @Override
     public Double getDoublePlotValue(Population pop) {
         if (AbstractMultiObjectiveOptimizationProblem.isPopulationMultiObjective(pop)) {
             return new Double(this.calculateMetric(pop));
@@ -522,6 +528,7 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
      * (non-Javadoc)
      * @see eva2.server.go.problems.InterfaceOptimizationProblem#getStringRepresentationForProblem(eva2.server.go.strategies.InterfaceOptimizer)
      */
+    @Override
 	public String getStringRepresentationForProblem(InterfaceOptimizer opt) {
 		// TODO Auto-generated method stub
 		return null;

@@ -28,6 +28,7 @@ public class ClassPreloader implements Runnable {
     /**
      * Load classes via GenericObjectEditor in a thread.
      */
+    @Override
 	public void run() {
 		if (classNames != null) {
 			for (int i = 0; i < classNames.length; i++) {

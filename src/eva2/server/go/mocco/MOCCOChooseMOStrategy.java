@@ -33,6 +33,7 @@ public class MOCCOChooseMOStrategy extends MOCCOPhase implements InterfaceProces
 
     /** This method will call the init method and will go to stall
      */
+    @Override
     public void initProcessElementParametrization() {
     	this.m_Mocco.m_JPanelControl.removeAll();
     	this.m_Mocco.m_JPanelParameters.removeAll();
@@ -149,6 +150,7 @@ public class MOCCOChooseMOStrategy extends MOCCOPhase implements InterfaceProces
     }
 
     ActionListener choosenMOEA = new ActionListener() {
+        @Override
         public void actionPerformed(ActionEvent event) {
             m_Mocco.m_JPanelControl.removeAll();
             m_Mocco.m_JPanelParameters.removeAll();
@@ -157,6 +159,7 @@ public class MOCCOChooseMOStrategy extends MOCCOPhase implements InterfaceProces
         }
     };
     ActionListener choosenSTEP = new ActionListener() {
+        @Override
         public void actionPerformed(ActionEvent event) {
             m_Mocco.m_JPanelControl.removeAll();
             m_Mocco.m_JPanelParameters.removeAll();
@@ -165,6 +168,7 @@ public class MOCCOChooseMOStrategy extends MOCCOPhase implements InterfaceProces
         }
     };
     ActionListener choosenREFP = new ActionListener() {
+        @Override
         public void actionPerformed(ActionEvent event) {
             m_Mocco.m_JPanelControl.removeAll();
             m_Mocco.m_JPanelParameters.removeAll();
@@ -173,6 +177,7 @@ public class MOCCOChooseMOStrategy extends MOCCOPhase implements InterfaceProces
         }
     };
     ActionListener choosenTBCH = new ActionListener() {
+        @Override
         public void actionPerformed(ActionEvent event) {
             m_Mocco.m_JPanelControl.removeAll();
             m_Mocco.m_JPanelParameters.removeAll();
@@ -181,6 +186,7 @@ public class MOCCOChooseMOStrategy extends MOCCOPhase implements InterfaceProces
         }
     };
     ActionListener choosenGDF = new ActionListener() {
+        @Override
         public void actionPerformed(ActionEvent event) {
             m_Mocco.m_JPanelControl.removeAll();
             m_Mocco.m_JPanelParameters.removeAll();

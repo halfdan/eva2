@@ -88,6 +88,7 @@ public abstract class AbstractProblemBinary extends AbstractOptimizationProblem 
      * name to the current object.
      * @return The name.
      */
+    @Override
     public String getName() {
     	return "AbstractProblemBinary";
     }
@@ -103,6 +104,7 @@ public abstract class AbstractProblemBinary extends AbstractOptimizationProblem 
      * @param opt       The Optimizer that is used or had been used.
      * @return The description.
      */
+    @Override
     public String getStringRepresentationForProblem(InterfaceOptimizer opt) {
         StringBuffer sb = new StringBuffer(200);
         sb.append("A binary valued problem:\n");

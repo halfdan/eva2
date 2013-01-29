@@ -23,6 +23,7 @@ public class RemoveSurplusIndividualsSMetric implements InterfaceRemoveSurplusIn
     public RemoveSurplusIndividualsSMetric(RemoveSurplusIndividualsSMetric a) {
     }
 
+    @Override
     public Object clone() {
         return (Object) new RemoveSurplusIndividualsSMetric(this);
     }
@@ -31,6 +32,7 @@ public class RemoveSurplusIndividualsSMetric implements InterfaceRemoveSurplusIn
      * from a given archive. Note archive will be altered!
      * @param archive
      */
+    @Override
     public void removeSurplusIndividuals(Population archive) {
         double[][]  fitness;
         double[]    space;

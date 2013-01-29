@@ -50,11 +50,13 @@ public class BasicDataSet extends AbstractDataSet {
 		return dataType;
 	}
 
+    @Override
 	public String getXLabel()
 	{
 		return xLabel;
 	}
 
+    @Override
 	public String getYLabel()
 	{
 		return yLabel;

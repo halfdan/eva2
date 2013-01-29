@@ -206,6 +206,7 @@ public class JExtDesktopPane extends JDesktopPane {
     public int getFrameCount() {
         return getComponentCount(new ComponentFilter() {
 
+            @Override
             public boolean accept(Component c) {
                 return c instanceof JInternalFrame
                         || (c instanceof JInternalFrame.JDesktopIcon
@@ -237,6 +238,7 @@ public class JExtDesktopPane extends JDesktopPane {
         }
     }
 
+    @Override
     public void addImpl(Component comp, Object constraints, int index) {
         super.addImpl(comp, constraints, index);
         //System.out.println("JExtDesktopPane.addImpl");

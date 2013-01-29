@@ -20,14 +20,17 @@ public class SolutionSet implements InterfaceSolutionSet {
 		sols = p;
 	}
 	
+    @Override
 	public SolutionSet clone() {
 		return new SolutionSet((Population)pop.clone(), (Population)sols.clone());
 	}
 	
+    @Override
 	public Population getSolutions() {
 		return sols;
 	}
 	
+    @Override
 	public Population getCurrentPopulation() {
 		return pop;
 	}

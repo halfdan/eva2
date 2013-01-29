@@ -28,6 +28,7 @@ public class MOCCOInitialPopulationSize extends MOCCOPhase implements InterfaceP
 
     /** This method will call the init method and will go to stall
      */
+    @Override
     public void initProcessElementParametrization() {
         this.m_Mocco.m_JPanelControl.removeAll();
 
@@ -61,6 +62,7 @@ public class MOCCOInitialPopulationSize extends MOCCOPhase implements InterfaceP
 
 
     ActionListener continue2 = new ActionListener() {
+        @Override
         public void actionPerformed(ActionEvent event) {
             m_Mocco.m_JPanelControl.removeAll();
             m_Mocco.m_JPanelControl.validate();
@@ -70,6 +72,7 @@ public class MOCCOInitialPopulationSize extends MOCCOPhase implements InterfaceP
     };
 
     ActionListener popSizeEdited = new ActionListener() {
+        @Override
         public void actionPerformed(ActionEvent event) {
             String s = m_JTextField.getText();
             try {

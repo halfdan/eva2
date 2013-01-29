@@ -87,10 +87,12 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
     	GenericObjectEditor.setHideProperty(this.getClass(), "population", true);
     }
     
+    @Override
     public Object clone() {
         return (Object) new ParticleFilterOptimization(this);
     }
 
+    @Override
     public void init() {
         //System.out.println("popsize is   " + m_Population.size());
         //System.out.println("pops targ is " + m_Population.getPopulationSize());
@@ -113,6 +115,7 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
      * @param pop       The initial population
      * @param reset     If true the population is reset.
      */
+    @Override
     public void initByPopulation(Population pop, boolean reset) {
         this.m_Population = (Population)pop.clone();
         if (reset) {
@@ -218,6 +221,7 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
      * Optimization loop of a resampling particle filter, restructured by MK.
      * 
      */
+    @Override
     public void optimize() {
         Population nextGeneration;
         //AbstractEAIndividual   elite;
@@ -240,9 +244,11 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
         
     }
 
+    @Override
     public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
         this.m_Listener = ea;
     }
+    @Override
 	public boolean removePopulationChangedEventListener(
 			InterfacePopulationChangedEventListener ea) {
 		if (m_Listener==ea) {
@@ -257,12 +263,14 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
     /** This method will set the problem that is to be optimized
      * @param problem
      */
+    @Override
     public void setProblem (InterfaceOptimizationProblem problem) {
         this.m_Problem = problem;
     	if (problem instanceof AbstractOptimizationProblem) {
     		((AbstractOptimizationProblem)problem).informAboutOptimizer(this);
     	}
     }
+    @Override
     public InterfaceOptimizationProblem getProblem () {
         return this.m_Problem;
     }
@@ -271,6 +279,7 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
      * and the applied methods.
      * @return A descriptive string
      */
+    @Override
     public String getStringRepresentation() {
     	StringBuilder strB=new StringBuilder(200);
         strB.append("Particle Filter:\nOptimization Problem: ");
@@ -282,9 +291,11 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
     /** This method allows you to set an identifier for the algorithm
      * @param name      The indenifier
      */
+    @Override
      public void setIdentifier(String name) {
         this.m_Identifier = name;
     }
+    @Override
      public String getIdentifier() {
          return this.m_Identifier;
      }
@@ -292,6 +303,7 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
     /** This method is required to free the memory on a RMIServer,
      * but there is nothing to implement.
      */
+    @Override
     public void freeWilly() {
 
     }
@@ -307,6 +319,7 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
     /** This method will return a naming String
      * @return The name of the algorithm
      */
+    @Override
     public String getName() {
         return "PF";
     }
@@ -316,9 +329,11 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
      * of the optimizer.
      * @return The population of current solutions to a given problem.
      */
+    @Override
     public Population getPopulation() {
         return this.m_Population;
     }
+    @Override
     public void setPopulation(Population pop){
         this.m_Population = pop;
     }
@@ -326,6 +341,7 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
         return "Edit the properties of the population used.";
     }
     
+    @Override
     public InterfaceSolutionSet getAllSolutions() {
     	return new SolutionSet(getPopulation());
     }

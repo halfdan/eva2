@@ -20,6 +20,7 @@ public class GenotypeMetricBitSet implements InterfaceDistanceMetric, java.io.Se
     public GenotypeMetricBitSet(GenotypeMetricBitSet a) {
     }
 
+    @Override
     public Object clone() {
         return (Object) new GenotypeMetricBitSet(this);
     }
@@ -31,6 +32,7 @@ public class GenotypeMetricBitSet implements InterfaceDistanceMetric, java.io.Se
      * @param indy2     The second individual.
      * @return double
      */
+    @Override
     public double distance(AbstractEAIndividual indy1, AbstractEAIndividual indy2) {
     	return GenotypeMetricBitSet.dist(indy1, indy2);
     }

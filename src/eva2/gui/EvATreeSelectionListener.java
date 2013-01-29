@@ -42,6 +42,7 @@ public class EvATreeSelectionListener implements TreeSelectionListener, Property
 		if (goEditor!=null) goEditor.addPropertyChangeListener(this); // listen to changes to the parameters
 	}
 
+    @Override
 	public void valueChanged(TreeSelectionEvent e) {
 		if (TRACE) System.out.println("valueChanged to " + BeanInspector.toString(e.getPath()));
 		TreePath tp = e.getPath();
@@ -59,6 +60,7 @@ public class EvATreeSelectionListener implements TreeSelectionListener, Property
 		}
 	}
 
+    @Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		if (TRACE) System.out.println("EvATreeNode received change event " + evt);
 		root.setObject(evt.getNewValue(), true);

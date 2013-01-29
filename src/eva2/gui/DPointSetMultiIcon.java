@@ -269,6 +269,7 @@ public class DPointSetMultiIcon extends DComponent
         jumperMI.addJump();
     }
 
+    @Override
     public void paint(DMeasures m)
     {
         try
@@ -490,6 +491,7 @@ public class DPointSetMultiIcon extends DComponent
 
     //~ Inner Classes //////////////////////////////////////////////////////////
 
+    @Override
     public String toString()
     {
         String text = "eva2.tools.chart2d.DPointSet[size:" + getSize();

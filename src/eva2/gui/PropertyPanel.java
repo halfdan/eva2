@@ -80,6 +80,7 @@ public class PropertyPanel extends JPanel {
 	/**
 	 *
 	 */
+    @Override
 	public void removeNotify() {
 		if (propertyDialog != null) {
 			propertyDialog = null;
@@ -89,6 +90,7 @@ public class PropertyPanel extends JPanel {
 	/**
 	 *
 	 */
+    @Override
 	public void paintComponent(Graphics g) {
 		Insets i = textLabel.getInsets();
 		Rectangle box = new Rectangle(i.left, i.top,

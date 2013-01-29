@@ -40,6 +40,7 @@ public class PropertyOptimizationObjectivesWithParam implements java.io.Serializ
         }
     }
 
+    @Override
     public Object clone() {
         return (Object) new PropertyOptimizationObjectivesWithParam(this);
     }

@@ -180,6 +180,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 //		lsStepsPerInd=stepsPerInd;
 //		lsCandidateRatio = candidateRatio;
 //	}
+    @Override
     public Object clone() {
         return (Object) new ParticleSwarmOptimization(this);
     }
@@ -194,6 +195,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
         setTopology(getTopology());
     }
 
+    @Override
     public void init() {
         if (m_Plot != null) {
 //			m_Plot.dispose();
@@ -446,6 +448,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
      * @param pop The initial population
      * @param reset If true the population is reset.
      */
+    @Override
     public void initByPopulation(Population pop, boolean reset) {
         if (pop != null) {
             this.m_Population = (Population) pop.clone();
@@ -1350,6 +1353,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
         }
     }
 
+    @Override
     public void optimize() {
 //		System.out.println(">>> " + m_Population.getStringRepresentation());
         startOptimize();
@@ -1659,10 +1663,12 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
         }
     }
 
+    @Override
     public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
         this.m_Listener = ea;
     }
 
+    @Override
     public boolean removePopulationChangedEventListener(
             InterfacePopulationChangedEventListener ea) {
         if (m_Listener == ea) {
@@ -1684,10 +1690,12 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
      *
      * @param problem
      */
+    @Override
     public void setProblem(InterfaceOptimizationProblem problem) {
         this.m_Problem = problem;
     }
 
+    @Override
     public InterfaceOptimizationProblem getProblem() {
         return this.m_Problem;
     }
@@ -1698,6 +1706,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
      *
      * @return A descriptive string
      */
+    @Override
     public String getStringRepresentation() {
         String result = "";
         result += "Particle Swarm Optimization:\n";
@@ -1712,10 +1721,12 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
      *
      * @param name The indenifier
      */
+    @Override
     public void setIdentifier(String name) {
         this.m_Identifier = name;
     }
 
+    @Override
     public String getIdentifier() {
         return this.m_Identifier;
     }
@@ -1724,6 +1735,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
      * This method is required to free the memory on a RMIServer, but there is
      * nothing to implement.
      */
+    @Override
     public void freeWilly() {
     }
 
@@ -1745,15 +1757,18 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
      *
      * @return The name of the algorithm
      */
+    @Override
     public String getName() {
 //		return "PSO-"+getTopology()+getTopologyRange()+(isDoLocalSearch() ? "-ls_" : "_")+getPhi1()+"_"+getPhi2();
         return "PSO-" + getTopology() + getTopologyRange() + "_" + getPhi1() + "_" + getPhi2();
     }
 
+    @Override
     public Population getPopulation() {
         return this.m_Population;
     }
 
+    @Override
     public void setPopulation(Population pop) {
         this.m_Population = pop;
         if (pop.size() != pop.getTargetSize()) { // new particle count!
@@ -1782,6 +1797,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
         return "Edit the properties of the population used.";
     }
 
+    @Override
     public InterfaceSolutionSet getAllSolutions() {
         return new SolutionSet(getPopulation());
     }
@@ -2253,6 +2269,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 //	public void setDoLocalSearch(boolean doLocalSearch) {
 //		this.doLocalSearch = doLocalSearch;
 //	}
+    @Override
     public String[] getAdditionalDataHeader() {
         if (emaPeriods > 0) {
             return new String[]{"meanEMASpeed", "meanCurSpeed"};
@@ -2261,6 +2278,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
         }
     }
 
+    @Override
     public String[] getAdditionalDataInfo() {
         if (emaPeriods > 0) {
             return new String[]{"Exponential moving average of the (range-relative) speed of all particles", "The mean (range-relative) current speed of all particles"};
@@ -2269,6 +2287,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
         }
     }
 
+    @Override
     public Object[] getAdditionalDataValue(PopulationInterface pop) {
         AbstractEAIndividual indy = (AbstractEAIndividual) pop.get(0);
         if (emaPeriods > 0) {

@@ -156,6 +156,7 @@ public class MOCCOViewer extends JPanel implements InterfaceRefSolutionListener,
 //    }
 
     ActionListener paretoFrontViewChanged = new ActionListener() {
+        @Override
         public void actionPerformed(ActionEvent event) {
             JComboBox tmpC = (JComboBox)event.getSource();
             int index = tmpC.getSelectedIndex();
@@ -194,6 +195,7 @@ public class MOCCOViewer extends JPanel implements InterfaceRefSolutionListener,
     };
 
     ActionListener saveParetoFront = new ActionListener() {
+        @Override
         public void actionPerformed(ActionEvent event) {
             SimpleDateFormat formatter = new SimpleDateFormat("E'_'yyyy.MM.dd'_'HH.mm.ss");
             String m_StartDate = formatter.format(new Date());
@@ -395,6 +397,7 @@ public class MOCCOViewer extends JPanel implements InterfaceRefSolutionListener,
      * Individual has been selected
      * @param indy  The selected individual
      */
+    @Override
     public void individualSelected(AbstractEAIndividual indy) {
         if (indy.isMarked()) indy.unmark();
         else {
@@ -448,6 +451,7 @@ public class MOCCOViewer extends JPanel implements InterfaceRefSolutionListener,
     /** This method will notify the listener that a point has been selected
      * @param point  The selected point, most likely 2d
      */
+    @Override
     public void refPointGiven(double[] point) {
         this.m_ReferencePoint = point;
         if (this.m_RefPointListener != null) this.m_RefPointListener.refPointGiven(point);

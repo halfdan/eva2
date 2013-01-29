@@ -62,6 +62,7 @@ public class GeneralGenericObjectEditorPanel extends JPanel implements ItemListe
         m_PPWrapper             = new JPanel();
         m_PropertyPanel         = this.m_ObjectEditor.getPropertyPanel();
         m_PropertyPanel.addPropertyChangeListener(new PropertyChangeListener() {
+            @Override
 	        public void propertyChange(PropertyChangeEvent evt) {
 	            m_ObjectEditor.firePropertyChange("", null, m_ObjectEditor.getValue());
 	        }
@@ -70,6 +71,7 @@ public class GeneralGenericObjectEditorPanel extends JPanel implements ItemListe
         m_OpenBut.setToolTipText("Load a configured object");
         m_OpenBut.setEnabled(true);
         m_OpenBut.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
 	            Object object = openObject();
                 if (object != null) {
@@ -87,6 +89,7 @@ public class GeneralGenericObjectEditorPanel extends JPanel implements ItemListe
         m_SaveBut.setToolTipText("Save the current configured object");
         m_SaveBut.setEnabled(true);
         m_SaveBut.addActionListener(new ActionListener() {
+            @Override
 	        public void actionPerformed(ActionEvent e) {
 	            saveObject(m_ObjectEditor.getValue());
 	        }
@@ -120,6 +123,7 @@ public class GeneralGenericObjectEditorPanel extends JPanel implements ItemListe
         m_okBut             = new JButton("OK");
         m_okBut.setEnabled(true);
         m_okBut.addActionListener(new ActionListener() {
+            @Override
 	        public void actionPerformed(ActionEvent e) {
 	            m_ObjectEditor.makeBackup();
 	            if ((getTopLevelAncestor() != null) && (getTopLevelAncestor() instanceof Window)) {
@@ -132,6 +136,7 @@ public class GeneralGenericObjectEditorPanel extends JPanel implements ItemListe
         m_cancelBut         = new JButton("Cancel");
         m_cancelBut.setEnabled(false);
         m_cancelBut.addActionListener(new ActionListener() {
+            @Override
 	        public void actionPerformed(ActionEvent e) {
                 m_ObjectEditor.undoBackup();
 	            updateClassType();
@@ -303,6 +308,7 @@ public class GeneralGenericObjectEditorPanel extends JPanel implements ItemListe
      * is changed appropriately.
      * @param e a value of type 'ItemEvent'
      */
+    @Override
     public void itemStateChanged(ItemEvent e) {
         String className = (String)m_ObjectChooser.getSelectedItem();
 

@@ -21,6 +21,7 @@ public class ArchivingNSGA extends AbstractArchiving implements java.io.Serializ
         this.m_Cleaner  = (InterfaceRemoveSurplusIndividuals) a.m_Cleaner.clone();
     }
 
+    @Override
     public Object clone() {
         return (Object) new ArchivingNSGA(this);
     }
@@ -30,6 +31,7 @@ public class ArchivingNSGA extends AbstractArchiving implements java.io.Serializ
      *  remove elements from the archive if the archive target size is exceeded.
      * @param pop       The population that may add Individuals to the archive.
      */
+    @Override
     public void addElementsToArchive(Population pop) {
 
         if (pop.getArchive() == null) pop.SetArchive(new Population());     

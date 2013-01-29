@@ -75,6 +75,7 @@ public abstract class AbstractProblemInteger extends AbstractOptimizationProblem
  * These are for GUI
  */
 
+    @Override
     public String getName() {
     	return "AbstractProblemInteger";
     }
@@ -90,6 +91,7 @@ public abstract class AbstractProblemInteger extends AbstractOptimizationProblem
      * @param opt       The Optimizer that is used or had been used.
      * @return The description.
      */
+    @Override
     public String getStringRepresentationForProblem(InterfaceOptimizer opt) {
         StringBuffer sb = new StringBuffer(200);
         sb.append("An integer valued problem:\n");

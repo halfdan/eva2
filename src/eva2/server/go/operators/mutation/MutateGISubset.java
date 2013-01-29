@@ -40,25 +40,30 @@ public class MutateGISubset implements InterfaceMutation, Serializable {
 		setMaxNumMutations(maxMutes);
 	}
 	
+    @Override
 	public Object clone() {
 		return new MutateGISubset(this);
 	}
 	
+    @Override
 	public void crossoverOnStrategyParameters(AbstractEAIndividual indy1,
 			Population partners) {
 		// nothing to do
 	}
 
+    @Override
 	public String getStringRepresentation() {
 		return "GI subset mutation in " + BeanInspector.toString(mutableSet);
 	}
 
+    @Override
 	public void init(AbstractEAIndividual individual,
 			InterfaceOptimizationProblem opt) {
 		// nothing to do
 		
 	}
 
+    @Override
 	public void mutate(AbstractEAIndividual individual) {
 		if (individual instanceof InterfaceGIIndividual) {
 			InterfaceGIIndividual giIndy = (InterfaceGIIndividual)individual;

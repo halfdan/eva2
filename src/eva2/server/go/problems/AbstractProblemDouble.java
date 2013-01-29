@@ -138,6 +138,7 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem
 	 * 
 	 * @see eval(double[] x)
 	 */
+    @Override
 	public void evaluate(AbstractEAIndividual individual) {
 		double[] x;
 		double[] fitness;
@@ -216,6 +217,7 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem
 	 *            the vector to evaluate
 	 * @return the target function value
 	 */
+    @Override
 	public abstract double[] eval(double[] x);
 
 	/**
@@ -223,6 +225,7 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem
 	 * 
 	 * @return the problem dimension
 	 */
+    @Override
 	public abstract int getProblemDimension();
 
 	@Override
@@ -238,6 +241,7 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem
 	 * 
 	 * @return a range array
 	 */
+    @Override
 	public double[][] makeRange() {
 		double[][] range = new double[this.getProblemDimension()][2];
 		for (int i = 0; i < range.length; i++) {
@@ -257,6 +261,7 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem
 	 * @param dim
 	 * @return the lower bound of the double range in the given dimension
 	 */
+    @Override
 	public double getRangeLowerBound(int dim) {
 		return -getDefaultRange();
 	}
@@ -271,6 +276,7 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem
 	 * @param dim
 	 * @return the upper bound of the double range in the given dimension
 	 */
+    @Override
 	public double getRangeUpperBound(int dim) {
 		return getDefaultRange();
 	}
@@ -349,6 +355,7 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem
 	 * 
 	 * @return the EA individual template currently used
 	 */
+    @Override
 	public InterfaceDataTypeDouble getEAIndividual() {
 		return (InterfaceDataTypeDouble) this.m_Template;
 	}
@@ -408,14 +415,17 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem
 	/**********************************************************************************************************************
 	 * These are for Interface2DBorderProblem
 	 */
+    @Override
 	public double[][] get2DBorder() {
 		return makeRange();
 	}
 
+    @Override
 	public double[] project2DPoint(double[] point) {
 		return Mathematics.expandVector(point, getProblemDimension(), 0.);
 	}
 
+    @Override
 	public double functionValue(double[] point) {
 		double[] x = project2DPoint(point);
 		double v = eval(x)[0];
@@ -504,6 +514,7 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem
 	 * 
 	 * @return the name of the object
 	 */
+    @Override
 	public String getName() {
 		return "AbstractProblemDouble";
 	}
@@ -524,6 +535,7 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem
 	 *            The Optimizer that is used or had been used.
 	 * @return The description.
 	 */
+    @Override
 	public String getStringRepresentationForProblem(InterfaceOptimizer opt) {
 		StringBuffer sb = new StringBuffer(200);
 		sb.append("A double valued problem: ");

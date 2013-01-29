@@ -45,6 +45,7 @@ public class JExtMenu extends JMenu{
   /**
    *
    */
+    @Override
   public JMenuItem add(Action a){
     JMenuItem item = super.add(a);
     Object o;
@@ -59,8 +60,10 @@ public class JExtMenu extends JMenu{
   /**
    *
    */
+    @Override
   protected PropertyChangeListener createActionChangeListener(JMenuItem b){
     return new ExtActionChangedListener(b){
+            @Override
       public void propertyChange(PropertyChangeEvent e) {
         JMenuItem menuItem = (JMenuItem)component;
         if(menuItem == null) return;

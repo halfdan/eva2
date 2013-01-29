@@ -44,10 +44,12 @@ public class SelectParticleWheel implements InterfaceSelection, java.io.Serializ
         this.m_ObeyDebsConstViolationPrinciple = a.m_ObeyDebsConstViolationPrinciple;
     }
 
+    @Override
     public Object clone() {
         return (Object) new SelectParticleWheel(this);
     }
     
+    @Override
     public void prepareSelection(Population population) {
     	m_SelProbCalculator.computeSelectionProbability(population, "Fitness", m_ObeyDebsConstViolationPrinciple);
     }
@@ -61,6 +63,7 @@ public class SelectParticleWheel implements InterfaceSelection, java.io.Serializ
      * @param size          The number of Individuals to select
      * @return The selected population.
      */
+    @Override
     public Population selectFrom(Population population, int size) {
         Population result = new Population();
         result.setTargetSize(size);
@@ -134,6 +137,7 @@ public class SelectParticleWheel implements InterfaceSelection, java.io.Serializ
      * @param size              The number of partners needed.
      * @return The selected partners.
      */
+    @Override
     public Population findPartnerFor(AbstractEAIndividual dad, Population avaiablePartners, int size) {
         return this.selectFrom(avaiablePartners, size);
     }
@@ -161,6 +165,7 @@ public class SelectParticleWheel implements InterfaceSelection, java.io.Serializ
      * of Deb
      * @param b     The new state
      */
+    @Override
     public void setObeyDebsConstViolationPrinciple(boolean b) {
         this.m_ObeyDebsConstViolationPrinciple = b;
     }

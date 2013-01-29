@@ -29,6 +29,7 @@ public class F2Problem extends AbstractProblemDoubleOffset implements InterfaceL
     /** This method returns a deep clone of the problem.
      * @return  the clone
      */
+    @Override
     public Object clone() {
         return (Object) new F2Problem(this);
     }
@@ -37,6 +38,7 @@ public class F2Problem extends AbstractProblemDoubleOffset implements InterfaceL
      * @param x     The n-dimensional input vector
      * @return  The m-dimensional output vector.
      */
+    @Override
     public double[] eval(double[] x) {
     	x = rotateMaybe(x);
         double[] result = new double[1];
@@ -51,6 +53,7 @@ public class F2Problem extends AbstractProblemDoubleOffset implements InterfaceL
         return result;
     }
     
+    @Override
 	public double[] getFirstOrderGradients(double[] x) {
 		x = rotateMaybe(x);
         int dim = x.length;
@@ -90,6 +93,7 @@ public class F2Problem extends AbstractProblemDoubleOffset implements InterfaceL
      * name to the current object.
      * @return The name.
      */
+    @Override
     public String getName() {
         return "F2-Problem";
     }
@@ -101,6 +105,7 @@ public class F2Problem extends AbstractProblemDoubleOffset implements InterfaceL
         return "Generalized Rosenbrock's function.";
     }
 
+    @Override
     public void doLocalSearch(Population pop) {
     	if (localSearchOptimizer == null) {
     		initLS();
@@ -115,6 +120,7 @@ public class F2Problem extends AbstractProblemDoubleOffset implements InterfaceL
 	    localSearchOptimizer.init();
     }
 
+    @Override
     public double getLocalSearchStepFunctionCallEquivalent() {
     	double cost = 1;
     	if (this.localSearchOptimizer instanceof GradientDescentAlgorithm) {

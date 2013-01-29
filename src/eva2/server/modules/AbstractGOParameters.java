@@ -100,11 +100,13 @@ public abstract class AbstractGOParameters implements InterfaceGOParameters, Ser
         }
     }
     
+    @Override
     public void saveInstance() {
         String fileName = this.getClass().getSimpleName() + ".ser";
         saveInstance(fileName);
     }
 	
+    @Override
 	public String toString() {
 		StringBuilder sBuilder = new StringBuilder(getName());
 		sBuilder.append("\n");
@@ -120,12 +122,14 @@ public abstract class AbstractGOParameters implements InterfaceGOParameters, Ser
 		return sBuilder.toString();
 	}
 
+    @Override
 	public void addInformableInstance(InterfaceNotifyOnInformers o) {
 		if (toInformAboutInformers==null) toInformAboutInformers=new LinkedList<InterfaceNotifyOnInformers>();
 		if (!toInformAboutInformers.contains(o)) toInformAboutInformers.add(o);
 		o.setInformers(getInformerList());
 	}
 	
+    @Override
 	public boolean removeInformableInstance(InterfaceNotifyOnInformers o) {
 		if (toInformAboutInformers==null) return false;
 		else return toInformAboutInformers.remove(o);
@@ -137,6 +141,7 @@ public abstract class AbstractGOParameters implements InterfaceGOParameters, Ser
 		}
 	}
 
+    @Override
 	public void setOptimizer(InterfaceOptimizer optimizer) {
 		this.m_Optimizer = optimizer;
 		this.m_Optimizer.setProblem(this.m_Problem);
@@ -151,6 +156,7 @@ public abstract class AbstractGOParameters implements InterfaceGOParameters, Ser
 		return ret;
 	}
 
+    @Override
 	public InterfaceOptimizer getOptimizer() {
 		return this.m_Optimizer;
 	}
@@ -158,6 +164,7 @@ public abstract class AbstractGOParameters implements InterfaceGOParameters, Ser
 		return "Choose an optimization strategy.";
 	}
 
+    @Override
 	public String getName() {
 		return "Optimization parameters";
 	}
@@ -166,15 +173,18 @@ public abstract class AbstractGOParameters implements InterfaceGOParameters, Ser
 	 * This method will set the problem that is to be optimized.
 	 * @param problem
 	 */
+    @Override
 	public void setProblem (InterfaceOptimizationProblem problem) {
 		this.m_Problem = problem;
 		this.m_Optimizer.setProblem(this.m_Problem);
 		fireNotifyOnInformers();
 	}
 	
+    @Override
 	public InterfaceOptimizationProblem getProblem() {
 		return this.m_Problem;
 	}
+    @Override
 	public String problemTipText() {
 		return "Choose the problem that is to optimize and the EA individual parameters.";
 	}
@@ -182,6 +192,7 @@ public abstract class AbstractGOParameters implements InterfaceGOParameters, Ser
 	/** This methods allow you to set and get the Seed for the Random Number Generator.
 	 * @param x     Long seed.
 	 */
+    @Override
 	public void setSeed(long x) {
 		randomSeed = x;
 	}
@@ -191,10 +202,12 @@ public abstract class AbstractGOParameters implements InterfaceGOParameters, Ser
      * 
 	 * @return The current seed for the random number generator.
 	 */
+    @Override
 	public long getSeed() {
 		return randomSeed;
 	}
     
+    @Override
 	public String seedTipText() {
 		return "Random number seed, set to zero to use current system time.";
 	}
@@ -203,25 +216,32 @@ public abstract class AbstractGOParameters implements InterfaceGOParameters, Ser
 	 * evolutionary algorithm.
 	 * @param term  The new terminator
 	 */
+    @Override
 	public void setTerminator(InterfaceTerminator term) {
 		this.m_Terminator = term;
 	}
+    @Override
 	public InterfaceTerminator getTerminator() {
 		return this.m_Terminator;
 	}
+    @Override
 	public String terminatorTipText() {
 		return "Choose a termination criterion.";
 	}
 
+    @Override
     public InterfacePostProcessParams getPostProcessParams() {
     	return m_PostProc;
     }
+    @Override
     public void setPostProcessParams(InterfacePostProcessParams ppp) {
     	m_PostProc = ppp;
     }
+    @Override
     public String postProcessParamsTipText() {
     	return "Parameters for the post processing step";
     }
+    @Override
     public void setDoPostProcessing(boolean doPP){
     	m_PostProc.setDoPostProcessing(doPP);
     }

@@ -58,6 +58,7 @@ public class MutateESGlobal implements InterfaceMutation, java.io.Serializable, 
     /** This method will enable you to clone a given mutation operator
      * @return The clone
      */
+    @Override
     public Object clone() {
         return new MutateESGlobal(this);
     }
@@ -66,6 +67,7 @@ public class MutateESGlobal implements InterfaceMutation, java.io.Serializable, 
      * are actually the same.
      * @param mutator   The other mutation operator
      */
+    @Override
     public boolean equals(Object mutator) {
         if (mutator instanceof MutateESGlobal) {
             MutateESGlobal mut = (MutateESGlobal)mutator;
@@ -80,6 +82,7 @@ public class MutateESGlobal implements InterfaceMutation, java.io.Serializable, 
      * @param individual      The individual that will be mutated.
      * @param opt               The optimization problem.
      */
+    @Override
     public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
 
     }
@@ -88,6 +91,7 @@ public class MutateESGlobal implements InterfaceMutation, java.io.Serializable, 
      * doesn't implement InterfaceESIndividual nothing happens.
      * @param individual    The individual that is to be mutated
      */
+    @Override
     public void mutate(AbstractEAIndividual individual) {
         //System.out.println("Before Mutate: " +((GAIndividual)individual).getSolutionRepresentationFor());
         if (individual instanceof InterfaceESIndividual) {
@@ -111,6 +115,7 @@ public class MutateESGlobal implements InterfaceMutation, java.io.Serializable, 
      * @param indy1     The original mother
      * @param partners  The original partners
      */
+    @Override
     public void crossoverOnStrategyParameters(AbstractEAIndividual indy1, Population partners) {
     	if (m_CrossoverType!=MutateESCrossoverTypeEnum.none) {
     		ArrayList<Double> tmpList = new ArrayList<Double>();
@@ -141,6 +146,7 @@ public class MutateESGlobal implements InterfaceMutation, java.io.Serializable, 
      * operator
      * @return A descriptive string.
      */
+    @Override
     public String getStringRepresentation() {
         return "ES global mutation";
     }
@@ -221,6 +227,7 @@ public class MutateESGlobal implements InterfaceMutation, java.io.Serializable, 
 	 * (non-Javadoc)
 	 * @see eva2.server.go.problems.InterfaceAdditionalPopulationInformer#getAdditionalDataHeader()
 	 */
+    @Override
 	public String[] getAdditionalDataHeader() {
 		return new String[] {"sigma"};
 	}
@@ -229,6 +236,7 @@ public class MutateESGlobal implements InterfaceMutation, java.io.Serializable, 
 	 * (non-Javadoc)
 	 * @see eva2.server.go.problems.InterfaceAdditionalPopulationInformer#getAdditionalDataInfo()
 	 */
+    @Override
 	public String[] getAdditionalDataInfo() {
 		return new String[] {"The ES global mutation step size."};
 	}
@@ -237,6 +245,7 @@ public class MutateESGlobal implements InterfaceMutation, java.io.Serializable, 
 	 * (non-Javadoc)
 	 * @see eva2.server.go.problems.InterfaceAdditionalPopulationInformer#getAdditionalDataValue(eva2.server.go.PopulationInterface)
 	 */
+    @Override
 	public Object[] getAdditionalDataValue(PopulationInterface pop) {
 		return new Object[]{m_MutationStepSize};
 	}

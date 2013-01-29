@@ -13,6 +13,7 @@ InterfaceMultimodalProblem {
 		dim=other.dim;
 	}
 
+    @Override
 	public double[] eval(double[] x) {
 		x = rotateMaybe(x);
 		double[] res = new double[1];
@@ -24,14 +25,17 @@ InterfaceMultimodalProblem {
 		return res;
 	}
 
+    @Override
 	public double getRangeLowerBound(int n) {
 		return 0.;
 	}
 	
+    @Override
 	public double getRangeUpperBound(int n) {
 		return 1.;
 	}
 	
+    @Override
 	public int getProblemDimension() {
 		return dim;
 	}
@@ -40,10 +44,12 @@ InterfaceMultimodalProblem {
 		dim = newDim;
 	}
 
+    @Override
 	public Object clone() {
 		return new F18Problem(this);
 	}
 
+    @Override
 	public String getName() {
 		return "F18-Problem";
 	}

@@ -56,6 +56,7 @@ public class MCParameters extends AbstractGOParameters implements InterfaceGOPar
     /**
      *
      */
+    @Override
     public Object clone() {
         return new MCParameters(this);
     }
@@ -67,6 +68,7 @@ public class MCParameters extends AbstractGOParameters implements InterfaceGOPar
         return "This is a simple Monte-Carlo Search, use big populations sizes for faster drawing.";
     }
 
+    @Override
     public void setOptimizer(InterfaceOptimizer optimizer) {
         // *pff* i'll ignore that!
     }

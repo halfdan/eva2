@@ -80,6 +80,7 @@ public class ClassificationSelfOrganizingMaps implements java.io.Serializable, I
      * the object
      * @return the deep clone
      */
+    @Override
     public Object clone() {
         return (Object) new ClassificationSelfOrganizingMaps(this);
     }
@@ -88,6 +89,7 @@ public class ClassificationSelfOrganizingMaps implements java.io.Serializable, I
      * @param space     The double[n][d] space
      * @param type      The classes [0,1,..]
      */
+    @Override
     public void init(double[][] space, int[] type) {
         this.m_AlternativeClasses = 0;
         for (int i = 0; i < type.length; i++) {
@@ -145,6 +147,7 @@ public class ClassificationSelfOrganizingMaps implements java.io.Serializable, I
      * @param space     The double[n][d] space
      * @param type      The int[n] classes [0,1,..]
      */
+    @Override
     public void train(double[][] space, int[] type) {
         // first init the assignment to zero
         for (int i = 0; i < this.m_SOM.length; i++) {
@@ -304,6 +307,7 @@ public class ClassificationSelfOrganizingMaps implements java.io.Serializable, I
      * @param point     The double[d] data point.
      * @return type     The resulting class.
      */
+    @Override
     public int getClassFor(double[] point) {
         int[] winner = this.findWinningNeuron(point);
         int mostClasses = 0;
@@ -329,6 +333,7 @@ public class ClassificationSelfOrganizingMaps implements java.io.Serializable, I
         frame.setSize(500, 500);
         frame.setLocation(530, 50);
         frame.addWindowListener(new WindowAdapter() {
+            @Override
             public void windowClosing(WindowEvent ev) {
                 System.exit(0);
             }

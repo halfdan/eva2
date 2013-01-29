@@ -103,6 +103,7 @@ Serializable {
 		return "Stop if a convergence criterion has been met.";
 	}
 
+    @Override
 	public void init(InterfaceOptimizationProblem prob) {
 		firstTime = true;
 		msg = "Not terminated.";
@@ -112,10 +113,12 @@ Serializable {
 		oldPopGens=-1;
 	}
 
+    @Override
 	public boolean isTerminated(InterfaceSolutionSet solSet) {
 		return isTerminated(solSet.getCurrentPopulation());
 	}
 
+    @Override
 	public boolean isTerminated(PopulationInterface pop) {
 		if (!firstTime && isStillConverged(pop)) {
 			if (TRACE) System.out.println("Converged at " + pop.getGeneration() + "/" + pop.getFunctionCalls() + ", measure " + calcPopulationMeasure(pop));
@@ -141,6 +144,7 @@ Serializable {
 	 */
 	protected abstract double calcInitialMeasure(PopulationInterface pop);
 		
+    @Override
 	public String lastTerminationMessage() {
 		return msg;
 	}

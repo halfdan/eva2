@@ -28,6 +28,7 @@ public class PhenotypeConvergenceTerminator extends PopulationMeasureTerminator 
 //		oldPhenNorm = o.oldPhenNorm;
 	}
 	
+    @Override
 	public void init(InterfaceOptimizationProblem prob) {
 		super.init(prob);
 //		oldPhenNorm  = 0;

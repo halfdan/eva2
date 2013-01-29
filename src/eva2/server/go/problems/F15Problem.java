@@ -60,12 +60,14 @@ public class F15Problem extends AbstractProblemDouble implements Serializable, I
 		return new F15Problem(this);
 	}
 
+    @Override
 	public SolutionHistogram getHistogram() {
 		if (getProblemDimension()<15) return new SolutionHistogram(0, 2, 16);
 		else if (getProblemDimension()<25) return new SolutionHistogram(0, 4, 16);
 		else return new SolutionHistogram(0, 8, 16);
 	}
 
+    @Override
 	public String getName() {
 		return "F15-Problem";
 	}

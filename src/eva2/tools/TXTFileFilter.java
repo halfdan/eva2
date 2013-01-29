@@ -25,6 +25,7 @@ public class TXTFileFilter extends FileFilter {
     public TXTFileFilter() {
     }
 
+    @Override
     public boolean accept(java.io.File file) {
         if (file.isDirectory()) return true;
         String fileName = file.getName();
@@ -33,6 +34,7 @@ public class TXTFileFilter extends FileFilter {
         else return false;
     }
 
+    @Override
     public String getDescription() {
         return "*.TXT; *.txt";
     }

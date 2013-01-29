@@ -24,6 +24,7 @@ public class GAStandardCodingInteger implements InterfaceGAIntegerCoding, java.i
      * @param correction            Enable automatic correction is enabled.
      * @return The int value.
      */
+    @Override
     public int decodeValue(BitSet refBitSet, int[] range, int[] locus, boolean correction) {
         int     u_max, u_min, m_max, m_min;
         int     m_start, m_length, counter = 0;
@@ -76,6 +77,7 @@ public class GAStandardCodingInteger implements InterfaceGAIntegerCoding, java.i
      * @param refBitSet         The BitSet where the questioned value is stored.
      * @param locus             The position and length on the BitSet that is to be coded.
      */
+    @Override
     public void codeValue(int value, int[] range, BitSet refBitSet, int[] locus) {
         int     u_max, u_min, m_max, m_min;
         int     m_start, m_length, counter = 0;
@@ -123,6 +125,7 @@ public class GAStandardCodingInteger implements InterfaceGAIntegerCoding, java.i
     /** This method will calculate how many bits are to be used to code a given value
      * @param range     The range for the value.
      */
+    @Override
     public int calculateNecessaryBits(int[] range) {
         int result = 0;
         double maxStore = 1. + range[1] -range[0];

@@ -16,6 +16,7 @@ public class GPNodeOne extends GPNodeConst implements java.io.Serializable {
     /** This method allows you to clone the Nodes
      * @return the clone
      */
+    @Override
     public Object clone() {
         return (Object) new GPNodeOne(this);
     }

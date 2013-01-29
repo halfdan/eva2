@@ -62,10 +62,12 @@ public class CHCAdaptiveSearchAlgorithm implements InterfaceOptimizer, java.io.S
         this.m_PopulSelectionOperator       = (InterfaceSelection)a.m_PopulSelectionOperator.clone();
     }
 
+    @Override
     public Object clone() {
         return (Object) new CHCAdaptiveSearchAlgorithm(this);
     }
 
+    @Override
     public void init() {
         this.m_Problem.initPopulation(this.m_Population);
         AbstractEAIndividual tmpIndy = ((AbstractEAIndividual)(this.m_Population.get(0)));
@@ -83,6 +85,7 @@ public class CHCAdaptiveSearchAlgorithm implements InterfaceOptimizer, java.io.S
      * @param pop       The initial population
      * @param reset     If true the population is reset.
      */
+    @Override
     public void initByPopulation(Population pop, boolean reset) {
         this.m_Population = (Population)pop.clone();
         if (reset) this.m_Population.init();
@@ -191,6 +194,7 @@ public class CHCAdaptiveSearchAlgorithm implements InterfaceOptimizer, java.io.S
         this.evaluatePopulation(this.m_Population);
     }
 
+    @Override
     public void optimize() {
         Population nextGeneration, tmp;
         //AbstractEAIndividual   elite;
@@ -218,9 +222,11 @@ public class CHCAdaptiveSearchAlgorithm implements InterfaceOptimizer, java.io.S
         this.firePropertyChangedEvent(Population.nextGenerationPerformed);
     }
 
+    @Override
     public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
         this.m_Listener = ea;
     }
+    @Override
 	public boolean removePopulationChangedEventListener(
 			InterfacePopulationChangedEventListener ea) {
 		if (m_Listener==ea) {
@@ -238,9 +244,11 @@ public class CHCAdaptiveSearchAlgorithm implements InterfaceOptimizer, java.io.S
     /** This method will set the problem that is to be optimized
      * @param problem
      */
+    @Override
     public void setProblem (InterfaceOptimizationProblem problem) {
         this.m_Problem = problem;
     }
+    @Override
     public InterfaceOptimizationProblem getProblem () {
         return this.m_Problem;
     }
@@ -249,6 +257,7 @@ public class CHCAdaptiveSearchAlgorithm implements InterfaceOptimizer, java.io.S
      * and the applied methods.
      * @return A descriptive string
      */
+    @Override
     public String getStringRepresentation() {
         String result = "";
         result += "CHC Adaptive Search Algorithm:\n";
@@ -261,9 +270,11 @@ public class CHCAdaptiveSearchAlgorithm implements InterfaceOptimizer, java.io.S
     /** This method allows you to set an identifier for the algorithm
      * @param name      The indenifier
      */
+    @Override
      public void setIdentifier(String name) {
         this.m_Identifier = name;
     }
+    @Override
      public String getIdentifier() {
          return this.m_Identifier;
      }
@@ -271,6 +282,7 @@ public class CHCAdaptiveSearchAlgorithm implements InterfaceOptimizer, java.io.S
     /** This method is required to free the memory on a RMIServer,
      * but there is nothing to implement.
      */
+    @Override
     public void freeWilly() {
 
     }
@@ -287,6 +299,7 @@ public class CHCAdaptiveSearchAlgorithm implements InterfaceOptimizer, java.io.S
     /** This method will return a naming String
      * @return The name of the algorithm
      */
+    @Override
     public String getName() {
         return "CHC";
     }
@@ -296,9 +309,11 @@ public class CHCAdaptiveSearchAlgorithm implements InterfaceOptimizer, java.io.S
      * of the optimizer.
      * @return The population of current solutions to a given problem.
      */
+    @Override
     public Population getPopulation() {
         return this.m_Population;
     }
+    @Override
     public void setPopulation(Population pop){
         this.m_Population = pop;
     }
@@ -306,6 +321,7 @@ public class CHCAdaptiveSearchAlgorithm implements InterfaceOptimizer, java.io.S
         return "Edit the properties of the population used.";
     }
     
+    @Override
     public InterfaceSolutionSet getAllSolutions() {
     	return new SolutionSet(getPopulation());
     }

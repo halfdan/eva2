@@ -87,6 +87,7 @@ public class MemeticAlgorithm implements InterfaceOptimizer,
 		return new MemeticAlgorithm(this);
 	}
 
+    @Override
 	public void initByPopulation(Population pop, boolean reset) {
 		this.setPopulation((Population) pop.clone());
 		if (reset) {
@@ -96,6 +97,7 @@ public class MemeticAlgorithm implements InterfaceOptimizer,
 		}
 	}
 
+    @Override
 	public void init() {
 		// counter = 0;
 		this.m_GlobalOptimizer.setProblem(this.m_Problem);
@@ -115,6 +117,7 @@ public class MemeticAlgorithm implements InterfaceOptimizer,
 		population.incrGeneration();
 	}
 
+    @Override
 	public void optimize() {
 
 		if (TRACE) System.out.println("global search");
@@ -199,10 +202,12 @@ public class MemeticAlgorithm implements InterfaceOptimizer,
 	 *
 	 * @param ea
 	 */
+    @Override
 	public void addPopulationChangedEventListener(
 	    InterfacePopulationChangedEventListener ea) {
 		this.m_Listener = ea;
 	}
+    @Override
 	public boolean removePopulationChangedEventListener(
 			InterfacePopulationChangedEventListener ea) {
 		if (m_Listener==ea) {
@@ -225,11 +230,13 @@ public class MemeticAlgorithm implements InterfaceOptimizer,
 	 *
 	 * @param problem
 	 */
+    @Override
 	public void setProblem(InterfaceOptimizationProblem problem) {
 		this.m_Problem = problem;
 		this.m_GlobalOptimizer.setProblem(this.m_Problem);
 	}
 
+    @Override
 	public InterfaceOptimizationProblem getProblem() {
 		return this.m_Problem;
 	}
@@ -240,6 +247,7 @@ public class MemeticAlgorithm implements InterfaceOptimizer,
 	 *
 	 * @return A descriptive string
 	 */
+    @Override
 	public String getStringRepresentation() {
 		String result = "";
 		result += "Memetic Algorithm:\n";
@@ -255,10 +263,12 @@ public class MemeticAlgorithm implements InterfaceOptimizer,
 	 * @param name
 	 *          The indenifier
 	 */
+    @Override
 	public void setIdentifier(String name) {
 		this.m_Identifier = name;
 	}
 
+    @Override
 	public String getIdentifier() {
 		return this.m_Identifier;
 	}
@@ -267,6 +277,7 @@ public class MemeticAlgorithm implements InterfaceOptimizer,
 	 * This method is required to free the memory on a RMIServer, but there is
 	 * nothing to implement.
 	 */
+    @Override
 	public void freeWilly() {
 
 	}
@@ -291,6 +302,7 @@ public class MemeticAlgorithm implements InterfaceOptimizer,
 	 *
 	 * @return The name of the algorithm
 	 */
+    @Override
 	public String getName() {
 		return "MemeticAlgorithm";
 	}
@@ -301,10 +313,12 @@ public class MemeticAlgorithm implements InterfaceOptimizer,
 	 *
 	 * @return The population of current solutions to a given problem.
 	 */
+    @Override
 	public Population getPopulation() {
 		return this.m_GlobalOptimizer.getPopulation();
 	}
 
+    @Override
 	public void setPopulation(Population pop) {
 		this.m_GlobalOptimizer.setPopulation(pop);
 	}
@@ -362,6 +376,7 @@ public class MemeticAlgorithm implements InterfaceOptimizer,
 		return "Choose the interval between the application of the local search.";
 	}
 
+    @Override
     public InterfaceSolutionSet getAllSolutions() {
     	return new SolutionSet(getPopulation());
     }

@@ -53,6 +53,7 @@ public class GenericConstraint extends AbstractConstraint implements InterfaceDo
 //		compileConstraint(constraintString);
 	}
 
+    @Override
 	public Object clone() {
 		return new GenericConstraint(this);
 	}

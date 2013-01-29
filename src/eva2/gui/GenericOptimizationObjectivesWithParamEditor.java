@@ -218,6 +218,7 @@ public class GenericOptimizationObjectivesWithParamEditor extends JPanel impleme
     /** This action listener,...
      */
     ActionListener updateTargets = new ActionListener() {
+        @Override
         public void actionPerformed(ActionEvent event) {
             updateTargetList();
         }
@@ -226,6 +227,7 @@ public class GenericOptimizationObjectivesWithParamEditor extends JPanel impleme
     /** This action listener,...
      */
     ActionListener addTarget = new ActionListener() {
+        @Override
         public void actionPerformed(ActionEvent event) {
             m_OptimizationObjectivesWithWeights.addTarget((InterfaceOptimizationObjective)m_OptimizationObjectivesWithWeights.getAvailableTargets()[0].clone());
             int l = m_OptimizationObjectivesWithWeights.getSelectedTargets().length;
@@ -258,6 +260,7 @@ public class GenericOptimizationObjectivesWithParamEditor extends JPanel impleme
     /** This action listener,...
      */
     ActionListener deleteTarget = new ActionListener() {
+        @Override
         public void actionPerformed(ActionEvent event) {
             int l = m_OptimizationObjectivesWithWeights.getSelectedTargets().length, j = 0;
             GeneralGOEProperty[] newEdit = new GeneralGOEProperty[l-1];
@@ -276,6 +279,7 @@ public class GenericOptimizationObjectivesWithParamEditor extends JPanel impleme
     /** This action listener,...
      */
     ActionListener normalizeWeights = new ActionListener() {
+        @Override
         public void actionPerformed(ActionEvent event) {
             double[] newW = m_OptimizationObjectivesWithWeights.getWeights();
             double sum = 0;
@@ -295,11 +299,14 @@ public class GenericOptimizationObjectivesWithParamEditor extends JPanel impleme
     /** This action listener reads all values
      */
     KeyListener readDoubleArrayAction = new KeyListener() {
+        @Override
         public void keyPressed(KeyEvent event) {
         }
+        @Override
         public void keyTyped(KeyEvent event) {
         }
 
+        @Override
         public void keyReleased(KeyEvent event) {
             double[] newW   = m_OptimizationObjectivesWithWeights.getWeights();
 
@@ -332,6 +339,7 @@ public class GenericOptimizationObjectivesWithParamEditor extends JPanel impleme
     /** This method will set the value of object that is to be edited.
      * @param o an object that must be an array.
      */
+    @Override
     public void setValue(Object o) {
         if (o instanceof PropertyOptimizationObjectivesWithParam) {
             this.m_OptimizationObjectivesWithWeights= (PropertyOptimizationObjectivesWithParam) o;
@@ -342,10 +350,12 @@ public class GenericOptimizationObjectivesWithParamEditor extends JPanel impleme
     /** Returns the current object.
      * @return the current object
      */
+    @Override
     public Object getValue() {
         return this.m_OptimizationObjectivesWithWeights;
     }
 
+    @Override
     public String getJavaInitializationString() {
         return "TEST";
     }
@@ -353,6 +363,7 @@ public class GenericOptimizationObjectivesWithParamEditor extends JPanel impleme
     /**
      *
      */
+    @Override
     public String getAsText() {
         return null;
     }
@@ -360,6 +371,7 @@ public class GenericOptimizationObjectivesWithParamEditor extends JPanel impleme
     /**
      *
      */
+    @Override
     public void setAsText(String text) throws IllegalArgumentException {
         throw new IllegalArgumentException(text);
     }
@@ -367,6 +379,7 @@ public class GenericOptimizationObjectivesWithParamEditor extends JPanel impleme
     /**
      *
      */
+    @Override
     public String[] getTags() {
         return null;
     }
@@ -388,6 +401,7 @@ public class GenericOptimizationObjectivesWithParamEditor extends JPanel impleme
     /** Returns true since the Object can be shown
      * @return true
      */
+    @Override
     public boolean isPaintable() {
         return true;
     }
@@ -397,6 +411,7 @@ public class GenericOptimizationObjectivesWithParamEditor extends JPanel impleme
      * @param gfx the graphics context to use
      * @param box the area we are allowed to paint into
      */
+    @Override
     public void paintValue(Graphics gfx, Rectangle box) {
         FontMetrics fm = gfx.getFontMetrics();
         int vpad = (box.height - fm.getAscent()) / 2;
@@ -407,6 +422,7 @@ public class GenericOptimizationObjectivesWithParamEditor extends JPanel impleme
     /** Returns true because we do support a custom editor.
     * @return true
     */
+    @Override
     public boolean supportsCustomEditor() {
         return true;
     }
@@ -414,6 +430,7 @@ public class GenericOptimizationObjectivesWithParamEditor extends JPanel impleme
     /** Returns the array editing component.
     * @return a value of type 'java.awt.Component'
     */
+    @Override
     public Component getCustomEditor() {
         if (this.m_Editor == null) this.initCustomEditor();
         return m_Editor;
@@ -429,11 +446,13 @@ public class GenericOptimizationObjectivesWithParamEditor extends JPanel impleme
 
     /********************************* java.beans.PropertyChangeListener *************************/
 
+    @Override
     public void addPropertyChangeListener(PropertyChangeListener l) {
   	  if (m_Support == null) m_Support = new PropertyChangeSupport(this);
   	  m_Support.addPropertyChangeListener(l);
     }
 
+    @Override
     public void removePropertyChangeListener(PropertyChangeListener l) {
   	  if (m_Support == null) m_Support = new PropertyChangeSupport(this);
   	  m_Support.removePropertyChangeListener(l);
@@ -442,6 +461,7 @@ public class GenericOptimizationObjectivesWithParamEditor extends JPanel impleme
      * editing an object.
      * @param evt
      */
+    @Override
      public void propertyChange(PropertyChangeEvent evt) {
         Object newVal = evt.getNewValue();
         Object oldVal = evt.getOldValue();

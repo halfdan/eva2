@@ -17,6 +17,7 @@ public class FitnessModifierNone implements java.io.Serializable, InterfaceFitne
      * your problem to store the unaltered fitness somewhere else so that
      * you may still fetch it!
      */
+    @Override
     public void modifyFitness(Population population) {
         // as the name might suggest this guy is pretty lazy
     }

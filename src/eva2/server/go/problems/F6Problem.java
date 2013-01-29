@@ -32,6 +32,7 @@ implements InterfaceMultimodalProblem, InterfaceFirstOrderDerivableProblem, Inte
     /** This method returns a deep clone of the problem.
      * @return  the clone
      */
+    @Override
     public Object clone() {
         return (Object) new F6Problem(this);
     }
@@ -40,6 +41,7 @@ implements InterfaceMultimodalProblem, InterfaceFirstOrderDerivableProblem, Inte
      * @param x     The n-dimensional input vector
      * @return  The m-dimensional output vector.
      */
+    @Override
     public double[] eval(double[] x) {
     	x = rotateMaybe(x);
         double[] result = new double[1];
@@ -51,6 +53,7 @@ implements InterfaceMultimodalProblem, InterfaceFirstOrderDerivableProblem, Inte
         return result;
     }
     
+    @Override
 	public double[] getFirstOrderGradients(double[] x) {
 		x = rotateMaybe(x);
         double[] result = new double[x.length];        
@@ -84,6 +87,7 @@ implements InterfaceMultimodalProblem, InterfaceFirstOrderDerivableProblem, Inte
      * name to the current object.
      * @return The name.
      */
+    @Override
     public String getName() {
         return "F6-Problem";
     }
@@ -122,16 +126,19 @@ implements InterfaceMultimodalProblem, InterfaceFirstOrderDerivableProblem, Inte
         return "Choose Omega.";
     }
     
+    @Override
     public void setDefaultAccuracy(double acc) {
     	super.SetDefaultAccuracy(acc);
     }
 
+    @Override
 	public SolutionHistogram getHistogram() {
 		if (getProblemDimension() < 15) return new SolutionHistogram(-0.5, 15.5, 16);
 		else if (getProblemDimension() < 25) return new SolutionHistogram(-0.5, 39.5, 16);
 		else return new SolutionHistogram(0, 80, 16);
 	}
 	
+    @Override
     public void doLocalSearch(Population pop) {
     	if (localSearchOptimizer == null) {
     		initLS();
@@ -146,6 +153,7 @@ implements InterfaceMultimodalProblem, InterfaceFirstOrderDerivableProblem, Inte
 	    localSearchOptimizer.init();
     }
 
+    @Override
     public double getLocalSearchStepFunctionCallEquivalent() {
     	double cost = 1;
     	if (this.localSearchOptimizer instanceof GradientDescentAlgorithm) {

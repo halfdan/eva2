@@ -45,5 +45,6 @@ public interface InterfaceCrossover {
      * are actually the same.
      * @param crossover   The other crossover operator
      */
+    @Override
     public boolean equals(Object crossover);
 }

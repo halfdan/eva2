@@ -50,8 +50,10 @@ public class DRectangle extends DComponent
     status = PART;
   }
 
+    @Override
   public DRectangle getRectangle(){ return this; }
 
+    @Override
   public void paint( DMeasures m ){
     if( isEmpty() ) return;
     Graphics g = m.getGraphics();
@@ -207,6 +209,7 @@ public class DRectangle extends DComponent
     return changed;
   }
 
+    @Override
   public Object clone(){
     DRectangle copy = new DRectangle( x, y, width, height );
     copy.status = status;
@@ -214,6 +217,7 @@ public class DRectangle extends DComponent
     return copy;
   }
 
+    @Override
   public String toString(){
     String text = "DRectangle[ ";
     switch( status ){

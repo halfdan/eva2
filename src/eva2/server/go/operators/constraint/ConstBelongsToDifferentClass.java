@@ -40,6 +40,7 @@ public class ConstBelongsToDifferentClass implements InterfaceConstraint, java.i
         }
     }
 
+    @Override
     public Object clone() {
         return (Object) new ConstBelongsToDifferentClass(this);
     }
@@ -49,6 +50,7 @@ public class ConstBelongsToDifferentClass implements InterfaceConstraint, java.i
      * @param indy  The individual to check.
      * @return true if valid false else.
      */
+    @Override
     public boolean isValid(AbstractEAIndividual indy) {
         double[] data;
         if (this.m_UsePhenotype && (indy instanceof InterfaceDataTypeDouble)) {

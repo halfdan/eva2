@@ -91,6 +91,7 @@ public class JPasswordDialog extends JDialog {
      *
      * @since ostermillerutils 1.00.00
      */
+    @Override
     public void setName(String name){
         this.name.setText(name);
     }
@@ -168,6 +169,7 @@ public class JPasswordDialog extends JDialog {
      *
      * @since ostermillerutils 1.00.00
      */
+    @Override
     public String getName(){
         return name.getText();
     }
@@ -253,6 +255,7 @@ public class JPasswordDialog extends JDialog {
      *
      * @since ostermillerutils 1.00.00
      */
+    @Override
     protected void dialogInit(){
 
 
@@ -265,6 +268,7 @@ public class JPasswordDialog extends JDialog {
         super.dialogInit();
 
         KeyListener keyListener = (new KeyAdapter() {
+            @Override
             public void keyPressed(KeyEvent e){
                 if (e.getKeyCode() == KeyEvent.VK_ESCAPE ||
                         (e.getSource() == cancelButton
@@ -282,6 +286,7 @@ public class JPasswordDialog extends JDialog {
         addKeyListener(keyListener);
 
         ActionListener actionListener = new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e){
                 Object source = e.getSource();
                 if (source == name){

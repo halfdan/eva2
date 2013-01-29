@@ -49,12 +49,14 @@ public class FloodAlgorithm implements InterfaceOptimizer, java.io.Serializable 
         this.m_DrainRate                    = a.m_DrainRate;
     }
 
+    @Override
     public Object clone() {
         return (Object) new FloodAlgorithm(this);
     }
 
     /** This method will init the HillClimber
      */
+    @Override
     public void init() {
         this.m_Problem.initPopulation(this.m_Population);
         this.m_Problem.evaluate(this.m_Population);
@@ -65,6 +67,7 @@ public class FloodAlgorithm implements InterfaceOptimizer, java.io.Serializable 
     /** This method will init the optimizer with a given population
      * @param reset     If true the population is reset.
      */
+    @Override
     public void initByPopulation(Population pop, boolean reset) {
         this.m_Population = (Population)pop.clone();
         if (reset) {
@@ -77,6 +80,7 @@ public class FloodAlgorithm implements InterfaceOptimizer, java.io.Serializable 
 
     /** This method will optimize
      */
+    @Override
     public void optimize() {
         AbstractEAIndividual    indy;
         Population              original = (Population)this.m_Population.clone();
@@ -120,9 +124,11 @@ public class FloodAlgorithm implements InterfaceOptimizer, java.io.Serializable 
     /** This method will set the problem that is to be optimized
      * @param problem
      */
+    @Override
     public void setProblem (InterfaceOptimizationProblem problem) {
         this.m_Problem = problem;
     }
+    @Override
     public InterfaceOptimizationProblem getProblem () {
         return this.m_Problem;
     }
@@ -168,9 +174,11 @@ public class FloodAlgorithm implements InterfaceOptimizer, java.io.Serializable 
     /** This method allows you to add the LectureGUI as listener to the Optimizer
      * @param ea
      */
+    @Override
     public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
         this.m_Listener = ea;
     }
+    @Override
 	public boolean removePopulationChangedEventListener(
 			InterfacePopulationChangedEventListener ea) {
 		if (m_Listener==ea) {
@@ -188,6 +196,7 @@ public class FloodAlgorithm implements InterfaceOptimizer, java.io.Serializable 
      * and the applied methods.
      * @return A descriptive string
      */
+    @Override
     public String getStringRepresentation() {
         String result = "";
         if (this.m_Population.size() > 1) result += "Multi(" + this.m_Population.size() + ")-Start Hill Climbing:\n";
@@ -200,9 +209,11 @@ public class FloodAlgorithm implements InterfaceOptimizer, java.io.Serializable 
     /** This method allows you to set an identifier for the algorithm
      * @param name      The indenifier
      */
+    @Override
      public void setIdentifier(String name) {
         this.m_Identifier = name;
     }
+    @Override
      public String getIdentifier() {
          return this.m_Identifier;
      }
@@ -210,6 +221,7 @@ public class FloodAlgorithm implements InterfaceOptimizer, java.io.Serializable 
     /** This method is required to free the memory on a RMIServer,
      * but there is nothing to implement.
      */
+    @Override
     public void freeWilly() {
 
     }
@@ -225,6 +237,7 @@ public class FloodAlgorithm implements InterfaceOptimizer, java.io.Serializable 
     /** This method will return a naming String
      * @return The name of the algorithm
      */
+    @Override
     public String getName() {
         return "MS-FA";
     }
@@ -234,9 +247,11 @@ public class FloodAlgorithm implements InterfaceOptimizer, java.io.Serializable 
      * of the optimizer.
      * @return The population of current solutions to a given problem.
      */
+    @Override
     public Population getPopulation() {
         return this.m_Population;
     }
+    @Override
     public void setPopulation(Population pop){
         this.m_Population = pop;
     }
@@ -245,6 +260,7 @@ public class FloodAlgorithm implements InterfaceOptimizer, java.io.Serializable 
     }
 
     
+    @Override
     public InterfaceSolutionSet getAllSolutions() {
     	return new SolutionSet(getPopulation());
     }

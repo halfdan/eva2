@@ -57,6 +57,7 @@ public class CbpsoFitnessThresholdBasedAdaption implements ParamAdaption, Generi
 	 * (non-Javadoc)
 	 * @see java.lang.Object#clone()
 	 */
+    @Override
 	public Object clone() {
 		return new CbpsoFitnessThresholdBasedAdaption(this);
 	}
@@ -65,6 +66,7 @@ public class CbpsoFitnessThresholdBasedAdaption implements ParamAdaption, Generi
 	 * (non-Javadoc)
 	 * @see eva2.server.go.operators.paramcontrol.ParamAdaption#calcValue(java.lang.Object, eva2.server.go.populations.Population, int, int)
 	 */
+    @Override
 	public Object calcValue(Object obj, Population pop, int iteration,
 			int maxIteration) {
 		if (obj instanceof CBNPSO) {
@@ -123,6 +125,7 @@ public class CbpsoFitnessThresholdBasedAdaption implements ParamAdaption, Generi
 	 * (non-Javadoc)
 	 * @see eva2.server.go.operators.paramcontrol.ParamAdaption#finish(java.lang.Object, eva2.server.go.populations.Population)
 	 */
+    @Override
 	public void finish(Object obj, Population pop) {
 		
 	}
@@ -131,6 +134,7 @@ public class CbpsoFitnessThresholdBasedAdaption implements ParamAdaption, Generi
 	 * (non-Javadoc)
 	 * @see eva2.server.go.operators.paramcontrol.ParamAdaption#getControlledParam()
 	 */
+    @Override
 	public String getControlledParam() {
 		return paramName;
 	}
@@ -139,6 +143,7 @@ public class CbpsoFitnessThresholdBasedAdaption implements ParamAdaption, Generi
 	 * (non-Javadoc)
 	 * @see eva2.server.go.operators.paramcontrol.ParamAdaption#init(java.lang.Object, eva2.server.go.populations.Population, java.lang.Object[])
 	 */
+    @Override
 	public void init(Object obj, Population pop, Object[] initialValues) {
 		currentVal=initialVal;
 		lastAdaption=0;
@@ -149,6 +154,7 @@ public class CbpsoFitnessThresholdBasedAdaption implements ParamAdaption, Generi
 	 * (non-Javadoc)
 	 * @see eva2.server.go.operators.paramcontrol.GenericParamAdaption#setControlledParam(java.lang.String)
 	 */
+    @Override
 	public void setControlledParam(String prm) {
 		paramName = prm;
 	}

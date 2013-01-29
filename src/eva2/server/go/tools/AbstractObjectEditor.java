@@ -34,11 +34,13 @@ public abstract class AbstractObjectEditor implements PropertyEditor, java.beans
 
     /********************************* java.beans.PropertyChangeListener *************************/
 
+    @Override
     public void addPropertyChangeListener(PropertyChangeListener l) {
   	  if (m_Support == null) m_Support = new PropertyChangeSupport(this);
   	  m_Support.addPropertyChangeListener(l);
     }
 
+    @Override
     public void removePropertyChangeListener(PropertyChangeListener l) {
   	  if (m_Support == null) m_Support = new PropertyChangeSupport(this);
   	  m_Support.removePropertyChangeListener(l);
@@ -47,6 +49,7 @@ public abstract class AbstractObjectEditor implements PropertyEditor, java.beans
      * editing an object.
      * @param evt
      */
+    @Override
      public void propertyChange(PropertyChangeEvent evt) {
         System.out.println("------------- here-----------------");
         this.updateCenterComponent(evt); // Let our panel update before guys downstream
@@ -57,27 +60,35 @@ public abstract class AbstractObjectEditor implements PropertyEditor, java.beans
    /** Returns true since the Object can be shown
      * @return true
      */
+    @Override
     abstract public boolean isPaintable();
 
     /** Paints a representation of the current classifier.
      * @param gfx the graphics context to use
      * @param box the area we are allowed to paint into
      */
+    @Override
     abstract public void paintValue(Graphics gfx, Rectangle box);
 
     /** Returns true because we do support a custom editor.
     * @return true
     */
+    @Override
     abstract public boolean supportsCustomEditor();
 
     /** Returns the array editing component.
     * @return a value of type 'java.awt.Component'
     */
+    @Override
     abstract public Component getCustomEditor();
 
+    @Override
     abstract public String getAsText();
+    @Override
     abstract public void setAsText(String text) throws IllegalArgumentException;
+    @Override
     abstract public String getJavaInitializationString();
+    @Override
     abstract public String[] getTags();
 
     /********************************* AbstractObjectEditor *************************/
@@ -103,7 +114,9 @@ public abstract class AbstractObjectEditor implements PropertyEditor, java.beans
     /** This method allows you to set the current value
      * @param obj   The new value
      */
+    @Override
     abstract public void setValue(Object obj);
+    @Override
     public Object getValue() {
         return this.m_Object;
     }
@@ -140,6 +153,7 @@ public abstract class AbstractObjectEditor implements PropertyEditor, java.beans
         m_HelpBut   = new JButton("Help");
 	    m_HelpBut.setToolTipText("More information about " + m_ClassName);
 	    m_HelpBut.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent a) {
                 HtmlDemo temp = new HtmlDemo(EVAHELP.cutClassName(m_Object.getClass().getName())+".html");
                 temp.show();

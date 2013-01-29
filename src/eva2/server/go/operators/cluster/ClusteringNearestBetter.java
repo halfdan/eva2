@@ -95,6 +95,7 @@ public class ClusteringNearestBetter implements InterfaceClustering, Serializabl
      * the object
      * @return the deep clone
      */
+    @Override
     public Object clone() {
         return (Object) new ClusteringNearestBetter(this);
     }
@@ -110,6 +111,7 @@ public class ClusteringNearestBetter implements InterfaceClustering, Serializabl
      * @param species
      * @return associative list matching loners to species.
      */
+    @Override
     public int[] associateLoners(Population loners, Population[] species, Population referenceSet) {
 //    	Pair<Integer,Double>[][] closestPerSpecList = new Pair[loners.size()][species.length];
     	int[] res = new int[loners.size()];
@@ -191,6 +193,7 @@ public class ClusteringNearestBetter implements InterfaceClustering, Serializabl
      * Perform one clustering step to measure the mean distance to the
      * nearest better individual (only if used).
      */
+    @Override
     public String initClustering(Population pop) {
     	if (this.isAdaptiveThreshold()) {
 	    	ArrayList<AbstractEAIndividual> sorted = pop.getSorted(comparator);
@@ -205,6 +208,7 @@ public class ClusteringNearestBetter implements InterfaceClustering, Serializabl
     	} else return null;
     }
     
+    @Override
 	public Population[] cluster(Population pop, Population referenceSet) {
 		if (pop.isEmpty()) return new Population[]{pop.cloneWithoutInds()};
 		ArrayList<AbstractEAIndividual> sorted = pop.getSorted(comparator);
@@ -339,6 +343,7 @@ public class ClusteringNearestBetter implements InterfaceClustering, Serializabl
      * @param species2  The second species.
      * @return True if species converge, else False.
      */
+    @Override
     public boolean mergingSpecies(Population species1, Population species2, Population referenceSet) {
     	getRefData(referenceSet, species1);
         if (testConvergingSpeciesOnBestOnly) {

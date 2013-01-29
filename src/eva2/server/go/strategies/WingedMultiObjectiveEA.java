@@ -53,10 +53,12 @@ public class WingedMultiObjectiveEA implements InterfaceOptimizer, java.io.Seria
         this.m_Population                   = (Population)a.m_Population.clone();
     }
 
+    @Override
     public Object clone() {
         return (Object) new WingedMultiObjectiveEA(this);
     }
 
+    @Override
     public void init() {
         if (this.m_Problem instanceof AbstractMultiObjectiveOptimizationProblem) {
             AbstractMultiObjectiveOptimizationProblem   tmpProb = (AbstractMultiObjectiveOptimizationProblem)this.m_Problem;
@@ -95,6 +97,7 @@ public class WingedMultiObjectiveEA implements InterfaceOptimizer, java.io.Seria
      * @param pop       The initial population
      * @param reset     If true the population is reset.
      */
+    @Override
     public void initByPopulation(Population pop, boolean reset) {
         if (this.m_Problem instanceof AbstractMultiObjectiveOptimizationProblem) {
             AbstractMultiObjectiveOptimizationProblem   tmpProb = (AbstractMultiObjectiveOptimizationProblem)this.m_Problem;
@@ -130,6 +133,7 @@ public class WingedMultiObjectiveEA implements InterfaceOptimizer, java.io.Seria
 
     /** The optimize method will compute a 'improved' and evaluated population
      */
+    @Override
     public void optimize() {
 
         this.m_MOOptimizer.optimize();
@@ -205,9 +209,11 @@ public class WingedMultiObjectiveEA implements InterfaceOptimizer, java.io.Seria
     /** This method allows you to add the LectureGUI as listener to the Optimizer
      * @param ea
      */
+    @Override
     public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
         this.m_Listener = ea;
     }
+    @Override
 	public boolean removePopulationChangedEventListener(
 			InterfacePopulationChangedEventListener ea) {
 		if (m_Listener==ea) {
@@ -224,9 +230,11 @@ public class WingedMultiObjectiveEA implements InterfaceOptimizer, java.io.Seria
     /** This method will set the problem that is to be optimized
      * @param problem
      */
+    @Override
     public void setProblem (InterfaceOptimizationProblem problem) {
         this.m_Problem = problem;
     }
+    @Override
     public InterfaceOptimizationProblem getProblem () {
         return this.m_Problem;
     }
@@ -235,6 +243,7 @@ public class WingedMultiObjectiveEA implements InterfaceOptimizer, java.io.Seria
      * and the applied methods.
      * @return A descriptive string
      */
+    @Override
     public String getStringRepresentation() {
         String result = "";
         result += "EMO:\n";
@@ -246,9 +255,11 @@ public class WingedMultiObjectiveEA implements InterfaceOptimizer, java.io.Seria
     /** This method allows you to set an identifier for the algorithm
      * @param name      The indenifier
      */
+    @Override
      public void setIdentifier(String name) {
         this.m_Identifier = name;
     }
+    @Override
      public String getIdentifier() {
          return this.m_Identifier;
      }
@@ -256,6 +267,7 @@ public class WingedMultiObjectiveEA implements InterfaceOptimizer, java.io.Seria
     /** This method is required to free the memory on a RMIServer,
      * but there is nothing to implement.
      */
+    @Override
     public void freeWilly() {
 
     }
@@ -271,6 +283,7 @@ public class WingedMultiObjectiveEA implements InterfaceOptimizer, java.io.Seria
     /** This method will return a naming String
      * @return The name of the algorithm
      */
+    @Override
     public String getName() {
         return "EMO-LS";
     }
@@ -280,9 +293,11 @@ public class WingedMultiObjectiveEA implements InterfaceOptimizer, java.io.Seria
      * of the optimizer.
      * @return The population of current solutions to a given problem.
      */
+    @Override
     public Population getPopulation() {
         return this.m_Population;
     }
+    @Override
     public void setPopulation(Population pop){
         this.m_Population = pop;
     }
@@ -290,6 +305,7 @@ public class WingedMultiObjectiveEA implements InterfaceOptimizer, java.io.Seria
         return "(Defunct)";
     }
     
+    @Override
     public InterfaceSolutionSet getAllSolutions() {
     	return new SolutionSet(getPopulation());
     }

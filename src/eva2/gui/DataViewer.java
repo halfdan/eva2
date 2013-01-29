@@ -91,6 +91,7 @@ public class DataViewer implements DataViewerInterface {
   /**
    *
    */
+    @Override
   public Graph getNewGraph(String InfoString) {
     m_GraphCounter++;
     if (TRACE) System.out.println("Graph.getNewGraph No:"+m_GraphCounter);
@@ -99,6 +100,7 @@ public class DataViewer implements DataViewerInterface {
   /**
    *
    */
+    @Override
   public void init() {
     m_Plot = new Plot(m_Name,"x","y", true);
   }

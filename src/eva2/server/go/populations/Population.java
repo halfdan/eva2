@@ -330,6 +330,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
         }
     }
 
+    @Override
     public Object clone() {
         return (Object) new Population(this);
     }

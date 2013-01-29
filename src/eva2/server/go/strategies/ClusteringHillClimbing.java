@@ -84,6 +84,7 @@ InterfaceOptimizer, Serializable, InterfaceAdditionalPopulationInformer {
 		loopCnt = 0;		
 	}
 	
+    @Override
     public Object clone() {
         return (Object) new ClusteringHillClimbing(this);
     }
@@ -97,9 +98,11 @@ InterfaceOptimizer, Serializable, InterfaceAdditionalPopulationInformer {
 		setLocalSearchMethod(getLocalSearchMethod());
 	}
 	
+    @Override
      public void setIdentifier(String name) {
         this.m_Identifier = name;
     }
+    @Override
      public String getIdentifier() {
          return this.m_Identifier;
      }
@@ -107,16 +110,20 @@ InterfaceOptimizer, Serializable, InterfaceAdditionalPopulationInformer {
      /** This method will set the problem that is to be optimized
       * @param problem
       */
+    @Override
      public void setProblem (InterfaceOptimizationProblem problem) {
          this.m_Problem = problem;
      }
+    @Override
      public InterfaceOptimizationProblem getProblem () {
          return this.m_Problem;
      }
 
+    @Override
     public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
         this.m_Listener = ea;
     }
+    @Override
 	public boolean removePopulationChangedEventListener(
 			InterfacePopulationChangedEventListener ea) {
 		if (m_Listener==ea) {
@@ -124,6 +131,7 @@ InterfaceOptimizer, Serializable, InterfaceAdditionalPopulationInformer {
 			return true;
 		} else return false;
 	}
+    @Override
     public void init() {
        	loopCnt = 0;
        	mutator = new MutateESFixedStepSize(initialStepSize);
@@ -140,6 +148,7 @@ InterfaceOptimizer, Serializable, InterfaceAdditionalPopulationInformer {
      * @param pop       The initial population
      * @param reset     If true the population is reset.
      */
+    @Override
     public void initByPopulation(Population pop, boolean reset) {
        	loopCnt = 0;
         this.m_Population = (Population)pop.clone();
@@ -157,6 +166,7 @@ InterfaceOptimizer, Serializable, InterfaceAdditionalPopulationInformer {
         if (this.m_Listener != null) this.m_Listener.registerPopulationStateChanged(this, name);
     }
     
+    @Override
 	public void optimize() {
 		double improvement;
 		
@@ -219,6 +229,7 @@ InterfaceOptimizer, Serializable, InterfaceAdditionalPopulationInformer {
 
 	}
 
+    @Override
 	public void registerPopulationStateChanged(Object source, String name) {
 		// The events of the interim hill climbing population will be caught here 
 		if (name.compareTo(Population.funCallIntervalReached) == 0) {
@@ -240,9 +251,11 @@ InterfaceOptimizer, Serializable, InterfaceAdditionalPopulationInformer {
      * of the optimizer.
      * @return The population of current solutions to a given problem.
      */
+    @Override
     public Population getPopulation() {
         return this.m_Population;
     }
+    @Override
     public void setPopulation(Population pop){
         this.m_Population = pop;
     }
@@ -250,6 +263,7 @@ InterfaceOptimizer, Serializable, InterfaceAdditionalPopulationInformer {
         return "Change the number of starting individuals stored (Cluster-HC).";
     }
 
+    @Override
     public InterfaceSolutionSet getAllSolutions() {
     	Population tmp = new Population();
     	tmp.addPopulation(archive);
@@ -264,6 +278,7 @@ InterfaceOptimizer, Serializable, InterfaceAdditionalPopulationInformer {
      * and the applied methods.
      * @return A descriptive string
      */
+    @Override
     public String getStringRepresentation() {
         StringBuffer sbuf = new StringBuffer("Clustering Hill Climbing");
         sbuf.append(", initial pop size: ");
@@ -274,8 +289,10 @@ InterfaceOptimizer, Serializable, InterfaceAdditionalPopulationInformer {
         return sbuf.toString();
     }
 	
+    @Override
 	public void freeWilly() {}
 
+    @Override
 	public String getName() {
 		return "ClustHC-"+initialPopSize+"-"+localSearchMethod;
 	}
@@ -425,14 +442,17 @@ InterfaceOptimizer, Serializable, InterfaceAdditionalPopulationInformer {
 		return "Set the method to be used for the hill climbing as local search";
 	}
 
+    @Override
 	public String[] getAdditionalDataHeader() {
 		return new String[]{"numIndies", "sigma", "numArchived", "archivedMeanDist"};
 	}
 	
+    @Override
 	public String[] getAdditionalDataInfo() {
 		return new String[]{"The current population size", "Current step size in case of stochastic HC", "Number of archived solutions", "Mean distance of archived solutions"};
 	}
 	
+    @Override
 	public Object[] getAdditionalDataValue(PopulationInterface pop) {
 		return new Object[]{m_Population.size(), mutator.getSigma(), archive.size(), archive.getPopulationMeasures()[0]};
 	}

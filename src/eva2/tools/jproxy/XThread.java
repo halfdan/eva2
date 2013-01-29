@@ -175,6 +175,7 @@ public class XThread extends Thread implements Serializable {
   /**
    *
    */
+    @Override
   public void run() {
     if (m_Method != null) {
       //setPriority(Thread.MAX_PRIORITY);

@@ -29,6 +29,7 @@ public class PhenotypeMetric implements InterfaceDistanceMetric, java.io.Seriali
     public PhenotypeMetric(PhenotypeMetric a) {
     }
 
+    @Override
     public Object clone() {
         return (Object) new PhenotypeMetric(this);
     }
@@ -86,6 +87,7 @@ public class PhenotypeMetric implements InterfaceDistanceMetric, java.io.Seriali
      * @param indy2     The second individual.
      * @return double
      */
+    @Override
     public double distance(AbstractEAIndividual indy1, AbstractEAIndividual indy2) {
         double      result = 0;
         // results are added up because individuals can implement several data types!

@@ -26,6 +26,7 @@ public class SelectMOMAIIDominanceCounter implements InterfaceSelection, java.io
         this.m_ObeyDebsConstViolationPrinciple = a.m_ObeyDebsConstViolationPrinciple;
     }
 
+    @Override
     public Object clone() {
         return (Object) new SelectMOMAIIDominanceCounter(this);
     }
@@ -36,6 +37,7 @@ public class SelectMOMAIIDominanceCounter implements InterfaceSelection, java.io
      * before hand...
      * @param population    The population that is to be processed.
      */
+    @Override
     public void prepareSelection(Population population) {
         // here i need to calculate the number of donimating solutions for all
         // individuals that have a MatlabMultipleSolution element
@@ -93,6 +95,7 @@ public class SelectMOMAIIDominanceCounter implements InterfaceSelection, java.io
      * @param size          The number of Individuals to select
      * @return The selected population.
      */
+    @Override
     public Population selectFrom(Population population, int size) {
         return this.m_Selection.selectFrom(population, size);
     }
@@ -103,6 +106,7 @@ public class SelectMOMAIIDominanceCounter implements InterfaceSelection, java.io
      * @param size              The number of partners needed.
      * @return The selected partners.
      */
+    @Override
     public Population findPartnerFor(AbstractEAIndividual dad, Population avaiablePartners, int size) {
         return this.selectFrom(avaiablePartners, size);
     }
@@ -141,6 +145,7 @@ public class SelectMOMAIIDominanceCounter implements InterfaceSelection, java.io
      * of Deb
      * @param b     The new state
      */
+    @Override
     public void setObeyDebsConstViolationPrinciple(boolean b) {
         this.m_ObeyDebsConstViolationPrinciple = b;
     }

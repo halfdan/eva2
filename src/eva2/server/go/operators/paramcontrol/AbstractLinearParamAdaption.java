@@ -28,18 +28,22 @@ public abstract class AbstractLinearParamAdaption implements ParamAdaption, Seri
 	@Override
 	public abstract Object clone();
 	
+    @Override
 	public Object calcValue(Object obj, Population pop, int iteration, int maxIteration) {
 		return Mathematics.linearInterpolation(iteration, 0, maxIteration, startV, endV);
 	}
 
+    @Override
 	public abstract String getControlledParam();
 	public String controlledParamTipText() {
 		return "The name of the parameter to be controlled by this adaption scheme.";
 	}
 
+    @Override
 	public void init(Object obj, Population pop, Object[] initialValues) {
 		BeanInspector.setMem(obj, getControlledParam(), startV);
 	}
+    @Override
 	public void finish(Object obj, Population pop) {}
 	
 	public double getStartV() {

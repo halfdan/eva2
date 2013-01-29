@@ -18,6 +18,7 @@ public class ObjectiveSpaceMetric implements InterfaceDistanceMetric, java.io.Se
     public ObjectiveSpaceMetric(ObjectiveSpaceMetric a) {
     }
 
+    @Override
     public Object clone() {
         return (Object) new ObjectiveSpaceMetric(this);
     }
@@ -29,6 +30,7 @@ public class ObjectiveSpaceMetric implements InterfaceDistanceMetric, java.io.Se
      * @param indy2     The second individual.
      * @return double
      */
+    @Override
     public double distance(AbstractEAIndividual indy1, AbstractEAIndividual indy2) {
         double[]    dIndy1, dIndy2;
         double      result = 0;

@@ -105,6 +105,7 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
     /**
      *
      */
+    @Override
     public void startOpt() {
         m_createInitialPopulations = true;        
         if (isOptRunning()) {
@@ -377,6 +378,7 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
      * @param source        The source of the event.
      * @param name          Could be used to indicate the nature of the event.
      */
+    @Override
     public void registerPopulationStateChanged(Object source, String name) {
         if (name.equals(Population.nextGenerationPerformed)) {
 //    		System.out.println(getGOParams().getOptimizer().getPopulation().getFunctionCalls() + " " + getGOParams().getOptimizer().getPopulation().getBestFitness()[0]);
@@ -418,6 +420,7 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
 //            System.err.println("Problems writing to output file!");
 //        }
 //    }
+    @Override
     public String getInfoString() {
         //StringBuffer sb = new StringBuffer("processing ");
         StringBuilder sb = new StringBuilder(this.goParams.getProblem().getName());

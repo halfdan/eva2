@@ -32,6 +32,7 @@ public class MOCCOChooseReferenceSolution extends MOCCOPhase implements Interfac
 
     /** This method will call the init method and will go to stall
      */
+    @Override
     public void initProcessElementParametrization() {
         this.m_Mocco.m_JPanelControl.removeAll();
 
@@ -111,6 +112,7 @@ public class MOCCOChooseReferenceSolution extends MOCCOPhase implements Interfac
     }
 
     ActionListener continue2 = new ActionListener() {
+        @Override
         public void actionPerformed(ActionEvent event) {
             if (m_ReferenceSolution != null) {
                 m_Mocco.m_View.setRefSolutionSelectable(false);
@@ -138,6 +140,7 @@ public class MOCCOChooseReferenceSolution extends MOCCOPhase implements Interfac
      * Individual has been selected
      * @param indy  The selected individual
      */
+    @Override
     public void individualSelected(AbstractEAIndividual indy) {
         Population pop = this.m_Mocco.m_State.m_ParetoFront.getMarkedIndividuals();
         if (pop.size() == 1) {
