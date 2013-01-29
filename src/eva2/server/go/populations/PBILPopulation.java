@@ -36,13 +36,16 @@ public class PBILPopulation extends Population implements Cloneable, java.io.Ser
         }
     }
 
+    @Override
     public Object clone() {
         return (Object) new PBILPopulation(this);
     }
 
-    /** This method inits the state of the population AFTER the individuals
-     * have been inited by a problem
+    /** 
+     * This method inits the state of the population AFTER the individuals
+     * have been inited by a problem.
      */
+    @Override
     public void init() {
         this.generationCount       = 0;
         this.functionCallCount    = 0;
@@ -56,7 +59,8 @@ public class PBILPopulation extends Population implements Cloneable, java.io.Ser
         }
     }
 
-    /** This method allows you to learn from several examples
+    /** 
+     * This method allows you to learn from several examples
      * @param examples  A population of examples.
      * @param learnRate The learning rate.
      */
@@ -74,7 +78,8 @@ public class PBILPopulation extends Population implements Cloneable, java.io.Ser
         }
     }
 
-    /** This method creates a new population based on the bit probability vector
+    /** 
+     * This method creates a new population based on the bit probability vector.
      */
     public void initPBIL() {
         InterfaceGAIndividual   tmpIndy, template = (InterfaceGAIndividual)((AbstractEAIndividual)this.get(0)).clone();
@@ -93,7 +98,8 @@ public class PBILPopulation extends Population implements Cloneable, java.io.Ser
         }
     }
 
-    /** This method allows you to mutate the bit probability vector
+    /** 
+     * This method allows you to mutate the bit probability vector
      * @param mutationRate      The mutation rate.
      */
     public void mutateProbabilityVector(double mutationRate, double sigma) {
@@ -104,7 +110,8 @@ public class PBILPopulation extends Population implements Cloneable, java.io.Ser
         }
     }
 
-    /** This method will build a probability vector from the current population
+    /** 
+     * This method will build a probability vector from the current population.
      */
     public void buildProbabilityVector() {
         int     dim = ((InterfaceGAIndividual)this.get(0)).getGenotypeLength();
@@ -125,20 +132,24 @@ public class PBILPopulation extends Population implements Cloneable, java.io.Ser
         }
     }
 
-    /** This method allows you to set the current probability vector.
+    /** 
+     * This method allows you to set the current probability vector.
      * @param pv    The new probability vector.
      */
-    public void SetProbabilityVector(double[] pv) {
+    public void setProbabilityVector(double[] pv) {
         this.m_ProbabilityVector = pv;
     }
+    
     public double[] getProbabilityVector() {
         return this.m_ProbabilityVector;
     }
 
-    /** This method will return a string description of the GAIndividal
-     * noteably the Genotype.
+    /** 
+     * This method will return a string description of the GAIndividal
+     * notably the Genotype.
      * @return A descriptive string
      */
+    @Override
     public String getStringRepresentation() {
         String result = "";
         result += "PBIL-Population:\n";

@@ -44,24 +44,25 @@ import javax.swing.JOptionPane;
 public class Processor extends Thread implements InterfaceProcessor, InterfacePopulationChangedEventListener {
 
     private static final Logger LOGGER = Logger.getLogger(Processor.class.getName());
-    private volatile boolean m_optRunning;
+    private volatile boolean isOptimizationRunning;
     private InterfaceStatistics m_Statistics;
     private InterfaceGOParameters goParams;
     private boolean m_createInitialPopulations = true;
     private boolean saveParams = true;
-    private RemoteStateListener m_ListenerModule;
+    private RemoteStateListener remoteStateListener;
     private boolean wasRestarted = false;
     private int runCounter = 0;
     private Population resPop = null;
     private boolean userAborted = false;
 
+    @Override
     public void addListener(RemoteStateListener module) {
         LOGGER.log(
                 Level.FINEST,
                 "Processor: setting module as listener: " + ((module == null)
                 ? "null" : module.toString()));
 
-        m_ListenerModule = module;
+        remoteStateListener = module;
     }
 
     /**
@@ -70,10 +71,10 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
      * 
      * @see InterfaceNotifyOnInformers
      */
-    public Processor(InterfaceStatistics Stat, ModuleAdapter Adapter, InterfaceGOParameters params) {
+    public Processor(InterfaceStatistics Stat, ModuleAdapter moduleAdapter, InterfaceGOParameters params) {
         goParams = params;
         m_Statistics = Stat;
-        m_ListenerModule = Adapter;
+        remoteStateListener = moduleAdapter;
 
         // the statistics want to be informed if the strategy or the optimizer (which provide statistical data as InterfaceAdditionalInformer) change.
         if (Stat != null && (params != null)) {
@@ -85,11 +86,11 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
     }
 
     public boolean isOptRunning() {
-        return m_optRunning;
+        return isOptimizationRunning;
     }
 
     protected void setOptRunning(boolean bRun) {
-        m_optRunning = bRun;
+        isOptimizationRunning = bRun;
     }
 
     /**
@@ -129,6 +130,7 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
     /**
      *
      */
+    @Override
     public void restartOpt() {
         m_createInitialPopulations = false;        
         if (isOptRunning()) {
@@ -143,6 +145,7 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
     /**
      *
      */
+    @Override
     public void stopOpt() { // this means user break
         setOptRunning(false);
     }
@@ -150,8 +153,9 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
     /**
      *
      */
+    @Override
     public void run() {
-        setPriority(1);
+        this.setPriority(1);
         while (true) {
             try {
                 Thread.sleep(200);
@@ -191,9 +195,9 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
             }
             //m_Statistics.stopOptPerformed(false);
             setOptRunning(false); // normal finish
-            if (m_ListenerModule != null) {
-                m_ListenerModule.performedStop(); // is only needed in client server mode
-                m_ListenerModule.updateProgress(0, errMsg);
+            if (remoteStateListener != null) {
+                remoteStateListener.performedStop(); // is only needed in client server mode
+                remoteStateListener.updateProgress(0, errMsg);
             }
         }
         return resPop;
@@ -213,11 +217,11 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
 
         RNG.setRandomSeed(goParams.getSeed());
 
-        if (m_ListenerModule != null) {
+        if (remoteStateListener != null) {
             if (wasRestarted) {
-                m_ListenerModule.performedRestart(getInfoString());
+                remoteStateListener.performedRestart(getInfoString());
             } else {
-                m_ListenerModule.performedStart(getInfoString());
+                remoteStateListener.performedStart(getInfoString());
             }
         }
 
@@ -238,8 +242,8 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
             }
 
             //m_Statistics.createNextGenerationPerformed((PopulationInterface)this.m_ModulParameter.getOptimizer().getPopulation());
-            if (m_ListenerModule != null) {
-                m_ListenerModule.updateProgress(getStatusPercent(goParams.getOptimizer().getPopulation(), runCounter, m_Statistics.getStatisticsParameter().getMultiRuns()), null);
+            if (remoteStateListener != null) {
+                remoteStateListener.updateProgress(getStatusPercent(goParams.getOptimizer().getPopulation(), runCounter, m_Statistics.getStatisticsParameter().getMultiRuns()), null);
             }
             if (popLog != null) {
                 EVAHELP.clearLog(popLog);
@@ -274,11 +278,11 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
 
         }
         setOptRunning(false); // normal finish
-        if (m_ListenerModule != null) {
-            m_ListenerModule.performedStop(); // is only needed in client server mode
+        if (remoteStateListener != null) {
+            remoteStateListener.performedStop(); // is only needed in client server mode
         }
-        if (m_ListenerModule != null) {
-            m_ListenerModule.updateProgress(0, null);
+        if (remoteStateListener != null) {
+            remoteStateListener.updateProgress(0, null);
         }
         goParams.getOptimizer().removePopulationChangedEventListener(this);
         return resultPop;
@@ -380,8 +384,8 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
                     (PopulationInterface) this.goParams.getOptimizer().getPopulation(),
                     this.goParams.getOptimizer(),
                     getInformerList());
-            if (m_ListenerModule != null) {
-                m_ListenerModule.updateProgress(
+            if (remoteStateListener != null) {
+                remoteStateListener.updateProgress(
                         getStatusPercent(
                         goParams.getOptimizer().getPopulation(),
                         runCounter,

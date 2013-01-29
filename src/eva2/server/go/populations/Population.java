@@ -41,29 +41,66 @@ import java.util.logging.Logger;
 public class Population extends ArrayList implements PopulationInterface, Cloneable, java.io.Serializable {
 
     private static final Logger LOGGER = Logger.getLogger(Population.class.getName());
+    
+    /**
+     * Number of generations.
+     */
     protected int generationCount = 0;
+    
+    /**
+     * Number of function calls.
+     */
     protected int functionCallCount = 0;
+    
+    /**
+     * Size of the target population.
+     */    
     protected int targetPopSize = 50;
     protected Population populationArchive = null;
+    
+    /**
+     * Method by which the Population gets initialized.
+     */
     PopulationInitMethod initMethod = PopulationInitMethod.individualDefault;
     private double[] seedPos = new double[10];
     private Pair<Integer, Integer> seedCardinality = new Pair<Integer, Integer>(5, 1);
     private double aroundDist = 0.1;
+    
     transient private ArrayList<InterfacePopulationChangedEventListener> listeners = null;
-    // the evaluation interval at which listeners are notified
+    
+    /**
+     * The evaluation interval at which listeners are notified.
+     */
     protected int notifyEvalInterval = 0;
-    // additional data connected to the population
+    
+    /**
+     * Additional data connected to the population.
+     */
     protected HashMap<String, Object> additionalPopData = null;
-    // historical best indidivuals may be traced for a given number of generations. Set to -1 to trace all, set to 0 to not trace at all
+    
+    /**
+     * historical best individuals may be traced for a given number of generations. 
+     * Set to -1 to trace all, set to 0 to not trace at all
+     */
     int historyMaxLen = 0;
+    
+    /**
+     * Best n Individuals in the history.
+     */
     private transient LinkedList<AbstractEAIndividual> m_History = new LinkedList<AbstractEAIndividual>();
-    // remember when the last sorted queue was prepared
+    
+    /**
+     * Remember when the last sorted queue was prepared.
+     */
     private int lastQModCount = -1;
-    // a sorted queue (for efficiency)
+    
+    /**
+     * A sorted queue (for efficiency).
+     */
     transient private ArrayList<AbstractEAIndividual> sortedArr = null;
+    
     private Comparator<Object> lastSortingComparator = null;
     private InterfaceDistanceMetric popDistMetric = null; // an associated metric
-//	private AbstractEAIndividualComparator historyComparator = null;
     public static final String funCallIntervalReached = "FunCallIntervalReached";
     public static final String populationInitialized = "PopulationReinitOccured";
     public static final String nextGenerationPerformed = "NextGenerationPerformed";
@@ -195,7 +232,6 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
         if (population.seedPos != null) {
             this.seedPos = population.seedPos.clone();
         }
-//        this.m_Listener			= population.m_Listener;
         if (population.listeners != null) {
             this.listeners = (ArrayList<InterfacePopulationChangedEventListener>) population.listeners.clone();
         } else {
@@ -1654,7 +1690,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      *
      * @param size
      */
-    public void setTargetSize(int size) {
+    public final void setTargetSize(int size) {
         this.targetPopSize = size;
     }
 
@@ -1665,7 +1701,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      * @return
      */
     public Population setTargetPopSize(int size) {
-        setTargetSize(size);
+        this.setTargetSize(size);
         return this;
     }
 
@@ -2328,7 +2364,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      * Calculate the fitness sum over all individuals for one criterion.
      *
      * @param criterion
-     * @return the fitness sum over all individuals for one criterio
+     * @return the fitness sum over all individuals for one criteria
      */
     public double getFitSum(int criterion) {
         double fSum = 0.;
