@@ -1,8 +1,8 @@
 package eva2.gui;
 
-import java.beans.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.beans.*;
 
 
 /**

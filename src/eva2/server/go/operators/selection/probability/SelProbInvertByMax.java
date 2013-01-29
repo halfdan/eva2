@@ -65,17 +65,21 @@ public class SelProbInvertByMax extends AbstractSelProb {
 					sum += result[i];
 				}
 
-				for (int i = 0; i < population.size(); i++) ((AbstractEAIndividual)population.get(i)).SetSelectionProbability(x, result[i]/sum);
+				for (int i = 0; i < population.size(); i++) {
+                                ((AbstractEAIndividual)population.get(i)).SetSelectionProbability(x, result[i]/sum);
+                            }
 			}
 		} else {
 			// not one is feasible therefore select the best regarding feasibility
 			System.err.println("warning, using standard probability for selection");
 			sum = 0;
 			// iterating over the individuals
-			for (int i = 0; i < data.length; i++)
-				result[i] = Math.exp(-((AbstractEAIndividual)population.get(i)).getConstraintViolation());
-			for (int i = 0; i < data.length; i++)
-				sum += result[i];
+			for (int i = 0; i < data.length; i++) {
+                        result[i] = Math.exp(-((AbstractEAIndividual)population.get(i)).getConstraintViolation());
+                    }
+			for (int i = 0; i < data.length; i++) {
+                        sum += result[i];
+                    }
 			for (int i = 0; i < population.size(); i++) {
 				double[] tmpD = new double[1];
 				tmpD[0] = result[i]/sum;

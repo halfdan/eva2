@@ -1,13 +1,12 @@
 package eva2.server.go.problems;
 
-import java.util.BitSet;
-
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.GAIndividualBinaryData;
 import eva2.server.go.individuals.InterfaceDataTypeBinary;
 import eva2.server.go.individuals.InterfaceGAIndividual;
 import eva2.server.go.populations.Population;
 import eva2.server.go.strategies.InterfaceOptimizer;
+import java.util.BitSet;
 
 /**
  * An abstract problem based on binary data.

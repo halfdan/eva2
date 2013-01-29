@@ -143,8 +143,9 @@ public class DContainer extends DComponent implements DParent{
    */
   public DElement getDElement( String key ){
     int index = -1;
-    for( int i=0; index == -1 && i < keys.size(); i++ )
-      if( ((String)keys.get(i)).equals( key ) ) index = i;
+    for( int i=0; index == -1 && i < keys.size(); i++ ) {
+          if( ((String)keys.get(i)).equals( key ) ) index = i;
+      }
     return (index<keys.size())? (DElement)elements.get(index):(DElement)null;
   }
 
@@ -184,8 +185,9 @@ public class DContainer extends DComponent implements DParent{
    */
     @Override
   public void setColor(Color c){
-    for( int i=0; i<elements.size(); i++ )
-      ((DElement)elements.get(i)).setColor(c);
+    for( int i=0; i<elements.size(); i++ ) {
+          ((DElement)elements.get(i)).setColor(c);
+      }
     super.setColor(c);
   }
 
@@ -204,8 +206,9 @@ public class DContainer extends DComponent implements DParent{
     @Override
   public void restoreBorder(){
     DBorder b = new DBorder();
-    for( int i=0; i<elements.size(); i++ )
-      b.insert( ((DElement)elements.get(i)).getDBorder() );
+    for( int i=0; i<elements.size(); i++ ) {
+          b.insert( ((DElement)elements.get(i)).getDBorder() );
+      }
     setDBorder( b );
   }
 

@@ -1,7 +1,6 @@
 package eva2.server.go.individuals;
 
 
-import java.util.ArrayList;
 
 import eva2.server.go.individuals.codings.gp.AbstractGPNode;
 import eva2.server.go.individuals.codings.gp.GPArea;
@@ -168,8 +167,9 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
     public void SetProgramPhenotype(InterfaceProgram[] program) {
         if (program instanceof AbstractGPNode[]) {
             this.m_Phenotype = new AbstractGPNode[program.length];
-            for (int i = 0; i < this.m_Phenotype.length; i++)
+            for (int i = 0; i < this.m_Phenotype.length; i++) {
                 this.m_Phenotype[i] = (AbstractGPNode)((AbstractGPNode)program[i]).clone();
+            }
         }
     }
 
@@ -181,8 +181,9 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
         this.SetProgramPhenotype(program);
         if (program instanceof AbstractGPNode[]) {
             this.m_Genotype = new AbstractGPNode[program.length];
-            for (int i = 0; i < this.m_Genotype.length; i++)
+            for (int i = 0; i < this.m_Genotype.length; i++) {
                 this.m_Genotype[i] = (AbstractGPNode)((AbstractGPNode)program[i]).clone();
+            }
         }
     }
 
@@ -233,9 +234,13 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
         String result = "";
         result += "GPIndividual coding program: (";
         result += "Fitness {";
-        for (int i = 0; i < this.m_Fitness.length; i++) result += this.m_Fitness[i] + ";";
+        for (int i = 0; i < this.m_Fitness.length; i++) {
+            result += this.m_Fitness[i] + ";";
+        }
         result += "}/SelProb{";
-        for (int i = 0; i < this.m_SelectionProbability.length; i++) result += this.m_SelectionProbability[i] + ";";
+        for (int i = 0; i < this.m_SelectionProbability.length; i++) {
+            result += this.m_SelectionProbability[i] + ";";
+        }
         result += "})\n Value: ";
         for (int i = 0; i < this.m_Genotype.length; i++) {
             if (this.m_Genotype[i] != null) result += this.m_Genotype[i].getStringRepresentation();

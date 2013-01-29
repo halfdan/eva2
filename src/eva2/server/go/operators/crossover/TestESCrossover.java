@@ -5,7 +5,6 @@ import javax.swing.*;
 
 import eva2.gui.JParaPanel;
 import eva2.gui.Plot;
-import eva2.server.go.SwingWorker;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.ESIndividualDoubleData;
 import eva2.server.go.individuals.InterfaceDataTypeDouble;

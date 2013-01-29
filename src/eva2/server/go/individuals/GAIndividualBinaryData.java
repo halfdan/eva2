@@ -1,14 +1,13 @@
 package eva2.server.go.individuals;
 
 
-import java.util.BitSet;
-
 import eva2.server.go.operators.crossover.CrossoverGAGINPoint;
 import eva2.server.go.operators.crossover.InterfaceCrossover;
 import eva2.server.go.operators.mutation.InterfaceMutation;
 import eva2.server.go.operators.mutation.MutateGANBit;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
+import java.util.BitSet;
 
 /** This individual uses a binary genotype to code for binary values.
  * Created by IntelliJ IDEA.
@@ -126,8 +125,10 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
         return this.m_Fitness;
     }
 
-    /** This method will return a string description of the GAIndividal
-     * noteably the Genotype.
+    /** 
+     * This method will return a string description of the GAIndividal
+     * notably the Genotype.
+     * 
      * @return A descriptive string
      */
     @Override
@@ -135,9 +136,13 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
         String result = "";
         result += "GAIndividual: (";
       result += "Fitness {";
-        for (int i = 0; i < this.m_Fitness.length; i++) result += this.m_Fitness[i] + ";";
+        for (int i = 0; i < this.m_Fitness.length; i++) {
+            result += this.m_Fitness[i] + ";";
+        }
         result += "}/SelProb{";
-        for (int i = 0; i < this.m_SelectionProbability.length; i++) result += this.m_SelectionProbability[i] + ";";
+        for (int i = 0; i < this.m_SelectionProbability.length; i++) {
+            result += this.m_SelectionProbability[i] + ";";
+        }
         result += "})\n Value: ";
         result += "{";
         for (int i = 0; i < this.m_GenotypeLength; i++) {
@@ -149,9 +154,6 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
         result += "\n Mutation ("+this.m_MutationProbability+"):" + this.m_MutationOperator.getStringRepresentation();
         return result;
     }
-/************************************************************************************
- * InterfaceGAIndividual methods
- */
 
     /** This method allows you to read the binary data
      * @return BitSet representing the binary data.
@@ -161,8 +163,10 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
         return this.m_Genotype;
     }
 
-    /** This method allows you to set the binary data, this can be used for
+    /** 
+     * This method allows you to set the binary data, this can be used for
      * memetic algorithms.
+     * 
      * @param binaryData    The new binary data.
      */
     @Override

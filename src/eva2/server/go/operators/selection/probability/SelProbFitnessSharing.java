@@ -62,7 +62,7 @@ public class SelProbFitnessSharing extends AbstractSelProb implements java.io.Se
                     }
                 }
             }
-            selProb[i] = selProb[i]/(1+sharing);
+            selProb[i] /= (1+sharing);
             sum += selProb[i];
         }
         for (int i = 0; i < population.size(); i++) {

@@ -1,7 +1,5 @@
 package eva2.server.go.operators.cluster;
 
-import java.util.ArrayList;
-
 import eva2.gui.BeanInspector;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.AbstractEAIndividualComparator;
@@ -11,6 +9,7 @@ import eva2.server.go.operators.distancemetric.InterfaceDistanceMetric;
 import eva2.server.go.operators.distancemetric.PhenotypeMetric;
 import eva2.server.go.populations.Population;
 import eva2.tools.Pair;
+import java.util.ArrayList;
 
 /**
  * Clustering using the DPI mechanism (dynamic peak identification).
@@ -68,7 +67,9 @@ public class ClusteringDynPeakIdent implements InterfaceClustering, java.io.Seri
 	public int[] associateLoners(Population loners, Population[] species,
 			Population referenceSet) {
 		Population bests = new Population(species.length);
-		for (int i=0; i<species.length; i++) bests.add(species[i].getBestEAIndividual());
+		for (int i=0; i<species.length; i++) {
+            bests.add(species[i].getBestEAIndividual());
+        }
 		return assignLeaders(loners, bests);
 	}
 

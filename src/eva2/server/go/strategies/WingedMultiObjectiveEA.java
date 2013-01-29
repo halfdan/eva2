@@ -74,7 +74,9 @@ public class WingedMultiObjectiveEA implements InterfaceOptimizer, java.io.Seria
             for (int i = 0; i < dim; i++) {
                 tmpP = (AbstractMultiObjectiveOptimizationProblem)this.m_Problem.clone();
                 weights = new double[dim];
-                for (int j = 0; j < dim; j++) weights[j] = 0;
+                for (int j = 0; j < dim; j++) {
+                    weights[j] = 0;
+                }
                 weights[i] = 1;
                 tmpDA = new PropertyDoubleArray(weights);
                 tmpWF = new MOSOWeightedFitness();
@@ -113,7 +115,9 @@ public class WingedMultiObjectiveEA implements InterfaceOptimizer, java.io.Seria
             for (int i = 0; i < dim; i++) {
                 tmpP = (AbstractMultiObjectiveOptimizationProblem)this.m_Problem.clone();
                 weights = new double[dim];
-                for (int j = 0; j < dim; j++) weights[j] = 0;
+                for (int j = 0; j < dim; j++) {
+                    weights[j] = 0;
+                }
                 weights[i] = 1;
                 tmpDA = new PropertyDoubleArray(weights);
                 tmpWF = new MOSOWeightedFitness();

@@ -1,7 +1,5 @@
 package eva2.server.go.operators.mutation;
 
-import java.io.Serializable;
-
 import eva2.gui.BeanInspector;
 import eva2.gui.GenericObjectEditor;
 import eva2.server.go.enums.ESMutationInitialSigma;
@@ -14,9 +12,10 @@ import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.server.go.strategies.EvolutionStrategies;
 import eva2.tools.EVAERROR;
 import eva2.tools.Pair;
+import eva2.tools.math.Jama.EigenvalueDecomposition;
 import eva2.tools.math.Mathematics;
 import eva2.tools.math.RNG;
-import eva2.tools.math.Jama.EigenvalueDecomposition;
+import java.io.Serializable;
 
 /**
  * Implementing CMA ES with rank-mu-update and weighted recombination. More information can be found here:
@@ -188,7 +187,9 @@ public class MutateESRankMuCMA implements InterfaceAdaptOperatorGenerational, In
         /* cumulation for sigma (ps) using B*z */
 		for (int i = 0; i < dim; ++i) {
 			double sum = 0.;
-			for (int j = 0; j < dim; ++j) sum += params.mB.get(i,j) * zVect[j];
+			for (int j = 0; j < dim; ++j) {
+                sum += params.mB.get(i,j) * zVect[j];
+            }
 			newPathS[i] = (1. - params.c_sig) * params.pathS[i]
 			              + Math.sqrt(params.c_sig * (2. - params.c_sig)) * sum;
 			if (!checkValidDouble(newPathS[i])) {
@@ -325,7 +326,9 @@ public class MutateESRankMuCMA implements InterfaceAdaptOperatorGenerational, In
 	
 	private boolean nearlySame(double[] bestFitness, double[] worstFitness) {
 		double epsilon = 1e-14;
-		for (int i=0; i<bestFitness.length; i++) if (Math.abs(bestFitness[i]-worstFitness[i])>epsilon) return false;
+		for (int i=0; i<bestFitness.length; i++) {
+            if (Math.abs(bestFitness[i]-worstFitness[i])>epsilon) return false;
+        }
 		return true;
 	}
 
@@ -366,32 +369,33 @@ public class MutateESRankMuCMA implements InterfaceAdaptOperatorGenerational, In
         	/* (only upper triangle!) */
             /* update covariance matrix */
         	//System.out.println("CCov " + getCCov(selected) + " Cc " + getCc() + " muCov " + getMuCov(selected));
-            for (int i = 0; i < dim; ++i)
+            for (int i = 0; i < dim; ++i) {
                 for (int j = 0; j <= i; ++j) {
 //                	oldVal = mC.get(i,j);
-                	newVal = (1 - ccv) * params.mC.get(i,j)
+                        newVal = (1 - ccv) * params.mC.get(i,j)
                     + ccv
                     * (1. / mcv)
                     * (newPathC[i] * newPathC[j] + (1 - hsig) * getCc()
                             * (2. - getCc()) * params.mC.get(i,j));
-                	checkValidDouble(newVal);
-                	params.mC.set(i,j,newVal);
-                	if (isRankMu()) {
-                		for (int k = 0; k < mu; ++k) { 
-                			/*
-                			 * additional rank mu
-                			 * update
-                			 */
-                			//                    	double[] x_k = ((InterfaceDataTypeDouble)selected.getEAIndividual(k)).getDoubleData();
-                			double[] x_k = AbstractEAIndividual.getDoublePositionShallow(selected.getEAIndividual(k));
-                			newVal = params.mC.get(i,j)+ ccv * (1 - 1. / mcv)
-                			* params.weights[k]	* (x_k[i] - params.meanX[i])
-                			* (x_k[j] - params.meanX[j]) / (getSigma(params, i) * getSigma(params, j)); // TODO right sigmas?
-                			checkValidDouble(newVal);
-                			params.mC.set(i,j, newVal);
-                		}
-                	}
+                        checkValidDouble(newVal);
+                        params.mC.set(i,j,newVal);
+                        if (isRankMu()) {
+                                for (int k = 0; k < mu; ++k) { 
+                                        /*
+                                         * additional rank mu
+                                         * update
+                                         */
+                                        //                    	double[] x_k = ((InterfaceDataTypeDouble)selected.getEAIndividual(k)).getDoubleData();
+                                        double[] x_k = AbstractEAIndividual.getDoublePositionShallow(selected.getEAIndividual(k));
+                                        newVal = params.mC.get(i,j)+ ccv * (1 - 1. / mcv)
+                                        * params.weights[k]	* (x_k[i] - params.meanX[i])
+                                        * (x_k[j] - params.meanX[j]) / (getSigma(params, i) * getSigma(params, j)); // TODO right sigmas?
+                                        checkValidDouble(newVal);
+                                        params.mC.set(i,j, newVal);
+                                }
+                        }
                 }
+            }
             // fill rest of C
             for (int i = 0; i < dim; ++i) {
                 for (int j = i+1; j < dim; ++j) {
@@ -631,7 +635,9 @@ public class MutateESRankMuCMA implements InterfaceAdaptOperatorGenerational, In
 		/* add mutation (sigma * B * (D*z)) */
 		for (int i = 0; i < x.length; ++i) {
 			double sum = 0.;
-			for (int j = 0; j < x.length; ++j) sum += params.mB.get(i,j) * sampl[j];
+			for (int j = 0; j < x.length; ++j) {
+                sum += params.mB.get(i,j) * sampl[j];
+            }
 			x[i] = params.meanX[i]+getSigma(params, i)*sum;
 			checkValidDouble(x[i]);
 		}
@@ -654,7 +660,9 @@ public class MutateESRankMuCMA implements InterfaceAdaptOperatorGenerational, In
 				/* add mutation (sigma * B * (D*z)) */
 				for (int i = 0; i < dim; ++i) {
 					double sum = 0.;
-					for (int j = 0; j < dim; ++j) sum += params.mB.get(i,j) * sampl[j];
+					for (int j = 0; j < dim; ++j) {
+                        sum += params.mB.get(i,j) * sampl[j];
+                    }
 					x[i] = params.meanX[i]+getSigma(params, i)*sum;
 					checkValidDouble(x[i]);
 				}

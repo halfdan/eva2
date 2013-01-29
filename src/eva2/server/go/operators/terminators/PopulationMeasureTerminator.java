@@ -7,7 +7,6 @@ import eva2.server.go.InterfaceTerminator;
 import eva2.server.go.PopulationInterface;
 import eva2.server.go.populations.InterfaceSolutionSet;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import eva2.tools.SelectedTag;
 
 /**
  * Abstract class giving the framework for a terminator that is based on

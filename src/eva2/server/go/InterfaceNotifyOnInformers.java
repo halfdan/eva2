@@ -1,8 +1,7 @@
 package eva2.server.go;
 
-import java.util.List;
-
 import eva2.server.go.problems.InterfaceAdditionalPopulationInformer;
+import java.util.List;
 
 public interface InterfaceNotifyOnInformers {
 	/**

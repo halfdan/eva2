@@ -1,12 +1,11 @@
 package eva2.server.go.operators.nichepso.deactivation;
 
-import java.util.Vector;
-
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.populations.Population;
 import eva2.server.go.strategies.NichePSO;
 import eva2.server.go.strategies.ParticleSubSwarmOptimization;
 import eva2.tools.EVAERROR;
+import java.util.Vector;
 
 /**
  * A subswarm is deactivated if all its particles are converged. 

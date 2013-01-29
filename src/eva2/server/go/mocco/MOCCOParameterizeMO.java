@@ -1,8 +1,6 @@
 package eva2.server.go.mocco;
 
 
-import javax.swing.*;
-
 import eva2.gui.GenericObjectEditor;
 import eva2.gui.PropertyEditorProvider;
 import eva2.server.go.InterfaceTerminator;
@@ -13,10 +11,10 @@ import eva2.server.go.strategies.InterfaceOptimizer;
 import eva2.server.go.strategies.MultiObjectiveEA;
 import eva2.server.go.tools.AbstractObjectEditor;
 import eva2.server.go.tools.GeneralGOEProperty;
-
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.*;
 
 /**
  * Created by IntelliJ IDEA.

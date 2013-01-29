@@ -2,13 +2,11 @@ package eva2.server.go.problems;
 
 
 
-import java.util.BitSet;
-
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceDataTypeBinary;
 import eva2.server.go.strategies.InterfaceOptimizer;
-import eva2.server.go.problems.AbstractProblemBinary;
 import eva2.tools.math.RNG;
+import java.util.BitSet;
 
 /**
  * Created by IntelliJ IDEA.

@@ -1,8 +1,5 @@
 package eva2.server.go.operators.terminators;
 
-import java.io.Serializable;
-import java.util.List;
-
 import eva2.server.go.InterfaceTerminator;
 import eva2.server.go.PopulationInterface;
 import eva2.server.go.individuals.AbstractEAIndividual;
@@ -11,6 +8,8 @@ import eva2.server.go.operators.distancemetric.ObjectiveSpaceMetric;
 import eva2.server.go.populations.InterfaceSolutionSet;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
+import java.io.Serializable;
+import java.util.List;
 
 /**
  * A terminator regarding population history (the archive of a population). Since the population

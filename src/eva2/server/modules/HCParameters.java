@@ -11,7 +11,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 
 /** The class gives access to all HC parameters for the EvA

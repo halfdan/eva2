@@ -11,14 +11,10 @@ package eva2.gui;
  */
 import java.awt.BorderLayout;
 import java.awt.Point;
-import java.awt.Toolkit;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.swing.BorderFactory;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -26,12 +22,7 @@ import javax.swing.JViewport;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import eva2.EvAInfo;
-import eva2.tools.BasicResourceLoader;
 import java.awt.Color;
-import java.awt.FlowLayout;
-import java.awt.event.*;
-import java.beans.PropertyChangeListener;
 import java.text.MessageFormat;
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;

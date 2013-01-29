@@ -1,8 +1,6 @@
 package eva2.server.go.tools;
 
 
-import java.io.*;
-
 import eva2.gui.GraphPointSet;
 import eva2.gui.Plot;
 import eva2.server.go.individuals.AbstractEAIndividual;
@@ -11,6 +9,7 @@ import eva2.server.go.individuals.InterfaceDataTypeDouble;
 import eva2.server.go.operators.archiving.ArchivingAllDominating;
 import eva2.server.go.populations.Population;
 import eva2.tools.chart2d.DPoint;
+import java.io.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -56,7 +55,7 @@ public class ImpactOfDimensionOnMOEAs {
                     ikel.evaluatePopulation(pop, i);
                     mean += ikel.numberOfParetoOptimalSolutions(pop)/(double)pop.size();
                 }
-                mean = mean/(double)multiRuns;
+                mean /= (double)multiRuns;
                 myPoint = new DPoint(i, mean);
                 log[i][l] = mean;
                 mySet.addDPoint(myPoint);

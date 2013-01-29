@@ -4,7 +4,6 @@ package eva2.server.go.operators.mutation;
 import java.util.ArrayList;
 
 import eva2.server.go.individuals.AbstractEAIndividual;
-import eva2.server.go.individuals.InterfaceDataTypeProgram;
 import eva2.server.go.individuals.InterfaceGPIndividual;
 import eva2.server.go.individuals.codings.gp.AbstractGPNode;
 import eva2.server.go.individuals.codings.gp.GPArea;

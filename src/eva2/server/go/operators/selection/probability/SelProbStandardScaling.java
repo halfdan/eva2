@@ -78,13 +78,17 @@ public class SelProbStandardScaling extends AbstractSelProb implements java.io.S
                         sum += result[i];
                     }
 
-                    for (int i = 0; i < population.size(); i++) ((AbstractEAIndividual)population.get(i)).SetSelectionProbability(x, result[i]/sum);
+                    for (int i = 0; i < population.size(); i++) {
+                        ((AbstractEAIndividual)population.get(i)).SetSelectionProbability(x, result[i]/sum);
+                    }
                 }
             } else {
                 // not one is feasible therefore select the best regarding feasibility
                 sum = 0;
                 min = Double.POSITIVE_INFINITY;
-                for (int i = 0; i < data.length; i++) result[i] = -((AbstractEAIndividual)population.get(i)).getConstraintViolation();
+                for (int i = 0; i < data.length; i++) {
+                    result[i] = -((AbstractEAIndividual)population.get(i)).getConstraintViolation();
+                }
                 for (int i = 0; i < data.length; i++) {
                     if (result[i] < min) min = result[i];
                     if (result[i] > max) max = result[i];
@@ -106,7 +110,9 @@ public class SelProbStandardScaling extends AbstractSelProb implements java.io.S
             for (int x = 0; x < data[0].length; x++) {
                 sum = 0;
                 min = Double.POSITIVE_INFINITY;
-                for (int i = 0; i < data.length; i++) result[i] = -data[i][x];
+                for (int i = 0; i < data.length; i++) {
+                    result[i] = -data[i][x];
+                }
                 for (int i = 0; i < data.length; i++) {
                     if (result[i] < min) min = result[i];
                     if (result[i] > max) max = result[i];
@@ -119,7 +125,9 @@ public class SelProbStandardScaling extends AbstractSelProb implements java.io.S
                     sum += result[i];
                 }
 
-                for (int i = 0; i < population.size(); i++) ((AbstractEAIndividual)population.get(i)).SetSelectionProbability(x, result[i]/sum);
+                for (int i = 0; i < population.size(); i++) {
+                    ((AbstractEAIndividual)population.get(i)).SetSelectionProbability(x, result[i]/sum);
+                }
             }
         }
     }

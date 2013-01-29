@@ -132,8 +132,12 @@ public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Ser
 //        Hashtable history = new Hashtable();
         int[] lock = new int[((InterfaceDataTypeDouble) indy).getDoubleData().length];
         double[] wstepsize = new double[((InterfaceDataTypeDouble) indy).getDoubleData().length];
-        for (int li = 0; li < lock.length; li++) lock[li] = 0;
-        for (int li = 0; li < lock.length; li++) wstepsize[li] = 1.0;
+        for (int li = 0; li < lock.length; li++) {
+              lock[li] = 0;
+          }
+        for (int li = 0; li < lock.length; li++) {
+              wstepsize[li] = 1.0;
+          }
         double fitness = 0;
         indy.putData(lockKey, lock);
         indy.putData(lastFitnessKey, new Double(fitness));
@@ -192,12 +196,12 @@ public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Ser
           for (int j = 0; j < newparams.length; j++) {
             if (lock[j] == 0) {
               double tempstepsize = 1;
-              if (this.localStepSizeAdaption) tempstepsize = tempstepsize * wstepsize[j];
-              if (this.globalStepSizeAdaption) tempstepsize = tempstepsize * indystepsize;
+              if (this.localStepSizeAdaption) tempstepsize *= wstepsize[j];
+              if (this.globalStepSizeAdaption) tempstepsize *= indystepsize;
               double wchange = signum(tempstepsize * gradient[j]) * Math.min(maximumabsolutechange,Math.abs(tempstepsize * gradient[j])); //indystepsize * gradient[j];
               if (this.manhattan) wchange = this.signum(wchange) * tempstepsize;
               if (dograddesc)  {
-                wchange = wchange + this.momentumweigth * oldchange[j];
+                  wchange += this.momentumweigth * oldchange[j];
               }
               newparams[j] = params[j] - wchange;
               if (newparams[j] < range[j][0]) newparams[j] = range[j][0];
@@ -223,11 +227,11 @@ public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Ser
     	  String msg="Warning, problem of type InterfaceFirstOrderDerivableProblem and template of type InterfaceDataTypeDouble is required for " + this.getClass();
     	  EVAERROR.errorMsgOnce(msg);
     	  Class<?>[] clsArr = ReflectPackage.getAssignableClasses(InterfaceFirstOrderDerivableProblem.class.getName(), true, true);
-    	  msg=msg+" (available: ";
+    	  msg += " (available: ";
     	  for (Class<?> cls: clsArr) {
     		  msg=msg+" "+cls.getSimpleName();
     	  }
-    	  msg=msg+")";
+    	  msg += ")";
     	  throw new RuntimeException(msg);
       }
     } // for loop population size

@@ -1,9 +1,8 @@
 package eva2.server.go.individuals;
 
+import eva2.tools.EVAERROR;
 import java.io.Serializable;
 import java.util.Comparator;
-
-import eva2.tools.EVAERROR;
 
 /**
  * Compare two individuals based on a linear combination of the fitness values.

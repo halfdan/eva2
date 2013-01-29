@@ -1,12 +1,11 @@
 package eva2.server.go.operators.crossover;
 
-import java.util.ArrayList;
-
 import eva2.gui.GenericObjectEditor;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
+import java.util.ArrayList;
 
 
 /**
@@ -98,7 +97,9 @@ public class CrossoverEAMixer implements InterfaceCrossover, InterfaceEvaluating
     @Override
     public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt){
         InterfaceCrossover[] crossers    = this.m_Crossers.getSelectedCrossers();
-        for (int i = 0; i < crossers.length; i++) crossers[i].init(individual, opt);
+        for (int i = 0; i < crossers.length; i++) {
+            crossers[i].init(individual, opt);
+        }
     }
 
     /** This method performs crossover on two individuals. If the individuals do
@@ -112,7 +113,7 @@ public class CrossoverEAMixer implements InterfaceCrossover, InterfaceEvaluating
         double[]            probs       = this.m_Crossers.getWeights();
         if (this.m_UseSelfAdaption) {
             for (int i = 0; i < probs.length; i++) {
-                probs[i] = probs[i] * Math.exp(this.m_Tau1 * RNG.gaussianDouble(1));
+                probs[i] *= Math.exp(this.m_Tau1 * RNG.gaussianDouble(1));
                 if (probs[i] <= this.m_LowerLimitChance) probs[i] = this.m_LowerLimitChance;
                 if (probs[i] >= 1) probs[i] = 1;
             }

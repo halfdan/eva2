@@ -1,10 +1,6 @@
 package eva2.server.go.individuals.codings.gp;
 
 
-import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.Vector;
-
 import eva2.gui.BeanInspector;
 import eva2.gui.GenericObjectEditor;
 import eva2.server.go.problems.GPFunctionProblem;
@@ -13,6 +9,9 @@ import eva2.tools.Pair;
 import eva2.tools.ReflectPackage;
 import eva2.tools.math.Mathematics;
 import eva2.tools.math.RNG;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.Vector;
 
 
 /** This gives an abstract node, with default functionality for get and set methods.
@@ -69,7 +68,9 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
         this.m_Depth    = node.m_Depth;
         this.m_Parent   = node.m_Parent;
         this.m_Nodes    = new AbstractGPNode[node.m_Nodes.length];
-        for (int i = 0; i < node.m_Nodes.length; i++) this.m_Nodes[i] = (AbstractGPNode) node.m_Nodes[i].clone();
+        for (int i = 0; i < node.m_Nodes.length; i++) {
+            this.m_Nodes[i] = (AbstractGPNode) node.m_Nodes[i].clone();
+        }
     }
     
     private static void appendStringRepresentation(AbstractGPNode node, StringBuffer sbuf) {
@@ -206,7 +207,9 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
     	else if (nodes.length==1) return op+"(" + nodes[0].getStringRepresentation()+")";
     	else {
     		String result = "( "+nodes[0].getStringRepresentation();
-    		for (int i = 1; i < nodes.length; i++) result += " " + op +  " " + nodes[i].getStringRepresentation();
+    		for (int i = 1; i < nodes.length; i++) {
+                result += " " + op +  " " + nodes[i].getStringRepresentation();
+            }
     		result += ")";
     		return result;
     	}
@@ -386,7 +389,9 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
      */
     public void addNodesTo(ArrayList ListOfNodes) {
         ListOfNodes.add(this);
-        for (int i = 0; i < this.m_Nodes.length; i++) this.m_Nodes[i].addNodesTo(ListOfNodes);
+        for (int i = 0; i < this.m_Nodes.length; i++) {
+            this.m_Nodes[i].addNodesTo(ListOfNodes);
+        }
     }
 
     /**
@@ -430,7 +435,9 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
         this.m_Parent = parent;
         if (parent != null) this.m_Depth = this.m_Parent.getDepth()+1;
         else this.m_Depth = 0;
-        for (int i = 0; i < this.m_Nodes.length; i++) this.m_Nodes[i].connect(this);
+        for (int i = 0; i < this.m_Nodes.length; i++) {
+            this.m_Nodes[i].connect(this);
+        }
     }
 
     /** This method will simply init the array of nodes
@@ -474,7 +481,9 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
      */
     public int getNumberOfNodes() {
         int result = 1;
-        for (int i = 0; i < this.m_Nodes.length; i++) result += this.m_Nodes[i].getNumberOfNodes();
+        for (int i = 0; i < this.m_Nodes.length; i++) {
+            result += this.m_Nodes[i].getNumberOfNodes();
+        }
         return result;
     }
 
@@ -534,7 +543,9 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
             }
         } else {
             // else i call the method on my followup nodes
-            for (int i = 0; i < this.m_Nodes.length; i++) this.m_Nodes[i].repairMaxDepth(area, depth);
+            for (int i = 0; i < this.m_Nodes.length; i++) {
+                this.m_Nodes[i].repairMaxDepth(area, depth);
+            }
         }
 
     }

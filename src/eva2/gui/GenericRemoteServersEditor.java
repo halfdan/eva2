@@ -3,7 +3,6 @@ package eva2.gui;
 
 import javax.swing.*;
 
-import eva2.server.go.SwingWorker;
 import eva2.tools.BasicResourceLoader;
 
 import java.beans.PropertyEditor;
@@ -12,8 +11,6 @@ import java.beans.PropertyChangeListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
-import java.util.Vector;
-import java.util.Enumeration;
 
 
 /**
@@ -131,7 +128,9 @@ public class GenericRemoteServersEditor extends JPanel implements PropertyEditor
         this.m_CPUs     = new JComboBox[this.m_RemoteServers.size()];
         this.m_Delete   = new JButton[this.m_RemoteServers.size()];
         String[] cups   = new String[8];
-        for (int i = 0; i < cups.length; i++) cups[i] = ""+(i+1);
+        for (int i = 0; i < cups.length; i++) {
+            cups[i] = ""+(i+1);
+        }
         // The head title
         setGBC(gbc, GridBagConstraints.WEST, GridBagConstraints.BOTH, 0, 1);
         this.m_ServerList.add(new JLabel("Status"), gbc);

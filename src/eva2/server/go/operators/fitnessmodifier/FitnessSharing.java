@@ -35,7 +35,9 @@ public class FitnessSharing implements java.io.Serializable, InterfaceFitnessMod
         AbstractEAIndividual tmpIndy;
 
         for (int x = 0; x < data[0].length; x++) {
-            for (int i = 0; i < data.length; i++) data[i][x] = -data[i][x];
+            for (int i = 0; i < data.length; i++) {
+                data[i][x] = -data[i][x];
+            }
             for (int i = 0; i < data.length; i++) {
                 if (data[i][x] < min) min = data[i][x];
             }
@@ -54,7 +56,7 @@ public class FitnessSharing implements java.io.Serializable, InterfaceFitnessMod
                         fitnessSharing += 1 - (this.m_Metric.distance(tmpIndy, (AbstractEAIndividual)population.get(j))/this.m_SharingDistance);
                     }
                 }
-                result[i] = result[i]/fitnessSharing;
+                result[i] /= fitnessSharing;
             }
 
             for (int i = 0; i < population.size(); i++) {

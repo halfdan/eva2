@@ -1,5 +1,15 @@
 package eva2.server.go.problems;
 
+import eva2.gui.BeanInspector;
+import eva2.gui.PropertyDoubleArray;
+import eva2.server.go.individuals.AbstractEAIndividual;
+import eva2.server.go.individuals.ESIndividualDoubleData;
+import eva2.server.go.individuals.InterfaceDataTypeDouble;
+import eva2.server.go.operators.moso.InterfaceMOSOConverter;
+import eva2.server.go.operators.moso.MOSONoConvert;
+import eva2.server.go.populations.Population;
+import eva2.server.go.strategies.InterfaceOptimizer;
+import eva2.tools.math.Mathematics;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
@@ -11,17 +21,6 @@ import java.io.Reader;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
-
-import eva2.gui.BeanInspector;
-import eva2.gui.PropertyDoubleArray;
-import eva2.server.go.individuals.AbstractEAIndividual;
-import eva2.server.go.individuals.ESIndividualDoubleData;
-import eva2.server.go.individuals.InterfaceDataTypeDouble;
-import eva2.server.go.operators.moso.InterfaceMOSOConverter;
-import eva2.server.go.operators.moso.MOSONoConvert;
-import eva2.server.go.populations.Population;
-import eva2.server.go.strategies.InterfaceOptimizer;
-import eva2.tools.math.Mathematics;
 
 public class ExternalRuntimeProblem extends AbstractOptimizationProblem 
 implements Interface2DBorderProblem, InterfaceProblemDouble, InterfaceHasInitRange {

@@ -68,7 +68,7 @@ public class GPNodeDiv extends AbstractGPNode implements java.io.Serializable {
                     if (tmpValue < 0) tmpValue = -this.m_LowerBorderForSec;
                     else tmpValue = this.m_LowerBorderForSec;
                 }
-                result = result / tmpValue;
+                result /= tmpValue;
         }
         return new Double(result);
     }

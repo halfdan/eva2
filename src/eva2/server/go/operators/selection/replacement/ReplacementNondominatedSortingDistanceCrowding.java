@@ -5,7 +5,6 @@ import java.util.Comparator;
 
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.operators.archiving.ArchivingNSGAII;
-import eva2.server.go.operators.distancemetric.PhenotypeMetric;
 import eva2.server.go.operators.selection.SelectRandom;
 import eva2.server.go.populations.Population;
 

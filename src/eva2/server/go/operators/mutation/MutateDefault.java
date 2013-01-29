@@ -2,7 +2,6 @@ package eva2.server.go.operators.mutation;
 
 import eva2.server.go.IndividualInterface;
 import eva2.server.go.individuals.AbstractEAIndividual;
-import eva2.server.go.individuals.InterfaceESIndividual;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 

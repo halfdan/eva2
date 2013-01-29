@@ -94,12 +94,16 @@ public class MutateESCorrolated implements InterfaceMutation, java.io.Serializab
             if (this.m_Sigmas == null) {
             	// init the Sigmas
             	this.m_Sigmas = new double[x.length];
-            	for (int i = 0; i < this.m_Sigmas.length; i++) this.m_Sigmas[i] = this.m_MutationStepSize;
+            	for (int i = 0; i < this.m_Sigmas.length; i++) {
+                    this.m_Sigmas[i] = this.m_MutationStepSize;
+                }
             }
             if (this.m_Alphas == null) {
             	// init the Alphas
             	this.m_Alphas = new double[(x.length*(x.length-1))/2];
-            	for (int i = 0; i < this.m_Alphas.length; i++) this.m_Alphas[i] = 0.0;
+            	for (int i = 0; i < this.m_Alphas.length; i++) {
+                    this.m_Alphas[i] = 0.0;
+                }
             }
         }
     }
@@ -177,13 +181,13 @@ public class MutateESCorrolated implements InterfaceMutation, java.io.Serializab
 
           //Mutate Sigmas
           for (int i = 0; i < x.length; i++) {
-            this.m_Sigmas[i] = this.m_Sigmas[i] * Math.exp(this.m_Tau1 * tmpR + this.m_Tau2 * RNG.gaussianDouble(1));
+              this.m_Sigmas[i] *= Math.exp(this.m_Tau1 * tmpR + this.m_Tau2 * RNG.gaussianDouble(1));
             if (this.m_Sigmas[i] < this.m_LowerLimitStepSize) this.m_Sigmas[i] = this.m_LowerLimitStepSize;
           }
 
           //Mutate Alphas
           for (int i = 0; i < this.m_Alphas.length; i++) {
-          	this.m_Alphas[i] = this.m_Alphas[i] + RNG.gaussianDouble(0.2);
+          	this.m_Alphas[i] += RNG.gaussianDouble(0.2);
           	if (this.m_Alphas[i] < -Math.PI/2) this.m_Alphas[i] = -Math.PI/2;
           	if (this.m_Alphas[i] > Math.PI/2) this.m_Alphas[i] = Math.PI/2;
           }

@@ -1,6 +1,5 @@
 package eva2.server.go.operators.moso;
 
-import eva2.gui.PropertyDoubleArray;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.populations.Population;
 import eva2.tools.math.RNG;
@@ -54,12 +53,17 @@ public class MOSORandomWeight implements InterfaceMOSOConverter, java.io.Seriali
             sum += tmpWeight[i];
         }
         if (sum <= 0.0000001) {
-            for (int i = 0; i < tmpWeight.length; i++) tmpWeight[i] = 1/(double)tmpWeight.length;
+            for (int i = 0; i < tmpWeight.length; i++) {
+                tmpWeight[i] = 1/(double)tmpWeight.length;
+            }
         } else {
-            for (int i = 0; i < tmpWeight.length; i++) tmpWeight[i] = tmpWeight[i]/sum;
+            for (int i = 0; i < tmpWeight.length; i++) {
+                tmpWeight[i] /= sum;
+            }
         }
-        for (int i = 0; (i < tmpWeight.length) && (i < tmpFit.length) ; i++)
+        for (int i = 0; (i < tmpWeight.length) && (i < tmpFit.length) ; i++) {
             resultFit[0] += tmpFit[i]*tmpWeight[i];
+        }
         indy.setFitness(resultFit);
     }
 

@@ -1,7 +1,5 @@
 package eva2.server.go.problems;
 
-import java.util.List;
-
 import eva2.server.go.PopulationInterface;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.ESIndividualDoubleData;
@@ -13,6 +11,7 @@ import eva2.server.go.populations.Population;
 import eva2.tools.EVAERROR;
 import eva2.tools.ToolBox;
 import eva2.tools.math.Mathematics;
+import java.util.List;
 
 public abstract class AbstractMultiModalProblemKnown extends AbstractProblemDouble 
 implements Interface2DBorderProblem, InterfaceMultimodalProblemKnown {

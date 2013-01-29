@@ -1,9 +1,8 @@
 package eva2.server.go.operators.paramcontrol;
 
-import java.io.Serializable;
-
 import eva2.server.go.populations.Population;
 import eva2.server.go.strategies.CBNPSO;
+import java.io.Serializable;
 
 /**
  * We want to be better than a fitness threshold. We expect a change of a certain value increases

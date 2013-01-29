@@ -62,9 +62,13 @@ public class MutateESPathLengthAdaption implements InterfaceMutation, java.io.Se
             if (this.m_SigmaGlobal != mut.m_SigmaGlobal) return false;
             if (this.m_c != mut.m_c) return false;
             if ((this.m_randZ != null) && (mut.m_randZ != null))
-                for (int i = 0; i < this.m_randZ.length; i++) if (this.m_randZ[i] != mut.m_randZ[i]) return false;
+                for (int i = 0; i < this.m_randZ.length; i++) {
+                if (this.m_randZ[i] != mut.m_randZ[i]) return false;
+            }
             if ((this.m_Path != null) && (mut.m_Path != null))
-                for (int i = 0; i < this.m_Path.length; i++) if (this.m_Path[i] != mut.m_Path[i]) return false;
+                for (int i = 0; i < this.m_Path.length; i++) {
+                if (this.m_Path[i] != mut.m_Path[i]) return false;
+            }
             return true;
         }
         else return false;
@@ -129,7 +133,9 @@ public class MutateESPathLengthAdaption implements InterfaceMutation, java.io.Se
 	}
 
     private void calculateNewStep() {
-   		for (int i = 0; i < m_dim; i++) m_randZ[i] = RNG.gaussianDouble(1.0);            
+   		for (int i = 0; i < m_dim; i++) {
+            m_randZ[i] = RNG.gaussianDouble(1.0);
+        }            
 	}
     
 	/** This method allows you to perform either crossover on the strategy parameters
@@ -153,12 +159,13 @@ public class MutateESPathLengthAdaption implements InterfaceMutation, java.io.Se
 //        double kappa_d          = ((double)m_dim)/4.0+1.0;
         
         double exp         = (pathLen - expectedPathLen)/(dampening*expectedPathLen);
-        m_SigmaGlobal           = m_SigmaGlobal * Math.exp(exp);
+        m_SigmaGlobal *= Math.exp(exp);
     }
 
     private void mutateX(double[] x,double[][] range, boolean checkRange) {
-        for (int i = 0; i < x.length; i++)
-             x[i] = x[i] + m_SigmaGlobal * m_randZ[i];
+        for (int i = 0; i < x.length; i++) {
+            x[i] += m_SigmaGlobal * m_randZ[i];
+        }
         if (checkRange) checkRange(x, range);
     }
 

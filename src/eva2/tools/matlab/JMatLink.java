@@ -1766,8 +1766,9 @@ public class JMatLink extends Thread {
 
 			// convert row from double to byte
 
-			for (int i = 0; i < d[n].length; i++)
-				b[i] = (byte) d[n][i];
+			for (int i = 0; i < d[n].length; i++) {
+                        b[i] = (byte) d[n][i];
+                    }
 
 			// convert byte to String
 

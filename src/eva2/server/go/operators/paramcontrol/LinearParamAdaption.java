@@ -2,7 +2,6 @@ package eva2.server.go.operators.paramcontrol;
 
 import java.io.Serializable;
 
-import eva2.tools.math.Mathematics;
 
 /**
  * Linearly adapt a specific target String parameter.

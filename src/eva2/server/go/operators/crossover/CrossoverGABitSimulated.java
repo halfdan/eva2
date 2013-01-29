@@ -1,13 +1,12 @@
 package eva2.server.go.operators.crossover;
 
 
-import java.util.BitSet;
-
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceGAIndividual;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
+import java.util.BitSet;
 
 /**
  * Created by IntelliJ IDEA.
@@ -63,18 +62,24 @@ public class CrossoverGABitSimulated implements InterfaceCrossover, java.io.Seri
 
             for (int i = 0; i < length; i++) {
                 current = 0;
-                for (int j = 0; j < tmpBitSet[0].length; j++) if (tmpBitSet[0][j].get(i)) current++;
-                current = current/(double)(tmpBitSet[0].length);
+                for (int j = 0; j < tmpBitSet[0].length; j++) {
+                    if (tmpBitSet[0][j].get(i)) current++;
+                }
+                current /= (double)(tmpBitSet[0].length);
                 for (int j = 0; j < tmpBitSet[0].length; j++) {
                     if (RNG.flipCoin(current)) tmpBitSet[1][j].set(i);
                     else tmpBitSet[1][j].clear(i);
                 }
             }
 
-            for (int i = 0; i < result.length; i++) ((InterfaceGAIndividual)result[i]).SetBGenotype(tmpBitSet[1][i]);
+            for (int i = 0; i < result.length; i++) {
+                ((InterfaceGAIndividual)result[i]).SetBGenotype(tmpBitSet[1][i]);
+            }
         }
         //in case the crossover was successfull lets give the mutation operators a chance to mate the strategy parameters
-        for (int i = 0; i < result.length; i++) result[i].getMutationOperator().crossoverOnStrategyParameters(indy1, partners);
+        for (int i = 0; i < result.length; i++) {
+            result[i].getMutationOperator().crossoverOnStrategyParameters(indy1, partners);
+        }
         //for (int i = 0; i < result.length; i++) System.out.println("After Crossover: " +result[i].getSolutionRepresentationFor());
         return result;
     }

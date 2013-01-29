@@ -2,12 +2,6 @@ package eva2.gui;
 
 
 
-import java.awt.BasicStroke;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.Stroke;
-import java.util.ArrayList;
-
 import eva2.tools.chart2d.DArray;
 import eva2.tools.chart2d.DBorder;
 import eva2.tools.chart2d.DComponent;
@@ -17,6 +11,11 @@ import eva2.tools.chart2d.DPoint;
 import eva2.tools.chart2d.DPointIcon;
 import eva2.tools.chart2d.DPointSet;
 import eva2.tools.chart2d.DRectangle;
+import java.awt.BasicStroke;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Stroke;
+import java.util.ArrayList;
 
 
 /**

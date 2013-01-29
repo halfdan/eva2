@@ -45,7 +45,9 @@ public class GPNodeProd extends AbstractGPNode implements java.io.Serializable {
             if (tmpObj instanceof double[]) result*=Mathematics.product((double[])tmpObj);
             else if (tmpObj instanceof Double[]) {
             	Double[] vals = (Double[])tmpObj;
-            	for (int j=0; j<vals.length; j++) result*=vals[j];
+            	for (int j=0; j<vals.length; j++) {
+                    result*=vals[j];
+                }
             } else if (tmpObj instanceof Double) result=(Double)tmpObj;
         }
         return new Double(result);

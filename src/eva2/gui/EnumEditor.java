@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyEditorSupport;
-
 import javax.swing.JFrame;
 
 /**
@@ -52,7 +51,9 @@ public class EnumEditor extends PropertyEditorSupport {
 	public String[] getTags() {
 		if (getValue()==null) return null;
 		String[] tags = new String[enumConstants.length];
-		for (int i=0; i<tags.length; i++) tags[i]=enumConstants[i].toString();
+		for (int i=0; i<tags.length; i++) {
+            tags[i]=enumConstants[i].toString();
+        }
 		return tags;
 	}
 

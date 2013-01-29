@@ -45,7 +45,9 @@ public class NoCrossover implements InterfaceCrossover, java.io.Serializable {
             result[i+1] = (AbstractEAIndividual) ((AbstractEAIndividual)partners.get(i)).clone();
         }
         //in case the crossover was successfull lets give the mutation operators a chance to mate the strategy parameters
-        for (int i = 0; i < result.length; i++) result[i].getMutationOperator().crossoverOnStrategyParameters(indy1, partners);        
+        for (int i = 0; i < result.length; i++) {
+            result[i].getMutationOperator().crossoverOnStrategyParameters(indy1, partners);
+        }        
         return result;
     }
 

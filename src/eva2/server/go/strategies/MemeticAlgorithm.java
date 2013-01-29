@@ -1,7 +1,5 @@
 package eva2.server.go.strategies;
 
-import java.util.Hashtable;
-
 import eva2.server.go.InterfacePopulationChangedEventListener;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.operators.selection.InterfaceSelection;
@@ -12,6 +10,7 @@ import eva2.server.go.populations.SolutionSet;
 import eva2.server.go.problems.F1Problem;
 import eva2.server.go.problems.InterfaceLocalSearchable;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
+import java.util.Hashtable;
 
 
 /**

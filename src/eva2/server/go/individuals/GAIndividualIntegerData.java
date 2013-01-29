@@ -1,8 +1,6 @@
 package eva2.server.go.individuals;
 
 
-import java.util.BitSet;
-
 import eva2.server.go.individuals.codings.ga.GAStandardCodingInteger;
 import eva2.server.go.individuals.codings.ga.InterfaceGAIntegerCoding;
 import eva2.server.go.operators.crossover.CrossoverGAGINPoint;
@@ -10,6 +8,7 @@ import eva2.server.go.operators.mutation.InterfaceMutation;
 import eva2.server.go.operators.mutation.MutateGANBit;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
+import java.util.BitSet;
 
 /** This individual uses a binary genotype to code for binary values using
  * two alternative encodings.
@@ -273,9 +272,13 @@ public class GAIndividualIntegerData extends AbstractEAIndividual implements Int
         String result = "";
         result += "GAIndividual coding int: (";
       result += "Fitness {";
-        for (int i = 0; i < this.m_Fitness.length; i++) result += this.m_Fitness[i] + ";";
+        for (int i = 0; i < this.m_Fitness.length; i++) {
+            result += this.m_Fitness[i] + ";";
+        }
         result += "}/SelProb{";
-        for (int i = 0; i < this.m_SelectionProbability.length; i++) result += this.m_SelectionProbability[i] + ";";
+        for (int i = 0; i < this.m_SelectionProbability.length; i++) {
+            result += this.m_SelectionProbability[i] + ";";
+        }
         result += "})\n Value: ";
         result += "[";
         int[]   d = this.getIntegerData();
@@ -295,7 +298,9 @@ public class GAIndividualIntegerData extends AbstractEAIndividual implements Int
         result += "]\n";
         result += "{";
         int overallLength = 0;
-        for (int i = 0; i < this.m_CodingLenghts.length; i++) overallLength += this.m_CodingLenghts[i];
+        for (int i = 0; i < this.m_CodingLenghts.length; i++) {
+            overallLength += this.m_CodingLenghts[i];
+        }
         for (int i = 0; i < overallLength; i++) {
             if (this.m_Genotype.get(i)) result += "1";
             else result += "0";
@@ -333,14 +338,18 @@ public class GAIndividualIntegerData extends AbstractEAIndividual implements Int
     @Override
     public int getGenotypeLength() {
         int overallLength = 0;
-        for (int i = 0; i < this.m_CodingLenghts.length; i++) overallLength += this.m_CodingLenghts[i];
+        for (int i = 0; i < this.m_CodingLenghts.length; i++) {
+            overallLength += this.m_CodingLenghts[i];
+        }
         return overallLength;
     }
 
     @Override
     public void defaultInit(InterfaceOptimizationProblem prob) {
         int overallLength = 0;
-        for (int i = 0; i < this.m_CodingLenghts.length; i++) overallLength += this.m_CodingLenghts[i];
+        for (int i = 0; i < this.m_CodingLenghts.length; i++) {
+            overallLength += this.m_CodingLenghts[i];
+        }
         for (int i = 0; i < overallLength; i++) {
             if (RNG.flipCoin(0.5)) this.m_Genotype.set(i);
             else this.m_Genotype.clear(i);
@@ -352,7 +361,9 @@ public class GAIndividualIntegerData extends AbstractEAIndividual implements Int
     @Override
     public void defaultMutate() {
         int overallLength = 0;
-        for (int i = 0; i < this.m_CodingLenghts.length; i++) overallLength += this.m_CodingLenghts[i];
+        for (int i = 0; i < this.m_CodingLenghts.length; i++) {
+            overallLength += this.m_CodingLenghts[i];
+        }
         int mutationIndex = RNG.randomInt(0, overallLength);
         if (this.m_Genotype.get(mutationIndex)) this.m_Genotype.clear(mutationIndex);
         else this.m_Genotype.set(mutationIndex);

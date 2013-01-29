@@ -1,9 +1,8 @@
 package eva2.server.go.individuals.codings.ga;
 
 
-import java.util.BitSet;
-
 import eva2.tools.math.RNG;
+import java.util.BitSet;
 
 
 /** The traditional binary coding for integer number, no variable number of bits here, sorry.
@@ -50,7 +49,7 @@ public class GAStandardCodingInteger implements InterfaceGAIntegerCoding, java.i
             }
         }
         //System.out.println(tmpV);
-        tmpV = tmpV + u_min;
+        tmpV += u_min;
         //System.out.println("Korregiere: " + tmpV + " " + u_min + " " + u_max + " " + output);
         if (tmpV > u_max) {
             // this value is invalid
@@ -106,7 +105,7 @@ public class GAStandardCodingInteger implements InterfaceGAIntegerCoding, java.i
                 //System.out.println("set 0");
             }
             counter++;
-            tmpV = tmpV / 2;
+            tmpV /= 2;
             // with this method the least significant bit will be at the lowest position
         }
         //System.out.println("tmpV " + tmpOut + " Range("+m_min+";"+m_max+") "+m_length+" "+this.printBitSet(tmpBitSet,m_length));

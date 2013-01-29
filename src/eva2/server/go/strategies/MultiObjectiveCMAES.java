@@ -1,8 +1,5 @@
 package eva2.server.go.strategies;
 
-import java.io.Serializable;
-import java.util.HashMap;
-
 import eva2.gui.GenericObjectEditor;
 import eva2.server.go.InterfacePopulationChangedEventListener;
 import eva2.server.go.individuals.AbstractEAIndividual;
@@ -14,6 +11,8 @@ import eva2.server.go.populations.Population;
 import eva2.server.go.populations.SolutionSet;
 import eva2.server.go.problems.AbstractOptimizationProblem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
+import java.io.Serializable;
+import java.util.HashMap;
 
 /**
  * 

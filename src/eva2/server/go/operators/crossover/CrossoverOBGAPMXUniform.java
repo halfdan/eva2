@@ -2,7 +2,6 @@ package eva2.server.go.operators.crossover;
 
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceOBGAIndividual;
-import eva2.server.go.operators.crossover.InterfaceCrossover;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
@@ -36,7 +35,9 @@ public class CrossoverOBGAPMXUniform implements InterfaceCrossover, java.io.Seri
       AbstractEAIndividual[] result = null;
       result = new AbstractEAIndividual[partners.size() + 1];
       result[0] = (AbstractEAIndividual) (indy1).clone();
-      for (int i = 0; i < partners.size(); i++) result[i + 1] = (AbstractEAIndividual) ((AbstractEAIndividual) partners.get(i)).clone();
+      for (int i = 0; i < partners.size(); i++) {
+            result[i + 1] = (AbstractEAIndividual) ((AbstractEAIndividual) partners.get(i)).clone();
+        }
 
 
       if ((indy1 instanceof InterfaceOBGAIndividual) && (partners.get(0) instanceof InterfaceOBGAIndividual)) {
@@ -69,7 +70,9 @@ public class CrossoverOBGAPMXUniform implements InterfaceCrossover, java.io.Seri
         ((InterfaceOBGAIndividual) result[1]).SetOBGenotype(pperm2);
       }
       //in case the crossover was successfull lets give the mutation operators a chance to mate the strategy parameters
-      for (int i = 0; i < result.length; i++) result[i].getMutationOperator().crossoverOnStrategyParameters(indy1, partners);
+      for (int i = 0; i < result.length; i++) {
+            result[i].getMutationOperator().crossoverOnStrategyParameters(indy1, partners);
+        }
       return result;
 
     }

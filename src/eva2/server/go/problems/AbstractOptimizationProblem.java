@@ -1,17 +1,5 @@
 package eva2.server.go.problems;
 
-import java.awt.BorderLayout;
-import java.io.Serializable;
-import java.util.Vector;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Semaphore;
-
-import javax.swing.JComponent;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-
 import eva2.server.go.InterfaceTerminator;
 import eva2.server.go.PopulationInterface;
 import eva2.server.go.enums.PostProcessMethod;
@@ -36,6 +24,16 @@ import eva2.server.go.operators.terminators.PopulationMeasureTerminator.Stagnati
 import eva2.server.go.populations.Population;
 import eva2.server.go.strategies.InterfaceOptimizer;
 import eva2.tools.ToolBox;
+import java.awt.BorderLayout;
+import java.io.Serializable;
+import java.util.Vector;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Semaphore;
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 /**
  * Created by IntelliJ IDEA.

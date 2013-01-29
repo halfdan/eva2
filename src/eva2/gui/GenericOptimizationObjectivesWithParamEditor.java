@@ -1,6 +1,10 @@
 package eva2.gui;
 
 
+import eva2.server.go.problems.InterfaceOptimizationObjective;
+import eva2.server.go.tools.AbstractObjectEditor;
+import eva2.server.go.tools.GeneralGOEProperty;
+import eva2.tools.BasicResourceLoader;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -20,7 +24,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.beans.PropertyEditor;
-
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -31,11 +34,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-
-import eva2.server.go.problems.InterfaceOptimizationObjective;
-import eva2.server.go.tools.AbstractObjectEditor;
-import eva2.server.go.tools.GeneralGOEProperty;
-import eva2.tools.BasicResourceLoader;
 
 
 /**
@@ -160,7 +158,9 @@ public class GenericOptimizationObjectivesWithParamEditor extends JPanel impleme
         this.m_Targets  = new JComponent[list.length];
         this.m_Delete   = new JButton[list.length];
         String[] cups   = new String[8];
-        for (int i = 0; i < cups.length; i++) cups[i] = ""+(i+1);
+        for (int i = 0; i < cups.length; i++) {
+            cups[i] = ""+(i+1);
+        }
         // The head title
         gbc.anchor      = GridBagConstraints.WEST;
         gbc.fill        = GridBagConstraints.BOTH;
@@ -288,7 +288,7 @@ public class GenericOptimizationObjectivesWithParamEditor extends JPanel impleme
             }
             if (sum != 0) {
                 for (int i = 0; i < newW.length; i++) {
-                    newW[i] = newW[i]/sum;
+                    newW[i] /= sum;
                 }
                 m_OptimizationObjectivesWithWeights.setWeights(newW);
             }

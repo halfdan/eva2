@@ -1,14 +1,13 @@
 package eva2.server.go.operators.paretofrontmetrics;
 
 
-import java.util.ArrayList;
-
 import eva2.gui.PropertyFilePath;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.operators.archiving.ArchivingAllDominating;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.AbstractMultiObjectiveOptimizationProblem;
 import eva2.server.go.tools.FileTools;
+import java.util.ArrayList;
 
 /** Maximum Pareto Front Error gives the maximum distance of all minimum distances of each
  * element in the current solution to the true Pareto front.
@@ -30,7 +29,9 @@ public class MetricMaximumParetoFrontError implements eva2.server.go.operators.p
     public MetricMaximumParetoFrontError(MetricMaximumParetoFrontError b) {
         if (b.m_Titles != null) {
             this.m_Titles = new String[b.m_Titles.length];
-            for (int i = 0; i < this.m_Titles.length; i++) this.m_Titles[i] = b.m_Titles[i];
+            for (int i = 0; i < this.m_Titles.length; i++) {
+                this.m_Titles[i] = b.m_Titles[i];
+            }
         }
         if (b.m_Reference != null) {
             this.m_Reference = new double[b.m_Reference.length][b.m_Reference[0].length];

@@ -1,5 +1,11 @@
 package eva2.gui;
 
+import eva2.server.go.populations.Population;
+import eva2.server.go.strategies.GeneticAlgorithm;
+import eva2.tools.Pair;
+import eva2.tools.SelectedTag;
+import eva2.tools.StringTools;
+import eva2.tools.Tag;
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
@@ -9,13 +15,6 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-
-import eva2.server.go.populations.Population;
-import eva2.server.go.strategies.GeneticAlgorithm;
-import eva2.tools.Pair;
-import eva2.tools.SelectedTag;
-import eva2.tools.StringTools;
-import eva2.tools.Tag;
 
 
 /**
@@ -234,7 +233,9 @@ public class BeanInspector {
 
 	private static void addIndent(StringBuffer sbuf, String indentStr, int indentDepth) {
 		if (indentStr!=null && (indentDepth>0)) {
-			for (int i=0; i<indentDepth; i++) sbuf.append(indentStr);
+			for (int i=0; i<indentDepth; i++) {
+                sbuf.append(indentStr);
+            }
 		}
 	}
 	
@@ -243,7 +244,9 @@ public class BeanInspector {
 			if (indentDepth<1) return "";
 			else {
 				StringBuffer sbuf = new StringBuffer(indentStr);
-				for (int i=2; i<=indentDepth; i++) sbuf.append(indentStr);
+				for (int i=2; i<=indentDepth; i++) {
+                    sbuf.append(indentStr);
+                }
 				return sbuf.toString();
 			}
 		} else return "";

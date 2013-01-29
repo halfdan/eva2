@@ -1,8 +1,7 @@
 package eva2.server.go.operators.mutation;
 
-import java.io.Serializable;
-
 import eva2.tools.EVAERROR;
+import java.io.Serializable;
 
 /**
  * This implementation restricts the swap positions of the standard swapping mutation

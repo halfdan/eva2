@@ -14,17 +14,16 @@ package eva2.gui;
  * IMPORTS
  *==========================================================================*/
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.io.Serializable;
-import java.util.ArrayList;
-
 import eva2.tools.chart2d.DArea;
 import eva2.tools.chart2d.DMeasures;
 import eva2.tools.chart2d.DPoint;
 import eva2.tools.chart2d.DPointIcon;
 import eva2.tools.chart2d.DPointSet;
 import eva2.tools.math.Mathematics;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.io.Serializable;
+import java.util.ArrayList;
 
 /*==========================================================================*
  * CLASS DECLARATION
@@ -79,8 +78,9 @@ public class GraphPointSet {
 		public DPointSet getDPointSet() {
 			DPointSet ret = new DPointSet(100);
 			ret.setColor(m_Color);
-			for (int i = 0; i < m_X.length; i++)
-				ret.addDPoint(m_X[i], m_Y[i]);
+			for (int i = 0; i < m_X.length; i++) {
+                ret.addDPoint(m_X[i], m_Y[i]);
+            }
 			return ret;
 		}
 

@@ -252,9 +252,13 @@ public class ESIndividualPermutationData extends AbstractEAIndividual implements
 		String result = "";
 		result += "ESIndividual coding permutation: (";
 		result += "Fitness {";
-		for (int i = 0; i < this.m_Fitness.length; i++) result += this.m_Fitness[i] + ";";
+		for (int i = 0; i < this.m_Fitness.length; i++) {
+                result += this.m_Fitness[i] + ";";
+            }
 		result += "}/SelProb{";
-		for (int i = 0; i < this.m_SelectionProbability.length; i++) result += this.m_SelectionProbability[i] + ";";
+		for (int i = 0; i < this.m_SelectionProbability.length; i++) {
+                result += this.m_SelectionProbability[i] + ";";
+            }
 		result += "})\n Value: ";
 		result += "[";
 		for (int i = 0; i < this.m_Genotype.length; i++) {

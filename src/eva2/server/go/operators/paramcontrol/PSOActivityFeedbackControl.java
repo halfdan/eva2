@@ -1,10 +1,9 @@
 package eva2.server.go.operators.paramcontrol;
 
-import java.io.Serializable;
-
 import eva2.server.go.populations.Population;
 import eva2.server.go.strategies.ParticleSwarmOptimization;
 import eva2.tools.math.Mathematics;
+import java.io.Serializable;
 
 /**
  * After the ANTS 08 paper by Yasuda et al., this implements an activity feedback control mechanism.

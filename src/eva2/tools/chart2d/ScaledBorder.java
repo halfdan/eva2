@@ -1,5 +1,6 @@
 package eva2.tools.chart2d;
 
+import eva2.tools.math.Mathematics;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -11,12 +12,9 @@ import java.awt.Point;
 import java.awt.geom.AffineTransform;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-
 import javax.swing.BorderFactory;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
-
-import eva2.tools.math.Mathematics;
 
 /**
  * ScaledBorder puts a border around Components

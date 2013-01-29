@@ -1,9 +1,8 @@
 package eva2.server.go.problems;
 
+import eva2.gui.BeanInspector;
 import java.util.BitSet;
 import java.util.concurrent.Semaphore;
-
-import eva2.gui.BeanInspector;
 
 /**
  * This implements a thread acting as a mediator between EvA and Matlab. Thanks to the idea 

@@ -16,9 +16,8 @@ package eva2.tools.chart2d;
  * IMPORTS
  *==========================================================================*/
 
-import java.awt.* ;
-
 import eva2.tools.EVAERROR;
+import java.awt.*;
 
 /*==========================================================================*
  * CLASS DECLARATION

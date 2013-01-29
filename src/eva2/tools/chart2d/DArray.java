@@ -209,8 +209,9 @@ public class DArray implements DIntDoubleMap{
     if( comp.max != max ) return false;
     if( comp.min != min ) return false;
     if( comp.minPositive != minPositive) return false;
-    for( int i=0; i<size; i++ )
-      if( comp.value[i] != value[i] ) return false;
+    for( int i=0; i<size; i++ ) {
+          if( comp.value[i] != value[i] ) return false;
+      }
     return true;
   }
 
@@ -218,7 +219,9 @@ public class DArray implements DIntDoubleMap{
   public String toString(){
     String text = "eva2.tools.chart2d.DArray[size:"+size;
     if( size < 11 )
-      for( int i=0; i<size; i++ ) text += ", "+value[i];
+      for( int i=0; i<size; i++ ) {
+          text += ", "+value[i];
+      }
     text += "]";
     return text;
   }

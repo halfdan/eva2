@@ -1,11 +1,5 @@
 package eva2.server.go.problems;
 
-import java.util.BitSet;
-
-import simpleprobs.InterfaceSimpleProblem;
-import simpleprobs.SimpleF1;
-import simpleprobs.SimpleProblemBinary;
-import simpleprobs.SimpleProblemDouble;
 import eva2.gui.BeanInspector;
 import eva2.gui.GenericObjectEditor;
 import eva2.gui.Plot;
@@ -17,6 +11,11 @@ import eva2.server.go.individuals.InterfaceDataTypeDouble;
 import eva2.server.go.populations.Population;
 import eva2.server.go.strategies.InterfaceOptimizer;
 import eva2.tools.math.RNG;
+import java.util.BitSet;
+import simpleprobs.InterfaceSimpleProblem;
+import simpleprobs.SimpleF1;
+import simpleprobs.SimpleProblemBinary;
+import simpleprobs.SimpleProblemDouble;
 
 public class SimpleProblemWrapper extends AbstractOptimizationProblem {
 	InterfaceSimpleProblem<?> simProb = new SimpleF1();

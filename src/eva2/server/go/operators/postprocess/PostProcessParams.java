@@ -1,9 +1,8 @@
 package eva2.server.go.operators.postprocess;
 
-import java.io.Serializable;
-
 import eva2.gui.GenericObjectEditor;
 import eva2.server.go.enums.PostProcessMethod;
+import java.io.Serializable;
 
 
 public class PostProcessParams implements InterfacePostProcessParams, Serializable {

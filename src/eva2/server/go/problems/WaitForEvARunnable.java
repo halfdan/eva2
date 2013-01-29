@@ -1,11 +1,10 @@
 package eva2.server.go.problems;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-
 import eva2.OptimizerRunnable;
 import eva2.gui.BeanInspector;
 import eva2.server.go.individuals.AbstractEAIndividual;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 class WaitForEvARunnable implements Runnable {
 	OptimizerRunnable runnable;

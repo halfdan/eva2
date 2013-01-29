@@ -1,9 +1,6 @@
 package eva2.server.go.individuals;
 
 
-import java.util.ArrayList;
-import java.util.BitSet;
-
 import eva2.server.go.individuals.codings.gp.AbstractGPNode;
 import eva2.server.go.individuals.codings.gp.GPArea;
 import eva2.server.go.individuals.codings.gp.InterfaceProgram;
@@ -12,6 +9,8 @@ import eva2.server.go.operators.mutation.InterfaceMutation;
 import eva2.server.go.operators.mutation.MutateDefault;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
+import java.util.ArrayList;
+import java.util.BitSet;
 
 /** This individual uses a binary genotype to code for a tree-based representation
  * using a BNF grammar, see also Grammatical Evolution.
@@ -154,7 +153,9 @@ public class GEIndividualProgramData extends AbstractEAIndividual implements Int
 
             // Now i get a sorted list
             ArrayList[] directList = new ArrayList[maxArity + 1];
-            for (int i = 0; i < directList.length; i++) directList[i] = new ArrayList();
+            for (int i = 0; i < directList.length; i++) {
+                directList[i] = new ArrayList();
+            }
             for (int i = 0; i < area.size(); i++) {
                 directList[((AbstractGPNode) area.get(i)).getArity()].add(area.get(i));
             }
@@ -173,7 +174,9 @@ public class GEIndividualProgramData extends AbstractEAIndividual implements Int
                     // this is a <opX> <expr> <expr>....
                     if (directList[i].size() > 0) {
                         tmpRule[0] = i+1;
-                        for (int j = 1; j < i+1; j++) tmpRule[j] = 0;
+                        for (int j = 1; j < i+1; j++) {
+                            tmpRule[j] = 0;
+                        }
                     } else {
                         tmpRule = null;
                     }
@@ -228,7 +231,9 @@ public class GEIndividualProgramData extends AbstractEAIndividual implements Int
             result += "T \t := \t{";
             this.m_Area[t].compileReducedList();
             ArrayList area = this.m_Area[t].getReducedList();
-            for (int i = 0; i < area.size(); i++) result += ((AbstractGPNode)area.get(i)).getStringRepresentation()+", ";
+            for (int i = 0; i < area.size(); i++) {
+                result += ((AbstractGPNode)area.get(i)).getStringRepresentation()+", ";
+            }
             result += "}\n";
             // now the S
             result += "S \t := \t<expr>\n\n";
@@ -250,13 +255,17 @@ public class GEIndividualProgramData extends AbstractEAIndividual implements Int
                         // These are the GP-Terminals
                         tmpNodes = (AbstractGPNode[])this.m_Rules[t][i];
                         result += "1. \t := \t<var> \t::\t"+ tmpNodes[0].getStringRepresentation()+"\n";
-                        for (int j = 1; j < tmpNodes.length; j++) result += "\t \t \t \t \t \t"+ tmpNodes[j].getStringRepresentation()+"\n";
+                        for (int j = 1; j < tmpNodes.length; j++) {
+                            result += "\t \t \t \t \t \t"+ tmpNodes[j].getStringRepresentation()+"\n";
+                        }
                     } else {
                         // These are the GP-Functions
                         tmpNodes = (AbstractGPNode[])this.m_Rules[t][i];
                         if (tmpNodes.length > 0) {
                             result += i+". \t := \t<op"+(i-1)+"> \t::\t"+ tmpNodes[0].getStringRepresentation()+"\n";
-                            for (int j = 1; j < tmpNodes.length; j++) result += "\t \t \t \t \t \t"+ tmpNodes[j].getStringRepresentation()+"\n";
+                            for (int j = 1; j < tmpNodes.length; j++) {
+                                result += "\t \t \t \t \t \t"+ tmpNodes[j].getStringRepresentation()+"\n";
+                            }
                         }
                     }
                 }

@@ -138,10 +138,11 @@ public class TimeSeries implements Serializable {
 
 					i = 0;
 					j = ((Integer) names.get(name)).intValue();
-					for (i = 0; i < data.length; i++)
-						if (!data[i][j].equals("-1")
-								&& !data[i][j].equals("NaN"))
-							count++;
+					for (i = 0; i < data.length; i++) {
+                    if (!data[i][j].equals("-1")
+                                    && !data[i][j].equals("NaN"))
+                            count++;
+                }
 					values = new double[2][count];
 					// /*
 					// * The times are supposed to be the first column. However,
@@ -152,13 +153,14 @@ public class TimeSeries implements Serializable {
 					// tcol = ((Integer) this.names.get("Time")).intValue();
 					// } catch (Exception exc) {
 					// };
-					for (i = 0, count = 0; i < data.length; i++)
-						if (!data[i][j].equals("-1")
-								&& !data[i][j].equals("NaN")) {
-							values[0][count] = Double
-									.parseDouble(data[i][tcol]);
-							values[1][count++] = Double.parseDouble(data[i][j]);
-						}
+					for (i = 0, count = 0; i < data.length; i++) {
+                    if (!data[i][j].equals("-1")
+                                    && !data[i][j].equals("NaN")) {
+                            values[0][count] = Double
+                                            .parseDouble(data[i][tcol]);
+                            values[1][count++] = Double.parseDouble(data[i][j]);
+                    }
+                }
 					names.put(name, values);
 				} catch (Exception exc) {
 					exc.printStackTrace();

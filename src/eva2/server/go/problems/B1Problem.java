@@ -1,14 +1,13 @@
 package eva2.server.go.problems;
 
 
-import java.util.BitSet;
-
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceDataTypeBinary;
 import eva2.server.go.operators.mutation.MutateEAMixer;
 import eva2.server.go.operators.mutation.MutateGAGISwapBits;
 import eva2.server.go.operators.mutation.MutateGAUniform;
 import eva2.server.go.strategies.InterfaceOptimizer;
+import java.util.BitSet;
 
 /**
  * The minimize bits problem for binary optimization.
@@ -51,7 +50,9 @@ public class B1Problem extends AbstractProblemBinary implements java.io.Serializ
         double[]                result = new double[1];
         int                     fitness = 0;
 
-        for (int i = 0; i < getProblemDimension(); i++) if (b.get(i)) fitness++;
+        for (int i = 0; i < getProblemDimension(); i++) {
+            if (b.get(i)) fitness++;
+        }
         result[0] = fitness;
         return result;
     }

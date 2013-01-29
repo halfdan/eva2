@@ -8,7 +8,6 @@ import eva2.server.go.populations.Population;
 import eva2.server.go.populations.SolutionSet;
 import eva2.server.go.problems.B1Problem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import eva2.tools.math.RNG;
 
 /** Threshold accepting algorithm simliar strategy as the flood
  * algorithm, similar problems.
@@ -164,8 +163,8 @@ public class ThresholdAlgorithm implements InterfaceOptimizer, java.io.Serializa
             TmpMeanCalls += program.m_FitnessCallsNeeded;
             TmpMeanFitness += program.m_Best.defaultEvaulateAsMiniBits();
         }
-        TmpMeanCalls = TmpMeanCalls/program.m_MultiRuns;
-        TmpMeanFitness = TmpMeanFitness/program.m_MultiRuns;
+        TmpMeanCalls /= program.m_MultiRuns;
+        TmpMeanFitness /= program.m_MultiRuns;
         System.out.println("("+program.m_MultiRuns+"/"+program.m_FitnessCalls+") Mean Fitness : " + TmpMeanFitness + " Mean Calls needed: " + TmpMeanCalls);
     }
     @Override

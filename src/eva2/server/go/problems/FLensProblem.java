@@ -19,7 +19,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import eva2.server.go.GOStandaloneVersion;
-import eva2.server.go.PopulationInterface;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.ESIndividualDoubleData;
 import eva2.server.go.individuals.InterfaceDataTypeDouble;
@@ -325,7 +324,9 @@ implements InterfaceOptimizationProblem, InterfaceHasSolutionViewer, java.io.Ser
 
 		x = new double[((InterfaceDataTypeDouble) individual).getDoubleData().length];
 		System.arraycopy(((InterfaceDataTypeDouble) individual).getDoubleData(), 0, x, 0, x.length);
-		for (int i = 0; i < x.length; i++) x[i] = x[i] - this.m_XOffSet;
+		for (int i = 0; i < x.length; i++) {
+            x[i] -= this.m_XOffSet;
+        }
 		fitness = this.doEvaluation(x);
 		for (int i = 0; i < fitness.length; i++) {
 			// add noise to the fitness
@@ -348,10 +349,14 @@ implements InterfaceOptimizationProblem, InterfaceHasSolutionViewer, java.io.Ser
         double[] ret            = new double[1];
 
         // set a minimum value for the thickness of the lens
-        for (int i = 0; i < x.length; i++) if (x[i] < 0.1) x[i] = 0.1;
+        for (int i = 0; i < x.length; i++) {
+            if (x[i] < 0.1) x[i] = 0.1;
+        }
 
         double[] tmpFit = this.testLens(x);
-        for (int i = 0; i < tmpFit.length; i++) fitness += Math.pow(tmpFit[i], 2);
+        for (int i = 0; i < tmpFit.length; i++) {
+            fitness += Math.pow(tmpFit[i], 2);
+        }
 
 //        // Computation of fitness. Uses an approximation for very thin lenses.
 //        // The fitness is the sum over all segments of the deviation from the center
@@ -361,7 +366,7 @@ implements InterfaceOptimizationProblem, InterfaceHasSolutionViewer, java.io.Ser
 
         // Here the thickness of the middle segment of the lens	is added to the fitness
         // to permit the optimization to reduce the overall thickness of the lens
-        if (this.m_UseMaterialConst) fitness = fitness + x[(int)(x.length/2)];
+        if (this.m_UseMaterialConst) fitness += x[(int)(x.length/2)];
 
         ret[0] = fitness;
         return ret;
@@ -377,8 +382,9 @@ implements InterfaceOptimizationProblem, InterfaceHasSolutionViewer, java.io.Ser
         // Computation of fitness. Uses an approximation for very thin lenses.
         // The fitness is the sum over all segments of the deviation from the center
         // of focus of a beam running through a segment.
-        for (int i = 1; i < x.length; i++)
-           result[i-1] = m_Radius - m_SegmentHight / 2 - m_SegmentHight * (i - 1) -  m_FocalLength / m_SegmentHight * (m_Epsilon - 1) * (x[i] - x[i-1]);
+        for (int i = 1; i < x.length; i++) {
+            result[i-1] = m_Radius - m_SegmentHight / 2 - m_SegmentHight * (i - 1) -  m_FocalLength / m_SegmentHight * (m_Epsilon - 1) * (x[i] - x[i-1]);
+        }
         return result;
     }
 

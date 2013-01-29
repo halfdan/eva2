@@ -1,13 +1,12 @@
 package eva2.server.stat;
 
-import java.util.List;
-
 import eva2.server.go.IndividualInterface;
 import eva2.server.go.PopulationInterface;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceAdditionalPopulationInformer;
 import eva2.server.go.strategies.InterfaceOptimizer;
+import java.util.List;
 
 /**
  * This may be given to a Processor if no further stats are required. It speeds up

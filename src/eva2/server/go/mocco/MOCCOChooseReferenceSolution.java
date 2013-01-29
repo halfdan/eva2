@@ -1,18 +1,16 @@
 package eva2.server.go.mocco;
 
 
-import javax.swing.*;
-
 import eva2.server.go.MOCCOStandalone;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.mocco.paretofrontviewer.InterfaceRefSolutionListener;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceMultiObjectiveDeNovoProblem;
 import eva2.server.go.problems.InterfaceOptimizationObjective;
-
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.*;
 
 /**
  * Created by IntelliJ IDEA.

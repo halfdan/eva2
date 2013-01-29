@@ -72,7 +72,7 @@ public class PBILPopulation extends Population implements Cloneable, java.io.Ser
             tmpIndy = (InterfaceGAIndividual)(examples.getEAIndividual(i)).clone();
             tmpBitSet = tmpIndy.getBGenotype();
             for (int j = 0; j < this.m_ProbabilityVector.length; j++) {
-                this.m_ProbabilityVector[j] = this.m_ProbabilityVector[j] * (1.0 - learnRate);
+                this.m_ProbabilityVector[j] *= (1.0 - learnRate);
                 if (tmpBitSet.get(j)) this.m_ProbabilityVector[j] += learnRate;
             }
         }
@@ -118,7 +118,9 @@ public class PBILPopulation extends Population implements Cloneable, java.io.Ser
         BitSet  tmpSet;
 
         this.m_ProbabilityVector = new double[dim];
-        for (int i = 0; i < this.m_ProbabilityVector.length; i++) this.m_ProbabilityVector[i] = 0;
+        for (int i = 0; i < this.m_ProbabilityVector.length; i++) {
+            this.m_ProbabilityVector[i] = 0;
+        }
         // first count the true bits
         for (int i = 0; i < this.size(); i++) {
             tmpSet = ((InterfaceGAIndividual)this.get(i)).getBGenotype();
@@ -128,7 +130,7 @@ public class PBILPopulation extends Population implements Cloneable, java.io.Ser
         }
         // now normalize
         for (int i = 0; i < dim; i++) {
-            this.m_ProbabilityVector[i] = this.m_ProbabilityVector[i]/this.size();
+            this.m_ProbabilityVector[i] /= this.size();
         }
     }
 

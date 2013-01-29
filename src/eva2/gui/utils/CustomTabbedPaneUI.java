@@ -4,13 +4,13 @@
  */
 package eva2.gui.utils;
 
-import javax.swing.*;
-import javax.swing.plaf.ComponentUI;
-import javax.swing.plaf.basic.BasicTabbedPaneUI;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import javax.swing.*;
+import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.basic.BasicTabbedPaneUI;
 
 public class CustomTabbedPaneUI extends BasicTabbedPaneUI {
 

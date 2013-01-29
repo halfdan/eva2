@@ -119,7 +119,9 @@ public class ClusteringKMeans implements InterfaceClustering, java.io.Serializab
             numbOfAssigned  = new int[this.m_K];
             for (int i = 0; i < newC.length; i++) {
                 numbOfAssigned[i] = 1;
-                for (int j = 0; j < newC[i].length; j++) newC[i][j] = this.m_C[i][j];
+                for (int j = 0; j < newC[i].length; j++) {
+                    newC[i][j] = this.m_C[i][j];
+                }
             }
             for (int i = 0; i < assignment.length; i++) {
                 numbOfAssigned[assignment[i]]++;
@@ -130,7 +132,7 @@ public class ClusteringKMeans implements InterfaceClustering, java.io.Serializab
             }
             for (int i = 0; i < newC.length; i++) {
                 for (int j = 0; j < newC[i].length; j++) {
-                    if (numbOfAssigned[i] > 1) newC[i][j] = newC[i][j]/(double)numbOfAssigned[i];
+                    if (numbOfAssigned[i] > 1) newC[i][j] /= (double)numbOfAssigned[i];
                     //else System.out.println("Someone was not assigned any data!? "+ i +" "+numbOfAssigned[i] + ": Data.size()="+data.length);
                 }
             }
@@ -226,7 +228,9 @@ public class ClusteringKMeans implements InterfaceClustering, java.io.Serializab
         // now expand to the expected format (unclustered indies at pop of index 0)
         int largeEnough = 0;
         // count clusters that are large enough
-        for (int i=0; i<result.length; i++) if (result[i].size()>=getMinClustSize()) largeEnough++;
+        for (int i=0; i<result.length; i++) {
+            if (result[i].size()>=getMinClustSize()) largeEnough++;
+        }
         Population[] resExpanded = new Population[largeEnough+1];
         resExpanded[0]=pop.cloneWithoutInds();
         int lastIndex = 1;

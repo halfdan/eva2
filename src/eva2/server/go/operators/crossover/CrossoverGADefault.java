@@ -1,13 +1,12 @@
 package eva2.server.go.operators.crossover;
 
 
-import java.util.BitSet;
-
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceGAIndividual;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
+import java.util.BitSet;
 
 /**
  * This operator performs one-point crossover.
@@ -52,9 +51,10 @@ public class CrossoverGADefault implements InterfaceCrossover,
 		AbstractEAIndividual[] result = null;
 		result = new AbstractEAIndividual[partners.size() + 1];
 		result[0] = (AbstractEAIndividual) (indy1).clone();
-		for (int i = 0; i < partners.size(); i++)
-			result[i + 1] = (AbstractEAIndividual) ((AbstractEAIndividual) partners
-			    .get(i)).clone();
+		for (int i = 0; i < partners.size(); i++) {
+            result[i + 1] = (AbstractEAIndividual) ((AbstractEAIndividual) partners
+                .get(i)).clone();
+        }
 		// for (int i = 0; i < result.length; i++) System.out.println("Before
 		// Crossover: " +result[i].getSolutionRepresentationFor());
 		if (partners.size() == 0) return result;
@@ -84,9 +84,10 @@ public class CrossoverGADefault implements InterfaceCrossover,
 		}
 		// in case the crossover was successfull lets give the mutation operators a
 		// chance to mate the strategy parameters
-		for (int i = 0; i < result.length; i++)
-			result[i].getMutationOperator().crossoverOnStrategyParameters(indy1,
-			    partners);
+		for (int i = 0; i < result.length; i++) {
+            result[i].getMutationOperator().crossoverOnStrategyParameters(indy1,
+                partners);
+        }
 		// for (int i = 0; i < result.length; i++) System.out.println("After
 		// Crossover: " +result[i].getSolutionRepresentationFor());
 		return result;

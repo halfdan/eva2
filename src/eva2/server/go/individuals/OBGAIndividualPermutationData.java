@@ -1,13 +1,12 @@
 package eva2.server.go.individuals;
 
 
-import java.util.ArrayList;
-
 import eva2.server.go.operators.crossover.CrossoverOBGAPMX;
 import eva2.server.go.operators.mutation.InterfaceMutation;
 import eva2.server.go.operators.mutation.MutateOBGAFlip;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
+import java.util.ArrayList;
 
 /** This individual uses a permutation based genotype to code for
  * permutations.
@@ -128,9 +127,13 @@ public class OBGAIndividualPermutationData extends AbstractEAIndividual implemen
    String result = "";
            result += "OBGAIndividual: (";
          result += "Fitness {";
-           for (int i = 0; i < this.m_Fitness.length; i++) result += this.m_Fitness[i] + ";";
+           for (int i = 0; i < this.m_Fitness.length; i++) {
+            result += this.m_Fitness[i] + ";";
+        }
            result += "}/SelProb{";
-           for (int i = 0; i < this.m_SelectionProbability.length; i++) result += this.m_SelectionProbability[i] + ";";
+           for (int i = 0; i < this.m_SelectionProbability.length; i++) {
+            result += this.m_SelectionProbability[i] + ";";
+        }
            result += "})\n Value: ";
            result += "{";
            int[] sizes = this.sizePermutation();

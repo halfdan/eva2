@@ -33,7 +33,9 @@ public abstract class AbstractParameterControl implements InterfaceParameterCont
 		String[] params = getControlledParameters();
 		if (params != null) {
 			initialValues=new Object[params.length];
-			for (int i=0; i<params.length; i++) initialValues[i]=BeanInspector.getMem(obj, params[i]);
+			for (int i=0; i<params.length; i++) {
+                        initialValues[i]=BeanInspector.getMem(obj, params[i]);
+                    }
 		}
 	}
 	
@@ -41,7 +43,9 @@ public abstract class AbstractParameterControl implements InterfaceParameterCont
 	public void finish(Object obj, Population finalPop) {
 		String[] params = getControlledParameters();
 		if (params != null) {
-			for (int i=0; i<params.length; i++) BeanInspector.setMem(obj, params[i], initialValues[i]);
+			for (int i=0; i<params.length; i++) {
+                        BeanInspector.setMem(obj, params[i], initialValues[i]);
+                    }
 		}
 	}
 

@@ -94,7 +94,9 @@ public class MOCCOState {
         }
 
         Population[]    newPop  = new Population[this.m_PopulationHistory.length +1];
-        for (int i = 0; i < this.m_PopulationHistory.length; i++) newPop[i]   = this.m_PopulationHistory[i];
+        for (int i = 0; i < this.m_PopulationHistory.length; i++) {
+            newPop[i]   = this.m_PopulationHistory[i];
+        }
         newPop[newPop.length-1]     = (Population)pop.clone();
         newPop[newPop.length-1].addPopulation(newPop[newPop.length-1].getArchive());
         newPop[newPop.length-1].SetArchive(null);

@@ -2,7 +2,6 @@ package eva2.server.go.problems;
 
 import eva2.server.go.problems.InterfaceOptimizationObjective;
 
-import javax.swing.*;
 
 import eva2.server.go.mocco.paretofrontviewer.InterfaceParetoFrontView;
 import eva2.server.go.mocco.paretofrontviewer.MOCCOViewer;

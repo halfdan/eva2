@@ -29,7 +29,9 @@ public class RFKoza_GPI_10_1 implements InterfaceRegressionFunction, java.io.Ser
     @Override
     public double evaluateFunction(double[] x) {
         double result = 0;
-        for (int i = 0; i < x.length; i++) result += Math.cos(2*x[i]);
+        for (int i = 0; i < x.length; i++) {
+            result += Math.cos(2*x[i]);
+        }
         return result;
     }
 

@@ -1,13 +1,12 @@
 package eva2.server.go.operators.crossover;
 
-import java.util.BitSet;
-
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceDataTypeBinary;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.server.go.strategies.BinaryScatterSearch;
 import eva2.tools.math.RNG;
+import java.util.BitSet;
 
 /**
  * Score driven Crossover-Method. It uses the same score as the BinaryScatterSearch.

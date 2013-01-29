@@ -182,8 +182,9 @@ public class MutateESCovarianceMatrixAdaption implements InterfaceMutation, java
         double  Cij;
         double  Bz_d;
         double  pathLen = 0.0;
-        for (int i = 0; i < this.m_D; i++)
+        for (int i = 0; i < this.m_D; i++) {
             this.s_N[i] = (1.0 - this.m_c) * this.s_N[i] + this.m_c * this.cu * this.Bz[i];
+        }
 //        System.out.println("C bef:\n" + m_C.toString());
         // ADAPT COVARIANCE
         for (int i = 0; i <this. m_D; i++) {
@@ -197,11 +198,13 @@ public class MutateESCovarianceMatrixAdaption implements InterfaceMutation, java
         // ADAPT GLOBAL STEPSIZE
         for (int i = 0; i < this.m_D; i++) {
             Bz_d            = 0.0;
-            for (int j = 0; j < this.m_D; j++) Bz_d = Bz_d + this.B.get(i, j) * this.m_Z[j];
+            for (int j = 0; j < this.m_D; j++) {
+                Bz_d += this.B.get(i, j) * this.m_Z[j];
+            }
             this.m_PathS[i]   = (1.0 - this.m_c) * this.m_PathS[i] + this.m_c * this.cu * Bz_d;
-            pathLen          = pathLen + this.m_PathS[i] * this.m_PathS[i];
+            pathLen += this.m_PathS[i] * this.m_PathS[i];
         }
-        this.m_SigmaGlobal = this.m_SigmaGlobal * Math.exp(this.Beta * this.m_c * (Math.sqrt(pathLen) - this.xi_dach));
+        this.m_SigmaGlobal *= Math.exp(this.Beta * this.m_c * (Math.sqrt(pathLen) - this.xi_dach));
   }
 
     protected void evaluateNewObjectX(double[] x,double[][] range) {
@@ -242,7 +245,9 @@ public class MutateESCovarianceMatrixAdaption implements InterfaceMutation, java
         //double[] oldZ = (double[]) this.m_Z.clone();
         double[] oldX = (double[])x.clone();
         
-        for (int i = 0; i < this.m_D; i++) this.m_Z[i] = RNG.gaussianDouble(1.0);
+        for (int i = 0; i < this.m_D; i++) {
+            this.m_Z[i] = RNG.gaussianDouble(1.0);
+        }
 
         this.m_C = (this.m_C.plus(this.m_C.transpose()).times(0.5)); // MAKE C SYMMETRIC
         this.m_Counter++;
@@ -260,16 +265,18 @@ public class MutateESCovarianceMatrixAdaption implements InterfaceMutation, java
             for (int i = 0; i < this.m_D; i++) {
                 this.Bz[i] = 0;
                 for (int j = 0; j < this.m_D; j++) {
-                    this.Bz[i] = this.Bz[i] + Math.sqrt(Math.abs(this.m_Eigenvalues[j])) * this.B.get(i, j) * this.m_Z[j];
+                    this.Bz[i] += Math.sqrt(Math.abs(this.m_Eigenvalues[j])) * this.B.get(i, j) * this.m_Z[j];
                 }
-                x[i] = x[i] + this.m_SigmaGlobal * this.Bz[i]; // here is the new value
+                x[i] += this.m_SigmaGlobal * this.Bz[i]; // here is the new value
             }
             isNewPosFeasible = true;
             if (this.m_CheckConstraints == true) {
                 for (int i = 0; i < m_D; i++) {
                     if (x[i] < range[i][0] || x[i] > range[i][1]) {
                     	// undo the step and try new Z
-                        for (int j = 0; j < this.m_D; j++) x[j] = oldX[j] - this.m_SigmaGlobal * this.Bz[j];
+                        for (int j = 0; j < this.m_D; j++) {
+                            x[j] = oldX[j] - this.m_SigmaGlobal * this.Bz[j];
+                        }
                         this.m_SigmaGlobal*=0.5;
                         isNewPosFeasible = false;
                         counter++;

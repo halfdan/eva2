@@ -1,8 +1,5 @@
 package eva2.server.go.strategies;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-
 import eva2.gui.GenericObjectEditor;
 import eva2.server.go.InterfacePopulationChangedEventListener;
 import eva2.server.go.InterfaceTerminator;
@@ -16,6 +13,8 @@ import eva2.server.go.operators.terminators.PopulationMeasureTerminator.Stagnati
 import eva2.server.go.populations.Population;
 import eva2.server.go.populations.SolutionSet;
 import eva2.server.go.problems.InterfaceAdditionalPopulationInformer;
+import java.util.Arrays;
+import java.util.LinkedList;
 
 /**
  * This implements the IPOP (increased population size restart) strategy ES, which increases

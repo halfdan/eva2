@@ -2,9 +2,7 @@ package eva2.server.go.operators.initialization;
 
 import java.util.BitSet;
 
-import eva2.gui.BeanInspector;
 import eva2.server.go.individuals.AbstractEAIndividual;
-import eva2.server.go.individuals.GIIndividualIntegerData;
 import eva2.server.go.individuals.InterfaceGAIndividual;
 import eva2.server.go.individuals.InterfaceGIIndividual;
 import eva2.server.go.problems.InterfaceOptimizationProblem;

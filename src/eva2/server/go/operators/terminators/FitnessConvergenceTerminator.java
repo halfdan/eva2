@@ -1,10 +1,9 @@
 package eva2.server.go.operators.terminators;
 
-import java.io.Serializable;
-
 import eva2.server.go.InterfaceTerminator;
 import eva2.server.go.PopulationInterface;
 import eva2.tools.math.Mathematics;
+import java.io.Serializable;
 
 
 /**

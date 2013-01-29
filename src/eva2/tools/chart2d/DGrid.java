@@ -16,10 +16,9 @@ package eva2.tools.chart2d;
  * IMPORTS
  *==========================================================================*/
 
-import java.awt.Color ;
-import java.awt.Graphics ;
-
 import eva2.tools.math.Mathematics;
+import java.awt.Color;
+import java.awt.Graphics;
 
 /*==========================================================================*
  * CLASS DECLARATION

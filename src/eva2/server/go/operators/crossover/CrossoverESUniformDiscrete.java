@@ -70,10 +70,14 @@ public class CrossoverESUniformDiscrete implements InterfaceCrossover, java.io.S
             }
 
             // write the result back
-            for (int i = 0; i < result.length; i++) ((InterfaceESIndividual)result[i]).SetDGenotype(children[i]);
+            for (int i = 0; i < result.length; i++) {
+                ((InterfaceESIndividual)result[i]).SetDGenotype(children[i]);
+            }
         }
         //in case the crossover was successfull lets give the mutation operators a chance to mate the strategy parameters
-        for (int i = 0; i < result.length; i++) result[i].getMutationOperator().crossoverOnStrategyParameters(indy1, partners);
+        for (int i = 0; i < result.length; i++) {
+            result[i].getMutationOperator().crossoverOnStrategyParameters(indy1, partners);
+        }
         //for (int i = 0; i < result.length; i++) System.out.println("After Crossover: " +result[i].getSolutionRepresentationFor());
         return result;
     }

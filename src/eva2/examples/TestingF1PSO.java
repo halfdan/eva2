@@ -9,7 +9,9 @@ public class TestingF1PSO {
 		OptimizerFactory.setEvaluationTerminator(50000);
 		double[] sol = OptimizerFactory.optimizeToDouble(OptimizerFactory.PSO, f1, null);
 		System.out.println(OptimizerFactory.terminatedBecause() + "\nFound solution: ");
-		for (int i=0; i<f1.getProblemDimension(); i++) System.out.print(sol[i] + " ");
+		for (int i=0; i<f1.getProblemDimension(); i++) {
+            System.out.print(sol[i] + " ");
+        }
 		System.out.println();
 	};
 }

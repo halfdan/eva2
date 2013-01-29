@@ -2,7 +2,6 @@ package eva2.server.go.operators.selection;
 
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.operators.selection.probability.InterfaceSelectionProbability;
-import eva2.server.go.operators.selection.probability.SelProbBoltzman;
 import eva2.server.go.operators.selection.probability.SelProbStandard;
 import eva2.server.go.operators.selection.probability.SelProbStandardScaling;
 import eva2.server.go.populations.Population;

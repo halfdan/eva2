@@ -1,13 +1,12 @@
 package eva2.client;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-
 import eva2.server.EvAMainAdapter;
 import eva2.server.modules.ModuleAdapter;
 import eva2.tools.jproxy.MainAdapter;
 import eva2.tools.jproxy.MainAdapterClient;
 import eva2.tools.jproxy.RMIConnection;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 
 /**

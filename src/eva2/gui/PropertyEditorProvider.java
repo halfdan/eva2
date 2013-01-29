@@ -1,13 +1,12 @@
 package eva2.gui;
 
-import java.beans.PropertyDescriptor;
-import java.beans.PropertyEditor;
-import java.beans.PropertyEditorManager;
-
 import eva2.server.go.InterfaceTerminator;
 import eva2.server.go.individuals.codings.gp.GPArea;
 import eva2.tools.SelectedTag;
 import eva2.tools.StringSelection;
+import java.beans.PropertyDescriptor;
+import java.beans.PropertyEditor;
+import java.beans.PropertyEditorManager;
 
 public class PropertyEditorProvider {
     final static boolean TRACE = false;

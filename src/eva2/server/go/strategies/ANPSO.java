@@ -414,7 +414,9 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
 		if (pop.size()<mainSwarmSize) {
 			int reinitSize=0;
 			if (indicesToReinit!=null) {
-				for (int i=0; i<indicesToReinit.size(); i++) reinitSize += indicesToReinit.get(i).length;
+				for (int i=0; i<indicesToReinit.size(); i++) {
+                                reinitSize += indicesToReinit.get(i).length;
+                            }
 			}
 			if (pop.size()+reinitSize==mainSwarmSize) {  // good case, extend pop size; null entries are to be tolerated.
 				sorted = new AbstractEAIndividual[pop.size()+reinitSize];
@@ -549,7 +551,9 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
 //		}
 		if (TRACEMTHD) System.out.println();
 		newMainPop.synchSize();
-		for (int i=0; i<setOfSubswarms.size(); i++) setOfSubswarms.get(i).synchSize();
+		for (int i=0; i<setOfSubswarms.size(); i++) {
+                setOfSubswarms.get(i).synchSize();
+            }
 		useAsSubSwarms(setOfSubswarms);
 		useAsMainSwarm(newMainPop);
 	}

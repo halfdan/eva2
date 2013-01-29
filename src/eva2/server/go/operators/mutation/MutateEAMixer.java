@@ -1,12 +1,11 @@
 package eva2.server.go.operators.mutation;
 
-import java.util.ArrayList;
-
 import eva2.gui.GenericObjectEditor;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
+import java.util.ArrayList;
 
 
 /**
@@ -101,7 +100,9 @@ public class MutateEAMixer implements InterfaceMutation, java.io.Serializable  {
     @Override
     public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt){
         InterfaceMutation[] mutators    = this.m_Mutators.getSelectedMutators();
-        for (int i = 0; i < mutators.length; i++) mutators[i].init(individual, opt);
+        for (int i = 0; i < mutators.length; i++) {
+            mutators[i].init(individual, opt);
+        }
     }
 
     /** This method will mutate a given AbstractEAIndividual. If the individual
@@ -114,7 +115,7 @@ public class MutateEAMixer implements InterfaceMutation, java.io.Serializable  {
         double[]            probs       = this.m_Mutators.getWeights();
         if (this.m_UseSelfAdaption) {
             for (int i = 0; i < probs.length; i++) {
-                probs[i] = probs[i] * Math.exp(this.m_Tau1 * RNG.gaussianDouble(1));
+                probs[i] *= Math.exp(this.m_Tau1 * RNG.gaussianDouble(1));
                 if (probs[i] <= this.m_LowerLimitChance) probs[i] = this.m_LowerLimitChance;
                 if (probs[i] >= 1) probs[i] = 1;
             }

@@ -200,14 +200,18 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 		if (globalRange!=null) { // these may be Matlab objects, so I do it by foot, just to be sure not to clone them within Matlab instead of here 
 			this.range = new double[globalRange.length][globalRange[0].length];
 			for (int i=0; i<this.range.length; i++) {
-				for (int j=0; j<this.range[0].length; j++) this.range[i][j]=globalRange[i][j]; 
+				for (int j=0; j<this.range[0].length; j++) {
+                                this.range[i][j]=globalRange[i][j];
+                            } 
 			}
 		} else this.range=null;
 		
 		if (initRange!=null) { // these may be Matlab objects, so I do it by foot, just to be sure not to clone them within Matlab instead of here
 			this.initialRange = new double[initRange.length][initRange[0].length];
 			for (int i=0; i<this.initialRange.length; i++) {
-				for (int j=0; j<this.initialRange[0].length; j++) this.initialRange[i][j]=initRange[i][j]; 
+				for (int j=0; j<this.initialRange[0].length; j++) {
+                                this.initialRange[i][j]=initRange[i][j];
+                            } 
 			}
 		} else this.initialRange=null;
 		

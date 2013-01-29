@@ -1,14 +1,13 @@
 package eva2.server.go.operators.paramcontrol;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Vector;
-
 import eva2.gui.BeanInspector;
 import eva2.server.go.populations.Population;
 import eva2.server.modules.Processor;
 import eva2.tools.Pair;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
 
 /**
  * The ParameterControlManager handles an array of ParamAdaption instances which dynamically adapt
@@ -46,7 +45,9 @@ public class ParameterControlManager implements InterfaceParameterControl, Seria
 		else initialValues=null;
 		if (o.singleAdapters != null) {
 			singleAdapters = new ParamAdaption[o.singleAdapters.length];
-			for (int i=0; i<singleAdapters.length; i++) singleAdapters[i]=(ParamAdaption)o.singleAdapters[i].clone();
+			for (int i=0; i<singleAdapters.length; i++) {
+                singleAdapters[i]=(ParamAdaption)o.singleAdapters[i].clone();
+            }
 		}
 	}
 	
@@ -60,7 +61,9 @@ public class ParameterControlManager implements InterfaceParameterControl, Seria
 		String[] params = getControlledParameters();
 		if (params != null) {
 			initialValues=new Object[params.length];
-			for (int i=0; i<params.length; i++) initialValues[i]=BeanInspector.getMem(obj, params[i]);
+			for (int i=0; i<params.length; i++) {
+                initialValues[i]=BeanInspector.getMem(obj, params[i]);
+            }
 		}
 		for (ParamAdaption prm : singleAdapters) {
 			prm.init(obj, initialPop, initialValues);
@@ -87,7 +90,9 @@ public class ParameterControlManager implements InterfaceParameterControl, Seria
 			tryRecursive(prm, "finish", new Object[]{finalPop});
 		}
 		if (params != null) {
-			for (int i=0; i<params.length; i++) BeanInspector.setMem(obj, params[i], initialValues[i]);
+			for (int i=0; i<params.length; i++) {
+                BeanInspector.setMem(obj, params[i], initialValues[i]);
+            }
 		}
 	}
 
@@ -172,7 +177,9 @@ public class ParameterControlManager implements InterfaceParameterControl, Seria
 		if (singleAdapters==null) setSingleAdapters(new ParamAdaption[]{pa});
 		else {
 			ParamAdaption[] newP = new ParamAdaption[singleAdapters.length+1];
-			for (int i=0; i<singleAdapters.length; i++) newP[i]=singleAdapters[i];
+			for (int i=0; i<singleAdapters.length; i++) {
+                newP[i]=singleAdapters[i];
+            }
 			newP[newP.length-1] = pa;
 			setSingleAdapters(newP);
 		}

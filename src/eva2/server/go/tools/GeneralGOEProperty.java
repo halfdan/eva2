@@ -1,8 +1,8 @@
 package eva2.server.go.tools;
 
-import javax.swing.*;
-import java.lang.reflect.Method;
 import java.beans.PropertyEditor;
+import java.lang.reflect.Method;
+import javax.swing.*;
 
 /**
  * Created by IntelliJ IDEA.

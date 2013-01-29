@@ -4,7 +4,6 @@ package eva2.server.go.tools;
 import javax.swing.*;
 
 import eva2.gui.GenericObjectEditor;
-import eva2.gui.PropertyDialog;
 import eva2.tools.EVAHELP;
 
 import java.awt.event.ItemListener;
@@ -13,7 +12,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Vector;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeEvent;
 import java.io.*;

@@ -33,7 +33,9 @@ public class MetricErrorRatio implements eva2.server.go.operators.paretofrontmet
         this.m_Epsilon          = b.m_Epsilon;
         if (b.m_Titles != null) {
             this.m_Titles = new String[b.m_Titles.length];
-            for (int i = 0; i < this.m_Titles.length; i++) this.m_Titles[i] = b.m_Titles[i];
+            for (int i = 0; i < this.m_Titles.length; i++) {
+                this.m_Titles[i] = b.m_Titles[i];
+            }
         }
         if (b.m_Reference != null) {
             this.m_Reference = new double[b.m_Reference.length][b.m_Reference[0].length];

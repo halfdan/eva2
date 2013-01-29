@@ -19,7 +19,9 @@ public class MOSOEpsilonConstraint implements InterfaceMOSOConverter, java.io.Se
         this.m_EpsilonConstraint = new PropertyEpsilonConstraint();
         this.m_EpsilonConstraint.m_OptimizeObjective = 0;
         double[] tmpD = new double[2];
-        for (int i = 0; i < tmpD.length; i++) tmpD[i] = 0.0;
+        for (int i = 0; i < tmpD.length; i++) {
+            tmpD[i] = 0.0;
+        }
         this.m_EpsilonConstraint.m_TargetValue = tmpD;
     }
 

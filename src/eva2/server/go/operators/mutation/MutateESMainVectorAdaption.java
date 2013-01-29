@@ -104,7 +104,9 @@ public class MutateESMainVectorAdaption implements InterfaceMutation, java.io.Se
             this.m_main_v[i]    = 0;
         };
         this.xi_dach    = Math.sqrt(this.N - 0.5);
-        for (int i = 0; i < this.N; i++) this.m_Z[i] = RNG.gaussianDouble(1.0);
+        for (int i = 0; i < this.N; i++) {
+            this.m_Z[i] = RNG.gaussianDouble(1.0);
+        }
         this.Z1 = RNG.gaussianDouble(1.0);
         evaluateNewObjectX(x, ranges);
     }
@@ -120,7 +122,9 @@ public class MutateESMainVectorAdaption implements InterfaceMutation, java.io.Se
             double[]    x       = ((InterfaceESIndividual)individual).getDGenotype();
             double[][]  ranges  = ((InterfaceESIndividual)individual).getDoubleRange();
             this.adaptStrategy();
-            for (int i = 0; i < N; i++) m_Z[i] = RNG.gaussianDouble(1.0);
+            for (int i = 0; i < N; i++) {
+                m_Z[i] = RNG.gaussianDouble(1.0);
+            }
             Z1 = RNG.gaussianDouble(1.0);
             evaluateNewObjectX(x, ranges);
 
@@ -143,12 +147,14 @@ public class MutateESMainVectorAdaption implements InterfaceMutation, java.io.Se
         double length = 0.0;
         for (int i = 0; i < this.N; i++) {
             this.s_d_N[i]   = (1.0 - this.m_c) * this.s_d_N[i] + Math.sqrt(this.m_c*(2.0-this.m_c)) * this.m_Z[i]; // PATH
-            length          = length + this.s_d_N[i] * this.s_d_N[i];
+            length += this.s_d_N[i] * this.s_d_N[i];
         }
-        this.m_SigmaScalar = this.m_SigmaScalar * Math.exp(this.m_Beta * this.m_c * (Math.sqrt(length) - this.xi_dach));
+        this.m_SigmaScalar *= Math.exp(this.m_Beta * this.m_c * (Math.sqrt(length) - this.xi_dach));
         // SIGN OF SCALAR PRODUCT
         double Product = 0.0;
-        for (int i = 0; i < this.N; i++) Product = Product + this.s_N[i] * this.m_main_v[i];
+        for (int i = 0; i < this.N; i++) {
+            Product += this.s_N[i] * this.m_main_v[i];
+        }
         if (Product < 0.0)  Product = -1.0;
         else                Product = 1.0;
         for (int i = 0; i < this.N; i++) { // ADAPT MAIN VECTOR
@@ -180,14 +186,14 @@ public class MutateESMainVectorAdaption implements InterfaceMutation, java.io.Se
         double      gradl   = 0;
         for (int i=0;i < x.length; i++) {
             grad[i] = 2*x[i];
-            vl      = vl + v[i]*v[i];
-            gradl   = gradl + grad[i]*grad[i];
+            vl += v[i]*v[i];
+            gradl += grad[i]*grad[i];
         }
         vl      = Math.sqrt(vl);
         gradl   = Math.sqrt(gradl);
         for (int i = 0; i < x.length; i++) {
-            v[i] = v[i] / vl; grad[i] = grad[i] / gradl;
-            x[i] = x[i] + this.m_SigmaScalar * (this.m_Z[i] + this.Z1 * this.w_v * this.m_main_v[i]);
+            v[i] /= vl; grad[i] /= gradl;
+            x[i] += this.m_SigmaScalar * (this.m_Z[i] + this.Z1 * this.w_v * this.m_main_v[i]);
         }
         if (getCheckConstraints()) { // MK: lets actually do a constraint check
         	Mathematics.projectToRange(x, range);

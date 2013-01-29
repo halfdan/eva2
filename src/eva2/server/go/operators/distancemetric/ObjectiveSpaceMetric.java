@@ -1,7 +1,6 @@
 package eva2.server.go.operators.distancemetric;
 
 import eva2.server.go.individuals.AbstractEAIndividual;
-import eva2.server.go.individuals.InterfaceDataTypeDouble;
 
 /** Objective space metric suited for multi-objective optimization.
  * Created by IntelliJ IDEA.

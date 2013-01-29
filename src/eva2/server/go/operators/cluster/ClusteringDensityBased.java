@@ -1,12 +1,11 @@
 package eva2.server.go.operators.cluster;
 
-import java.util.ArrayList;
-
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.operators.distancemetric.InterfaceDistanceMetric;
 import eva2.server.go.operators.distancemetric.PhenotypeMetric;
 import eva2.server.go.populations.Population;
 import eva2.tools.Pair;
+import java.util.ArrayList;
 
 
 /** The DBSCAN method. As far as I recall this is an hierachical
@@ -120,7 +119,9 @@ public class ClusteringDensityBased implements InterfaceClusteringDistanceParam,
             }
         }
 
-        for (int i = 0; i < Clustered.length; i++) Clustered[i] = false;
+        for (int i = 0; i < Clustered.length; i++) {
+            Clustered[i] = false;
+        }
 
         // Now identify clusters within pop and add them to the result
         for (int i = 0; i < ConnectionMatrix.length; i++) {
@@ -133,7 +134,9 @@ public class ClusteringDensityBased implements InterfaceClusteringDistanceParam,
         }
 
         Population[] result = new Population[ClusteredPopulations.size()];
-        for (int i = 0; i < ClusteredPopulations.size(); i++) result[i] = ClusteredPopulations.get(i);
+        for (int i = 0; i < ClusteredPopulations.size(); i++) {
+            result[i] = ClusteredPopulations.get(i);
+        }
         return result;
     }
 

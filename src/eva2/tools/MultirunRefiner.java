@@ -8,9 +8,9 @@ package eva2.tools;
 
 import java.awt.*;
 import java.awt.event.*;
-import javax.swing.*;
-import java.util.*;
 import java.io.*;
+import java.util.*;
+import javax.swing.*;
 
 /** MultirunRefiner
  * Description:     This is a small programm .
@@ -267,7 +267,9 @@ public class MultirunRefiner {
 
         for(int i = 0; i < result.size(); i++) {
             mean = ((double[])(result.get(i)));
-            for (int k=0; k<mean.length; k++) mean[k]/=numExp;
+            for (int k=0; k<mean.length; k++) {
+                mean[k]/=numExp;
+            }
         }
         return result;
     }
@@ -359,7 +361,9 @@ public class MultirunRefiner {
             from = to;
         }
         output  = new double[i];
-        for (int j = 0; j < i; j++) output[j] = ((Double)tmpOutput.elementAt(j)).doubleValue();
+        for (int j = 0; j < i; j++) {
+            output[j] = ((Double)tmpOutput.elementAt(j)).doubleValue();
+        }
         return output;
     }
     /**

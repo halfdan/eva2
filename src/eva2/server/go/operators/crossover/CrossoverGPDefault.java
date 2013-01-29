@@ -1,7 +1,6 @@
 package eva2.server.go.operators.crossover;
 
 
-import java.util.ArrayList;
 
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.GPIndividualProgramData;
@@ -53,8 +52,12 @@ public class CrossoverGPDefault implements InterfaceCrossover, java.io.Serializa
         AbstractEAIndividual[] result = null;
         result = new AbstractEAIndividual[partners.size()+1];
         result[0] = (AbstractEAIndividual) (indy1).clone();
-        for (int i = 0; i < partners.size(); i++) result[i+1] = (AbstractEAIndividual) ((AbstractEAIndividual)partners.get(i)).clone();
-        if (TRACE) for (int i = 0; i < result.length; i++) System.out.println("Before Crossover: " +result[i].getStringRepresentation());
+        for (int i = 0; i < partners.size(); i++) {
+            result[i+1] = (AbstractEAIndividual) ((AbstractEAIndividual)partners.get(i)).clone();
+        }
+        if (TRACE) for (int i = 0; i < result.length; i++) {
+            System.out.println("Before Crossover: " +result[i].getStringRepresentation());
+        }
         if (partners.size() == 0) return result;
         if ((indy1 instanceof InterfaceGPIndividual) && (partners.get(0) instanceof InterfaceGPIndividual)) {
         	int allowedDepth = ((InterfaceGPIndividual)indy1).getMaxAllowedDepth();
@@ -102,7 +105,9 @@ public class CrossoverGPDefault implements InterfaceCrossover, java.io.Serializa
         	((GPIndividualProgramData)result[i]).checkDepth();
         	result[i].getMutationOperator().crossoverOnStrategyParameters(indy1, partners);
         }
-        if (TRACE) for (int i = 0; i < result.length; i++) System.out.println("After Crossover: " +result[i].getStringRepresentation());
+        if (TRACE) for (int i = 0; i < result.length; i++) {
+            System.out.println("After Crossover: " +result[i].getStringRepresentation());
+        }
         return result;
     }
 

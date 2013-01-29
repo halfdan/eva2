@@ -1,8 +1,7 @@
 package eva2.tools;
 
-import java.util.Comparator;
-
 import eva2.gui.BeanInspector;
+import java.util.Comparator;
 
 public class PairComparator implements Comparator<Pair<?,?>> {
 	boolean useHead = true;

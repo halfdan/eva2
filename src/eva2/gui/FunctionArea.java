@@ -11,6 +11,21 @@ package eva2.gui;
  * IMPORTS
  *==========================================================================
  */
+import eva2.server.go.individuals.AbstractEAIndividual;
+import eva2.server.go.mocco.paretofrontviewer.InterfaceRefPointListener;
+import eva2.tools.ToolBoxGui;
+import eva2.tools.chart2d.Chart2DDPointIconCircle;
+import eva2.tools.chart2d.Chart2DDPointIconContent;
+import eva2.tools.chart2d.Chart2DDPointIconCross;
+import eva2.tools.chart2d.Chart2DDPointIconPoint;
+import eva2.tools.chart2d.Chart2DDPointIconText;
+import eva2.tools.chart2d.DArea;
+import eva2.tools.chart2d.DBorder;
+import eva2.tools.chart2d.DFunction;
+import eva2.tools.chart2d.DPoint;
+import eva2.tools.chart2d.DPointIcon;
+import eva2.tools.chart2d.DPointSet;
+import eva2.tools.chart2d.ScaledBorder;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -27,28 +42,11 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
-
-import eva2.server.go.individuals.AbstractEAIndividual;
-import eva2.server.go.mocco.paretofrontviewer.InterfaceRefPointListener;
-import eva2.tools.ToolBoxGui;
-import eva2.tools.chart2d.Chart2DDPointIconCircle;
-import eva2.tools.chart2d.Chart2DDPointIconContent;
-import eva2.tools.chart2d.Chart2DDPointIconCross;
-import eva2.tools.chart2d.Chart2DDPointIconPoint;
-import eva2.tools.chart2d.Chart2DDPointIconText;
-import eva2.tools.chart2d.DArea;
-import eva2.tools.chart2d.DBorder;
-import eva2.tools.chart2d.DFunction;
-import eva2.tools.chart2d.DPoint;
-import eva2.tools.chart2d.DPointIcon;
-import eva2.tools.chart2d.DPointSet;
-import eva2.tools.chart2d.ScaledBorder;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /*
  * ==========================================================================*

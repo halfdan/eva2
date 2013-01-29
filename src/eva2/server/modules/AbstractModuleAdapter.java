@@ -11,7 +11,6 @@ package eva2.server.modules;
  */
 import java.io.Serializable;
 import java.net.InetAddress;
-import java.util.Vector;
 
 import eva2.server.go.InterfaceGOParameters;
 import eva2.server.go.InterfaceProcessor;

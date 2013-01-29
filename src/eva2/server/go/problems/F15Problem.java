@@ -1,8 +1,7 @@
 package eva2.server.go.problems;
 
-import java.io.Serializable;
-
 import eva2.server.go.operators.postprocess.SolutionHistogram;
+import java.io.Serializable;
 
 /**
  * The Levy-function, from Levy, A., and Montalvo, A. (1985). Also described in 

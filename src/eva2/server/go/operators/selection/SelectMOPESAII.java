@@ -1,14 +1,13 @@
 package eva2.server.go.operators.selection;
 
 
-import java.util.Hashtable;
-import java.util.ArrayList;
-import java.util.Enumeration;
-
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.operators.archiving.ArchivingPESAII;
 import eva2.server.go.populations.Population;
 import eva2.tools.math.RNG;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.Hashtable;
 
 /** The multi-objective PESA II selection criteria based on an n-dimensional
  * grid using a squeezing factor. 

@@ -1,11 +1,11 @@
 package eva2.gui;
 
-import javax.swing.*;
-import java.beans.PropertyEditor;
-import java.beans.PropertyChangeSupport;
-import java.beans.PropertyChangeListener;
 import java.awt.*;
 import java.awt.event.*;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import java.beans.PropertyEditor;
+import javax.swing.*;
 
 /**
  * Created by IntelliJ IDEA.

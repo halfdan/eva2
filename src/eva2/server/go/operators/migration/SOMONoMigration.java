@@ -1,8 +1,5 @@
 package eva2.server.go.operators.migration;
 
-import eva2.server.go.operators.selection.InterfaceSelection;
-import eva2.server.go.operators.selection.SelectMOMaxiMin;
-import eva2.server.go.populations.Population;
 import eva2.server.go.strategies.InterfaceOptimizer;
 
 /** Implements no migration as reference.

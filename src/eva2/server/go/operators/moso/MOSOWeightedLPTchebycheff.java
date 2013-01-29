@@ -19,10 +19,14 @@ public class MOSOWeightedLPTchebycheff implements InterfaceMOSOConverter, java.i
         this.m_WLPT     = new PropertyWeightedLPTchebycheff();
         this.m_WLPT.m_P = 0;
         double[] tmpD = new double[2];
-        for (int i = 0; i < tmpD.length; i++) tmpD[i] = 0.0;
+        for (int i = 0; i < tmpD.length; i++) {
+            tmpD[i] = 0.0;
+        }
         this.m_WLPT.m_IdealValue = tmpD;
         tmpD = new double[2];
-        for (int i = 0; i < tmpD.length; i++) tmpD[i] = 1.0;
+        for (int i = 0; i < tmpD.length; i++) {
+            tmpD[i] = 1.0;
+        }
         this.m_WLPT.m_Weights = tmpD;
     }
 

@@ -2,7 +2,6 @@ package eva2.server.go.strategies;
 
 import eva2.tools.math.RNG;
 import eva2.server.go.individuals.AbstractEAIndividual;
-import eva2.server.go.populations.Population;
 
 /**
  * This extends the particle swarm optimization implementation 

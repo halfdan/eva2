@@ -1,12 +1,11 @@
 package eva2.server.go.individuals;
 
 
-import java.util.BitSet;
-
 import eva2.server.go.operators.mutation.InterfaceMutation;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
+import java.util.BitSet;
 
 /** This individual combines a binary and a real-valued phenotype.
  * Created by IntelliJ IDEA.
@@ -139,12 +138,16 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
 
             numTmp = (AbstractEAIndividual)this.getNumbers();
             numPop = new Population();
-            for (int i = 0; i < partners.size(); i++) numPop.add(((GAESIndividualBinaryDoubleData)partners.get(i)).getNumbers());
+            for (int i = 0; i < partners.size(); i++) {
+                numPop.add(((GAESIndividualBinaryDoubleData)partners.get(i)).getNumbers());
+            }
             resNum = numTmp.mateWith(numPop);
 
             binTmp = (AbstractEAIndividual)this.getBitSet();
             binPop = new Population();
-            for (int i = 0; i < partners.size(); i++) binPop.add(((GAESIndividualBinaryDoubleData)partners.get(i)).getBitSet());
+            for (int i = 0; i < partners.size(); i++) {
+                binPop.add(((GAESIndividualBinaryDoubleData)partners.get(i)).getBitSet());
+            }
             resBin = binTmp.mateWith(binPop);
 
             result = new GAESIndividualBinaryDoubleData[resNum.length];
@@ -172,7 +175,9 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
                 result[i+1] = (AbstractEAIndividual) ((AbstractEAIndividual)partners.get(i)).clone();
             }
         }
-        for (int i = 0; i < result.length; i++) result[i].giveNewName();
+        for (int i = 0; i < result.length; i++) {
+            result[i].giveNewName();
+        }
         return result;
     }
 

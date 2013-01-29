@@ -136,8 +136,9 @@ public class ArchivingNSGAII extends ArchivingNSGA implements java.io.Serializab
             if (tmpDom.size() < 1) {
                 System.out.println("Problem NSGA II at level " + level + ".");
                 tmpDom.addPopulation(tmpNonDom);
-                for (int i = 0; i < tmpDom.size(); i++)
+                for (int i = 0; i < tmpDom.size(); i++) {
                     ((AbstractEAIndividual)tmpDom.get(i)).putData("ParetoLevel", new Integer(level));
+                }
                 tmpPop.clear();
 //                System.out.println(""+tmpPop.getStringRepresentation());
 //                tmpPop.removeDoubleInstancesUsingFitness();
@@ -146,7 +147,9 @@ public class ArchivingNSGAII extends ArchivingNSGA implements java.io.Serializab
             level++;
         }
         result = new Population[tmpResult.size()];
-        for (int i = 0; i < result.length; i++) result[i] = (Population) tmpResult.get(i);
+        for (int i = 0; i < result.length; i++) {
+            result[i] = (Population) tmpResult.get(i);
+        }
         return result;
     }
     /** This method will cacluated the NSGAII crowding distance

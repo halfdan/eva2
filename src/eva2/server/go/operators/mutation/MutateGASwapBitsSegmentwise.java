@@ -1,14 +1,13 @@
 package eva2.server.go.operators.mutation;
 
 
-import java.util.BitSet;
-
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceGAIndividual;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.tools.EVAERROR;
 import eva2.tools.math.RNG;
+import java.util.BitSet;
 
 /**
  * Swap two random bits of a GA individual within subsequences (segments) of fixed length.

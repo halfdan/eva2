@@ -31,7 +31,9 @@ public class MOSOMOGARankBased implements InterfaceMOSOConverter, java.io.Serial
     @Override
     public void convertMultiObjective2SingleObjective(Population pop) {
         int[] MOGARank = new int[pop.size()];
-        for (int i = 0; i < MOGARank.length; i++) MOGARank[i] = 1;
+        for (int i = 0; i < MOGARank.length; i++) {
+            MOGARank[i] = 1;
+        }
         for (int i = 0; i < pop.size()-1; i++) {
             for (int j = 0; j < pop.size(); j++) {
                 if (i != j) {

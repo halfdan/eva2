@@ -82,7 +82,9 @@ public class SelectRandom implements InterfaceSelection, java.io.Serializable {
         	} else {
         		if (size > population.size()) throw new RuntimeException("Error, invalid selection: trying to select more individuals (without replacement) than available in SelectRandom.");
         		int[] perm = RNG.randomPerm(size);
-        		for (int i=0; i<size; i++) result.add(population.getEAIndividual(perm[i]));
+        		for (int i=0; i<size; i++) {
+                        result.add(population.getEAIndividual(perm[i]));
+                    }
         	}
         }
         return result;

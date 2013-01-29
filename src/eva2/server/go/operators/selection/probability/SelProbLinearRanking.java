@@ -56,7 +56,9 @@ public class SelProbLinearRanking extends AbstractSelProb implements java.io.Ser
                     }
                     int[]       rank_index = new int[data.length];
                     double[]    fitness    = new double[data.length];
-                    for (int i = 0; i < result.length; i++) result[i] = 0;
+                    for (int i = 0; i < result.length; i++) {
+                        result[i] = 0;
+                    }
                     for (int i = 0; i < data.length; i++) {
                         if (!(((AbstractEAIndividual)population.get(i)).violatesConstraint())) {
                             fitness[i]      = data[i][x];
@@ -91,7 +93,9 @@ public class SelProbLinearRanking extends AbstractSelProb implements java.io.Ser
                 // not one is feasible therefore select the best regarding feasibility
                 int[]       rank_index = new int[data.length];
                 double[]    fitness    = new double[data.length];
-                for (int i = 0; i < result.length; i++) result[i] = 0;
+                for (int i = 0; i < result.length; i++) {
+                    result[i] = 0;
+                }
                 for (int i = 0; i < data.length; i++) {
                     fitness[i]      = -((AbstractEAIndividual)population.get(i)).getConstraintViolation();
                     rank_index[i]   = i;
@@ -123,7 +127,9 @@ public class SelProbLinearRanking extends AbstractSelProb implements java.io.Ser
             for (int x = 0; x < data[0].length; x++) {
                 int[]       rank_index = new int[data.length];
                 double[]    fitness    = new double[data.length];
-                for (int i = 0; i < result.length; i++) result[i] = 0;
+                for (int i = 0; i < result.length; i++) {
+                    result[i] = 0;
+                }
                 for (int i = 0; i < data.length; i++) {
                     fitness[i]      = data[i][x];
                     rank_index[i]   = i;

@@ -18,7 +18,9 @@ public class MOSOLpMetric implements InterfaceMOSOConverter, java.io.Serializabl
 
     public MOSOLpMetric() {
         double[] tmpD = new double[2];
-        for (int i = 0; i < tmpD.length; i++) tmpD[i] = 0.0;
+        for (int i = 0; i < tmpD.length; i++) {
+            tmpD[i] = 0.0;
+        }
         this.m_Reference = new PropertyDoubleArray(tmpD);
     }
     public MOSOLpMetric(MOSOLpMetric b) {
@@ -83,8 +85,12 @@ public class MOSOLpMetric implements InterfaceMOSOConverter, java.io.Serializabl
     public void setOutputDimension(int dim) {
         double[] newWeights = new double[dim];
 
-        for (int i = 0; i < newWeights.length; i++) newWeights[i] = 0.0;
-        for (int i = 0; (i < this.m_Reference.getNumRows()) && (i < newWeights.length); i++) newWeights[i] = this.m_Reference.getValue(i,0);
+        for (int i = 0; i < newWeights.length; i++) {
+            newWeights[i] = 0.0;
+        }
+        for (int i = 0; (i < this.m_Reference.getNumRows()) && (i < newWeights.length); i++) {
+            newWeights[i] = this.m_Reference.getValue(i,0);
+        }
 
         this.m_Reference.setDoubleArray(newWeights);
     }

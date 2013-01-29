@@ -12,6 +12,7 @@
 
 package eva2.tools.chart2d;
 
+import eva2.tools.print.PagePrinter;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
@@ -19,11 +20,8 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
-
 import javax.swing.JComponent;
 import javax.swing.border.Border;
-
-import eva2.tools.print.PagePrinter;
 
 /*==========================================================================*
  * IMPORTS

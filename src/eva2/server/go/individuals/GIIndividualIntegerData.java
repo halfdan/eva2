@@ -231,9 +231,13 @@ public class GIIndividualIntegerData extends AbstractEAIndividual implements Int
         String result = "";
         result += "GIIndividual coding int: (";
       result += "Fitness {";
-        for (int i = 0; i < this.m_Fitness.length; i++) result += this.m_Fitness[i] + ";";
+        for (int i = 0; i < this.m_Fitness.length; i++) {
+            result += this.m_Fitness[i] + ";";
+        }
         result += "}/SelProb{";
-        for (int i = 0; i < this.m_SelectionProbability.length; i++) result += this.m_SelectionProbability[i] + ";";
+        for (int i = 0; i < this.m_SelectionProbability.length; i++) {
+            result += this.m_SelectionProbability[i] + ";";
+        }
         result += "})\n Value: ";
         result += "[";
         int[]   d = this.getIntegerData();

@@ -1,12 +1,11 @@
 package eva2.server.go.strategies.tribes;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.server.go.strategies.Tribes;
 import eva2.tools.math.RNG;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class TribesSwarm implements java.io.Serializable{
@@ -63,7 +62,9 @@ public class TribesSwarm implements java.io.Serializable{
     public Population toPopulation() {
     	Population pop = new Population(numExplorers());
         for (int n = 0; n < tribeNb; n++) {
-        	for (int i=0; i<tribes[n].explorerNb; i++) pop.add(tribes[n].explorer[i]);
+        	for (int i=0; i<tribes[n].explorerNb; i++) {
+                pop.add(tribes[n].explorer[i]);
+            }
         }
         pop.add(getBestMemory().asDummyExplorer(range, masterTribe.getObjectiveFirstDim()));
         pop.synchSize();
@@ -294,7 +295,7 @@ public class TribesSwarm implements java.io.Serializable{
         Tribe t = new Tribe();
         tribes[tribeNb] = t;
         tribes[tribeNb].newTribe(explorerNb, explorer, memoryNb, memo);
-        tribeNb = tribeNb + 1;
+        tribeNb += 1;
 
         findBest();
 
@@ -308,7 +309,7 @@ public class TribesSwarm implements java.io.Serializable{
         int size = 0;
         int n;
         for (n = 0; n < tribeNb; n++) {
-            size = size + tribes[n].getNumExplorers();
+            size += tribes[n].getNumExplorers();
         }
         return size;
     }
@@ -502,12 +503,11 @@ public class TribesSwarm implements java.io.Serializable{
         int n;
         for (n = 0; n < swarm.tribeNb; n++) {
             // In a tribe the graph is completely connected
-            link = link +
-                   swarm.tribes[n].explorerNb *
-                   swarm.tribes[n].memoryNb;
+            link += swarm.tribes[n].explorerNb *
+                    swarm.tribes[n].memoryNb;
         }
         // Roughly speaking, each shaman is linked to all the others
-        link = link + swarm.tribeNb * (swarm.tribeNb - 1);
+        link += swarm.tribeNb * (swarm.tribeNb - 1);
         return link;
     }
 
@@ -556,16 +556,15 @@ public class TribesSwarm implements java.io.Serializable{
                  */
                 // Just shamans
 
-                mTot = mTot + w;
-                queen.position.x[d] = queen.position.x[d] +
-                                      w * tribes[t].memory[tribes[t].shaman].
-                                      getPos().x[d];
+                mTot += w;
+                queen.position.x[d] += w * tribes[t].memory[tribes[t].shaman].
+                                       getPos().x[d];
 
             }
         }
 
         for (d = 0; d < range.length; d++) {
-            queen.position.x[d] = queen.position.x[d] / mTot;
+            queen.position.x[d] /= mTot;
         }
         queen.keepIn(range);
 //        queen.granul(pb.H);

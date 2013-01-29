@@ -1,20 +1,6 @@
 package eva2.server.go.mocco;
 
 
-import java.awt.BorderLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-
 import eva2.gui.GenericObjectEditor;
 import eva2.gui.PropertyDoubleArray;
 import eva2.gui.PropertyEditorProvider;
@@ -29,6 +15,18 @@ import eva2.server.go.strategies.GeneticAlgorithm;
 import eva2.server.go.strategies.InterfaceOptimizer;
 import eva2.server.go.tools.AbstractObjectEditor;
 import eva2.server.go.tools.GeneralGOEProperty;
+import java.awt.BorderLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 /**
  * Created by IntelliJ IDEA.
@@ -324,7 +322,9 @@ public class MOCCOParameterizeSTEP extends MOCCOPhase implements InterfaceProces
         }
 
         double[] result = new double[tmpA.size()];
-        for (int i = 0; i < result.length; i++) result[i] = ((Double)tmpA.get(i)).doubleValue();
+        for (int i = 0; i < result.length; i++) {
+            result[i] = ((Double)tmpA.get(i)).doubleValue();
+        }
         return result;
     }
 }

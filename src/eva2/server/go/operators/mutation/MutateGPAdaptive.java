@@ -72,7 +72,7 @@ public class MutateGPAdaptive implements InterfaceMutation, java.io.Serializable
     public void mutate(AbstractEAIndividual individual) {
         //System.out.println("Before Mutate: " +((GAIndividual)individual).getSolutionRepresentationFor());
         if (individual instanceof InterfaceGPIndividual) {
-            this.m_MutationStep = this.m_MutationStep * Math.exp(this.m_Tau1 * RNG.gaussianDouble(1) + this.m_Tau2 * RNG.gaussianDouble(1));
+            this.m_MutationStep *= Math.exp(this.m_Tau1 * RNG.gaussianDouble(1) + this.m_Tau2 * RNG.gaussianDouble(1));
             if (this.m_MutationStep < this.m_LowerLimitStepSize) this.m_MutationStep = this.m_LowerLimitStepSize;
             if (this.m_MutationStep > 1) this.m_MutationStep = 1;
             if (RNG.flipCoin(this.m_MutationStep)) ((IndividualInterface)individual).defaultMutate();

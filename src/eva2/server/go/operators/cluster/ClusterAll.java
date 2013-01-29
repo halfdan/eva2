@@ -1,9 +1,8 @@
 package eva2.server.go.operators.cluster;
 
+import eva2.server.go.populations.Population;
 import java.io.Serializable;
 import java.util.Arrays;
-
-import eva2.server.go.populations.Population;
 
 /**
  * Dummy class which assigns all individuals to a single cluster only.

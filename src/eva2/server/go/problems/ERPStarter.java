@@ -47,7 +47,9 @@ public class ERPStarter {
 		
 		if (unknownArgs.length>0 || (values[2]==null) || (values[3]==null) || (values[4]==null)) {
 			System.err.println("Missing or unrecognized command line options: ");
-			for (int i=0; i<unknownArgs.length; i++) System.err.println("   " + args[unknownArgs[i]]);
+			for (int i=0; i<unknownArgs.length; i++) {
+                System.err.println("   " + args[unknownArgs[i]]);
+            }
 			System.err.println("Use with: --csv <path-to-csv-config-file> --cmd <command-with-full-path> --maxEvals <maxEvals> [--multiObjective] [--gui]");
 			return;
 		}

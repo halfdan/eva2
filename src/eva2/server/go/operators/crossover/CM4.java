@@ -1,12 +1,11 @@
 package eva2.server.go.operators.crossover;
 
-import java.util.BitSet;
-
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceDataTypeBinary;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
+import java.util.BitSet;
 
 /**
  * This crossover-Method performs an \"intersection\" of the selected Individuals and then tries to improve it through score (like in CM3)
@@ -41,7 +40,7 @@ public class CM4 implements InterfaceCrossover, java.io.Serializable {
 
 	private double weight(double valX, boolean xi, double valY, boolean yi){
 		double result = valX*convertBoolean(xi)+valY*convertBoolean(yi);
-		result = result / (valX + valY);
+		result /= (valX + valY);
 		return result;
 	}
 

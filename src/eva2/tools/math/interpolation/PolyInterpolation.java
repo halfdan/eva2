@@ -110,8 +110,9 @@ public class PolyInterpolation
 	{
 		int n = polynomialCoefficients.length - 1;
 		double y = polynomialCoefficients[n];
-		for (int j = n - 1; j >= 0; j--)
-			y = y * x + polynomialCoefficients[j];
+		for (int j = n - 1; j >= 0; j--) {
+            y = y * x + polynomialCoefficients[j];
+        }
 
 		return y;
 	}
@@ -159,13 +160,15 @@ public class PolyInterpolation
 		double cnst = 1.0;
 
 		pd[0] = polynomialCoefficients[nc];
-		for (j = 1; j <= ndDerivateNumber; j++)
-			pd[j] = 0.0;
+		for (j = 1; j <= ndDerivateNumber; j++) {
+            pd[j] = 0.0;
+        }
 		for (i = nc - 1; i >= 0; i--)
 		{
 			nnd = (ndDerivateNumber < (nc - i) ? ndDerivateNumber : nc - i);
-			for (j = nnd; j >= 1; j--)
-				pd[j] = pd[j] * x + pd[j - 1];
+			for (j = nnd; j >= 1; j--) {
+                pd[j] = pd[j] * x + pd[j - 1];
+            }
 			pd[0] = pd[0] * x + polynomialCoefficients[i];
 		}
 		for (i = 2; i <= ndDerivateNumber; i++)

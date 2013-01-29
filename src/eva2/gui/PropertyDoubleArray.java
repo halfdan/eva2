@@ -52,7 +52,9 @@ public class PropertyDoubleArray implements java.io.Serializable {
      */
     public void setDoubleArray(double[] d) {
     	this.m_DoubleArray = new double[d.length][1];
-    	for (int i=0; i<d.length; i++) m_DoubleArray[i][0] = d[i];
+    	for (int i=0; i<d.length; i++) {
+            m_DoubleArray[i][0] = d[i];
+        }
     	m_numCols=1;
     }
     
@@ -81,7 +83,9 @@ public class PropertyDoubleArray implements java.io.Serializable {
     		throw new IllegalArgumentException("Error, invalid column selected, " + col + " of " + m_numCols);
     	}
     	double[] ret = new double[m_DoubleArray.length];
-    	for (int i=0; i<ret.length; i++) ret[i]=m_DoubleArray[i][col];
+    	for (int i=0; i<ret.length; i++) {
+            ret[i]=m_DoubleArray[i][col];
+        }
     	return ret;
     }
     
@@ -119,7 +123,9 @@ public class PropertyDoubleArray implements java.io.Serializable {
 		int inc=0;
 		for (int i = 0; i < newDD.length; i++) {
 			if (i==k) inc=1;
-			for (int j=0; j<getNumCols(); j++) newDD[i][j] = m_DoubleArray[i+inc][j];
+			for (int j=0; j<getNumCols(); j++) {
+                        newDD[i][j] = m_DoubleArray[i+inc][j];
+                    }
 		}
 		setDoubleArray(newDD);
 	}
@@ -134,10 +140,17 @@ public class PropertyDoubleArray implements java.io.Serializable {
 		if (k<0 || k>= getNumRows()) k=getNumRows()-1;
 		double[][] newDD = new double[getNumRows()+1][getNumCols()];
 
-		for (int i = 0; i < getNumRows(); i++) 
-			for (int j=0; j<getNumCols(); j++) newDD[i][j] = m_DoubleArray[i][j];
-		if (k>=0) for (int j=0; j<getNumCols(); j++) newDD[newDD.length-1][j] = newDD[k][j];
-		else for (int j=0; j<getNumCols(); j++) newDD[newDD.length-1][j] = 1.; // if the array was empty
+		for (int i = 0; i < getNumRows(); i++) {
+                for (int j = 0; j<getNumCols(); j++) {
+                    newDD[i][j] = m_DoubleArray[i][j];
+                }
+            }
+		if (k>=0) for (int j=0; j<getNumCols(); j++) {
+                newDD[newDD.length-1][j] = newDD[k][j];
+            }
+		else for (int j=0; j<getNumCols(); j++) {
+                newDD[newDD.length-1][j] = 1.;
+            } // if the array was empty
 		setDoubleArray(newDD);
 	}
 	

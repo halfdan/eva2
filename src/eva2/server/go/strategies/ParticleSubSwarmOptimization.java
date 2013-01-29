@@ -1,7 +1,5 @@
 package eva2.server.go.strategies;
 
-import java.util.Vector;
-
 import eva2.server.go.IndividualInterface;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.ESIndividualDoubleData;
@@ -11,6 +9,7 @@ import eva2.server.go.populations.Population;
 import eva2.server.go.problems.AbstractOptimizationProblem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.Mathematics;
+import java.util.Vector;
 
 
 /**
@@ -634,7 +633,7 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
 			AbstractEAIndividual indy = getPopulation().getEAIndividual(i);
 			meanDistanceFromGBestPos += distance(gbest, indy);
 		}
-		meanDistanceFromGBestPos = meanDistanceFromGBestPos/(double)getPopulation().size();
+		meanDistanceFromGBestPos /= (double)getPopulation().size();
 		return meanDistanceFromGBestPos;
 	}
 

@@ -13,7 +13,6 @@ import eva2.tools.StringSelection;
 import eva2.tools.StringTools;
 import eva2.tools.ToolBox;
 import eva2.tools.math.Mathematics;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
@@ -145,7 +144,9 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 				boolean rm = l.notifyMultiRunFinished(currentStatHeader, finalObjectData);
 				if (rm) toRemove.add(l);
 			}
-			for (InterfaceStatisticsListener l : toRemove) dataListeners.remove(l); 
+			for (InterfaceStatisticsListener l : toRemove) { 
+                dataListeners.remove(l);
+            } 
 		}
 	}
 	
@@ -311,7 +312,9 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 		if (iterationCounter < sumDataCollection.size()) {
 			// no good: later run was shorter than the first one. What to do? Discard the longer one:
 			if (TRACE) System.err.println("Error in AbstractStatistics: later run was shorter than earlier one... discarding rest...");
-			for (int i=sumDataCollection.size()-1; i>=iterationCounter; i--) sumDataCollection.remove(i);
+			for (int i=sumDataCollection.size()-1; i>=iterationCounter; i--) {
+                sumDataCollection.remove(i);
+            }
 		}
 		optRunsPerformed++;
 		functionCallSum += functionCalls;
@@ -437,10 +440,14 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 
 		if (printFinalVerbosity() && (statDataSumOverAll != null)) {
 			printToTextListener("     Averaged sum of run statistical data: (" +  optRunsPerformed + " runs):");
-			for (int i=0; i<statDataSumOverAll.length; i++) if (statDataSumOverAll[i]!=null) printToTextListener(textFieldDelimiter+(statDataSumOverAll[i]/optRunsPerformed));
+			for (int i=0; i<statDataSumOverAll.length; i++) {
+                if (statDataSumOverAll[i]!=null) printToTextListener(textFieldDelimiter+(statDataSumOverAll[i]/optRunsPerformed));
+            }
 			printToTextListener("\n     Averaged last statistical data (" +  optRunsPerformed + " runs):");
 			Double[] lastSum = sumDataCollection.get(sumDataCollection.size()-1);
-			for (int i=0; i<lastSum.length; i++) if (lastSum[i]!=null) printToTextListener(textFieldDelimiter+(lastSum[i]/optRunsPerformed));
+			for (int i=0; i<lastSum.length; i++) {
+                if (lastSum[i]!=null) printToTextListener(textFieldDelimiter+(lastSum[i]/optRunsPerformed));
+            }
 //			for (int i=0; i<lastAdditionalInfoSums.length; i++) if (lastAdditionalInfoSums[i]!=null) printToTextListener(" \t"+(lastAdditionalInfoSums[i]/optRunsPerformed));
 			printToTextListener("\n");
 		}
@@ -471,7 +478,9 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 			if (refineMultiRuns && (sumDataCollection != null)) {
 				if (printFinalVerbosity()) printToTextListener(" Averaged performance:\n");
 				// the summed-up values of the mean collection is divided by the number of runs
-				for (int i=0; i<sumDataCollection.size(); i++) divideMean(sumDataCollection.get(i), optRunsPerformed);
+				for (int i=0; i<sumDataCollection.size(); i++) {
+                    divideMean(sumDataCollection.get(i), optRunsPerformed);
+                }
 				if (printFinalVerbosity()) printToTextListener(refineToText(sumDataCollection, showAvgIntervals));
 			}
 			if (printFinalVerbosity() && (finalObjectData!=null)) {
@@ -528,7 +537,9 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 	 */
     public static double[] calcMeanFit(List<IndividualInterface> list) {
 		double[] sumFit = list.get(0).getFitness().clone();
-		for (int i=1; i<list.size(); i++) Mathematics.vvAdd(sumFit, list.get(i).getFitness(), sumFit);
+		for (int i=1; i<list.size(); i++) {
+            Mathematics.vvAdd(sumFit, list.get(i).getFitness(), sumFit);
+        }
 		Mathematics.svDiv(list.size(), sumFit, sumFit);
 		
 		return sumFit;
@@ -536,7 +547,9 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 	
     public static double[] calcMedianFit(List<IndividualInterface> list) {
     	ArrayList<double[]> dblAList = new ArrayList<double[]>(list.size());
-    	for (int i=0; i<list.size(); i++) dblAList.add(list.get(i).getFitness());
+    	for (int i=0; i<list.size(); i++) {
+            dblAList.add(list.get(i).getFitness());
+        }
 		return Mathematics.median(dblAList, false);
 	}
     
@@ -1183,7 +1196,9 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 	}
 	
 	private static void divideMean(Double[] mean, double d) {
-		for (int j=0; j<mean.length; j++) if (mean[j]!=null) mean[j] /= d;
+		for (int j=0; j<mean.length; j++) {
+            if (mean[j]!=null) mean[j] /= d;
+        }
 //		for (int i=0; i<mean.length; i++) {
 //			for (int j=0; j<mean[i].length; j++) mean[i][j] /= d;
 //		}

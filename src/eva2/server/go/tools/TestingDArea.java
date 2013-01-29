@@ -1,11 +1,9 @@
 package eva2.server.go.tools;
 
 
-import javax.swing.*;
-
 import eva2.tools.chart2d.*;
-
 import java.awt.*;
+import javax.swing.*;
 
 /**
  * Created by IntelliJ IDEA.

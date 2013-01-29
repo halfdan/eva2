@@ -1,7 +1,5 @@
 package eva2.server.go.operators.terminators;
 
-import java.io.Serializable;
-
 import eva2.gui.BeanInspector;
 import eva2.server.go.PopulationInterface;
 import eva2.server.go.operators.paretofrontmetrics.InterfaceParetoFrontMetric;
@@ -10,6 +8,7 @@ import eva2.server.go.populations.Population;
 import eva2.server.go.problems.AbstractMultiObjectiveOptimizationProblem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.tools.EVAERROR;
+import java.io.Serializable;
 
 /**
  * Employ a pareto metric to determine convergence of a population. Requires to be run

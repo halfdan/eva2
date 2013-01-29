@@ -1,7 +1,5 @@
 package eva2.server.go.strategies;
 
-import java.util.ArrayList;
-
 import eva2.OptimizerFactory;
 import eva2.OptimizerRunnable;
 import eva2.gui.BeanInspector;
@@ -24,6 +22,7 @@ import eva2.tools.Pair;
 import eva2.tools.SelectedTag;
 import eva2.tools.math.Mathematics;
 import eva2.tools.math.RNG;
+import java.util.ArrayList;
 
 /**
  * A ScatterSearch implementation taken mainly from [1]. Unfortunately, some parameters as well as
@@ -321,7 +320,9 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
 	private double[] multScalarTransposed(double[] diff, ArrayList<double[]> distVects) {
 		// d[0]*m[0][0], d[1]*m[0][1] etc.
 		double[] res = new double[distVects.size()];
-		for (int i=0; i<distVects.size(); i++) res[i] = Mathematics.vvMult(diff, distVects.get(i));
+		for (int i=0; i<distVects.size(); i++) {
+            res[i] = Mathematics.vvMult(diff, distVects.get(i));
+        }
 		return res;
 	}
 
@@ -502,7 +503,9 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
 		double[] v2 = ((InterfaceDataTypeDouble)indy2).getDoubleData();
 
 		double[] dVect = RNG.randomDoubleArray(0, 1, probDim);
-		for (int i=0; i<probDim; i++) dVect[i] *= (v2[i]-v1[i])/2.;
+		for (int i=0; i<probDim; i++) {
+            dVect[i] *= (v2[i]-v1[i])/2.;
+        }
 		double[] candidate = bFirst ? v1 : v2;
 		double[] combi = bAdd ? Mathematics.vvAdd(candidate, dVect) : Mathematics.vvSub(candidate, dVect);
 		if (checkRange) Mathematics.projectToRange(combi, range);
@@ -525,7 +528,9 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
 		double[][] distances = new double[rest.size()][refSetSize];
 
 		for (int i=0; i<distances.length; i++) { // compute euc. distances of all rest indies to all refset indies.
-			for (int j=0; j<h; j++) distances[i][j]=PhenotypeMetric.dist(rest.getEAIndividual(i), curRefSet.getEAIndividual(j));
+			for (int j=0; j<h; j++) {
+                distances[i][j]=PhenotypeMetric.dist(rest.getEAIndividual(i), curRefSet.getEAIndividual(j));
+            }
 		}
 		while (curRefSet.size()<refSetSize) {
 			// "the vector having highest minimum distance will join the refset."
@@ -533,7 +538,9 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
 			// add the selected diverse indy
 			curRefSet.add(rest.getEAIndividual(sel));
 			// compute distances
-			for (int i=0; i<distances.length; i++) distances[i][h]=PhenotypeMetric.dist(rest.getEAIndividual(i), curRefSet.getEAIndividual(h));
+			for (int i=0; i<distances.length; i++) {
+                distances[i][h]=PhenotypeMetric.dist(rest.getEAIndividual(i), curRefSet.getEAIndividual(h));
+            }
 			// dont! remove it from the rest indi set
 			//rest.remove(sel);
 			// instead, set a min dist of -1 which will guarantee its not selected again
@@ -581,14 +588,18 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
 			for (int k=0; k<pop.size(); k++) {
 				double[] params = ((InterfaceDataTypeDouble)pop.getEAIndividual(k)).getDoubleData();
 				for (int j=0; j<probDim; j++) {
-					for (int iv = 0; iv<intervals; iv++) if (isInRangeInterval(params[j], j, iv)) freq[j][iv]++;
+					for (int iv = 0; iv<intervals; iv++) {
+                        if (isInRangeInterval(params[j], j, iv)) freq[j][iv]++;
+                    }
 				}
 			}
 		} else {
 			// or start with diagonals
 			for (int i=0; i<intervals; i++) {
 				pop.add(createDiagIndies(i));
-				for (int j=0; j<probDim; j++) freq[j][i]=1;
+				for (int j=0; j<probDim; j++) {
+                    freq[j][i]=1;
+                }
 			}
 		}
 
@@ -619,13 +630,17 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
 
 	private double getFreqDepProb(int dim, int interv, int freq[][]) {
 		double sum = 0;
-		for (int k=0; k<intervals; k++) sum += (double)freq[dim][k];
+		for (int k=0; k<intervals; k++) {
+            sum += (double)freq[dim][k];
+        }
 		return freq[dim][interv]/sum;
 	}
 
 	private int selectInterv(int dim, int freq[][]) {
 		double[] probs = new double[intervals];
-		for (int i=0; i<intervals; i++) probs[i] = getFreqDepProb(dim, i, freq);
+		for (int i=0; i<intervals; i++) {
+            probs[i] = getFreqDepProb(dim, i, freq);
+        }
 		double rnd = RNG.randomDouble();
 		int sel = 0;
 		double sum = probs[0];
@@ -648,7 +663,9 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
 		AbstractEAIndividual indy = (AbstractEAIndividual)template.clone();
 		InterfaceDataTypeDouble dblIndy = (InterfaceDataTypeDouble)indy;
 		double[] genes = dblIndy.getDoubleData();
-		for (int i=0; i<probDim; i++) genes[i] = randInRangeInterval(i, interval);
+		for (int i=0; i<probDim; i++) {
+            genes[i] = randInRangeInterval(i, interval);
+        }
 		dblIndy.SetDoubleGenotype(genes);
 		return indy;
 	}

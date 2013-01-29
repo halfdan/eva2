@@ -1,7 +1,6 @@
 package eva2.server.go.operators.crossover;
 
 import eva2.server.go.individuals.AbstractEAIndividual;
-import eva2.server.go.individuals.InterfaceDataTypePermutation;
 import eva2.server.go.individuals.InterfaceOBGAIndividual;
 import eva2.server.go.operators.crossover.InterfaceCrossover;
 import eva2.server.go.populations.Population;
@@ -37,7 +36,9 @@ public class CrossoverOBGAPMX implements InterfaceCrossover, java.io.Serializabl
     AbstractEAIndividual[] result = null;
     result = new AbstractEAIndividual[partners.size()+1];
     result[0] = (AbstractEAIndividual) (indy1).clone();
-    for (int i = 0; i < partners.size(); i++) result[i+1] = (AbstractEAIndividual) ((AbstractEAIndividual)partners.get(i)).clone();
+    for (int i = 0; i < partners.size(); i++) {
+            result[i+1] = (AbstractEAIndividual) ((AbstractEAIndividual)partners.get(i)).clone();
+        }
 
     if ((indy1 instanceof InterfaceOBGAIndividual) && (partners.get(0) instanceof InterfaceOBGAIndividual)) {
       int[][] pperm1;
@@ -72,7 +73,9 @@ public class CrossoverOBGAPMX implements InterfaceCrossover, java.io.Serializabl
       //((InterfaceDataTypePermutation) result[1]).SetPermutationDataLamarckian(pperm2);
     }
     //in case the crossover was successfull lets give the mutation operators a chance to mate the strategy parameters
-      for (int i = 0; i < result.length; i++) result[i].getMutationOperator().crossoverOnStrategyParameters(indy1, partners);
+      for (int i = 0; i < result.length; i++) {
+            result[i].getMutationOperator().crossoverOnStrategyParameters(indy1, partners);
+        }
 
 
     return result;

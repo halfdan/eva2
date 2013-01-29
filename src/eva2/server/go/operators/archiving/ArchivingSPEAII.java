@@ -285,7 +285,9 @@ public class ArchivingSPEAII extends AbstractArchiving implements java.io.Serial
         if (pop.getArchive() != null) tmp.addPopulation(pop.getArchive());
 
         double[][] fitness = new double[tmp.size()][];
-        for (int i = 0; i < tmp.size(); i++) fitness[i] = ((AbstractEAIndividual)tmp.get(i)).getFitness();
+        for (int i = 0; i < tmp.size(); i++) {
+            fitness[i] = ((AbstractEAIndividual)tmp.get(i)).getFitness();
+        }
         double[] minY, maxY;
         minY = fitness[0];
         maxY = fitness[0];
@@ -322,7 +324,9 @@ public class ArchivingSPEAII extends AbstractArchiving implements java.io.Serial
             }
         }
         if (this.soutDebug) {
-            for (int i = 0; i < SPEAStrength.length; i++) System.out.println("SPEAStrength "+i+": "+SPEAStrength[i]);
+            for (int i = 0; i < SPEAStrength.length; i++) {
+                System.out.println("SPEAStrength "+i+": "+SPEAStrength[i]);
+            }
         }
 
         // now calculate the SPEAFitness
@@ -345,7 +349,9 @@ public class ArchivingSPEAII extends AbstractArchiving implements java.io.Serial
             }
         }
         if (this.soutDebug) {
-            for (int i = 0; i < result.length; i++) System.out.println("Result "+i+": "+result[i]);
+            for (int i = 0; i < result.length; i++) {
+                System.out.println("Result "+i+": "+result[i]);
+            }
             this.m_Plot = new eva2.gui.Plot("Debug SPEAII", "Y1", "Y2", true);
             this.m_Plot.setUnconnectedPoint(0, 0, 11);
             this.m_Plot.setUnconnectedPoint(1.2, 2.0, 11);
