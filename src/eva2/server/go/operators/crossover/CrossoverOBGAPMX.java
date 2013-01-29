@@ -2,7 +2,6 @@ package eva2.server.go.operators.crossover;
 
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceOBGAIndividual;
-import eva2.server.go.operators.crossover.InterfaceCrossover;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;

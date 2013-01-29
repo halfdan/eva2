@@ -1,10 +1,10 @@
 package eva2.gui;
 
-import javax.swing.JToolBar;
 import eva2.tools.ToolBoxGui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
+import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 
 /**

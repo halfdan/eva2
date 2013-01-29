@@ -1,16 +1,14 @@
 package eva2.gui;
 
 
-import javax.swing.*;
-
 import eva2.tools.BasicResourceLoader;
-
-import java.beans.PropertyEditor;
-import java.beans.PropertyChangeSupport;
-import java.beans.PropertyChangeListener;
 import java.awt.*;
 import java.awt.event.*;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import java.beans.PropertyEditor;
 import java.io.*;
+import javax.swing.*;
 
 
 /**

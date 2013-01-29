@@ -1,6 +1,11 @@
 package eva2.gui;
 
 
+import eva2.server.go.problems.InterfaceOptimizationObjective;
+import eva2.server.go.problems.InterfaceOptimizationTarget;
+import eva2.server.go.tools.AbstractObjectEditor;
+import eva2.server.go.tools.GeneralGOEProperty;
+import eva2.tools.BasicResourceLoader;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -17,7 +22,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.beans.PropertyEditor;
-
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -27,12 +31,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
-
-import eva2.server.go.problems.InterfaceOptimizationObjective;
-import eva2.server.go.problems.InterfaceOptimizationTarget;
-import eva2.server.go.tools.AbstractObjectEditor;
-import eva2.server.go.tools.GeneralGOEProperty;
-import eva2.tools.BasicResourceLoader;
 
 
 /**

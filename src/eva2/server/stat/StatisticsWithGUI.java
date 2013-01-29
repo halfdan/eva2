@@ -13,11 +13,6 @@ package eva2.server.stat;
 /*==========================================================================*
  * IMPORTS
  *==========================================================================*/
-import java.io.Serializable;
-import java.net.InetAddress;
-import java.util.ArrayList;
-import java.util.List;
-
 import eva2.gui.BeanInspector;
 import eva2.gui.Graph;
 import eva2.gui.GraphWindow;
@@ -32,6 +27,10 @@ import eva2.tools.Pair;
 import eva2.tools.jproxy.MainAdapterClient;
 import eva2.tools.jproxy.RMIProxyLocal;
 import eva2.tools.jproxy.RMIProxyRemote;
+import java.io.Serializable;
+import java.net.InetAddress;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

@@ -1,10 +1,9 @@
 package eva2.server.go.operators.constraint;
 
-import java.io.Serializable;
-
 import eva2.server.go.individuals.codings.gp.AbstractGPNode;
 import eva2.server.go.problems.GPFunctionProblem;
 import eva2.tools.EVAERROR;
+import java.io.Serializable;
 
 /**
  * A generic constraint is defined by a String describing a function of the x0...xn values of potential solutions.

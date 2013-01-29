@@ -6,11 +6,12 @@ package eva2.gui;
  * Hannes Planatscher @version: $Revision: 322 $ $Date: 2007-12-11 17:24:07
  * +0100 (Tue, 11 Dec 2007) $ $Author: mkron $
  */
-import java.awt.AWTException;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Rectangle;
-import java.awt.Robot;
+import eva2.EvAInfo;
+import eva2.server.go.individuals.AbstractEAIndividual;
+import eva2.server.go.populations.Population;
+import eva2.tools.BasicResourceLoader;
+import eva2.tools.chart2d.DPointSet;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -25,19 +26,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Formatter;
 import java.util.Locale;
-
 import javax.imageio.ImageIO;
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-
-import eva2.EvAInfo;
-import eva2.server.go.individuals.AbstractEAIndividual;
-import eva2.server.go.populations.Population;
-import eva2.tools.BasicResourceLoader;
-import eva2.tools.chart2d.DPointSet;
-import java.awt.*;
 import javax.swing.*;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;

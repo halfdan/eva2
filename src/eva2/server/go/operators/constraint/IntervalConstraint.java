@@ -1,10 +1,9 @@
 package eva2.server.go.operators.constraint;
 
-import java.io.Serializable;
-
 import eva2.gui.GenericObjectEditor;
 import eva2.tools.EVAERROR;
 import eva2.tools.math.Mathematics;
+import java.io.Serializable;
 
 /**
  * A constraint for a parameter or a generic function to lie within certain bounds.

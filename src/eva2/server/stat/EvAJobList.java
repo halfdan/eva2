@@ -1,19 +1,5 @@
 package eva2.server.stat;
 
-import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.beans.PropertyEditor;
-import java.io.File;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
-import javax.swing.JComponent;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
-
 import eva2.gui.GenericArrayEditor;
 import eva2.gui.JParaPanel;
 import eva2.gui.PropertySelectableList;
@@ -24,6 +10,18 @@ import eva2.server.modules.AbstractModuleAdapter;
 import eva2.server.modules.GenericModuleAdapter;
 import eva2.server.modules.ModuleAdapter;
 import eva2.tools.Serializer;
+import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.beans.PropertyEditor;
+import java.io.File;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import javax.swing.JComponent;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 /**
  * A selectable list of EvAJobs. Each job contains a GOParameters instance and potentially

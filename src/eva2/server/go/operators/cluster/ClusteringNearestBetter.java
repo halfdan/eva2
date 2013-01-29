@@ -1,10 +1,5 @@
 package eva2.server.go.operators.cluster;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Vector;
-
 import eva2.gui.BeanInspector;
 import eva2.gui.GenericObjectEditor;
 import eva2.server.go.individuals.AbstractEAIndividual;
@@ -14,6 +9,10 @@ import eva2.server.go.operators.distancemetric.PhenotypeMetric;
 import eva2.server.go.operators.paramcontrol.ParamAdaption;
 import eva2.server.go.operators.paramcontrol.ParameterControlManager;
 import eva2.server.go.populations.Population;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Vector;
 
 /**
  * Hierarchical clustering after Preuss et al., "Counteracting Genetic Drift and Disruptive Recombination 

@@ -5,13 +5,12 @@ package eva2.gui;
  * $Date: 2006-12-18 16:32:23 +0100 (Mon, 18 Dec 2006) $ $Author: marcekro $
  */
 
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.beans.PropertyEditor;
-
 import eva2.EvAInfo;
 import eva2.tools.BasicResourceLoader;
 import eva2.tools.EVAHELP;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.beans.PropertyEditor;
 import javax.swing.JDialog;
 
 /**

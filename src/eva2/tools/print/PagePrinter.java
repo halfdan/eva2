@@ -16,7 +16,7 @@ package eva2.tools.print;
  * IMPORTS
  *==========================================================================*/
 
-import java.awt.* ;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.print.*;
 import javax.swing.*;

@@ -1,5 +1,8 @@
 package eva2.server.go.tools;
 
+import eva2.gui.BeanInspector;
+import eva2.tools.BasicResourceLoader;
+import eva2.tools.StringTools;
 import java.awt.Component;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -13,13 +16,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-
-import eva2.gui.BeanInspector;
-import eva2.tools.BasicResourceLoader;
-import eva2.tools.StringTools;
 
 
 /**

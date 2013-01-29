@@ -1,12 +1,11 @@
 package eva2.server.go.operators.terminators;
 
-import java.io.Serializable;
-
 import eva2.gui.BeanInspector;
 import eva2.server.go.InterfaceTerminator;
 import eva2.server.go.PopulationInterface;
 import eva2.server.go.populations.InterfaceSolutionSet;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
+import java.io.Serializable;
 
 /**
  * Abstract class giving the framework for a terminator that is based on

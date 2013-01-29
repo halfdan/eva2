@@ -1,9 +1,5 @@
 package eva2.server.modules;
 
-import java.io.Serializable;
-import java.util.LinkedList;
-import java.util.List;
-
 import eva2.gui.BeanInspector;
 import eva2.server.go.InterfaceGOParameters;
 import eva2.server.go.InterfaceNotifyOnInformers;
@@ -17,6 +13,9 @@ import eva2.server.go.strategies.InterfaceOptimizer;
 import eva2.tools.Serializer;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.Serializable;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

@@ -1,8 +1,6 @@
 package eva2.server.modules;
 
 
-import java.io.Serializable;
-
 import eva2.server.go.InterfaceGOParameters;
 import eva2.server.go.enums.DETypeEnum;
 import eva2.server.go.operators.terminators.EvaluationTerminator;
@@ -13,6 +11,7 @@ import eva2.server.go.strategies.InterfaceOptimizer;
 import eva2.tools.Serializer;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.Serializable;
 import java.util.logging.Level;
 
 /** The class gives access to all DE parameters for the EvA
