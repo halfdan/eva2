@@ -1,11 +1,11 @@
 package eva2.gui;
 
-import javax.swing.*;
-import java.beans.PropertyEditor;
-import java.beans.PropertyChangeSupport;
-import java.beans.PropertyChangeListener;
 import java.awt.*;
 import java.awt.event.*;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import java.beans.PropertyEditor;
+import javax.swing.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -44,7 +44,9 @@ public class GenericEpsilonThresholdEditor extends JPanel implements PropertyEdi
         this.m_TargetPanel.setLayout(new GridLayout(1, 2));
         this.m_TargetPanel.add(new JLabel("Optimize:"));
         this.m_Objective = new JComboBox();
-        for (int i = 0; i < this.m_EpsilonThreshhold.m_TargetValue.length; i++) this.m_Objective.addItem("Objective "+i);
+        for (int i = 0; i < this.m_EpsilonThreshhold.m_TargetValue.length; i++) {
+            this.m_Objective.addItem("Objective "+i);
+        }
         this.m_TargetPanel.add(this.m_Objective);
         this.m_Objective.addItemListener(this.objectiveAction);
         this.m_CustomEditor.add(this.m_TargetPanel, BorderLayout.NORTH);

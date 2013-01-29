@@ -20,7 +20,6 @@ import javax.swing.JOptionPane;
 import eva2.gui.BeanInspector;
 import eva2.tools.BasicResourceLoader;
 import eva2.tools.StringTools;
-import java.beans.XMLEncoder;
 
 
 /**

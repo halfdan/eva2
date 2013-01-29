@@ -71,7 +71,9 @@ public class CrossoverESArithmetical implements InterfaceCrossover, java.io.Seri
                     alpha[j] = RNG.randomDouble(0,1);
                     sum += alpha[j];
                 }
-                for (int j = 0; j <alpha.length; j++) alpha[j] = alpha[j]/sum;
+                for (int j = 0; j <alpha.length; j++) {
+                    alpha[j] /= sum;
+                }
                 for (int n = 0; n < children[i].length; n++) {
                     children[i][n] = 0;
                     for (int m = 0; m < parents.length; m++) {
@@ -80,10 +82,14 @@ public class CrossoverESArithmetical implements InterfaceCrossover, java.io.Seri
                 }
             }
             // write the result back
-            for (int i = 0; i < result.length; i++) ((InterfaceESIndividual)result[i]).SetDGenotype(children[i]);
+            for (int i = 0; i < result.length; i++) {
+                ((InterfaceESIndividual)result[i]).SetDGenotype(children[i]);
+            }
         }
         //in case the crossover was successful lets give the mutation operators a chance to mate the strategy parameters
-        for (int i = 0; i < result.length; i++) result[i].getMutationOperator().crossoverOnStrategyParameters(indy1, partners);
+        for (int i = 0; i < result.length; i++) {
+            result[i].getMutationOperator().crossoverOnStrategyParameters(indy1, partners);
+        }
         //for (int i = 0; i < result.length; i++) System.out.println("After Crossover: " +result[i].getSolutionRepresentationFor());
         return result;
     }

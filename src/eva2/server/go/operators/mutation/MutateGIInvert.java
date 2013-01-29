@@ -93,7 +93,9 @@ public class MutateGIInvert implements InterfaceMutation, java.io.Serializable {
 
     private void pintInt(String s, int[] x) {
         String tmp = "{"+x[0];
-        for (int i = 1; i < x.length; i++) tmp += ", "+x[i];
+        for (int i = 1; i < x.length; i++) {
+            tmp += ", "+x[i];
+        }
         System.out.println(s+tmp+"}");
     }
 

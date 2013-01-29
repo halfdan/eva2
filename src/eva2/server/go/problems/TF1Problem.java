@@ -118,7 +118,9 @@ public class TF1Problem extends AbstractMultiObjectiveOptimizationProblem implem
 
         x = new double[((InterfaceDataTypeDouble) individual).getDoubleData().length];
         System.arraycopy(((InterfaceDataTypeDouble) individual).getDoubleData(), 0, x, 0, x.length);
-        for (int i = 0; i < x.length; i++) x[i] = x[i] - this.m_XOffSet;
+        for (int i = 0; i < x.length; i++) {
+            x[i] -= this.m_XOffSet;
+        }
         fitness = this.doEvaluation(x);
         for (int i = 0; i < fitness.length; i++) {
             // add noise to the fitness
@@ -158,7 +160,9 @@ public class TF1Problem extends AbstractMultiObjectiveOptimizationProblem implem
     protected double g(double[] x) {
         double result = 0;
 
-        for (int i = 1; i < x.length; i++) result += x[i];
+        for (int i = 1; i < x.length; i++) {
+            result += x[i];
+        }
         result = result * 9/(x.length-1);
         result += 1;
         return result;

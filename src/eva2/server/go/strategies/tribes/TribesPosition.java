@@ -1,9 +1,8 @@
 package eva2.server.go.strategies.tribes;
 
-import java.util.Arrays;
-
 import eva2.server.go.strategies.Tribes;
 import eva2.tools.math.RNG;
+import java.util.Arrays;
 
 
 public class TribesPosition implements java.io.Serializable {
@@ -879,7 +878,7 @@ public class TribesPosition implements java.io.Serializable {
 
     	int n;
     	for (n = 1; n < fitness.length; n++) {
-    		t = t + Math.abs(fitness[n]);
+    		t += Math.abs(fitness[n]);
     	}
     	return t;
     }
@@ -891,7 +890,7 @@ public class TribesPosition implements java.io.Serializable {
     	double t = 0;
     	int n;
     	for (n = 0; n < fitness.length; n++) {
-    		t = t + Math.abs(fitness[n]);
+    		t += Math.abs(fitness[n]);
     	}
     	return t;
     }

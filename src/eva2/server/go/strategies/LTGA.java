@@ -1,9 +1,7 @@
 package eva2.server.go.strategies;
 
 import java.util.BitSet;
-import java.util.Collection;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.Set;
 import java.util.Stack;
 import java.util.logging.Level;

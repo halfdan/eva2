@@ -1,19 +1,6 @@
 package eva2.server.go.mocco;
 
 
-import java.awt.BorderLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-
 import eva2.gui.GenericObjectEditor;
 import eva2.gui.PropertyEditorProvider;
 import eva2.gui.PropertyRemoteServers;
@@ -26,6 +13,17 @@ import eva2.server.go.strategies.IslandModelEA;
 import eva2.server.go.tools.AbstractObjectEditor;
 import eva2.server.go.tools.GeneralGOEProperty;
 import eva2.tools.math.RNG;
+import java.awt.BorderLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 /**
  * Created by IntelliJ IDEA.
@@ -271,7 +269,9 @@ public class MOCCOParameterizeTchebycheff extends MOCCOPhase implements Interfac
                     else tmpD[j] = 1;
                     sum += tmpD[j];
                 }
-                for (int j = 0; j < tmpD.length; j++) tmpD[j] = tmpD[j]/sum;
+                for (int j = 0; j < tmpD.length; j++) {
+                    tmpD[j] /= sum;
+                }
                 tmpLPs[i] = new MOSOWeightedLPTchebycheff();
                 // I've to set this before I change the parameters, because the problem sets the
                 // output dimension based on the AbstractMultiObjectiveOptimizationProblem and

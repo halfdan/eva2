@@ -49,10 +49,10 @@ public class AdaptiveCrossoverEAMixer extends CrossoverEAMixer implements Interf
 			this.pop.incrFunctionCalls();
 			if(indy.getFitness(0)<this.lastFitness){
 				this.lastFitness = indy.getFitness(0);
-				this.used[lastOperatorIndex] = this.used[lastOperatorIndex] + 1;
+				this.used[lastOperatorIndex] += 1;
 				int sum = 0;
 				for(int i=0; i<this.used.length; i++){
-					sum = sum + used[i];
+					sum += used[i];
 				}
 				double[] weights = new double[used.length];
 				for(int i=0; i<weights.length; i++){
@@ -67,7 +67,9 @@ public class AdaptiveCrossoverEAMixer extends CrossoverEAMixer implements Interf
 
 	public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt, Population pop, double fit){
 		InterfaceCrossover[] mutators    = this.m_Crossers.getSelectedCrossers();
-		for (int i = 0; i < mutators.length; i++) mutators[i].init(individual, opt);
+		for (int i = 0; i < mutators.length; i++) {
+                mutators[i].init(individual, opt);
+            }
 		this.pop = pop;
 		this.lastFitness = fit;
 		this.used = new int[getCrossovers().getWeights().length];
@@ -80,7 +82,9 @@ public class AdaptiveCrossoverEAMixer extends CrossoverEAMixer implements Interf
 	
 	public void update(AbstractEAIndividual individual, InterfaceOptimizationProblem opt, Population pop, double fit){
 		InterfaceCrossover[] mutators    = this.m_Crossers.getSelectedCrossers();
-		for (int i = 0; i < mutators.length; i++) mutators[i].init(individual, opt);
+		for (int i = 0; i < mutators.length; i++) {
+                mutators[i].init(individual, opt);
+            }
 		this.pop = pop;
 		this.lastFitness = fit;
 		this.opt = opt;

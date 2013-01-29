@@ -643,7 +643,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
                 int toHit = (nextStep - functionCallCount);
                 this.functionCallCount += toHit; // little cheat, notify may be after some more evals
                 firePropertyChangedEvent(funCallIntervalReached);
-                d = d - toHit;
+                d -= toHit;
 //    			this.m_FunctionCalls += (d-toHit);
             }
             if (d > 0) {
@@ -1865,7 +1865,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
             }
         }
         for (int j = 0; j < result.length; j++) {
-            result[j] = result[j] / ((double) this.size());
+            result[j] /= ((double) this.size());
         }
         return result;
     }
@@ -2075,7 +2075,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
             res[0] = res[1] = res[2] = res[3] = Double.NaN;
         } else {
             // calc standard deviation
-            res[0] = res[0] / pop.size();
+            res[0] /= pop.size();
             for (int i = 0; i < pop.size(); i++) {
                 d = res[0] - pop.get(i).getFitness(fitCrit);
                 res[3] += d * d;

@@ -33,7 +33,9 @@ public class FitnessAdaptiveClustering implements java.io.Serializable, Interfac
         double[]    result  = new double[data.length];
 
         for (int x = 0; x < data[0].length; x++) {
-            for (int i = 0; i < data.length; i++) data[i][x] = -data[i][x];
+            for (int i = 0; i < data.length; i++) {
+                data[i][x] = -data[i][x];
+            }
             for (int i = 0; i < data.length; i++) {
                 if (data[i][x] < min) min = data[i][x] ;
             }
@@ -50,7 +52,7 @@ public class FitnessAdaptiveClustering implements java.io.Serializable, Interfac
             for (int i = 1; i < ClusterResult.length; i++) {
                 cluster = ClusterResult[i];
                 for (int j = 0; j < cluster.size(); j++) {
-                    result[i]   = result[i]/((double)cluster.size());
+                    result[i] /= ((double)cluster.size());
                 }
             }
 

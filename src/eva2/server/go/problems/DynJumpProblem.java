@@ -1,11 +1,10 @@
 package eva2.server.go.problems;
 
+import eva2.server.go.individuals.AbstractEAIndividual;
+import eva2.server.go.strategies.InterfaceOptimizer;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
-
-import eva2.server.go.individuals.AbstractEAIndividual;
-import eva2.server.go.strategies.InterfaceOptimizer;
 
 /** 
  * A dynamically "jumping" problem. The severity gives the length of one jump in problem space, occurring
@@ -111,8 +110,9 @@ public class DynJumpProblem extends AbstractDynTransProblem {
 		}
 		if (TRACE) {
 			System.out.print("Jumped to ");
-			for (int i = 0; i < getProblemDimension(); i++) 
-				System.out.print(" " + translation[i]);
+			for (int i = 0; i < getProblemDimension(); i++) {
+                System.out.print(" " + translation[i]);
+            }
 			System.out.println();
 		}
 	}

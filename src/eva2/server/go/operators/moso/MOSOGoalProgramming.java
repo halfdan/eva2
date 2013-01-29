@@ -17,7 +17,9 @@ public class MOSOGoalProgramming implements InterfaceMOSOConverter, java.io.Seri
 
     public MOSOGoalProgramming() {
         double[] tmpD = new double[2];
-        for (int i = 0; i < tmpD.length; i++) tmpD[i] = 0.0;
+        for (int i = 0; i < tmpD.length; i++) {
+            tmpD[i] = 0.0;
+        }
         this.m_Goals = new PropertyDoubleArray(tmpD);
     }
     public MOSOGoalProgramming(MOSOGoalProgramming b) {
@@ -55,8 +57,9 @@ public class MOSOGoalProgramming implements InterfaceMOSOConverter, java.io.Seri
         tmpFit = indy.getFitness();
         indy.putData("MOFitness", tmpFit);
         resultFit[0] = 0;
-        for (int i = 0; (i < this.m_Goals.getNumRows()) && (i < tmpFit.length) ; i++)
+        for (int i = 0; (i < this.m_Goals.getNumRows()) && (i < tmpFit.length) ; i++) {
             resultFit[0] += tmpFit[i]-this.m_Goals.getValue(i, 0);
+        }
         indy.setFitness(resultFit);
     }
 
@@ -69,8 +72,12 @@ public class MOSOGoalProgramming implements InterfaceMOSOConverter, java.io.Seri
     public void setOutputDimension(int dim) {
         double[] newWeights = new double[dim];
 
-        for (int i = 0; i < newWeights.length; i++) newWeights[i] = 0.0;
-        for (int i = 0; (i < this.m_Goals.getNumRows()) && (i < newWeights.length); i++) newWeights[i] = this.m_Goals.getValue(i,0);
+        for (int i = 0; i < newWeights.length; i++) {
+            newWeights[i] = 0.0;
+        }
+        for (int i = 0; (i < this.m_Goals.getNumRows()) && (i < newWeights.length); i++) {
+            newWeights[i] = this.m_Goals.getValue(i,0);
+        }
 
         this.m_Goals.setDoubleArray(newWeights);
     }

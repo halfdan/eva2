@@ -12,6 +12,7 @@ package eva2.client;
  * $Author: mkron $  
  */
 import eva2.EvAInfo;
+import eva2.client.SplashScreen;
 import eva2.gui.*;
 import eva2.server.EvAServer;
 import eva2.server.go.InterfaceGOParameters;

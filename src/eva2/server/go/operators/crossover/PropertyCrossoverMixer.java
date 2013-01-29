@@ -18,7 +18,9 @@ public class PropertyCrossoverMixer implements java.io.Serializable {
 
     public PropertyCrossoverMixer(InterfaceCrossover[] d) {
         this.m_Weights = new double[d.length];
-        for (int i = 0; i < d.length; i++) this.m_Weights[i] = 1/((double)d.length);
+        for (int i = 0; i < d.length; i++) {
+            this.m_Weights[i] = 1/((double)d.length);
+        }
         this.m_AvailableTargets = d;
         this.m_SelectedTargets  = null;
     }
@@ -54,7 +56,9 @@ public class PropertyCrossoverMixer implements java.io.Serializable {
 
         if (this.m_Weights == null) {
             this.m_Weights = new double[d.length];
-            for (int i = 0; i < this.m_Weights.length; i++) this.m_Weights[i] = 1/((double)d.length);
+            for (int i = 0; i < this.m_Weights.length; i++) {
+                this.m_Weights[i] = 1/((double)d.length);
+            }
             return;
         }
 
@@ -62,11 +66,15 @@ public class PropertyCrossoverMixer implements java.io.Serializable {
 
         if (d.length > this.m_Weights.length) {
             double[] newWeights = new double[d.length];
-            for (int i = 0; i < this.m_Weights.length; i++) newWeights[i] = this.m_Weights[i];
+            for (int i = 0; i < this.m_Weights.length; i++) {
+                newWeights[i] = this.m_Weights[i];
+            }
             this.m_Weights = newWeights;
         } else {
             double[] newWeights = new double[d.length];
-            for (int i = 0; i < d.length; i++) newWeights[i] = this.m_Weights[i];
+            for (int i = 0; i < d.length; i++) {
+                newWeights[i] = this.m_Weights[i];
+            }
             this.m_Weights = newWeights;
         }
     }
@@ -93,7 +101,9 @@ public class PropertyCrossoverMixer implements java.io.Serializable {
     }
     public void setWeights(double[] d) {
         this.m_Weights = d;
-        for (int i = 0; i < this.m_Weights.length; i++) this.m_Weights[i] = Math.abs(this.m_Weights[i]);
+        for (int i = 0; i < this.m_Weights.length; i++) {
+            this.m_Weights[i] = Math.abs(this.m_Weights[i]);
+        }
     }
 
     /** This method allows you to set/get the descriptive string
@@ -123,7 +133,7 @@ public class PropertyCrossoverMixer implements java.io.Serializable {
         }
         if (sum > 0) {
             for (int i = 0; i < this.m_Weights.length; i++) {
-                this.m_Weights[i] = this.m_Weights[i]/sum;
+                this.m_Weights[i] /= sum;
             }
         }
     }

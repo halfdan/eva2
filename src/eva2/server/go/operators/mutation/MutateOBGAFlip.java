@@ -1,7 +1,6 @@
 package eva2.server.go.operators.mutation;
 
 import eva2.server.go.individuals.AbstractEAIndividual;
-import eva2.server.go.individuals.InterfaceDataTypePermutation;
 import eva2.server.go.individuals.InterfaceOBGAIndividual;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;

@@ -1,7 +1,5 @@
 package eva2.server.go.strategies;
 
-import java.io.Serializable;
-
 import eva2.gui.GenericObjectEditor;
 import eva2.server.go.InterfacePopulationChangedEventListener;
 import eva2.server.go.PopulationInterface;
@@ -16,6 +14,7 @@ import eva2.server.go.problems.F1Problem;
 import eva2.server.go.problems.InterfaceAdditionalPopulationInformer;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.tools.Pair;
+import java.io.Serializable;
 
 
 /**

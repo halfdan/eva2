@@ -60,8 +60,9 @@ public class MOSODynamicallyWeightedFitness implements InterfaceMOSOConverter, j
         weights[0] = Math.pow(Math.sin(2*Math.PI*(double)this.m_CurrentGeneration/this.m_F), 2);
         weights[1] = 1 - weights[0];
 
-        for (int i = 0; (i <2) && (i < tmpFit.length); i++)
+        for (int i = 0; (i <2) && (i < tmpFit.length); i++) {
             resultFit[0] += tmpFit[i]*weights[i];
+        }
         indy.setFitness(resultFit);
     }
 

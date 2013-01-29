@@ -13,7 +13,6 @@ import java.util.List;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 
 import eva2.gui.GenericArrayEditor;
 import eva2.gui.JParaPanel;
@@ -25,8 +24,6 @@ import eva2.server.modules.AbstractModuleAdapter;
 import eva2.server.modules.GenericModuleAdapter;
 import eva2.server.modules.ModuleAdapter;
 import eva2.tools.Serializer;
-import java.awt.Color;
-import javax.swing.*;
 
 /**
  * A selectable list of EvAJobs. Each job contains a GOParameters instance and potentially

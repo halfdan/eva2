@@ -143,7 +143,7 @@ public class CubicSpline{
 
         	if (xx<this.x[0] || xx>this.x[this.npoints-1]){
 //                        System.out.println(xx);
-                        xx = xx - 0.00001;
+                        xx -= 0.00001;
 	        	//throw new IllegalArgumentException("x is outside the range of data points");
 	    	}
 

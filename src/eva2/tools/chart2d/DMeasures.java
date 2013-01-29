@@ -1,11 +1,10 @@
 package eva2.tools.chart2d;
 
-import java.awt.Point ;
-import java.awt.Graphics ;
-import java.awt.Dimension ;
-import java.awt.Insets ;
-
-import java.awt.Component ;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Insets;
+import java.awt.Point;
 import java.io.Serializable;
 
 /**

@@ -1,8 +1,6 @@
 package eva2.server.go.operators.mutation;
 
 
-import java.util.ArrayList;
-
 import eva2.server.go.PopulationInterface;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceESIndividual;
@@ -12,6 +10,7 @@ import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.tools.SelectedTag;
 import eva2.tools.Tag;
 import eva2.tools.math.RNG;
+import java.util.ArrayList;
 
 /**
  * Created by IntelliJ IDEA.
@@ -90,7 +89,9 @@ public class MutateESLocal implements InterfaceMutation, InterfaceAdditionalPopu
         if (individual instanceof InterfaceESIndividual) {
             // init the Sigmas
             this.m_Sigmas = new double[((InterfaceESIndividual)individual).getDGenotype().length];
-            for (int i = 0; i < this.m_Sigmas.length; i++) this.m_Sigmas[i] = this.m_MutationStepSize;
+            for (int i = 0; i < this.m_Sigmas.length; i++) {
+                this.m_Sigmas[i] = this.m_MutationStepSize;
+            }
         }
     }
 
@@ -108,7 +109,7 @@ public class MutateESLocal implements InterfaceMutation, InterfaceAdditionalPopu
             double      tmpR    = RNG.gaussianDouble(1);
 
             for (int i = 0; i < x.length; i++) {
-                this.m_Sigmas[i] = this.m_Sigmas[i] * Math.exp(this.m_Tau1 * tmpR + this.m_Tau2 * RNG.gaussianDouble(1));
+                this.m_Sigmas[i] *= Math.exp(this.m_Tau1 * tmpR + this.m_Tau2 * RNG.gaussianDouble(1));
                 if (this.m_Sigmas[i] < this.m_LowerLimitStepSize) this.m_Sigmas[i] = this.m_LowerLimitStepSize;
                 x[i] += ((range[i][1] -range[i][0])/2)*RNG.gaussianDouble(this.m_Sigmas[i]);
                 if (range[i][0] > x[i]) x[i] = range[i][0];
@@ -148,13 +149,19 @@ public class MutateESLocal implements InterfaceMutation, InterfaceAdditionalPopu
         switch (this.m_CrossoverType.getSelectedTag().getID()) {
             case 1 : {
                 this.m_MutationStepSize = 0;
-                for (int i = 0; i < this.m_Sigmas.length; i++) this.m_Sigmas[i] = 0;
+                for (int i = 0; i < this.m_Sigmas.length; i++) {
+                this.m_Sigmas[i] = 0;
+            }
                 for (int i = 0; i < listA.length; i++) {
                     this.m_MutationStepSize += listA[i];
-                    for (int j = 0; j < this.m_Sigmas.length; j++) this.m_Sigmas[j] += listB[i][j];
+                    for (int j = 0; j < this.m_Sigmas.length; j++) {
+                    this.m_Sigmas[j] += listB[i][j];
                 }
-                this.m_MutationStepSize = this.m_MutationStepSize/(double)listA.length;
-                for (int i = 0; i < this.m_Sigmas.length; i++) this.m_Sigmas[i] = this.m_Sigmas[i]/(double)listA.length;
+                }
+                this.m_MutationStepSize /= (double)listA.length;
+                for (int i = 0; i < this.m_Sigmas.length; i++) {
+                this.m_Sigmas[i] /= (double)listA.length;
+            }
                 break;
             }
             case 2 : {

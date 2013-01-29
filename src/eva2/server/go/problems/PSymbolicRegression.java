@@ -1,7 +1,5 @@
 package eva2.server.go.problems;
 
-import java.io.Serializable;
-
 import eva2.gui.Plot;
 import eva2.server.go.PopulationInterface;
 import eva2.server.go.individuals.AbstractEAIndividual;
@@ -33,6 +31,7 @@ import eva2.server.go.strategies.InterfaceOptimizer;
 import eva2.tools.EVAERROR;
 import eva2.tools.ToolBox;
 import eva2.tools.math.RNG;
+import java.io.Serializable;
 
 /**
  * Created by IntelliJ IDEA.
@@ -79,11 +78,15 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
             this.m_TargetFunction   = (InterfaceRegressionFunction)b.m_TargetFunction.clone();
         if (b.m_X != null) {
             this.m_X = new double[b.m_X.length];
-            for (int i = 0; i < this.m_X.length; i++) this.m_X[i] = b.m_X[i];
+            for (int i = 0; i < this.m_X.length; i++) {
+                this.m_X[i] = b.m_X[i];
+            }
         }
         if (b.m_C != null) {
             this.m_C = new double[b.m_C.length];
-            for (int i = 0; i < this.m_C.length; i++) this.m_C[i] = b.m_C[i];
+            for (int i = 0; i < this.m_C.length; i++) {
+                this.m_C[i] = b.m_C[i];
+            }
         }
         this.m_Noise                = b.m_Noise;
         this.m_UseInnerConst        = b.m_UseInnerConst;
@@ -110,7 +113,9 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
         if (m_TargetFunction == null) m_TargetFunction = new RFKoza_GPI_7_3();
         this.m_OverallBest  = null;
         this.m_C            = new double[this.m_NumberOfConstants];
-        for (int i = 0; i < this.m_C.length; i++) this.m_C[i] = RNG.randomDouble(-10, 10);
+        for (int i = 0; i < this.m_C.length; i++) {
+            this.m_C[i] = RNG.randomDouble(-10, 10);
+        }
 	}
 
     /**
@@ -136,8 +141,12 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
 	        this.m_GPArea.add2CompleteList(new GPNodeSqrt(), false);
 	        this.m_GPArea.add2CompleteList(new GPNodePow2(), false);
 	        this.m_GPArea.add2CompleteList(new GPNodePow3(), false);
-	        for (int i = 0; i < this.m_X.length; i++) this.m_GPArea.add2CompleteList(new GPNodeInput("X"+i));
-	        for (int i = 0; i < this.m_C.length; i++) this.m_GPArea.add2CompleteList(new GPNodeInput("C"+i), false);
+	        for (int i = 0; i < this.m_X.length; i++) {
+                this.m_GPArea.add2CompleteList(new GPNodeInput("X"+i));
+            }
+	        for (int i = 0; i < this.m_C.length; i++) {
+                this.m_GPArea.add2CompleteList(new GPNodeInput("C"+i), false);
+            }
     	}
     	if ((oldArea!=null) && (oldArea.getBlackList()!=null) && (oldArea.getBlackList().size()==m_GPArea.getBlackList().size())) {
     		m_GPArea.SetBlackList(oldArea.getBlackList());
@@ -238,7 +247,7 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
             fitness += Math.pow((this.m_TargetFunction.evaluateFunction(this.m_X) - ((Double)program.evaluate(this)).doubleValue()), 2);
         }
         
-        fitness = fitness / (double)this.m_NumberOfCheckPoints;
+        fitness /= (double)this.m_NumberOfCheckPoints;
         // add noise to the fitness
         fitness += RNG.gaussianDouble(this.m_Noise);
         // set the fitness of the individual

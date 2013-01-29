@@ -1,7 +1,5 @@
 package eva2.server.go.strategies;
 
-import java.io.Serializable;
-
 import eva2.server.go.PopulationInterface;
 import eva2.server.go.enums.PSOTopologyEnum;
 import eva2.server.go.operators.cluster.ClusteringDensityBased;
@@ -18,6 +16,7 @@ import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.server.go.problems.InterfaceProblemDouble;
 import eva2.tools.EVAERROR;
 import eva2.tools.ToolBox;
+import java.io.Serializable;
 
 public class CBNPSO extends ClusterBasedNichingEA implements Serializable {
 	private boolean forceUpperClustDist = true;

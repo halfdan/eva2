@@ -40,7 +40,9 @@ public class GAGrayCodingInteger implements InterfaceGAIntegerCoding,java.io.Ser
 //        }
         for (int i = 0; i < tmpLocus[1]; i++) {
             tmpB = refBitSet.get(locus[0]);
-            for (int j = 1; j <= i; j++) tmpB = tmpB ^ refBitSet.get(locus[0] + j);
+            for (int j = 1; j <= i; j++) {
+                tmpB ^= refBitSet.get(locus[0] + j);
+            }
             if (tmpB) tmpBitSet.set(i);
             else tmpBitSet.clear(i);
         }

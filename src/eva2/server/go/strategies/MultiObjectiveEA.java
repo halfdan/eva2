@@ -141,7 +141,9 @@ public class MultiObjectiveEA implements InterfaceOptimizer, java.io.Serializabl
         if (pop.getArchive() != null) tmp.addPopulation(pop.getArchive());
 
         double[][] fitness = new double[tmp.size()][];
-        for (int i = 0; i < tmp.size(); i++) fitness[i] = ((AbstractEAIndividual)tmp.get(i)).getFitness();
+        for (int i = 0; i < tmp.size(); i++) {
+            fitness[i] = ((AbstractEAIndividual)tmp.get(i)).getFitness();
+        }
         double[] minY, maxY;
         minY = fitness[0];
         maxY = fitness[0];

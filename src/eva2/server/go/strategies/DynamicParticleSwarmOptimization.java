@@ -4,7 +4,6 @@ import eva2.gui.GenericObjectEditor;
 import eva2.gui.Plot;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceDataTypeDouble;
-import eva2.server.go.individuals.InterfaceESIndividual;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.AbstractOptimizationProblem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;

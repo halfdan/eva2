@@ -2,7 +2,6 @@ package eva2.server.go.operators.selection;
 
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.operators.archiving.ArchivingPESAII;
-import eva2.server.go.operators.moso.MOSOMaxiMin;
 import eva2.server.go.populations.Population;
 import eva2.tools.math.RNG;
 

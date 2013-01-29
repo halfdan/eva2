@@ -1,8 +1,7 @@
 package eva2.server.go.problems;
 
-import java.io.Serializable;
-
 import eva2.server.go.operators.postprocess.SolutionHistogram;
+import java.io.Serializable;
 
 /**
  * The multi-modal, multi-funnel Rana function, f_rana = sum_{i=0}^{n-2} (g(x_i, x_{i+1})

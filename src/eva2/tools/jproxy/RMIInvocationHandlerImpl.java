@@ -12,13 +12,12 @@ package eva2.tools.jproxy;
  * IMPORTS
  *==========================================================================*/
 
-import java.rmi.RemoteException;
-import java.rmi.Naming;
-import java.rmi.server.UnicastRemoteObject;
-import java.lang.reflect.Method;
-import java.lang.reflect.InvocationTargetException;
-
 import eva2.tools.math.RNG;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.rmi.Naming;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 /*==========================================================================*
 * CLASS DECLARATION
 *==========================================================================*/

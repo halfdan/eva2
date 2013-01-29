@@ -1,11 +1,10 @@
 package eva2.server.go.operators.selection.probability;
 
 
-import java.util.ArrayList;
-
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.populations.Population;
 import eva2.tools.EVAERROR;
+import java.util.ArrayList;
 
 /** This abstract implementation gives some general
  * methods for retrieving and cleaning fitness values.
@@ -118,7 +117,9 @@ public abstract class AbstractSelProb implements InterfaceSelectionProbability, 
             }
             // now we got a complete ArrayList
             tmpD = new double[tmpList.size()];
-            for (int j = 0; j < tmpD.length; j++) tmpD[j] = ((Double)tmpList.get(j)).doubleValue();
+            for (int j = 0; j < tmpD.length; j++) {
+                tmpD[j] = ((Double)tmpList.get(j)).doubleValue();
+            }
             result[i] = tmpD;
         }
 
@@ -146,7 +147,7 @@ public abstract class AbstractSelProb implements InterfaceSelectionProbability, 
                 //System.out.println("Problem: Sum over fitness is NaN! Please check fitness function!");
                 tmpSum = 0;
                 for (int j = 0; j < result[i].length; j++) {
-                    result[i][j] = result[i][j]/1000;
+                    result[i][j] /= 1000;
                     tmpSum += result[i][j];
                 }
             }

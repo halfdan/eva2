@@ -4,14 +4,10 @@
  */
 package eva2.gui;
 
-import eva2.EvAInfo;
 import eva2.tools.BasicResourceLoader;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;

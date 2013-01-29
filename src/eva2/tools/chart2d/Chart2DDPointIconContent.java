@@ -1,16 +1,13 @@
 package eva2.tools.chart2d;
 
 
-import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-
-
-import javax.swing.*;
-
 import eva2.gui.InterfaceDPointWithContent;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
+import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import javax.swing.*;
 
 /**
  * Created by IntelliJ IDEA.

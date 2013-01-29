@@ -1,7 +1,6 @@
 package eva2.tools;
 
 import java.awt.Component;
-
 import java.awt.Toolkit;
 import javax.swing.*;
 

@@ -5,6 +5,9 @@ package eva2.gui;
  * $Revision: 266 $ $Date: 2007-11-20 14:33:48 +0100 (Tue, 20 Nov 2007) $ $Author: mkron $
  */
 
+import eva2.EvAInfo;
+import eva2.tools.ReflectPackage;
+import eva2.tools.jproxy.RMIProxyLocal;
 import java.awt.Component;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
@@ -25,10 +28,6 @@ import java.util.StringTokenizer;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import eva2.EvAInfo;
-import eva2.tools.ReflectPackage;
-import eva2.tools.jproxy.RMIProxyLocal;
 
 public class GenericObjectEditor implements PropertyEditor {
 

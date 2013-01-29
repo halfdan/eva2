@@ -171,7 +171,9 @@ public final class StringTools {
     	if (printErrorsOnUnrecog) {
     		if (unrecogs.length>0) {
     			System.err.println("Unrecognized command line options: ");
-    			for (int i=0; i<unrecogs.length; i++) System.err.println("   " + args[unrecogs[i]]);
+    			for (int i=0; i<unrecogs.length; i++) {
+                    System.err.println("   " + args[unrecogs[i]]);
+                }
     		}
     	}
     	HashMap<String, Object> map = new HashMap<String, Object>();

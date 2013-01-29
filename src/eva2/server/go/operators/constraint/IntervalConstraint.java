@@ -3,7 +3,6 @@ package eva2.server.go.operators.constraint;
 import java.io.Serializable;
 
 import eva2.gui.GenericObjectEditor;
-import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.tools.EVAERROR;
 import eva2.tools.math.Mathematics;
 

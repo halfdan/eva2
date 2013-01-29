@@ -3,13 +3,11 @@ package eva2.server.go.operators.selection;
 import eva2.gui.GraphPointSet;
 import eva2.gui.Plot;
 import eva2.server.go.individuals.AbstractEAIndividual;
-import eva2.server.go.operators.archiving.ArchivingNSGAII;
 import eva2.server.go.operators.archiving.ArchivingSPEAII;
 import eva2.server.go.populations.Population;
 import eva2.tools.chart2d.Chart2DDPointIconCircle;
 import eva2.tools.chart2d.Chart2DDPointIconText;
 import eva2.tools.chart2d.DPoint;
-import eva2.tools.math.RNG;
 
 /** The SPEA II selection criteria using strength and raw fitness to determine
  * good individuals.

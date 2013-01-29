@@ -1,9 +1,8 @@
 package eva2.server.go.individuals.codings.ga;
 
 
-import java.util.BitSet;
-
 import eva2.tools.math.RNG;
+import java.util.BitSet;
 
 
 /** This gives the gray coding for double with a variable number of bits for coding
@@ -40,7 +39,9 @@ public class GAGrayCodingDouble implements InterfaceGADoubleCoding, java.io.Seri
 
         for (int i = 0; i < tmpLocus[1]; i++) {
             tmpB = refBitSet.get(locus[0]);
-            for (int j = 1; j <= i; j++) tmpB = tmpB ^ refBitSet.get(locus[0] + j);
+            for (int j = 1; j <= i; j++) {
+                tmpB ^= refBitSet.get(locus[0] + j);
+            }
             if (tmpB) tmpBitSet.set(i);
             else tmpBitSet.clear(i);
         }

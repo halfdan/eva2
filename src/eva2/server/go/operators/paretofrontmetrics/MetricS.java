@@ -112,10 +112,14 @@ public class MetricS implements InterfaceParetoFrontMetric, java.io.Serializable
         double[]    tmpF, redF;
         for (int i = 0; i < f.length; i++) {
             tmpF = ((AbstractEAIndividual)archive.get(i)).getFitness();
-            for (int j = 0; j < dim; j++) f[i][j] = tmpF[j];
+            for (int j = 0; j < dim; j++) {
+                f[i][j] = tmpF[j];
+            }
             if (smPop != null) {
                 redF = new double[tmpF.length -1];
-                for (int j = 0; j < redF.length; j++) redF[j] = tmpF[j];
+                for (int j = 0; j < redF.length; j++) {
+                    redF[j] = tmpF[j];
+                }
                 tmpIndy = new ESIndividualDoubleData();
                 tmpIndy.setFitness(redF);
                 smPop.add(i, tmpIndy);
@@ -127,7 +131,7 @@ public class MetricS implements InterfaceParetoFrontMetric, java.io.Serializable
             // s-metric is given by the border
             result = 1.0;
             for (int i = 0; i < dim; i++) {
-                result = result * (border[i][1] - border[i][0]);
+                result *= (border[i][1] - border[i][0]);
             }
             return result;
         }
@@ -176,7 +180,9 @@ public class MetricS implements InterfaceParetoFrontMetric, java.io.Serializable
                     tmpS    = this.calculateSMetric(tmpPop, tmpBorder, dim-1);
                     result  += (f[tmpIndex][dim-1] - lastValue[dim-1]) * tmpS;
                 }
-                for (int j = 0; j < f[tmpIndex].length; j++) lastValue[j] = f[tmpIndex][j];
+                for (int j = 0; j < f[tmpIndex].length; j++) {
+                    lastValue[j] = f[tmpIndex][j];
+                }
             } else {
                 // no smallest found break
                 i  = f.length+1;

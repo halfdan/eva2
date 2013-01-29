@@ -9,7 +9,6 @@ package eva2.gui;
  *            $Date: 2007-11-27 14:37:05 +0100 (Tue, 27 Nov 2007) $
  *            $Author: mkron $
  */
-import eva2.EvAInfo;
 import eva2.server.modules.ModuleAdapter;
 import eva2.server.stat.EvAJob;
 import eva2.tools.ToolBoxGui;

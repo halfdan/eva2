@@ -1,8 +1,5 @@
 package eva2.server.go.strategies;
 
-import java.util.ArrayList;
-import java.util.BitSet;
-
 import eva2.gui.BeanInspector;
 import eva2.server.go.InterfacePopulationChangedEventListener;
 import eva2.server.go.individuals.AbstractEAIndividual;
@@ -25,6 +22,8 @@ import eva2.server.go.problems.B1Problem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.tools.Pair;
 import eva2.tools.math.RNG;
+import java.util.ArrayList;
+import java.util.BitSet;
 
 /**
  * A BinaryScatterSearch implementation taken mainly from [i].
@@ -269,7 +268,7 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
 			if(method1){
 				method1 = !method1;
 				data.set(0, data.size(), true);
-				for(int j=0; j<data.size(); j=j+i){
+				for(int j=0; j<data.size(); j += i){
 					data.flip(j);
 				}
 				((InterfaceDataTypeBinary) indy).SetBinaryGenotype(data);
@@ -281,7 +280,7 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
 				method1 = !method1;
 				if(i!=1){
 					data.set(0, data.size(), false);
-					for(int j=0; j<data.size(); j=j+i){
+					for(int j=0; j<data.size(); j += i){
 						data.flip(j);
 					}
 					((InterfaceDataTypeBinary) indy).SetBinaryGenotype(data);

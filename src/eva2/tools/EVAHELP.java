@@ -45,7 +45,7 @@ public class EVAHELP {
      String line = null;
             while ((line = in.readLine()) != null) {
        //System.out.println(line);
-       Out = Out + line;
+                Out += line;
      }
    } catch (Exception e) {
             System.out.println("Error in calling the command:" + e.getMessage());

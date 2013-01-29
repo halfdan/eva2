@@ -25,7 +25,6 @@ import eva2.gui.JTextoutputFrame;
 import eva2.gui.JTextoutputFrameInterface;
 import eva2.gui.Plot;
 import eva2.gui.PlotInterface;
-import eva2.server.EvAServer;
 import eva2.server.go.PopulationInterface;
 import eva2.server.go.problems.InterfaceAdditionalPopulationInformer;
 import eva2.tools.EVAERROR;
@@ -286,7 +285,7 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
         }
         if (doTextOutput()) {
             String s = "calls , " + calls + " bestfit , ";
-            s = s + BeanInspector.toString(currentBestFit);
+            s += BeanInspector.toString(currentBestFit);
             if (currentWorstFit != null) {
                 s = s + " , worstfit , " + BeanInspector.toString(currentWorstFit);
             }

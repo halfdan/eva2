@@ -3,7 +3,6 @@ package eva2.server.go.operators.paramcontrol;
 import java.io.Serializable;
 
 import eva2.server.go.populations.Population;
-import eva2.server.go.problems.AbstractProblemDouble;
 
 /**
  * A sinusoidal adaption scheme which can be dampened. The value oscillates between a lower and an upper

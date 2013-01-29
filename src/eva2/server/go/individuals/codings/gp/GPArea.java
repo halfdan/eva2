@@ -1,11 +1,10 @@
 package eva2.server.go.individuals.codings.gp;
 
 
+import eva2.tools.math.RNG;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
-
-import eva2.tools.math.RNG;
 
 
 /**  This class gives the area of GPNodes for a GP problem. The area gives

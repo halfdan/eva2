@@ -17,9 +17,13 @@ public class MOSOWeightedFitness implements InterfaceMOSOConverter, java.io.Seri
 
     public MOSOWeightedFitness() {
         double[][] tmpD = new double[2][1];
-        for (int i = 0; i < tmpD.length; i++) tmpD[i][0] = 1.0;
+        for (int i = 0; i < tmpD.length; i++) {
+            tmpD[i][0] = 1.0;
+        }
         this.m_Weights = new PropertyDoubleArray(tmpD);
-        for (int i = 0; i < this.m_Weights.getNumRows(); i++) this.m_Weights.normalizeColumns();
+        for (int i = 0; i < this.m_Weights.getNumRows(); i++) {
+            this.m_Weights.normalizeColumns();
+        }
     }
     
     public MOSOWeightedFitness(double[][] weights) {
@@ -62,8 +66,9 @@ public class MOSOWeightedFitness implements InterfaceMOSOConverter, java.io.Seri
 
         tmpFit = indy.getFitness();
         indy.putData("MOFitness", tmpFit);
-        for (int i = 0; (i < this.m_Weights.getNumRows()) && (i < tmpFit.length) ; i++)
+        for (int i = 0; (i < this.m_Weights.getNumRows()) && (i < tmpFit.length) ; i++) {
             resultFit[0] += tmpFit[i]*this.m_Weights.getValue(i,0);
+        }
         indy.setFitness(resultFit);
     }
 
@@ -85,8 +90,12 @@ public class MOSOWeightedFitness implements InterfaceMOSOConverter, java.io.Seri
     public void setOutputDimension(int dim) {
         double[] newWeights = new double[dim];
 
-        for (int i = 0; i < newWeights.length; i++) newWeights[i] = 1;
-        for (int i = 0; (i < this.m_Weights.getNumRows()) && (i < newWeights.length); i++) newWeights[i] = this.m_Weights.getValue(i,0);
+        for (int i = 0; i < newWeights.length; i++) {
+            newWeights[i] = 1;
+        }
+        for (int i = 0; (i < this.m_Weights.getNumRows()) && (i < newWeights.length); i++) {
+            newWeights[i] = this.m_Weights.getValue(i,0);
+        }
 
         this.m_Weights.setDoubleArray(newWeights);
     }

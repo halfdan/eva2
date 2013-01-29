@@ -1,11 +1,10 @@
 package eva2.server.stat;
 
-import java.io.Serializable;
-import java.util.List;
-
 import eva2.gui.BeanInspector;
 import eva2.server.go.InterfaceGOParameters;
 import eva2.tools.StringSelection;
+import java.io.Serializable;
+import java.util.List;
 
 /**
  * An EvAJob is a set of optimization parameters and potential results from the statistics class.
@@ -81,8 +80,8 @@ public class EvAJob implements Serializable, InterfaceStatisticsListener {
 			name = name+" Job ("+jobID+"), "; // +params.getName();
 			name=name+params.getOptimizer().getName()+"/"+params.getProblem().getName();
 //			name=name+( (onlineData==null) ? ", empty" : (onlineData.size()+" records"));
-			name=name+(", " + numRuns + " runs");
-			if (fieldHeaders!=null) name=name+(", " + fieldHeaders.length + " fields");
+			name += (", " + numRuns + " runs");
+			if (fieldHeaders!=null) name += (", " + fieldHeaders.length + " fields");
 //			if (jobFinished) name=name+", finished";
 //			if (lastRunIncompl) name=name+", incomplete";
 			return name;

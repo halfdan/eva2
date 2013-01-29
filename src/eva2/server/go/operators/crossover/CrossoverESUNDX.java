@@ -1,8 +1,6 @@
 package eva2.server.go.operators.crossover;
 
 
-import java.util.ArrayList;
-
 import eva2.gui.Plot;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.ESIndividualDoubleData;
@@ -12,6 +10,7 @@ import eva2.server.go.problems.F1Problem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.Mathematics;
 import eva2.tools.math.RNG;
+import java.util.ArrayList;
 
 /**
  * This is the Unimodal Normal Distribution Crossover by Ono and Kobayashi, 1997. Cf.:
@@ -98,7 +97,9 @@ public class CrossoverESUNDX implements InterfaceCrossover, java.io.Serializable
             // now determine the offsprings
             for (int i = 0; i < children.length; i++) {
                 // first the mean
-                for (int j = 0; j < g.length; j++) children[i][j] = g[j];
+                for (int j = 0; j < g.length; j++) {
+                    children[i][j] = g[j];
+                }
                 // then the given coordinates
                 for (int j = 0; j < givenCoordinates.size(); j++) {
                     tmpD = (double[])givenCoordinates.get(j);
@@ -114,10 +115,14 @@ public class CrossoverESUNDX implements InterfaceCrossover, java.io.Serializable
             }
 
             // write the result back
-            for (int i = 0; i < result.length; i++) ((InterfaceESIndividual)result[i]).SetDGenotype(children[i]);
+            for (int i = 0; i < result.length; i++) {
+                ((InterfaceESIndividual)result[i]).SetDGenotype(children[i]);
+            }
         }
         //in case the crossover was successfull lets give the mutation operators a chance to mate the strategy parameters
-        for (int i = 0; i < result.length; i++) result[i].getMutationOperator().crossoverOnStrategyParameters(indy1, partners);
+        for (int i = 0; i < result.length; i++) {
+            result[i].getMutationOperator().crossoverOnStrategyParameters(indy1, partners);
+        }
         //for (int i = 0; i < result.length; i++) System.out.println("After Crossover: " +result[i].getSolutionRepresentationFor());
         return result;
     }
@@ -154,7 +159,9 @@ public class CrossoverESUNDX implements InterfaceCrossover, java.io.Serializable
         double      tmpD;
 
         completeList = new ArrayList();
-        for (int i = 0; i < given.size(); i++) completeList.add(given.get(i));
+        for (int i = 0; i < given.size(); i++) {
+            completeList.add(given.get(i));
+        }
 
         while (completeList.size() < mean.length) {
             tmpVec = RNG.gaussianVector(mean.length, 1., true);

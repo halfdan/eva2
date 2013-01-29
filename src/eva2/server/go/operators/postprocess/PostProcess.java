@@ -89,7 +89,9 @@ public class PostProcess {
 //        Population result = new Population(5);
         AbstractEAIndividual[]  found = new AbstractEAIndividual[optima.size()];
         double indDist;
-        for (int i = 0; i < found.length; i++) found[i] = null;
+        for (int i = 0; i < found.length; i++) {
+            found[i] = null;
+        }
 
         for (int i = 0; i < pop.size(); i++) {
             candidate = (AbstractEAIndividual) pop.get(i);
@@ -1171,7 +1173,9 @@ public class PostProcess {
 			if (extrOpts.size() > 0) {
 				if (listener!=null) listener.print(" measures fit: ");
 				int critCnt = extrOpts.getEAIndividual(0).getFitness().length;
-				for (int i=0; i<critCnt; i++) if (listener!=null) listener.print(BeanInspector.toString(extrOpts.getFitnessMeasures(i)) + " ");
+				for (int i=0; i<critCnt; i++) {
+                                if (listener!=null) listener.print(BeanInspector.toString(extrOpts.getFitnessMeasures(i)) + " ");
+                            }
 				if (extrOpts.size()>1) {
 					if (listener!=null) listener.print("; phen: " + BeanInspector.toString(extrOpts.getPopulationMeasures(new PhenotypeMetric())));
 					if (listener!=null) listener.print("; eucl: " + BeanInspector.toString(extrOpts.getPopulationMeasures(new EuclideanMetric())));

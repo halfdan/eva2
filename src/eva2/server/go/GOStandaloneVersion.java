@@ -2,6 +2,7 @@ package eva2.server.go;
 
 import eva2.gui.BeanInspector;
 import eva2.gui.JParaPanel;
+import eva2.server.go.SwingWorker;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.ESIndividualDoubleData;
 import eva2.server.go.individuals.GAIndividualDoubleData;
@@ -231,7 +232,9 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
             m_Continue.setEnabled(true);
             m_StopButton.setEnabled(false);
             worker.interrupt();
-            for (int i = 0; i < m_MultiRuns; i++) m_Plot.clearGraph(1000 +i);
+            for (int i = 0; i < m_MultiRuns; i++) {
+                m_Plot.clearGraph(1000 +i);
+            }
         }
     };
 
@@ -448,7 +451,9 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
                 System.out.println("Failed to close output file!");
             }
         }
-        if (this.show) for (int i = 0; i < this.m_MultiRuns; i++) this.m_Plot.clearGraph(1000 +i);
+        if (this.show) for (int i = 0; i < this.m_MultiRuns; i++) {
+            this.m_Plot.clearGraph(1000 +i);
+        }
         updateStatus(0);
         if (this.show) this.m_StatusField.setText("Finished...");
         return "All Done";
@@ -573,7 +578,9 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
     		tmpLine.append("\t");
     		tmpLine.append(population.getBestEAIndividual().getFitness(0));
     		tmpLine.append("\t");
-    		for (int i = 0; i < population.size(); i++) tmpd += ((AbstractEAIndividual)population.get(i)).getFitness(0)/(double)population.size();
+    		for (int i = 0; i < population.size(); i++) {
+                tmpd += ((AbstractEAIndividual)population.get(i)).getFitness(0)/(double)population.size();
+            }
     		tmpLine.append("\t");
     		tmpLine.append(tmpd);
     		tmpLine.append("\t");

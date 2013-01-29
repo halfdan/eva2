@@ -1,13 +1,11 @@
 package eva2.server.go.operators.classification;
 
-import javax.swing.*;
-
 import eva2.tools.chart2d.*;
 import eva2.tools.math.RNG;
-
+import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.*;
+import javax.swing.*;
 
 /** Self-organizing maps, a simple, but easy to visualize method
  * for classification. The Dikel flag is an undocumented extension,
@@ -113,7 +111,7 @@ public class ClassificationSelfOrganizingMaps implements java.io.Serializable, I
             }
         }
         for (int i = 0; i < this.m_Range.length; i++) {
-            this.m_Range[i][2] = this.m_Range[i][2]/((double)space.length);
+            this.m_Range[i][2] /= ((double)space.length);
             for (int j = 0; j < space.length; j++) {
                 this.m_Range[i][3] += Math.pow((this.m_Range[i][2] - space[j][i]), 2);
             }
@@ -298,7 +296,7 @@ public class ClassificationSelfOrganizingMaps implements java.io.Serializable, I
             }
         }
         for (int i = 0; i < this.m_SOM[w[0]][w[1]].length; i++) {
-            vec[i] = vec[i] - (a/2.0)*nec[i];
+            vec[i] -= (a/2.0)*nec[i];
             this.m_SOM[w[0]][w[1]][i] += a * vec[i];
         }
     }

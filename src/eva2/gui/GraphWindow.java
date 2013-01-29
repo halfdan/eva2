@@ -5,11 +5,10 @@ package eva2.gui;
  * $ $Date: 2007-12-06 16:05:11 +0100 (Thu, 06 Dec 2007) $ $Author: mkron $
  */
 
-import java.net.InetAddress;
-import java.util.ArrayList;
-
 import eva2.tools.jproxy.MainAdapterClient;
 import eva2.tools.jproxy.RMIProxyRemote;
+import java.net.InetAddress;
+import java.util.ArrayList;
 
 /**
  * It represents one plot window in the client GUI.

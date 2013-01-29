@@ -1,8 +1,6 @@
 package eva2.server.modules;
 
 
-import java.io.Serializable;
-
 import eva2.gui.GenericObjectEditor;
 import eva2.server.go.InterfaceGOParameters;
 import eva2.server.go.enums.PSOTopologyEnum;
@@ -15,6 +13,7 @@ import eva2.tools.SelectedTag;
 import eva2.tools.Serializer;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.Serializable;
 import java.util.logging.Level;
 
 /** The class gives access to all PSO parameters for the EvA

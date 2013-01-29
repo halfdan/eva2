@@ -92,7 +92,9 @@ public class MutateGITranslocate implements InterfaceMutation, java.io.Serializa
     		int[] tmp = new int[x.length];
     		int[] without = new int[x.length - length];
     		int[] insert = new int[length];
-    		for (int i = 0; i < length; i++) insert[i] = x[i+from];
+    		for (int i = 0; i < length; i++) {
+                insert[i] = x[i+from];
+            }
     		for (int i = 0; i < without.length; i++) {
     			if (i < from) without[i] = x[i];
     			else without[i] = x[i+length];

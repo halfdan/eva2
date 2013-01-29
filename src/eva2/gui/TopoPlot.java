@@ -12,15 +12,13 @@ package eva2.gui;
 /*==========================================================================*
  * IMPORTS
  *==========================================================================*/
-import java.awt.Color;
-
-import javax.swing.JPanel;
-
 import eva2.server.go.problems.Interface2DBorderProblem;
 import eva2.server.go.problems.InterfaceFirstOrderDerivableProblem;
 import eva2.tools.chart2d.DRectangle;
 import eva2.tools.diagram.ColorBarCalculator;
 import eva2.tools.math.Mathematics;
+import java.awt.Color;
+import javax.swing.JPanel;
 
 
 /*==========================================================================*
@@ -121,7 +119,9 @@ public class TopoPlot extends Plot {
     		if (tmp > max) max = tmp;
     		if (withGradientsIfAvailable && (problem instanceof InterfaceFirstOrderDerivableProblem)) {
     			double[] deriv = ((InterfaceFirstOrderDerivableProblem)problem).getFirstOrderGradients(problem.project2DPoint(pos));
-    			for (int i=0; i<2;i++) maxDeriv=Math.max(maxDeriv, Math.abs(deriv[i])); // maximum deriv of first 2 dims
+    			for (int i=0; i<2;i++) {
+                        maxDeriv=Math.max(maxDeriv, Math.abs(deriv[i]));
+                    } // maximum deriv of first 2 dims
     		}
 
     	} // for y

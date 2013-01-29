@@ -1,10 +1,9 @@
 package eva2.server.go.problems;
 
-import java.util.Arrays;
-import java.util.Random;
-
 import eva2.server.go.operators.postprocess.SolutionHistogram;
 import eva2.tools.math.RNG;
+import java.util.Arrays;
+import java.util.Random;
 
 /**
  * Fletcher-Powell function with up to 2^n optima from Shir&Baeck, PPSN 2006, 

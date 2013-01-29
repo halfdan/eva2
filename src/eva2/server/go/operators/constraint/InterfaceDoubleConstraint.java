@@ -1,7 +1,5 @@
 package eva2.server.go.operators.constraint;
 
-import eva2.server.go.individuals.AbstractEAIndividual;
-
 /** 
  * A constraint delivering a double valued degree of violation.
  */

@@ -29,7 +29,9 @@ public class RFKoza_GPI_7_3_extended implements InterfaceRegressionFunction, jav
     @Override
     public double evaluateFunction(double[] x) {
         double result = 0;
-        for (int i = 0; i < x.length; i++) result += 0.12345*Math.pow(x[i], 4) + (Math.PI/4)*Math.pow(x[i], 3) + (Math.E/2)*Math.pow(x[i], 2) + 1.23456*Math.pow(x[i], 1);
+        for (int i = 0; i < x.length; i++) {
+            result += 0.12345*Math.pow(x[i], 4) + (Math.PI/4)*Math.pow(x[i], 3) + (Math.E/2)*Math.pow(x[i], 2) + 1.23456*Math.pow(x[i], 1);
+        }
         return result;
     }
 

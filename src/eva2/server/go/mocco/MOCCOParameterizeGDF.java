@@ -1,8 +1,6 @@
 package eva2.server.go.mocco;
 
 
-import javax.swing.*;
-
 import eva2.gui.GenericObjectEditor;
 import eva2.gui.PropertyDoubleArray;
 import eva2.gui.PropertyEditorProvider;
@@ -17,11 +15,11 @@ import eva2.server.go.strategies.GeneticAlgorithm;
 import eva2.server.go.strategies.InterfaceOptimizer;
 import eva2.server.go.tools.AbstractObjectEditor;
 import eva2.server.go.tools.GeneralGOEProperty;
-
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import javax.swing.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -247,7 +245,9 @@ public class MOCCOParameterizeGDF extends MOCCOPhase implements InterfaceProcess
         }
 
         double[] result = new double[tmpA.size()];
-        for (int i = 0; i < result.length; i++) result[i] = ((Double)tmpA.get(i)).doubleValue();
+        for (int i = 0; i < result.length; i++) {
+            result[i] = ((Double)tmpA.get(i)).doubleValue();
+        }
         return result;
     }
 }

@@ -1,7 +1,6 @@
 package eva2.server.go.individuals.codings.gp;
 
 
-import java.util.ArrayList;
 
 import eva2.server.go.problems.InterfaceProgramProblem;
 

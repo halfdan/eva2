@@ -149,8 +149,8 @@ public class MonteCarloSearch implements InterfaceOptimizer, java.io.Serializabl
             TmpMeanCalls += program.m_FitnessCallsNeeded;
             TmpMeanFitness += program.m_Best.defaultEvaulateAsMiniBits();
         }
-        TmpMeanCalls = TmpMeanCalls/program.m_MultiRuns;
-        TmpMeanFitness = TmpMeanFitness/program.m_MultiRuns;
+        TmpMeanCalls /= program.m_MultiRuns;
+        TmpMeanFitness /= program.m_MultiRuns;
         System.out.println("("+program.m_MultiRuns+"/"+program.m_FitnessCalls+") Mean Fitness : " + TmpMeanFitness + " Mean Calls needed: " + TmpMeanCalls);
     }
 

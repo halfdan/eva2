@@ -1,6 +1,5 @@
 package eva2.server.go.operators.moso;
 
-import eva2.gui.PropertyDoubleArray;
 import eva2.gui.PropertyEpsilonThreshold;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.populations.Population;
@@ -20,10 +19,14 @@ public class MOSOEpsilonThreshold implements InterfaceMOSOConverter, java.io.Ser
         this.m_EpsilonThreshold = new PropertyEpsilonThreshold();
         this.m_EpsilonThreshold.m_OptimizeObjective = 0;
         double[] tmpD = new double[2];
-        for (int i = 0; i < tmpD.length; i++) tmpD[i] = 0.0;
+        for (int i = 0; i < tmpD.length; i++) {
+            tmpD[i] = 0.0;
+        }
         this.m_EpsilonThreshold.m_TargetValue = tmpD;
         tmpD = new double[2];
-        for (int i = 0; i < tmpD.length; i++) tmpD[i] = 1.0;
+        for (int i = 0; i < tmpD.length; i++) {
+            tmpD[i] = 1.0;
+        }
         this.m_EpsilonThreshold.m_Punishment = tmpD;
     }
 

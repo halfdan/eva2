@@ -1,11 +1,10 @@
 package eva2.server.go.problems;
 
-import java.util.Random;
-
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceDataTypeDouble;
 import eva2.server.go.populations.Population;
 import eva2.server.go.strategies.InterfaceOptimizer;
+import java.util.Random;
 
 
 public abstract class AbstractDynTransProblem extends AbstractSynchronousOptimizationProblem {
@@ -80,8 +79,9 @@ public abstract class AbstractDynTransProblem extends AbstractSynchronousOptimiz
 	
 	private double transLength(double time) {
 		double ret = 0.;
-		for (int i = 0; i < getProblemDimension(); i++)
-			ret += Math.pow(getTranslation(i, time), 2.);
+		for (int i = 0; i < getProblemDimension(); i++) {
+            ret += Math.pow(getTranslation(i, time), 2.);
+        }
 		return Math.sqrt(ret);
 	}
 	
@@ -133,8 +133,9 @@ public abstract class AbstractDynTransProblem extends AbstractSynchronousOptimiz
 	public void initPopulationAt(Population population, double time) {
 		if (TRACE) System.out.println("DynTransProblem at " + this + " initPop, problem is " + getProblem());
 		getProblem().initPopulation(population);
-		for (int i = 0; i < population.size(); i++) 
-			((AbstractEAIndividual)population.get(i)).SetAge(0);
+		for (int i = 0; i < population.size(); i++) {
+            ((AbstractEAIndividual)population.get(i)).SetAge(0);
+        }
 	}
 	
 	public int getProblemDimension() {

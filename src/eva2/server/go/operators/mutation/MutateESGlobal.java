@@ -9,7 +9,6 @@ import eva2.server.go.individuals.InterfaceESIndividual;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceAdditionalPopulationInformer;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import eva2.tools.SelectedTag;
 import eva2.tools.math.RNG;
 
 
@@ -97,7 +96,7 @@ public class MutateESGlobal implements InterfaceMutation, java.io.Serializable, 
         if (individual instanceof InterfaceESIndividual) {
             double[] x = ((InterfaceESIndividual)individual).getDGenotype();
             double[][] range = ((InterfaceESIndividual)individual).getDoubleRange();
-            this.m_MutationStepSize = this.m_MutationStepSize * Math.exp(this.m_Tau1 * RNG.gaussianDouble(1));
+            this.m_MutationStepSize *= Math.exp(this.m_Tau1 * RNG.gaussianDouble(1));
             if (this.m_MutationStepSize < this.m_LowerLimitStepSize) this.m_MutationStepSize = this.m_LowerLimitStepSize;
             for (int i = 0; i < x.length; i++) {
                 x[i] += ((range[i][1] -range[i][0])/2)*RNG.gaussianDouble(this.m_MutationStepSize);
@@ -124,14 +123,18 @@ public class MutateESGlobal implements InterfaceMutation, java.io.Serializable, 
     			if (((AbstractEAIndividual)partners.get(i)).getMutationOperator() instanceof MutateESGlobal) tmpList.add(new Double(((MutateESGlobal)((AbstractEAIndividual)partners.get(i)).getMutationOperator()).m_MutationStepSize));
     		}
     		double[] list = new double[tmpList.size()];
-    		for (int i = 0; i < tmpList.size(); i++) list[i] = ((Double)tmpList.get(i)).doubleValue();
+    		for (int i = 0; i < tmpList.size(); i++) {
+                list[i] = ((Double)tmpList.get(i)).doubleValue();
+            }
     		if (list.length <= 1) return;
 
     		switch (this.m_CrossoverType) {
     		case intermediate : 
     			this.m_MutationStepSize = 0;
-    			for (int i = 0; i < list.length; i++) this.m_MutationStepSize += list[i];
-    			this.m_MutationStepSize = this.m_MutationStepSize/(double)list.length;
+    			for (int i = 0; i < list.length; i++) {
+                this.m_MutationStepSize += list[i];
+            }
+    			this.m_MutationStepSize /= (double)list.length;
     			break;
     		case discrete : 
     			this.m_MutationStepSize = list[RNG.randomInt(0, list.length-1)];

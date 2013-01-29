@@ -89,9 +89,9 @@ public class MutateESMutativeStepSizeControl implements InterfaceMutation, java.
             double[] x = ((InterfaceESIndividual)individual).getDGenotype();
             double[][] range = ((InterfaceESIndividual)individual).getDoubleRange();
             if (RNG.flipCoin(0.5))
-                this.m_MutationStepSize = this.m_MutationStepSize * this.m_Alpha;
+                this.m_MutationStepSize *= this.m_Alpha;
             else
-                this.m_MutationStepSize = this.m_MutationStepSize / this.m_Alpha;
+                this.m_MutationStepSize /= this.m_Alpha;
             if (this.m_MutationStepSize < this.m_LowerLimitStepSize) this.m_MutationStepSize = this.m_LowerLimitStepSize;
             if (this.m_MutationStepSize > this.m_UpperLimitStepSize) this.m_MutationStepSize = this.m_UpperLimitStepSize;
             for (int i = 0; i < x.length; i++) {

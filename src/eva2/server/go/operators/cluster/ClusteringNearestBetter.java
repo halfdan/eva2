@@ -14,7 +14,6 @@ import eva2.server.go.operators.distancemetric.PhenotypeMetric;
 import eva2.server.go.operators.paramcontrol.ParamAdaption;
 import eva2.server.go.operators.paramcontrol.ParameterControlManager;
 import eva2.server.go.populations.Population;
-import eva2.tools.Pair;
 
 /**
  * Hierarchical clustering after Preuss et al., "Counteracting Genetic Drift and Disruptive Recombination 
@@ -200,7 +199,9 @@ public class ClusteringNearestBetter implements InterfaceClustering, Serializabl
 	    	if (uplink==null || (uplink.length!=pop.size())) uplink = new int[pop.size()]; // parent index of all indys
 	    	if (uplinkDist==null || (uplinkDist.length!=pop.size())) uplinkDist = new double[pop.size()]; // parent distance for all indys
 	    	if (children==null || (children.length!=pop.size())) children = new Vector[pop.size()]; // list of children for all indies
-	    	else if (children.length==pop.size()) for (int i=0; i<pop.size(); i++) children[i]=null;
+	    	else if (children.length==pop.size()) for (int i=0; i<pop.size(); i++) {
+                children[i]=null;
+            }
 	    	currentMeanDistance = createClusterTreeFromSortedPop(sorted);
 	    	if (TRACE) pop.putData(initializedForKey, pop.hashCode());
 	    	pop.putData(initializedRefData, currentMeanDistance);
@@ -215,7 +216,9 @@ public class ClusteringNearestBetter implements InterfaceClustering, Serializabl
 		if (uplink==null || (uplink.length!=pop.size())) uplink = new int[pop.size()]; // parent index of all indys
 		if (uplinkDist==null || (uplinkDist.length!=pop.size())) uplinkDist = new double[pop.size()]; // parent distance for all indys
 		if (children==null || (children.length!=pop.size())) children = new Vector[pop.size()]; // list of children for all indies
-		else if (children.length==pop.size()) for (int i=0; i<pop.size(); i++) children[i]=null;
+		else if (children.length==pop.size()) for (int i=0; i<pop.size(); i++) {
+            children[i]=null;
+        }
  		
 		if (TRACE) {
 			System.out.println("Current pop measures: " + BeanInspector.toString(pop.getPopulationMeasures(metric)[0]));

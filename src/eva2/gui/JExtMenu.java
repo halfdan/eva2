@@ -12,7 +12,6 @@ package eva2.gui;
 /*==========================================================================*
  * IMPORTS
  *==========================================================================*/
-import java.awt.Font;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;

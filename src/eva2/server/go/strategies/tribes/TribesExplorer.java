@@ -2,7 +2,6 @@ package eva2.server.go.strategies.tribes;
 
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceDataTypeDouble;
-import eva2.server.go.individuals.InterfaceESIndividual;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.server.go.strategies.Tribes;
@@ -410,7 +409,7 @@ public class TribesExplorer extends AbstractEAIndividual implements InterfaceDat
 
         //  Update position
         for (i = 0; i < position.x.length; i++) {
-            position.x[i] = position.x[i] + velocity.x[i];
+            position.x[i] += velocity.x[i];
         }
 
         if (swarm.masterTribe.isCheckConstraints()) { // Keep inside the search space ...
@@ -696,8 +695,8 @@ public class TribesExplorer extends AbstractEAIndividual implements InterfaceDat
 
         if (back) {
             for (d = 0; d < position.x.length; d++) {
-                position.x[d] = position.x[d] - velocity.x[d];
-                velocity.x[d] = velocity.x[d] / 2;
+                position.x[d] -= velocity.x[d];
+                velocity.x[d] /= 2;
             }
         }
 
@@ -770,8 +769,8 @@ public class TribesExplorer extends AbstractEAIndividual implements InterfaceDat
 //    		if (Double.isInfinite(c1)) c1 = Double.MIN_VALUE;
 //    		if (Double.isInfinite(c2)) c2 = Double.MIN_VALUE;
     		c3 = c1 + c2;
-    		c1 = c1 / c3;
-    		c2 = c2 / c3;
+    		c1 /= c3;
+    		c2 /= c3;
 
     		for (d = 0; d < velocity.x.length; d++) {
     			dx = c1 * rand_i[d] + c2 * rand_g[d];
@@ -846,8 +845,8 @@ Like Pivot and hyperspheres, but a velocity component is added
     		c2 = 1 / pos2.getTotalError();
     		c3 = 1 / pos3.getTotalError();
     		c = c2 + c3;
-    		c2 = c2 / c;
-    		c3 = c3 / c;
+    		c2 /= c;
+    		c3 /= c;
 
     		for (d = 0; d < velocity.x.length; d++) {
     			dx = c2 * rand_i[d] + c3 * rand_g[d];
@@ -880,7 +879,7 @@ Like Pivot and hyperspheres, but a velocity component is added
 
     	if (strategy == 2) { // Add Gaussian noise
     		for (d = 0; d < velocity.x.length; d++) {
-    			velocity.x[d] = velocity.x[d] * lambda;
+    			velocity.x[d] *= lambda;
     		}
     	}
 

@@ -1,11 +1,10 @@
 package eva2.server.go.operators.crossover;
 
-import java.util.BitSet;
-
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceDataTypeBinary;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
+import java.util.BitSet;
 
 /**
  * This crossover-Method tries to convert the first individual into the second. If a better Individual is found on the way, this individual is chosen.

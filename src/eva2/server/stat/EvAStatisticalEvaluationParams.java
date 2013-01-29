@@ -1,11 +1,9 @@
 package eva2.server.stat;
 
+import eva2.tools.StringSelection;
 import java.io.Serializable;
 import java.util.List;
-
 import javax.swing.JButton;
-
-import eva2.tools.StringSelection;
 
 public class EvAStatisticalEvaluationParams implements Serializable {
 

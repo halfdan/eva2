@@ -135,8 +135,9 @@ public class ComAdapter {
 	 */
 	public void setServerList(String[] server){
 		m_HostNameList.clear();
-		for (int i=0;i<server.length;i++)
-			m_HostNameList.add(server[i]);
+		for (int i=0;i<server.length;i++) {
+                m_HostNameList.add(server[i]);
+            }
 
 	}
 	/**

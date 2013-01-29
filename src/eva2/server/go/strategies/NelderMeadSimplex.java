@@ -1,8 +1,5 @@
 package eva2.server.go.strategies;
 
-import java.io.Serializable;
-import java.util.Vector;
-
 import eva2.gui.BeanInspector;
 import eva2.server.go.InterfacePopulationChangedEventListener;
 import eva2.server.go.individuals.AbstractEAIndividual;
@@ -14,6 +11,8 @@ import eva2.server.go.problems.AbstractOptimizationProblem;
 import eva2.server.go.problems.AbstractProblemDouble;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.Mathematics;
+import java.io.Serializable;
+import java.util.Vector;
 
 /**
  * Nelder-Mead-Simplex does not guarantee an equal number of evaluations within each optimize call
@@ -105,7 +104,9 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
 
 	protected double[] calcChallengeVect(double[] centroid, double[] refX) {
 		double[] r = new double[centroid.length];
-		for (int i=0; i<r.length; i++) r[i] = 2*centroid[i] - refX[i];
+		for (int i=0; i<r.length; i++) {
+            r[i] = 2*centroid[i] - refX[i];
+        }
 //		double alpha = 1.3;
 //		for (int i=0; i<r.length; i++) r[i] = centroid[i] + alpha*(centroid[i] - refX[i]);
 		return r;
@@ -170,7 +171,9 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
 			return reflectedInd;
 		} else if (firstIsBetter(reflectedInd, best)) { //neues besser als bisher bestes => Expansion
 			double[] e = new double[dim];
-			for (int i=0; i<dim; i++)  e[i] = 3*centroid[i] - 2*x_worst[i];
+			for (int i=0; i<dim; i++) {
+                e[i] = 3*centroid[i] - 2*x_worst[i];
+            }
 			if (checkConstraints && !Mathematics.isInRange(e, range)) Mathematics.projectToRange(e, range);
 			
 			AbstractEAIndividual e_ind = createEvalIndy(bestpop, e);
@@ -184,7 +187,9 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
 		} else if (firstIsBetterEqual(bestpop.getWorstEAIndividual(fitIndex), reflectedInd)) {
 			//kontrahiere da neues indi keine verbesserung brachte
 			double[] c = new double[dim];
-			for (int i=0; i<dim; i++)  c[i] = 0.5*centroid[i] + 0.5*x_worst[i];
+			for (int i=0; i<dim; i++) {
+                c[i] = 0.5*centroid[i] + 0.5*x_worst[i];
+            }
 			if (checkConstraints && !Mathematics.isInRange(c, range)) Mathematics.projectToRange(c, range);
 			
 //			AbstractEAIndividual c_ind = (AbstractEAIndividual)((AbstractEAIndividual)bestpop.getIndividual(1)).clone(); 
@@ -262,8 +267,9 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
 
 	private void fireNextGenerationPerformed() {
 		if (m_Listener != null) {
-			for (int i=0; i<m_Listener.size(); i++)
-				m_Listener.elementAt(i).registerPopulationStateChanged(this, Population.nextGenerationPerformed);
+			for (int i=0; i<m_Listener.size(); i++) {
+                m_Listener.elementAt(i).registerPopulationStateChanged(this, Population.nextGenerationPerformed);
+            }
 		}
 	}
 
@@ -293,7 +299,9 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
 				
 				for(int j=0;j<m_Population.size();j++){
 					double [] c= ((InterfaceDataTypeDouble) m_Population.getEAIndividual(j)).getDoubleData();
-					for (int i=0; i<c.length; i++)  c[i] = 0.5*c[i] + 0.5*u_1[i];
+					for (int i=0; i<c.length; i++) {
+                        c[i] = 0.5*c[i] + 0.5*u_1[i];
+                    }
 					((InterfaceDataTypeDouble) m_Population.getEAIndividual(j)).SetDoubleGenotype(c);
 //					m_Population.getEAIndividual(j).resetConstraintViolation(); // not a good idea because during evaluation, a stats update may be performed which mustnt see indies which are evaluated, but possible constraints have been reset.
 				}

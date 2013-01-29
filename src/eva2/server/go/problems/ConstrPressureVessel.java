@@ -1,6 +1,5 @@
 package eva2.server.go.problems;
 
-import java.util.Iterator;
 import java.util.Vector;
 
 import eva2.gui.GenericObjectEditor;

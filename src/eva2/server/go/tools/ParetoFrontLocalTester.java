@@ -1,10 +1,9 @@
 package eva2.server.go.tools;
 
 
-import java.util.ArrayList;
-import java.io.*;
-
 import eva2.gui.GraphPointSet;
+import java.io.*;
+import java.util.ArrayList;
 
 /**
  * Created by IntelliJ IDEA.

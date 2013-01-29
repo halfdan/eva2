@@ -1,14 +1,13 @@
 package eva2.server.go.tools;
 
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.util.ArrayList;
-
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.ESIndividualDoubleData;
 import eva2.server.go.operators.archiving.ArchivingAllDominating;
 import eva2.server.go.populations.Population;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.util.ArrayList;
 
 /**
  * Created by IntelliJ IDEA.

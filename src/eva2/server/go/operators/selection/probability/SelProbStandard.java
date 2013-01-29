@@ -60,17 +60,20 @@ public class SelProbStandard extends AbstractSelProb implements java.io.Serializ
                             result[i] = 0;
                         sum += result[i];
                     }
-                    for (int i = 0; i < population.size(); i++)
+                    for (int i = 0; i < population.size(); i++) {
                         ((AbstractEAIndividual)population.get(i)).SetSelectionProbability(x, result[i]/sum);
+                    }
                 }
             } else {
                 // not one is feasible therefore select the best regarding feasibility
                 sum = 0;
                 // iterating over the individuals
-                for (int i = 0; i < data.length; i++)
+                for (int i = 0; i < data.length; i++) {
                     result[i] = Math.exp(-((AbstractEAIndividual)population.get(i)).getConstraintViolation());
-                for (int i = 0; i < data.length; i++)
+                }
+                for (int i = 0; i < data.length; i++) {
                     sum += result[i];
+                }
                 for (int i = 0; i < population.size(); i++) {
                     double[] tmpD = new double[1];
                     tmpD[0] = result[i]/sum;
@@ -82,12 +85,15 @@ public class SelProbStandard extends AbstractSelProb implements java.io.Serializ
             for (int x = 0; x < data[0].length; x++) {
                 sum = 0;
                 // iterating over the individuals
-                for (int i = 0; i < data.length; i++)
+                for (int i = 0; i < data.length; i++) {
                     result[i] = Math.exp(-data[i][x]);
-                for (int i = 0; i < data.length; i++)
+                }
+                for (int i = 0; i < data.length; i++) {
                     sum += result[i];
-                for (int i = 0; i < population.size(); i++)
+                }
+                for (int i = 0; i < population.size(); i++) {
                     ((AbstractEAIndividual)population.get(i)).SetSelectionProbability(x, result[i]/sum);
+                }
             }
         }
     }

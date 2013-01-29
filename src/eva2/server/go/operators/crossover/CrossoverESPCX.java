@@ -1,8 +1,6 @@
 package eva2.server.go.operators.crossover;
 
 
-import java.util.ArrayList;
-
 import eva2.gui.Plot;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.ESIndividualDoubleData;
@@ -12,6 +10,7 @@ import eva2.server.go.problems.F1Problem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.Mathematics;
 import eva2.tools.math.RNG;
+import java.util.ArrayList;
 
 /**
  * Created by IntelliJ IDEA.
@@ -111,10 +110,14 @@ public class CrossoverESPCX implements InterfaceCrossover, java.io.Serializable 
             }
 
             // write the result back
-            for (int i = 0; i < result.length; i++) ((InterfaceESIndividual)result[i]).SetDGenotype(children[i]);
+            for (int i = 0; i < result.length; i++) {
+                ((InterfaceESIndividual)result[i]).SetDGenotype(children[i]);
+            }
         }
         //in case the crossover was successfull lets give the mutation operators a chance to mate the strategy parameters
-        for (int i = 0; i < result.length; i++) result[i].getMutationOperator().crossoverOnStrategyParameters(indy1, partners);
+        for (int i = 0; i < result.length; i++) {
+            result[i].getMutationOperator().crossoverOnStrategyParameters(indy1, partners);
+        }
         //for (int i = 0; i < result.length; i++) System.out.println("After Crossover: " +result[i].getSolutionRepresentationFor());
         return result;
     }
@@ -154,7 +157,7 @@ public class CrossoverESPCX implements InterfaceCrossover, java.io.Serializable 
                     tmpMean += Math.abs(Mathematics.vvMult(toro, Mathematics.vvSub(parents[j], mean)));
                 }
             }
-            tmpMean = tmpMean/((double)(result.size()-1));
+            tmpMean /= ((double)(result.size()-1));
             toro = Mathematics.svMult(tmpMean, toro);
             result.set(i, toro);
         }

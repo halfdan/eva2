@@ -1,19 +1,17 @@
 package eva2.server.go.operators.mutation;
 
-import javax.swing.*;
-
 import eva2.gui.*;
 import eva2.server.go.tools.AbstractObjectEditor;
 import eva2.server.go.tools.GeneralGEOFaker;
 import eva2.server.go.tools.GeneralGOEProperty;
 import eva2.tools.BasicResourceLoader;
-
-import java.beans.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.beans.*;
+import javax.swing.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -138,7 +136,9 @@ public class PropertyMutationMixerEditor extends JPanel implements PropertyEdito
         this.m_Targets  = new JComponent[list.length];
         this.m_Delete   = new JButton[list.length];
         String[] cups   = new String[8];
-        for (int i = 0; i < cups.length; i++) cups[i] = ""+(i+1);
+        for (int i = 0; i < cups.length; i++) {
+            cups[i] = ""+(i+1);
+        }
         // The head title
         gbc.anchor      = GridBagConstraints.WEST;
         gbc.fill        = GridBagConstraints.BOTH;

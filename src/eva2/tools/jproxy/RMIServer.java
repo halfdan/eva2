@@ -9,7 +9,6 @@ package eva2.tools.jproxy;
  *            $Author: ulmerh $
  */
 
-import eva2.EvAInfo;
 import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.rmi.Naming;

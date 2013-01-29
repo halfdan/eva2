@@ -13,9 +13,9 @@ package eva2.gui;
  * IMPORTS
  *==========================================================================*/
 import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.KeyStroke;
-import javax.swing.Action;
 /**
  *
  */

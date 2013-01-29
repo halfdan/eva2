@@ -2,7 +2,6 @@ package eva2.server.go.operators.constraint;
 
 import java.io.Serializable;
 
-import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.codings.gp.AbstractGPNode;
 import eva2.server.go.problems.GPFunctionProblem;
 import eva2.tools.EVAERROR;

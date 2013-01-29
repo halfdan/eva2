@@ -1,12 +1,5 @@
 package eva2.server.go.problems;
 
-import java.awt.Color;
-import java.util.ArrayList;
-import java.util.Vector;
-import java.util.concurrent.Semaphore;
-
-import javax.swing.JFrame;
-
 import eva2.gui.GraphPointSet;
 import eva2.gui.Plot;
 import eva2.server.go.PopulationInterface;
@@ -24,6 +17,11 @@ import eva2.tools.ToolBox;
 import eva2.tools.chart2d.Chart2DDPointIconCircle;
 import eva2.tools.chart2d.Chart2DDPointIconText;
 import eva2.tools.chart2d.DPoint;
+import java.awt.Color;
+import java.util.ArrayList;
+import java.util.Vector;
+import java.util.concurrent.Semaphore;
+import javax.swing.JFrame;
 
 /**
  * Created by IntelliJ IDEA.

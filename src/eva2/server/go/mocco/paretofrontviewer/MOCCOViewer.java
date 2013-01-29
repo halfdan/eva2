@@ -1,8 +1,6 @@
 package eva2.server.go.mocco.paretofrontviewer;
 
 
-import javax.swing.*;
-
 import eva2.gui.FunctionArea;
 import eva2.gui.GraphPointSet;
 import eva2.gui.InterfaceDPointWithContent;
@@ -15,16 +13,16 @@ import eva2.tools.chart2d.Chart2DDPointContentSelectable;
 import eva2.tools.chart2d.DPoint;
 import eva2.tools.chart2d.DPointIcon;
 import eva2.tools.chart2d.ScaledBorder;
-
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedWriter;
-import java.io.OutputStreamWriter;
-import java.io.FileOutputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import javax.swing.*;
 
 
 /**
@@ -212,7 +210,9 @@ public class MOCCOViewer extends JPanel implements InterfaceRefSolutionListener,
             }
             InterfaceOptimizationObjective[] obj = ((InterfaceMultiObjectiveDeNovoProblem)m_MOCCO.m_State.m_CurrentProblem).getProblemObjectives();
             tmp = "";
-            for (int j = 0; j < obj.length; j++) tmp += obj[j].getIdentName() +"\t";
+            for (int j = 0; j < obj.length; j++) {
+                tmp += obj[j].getIdentName() +"\t";
+            }
             try { out.write(tmp+"\n"); } catch (java.io.IOException e) { }
             for (int i = 0; i < pop.size(); i++) {
                 if (!((AbstractEAIndividual)pop.get(i)).violatesConstraint()) {
@@ -235,10 +235,14 @@ public class MOCCOViewer extends JPanel implements InterfaceRefSolutionListener,
                 return;
             }
             pop = new Population();
-            for (int i = 0; i < m_MOCCO.m_State.m_PopulationHistory.length; i++) pop.addPopulation(m_MOCCO.m_State.m_PopulationHistory[i]);
+            for (int i = 0; i < m_MOCCO.m_State.m_PopulationHistory.length; i++) {
+                pop.addPopulation(m_MOCCO.m_State.m_PopulationHistory[i]);
+            }
             obj = ((InterfaceMultiObjectiveDeNovoProblem)m_MOCCO.m_State.m_CurrentProblem).getProblemObjectives();
             tmp = "";
-            for (int j = 0; j < obj.length; j++) tmp += obj[j].getIdentName() +"\t";
+            for (int j = 0; j < obj.length; j++) {
+                tmp += obj[j].getIdentName() +"\t";
+            }
             try { out.write(tmp+"\n"); } catch (java.io.IOException e) { }
             for (int i = 0; i < pop.size(); i++) {
                 if (!((AbstractEAIndividual)pop.get(i)).violatesConstraint()) {
@@ -261,10 +265,14 @@ public class MOCCOViewer extends JPanel implements InterfaceRefSolutionListener,
                 return;
             }
             pop = new Population();
-            for (int i = 0; i < m_MOCCO.m_State.m_PopulationHistory.length; i++) pop.addPopulation(m_MOCCO.m_State.m_PopulationHistory[i]);
+            for (int i = 0; i < m_MOCCO.m_State.m_PopulationHistory.length; i++) {
+                pop.addPopulation(m_MOCCO.m_State.m_PopulationHistory[i]);
+            }
             obj = ((InterfaceMultiObjectiveDeNovoProblem)m_MOCCO.m_State.m_CurrentProblem).getProblemObjectives();
             tmp = "";
-            for (int j = 0; j < obj.length; j++) tmp += obj[j].getIdentName() +"\t";
+            for (int j = 0; j < obj.length; j++) {
+                tmp += obj[j].getIdentName() +"\t";
+            }
             try { out.write(tmp+"\n"); } catch (java.io.IOException e) { }
             for (int i = 0; i < pop.size(); i++) {
                 if (((AbstractEAIndividual)pop.get(i)).violatesConstraint()) {
@@ -289,7 +297,9 @@ public class MOCCOViewer extends JPanel implements InterfaceRefSolutionListener,
             pop = m_MOCCO.m_State.m_ParetoFront.getMarkedIndividuals();
             obj = ((InterfaceMultiObjectiveDeNovoProblem)m_MOCCO.m_State.m_CurrentProblem).getProblemObjectives();
             tmp = "";
-            for (int j = 0; j < obj.length; j++) tmp += obj[j].getIdentName() +"\t";
+            for (int j = 0; j < obj.length; j++) {
+                tmp += obj[j].getIdentName() +"\t";
+            }
             try { out.write(tmp+"\n"); } catch (java.io.IOException e) { }
             for (int i = 0; i < pop.size(); i++) {
                 // write
@@ -312,11 +322,15 @@ public class MOCCOViewer extends JPanel implements InterfaceRefSolutionListener,
             pop = m_MOCCO.m_State.m_ParetoFront.getMarkedIndividuals();
             obj = ((InterfaceMultiObjectiveDeNovoProblem)m_MOCCO.m_State.m_CurrentProblem).getProblemObjectives();
             tmp = "";
-            for (int j = 0; j < obj.length; j++) tmp += obj[j].getIdentName() +"\t";
+            for (int j = 0; j < obj.length; j++) {
+                tmp += obj[j].getIdentName() +"\t";
+            }
             try { out.write(tmp+"\n"); } catch (java.io.IOException e) { }
             tmp = "";
             if (m_ReferencePoint != null) {
-                for (int j = 0; j < m_ReferencePoint.length; j++) tmp += m_ReferencePoint[j] +"\t";
+                for (int j = 0; j < m_ReferencePoint.length; j++) {
+                    tmp += m_ReferencePoint[j] +"\t";
+                }
                 try { out.write(tmp+"\n"); } catch (java.io.IOException e) { }
             }
             try { out.close(); } catch(java.io.IOException e) {}
@@ -466,7 +480,9 @@ public class MOCCOViewer extends JPanel implements InterfaceRefSolutionListener,
         if (this.m_RefPointSelectable) {
             int dim = ((AbstractEAIndividual)this.m_MOCCO.m_State.m_ParetoFront.get(0)).getFitness().length;
             this.m_ReferencePoint = new double[dim];
-            for (int i = 0; i < dim; i++) this.m_ReferencePoint[i] = 0;
+            for (int i = 0; i < dim; i++) {
+                this.m_ReferencePoint[i] = 0;
+            }
         } else {
             //this.m_ReferencePoint = null;
         }

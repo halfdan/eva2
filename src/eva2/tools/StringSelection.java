@@ -1,13 +1,12 @@
 package eva2.tools;
 
+import eva2.gui.BeanInspector;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-
-import eva2.gui.BeanInspector;
 
 /**
  * An array of Strings that can be selected and deselected. May be created directly from an Enum.

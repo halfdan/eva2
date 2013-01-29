@@ -7,7 +7,6 @@ import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceESIndividual;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
-import eva2.tools.SelectedTag;
 import eva2.tools.math.Mathematics;
 import eva2.tools.math.RNG;
 
@@ -172,7 +171,9 @@ public class MutateESCorrVector implements InterfaceMutation, java.io.Serializab
             if (((AbstractEAIndividual)partners.get(i)).getMutationOperator() instanceof MutateESCorrVector) tmpList.add(new Double(((MutateESCorrVector)((AbstractEAIndividual)partners.get(i)).getMutationOperator()).m_scalingDev));
         }
         double[] list = new double[tmpList.size()];
-        for (int i = 0; i < tmpList.size(); i++) list[i] = ((Double)tmpList.get(i)).doubleValue();
+        for (int i = 0; i < tmpList.size(); i++) {
+            list[i] = ((Double)tmpList.get(i)).doubleValue();
+        }
         if (list.length <= 1) return;
         // discreete mutation for step size
         this.m_scalingDev = list[RNG.randomInt(0, list.length-1)];

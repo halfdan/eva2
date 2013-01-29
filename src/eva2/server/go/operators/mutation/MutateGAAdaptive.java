@@ -1,13 +1,12 @@
 package eva2.server.go.operators.mutation;
 
 
-import java.util.BitSet;
-
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceGAIndividual;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
+import java.util.BitSet;
 
 /**
  * The mutation probability is adapted using a parameter tau and stored in the individual.
@@ -75,7 +74,7 @@ public class MutateGAAdaptive implements InterfaceMutation, java.io.Serializable
         //System.out.println("Before Mutate: " +((GAIndividual)individual).getSolutionRepresentationFor());
         if (individual instanceof InterfaceGAIndividual) {
             BitSet  tmpBitSet   = ((InterfaceGAIndividual)individual).getBGenotype();
-            this.m_MutationStep = this.m_MutationStep * Math.exp(this.m_Tau1 * RNG.gaussianDouble(1));
+            this.m_MutationStep *= Math.exp(this.m_Tau1 * RNG.gaussianDouble(1));
             if (this.m_MutationStep < this.m_LowerLimitStepSize) this.m_MutationStep = this.m_LowerLimitStepSize;
             for (int i = 0; i < ((InterfaceGAIndividual)individual).getGenotypeLength(); i++) {
                 if (RNG.flipCoin(this.m_MutationStep/((InterfaceGAIndividual)individual).getGenotypeLength())) {

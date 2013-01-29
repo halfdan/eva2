@@ -1,12 +1,11 @@
 package eva2.server.go.operators.paramcontrol;
 
-import java.io.Serializable;
-import java.util.LinkedList;
-
 import eva2.server.go.individuals.InterfaceDataTypeDouble;
 import eva2.server.go.operators.constraint.AbstractConstraint;
 import eva2.server.go.populations.Population;
 import eva2.tools.math.Mathematics;
+import java.io.Serializable;
+import java.util.LinkedList;
 
 /**
  * Simple penalty factor adaption for contraints with fitness based penalty after Bean and Hadj-Alouane 1992/1997.

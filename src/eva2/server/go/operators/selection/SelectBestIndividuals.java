@@ -1,11 +1,10 @@
 package eva2.server.go.operators.selection;
 
 
-import java.util.ArrayList;
-
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.populations.Population;
 import eva2.tools.math.RNG;
+import java.util.ArrayList;
 
 /** Select the best individuals.
  * In case of multiple fitness values the selection

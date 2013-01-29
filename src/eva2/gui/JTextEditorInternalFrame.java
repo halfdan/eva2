@@ -12,14 +12,14 @@ package eva2.gui;
 /*==========================================================================*
  * IMPORTS
  *==========================================================================*/
+import java.awt.Event;
+import java.awt.event.*;
+import java.io.*;
+import java.util.Hashtable;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.text.*;
 import javax.swing.undo.*;
-import java.io.*;
-import java.util.Hashtable;
-import java.awt.event.* ;
-import java.awt.Event;
 
 
 public class JTextEditorInternalFrame extends JDocFrame{
@@ -138,7 +138,9 @@ public class JTextEditorInternalFrame extends JDocFrame{
     hashActions.put(redoAction, actRedo = new RedoAction());
 
     Action[] actions = textArea.getActions();
-    for(int i = 0; i < actions.length; i++) hashActions.put((String)actions[i].getValue(Action.NAME), actions[i]);
+    for(int i = 0; i < actions.length; i++) {
+            hashActions.put((String)actions[i].getValue(Action.NAME), actions[i]);
+        }
 
     mnuEdit = new JExtMenu("&Bearbeiten");
     barEdit = new JExtToolBar();

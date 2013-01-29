@@ -5,9 +5,7 @@ package eva2.gui;
  * $Date: 2006-01-18 11:02:22 +0100 (Wed, 18 Jan 2006) $ $Author: streiche $
  */
 
-import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.Event;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

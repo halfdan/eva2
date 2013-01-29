@@ -13,9 +13,7 @@ import eva2.server.go.strategies.InterfaceOptimizer;
 import eva2.tools.Serializer;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /** The class gives access to all DE parameters for the EvA
  * top level GUI.

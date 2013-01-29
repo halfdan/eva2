@@ -12,9 +12,8 @@ package eva2.tools;
 /*==========================================================================*
  * IMPORTS
  *==========================================================================*/
-import java.util.Comparator;
-
 import eva2.tools.math.RNG;
+import java.util.Comparator;
 /**
  *
  */
@@ -39,8 +38,9 @@ public class KMEANSJAVA {
    */
   private double dist (double[] x1,double[] x2) {
     double ret = 0;
-    for (int i=0;i<x1.length;i++)
-      ret = ret + (x1[i]-x2[i]) *  (x1[i]-x2[i]);
+    for (int i=0;i<x1.length;i++) {
+            ret += (x1[i]-x2[i]) *  (x1[i]-x2[i]);
+        }
     return Math.sqrt(ret);
   }
   /**
@@ -52,8 +52,9 @@ public class KMEANSJAVA {
     if (K>samples.length) K = samples.length;
     int counter=0;
     m_C = new double[K][];
-    for (int i=0;i<K;i++)  // random Init !!
-      m_C[i] = (double[])samples[i].clone();
+    for (int i=0;i<K;i++) {
+            m_C[i] = (double[])samples[i].clone();
+        }
     m_IDX = new int[samples.length];
     while (counter++<iterations) {
       // determine m_IDX start
@@ -77,13 +78,14 @@ public class KMEANSJAVA {
           if (m_IDX[j]==indexofc) {
             treffer++;
             for (int d =0;d<newcenter.length;d++) {
-              newcenter[d] = newcenter[d] + m_C[m_IDX[j]][d];
+                            newcenter[d] += m_C[m_IDX[j]][d];
               //newcenter[d] = newcenter[d] + samples[j][d];
             }
           }
         }
-        for (int d =0;d<newcenter.length;d++)
-          newcenter[d] = newcenter[d] / treffer;
+        for (int d =0;d<newcenter.length;d++) {
+                    newcenter[d] /= treffer;
+                }
          m_C[indexofc] = newcenter;
       }
       // determine the new centers

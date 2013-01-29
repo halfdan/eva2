@@ -38,8 +38,12 @@ public class SelProbRanking extends AbstractSelProb implements java.io.Serializa
         if (obeyConst) {
             for (int x = 0; x < data[0].length; x++) {
                 sum = 0;
-                for (int i = 0; i < result.length; i++) result[i] = 0;
-                for (int i = 0; i < data.length; i++) data[i][x] = -data[i][x];
+                for (int i = 0; i < result.length; i++) {
+                    result[i] = 0;
+                }
+                for (int i = 0; i < data.length; i++) {
+                    data[i][x] = -data[i][x];
+                }
                 for (int i = 0; i < data.length; i++) {
                     for (int j = i + 1; j < data.length; j++) {
                         if (!(((AbstractEAIndividual)population.get(i)).violatesConstraint()) && (!((AbstractEAIndividual)population.get(j)).violatesConstraint())) {
@@ -68,8 +72,12 @@ public class SelProbRanking extends AbstractSelProb implements java.io.Serializa
         } else {
             for (int x = 0; x < data[0].length; x++) {
                 sum = 0;
-                for (int i = 0; i < result.length; i++) result[i] = 0;
-                for (int i = 0; i < data.length; i++) data[i][x] = -data[i][x];
+                for (int i = 0; i < result.length; i++) {
+                    result[i] = 0;
+                }
+                for (int i = 0; i < data.length; i++) {
+                    data[i][x] = -data[i][x];
+                }
                 for (int i = 0; i < data.length; i++) {
                     for (int j = i + 1; j < data.length; j++) {
                         if (data[j][x] < data[i][x]) result[i]++;

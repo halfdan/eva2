@@ -1,13 +1,12 @@
 package eva2.server.stat;
 
+import eva2.gui.BeanInspector;
+import eva2.tools.ReflectPackage;
+import eva2.tools.math.Mathematics;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-
-import eva2.gui.BeanInspector;
-import eva2.tools.ReflectPackage;
-import eva2.tools.math.Mathematics;
 
 /**
  * Do some statistical tests on a set of job results. Note that the plausibility (comparability of the
@@ -310,7 +309,9 @@ public class EvAStatisticalEvaluation {
 		for (EvAJob j:jobList) {
 			if (lSoFar==null) {
 				lSoFar = new LinkedList<String>();
-				for (String f : j.getFieldHeaders()) lSoFar.add(f);
+				for (String f : j.getFieldHeaders()) {
+                    lSoFar.add(f);
+                }
 			} else {
 				for (String f : lSoFar) {
 					if (j.getFieldIndex(f)>=0) tmpL.add(f);

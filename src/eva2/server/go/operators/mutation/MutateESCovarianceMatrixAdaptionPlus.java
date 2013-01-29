@@ -165,7 +165,7 @@ public class MutateESCovarianceMatrixAdaptionPlus extends
 					.getEAIndividual(i).getFitness(0))
 				rate++;
 		}
-		rate = rate / parentPop.size();
+		            rate /= parentPop.size();
 
 		if (updateSelected)
 			for (int i = 0; i < selectedPop.size(); i++) { // applied to the old
@@ -208,9 +208,8 @@ public class MutateESCovarianceMatrixAdaptionPlus extends
 
 	public void updateStepSize(double psuccess) {
 		this.m_psuccess = (1 - m_cp) * m_psuccess + m_cp * psuccess;
-		m_SigmaGlobal = m_SigmaGlobal
-				* Math.exp(1 / m_stepd * (m_psuccess - m_psuccesstarget)
-						/ (1 - m_psuccesstarget));
+		m_SigmaGlobal *= Math.exp(1 / m_stepd * (m_psuccess - m_psuccesstarget)
+                                               / (1 - m_psuccesstarget));
 	}
 
     @Override

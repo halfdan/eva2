@@ -1,12 +1,5 @@
 package eva2.tools.math;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.BitSet;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-
 import eva2.gui.BeanInspector;
 import eva2.server.go.enums.BOAScoringMethods;
 import eva2.server.go.individuals.AbstractEAIndividual;
@@ -14,6 +7,12 @@ import eva2.server.go.individuals.InterfaceDataTypeBinary;
 import eva2.server.go.individuals.InterfaceGAIndividual;
 import eva2.server.go.populations.Population;
 import eva2.tools.Pair;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.BitSet;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 
 public class BayNet {
 
@@ -537,25 +536,25 @@ public class BayNet {
 			}
 			double[] pTable = currentNode.getPTable();
 			switch(this.scoringMethod){
-			case BIC: result = result - (Math.log(pop.size()) * pTable.length * 2)/2;break;
+			case BIC: result -= (Math.log(pop.size()) * pTable.length * 2)/2;break;
 			default: break;
 			}
 			for(int j=0; j<pTable.length; j++){
 				Population pop2 = numberSetCorrectly(pop, j, parId);
 //				double firstFraction = 0.0;
 				switch(this.scoringMethod){
-				case BDM: result = result + Math.log(firstFractionBDM(pop, parents, pop2)); break;
-				case K2: result = result + Math.log(firstFractionBDM(pop, parents, pop2)); break;
-				case BIC: result = result - firstFractionBIC(pop2); break;
+				case BDM: result += Math.log(firstFractionBDM(pop, parents, pop2)); break;
+				case K2: result += Math.log(firstFractionBDM(pop, parents, pop2)); break;
+				case BIC: result -= firstFractionBIC(pop2); break;
 				}
 //				result = result + Math.log(firstFraction);
 				if(pop2.size() > 0){
 					for(int k=0; k<2; k++){
 //						double secondFraction = 0.0;
 						switch(this.scoringMethod){
-						case BDM: result = result +  Math.log(secondFractionBDM(pop, currentNode, parents, j, pop2, k)); break;
-						case K2: result = result + Math.log(secondFractionBDM(pop, currentNode, parents, j, pop2, k)); break;
-						case BIC: result = result + secondFractionBIC(pop2, currentNode, k, j); break;
+						case BDM: result += Math.log(secondFractionBDM(pop, currentNode, parents, j, pop2, k)); break;
+						case K2: result += Math.log(secondFractionBDM(pop, currentNode, parents, j, pop2, k)); break;
+						case BIC: result += secondFractionBIC(pop2, currentNode, k, j); break;
 						}
 //						result = result + Math.log(secondFraction);
 					}
@@ -579,25 +578,25 @@ public class BayNet {
 			}
 			double[] pTable = currentNode.getPTable();
 			switch(this.scoringMethod){
-			case BIC: result = result - (Math.log(pop.size()) * pTable.length * 2)/2;break;
+			case BIC: result -= (Math.log(pop.size()) * pTable.length * 2)/2;break;
 			default: break;
 			}
 			for(int j=0; j<pTable.length; j++){
 				Population pop2 = numberSetCorrectly(pop, j, parId);
 //				double firstFraction = 0.0;
 				switch(this.scoringMethod){
-				case BDM: result = result + Math.log(firstFractionBDM(pop, parents, pop2)); break;
-				case K2: result = result + Math.log(firstFractionBDM(pop, parents, pop2)); break;
-				case BIC: result = result - firstFractionBIC(pop2); break;
+				case BDM: result += Math.log(firstFractionBDM(pop, parents, pop2)); break;
+				case K2: result += Math.log(firstFractionBDM(pop, parents, pop2)); break;
+				case BIC: result -= firstFractionBIC(pop2); break;
 				}
 //				result = result + Math.log(firstFraction);
 				if(pop2.size() > 0){
 					for(int k=0; k<2; k++){
 //						double secondFraction = 0.0;
 						switch(this.scoringMethod){
-						case BDM: result = result +  Math.log(secondFractionBDM(pop, currentNode, parents, j, pop2, k)); break;
-						case K2: result = result + Math.log(secondFractionBDM(pop, currentNode, parents, j, pop2, k)); break;
-						case BIC: result = result + secondFractionBIC(pop2, currentNode, k, j); break;
+						case BDM: result += Math.log(secondFractionBDM(pop, currentNode, parents, j, pop2, k)); break;
+						case K2: result += Math.log(secondFractionBDM(pop, currentNode, parents, j, pop2, k)); break;
+						case BIC: result += secondFractionBIC(pop2, currentNode, k, j); break;
 						}
 //						result = result + Math.log(secondFraction);
 					}
@@ -620,22 +619,22 @@ public class BayNet {
 		}
 		double[] pTable = currentNode.getPTable();
 		switch(this.scoringMethod){
-		case BIC: result = result - (Math.log(pop.size()) * pTable.length * 2)/2;break;
+		case BIC: result -= (Math.log(pop.size()) * pTable.length * 2)/2;break;
 		default: break;
 		}
 		for(int j=0; j<pTable.length; j++){
 			Population pop2 = numberSetCorrectly(pop, j, parId);
 			switch(this.scoringMethod){
-			case BDM: result = result + Math.log(firstFractionBDM(pop, parents, pop2)); break;
-			case K2: result = result + Math.log(firstFractionBDM(pop, parents, pop2)); break;
-			case BIC: result = result - firstFractionBIC(pop2); break;
+			case BDM: result += Math.log(firstFractionBDM(pop, parents, pop2)); break;
+			case K2: result += Math.log(firstFractionBDM(pop, parents, pop2)); break;
+			case BIC: result -= firstFractionBIC(pop2); break;
 			}
 			if(pop2.size() > 0){
 				for(int k=0; k<2; k++){
 					switch(this.scoringMethod){
-					case BDM: result = result +  Math.log(secondFractionBDM(pop, currentNode, parents, j, pop2, k)); break;
-					case K2: result = result + Math.log(secondFractionBDM(pop, currentNode, parents, j, pop2, k)); break;
-					case BIC: result = result + secondFractionBIC(pop2, currentNode, k, j); break;
+					case BDM: result += Math.log(secondFractionBDM(pop, currentNode, parents, j, pop2, k)); break;
+					case K2: result += Math.log(secondFractionBDM(pop, currentNode, parents, j, pop2, k)); break;
+					case BIC: result += secondFractionBIC(pop2, currentNode, k, j); break;
 					}
 				}
 			}
@@ -668,22 +667,22 @@ public class BayNet {
 		}
 		double[] pTable = currentNode.getPTable();
 		switch(this.scoringMethod){
-		case BIC: result = result - (Math.log(pop.size()) * pTable.length * 2)/2;break;
+		case BIC: result -= (Math.log(pop.size()) * pTable.length * 2)/2;break;
 		default: break;
 		}
 		for(int j=0; j<pTable.length; j++){
 			Population pop2 = numberSetCorrectly(pop, j, parId);
 			switch(this.scoringMethod){
-			case BDM: result = result + Math.log(firstFractionBDM(pop, parents, pop2)); break;
-			case K2: result = result + Math.log(firstFractionBDM(pop, parents, pop2)); break;
-			case BIC: result = result - firstFractionBIC(pop2); break;
+			case BDM: result += Math.log(firstFractionBDM(pop, parents, pop2)); break;
+			case K2: result += Math.log(firstFractionBDM(pop, parents, pop2)); break;
+			case BIC: result -= firstFractionBIC(pop2); break;
 			}
 			if(pop2.size() > 0){
 				for(int k=0; k<2; k++){
 					switch(this.scoringMethod){
-					case BDM: result = result +  Math.log(secondFractionBDM(pop, currentNode, parents, j, pop2, k)); break;
-					case K2: result = result + Math.log(secondFractionBDM(pop, currentNode, parents, j, pop2, k)); break;
-					case BIC: result = result + secondFractionBIC(pop2, currentNode, k, j); break;
+					case BDM: result += Math.log(secondFractionBDM(pop, currentNode, parents, j, pop2, k)); break;
+					case K2: result += Math.log(secondFractionBDM(pop, currentNode, parents, j, pop2, k)); break;
+					case BIC: result += secondFractionBIC(pop2, currentNode, k, j); break;
 					}
 				}
 			}
@@ -850,9 +849,10 @@ public class BayNet {
 
 		// setting up the number in reverse order
 		int mask = 1;
-		for (int i = 0; i < length; ++i, mask <<= 1)
-			if ((mask & absValue) > 0)
-				bitSet.set(offset + i);
+		for (int i = 0; i < length; ++i, mask <<= 1) {
+            if ((mask & absValue) > 0)
+                    bitSet.set(offset + i);
+        }
 
 		// setting up the sign
 		if (value < 0)
@@ -897,21 +897,21 @@ public class BayNet {
 	
 	public String generateYFilesCode(){
 		String result = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n";
-		result = result + "<graphml xmlns=\"http://graphml.graphdrawing.org/xmlns\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:y=\"http://www.yworks.com/xml/graphml\" xmlns:yed=\"http://www.yworks.com/xml/yed/3\" xsi:schemaLocation=\"http://graphml.graphdrawing.org/xmlns http://www.yworks.com/xml/schema/graphml/1.1/ygraphml.xsd\">\n";
-		result = result + "  <!--Created by yFiles for Java HEAD-Current-->\n";
-		result = result + "  <key for=\"graphml\" id=\"d0\" yfiles.type=\"resources\"/>\n";
-		result = result + "  <key for=\"port\" id=\"d1\" yfiles.type=\"portgraphics\"/>\n";
-		result = result + "  <key for=\"port\" id=\"d2\" yfiles.type=\"portgeometry\"/>\n";
-		result = result + "  <key for=\"port\" id=\"d3\" yfiles.type=\"portuserdata\"/>\n";
-		result = result + "  <key attr.name=\"url\" attr.type=\"string\" for=\"node\" id=\"d4\"/>\n";
-		result = result + "  <key attr.name=\"description\" attr.type=\"string\" for=\"node\" id=\"d5\"/>\n";
-		result = result + "  <key for=\"node\" id=\"d6\" yfiles.type=\"nodegraphics\"/>\n";
-		result = result + "  <key attr.name=\"Beschreibung\" attr.type=\"string\" for=\"graph\" id=\"d7\"/>\n";
-		result = result + "  <key attr.name=\"url\" attr.type=\"string\" for=\"edge\" id=\"d8\"/>\n";
-		result = result + "  <key attr.name=\"description\" attr.type=\"string\" for=\"edge\" id=\"d9\"/>\n";
-		result = result + "  <key for=\"edge\" id=\"d10\" yfiles.type=\"edgegraphics\"/>\n";
-		result = result + "  <graph edgedefault=\"directed\" id=\"G\">\n";
-		result = result + "    <data key=\"d7\"/>\n";
+		result += "<graphml xmlns=\"http://graphml.graphdrawing.org/xmlns\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:y=\"http://www.yworks.com/xml/graphml\" xmlns:yed=\"http://www.yworks.com/xml/yed/3\" xsi:schemaLocation=\"http://graphml.graphdrawing.org/xmlns http://www.yworks.com/xml/schema/graphml/1.1/ygraphml.xsd\">\n";
+		result += "  <!--Created by yFiles for Java HEAD-Current-->\n";
+		result += "  <key for=\"graphml\" id=\"d0\" yfiles.type=\"resources\"/>\n";
+		result += "  <key for=\"port\" id=\"d1\" yfiles.type=\"portgraphics\"/>\n";
+		result += "  <key for=\"port\" id=\"d2\" yfiles.type=\"portgeometry\"/>\n";
+		result += "  <key for=\"port\" id=\"d3\" yfiles.type=\"portuserdata\"/>\n";
+		result += "  <key attr.name=\"url\" attr.type=\"string\" for=\"node\" id=\"d4\"/>\n";
+		result += "  <key attr.name=\"description\" attr.type=\"string\" for=\"node\" id=\"d5\"/>\n";
+		result += "  <key for=\"node\" id=\"d6\" yfiles.type=\"nodegraphics\"/>\n";
+		result += "  <key attr.name=\"Beschreibung\" attr.type=\"string\" for=\"graph\" id=\"d7\"/>\n";
+		result += "  <key attr.name=\"url\" attr.type=\"string\" for=\"edge\" id=\"d8\"/>\n";
+		result += "  <key attr.name=\"description\" attr.type=\"string\" for=\"edge\" id=\"d9\"/>\n";
+		result += "  <key for=\"edge\" id=\"d10\" yfiles.type=\"edgegraphics\"/>\n";
+		result += "  <graph edgedefault=\"directed\" id=\"G\">\n";
+		result += "    <data key=\"d7\"/>\n";
 		for(int i=0; i<this.nodes.length; i++){
 			Pair<Integer, String> pair = generateTable(i);
 			Integer length = pair.getHead();
@@ -921,42 +921,42 @@ public class BayNet {
 			Double height = 40+11*Math.pow(2, length-1);
 			Double width = (double) (40+10*length);
 		    result = result + "    <node id=\"n" + i + "\">\n";
-		    result = result + "      <data key=\"d5\"/>\n";
-		    result = result + "      <data key=\"d6\">\n";
-		    result = result + "        <y:ShapeNode>\n";
+		    result += "      <data key=\"d5\"/>\n";
+		    result += "      <data key=\"d6\">\n";
+		    result += "        <y:ShapeNode>\n";
 		    result = result + "          <y:Geometry height=\""+ height +"\" width=\""+ width +"\" x=\"" + x + "\" y=\"" + y + "\"/>\n";
-		    result = result + "          <y:Fill color=\"#FFCC00\" transparent=\"false\"/>\n";
-		    result = result + "          <y:BorderStyle color=\"#000000\" type=\"line\" width=\"1.0\"/>\n";
+		    result += "          <y:Fill color=\"#FFCC00\" transparent=\"false\"/>\n";
+		    result += "          <y:BorderStyle color=\"#000000\" type=\"line\" width=\"1.0\"/>\n";
 		    result = result + "          <y:NodeLabel alignment=\"center\" autoSizePolicy=\"content\" fontFamily=\"Dialog\" fontSize=\"12\" fontStyle=\"plain\" hasBackgroundColor=\"false\" hasLineColor=\"false\" height=\"18.701171875\" modelName=\"internal\" modelPosition=\"c\" textColor=\"#000000\" visible=\"true\" width=\"10.673828125\" x=\"9.6630859375\" y=\"5.6494140625\">" + i + table + "</y:NodeLabel>\n";
-		    result = result + "          <y:Shape type=\"roundrectangle\"/>\n";
-		    result = result + "        </y:ShapeNode>\n";
-		    result = result + "      </data>\n";
-		    result = result + "    </node>\n";
+		    result += "          <y:Shape type=\"roundrectangle\"/>\n";
+		    result += "        </y:ShapeNode>\n";
+		    result += "      </data>\n";
+		    result += "    </node>\n";
 		}
 		int cnt = 0;
 		for(int i=0; i<this.network.length; i++){
 			for(int j=0; j<this.network[i].length; j++){
 				if(this.network[i][j]){
 					result = result + "    <edge id=\"e" + cnt + "\" source=\"n" + i + "\" target=\"n" + j + "\">\n";
-					result = result + "      <data key=\"d9\"/>\n";
-					result = result + "      <data key=\"d10\">\n";
-					result = result + "        <y:PolyLineEdge>\n";
-					result = result + "          <y:Path sx=\"0.0\" sy=\"0.0\" tx=\"0.0\" ty=\"0.0\"/>\n";
-					result = result + "          <y:LineStyle color=\"#000000\" type=\"line\" width=\"1.0\"/>\n";
-					result = result + "          <y:Arrows source=\"none\" target=\"standard\"/>\n";
-					result = result + "          <y:BendStyle smoothed=\"false\"/>\n";
-					result = result + "        </y:PolyLineEdge>\n";
-					result = result + "      </data>\n";
-					result = result + "    </edge>\n";
+					result += "      <data key=\"d9\"/>\n";
+					result += "      <data key=\"d10\">\n";
+					result += "        <y:PolyLineEdge>\n";
+					result += "          <y:Path sx=\"0.0\" sy=\"0.0\" tx=\"0.0\" ty=\"0.0\"/>\n";
+					result += "          <y:LineStyle color=\"#000000\" type=\"line\" width=\"1.0\"/>\n";
+					result += "          <y:Arrows source=\"none\" target=\"standard\"/>\n";
+					result += "          <y:BendStyle smoothed=\"false\"/>\n";
+					result += "        </y:PolyLineEdge>\n";
+					result += "      </data>\n";
+					result += "    </edge>\n";
 					cnt++;
 				}
 			}
 		}
-		result = result + "  </graph>\n";
-		result = result + "  <data key=\"d0\">\n";
-		result = result + "    <y:Resources/>\n";
-		result = result + "  </data>\n";
-		result = result + "</graphml>\n";
+		result += "  </graph>\n";
+		result += "  <data key=\"d0\">\n";
+		result += "    <y:Resources/>\n";
+		result += "  </data>\n";
+		result += "</graphml>\n";
 		return result;
 	}
 
@@ -965,13 +965,13 @@ public class BayNet {
 		double [] pTable = nodes[i].getPTable();
 		int length = Integer.toBinaryString(pTable.length).length();
 		for(int j=0; j<pTable.length; j++){
-			result = result + "\n";
+			result += "\n";
 			String line = Integer.toBinaryString(j);
 			while(line.length() < length-1){
 				line = "0" + line;
 			}
 			line = line + ": "+pTable[j];
-			result = result + line;
+			result += line;
 		}
 		Pair<Integer, String> p = new Pair<Integer, String>();
 		p.setHead(length);

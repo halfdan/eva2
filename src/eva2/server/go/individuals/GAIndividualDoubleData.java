@@ -1,8 +1,6 @@
 package eva2.server.go.individuals;
 
 
-import java.util.BitSet;
-
 import eva2.server.go.individuals.codings.ga.GAStandardCodingDouble;
 import eva2.server.go.individuals.codings.ga.InterfaceGADoubleCoding;
 import eva2.server.go.operators.crossover.CrossoverGAGINPoint;
@@ -11,6 +9,7 @@ import eva2.server.go.operators.mutation.InterfaceMutation;
 import eva2.server.go.operators.mutation.MutateGAUniform;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
+import java.util.BitSet;
 
 /** This individual uses a binary genotype to code for double values
  * using two alternative encodings.
@@ -247,9 +246,13 @@ public class GAIndividualDoubleData extends AbstractEAIndividual implements Inte
         String result = "";
         result += "GAIndividual coding double: (";
         result += "Fitness {";
-        for (int i = 0; i < this.m_Fitness.length; i++) result += this.m_Fitness[i] + ";";
+        for (int i = 0; i < this.m_Fitness.length; i++) {
+            result += this.m_Fitness[i] + ";";
+        }
         result += "}/SelProb{";
-        for (int i = 0; i < this.m_SelectionProbability.length; i++) result += this.m_SelectionProbability[i] + ";";
+        for (int i = 0; i < this.m_SelectionProbability.length; i++) {
+            result += this.m_SelectionProbability[i] + ";";
+        }
         result += "})\n Value: ";
         result += "[";
         double[] d = this.getDoubleData();

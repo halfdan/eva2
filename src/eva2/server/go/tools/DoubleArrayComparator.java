@@ -1,8 +1,7 @@
 package eva2.server.go.tools;
 
-import java.util.Comparator;
-
 import eva2.server.go.individuals.AbstractEAIndividual;
+import java.util.Comparator;
 
 /**
  * Comparator implementation which compares two double arrays.

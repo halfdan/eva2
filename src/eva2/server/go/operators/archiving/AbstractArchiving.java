@@ -84,7 +84,9 @@ public abstract class AbstractArchiving implements InterfaceArchiving, java.io.S
      **/
      public void plotParetoFront(Population pop, Plot plot) {
         DPointIcon[] icons = new DPointIcon[pop.size()];
-        for (int i = 0; i < icons.length; i++) icons[i] = new Chart2DDPointIconCross();
+        for (int i = 0; i < icons.length; i++) {
+             icons[i] = new Chart2DDPointIconCross();
+         }
         this.plotParetoFront(pop, icons, plot);
     }
 

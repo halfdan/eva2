@@ -84,8 +84,12 @@ public class SelProbBoltzman extends AbstractSelProb implements java.io.Serializ
                         sum += result[i];
                     }
 
-                    if (sum == 0) for (int i = 0; i < data.length; i++) result[i] = 1/result.length;
-                    else for (int i = 0; i < data.length; i++) result[i] = result[i]/sum;
+                    if (sum == 0) for (int i = 0; i < data.length; i++) {
+                        result[i] = 1/result.length;
+                    }
+                    else for (int i = 0; i < data.length; i++) {
+                        result[i] /= sum;
+                    }
 
                     boolean check = true;
                     for (int i = 0; i < data.length; i++) {
@@ -97,10 +101,14 @@ public class SelProbBoltzman extends AbstractSelProb implements java.io.Serializ
                         System.out.println("Mean: " + mean);
                         System.out.println("Dev:  " + dev);
                         System.out.println("Worst:" + worst);
-                        for (int i = 0; i < data.length; i++) result[i] = 1/result.length;
+                        for (int i = 0; i < data.length; i++) {
+                            result[i] = 1/result.length;
+                        }
                     }
 
-                    for (int i = 0; i < population.size(); i++) ((AbstractEAIndividual)population.get(i)).SetSelectionProbability(x, result[i]);
+                    for (int i = 0; i < population.size(); i++) {
+                        ((AbstractEAIndividual)population.get(i)).SetSelectionProbability(x, result[i]);
+                    }
                 }
             } else {
                 // not one is feasible therefore select the best regarding feasibility
@@ -123,14 +131,22 @@ public class SelProbBoltzman extends AbstractSelProb implements java.io.Serializ
                     sum += result[i];
                 }
 
-                if (sum == 0) for (int i = 0; i < data.length; i++) result[i] = 1/result.length;
-                else for (int i = 0; i < data.length; i++) result[i] = result[i]/sum;
+                if (sum == 0) for (int i = 0; i < data.length; i++) {
+                    result[i] = 1/result.length;
+                }
+                else for (int i = 0; i < data.length; i++) {
+                    result[i] /= sum;
+                }
 
                 boolean check = true;
-                for (int i = 0; i < data.length; i++) if (Double.isNaN(result[i])) check = false;
+                for (int i = 0; i < data.length; i++) {
+                    if (Double.isNaN(result[i])) check = false;
+                }
                 if (!check) {
                     System.out.println("Boltzman Normation created major error (const, but no feasible)!");
-                    for (int i = 0; i < data.length; i++) result[i] = 1/result.length;
+                    for (int i = 0; i < data.length; i++) {
+                        result[i] = 1/result.length;
+                    }
                 }
                 for (int i = 0; i < population.size(); i++) {
                     double[] tmpD = new double[1];
@@ -158,17 +174,27 @@ public class SelProbBoltzman extends AbstractSelProb implements java.io.Serializ
                     sum += result[i];
                 }
 
-                if (sum == 0) for (int i = 0; i < data.length; i++) result[i] = 1/result.length;
-                else for (int i = 0; i < data.length; i++) result[i] = result[i]/sum;
-
-                boolean check = true;
-                for (int i = 0; i < data.length; i++) if (Double.isNaN(result[i])) check = false;
-                if (!check) {
-                    System.out.println("Boltzman Normation created major error (no const)!");
-                    for (int i = 0; i < data.length; i++) result[i] = 1/result.length;
+                if (sum == 0) for (int i = 0; i < data.length; i++) {
+                    result[i] = 1/result.length;
+                }
+                else for (int i = 0; i < data.length; i++) {
+                    result[i] /= sum;
                 }
 
-                for (int i = 0; i < population.size(); i++) ((AbstractEAIndividual)population.get(i)).SetSelectionProbability(x, result[i]);
+                boolean check = true;
+                for (int i = 0; i < data.length; i++) {
+                    if (Double.isNaN(result[i])) check = false;
+                }
+                if (!check) {
+                    System.out.println("Boltzman Normation created major error (no const)!");
+                    for (int i = 0; i < data.length; i++) {
+                        result[i] = 1/result.length;
+                    }
+                }
+
+                for (int i = 0; i < population.size(); i++) {
+                    ((AbstractEAIndividual)population.get(i)).SetSelectionProbability(x, result[i]);
+                }
             }
         }
     }

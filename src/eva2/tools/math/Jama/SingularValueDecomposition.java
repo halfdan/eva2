@@ -414,7 +414,7 @@ public class SingularValueDecomposition implements java.io.Serializable {
                   }
                }
                e[p-2] = f;
-               iter = iter + 1;
+                iter += 1;
             }
             break;
 

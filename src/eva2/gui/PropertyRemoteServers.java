@@ -1,9 +1,8 @@
 package eva2.gui;
 
+import eva2.tools.jproxy.RMIInvocationHandler;
 import java.rmi.Naming;
 import java.util.ArrayList;
-
-import eva2.tools.jproxy.RMIInvocationHandler;
 
 
 /**

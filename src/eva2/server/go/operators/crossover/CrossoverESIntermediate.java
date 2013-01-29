@@ -59,15 +59,23 @@ public class CrossoverESIntermediate implements InterfaceCrossover, java.io.Seri
 
             for (int i = 0; i < children[0].length; i++) {
                 intermediate = 0;
-                for (int j = 0; j < parents.length; j++) intermediate += parents[j][i];
-                intermediate = intermediate/parents.length;
-                for (int j = 0; j < children.length; j++) children[j][i] = intermediate;
+                for (int j = 0; j < parents.length; j++) {
+                    intermediate += parents[j][i];
+                }
+                intermediate /= parents.length;
+                for (int j = 0; j < children.length; j++) {
+                    children[j][i] = intermediate;
+                }
             }
             // write the result back
-            for (int i = 0; i < result.length; i++) ((InterfaceESIndividual)result[i]).SetDGenotype(children[i]);
+            for (int i = 0; i < result.length; i++) {
+                ((InterfaceESIndividual)result[i]).SetDGenotype(children[i]);
+            }
        }
         //in case the crossover was successfull lets give the mutation operators a chance to mate the strategy parameters
-        for (int i = 0; i < result.length; i++) result[i].getMutationOperator().crossoverOnStrategyParameters(indy1, partners);
+        for (int i = 0; i < result.length; i++) {
+            result[i].getMutationOperator().crossoverOnStrategyParameters(indy1, partners);
+        }
         //for (int i = 0; i < result.length; i++) System.out.println("After Crossover: " +result[i].getSolutionRepresentationFor());
         return result;
     }

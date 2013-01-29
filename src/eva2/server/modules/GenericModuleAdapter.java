@@ -1,9 +1,6 @@
 package eva2.server.modules;
 
 
-import java.io.Serializable;
-import java.lang.reflect.Proxy;
-
 import eva2.gui.EvAModuleButtonPanelMaker;
 import eva2.gui.EvATabbedFrameMaker;
 import eva2.gui.GenericObjectEditor;
@@ -17,6 +14,8 @@ import eva2.server.stat.StatisticsStandalone;
 import eva2.server.stat.StatisticsWithGUI;
 import eva2.tools.jproxy.MainAdapterClient;
 import eva2.tools.jproxy.RMIProxyLocal;
+import java.io.Serializable;
+import java.lang.reflect.Proxy;
 
 public class GenericModuleAdapter extends AbstractModuleAdapter implements Serializable {
 

@@ -53,7 +53,9 @@ public class PropertyOptimizationObjectivesWithParam implements java.io.Serializ
 
         if (this.m_Weights == null) {
             this.m_Weights = new double[d.length];
-            for (int i = 0; i < this.m_Weights.length; i++) this.m_Weights[i] = 1.0;
+            for (int i = 0; i < this.m_Weights.length; i++) {
+                this.m_Weights[i] = 1.0;
+            }
             return;
         }
 
@@ -61,11 +63,15 @@ public class PropertyOptimizationObjectivesWithParam implements java.io.Serializ
         
         if (d.length > this.m_Weights.length) {
             double[] newWeights = new double[d.length];
-            for (int i = 0; i < this.m_Weights.length; i++) newWeights[i] = this.m_Weights[i];
+            for (int i = 0; i < this.m_Weights.length; i++) {
+                newWeights[i] = this.m_Weights[i];
+            }
             this.m_Weights = newWeights;
         } else {
             double[] newWeights = new double[d.length];
-            for (int i = 0; i < d.length; i++) newWeights[i] = this.m_Weights[i];
+            for (int i = 0; i < d.length; i++) {
+                newWeights[i] = this.m_Weights[i];
+            }
             this.m_Weights = newWeights;
         }
     }

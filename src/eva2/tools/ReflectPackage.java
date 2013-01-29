@@ -1,5 +1,6 @@
 package eva2.tools;
 
+import eva2.gui.BeanInspector;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -15,11 +16,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
-
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
-
-import eva2.gui.BeanInspector;
 
 
 /**
@@ -363,7 +361,9 @@ public class ReflectPackage {
 		ArrayList<String> valids = getValidCPEntries();
 //		vp = valids.toArray(dynCP); // this causes Matlab to crash meanly.
 		String[] vp = new String[valids.size()];
-		for (int i=0; i<valids.size(); i++) vp[i] = valids.get(i);
+		for (int i=0; i<valids.size(); i++) {
+            vp[i] = valids.get(i);
+        }
 		return vp;
 	}
 	
@@ -536,7 +536,9 @@ public class ReflectPackage {
 		try {
 			Class<?> clz = Class.forName(clsName);
 			Class<?>[] argClz=new Class[args.length]; 
-			for (int i=0; i<args.length; i++) argClz[i]=args[i].getClass();
+			for (int i=0; i<args.length; i++) {
+                argClz[i]=args[i].getClass();
+            }
 			Constructor<?> ct;
 			try {
 				ct = clz.getConstructor(argClz);

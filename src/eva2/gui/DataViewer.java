@@ -12,11 +12,10 @@ package eva2.gui;
 /*==========================================================================*
  * IMPORTS
  *==========================================================================*/
-import java.net.InetAddress;
-import java.util.ArrayList;
-
 import eva2.tools.jproxy.MainAdapterClient;
 import eva2.tools.jproxy.RMIProxyRemote;
+import java.net.InetAddress;
+import java.util.ArrayList;
 
 /*==========================================================================*
  * CLASS DECLARATION

@@ -1,11 +1,10 @@
 package eva2.tools;
 
-import java.util.StringTokenizer;
-import java.rmi.Naming;
-
 import eva2.server.EvAMainAdapter;
 import eva2.server.EvAMainAdapterImpl;
 import eva2.tools.jproxy.RMIInvocationHandler;
+import java.rmi.Naming;
+import java.util.StringTokenizer;
 
 /**
  * <p>Title: EvA2</p>

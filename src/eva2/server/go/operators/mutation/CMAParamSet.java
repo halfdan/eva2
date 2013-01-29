@@ -170,7 +170,9 @@ class CMAParamSet implements InterfacePopulationChangedEventListener, Serializab
 			} else theWeights[i] = 1.;
 			sum+=theWeights[i];
 		}
-		for (int i=0; i<mu; i++) theWeights[i] = theWeights[i]/sum; 
+		for (int i=0; i<mu; i++) {
+                theWeights[i] /= sum;
+            } 
 		return theWeights;
 	}
 

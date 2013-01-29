@@ -16,8 +16,6 @@ import  java.beans.*;
 import  java.awt.*;
 import  java.awt.event.*;
 import  javax.swing.*;
-import javax.swing.event.InternalFrameAdapter;
-import javax.swing.event.InternalFrameEvent;
 
 /*==========================================================================*
  * CLASS DECLARATION

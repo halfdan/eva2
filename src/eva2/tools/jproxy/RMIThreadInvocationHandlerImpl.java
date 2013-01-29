@@ -11,14 +11,13 @@ package eva2.tools.jproxy;
 /*==========================================================================*
  * IMPORTS
  *==========================================================================*/
+import eva2.tools.math.RNG;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.InetAddress;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-
-import eva2.tools.math.RNG;
 
 /*==========================================================================*
 * CLASS DECLARATION

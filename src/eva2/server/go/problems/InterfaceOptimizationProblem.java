@@ -1,10 +1,9 @@
 package eva2.server.go.problems;
 
-import javax.swing.*;
-
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.populations.Population;
 import eva2.server.go.strategies.InterfaceOptimizer;
+import javax.swing.*;
 
 /**
  * Created by IntelliJ IDEA.

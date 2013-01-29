@@ -3,7 +3,6 @@ package eva2.server.go.operators.distancemetric;
 import java.io.Serializable;
 
 import eva2.server.go.individuals.AbstractEAIndividual;
-import eva2.server.go.individuals.InterfaceDataTypeDouble;
 import eva2.server.go.strategies.ParticleSwarmOptimization;
 import eva2.tools.EVAERROR;
 

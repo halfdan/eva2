@@ -1,9 +1,8 @@
 package eva2.server.go.operators.distancemetric;
 
-import java.io.Serializable;
-
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.individuals.InterfaceDataTypeDouble;
+import java.io.Serializable;
 
 /**
  * The Euclidean metric just measures the Euclidean distance based on the default double representation

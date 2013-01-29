@@ -172,8 +172,8 @@ public class SimulatedAnnealing implements InterfaceOptimizer, java.io.Serializa
             TmpMeanCalls += program.m_FitnessCallsNeeded;
             TmpMeanFitness += program.m_Best.defaultEvaulateAsMiniBits();
         }
-        TmpMeanCalls = TmpMeanCalls/program.m_MultiRuns;
-        TmpMeanFitness = TmpMeanFitness/program.m_MultiRuns;
+        TmpMeanCalls /= program.m_MultiRuns;
+        TmpMeanFitness /= program.m_MultiRuns;
         System.out.println("("+program.m_MultiRuns+"/"+program.m_FitnessCalls+") Mean Fitness : " + TmpMeanFitness + " Mean Calls needed: " + TmpMeanCalls);
     }
 

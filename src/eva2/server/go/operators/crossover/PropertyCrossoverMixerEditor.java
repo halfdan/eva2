@@ -1,6 +1,12 @@
 package eva2.server.go.operators.crossover;
 
 
+import eva2.gui.GenericObjectEditor;
+import eva2.gui.PropertyEditorProvider;
+import eva2.server.go.tools.AbstractObjectEditor;
+import eva2.server.go.tools.GeneralGEOFaker;
+import eva2.server.go.tools.GeneralGOEProperty;
+import eva2.tools.BasicResourceLoader;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -20,7 +26,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.beans.PropertyEditor;
-
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -31,13 +36,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-
-import eva2.gui.GenericObjectEditor;
-import eva2.gui.PropertyEditorProvider;
-import eva2.server.go.tools.AbstractObjectEditor;
-import eva2.server.go.tools.GeneralGEOFaker;
-import eva2.server.go.tools.GeneralGOEProperty;
-import eva2.tools.BasicResourceLoader;
 
 
 /**
@@ -163,7 +161,9 @@ public class PropertyCrossoverMixerEditor extends JPanel implements PropertyEdit
         this.m_Targets  = new JComponent[list.length];
         this.m_Delete   = new JButton[list.length];
         String[] cups   = new String[8];
-        for (int i = 0; i < cups.length; i++) cups[i] = ""+(i+1);
+        for (int i = 0; i < cups.length; i++) {
+            cups[i] = ""+(i+1);
+        }
         // The head title
         gbc.anchor      = GridBagConstraints.WEST;
         gbc.fill        = GridBagConstraints.BOTH;

@@ -1,14 +1,13 @@
 package eva2.tools.math;
 
-import java.util.Arrays;
-import java.util.List;
-
 import eva2.server.go.tools.DoubleArrayComparator;
 import eva2.tools.EVAERROR;
 import eva2.tools.math.Jama.Matrix;
 import eva2.tools.math.interpolation.BasicDataSet;
 import eva2.tools.math.interpolation.InterpolationException;
 import eva2.tools.math.interpolation.SplineInterpolation;
+import java.util.Arrays;
+import java.util.List;
 
 //created at June 27 2006
 
@@ -28,9 +27,11 @@ public class Mathematics {
 		if (a.length != a[0].length)
 			return null;
 		double[][] b = new double[a.length][a.length];
-		for (int i = 0; i < a.length; i++)
-			for (int j = 0; j < a.length; j++)
-				b[i][j] = adjoint(a, i, j);
+		for (int i = 0; i < a.length; i++) {
+            for (int j = 0; j < a.length; j++) {
+                b[i][j] = adjoint(a, i, j);
+            }
+        }
 		return b;
 	}
 
@@ -98,8 +99,9 @@ public class Mathematics {
 		if (root == 0)
 			throw new RuntimeException("There is no 0-root!");
 		double d = 0;
-		for (int i = 0; i < x.length; i++)
-			d += Math.pow(Math.abs(x[i] - y[i]), root);
+		for (int i = 0; i < x.length; i++) {
+            d += Math.pow(Math.abs(x[i] - y[i]), root);
+        }
 		return Math.pow(d, (double) 1 / root);
 	}
 
@@ -121,8 +123,9 @@ public class Mathematics {
 			throw new RuntimeException(
 					"The vectors x and y must have the same dimension");
 		double d = 0;
-		for (int i = 0; i < x.length; i++)
-			d += Math.pow(Math.abs(x[i] - y[i]), 2);
+		for (int i = 0; i < x.length; i++) {
+            d += Math.pow(Math.abs(x[i] - y[i]), 2);
+        }
 		return Math.sqrt(d);
 	}
 
@@ -143,8 +146,9 @@ public class Mathematics {
 		} else {
 			double[] expanded = new double[len];
 			System.arraycopy(x, 0, expanded, 0, x.length);
-			for (int i = x.length; i < expanded.length; i++)
-				expanded[i] = v;
+			for (int i = x.length; i < expanded.length; i++) {
+                expanded[i] = v;
+            }
 			return expanded;
 		}
 	}
@@ -199,8 +203,9 @@ public class Mathematics {
 	 */
 	public static double getAvgRange(double[][] range) {
 		double sum = 0.;
-		for (int i = 0; i < range.length; i++)
-			sum += (range[i][1] - range[i][0]);
+		for (int i = 0; i < range.length; i++) {
+            sum += (range[i][1] - range[i][0]);
+        }
 		return sum / range.length;
 	}
 
@@ -364,9 +369,11 @@ public class Mathematics {
 		if (det == 0)
 			return null;
 		double[][] b = adjoint(a);
-		for (int i = 0; i < a.length; i++)
-			for (int j = 0; j < a.length; j++)
-				b[i][j] /= det;
+		for (int i = 0; i < a.length; i++) {
+            for (int j = 0; j < a.length; j++) {
+                b[i][j] /= det;
+            }
+        }
 		return b;
 	}
 
@@ -505,8 +512,9 @@ public class Mathematics {
 
 	public static double max(double[] vals) {
 		double maxVal = vals[0];
-		for (int i = 1; i < vals.length; i++)
-			maxVal = Math.max(maxVal, vals[i]);
+		for (int i = 1; i < vals.length; i++) {
+            maxVal = Math.max(maxVal, vals[i]);
+        }
 		return maxVal;
 	}
 
@@ -539,7 +547,7 @@ public class Mathematics {
 			}
 		}
 		for (int i = 0; i < result.length; i++) {
-			result[i] = result[i] / ((double) d.length);
+			result[i] /= ((double) d.length);
 		}
 		return result;
 	}
@@ -675,8 +683,9 @@ public class Mathematics {
 	
 	public static double min(double[] vals) {
 		double minVal = vals[0];
-		for (int i = 1; i < vals.length; i++)
-			minVal = Math.min(minVal, vals[i]);
+		for (int i = 1; i < vals.length; i++) {
+            minVal = Math.min(minVal, vals[i]);
+        }
 		return minVal;
 	}
 

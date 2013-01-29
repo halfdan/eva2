@@ -1,11 +1,10 @@
 package eva2.server.go.problems;
 
-import java.io.Serializable;
-import java.util.Vector;
-
 import eva2.server.go.operators.constraint.AbstractConstraint;
 import eva2.server.go.operators.constraint.ConstraintCollection;
 import eva2.server.go.operators.constraint.IntervalConstraint;
+import java.io.Serializable;
+import java.util.Vector;
 
 public class ConstrHimmelblauProblem extends AbstractProblemDouble implements Serializable {
 	private static double yOffset = 31025.5602425; // moving the optimum close to zero

@@ -64,9 +64,9 @@ public class MovingAverage {
     if (m_overflow) // MK 12/06
       tail = m_size;
     for (int i=0;i<tail;i++) {
-      m_Average = m_Average + m_array[i];
+            m_Average += m_array[i];
     }
-    m_Average = m_Average / tail;
+        m_Average /= tail;
   }
   /**
    *

@@ -128,7 +128,7 @@ public class GAStandardCodingDouble implements InterfaceGADoubleCoding, java.io.
                 //System.out.println("set 0");
             }
             counter++;
-            tmpV = tmpV / 2;
+            tmpV /= 2;
             // with this method the least significant bit will be at the lowest position
         }
         //System.out.print("FLOAT Value coded : " + value + " " + this.printBitSet(tmpBitSet, m_length));

@@ -1,8 +1,7 @@
 package eva2.server.go.operators.paramcontrol;
 
-import java.io.Serializable;
-
 import eva2.server.go.populations.Population;
+import java.io.Serializable;
 
 /**
  * Adapt a generic parameter using exponential decay.

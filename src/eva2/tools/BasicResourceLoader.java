@@ -203,7 +203,9 @@ public class BasicResourceLoader implements ResourceLoader
 	}
 	
 	private static void trimAll(String[] entries) {
-		for (int i=0; i<entries.length; i++) if (entries[i]!=null) entries[i]=entries[i].trim();
+		for (int i=0; i<entries.length; i++) {
+                if (entries[i]!=null) entries[i]=entries[i].trim();
+            }
 	}
 
 	/**

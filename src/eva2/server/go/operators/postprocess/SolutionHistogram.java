@@ -1,12 +1,11 @@
 package eva2.server.go.operators.postprocess;
 
-import java.util.Arrays;
-
 import eva2.gui.BeanInspector;
 import eva2.server.go.populations.Population;
 import eva2.server.go.problems.AbstractOptimizationProblem;
 import eva2.server.go.problems.InterfaceInterestingHistogram;
 import eva2.tools.math.Mathematics;
+import java.util.Arrays;
 
 public class SolutionHistogram {
 	private double lBound, uBound;
@@ -73,7 +72,9 @@ public class SolutionHistogram {
 		if (o.isEmtpy()) System.err.println("Warning, adding empty histogram... (SolutionHistogram)");
 		if (isCompatible(o)) {
 			arity+=o.arity;
-			for (int i=0; i<numBins; i++) histogram[i]+=o.histogram[i];
+			for (int i=0; i<numBins; i++) {
+                histogram[i]+=o.histogram[i];
+            }
 		}
 	}
 	
@@ -83,7 +84,9 @@ public class SolutionHistogram {
 	 */
 	public double[] getAverage() {
 		double[] avg = new double[numBins];
-		for (int i=0; i<numBins; i++) avg[i]=((double)histogram[i])/arity;
+		for (int i=0; i<numBins; i++) {
+            avg[i]=((double)histogram[i])/arity;
+        }
 		return avg;
 	}
 	

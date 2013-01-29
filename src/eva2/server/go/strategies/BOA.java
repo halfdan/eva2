@@ -12,7 +12,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import eva2.gui.BeanInspector;
-import eva2.gui.GenericObjectEditor;
 import eva2.server.go.InterfacePopulationChangedEventListener;
 import eva2.server.go.enums.BOAScoringMethods;
 import eva2.server.go.individuals.AbstractEAIndividual;
@@ -408,18 +407,16 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
 		createDirectoryIfNeeded(this.netFolder);
 		for (int i = 0; i < this.edgeRate.length; i++) {
 			for (int j = 0; j < this.edgeRate.length; j++) {
-				message = message
-				// we devide through count+1, because we have a generation 0
-						+ (((double) edgeRate[i][j]) / (this.count + 1));
+				message += (((double) edgeRate[i][j]) / (this.count + 1));
 				if (j != this.edgeRate.length - 1) {
-					message = message + ",";
+					message += ",";
 				}
 			}
 			if (i != this.edgeRate.length - 1) {
-				message = message + ";";
+				message += ";";
 			}
 		}
-		message = message + "];";
+		message += "];";
 		try {
 			w = new FileWriter(filename);
 			out = new PrintWriter(w);

@@ -1,16 +1,5 @@
 package eva2.server.go.strategies;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Vector;
-
 import eva2.OptimizerFactory;
 import eva2.gui.GenericObjectEditor;
 import eva2.gui.TopoPlot;
@@ -54,6 +43,16 @@ import eva2.tools.chart2d.DElement;
 import eva2.tools.chart2d.DPoint;
 import eva2.tools.chart2d.DPointIcon;
 import eva2.tools.chart2d.DPointSet;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Vector;
 
 
 /**
@@ -1312,7 +1311,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
 		for (int i = 0; i < getSubSwarms().size(); ++i){
 			mean += getSubSwarms().get(i).getPopulation().size();
 		}
-		mean = mean/getSubSwarms().size();
+		mean /= getSubSwarms().size();
 		return mean;
 	}
 
@@ -1337,8 +1336,8 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
     			++pairs;
     		}
     	}
-    	meanDist = meanDist / pairs;
-    	meanDist = meanDist / getMainSwarm().maxPosDist;
+    	meanDist /= pairs;
+    	meanDist /= getMainSwarm().maxPosDist;
     	return meanDist;
     }
     
@@ -1348,8 +1347,8 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
 			ParticleSubSwarmOptimization currentSubswarm = getSubSwarms().get(i);
 			meanDiv += currentSubswarm.getEuclideanDiversity();
 		}
-		meanDiv = meanDiv/(double)getSubSwarms().size();
-		meanDiv = meanDiv/getMainSwarm().maxPosDist;
+		meanDiv /= (double)getSubSwarms().size();
+		meanDiv /= getMainSwarm().maxPosDist;
 		return meanDiv;
 	}
 

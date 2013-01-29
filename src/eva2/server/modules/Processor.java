@@ -1,6 +1,5 @@
 package eva2.server.modules;
 
-import eva2.EvAInfo;
 import eva2.gui.BeanInspector;
 import eva2.server.go.*;
 import eva2.server.go.operators.paramcontrol.ConstantParameters;

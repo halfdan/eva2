@@ -1,7 +1,5 @@
 package eva2.server.go.problems;
 
-import java.util.Arrays;
-
 import eva2.server.go.PopulationInterface;
 import eva2.server.go.individuals.AbstractEAIndividual;
 import eva2.server.go.operators.distancemetric.EuclideanMetric;
@@ -9,6 +7,7 @@ import eva2.server.go.operators.postprocess.SolutionHistogram;
 import eva2.server.go.populations.Population;
 import eva2.tools.ToolBox;
 import eva2.tools.math.Mathematics;
+import java.util.Arrays;
 
 
 /**

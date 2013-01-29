@@ -1,10 +1,9 @@
 package eva2.server.go.operators.paramcontrol;
 
-import java.io.Serializable;
-
 import eva2.server.go.populations.Population;
 import eva2.server.go.populations.SolutionSet;
 import eva2.server.go.strategies.InterfaceOptimizer;
+import java.io.Serializable;
 
 public class SuccessBasedAdaption implements ParamAdaption, InterfaceHasUpperDoubleBound, 
 GenericParamAdaption, Serializable {

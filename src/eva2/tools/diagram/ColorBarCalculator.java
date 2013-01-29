@@ -17,11 +17,6 @@ package eva2.tools.diagram;
  *============================================================================*/
 
 import java.awt.*;
-import java.awt.geom.*;
-import java.awt.image.*;
-import javax.swing.*;
-
-import eva2.tools.math.*;
 
 
 /*============================================================================

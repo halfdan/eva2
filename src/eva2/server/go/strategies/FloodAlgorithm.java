@@ -101,7 +101,7 @@ public class FloodAlgorithm implements InterfaceOptimizer, java.io.Serializable 
                 this.m_Population.add(i, original.get(i));
             }
         }
-        this.m_CurrentFloodPeak = this.m_CurrentFloodPeak - this.m_DrainRate;
+        this.m_CurrentFloodPeak -= this.m_DrainRate;
         this.m_Population.incrGeneration();
         this.firePropertyChangedEvent(Population.nextGenerationPerformed);
     }
@@ -166,8 +166,8 @@ public class FloodAlgorithm implements InterfaceOptimizer, java.io.Serializable 
             TmpMeanCalls += program.m_FitnessCallsNeeded;
             TmpMeanFitness += program.m_Best.defaultEvaulateAsMiniBits();
         }
-        TmpMeanCalls = TmpMeanCalls/program.m_MultiRuns;
-        TmpMeanFitness = TmpMeanFitness/program.m_MultiRuns;
+        TmpMeanCalls /= program.m_MultiRuns;
+        TmpMeanFitness /= program.m_MultiRuns;
         System.out.println("("+program.m_MultiRuns+"/"+program.m_FitnessCalls+") Mean Fitness : " + TmpMeanFitness + " Mean Calls needed: " + TmpMeanCalls);
     }
 

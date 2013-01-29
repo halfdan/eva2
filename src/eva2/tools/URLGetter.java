@@ -1,7 +1,7 @@
 package eva2.tools;
-import java.net.*;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.net.*;
 /**
  * <p>Title: EvA2</p>
  * <p>Description: </p>

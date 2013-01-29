@@ -1,8 +1,5 @@
 package eva2.server.go.strategies;
 
-import java.util.Iterator;
-import java.util.List;
-
 import eva2.gui.GenericObjectEditor;
 import eva2.server.go.InterfacePopulationChangedEventListener;
 import eva2.server.go.individuals.AbstractEAIndividual;
@@ -17,6 +14,8 @@ import eva2.server.go.strategies.tribes.TribesExplorer;
 import eva2.server.go.strategies.tribes.TribesParam;
 import eva2.server.go.strategies.tribes.TribesPosition;
 import eva2.server.go.strategies.tribes.TribesSwarm;
+import java.util.Iterator;
+import java.util.List;
 
 
 /**

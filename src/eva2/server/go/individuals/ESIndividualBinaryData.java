@@ -1,13 +1,12 @@
 package eva2.server.go.individuals;
 
-import java.util.BitSet;
-
 import eva2.server.go.operators.crossover.CrossoverESDefault;
 import eva2.server.go.operators.mutation.InterfaceMutation;
 import eva2.server.go.operators.mutation.MutateESGlobal;
 import eva2.server.go.problems.InterfaceHasInitRange;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
+import java.util.BitSet;
 
 
 /** This individual uses a real-valued genotype to code for binary values, either
@@ -206,9 +205,13 @@ public class ESIndividualBinaryData extends AbstractEAIndividual implements Inte
         String result = "";
         result += "ESIndividual coding double: (";
         result += "Fitness {";
-        for (int i = 0; i < this.m_Fitness.length; i++) result += this.m_Fitness[i] + ";";
+        for (int i = 0; i < this.m_Fitness.length; i++) {
+            result += this.m_Fitness[i] + ";";
+        }
         result += "}/SelProb{";
-        for (int i = 0; i < this.m_SelectionProbability.length; i++) result += this.m_SelectionProbability[i] + ";";
+        for (int i = 0; i < this.m_SelectionProbability.length; i++) {
+            result += this.m_SelectionProbability[i] + ";";
+        }
         result += "})\n Value: ";
         result += "[";
         for (int i = 0; i < this.m_Genotype.length; i++) {

@@ -1,8 +1,7 @@
 package eva2.server.go.operators.nichepso.merging;
 
-import java.util.Vector;
-
 import eva2.server.go.strategies.ParticleSubSwarmOptimization;
+import java.util.Vector;
 
 
 /**

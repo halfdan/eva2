@@ -1,7 +1,5 @@
 package eva2.server.go.operators.cluster;
 
-import java.util.Arrays;
-
 import eva2.gui.GraphPointSet;
 import eva2.gui.Plot;
 import eva2.server.go.individuals.AbstractEAIndividual;
@@ -13,6 +11,7 @@ import eva2.tools.chart2d.Chart2DDPointIconCircle;
 import eva2.tools.chart2d.Chart2DDPointIconText;
 import eva2.tools.chart2d.DPoint;
 import eva2.tools.math.RNG;
+import java.util.Arrays;
 
 /** The x-means clustering method should be able to determine a
  * suiteable value for k automatically, simply by evaluating all
@@ -165,7 +164,9 @@ public class ClusteringXMeans implements InterfaceClustering, java.io.Serializab
                 result[j] += data[i][j];
             }
         }
-        for (int j = 0; j < result.length; j++) result[j] = result[j]/((double)data.length);
+        for (int j = 0; j < result.length; j++) {
+            result[j] /= ((double)data.length);
+        }
         return result;
     }
 
@@ -176,7 +177,7 @@ public class ClusteringXMeans implements InterfaceClustering, java.io.Serializab
         for (int i = 0; i < data.length; i++) {
             result += Math.pow(this.distance(data[i], mean), 2);
         }
-        result = result/((double)data.length);
+        result /= ((double)data.length);
 
         return result;
     }
@@ -266,7 +267,9 @@ public class ClusteringXMeans implements InterfaceClustering, java.io.Serializab
         double[][]      data    = this.extractClusterDataFrom(pop);
         int             clusterAssigned;
 
-        for (int i = 0; i < result.length; i++) result[i] = new Population();
+        for (int i = 0; i < result.length; i++) {
+            result[i] = new Population();
+        }
         // let's assign the elements of the population to a c
         for (int i = 0; i < data.length; i++) {
             // find the closest c

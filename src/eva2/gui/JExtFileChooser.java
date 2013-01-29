@@ -12,8 +12,8 @@ package eva2.gui;
 /*==========================================================================*
  * IMPORTS
  *==========================================================================*/
-import javax.swing.*;
 import java.io.File;
+import javax.swing.*;
 
 public class JExtFileChooser extends JFileChooser{
   private boolean overwriteWarning = true;

@@ -29,7 +29,9 @@ public class RFRaidl_F1 implements InterfaceRegressionFunction, java.io.Serializ
     @Override
     public double evaluateFunction(double[] x) {
         double result = 0;
-        for (int i = 0; i < x.length; i++) result += Math.sin(x[i]);
+        for (int i = 0; i < x.length; i++) {
+            result += Math.sin(x[i]);
+        }
         return result;
     }
 

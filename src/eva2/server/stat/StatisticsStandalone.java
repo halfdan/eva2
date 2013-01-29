@@ -13,13 +13,12 @@ package eva2.server.stat;
 /*==========================================================================*
  * IMPORTS
  *==========================================================================*/
+import eva2.server.go.PopulationInterface;
+import eva2.server.go.problems.InterfaceAdditionalPopulationInformer;
 import java.io.Serializable;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
-
-import eva2.server.go.PopulationInterface;
-import eva2.server.go.problems.InterfaceAdditionalPopulationInformer;
 
 /**
  * This simple statistics implementation can collect all Object data available during runs.
@@ -81,9 +80,12 @@ public class StatisticsStandalone extends AbstractStatistics implements Interfac
 			m_ResultData = new ArrayList<ArrayList<Object[]>>(m_StatsParams.getMultiRuns());
 			List<String> description = getOutputHeaderFieldNames(informerList);
 			m_ResultHeaderStrings = new ArrayList<String>();
-			for (String str : description) m_ResultHeaderStrings.add(str);
-			for (int i = 0; i < m_StatsParams.getMultiRuns(); i++)
-				m_ResultData.add(new ArrayList<Object[]>());
+			for (String str : description) {
+                m_ResultHeaderStrings.add(str);
+            }
+			for (int i = 0; i < m_StatsParams.getMultiRuns(); i++) {
+                m_ResultData.add(new ArrayList<Object[]>());
+            }
 		} else {
 			m_ResultData=null;
 			m_ResultHeaderStrings = null;

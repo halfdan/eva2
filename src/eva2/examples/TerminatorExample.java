@@ -31,7 +31,9 @@ public class TerminatorExample {
 				+ " evals performed. "
 				+ OptimizerFactory.terminatedBecause()
 				+ " Found solution: ");
-		for (int i=0; i<f1.getProblemDimension(); i++) System.out.print(sol[i] + " ");
+		for (int i=0; i<f1.getProblemDimension(); i++) {
+            System.out.print(sol[i] + " ");
+        }
 		System.out.println();
 	};
 }

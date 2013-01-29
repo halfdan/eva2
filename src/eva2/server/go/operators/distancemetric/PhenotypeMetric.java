@@ -11,7 +11,6 @@ import eva2.server.go.individuals.InterfaceDataTypeDouble;
 import eva2.server.go.individuals.InterfaceDataTypeInteger;
 import eva2.server.go.individuals.InterfaceDataTypePermutation;
 import eva2.server.go.individuals.InterfaceDataTypeProgram;
-import eva2.server.go.individuals.codings.gp.InterfaceProgram;
 
 /** 
  * A phenotype metric suited for the most common data types.
@@ -56,8 +55,12 @@ public class PhenotypeMetric implements InterfaceDistanceMetric, java.io.Seriali
         d = new int[n+1][m+1];
 
         // Step 2
-        for (i = 0; i <= n; i++) d[i][0] = i;
-        for (j = 0; j <= m; j++) d[0][j] = j;
+        for (i = 0; i <= n; i++) {
+            d[i][0] = i;
+        }
+        for (j = 0; j <= m; j++) {
+            d[0][j] = j;
+        }
 
         // Step 3
         for (i = 1; i <= n; i++) {
@@ -130,8 +133,12 @@ public class PhenotypeMetric implements InterfaceDistanceMetric, java.io.Seriali
             for (int p = 0; p < ((InterfaceDataTypePermutation) indy1).getPermutationData().length; p++) {
               dIndy1 = ((InterfaceDataTypePermutation) indy1).getPermutationData()[p];
               dIndy2 = ((InterfaceDataTypePermutation) indy2).getPermutationData()[p];
-              for (int i = 0; i < dIndy1.length; i++) s1 += dIndy1[i];
-              for (int i = 0; i < dIndy2.length; i++) s2 += dIndy2[i];
+              for (int i = 0; i < dIndy1.length; i++) {
+                    s1 += dIndy1[i];
+                }
+              for (int i = 0; i < dIndy2.length; i++) {
+                    s2 += dIndy2[i];
+                }
               result += PhenotypeMetric.computeLevenshteinDistance(s1, s2)/((double)Math.max(s1.length(), s2.length()));
             }
         }
@@ -167,7 +174,7 @@ public class PhenotypeMetric implements InterfaceDistanceMetric, java.io.Seriali
         	for (int i = 0; (i < ((InterfaceDataTypeBinary)indy).size()) ; i++) {
                 if (bs.get(i)) result += 1;
             }
-        	result = result/((InterfaceDataTypeBinary)indy).size();
+        	result /= ((InterfaceDataTypeBinary)indy).size();
         	return result;
         }
         if (indy instanceof InterfaceDataTypeInteger) {

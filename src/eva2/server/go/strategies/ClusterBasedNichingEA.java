@@ -1,11 +1,5 @@
 package eva2.server.go.strategies;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.PriorityQueue;
-
 import eva2.gui.BeanInspector;
 import eva2.gui.GenericObjectEditor;
 import eva2.gui.GraphPointSet;
@@ -41,6 +35,11 @@ import eva2.tools.chart2d.DPoint;
 import eva2.tools.chart2d.DPointIcon;
 import eva2.tools.chart2d.DPointSet;
 import eva2.tools.math.Mathematics;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.PriorityQueue;
 
 /** The infamous clustering based niching EA, still under construction.
  * It should be able to identify and track multiple global/local optima
@@ -530,7 +529,9 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
 //    			System.out.println("At " + m_Undifferentiated.getFunctionCalls() + " reinited " + reinitPop.size() + " indies... ");
     	}
     	int countIndies = (reinitPop != null ? reinitPop.size() : 0) + m_Undifferentiated.size();
-    	for (int i=0; i<m_Species.size(); i++) countIndies+=m_Species.get(i).size();
+    	for (int i=0; i<m_Species.size(); i++) {
+            countIndies+=m_Species.get(i).size();
+        }
     	if (TRACE) System.out.println("NumIndies: " + countIndies);;
     	if (this.m_ShowCycle > 0) {
             if (m_Undifferentiated.getGeneration()<=1) plot(m_Undifferentiated.getGeneration());
@@ -1422,7 +1423,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
 			double[][] range = ((InterfaceProblemDouble)m_Problem).makeRange();
 			int dim = range.length;
 			double nRad = EsDpiNiching.calcEstimatedNicheRadius(range, numExpectedOptima, ((ClusteringDensityBased) m_CAForSpeciesDifferentation).getMetric());
-			nRad = nRad * Math.pow(0.5, 1/dim);
+			nRad *= Math.pow(0.5, 1/dim);
 //			System.out.println("Alternative clust diff from niche radius... " + nRad);
 			this.clusterDiffDist = nRad;
 //			System.out.println("Setting the clusterDiffDist to "+ clusterDiffDist);

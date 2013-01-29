@@ -1,6 +1,10 @@
 package eva2.tools.math.Jama;
 
 
+import eva2.gui.BeanInspector;
+import eva2.tools.Pair;
+import eva2.tools.math.Jama.util.Maths;
+import eva2.tools.math.Mathematics;
 import java.io.BufferedReader;
 import java.io.PrintWriter;
 import java.io.Serializable;
@@ -11,11 +15,6 @@ import java.text.NumberFormat;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.Vector;
-
-import eva2.gui.BeanInspector;
-import eva2.tools.Pair;
-import eva2.tools.math.Mathematics;
-import eva2.tools.math.Jama.util.Maths;
 
 
 /**
@@ -260,7 +259,9 @@ public class Matrix implements Cloneable, Serializable {
     */
    public Matrix getDiagonalMatrix() {
 	   double[][] D = new double[m][n];
-	   for (int i=0; i<Math.min(m,n); i++) D[i][i]=A[i][i];
+	   for (int i=0; i<Math.min(m,n); i++) {
+            D[i][i]=A[i][i];
+        }
 	   return new Matrix(D);
    }
    
@@ -271,7 +272,9 @@ public class Matrix implements Cloneable, Serializable {
 	 */
 	public double[] diag() {
 		double[] d = new double[Math.min(getColumnDimension(), getRowDimension())];
-		for (int i=0; i<d.length; i++) d[i] = get(i, i);
+		for (int i=0; i<d.length; i++) {
+            d[i] = get(i, i);
+        }
 		return d;
 	}
    
@@ -468,7 +471,9 @@ public class Matrix implements Cloneable, Serializable {
     * @param v
     */
    public void fill(double v) {
-	   for (int i=0; i<A.length; i++) Arrays.fill(A[i], v);
+	   for (int i=0; i<A.length; i++) {
+            Arrays.fill(A[i], v);
+        }
    }
    
    /** Set a submatrix.
@@ -683,7 +688,7 @@ public class Matrix implements Cloneable, Serializable {
       checkMatrixDimensions(B);
       for (int i = 0; i < m; i++) {
          for (int j = 0; j < n; j++) {
-            A[i][j] = A[i][j] + B.A[i][j];
+                A[i][j] += B.A[i][j];
          }
       }
       return this;
@@ -700,7 +705,7 @@ public class Matrix implements Cloneable, Serializable {
 	   }
       for (int i = 0; i < m; i++) {
          for (int j = 0; j < n; j++) {
-            A[i][j] = A[i][j] + B[i][j];
+                A[i][j] += B[i][j];
          }
       }
       return this;
@@ -732,7 +737,7 @@ public class Matrix implements Cloneable, Serializable {
       checkMatrixDimensions(B);
       for (int i = 0; i < m; i++) {
          for (int j = 0; j < n; j++) {
-            A[i][j] = A[i][j] - B.A[i][j];
+                A[i][j] -= B.A[i][j];
          }
       }
       return this;
@@ -764,7 +769,7 @@ public class Matrix implements Cloneable, Serializable {
       checkMatrixDimensions(B);
       for (int i = 0; i < m; i++) {
          for (int j = 0; j < n; j++) {
-            A[i][j] = A[i][j] * B.A[i][j];
+                A[i][j] *= B.A[i][j];
          }
       }
       return this;
@@ -796,7 +801,7 @@ public class Matrix implements Cloneable, Serializable {
       checkMatrixDimensions(B);
       for (int i = 0; i < m; i++) {
          for (int j = 0; j < n; j++) {
-            A[i][j] = A[i][j] / B.A[i][j];
+                A[i][j] /= B.A[i][j];
          }
       }
       return this;
@@ -1185,8 +1190,9 @@ public class Matrix implements Cloneable, Serializable {
          for (int j = 0; j < n; j++) {
             String s = format.format(A[i][j]); // format the number
             int padding = Math.max(1,width-s.length()); // At _least_ 1 space
-            for (int k = 0; k < padding; k++)
-               output.print(' ');
+            for (int k = 0; k < padding; k++) {
+                    output.print(' ');
+                }
             output.print(s);
          }
          output.println();
@@ -1227,8 +1233,9 @@ public class Matrix implements Cloneable, Serializable {
 
       int n = v.size();  // Now we've got the number of columns!
       double row[] = new double[n];
-      for (int j=0; j<n; j++)  // extract the elements of the 1st row.
-         row[j]=((Double)v.elementAt(j)).doubleValue();
+      for (int j=0; j<n; j++) {
+            row[j]=((Double)v.elementAt(j)).doubleValue();
+        }
       v.removeAllElements();
       v.addElement(row);  // Start storing rows instead of columns.
       while (tokenizer.nextToken() == StreamTokenizer.TT_WORD) {
@@ -1289,7 +1296,9 @@ public class Matrix implements Cloneable, Serializable {
    }
    
    private void rowSubtract(int start, int end, double[] v) {
-	   for (int i=start; i<=end; i++) Mathematics.vvSub(A[i], v, A[i]);
+	   for (int i=start; i<=end; i++) {
+            Mathematics.vvSub(A[i], v, A[i]);
+        }
    }
 
    /**

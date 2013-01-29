@@ -7,14 +7,12 @@ package eva2.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.Toolkit;
 import java.beans.PropertyEditor;
 
 import eva2.EvAInfo;
 import eva2.tools.BasicResourceLoader;
 import eva2.tools.EVAHELP;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 
 /**
  *
