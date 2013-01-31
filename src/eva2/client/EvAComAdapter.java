@@ -16,17 +16,17 @@ import eva2.server.EvAMainAdapter;
 import eva2.server.EvAMainAdapterImpl;
 import eva2.server.go.InterfaceGOParameters;
 import eva2.server.modules.ModuleAdapter;
-import eva2.tools.jproxy.*;
 import java.rmi.RemoteException;
 
 /**
  *
  */
-public class EvAComAdapter extends ComAdapter {
+public class EvAComAdapter {
 
     private LoggingPanel loggingPanel;
     private EvAMainAdapterImpl localMainAdapter;
     private boolean runLocally = false;
+    private static EvAComAdapter m_instance;
 
     /**
      *
@@ -41,7 +41,6 @@ public class EvAComAdapter extends ComAdapter {
     public static EvAComAdapter getInstance() {
         if (m_instance == null) {
             m_instance = new EvAComAdapter();
-            m_instance.addServersFromProperties(EvAInfo.getProperties());
         }
         return (EvAComAdapter) m_instance;
     }
@@ -53,14 +52,8 @@ public class EvAComAdapter extends ComAdapter {
      */
     public ModuleAdapter getModuleAdapter(String selectedModuleName, InterfaceGOParameters goParams, String noGuiStatsFile) {
         ModuleAdapter newModuleAdapter;
-        if ((m_RMIServer == null) && isRunLocally()) {
-            newModuleAdapter = getLocalMainAdapter().getModuleAdapter(selectedModuleName, true, getHostName(), goParams, noGuiStatsFile, null);
-        } else {
-            newModuleAdapter = ((RMIConnectionEvA) getConnection(getHostName())).getModuleAdapter(selectedModuleName);
-            if (newModuleAdapter == null) {
-                System.err.println("RMI Error for getting ModuleAdapterObject : " + selectedModuleName);
-            }
-        }
+        newModuleAdapter = getLocalMainAdapter().getModuleAdapter(selectedModuleName, goParams, noGuiStatsFile);
+        
         return newModuleAdapter;
     }
 
@@ -82,19 +75,9 @@ public class EvAComAdapter extends ComAdapter {
      */
     public String[] getModuleNameList() {
         String[] list;
-
-        if ((m_RMIServer == null) && isRunLocally()) {
-            list = getLocalMainAdapter().getModuleNameList();
-        } else {
-            RMIConnectionEvA Connection = (RMIConnectionEvA) getConnection(getHostName());
-            if (Connection == null) {
-                System.err.println("Couldnt create RMIConnection in EvAComAdapter.getModuleNameList");
-                return null;
-            }
-            list = ((EvAMainAdapter) Connection.getMainAdapter()).getModuleNameList();
-        }
+        list = getLocalMainAdapter().getModuleNameList();
         if (loggingPanel != null) {
-            loggingPanel.logMessage("List of modules on server:");
+            loggingPanel.logMessage("List of modules available:");
         }
         if (list != null) {
             for (int i = 0; i < list.length; i++) {
@@ -104,34 +87,5 @@ public class EvAComAdapter extends ComAdapter {
             }
         }
         return list;
-    }
-
-    @Override
-    protected MainAdapter getMainAdapter(RMIInvocationHandler invocHandler) throws RemoteException {
-        try {
-            return (EvAMainAdapter) invocHandler.getWrapper();
-        } catch (ClassCastException e) {
-            System.err.println("Warning: cannot cast to EvAMainAdapter in EvAComAdapter.. trying MainAdapter...");
-        }
-        return (MainAdapter) invocHandler.getWrapper();
-    }
-
-    @Override
-    protected RMIConnection createRMIConnection(String Host, MainAdapter mainRemoteObject, MainAdapterClient client) {
-        return new RMIConnectionEvA(Host, mainRemoteObject, client);
-    }
-
-    /**
-     * @return the runLocally
-     */
-    public boolean isRunLocally() {
-        return runLocally;
-    }
-
-    /**
-     * @param runLocally the runLocally to set
-     */
-    public void setRunLocally(boolean runLocally) {
-        this.runLocally = runLocally;
     }
 }

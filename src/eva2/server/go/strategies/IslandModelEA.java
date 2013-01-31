@@ -2,7 +2,6 @@ package eva2.server.go.strategies;
 
 import eva2.gui.BeanInspector;
 import eva2.gui.Plot;
-import eva2.gui.PropertyRemoteServers;
 import eva2.server.go.InterfacePopulationChangedEventListener;
 import eva2.server.go.individuals.ESIndividualDoubleData;
 import eva2.server.go.operators.migration.InterfaceMigration;
@@ -17,9 +16,6 @@ import eva2.server.go.problems.F1Problem;
 import eva2.server.go.problems.F8Problem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 import eva2.server.go.problems.TF1Problem;
-import eva2.tools.jproxy.RMIProxyLocal;
-import eva2.tools.jproxy.RMIProxyRemoteThread;
-import eva2.tools.jproxy.RMIServer;
 
 /** The one and only island model for parallelization. Since parallelization based
  * on the RMIProxyRemoteThread is on the one hand much slower than benchmark function
@@ -41,6 +37,7 @@ import eva2.tools.jproxy.RMIServer;
  * Time: 14:48:20
  * To change this template use File | Settings | File Templates.
  */
+
 public class IslandModelEA implements InterfacePopulationChangedEventListener, InterfaceOptimizer, java.io.Serializable {
 
     private Population                              m_Population        = new Population();
@@ -50,14 +47,12 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
 //    private String[]                                m_NodesList;
     private int                                     m_MigrationRate     = 10;
     private boolean                                 m_HeterogenuousProblems = false;
-    private PropertyRemoteServers                   m_Servers           = new PropertyRemoteServers();
 
     // These are the processor to run on
     private int                                                 m_numLocalCPUs         = 1;
     private boolean                                             m_localOnly       = false;
     transient private InterfaceOptimizer[]                      m_Islands;
-    transient private RMIServer                                 m_LocalServer       = null;
-
+ 
     // This is for debugging
     private boolean                                             m_LogLocalChanges   = true;
     private boolean                                             m_Show              = false;
@@ -76,7 +71,6 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
         this.m_Problem                      = (InterfaceOptimizationProblem)a.m_Problem.clone();
         this.m_Optimizer                    = (InterfaceOptimizer)a.m_Optimizer.clone();
         this.m_Migration                    = (InterfaceMigration)a.m_Migration.clone();
-        this.m_Servers                      = (PropertyRemoteServers)a.m_Servers.clone();
         this.m_MigrationRate				= a.m_MigrationRate;
         this.m_HeterogenuousProblems		= a.m_HeterogenuousProblems;
         this.m_numLocalCPUs                    = a.m_numLocalCPUs;
@@ -119,7 +113,8 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
             }
         } else {
             // this is running on remote machines
-            if (this.m_LocalServer == null) {
+            // ToDo: Parallelize with Threads?!?
+            /*if (this.m_LocalServer == null) {
                 this.m_LocalServer = RMIServer.getInstance();
             }
             try {
@@ -139,7 +134,7 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
                 if (this.m_LogLocalChanges) {
                     this.m_Islands[i].addPopulationChangedEventListener(myLocal);
                 }
-            }
+            }*/
         }
 
         this.m_Migration.initMigration(this.m_Islands);
@@ -193,6 +188,8 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
             }
         } else {
             // this is running on remote machines
+            // ToDo: Parallellize with threads?!?
+            /*
             if (this.m_LocalServer == null) {
                 this.m_LocalServer = RMIServer.getInstance();
             }
@@ -213,7 +210,7 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
                 if (this.m_LogLocalChanges) {
                     this.m_Islands[i].addPopulationChangedEventListener(myLocal);
                 }
-            }
+            }*/
         }
 
         this.m_Migration.initMigration(this.m_Islands);
@@ -282,7 +279,7 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
             }
         }
         this.m_Population.clear();
-        this.m_Population.SetFunctionCalls(0);
+        this.m_Population.setFunctionCalls(0);
         Population pop;
         for (int i = 0; i < this.m_Islands.length; i++) {
             pop = (Population)this.m_Islands[i].getPopulation().clone();
@@ -372,16 +369,9 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
     public static void main(String[] args) {
         // @todo die ServerStarter muss ich noch hin kriegen
         // @todo Wichtig ich brauche den eva2.tools.jproxy.RMIServer!
-        PropertyRemoteServers s = new PropertyRemoteServers();
-        s.addServerNode("raold1.informatik.uni-tuebingen.de", 2);
-        s.addServerNode("raold2.informatik.uni-tuebingen.de", 2);
-        s.addServerNode("raold3.informatik.uni-tuebingen.de", 2);
-        s.setPassword("KozeOpL;");
-        s.startServers();
         IslandModelEA imea  = new IslandModelEA();
         imea.m_Show = true;
         imea.m_localOnly = false;
-        imea.setServers(s);
         if (false) {
             imea.m_Optimizer    = new MultiObjectiveEA();
             ((MultiObjectiveEA)imea.m_Optimizer).setArchiveSize(25);
@@ -565,15 +555,6 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
         return "Set the migration rate for communication between islands.";
     }
 
-    /** This method allows you to managae the available servers
-     * @return The current servers
-     */
-    public PropertyRemoteServers getServers() {
-        return this.m_Servers;
-    }
-    public void setServers(PropertyRemoteServers b){
-        this.m_Servers = b;
-    }
     public String serversTipText() {
         return "Choose and manage the servers (only active in parallelized mode).";
     }

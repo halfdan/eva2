@@ -1,7 +1,5 @@
 package eva2.server.modules;
 
-import eva2.tools.jproxy.MainAdapterClient;
-
 /**
  * This the MC module adapter necessary to access this implementation from the EvA top level.
  */
@@ -15,8 +13,8 @@ public class MCModuleAdapter extends GenericModuleAdapter implements ModuleAdapt
      * @param adapterName The AdapterName
      * @param client The client to serve
      */
-    public MCModuleAdapter(String adapterName, MainAdapterClient client) {
-        super(adapterName, "MC.html", client, MCParameters.getInstance(), true);
+    public MCModuleAdapter(String adapterName) {
+        super(adapterName, "MC.html", MCParameters.getInstance(), true);
     }
 
     /**

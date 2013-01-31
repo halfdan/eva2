@@ -5,9 +5,6 @@ package eva2.gui;
  * $ $Date: 2007-12-06 16:05:11 +0100 (Thu, 06 Dec 2007) $ $Author: mkron $
  */
 
-import eva2.tools.jproxy.MainAdapterClient;
-import eva2.tools.jproxy.RMIProxyRemote;
-import java.net.InetAddress;
 import java.util.ArrayList;
 
 /**
@@ -18,14 +15,13 @@ public class GraphWindow {
     public static boolean TRACE = false;
     static private int graphCounter = -1;
     static private PlotContainer plotContainer;
-    private MainAdapterClient mainAdapterClient;
     private PlotInterface plotter;
     private String name;
 
     /**
      *
      */
-    public static GraphWindow getInstance(MainAdapterClient client, String graphWindowName,
+    public static GraphWindow getInstance(String graphWindowName,
             String strx, String stry) {
         if (plotContainer == null) {
             plotContainer = new PlotContainer();
@@ -39,7 +35,7 @@ public class GraphWindow {
                 if (ret != null) {
                     plotContainer.remove(ret); // remove if not valid any more
                 }
-                ret = new GraphWindow(client, graphWindowName, strx, stry);
+                ret = new GraphWindow(graphWindowName, strx, stry);
                 plotContainer.add(ret);
             }
         } catch (Exception ee) {
@@ -60,28 +56,12 @@ public class GraphWindow {
     /**
      *
      */
-    private GraphWindow(MainAdapterClient client, String plotName, String strx, String stry) {
+    private GraphWindow(String plotName, String strx, String stry) {
         if (TRACE) {
             System.out.println("Constructor GraphWindow");
         }
-        mainAdapterClient = client;
         name = plotName;
-        try {
-            if ((client == null) || client.getHostName().equals(InetAddress.getLocalHost().getHostName())) {
-                if (TRACE) {
-                    System.out.println("no RMI");
-                }
-                plotter = new Plot(plotName, strx, stry, true);
-            } else {
-                plotter = (PlotInterface) RMIProxyRemote.newInstance(new Plot(plotName, strx, stry, false), mainAdapterClient);
-                plotter.init();
-                if (TRACE) {
-                    System.out.println("with RMI");
-                }
-            }
-        } catch (Exception e) {
-            System.err.println("InetAddress.getLocalHost().getHostAddress() --> ERROR" + e.getMessage());
-        }
+        plotter = new Plot(plotName, strx, stry, true);
     }
 
     /**

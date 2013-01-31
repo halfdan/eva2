@@ -1,6 +1,5 @@
 package eva2.server.modules;
 
-import eva2.tools.jproxy.MainAdapterClient;
 import java.io.Serializable;
 
 
@@ -12,13 +11,13 @@ public class MOEAModuleAdapter extends GenericModuleAdapter implements Serializa
     private static final String moduleName = "Multi-Objective_Evolutionary_Algorithms";
 
     /**
-     * Constructor of the ModuleAdapter
+     * Constructor of the ModuleAdapter.
      *
      * @param AdapterName The AdapterName
      * @param Client The client to serve
      */
-    public MOEAModuleAdapter(String adapterName, MainAdapterClient client) {
-        super(adapterName, "MOEA.html", client, MOEAParameters.getInstance(), true);
+    public MOEAModuleAdapter(String adapterName) {
+        super(adapterName, "MOEA.html", MOEAParameters.getInstance(), true);
     }
 
     /**

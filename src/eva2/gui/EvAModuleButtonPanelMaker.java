@@ -9,11 +9,10 @@ package eva2.gui;
  *            $Date: 2007-11-27 14:37:05 +0100 (Tue, 27 Nov 2007) $
  *            $Author: mkron $
  */
+import eva2.optimization.OptimizationStateListener;
 import eva2.server.modules.ModuleAdapter;
 import eva2.server.stat.EvAJob;
 import eva2.tools.ToolBoxGui;
-import eva2.tools.jproxy.RMIProxyLocal;
-import eva2.tools.jproxy.RemoteStateListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.Serializable;
@@ -28,7 +27,7 @@ import javax.swing.JToolBar;
  * Contains the GUI elements of start and stop buttons and optionally a help
  * button.
  */
-public class EvAModuleButtonPanelMaker implements RemoteStateListener, Serializable, PanelMaker {
+public class EvAModuleButtonPanelMaker implements OptimizationStateListener, Serializable, PanelMaker {
 
     private static final Logger LOGGER = Logger.getLogger(EvAModuleButtonPanelMaker.class.getName());
     private String m_Name = "undefined";
@@ -55,20 +54,9 @@ public class EvAModuleButtonPanelMaker implements RemoteStateListener, Serializa
     public JToolBar makePanel() {
         toolBar = new JToolBar();
         toolBar.setFloatable(false);
-
-        /* ToDo: This is useless? */
-        if (moduleAdapter.hasConnection()) { // we might be in rmi mode
-            try {
-                String myhostname = InetAddress.getLocalHost().getHostName();
-            } catch (Exception e) {
-                LOGGER.log(Level.WARNING, "Could not get hostname", e);
-            }
-        }
-        if (!moduleAdapter.hasConnection()) {
-            moduleAdapter.addRemoteStateListener((RemoteStateListener) (this));
-        } else {// there is a network RMI connection
-            moduleAdapter.addRemoteStateListener((RemoteStateListener) RMIProxyLocal.newInstance(this));
-        }
+        
+        moduleAdapter.addOptimizationStateListener((OptimizationStateListener) (this));
+        
 
         //////////////////////////////////////////////////////////////
         runButton = ToolBoxGui.createIconifiedButton("images/Play24.gif", "Start", true);
@@ -159,7 +147,6 @@ public class EvAModuleButtonPanelMaker implements RemoteStateListener, Serializa
     }
 
     private void makeHelpButton() {
-        ///////////////////////////////////////////////////////////////
         if (helpFileName != null && (!helpFileName.equals(""))) {
             helpButton = new JButton("Description");
             helpButton.setToolTipText("Description of the current optimization algorithm.");
@@ -167,7 +154,6 @@ public class EvAModuleButtonPanelMaker implements RemoteStateListener, Serializa
 
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    //System.out.println("Run Opt pressed !!!!!!!!!!!!!!!!======================!!");
                     try {
                         if (helpFileName != null) {
                             HtmlDemo temp = new HtmlDemo(helpFileName);

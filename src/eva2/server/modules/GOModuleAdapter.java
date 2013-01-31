@@ -1,7 +1,6 @@
 package eva2.server.modules;
 
 import eva2.server.go.InterfaceGOParameters;
-import eva2.tools.jproxy.MainAdapterClient;
 import java.io.Serializable;
 
 
@@ -25,8 +24,8 @@ public class GOModuleAdapter extends GenericModuleAdapter implements ModuleAdapt
      * @param AdapterName	the title of the ModulAdapter
      * @param Client	the client instance
      */
-    public GOModuleAdapter(String adapterName, MainAdapterClient client) {
-        super(adapterName, "", client, GOParameters.getInstance(), false);
+    public GOModuleAdapter(String adapterName) {
+        super(adapterName, "", GOParameters.getInstance(), false);
     }
 
     /**
@@ -35,9 +34,8 @@ public class GOModuleAdapter extends GenericModuleAdapter implements ModuleAdapt
      * @param AdapterName	the title of the ModulAdapter
      * @param Client	the client instance
      */
-    public GOModuleAdapter(String adapterName, InterfaceGOParameters goParams, String noGuiLogFile, MainAdapterClient client) {
-        //super(adapterName, "", client, GOParameters.getInstance(serParamsFile, false), false);
-        super(adapterName, "", client, goParams, false, noGuiLogFile);
+    public GOModuleAdapter(String adapterName, InterfaceGOParameters goParams, String noGuiLogFile) {
+        super(adapterName, "", goParams, false, noGuiLogFile);
     }
 //  /**
 //   * Starts a statistics GUI and the GOProcessor thread with a given GOParameters file.

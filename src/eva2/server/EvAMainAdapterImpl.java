@@ -12,12 +12,10 @@ package eva2.server;
 import eva2.EvAInfo;
 import eva2.server.go.InterfaceGOParameters;
 import eva2.server.modules.ModuleAdapter;
-import eva2.tools.jproxy.MainAdapterClient;
-import eva2.tools.jproxy.MainAdapterImpl;
 /**
- *
+ * 
  */
-public class EvAMainAdapterImpl extends MainAdapterImpl implements EvAMainAdapter {
+public class EvAMainAdapterImpl implements EvAMainAdapter {
 
     private ModuleServer moduleServer = null;
 
@@ -32,13 +30,13 @@ public class EvAMainAdapterImpl extends MainAdapterImpl implements EvAMainAdapte
     }
 
     @Override
-    public ModuleAdapter getModuleAdapter(String selectedModule, boolean withoutRMI, String hostAddress, MainAdapterClient client) {
-        return getModuleAdapter(selectedModule, withoutRMI, hostAddress, null, null, client);
+    public ModuleAdapter getModuleAdapter(String selectedModule) {
+        return getModuleAdapter(selectedModule);
     }
 
     @Override
-    public ModuleAdapter getModuleAdapter(String selectedModule, boolean withoutRMI, String hostAddress, InterfaceGOParameters goParams, String noGuiStatsFile, MainAdapterClient client) {
-        return moduleServer.createModuleAdapter(selectedModule, client, withoutRMI, hostAddress, goParams, noGuiStatsFile);
+    public ModuleAdapter getModuleAdapter(String selectedModule, InterfaceGOParameters goParams, String noGuiStatsFile) {
+        return moduleServer.createModuleAdapter(selectedModule, goParams, noGuiStatsFile);
     }
 }
 

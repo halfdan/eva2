@@ -1,17 +1,7 @@
 package eva2.server.go;
 
-import eva2.tools.jproxy.RemoteStateListener;
+import eva2.optimization.OptimizationStateListener;
 
-/*
- * Title:        EvA2
- * Description:
- * Copyright:    Copyright (c) 2003
- * Company:      University of Tuebingen, Computer Architecture
- * @author Holger Ulmer, Felix Streichert, Hannes Planatscher
- * @version:  $Revision: 306 $
- *            $Date: 2007-12-04 14:22:52 +0100 (Tue, 04 Dec 2007) $
- *            $Author: mkron $
- */
 
 /**
  * Interface for Optimization Processor.
@@ -34,11 +24,11 @@ public interface InterfaceProcessor {
     void stopOpt();
 
     /**
-     * Adds a new RemoteStateListener.
+     * Adds a new OptimizationStateListener.
      *
      * @param module The module to add.
      */
-    void addListener(RemoteStateListener module);
+    void addListener(OptimizationStateListener module);
 
     /**
      * Get Info String about the Optimization.

@@ -10,9 +10,6 @@ package eva2.server.stat;
  *            $Date: 2007-12-11 17:24:07 +0100 (Tue, 11 Dec 2007) $
  *            $Author: mkron $
  */
-/*==========================================================================*
- * IMPORTS
- *==========================================================================*/
 import eva2.gui.BeanInspector;
 import eva2.gui.Graph;
 import eva2.gui.GraphWindow;
@@ -24,9 +21,6 @@ import eva2.server.go.PopulationInterface;
 import eva2.server.go.problems.InterfaceAdditionalPopulationInformer;
 import eva2.tools.EVAERROR;
 import eva2.tools.Pair;
-import eva2.tools.jproxy.MainAdapterClient;
-import eva2.tools.jproxy.RMIProxyLocal;
-import eva2.tools.jproxy.RMIProxyRemote;
 import java.io.Serializable;
 import java.net.InetAddress;
 import java.util.ArrayList;
@@ -35,10 +29,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * A statistics class to plot fitness curves in client-server mode. Mainly, arrays of GraphWindows
- * and Graphs are managed and the selected data fields are plotted.
- * TODO: this could finally be cleanly reduced to an InterfaceStatisticsListener - without inheriting
- * from AbstractStatistics.
+ * A statistics class to plot fitness curves in client-server mode. Mainly,
+ * arrays of GraphWindows and Graphs are managed and the selected data fields
+ * are plotted. TODO: this could finally be cleanly reduced to an
+ * InterfaceStatisticsListener - without inheriting from AbstractStatistics.
  */
 public class StatisticsWithGUI extends AbstractStatistics implements Serializable, InterfaceStatistics {
 
@@ -50,7 +44,6 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
     private Graph[][] statGraph;
     private String graphInfoString;
     protected int plotCounter;
-    private MainAdapterClient mainAdapterClient; // the connection to the client MainAdapter
     private JTextoutputFrameInterface proxyPrinter;
     /*
      * List of descriptor strings and optional indices. strictly its redundant
@@ -63,35 +56,9 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
     /**
      *
      */
-    public MainAdapterClient getMainAdapterClient() {
-        return mainAdapterClient;
-    }
-
-    /**
-     *
-     */
-    public StatisticsWithGUI(MainAdapterClient client) {
-        mainAdapterClient = client;
-        if (client != null) { // We are probably in rmi mode
-            try {
-                hostName = InetAddress.getLocalHost().getHostName();
-            } catch (Exception ex) {
-                LOGGER.log(Level.WARNING, "Could not retrieve hostname.", ex);
-            }
-        } else {
-            hostName = "localhost";
-        }
-
-
-        if ((client == null) || client.getHostName().equals(hostName)) {
-            m_StatsParams = StatisticsParameter.getInstance(true);
-            proxyPrinter = new JTextoutputFrame("TextOutput of " + hostName);
-        } else { // we use RMI
-            m_StatsParams = (InterfaceStatisticsParameter) RMIProxyLocal.newInstance(
-                    StatisticsParameter.getInstance(true));
-            proxyPrinter = (JTextoutputFrameInterface) RMIProxyRemote.newInstance(new JTextoutputFrame("TextOutput " + hostName),
-                    mainAdapterClient);
-        }
+    public StatisticsWithGUI() {
+        m_StatsParams = StatisticsParameter.getInstance(true);
+        proxyPrinter = new JTextoutputFrame("TextOutput of " + hostName);
         addTextListener(proxyPrinter);
     }
 
@@ -170,10 +137,9 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
         maybeShowProxyPrinter();
         int windowCount = 1; // TODO this was earlier description.length for the 2-D String-Array returned by m_StatsParams.getPlotDescriptions, which however always returned an array of length 1 (in the first dim).
         int graphCount = graphDesc.size();
-//		System.out.println("Initializing " + graphCount + " plots (StatisticsWithGUI)");
         fitnessFrame = new GraphWindow[windowCount];
         for (int i = 0; i < fitnessFrame.length; i++) {
-            fitnessFrame[i] = GraphWindow.getInstance(mainAdapterClient, "Optimization " + i + " " + " on " + hostName, "function calls", "fitness");
+            fitnessFrame[i] = GraphWindow.getInstance("Optimization " + i, "function calls", "fitness");
         }
 
         fitnessGraph = new Graph[windowCount][];

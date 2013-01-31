@@ -11,10 +11,8 @@ package eva2.server.modules;
  */
 import eva2.server.go.InterfaceGOParameters;
 import eva2.server.go.InterfaceProcessor;
-import eva2.tools.jproxy.MainAdapterClient;
-import eva2.tools.jproxy.RemoteStateListener;
+import eva2.optimization.OptimizationStateListener;
 import java.io.Serializable;
-import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,39 +30,20 @@ abstract public class AbstractModuleAdapter implements ModuleAdapter, Serializab
     protected String hostName = "not defined";
     protected boolean hasConnection = true;
     protected ModuleAdapter remoteModuleAdapter = null;
-    protected boolean useRMI = true;
-    protected MainAdapterClient mainAdapterClient; // connection to client
-    private List<RemoteStateListener> remoteStateListeners;
+    private List<OptimizationStateListener> optimizationStateListeners;
 
-    protected AbstractModuleAdapter(MainAdapterClient client) {
+    protected AbstractModuleAdapter() {
         instanceCounter++;
         instanceNumber = instanceCounter;
-
-        if (client != null) {
-            try {
-                hostName = InetAddress.getLocalHost().getHostName();
-            } catch (Exception e) {
-                System.out.println("InetAddress.getLocalHost().getHostAddress() --> ERROR" + e.getMessage());
-            }
-        } else {
-            hostName = "localhost";
-        }
-
-        if ((client == null) || client.getHostName().equals(hostName)) {
-            useRMI = false;
-        } else {
-            /* we use RMI */
-            useRMI = true;
-        }
-        remoteStateListeners = new ArrayList<RemoteStateListener>();
+        optimizationStateListeners = new ArrayList<OptimizationStateListener>();
     }
 
     /**
-     * From the interface RemoteStateListener. Added this method to make progress bar possible.
+     * From the interface OptimizationStateListener. Added this method to make progress bar possible.
      */
     @Override
     public void updateProgress(final int percent, String msg) {
-        for (RemoteStateListener listener : remoteStateListeners) {
+        for (OptimizationStateListener listener : optimizationStateListeners) {
             listener.updateProgress(percent, msg);
         }
     }
@@ -155,8 +134,8 @@ abstract public class AbstractModuleAdapter implements ModuleAdapter, Serializab
      * Adds a remote state listener.
      */
     @Override
-    public void addRemoteStateListener(RemoteStateListener remoteListener) {
-        remoteStateListeners.add(remoteListener);
+    public void addOptimizationStateListener(OptimizationStateListener remoteListener) {
+        optimizationStateListeners.add(remoteListener);
     }
 
     /**
@@ -200,21 +179,21 @@ abstract public class AbstractModuleAdapter implements ModuleAdapter, Serializab
      */
     @Override
     public void performedStop() {
-        for (RemoteStateListener listener : remoteStateListeners) {
+        for (OptimizationStateListener listener : optimizationStateListeners) {
             listener.performedStop();
         }
     }
 
     @Override
     public void performedStart(String infoString) {
-        for (RemoteStateListener listener : remoteStateListeners) {
+        for (OptimizationStateListener listener : optimizationStateListeners) {
             listener.performedStart(infoString);
         }
     }
 
     @Override
     public void performedRestart(String infoString) {
-        for (RemoteStateListener listener : remoteStateListeners) {
+        for (OptimizationStateListener listener : optimizationStateListeners) {
             listener.performedRestart(infoString);
         }
     }
