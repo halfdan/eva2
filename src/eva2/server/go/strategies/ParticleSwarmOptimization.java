@@ -1732,14 +1732,6 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
     }
 
     /**
-     * This method is required to free the memory on a RMIServer, but there is
-     * nothing to implement.
-     */
-    @Override
-    public void freeWilly() {
-    }
-
-    /**
      * ********************************************************************************************************************
      * These are for GUI
      */
@@ -2063,7 +2055,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 
     /**
      * @return true if swarm visualization is turned on
-	 *
+     *
      */
     public boolean isShow() {
         return m_Show;
@@ -2071,7 +2063,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 
     /**
      * @param set swarm visualization (2D)
-	 *
+     *
      */
     public void setShow(boolean show) {
         m_Show = show;
@@ -2086,7 +2078,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 
     /**
      * @return the checkSpeedLimit
-	 *
+     *
      */
     public boolean isCheckSpeedLimit() {
         return checkSpeedLimit;
@@ -2094,7 +2086,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 
     /**
      * @param checkSpeedLimit the checkSpeedLimit to set
-	 *
+     *
      */
     public void setCheckSpeedLimit(boolean checkSpeedLimit) {
         this.checkSpeedLimit = checkSpeedLimit;
@@ -2113,7 +2105,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 //	}
     /**
      * @return the sleepTime
-	 *
+     *
      */
     public int getSleepTime() {
         return sleepTime;
@@ -2121,7 +2113,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 
     /**
      * @param sleepTime the sleepTime to set
-	 *
+     *
      */
     public void setSleepTime(int sleepTime) {
         this.sleepTime = sleepTime;

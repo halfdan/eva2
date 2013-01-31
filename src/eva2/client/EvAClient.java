@@ -772,15 +772,15 @@ public class EvAClient extends JFrame implements OptimizationStateListener {
         menuBar = new JMenuBar();
         setJMenuBar(menuBar);
         menuModule = new JExtMenu("&Module");
-        menuModule.add(actModuleLoad);
+        //menuModule.add(actModuleLoad);
 
         menuSelHosts = new JExtMenu("&Select Hosts");
-        menuSelHosts.setToolTipText("Select a host for the server application");
-        menuSelHosts.add(actHost);
-        menuSelHosts.add(actAvailableHost);
-        menuSelHosts.addSeparator();
-        menuSelHosts.add(actKillHost);
-        menuSelHosts.add(actKillAllHosts);
+        //menuSelHosts.setToolTipText("Select a host for the server application");
+        //menuSelHosts.add(actHost);
+        //menuSelHosts.add(actAvailableHost);
+        //menuSelHosts.addSeparator();
+        //menuSelHosts.add(actKillHost);
+        //menuSelHosts.add(actKillAllHosts);
 
         menuHelp = new JExtMenu("&Help");
         menuHelp.add(actHelp);
@@ -790,13 +790,13 @@ public class EvAClient extends JFrame implements OptimizationStateListener {
 
         menuOptions = new JExtMenu("&Options");
         menuOptions.add(actPreferences);
-        menuOptions.add(menuSelHosts);
+        //menuOptions.add(menuSelHosts);
         menuOptions.addSeparator();
         menuOptions.add(actQuit);
         // this is accessible if no default module is given
-        if (showLoadModules) {
-            menuBar.add(menuModule);
-        }
+        //if (showLoadModules) {
+        //    menuBar.add(menuModule);
+        //}
 
         menuBar.add(menuOptions);
         menuBar.add(((JExtDesktopPane) desktopPane).getWindowMenu());

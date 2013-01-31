@@ -8,6 +8,6 @@ package eva2.server.go;
  * To change this template use Options | File Templates.
  */
 public interface InterfaceGOStandalone {
-    public void startExperiment();
-    public void setShow(boolean t);
+    void startExperiment();
+    void setShow(boolean t);
 }

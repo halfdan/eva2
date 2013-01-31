@@ -242,14 +242,6 @@ public class GeneticAlgorithm implements InterfaceOptimizer, java.io.Serializabl
     }
 
     /**
-     * This method is required to free the memory on a RMIServer, but there is
-     * nothing to implement.
-     */
-    @Override
-    public void freeWilly() {
-    }
-
-    /**
      * ********************************************************************************************************************
      * These are for GUI
      */

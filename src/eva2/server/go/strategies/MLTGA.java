@@ -246,13 +246,13 @@ public class MLTGA implements InterfaceOptimizer, java.io.Serializable, Interfac
         this.problem.evaluatePopulationStart(this.population);
         Stack<Set<Integer>> linkageTree = buildLinkageTree();
         Population newPop = new Population(this.popSize);
-        if(elitism){
+        if (elitism) {
             AbstractEAIndividual firstIndy = this.population.getBestEAIndividual();
             AbstractEAIndividual firstNewIndy = buildNewIndy(firstIndy, linkageTree);
             newPop.add(firstNewIndy);
         }
         for (int i = 0; i < this.popSize; i++) {
-            if(this.elitism && i==0){
+            if (this.elitism && i == 0) {
                 continue;
             }
             Population indies = this.population.getRandNIndividuals(1);
@@ -265,21 +265,21 @@ public class MLTGA implements InterfaceOptimizer, java.io.Serializable, Interfac
     }
 
     private AbstractEAIndividual buildNewIndy(AbstractEAIndividual indy,
-    		Stack<Set<Integer>> linkageTree) {
-    	for (Set<Integer> mask : linkageTree) {
-    		BitSet gen = getBinaryData(indy);
-    		BitSet newGene = (BitSet) gen.clone();
-    		for (Integer flipID : mask) {
-    			newGene.flip(flipID);
-    		}
-    		AbstractEAIndividual newIndy = (AbstractEAIndividual) this.template.clone();
-    		((InterfaceDataTypeBinary) newIndy).SetBinaryGenotype(newGene);
-    		evaluate(newIndy);
-    		if (newIndy.getFitness(0) < indy.getFitness(0)) {
-    			indy = newIndy;
-    		}
-    	}
-    	return indy;
+            Stack<Set<Integer>> linkageTree) {
+        for (Set<Integer> mask : linkageTree) {
+            BitSet gen = getBinaryData(indy);
+            BitSet newGene = (BitSet) gen.clone();
+            for (Integer flipID : mask) {
+                newGene.flip(flipID);
+            }
+            AbstractEAIndividual newIndy = (AbstractEAIndividual) this.template.clone();
+            ((InterfaceDataTypeBinary) newIndy).SetBinaryGenotype(newGene);
+            evaluate(newIndy);
+            if (newIndy.getFitness(0) < indy.getFitness(0)) {
+                indy = newIndy;
+            }
+        }
+        return indy;
     }
 
     /**
@@ -320,16 +320,16 @@ public class MLTGA implements InterfaceOptimizer, java.io.Serializable, Interfac
     public void setProblem(InterfaceOptimizationProblem problem) {
         this.problem = (AbstractOptimizationProblem) problem;
     }
-    
-    public boolean getElitism(){
+
+    public boolean getElitism() {
         return this.elitism;
     }
-    
-    public void setElitism(boolean b){
+
+    public void setElitism(boolean b) {
         this.elitism = b;
     }
-    
-    public String elitismTipText(){
+
+    public String elitismTipText() {
         return "use elitism?";
     }
 
@@ -341,10 +341,6 @@ public class MLTGA implements InterfaceOptimizer, java.io.Serializable, Interfac
     @Override
     public String getStringRepresentation() {
         return "Linkage Tree GA";
-    }
-
-    @Override
-    public void freeWilly() {
     }
 
     @Override
