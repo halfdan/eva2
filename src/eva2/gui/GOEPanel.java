@@ -4,7 +4,6 @@ import eva2.server.go.tools.FileTools;
 import eva2.tools.BasicResourceLoader;
 import eva2.tools.EVAHELP;
 import eva2.tools.SerializedObject;
-import eva2.tools.jproxy.RMIProxyLocal;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -65,7 +64,6 @@ public class GOEPanel extends JPanel implements ItemListener {
     private GenericObjectEditor genericObjectEditor = null;
     private boolean withComboBoxToolTips = true; // should tool tips for the combo box be created?
     private int tipMaxLen = 100; // maximum length of tool tip
-    
     private HashMap<String, String> classNameMap;
 
     /**
@@ -99,17 +97,15 @@ public class GOEPanel extends JPanel implements ItemListener {
         propertySheetPanel = new PropertySheetPanel();
         propertySheetPanel.addPropertyChangeListener(
                 new PropertyChangeListener() {
-
             @Override
-                    public void propertyChange(final PropertyChangeEvent event) {
-                        propChangeSupport.firePropertyChange("", backupObject, genericObjectEditor.getValue());
-                    }
-                });
+            public void propertyChange(final PropertyChangeEvent event) {
+                propChangeSupport.firePropertyChange("", backupObject, genericObjectEditor.getValue());
+            }
+        });
         openButton = makeIconButton("images/Open16.gif", "Open");
         openButton.setToolTipText("Load a configured object");
         openButton.setEnabled(true);
         openButton.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(final ActionEvent event) {
                 Object object = FileTools.openObject(openButton, genericObjectEditor.getClassType());
@@ -128,7 +124,6 @@ public class GOEPanel extends JPanel implements ItemListener {
         saveButton.setToolTipText("Save the current configured object");
         saveButton.setEnabled(true);
         saveButton.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(final ActionEvent event) {
                 FileTools.saveObjectWithFileChooser(saveButton, genericObjectEditor.getValue());
@@ -138,14 +133,13 @@ public class GOEPanel extends JPanel implements ItemListener {
         okayButton = new JButton("OK");
         okayButton.setEnabled(true);
         okayButton.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(final ActionEvent event) {
                 backupObject = copyObject(genericObjectEditor.getValue());
 
                 updateClassType();
                 updateChildPropertySheet();
-                
+
                 /*
                  * ToDo: This is really ugly. Find a way to make this better.
                  */
@@ -160,7 +154,6 @@ public class GOEPanel extends JPanel implements ItemListener {
         cancelButton = new JButton("Cancel");
         cancelButton.setEnabled(true);
         cancelButton.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(final ActionEvent event) {
                 if (backupObject != null) {
@@ -223,26 +216,26 @@ public class GOEPanel extends JPanel implements ItemListener {
         }
         objectChooser.addItemListener(this);
     }
-    
+
     /**
-     * This method is duplicated from EvAModuleButtonPanelMaker.
-     * ToDo: Refactor this.
+     * This method is duplicated from EvAModuleButtonPanelMaker. ToDo: Refactor
+     * this.
      *
      * @param iconSrc
      * @param title
-     * @return 
+     * @return
      */
     private JButton makeIconButton(final String iconSrc, final String title) {
-		JButton newButton;
-		byte[] bytes;
-		bytes = BasicResourceLoader.instance().getBytesFromResourceLocation(iconSrc, false);
-		if (bytes == null) {
-			newButton = new JButton(title);			
-		} else {
-			newButton = new JButton(new ImageIcon(Toolkit.getDefaultToolkit().createImage(bytes)));
-		}
-		return newButton;
-	}
+        JButton newButton;
+        byte[] bytes;
+        bytes = BasicResourceLoader.instance().getBytesFromResourceLocation(iconSrc, false);
+        if (bytes == null) {
+            newButton = new JButton(title);
+        } else {
+            newButton = new JButton(new ImageIcon(Toolkit.getDefaultToolkit().createImage(bytes)));
+        }
+        return newButton;
+    }
 
     public void setEnabledOkCancelButtons(boolean enabled) {
         okayButton.setEnabled(enabled);
@@ -316,11 +309,7 @@ public class GOEPanel extends JPanel implements ItemListener {
     protected void updateClassType() {
         List<String> classesLongNames;
         ArrayList<Class<?>> instances = new ArrayList<Class<?>>(5);
-        if (Proxy.isProxyClass(genericObjectEditor.getClassType())) {
-            classesLongNames = GenericObjectEditor.getClassesFromProperties(((RMIProxyLocal) Proxy.getInvocationHandler(((Proxy) genericObjectEditor.getValue()))).getOriginalClass().getName(), null);
-        } else {
-            classesLongNames = GenericObjectEditor.getClassesFromProperties(genericObjectEditor.getClassType().getName(), instances);
-        }
+        classesLongNames = GenericObjectEditor.getClassesFromProperties(genericObjectEditor.getClassType().getName(), instances);
         if (classesLongNames.size() > 1) {
             classNameMap = new HashMap<String, String>();
             for (String className : classesLongNames) {
@@ -396,7 +385,8 @@ public class GOEPanel extends JPanel implements ItemListener {
     }
 
     /**
-     * When the chooser selection is changed, ensures that the Object is changed appropriately.
+     * When the chooser selection is changed, ensures that the Object is changed
+     * appropriately.
      *
      * @param e a value of type 'ItemEvent'
      */

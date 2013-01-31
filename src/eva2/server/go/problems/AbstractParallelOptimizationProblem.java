@@ -1,8 +1,5 @@
 package eva2.server.go.problems;
 
-import eva2.gui.PropertyRemoteServers;
-import eva2.tools.jproxy.RMIProxyRemoteThread;
-
 /**
  * This class is under construction. 
  * 
@@ -14,14 +11,14 @@ import eva2.tools.jproxy.RMIProxyRemoteThread;
  */
 public abstract class AbstractParallelOptimizationProblem extends AbstractOptimizationProblem {
 
-    private PropertyRemoteServers                   m_Servers           = new PropertyRemoteServers();
+//    private PropertyRemoteServers                   m_Servers           = new PropertyRemoteServers();
     private int                                     m_LocalCPUs         = 4;
     private boolean                                 m_Parallelize       = false;
     private AbstractOptimizationProblem[]           m_Slaves;
 
     @Override
     public void initProblem() {
-        if (this.m_Parallelize) {
+  /*      if (this.m_Parallelize) {
             // this is running on remote maschines
             String[] nodesList = this.m_Servers.getCheckedServerNodes();
             if ((nodesList == null) || (nodesList.length == 0)) {
@@ -37,22 +34,8 @@ public abstract class AbstractParallelOptimizationProblem extends AbstractOptimi
             for (int i = 0; i < this.m_LocalCPUs; i++) {
                 this.m_Slaves[i] = (AbstractOptimizationProblem) this.clone();
             }
-        }
+        }*/
     }
-
-//    /** This method evaluates a given population and set the fitness values
-//     * accordingly
-//     * @param population    The population that is to be evaluated.
-//     */
-//    public void evaluate(Population population) {
-//        AbstractEAIndividual    tmpIndy;
-//        int                     curIndex = 0;
-//
-//        while (curIndex < population.size()) {
-//            what the ?? is this??
-//        }
-//
-//    }
 
 /**********************************************************************************************************************
  * These are for GUI
@@ -88,7 +71,7 @@ public abstract class AbstractParallelOptimizationProblem extends AbstractOptimi
     /** This method allows you to managae the available servers
      * @return The current servers
      */
-    public PropertyRemoteServers getServers() {
+  /*  public PropertyRemoteServers getServers() {
         return this.m_Servers;
     }
     public void setServers(PropertyRemoteServers b){
@@ -97,7 +80,7 @@ public abstract class AbstractParallelOptimizationProblem extends AbstractOptimi
     public String serversTipText() {
         return "Choose and manage the servers (only active in parallelized mode).";
     }
-
+*/
     /** This method allows you to set the number of processors in local mode
      * @param n     Number of processors.
      */

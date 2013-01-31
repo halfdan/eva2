@@ -3,7 +3,6 @@ package eva2.server.go.mocco;
 
 import eva2.gui.GenericObjectEditor;
 import eva2.gui.PropertyEditorProvider;
-import eva2.gui.PropertyRemoteServers;
 import eva2.server.go.InterfaceTerminator;
 import eva2.server.go.MOCCOStandalone;
 import eva2.server.go.operators.migration.SOBestMigration;
@@ -240,12 +239,13 @@ public class MOCCOParameterizeRefPoint extends MOCCOPhase implements InterfacePr
             }
             // then set the values
 //            if (!m_Island.getLocalOnly()) {
-                PropertyRemoteServers t = m_Island.getServers();
+            // ToDo: Think of new ways to do this!
+                /*PropertyRemoteServers t = m_Island.getServers();
                 String[] servers = t.getServerNodes();
                 if (servers.length != m_Perturbations) {
                     System.out.println("Warning: Number of servers overrides number of perturbations!");
                     m_Perturbations = servers.length;
-                }
+                }*/
 //            } else {
 //                m_Island.setNumberLocalCPUs(m_Perturbations);
 //            }

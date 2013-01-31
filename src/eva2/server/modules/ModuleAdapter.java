@@ -10,12 +10,12 @@ package eva2.server.modules;
  *            $Author: mkron $
  */
 import eva2.gui.EvATabbedFrameMaker;
+import eva2.optimization.OptimizationStateListener;
 import eva2.server.stat.EvAJob;
-import eva2.tools.jproxy.RemoteStateListener;
 /**
  *
  */
-public interface ModuleAdapter extends RemoteStateListener {
+public interface ModuleAdapter extends OptimizationStateListener {
 
     EvATabbedFrameMaker getModuleFrame();
 
@@ -48,7 +48,7 @@ public interface ModuleAdapter extends RemoteStateListener {
      */
     boolean startPostProcessing();
 
-    void addRemoteStateListener(RemoteStateListener x);
+    void addOptimizationStateListener(OptimizationStateListener x);
 
     String getAdapterName();
 

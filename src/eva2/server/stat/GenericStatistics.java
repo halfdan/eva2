@@ -9,13 +9,9 @@ package eva2.server.stat;
  *            $Date: 2007-12-06 16:05:11 +0100 (Thu, 06 Dec 2007) $
  *            $Author: mkron $
  */
-/*==========================================================================*
- * IMPORTS
- *==========================================================================*/
 import eva2.gui.DataViewer;
 import eva2.gui.DataViewerInterface;
 import eva2.gui.Graph;
-import eva2.tools.jproxy.MainAdapterClient;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.logging.Logger;
@@ -33,14 +29,6 @@ public class GenericStatistics implements Serializable {
     private transient Field[] fields;
     private DataViewerInterface viewer;
     private Graph graph;
-    private static MainAdapterClient mainAdapterClient;
-
-    /**
-     *
-     */
-    public static void setMainAdapterClient(MainAdapterClient adapter) {
-        mainAdapterClient = adapter;
-    }
 
     /**
      *
@@ -131,7 +119,7 @@ public class GenericStatistics implements Serializable {
      *
      */
     public void initViewer() {
-        viewer = DataViewer.getInstance(mainAdapterClient, "test");
+        viewer = DataViewer.getInstance("test");
         graph = viewer.getNewGraph("test");
     }
 

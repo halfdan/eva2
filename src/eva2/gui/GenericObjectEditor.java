@@ -7,7 +7,6 @@ package eva2.gui;
 
 import eva2.EvAInfo;
 import eva2.tools.ReflectPackage;
-import eva2.tools.jproxy.RMIProxyLocal;
 import java.awt.Component;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
@@ -287,14 +286,8 @@ public class GenericObjectEditor implements PropertyEditor {
         }
 
         Vector<String> v = null;
-        if (Proxy.isProxyClass(classType)) {
-            //if (TRACE) System.out.println("PROXY! original was " + ((RMIProxyLocal)Proxy.getInvocationHandler(((Proxy)m_Object))).getOriginalClass().getName());
-            v = new Vector<String>(getClassesFromProperties(((RMIProxyLocal) Proxy.getInvocationHandler(((Proxy) m_Object))).getOriginalClass().getName(), null));
-        } else {
-            v = new Vector<String>(getClassesFromProperties(classType.getName(), null));
-        }
-
-//		v = new Vector<String>(getClassesFromProperties(m_ClassType.getName()));
+        v = new Vector<String>(getClassesFromProperties(classType.getName(), null));
+        
         try {
             if (v.size() > 0) {
                 setObject((Object) Class.forName((String) v.get(0)).newInstance());

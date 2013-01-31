@@ -1,7 +1,5 @@
 package eva2.server.modules;
 
-import eva2.tools.jproxy.MainAdapterClient;
-
 /**
  * This the EP module adapter necessary to access this implementation from the EvA top level.
  */
@@ -9,8 +7,8 @@ public class EPModuleAdapter extends GenericModuleAdapter implements ModuleAdapt
 
     private static final String moduleName = "Evolutionary_Programming";
 
-    public EPModuleAdapter(String adapterName, MainAdapterClient client) {
-        super(adapterName, "EP.html", client, EPParameters.getInstance(), true);
+    public EPModuleAdapter(String adapterName) {
+        super(adapterName, "EP.html", EPParameters.getInstance(), true);
     }
 
     /**

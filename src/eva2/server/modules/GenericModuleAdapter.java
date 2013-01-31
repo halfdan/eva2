@@ -12,8 +12,6 @@ import eva2.server.stat.EvAJobList;
 import eva2.server.stat.InterfaceStatisticsParameter;
 import eva2.server.stat.StatisticsStandalone;
 import eva2.server.stat.StatisticsWithGUI;
-import eva2.tools.jproxy.MainAdapterClient;
-import eva2.tools.jproxy.RMIProxyLocal;
 import java.io.Serializable;
 import java.lang.reflect.Proxy;
 
@@ -29,22 +27,19 @@ public class GenericModuleAdapter extends AbstractModuleAdapter implements Seria
      *
      * @param adapterName The AdapterName
      * @param helperFName Name of a HTML help file name
-     * @param adapterClient The client to serve
      * @param params A parameter set describing the optimizer module
      * @param optimizerExpert Set to true if setting the optimizer is an expert option being hidden
      * from the gui
      * @param noGUIStatOut If null, statistics with GUI are used, else the standalone statistics
      * with given output filename.
      */
-    public GenericModuleAdapter(String adapterName, String helperFName, MainAdapterClient adapterClient, InterfaceGOParameters params, boolean optimizerExpert, String noGUIStatOut) {
-        super(adapterClient);
+    public GenericModuleAdapter(String adapterName, String helperFName, InterfaceGOParameters params, boolean optimizerExpert, String noGUIStatOut) {        
         remoteModuleAdapter = this;
         this.adapterName = adapterName;
-        mainAdapterClient = adapterClient;
         helperFilename = helperFName;
 
         if (noGUIStatOut==null) {
-        	statisticsModule   = new StatisticsWithGUI(adapterClient);
+        	statisticsModule   = new StatisticsWithGUI();
         } else {
         	statisticsModule	= new StatisticsStandalone(noGUIStatOut);
         }
@@ -69,8 +64,8 @@ public class GenericModuleAdapter extends AbstractModuleAdapter implements Seria
      * @param params		a parameter set describing the optimizer module
      * @param optimizerExpert	 set to true if setting the optimizer is an expert option being hidden from the gui
      */
-    public GenericModuleAdapter(String adapterName, String helperFName, MainAdapterClient Client, InterfaceGOParameters params, boolean optimizerExpert) {
-    	this(adapterName, helperFName, Client, params, optimizerExpert, null);
+    public GenericModuleAdapter(String adapterName, String helperFName, InterfaceGOParameters params, boolean optimizerExpert) {
+    	this(adapterName, helperFName, params, optimizerExpert, null);
     }
     
     /** 
@@ -98,27 +93,17 @@ public class GenericModuleAdapter extends AbstractModuleAdapter implements Seria
         ButtonPanel.setHelperFilename(helperFilename);
         frmMkr.addPanelMaker(ButtonPanel);
         InterfaceGOParameters goParams = ((Processor) processor).getGOParams();
-        // TODO do we really need proxies here?
-        if (useRMI && !Proxy.isProxyClass(goParams.getClass())) {
-            frmMkr.addPanelMaker(paramPanel = new JParaPanel(RMIProxyLocal.newInstance(goParams), goParams.getName()));
-        } else {
+       
             frmMkr.addPanelMaker(paramPanel = new JParaPanel(goParams, goParams.getName()));
-        }
-        if (useRMI && !Proxy.isProxyClass(Stat.getClass())) {
-            frmMkr.addPanelMaker(new JParaPanel(RMIProxyLocal.newInstance(Stat), Stat.getName()));
-        } else {
+
             frmMkr.addPanelMaker(new JParaPanel(Stat, Stat.getName()));
-        }
 
         jobList = new EvAJobList(new EvAJob[]{});
         jobList.setModule(this);
         jobList.addTextListener((AbstractStatistics) ((Processor) processor).getStatistics());
 
-        if (useRMI && !Proxy.isProxyClass(Stat.getClass())) {
-            jobPanel = new JParaPanel(RMIProxyLocal.newInstance(jobList), jobList.getName());
-        } else {
+        
             jobPanel = new JParaPanel(jobList, jobList.getName());
-        }
 
         frmMkr.addPanelMaker(jobPanel);
 
