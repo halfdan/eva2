@@ -28,8 +28,7 @@ import javax.swing.plaf.basic.BasicComboBoxRenderer;
 public class GOEPanel extends JPanel implements ItemListener {
 
     private Object backupObject;
-    private PropertyChangeSupport propChangeSupport;
-    private static boolean TRACE = false;
+    private PropertyChangeSupport propChangeSupport;    
     /**
      * The chooser component
      */

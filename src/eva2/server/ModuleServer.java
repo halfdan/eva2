@@ -92,20 +92,7 @@ public class ModuleServer {
             }
 
         }
-        // and the running modules
-        // @todo running modules sind abgeschaltet
-
-//		for (int i = 0; i < m_RunnungModules.size(); i++) {
-//			String AdapterName = null;
-//			try {
-//				AdapterName = ( (ModuleAdapter) m_RunnungModules.get(i)).getAdapterName();
-//			}
-//			catch (Exception ee) {
-//				System.err.println("Error: GetAdapterName" + ee.getMessage());
-//			}
-//			ModuleNameList.add(AdapterName);
-//		}
-
+        
         String[] x = new String[moduleNameList.size()];
         moduleNameList.toArray(x);
         return x;
@@ -176,21 +163,6 @@ public class ModuleServer {
                 return (ModuleAdapter) moduleAdapter;
             }
         }
-//		//  @todo running modules sind gerade noch abgeschaltet
-//		for (int i = 0; i < m_RunnungModules.size(); i++) {
-//			try {
-//				adapterName = ( (ModuleAdapter) m_RunnungModules.get(i)).getAdapterName();
-//			}
-//			catch (Exception e) {
-//				System.out.println("Error : GetAdapterName" + e);
-//			}
-//			if (adapterName.equals(selectedModuleName)) {
-//				if (TRACE)
-//					System.out.println(" Choose a running Module!!! " + adapterName);
-//				m_ModuleAdapter = ( (ModuleAdapter) m_RunnungModules.get(i));
-//				return (ModuleAdapter) m_ModuleAdapter;
-//			}
-//		}
 
         LOGGER.log(Level.SEVERE, "No valid module defined: {0}", selectedModuleName);
         return null;

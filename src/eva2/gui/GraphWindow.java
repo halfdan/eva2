@@ -6,13 +6,14 @@ package eva2.gui;
  */
 
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * It represents one plot window in the client GUI.
  */
 public class GraphWindow {
-
-    public static boolean TRACE = false;
+    private static final Logger LOGGER = Logger.getLogger(GraphWindow.class.getName());
     static private int graphCounter = -1;
     static private PlotContainer plotContainer;
     private PlotInterface plotter;
@@ -57,9 +58,6 @@ public class GraphWindow {
      *
      */
     private GraphWindow(String plotName, String strx, String stry) {
-        if (TRACE) {
-            System.out.println("Constructor GraphWindow");
-        }
         name = plotName;
         plotter = new Plot(plotName, strx, stry, true);
     }
@@ -76,9 +74,7 @@ public class GraphWindow {
      */
     public Graph getNewGraph(String infoString) {
         graphCounter++;
-        if (TRACE) {
-            System.out.println("Graph.getNewGraph No:" + graphCounter + " - " + infoString);
-        }
+        LOGGER.log(Level.FINEST, "Graph.getNewGraph No:{0} - {1} created.", new Object[]{graphCounter, infoString});
         return new Graph(infoString, plotter, graphCounter);
     }
 }
@@ -104,7 +100,7 @@ class PlotContainer extends ArrayList<GraphWindow> {
      *
      */
     public boolean containsName(String name) {
-        GraphWindow temp = null;
+        GraphWindow temp;
         for (int i = 0; i < size(); i++) {
             temp = (GraphWindow) (get(i));
             if (name.equals(temp.getName())) {
@@ -130,7 +126,7 @@ class PlotContainer extends ArrayList<GraphWindow> {
                 return actualPlot;
             }
         }
-        GraphWindow temp = null;
+        GraphWindow temp;
         for (int i = 0; i < size(); i++) {
             temp = (GraphWindow) (get(i));
             if (name.equals(temp.getName())) {
