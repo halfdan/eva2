@@ -263,8 +263,7 @@ public class GenericObjectEditor implements PropertyEditor {
      *
      * @param type a value of type 'Class'
      */
-    public void setClassType(Class<?> type) {
-        //if (TRACE) System.out.println("GOE setClassType("+ (type == null? "<null>" : type.getName()) + ")");
+    public void setClassType(Class<?> type) {        
         classType = type;
         if (editorComponent != null) {
             editorComponent.updateClassType();
@@ -337,7 +336,6 @@ public class GenericObjectEditor implements PropertyEditor {
      */
     private void setObject(Object c) {
         // This should really call equals() for comparison.
-        //if (TRACE) System.out.println("setObject "+ c.getClass().getName() + " " + c);
         boolean trueChange = (c != getValue());
 
         m_Backup = m_Object;
