@@ -12,20 +12,20 @@ import eva2.server.go.populations.SolutionSet;
 import eva2.server.go.problems.B1Problem;
 import eva2.server.go.problems.InterfaceOptimizationProblem;
 
-/** Evolution strategies by Rechenberg and Schwefel, but please remember that
+/**
+ * Evolution strategies by Rechenberg and Schwefel, but please remember that
  * this only gives the generation strategy and not the coding. But this is the
- * only stategy that is able to utilize the 1/5 success rule mutation. Unfortunately,
- * there is a minor problem with the interpretation of the population size in constrast
- * to the parameters mu and lambda used by Rechenberg and Schwefel. Therefore, i'm
- * afraid that the interpretation of the population size may be subject to future
- * changes.
- * This is a implementation of Evolution Strategies.
- * Copyright:       Copyright (c) 2003
- * Company:         University of Tuebingen, Computer Architecture
- * @author          Felix Streichert
- * @version:  $Revision: 307 $
- *            $Date: 2007-12-04 14:31:47 +0100 (Tue, 04 Dec 2007) $
- *            $Author: mkron $
+ * only stategy that is able to utilize the 1/5 success rule mutation.
+ * Unfortunately, there is a minor problem with the interpretation of the
+ * population size in constrast to the parameters mu and lambda used by
+ * Rechenberg and Schwefel. Therefore, i'm afraid that the interpretation of the
+ * population size may be subject to future changes. This is a implementation of
+ * Evolution Strategies. Copyright: Copyright (c) 2003 Company: University of
+ * Tuebingen, Computer Architecture
+ *
+ * @author Felix Streichert
+ * @version: $Revision: 307 $ $Date: 2007-12-04 14:31:47 +0100 (Tue, 04 Dec
+ * 2007) $ $Author: mkron $
  */
 public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializable {
 
@@ -210,9 +210,9 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
         }
 
         setPop(getReplacePop(nextGeneration));
-        
+
         // necessary here because evalPop was not called on population
-        this.firePropertyChangedEvent(Population.nextGenerationPerformed); 
+        this.firePropertyChangedEvent(Population.nextGenerationPerformed);
     }
 
     /**
@@ -340,17 +340,8 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
     }
 
     /**
-     * This method is required to free the memory on a RMIServer, but there is
-     * nothing to implement.
-     */
-    @Override
-    public void freeWilly() {
-    }
-
-    /**
      * These are for GUI
      */
-    
     /**
      * This method returns a global info string
      *

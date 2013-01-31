@@ -14,5 +14,5 @@ public interface InterfacePopulationChangedEventListener {
      * @param source        The source of the event.
      * @param name          Could be used to indicate the nature of the event.
      */
-    public void registerPopulationStateChanged(Object source, String name);
+    void registerPopulationStateChanged(Object source, String name);
 }

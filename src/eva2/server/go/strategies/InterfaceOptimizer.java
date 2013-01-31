@@ -22,29 +22,29 @@ public interface InterfaceOptimizer {
     /** This method will return deep clone of the optimizer
      * @return The clone
      */
-    public Object clone();
+    Object clone();
 
     /** This method will return a naming String
      * @return The name of the algorithm
      */
-    public String getName();
+    String getName();
 
     /** 
      * This method allows you to add a listener to the Optimizer.
      * @param ea
      */
-    public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea);
+    void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea);
     
     /** 
      * This method removes a listener from the Optimizer. It returns true on success,
      * false if the listener could not be found.
      * @param ea
      */
-    public boolean removePopulationChangedEventListener(InterfacePopulationChangedEventListener ea);
+    boolean removePopulationChangedEventListener(InterfacePopulationChangedEventListener ea);
     
     /** This method will init the optimizer
      */
-    public void init();
+    void init();
 
     /** 
      * This method will init the optimizer with a given population.
@@ -52,22 +52,22 @@ public interface InterfaceOptimizer {
      * @param pop       The initial population
      * @param reset     If true the population is reinitialized and reevaluated.
      */
-    public void initByPopulation(Population pop, boolean reset);
+    void initByPopulation(Population pop, boolean reset);
 
     /** This method will optimize for a single iteration, after this step
      * the population should be as big as possible (ie. the size of lambda
      * and not mu) and all individual should be evaluated. This allows more
      * usefull statistics on the population.
      */
-    public void optimize();
+    void optimize();
 
     /** Assuming that all optimizer will store their data in a population
      * we will allow access to this population to query to current state
      * of the optimizer.
      * @return The population of current solutions to a given problem.
      */
-    public Population getPopulation();
-    public void setPopulation(Population pop);
+    Population getPopulation();
+    void setPopulation(Population pop);
     
     /**
      * Return all found solutions (local optima) if they are not contained in the current population. Be
@@ -78,14 +78,14 @@ public interface InterfaceOptimizer {
      * 
      * @return A solution set of the current population and possibly earlier solutions.
      */
-    public InterfaceSolutionSet getAllSolutions();
+    InterfaceSolutionSet getAllSolutions();
     
     /** 
      * This method allows you to set an identifier for the algorithm
      * @param name      The identifier
      */
-     public void setIdentifier(String name);
-     public String getIdentifier();
+    void setIdentifier(String name);
+    String getIdentifier();
 
     /**
      * This method will set the problem that is to be optimized. The problem
@@ -93,17 +93,12 @@ public interface InterfaceOptimizer {
      *
      * @param problem
      */
-    public void setProblem (InterfaceOptimizationProblem problem);
-    public InterfaceOptimizationProblem getProblem ();
+    void setProblem (InterfaceOptimizationProblem problem);
+    InterfaceOptimizationProblem getProblem ();
 
     /** This method will return a string describing all properties of the optimizer
      * and the applied methods.
      * @return A descriptive string
      */
-    public String getStringRepresentation();
-
-    /** This method is required to free the memory on a RMIServer,
-     * but there is nothing to implement.
-     */
-    public void freeWilly();
+    String getStringRepresentation();
 }

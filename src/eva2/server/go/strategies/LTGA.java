@@ -365,10 +365,6 @@ public class LTGA implements InterfaceOptimizer, java.io.Serializable, Interface
     }
 
     @Override
-    public void freeWilly() {
-    }
-
-    @Override
     public void registerPopulationStateChanged(Object source, String name) {
         // The events of the interim hill climbing population will be caught here 
         if (name.compareTo(Population.funCallIntervalReached) == 0) {

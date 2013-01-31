@@ -284,6 +284,8 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
      * with the given parameters. If windowLen <= 0, the deactivation mechanism
      * is disabled. This provides for semi-sequential niching with DPI-ES
      *
+     *
+     *
 
      *
      * @param threshold
@@ -948,7 +950,8 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
     /**
      * Calculate the dynamic population size, which is the number of individuals
      * that are currently "alive" in the peak set. This must be implemented in
-     * analogy to {@link #collectPopulationIncGen(Population, EvolutionStrategies[], Population)}
+     * analogy to
+     * {@link #collectPopulationIncGen(Population, EvolutionStrategies[], Population)}
      *
      * @return
      */
@@ -1046,10 +1049,6 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
         } else {
             return false;
         }
-    }
-
-    @Override
-    public void freeWilly() {
     }
 
     @Override
