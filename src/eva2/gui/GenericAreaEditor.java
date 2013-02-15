@@ -1,7 +1,7 @@
 package eva2.gui;
 
-import eva2.server.go.individuals.codings.gp.AbstractGPNode;
-import eva2.server.go.individuals.codings.gp.GPArea;
+import eva2.optimization.individuals.codings.gp.AbstractGPNode;
+import eva2.optimization.individuals.codings.gp.GPArea;
 
 /**
  * Created by IntelliJ IDEA.

@@ -1,7 +1,7 @@
 package eva2.gui;
 
-import eva2.server.go.InterfaceTerminator;
-import eva2.server.go.individuals.codings.gp.GPArea;
+import eva2.optimization.go.InterfaceTerminator;
+import eva2.optimization.individuals.codings.gp.GPArea;
 import eva2.tools.SelectedTag;
 import eva2.tools.StringSelection;
 import java.beans.PropertyDescriptor;

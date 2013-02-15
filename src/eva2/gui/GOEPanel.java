@@ -1,6 +1,6 @@
 package eva2.gui;
 
-import eva2.server.go.tools.FileTools;
+import eva2.optimization.tools.FileTools;
 import eva2.tools.BasicResourceLoader;
 import eva2.tools.EVAHELP;
 import eva2.tools.SerializedObject;

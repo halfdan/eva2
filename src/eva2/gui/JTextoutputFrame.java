@@ -6,7 +6,7 @@ package eva2.gui;
  */
 
 import eva2.EvAInfo;
-import eva2.server.go.tools.FileTools;
+import eva2.optimization.tools.FileTools;
 import eva2.tools.BasicResourceLoader;
 import java.awt.BorderLayout;
 import java.awt.Point;

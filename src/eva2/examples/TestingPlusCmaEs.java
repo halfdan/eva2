@@ -1,12 +1,12 @@
 package eva2.examples;
 import eva2.OptimizerFactory;
-import eva2.server.go.individuals.AbstractEAIndividual;
-import eva2.server.go.operators.crossover.CrossoverESDefault;
-import eva2.server.go.operators.mutation.MutateESCovarianceMatrixAdaption;
-import eva2.server.go.operators.terminators.EvaluationTerminator;
-import eva2.server.go.problems.FM0Problem;
-import eva2.server.go.strategies.EvolutionStrategies;
-import eva2.server.modules.GOParameters;
+import eva2.optimization.individuals.AbstractEAIndividual;
+import eva2.optimization.operators.crossover.CrossoverESDefault;
+import eva2.optimization.operators.mutation.MutateESCovarianceMatrixAdaption;
+import eva2.optimization.operators.terminators.EvaluationTerminator;
+import eva2.optimization.problems.FM0Problem;
+import eva2.optimization.strategies.EvolutionStrategies;
+import eva2.optimization.modules.GOParameters;
 
 public class TestingPlusCmaEs {
 	public static void main(String[] args) {

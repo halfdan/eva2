@@ -1,11 +1,11 @@
 package eva2.tools.math;
 
 import eva2.gui.BeanInspector;
-import eva2.server.go.enums.BOAScoringMethods;
-import eva2.server.go.individuals.AbstractEAIndividual;
-import eva2.server.go.individuals.InterfaceDataTypeBinary;
-import eva2.server.go.individuals.InterfaceGAIndividual;
-import eva2.server.go.populations.Population;
+import eva2.optimization.enums.BOAScoringMethods;
+import eva2.optimization.individuals.AbstractEAIndividual;
+import eva2.optimization.individuals.InterfaceDataTypeBinary;
+import eva2.optimization.individuals.InterfaceGAIndividual;
+import eva2.optimization.populations.Population;
 import eva2.tools.Pair;
 import java.util.ArrayList;
 import java.util.Arrays;

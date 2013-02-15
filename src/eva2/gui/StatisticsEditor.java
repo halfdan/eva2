@@ -9,7 +9,7 @@ package eva2.gui;
  *            $Date: 2007-10-23 13:43:24 +0200 (Tue, 23 Oct 2007) $
  *            $Author: mkron $
  */
-import eva2.server.stat.GenericStatistics;
+import eva2.optimization.stat.GenericStatistics;
 import java.awt.*;
 import java.beans.*;
 import javax.swing.*;

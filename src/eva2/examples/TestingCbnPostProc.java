@@ -1,10 +1,10 @@
 package eva2.examples;
 import eva2.OptimizerFactory;
-import eva2.server.go.individuals.AbstractEAIndividual;
-import eva2.server.go.operators.postprocess.PostProcessParams;
-import eva2.server.go.operators.terminators.EvaluationTerminator;
-import eva2.server.go.problems.FM0Problem;
-import eva2.server.modules.GOParameters;
+import eva2.optimization.individuals.AbstractEAIndividual;
+import eva2.optimization.operators.postprocess.PostProcessParams;
+import eva2.optimization.operators.terminators.EvaluationTerminator;
+import eva2.optimization.problems.FM0Problem;
+import eva2.optimization.modules.GOParameters;
 import java.util.List;
 
 public class TestingCbnPostProc {
