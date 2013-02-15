@@ -1,7 +1,7 @@
 package eva2.gui;
 
-import eva2.server.go.individuals.AbstractEAIndividual;
-import eva2.server.go.mocco.paretofrontviewer.InterfaceRefSolutionListener;
+import eva2.optimization.individuals.AbstractEAIndividual;
+import eva2.optimization.mocco.paretofrontviewer.InterfaceRefSolutionListener;
 
 /**
  * Created by IntelliJ IDEA.

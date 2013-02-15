@@ -1,7 +1,7 @@
 package eva2.gui;
 
-import eva2.server.go.individuals.AbstractEAIndividual;
-import eva2.server.go.problems.InterfaceOptimizationProblem;
+import eva2.optimization.individuals.AbstractEAIndividual;
+import eva2.optimization.problems.InterfaceOptimizationProblem;
 
 /**
  * Created by IntelliJ IDEA.

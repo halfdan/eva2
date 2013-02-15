@@ -2,8 +2,8 @@ package eva2.tools.chart2d;
 
 
 import eva2.gui.InterfaceDPointWithContent;
-import eva2.server.go.individuals.AbstractEAIndividual;
-import eva2.server.go.problems.InterfaceOptimizationProblem;
+import eva2.optimization.individuals.AbstractEAIndividual;
+import eva2.optimization.problems.InterfaceOptimizationProblem;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;

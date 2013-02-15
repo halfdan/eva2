@@ -1,6 +1,6 @@
 package eva2.gui;
 
-import eva2.server.go.problems.InterfaceOptimizationObjective;
+import eva2.optimization.problems.InterfaceOptimizationObjective;
 
 /**
  * Created by IntelliJ IDEA.

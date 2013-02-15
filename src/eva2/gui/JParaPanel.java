@@ -8,7 +8,7 @@ package eva2.gui;
  * @author Holger Ulmer, Felix Streichert, Hannes Planatscher
  */
 
-import eva2.server.stat.EvAJobList;
+import eva2.optimization.stat.EvAJobList;
 import java.beans.PropertyEditor;
 import java.beans.PropertyEditorManager;
 import java.io.Serializable;

@@ -10,8 +10,8 @@ package eva2.gui;
  *            $Author: mkron $
  */
 import eva2.optimization.OptimizationStateListener;
-import eva2.server.modules.ModuleAdapter;
-import eva2.server.stat.EvAJob;
+import eva2.optimization.modules.ModuleAdapter;
+import eva2.optimization.stat.EvAJob;
 import eva2.tools.ToolBoxGui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

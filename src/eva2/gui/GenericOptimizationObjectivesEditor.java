@@ -1,10 +1,10 @@
 package eva2.gui;
 
 
-import eva2.server.go.problems.InterfaceOptimizationObjective;
-import eva2.server.go.problems.InterfaceOptimizationTarget;
-import eva2.server.go.tools.AbstractObjectEditor;
-import eva2.server.go.tools.GeneralGOEProperty;
+import eva2.optimization.problems.InterfaceOptimizationObjective;
+import eva2.optimization.problems.InterfaceOptimizationTarget;
+import eva2.optimization.tools.AbstractObjectEditor;
+import eva2.optimization.tools.GeneralGOEProperty;
 import eva2.tools.BasicResourceLoader;
 import java.awt.BorderLayout;
 import java.awt.Component;

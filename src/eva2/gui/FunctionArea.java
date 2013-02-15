@@ -11,8 +11,8 @@ package eva2.gui;
  * IMPORTS
  *==========================================================================
  */
-import eva2.server.go.individuals.AbstractEAIndividual;
-import eva2.server.go.mocco.paretofrontviewer.InterfaceRefPointListener;
+import eva2.optimization.individuals.AbstractEAIndividual;
+import eva2.optimization.mocco.paretofrontviewer.InterfaceRefPointListener;
 import eva2.tools.ToolBoxGui;
 import eva2.tools.chart2d.Chart2DDPointIconCircle;
 import eva2.tools.chart2d.Chart2DDPointIconContent;

@@ -1,11 +1,11 @@
 package eva2.examples;
 import eva2.OptimizerFactory;
-import eva2.server.go.operators.selection.SelectXProbRouletteWheel;
-import eva2.server.go.operators.terminators.EvaluationTerminator;
-import eva2.server.go.populations.Population;
-import eva2.server.go.problems.B1Problem;
-import eva2.server.go.strategies.GeneticAlgorithm;
-import eva2.server.modules.GOParameters;
+import eva2.optimization.operators.selection.SelectXProbRouletteWheel;
+import eva2.optimization.operators.terminators.EvaluationTerminator;
+import eva2.optimization.populations.Population;
+import eva2.optimization.problems.B1Problem;
+import eva2.optimization.strategies.GeneticAlgorithm;
+import eva2.optimization.modules.GOParameters;
 import java.util.BitSet;
 
 public class TestingGAB1 {

@@ -1,8 +1,8 @@
 package eva2.gui;
 
 import eva2.client.EvAClient;
-import eva2.server.go.populations.Population;
-import eva2.server.go.strategies.GeneticAlgorithm;
+import eva2.optimization.populations.Population;
+import eva2.optimization.strategies.GeneticAlgorithm;
 import eva2.tools.Pair;
 import eva2.tools.SelectedTag;
 import eva2.tools.StringTools;

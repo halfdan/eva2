@@ -5,8 +5,8 @@ package eva2.gui;
  * $ $Date: 2007-11-21 18:06:36 +0100 (Wed, 21 Nov 2007) $ $Author: mkron $
  */
 
-import eva2.server.go.InterfaceNotifyOnInformers;
-import eva2.server.go.problems.InterfaceAdditionalPopulationInformer;
+import eva2.optimization.go.InterfaceNotifyOnInformers;
+import eva2.optimization.problems.InterfaceAdditionalPopulationInformer;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.Serializable;

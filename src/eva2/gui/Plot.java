@@ -7,8 +7,8 @@ package eva2.gui;
  * +0100 (Tue, 11 Dec 2007) $ $Author: mkron $
  */
 import eva2.EvAInfo;
-import eva2.server.go.individuals.AbstractEAIndividual;
-import eva2.server.go.populations.Population;
+import eva2.optimization.individuals.AbstractEAIndividual;
+import eva2.optimization.populations.Population;
 import eva2.tools.BasicResourceLoader;
 import eva2.tools.chart2d.DPointSet;
 import java.awt.*;

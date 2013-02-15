@@ -12,10 +12,10 @@ package eva2.client;
  */
 import eva2.EvAInfo;
 import eva2.gui.LoggingPanel;
-import eva2.server.EvAMainAdapter;
-import eva2.server.EvAMainAdapterImpl;
-import eva2.server.go.InterfaceGOParameters;
-import eva2.server.modules.ModuleAdapter;
+import eva2.optimization.EvAMainAdapter;
+import eva2.optimization.EvAMainAdapterImpl;
+import eva2.optimization.go.InterfaceGOParameters;
+import eva2.optimization.modules.ModuleAdapter;
 import java.rmi.RemoteException;
 
 /**

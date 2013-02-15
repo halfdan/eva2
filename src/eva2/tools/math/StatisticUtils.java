@@ -12,7 +12,7 @@ package eva2.tools.math;
 //  Copyright (c) Dept. Computer Architecture, University of Tuebingen, Germany
 //
 ///////////////////////////////////////////////////////////////////////////////
-import eva2.server.go.problems.AbstractProblemDouble;
+import eva2.optimization.problems.AbstractProblemDouble;
 import eva2.tools.math.Jama.Matrix;
 import java.util.ArrayList;
 import java.util.Collections;

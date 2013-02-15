@@ -12,8 +12,8 @@ package eva2.gui;
 /*==========================================================================*
  * IMPORTS
  *==========================================================================*/
-import eva2.server.go.problems.Interface2DBorderProblem;
-import eva2.server.go.problems.InterfaceFirstOrderDerivableProblem;
+import eva2.optimization.problems.Interface2DBorderProblem;
+import eva2.optimization.problems.InterfaceFirstOrderDerivableProblem;
 import eva2.tools.chart2d.DRectangle;
 import eva2.tools.diagram.ColorBarCalculator;
 import eva2.tools.math.Mathematics;

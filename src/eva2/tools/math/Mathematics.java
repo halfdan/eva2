@@ -1,6 +1,6 @@
 package eva2.tools.math;
 
-import eva2.server.go.tools.DoubleArrayComparator;
+import eva2.optimization.tools.DoubleArrayComparator;
 import eva2.tools.EVAERROR;
 import eva2.tools.math.Jama.Matrix;
 import eva2.tools.math.interpolation.BasicDataSet;
