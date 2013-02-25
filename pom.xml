@@ -32,6 +32,11 @@
       <artifactId>commons-math3</artifactId>
       <version>3.1.1</version>
     </dependency>
+    <dependency>
+      <groupId>net.sf.jchart2d</groupId>
+      <artifactId>jchart2d</artifactId>
+      <version>3.3.2</version>
+    </dependency>
   </dependencies>
   
   
