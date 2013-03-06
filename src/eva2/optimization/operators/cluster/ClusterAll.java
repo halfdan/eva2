@@ -54,7 +54,7 @@ public class ClusterAll implements InterfaceClustering, Serializable {
 
 	/*
 	 * (non-Javadoc)
-	 * @see eva2.server.go.operators.cluster.InterfaceClustering#cluster(eva2.server.go.populations.Population, eva2.server.go.populations.Population)
+	 * @see eva2.optimization.operators.cluster.InterfaceClustering#cluster(eva2.optimization.populations.Population, eva2.optimization.populations.Population)
 	 */
     @Override
 	public Population[] cluster(Population pop, Population referenceSet) {
@@ -64,7 +64,7 @@ public class ClusterAll implements InterfaceClustering, Serializable {
 
 	/*
 	 * (non-Javadoc)
-	 * @see eva2.server.go.operators.cluster.InterfaceClustering#initClustering(eva2.server.go.populations.Population)
+	 * @see eva2.optimization.operators.cluster.InterfaceClustering#initClustering(eva2.optimization.populations.Population)
 	 */
     @Override
 	public String initClustering(Population pop) {
@@ -73,7 +73,7 @@ public class ClusterAll implements InterfaceClustering, Serializable {
 
 	/*
 	 * (non-Javadoc)
-	 * @see eva2.server.go.operators.cluster.InterfaceClustering#mergingSpecies(eva2.server.go.populations.Population, eva2.server.go.populations.Population, eva2.server.go.populations.Population)
+	 * @see eva2.optimization.operators.cluster.InterfaceClustering#mergingSpecies(eva2.optimization.populations.Population, eva2.optimization.populations.Population, eva2.optimization.populations.Population)
 	 */
     @Override
 	public boolean mergingSpecies(Population species1, Population species2,

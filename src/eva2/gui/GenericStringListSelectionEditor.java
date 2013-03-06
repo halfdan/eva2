@@ -3,8 +3,8 @@
 //
 //import javax.swing.*;
 //
-//import eva2.server.go.individuals.codings.gp.AbstractGPNode;
-//import eva2.server.go.individuals.codings.gp.GPArea;
+//import eva2.optimization.individuals.codings.gp.AbstractGPNode;
+//import eva2.optimization.individuals.codings.gp.GPArea;
 //
 //import java.beans.PropertyEditor;
 //import java.beans.PropertyChangeSupport;

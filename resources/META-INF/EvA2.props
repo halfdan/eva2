@@ -12,10 +12,10 @@ ServerList = localhost,134.2.172.14,ranode22
 #################### Internals: Do not alter!
 
 # base class for modules. Do not alter!
-ModulePackage = eva2.server.modules
+ModulePackage = eva2.optimization.modules
 
 # filter class for modules. Do not alter!
-ModuleFilterClass = eva2.server.modules.AbstractModuleAdapter
+ModuleFilterClass = eva2.optimization.modules.AbstractModuleAdapter
 
 # Full EvA2 version number
 EvA2Version = 3.0-rc1

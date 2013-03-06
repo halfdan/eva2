@@ -63,7 +63,7 @@ public class CbpsoFitnessThresholdBasedAdaption implements ParamAdaption, Generi
 
 	/*
 	 * (non-Javadoc)
-	 * @see eva2.server.go.operators.paramcontrol.ParamAdaption#calcValue(java.lang.Object, eva2.server.go.populations.Population, int, int)
+	 * @see eva2.optimization.operators.paramcontrol.ParamAdaption#calcValue(java.lang.Object, eva2.optimization.populations.Population, int, int)
 	 */
     @Override
 	public Object calcValue(Object obj, Population pop, int iteration,
@@ -126,7 +126,7 @@ public class CbpsoFitnessThresholdBasedAdaption implements ParamAdaption, Generi
 
 	/*
 	 * (non-Javadoc)
-	 * @see eva2.server.go.operators.paramcontrol.ParamAdaption#finish(java.lang.Object, eva2.server.go.populations.Population)
+	 * @see eva2.optimization.operators.paramcontrol.ParamAdaption#finish(java.lang.Object, eva2.optimization.populations.Population)
 	 */
     @Override
 	public void finish(Object obj, Population pop) {
@@ -135,7 +135,7 @@ public class CbpsoFitnessThresholdBasedAdaption implements ParamAdaption, Generi
 
 	/*
 	 * (non-Javadoc)
-	 * @see eva2.server.go.operators.paramcontrol.ParamAdaption#getControlledParam()
+	 * @see eva2.optimization.operators.paramcontrol.ParamAdaption#getControlledParam()
 	 */
     @Override
 	public String getControlledParam() {
@@ -144,7 +144,7 @@ public class CbpsoFitnessThresholdBasedAdaption implements ParamAdaption, Generi
 
 	/*
 	 * (non-Javadoc)
-	 * @see eva2.server.go.operators.paramcontrol.ParamAdaption#init(java.lang.Object, eva2.server.go.populations.Population, java.lang.Object[])
+	 * @see eva2.optimization.operators.paramcontrol.ParamAdaption#init(java.lang.Object, eva2.optimization.populations.Population, java.lang.Object[])
 	 */
     @Override
 	public void init(Object obj, Population pop, Object[] initialValues) {
@@ -155,7 +155,7 @@ public class CbpsoFitnessThresholdBasedAdaption implements ParamAdaption, Generi
 
 	/*
 	 * (non-Javadoc)
-	 * @see eva2.server.go.operators.paramcontrol.GenericParamAdaption#setControlledParam(java.lang.String)
+	 * @see eva2.optimization.operators.paramcontrol.GenericParamAdaption#setControlledParam(java.lang.String)
 	 */
     @Override
 	public void setControlledParam(String prm) {

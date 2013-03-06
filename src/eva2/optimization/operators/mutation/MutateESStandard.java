@@ -1,12 +1,12 @@
 package eva2.optimization.operators.mutation;
 
-//package eva2.server.go.operators.mutation;
+//package eva2.optimization.operators.mutation;
 //
-//import eva2.server.go.individuals.AbstractEAIndividual;
-//import eva2.server.go.individuals.InterfaceDataTypeDouble;
-//import eva2.server.go.individuals.InterfaceESIndividual;
-//import eva2.server.go.populations.Population;
-//import eva2.server.go.problems.InterfaceOptimizationProblem;
+//import eva2.optimization.individuals.AbstractEAIndividual;
+//import eva2.optimization.individuals.InterfaceDataTypeDouble;
+//import eva2.optimization.individuals.InterfaceESIndividual;
+//import eva2.optimization.populations.Population;
+//import eva2.optimization.problems.InterfaceOptimizationProblem;
 //import eva2.tools.math.RNG;
 //
 ///**

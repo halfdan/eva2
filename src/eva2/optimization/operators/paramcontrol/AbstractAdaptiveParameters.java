@@ -1,6 +1,6 @@
 package eva2.optimization.operators.paramcontrol;
 
-//package eva2.server.go.operators.paramcontrol;
+//package eva2.optimization.operators.paramcontrol;
 //
 //import java.io.Serializable;
 //

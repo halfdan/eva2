@@ -433,7 +433,7 @@ public class ReflectPackage {
 	
 	/**
 	 * Retrieve assignable classes of the given package from classpath given by full class and package String,
-	 * such as eva2.server.go.problems.AbstractOptimizationProblem.
+	 * such as eva2.optimization.problems.AbstractOptimizationProblem.
 	 * 
 	 * @param pckg	String denoting the package
 	 * @param reqSuperCls

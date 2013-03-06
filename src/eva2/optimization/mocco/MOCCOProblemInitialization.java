@@ -53,7 +53,7 @@ public class MOCCOProblemInitialization extends MOCCOPhase implements InterfaceP
         
         Class[] altern = null;
 		try {
-			altern = ReflectPackage.getAssignableClassesInPackage("eva2.server.go.problems", Class.forName("eva2.server.go.problems.InterfaceMultiObjectiveDeNovoProblem"), true, true);
+			altern = ReflectPackage.getAssignableClassesInPackage("eva2.optimization.problems", Class.forName("eva2.optimization.problems.InterfaceMultiObjectiveDeNovoProblem"), true, true);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}

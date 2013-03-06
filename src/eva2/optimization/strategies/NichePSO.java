@@ -762,7 +762,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
     /**
      * @tested nn (non-Javadoc)
      * @see
-     * eva2.server.go.strategies.InterfaceOptimizer#setPopulation(javaeva.server.oa.go.Populations.Population)
+     * eva2.optimization.strategies.InterfaceOptimizer#setPopulation(javaeva.server.oa.go.Populations.Population)
      */
     @Override
     public void setPopulation(Population pop) {
@@ -865,7 +865,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
 
     /**
      * @tested junit (non-Javadoc)
-     * @see eva2.server.go.strategies.InterfaceOptimizer#getAllSolutions()
+     * @see eva2.optimization.strategies.InterfaceOptimizer#getAllSolutions()
      * @return a population consisting of the personal best solutions of every
      * particle in the mainswarm and all subswarms
      */

@@ -253,7 +253,7 @@ public class MutateESGlobal implements InterfaceMutation, java.io.Serializable, 
 
 	/*
 	 * (non-Javadoc)
-	 * @see eva2.server.go.problems.InterfaceAdditionalPopulationInformer#getAdditionalDataHeader()
+	 * @see eva2.optimization.problems.InterfaceAdditionalPopulationInformer#getAdditionalDataHeader()
 	 */
     @Override
 	public String[] getAdditionalDataHeader() {
@@ -262,7 +262,7 @@ public class MutateESGlobal implements InterfaceMutation, java.io.Serializable, 
 
 	/*
 	 * (non-Javadoc)
-	 * @see eva2.server.go.problems.InterfaceAdditionalPopulationInformer#getAdditionalDataInfo()
+	 * @see eva2.optimization.problems.InterfaceAdditionalPopulationInformer#getAdditionalDataInfo()
 	 */
     @Override
 	public String[] getAdditionalDataInfo() {
@@ -271,7 +271,7 @@ public class MutateESGlobal implements InterfaceMutation, java.io.Serializable, 
 
 	/*
 	 * (non-Javadoc)
-	 * @see eva2.server.go.problems.InterfaceAdditionalPopulationInformer#getAdditionalDataValue(eva2.server.go.PopulationInterface)
+	 * @see eva2.optimization.problems.InterfaceAdditionalPopulationInformer#getAdditionalDataValue(eva2.optimization.PopulationInterface)
 	 */
     @Override
 	public Object[] getAdditionalDataValue(PopulationInterface pop) {
