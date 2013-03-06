@@ -70,7 +70,7 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
      * (non-Javadoc)
      * 
      * @see
-     * eva2.server.go.strategies.InterfaceOptimizer#setIdentifier(java.lang.
+     * eva2.optimization.strategies.InterfaceOptimizer#setIdentifier(java.lang.
      * String)
      */
     @Override
@@ -82,7 +82,7 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
      * (non-Javadoc)
      * 
      * @see
-     * eva2.server.go.strategies.InterfaceOptimizer#SetProblem(eva2.server.go
+     * eva2.optimization.strategies.InterfaceOptimizer#SetProblem(eva2.optimization
      * .problems.InterfaceOptimizationProblem)
      */
     @Override
@@ -104,7 +104,7 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
     /*
      * (non-Javadoc)
      * 
-     * @see eva2.server.go.strategies.InterfaceOptimizer#getAllSolutions()
+     * @see eva2.optimization.strategies.InterfaceOptimizer#getAllSolutions()
      */
     @Override
     public InterfaceSolutionSet getAllSolutions() {
@@ -115,7 +115,7 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
     /*
      * (non-Javadoc)
      * 
-     * @see eva2.server.go.strategies.InterfaceOptimizer#getIdentifier()
+     * @see eva2.optimization.strategies.InterfaceOptimizer#getIdentifier()
      */
     @Override
     public String getIdentifier() {
@@ -125,7 +125,7 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
     /*
      * (non-Javadoc)
      * 
-     * @see eva2.server.go.strategies.InterfaceOptimizer#getName()
+     * @see eva2.optimization.strategies.InterfaceOptimizer#getName()
      */
     @Override
     public String getName() {
@@ -139,7 +139,7 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
     /*
      * (non-Javadoc)
      * 
-     * @see eva2.server.go.strategies.InterfaceOptimizer#getPopulation()
+     * @see eva2.optimization.strategies.InterfaceOptimizer#getPopulation()
      */
     @Override
     public Population getPopulation() {
@@ -149,7 +149,7 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
     /*
      * (non-Javadoc)
      * 
-     * @see eva2.server.go.strategies.InterfaceOptimizer#getProblem()
+     * @see eva2.optimization.strategies.InterfaceOptimizer#getProblem()
      */
     @Override
     public InterfaceOptimizationProblem getProblem() {
@@ -160,7 +160,7 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
      * (non-Javadoc)
      * 
      * @see
-     * eva2.server.go.strategies.InterfaceOptimizer#getStringRepresentation()
+     * eva2.optimization.strategies.InterfaceOptimizer#getStringRepresentation()
      */
     @Override
     public String getStringRepresentation() {
@@ -175,7 +175,7 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
     /*
      * (non-Javadoc)
      * 
-     * @see eva2.server.go.strategies.InterfaceOptimizer#init()
+     * @see eva2.optimization.strategies.InterfaceOptimizer#init()
      */
     @Override
     public void init() {
@@ -192,7 +192,7 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
      * (non-Javadoc)
      * 
      * @see
-     * eva2.server.go.strategies.InterfaceOptimizer#initByPopulation(eva2.server
+     * eva2.optimization.strategies.InterfaceOptimizer#initByPopulation(eva2.server
      * .go.populations.Population, boolean)
      */
     @Override
@@ -217,7 +217,7 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
     /*
      * (non-Javadoc)
      * 
-     * @see eva2.server.go.strategies.InterfaceOptimizer#optimize()
+     * @see eva2.optimization.strategies.InterfaceOptimizer#optimize()
      */
     @Override
     public void optimize() {
@@ -354,9 +354,9 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
     /*
      * (non-Javadoc)
      * 
-     * @seeeva2.server.go.strategies.InterfaceOptimizer#
+     * @seeeva2.optimization.strategies.InterfaceOptimizer#
      * removePopulationChangedEventListener
-     * (eva2.server.go.InterfacePopulationChangedEventListener)
+     * (eva2.optimization.InterfacePopulationChangedEventListener)
      */
     @Override
     public boolean removePopulationChangedEventListener(
@@ -368,7 +368,7 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
      * (non-Javadoc)
      * 
      * @see
-     * eva2.server.go.strategies.InterfaceOptimizer#setPopulation(eva2.server
+     * eva2.optimization.strategies.InterfaceOptimizer#setPopulation(eva2.server
      * .go.populations.Population)
      */
     @Override

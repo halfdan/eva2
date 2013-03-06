@@ -94,7 +94,7 @@ public class F21Problem extends AbstractProblemDouble implements InterfaceMultim
 	
 	/*
 	 * (non-Javadoc)
-	 * @see eva2.server.go.problems.AbstractOptimizationProblem#clone()
+	 * @see eva2.optimization.problems.AbstractOptimizationProblem#clone()
 	 */
     @Override
 	public Object clone() {
@@ -103,7 +103,7 @@ public class F21Problem extends AbstractProblemDouble implements InterfaceMultim
 
 	/*
 	 * (non-Javadoc)
-	 * @see eva2.server.go.problems.InterfaceInterestingHistogram#getHistogram()
+	 * @see eva2.optimization.problems.InterfaceInterestingHistogram#getHistogram()
 	 */
     @Override
 	public SolutionHistogram getHistogram() {

@@ -548,7 +548,7 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
     
     /*
      * (non-Javadoc)
-     * @see eva2.server.go.problems.AbstractOptimizationProblem#getAdditionalDataInfo(eva2.server.go.PopulationInterface)
+     * @see eva2.optimization.problems.AbstractOptimizationProblem#getAdditionalDataInfo(eva2.optimization.PopulationInterface)
      */
     @Override
     public String[] getAdditionalDataInfo() {
@@ -559,7 +559,7 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
 
     /*
      * (non-Javadoc)
-     * @see eva2.server.go.problems.InterfaceOptimizationProblem#getStringRepresentationForProblem(eva2.server.go.strategies.InterfaceOptimizer)
+     * @see eva2.optimization.problems.InterfaceOptimizationProblem#getStringRepresentationForProblem(eva2.optimization.strategies.InterfaceOptimizer)
      */
     @Override
 	public String getStringRepresentationForProblem(InterfaceOptimizer opt) {

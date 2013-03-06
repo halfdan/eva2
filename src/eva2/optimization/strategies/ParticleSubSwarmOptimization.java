@@ -212,7 +212,7 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
     }
 
 	/* (non-Javadoc)
-	 * @see eva2.server.go.strategies.ParticleSwarmOptimization#addSortedIndizesTo(eva2.server.go.populations.Population)
+	 * @see eva2.optimization.strategies.ParticleSwarmOptimization#addSortedIndizesTo(eva2.optimization.populations.Population)
 	 */ 
     @Override
 	protected void addSortedIndicesTo(Object[] sortedPopulation, Population pop) {

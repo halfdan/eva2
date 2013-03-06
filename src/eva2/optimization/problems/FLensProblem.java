@@ -611,7 +611,7 @@ implements InterfaceOptimizationProblem, InterfaceHasSolutionViewer, java.io.Ser
 	
 	/*
 	 * (non-Javadoc)
-	 * @see eva2.server.go.problems.InterfaceHasSolutionViewer#getSolutionViewer()
+	 * @see eva2.optimization.problems.InterfaceHasSolutionViewer#getSolutionViewer()
 	 */
     @Override
 	public InterfaceSolutionViewer getSolutionViewer() {
