@@ -100,7 +100,6 @@ public class PDDifferentialEvolution implements InterfaceOptimizer, java.io.Seri
     @Override
     public void init() {
         this.m_Problem.initPopulation(this.m_Population);
-//        children = new Population(m_Population.size());
         this.evaluatePopulation(this.m_Population);
         this.firePropertyChangedEvent(Population.nextGenerationPerformed);
     }
@@ -123,8 +122,6 @@ public class PDDifferentialEvolution implements InterfaceOptimizer, java.io.Seri
             this.evaluatePopulation(this.m_Population);
             this.firePropertyChangedEvent(Population.nextGenerationPerformed);
         }
-//        if (reset) this.m_Population.init();
-//        else children = new Population(m_Population.size());
     }
 
     /**
@@ -284,33 +281,12 @@ public class PDDifferentialEvolution implements InterfaceOptimizer, java.io.Seri
     }
 
     /**
-     * This method returns two parents to the original individual
-     *
-     * @param pop The population to choose from
-     * @return the delta vector
-     */
-//    private double[][] chooseRandomParents(Population pop) {
-//        InterfaceESIndividual indy1, indy2;
-//        double[][] result = new double[2][];
-//        try {
-//            indy1 = (InterfaceESIndividual)pop.get(RNG.randomInt(0, pop.size()-1));
-//            indy2 = (InterfaceESIndividual)pop.get(RNG.randomInt(0, pop.size()-1));
-//        } catch (java.lang.ClassCastException e) {
-//            System.out.println("Differential Evolution currently requires InterfaceESIndividual as basic data type!");
-//            return result;
-//        }
-//        result[0] = indy1.getDGenotype();
-//        result[1] = indy2.getDGenotype();
-//        return result;
-//    }
-    /**
      * This method will generate one new individual from the given population
      *
      * @param pop The current population
      * @return AbstractEAIndividual
      */
     public AbstractEAIndividual generateNewIndividual(Population pop, int parentIndex) {
-//    	int firstParentIndex;
         AbstractEAIndividual indy;
         InterfaceDataTypeDouble esIndy;
 
@@ -328,7 +304,6 @@ public class PDDifferentialEvolution implements InterfaceOptimizer, java.io.Seri
             esIndy = (InterfaceDataTypeDouble) indy;
         } catch (java.lang.ClassCastException e) {
             throw new RuntimeException("Differential Evolution currently requires InterfaceESIndividual as basic data type!");
-//            return (AbstractEAIndividual)((AbstractEAIndividual)pop.get(RNG.randomInt(0, pop.size()-1))).getClone();
         }
         double[] nX, vX, oX;
         oX = esIndy.getDoubleData();
@@ -517,10 +492,8 @@ public class PDDifferentialEvolution implements InterfaceOptimizer, java.io.Seri
      *
      */
     public void optimizeGenerational() {
-//        AbstractEAIndividual    indy = null, orig;
         int parentIndex;
         // required for dynamic problems especially
-//        m_Problem.evaluatePopulationStart(m_Population);
         if (children == null) {
             children = new Population(m_Population.size());
         } else {
@@ -570,7 +543,6 @@ public class PDDifferentialEvolution implements InterfaceOptimizer, java.io.Seri
                     ReplacementCrowding repl = new ReplacementCrowding();
                     repl.insertIndividual(indy, m_Population, null);
                 } else {
-//					index   = RNG.randomInt(0, this.m_Population.size()-1);
                     if (!compareToParent) {
                         parentIndex = RNG.randomInt(0, this.m_Population.size() - 1);
                     }
@@ -620,8 +592,6 @@ public class PDDifferentialEvolution implements InterfaceOptimizer, java.io.Seri
                 index = RNG.randomInt(0, this.m_Population.size() - 1);
             }
             indy = generateNewIndividual(m_Population, index);
-//        	if (cyclePop) indy = this.generateNewIndividual(this.m_Population, i);
-//        	else indy = this.generateNewIndividual(this.m_Population, -1);
             this.m_Problem.evaluate(indy);
             this.m_Population.incrFunctionCalls();
             if (nextDoomed >= 0) {	// this one is lucky, may replace an 'old' one
@@ -629,19 +599,13 @@ public class PDDifferentialEvolution implements InterfaceOptimizer, java.io.Seri
                 nextDoomed = getNextDoomed(m_Population, nextDoomed + 1);
             } else {
                 if (m_Problem instanceof AbstractMultiObjectiveOptimizationProblem) {
-
                     if (indy.isDominatingDebConstraints(m_Population.getEAIndividual(index))) { //child dominates the parent replace the parent
                         m_Population.replaceIndividualAt(index, indy);
                     } else if (!(m_Population.getEAIndividual(index).isDominatingDebConstraints(indy))) { //do nothing if parent dominates the child use crowding if neither one dominates the other one
                         ReplacementNondominatedSortingDistanceCrowding repl = new ReplacementNondominatedSortingDistanceCrowding();
                         repl.insertIndividual(indy, m_Population, null);
                     }
-                    //	ReplacementCrowding repl = new ReplacementCrowding();
-                    //	repl.insertIndividual(indy, m_Population, null);
-
-
                 } else {
-//					index   = RNG.randomInt(0, this.m_Population.size()-1);
                     if (!compareToParent) {
                         index = RNG.randomInt(0, this.m_Population.size() - 1);
                     }
@@ -653,43 +617,6 @@ public class PDDifferentialEvolution implements InterfaceOptimizer, java.io.Seri
             }
         }
 
-//////// this was a non-steady-state-version
-//        if (children==null) children = new Population(m_Population.size());
-//        for (int i = 0; i < this.m_Population.size(); i++) {
-//            indy = this.generateNewIndividual(this.m_Population);
-//            this.m_Problem.evaluate(indy);
-//            this.m_Population.incrFunctionCalls();
-//            children.add(indy);
-//        }
-//        int nextDoomed = getNextDoomed(m_Population, 0);
-//        
-//        for (int i=0; i<this.m_Population.size(); i++) {
-//    		indy 	= (AbstractEAIndividual)children.get(i);
-//        	if (nextDoomed >= 0) {	// kid is lucky, it may replace an 'old' individual
-//        		m_Population.replaceIndividualAt(nextDoomed, indy);
-//        		nextDoomed = getNextDoomed(m_Population, nextDoomed+1);
-//        	} else {	// duel with random one
-//	            index   = RNG.randomInt(0, this.m_Population.size()-1);
-//	            org     = (AbstractEAIndividual)this.m_Population.get(index);
-//	            // if (envHasChanged) this.m_Problem.evaluate(org);
-//	            if (indy.isDominatingDebConstraints(org)) {
-//	            	this.m_Population.replaceIndividualAt(index, indy);
-//	            }
-//        	}
-//        }
-//        children.clear();
-//////// this was the original version
-//        for (int i = 0; i < this.m_Population.size(); i++) {
-//            indy = this.generateNewIndividual(this.m_Population);
-//            this.m_Problem.evaluate(indy);
-//            this.m_Population.incrFunctionCalls();
-//            index   = RNG.randomInt(0, this.m_Population.size()-1);
-//            org     = (AbstractEAIndividual)this.m_Population.get(index);
-//            if (indy.isDominatingDebConstraints(org)) {
-//                this.m_Population.remove(index);
-//                this.m_Population.add(index, indy);
-//            }
-//        }
         m_Problem.evaluatePopulationEnd(m_Population);
         this.m_Population.incrGeneration();
         this.firePropertyChangedEvent(Population.nextGenerationPerformed);
@@ -1004,17 +931,6 @@ public class PDDifferentialEvolution implements InterfaceOptimizer, java.io.Seri
         return "If true, values for k, f, lambda are randomly sampled around +/- 20% of the given values.";
     }
 
-//	public boolean isCyclePop() {
-//		return cyclePop;
-//	}
-//
-//	public void setCyclePop(boolean cyclePop) {
-//		this.cyclePop = cyclePop;
-//	}
-//	
-//	public String cyclePopTipText() {
-//		return "Use all individuals as parents in cyclic sequence instead of randomly.";
-//	}
     public boolean isCompareToParent() {
         return compareToParent;
     }
