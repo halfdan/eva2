@@ -22,7 +22,7 @@ end
 % disp(sprintf('creating mediator'));
 
 % set up a mediator and inform JE
-int.mediator = eva2.server.go.problems.MatlabEvalMediator(int.opts.NiceSleepTime);
+int.mediator = eva2.optimization.problems.MatlabEvalMediator(int.opts.NiceSleepTime);
 int.mp.setMediator(int.mediator);
 JEMediator=int.mediator;
 createStopBox=int.opts.CreateStopBox;

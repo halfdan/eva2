@@ -69,11 +69,11 @@ else
 end
 
 if (strcmp(datatype,'double'))
-    int.dataType=eva2.server.go.problems.MatlabProblemDataTypeEnum.typeDouble;
+    int.dataType=eva2.optimization.problems.MatlabProblemDataTypeEnum.typeDouble;
 elseif strcmp(datatype, 'int')
-    int.dataType=eva2.server.go.problems.MatlabProblemDataTypeEnum.typeInteger;
+    int.dataType=eva2.optimization.problems.MatlabProblemDataTypeEnum.typeInteger;
 elseif strcmp(datatype, 'binary')
-    int.dataType=eva2.server.go.problems.MatlabProblemDataTypeEnum.typeBinary;
+    int.dataType=eva2.optimization.problems.MatlabProblemDataTypeEnum.typeBinary;
 else
     error('Invalid data type, select double, int, or binary!');
 end
@@ -127,16 +127,16 @@ end
 display(getOptions(int));
 % finally create the java object
 if (isempty(int.initialRange)) % binary case
-    int.mp = eva2.server.go.problems.MatlabProblem(int.dim, int.dataType, int.range);
+    int.mp = eva2.optimization.problems.MatlabProblem(int.dim, int.dataType, int.range);
 else
 %     size(int.range);
 %     size(int.initialRange);
 %     eq(size(int.range), size(int.initialRange))
 %     disp('-------');
     if (isempty(int.range) || (sum(eq(size(int.range), size(int.initialRange)))==2))
-        int.mp = eva2.server.go.problems.MatlabProblem(int.dim, int.dataType, int.range, int.initialRange);
+        int.mp = eva2.optimization.problems.MatlabProblem(int.dim, int.dataType, int.range, int.initialRange);
         %int.mp.getIndividualTemplate().setMutationOperator( ...
-        %    eva2.server.go.operators.mutation.MutateEAMixer(eva2.server.go.operators.mutation.MutateGASwapBits, eva2.server.go.operators.mutation.MutateGAUniform));
+        %    eva2.optimization.operators.mutation.MutateEAMixer(eva2.optimization.operators.mutation.MutateGASwapBits, eva2.optimization.operators.mutation.MutateGAUniform));
     else 
         error('Mismatching dimensions of range and initial range!');
     end

@@ -2,7 +2,7 @@ function testEvalFunc(int)
 % Test the fitness function output format.
 wordwidth=32;
 
-if (strcmp(int.dataType,eva2.server.go.problems.MatlabProblemDataTypeEnum.typeBinary))
+if (strcmp(int.dataType,eva2.optimization.problems.MatlabProblemDataTypeEnum.typeBinary))
     % binary problem
     s=sprintf('Binary problem of bitwidth %d', int.dim);
     disp(s);
@@ -13,7 +13,7 @@ if (strcmp(int.dataType,eva2.server.go.problems.MatlabProblemDataTypeEnum.typeBi
     %x(numInts)=bitshift(x(numInts),-overheadBits); % shift right by overhead
     bs=eva2.tools.math.RNG.randomBitSet(0.5, int.dim);
     x=convertUnsignedJE(int, bs);
-elseif strcmp(int.dataType,eva2.server.go.problems.MatlabProblemDataTypeEnum.typeDouble)
+elseif strcmp(int.dataType,eva2.optimization.problems.MatlabProblemDataTypeEnum.typeDouble)
     % double problem
     x=rand(1, int.dim);
     s=sprintf('Real valued problem in %d dimensions and range %s ', int.dim, mat2str(int.range));
@@ -21,7 +21,7 @@ elseif strcmp(int.dataType,eva2.server.go.problems.MatlabProblemDataTypeEnum.typ
     for i=1:int.dim
         x(i)=int.range(i,1)+x(i)*(int.range(i,2)-int.range(i,1));
     end
-elseif strcmp(int.dataType,eva2.server.go.problems.MatlabProblemDataTypeEnum.typeInteger)
+elseif strcmp(int.dataType,eva2.optimization.problems.MatlabProblemDataTypeEnum.typeInteger)
     % integer problem
     s=sprintf('Real valued problem in %d dimensions and range %s ', int.dim, mat2str(int.range));
     disp(s);

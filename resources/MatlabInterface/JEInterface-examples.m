@@ -19,7 +19,7 @@ finalPop=getMultipleResults(JI);
 R=30;
 JI=JEInterface(@testfun, 'binary', R, R, 4, 'Display', 'iter');
 JI=setOutputAllStatsFields(JI, 0); % suppress output of additional statistics, spares runtime with large populations
-JI=optimizeWith(JI, 3, 'population', eva2.server.go.populations.Population(1000);
+JI=optimizeWith(JI, 3, 'population', eva2.optimization.populations.Population(1000);
 [sol, fit]=getResult(JI);
 finalPop=getMultipleResults(JI);
 

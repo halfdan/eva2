@@ -31,14 +31,14 @@ if ((nargin == 2) || (nargin == 3))
     if (ischar(maxEvals)) ; maxEvals=   str2num(maxEvals); end;
     if (ischar(fTol)) ;     fTol    =   str2num(fTol); end;
 
-    import eva2.server.go.operators.terminators.PhenotypeConvergenceTerminator;
-    import eva2.server.go.operators.terminators.FitnessConvergenceTerminator;
-    import eva2.server.go.operators.terminators.PopulationMeasureTerminator;  
-    import eva2.server.go.operators.terminators.PopulationMeasureTerminator.*;
-    import eva2.server.go.operators.terminators.CombinedTerminator;
-    import eva2.server.go.operators.terminators.EvaluationTerminator;
+    import eva2.optimization.operators.terminators.PhenotypeConvergenceTerminator;
+    import eva2.optimization.operators.terminators.FitnessConvergenceTerminator;
+    import eva2.optimization.operators.terminators.PopulationMeasureTerminator;
+    import eva2.optimization.operators.terminators.PopulationMeasureTerminator.*;
+    import eva2.optimization.operators.terminators.CombinedTerminator;
+    import eva2.optimization.operators.terminators.EvaluationTerminator;
     import eva2.OptimizerFactory;
-    import eva2.server.go.problems.MatlabProblem;
+    import eva2.optimization.problems.MatlabProblem;
 
     % set some default values if theyre not given
     % fminsearch, for example, always uses TolX and TolFun with default
