@@ -55,9 +55,9 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
     transient private boolean show = false;
 //    transient private InterfaceTest   test = new Test1();
     // Opt. Algorithms and Parameters
-    //transient private InterfaceOptimizer              m_Optimizer         = new EvolutionaryMultiObjectiveOptimization();
-    //transient private InterfaceOptimizationProblem    m_Problem           = new TF1Problem();
-    //transient private int                             m_FunctionCalls     = 1000;
+    //transient private InterfaceOptimizer              optimizer         = new EvolutionaryMultiObjectiveOptimization();
+    //transient private InterfaceOptimizationProblem    problem           = new TF1Problem();
+    //transient private int                             functionCalls     = 1000;
     private GOParameters m_GO;
     transient private int m_MultiRuns = 1;
     transient private int m_RecentFC;
@@ -324,7 +324,7 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
                 ((GAIndividualDoubleData) tmpIndy).setCrossoverProbability(1.0);
                 ((GAIndividualDoubleData) tmpIndy).setMutationProbability(1.0);
                 ((F1Problem) problem).setEAIndividual(tmpIndy);
-                //((FGRNInferringProblem)this.m_Problem).setStructreSkelInterval(1);
+                //((FGRNInferringProblem)this.problem).setStructreSkelInterval(1);
                 this.m_GO.getOptimizer().setProblem(problem);
                 this.m_GO.getOptimizer().addPopulationChangedEventListener(this);
                 this.doWork();
@@ -340,8 +340,8 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
                 tmpIndy = new ESIndividualDoubleData();
                 ((AbstractEAIndividual) tmpIndy).setMutationOperator(new MutateESLocal());
                 ((F1Problem) problem).setEAIndividual(tmpIndy);
-                //((FGRNInferringProblem)this.m_Problem).setUseHEigenMatrix(true);
-                //((FGRNInferringProblem)this.m_Problem).setUseOnlyPositiveNumbers(true);
+                //((FGRNInferringProblem)this.problem).setUseHEigenMatrix(true);
+                //((FGRNInferringProblem)this.problem).setUseOnlyPositiveNumbers(true);
                 this.m_GO.getOptimizer().setProblem(problem);
                 this.m_GO.getOptimizer().addPopulationChangedEventListener(this);
                 this.doWork();
@@ -388,7 +388,7 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
             }
 
             // init problem 
-            this.m_GO.getProblem().initProblem();
+            this.m_GO.getProblem().initializeProblem();
             this.m_GO.getOptimizer().setProblem(this.m_GO.getProblem());
             // int optimizer and population
             //this.m_GO.getOptimizer().init();
@@ -402,7 +402,7 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
             //this.writeToFile("Here i'll write something characterizing the algorithm.");
 
             for (int j = 0; j < this.m_MultiRuns; j++) {
-                this.m_GO.getProblem().initProblem(); // in the loop as well, dynamic probs may need that (MK)
+                this.m_GO.getProblem().initializeProblem(); // in the loop as well, dynamic probs may need that (MK)
                 this.m_TmpData = new ArrayList();
                 this.currentRun = j;
                 if (this.show) {
@@ -415,7 +415,7 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
                 this.writeToFile(" FitnessCalls\t Best\t Mean\t Worst \t" + BeanInspector.toString(this.m_GO.getProblem().getAdditionalDataHeader(), '\t', false, ""));
                 if ((this.m_ContinueFlag) && (this.m_Backup != null)) {
                     this.m_RecentFC += this.m_Backup.getFunctionCalls();
-                    this.m_GO.getOptimizer().getProblem().initProblem();
+                    this.m_GO.getOptimizer().getProblem().initializeProblem();
                     this.m_GO.getOptimizer().addPopulationChangedEventListener(null);
                     this.m_GO.getOptimizer().setPopulation(this.m_Backup);
                     this.m_GO.getOptimizer().getProblem().evaluate(this.m_GO.getOptimizer().getPopulation());
@@ -427,9 +427,9 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
                     this.m_RecentFC = 0;
                     this.m_GO.getOptimizer().init();
                 }
-                //while (this.m_GO.getOptimizer().getPopulation().getFunctionCalls() < this.m_FunctionCalls) {
+                //while (this.m_GO.getOptimizer().getPopulation().getFunctionCalls() < this.functionCalls) {
                 while (!this.m_GO.getTerminator().isTerminated(this.m_GO.getOptimizer().getPopulation())) {
-                    //System.out.println("Simulated Function calls "+ this.m_Optimizer.getPopulation().getFunctionCalls());
+                    //System.out.println("Simulated Function calls "+ this.optimizer.getPopulation().getFunctionCalls());
                     if (Thread.interrupted()) {
                         throw new InterruptedException();
                     }
@@ -751,10 +751,10 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
 //     * @param functionCalls The maximal number of Function calls
 //     */
 //    public void setFunctionCalls(int functionCalls) {
-//        this.m_FunctionCalls = functionCalls;
+//        this.functionCalls = functionCalls;
 //    }
 //    public int getFunctionCalls() {
-//        return this.m_FunctionCalls;
+//        return this.functionCalls;
 //    }
 //    public String functionCallsTipText() {
 //        return "The maxiaml number of function(fitness) evaluations that are performed. Mote: Generational algorihtms may be delayed!";
@@ -764,13 +764,13 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
 //     * @param optimizer The new optimizing algorithm
 //     */
 //    public void setOptimizer(InterfaceOptimizer optimizer) {
-//        this.m_Optimizer = optimizer;
-//        this.m_Optimizer.addPopulationChangedEventListener(this);
-//        this.m_ExperimentName   = this.m_Optimizer.getName()+"-"+this.m_PerformedRuns.size();
-//        this.m_Optimizer.SetProblem(this.m_Problem);
+//        this.optimizer = optimizer;
+//        this.optimizer.addPopulationChangedEventListener(this);
+//        this.m_ExperimentName   = this.optimizer.getName()+"-"+this.m_PerformedRuns.size();
+//        this.optimizer.SetProblem(this.problem);
 //    }
 //    public InterfaceOptimizer getOptimizer() {
-//        return this.m_Optimizer;
+//        return this.optimizer;
 //    }
 //    public String optimizerTipText() {
 //        return "Choose a optimizing strategies.";
@@ -779,11 +779,11 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
 //     * @param problem
 //     */
 //    public void SetProblem (InterfaceOptimizationProblem problem) {
-//        this.m_Problem = problem;
-//        this.m_Optimizer.SetProblem(this.m_Problem);
+//        this.problem = problem;
+//        this.optimizer.SetProblem(this.problem);
 //    }
 //    public InterfaceOptimizationProblem getProblem () {
-//        return this.m_Problem;
+//        return this.problem;
 //    }
 //    public String problemTipText() {
 //        return "Choose the problem that is to optimize and the EA individual parameters.";

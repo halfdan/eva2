@@ -74,15 +74,15 @@ implements Interface2DBorderProblem, InterfaceProblemDouble, InterfaceHasInitRan
 	}
 	
     public ExternalRuntimeProblem() {
-        this.m_Template         = new ESIndividualDoubleData();
-        ((ESIndividualDoubleData)this.m_Template).setDoubleDataLength(m_ProblemDimension);
-        ((ESIndividualDoubleData)this.m_Template).SetDoubleRange(makeRange());
+        this.template = new ESIndividualDoubleData();
+        ((ESIndividualDoubleData)this.template).setDoubleDataLength(m_ProblemDimension);
+        ((ESIndividualDoubleData)this.template).SetDoubleRange(makeRange());
     }
     
     public ExternalRuntimeProblem(ExternalRuntimeProblem b) {
         //AbstractOptimizationProblem
-        if (b.m_Template != null) {
-            this.m_Template         = (AbstractEAIndividual)((AbstractEAIndividual)b.m_Template).clone();
+        if (b.template != null) {
+            this.template = (AbstractEAIndividual)((AbstractEAIndividual)b.template).clone();
         }
         //ExternalRuntimeProblem
         if (b.m_OverallBest != null) {
@@ -122,7 +122,7 @@ implements Interface2DBorderProblem, InterfaceProblemDouble, InterfaceHasInitRan
     /** This method inits the Problem to log multiruns
      */
     @Override
-    public void initProblem() {
+    public void initializeProblem() {
         this.m_OverallBest = null;
         File f = new File(m_Command);
         if (f.exists()) {
@@ -149,13 +149,13 @@ implements Interface2DBorderProblem, InterfaceProblemDouble, InterfaceHasInitRan
      * @param population    The populations that is to be inited
      */
     @Override
-    public void initPopulation(Population population) {
+    public void initializePopulation(Population population) {
         this.m_OverallBest = null;
 
-        ((InterfaceDataTypeDouble)this.m_Template).setDoubleDataLength(this.m_ProblemDimension);
-        ((InterfaceDataTypeDouble)this.m_Template).SetDoubleRange(makeRange());
+        ((InterfaceDataTypeDouble)this.template).setDoubleDataLength(this.m_ProblemDimension);
+        ((InterfaceDataTypeDouble)this.template).SetDoubleRange(makeRange());
 
-        AbstractOptimizationProblem.defaultInitPopulation(population, m_Template, this);
+        AbstractOptimizationProblem.defaultInitPopulation(population, template, this);
     }
     
     @Override
@@ -440,11 +440,11 @@ implements Interface2DBorderProblem, InterfaceProblemDouble, InterfaceHasInitRan
      * @param indy The EAIndividual type
      */
     public void setEAIndividual(InterfaceDataTypeDouble indy) {
-        this.m_Template = (AbstractEAIndividual)indy;
+        this.template = (AbstractEAIndividual)indy;
     }
     @Override
     public InterfaceDataTypeDouble getEAIndividual() {
-        return (InterfaceDataTypeDouble)this.m_Template;
+        return (InterfaceDataTypeDouble)this.template;
     }
     @Override
 	public double functionValue(double[] point) {

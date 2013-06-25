@@ -25,10 +25,10 @@ public class OBGAIndividualPermutationData extends AbstractEAIndividual implemen
   int[]       firstindex;
 
   public OBGAIndividualPermutationData() {
-    this.m_MutationProbability  = 0.2;
-    this.m_MutationOperator   = new MutateOBGAFlip();
-    this.m_CrossoverProbability = 1.0;
-    this.m_CrossoverOperator = new CrossoverOBGAPMX();
+    this.mutationProbability = 0.2;
+    this.mutationOperator = new MutateOBGAFlip();
+    this.crossoverProbability = 1.0;
+    this.crossoverOperator = new CrossoverOBGAPMX();
     this.setPermutationDataLength(new int[]{20});
     firstindex = new int[]{0};
   }
@@ -49,17 +49,17 @@ public class OBGAIndividualPermutationData extends AbstractEAIndividual implemen
 
       System.arraycopy(individual.m_Genotype, 0, this.m_Genotype, 0, this.m_Genotype.length);
     this.firstindex                 = individual.firstindex;
-    this.m_Age                      = individual.m_Age;
-    this.m_CrossoverOperator        = individual.m_CrossoverOperator;
-    this.m_CrossoverProbability     = individual.m_CrossoverProbability;
-    this.m_MutationOperator         = (InterfaceMutation)individual.m_MutationOperator.clone();
-    this.m_MutationProbability      = individual.m_MutationProbability;
-    this.m_SelectionProbability     = new double[individual.m_SelectionProbability.length];
-    for (int i = 0; i < this.m_SelectionProbability.length; i++) {
-            this.m_SelectionProbability[i] = individual.m_SelectionProbability[i];    }
-    this.m_Fitness = new double[individual.m_Fitness.length];
-    for (int i = 0; i < this.m_Fitness.length; i++) {
-            this.m_Fitness[i] = individual.m_Fitness[i];
+    this.age = individual.age;
+    this.crossoverOperator = individual.crossoverOperator;
+    this.crossoverProbability = individual.crossoverProbability;
+    this.mutationOperator = (InterfaceMutation)individual.mutationOperator.clone();
+    this.mutationProbability = individual.mutationProbability;
+    this.selectionProbability = new double[individual.selectionProbability.length];
+    for (int i = 0; i < this.selectionProbability.length; i++) {
+            this.selectionProbability[i] = individual.selectionProbability[i];    }
+    this.fitness = new double[individual.fitness.length];
+    for (int i = 0; i < this.fitness.length; i++) {
+            this.fitness[i] = individual.fitness[i];
     }
     this.cloneAEAObjects(individual);
   }
@@ -111,8 +111,8 @@ public class OBGAIndividualPermutationData extends AbstractEAIndividual implemen
      this.defaultInit(opt);
      System.out.println("Initial value for OBGAIndividualBinaryData is no Permutation!");
    }
-   this.m_MutationOperator.init(this, opt);
-   this.m_CrossoverOperator.init(this, opt);
+   this.mutationOperator.init(this, opt);
+   this.crossoverOperator.init(this, opt);
  }
 
     /** This method can be used to read the current fitness of the individual.
@@ -122,7 +122,7 @@ public class OBGAIndividualPermutationData extends AbstractEAIndividual implemen
   */
     @Override
  public double[] getFitness() {
-   return this.m_Fitness;
+   return this.fitness;
  }
 
  /** This method will return a string description of the GAIndividal
@@ -134,12 +134,12 @@ public class OBGAIndividualPermutationData extends AbstractEAIndividual implemen
    String result = "";
            result += "OBGAIndividual: (";
          result += "Fitness {";
-           for (int i = 0; i < this.m_Fitness.length; i++) {
-            result += this.m_Fitness[i] + ";";
+           for (int i = 0; i < this.fitness.length; i++) {
+            result += this.fitness[i] + ";";
         }
            result += "}/SelProb{";
-           for (int i = 0; i < this.m_SelectionProbability.length; i++) {
-            result += this.m_SelectionProbability[i] + ";";
+           for (int i = 0; i < this.selectionProbability.length; i++) {
+            result += this.selectionProbability[i] + ";";
         }
            result += "})\n Value: ";
            result += "{";
@@ -153,7 +153,7 @@ public class OBGAIndividualPermutationData extends AbstractEAIndividual implemen
              result += "\n";
            }
            result += "}";
-           result += "\n Mutation ("+this.m_MutationProbability+"):" + this.m_MutationOperator.getStringRepresentation();
+           result += "\n Mutation ("+this.mutationProbability +"):" + this.mutationOperator.getStringRepresentation();
            return result;
 
  }

@@ -21,10 +21,10 @@ public class ESIndividualIntegerData extends AbstractEAIndividual implements Int
     private int[][]                 m_Range;
 
     public ESIndividualIntegerData() {
-        this.m_MutationProbability  = 1.0;
-        this.m_MutationOperator     = new MutateESGlobal();
-        this.m_CrossoverProbability = 0.5;
-        this.m_CrossoverOperator    = new CrossoverESDefault();
+        this.mutationProbability = 1.0;
+        this.mutationOperator = new MutateESGlobal();
+        this.crossoverProbability = 0.5;
+        this.crossoverOperator = new CrossoverESDefault();
         this.m_Genotype             = new double[1];
         this.m_Range                = new int[1][2];
         this.m_Range[0][0]          = -10;
@@ -45,18 +45,18 @@ public class ESIndividualIntegerData extends AbstractEAIndividual implements Int
         }
 
         // cloning the members of AbstractEAIndividual
-        this.m_Age                      = individual.m_Age;
-        this.m_CrossoverOperator        = individual.m_CrossoverOperator;
-        this.m_CrossoverProbability     = individual.m_CrossoverProbability;
-        this.m_MutationOperator         = (InterfaceMutation)individual.m_MutationOperator.clone();
-        this.m_MutationProbability      = individual.m_MutationProbability;
-        this.m_SelectionProbability = new double[individual.m_SelectionProbability.length];
-        for (int i = 0; i < this.m_SelectionProbability.length; i++) {
-            this.m_SelectionProbability[i] = individual.m_SelectionProbability[i];
+        this.age = individual.age;
+        this.crossoverOperator = individual.crossoverOperator;
+        this.crossoverProbability = individual.crossoverProbability;
+        this.mutationOperator = (InterfaceMutation)individual.mutationOperator.clone();
+        this.mutationProbability = individual.mutationProbability;
+        this.selectionProbability = new double[individual.selectionProbability.length];
+        for (int i = 0; i < this.selectionProbability.length; i++) {
+            this.selectionProbability[i] = individual.selectionProbability[i];
         }
-        this.m_Fitness = new double[individual.m_Fitness.length];
-        for (int i = 0; i < this.m_Fitness.length; i++) {
-            this.m_Fitness[i] = individual.m_Fitness[i];
+        this.fitness = new double[individual.fitness.length];
+        for (int i = 0; i < this.fitness.length; i++) {
+            this.fitness[i] = individual.fitness[i];
         }
         cloneAEAObjects((AbstractEAIndividual) individual);
     }
@@ -226,8 +226,8 @@ public class ESIndividualIntegerData extends AbstractEAIndividual implements Int
             this.defaultInit(opt);
             System.out.println("Initial value for ESIndividualIntegerData is not int[]!");
         }
-        this.m_MutationOperator.init(this, opt);
-        this.m_CrossoverOperator.init(this, opt);
+        this.mutationOperator.init(this, opt);
+        this.crossoverOperator.init(this, opt);
     }
 
     /** This method will return a string description of the GAIndividal
@@ -239,12 +239,12 @@ public class ESIndividualIntegerData extends AbstractEAIndividual implements Int
         String result = "";
         result += "ESIndividual coding int: (";
         result += "Fitness {";
-        for (int i = 0; i < this.m_Fitness.length; i++) {
-            result += this.m_Fitness[i] + ";";
+        for (int i = 0; i < this.fitness.length; i++) {
+            result += this.fitness[i] + ";";
         }
         result += "}/SelProb{";
-        for (int i = 0; i < this.m_SelectionProbability.length; i++) {
-            result += this.m_SelectionProbability[i] + ";";
+        for (int i = 0; i < this.selectionProbability.length; i++) {
+            result += this.selectionProbability[i] + ";";
         }
         result += "})\n Value: ";
         result += "[";

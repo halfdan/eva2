@@ -89,10 +89,10 @@ public class PSOParameters extends AbstractGOParameters implements InterfaceGOPa
      * @return The population of current solutions to a given problem.
      */
     public Population getPopulation() {
-        return ((ParticleSwarmOptimization)this.m_Optimizer).getPopulation();
+        return ((ParticleSwarmOptimization)this.optimizer).getPopulation();
     }
     public void setPopulation(Population pop){
-        ((ParticleSwarmOptimization)this.m_Optimizer).setPopulation(pop);
+        ((ParticleSwarmOptimization)this.optimizer).setPopulation(pop);
     }
     public String populationTipText() {
         return "Edit the properties of the population used.";
@@ -102,26 +102,26 @@ public class PSOParameters extends AbstractGOParameters implements InterfaceGOPa
      * @param f
      */
     public void setInitialVelocity (double f) {
-        ((ParticleSwarmOptimization)this.m_Optimizer).setInitialVelocity(f);
+        ((ParticleSwarmOptimization)this.optimizer).setInitialVelocity(f);
     }
     public double getInitialVelocity() {
-        return ((ParticleSwarmOptimization)this.m_Optimizer).getInitialVelocity();
+        return ((ParticleSwarmOptimization)this.optimizer).getInitialVelocity();
     }
     public String initialVelocityTipText() {
-        return ((ParticleSwarmOptimization)this.m_Optimizer).initialVelocityTipText();
+        return ((ParticleSwarmOptimization)this.optimizer).initialVelocityTipText();
     }
 
     /** This method will set the speed limit
      * @param k
      */
     public void setSpeedLimit (double k) {
-        ((ParticleSwarmOptimization)this.m_Optimizer).setSpeedLimit(k);
+        ((ParticleSwarmOptimization)this.optimizer).setSpeedLimit(k);
     }
     public double getSpeedLimit() {
-        return ((ParticleSwarmOptimization)this.m_Optimizer).getSpeedLimit();
+        return ((ParticleSwarmOptimization)this.optimizer).getSpeedLimit();
     }
     public String speedLimitTipText() {
-        return ((ParticleSwarmOptimization)this.m_Optimizer).speedLimitTipText();
+        return ((ParticleSwarmOptimization)this.optimizer).speedLimitTipText();
     }
 
     /** This method will set the inertness
@@ -130,15 +130,15 @@ public class PSOParameters extends AbstractGOParameters implements InterfaceGOPa
     public void setInertnessOrChi(double k) {
 //        if (k < 0) k = 0;
 //        if (k > 1) k = 1;
-        ((ParticleSwarmOptimization)this.m_Optimizer).setInertnessOrChi(k);
+        ((ParticleSwarmOptimization)this.optimizer).setInertnessOrChi(k);
     }
     
     public double getInertnessOrChi() {
-        return ((ParticleSwarmOptimization)this.m_Optimizer).getInertnessOrChi();
+        return ((ParticleSwarmOptimization)this.optimizer).getInertnessOrChi();
     }
     
     public String inertnessOrChiTipText() {
-        return ((ParticleSwarmOptimization)this.m_Optimizer).inertnessOrChiTipText();
+        return ((ParticleSwarmOptimization)this.optimizer).inertnessOrChiTipText();
     }
 
     /** This method will set greediness to move towards the best solution
@@ -146,13 +146,13 @@ public class PSOParameters extends AbstractGOParameters implements InterfaceGOPa
      * @param l
      */
     public void setPhi1 (double l) {
-        ((ParticleSwarmOptimization)this.m_Optimizer).setPhi1(l);
+        ((ParticleSwarmOptimization)this.optimizer).setPhi1(l);
     }
     public double getPhi1() {
-        return ((ParticleSwarmOptimization)this.m_Optimizer).getPhi1();
+        return ((ParticleSwarmOptimization)this.optimizer).getPhi1();
     }
     public String phi1TipText() {
-        return ((ParticleSwarmOptimization)this.m_Optimizer).phi1TipText();
+        return ((ParticleSwarmOptimization)this.optimizer).phi1TipText();
     }
 
     /** This method will set greediness to move towards the best solution
@@ -160,13 +160,13 @@ public class PSOParameters extends AbstractGOParameters implements InterfaceGOPa
      * @param l
      */
     public void setPhi2 (double l) {
-        ((ParticleSwarmOptimization)this.m_Optimizer).setPhi2(l);
+        ((ParticleSwarmOptimization)this.optimizer).setPhi2(l);
     }
     public double getPhi2() {
-        return ((ParticleSwarmOptimization)this.m_Optimizer).getPhi2();
+        return ((ParticleSwarmOptimization)this.optimizer).getPhi2();
     }
     public String phi2TipText() {
-    	return ((ParticleSwarmOptimization)this.m_Optimizer).phi2TipText();
+    	return ((ParticleSwarmOptimization)this.optimizer).phi2TipText();
     }
 
     
@@ -174,129 +174,129 @@ public class PSOParameters extends AbstractGOParameters implements InterfaceGOPa
 	 * @param s    Check Constraints.
 	 */
 	public void setCheckRange(boolean s) {
-		((ParticleSwarmOptimization)this.m_Optimizer).setCheckRange(s);
+		((ParticleSwarmOptimization)this.optimizer).setCheckRange(s);
 	}
 	public boolean isCheckRange() {
-		return ((ParticleSwarmOptimization)this.m_Optimizer).isCheckRange();
+		return ((ParticleSwarmOptimization)this.optimizer).isCheckRange();
 	}
 	public String checkConstraintsTipText() {
-		return ((ParticleSwarmOptimization)this.m_Optimizer).checkRangeTipText();
+		return ((ParticleSwarmOptimization)this.optimizer).checkRangeTipText();
 	}
 	
     /** This method allows you to choose the topology type.
      * @param t  The type.
      */
     public void setTopology(PSOTopologyEnum t) {
-        ((ParticleSwarmOptimization)this.m_Optimizer).setTopology(t);
-        ((ParticleSwarmOptimization)this.m_Optimizer).setGOEShowProperties(getClass());
+        ((ParticleSwarmOptimization)this.optimizer).setTopology(t);
+        ((ParticleSwarmOptimization)this.optimizer).setGOEShowProperties(getClass());
     }
     public PSOTopologyEnum getTopology() {
-        return ((ParticleSwarmOptimization)this.m_Optimizer).getTopology();
+        return ((ParticleSwarmOptimization)this.optimizer).getTopology();
     }
     public String topologyTipText() {
-        return ((ParticleSwarmOptimization)this.m_Optimizer).topologyTipText();
+        return ((ParticleSwarmOptimization)this.optimizer).topologyTipText();
     }
 
     /** The range of the local neighbourhood.
      * @param s  The range.
      */
     public void setTopologyRange(int s) {
-        ((ParticleSwarmOptimization)this.m_Optimizer).setTopologyRange(s);
+        ((ParticleSwarmOptimization)this.optimizer).setTopologyRange(s);
     }
     public int getTopologyRange() {
-        return ((ParticleSwarmOptimization)this.m_Optimizer).getTopologyRange();
+        return ((ParticleSwarmOptimization)this.optimizer).getTopologyRange();
     }
     public String topologyRangeTipText() {
-        return ((ParticleSwarmOptimization)this.m_Optimizer).topologyRangeTipText();
+        return ((ParticleSwarmOptimization)this.optimizer).topologyRangeTipText();
     }
     
 	public double getSubSwarmRadius() {
-		return ((ParticleSwarmOptimization)this.m_Optimizer).getSubSwarmRadius();
+		return ((ParticleSwarmOptimization)this.optimizer).getSubSwarmRadius();
 	}
 	public void setSubSwarmRadius(double radius) {
-		((ParticleSwarmOptimization)this.m_Optimizer).setSubSwarmRadius(radius);
+		((ParticleSwarmOptimization)this.optimizer).setSubSwarmRadius(radius);
 	}
 	public String subSwarmRadiusTipText() {
-		return ((ParticleSwarmOptimization)this.m_Optimizer).subSwarmRadiusTipText();
+		return ((ParticleSwarmOptimization)this.optimizer).subSwarmRadiusTipText();
 	}
 	
 	public int getMaxSubSwarmSize() {
-		return ((ParticleSwarmOptimization)this.m_Optimizer).getMaxSubSwarmSize();
+		return ((ParticleSwarmOptimization)this.optimizer).getMaxSubSwarmSize();
 	}
 	public void setMaxSubSwarmSize(int subSize) {
-		((ParticleSwarmOptimization)this.m_Optimizer).setMaxSubSwarmSize(subSize);
+		((ParticleSwarmOptimization)this.optimizer).setMaxSubSwarmSize(subSize);
 	}
 	public String maxSubSwarmSizeTipText() {
-		return ((ParticleSwarmOptimization)this.m_Optimizer).maxSubSwarmSizeTipText();
+		return ((ParticleSwarmOptimization)this.optimizer).maxSubSwarmSizeTipText();
 	}
     
 	/**
 	 * @return the checkSpeedLimit
 	 **/
 	public boolean isCheckSpeedLimit() {
-		return ((ParticleSwarmOptimization)this.m_Optimizer).isCheckSpeedLimit();
+		return ((ParticleSwarmOptimization)this.optimizer).isCheckSpeedLimit();
 	}
 	/**
 	 * @param checkSpeedLimit the checkSpeedLimit to set
 	 **/
 	public void setCheckSpeedLimit(boolean checkSpeedLimit) {
-		((ParticleSwarmOptimization)this.m_Optimizer).setCheckSpeedLimit(checkSpeedLimit);
+		((ParticleSwarmOptimization)this.optimizer).setCheckSpeedLimit(checkSpeedLimit);
 		GenericObjectEditor.setHideProperty(getClass(), "speedLimit", !checkSpeedLimit);
 	}
 	
 	public String checkSpeedLimitTipText() {
-		return ((ParticleSwarmOptimization)this.m_Optimizer).checkSpeedLimitTipText();
+		return ((ParticleSwarmOptimization)this.optimizer).checkSpeedLimitTipText();
 	}
 	
     /** This method allows you to choose the algorithm type.
      * @param s  The type.
      */
     public void setAlgoType(SelectedTag s) {
-    	((ParticleSwarmOptimization)this.m_Optimizer).setAlgoType(s);
+    	((ParticleSwarmOptimization)this.optimizer).setAlgoType(s);
     }
     
     public SelectedTag getAlgoType() {
-        return ((ParticleSwarmOptimization)this.m_Optimizer).getAlgoType();
+        return ((ParticleSwarmOptimization)this.optimizer).getAlgoType();
     }
     
     public String algoTypeTipText() {
-        return ((ParticleSwarmOptimization)this.m_Optimizer).algoTypeTipText();
+        return ((ParticleSwarmOptimization)this.optimizer).algoTypeTipText();
     }
     
 //	/**
 //	 * @return the treeBranchDeg
 //	 */
 //	public int getTreeBranchDegree() {
-//		return ((ParticleSwarmOptimization)this.m_Optimizer).getTreeBranchDegree();
+//		return ((ParticleSwarmOptimization)this.optimizer).getTreeBranchDegree();
 //	}
 //
 //	/**
 //	 * @param treeBranchDeg the treeBranchDeg to set
 //	 */
 //	public void setTreeBranchDegree(int treeBranchDeg) {
-//		((ParticleSwarmOptimization)this.m_Optimizer).setTreeBranchDegree(treeBranchDeg);
+//		((ParticleSwarmOptimization)this.optimizer).setTreeBranchDegree(treeBranchDeg);
 //	}
 //
 //	public String treeBranchDegreeTipText() {
-//		return ((ParticleSwarmOptimization)this.m_Optimizer).treeBranchDegreeTipText();
+//		return ((ParticleSwarmOptimization)this.optimizer).treeBranchDegreeTipText();
 //	}
 	
 	/**
 	 * @return the wrapTopology
 	 */
 	public boolean isWrapTopology() {
-		return ((ParticleSwarmOptimization)this.m_Optimizer).isWrapTopology();
+		return ((ParticleSwarmOptimization)this.optimizer).isWrapTopology();
 	}
 
 	/**
 	 * @param wrapTopology the wrapTopology to set
 	 */
 	public void setWrapTopology(boolean wrapTopology) {
-		((ParticleSwarmOptimization)this.m_Optimizer).setWrapTopology(wrapTopology);
+		((ParticleSwarmOptimization)this.optimizer).setWrapTopology(wrapTopology);
 	}
 	
 	public String wrapTopologyTipText() {
-		return ((ParticleSwarmOptimization)this.m_Optimizer).wrapTopologyTipText();
+		return ((ParticleSwarmOptimization)this.optimizer).wrapTopologyTipText();
 	}
 
 }

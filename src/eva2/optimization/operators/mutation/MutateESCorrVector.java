@@ -132,7 +132,7 @@ public class MutateESCorrVector implements InterfaceMutation, java.io.Serializab
             // mutate the velocity vector and write it back
             if ((m_scalingDev > 0) || (m_rotationDev > 0)) {
 //            	for (int i = 0; i < vel.length; i++) {
-//            		vel[i] += ((range[i][1] -range[i][0])/2)*RNG.gaussianDouble(this.m_MutationStepSize);
+//            		vel[i] += ((range[i][1] -range[i][0])/2)*RNG.gaussianDouble(this.mutationStepSize);
 //            	}
             	double rotateRad = m_rotationDev*(Math.PI/360.)*RNG.gaussianDouble(1.);
             	// rotate with a gaussian distribution of deviation rotationDeg 

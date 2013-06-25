@@ -36,11 +36,11 @@ public class F5Problem extends AbstractProblemDoubleOffset implements Serializab
     	x = rotateMaybe(x);
         double[]    result = new double[1];
         double      tmp;
-        result[0]     = m_YOffset;
+        result[0]     = yOffset;
         for (int i = 0; i < x.length; i++) {
             tmp = 0;
             for (int j = 0; j <= i; j++) {
-                tmp += x[j]-m_XOffset;
+                tmp += x[j]- xOffset;
             }
             result[0] += Math.pow(tmp, 2);
         }
@@ -56,10 +56,10 @@ public class F5Problem extends AbstractProblemDoubleOffset implements Serializab
         result += "F5 Schwefel's Function:\n";
         result += "This problem is unimodal.\n";
         result += "Parameters:\n";
-        result += "Dimension   : " + this.m_ProblemDimension +"\n";
+        result += "Dimension   : " + this.problemDimension +"\n";
         result += "Noise level : " + this.getNoise() + "\n";
         result += "Solution representation:\n";
-        //result += this.m_Template.getSolutionRepresentationFor();
+        //result += this.template.getSolutionRepresentationFor();
         return result;
     }
 

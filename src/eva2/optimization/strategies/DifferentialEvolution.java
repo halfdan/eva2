@@ -99,7 +99,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
 
     @Override
     public void init() {
-        this.m_Problem.initPopulation(this.m_Population);
+        this.m_Problem.initializePopulation(this.m_Population);
 //        children = new Population(m_Population.size());
         this.evaluatePopulation(this.m_Population);
         this.firePropertyChangedEvent(Population.nextGenerationPerformed);
@@ -201,7 +201,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
     private double[] fetchDeltaCurrentRandom(Population pop, InterfaceDataTypeDouble indy) {
         double[] x1, x2;
         double[] result;
-        boolean isEmpty;
+       boolean isEmpty;
         int iterations = 0;
 
 
@@ -520,7 +520,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
 //        AbstractEAIndividual    indy = null, orig;
         int parentIndex;
         // required for dynamic problems especially
-//        m_Problem.evaluatePopulationStart(m_Population);
+//        problem.evaluatePopulationStart(m_Population);
         if (children == null) {
             children = new Population(m_Population.size());
         } else {
@@ -657,7 +657,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
 //        if (children==null) children = new Population(m_Population.size());
 //        for (int i = 0; i < this.m_Population.size(); i++) {
 //            indy = this.generateNewIndividual(this.m_Population);
-//            this.m_Problem.evaluate(indy);
+//            this.problem.evaluate(indy);
 //            this.m_Population.incrFunctionCalls();
 //            children.add(indy);
 //        }
@@ -671,7 +671,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
 //        	} else {	// duel with random one
 //	            index   = RNG.randomInt(0, this.m_Population.size()-1);
 //	            org     = (AbstractEAIndividual)this.m_Population.get(index);
-//	            // if (envHasChanged) this.m_Problem.evaluate(org);
+//	            // if (envHasChanged) this.problem.evaluate(org);
 //	            if (indy.isDominatingDebConstraints(org)) {
 //	            	this.m_Population.replaceIndividualAt(index, indy);
 //	            }
@@ -681,7 +681,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
 //////// this was the original version
 //        for (int i = 0; i < this.m_Population.size(); i++) {
 //            indy = this.generateNewIndividual(this.m_Population);
-//            this.m_Problem.evaluate(indy);
+//            this.problem.evaluate(indy);
 //            this.m_Population.incrFunctionCalls();
 //            index   = RNG.randomInt(0, this.m_Population.size()-1);
 //            org     = (AbstractEAIndividual)this.m_Population.get(index);

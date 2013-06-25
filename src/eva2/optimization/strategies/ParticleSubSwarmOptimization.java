@@ -334,7 +334,7 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
 	public void updateMaxPosDist(){
 		//  compute the maximal possible distance in the search space: 
 		AbstractOptimizationProblem prob = (AbstractOptimizationProblem)m_Problem;
-		// m_Problem must have called initProblem, so that the template is set correctly. This shouls always be the case here... 
+		// problem must have called initializeProblem, so that the template is set correctly. This shouls always be the case here...
 		AbstractEAIndividual template = prob.getIndividualTemplate();
 		if (template == null){
 			System.out.println("Problem does not implement getIndividualTemplate, updateMaxPosDist could not infer dimensions");

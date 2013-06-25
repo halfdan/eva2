@@ -23,10 +23,10 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
     protected int                   m_GenotypeLength;
 
     public GAIndividualBinaryData() {
-        this.m_MutationProbability  = 0.1;
-        this.m_MutationOperator     = new MutateGANBit();
-        this.m_CrossoverProbability = 1.0;
-        this.m_CrossoverOperator    = new CrossoverGAGINPoint();
+        this.mutationProbability = 0.1;
+        this.mutationOperator = new MutateGANBit();
+        this.crossoverProbability = 1.0;
+        this.crossoverOperator = new CrossoverGAGINPoint();
         this.m_GenotypeLength       = 20;
         this.m_Genotype             = new BitSet();
     }
@@ -46,18 +46,18 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
         }
 
         // cloning the members of AbstractEAIndividual
-        this.m_Age                      = individual.m_Age;
-        this.m_CrossoverOperator        = (InterfaceCrossover)individual.m_CrossoverOperator.clone();
-        this.m_CrossoverProbability     = individual.m_CrossoverProbability;
-        this.m_MutationOperator         = (InterfaceMutation)individual.m_MutationOperator.clone();
-        this.m_MutationProbability      = individual.m_MutationProbability;
-        this.m_SelectionProbability     = new double[individual.m_SelectionProbability.length];
-        for (int i = 0; i < this.m_SelectionProbability.length; i++) {
-            this.m_SelectionProbability[i] = individual.m_SelectionProbability[i];
+        this.age = individual.age;
+        this.crossoverOperator = (InterfaceCrossover)individual.crossoverOperator.clone();
+        this.crossoverProbability = individual.crossoverProbability;
+        this.mutationOperator = (InterfaceMutation)individual.mutationOperator.clone();
+        this.mutationProbability = individual.mutationProbability;
+        this.selectionProbability = new double[individual.selectionProbability.length];
+        for (int i = 0; i < this.selectionProbability.length; i++) {
+            this.selectionProbability[i] = individual.selectionProbability[i];
         }
-        this.m_Fitness                  = new double[individual.m_Fitness.length];
-        for (int i = 0; i < this.m_Fitness.length; i++) {
-            this.m_Fitness[i] = individual.m_Fitness[i];
+        this.fitness = new double[individual.fitness.length];
+        for (int i = 0; i < this.fitness.length; i++) {
+            this.fitness[i] = individual.fitness[i];
         }
         cloneAEAObjects((AbstractEAIndividual) individual);
     }
@@ -121,8 +121,8 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
             this.defaultInit(opt);
             System.out.println("Initial value for GAIndividualBinaryData is no BitSet!");
         }
-        this.m_MutationOperator.init(this, opt);
-        this.m_CrossoverOperator.init(this, opt);
+        this.mutationOperator.init(this, opt);
+        this.crossoverOperator.init(this, opt);
     }
 
     /** This method can be used to read the current fitness of the individual.
@@ -132,7 +132,7 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
      */
     @Override
     public double[] getFitness() {
-        return this.m_Fitness;
+        return this.fitness;
     }
 
     /** 
@@ -146,12 +146,12 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
         String result = "";
         result += "GAIndividual: (";
       result += "Fitness {";
-        for (int i = 0; i < this.m_Fitness.length; i++) {
-            result += this.m_Fitness[i] + ";";
+        for (int i = 0; i < this.fitness.length; i++) {
+            result += this.fitness[i] + ";";
         }
         result += "}/SelProb{";
-        for (int i = 0; i < this.m_SelectionProbability.length; i++) {
-            result += this.m_SelectionProbability[i] + ";";
+        for (int i = 0; i < this.selectionProbability.length; i++) {
+            result += this.selectionProbability[i] + ";";
         }
         result += "})\n Value: ";
         result += "{";
@@ -167,7 +167,7 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
             }
         }
         result += "}";
-        result += "\n Mutation ("+this.m_MutationProbability+"):" + this.m_MutationOperator.getStringRepresentation();
+        result += "\n Mutation ("+this.mutationProbability +"):" + this.mutationOperator.getStringRepresentation();
         return result;
     }
 

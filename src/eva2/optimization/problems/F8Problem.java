@@ -64,13 +64,13 @@ public class F8Problem extends AbstractProblemDoubleOffset
         double          sum1 = 0, sum2 = 0, exp1, exp2;
 
         for (int i = 0; i < x.length; i++) {
-        	double xi = x[i]-m_XOffset;
+        	double xi = x[i]- xOffset;
         	sum1 += (xi)*(xi);
         	sum2 += Math.cos(c * (xi));
         }
-        exp1    = -b*Math.sqrt(sum1/(double)this.m_ProblemDimension);
-        exp2    = sum2/(double)this.m_ProblemDimension;
-        result[0] = m_YOffset + a +  Math.E  - a * Math.exp(exp1)- Math.exp(exp2);
+        exp1    = -b*Math.sqrt(sum1/(double)this.problemDimension);
+        exp2    = sum2/(double)this.problemDimension;
+        result[0] = yOffset + a +  Math.E  - a * Math.exp(exp1)- Math.exp(exp2);
 
         return result;
     }
@@ -84,17 +84,17 @@ public class F8Problem extends AbstractProblemDoubleOffset
         result += "F8 Ackley's function.\n";
         result += "This problem is multimodal.\n";
         result += "Parameters:\n";
-        result += "Dimension   : " + this.m_ProblemDimension +"\n";
+        result += "Dimension   : " + this.problemDimension +"\n";
         result += "Noise level : " + this.getNoise() + "\n";
         result += "Solution representation:\n";
-        //result += this.m_Template.getSolutionRepresentationFor();
+        //result += this.template.getSolutionRepresentationFor();
         return result;
     }
 
     
     @Override
-	public void initProblem() {
-		super.initProblem();
+	public void initializeProblem() {
+		super.initializeProblem();
 		initListOfOptima();
 	}
     
@@ -133,7 +133,7 @@ public class F8Problem extends AbstractProblemDoubleOffset
 //		double sum1=0, sum2=0;
 //		double[] derivs = new double[x.length];
 //    	x = rotateMaybe(x);
-//        double dim = (double)this.m_ProblemDimension;
+//        double dim = (double)this.problemDimension;
 //
 //        for (int i = 0; i < x.length; i++) {
 //        	double xi = x[i]-m_XOffSet;
@@ -174,7 +174,7 @@ public class F8Problem extends AbstractProblemDoubleOffset
 	public String[] getAdditionalDataHeader() {
 		String[] superHd = super.getAdditionalDataHeader();
 		return ToolBox.appendArrays(new String[]{"numOptimaFound","maxPeakRatio"}, superHd);
-//		return "#Optima found \tMaximum Peak Ratio \t" + super.getAdditionalDataHeader(pop);
+//		return "#Optima found \tMaximum Peak Ratio \t" + super.getAdditionalDataHeader(population);
 	}
 
 	@Override
@@ -227,9 +227,9 @@ public class F8Problem extends AbstractProblemDoubleOffset
           addOptimum(pos);
   }
 }                   }
-//			System.out.println("Inited " + m_ListOfOptima.size() + " optima, measures: " + BeanInspector.toString(m_ListOfOptima.getPopulationMeasures(new PhenotypeMetric())));
-//			System.out.println("Inited " + m_ListOfOptima.size() + " optima, measures: " + BeanInspector.toString(m_ListOfOptima.getPopulationMeasures(new EuclideanMetric())));
-//			System.out.println(m_ListOfOptima.getStringRepresentation());
+//			System.out.println("Inited " + listOfOptima.size() + " optima, measures: " + BeanInspector.toString(listOfOptima.getPopulationMeasures(new PhenotypeMetric())));
+//			System.out.println("Inited " + listOfOptima.size() + " optima, measures: " + BeanInspector.toString(listOfOptima.getPopulationMeasures(new EuclideanMetric())));
+//			System.out.println(listOfOptima.getStringRepresentation());
 			state_initializing_optima=false;
 		}
 	}
@@ -279,14 +279,14 @@ public class F8Problem extends AbstractProblemDoubleOffset
                     }
 		}
 //		else {
-//			if (m_ListOfOptima.isEmpty()) return true;
+//			if (listOfOptima.isEmpty()) return true;
 //			else {
 //				// test for correctness of the second optimum - if its gradient is nonzero, reinit optima
-//				AbstractEAIndividual testIndy = m_ListOfOptima.getEAIndividual(1);
+//				AbstractEAIndividual testIndy = listOfOptima.getEAIndividual(1);
 //				double grad[] = this.getFirstOrderGradients(testIndy.getDoublePosition());
 //				for (int i=0; i<grad.length; i++) {
 //					if (Math.abs(grad[i])>1e-20) {
-//						m_ListOfOptima.clear();
+//						listOfOptima.clear();
 //						return true;
 //					}
 //				}
@@ -300,14 +300,14 @@ public class F8Problem extends AbstractProblemDoubleOffset
 	}
 	
 //	private double[] refineSolution(double[] pos) {
-//		Population pop = new Population();
+//		Population population = new Population();
 //		InterfaceDataTypeDouble tmpIndy;
-//		tmpIndy = (InterfaceDataTypeDouble)((AbstractEAIndividual)this.m_Template).clone();
+//		tmpIndy = (InterfaceDataTypeDouble)((AbstractEAIndividual)this.template).clone();
 //		tmpIndy.SetDoubleGenotype(pos);
 //		((AbstractEAIndividual)tmpIndy).SetFitness(eval(pos));
-//		pop.add(tmpIndy);
+//		population.add(tmpIndy);
 //		FitnessConvergenceTerminator convTerm = new FitnessConvergenceTerminator(1e-15, 10, false, true);
-//		int calls = PostProcess.processWithGDA(pop, this, convTerm, 0, 0.0000000000000001, 0.01);
-//		return ((InterfaceDataTypeDouble)pop.getBestEAIndividual()).getDoubleData();
+//		int calls = PostProcess.processWithGDA(population, this, convTerm, 0, 0.0000000000000001, 0.01);
+//		return ((InterfaceDataTypeDouble)population.getBestEAIndividual()).getDoubleData();
 //	}
 }

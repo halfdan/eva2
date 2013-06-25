@@ -244,7 +244,7 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
     @Override
     public void init() {
         defaultInit();
-        this.problem.initPopulation(this.population);
+        this.problem.initializePopulation(this.population);
         this.evaluatePopulation(this.population);
         this.firePropertyChangedEvent(Population.nextGenerationPerformed);
     }

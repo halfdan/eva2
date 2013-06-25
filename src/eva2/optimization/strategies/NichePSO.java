@@ -1499,7 +1499,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
             result += ((InterfaceMultimodalProblemKnown) m_Problem).getNumberOfFoundOptima(elitepop);
             result += "(" + ((InterfaceMultimodalProblemKnown) m_Problem).getRealOptima().size() + ")\t";
             result += ((InterfaceMultimodalProblemKnown) m_Problem).getMaximumPeakRatio(elitepop) + "\t";
-            //boolean[] opts = ((InterfaceMultimodalProblem)m_Problem).whichOptimaAreFound(elitepop);
+            //boolean[] opts = ((InterfaceMultimodalProblem)problem).whichOptimaAreFound(elitepop);
             //result += "Optima:";
             //for (int i = 0; i < opts.length; ++i){
             //result += String.valueOf(opts[i])+" ";

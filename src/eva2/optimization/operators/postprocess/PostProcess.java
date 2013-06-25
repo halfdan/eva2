@@ -1410,7 +1410,7 @@ listener.println("found " + getFoundOptima(solutions, mmkProb.getRealOptima(), e
 		double[] avgFit = null;
 		Population pop = new Population(portion);
 		IndividualInterface indy;
-		prob.initProblem();
+		prob.initializeProblem();
 		while (cnt < steps) {
 			pop.clear();
 			for (int i=0; i<curPopSize; i++) {

@@ -648,7 +648,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
                 this.functionCallCount += toHit; // little cheat, notify may be after some more evals
                 firePropertyChangedEvent(funCallIntervalReached);
                 d -= toHit;
-//    			this.m_FunctionCalls += (d-toHit);
+//    			this.functionCalls += (d-toHit);
             }
             if (d > 0) {
                 this.functionCallCount += d; // add up the rest

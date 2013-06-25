@@ -93,7 +93,7 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
  */
 	public ANPSO() {
 //		NichePSO.stdNPSO(anpso, problem, randSeed, evalCnt);
-//		NichePSO.stdNPSO((ANPSO)this, (AbstractOptimizationProblem)this.m_Problem, 0, 1000);
+//		NichePSO.stdNPSO((ANPSO)this, (AbstractOptimizationProblem)this.problem, 0, 1000);
 
 		/////////// from NichePSO
 //		super.initMainSwarm(); // not really necessary if init is called before optimization but this way init doesnt change the parameters of a newly constructed object
@@ -302,7 +302,7 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
 ////			for (int i=0; i<distances.size(); i++) {
 ////				var += Math.pow(distances.get(i)-avg, 2);
 ////			}
-////			System.out.println("gen " + pop.getGeneration() + " dim " + ((AbstractProblemDouble)m_Problem).getProblemDimension() +" avg " + avg + " variance " + var);
+////			System.out.println("gen " + pop.getGeneration() + " dim " + ((AbstractProblemDouble)problem).getProblemDimension() +" avg " + avg + " variance " + var);
 ////		}
 //		return avg;
 //	}

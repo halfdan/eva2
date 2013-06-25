@@ -110,10 +110,10 @@ public abstract class AbstractDynTransProblem extends AbstractSynchronousOptimiz
 	 * Initializes the underlying problem in the problem class 
 	 */
     @Override
-	public void initProblem() {
-		super.initProblem();
+	public void initializeProblem() {
+		super.initializeProblem();
 		bestIndividual = null;
-		getProblem().initProblem();
+		getProblem().initializeProblem();
 	}
 
 
@@ -138,7 +138,7 @@ public abstract class AbstractDynTransProblem extends AbstractSynchronousOptimiz
 		if (TRACE) {
                 System.out.println("DynTransProblem at " + this + " initPop, problem is " + getProblem());
             }
-		getProblem().initPopulation(population);
+		getProblem().initializePopulation(population);
 		for (int i = 0; i < population.size(); i++) {
             ((AbstractEAIndividual)population.get(i)).SetAge(0);
         }
@@ -172,7 +172,7 @@ public abstract class AbstractDynTransProblem extends AbstractSynchronousOptimiz
 		/* to get the right values for problemDimension and Range */
 		Population pop = new Population();
 		pop.setTargetSize(1);		
-		prob.initPopulation(pop);
+		prob.initializePopulation(pop);
 		AbstractEAIndividual indy = (AbstractEAIndividual)pop.get(0);
 		if (indy instanceof InterfaceDataTypeDouble) {
 			problemDimension = ((InterfaceDataTypeDouble)indy).getDoubleRange().length;

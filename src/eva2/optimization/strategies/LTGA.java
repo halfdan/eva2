@@ -116,7 +116,7 @@ public class LTGA implements InterfaceOptimizer, java.io.Serializable, Interface
     @Override
     public void init() {
         this.defaultInit();
-        this.problem.initPopulation(this.population);
+        this.problem.initializePopulation(this.population);
         this.evaluatePopulation(this.population);
         this.firePropertyChangedEvent(Population.nextGenerationPerformed);
     }

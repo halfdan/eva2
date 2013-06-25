@@ -881,7 +881,7 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
             InterfaceTerminator term, String dataPrefix,
             AbstractOptimizationProblem problem, InterfacePopulationChangedEventListener listener) {
 
-//		problem.initProblem();
+//		problem.initializeProblem();
 
         GOParameters params = specialSS(localSearchSteps, localSearchFitnessFilter, nmInitPerturb, relativeFitCrit, refSetSize, problem, term);
 
@@ -900,7 +900,7 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
             int refSetSize,
             AbstractOptimizationProblem problem, InterfaceTerminator term) {
         ScatterSearch ss = new ScatterSearch();
-        problem.initProblem();
+        problem.initializeProblem();
         ss.setProblem(problem);
         ss.setRefSetSize(refSetSize);
         ss.setNelderMeadInitPerturbation(nmInitPerturb);
@@ -915,7 +915,7 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
         Population pop = new Population();
         pop.setTargetSize(refSetSize);
         pop.init();
-        problem.initPopulation(pop);
+        problem.initializePopulation(pop);
         ss.initByPopulation(pop, true);
 
         return OptimizerFactory.makeParams(ss, pop, problem, 0, term);

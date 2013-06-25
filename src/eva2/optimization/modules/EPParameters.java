@@ -89,10 +89,10 @@ public class EPParameters extends AbstractGOParameters implements InterfaceGOPar
      * @return The population of current solutions to a given problem.
      */
     public Population getPopulation() {
-        return ((EvolutionaryProgramming)this.m_Optimizer).getPopulation();
+        return ((EvolutionaryProgramming)this.optimizer).getPopulation();
     }
     public void setPopulation(Population pop){
-        ((EvolutionaryProgramming)this.m_Optimizer).setPopulation(pop);
+        ((EvolutionaryProgramming)this.optimizer).setPopulation(pop);
     }
     public String populationTipText() {
         return "Edit the properties of the population used.";
@@ -102,10 +102,10 @@ public class EPParameters extends AbstractGOParameters implements InterfaceGOPar
      * @param selection
      */
     public void setEnvironmentSelection(InterfaceSelection selection) {
-        ((EvolutionaryProgramming)this.m_Optimizer).setEnvironmentSelection(selection);
+        ((EvolutionaryProgramming)this.optimizer).setEnvironmentSelection(selection);
     }
     public InterfaceSelection getEnvironmentSelection() {
-        return ((EvolutionaryProgramming)this.m_Optimizer).getEnvironmentSelection();
+        return ((EvolutionaryProgramming)this.optimizer).getEnvironmentSelection();
     }
     public String environmentSelectionTipText() {
         return "Choose a method for selecting the reduced population.";

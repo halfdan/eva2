@@ -51,7 +51,7 @@ public class SteadyStateGA implements InterfaceOptimizer, java.io.Serializable {
 
     @Override
     public void init() {
-        this.m_Problem.initPopulation(this.m_Population);
+        this.m_Problem.initializePopulation(this.m_Population);
         this.evaluatePopulation(this.m_Population);
         this.firePropertyChangedEvent(Population.nextGenerationPerformed);
     }

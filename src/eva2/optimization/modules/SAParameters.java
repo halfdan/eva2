@@ -27,7 +27,7 @@ public class SAParameters extends AbstractGOParameters implements InterfaceGOPar
     // Opt. Algorithms and Parameters
     private InterfaceOptimizer              m_Optimizer         = new SimulatedAnnealing();
     private InterfaceOptimizationProblem    m_Problem           = new B1Problem();
-    //private int                             m_FunctionCalls     = 1000;
+    //private int                             functionCalls     = 1000;
     private InterfaceTerminator             m_Terminator        = new EvaluationTerminator();
 //    private String                          m_OutputFileName    = "none";
     transient private InterfacePopulationChangedEventListener m_Listener;

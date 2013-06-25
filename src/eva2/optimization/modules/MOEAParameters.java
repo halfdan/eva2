@@ -70,10 +70,10 @@ public class MOEAParameters extends AbstractGOParameters implements InterfaceGOP
      * @return The population of current solutions to a given problem.
      */
     public Population getPopulation() {
-        return ((MultiObjectiveEA)this.m_Optimizer).getPopulation();
+        return ((MultiObjectiveEA)this.optimizer).getPopulation();
     }
     public void setPopulation(Population pop){
-        ((MultiObjectiveEA)this.m_Optimizer).setPopulation(pop);
+        ((MultiObjectiveEA)this.optimizer).setPopulation(pop);
     }
     public String populationTipText() {
         return "Edit the properties of the Population used.";
@@ -84,11 +84,11 @@ public class MOEAParameters extends AbstractGOParameters implements InterfaceGOP
      */
     @Override
     public InterfaceOptimizer getOptimizer() {
-        return ((MultiObjectiveEA)this.m_Optimizer).getOptimizer();
+        return ((MultiObjectiveEA)this.optimizer).getOptimizer();
     }
     @Override
     public void setOptimizer(InterfaceOptimizer b){
-        ((MultiObjectiveEA)this.m_Optimizer).setOptimizer(b);
+        ((MultiObjectiveEA)this.optimizer).setOptimizer(b);
     }
     @Override
     public String optimizerTipText() {
@@ -99,10 +99,10 @@ public class MOEAParameters extends AbstractGOParameters implements InterfaceGOP
      * @return The current optimizing method
      */
     public InterfaceArchiving getArchivingStrategy() {
-        return ((MultiObjectiveEA)this.m_Optimizer).getArchivingStrategy();
+        return ((MultiObjectiveEA)this.optimizer).getArchivingStrategy();
     }
     public void setArchivingStrategy(InterfaceArchiving b){
-        ((MultiObjectiveEA)this.m_Optimizer).setArchivingStrategy(b);
+        ((MultiObjectiveEA)this.optimizer).setArchivingStrategy(b);
     }
     public String archivingStrategyTipText() {
         return "Choose the archiving strategy.";
@@ -112,10 +112,10 @@ public class MOEAParameters extends AbstractGOParameters implements InterfaceGOP
      * @return The current optimizing method
      */
     public InterfaceInformationRetrieval getInformationRetrieval() {
-        return ((MultiObjectiveEA)this.m_Optimizer).getInformationRetrieval();
+        return ((MultiObjectiveEA)this.optimizer).getInformationRetrieval();
     }
     public void setInformationRetrieval(InterfaceInformationRetrieval b){
-        ((MultiObjectiveEA)this.m_Optimizer).setInformationRetrieval(b);
+        ((MultiObjectiveEA)this.optimizer).setInformationRetrieval(b);
     }
     public String informationRetrievalTipText() {
         return "Choose the Information Retrieval strategy.";
@@ -125,20 +125,20 @@ public class MOEAParameters extends AbstractGOParameters implements InterfaceGOP
      * @return The current optimizing method
      */
     public int getArchiveSize() {
-        Population archive = ((MultiObjectiveEA)this.m_Optimizer).getPopulation().getArchive();
+        Population archive = ((MultiObjectiveEA)this.optimizer).getPopulation().getArchive();
         if (archive == null) {
             archive = new Population();
-            ((MultiObjectiveEA)this.m_Optimizer).getPopulation().SetArchive(archive);
+            ((MultiObjectiveEA)this.optimizer).getPopulation().SetArchive(archive);
         }
-        return ((MultiObjectiveEA)this.m_Optimizer).getArchiveSize();
+        return ((MultiObjectiveEA)this.optimizer).getArchiveSize();
     }
     public void setArchiveSize(int b){
-        Population archive = ((MultiObjectiveEA)this.m_Optimizer).getPopulation().getArchive();
+        Population archive = ((MultiObjectiveEA)this.optimizer).getPopulation().getArchive();
         if (archive == null) {
             archive = new Population();
-            ((MultiObjectiveEA)this.m_Optimizer).getPopulation().SetArchive(archive);
+            ((MultiObjectiveEA)this.optimizer).getPopulation().SetArchive(archive);
         }
-        ((MultiObjectiveEA)this.m_Optimizer).getPopulation().getArchive().setTargetSize(b);
+        ((MultiObjectiveEA)this.optimizer).getPopulation().getArchive().setTargetSize(b);
     }
     public String archiveSizeTipText() {
         return "Choose the size of the archive.";

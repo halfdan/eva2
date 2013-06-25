@@ -37,10 +37,10 @@ public class F12Problem extends AbstractProblemDoubleOffset implements Serializa
         double[] result = new double[1];
         double tmp = 0;//-5;
         for (int i = 1; i < x.length-1; i++) {
-            tmp += Math.pow(x[i]-m_XOffset, 2);
+            tmp += Math.pow(x[i]- xOffset, 2);
         }
-        double x0 = x[0]-m_XOffset;
-        result[0] = m_YOffset+((Math.exp(-5*x0*x0)+2*Math.exp(-5*Math.pow(1-x0, 2)))*Math.exp(-5*tmp));
+        double x0 = x[0]- xOffset;
+        result[0] = yOffset +((Math.exp(-5*x0*x0)+2*Math.exp(-5*Math.pow(1-x0, 2)))*Math.exp(-5*tmp));
         return result;
     }
 
@@ -52,10 +52,10 @@ public class F12Problem extends AbstractProblemDoubleOffset implements Serializa
 
         result += "F12 Galar:\n";
         result += "Parameters:\n";
-        result += "Dimension   : " + this.m_ProblemDimension +"\n";
+        result += "Dimension   : " + this.problemDimension +"\n";
         result += "Noise level : " + this.getNoise() + "\n";
         result += "Solution representation:\n";
-        //result += this.m_Template.getSolutionRepresentationFor();
+        //result += this.template.getSolutionRepresentationFor();
         return result;
     }
 

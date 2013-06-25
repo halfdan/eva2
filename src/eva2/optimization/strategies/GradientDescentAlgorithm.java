@@ -108,7 +108,7 @@ public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Ser
     public void init() {
         //System.out.println("init() called ");
 //    indyhash = new Hashtable();
-        this.m_Problem.initPopulation(this.m_Population);
+        this.m_Problem.initializePopulation(this.m_Population);
         this.m_Problem.evaluate(this.m_Population);
     }
 
@@ -231,7 +231,7 @@ public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Ser
 
                 ((InterfaceDataTypeDouble) indy).SetDoubleGenotype(params);
 
-            } // end if ((this.m_Problem instanceof InterfaceFirstOrderDerivableProblem) && (indy instanceof InterfaceDataTypeDouble)) {
+            } // end if ((this.problem instanceof InterfaceFirstOrderDerivableProblem) && (indy instanceof InterfaceDataTypeDouble)) {
             else {
                 String msg = "Warning, problem of type InterfaceFirstOrderDerivableProblem and template of type InterfaceDataTypeDouble is required for " + this.getClass();
                 EVAERROR.errorMsgOnce(msg);

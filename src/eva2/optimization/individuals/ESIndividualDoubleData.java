@@ -25,10 +25,10 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
     private double[][]                  m_Range;
 
     public ESIndividualDoubleData() {
-        this.m_MutationProbability  = 1.0;
-        this.m_MutationOperator     = new MutateESGlobal(0.2, MutateESCrossoverTypeEnum.intermediate);
-        this.m_CrossoverProbability = 0.5;
-        this.m_CrossoverOperator    = new CrossoverESDefault();
+        this.mutationProbability = 1.0;
+        this.mutationOperator = new MutateESGlobal(0.2, MutateESCrossoverTypeEnum.intermediate);
+        this.crossoverProbability = 0.5;
+        this.crossoverOperator = new CrossoverESDefault();
         this.m_Genotype             = new double[1];
         this.m_Phenotype			= null;
         this.m_Range                = new double[1][2];
@@ -50,18 +50,18 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
         }
 
         // cloning the members of AbstractEAIndividual
-        this.m_Age                      = individual.m_Age;
-        this.m_CrossoverOperator        = individual.m_CrossoverOperator;
-        this.m_CrossoverProbability     = individual.m_CrossoverProbability;
-        this.m_MutationOperator         = (InterfaceMutation)individual.m_MutationOperator.clone();
-        this.m_MutationProbability      = individual.m_MutationProbability;
-        this.m_SelectionProbability = new double[individual.m_SelectionProbability.length];
-        for (int i = 0; i < this.m_SelectionProbability.length; i++) {
-            this.m_SelectionProbability[i] = individual.m_SelectionProbability[i];
+        this.age = individual.age;
+        this.crossoverOperator = individual.crossoverOperator;
+        this.crossoverProbability = individual.crossoverProbability;
+        this.mutationOperator = (InterfaceMutation)individual.mutationOperator.clone();
+        this.mutationProbability = individual.mutationProbability;
+        this.selectionProbability = new double[individual.selectionProbability.length];
+        for (int i = 0; i < this.selectionProbability.length; i++) {
+            this.selectionProbability[i] = individual.selectionProbability[i];
         }
-        this.m_Fitness = new double[individual.m_Fitness.length];
-        for (int i = 0; i < this.m_Fitness.length; i++) {
-            this.m_Fitness[i] = individual.m_Fitness[i];
+        this.fitness = new double[individual.fitness.length];
+        for (int i = 0; i < this.fitness.length; i++) {
+            this.fitness[i] = individual.fitness[i];
         }
         cloneAEAObjects((AbstractEAIndividual) individual);
     }
@@ -264,8 +264,8 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
             this.defaultInit(opt);
             System.out.println("Initial value for ESIndividualDoubleData is not double[]!");
         }
-        this.m_MutationOperator.init(this, opt);
-        this.m_CrossoverOperator.init(this, opt);
+        this.mutationOperator.init(this, opt);
+        this.crossoverOperator.init(this, opt);
     }
 
     /** This method will return a string description of the GAIndividal
@@ -276,14 +276,14 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
     public String getStringRepresentation() {
     	StringBuilder strB = new StringBuilder(200);
     	strB.append("ESIndividual coding double: (Fitness {");
-        for (int i = 0; i < this.m_Fitness.length; i++) {
-        	strB.append(this.m_Fitness[i]);
+        for (int i = 0; i < this.fitness.length; i++) {
+        	strB.append(this.fitness[i]);
         	strB.append(";");
         }
     	strB.append("}/SelProb{");
     	
-        for (int i = 0; i < this.m_SelectionProbability.length; i++) {
-        	strB.append(this.m_SelectionProbability[i]);
+        for (int i = 0; i < this.selectionProbability.length; i++) {
+        	strB.append(this.selectionProbability[i]);
         	strB.append(";");
         }
         strB.append("}) Value: [");
@@ -404,8 +404,8 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
 //    public String toString() {
 //    	String str = "Ind " + m_Genotype[0];
 //    	for (int i=1; i<this.m_Genotype.length; i++) str += "/" + m_Genotype[i];
-//    	str += "~" + m_Fitness[0];
-//    	for (int i=1; i<this.m_Fitness.length; i++) str += "/" + m_Fitness[i];
+//    	str += "~" + fitness[0];
+//    	for (int i=1; i<this.fitness.length; i++) str += "/" + fitness[i];
 //    	return str;
 //    }
 }

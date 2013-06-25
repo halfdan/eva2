@@ -18,8 +18,8 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
     private InterfaceDataTypePermutation    m_Permutation   = new OBGAIndividualPermutationData();
 
     public GIOBGAIndividualIntegerPermutationData() {
-        this.m_MutationProbability  = 1.0;
-        this.m_CrossoverProbability = 1.0;
+        this.mutationProbability = 1.0;
+        this.crossoverProbability = 1.0;
         this.m_Integer          = new GIIndividualIntegerData();
         this.m_Permutation      = new OBGAIndividualPermutationData();
     }
@@ -29,18 +29,18 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
         this.m_Permutation      = (InterfaceDataTypePermutation)((AbstractEAIndividual)individual.getPermutations()).clone();
 
         // cloning the members of AbstractEAIndividual
-        this.m_Age                      = individual.m_Age;
-        this.m_CrossoverOperator        = individual.m_CrossoverOperator;
-        this.m_CrossoverProbability     = individual.m_CrossoverProbability;
-        this.m_MutationOperator         = (InterfaceMutation)individual.m_MutationOperator.clone();
-        this.m_MutationProbability      = individual.m_MutationProbability;
-        this.m_SelectionProbability = new double[individual.m_SelectionProbability.length];
-        for (int i = 0; i < this.m_SelectionProbability.length; i++) {
-            this.m_SelectionProbability[i] = individual.m_SelectionProbability[i];
+        this.age = individual.age;
+        this.crossoverOperator = individual.crossoverOperator;
+        this.crossoverProbability = individual.crossoverProbability;
+        this.mutationOperator = (InterfaceMutation)individual.mutationOperator.clone();
+        this.mutationProbability = individual.mutationProbability;
+        this.selectionProbability = new double[individual.selectionProbability.length];
+        for (int i = 0; i < this.selectionProbability.length; i++) {
+            this.selectionProbability[i] = individual.selectionProbability[i];
         }
-        this.m_Fitness = new double[individual.m_Fitness.length];
-        for (int i = 0; i < this.m_Fitness.length; i++) {
-            this.m_Fitness[i] = individual.m_Fitness[i];
+        this.fitness = new double[individual.fitness.length];
+        for (int i = 0; i < this.fitness.length; i++) {
+            this.fitness[i] = individual.fitness[i];
         }
         cloneAEAObjects((AbstractEAIndividual) individual);
     }
@@ -111,10 +111,10 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
      */
     @Override
     public void mutate() {
-        if (RNG.flipCoin(this.m_MutationProbability)) {
+        if (RNG.flipCoin(this.mutationProbability)) {
             ((AbstractEAIndividual)this.m_Integer).mutate();
         }
-        if (RNG.flipCoin(this.m_MutationProbability)) {
+        if (RNG.flipCoin(this.mutationProbability)) {
             ((AbstractEAIndividual)this.m_Permutation).mutate();
         }
     }
@@ -133,7 +133,7 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
     @Override
     public AbstractEAIndividual[] mateWith(Population partners) {
         AbstractEAIndividual[] result;
-        if (RNG.flipCoin(this.m_CrossoverProbability)) {
+        if (RNG.flipCoin(this.crossoverProbability)) {
             AbstractEAIndividual[]  resNum, resBin;
             AbstractEAIndividual    numTmp, binTmp;
             Population              numPop, binPop;

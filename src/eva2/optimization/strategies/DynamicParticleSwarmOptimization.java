@@ -254,52 +254,6 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
 		return rand;
 	}
 	
-    /** This method will update a given individual
-     * according to the PSO method
-     * @param index      The individual to update.
-     * @param pop       The current population.
-     * @param best      The best individual found so far.
-     */
-//    protected void updateIndividual(int index, Population pop, AbstractEAIndividual best) {
-//        AbstractEAIndividual indy = (AbstractEAIndividual)pop.get(index);
-//        if (indy instanceof InterfaceESIndividual) {
-//            InterfaceESIndividual endy = (InterfaceESIndividual) indy;
-//            
-//        	if (isParticleType(indy, resetType)) {
-//				resetIndividual(indy);
-//        	} else {	            
-//	            indy.SetData(partTypeKey, defaultType);	// reset in case it was quantum
-//	            
-//	            double[] personalBestPos   = (double[]) indy.getData(partBestPosKey);
-//	            double[] velocity       = (double[]) indy.getData(partVelKey);
-//	            double[] curPosition    = endy.getDGenotype();
-//	            double[][] range = endy.getDoubleRange();
-//	            
-//	            // search for the local best position
-//	            double[]    neighbourBestPos = findNeighbourhoodOptimum(index, pop, best);
-//           
-//	            // now update the velocity
-//	            double[] curVelocity = updateVelocity(index, velocity, personalBestPos, curPosition, neighbourBestPos, range);
-//	
-//	            //System.out.println("localBestPos is " + localBestPosition[0] + "/" + localBestPosition[1]);
-//	            
-//	            // check the speed limit!
-//	            if (checkSpeedLimit) enforceSpeedLimit(curVelocity, range, getSpeedLimit(index, pop.size()));
-//	
-//	            // enforce range constraints if necessary
-//	            if (m_CheckConstraints) ensureConstraints(curPosition, curVelocity, range); 
-//	            
-//	            plotIndy(curPosition, curVelocity, (Integer)indy.getData(indexKey));
-//	            // finally update the position
-//	            updatePosition(indy, curVelocity, curPosition, range); 
-//	            
-//	            resetFitness(indy);
-//        	}
-//        } else {
-//            System.err.println("Could not perform PSO update, because individual is not instance of InterfaceESIndividual!");
-//        }
-//    }
-
 	@Override
 	protected double[] updateVelocity(int index, double[] lastVelocity, double[] bestPosition, double[] curPosition, double[] localBestPos, double[][] range) {
 		if (envHasChanged) {
@@ -337,10 +291,10 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
 	}
 	
 	protected double getProblemSpecificAttraction(int i, double chi) {
-//		if (m_Problem instanceof DynLocalizationProblem) {
+//		if (problem instanceof DynLocalizationProblem) {
 //			// TODO test this!
 //			//hier weiter
-//			double[] att = ((DynLocalizationProblem)m_Problem).getProblemSpecificAttractor();
+//			double[] att = ((DynLocalizationProblem)problem).getProblemSpecificAttractor();
 //			return (this.phi3 * chi * RNG.randomDouble(0, 1.))*att[i];
 //		} else 
 			return 0;
@@ -363,7 +317,6 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
      * Get the speed limit of an individual (respecting highEnergyRatio, so some individuals may be accelerated).
      *
      * @param index	the individuals index
-     * @param popSize	the size of the population
      * @return the speed limit of the individual
      */
     @Override
@@ -420,7 +373,7 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
 	 * according to the PSO method
 	 * @param index      The individual to update.
 	 * @param pop       The current population.
-	 * @param best      The best individual found so far.
+	 * @param indy      The best individual found so far.
 	 */
     @Override
 	protected void updateIndividual(int index, AbstractEAIndividual indy, Population pop) {
@@ -465,8 +418,8 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
 	    if (doSpeedAdaptation) {
     		adaptTrackingSpeed(((InterfaceDataTypeDouble)population.get(0)).getDoubleRange());
     	}
-//        if (m_Problem instanceof DynLocalizationProblem) {
-//        	((DynLocalizationProblem)m_Problem).adaptPSOByPopulation(population, this);
+//        if (problem instanceof DynLocalizationProblem) {
+//        	((DynLocalizationProblem)problem).adaptPSOByPopulation(population, this);
 //        }
     }
     

@@ -17,7 +17,7 @@ public class F2Problem extends AbstractProblemDoubleOffset implements InterfaceL
 
 
 	public F2Problem() {
-        this.m_Template         = new ESIndividualDoubleData();
+        this.template = new ESIndividualDoubleData();
     }
     public F2Problem(F2Problem b) {
         super(b);     
@@ -42,14 +42,14 @@ public class F2Problem extends AbstractProblemDoubleOffset implements InterfaceL
     public double[] eval(double[] x) {
     	x = rotateMaybe(x);
         double[] result = new double[1];
-        result[0]     = m_YOffset;
+        result[0]     = yOffset;
         double xi, xii;
         for (int i = 0; i < x.length-1; i++) {
-        	xi=x[i]-m_XOffset;
-        	xii=x[i+1]-m_XOffset;
+        	xi=x[i]- xOffset;
+        	xii=x[i+1]- xOffset;
             result[0]  += (100*(xii-xi*xi)*(xii-xi*xi)+(xi-1)*(xi-1));
         }
-        if (m_YOffset==0 && (result[0]<=0)) {
+        if (yOffset ==0 && (result[0]<=0)) {
             result[0]=Math.sqrt(Double.MIN_VALUE);
         } // guard for plots in log scale
         return result;
@@ -63,8 +63,8 @@ public class F2Problem extends AbstractProblemDoubleOffset implements InterfaceL
         double xi, xii;
         
         for (int i = 0; i < dim-1; i++) {
-        	xi=x[i]-m_XOffset;
-        	xii=x[i+1]-m_XOffset;
+        	xi=x[i]- xOffset;
+        	xii=x[i+1]- xOffset;
 
         	result[i] += 400*xi*(xi*xi-xii) + 2*xi-2;
         	result[i+1] += -200 * (xi*xi - xii);
@@ -81,10 +81,10 @@ public class F2Problem extends AbstractProblemDoubleOffset implements InterfaceL
         result += "F2 Generalized Rosenbrock function:\n";
         result += "This problem has a deceptive optimum at (0,0,..), the true optimum is at (1,1,1,..).\n";
         result += "Parameters:\n";
-        result += "Dimension   : " + this.m_ProblemDimension +"\n";
+        result += "Dimension   : " + this.problemDimension +"\n";
         result += "Noise level : " + this.getNoise() + "\n";
         result += "Solution representation:\n";
-        //result += this.m_Template.getSolutionRepresentationFor();
+        //result += this.template.getSolutionRepresentationFor();
         return result;
     }
     

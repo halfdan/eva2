@@ -86,10 +86,10 @@ public class GAParameters extends AbstractGOParameters implements InterfaceGOPar
      * @return The population of current solutions to a given problem.
      */
     public Population getPopulation() {
-        return ((GeneticAlgorithm)this.m_Optimizer).getPopulation();
+        return ((GeneticAlgorithm)this.optimizer).getPopulation();
     }
     public void setPopulation(Population pop){
-        ((GeneticAlgorithm)this.m_Optimizer).setPopulation(pop);
+        ((GeneticAlgorithm)this.optimizer).setPopulation(pop);
     }
     public String populationTipText() {
         return "Edit the properties of the population used.";
@@ -112,10 +112,10 @@ public class GAParameters extends AbstractGOParameters implements InterfaceGOPar
      * @param selection
      */
     public void setParentSelection(InterfaceSelection selection) {
-        ((GeneticAlgorithm)this.m_Optimizer).setParentSelection(selection);
+        ((GeneticAlgorithm)this.optimizer).setParentSelection(selection);
     }
     public InterfaceSelection getParentSelection() {
-        return ((GeneticAlgorithm)this.m_Optimizer).getParentSelection();
+        return ((GeneticAlgorithm)this.optimizer).getParentSelection();
     }
     public String parentSelectionTipText() {
         return "Choose a parent selection method.";
@@ -125,10 +125,10 @@ public class GAParameters extends AbstractGOParameters implements InterfaceGOPar
      * @param elitism
      */
     public void setElitism (boolean elitism) {
-        ((GeneticAlgorithm)this.m_Optimizer).setElitism(elitism);
+        ((GeneticAlgorithm)this.optimizer).setElitism(elitism);
     }
     public boolean getElitism() {
-        return ((GeneticAlgorithm)this.m_Optimizer).getElitism();
+        return ((GeneticAlgorithm)this.optimizer).getElitism();
     }
     public String elitismTipText() {
         return "Enable/disable elitism.";
@@ -141,10 +141,10 @@ public class GAParameters extends AbstractGOParameters implements InterfaceGOPar
         if (partners < 0) {
             partners = 0;
         }
-        ((GeneticAlgorithm)this.m_Optimizer).setNumberOfPartners(partners);
+        ((GeneticAlgorithm)this.optimizer).setNumberOfPartners(partners);
     }
     public int getNumberOfPartners() {
-        return ((GeneticAlgorithm)this.m_Optimizer).getNumberOfPartners();
+        return ((GeneticAlgorithm)this.optimizer).getNumberOfPartners();
     }
     public String numberOfPartnersTipText() {
         return "The number of mating partners needed to create offsprings.";
@@ -154,10 +154,10 @@ public class GAParameters extends AbstractGOParameters implements InterfaceGOPar
      * @param selection
      */
     public void setPartnerSelection(InterfaceSelection selection) {
-        ((GeneticAlgorithm)this.m_Optimizer).setPartnerSelection(selection);
+        ((GeneticAlgorithm)this.optimizer).setPartnerSelection(selection);
     }
     public InterfaceSelection getPartnerSelection() {
-        return ((GeneticAlgorithm)this.m_Optimizer).getPartnerSelection();
+        return ((GeneticAlgorithm)this.optimizer).getPartnerSelection();
     }
     public String partnerSelectionTipText() {
         return "Choose a selection method for selecting recombination partners for given parents.";

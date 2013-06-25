@@ -62,50 +62,42 @@ import java.util.PriorityQueue;
 public class ClusterBasedNichingEA implements InterfacePopulationChangedEventListener, InterfaceAdditionalPopulationInformer, InterfaceOptimizer, java.io.Serializable {
 
     private static final long serialVersionUID = -3143069327594708609L;
-    private Population m_Population = new Population();
-    private transient Population m_Archive = new Population();
-    private ArrayList<Population> m_Species = new ArrayList<Population>();
-    private Population m_Undifferentiated = new Population();
-    private transient Population m_doomedPop = new Population();
-    private InterfaceOptimizationProblem m_Problem = new B1Problem();
-    private InterfaceOptimizer m_Optimizer = new GeneticAlgorithm();
-    private InterfaceClustering m_CAForSpeciesDifferentation = new ClusteringDensityBased();
-    private InterfaceClustering m_CAForSpeciesMerging = new ClusteringDensityBased();
+    private Population population = new Population();
+    private transient Population poulationArchive = new Population();
+    private ArrayList<Population> species = new ArrayList<Population>();
+    private Population undifferentiatedPopulation = new Population();
+    private transient Population doomedPopulation = new Population();
+    private InterfaceOptimizationProblem optimizationProblem = new B1Problem();
+    private InterfaceOptimizer optimizer = new GeneticAlgorithm();
+    private InterfaceClustering caForSpeciesDifferentation = new ClusteringDensityBased();
+    private InterfaceClustering caForSpeciesMerging = new ClusteringDensityBased();
     private double clusterDiffDist = 0.05;
-//    private double							clusterMergeDist = 0.0001;
-//    private Distraction						distraction						= null;
     private boolean useDistraction = false;
-//    private double 							distrDefaultStrength = .7;
     private double epsilonBound = 1e-10;
-    transient private String m_Identifier = "";
-    transient private InterfacePopulationChangedEventListener m_Listener;
-    private int m_SpeciesCycle = 1;
-    // from which size on is a species considered active 
-//    private int 							m_actSpecSize					= 2;
-    private int m_minGroupSize = 3;
-//    private boolean                         m_UseClearing                   = false;
-//    private boolean							m_UseArchive					= true;
-    private boolean m_UseSpeciesDifferentiation = true;
-    private boolean m_mergeSpecies = true;
-    private int m_PopulationSize = 50;
+    transient private String identifier = "";
+    transient private InterfacePopulationChangedEventListener populationChangedEventListener;
+    private int speciesCycle = 1;
+
+    private int minGroupSize = 3;
+    private boolean useSpeciesDifferentiation = true;
+    private boolean mergeSpecies = true;
+    private int populationSize = 50;
     private int convergedCnt = 0;
     private int collisions = 0;
     private static boolean TRACE = false, TRACE_STATE = false, TRACE_EVTS = false;
-    private int m_ShowCycle = 0;
-    transient private TopoPlot m_Topology;
+    private int showCycle = 0;
+    transient private TopoPlot topologyPlot;
     private int haltingWindow = 15;
     private double muLambdaRatio = 0.5;
     private int sleepTime = 0;
-    private int m_maxSpeciesSize = 15;
+    private int maxSpeciesSize = 15;
     private AbstractEAIndividualComparator reduceSizeComparator = new AbstractEAIndividualComparator();
     private AbstractEAIndividualComparator histComparator = new AbstractEAIndividualComparator("", -1, true);
     protected ParameterControlManager paramControl = new ParameterControlManager();
     private double avgDistForConvergence = 0.1; // Upper bound for average indy distance in a species in the test for convergence
 
     public ClusterBasedNichingEA() {
-        this.m_CAForSpeciesMerging = new ClusteringDensityBased();
-//        ((ClusteringDensityBased)this.m_CAForSpeciesMerging).setMinimumGroupSize(m_minGroupSize);
-//        if (useDistraction) distraction = new Distraction(distrDefaultStrength, Distraction.METH_BEST);
+        this.caForSpeciesMerging = new ClusteringDensityBased();
     }
 
     /**
@@ -146,30 +138,30 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
 
     public ClusterBasedNichingEA(ClusterBasedNichingEA a) {
         this.epsilonBound = a.epsilonBound;
-        this.m_Population = (Population) a.m_Population.clone();
-        this.m_Archive = (Population) a.m_Archive.clone();
-        this.m_doomedPop = (Population) a.m_doomedPop.clone();
-        this.m_Problem = (InterfaceOptimizationProblem) a.m_Problem.clone();
-        this.m_Optimizer = (InterfaceOptimizer) a.m_Optimizer.clone();
-        this.m_Species = (ArrayList<Population>) (a.m_Species.clone());
-        this.m_Undifferentiated = (Population) a.m_Undifferentiated.clone();
-        this.m_CAForSpeciesMerging = (InterfaceClustering) this.m_CAForSpeciesMerging.clone();
-        this.m_CAForSpeciesDifferentation = (InterfaceClustering) this.m_CAForSpeciesDifferentation.clone();
-        this.m_SpeciesCycle = a.m_SpeciesCycle;
-        this.m_minGroupSize = a.m_minGroupSize;
-        this.m_UseSpeciesDifferentiation = a.m_UseSpeciesDifferentiation;
-        this.m_mergeSpecies = a.m_mergeSpecies;
-        this.m_PopulationSize = a.m_PopulationSize;
+        this.population = (Population) a.population.clone();
+        this.poulationArchive = (Population) a.poulationArchive.clone();
+        this.doomedPopulation = (Population) a.doomedPopulation.clone();
+        this.optimizationProblem = (InterfaceOptimizationProblem) a.optimizationProblem.clone();
+        this.optimizer = (InterfaceOptimizer) a.optimizer.clone();
+        this.species = (ArrayList<Population>) (a.species.clone());
+        this.undifferentiatedPopulation = (Population) a.undifferentiatedPopulation.clone();
+        this.caForSpeciesMerging = (InterfaceClustering) this.caForSpeciesMerging.clone();
+        this.caForSpeciesDifferentation = (InterfaceClustering) this.caForSpeciesDifferentation.clone();
+        this.speciesCycle = a.speciesCycle;
+        this.minGroupSize = a.minGroupSize;
+        this.useSpeciesDifferentiation = a.useSpeciesDifferentiation;
+        this.mergeSpecies = a.mergeSpecies;
+        this.populationSize = a.populationSize;
         this.haltingWindow = a.haltingWindow;
-        this.m_maxSpeciesSize = a.m_maxSpeciesSize;
+        this.maxSpeciesSize = a.maxSpeciesSize;
         this.muLambdaRatio = a.muLambdaRatio;
         this.sleepTime = a.sleepTime;
         this.convergedCnt = a.convergedCnt;
         this.collisions = a.collisions;
         this.clusterDiffDist = a.clusterDiffDist;
         this.useDistraction = a.useDistraction;
-        this.m_ShowCycle = a.m_ShowCycle;
-        this.m_maxSpeciesSize = a.m_maxSpeciesSize;
+        this.showCycle = a.showCycle;
+        this.maxSpeciesSize = a.maxSpeciesSize;
     }
 
     @Override
@@ -179,26 +171,26 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
 
     @Override
     public void init() {
-        if (m_Undifferentiated == null) {
-            this.m_Undifferentiated = new Population(m_PopulationSize);
+        if (undifferentiatedPopulation == null) {
+            this.undifferentiatedPopulation = new Population(populationSize);
         } else {
-            m_Undifferentiated.resetProperties();
-            m_Undifferentiated.setTargetSize(m_PopulationSize);
+            undifferentiatedPopulation.resetProperties();
+            undifferentiatedPopulation.setTargetSize(populationSize);
         }
 
-        this.m_Undifferentiated.setUseHistory(true);
+        this.undifferentiatedPopulation.setUseHistory(true);
 
-        this.m_Problem.initPopulation(this.m_Undifferentiated);
-        this.m_Optimizer.initByPopulation(m_Undifferentiated, true);
-        m_Undifferentiated = this.m_Optimizer.getPopulation(); // some optimizers clone the given one.
-        if (m_Optimizer instanceof EvolutionStrategies) {
-            EvolutionStrategies es = (EvolutionStrategies) m_Optimizer;
+        this.optimizationProblem.initializePopulation(this.undifferentiatedPopulation);
+        this.optimizer.initByPopulation(undifferentiatedPopulation, true);
+        undifferentiatedPopulation = this.optimizer.getPopulation(); // some optimizers clone the given one.
+        if (optimizer instanceof EvolutionStrategies) {
+            EvolutionStrategies es = (EvolutionStrategies) optimizer;
             es.setLambda(getPopulationSize());
             es.setMu((int) (muLambdaRatio * (double) getPopulationSize()));
         }
-//        this.m_Optimizer.init();
-        m_doomedPop = m_Undifferentiated.cloneWithoutInds();
-        if (m_Undifferentiated.getFunctionCalls() != m_PopulationSize) {
+//        this.optimizer.init();
+        doomedPopulation = undifferentiatedPopulation.cloneWithoutInds();
+        if (undifferentiatedPopulation.getFunctionCalls() != populationSize) {
             System.err.println("Whats that in CBN!?");
         }
         initDefaults(false);
@@ -216,19 +208,19 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
      * @param evalPop
      */
     private void initDefaults(boolean evalPop) {
-        this.m_Optimizer.addPopulationChangedEventListener(this);
-        this.m_Undifferentiated.setTargetSize(this.m_PopulationSize);
-        this.m_Species = new ArrayList<Population>();
-        this.m_Archive = m_Undifferentiated.cloneWithoutInds();
+        this.optimizer.addPopulationChangedEventListener(this);
+        this.undifferentiatedPopulation.setTargetSize(this.populationSize);
+        this.species = new ArrayList<Population>();
+        this.poulationArchive = undifferentiatedPopulation.cloneWithoutInds();
 //    	if (useDistraction) distraction = new Distraction(distrDefaultStrength, Distraction.METH_BEST);
         convergedCnt = 0;
         collisions = 0;
         if (evalPop) {
-            this.evaluatePopulation(this.m_Undifferentiated);
+            this.evaluatePopulation(this.undifferentiatedPopulation);
         }
-        this.m_Optimizer.initByPopulation(m_Undifferentiated, false);
-        this.m_Undifferentiated = m_Optimizer.getPopulation(); // required for changes to the population by the optimizer
-        m_Population = m_Undifferentiated;
+        this.optimizer.initByPopulation(undifferentiatedPopulation, false);
+        this.undifferentiatedPopulation = optimizer.getPopulation(); // required for changes to the population by the optimizer
+        population = undifferentiatedPopulation;
         this.firePropertyChangedEvent("FirstGenerationPerformed");
     }
 
@@ -240,9 +232,9 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
      */
     @Override
     public void initByPopulation(Population pop, boolean reset) {
-        this.m_Undifferentiated = (Population) pop.clone();
+        this.undifferentiatedPopulation = (Population) pop.clone();
         if (reset) {
-            this.m_Undifferentiated.init();
+            this.undifferentiatedPopulation.init();
         }
         initDefaults(reset);
     }
@@ -253,18 +245,18 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
      * @param population The population that is to be evaluated
      */
     private void evaluatePopulation(Population population) {
-        this.m_Problem.evaluate(population);
+        this.optimizationProblem.evaluate(population);
         population.incrGeneration();
     }
 
     private void plot(int gen) {
-        if (!(this.m_Problem instanceof TF1Problem) && !(this.m_Problem instanceof Interface2DBorderProblem)) {
+        if (!(this.optimizationProblem instanceof TF1Problem) && !(this.optimizationProblem instanceof Interface2DBorderProblem)) {
             return;
         }
         double[] a = new double[2];
         a[0] = 0.0;
         a[1] = 0.0;
-        if (this.m_Problem instanceof TF1Problem) {
+        if (this.optimizationProblem instanceof TF1Problem) {
             // now i need to plot the pareto fronts
             Plot plot = new Plot("TF3Problem at gen. " + gen, "y1", "y2", a, a);
             plot.setUnconnectedPoint(0, 0, 0);
@@ -272,17 +264,17 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
             GraphPointSet mySet = new GraphPointSet(10, plot.getFunctionArea());
             DPoint point;
             mySet.setConnectedMode(false);
-            for (int i = 0; i < this.m_Undifferentiated.size(); i++) {
-                AbstractEAIndividual indy = (AbstractEAIndividual) this.m_Undifferentiated.get(i);
+            for (int i = 0; i < this.undifferentiatedPopulation.size(); i++) {
+                AbstractEAIndividual indy = (AbstractEAIndividual) this.undifferentiatedPopulation.get(i);
                 double[] d = indy.getFitness();
                 point = new DPoint(d[0], d[1]);
                 point.setIcon(new Chart2DDPointIconCircle());
                 mySet.addDPoint(point);
             }
-            for (int i = 0; i < this.m_Species.size(); i++) {
+            for (int i = 0; i < this.species.size(); i++) {
                 mySet = new GraphPointSet(10 + i, plot.getFunctionArea());
                 mySet.setConnectedMode(false);
-                Population pop = (Population) this.m_Species.get(i);
+                Population pop = (Population) this.species.get(i);
 //                ArchivingAllDomiating arch = new ArchivingAllDomiating();
 //                arch.plotParetoFront(pop, plot);
                 for (int j = 0; j < pop.size(); j++) {
@@ -296,28 +288,28 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
             }
 
         }
-        if (this.m_Problem instanceof Interface2DBorderProblem) {
+        if (this.optimizationProblem instanceof Interface2DBorderProblem) {
             DPointSet popRep = new DPointSet();
             InterfaceDataTypeDouble tmpIndy1;
             Population pop;
 
-            this.m_Topology = new TopoPlot("CBN-Species at gen. " + gen, "x", "y", a, a);
-            this.m_Topology.setParams(50, 50);
-            this.m_Topology.setTopology((Interface2DBorderProblem) this.m_Problem);
+            this.topologyPlot = new TopoPlot("CBN-Species at gen. " + gen, "x", "y", a, a);
+            this.topologyPlot.setParams(50, 50);
+            this.topologyPlot.setTopology((Interface2DBorderProblem) this.optimizationProblem);
             //draw the undifferentiated
-            for (int i = 0; i < this.m_Undifferentiated.size(); i++) {
-                tmpIndy1 = (InterfaceDataTypeDouble) this.m_Undifferentiated.get(i);
+            for (int i = 0; i < this.undifferentiatedPopulation.size(); i++) {
+                tmpIndy1 = (InterfaceDataTypeDouble) this.undifferentiatedPopulation.get(i);
                 popRep.addDPoint(new DPoint(tmpIndy1.getDoubleData()[0], tmpIndy1.getDoubleData()[1]));
             }
-            this.m_Topology.getFunctionArea().addDElement(popRep);
+            this.topologyPlot.getFunctionArea().addDElement(popRep);
             //draw the species
-            for (int i = 0; i < this.m_Species.size(); i++) {
-                pop = (Population) this.m_Species.get(i);
-                plotPopConnected(m_Topology, pop);
+            for (int i = 0; i < this.species.size(); i++) {
+                pop = (Population) this.species.get(i);
+                plotPopConnected(topologyPlot, pop);
             }
             if (!useDistraction) {
-                for (int i = 0; i < this.m_Archive.size(); i++) {
-                    plotIndy(m_Topology, 'x', (InterfaceDataTypeDouble) m_Archive.get(i));
+                for (int i = 0; i < this.poulationArchive.size(); i++) {
+                    plotIndy(topologyPlot, 'x', (InterfaceDataTypeDouble) poulationArchive.get(i));
                 }
             } else {
 //            	for (int i = 0; i < this.distraction.getDistractorSetSize(); i++) {
@@ -384,13 +376,13 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
      * @return A population of new individuals
      */
     private Population initializeIndividuals(int n) {
-        Population result = m_Undifferentiated.cloneWithoutInds();
+        Population result = undifferentiatedPopulation.cloneWithoutInds();
         result.setUseHistory(true);
         result.setTargetSize(n);
         //@todo: crossover between species is to be implemented
-        m_Problem.initPopulation(result);
-        m_Problem.evaluate(result);
-        m_Optimizer.setPopulation(result);	// for some initialization by the optimizer, such as PSO memory 
+        optimizationProblem.initializePopulation(result);
+        optimizationProblem.evaluate(result);
+        optimizer.setPopulation(result);	// for some initialization by the optimizer, such as PSO memory
 //        capMutationRate(result, RNG.randomDouble(0.001, 0.1));
         return result;
     }
@@ -443,7 +435,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
             // TODO something like this may be used as additional convergence criterion.
             // it influences the number of local optima archived and seems to increase the score, but not the best-found solutions, at least for a large clustering parameter 
 //    		System.out.println("Terminated, subswarm measures: " + BeanInspector.toString(pop.getPopulationMeasures()));
-//            	if (m_Optimizer instanceof ParticleSwarmOptimization) {
+//            	if (optimizer instanceof ParticleSwarmOptimization) {
 //            		double swarmSp = ParticleSwarmOptimization.getPopulationVelSpeed(pop, 2, ParticleSwarmOptimization.partVelKey, null, null)[0];
 //            		System.out.println("Swarm speed: " + swarmSp);
 //            		if (swarmSp > 0.05) {
@@ -482,10 +474,10 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
     }
 
     private Population optimizeSpecies(Population species, boolean minorPlot) {
-        m_Optimizer.setPopulation(species);
-//    	m_Optimizer.initByPopulation(species, false);
-        if (m_Optimizer instanceof EvolutionStrategies) {
-            EvolutionStrategies es = (EvolutionStrategies) m_Optimizer;
+        optimizer.setPopulation(species);
+//    	optimizer.initByPopulation(species, false);
+        if (optimizer instanceof EvolutionStrategies) {
+            EvolutionStrategies es = (EvolutionStrategies) optimizer;
             int mu = Math.max(1, (int) (muLambdaRatio * species.size()));
             if (mu >= species.size()) {
                 if (TRACE) {
@@ -501,16 +493,16 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
         }
         if (TRACE) {
             System.out.println("Bef: spec size: " + species.size() + ", target size " + species.getTargetSize());
-            System.out.println("Best bef: " + BeanInspector.toString(m_Optimizer.getPopulation().getBestFitness()));
+            System.out.println("Best bef: " + BeanInspector.toString(optimizer.getPopulation().getBestFitness()));
         }
 
-        if (BeanInspector.hasMethod(m_Optimizer, "getLastModelPopulation", null) != null) {
-            Object pc = BeanInspector.callIfAvailable(m_Optimizer, "getLastTrainingPatterns", null);
+        if (BeanInspector.hasMethod(optimizer, "getLastModelPopulation", null) != null) {
+            Object pc = BeanInspector.callIfAvailable(optimizer, "getLastTrainingPatterns", null);
 //   			System.out.println("MAPSO train set bef optSpec: " + BeanInspector.callIfAvailable(pc, "getStringRepresentation", null));
         }
 
-        this.m_Optimizer.optimize();
-        Population retPop = m_Optimizer.getPopulation();
+        this.optimizer.optimize();
+        Population retPop = optimizer.getPopulation();
 
         if (TRACE) {
             System.out.println("Aft: spec size: " + retPop.size() + ", target size " + retPop.getTargetSize());
@@ -544,25 +536,25 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
     public void optimize() {
         Population reinitPop = null;
         if (TRACE_STATE) {
-            printState("---- CBN Optimizing", m_doomedPop);
-            //            System.out.println("-Funcalls: "+m_Undifferentiated.getFunctionCalls());
+            printState("---- CBN Optimizing", doomedPopulation);
+            //            System.out.println("-Funcalls: "+undifferentiatedPopulation.getFunctionCalls());
         }
-        if (m_doomedPop.size() > 0) {
-            reinitPop = this.initializeIndividuals(m_doomedPop.size()); // do not add these to undifferentiated yet, that would mess up the evaluation count 
-            m_doomedPop.clear();
+        if (doomedPopulation.size() > 0) {
+            reinitPop = this.initializeIndividuals(doomedPopulation.size()); // do not add these to undifferentiated yet, that would mess up the evaluation count
+            doomedPopulation.clear();
 //    		if (TRACE) 
-//    			System.out.println("At " + m_Undifferentiated.getFunctionCalls() + " reinited " + reinitPop.size() + " indies... ");
+//    			System.out.println("At " + undifferentiatedPopulation.getFunctionCalls() + " reinited " + reinitPop.size() + " indies... ");
         }
-        int countIndies = (reinitPop != null ? reinitPop.size() : 0) + m_Undifferentiated.size();
-        for (int i = 0; i < m_Species.size(); i++) {
-            countIndies += m_Species.get(i).size();
+        int countIndies = (reinitPop != null ? reinitPop.size() : 0) + undifferentiatedPopulation.size();
+        for (int i = 0; i < species.size(); i++) {
+            countIndies += species.get(i).size();
         }
         if (TRACE) {
             System.out.println("NumIndies: " + countIndies);
         };
-        if (this.m_ShowCycle > 0) {
-            if (m_Undifferentiated.getGeneration() <= 1) {
-                plot(m_Undifferentiated.getGeneration());
+        if (this.showCycle > 0) {
+            if (undifferentiatedPopulation.getGeneration() <= 1) {
+                plot(undifferentiatedPopulation.getGeneration());
             }
         }
         if (sleepTime > 0) {
@@ -575,30 +567,30 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
 
         // species evolution phase
         // optimize D_0
-        this.m_Undifferentiated.synchSize();
-        if (m_Undifferentiated.size() > 0) {
-//            this.capMutationRate(this.m_Undifferentiated, 0); // MK this sets mutation rate to 0! why? possibly to guarantee contraction of the species?
-            m_Undifferentiated.putData(InterfaceSpeciesAware.populationTagKey, InterfaceSpeciesAware.explorerPopTag);
-            m_Undifferentiated = optimizeSpecies(m_Undifferentiated, false);
+        this.undifferentiatedPopulation.synchSize();
+        if (undifferentiatedPopulation.size() > 0) {
+//            this.capMutationRate(this.undifferentiatedPopulation, 0); // MK this sets mutation rate to 0! why? possibly to guarantee contraction of the species?
+            undifferentiatedPopulation.putData(InterfaceSpeciesAware.populationTagKey, InterfaceSpeciesAware.explorerPopTag);
+            undifferentiatedPopulation = optimizeSpecies(undifferentiatedPopulation, false);
         } else {
-            m_Undifferentiated.incrGeneration();
+            undifferentiatedPopulation.incrGeneration();
         }
 
         Population curSpecies;
         // optimize the clustered species
-        for (int i = this.m_Species.size() - 1; i >= 0; i--) {
+        for (int i = this.species.size() - 1; i >= 0; i--) {
             if (TRACE) {
-                System.out.println("-Deme " + i + " size: " + ((Population) this.m_Species.get(i)).size());
+                System.out.println("-Deme " + i + " size: " + ((Population) this.species.get(i)).size());
             }
-            curSpecies = ((Population) this.m_Species.get(i));
+            curSpecies = ((Population) this.species.get(i));
             curSpecies.SetFunctionCalls(0);
             curSpecies.synchSize();
 //            if (isActive(curSpecies)) { // Lets have only active species...
             if ((haltingWindow > 0) && (this.testSpeciesForConvergence(curSpecies))) {
 ///////////////////////////////////////////// Halting Window /////////////////////////////////////////////////
 //                    if (this.m_Debug) {
-//                        System.out.println("Undiff.Size: " + this.m_Undifferentiated.size() +"/"+this.m_Undifferentiated.getPopulationSize());
-//                        System.out.println("Diff.Size  : " + ((Population)this.m_Species.get(i)).size() +"/"+((Population)this.m_Species.get(i)).getPopulationSize());
+//                        System.out.println("Undiff.Size: " + this.undifferentiatedPopulation.size() +"/"+this.undifferentiatedPopulation.getPopulationSize());
+//                        System.out.println("Diff.Size  : " + ((Population)this.species.get(i)).size() +"/"+((Population)this.species.get(i)).getPopulationSize());
 //                    }
                 convergedCnt++;
                 if (TRACE_EVTS) {
@@ -625,9 +617,9 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
 //                	}
                 int toReinit = 0;
                 if (true) { //if (m_UseArchive) {
-                    m_Archive.add(best);
-//                    	System.out.println((""+ m_Population.getFunctionCalls() + " " + (BeanInspector.toString(best.getDoublePosition())).replaceAll(";|\\[|\\]", "")));
-                    m_Species.remove(i);  // remove the converged Species
+                    poulationArchive.add(best);
+//                    	System.out.println((""+ population.getFunctionCalls() + " " + (BeanInspector.toString(best.getDoublePosition())).replaceAll(";|\\[|\\]", "")));
+                    species.remove(i);  // remove the converged Species
                     toReinit = curSpecies.size();
                 }
 //                	else {
@@ -636,12 +628,12 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
 //                    	deactivateSpecies(curSpecies, best, null);
 //                    }
                 // those will not be optimized anymore, so we dont need to doom them, but can directly add them to undiff!
-                m_Undifferentiated.addPopulation(initializeIndividuals(toReinit));
-                m_Undifferentiated.incrFunctionCallsBy(toReinit);
+                undifferentiatedPopulation.addPopulation(initializeIndividuals(toReinit));
+                undifferentiatedPopulation.incrFunctionCallsBy(toReinit);
 
 //                    if (this.m_Debug) {
-//                        System.out.println("Undiff.Size: " + this.m_Undifferentiated.size() +"/"+this.m_Undifferentiated.getPopulationSize());
-//                        System.out.println("Diff.Size  : " + ((Population)this.m_Species.get(i)).size() +"/"+((Population)this.m_Species.get(i)).getPopulationSize());
+//                        System.out.println("Undiff.Size: " + this.undifferentiatedPopulation.size() +"/"+this.undifferentiatedPopulation.getPopulationSize());
+//                        System.out.println("Diff.Size  : " + ((Population)this.species.get(i)).size() +"/"+((Population)this.species.get(i)).getPopulationSize());
 //                    }
 //                    if (this.m_Debug) System.out.println("--------------------------End converged");
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -650,47 +642,47 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
 //                    this.capMutationRate(curSpecies, 0.05);
                 curSpecies.putData(InterfaceSpeciesAware.populationTagKey, InterfaceSpeciesAware.localPopTag);
                 Population optimizedSpec = optimizeSpecies(curSpecies, true);
-                this.m_Species.set(i, optimizedSpec);
-                curSpecies = ((Population) this.m_Species.get(i)); // reset to expected population, just to be sure
+                this.species.set(i, optimizedSpec);
+                curSpecies = ((Population) this.species.get(i)); // reset to expected population, just to be sure
             }
 //            }
             // This is necessary to keep track of the function calls needed
-            m_Undifferentiated.incrFunctionCallsBy(curSpecies.getFunctionCalls());
+            undifferentiatedPopulation.incrFunctionCallsBy(curSpecies.getFunctionCalls());
             if (TRACE) {
-                System.out.println("### funcalls: " + m_Undifferentiated.getFunctionCalls());
+                System.out.println("### funcalls: " + undifferentiatedPopulation.getFunctionCalls());
             }
         }
 
         //////////////////////
-        synchronized (m_Population) { // fill the m_Population instance with the current individuals from undiff, spec, etc.
-            this.m_Population = (Population) this.m_Undifferentiated.clone();
-            m_Population.setUseHistory(true);
-            for (int i = 0; i < this.m_Species.size(); i++) {
-                this.m_Population.addPopulation((Population) this.m_Species.get(i));
+        synchronized (population) { // fill the population instance with the current individuals from undiff, spec, etc.
+            this.population = (Population) this.undifferentiatedPopulation.clone();
+            population.setUseHistory(true);
+            for (int i = 0; i < this.species.size(); i++) {
+                this.population.addPopulation((Population) this.species.get(i));
             }
-            if (m_doomedPop.size() > 0) {
-                m_Population.addPopulation(reinitPop);
+            if (doomedPopulation.size() > 0) {
+                population.addPopulation(reinitPop);
             } // this is just so that the numbers match up...
-            m_Population.synchSize();
+            population.synchSize();
         }
 
         //////////////////////
-        if ((this.m_Undifferentiated.getFunctionCalls() + (reinitPop == null ? 0 : (reinitPop.size()))) % this.m_PopulationSize != 0) {
+        if ((this.undifferentiatedPopulation.getFunctionCalls() + (reinitPop == null ? 0 : (reinitPop.size()))) % this.populationSize != 0) {
             if (TRACE) {
                 System.out.println("### mismatching number of funcalls, inactive species?");
-            }// Correcting by " + (m_PopulationSize - (m_Undifferentiated.getFunctionCalls() % m_PopulationSize)));
-//        	if (TRACE) System.out.println("### undiff " + ((isActive(m_Undifferentiated)) ? "active!" : "inactive!"));
-//        	m_Undifferentiated.incrFunctionCallsBy(m_PopulationSize - (m_Undifferentiated.getFunctionCalls() % m_PopulationSize));
-        } //else if (TRACE) System.out.println("### undiff active: " + isActive(m_Undifferentiated));        
+            }// Correcting by " + (populationSize - (undifferentiatedPopulation.getFunctionCalls() % populationSize)));
+//        	if (TRACE) System.out.println("### undiff " + ((isActive(undifferentiatedPopulation)) ? "active!" : "inactive!"));
+//        	undifferentiatedPopulation.incrFunctionCallsBy(populationSize - (undifferentiatedPopulation.getFunctionCalls() % populationSize));
+        } //else if (TRACE) System.out.println("### undiff active: " + isActive(undifferentiatedPopulation));
 
         // possible species differentiation and convergence
-        if (this.m_Undifferentiated.getGeneration() % this.m_SpeciesCycle == 0) {
+        if (this.undifferentiatedPopulation.getGeneration() % this.speciesCycle == 0) {
             if (TRACE) {
                 System.out.println("Species cycle:");
             }
             initClustering();
 
-            if (this.m_UseSpeciesDifferentiation) {
+            if (this.useSpeciesDifferentiation) {
 ///////////////////////////// species differentiation phase
                 if (TRACE) {
                     printState("---Species Differentation", reinitPop);
@@ -698,25 +690,25 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
                 Population[] clusters;
                 ArrayList<Population> newSpecies = new ArrayList<Population>();
                 //cluster the undifferentiated population
-                clusters = this.m_CAForSpeciesDifferentation.cluster(this.m_Undifferentiated, m_Population);
+                clusters = this.caForSpeciesDifferentation.cluster(this.undifferentiatedPopulation, population);
                 if (TRACE) {
                     System.out.println("clustered undiff to " + clusters.length);
                 }
                 for (int j = 1; j < clusters.length; j++) { // loop new clusters
-                    splitFromFirst(m_Undifferentiated, clusters[j], false);
+                    splitFromFirst(undifferentiatedPopulation, clusters[j], false);
                     newSpecies.add(clusters[j]);
                 }
                 replaceUndifferentiated(clusters[0]);
-                for (int i = 0; i < this.m_Species.size(); i++) { // loop old species
-                    curSpecies = this.m_Species.get(i);
-//                    if (curSpecies.size()>m_minGroupSize) { // only active populations are clustered
+                for (int i = 0; i < this.species.size(); i++) { // loop old species
+                    curSpecies = this.species.get(i);
+//                    if (curSpecies.size()>minGroupSize) { // only active populations are clustered
                     // check if a species has differentiated any further
-                    clusters = this.m_CAForSpeciesDifferentation.cluster(curSpecies, m_Population);
+                    clusters = this.caForSpeciesDifferentation.cluster(curSpecies, population);
                     if (TRACE) {
                         System.out.println("clustered " + i + " to " + clusters.length);
                     }
                     if (clusters[0].size() > 0) {
-                        mergeToFirst(m_Undifferentiated, clusters[0], false);
+                        mergeToFirst(undifferentiatedPopulation, clusters[0], false);
                     }
                     for (int j = 1; j < clusters.length; j++) { // set up new species
                         // this is treated as a split only if more than one cluster was found
@@ -735,7 +727,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
 //                        newSpecies.add(curSpecies);
 //                    }
                 }
-                this.m_Species = newSpecies;
+                this.species = newSpecies;
                 if (TRACE) {
                     printState("---After differentiation", reinitPop);
                 }
@@ -744,31 +736,31 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
             } // end of species differentiation
 
             // plot the populations
-            if (this.m_ShowCycle > 0) {
-                if ((this.m_Undifferentiated.getGeneration() <= 2) || (this.m_Undifferentiated.getGeneration() % this.m_ShowCycle == 0)) {
-                    this.plot(this.m_Undifferentiated.getGeneration());
+            if (this.showCycle > 0) {
+                if ((this.undifferentiatedPopulation.getGeneration() <= 2) || (this.undifferentiatedPopulation.getGeneration() % this.showCycle == 0)) {
+                    this.plot(this.undifferentiatedPopulation.getGeneration());
                 }
             }
 
-            if (this.m_mergeSpecies && (m_Species.size() > 0)) {
+            if (this.mergeSpecies && (species.size() > 0)) {
 ///////////////////////////// species merging phase
                 if (TRACE) {
                     System.out.println("-Species merge:");
                 }
                 // first test if loners belong to any species
-                int[] assocSpec = m_CAForSpeciesMerging.associateLoners(m_Undifferentiated, m_Species.toArray(new Population[m_Species.size()]), m_Population);
-                for (int i = m_Undifferentiated.size() - 1; i >= 0; i--) { // backwards or die!
+                int[] assocSpec = caForSpeciesMerging.associateLoners(undifferentiatedPopulation, species.toArray(new Population[species.size()]), population);
+                for (int i = undifferentiatedPopulation.size() - 1; i >= 0; i--) { // backwards or die!
                     if (assocSpec[i] >= 0) {
                         if (TRACE_EVTS) {
                             System.out.println("!!! Loner merge to " + i);
                         }
                         // loner i should be merged to species assocSpec[i]
-                        AbstractEAIndividual tmpIndy = (AbstractEAIndividual) this.m_Undifferentiated.get(i);
-                        if (m_Topology != null) {
-                            plotLine(m_Topology, tmpIndy, m_Species.get(assocSpec[i]).getBestEAIndividual());
+                        AbstractEAIndividual tmpIndy = (AbstractEAIndividual) this.undifferentiatedPopulation.get(i);
+                        if (topologyPlot != null) {
+                            plotLine(topologyPlot, tmpIndy, species.get(assocSpec[i]).getBestEAIndividual());
                         }
-                        this.m_Undifferentiated.remove(i);
-                        m_Species.get(assocSpec[i]).add(tmpIndy); // TODO merge information from loners?
+                        this.undifferentiatedPopulation.remove(i);
+                        species.get(assocSpec[i]).add(tmpIndy); // TODO merge information from loners?
                     }
                 }
                 if (TRACE) {
@@ -776,12 +768,12 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
                 }
                 Population spec1, spec2;
                 // test if species are close to already archived solutions - deactivate them if so
-                assocSpec = m_CAForSpeciesMerging.associateLoners(m_Archive, m_Species.toArray(new Population[m_Species.size()]), m_Population);
+                assocSpec = caForSpeciesMerging.associateLoners(poulationArchive, species.toArray(new Population[species.size()]), population);
                 PriorityQueue<Integer> specToRemove = new PriorityQueue<Integer>(5, Collections.reverseOrder()); // backwards sorted or DIE!
-                for (int i = m_Archive.size() - 1; i >= 0; i--) {
+                for (int i = poulationArchive.size() - 1; i >= 0; i--) {
                     if (assocSpec[i] >= 0) {
-                        AbstractEAIndividual aIndy = m_Archive.getEAIndividual(i);
-                        spec1 = (Population) this.m_Species.get(assocSpec[i]);
+                        AbstractEAIndividual aIndy = poulationArchive.getEAIndividual(i);
+                        spec1 = (Population) this.species.get(assocSpec[i]);
                         // archived solution corresponds to an existing species
                         if (!specToRemove.contains(assocSpec[i])) {
                             // the species has not yet been deactivated
@@ -792,12 +784,12 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
                             }
                             if (spec1.getBestEAIndividual().isDominating(aIndy)) {
                                 // update the archived one with the better one? No rather not - it may happen that a large species is assoctiated which is quite large and spans over several optima - in that case an earlier found may get lost
-//                				m_Archive.set(i, spec1.getBestEAIndividual());
+//                				poulationArchive.set(i, spec1.getBestEAIndividual());
                             }
                             if (TRACE_EVTS) {
                                 System.out.println("!!! Reinit Spec " + assocSpec[i] + ", fit " + spec1.getBestEAIndividual());
                             }
-                            m_doomedPop.addPopulation(spec1);
+                            doomedPopulation.addPopulation(spec1);
                         }
                     }
                 }
@@ -810,24 +802,24 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
                     if (TRACE) {
                         System.out.println("Removing species at index " + specIndex);
                     }
-                    m_Species.remove(specIndex); // warning, dont try to remove Integer object but index i!
+                    species.remove(specIndex); // warning, dont try to remove Integer object but index i!
                     lastRemoved = specIndex;
                 }
                 if (TRACE) {
                     printState("---After archive-merges", reinitPop);
                 }
                 // Now test if species should be merged among each other
-                for (int i1 = 0; i1 < this.m_Species.size(); i1++) {
-                    spec1 = (Population) this.m_Species.get(i1);
-                    for (int i2 = i1 + 1; i2 < this.m_Species.size(); i2++) {
-                        spec2 = (Population) this.m_Species.get(i2);
-                        if (this.m_CAForSpeciesMerging.mergingSpecies(spec1, spec2, m_Population)) {
+                for (int i1 = 0; i1 < this.species.size(); i1++) {
+                    spec1 = (Population) this.species.get(i1);
+                    for (int i2 = i1 + 1; i2 < this.species.size(); i2++) {
+                        spec2 = (Population) this.species.get(i2);
+                        if (this.caForSpeciesMerging.mergingSpecies(spec1, spec2, population)) {
 
                             if (TRACE_EVTS || TRACE) {
                                 System.out.println("!!! -Merging species (" + i1 + ", " + i2 + ") [" + spec1.size() + "/" + spec2.size() + "]");
                             }
                             mergeToFirst(spec1, spec2, true);
-                            this.m_Species.remove(i2);
+                            this.species.remove(i2);
                             i2--;
                         }
                     }
@@ -837,25 +829,25 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
                 }
             } /// end of species merging
 
-            if (m_maxSpeciesSize >= m_minGroupSize) {
+            if (maxSpeciesSize >= minGroupSize) {
                 // reinit worst n individuals from all species which are too large
-                for (int i = 0; i < m_Species.size(); i++) {
-                    Population curSpec = m_Species.get(i);
-                    if (curSpec.size() > m_maxSpeciesSize) {
+                for (int i = 0; i < species.size(); i++) {
+                    Population curSpec = species.get(i);
+                    if (curSpec.size() > maxSpeciesSize) {
                         if (TRACE_EVTS) {
-                            System.out.println("!!! Reinit indies " + (m_maxSpeciesSize - curSpec.size()));
+                            System.out.println("!!! Reinit indies " + (maxSpeciesSize - curSpec.size()));
                         }
                         ArrayList<AbstractEAIndividual> sorted = curSpec.getSorted(reduceSizeComparator);
-                        for (int k = m_maxSpeciesSize; k < sorted.size(); k++) {
+                        for (int k = maxSpeciesSize; k < sorted.size(); k++) {
                             if (curSpec.remove(sorted.get(k))) {
-                                m_doomedPop.add(sorted.get(k));
+                                doomedPopulation.add(sorted.get(k));
                             }
                         }
-//            			reinitCount = sorted.size()-m_maxSpeciesSize;
-//            			curSpec.setPopulationSize(m_maxSpeciesSize);
+//            			reinitCount = sorted.size()-maxSpeciesSize;
+//            			curSpec.setPopulationSize(maxSpeciesSize);
 //            			if (TRACE) System.out.println("Reduced spec " + i + " to size " + curSpec.size() + ", reinit of " + reinitCount + " indies immanent...");
-//                        this.m_Undifferentiated.addPopulation(this.initializeIndividuals(reinitCount));
-//                        this.m_Undifferentiated.setPopulationSize(this.m_Undifferentiated.getPopulationSize()+reinitCount);
+//                        this.undifferentiatedPopulation.addPopulation(this.initializeIndividuals(reinitCount));
+//                        this.undifferentiatedPopulation.setPopulationSize(this.undifferentiatedPopulation.getPopulationSize()+reinitCount);
                     }
                 }
             }
@@ -863,42 +855,42 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
 
         // add new individuals from last step to undifferentiated set
         if ((reinitPop != null) && (reinitPop.size() > 0)) {
-            m_Undifferentiated.addPopulation(reinitPop);
-            m_Undifferentiated.incrFunctionCallsBy(reinitPop.size());
+            undifferentiatedPopulation.addPopulation(reinitPop);
+            undifferentiatedPopulation.incrFunctionCallsBy(reinitPop.size());
         }
-        m_Undifferentiated.setTargetSize(m_Undifferentiated.size());
+        undifferentiatedPopulation.setTargetSize(undifferentiatedPopulation.size());
         // output the result
         if (TRACE) {
-            System.out.println("-Funcalls: " + this.m_Undifferentiated.getFunctionCalls());
+            System.out.println("-Funcalls: " + this.undifferentiatedPopulation.getFunctionCalls());
         }
 
-        synchronized (m_Population) { // fill the m_Population instance with the current individuals from undiff, spec, etc.
-            this.m_Population = (Population) this.m_Undifferentiated.clone();
-            m_Population.setUseHistory(true);
-            for (int i = 0; i < this.m_Species.size(); i++) {
-                this.m_Population.addPopulation((Population) this.m_Species.get(i));
+        synchronized (population) { // fill the population instance with the current individuals from undiff, spec, etc.
+            this.population = (Population) this.undifferentiatedPopulation.clone();
+            population.setUseHistory(true);
+            for (int i = 0; i < this.species.size(); i++) {
+                this.population.addPopulation((Population) this.species.get(i));
             }
-            if (m_doomedPop.size() > 0) {
-                m_Population.addPopulation(m_doomedPop);
+            if (doomedPopulation.size() > 0) {
+                population.addPopulation(doomedPopulation);
             } // this is just so that the numbers match up...
-            m_Population.synchSize();
+            population.synchSize();
             if (TRACE) {
-                System.out.println("Doomed size: " + m_doomedPop.size());
-                System.out.println("Population size: " + this.m_Population.size());
+                System.out.println("Doomed size: " + doomedPopulation.size());
+                System.out.println("Population size: " + this.population.size());
             }
-            if (m_Population.size() != m_PopulationSize) {
-                System.err.println("Warning: Invalid population size in CBNEA! " + m_Population.size());
+            if (population.size() != populationSize) {
+                System.err.println("Warning: Invalid population size in CBNEA! " + population.size());
             }
             if (TRACE_STATE) {
-                printState("---- EoCBN", m_doomedPop);
-                System.out.println("Archive: " + m_Archive.getStringRepresentation());
+                printState("---- EoCBN", doomedPopulation);
+                System.out.println("Archive: " + poulationArchive.getStringRepresentation());
             }
         }
 //        if (TRACE) {
 //        	// this is just a test adding all species centers as distractors with high strength
-//        	Distraction distr = new Distraction(5., 0, m_Species);
+//        	Distraction distr = new Distraction(5., 0, species);
 //        	if (!distr.isEmpty()) {
-//        		double[] distVect = distr.calcDistractionFor(m_Undifferentiated.getBestEAIndividual());
+//        		double[] distVect = distr.calcDistractionFor(undifferentiatedPopulation.getBestEAIndividual());
 //        		System.out.println("species distract best towards " + BeanInspector.toString(distVect));
 //        	}
 //        }
@@ -912,16 +904,16 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
      */
     private void initClustering() {
         if (getClusterDiffDist() > 0) { // assume that it should be set
-            if (this.m_CAForSpeciesDifferentation instanceof InterfaceClusteringDistanceParam) {
-                ((InterfaceClusteringDistanceParam) m_CAForSpeciesDifferentation).setClustDistParam(getClusterDiffDist());
+            if (this.caForSpeciesDifferentation instanceof InterfaceClusteringDistanceParam) {
+                ((InterfaceClusteringDistanceParam) caForSpeciesDifferentation).setClustDistParam(getClusterDiffDist());
                 if (TRACE) {
                     System.out.println("### Clustering distance parameter set to " + getClusterDiffDist());
                 }
             } else {
-                EVAERROR.errorMsgOnce("Warning: cluster distance is defined in CBN  but the clustering method " + m_CAForSpeciesDifferentation.getClass() + " cant interpret it!");
+                EVAERROR.errorMsgOnce("Warning: cluster distance is defined in CBN  but the clustering method " + caForSpeciesDifferentation.getClass() + " cant interpret it!");
             }
         }
-        this.m_CAForSpeciesDifferentation.initClustering(m_Population);
+        this.caForSpeciesDifferentation.initClustering(population);
     }
 
 //
@@ -934,8 +926,8 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
 //     */
 //	private Population getCurrentPop() {
 //		Population pop = new Population(getPopulationSize());
-//		pop.addPopulation(m_Undifferentiated);
-//		for (int i=0; i<m_Species.size(); i++) pop.addPopulation(m_Species.get(i));
+//		pop.addPopulation(undifferentiatedPopulation);
+//		for (int i=0; i<species.size(); i++) pop.addPopulation(species.get(i));
 //		pop.synchSize();
 //		return pop;
 //	}
@@ -946,21 +938,21 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
      */
     private void replaceUndifferentiated(Population pop) {
 //        System.out.println("Adding " + pop.size() + " as undiff.");
-        m_Undifferentiated.clear();
-        m_Undifferentiated.addPopulation(pop);
+        undifferentiatedPopulation.clear();
+        undifferentiatedPopulation.addPopulation(pop);
     }
 
     private void printState(String headline, Population reinit) {
-        System.out.print(headline + ", Gen. " + this.m_Undifferentiated.getGeneration());
-        System.out.print(" - Undiff.: " + specTag(m_Undifferentiated));
+        System.out.print(headline + ", Gen. " + this.undifferentiatedPopulation.getGeneration());
+        System.out.print(" - Undiff.: " + specTag(undifferentiatedPopulation));
         System.out.print(", Demes: ");
-        int sum = m_Undifferentiated.size() + (reinit == null ? 0 : reinit.size());
-        if (m_Species.size() > 0) {
-            sum += m_Species.get(0).size();
-            System.out.print(specTag(m_Species.get(0)));
-            for (int i = 1; i < m_Species.size(); i++) {
-                System.out.print(", " + specTag(m_Species.get(i)));
-                sum += m_Species.get(i).size();
+        int sum = undifferentiatedPopulation.size() + (reinit == null ? 0 : reinit.size());
+        if (species.size() > 0) {
+            sum += species.get(0).size();
+            System.out.print(specTag(species.get(0)));
+            for (int i = 1; i < species.size(); i++) {
+                System.out.print(", " + specTag(species.get(i)));
+                sum += species.get(i).size();
             }
         }
         System.out.println(", reinit: " + (reinit == null ? 0 : reinit.size()) + ", sum: " + sum);
@@ -979,8 +971,8 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
      */
     protected void mergeToFirst(Population spec1, Population spec2, boolean plot) {
 //    	System.out.println("Merging " + spec2.size() + " to " + spec1.size());
-        if (plot && (m_Topology != null)) {
-            plotLine(m_Topology, spec1.getBestEAIndividual(), spec2.getBestEAIndividual());
+        if (plot && (topologyPlot != null)) {
+            plotLine(topologyPlot, spec1.getBestEAIndividual(), spec2.getBestEAIndividual());
         }
         spec1.addPopulation(spec2);
         // keep longer history
@@ -991,8 +983,8 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
             spec1.setGenerationTo(spec2.getGeneration());
         }
         // possibly notify the optimizer of the merging event to merge population based information
-        if (m_Optimizer instanceof InterfaceSpeciesAware) {
-            ((InterfaceSpeciesAware) m_Optimizer).mergeToFirstPopulationEvent(spec1, spec2);
+        if (optimizer instanceof InterfaceSpeciesAware) {
+            ((InterfaceSpeciesAware) optimizer).mergeToFirstPopulationEvent(spec1, spec2);
         }
     }
 
@@ -1015,8 +1007,8 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
             newSp.SetHistory(new LinkedList<AbstractEAIndividual>());
         }
 
-        if (m_Optimizer instanceof InterfaceSpeciesAware) {
-            ((InterfaceSpeciesAware) m_Optimizer).splitFromFirst(parentSp, newSp);
+        if (optimizer instanceof InterfaceSpeciesAware) {
+            ((InterfaceSpeciesAware) optimizer).splitFromFirst(parentSp, newSp);
         }
     }
 
@@ -1044,8 +1036,8 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
 //    }
 //    public int countActiveSpec() {
 //    	int k = 0;
-//    	for (int i=0; i<m_Species.size(); i++) {
-//    		if (isActive(m_Species.get(i))) k++;
+//    	for (int i=0; i<species.size(); i++) {
+//    		if (isActive(species.get(i))) k++;
 //    	}
 //    	return k;
 //    }
@@ -1062,14 +1054,14 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
 
     @Override
     public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
-        this.m_Listener = ea;
+        this.populationChangedEventListener = ea;
     }
 
     @Override
     public boolean removePopulationChangedEventListener(
             InterfacePopulationChangedEventListener ea) {
-        if (m_Listener == ea) {
-            m_Listener = null;
+        if (populationChangedEventListener == ea) {
+            populationChangedEventListener = null;
             return true;
         } else {
             return false;
@@ -1077,8 +1069,8 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
     }
 
     protected void firePropertyChangedEvent(String name) {
-        if (this.m_Listener != null) {
-            this.m_Listener.registerPopulationStateChanged(this, name);
+        if (this.populationChangedEventListener != null) {
+            this.populationChangedEventListener.registerPopulationStateChanged(this, name);
         }
     }
 
@@ -1089,13 +1081,13 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
      */
     @Override
     public void setProblem(InterfaceOptimizationProblem problem) {
-        this.m_Problem = problem;
-        this.m_Optimizer.setProblem(this.m_Problem);
+        this.optimizationProblem = problem;
+        this.optimizer.setProblem(this.optimizationProblem);
     }
 
     @Override
     public InterfaceOptimizationProblem getProblem() {
-        return this.m_Problem;
+        return this.optimizationProblem;
     }
 
     /**
@@ -1109,8 +1101,8 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
         String result = "";
         result += "Genetic Algorithm:\n";
         result += "Optimization Problem: ";
-        result += this.m_Problem.getStringRepresentationForProblem(this) + "\n";
-        result += this.m_Population.getStringRepresentation();
+        result += this.optimizationProblem.getStringRepresentationForProblem(this) + "\n";
+        result += this.population.getStringRepresentation();
         return result;
     }
 
@@ -1121,12 +1113,12 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
      */
     @Override
     public void setIdentifier(String name) {
-        this.m_Identifier = name;
+        this.identifier = name;
     }
 
     @Override
     public String getIdentifier() {
-        return this.m_Identifier;
+        return this.identifier;
     }
 
     /**
@@ -1154,27 +1146,27 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
 
     @Override
     public Population getPopulation() {
-//        this.m_Population = (Population)m_Undifferentiated.clone();
-//        for (int i = 0; i < this.m_Species.size(); i++) this.m_Population.addPopulation((Population)this.m_Species.get(i));
-//        m_Population.setPopulationSize(m_Population.size()); // set it to true value
-        return this.m_Population;
+//        this.population = (Population)undifferentiatedPopulation.clone();
+//        for (int i = 0; i < this.species.size(); i++) this.population.addPopulation((Population)this.species.get(i));
+//        population.setPopulationSize(population.size()); // set it to true value
+        return this.population;
     }
 
     @Override
     public void setPopulation(Population pop) {
-        this.m_Undifferentiated = pop;
-        if (m_Archive == null) {
-            m_Archive = new Population();
+        this.undifferentiatedPopulation = pop;
+        if (poulationArchive == null) {
+            poulationArchive = new Population();
         }
-        m_Archive.setPopMetric(pop.getPopMetric());
-        m_Population.setPopMetric(pop.getPopMetric());
-        m_doomedPop.setPopMetric(pop.getPopMetric());
+        poulationArchive.setPopMetric(pop.getPopMetric());
+        population.setPopMetric(pop.getPopMetric());
+        doomedPopulation.setPopMetric(pop.getPopMetric());
 
-        if (m_CAForSpeciesDifferentation instanceof InterfaceClusteringMetricBased) {
-            ((InterfaceClusteringMetricBased) m_CAForSpeciesDifferentation).setMetric(pop.getPopMetric());
+        if (caForSpeciesDifferentation instanceof InterfaceClusteringMetricBased) {
+            ((InterfaceClusteringMetricBased) caForSpeciesDifferentation).setMetric(pop.getPopMetric());
         }
-        if (m_CAForSpeciesMerging instanceof InterfaceClusteringMetricBased) {
-            ((InterfaceClusteringMetricBased) m_CAForSpeciesMerging).setMetric(pop.getPopMetric());
+        if (caForSpeciesMerging instanceof InterfaceClusteringMetricBased) {
+            ((InterfaceClusteringMetricBased) caForSpeciesMerging).setMetric(pop.getPopMetric());
         }
         pop.setUseHistory(true);
     }
@@ -1184,7 +1176,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
     }
 
     public Population getArchivedSolutions() {
-        return (Population) m_Archive.clone();
+        return (Population) poulationArchive.clone();
     }
 
     @Override
@@ -1192,11 +1184,11 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
         // return inactive species
         Population sols = getArchivedSolutions();
 //    	sols.addPopulation(getPopulation());
-        for (Population sp : m_Species) {
+        for (Population sp : species) {
             sols.add(sp.getBestIndividual());
         }
-        if (m_Undifferentiated.size() > 0) {
-            sols.add(m_Undifferentiated.getBestIndividual());
+        if (undifferentiatedPopulation.size() > 0) {
+            sols.add(undifferentiatedPopulation.getBestIndividual());
         }
 //    	if (!sols.checkNoNullIndy()) {
 //    		System.err.println("error in CBN...");
@@ -1224,12 +1216,12 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
      * @return The current status of this flag
      */
     public boolean isUseMerging() {
-        return this.m_mergeSpecies;
+        return this.mergeSpecies;
     }
 
     public void setUseMerging(boolean b) {
-        this.m_mergeSpecies = b;
-        GenericObjectEditor.setHideProperty(this.getClass(), "mergingCA", !m_mergeSpecies);
+        this.mergeSpecies = b;
+        GenericObjectEditor.setHideProperty(this.getClass(), "mergingCA", !mergeSpecies);
     }
 
     public String useMergingTipText() {
@@ -1242,11 +1234,11 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
      * @return The current optimizing method
      */
     public InterfaceOptimizer getOptimizer() {
-        return this.m_Optimizer;
+        return this.optimizer;
     }
 
     public void setOptimizer(InterfaceOptimizer b) {
-        this.m_Optimizer = b;
+        this.optimizer = b;
         if (b instanceof EvolutionStrategies) {
             EvolutionStrategies es = (EvolutionStrategies) b;
             setMuLambdaRatio(es.getMu() / (double) es.getLambda());
@@ -1263,11 +1255,11 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
      * @return The current clustering method
      */
     public InterfaceClustering getDifferentiationCA() {
-        return this.m_CAForSpeciesDifferentation;
+        return this.caForSpeciesDifferentation;
     }
 
     public void setDifferentiationCA(InterfaceClustering b) {
-        this.m_CAForSpeciesDifferentation = b;
+        this.caForSpeciesDifferentation = b;
     }
 
     public String differentiationCATipText() {
@@ -1280,11 +1272,11 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
      * @return The current clustering method
      */
     public InterfaceClustering getMergingCA() {
-        return this.m_CAForSpeciesMerging;
+        return this.caForSpeciesMerging;
     }
 
     public void setMergingCA(InterfaceClustering b) {
-        this.m_CAForSpeciesMerging = b;
+        this.caForSpeciesMerging = b;
     }
 
     public String mergingCATipText() {
@@ -1307,11 +1299,11 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
      * performed.
      */
     public int getSpeciesCycle() {
-        return this.m_SpeciesCycle;
+        return this.speciesCycle;
     }
 
     public void setSpeciesCycle(int b) {
-        this.m_SpeciesCycle = b;
+        this.speciesCycle = b;
     }
 
     public String speciesCycleTipText() {
@@ -1325,13 +1317,13 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
      * performed.
      */
     public int getShowCycle() {
-        return this.m_ShowCycle;
+        return this.showCycle;
     }
 
     public void setShowCycle(int b) {
-        this.m_ShowCycle = b;
+        this.showCycle = b;
         if (b <= 0) {
-            m_Topology = null;
+            topologyPlot = null;
         }
     }
 
@@ -1345,11 +1337,11 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
      * @return This number gives initial population size.
      */
     public int getPopulationSize() {
-        return this.m_PopulationSize;
+        return this.populationSize;
     }
 
     public void setPopulationSize(int b) {
-        this.m_PopulationSize = b;
+        this.populationSize = b;
     }
 
     public String populationSizeTipText() {
@@ -1480,15 +1472,15 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
     public Object[] getAdditionalDataValue(PopulationInterface pop) {
 //		int actives = countActiveSpec();
         return new Object[]{
-                    m_Undifferentiated.size(),
-                    m_Species.size(),
+                    undifferentiatedPopulation.size(),
+                    species.size(),
                     getAvgSpeciesMeasures()[0],
-                    m_Archive.size(),
-                    m_Archive.getCorrelations()[3],
-                    m_Archive.getPopulationMeasures()[0],
+                    poulationArchive.size(),
+                    poulationArchive.getCorrelations()[3],
+                    poulationArchive.getPopulationMeasures()[0],
                     collisions,
                     getClusterDiffDist()};
-//		return m_Undifferentiated.size() + " \t " + m_Species.size() + " \t " + BeanInspector.toString(getAvgSpeciesMeasures()[0]) + " \t " + (m_Archive.size());
+//		return undifferentiatedPopulation.size() + " \t " + species.size() + " \t " + BeanInspector.toString(getAvgSpeciesMeasures()[0]) + " \t " + (poulationArchive.size());
     }
 
     /**
@@ -1498,31 +1490,31 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
      * @return average population measures
      */
     protected double[] getAvgSpeciesMeasures() {
-        if (m_Species == null || (m_Species.size() == 0)) {
+        if (species == null || (species.size() == 0)) {
             return new double[]{0};
         } else {
-            double[] measures = m_Species.get(0).getPopulationMeasures();
-            for (int i = 1; i < m_Species.size(); i++) {
-                Mathematics.vvAdd(measures, m_Species.get(i).getPopulationMeasures(), measures);
+            double[] measures = species.get(0).getPopulationMeasures();
+            for (int i = 1; i < species.size(); i++) {
+                Mathematics.vvAdd(measures, species.get(i).getPopulationMeasures(), measures);
             }
-            if (m_Species.size() > 1) {
-                Mathematics.svDiv((double) m_Species.size(), measures, measures);
+            if (species.size() > 1) {
+                Mathematics.svDiv((double) species.size(), measures, measures);
             }
             return measures;
         }
     }
 
     public int getMaxSpeciesSize() {
-        return m_maxSpeciesSize;
+        return maxSpeciesSize;
     }
 
     public void setMaxSpeciesSize(int mMaxSpeciesSize) {
-        m_maxSpeciesSize = mMaxSpeciesSize;
-        GenericObjectEditor.setShowProperty(this.getClass(), "reduceSizeComparator", (m_maxSpeciesSize >= m_minGroupSize));
+        maxSpeciesSize = mMaxSpeciesSize;
+        GenericObjectEditor.setShowProperty(this.getClass(), "reduceSizeComparator", (maxSpeciesSize >= minGroupSize));
     }
 
     public String maxSpeciesSizeTipText() {
-        return "If >= " + m_minGroupSize + ", larger species are reduced to the given size by reinitializing the worst individuals.";
+        return "If >= " + minGroupSize + ", larger species are reduced to the given size by reinitializing the worst individuals.";
     }
 
     public String reduceSizeComparatorTipText() {
@@ -1555,10 +1547,10 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
     public void setClusterDiffDist(double clusterDiffDist) {
         this.clusterDiffDist = clusterDiffDist;
         if (clusterDiffDist < 0) {
-            if ((m_Problem instanceof InterfaceProblemDouble) && (m_CAForSpeciesDifferentation instanceof ClusteringDensityBased)) {
-//				int numExpectedOptima = (int)((((double)getPopulationSize())*0.9)/((ClusteringDensityBased)m_CAForSpeciesDifferentation).getMinimumGroupSize()); 
-//				this.clusterDiffDist = EsDpiNiching.calcEstimatedNicheRadius(((AbstractProblemDouble)m_Problem).makeRange(), numExpectedOptima, new EuclideanMetric());
-                setUpperBoundClustDiff((InterfaceProblemDouble) m_Problem);
+            if ((optimizationProblem instanceof InterfaceProblemDouble) && (caForSpeciesDifferentation instanceof ClusteringDensityBased)) {
+//				int numExpectedOptima = (int)((((double)getPopulationSize())*0.9)/((ClusteringDensityBased)caForSpeciesDifferentation).getMinimumGroupSize());
+//				this.clusterDiffDist = EsDpiNiching.calcEstimatedNicheRadius(((AbstractProblemDouble)problem).makeRange(), numExpectedOptima, new EuclideanMetric());
+                setUpperBoundClustDiff((InterfaceProblemDouble) optimizationProblem);
             } else {
                 System.err.println("Warning, unable to calculate standard niche radius in CBN-EA");
             }
@@ -1577,12 +1569,12 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
      * @param q
      */
     public void setUpperBoundClustDiff(InterfaceProblemDouble prob) {
-        if (m_CAForSpeciesDifferentation instanceof ClusteringDensityBased) {
-            double meanSubSwarmSize = 0.5 * (((ClusteringDensityBased) m_CAForSpeciesDifferentation).getMinimumGroupSize() + getMaxSpeciesSize());
+        if (caForSpeciesDifferentation instanceof ClusteringDensityBased) {
+            double meanSubSwarmSize = 0.5 * (((ClusteringDensityBased) caForSpeciesDifferentation).getMinimumGroupSize() + getMaxSpeciesSize());
             int numExpectedOptima = (int) ((((double) getPopulationSize())) / meanSubSwarmSize);
-            double[][] range = ((InterfaceProblemDouble) m_Problem).makeRange();
+            double[][] range = ((InterfaceProblemDouble) optimizationProblem).makeRange();
             int dim = range.length;
-            double nRad = EsDpiNiching.calcEstimatedNicheRadius(range, numExpectedOptima, ((ClusteringDensityBased) m_CAForSpeciesDifferentation).getMetric());
+            double nRad = EsDpiNiching.calcEstimatedNicheRadius(range, numExpectedOptima, ((ClusteringDensityBased) caForSpeciesDifferentation).getMetric());
             nRad *= Math.pow(0.5, 1 / dim);
 //			System.out.println("Alternative clust diff from niche radius... " + nRad);
             this.clusterDiffDist = nRad;

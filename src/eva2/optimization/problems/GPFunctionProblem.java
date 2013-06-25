@@ -59,7 +59,7 @@ public class GPFunctionProblem extends AbstractProblemDouble implements Interfac
 	 */
 	public GPFunctionProblem(InterfaceProgram gpProb, GPArea area, int pDim, double scStart, double scLim) {
 		dim = pDim;
-		((ESIndividualDoubleData)m_Template).setDoubleDataLength(dim);
+		((ESIndividualDoubleData) template).setDoubleDataLength(dim);
 		gpProblem = gpProb;
 		gpArea = area;
 		scalingStart=scStart;
@@ -102,7 +102,7 @@ public class GPFunctionProblem extends AbstractProblemDouble implements Interfac
 	 */
 	public void setProblemDimension(int newDim) {
 		dim = newDim;
-		((ESIndividualDoubleData)m_Template).setDoubleDataLength(dim);
+		((ESIndividualDoubleData) template).setDoubleDataLength(dim);
 	}
 
 	/**

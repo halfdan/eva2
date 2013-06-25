@@ -171,7 +171,7 @@ class MyLensViewer extends JPanel implements InterfaceSolutionViewer {
     @Override
 	public void updateView(Population pop, boolean showAllIfPossible) {
 		if (showAllIfPossible) {
-//			indiesToPaint=pop;
+//			indiesToPaint=population;
 			for (int i=0; i<pop.size(); i++) {
 				MyLensViewer newView=new MyLensViewer(m_LensProblem);
 				
@@ -231,15 +231,15 @@ implements InterfaceOptimizationProblem, InterfaceHasSolutionViewer, java.io.Ser
     private boolean                     m_UseMaterialConst  = false;
 
 	public FLensProblem() {
-        this.m_Template         = new ESIndividualDoubleData();
+        this.template = new ESIndividualDoubleData();
         if (this.m_Show) {
                 this.initProblemFrame();
             }
 	}
 	public FLensProblem(FLensProblem b) {
         //AbstractOptimizationProblem
-        if (b.m_Template != null) {
-                this.m_Template         = (AbstractEAIndividual)((AbstractEAIndividual)b.m_Template).clone();
+        if (b.template != null) {
+                this.template = (AbstractEAIndividual)((AbstractEAIndividual)b.template).clone();
             }
         //FLensProblem
         if (b.m_OverallBest != null) {
@@ -299,7 +299,7 @@ implements InterfaceOptimizationProblem, InterfaceHasSolutionViewer, java.io.Ser
 	/** This method inits the Problem to log multiruns
 	 */
     @Override
-	public void initProblem() {
+	public void initializeProblem() {
 		this.m_OverallBest = null;
         if (this.m_Show) {
                 this.initProblemFrame();
@@ -310,18 +310,18 @@ implements InterfaceOptimizationProblem, InterfaceHasSolutionViewer, java.io.Ser
 	 * @param population    The populations that is to be inited
 	 */
     @Override
-	public void initPopulation(Population population) {
+	public void initializePopulation(Population population) {
 		this.m_OverallBest = null;
-		((InterfaceDataTypeDouble)this.m_Template).setDoubleDataLength(this.m_ProblemDimension);
+		((InterfaceDataTypeDouble)this.template).setDoubleDataLength(this.m_ProblemDimension);
         // set the range
         double[][] range = new double[this.m_ProblemDimension][2];
         for (int i = 0; i < range.length; i++) {
             range[i][0] = 0.1;
             range[i][1] = 5.0;
         }
-       ((InterfaceDataTypeDouble)this.m_Template).SetDoubleRange(range);
+       ((InterfaceDataTypeDouble)this.template).SetDoubleRange(range);
 
-		AbstractOptimizationProblem.defaultInitPopulation(population, m_Template, this);
+		AbstractOptimizationProblem.defaultInitPopulation(population, template, this);
         if (this.m_Show) {
                 this.initProblemFrame();
             }
@@ -384,7 +384,7 @@ implements InterfaceOptimizationProblem, InterfaceHasSolutionViewer, java.io.Ser
 //        // The fitness is the sum over all segments of the deviation from the center
 //        // of focus of a beam running through a segment.
 //         for (int i = 1; i < x.length; i++)
-//            fitness = fitness + Math.pow(m_Radius - m_SegmentHight / 2 - m_SegmentHight * (i - 1) -  m_FocalLength / m_SegmentHight * (m_Epsilon - 1) * (x[i] - x[i-1]),2);
+//            fitness = fitness + Math.pow(m_Radius - m_SegmentHight / 2 - m_SegmentHight * (i - 1) -  m_FocalLength / m_SegmentHight * (epsilon - 1) * (x[i] - x[i-1]),2);
 
         // Here the thickness of the middle segment of the lens	is added to the fitness
         // to permit the optimization to reduce the overall thickness of the lens
@@ -451,7 +451,7 @@ implements InterfaceOptimizationProblem, InterfaceHasSolutionViewer, java.io.Ser
 		result += "Dimension   : " + this.m_ProblemDimension +"\n";
 		result += "Noise level : " + this.m_Noise + "\n";
 		result += "Solution representation:\n";
-		//result += this.m_Template.getSolutionRepresentationFor();
+		//result += this.template.getSolutionRepresentationFor();
 		return result;
 	}
 
@@ -593,10 +593,10 @@ implements InterfaceOptimizationProblem, InterfaceHasSolutionViewer, java.io.Ser
      * @param indy The EAIndividual type
      */
     public void setEAIndividual(InterfaceDataTypeDouble indy) {
-        this.m_Template = (AbstractEAIndividual)indy;
+        this.template = (AbstractEAIndividual)indy;
     }
     public InterfaceDataTypeDouble getEAIndividual() {
-        return (InterfaceDataTypeDouble)this.m_Template;
+        return (InterfaceDataTypeDouble)this.template;
     }
 
 	/** This method allows you to set the EA individual type

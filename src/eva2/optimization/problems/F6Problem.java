@@ -17,7 +17,7 @@ implements InterfaceMultimodalProblem, InterfaceFirstOrderDerivableProblem, Inte
 	private transient GradientDescentAlgorithm localSearchOptimizer=null;
 
     public F6Problem() {
-        this.m_Template         = new ESIndividualDoubleData();
+        this.template = new ESIndividualDoubleData();
     }
     public F6Problem(F6Problem b) {
         super(b);
@@ -45,9 +45,9 @@ implements InterfaceMultimodalProblem, InterfaceFirstOrderDerivableProblem, Inte
     public double[] eval(double[] x) {
     	x = rotateMaybe(x);
         double[] result = new double[1];
-        result[0]     = x.length * this.m_A + m_YOffset;
+        result[0]     = x.length * this.m_A + yOffset;
         for (int i = 0; i < x.length; i++) {
-        	double xi = x[i]-m_XOffset;
+        	double xi = x[i]- xOffset;
             result[0]  += Math.pow(xi, 2) - this.m_A * Math.cos(this.m_Omega*xi);
         }
         return result;
@@ -59,7 +59,7 @@ implements InterfaceMultimodalProblem, InterfaceFirstOrderDerivableProblem, Inte
         double[] result = new double[x.length];        
         for (int j=0; j<x.length; j++) {
         	result[j]=0;
-        	double xj = x[j]-m_XOffset;
+        	double xj = x[j]- xOffset;
         	result[j]  += 2*xj + this.m_Omega * this.m_A * Math.sin(this.m_Omega*xj);
         }
         return result;
@@ -73,10 +73,10 @@ implements InterfaceMultimodalProblem, InterfaceFirstOrderDerivableProblem, Inte
 
         result += "F6 Generalized Rastrigin's Function:\n";
         result += "Parameters:\n";
-        result += "Dimension   : " + this.m_ProblemDimension +"\n";
+        result += "Dimension   : " + this.problemDimension +"\n";
         result += "Noise level : " + this.getNoise() + "\n";
         result += "Solution representation:\n";
-        //result += this.m_Template.getSolutionRepresentationFor();
+        //result += this.template.getSolutionRepresentationFor();
         return result;
     }
 

@@ -86,7 +86,7 @@ public class B1Problem extends AbstractProblemBinary implements java.io.Serializ
         result += "Parameters:\n";
         result += "Number of Bits: " + this.m_ProblemDimension +"\n";
         result += "Solution representation:\n";
-        //result += this.m_Template.getSolutionRepresentationFor();
+        //result += this.template.getSolutionRepresentationFor();
         return result;
     }
 
@@ -129,10 +129,10 @@ public class B1Problem extends AbstractProblemBinary implements java.io.Serializ
      * @param indy The EAIndividual type
      */
     public void setEAIndividual(InterfaceDataTypeBinary indy) {
-        this.m_Template = (AbstractEAIndividual) indy;
+        this.template = (AbstractEAIndividual) indy;
     }
     public InterfaceDataTypeBinary getEAIndividual() {
-        return (InterfaceDataTypeBinary) this.m_Template;
+        return (InterfaceDataTypeBinary) this.template;
     }
     public String EAIndividualTipText() {
         return "Choose the EAIndividual to use.";

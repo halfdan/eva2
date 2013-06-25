@@ -181,7 +181,7 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
     public void init() {
         // initByPopulation(m_Population, true);
         this.m_Population.setTargetSize(m_lambdamo);
-        this.m_Problem.initPopulation(this.m_Population);
+        this.m_Problem.initializePopulation(this.m_Population);
         // children = new Population(m_Population.size());
         this.evaluatePopulation(this.m_Population);
         this.firePropertyChangedEvent(Population.nextGenerationPerformed);
@@ -199,7 +199,7 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
     public void initByPopulation(Population pop, boolean reset) {
         setPopulation(pop);
         if (reset) {
-            m_Problem.initPopulation(m_Population);
+            m_Problem.initializePopulation(m_Population);
             m_Problem.evaluate(m_Population);
 
         }

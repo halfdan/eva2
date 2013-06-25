@@ -153,7 +153,7 @@ public class IndividualWeightedFitnessComparator implements Comparator<Object>, 
 //	public static void main(String[] args) {
 //		TF1Problem prob = new TF1Problem();
 //		Population pop = new Population(10);
-//		prob.initPopulation(pop);
+//		prob.initializePopulation(pop);
 //		prob.evaluate(pop);
 //		System.out.println(pop.getStringRepresentation());
 //		System.out.println("***");

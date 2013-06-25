@@ -59,7 +59,7 @@ public class MonteCarloSearch implements InterfaceOptimizer, java.io.Serializabl
      */
     @Override
     public void init() {
-        this.m_Problem.initPopulation(this.m_Population);
+        this.m_Problem.initializePopulation(this.m_Population);
         this.m_Problem.evaluate(this.m_Population);
         this.firePropertyChangedEvent(Population.nextGenerationPerformed);
     }
@@ -88,7 +88,7 @@ public class MonteCarloSearch implements InterfaceOptimizer, java.io.Serializabl
     public void optimize() {
         Population original = (Population) this.m_Population.clone();
 
-//        this.m_Problem.initPopulation(this.m_Population);
+//        this.problem.initializePopulation(this.m_Population);
         for (int i = 0; i < m_Population.size(); i++) {
             m_Population.getEAIndividual(i).defaultInit(null);
         }

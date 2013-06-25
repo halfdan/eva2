@@ -419,7 +419,7 @@ public class StatisticUtils
 				{ 439.128, 112.370,-422.820,-43.119,-297.609,-438.940, 488.914,-512.000,-407.847, 386.611},
 				{ 395.772, 191.634,-511.999,-93.078,-282.853,-444.621, 491.291,-512.000,-407.620, 386.493}};
 		
-		vs[1]=Mathematics.rotate(vs[0], AbstractProblemDouble.initDefaultRotationMatrix(10, 10));
+		vs[1]=Mathematics.rotate(vs[0], AbstractProblemDouble.initializeDefaultRotationMatrix(10, 10));
 		
 		for (int i=0; i<vs.length; i++) {
 			for (int j=0; j<vs.length; j++) {
@@ -427,9 +427,9 @@ public class StatisticUtils
 			}
 			System.out.println();
 		}
-//		vs[1]=Mathematics.rotate(vs[0], AbstractProblemDouble.initDefaultRotationMatrix(30, 10));
-//		vs[2]=Mathematics.rotate(vs[0], AbstractProblemDouble.initDefaultRotationMatrix(50, 10));
-//		vs[3]=Mathematics.rotate(vs[0], AbstractProblemDouble.initDefaultRotationMatrix(70, 10));
+//		vs[1]=Mathematics.rotate(vs[0], AbstractProblemDouble.initializeDefaultRotationMatrix(30, 10));
+//		vs[2]=Mathematics.rotate(vs[0], AbstractProblemDouble.initializeDefaultRotationMatrix(50, 10));
+//		vs[3]=Mathematics.rotate(vs[0], AbstractProblemDouble.initializeDefaultRotationMatrix(70, 10));
 		
 		vs = new double[][]{{0.1,0.9},
 							{0.8,0.2},

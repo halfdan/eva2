@@ -239,7 +239,7 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
         while (isOptRunning() && (runCounter < m_Statistics.getStatisticsParameter().getMultiRuns())) {
             m_Statistics.startOptPerformed(getInfoString(), runCounter, goParams, getInformerList());
 
-            this.goParams.getProblem().initProblem();
+            this.goParams.getProblem().initializeProblem();
             this.goParams.getOptimizer().setProblem(this.goParams.getProblem());
             this.goParams.getTerminator().init(this.goParams.getProblem());
             maybeInitParamCtrl(goParams);

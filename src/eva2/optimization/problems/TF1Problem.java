@@ -41,8 +41,8 @@ public class TF1Problem extends AbstractMultiObjectiveOptimizationProblem implem
     
     public TF1Problem(TF1Problem b) {
         //AbstractOptimizationProblem
-        if (b.m_Template != null) {
-            this.m_Template         = (AbstractEAIndividual)((AbstractEAIndividual)b.m_Template).clone();
+        if (b.template != null) {
+            this.template = (AbstractEAIndividual)((AbstractEAIndividual)b.template).clone();
         }
         //AbstractMultiObjectiveOptimizationProblem
         if (b.m_MOSOConverter != null) {
@@ -88,15 +88,15 @@ public class TF1Problem extends AbstractMultiObjectiveOptimizationProblem implem
      * @param population    The populations that is to be inited
      */
     @Override
-    public void initPopulation(Population population) {
+    public void initializePopulation(Population population) {
         this.m_ParetoFront = new Population();
 
         double[][] newRange = makeRange();
 
-        ((InterfaceDataTypeDouble)this.m_Template).setDoubleDataLength(this.m_ProblemDimension);
-        ((InterfaceDataTypeDouble)this.m_Template).SetDoubleRange(newRange);
+        ((InterfaceDataTypeDouble)this.template).setDoubleDataLength(this.m_ProblemDimension);
+        ((InterfaceDataTypeDouble)this.template).SetDoubleRange(newRange);
         
-        AbstractOptimizationProblem.defaultInitPopulation(population, m_Template, this);
+        AbstractOptimizationProblem.defaultInitPopulation(population, template, this);
     }
     
 	protected double[][] makeRange() {
@@ -210,7 +210,7 @@ public class TF1Problem extends AbstractMultiObjectiveOptimizationProblem implem
         result += "Dimension   : " + this.m_ProblemDimension +"\n";
         result += "Noise level : " + this.m_Noise + "\n";
         result += "Solution representation:\n";
-        //result += this.m_Template.getSolutionRepresentationFor();
+        //result += this.template.getSolutionRepresentationFor();
         return result;
     }
 
@@ -342,10 +342,10 @@ public class TF1Problem extends AbstractMultiObjectiveOptimizationProblem implem
      * @param indy The EAIndividual type
      */
     public void setEAIndividual(InterfaceDataTypeDouble indy) {
-        this.m_Template = (AbstractEAIndividual) indy;
+        this.template = (AbstractEAIndividual) indy;
     }
     public InterfaceDataTypeDouble getEAIndividual() {
-        return (InterfaceDataTypeDouble)this.m_Template;
+        return (InterfaceDataTypeDouble)this.template;
     }
 
     /** This method allows you to set a Multiobjective to

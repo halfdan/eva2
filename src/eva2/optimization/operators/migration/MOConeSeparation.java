@@ -149,7 +149,7 @@ public class MOConeSeparation implements InterfaceMigration, java.io.Serializabl
 //                    indy = (AbstractEAIndividual)oldIPOP[i].get(j);
 //                    myPoint = new DPoint(indy.getFitness()[0], indy.getFitness()[1]);
 //                    tmp = new Chart2DDPointIconText(""+i);
-//                    if (indy.m_AreaConst4ParallelViolated) tmp.setIcon(new Chart2DDPointIconCircle());
+//                    if (indy.areaConst4ParallelViolated) tmp.setIcon(new Chart2DDPointIconCircle());
 //                    myPoint.setIcon(tmp);
 //                    mySet.addDPoint(myPoint);
 //                }
@@ -382,7 +382,7 @@ public class MOConeSeparation implements InterfaceMigration, java.io.Serializabl
 //                    prob.evaluate(newIPOP[i]);
 //                    System.out.println("Invalid Individual in Island "+i+" ("+newIPOP[i].size()+"): ");
 //                    for (int j = 0; j < newIPOP[i].size(); j++) {
-//                        if(((AbstractEAIndividual)newIPOP[i].get(j)).m_AreaConst4ParallelViolated) {
+//                        if(((AbstractEAIndividual)newIPOP[i].get(j)).areaConst4ParallelViolated) {
 //                            System.out.print(j+", ");
 //                            ((AbstractEAIndividual)newIPOP[i].get(j)).checkAreaConst4Parallelization(((AbstractMultiObjectiveOptimizationProblem)prob).m_AreaConst4Parallelization);
 //                        }

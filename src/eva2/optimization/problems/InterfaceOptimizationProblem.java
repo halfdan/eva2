@@ -21,7 +21,7 @@ public interface InterfaceOptimizationProblem extends InterfaceAdditionalPopulat
 
     /** This method inits the Problem to log multiruns
      */
-    public void initProblem();
+    public void initializeProblem();
 
     /** This method will report whether or not this optimization problem is truly
      * multi-objective
@@ -34,7 +34,7 @@ public interface InterfaceOptimizationProblem extends InterfaceAdditionalPopulat
     /** This method inits a given population
      * @param population    The populations that is to be inited
      */
-    public void initPopulation(Population population);
+    public void initializePopulation(Population population);
 
     /** This method evaluates a given population and set the fitness values
      * accordingly

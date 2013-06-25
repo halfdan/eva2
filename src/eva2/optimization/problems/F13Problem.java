@@ -11,7 +11,7 @@ import eva2.optimization.operators.postprocess.SolutionHistogram;
 public class F13Problem extends AbstractProblemDoubleOffset implements InterfaceMultimodalProblem, InterfaceInterestingHistogram {
 
     public F13Problem() {
-        this.m_Template         = new ESIndividualDoubleData();
+        this.template = new ESIndividualDoubleData();
         setDefaultRange(500);
     }
     public F13Problem(F13Problem b) {
@@ -54,13 +54,13 @@ public class F13Problem extends AbstractProblemDoubleOffset implements Interface
     public double[] eval(double[] x) {
     	x = rotateMaybe(x);
         double[] result = new double[1];
-        result[0] = m_YOffset;
+        result[0] = yOffset;
         
         for (int i=0; i<x.length; i++) {
-        	double xi = (x[i]-m_XOffset);
+        	double xi = (x[i]- xOffset);
         	result[0] -= xi*Math.sin(Math.sqrt(Math.abs(xi)));
         }
-        result[0] += (418.9829 * m_ProblemDimension);
+        result[0] += (418.9829 * problemDimension);
         // res = cn-sum_i(xi*sin(sqrt(abs(xi))))
         return result;
     }
@@ -73,10 +73,10 @@ public class F13Problem extends AbstractProblemDoubleOffset implements Interface
 
         result += "F13 Schwefel:\n";
         result += "Parameters:\n";
-        result += "Dimension   : " + this.m_ProblemDimension +"\n";
+        result += "Dimension   : " + this.problemDimension +"\n";
         result += "Noise level : " + this.getNoise() + "\n";
         result += "Solution representation:\n";
-        //result += this.m_Template.getSolutionRepresentationFor();
+        //result += this.template.getSolutionRepresentationFor();
         return result;
     }
 
