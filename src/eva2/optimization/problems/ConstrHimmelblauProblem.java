@@ -29,8 +29,8 @@ public class ConstrHimmelblauProblem extends AbstractProblemDouble implements Se
 	}
 	
 //	@Override
-//	public void initProblem() {
-//		super.initProblem();
+//	public void initializeProblem() {
+//		super.initializeProblem();
 //		setConstraints(new AbstractConstraint[]{new ConstraintCollection(makeDefaultConstraints())});
 //	}
 

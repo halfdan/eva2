@@ -129,7 +129,7 @@ public class MOCCOStandalone implements InterfaceGOStandalone, InterfacePopulati
                 Population pop = new Population();
                 pop.setTargetSize(this.m_State.m_InitialPopulationSize);
                 this.m_State.m_CurrentProblem = (InterfaceOptimizationProblem) this.m_State.m_OriginalProblem.clone();
-                this.m_State.m_CurrentProblem.initPopulation(pop);
+                this.m_State.m_CurrentProblem.initializePopulation(pop);
                 this.m_State.m_CurrentProblem.evaluate(pop);
                 this.m_State.addPopulation2History(pop);
                 this.m_View.problemChanged(true);
@@ -140,7 +140,7 @@ public class MOCCOStandalone implements InterfaceGOStandalone, InterfacePopulati
             tmpP.initProcessElementParametrization();
             while (!tmpP.isFinished()) { try { Thread.sleep(1000); } catch (java.lang.InterruptedException e) { } }
             this.m_State.makeFitnessCache(true);            
-            this.m_State.m_CurrentProblem.initProblem();
+            this.m_State.m_CurrentProblem.initializeProblem();
             this.m_State.makeBackup();
             this.m_View.problemChanged(true);
             if (this.m_State.m_CurrentProblem.isMultiObjective()) {

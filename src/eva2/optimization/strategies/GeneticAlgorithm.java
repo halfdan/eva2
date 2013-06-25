@@ -57,7 +57,7 @@ public class GeneticAlgorithm implements InterfaceOptimizer, java.io.Serializabl
 
     @Override
     public void init() {
-        this.optimizationProblem.initPopulation(this.population);
+        this.optimizationProblem.initializePopulation(this.population);
         this.evaluatePopulation(this.population);
         this.firePropertyChangedEvent(Population.nextGenerationPerformed);
     }
@@ -71,7 +71,7 @@ public class GeneticAlgorithm implements InterfaceOptimizer, java.io.Serializabl
     public void initByPopulation(Population pop, boolean reset) {
         this.population = (Population) pop.clone();
         if (reset) {
-            this.optimizationProblem.initPopulation(population);
+            this.optimizationProblem.initializePopulation(population);
             this.population.init();
             this.evaluatePopulation(this.population);
             this.firePropertyChangedEvent(Population.nextGenerationPerformed);

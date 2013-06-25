@@ -60,15 +60,15 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
     private boolean                                 m_Show = false;
 
     public PSymbolicRegression() {
-        this.m_Template     = new GPIndividualProgramData();
-        this.initProblem();
+        this.template = new GPIndividualProgramData();
+        this.initializeProblem();
         this.compileArea();
     }
 
     public PSymbolicRegression(PSymbolicRegression b) {
         //AbstractOptimizationProblem
-        if (b.m_Template != null) {
-            this.m_Template         = (AbstractEAIndividual)((AbstractEAIndividual)b.m_Template).clone();
+        if (b.template != null) {
+            this.template = (AbstractEAIndividual)((AbstractEAIndividual)b.template).clone();
         }
         //F1Problem
         if (b.m_OverallBest != null) {
@@ -113,7 +113,7 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
     /** This method inits the Problem to log multiruns
      */
     @Override
-    public void initProblem() {
+    public void initializeProblem() {
         if (m_TargetFunction == null) {
             m_TargetFunction = new RFKoza_GPI_7_3();
         }
@@ -164,7 +164,7 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
      * @param population    The populations that is to be inited
      */
     @Override
-    public void initPopulation(Population population) {
+    public void initializePopulation(Population population) {
     	initPopulation(population, this, m_UseInnerConst, m_NumberOfConstants);
     }
     
@@ -438,7 +438,7 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
      */
     public void setNumberOfConstants(int b) {
         this.m_NumberOfConstants = b;
-        this.initProblem();
+        this.initializeProblem();
         m_GPArea.clear();
         this.compileArea();
     }
@@ -472,13 +472,13 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
         this.m_GPArea       = i;
         GPArea tmpArea[]    = new GPArea[1];
         tmpArea[0]          = this.m_GPArea;
-        ((InterfaceDataTypeProgram)this.m_Template).setProgramDataLength(1);
-        ((InterfaceDataTypeProgram)this.m_Template).SetFunctionArea(tmpArea);
+        ((InterfaceDataTypeProgram)this.template).setProgramDataLength(1);
+        ((InterfaceDataTypeProgram)this.template).SetFunctionArea(tmpArea);
     }
     @Override
     public GPArea getArea() {
     	if (m_GPArea==null) {
-            initProblem();
+            initializeProblem();
         }
         return this.m_GPArea;
     }
@@ -514,7 +514,7 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
     }
     public InterfaceRegressionFunction getTargetFunction() {
     	if (m_TargetFunction==null) {
-            initProblem();
+            initializeProblem();
         }
         return this.m_TargetFunction;
     }
@@ -526,10 +526,10 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
      * @param indy The EAIndividual type
      */
     public void setGPIndividual(InterfaceDataTypeProgram indy) {
-        this.m_Template = (AbstractEAIndividual) indy;
+        this.template = (AbstractEAIndividual) indy;
     }
     public InterfaceDataTypeProgram getGPIndividual() {
-        return (InterfaceDataTypeProgram)this.m_Template;
+        return (InterfaceDataTypeProgram)this.template;
     }
     public String GPIndividualTipText() {
     	return "Modify the properties of the template GP individual such as maximum tree depth etc.";

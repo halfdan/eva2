@@ -9,11 +9,9 @@ package eva2.optimization.problems;
  */
 public abstract class AbstractProblemDoubleOffset extends AbstractProblemDouble implements Interface2DBorderProblem {
 
-//	protected AbstractEAIndividual      m_OverallBest       = null;
-    protected int                       m_ProblemDimension  = 10;
-    protected double                    m_XOffset           = 0.0; // TODO make them private, implement eval() and create abstract evalWithoutOffsets
-    protected double                    m_YOffset           = 0.0;
-//    protected boolean                   m_UseTestConstraint = false;
+    protected int problemDimension = 10;
+    protected double xOffset = 0.0; // TODO make them private, implement eval() and create abstract evalWithoutOffsets
+    protected double yOffset = 0.0;
 
     public AbstractProblemDoubleOffset() {
     	super();
@@ -23,10 +21,9 @@ public abstract class AbstractProblemDoubleOffset extends AbstractProblemDouble 
     public AbstractProblemDoubleOffset(AbstractProblemDoubleOffset b) {
     	super();
     	super.cloneObjects(b);
-    	this.m_ProblemDimension = b.m_ProblemDimension;
-    	this.m_XOffset          = b.m_XOffset;
-    	this.m_YOffset          = b.m_YOffset;
-//    	this.m_UseTestConstraint = b.m_UseTestConstraint;
+    	this.problemDimension = b.problemDimension;
+    	this.xOffset = b.xOffset;
+    	this.yOffset = b.yOffset;
     }
     
     public AbstractProblemDoubleOffset(int dim) {
@@ -55,10 +52,10 @@ public abstract class AbstractProblemDoubleOffset extends AbstractProblemDouble 
      * @param XOffset     The offset for the decision variables.
      */
     public void setXOffset(double XOffset) {
-        this.m_XOffset = XOffset;
+        this.xOffset = XOffset;
     }
     public double getXOffset() {
-        return this.m_XOffset;
+        return this.xOffset;
     }
     public String XOffsetTipText() {
         return "Choose an offset for the decision variables.";
@@ -69,10 +66,10 @@ public abstract class AbstractProblemDoubleOffset extends AbstractProblemDouble 
      * @param YOffset     The offset for the objective value.
      */
     public void setYOffset(double YOffset) {
-        this.m_YOffset = YOffset;
+        this.yOffset = YOffset;
     }
     public double getYOffset() {
-        return this.m_YOffset;
+        return this.yOffset;
     }
     public String YOffsetTipText() {
         return "Choose an offset for the objective value.";
@@ -81,11 +78,11 @@ public abstract class AbstractProblemDoubleOffset extends AbstractProblemDouble 
      * @param t Length of the x vector at is to be optimized
      */
     public void setProblemDimension(int t) {
-        this.m_ProblemDimension = t;
+        this.problemDimension = t;
     }
     @Override
     public int getProblemDimension() {
-        return this.m_ProblemDimension;
+        return this.problemDimension;
     }
     public String problemDimensionTipText() {
         return "Length of the x vector to be optimized.";

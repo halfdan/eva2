@@ -40,8 +40,6 @@ import java.util.Vector;
  * Possible topologies are: "Linear", "Grid", "Star", "Multi-Swarm", "Tree",
  * "HPSO", "Random" in that order starting by 0.
  *
- * Created by IntelliJ IDEA. User: streiche Date: 28.10.2004 Time: 11:23:21 To
- * change this template use File | Settings | File Templates.
  */
 public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Serializable, InterfaceAdditionalPopulationInformer {
 
@@ -74,9 +72,6 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
     protected int minSubSwarmSize = 2;
     protected int treeStruct = 1;
     protected boolean wrapTopology = true;
-//	protected boolean							doLocalSearch = false;
-//	protected int 								localSearchGens=100;
-//	protected int 								lsStepsPerInd=200;
     protected int treeLevels, treeOrphans, treeLastFullLevelNodeCnt;
     protected int dmsRegroupInterval = 10;
     private transient Vector<int[]> dmsLinks = null;
@@ -211,7 +206,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
         }
         tracedVelocity = null;
         if (!externalInitialPop) {
-            this.m_Problem.initPopulation(this.m_Population);
+            this.m_Problem.initializePopulation(this.m_Population);
         }
         // evaluation needs to be done here now, as its omitted if reset is false
         initDefaults(this.m_Population);
@@ -1382,7 +1377,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 ////			Population bestN = m_Population.getSortedNIndividuals(Math.max(1,(int)(lsCandidateRatio*m_Population.size())), false);
 //			Population cands=(Population)bestN.clone();
 //			int maxSteps=cands.size()*lsStepsPerInd;
-//			int stepsDone = PostProcess.processSingleCandidates(PostProcessMethod.nelderMead, cands, maxSteps, 0.01, (AbstractOptimizationProblem)this.m_Problem, null);
+//			int stepsDone = PostProcess.processSingleCandidates(PostProcessMethod.nelderMead, cands, maxSteps, 0.01, (AbstractOptimizationProblem)this.problem, null);
 //			for (int i=0; i<cands.size(); i++) {
 //				if (AbstractEAIndividual.isDominatingFitnessNotEqual(cands.getEAIndividual(i).getFitness(),
 //						(double[])bestN.getEAIndividual(i).getData(partBestFitKey))) {
@@ -2230,7 +2225,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
                 relDiff = (personalBestfit[0] - ((InterfaceProblemDouble) m_Problem).eval(personalBestPos)[0]) / personalBestfit[0];
             } else {
                 relDiff = (personalBestfit[0] - ((InterfaceProblemDouble) m_Problem).eval(personalBestPos)[0]); // absolute diff in this case
-            }//			if (personalBestfit[0]!=((InterfaceProblemDouble)m_Problem).eval(personalBestPos)[0]) {
+            }//			if (personalBestfit[0]!=((InterfaceProblemDouble)problem).eval(personalBestPos)[0]) {
             if (Math.abs(relDiff) > 1e-20) {
                 System.err.println("Warning: mismatching best fitness by " + relDiff);
                 System.err.println("partInfo: " + i + " - " + getParticleInfo(population.getEAIndividual(i)));

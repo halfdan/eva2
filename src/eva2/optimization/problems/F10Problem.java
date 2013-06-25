@@ -16,7 +16,7 @@ public class F10Problem extends AbstractProblemDoubleOffset implements Interface
     private int     m_Iterations = 20;
 
     public F10Problem() {
-        this.m_Template         = new ESIndividualDoubleData();
+        this.template = new ESIndividualDoubleData();
     }
     public F10Problem(F10Problem b) {
     	super(b);
@@ -42,9 +42,9 @@ public class F10Problem extends AbstractProblemDoubleOffset implements Interface
     	x = rotateMaybe(x);
         double[] result = new double[1];
         double c1 = this.calculateC(1);
-        result[0]     = m_YOffset;
+        result[0]     = yOffset;
         for (int i = 0; i < x.length-1; i++) {
-        	double xi = x[i]-m_XOffset;
+        	double xi = x[i]- xOffset;
             result[0]  += ((this.calculateC(xi))/(c1 * Math.pow(Math.abs(xi),2-this.m_D))) + Math.pow(xi, 2) -1;
         }
         return result;
@@ -68,10 +68,10 @@ public class F10Problem extends AbstractProblemDoubleOffset implements Interface
 
         result += "F10 Weierstrass-Mandelbrot Fractal Function:\n";
         result += "Parameters:\n";
-        result += "Dimension   : " + this.m_ProblemDimension +"\n";
+        result += "Dimension   : " + this.problemDimension +"\n";
         result += "Noise level : " + this.getNoise() + "\n";
         result += "Solution representation:\n";
-        //result += this.m_Template.getSolutionRepresentationFor();
+        //result += this.template.getSolutionRepresentationFor();
         return result;
     }
 

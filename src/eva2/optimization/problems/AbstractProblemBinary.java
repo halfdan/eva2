@@ -21,17 +21,17 @@ public abstract class AbstractProblemBinary extends AbstractOptimizationProblem 
 	}
 	
 	protected void initTemplate() {
-		if (m_Template == null) {
-                this.m_Template         = new GAIndividualBinaryData();
+		if (template == null) {
+                this.template = new GAIndividualBinaryData();
             }
-		if (((InterfaceGAIndividual)this.m_Template).getGenotypeLength()!=this.getProblemDimension()) {
-			((InterfaceDataTypeBinary)this.m_Template).setBinaryDataLength(this.getProblemDimension());
+		if (((InterfaceGAIndividual)this.template).getGenotypeLength()!=this.getProblemDimension()) {
+			((InterfaceDataTypeBinary)this.template).setBinaryDataLength(this.getProblemDimension());
 		}
 	}
 	
 	public void cloneObjects(AbstractProblemBinary o) {
-		if (o.m_Template != null) {
-                m_Template = (AbstractEAIndividual)o.m_Template.clone();
+		if (o.template != null) {
+                template = (AbstractEAIndividual)o.template.clone();
             }
 	}
 	
@@ -65,7 +65,7 @@ public abstract class AbstractProblemBinary extends AbstractOptimizationProblem 
 
 //	/**
 //	 * Initialize a single individual with index k in the
-//	 * initPopulation cycle.
+//	 * initializePopulation cycle.
 //	 * @param k
 //	 * @param indy
 //	 */
@@ -74,13 +74,13 @@ public abstract class AbstractProblemBinary extends AbstractOptimizationProblem 
 //    }
 
 	@Override
-	public void initPopulation(Population population) {
-        ((InterfaceDataTypeBinary)this.m_Template).setBinaryDataLength(this.getProblemDimension());
-        AbstractOptimizationProblem.defaultInitPopulation(population, m_Template, this);
+	public void initializePopulation(Population population) {
+        ((InterfaceDataTypeBinary)this.template).setBinaryDataLength(this.getProblemDimension());
+        AbstractOptimizationProblem.defaultInitPopulation(population, template, this);
 	}
 	
 	@Override
-	public void initProblem() {
+	public void initializeProblem() {
 		initTemplate();
 	}
 	    

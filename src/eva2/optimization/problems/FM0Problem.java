@@ -13,10 +13,10 @@ import java.io.Serializable;
 public class FM0Problem extends AbstractMultiModalProblemKnown implements InterfaceOptimizationProblem, Interface2DBorderProblem, InterfaceMultimodalProblemKnown, Serializable {
  
 	public FM0Problem() {
-        this.m_ProblemDimension = 2;
-        this.m_Template         = new ESIndividualDoubleData();
+        this.problemDimension = 2;
+        this.template = new ESIndividualDoubleData();
 //        this.m_Extrema          = new double[2];
-//        this.m_Range            = new double [this.m_ProblemDimension][2];
+//        this.m_Range            = new double [this.problemDimension][2];
 //        this.m_Range[0][0]      = -2.0;
 //        this.m_Range[0][1]      =  2.0;
 //        this.m_Range[1][0]      = -2.8;

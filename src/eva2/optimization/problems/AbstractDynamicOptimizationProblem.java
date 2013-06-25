@@ -84,7 +84,7 @@ public abstract class AbstractDynamicOptimizationProblem extends AbstractOptimiz
     }
     
     @Override
-    public void initProblem() {
+    public void initializeProblem() {
     	setCurrentProblemTime(getStartTime());
     	if (myplot != null) {
             try {
@@ -108,8 +108,8 @@ makePlot();
      * @param population    The populations that is to be inited
      */
     @Override
-    public void initPopulation(Population population) {
-    	//initProblem();	// this shouldnt be necessary
+    public void initializePopulation(Population population) {
+    	//initializeProblem();	// this shouldnt be necessary
     	this.initPopulationAt(population, getCurrentProblemTime());
     }
     

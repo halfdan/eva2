@@ -16,94 +16,65 @@ import java.util.List;
 public abstract class AbstractMultiModalProblemKnown extends AbstractProblemDouble 
 implements Interface2DBorderProblem, InterfaceMultimodalProblemKnown {
 	protected static InterfaceDistanceMetric   m_Metric = new PhenotypeMetric();
-	private double                    m_GlobalOpt = 0;
-	protected Population                  m_ListOfOptima;
-	protected double                    m_Epsilon = 0.05;
-//	protected double[][]                m_Range;
-//	protected double[]                  m_Extrema;
-	protected int						m_ProblemDimension = 2;
+	private double globalOptimum = 0;
+	protected Population listOfOptima;
+	protected double epsilon = 0.05;
+	protected int problemDimension = 2;
 	// if the global optimum is zero and we want to see logarithmic plots, the offset must be a little lower. see addOptimum()
-	protected boolean 					makeGlobalOptUnreachable = false;
+	protected boolean makeGlobalOptUnreachable = false;
 
 	public AbstractMultiModalProblemKnown() {
-		this.m_ProblemDimension = 2;
-		this.m_Template         = new ESIndividualDoubleData();
-//		this.m_Extrema          = new double[2];
-//		this.m_Range            = makeRange();
-//		this.m_Extrema[0]       = -2;
-//		this.m_Extrema[1]       = 6;
+		this.problemDimension = 2;
+		this.template = new ESIndividualDoubleData();
 	}
 
 	protected void cloneObjects(AbstractMultiModalProblemKnown b) {
 		super.cloneObjects(b);
-		if (b.m_ListOfOptima != null) {
-                this.m_ListOfOptima           = (Population)((Population)b.m_ListOfOptima).clone();
-            }
-//		if (b.m_Range != null) {
-//			this.m_Range          = new double[b.m_Range.length][b.m_Range[0].length];
-//			for (int i = 0; i < this.m_Range.length; i++) {
-//				for (int j = 0; j < this.m_Range[i].length; j++) {
-//					this.m_Range[i][j] = b.m_Range[i][j];
-//				}
-//			}
-//		}		
-		this.m_ProblemDimension = b.m_ProblemDimension;
-		this.m_GlobalOpt        = b.m_GlobalOpt;
-		this.m_Epsilon         = b.m_Epsilon;
-//		if (b.m_Extrema != null) {
-//		this.m_Extrema          = new double[b.m_Extrema.length];
-//		for (int i = 0; i < this.m_Extrema.length; i++) {
-//			this.m_Extrema[i] = b.m_Extrema[i];
-//		}
-//	}
+		if (b.listOfOptima != null) {
+                this.listOfOptima = (Population)((Population)b.listOfOptima).clone();
+            };
+		this.globalOptimum = b.globalOptimum;
+		this.epsilon = b.epsilon;
 	}
 	
 	public AbstractMultiModalProblemKnown(AbstractMultiModalProblemKnown b) {
 		cloneObjects(b);
 	}
 
-//	/** This method returns a deep clone of the problem.
-//	 * @return  the clone
-//	 */
-//	public Object clone() {
-//		return (Object) new AbstractMultiModalProblem(this);
-//	}
-
 	/** This method inits a given population
 	 * @param population    The populations that is to be inited
 	 */
     @Override
-	public void initPopulation(Population population) {
+	public void initializePopulation(Population population) {
 		AbstractEAIndividual tmpIndy;
 
 		population.clear();
 
-//		this.m_ProblemDimension = 2;
-		((InterfaceDataTypeDouble)this.m_Template).setDoubleDataLength(this.m_ProblemDimension);
-		((InterfaceDataTypeDouble)this.m_Template).SetDoubleRange(makeRange());
+		((InterfaceDataTypeDouble)this.template).setDoubleDataLength(this.problemDimension);
+		((InterfaceDataTypeDouble)this.template).SetDoubleRange(makeRange());
 		for (int i = 0; i < population.getTargetSize(); i++) {
-			tmpIndy = (AbstractEAIndividual)((AbstractEAIndividual)this.m_Template).clone();
+			tmpIndy = (AbstractEAIndividual)((AbstractEAIndividual)this.template).clone();
 			tmpIndy.init(this);
 			population.add(tmpIndy);
 		}
 		// population init must be last
 		// it set's fitcalls and generation to zero
 		population.init();
-		if (m_ListOfOptima == null) {
-			this.m_GlobalOpt = Double.NEGATIVE_INFINITY;
-			m_ListOfOptima = new Population();
+		if (listOfOptima == null) {
+			this.globalOptimum = Double.NEGATIVE_INFINITY;
+			listOfOptima = new Population();
 			this.initListOfOptima();
 		}
 	}
 	
     @Override
-	public void initProblem() {
-		super.initProblem();
-		this.m_GlobalOpt = Double.NEGATIVE_INFINITY;
-		m_ListOfOptima = new Population();
+	public void initializeProblem() {
+		super.initializeProblem();
+		this.globalOptimum = Double.NEGATIVE_INFINITY;
+		listOfOptima = new Population();
 		this.initListOfOptima();
-		if (!fullListAvailable() && (Double.isInfinite(m_GlobalOpt))) {
-                m_GlobalOpt=0;
+		if (!fullListAvailable() && (Double.isInfinite(globalOptimum))) {
+                globalOptimum =0;
             }
 	}
 
@@ -115,7 +86,7 @@ implements Interface2DBorderProblem, InterfaceMultimodalProblemKnown {
 	public double[] eval(double[] x) {
 		x = rotateMaybe(x);
 		double[] result = new double[1];
-		result[0]   = this.m_GlobalOpt - evalUnnormalized(x)[0];
+		result[0]   = this.globalOptimum - evalUnnormalized(x)[0];
 		return result;
 	}
 
@@ -140,27 +111,11 @@ implements Interface2DBorderProblem, InterfaceMultimodalProblemKnown {
 	@Override
 	public Object[] getAdditionalDataValue(PopulationInterface pop) {
 		Object[] result = new Object[2];
-//		result += AbstractEAIndividual.getDefaultDataString(pop.getBestIndividual()) +"\t";
 		result[0] = this.getNumberOfFoundOptima((Population)pop);
 		result[1] = this.getMaximumPeakRatio((Population)pop);
 		return ToolBox.appendArrays(result, super.getAdditionalDataValue(pop));
 	}
-//
-//	/** This method returns a string describing the optimization problem.
-//	 * @return The description.
-//	 */
-//	public String getStringRepresentation() {
-//		String result = "";
-//
-//		result += "M0 function:\n";
-//		result += "This problem has one global and one local optimum.\n";
-//		result += "Parameters:\n";
-//		result += "Dimension   : " + this.m_ProblemDimension +"\n";
-//		result += "Noise level : " + this.getNoise() + "\n";
-//		result += "Solution representation:\n";
-//		//result += this.m_Template.getSolutionRepresentationFor();
-//		return result;
-//	}
+
 
 	/**********************************************************************************************************************
 	 * Implementation of InterfaceMultimodalProblemKnown
@@ -178,33 +133,32 @@ implements Interface2DBorderProblem, InterfaceMultimodalProblemKnown {
 	}
 
 	/** This method allows you to add a 2d optima to the list of optima
-	 * @param x
-	 * @param y
+	 * @param point
 	 */
 	protected void addOptimum(double[] point) {
 		InterfaceDataTypeDouble tmpIndy;
-		tmpIndy = (InterfaceDataTypeDouble)((AbstractEAIndividual)this.m_Template).clone();
+		tmpIndy = (InterfaceDataTypeDouble)((AbstractEAIndividual)this.template).clone();
 		tmpIndy.SetDoubleGenotype(point);
 		((AbstractEAIndividual)tmpIndy).setFitness(evalUnnormalized(point));
-		if (((AbstractEAIndividual)tmpIndy).getFitness(0)>=m_GlobalOpt) {
-			m_GlobalOpt = ((AbstractEAIndividual)tmpIndy).getFitness(0);
+		if (((AbstractEAIndividual)tmpIndy).getFitness(0)>= globalOptimum) {
+			globalOptimum = ((AbstractEAIndividual)tmpIndy).getFitness(0);
 			if (makeGlobalOptUnreachable) {
-				double tmp=m_GlobalOpt;
+				double tmp= globalOptimum;
 				double dx = 1e-30;
-				while (tmp==m_GlobalOpt) {
+				while (tmp== globalOptimum) {
 					// this increases the optimum until there is a real difference.
 					// tries to avoid zero y-values which break the logarithmic plot
 					tmp+=dx;
 					dx *= 10;
 				}
-				m_GlobalOpt = tmp;
+				globalOptimum = tmp;
 			}
 		} 
 		if (isDoRotation()) {
 			point = inverseRotateMaybe(point); // theres an inverse rotation required
 			tmpIndy.SetDoubleGenotype(point);
 		}
-		this.m_ListOfOptima.add(tmpIndy);
+		this.listOfOptima.add(tmpIndy);
 	}
 
 	/** 
@@ -222,7 +176,7 @@ implements Interface2DBorderProblem, InterfaceMultimodalProblemKnown {
 	 */
     @Override
 	public Population getRealOptima() {
-		return this.m_ListOfOptima;
+		return this.listOfOptima;
 	}
 	
     /**
@@ -265,7 +219,7 @@ implements Interface2DBorderProblem, InterfaceMultimodalProblemKnown {
                 return -1;
             }
 		else {
-                return getMaximumPeakRatio(this.getRealOptima(), pop, m_Epsilon);
+                return getMaximumPeakRatio(this.getRealOptima(), pop, epsilon);
             }
 	}
 	
@@ -273,7 +227,7 @@ implements Interface2DBorderProblem, InterfaceMultimodalProblemKnown {
 	 * Returns -1 if the full list is not available. Otherwise calculates the maximum peak ratio
 	 * based on the full list of known optima.
 	 * This assumes that the realOpts have fitness values assigned as for maximization and the
-	 * pop has fitness values assigned for minimization (mirrored by maximum fitness within realOpts).
+	 * population has fitness values assigned for minimization (mirrored by maximum fitness within realOpts).
 	 * 
 	 * This is in analogy to the original implementation by F.Streichert.  
 	 * 
@@ -287,8 +241,6 @@ implements Interface2DBorderProblem, InterfaceMultimodalProblemKnown {
 		if (realOpts==null || (realOpts.size()==0)) {
                 return -1;
             }
-//		if (!mmProb.fullListAvailable()) return -1;
-//		Population realOpts = mmProb.getRealOptima();
 		double 			tmp, maxOpt = realOpts.getEAIndividual(0).getFitness(0);
 		sumRealMaxima = maxOpt;
 		for (int i=1; i<realOpts.size(); i++) {
@@ -309,16 +261,14 @@ implements Interface2DBorderProblem, InterfaceMultimodalProblemKnown {
                                 EVAERROR.errorMsgOnce("warning: for the MPR calculation, negative fitness values may disturb the allover result (AbstractMultiModalProblemKnown)");
                             }
 				foundInvertedSum += Math.max(0., tmp);
-//				System.out.println("foundInvertedSum = " + foundInvertedSum);
-			}
+            }
 		}
-//		System.out.println("foundSum: " + foundInvertedSum + " realsum: " + sumRealMaxima + " ratio: " + foundInvertedSum/sumRealMaxima);
 		return foundInvertedSum/sumRealMaxima;
 	}
 	
 	/**
 	 * Returns -1 if the full list is not available. Otherwise calculates the maximum peak ratio
-	 * based on the full list of known optima. Assumes that both realOpts and pop have fitness
+	 * based on the full list of known optima. Assumes that both realOpts and population have fitness
 	 * values assigned as in a maximization problem. This is the standard formulation of MPR.
 	 * 
 	 * @param mmProb
@@ -348,9 +298,8 @@ implements Interface2DBorderProblem, InterfaceMultimodalProblemKnown {
 	 * values are positive (and for a corresponding pair, foundFits[i]<realFits[i]).
 	 * If these assumptions hold, the MPR lies in [0,1]. 
 	 * 
-	 * @param mmProb
-	 * @param pop
-	 * @param epsilon
+	 * @param realFits
+	 * @param foundFits
 	 * @return
 	 */
 	public static double getMaximumPeakRatioMaximization(double[] realFits, double[] foundFits) {
@@ -360,12 +309,12 @@ implements Interface2DBorderProblem, InterfaceMultimodalProblemKnown {
 	
 	/**
 	 * Returns -1 if the full list is not available. Otherwise calculates the maximum peak ratio
-	 * based on the full list of known optima. Assumes that both realOpts and pop have fitness
+	 * based on the full list of known optima. Assumes that both realOpts and population have fitness
 	 * values assigned as in a minimization problem. Using a fitness value fitThreshold, they are inverted
 	 * and then treated as in maximization. An optimum which has not been found closely (by epsilon)
 	 * in the population is assumed to be covered with an individual of fitness fitThreshold.
 	 * 
-	 * @param mmProb
+	 * @param realOpts
 	 * @param pop
 	 * @param epsilon
 	 * @return
@@ -408,67 +357,18 @@ implements Interface2DBorderProblem, InterfaceMultimodalProblemKnown {
 		// now we can call the standard calculation method
 		return getMaximumPeakRatioMaximization(realFits, foundFits);
 	}	
-	
-//	public double getMaximumPeakRatio(Population pop) {
-//		double                  result = 0, sum = 0;
-//		AbstractEAIndividual   posOpt, opt;
-//		boolean[]               found = new boolean[this.m_Optima.size()];
-//		for (int i = 0; i < found.length; i++) {
-//			found[i] = false;
-//			sum += ((AbstractEAIndividual)this.m_Optima.get(i)).getFitness(0) ;
-//			//System.out.println("Optimum " + i + ".: " + (((AbstractEAIndividual)this.m_Optima.get(i)).getFitness(0)));
-//		}
-//
-//		for (int i = 0; i < pop.size(); i++) {
-//			posOpt = (AbstractEAIndividual) pop.get(i);
-//			for (int j = 0; j < this.m_Optima.size(); j++) {
-//				if (!found[j]) {
-//					opt = (AbstractEAIndividual) this.m_Optima.get(j);
-//					if (this.m_Metric.distance(posOpt, opt) < this.m_Epsilon) {
-//						found[j] = true;
-//						result += this.m_GlobalOpt - posOpt.getFitness(0);
-//						//System.out.println("Found Optimum " + j + ".: " + (this.m_GlobalOpt - posOpt.getFitness(0)));
-//					}
-//				}
-//			}
-//		}
-//		return result/sum;
-//	}
-	/**********************************************************************************************************************
-	 * These are for GUI
-	 */
 
-//	/** This method returns this min and may fitness occuring
-//	* @return double[]
-//	*/
-//	public double[] getExtrema() {
-//	double[] range = new double[2];
-//	range[0] = -5;
-//	range[1] = 5;
-//	return range;
-//	}
-
-//	/**
-//	 * @return the m_Epsilon
-//	 */
-//	public double getEpsilon() {
-//		return m_Epsilon;
-//	}
 
 	/**
-	 * @param epsilon the m_Epsilon to set
+	 * @param epsilon the epsilon to set
 	 */
     @Override
 	public void setDefaultAccuracy(double epsilon) {
 		super.SetDefaultAccuracy(epsilon);
 	}
-//
-//	public String epsilonTipText() {
-//		return "Epsilon criterion indicating whether an optimum was found";
-//	}
 
 	@Override
 	public int getProblemDimension() {
-		return m_ProblemDimension;
+		return problemDimension;
 	}
 }

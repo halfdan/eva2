@@ -8,8 +8,6 @@ import java.io.Serializable;
  * with g(x,y) = x sin(a)cos(b)+(y+1)cos(a)sin(b), a=sqrt(|-x+y+1|), b=sqrt(|x+y+1|).
  * 
  * For gnuplot: x *sin(sqrt(abs(-x+y+1)))*cos(sqrt(abs(x+y+1)))+(y+1)*cos(sqrt(abs(-x+y+1)))*sin(sqrt(abs(x+y+1)))
- * 
- * @author mkron
  *
  */
 public class F20Problem extends AbstractProblemDouble implements Serializable, InterfaceInterestingHistogram{
@@ -58,11 +56,7 @@ public class F20Problem extends AbstractProblemDouble implements Serializable, I
 		double b=beta(x,y);
 		return x*Math.sin(a)*Math.cos(b)+(y+1.)*Math.cos(a)*Math.sin(b);
 	}
-	
-//	private double alpha(double x, double y) {
-//		return Math.sqrt(Math.abs(-x+y+1));
-//	}
-	
+
 	private double beta(double x, double y) {
 		return Math.sqrt(Math.abs(x+y+1));
 	}
@@ -112,21 +106,21 @@ public class F20Problem extends AbstractProblemDouble implements Serializable, I
                     }
 		}
 		if (getProblemDimension()==30) {
-			if (getYOffset()==0) { 
-                        return new SolutionHistogram(-15000, -8600, 16);
-                    } 
-//			das passst wohl nicht für Multimodales... Also nochmal für 30D.
-			else {
-                        return new SolutionHistogram(0, 6400, 16);
-                    }
-		}
-		if (getProblemDimension() <= 5) {
-			double lower = getYOffset()-((getProblemDimension()-1)*getDefaultRange());
-			return new SolutionHistogram(lower, lower+160, 16);
-		} else if (getProblemDimension() < 15) {
-			return new SolutionHistogram(getYOffset()-5000, getYOffset()-3400, 16);
-		} else {
-                return new SolutionHistogram(getYOffset()-15000, getYOffset()-13400, 16);
+            if (getYOffset() == 0) {
+                return new SolutionHistogram(-15000, -8600, 16);
             }
-	}
+//			das passst wohl nicht für Multimodales... Also nochmal für 30D.
+            else {
+                return new SolutionHistogram(0, 6400, 16);
+            }
+        }
+        if (getProblemDimension() <= 5) {
+            double lower = getYOffset() - ((getProblemDimension() - 1) * getDefaultRange());
+            return new SolutionHistogram(lower, lower + 160, 16);
+        } else if (getProblemDimension() < 15) {
+            return new SolutionHistogram(getYOffset() - 5000, getYOffset() - 3400, 16);
+        } else {
+            return new SolutionHistogram(getYOffset() - 15000, getYOffset() - 13400, 16);
+        }
+    }
 }

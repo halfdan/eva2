@@ -89,22 +89,22 @@ public class MultiObjectiveEA implements InterfaceOptimizer, java.io.Serializabl
      */
     @Override
     public void optimize() {
-//        double[][] may = this.showMay(this.m_Optimizer.getPopulation());
+//        double[][] may = this.showMay(this.optimizer.getPopulation());
         // This is in total compliance with Koch's framework nice isn't it?
         this.m_Optimizer.optimize();
         // now comes all the multiobjective optimization stuff
         // This is the Environment Selection
         this.m_Archiver.addElementsToArchive(this.m_Optimizer.getPopulation());
-        //if (true) this.m_Archiver.plotArchive(this.m_Optimizer.getPopulation());
+        //if (true) this.m_Archiver.plotArchive(this.optimizer.getPopulation());
 //        if (false) {
-//            int popSize = this.m_Optimizer.getPopulation().size();
-//            int archiveSize = this.m_Optimizer.getPopulation().getArchive().size();
+//            int popSize = this.optimizer.getPopulation().size();
+//            int archiveSize = this.optimizer.getPopulation().getArchive().size();
 //            int feasiblePop = 0, feasibleArch = 0;
 //            for (int i = 0; i < popSize; i++) {
-//                if (((AbstractEAIndividual)this.m_Optimizer.getPopulation().get(i)).getConstraintViolation() == 0) feasiblePop++;
+//                if (((AbstractEAIndividual)this.optimizer.getPopulation().get(i)).getConstraintViolation() == 0) feasiblePop++;
 //            }
 //            for (int i = 0; i < archiveSize; i++) {
-//                if (((AbstractEAIndividual)this.m_Optimizer.getPopulation().getArchive().get(i)).getConstraintViolation() == 0) feasibleArch++;
+//                if (((AbstractEAIndividual)this.optimizer.getPopulation().getArchive().get(i)).getConstraintViolation() == 0) feasibleArch++;
 //            }
 //            System.out.println("Population size : "+popSize + " ("+feasiblePop+"/"+(popSize-feasiblePop)+")");
 //            System.out.println("Archive size    : "+archiveSize + " ("+feasibleArch+"/"+(archiveSize-feasibleArch)+")");
@@ -114,7 +114,7 @@ public class MultiObjectiveEA implements InterfaceOptimizer, java.io.Serializabl
         // the population from which in the next generation the parents will be selected.
         this.m_InformationRetrieval.retrieveInformationFrom(this.m_Optimizer.getPopulation());
 
-//        double[][] mayday = this.showMay(this.m_Optimizer.getPopulation());
+//        double[][] mayday = this.showMay(this.optimizer.getPopulation());
 //        if ((mayday[0][0] > may[0][0]) || (mayday[1][1] > may[1][1])) {
 //            System.out.println("Losing the edges:");
 //            System.out.println("Before : (" +may[0][0]+"/"+may[0][1]+") and ("+may[1][0]+"/"+may[1][1]+")");
@@ -210,7 +210,7 @@ public class MultiObjectiveEA implements InterfaceOptimizer, java.io.Serializabl
         result += " Optimizer             = " + this.m_Optimizer.getClass().toString() + "\n";
         result += this.m_Optimizer.getStringRepresentation() + "\n";
         //result += "=> The Optimization Problem: ";
-        //result += this.m_Problem.getStringRepresentationForProblem(this) +"\n";
+        //result += this.problem.getStringRepresentationForProblem(this) +"\n";
         //result += this.m_Population.getStringRepresentation();
         return result;
     }

@@ -60,7 +60,7 @@ public class PBILParameters extends AbstractGOParameters implements InterfaceGOP
      * @return description
      */
 //    public static String globalInfo() {
-//    	return ((PopulationBasedIncrementalLearning)this.m_Optimizer).globalInfo();
+//    	return ((PopulationBasedIncrementalLearning)this.optimizer).globalInfo();
 //    }
 
     @Override
@@ -75,10 +75,10 @@ public class PBILParameters extends AbstractGOParameters implements InterfaceGOP
      * @return The population of current solutions to a given problem.
      */
     public Population getPopulation() {
-        return ((PopulationBasedIncrementalLearning)this.m_Optimizer).getPopulation();
+        return ((PopulationBasedIncrementalLearning)this.optimizer).getPopulation();
     }
     public void setPopulation(Population pop){
-        ((PopulationBasedIncrementalLearning)this.m_Optimizer).setPopulation(pop);
+        ((PopulationBasedIncrementalLearning)this.optimizer).setPopulation(pop);
     }
     public String populationTipText() {
         return "Edit the properties of the population used.";
@@ -88,10 +88,10 @@ public class PBILParameters extends AbstractGOParameters implements InterfaceGOP
      * @param selection
      */
     public void setSelectionMethod(InterfaceSelection selection) {
-        ((PopulationBasedIncrementalLearning)this.m_Optimizer).setSelectionMethod(selection);
+        ((PopulationBasedIncrementalLearning)this.optimizer).setSelectionMethod(selection);
     }
     public InterfaceSelection getSelectionMethod() {
-        return ((PopulationBasedIncrementalLearning)this.m_Optimizer).getSelectionMethod();
+        return ((PopulationBasedIncrementalLearning)this.optimizer).getSelectionMethod();
     }
     public String selectionMethodTipText() {
         return "Choose a selection method.";
@@ -101,10 +101,10 @@ public class PBILParameters extends AbstractGOParameters implements InterfaceGOP
      * @param elitism
      */
     public void setElitism (boolean elitism) {
-        ((PopulationBasedIncrementalLearning)this.m_Optimizer).setElitism(elitism);
+        ((PopulationBasedIncrementalLearning)this.optimizer).setElitism(elitism);
     }
     public boolean getElitism() {
-        return ((PopulationBasedIncrementalLearning)this.m_Optimizer).getElitism();
+        return ((PopulationBasedIncrementalLearning)this.optimizer).getElitism();
     }
     public String elitismTipText() {
         return "Enable/disable elitism.";
@@ -117,10 +117,10 @@ public class PBILParameters extends AbstractGOParameters implements InterfaceGOP
         if (LearningRate < 0) {
             LearningRate = 0;
         }
-        ((PopulationBasedIncrementalLearning)this.m_Optimizer).setLearningRate(LearningRate);
+        ((PopulationBasedIncrementalLearning)this.optimizer).setLearningRate(LearningRate);
     }
     public double getLearningRate() {
-        return ((PopulationBasedIncrementalLearning)this.m_Optimizer).getLearningRate();
+        return ((PopulationBasedIncrementalLearning)this.optimizer).getLearningRate();
     }
     public String learningRateTipText() {
         return "The learing rate of PBIL.";
@@ -136,11 +136,11 @@ public class PBILParameters extends AbstractGOParameters implements InterfaceGOP
         if (m > 1) {
             m = 1;
         }
-        ((PopulationBasedIncrementalLearning)this.m_Optimizer).setMutationRate(m);
+        ((PopulationBasedIncrementalLearning)this.optimizer).setMutationRate(m);
 
      }
     public double getMutationRate() {
-        return ((PopulationBasedIncrementalLearning)this.m_Optimizer).getMutationRate();
+        return ((PopulationBasedIncrementalLearning)this.optimizer).getMutationRate();
     }
     public String mutationRateTipText() {
         return "The mutation rate of PBIL.";
@@ -153,10 +153,10 @@ public class PBILParameters extends AbstractGOParameters implements InterfaceGOP
         if (m < 0) {
             m = 0;
         }
-        ((PopulationBasedIncrementalLearning)this.m_Optimizer).setMutateSigma(m);
+        ((PopulationBasedIncrementalLearning)this.optimizer).setMutateSigma(m);
     }
     public double getMutateSigma() {
-        return ((PopulationBasedIncrementalLearning)this.m_Optimizer).getMutateSigma();
+        return ((PopulationBasedIncrementalLearning)this.optimizer).getMutateSigma();
     }
     public String mutateSigmaTipText() {
         return "Set the sigma for the mutation of the probability vector.";
@@ -169,10 +169,10 @@ public class PBILParameters extends AbstractGOParameters implements InterfaceGOP
         if (PositiveSamples < 1) {
             PositiveSamples = 1;
         }
-        ((PopulationBasedIncrementalLearning)this.m_Optimizer).setPositiveSamples(PositiveSamples);
+        ((PopulationBasedIncrementalLearning)this.optimizer).setPositiveSamples(PositiveSamples);
     }
     public int getPositiveSamples() {
-        return ((PopulationBasedIncrementalLearning)this.m_Optimizer).getPositiveSamples();
+        return ((PopulationBasedIncrementalLearning)this.optimizer).getPositiveSamples();
     }
     public String positiveSamplesTipText() {
         return "The number of positive samples that update the PBIL vector.";

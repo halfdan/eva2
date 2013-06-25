@@ -42,33 +42,25 @@ import javax.swing.JTextArea;
  * Time: 13:40:12
  * To change this template use Options | File Templates.
  */
-public abstract class AbstractOptimizationProblem 
-implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serializable {
+public abstract class AbstractOptimizationProblem implements InterfaceOptimizationProblem, Serializable {
 	class EvalThread extends Thread {
 		AbstractOptimizationProblem prob;
 		AbstractEAIndividual ind;
-//		Vector<AbstractEAIndividual> resultrep;
-		Population pop;
-		Semaphore m_Semaphore;
+		Population population;
+		Semaphore semaphore;
 		
 		public EvalThread(AbstractOptimizationProblem prob, AbstractEAIndividual ind, Population pop,Semaphore sema) {
 			this.ind = ind;
 			this.prob = prob;
-//			this.resultrep = resultrep;
-			this.pop = pop;
-			this.m_Semaphore=sema;
+			this.population = pop;
+			this.semaphore =sema;
 		}
 		
         @Override
 		public void run() {
-//			System.out.println("Running ET " + this);
-//			long time=System.nanoTime();
 			prob.evaluate(ind);
-//			resultrep.add(ind);
-			pop.incrFunctionCalls();
-			m_Semaphore.release();
-//			long duration=System.nanoTime()-time;
-//			System.out.println("Finished ET" + this +  ", time was " + duration);
+			population.incrFunctionCalls();
+			semaphore.release();
 		}
 		
 	}
@@ -82,9 +74,9 @@ implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serial
 	 */
 	public static final String OLD_FITNESS_KEY = "oldFitness";
 	
-	int parallelthreads = 1;
+	private int parallelthreads = 1;
 	
-    protected 	AbstractEAIndividual      m_Template = null;
+    protected AbstractEAIndividual template = null;
 //    private transient ArrayList<ParamChangeListener> changeListeners = null;
 
 	private double defaultAccuracy = 0.001; // default accuracy for identifying optima.
@@ -112,7 +104,7 @@ implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serial
 	 * If you override it, make sure to call the super method!
      */
     @Override
-    public abstract void initProblem();
+    public abstract void initializeProblem();
 
     /******************** The most important methods ****************************************/
 
@@ -120,7 +112,7 @@ implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serial
      * @param population    The populations that is to be inited
      */
     @Override
-    public abstract void initPopulation(Population population);
+    public abstract void initializePopulation(Population population);
 
     /** This method evaluates a given population and set the fitness values
      * accordingly
@@ -133,27 +125,6 @@ implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serial
         
         if (this.parallelthreads > 1) {
         	Vector<AbstractEAIndividual> queue = new Vector<AbstractEAIndividual>(population.size());
-//        	Vector<AbstractEAIndividual> finished =  new Vector<AbstractEAIndividual>(population.size());
-        	/* 	queue.addAll(population);
-        	Semaphore sema=new Semaphore(parallelthreads);
-        	while (finished.size() < population.size()) {
-        		try {
-					sema.acquire();
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-        		if ((population.size()-(queue.size() + finished.size())) < parallelthreads) {
-        			if (queue.size() > 0) {
-	        			AbstractEAIndividual tmpindy = queue.get(0);
-		        		queue.remove(0);
-		        		tmpindy.resetConstraintViolation();
-		        		EvalThread evalthread = new EvalThread(this,tmpindy,finished,population,sema);
-		        		evalthread.start();
-
-        			} 
-        		}
-        	}*/
         	Semaphore sema=new Semaphore(0);
         	ExecutorService pool = Executors.newFixedThreadPool(parallelthreads);
         	int cntIndies=0;    
@@ -338,7 +309,6 @@ implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serial
         		Population maybeFiltered = (Population)pop; 
         		if (pop.size()>100) { // for efficiency reasons...
         			maybeFiltered = maybeFiltered.filterByFitness(hist.getUpperBound(), fitCrit);
-//        			System.out.println("Reduced " + pop.size() + " to " + maybeFiltered.size());
         		}
     			Population sols = PostProcess.clusterBestUpdateHistogram((Population)maybeFiltered, this, hist, fitCrit, getDefaultAccuracy());
     		}
@@ -429,7 +399,7 @@ implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serial
      * @return the problem's individual template
      */
     public AbstractEAIndividual getIndividualTemplate() {
-    	return m_Template;
+    	return template;
     }
     
     public String individualTemplateTipText() {
@@ -451,7 +421,7 @@ implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serial
     		double epsilonPhenoSpace, double epsilonFitConv, double clusterSigma, int maxEvalsPerIndy) {
     	Population potOptima = new Population();
     	for (int i = 0; i < pop.size(); ++i){
-    		//System.out.println("Refining " + i + " of " + pop.size());
+    		//System.out.println("Refining " + i + " of " + population.size());
     		AbstractEAIndividual indy = pop.getEAIndividual(i);
 //    		System.out.println("bef: " + indy.toString());
     		boolean isConverged = AbstractOptimizationProblem.isPotentialOptimumNMS(prob, indy, epsilonPhenoSpace, epsilonFitConv, maxEvalsPerIndy);
@@ -496,7 +466,7 @@ implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serial
             mutationStepSize = 0.0001;
         } 
     	if (numOfFailures<0) {
-            numOfFailures = 100*AbstractEAIndividual.getDoublePositionShallow(this.m_Template).length;
+            numOfFailures = 100*AbstractEAIndividual.getDoublePositionShallow(this.template).length;
         } // scales the effort with the number of problem dimensions
     	
     	AbstractEAIndividual indy = (AbstractEAIndividual)orig.clone();
@@ -564,11 +534,10 @@ implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serial
     	double initRelPerturb = -1;
     	int dim = -1;
     	if (orig instanceof InterfaceDataTypeDouble) {
-//    		initPerturb = epsilonPhenoSpace/(2*(Mathematics.getAvgRange(((InterfaceDataTypeDouble)orig).getDoubleRange())));
     		initRelPerturb = epsilonPhenoSpace*0.5;
     		dim=((InterfaceDataTypeDouble)orig).getDoubleRange().length;
         	if (maxEvaluations<0) {
-                maxEvaluations = 500*AbstractEAIndividual.getDoublePositionShallow(prob.m_Template).length;
+                maxEvaluations = 500*AbstractEAIndividual.getDoublePositionShallow(prob.template).length;
             } // scales the effort with the number of problem dimensions
     	} else {
     		System.err.println("Cannot initialize NMS on non-double valued individuals!");
@@ -584,19 +553,19 @@ implements InterfaceOptimizationProblem /*, InterfaceParamControllable*/, Serial
     	int evalsPerf = PostProcess.processSingleCandidatesNMCMA(PostProcessMethod.nelderMead, pop, term, initRelPerturb, prob);
     	overallDist = metric.distance(indy, pop.getBestEAIndividual());
     	//System.out.println(System.currentTimeMillis() + " in " + evalsPerf + " evals moved by "+ overallDist);
-//    	System.out.println("aft: " + pop.getBestEAIndividual().toString() + ", evals performed: " + evalsPerf + ", opt moved by " + overallDist);
+//    	System.out.println("aft: " + population.getBestEAIndividual().toString() + ", evals performed: " + evalsPerf + ", opt moved by " + overallDist);
 //    	System.out.println("terminated because: " + term.lastTerminationMessage());
     	orig.putData(PostProcess.movedDistanceKey, overallDist);
     	orig.putData(PostProcess.movedToPositionKey, pop.getBestEAIndividual().getDoublePosition());
 //    	if (overallDist==0) {
-//    		PostProcess.processSingleCandidatesNMCMA(PostProcessMethod.nelderMead, pop, term, initPerturb, this);
+//    		PostProcess.processSingleCandidatesNMCMA(PostProcessMethod.nelderMead, population, term, initPerturb, this);
 //    	}
 
 //    		System.out.println("Checked "+ indy.getStringRepresentation());
 //    		String msg = 								"----discarding ";
 //    		if (overallDist <= epsilonPhenoSpace) msg=	"++++keeping    ";
 //    		System.out.println(msg + BeanInspector.toString(indy.getDoublePosition()));
-//    		System.out.println("which moved to " + BeanInspector.toString(pop.getBestEAIndividual().getDoublePosition()));
+//    		System.out.println("which moved to " + BeanInspector.toString(population.getBestEAIndividual().getDoublePosition()));
 //    		System.out.println(" by " + overallDist + " > " + epsilonPhenoSpace);
 
     	return (overallDist < epsilonPhenoSpace);

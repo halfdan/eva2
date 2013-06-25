@@ -32,40 +32,38 @@ import java.util.*;
  */
 public abstract class AbstractEAIndividual implements IndividualInterface, java.io.Serializable {
 
-    public int m_FunctionCalls = 0;        // TODO ist irgendwie eine Kruecke
-    protected int m_Age = 0;
-    private long m_ID = 0;
-    private static long m_IDcounter = 0;
+    public int functionCalls = 0;        // TODO ist irgendwie eine Kruecke
+    protected int age = 0;
+    private long id = 0;
+    private static long idCounter = 0;
     private boolean logParents = false;
     // heritage is to contain a list of all parents of the individual
     private Long[] parentIDs = null;
     transient private AbstractEAIndividual[] parentTree = null;
-    protected double[] m_Fitness = new double[1];
-    private double m_ConstraintViolation = 0;
-    public boolean m_AreaConst4ParallelViolated = false; // no idea what felix used this for...
-    public boolean m_Marked = false;    // is for GUI only!
-    public boolean m_isPenalized = false;	// may be set true for penalty based constraints
-    protected double[] m_SelectionProbability = new double[1];
-    ;
-    protected double m_CrossoverProbability = 1.0;
-    protected double m_MutationProbability = 0.2;
-    protected InterfaceMutation m_MutationOperator = new NoMutation();
-    protected InterfaceCrossover m_CrossoverOperator = new NoCrossover();
-    protected InterfaceInitialization m_InitOperator = new DefaultInitialization();
-    //    protected String[]                      m_Identifiers           = new String[m_ObjectIncrement];
-//    protected Object[]                      m_Objects               = new Object[m_ObjectIncrement];
-    protected HashMap<String, Object> m_dataHash = new HashMap<String, Object>();
+    protected double[] fitness = new double[1];
+    private double constraintViolation = 0;
+    public boolean areaConst4ParallelViolated = false; // no idea what felix used this for...
+    public boolean isMarked = false;    // is for GUI only!
+    public boolean isPenalized = false;	// may be set true for penalty based constraints
+    protected double[] selectionProbability = new double[1];
+
+    protected double crossoverProbability = 1.0;
+    protected double mutationProbability = 0.2;
+    protected InterfaceMutation mutationOperator = new NoMutation();
+    protected InterfaceCrossover crossoverOperator = new NoCrossover();
+    protected InterfaceInitialization initializationOperator = new DefaultInitialization();
+    protected HashMap<String, Object> dataHash = new HashMap<String, Object>();
     // introduced for the nichingPSO/ANPSO (M.Aschoff)
     private int individualIndex = -1;
 
     public AbstractEAIndividual() {
-        m_IDcounter++;
-        m_ID = m_IDcounter;
-//  	System.out.println("my id is " + m_ID);
+        idCounter++;
+        id = idCounter;
+//  	System.out.println("my id is " + id);
     }
 
     public long getIndyID() {
-        return m_ID;
+        return id;
     }
 
     public int getIndividualIndex() {
@@ -95,11 +93,11 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      * @param pCross
      */
     public void setOperators(InterfaceInitialization initOp, InterfaceMutation mutOp, double pMut, InterfaceCrossover coOp, double pCross) {
-        m_InitOperator = initOp;
-        m_MutationProbability = pMut;
-        m_MutationOperator = mutOp;
-        m_CrossoverProbability = pCross;
-        m_CrossoverOperator = coOp;
+        initializationOperator = initOp;
+        mutationProbability = pMut;
+        mutationOperator = mutOp;
+        crossoverProbability = pCross;
+        crossoverOperator = coOp;
     }
 
     /**
@@ -125,12 +123,12 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      * @param pCross
      */
     public void initCloneOperators(InterfaceMutation mutOp, double pMut, InterfaceCrossover coOp, double pCross, InterfaceOptimizationProblem problem) {
-        m_MutationProbability = pMut;
-        m_MutationOperator = (InterfaceMutation) mutOp.clone();
-        m_MutationOperator.init(this, problem);
-        m_CrossoverProbability = pCross;
-        m_CrossoverOperator = (InterfaceCrossover) coOp.clone();
-        m_CrossoverOperator.init(this, problem);
+        mutationProbability = pMut;
+        mutationOperator = (InterfaceMutation) mutOp.clone();
+        mutationOperator.init(this, problem);
+        crossoverProbability = pCross;
+        crossoverOperator = (InterfaceCrossover) coOp.clone();
+        crossoverOperator.init(this, problem);
     }
 
     /**
@@ -156,13 +154,13 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      */
     public void cloneAEAObjects(AbstractEAIndividual individual) {
 //        m_Name              = new String(individual.m_Name);
-        m_dataHash = (HashMap<String, Object>) (individual.m_dataHash.clone());
-        m_ConstraintViolation = individual.m_ConstraintViolation;
-//        m_AreaConst4ParallelViolated = individual.m_AreaConst4ParallelViolated;
-        m_Marked = individual.m_Marked;
-        m_isPenalized = individual.m_isPenalized;
+        dataHash = (HashMap<String, Object>) (individual.dataHash.clone());
+        constraintViolation = individual.constraintViolation;
+//        areaConst4ParallelViolated = individual.areaConst4ParallelViolated;
+        isMarked = individual.isMarked;
+        isPenalized = individual.isPenalized;
         individualIndex = individual.individualIndex;
-        m_InitOperator = individual.m_InitOperator.clone();
+        initializationOperator = individual.initializationOperator.clone();
         if (individual.parentIDs != null) {
             parentIDs = new Long[individual.parentIDs.length];
             System.arraycopy(individual.parentIDs, 0, parentIDs, 0, parentIDs.length);
@@ -191,7 +189,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
             if (!this.equalFitness(indy)) {
                 return false;
             }
-            this.m_ConstraintViolation = indy.m_ConstraintViolation;
+            this.constraintViolation = indy.constraintViolation;
 
             // check the genotypes
             if (!this.equalGenotypes(indy)) {
@@ -199,21 +197,21 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
             }
 
             // Age will not be used
-            //if (this.m_Age != indy.m_Age) return false;
+            //if (this.age != indy.age) return false;
 
             // checking on mutation/crossover probabilities
-            if (this.m_MutationProbability != indy.m_MutationProbability) {
+            if (this.mutationProbability != indy.mutationProbability) {
                 return false;
             }
-            if (this.m_CrossoverProbability != indy.m_CrossoverProbability) {
+            if (this.crossoverProbability != indy.crossoverProbability) {
                 return false;
             }
 
             // checking in mutation/crossover operators
-            if (!this.m_MutationOperator.equals(indy.m_MutationOperator)) {
+            if (!this.mutationOperator.equals(indy.mutationOperator)) {
                 return false;
             }
-            if (!this.m_CrossoverOperator.equals(indy.m_CrossoverOperator)) {
+            if (!this.crossoverOperator.equals(indy.crossoverOperator)) {
                 return false;
             }
 //            System.err.println("Check whether this is semantically meant by equality!!! (AbstractEAIndividual.equals())");
@@ -297,12 +295,12 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
 //    public boolean equals(Object obj) {
 //        if (obj instanceof AbstractEAIndividual) {
 //            AbstractEAIndividual indy = (AbstractEAIndividual)obj;
-//            if (this.m_Fitness.length != indy.m_Fitness.length) return false;
-////            for (int i = 0; i < this.m_Fitness.length; i++) if (this.m_Fitness[i] != indy.m_Fitness[i]) return false;
-////            for (int i = 0; i < this.m_Fitness.length; i++)
-////                if (new Double(this.m_Fitness[i]).compareTo(new Double(indy.m_Fitness[i])) != 0) return false;
-//            for (int i = 0; i < this.m_Fitness.length; i++) {
-//                if (Math.abs(this.m_Fitness[i]- indy.m_Fitness[i]) > 0.00000001) return false;
+//            if (this.fitness.length != indy.fitness.length) return false;
+////            for (int i = 0; i < this.fitness.length; i++) if (this.fitness[i] != indy.fitness[i]) return false;
+////            for (int i = 0; i < this.fitness.length; i++)
+////                if (new Double(this.fitness[i]).compareTo(new Double(indy.fitness[i])) != 0) return false;
+//            for (int i = 0; i < this.fitness.length; i++) {
+//                if (Math.abs(this.fitness[i]- indy.fitness[i]) > 0.00000001) return false;
 //            }
 //            return true;
 //        } else {
@@ -315,10 +313,10 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      * @param opt The optimization problem that is to be solved.
      */
     public void init(InterfaceOptimizationProblem opt) {
-        m_InitOperator.initialize(this, opt);
+        initializationOperator.initialize(this, opt);
 //        this.defaultInit(opt);
-        this.m_MutationOperator.init(this, opt);
-        this.m_CrossoverOperator.init(this, opt);
+        this.mutationOperator.init(this, opt);
+        this.crossoverOperator.init(this, opt);
     }
 
     /**
@@ -334,8 +332,8 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      * This method will mutate the individual randomly
      */
     public void mutate() {
-        if (RNG.flipCoin(this.m_MutationProbability)) {
-            this.m_MutationOperator.mutate(this);
+        if (RNG.flipCoin(this.mutationProbability)) {
+            this.mutationOperator.mutate(this);
         }
     }
 
@@ -350,8 +348,8 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      */
     public AbstractEAIndividual[] mateWith(Population partners) {
         AbstractEAIndividual[] result;
-        if (RNG.flipCoin(this.m_CrossoverProbability)) {
-            result = this.m_CrossoverOperator.mate(this, partners);
+        if (RNG.flipCoin(this.crossoverProbability)) {
+            result = this.crossoverOperator.mate(this, partners);
             if (logParents) {
                 for (int i = 0; i < result.length; i++) {
                     result[i].setParents(this, partners);
@@ -477,7 +475,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      * @return The current age.
      */
     public int getAge() {
-        return this.m_Age;
+        return this.age;
     }
 
     /**
@@ -487,21 +485,21 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      * @param age The new age.
      */
     public void SetAge(int age) {
-        this.m_Age = age;
+        this.age = age;
     }
 
     /**
      * This method will incr the current age by one.
      */
     public void incrAge() {
-        this.m_Age++;
+        this.age++;
     }
 
     /**
      * This method allows you to reset the user data
      */
     public void resetUserData() {
-        m_dataHash.clear();
+        dataHash.clear();
     }
 
     /**
@@ -509,8 +507,8 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      * individual
      */
     public void resetConstraintViolation() {
-        m_isPenalized = false;
-        this.m_ConstraintViolation = 0;
+        isPenalized = false;
+        this.constraintViolation = 0;
     }
 
     /**
@@ -520,7 +518,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      * @param c The constraint violation.
      */
     public void addConstraintViolation(double c) {
-        this.m_ConstraintViolation += Math.abs(c);
+        this.constraintViolation += Math.abs(c);
     }
 
     /**
@@ -529,7 +527,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      * @return The current level of constraint violation
      */
     public double getConstraintViolation() {
-        return this.m_ConstraintViolation;
+        return this.constraintViolation;
     }
 
     /**
@@ -538,7 +536,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      * @return True if constraints are violated
      */
     public boolean violatesConstraint() {
-        if (this.m_ConstraintViolation > 0) {
+        if (this.constraintViolation > 0) {
             return true;
         } else {
             return false;
@@ -552,23 +550,23 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      * @return true if marked false if not
      */
     public boolean getMarked() {
-        return this.m_Marked;
+        return this.isMarked;
     }
 
     public void SetMarked(boolean t) {
-        this.m_Marked = t;
+        this.isMarked = t;
     }
 
     public boolean isMarked() {
-        return this.m_Marked;
+        return this.isMarked;
     }
 
     public void unmark() {
-        this.m_Marked = false;
+        this.isMarked = false;
     }
 
     public void mark() {
-        this.m_Marked = true;
+        this.isMarked = true;
     }
 
     /**
@@ -577,7 +575,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      * @return
      */
     public boolean isMarkedPenalized() {
-        return m_isPenalized;
+        return isPenalized;
     }
 
     /**
@@ -586,7 +584,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      * @return
      */
     public void SetMarkPenalized(boolean p) {
-        m_isPenalized = p;
+        isPenalized = p;
     }
 
     /**
@@ -598,7 +596,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      */
     @Override
     public double[] getFitness() {
-        return this.m_Fitness;
+        return this.fitness;
     }
 
     /**
@@ -609,8 +607,8 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      * @return The fitness value at index
      */
     public double getFitness(int index) {
-        if (this.m_Fitness.length > index) {
-            return this.m_Fitness[index];
+        if (this.fitness.length > index) {
+            return this.fitness[index];
         } else {
             return 0;
         }
@@ -620,11 +618,10 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      * This method will set the complete Fitness of the individual
      *
      * @param fitness The new fitness array
-     * @deprecated
      */
     @Override
     public void setFitness(double[] fitness) {
-        this.m_Fitness = fitness;
+        this.fitness = fitness;
     }
 
     /**
@@ -634,15 +631,15 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      * @param fitness The new fitness value.
      */
     public void SetFitness(int index, double fitness) {
-        if (this.m_Fitness.length > index) {
-            this.m_Fitness[index] = fitness;
+        if (this.fitness.length > index) {
+            this.fitness[index] = fitness;
         } else {
             double[] tmpD = new double[index + 1];
-            for (int i = 0; i < this.m_Fitness.length; i++) {
-                tmpD[i] = this.m_Fitness[i];
+            for (int i = 0; i < this.fitness.length; i++) {
+                tmpD[i] = this.fitness[i];
             }
-            this.m_Fitness = tmpD;
-            this.m_Fitness[index] = fitness;
+            this.fitness = tmpD;
+            this.fitness[index] = fitness;
         }
     }
 
@@ -653,9 +650,9 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      * @param resetVal The new fitness array
      */
     public void resetFitness(double resetVal) {
-        if (m_Fitness != null) {
-            for (int i = 0; i < m_Fitness.length; i++) {
-                m_Fitness[i] = resetVal;
+        if (fitness != null) {
+            for (int i = 0; i < fitness.length; i++) {
+                fitness[i] = resetVal;
             }
         }
     }
@@ -665,11 +662,11 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      * for parallelizing MOEAs
      */
     public void checkAreaConst4Parallelization(ArrayList Constraints) {
-        this.m_AreaConst4ParallelViolated = false;
+        this.areaConst4ParallelViolated = false;
         if (Constraints != null) {
             for (int i = 0; i < Constraints.size(); i++) {
                 if (!((InterfaceConstraint) Constraints.get(i)).isValid(this)) {
-                    this.m_AreaConst4ParallelViolated = true;
+                    this.areaConst4ParallelViolated = true;
                 }
             }
         }
@@ -684,15 +681,15 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      * @return True if better false else
      */
     public boolean isDominating(AbstractEAIndividual indy) {
-        if (this.m_AreaConst4ParallelViolated) {
+        if (this.areaConst4ParallelViolated) {
             return false;
         }
-        if (indy.m_AreaConst4ParallelViolated) {
+        if (indy.areaConst4ParallelViolated) {
             return true;
         }
         return isDominatingFitness(getFitness(), indy.getFitness());
-//        for (int i = 0; (i < this.m_Fitness.length) && (i < tmpFitness.length); i++) {
-//            if (this.m_Fitness[i] <= tmpFitness[i]) result &= true;
+//        for (int i = 0; (i < this.fitness.length) && (i < tmpFitness.length); i++) {
+//            if (this.fitness[i] <= tmpFitness[i]) result &= true;
 //            else result &= false;
 //        }
 //        return result;
@@ -770,15 +767,15 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      * is worse, 0 if they are equal in that respect.
      */
     public int compareConstraintViolation(AbstractEAIndividual indy) {
-        if ((this.m_ConstraintViolation > 0) && (indy.m_ConstraintViolation <= 0)) {
+        if ((this.constraintViolation > 0) && (indy.constraintViolation <= 0)) {
             return -1;
         }
-        if ((this.m_ConstraintViolation <= 0) && (indy.m_ConstraintViolation > 0)) {
+        if ((this.constraintViolation <= 0) && (indy.constraintViolation > 0)) {
             return 1;
-        } else {  // both violate: ((this.m_ConstraintViolation > 0) && (indy.m_ConstraintViolation > 0)) {
-            if (this.m_ConstraintViolation < indy.m_ConstraintViolation) {
+        } else {  // both violate: ((this.constraintViolation > 0) && (indy.constraintViolation > 0)) {
+            if (this.constraintViolation < indy.constraintViolation) {
                 return 1;
-            } else if (this.m_ConstraintViolation > indy.m_ConstraintViolation) {
+            } else if (this.constraintViolation > indy.constraintViolation) {
                 return -1;
             } else {
                 return 0;
@@ -801,8 +798,8 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
         } else {
             return (constrViolComp > 0);
         }
-//        for (int i = 0; (i < this.m_Fitness.length) && (i < tmpFitness.length); i++) {
-//            if (this.m_Fitness[i] <= tmpFitness[i]) result &= true;
+//        for (int i = 0; (i < this.fitness.length) && (i < tmpFitness.length); i++) {
+//            if (this.fitness[i] <= tmpFitness[i]) result &= true;
 //            else result &= false;
 //        }
 //        return result;
@@ -818,10 +815,10 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      */
     public boolean isDominatingEqual(AbstractEAIndividual indy) {
         // TODO: should this method really be called "..Equal"?
-        if (this.m_AreaConst4ParallelViolated) {
+        if (this.areaConst4ParallelViolated) {
             return false;
         }
-        if (indy.m_AreaConst4ParallelViolated) {
+        if (indy.areaConst4ParallelViolated) {
             return true;
         }
         return isDominatingFitnessNotEqual(getFitness(), indy.getFitness());
@@ -854,7 +851,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      * @return The complete selection probability array
      */
     public double[] getSelectionProbability() {
-        return this.m_SelectionProbability;
+        return this.selectionProbability;
     }
 
     /**
@@ -866,8 +863,8 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      * @return The selection probability value at index
      */
     public double getSelectionProbability(int index) {
-        if (this.m_SelectionProbability.length > index) {
-            return this.m_SelectionProbability[index];
+        if (this.selectionProbability.length > index) {
+            return this.selectionProbability[index];
         } else {
             return 0;
         }
@@ -879,7 +876,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      * @param sel The new selection probability array
      */
     public void SetSelectionProbability(double[] sel) {
-        this.m_SelectionProbability = sel;
+        this.selectionProbability = sel;
     }
 
     /**
@@ -889,15 +886,15 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      * @param sel The new selection probability value.
      */
     public void SetSelectionProbability(int index, double sel) {
-        if (this.m_SelectionProbability.length > index) {
-            this.m_SelectionProbability[index] = sel;
+        if (this.selectionProbability.length > index) {
+            this.selectionProbability[index] = sel;
         } else {
             double[] tmpD = new double[index + 1];
-            for (int i = 0; i < this.m_SelectionProbability.length; i++) {
-                tmpD[i] = this.m_SelectionProbability[i];
+            for (int i = 0; i < this.selectionProbability.length; i++) {
+                tmpD[i] = this.selectionProbability[i];
             }
-            this.m_SelectionProbability = tmpD;
-            this.m_SelectionProbability[index] = sel;
+            this.selectionProbability = tmpD;
+            this.selectionProbability[index] = sel;
         }
     }
 
@@ -908,11 +905,11 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      * @param mutator The mutation operator.
      */
     public void setMutationOperator(InterfaceMutation mutator) {
-        this.m_MutationOperator = mutator;
+        this.mutationOperator = mutator;
     }
 
     public InterfaceMutation getMutationOperator() {
-        return this.m_MutationOperator;
+        return this.mutationOperator;
     }
 
     public String mutationOperatorTipText() {
@@ -932,11 +929,11 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
         if (mutprob > 1) {
             mutprob = 1;
         }
-        m_MutationProbability = mutprob;
+        mutationProbability = mutprob;
     }
 
     public double getMutationProbability() {
-        return m_MutationProbability;
+        return mutationProbability;
     }
 
     public String mutationProbabilityTipText() {
@@ -950,11 +947,11 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      * @param crossover The crossover operator.
      */
     public void setCrossoverOperator(InterfaceCrossover crossover) {
-        this.m_CrossoverOperator = crossover;
+        this.crossoverOperator = crossover;
     }
 
     public InterfaceCrossover getCrossoverOperator() {
-        return this.m_CrossoverOperator;
+        return this.crossoverOperator;
     }
 
     public String crossoverOperatorTipText() {
@@ -967,17 +964,17 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      * @param prob
      */
     public void setCrossoverProbability(double prob) {
-        this.m_CrossoverProbability = prob;
-        if (this.m_CrossoverProbability > 1) {
-            this.m_CrossoverProbability = 1;
+        this.crossoverProbability = prob;
+        if (this.crossoverProbability > 1) {
+            this.crossoverProbability = 1;
         }
-        if (this.m_CrossoverProbability < 0) {
-            this.m_CrossoverProbability = 0;
+        if (this.crossoverProbability < 0) {
+            this.crossoverProbability = 0;
         }
     }
 
     public double getCrossoverProbability() {
-        return this.m_CrossoverProbability;
+        return this.crossoverProbability;
     }
 
     public String crossoverProbabilityTipText() {
@@ -985,11 +982,11 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
     }
 
     public InterfaceInitialization getInitOperator() {
-        return m_InitOperator;
+        return initializationOperator;
     }
 
     public void setInitOperator(InterfaceInitialization mInitOperator) {
-        m_InitOperator = mInitOperator;
+        initializationOperator = mInitOperator;
     }
 
     public String initOperatorTipText() {
@@ -1004,7 +1001,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      * @param obj The object that is to be stored.
      */
     public void putData(String name, Object obj) {
-        m_dataHash.put(name, obj);
+        dataHash.put(name, obj);
     }
 
     /**
@@ -1020,7 +1017,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
 //        if (name.equalsIgnoreCase("SelectionProbabilityArray")) return this.getSelectionProbability();
 //        if (name.equalsIgnoreCase("Fitness")) return this.getFitness();
 //        if (name.equalsIgnoreCase("FitnessArray")) return this.getFitness();
-        Object data = m_dataHash.get(name);
+        Object data = dataHash.get(name);
         if (data == null) { // Fitness is actually in use... so lets have a minor special treatment
 //    		try {
             if (name.compareToIgnoreCase("Fitness") == 0) {
@@ -1045,7 +1042,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      * @return true if data is associated with the key, else false
      */
     public boolean hasData(String key) {
-        if (m_dataHash.get(key) == null) {
+        if (dataHash.get(key) == null) {
             return (key.compareToIgnoreCase("Fitness") == 0);
         } else {
             return true;
@@ -1323,7 +1320,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
 //        else return this.getFitness();
 //    }
     public boolean isDominantNotEqual(double[] otherFitness) {
-        return isDominatingFitnessNotEqual(m_Fitness, otherFitness);
+        return isDominatingFitnessNotEqual(fitness, otherFitness);
     }
 
     /**
@@ -1332,7 +1329,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      */
     @Override
     public boolean isDominant(double[] otherFitness) {
-        return isDominatingFitness(m_Fitness, otherFitness);
+        return isDominatingFitness(fitness, otherFitness);
     }
 
     /**

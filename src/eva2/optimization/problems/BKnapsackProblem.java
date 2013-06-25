@@ -154,7 +154,7 @@ public class BKnapsackProblem extends AbstractProblemBinary implements java.io.S
     /** This method inits the Problem to log multiruns
      */
     @Override
-    public void initProblem() {
+    public void initializeProblem() {
         // nothing to init here
     }
 
@@ -340,7 +340,7 @@ public class BKnapsackProblem extends AbstractProblemBinary implements java.io.S
         result.append(this.m_Punish);
         result.append("\n");
         result.append("Solution representation:\n");
-        //result += this.m_Template.getSolutionRepresentationFor();
+        //result += this.template.getSolutionRepresentationFor();
         return result.toString();
     }
 
@@ -380,10 +380,10 @@ public class BKnapsackProblem extends AbstractProblemBinary implements java.io.S
      * @param indy The EAIndividual type
      */
     public void setEAIndividual(InterfaceDataTypeBinary indy) {
-        this.m_Template = (AbstractEAIndividual) indy;
+        this.template = (AbstractEAIndividual) indy;
     }
     public InterfaceDataTypeBinary getEAIndividual() {
-        return (InterfaceDataTypeBinary) this.m_Template;
+        return (InterfaceDataTypeBinary) this.template;
     }
     public String EAIndividualTipText() {
         return "Choose the EA-individual to use.";

@@ -104,32 +104,32 @@ public class SimpleProblemWrapper extends AbstractOptimizationProblem {
 	}
 	
 	@Override
-	public void initPopulation(Population population) {
+	public void initializePopulation(Population population) {
         initTemplate();
-        AbstractOptimizationProblem.defaultInitPopulation(population, m_Template, this);
+        AbstractOptimizationProblem.defaultInitPopulation(population, template, this);
 	}
 
 	@Override
-	public void initProblem() {
+	public void initializeProblem() {
 		bestIndy = null;
 		initTemplate();
 		setSimpleProblem(getSimpleProblem()); // possibly create plot
-		BeanInspector.callIfAvailable(simProb, "initProblem", null);	// possibly call initProblem of subproblem  
+		BeanInspector.callIfAvailable(simProb, "initializeProblem", null);	// possibly call initializeProblem of subproblem
 	}
 
 	protected void initTemplate() {
 		if (resetTemplate) {
 			if (simProb instanceof SimpleProblemDouble) {
-				this.m_Template         = new ESIndividualDoubleData();
+				this.template = new ESIndividualDoubleData();
 			} else if (simProb instanceof SimpleProblemBinary) {
-				this.m_Template         = new GAIndividualBinaryData();
+				this.template = new GAIndividualBinaryData();
 			}
 		}
-		if (m_Template instanceof InterfaceDataTypeDouble) {
-			((InterfaceDataTypeDouble)this.m_Template).setDoubleDataLength(simProb.getProblemDimension());
-			((InterfaceDataTypeDouble)this.m_Template).SetDoubleRange(makeRange());
-		} else if (m_Template instanceof InterfaceDataTypeBinary) {
-			((InterfaceDataTypeBinary)this.m_Template).setBinaryDataLength(simProb.getProblemDimension());
+		if (template instanceof InterfaceDataTypeDouble) {
+			((InterfaceDataTypeDouble)this.template).setDoubleDataLength(simProb.getProblemDimension());
+			((InterfaceDataTypeDouble)this.template).SetDoubleRange(makeRange());
+		} else if (template instanceof InterfaceDataTypeBinary) {
+			((InterfaceDataTypeBinary)this.template).setBinaryDataLength(simProb.getProblemDimension());
 		} else {
                 System.err.println("Individual type not valid!");
             }
@@ -245,7 +245,7 @@ public class SimpleProblemWrapper extends AbstractOptimizationProblem {
 	
 	public void setIndividualTemplate(AbstractEAIndividual indy) {
 		resetTemplate = false;
-		m_Template = indy;
+		template = indy;
 	}
     
     @Override

@@ -66,7 +66,7 @@ public class PopulationBasedIncrementalLearning implements InterfaceOptimizer, j
 
     @Override
     public void init() {
-        this.m_Problem.initPopulation(this.m_Population);
+        this.m_Problem.initializePopulation(this.m_Population);
         if ((m_initialProbabilities != null) && (m_initialProbabilities.length == ((PBILPopulation) m_Population).getProbabilityVector().length)) {
             ((PBILPopulation) m_Population).setProbabilityVector(m_initialProbabilities);
         } else {

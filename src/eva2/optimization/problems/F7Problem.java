@@ -26,7 +26,7 @@ public class F7Problem extends AbstractProblemDoubleOffset implements Serializab
         tag[0] = new Tag(0, "Function Calls");
         tag[1] = new Tag(1, "Generation");
         this.m_TimeIntervalType    = new SelectedTag(0, tag);
-        this.m_Template         = new ESIndividualDoubleData();
+        this.template = new ESIndividualDoubleData();
     }
     public F7Problem(F7Problem b) {
         super(b);
@@ -74,14 +74,14 @@ public class F7Problem extends AbstractProblemDoubleOffset implements Serializab
     public double[] eval(double[] x) {
     	x = rotateMaybe(x);
         double[] result = new double[1];
-        result[0]     = m_YOffset;
+        result[0]     = yOffset;
         if ((Math.floor(this.m_CurrentTimeStamp / this.m_t)%2) == 0) {
             for (int i = 0; i < x.length-1; i++) {
-                result[0]  += Math.pow(x[i]-m_XOffset, 2);
+                result[0]  += Math.pow(x[i]- xOffset, 2);
             }
         } else {
             for (int i = 0; i < x.length-1; i++) {
-                result[0]  += Math.pow(x[i]-m_XOffset-this.m_Change, 2);
+                result[0]  += Math.pow(x[i]- xOffset -this.m_Change, 2);
             }
         }
         return result;
@@ -95,10 +95,10 @@ public class F7Problem extends AbstractProblemDoubleOffset implements Serializab
 
         result += "F7 Sphere Model, changing Environemt:\n";
         result += "Parameters:\n";
-        result += "Dimension   : " + this.m_ProblemDimension +"\n";
+        result += "Dimension   : " + this.problemDimension +"\n";
         result += "Noise level : " + this.getNoise() + "\n";
         result += "Solution representation:\n";
-        //result += this.m_Template.getSolutionRepresentationFor();
+        //result += this.template.getSolutionRepresentationFor();
         return result;
     }
 

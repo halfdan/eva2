@@ -123,7 +123,7 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
              }
              this.m_Islands = new InterfaceOptimizer[nodesList.length];
              for (int i = 0; i < nodesList.length; i++) {
-             this.m_Islands[i] = (InterfaceOptimizer) RMIProxyRemoteThread.newInstance(this.m_Optimizer, nodesList[i]);
+             this.m_Islands[i] = (InterfaceOptimizer) RMIProxyRemoteThread.newInstance(this.optimizer, nodesList[i]);
              this.m_Islands[i].setIdentifier(""+i);
              this.m_Islands[i].init();
              if (this.m_LogLocalChanges) {
@@ -201,7 +201,7 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
              }
              this.m_Islands = new InterfaceOptimizer[nodesList.length];
              for (int i = 0; i < nodesList.length; i++) {
-             this.m_Islands[i] = (InterfaceOptimizer) RMIProxyRemoteThread.newInstance(this.m_Optimizer, nodesList[i]);
+             this.m_Islands[i] = (InterfaceOptimizer) RMIProxyRemoteThread.newInstance(this.optimizer, nodesList[i]);
              this.m_Islands[i].setIdentifier(""+i);
              this.m_Islands[i].init();
              if (this.m_LogLocalChanges) {
@@ -365,7 +365,7 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
             result += this.m_Optimizer.getStringRepresentation() + "\n";
         }
         //result += "=> The Optimization Problem: ";
-        //result += this.m_Problem.getStringRepresentationForProblem(this) +"\n";
+        //result += this.problem.getStringRepresentationForProblem(this) +"\n";
         //result += this.m_Population.getStringRepresentation();
         return result;
     }
@@ -387,9 +387,9 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
             ((MultiObjectiveEA) imea.m_Optimizer).getPopulation().setTargetSize(50);
             imea.m_Problem = new TF1Problem();
             ((TF1Problem) imea.m_Problem).setEAIndividual(new ESIndividualDoubleData());
-//            ((TF1Problem)imea.m_Problem).setEAIndividual(new ESIndividualDoubleData());
-//            imea.m_Problem      = new TFPortfolioSelectionProblem();
-//            ((TFPortfolioSelectionProblem)imea.m_Problem).setEAIndividual(new ESIndividualDoubleData());
+//            ((TF1Problem)imea.problem).setEAIndividual(new ESIndividualDoubleData());
+//            imea.problem      = new TFPortfolioSelectionProblem();
+//            ((TFPortfolioSelectionProblem)imea.problem).setEAIndividual(new ESIndividualDoubleData());
             if (false) {
                 MOClusteringSeparation c = new MOClusteringSeparation();
                 c.getKMeans().setUseSearchSpace(false);

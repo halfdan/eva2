@@ -73,6 +73,5 @@ public class F16Problem extends AbstractProblemDouble implements InterfaceMultim
     @Override
 	public SolutionHistogram getHistogram() {
 		return new SolutionHistogram(-0.001, 0.599, 15);
-//		return new SolutionHistogram(-0.001, 0.099, 5);
 	}
 }

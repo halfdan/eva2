@@ -14,8 +14,8 @@ public class F14Problem extends AbstractProblemDoubleOffset implements Interface
 	double rotationDX = 2;
 	
 	public F14Problem() {
-        this.m_Template         = new ESIndividualDoubleData();
-        this.m_ProblemDimension = 2;
+        this.template = new ESIndividualDoubleData();
+        this.problemDimension = 2;
     }
     
     public F14Problem(F14Problem b) {
@@ -34,8 +34,8 @@ public class F14Problem extends AbstractProblemDoubleOffset implements Interface
     @Override
     public double[] eval(double[] x) {
         double[] result = new double[1];
-        double x0 = x[0]-rotationDX-m_XOffset;
-        double x1 = x[1]-rotationDX-m_XOffset;
+        double x0 = x[0]-rotationDX- xOffset;
+        double x1 = x[1]-rotationDX- xOffset;
         if (rotation != 0.) {
 			double cosw = Math.cos(rotation);
 			double sinw = Math.sin(rotation);
@@ -45,7 +45,7 @@ public class F14Problem extends AbstractProblemDoubleOffset implements Interface
 			x0=tmpx0;
         }
         //matlab: 40 + (- exp(cos(5*X)+cos(3*Y)) .* exp(-X.^2) .* (-.05*Y.^2+5));
-        result[0] = m_YOffset+36.9452804947;//36.945280494653247;
+        result[0] = yOffset +36.9452804947;//36.945280494653247;
         result[0] += (-Math.exp(Math.cos(3*x0)+Math.cos(6*x1)) * Math.exp(-x0*x0/10) * (-.05*x1*x1+5));
 
         return result;
@@ -71,7 +71,7 @@ public class F14Problem extends AbstractProblemDoubleOffset implements Interface
 
         result += "F14 function:\n";
         result += "Several local minima in linear order which may be rotated.\n";
-        //result += this.m_Template.getSolutionRepresentationFor();
+        //result += this.template.getSolutionRepresentationFor();
         return result;
     }
 

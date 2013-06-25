@@ -124,7 +124,7 @@ public class OptimizerFactory {
             double lambda, double CR,
             InterfacePopulationChangedEventListener listener) {
 
-        problem.initProblem();
+        problem.initializeProblem();
 
         setTemplateOperators(problem, new NoMutation(), 0, new NoCrossover(), 0);
 
@@ -205,7 +205,7 @@ public class OptimizerFactory {
             InterfaceSelection selection, AbstractOptimizationProblem problem,
             InterfacePopulationChangedEventListener listener) {
 
-        problem.initProblem();
+        problem.initializeProblem();
 
         AbstractEAIndividual tmpIndi = problem.getIndividualTemplate();
         AbstractEAIndividual.setOperators(tmpIndi, mutationoperator, pm, crossoveroperator, pc);
@@ -243,7 +243,7 @@ public class OptimizerFactory {
             AbstractOptimizationProblem problem,
             InterfacePopulationChangedEventListener listener) {
 
-        problem.initProblem();
+        problem.initializeProblem();
 
         setTemplateOperators(problem, mut, pm, cross, pc);
 
@@ -317,7 +317,7 @@ public class OptimizerFactory {
             AbstractOptimizationProblem problem,
             InterfacePopulationChangedEventListener listener) {
 
-        problem.initProblem();
+        problem.initializeProblem();
         subOpt.setProblem(problem);
 
         return new MultiObjectiveEA(subOpt, archiving, archiveSize,
@@ -335,7 +335,7 @@ public class OptimizerFactory {
 
         System.err.println("Currently not implemented!");
 
-        problem.initProblem();
+        problem.initializeProblem();
 
         AbstractEAIndividual tmpIndi = problem.getIndividualTemplate();
         tmpIndi.setCrossoverOperator(new NoCrossover());
@@ -375,7 +375,7 @@ public class OptimizerFactory {
             AbstractOptimizationProblem problem,
             InterfacePopulationChangedEventListener listener) {
 
-        problem.initProblem();
+        problem.initializeProblem();
 
         setTemplateOperators(problem, mutator, 1., new NoCrossover(), 0);
 
@@ -406,7 +406,7 @@ public class OptimizerFactory {
             AbstractOptimizationProblem problem, int popsize,
             InterfacePopulationChangedEventListener listener) {
 
-        problem.initProblem();
+        problem.initializeProblem();
         setTemplateOperators(problem, new NoMutation(), 0, new NoCrossover(), 0);
 
         MonteCarloSearch mc = new MonteCarloSearch();
@@ -443,7 +443,7 @@ public class OptimizerFactory {
             double phi2, double speedLim, PSOTopologyEnum selectedTopology, int topologyRange,
             InterfacePopulationChangedEventListener listener) {
 
-        problem.initProblem();
+        problem.initializeProblem();
 
         setTemplateOperators(problem, new NoMutation(), 0, new NoCrossover(), 0);
 
@@ -484,7 +484,7 @@ public class OptimizerFactory {
             double temperature, InterfaceMutation mut,
             InterfacePopulationChangedEventListener listener) {
 
-        problem.initProblem();
+        problem.initializeProblem();
 
         setTemplateOperators(problem, mut, 1, new NoCrossover(), 0);
 
@@ -520,7 +520,7 @@ public class OptimizerFactory {
             double learningRate, double mutateSigma, double mutationRate,
             int positiveSamples, InterfaceSelection selection, int popsize,
             AbstractOptimizationProblem problem, InterfacePopulationChangedEventListener listener) {
-        problem.initProblem();
+        problem.initializeProblem();
         PopulationBasedIncrementalLearning pbil = new PopulationBasedIncrementalLearning();
 
         pbil.setLearningRate(learningRate);
@@ -771,7 +771,7 @@ public class OptimizerFactory {
             InterfaceTerminator term) {
         Population pop = new Population(popSize);
         RNG.setRandomSeed(seed);
-        problem.initPopulation(pop);
+        problem.initializePopulation(pop);
         return makeParams(opt, pop, problem, seed, term);
     }
 

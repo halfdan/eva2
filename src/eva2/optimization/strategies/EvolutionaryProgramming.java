@@ -49,7 +49,7 @@ public class EvolutionaryProgramming implements InterfaceOptimizer, java.io.Seri
 
     @Override
     public void init() {
-        this.m_Problem.initPopulation(this.m_Population);
+        this.m_Problem.initializePopulation(this.m_Population);
         this.evaluatePopulation(this.m_Population);
         this.m_PopulationSize = this.m_Population.size();
         this.firePropertyChangedEvent(Population.nextGenerationPerformed);

@@ -32,31 +32,31 @@ import java.util.BitSet;
  */
 public class CHCAdaptiveSearchAlgorithm implements InterfaceOptimizer, java.io.Serializable {
 
-    private double m_InitialDifferenceThreshold = 0.25;
-    private int m_DifferenceThreshold;
-    private double m_DivergenceRate = 0.35;
-    private boolean m_UseElitism = true;
-    private int m_NumberOfPartners = 1;
-    private Population m_Population = new Population();
-    private InterfaceOptimizationProblem m_Problem = new B1Problem();
-    private InterfaceSelection m_RecombSelectionOperator = new SelectRandom();
-    private InterfaceSelection m_PopulSelectionOperator = new SelectBestSingle();
-    transient private String m_Identifier = "";
-    transient private InterfacePopulationChangedEventListener m_Listener;
+    private double initialDifferenceThreshold = 0.25;
+    private int differenceThreshold;
+    private double divergenceRate = 0.35;
+    private boolean useElitism = true;
+    private int numberOfPartners = 1;
+    private Population population = new Population();
+    private InterfaceOptimizationProblem optimizationProblem = new B1Problem();
+    private InterfaceSelection recombSelectionOperator = new SelectRandom();
+    private InterfaceSelection populationSelectionOperator = new SelectBestSingle();
+    transient private String identifier = "";
+    transient private InterfacePopulationChangedEventListener interfacePopulationChangedEventListener;
 
     public CHCAdaptiveSearchAlgorithm() {
     }
 
     public CHCAdaptiveSearchAlgorithm(CHCAdaptiveSearchAlgorithm a) {
-        this.m_Population = (Population) a.m_Population.clone();
-        this.m_Problem = (InterfaceOptimizationProblem) a.m_Problem.clone();
-        this.m_InitialDifferenceThreshold = a.m_InitialDifferenceThreshold;
-        this.m_DifferenceThreshold = a.m_DifferenceThreshold;
-        this.m_DivergenceRate = a.m_DivergenceRate;
-        this.m_NumberOfPartners = a.m_NumberOfPartners;
-        this.m_UseElitism = a.m_UseElitism;
-        this.m_RecombSelectionOperator = (InterfaceSelection) a.m_RecombSelectionOperator.clone();
-        this.m_PopulSelectionOperator = (InterfaceSelection) a.m_PopulSelectionOperator.clone();
+        this.population = (Population) a.population.clone();
+        this.optimizationProblem = (InterfaceOptimizationProblem) a.optimizationProblem.clone();
+        this.initialDifferenceThreshold = a.initialDifferenceThreshold;
+        this.differenceThreshold = a.differenceThreshold;
+        this.divergenceRate = a.divergenceRate;
+        this.numberOfPartners = a.numberOfPartners;
+        this.useElitism = a.useElitism;
+        this.recombSelectionOperator = (InterfaceSelection) a.recombSelectionOperator.clone();
+        this.populationSelectionOperator = (InterfaceSelection) a.populationSelectionOperator.clone();
     }
 
     @Override
@@ -66,15 +66,15 @@ public class CHCAdaptiveSearchAlgorithm implements InterfaceOptimizer, java.io.S
 
     @Override
     public void init() {
-        this.m_Problem.initPopulation(this.m_Population);
-        AbstractEAIndividual tmpIndy = ((AbstractEAIndividual) (this.m_Population.get(0)));
+        this.optimizationProblem.initializePopulation(this.population);
+        AbstractEAIndividual tmpIndy = ((AbstractEAIndividual) (this.population.get(0)));
         if (tmpIndy instanceof InterfaceGAIndividual) {
-            this.m_DifferenceThreshold = (int) (((InterfaceGAIndividual) tmpIndy).getGenotypeLength() * this.m_InitialDifferenceThreshold);
+            this.differenceThreshold = (int) (((InterfaceGAIndividual) tmpIndy).getGenotypeLength() * this.initialDifferenceThreshold);
         } else {
             System.out.println("Problem does not apply InterfaceGAIndividual, which is the only individual type valid for CHC!");
         }
 
-        this.evaluatePopulation(this.m_Population);
+        this.evaluatePopulation(this.population);
         this.firePropertyChangedEvent(Population.nextGenerationPerformed);
     }
 
@@ -86,19 +86,19 @@ public class CHCAdaptiveSearchAlgorithm implements InterfaceOptimizer, java.io.S
      */
     @Override
     public void initByPopulation(Population pop, boolean reset) {
-        this.m_Population = (Population) pop.clone();
+        this.population = (Population) pop.clone();
         if (reset) {
-            this.m_Population.init();
+            this.population.init();
         }
-        AbstractEAIndividual tmpIndy = ((AbstractEAIndividual) (this.m_Population.get(0)));
+        AbstractEAIndividual tmpIndy = ((AbstractEAIndividual) (this.population.get(0)));
         if (tmpIndy instanceof InterfaceGAIndividual) {
-            this.m_DifferenceThreshold = (int) (((InterfaceGAIndividual) tmpIndy).getGenotypeLength() * this.m_InitialDifferenceThreshold);
+            this.differenceThreshold = (int) (((InterfaceGAIndividual) tmpIndy).getGenotypeLength() * this.initialDifferenceThreshold);
         } else {
             System.out.println("Problem does not apply InterfaceGAIndividual, which is the only individual type valid for CHC!");
         }
 
         if (reset) {
-            this.evaluatePopulation(this.m_Population);
+            this.evaluatePopulation(this.population);
             this.firePropertyChangedEvent(Population.nextGenerationPerformed);
         }
     }
@@ -109,7 +109,7 @@ public class CHCAdaptiveSearchAlgorithm implements InterfaceOptimizer, java.io.S
      * @param population The population that is to be evaluated
      */
     private void evaluatePopulation(Population population) {
-        this.m_Problem.evaluate(population);
+        this.optimizationProblem.evaluate(population);
         population.incrGeneration();
     }
 
@@ -118,16 +118,16 @@ public class CHCAdaptiveSearchAlgorithm implements InterfaceOptimizer, java.io.S
      * population of evaluated individuals.
      */
     private Population generateChildren() {
-        Population result = this.m_Population.cloneWithoutInds(), parents, partners;
+        Population result = this.population.cloneWithoutInds(), parents, partners;
         AbstractEAIndividual[] offSprings;
         AbstractEAIndividual tmpIndy;
 
         result.clear();
-//        this.m_NormationOperator.computeSelectionProbability(this.m_Population, "Fitness");
-        //System.out.println("Population:"+this.m_Population.getSolutionRepresentationFor());
-        this.m_PopulSelectionOperator.prepareSelection(this.m_Population);
-        this.m_RecombSelectionOperator.prepareSelection(this.m_Population);
-        parents = this.m_PopulSelectionOperator.selectFrom(this.m_Population, this.m_Population.getTargetSize());
+//        this.m_NormationOperator.computeSelectionProbability(this.population, "Fitness");
+        //System.out.println("Population:"+this.population.getSolutionRepresentationFor());
+        this.populationSelectionOperator.prepareSelection(this.population);
+        this.recombSelectionOperator.prepareSelection(this.population);
+        parents = this.populationSelectionOperator.selectFrom(this.population, this.population.getTargetSize());
         //System.out.println("Parents:"+parents.getSolutionRepresentationFor());
 
         for (int i = 0; i < parents.size(); i++) {
@@ -135,12 +135,12 @@ public class CHCAdaptiveSearchAlgorithm implements InterfaceOptimizer, java.io.S
             if (tmpIndy == null) {
                 System.out.println("Individual null " + i);
             }
-            if (this.m_Population == null) {
+            if (this.population == null) {
                 System.out.println("population null " + i);
             }
 
-            partners = this.m_RecombSelectionOperator.findPartnerFor(tmpIndy, this.m_Population, this.m_NumberOfPartners);
-            if (this.computeHammingDistance(tmpIndy, partners) > this.m_DifferenceThreshold) {
+            partners = this.recombSelectionOperator.findPartnerFor(tmpIndy, this.population, this.numberOfPartners);
+            if (this.computeHammingDistance(tmpIndy, partners) > this.differenceThreshold) {
                 offSprings = tmpIndy.mateWith(partners);
                 for (int j = 0; j < offSprings.length; j++) {
                     offSprings[j].mutate();
@@ -182,17 +182,17 @@ public class CHCAdaptiveSearchAlgorithm implements InterfaceOptimizer, java.io.S
      * mutation rate.
      */
     private void diverge() {
-        AbstractEAIndividual best = this.m_Population.getBestEAIndividual();
+        AbstractEAIndividual best = this.population.getBestEAIndividual();
         InterfaceGAIndividual mutant;
         BitSet tmpBitSet;
 
-        this.m_Population.clear();
-        this.m_Population.add(best);
-        for (int i = 1; i < this.m_Population.getTargetSize(); i++) {
+        this.population.clear();
+        this.population.add(best);
+        for (int i = 1; i < this.population.getTargetSize(); i++) {
             mutant = (InterfaceGAIndividual) best.clone();
             tmpBitSet = mutant.getBGenotype();
             for (int j = 0; j < mutant.getGenotypeLength(); j++) {
-                if (RNG.flipCoin(this.m_DivergenceRate)) {
+                if (RNG.flipCoin(this.divergenceRate)) {
                     if (tmpBitSet.get(j)) {
                         tmpBitSet.clear(j);
                     } else {
@@ -201,13 +201,13 @@ public class CHCAdaptiveSearchAlgorithm implements InterfaceOptimizer, java.io.S
                 }
             }
             mutant.SetBGenotype(tmpBitSet);
-            this.m_Population.add(mutant);
+            this.population.add(mutant);
         }
         if (best instanceof InterfaceGAIndividual) {
-            this.m_DifferenceThreshold = (int) (this.m_DivergenceRate * (1 - this.m_DivergenceRate) * ((InterfaceGAIndividual) best).getGenotypeLength());
+            this.differenceThreshold = (int) (this.divergenceRate * (1 - this.divergenceRate) * ((InterfaceGAIndividual) best).getGenotypeLength());
 
         }
-        this.evaluatePopulation(this.m_Population);
+        this.evaluatePopulation(this.population);
     }
 
     @Override
@@ -215,39 +215,39 @@ public class CHCAdaptiveSearchAlgorithm implements InterfaceOptimizer, java.io.S
         Population nextGeneration, tmp;
         //AbstractEAIndividual   elite;
 
-        if (this.m_DifferenceThreshold < 0) {
+        if (this.differenceThreshold < 0) {
             this.diverge();
         } else {
             nextGeneration = this.generateChildren();
             if (nextGeneration.size() == 0) {
-                this.m_DifferenceThreshold--;
+                this.differenceThreshold--;
             } else {
                 this.evaluatePopulation(nextGeneration);
-                if (nextGeneration.getWorstEAIndividual().getFitness(0) > this.m_Population.getBestEAIndividual().getFitness(0)) {
-                    this.m_DifferenceThreshold--;
+                if (nextGeneration.getWorstEAIndividual().getFitness(0) > this.population.getBestEAIndividual().getFitness(0)) {
+                    this.differenceThreshold--;
                 }
             }
-            nextGeneration.addPopulation(this.m_Population);
+            nextGeneration.addPopulation(this.population);
 //            this.m_NormationOperator.computeSelectionProbability(nextGeneration, "Fitness");
-            this.m_PopulSelectionOperator.prepareSelection(this.m_Population);
-            tmp = this.m_PopulSelectionOperator.selectFrom(nextGeneration, this.m_Population.getTargetSize());
+            this.populationSelectionOperator.prepareSelection(this.population);
+            tmp = this.populationSelectionOperator.selectFrom(nextGeneration, this.population.getTargetSize());
             nextGeneration.clear();
             nextGeneration.addPopulation(tmp);
-            this.m_Population = nextGeneration;
+            this.population = nextGeneration;
         }
         this.firePropertyChangedEvent(Population.nextGenerationPerformed);
     }
 
     @Override
     public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
-        this.m_Listener = ea;
+        this.interfacePopulationChangedEventListener = ea;
     }
 
     @Override
     public boolean removePopulationChangedEventListener(
             InterfacePopulationChangedEventListener ea) {
-        if (m_Listener == ea) {
-            m_Listener = null;
+        if (interfacePopulationChangedEventListener == ea) {
+            interfacePopulationChangedEventListener = null;
             return true;
         } else {
             return false;
@@ -258,8 +258,8 @@ public class CHCAdaptiveSearchAlgorithm implements InterfaceOptimizer, java.io.S
      * Something has changed
      */
     protected void firePropertyChangedEvent(String name) {
-        if (this.m_Listener != null) {
-            this.m_Listener.registerPopulationStateChanged(this, name);
+        if (this.interfacePopulationChangedEventListener != null) {
+            this.interfacePopulationChangedEventListener.registerPopulationStateChanged(this, name);
         }
     }
 
@@ -270,12 +270,12 @@ public class CHCAdaptiveSearchAlgorithm implements InterfaceOptimizer, java.io.S
      */
     @Override
     public void setProblem(InterfaceOptimizationProblem problem) {
-        this.m_Problem = problem;
+        this.optimizationProblem = problem;
     }
 
     @Override
     public InterfaceOptimizationProblem getProblem() {
-        return this.m_Problem;
+        return this.optimizationProblem;
     }
 
     /**
@@ -289,8 +289,8 @@ public class CHCAdaptiveSearchAlgorithm implements InterfaceOptimizer, java.io.S
         String result = "";
         result += "CHC Adaptive Search Algorithm:\n";
         result += "Optimization Problem: ";
-        result += this.m_Problem.getStringRepresentationForProblem(this) + "\n";
-        result += this.m_Population.getStringRepresentation();
+        result += this.optimizationProblem.getStringRepresentationForProblem(this) + "\n";
+        result += this.population.getStringRepresentation();
         return result;
     }
 
@@ -301,12 +301,12 @@ public class CHCAdaptiveSearchAlgorithm implements InterfaceOptimizer, java.io.S
      */
     @Override
     public void setIdentifier(String name) {
-        this.m_Identifier = name;
+        this.identifier = name;
     }
 
     @Override
     public String getIdentifier() {
-        return this.m_Identifier;
+        return this.identifier;
     }
 
     /**
@@ -341,12 +341,12 @@ public class CHCAdaptiveSearchAlgorithm implements InterfaceOptimizer, java.io.S
      */
     @Override
     public Population getPopulation() {
-        return this.m_Population;
+        return this.population;
     }
 
     @Override
     public void setPopulation(Population pop) {
-        this.m_Population = pop;
+        this.population = pop;
     }
 
     public String populationTipText() {
@@ -376,11 +376,11 @@ public class CHCAdaptiveSearchAlgorithm implements InterfaceOptimizer, java.io.S
      * @param elitism
      */
     public void setElitism(boolean elitism) {
-        this.m_UseElitism = elitism;
+        this.useElitism = elitism;
     }
 
     public boolean getElitism() {
-        return this.m_UseElitism;
+        return this.useElitism;
     }
 
     public String elitismTipText() {
@@ -396,11 +396,11 @@ public class CHCAdaptiveSearchAlgorithm implements InterfaceOptimizer, java.io.S
         if (partners < 0) {
             partners = 0;
         }
-        this.m_NumberOfPartners = partners;
+        this.numberOfPartners = partners;
     }
 
     public int getNumberOfPartners() {
-        return this.m_NumberOfPartners;
+        return this.numberOfPartners;
     }
 
     public String numberOfPartnersTipText() {

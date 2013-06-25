@@ -35,9 +35,9 @@ public class F4Problem extends AbstractProblemDoubleOffset implements Serializab
     public double[] eval(double[] x) {
     	x = rotateMaybe(x);
         double[] result = new double[1];
-        result[0]     = m_YOffset;
+        result[0]     = yOffset;
         for (int i = 0; i < x.length-1; i++) {
-            result[0]  += (i+1)*Math.pow((x[i]-m_XOffset), 4);
+            result[0]  += (i+1)*Math.pow((x[i]- xOffset), 4);
         }
         return result;
     }
@@ -51,10 +51,10 @@ public class F4Problem extends AbstractProblemDoubleOffset implements Serializab
         result += "F4 Quadratic Function with noise:\n";
         result += "This problem is noisey.\n";
         result += "Parameters:\n";
-        result += "Dimension   : " + this.m_ProblemDimension +"\n";
+        result += "Dimension   : " + this.problemDimension +"\n";
         result += "Noise level : " + this.getNoise() + "\n";
         result += "Solution representation:\n";
-        //result += this.m_Template.getSolutionRepresentationFor();
+        //result += this.template.getSolutionRepresentationFor();
         return result;
     }
 

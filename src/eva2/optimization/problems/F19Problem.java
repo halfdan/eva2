@@ -35,8 +35,8 @@ InterfaceMultimodalProblem, InterfaceInterestingHistogram, InterfaceFirstOrderDe
 	}
 
     @Override
-	public void initProblem() {
-		super.initProblem();
+	public void initializeProblem() {
+		super.initializeProblem();
 //		if (alphas==null) {
 			// create static random data
 			Random rand = new Random(randSeed);

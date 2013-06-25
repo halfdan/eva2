@@ -82,10 +82,10 @@ public class HCParameters extends AbstractGOParameters implements InterfaceGOPar
      * @return The population of current solutions to a given problem.
      */
     public Population getPopulation() {
-        return ((HillClimbing) this.m_Optimizer).getPopulation();
+        return ((HillClimbing) this.optimizer).getPopulation();
     }
     public void setPopulation(Population pop){
-        ((HillClimbing) this.m_Optimizer).setPopulation(pop);
+        ((HillClimbing) this.optimizer).setPopulation(pop);
     }
     public String populationTipText() {
         return "Edit the properties of the population used.";

@@ -5,7 +5,7 @@ import eva2.optimization.individuals.ESIndividualDoubleData;
 public class F9Problem extends AbstractProblemDoubleOffset implements java.io.Serializable {
 
     public F9Problem() {
-        this.m_Template         = new ESIndividualDoubleData();
+        this.template = new ESIndividualDoubleData();
     }
     public F9Problem(F9Problem b) {
         super(b);
@@ -27,9 +27,9 @@ public class F9Problem extends AbstractProblemDoubleOffset implements java.io.Se
     public double[] eval(double[] x) {
     	x = rotateMaybe(x);
         double[] result = new double[1];
-        result[0]     = m_YOffset;
+        result[0]     = yOffset;
         for (int i = 0; i < x.length; i++) {
-            result[0]  += (i+1)*Math.pow(x[i]-m_XOffset, 2);
+            result[0]  += (i+1)*Math.pow(x[i]- xOffset, 2);
         }
         return result;
     }
@@ -42,10 +42,10 @@ public class F9Problem extends AbstractProblemDoubleOffset implements java.io.Se
 
         result += "F9 Weighted Sphere Model:\n";
         result += "Parameters:\n";
-        result += "Dimension   : " + this.m_ProblemDimension +"\n";
+        result += "Dimension   : " + this.problemDimension +"\n";
         result += "Noise level : " + this.getNoise() + "\n";
         result += "Solution representation:\n";
-        //result += this.m_Template.getSolutionRepresentationFor();
+        //result += this.template.getSolutionRepresentationFor();
         return result;
     }
 

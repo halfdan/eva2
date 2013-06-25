@@ -95,7 +95,7 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
         checkPopulationConstraints();
         population.putData(esMuParam, getMu());
         population.putData(esLambdaParam, getLambda());
-        this.optimizationProblem.initPopulation(this.population);
+        this.optimizationProblem.initializePopulation(this.population);
         this.evaluatePopulation(this.population);
     }
 

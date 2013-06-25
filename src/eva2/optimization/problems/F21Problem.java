@@ -44,8 +44,8 @@ public class F21Problem extends AbstractProblemDouble implements InterfaceMultim
 	}
 
 	@Override
-	public void initProblem() {
-		super.initProblem();
+	public void initializeProblem() {
+		super.initializeProblem();
 		Random rnd = new Random(rndSeed);
 		heights=new double[getProblemDimension()];
 		peaks=new double[getProblemDimension()][];

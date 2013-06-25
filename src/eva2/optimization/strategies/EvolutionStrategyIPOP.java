@@ -136,7 +136,7 @@ public class EvolutionStrategyIPOP extends EvolutionStrategies implements Interf
 		bestList.add(best);
 		best = null;
 		Population newPop = getPopulation().cloneWithoutInds();
-		getProblem().initPopulation(newPop); // this is where the reinit event of Pop is called, meaning that the rank-mu-cma matrix is reinitialized as well
+		getProblem().initializePopulation(newPop); // this is where the reinit event of Pop is called, meaning that the rank-mu-cma matrix is reinitialized as well
 		double[] badFit = getPopulation().getBestFitness().clone();
 		Arrays.fill(badFit, Double.MAX_VALUE);
 		newPop.setAllFitnessValues(badFit);

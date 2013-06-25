@@ -36,7 +36,7 @@ import eva2.tools.math.RNG;
  * that case, the default range parameter is not used.
  * 
  * Anything you want to do before any optimization is started on the problem
- * should go into {@link #initProblem()}, but remember to call the super-method
+ * should go into {@link #initializeProblem()}, but remember to call the super-method
  * in your implementation. The individual template will be initialized to an
  * ESIndividualDoubleData by then.
  * 
@@ -44,21 +44,14 @@ import eva2.tools.math.RNG;
  * {@link #getName()} methods to provide some distinctive information for the
  * user.
  * 
- * 
- * @author mkron
- * 
  */
-public abstract class AbstractProblemDouble extends AbstractOptimizationProblem
-		implements InterfaceProblemDouble, Interface2DBorderProblem/*
-																	 * ,
-																	 * InterfaceParamControllable
-																	 */{
+public abstract class AbstractProblemDouble extends AbstractOptimizationProblem implements InterfaceProblemDouble, Interface2DBorderProblem {
 	/**
 	 * Generated serial version identifier.
 	 */
 	private static final long serialVersionUID = -3904130243174390134L;
-	private double m_DefaultRange = 10;
-	private double m_Noise = 0;
+	private double defaultRange = 10;
+	private double noise = 0;
 	private boolean doRotation = false; // should really be false by default
 	private Matrix rotation;
 
@@ -80,14 +73,14 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem
 	}
 
 	protected void initTemplate() {
-		if (m_Template == null) {
-                m_Template = new ESIndividualDoubleData();
+		if (template == null) {
+                template = new ESIndividualDoubleData();
             }
 		if (getProblemDimension() > 0) { // avoid evil case setting dim to 0
 											// during object init
-			((InterfaceDataTypeDouble) this.m_Template)
+			((InterfaceDataTypeDouble) this.template)
 					.setDoubleDataLength(getProblemDimension());
-			((InterfaceDataTypeDouble) this.m_Template)
+			((InterfaceDataTypeDouble) this.template)
 					.SetDoubleRange(makeRange());
 		}
 	}
@@ -97,11 +90,11 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem
 	}
 
 	protected void cloneObjects(AbstractProblemDouble o) {
-		this.m_DefaultRange = o.m_DefaultRange;
-		this.m_Noise = o.m_Noise;
+		this.defaultRange = o.defaultRange;
+		this.noise = o.noise;
 		this.SetDefaultAccuracy(o.getDefaultAccuracy());
-		if (o.m_Template != null) {
-                this.m_Template = (AbstractEAIndividual) o.m_Template.clone();
+		if (o.template != null) {
+                this.template = (AbstractEAIndividual) o.template.clone();
             }
 		if (o.constraintArray != null) {
 			this.constraintArray = o.constraintArray.clone();
@@ -126,11 +119,8 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem
 	 * @return the double solution representation
 	 */
 	protected double[] getEvalArray(AbstractEAIndividual individual) {
-		double[] x = new double[((InterfaceDataTypeDouble) individual)
-				.getDoubleData().length];
-		System.arraycopy(
-				((InterfaceDataTypeDouble) individual).getDoubleData(), 0, x,
-				0, x.length);
+		double[] x = new double[((InterfaceDataTypeDouble) individual).getDoubleData().length];
+		System.arraycopy(((InterfaceDataTypeDouble) individual).getDoubleData(), 0, x, 0, x.length);
 		return x;
 	}
 
@@ -151,9 +141,9 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem
         // evaluate the vector
         fitness = this.eval(x);
         // if indicated, add Gaussian noise
-        if (m_Noise != 0) {
-                RNG.addNoise(fitness, m_Noise);
-            } 
+        if (noise != 0) {
+            RNG.addNoise(fitness, noise);
+        }
         // set the fitness
         setEvalFitness(individual, x, fitness);
         if (isWithConstraints()) {
@@ -165,8 +155,8 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem
 	protected double[] rotateMaybe(double[] x) {
 		if (isDoRotation()) {
 			if (rotation == null) {
-                        initProblem();
-                    }
+                initializeProblem();
+            }
 			x = Mathematics.rotate(x, rotation);
 		}
 		return x;
@@ -175,8 +165,8 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem
 	protected double[] inverseRotateMaybe(double[] x) {
 		if (isDoRotation()) {
 			if (rotation == null) {
-                        initProblem();
-                    }
+                initializeProblem();
+            }
 			x = Mathematics.rotate(x, rotation.inverse());
 		}
 		return x;
@@ -190,16 +180,11 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem
 	 * @param indyPos
 	 *            may contain the decoded individual position
 	 */
-	protected void addConstraints(AbstractEAIndividual individual,
-			double[] indyPos) {
-		AbstractConstraint[] cnstr = getConstraints();
-		for (int i = 0; i < cnstr.length; i++) {
-			// String name= (String)BeanInspector.callIfAvailable(cnstr[i],
-			// "getName", new Object[]{});
-			// System.out.println("checking constraint " + (name==null ?
-			// cnstr[i].getClass().getSimpleName() : name));
-			((AbstractConstraint) cnstr[i]).addViolation(individual, indyPos);
-		}
+	protected void addConstraints(AbstractEAIndividual individual, double[] indyPos) {
+		AbstractConstraint[] contraints = getConstraints();
+        for (AbstractConstraint contraint : contraints) {
+            contraint.addViolation(individual, indyPos);
+        }
 	}
 
 	/**
@@ -210,8 +195,7 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem
 	 * @param x
 	 * @param fit
 	 */
-	protected void setEvalFitness(AbstractEAIndividual individual, double[] x,
-			double[] fit) {
+	protected void setEvalFitness(AbstractEAIndividual individual, double[] x, double[] fit) {
 		individual.setFitness(fit);
 	}
 
@@ -236,10 +220,9 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem
 	public abstract int getProblemDimension();
 
 	@Override
-	public void initPopulation(Population population) {
+	public void initializePopulation(Population population) {
 		initTemplate();
-		AbstractOptimizationProblem.defaultInitPopulation(population,
-				m_Template, this);
+		AbstractOptimizationProblem.defaultInitPopulation(population, template, this);
 	}
 
 	/**
@@ -289,14 +272,13 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem
 	}
 
 	@Override
-	public void initProblem() {
+	public void initializeProblem() {
 		initTemplate();
 		if (isDoRotation()) {
-			rotation = initDefaultRotationMatrix(rotAngle,
-					getProblemDimension());
+			rotation = initializeDefaultRotationMatrix(rotAngle, getProblemDimension());
 		} else {
-                rotation = null;
-            }
+            rotation = null;
+        }
 	}
 
 	/**
@@ -307,17 +289,9 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem
 	 * @param dim
 	 * @return
 	 */
-	public static Matrix initDefaultRotationMatrix(double rotAngle, int dim) {
+	public static Matrix initializeDefaultRotationMatrix(double rotAngle, int dim) {
 		Matrix rotation = null;
-		// Matrix vec = new Matrix(dim, 1);
-		// for (int i=0; i<dim; i++) vec.set(i,0, i+1);
-		// System.out.println(BeanInspector.toString(eval(vec.getColumnPackedCopy())));
-		// rotation = new Matrix(dim, dim);
-		// rotation = Mathematics.getRotationMatrix(vec).transpose();
-		rotation = Mathematics.getRotationMatrix((rotAngle * Math.PI / 180.),
-				dim).transpose();
-		// double[] t= new double[dim]; Arrays.fill(t, 1.);
-		// System.out.println(BeanInspector.toString(rotation.times(t)));
+		rotation = Mathematics.getRotationMatrix((rotAngle * Math.PI / 180.), dim).transpose();
 		return rotation;
 	}
 
@@ -331,9 +305,9 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem
 	 */
 	public void setNoise(double noise) {
 		if (noise < 0) {
-                noise = 0;
-            }
-		this.m_Noise = noise;
+            noise = 0;
+        }
+		this.noise = noise;
 	}
 
 	/**
@@ -342,7 +316,7 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem
 	 * @return the current noise level
 	 */
 	public double getNoise() {
-		return this.m_Noise;
+		return this.noise;
 	}
 
 	public String noiseTipText() {
@@ -356,7 +330,7 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem
 	 *            The EAIndividual type
 	 */
 	public void setEAIndividual(InterfaceDataTypeDouble indy) {
-		this.m_Template = (AbstractEAIndividual) indy;
+		this.template = (AbstractEAIndividual) indy;
 	}
 
 	/**
@@ -366,7 +340,7 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem
 	 */
     @Override
 	public InterfaceDataTypeDouble getEAIndividual() {
-		return (InterfaceDataTypeDouble) this.m_Template;
+		return (InterfaceDataTypeDouble) this.template;
 	}
 
 	public String EAIndividualTipText() {
@@ -379,7 +353,7 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem
 	 * @return value of the absolute range limit
 	 */
 	public double getDefaultRange() {
-		return m_DefaultRange;
+		return defaultRange;
 	}
 
 	/**
@@ -388,7 +362,7 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem
 	 * @param defaultRange
 	 */
 	public void setDefaultRange(double defaultRange) {
-		this.m_DefaultRange = defaultRange;
+		this.defaultRange = defaultRange;
 		initTemplate();
 	}
 
@@ -556,7 +530,7 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem
 		sb.append("Dimension   : ");
 		sb.append(this.getProblemDimension());
 		sb.append("\nNoise level : ");
-		sb.append(this.m_Noise);
+		sb.append(this.noise);
 		return sb.toString();
 	}
 
@@ -664,7 +638,7 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem
 		if (!isShowing && showP) {
 			TopoPlot plot = new TopoPlot(getName(), "x1", "x2");
 			plot.setParams(60, 60, ColorBarCalculator.BLUE_TO_RED);
-			this.initProblem();
+			this.initializeProblem();
 			plot.setTopology(this, makeRange(), true);
 			if (this instanceof InterfaceMultimodalProblemKnown
 					&& ((InterfaceMultimodalProblemKnown) this)

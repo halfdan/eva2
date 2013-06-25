@@ -9,7 +9,7 @@ import java.io.Serializable;
  */
 
 public class F15Problem extends AbstractProblemDouble implements Serializable, InterfaceInterestingHistogram {
-	private int dim=10;
+	private int problemDimension =10;
     
 	public F15Problem() {
 		super();
@@ -24,7 +24,7 @@ public class F15Problem extends AbstractProblemDouble implements Serializable, I
 	
 	public F15Problem(F15Problem o) {
 		super(o);
-		dim=o.getProblemDimension();
+		problemDimension =o.getProblemDimension();
 		setDefaultRange(o.getDefaultRange());
 	}
 	
@@ -41,17 +41,17 @@ public class F15Problem extends AbstractProblemDouble implements Serializable, I
 		
 		s=Math.sin(Math.PI*x[0]);
 		double[] y = new double[1];
-		y[0] = 10.*s*s+sum+dim*(x[dim-1]-1)*(x[dim-1]-1);
+		y[0] = 10.*s*s+sum+ problemDimension *(x[problemDimension -1]-1)*(x[problemDimension -1]-1);
 		return y;
 	}
 
 	@Override
 	public int getProblemDimension() {
-		return dim;
+		return problemDimension;
 	}
 
 	public void setProblemDimension(int d) {
-		dim=d;
+		problemDimension = d;
 	}
 	
 	@Override
@@ -62,14 +62,14 @@ public class F15Problem extends AbstractProblemDouble implements Serializable, I
     @Override
 	public SolutionHistogram getHistogram() {
 		if (getProblemDimension()<15) {
-                return new SolutionHistogram(0, 2, 16);
-            }
-		else if (getProblemDimension()<25) {
-                return new SolutionHistogram(0, 4, 16);
-            }
-		else {
-                return new SolutionHistogram(0, 8, 16);
-            }
+            return new SolutionHistogram(0, 2, 16);
+        }
+        else if (getProblemDimension()<25) {
+            return new SolutionHistogram(0, 4, 16);
+        }
+        else {
+            return new SolutionHistogram(0, 8, 16);
+        }
 	}
 
     @Override

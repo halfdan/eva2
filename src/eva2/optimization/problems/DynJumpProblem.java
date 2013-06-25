@@ -120,8 +120,8 @@ public class DynJumpProblem extends AbstractDynTransProblem {
 	}
 
     @Override
-	public void initProblem() {
-		super.initProblem();
+	public void initializeProblem() {
+		super.initializeProblem();
 		translation = new double[getProblemDimension()];
 		evalsSinceChange = 0.0;
 		evaluations = 0.0;

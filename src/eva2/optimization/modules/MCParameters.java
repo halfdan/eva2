@@ -80,10 +80,10 @@ public class MCParameters extends AbstractGOParameters implements InterfaceGOPar
      * @return The population of current solutions to a given problem.
      */
     public Population getPopulation() {
-        return ((MonteCarloSearch)this.m_Optimizer).getPopulation();
+        return ((MonteCarloSearch)this.optimizer).getPopulation();
     }
     public void setPopulation(Population pop){
-        ((MonteCarloSearch)this.m_Optimizer).setPopulation(pop);
+        ((MonteCarloSearch)this.optimizer).setPopulation(pop);
     }
     public String populationTipText() {
         return "Edit the properties of the population used.";

@@ -27,11 +27,11 @@ import javax.swing.*;
 public class MOCCOParameterizeMO extends MOCCOPhase implements InterfaceProcessElement {
 
 //    private JComboBox   m_OptimizerChooser;
-//    private InterfaceOptimizer m_Optimizer;
+//    private InterfaceOptimizer optimizer;
 
     public MOCCOParameterizeMO(MOCCOStandalone mocco) {
         this.m_Mocco = mocco;
-//        this.m_Optimizer = (InterfaceOptimizer)this.m_Mocco.m_State.m_Optimizer.clone();
+//        this.optimizer = (InterfaceOptimizer)this.m_Mocco.m_State.optimizer.clone();
     }
 
     /** This method will call the init method and will go to stall
@@ -67,11 +67,11 @@ public class MOCCOParameterizeMO extends MOCCOPhase implements InterfaceProcessE
                     "Warning", JOptionPane.WARNING_MESSAGE);
             }
 //            JOptionPane.showMessageDialog(this.m_Mocco.m_JFrame,
-//                "The current "+this.m_Mocco.m_State.m_Optimizer.getName() +
+//                "The current "+this.m_Mocco.m_State.optimizer.getName() +
 //                " is typically a single-objective optimizer. I'm defaulting to a " +
 //                "multi-objective EA instead, please parameterize accordingly.",
 //                "Warning", JOptionPane.WARNING_MESSAGE);
-//            this.m_Mocco.m_State.m_Optimizer = new MultiObjectiveEA();
+//            this.m_Mocco.m_State.optimizer = new MultiObjectiveEA();
         }
         this.m_Mocco.m_JPanelParameters.removeAll();
         this.m_Mocco.m_JPanelParameters.setLayout(new BorderLayout());
@@ -145,7 +145,7 @@ public class MOCCOParameterizeMO extends MOCCOPhase implements InterfaceProcessE
     ActionListener continue2 = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent event) {
-            //m_Mocco.m_State.m_Optimizer = (InterfaceOptimizer)m_Optimizer.clone();
+            //m_Mocco.m_State.optimizer = (InterfaceOptimizer)optimizer.clone();
             m_Mocco.m_JPanelControl.removeAll();
             m_Mocco.m_JPanelParameters.removeAll();
             m_Mocco.m_State.m_Optimizer.setProblem(m_Mocco.m_State.m_CurrentProblem);

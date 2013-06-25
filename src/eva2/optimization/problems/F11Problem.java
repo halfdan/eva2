@@ -14,8 +14,8 @@ public class F11Problem extends AbstractProblemDoubleOffset implements Interface
     private double m_D          = 4000;
 
     public F11Problem() {
-        this.m_ProblemDimension = 10;
-        this.m_Template         = new ESIndividualDoubleData();
+        this.problemDimension = 10;
+        this.template = new ESIndividualDoubleData();
         setDefaultRange(600);
     }
     
@@ -42,11 +42,11 @@ public class F11Problem extends AbstractProblemDoubleOffset implements Interface
         double[] result = new double[1];
         double tmpProd = 1;
         for (int i = 0; i < x.length; i++) {
-        	double xi = x[i]-m_XOffset;
+        	double xi = x[i]- xOffset;
             result[0]  += Math.pow(xi, 2);
             tmpProd *= Math.cos((xi)/Math.sqrt(i+1));
         }
-        result[0] = ((result[0]/this.m_D) - tmpProd + 1)+m_YOffset;
+        result[0] = ((result[0]/this.m_D) - tmpProd + 1)+ yOffset;
         return result;
     }
 
@@ -58,10 +58,10 @@ public class F11Problem extends AbstractProblemDoubleOffset implements Interface
 
         result += "F11 Griewank Function:\n";
         result += "Parameters:\n";
-        result += "Dimension   : " + this.m_ProblemDimension +"\n";
+        result += "Dimension   : " + this.problemDimension +"\n";
         result += "Noise level : " + this.getNoise() + "\n";
 //        result += "Solution representation:\n";
-        //result += this.m_Template.getSolutionRepresentationFor();
+        //result += this.template.getSolutionRepresentationFor();
         return result;
     }
 

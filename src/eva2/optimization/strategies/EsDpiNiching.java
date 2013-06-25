@@ -583,7 +583,7 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
                             loners.removeMembers(luckyLosers, true);
                             // fill up with random indies
                             //        				Population randomNewIndies = new Population(lambdaPerPeak - selected.size());
-                            //        				problem.initPopulation(randomNewIndies); // function calls??
+                            //        				problem.initializePopulation(randomNewIndies); // function calls??
                             //        				selected.addAll(randomNewIndies);
                         }
                     }
@@ -767,7 +767,7 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
      */
     private Population initRandomPeakPop(int cntPerNewSpecies) {
         Population newPop = new Population(cntPerNewSpecies);
-        problem.initPopulation(newPop);
+        problem.initializePopulation(newPop);
         newPop.putData(EvolutionStrategies.esLambdaParam, getLambdaPerPeak());
         newPop.putData(EvolutionStrategies.esMuParam, getMuPerPeak());
         newPop.setMaxHistoryLength(haltingWindowLen);
@@ -780,7 +780,7 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
     private void generateEvalImmigrants(int cnt) {
         if (cnt > 0) {
             randomNewIndies = new Population(cnt);
-            problem.initPopulation(randomNewIndies);
+            problem.initializePopulation(randomNewIndies);
             problem.evaluate(randomNewIndies);
             population.incrFunctionCallsBy(cnt);
             if (TRACE) {

@@ -395,7 +395,7 @@ public class ClusteringKMeans implements InterfaceClustering, java.io.Serializab
         F1Problem f1 = new F1Problem();
         f1.setProblemDimension(2);
         f1.setEAIndividual(new ESIndividualDoubleData());
-        f1.initPopulation(pop);
+        f1.initializePopulation(pop);
         ckm.cluster(pop, (Population)null);
 
     }

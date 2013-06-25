@@ -20,17 +20,17 @@ public abstract class AbstractProblemInteger extends AbstractOptimizationProblem
     }
 
     protected void initTemplate() {
-    	if (m_Template==null) {
-            m_Template = new GIIndividualIntegerData();
+    	if (template ==null) {
+            template = new GIIndividualIntegerData();
         }
-		if (((InterfaceDataTypeInteger)this.m_Template).size()!=this.getProblemDimension()) {
-			((InterfaceDataTypeInteger)this.m_Template).setIntegerDataLength(this.getProblemDimension());
+		if (((InterfaceDataTypeInteger)this.template).size()!=this.getProblemDimension()) {
+			((InterfaceDataTypeInteger)this.template).setIntegerDataLength(this.getProblemDimension());
 		}
     }
 
 	public void cloneObjects(AbstractProblemInteger o) {
-		if (o.m_Template != null) {
-                m_Template = (AbstractEAIndividual)o.m_Template.clone();
+		if (o.template != null) {
+                template = (AbstractEAIndividual)o.template.clone();
             }
         if (o.m_OverallBest != null) {
                 m_OverallBest      = (AbstractEAIndividual)((AbstractEAIndividual)o.m_OverallBest).clone();
@@ -39,16 +39,16 @@ public abstract class AbstractProblemInteger extends AbstractOptimizationProblem
 	}
 
 	@Override
-    public void initProblem() {
+    public void initializeProblem() {
 		initTemplate();
         this.m_OverallBest = null;
     }
 
 	@Override
-    public void initPopulation(Population population) {
+    public void initializePopulation(Population population) {
         this.m_OverallBest = null;
-        ((InterfaceDataTypeInteger)this.m_Template).setIntegerDataLength(this.m_ProblemDimension);
-        AbstractOptimizationProblem.defaultInitPopulation(population, m_Template, this);
+        ((InterfaceDataTypeInteger)this.template).setIntegerDataLength(this.m_ProblemDimension);
+        AbstractOptimizationProblem.defaultInitPopulation(population, template, this);
     }
 
     @Override
@@ -125,6 +125,6 @@ public abstract class AbstractProblemInteger extends AbstractOptimizationProblem
      * @param indy The EAIndividual type
      */
     public void setIndividualTemplate(AbstractEAIndividual indy) {
-        this.m_Template = (AbstractEAIndividual)indy;
+        this.template = (AbstractEAIndividual)indy;
     }
 }

@@ -14,8 +14,8 @@ import eva2.optimization.populations.Population;
 public class MutateESSuccessRule extends MutateESFixedStepSize implements InterfaceMutation, InterfaceAdaptOperatorGenerational, java.io.Serializable {
     // it would be quite nice to make this variable static, but in that case
     // no one could runs n independent ES runs in parallel anymore *sigh*
-    // protected static double m_MutationStepSize    = 0.2;
-//    protected double        m_MutationStepSize    = 0.2; // now in base class
+    // protected static double mutationStepSize    = 0.2;
+//    protected double        mutationStepSize    = 0.2; // now in base class
     protected double        m_SuccessRate         = 0.2;
     protected double        m_Alpha               = 1.2;
 

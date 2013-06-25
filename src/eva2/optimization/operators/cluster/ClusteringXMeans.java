@@ -303,7 +303,7 @@ public class ClusteringXMeans implements InterfaceClustering, java.io.Serializab
         if (true) {
             int         k = 3;
             double[]    x;
-            f1.initPopulation(pop);
+            f1.initializePopulation(pop);
             for (int i = 0; i < pop.size(); i++) {
                 x = ((InterfaceDataTypeDouble)pop.get(i)).getDoubleData();
                 switch (i%k) {
@@ -343,7 +343,7 @@ public class ClusteringXMeans implements InterfaceClustering, java.io.Serializab
                 ((InterfaceDataTypeDouble)pop.get(i)).SetDoubleGenotype(x);
             }
         } else {
-            f1.initPopulation(pop);
+            f1.initializePopulation(pop);
         }
         ckm.cluster(pop, (Population)null);
 

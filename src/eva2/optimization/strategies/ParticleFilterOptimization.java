@@ -105,7 +105,7 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
             (((AbstractOptimizationProblem) m_Problem).getIndividualTemplate()).setMutationOperator(new MutateESCorrVector(mutationSigma, initialVelocity, rotationDeg));
         }
         m_Population.setTargetSize(popSize);
-        this.m_Problem.initPopulation(this.m_Population);
+        this.m_Problem.initializePopulation(this.m_Population);
 
         setWithShow(withShow);
 

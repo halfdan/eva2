@@ -79,11 +79,11 @@ public class SSGAParameters extends AbstractGOParameters implements InterfaceGOP
      * @return The population of current solutions to a given problem.
      */
     public Population getPopulation() {
-        return ((SteadyStateGA) this.m_Optimizer).getPopulation();
+        return ((SteadyStateGA) this.optimizer).getPopulation();
     }
 
     public void setPopulation(Population pop){
-        ((SteadyStateGA) this.m_Optimizer).setPopulation(pop);
+        ((SteadyStateGA) this.optimizer).setPopulation(pop);
     }
 
     public String populationTipText() {
@@ -107,11 +107,11 @@ public class SSGAParameters extends AbstractGOParameters implements InterfaceGOP
      * @param selection
      */
     public void setParentSelection(InterfaceSelection selection) {
-        ((SteadyStateGA) this.m_Optimizer).setParentSelection(selection);
+        ((SteadyStateGA) this.optimizer).setParentSelection(selection);
     }
 
     public InterfaceSelection getParentSelection() {
-        return ((SteadyStateGA) this.m_Optimizer).getParentSelection();
+        return ((SteadyStateGA) this.optimizer).getParentSelection();
     }
 
     public String parentSelectionTipText() {
@@ -128,11 +128,11 @@ public class SSGAParameters extends AbstractGOParameters implements InterfaceGOP
         if (partners < 0) {
             partners = 0;
         }
-        ((SteadyStateGA) this.m_Optimizer).setNumberOfPartners(partners);
+        ((SteadyStateGA) this.optimizer).setNumberOfPartners(partners);
     }
     
     public int getNumberOfPartners() {
-        return ((SteadyStateGA) this.m_Optimizer).getNumberOfPartners();
+        return ((SteadyStateGA) this.optimizer).getNumberOfPartners();
     }
     public String numberOfPartnersTipText() {
         return "The number of mating partners needed to create offsprings.";
@@ -142,10 +142,10 @@ public class SSGAParameters extends AbstractGOParameters implements InterfaceGOP
      * @param selection
      */
     public void setPartnerSelection(InterfaceSelection selection) {
-        ((SteadyStateGA)this.m_Optimizer).setPartnerSelection(selection);
+        ((SteadyStateGA)this.optimizer).setPartnerSelection(selection);
     }
     public InterfaceSelection getPartnerSelection() {
-        return ((SteadyStateGA)this.m_Optimizer).getPartnerSelection();
+        return ((SteadyStateGA)this.optimizer).getPartnerSelection();
     }
     public String partnerSelectionTipText() {
         return "Choose a selection method for selecting recombination partners for given parents.";
@@ -155,10 +155,10 @@ public class SSGAParameters extends AbstractGOParameters implements InterfaceGOP
      * @param s     A InterfaceReplacement strategy.
      */
     public void setReplacementSelection(InterfaceReplacement s) {
-        ((SteadyStateGA)this.m_Optimizer).setReplacementSelection(s);
+        ((SteadyStateGA)this.optimizer).setReplacementSelection(s);
     }
     public InterfaceReplacement getReplacementSelection() {
-        return ((SteadyStateGA)this.m_Optimizer).getReplacementSelection();
+        return ((SteadyStateGA)this.optimizer).getReplacementSelection();
     }
     public String replacementSelectionTipText() {
         return "Choose a replacement strategy.";

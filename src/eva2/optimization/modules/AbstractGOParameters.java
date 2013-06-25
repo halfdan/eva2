@@ -25,11 +25,11 @@ public abstract class AbstractGOParameters implements InterfaceGOParameters, Ser
 	protected long randomSeed  = (long)0.0;
 
 	// Opt. Algorithms and Parameters
-	protected InterfaceOptimizer              m_Optimizer;
-	protected InterfaceOptimizationProblem    m_Problem ;
-	protected InterfaceTerminator             m_Terminator;
-	protected InterfacePostProcessParams		m_PostProc = new PostProcessParams(false);
-	transient protected InterfacePopulationChangedEventListener m_Listener;
+	protected InterfaceOptimizer optimizer;
+	protected InterfaceOptimizationProblem problem;
+	protected InterfaceTerminator terminator;
+	protected InterfacePostProcessParams postProcessing = new PostProcessParams(false);
+	transient protected InterfacePopulationChangedEventListener populationChangedEventListener;
 	transient private List<InterfaceNotifyOnInformers> toInformAboutInformers = null;
 	
 	protected AbstractGOParameters() {
@@ -37,20 +37,20 @@ public abstract class AbstractGOParameters implements InterfaceGOParameters, Ser
 
 	protected AbstractGOParameters(AbstractGOParameters goParameters) {
 		this();
-		this.m_Optimizer        = goParameters.m_Optimizer;
-		this.m_Problem          = goParameters.m_Problem;
-		this.m_Terminator       = goParameters.m_Terminator;
-		this.m_Optimizer.setProblem(this.m_Problem);
-		this.randomSeed             = goParameters.randomSeed;
-		this.m_PostProc			= goParameters.m_PostProc;
+		this.optimizer = goParameters.optimizer;
+		this.problem = goParameters.problem;
+		this.terminator = goParameters.terminator;
+		this.optimizer.setProblem(this.problem);
+		this.randomSeed = goParameters.randomSeed;
+		this.postProcessing = goParameters.postProcessing;
 	}
 	
 	public AbstractGOParameters(InterfaceOptimizer opt, InterfaceOptimizationProblem prob, InterfaceTerminator term) {
 		this();
-		m_Optimizer = opt;
-		m_Problem = prob;
-		m_Terminator = term;
-		m_PostProc = new PostProcessParams(false);
+		optimizer = opt;
+		problem = prob;
+		terminator = term;
+		postProcessing = new PostProcessParams(false);
 		opt.setProblem(prob);
 	}
 
@@ -60,12 +60,12 @@ public abstract class AbstractGOParameters implements InterfaceGOParameters, Ser
 	 * @param src
 	 */
 	public void setSameParams(AbstractGOParameters src) {
-		setOptimizer(src.m_Optimizer);
-		setProblem(src.m_Problem);
-		setTerminator(src.m_Terminator);
-		this.m_Optimizer.setProblem(this.m_Problem);
+		setOptimizer(src.optimizer);
+		setProblem(src.problem);
+		setTerminator(src.terminator);
+		this.optimizer.setProblem(this.problem);
 		setSeed(src.randomSeed);
-		setPostProcessParams(src.m_PostProc);
+		setPostProcessParams(src.postProcessing);
 	}
 	
 	/** 
@@ -74,22 +74,22 @@ public abstract class AbstractGOParameters implements InterfaceGOParameters, Ser
 	 * @param ea
 	 */
 	public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
-		this.m_Listener = ea;
-		if (this.m_Optimizer != null) {
-                this.m_Optimizer.addPopulationChangedEventListener(this.m_Listener);
+		this.populationChangedEventListener = ea;
+		if (this.optimizer != null) {
+            this.optimizer.addPopulationChangedEventListener(this.populationChangedEventListener);
+        }
+	}
+
+	public boolean removePopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
+        if (populationChangedEventListener ==ea) {
+            populationChangedEventListener =null;
+            if (this.optimizer !=null) {
+                this.optimizer.removePopulationChangedEventListener(ea);
             }
-	}	
-	public boolean removePopulationChangedEventListener(
-			InterfacePopulationChangedEventListener ea) {
-		if (m_Listener==ea) {
-			m_Listener=null;
-			if (this.m_Optimizer!=null) {
-                        this.m_Optimizer.removePopulationChangedEventListener(ea);
-                    }
-			return true;
-		} else {
-                                return false;
-                            }
+            return true;
+        } else {
+            return false;
+        }
 	}
     
     /**
@@ -117,11 +117,11 @@ public abstract class AbstractGOParameters implements InterfaceGOParameters, Ser
 		sBuilder.append("seed=");
 		sBuilder.append(randomSeed);
 		sBuilder.append("\nProblem: ");
-		sBuilder.append(BeanInspector.toString(m_Problem));
+		sBuilder.append(BeanInspector.toString(problem));
 		sBuilder.append("\nOptimizer: ");
-		sBuilder.append(BeanInspector.toString(m_Optimizer));
+		sBuilder.append(BeanInspector.toString(optimizer));
 		sBuilder.append("\nTerminator: ");
-		sBuilder.append(BeanInspector.toString(m_Terminator));
+		sBuilder.append(BeanInspector.toString(terminator));
 		sBuilder.append("\n");
 		return sBuilder.toString();
 	}
@@ -156,28 +156,28 @@ listener.setInformers(getInformerList());
 
     @Override
 	public void setOptimizer(InterfaceOptimizer optimizer) {
-		this.m_Optimizer = optimizer;
-		this.m_Optimizer.setProblem(this.m_Problem);
-		if (this.m_Listener != null) {
-                this.m_Optimizer.addPopulationChangedEventListener(this.m_Listener);
+		this.optimizer = optimizer;
+		this.optimizer.setProblem(this.problem);
+		if (this.populationChangedEventListener != null) {
+                this.optimizer.addPopulationChangedEventListener(this.populationChangedEventListener);
             }
 		fireNotifyOnInformers();
 	}
 	
 	private List<InterfaceAdditionalPopulationInformer> getInformerList() {
 		LinkedList<InterfaceAdditionalPopulationInformer> ret = new LinkedList<InterfaceAdditionalPopulationInformer>();
-		if (m_Problem instanceof InterfaceAdditionalPopulationInformer) {
-                ret.add(m_Problem);
+		if (problem instanceof InterfaceAdditionalPopulationInformer) {
+                ret.add(problem);
             }
-		if (m_Optimizer instanceof InterfaceAdditionalPopulationInformer) {
-                ret.add((InterfaceAdditionalPopulationInformer)m_Optimizer);
+		if (optimizer instanceof InterfaceAdditionalPopulationInformer) {
+                ret.add((InterfaceAdditionalPopulationInformer) optimizer);
             }
 		return ret;
 	}
 
     @Override
 	public InterfaceOptimizer getOptimizer() {
-		return this.m_Optimizer;
+		return this.optimizer;
 	}
 	public String optimizerTipText() {
 		return "Choose an optimization strategy.";
@@ -194,14 +194,14 @@ listener.setInformers(getInformerList());
 	 */
     @Override
 	public void setProblem (InterfaceOptimizationProblem problem) {
-		this.m_Problem = problem;
-		this.m_Optimizer.setProblem(this.m_Problem);
+		this.problem = problem;
+		this.optimizer.setProblem(this.problem);
 		fireNotifyOnInformers();
 	}
 	
     @Override
 	public InterfaceOptimizationProblem getProblem() {
-		return this.m_Problem;
+		return this.problem;
 	}
     @Override
 	public String problemTipText() {
@@ -237,11 +237,11 @@ listener.setInformers(getInformerList());
 	 */
     @Override
 	public void setTerminator(InterfaceTerminator term) {
-		this.m_Terminator = term;
+		this.terminator = term;
 	}
     @Override
 	public InterfaceTerminator getTerminator() {
-		return this.m_Terminator;
+		return this.terminator;
 	}
     @Override
 	public String terminatorTipText() {
@@ -250,11 +250,11 @@ listener.setInformers(getInformerList());
 
     @Override
     public InterfacePostProcessParams getPostProcessParams() {
-    	return m_PostProc;
+    	return postProcessing;
     }
     @Override
     public void setPostProcessParams(InterfacePostProcessParams ppp) {
-    	m_PostProc = ppp;
+    	postProcessing = ppp;
     }
     @Override
     public String postProcessParamsTipText() {
@@ -262,6 +262,6 @@ listener.setInformers(getInformerList());
     }
     @Override
     public void setDoPostProcessing(boolean doPP){
-    	m_PostProc.setDoPostProcessing(doPP);
+    	postProcessing.setDoPostProcessing(doPP);
     }
 }

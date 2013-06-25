@@ -17,12 +17,12 @@ package eva2.optimization.operators.mutation;
 // * To change this template use Options | File Templates.
 // */
 //public class MutateESStandard implements InterfaceMutation, java.io.Serializable  {
-//    protected double      m_MutationStepSize = 0.1;
+//    protected double      mutationStepSize = 0.1;
 //    public MutateESStandard() {
 //    }
 //
 //    public MutateESStandard(MutateESStandard d) {
-//        this.m_MutationStepSize = d.m_MutationStepSize;
+//        this.mutationStepSize = d.mutationStepSize;
 //    }
 //
 //    /** This method will enable you to clone a given mutation operator
@@ -39,7 +39,7 @@ package eva2.optimization.operators.mutation;
 //    public boolean equals(Object mutator) {
 //        if (mutator instanceof MutateESStandard) {
 //            MutateESStandard mut = (MutateESStandard)mutator;
-//            if (this.m_MutationStepSize != mut.m_MutationStepSize) return false;
+//            if (this.mutationStepSize != mut.mutationStepSize) return false;
 //            return true;
 //        } else return false;
 //    }
@@ -62,7 +62,7 @@ package eva2.optimization.operators.mutation;
 //            double[]    x       = ((InterfaceESIndividual)individual).getDGenotype();
 //            double[][]  range   = ((InterfaceESIndividual)individual).getDoubleRange();
 //            for (int i = 0; i < x.length; i++) {
-//                x[i] += ((range[i][1] -range[i][0])/2)*RNG.gaussianDouble(this.m_MutationStepSize);
+//                x[i] += ((range[i][1] -range[i][0])/2)*RNG.gaussianDouble(this.mutationStepSize);
 //                if (range[i][0] > x[i]) x[i] = range[i][0];
 //                if (range[i][1] < x[i]) x[i] = range[i][1];
 //            }
@@ -111,10 +111,10 @@ package eva2.optimization.operators.mutation;
 //     */
 //    public void setMutationStepSize(double step) {
 //        if (step < 0) step = 0.0000001;
-//        this.m_MutationStepSize = step;
+//        this.mutationStepSize = step;
 //    }
 //    public double getMutationStepSize() {
-//        return this.m_MutationStepSize;
+//        return this.mutationStepSize;
 //    }
 //    public String mutationStepSizeTipText() {
 //        return "Set the value for the fixed mutation step size.";

@@ -165,7 +165,7 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
 //		AbstractEAIndividual reflectedInd = (AbstractEAIndividual)((AbstractEAIndividual)bestpop.getIndividual(1)).clone(); 
 //		((InterfaceDataTypeDouble)reflectedInd).SetDoubleGenotype(r);
 //
-//		m_Problem.evaluate(reflectedInd);
+//		problem.evaluate(reflectedInd);
         AbstractEAIndividual reflectedInd = createEvalIndy(bestpop, r);
         this.m_Population.incrFunctionCalls();
 
@@ -200,7 +200,7 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
 
 //			AbstractEAIndividual c_ind = (AbstractEAIndividual)((AbstractEAIndividual)bestpop.getIndividual(1)).clone(); 
 //			((InterfaceDataTypeDouble)c_ind).SetDoubleGenotype(c);
-//			m_Problem.evaluate(c_ind);
+//			problem.evaluate(c_ind);
             AbstractEAIndividual c_ind = createEvalIndy(bestpop, c);
             this.m_Population.incrFunctionCalls();
             if (firstIsBetterEqual(c_ind, worst)) {
@@ -265,7 +265,7 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
         setPopulation(pop);
         pop.addPopulationChangedEventListener(this);
         if (reset) {
-            m_Problem.initPopulation(m_Population);
+            m_Problem.initializePopulation(m_Population);
             m_Problem.evaluate(m_Population);
         }
 //		fireNextGenerationPerformed();
@@ -295,7 +295,7 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
                     System.err.println("WARNING: nelder mead step produced indy out of range!");
 //					Mathematics.projectToRange(x, range);
 //					((InterfaceDataTypeDouble)ind).SetDoubleGenotype(x);
-//					m_Problem.evaluate(ind);
+//					problem.evaluate(ind);
 //					this.m_Population.incrFunctionCalls();
                 }
                 m_Population.set(m_Population.getIndexOfWorstIndividualNoConstr(fitIndex), ind, fitIndex);
@@ -372,7 +372,7 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
     public static final NelderMeadSimplex createNelderMeadSimplex(AbstractOptimizationProblem problem,
             InterfacePopulationChangedEventListener listener) {
 
-        problem.initProblem();
+        problem.initializeProblem();
         NelderMeadSimplex nms = new NelderMeadSimplex();
         nms.setProblemAndPopSize(problem);
 
@@ -407,14 +407,14 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
             InterfacePopulationChangedEventListener listener) {
 
         // TODO this method might be superfluous when using PostProcess
-        problem.initProblem();
+        problem.initializeProblem();
         NelderMeadSimplex nms = new NelderMeadSimplex();
         nms.setProblemAndPopSize(problem);
 
         Population initialPop;
         if (perturbationRatio <= 0) { // random case
             initialPop = new Population(nms.getPopulationSize());
-            problem.initPopulation(initialPop);
+            problem.initializePopulation(initialPop);
             initialPop.set(0, candidate);
         } else {
             double[][] range = ((InterfaceDataTypeDouble) candidate).getDoubleRange();

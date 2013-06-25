@@ -106,7 +106,7 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
     public AbstractMultiObjectiveOptimizationProblem(double borderHigh) {
     	super();
     	m_defaultBorderHigh=borderHigh;
-        this.m_Template         = new ESIndividualDoubleData();
+        this.template = new ESIndividualDoubleData();
         makeBorder();
         if (this.m_Show) {
             this.initProblemFrame();
@@ -151,7 +151,7 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
      * problem frame (i'll provide a default implementation here.
      */
     @Override
-    public void initProblem() {
+    public void initializeProblem() {
         makeBorder();
         this.m_ParetoFront = new Population();
         if (this.m_Show) {
@@ -380,7 +380,7 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
                 tmpPop = moProblem.m_ParetoFront;
             } else {
                 // in this case i use the population of the optimizer
-                // and eventually the pop.archive if there is one
+                // and eventually the population.archive if there is one
                 tmpPop = new Population();
                 tmpPop.addPopulation(p);
                 if (p.getArchive() != null) {
@@ -594,28 +594,28 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
     }
 
 //    /** This method will calculate the s-Metric if an archive population is present.
-//     * @param pop       The population.
+//     * @param population       The population.
 //     * @return s-metric
 //     */
-//    public double tcalculateSMetric(Population pop) {
+//    public double tcalculateSMetric(Population population) {
 //        double result = 0;
 //
 //        ((SMetric)this.m_Metric).setObjectiveSpaceRange(this.m_Border);
-//        result = this.m_Metric.calculateMetricOn(pop);
+//        result = this.m_Metric.calculateMetricOn(population);
 //
 //        return result;
 //    }
 //
 //    /** This method will calculate the s-Metric if an archive population is present.
-//     * @param pop       The population.
+//     * @param population       The population.
 //     * @return s-metric
 //     */
-//    public double calculateRelativeSMetric(Population pop, double[][] ref) {
+//    public double calculateRelativeSMetric(Population population, double[][] ref) {
 //        double result = 0;
 //        SMetricWithReference tmpMetric = new SMetricWithReference();
 //        tmpMetric.setObjectiveSpaceRange(this.m_Border);
 //        tmpMetric.setReferenceFront(ref);
-//        result = tmpMetric.calculateMetricOn(pop);
+//        result = tmpMetric.calculateMetricOn(population);
 //        return result;
 //    }
 

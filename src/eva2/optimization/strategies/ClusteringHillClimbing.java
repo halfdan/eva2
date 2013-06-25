@@ -147,7 +147,7 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
         archive = new Population();
         hideHideable();
         m_Population.setTargetSize(initialPopSize);
-        this.m_Problem.initPopulation(this.m_Population);
+        this.m_Problem.initializePopulation(this.m_Population);
         m_Population.addPopulationChangedEventListener(null); // noone will be notified directly on pop changes
         this.m_Problem.evaluate(this.m_Population);
         this.firePropertyChangedEvent(Population.nextGenerationPerformed);
@@ -200,7 +200,7 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
                 System.out.println("evalCycle: " + hcEvalCycle + ", evals now: " + evalsNow);
             }
             popD = PostProcess.clusterLocalSearch(localSearchMethod, m_Population, (AbstractOptimizationProblem) m_Problem, sigmaClust, evalsNow, 0.5, mutator);
-            //		(m_Population, (AbstractOptimizationProblem)m_Problem, sigmaClust, hcEvalCycle - (m_Population.getFunctionCalls() % hcEvalCycle), 0.5);
+            //		(m_Population, (AbstractOptimizationProblem)problem, sigmaClust, hcEvalCycle - (m_Population.getFunctionCalls() % hcEvalCycle), 0.5);
             if (popD.head().getFunctionCalls() == funCallsBefore) {
                 System.err.println("Bad case, increasing allowed evaluations!");
                 evalsNow = Math.max(evalsNow++, (int) (evalsNow * 1.2));
@@ -235,7 +235,7 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
                 Population tmpPop = new Population();
                 tmpPop.addPopulationChangedEventListener(null);
                 tmpPop.setTargetSize(initialPopSize);
-                this.m_Problem.initPopulation(tmpPop);
+                this.m_Problem.initializePopulation(tmpPop);
                 tmpPop.setSameParams(m_Population);
                 tmpPop.setTargetSize(initialPopSize);
                 this.m_Problem.evaluate(tmpPop);

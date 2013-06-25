@@ -45,8 +45,8 @@ public abstract class AbstractSynchronousOptimizationProblem extends
 	
 	
     @Override
-    public void initProblem() {
-    	super.initProblem();
+    public void initializeProblem() {
+    	super.initializeProblem();
     	evalsSinceChange = 0.;
     	
     }

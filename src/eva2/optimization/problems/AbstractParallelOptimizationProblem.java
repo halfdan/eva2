@@ -17,7 +17,7 @@ public abstract class AbstractParallelOptimizationProblem extends AbstractOptimi
     private AbstractOptimizationProblem[]           m_Slaves;
 
     @Override
-    public void initProblem() {
+    public void initializeProblem() {
   /*      if (this.m_Parallelize) {
             // this is running on remote maschines
             String[] nodesList = this.m_Servers.getCheckedServerNodes();
