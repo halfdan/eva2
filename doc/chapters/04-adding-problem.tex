@@ -1,0 +1,43 @@
+\chapter{Quickly Adding a Problem Class\label{sec:Quickly-Adding-Your-Problem}}
+
+It is easy to integrate your own Java-coded problem in \noun{EvA2}
+and optimize it using the GUI. Preconditions for the quick way are
+only the two following ones:
+\begin{itemize}
+\item A potential solution to your problem can be coded as a double vector
+or a BitSet.
+\item You can implement the target function such that it produces a double
+valued fitness vector from the double vector or BitSet.
+\end{itemize}
+If these simple conditions are met, you have the advantage of being
+able to use the full ``Java-Power'' to implement a target function
+and optimize it in \noun{EvA2}. Just follow these steps:
+\begin{itemize}
+\item Create an empty class (let's say, \texttt{ExampleProblem}) and assign
+it to the package \texttt{simpleprobs}. Put it in a directory called
+``simpleprobs'' within your working directory.
+\item Have the class inherit from \texttt{simpleprobs.SimpleDoubleProblem}
+or, depending on which datatype you want to use, from \texttt{simple\-probs.Simple\-Binary\-Problem}.
+Both base types can be used directly from the \noun{EvA2} jar-file
+(which of course needs to be on the java classpath - in Eclipse, for
+instance, add the \noun{EvA2} jar as ``External jar'' to the Java
+build path through the project settings).
+\item Implement the method \texttt{public int getProblemDimension() \{...\}}
+whithin your ExampleProblem, which returns the number of dimensions
+of the solution space, i.e. the length of the \emph{x} vector or size
+of the \texttt{BitSet}, respectively. The problem dimension may be
+a variable defined in your class, but it must not change during an
+optimization run.
+\item Implement the method \texttt{public double{[}{]}} \texttt{eval(double{[}{]}
+x)} for double coded problems or \texttt{public} \texttt{double{[}{]}}
+\texttt{eval(BitSet} \texttt{bs)} for binary coded problems, whithin
+your ExampleProblem, where the fitness of a potential solution is
+calculated.
+\item Start the \noun{EvA2} GUI. \emph{Make sure that your working directory
+is in the Java classpath}! From the problem list, select the \emph{SimpleProblemWrapper}
+class as optimization problem. The wrapper class allows you to select
+your ExampleProblem as target function. If you implemented a double
+valued problem, you may also set a default range parameter, defining
+the positive and negative bound of the solution space allowed. Now
+select your prefered optimization method and start the optimization.
+\end{itemize}

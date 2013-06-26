@@ -1,0 +1,50 @@
+\chapter{General Hints on Optimization with \noun{EvA2}}
+
+As you have come so far, you have hopefully learned a few things about
+the concepts of \noun{EvA~2 }and got an idea on how optimization
+in the framework can be done. Now we want to give a few more practical
+hints on what to do with an unknown, probably difficult function.
+Let's suppose you have a mathematical or algorithmic problem which
+is infeasible to solve by means of mathematical analysis, gradients
+are not computable in a simple way, and you haven't found a specialized
+algorithm or heuristic in literature that solves it to the quality
+you need, or you have found one but you don't understand it and can't
+download it anywhere. All in all, you have a tough problem, \noun{MyToughProblem},
+and you want to optimize it.
+
+Let's also suppose you can implement \noun{MyToughProblem} in Java
+(Sec.~\ref{sec:Quickly-Adding-Your-Problem}) or make it accessible
+for\noun{ EvA~2} through an external interface (Sec.~\ref{sec:External-Interfaces}). 
+
+You might now be tempted to ask: ``Exactly which optimizer do I need
+to run with which parameters to solve \noun{MyToughProblem} once and
+for all times?''.
+
+And as you might have feared, this is a question which we cannot answer,
+and maybe noone else can. But we will at least try to come a bit closer
+to an answer here. There are several choices you have to make before
+optimization, one of the earliest concern implementation: which representation
+to use? E.g. in Sec.~\ref{sub:Accessing-Standard-Optimizers}, we
+said a few things about double-valued and binary representation, and
+many problems are natural to the one or the other implementation.
+Combinatorical problems, for example, can be much easier projected
+to a binary vector than to a double-valued one. Continuous functions
+are a typical case for a real valued representation.
+\begin{itemize}
+\item which representation? 
+\item how many optima? 
+\item what range? 
+\item will specialized operators help?
+\item what about constraints?
+\item what about multi objectives?
+\end{itemize}
+read the examples given in Sec.~\ref{sec:Using-the-API}, you might
+So, for an unknown function
+
+However, if you are dealing with an unknown function and you reckon
+that it has quite a lot of optima, 
+\begin{itemize}
+\item Which options can be changed at all for optimizer X? -> anhang with
+GOParameter classes? Some optimizers have no specialized GOParameters.
+Access optimizer directly.
+\end{itemize}
