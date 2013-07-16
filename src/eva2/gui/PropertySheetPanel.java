@@ -176,6 +176,7 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
         propertyTable.setDefaultRenderer(Object.class, new PropertyCellRenderer());
         propertyTable.setDefaultEditor(Object.class, new PropertyCellEditor());
         propertyTable.setRowHeight(20);
+        propertyTable.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
 
         // Close any child windows at this point
         removeAll();
@@ -763,14 +764,14 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
         	JComponent newView = null;
         	newView = getView(tmpEdit);
             if (newView == null) {
-                System.err.println("Warning: Property \"" + propertyDescriptors[i].getDisplayName() + "\" has non-displayabale editor.  Skipping.");
+                System.err.println("Warning: Property \"" + propertyDescriptors[i].getDisplayName() + "\" has non-displayable editor.  Skipping.");
         		return false;
         	}
             propertyEditors[i].addPropertyChangeListener(this);
             views[i] = newView;
             if (toolTips[i] != null) {
                 views[i].setToolTipText(toolTips[i]);
-        }
+            }
             viewWrappers[i].removeAll();
             viewWrappers[i].setLayout(new BorderLayout());
             viewWrappers[i].add(views[i], BorderLayout.CENTER);
@@ -796,8 +797,6 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
                 // This could check whether i have to set the value back to
                 // the editor, this would allow to check myu and lambda
                 // why shouldn't i do this for every property!?
-//                System.out.println("value: "+((Integer)value).intValue());
-//                System.out.println(" m_Values[i]: "+ ((Integer) m_Values[i]).intValue());
                 if (((Integer) newValue).intValue() != ((Integer) objectValues[i]).intValue()) {
                     propertyEditors[i].setValue(objectValues[i]);
                 }
@@ -813,7 +812,6 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
         } catch (Exception ex) {
             System.out.println("PropertySheetPanel.wasModified(): Unexpected exception while updating " + property.getName());
         }
-        //revalidate();
         if (views[i] != null && views[i] instanceof PropertyPanel) {
             //System.err.println("Trying to repaint the property canvas");
             views[i].repaint();
@@ -944,7 +942,7 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
      * @return
      */
     private boolean updateFieldView(int i) {
-    	// looking at another field (not changed explicitly, maybe implicitely
+    	// looking at another field (not changed explicitly, maybe implicitly
     	boolean valChanged = false;
     	boolean doRepaint = false;
         Object args[] = {};
@@ -1071,20 +1069,43 @@ class PropertyCellRenderer implements TableCellRenderer {
     
 }
 
-class PropertyCellEditor implements TableCellEditor {
+class PropertyCellEditor extends AbstractCellEditor implements TableCellEditor {
     private JLabel empty = new JLabel();
     private Object value;
 
     @Override
-    public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+    public JComponent getTableCellEditorComponent(JTable table, final Object value, boolean isSelected, int row, int column) {
         this.value = value;
-        Component component;
+        JComponent component;
         if (value == null) {
             component = empty;
         } else if (value instanceof String) {
             component = new JLabel(value.toString());
-        } else if (value instanceof eva2.gui.PropertyPanel) {
-            component = (PropertyPanel) value;            
+        } else if (value instanceof PropertyPanel) {
+            component = new JPanel();
+            component.setLayout(new GridBagLayout());
+            GridBagConstraints gbConstraints = new GridBagConstraints();
+            gbConstraints.gridx = 0;
+            gbConstraints.gridy = 0;
+            gbConstraints.weightx = 1.0;
+            gbConstraints.fill = GridBagConstraints.HORIZONTAL;
+            component.add((PropertyPanel) value, gbConstraints);
+            JButton dialogButton = new JButton("...");
+            dialogButton.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 0, Color.LIGHT_GRAY));
+            dialogButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(final ActionEvent event) {
+                    ((PropertyPanel) value).showDialog(0, 0);
+                    fireEditingStopped();
+                }
+            });
+            gbConstraints = new GridBagConstraints();
+            gbConstraints.weighty = 1.0;
+            gbConstraints.fill = GridBagConstraints.VERTICAL;
+            gbConstraints.anchor = GridBagConstraints.LINE_END;
+            gbConstraints.gridy = 0;
+            gbConstraints.gridx = 1;
+            component.add(dialogButton, gbConstraints);
         } else if (value instanceof PropertyText) {
             component = (PropertyText) value;
         } else if (value instanceof PropertyBoolSelector) {
@@ -1094,6 +1115,7 @@ class PropertyCellEditor implements TableCellEditor {
         } else {
             throw new UnsupportedOperationException("Not supported yet.");
         }
+
         if (isSelected) {
             component.setForeground(table.getSelectionForeground());
             component.setBackground(table.getSelectionBackground());
@@ -1122,26 +1144,6 @@ class PropertyCellEditor implements TableCellEditor {
         return true;
     }
 
-    @Override
-    public boolean shouldSelectCell(EventObject anEvent) {
-        return true;
-    }
 
-    @Override
-    public boolean stopCellEditing() {
-        return true;
-    }
-
-    @Override
-    public void cancelCellEditing() {
-    }
-
-    @Override
-    public void addCellEditorListener(CellEditorListener l) {
-    }
-
-    @Override
-    public void removeCellEditorListener(CellEditorListener l) {
-    }
     
 }

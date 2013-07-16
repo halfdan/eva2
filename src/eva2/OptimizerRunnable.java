@@ -295,8 +295,4 @@ public class OptimizerRunnable implements Runnable {
 	public void setOutputFullStatsToText(boolean addInfo) {
 		((AbstractStatistics)proc.getStatistics()).getStatisticsParameter().setOutputAllFieldsAsText(addInfo);
 	}
-	
-//	public void configureStats(int verbosityLevel, int outputDirection, int multiRuns, boolean additionalInfo) {
-//		asdf
-//	}
 }

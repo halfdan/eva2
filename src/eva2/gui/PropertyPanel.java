@@ -42,35 +42,22 @@ public class PropertyPanel extends JPanel {
 		propertyEditor = editor;
         
         textLabel = new JLabel();
+
         add(textLabel, gbConstraints);
-        
-		JButton dialogButton = new JButton("...");
-        dialogButton.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 0, Color.LIGHT_GRAY));
-        dialogButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent event) {
-                if (propertyEditor.getValue() != null) {
-					showDialog(getLocationOnScreen().x, getLocationOnScreen().y);
-				}
-            }            
-        });
-        gbConstraints.weighty = 1.0;
-        gbConstraints.fill = GridBagConstraints.VERTICAL;
-        gbConstraints.anchor = GridBagConstraints.LINE_END;
-        gbConstraints.gridx = 1;
-        add(dialogButton, gbConstraints);
+
+
 	}
 	
 	public void showDialog(int initX, int initY) {
 		if (propertyDialog == null) {
 			propertyDialog = new PropertyDialog(propertyEditor, EVAHELP.cutClassName(propertyEditor.getClass().getName()) , initX, initY);
 			propertyDialog.setPreferredSize(new Dimension(500,300));
+            propertyDialog.setModal(true);
             propertyDialog.setVisible(true);
 		}
 		else {
 			propertyDialog.updateFrameTitle(propertyEditor);
 			propertyDialog.setVisible(false);
-			propertyDialog.setVisible(true);
 			propertyDialog.requestFocus();
 		}
 	}	
@@ -98,10 +85,6 @@ public class PropertyPanel extends JPanel {
 				getSize().width - i.right - i.left,
 				getSize().height - i.bottom - i.top);
 		propertyEditor.paintValue(g, box);
-        
-//		Rectangle box = new Rectangle(i.left,i.top,
-//		this.getWidth() - i.right,
-//		this.getHeight() - i.bottom );
 	}
 	
 	public PropertyEditor getEditor() {
