@@ -1,7 +1,7 @@
 package eva2.optimization.strategies;
 
-import eva2.optimization.operators.paramcontrol.LinearParamAdaption;
-import eva2.optimization.operators.paramcontrol.ParamAdaption;
+import eva2.optimization.operator.paramcontrol.LinearParamAdaption;
+import eva2.optimization.operator.paramcontrol.ParamAdaption;
 
 public class StarANPSO extends ANPSO {
 	private int defaultEvalCnt=10000;

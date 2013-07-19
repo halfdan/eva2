@@ -5,7 +5,7 @@ import eva2.gui.GenericObjectEditor;
 import eva2.gui.PropertyEditorProvider;
 import eva2.optimization.go.InterfaceTerminator;
 import eva2.optimization.go.MOCCOStandalone;
-import eva2.optimization.populations.Population;
+import eva2.optimization.population.Population;
 import eva2.optimization.strategies.GeneticAlgorithm;
 import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.optimization.strategies.MultiObjectiveEA;

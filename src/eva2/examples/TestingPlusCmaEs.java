@@ -3,9 +3,9 @@ package eva2.examples;
 import eva2.OptimizerFactory;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.modules.OptimizationParameters;
-import eva2.optimization.operators.crossover.CrossoverESDefault;
-import eva2.optimization.operators.mutation.MutateESCovarianceMatrixAdaption;
-import eva2.optimization.operators.terminators.EvaluationTerminator;
+import eva2.optimization.operator.crossover.CrossoverESDefault;
+import eva2.optimization.operator.mutation.MutateESCovarianceMatrixAdaption;
+import eva2.optimization.operator.terminators.EvaluationTerminator;
 import eva2.optimization.problems.FM0Problem;
 import eva2.optimization.strategies.EvolutionStrategies;
 

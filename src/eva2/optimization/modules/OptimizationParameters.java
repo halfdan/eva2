@@ -2,7 +2,7 @@ package eva2.optimization.modules;
 
 import eva2.optimization.go.InterfaceOptimizationParameters;
 import eva2.optimization.go.InterfaceTerminator;
-import eva2.optimization.operators.terminators.EvaluationTerminator;
+import eva2.optimization.operator.terminators.EvaluationTerminator;
 import eva2.optimization.problems.F1Problem;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.optimization.strategies.GeneticAlgorithm;

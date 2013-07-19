@@ -4,7 +4,7 @@ import eva2.gui.GenericObjectEditor;
 import eva2.gui.Plot;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.InterfaceDataTypeDouble;
-import eva2.optimization.populations.Population;
+import eva2.optimization.population.Population;
 import eva2.optimization.problems.AbstractOptimizationProblem;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.tools.SelectedTag;

@@ -1,7 +1,7 @@
 package eva2.optimization.problems;
 
 import eva2.optimization.individuals.AbstractEAIndividual;
-import eva2.optimization.populations.Population;
+import eva2.optimization.population.Population;
 import eva2.optimization.strategies.InterfaceOptimizer;
 import javax.swing.*;
 

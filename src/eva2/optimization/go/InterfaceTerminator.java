@@ -1,6 +1,7 @@
 package eva2.optimization.go;
 
-import eva2.optimization.populations.InterfaceSolutionSet;
+import eva2.optimization.population.InterfaceSolutionSet;
+import eva2.optimization.population.PopulationInterface;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
 
 /**

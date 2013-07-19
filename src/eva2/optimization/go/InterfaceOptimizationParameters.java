@@ -1,6 +1,6 @@
 package eva2.optimization.go;
 
-import eva2.optimization.operators.postprocess.InterfacePostProcessParams;
+import eva2.optimization.operator.postprocess.InterfacePostProcessParams;
 import eva2.optimization.problems.InterfaceAdditionalPopulationInformer;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.optimization.strategies.InterfaceOptimizer;

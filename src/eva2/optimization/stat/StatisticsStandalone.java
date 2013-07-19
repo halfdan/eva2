@@ -13,7 +13,7 @@ package eva2.optimization.stat;
 /*==========================================================================*
  * IMPORTS
  *==========================================================================*/
-import eva2.optimization.go.PopulationInterface;
+import eva2.optimization.population.PopulationInterface;
 import eva2.optimization.problems.InterfaceAdditionalPopulationInformer;
 import java.io.Serializable;
 import java.net.InetAddress;

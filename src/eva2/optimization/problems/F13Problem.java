@@ -2,7 +2,7 @@ package eva2.optimization.problems;
 
 import eva2.gui.GenericObjectEditor;
 import eva2.optimization.individuals.ESIndividualDoubleData;
-import eva2.optimization.operators.postprocess.SolutionHistogram;
+import eva2.optimization.operator.postprocess.SolutionHistogram;
 
 /**
  * Schwefels sine root function (1981) with a minimum at 420.9687^n of value 0.

@@ -2,9 +2,9 @@ package eva2.optimization.individuals;
 
 
 import eva2.optimization.enums.MutateESCrossoverTypeEnum;
-import eva2.optimization.operators.crossover.CrossoverESDefault;
-import eva2.optimization.operators.mutation.InterfaceMutation;
-import eva2.optimization.operators.mutation.MutateESGlobal;
+import eva2.optimization.operator.crossover.CrossoverESDefault;
+import eva2.optimization.operator.mutation.InterfaceMutation;
+import eva2.optimization.operator.mutation.MutateESGlobal;
 import eva2.optimization.problems.InterfaceHasInitRange;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.tools.EVAERROR;

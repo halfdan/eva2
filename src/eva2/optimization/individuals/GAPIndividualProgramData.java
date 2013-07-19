@@ -2,8 +2,8 @@ package eva2.optimization.individuals;
 
 
 import eva2.optimization.individuals.codings.gp.InterfaceProgram;
-import eva2.optimization.operators.mutation.InterfaceMutation;
-import eva2.optimization.populations.Population;
+import eva2.optimization.operator.mutation.InterfaceMutation;
+import eva2.optimization.population.Population;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
 

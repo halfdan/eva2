@@ -1,8 +1,8 @@
 package eva2.optimization.problems;
 
-import eva2.optimization.operators.constraint.AbstractConstraint;
-import eva2.optimization.operators.constraint.ConstraintCollection;
-import eva2.optimization.operators.constraint.IntervalConstraint;
+import eva2.optimization.operator.constraint.AbstractConstraint;
+import eva2.optimization.operator.constraint.ConstraintCollection;
+import eva2.optimization.operator.constraint.IntervalConstraint;
 import java.io.Serializable;
 import java.util.Vector;
 

@@ -1,8 +1,8 @@
 package eva2.optimization.strategies;
 
 import eva2.optimization.go.InterfacePopulationChangedEventListener;
-import eva2.optimization.populations.InterfaceSolutionSet;
-import eva2.optimization.populations.Population;
+import eva2.optimization.population.InterfaceSolutionSet;
+import eva2.optimization.population.Population;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
 
 

@@ -1,8 +1,8 @@
 package eva2.examples;
 import eva2.OptimizerFactory;
-import eva2.optimization.operators.selection.SelectXProbRouletteWheel;
-import eva2.optimization.operators.terminators.EvaluationTerminator;
-import eva2.optimization.populations.Population;
+import eva2.optimization.operator.selection.SelectXProbRouletteWheel;
+import eva2.optimization.operator.terminators.EvaluationTerminator;
+import eva2.optimization.population.Population;
 import eva2.optimization.problems.B1Problem;
 import eva2.optimization.strategies.GeneticAlgorithm;
 import eva2.optimization.modules.OptimizationParameters;

@@ -6,7 +6,7 @@ import eva2.gui.GraphPointSet;
 import eva2.gui.InterfaceDPointWithContent;
 import eva2.optimization.go.MOCCOStandalone;
 import eva2.optimization.individuals.AbstractEAIndividual;
-import eva2.optimization.populations.Population;
+import eva2.optimization.population.Population;
 import eva2.optimization.problems.InterfaceMultiObjectiveDeNovoProblem;
 import eva2.optimization.problems.InterfaceOptimizationObjective;
 import eva2.tools.chart2d.Chart2DDPointContentSelectable;

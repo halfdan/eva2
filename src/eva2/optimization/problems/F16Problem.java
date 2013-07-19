@@ -1,6 +1,6 @@
 package eva2.optimization.problems;
 
-import eva2.optimization.operators.postprocess.SolutionHistogram;
+import eva2.optimization.operator.postprocess.SolutionHistogram;
 
 /**
  * The Vincent function: Multiple optima with increasing density near the lower bounds, 

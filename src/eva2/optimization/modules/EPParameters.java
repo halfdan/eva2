@@ -2,9 +2,9 @@ package eva2.optimization.modules;
 
 
 import eva2.optimization.go.InterfaceOptimizationParameters;
-import eva2.optimization.operators.selection.InterfaceSelection;
-import eva2.optimization.operators.terminators.EvaluationTerminator;
-import eva2.optimization.populations.Population;
+import eva2.optimization.operator.selection.InterfaceSelection;
+import eva2.optimization.operator.terminators.EvaluationTerminator;
+import eva2.optimization.population.Population;
 import eva2.optimization.problems.F1Problem;
 import eva2.optimization.strategies.EvolutionaryProgramming;
 import eva2.optimization.strategies.InterfaceOptimizer;

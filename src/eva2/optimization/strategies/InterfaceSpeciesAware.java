@@ -1,6 +1,6 @@
 package eva2.optimization.strategies;
 
-import eva2.optimization.populations.Population;
+import eva2.optimization.population.Population;
 
 /**
  * An interface for optimizers which are to be notified in case of species

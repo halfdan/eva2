@@ -1,13 +1,13 @@
 package eva2.examples;
 
 import eva2.OptimizerFactory;
-import eva2.optimization.operators.terminators.CombinedTerminator;
-import eva2.optimization.operators.terminators.EvaluationTerminator;
-import eva2.optimization.operators.terminators.FitnessConvergenceTerminator;
-import eva2.optimization.operators.terminators.PhenotypeConvergenceTerminator;
-import eva2.optimization.operators.terminators.PopulationMeasureTerminator.ChangeTypeEnum;
-import eva2.optimization.operators.terminators.PopulationMeasureTerminator.DirectionTypeEnum;
-import eva2.optimization.operators.terminators.PopulationMeasureTerminator.StagnationTypeEnum;
+import eva2.optimization.operator.terminators.CombinedTerminator;
+import eva2.optimization.operator.terminators.EvaluationTerminator;
+import eva2.optimization.operator.terminators.FitnessConvergenceTerminator;
+import eva2.optimization.operator.terminators.PhenotypeConvergenceTerminator;
+import eva2.optimization.operator.terminators.PopulationMeasureTerminator.ChangeTypeEnum;
+import eva2.optimization.operator.terminators.PopulationMeasureTerminator.DirectionTypeEnum;
+import eva2.optimization.operator.terminators.PopulationMeasureTerminator.StagnationTypeEnum;
 import eva2.optimization.problems.F1Problem;
 
 public class TerminatorExample {
