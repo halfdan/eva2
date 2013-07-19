@@ -1,13 +1,13 @@
 package eva2.optimization.problems;
 
-import eva2.optimization.go.PopulationInterface;
+import eva2.optimization.population.PopulationInterface;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.ESIndividualDoubleData;
 import eva2.optimization.individuals.InterfaceDataTypeDouble;
-import eva2.optimization.operators.distancemetric.InterfaceDistanceMetric;
-import eva2.optimization.operators.distancemetric.PhenotypeMetric;
-import eva2.optimization.operators.postprocess.PostProcess;
-import eva2.optimization.populations.Population;
+import eva2.optimization.operator.distancemetric.InterfaceDistanceMetric;
+import eva2.optimization.operator.distancemetric.PhenotypeMetric;
+import eva2.optimization.operator.postprocess.PostProcess;
+import eva2.optimization.population.Population;
 import eva2.tools.EVAERROR;
 import eva2.tools.ToolBox;
 import eva2.tools.math.Mathematics;

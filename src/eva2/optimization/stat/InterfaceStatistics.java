@@ -13,8 +13,8 @@ package eva2.optimization.stat;
  * IMPORTS
  *==========================================================================*/
 import eva2.optimization.go.IndividualInterface;
-import eva2.optimization.go.PopulationInterface;
-import eva2.optimization.populations.Population;
+import eva2.optimization.population.PopulationInterface;
+import eva2.optimization.population.Population;
 import eva2.optimization.problems.InterfaceAdditionalPopulationInformer;
 import eva2.optimization.strategies.InterfaceOptimizer;
 import java.util.List;

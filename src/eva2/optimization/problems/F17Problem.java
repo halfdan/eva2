@@ -1,6 +1,6 @@
 package eva2.optimization.problems;
 
-import eva2.optimization.operators.postprocess.SolutionHistogram;
+import eva2.optimization.operator.postprocess.SolutionHistogram;
 /**
  * Bohachevsky function, numerous optima on an oval hyperparabola with similar attractor sizes 
  * but decreasing fitness towards the bounds. Described e.g. in Shir&Bäck, PPSN 2006, 

@@ -2,7 +2,7 @@ package eva2.optimization.problems;
 
 import eva2.gui.Plot;
 import eva2.optimization.individuals.AbstractEAIndividual;
-import eva2.optimization.populations.Population;
+import eva2.optimization.population.Population;
 
 
 /**
@@ -88,10 +88,11 @@ public abstract class AbstractDynamicOptimizationProblem extends AbstractOptimiz
     	setCurrentProblemTime(getStartTime());
     	if (myplot != null) {
             try {
-myplot.jump();
-} catch(NullPointerException e) {
-makePlot();
-}       }
+                myplot.jump();
+            } catch (NullPointerException e) {
+                makePlot();
+            }
+        }
     }
     
     /**
@@ -100,7 +101,7 @@ makePlot();
      * 
      * @param severity the severity of the change (time measure)
      */
-    public abstract void resetProblem(double sev);
+    public abstract void resetProblem(double severity);
     
     /**
      * This method inits a given population at the current time stamp.

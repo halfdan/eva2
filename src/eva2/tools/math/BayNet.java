@@ -5,7 +5,7 @@ import eva2.optimization.enums.BOAScoringMethods;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.InterfaceDataTypeBinary;
 import eva2.optimization.individuals.InterfaceGAIndividual;
-import eva2.optimization.populations.Population;
+import eva2.optimization.population.Population;
 import eva2.tools.Pair;
 import java.util.ArrayList;
 import java.util.Arrays;

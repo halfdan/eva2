@@ -1,8 +1,8 @@
 package eva2.optimization.modules;
 
 import eva2.optimization.go.InterfaceOptimizationParameters;
-import eva2.optimization.operators.terminators.EvaluationTerminator;
-import eva2.optimization.populations.Population;
+import eva2.optimization.operator.terminators.EvaluationTerminator;
+import eva2.optimization.population.Population;
 import eva2.optimization.problems.B1Problem;
 import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.optimization.strategies.MonteCarloSearch;

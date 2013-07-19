@@ -7,7 +7,7 @@ import eva2.gui.PropertyEditorProvider;
 import eva2.optimization.go.InterfaceTerminator;
 import eva2.optimization.go.MOCCOStandalone;
 import eva2.optimization.individuals.AbstractEAIndividual;
-import eva2.optimization.operators.moso.MOSOWeightedFitness;
+import eva2.optimization.operator.moso.MOSOWeightedFitness;
 import eva2.optimization.problems.AbstractMultiObjectiveOptimizationProblem;
 import eva2.optimization.problems.InterfaceMultiObjectiveDeNovoProblem;
 import eva2.optimization.problems.InterfaceOptimizationObjective;

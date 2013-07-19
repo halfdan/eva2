@@ -2,11 +2,11 @@ package eva2.optimization.problems;
 
 import eva2.gui.GenericObjectEditor;
 import eva2.optimization.individuals.AbstractEAIndividual;
-import eva2.optimization.operators.constraint.AbstractConstraint;
-import eva2.optimization.operators.constraint.ConstraintCollection;
-import eva2.optimization.operators.constraint.ConstraintHandlingEnum;
-import eva2.optimization.operators.constraint.ConstraintRelationEnum;
-import eva2.optimization.operators.constraint.GenericConstraint;
+import eva2.optimization.operator.constraint.AbstractConstraint;
+import eva2.optimization.operator.constraint.ConstraintCollection;
+import eva2.optimization.operator.constraint.ConstraintHandlingEnum;
+import eva2.optimization.operator.constraint.ConstraintRelationEnum;
+import eva2.optimization.operator.constraint.GenericConstraint;
 import java.util.Vector;
 
 public class ConstrPressureVessel extends AbstractProblemDouble {

@@ -1,15 +1,15 @@
 package eva2.optimization.strategies;
 
-import eva2.optimization.go.PopulationInterface;
+import eva2.optimization.population.PopulationInterface;
 import eva2.optimization.enums.PSOTopologyEnum;
-import eva2.optimization.operators.cluster.ClusteringDensityBased;
-import eva2.optimization.operators.distancemetric.IndividualDataMetric;
-import eva2.optimization.operators.paramcontrol.CbpsoFitnessThresholdBasedAdaption;
-import eva2.optimization.operators.paramcontrol.LinearParamAdaption;
-import eva2.optimization.operators.paramcontrol.ParamAdaption;
-import eva2.optimization.operators.paramcontrol.SinusoidalParamAdaption;
-import eva2.optimization.populations.Population;
-import eva2.optimization.populations.SolutionSet;
+import eva2.optimization.operator.cluster.ClusteringDensityBased;
+import eva2.optimization.operator.distancemetric.IndividualDataMetric;
+import eva2.optimization.operator.paramcontrol.CbpsoFitnessThresholdBasedAdaption;
+import eva2.optimization.operator.paramcontrol.LinearParamAdaption;
+import eva2.optimization.operator.paramcontrol.ParamAdaption;
+import eva2.optimization.operator.paramcontrol.SinusoidalParamAdaption;
+import eva2.optimization.population.Population;
+import eva2.optimization.population.SolutionSet;
 import eva2.optimization.problems.AbstractProblemDouble;
 import eva2.optimization.problems.InterfaceInterestingHistogram;
 import eva2.optimization.problems.InterfaceOptimizationProblem;

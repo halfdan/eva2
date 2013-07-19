@@ -3,7 +3,7 @@ package eva2.optimization.mocco.paretofrontviewer;
 
 import eva2.gui.*;
 import eva2.optimization.individuals.AbstractEAIndividual;
-import eva2.optimization.populations.Population;
+import eva2.optimization.population.Population;
 import eva2.optimization.problems.InterfaceMultiObjectiveDeNovoProblem;
 import eva2.optimization.problems.InterfaceOptimizationObjective;
 import eva2.tools.chart2d.Chart2DDPointContentSelectable;

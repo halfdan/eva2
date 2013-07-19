@@ -1,6 +1,6 @@
 package eva2.optimization.strategies;
 
-import eva2.optimization.operators.selection.SelectBestSingle;
+import eva2.optimization.operator.selection.SelectBestSingle;
 
 public class EsDpiNichingCma extends EsDpiNiching {
 

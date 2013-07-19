@@ -3,10 +3,10 @@ package eva2.optimization.individuals;
 
 import eva2.optimization.individuals.codings.ga.GAStandardCodingDouble;
 import eva2.optimization.individuals.codings.ga.InterfaceGADoubleCoding;
-import eva2.optimization.operators.crossover.CrossoverGAGINPoint;
-import eva2.optimization.operators.crossover.InterfaceCrossover;
-import eva2.optimization.operators.mutation.InterfaceMutation;
-import eva2.optimization.operators.mutation.MutateGAUniform;
+import eva2.optimization.operator.crossover.CrossoverGAGINPoint;
+import eva2.optimization.operator.crossover.InterfaceCrossover;
+import eva2.optimization.operator.mutation.InterfaceMutation;
+import eva2.optimization.operator.mutation.MutateGAUniform;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
 import java.util.BitSet;

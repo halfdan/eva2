@@ -1,8 +1,8 @@
 package eva2.examples;
 import eva2.OptimizerFactory;
 import eva2.optimization.individuals.AbstractEAIndividual;
-import eva2.optimization.operators.postprocess.PostProcessParams;
-import eva2.optimization.operators.terminators.EvaluationTerminator;
+import eva2.optimization.operator.postprocess.PostProcessParams;
+import eva2.optimization.operator.terminators.EvaluationTerminator;
 import eva2.optimization.problems.FM0Problem;
 import eva2.optimization.modules.OptimizationParameters;
 import java.util.List;

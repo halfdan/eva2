@@ -1,9 +1,9 @@
 package eva2.optimization.strategies;
 
 import eva2.optimization.enums.PSOTopologyEnum;
-import eva2.optimization.operators.cluster.ClusteringDensityBased;
-import eva2.optimization.operators.distancemetric.IndividualDataMetric;
-import eva2.optimization.operators.paramcontrol.ParamAdaption;
+import eva2.optimization.operator.cluster.ClusteringDensityBased;
+import eva2.optimization.operator.distancemetric.IndividualDataMetric;
+import eva2.optimization.operator.paramcontrol.ParamAdaption;
 
 /**
  * A thunk class preconfiguring CBN-EA to function as a sequential niching method. This

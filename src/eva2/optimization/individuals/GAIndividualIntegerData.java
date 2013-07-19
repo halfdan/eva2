@@ -3,9 +3,9 @@ package eva2.optimization.individuals;
 
 import eva2.optimization.individuals.codings.ga.GAStandardCodingInteger;
 import eva2.optimization.individuals.codings.ga.InterfaceGAIntegerCoding;
-import eva2.optimization.operators.crossover.CrossoverGAGINPoint;
-import eva2.optimization.operators.mutation.InterfaceMutation;
-import eva2.optimization.operators.mutation.MutateGANBit;
+import eva2.optimization.operator.crossover.CrossoverGAGINPoint;
+import eva2.optimization.operator.mutation.InterfaceMutation;
+import eva2.optimization.operator.mutation.MutateGANBit;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
 import java.util.BitSet;

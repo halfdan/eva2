@@ -3,8 +3,8 @@ package eva2.optimization.tools;
 
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.ESIndividualDoubleData;
-import eva2.optimization.operators.archiving.ArchivingAllDominating;
-import eva2.optimization.populations.Population;
+import eva2.optimization.operator.archiving.ArchivingAllDominating;
+import eva2.optimization.population.Population;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;

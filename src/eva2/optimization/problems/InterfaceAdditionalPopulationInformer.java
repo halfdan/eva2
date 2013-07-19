@@ -1,6 +1,6 @@
 package eva2.optimization.problems;
 
-import eva2.optimization.go.PopulationInterface;
+import eva2.optimization.population.PopulationInterface;
 
 /**
  * An interface for an instance providing specialized statistical data on an optimization run.

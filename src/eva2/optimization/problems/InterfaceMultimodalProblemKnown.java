@@ -1,6 +1,6 @@
 package eva2.optimization.problems;
 
-import eva2.optimization.populations.Population;
+import eva2.optimization.population.Population;
 
 /**
  * A multimodal problem which has knowledge of its optima.

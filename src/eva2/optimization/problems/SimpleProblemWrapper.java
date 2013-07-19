@@ -8,7 +8,7 @@ import eva2.optimization.individuals.ESIndividualDoubleData;
 import eva2.optimization.individuals.GAIndividualBinaryData;
 import eva2.optimization.individuals.InterfaceDataTypeBinary;
 import eva2.optimization.individuals.InterfaceDataTypeDouble;
-import eva2.optimization.populations.Population;
+import eva2.optimization.population.Population;
 import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.tools.math.RNG;
 import java.util.BitSet;

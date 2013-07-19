@@ -3,9 +3,9 @@ package eva2.optimization.problems;
 
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.InterfaceDataTypeBinary;
-import eva2.optimization.operators.mutation.MutateEAMixer;
-import eva2.optimization.operators.mutation.MutateGAGISwapBits;
-import eva2.optimization.operators.mutation.MutateGAUniform;
+import eva2.optimization.operator.mutation.MutateEAMixer;
+import eva2.optimization.operator.mutation.MutateGAGISwapBits;
+import eva2.optimization.operator.mutation.MutateGAUniform;
 import eva2.optimization.strategies.InterfaceOptimizer;
 import java.util.BitSet;
 

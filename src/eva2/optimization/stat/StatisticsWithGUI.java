@@ -17,15 +17,13 @@ import eva2.gui.JTextoutputFrame;
 import eva2.gui.JTextoutputFrameInterface;
 import eva2.gui.Plot;
 import eva2.gui.PlotInterface;
-import eva2.optimization.go.PopulationInterface;
+import eva2.optimization.population.PopulationInterface;
 import eva2.optimization.problems.InterfaceAdditionalPopulationInformer;
 import eva2.tools.EVAERROR;
 import eva2.tools.Pair;
 import java.io.Serializable;
-import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**

@@ -1,8 +1,8 @@
 package eva2.optimization.problems;
 
 import eva2.optimization.individuals.ESIndividualDoubleData;
-import eva2.optimization.operators.postprocess.SolutionHistogram;
-import eva2.optimization.populations.Population;
+import eva2.optimization.operator.postprocess.SolutionHistogram;
+import eva2.optimization.population.Population;
 import eva2.optimization.strategies.GradientDescentAlgorithm;
 import java.io.Serializable;
 

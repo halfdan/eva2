@@ -4,7 +4,7 @@ package eva2.optimization.mocco;
 import eva2.optimization.go.MOCCOStandalone;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.mocco.paretofrontviewer.InterfaceRefSolutionListener;
-import eva2.optimization.populations.Population;
+import eva2.optimization.population.Population;
 import eva2.optimization.problems.InterfaceMultiObjectiveDeNovoProblem;
 import eva2.optimization.problems.InterfaceOptimizationObjective;
 import java.awt.*;

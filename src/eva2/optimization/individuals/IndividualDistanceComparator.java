@@ -1,6 +1,6 @@
 package eva2.optimization.individuals;
 
-import eva2.optimization.operators.distancemetric.InterfaceDistanceMetric;
+import eva2.optimization.operator.distancemetric.InterfaceDistanceMetric;
 import java.io.Serializable;
 import java.util.Comparator;
 

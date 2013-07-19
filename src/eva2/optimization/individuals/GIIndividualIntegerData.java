@@ -1,8 +1,8 @@
 package eva2.optimization.individuals;
 
-import eva2.optimization.operators.crossover.CrossoverGIDefault;
-import eva2.optimization.operators.mutation.InterfaceMutation;
-import eva2.optimization.operators.mutation.MutateDefault;
+import eva2.optimization.operator.crossover.CrossoverGIDefault;
+import eva2.optimization.operator.mutation.InterfaceMutation;
+import eva2.optimization.operator.mutation.MutateDefault;
 import eva2.optimization.problems.InterfaceHasInitRange;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;

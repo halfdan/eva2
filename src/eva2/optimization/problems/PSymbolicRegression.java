@@ -1,7 +1,7 @@
 package eva2.optimization.problems;
 
 import eva2.gui.Plot;
-import eva2.optimization.go.PopulationInterface;
+import eva2.optimization.population.PopulationInterface;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.GAPIndividualProgramData;
 import eva2.optimization.individuals.GPIndividualProgramData;
@@ -24,7 +24,7 @@ import eva2.optimization.individuals.codings.gp.GPNodeSin;
 import eva2.optimization.individuals.codings.gp.GPNodeSqrt;
 import eva2.optimization.individuals.codings.gp.GPNodeSub;
 import eva2.optimization.individuals.codings.gp.InterfaceProgram;
-import eva2.optimization.populations.Population;
+import eva2.optimization.population.Population;
 import eva2.optimization.problems.regression.InterfaceRegressionFunction;
 import eva2.optimization.problems.regression.RFKoza_GPI_7_3;
 import eva2.optimization.strategies.InterfaceOptimizer;

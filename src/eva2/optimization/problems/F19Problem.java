@@ -1,6 +1,6 @@
 package eva2.optimization.problems;
 
-import eva2.optimization.operators.postprocess.SolutionHistogram;
+import eva2.optimization.operator.postprocess.SolutionHistogram;
 import eva2.tools.math.RNG;
 import java.util.Arrays;
 import java.util.Random;

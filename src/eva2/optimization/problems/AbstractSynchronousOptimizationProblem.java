@@ -3,7 +3,7 @@
  */
 package eva2.optimization.problems;
 
-import eva2.optimization.populations.Population;
+import eva2.optimization.population.Population;
 
 /** 
  * A synchronous problem changes in equal intervals. As the EA takes notice of the
