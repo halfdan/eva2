@@ -1,24 +1,13 @@
-package eva2.client;
+package eva2.gui;
 
-/*
- * Title: EvA2
- * Description: The main client class of the EvA framework.
- * Copyright: Copyright (c) 2008
- * Company: University of Tuebingen, Computer
- * Architecture 
- * 
- * @author Holger Ulmer, Felix Streichert, Hannes Planatscher
- * @version: $Revision: 322 $ $Date: 2007-12-11 17:24:07 +0100 (Tue, 11 Dec 2007)$
- * $Author: mkron $  
- */
 import eva2.EvAInfo;
-import eva2.gui.*;
+import eva2.client.*;
 import eva2.optimization.OptimizationStateListener;
 import eva2.optimization.go.InterfaceOptimizationParameters;
 import eva2.optimization.modules.AbstractModuleAdapter;
-import eva2.optimization.modules.OptimizationParameters;
 import eva2.optimization.modules.GenericModuleAdapter;
 import eva2.optimization.modules.ModuleAdapter;
+import eva2.optimization.modules.OptimizationParameters;
 import eva2.optimization.stat.AbstractStatistics;
 import eva2.optimization.stat.InterfaceStatisticsListener;
 import eva2.optimization.stat.InterfaceStatisticsParameter;
@@ -26,22 +15,22 @@ import eva2.tools.BasicResourceLoader;
 import eva2.tools.EVAERROR;
 import eva2.tools.ReflectPackage;
 import eva2.tools.StringTools;
+
+import javax.help.HelpSet;
+import javax.help.JHelpContentViewer;
+import javax.help.JHelpNavigator;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.help.*;
-import javax.swing.*;
-
 
 /**
  *
  */
-public class EvAClient extends JFrame implements OptimizationStateListener {
+public class Main extends JFrame implements OptimizationStateListener {
 
     /**
      * Generated serial version identifier.
@@ -53,8 +42,8 @@ public class EvAClient extends JFrame implements OptimizationStateListener {
     private JDesktopPane desktopPane;
     private JPanel configurationPane;
     private JSplitPane horizontalSplit;
-    private Runnable initRnbl = null;    
-    
+    private Runnable initRnbl = null;
+
     //private EvAComAdapter comAdapter;
     private transient JMenuBar menuBar;
     private transient JExtMenu menuHelp;
@@ -63,49 +52,49 @@ public class EvAClient extends JFrame implements OptimizationStateListener {
     private transient JExtMenu menuOptions;
     private JPanel statusBar;
     private transient JProgressBar progressBar;
-    
+
     // Option
     private ExtAction actPreferences;
     private ExtAction actQuit;
-    
+
     // LogPanel
     private LoggingPanel logPanel;
-    private static final Logger LOGGER = Logger.getLogger(EvAClient.class.getName());
-    
+    private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
+
     // Module:
     private ExtAction actModuleLoad;
 
-    // Hosts:    
+    // Hosts:
     private ExtAction actHost;
     private ExtAction actAvailableHost;
     private ExtAction actKillHost;
     private ExtAction actKillAllHosts;
     private ModuleAdapter currentModuleAdapter = null;
-    
+
     // Help:
     private ExtAction actHelp;
     private ExtAction actAbout;
     private ExtAction actLicense;
-    
+
     //	if not null, the module is loaded automatically and no other can be selected
     private String useDefaultModule = null;	//"Genetic_Optimization";
     private boolean showLoadModules = false;
     private boolean localMode = false;
-    
+
     // measuring optimization runtime
     private long startTime = 0;
     // remember the module in use
-    private transient String currentModule = null;    
+    private transient String currentModule = null;
     private boolean withGUI = true;
     private boolean withTreeView = false;
     private EvATabbedFrameMaker frameMaker = null;
     private Window parentWindow;
-    
-    private List<OptimizationStateListener> superListenerList = null;
-    
+
+    private java.util.List<OptimizationStateListener> superListenerList = null;
+
     private EvAComAdapter comAdapter;
 
-   
+
     public void addOptimizationStateListener(OptimizationStateListener l) {
         if (superListenerList == null) {
             superListenerList = new ArrayList<OptimizationStateListener>();
@@ -123,67 +112,67 @@ public class EvAClient extends JFrame implements OptimizationStateListener {
 
     /**
      * Constructor of GUI of EvA2. Works as client for the EvA2 server. Note
-     * that the EvAClient initialized multi-threaded for efficiency. Use {@link #awaitGuiInitialized()}
+     * that the Main initialized multi-threaded for efficiency. Use {@link #awaitGuiInitialized()}
      * to await full initialization if necessary.
      *
      */
-    public EvAClient(final String hostName) {
+    public Main(final String hostName) {
         this(hostName, null, false, false);
     }
 
     /**
      * A constructor. Splash screen is optional, Gui is activated, no parent
-     * window. Note that the EvAClient initialized multi-threaded for
+     * window. Note that the Main initialized multi-threaded for
      * efficiency. Use {@link #awaitGuiInitialized()} to await full
      * initialization if necessary.
      *
-     * @see #EvAClient(String, Window, String, boolean, boolean, boolean)
+     * @see #EvAClient(String, java.awt.Window, String, boolean, boolean, boolean)
      * @param hostName
      * @param paramsFile
      * @param autorun
      * @param nosplash
      */
-    public EvAClient(final String hostName, final String paramsFile, boolean autorun, boolean nosplash) {
+    public Main(final String hostName, final String paramsFile, boolean autorun, boolean nosplash) {
         this(hostName, null, paramsFile, null, autorun, nosplash, false, false);
     }
 
     /**
-     * A constructor with optional spash screen. Note that the EvAClient is
+     * A constructor with optional spash screen. Note that the Main is
      * initialized multi-threaded for efficiency. Use {@link #awaitGuiInitialized()}
      * to await full initialization if necessary.
      *
-     * @see #EvAClient(String, String, boolean, boolean)
+     * @see #Main(String, String, boolean, boolean)
      *
      * @param hostName
      * @param autorun
      * @param nosplash
      */
-    public EvAClient(final String hostName, boolean autorun, boolean nosplash) {
+    public Main(final String hostName, boolean autorun, boolean nosplash) {
         this(hostName, null, autorun, nosplash);
     }
 
     /**
-     * A constructor with optional splash screen. Note that the EvAClient
+     * A constructor with optional splash screen. Note that the Main
      * initialized multi-threaded for efficiency. Use {@link #awaitGuiInitialized()}
      * to await full initialization if necessary.
      *
-     * @see #EvAClient(String, String, boolean, boolean)
+     * @see #Main(String, String, boolean, boolean)
      * @param hostName
      * @param paramsFile
      * @param autorun
      * @param noSplash
      * @param noGui
      */
-    public EvAClient(final String hostName, String paramsFile, boolean autorun, boolean noSplash, boolean noGui, boolean withTreeView) {
+    public Main(final String hostName, String paramsFile, boolean autorun, boolean noSplash, boolean noGui, boolean withTreeView) {
         this(hostName, null, paramsFile, null, autorun, noSplash, noGui, withTreeView);
     }
 
     /**
-     * A constructor with optional splash screen. Note that the EvAClient
+     * A constructor with optional splash screen. Note that the Main
      * initialized multi-threaded for efficiency. Use {@link #awaitGuiInitialized()}
      * to await full initialization if necessary.
      *
-     * @see #EvAClient(String, String, boolean, boolean)
+     * @see #Main(String, String, boolean, boolean)
      *
      * @param hostName
      * @param paramsFile
@@ -191,7 +180,7 @@ public class EvAClient extends JFrame implements OptimizationStateListener {
      * @param noSplash
      * @param noGui
      */
-    public EvAClient(final String hostName, InterfaceOptimizationParameters goParams, boolean autorun, boolean noSplash, boolean noGui) {
+    public Main(final String hostName, InterfaceOptimizationParameters goParams, boolean autorun, boolean noSplash, boolean noGui) {
         this(hostName, null, null, goParams, autorun, noSplash, noGui, false);
     }
 
@@ -206,7 +195,7 @@ public class EvAClient extends JFrame implements OptimizationStateListener {
      * @param noSplash
      * @param noGui
      */
-    public EvAClient(final String hostName, final Window parent, final String paramsFile, final InterfaceOptimizationParameters goParams, final boolean autorun, final boolean noSplash, final boolean noGui) {
+    public Main(final String hostName, final Window parent, final String paramsFile, final InterfaceOptimizationParameters goParams, final boolean autorun, final boolean noSplash, final boolean noGui) {
         this(hostName, parent, paramsFile, goParams, autorun, noSplash, noGui, false);
     }
 
@@ -215,7 +204,7 @@ public class EvAClient extends JFrame implements OptimizationStateListener {
      * locally or as client for the EvA2 server. GO parameters may be loaded
      * from a file (paramsFile) or given directly as a java instance. Both may
      * be null to start with standard parameters. If both are non null, the java
-     * instance has the higher priority. Note that the EvAClient initialized
+     * instance has the higher priority. Note that the Main initialized
      * multi-threaded for efficiency. Use {@link #awaitGuiInitialized()} to
      * await full initialization if necessary.
      *
@@ -226,9 +215,9 @@ public class EvAClient extends JFrame implements OptimizationStateListener {
      * @param noSplash
      * @param noGui
      */
-    public EvAClient(final String hostName, final Window parent, final String paramsFile, final InterfaceOptimizationParameters goParams, final boolean autorun, final boolean noSplash, final boolean noGui, final boolean showTreeView) {
+    public Main(final String hostName, final Window parent, final String paramsFile, final InterfaceOptimizationParameters goParams, final boolean autorun, final boolean noSplash, final boolean noGui, final boolean showTreeView) {
         clientInited = false;
-        final SplashScreen splashScreen = new SplashScreen(EvAInfo.splashLocation);
+        final eva2.gui.SplashScreen splashScreen = new eva2.gui.SplashScreen(EvAInfo.splashLocation);
 
         // preload some classes (into system cache) in a parallel thread
         preloadClasses();
@@ -261,7 +250,7 @@ public class EvAClient extends JFrame implements OptimizationStateListener {
                     if (!autorun) {
                         if (!noSplash) {
                             try {
-                                // if splashScreenTime has not passed, sleep some more 
+                                // if splashScreenTime has not passed, sleep some more
                                 if (wait < splashScreenTime) {
                                     Thread.sleep(splashScreenTime - wait);
                                 }
@@ -294,7 +283,7 @@ public class EvAClient extends JFrame implements OptimizationStateListener {
     /**
      * Since the constructor runs multi-threaded for efficiency, this method may
      * be called to await the full initialization of a client instance. As soon
-     * as it returns, the EvAClient GUI is fully initialized.
+     * as it returns, the Main GUI is fully initialized.
      */
     public void awaitClientInitialized() {
         if (initRnbl != null) {
@@ -331,14 +320,14 @@ public class EvAClient extends JFrame implements OptimizationStateListener {
         }
     }
 
-    
+
     /**
      * Set UI Font for all controls.
-     * 
+     *
      * @param fontResource The FontUIResource for the controls
-     */    
+     */
     private static void setUIFont(javax.swing.plaf.FontUIResource fontResource) {
-        java.util.Enumeration keys = UIManager.getDefaults().keys();
+        Enumeration keys = UIManager.getDefaults().keys();
         while (keys.hasMoreElements()) {
             Object key = keys.nextElement();
             Object value = UIManager.get(key);
@@ -355,9 +344,9 @@ public class EvAClient extends JFrame implements OptimizationStateListener {
     private void init(String hostName, String paramsFile, InterfaceOptimizationParameters goParams, final Window parent) {
         useDefaultModule = EvAInfo.propDefaultModule();
         this.parentWindow = parent;
-        
+
         setUIFont(new javax.swing.plaf.FontUIResource(Font.SANS_SERIF, 0, 11));
-        
+
         if (useDefaultModule != null) {
             useDefaultModule = useDefaultModule.trim();
             if (useDefaultModule.length() < 1) {
@@ -367,7 +356,7 @@ public class EvAClient extends JFrame implements OptimizationStateListener {
 
         if (withGUI) {
             GridBagConstraints gbConstraints = new GridBagConstraints();
-            
+
             /* Set Look and Feel */
             try {
                 //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -375,18 +364,18 @@ public class EvAClient extends JFrame implements OptimizationStateListener {
             } catch (Exception ex) {
                 LOGGER.log(Level.INFO, "Could not set Look&Feel", ex);
             }
-            
+
             /* Create main frame with GridBagLayout */
             setTitle(EvAInfo.productName);
             setLayout(new GridBagLayout());
             setMinimumSize(new Dimension(800, 600));
 
             /* Creates the desktopPane for Plot/Text Output */
-            desktopPane = new JExtDesktopPane();            
+            desktopPane = new JExtDesktopPane();
             JEFrameRegister.getInstance().setDesktopPane(desktopPane);
             /* Creates desktopPane ToolBar to show tiling buttons */
             desktopToolBar = new JExtDesktopPaneToolBar((JExtDesktopPane) desktopPane);
-            
+
             /* Pane to hold ToolBar + DesktopPane */
             JPanel desktopPanel = new JPanel(new GridBagLayout());
             GridBagConstraints desktopConst = new GridBagConstraints();
@@ -399,7 +388,7 @@ public class EvAClient extends JFrame implements OptimizationStateListener {
             desktopConst.fill = GridBagConstraints.BOTH;
             desktopConst.weighty = 1.0;
             desktopPanel.add(desktopPane, desktopConst);
-                        
+
             BasicResourceLoader loader = BasicResourceLoader.instance();
             byte[] bytes = loader.getBytesFromResourceLocation(EvAInfo.iconLocation, true);
             // TODO: use setIconImages (for better support of multiple icons when changing programs etc.)
@@ -410,7 +399,7 @@ public class EvAClient extends JFrame implements OptimizationStateListener {
             } catch (Exception e) {
                 System.out.println("Error" + e.getMessage());
             }
-			
+
             logPanel = new LoggingPanel(LOGGER);
             logPanel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 
@@ -421,9 +410,9 @@ public class EvAClient extends JFrame implements OptimizationStateListener {
                 showLoadModules = false; // may be set to true again if default module couldnt be loaded
             }
             createActions();
-            
+
             setSize(800, 600);
-  
+
             /* Create a new ConfigurationPanel (left side) */
             configurationPane = new JPanel(new GridBagLayout());
             gbConstraints.ipadx = 5;
@@ -436,13 +425,13 @@ public class EvAClient extends JFrame implements OptimizationStateListener {
             gbConstraints.gridwidth = GridBagConstraints.RELATIVE;
             gbConstraints.gridheight = GridBagConstraints.RELATIVE;
             add(configurationPane, gbConstraints);
-            
+
             /* SplitPane for desktopPanel and loggingPanel */
             horizontalSplit = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true);
             horizontalSplit.setTopComponent(desktopPanel);
             horizontalSplit.setBottomComponent(logPanel);
-            horizontalSplit.setDividerLocation(0.25);  
-            horizontalSplit.setDividerSize(8);            
+            horizontalSplit.setDividerLocation(0.25);
+            horizontalSplit.setDividerSize(8);
             horizontalSplit.setOneTouchExpandable(true);
             horizontalSplit.setResizeWeight(1.0);
             horizontalSplit.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
@@ -454,33 +443,33 @@ public class EvAClient extends JFrame implements OptimizationStateListener {
             gbConstraints.gridwidth = GridBagConstraints.REMAINDER;
             gbConstraints.gridheight = GridBagConstraints.RELATIVE;
             add(horizontalSplit, gbConstraints);
-            
+
             /* StatusBar of the main frame */
             statusBar = new JPanel(new FlowLayout(FlowLayout.RIGHT));
             JPanel statusBarControls = new JPanel();
             statusBarControls.setLayout(new BoxLayout(statusBarControls, BoxLayout.LINE_AXIS));
-            
+
             statusBarControls.add(Box.createHorizontalGlue());
             /* Logging settings drop down */
             LoggingLevelLabel loggingOption = new LoggingLevelLabel(LOGGER);
-            
+
             statusBarControls.add(loggingOption);
-            
+
             statusBarControls.add(Box.createHorizontalStrut(5));
             statusBarControls.add(new JSeparator(JSeparator.VERTICAL));
             statusBarControls.add(Box.createHorizontalStrut(5));
-            
+
             /* Create ProgressBar and add it to the status bar */
             statusBarControls.add(new JLabel("Progress"));
             statusBarControls.add(Box.createHorizontalStrut(5));
-            
+
             progressBar = new JProgressBar();
             progressBar.setValue(0);
             progressBar.setStringPainted(true);
             statusBarControls.add(progressBar);
-            
+
             statusBar.add(statusBarControls);
-            
+
             gbConstraints.gridx = 0;
             gbConstraints.gridy = 2;
             gbConstraints.gridwidth = 2;
@@ -488,11 +477,11 @@ public class EvAClient extends JFrame implements OptimizationStateListener {
             gbConstraints.fill = GridBagConstraints.HORIZONTAL;
             gbConstraints.anchor = GridBagConstraints.PAGE_END;
             add(statusBar, gbConstraints);
-            
+
             setVisible(true);
         }
         if (useDefaultModule != null) {
-            /* 
+            /*
              * if goParams are not defined and a params file is defined
              * try to load parameters from file
              */
@@ -509,12 +498,12 @@ public class EvAClient extends JFrame implements OptimizationStateListener {
                 @Override
                 public void windowClosing(final WindowEvent event) {
                     int result = JOptionPane.showConfirmDialog(
-                            EvAClient.this,
+                            Main.this,
                             "Do you really want to exit EvA2?",
                             "Exit Application",
                             JOptionPane.YES_NO_OPTION);
                     if (result == JOptionPane.YES_OPTION) {
-                        EvAClient.this.close();
+                        Main.this.close();
                     }
                 }
             });
@@ -527,7 +516,7 @@ public class EvAClient extends JFrame implements OptimizationStateListener {
             if (!(configurationPane.isVisible())) {
                 configurationPane.setVisible(true);
             }
-            
+
             if (!(this.isVisible())) {
                 Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
                 this.setLocation((int) ((screenSize.width - this.getWidth()) / 2), (int) ((screenSize.height - this.getHeight()) / 2.5));
@@ -536,13 +525,13 @@ public class EvAClient extends JFrame implements OptimizationStateListener {
                 this.setVisible(true);
                 this.setVisible(true);
             }
-            
+
             // if this message is omitted, the stupid scroll pane runs to
             // the end of the last line which is ugly for a long class path
             LOGGER.info("EvA2 ready");
         }
     }
-    
+
     /**
      * Closes EvA2 workbench. Will not kill the JVM iff
      * the MATLAB environment variable has been set.
@@ -572,7 +561,7 @@ public class EvAClient extends JFrame implements OptimizationStateListener {
      * The one and only main of the client program. Possible arguments:
      * --autorun immediately starts the optimization (with parameters loaded
      * from current directory if available. --hostname HOST: sets the hostname
-     * for the EvAClient to HOST --nosplash: skip the splash screen. --params
+     * for the Main to HOST --nosplash: skip the splash screen. --params
      * PFILE: load the optimization parameter from the serialized file PFILE
      *
      * @param args command line parameters
@@ -587,21 +576,21 @@ public class EvAClient extends JFrame implements OptimizationStateListener {
              * command-line arguments! See above!
              */
             System.setProperty("com.apple.mrj.application.apple.menu.about.name", EvAInfo.productName);
-            
+
             System.setProperty("apple.awt.graphics.EnableQ2DX", "true");
             System.setProperty("apple.laf.useScreenMenuBar", "true");
             System.setProperty("com.apple.macos.smallTabs", "true");
             System.setProperty("com.apple.macos.useScreenMenuBar", "true");
-            
+
             System.setProperty("com.apple.mrj.application.growbox.intrudes", "false");
             System.setProperty("com.apple.mrj.application.live-resize", "true");
         }
     	/*==========================================================================*/
-    	
-    	
+
+
         /* Available command-line parameters */
         String[] keys = new String[]{
-            "--help", "--autorun", "--nosplash", "--nogui", 
+            "--help", "--autorun", "--nosplash", "--nogui",
             "--remotehost", "--params", "--treeView"
         };
         /* Number of arguments per parameter */
@@ -630,7 +619,7 @@ public class EvAClient extends JFrame implements OptimizationStateListener {
             String hostName = StringTools.checkSingleStringArg(keys[4], values[4], arities[4] - 1);
             String paramsFile = StringTools.checkSingleStringArg(keys[5], values[5], arities[5] - 1);
 
-            new EvAClient(hostName, paramsFile, autorun, nosplash, nogui, treeView);
+            new Main(hostName, paramsFile, autorun, nosplash, nogui, treeView);
         }
     }
 
@@ -643,12 +632,12 @@ public class EvAClient extends JFrame implements OptimizationStateListener {
      * optimization
      * @param windowListener	additional window listener for client frame
      */
-    public static EvAClient initClientGUI(OptimizationParameters goParams,
+    public static Main initClientGUI(OptimizationParameters goParams,
             InterfaceStatisticsListener statisticsListener,
             WindowListener windowListener, final Window parent) {
-        EvAClient evaClient;
+        Main evaClient;
 
-        evaClient = new EvAClient(null, parent, null, goParams,
+        evaClient = new Main(null, parent, null, goParams,
                 false, true, false, false); // initializes GUI in the background
         // important: wait for GUI initialization before accessing any internal
         // settings:
@@ -656,7 +645,7 @@ public class EvAClient extends JFrame implements OptimizationStateListener {
         // GUI is ready
         evaClient.addWindowListener(windowListener);
         // modify initial settings and activate output of all data:
-        evaClient.getStatistics().getStatisticsParameter().setOutputAllFieldsAsText(true); 
+        evaClient.getStatistics().getStatisticsParameter().setOutputAllFieldsAsText(true);
         // add a data listener instance:
         evaClient.getStatistics().addDataListener(statisticsListener);
 
@@ -718,16 +707,16 @@ public class EvAClient extends JFrame implements OptimizationStateListener {
                 showLicense();
             }
         };
-                
+
         actQuit = new ExtAction("&Quit", "Quit EvA2 workbench",
                 KeyStroke.getKeyStroke(KeyEvent.VK_Q, Event.CTRL_MASK)) {
 
             @Override
             public void actionPerformed(final ActionEvent event) {
-                EvAClient.this.close();
+                Main.this.close();
             }
         };
-        
+
         actPreferences = new ExtAction("&Preferences", "Show preferences dialog",
                 KeyStroke.getKeyStroke(KeyEvent.VK_P, Event.CTRL_MASK)) {
 
@@ -736,7 +725,7 @@ public class EvAClient extends JFrame implements OptimizationStateListener {
                 // ToDo
             }
         };
-        
+
         actHelp = new ExtAction("&Help", "Show help contents",
                 KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0)) {
 
@@ -744,7 +733,7 @@ public class EvAClient extends JFrame implements OptimizationStateListener {
             public void actionPerformed(final ActionEvent event) {
                 // ToDo
                 String helpHS = "EvA2Help/EvA2Help.hs";
-                ClassLoader cl = EvAClient.class.getClassLoader();
+                ClassLoader cl = Main.class.getClassLoader();
                 JHelpContentViewer helpPane;
                 try {
                     URL hsURL = HelpSet.findHelpSet(cl, helpHS);
@@ -760,7 +749,7 @@ public class EvAClient extends JFrame implements OptimizationStateListener {
                 } catch (Exception ee) {
                     // Say what the exception really is
                     LOGGER.log(Level.WARNING, "Could not open application help", ee);
-                }                
+                }
             }
         };
     }
@@ -877,14 +866,14 @@ public class EvAClient extends JFrame implements OptimizationStateListener {
                     frameMaker = newModuleAdapter.getModuleFrame();
 
                     /* This is the left TabPane on the main frame */
-                    JPanel moduleContainer = frameMaker.makePanel(); 
+                    JPanel moduleContainer = frameMaker.makePanel();
 
                     boolean wasVisible = configurationPane.isVisible();
                     configurationPane.setVisible(false);
                     configurationPane.removeAll();
 
                     GridBagConstraints gbConstraints = new GridBagConstraints();
-                    
+
                     /* ToDo: Find a way to properly add the TreeView to the GOPanel */
                     if (withTreeView && (newModuleAdapter instanceof AbstractModuleAdapter)) {
                         JComponent tree = null;
@@ -896,8 +885,8 @@ public class EvAClient extends JFrame implements OptimizationStateListener {
                         gbConstraints.weighty = 1.0;
                         configurationPane.add(tree, gbConstraints);
                     }
-                    
-                    
+
+
                     gbConstraints.weightx = 1.0;
                     gbConstraints.weighty = 0.0;
                     gbConstraints.gridx = 0;
@@ -906,13 +895,13 @@ public class EvAClient extends JFrame implements OptimizationStateListener {
                     gbConstraints.fill = GridBagConstraints.HORIZONTAL;
                     gbConstraints.anchor = GridBagConstraints.PAGE_START;
                     add(frameMaker.getToolBar(), gbConstraints);
-                    
+
                     GridBagConstraints gbConstraints2 = new GridBagConstraints();
                     gbConstraints2.gridx = 0;
-                    gbConstraints2.gridy = 0;                    
-                    gbConstraints2.fill = GridBagConstraints.VERTICAL;                    
+                    gbConstraints2.gridy = 0;
+                    gbConstraints2.fill = GridBagConstraints.VERTICAL;
                     //gbConstraints2.gridheight = GridBagConstraints.REMAINDER;
-                    gbConstraints2.weighty = 1.0;                    
+                    gbConstraints2.weighty = 1.0;
                     configurationPane.add(moduleContainer, gbConstraints2);
                     configurationPane.validate();
                 }
@@ -942,7 +931,7 @@ public class EvAClient extends JFrame implements OptimizationStateListener {
      * Create a tree view of an object based on EvATreeNode. It is encapsulated
      * in a JScrollPane.
      *
-     * @see EvATreeNode
+     * @see eva2.gui.EvATreeNode
      * @param title
      * @param object
      * @return
@@ -954,7 +943,7 @@ public class EvAClient extends JFrame implements OptimizationStateListener {
 
         EvATreeSelectionListener treeListener = new EvATreeSelectionListener(root, goPanel.getEditor(), jtree);
         // hooks itself up as the tree listener. It reacts both to changes in the selection
-        // state of the tree (to update the parameter panel) and to changes in the 
+        // state of the tree (to update the parameter panel) and to changes in the
         // parameters to update the tree
         return treeView;
     }
@@ -1034,37 +1023,5 @@ public class EvAClient extends JFrame implements OptimizationStateListener {
             };
             SwingUtilities.invokeLater(doSetProgressBarValue);
         }
-    }
-}
-final class SplashScreen extends Frame {
-
-    private static final long serialVersionUID = 1281793825850423095L;
-    private String imgLocation;
-
-    public SplashScreen(String imgLoc) {
-        imgLocation = imgLoc;
-    }
-
-    /**
-     * Show the splash screen to the end user.
-     *
-     * <P>Once this method returns, the splash screen is realized, which means
-     * that almost all work on the splash screen should proceed through the
-     * event dispatch thread. In particular, any call to
-     * <code>dispose</code> for the splash screen must be performed in the event
-     * dispatch thread.
-     */
-    public void splash() {
-        JWindow splashWindow = new JWindow(this);
-        BasicResourceLoader loader = BasicResourceLoader.instance();
-        byte[] bytes = loader.getBytesFromResourceLocation(imgLocation, true);
-        ImageIcon ii = new ImageIcon(Toolkit.getDefaultToolkit().createImage(bytes));
-        JLabel splashLabel = new JLabel(ii);
-        
-        splashWindow.add(splashLabel);
-        splashWindow.pack();
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        splashWindow.setLocation(screenSize.width / 2 - splashWindow.getSize().width / 2, screenSize.height / 2 - splashWindow.getSize().height / 2);
-        splashWindow.setVisible(true);        
     }
 }

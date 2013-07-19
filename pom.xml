@@ -68,7 +68,7 @@
             <addMavenDescriptor>false</addMavenDescriptor>
             <manifest>
               <addClasspath>true</addClasspath>
-              <mainClass>eva2.client.EvAClient</mainClass>
+              <mainClass>eva2.gui.Main</mainClass>
             </manifest>
           </archive>
         </configuration>
@@ -92,7 +92,7 @@
           </descriptorRefs>
           <archive>
             <manifest>
-              <mainClass>eva2.client.EvAClient</mainClass>
+              <mainClass>eva2.gui.Main</mainClass>
             </manifest>
           </archive>
         </configuration>

@@ -255,7 +255,7 @@
 	</delete>
 
 	<jar jarfile="${bin.dist.dir}/${jar.name}.jar"  basedir="${build.directory}" >
-	  <manifest> <attribute name="Main-Class" value="eva2.client.EvAClient"/> </manifest>
+	  <manifest> <attribute name="Main-Class" value="eva2.gui.Main"/> </manifest>
 	</jar>
 	
     <copy todir="${distribution.directory}">
@@ -333,7 +333,7 @@
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
 
   <target name="run" description="Runs EvA2.">
-    <java classname="eva2.client.EvAClient" fork="yes">
+    <java classname="eva2.gui.Main" fork="yes">
       <jvmarg value="-Xmx512m"/>
       <classpath>
       	<pathelement path="${project.class.path}" />

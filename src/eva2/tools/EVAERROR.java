@@ -47,7 +47,7 @@ public class EVAERROR {
 	 * Send a message only once to System.err. Once means that the msg is stored for the lifetime of
 	 * the VM or until clearMsgCache() is called.
 	 *
-	 * @param msg
+	 * @param message
 	 */
 	public static void errorMsgOnce(String message) {
 		if (errorMap == null) {

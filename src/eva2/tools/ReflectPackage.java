@@ -464,7 +464,7 @@ public class ReflectPackage {
 //		BasicResourceLoader rld = BasicResourceLoader.instance();
 //		byte[] b = rld.getBytesFromResourceLocation("images/Sub24.gif");
 //		System.out.println((b == null) ? "null" : b.toString());
-//		b = rld.getBytesFromResourceLocation("src/eva2/client/EvAClient.java");
+//		b = rld.getBytesFromResourceLocation("src/eva2/client/SplashScreen.java");
 //		System.out.println((b == null) ? "null" : b.toString());
 
 		HashSet<String> h = new HashSet<String> (20);

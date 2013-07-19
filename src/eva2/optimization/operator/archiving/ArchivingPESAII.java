@@ -48,36 +48,6 @@ public class ArchivingPESAII extends AbstractArchiving implements java.io.Serial
         }
         Population  archive = pop.getArchive();
 
-        ////////////////////////////////////////////////////////////////////////////////////
-        if (this.m_Debug) {
-            this.m_Plot = new eva2.gui.Plot("Debug SPEAII", "Y1", "Y2", true);
-            System.out.println("Population size: " + pop.size());
-            // plot the population
-            this.m_Plot.setUnconnectedPoint(0, 0, 11);
-            this.m_Plot.setUnconnectedPoint(1.2, 2.0, 11);
-            Population tmpPop = new Population();
-            tmpPop.addPopulation(pop);
-            tmpPop.addPopulation(pop.getArchive());
-            double[][]      trueFitness;
-            GraphPointSet   mySet = new GraphPointSet(10, this.m_Plot.getFunctionArea());
-            DPoint          myPoint;
-            Chart2DDPointIconText tmp;
-            trueFitness = new double[archive.size()][];
-            for (int i = 0; i < archive.size(); i++) {
-                trueFitness[i] = ((AbstractEAIndividual)archive.get(i)).getFitness();
-            }
-            mySet.setConnectedMode(false);
-            for (int i = 0; i < trueFitness.length; i++) {
-                myPoint = new DPoint(trueFitness[i][0], trueFitness[i][1]);
-                tmp = new Chart2DDPointIconText("");
-                tmp.setIcon(new Chart2DDPointIconCircle());
-                myPoint.setIcon(tmp);
-                mySet.addDPoint(myPoint);
-            }
-        }
-        ////////////////////////////////////////////////////////////////////////////////////
-
-
         // test for each element in population if it
         // is dominating a element in the archive
         for (int i = 0; i < pop.size(); i++) {
@@ -87,57 +57,7 @@ public class ArchivingPESAII extends AbstractArchiving implements java.io.Serial
         }
 
         ////////////////////////////////////////////////////////////////////////////////////
-        if (this.m_Debug) {
-            // first plot the grid
-            double[][]  bounds;
-            double[][]  trueFitness = new double[archive.size()][];
 
-            // first calculate the bounds of the search space
-            bounds = new double[((AbstractEAIndividual)archive.get(0)).getFitness().length][2];
-            for (int i = 0; i < bounds.length; i++) {
-                bounds[i][0] = Double.POSITIVE_INFINITY;
-                bounds[i][1] = Double.NEGATIVE_INFINITY;
-            }
-            for (int i = 0; i < archive.size(); i++) {
-                trueFitness[i] = ((AbstractEAIndividual)archive.get(i)).getFitness();
-                for (int j = 0; j < trueFitness[i].length; j++) {
-                    if (trueFitness[i][j] < bounds[j][0]) {
-                        bounds[j][0] = trueFitness[i][j];
-                    }
-                    if (trueFitness[i][j] > bounds[j][1]) {
-                        bounds[j][1] = trueFitness[i][j];
-                    }
-                }
-            }
-            double  gridx, gridy;
-            DLine   line;
-            gridx = (bounds[0][1] - bounds[0][0])/this.m_GridSize;
-            gridy = (bounds[1][1] - bounds[1][0])/this.m_GridSize;
-            for (int i = 0; i <= this.m_GridSize; i++) {
-                line = new DLine(bounds[0][0]+gridx*i, bounds[1][0], bounds[0][0]+gridx*i, bounds[1][1], Color.BLUE);
-                this.m_Plot.getFunctionArea().addDElement(line);
-                line = new DLine(bounds[0][0], bounds[1][0]+gridy*i, bounds[0][1], bounds[1][0]+gridy*i, Color.BLUE);
-                this.m_Plot.getFunctionArea().addDElement(line);
-            }
-
-            // now plot the archive with squeezing factor
-            int[]           sqFactor   = this.calculateSqueezeFactor(archive);
-            GraphPointSet   mySet = new GraphPointSet(10, this.m_Plot.getFunctionArea());
-            DPoint          myPoint;
-            Chart2DDPointIconText       tmp;
-            Chart2DDPointIconCircle     tmp2;
-            mySet.setConnectedMode(false);
-            for (int i = 0; i < trueFitness.length; i++) {
-                myPoint = new DPoint(trueFitness[i][0], trueFitness[i][1]);
-                tmp = new Chart2DDPointIconText("SF:"+sqFactor[i]);
-                tmp2 = new Chart2DDPointIconCircle();
-                tmp2.setFillColor(Color.GREEN);
-                tmp.setIcon(tmp2);
-                myPoint.setIcon(tmp);
-                mySet.addDPoint(myPoint);
-            }
-        }
-        ////////////////////////////////////////////////////////////////////////////////////
 
         // Now check whether there are individuals to remove
         int         bigSqueeze, index;
@@ -157,27 +77,6 @@ public class ArchivingPESAII extends AbstractArchiving implements java.io.Serial
             }
             archive.remove(index);
         }
-        ////////////////////////////////////////////////////////////////////////////////////
-        if (this.m_Debug) {
-            double[][] trueFitness;
-            GraphPointSet   mySet = new GraphPointSet(10, this.m_Plot.getFunctionArea());
-            DPoint          myPoint;
-            Chart2DDPointIconCircle tmp;
-            trueFitness = new double[archive.size()][];
-            for (int i = 0; i < archive.size(); i++) {
-                trueFitness[i] = ((AbstractEAIndividual)archive.get(i)).getFitness();
-            }
-            mySet.setConnectedMode(false);
-            for (int i = 0; i < trueFitness.length; i++) {
-                myPoint = new DPoint(trueFitness[i][0], trueFitness[i][1]);
-                tmp = new Chart2DDPointIconCircle();
-                tmp.setFillColor(Color.RED);
-                myPoint.setIcon(tmp);
-                mySet.addDPoint(myPoint);
-            }
-        }
-        ////////////////////////////////////////////////////////////////////////////////////
-
     }
 
     /** This method will calculate the squeeze factor for a population

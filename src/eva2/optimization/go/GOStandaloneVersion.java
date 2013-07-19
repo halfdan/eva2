@@ -166,7 +166,7 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
         }
         this.m_O1 = (paraPanel.makePanel());
         // TODO this is defunct anyways... (MK, 2010-03)
-//        EvAClient.setProperty("eva2.server.oa.go.Tools.InterfaceTest", "eva2.server.oa.go.Tools.Test1,eva2.server.oa.go.Tools.Test2");
+//        Main.setProperty("eva2.server.oa.go.Tools.InterfaceTest", "eva2.server.oa.go.Tools.Test1,eva2.server.oa.go.Tools.Test2");
         this.m_OptionsPanel = new JTabbedPane();
         JParaPanel paraPanel2 = new JParaPanel(this.m_GO, "MyGUI");
         this.m_O2 = (paraPanel2.makePanel());

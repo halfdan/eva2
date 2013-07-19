@@ -48,16 +48,6 @@ public class ArchivingSPEAII extends AbstractArchiving implements java.io.Serial
             pop.SetArchive(new Population());
         }
 
-        ////////////////////////////////////////////////////////////////////////////////////
-        if (this.m_Debug) {
-            this.m_Plot = new eva2.gui.Plot("Debug SPEAII", "Y1", "Y2", true);
-            System.out.println("Population size: " + pop.size());
-            // plot the population
-            this.m_Plot.setUnconnectedPoint(0, 0, 11);
-            this.m_Plot.setUnconnectedPoint(1.2, 2.0, 11);
-        }
-        ////////////////////////////////////////////////////////////////////////////////////
-
         // First merge the current population and the archive
         Population tmpPop = new Population();
         tmpPop.addPopulation((Population)pop.getClone());
@@ -73,30 +63,6 @@ public class ArchivingSPEAII extends AbstractArchiving implements java.io.Serial
 //            ((AbstractEAIndividual)tmpPop.get(i)).SetData("kthDistance", new Double(kthDistance[i]));
 //        }
 
-        ////////////////////////////////////////////////////////////////////////////////////
-        if (this.m_Debug) {
-            double[][] trueFitness;
-            GraphPointSet   mySet = new GraphPointSet(10, this.m_Plot.getFunctionArea());
-            DPoint          myPoint;
-            double          tmp1, tmp2;
-            Chart2DDPointIconText tmp;
-            trueFitness = new double[tmpPop.size()][];
-            for (int i = 0; i < tmpPop.size(); i++) {
-                trueFitness[i] = ((AbstractEAIndividual)tmpPop.get(i)).getFitness();
-            }
-            mySet.setConnectedMode(false);
-            for (int i = 0; i < trueFitness.length; i++) {
-                myPoint = new DPoint(trueFitness[i][0], trueFitness[i][1]);
-                tmp1 = Math.round(RawFitness[i]*100)/(double)100;
-                tmp2 = Math.round(kthDistance[i]*100)/(double)100;
-                tmp = new Chart2DDPointIconText("RF:"+RawFitness[i]+"/ KD:"+tmp2);
-                tmp.setIcon(new Chart2DDPointIconCircle());
-                myPoint.setIcon(tmp);
-                mySet.addDPoint(myPoint);
-            }
-        }
-        ////////////////////////////////////////////////////////////////////////////////////
-
         // Now init the new archive
         Population archive = new Population();
         archive.setTargetSize(pop.getArchive().getTargetSize());
@@ -110,54 +76,6 @@ public class ArchivingSPEAII extends AbstractArchiving implements java.io.Serial
                 archive.add(tmpPop.get(i));
             }
         }
-        ///////////////////////////////////////////////////////////////////////////////
-
-//        double[][] p = this.showMay(archive);
-//        if ((true) && ((p[0][0] > d[0][0]) || (p[1][1] > d[1][1]))) {
-//            this.tz = true;
-//            this.calculateRawFitness(tmpPop);
-//            this.tz = false;
-//            this.m_Plot = new eva2.gui.Plot("Debug SPEAII", "Y1", "Y2");
-//            // plot the population
-//            this.m_Plot.setUnconnectedPoint(0, 0, 11);
-//            this.m_Plot.setUnconnectedPoint(1.2, 2.0, 11);
-//            System.out.println("------------------Alert max!");
-//            double[][] trueFitness;
-//            GraphPointSet   mySet = new GraphPointSet(10, this.m_Plot.getFunctionArea());
-//            DPoint          myPoint;
-//            double          tmp1, tmp2;
-//            Chart2DDPointIconText tmp;
-//            trueFitness = new double[tmpPop.size()][];
-//            for (int i = 0; i < tmpPop.size(); i++) {
-//                trueFitness[i] = ((AbstractEAIndividual)tmpPop.get(i)).getFitness();
-//            }
-//            mySet.setConnectedMode(false);
-//            for (int i = 0; i < trueFitness.length; i++) {
-//                myPoint = new DPoint(trueFitness[i][0], trueFitness[i][1]);
-//                tmp1 = Math.round(RawFitness[i]*100)/(double)100;
-//                tmp2 = Math.round(kthDistance[i]*100)/(double)100;
-//                tmp = new Chart2DDPointIconText(""+RawFitness[i]+"/"+tmp2);
-//                tmp.setIcon(new Chart2DDPointIconCircle());
-//                myPoint.setIcon(tmp);
-//                mySet.addDPoint(myPoint);
-//            }
-//
-//            mySet = new GraphPointSet(10, this.m_Plot.getFunctionArea());
-//            Chart2DDPointIconCircle tmpC;
-//            trueFitness = new double[archive.size()][];
-//            for (int i = 0; i < archive.size(); i++) {
-//                trueFitness[i] = ((AbstractEAIndividual)archive.get(i)).getFitness();
-//            }
-//            mySet.setConnectedMode(false);
-//            for (int i = 0; i < trueFitness.length; i++) {
-//                myPoint = new DPoint(trueFitness[i][0], trueFitness[i][1]);
-//                tmpC = new Chart2DDPointIconCircle();
-//                tmpC.setFillColor(Color.GREEN);
-//                myPoint.setIcon(tmpC);
-//                mySet.addDPoint(myPoint);
-//            }
-//        }
-        /////////////////////////////////////////////////////////////////////////////////////
 
         // if there is some place left let's add some more
         int currentLevel = 0;
@@ -169,26 +87,6 @@ public class ArchivingSPEAII extends AbstractArchiving implements java.io.Serial
                 }
             }
         }
-        ////////////////////////////////////////////////////////////////////////////////////
-        if (this.m_Debug) {
-            double[][] trueFitness;
-            GraphPointSet   mySet = new GraphPointSet(10, this.m_Plot.getFunctionArea());
-            DPoint          myPoint;
-            Chart2DDPointIconCircle tmp;
-            trueFitness = new double[archive.size()][];
-            for (int i = 0; i < archive.size(); i++) {
-                trueFitness[i] = ((AbstractEAIndividual)archive.get(i)).getFitness();
-            }
-            mySet.setConnectedMode(false);
-            for (int i = 0; i < trueFitness.length; i++) {
-                myPoint = new DPoint(trueFitness[i][0], trueFitness[i][1]);
-                tmp = new Chart2DDPointIconCircle();
-                tmp.setFillColor(Color.GREEN);
-                myPoint.setIcon(tmp);
-                mySet.addDPoint(myPoint);
-            }
-        }
-        ////////////////////////////////////////////////////////////////////////////////////
 
         // Here i want to remove surplus individuals *pff*
         // So the basic idea is to search on the highes level of
@@ -215,72 +113,8 @@ public class ArchivingSPEAII extends AbstractArchiving implements java.io.Serial
              archive.remove(ICurSma);
         }
 
-        ////////////////////////////////////////////////////////////////////////////////////
-        if (this.m_Debug) {
-            double[][] trueFitness;
-            GraphPointSet   mySet = new GraphPointSet(10, this.m_Plot.getFunctionArea());
-            DPoint          myPoint;
-            Chart2DDPointIconCircle tmp;
-            trueFitness = new double[archive.size()][];
-            for (int i = 0; i < archive.size(); i++) {
-                trueFitness[i] = ((AbstractEAIndividual)archive.get(i)).getFitness();
-            }
-            mySet.setConnectedMode(false);
-            for (int i = 0; i < trueFitness.length; i++) {
-                myPoint = new DPoint(trueFitness[i][0], trueFitness[i][1]);
-                tmp = new Chart2DDPointIconCircle();
-                tmp.setFillColor(Color.RED);
-                myPoint.setIcon(tmp);
-                mySet.addDPoint(myPoint);
-            }
-        }
-        ////////////////////////////////////////////////////////////////////////////////////
         pop.SetArchive(archive);
 
-        // if there are too many let's remove the surplus
-        // i could simply remove the individuals with the
-        // smallest distance to a neighbor selecting from
-        // all individuals or just selecting from the ones
-        // in the range of currentLevel to currentLevel+1
-//        while (archive.size() > archive.getPopulationSize()) {
-//            // now it's time to use the <=d operator e.g.
-//            // remove the individuals that are to close
-//            // to thier neighbours
-//            double[][] dist
-//
-//        }
-
-//
-//        // might sound stuid but as far as i understood this
-//        // i'll simply select the n best ones regarding SPEAFit
-//        Population archive = (Population)pop.getArchive().clone();
-//        archive.clear();
-//        double  smallest;
-//        int     index;
-//        for (int i = 0; i < archive.getPopulationSize(); i++) {
-//            // find the smallest one
-//            index = -1;
-//            smallest = Double.POSITIVE_INFINITY;
-//            for (int j = 0; j < SPEAFit.length; j++) {
-//                if (smallest > SPEAFit[j]) {
-//                    smallest = SPEAFit[j];
-//                    index = j;
-//                }
-//            }
-//
-//            if (index > -1) {
-//                SPEAFit[index] = Double.POSITIVE_INFINITY;
-//                archive.add(tmpPop.get(index));
-//            }
-//        }
-//        if (this.m_Debug) {
-//            // plot the archive
-//            double[] tmpD;
-//            for (int i = 0; i < archive.size(); i++) {
-//                tmpD = ((AbstractEAIndividual)archive.get(i)).getFitness();
-//                this.m_Plot.setUnconnectedPoint(tmpD[0], tmpD[1], 12);
-//            }
-//        }
     }
 
     private double[][] showMay(Population pop) {
@@ -537,26 +371,6 @@ public class ArchivingSPEAII extends AbstractArchiving implements java.io.Serial
             SPEAResult[i] = SPEAFitness[i] + (1/(2+D[i]));
             ((AbstractEAIndividual)pop.get(i)).putData("RawFit", new Double(SPEAFitness[i]));
             ((AbstractEAIndividual)pop.get(i)).putData("SPEAFit", new Double(SPEAResult[i]));
-        }
-
-        if (this.m_Debug && this.m_Plot != null) {
-            //System.out.println("k: " + k);
-            GraphPointSet   mySet = new GraphPointSet(10, this.m_Plot.getFunctionArea());
-            DPoint          myPoint;
-            double          tmp1, tmp2;
-            Chart2DDPointIconText tmp;
-
-            mySet.setConnectedMode(false);
-            for (int i = 0; i < trueFitness.length; i++) {
-
-                myPoint = new DPoint(trueFitness[i][0], trueFitness[i][1]);
-                tmp1 = Math.round(SPEAResult[i]*100)/(double)100;
-                tmp2 = Math.round(D[i]*100)/(double)100;
-                tmp = new Chart2DDPointIconText(""+SPEAStrength[i]+"/"+SPEAFitness[i]);
-                tmp.setIcon(new Chart2DDPointIconCircle());
-                myPoint.setIcon(tmp);
-                mySet.addDPoint(myPoint);
-            }
         }
 
         // Puh!

@@ -2,7 +2,7 @@ package eva2.optimization.problems;
 
 import eva2.OptimizerFactory;
 import eva2.OptimizerRunnable;
-import eva2.client.EvAClient;
+import eva2.gui.Main;
 import eva2.gui.BeanInspector;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.modules.OptimizationParameters;
@@ -85,7 +85,7 @@ public class ERPStarter {
 		//	Instantiate optimization
 		OptimizationParameters params = new OptimizationParameters(opt, erp, new EvaluationTerminator(maxEvals));
 		if (startGUI) {
-			EvAClient.initClientGUI(params, null, null, null);
+			Main.initClientGUI(params, null, null, null);
 		} else {
 			OptimizerRunnable rnbl = new OptimizerRunnable(params, new StatisticsStandalone(outputFilePrefix, 1, 3, true), false);
 			// actually start the optimization
