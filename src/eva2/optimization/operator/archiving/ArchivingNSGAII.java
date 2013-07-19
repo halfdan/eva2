@@ -39,25 +39,6 @@ public class ArchivingNSGAII extends ArchivingNSGA implements java.io.Serializab
             pop.SetArchive(new Population());
         }
 
-        //////////////////////////////////////////////////////////////////////////////////////////////
-        if (this.m_Debug && false) {
-            // plot the complete population
-            double[] tmpD = new double[2];
-            tmpD[0] = 0;
-            tmpD[1] = 0;
-            this.m_Plot = new eva2.gui.Plot("Debug NSGAII", "Y1", "Y2", tmpD, tmpD);
-            System.out.println("Population size: " + pop.size());
-            // plot the population
-            this.m_Plot.setUnconnectedPoint(0, 0, 11);
-            this.m_Plot.setUnconnectedPoint(1.05, 2.5, 11);
-            double[][] trueFitness = new double[pop.size()][];
-            for (int i = 0; i < pop.size(); i++) {
-                trueFitness[i]  = ((AbstractEAIndividual)pop.get(i)).getFitness();
-                this.m_Plot.setUnconnectedPoint(trueFitness[i][0], trueFitness[i][1], 11);
-            }
-        }
-        //////////////////////////////////////////////////////////////////////////////////////////////
-
         // First merge the current population and the archive
         Population tmpPop = new Population();
         tmpPop.addPopulation((Population)pop.getClone());

@@ -71,7 +71,7 @@ public class GeneralGEOFaker extends JPanel {
 //                edit.setEnabled(false);
 //                m_SourceCodeEditor = new SourceCodeEditor();
 //                String className = m_Editor.getValue().getClass().getName();
-//                m_SourceCodeEditor.editSource(EvAClient.DYNAMICCLASSES_PROPERTIES.getProperty(className));
+//                m_SourceCodeEditor.editSource(Main.DYNAMICCLASSES_PROPERTIES.getProperty(className));
 //                m_SourceCodeEditorFrame = new PropertyDialog(m_SourceCodeEditor, "test", 50, 50);
 //                m_SourceCodeEditorFrame.pack();
 //                m_SourceCodeEditorFrame.addWindowListener(new WindowAdapter() {

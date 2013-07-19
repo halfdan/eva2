@@ -345,7 +345,7 @@
 <jar jarfile="${bin.dist.dir}/${library.directory}/EvA2Base.jar"  basedir="${build.directory}">
 
 <!--<fileset dir="${classes.dir}" excludes="*test*"/>-->
-<manifest> <attribute name="Main-Class" value="eva2.client.EvAClient"/> </manifest>
+<manifest> <attribute name="Main-Class" value="eva2.gui.Main"/> </manifest>
 </jar>
 </target>
 
@@ -372,7 +372,7 @@
  <!-- <fileset dir="${classes.dir}" excludes="*test*"/>
   -->
  <manifest>
-  <attribute name="Main-Class" value="eva2.client.EvAClient" />
+  <attribute name="Main-Class" value="eva2.gui.Main" />
   </manifest>
   </jar>
   </target>
@@ -389,7 +389,7 @@
 
 	<jar jarfile="${bin.dist.dir}/${jar.name}.jar"  basedir="${build.directory}" >
 	  <manifest> 
-	  	<attribute name="Main-Class" value="eva2.client.EvAClient"/>
+	  	<attribute name="Main-Class" value="eva2.gui.Main"/>
 		<attribute name="Built-By" value="Center for Bioinformatics Tuebingen (ZBIT)"/>
 	  	<!--
 	  	<attribute name="Xdock:name" value="EvA2"/>
@@ -662,7 +662,7 @@
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
 
   <target name="run" description="Runs EvA2.">
-    <java classname="eva2.client.EvAClient" fork="yes">
+    <java classname="eva2.gui.Main" fork="yes">
       <jvmarg value="-Xmx512m"/>
       <classpath>
       	<pathelement path="${project.class.path}" />

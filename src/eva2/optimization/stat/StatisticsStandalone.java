@@ -105,9 +105,6 @@ public class StatisticsStandalone extends AbstractStatistics implements Interfac
 
     @Override
 	public void plotSpecificData(PopulationInterface pop, List<InterfaceAdditionalPopulationInformer> informerList) {
-		if (TRACE) {
-                System.out.println(" m_SpecificData !!");
-            }
 		double[] specificData = pop.getSpecificData();
 		if (specificData != null) {
 			for (int i = 0; i < specificData.length; i++) {

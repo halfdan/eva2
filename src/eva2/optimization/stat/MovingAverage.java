@@ -1,20 +1,6 @@
 package eva2.optimization.stat;
-/*
- * Title:        EvA2
- * Description:
- * Copyright:    Copyright (c) 2003
- * Company:      University of Tuebingen, Computer Architecture
- * @author Holger Ulmer, Felix Streichert, Hannes Planatscher
- * @version:  $Revision: 16 $
- *            $Date: 2006-12-20 10:42:57 +0100 (Wed, 20 Dec 2006) $
- *            $Author: marcekro $
- */
-/*==========================================================================*
- * IMPORTS
- *==========================================================================*/
-/*==========================================================================*
-* INTERFACE DECLARATION
-*==========================================================================*/
+
+
 /**
  *
  */

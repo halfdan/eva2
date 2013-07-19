@@ -19,7 +19,7 @@ public final class StringTools {
     private StringTools() { }
 
     /**
-     * Returns a HTML formated String, in which each line is at most lineBreak
+     * Returns a HTML formatted String, in which each line is at most lineBreak
      * symbols long.
      *
      * @param string
