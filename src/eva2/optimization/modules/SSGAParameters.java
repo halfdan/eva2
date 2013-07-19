@@ -1,6 +1,6 @@
 package eva2.optimization.modules;
 
-import eva2.optimization.go.InterfaceGOParameters;
+import eva2.optimization.go.InterfaceOptimizationParameters;
 import eva2.optimization.operators.selection.InterfaceSelection;
 import eva2.optimization.operators.selection.replacement.InterfaceReplacement;
 import eva2.optimization.operators.terminators.EvaluationTerminator;
@@ -22,7 +22,7 @@ import java.util.logging.Level;
  * Time: 15:44:34
  * To change this template use File | Settings | File Templates.
  */
-public class SSGAParameters extends AbstractGOParameters implements InterfaceGOParameters, Serializable {
+public class SSGAParameters extends AbstractOptimizationParameters implements InterfaceOptimizationParameters, Serializable {
 
     /**
      * Load or create a new instance of the class.

@@ -18,6 +18,8 @@ import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.tools.EVAERROR;
 import eva2.tools.math.Mathematics;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Parameter;
+
 import java.util.Vector;
 
 /**
@@ -35,9 +37,16 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
     protected transient Population children = null;
     protected AbstractOptimizationProblem m_Problem = new F1Problem();
     private DETypeEnum m_DEType;
+
+    @Parameter(name = "F", description = "Differential Weight")
     private double m_F = 0.8;
+
+    @Parameter(name = "CR", description = "Crossover Rate")
     private double m_k = 0.6; // AKA CR
+
+    @Parameter(name = "Lambda", description = "Lambda")
     private double m_Lambda = 0.6;
+
     private double m_Mt = 0.05;
     private int maximumAge = -1;
     private boolean reEvaluate = false;

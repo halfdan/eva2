@@ -5,7 +5,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 /**
  * The node class for the EvA2 tree view panel. Each node contains a parameter object.
  * Typically, the tree hierarchy starts with a
- * GOParameters object, however this is not necessary.
+ * OptimizationParameters object, however this is not necessary.
  * The tree is constructed using the reflection functionality of PropertySheetPanel
  * which is also used to generate the nested panels for parameter configuration.
  * 

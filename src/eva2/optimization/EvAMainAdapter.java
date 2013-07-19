@@ -8,7 +8,7 @@ package eva2.optimization;
  *            $Date: 2007-11-16 17:25:09 +0100 (Fri, 16 Nov 2007) $
  *            $Author: mkron $
  */
-import eva2.optimization.go.InterfaceGOParameters;
+import eva2.optimization.go.InterfaceOptimizationParameters;
 import eva2.optimization.modules.ModuleAdapter;
 /**
  *
@@ -20,5 +20,5 @@ public interface EvAMainAdapter {
 
     ModuleAdapter getModuleAdapter(String selectedModuleName);
 
-    ModuleAdapter getModuleAdapter(String selectedModuleName, InterfaceGOParameters goParams, String noGuiStatsFile);
+    ModuleAdapter getModuleAdapter(String selectedModuleName, InterfaceOptimizationParameters goParams, String noGuiStatsFile);
 }

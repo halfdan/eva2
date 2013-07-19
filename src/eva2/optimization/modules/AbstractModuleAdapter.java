@@ -9,7 +9,7 @@ package eva2.optimization.modules;
  *            $Date: 2007-12-04 14:22:52 +0100 (Tue, 04 Dec 2007) $
  *            $Author: mkron $
  */
-import eva2.optimization.go.InterfaceGOParameters;
+import eva2.optimization.go.InterfaceOptimizationParameters;
 import eva2.optimization.go.InterfaceProcessor;
 import eva2.optimization.OptimizationStateListener;
 import java.io.Serializable;
@@ -108,7 +108,7 @@ abstract public class AbstractModuleAdapter implements ModuleAdapter, Serializab
         }
     }
 
-    public InterfaceGOParameters getGOParameters() {
+    public InterfaceOptimizationParameters getGOParameters() {
         if ((processor != null) && (processor instanceof Processor)) {
             return ((Processor) processor).getGOParams();
         } else {
@@ -116,7 +116,7 @@ abstract public class AbstractModuleAdapter implements ModuleAdapter, Serializab
         }
     }
 
-    public void setGOParameters(InterfaceGOParameters goParams) {
+    public void setGOParameters(InterfaceOptimizationParameters goParams) {
         if ((processor != null) && (processor instanceof Processor)) {
             ((Processor) processor).setGOParams(goParams);
         }

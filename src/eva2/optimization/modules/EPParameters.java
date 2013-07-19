@@ -1,7 +1,7 @@
 package eva2.optimization.modules;
 
 
-import eva2.optimization.go.InterfaceGOParameters;
+import eva2.optimization.go.InterfaceOptimizationParameters;
 import eva2.optimization.operators.selection.InterfaceSelection;
 import eva2.optimization.operators.terminators.EvaluationTerminator;
 import eva2.optimization.populations.Population;
@@ -23,7 +23,7 @@ import java.util.logging.Logger;
  * Time: 13:49:09
  * To change this template use File | Settings | File Templates.
  */
-public class EPParameters extends AbstractGOParameters implements InterfaceGOParameters, Serializable {
+public class EPParameters extends AbstractOptimizationParameters implements InterfaceOptimizationParameters, Serializable {
 
     private static final Logger LOGGER = Logger.getLogger(EPParameters.class.getName());
 

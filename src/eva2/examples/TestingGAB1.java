@@ -5,7 +5,7 @@ import eva2.optimization.operators.terminators.EvaluationTerminator;
 import eva2.optimization.populations.Population;
 import eva2.optimization.problems.B1Problem;
 import eva2.optimization.strategies.GeneticAlgorithm;
-import eva2.optimization.modules.GOParameters;
+import eva2.optimization.modules.OptimizationParameters;
 import java.util.BitSet;
 
 public class TestingGAB1 {
@@ -13,7 +13,7 @@ public class TestingGAB1 {
 		B1Problem b1 = new B1Problem();
 		BitSet sol;
 		// default go-parameter instance with a GA
-		GOParameters gaParams = OptimizerFactory.standardGA(b1);                
+		OptimizationParameters gaParams = OptimizerFactory.standardGA(b1);
 		// add an evaluation terminator
 		gaParams.setTerminator(new EvaluationTerminator(1000));
 		// set a specific random seed

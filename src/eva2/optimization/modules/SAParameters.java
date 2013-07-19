@@ -1,6 +1,6 @@
 package eva2.optimization.modules;
 
-import eva2.optimization.go.InterfaceGOParameters;
+import eva2.optimization.go.InterfaceOptimizationParameters;
 import eva2.optimization.go.InterfacePopulationChangedEventListener;
 import eva2.optimization.go.InterfaceTerminator;
 import eva2.optimization.operators.terminators.EvaluationTerminator;
@@ -23,7 +23,7 @@ import java.util.logging.Level;
  * Time: 21:25:12
  * To change this template use File | Settings | File Templates.
  */
-public class SAParameters extends AbstractGOParameters implements InterfaceGOParameters, Serializable {
+public class SAParameters extends AbstractOptimizationParameters implements InterfaceOptimizationParameters, Serializable {
     // Opt. Algorithms and Parameters
     private InterfaceOptimizer              m_Optimizer         = new SimulatedAnnealing();
     private InterfaceOptimizationProblem    m_Problem           = new B1Problem();

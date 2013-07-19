@@ -1,5 +1,6 @@
 package eva2;
 
+import eva2.optimization.go.InterfaceOptimizationParameters;
 import eva2.optimization.stat.StatisticsDummy;
 import eva2.optimization.stat.InterfaceStatistics;
 import eva2.optimization.stat.StatisticsParameter;
@@ -8,7 +9,6 @@ import eva2.optimization.stat.StatisticsStandalone;
 import eva2.optimization.stat.InterfaceTextListener;
 import eva2.optimization.OptimizationStateListener;
 import eva2.optimization.go.IndividualInterface;
-import eva2.optimization.go.InterfaceGOParameters;
 import eva2.optimization.go.InterfaceTerminator;
 import eva2.optimization.individuals.InterfaceDataTypeBinary;
 import eva2.optimization.individuals.InterfaceDataTypeDouble;
@@ -17,7 +17,7 @@ import eva2.optimization.operators.postprocess.InterfacePostProcessParams;
 import eva2.optimization.operators.postprocess.PostProcessParams;
 import eva2.optimization.populations.Population;
 import eva2.optimization.populations.SolutionSet;
-import eva2.optimization.modules.GOParameters;
+import eva2.optimization.modules.OptimizationParameters;
 import eva2.optimization.modules.Processor;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -47,7 +47,7 @@ public class OptimizerRunnable implements Runnable {
 	 * @param params
 	 * @param outputFilePrefix
 	 */
-	public OptimizerRunnable(GOParameters params, String outputFilePrefix) {
+	public OptimizerRunnable(OptimizationParameters params, String outputFilePrefix) {
 		this(params, outputFilePrefix, false);
 	}
 		
@@ -58,7 +58,7 @@ public class OptimizerRunnable implements Runnable {
 	 * @param params
 	 * @param restart
 	 */
-	public OptimizerRunnable(GOParameters params, boolean restart) {
+	public OptimizerRunnable(OptimizationParameters params, boolean restart) {
 		this(params, new StatisticsDummy(), restart);
 	}
 	
@@ -71,7 +71,7 @@ public class OptimizerRunnable implements Runnable {
 	 * @param outputFilePrefix
 	 * @param restart
 	 */
-	public OptimizerRunnable(GOParameters params, String outputFilePrefix, boolean restart) {
+	public OptimizerRunnable(OptimizationParameters params, String outputFilePrefix, boolean restart) {
 		this(params, new StatisticsStandalone(outputFilePrefix), restart);
 	}
 	
@@ -83,7 +83,7 @@ public class OptimizerRunnable implements Runnable {
 	 * @param outputFilePrefix
 	 * @param restart
 	 */
-	public OptimizerRunnable(GOParameters params, InterfaceStatistics stats, boolean restart) {
+	public OptimizerRunnable(OptimizationParameters params, InterfaceStatistics stats, boolean restart) {
 		rnblID = cntID;
 		cntID++;        
 
@@ -110,7 +110,7 @@ public class OptimizerRunnable implements Runnable {
 		return rnblID;
 	}
 	
-	public InterfaceGOParameters getGOParams() {
+	public InterfaceOptimizationParameters getGOParams() {
 		return proc.getGOParams();
 	}
 	
@@ -122,7 +122,7 @@ public class OptimizerRunnable implements Runnable {
 		if (proc.isOptRunning()) {
                 throw new RuntimeException("Error - cannot change statistics instance during optimization.");
             }
-		InterfaceGOParameters params = proc.getGOParams(); 
+		InterfaceOptimizationParameters params = proc.getGOParams();
 		proc = new Processor(stats, null, params);
 		if (proc.getStatistics() instanceof AbstractStatistics) {
                 ((AbstractStatistics)proc.getStatistics()).setSaveParams(false);

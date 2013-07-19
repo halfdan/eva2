@@ -8,6 +8,7 @@ import eva2.optimization.go.InterfacePopulationChangedEventListener;
 import eva2.optimization.go.InterfaceTerminator;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.InterfaceDataTypeDouble;
+import eva2.optimization.modules.OptimizationParameters;
 import eva2.optimization.operators.distancemetric.PhenotypeMetric;
 import eva2.optimization.operators.postprocess.PostProcess;
 import eva2.optimization.operators.terminators.EvaluationTerminator;
@@ -17,7 +18,6 @@ import eva2.optimization.populations.SolutionSet;
 import eva2.optimization.problems.AbstractOptimizationProblem;
 import eva2.optimization.problems.F1Problem;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
-import eva2.optimization.modules.GOParameters;
 import eva2.tools.Pair;
 import eva2.tools.SelectedTag;
 import eva2.tools.math.Mathematics;
@@ -883,18 +883,18 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
 
 //		problem.initializeProblem();
 
-        GOParameters params = specialSS(localSearchSteps, localSearchFitnessFilter, nmInitPerturb, relativeFitCrit, refSetSize, problem, term);
+        OptimizationParameters params = specialSS(localSearchSteps, localSearchFitnessFilter, nmInitPerturb, relativeFitCrit, refSetSize, problem, term);
 
         OptimizerRunnable rnbl = new OptimizerRunnable(params, dataPrefix);
         return rnbl;
     }
 
-    public static final GOParameters standardSS(
+    public static final OptimizationParameters standardSS(
             AbstractOptimizationProblem problem) {
         return specialSS(0, 0, 0.1, true, 10, problem, new EvaluationTerminator(10000));
     }
 
-    public static final GOParameters specialSS(
+    public static final OptimizationParameters specialSS(
             int localSearchSteps, double localSearchFitnessFilter,
             double nmInitPerturb, boolean relativeFitCrit,
             int refSetSize,

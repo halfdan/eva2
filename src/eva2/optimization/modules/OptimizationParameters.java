@@ -1,6 +1,6 @@
 package eva2.optimization.modules;
 
-import eva2.optimization.go.InterfaceGOParameters;
+import eva2.optimization.go.InterfaceOptimizationParameters;
 import eva2.optimization.go.InterfaceTerminator;
 import eva2.optimization.operators.terminators.EvaluationTerminator;
 import eva2.optimization.problems.F1Problem;
@@ -23,10 +23,10 @@ import java.util.logging.Level;
  *            $Date: 2007-12-04 14:22:52 +0100 (Tue, 04 Dec 2007) $
  *            $Author: mkron $
  */
-public class GOParameters extends AbstractGOParameters implements InterfaceGOParameters, Serializable {
+public class OptimizationParameters extends AbstractOptimizationParameters implements InterfaceOptimizationParameters, Serializable {
 
-    public static GOParameters getInstance() {
-        return getInstance("GOParameters.ser", true);
+    public static OptimizationParameters getInstance() {
+        return getInstance("OptimizationParameters.ser", true);
     }
 
     /**
@@ -34,36 +34,36 @@ public class GOParameters extends AbstractGOParameters implements InterfaceGOPar
      *  
      * @param serParamFile
      * @param casually if true, standard parameters are used quietly if the params cannot be loaded
-     * @return a GOParameters instance
+     * @return a OptimizationParameters instance
      */
-    public static GOParameters getInstance(String serParamFile, final boolean casually) {
-        GOParameters instance = null;
+    public static OptimizationParameters getInstance(String serParamFile, final boolean casually) {
+        OptimizationParameters instance = null;
         try {
             FileInputStream fileStream = new FileInputStream(serParamFile);
-            instance = (GOParameters) Serializer.loadObject(fileStream, casually);
+            instance = (OptimizationParameters) Serializer.loadObject(fileStream, casually);
         } catch (FileNotFoundException ex) {
             LOGGER.log(Level.WARNING, "Could not load instance object.", ex);
         }
 
         if (instance == null) {
-            instance = new GOParameters();
+            instance = new OptimizationParameters();
         }
         return instance;
     }
 
-    public GOParameters() {
+    public OptimizationParameters() {
     	super(new GeneticAlgorithm(), new F1Problem(), new EvaluationTerminator(1000));
     }
     
-    public GOParameters(InterfaceOptimizer opt, InterfaceOptimizationProblem prob, InterfaceTerminator term) {
+    public OptimizationParameters(InterfaceOptimizer opt, InterfaceOptimizationProblem prob, InterfaceTerminator term) {
     	super(opt, prob, term);
     }
     
     /**
      *
      */
-    private GOParameters(GOParameters Source) {
-    	super(Source);
+    private OptimizationParameters(OptimizationParameters parameters) {
+    	super(parameters);
     }
     /**
      *
@@ -77,7 +77,7 @@ public class GOParameters extends AbstractGOParameters implements InterfaceGOPar
      */
     @Override
     public Object clone() {
-        return new GOParameters(this);
+        return new OptimizationParameters(this);
     }
     
     /** This method returns a global info string.

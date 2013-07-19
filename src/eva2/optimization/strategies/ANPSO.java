@@ -7,6 +7,7 @@ import eva2.optimization.go.PopulationInterface;
 import eva2.optimization.enums.PSOTopologyEnum;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.InterfaceDataTypeDouble;
+import eva2.optimization.modules.OptimizationParameters;
 import eva2.optimization.operators.nichepso.deactivation.StandardDeactivationStrategy;
 import eva2.optimization.operators.paramcontrol.LinearParamAdaption;
 import eva2.optimization.operators.paramcontrol.ParamAdaption;
@@ -15,7 +16,6 @@ import eva2.optimization.populations.Population;
 import eva2.optimization.problems.AbstractOptimizationProblem;
 import eva2.optimization.problems.Interface2DBorderProblem;
 import eva2.optimization.problems.InterfaceAdditionalPopulationInformer;
-import eva2.optimization.modules.GOParameters;
 import eva2.tools.ToolBox;
 import eva2.tools.chart2d.DPoint;
 import eva2.tools.chart2d.DPointSet;
@@ -951,7 +951,7 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
 		return "sets the range of the neighborhood topology for the main swarm";
 	}
 	
-	public static final GOParameters aNichePSO(AbstractOptimizationProblem problem, long randSeed, InterfaceTerminator term) {
+	public static final OptimizationParameters aNichePSO(AbstractOptimizationProblem problem, long randSeed, InterfaceTerminator term) {
 		ANPSO anpso = new ANPSO();
 		anpso.setMainSwarmSize(75);
 
@@ -966,7 +966,7 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
 	 * @param evalCnt
 	 * @return
 	 */
-	public static final GOParameters stdANPSO(AbstractOptimizationProblem problem, long randSeed, int evalCnt) {
+	public static final OptimizationParameters stdANPSO(AbstractOptimizationProblem problem, long randSeed, int evalCnt) {
 		ANPSO anpso = new ANPSO();
 		NichePSO.stdNPSO(anpso, problem, randSeed, evalCnt);
 		
@@ -985,7 +985,7 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
 		return OptimizerFactory.makeParams(anpso, anpso.getMainSwarmSize(), problem, randSeed, new EvaluationTerminator(evalCnt));
 	}
 	
-	public static final GOParameters starANPSO(AbstractOptimizationProblem problem, long randSeed, int evalCnt) {
+	public static final OptimizationParameters starANPSO(AbstractOptimizationProblem problem, long randSeed, int evalCnt) {
 		ANPSO anpso = new ANPSO();
 		NichePSO.starNPSO(anpso, problem, randSeed, evalCnt);
 
@@ -1006,7 +1006,7 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
 		return OptimizerFactory.makeParams(anpso, anpso.getMainSwarmSize(), problem, randSeed, new EvaluationTerminator(evalCnt));
 	}
 	
-	public static final GOParameters gmakANPSO(AbstractOptimizationProblem problem, long randSeed, int evalCnt) {
+	public static final OptimizationParameters gmakANPSO(AbstractOptimizationProblem problem, long randSeed, int evalCnt) {
 		ANPSO anpso = new ANPSO();
 		NichePSO.starNPSO(anpso, problem, randSeed, evalCnt);
 
@@ -1036,7 +1036,7 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
 	 * @param evalCnt
 	 * @return
 	 */
-	public static final GOParameters sgANPSO(AbstractOptimizationProblem problem, long randSeed, int evalCnt) {
+	public static final OptimizationParameters sgANPSO(AbstractOptimizationProblem problem, long randSeed, int evalCnt) {
 		return starTopoANPSO(problem, randSeed, evalCnt, 1, 2);
 	}
 	
@@ -1050,8 +1050,8 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
 	 * @param topologyRange
 	 * @return
 	 */
-	public static final GOParameters starTopoANPSO(AbstractOptimizationProblem problem, long randSeed, int evalCnt, int topology, int topologyRange) {
-		GOParameters params = starANPSO(problem, randSeed, evalCnt);
+	public static final OptimizationParameters starTopoANPSO(AbstractOptimizationProblem problem, long randSeed, int evalCnt, int topology, int topologyRange) {
+		OptimizationParameters params = starANPSO(problem, randSeed, evalCnt);
 		((ANPSO)params.getOptimizer()).SetMainSwarmTopologyTag(topology);
 		((ANPSO)params.getOptimizer()).setMainSwarmTopologyRange(topologyRange);
 		((ANPSO)params.getOptimizer()).getMainSwarm().setInertnessOrChi(0.73);

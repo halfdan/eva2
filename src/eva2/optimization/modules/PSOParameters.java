@@ -2,7 +2,7 @@ package eva2.optimization.modules;
 
 
 import eva2.gui.GenericObjectEditor;
-import eva2.optimization.go.InterfaceGOParameters;
+import eva2.optimization.go.InterfaceOptimizationParameters;
 import eva2.optimization.enums.PSOTopologyEnum;
 import eva2.optimization.operators.terminators.EvaluationTerminator;
 import eva2.optimization.populations.Population;
@@ -24,7 +24,7 @@ import java.util.logging.Level;
  * Time: 17:58:37
  * To change this template use File | Settings | File Templates.
  */
-public class PSOParameters extends AbstractGOParameters implements InterfaceGOParameters, Serializable {
+public class PSOParameters extends AbstractOptimizationParameters implements InterfaceOptimizationParameters, Serializable {
 
     /**
      * Load or create a new instance of the class.

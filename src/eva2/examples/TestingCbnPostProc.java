@@ -4,7 +4,7 @@ import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.operators.postprocess.PostProcessParams;
 import eva2.optimization.operators.terminators.EvaluationTerminator;
 import eva2.optimization.problems.FM0Problem;
-import eva2.optimization.modules.GOParameters;
+import eva2.optimization.modules.OptimizationParameters;
 import java.util.List;
 
 public class TestingCbnPostProc {
@@ -14,7 +14,7 @@ public class TestingCbnPostProc {
 		AbstractEAIndividual best;              
 		List<AbstractEAIndividual> ppSols;
 
-		GOParameters esParams = OptimizerFactory.standardCbnES(fm0);            
+		OptimizationParameters esParams = OptimizerFactory.standardCbnES(fm0);
 		esParams.setTerminator(new EvaluationTerminator(2000));                 
 		esParams.setSeed(0);
 		best = (AbstractEAIndividual)OptimizerFactory.optimizeToInd(esParams, null);

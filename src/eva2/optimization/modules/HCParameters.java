@@ -1,6 +1,6 @@
 package eva2.optimization.modules;
 
-import eva2.optimization.go.InterfaceGOParameters;
+import eva2.optimization.go.InterfaceOptimizationParameters;
 import eva2.optimization.operators.terminators.EvaluationTerminator;
 import eva2.optimization.populations.Population;
 import eva2.optimization.problems.B1Problem;
@@ -21,7 +21,7 @@ import java.util.logging.Level;
  * Time: 21:19:20
  * To change this template use File | Settings | File Templates.
  */
-public class HCParameters extends AbstractGOParameters implements InterfaceGOParameters, Serializable {
+public class HCParameters extends AbstractOptimizationParameters implements InterfaceOptimizationParameters, Serializable {
 
     /**
      * Load or create a new instance of the class.

@@ -14,9 +14,9 @@ package eva2.client;
 import eva2.EvAInfo;
 import eva2.gui.*;
 import eva2.optimization.OptimizationStateListener;
-import eva2.optimization.go.InterfaceGOParameters;
+import eva2.optimization.go.InterfaceOptimizationParameters;
 import eva2.optimization.modules.AbstractModuleAdapter;
-import eva2.optimization.modules.GOParameters;
+import eva2.optimization.modules.OptimizationParameters;
 import eva2.optimization.modules.GenericModuleAdapter;
 import eva2.optimization.modules.ModuleAdapter;
 import eva2.optimization.stat.AbstractStatistics;
@@ -191,7 +191,7 @@ public class EvAClient extends JFrame implements OptimizationStateListener {
      * @param noSplash
      * @param noGui
      */
-    public EvAClient(final String hostName, InterfaceGOParameters goParams, boolean autorun, boolean noSplash, boolean noGui) {
+    public EvAClient(final String hostName, InterfaceOptimizationParameters goParams, boolean autorun, boolean noSplash, boolean noGui) {
         this(hostName, null, null, goParams, autorun, noSplash, noGui, false);
     }
 
@@ -206,7 +206,7 @@ public class EvAClient extends JFrame implements OptimizationStateListener {
      * @param noSplash
      * @param noGui
      */
-    public EvAClient(final String hostName, final Window parent, final String paramsFile, final InterfaceGOParameters goParams, final boolean autorun, final boolean noSplash, final boolean noGui) {
+    public EvAClient(final String hostName, final Window parent, final String paramsFile, final InterfaceOptimizationParameters goParams, final boolean autorun, final boolean noSplash, final boolean noGui) {
         this(hostName, parent, paramsFile, goParams, autorun, noSplash, noGui, false);
     }
 
@@ -226,7 +226,7 @@ public class EvAClient extends JFrame implements OptimizationStateListener {
      * @param noSplash
      * @param noGui
      */
-    public EvAClient(final String hostName, final Window parent, final String paramsFile, final InterfaceGOParameters goParams, final boolean autorun, final boolean noSplash, final boolean noGui, final boolean showTreeView) {
+    public EvAClient(final String hostName, final Window parent, final String paramsFile, final InterfaceOptimizationParameters goParams, final boolean autorun, final boolean noSplash, final boolean noGui, final boolean showTreeView) {
         clientInited = false;
         final SplashScreen splashScreen = new SplashScreen(EvAInfo.splashLocation);
 
@@ -352,7 +352,7 @@ public class EvAClient extends JFrame implements OptimizationStateListener {
      * Sets given hostname and tries to load GOParamsters from given file if non
      * null.
      */
-    private void init(String hostName, String paramsFile, InterfaceGOParameters goParams, final Window parent) {        
+    private void init(String hostName, String paramsFile, InterfaceOptimizationParameters goParams, final Window parent) {
         useDefaultModule = EvAInfo.propDefaultModule();
         this.parentWindow = parent;
         
@@ -497,7 +497,7 @@ public class EvAClient extends JFrame implements OptimizationStateListener {
              * try to load parameters from file
              */
             if (goParams == null && (paramsFile != null && (paramsFile.length() > 0))) {
-                goParams = GOParameters.getInstance(paramsFile, false);
+                goParams = OptimizationParameters.getInstance(paramsFile, false);
             }
             loadSpecificModule(useDefaultModule, goParams);//loadSpecificModule
         }
@@ -643,7 +643,7 @@ public class EvAClient extends JFrame implements OptimizationStateListener {
      * optimization
      * @param windowListener	additional window listener for client frame
      */
-    public static EvAClient initClientGUI(GOParameters goParams,
+    public static EvAClient initClientGUI(OptimizationParameters goParams,
             InterfaceStatisticsListener statisticsListener,
             WindowListener windowListener, final Window parent) {
         EvAClient evaClient;
@@ -809,7 +809,7 @@ public class EvAClient extends JFrame implements OptimizationStateListener {
      *
      * @return
      */
-    public InterfaceGOParameters getGOParameters() {
+    public InterfaceOptimizationParameters getGOParameters() {
         if (currentModuleAdapter != null) {
             if (currentModuleAdapter instanceof AbstractModuleAdapter) {
                 return ((AbstractModuleAdapter) currentModuleAdapter).getGOParameters();
@@ -839,7 +839,7 @@ public class EvAClient extends JFrame implements OptimizationStateListener {
         }
     }
 
-    private void loadSpecificModule(String selectedModule, InterfaceGOParameters goParams) {
+    private void loadSpecificModule(String selectedModule, InterfaceOptimizationParameters goParams) {
         ModuleAdapter newModuleAdapter = null;
         //
         try {
@@ -888,7 +888,7 @@ public class EvAClient extends JFrame implements OptimizationStateListener {
                     /* ToDo: Find a way to properly add the TreeView to the GOPanel */
                     if (withTreeView && (newModuleAdapter instanceof AbstractModuleAdapter)) {
                         JComponent tree = null;
-                        tree = getEvATreeView(frameMaker.getGOPanel(), "GOParameters", ((AbstractModuleAdapter) newModuleAdapter).getGOParameters());
+                        tree = getEvATreeView(frameMaker.getGOPanel(), "OptimizationParameters", ((AbstractModuleAdapter) newModuleAdapter).getGOParameters());
                         gbConstraints.gridx = 0;
                         gbConstraints.gridy = 0;
                         gbConstraints.fill = GridBagConstraints.BOTH;

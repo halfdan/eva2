@@ -10,13 +10,11 @@ package eva2.client;
  *            $Date: 2007-12-06 16:05:11 +0100 (Thu, 06 Dec 2007) $
  *            $Author: mkron $
  */
-import eva2.EvAInfo;
 import eva2.gui.LoggingPanel;
 import eva2.optimization.EvAMainAdapter;
 import eva2.optimization.EvAMainAdapterImpl;
-import eva2.optimization.go.InterfaceGOParameters;
+import eva2.optimization.go.InterfaceOptimizationParameters;
 import eva2.optimization.modules.ModuleAdapter;
-import java.rmi.RemoteException;
 
 /**
  *
@@ -50,7 +48,7 @@ public class EvAComAdapter {
      *
      * @return
      */
-    public ModuleAdapter getModuleAdapter(String selectedModuleName, InterfaceGOParameters goParams, String noGuiStatsFile) {
+    public ModuleAdapter getModuleAdapter(String selectedModuleName, InterfaceOptimizationParameters goParams, String noGuiStatsFile) {
         ModuleAdapter newModuleAdapter;
         newModuleAdapter = getLocalMainAdapter().getModuleAdapter(selectedModuleName, goParams, noGuiStatsFile);
         
