@@ -9,6 +9,7 @@ import eva2.optimization.go.PopulationInterface;
 import eva2.optimization.enums.PSOTopologyEnum;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.InterfaceDataTypeDouble;
+import eva2.optimization.modules.OptimizationParameters;
 import eva2.optimization.operators.nichepso.absorption.EuclideanDiversityAbsorptionStrategy;
 import eva2.optimization.operators.nichepso.absorption.InterfaceAbsorptionStrategy;
 import eva2.optimization.operators.nichepso.absorption.StandardAbsorptionStrategy;
@@ -32,7 +33,6 @@ import eva2.optimization.problems.InterfaceAdditionalPopulationInformer;
 import eva2.optimization.problems.InterfaceMultimodalProblem;
 import eva2.optimization.problems.InterfaceMultimodalProblemKnown;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
-import eva2.optimization.modules.GOParameters;
 import eva2.tools.SelectedTag;
 import eva2.tools.chart2d.Chart2DDPointIconCircle;
 import eva2.tools.chart2d.Chart2DDPointIconContent;
@@ -2140,7 +2140,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
         return date;
     }
 
-    public static final GOParameters nichePSO(AbstractOptimizationProblem problem, long randSeed, InterfaceTerminator term) {
+    public static final OptimizationParameters nichePSO(AbstractOptimizationProblem problem, long randSeed, InterfaceTerminator term) {
         NichePSO npso = new NichePSO();
         npso.setMainSwarmSize(75);
 
@@ -2154,7 +2154,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
      *
      * The evaluation count is required currently due to the
      * generation-dependent intertness decay used by the std. variant. To alter
-     * the terminator, use GOParameters.setTerminator(), and mind the intertness
+     * the terminator, use OptimizationParameters.setTerminator(), and mind the intertness
      * behavior of the NichePSO, which can be altered by using
      * getMainSwarm().setInertnessAging(InterfaceParameteraging)
      *
@@ -2163,11 +2163,11 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
      * @param evalCnt
      * @return
      */
-    public static final GOParameters stdNPSO(AbstractOptimizationProblem problem, long randSeed, int evalCnt) {
+    public static final OptimizationParameters stdNPSO(AbstractOptimizationProblem problem, long randSeed, int evalCnt) {
         return stdNPSO(null, problem, randSeed, evalCnt);
     }
 
-    public static final GOParameters starNPSO(AbstractOptimizationProblem problem, long randSeed, int evalCnt) {
+    public static final OptimizationParameters starNPSO(AbstractOptimizationProblem problem, long randSeed, int evalCnt) {
         return starNPSO(null, problem, randSeed, evalCnt);
     }
 
@@ -2183,7 +2183,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
      * @param evalCnt
      * @return
      */
-    public static final GOParameters stdNPSO(NichePSO npso, AbstractOptimizationProblem problem, long randSeed, int evalCnt) {
+    public static final OptimizationParameters stdNPSO(NichePSO npso, AbstractOptimizationProblem problem, long randSeed, int evalCnt) {
         if (npso == null) {
             npso = new NichePSO();
         }
@@ -2233,7 +2233,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
      * @param evalCnt
      * @return
      */
-    public static final GOParameters starNPSO(NichePSO npso, AbstractOptimizationProblem problem, long randSeed, int evalCnt) {
+    public static final OptimizationParameters starNPSO(NichePSO npso, AbstractOptimizationProblem problem, long randSeed, int evalCnt) {
         starNPSO(npso, evalCnt);
         return OptimizerFactory.makeParams(npso, npso.getMainSwarmSize(), problem, randSeed, new EvaluationTerminator(evalCnt));
     }

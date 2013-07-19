@@ -1,6 +1,6 @@
 package eva2.optimization.modules;
 
-import eva2.optimization.go.InterfaceGOParameters;
+import eva2.optimization.go.InterfaceOptimizationParameters;
 import java.io.Serializable;
 
 
@@ -25,26 +25,26 @@ public class GOModuleAdapter extends GenericModuleAdapter implements ModuleAdapt
      * @param Client	the client instance
      */
     public GOModuleAdapter(String adapterName) {
-        super(adapterName, "", GOParameters.getInstance(), false);
+        super(adapterName, "", OptimizationParameters.getInstance(), false);
     }
 
     /**
-     * Starts a statistics GUI and the GOProcessor thread with a given GOParameters file.
+     * Starts a statistics GUI and the GOProcessor thread with a given OptimizationParameters file.
      *
      * @param AdapterName	the title of the ModulAdapter
      * @param Client	the client instance
      */
-    public GOModuleAdapter(String adapterName, InterfaceGOParameters goParams, String noGuiLogFile) {
+    public GOModuleAdapter(String adapterName, InterfaceOptimizationParameters goParams, String noGuiLogFile) {
         super(adapterName, "", goParams, false, noGuiLogFile);
     }
 //  /**
-//   * Starts a statistics GUI and the GOProcessor thread with a given GOParameters file.
+//   * Starts a statistics GUI and the GOProcessor thread with a given OptimizationParameters file.
 //   * 
 //   * @param AdapterName	the title of the ModulAdapter
 //   * @param Client	the client instance
 //   */
 //  public GOModuleAdapter(String adapterName, String serParamsFile, String noGuiLogFile, MainAdapterClient client) {
-//       //super(adapterName, "", client, GOParameters.getInstance(serParamsFile, false), false);
-//       super(adapterName, "", client, GOParameters.getInstance(serParamsFile, serParamsFile==null), false, noGuiLogFile);
+//       //super(adapterName, "", client, OptimizationParameters.getInstance(serParamsFile, false), false);
+//       super(adapterName, "", client, OptimizationParameters.getInstance(serParamsFile, serParamsFile==null), false, noGuiLogFile);
 //   }
 }

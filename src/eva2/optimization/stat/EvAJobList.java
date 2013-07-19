@@ -3,9 +3,9 @@ package eva2.optimization.stat;
 import eva2.gui.GenericArrayEditor;
 import eva2.gui.JParaPanel;
 import eva2.gui.PropertySelectableList;
-import eva2.optimization.go.InterfaceGOParameters;
+import eva2.optimization.go.InterfaceOptimizationParameters;
+import eva2.optimization.modules.AbstractOptimizationParameters;
 import eva2.optimization.tools.FileTools;
-import eva2.optimization.modules.AbstractGOParameters;
 import eva2.optimization.modules.AbstractModuleAdapter;
 import eva2.optimization.modules.GenericModuleAdapter;
 import eva2.optimization.modules.ModuleAdapter;
@@ -24,7 +24,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 /**
- * A selectable list of EvAJobs. Each job contains a GOParameters instance and potentially
+ * A selectable list of EvAJobs. Each job contains a OptimizationParameters instance and potentially
  * statistical data.
  *
  * @author mkron
@@ -53,8 +53,8 @@ public class EvAJobList extends PropertySelectableList<EvAJob> implements Serial
      * @param params
      * @param stats
      */
-    public EvAJob addJob(InterfaceGOParameters params, AbstractStatistics stats) {
-        EvAJob job = new EvAJob((InterfaceGOParameters) Serializer.deepClone(params), stats);
+    public EvAJob addJob(InterfaceOptimizationParameters params, AbstractStatistics stats) {
+        EvAJob job = new EvAJob((InterfaceOptimizationParameters) Serializer.deepClone(params), stats);
         stats.addDataListener(job);
         addJob(job, true);
         return job;
@@ -138,13 +138,13 @@ public class EvAJobList extends PropertySelectableList<EvAJob> implements Serial
 
     /**
      * Search for a job in the list which has the given parameter structure assigned. This is tested
-     * by reference, so the exact same instance of InterfaceGOParameters must be known. If no
+     * by reference, so the exact same instance of InterfaceOptimizationParameters must be known. If no
      * matching job is found, null is returned.
      *
      * @param params
      * @return
      */
-    public EvAJob getJobOf(InterfaceGOParameters params) {
+    public EvAJob getJobOf(InterfaceOptimizationParameters params) {
         for (EvAJob job : getObjects()) {
             if (job.getGOParams() == params) {
                 return job;
@@ -212,8 +212,8 @@ public class EvAJobList extends PropertySelectableList<EvAJob> implements Serial
                 List<EvAJob> jobs = jobList.getSelectedJobs();
                 if (jobs.size() == 1) {
                     EvAJob job = jobs.get(0);
-                    AbstractGOParameters curParams = (AbstractGOParameters) ((AbstractModuleAdapter) jobList.module).getGOParameters();
-                    curParams.setSameParams((AbstractGOParameters) job.getGOParams());
+                    AbstractOptimizationParameters curParams = (AbstractOptimizationParameters) ((AbstractModuleAdapter) jobList.module).getGOParameters();
+                    curParams.setSameParams((AbstractOptimizationParameters) job.getGOParams());
                     ((GenericModuleAdapter) jobList.module).setGOParameters(curParams);
                     ((GenericModuleAdapter) jobList.module).getStatistics().getStatisticsParameter().setMultiRuns(job.getNumRuns());
                     ((GenericModuleAdapter) jobList.module).getStatistics().getStatisticsParameter().setFieldSelection(job.getFieldSelection(((GenericModuleAdapter) jobList.module).getStatistics().getStatisticsParameter().getFieldSelection()));

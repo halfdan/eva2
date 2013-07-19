@@ -1,7 +1,7 @@
 package eva2.optimization.stat;
 
 import eva2.gui.BeanInspector;
-import eva2.optimization.go.InterfaceGOParameters;
+import eva2.optimization.go.InterfaceOptimizationParameters;
 import eva2.tools.StringSelection;
 import java.io.Serializable;
 import java.util.List;
@@ -19,7 +19,7 @@ import java.util.List;
 public class EvAJob implements Serializable, InterfaceStatisticsListener {
 	private static final boolean TRACE = false;
 	
-	private InterfaceGOParameters params = null;
+	private InterfaceOptimizationParameters params = null;
 	private String[] fieldHeaders = null;
 	private List<Object[]> multiRunFinalObjectData = null;
 	private int jobID=0;
@@ -36,7 +36,7 @@ public class EvAJob implements Serializable, InterfaceStatisticsListener {
 		jobIDCounter++;
 	}
 	
-	public EvAJob(InterfaceGOParameters params, InterfaceStatistics sts) {
+	public EvAJob(InterfaceOptimizationParameters params, InterfaceStatistics sts) {
 		this();
 		this.params = params;
 		if (sts instanceof AbstractStatistics) {
@@ -58,7 +58,7 @@ public class EvAJob implements Serializable, InterfaceStatisticsListener {
 		multiRunFinalObjectData=null;
 	}
 	
-	public InterfaceGOParameters getParams() {
+	public InterfaceOptimizationParameters getParams() {
 		return params;
 	}
 
@@ -67,7 +67,7 @@ public class EvAJob implements Serializable, InterfaceStatisticsListener {
 	 * 
 	 * @param params
 	 */
-	public void setParams(InterfaceGOParameters params) {
+	public void setParams(InterfaceOptimizationParameters params) {
 		// how should this be treated? In case the run is already finished, changing
 		// the parameters will be evil, so avoid that case.
 		if (state==StateEnum.complete) {
@@ -134,7 +134,7 @@ public class EvAJob implements Serializable, InterfaceStatisticsListener {
 		return multiRunFinalObjectData;
 	}
 	
-	public InterfaceGOParameters getGOParams() {
+	public InterfaceOptimizationParameters getGOParams() {
 		return params;
 	}
 	

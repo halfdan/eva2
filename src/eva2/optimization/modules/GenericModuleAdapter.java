@@ -5,7 +5,7 @@ import eva2.gui.EvAModuleButtonPanelMaker;
 import eva2.gui.EvATabbedFrameMaker;
 import eva2.gui.GenericObjectEditor;
 import eva2.gui.JParaPanel;
-import eva2.optimization.go.InterfaceGOParameters;
+import eva2.optimization.go.InterfaceOptimizationParameters;
 import eva2.optimization.stat.AbstractStatistics;
 import eva2.optimization.stat.EvAJob;
 import eva2.optimization.stat.EvAJobList;
@@ -13,7 +13,6 @@ import eva2.optimization.stat.InterfaceStatisticsParameter;
 import eva2.optimization.stat.StatisticsStandalone;
 import eva2.optimization.stat.StatisticsWithGUI;
 import java.io.Serializable;
-import java.lang.reflect.Proxy;
 
 public class GenericModuleAdapter extends AbstractModuleAdapter implements Serializable {
 
@@ -33,7 +32,7 @@ public class GenericModuleAdapter extends AbstractModuleAdapter implements Seria
      * @param noGUIStatOut If null, statistics with GUI are used, else the standalone statistics
      * with given output filename.
      */
-    public GenericModuleAdapter(String adapterName, String helperFName, InterfaceGOParameters params, boolean optimizerExpert, String noGUIStatOut) {        
+    public GenericModuleAdapter(String adapterName, String helperFName, InterfaceOptimizationParameters params, boolean optimizerExpert, String noGUIStatOut) {
         remoteModuleAdapter = this;
         this.adapterName = adapterName;
         helperFilename = helperFName;
@@ -64,7 +63,7 @@ public class GenericModuleAdapter extends AbstractModuleAdapter implements Seria
      * @param params		a parameter set describing the optimizer module
      * @param optimizerExpert	 set to true if setting the optimizer is an expert option being hidden from the gui
      */
-    public GenericModuleAdapter(String adapterName, String helperFName, InterfaceGOParameters params, boolean optimizerExpert) {
+    public GenericModuleAdapter(String adapterName, String helperFName, InterfaceOptimizationParameters params, boolean optimizerExpert) {
     	this(adapterName, helperFName, params, optimizerExpert, null);
     }
     
@@ -92,7 +91,7 @@ public class GenericModuleAdapter extends AbstractModuleAdapter implements Seria
         EvAModuleButtonPanelMaker ButtonPanel = new EvAModuleButtonPanelMaker(remoteModuleAdapter, ((Processor) processor).isOptRunning());
         ButtonPanel.setHelperFilename(helperFilename);
         frmMkr.addPanelMaker(ButtonPanel);
-        InterfaceGOParameters goParams = ((Processor) processor).getGOParams();
+        InterfaceOptimizationParameters goParams = ((Processor) processor).getGOParams();
        
             frmMkr.addPanelMaker(paramPanel = new JParaPanel(goParams, goParams.getName()));
 
@@ -144,7 +143,7 @@ public class GenericModuleAdapter extends AbstractModuleAdapter implements Seria
     }
 
     @Override
-    public void setGOParameters(InterfaceGOParameters goParams) {
+    public void setGOParameters(InterfaceOptimizationParameters goParams) {
         super.setGOParameters(goParams);
         paramPanel.getEditor().setValue(goParams);
     }

@@ -10,7 +10,7 @@ package eva2.optimization;
  *            $Date: 2007-12-06 16:05:11 +0100 (Thu, 06 Dec 2007) $
  *            $Author: mkron $
  */
-import eva2.optimization.go.InterfaceGOParameters;
+import eva2.optimization.go.InterfaceOptimizationParameters;
 import eva2.optimization.modules.GOModuleAdapter;
 import eva2.optimization.modules.ModuleAdapter;
 import eva2.tools.EVAERROR;
@@ -105,7 +105,7 @@ public class ModuleServer {
      *
      * @return the loaded module adapter instance
      */
-    public ModuleAdapter createModuleAdapter(String selectedModuleName, InterfaceGOParameters goParams, String noGuiLogFile) {
+    public ModuleAdapter createModuleAdapter(String selectedModuleName, InterfaceOptimizationParameters goParams, String noGuiLogFile) {
         moduleAdapterCounter++;
         String adapterName = "ERROR MODULADAPTER !!";
         String moduleName = null;
@@ -147,7 +147,7 @@ public class ModuleServer {
                     } else {
                         Object[] param = new Object[4];
                         param[0] = (String) adapterName;
-                        param[1] = (InterfaceGOParameters) goParams;
+                        param[1] = (InterfaceOptimizationParameters) goParams;
                         param[2] = (String) noGuiLogFile;
                         while ((constructorArr[constrIndex].getParameterTypes().length != 4) && (constrIndex < constructorArr.length)) {
                             constrIndex++;

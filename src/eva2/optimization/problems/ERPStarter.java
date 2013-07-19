@@ -5,6 +5,7 @@ import eva2.OptimizerRunnable;
 import eva2.client.EvAClient;
 import eva2.gui.BeanInspector;
 import eva2.optimization.individuals.AbstractEAIndividual;
+import eva2.optimization.modules.OptimizationParameters;
 import eva2.optimization.operators.crossover.CrossoverESDefault;
 import eva2.optimization.operators.moso.MOSONoConvert;
 import eva2.optimization.operators.moso.MOSOWeightedFitness;
@@ -15,7 +16,6 @@ import eva2.optimization.populations.InterfaceSolutionSet;
 import eva2.optimization.populations.Population;
 import eva2.optimization.strategies.GeneticAlgorithm;
 import eva2.optimization.strategies.InterfaceOptimizer;
-import eva2.optimization.modules.GOParameters;
 import eva2.optimization.stat.StatisticsStandalone;
 import eva2.tools.BasicResourceLoader;
 import eva2.tools.StringTools;
@@ -83,7 +83,7 @@ public class ERPStarter {
 		System.out.println("Optimizer instance: " + BeanInspector.toString(opt));
 		System.out.println("Problem instance: " + BeanInspector.toString(erp));
 		//	Instantiate optimization
-		GOParameters params = new GOParameters(opt, erp, new EvaluationTerminator(maxEvals));
+		OptimizationParameters params = new OptimizationParameters(opt, erp, new EvaluationTerminator(maxEvals));
 		if (startGUI) {
 			EvAClient.initClientGUI(params, null, null, null);
 		} else {

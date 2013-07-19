@@ -1,7 +1,7 @@
 package eva2.optimization.modules;
 
 
-import eva2.optimization.go.InterfaceGOParameters;
+import eva2.optimization.go.InterfaceOptimizationParameters;
 import eva2.optimization.enums.DETypeEnum;
 import eva2.optimization.operators.terminators.EvaluationTerminator;
 import eva2.optimization.populations.Population;
@@ -22,7 +22,7 @@ import java.util.logging.Level;
  * Time: 13:49:09
  * To change this template use File | Settings | File Templates.
  */
-public class DEParameters extends AbstractGOParameters implements InterfaceGOParameters, Serializable {
+public class DEParameters extends AbstractOptimizationParameters implements InterfaceOptimizationParameters, Serializable {
 
 
     /**

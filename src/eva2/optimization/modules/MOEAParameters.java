@@ -1,6 +1,6 @@
 package eva2.optimization.modules;
 
-import eva2.optimization.go.InterfaceGOParameters;
+import eva2.optimization.go.InterfaceOptimizationParameters;
 import eva2.optimization.operators.archiving.InterfaceArchiving;
 import eva2.optimization.operators.archiving.InterfaceInformationRetrieval;
 import eva2.optimization.operators.terminators.EvaluationTerminator;
@@ -22,7 +22,7 @@ import java.util.logging.Level;
  * Time: 13:49:09
  * To change this template use File | Settings | File Templates.
  */
-public class MOEAParameters extends AbstractGOParameters implements InterfaceGOParameters, Serializable {
+public class MOEAParameters extends AbstractOptimizationParameters implements InterfaceOptimizationParameters, Serializable {
 
     /**
      * Load or create a new instance of the class.

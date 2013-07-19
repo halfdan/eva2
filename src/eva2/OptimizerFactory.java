@@ -1,5 +1,6 @@
 package eva2;
 
+import eva2.optimization.modules.OptimizationParameters;
 import eva2.optimization.operators.mutation.InterfaceMutation;
 import eva2.optimization.operators.mutation.NoMutation;
 import eva2.optimization.operators.mutation.MutateESFixedStepSize;
@@ -54,7 +55,6 @@ import eva2.optimization.operators.terminators.EvaluationTerminator;
 import eva2.optimization.populations.PBILPopulation;
 import eva2.optimization.populations.Population;
 import eva2.optimization.problems.AbstractOptimizationProblem;
-import eva2.optimization.modules.GOParameters;
 import eva2.optimization.stat.InterfaceStatistics;
 import eva2.tools.math.RNG;
 import java.util.ArrayList;
@@ -290,8 +290,8 @@ public class OptimizerFactory {
      * @param problem
      * @return
      */
-    public static GOParameters standardMOGA(AbstractOptimizationProblem problem) {
-        GOParameters gaParams = standardGA(problem);
+    public static OptimizationParameters standardMOGA(AbstractOptimizationProblem problem) {
+        OptimizationParameters gaParams = standardGA(problem);
         int archiveSize = 100;
         int popSize = 100;
         MultiObjectiveEA moga = createMultiObjectiveEA(gaParams.getOptimizer(), archiveSize, problem, null);
@@ -563,7 +563,7 @@ public class OptimizerFactory {
      * @param optType	optimizer identifier
      * @param problem	corresponding optimization problem
      */
-    public static GOParameters getParams(final int optType,
+    public static OptimizationParameters getParams(final int optType,
             AbstractOptimizationProblem problem) {
         switch (optType) {
             case STD_ES:
@@ -647,7 +647,7 @@ public class OptimizerFactory {
             AbstractOptimizationProblem problem, InterfaceTerminator terminator,
             String outputFilePrefix) {
         OptimizerRunnable opt = null;
-        GOParameters params = getParams(optType, problem);
+        OptimizationParameters params = getParams(optType, problem);
         if (params != null) {
             opt = new OptimizerRunnable(params, outputFilePrefix);
             if (terminator != null) {
@@ -660,14 +660,14 @@ public class OptimizerFactory {
     }
 
     /**
-     * Produce a runnable optimizer from a GOParameters instance. Output is
+     * Produce a runnable optimizer from a OptimizationParameters instance. Output is
      * written to a file if the prefix String is given.
      *
      * @param params
      * @param outputFilePrefix
      * @return a runnable optimizer
      */
-    public static OptimizerRunnable getOptRunnable(GOParameters params, String outputFilePrefix) {
+    public static OptimizerRunnable getOptRunnable(OptimizationParameters params, String outputFilePrefix) {
         return new OptimizerRunnable(params, outputFilePrefix);
     }
 
@@ -714,13 +714,13 @@ public class OptimizerFactory {
 
     // /////////////////////// Creating default strategies
     /**
-     * Use lambda, default random seed and terminator to produce GOParameters.
+     * Use lambda, default random seed and terminator to produce OptimizationParameters.
      *
      * @param es
      * @param problem
      * @return
      */
-    public static GOParameters makeESParams(EvolutionStrategies es,
+    public static OptimizationParameters makeESParams(EvolutionStrategies es,
             AbstractOptimizationProblem problem) {
         return makeParams(es, es.getLambda(), problem, randSeed, getTerminator());
     }
@@ -735,7 +735,7 @@ public class OptimizerFactory {
      * @param problem
      * @return
      */
-    public static GOParameters makeParams(InterfaceOptimizer opt, int popSize, AbstractOptimizationProblem problem) {
+    public static OptimizationParameters makeParams(InterfaceOptimizer opt, int popSize, AbstractOptimizationProblem problem) {
         return makeParams(opt, popSize, problem, randSeed, getTerminator());
     }
 
@@ -749,7 +749,7 @@ public class OptimizerFactory {
      * @param problem
      * @return
      */
-    public static GOParameters makeParams(InterfaceOptimizer opt, AbstractOptimizationProblem problem, InterfaceTerminator term) {
+    public static OptimizationParameters makeParams(InterfaceOptimizer opt, AbstractOptimizationProblem problem, InterfaceTerminator term) {
         return makeParams(opt, opt.getPopulation().getTargetSize(), problem, randSeed, term);
     }
 
@@ -766,7 +766,7 @@ public class OptimizerFactory {
      * @param term
      * @return
      */
-    public static GOParameters makeParams(InterfaceOptimizer opt,
+    public static OptimizationParameters makeParams(InterfaceOptimizer opt,
             int popSize, AbstractOptimizationProblem problem, long seed,
             InterfaceTerminator term) {
         Population pop = new Population(popSize);
@@ -776,7 +776,7 @@ public class OptimizerFactory {
     }
 
     /**
-     * Create a GOParameters instance and prepare it with the given arguments.
+     * Create a OptimizationParameters instance and prepare it with the given arguments.
      * The result can be modified and then used to create an OptimizerRunnable,
      * which of course can simply be run.
      *
@@ -788,10 +788,10 @@ public class OptimizerFactory {
      * @param term
      * @return
      */
-    public static GOParameters makeParams(InterfaceOptimizer opt,
+    public static OptimizationParameters makeParams(InterfaceOptimizer opt,
             Population pop, AbstractOptimizationProblem problem, long seed,
             InterfaceTerminator term) {
-        GOParameters params = new GOParameters();
+        OptimizationParameters params = new OptimizationParameters();
         params.setProblem(problem);
         opt.setProblem(problem);
         opt.setPopulation(pop);
@@ -840,7 +840,7 @@ public class OptimizerFactory {
      * @param outputFilePrefix
      * @return the OptimizerRunnable instance just started
      */
-    public static OptimizerRunnable optimizeInThread(GOParameters params, String outputFilePrefix) {
+    public static OptimizerRunnable optimizeInThread(OptimizationParameters params, String outputFilePrefix) {
         return optimizeInThread(new OptimizerRunnable(params, outputFilePrefix));
     }
 
@@ -859,7 +859,7 @@ public class OptimizerFactory {
     }
 
     // ///////////////////////////// Optimize a given parameter instance
-    public static BitSet optimizeToBinary(GOParameters params,
+    public static BitSet optimizeToBinary(OptimizationParameters params,
             String outputFilePrefix) {
         OptimizerRunnable runnable = optimize(new OptimizerRunnable(params,
                 outputFilePrefix));
@@ -886,20 +886,20 @@ public class OptimizerFactory {
         return (runnable != null) ? runnable.getBinarySolution() : null;
     }
 
-    public static double[] optimizeToDouble(GOParameters params,
+    public static double[] optimizeToDouble(OptimizationParameters params,
             String outputFilePrefix) {
         OptimizerRunnable runnable = optimize(new OptimizerRunnable(params,
                 outputFilePrefix));
         return runnable.getDoubleSolution();
     }
 
-    public static double[] optimizeToDouble(GOParameters params) {
+    public static double[] optimizeToDouble(OptimizationParameters params) {
         OptimizerRunnable runnable = optimize(new OptimizerRunnable(params,
                 false));
         return runnable.getDoubleSolution();
     }
 
-    public static double[] optimizeToDouble(GOParameters params, InterfaceStatistics stats) {
+    public static double[] optimizeToDouble(OptimizationParameters params, InterfaceStatistics stats) {
         OptimizerRunnable runnable = optimize(new OptimizerRunnable(params, stats,
                 false));
         return runnable.getDoubleSolution();
@@ -922,13 +922,13 @@ public class OptimizerFactory {
         return (runnable != null) ? runnable.getDoubleSolution() : null;
     }
 
-    public static IndividualInterface optimizeToInd(GOParameters params) {
+    public static IndividualInterface optimizeToInd(OptimizationParameters params) {
         OptimizerRunnable runnable = optimize(new OptimizerRunnable(params,
                 false));
         return runnable.getResult();
     }
 
-    public static IndividualInterface optimizeToInd(GOParameters params,
+    public static IndividualInterface optimizeToInd(OptimizationParameters params,
             String outputFilePrefix) {
         OptimizerRunnable runnable = optimize(new OptimizerRunnable(params,
                 outputFilePrefix));
@@ -952,7 +952,7 @@ public class OptimizerFactory {
         return (runnable != null) ? runnable.getResult() : null;
     }
 
-    public static Population optimizeToPop(GOParameters params,
+    public static Population optimizeToPop(OptimizationParameters params,
             String outputFilePrefix) {
         OptimizerRunnable runnable = optimize(new OptimizerRunnable(params,
                 outputFilePrefix));
@@ -1191,7 +1191,7 @@ public class OptimizerFactory {
      *
      * @return	a standard multi-start hill-climber
      */
-    public static GOParameters hillClimbing(
+    public static OptimizationParameters hillClimbing(
             AbstractOptimizationProblem problem) {
         return hillClimbing(problem, 50);
     }
@@ -1202,12 +1202,12 @@ public class OptimizerFactory {
      *
      * @return	a standard multi-start hill-climber
      */
-    public static GOParameters hillClimbing(
+    public static OptimizationParameters hillClimbing(
             AbstractOptimizationProblem problem, int popSize) {
         return makeParams(new HillClimbing(), popSize, problem, randSeed, getTerminator());
     }
 
-    public static GOParameters monteCarlo(
+    public static OptimizationParameters monteCarlo(
             AbstractOptimizationProblem problem) {
         return makeParams(new MonteCarloSearch(), 50, problem, randSeed, getTerminator());
     }
@@ -1225,7 +1225,7 @@ public class OptimizerFactory {
      * @param popSize
      * @return
      */
-    public static GOParameters createCbn(AbstractOptimizationProblem problem, InterfaceOptimizer opt,
+    public static OptimizationParameters createCbn(AbstractOptimizationProblem problem, InterfaceOptimizer opt,
             double clusterSigma, int minClustSize, int maxSpecSize, int haltingWindowLength, double haltingWindowEpsilon, int popSize) {
         return createCbn(problem, opt, new ClusteringDensityBased(clusterSigma, minClustSize), maxSpecSize,
                 new ClusteringDensityBased(clusterSigma, minClustSize), haltingWindowLength, haltingWindowEpsilon, popSize);
@@ -1238,14 +1238,14 @@ public class OptimizerFactory {
      * @param problem
      * @return
      */
-    public static GOParameters standardCbnPSO(AbstractOptimizationProblem problem) {
+    public static OptimizationParameters standardCbnPSO(AbstractOptimizationProblem problem) {
         return createCbnPSO(problem, cbnDefaultClusterSigma, cbnDefaultMinGroupSize, cbnDefaultMaxGroupSize,
                 cbnDefaultHaltingWindowLength, cbnDefaultHaltingWindowEpsilon, 100);
     }
 
-    public static GOParameters createCbnPSO(AbstractOptimizationProblem problem, double clusterSigma, int minClustSize,
+    public static OptimizationParameters createCbnPSO(AbstractOptimizationProblem problem, double clusterSigma, int minClustSize,
             int maxSpecSize, int haltingWindowLength, double haltingWindowEpsilon, int popSize) {
-        GOParameters psoParams = standardPSO(problem);
+        OptimizationParameters psoParams = standardPSO(problem);
         ParticleSwarmOptimization pso = (ParticleSwarmOptimization) psoParams.getOptimizer();
         ClusteringDensityBased clust = new ClusteringDensityBased(clusterSigma, minClustSize,
                 new IndividualDataMetric(ParticleSwarmOptimization.partBestPosKey));
@@ -1265,7 +1265,7 @@ public class OptimizerFactory {
      * @param popSize
      * @return
      */
-    public static GOParameters createCbn(AbstractOptimizationProblem problem, InterfaceOptimizer opt,
+    public static OptimizationParameters createCbn(AbstractOptimizationProblem problem, InterfaceOptimizer opt,
             InterfaceClustering clustDifferentiate, int maxSpecSize, InterfaceClustering clustMerge, int haltingWindowLength,
             double haltingWindowEpsilon, int popSize) {
         ClusterBasedNichingEA cbn = new ClusterBasedNichingEA();
@@ -1289,7 +1289,7 @@ public class OptimizerFactory {
      * @param problem
      * @return
      */
-    public static GOParameters standardCbnES(AbstractOptimizationProblem problem) {
+    public static OptimizationParameters standardCbnES(AbstractOptimizationProblem problem) {
         EvolutionStrategies es = new EvolutionStrategies();
         es.setMu(15);
         es.setLambda(50);
@@ -1304,8 +1304,8 @@ public class OptimizerFactory {
      * @param problem
      * @return
      */
-    public static GOParameters standardCbnCmaES(AbstractOptimizationProblem problem) {
-        GOParameters cmaEsParams = cmaES(problem);
+    public static OptimizationParameters standardCbnCmaES(AbstractOptimizationProblem problem) {
+        OptimizationParameters cmaEsParams = cmaES(problem);
         EvolutionStrategies cmaES = (EvolutionStrategies) cmaEsParams.getOptimizer();
         return createCbn(problem, cmaES, cbnDefaultClusterSigma, cbnDefaultMinGroupSize, cbnDefaultMaxGroupSize, cbnDefaultHaltingWindowLength, cbnDefaultHaltingWindowEpsilon, 100);
     }
@@ -1317,7 +1317,7 @@ public class OptimizerFactory {
      * @param problem
      * @return
      */
-    public static GOParameters standardCbnGA(AbstractOptimizationProblem problem) {
+    public static OptimizationParameters standardCbnGA(AbstractOptimizationProblem problem) {
         GeneticAlgorithm ga = new GeneticAlgorithm();
         return createCbn(problem, ga, cbnDefaultClusterSigma, cbnDefaultMinGroupSize, cbnDefaultMaxGroupSize, cbnDefaultHaltingWindowLength, cbnDefaultHaltingWindowEpsilon, 100);
     }
@@ -1327,7 +1327,7 @@ public class OptimizerFactory {
      * @param problem
      * @return
      */
-    public static GOParameters standardPBIL(AbstractOptimizationProblem problem) {
+    public static OptimizationParameters standardPBIL(AbstractOptimizationProblem problem) {
         PopulationBasedIncrementalLearning pbil = createPBIL(0.04, 0.01, 0.5, 1,
                 new SelectBestIndividuals(), 50, problem, null);
 
@@ -1345,7 +1345,7 @@ public class OptimizerFactory {
      * @param problem
      * @return
      */
-    public static GOParameters stdClusteringHillClimbing(
+    public static OptimizationParameters stdClusteringHillClimbing(
             AbstractOptimizationProblem problem) {
         return clusteringHillClimbing(problem, 1000, 100, 0.000001,
                 PostProcessMethod.hillClimber, 0.05, 0.000001, 0.05);
@@ -1363,7 +1363,7 @@ public class OptimizerFactory {
      * @param sigmaClust
      * @return
      */
-    public static GOParameters clusteringHillClimbingNM(AbstractOptimizationProblem problem,
+    public static OptimizationParameters clusteringHillClimbingNM(AbstractOptimizationProblem problem,
             int evalCycle, int popSize, double minImprovement, double sigmaClust) {
         return clusteringHillClimbing(problem, evalCycle, popSize, minImprovement,
                 PostProcessMethod.nelderMead, 0.01, 0.00000001, sigmaClust);
@@ -1384,7 +1384,7 @@ public class OptimizerFactory {
      * @param sigmaClust
      * @return
      */
-    public static GOParameters clusteringHillClimbing(
+    public static OptimizationParameters clusteringHillClimbing(
             AbstractOptimizationProblem problem, int evalCycle, int popSize, double minImprovement,
             PostProcessMethod method, double hcInitialStep, double hcStepThresh, double sigmaClust) {
         ClusteringHillClimbing chc = new ClusteringHillClimbing();
@@ -1401,7 +1401,7 @@ public class OptimizerFactory {
         return makeParams(chc, popSize, problem, randSeed, getTerminator());
     }
 
-    public static GOParameters cmaES(AbstractOptimizationProblem problem) {
+    public static OptimizationParameters cmaES(AbstractOptimizationProblem problem) {
         EvolutionStrategies es = new EvolutionStrategies();
         es.setMu(15);
         es.setLambda(50);
@@ -1428,11 +1428,11 @@ public class OptimizerFactory {
      * @param problem the optimization problem
      * @return
      */
-    public static GOParameters cmaESIPOP(AbstractOptimizationProblem problem) {
+    public static OptimizationParameters cmaESIPOP(AbstractOptimizationProblem problem) {
         return createCmaEsIPop(problem, 2.);
     }
 
-    public static GOParameters createCmaEsIPop(AbstractOptimizationProblem problem, double incLambdaFact) {
+    public static OptimizationParameters createCmaEsIPop(AbstractOptimizationProblem problem, double incLambdaFact) {
         EvolutionStrategies es = new EvolutionStrategyIPOP();
 
         AbstractEAIndividual indyTemplate = problem.getIndividualTemplate();
@@ -1460,7 +1460,7 @@ public class OptimizerFactory {
         return makeESParams(es, problem);
     }
 
-    public static GOParameters standardNMS(AbstractOptimizationProblem problem) {
+    public static OptimizationParameters standardNMS(AbstractOptimizationProblem problem) {
         NelderMeadSimplex nms = NelderMeadSimplex.createNelderMeadSimplex(problem, null);
         return makeParams(nms, 50, problem, randSeed, getTerminator());
     }
@@ -1472,7 +1472,7 @@ public class OptimizerFactory {
      * @param problem
      * @return
      */
-    public static GOParameters standardDE(
+    public static OptimizationParameters standardDE(
             AbstractOptimizationProblem problem) {
         DifferentialEvolution de = new DifferentialEvolution();
         de.setDEType(DETypeEnum.DE2_CurrentToBest); // this sets current-to-best
@@ -1483,7 +1483,7 @@ public class OptimizerFactory {
         return makeParams(de, 50, problem, randSeed, getTerminator());
     }
 
-    public static GOParameters standardES(
+    public static OptimizationParameters standardES(
             AbstractOptimizationProblem problem) {
         EvolutionStrategies es = new EvolutionStrategies();
         es.setMu(15);
@@ -1499,7 +1499,7 @@ public class OptimizerFactory {
         return makeESParams(es, problem);
     }
 
-    public static GOParameters standardGA(
+    public static OptimizationParameters standardGA(
             AbstractOptimizationProblem problem) {
         GeneticAlgorithm ga = new GeneticAlgorithm();
         ga.setElitism(true);
@@ -1515,7 +1515,7 @@ public class OptimizerFactory {
      * @param problem
      * @return
      */
-    public static GOParameters standardPSO(
+    public static OptimizationParameters standardPSO(
             AbstractOptimizationProblem problem) {
         ParticleSwarmOptimization pso = new ParticleSwarmOptimization();
         pso.setPhiValues(2.05, 2.05);
@@ -1524,7 +1524,7 @@ public class OptimizerFactory {
         return makeParams(pso, 30, problem, randSeed, getTerminator());
     }
 
-    public static GOParameters tribes(AbstractOptimizationProblem problem) {
+    public static OptimizationParameters tribes(AbstractOptimizationProblem problem) {
         return makeParams(new Tribes(), 1, problem, randSeed, getTerminator());
     }
 
@@ -1535,7 +1535,7 @@ public class OptimizerFactory {
      * @param problem
      * @return
      */
-    public static GOParameters standardNichingEs(AbstractOptimizationProblem prob) {
+    public static OptimizationParameters standardNichingEs(AbstractOptimizationProblem prob) {
         // nichingEs(AbstractOptimizationProblem prob, double nicheRadius, int muPerPeak, int lambdaPerPeak, 
         return createNichingEs(prob, -1, 100, 100,
                 // int expectedPeaks, int rndImmigrants, int explorerPeaks, int resetExplInterval, int etaPresel) {
@@ -1548,7 +1548,7 @@ public class OptimizerFactory {
      * @param problem
      * @return
      */
-    public static GOParameters createNichingEs(AbstractOptimizationProblem prob, double nicheRadius, int muPerPeak, int lambdaPerPeak, int expectedPeaks, int rndImmigrants, int explorerPeaks, int resetExplInterval, int etaPresel) {
+    public static OptimizationParameters createNichingEs(AbstractOptimizationProblem prob, double nicheRadius, int muPerPeak, int lambdaPerPeak, int expectedPeaks, int rndImmigrants, int explorerPeaks, int resetExplInterval, int etaPresel) {
         EsDpiNiching nes = new EsDpiNiching(nicheRadius, muPerPeak, lambdaPerPeak, expectedPeaks, rndImmigrants, explorerPeaks, resetExplInterval, etaPresel);
 
         if (assertIndyType(prob, InterfaceESIndividual.class)) {
@@ -1567,7 +1567,7 @@ public class OptimizerFactory {
      * @param prob
      * @return
      */
-    public static GOParameters standardNichingCmaEs(AbstractOptimizationProblem prob) {
+    public static OptimizationParameters standardNichingCmaEs(AbstractOptimizationProblem prob) {
         return createNichingCmaEs(prob, -1, 10, 10, 0, 0, -1);
     }
 
@@ -1577,7 +1577,7 @@ public class OptimizerFactory {
      * @param prob
      * @return
      */
-    public static GOParameters createNichingCmaEs(AbstractOptimizationProblem prob, double nicheRad) {
+    public static OptimizationParameters createNichingCmaEs(AbstractOptimizationProblem prob, double nicheRad) {
         return createNichingCmaEs(prob, nicheRad, 10, 10, 0, 0, -1);
     }
 
@@ -1587,7 +1587,7 @@ public class OptimizerFactory {
      * @param prob
      * @return
      */
-    public static GOParameters createNichingCmaEs(AbstractOptimizationProblem prob, double nicheRad, double stagnationEpsilon) {
+    public static OptimizationParameters createNichingCmaEs(AbstractOptimizationProblem prob, double nicheRad, double stagnationEpsilon) {
         return createNichingCmaEs(prob, nicheRad, 10, 10, 0, 0, stagnationEpsilon);
     }
 
@@ -1597,7 +1597,7 @@ public class OptimizerFactory {
      * @param prob
      * @return
      */
-    public static GOParameters createNichingCmaEs(AbstractOptimizationProblem prob, double nicheRad, int nicheCount, double stagnationEpsilon) {
+    public static OptimizationParameters createNichingCmaEs(AbstractOptimizationProblem prob, double nicheRad, int nicheCount, double stagnationEpsilon) {
         return createNichingCmaEs(prob, nicheRad, 10, nicheCount, 0, 0, stagnationEpsilon);
     }
 
@@ -1612,7 +1612,7 @@ public class OptimizerFactory {
      * @param resetExplInterval
      * @return
      */
-    public static GOParameters createNichingCmaEs(AbstractOptimizationProblem prob, double nicheRadius, int lambda, int expectedPeaks, int explorerPeaks, int resetExplInterval, double stagnationEpsilon) {
+    public static OptimizationParameters createNichingCmaEs(AbstractOptimizationProblem prob, double nicheRadius, int lambda, int expectedPeaks, int explorerPeaks, int resetExplInterval, double stagnationEpsilon) {
         EsDpiNiching nes = new EsDpiNichingCma(nicheRadius, lambda, expectedPeaks, explorerPeaks, resetExplInterval);
         if (stagnationEpsilon > 0) {
             nes.setEpsilonBound(stagnationEpsilon);

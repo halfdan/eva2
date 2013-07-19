@@ -6,6 +6,7 @@ import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.ESIndividualDoubleData;
 import eva2.optimization.individuals.GAIndividualDoubleData;
 import eva2.optimization.individuals.InterfaceDataTypeDouble;
+import eva2.optimization.modules.OptimizationParameters;
 import eva2.optimization.operators.crossover.CrossoverGAGINPoint;
 import eva2.optimization.operators.mutation.InterfaceMutation;
 import eva2.optimization.operators.mutation.MutateESFixedStepSize;
@@ -17,7 +18,6 @@ import eva2.optimization.problems.F1Problem;
 import eva2.optimization.strategies.EvolutionStrategies;
 import eva2.optimization.strategies.GeneticAlgorithm;
 import eva2.optimization.strategies.InterfaceOptimizer;
-import eva2.optimization.modules.GOParameters;
 import eva2.tools.math.RNG;
 import java.awt.BorderLayout;
 import java.awt.List;
@@ -58,7 +58,7 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
     //transient private InterfaceOptimizer              optimizer         = new EvolutionaryMultiObjectiveOptimization();
     //transient private InterfaceOptimizationProblem    problem           = new TF1Problem();
     //transient private int                             functionCalls     = 1000;
-    private GOParameters m_GO;
+    private OptimizationParameters m_GO;
     transient private int m_MultiRuns = 1;
     transient private int m_RecentFC;
     transient private int currentExperiment = 0;
@@ -88,7 +88,7 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
 //        this.m_List.add("Test2");
 //        this.m_List.add("Test3");
 //        this.m_yself            = this;
-        this.m_GO = GOParameters.getInstance();
+        this.m_GO = OptimizationParameters.getInstance();
         this.m_ExperimentName = this.m_GO.getOptimizer().getName() + "-" + this.m_PerformedRuns.size();
         this.m_GO.addPopulationChangedEventListener(this);
         RNG.setRandomSeed(m_GO.getSeed());
@@ -98,7 +98,7 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
      * This method allows you to get the current GO parameters
      *
      */
-    public GOParameters getGOParameters() {
+    public OptimizationParameters getGOParameters() {
         return this.m_GO;
     }
 

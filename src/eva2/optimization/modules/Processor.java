@@ -1,11 +1,7 @@
 package eva2.optimization.modules;
 
-import eva2.optimization.go.InterfaceNotifyOnInformers;
-import eva2.optimization.go.PopulationInterface;
-import eva2.optimization.go.InterfaceProcessor;
-import eva2.optimization.go.InterfaceTerminator;
-import eva2.optimization.go.InterfaceGOParameters;
-import eva2.optimization.go.InterfacePopulationChangedEventListener;
+import eva2.optimization.go.*;
+import eva2.optimization.go.InterfaceOptimizationParameters;
 import eva2.gui.BeanInspector;
 import eva2.optimization.OptimizationStateListener;
 import eva2.optimization.operators.paramcontrol.ConstantParameters;
@@ -51,7 +47,7 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
     private static final Logger LOGGER = Logger.getLogger(Processor.class.getName());
     private volatile boolean isOptimizationRunning;
     private InterfaceStatistics m_Statistics;
-    private InterfaceGOParameters goParams;
+    private InterfaceOptimizationParameters goParams;
     private boolean m_createInitialPopulations = true;
     private boolean saveParams = true;
     private OptimizationStateListener optimizationStateListener;
@@ -76,7 +72,7 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
      *
      * @see InterfaceNotifyOnInformers
      */
-    public Processor(InterfaceStatistics Stat, ModuleAdapter moduleAdapter, InterfaceGOParameters params) {
+    public Processor(InterfaceStatistics Stat, ModuleAdapter moduleAdapter, InterfaceOptimizationParameters params) {
         goParams = params;
         m_Statistics = Stat;
         optimizationStateListener = moduleAdapter;
@@ -321,17 +317,17 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
         }
     }
 
-    private void maybeInitParamCtrl(InterfaceGOParameters goParams) {
+    private void maybeInitParamCtrl(InterfaceOptimizationParameters goParams) {
         iterateParamCtrl(goParams.getOptimizer(), "init", new Object[]{goParams.getOptimizer(), goParams.getOptimizer().getPopulation()});
         iterateParamCtrl(goParams.getProblem(), "init", new Object[]{goParams.getProblem(), goParams.getOptimizer().getPopulation()});
     }
 
-    private void maybeFinishParamCtrl(InterfaceGOParameters goParams) {
+    private void maybeFinishParamCtrl(InterfaceOptimizationParameters goParams) {
         iterateParamCtrl(goParams.getOptimizer(), "finish", new Object[]{goParams.getOptimizer(), goParams.getOptimizer().getPopulation()});
         iterateParamCtrl(goParams.getProblem(), "finish", new Object[]{goParams.getProblem(), goParams.getOptimizer().getPopulation()});
     }
 
-    private void maybeUpdateParamCtrl(InterfaceGOParameters goParams) {
+    private void maybeUpdateParamCtrl(InterfaceOptimizationParameters goParams) {
         Object[] args;
         InterfaceTerminator terminator = goParams.getTerminator();
         InterfaceOptimizer optimizer = goParams.getOptimizer();
@@ -451,11 +447,11 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
     /**
      * These methods allow you to get and set the Module Parameters.
      */
-    public InterfaceGOParameters getGOParams() {
+    public InterfaceOptimizationParameters getGOParams() {
         return goParams;
     }
 
-    public void setGOParams(InterfaceGOParameters params) {
+    public void setGOParams(InterfaceOptimizationParameters params) {
         if (params != null) {
             goParams = params;
         } else {

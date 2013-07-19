@@ -37,7 +37,7 @@ import eva2.optimization.strategies.EvolutionStrategies;
 import eva2.optimization.strategies.GradientDescentAlgorithm;
 import eva2.optimization.strategies.HillClimbing;
 import eva2.optimization.strategies.NelderMeadSimplex;
-import eva2.optimization.modules.GOParameters;
+import eva2.optimization.modules.OptimizationParameters;
 import eva2.optimization.stat.InterfaceTextListener;
 import eva2.optimization.stat.StatisticsParameter;
 import eva2.tools.Pair;
@@ -526,7 +526,7 @@ public class PostProcess {
 		}
 		es.initByPopulation(pop, false);
 
-		GOParameters cmaParams = OptimizerFactory.makeParams(es, pop, problem, 0, term);
+		OptimizationParameters cmaParams = OptimizerFactory.makeParams(es, pop, problem, 0, term);
 		
 		int funCallsBefore = pop.getFunctionCalls();
 		pop.SetFunctionCalls(baseEvals);

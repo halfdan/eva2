@@ -10,7 +10,7 @@ package eva2.optimization;
  *            $Author: mkron $
  */
 import eva2.EvAInfo;
-import eva2.optimization.go.InterfaceGOParameters;
+import eva2.optimization.go.InterfaceOptimizationParameters;
 import eva2.optimization.modules.ModuleAdapter;
 /**
  * 
@@ -35,7 +35,7 @@ public class EvAMainAdapterImpl implements EvAMainAdapter {
     }
 
     @Override
-    public ModuleAdapter getModuleAdapter(String selectedModule, InterfaceGOParameters goParams, String noGuiStatsFile) {
+    public ModuleAdapter getModuleAdapter(String selectedModule, InterfaceOptimizationParameters goParams, String noGuiStatsFile) {
         return moduleServer.createModuleAdapter(selectedModule, goParams, noGuiStatsFile);
     }
 }

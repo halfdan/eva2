@@ -12,7 +12,7 @@ import eva2.optimization.strategies.InterfaceOptimizer;
  * Time: 13:14:06
  * To change this template use Options | File Templates.
  */
-public interface InterfaceGOParameters {
+public interface InterfaceOptimizationParameters {
 
     /** This method returns a global info string
      * @return description

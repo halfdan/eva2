@@ -1,7 +1,7 @@
 package eva2.optimization.modules;
 
 import eva2.gui.BeanInspector;
-import eva2.optimization.go.InterfaceGOParameters;
+import eva2.optimization.go.InterfaceOptimizationParameters;
 import eva2.optimization.go.InterfaceNotifyOnInformers;
 import eva2.optimization.go.InterfacePopulationChangedEventListener;
 import eva2.optimization.go.InterfaceTerminator;
@@ -20,8 +20,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-public abstract class AbstractGOParameters implements InterfaceGOParameters, Serializable {	
-    protected static final Logger LOGGER = Logger.getLogger(AbstractGOParameters.class.getName());
+public abstract class AbstractOptimizationParameters implements InterfaceOptimizationParameters, Serializable {
+    protected static final Logger LOGGER = Logger.getLogger(AbstractOptimizationParameters.class.getName());
 	protected long randomSeed  = (long)0.0;
 
 	// Opt. Algorithms and Parameters
@@ -32,20 +32,20 @@ public abstract class AbstractGOParameters implements InterfaceGOParameters, Ser
 	transient protected InterfacePopulationChangedEventListener populationChangedEventListener;
 	transient private List<InterfaceNotifyOnInformers> toInformAboutInformers = null;
 	
-	protected AbstractGOParameters() {
+	protected AbstractOptimizationParameters() {
 	}
 
-	protected AbstractGOParameters(AbstractGOParameters goParameters) {
+	protected AbstractOptimizationParameters(AbstractOptimizationParameters optimizationParameters) {
 		this();
-		this.optimizer = goParameters.optimizer;
-		this.problem = goParameters.problem;
-		this.terminator = goParameters.terminator;
+		this.optimizer = optimizationParameters.optimizer;
+		this.problem = optimizationParameters.problem;
+		this.terminator = optimizationParameters.terminator;
 		this.optimizer.setProblem(this.problem);
-		this.randomSeed = goParameters.randomSeed;
-		this.postProcessing = goParameters.postProcessing;
+		this.randomSeed = optimizationParameters.randomSeed;
+		this.postProcessing = optimizationParameters.postProcessing;
 	}
 	
-	public AbstractGOParameters(InterfaceOptimizer opt, InterfaceOptimizationProblem prob, InterfaceTerminator term) {
+	public AbstractOptimizationParameters(InterfaceOptimizer opt, InterfaceOptimizationProblem prob, InterfaceTerminator term) {
 		this();
 		optimizer = opt;
 		problem = prob;
@@ -57,15 +57,15 @@ public abstract class AbstractGOParameters implements InterfaceGOParameters, Ser
 	/**
 	 * Apply the given GO parameter settings to this instance. This maintains the listeners etc.
 	 * 
-	 * @param src
+	 * @param parameters
 	 */
-	public void setSameParams(AbstractGOParameters src) {
-		setOptimizer(src.optimizer);
-		setProblem(src.problem);
-		setTerminator(src.terminator);
+	public void setSameParams(AbstractOptimizationParameters parameters) {
+		setOptimizer(parameters.optimizer);
+		setProblem(parameters.problem);
+		setTerminator(parameters.terminator);
 		this.optimizer.setProblem(this.problem);
-		setSeed(src.randomSeed);
-		setPostProcessParams(src.postProcessing);
+		setSeed(parameters.randomSeed);
+		setPostProcessParams(parameters.postProcessing);
 	}
 	
 	/** 
