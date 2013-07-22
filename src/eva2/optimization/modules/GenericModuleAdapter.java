@@ -6,18 +6,15 @@ import eva2.gui.EvATabbedFrameMaker;
 import eva2.gui.editor.GenericObjectEditor;
 import eva2.gui.JParaPanel;
 import eva2.optimization.go.InterfaceOptimizationParameters;
-import eva2.optimization.stat.AbstractStatistics;
-import eva2.optimization.stat.EvAJob;
-import eva2.optimization.stat.EvAJobList;
-import eva2.optimization.stat.InterfaceStatisticsParameter;
-import eva2.optimization.stat.StatisticsStandalone;
-import eva2.optimization.stat.StatisticsWithGUI;
+import eva2.optimization.stat.*;
+import eva2.optimization.stat.OptimizationJob;
+
 import java.io.Serializable;
 
 public class GenericModuleAdapter extends AbstractModuleAdapter implements Serializable {
 
     private AbstractStatistics statisticsModule;
-    private EvAJobList jobList = null;
+    private OptimizationJobList jobList = null;
     public String helperFilename;
     JParaPanel jobPanel = null, paramPanel = null;
 
@@ -97,7 +94,7 @@ public class GenericModuleAdapter extends AbstractModuleAdapter implements Seria
 
             frmMkr.addPanelMaker(new JParaPanel(Stat, Stat.getName()));
 
-        jobList = new EvAJobList(new EvAJob[]{});
+        jobList = new OptimizationJobList(new OptimizationJob[]{});
         jobList.setModule(this);
         jobList.addTextListener((AbstractStatistics) ((Processor) processor).getStatistics());
 
@@ -113,7 +110,7 @@ public class GenericModuleAdapter extends AbstractModuleAdapter implements Seria
     @Override
     public void performedStart(String infoString) {
         super.performedStart(infoString);
-        EvAJob job = scheduleJob();
+        OptimizationJob job = scheduleJob();
         ((AbstractStatistics) (((Processor) processor).getStatistics())).addDataListener(job);
     }
 
@@ -136,8 +133,8 @@ public class GenericModuleAdapter extends AbstractModuleAdapter implements Seria
     }
 
     @Override
-    public EvAJob scheduleJob() {
-        EvAJob job = jobList.addJob(((Processor) processor).getGOParams(), (AbstractStatistics) (((Processor) processor).getStatistics()));
+    public OptimizationJob scheduleJob() {
+        OptimizationJob job = jobList.addJob(((Processor) processor).getGOParams(), (AbstractStatistics) (((Processor) processor).getStatistics()));
         jobPanel.getEditor().setValue(jobList);
         return job;
     }

@@ -11,7 +11,8 @@ package eva2.optimization.modules;
  */
 import eva2.gui.EvATabbedFrameMaker;
 import eva2.optimization.OptimizationStateListener;
-import eva2.optimization.stat.EvAJob;
+import eva2.optimization.stat.OptimizationJob;
+
 /**
  *
  */
@@ -26,7 +27,7 @@ public interface ModuleAdapter extends OptimizationStateListener {
      *
      * @return A new Job
      */
-    EvAJob scheduleJob();
+    OptimizationJob scheduleJob();
 
     void restartOpt();
 

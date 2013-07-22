@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * An EvAJob is a set of optimization parameters and potential results from the statistics class.
+ * An OptimizationJob is a set of optimization parameters and potential results from the statistics class.
  * Each job has a unique ID and may have been completely finished or not. Once finished, the
  * framework should guarantee that the job is removed as a statistics listener.
  * 
@@ -16,7 +16,7 @@ import java.util.List;
  * @author mkron
  *
  */
-public class EvAJob implements Serializable, InterfaceStatisticsListener {
+public class OptimizationJob implements Serializable, InterfaceStatisticsListener {
 	private static final boolean TRACE = false;
 	
 	private InterfaceOptimizationParameters params = null;
@@ -31,12 +31,12 @@ public class EvAJob implements Serializable, InterfaceStatisticsListener {
 	
 	private enum StateEnum { running, idle, complete, incomplete};
 	
-	public EvAJob() {
+	public OptimizationJob() {
 		jobID=jobIDCounter;
 		jobIDCounter++;
 	}
 	
-	public EvAJob(InterfaceOptimizationParameters params, InterfaceStatistics sts) {
+	public OptimizationJob(InterfaceOptimizationParameters params, InterfaceStatistics sts) {
 		this();
 		this.params = params;
 		if (sts instanceof AbstractStatistics) {
@@ -169,7 +169,7 @@ public class EvAJob implements Serializable, InterfaceStatisticsListener {
 		numRuns=runsPerformed;
 		lastRunIncompl = !completedLastRun;
 		if (TRACE) {
-                System.out.println("EvAJob.notifyRunStopped, " + runsPerformed + " " + completedLastRun);
+                System.out.println("OptimizationJob.notifyRunStopped, " + runsPerformed + " " + completedLastRun);
             }
 	}
 	
