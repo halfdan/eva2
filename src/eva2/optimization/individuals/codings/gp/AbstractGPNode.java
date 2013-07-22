@@ -2,7 +2,7 @@ package eva2.optimization.individuals.codings.gp;
 
 
 import eva2.gui.BeanInspector;
-import eva2.gui.GenericObjectEditor;
+import eva2.gui.editor.GenericObjectEditor;
 import eva2.optimization.problems.GPFunctionProblem;
 import eva2.optimization.problems.InterfaceProgramProblem;
 import eva2.tools.Pair;

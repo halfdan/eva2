@@ -1,6 +1,7 @@
 package eva2.optimization.operator.mutation;
 
 import eva2.gui.*;
+import eva2.gui.editor.GenericObjectEditor;
 import eva2.optimization.tools.AbstractObjectEditor;
 import eva2.optimization.tools.GeneralGEOFaker;
 import eva2.optimization.tools.GeneralGOEProperty;

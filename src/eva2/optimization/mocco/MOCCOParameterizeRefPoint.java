@@ -1,7 +1,7 @@
 package eva2.optimization.mocco;
 
 
-import eva2.gui.GenericObjectEditor;
+import eva2.gui.editor.GenericObjectEditor;
 import eva2.gui.PropertyEditorProvider;
 import eva2.optimization.go.InterfaceTerminator;
 import eva2.optimization.go.MOCCOStandalone;

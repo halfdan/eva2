@@ -1,7 +1,7 @@
 package eva2.optimization.operator.crossover;
 
 
-import eva2.gui.Plot;
+import eva2.gui.plot.Plot;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.ESIndividualDoubleData;
 import eva2.optimization.individuals.InterfaceESIndividual;
@@ -265,7 +265,7 @@ public class CrossoverESUNDX implements InterfaceCrossover, java.io.Serializable
         tmpD[0] = 1;
         tmpD[1] = 1;
         if (plotFlag) {
-            plot = new eva2.gui.Plot("SBX Test", "x", "y", true);
+            plot = new Plot("SBX Test", "x", "y", true);
             tmpD = indy1.getDoubleData();
             plot.setUnconnectedPoint(tmpD[0], tmpD[1], 0);
             tmpD = indy2.getDoubleData();

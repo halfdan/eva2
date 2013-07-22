@@ -1,6 +1,6 @@
 package eva2.optimization.stat;
 
-import eva2.gui.GenericArrayEditor;
+import eva2.gui.editor.GenericArrayEditor;
 import eva2.gui.JParaPanel;
 import eva2.gui.PropertySelectableList;
 import eva2.optimization.go.InterfaceOptimizationParameters;

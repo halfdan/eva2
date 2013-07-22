@@ -1,6 +1,6 @@
 package eva2.optimization.operator.paramcontrol;
 
-import eva2.gui.GenericObjectEditor;
+import eva2.gui.editor.GenericObjectEditor;
 import java.io.Serializable;
 
 /**

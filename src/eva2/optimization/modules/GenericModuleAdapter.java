@@ -3,7 +3,7 @@ package eva2.optimization.modules;
 
 import eva2.gui.EvAModuleButtonPanelMaker;
 import eva2.gui.EvATabbedFrameMaker;
-import eva2.gui.GenericObjectEditor;
+import eva2.gui.editor.GenericObjectEditor;
 import eva2.gui.JParaPanel;
 import eva2.optimization.go.InterfaceOptimizationParameters;
 import eva2.optimization.stat.AbstractStatistics;

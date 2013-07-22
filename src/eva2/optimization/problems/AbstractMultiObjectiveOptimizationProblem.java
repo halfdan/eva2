@@ -1,7 +1,7 @@
 package eva2.optimization.problems;
 
-import eva2.gui.GraphPointSet;
-import eva2.gui.Plot;
+import eva2.gui.plot.GraphPointSet;
+import eva2.gui.plot.Plot;
 import eva2.optimization.population.PopulationInterface;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.ESIndividualDoubleData;
@@ -370,7 +370,7 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
         Population              tmpPop = null;
 
         if (p.getGeneration() > 2) {
-//            m_Plot = new eva2.gui.Plot("Multiobjective Optimization", "Y1", "Y2");
+//            m_Plot = new eva2.gui.plot.Plot("Multiobjective Optimization", "Y1", "Y2");
             // i want to plot the pareto front for MOEA and other strategies
             // but i have to differentiate between the case where
             // there is a true MOEA at work and where the

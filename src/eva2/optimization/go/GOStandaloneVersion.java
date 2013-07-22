@@ -2,6 +2,7 @@ package eva2.optimization.go;
 
 import eva2.gui.BeanInspector;
 import eva2.gui.JParaPanel;
+import eva2.gui.plot.Plot;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.ESIndividualDoubleData;
 import eva2.optimization.individuals.GAIndividualDoubleData;
@@ -72,7 +73,7 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
     transient private Population m_Backup;
     transient private boolean m_ContinueFlag;
     // Plot Panel stuff
-    transient private eva2.gui.Plot m_Plot;
+    transient private Plot m_Plot;
     transient private ArrayList m_PerformedRuns = new ArrayList();
     transient private ArrayList m_TmpData;
     transient private BufferedWriter m_OutputFile;
@@ -186,7 +187,7 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
         double[] tmpD = new double[2];
         tmpD[0] = 1;
         tmpD[1] = 1;
-        this.m_Plot = new eva2.gui.Plot("EA Lecture Plot", "Function calls", "Fitness", true);
+        this.m_Plot = new Plot("EA Lecture Plot", "Function calls", "Fitness", true);
         // validate and show
         this.m_Frame.validate();
         this.m_Frame.setVisible(true);

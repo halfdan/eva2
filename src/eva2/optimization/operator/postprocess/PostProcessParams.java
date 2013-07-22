@@ -1,6 +1,6 @@
 package eva2.optimization.operator.postprocess;
 
-import eva2.gui.GenericObjectEditor;
+import eva2.gui.editor.GenericObjectEditor;
 import eva2.optimization.enums.PostProcessMethod;
 import java.io.Serializable;
 

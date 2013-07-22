@@ -8,6 +8,7 @@ package eva2.gui;
  * @author Holger Ulmer, Felix Streichert, Hannes Planatscher
  */
 
+import eva2.gui.editor.GenericObjectEditor;
 import eva2.optimization.stat.EvAJobList;
 import java.beans.PropertyEditor;
 import java.beans.PropertyEditorManager;

@@ -1,6 +1,6 @@
 package eva2.optimization.problems;
 
-import eva2.gui.Plot;
+import eva2.gui.plot.Plot;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
 
@@ -344,7 +344,7 @@ public abstract class AbstractDynamicOptimizationProblem extends AbstractOptimiz
         tmpD[0] = 0;
         tmpD[1] = 0;
         // im not really certain about what tmpD is required for
-        this.myplot = new eva2.gui.Plot("population measures", "x1", "x2", tmpD, tmpD);
+        this.myplot = new Plot("population measures", "x1", "x2", tmpD, tmpD);
 	}
 	
     /** This method allows the CommonJavaObjectEditorPanel to read the

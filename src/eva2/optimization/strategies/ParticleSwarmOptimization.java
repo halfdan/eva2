@@ -1,13 +1,14 @@
 package eva2.optimization.strategies;
 
+import eva2.gui.plot.Plot;
 import eva2.optimization.problems.F1Problem;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.optimization.problems.InterfaceProblemDouble;
 import eva2.optimization.problems.InterfaceAdditionalPopulationInformer;
 import eva2.optimization.problems.Interface2DBorderProblem;
 import eva2.gui.BeanInspector;
-import eva2.gui.GenericObjectEditor;
-import eva2.gui.TopoPlot;
+import eva2.gui.editor.GenericObjectEditor;
+import eva2.gui.plot.TopoPlot;
 import eva2.optimization.go.InterfacePopulationChangedEventListener;
 import eva2.optimization.population.PopulationInterface;
 import eva2.optimization.enums.PSOTopologyEnum;
@@ -106,7 +107,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
     // for debugging only
     transient private static boolean TRACE = false;
     transient protected boolean m_Show = false;
-    transient protected eva2.gui.Plot m_Plot;
+    transient protected Plot m_Plot;
     private boolean externalInitialPop = false;
     private static String lastSuccessKey = "successfulUpdate";
 //	private double lsCandidateRatio=0.25;
@@ -1656,7 +1657,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
         if (this.m_Plot == null) {
             InterfaceDataTypeDouble indy = (InterfaceDataTypeDouble) this.m_Population.get(0);
             double[][] range = indy.getDoubleRange();
-            this.m_Plot = new eva2.gui.Plot("PSO " + m_Population.getGeneration(), "x1", "x2", range[0], range[1]);
+            this.m_Plot = new Plot("PSO " + m_Population.getGeneration(), "x1", "x2", range[0], range[1]);
 //			this.m_Plot.setUnconnectedPoint(range[0][0], range[1][0], 0);
 //			this.m_Plot.setUnconnectedPoint(range[0][1], range[1][1], 0);
         }

@@ -1,7 +1,7 @@
 package eva2.optimization.strategies;
 
 import eva2.gui.BeanInspector;
-import eva2.gui.Plot;
+import eva2.gui.plot.Plot;
 import eva2.optimization.go.InterfacePopulationChangedEventListener;
 import eva2.optimization.individuals.ESIndividualDoubleData;
 import eva2.optimization.operator.migration.InterfaceMigration;
@@ -84,7 +84,7 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
                 double[] tmpD = new double[2];
                 tmpD[0] = 0;
                 tmpD[1] = 0;
-                this.m_Plot = new eva2.gui.Plot("Island Model EA", "FitnessCalls", "Fitness", tmpD, tmpD);
+                this.m_Plot = new Plot("Island Model EA", "FitnessCalls", "Fitness", tmpD, tmpD);
             }
         }
 
@@ -160,7 +160,7 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
                 double[] tmpD = new double[2];
                 tmpD[0] = 0;
                 tmpD[1] = 0;
-                this.m_Plot = new eva2.gui.Plot("Island Model EA", "FitnessCalls", "Fitness", tmpD, tmpD);
+                this.m_Plot = new Plot("Island Model EA", "FitnessCalls", "Fitness", tmpD, tmpD);
             }
         }
 

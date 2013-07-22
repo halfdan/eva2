@@ -1,7 +1,9 @@
 package eva2.optimization.tools;
 
 
-import eva2.gui.GraphPointSet;
+import eva2.gui.plot.GraphPointSet;
+import eva2.gui.plot.Plot;
+
 import java.io.*;
 import java.util.ArrayList;
 
@@ -14,7 +16,7 @@ import java.util.ArrayList;
  */
 public class ParetoFrontLocalTester {
 
-    private eva2.gui.Plot        m_Plot;
+    private Plot m_Plot;
     private int                     index           = 0;
     private BufferedWriter          m_OutputFile    = null;
 
@@ -150,7 +152,7 @@ public class ParetoFrontLocalTester {
         double[] tmpD = new double[2];
         tmpD[0] = 0;
         tmpD[1] = 0;
-        this.m_Plot = new eva2.gui.Plot("Multiobjective Optimization", "Y1", "Y2", tmpD, tmpD);
+        this.m_Plot = new Plot("Multiobjective Optimization", "Y1", "Y2", tmpD, tmpD);
 
     }
 

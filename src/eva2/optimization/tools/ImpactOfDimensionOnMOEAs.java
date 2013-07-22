@@ -1,8 +1,8 @@
 package eva2.optimization.tools;
 
 
-import eva2.gui.GraphPointSet;
-import eva2.gui.Plot;
+import eva2.gui.plot.GraphPointSet;
+import eva2.gui.plot.Plot;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.ESIndividualDoubleData;
 import eva2.optimization.individuals.InterfaceDataTypeDouble;
@@ -36,7 +36,7 @@ public class ImpactOfDimensionOnMOEAs {
         double[] tmpD = new double[2];
         tmpD[0] = 1;
         tmpD[1] = 1;
-        mPlot = new eva2.gui.Plot("ImpactOfDimensionOnMOEAs", "ProblemDimensin", "No. of Pareto-opt solutions", true);
+        mPlot = new Plot("ImpactOfDimensionOnMOEAs", "ProblemDimensin", "No. of Pareto-opt solutions", true);
         for (int l = 0; l < 5; l++) {
             popSize = 100 + (l*100);
             mySet = new GraphPointSet(l, mPlot.getFunctionArea());

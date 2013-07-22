@@ -1,5 +1,6 @@
 package eva2.gui;
 
+import eva2.gui.editor.GenericObjectEditor;
 import eva2.optimization.tools.FileTools;
 import eva2.tools.BasicResourceLoader;
 import eva2.tools.EVAHELP;

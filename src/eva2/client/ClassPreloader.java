@@ -1,6 +1,6 @@
 package eva2.client;
 
-import eva2.gui.GenericObjectEditor;
+import eva2.gui.editor.GenericObjectEditor;
 
 /**
  * This Runnable just requests a number of classes as does the

@@ -11,12 +11,12 @@ package eva2.optimization.stat;
  *            $Author: mkron $
  */
 import eva2.gui.BeanInspector;
-import eva2.gui.Graph;
-import eva2.gui.GraphWindow;
+import eva2.gui.plot.Graph;
+import eva2.gui.plot.GraphWindow;
 import eva2.gui.JTextoutputFrame;
 import eva2.gui.JTextoutputFrameInterface;
-import eva2.gui.Plot;
-import eva2.gui.PlotInterface;
+import eva2.gui.plot.Plot;
+import eva2.gui.plot.PlotInterface;
 import eva2.optimization.population.PopulationInterface;
 import eva2.optimization.problems.InterfaceAdditionalPopulationInformer;
 import eva2.tools.EVAERROR;

@@ -1,7 +1,7 @@
 package eva2.tools.chart2d;
 
 
-import eva2.gui.InterfaceDPointWithContent;
+import eva2.gui.plot.InterfaceDPointWithContent;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
 import java.awt.*;

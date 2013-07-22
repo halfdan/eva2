@@ -1,7 +1,7 @@
 package eva2.optimization.operator.cluster;
 
 import eva2.gui.BeanInspector;
-import eva2.gui.GenericObjectEditor;
+import eva2.gui.editor.GenericObjectEditor;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.AbstractEAIndividualComparator;
 import eva2.optimization.operator.distancemetric.InterfaceDistanceMetric;

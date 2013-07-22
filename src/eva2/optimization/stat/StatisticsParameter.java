@@ -1,7 +1,7 @@
 package eva2.optimization.stat;
 
 import eva2.gui.BeanInspector;
-import eva2.gui.GenericObjectEditor;
+import eva2.gui.editor.GenericObjectEditor;
 import eva2.optimization.go.InterfaceNotifyOnInformers;
 import eva2.optimization.problems.InterfaceAdditionalPopulationInformer;
 import eva2.tools.EVAERROR;

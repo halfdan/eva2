@@ -1,7 +1,7 @@
 package eva2.optimization.operator.selection;
 
-import eva2.gui.GraphPointSet;
-import eva2.gui.Plot;
+import eva2.gui.plot.GraphPointSet;
+import eva2.gui.plot.Plot;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.operator.archiving.ArchivingSPEAII;
 import eva2.optimization.population.Population;
@@ -81,7 +81,7 @@ public class SelectMOSPEAII implements InterfaceSelection, java.io.Serializable 
             double[] tmpD = new double[2];
             tmpD[0] = 0;
             tmpD[1] = 0;
-            Plot plot = new eva2.gui.Plot("Debug SPEAIISelect", "Y1", "Y2", tmpD, tmpD);
+            Plot plot = new Plot("Debug SPEAIISelect", "Y1", "Y2", tmpD, tmpD);
             plot.setUnconnectedPoint(0, 0, 11);
             plot.setUnconnectedPoint(1.2, 10, 11);
             GraphPointSet   mySet = new GraphPointSet(10, plot.getFunctionArea());

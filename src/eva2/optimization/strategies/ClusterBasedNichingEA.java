@@ -1,10 +1,10 @@
 package eva2.optimization.strategies;
 
 import eva2.gui.BeanInspector;
-import eva2.gui.GenericObjectEditor;
-import eva2.gui.GraphPointSet;
-import eva2.gui.Plot;
-import eva2.gui.TopoPlot;
+import eva2.gui.editor.GenericObjectEditor;
+import eva2.gui.plot.GraphPointSet;
+import eva2.gui.plot.Plot;
+import eva2.gui.plot.TopoPlot;
 import eva2.optimization.go.InterfacePopulationChangedEventListener;
 import eva2.optimization.go.InterfaceTerminator;
 import eva2.optimization.population.PopulationInterface;

@@ -1,6 +1,7 @@
 package eva2.optimization.operator.archiving;
 
-import eva2.gui.*;
+import eva2.gui.plot.GraphPointSet;
+import eva2.gui.plot.Plot;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
 import eva2.tools.chart2d.Chart2DDPointIconCross;
@@ -17,7 +18,7 @@ import eva2.tools.chart2d.DPointIcon;
  * To change this template use Options | File Templates.
  */
 public abstract class AbstractArchiving implements InterfaceArchiving, java.io.Serializable {
-    transient protected eva2.gui.Plot    m_Plot = null;
+    transient protected Plot m_Plot = null;
     protected int                           p = 0;
     public boolean obeyDebsConstViolationPrinciple = true;
 

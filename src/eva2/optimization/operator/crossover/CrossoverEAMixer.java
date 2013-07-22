@@ -1,6 +1,6 @@
 package eva2.optimization.operator.crossover;
 
-import eva2.gui.GenericObjectEditor;
+import eva2.gui.editor.GenericObjectEditor;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
 import eva2.optimization.problems.InterfaceOptimizationProblem;

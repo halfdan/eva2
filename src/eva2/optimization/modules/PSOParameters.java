@@ -1,7 +1,7 @@
 package eva2.optimization.modules;
 
 
-import eva2.gui.GenericObjectEditor;
+import eva2.gui.editor.GenericObjectEditor;
 import eva2.optimization.go.InterfaceOptimizationParameters;
 import eva2.optimization.enums.PSOTopologyEnum;
 import eva2.optimization.operator.terminators.EvaluationTerminator;

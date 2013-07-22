@@ -1,7 +1,8 @@
 package eva2.optimization.operator.archiving;
 
 
-import eva2.gui.GraphPointSet;
+import eva2.gui.plot.GraphPointSet;
+import eva2.gui.plot.Plot;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.operator.distancemetric.InterfaceDistanceMetric;
 import eva2.optimization.operator.distancemetric.ObjectiveSpaceMetric;
@@ -9,7 +10,6 @@ import eva2.optimization.population.Population;
 import eva2.tools.chart2d.Chart2DDPointIconCircle;
 import eva2.tools.chart2d.Chart2DDPointIconText;
 import eva2.tools.chart2d.DPoint;
-import java.awt.Color;
 
 /** The strength Pareto EA in it's second version, which is based on
  * dominance counts.
@@ -196,7 +196,7 @@ public class ArchivingSPEAII extends AbstractArchiving implements java.io.Serial
             for (int i = 0; i < result.length; i++) {
                 System.out.println("Result "+i+": "+result[i]);
             }
-            this.m_Plot = new eva2.gui.Plot("Debug SPEAII", "Y1", "Y2", true);
+            this.m_Plot = new Plot("Debug SPEAII", "Y1", "Y2", true);
             this.m_Plot.setUnconnectedPoint(0, 0, 11);
             this.m_Plot.setUnconnectedPoint(1.2, 2.0, 11);
             GraphPointSet   mySet = new GraphPointSet(10, this.m_Plot.getFunctionArea());
