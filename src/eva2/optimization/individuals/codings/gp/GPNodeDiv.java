@@ -3,7 +3,8 @@ package eva2.optimization.individuals.codings.gp;
 import eva2.optimization.problems.InterfaceProgramProblem;
 
 
-/** A division node with two arguments and secure division. If
+/**
+ * A division node with two arguments and secure division. If
  * the second argument is absolute smaller than 0.00000001 the
  * result is 1.
  * Created by IntelliJ IDEA.
@@ -13,7 +14,7 @@ import eva2.optimization.problems.InterfaceProgramProblem;
  * To change this template use Options | File Templates.
  */
 public class GPNodeDiv extends AbstractGPNode implements java.io.Serializable {
-    private double      m_LowerBorderForSec = 0.00000001;
+    private double m_LowerBorderForSec = 0.00000001;
 
 
     public GPNodeDiv() {
@@ -25,7 +26,9 @@ public class GPNodeDiv extends AbstractGPNode implements java.io.Serializable {
         this.cloneMembers(node);
     }
 
-    /** This method will be used to identify the node in the GPAreaEditor
+    /**
+     * This method will be used to identify the node in the GPAreaEditor
+     *
      * @return The name.
      */
     @Override
@@ -33,7 +36,9 @@ public class GPNodeDiv extends AbstractGPNode implements java.io.Serializable {
         return "Div";
     }
 
-    /** This method allows you to clone the Nodes
+    /**
+     * This method allows you to clone the Nodes
+     *
      * @return the clone
      */
     @Override
@@ -41,7 +46,9 @@ public class GPNodeDiv extends AbstractGPNode implements java.io.Serializable {
         return (Object) new GPNodeDiv(this);
     }
 
-    /** This method will return the current arity
+    /**
+     * This method will return the current arity
+     *
      * @return Arity.
      */
     @Override
@@ -49,42 +56,43 @@ public class GPNodeDiv extends AbstractGPNode implements java.io.Serializable {
         return 2;
     }
 
-    /** This method will evaluate a given node
+    /**
+     * This method will evaluate a given node
+     *
      * @param environment
      */
     @Override
     public Object evaluate(InterfaceProgramProblem environment) {
         Object tmpObj;
-        double result   = 1;
+        double result = 1;
         double tmpValue = 0;
 
         tmpObj = this.m_Nodes[0].evaluate(environment);
         if (tmpObj instanceof Double) {
-            result = ((Double)tmpObj).doubleValue();
+            result = ((Double) tmpObj).doubleValue();
         }
         for (int i = 1; i < this.m_Nodes.length; i++) {
             tmpObj = this.m_Nodes[i].evaluate(environment);
             if (tmpObj instanceof Double) {
-                tmpValue = ((Double)tmpObj).doubleValue();
+                tmpValue = ((Double) tmpObj).doubleValue();
             }
-                if (Math.abs(tmpValue) < this.m_LowerBorderForSec) {
-                    if (tmpValue < 0) {
-                        tmpValue = -this.m_LowerBorderForSec;
-                    }
-                    else {
-                        tmpValue = this.m_LowerBorderForSec;
-                    }
+            if (Math.abs(tmpValue) < this.m_LowerBorderForSec) {
+                if (tmpValue < 0) {
+                    tmpValue = -this.m_LowerBorderForSec;
+                } else {
+                    tmpValue = this.m_LowerBorderForSec;
                 }
-                result /= tmpValue;
+            }
+            result /= tmpValue;
         }
         return new Double(result);
     }
-    
+
     @Override
     public String getOpIdentifier() {
-    	return "/";
+        return "/";
     }
-    
+
 //    /** This method returns a string representation
 //     * @return string
 //     */

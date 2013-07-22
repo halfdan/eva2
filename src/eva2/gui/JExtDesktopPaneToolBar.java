@@ -1,6 +1,7 @@
 package eva2.gui;
 
 import eva2.tools.ToolBoxGui;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
@@ -8,19 +9,18 @@ import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 
 /**
- *
  * @author becker
  */
 public class JExtDesktopPaneToolBar extends JToolBar {
-    
+
     private JExtDesktopPane desktopPane;
-    
+
     public JExtDesktopPaneToolBar(JExtDesktopPane desktopPane) {
         this.desktopPane = desktopPane;
-        
+
         initComponents();
     }
-    
+
     private void initComponents() {
         /* We don't want the ToolBar to be draggable */
         setFloatable(false);
@@ -33,10 +33,10 @@ public class JExtDesktopPaneToolBar extends JToolBar {
             public void actionPerformed(ActionEvent e) {
                 desktopPane.tileWindows(SwingConstants.VERTICAL);
             }
-            
+
         });
-        add(verticalButton);        
-        
+        add(verticalButton);
+
         JButton horizontalButton = ToolBoxGui.createIconifiedButton("images/TileHorizontal16.png", "Tile horizontally", false);
         horizontalButton.addActionListener(new ActionListener() {
 
@@ -44,10 +44,10 @@ public class JExtDesktopPaneToolBar extends JToolBar {
             public void actionPerformed(ActionEvent e) {
                 desktopPane.tileWindows(SwingConstants.HORIZONTAL);
             }
-            
+
         });
         add(horizontalButton);
-        
+
         JButton cascadeButton = ToolBoxGui.createIconifiedButton("images/Cascade16.png", "Cascade windows", false);
         cascadeButton.addActionListener(new ActionListener() {
 
@@ -55,7 +55,7 @@ public class JExtDesktopPaneToolBar extends JToolBar {
             public void actionPerformed(ActionEvent e) {
                 desktopPane.overlapWindows();
             }
-            
+
         });
         add(cascadeButton);
     }

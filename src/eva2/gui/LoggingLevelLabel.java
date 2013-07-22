@@ -26,7 +26,7 @@ public final class LoggingLevelLabel extends JLabel {
     private JPopupMenu menu;
     private String[] options;
     private Logger logger;
-    
+
     public LoggingLevelLabel(final Logger logger) {
         options = new String[]{"Info", "Warning", "Severe", "Fine", "Finer", "Finest", "All"};
 
@@ -36,7 +36,7 @@ public final class LoggingLevelLabel extends JLabel {
         createPopupMenu();
         updateText();
     }
-    
+
     private void createPopupMenu() {
         this.menu = new JPopupMenu();
         addMouseListener(new MouseListener() {
@@ -59,7 +59,7 @@ public final class LoggingLevelLabel extends JLabel {
             }
 
             @Override
-            public void mouseExited(MouseEvent e) {                
+            public void mouseExited(MouseEvent e) {
             }
         });
 
@@ -85,20 +85,20 @@ public final class LoggingLevelLabel extends JLabel {
         /* Show the updated text */
         setText("<html><b>Level</b>: " + lvl.getName());
     }
-    
+
     /**
      * Sets the level of the logger to a new level.
-     * 
+     *
      * @param level The new level for the logger
      */
-    private void setLoggerLevel(Level level) {  
+    private void setLoggerLevel(Level level) {
         // Recursively set logging level for all classes under eva2
         Logger.getLogger("eva2").setLevel(level);
         logger.log(Level.INFO, "Logging Level changed to {0}", level.getName());
     }
-    
+
     /**
-     * 
+     *
      */
     class MenuActionListener implements ActionListener {
 
@@ -115,6 +115,6 @@ public final class LoggingLevelLabel extends JLabel {
             }
 
             LoggingLevelLabel.this.updateText();
-        }   
+        }
     }
 }

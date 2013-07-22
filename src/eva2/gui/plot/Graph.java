@@ -32,7 +32,6 @@ public class Graph implements Serializable {
     }
 
     /**
-     *
      * @param Info
      * @param stroke
      */
@@ -84,7 +83,7 @@ public class Graph implements Serializable {
      * false if force was used and points possibly have been lost.
      *
      * @return true if the graph could be added directly or false if the graph was added by force
-     * losing some data points
+     *         losing some data points
      * @see PlotInterface.addGraph
      */
     public boolean addGraph(Graph x) {

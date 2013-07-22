@@ -12,6 +12,7 @@ package eva2.gui;
 /*==========================================================================*
  * IMPORTS
  *==========================================================================*/
+
 import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -24,82 +25,84 @@ import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+
 /**
  *
  */
 public class PropertySheetPanelStat extends JPanel implements Serializable {
 
-  public final static boolean TRACE = false;
-  private Object[] m_Values;
-  private JCheckBoxFlag[] m_Views;
-  private JLabel[] m_Labels;
-  private boolean[] m_flag;
+    public final static boolean TRACE = false;
+    private Object[] m_Values;
+    private JCheckBoxFlag[] m_Views;
+    private JLabel[] m_Labels;
+    private boolean[] m_flag;
 
-  /**
-   * Creates the property sheet panel.
-   */
-  public PropertySheetPanelStat() {
-    //    setBorder(BorderFactory.createLineBorder(Color.red));
+    /**
+     * Creates the property sheet panel.
+     */
+    public PropertySheetPanelStat() {
+        //    setBorder(BorderFactory.createLineBorder(Color.red));
         setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-  }
+    }
+
     /**
      * A support object for handling property change listeners
      */
-  private PropertyChangeSupport m_support = new PropertyChangeSupport(this);
+    private PropertyChangeSupport m_support = new PropertyChangeSupport(this);
 
-  public synchronized void setTarget(String[] names, boolean[] flag) {
-    int componentOffset = 0;
-    // Close any child windows at this point
-    removeAll();
-    GridBagLayout gbLayout = new GridBagLayout();
-    setLayout(gbLayout);
-    setVisible(false);
+    public synchronized void setTarget(String[] names, boolean[] flag) {
+        int componentOffset = 0;
+        // Close any child windows at this point
+        removeAll();
+        GridBagLayout gbLayout = new GridBagLayout();
+        setLayout(gbLayout);
+        setVisible(false);
 
-    int rowHeight = 12;
+        int rowHeight = 12;
 
-    m_Values = new Object[flag.length];
-    m_Views = new JCheckBoxFlag[flag.length];
-    m_Labels = new JLabel[names.length];
+        m_Values = new Object[flag.length];
+        m_Views = new JCheckBoxFlag[flag.length];
+        m_Labels = new JLabel[names.length];
 
-    for (int i = 0; i < names.length; i++) {
-      m_Labels[i] = new JLabel(names[i], SwingConstants.RIGHT);
+        for (int i = 0; i < names.length; i++) {
+            m_Labels[i] = new JLabel(names[i], SwingConstants.RIGHT);
             m_Labels[i].setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 5));
-      m_Views[i] = new JCheckBoxFlag(flag[i]);
-      GridBagConstraints gbConstraints = new GridBagConstraints();
-      gbConstraints.anchor = GridBagConstraints.EAST;
-      gbConstraints.fill = GridBagConstraints.HORIZONTAL;
+            m_Views[i] = new JCheckBoxFlag(flag[i]);
+            GridBagConstraints gbConstraints = new GridBagConstraints();
+            gbConstraints.anchor = GridBagConstraints.EAST;
+            gbConstraints.fill = GridBagConstraints.HORIZONTAL;
             gbConstraints.gridy = i + componentOffset;
             gbConstraints.gridx = 0;
-      gbLayout.setConstraints(m_Labels[i], gbConstraints);
-      add(m_Labels[i]);
-      JPanel newPanel = new JPanel();
+            gbLayout.setConstraints(m_Labels[i], gbConstraints);
+            add(m_Labels[i]);
+            JPanel newPanel = new JPanel();
             newPanel.setBorder(BorderFactory.createEmptyBorder(10, 5, 0, 10));
 
-      newPanel.setLayout(new BorderLayout());
-      newPanel.add(m_Views[i], BorderLayout.CENTER);
-      gbConstraints = new GridBagConstraints();
-      gbConstraints.anchor = GridBagConstraints.WEST;
-      gbConstraints.fill = GridBagConstraints.BOTH;
+            newPanel.setLayout(new BorderLayout());
+            newPanel.add(m_Views[i], BorderLayout.CENTER);
+            gbConstraints = new GridBagConstraints();
+            gbConstraints.anchor = GridBagConstraints.WEST;
+            gbConstraints.fill = GridBagConstraints.BOTH;
             gbConstraints.gridy = i + componentOffset;
             gbConstraints.gridx = 1;
-      gbConstraints.weightx = 100;
-      gbLayout.setConstraints(newPanel, gbConstraints);
-      add(newPanel);
+            gbConstraints.weightx = 100;
+            gbLayout.setConstraints(newPanel, gbConstraints);
+            add(newPanel);
+        }
+        validate();
+        setVisible(true);
     }
-    validate();
-    setVisible(true);
-  }
 
-  /**
-   *
-   */
-  public boolean[] getState() {
-    boolean[] ret = new boolean[this.m_Views.length];
+    /**
+     *
+     */
+    public boolean[] getState() {
+        boolean[] ret = new boolean[this.m_Views.length];
         for (int i = 0; i < ret.length; i++) {
-      ret[i] = m_Views[i].isSelected();
+            ret[i] = m_Views[i].isSelected();
+        }
+        return ret;
     }
-    return ret;
-  }
 }
 
 /**
@@ -107,23 +110,23 @@ public class PropertySheetPanelStat extends JPanel implements Serializable {
  */
 class JCheckBoxFlag extends JCheckBox {
 
-  private boolean m_Flag = true;
+    private boolean m_Flag = true;
 
     public JCheckBoxFlag(boolean flag) {
-    super();
-    m_Flag = flag;
+        super();
+        m_Flag = flag;
         addItemListener(new ItemListener() {
 
             @Override
             public void itemStateChanged(ItemEvent evt) {
-          if (evt.getStateChange() == evt.SELECTED) {
-            m_Flag = true;
-          }
-          if (evt.getStateChange() == evt.DESELECTED) {
-          m_Flag = false;
-          }
-        }
-    });
+                if (evt.getStateChange() == evt.SELECTED) {
+                    m_Flag = true;
+                }
+                if (evt.getStateChange() == evt.DESELECTED) {
+                    m_Flag = false;
+                }
+            }
+        });
 
-  }
+    }
 }

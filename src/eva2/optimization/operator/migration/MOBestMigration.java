@@ -5,7 +5,8 @@ import eva2.optimization.operator.selection.SelectMOMaxiMin;
 import eva2.optimization.population.Population;
 import eva2.optimization.strategies.InterfaceOptimizer;
 
-/** Migration based on a Multi-criterial selection mechanism
+/**
+ * Migration based on a Multi-criterial selection mechanism
  * migrating the n best individuals between all populations.
  * Created by IntelliJ IDEA.
  * User: streiche
@@ -15,17 +16,19 @@ import eva2.optimization.strategies.InterfaceOptimizer;
  */
 public class MOBestMigration implements InterfaceMigration, java.io.Serializable {
 
-    private InterfaceSelection  m_Selection = new SelectMOMaxiMin();
-    int                         m_N = 5;
+    private InterfaceSelection m_Selection = new SelectMOMaxiMin();
+    int m_N = 5;
 
-    /** The ever present clone method
+    /**
+     * The ever present clone method
      */
     @Override
     public Object clone() {
         return new MOBestMigration();
     }
 
-    /** Typically i'll need some initialization method for
+    /**
+     * Typically i'll need some initialization method for
      * every bit of code i write....
      */
     @Override
@@ -33,7 +36,8 @@ public class MOBestMigration implements InterfaceMigration, java.io.Serializable
         // pff at a later stage i could initialize a topology here
     }
 
-    /** The migrate method can be called asychnronously or
+    /**
+     * The migrate method can be called asychnronously or
      * sychronously. Basically it allows migration of individuals
      * between multiple EA islands and since there are so many
      * different possible strategies i've introduced this
@@ -45,15 +49,15 @@ public class MOBestMigration implements InterfaceMigration, java.io.Serializable
      */
     @Override
     public void migrate(InterfaceOptimizer[] islands) {
-        Population[]            oldIPOP = new Population[islands.length];
-        Population[]            newIPOP = new Population[islands.length];
-        Population[]            comSet;
-        Population              selected;
+        Population[] oldIPOP = new Population[islands.length];
+        Population[] newIPOP = new Population[islands.length];
+        Population[] comSet;
+        Population selected;
 
         // collect the populations
         for (int i = 0; i < islands.length; i++) {
             oldIPOP[i] = islands[i].getPopulation();
-            newIPOP[i] = (Population)oldIPOP[i].clone();
+            newIPOP[i] = (Population) oldIPOP[i].clone();
         }
 
         // perform migration for each ipop
@@ -63,10 +67,10 @@ public class MOBestMigration implements InterfaceMigration, java.io.Serializable
             comSet = oldIPOP;
 
             // todo: Here i could implement multiple selection and replacement schemes
-            newIPOP[i].removeNIndividuals(comSet.length*this.m_N);
-            for(int j = 0; j < comSet.length; j++) {
+            newIPOP[i].removeNIndividuals(comSet.length * this.m_N);
+            for (int j = 0; j < comSet.length; j++) {
                 selected = this.m_Selection.selectFrom(comSet[j], this.m_N);
-                newIPOP[i].addPopulation((Population)selected.clone());
+                newIPOP[i].addPopulation((Population) selected.clone());
             }
         }
 
@@ -79,45 +83,58 @@ public class MOBestMigration implements InterfaceMigration, java.io.Serializable
 /**********************************************************************************************************************
  * These are for GUI
  */
-    /** This method returns a global info string
+    /**
+     * This method returns a global info string
+     *
      * @return description
      */
     public static String globalInfo() {
         return "This is multi-objective migration scheme.";
     }
-    /** This method will return a naming String
+
+    /**
+     * This method will return a naming String
+     *
      * @return The name of the algorithm
      */
     public String getName() {
         return "MOBestMigration";
-    }     
+    }
 
-    /** This method allows you to set/get the selection method for migration.
+    /**
+     * This method allows you to set/get the selection method for migration.
+     *
      * @return The selection method
      */
     public InterfaceSelection getSelection() {
         return this.m_Selection;
     }
-    public void setSelection(InterfaceSelection b){
+
+    public void setSelection(InterfaceSelection b) {
         this.m_Selection = b;
     }
+
     public String selectionTipText() {
         return "Choose the selection method for migration.";
     }
 
-    /** This method allows you to set/get the number of individuals
+    /**
+     * This method allows you to set/get the number of individuals
      * to migrate per migration event.
+     *
      * @return The current number of individuals to migrate
      */
     public int getN() {
         return this.m_N;
     }
-    public void setN(int b){
+
+    public void setN(int b) {
         if (b < 1) {
             b = 1;
         }
         this.m_N = b;
     }
+
     public String nTipText() {
         return "The number of individuals to migrate per migration event.";
     }

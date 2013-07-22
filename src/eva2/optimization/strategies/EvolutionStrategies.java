@@ -102,7 +102,7 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
     /**
      * This method will init the optimizer with a given population
      *
-     * @param pop The initial population
+     * @param pop   The initial population
      * @param reset If true the population is reset.
      */
     @Override
@@ -302,7 +302,7 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
      *
      * @param myu
      * @param lambda
-     * @param plus True if plus, false if comma strategy
+     * @param plus   True if plus, false if comma strategy
      */
     public void setGenerationStrategy(int myu, int lambda, boolean plus) {
         this.mu = myu;

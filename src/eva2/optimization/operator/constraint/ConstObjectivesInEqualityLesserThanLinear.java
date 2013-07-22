@@ -2,7 +2,8 @@ package eva2.optimization.operator.constraint;
 
 import eva2.optimization.individuals.AbstractEAIndividual;
 
-/** This area constraint for parallelization is based on
+/**
+ * This area constraint for parallelization is based on
  * a line constraint
  * Created by IntelliJ IDEA.
  * User: streiche
@@ -12,18 +13,19 @@ import eva2.optimization.individuals.AbstractEAIndividual;
  */
 public class ConstObjectivesInEqualityLesserThanLinear implements InterfaceConstraint, java.io.Serializable {
 
-    private double      m, b;
+    private double m, b;
 
     public ConstObjectivesInEqualityLesserThanLinear() {
     }
+
     public ConstObjectivesInEqualityLesserThanLinear(double m, double b) {
-        this.m  = m;
-        this.b  = b;
+        this.m = m;
+        this.b = b;
     }
 
     public ConstObjectivesInEqualityLesserThanLinear(ConstObjectivesInEqualityLesserThanLinear a) {
-        this.b      = a.b;
-        this.m      = a.m;
+        this.b = a.b;
+        this.m = a.m;
     }
 
     @Override
@@ -31,9 +33,11 @@ public class ConstObjectivesInEqualityLesserThanLinear implements InterfaceConst
         return (Object) new ConstObjectivesInEqualityLesserThanLinear(this);
     }
 
-    /** This method allows you wether or not a given individual
+    /**
+     * This method allows you wether or not a given individual
      * violates the constraints.
-     * @param indy  The individual to check.
+     *
+     * @param indy The individual to check.
      * @return true if valid false else.
      */
     @Override
@@ -42,10 +46,9 @@ public class ConstObjectivesInEqualityLesserThanLinear implements InterfaceConst
         if (d.length != 2) {
             return true;
         }
-        if ((this.m*d[0] + this.b) > d[1]) {
+        if ((this.m * d[0] + this.b) > d[1]) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }

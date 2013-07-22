@@ -12,6 +12,7 @@ import eva2.optimization.strategies.IslandModelEA;
 import eva2.optimization.tools.AbstractObjectEditor;
 import eva2.optimization.tools.GeneralGOEProperty;
 import eva2.tools.math.RNG;
+
 import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -33,19 +34,20 @@ import javax.swing.JTextField;
  */
 public class MOCCOParameterizeTchebycheff extends MOCCOPhase implements InterfaceProcessElement {
 
-    private double[]                m_RefPoint;
-    private IslandModelEA           m_Island;
-    private GeneralGOEProperty      m_EIMEA;
-    private int                     m_Perturbations = 4;
-    private JTextField              m_NumPer;
-    JPanel                          m_Parameters;
-    private JTextField[]            m_UpperLimit, m_LowerLimit;
+    private double[] m_RefPoint;
+    private IslandModelEA m_Island;
+    private GeneralGOEProperty m_EIMEA;
+    private int m_Perturbations = 4;
+    private JTextField m_NumPer;
+    JPanel m_Parameters;
+    private JTextField[] m_UpperLimit, m_LowerLimit;
 
     public MOCCOParameterizeTchebycheff(MOCCOStandalone mocco) {
         this.m_Mocco = mocco;
     }
 
-    /** This method will call the init method and will go to stall
+    /**
+     * This method will call the init method and will go to stall
      */
     @Override
     public void initProcessElementParametrization() {
@@ -83,30 +85,30 @@ public class MOCCOParameterizeTchebycheff extends MOCCOPhase implements Interfac
     private void installChoice() {
         this.m_Parameters.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.anchor      = GridBagConstraints.WEST;
-        gbc.fill        = GridBagConstraints.BOTH;
-        gbc.gridx       = 0;
-        gbc.gridy       = 0;
-        gbc.weightx     = 2;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 2;
         this.m_Parameters.add(new JLabel("Choose number of Perturbations k:"), gbc);
-        gbc.gridx       = 1;
-        gbc.gridy       = 0;
-        gbc.weightx     = 1;
-        this.m_NumPer = new JTextField(""+this.m_Perturbations);
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.weightx = 1;
+        this.m_NumPer = new JTextField("" + this.m_Perturbations);
         this.m_Parameters.add(this.m_NumPer, gbc);
         // weight constraints
         JComponent tmpP = this.makeLimits4Weigths();
         tmpP.setBorder(BorderFactory.createCompoundBorder(
-		    BorderFactory.createTitledBorder("Choose Weight Bounds (0,1)"),
-			BorderFactory.createEmptyBorder(0, 5, 5, 5)));
-        gbc.gridx       = 0;
-        gbc.gridwidth   = 2;
-        gbc.gridy       = 1;
-        gbc.weightx     = 2;
+                BorderFactory.createTitledBorder("Choose Weight Bounds (0,1)"),
+                BorderFactory.createEmptyBorder(0, 5, 5, 5)));
+        gbc.gridx = 0;
+        gbc.gridwidth = 2;
+        gbc.gridy = 1;
+        gbc.weightx = 2;
         this.m_Parameters.add(tmpP, gbc);
         // IslandModelEA
-        this.m_EIMEA    = new GeneralGOEProperty();
-        this.m_Island   = new IslandModelEA();
+        this.m_EIMEA = new GeneralGOEProperty();
+        this.m_Island = new IslandModelEA();
         this.m_Island.setHeterogenuousProblems(true);
         this.m_Island.setLocalOnly(true);
         this.m_Island.setMigrationRate(2);
@@ -114,10 +116,10 @@ public class MOCCOParameterizeTchebycheff extends MOCCOPhase implements Interfac
         this.m_Island.setNumberLocalCPUs(this.m_Perturbations);
         this.m_Island.setProblem(this.m_Mocco.m_State.m_CurrentProblem);
         this.m_Mocco.m_State.m_Optimizer = this.m_Island;
-        this.m_EIMEA.m_Name               = "Island Model EA";
+        this.m_EIMEA.m_Name = "Island Model EA";
         try {
-            this.m_EIMEA.m_Value      = this.m_Island;
-            this.m_EIMEA.m_Editor     = PropertyEditorProvider.findEditor(this.m_EIMEA.m_Value.getClass());
+            this.m_EIMEA.m_Value = this.m_Island;
+            this.m_EIMEA.m_Editor = PropertyEditorProvider.findEditor(this.m_EIMEA.m_Value.getClass());
             if (this.m_EIMEA.m_Editor == null) {
                 this.m_EIMEA.m_Editor = PropertyEditorProvider.findEditor(IslandModelEA.class);
             }
@@ -132,20 +134,20 @@ public class MOCCOParameterizeTchebycheff extends MOCCOPhase implements Interfac
         } catch (Exception e) {
             System.out.println("Darn can't read the value...");
         }
-        gbc.gridx       = 0;
-        gbc.gridy       = 2;
-        gbc.weightx     = 2;
-        this.m_Parameters.add(new JLabel(""+this.m_EIMEA.m_Name), gbc);
-        gbc.gridx       = 1;
-        gbc.gridy       = 2;
-        gbc.weightx     = 1;
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.weightx = 2;
+        this.m_Parameters.add(new JLabel("" + this.m_EIMEA.m_Name), gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 2;
+        gbc.weightx = 1;
         this.m_Parameters.add(this.m_EIMEA.m_View, gbc);
         // Terminator
-        GeneralGOEProperty editor   = new GeneralGOEProperty();
-        editor.m_Name               = "Terminator";
+        GeneralGOEProperty editor = new GeneralGOEProperty();
+        editor.m_Name = "Terminator";
         try {
-            editor.m_Value      = this.m_Mocco.m_State.m_Terminator;
-            editor.m_Editor     = PropertyEditorProvider.findEditor(editor.m_Value.getClass());
+            editor.m_Value = this.m_Mocco.m_State.m_Terminator;
+            editor.m_Editor = PropertyEditorProvider.findEditor(editor.m_Value.getClass());
             if (editor.m_Editor == null) {
                 editor.m_Editor = PropertyEditorProvider.findEditor(InterfaceTerminator.class);
             }
@@ -160,55 +162,55 @@ public class MOCCOParameterizeTchebycheff extends MOCCOPhase implements Interfac
         } catch (Exception e) {
             System.out.println("Darn can't read the value...");
         }
-        gbc.gridx       = 0;
-        gbc.gridy       = 3;
-        gbc.weightx     = 2;
-        this.m_Parameters.add(new JLabel(""+editor.m_Name), gbc);
-        gbc.gridx       = 1;
-        gbc.gridy       = 3;
-        gbc.weightx     = 1;
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.weightx = 2;
+        this.m_Parameters.add(new JLabel("" + editor.m_Name), gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 3;
+        gbc.weightx = 1;
         this.m_Parameters.add(editor.m_View, gbc);
     }
 
     private JComponent makeLimits4Weigths() {
         JPanel result = new JPanel();
         result.setLayout(new GridBagLayout());
-        this.m_UpperLimit   = new JTextField[this.m_RefPoint.length];
-        this.m_LowerLimit   = new JTextField[this.m_RefPoint.length];
+        this.m_UpperLimit = new JTextField[this.m_RefPoint.length];
+        this.m_LowerLimit = new JTextField[this.m_RefPoint.length];
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.anchor      = GridBagConstraints.WEST;
-        gbc.fill        = GridBagConstraints.BOTH;
-        gbc.gridx       = 0;
-        gbc.gridy       = 0;
-        gbc.weightx     = 1;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 1;
         result.add(new JLabel("Objective"), gbc);
-        gbc.gridx       = 1;
-        gbc.gridy       = 0;
-        gbc.weightx     = 2;
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.weightx = 2;
         result.add(new JLabel("Ideal Value"), gbc);
-        gbc.gridx       = 2;
-        gbc.gridy       = 0;
-        gbc.weightx     = 1;
+        gbc.gridx = 2;
+        gbc.gridy = 0;
+        gbc.weightx = 1;
         result.add(new JLabel("Lower"), gbc);
-        gbc.gridx       = 3;
-        gbc.gridy       = 0;
+        gbc.gridx = 3;
+        gbc.gridy = 0;
         result.add(new JLabel("Upper"), gbc);
         for (int i = 0; i < this.m_RefPoint.length; i++) {
-            gbc.gridx       = 0;
-            gbc.gridy       = i+1;
-            gbc.weightx     = 1;
-            result.add(new JLabel("Fitness "+i), gbc);
-            gbc.gridx       = 1;
-            gbc.gridy       = i+1;
-            gbc.weightx     = 2;
-            result.add(new JLabel(""+this.m_RefPoint[i]), gbc);
-            gbc.gridx       = 2;
-            gbc.gridy       = i+1;
-            gbc.weightx     = 1;
+            gbc.gridx = 0;
+            gbc.gridy = i + 1;
+            gbc.weightx = 1;
+            result.add(new JLabel("Fitness " + i), gbc);
+            gbc.gridx = 1;
+            gbc.gridy = i + 1;
+            gbc.weightx = 2;
+            result.add(new JLabel("" + this.m_RefPoint[i]), gbc);
+            gbc.gridx = 2;
+            gbc.gridy = i + 1;
+            gbc.weightx = 1;
             this.m_LowerLimit[i] = new JTextField("0.0");
             result.add(this.m_LowerLimit[i], gbc);
-            gbc.gridx       = 3;
-            gbc.gridy       = i+1;
+            gbc.gridx = 3;
+            gbc.gridy = i + 1;
             this.m_UpperLimit[i] = new JTextField("1.0");
             result.add(this.m_UpperLimit[i], gbc);
 
@@ -216,9 +218,11 @@ public class MOCCOParameterizeTchebycheff extends MOCCOPhase implements Interfac
         return result;
     }
 
-    /** Method method allows mocco to set the previously selected
+    /**
+     * Method method allows mocco to set the previously selected
      * reference point
-     * @param point  the reference point
+     *
+     * @param point the reference point
      */
     public void setReferencePoint(double[] point) {
         this.m_RefPoint = point;
@@ -234,7 +238,7 @@ public class MOCCOParameterizeTchebycheff extends MOCCOPhase implements Interfac
                 System.out.println("Can't read k.");
             }
             if (m_EIMEA.m_Value instanceof IslandModelEA) {
-                m_Island = (IslandModelEA)m_EIMEA.m_Value;
+                m_Island = (IslandModelEA) m_EIMEA.m_Value;
             } else {
                 System.out.println("The selected optimizer does not allow heterogenuous multi-starts!");
             }
@@ -253,8 +257,8 @@ public class MOCCOParameterizeTchebycheff extends MOCCOPhase implements Interfac
             m_Mocco.m_State.m_Optimizer = m_Island;
             m_Mocco.m_State.m_Optimizer.setProblem(m_Mocco.m_State.m_CurrentProblem);
             m_Island.init();
-            double[]    tmpD;
-            double      sum = 0, l = 0, u = 1;
+            double[] tmpD;
+            double sum = 0, l = 0, u = 1;
             MOSOWeightedLPTchebycheff[] tmpLPs = new MOSOWeightedLPTchebycheff[m_Perturbations];
             for (int i = 0; i < m_Perturbations; i++) {
                 tmpD = new double[m_RefPoint.length];
@@ -262,10 +266,12 @@ public class MOCCOParameterizeTchebycheff extends MOCCOPhase implements Interfac
                 for (int j = 0; j < tmpD.length; j++) {
                     try {
                         l = new Double(m_LowerLimit[j].getText()).doubleValue();
-                    } catch (NumberFormatException e) {}
+                    } catch (NumberFormatException e) {
+                    }
                     try {
                         u = new Double(m_UpperLimit[j].getText()).doubleValue();
-                    } catch (NumberFormatException e) {}
+                    } catch (NumberFormatException e) {
+                    }
                     if (l < 0) {
                         l = 0;
                     }
@@ -280,13 +286,13 @@ public class MOCCOParameterizeTchebycheff extends MOCCOPhase implements Interfac
                     }
                     if (u < l) {
                         double t = u;
-                        u = l; l = t;
+                        u = l;
+                        l = t;
                     }
 
                     if (i > 0) {
-                        tmpD[j] = RNG.randomDouble(l,u);
-                    }
-                    else {
+                        tmpD[j] = RNG.randomDouble(l, u);
+                    } else {
                         tmpD[j] = 1;
                     }
                     sum += tmpD[j];
@@ -298,10 +304,10 @@ public class MOCCOParameterizeTchebycheff extends MOCCOPhase implements Interfac
                 // I've to set this before I change the parameters, because the problem sets the
                 // output dimension based on the AbstractMultiObjectiveOptimizationProblem and
                 // that one has not the faintest idea about the true output dimension
-                ((AbstractMultiObjectiveOptimizationProblem)m_Island.getOptimizers()[i].getProblem()).setMOSOConverter(tmpLPs[i]);
+                ((AbstractMultiObjectiveOptimizationProblem) m_Island.getOptimizers()[i].getProblem()).setMOSOConverter(tmpLPs[i]);
                 tmpLPs[i].setOutputDimension(tmpD.length);
-                tmpLPs[i].getIdealPWeights().m_IdealValue   = m_RefPoint;
-                tmpLPs[i].getIdealPWeights().m_Weights      = tmpD;
+                tmpLPs[i].getIdealPWeights().m_IdealValue = m_RefPoint;
+                tmpLPs[i].getIdealPWeights().m_Weights = tmpD;
             }
             m_Mocco.m_View.removeReferencePoint();
             m_Mocco.m_JPanelControl.removeAll();

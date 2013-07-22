@@ -51,7 +51,7 @@ public class MultiObjectiveEA implements InterfaceOptimizer, java.io.Serializabl
     }
 
     public MultiObjectiveEA(InterfaceOptimizer subOpt, InterfaceArchiving archiving, int archiveSize,
-            InterfaceInformationRetrieval infoRetrieval, AbstractOptimizationProblem problem) {
+                            InterfaceInformationRetrieval infoRetrieval, AbstractOptimizationProblem problem) {
         setOptimizer(subOpt);
         setArchivingStrategy(archiving);
         setArchiveSize(archiveSize);
@@ -74,7 +74,7 @@ public class MultiObjectiveEA implements InterfaceOptimizer, java.io.Serializabl
     /**
      * This method will init the optimizer with a given population
      *
-     * @param pop The initial population
+     * @param pop   The initial population
      * @param reset If true the population is reset.
      */
     @Override

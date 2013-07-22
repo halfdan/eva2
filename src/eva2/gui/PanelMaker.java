@@ -4,9 +4,9 @@ import javax.swing.JComponent;
 
 /**
  * Simple helper interface.
- * @author mkron
  *
+ * @author mkron
  */
 public interface PanelMaker {
-	 public JComponent makePanel();
+    public JComponent makePanel();
 }

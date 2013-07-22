@@ -1,6 +1,7 @@
 package eva2.tools;
 
 import eva2.gui.BeanInspector;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,9 +13,8 @@ import java.util.List;
  * An array of Strings that can be selected and deselected. May be created directly from an Enum.
  * An analogous set of descriptive strings may be added for each field, for example to produce
  * tool tips in a GUI.
- * 
- * @author mkron
  *
+ * @author mkron
  */
 public class StringSelection implements Serializable {
 
@@ -45,8 +45,8 @@ public class StringSelection implements Serializable {
      * descriptions. A single element is preselected by index, all others
      * deselected.
      *
-     * @param sArr a String array of selectable strings
-     * @param tips descriptive strings of same length or null
+     * @param sArr       a String array of selectable strings
+     * @param tips       descriptive strings of same length or null
      * @param initialSel index of the preselected string
      */
     public StringSelection(String[] sArr, String[] tips, int initialSel) {
@@ -60,7 +60,7 @@ public class StringSelection implements Serializable {
     /**
      * Constructor from an enum class and optional descriptions.
      *
-     * @param e an enum from which the selectable strings will be taken
+     * @param e    an enum from which the selectable strings will be taken
      * @param tips descriptive strings of same length or null
      */
     public StringSelection(Enum<?> e, String[] tips) {
@@ -97,7 +97,7 @@ public class StringSelection implements Serializable {
      * @param headerFields
      */
     public StringSelection(Enum<?> e, String[] enumTips,
-            List<String> headerFields, String[] addTips) {
+                           List<String> headerFields, String[] addTips) {
         this(ToolBox.appendEnumAndArray(e, headerFields.toArray(new String[headerFields.size()])),
                 ToolBox.appendArrays(enumTips, addTips));
         enumClass = e.getClass();
@@ -119,7 +119,7 @@ public class StringSelection implements Serializable {
     /**
      * Return a descriptive String for element i or null if none is provided.
      *
-     * @param i	index of the string element
+     * @param i index of the string element
      * @return a descriptive String for element i or null
      */
     public String getElementInfo(int i) {

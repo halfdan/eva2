@@ -14,7 +14,7 @@ import eva2.optimization.problems.InterfaceOptimizationProblem;
  * complexity of the search space. This implements a Random Walk Search using
  * the initialization method of the problem instance, meaning that the random
  * characteristics may be problem dependent.
- *
+ * <p/>
  * Copyright: Copyright (c) 2003 Company: University of Tuebingen, Computer
  * Architecture
  *
@@ -67,7 +67,7 @@ public class MonteCarloSearch implements InterfaceOptimizer, java.io.Serializabl
     /**
      * This method will init the optimizer with a given population
      *
-     * @param pop The initial population
+     * @param pop   The initial population
      * @param reset If true the population is reset.
      */
     @Override

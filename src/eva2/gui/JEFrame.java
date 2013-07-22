@@ -22,42 +22,42 @@ import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
 
 public class JEFrame extends JInternalFrame {
-	private boolean closeAllOnClose = false;
-	
-	public JEFrame() {
-		super();
-		init();
-	}
+    private boolean closeAllOnClose = false;
 
-	public JEFrame(String name) {
-		super(name);
-		init();
-	}
-	
-	/**
-	 * Set to true if all registered JEFrames should be closed if this frame is closed.
-	 *
-	 * @param c
-	 */
-	public void setCloseAllOnClosed(boolean c) {
-		closeAllOnClose = c;
-	}
+    public JEFrame() {
+        super();
+        init();
+    }
 
-	@Override
-	public void addInternalFrameListener(InternalFrameListener l) {
-		super.addInternalFrameListener(l);
-	}
+    public JEFrame(String name) {
+        super(name);
+        init();
+    }
 
-	private void init() {
-		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		
-		this.addInternalFrameListener(new InternalFrameAdapter() {
+    /**
+     * Set to true if all registered JEFrames should be closed if this frame is closed.
+     *
+     * @param c
+     */
+    public void setCloseAllOnClosed(boolean c) {
+        closeAllOnClose = c;
+    }
+
+    @Override
+    public void addInternalFrameListener(InternalFrameListener l) {
+        super.addInternalFrameListener(l);
+    }
+
+    private void init() {
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+
+        this.addInternalFrameListener(new InternalFrameAdapter() {
 
             @Override
             public void internalFrameClosed(InternalFrameEvent e) {
                 super.internalFrameClosed(e);
-				JEFrameRegister.getInstance().unregister((JEFrame) e.getInternalFrame());
-				if (closeAllOnClose) {
+                JEFrameRegister.getInstance().unregister((JEFrame) e.getInternalFrame());
+                if (closeAllOnClose) {
                     JEFrameRegister.getInstance().closeAll();
                 }
             }
@@ -70,59 +70,59 @@ public class JEFrame extends JInternalFrame {
 
             @Override
             public void internalFrameActivated(InternalFrameEvent e) {
-            	JEFrameRegister.getInstance().register((JEFrame) e.getInternalFrame());
-			    super.internalFrameActivated(e);
+                JEFrameRegister.getInstance().register((JEFrame) e.getInternalFrame());
+                super.internalFrameActivated(e);
             }
-		});
-		this.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-				KeyStroke.getKeyStroke(KeyEvent.VK_F, Event.CTRL_MASK),
-				"ctrlFpressed"
-		);
-		this.getRootPane().getActionMap().put(
-				"ctrlFpressed",
-				new AbstractAction("ctrlFpressed") {
-            @Override
-					public void actionPerformed(ActionEvent actionEvent) {
+        });
+        this.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+                KeyStroke.getKeyStroke(KeyEvent.VK_F, Event.CTRL_MASK),
+                "ctrlFpressed"
+        );
+        this.getRootPane().getActionMap().put(
+                "ctrlFpressed",
+                new AbstractAction("ctrlFpressed") {
+                    @Override
+                    public void actionPerformed(ActionEvent actionEvent) {
                         JEFrameRegister.getInstance().getFrameList().get(0).toFront();
-					}
-				}
-		);
-		this.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-				KeyStroke.getKeyStroke(KeyEvent.VK_O, Event.CTRL_MASK),
-				"ctrlOpressed"
-		);
-		this.getRootPane().getActionMap().put(
-				"ctrlOpressed",
-				new AbstractAction("ctrlOpressed") {
-            @Override
-					public void actionPerformed(ActionEvent actionEvent) {
-						java.util.List<JEFrame> frameList = JEFrameRegister.getInstance().getFrameList();
-						for (JEFrame frame : frameList) {
+                    }
+                }
+        );
+        this.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+                KeyStroke.getKeyStroke(KeyEvent.VK_O, Event.CTRL_MASK),
+                "ctrlOpressed"
+        );
+        this.getRootPane().getActionMap().put(
+                "ctrlOpressed",
+                new AbstractAction("ctrlOpressed") {
+                    @Override
+                    public void actionPerformed(ActionEvent actionEvent) {
+                        java.util.List<JEFrame> frameList = JEFrameRegister.getInstance().getFrameList();
+                        for (JEFrame frame : frameList) {
                             frame.toFront();
                         }
-					}
-				}
-		);
-		this.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-				KeyStroke.getKeyStroke(KeyEvent.VK_LESS , Event.CTRL_MASK),
-				"ctrlSmallerpressed"
-		);
-		final JEFrame self = this;
-		this.getRootPane().getActionMap().put(
-				"ctrlSmallerpressed",
-				new AbstractAction("ctrlSmallerpressed") {
-            @Override
-					public void actionPerformed(ActionEvent actionEvent) {
-						JEFrameRegister.getInstance().setFocusToNext(self);
-					}
-				}
-		);
-        
+                    }
+                }
+        );
+        this.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+                KeyStroke.getKeyStroke(KeyEvent.VK_LESS, Event.CTRL_MASK),
+                "ctrlSmallerpressed"
+        );
+        final JEFrame self = this;
+        this.getRootPane().getActionMap().put(
+                "ctrlSmallerpressed",
+                new AbstractAction("ctrlSmallerpressed") {
+                    @Override
+                    public void actionPerformed(ActionEvent actionEvent) {
+                        JEFrameRegister.getInstance().setFocusToNext(self);
+                    }
+                }
+        );
+
         this.setMaximizable(true);
         this.setResizable(true);
         this.setIconifiable(true);
         this.setClosable(true);
-        
-        
-	}
+
+
+    }
 }

@@ -6,14 +6,16 @@ package eva2.optimization.individuals.codings.gp;
  */
 public class GPNodeOne extends GPNodeConst implements java.io.Serializable {
     public GPNodeOne() {
-    	super(1.);
+        super(1.);
     }
-    
+
     public GPNodeOne(GPNodeOne node) {
-    	super(node);
-	}
-    
-    /** This method allows you to clone the Nodes
+        super(node);
+    }
+
+    /**
+     * This method allows you to clone the Nodes
+     *
      * @return the clone
      */
     @Override

@@ -15,6 +15,7 @@ import eva2.optimization.strategies.tribes.TribesExplorer;
 import eva2.optimization.strategies.tribes.TribesParam;
 import eva2.optimization.strategies.tribes.TribesPosition;
 import eva2.optimization.strategies.tribes.TribesSwarm;
+
 import java.util.Iterator;
 import java.util.List;
 
@@ -31,19 +32,18 @@ import java.util.List;
  * the CEC 2005 benchmarks (see the corresponding class) - I widely kept the
  * original comments, except for places I changed the code so much that they
  * might mislead - thats all, I think
- *
+ * <p/>
  * I could produce similar results as Clerc's on Rosenbrock and Griewank, (in
  * his book on p. 148), I couldnt reproduce the 100% success rate on Ackley,
  * though.
  *
  * @author Maurice Clerc, Marcel Kronfeld
- * @date 2007-09-13
- *
- * Original notes:
- * @version 2006-02 21
  * @author Maurice.Clerc@WriteMe.com  {@link http://mauriceclerc.net}
- * {@link http://clerc.maurice.free.fr/pso/}
- *
+ *         {@link http://clerc.maurice.free.fr/pso/}
+ * @version 2006-02 21
+ * @date 2007-09-13
+ * <p/>
+ * Original notes:
  */
 /* Last updates (M.Clerc)
  2006-02-21 Added a repelling option (see variable "repel" in Tribes). Not very convincing
@@ -228,7 +228,7 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
 
         population.clear();
         population.addAll(swarm.toPopulation());
-        population.init();	// necessary to allow for multi-runs
+        population.init();    // necessary to allow for multi-runs
 
         if (m_Show) {
             show();
@@ -264,7 +264,7 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
     public void optimize() {
 
         int initOption = 0;
-        if (iter == 0) { 	// first iteration!
+        if (iter == 0) {    // first iteration!
             if (initRange == null) {
                 rangeInitType = 0;
             } else {
@@ -530,7 +530,7 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
      * evalF; if (evalF < pb.maxEval) { temp[2] = 1; } else { temp[2] = 0; }
      *
      * return temp; }
-	 *
+     *
      */
     /**
      * Population will be hidden.
@@ -592,7 +592,7 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
         // return population and memories?
         Population all = (Population) population.clone();
         List<TribesPosition> mems = swarm.collectMem();
-        for (Iterator<TribesPosition> iterator = mems.iterator(); iterator.hasNext();) {
+        for (Iterator<TribesPosition> iterator = mems.iterator(); iterator.hasNext(); ) {
             TribesPosition tp = iterator.next();
             all.add(positionToExplorer(tp));
         }
@@ -728,6 +728,7 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
 //	public void setUseAnchor(boolean useAnchor) {
 //		this.useAnchor = useAnchor;
 //	}
+
     /**
      * @return the m_Show
      */

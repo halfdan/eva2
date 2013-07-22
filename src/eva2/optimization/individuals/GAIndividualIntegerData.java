@@ -8,9 +8,11 @@ import eva2.optimization.operator.mutation.InterfaceMutation;
 import eva2.optimization.operator.mutation.MutateGANBit;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
+
 import java.util.BitSet;
 
-/** This individual uses a binary genotype to code for binary values using
+/**
+ * This individual uses a binary genotype to code for binary values using
  * two alternative encodings.
  * Created by IntelliJ IDEA.
  * User: streiche
@@ -20,50 +22,50 @@ import java.util.BitSet;
  */
 public class GAIndividualIntegerData extends AbstractEAIndividual implements InterfaceGAIndividual, InterfaceDataTypeInteger, java.io.Serializable {
 
-    private int[]                       m_Phenotype;
-    private int[][]                     m_Range;
-    protected BitSet                    m_Genotype;
-    protected int[]                     m_CodingLenghts;
-    private InterfaceGAIntegerCoding    m_IntegerCoding          = new GAStandardCodingInteger();
+    private int[] m_Phenotype;
+    private int[][] m_Range;
+    protected BitSet m_Genotype;
+    protected int[] m_CodingLenghts;
+    private InterfaceGAIntegerCoding m_IntegerCoding = new GAStandardCodingInteger();
 
     public GAIndividualIntegerData() {
         this.mutationProbability = 0.2;
         this.mutationOperator = new MutateGANBit();
         this.crossoverProbability = 0.7;
         this.crossoverOperator = new CrossoverGAGINPoint();
-        this.m_Range                = new int[1][2];
-        this.m_CodingLenghts        = new int[1];
-        this.m_CodingLenghts[0]     = 3;
-        this.m_Range[0][0]          = 0;
-        this.m_Range[0][1]          = 7;
-        this.m_Genotype             = new BitSet();
+        this.m_Range = new int[1][2];
+        this.m_CodingLenghts = new int[1];
+        this.m_CodingLenghts[0] = 3;
+        this.m_Range[0][0] = 0;
+        this.m_Range[0][1] = 7;
+        this.m_Genotype = new BitSet();
     }
 
     public GAIndividualIntegerData(GAIndividualIntegerData individual) {
         if (individual.m_Phenotype != null) {
-            this.m_Phenotype            = new int[individual.m_Phenotype.length];
+            this.m_Phenotype = new int[individual.m_Phenotype.length];
             System.arraycopy(individual.m_Phenotype, 0, this.m_Phenotype, 0, this.m_Phenotype.length);
         }
-        this.m_Genotype         = (BitSet) individual.m_Genotype.clone();
-        this.m_Range            = new int[individual.m_Range.length][2];
-        this.m_CodingLenghts    = new int[individual.m_CodingLenghts.length];
+        this.m_Genotype = (BitSet) individual.m_Genotype.clone();
+        this.m_Range = new int[individual.m_Range.length][2];
+        this.m_CodingLenghts = new int[individual.m_CodingLenghts.length];
         for (int i = 0; i < this.m_Range.length; i++) {
             this.m_CodingLenghts[i] = individual.m_CodingLenghts[i];
-            this.m_Range[i][0]      = individual.m_Range[i][0];
-            this.m_Range[i][1]      = individual.m_Range[i][1];
+            this.m_Range[i][0] = individual.m_Range[i][0];
+            this.m_Range[i][1] = individual.m_Range[i][1];
         }
 
         // cloning the members of AbstractEAIndividual
         this.age = individual.age;
         this.crossoverOperator = individual.crossoverOperator;
         this.crossoverProbability = individual.crossoverProbability;
-        this.mutationOperator = (InterfaceMutation)individual.mutationOperator.clone();
+        this.mutationOperator = (InterfaceMutation) individual.mutationOperator.clone();
         this.mutationProbability = individual.mutationProbability;
         this.selectionProbability = new double[individual.selectionProbability.length];
         for (int i = 0; i < this.selectionProbability.length; i++) {
             this.selectionProbability[i] = individual.selectionProbability[i];
         }
-        this.m_IntegerCoding            = individual.m_IntegerCoding;
+        this.m_IntegerCoding = individual.m_IntegerCoding;
         this.fitness = new double[individual.fitness.length];
         for (int i = 0; i < this.fitness.length; i++) {
             this.fitness[i] = individual.fitness[i];
@@ -77,8 +79,10 @@ public class GAIndividualIntegerData extends AbstractEAIndividual implements Int
     }
 
 
-    /** This method checks on equality regarding genotypic equality
-     * @param individual      The individual to compare to.
+    /**
+     * This method checks on equality regarding genotypic equality
+     *
+     * @param individual The individual to compare to.
      * @return boolean if equal true else false.
      */
     @Override
@@ -112,33 +116,37 @@ public class GAIndividualIntegerData extends AbstractEAIndividual implements Int
 /************************************************************************************
  * InterfaceDataTypeInteger methods
  */
-    /** This method allows you to request a certain amount of double data
-     * @param length    The lenght of the double[] that is to be optimized
+    /**
+     * This method allows you to request a certain amount of double data
+     *
+     * @param length The lenght of the double[] that is to be optimized
      */
     @Override
-    public void setIntegerDataLength (int length) {
-        int[]        newDesPa = new int[length];
-        int[][]      newRange = new int[length][2];
+    public void setIntegerDataLength(int length) {
+        int[] newDesPa = new int[length];
+        int[][] newRange = new int[length][2];
 
         // copy the old values for the decision parameters and the range
         for (int i = 0; ((i < newDesPa.length) && (i < this.m_Range.length)); i++) {
-            newRange[i][0]  = this.m_Range[i][0];
-            newRange[i][1]  = this.m_Range[i][1];
+            newRange[i][0] = this.m_Range[i][0];
+            newRange[i][1] = this.m_Range[i][1];
         }
 
         // if the new length is bigger than the last value fills the extra elements
         for (int i = this.m_Range.length; (i < newDesPa.length); i++) {
-            newRange[i][0]  = this.m_Range[this.m_Range.length-1][0];
-            newRange[i][1]  = this.m_Range[this.m_Range.length-1][1];
+            newRange[i][0] = this.m_Range[this.m_Range.length - 1][0];
+            newRange[i][1] = this.m_Range[this.m_Range.length - 1][1];
         }
-        this.m_Range            = newRange;
-        this.m_CodingLenghts    = new int[this.m_Range.length];
+        this.m_Range = newRange;
+        this.m_CodingLenghts = new int[this.m_Range.length];
         for (int i = 0; i < this.m_Range.length; i++) {
             this.m_CodingLenghts[i] = this.m_IntegerCoding.calculateNecessaryBits(this.m_Range[i]);
         }
     }
 
-    /** This method returns the length of the double data set
+    /**
+     * This method returns the length of the double data set
+     *
      * @return The number of bits stored
      */
     @Override
@@ -146,10 +154,12 @@ public class GAIndividualIntegerData extends AbstractEAIndividual implements Int
         return this.m_Range.length;
     }
 
-    /** This method will set the range of the integer attributes. If range.length
+    /**
+     * This method will set the range of the integer attributes. If range.length
      * does not equal doubledata.length only range[i] will be used to set all
      * ranges.
-     * @param range     The new range for the double data.
+     *
+     * @param range The new range for the double data.
      */
     @Override
     public void SetIntRange(int[][] range) {
@@ -166,31 +176,33 @@ public class GAIndividualIntegerData extends AbstractEAIndividual implements Int
 
     /**
      * Set lower and upper integer range in all dimensions.
-     * 
+     *
      * @param lower
      * @param upper
      */
     public void SetIntRange(int lower, int upper) {
-    	for (int i=0; i<m_Range.length; i++) {
-    		SetIntRange(i, lower, upper);
+        for (int i = 0; i < m_Range.length; i++) {
+            SetIntRange(i, lower, upper);
             m_CodingLenghts[i] = m_IntegerCoding.calculateNecessaryBits(m_Range[i]);
-    	}
+        }
     }
-    
+
     /**
      * Set lower and upper integer range in a specific dimension.
-     * 
+     *
      * @param index
      * @param lower
      * @param upper
      */
     public void SetIntRange(int index, int lower, int upper) {
-   		m_Range[index][0] = lower;
-   		m_Range[index][1] = upper;
-   		m_CodingLenghts[index] = m_IntegerCoding.calculateNecessaryBits(m_Range[index]);
+        m_Range[index][0] = lower;
+        m_Range[index][1] = upper;
+        m_CodingLenghts[index] = m_IntegerCoding.calculateNecessaryBits(m_Range[index]);
     }
-    
-    /** This method will return the range for all double attributes.
+
+    /**
+     * This method will return the range for all double attributes.
+     *
      * @return The range array.
      */
     @Override
@@ -198,7 +210,9 @@ public class GAIndividualIntegerData extends AbstractEAIndividual implements Int
         return this.m_Range;
     }
 
-    /** This method allows you to read the double data
+    /**
+     * This method allows you to read the double data
+     *
      * @return BitSet representing the double data.
      */
     @Override
@@ -215,8 +229,10 @@ public class GAIndividualIntegerData extends AbstractEAIndividual implements Int
         return this.m_Phenotype;
     }
 
-    /** This method allows you to read the int data without
+    /**
+     * This method allows you to read the int data without
      * an update from the genotype
+     *
      * @return int[] representing the int data.
      */
     @Override
@@ -224,45 +240,51 @@ public class GAIndividualIntegerData extends AbstractEAIndividual implements Int
         return this.m_Phenotype;
     }
 
-    /** This method allows you to set the double data.
-     * @param doubleData    The new double data.
+    /**
+     * This method allows you to set the double data.
+     *
+     * @param doubleData The new double data.
      */
     @Override
     public void SetIntPhenotype(int[] doubleData) {
         this.m_Phenotype = doubleData;
     }
 
-    /** This method allows you to set the double data, this can be used for
+    /**
+     * This method allows you to set the double data, this can be used for
      * memetic algorithms.
-     * @param doubleData    The new double data.
+     *
+     * @param doubleData The new double data.
      */
     @Override
     public void SetIntGenotype(int[] doubleData) {
         this.SetIntPhenotype(doubleData);
         if (doubleData != null) {
-	        int[] locus = new int[2];
-	        locus[0] = 0;
-	        locus[1] = 0;
-	        for (int i = 0; i < doubleData.length; i++) {
-	            locus[0] += locus[1];
-	            locus[1] = this.m_CodingLenghts[i];
-	            this.m_IntegerCoding.codeValue(doubleData[i], this.m_Range[i], this.m_Genotype, locus);
-	        }
+            int[] locus = new int[2];
+            locus[0] = 0;
+            locus[1] = 0;
+            for (int i = 0; i < doubleData.length; i++) {
+                locus[0] += locus[1];
+                locus[1] = this.m_CodingLenghts[i];
+                this.m_IntegerCoding.codeValue(doubleData[i], this.m_Range[i], this.m_Genotype, locus);
+            }
         }
     }
 
 /************************************************************************************
  * AbstractEAIndividual methods
  */
-    /** This method will init the individual with a given value for the
+    /**
+     * This method will init the individual with a given value for the
      * phenotype.
-     * @param obj   The initial value for the phenotype
-     * @param opt   The optimization problem that is to be solved.
+     *
+     * @param obj The initial value for the phenotype
+     * @param opt The optimization problem that is to be solved.
      */
     @Override
     public void initByValue(Object obj, InterfaceOptimizationProblem opt) {
         if (obj instanceof int[]) {
-            int[]  bs = (int[]) obj;
+            int[] bs = (int[]) obj;
             if (bs.length != this.m_Range.length) {
                 System.out.println("Init value and requested length doesn't match!");
             }
@@ -275,15 +297,17 @@ public class GAIndividualIntegerData extends AbstractEAIndividual implements Int
         this.crossoverOperator.init(this, opt);
     }
 
-    /** This method will return a string description of the GAIndividal
+    /**
+     * This method will return a string description of the GAIndividal
      * noteably the Genotype.
+     *
      * @return A descriptive string
      */
     @Override
     public String getStringRepresentation() {
         String result = "";
         result += "GAIndividual coding int: (";
-      result += "Fitness {";
+        result += "Fitness {";
         for (int i = 0; i < this.fitness.length; i++) {
             result += this.fitness[i] + ";";
         }
@@ -293,14 +317,14 @@ public class GAIndividualIntegerData extends AbstractEAIndividual implements Int
         }
         result += "})\n Value: ";
         result += "[";
-        int[]   d = this.getIntegerData();
+        int[] d = this.getIntegerData();
         for (int i = 0; i < d.length; i++) {
             result += d[i] + "; ";
         }
         result += "]\n";
         result += "CodingRange:  [";
         for (int i = 0; i < this.m_Range.length; i++) {
-            result += "("+this.m_Range[i][0]+"; "+this.m_Range[i][1]+"); ";
+            result += "(" + this.m_Range[i][0] + "; " + this.m_Range[i][1] + "); ";
         }
         result += "]\n";
         result += "CodingLength: [";
@@ -316,8 +340,7 @@ public class GAIndividualIntegerData extends AbstractEAIndividual implements Int
         for (int i = 0; i < overallLength; i++) {
             if (this.m_Genotype.get(i)) {
                 result += "1";
-            }
-            else {
+            } else {
                 result += "0";
             }
         }
@@ -329,7 +352,9 @@ public class GAIndividualIntegerData extends AbstractEAIndividual implements Int
  * InterfaceGAIndividual methods
  */
 
-    /** This method allows you to read the binary data
+    /**
+     * This method allows you to read the binary data
+     *
      * @return BitSet representing the binary data.
      */
     @Override
@@ -337,18 +362,22 @@ public class GAIndividualIntegerData extends AbstractEAIndividual implements Int
         return this.m_Genotype;
     }
 
-    /** This method allows you to set the binary data, this can be used for
+    /**
+     * This method allows you to set the binary data, this can be used for
      * memetic algorithms.
-     * @param binaryData    The new binary data.
+     *
+     * @param binaryData The new binary data.
      */
     @Override
     public void SetBGenotype(BitSet binaryData) {
         this.m_Genotype = binaryData;
     }
 
-    /** This method allows the user to read the length of the genotype.
+    /**
+     * This method allows the user to read the length of the genotype.
      * This may be necessary since BitSet.lenght only returns the index
      * of the last significat bit.
+     *
      * @return The length of the genotype.
      */
     @Override
@@ -369,14 +398,14 @@ public class GAIndividualIntegerData extends AbstractEAIndividual implements Int
         for (int i = 0; i < overallLength; i++) {
             if (RNG.flipCoin(0.5)) {
                 this.m_Genotype.set(i);
-            }
-            else {
+            } else {
                 this.m_Genotype.clear(i);
             }
         }
     }
 
-    /** This method performs a simple one point mutation in the genotype
+    /**
+     * This method performs a simple one point mutation in the genotype
      */
     @Override
     public void defaultMutate() {
@@ -387,8 +416,7 @@ public class GAIndividualIntegerData extends AbstractEAIndividual implements Int
         int mutationIndex = RNG.randomInt(0, overallLength);
         if (this.m_Genotype.get(mutationIndex)) {
             this.m_Genotype.clear(mutationIndex);
-        }
-        else {
+        } else {
             this.m_Genotype.set(mutationIndex);
         }
     }
@@ -396,43 +424,45 @@ public class GAIndividualIntegerData extends AbstractEAIndividual implements Int
     public static void main(String[] args) {
         System.out.println("Test this stuff!");
         GAIndividualIntegerData indy = new GAIndividualIntegerData();
-        int     dimension = 10;
+        int dimension = 10;
         int[][] range = new int[dimension][2];
         for (int i = 0; i < dimension; i++) {
             range[i][0] = 0;
-            range[i][1] = i+1;
+            range[i][1] = i + 1;
         }
         indy.setIntegerDataLength(dimension);
         indy.SetIntRange(range);
         indy.defaultInit(null);
-        System.out.println(""+indy.getStringRepresentation());
+        System.out.println("" + indy.getStringRepresentation());
         System.out.println("System.exit(0)");
         int[] data = indy.getIntegerData();
         String tmp = "Before {";
         for (int i = 0; i < data.length; i++) {
-            tmp += data[i] +"; ";
+            tmp += data[i] + "; ";
         }
-        System.out.println(tmp+"}");
+        System.out.println(tmp + "}");
         tmp = "Setting {";
         for (int i = 0; i < data.length; i++) {
             data[i] = RNG.randomInt(range[i][0], range[i][1]);
             tmp += data[i] + "; ";
         }
-        System.out.println(tmp+"}");
+        System.out.println(tmp + "}");
         indy.SetIntGenotype(data);
-        System.out.println(""+indy.getStringRepresentation());
+        System.out.println("" + indy.getStringRepresentation());
         data = indy.getIntegerData();
         tmp = "After {";
         for (int i = 0; i < data.length; i++) {
-            tmp += data[i] +"; ";
+            tmp += data[i] + "; ";
         }
-        System.out.println(tmp+"}");
+        System.out.println(tmp + "}");
     }
 /**********************************************************************************************************************
  * These are for GUI
  */
-    /** This method allows the CommonJavaObjectEditorPanel to read the
+    /**
+     * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
+     *
      * @return The name.
      */
     @Override
@@ -440,23 +470,29 @@ public class GAIndividualIntegerData extends AbstractEAIndividual implements Int
         return "GA individual";
     }
 
-    /** This method returns a global info string
+    /**
+     * This method returns a global info string
+     *
      * @return description
      */
     public static String globalInfo() {
         return "This is a GA individual suited to optimize int values.";
     }
 
-    /** This method allows you to set the Coding that is to be used, currently either standard binary
+    /**
+     * This method allows you to set the Coding that is to be used, currently either standard binary
      * coding or Gray coding.
+     *
      * @param coding The used genotype coding method
      */
     public void setGACoding(InterfaceGAIntegerCoding coding) {
         this.m_IntegerCoding = coding;
     }
+
     public InterfaceGAIntegerCoding getGACoding() {
         return this.m_IntegerCoding;
     }
+
     public String gAIntegerCodingTipText() {
         return "Choose the coding to use.";
     }

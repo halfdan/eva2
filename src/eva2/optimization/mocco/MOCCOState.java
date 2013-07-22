@@ -11,6 +11,7 @@ import eva2.optimization.problems.InterfaceOptimizationObjective;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.optimization.strategies.MultiObjectiveEA;
+
 import java.awt.Color;
 import java.util.ArrayList;
 
@@ -23,24 +24,24 @@ import java.util.ArrayList;
  */
 public class MOCCOState {
 
-    public transient boolean                        isVisible           = false;
-    public InterfaceOptimizer                       m_Optimizer         = new MultiObjectiveEA();
-    public InterfaceOptimizer                       m_BackupOptimizer;
-    public InterfaceTerminator                      m_Terminator        = new EvaluationTerminator();
-    public InterfaceOptimizationProblem             m_OriginalProblem   = null;
-    public InterfaceOptimizationProblem             m_CurrentProblem;
-    public InterfaceOptimizationProblem             m_BackupProblem;
-    public int                                      m_InitialPopulationSize = 50;
+    public transient boolean isVisible = false;
+    public InterfaceOptimizer m_Optimizer = new MultiObjectiveEA();
+    public InterfaceOptimizer m_BackupOptimizer;
+    public InterfaceTerminator m_Terminator = new EvaluationTerminator();
+    public InterfaceOptimizationProblem m_OriginalProblem = null;
+    public InterfaceOptimizationProblem m_CurrentProblem;
+    public InterfaceOptimizationProblem m_BackupProblem;
+    public int m_InitialPopulationSize = 50;
     // the population history
-    public Population                               m_ParetoFront;
-    public Population[]                             m_PopulationHistory = new Population[0];
-    public boolean[]                                m_Show;
-    public boolean[]                                m_Use;
-    public Color[]                                  m_Color;
+    public Population m_ParetoFront;
+    public Population[] m_PopulationHistory = new Population[0];
+    public boolean[] m_Show;
+    public boolean[] m_Use;
+    public Color[] m_Color;
     // the fitness cache for fast plotting
-    public ArrayList                                m_FitnessCache      = new ArrayList();
-    public ArrayList                                m_ObjectiveCache    = new ArrayList();
-    public ArrayList                                m_ConstraintCache   = new ArrayList();
+    public ArrayList m_FitnessCache = new ArrayList();
+    public ArrayList m_ObjectiveCache = new ArrayList();
+    public ArrayList m_ConstraintCache = new ArrayList();
 
     public MOCCOState() {
     }
@@ -61,13 +62,13 @@ public class MOCCOState {
     }
 
     public void makeBackup() {
-        this.m_BackupProblem    = (InterfaceOptimizationProblem)this.m_CurrentProblem.clone();
-        this.m_BackupOptimizer  = (InterfaceOptimizer)this.m_Optimizer.clone();
+        this.m_BackupProblem = (InterfaceOptimizationProblem) this.m_CurrentProblem.clone();
+        this.m_BackupOptimizer = (InterfaceOptimizer) this.m_Optimizer.clone();
         this.m_BackupOptimizer.setProblem(null);
     }
 
     public void addPopulation2History(Population pop) {
-        InterfaceOptimizationObjective[]    tmpObj  = null;
+        InterfaceOptimizationObjective[] tmpObj = null;
 
         if (this.m_Show == null) {
             this.m_Use = new boolean[1];
@@ -77,46 +78,46 @@ public class MOCCOState {
             this.m_Color = new Color[1];
             this.m_Color[0] = this.getColor4Index(0);
         } else {
-            boolean[]       newUse  = new boolean[this.m_Show.length +1];
-            boolean[]       newShow = new boolean[this.m_Show.length +1];
-            Color[]         newColor = new Color[this.m_Show.length +1];
+            boolean[] newUse = new boolean[this.m_Show.length + 1];
+            boolean[] newShow = new boolean[this.m_Show.length + 1];
+            Color[] newColor = new Color[this.m_Show.length + 1];
             for (int i = 0; i < this.m_Show.length; i++) {
-                newUse[i]   = this.m_Use[i];
-                newShow[i]  = this.m_Show[i];
+                newUse[i] = this.m_Use[i];
+                newShow[i] = this.m_Show[i];
                 newColor[i] = this.m_Color[i];
             }
-            newUse[m_Show.length]   = true;
-            newShow[m_Show.length]  = true;
+            newUse[m_Show.length] = true;
+            newShow[m_Show.length] = true;
             newColor[m_Show.length] = this.getColor4Index(this.m_PopulationHistory.length);
-            this.m_Use              = newUse;
-            this.m_Show             = newShow;
-            this.m_Color            = newColor;
+            this.m_Use = newUse;
+            this.m_Show = newShow;
+            this.m_Color = newColor;
         }
 
-        Population[]    newPop  = new Population[this.m_PopulationHistory.length +1];
+        Population[] newPop = new Population[this.m_PopulationHistory.length + 1];
         for (int i = 0; i < this.m_PopulationHistory.length; i++) {
-            newPop[i]   = this.m_PopulationHistory[i];
+            newPop[i] = this.m_PopulationHistory[i];
         }
-        newPop[newPop.length-1]     = (Population)pop.clone();
-        newPop[newPop.length-1].addPopulation(newPop[newPop.length-1].getArchive());
-        newPop[newPop.length-1].SetArchive(null);
-        this.m_PopulationHistory    = newPop;
+        newPop[newPop.length - 1] = (Population) pop.clone();
+        newPop[newPop.length - 1].addPopulation(newPop[newPop.length - 1].getArchive());
+        newPop[newPop.length - 1].SetArchive(null);
+        this.m_PopulationHistory = newPop;
         ArrayList fitness = new ArrayList();
         ArrayList objectives = new ArrayList();
         ArrayList constraint = new ArrayList();
         if (this.m_CurrentProblem instanceof InterfaceMultiObjectiveDeNovoProblem) {
-            tmpObj = ((InterfaceMultiObjectiveDeNovoProblem)this.m_CurrentProblem).getProblemObjectives();
+            tmpObj = ((InterfaceMultiObjectiveDeNovoProblem) this.m_CurrentProblem).getProblemObjectives();
         }
-        for (int j = 0; j < newPop[newPop.length-1].size(); j++) {
+        for (int j = 0; j < newPop[newPop.length - 1].size(); j++) {
             if (tmpObj != null) {
                 double[] tmoF = new double[tmpObj.length];
                 for (int k = 0; k < tmpObj.length; k++) {
-                    tmoF[k] = ((Double)((AbstractEAIndividual)newPop[newPop.length-1].get(j)).getData(tmpObj[k].getIdentName())).doubleValue();
+                    tmoF[k] = ((Double) ((AbstractEAIndividual) newPop[newPop.length - 1].get(j)).getData(tmpObj[k].getIdentName())).doubleValue();
                 }
                 objectives.add(tmoF);
             }
-            fitness.add(((AbstractEAIndividual)newPop[newPop.length-1].get(j)).getFitness());
-            constraint.add(new Double(((AbstractEAIndividual)newPop[newPop.length-1].get(j)).getConstraintViolation()));
+            fitness.add(((AbstractEAIndividual) newPop[newPop.length - 1].get(j)).getFitness());
+            constraint.add(new Double(((AbstractEAIndividual) newPop[newPop.length - 1].get(j)).getConstraintViolation()));
         }
         if (this.m_ObjectiveCache != null) {
             this.m_ObjectiveCache.add(objectives);
@@ -125,18 +126,26 @@ public class MOCCOState {
         this.m_ConstraintCache.add(constraint);
     }
 
-    /** Simple method to choose a color
-     * @param i     The index to choose a color for
+    /**
+     * Simple method to choose a color
+     *
+     * @param i The index to choose a color for
      * @return A nice color...
      */
     public Color getColor4Index(int i) {
-        switch (i%6) {
-            case 0: return Color.RED;
-            case 1: return Color.BLUE;
-            case 2: return Color.GREEN;
-            case 3: return Color.CYAN;
-            case 4: return Color.MAGENTA;
-            case 5: return Color.ORANGE;
+        switch (i % 6) {
+            case 0:
+                return Color.RED;
+            case 1:
+                return Color.BLUE;
+            case 2:
+                return Color.GREEN;
+            case 3:
+                return Color.CYAN;
+            case 4:
+                return Color.MAGENTA;
+            case 5:
+                return Color.ORANGE;
         }
         return Color.RED;
     }
@@ -149,7 +158,9 @@ public class MOCCOState {
         this.makeFitnessCache(false);
     }
 
-    /** This method return the currently selected populations
+    /**
+     * This method return the currently selected populations
+     *
      * @return the selected populations
      */
     public Population getSelectedPopulations() {
@@ -163,8 +174,10 @@ public class MOCCOState {
         return result;
     }
 
-    /** This method establishes a fitness cache to give the plot methods
+    /**
+     * This method establishes a fitness cache to give the plot methods
      * easier and faster access to the data
+     *
      * @param reevaluate
      */
     public void makeFitnessCache(boolean reevaluate) {
@@ -184,17 +197,17 @@ public class MOCCOState {
             }
             this.m_CurrentProblem.evaluate(pop);
         }
-        this.m_FitnessCache     = new ArrayList();
-        this.m_ObjectiveCache   = null;
-        this.m_ConstraintCache  = new ArrayList();
+        this.m_FitnessCache = new ArrayList();
+        this.m_ObjectiveCache = null;
+        this.m_ConstraintCache = new ArrayList();
         if (this.m_CurrentProblem instanceof InterfaceMultiObjectiveDeNovoProblem) {
-            this.m_ObjectiveCache   = new ArrayList();
-            tmpObj = ((InterfaceMultiObjectiveDeNovoProblem)this.m_CurrentProblem).getProblemObjectives();
+            this.m_ObjectiveCache = new ArrayList();
+            tmpObj = ((InterfaceMultiObjectiveDeNovoProblem) this.m_CurrentProblem).getProblemObjectives();
         }
         this.m_ParetoFront = new Population();
         for (int i = 0; i < this.m_PopulationHistory.length; i++) {
             if (reevaluate) {
-                ((AbstractMultiObjectiveOptimizationProblem)this.m_CurrentProblem).resetParetoFront();
+                ((AbstractMultiObjectiveOptimizationProblem) this.m_CurrentProblem).resetParetoFront();
                 this.m_CurrentProblem.evaluate(this.m_PopulationHistory[i]);
             }
             this.m_ParetoFront.addPopulation(this.m_PopulationHistory[i]);
@@ -206,20 +219,20 @@ public class MOCCOState {
                     double[] tmoF = new double[tmpObj.length];
                     for (int k = 0; k < tmpObj.length; k++) {
                         if (this.m_PopulationHistory[i].get(j) == null) {
-                            System.out.println("Individual "+i+" == null!");
+                            System.out.println("Individual " + i + " == null!");
                         }
                         if (tmpObj[k] == null) {
-                            System.out.println("Objective "+k+" == null!");
+                            System.out.println("Objective " + k + " == null!");
                         }
-                        if (((AbstractEAIndividual)this.m_PopulationHistory[i].get(j)).getData(tmpObj[k].getIdentName()) == null) {
-                            System.out.println("User Data "+k+" "+tmpObj[k].getIdentName()+" == null!");
+                        if (((AbstractEAIndividual) this.m_PopulationHistory[i].get(j)).getData(tmpObj[k].getIdentName()) == null) {
+                            System.out.println("User Data " + k + " " + tmpObj[k].getIdentName() + " == null!");
                         }
-                        tmoF[k] = ((Double)((AbstractEAIndividual)this.m_PopulationHistory[i].get(j)).getData(tmpObj[k].getIdentName())).doubleValue();
+                        tmoF[k] = ((Double) ((AbstractEAIndividual) this.m_PopulationHistory[i].get(j)).getData(tmpObj[k].getIdentName())).doubleValue();
                     }
                     objectives.add(tmoF);
                 }
-                fitness.add(((AbstractEAIndividual)this.m_PopulationHistory[i].get(j)).getFitness());
-                constraint.add(new Double(((AbstractEAIndividual)this.m_PopulationHistory[i].get(j)).getConstraintViolation()));
+                fitness.add(((AbstractEAIndividual) this.m_PopulationHistory[i].get(j)).getFitness());
+                constraint.add(new Double(((AbstractEAIndividual) this.m_PopulationHistory[i].get(j)).getConstraintViolation()));
             }
             if (this.m_ObjectiveCache != null) {
                 this.m_ObjectiveCache.add(objectives);

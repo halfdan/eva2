@@ -9,10 +9,12 @@ package eva2.optimization.operator.terminators;
  *            $Date: 2007-12-05 11:29:32 +0100 (Wed, 05 Dec 2007) $
  *            $Author: mkron $
  */
+
 import eva2.optimization.go.InterfaceTerminator;
 import eva2.optimization.population.PopulationInterface;
 import eva2.optimization.population.InterfaceSolutionSet;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
+
 import java.io.Serializable;
 
 /**

@@ -13,18 +13,18 @@ import java.awt.*;
  */
 public class Chart2DDPointIconCross implements DPointIcon {
 
-    private Color       m_Color;
+    private Color m_Color;
 
     /**
      * this method has to be overridden to paint the icon. The point itself lies
      * at coordinates (0, 0)
      */
     @Override
-    public void paint( Graphics g ){
+    public void paint(Graphics g) {
         Color prev = g.getColor();
         g.setColor(this.m_Color);
-        g.drawLine(-1, 1, 1,-1);
-        g.drawLine(-1,-1, 1, 1);
+        g.drawLine(-1, 1, 1, -1);
+        g.drawLine(-1, -1, 1, 1);
         g.setColor(prev);
     }
 

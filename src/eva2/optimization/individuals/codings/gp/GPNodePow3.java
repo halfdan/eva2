@@ -2,7 +2,8 @@ package eva2.optimization.individuals.codings.gp;
 
 import eva2.optimization.problems.InterfaceProgramProblem;
 
-/** This argument puts the argument to the power of three.
+/**
+ * This argument puts the argument to the power of three.
  * Created by IntelliJ IDEA.
  * User: streiche
  * Date: 30.09.2003
@@ -13,11 +14,14 @@ public class GPNodePow3 extends AbstractGPNode implements java.io.Serializable {
 
     public GPNodePow3() {
     }
+
     public GPNodePow3(GPNodePow3 node) {
-    	this.cloneMembers(node);
+        this.cloneMembers(node);
     }
 
-    /** This method will be used to identify the node in the GPAreaEditor
+    /**
+     * This method will be used to identify the node in the GPAreaEditor
+     *
      * @return The name.
      */
     @Override
@@ -25,7 +29,9 @@ public class GPNodePow3 extends AbstractGPNode implements java.io.Serializable {
         return "Pow3";
     }
 
-    /** This method allows you to clone the Nodes
+    /**
+     * This method allows you to clone the Nodes
+     *
      * @return the clone
      */
     @Override
@@ -33,7 +39,9 @@ public class GPNodePow3 extends AbstractGPNode implements java.io.Serializable {
         return (Object) new GPNodePow3(this);
     }
 
-    /** This method will return the current arity
+    /**
+     * This method will return the current arity
+     *
      * @return Arity.
      */
     @Override
@@ -41,7 +49,9 @@ public class GPNodePow3 extends AbstractGPNode implements java.io.Serializable {
         return 1;
     }
 
-    /** This method will evaluate a given node
+    /**
+     * This method will evaluate a given node
+     *
      * @param environment
      */
     @Override
@@ -51,14 +61,14 @@ public class GPNodePow3 extends AbstractGPNode implements java.io.Serializable {
 
         tmpObj = this.m_Nodes[0].evaluate(environment);
         if (tmpObj instanceof Double) {
-            result = Math.pow(((Double)tmpObj).doubleValue(), 3);
+            result = Math.pow(((Double) tmpObj).doubleValue(), 3);
         }
         return new Double(result);
     }
 
     @Override
     public String getOpIdentifier() {
-    	return "pow3";
+        return "pow3";
     }
 //    /** This method returns a string representation
 //     * @return string

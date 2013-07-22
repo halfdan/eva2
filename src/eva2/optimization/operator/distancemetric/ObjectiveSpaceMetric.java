@@ -2,7 +2,8 @@ package eva2.optimization.operator.distancemetric;
 
 import eva2.optimization.individuals.AbstractEAIndividual;
 
-/** Objective space metric suited for multi-objective optimization.
+/**
+ * Objective space metric suited for multi-objective optimization.
  * Created by IntelliJ IDEA.
  * User: streiche
  * Date: 04.08.2003
@@ -22,17 +23,19 @@ public class ObjectiveSpaceMetric implements InterfaceDistanceMetric, java.io.Se
         return (Object) new ObjectiveSpaceMetric(this);
     }
 
-    /** This method allows you to compute the distance between two individuals.
+    /**
+     * This method allows you to compute the distance between two individuals.
      * Depending on the metric this method may reject some types of individuals.
      * The default return value would be 1.0.
-     * @param indy1     The first individual.
-     * @param indy2     The second individual.
+     *
+     * @param indy1 The first individual.
+     * @param indy2 The second individual.
      * @return double
      */
     @Override
     public double distance(AbstractEAIndividual indy1, AbstractEAIndividual indy2) {
-        double[]    dIndy1, dIndy2;
-        double      result = 0;
+        double[] dIndy1, dIndy2;
+        double result = 0;
 
         dIndy1 = indy1.getFitness();
         dIndy2 = indy2.getFitness();
@@ -45,13 +48,18 @@ public class ObjectiveSpaceMetric implements InterfaceDistanceMetric, java.io.Se
 /**********************************************************************************************************************
  * These are for GUI
  */
-    /** This method returns a global info string
+    /**
+     * This method returns a global info string
+     *
      * @return description
      */
     public static String globalInfo() {
         return "The objective space metric calculates euclidian distances on the fitness vectors.";
     }
-    /** This method will return a naming String
+
+    /**
+     * This method will return a naming String
+     *
      * @return The name of the algorithm
      */
     public String getName() {

@@ -16,6 +16,7 @@ import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.tools.Pair;
 import eva2.tools.math.BayNet;
 import eva2.tools.math.RNG;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -32,18 +33,17 @@ import java.util.logging.Logger;
 
 /**
  * Basic implementation of the Bayesian Optimization Algorithm
- *
+ * <p/>
  * Martin Pelikan, David E. Goldberg and Erick Cantu-Paz: 'BOA: The Bayesian
  * Optimization Algorithm' the works by Martin Pelikan and David E. Goldberg.
  * Genetic and Evolutionary Computation Conference (GECCO-99), pp. 525-532
  * (1999)
  *
  * @author seitz
- *
  */
 public class BOA implements InterfaceOptimizer, java.io.Serializable {
 
-//	private static boolean TRACE = false;
+    //	private static boolean TRACE = false;
     private static final Logger LOGGER = Logger.getLogger(BOA.class.getName());
     transient private InterfacePopulationChangedEventListener m_Listener = null;
     private String m_Identifier = "BOA";
@@ -73,9 +73,9 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
     }
 
     public BOA(int numberOfParents, int popSize, BOAScoringMethods method,
-            double learningSetRatio, double resampleRatio, String outputFolder,
-            double upperProbLimit, double lowerProbLimit, boolean printNetworks,
-            boolean printEdgeRate, boolean printMetrics, boolean printTimestamps) {
+               double learningSetRatio, double resampleRatio, String outputFolder,
+               double upperProbLimit, double lowerProbLimit, boolean printNetworks,
+               boolean printEdgeRate, boolean printMetrics, boolean printTimestamps) {
         this.numberOfParents = numberOfParents;
         this.PopSize = popSize;
         this.scoringMethod = method;
@@ -187,7 +187,7 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
         } else {
             throw new RuntimeException(
                     "Unable to get binary representation for "
-                    + indy.getClass());
+                            + indy.getClass());
         }
     }
 
@@ -294,7 +294,7 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
                                     // add the edge to the list of possible new edges
                                     bestNetworks
                                             .add(new Pair<Integer, Integer>(i,
-                                            j));
+                                                    j));
                                     // if we have a better score
                                 } else {
                                     // delete the current possible edges
@@ -302,7 +302,7 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
                                     // add the edge to the list fo possible new edges
                                     bestNetworks
                                             .add(new Pair<Integer, Integer>(i,
-                                            j));
+                                                    j));
                                     // adapt the score
                                     score = tmpScore;
                                     // we could improve the network
@@ -716,7 +716,7 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
         return new String[]{"learningRatio", "resamplingRatio"};
     }
 
-//	public boolean isPrintExtraOutput() {
+    //	public boolean isPrintExtraOutput() {
 //		return this.printExtraOutput;
 //	}
 //	public void setPrintExtraOutput(boolean b) {

@@ -9,6 +9,7 @@ package eva2.gui;
  *            $Date: 2007-10-23 12:56:51 +0200 (Tue, 23 Oct 2007) $
  *            $Author: mkron $
  */
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Point;
@@ -26,91 +27,95 @@ import javax.swing.event.ChangeListener;
  *
  */
 public class LoggingPanel extends JPanel {
-	protected static Logger logger;
-	protected JTextArea loggingTextArea = new JTextArea(10,20);
-	protected boolean firstMessage = true;
-	protected Handler loggingHandler;
-	protected JPopupMenu loggingLevelMenu;
-	/**
-	 *
-	 */
-	public LoggingPanel(Logger logger) {
-		this.logger = logger;
-		loggingTextArea.setEditable(false);		
-		loggingTextArea.setLineWrap(true);
+    protected static Logger logger;
+    protected JTextArea loggingTextArea = new JTextArea(10, 20);
+    protected boolean firstMessage = true;
+    protected Handler loggingHandler;
+    protected JPopupMenu loggingLevelMenu;
+
+    /**
+     *
+     */
+    public LoggingPanel(Logger logger) {
+        this.logger = logger;
+        loggingTextArea.setEditable(false);
+        loggingTextArea.setLineWrap(true);
         loggingTextArea.setBorder(BorderFactory.createEmptyBorder());
-				
-		setLayout(new BorderLayout());
-		
+
+        setLayout(new BorderLayout());
+
         add(new JLabel("Info"), BorderLayout.PAGE_START);
-		
-		this.loggingHandler = new LoggingHandler(this);
-		logger.addHandler(loggingHandler);
-		
-		final JScrollPane scrollpane = new JScrollPane(loggingTextArea);
+
+        this.loggingHandler = new LoggingHandler(this);
+        logger.addHandler(loggingHandler);
+
+        final JScrollPane scrollpane = new JScrollPane(loggingTextArea);
         scrollpane.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
 //		scrollpane.setAutoscrolls(false);
-		add(scrollpane, BorderLayout.CENTER);
-		scrollpane.getViewport().addChangeListener(new ChangeListener() {
-			private int lastHeight;
-			//
+        add(scrollpane, BorderLayout.CENTER);
+        scrollpane.getViewport().addChangeListener(new ChangeListener() {
+            private int lastHeight;
+
+            //
             @Override
-			public void stateChanged(ChangeEvent e) {
-				JViewport viewport = (JViewport)e.getSource();
-				int height = viewport.getViewSize().height;
-				if (height != lastHeight) {
-					lastHeight = height;
-					int x = height - viewport.getExtentSize().height;
-					viewport.setViewPosition(new Point(0, x));
-				}
-			}
-		});
-	}
-	/**
-	 *
-	 */
-	protected static String getTimestamp() {
-		return (new SimpleDateFormat("HH:mm:ss:")).format(new Date());
-	}
-	/**
-	 *
-	 */
-	public void logMessage(String message) {
-		loggingTextArea.append(LoggingPanel.getTimestamp() + ' ' + message);
-		loggingTextArea.append("\n");
-	}
+            public void stateChanged(ChangeEvent e) {
+                JViewport viewport = (JViewport) e.getSource();
+                int height = viewport.getViewSize().height;
+                if (height != lastHeight) {
+                    lastHeight = height;
+                    int x = height - viewport.getExtentSize().height;
+                    viewport.setViewPosition(new Point(0, x));
+                }
+            }
+        });
+    }
+
+    /**
+     *
+     */
+    protected static String getTimestamp() {
+        return (new SimpleDateFormat("HH:mm:ss:")).format(new Date());
+    }
+
+    /**
+     *
+     */
+    public void logMessage(String message) {
+        loggingTextArea.append(LoggingPanel.getTimestamp() + ' ' + message);
+        loggingTextArea.append("\n");
+    }
 }
 
 class LoggingHandler extends Handler {
-	protected LoggingPanel loggingPanel;
-	
-	public LoggingHandler(LoggingPanel loggingPanel) {
-		this.loggingPanel = loggingPanel;
-	}
+    protected LoggingPanel loggingPanel;
 
-	@Override
-	public void publish(LogRecord record) {
-		StringBuilder sBuilder = new StringBuilder();
-		sBuilder.append("[");
-		sBuilder.append(record.getLevel().toString());
-		sBuilder.append("] ");
-		MessageFormat messageFormat = new MessageFormat(record.getMessage());
-		sBuilder.append(messageFormat.format(record.getParameters()));
-		// Show message on LogPanel
-		this.loggingPanel.logMessage(sBuilder.toString());
-	}
+    public LoggingHandler(LoggingPanel loggingPanel) {
+        this.loggingPanel = loggingPanel;
+    }
 
-	@Override
-	public void flush() {
-		/*
-		 * We do nothing here as we don't buffer the entries
+    @Override
+    public void publish(LogRecord record) {
+        StringBuilder sBuilder = new StringBuilder();
+        sBuilder.append("[");
+        sBuilder.append(record.getLevel().toString());
+        sBuilder.append("] ");
+        MessageFormat messageFormat = new MessageFormat(record.getMessage());
+        sBuilder.append(messageFormat.format(record.getParameters()));
+        // Show message on LogPanel
+        this.loggingPanel.logMessage(sBuilder.toString());
+    }
+
+    @Override
+    public void flush() {
+        /*
+         * We do nothing here as we don't buffer the entries
 		 */
-	}
+    }
 
-	@Override
-	public void close() throws SecurityException {
+    @Override
+    public void close() throws SecurityException {
 		/*
 		 * Nothing to close
 		 */
-	}
+    }
 }

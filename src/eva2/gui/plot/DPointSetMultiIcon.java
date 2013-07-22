@@ -1,7 +1,6 @@
 package eva2.gui.plot;
 
 
-
 import eva2.tools.chart2d.DArray;
 import eva2.tools.chart2d.DBorder;
 import eva2.tools.chart2d.DComponent;
@@ -11,6 +10,7 @@ import eva2.tools.chart2d.DPoint;
 import eva2.tools.chart2d.DPointIcon;
 import eva2.tools.chart2d.DPointSet;
 import eva2.tools.chart2d.DRectangle;
+
 import java.awt.BasicStroke;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -25,74 +25,61 @@ import java.util.ArrayList;
  * Time: 16:17:35
  * To change this template use File | Settings | File Templates.
  */
-public class DPointSetMultiIcon extends DComponent
-{
+public class DPointSetMultiIcon extends DComponent {
     //~ Instance fields ////////////////////////////////////////////////////////
 
     /**
      * this class stores the jump positions (see this.jump)
      */
-    class JumpManager
-    {
+    class JumpManager {
         protected int index = -1;
         protected ArrayList<Integer> jumps = new ArrayList<Integer>();
 
-        public void addJump()
-        {
+        public void addJump() {
             jumps.add(getSize());
         }
 
-        public boolean hasMoreIntervals()
-        {
+        public boolean hasMoreIntervals() {
             return index < jumps.size();
         }
 
-        public int[] nextInterval()
-        {
+        public int[] nextInterval() {
             int no_jumps = jumps.size();
 
-            if (index >= no_jumps)
-            {
+            if (index >= no_jumps) {
                 throw new ArrayIndexOutOfBoundsException(
-                    "No more intervals in JumpManager");
+                        "No more intervals in JumpManager");
             }
 
             int[] inter = new int[2];
 
-            if (index == -1)
-            {
+            if (index == -1) {
                 inter[0] = 0;
-            }
-            else
-            {
+            } else {
                 inter[0] = jumps.get(index);
             }
 
             index++;
 
-            if (index < no_jumps)
-            {
+            if (index < no_jumps) {
                 inter[1] = jumps.get(index);
-            }
-            else
-            {
+            } else {
                 inter[1] = getSize();
             }
 
             return inter;
         }
 
-        public void reset()
-        {
+        public void reset() {
             index = -1;
             jumps.clear();
         }
 
-        public void restore()
-        {
+        public void restore() {
             index = -1;
         }
     }
+
     protected boolean connectedMI;
     protected DPointIcon iconMI = null;
     protected DPointSetMultiIcon.JumpManager jumperMI = new DPointSetMultiIcon.JumpManager();
@@ -104,17 +91,14 @@ public class DPointSetMultiIcon extends DComponent
 
     protected DIntDoubleMap yMI;
 
-    public DPointSetMultiIcon()
-    {
+    public DPointSetMultiIcon() {
         this(10, 2);
     }
 
-    public DPointSetMultiIcon(DIntDoubleMap x_values, DIntDoubleMap y_values)
-    {
-        if (x_values.getSize() != y_values.getSize())
-        {
+    public DPointSetMultiIcon(DIntDoubleMap x_values, DIntDoubleMap y_values) {
+        if (x_values.getSize() != y_values.getSize()) {
             throw new IllegalArgumentException(
-                "The number of x-values has to be the same than the number of y-values");
+                    "The number of x-values has to be the same than the number of y-values");
         }
 
         xMI = x_values;
@@ -123,26 +107,22 @@ public class DPointSetMultiIcon extends DComponent
         setDBorder(new DBorder(1, 1, 1, 1));
     }
 
-    public DPointSetMultiIcon(int initial_capacity)
-    {
+    public DPointSetMultiIcon(int initial_capacity) {
         this(initial_capacity, 2);
     }
 
     //~ Methods ////////////////////////////////////////////////////////////////
 
-    public DPointSetMultiIcon(int initial_capacity, int length_multiplier)
-    {
+    public DPointSetMultiIcon(int initial_capacity, int length_multiplier) {
         this(new DArray(initial_capacity, length_multiplier),
-            new DArray(initial_capacity, length_multiplier));
+                new DArray(initial_capacity, length_multiplier));
     }
 
-    public void addDPoint(double x, double y)
-    {
+    public void addDPoint(double x, double y) {
         addDPoint(new DPoint(x, y));
     }
 
-    public void addDPoint(DPoint p)
-    {
+    public void addDPoint(DPoint p) {
         xMI.addImage(p.x);
         yMI.addImage(p.y);
         m_IconsMI.add(p.getIcon());
@@ -156,10 +136,8 @@ public class DPointSetMultiIcon extends DComponent
      * @param index the index of the DPoint
      * @return the DPoint at the given index
      */
-    public DPoint getDPoint(int index)
-    {
-        if (index >= xMI.getSize())
-        {
+    public DPoint getDPoint(int index) {
+        if (index >= xMI.getSize()) {
             throw new ArrayIndexOutOfBoundsException(index);
         }
 
@@ -170,8 +148,7 @@ public class DPointSetMultiIcon extends DComponent
         return p;
     }
 
-    public DPointSet getDPointSet()
-    {
+    public DPointSet getDPointSet() {
         return new DPointSet(xMI, yMI);
     }
 
@@ -180,8 +157,7 @@ public class DPointSetMultiIcon extends DComponent
      *
      * @return the DPointIcon
      */
-    public DPointIcon getIcon()
-    {
+    public DPointIcon getIcon() {
         return iconMI;
     }
 
@@ -194,16 +170,12 @@ public class DPointSetMultiIcon extends DComponent
      *
      * @return the nearest <code>DPoint</code>
      */
-    public DPoint getNearestDPoint(DPoint point)
-    {
+    public DPoint getNearestDPoint(DPoint point) {
         int minIndex = getNearestDPointIndex(point);
 
-        if (minIndex == -1)
-        {
+        if (minIndex == -1) {
             return null;
-        }
-        else
-        {
+        } else {
             DPoint result = new DPoint(xMI.getImage(minIndex),
                     yMI.getImage(minIndex));
             result.setIcon((DPointIcon) this.m_IconsMI.get(minIndex));
@@ -212,22 +184,21 @@ public class DPointSetMultiIcon extends DComponent
         }
     }
 
-    /** method returns the index to the nearest <code>DPoint</code> in this <code>DPointSet</code>.
+    /**
+     * method returns the index to the nearest <code>DPoint</code> in this <code>DPointSet</code>.
+     *
      * @return the index to the nearest <code>DPoint</code>. -1 if no nearest <code>DPoint</code> was found.
      */
-    public int getNearestDPointIndex(DPoint point)
-    {
+    public int getNearestDPointIndex(DPoint point) {
         double minValue = Double.MAX_VALUE;
         int minIndex = -1;
 
-        for (int i = 0; i < xMI.getSize(); i++)
-        {
+        for (int i = 0; i < xMI.getSize(); i++) {
             double dx = point.x - xMI.getImage(i);
             double dy = point.y - yMI.getImage(i);
             double dummy = (dx * dx) + (dy * dy);
 
-            if (dummy < minValue)
-            {
+            if (dummy < minValue) {
                 minValue = dummy;
                 minIndex = i;
             }
@@ -236,8 +207,7 @@ public class DPointSetMultiIcon extends DComponent
         return minIndex;
     }
 
-    public int getSize()
-    {
+    public int getSize() {
         int size = Math.min(xMI.getSize(), yMI.getSize());
 
         //    int size = x.getSize();
@@ -254,8 +224,7 @@ public class DPointSetMultiIcon extends DComponent
      *
      * @return the stroke
      */
-    public Stroke getStroke()
-    {
+    public Stroke getStroke() {
         return strokeMI;
     }
 
@@ -263,58 +232,46 @@ public class DPointSetMultiIcon extends DComponent
      * This method causes the DPointSet to interupt the connected painting at the
      * current position.
      */
-    public void jump()
-    {
+    public void jump() {
         jumperMI.addJump();
     }
 
     @Override
-    public void paint(DMeasures m)
-    {
-        try
-        {
+    public void paint(DMeasures m) {
+        try {
             Graphics2D g = (Graphics2D) m.getGraphics();
             g.setStroke(strokeMI);
 
-            if (color != null)
-            {
+            if (color != null) {
                 g.setColor(color);
             }
 
             int size = getSize();
 
-            if (connectedMI && (size > 1))
-            {
+            if (connectedMI && (size > 1)) {
                 jumperMI.restore();
 
-                while (jumperMI.hasMoreIntervals())
-                {
+                while (jumperMI.hasMoreIntervals()) {
                     int[] interval = jumperMI.nextInterval();
                     Point p1 = null;
                     Point p2;
 
-                    for (int i = interval[0]; i < interval[1]; i++)
-                    {
+                    for (int i = interval[0]; i < interval[1]; i++) {
                         p2 = m.getPoint(xMI.getImage(i), yMI.getImage(i));
-                        if (p1 != null)
-                        {
-                        	if (p2!=null) {
-                        		g.drawLine(p1.x, p1.y, p2.x, p2.y);
-                        	}
+                        if (p1 != null) {
+                            if (p2 != null) {
+                                g.drawLine(p1.x, p1.y, p2.x, p2.y);
+                            }
                         }
 
-                        if ((i < this.m_IconsMI.size()) && (this.m_IconsMI.get(i) != null))
-                        {
+                        if ((i < this.m_IconsMI.size()) && (this.m_IconsMI.get(i) != null)) {
                             g.setStroke(new BasicStroke());
                             g.translate(p2.x, p2.y);
                             ((DPointIcon) this.m_IconsMI.get(i)).paint(g);
                             g.translate(-p2.x, -p2.y);
                             g.setStroke(strokeMI);
-                        }
-                        else
-                        {
-                            if (iconMI != null)
-                            {
+                        } else {
+                            if (iconMI != null) {
                                 g.setStroke(new BasicStroke());
                                 g.translate(p2.x, p2.y);
                                 iconMI.paint(g);
@@ -326,66 +283,50 @@ public class DPointSetMultiIcon extends DComponent
                         p1 = p2;
                     }
                 }
-            }
-            else
-            {
+            } else {
                 Point p;
 
                 //for (int i = 0; i < size; i++)
                 // @todo Streiche: Mal wieder eine index out of bounds exception, dass ist einfach mist...
-                for (int i = 0; i < this.m_IconsMI.size(); i++)
-                {
-                    try
-                    {
+                for (int i = 0; i < this.m_IconsMI.size(); i++) {
+                    try {
                         p = m.getPoint(xMI.getImage(i), yMI.getImage(i));
 
-                        if (p==null) {
+                        if (p == null) {
                             continue;
                         }
-                        if (this.m_IconsMI.get(i) != null)
-                        {
+                        if (this.m_IconsMI.get(i) != null) {
                             g.setStroke(new BasicStroke());
                             g.translate(p.x, p.y);
                             ((DPointIcon) this.m_IconsMI.get(i)).paint(g);
                             g.translate(-p.x, -p.y);
                             g.setStroke(strokeMI);
-                        }
-                        else
-                        {
-                            if (iconMI == null)
-                            {
+                        } else {
+                            if (iconMI == null) {
                                 g.drawLine(p.x - 1, p.y - 1, p.x + 1, p.y + 1);
                                 g.drawLine(p.x + 1, p.y - 1, p.x - 1, p.y + 1);
-                            }
-                            else
-                            {
+                            } else {
                                 g.setStroke(new BasicStroke());
                                 g.translate(p.x, p.y);
                                 iconMI.paint(g);
                                 g.translate(-p.x, -p.y);
                             }
                         }
-                    }
-                     catch (java.lang.IllegalArgumentException e)
-                    {
+                    } catch (java.lang.IllegalArgumentException e) {
                         System.out.println(
-                            "The rectangle lies not in the currently painted rectangle.");
+                                "The rectangle lies not in the currently painted rectangle.");
                     }
                 }
             }
 
             g.setStroke(new BasicStroke());
-        }
-         catch (java.lang.ArrayIndexOutOfBoundsException e)
-        {
+        } catch (java.lang.ArrayIndexOutOfBoundsException e) {
             // *pff*
         }
     }
 
-    public void removeAllPoints()
-    {
-        if (xMI.getSize() == 0)
-        {
+    public void removeAllPoints() {
+        if (xMI.getSize() == 0) {
             return;
         }
 
@@ -401,15 +342,12 @@ public class DPointSetMultiIcon extends DComponent
      * if the DPointSet is connected, all points will be painted connected to
      * their following point
      */
-    public void removeJumps()
-    {
+    public void removeJumps() {
         jumperMI.reset();
     }
 
-    protected void restore()
-    {
-        if (getSize() == 0)
-        {
+    protected void restore() {
+        if (getSize() == 0) {
             rectangle = DRectangle.getEmpty();
 
             return;
@@ -422,13 +360,11 @@ public class DPointSetMultiIcon extends DComponent
         rectangle = new DRectangle(min_x, min_y, max_x - min_x, max_y - min_y);
     }
 
-    public void setConnected(boolean aFlag)
-    {
+    public void setConnected(boolean aFlag) {
         boolean changed = !(aFlag == connectedMI);
         connectedMI = aFlag;
 
-        if (changed)
-        {
+        if (changed) {
             repaint();
         }
     }
@@ -439,10 +375,8 @@ public class DPointSetMultiIcon extends DComponent
      * @param index the index of the point
      * @param p     the point to insert
      */
-    public void setDPoint(int index, DPoint p)
-    {
-        if (index >= xMI.getSize())
-        {
+    public void setDPoint(int index, DPoint p) {
+        if (index >= xMI.getSize()) {
             throw new ArrayIndexOutOfBoundsException(index);
         }
 
@@ -459,30 +393,24 @@ public class DPointSetMultiIcon extends DComponent
      *
      * @param icon the DPointIcon
      */
-    public void setIcon(DPointIcon icon)
-    {
+    public void setIcon(DPointIcon icon) {
         this.iconMI = icon;
 
-        if (icon == null)
-        {
+        if (icon == null) {
             setDBorder(new DBorder(1, 1, 1, 1));
-        }
-        else
-        {
+        } else {
             setDBorder(icon.getDBorder());
         }
     }
 
     /**
-     *  method sets the stroke of the line
-     *  if the points were not connected, they now will be connected
+     * method sets the stroke of the line
+     * if the points were not connected, they now will be connected
      *
      * @param s the new stroke
      */
-    public void setStroke(Stroke s)
-    {
-        if (s == null)
-        {
+    public void setStroke(Stroke s) {
+        if (s == null) {
             s = new BasicStroke();
         }
 
@@ -493,12 +421,10 @@ public class DPointSetMultiIcon extends DComponent
     //~ Inner Classes //////////////////////////////////////////////////////////
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         String text = "eva2.tools.chart2d.DPointSet[size:" + getSize();
 
-        for (int i = 0; i < xMI.getSize(); i++)
-        {
+        for (int i = 0; i < xMI.getSize(); i++) {
             text += (",(" + xMI.getImage(i) + "," + yMI.getImage(i) + ")");
         }
 

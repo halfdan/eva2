@@ -9,6 +9,7 @@ package eva2.optimization.modules;
  *            $Date: 2007-11-21 18:06:36 +0100 (Wed, 21 Nov 2007) $
  *            $Author: mkron $
  */
+
 import eva2.gui.EvATabbedFrameMaker;
 import eva2.optimization.OptimizationStateListener;
 import eva2.optimization.stat.OptimizationJob;

@@ -1,4 +1,5 @@
 package eva2.gui.editor;
+
 /*
  * Title:        EvA2
  * Description:
@@ -10,5 +11,5 @@ package eva2.gui.editor;
  *            $Author: streiche $
  */
 public interface ComponentFilter {
-  public boolean accept(java.awt.Component component);
+    public boolean accept(java.awt.Component component);
 }

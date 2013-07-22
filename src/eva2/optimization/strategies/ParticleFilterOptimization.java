@@ -23,7 +23,7 @@ import eva2.optimization.problems.InterfaceOptimizationProblem;
  * here and not completely checked whether this works on arbitrary problem
  * instances. MK did some adaptations, this should work on real valued problems
  * now.
- *
+ * <p/>
  * This is a implementation of Genetic Algorithms. Copyright: Copyright (c) 2003
  * Company: University of Tuebingen, Computer Architecture
  *
@@ -116,7 +116,7 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
     /**
      * This method will init the optimizer with a given population
      *
-     * @param pop The initial population
+     * @param pop   The initial population
      * @param reset If true the population is reset.
      */
     @Override
@@ -142,7 +142,6 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
 
     /**
      * This method will resample the given population using EA parent selection.
-     *
      */
     protected Population resample(Population pop) {
         Population parents;
@@ -238,7 +237,6 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
 
     /**
      * Optimization loop of a resampling particle filter, restructured by MK.
-     *
      */
     @Override
     public void optimize() {
@@ -411,7 +409,6 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
 
     /**
      * @return the withShow
-	 *
      */
     public boolean isWithShow() {
         return withShow;
@@ -436,7 +433,6 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
 
     /**
      * @param withShow the withShow to set
-	 *
      */
     public void setWithShow(boolean wShow) {
         this.withShow = wShow;
@@ -459,7 +455,6 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
 
     /**
      * @return the sleepTime
-	 *
      */
     public int getSleepTime() {
         return sleepTime;
@@ -467,7 +462,6 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
 
     /**
      * @param sleepTime the sleepTime to set
-	 *
      */
     public void setSleepTime(int sleepTime) {
         this.sleepTime = sleepTime;
@@ -475,7 +469,6 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
 
     /**
      * @return the mutationSigma
-	 *
      */
     public double getMutationSigma() {
         return mutationSigma;
@@ -483,7 +476,6 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
 
     /**
      * @param mutationSigma the mutationSigma to set
-	 *
      */
     public void setMutationSigma(double mutationSigma) {
         this.mutationSigma = mutationSigma;

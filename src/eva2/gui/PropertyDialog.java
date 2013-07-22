@@ -8,6 +8,7 @@ package eva2.gui;
 import eva2.EvAInfo;
 import eva2.tools.BasicResourceLoader;
 import eva2.tools.EVAHELP;
+
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.beans.PropertyEditor;
@@ -25,7 +26,7 @@ public class PropertyDialog extends JDialog {
      *
      */
     public PropertyDialog(PropertyEditor editor, String title, int x, int y) {
-        super();        
+        super();
         setTitle(getFrameNameFromEditor(editor));
         //super(getFrameNameFromEditor(editor)); // that was the long class name !!
         BasicResourceLoader loader = BasicResourceLoader.instance();

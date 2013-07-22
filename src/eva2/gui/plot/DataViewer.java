@@ -31,7 +31,7 @@ public class DataViewer implements DataViewerInterface {
         }
         DataViewerInterface ret = null;
         try {
-            if (!viewContainer.containsName(graphWindowName)) {                
+            if (!viewContainer.containsName(graphWindowName)) {
                 ret = new DataViewer(graphWindowName, true);
                 viewContainer.add(ret);
             } else {
@@ -89,7 +89,8 @@ class ViewContainer extends ArrayList {
     /**
      *
      */
-    public ViewContainer() { }
+    public ViewContainer() {
+    }
 
     /**
      *

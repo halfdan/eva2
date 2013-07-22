@@ -12,30 +12,35 @@ package eva2.gui;
 /*==========================================================================*
  * IMPORTS
  *==========================================================================*/
+
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import javax.swing.JComponent;
+
 /**
  *
  */
-public abstract class ExtActionChangedListener implements PropertyChangeListener{
-  protected JComponent component;
-  /**
-   *
-   */
-  ExtActionChangedListener(JComponent c){
-    super();
-    setTarget(c);
-  }
-  /**
-   *
-   */
+public abstract class ExtActionChangedListener implements PropertyChangeListener {
+    protected JComponent component;
+
+    /**
+     *
+     */
+    ExtActionChangedListener(JComponent c) {
+        super();
+        setTarget(c);
+    }
+
+    /**
+     *
+     */
     @Override
-  public abstract void propertyChange(PropertyChangeEvent e);
-  /**
-   *
-   */
-  public void setTarget(JComponent c){
-    component = c;
-  }
+    public abstract void propertyChange(PropertyChangeEvent e);
+
+    /**
+     *
+     */
+    public void setTarget(JComponent c) {
+        component = c;
+    }
 }

@@ -35,6 +35,7 @@ import eva2.tools.chart2d.DPoint;
 import eva2.tools.chart2d.DPointIcon;
 import eva2.tools.chart2d.DPointSet;
 import eva2.tools.math.Mathematics;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -44,16 +45,16 @@ import java.util.PriorityQueue;
 /**
  * The infamous clustering based niching EA, still under construction. It should
  * be able to identify and track multiple global/local optima at the same time.
- *
+ * <p/>
  * Notes: For std. GA, the mutation rate may have to reduced, because the
  * initial step size tends to be rel. large and easily disperse clustered
  * species (so that they fall below the minimum swarm size and the local optimum
  * is lost).
- *
+ * <p/>
  * For the CBN-PSO remember to use the IndividualDataMetric so that the
  * remembered positions are used for clustering (which are rel. stable - so that
  * species clustering actually makes sense).
- *
+ * <p/>
  * Copyright: Copyright (c) 2010 Company: University of Tuebingen, Computer
  * Architecture
  *
@@ -227,7 +228,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
     /**
      * This method will init the optimizer with a given population
      *
-     * @param pop The initial population
+     * @param pop   The initial population
      * @param reset If true the population is reset.
      */
     @Override
@@ -338,7 +339,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
     }
 
     public static void plotLine(TopoPlot tp, AbstractEAIndividual indy1,
-            AbstractEAIndividual indy2) {
+                                AbstractEAIndividual indy2) {
 //		DPointSet popRep;
         double[] pos1, pos2;
         if (indy1 instanceof InterfaceDataTypeDouble) {
@@ -382,7 +383,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
         //@todo: crossover between species is to be implemented
         optimizationProblem.initializePopulation(result);
         optimizationProblem.evaluate(result);
-        optimizer.setPopulation(result);	// for some initialization by the optimizer, such as PSO memory
+        optimizer.setPopulation(result);    // for some initialization by the optimizer, such as PSO memory
 //        capMutationRate(result, RNG.randomDouble(0.001, 0.1));
         return result;
     }
@@ -459,7 +460,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
      * @param firstIndy
      * @param secIndy
      * @return true if the second individual has improved in relation to the
-     * first one
+     *         first one
      */
     private boolean testSecondForImprovement(AbstractEAIndividual firstIndy, AbstractEAIndividual secIndy) {
         if (epsilonBound > 0) {
@@ -551,7 +552,8 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
         }
         if (TRACE) {
             System.out.println("NumIndies: " + countIndies);
-        };
+        }
+        ;
         if (this.showCycle > 0) {
             if (undifferentiatedPopulation.getGeneration() <= 1) {
                 plot(undifferentiatedPopulation.getGeneration());
@@ -900,7 +902,6 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
 
     /**
      * Initialize the clustering method for differentiation.
-     *
      */
     private void initClustering() {
         if (getClusterDiffDist() > 0) { // assume that it should be set
@@ -931,6 +932,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
 //		pop.synchSize();
 //		return pop;
 //	}
+
     /**
      * Replace the undifferentiated population with the given one.
      *
@@ -1041,11 +1043,12 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
 //    	}
 //    	return k;
 //    }
+
     /**
      * This method allows an optimizer to register a change in the optimizer.
      *
      * @param source The source of the event.
-     * @param name Could be used to indicate the nature of the event.
+     * @param name   Could be used to indicate the nature of the event.
      */
     @Override
     public void registerPopulationStateChanged(Object source, String name) {
@@ -1209,6 +1212,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
 //    public String applyClearingTipText() {
 //        return "Clearing removes all but the best individuals from an identified species.";
 //    }
+
     /**
      * This method allows you to set/get the switch that toggles the use of
      * species convergence.
@@ -1292,11 +1296,12 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
 //    public String useArchiveTipText() {
 //    	return "Toggle usage of an archive where converged species are saved and the individuals reinitialized.";
 //    }
+
     /**
      * Determines how often species differentation/convergence is performed.
      *
      * @return This number gives the generations when specification is
-     * performed.
+     *         performed.
      */
     public int getSpeciesCycle() {
         return this.speciesCycle;
@@ -1314,7 +1319,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
      * TDetermines how often show is performed.
      *
      * @return This number gives the generations when specification is
-     * performed.
+     *         performed.
      */
     public int getShowCycle() {
         return this.showCycle;
@@ -1358,6 +1363,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
 //	public double getMuLambdaRatio() {
 //		return muLambdaRatio;
 //	}
+
     /**
      * This is now set if an ES is set as optimizer.
      *
@@ -1412,6 +1418,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
 //		this.distrDefaultStrength = distrDefaultStrength;
 //		distraction.setDefaultStrength(distrDefaultStrength);
 //	}
+
     /**
      * @return the sleepTime
      */
@@ -1451,35 +1458,35 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
     @Override
     public String[] getAdditionalDataHeader() {
         return new String[]{"numUndiff", "numActSpec", "avgSpecMeas", "numArchived",
-                    "archivedMedCorr", "archivedMeanDist", "numCollisions", "clustSig"};
+                "archivedMedCorr", "archivedMeanDist", "numCollisions", "clustSig"};
     }
 
     @Override
     public String[] getAdditionalDataInfo() {
         return new String[]{
-                    "The number of exploring individuals in the main population",
-                    "The number of active species (sub-populations)",
-                    "The average of the mean distance of individuals within a species",
-                    "The number of stored potential local optima",
-                    "The median correlation of archived solutions",
-                    "The mean distance of archived solutions",
-                    "The number of collisions events that happened so far",
-                    "The clustering distance"
-                };
+                "The number of exploring individuals in the main population",
+                "The number of active species (sub-populations)",
+                "The average of the mean distance of individuals within a species",
+                "The number of stored potential local optima",
+                "The median correlation of archived solutions",
+                "The mean distance of archived solutions",
+                "The number of collisions events that happened so far",
+                "The clustering distance"
+        };
     }
 
     @Override
     public Object[] getAdditionalDataValue(PopulationInterface pop) {
 //		int actives = countActiveSpec();
         return new Object[]{
-                    undifferentiatedPopulation.size(),
-                    species.size(),
-                    getAvgSpeciesMeasures()[0],
-                    poulationArchive.size(),
-                    poulationArchive.getCorrelations()[3],
-                    poulationArchive.getPopulationMeasures()[0],
-                    collisions,
-                    getClusterDiffDist()};
+                undifferentiatedPopulation.size(),
+                species.size(),
+                getAvgSpeciesMeasures()[0],
+                poulationArchive.size(),
+                poulationArchive.getCorrelations()[3],
+                poulationArchive.getPopulationMeasures()[0],
+                collisions,
+                getClusterDiffDist()};
 //		return undifferentiatedPopulation.size() + " \t " + species.size() + " \t " + BeanInspector.toString(getAvgSpeciesMeasures()[0]) + " \t " + (poulationArchive.size());
     }
 
@@ -1534,7 +1541,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
         return new String[]{"mergingCA", "differentiationCA"};
     }
 
-//	public void setHistComparator(AbstractEAIndividualComparator histComparator) {
+    //	public void setHistComparator(AbstractEAIndividualComparator histComparator) {
 //		this.histComparator = histComparator;
 //	}
     public AbstractEAIndividualComparator getHistComparator() {
@@ -1561,7 +1568,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
      * Calculate the clustering parameter in such a way that about one q-th part
      * of the range of the given problem is within one hyper sphere of the
      * clustering parameter.
-     *
+     * <p/>
      * For certain types of parameter adaption schemes, this automatically sets
      * the upper limit if the clustering parameter is controlled.
      *

@@ -1,6 +1,7 @@
 package eva2.optimization.mocco;
 
 import eva2.optimization.go.MOCCOStandalone;
+
 import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -20,13 +21,14 @@ import javax.swing.JTextField;
  */
 public class MOCCOInitialPopulationSize extends MOCCOPhase implements InterfaceProcessElement {
 
-    private JTextField          m_JTextField;
+    private JTextField m_JTextField;
 
     public MOCCOInitialPopulationSize(MOCCOStandalone mocco) {
         this.m_Mocco = mocco;
     }
 
-    /** This method will call the init method and will go to stall
+    /**
+     * This method will call the init method and will go to stall
      */
     @Override
     public void initProcessElementParametrization() {
@@ -45,15 +47,15 @@ public class MOCCOInitialPopulationSize extends MOCCOPhase implements InterfaceP
         JPanel tmpP = new JPanel();
         tmpP.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.fill        = GridBagConstraints.HORIZONTAL;
-        gbc.anchor      = GridBagConstraints.EAST;
-        gbc.weightx     = 100;        
-        gbc.gridx       = 0;
-        gbc.gridy       = 0;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.anchor = GridBagConstraints.EAST;
+        gbc.weightx = 100;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
         tmpP.add(new JLabel("Initial Solution Set Size:"), gbc);
-        this.m_JTextField = new JTextField(""+this.m_Mocco.m_State.m_InitialPopulationSize);
+        this.m_JTextField = new JTextField("" + this.m_Mocco.m_State.m_InitialPopulationSize);
         this.m_JTextField.addActionListener(popSizeEdited);
-        gbc.gridx       = 1;
+        gbc.gridx = 1;
         tmpP.add(this.m_JTextField, gbc);
         this.m_Mocco.m_JPanelParameters.add(tmpP, BorderLayout.CENTER);
         this.m_Mocco.m_JPanelParameters.validate();

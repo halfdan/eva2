@@ -13,28 +13,29 @@ import eva2.tools.math.RNG;
  * <p>Description: </p>
  * <p>Copyright: Copyright (c) 2003</p>
  * <p>Company: </p>
+ *
  * @author planatsc
  * @version 1.0
-*
-* Mutates a permutation by inversion a part of the permutation.
-* <br><br>
-* <b>Example: </b>
-* <pre>
-*          1 2 | 3 4 5 | 6 7 8 9 ->
-*          1 2 | 5 4 3 | 6 7 8 9
-* </pre>
+ *          <p/>
+ *          Mutates a permutation by inversion a part of the permutation.
+ *          <br><br>
+ *          <b>Example: </b>
+ *          <pre>
+ *                                              1 2 | 3 4 5 | 6 7 8 9 ->
+ *                                              1 2 | 5 4 3 | 6 7 8 9
+ *                                     </pre>
  */
 
 
 public class MutateOBGAInversion implements java.io.Serializable, InterfaceMutation {
 
-  public MutateOBGAInversion() {
-  }
+    public MutateOBGAInversion() {
+    }
 
     @Override
-  public Object clone() {
-    return this;
-  }
+    public Object clone() {
+        return this;
+    }
 
     /** This method allows you to evaluate wether two mutation operators
      * are actually the same.
@@ -44,30 +45,29 @@ public class MutateOBGAInversion implements java.io.Serializable, InterfaceMutat
     public boolean equals(Object mutator) {
         if (mutator instanceof MutateOBGAInversion) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
 
     @Override
     public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
-    //nothing to init
-  }
+        //nothing to init
+    }
 
     @Override
-  public void mutate(AbstractEAIndividual individual) {
-    int[][] permnew = (int[][]) ((InterfaceOBGAIndividual) individual). getOBGenotype().clone();
-    int[][] perm = ((InterfaceDataTypePermutation) individual).getPermutationData();
-    for (int p = 0; p < perm.length; p++) {
-      int p1 = RNG.randomInt(0, perm[p].length - 1);
-      int p2 = RNG.randomInt(p1, perm[p].length - 1);
-      for (int i = 0; i <= (p2-p1); i++) {
-        permnew[p][p1+i] = perm[p][p2-i];
-      }
+    public void mutate(AbstractEAIndividual individual) {
+        int[][] permnew = (int[][]) ((InterfaceOBGAIndividual) individual).getOBGenotype().clone();
+        int[][] perm = ((InterfaceDataTypePermutation) individual).getPermutationData();
+        for (int p = 0; p < perm.length; p++) {
+            int p1 = RNG.randomInt(0, perm[p].length - 1);
+            int p2 = RNG.randomInt(p1, perm[p].length - 1);
+            for (int i = 0; i <= (p2 - p1); i++) {
+                permnew[p][p1 + i] = perm[p][p2 - i];
+            }
+        }
+        ((InterfaceOBGAIndividual) individual).SetOBGenotype(permnew);
     }
-    ( (InterfaceOBGAIndividual) individual).SetOBGenotype(permnew);
-  }
 
     /** This method allows you to perform either crossover on the strategy parameters
      * or to deal in some other way with the crossover event.
@@ -98,6 +98,7 @@ public class MutateOBGAInversion implements java.io.Serializable, InterfaceMutat
     public String getName() {
         return "OBGA inversion mutation";
     }
+
     /** This method returns a global info string
      * @return description
      */

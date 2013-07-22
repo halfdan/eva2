@@ -7,10 +7,12 @@ import eva2.optimization.operator.archiving.ArchivingAllDominating;
 import eva2.optimization.population.Population;
 import eva2.optimization.problems.AbstractMultiObjectiveOptimizationProblem;
 import eva2.optimization.tools.FileTools;
+
 import java.util.ArrayList;
 
 
-/** The error ratio metric only suited for small discrete
+/**
+ * The error ratio metric only suited for small discrete
  * Pareto fronts, since it calculates the intersection between
  * the reference and the current solution.
  * Created by IntelliJ IDEA.
@@ -20,17 +22,17 @@ import java.util.ArrayList;
  * To change this template use File | Settings | File Templates.
  */
 public class MetricErrorRatio implements eva2.optimization.operator.paretofrontmetrics.InterfaceParetoFrontMetric, java.io.Serializable {
-    private PropertyFilePath    m_InputFilePath         = PropertyFilePath.getFilePathFromResource("MOPReference/T1_250.txt");
-    private double              m_Epsilon               = 0.0001;
-    private String[]            m_Titles;
-    private double[][]          m_Reference;
+    private PropertyFilePath m_InputFilePath = PropertyFilePath.getFilePathFromResource("MOPReference/T1_250.txt");
+    private double m_Epsilon = 0.0001;
+    private String[] m_Titles;
+    private double[][] m_Reference;
 
     public MetricErrorRatio() {
         this.loadReferenceData();
     }
 
     public MetricErrorRatio(MetricErrorRatio b) {
-        this.m_Epsilon          = b.m_Epsilon;
+        this.m_Epsilon = b.m_Epsilon;
         if (b.m_Titles != null) {
             this.m_Titles = new String[b.m_Titles.length];
             for (int i = 0; i < this.m_Titles.length; i++) {
@@ -47,33 +49,35 @@ public class MetricErrorRatio implements eva2.optimization.operator.paretofrontm
         }
     }
 
-    /** This method allows you to init the metric loading data etc
-     *
+    /**
+     * This method allows you to init the metric loading data etc
      */
     public void init() {
         this.loadReferenceData();
     }
 
-    /** This method returns a deep clone of the problem.
-     * @return  the clone
+    /**
+     * This method returns a deep clone of the problem.
+     *
+     * @return the clone
      */
     @Override
     public Object clone() {
         return (Object) new MetricErrorRatio(this);
     }
 
-    /** This method loads the reference data
-     *
+    /**
+     * This method loads the reference data
      */
     private void loadReferenceData() {
-        String[]    tmpS, lines = FileTools.loadStringsFromFile(this.m_InputFilePath.getCompleteFilePath());
+        String[] tmpS, lines = FileTools.loadStringsFromFile(this.m_InputFilePath.getCompleteFilePath());
         if (lines == null) {
-            System.out.println("Failed to read "+this.m_InputFilePath.getCompleteFilePath());
+            System.out.println("Failed to read " + this.m_InputFilePath.getCompleteFilePath());
         }
         lines[0].trim();
         this.m_Titles = lines[0].split("\t");
-        ArrayList   tmpA = new ArrayList();
-        double[]    tmpD;
+        ArrayList tmpA = new ArrayList();
+        double[] tmpD;
         for (int i = 1; i < lines.length; i++) {
             tmpD = new double[this.m_Titles.length];
             lines[i].trim();
@@ -85,18 +89,19 @@ public class MetricErrorRatio implements eva2.optimization.operator.paretofrontm
         }
         this.m_Reference = new double[tmpA.size()][];
         for (int i = 0; i < tmpA.size(); i++) {
-            this.m_Reference[i] = (double[])tmpA.get(i);
+            this.m_Reference[i] = (double[]) tmpA.get(i);
         }
     }
 
-    /** This method gives a metric how to evaluate
+    /**
+     * This method gives a metric how to evaluate
      * an achieved Pareto-Front
      */
     @Override
     public double calculateMetricOn(Population pop, AbstractMultiObjectiveOptimizationProblem problem) {
-        double      result = 0;
-        Population  tmpPop = new Population();
-        Population  tmpPPO = new Population();
+        double result = 0;
+        Population tmpPop = new Population();
+        Population tmpPPO = new Population();
         tmpPPO.addPopulation(pop);
         if (pop.getArchive() != null) {
             tmpPPO.addPopulation(pop.getArchive());
@@ -112,23 +117,25 @@ public class MetricErrorRatio implements eva2.optimization.operator.paretofrontm
         dom.addElementsToArchive(tmpPPO);
         tmpPPO = tmpPPO.getArchive();
         for (int i = 0; i < tmpPPO.size(); i++) {
-            if (this.inReference((AbstractEAIndividual)tmpPPO.get(i))) {
+            if (this.inReference((AbstractEAIndividual) tmpPPO.get(i))) {
                 result++;
             }
         }
-        return (result/((double)tmpPPO.size()));
+        return (result / ((double) tmpPPO.size()));
     }
 
-    /** This method will determine wether or not the individual is in the reference set
+    /**
+     * This method will determine wether or not the individual is in the reference set
+     *
      * @return true if it is within the epsilon threshold
      */
     private boolean inReference(AbstractEAIndividual indy) {
         double[] fitness = indy.getFitness();
-        double      result = 0;
+        double result = 0;
         for (int i = 0; i < this.m_Reference.length; i++) {
             result = 0;
             for (int j = 0; (j < fitness.length) && (j < this.m_Reference[i].length); j++) {
-                result += Math.pow((fitness[j]-this.m_Reference[i][j]), 2);
+                result += Math.pow((fitness[j] - this.m_Reference[i][j]), 2);
             }
             if (Math.sqrt(result) < this.m_Epsilon) {
                 return true;
@@ -140,44 +147,56 @@ public class MetricErrorRatio implements eva2.optimization.operator.paretofrontm
 /**********************************************************************************************************************
  * These are for GUI
  */
-    /** This method allows the CommonJavaObjectEditorPanel to read the
+    /**
+     * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
+     *
      * @return The name.
      */
     public String getName() {
         return "Error ratio";
     }
 
-    /** This method returns a global info string
+    /**
+     * This method returns a global info string
+     *
      * @return description
      */
     public static String globalInfo() {
         return "This method calculates how many solutions are contained in the reference solution.";
     }
 
-    /** This method allows you to set the path to the data file.
-     * @param b     File path.
+    /**
+     * This method allows you to set the path to the data file.
+     *
+     * @param b File path.
      */
     public void setInputFilePath(PropertyFilePath b) {
         this.m_InputFilePath = b;
         this.loadReferenceData();
     }
+
     public PropertyFilePath getInputFilePath() {
         return this.m_InputFilePath;
     }
+
     public String inputFilePathTipText() {
         return "Select the reference soltuion by choosing the input file.";
     }
 
-    /** This method will allow you set an upper border as constraint
-     * @param d     The upper border.
+    /**
+     * This method will allow you set an upper border as constraint
+     *
+     * @param d The upper border.
      */
     public void setEpsilon(double d) {
         this.m_Epsilon = d;
     }
+
     public double getEpsilon() {
         return this.m_Epsilon;
     }
+
     public String epsilonTipText() {
         return "For continuous objectives spaces this gives an epsilon boundary for the solutions.";
     }

@@ -1,23 +1,23 @@
 package eva2.optimization.operator.cluster;
 
 import eva2.optimization.population.Population;
+
 import java.io.Serializable;
 import java.util.Arrays;
 
 /**
  * Dummy class which assigns all individuals to a single cluster only.
- * 
- * @author mkron
  *
+ * @author mkron
  */
 public class ClusterAll implements InterfaceClustering, Serializable {
-	
-	private boolean assignLoners = false; // should loners be assigned?
-	
+
+    private boolean assignLoners = false; // should loners be assigned?
+
     @Override
-	public Object clone() {
-		return new ClusterAll();
-	}
+    public Object clone() {
+        return new ClusterAll();
+    }
 
     /**
      * Try to associate a set of loners with a given set of species. Return a list
@@ -29,64 +29,63 @@ public class ClusterAll implements InterfaceClustering, Serializable {
      * which is the reference population to consider the measures of. This is for cases
      * where, e.g., subsets of a Population are to be clustered using measures of the
      * original population.
-     * 
+     *
      * @param loners
      * @param species
      * @param referenceSet a reference population for dynamic measures
      * @return associative list matching loners to species.
      */
     @Override
-	public int[] associateLoners(Population loners, Population[] species,
-			Population referenceSet) {
-		if (loners!=null && (loners.size()>0)) {
-			int[] indices = new int[loners.size()]; 
-			if (assignLoners) {
-                        Arrays.fill(indices, 0);
-                    }
-			else {
-                        Arrays.fill(indices, -1);
-                    }
-			return indices;
-		} else {
-                                return null;
-                            }
-	}
+    public int[] associateLoners(Population loners, Population[] species,
+                                 Population referenceSet) {
+        if (loners != null && (loners.size() > 0)) {
+            int[] indices = new int[loners.size()];
+            if (assignLoners) {
+                Arrays.fill(indices, 0);
+            } else {
+                Arrays.fill(indices, -1);
+            }
+            return indices;
+        } else {
+            return null;
+        }
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see eva2.optimization.operators.cluster.InterfaceClustering#cluster(eva2.optimization.populations.Population, eva2.optimization.populations.Population)
-	 */
+    /*
+     * (non-Javadoc)
+     * @see eva2.optimization.operators.cluster.InterfaceClustering#cluster(eva2.optimization.populations.Population, eva2.optimization.populations.Population)
+     */
     @Override
-	public Population[] cluster(Population pop, Population referenceSet) {
-		// first pop is empty (there are no loners), second pop is complete
-		return new Population[]{pop.cloneWithoutInds(), pop.cloneShallowInds()};
-	}
+    public Population[] cluster(Population pop, Population referenceSet) {
+        // first pop is empty (there are no loners), second pop is complete
+        return new Population[]{pop.cloneWithoutInds(), pop.cloneShallowInds()};
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see eva2.optimization.operators.cluster.InterfaceClustering#initClustering(eva2.optimization.populations.Population)
-	 */
+    /*
+     * (non-Javadoc)
+     * @see eva2.optimization.operators.cluster.InterfaceClustering#initClustering(eva2.optimization.populations.Population)
+     */
     @Override
-	public String initClustering(Population pop) {
-		return null;
-	}
+    public String initClustering(Population pop) {
+        return null;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see eva2.optimization.operators.cluster.InterfaceClustering#mergingSpecies(eva2.optimization.populations.Population, eva2.optimization.populations.Population, eva2.optimization.populations.Population)
-	 */
+    /*
+     * (non-Javadoc)
+     * @see eva2.optimization.operators.cluster.InterfaceClustering#mergingSpecies(eva2.optimization.populations.Population, eva2.optimization.populations.Population, eva2.optimization.populations.Population)
+     */
     @Override
-	public boolean mergingSpecies(Population species1, Population species2,
-			Population referenceSet) {
-		return true;
-	}
-	
-	public static String globalInfo() {
-		return "A dummy clustering implementation which assigns all elements to a single cluster.";
-	}
-	
-	public String getName() {
-		return "Cluster-all";
-	}
+    public boolean mergingSpecies(Population species1, Population species2,
+                                  Population referenceSet) {
+        return true;
+    }
+
+    public static String globalInfo() {
+        return "A dummy clustering implementation which assigns all elements to a single cluster.";
+    }
+
+    public String getName() {
+        return "Cluster-all";
+    }
 
 }

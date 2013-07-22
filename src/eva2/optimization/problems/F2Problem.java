@@ -13,66 +13,74 @@ import eva2.optimization.strategies.GradientDescentAlgorithm;
  */
 public class F2Problem extends AbstractProblemDoubleOffset implements InterfaceLocalSearchable, InterfaceMultimodalProblem, java.io.Serializable, InterfaceFirstOrderDerivableProblem {
 
-    private transient GradientDescentAlgorithm localSearchOptimizer=null;
+    private transient GradientDescentAlgorithm localSearchOptimizer = null;
 
 
-	public F2Problem() {
+    public F2Problem() {
         this.template = new ESIndividualDoubleData();
     }
+
     public F2Problem(F2Problem b) {
-        super(b);     
-    }
-    public F2Problem(int dim) {
-    	super(dim);
+        super(b);
     }
 
-    /** This method returns a deep clone of the problem.
-     * @return  the clone
+    public F2Problem(int dim) {
+        super(dim);
+    }
+
+    /**
+     * This method returns a deep clone of the problem.
+     *
+     * @return the clone
      */
     @Override
     public Object clone() {
         return (Object) new F2Problem(this);
     }
 
-    /** Ths method allows you to evaluate a double[] to determine the fitness
-     * @param x     The n-dimensional input vector
-     * @return  The m-dimensional output vector.
+    /**
+     * Ths method allows you to evaluate a double[] to determine the fitness
+     *
+     * @param x The n-dimensional input vector
+     * @return The m-dimensional output vector.
      */
     @Override
     public double[] eval(double[] x) {
-    	x = rotateMaybe(x);
+        x = rotateMaybe(x);
         double[] result = new double[1];
-        result[0]     = yOffset;
+        result[0] = yOffset;
         double xi, xii;
-        for (int i = 0; i < x.length-1; i++) {
-        	xi=x[i]- xOffset;
-        	xii=x[i+1]- xOffset;
-            result[0]  += (100*(xii-xi*xi)*(xii-xi*xi)+(xi-1)*(xi-1));
+        for (int i = 0; i < x.length - 1; i++) {
+            xi = x[i] - xOffset;
+            xii = x[i + 1] - xOffset;
+            result[0] += (100 * (xii - xi * xi) * (xii - xi * xi) + (xi - 1) * (xi - 1));
         }
-        if (yOffset ==0 && (result[0]<=0)) {
-            result[0]=Math.sqrt(Double.MIN_VALUE);
+        if (yOffset == 0 && (result[0] <= 0)) {
+            result[0] = Math.sqrt(Double.MIN_VALUE);
         } // guard for plots in log scale
         return result;
     }
-    
+
     @Override
-	public double[] getFirstOrderGradients(double[] x) {
-		x = rotateMaybe(x);
+    public double[] getFirstOrderGradients(double[] x) {
+        x = rotateMaybe(x);
         int dim = x.length;
         double[] result = new double[dim];
         double xi, xii;
-        
-        for (int i = 0; i < dim-1; i++) {
-        	xi=x[i]- xOffset;
-        	xii=x[i+1]- xOffset;
 
-        	result[i] += 400*xi*(xi*xi-xii) + 2*xi-2;
-        	result[i+1] += -200 * (xi*xi - xii);
+        for (int i = 0; i < dim - 1; i++) {
+            xi = x[i] - xOffset;
+            xii = x[i + 1] - xOffset;
+
+            result[i] += 400 * xi * (xi * xi - xii) + 2 * xi - 2;
+            result[i + 1] += -200 * (xi * xi - xii);
         }
         return result;
-	}
-	
-    /** This method returns a string describing the optimization problem.
+    }
+
+    /**
+     * This method returns a string describing the optimization problem.
+     *
      * @return The description.
      */
     public String getStringRepresentationForProblem() {
@@ -81,18 +89,20 @@ public class F2Problem extends AbstractProblemDoubleOffset implements InterfaceL
         result += "F2 Generalized Rosenbrock function:\n";
         result += "This problem has a deceptive optimum at (0,0,..), the true optimum is at (1,1,1,..).\n";
         result += "Parameters:\n";
-        result += "Dimension   : " + this.problemDimension +"\n";
+        result += "Dimension   : " + this.problemDimension + "\n";
         result += "Noise level : " + this.getNoise() + "\n";
         result += "Solution representation:\n";
         //result += this.template.getSolutionRepresentationFor();
         return result;
     }
-    
+
 /**********************************************************************************************************************
  * These are for GUI
  */
-    /** This method allows the CommonJavaObjectEditorPanel to read the
+    /**
+     * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
+     *
      * @return The name.
      */
     @Override
@@ -100,7 +110,9 @@ public class F2Problem extends AbstractProblemDoubleOffset implements InterfaceL
         return "F2-Problem";
     }
 
-    /** This method returns a global info string
+    /**
+     * This method returns a global info string
+     *
      * @return description
      */
     public static String globalInfo() {
@@ -109,25 +121,25 @@ public class F2Problem extends AbstractProblemDoubleOffset implements InterfaceL
 
     @Override
     public void doLocalSearch(Population pop) {
-    	if (localSearchOptimizer == null) {
-    		initLS();
-    	}
-    	localSearchOptimizer.setPopulation(pop);
-    	localSearchOptimizer.optimize();
+        if (localSearchOptimizer == null) {
+            initLS();
+        }
+        localSearchOptimizer.setPopulation(pop);
+        localSearchOptimizer.optimize();
     }
 
     private void initLS() {
-		localSearchOptimizer = new GradientDescentAlgorithm();
-	    localSearchOptimizer.setProblem(this);
-	    localSearchOptimizer.init();
+        localSearchOptimizer = new GradientDescentAlgorithm();
+        localSearchOptimizer.setProblem(this);
+        localSearchOptimizer.init();
     }
 
     @Override
     public double getLocalSearchStepFunctionCallEquivalent() {
-    	double cost = 1;
-    	if (this.localSearchOptimizer instanceof GradientDescentAlgorithm) {
-    		cost = ((GradientDescentAlgorithm) localSearchOptimizer).getIterations();
-    	}
-    	return cost;
+        double cost = 1;
+        if (this.localSearchOptimizer instanceof GradientDescentAlgorithm) {
+            cost = ((GradientDescentAlgorithm) localSearchOptimizer).getIterations();
+        }
+        return cost;
     }
 }

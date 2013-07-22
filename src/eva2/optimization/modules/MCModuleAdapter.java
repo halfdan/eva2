@@ -11,7 +11,7 @@ public class MCModuleAdapter extends GenericModuleAdapter implements ModuleAdapt
      * Constructor of the ModuleAdapter.
      *
      * @param adapterName The AdapterName
-     * @param client The client to serve
+     * @param client      The client to serve
      */
     public MCModuleAdapter(String adapterName) {
         super(adapterName, "MC.html", MCParameters.getInstance(), true);

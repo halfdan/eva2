@@ -5,6 +5,7 @@ import eva2.optimization.go.MOCCOStandalone;
 import eva2.optimization.mocco.paretofrontviewer.InterfaceRefPointListener;
 import eva2.optimization.problems.InterfaceMultiObjectiveDeNovoProblem;
 import eva2.optimization.problems.InterfaceOptimizationObjective;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,15 +20,16 @@ import javax.swing.*;
  */
 public class MOCCOChooseReferencePoint extends MOCCOPhase implements InterfaceProcessElement, InterfaceRefPointListener {
 
-    private JTextField[]    m_JTextField;
-    private double[]        m_ReferencePoint;
-    JPanel                  m_Selected;
+    private JTextField[] m_JTextField;
+    private double[] m_ReferencePoint;
+    JPanel m_Selected;
 
     public MOCCOChooseReferencePoint(MOCCOStandalone mocco) {
         this.m_Mocco = mocco;
     }
 
-    /** This method will call the init method and will go to stall
+    /**
+     * This method will call the init method and will go to stall
      */
     @Override
     public void initProcessElementParametrization() {
@@ -58,7 +60,7 @@ public class MOCCOChooseReferencePoint extends MOCCOPhase implements InterfacePr
 
     private void updateSelected() {
         this.m_Selected.removeAll();
-        InterfaceOptimizationObjective[] objectives = ((InterfaceMultiObjectiveDeNovoProblem)this.m_Mocco.m_State.m_CurrentProblem).getProblemObjectives();
+        InterfaceOptimizationObjective[] objectives = ((InterfaceMultiObjectiveDeNovoProblem) this.m_Mocco.m_State.m_CurrentProblem).getProblemObjectives();
         this.m_Selected.setLayout(new BorderLayout());
         if (this.m_Mocco.m_View.m_ReferencePoint == null) {
             this.m_Selected.add(new JLabel("No reference point! Wierd there should be a default value!?"), BorderLayout.NORTH);
@@ -68,17 +70,17 @@ public class MOCCOChooseReferencePoint extends MOCCOPhase implements InterfacePr
             this.m_JTextField = new JTextField[this.m_Mocco.m_View.m_ReferencePoint.length];
             tmpP.setLayout(new GridBagLayout());
             GridBagConstraints gbc = new GridBagConstraints();
-            gbc.anchor      = GridBagConstraints.WEST;
-            gbc.fill        = GridBagConstraints.BOTH;
+            gbc.anchor = GridBagConstraints.WEST;
+            gbc.fill = GridBagConstraints.BOTH;
             for (int i = 0; i < this.m_Mocco.m_View.m_ReferencePoint.length; i++) {
-                gbc.gridx       = 0;
-                gbc.gridy       = i;
-                gbc.weightx     = 1;
-                tmpP.add(new JLabel("Fitness "+(i+1)), gbc);
-                gbc.gridx       = 1;
-                gbc.gridy       = i;
-                gbc.weightx     = 1;
-                this.m_JTextField[i] = new JTextField(""+this.m_Mocco.m_View.m_ReferencePoint[i]);
+                gbc.gridx = 0;
+                gbc.gridy = i;
+                gbc.weightx = 1;
+                tmpP.add(new JLabel("Fitness " + (i + 1)), gbc);
+                gbc.gridx = 1;
+                gbc.gridy = i;
+                gbc.weightx = 1;
+                this.m_JTextField[i] = new JTextField("" + this.m_Mocco.m_View.m_ReferencePoint[i]);
                 this.m_JTextField[i].setEditable(true);
                 this.m_JTextField[i].addActionListener(refPointEdited);
                 tmpP.add(this.m_JTextField[i], gbc);
@@ -88,7 +90,9 @@ public class MOCCOChooseReferencePoint extends MOCCOPhase implements InterfacePr
         this.m_Selected.validate();
     }
 
-    /** This method returns the reference point
+    /**
+     * This method returns the reference point
+     *
      * @return double[]     The reference point
      */
     public double[] getReferencePoint() {
@@ -122,10 +126,12 @@ public class MOCCOChooseReferencePoint extends MOCCOPhase implements InterfacePr
      *  InterfaceReferenceListener
      */
 
-    /** This method will notify the listener that a point has been selected
+    /**
+     * This method will notify the listener that a point has been selected
      * It has to be noted though that at this point the reference point is not
      * a full vector since it is only 2d
-     * @param point  The selected point, most likely 2d
+     *
+     * @param point The selected point, most likely 2d
      */
     @Override
     public void refPointGiven(double[] point) {

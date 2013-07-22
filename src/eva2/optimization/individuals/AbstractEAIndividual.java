@@ -14,9 +14,11 @@ import eva2.optimization.population.Population;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.tools.EVAERROR;
 import eva2.tools.math.RNG;
+
 import java.util.*;
 
-/** This is the abstract EA individual implementing the most important methods giving
+/**
+ * This is the abstract EA individual implementing the most important methods giving
  * access to mutation and crossover rates and operators, fitness values and selection
  * probabilities. All EA individuals should typically extend this abstract EA individual.
  * In that case the EA individuals only implement the genotype and phenotype interfaces.
@@ -44,7 +46,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
     private double constraintViolation = 0;
     public boolean areaConst4ParallelViolated = false; // no idea what felix used this for...
     public boolean isMarked = false;    // is for GUI only!
-    public boolean isPenalized = false;	// may be set true for penalty based constraints
+    public boolean isPenalized = false;    // may be set true for penalty based constraints
     protected double[] selectionProbability = new double[1];
 
     protected double crossoverProbability = 1.0;
@@ -249,6 +251,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
 //    public String getIndividualName() {
 //        return this.m_Name;
 //    }
+
     /**
      * This method is used when a new offspring is created the increment the
      * name.
@@ -307,6 +310,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
 //            return false;
 //        }
 //    }
+
     /**
      * This method will allow a default initialisation of the individual
      *
@@ -385,6 +389,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
 //	public void setLogHeritagetLen(int logLen) {
 //		logParentLen = logLen;
 //	}
+
     /**
      * Add an ancestor generation with multiple parents.
      *
@@ -446,6 +451,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
 //		heritage.add(parentIDs);
 ////		if (heritage.size() > logParentLen) heritage.remove(0);
 //	}
+
     /**
      * Add an ancestor generation with only one parent.
      *
@@ -468,6 +474,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
 //		if (heritage != null) return heritage.getLast();
 //		else return null;
 //	}
+
     /**
      * This method will allow you to get the current age of an individual Zero
      * means it has not even been evaluated.
@@ -627,7 +634,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
     /**
      * This method allows you to set the i-th fitness value
      *
-     * @param index The index of the fitness value to set.
+     * @param index   The index of the fitness value to set.
      * @param fitness The new fitness value.
      */
     public void SetFitness(int index, double fitness) {
@@ -764,7 +771,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      *
      * @param indy The individual to compare to.
      * @return 1 if the instance is better (regarding constraints only), -1 if
-     * is worse, 0 if they are equal in that respect.
+     *         is worse, 0 if they are equal in that respect.
      */
     public int compareConstraintViolation(AbstractEAIndividual indy) {
         if ((this.constraintViolation > 0) && (indy.constraintViolation <= 0)) {
@@ -883,7 +890,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      * This method allows you to set the i-th selection probability value
      *
      * @param index The index of the selection probability value to set.
-     * @param sel The new selection probability value.
+     * @param sel   The new selection probability value.
      */
     public void SetSelectionProbability(int index, double sel) {
         if (this.selectionProbability.length > index) {
@@ -998,7 +1005,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      * name.
      *
      * @param name The identifying name.
-     * @param obj The object that is to be stored.
+     * @param obj  The object that is to be stored.
      */
     public void putData(String name, Object obj) {
         dataHash.put(name, obj);
@@ -1010,7 +1017,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      * fitness array.
      *
      * @param name The name of the requested Object
-     * @return Object	The associated object or null if none is found
+     * @return Object    The associated object or null if none is found
      */
     public Object getData(String name) {
 //        if (name.equalsIgnoreCase("SelectionProbability")) return this.getSelectionProbability();
@@ -1286,7 +1293,6 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
 
     /**
      * @return true if parent history logging is activated
-     *
      */
     protected boolean isLogParents() {
         return logParents;
@@ -1309,7 +1315,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
         return (IndividualInterface) this.clone();
     }
 
-//    /** This method is used to get the basic data type of an individual double[].
+    //    /** This method is used to get the basic data type of an individual double[].
 //     * @deprecated Since not all EAIndividuals provide double as basic data type
 //     * the fitness can be is returned as default value.
 //     * @see #getFitness()

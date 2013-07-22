@@ -4,9 +4,11 @@ package eva2.optimization.operator.selection.probability;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
 import eva2.tools.EVAERROR;
+
 import java.util.ArrayList;
 
-/** This abstract implementation gives some general
+/**
+ * This abstract implementation gives some general
  * methods for retrieving and cleaning fitness values.
  * Created by IntelliJ IDEA.
  * User: streiche
@@ -16,29 +18,35 @@ import java.util.ArrayList;
  */
 public abstract class AbstractSelProb implements InterfaceSelectionProbability, java.io.Serializable {
 
-    /** This method allows you to make a deep clone of
+    /**
+     * This method allows you to make a deep clone of
      * the object
+     *
      * @return the deep clone
      */
     @Override
     public abstract Object clone();
 
-    /** This method computes the selection probability for each individual
+    /**
+     * This method computes the selection probability for each individual
      * in the population. Note: Summed over the complete population the selection
-     *  probability sums up to one.
-     * @param population    The population to compute.
-     * @param input         The name of the input.
+     * probability sums up to one.
+     *
+     * @param population The population to compute.
+     * @param input      The name of the input.
      */
     @Override
     public void computeSelectionProbability(Population population, String[] input, boolean obeyConst) {
         this.computeSelectionProbability(population, this.preprocess(population, input), obeyConst);
     }
 
-    /** This method computes the selection probability for each individual
+    /**
+     * This method computes the selection probability for each individual
      * in the population. Note: Summed over the complete population the selection
-     *  probability sums up to one.
-     * @param population    The population to compute.
-     * @param input         The name of the input.
+     * probability sums up to one.
+     *
+     * @param population The population to compute.
+     * @param input      The name of the input.
      */
     @Override
     public void computeSelectionProbability(Population population, String input, boolean obeyConst) {
@@ -47,90 +55,94 @@ public abstract class AbstractSelProb implements InterfaceSelectionProbability, 
         this.computeSelectionProbability(population, tmp, obeyConst);
     }
 
-    /** This method computes the selection probability for each individual
+    /**
+     * This method computes the selection probability for each individual
      * in the population. Note: Summed over the complete population the selection
-     *  probability sums up to one.
-     * @param population    The population to compute.
-     * @param data         The input data as double[][].
+     * probability sums up to one.
+     *
+     * @param population The population to compute.
+     * @param data       The input data as double[][].
      */
     @Override
     public abstract void computeSelectionProbability(Population population, double[][] data, boolean obeyConst);
 
-    /** This method converts all inputs to a list of double values
-     * @param population    A population that is to be computed.
-     * @param inputs        A list of inputs.
+    /**
+     * This method converts all inputs to a list of double values
+     *
+     * @param population A population that is to be computed.
+     * @param inputs     A list of inputs.
      * @return double[][]   A array of values, first index gives the individual, second index the value.
      */
     protected double[][] preprocess(Population population, String[] inputs) {
-        double[][]  result;
-        double[]    tmpD;
-        ArrayList   tmpList = new ArrayList();
+        double[][] result;
+        double[] tmpD;
+        ArrayList tmpList = new ArrayList();
         AbstractEAIndividual tmpIndy;
-        Object      obj;
+        Object obj;
 
         result = new double[population.size()][];
         for (int i = 0; i < population.size(); i++) {
-            tmpIndy = (AbstractEAIndividual)population.get(i);
+            tmpIndy = (AbstractEAIndividual) population.get(i);
             tmpList = new ArrayList();
             for (int j = 0; j < inputs.length; j++) {
                 obj = tmpIndy.getData(inputs[j]);
-                if (obj==null) {
+                if (obj == null) {
                     EVAERROR.errorMsgOnce("Error: could not get data by key " + inputs[j] + " from individual in AbstractSelProb");
                 }
                 if (obj instanceof double[]) {
-                    for (int m = 0; m < ((double[])obj).length; m++) {
-                        tmpList.add(new Double(((double[])obj)[m]));
+                    for (int m = 0; m < ((double[]) obj).length; m++) {
+                        tmpList.add(new Double(((double[]) obj)[m]));
                     }
                     continue;
                 }
                 if (obj instanceof Double) {
-                    tmpList.add((Double)obj);
+                    tmpList.add((Double) obj);
                     continue;
                 }
                 if (obj instanceof float[]) {
-                    for (int m = 0; m < ((float[])obj).length; m++) {
-                        tmpList.add(new Double(((float[])obj)[m]));
+                    for (int m = 0; m < ((float[]) obj).length; m++) {
+                        tmpList.add(new Double(((float[]) obj)[m]));
                     }
                     continue;
                 }
                 if (obj instanceof Float) {
-                    tmpList.add((Float)obj);
+                    tmpList.add((Float) obj);
                     continue;
                 }
                 if (obj instanceof long[]) {
-                    for (int m = 0; m < ((long[])obj).length; m++) {
-                        tmpList.add(new Double(((long[])obj)[m]));
+                    for (int m = 0; m < ((long[]) obj).length; m++) {
+                        tmpList.add(new Double(((long[]) obj)[m]));
                     }
                     continue;
                 }
                 if (obj instanceof Long) {
-                    tmpList.add((Long)obj);
+                    tmpList.add((Long) obj);
                     continue;
                 }
                 if (obj instanceof int[]) {
-                    for (int m = 0; m < ((int[])obj).length; m++) {
-                        tmpList.add(new Double(((int[])obj)[m]));
+                    for (int m = 0; m < ((int[]) obj).length; m++) {
+                        tmpList.add(new Double(((int[]) obj)[m]));
                     }
                     continue;
                 }
                 if (obj instanceof Integer) {
-                    tmpList.add((Integer)obj);
+                    tmpList.add((Integer) obj);
                 }
             }
             // now we got a complete ArrayList
             tmpD = new double[tmpList.size()];
             for (int j = 0; j < tmpD.length; j++) {
-                tmpD[j] = ((Double)tmpList.get(j)).doubleValue();
+                tmpD[j] = ((Double) tmpList.get(j)).doubleValue();
             }
             result[i] = tmpD;
         }
 
         // Here i could check for NaN and BufferOverflows
-        double  tmpSum, min, max;
+        double tmpSum, min, max;
         for (int i = 0; i < result.length; i++) {
-            tmpSum  = 0;
-            min     = Double.MAX_VALUE;
-            max     = Double.MIN_VALUE;
+            tmpSum = 0;
+            min = Double.MAX_VALUE;
+            max = Double.MIN_VALUE;
             for (int j = 0; j < result[i].length; j++) {
                 if (Double.isInfinite(result[i][j])) {
                     result[i][j] = Double.NaN;

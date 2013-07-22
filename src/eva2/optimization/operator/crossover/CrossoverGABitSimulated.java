@@ -6,6 +6,7 @@ import eva2.optimization.individuals.InterfaceGAIndividual;
 import eva2.optimization.population.Population;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
+
 import java.util.BitSet;
 
 /**
@@ -16,15 +17,19 @@ import java.util.BitSet;
  * To change this template use Options | File Templates.
  */
 public class CrossoverGABitSimulated implements InterfaceCrossover, java.io.Serializable {
-    private InterfaceOptimizationProblem    m_OptimizationProblem;
+    private InterfaceOptimizationProblem m_OptimizationProblem;
 
     public CrossoverGABitSimulated() {
 
     }
+
     public CrossoverGABitSimulated(CrossoverGABitSimulated c) {
-        this.m_OptimizationProblem      = c.m_OptimizationProblem;
+        this.m_OptimizationProblem = c.m_OptimizationProblem;
     }
-    /** This method will enable you to clone a given mutation operator
+
+    /**
+     * This method will enable you to clone a given mutation operator
+     *
      * @return The clone
      */
     @Override
@@ -32,34 +37,36 @@ public class CrossoverGABitSimulated implements InterfaceCrossover, java.io.Seri
         return new CrossoverGABitSimulated(this);
     }
 
-    /** This method performs crossover on two individuals. If the individuals do
+    /**
+     * This method performs crossover on two individuals. If the individuals do
      * not implement InterfaceGAIndividual, then nothing will happen.
-     * @param indy1 The first individual
+     *
+     * @param indy1    The first individual
      * @param partners The second individual
      */
     @Override
     public AbstractEAIndividual[] mate(AbstractEAIndividual indy1, Population partners) {
         AbstractEAIndividual[] result = null;
-        result = new AbstractEAIndividual[partners.size()+1];
+        result = new AbstractEAIndividual[partners.size() + 1];
         result[0] = (AbstractEAIndividual) (indy1).clone();
         for (int i = 0; i < partners.size(); i++) {
-            result[i+1] = (AbstractEAIndividual) ((AbstractEAIndividual)partners.get(i)).clone();
+            result[i + 1] = (AbstractEAIndividual) ((AbstractEAIndividual) partners.get(i)).clone();
         }
         if (partners.size() == 0) {
             return result;
         }
         //for (int i = 0; i < result.length; i++) System.out.println("Before Crossover: " +result[i].getSolutionRepresentationFor());
         if ((indy1 instanceof InterfaceGAIndividual) && (partners.get(0) instanceof InterfaceGAIndividual)) {
-            int         length          =  ((InterfaceGAIndividual)indy1).getGenotypeLength();
-            double      current;
-            BitSet[][]  tmpBitSet       = new BitSet[2][partners.size()+1];
+            int length = ((InterfaceGAIndividual) indy1).getGenotypeLength();
+            double current;
+            BitSet[][] tmpBitSet = new BitSet[2][partners.size() + 1];
 
-            tmpBitSet[0][0]     = ((InterfaceGAIndividual)indy1).getBGenotype();
-            tmpBitSet[1][0]     = ((InterfaceGAIndividual)result[0]).getBGenotype();
+            tmpBitSet[0][0] = ((InterfaceGAIndividual) indy1).getBGenotype();
+            tmpBitSet[1][0] = ((InterfaceGAIndividual) result[0]).getBGenotype();
             for (int i = 0; i < partners.size(); i++) {
-                tmpBitSet[0][i+1] = ((InterfaceGAIndividual)partners.get(i)).getBGenotype();
-                tmpBitSet[1][i+1] = ((InterfaceGAIndividual)result[i+1]).getBGenotype();
-                length = Math.max(length, ((InterfaceGAIndividual)partners.get(i)).getGenotypeLength());
+                tmpBitSet[0][i + 1] = ((InterfaceGAIndividual) partners.get(i)).getBGenotype();
+                tmpBitSet[1][i + 1] = ((InterfaceGAIndividual) result[i + 1]).getBGenotype();
+                length = Math.max(length, ((InterfaceGAIndividual) partners.get(i)).getGenotypeLength());
             }
 
             for (int i = 0; i < length; i++) {
@@ -69,19 +76,18 @@ public class CrossoverGABitSimulated implements InterfaceCrossover, java.io.Seri
                         current++;
                     }
                 }
-                current /= (double)(tmpBitSet[0].length);
+                current /= (double) (tmpBitSet[0].length);
                 for (int j = 0; j < tmpBitSet[0].length; j++) {
                     if (RNG.flipCoin(current)) {
                         tmpBitSet[1][j].set(i);
-                    }
-                    else {
+                    } else {
                         tmpBitSet[1][j].clear(i);
                     }
                 }
             }
 
             for (int i = 0; i < result.length; i++) {
-                ((InterfaceGAIndividual)result[i]).SetBGenotype(tmpBitSet[1][i]);
+                ((InterfaceGAIndividual) result[i]).SetBGenotype(tmpBitSet[1][i]);
             }
         }
         //in case the crossover was successfull lets give the mutation operators a chance to mate the strategy parameters
@@ -92,26 +98,29 @@ public class CrossoverGABitSimulated implements InterfaceCrossover, java.io.Seri
         return result;
     }
 
-    /** This method allows you to evaluate wether two crossover operators
+    /**
+     * This method allows you to evaluate wether two crossover operators
      * are actually the same.
-     * @param crossover   The other crossover operator
+     *
+     * @param crossover The other crossover operator
      */
     @Override
     public boolean equals(Object crossover) {
         if (crossover instanceof CrossoverGABitSimulated) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
 
-    /** This method will allow the crossover operator to be initialized depending on the
+    /**
+     * This method will allow the crossover operator to be initialized depending on the
      * individual and the optimization problem. The optimization problem is to be stored
      * since it is to be called during crossover to calculate the exogene parameters for
      * the offsprings.
-     * @param individual    The individual that will be mutated.
-     * @param opt           The optimization problem.
+     *
+     * @param individual The individual that will be mutated.
+     * @param opt        The optimization problem.
      */
     @Override
     public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
@@ -121,19 +130,24 @@ public class CrossoverGABitSimulated implements InterfaceCrossover, java.io.Seri
     @Override
     public String getStringRepresentation() {
         return this.getName();
-    }    
+    }
 
 /**********************************************************************************************************************
  * These are for GUI
  */
-    /** This method allows the CommonJavaObjectEditorPanel to read the
+    /**
+     * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
+     *
      * @return The name.
      */
     public String getName() {
         return "GA bit simulated crossover";
     }
-    /** This method returns a global info string
+
+    /**
+     * This method returns a global info string
+     *
      * @return description
      */
     public static String globalInfo() {

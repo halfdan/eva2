@@ -9,10 +9,12 @@ package eva2.gui;
  *            $Date: 2007-11-27 14:37:05 +0100 (Tue, 27 Nov 2007) $
  *            $Author: mkron $
  */
+
 import eva2.optimization.OptimizationStateListener;
 import eva2.optimization.modules.ModuleAdapter;
 import eva2.optimization.stat.OptimizationJob;
 import eva2.tools.ToolBoxGui;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.Serializable;
@@ -53,9 +55,9 @@ public class EvAModuleButtonPanelMaker implements OptimizationStateListener, Ser
     public JToolBar makePanel() {
         toolBar = new JToolBar();
         toolBar.setFloatable(false);
-        
+
         moduleAdapter.addOptimizationStateListener((OptimizationStateListener) (this));
-        
+
 
         //////////////////////////////////////////////////////////////
         runButton = ToolBoxGui.createIconifiedButton("images/Play24.gif", "Start", true);
@@ -111,7 +113,7 @@ public class EvAModuleButtonPanelMaker implements OptimizationStateListener, Ser
         });
         postProcessButton.setEnabled(runningState && moduleAdapter.hasPostProcessing());
         toolBar.add(postProcessButton);
-        
+
         scheduleButton = ToolBoxGui.createIconifiedButton("images/Server24.gif", "Schedule", true);
         scheduleButton.setToolTipText("Schedule the currently configured optimization as a job.");
         //scheduleButton.setBorderPainted(false);
@@ -139,7 +141,7 @@ public class EvAModuleButtonPanelMaker implements OptimizationStateListener, Ser
             stopButton.setEnabled(true);
             runButton.setEnabled(false);
             postProcessButton.setEnabled(false);
-        } catch (Exception ex) {            
+        } catch (Exception ex) {
             ex.printStackTrace();
             System.err.print("Error in run: " + ex + " : " + ex.getMessage());
         }

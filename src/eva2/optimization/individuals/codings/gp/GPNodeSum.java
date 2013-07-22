@@ -4,9 +4,8 @@ package eva2.optimization.individuals.codings.gp;
 import eva2.optimization.problems.InterfaceProgramProblem;
 import eva2.tools.math.Mathematics;
 
-/** 
+/**
  * A simple sum node with a single, possibly vectorial (array), argument.
- * 
  */
 public class GPNodeSum extends AbstractGPNode implements java.io.Serializable {
 
@@ -14,10 +13,12 @@ public class GPNodeSum extends AbstractGPNode implements java.io.Serializable {
     }
 
     public GPNodeSum(GPNodeSum node) {
-    	this.cloneMembers(node);
+        this.cloneMembers(node);
     }
 
-    /** This method will be used to identify the node in the GPAreaEditor
+    /**
+     * This method will be used to identify the node in the GPAreaEditor
+     *
      * @return The name.
      */
     @Override
@@ -25,7 +26,9 @@ public class GPNodeSum extends AbstractGPNode implements java.io.Serializable {
         return "Sum";
     }
 
-    /** This method allows you to clone the Nodes
+    /**
+     * This method allows you to clone the Nodes
+     *
      * @return the clone
      */
     @Override
@@ -33,7 +36,9 @@ public class GPNodeSum extends AbstractGPNode implements java.io.Serializable {
         return (Object) new GPNodeSum(this);
     }
 
-    /** This method will return the current arity
+    /**
+     * This method will return the current arity
+     *
      * @return Arity.
      */
     @Override
@@ -41,7 +46,9 @@ public class GPNodeSum extends AbstractGPNode implements java.io.Serializable {
         return 1;
     }
 
-    /** This method will evaluate a given node
+    /**
+     * This method will evaluate a given node
+     *
      * @param environment
      */
     @Override
@@ -52,15 +59,14 @@ public class GPNodeSum extends AbstractGPNode implements java.io.Serializable {
         for (int i = 0; i < this.m_Nodes.length; i++) {
             tmpObj = this.m_Nodes[i].evaluate(environment);
             if (tmpObj instanceof double[]) {
-                result+=Mathematics.sum((double[])tmpObj);
-            }
-            else if (tmpObj instanceof Double[]) {
-            	Double[] vals = (Double[])tmpObj;
-            	for (int j=0; j<vals.length; j++) {
-                    result+=vals[j];
+                result += Mathematics.sum((double[]) tmpObj);
+            } else if (tmpObj instanceof Double[]) {
+                Double[] vals = (Double[]) tmpObj;
+                for (int j = 0; j < vals.length; j++) {
+                    result += vals[j];
                 }
             } else if (tmpObj instanceof Double) {
-                result=(Double)tmpObj;
+                result = (Double) tmpObj;
             }
         }
         return new Double(result);
@@ -68,6 +74,6 @@ public class GPNodeSum extends AbstractGPNode implements java.io.Serializable {
 
     @Override
     public String getOpIdentifier() {
-    	return "sum";
+        return "sum";
     }
 }

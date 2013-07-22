@@ -14,16 +14,19 @@ import eva2.tools.math.RNG;
  * To change this template use Options | File Templates.
  */
 public class CrossoverESUniformDiscrete implements InterfaceCrossover, java.io.Serializable {
-    private InterfaceOptimizationProblem    m_OptimizationProblem;
+    private InterfaceOptimizationProblem m_OptimizationProblem;
 
     public CrossoverESUniformDiscrete() {
 
     }
+
     public CrossoverESUniformDiscrete(CrossoverESUniformDiscrete c) {
-        this.m_OptimizationProblem      = c.m_OptimizationProblem;
+        this.m_OptimizationProblem = c.m_OptimizationProblem;
     }
 
-    /** This method will enable you to clone a given crossover operator
+    /**
+     * This method will enable you to clone a given crossover operator
+     *
      * @return The clone
      */
     @Override
@@ -31,47 +34,49 @@ public class CrossoverESUniformDiscrete implements InterfaceCrossover, java.io.S
         return new CrossoverESUniformDiscrete(this);
     }
 
-    /** This method performs crossover on two individuals. If the individuals do
+    /**
+     * This method performs crossover on two individuals. If the individuals do
      * not implement InterfaceGAIndividual, then nothing will happen.
-     * @param indy1 The first individual
+     *
+     * @param indy1    The first individual
      * @param partners The second individual
      */
     @Override
     public AbstractEAIndividual[] mate(AbstractEAIndividual indy1, Population partners) {
-        AbstractEAIndividual[]  result = null;
-        double[][]              parents, children;
+        AbstractEAIndividual[] result = null;
+        double[][] parents, children;
 
 
-        result      = new AbstractEAIndividual[partners.size()+1];
-        result[0]   = (AbstractEAIndividual) (indy1).clone();
+        result = new AbstractEAIndividual[partners.size() + 1];
+        result[0] = (AbstractEAIndividual) (indy1).clone();
         for (int i = 0; i < partners.size(); i++) {
-            result[i+1]     = (AbstractEAIndividual) ((AbstractEAIndividual)partners.get(i)).clone();
+            result[i + 1] = (AbstractEAIndividual) ((AbstractEAIndividual) partners.get(i)).clone();
         }
         //for (int i = 0; i < result.length; i++) System.out.println("Before Crossover: " +result[i].getSolutionRepresentationFor());
 
         if ((indy1 instanceof InterfaceESIndividual) && (partners.get(0) instanceof InterfaceESIndividual)) {
-            int         length          =  ((InterfaceESIndividual)result[0]).getDGenotype().length;
-            int         mixer           = RNG.randomInt(0, partners.size());
+            int length = ((InterfaceESIndividual) result[0]).getDGenotype().length;
+            int mixer = RNG.randomInt(0, partners.size());
 
-            parents     = new double[partners.size()+1][];
-            children    = new double[partners.size()+1][];
+            parents = new double[partners.size() + 1][];
+            children = new double[partners.size() + 1][];
             for (int i = 0; i < result.length; i++) {
-                parents[i] = new double[((InterfaceESIndividual)result[i]).getDGenotype().length];
+                parents[i] = new double[((InterfaceESIndividual) result[i]).getDGenotype().length];
                 children[i] = new double[parents[i].length];
-                System.arraycopy(((InterfaceESIndividual)result[i]).getDGenotype(), 0, parents[i], 0, parents[i].length);
-                System.arraycopy(((InterfaceESIndividual)result[i]).getDGenotype(), 0, children[i], 0, parents[i].length);
+                System.arraycopy(((InterfaceESIndividual) result[i]).getDGenotype(), 0, parents[i], 0, parents[i].length);
+                System.arraycopy(((InterfaceESIndividual) result[i]).getDGenotype(), 0, children[i], 0, parents[i].length);
             }
 
             for (int i = 0; i < length; i++) {
-                mixer = RNG.randomInt(0, children.length-1);
+                mixer = RNG.randomInt(0, children.length - 1);
                 for (int j = 0; j < children.length; j++) {
-                        children[j][i] = parents[(j + mixer) % parents.length][i];
+                    children[j][i] = parents[(j + mixer) % parents.length][i];
                 }
             }
 
             // write the result back
             for (int i = 0; i < result.length; i++) {
-                ((InterfaceESIndividual)result[i]).SetDGenotype(children[i]);
+                ((InterfaceESIndividual) result[i]).SetDGenotype(children[i]);
             }
         }
         //in case the crossover was successfull lets give the mutation operators a chance to mate the strategy parameters
@@ -82,26 +87,29 @@ public class CrossoverESUniformDiscrete implements InterfaceCrossover, java.io.S
         return result;
     }
 
-    /** This method allows you to evaluate wether two crossover operators
+    /**
+     * This method allows you to evaluate wether two crossover operators
      * are actually the same.
-     * @param crossover   The other crossover operator
+     *
+     * @param crossover The other crossover operator
      */
     @Override
     public boolean equals(Object crossover) {
         if (crossover instanceof CrossoverESUniformDiscrete) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
 
-    /** This method will allow the crossover operator to be initialized depending on the
+    /**
+     * This method will allow the crossover operator to be initialized depending on the
      * individual and the optimization problem. The optimization problem is to be stored
      * since it is to be called during crossover to calculate the exogene parameters for
      * the offsprings.
-     * @param individual    The individual that will be mutated.
-     * @param opt           The optimization problem.
+     *
+     * @param individual The individual that will be mutated.
+     * @param opt        The optimization problem.
      */
     @Override
     public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
@@ -111,19 +119,24 @@ public class CrossoverESUniformDiscrete implements InterfaceCrossover, java.io.S
     @Override
     public String getStringRepresentation() {
         return this.getName();
-    }    
+    }
 
 /**********************************************************************************************************************
  * These are for GUI
  */
-    /** This method allows the CommonJavaObjectEditorPanel to read the
+    /**
+     * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
+     *
      * @return The name.
      */
     public String getName() {
         return "ES discrete n-point crossover";
     }
-    /** This method returns a global info string
+
+    /**
+     * This method returns a global info string
+     *
      * @return description
      */
     public static String globalInfo() {

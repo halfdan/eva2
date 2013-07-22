@@ -18,10 +18,12 @@ import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.tools.chart2d.Chart2DDPointIconCircle;
 import eva2.tools.chart2d.Chart2DDPointIconText;
 import eva2.tools.chart2d.DPoint;
+
 import java.io.BufferedWriter;
 import java.io.IOException;
 
-/** This method implements the cone separation subdivision
+/**
+ * This method implements the cone separation subdivision
  * scheme, this method rearanges the populations and may
  * impose area constraints on the subpopulations.
  * Created by IntelliJ IDEA.
@@ -32,33 +34,35 @@ import java.io.IOException;
  */
 public class MOConeSeparation implements InterfaceMigration, java.io.Serializable {
 
-    public boolean                      m_Debug                 = false;
-    private boolean                     m_UseAllToDetermineR    = false;  // since i'm only interessted in the pareto-front this should be set to false!!
-    private boolean                     m_UseConstraints        = true;
-    private InterfaceSelection          m_Selection             = new SelectRandom();
-    private double[][]                  m_3DBounds;
+    public boolean m_Debug = false;
+    private boolean m_UseAllToDetermineR = false;  // since i'm only interessted in the pareto-front this should be set to false!!
+    private boolean m_UseConstraints = true;
+    private InterfaceSelection m_Selection = new SelectRandom();
+    private double[][] m_3DBounds;
 
     public MOConeSeparation() {
 
     }
 
     public MOConeSeparation(MOConeSeparation b) {
-        this.m_Debug                = b.m_Debug;
-        this.m_UseConstraints       = b.m_UseConstraints;
-        this.m_UseAllToDetermineR   = b.m_UseAllToDetermineR;
+        this.m_Debug = b.m_Debug;
+        this.m_UseConstraints = b.m_UseConstraints;
+        this.m_UseAllToDetermineR = b.m_UseAllToDetermineR;
         if (b.m_Selection != null) {
-            this.m_Selection   = (InterfaceSelection)b.m_Selection.clone();
+            this.m_Selection = (InterfaceSelection) b.m_Selection.clone();
         }
     }
 
-    /** The ever present clone method
+    /**
+     * The ever present clone method
      */
     @Override
     public Object clone() {
         return new MOConeSeparation(this);
     }
 
-    /** Typically i'll need some initialization method for
+    /**
+     * Typically i'll need some initialization method for
      * every bit of code i write....
      */
     @Override
@@ -66,7 +70,8 @@ public class MOConeSeparation implements InterfaceMigration, java.io.Serializabl
         // pff at a later stage i could initialize a topology here
     }
 
-    /** The migrate method can be called asychnronously or
+    /**
+     * The migrate method can be called asychnronously or
      * sychronously. Basically it allows migration of individuals
      * between multiple EA islands and since there are so many
      * different possible strategies i've introduced this
@@ -78,29 +83,29 @@ public class MOConeSeparation implements InterfaceMigration, java.io.Serializabl
      */
     @Override
     public void migrate(InterfaceOptimizer[] islands) {
-        Population[]            oldIPOP = new Population[islands.length];
-        Population[]            newIPOP = new Population[islands.length];
-        Population              collector = new Population(), memory;
-        InterfaceArchiving      allDom = new ArchivingAllDominating();
+        Population[] oldIPOP = new Population[islands.length];
+        Population[] newIPOP = new Population[islands.length];
+        Population collector = new Population(), memory;
+        InterfaceArchiving allDom = new ArchivingAllDominating();
 
         // collect the populations
         for (int i = 0; i < islands.length; i++) {
             oldIPOP[i] = islands[i].getPopulation();
             if (this.m_Debug) {
-                System.out.println("Got population from "+i+" of size "+oldIPOP[i].size());
+                System.out.println("Got population from " + i + " of size " + oldIPOP[i].size());
             }
-            collector.addPopulation((Population)oldIPOP[i].clone());
+            collector.addPopulation((Population) oldIPOP[i].clone());
             newIPOP[i] = new Population();
         }
-        memory = (Population)collector.clone();
+        memory = (Population) collector.clone();
 
-        if (((AbstractEAIndividual)collector.get(0)).getFitness().length == 2) {
+        if (((AbstractEAIndividual) collector.get(0)).getFitness().length == 2) {
             this.coneSeparation2D(collector, newIPOP, islands);
         } else {
-            if (((AbstractEAIndividual)collector.get(0)).getFitness().length == 3) {
+            if (((AbstractEAIndividual) collector.get(0)).getFitness().length == 3) {
                 this.coneSeparation3D(collector, newIPOP, islands);
             } else {
-                if (((AbstractEAIndividual)collector.get(0)).getFitness().length >= 4) {
+                if (((AbstractEAIndividual) collector.get(0)).getFitness().length >= 4) {
                     System.out.println("*Pff*");
                 }
             }
@@ -111,23 +116,25 @@ public class MOConeSeparation implements InterfaceMigration, java.io.Serializabl
             oldIPOP[i].addPopulation(newIPOP[i]);
             // todo remove this for nice pictures
             if (!oldIPOP[i].targetSizeReached()) {
-                oldIPOP[i].addPopulation(this.m_Selection.selectFrom(memory, oldIPOP[i].getTargetSize()-oldIPOP[i].size()));
+                oldIPOP[i].addPopulation(this.m_Selection.selectFrom(memory, oldIPOP[i].getTargetSize() - oldIPOP[i].size()));
             }
             if (this.m_Debug) {
-                System.out.println("Setting island "+i+" to population size " + oldIPOP[i].size());
+                System.out.println("Setting island " + i + " to population size " + oldIPOP[i].size());
             }
             allDom.addElementsToArchive(oldIPOP[i]);
             islands[i].setPopulation(oldIPOP[i]);
         }
     }
 
-    /** This method performs cone separation in 2D
-     * @param collector     This is a aggregated population;
-     * @param newIPOP       The new population on the islands after separation
-     * @param islands       The optimizer required to get the problem to set the constraints.
+    /**
+     * This method performs cone separation in 2D
+     *
+     * @param collector This is a aggregated population;
+     * @param newIPOP   The new population on the islands after separation
+     * @param islands   The optimizer required to get the problem to set the constraints.
      */
     private void coneSeparation2D(Population collector, Population[] newIPOP, InterfaceOptimizer[] islands) {
-        AbstractEAIndividual    indy;
+        AbstractEAIndividual indy;
 
 //        if (this.m_Debug) {
 //            // let's see how they arrive here
@@ -159,33 +166,32 @@ public class MOConeSeparation implements InterfaceMigration, java.io.Serializabl
         // now let's find the reference point first just in 2D
         InterfaceArchiving allDom = new ArchivingAllDominating();
         allDom.addElementsToArchive(collector);
-        int         y1Big = 0, y2Big = 0;
-        Population  archive = collector.getArchive();
-        Population  ref;
+        int y1Big = 0, y2Big = 0;
+        Population archive = collector.getArchive();
+        Population ref;
 
         if (this.m_UseAllToDetermineR) {
             ref = collector;
-        }
-        else {
+        } else {
             ref = archive;
         }
 
         for (int i = 1; i < ref.size(); i++) {
-            if (((AbstractEAIndividual)ref.get(i)).getFitness()[0] > ((AbstractEAIndividual)ref.get(y1Big)).getFitness()[0]) {
+            if (((AbstractEAIndividual) ref.get(i)).getFitness()[0] > ((AbstractEAIndividual) ref.get(y1Big)).getFitness()[0]) {
                 y1Big = i;
             }
-            if (((AbstractEAIndividual)ref.get(i)).getFitness()[1] > ((AbstractEAIndividual)ref.get(y2Big)).getFitness()[1]) {
+            if (((AbstractEAIndividual) ref.get(i)).getFitness()[1] > ((AbstractEAIndividual) ref.get(y2Big)).getFitness()[1]) {
                 y2Big = i;
             }
         }
-        double[]    r = new double[2];
-        double      alpha = 90.0/(double)islands.length;
-        double[][]  boundaries = new double[islands.length-1][2];
-        r[0] = ((AbstractEAIndividual)ref.get(y1Big)).getFitness()[0];
-        r[1] = ((AbstractEAIndividual)ref.get(y2Big)).getFitness()[1];
+        double[] r = new double[2];
+        double alpha = 90.0 / (double) islands.length;
+        double[][] boundaries = new double[islands.length - 1][2];
+        r[0] = ((AbstractEAIndividual) ref.get(y1Big)).getFitness()[0];
+        r[1] = ((AbstractEAIndividual) ref.get(y2Big)).getFitness()[1];
         for (int i = 0; i < boundaries.length; i++) {
-            boundaries[i][0] = 1 / Math.tan(Math.toRadians(alpha*(i+1)));
-            boundaries[i][1] = r[1] - boundaries[i][0]*r[0];
+            boundaries[i][0] = 1 / Math.tan(Math.toRadians(alpha * (i + 1)));
+            boundaries[i][1] = r[1] - boundaries[i][0] * r[0];
 //            System.out.println("Boundary"+i+" f(x)="+boundaries[i][0]+"*x + "+ boundaries[i][1]);
         }
 
@@ -194,8 +200,8 @@ public class MOConeSeparation implements InterfaceMigration, java.io.Serializabl
         // Now i got the cone's let's separate
         for (int i = 0; i < boundaries.length; i++) {
             for (int j = 0; j < collector.size(); j++) {
-                indy = (AbstractEAIndividual)collector.get(j);
-                if (indy.getFitness()[1] < boundaries[i][0]*indy.getFitness()[0]+boundaries[i][1]) {
+                indy = (AbstractEAIndividual) collector.get(j);
+                if (indy.getFitness()[1] < boundaries[i][0] * indy.getFitness()[0] + boundaries[i][1]) {
                     // this guy belongs to cone i
                     newIPOP[i].add(indy);
                     collector.remove(j);
@@ -204,17 +210,17 @@ public class MOConeSeparation implements InterfaceMigration, java.io.Serializabl
             }
         }
         // the rest belongs to newIPOP.length-1
-        newIPOP[newIPOP.length-1].addPopulation(collector);
+        newIPOP[newIPOP.length - 1].addPopulation(collector);
 
         if (this.m_Debug) {
-            Plot        plot;
-            double[]    tmpD = new double[2];
+            Plot plot;
+            double[] tmpD = new double[2];
             tmpD[0] = 0;
             tmpD[1] = 0;
             plot = new Plot("Debugging Cone Separation", "Y1", "Y2", tmpD, tmpD);
-            GraphPointSet           mySet;
-            DPoint                  myPoint;
-            Chart2DDPointIconText   tmp;
+            GraphPointSet mySet;
+            DPoint myPoint;
+            Chart2DDPointIconText tmp;
             mySet = new GraphPointSet(9, plot.getFunctionArea());
             mySet.setConnectedMode(false);
             // now plot the region boundaries
@@ -223,12 +229,12 @@ public class MOConeSeparation implements InterfaceMigration, java.io.Serializabl
                 mySet.addDPoint(myPoint);
             }
             for (int i = 0; i < newIPOP.length; i++) {
-                mySet = new GraphPointSet(10+i, plot.getFunctionArea());
+                mySet = new GraphPointSet(10 + i, plot.getFunctionArea());
                 mySet.setConnectedMode(false);
                 for (int j = 0; j < newIPOP[i].size(); j++) {
-                    indy = (AbstractEAIndividual)newIPOP[i].get(j);
+                    indy = (AbstractEAIndividual) newIPOP[i].get(j);
                     myPoint = new DPoint(indy.getFitness()[0], indy.getFitness()[1]);
-                    tmp = new Chart2DDPointIconText(""+i);
+                    tmp = new Chart2DDPointIconText("" + i);
                     if (i % 2 == 0) {
                         tmp.setIcon(new Chart2DDPointIconCircle());
                     }
@@ -239,7 +245,7 @@ public class MOConeSeparation implements InterfaceMigration, java.io.Serializabl
             mySet = new GraphPointSet(10, plot.getFunctionArea());
             mySet.setConnectedMode(false);
             // now plot the region boundaries
-            for (int i = 0; i < islands.length-1; i++) {
+            for (int i = 0; i < islands.length - 1; i++) {
                 myPoint = new DPoint(r[0], r[1]);
                 mySet.addDPoint(myPoint);
                 myPoint = new DPoint(r[0], r[1]);
@@ -250,9 +256,9 @@ public class MOConeSeparation implements InterfaceMigration, java.io.Serializabl
                     myPoint = new DPoint(0.0, boundaries[i][1]);
                     mySet.addDPoint(myPoint);
                 } else {
-                    myPoint = new DPoint(-boundaries[i][1]/boundaries[i][0], 0);
+                    myPoint = new DPoint(-boundaries[i][1] / boundaries[i][0], 0);
                     mySet.addDPoint(myPoint);
-                    myPoint = new DPoint(-boundaries[i][1]/boundaries[i][0], 0);
+                    myPoint = new DPoint(-boundaries[i][1] / boundaries[i][0], 0);
                     mySet.addDPoint(myPoint);
                 }
             }
@@ -266,18 +272,18 @@ public class MOConeSeparation implements InterfaceMigration, java.io.Serializabl
                 if (prob instanceof AbstractMultiObjectiveOptimizationProblem) {
                     // set the boundaries to perform the constrained
                     // domain principle introduced by Deb et al.
-                    ((AbstractMultiObjectiveOptimizationProblem)prob).m_AreaConst4Parallelization.clear();
+                    ((AbstractMultiObjectiveOptimizationProblem) prob).m_AreaConst4Parallelization.clear();
                     if (i > 0) {
                         // add the lower boundary
-                        ConstObjectivesInEqualityBiggerThanLinear b = new ConstObjectivesInEqualityBiggerThanLinear(boundaries[i-1][0], boundaries[i-1][1]);
+                        ConstObjectivesInEqualityBiggerThanLinear b = new ConstObjectivesInEqualityBiggerThanLinear(boundaries[i - 1][0], boundaries[i - 1][1]);
 
-                        ((AbstractMultiObjectiveOptimizationProblem)prob).m_AreaConst4Parallelization.add(b);
+                        ((AbstractMultiObjectiveOptimizationProblem) prob).m_AreaConst4Parallelization.add(b);
                     }
-                    if (i < islands.length-1) {
+                    if (i < islands.length - 1) {
                         // add the upper boundary
                         ConstObjectivesInEqualityLesserThanLinear b = new ConstObjectivesInEqualityLesserThanLinear(boundaries[i][0], boundaries[i][1]);
 
-                        ((AbstractMultiObjectiveOptimizationProblem)prob).m_AreaConst4Parallelization.add(b);
+                        ((AbstractMultiObjectiveOptimizationProblem) prob).m_AreaConst4Parallelization.add(b);
                     }
                     islands[i].setProblem(prob);
                 }
@@ -285,81 +291,84 @@ public class MOConeSeparation implements InterfaceMigration, java.io.Serializabl
         }
     }
 
-    /** This method performs cone separation in 2D
-     * @param collector     This is a aggregated population;
-     * @param newIPOP       The new population on the islands after separation
-     * @param islands       The optimizer required to get the problem to set the constraints.
+    /**
+     * This method performs cone separation in 2D
+     *
+     * @param collector This is a aggregated population;
+     * @param newIPOP   The new population on the islands after separation
+     * @param islands   The optimizer required to get the problem to set the constraints.
      */
     private void coneSeparation3D(Population collector, Population[] newIPOP, InterfaceOptimizer[] islands) {
-        AbstractEAIndividual    indy;
+        AbstractEAIndividual indy;
 
         // now let's find the reference point first just in 2D
         InterfaceArchiving allDom = new ArchivingAllDominating();
         allDom.addElementsToArchive(collector);
-        int         y1Big = 0, y2Big = 0, y3Big = 0;
-        Population  archive = collector.getArchive();
-        Population  ref;
+        int y1Big = 0, y2Big = 0, y3Big = 0;
+        Population archive = collector.getArchive();
+        Population ref;
 
         if (this.m_UseAllToDetermineR) {
             ref = collector;
-        }
-        else {
+        } else {
             ref = archive;
         }
 
         for (int i = 1; i < ref.size(); i++) {
-            if (((AbstractEAIndividual)ref.get(i)).getFitness()[0] > ((AbstractEAIndividual)ref.get(y1Big)).getFitness()[0]) {
+            if (((AbstractEAIndividual) ref.get(i)).getFitness()[0] > ((AbstractEAIndividual) ref.get(y1Big)).getFitness()[0]) {
                 y1Big = i;
             }
-            if (((AbstractEAIndividual)ref.get(i)).getFitness()[1] > ((AbstractEAIndividual)ref.get(y2Big)).getFitness()[1]) {
+            if (((AbstractEAIndividual) ref.get(i)).getFitness()[1] > ((AbstractEAIndividual) ref.get(y2Big)).getFitness()[1]) {
                 y2Big = i;
             }
-            if (((AbstractEAIndividual)ref.get(i)).getFitness()[2] > ((AbstractEAIndividual)ref.get(y3Big)).getFitness()[2]) {
+            if (((AbstractEAIndividual) ref.get(i)).getFitness()[2] > ((AbstractEAIndividual) ref.get(y3Big)).getFitness()[2]) {
                 y3Big = i;
             }
         }
         // now build a 3D bounding rule
-        double[]    distopian = new double[3], zE = new double[3];
-        double[][]  normals = new double[islands.length][3];
-        double      angIncr = 360.0 /(double)islands.length;
+        double[] distopian = new double[3], zE = new double[3];
+        double[][] normals = new double[islands.length][3];
+        double angIncr = 360.0 / (double) islands.length;
 
-        distopian[0] = ((AbstractEAIndividual)ref.get(y1Big)).getFitness()[0];
-        distopian[1] = ((AbstractEAIndividual)ref.get(y2Big)).getFitness()[1];
-        distopian[2] = ((AbstractEAIndividual)ref.get(y3Big)).getFitness()[2];
+        distopian[0] = ((AbstractEAIndividual) ref.get(y1Big)).getFitness()[0];
+        distopian[1] = ((AbstractEAIndividual) ref.get(y2Big)).getFitness()[1];
+        distopian[2] = ((AbstractEAIndividual) ref.get(y3Big)).getFitness()[2];
 
-        zE[0] = 0; zE[1] = 0; zE[2] = 1;
+        zE[0] = 0;
+        zE[1] = 0;
+        zE[2] = 1;
 
-        double[] firstVec   = this.getCrossProduct(distopian, zE);
-        firstVec            = this.getNormalized(firstVec);
-        double[] normDist   = this.getNormalized(distopian);
+        double[] firstVec = this.getCrossProduct(distopian, zE);
+        firstVec = this.getNormalized(firstVec);
+        double[] normDist = this.getNormalized(distopian);
 
-        this.m_3DBounds     = new double[normals.length+2][3];
-        this.m_3DBounds[0]  = distopian;
+        this.m_3DBounds = new double[normals.length + 2][3];
+        this.m_3DBounds[0] = distopian;
 
         for (int i = 0; i < normals.length; i++) {
-            normals[i]              = this.rotVector(firstVec, normDist, Math.toRadians(i*angIncr));
-            this.m_3DBounds[i+1]    = normals[i];
+            normals[i] = this.rotVector(firstVec, normDist, Math.toRadians(i * angIncr));
+            this.m_3DBounds[i + 1] = normals[i];
         }
 
         // now i got the bounding planes
-        double[][]  lastBoundingPlane   = new double[2][3]; // first double[3] gives a point on the plane, the second gives the normal on the plane
-        double[][]  curBoundingPlane    = new double[2][3];
-        double[]    fitness;
+        double[][] lastBoundingPlane = new double[2][3]; // first double[3] gives a point on the plane, the second gives the normal on the plane
+        double[][] curBoundingPlane = new double[2][3];
+        double[] fitness;
         InterfaceOptimizationProblem prob;
-        lastBoundingPlane[0]    = distopian;
-        lastBoundingPlane[1]    = normals[normals.length-1];
-        curBoundingPlane[0]     = distopian;
-        curBoundingPlane[1]     = normals[0];
+        lastBoundingPlane[0] = distopian;
+        lastBoundingPlane[1] = normals[normals.length - 1];
+        curBoundingPlane[0] = distopian;
+        curBoundingPlane[1] = normals[0];
 
         collector.SetArchive(new Population());
 
         // Now i got the cone's let's separate
         for (int i = 0; i < normals.length; i++) {
             for (int j = 0; j < collector.size(); j++) {
-                indy = (AbstractEAIndividual)collector.get(j);
+                indy = (AbstractEAIndividual) collector.get(j);
                 fitness = indy.getFitness();
                 if ((this.getScalarProduct(curBoundingPlane[1], this.getVectorSub(fitness, curBoundingPlane[0])) < 0) &&
-                    (this.getScalarProduct(lastBoundingPlane[1], this.getVectorSub(fitness, lastBoundingPlane[0])) >= 0)) {
+                        (this.getScalarProduct(lastBoundingPlane[1], this.getVectorSub(fitness, lastBoundingPlane[0])) >= 0)) {
                     // this guy belongs to cone i
                     newIPOP[i].add(indy);
 //                    collector.remove(j);
@@ -371,11 +380,11 @@ public class MOConeSeparation implements InterfaceMigration, java.io.Serializabl
                 if (prob instanceof AbstractMultiObjectiveOptimizationProblem) {
                     // set the boundaries to perform the constrained
                     // domain principle introduced by Deb et al.
-                    ((AbstractMultiObjectiveOptimizationProblem)prob).m_AreaConst4Parallelization.clear();
-                    ConstObjectivesInEqualitySmallerThanSurface     sts = new ConstObjectivesInEqualitySmallerThanSurface(curBoundingPlane[0], curBoundingPlane[1]);
-                    ConstObjectivesInEqualityBiggerThanSurface      bts = new ConstObjectivesInEqualityBiggerThanSurface(lastBoundingPlane[0], lastBoundingPlane[1]);
-                    ((AbstractMultiObjectiveOptimizationProblem)prob).m_AreaConst4Parallelization.add(sts);
-                    ((AbstractMultiObjectiveOptimizationProblem)prob).m_AreaConst4Parallelization.add(bts);
+                    ((AbstractMultiObjectiveOptimizationProblem) prob).m_AreaConst4Parallelization.clear();
+                    ConstObjectivesInEqualitySmallerThanSurface sts = new ConstObjectivesInEqualitySmallerThanSurface(curBoundingPlane[0], curBoundingPlane[1]);
+                    ConstObjectivesInEqualityBiggerThanSurface bts = new ConstObjectivesInEqualityBiggerThanSurface(lastBoundingPlane[0], lastBoundingPlane[1]);
+                    ((AbstractMultiObjectiveOptimizationProblem) prob).m_AreaConst4Parallelization.add(sts);
+                    ((AbstractMultiObjectiveOptimizationProblem) prob).m_AreaConst4Parallelization.add(bts);
                 }
                 islands[i].setProblem(prob);
 //                if (true) {
@@ -392,9 +401,9 @@ public class MOConeSeparation implements InterfaceMigration, java.io.Serializabl
             }
             lastBoundingPlane[0] = curBoundingPlane[0];
             lastBoundingPlane[1] = curBoundingPlane[1];
-            curBoundingPlane[0]  = distopian;
-            if (i+1 < normals.length) {
-                curBoundingPlane[1]     = normals[i+1];
+            curBoundingPlane[0] = distopian;
+            if (i + 1 < normals.length) {
+                curBoundingPlane[1] = normals[i + 1];
             }
 //            else curBoundingPlane[1]     = normals[0];
         }
@@ -426,26 +435,30 @@ public class MOConeSeparation implements InterfaceMigration, java.io.Serializabl
 //        }
     }
 
-    /** This method returns the scalar product of two vectors
+    /**
+     * This method returns the scalar product of two vectors
+     *
      * @param a The first vector
      * @param b The second vector
      * @return The scalar product of a and b
      */
     private double getScalarProduct(double[] a, double[] b) {
-        return (a[0]*b[0] + a[1]*b[1] + a[2]*b[2]);
+        return (a[0] * b[0] + a[1] * b[1] + a[2] * b[2]);
     }
 
-    /** This method returns the cross product of two 3D vectors
-     * @param a     The first vector
-     * @param b     The second vector
+    /**
+     * This method returns the cross product of two 3D vectors
+     *
+     * @param a The first vector
+     * @param b The second vector
      * @return The cross product
      */
     private double[] getCrossProduct(double[] a, double[] b) {
         double[] result = new double[3];
 
-        result[0] = a[1]*b[2] - a[2]*b[1];
-        result[1] = a[2]*b[0] - a[0]*b[2];
-        result[2] = a[0]*b[1] - a[1]*b[0];
+        result[0] = a[1] * b[2] - a[2] * b[1];
+        result[1] = a[2] * b[0] - a[0] * b[2];
+        result[2] = a[0] * b[1] - a[1] * b[0];
 
         return result;
     }
@@ -453,9 +466,9 @@ public class MOConeSeparation implements InterfaceMigration, java.io.Serializabl
     private double[] getVectorAdd(double[] a, double[] b) {
         double[] result = new double[3];
 
-        result[0] = a[0]+b[0];
-        result[1] = a[1]+b[1];
-        result[2] = a[2]+b[2];
+        result[0] = a[0] + b[0];
+        result[1] = a[1] + b[1];
+        result[2] = a[2] + b[2];
 
         return result;
     }
@@ -463,9 +476,9 @@ public class MOConeSeparation implements InterfaceMigration, java.io.Serializabl
     private double[] getVectorSub(double[] a, double[] b) {
         double[] result = new double[3];
 
-        result[0] = a[0]-b[0];
-        result[1] = a[1]-b[1];
-        result[2] = a[2]-b[2];
+        result[0] = a[0] - b[0];
+        result[1] = a[1] - b[1];
+        result[2] = a[2] - b[2];
 
         return result;
     }
@@ -473,15 +486,17 @@ public class MOConeSeparation implements InterfaceMigration, java.io.Serializabl
     private double[] getScalarMultiplication(double a, double[] b) {
         double[] result = new double[3];
 
-        result[0] = a*b[0];
-        result[1] = a*b[1];
-        result[2] = a*b[2];
+        result[0] = a * b[0];
+        result[1] = a * b[1];
+        result[2] = a * b[2];
 
         return result;
     }
 
-    /** This method will return a normalized vector
-     * @param a     The vector to normalize
+    /**
+     * This method will return a normalized vector
+     *
+     * @param a The vector to normalize
      * @return A normalized version of the input vector
      */
     private double[] getNormalized(double[] a) {
@@ -492,59 +507,63 @@ public class MOConeSeparation implements InterfaceMigration, java.io.Serializabl
         }
         sum = Math.sqrt(sum);
         for (int i = 0; i < a.length; i++) {
-            result[i] = a[i]/sum;
+            result[i] = a[i] / sum;
         }
         return result;
     }
 
-    /** Quaternion rotation
-     * @param s  The first quaternion
-     * @param v  The second quaternion
+    /**
+     * Quaternion rotation
+     *
+     * @param s The first quaternion
+     * @param v The second quaternion
      * @return The resulting quaternion
      */
     private double[] qMult(double[] s, double[] v) {
         double[] r = new double[4];
-        r[0] = s[0]*v[0] - s[1]*v[1] - s[2]*v[2] - s[3]*v[3];
-        r[1] = s[0]*v[1] + s[1]*v[0] + s[2]*v[3] - s[3]*v[2];
-        r[2] = s[0]*v[2] - s[1]*v[3] + s[2]*v[0] + s[3]*v[1];
-        r[3] = s[0]*v[3] + s[1]*v[2] - s[2]*v[1] + s[3]*v[0];
+        r[0] = s[0] * v[0] - s[1] * v[1] - s[2] * v[2] - s[3] * v[3];
+        r[1] = s[0] * v[1] + s[1] * v[0] + s[2] * v[3] - s[3] * v[2];
+        r[2] = s[0] * v[2] - s[1] * v[3] + s[2] * v[0] + s[3] * v[1];
+        r[3] = s[0] * v[3] + s[1] * v[2] - s[2] * v[1] + s[3] * v[0];
         return r;
     }
 
-    /** This method will perform a quaterion rotation
+    /**
+     * This method will perform a quaterion rotation
+     *
      * @param v     The vector to rotate
      * @param u     The vector to rotate aroung
      * @param alpha The rotation angle in RAD!
      * @return The resulting rotated vector
      */
     private double[] rotQuad(double[] v, double[] u, double alpha) {
-        double[]    result  = new double[3];
-        double[]    q       = new double[4];
-        double[]    qt      = new double[4];
-        double[]    p       = new double[4];
-        double      s, f;
+        double[] result = new double[3];
+        double[] q = new double[4];
+        double[] qt = new double[4];
+        double[] p = new double[4];
+        double s, f;
 
-        p[0]        = 0;
-        p[1]        = v[0];
-        p[2]        = v[1];
-        p[3]        = v[2];
-        s           = Math.cos(alpha/2.0);
-        f           = Math.sin(alpha/2.0);
-        q[0]        = s;
-        q[1]        = u[0]*f;
-        q[2]        = u[1]*f;
-        q[3]        = u[2]*f;
+        p[0] = 0;
+        p[1] = v[0];
+        p[2] = v[1];
+        p[3] = v[2];
+        s = Math.cos(alpha / 2.0);
+        f = Math.sin(alpha / 2.0);
+        q[0] = s;
+        q[1] = u[0] * f;
+        q[2] = u[1] * f;
+        q[3] = u[2] * f;
         // ok bis hier hin
-        qt[0]       = s;
-        qt[1]       = -q[1];
-        qt[2]       = -q[2];
-        qt[3]       = -q[3];
-        p           = this.qMult(q, p);
-        p           = this.qMult(p, qt);
-        f           = 1/(q[0]*q[0] + q[1]*q[1] + q[2]*q[2] + q[3]*q[3]);
-        result[0]   = p[1];// * f;
-        result[1]   = p[2]; // * f;
-        result[2]   = p[3]; // * f;
+        qt[0] = s;
+        qt[1] = -q[1];
+        qt[2] = -q[2];
+        qt[3] = -q[3];
+        p = this.qMult(q, p);
+        p = this.qMult(p, qt);
+        f = 1 / (q[0] * q[0] + q[1] * q[1] + q[2] * q[2] + q[3] * q[3]);
+        result[0] = p[1];// * f;
+        result[1] = p[2]; // * f;
+        result[2] = p[3]; // * f;
         result = this.getNormalized(result);
         return result;
     }
@@ -554,7 +573,7 @@ public class MOConeSeparation implements InterfaceMigration, java.io.Serializabl
 
         tmp1 = this.getScalarMultiplication(Math.cos(a), p);
         tmp2 = this.getScalarMultiplication(this.getScalarProduct(w, p), p);
-        tmp2 = this.getScalarMultiplication((1-Math.cos(a)), tmp2);
+        tmp2 = this.getScalarMultiplication((1 - Math.cos(a)), tmp2);
         tmp3 = this.getScalarMultiplication(Math.sin(a), this.getCrossProduct(w, p));
         result = this.getVectorAdd(tmp1, tmp2);
         result = this.getVectorAdd(result, tmp3);
@@ -709,12 +728,14 @@ public class MOConeSeparation implements InterfaceMigration, java.io.Serializabl
 //        System.exit(0);
 //    }
 
-    /** This method writes Data to file.
-     * @param line      The line that is to be added to the file
+    /**
+     * This method writes Data to file.
+     *
+     * @param line The line that is to be added to the file
      */
     private void writeToFile(BufferedWriter out, String line) {
         String write = line + "\n";
-        write.replaceAll(",",".");
+        write.replaceAll(",", ".");
         if (out == null) {
             return;
         }
@@ -729,47 +750,60 @@ public class MOConeSeparation implements InterfaceMigration, java.io.Serializabl
 /**********************************************************************************************************************
  * These are for GUI
  */
-    /** This method returns a global info string
+    /**
+     * This method returns a global info string
+     *
      * @return description
      */
     public static String globalInfo() {
         return "This is migration scheme, which implements a cone separation based partitioning.";
     }
-    /** This method will return a naming String
+
+    /**
+     * This method will return a naming String
+     *
      * @return The name of the algorithm
      */
     public String getName() {
         return "MOConeSeparation";
     }
 
-    /** This method allows you to toggle which elements are
+    /**
+     * This method allows you to toggle which elements are
      * to be used to calculate the reference point. If false
      * all individuals are used to calculate the reference point.
      * This can cause the algorithm to build cone segments, which
      * are actually all dominated.
+     *
      * @return The modus to calculate the reference point.
      */
     public boolean getUseAllToDetermineR() {
         return this.m_UseAllToDetermineR;
     }
-    public void setUseAllToDetermineR(boolean b){
+
+    public void setUseAllToDetermineR(boolean b) {
         this.m_UseAllToDetermineR = b;
     }
+
     public String useAllToDetermineRTipText() {
         return "If true all individuals are used to calculate the reference point (may reduce efficiency).";
     }
 
-    /** This method allows you to toogle the use of constraints,
+    /**
+     * This method allows you to toogle the use of constraints,
      * which enable the algorithm to limit each island to a
      * specific area of the search space.
+     *
      * @return The modus of constraints.
      */
     public boolean getUseConstraints() {
         return this.m_UseConstraints;
     }
-    public void setUseConstraints(boolean b){
+
+    public void setUseConstraints(boolean b) {
         this.m_UseConstraints = b;
     }
+
     public String useConstraintsTipText() {
         return "If activated constraints are used to limit each island to a local area.";
     }

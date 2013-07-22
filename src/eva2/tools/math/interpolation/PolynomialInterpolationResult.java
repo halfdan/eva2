@@ -25,30 +25,27 @@ package eva2.tools.math.interpolation;
 /**
  * The result data for a polynomial interpolation.
  */
-public class PolynomialInterpolationResult
-{
-	/*-------------------------------------------------------------------------*
-	 * public member variables
+public class PolynomialInterpolationResult {
+    /*-------------------------------------------------------------------------*
+     * public member variables
 	 *-------------------------------------------------------------------------*/
 
-	public double y = Double.NaN;
-	public double yError = Double.NaN;
+    public double y = Double.NaN;
+    public double yError = Double.NaN;
 
 	/*------------------------------------------------------------------------*
 	 * constructor
 	 *------------------------------------------------------------------------*/
 
-	public PolynomialInterpolationResult()
-	{
-		y = Double.NaN;
-		yError = Double.NaN;
-	}
+    public PolynomialInterpolationResult() {
+        y = Double.NaN;
+        yError = Double.NaN;
+    }
 
-	public PolynomialInterpolationResult(double y, double yError)
-	{
-		this.y = y;
-		this.yError = yError;
-	}
+    public PolynomialInterpolationResult(double y, double yError) {
+        this.y = y;
+        this.yError = yError;
+    }
 }
 
 /****************************************************************************

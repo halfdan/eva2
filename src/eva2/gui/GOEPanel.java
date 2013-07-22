@@ -5,6 +5,7 @@ import eva2.optimization.tools.FileTools;
 import eva2.tools.BasicResourceLoader;
 import eva2.tools.EVAHELP;
 import eva2.tools.SerializedObject;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -29,7 +30,7 @@ import javax.swing.plaf.basic.BasicComboBoxRenderer;
 public class GOEPanel extends JPanel implements ItemListener {
 
     private Object backupObject;
-    private PropertyChangeSupport propChangeSupport;    
+    private PropertyChangeSupport propChangeSupport;
     /**
      * The chooser component
      */
@@ -97,11 +98,11 @@ public class GOEPanel extends JPanel implements ItemListener {
         propertySheetPanel = new PropertySheetPanel();
         propertySheetPanel.addPropertyChangeListener(
                 new PropertyChangeListener() {
-            @Override
-            public void propertyChange(final PropertyChangeEvent event) {
-                propChangeSupport.firePropertyChange("", backupObject, genericObjectEditor.getValue());
-            }
-        });
+                    @Override
+                    public void propertyChange(final PropertyChangeEvent event) {
+                        propChangeSupport.firePropertyChange("", backupObject, genericObjectEditor.getValue());
+                    }
+                });
         openButton = makeIconButton("images/Open16.gif", "Open");
         openButton.setToolTipText("Load a configured object");
         openButton.setEnabled(true);
@@ -409,8 +410,8 @@ public class GOEPanel extends JPanel implements ItemListener {
                 objectChooser.setSelectedIndex(0);
                 JOptionPane.showMessageDialog(this,
                         "Could not create an example of\n"
-                        + className + "\n"
-                        + "from the current classpath. Is the resource folder at the right place?\nIs the class abstract or the default constructor missing?",
+                                + className + "\n"
+                                + "from the current classpath. Is the resource folder at the right place?\nIs the class abstract or the default constructor missing?",
                         "GenericObjectEditor",
                         JOptionPane.ERROR_MESSAGE);
                 EVAHELP.getSystemPropertyString();
@@ -431,7 +432,7 @@ class ToolTipComboBoxRenderer extends BasicComboBoxRenderer {
 
     @Override
     public Component getListCellRendererComponent(JList list, Object value,
-            int index, boolean isSelected, boolean cellHasFocus) {
+                                                  int index, boolean isSelected, boolean cellHasFocus) {
         if (isSelected) {
             setBackground(list.getSelectionBackground());
             setForeground(list.getSelectionForeground());

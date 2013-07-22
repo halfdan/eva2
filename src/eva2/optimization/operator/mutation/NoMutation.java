@@ -43,7 +43,7 @@ public class NoMutation implements InterfaceMutation, java.io.Serializable {
      * This method allows you to init the mutation operator
      *
      * @param individual The individual that will be mutated.
-     * @param opt The optimization problem.
+     * @param opt        The optimization problem.
      */
     @Override
     public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
@@ -63,7 +63,7 @@ public class NoMutation implements InterfaceMutation, java.io.Serializable {
      * This method allows you to perform either crossover on the strategy
      * parameters or to deal in some other way with the crossover event.
      *
-     * @param indy1 The original mother
+     * @param indy1    The original mother
      * @param partners The original partners
      */
     @Override

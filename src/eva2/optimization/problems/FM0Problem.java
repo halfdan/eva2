@@ -1,6 +1,7 @@
 package eva2.optimization.problems;
 
 import eva2.optimization.individuals.ESIndividualDoubleData;
+
 import java.io.Serializable;
 
 /**
@@ -11,8 +12,8 @@ import java.io.Serializable;
  * To change this template use Options | File Templates.
  */
 public class FM0Problem extends AbstractMultiModalProblemKnown implements InterfaceOptimizationProblem, Interface2DBorderProblem, InterfaceMultimodalProblemKnown, Serializable {
- 
-	public FM0Problem() {
+
+    public FM0Problem() {
         this.problemDimension = 2;
         this.template = new ESIndividualDoubleData();
 //        this.m_Extrema          = new double[2];
@@ -26,44 +27,48 @@ public class FM0Problem extends AbstractMultiModalProblemKnown implements Interf
     }
 
     @Override
-	public double getRangeUpperBound(int dim) {
-    	if (dim == 0) {
-                return 2.0;
-            }
-    	else {
-                return 2.8;
-            }
-    }
-    
-    @Override
-	public double getRangeLowerBound(int dim) {
-    	return -1*getRangeUpperBound(dim);
-    }
-    
-    public FM0Problem(FM0Problem b) {
-    	cloneObjects(b);
+    public double getRangeUpperBound(int dim) {
+        if (dim == 0) {
+            return 2.0;
+        } else {
+            return 2.8;
+        }
     }
 
-    /** This method returns a deep clone of the problem.
-     * @return  the clone
+    @Override
+    public double getRangeLowerBound(int dim) {
+        return -1 * getRangeUpperBound(dim);
+    }
+
+    public FM0Problem(FM0Problem b) {
+        cloneObjects(b);
+    }
+
+    /**
+     * This method returns a deep clone of the problem.
+     *
+     * @return the clone
      */
     @Override
     public Object clone() {
         return (Object) new FM0Problem(this);
     }
 
-    /** This method returns the unnormalized function value for an maximization problem
-     * @param x     The n-dimensional input vector
-     * @return  The m-dimensional output vector.
+    /**
+     * This method returns the unnormalized function value for an maximization problem
+     *
+     * @param x The n-dimensional input vector
+     * @return The m-dimensional output vector.
      */
     @Override
     public double[] evalUnnormalized(double[] x) {
         double[] result = new double[1];
-        result[0]   = Math.sin(2*x[0] - 0.5*Math.PI) + 1 + 2*Math.cos(x[1]) + 0.5*x[0];
+        result[0] = Math.sin(2 * x[0] - 0.5 * Math.PI) + 1 + 2 * Math.cos(x[1]) + 0.5 * x[0];
         return result;
     }
 
-    /** This method will prepare the problem to return a list of all optima
+    /**
+     * This method will prepare the problem to return a list of all optima
      * if possible and to return quality measures like NumberOfOptimaFound and
      * the MaximumPeakRatio. This method should be called by the user.
      */
@@ -81,8 +86,10 @@ public class FM0Problem extends AbstractMultiModalProblemKnown implements Interf
 /**********************************************************************************************************************
  * These are for GUI
  */
-    /** This method allows the CommonJavaObjectEditorPanel to read the
+    /**
+     * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
+     *
      * @return The name.
      */
     @Override
@@ -90,7 +97,9 @@ public class FM0Problem extends AbstractMultiModalProblemKnown implements Interf
         return "M0 Problem";
     }
 
-    /** This method returns a global info string
+    /**
+     * This method returns a global info string
+     *
      * @return description
      */
     public static String globalInfo() {

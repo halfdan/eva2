@@ -22,6 +22,7 @@ import eva2.tools.Pair;
 import eva2.tools.SelectedTag;
 import eva2.tools.math.Mathematics;
 import eva2.tools.math.RNG;
+
 import java.util.ArrayList;
 
 /**
@@ -35,10 +36,10 @@ import java.util.ArrayList;
  * first fitness criterion is regarded).
  *
  * @author mkron
- *
- * [1] M.Rodiguez-Fernandez, J.Egea, J.Banga: Novel metaheuristic for parameter
- * estimation in nonlinear dynamic biological systems. BMC Bioinformatics 2006,
- * 7:483. BioMed Central 2006.
+ *         <p/>
+ *         [1] M.Rodiguez-Fernandez, J.Egea, J.Banga: Novel metaheuristic for parameter
+ *         estimation in nonlinear dynamic biological systems. BMC Bioinformatics 2006,
+ *         7:483. BioMed Central 2006.
  */
 public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, InterfacePopulationChangedEventListener {
 
@@ -63,7 +64,7 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
     private int generationCycle = 50;
     private int fitCrit = -1;
     protected boolean checkRange = true;
-//	private int lastLocalSearch = -1;
+    //	private int lastLocalSearch = -1;
 //	// nr of generations between local searches
 //	protected int localSearchInterval = 10;
     // below this threshold a local search will be performed
@@ -184,7 +185,7 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
         }
     }
 
-//	public double eval(double[] x) {
+    //	public double eval(double[] x) {
 //		AbstractEAIndividual indy = (AbstractEAIndividual)template.clone();
 //		((InterfaceDataTypeDouble)indy).SetDoubleGenotype(x);
 //		problem.evaluate(indy);
@@ -360,7 +361,7 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
      *
      * @param refSet
      * @param candidates
-     * @param oldRefSet only to be used as for phenotypic diversity measure
+     * @param oldRefSet  only to be used as for phenotypic diversity measure
      */
     private void updateRefSet(Population refSet, Population candidates, Population oldRefSet) {
         int bestIndex = candidates.getIndexOfBestIndividualPrefFeasible();
@@ -738,7 +739,7 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
         return RNG.randomDouble(lowB, upB);
     }
 
-///////////// Trivials...
+    ///////////// Trivials...
     @Override
     public void setIdentifier(String name) {
         m_Identifier = name;
@@ -871,6 +872,7 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
     }
 
     ////////////////////////////////////////////7
+
     /**
      * This method performs a scatter search runnable.
      */

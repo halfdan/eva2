@@ -123,1334 +123,1359 @@ package eva2.tools.matlab;
 // The problem is ActiveX: one only can make calls to the engine library
 
 // (especially engEvalString) from ONE single thread.
+
 import java.io.UnsupportedEncodingException;
 
 public class JMatLink extends Thread {
-	private static JMatLink m_Instance = null;
+    private static JMatLink m_Instance = null;
 
-	/**
-   *
-   */
-	public static JMatLink getInstance() {
-		// System.out.println("JMatLink getInstance () {");
-		if (m_Instance == null) {
-                m_Instance = new JMatLink();
-            }
-		return m_Instance;
-	}
+    /**
+     *
+     */
+    public static JMatLink getInstance() {
+        // System.out.println("JMatLink getInstance () {");
+        if (m_Instance == null) {
+            m_Instance = new JMatLink();
+        }
+        return m_Instance;
+    }
 
-	// static declarations
-	// the variable "status" is used to tell the main
-	// thread what to do.
-	private final static int idleI = 0;
-	private final static int engOpenI = 1;
-	private final static int engCloseI = 2;
-	private final static int engEvalStringI = 3;
-	private final static int engGetScalarI = 4;
-	private final static int engGetVectorI = 5;
-	private final static int engGetArrayI = 6;
-	private final static int engPutArray2dI = 9;
-	private final static int engOutputBufferI = 10;
-	private final static int engGetCharArrayI = 11;
-	private final static int destroyJMatLinkI = 12;
-	private final static int engOpenSingleUseI = 13;
-	// All variables are global to allow all methods
+    // static declarations
+    // the variable "status" is used to tell the main
+    // thread what to do.
+    private final static int idleI = 0;
+    private final static int engOpenI = 1;
+    private final static int engCloseI = 2;
+    private final static int engEvalStringI = 3;
+    private final static int engGetScalarI = 4;
+    private final static int engGetVectorI = 5;
+    private final static int engGetArrayI = 6;
+    private final static int engPutArray2dI = 9;
+    private final static int engOutputBufferI = 10;
+    private final static int engGetCharArrayI = 11;
+    private final static int destroyJMatLinkI = 12;
+    private final static int engOpenSingleUseI = 13;
+    // All variables are global to allow all methods
 
-	// and the main thread to share all data
+    // and the main thread to share all data
 
-	private int status = idleI;
+    private int status = idleI;
 
-	private String arrayS;
+    private String arrayS;
 
-	private String engEvalStringS;
+    private String engEvalStringS;
 
-	private String engOutputBufferS;
+    private String engOutputBufferS;
 
-	private double engGetScalarD;
+    private double engGetScalarD;
 
-	private double[] engGetVectorD;
+    private double[] engGetVectorD;
 
-	private double[][] engGetArrayD;
+    private double[][] engGetArrayD;
 
-	private double engPutArrayD;
+    private double engPutArrayD;
 
-	private double[] engPutArray1dD;
+    private double[] engPutArray1dD;
 
-	private double[][] engPutArray2dD;
+    private double[][] engPutArray2dD;
 
-	private String[] engGetCharArrayS;
+    private String[] engGetCharArrayS;
 
-	private int epI; /* Engine pointer */
+    private int epI; /* Engine pointer */
 
-	private int retValI; /* return Value of eng-methods */
+    private int retValI; /* return Value of eng-methods */
 
-	private String startCmdS; /* start command for engOpen... */
+    private String startCmdS; /* start command for engOpen... */
 
-	private int buflenI; /* output buffer length */
+    private int buflenI; /* output buffer length */
 
-	private boolean debugB = false;
+    private boolean debugB = false;
 
-	// Locks
+    // Locks
 
-	private boolean lockEngineB = false;
+    private boolean lockEngineB = false;
 
-	private boolean lockThreadB = false;
+    private boolean lockThreadB = false;
 
-	private boolean lockWaitForValueB = false;
+    private boolean lockWaitForValueB = false;
 
-	private boolean destroyJMatLinkB = false;
+    private boolean destroyJMatLinkB = false;
 
-	private Thread runner;
+    private Thread runner;
 
-	// *********************** native declarations ****************************
+    // *********************** native declarations ****************************
 
-	// NEVER call native methods directly, like
+    // NEVER call native methods directly, like
 
-	// JMatLink.engEvalStringNATIVE("a=1"). Matlab's engine has quite some
+    // JMatLink.engEvalStringNATIVE("a=1"). Matlab's engine has quite some
 
-	// thread problems.
+    // thread problems.
 
-	private native void displayHelloWorld();
+    private native void displayHelloWorld();
 
-	private native void engTestNATIVE();
+    private native void engTestNATIVE();
 
-	private native int engOpenNATIVE(String startCmdS);
+    private native int engOpenNATIVE(String startCmdS);
 
-	private native int engOpenSingleUseNATIVE(String startCmdS);
+    private native int engOpenSingleUseNATIVE(String startCmdS);
 
-	private native int engCloseNATIVE(int epI);
+    private native int engCloseNATIVE(int epI);
 
-	private native int engEvalStringNATIVE(int epI, String evalS);
+    private native int engEvalStringNATIVE(int epI, String evalS);
 
-	private native double engGetScalarNATIVE(int epI, String nameS);
+    private native double engGetScalarNATIVE(int epI, String nameS);
 
-	private native double[] engGetVectorNATIVE(int epI, String nameS);
+    private native double[] engGetVectorNATIVE(int epI, String nameS);
 
-	private native double[][] engGetArrayNATIVE(int epI, String nameS);
+    private native double[][] engGetArrayNATIVE(int epI, String nameS);
 
-	private native String[] engGetCharArrayNATIVE(int epI, String nameS);
+    private native String[] engGetCharArrayNATIVE(int epI, String nameS);
 
-	private native void engPutArrayNATIVE(int epI, String matrixS,
-			double[][] valuesDD);
+    private native void engPutArrayNATIVE(int epI, String matrixS,
+                                          double[][] valuesDD);
 
-	private native String engOutputBufferNATIVE(int epI, int buflenI);
+    private native String engOutputBufferNATIVE(int epI, int buflenI);
 
-	private native void setDebugNATIVE(boolean debugB);
+    private native void setDebugNATIVE(boolean debugB);
 
-	// *******************************************************************************
+    // *******************************************************************************
 
-	// ************** load JMatLink library into memory **********************
+    // ************** load JMatLink library into memory **********************
 
-	static {
-		// System.out.println("loading !!");
-		try { // System.out.println("loading");
+    static {
+        // System.out.println("loading !!");
+        try { // System.out.println("loading");
 
-			System.loadLibrary("JMatLink");
+            System.loadLibrary("JMatLink");
 
-			// String
-			// path="../lib/"+SystemHelper.getOperationSystemName()+"/JMatLink.dll";
+            // String
+            // path="../lib/"+SystemHelper.getOperationSystemName()+"/JMatLink.dll";
 
-			// System.out.println("load: "+path);
+            // System.out.println("load: "+path);
 
-			// System.loadLibrary(path);
+            // System.loadLibrary(path);
 
-			// String libPath = "." + System.getProperty("file.separator", "/");
+            // String libPath = "." + System.getProperty("file.separator", "/");
 
-			// //libPath += SystemHelper.getOperationSystemName() +
-			// System.getProperty("file.separator", "/");
+            // //libPath += SystemHelper.getOperationSystemName() +
+            // System.getProperty("file.separator", "/");
 
-			// libPath += System.mapLibraryName("JMatLink");
+            // libPath += System.mapLibraryName("JMatLink");
 
-			//
+            //
 
-			// // make sure that we have the absolute path
+            // // make sure that we have the absolute path
 
-			// libPath = new File(libPath).getAbsolutePath();
+            // libPath = new File(libPath).getAbsolutePath();
 
-			//
+            //
 
-			// System.out.println("load: "+"d:/workingAt/JCompChem/lib/windows/JMatLink.dll");
+            // System.out.println("load: "+"d:/workingAt/JCompChem/lib/windows/JMatLink.dll");
 
-			// System.loadLibrary("../lib/windows/JMatLink_old.dll");
+            // System.loadLibrary("../lib/windows/JMatLink_old.dll");
 
-			// System.out.println("loaded");
+            // System.out.println("loaded");
 
-		}
+        } catch (UnsatisfiedLinkError e) {
 
-		catch (UnsatisfiedLinkError e) {
+            System.err.println("ERROR: Could not load the JMatLink library");
 
-			System.err.println("ERROR: Could not load the JMatLink library");
+            e.printStackTrace();
 
-			e.printStackTrace();
+        }
+        // System.out.println("loading !! end");
 
-		}
-		// System.out.println("loading !! end");
+    }
 
-	}
+    // ************************ JMatLink constructor ***************************
 
-	// ************************ JMatLink constructor ***************************
+    /**
+     * This is the constructor for the JMatLink library.
+     * <p/>
+     * <p/>
+     * <p/>
+     * <p/>
+     * E.g.:<br>
+     * <p/>
+     * <pre>
+     *
+     *   <b>JMatLink</b> engine = new <b>JMatLink()</b>;
+     *
+     *   engine.engOpen();
+     *
+     *   engine.engEvalString("surf(peaks)");
+     *
+     *   engine.engClose();
+     *
+     * </pre>
+     * *************************************************************************
+     */
 
-	/**
-	 * This is the constructor for the JMatLink library.
-	 * 
-	 * 
-	 * 
-	 * <p>
-	 * E.g.:<br>
-	 * 
-	 * <pre>
-	 * 
-	 *   <b>JMatLink</b> engine = new <b>JMatLink()</b>;
-	 * 
-	 *   engine.engOpen();
-	 * 
-	 *   engine.engEvalString("surf(peaks)");
-	 * 
-	 *   engine.engClose();
-	 * 
-	 * </pre>
-	 ***************************************************************************/
+    private JMatLink() {
 
-	private JMatLink() {
+        if (debugB) {
+            System.out.println("JMatLink constructor");
+        }
 
-		if (debugB) {
-                System.out.println("JMatLink constructor");
-            }
+        runner = new Thread(this);
 
-		runner = new Thread(this);
+        runner.start();
 
-		runner.start();
+    }
 
-	}
-
-	// **** terminate running thread ****
+    // **** terminate running thread ****
 
     @Override
-	public void destroy() {
+    public void destroy() {
 
-		destroyJMatLinkB = true;
+        destroyJMatLinkB = true;
 
-		notifyAll();
+        notifyAll();
 
-	}
+    }
 
-	public void kill() {
+    public void kill() {
 
-		destroyJMatLinkB = true;
+        destroyJMatLinkB = true;
 
-		callThread(destroyJMatLinkI);
-
-	}
-
-	// ////////////////////////////////////////////////////////////////////////////
-
-	// ***************************** engOpen *****************************
-
-	/**
-	 * Open engine. This command is used to open a <b>single</b> connection
-	 * 
-	 * to matlab.
-	 * 
-	 * 
-	 * 
-	 * <p>
-	 * E.g.:<br>
-	 * 
-	 * <pre>
-	 * 
-	 *   JMatLink engine = new JMatLink();
-	 * 
-	 *   engine.<b>engOpen()</b>;
-	 * 
-	 *   engine.engEvalString("surf(peaks)");
-	 * 
-	 *   engine.engClose();
-	 * 
-	 * </pre>
-	 ***************************************************************************/
-
-	public synchronized int engOpen()
-
-	{
-		return engOpen(""); // return value is pointer to engine
-
-	}
-
-	// ***************************** engOpen *******************************
-
-	/**
-	 * Open engine. This command is used to open a <b>single</b> connection
-	 * 
-	 * to matlab.
-	 * <p>
-	 * This command is only useful on unix systems. On windows
-	 * 
-	 * the optional parameter <b>must</b> be NULL.
-	 * 
-	 * 
-	 * 
-	 * <p>
-	 * E.g.:<br>
-	 * 
-	 * <pre>
-	 * 
-	 *   JMatLink engine = new JMatLink();
-	 * 
-	 *   engine.<b>engOpen("commands to start matlab")</b>;
-	 * 
-	 *   engine.engEvalString("surf(peaks)");
-	 * 
-	 *   engine.engClose();
-	 * 
-	 * </pre>
-	 ***************************************************************************/
-
-	public synchronized int engOpen(String startCmdS)
-
-	{
-
-		// startup MATLAB and set up connection
-
-		lockEngineLock();
-
-		lockWaitForValue();
-
-		this.startCmdS = startCmdS;
-
-		callThread(engOpenI);
-
-		WaitForValue();
-
-		releaseEngineLock();
-
-		return this.epI;
-
-	}
-
-	// ************************** engOpenSingleUse *****************************
-
-	/**
-	 * Open engine for single use. This command is used to open
-	 * 
-	 * <b>multiple</b> connections to matlab.
-	 * 
-	 * 
-	 * 
-	 * <p>
-	 * E.g.:<br>
-	 * 
-	 * <pre>
-	 * 
-	 *   int a,b;
-	 * 
-	 *   JMatLink engine = new JMatLink();
-	 * 
-	 *   a = engine.<b>engOpenSingleUse()</b>;   // start first matlab session
-	 * 
-	 *   b = engine.<b>engOpenSingleUse()</b>;   // start second matlab session
-	 * 
-	 *   engine.engEvalString(a, "surf(peaks)");
-	 * 
-	 *   engine.engEvalString(b, "foo=ones(10,0)");
-	 * 
-	 *   engine.engClose(a);
-	 * 
-	 *   engine.engClose(b);
-	 * 
-	 * </pre>
-	 ***************************************************************************/
-
-	public synchronized int engOpenSingleUse()
-
-	{
-
-		return engOpenSingleUse("");
-
-	}
-
-	// ************************** engOpenSingleUse *****************************
-
-	/**
-	 * Open engine for single use. This command is used to open
-	 * 
-	 * <b>multiple</b> connections to matlab.
-	 * 
-	 * 
-	 * 
-	 * <p>
-	 * E.g.:<br>
-	 * 
-	 * <pre>
-	 * 
-	 *   int a,b;
-	 * 
-	 *   JMatLink engine = new JMatLink();
-	 * 
-	 *   a = engine.<b>engOpenSingleUse("start matlab")</b>;   // start first matlab session
-	 * 
-	 *   b = engine.<b>engOpenSingleUse("start matlab")</b>;   // start second matlab session
-	 * 
-	 *   engine.engEvalString(a, "surf(peaks)");
-	 * 
-	 *   engine.engEvalString(b, "foo=ones(10,0)");
-	 * 
-	 *   engine.engClose(a);
-	 * 
-	 *   engine.engClose(b);
-	 * 
-	 * </pre>
-	 ***************************************************************************/
-
-	public synchronized int engOpenSingleUse(String startCmdS)
-
-	{
-
-		lockEngineLock();
-
-		lockWaitForValue();
-
-		this.startCmdS = startCmdS;
-
-		callThread(engOpenSingleUseI);
-
-		WaitForValue();
-
-		releaseEngineLock();
-
-		return this.epI;
-
-	}
-
-	// ***************************** engClose *****************************
-
-	/**
-	 * Close the connection to matlab.
-	 * 
-	 * 
-	 * 
-	 * <p>
-	 * E.g.:<br>
-	 * 
-	 * <pre>
-	 * 
-	 *  JMatLink engine = new JMatLink();
-	 * 
-	 *  engine.engOpen();
-	 * 
-	 *  engine.engEvalString("surf(peaks)");
-	 * 
-	 *  engine.<b>engClose()</b>;
-	 * 
-	 * </pre>
-	 ***************************************************************************/
-
-	public synchronized void engClose()
-
-	{
-
-		engClose(this.epI);
-
-	}
-
-	// ***************************** engClose *****************************
-
-	/**
-	 * Close a specified connection to an instance of matlab.
-	 * 
-	 * 
-	 * 
-	 * <p>
-	 * E.g.:<br>
-	 * 
-	 * <pre>
-	 * 
-	 *  int a,b;
-	 * 
-	 *  JMatLink engine = new JMatLink();
-	 * 
-	 *  a = engine.engOpenSingleUse();       // start first  matlab session
-	 * 
-	 *  b = engine.engOpenSingleUse();       // start second matlab session
-	 * 
-	 *  engine.engEvalString(b, "surf(peaks)");
-	 * 
-	 *  engine.engEvalString(a, "array = randn(23)");
-	 * 
-	 *  engine.<b>engClose</b>(a);      // Close the first  connection to matlab
-	 * 
-	 *  engine.<b>engClose</b>(b);      // Close the second connection to matlab
-	 * 
-	 * </pre>
-	 ***************************************************************************/
-
-	public synchronized void engClose(int epI)
-
-	{
-
-		// close connection and terminate MATLAB
-
-		lockEngineLock();
-
-		lockWaitForValue();
-
-		this.epI = epI;
-
-		callThread(engCloseI);
-
-		WaitForValue();
-
-		releaseEngineLock();
-
-		// return retValI; Return value indicates success
-
-	}
-
-	// ***************************** engEvalString *****************************
-
-	/**
-	 * Evaluate an expression in matlab's workspace.
-	 * 
-	 * 
-	 * 
-	 * E.g.:<br>
-	 * 
-	 * <pre>
-	 * 
-	 *   JMatLink engine = new JMatLink();
-	 * 
-	 *   engine.engOpen();
-	 * 
-	 *   engine.<b>engEvalString</b>("surf(peaks)");
-	 * 
-	 *   engine.engClose();
-	 * 
-	 * </pre>
-	 ***************************************************************************/
-
-	public synchronized void engEvalString(String evalS)
-
-	{
-
-		engEvalString(this.epI, evalS);
-
-	}
-
-	// ***************************** engEvalString *************************
-
-	/**
-	 * Evaluate an expression in a specified workspace.
-	 * 
-	 * 
-	 * 
-	 * <p>
-	 * E.g.:<br>
-	 * 
-	 * <pre>
-	 * 
-	 *  int a,b;
-	 * 
-	 *  JMatLink engine = new JMatLink();
-	 * 
-	 *  a = engine.engOpenSingleUse();
-	 * 
-	 *  engine.<b>engEvalString</b>(a, "surf(peaks)");
-	 * 
-	 *  engine.engClose();
-	 * 
-	 * </pre>
-	 ***************************************************************************/
-
-	public synchronized void engEvalString(int epI, String evalS)
-
-	{
-
-		// evaluate expression "evalS" in specified engine Ep
-
-		if (debugB) {
-                System.out.println("eval(ep,String) in  " + epI + " " + evalS);
-            }
-
-		lockEngineLock();
-
-		lockWaitForValue();
-
-		this.epI = epI;
-
-		engEvalStringS = evalS;
-
-		callThread(engEvalStringI);
-
-		WaitForValue();
-
-		releaseEngineLock();
-
-		if (debugB) {
-                System.out.println("eval(ep,String) out " + epI + " " + evalS);
-            }
-
-		// return retValI; Return value indicates success
-
-	}
-
-	// ***************************** engGetScalar **************************
-
-	/**
-	 * Get a scalar value from matlab's workspace.
-	 * 
-	 * 
-	 * 
-	 * <p>
-	 * E.g.:<br>
-	 * 
-	 * <pre>
-	 * 
-	 *  double a;
-	 * 
-	 *  JMatLink engine = new JMatLink();
-	 * 
-	 *  engine.engOpen();
-	 * 
-	 *  engine.engEvalString("foo = sin( 3 )");
-	 * 
-	 *  a = engine.<b>engGetScalarValue</b>("foo");
-	 * 
-	 *  engine.engClose();
-	 * 
-	 * </pre>
-	 ***************************************************************************/
-
-	public synchronized double engGetScalar(String arrayS)
-
-	{
-
-		return engGetScalar(this.epI, arrayS);
-
-	}
-
-	// ***************************** engGetScalar **************************
-
-	/**
-	 * Get a scalar value from a specified workspace.
-	 * 
-	 * 
-	 * 
-	 * <p>
-	 * E.g.:<br>
-	 * 
-	 * <pre>
-	 * 
-	 *   double a;
-	 * 
-	 *   int b;
-	 * 
-	 *   JMatLink engine = new JMatLink();
-	 * 
-	 *   b = engine.engOpenSigleUse();
-	 * 
-	 *   engine.engEvalString(b, "foo = sin( 3 )");
-	 * 
-	 *   a = engine.<b>engGetScalarValue</b>(b, "foo");
-	 * 
-	 *   engine.engClose();
-	 * 
-	 * </pre>
-	 ***************************************************************************/
-
-	public synchronized double engGetScalar(int epI, String arrayS)
-
-	{
-
-		// Get scalar value or element (1,1) of an array from
-
-		// MATLAB's workspace
-
-		// Only real values are supported right now
-
-		lockEngineLock();
-
-		lockWaitForValue();
+        callThread(destroyJMatLinkI);
+
+    }
+
+    // ////////////////////////////////////////////////////////////////////////////
+
+    // ***************************** engOpen *****************************
+
+    /**
+     * Open engine. This command is used to open a <b>single</b> connection
+     * <p/>
+     * to matlab.
+     * <p/>
+     * <p/>
+     * <p/>
+     * <p/>
+     * E.g.:<br>
+     * <p/>
+     * <pre>
+     *
+     *   JMatLink engine = new JMatLink();
+     *
+     *   engine.<b>engOpen()</b>;
+     *
+     *   engine.engEvalString("surf(peaks)");
+     *
+     *   engine.engClose();
+     *
+     * </pre>
+     * *************************************************************************
+     */
+
+    public synchronized int engOpen()
+
+    {
+        return engOpen(""); // return value is pointer to engine
+
+    }
+
+    // ***************************** engOpen *******************************
+
+    /**
+     * Open engine. This command is used to open a <b>single</b> connection
+     * <p/>
+     * to matlab.
+     * <p/>
+     * This command is only useful on unix systems. On windows
+     * <p/>
+     * the optional parameter <b>must</b> be NULL.
+     * <p/>
+     * <p/>
+     * <p/>
+     * <p/>
+     * E.g.:<br>
+     * <p/>
+     * <pre>
+     *
+     *   JMatLink engine = new JMatLink();
+     *
+     *   engine.<b>engOpen("commands to start matlab")</b>;
+     *
+     *   engine.engEvalString("surf(peaks)");
+     *
+     *   engine.engClose();
+     *
+     * </pre>
+     * *************************************************************************
+     */
+
+    public synchronized int engOpen(String startCmdS)
+
+    {
+
+        // startup MATLAB and set up connection
+
+        lockEngineLock();
+
+        lockWaitForValue();
+
+        this.startCmdS = startCmdS;
+
+        callThread(engOpenI);
+
+        WaitForValue();
+
+        releaseEngineLock();
+
+        return this.epI;
+
+    }
+
+    // ************************** engOpenSingleUse *****************************
+
+    /**
+     * Open engine for single use. This command is used to open
+     * <p/>
+     * <b>multiple</b> connections to matlab.
+     * <p/>
+     * <p/>
+     * <p/>
+     * <p/>
+     * E.g.:<br>
+     * <p/>
+     * <pre>
+     *
+     *   int a,b;
+     *
+     *   JMatLink engine = new JMatLink();
+     *
+     *   a = engine.<b>engOpenSingleUse()</b>;   // start first matlab session
+     *
+     *   b = engine.<b>engOpenSingleUse()</b>;   // start second matlab session
+     *
+     *   engine.engEvalString(a, "surf(peaks)");
+     *
+     *   engine.engEvalString(b, "foo=ones(10,0)");
+     *
+     *   engine.engClose(a);
+     *
+     *   engine.engClose(b);
+     *
+     * </pre>
+     * *************************************************************************
+     */
+
+    public synchronized int engOpenSingleUse()
+
+    {
+
+        return engOpenSingleUse("");
+
+    }
+
+    // ************************** engOpenSingleUse *****************************
+
+    /**
+     * Open engine for single use. This command is used to open
+     * <p/>
+     * <b>multiple</b> connections to matlab.
+     * <p/>
+     * <p/>
+     * <p/>
+     * <p/>
+     * E.g.:<br>
+     * <p/>
+     * <pre>
+     *
+     *   int a,b;
+     *
+     *   JMatLink engine = new JMatLink();
+     *
+     *   a = engine.<b>engOpenSingleUse("start matlab")</b>;   // start first matlab session
+     *
+     *   b = engine.<b>engOpenSingleUse("start matlab")</b>;   // start second matlab session
+     *
+     *   engine.engEvalString(a, "surf(peaks)");
+     *
+     *   engine.engEvalString(b, "foo=ones(10,0)");
+     *
+     *   engine.engClose(a);
+     *
+     *   engine.engClose(b);
+     *
+     * </pre>
+     * *************************************************************************
+     */
+
+    public synchronized int engOpenSingleUse(String startCmdS)
+
+    {
+
+        lockEngineLock();
+
+        lockWaitForValue();
+
+        this.startCmdS = startCmdS;
+
+        callThread(engOpenSingleUseI);
+
+        WaitForValue();
+
+        releaseEngineLock();
+
+        return this.epI;
+
+    }
+
+    // ***************************** engClose *****************************
+
+    /**
+     * Close the connection to matlab.
+     * <p/>
+     * <p/>
+     * <p/>
+     * <p/>
+     * E.g.:<br>
+     * <p/>
+     * <pre>
+     *
+     *  JMatLink engine = new JMatLink();
+     *
+     *  engine.engOpen();
+     *
+     *  engine.engEvalString("surf(peaks)");
+     *
+     *  engine.<b>engClose()</b>;
+     *
+     * </pre>
+     * *************************************************************************
+     */
+
+    public synchronized void engClose()
+
+    {
+
+        engClose(this.epI);
+
+    }
+
+    // ***************************** engClose *****************************
+
+    /**
+     * Close a specified connection to an instance of matlab.
+     * <p/>
+     * <p/>
+     * <p/>
+     * <p/>
+     * E.g.:<br>
+     * <p/>
+     * <pre>
+     *
+     *  int a,b;
+     *
+     *  JMatLink engine = new JMatLink();
+     *
+     *  a = engine.engOpenSingleUse();       // start first  matlab session
+     *
+     *  b = engine.engOpenSingleUse();       // start second matlab session
+     *
+     *  engine.engEvalString(b, "surf(peaks)");
+     *
+     *  engine.engEvalString(a, "array = randn(23)");
+     *
+     *  engine.<b>engClose</b>(a);      // Close the first  connection to matlab
+     *
+     *  engine.<b>engClose</b>(b);      // Close the second connection to matlab
+     *
+     * </pre>
+     * *************************************************************************
+     */
+
+    public synchronized void engClose(int epI)
+
+    {
+
+        // close connection and terminate MATLAB
+
+        lockEngineLock();
+
+        lockWaitForValue();
+
+        this.epI = epI;
+
+        callThread(engCloseI);
+
+        WaitForValue();
+
+        releaseEngineLock();
+
+        // return retValI; Return value indicates success
+
+    }
+
+    // ***************************** engEvalString *****************************
+
+    /**
+     * Evaluate an expression in matlab's workspace.
+     * <p/>
+     * <p/>
+     * <p/>
+     * E.g.:<br>
+     * <p/>
+     * <pre>
+     *
+     *   JMatLink engine = new JMatLink();
+     *
+     *   engine.engOpen();
+     *
+     *   engine.<b>engEvalString</b>("surf(peaks)");
+     *
+     *   engine.engClose();
+     *
+     * </pre>
+     * *************************************************************************
+     */
+
+    public synchronized void engEvalString(String evalS)
+
+    {
+
+        engEvalString(this.epI, evalS);
+
+    }
+
+    // ***************************** engEvalString *************************
+
+    /**
+     * Evaluate an expression in a specified workspace.
+     * <p/>
+     * <p/>
+     * <p/>
+     * <p/>
+     * E.g.:<br>
+     * <p/>
+     * <pre>
+     *
+     *  int a,b;
+     *
+     *  JMatLink engine = new JMatLink();
+     *
+     *  a = engine.engOpenSingleUse();
+     *
+     *  engine.<b>engEvalString</b>(a, "surf(peaks)");
+     *
+     *  engine.engClose();
+     *
+     * </pre>
+     * *************************************************************************
+     */
+
+    public synchronized void engEvalString(int epI, String evalS)
+
+    {
+
+        // evaluate expression "evalS" in specified engine Ep
+
+        if (debugB) {
+            System.out.println("eval(ep,String) in  " + epI + " " + evalS);
+        }
+
+        lockEngineLock();
+
+        lockWaitForValue();
+
+        this.epI = epI;
+
+        engEvalStringS = evalS;
+
+        callThread(engEvalStringI);
+
+        WaitForValue();
+
+        releaseEngineLock();
+
+        if (debugB) {
+            System.out.println("eval(ep,String) out " + epI + " " + evalS);
+        }
+
+        // return retValI; Return value indicates success
+
+    }
+
+    // ***************************** engGetScalar **************************
+
+    /**
+     * Get a scalar value from matlab's workspace.
+     * <p/>
+     * <p/>
+     * <p/>
+     * <p/>
+     * E.g.:<br>
+     * <p/>
+     * <pre>
+     *
+     *  double a;
+     *
+     *  JMatLink engine = new JMatLink();
+     *
+     *  engine.engOpen();
+     *
+     *  engine.engEvalString("foo = sin( 3 )");
+     *
+     *  a = engine.<b>engGetScalarValue</b>("foo");
+     *
+     *  engine.engClose();
+     *
+     * </pre>
+     * *************************************************************************
+     */
+
+    public synchronized double engGetScalar(String arrayS)
+
+    {
+
+        return engGetScalar(this.epI, arrayS);
+
+    }
+
+    // ***************************** engGetScalar **************************
+
+    /**
+     * Get a scalar value from a specified workspace.
+     * <p/>
+     * <p/>
+     * <p/>
+     * <p/>
+     * E.g.:<br>
+     * <p/>
+     * <pre>
+     *
+     *   double a;
+     *
+     *   int b;
+     *
+     *   JMatLink engine = new JMatLink();
+     *
+     *   b = engine.engOpenSigleUse();
+     *
+     *   engine.engEvalString(b, "foo = sin( 3 )");
+     *
+     *   a = engine.<b>engGetScalarValue</b>(b, "foo");
+     *
+     *   engine.engClose();
+     *
+     * </pre>
+     * *************************************************************************
+     */
+
+    public synchronized double engGetScalar(int epI, String arrayS)
+
+    {
+
+        // Get scalar value or element (1,1) of an array from
+
+        // MATLAB's workspace
+
+        // Only real values are supported right now
+
+        lockEngineLock();
+
+        lockWaitForValue();
 
 		/* copy parameters to global variables */
 
-		this.epI = epI;
+        this.epI = epI;
+
+        this.arrayS = arrayS;
 
-		this.arrayS = arrayS;
+        callThread(engGetScalarI);
 
-		callThread(engGetScalarI);
+        WaitForValue();
 
-		WaitForValue();
+        releaseEngineLock();
 
-		releaseEngineLock();
+        return engGetScalarD;
 
-		return engGetScalarD;
-
-	}
-
-	// ***************************** engGetVector **************************
-
-	/**
-	 * Get an array (1 * n) from matlab's workspace.
-	 * 
-	 * 
-	 * 
-	 * <p>
-	 * E.g.:<br>
-	 * 
-	 * <pre>
-	 * 
-	 *   double[] array;
-	 * 
-	 *   JMatLink engine = new JMatLink();
-	 * 
-	 *   engine.engOpen();
-	 * 
-	 *   engine.engEvalString("array = randn(10,1);");
-	 * 
-	 *   array = engine.<b>engGetVector</b>("array");
-	 * 
-	 *   engine.engClose();
-	 * 
-	 * </pre>
-	 ***************************************************************************/
-
-	public synchronized double[] engGetVector(String arrayS)
-
-	{
-
-		return engGetVector(this.epI, arrayS);
-
-	}
-
-	// ***************************** engGetVector **************************
-
-	/**
-	 * Get an array (1 * n) from a specified workspace.
-	 * 
-	 * 
-	 * 
-	 * <p>
-	 * E.g.:<br>
-	 * 
-	 * <pre>
-	 * 
-	 *   int b;
-	 * 
-	 *   double[] array;
-	 * 
-	 *   JMatLink engine = new JMatLink();
-	 * 
-	 *   b = engine.engOpenSingleUse();
-	 * 
-	 *   engine.engEvalString(b, "array = randn(10,1);");
-	 * 
-	 *   array = engine.<b>engGetVector</b>(b, "array");
-	 * 
-	 *   engine.engClose();
-	 * 
-	 * </pre>
-	 ***************************************************************************/
-
-	public synchronized double[] engGetVector(int epI, String arrayS)
-
-	{
-
-		// only real values are supported so far
-
-		lockEngineLock();
-
-		lockWaitForValue();
-
-		this.epI = epI;
-
-		this.arrayS = arrayS;
-
-		callThread(engGetVectorI);
-
-		WaitForValue();
-
-		releaseEngineLock();
-
-		return engGetVectorD;
-
-	}
-
-	// ***************************** engGetArray ***************************
-
-	/**
-	 * Get an array from matlab's workspace.
-	 * 
-	 * 
-	 * 
-	 * <p>
-	 * E.g.:<br>
-	 * 
-	 * <pre>
-	 * 
-	 *   int b;
-	 * 
-	 *   double[][] array;
-	 * 
-	 *   JMatLink engine = new JMatLink();
-	 * 
-	 *   engine.engOpen();
-	 * 
-	 *   engine.engEvalString("array = randn(10);");
-	 * 
-	 *   array = engine.<b>engGetArray</b>("array");
-	 * 
-	 *   engine.engClose();
-	 * 
-	 * </pre>
-	 ***************************************************************************/
-
-	public synchronized double[][] engGetArray(String arrayS)
-
-	{
-
-		return engGetArray(this.epI, arrayS);
-
-	}
-
-	// ***************************** engGetArray ***************************
-
-	/**
-	 * Get an array from a specified instance/workspace of matlab.
-	 * 
-	 * 
-	 * 
-	 * <p>
-	 * E.g.:<br>
-	 * 
-	 * <pre>
-	 * 
-	 *   int b;
-	 * 
-	 *   double[][] array;
-	 * 
-	 *   JMatLink engine = new JMatLink();
-	 * 
-	 *   b = engine.engOpenSingleUse();
-	 * 
-	 *   engine.engEvalString(b, "array = randn(10);");
-	 * 
-	 *   array = engine.<b>engGetArray</b>(b, "array");
-	 * 
-	 *   engine.engClose(b);
-	 * 
-	 * </pre>
-	 ***************************************************************************/
-
-	public synchronized double[][] engGetArray(int epI, String arrayS)
-
-	{
-
-		// only real values are supported so far
-
-		lockEngineLock();
-
-		lockWaitForValue();
-
-		this.epI = epI;
-
-		this.arrayS = arrayS;
-
-		callThread(engGetArrayI);
-
-		WaitForValue();
-
-		releaseEngineLock();
-
-		return engGetArrayD;
-
-	}
-
-	// ************************** engGetCharArray *****************************
-
-	/**
-	 * Get an 'char' array (string) from matlab's workspace.
-	 * 
-	 * 
-	 * 
-	 * <p>
-	 * E.g.:<br>
-	 * 
-	 * <pre>
-	 * 
-	 *   String array;
-	 * 
-	 *   JMatLink engine = new JMatLink();
-	 * 
-	 *   engine.engOpen();
-	 * 
-	 *   engine.engEvalString("array = 'hello world';");
-	 * 
-	 *   array = engine.<b>engCharArray</b>("array");
-	 * 
-	 *   System.out.println("output = "+ array);
-	 * 
-	 *   engine.engClose();
-	 * 
-	 * </pre>
-	 ***************************************************************************/
-
-	public synchronized String[] engGetCharArray(String arrayS)
-
-	{
-
-		// convert to double array
-
-		engEvalString("engGetCharArrayD=double(" + arrayS + ")");
-
-		// get double array
-
-		double[][] arrayD = engGetArray("engGetCharArrayD");
-
-		// delete temporary double array
-
-		engEvalString("clear engGetCharArrayD");
-
-		// convert double back to char
-
-		return double2String(arrayD);
-
-	}
-
-	// ***************************** engPutArray ***************************
-
-	/**
-	 * Put an array into a specified workspace.
-	 * 
-	 * 
-	 * 
-	 * <p>
-	 * E.g.:<br>
-	 * 
-	 * <pre>
-	 * 
-	 *   int array = 1;
-	 * 
-	 *   JMatLink engine = new JMatLink();
-	 * 
-	 *   engine.engOpen();
-	 * 
-	 *   engine.<b>engPutArray</b>("array", array);
-	 * 
-	 *   engine.engClose();
-	 * 
-	 * </pre>
-	 ***************************************************************************/
-
-	public synchronized void engPutArray(String arrayS, int valueI)
-
-	{
-
-		engPutArray(this.epI, arrayS, new Integer(valueI).doubleValue());
-
-	}
-
-	// ***************************** engPutArray ***************************
-
-	// public synchronized void engPutArray( String arrayS, int[] valuesI )
-
-	// {
-
-	// engPutArray( this.epI, arrayS, (double[])valuesI );
-
-	// }
-
-	// ***************************** engPutArray ***************************
-
-	/**
-	 * Put an array into matlab's workspace.
-	 * 
-	 * 
-	 * 
-	 * <p>
-	 * E.g.:<br>
-	 * 
-	 * <pre>
-	 * 
-	 *   double array = 1;
-	 * 
-	 *   JMatLink engine = new JMatLink();
-	 * 
-	 *   engine.engOpen();
-	 * 
-	 *   engine.<b>engPutArray</b>("array", array);
-	 * 
-	 *   engine.engClose();
-	 * 
-	 * </pre>
-	 ***************************************************************************/
-
-	public synchronized void engPutArray(String arrayS, double valueD)
-
-	{
-
-		engPutArray(this.epI, arrayS, valueD);
-
-	}
-
-	// ***************************** engPutArray *****************************
-
-	/**
-	 * Put an array into a specified instance/workspace of matlab.
-	 * 
-	 * 
-	 * 
-	 * <p>
-	 * E.g.:<br>
-	 * 
-	 * <pre>
-	 * 
-	 *   int b;
-	 * 
-	 *   double array = 1;
-	 * 
-	 *   JMatLink engine = new JMatLink();
-	 * 
-	 *   b = engine.engOpenSingleUse();
-	 * 
-	 *   engine.<b>engPutArray</b>(b, "array", array);
-	 * 
-	 *   engine.engClose(b);
-	 * 
-	 * </pre>
-	 ***************************************************************************/
-
-	public synchronized void engPutArray(int epI, String arrayS, double valueD)
-
-	{
-
-		double vDD[][] = { { 0.0 } };
-
-		vDD[0][0] = valueD;
-
-		engPutArray(epI, arrayS, vDD); // nxn dimensional
-
-	}
-
-	// ***************************** engPutArray ***************************
-
-	/**
-	 * Put an array (1 dimensional) into a specified instance/workspace of
-	 * 
-	 * matlab.
-	 * 
-	 * 
-	 * 
-	 * <p>
-	 * E.g.:<br>
-	 * 
-	 * <pre>
-	 * 
-	 *   double[] array = {1.0 , 2.0 , 3.0};
-	 * 
-	 *   JMatLink engine = new JMatLink();
-	 * 
-	 *   engine.engOpen();
-	 * 
-	 *   engine.<b>engPutArray</b>("array", array);
-	 * 
-	 *   engine.engClose();
-	 * 
-	 * </pre>
-	 ***************************************************************************/
-
-	public synchronized void engPutArray(String arrayS, double[] valuesD)
-
-	{
-
-		engPutArray(this.epI, arrayS, valuesD);
-
-	}
-
-	// ***************************** engPutArray *****************************
-
-	/**
-	 * Put an array (1 dimensional) into a specified instance/workspace of
-	 * 
-	 * matlab.
-	 * 
-	 * 
-	 * 
-	 * <p>
-	 * E.g.:<br>
-	 * 
-	 * <pre>
-	 * 
-	 *   int b;
-	 * 
-	 *   double[] array = {1.0 , 2.0 , 3.0};
-	 * 
-	 *   JMatLink engine = new JMatLink();
-	 * 
-	 *   b = engine.engOpenSingleUse();
-	 * 
-	 *   engine.<b>engPutArray</b>(b, "array", array);
-	 * 
-	 *   engine.engClose(b);
-	 * 
-	 * </pre>
-	 ***************************************************************************/
-
-	public synchronized void engPutArray(int epI, String arrayS,
-			double[] valuesD)
-
-	{
-
-		double[][] vDD = new double[1][valuesD.length]; // 1xn array
-
-		if (debugB) {
-                System.out.println("length  = " + valuesD.length);
-            }
-
-		vDD[0] = valuesD; // copy row
-
-		engPutArray(epI, arrayS, vDD);
-
-	}
-
-	// ***************************** engPutArray ***************************
-
-	/**
-	 * Put an array (2 dimensional) into matlab's workspace.
-	 * 
-	 * 
-	 * 
-	 * <p>
-	 * E.g.:<br>
-	 * 
-	 * <pre>
-	 * 
-	 *   double[][] array={{1.0 , 2.0 , 3.0},
-	 * 
-	 *                     {4.0 , 5.0 , 6.0}};
-	 * 
-	 *   JMatLink engine = new JMatLink();
-	 * 
-	 *   engine.engOpenSingleUse();
-	 * 
-	 *   engine.<b>engPutArray</b>("array", array);
-	 * 
-	 *   engine.engClose();
-	 * 
-	 * </pre>
-	 ***************************************************************************/
-
-	public synchronized void engPutArray(String arrayS, double[][] valuesDD)
-
-	{
-
-		engPutArray(this.epI, arrayS, valuesDD);
-
-	}
-
-	// ***************************** engPutArray ***************************
-
-	/**
-	 * Put an array (2 dimensional) into a specified instance/workspace of
-	 * 
-	 * matlab.
-	 * 
-	 * 
-	 * 
-	 * <p>
-	 * E.g.:<br>
-	 * 
-	 * <pre>
-	 * 
-	 * int b;
-	 * 
-	 * double[][] array = { { 1.0, 2.0, 3.0 },
-	 * 
-	 * { 4.0, 5.0, 6.0 } };
-	 * 
-	 * JMatLink engine = new JMatLink();
-	 * 
-	 * b = engine.engOpenSingleUse();
-	 * 
-	 * engine.engPutArray(b, &quot;array&quot;, array);
-	 * 
-	 * engine.engClose(b);
-	 * 
-	 * </pre>
-	 ***************************************************************************/
-
-	public synchronized void engPutArray(int epI, String arrayS,
-			double[][] valuesDD)
-
-	{
-
-		// send an array to MATLAB
-
-		// only real values are supported so far
-
-		lockEngineLock();
-
-		lockWaitForValue();
-
-		this.epI = epI;
-
-		this.arrayS = arrayS;
-
-		this.engPutArray2dD = valuesDD;
-
-		callThread(engPutArray2dI);
-
-		WaitForValue();
-
-		releaseEngineLock();
-
-	}
-
-	// ***************************** engOutputBuffer ***********************
-
-	/**
-	 * Return the outputs of previous commands from matlab's workspace.
-	 * 
-	 * 
-	 * 
-	 * <p>
-	 * E.g.:<br>
-	 * 
-	 * <pre>
-	 * 
-	 *   String buffer;
-	 * 
-	 *   JMatLink engine = new JMatLink();
-	 * 
-	 *   engine.engOpen();
-	 * 
-	 *   engine.engEvalString("surf(peaks)");
-	 * 
-	 *   buffer = engine.<b>engOutputBuffer</b>();
-	 * 
-	 *   System.out.println("workspace " + buffer);
-	 * 
-	 *   engine.engClose();
-	 * 
-	 * </pre>
-	 ***************************************************************************/
-
-	public synchronized String engOutputBuffer()
-
-	{
-
-		return engOutputBuffer(this.epI, this.buflenI);
-
-	}
-
-	// ***************************** engOutputBuffer ***********************
-
-	/**
-	 * Return the outputs of previous commands from a specified instance/
-	 * 
-	 * workspace form matlab.
-	 * 
-	 * 
-	 * 
-	 * <p>
-	 * E.g.:<br>
-	 * 
-	 * <pre>
-	 * 
-	 *   String buffer;
-	 * 
-	 *   JMatLink engine = new JMatLink();
-	 * 
-	 *   engine.engOpen();
-	 * 
-	 *   engine.engEvalString("surf(peaks)");
-	 * 
-	 *   buffer = engine.<b>engOutputBuffer</b>();
-	 * 
-	 *   System.out.println("workspace " + buffer);
-	 * 
-	 *   engine.engClose();
-	 * 
-	 * </pre>
-	 ***************************************************************************/
-
-	public synchronized String engOutputBuffer(int epI)
-
-	{
-
-		return engOutputBuffer(epI, this.buflenI);
-
-	}
-
-	// ***************************** engOutputBuffer ***********************
-
-	/**
-	 * Return the ouputs of previous commands in matlab's workspace.
-	 * 
-	 * 
-	 * 
-	 * Right now the parameter <i>buflen</i> is not supported.
-	 * 
-	 * 
-	 * 
-	 * <p>
-	 * E.g.:<br>
-	 * 
-	 * <pre>
-	 * 
-	 *   String buffer;
-	 * 
-	 *   JMatLink engine = new JMatLink();
-	 * 
-	 *   engine.engOpen();
-	 * 
-	 *   engine.engEvalString("surf(peaks)");
-	 * 
-	 *   buffer = engine.<b>engOutputBuffer</b>();
-	 * 
-	 *   System.out.println("workspace " + buffer);
-	 * 
-	 *   engine.engClose();
-	 * 
-	 * </pre>
-	 ***************************************************************************/
-
-	public synchronized String engOutputBuffer(int epI, int buflenI)
-
-	{
-
-		// get the output buffer from MATLAB
-
-		if (debugB) {
-                System.out
-                                .println("Thread in: " + Thread.currentThread().getName());
-            }
-
-		lockEngineLock();
-
-		lockWaitForValue();
-
-		this.epI = epI;
-
-		this.buflenI = buflenI;
-
-		callThread(engOutputBufferI);
-
-		WaitForValue();
-
-		releaseEngineLock();
-
-		if (debugB) {
-                System.out.println("Thread out: "
-                                + Thread.currentThread().getName());
-            }
-
-		return engOutputBufferS;
-
-	}
-
-	// ***************************** setDebug *******************************
+    }
+
+    // ***************************** engGetVector **************************
+
+    /**
+     * Get an array (1 * n) from matlab's workspace.
+     * <p/>
+     * <p/>
+     * <p/>
+     * <p/>
+     * E.g.:<br>
+     * <p/>
+     * <pre>
+     *
+     *   double[] array;
+     *
+     *   JMatLink engine = new JMatLink();
+     *
+     *   engine.engOpen();
+     *
+     *   engine.engEvalString("array = randn(10,1);");
+     *
+     *   array = engine.<b>engGetVector</b>("array");
+     *
+     *   engine.engClose();
+     *
+     * </pre>
+     * *************************************************************************
+     */
+
+    public synchronized double[] engGetVector(String arrayS)
+
+    {
+
+        return engGetVector(this.epI, arrayS);
+
+    }
+
+    // ***************************** engGetVector **************************
+
+    /**
+     * Get an array (1 * n) from a specified workspace.
+     * <p/>
+     * <p/>
+     * <p/>
+     * <p/>
+     * E.g.:<br>
+     * <p/>
+     * <pre>
+     *
+     *   int b;
+     *
+     *   double[] array;
+     *
+     *   JMatLink engine = new JMatLink();
+     *
+     *   b = engine.engOpenSingleUse();
+     *
+     *   engine.engEvalString(b, "array = randn(10,1);");
+     *
+     *   array = engine.<b>engGetVector</b>(b, "array");
+     *
+     *   engine.engClose();
+     *
+     * </pre>
+     * *************************************************************************
+     */
+
+    public synchronized double[] engGetVector(int epI, String arrayS)
+
+    {
+
+        // only real values are supported so far
+
+        lockEngineLock();
+
+        lockWaitForValue();
+
+        this.epI = epI;
+
+        this.arrayS = arrayS;
+
+        callThread(engGetVectorI);
+
+        WaitForValue();
+
+        releaseEngineLock();
+
+        return engGetVectorD;
+
+    }
+
+    // ***************************** engGetArray ***************************
+
+    /**
+     * Get an array from matlab's workspace.
+     * <p/>
+     * <p/>
+     * <p/>
+     * <p/>
+     * E.g.:<br>
+     * <p/>
+     * <pre>
+     *
+     *   int b;
+     *
+     *   double[][] array;
+     *
+     *   JMatLink engine = new JMatLink();
+     *
+     *   engine.engOpen();
+     *
+     *   engine.engEvalString("array = randn(10);");
+     *
+     *   array = engine.<b>engGetArray</b>("array");
+     *
+     *   engine.engClose();
+     *
+     * </pre>
+     * *************************************************************************
+     */
+
+    public synchronized double[][] engGetArray(String arrayS)
+
+    {
+
+        return engGetArray(this.epI, arrayS);
+
+    }
+
+    // ***************************** engGetArray ***************************
+
+    /**
+     * Get an array from a specified instance/workspace of matlab.
+     * <p/>
+     * <p/>
+     * <p/>
+     * <p/>
+     * E.g.:<br>
+     * <p/>
+     * <pre>
+     *
+     *   int b;
+     *
+     *   double[][] array;
+     *
+     *   JMatLink engine = new JMatLink();
+     *
+     *   b = engine.engOpenSingleUse();
+     *
+     *   engine.engEvalString(b, "array = randn(10);");
+     *
+     *   array = engine.<b>engGetArray</b>(b, "array");
+     *
+     *   engine.engClose(b);
+     *
+     * </pre>
+     * *************************************************************************
+     */
+
+    public synchronized double[][] engGetArray(int epI, String arrayS)
+
+    {
+
+        // only real values are supported so far
+
+        lockEngineLock();
+
+        lockWaitForValue();
+
+        this.epI = epI;
+
+        this.arrayS = arrayS;
+
+        callThread(engGetArrayI);
+
+        WaitForValue();
+
+        releaseEngineLock();
+
+        return engGetArrayD;
+
+    }
+
+    // ************************** engGetCharArray *****************************
+
+    /**
+     * Get an 'char' array (string) from matlab's workspace.
+     * <p/>
+     * <p/>
+     * <p/>
+     * <p/>
+     * E.g.:<br>
+     * <p/>
+     * <pre>
+     *
+     *   String array;
+     *
+     *   JMatLink engine = new JMatLink();
+     *
+     *   engine.engOpen();
+     *
+     *   engine.engEvalString("array = 'hello world';");
+     *
+     *   array = engine.<b>engCharArray</b>("array");
+     *
+     *   System.out.println("output = "+ array);
+     *
+     *   engine.engClose();
+     *
+     * </pre>
+     * *************************************************************************
+     */
+
+    public synchronized String[] engGetCharArray(String arrayS)
+
+    {
+
+        // convert to double array
+
+        engEvalString("engGetCharArrayD=double(" + arrayS + ")");
+
+        // get double array
+
+        double[][] arrayD = engGetArray("engGetCharArrayD");
+
+        // delete temporary double array
+
+        engEvalString("clear engGetCharArrayD");
+
+        // convert double back to char
+
+        return double2String(arrayD);
+
+    }
+
+    // ***************************** engPutArray ***************************
+
+    /**
+     * Put an array into a specified workspace.
+     * <p/>
+     * <p/>
+     * <p/>
+     * <p/>
+     * E.g.:<br>
+     * <p/>
+     * <pre>
+     *
+     *   int array = 1;
+     *
+     *   JMatLink engine = new JMatLink();
+     *
+     *   engine.engOpen();
+     *
+     *   engine.<b>engPutArray</b>("array", array);
+     *
+     *   engine.engClose();
+     *
+     * </pre>
+     * *************************************************************************
+     */
+
+    public synchronized void engPutArray(String arrayS, int valueI)
+
+    {
+
+        engPutArray(this.epI, arrayS, new Integer(valueI).doubleValue());
+
+    }
+
+    // ***************************** engPutArray ***************************
+
+    // public synchronized void engPutArray( String arrayS, int[] valuesI )
+
+    // {
+
+    // engPutArray( this.epI, arrayS, (double[])valuesI );
+
+    // }
+
+    // ***************************** engPutArray ***************************
+
+    /**
+     * Put an array into matlab's workspace.
+     * <p/>
+     * <p/>
+     * <p/>
+     * <p/>
+     * E.g.:<br>
+     * <p/>
+     * <pre>
+     *
+     *   double array = 1;
+     *
+     *   JMatLink engine = new JMatLink();
+     *
+     *   engine.engOpen();
+     *
+     *   engine.<b>engPutArray</b>("array", array);
+     *
+     *   engine.engClose();
+     *
+     * </pre>
+     * *************************************************************************
+     */
+
+    public synchronized void engPutArray(String arrayS, double valueD)
+
+    {
+
+        engPutArray(this.epI, arrayS, valueD);
+
+    }
+
+    // ***************************** engPutArray *****************************
+
+    /**
+     * Put an array into a specified instance/workspace of matlab.
+     * <p/>
+     * <p/>
+     * <p/>
+     * <p/>
+     * E.g.:<br>
+     * <p/>
+     * <pre>
+     *
+     *   int b;
+     *
+     *   double array = 1;
+     *
+     *   JMatLink engine = new JMatLink();
+     *
+     *   b = engine.engOpenSingleUse();
+     *
+     *   engine.<b>engPutArray</b>(b, "array", array);
+     *
+     *   engine.engClose(b);
+     *
+     * </pre>
+     * *************************************************************************
+     */
+
+    public synchronized void engPutArray(int epI, String arrayS, double valueD)
+
+    {
+
+        double vDD[][] = {{0.0}};
+
+        vDD[0][0] = valueD;
+
+        engPutArray(epI, arrayS, vDD); // nxn dimensional
+
+    }
+
+    // ***************************** engPutArray ***************************
+
+    /**
+     * Put an array (1 dimensional) into a specified instance/workspace of
+     * <p/>
+     * matlab.
+     * <p/>
+     * <p/>
+     * <p/>
+     * <p/>
+     * E.g.:<br>
+     * <p/>
+     * <pre>
+     *
+     *   double[] array = {1.0 , 2.0 , 3.0};
+     *
+     *   JMatLink engine = new JMatLink();
+     *
+     *   engine.engOpen();
+     *
+     *   engine.<b>engPutArray</b>("array", array);
+     *
+     *   engine.engClose();
+     *
+     * </pre>
+     * *************************************************************************
+     */
+
+    public synchronized void engPutArray(String arrayS, double[] valuesD)
+
+    {
+
+        engPutArray(this.epI, arrayS, valuesD);
+
+    }
+
+    // ***************************** engPutArray *****************************
+
+    /**
+     * Put an array (1 dimensional) into a specified instance/workspace of
+     * <p/>
+     * matlab.
+     * <p/>
+     * <p/>
+     * <p/>
+     * <p/>
+     * E.g.:<br>
+     * <p/>
+     * <pre>
+     *
+     *   int b;
+     *
+     *   double[] array = {1.0 , 2.0 , 3.0};
+     *
+     *   JMatLink engine = new JMatLink();
+     *
+     *   b = engine.engOpenSingleUse();
+     *
+     *   engine.<b>engPutArray</b>(b, "array", array);
+     *
+     *   engine.engClose(b);
+     *
+     * </pre>
+     * *************************************************************************
+     */
+
+    public synchronized void engPutArray(int epI, String arrayS,
+                                         double[] valuesD)
+
+    {
+
+        double[][] vDD = new double[1][valuesD.length]; // 1xn array
+
+        if (debugB) {
+            System.out.println("length  = " + valuesD.length);
+        }
+
+        vDD[0] = valuesD; // copy row
+
+        engPutArray(epI, arrayS, vDD);
+
+    }
+
+    // ***************************** engPutArray ***************************
+
+    /**
+     * Put an array (2 dimensional) into matlab's workspace.
+     * <p/>
+     * <p/>
+     * <p/>
+     * <p/>
+     * E.g.:<br>
+     * <p/>
+     * <pre>
+     *
+     *   double[][] array={{1.0 , 2.0 , 3.0},
+     *
+     *                     {4.0 , 5.0 , 6.0}};
+     *
+     *   JMatLink engine = new JMatLink();
+     *
+     *   engine.engOpenSingleUse();
+     *
+     *   engine.<b>engPutArray</b>("array", array);
+     *
+     *   engine.engClose();
+     *
+     * </pre>
+     * *************************************************************************
+     */
+
+    public synchronized void engPutArray(String arrayS, double[][] valuesDD)
+
+    {
+
+        engPutArray(this.epI, arrayS, valuesDD);
+
+    }
+
+    // ***************************** engPutArray ***************************
+
+    /**
+     * Put an array (2 dimensional) into a specified instance/workspace of
+     * <p/>
+     * matlab.
+     * <p/>
+     * <p/>
+     * <p/>
+     * <p/>
+     * E.g.:<br>
+     * <p/>
+     * <pre>
+     *
+     * int b;
+     *
+     * double[][] array = { { 1.0, 2.0, 3.0 },
+     *
+     * { 4.0, 5.0, 6.0 } };
+     *
+     * JMatLink engine = new JMatLink();
+     *
+     * b = engine.engOpenSingleUse();
+     *
+     * engine.engPutArray(b, &quot;array&quot;, array);
+     *
+     * engine.engClose(b);
+     *
+     * </pre>
+     * *************************************************************************
+     */
+
+    public synchronized void engPutArray(int epI, String arrayS,
+                                         double[][] valuesDD)
+
+    {
+
+        // send an array to MATLAB
+
+        // only real values are supported so far
+
+        lockEngineLock();
+
+        lockWaitForValue();
+
+        this.epI = epI;
+
+        this.arrayS = arrayS;
+
+        this.engPutArray2dD = valuesDD;
+
+        callThread(engPutArray2dI);
+
+        WaitForValue();
+
+        releaseEngineLock();
+
+    }
+
+    // ***************************** engOutputBuffer ***********************
+
+    /**
+     * Return the outputs of previous commands from matlab's workspace.
+     * <p/>
+     * <p/>
+     * <p/>
+     * <p/>
+     * E.g.:<br>
+     * <p/>
+     * <pre>
+     *
+     *   String buffer;
+     *
+     *   JMatLink engine = new JMatLink();
+     *
+     *   engine.engOpen();
+     *
+     *   engine.engEvalString("surf(peaks)");
+     *
+     *   buffer = engine.<b>engOutputBuffer</b>();
+     *
+     *   System.out.println("workspace " + buffer);
+     *
+     *   engine.engClose();
+     *
+     * </pre>
+     * *************************************************************************
+     */
+
+    public synchronized String engOutputBuffer()
+
+    {
+
+        return engOutputBuffer(this.epI, this.buflenI);
+
+    }
+
+    // ***************************** engOutputBuffer ***********************
+
+    /**
+     * Return the outputs of previous commands from a specified instance/
+     * <p/>
+     * workspace form matlab.
+     * <p/>
+     * <p/>
+     * <p/>
+     * <p/>
+     * E.g.:<br>
+     * <p/>
+     * <pre>
+     *
+     *   String buffer;
+     *
+     *   JMatLink engine = new JMatLink();
+     *
+     *   engine.engOpen();
+     *
+     *   engine.engEvalString("surf(peaks)");
+     *
+     *   buffer = engine.<b>engOutputBuffer</b>();
+     *
+     *   System.out.println("workspace " + buffer);
+     *
+     *   engine.engClose();
+     *
+     * </pre>
+     * *************************************************************************
+     */
+
+    public synchronized String engOutputBuffer(int epI)
+
+    {
+
+        return engOutputBuffer(epI, this.buflenI);
+
+    }
+
+    // ***************************** engOutputBuffer ***********************
+
+    /**
+     * Return the ouputs of previous commands in matlab's workspace.
+     * <p/>
+     * <p/>
+     * <p/>
+     * Right now the parameter <i>buflen</i> is not supported.
+     * <p/>
+     * <p/>
+     * <p/>
+     * <p/>
+     * E.g.:<br>
+     * <p/>
+     * <pre>
+     *
+     *   String buffer;
+     *
+     *   JMatLink engine = new JMatLink();
+     *
+     *   engine.engOpen();
+     *
+     *   engine.engEvalString("surf(peaks)");
+     *
+     *   buffer = engine.<b>engOutputBuffer</b>();
+     *
+     *   System.out.println("workspace " + buffer);
+     *
+     *   engine.engClose();
+     *
+     * </pre>
+     * *************************************************************************
+     */
+
+    public synchronized String engOutputBuffer(int epI, int buflenI)
+
+    {
+
+        // get the output buffer from MATLAB
+
+        if (debugB) {
+            System.out
+                    .println("Thread in: " + Thread.currentThread().getName());
+        }
+
+        lockEngineLock();
+
+        lockWaitForValue();
+
+        this.epI = epI;
+
+        this.buflenI = buflenI;
+
+        callThread(engOutputBufferI);
+
+        WaitForValue();
+
+        releaseEngineLock();
+
+        if (debugB) {
+            System.out.println("Thread out: "
+                    + Thread.currentThread().getName());
+        }
+
+        return engOutputBufferS;
+
+    }
+
+    // ***************************** setDebug *******************************
 
 	/*
-	 * Switch on or disable debug information printed to standard output.
+     * Switch on or disable debug information printed to standard output.
 	 * 
 	 * 
 	 * 
@@ -1475,325 +1500,323 @@ public class JMatLink extends Thread {
 	 * *************************************************************************
 	 */
 
-	public void setDebug(boolean debugB)
+    public void setDebug(boolean debugB)
 
-	{
+    {
 
-		this.debugB = debugB;
+        this.debugB = debugB;
 
-		setDebugNATIVE(debugB);
+        setDebugNATIVE(debugB);
 
-	}
+    }
 
-	// //////////////////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////////////////////
 
-	// This method notifys the main thread to call matlab's engine
+    // This method notifys the main thread to call matlab's engine
 
-	// Since threads don't have methods, we set a variable which
+    // Since threads don't have methods, we set a variable which
 
-	// contains the necessary information about what to do.
+    // contains the necessary information about what to do.
 
-	private synchronized void callThread(int status)
+    private synchronized void callThread(int status)
 
-	{
+    {
 
-		this.status = status;
+        this.status = status;
 
-		lockThreadB = false;
+        lockThreadB = false;
 
-		notifyAll();
+        notifyAll();
 
-	}
+    }
 
-	// //////////////////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////////////////////
 
-	// The run methods does ALL calls to the native methods
+    // The run methods does ALL calls to the native methods
 
-	// The keyword "synchronized" is neccessary to block the run()
+    // The keyword "synchronized" is neccessary to block the run()
 
-	// method as long as one command needs to get executed.
+    // method as long as one command needs to get executed.
 
     @Override
-	public synchronized void run()
+    public synchronized void run()
 
-	{
+    {
 
-		int tempRetVal;
+        int tempRetVal;
 
-		if (debugB) {
-                System.out.println("JMatLink: thread is running");
+        if (debugB) {
+            System.out.println("JMatLink: thread is running");
+        }
+
+        while (true) {
+
+            // System.out.println("Number of Java-Threads: "+Thread.activeCount()+"");
+
+            // Thread thread = Thread.currentThread();
+
+            // System.out.println("Name of active Java-Threads: "+thread.getName()+"");
+
+            // System.out.println("active Java-Thread is Daemon: "+thread.isDaemon();+"");
+
+            switch (status) {
+
+                case engOpenI:
+                    epI = engOpenNATIVE(startCmdS);
+
+                    releaseWaitForValue();
+
+                    break;
+
+                case engOpenSingleUseI:
+                    epI = engOpenSingleUseNATIVE(startCmdS);
+
+                    releaseWaitForValue();
+
+                    break;
+
+                case engCloseI:
+                    retValI = engCloseNATIVE(epI);
+
+                    releaseWaitForValue();
+
+                    break;
+
+                case engEvalStringI:
+                    retValI = engEvalStringNATIVE(epI, engEvalStringS);
+
+                    releaseWaitForValue();
+
+                    break;
+
+                case engGetScalarI:
+                    engGetScalarD = engGetScalarNATIVE(epI, arrayS);
+
+                    releaseWaitForValue();
+
+                    break;
+
+                case engGetVectorI:
+                    engGetVectorD = engGetVectorNATIVE(epI, arrayS);
+
+                    releaseWaitForValue();
+
+                    break;
+
+                case engGetArrayI:
+                    engGetArrayD = engGetArrayNATIVE(epI, arrayS);
+
+                    releaseWaitForValue();
+
+                    break;
+
+                case engGetCharArrayI:
+                    engGetCharArrayS = engGetCharArrayNATIVE(epI, arrayS);
+
+                    releaseWaitForValue();
+
+                    break;
+
+                case engPutArray2dI:
+                    engPutArrayNATIVE(epI, arrayS, engPutArray2dD);
+
+                    releaseWaitForValue();
+
+                    break;
+
+                case engOutputBufferI:
+                    engOutputBufferS = engOutputBufferNATIVE(epI, buflenI);
+
+                    releaseWaitForValue();
+
+                    break;
+
+                default: // System.out.println("thread default switch statem.");
+
             }
 
-		while (true) {
+            status = 0;
 
-			// System.out.println("Number of Java-Threads: "+Thread.activeCount()+"");
+            lockThreadB = true;
 
-			// Thread thread = Thread.currentThread();
+            while (lockThreadB == true) {
 
-			// System.out.println("Name of active Java-Threads: "+thread.getName()+"");
+                synchronized (this) {
 
-			// System.out.println("active Java-Thread is Daemon: "+thread.isDaemon();+"");
+                    try {
+                        wait();
+                    } // wait until next command is available
 
-			switch (status) {
-
-			case engOpenI:
-				epI = engOpenNATIVE(startCmdS);
-
-				releaseWaitForValue();
-
-				break;
-
-			case engOpenSingleUseI:
-				epI = engOpenSingleUseNATIVE(startCmdS);
-
-				releaseWaitForValue();
-
-				break;
-
-			case engCloseI:
-				retValI = engCloseNATIVE(epI);
-
-				releaseWaitForValue();
-
-				break;
-
-			case engEvalStringI:
-				retValI = engEvalStringNATIVE(epI, engEvalStringS);
-
-				releaseWaitForValue();
-
-				break;
-
-			case engGetScalarI:
-				engGetScalarD = engGetScalarNATIVE(epI, arrayS);
-
-				releaseWaitForValue();
-
-				break;
-
-			case engGetVectorI:
-				engGetVectorD = engGetVectorNATIVE(epI, arrayS);
-
-				releaseWaitForValue();
-
-				break;
-
-			case engGetArrayI:
-				engGetArrayD = engGetArrayNATIVE(epI, arrayS);
-
-				releaseWaitForValue();
-
-				break;
-
-			case engGetCharArrayI:
-				engGetCharArrayS = engGetCharArrayNATIVE(epI, arrayS);
-
-				releaseWaitForValue();
-
-				break;
-
-			case engPutArray2dI:
-				engPutArrayNATIVE(epI, arrayS, engPutArray2dD);
-
-				releaseWaitForValue();
-
-				break;
-
-			case engOutputBufferI:
-				engOutputBufferS = engOutputBufferNATIVE(epI, buflenI);
-
-				releaseWaitForValue();
-
-				break;
-
-			default: // System.out.println("thread default switch statem.");
-
-			}
-
-			status = 0;
-
-			lockThreadB = true;
-
-			while (lockThreadB == true) {
-
-				synchronized (this) {
-
-					try {
-						wait();
-					} // wait until next command is available
-
-					catch (InterruptedException e) {
-					}
-
-				}
-
-			}
-
-			// System.out.println("JMatLink: thread awoke and passed lock");
-
-			if (destroyJMatLinkB == true) {
-                        break;
+                    catch (InterruptedException e) {
                     }
 
-		} // end while
+                }
 
-		if (debugB) {
-                System.out.println("JMatLink: thread terminated");
             }
 
-	} // end run
+            // System.out.println("JMatLink: thread awoke and passed lock");
 
-	// //////////////////////////////////////////////////////////////////////////////
+            if (destroyJMatLinkB == true) {
+                break;
+            }
 
-	// The MATLAB engine is served by a thread. Threads don't have methods
+        } // end while
 
-	// which can be called. So we need to send messages to that thread
+        if (debugB) {
+            System.out.println("JMatLink: thread terminated");
+        }
 
-	// by using notifyAll. In the meantime NO OTHER methods is allowed to
+    } // end run
 
-	// access our thread (engine) so we lock everything up.
+    // //////////////////////////////////////////////////////////////////////////////
 
-	private void lockEngineLock() {
+    // The MATLAB engine is served by a thread. Threads don't have methods
 
-		synchronized (this) {
+    // which can be called. So we need to send messages to that thread
 
-			while (lockEngineB == true) {
+    // by using notifyAll. In the meantime NO OTHER methods is allowed to
 
-				try { // System.out.println("lockEngineLock locked");
+    // access our thread (engine) so we lock everything up.
 
-					wait();
-				} // wait until last command is finished
+    private void lockEngineLock() {
 
-				catch (InterruptedException e) {
-				}
+        synchronized (this) {
 
-			}
+            while (lockEngineB == true) {
 
-			// now lockEngineB is false
+                try { // System.out.println("lockEngineLock locked");
 
-			lockEngineB = true;
+                    wait();
+                } // wait until last command is finished
 
-		}
+                catch (InterruptedException e) {
+                }
 
-	} // end lockEngine
+            }
 
-	private synchronized void releaseEngineLock() {
+            // now lockEngineB is false
 
-		lockEngineB = false;
+            lockEngineB = true;
 
-		notifyAll();
+        }
 
-	}
+    } // end lockEngine
 
-	// //////////////////////////////////////////////////////////////////////////////
+    private synchronized void releaseEngineLock() {
 
-	// The MATLAB engine is served by a thread. Threads don't have methods
+        lockEngineB = false;
 
-	// which can be called directly. If we send a command that returns data
+        notifyAll();
 
-	// back to the calling function e.g. engGetArray("array"), we'll notify
+    }
 
-	// the main thread to get the data from matlab. Since the data is collected
+    // //////////////////////////////////////////////////////////////////////////////
 
-	// in another thread, we don't know exactly when the data is available,
-	// since
+    // The MATLAB engine is served by a thread. Threads don't have methods
 
-	// this is a concurrent situation.
+    // which can be called directly. If we send a command that returns data
 
-	// The solution is simple: I always use a locking-mechanism to wait for the
+    // back to the calling function e.g. engGetArray("array"), we'll notify
 
-	// data. The main thread will release the lock and the calling method can
+    // the main thread to get the data from matlab. Since the data is collected
 
-	// return the data.
+    // in another thread, we don't know exactly when the data is available,
+    // since
 
-	//
+    // this is a concurrent situation.
 
-	// Steps:
+    // The solution is simple: I always use a locking-mechanism to wait for the
 
-	// 1. a method that returns data calls the locking method
+    // data. The main thread will release the lock and the calling method can
 
-	// 2. notify the thread to call matlab
+    // return the data.
 
-	// 3. wait for the returned data
+    //
 
-	// 4. after the thread itself got the data it releases the locks method
+    // Steps:
 
-	// 5. return data
+    // 1. a method that returns data calls the locking method
 
-	private synchronized void lockWaitForValue() {
+    // 2. notify the thread to call matlab
 
-		lockWaitForValueB = true;
+    // 3. wait for the returned data
 
-	}
+    // 4. after the thread itself got the data it releases the locks method
 
-	private void WaitForValue() {
+    // 5. return data
 
-		synchronized (this) {
+    private synchronized void lockWaitForValue() {
 
-			while (lockWaitForValueB == true) {
+        lockWaitForValueB = true;
 
-				try { // System.out.println("lockWaitForValue locked");
+    }
 
-					wait();
-				} // wait for return value
+    private void WaitForValue() {
 
-				catch (InterruptedException e) {
-				}
+        synchronized (this) {
 
-			}
+            while (lockWaitForValueB == true) {
 
-		}
+                try { // System.out.println("lockWaitForValue locked");
 
-		// System.out.println("WaitForValue released");
+                    wait();
+                } // wait for return value
 
-	} // end waitForValue
+                catch (InterruptedException e) {
+                }
 
-	private synchronized void releaseWaitForValue() {
+            }
 
-		lockWaitForValueB = false;
+        }
 
-		notifyAll();
+        // System.out.println("WaitForValue released");
 
-	}
+    } // end waitForValue
 
-	// //////////////////////////////////////////////////////////////////////////////
+    private synchronized void releaseWaitForValue() {
 
-	// // Utility methods ////
+        lockWaitForValueB = false;
 
-	// Convert an n*n double array to n*1 String vector
+        notifyAll();
 
-	private String[] double2String(double[][] d)
+    }
 
-	{
+    // //////////////////////////////////////////////////////////////////////////////
 
-		String encodeS[] = new String[d.length]; // String vector
+    // // Utility methods ////
 
-		// for all rows
+    // Convert an n*n double array to n*1 String vector
 
-		for (int n = 0; n < d.length; n++) {
+    private String[] double2String(double[][] d)
 
-			byte b[] = new byte[d[n].length];
+    {
 
-			// convert row from double to byte
+        String encodeS[] = new String[d.length]; // String vector
 
-			for (int i = 0; i < d[n].length; i++) {
-                        b[i] = (byte) d[n][i];
-                    }
+        // for all rows
 
-			// convert byte to String
+        for (int n = 0; n < d.length; n++) {
 
-			try {
-				encodeS[n] = new String(b, "UTF8");
-			}
+            byte b[] = new byte[d[n].length];
 
-			catch (UnsupportedEncodingException e) {
-			}
+            // convert row from double to byte
 
-		}
+            for (int i = 0; i < d[n].length; i++) {
+                b[i] = (byte) d[n][i];
+            }
 
-		return encodeS;
+            // convert byte to String
 
-	} // end double2String
+            try {
+                encodeS[n] = new String(b, "UTF8");
+            } catch (UnsupportedEncodingException e) {
+            }
+
+        }
+
+        return encodeS;
+
+    } // end double2String
 
 } // end class JMatLink
 

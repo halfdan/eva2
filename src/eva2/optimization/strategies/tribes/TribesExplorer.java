@@ -9,16 +9,16 @@ import eva2.tools.math.RNG;
 
 public class TribesExplorer extends AbstractEAIndividual implements InterfaceDataTypeDouble {
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	TribesPosition positionT_2; // Position at time t-2
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    TribesPosition positionT_2; // Position at time t-2
     TribesPosition positionT_1;  // Position at time t-1
     TribesPosition position;  // Current position
-    TribesPosition velocity; 
+    TribesPosition velocity;
     double[][] range = null;
     protected double objectiveValueFirstDim = 0.;
-    
+
     // int informant[] = new int[4];
     /*
          informant[0] = tribe rank in the swarm
@@ -38,15 +38,15 @@ public class TribesExplorer extends AbstractEAIndividual implements InterfaceDat
     int strategy; // Moving strategy
     int status; // 1 to 9
     int label;
-    
+
     public TribesExplorer(double[][] range, double objFirstDim) {
-    	init(range.length, Tribes.maxTribeNb);
-    	SetDoubleRange(range);
-    	objectiveValueFirstDim = objFirstDim;
+        init(range.length, Tribes.maxTribeNb);
+        SetDoubleRange(range);
+        objectiveValueFirstDim = objFirstDim;
     }
-    
+
     public TribesExplorer(TribesExplorer expl) {
-    	this(expl.getDoubleRange(), expl.objectiveValueFirstDim);
+        this(expl.getDoubleRange(), expl.objectiveValueFirstDim);
         int n;
         for (n = 0; n < 2; n++) {
             // Clone.informant[n] = explorer.informant[n];
@@ -65,76 +65,76 @@ public class TribesExplorer extends AbstractEAIndividual implements InterfaceDat
             iGroup[n][0] = expl.iGroup[n][0];
         }
     }
-    
+
     public void init(int maxDimension, int maxTribeNb) {
-    	initPositions(maxDimension);
-    	iGroup = new int[maxTribeNb][2];
+        initPositions(maxDimension);
+        iGroup = new int[maxTribeNb][2];
     }
 
-	protected void initPositions(int maxDimension) {
-		positionT_2 = new TribesPosition(maxDimension); // Position at time t-2
-    	positionT_1 = new TribesPosition(maxDimension); // Position at time t-1
-    	position = new TribesPosition(maxDimension); // Current position
-    	velocity = new TribesPosition(maxDimension);
-	}
+    protected void initPositions(int maxDimension) {
+        positionT_2 = new TribesPosition(maxDimension); // Position at time t-2
+        positionT_1 = new TribesPosition(maxDimension); // Position at time t-1
+        position = new TribesPosition(maxDimension); // Current position
+        velocity = new TribesPosition(maxDimension);
+    }
 //    private void print(String string, out output) {
 //        output.out.append(string);
 //    }
-    
+
     @Override
     public double[] getFitness() {
-    	return position.getFitness();
+        return position.getFitness();
     }
-    
+
     @Override
     public double getFitness(int index) {
-    	return position.getFitness()[index];
+        return position.getFitness()[index];
     }
-    
+
     /**
      * Be aware that for a TribesExplorer, an objective value might be taken into account
      * by reducing the fitness (in the first dimension).
      */
     @Override
     public void setFitness(double[] fitness) {
-    	position.fitness = fitness;
-    	super.setFitness(fitness);
-    	fitness[0] -= objectiveValueFirstDim;
-    	position.setTotalError();
+        position.fitness = fitness;
+        super.setFitness(fitness);
+        fitness[0] -= objectiveValueFirstDim;
+        position.setTotalError();
     }
-    
+
     /**
      * Be aware that for a TribesExplorer, an objective value might be taken into account
      * by reducing the fitness (in the first dimension).
      */
     @Override
     public void SetFitness(int index, double fitness) {
-    	super.SetFitness(index, fitness);
-    	if (index > position.fitness.length) {
-    		double[] newFit = new double[index+1];
-    		System.arraycopy(position.fitness, 0, newFit, 0, position.fitness.length);
-    		position.fitness = newFit; 
-    	}
-    	if (index == 0) { 
-    		position.fitness[index] = (fitness-objectiveValueFirstDim);
-    	} else {
-    		position.fitness[index] = fitness;
-    	}
-    	position.setTotalError();
+        super.SetFitness(index, fitness);
+        if (index > position.fitness.length) {
+            double[] newFit = new double[index + 1];
+            System.arraycopy(position.fitness, 0, newFit, 0, position.fitness.length);
+            position.fitness = newFit;
+        }
+        if (index == 0) {
+            position.fitness[index] = (fitness - objectiveValueFirstDim);
+        } else {
+            position.fitness[index] = fitness;
+        }
+        position.setTotalError();
     }
 
     @Override
     public TribesExplorer clone() {
-    	return new TribesExplorer(this);
+        return new TribesExplorer(this);
     }
-    
+
     /**
      * Resets all positions and velocity.
      */
     public void clearPosVel() {
-    	initPositions(position.getMaxDimension());
+        initPositions(position.getMaxDimension());
     }
-    
+
 //
 //    public int generateExplorer(TribesParam pb,
 //    		TribesSwarm swarm, TribesPosition center, double radius,
@@ -285,33 +285,33 @@ public class TribesExplorer extends AbstractEAIndividual implements InterfaceDat
 //        double pseudoGradient, pseudoGradientBest;
 
         switch (informOption) {
-        default:
-            System.err.println("moveExplorer error");
-            break;
-        case -1: // The "true" best informant
+            default:
+                System.err.println("moveExplorer error");
+                break;
+            case -1: // The "true" best informant
 
             /* In the tribe it should be the shaman
              */
 
-            iGroup[0][0] = tribeRank;
-            iGroup[0][1] = swarm.tribes[tribeRank].shaman;
+                iGroup[0][0] = tribeRank;
+                iGroup[0][1] = swarm.tribes[tribeRank].shaman;
 
             /*
              System.out.print("\ninformExplorer " + iGroup[0][0]+ " " +
                                           iGroup[0][1] + " ");
              */
 //For the shaman, links to the other shamans
-            m = 1;
-            for (n = 0; n < swarm.tribeNb; n++) {
-                if (n == fromTribe) {
-                    continue;
+                m = 1;
+                for (n = 0; n < swarm.tribeNb; n++) {
+                    if (n == fromTribe) {
+                        continue;
+                    }
+                    iGroup[m][0] = n;
+                    iGroup[m][1] = swarm.tribes[n].shaman;
+                    m++;
                 }
-                iGroup[m][0] = n;
-                iGroup[m][1] = swarm.tribes[n].shaman;
-                m++;
-            }
 
-            break;
+                break;
             /*
                     case 1: // Depending on pseudo-gradient
                         f1 = position.totalError;
@@ -363,7 +363,7 @@ public class TribesExplorer extends AbstractEAIndividual implements InterfaceDat
 
 
     public boolean moveExplorer(int fromTribe, int rank, TribesSwarm swarm,
-                            int informOption, InterfaceOptimizationProblem prob) {
+                                int informOption, InterfaceOptimizationProblem prob) {
         int i;
         boolean fitnessEval;
         int n;
@@ -400,11 +400,11 @@ public class TribesExplorer extends AbstractEAIndividual implements InterfaceDat
 
         // May use repelling
         if (Tribes.repel && (swarm.tribes[fromTribe].explorerNb > 2) &&
-            (rank == swarm.tribes[fromTribe].worst)) {
+                (rank == swarm.tribes[fromTribe].worst)) {
             for (i = 0; i < velocity.x.length; i++) {
                 velocity.x[i] = -velocity.x[i];
             }
-  //System.out.print("\n repelling");
+            //System.out.print("\n repelling");
         }
 
         //  Update position
@@ -441,17 +441,17 @@ public class TribesExplorer extends AbstractEAIndividual implements InterfaceDat
         //    System.out.print("\n fitness before move "+movedExplorer.position.fitness);
         if (fitnessEval) {
             if (swarm.masterTribe.isCheckConstraints() || !outH) { // certainly within range
-            	prob.evaluate(this);
-            	swarm.masterTribe.incEvalCnt();
+                prob.evaluate(this);
+                swarm.masterTribe.incEvalCnt();
 //                evalF = position.fitnessEval(pb.function, pb.objective,
 //                                             pb.fitnessSize, eval);
             } else { // Artificial fitness by using penalties
                 for (n = 0; n < position.fitness.length; n++) {
-                	SetFitness(n, swarm.tribes[fromTribe].memory[
-                                          contact].
-                                          getPos().
-                                          fitness[n] +
-                                          keepInPenalty(range, position));
+                    SetFitness(n, swarm.tribes[fromTribe].memory[
+                            contact].
+                            getPos().
+                            fitness[n] +
+                            keepInPenalty(range, position));
                 }
                 // position.totalError(position.fitness); // MK: this wont actually do anything
             }
@@ -506,53 +506,53 @@ public class TribesExplorer extends AbstractEAIndividual implements InterfaceDat
          */
 
         switch (status) {
-        default:
+            default:
 
-            //  strategy = RNG.randomInt(4); // 0 to 3
-            strategy = 1 + RNG.randomInt(3); // 1 to 3
+                //  strategy = RNG.randomInt(4); // 0 to 3
+                strategy = 1 + RNG.randomInt(3); // 1 to 3
 
-        case 1:
-            strategy = 1 + RNG.randomInt(3);
-            break;
-        case 2:
-            strategy = 1 + RNG.randomInt(3);
-            break;
-        case 3:
-            strategy = 1 + RNG.randomInt(3);
-            break;
+            case 1:
+                strategy = 1 + RNG.randomInt(3);
+                break;
+            case 2:
+                strategy = 1 + RNG.randomInt(3);
+                break;
+            case 3:
+                strategy = 1 + RNG.randomInt(3);
+                break;
 
-        case 4:
-            strategy = 1 + RNG.randomInt(3);
-            break;
-        case 5:
-            strategy = 1 + RNG.randomInt(3);
-            break;
+            case 4:
+                strategy = 1 + RNG.randomInt(3);
+                break;
+            case 5:
+                strategy = 1 + RNG.randomInt(3);
+                break;
 
-        case 6:
+            case 6:
 
-            break;
+                break;
 
-        case 7:
-            if (statusTribe == 1) {
-                strategy = RNG.randomInt(2);
-            }
-            break;
-        case 8:
-            if (statusTribe == 1) {
-                strategy = RNG.randomInt(2);
-            }
-            break;
+            case 7:
+                if (statusTribe == 1) {
+                    strategy = RNG.randomInt(2);
+                }
+                break;
+            case 8:
+                if (statusTribe == 1) {
+                    strategy = RNG.randomInt(2);
+                }
+                break;
 
-        case 9:
-            if (statusTribe == 1) {
-                strategy = RNG.randomInt(2);
-            } else if (Tribes.blind > 0) {
-                strategy = 6; // Keep moving the same way
-            } else {
-                //strategy = 4; // Quasi-gradient (questionable)
-                strategy = 5; // Adaptive coefficients
-            }
-            break;
+            case 9:
+                if (statusTribe == 1) {
+                    strategy = RNG.randomInt(2);
+                } else if (Tribes.blind > 0) {
+                    strategy = 6; // Keep moving the same way
+                } else {
+                    //strategy = 4; // Quasi-gradient (questionable)
+                    strategy = 5; // Adaptive coefficients
+                }
+                break;
         }
         /*
                 // Bias in favor of strategy 5
@@ -568,8 +568,8 @@ public class TribesExplorer extends AbstractEAIndividual implements InterfaceDat
          */
 //strategy=9; //***  TEST non adaptive parametric strategy (cf. velocitClass)
 
-         // For information. Will be displayed
-         Tribes.strategies[strategy - 1]++;
+        // For information. Will be displayed
+        Tribes.strategies[strategy - 1]++;
     }
 
 //    public void displayExplorer(out out) {
@@ -583,7 +583,7 @@ public class TribesExplorer extends AbstractEAIndividual implements InterfaceDat
 //        }
 //    }
 
-//    public void initExplorerSpace(int D, double[] xmin, double[] xmax) {
+    //    public void initExplorerSpace(int D, double[] xmin, double[] xmax) {
 //        // Random initialisation of position
 //        int d;
 //        double r;
@@ -616,6 +616,7 @@ public class TribesExplorer extends AbstractEAIndividual implements InterfaceDat
         confCoeff[1] = (r + 1) * (r + 2) / 4; // Mean value (Cf. "Stagnation Analysis")
 
     }
+
     private double keepInPenalty(double[][] range, TribesPosition pos) {
         int d;
         double penalty = 0;
@@ -675,7 +676,7 @@ public class TribesExplorer extends AbstractEAIndividual implements InterfaceDat
 
     }
 
-//    int gNb; // Number of g constraints  (<=0)
+    //    int gNb; // Number of g constraints  (<=0)
 //    int hNb; // Number of h constraints (<ups)
 //    double ups; // Tolerance for h constraints
     public void constraint(int gNb, int hNb, double ups) {
@@ -712,179 +713,179 @@ public class TribesExplorer extends AbstractEAIndividual implements InterfaceDat
 //    }
 
     public void changeVelocity(TribesPosition velocity, int fromTribe, TribesSwarm swarm,
-    		int strategy, double confCoeff[]) {
+                               int strategy, double confCoeff[]) {
 
 //  	System.out.println("\n changeVelocity");
-    	double c, c0, c1, c2, c3;
+        double c, c0, c1, c2, c3;
 
-    	int d;
-    	double dx;
-    	double f1, f2;
-    	double lambda = 1;
+        int d;
+        double dx;
+        double f1, f2;
+        double lambda = 1;
 
-    	double r, r1, r2;
+        double r, r1, r2;
 
-    	int rankMem, rankTribe;
-    	double rho, rho2, rho3;
+        int rankMem, rankTribe;
+        double rho, rho2, rho3;
 
-    	double gradient;
-    	double[] rand_i, rand_g;
+        double gradient;
+        double[] rand_i, rand_g;
 
-    	double z;
-    	TribesPosition pos1 = this.position;
-    	TribesPosition pos2 = swarm.tribes[fromTribe].memory[this.contact].getPos();
-    	rankTribe = this.iGroup[0][0];
-    	rankMem = this.iGroup[0][1];
-    	TribesPosition pos3 = swarm.tribes[rankTribe].memory[rankMem].getPos();
+        double z;
+        TribesPosition pos1 = this.position;
+        TribesPosition pos2 = swarm.tribes[fromTribe].memory[this.contact].getPos();
+        rankTribe = this.iGroup[0][0];
+        rankMem = this.iGroup[0][1];
+        TribesPosition pos3 = swarm.tribes[rankTribe].memory[rankMem].getPos();
 
-    	switch (strategy) {
-    	case 0: // Around the best informant
-    		rho = pos1.distanceTo(pos2);
-    		rand_i = RNG.randHypersphere(pos2.getDoubleArray(), rho, 1.5);
+        switch (strategy) {
+            case 0: // Around the best informant
+                rho = pos1.distanceTo(pos2);
+                rand_i = RNG.randHypersphere(pos2.getDoubleArray(), rho, 1.5);
 
-    		for (d = 0; d < velocity.x.length; d++) {
-    			velocity.x[d] = rand_i[d]-pos1.x[d];
-    		}
-    		break;
+                for (d = 0; d < velocity.x.length; d++) {
+                    velocity.x[d] = rand_i[d] - pos1.x[d];
+                }
+                break;
 
-    	case 2: // Like 1 (cf. below) + Gaussian noise
+            case 2: // Like 1 (cf. below) + Gaussian noise
 
-    		c0 = (pos2.getTotalError() - pos1.getTotalError()) /
-    		(pos2.getTotalError() + pos1.getTotalError());
+                c0 = (pos2.getTotalError() - pos1.getTotalError()) /
+                        (pos2.getTotalError() + pos1.getTotalError());
 
-    		lambda = 1 + RNG.gaussianDouble(c0);
+                lambda = 1 + RNG.gaussianDouble(c0);
 
 //  		NO BREAK HERE. Continue with case 1
 
-    	case 1: // Pivot and hyperspheres
-    		rho = pos2.distanceTo(pos3);
-    		rho2 = rho;
-    		rho3 = rho;
+            case 1: // Pivot and hyperspheres
+                rho = pos2.distanceTo(pos3);
+                rho2 = rho;
+                rho3 = rho;
 
-    		rand_i = RNG.randHypersphere(pos2.getDoubleArray(), rho2, 0);
-    		rand_g = RNG.randHypersphere(pos3.getDoubleArray(), rho3, 0);
+                rand_i = RNG.randHypersphere(pos2.getDoubleArray(), rho2, 0);
+                rand_g = RNG.randHypersphere(pos3.getDoubleArray(), rho3, 0);
 
-    		c1 = 1 / pos2.getTotalError();
-    		c2 = 1 / pos3.getTotalError();
+                c1 = 1 / pos2.getTotalError();
+                c2 = 1 / pos3.getTotalError();
 //    		if (Double.isInfinite(c1)) c1 = Double.MIN_VALUE;
 //    		if (Double.isInfinite(c2)) c2 = Double.MIN_VALUE;
-    		c3 = c1 + c2;
-    		c1 /= c3;
-    		c2 /= c3;
+                c3 = c1 + c2;
+                c1 /= c3;
+                c2 /= c3;
 
-    		for (d = 0; d < velocity.x.length; d++) {
-    			dx = c1 * rand_i[d] + c2 * rand_g[d];
-    			velocity.x[d] = dx - pos1.x[d];
-    		}
+                for (d = 0; d < velocity.x.length; d++) {
+                    dx = c1 * rand_i[d] + c2 * rand_g[d];
+                    velocity.x[d] = dx - pos1.x[d];
+                }
 
-    		break;
+                break;
 
-    	case 3: //  Independent Gaussians
-    		for (d = 0; d < velocity.x.length; d++) {
-    			rho2 = Math.abs(pos3.x[d] - pos2.x[d]);
-    			r = RNG.gaussianDouble(rho2);
-    			velocity.x[d] = pos3.x[d] + r - pos1.x[d];
-    		}
+            case 3: //  Independent Gaussians
+                for (d = 0; d < velocity.x.length; d++) {
+                    rho2 = Math.abs(pos3.x[d] - pos2.x[d]);
+                    r = RNG.gaussianDouble(rho2);
+                    velocity.x[d] = pos3.x[d] + r - pos1.x[d];
+                }
 
-    		break;
+                break;
 
-    	case 4: // Quasi-gradient (questionable)
+            case 4: // Quasi-gradient (questionable)
 
-    		f1 = pos1.getTotalError();
-    		f2 = pos3.getTotalError();
-    		gradient=( -f1 / (f2 - f1)) ;
+                f1 = pos1.getTotalError();
+                f2 = pos3.getTotalError();
+                gradient = (-f1 / (f2 - f1));
 
-    		for (d = 0; d < velocity.x.length; d++) {
-    			if (f2 == f1) {
-    				velocity.x[d]=0;
-    			} else {
-    				velocity.x[d] = gradient*(pos3.x[d] - pos1.x[d]);
-    			}
-    		}
-    		break;
+                for (d = 0; d < velocity.x.length; d++) {
+                    if (f2 == f1) {
+                        velocity.x[d] = 0;
+                    } else {
+                        velocity.x[d] = gradient * (pos3.x[d] - pos1.x[d]);
+                    }
+                }
+                break;
 
-    	case 5: // Adaptive confidence coefficients
-    		c1 = confCoeff[0];
-    		c = confCoeff[1];
+            case 5: // Adaptive confidence coefficients
+                c1 = confCoeff[0];
+                c = confCoeff[1];
 
-    		for (d = 0; d < velocity.x.length; d++) {
-    			r1 = RNG.randomDouble(); // Sur [0,1]
-    			r2 = RNG.randomDouble();
-    			velocity.x[d] = c1 * velocity.x[d] +
-    			r1 * c *
-    			(pos2.x[d] - pos1.x[d]) +
-    			r2 * c *
-    			(pos3.x[d] - pos1.x[d]);
-    		}
+                for (d = 0; d < velocity.x.length; d++) {
+                    r1 = RNG.randomDouble(); // Sur [0,1]
+                    r2 = RNG.randomDouble();
+                    velocity.x[d] = c1 * velocity.x[d] +
+                            r1 * c *
+                                    (pos2.x[d] - pos1.x[d]) +
+                            r2 * c *
+                                    (pos3.x[d] - pos1.x[d]);
+                }
 
-    		break;
+                break;
 
-    	case 6: // Keep moving the same way, with a smaller velocity (quasi-gradient)
-    		r = RNG.randomDouble() / 2;
-    		for (d = 0; d < velocity.x.length; d++) {
-    			velocity.x[d] = r * velocity.x[d];
-    		}
-    		break;
+            case 6: // Keep moving the same way, with a smaller velocity (quasi-gradient)
+                r = RNG.randomDouble() / 2;
+                for (d = 0; d < velocity.x.length; d++) {
+                    velocity.x[d] = r * velocity.x[d];
+                }
+                break;
 
-    	case 7: /* Velocity and hyperspheres
+            case 7: /* Velocity and hyperspheres
 Like Pivot and hyperspheres, but a velocity component is added
    Questionable.
     	 */
-    		z = 2 * Math.log(2);
-    		c1 = 1 / z;
+                z = 2 * Math.log(2);
+                c1 = 1 / z;
 
 //  		c1 = c1 * (1 - pos3.fitness[0] / pos2.fitness[0]);
 
-    		rho = pos2.distanceTo(pos3);
-    		rho2 = rho;
-    		rho3 = rho;
+                rho = pos2.distanceTo(pos3);
+                rho2 = rho;
+                rho3 = rho;
 
-    		rand_i = RNG.randHypersphere(pos2.getDoubleArray(), rho2, 0);
-    		rand_g = RNG.randHypersphere(pos3.getDoubleArray(), rho3, 0);
+                rand_i = RNG.randHypersphere(pos2.getDoubleArray(), rho2, 0);
+                rand_g = RNG.randHypersphere(pos3.getDoubleArray(), rho3, 0);
 
-    		c2 = 1 / pos2.getTotalError();
-    		c3 = 1 / pos3.getTotalError();
-    		c = c2 + c3;
-    		c2 /= c;
-    		c3 /= c;
+                c2 = 1 / pos2.getTotalError();
+                c3 = 1 / pos3.getTotalError();
+                c = c2 + c3;
+                c2 /= c;
+                c3 /= c;
 
-    		for (d = 0; d < velocity.x.length; d++) {
-    			dx = c2 * rand_i[d] + c3 * rand_g[d];
-    			velocity.x[d] = c1 * velocity.x[d] + dx - pos1.x[d];
-    		}
+                for (d = 0; d < velocity.x.length; d++) {
+                    dx = c2 * rand_i[d] + c3 * rand_g[d];
+                    velocity.x[d] = c1 * velocity.x[d] + dx - pos1.x[d];
+                }
 
-    		break;
+                break;
 
-    	case 9:
+            case 9:
 
     		/*
 "Classical" parametric method for tests (cf. my paper "Stagnation Analysis")
     		 */
-    		z = 2 * Math.log(2);
-    		c1 = 1 / z;
-    		c = (c1 + 1) * (c1 + 2) / 4;
+                z = 2 * Math.log(2);
+                c1 = 1 / z;
+                c = (c1 + 1) * (c1 + 2) / 4;
 
-    		for (d = 0; d < velocity.x.length; d++) {
-    			r1 = RNG.randomDouble(); // Sur [0,1]
-    			r2 = RNG.randomDouble();
-    			velocity.x[d] = c1 * velocity.x[d] +
-    			r1 * c *
-    			(pos2.x[d] - pos1.x[d]) +
-    			r2 * c *
-    			(pos3.x[d] - pos1.x[d]);
-    		}
+                for (d = 0; d < velocity.x.length; d++) {
+                    r1 = RNG.randomDouble(); // Sur [0,1]
+                    r2 = RNG.randomDouble();
+                    velocity.x[d] = c1 * velocity.x[d] +
+                            r1 * c *
+                                    (pos2.x[d] - pos1.x[d]) +
+                            r2 * c *
+                                    (pos3.x[d] - pos1.x[d]);
+                }
 
-    		break;
-    	}
+                break;
+        }
 
-    	if (strategy == 2) { // Add Gaussian noise
-    		for (d = 0; d < velocity.x.length; d++) {
-    			velocity.x[d] *= lambda;
-    		}
-    	}
+        if (strategy == 2) { // Add Gaussian noise
+            for (d = 0; d < velocity.x.length; d++) {
+                velocity.x[d] *= lambda;
+            }
+        }
 
 //  	Below are some TESTS ...
-    	/*
+        /*
 // Add repulsions for the shaman
 if(rankMem==swarm.tribes[rankTribe].shaman) {
 for(m=1;m<swarm.tribeNb;m++) { // For each other shaman S
@@ -901,7 +902,7 @@ pos2=swarm.tribes[rankTribe].memory[rankMem].position;
 }
 }
     	 */
-    	/*
+        /*
 // Confinement for the shaman
 if (rankMem == swarm.tribes[rankTribe].shaman) {
 cmin = 1;
@@ -935,48 +936,48 @@ v[d] = cmin * v[d];
 
     }
 
-	@Override
-	public boolean equalGenotypes(AbstractEAIndividual individual) {
-		return (position.distanceTo(((TribesExplorer)individual).position) == 0.);
-	}
+    @Override
+    public boolean equalGenotypes(AbstractEAIndividual individual) {
+        return (position.distanceTo(((TribesExplorer) individual).position) == 0.);
+    }
 
-	@Override
-	public String getStringRepresentation() {
-		StringBuffer sb = new StringBuffer();
-		sb.append("TribesExplorer [");
-		for (int i=0; i<position.x.length; i++) {
-			sb.append(position.x[i]);
-			sb.append(" ");
-		}
-		sb.append("]");
-		return sb.toString();
-	}
+    @Override
+    public String getStringRepresentation() {
+        StringBuffer sb = new StringBuffer();
+        sb.append("TribesExplorer [");
+        for (int i = 0; i < position.x.length; i++) {
+            sb.append(position.x[i]);
+            sb.append(" ");
+        }
+        sb.append("]");
+        return sb.toString();
+    }
 
-	@Override
-	public void init(InterfaceOptimizationProblem opt) {
-		// TODO whats this for?
+    @Override
+    public void init(InterfaceOptimizationProblem opt) {
+        // TODO whats this for?
         for (int i = 0; i < this.position.x.length; i++) {
             this.position.x[0] = 0.;
         }
-	}
+    }
 
     @Override
-	public void defaultInit(InterfaceOptimizationProblem prob) {
-		// shouldnt be called as we are beyond the EvA framework in this class
+    public void defaultInit(InterfaceOptimizationProblem prob) {
+        // shouldnt be called as we are beyond the EvA framework in this class
         for (int i = 0; i < this.position.x.length; i++) {
             this.position.x[0] = 0.;
         }
-	}
-	
+    }
+
     @Override
-	public void defaultMutate() {
-		// shouldnt be called as we are beyond the EvA framework in this class
-	}
-	
-	@Override
-	public void initByValue(Object obj, InterfaceOptimizationProblem opt) {
+    public void defaultMutate() {
+        // shouldnt be called as we are beyond the EvA framework in this class
+    }
+
+    @Override
+    public void initByValue(Object obj, InterfaceOptimizationProblem opt) {
         if (obj instanceof double[]) {
-            double[]  x = (double[]) obj;
+            double[] x = (double[]) obj;
             if (x.length != position.x.length) {
                 System.err.println("Init value and requested length doesn't match!");
             }
@@ -985,67 +986,67 @@ v[d] = cmin * v[d];
             this.init(opt);
             System.err.println("Initial value for ESIndividualDoubleData is not double[]!");
         }
-	}
-
-	@Override
-	public AbstractEAIndividual[] mateWith(Population partners) {
-		System.err.println("TRIBES: mating is not available!");
-		return null;
-	}
-
-	@Override
-	public void mutate() {
-		System.err.println("TRIBES: mutation is not available!");
-	}
+    }
 
     @Override
-	public void SetDoublePhenotype(double[] doubleData) {
-		position.setDoubleArray(doubleData);
-	}
+    public AbstractEAIndividual[] mateWith(Population partners) {
+        System.err.println("TRIBES: mating is not available!");
+        return null;
+    }
 
     @Override
-	public void SetDoubleGenotype(double[] doubleData) {
-		position.setDoubleArray(doubleData);
-	}
+    public void mutate() {
+        System.err.println("TRIBES: mutation is not available!");
+    }
 
     @Override
-	public void SetDoubleRange(double[][] range) {
-	    if (position.x.length != range.length) {	// we will need to fully reinit the particle
-	    	initPositions(range.length);
-	    }
-	    this.range = range;
-	}
+    public void SetDoublePhenotype(double[] doubleData) {
+        position.setDoubleArray(doubleData);
+    }
 
     @Override
-	public double[] getDoubleData() {
-		return position.x;
-	}
-	
-	public double[] getVelocity() {
-		return velocity.x;
-	}		
+    public void SetDoubleGenotype(double[] doubleData) {
+        position.setDoubleArray(doubleData);
+    }
 
     @Override
-	public double[] getDoubleDataWithoutUpdate() {
-		return position.x;
-	}
+    public void SetDoubleRange(double[][] range) {
+        if (position.x.length != range.length) {    // we will need to fully reinit the particle
+            initPositions(range.length);
+        }
+        this.range = range;
+    }
 
     @Override
-	public double[][] getDoubleRange() {
-		return range;
-	}
+    public double[] getDoubleData() {
+        return position.x;
+    }
+
+    public double[] getVelocity() {
+        return velocity.x;
+    }
 
     @Override
-	public void setDoubleDataLength(int length) {
-	    if (position.x.length != length) {	// we will need to fully reinit the particle
-	    	initPositions(length);
-	    }
-	}
+    public double[] getDoubleDataWithoutUpdate() {
+        return position.x;
+    }
 
     @Override
-	public int size() {
-		return position.x.length;
-	}
+    public double[][] getDoubleRange() {
+        return range;
+    }
+
+    @Override
+    public void setDoubleDataLength(int length) {
+        if (position.x.length != length) {    // we will need to fully reinit the particle
+            initPositions(length);
+        }
+    }
+
+    @Override
+    public int size() {
+        return position.x.length;
+    }
 
 //	public void SetDGenotype(double[] b) {
 //		position.setDoubleArray(b);

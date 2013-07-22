@@ -3,19 +3,21 @@ package eva2.optimization.individuals.codings.gp;
 import eva2.optimization.problems.InterfaceProgramProblem;
 
 
-/** 
+/**
  * A node for retrieving the absolute value
- * 
  */
 public class GPNodeAbs extends AbstractGPNode implements java.io.Serializable {
 
     public GPNodeAbs() {
     }
+
     public GPNodeAbs(GPNodeAbs node) {
         this.cloneMembers(node);
     }
 
-    /** This method will be used to identify the node in the GPAreaEditor
+    /**
+     * This method will be used to identify the node in the GPAreaEditor
+     *
      * @return The name.
      */
     @Override
@@ -23,7 +25,9 @@ public class GPNodeAbs extends AbstractGPNode implements java.io.Serializable {
         return "Abs";
     }
 
-    /** This method allows you to clone the Nodes
+    /**
+     * This method allows you to clone the Nodes
+     *
      * @return the clone
      */
     @Override
@@ -31,7 +35,9 @@ public class GPNodeAbs extends AbstractGPNode implements java.io.Serializable {
         return (Object) new GPNodeAbs(this);
     }
 
-    /** This method will return the current arity
+    /**
+     * This method will return the current arity
+     *
      * @return Arity.
      */
     @Override
@@ -39,7 +45,9 @@ public class GPNodeAbs extends AbstractGPNode implements java.io.Serializable {
         return 1;
     }
 
-    /** This method will evaluate a given node
+    /**
+     * This method will evaluate a given node
+     *
      * @param environment
      */
     @Override
@@ -49,20 +57,19 @@ public class GPNodeAbs extends AbstractGPNode implements java.io.Serializable {
 
         tmpObj = this.m_Nodes[0].evaluate(environment);
         if (tmpObj instanceof Double) {
-            result += ((Double)tmpObj).doubleValue();
+            result += ((Double) tmpObj).doubleValue();
         }
         Double ret = new Double(result);
-        
-        if (ret<0) {
+
+        if (ret < 0) {
             return -ret;
-        } 
-        else {
+        } else {
             return ret;
         }
     }
 
     @Override
     public String getOpIdentifier() {
-    	return "abs";
+        return "abs";
     }
 }

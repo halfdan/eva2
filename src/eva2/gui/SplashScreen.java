@@ -11,6 +11,7 @@ package eva2.gui;
  * @version: $Revision: 322 $ $Date: 2007-12-11 17:24:07 +0100 (Tue, 11 Dec 2007)$
  * $Author: mkron $  
  */
+
 import eva2.tools.BasicResourceLoader;
 
 import java.awt.*;
@@ -28,7 +29,7 @@ class SplashScreen extends Frame {
 
     /**
      * Show the splash screen to the end user.
-     *
+     * <p/>
      * <P>Once this method returns, the splash screen is realized, which means
      * that almost all work on the splash screen should proceed through the
      * event dispatch thread. In particular, any call to
@@ -41,11 +42,11 @@ class SplashScreen extends Frame {
         byte[] bytes = loader.getBytesFromResourceLocation(imgLocation, true);
         ImageIcon ii = new ImageIcon(Toolkit.getDefaultToolkit().createImage(bytes));
         JLabel splashLabel = new JLabel(ii);
-        
+
         splashWindow.add(splashLabel);
         splashWindow.pack();
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         splashWindow.setLocation(screenSize.width / 2 - splashWindow.getSize().width / 2, screenSize.height / 2 - splashWindow.getSize().height / 2);
-        splashWindow.setVisible(true);        
+        splashWindow.setVisible(true);
     }
 }

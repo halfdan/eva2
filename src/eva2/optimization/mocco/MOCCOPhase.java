@@ -1,6 +1,7 @@
 package eva2.optimization.mocco;
 
 import eva2.optimization.go.MOCCOStandalone;
+
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -19,15 +20,18 @@ import javax.swing.JTextArea;
  */
 public abstract class MOCCOPhase implements InterfaceProcessElement {
 
-    public MOCCOStandalone      m_Mocco;
-    public volatile boolean     m_Finished = false;
+    public MOCCOStandalone m_Mocco;
+    public volatile boolean m_Finished = false;
 
-    /** This method will call the init method and will go to stall
+    /**
+     * This method will call the init method and will go to stall
      */
     @Override
     public abstract void initProcessElementParametrization();
 
-    /** This method will wait for the parametrisation result
+    /**
+     * This method will wait for the parametrisation result
+     *
      * @return boolean  Result
      */
     @Override
@@ -35,8 +39,8 @@ public abstract class MOCCOPhase implements InterfaceProcessElement {
         return this.m_Finished;
     }
 
-    /** Save the stuff to *.ser file for offline optimization
-     *
+    /**
+     * Save the stuff to *.ser file for offline optimization
      */
     ActionListener saveState2FileForOfflineOptimization = new ActionListener() {
         @Override
@@ -45,33 +49,37 @@ public abstract class MOCCOPhase implements InterfaceProcessElement {
         }
     };
 
-    /** This method makes a helptext element similar to that used in EvA
-     * @param help  The text to display
+    /**
+     * This method makes a helptext element similar to that used in EvA
+     *
+     * @param help The text to display
      * @return the helptext component
      */
     public JComponent makeHelpText(String help) {
         return this.makeInformationText("Info", help);
     }
 
-    /** This method makes a helptext element similar to that used in EvA
-     * @param title  The title of the help text
+    /**
+     * This method makes a helptext element similar to that used in EvA
+     *
+     * @param title The title of the help text
      * @param help  The text to display
-      * @return the helptext component
+     * @return the helptext component
      */
     public JComponent makeInformationText(String title, String help) {
-        JPanel      result  = new JPanel();
-        JTextArea   jt      = new JTextArea();
-	    jt.setFont(new Font("SansSerif", Font.PLAIN,12));
-	    jt.setEditable(false);
-	    jt.setLineWrap(true);
-	    jt.setWrapStyleWord(true);
-	    jt.setText(help);
+        JPanel result = new JPanel();
+        JTextArea jt = new JTextArea();
+        jt.setFont(new Font("SansSerif", Font.PLAIN, 12));
+        jt.setEditable(false);
+        jt.setLineWrap(true);
+        jt.setWrapStyleWord(true);
+        jt.setText(help);
         jt.setBackground(result.getBackground());
-	    result.setBorder(BorderFactory.createCompoundBorder(
-		    BorderFactory.createTitledBorder(title),
-			BorderFactory.createEmptyBorder(0, 5, 5, 5)));
-	    result.setLayout(new BorderLayout());
-	    result.add(jt, BorderLayout.CENTER);
+        result.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createTitledBorder(title),
+                BorderFactory.createEmptyBorder(0, 5, 5, 5)));
+        result.setLayout(new BorderLayout());
+        result.add(jt, BorderLayout.CENTER);
         return result;
     }
 }

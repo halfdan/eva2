@@ -7,7 +7,8 @@ import eva2.optimization.operator.archiving.ArchivingAllDominating;
 import eva2.optimization.population.Population;
 import eva2.optimization.problems.AbstractMultiObjectiveOptimizationProblem;
 
-/** S-Metric calculates the hyper-volume covered between the current solutions and a reference point.
+/**
+ * S-Metric calculates the hyper-volume covered between the current solutions and a reference point.
  * Created by IntelliJ IDEA.
  * User: streiche
  * Date: 08.06.2005
@@ -17,7 +18,7 @@ import eva2.optimization.problems.AbstractMultiObjectiveOptimizationProblem;
 public class MetricS implements InterfaceParetoFrontMetric, java.io.Serializable {
 
     private double[][] m_ObjectiveSpaceRange;
-	private static boolean TRACE=false;
+    private static boolean TRACE = false;
 
     public MetricS() {
 
@@ -33,8 +34,10 @@ public class MetricS implements InterfaceParetoFrontMetric, java.io.Serializable
         }
     }
 
-    /** This method returns a deep clone of the problem.
-     * @return  the clone
+    /**
+     * This method returns a deep clone of the problem.
+     *
+     * @return the clone
      */
     @Override
     public Object clone() {
@@ -45,14 +48,15 @@ public class MetricS implements InterfaceParetoFrontMetric, java.io.Serializable
         this.m_ObjectiveSpaceRange = range;
     }
 
-    /** This method allows you to init the metric loading data etc
-     *
+    /**
+     * This method allows you to init the metric loading data etc
      */
     public void init() {
 
-    }    
+    }
 
-    /** This method gives a metric how to evaluate
+    /**
+     * This method gives a metric how to evaluate
      * an achieved Pareto-Front
      */
     @Override
@@ -67,7 +71,7 @@ public class MetricS implements InterfaceParetoFrontMetric, java.io.Serializable
             reference *= (this.m_ObjectiveSpaceRange[i][1] - this.m_ObjectiveSpaceRange[i][0]);
         }
         //System.out.println("SMetric: "+smetric +" Reference: " + reference);
-        double res = ((Math.abs(smetric)/Math.abs(reference))*100);
+        double res = ((Math.abs(smetric) / Math.abs(reference)) * 100);
         if (TRACE) {
             System.out.println("Res is " + res);
         }
@@ -87,16 +91,18 @@ public class MetricS implements InterfaceParetoFrontMetric, java.io.Serializable
 //        return ((Math.abs(smetric)/Math.abs(reference))*100);
 //    }
 
-    /** This method will calculate the s-metric from a double array of
+    /**
+     * This method will calculate the s-metric from a double array of
      * fitness cases
-     * @param pop   Array of fitness cases
-     * @param border    The border to use when calculating the s-metric.
+     *
+     * @param pop    Array of fitness cases
+     * @param border The border to use when calculating the s-metric.
      * @return s-metric
      */
     public double calculateSMetric(Population pop, double[][] border, int dim) {
-        double  result      = 0;
-        int     tmpIndex;
-        double  tmpSmallest;
+        double result = 0;
+        int tmpIndex;
+        double tmpSmallest;
         Population smPop = null;
         AbstractEAIndividual tmpIndy;
 
@@ -109,22 +115,22 @@ public class MetricS implements InterfaceParetoFrontMetric, java.io.Serializable
         }
         // Now we have an archive, lets caluculate the s-metric
         // first extract the fitnesscases from the archive
-        if (dim==1) {
+        if (dim == 1) {
             return pop.getBestFitness()[0];
         }
-        
+
         if (dim > 2) {
             smPop = new Population();
         }
-        double[][]  f = new double[archive.size()][dim];
-        double[]    tmpF, redF;
+        double[][] f = new double[archive.size()][dim];
+        double[] tmpF, redF;
         for (int i = 0; i < f.length; i++) {
-            tmpF = ((AbstractEAIndividual)archive.get(i)).getFitness();
+            tmpF = ((AbstractEAIndividual) archive.get(i)).getFitness();
             for (int j = 0; j < dim; j++) {
                 f[i][j] = tmpF[j];
             }
             if (smPop != null) {
-                redF = new double[tmpF.length -1];
+                redF = new double[tmpF.length - 1];
                 for (int j = 0; j < redF.length; j++) {
                     redF[j] = tmpF[j];
                 }
@@ -145,57 +151,57 @@ public class MetricS implements InterfaceParetoFrontMetric, java.io.Serializable
         }
 
         double[] lastValue = null;
-        lastValue   = new double[dim];
+        lastValue = new double[dim];
         for (int i = 0; i < dim; i++) {
             lastValue[i] = border[i][1];
         }
-        lastValue[dim-1] = border[dim-1][0]-1;
+        lastValue[dim - 1] = border[dim - 1][0] - 1;
 
         for (int i = 0; i < f.length; i++) {
             // first search for the smallest in the last dimension
-            tmpIndex    = 0;
+            tmpIndex = 0;
             tmpSmallest = Double.MAX_VALUE;
             for (int j = 0; j < f.length; j++) {
-                if ((f[j][dim-1] > lastValue[dim-1]) && (f[j][dim-1] < tmpSmallest)) {
-                    tmpIndex    = j;
-                    tmpSmallest = f[j][dim-1];
+                if ((f[j][dim - 1] > lastValue[dim - 1]) && (f[j][dim - 1] < tmpSmallest)) {
+                    tmpIndex = j;
+                    tmpSmallest = f[j][dim - 1];
                 }
             }
-            if (f[tmpIndex][dim-1] > lastValue[dim-1]) {
+            if (f[tmpIndex][dim - 1] > lastValue[dim - 1]) {
                 // now i should have identified the current smallest
                 // here i found the very first individual, therefore
                 // no lastValue has been set... set it to border
-                if (lastValue[dim-1] < border[dim-1][0]) {
-                    lastValue[dim-1] = border[dim-1][0];
+                if (lastValue[dim - 1] < border[dim - 1][0]) {
+                    lastValue[dim - 1] = border[dim - 1][0];
                 }
                 if (dim == 2) {
-                    result += lastValue[0] * (f[tmpIndex][1]-lastValue[1]);
+                    result += lastValue[0] * (f[tmpIndex][1] - lastValue[1]);
                 } else {
                     // reduce dimension and call calculateCMetric recursively
-                    Population  tmpPop = new Population();
-                    double[][]  tmpBorder;
-                    double      tmpS;
+                    Population tmpPop = new Population();
+                    double[][] tmpBorder;
+                    double tmpS;
                     for (int j = 0; j < archive.size(); j++) {
-                        if (((AbstractEAIndividual)archive.get(j)).getFitness(dim-1) < f[tmpIndex][dim-1]) {
+                        if (((AbstractEAIndividual) archive.get(j)).getFitness(dim - 1) < f[tmpIndex][dim - 1]) {
                             // this one is small enough to join the next level
                             tmpPop.add(smPop.get(j));
                         }
                     }
 
-                    tmpBorder = new double[border.length-1][2];
+                    tmpBorder = new double[border.length - 1][2];
                     for (int j = 0; j < tmpBorder.length; j++) {
                         tmpBorder[j][0] = border[j][0];
                         tmpBorder[j][1] = border[j][1];
                     }
-                    tmpS    = this.calculateSMetric(tmpPop, tmpBorder, dim-1);
-                    result  += (f[tmpIndex][dim-1] - lastValue[dim-1]) * tmpS;
+                    tmpS = this.calculateSMetric(tmpPop, tmpBorder, dim - 1);
+                    result += (f[tmpIndex][dim - 1] - lastValue[dim - 1]) * tmpS;
                 }
                 for (int j = 0; j < f[tmpIndex].length; j++) {
                     lastValue[j] = f[tmpIndex][j];
                 }
             } else {
                 // no smallest found break
-                i  = f.length+1;
+                i = f.length + 1;
                 break;
             }
         }
@@ -205,22 +211,22 @@ public class MetricS implements InterfaceParetoFrontMetric, java.io.Serializable
             result += lastValue[0] * (border[1][1] - lastValue[1]);
         } else {
             // reduce dimension and call calculateCMetric recursively
-            Population  tmpPop = new Population();
-            double[][]  tmpBorder;
-            double      tmpS;
+            Population tmpPop = new Population();
+            double[][] tmpBorder;
+            double tmpS;
             for (int j = 0; j < archive.size(); j++) {
-                if (((AbstractEAIndividual)archive.get(j)).getFitness(dim-1) <= lastValue[dim-1]) {
+                if (((AbstractEAIndividual) archive.get(j)).getFitness(dim - 1) <= lastValue[dim - 1]) {
                     // this one is small enough to join the next level
                     tmpPop.add(smPop.get(j));
                 }
             }
-            tmpBorder = new double[border.length-1][2];
+            tmpBorder = new double[border.length - 1][2];
             for (int j = 0; j < tmpBorder.length; j++) {
                 tmpBorder[j][0] = border[j][0];
                 tmpBorder[j][1] = border[j][1];
             }
-            tmpS    = this.calculateSMetric(tmpPop, tmpBorder, dim-1);
-            result  += (border[dim-1][1] - lastValue[dim-1]) * tmpS;
+            tmpS = this.calculateSMetric(tmpPop, tmpBorder, dim - 1);
+            result += (border[dim - 1][1] - lastValue[dim - 1]) * tmpS;
         }
         return result;
     }
@@ -228,15 +234,19 @@ public class MetricS implements InterfaceParetoFrontMetric, java.io.Serializable
 /**********************************************************************************************************************
  * These are for GUI
  */
-    /** This method allows the CommonJavaObjectEditorPanel to read the
+    /**
+     * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
+     *
      * @return The name.
      */
     public String getName() {
         return "S-Metric";
     }
 
-    /** This method returns a global info string
+    /**
+     * This method returns a global info string
+     *
      * @return description
      */
     public static String globalInfo() {

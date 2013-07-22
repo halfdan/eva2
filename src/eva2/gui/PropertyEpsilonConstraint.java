@@ -9,8 +9,8 @@ package eva2.gui;
  */
 public class PropertyEpsilonConstraint implements java.io.Serializable {
 
-    public double[]     m_TargetValue;
-    public int          m_OptimizeObjective;
+    public double[] m_TargetValue;
+    public int m_OptimizeObjective;
 
     public PropertyEpsilonConstraint() {
     }

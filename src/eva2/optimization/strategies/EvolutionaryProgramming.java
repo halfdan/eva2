@@ -15,7 +15,7 @@ import eva2.optimization.problems.InterfaceOptimizationProblem;
  * local search strategy solely based on mutation. To prevent any confusion, the
  * mutation rate is temporaily set to 1.0. Potential citation: the PhD thesis of
  * David B. Fogel (1992).
- *
+ * <p/>
  * Copyright: Copyright (c) 2003 Company: University of Tuebingen, Computer
  * Architecture
  *

@@ -14,6 +14,7 @@ import eva2.optimization.problems.F1Problem;
 import eva2.optimization.problems.InterfaceAdditionalPopulationInformer;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.tools.Pair;
+
 import java.io.Serializable;
 
 /**
@@ -24,7 +25,7 @@ import java.io.Serializable;
  * a cluster, only a subset of representatives of the cluster is taken over to
  * the next HC step while the rest is discarded. This means that the population
  * size may be reduced.
- *
+ * <p/>
  * As soon as the improvement by HC lies below a threshold, the mutation step
  * size is decreased. If the step size is decreased below a certain threshold,
  * the current population is stored to an archive and reinitialized. Thus, the
@@ -32,7 +33,6 @@ import java.io.Serializable;
  * than the population size.
  *
  * @author mkron
- *
  */
 public class ClusteringHillClimbing implements InterfacePopulationChangedEventListener,
         InterfaceOptimizer, Serializable, InterfaceAdditionalPopulationInformer {
@@ -46,7 +46,7 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
     private int hcEvalCycle = 1000;
     private int initialPopSize = 100;
     private int loopCnt = 0;
-//   	private int								baseEvalCnt = 0;
+    //   	private int								baseEvalCnt = 0;
     private int notifyGuiEvery = 50;
     private double sigmaClust = 0.01;
     private double minImprovement = 0.000001;
@@ -156,7 +156,7 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
     /**
      * This method will init the optimizer with a given population
      *
-     * @param pop The initial population
+     * @param pop   The initial population
      * @param reset If true the population is reset.
      */
     @Override

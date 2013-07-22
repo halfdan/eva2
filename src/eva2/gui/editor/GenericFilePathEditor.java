@@ -23,22 +23,32 @@ import javax.swing.SwingConstants;
  */
 public class GenericFilePathEditor extends JPanel implements PropertyEditor {
 
-    /** Handles property change notification */
-    private PropertyChangeSupport   m_Support = new PropertyChangeSupport(this);
-    /** The label for when we can't edit that type */
-    private JLabel                  m_Label = new JLabel("Can't edit", SwingConstants.CENTER);
-    /** The FilePath that is to be edited*/
+    /**
+     * Handles property change notification
+     */
+    private PropertyChangeSupport m_Support = new PropertyChangeSupport(this);
+    /**
+     * The label for when we can't edit that type
+     */
+    private JLabel m_Label = new JLabel("Can't edit", SwingConstants.CENTER);
+    /**
+     * The FilePath that is to be edited
+     */
     private PropertyFilePath m_FilePath;
 
-    /** The gaphix stuff */
-    private JFileChooser            m_FileChooser;
-    private JPanel                  m_Panel;
+    /**
+     * The gaphix stuff
+     */
+    private JFileChooser m_FileChooser;
+    private JPanel m_Panel;
 
     public GenericFilePathEditor() {
         // compiled code
     }
 
-    /** This method will set the value of object that is to be edited.
+    /**
+     * This method will set the value of object that is to be edited.
+     *
      * @param o an object that must be an array.
      */
     @Override
@@ -48,7 +58,9 @@ public class GenericFilePathEditor extends JPanel implements PropertyEditor {
         }
     }
 
-    /** Returns the current object.
+    /**
+     * Returns the current object.
+     *
      * @return the current object
      */
     @Override
@@ -87,21 +99,23 @@ public class GenericFilePathEditor extends JPanel implements PropertyEditor {
 
     @Override
     public void addPropertyChangeListener(PropertyChangeListener l) {
-  	  if (m_Support == null) {
+        if (m_Support == null) {
             m_Support = new PropertyChangeSupport(this);
         }
-  	  m_Support.addPropertyChangeListener(l);
+        m_Support.addPropertyChangeListener(l);
     }
 
     @Override
     public void removePropertyChangeListener(PropertyChangeListener l) {
-  	  if (m_Support == null) {
+        if (m_Support == null) {
             m_Support = new PropertyChangeSupport(this);
         }
-  	  m_Support.removePropertyChangeListener(l);
+        m_Support.removePropertyChangeListener(l);
     }
 
-    /** Returns true since the Object can be shown
+    /**
+     * Returns true since the Object can be shown
+     *
      * @return true
      */
     @Override
@@ -109,7 +123,8 @@ public class GenericFilePathEditor extends JPanel implements PropertyEditor {
         return true;
     }
 
-    /** Paints a representation of the current classifier.
+    /**
+     * Paints a representation of the current classifier.
      *
      * @param gfx the graphics context to use
      * @param box the area we are allowed to paint into
@@ -119,24 +134,28 @@ public class GenericFilePathEditor extends JPanel implements PropertyEditor {
         FontMetrics fm = gfx.getFontMetrics();
         int vpad = (box.height - fm.getAscent()) / 2;
         String rep = this.m_FilePath.FileName;
-        gfx.drawString(rep, 2, fm.getHeight() + vpad - 3  );
+        gfx.drawString(rep, 2, fm.getHeight() + vpad - 3);
     }
 
-    /** Returns true because we do support a custom editor.
-    * @return true
-    */
+    /**
+     * Returns true because we do support a custom editor.
+     *
+     * @return true
+     */
     @Override
     public boolean supportsCustomEditor() {
         return true;
     }
 
-    /** Returns the array editing component.
-    * @return a value of type 'java.awt.Component'
-    */
+    /**
+     * Returns the array editing component.
+     *
+     * @return a value of type 'java.awt.Component'
+     */
     @Override
     public Component getCustomEditor() {
-        this.m_Panel            = new JPanel();
-        this.m_FileChooser      = new JFileChooser();
+        this.m_Panel = new JPanel();
+        this.m_FileChooser = new JFileChooser();
         File file = new File(this.m_FilePath.getCompleteFilePath());
         this.m_FileChooser.setSelectedFile(file);
         this.m_FileChooser.setMultiSelectionEnabled(false);
@@ -145,7 +164,8 @@ public class GenericFilePathEditor extends JPanel implements PropertyEditor {
         return this.m_Panel;
     }
 
-    /** This action listener, called by the "train" button, causes
+    /**
+     * This action listener, called by the "train" button, causes
      * the SOM to recalculate the mapping.
      */
     ActionListener fileChooserAction = new ActionListener() {
@@ -155,7 +175,7 @@ public class GenericFilePathEditor extends JPanel implements PropertyEditor {
                 m_FilePath.setCompleteFilePath(m_FileChooser.getSelectedFile().getAbsolutePath());
                 m_Support.firePropertyChange("", m_FilePath, null);
                 Window w = (Window) m_FileChooser.getTopLevelAncestor();
-	            w.dispose();
+                w.dispose();
                 m_Panel = null;
             }
             if (event.getActionCommand() == "CancelSelection") {

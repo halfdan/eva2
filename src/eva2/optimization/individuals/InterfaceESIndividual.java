@@ -1,6 +1,7 @@
 package eva2.optimization.individuals;
 
-/** This interface gives access to a real-valued genotype and should 
+/**
+ * This interface gives access to a real-valued genotype and should
  * only be used by mutation and crossover operators. Onyl exception are
  * data type specific optimization strategies like PSO or DE.
  * Created by IntelliJ IDEA.
@@ -11,13 +12,17 @@ package eva2.optimization.individuals;
  */
 public interface InterfaceESIndividual {
 
-    /** This method will allow the user to read the ES 'genotype'
+    /**
+     * This method will allow the user to read the ES 'genotype'
+     *
      * @return BitSet
      */
     public double[] getDGenotype();
 
-    /** This method will allow the user to set the current ES 'genotype'.
-     * @param b    The new genotype of the Individual
+    /**
+     * This method will allow the user to set the current ES 'genotype'.
+     *
+     * @param b The new genotype of the Individual
      */
     public void SetDGenotype(double[] b);
 //
@@ -28,7 +33,9 @@ public interface InterfaceESIndividual {
 //     */
 //    public void SetDoubleRange(double[][] range);
 
-    /** This method will return the range for all double attributes.
+    /**
+     * This method will return the range for all double attributes.
+     *
      * @return The range array.
      */
     public double[][] getDoubleRange();

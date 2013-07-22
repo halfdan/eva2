@@ -6,38 +6,43 @@ import eva2.optimization.problems.InterfaceProgramProblem;
  * A simple constant node with the value 1.
  */
 public class GPNodeConst extends AbstractGPNode implements java.io.Serializable {
-	double value = 1.;
-	
-    public GPNodeConst() { }
-    
+    double value = 1.;
+
+    public GPNodeConst() {
+    }
+
     public GPNodeConst(double val) {
-    	value = val;
+        value = val;
     }
 
     public GPNodeConst(GPNodeConst node) {
-    	value = node.value;
-    	this.cloneMembers(node);
+        value = node.value;
+        this.cloneMembers(node);
     }
 
     @Override
-	public boolean equals(Object obj) {
-		if (obj instanceof GPNodeConst) {
-			GPNodeConst node = (GPNodeConst)obj;
-			return (node.value==this.value);
-		} else {
-                return false;
-            }
-	}
+    public boolean equals(Object obj) {
+        if (obj instanceof GPNodeConst) {
+            GPNodeConst node = (GPNodeConst) obj;
+            return (node.value == this.value);
+        } else {
+            return false;
+        }
+    }
 
-	/** This method will be used to identify the node in the GPAreaEditor
+    /**
+     * This method will be used to identify the node in the GPAreaEditor
+     *
      * @return The name.
      */
     @Override
     public String getName() {
-        return ""+value;
+        return "" + value;
     }
 
-    /** This method will return the current arity
+    /**
+     * This method will return the current arity
+     *
      * @return Arity.
      */
     @Override
@@ -45,7 +50,9 @@ public class GPNodeConst extends AbstractGPNode implements java.io.Serializable 
         return 0;
     }
 
-    /** This method will evaluate a given node
+    /**
+     * This method will evaluate a given node
+     *
      * @param environment
      */
     @Override
@@ -55,7 +62,7 @@ public class GPNodeConst extends AbstractGPNode implements java.io.Serializable 
 
     @Override
     public String getOpIdentifier() {
-    	return getName();
+        return getName();
     }
 //    /** This method returns a string representation
 //     * @return string
@@ -64,8 +71,8 @@ public class GPNodeConst extends AbstractGPNode implements java.io.Serializable 
 //        return getName();
 //    }
 
-	@Override
-	public Object clone() {
-		return new GPNodeConst(this);
-	}
+    @Override
+    public Object clone() {
+        return new GPNodeConst(this);
+    }
 }

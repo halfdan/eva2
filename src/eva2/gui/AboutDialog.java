@@ -5,6 +5,7 @@
 package eva2.gui;
 
 import eva2.tools.BasicResourceLoader;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,24 +14,23 @@ import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
 /**
- *
  * @author becker
  */
 public class AboutDialog extends JDialog {
     private JLabel imageLabel;
     private JEditorPane infoEditorPane;
     private JTextArea aboutTextArea;
-    
+
     public AboutDialog(Frame parent) {
         super(parent);
         initComponents();
     }
-    
+
     private void initComponents() {
         setTitle("About");
         setLayout(new GridBagLayout());
         GridBagConstraints gbConstraints = new GridBagConstraints();
-        
+
         setSize(new Dimension(470, 600));
         setResizable(false);
         
@@ -41,19 +41,19 @@ public class AboutDialog extends JDialog {
         
         /* Create a new JLabel with the image */
         imageLabel = new JLabel(imageIcon);
-        
+
         gbConstraints.gridx = 0;
         gbConstraints.gridy = 0;
         gbConstraints.ipady = 10;
         gbConstraints.insets = new Insets(10, 10, 0, 10);
         gbConstraints.anchor = GridBagConstraints.PAGE_START;
         add(imageLabel, gbConstraints);
-        
+
         String infoMessage = "<html><head></head><body>"
-    +"<p>EvA2 (an Evolutionary Algorithms framework, revised version 2) is a comprehensive heuristic optimization framework with emphasis on Evolutionary Algorithms implemented in Java™.</p>"
-+"<p>For more information, please visit the <a href=\"http://www.cogsys.cs.uni-tuebingen.de/software/JavaEvA/\">EvA2 Homepage</a>.</p>"
-+"</body></html>";
-        
+                + "<p>EvA2 (an Evolutionary Algorithms framework, revised version 2) is a comprehensive heuristic optimization framework with emphasis on Evolutionary Algorithms implemented in Java™.</p>"
+                + "<p>For more information, please visit the <a href=\"http://www.cogsys.cs.uni-tuebingen.de/software/JavaEvA/\">EvA2 Homepage</a>.</p>"
+                + "</body></html>";
+
         infoEditorPane = new JEditorPane("text/html", infoMessage);
         infoEditorPane.setEditable(false);
         infoEditorPane.setOpaque(false);
@@ -74,10 +74,10 @@ public class AboutDialog extends JDialog {
         gbConstraints.gridy++;
         gbConstraints.anchor = GridBagConstraints.CENTER;
         gbConstraints.fill = GridBagConstraints.HORIZONTAL;
-        gbConstraints.weightx = 1.0;        
+        gbConstraints.weightx = 1.0;
         add(infoEditorPane, gbConstraints);
-        
-        aboutTextArea = new JTextArea();        
+
+        aboutTextArea = new JTextArea();
         aboutTextArea.setEditable(false);
         aboutTextArea.setRows(8);
 
@@ -93,7 +93,7 @@ public class AboutDialog extends JDialog {
             public void actionPerformed(ActionEvent e) {
                 AboutDialog.this.dispose();
             }
-            
+
         });
         gbConstraints.gridy++;
         gbConstraints.fill = GridBagConstraints.NONE;

@@ -2,7 +2,8 @@ package eva2.optimization.operator.archiving;
 
 import eva2.optimization.population.Population;
 
-/** This information retrieval inserts the retrieved
+/**
+ * This information retrieval inserts the retrieved
  * solutions, by removing random individuals from the
  * population.
  * Created by IntelliJ IDEA.
@@ -24,9 +25,11 @@ public class InformationRetrievalInserting implements InterfaceInformationRetrie
         return (Object) new InformationRetrievalInserting(this);
     }
 
-    /** This method will allow Information Retrieval from a archive onto
+    /**
+     * This method will allow Information Retrieval from a archive onto
      * an already existing population.
-     * @param pop           The population.
+     *
+     * @param pop The population.
      */
     @Override
     public void retrieveInformationFrom(Population pop) {
@@ -37,24 +40,29 @@ public class InformationRetrievalInserting implements InterfaceInformationRetrie
         }
         if (archive.size() < pop.getTargetSize()) {
             // remove archive size individuals from pop
-            pop.removeNIndividuals(archive.size()-(pop.getTargetSize()-pop.size()));
+            pop.removeNIndividuals(archive.size() - (pop.getTargetSize() - pop.size()));
         } else {
             pop.clear();
         }
 
-        pop.addPopulation((Population)archive.getClone());
+        pop.addPopulation((Population) archive.getClone());
     }
 
 /**********************************************************************************************************************
  * These are for GUI
  */
-    /** This method returns a global info string
+    /**
+     * This method returns a global info string
+     *
      * @return description
      */
     public static String globalInfo() {
         return "This Information Retrieval will insert the archive into current population by replacing random individuals if necessary.";
     }
-    /** This method will return a naming String
+
+    /**
+     * This method will return a naming String
+     *
      * @return The name of the algorithm
      */
     public String getName() {

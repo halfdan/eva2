@@ -27,13 +27,13 @@ import eva2.optimization.problems.TF1Problem;
  * to allow fast and reliable computation. This is still usefull, since it is
  * less prone to premature convergence and also an heterogenuous island model
  * can be used.
- *
+ * <p/>
  * A population of the same size is sent to all nodes and evaluated there
  * independently for a cycle (more precisely: for MigrationRate generations)
  * after which a communication step is performed according to the migration
  * model. Only after migration is a main cycle complete, the statistics updated
  * etc.
- *
+ * <p/>
  * Created by IntelliJ IDEA. User: streiche Date: 12.09.2004 Time: 14:48:20 To
  * change this template use File | Settings | File Templates.
  */
@@ -43,7 +43,7 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
     private InterfaceOptimizer m_Optimizer = new GeneticAlgorithm();
     private InterfaceMigration m_Migration = new SOBestMigration();
     private InterfaceOptimizationProblem m_Problem = new F8Problem();
-//    private String[]                                m_NodesList;
+    //    private String[]                                m_NodesList;
     private int m_MigrationRate = 10;
     private boolean m_HeterogenuousProblems = false;
     // These are the processor to run on
@@ -462,7 +462,7 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
      * This method allows an optimizer to register a change in the EA-lecture
      *
      * @param source The source of the event.
-     * @param name Could be used to indicate the nature of the event.
+     * @param name   Could be used to indicate the nature of the event.
      */
     @Override
     public void registerPopulationStateChanged(Object source, String name) {

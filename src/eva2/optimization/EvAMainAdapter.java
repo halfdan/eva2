@@ -4,12 +4,14 @@ package eva2.optimization;
  * Description:  API for distributed and parallel computing.
  * Copyright:    Copyright (c) 2004
  * Company:      University of Tuebingen
- * @version:  $Revision: 259 $
+ * @version: $Revision: 259 $
  *            $Date: 2007-11-16 17:25:09 +0100 (Fri, 16 Nov 2007) $
  *            $Author: mkron $
  */
+
 import eva2.optimization.go.InterfaceOptimizationParameters;
 import eva2.optimization.modules.ModuleAdapter;
+
 /**
  *
  */

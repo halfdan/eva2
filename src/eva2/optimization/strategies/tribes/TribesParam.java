@@ -2,14 +2,14 @@ package eva2.optimization.strategies.tribes;
 
 /**
  * This class for now is used only for keeping the door open to the original
- * constraint handling, still it is deactivated as of now. 
+ * constraint handling, still it is deactivated as of now.
  */
 public class TribesParam implements java.io.Serializable {
-/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	//    double accuracy;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    //    double accuracy;
 //    int[] function = new int[Tribes.maxFunctionNb];
 //    int functionNb;
 //    int maxEval;
@@ -24,9 +24,9 @@ public class TribesParam implements java.io.Serializable {
     double ups; // Tolerance for h constraints
     boolean constraint;
 //    int fitnessSize;
-    
+
     public TribesParam() {
-    //	H = new TribesSearchSpace();
-    	constraint = false;
+        //	H = new TribesSearchSpace();
+        constraint = false;
     }
 }

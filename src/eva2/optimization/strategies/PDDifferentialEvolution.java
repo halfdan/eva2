@@ -18,6 +18,7 @@ import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.tools.EVAERROR;
 import eva2.tools.math.Mathematics;
 import eva2.tools.math.RNG;
+
 import java.util.Vector;
 
 /**
@@ -27,7 +28,6 @@ import java.util.Vector;
  * crossover operators selected. Added aging mechanism to provide for
  * dynamically changing problems. If an individual reaches the age limit, it is
  * doomed and replaced by the next challenge vector, even if its worse.
- *
  */
 public class PDDifferentialEvolution implements InterfaceOptimizer, java.io.Serializable {
 
@@ -54,7 +54,6 @@ public class PDDifferentialEvolution implements InterfaceOptimizer, java.io.Seri
 
     /**
      * A constructor.
-     *
      */
     public PDDifferentialEvolution() {
         // sets DE2 as default
@@ -111,7 +110,7 @@ public class PDDifferentialEvolution implements InterfaceOptimizer, java.io.Seri
     /**
      * This method will init the optimizer with a given population
      *
-     * @param pop The initial population
+     * @param pop   The initial population
      * @param reset If true the population is reset.
      */
     @Override
@@ -246,7 +245,7 @@ public class PDDifferentialEvolution implements InterfaceOptimizer, java.io.Seri
     /**
      * This method will return the delta vector to the best individual
      *
-     * @param pop The population to choose the best from
+     * @param pop  The population to choose the best from
      * @param indy The current individual
      * @return the delta vector
      */
@@ -489,7 +488,6 @@ public class PDDifferentialEvolution implements InterfaceOptimizer, java.io.Seri
      * slightly worse for schemes that rely on current best individuals, because
      * improvements are not immediately incorporated as in the steady state DE.
      * However it may be easier to parallelize.
-     *
      */
     public void optimizeGenerational() {
         int parentIndex;
@@ -535,7 +533,7 @@ public class PDDifferentialEvolution implements InterfaceOptimizer, java.io.Seri
             } else {
                 parentIndex = RNG.randomInt(0, this.m_Population.size() - 1);
             }
-            if (nextDoomed >= 0) {	// this one is lucky, may replace an 'old' one
+            if (nextDoomed >= 0) {    // this one is lucky, may replace an 'old' one
                 m_Population.replaceIndividualAt(nextDoomed, indy);
                 nextDoomed = getNextDoomed(m_Population, nextDoomed + 1);
             } else {
@@ -594,7 +592,7 @@ public class PDDifferentialEvolution implements InterfaceOptimizer, java.io.Seri
             indy = generateNewIndividual(m_Population, index);
             this.m_Problem.evaluate(indy);
             this.m_Population.incrFunctionCalls();
-            if (nextDoomed >= 0) {	// this one is lucky, may replace an 'old' one
+            if (nextDoomed >= 0) {    // this one is lucky, may replace an 'old' one
                 m_Population.replaceIndividualAt(nextDoomed, indy);
                 nextDoomed = getNextDoomed(m_Population, nextDoomed + 1);
             } else {
@@ -628,9 +626,9 @@ public class PDDifferentialEvolution implements InterfaceOptimizer, java.io.Seri
      * younger, -1 is returned. The start index of the search may be provided to
      * make iterative search efficient.
      *
-     * @param pop	Population to search
-     * @param startIndex	index to start the search from
-     * @return	index of an overaged individual or -1
+     * @param pop        Population to search
+     * @param startIndex index to start the search from
+     * @return index of an overaged individual or -1
      */
     protected int getNextDoomed(Population pop, int startIndex) {
         if (maximumAge > 0) {
@@ -881,7 +879,6 @@ public class PDDifferentialEvolution implements InterfaceOptimizer, java.io.Seri
 
     /**
      * @return the maximumAge
-	 *
      */
     public int getMaximumAge() {
         return maximumAge;
@@ -889,7 +886,6 @@ public class PDDifferentialEvolution implements InterfaceOptimizer, java.io.Seri
 
     /**
      * @param maximumAge the maximumAge to set
-	 *
      */
     public void setMaximumAge(int maximumAge) {
         this.maximumAge = maximumAge;
@@ -969,7 +965,6 @@ public class PDDifferentialEvolution implements InterfaceOptimizer, java.io.Seri
 
     /**
      * @return the maximumAge
-	 *
      */
     public boolean isReEvaluate() {
         return reEvaluate;
@@ -977,7 +972,6 @@ public class PDDifferentialEvolution implements InterfaceOptimizer, java.io.Seri
 
     /**
      * @param maximumAge the maximumAge to set
-	 *
      */
     public void setReEvaluate(boolean reEvaluate) {
         this.reEvaluate = reEvaluate;

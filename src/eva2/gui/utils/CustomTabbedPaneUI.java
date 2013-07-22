@@ -96,13 +96,13 @@ public class CustomTabbedPaneUI extends BasicTabbedPaneUI {
 
     @Override
     protected int calculateTabHeight(int tabPlacement, int tabIndex,
-            int fontHeight) {
+                                     int fontHeight) {
         return 21;
     }
 
     @Override
     protected int calculateTabWidth(int tabPlacement, int tabIndex,
-            FontMetrics metrics) {
+                                    FontMetrics metrics) {
         int w = super.calculateTabWidth(tabPlacement, tabIndex, metrics);
         int wid = metrics.charWidth('M');
         w += wid * 2;
@@ -134,7 +134,7 @@ public class CustomTabbedPaneUI extends BasicTabbedPaneUI {
 
     @Override
     protected void paintTabBackground(Graphics g, int tabPlacement,
-            int tabIndex, int x, int y, int w, int h, boolean isSelected) {
+                                      int tabIndex, int x, int y, int w, int h, boolean isSelected) {
         Graphics2D g2d = (Graphics2D) g;
         ColorSet colorSet;
 
@@ -174,7 +174,7 @@ public class CustomTabbedPaneUI extends BasicTabbedPaneUI {
 
     @Override
     protected void paintTabBorder(Graphics g, int tabPlacement, int tabIndex,
-            int x, int y, int w, int h, boolean isSelected) {
+                                  int x, int y, int w, int h, boolean isSelected) {
         Rectangle rect = getTabBounds(tabIndex, new Rectangle(x, y, w, h));
         g.setColor(dividerColor);
         g.drawLine(rect.x + rect.width, 0, rect.x + rect.width, 20);
@@ -182,37 +182,37 @@ public class CustomTabbedPaneUI extends BasicTabbedPaneUI {
 
     @Override
     protected void paintContentBorderTopEdge(Graphics g, int tabPlacement,
-            int selectedIndex, int x, int y, int w, int h) {
+                                             int selectedIndex, int x, int y, int w, int h) {
     }
 
     @Override
     protected void paintContentBorderRightEdge(Graphics g, int tabPlacement,
-            int selectedIndex, int x, int y, int w, int h) {
+                                               int selectedIndex, int x, int y, int w, int h) {
         // Do nothing
     }
 
     @Override
     protected void paintContentBorderLeftEdge(Graphics g, int tabPlacement,
-            int selectedIndex, int x, int y, int w, int h) {
+                                              int selectedIndex, int x, int y, int w, int h) {
         // Do nothing
     }
 
     @Override
     protected void paintContentBorderBottomEdge(Graphics g, int tabPlacement,
-            int selectedIndex, int x, int y, int w, int h) {
+                                                int selectedIndex, int x, int y, int w, int h) {
         // Do nothing
     }
 
     @Override
     protected void paintFocusIndicator(Graphics g, int tabPlacement,
-            Rectangle[] rects, int tabIndex, Rectangle iconRect,
-            Rectangle textRect, boolean isSelected) {
+                                       Rectangle[] rects, int tabIndex, Rectangle iconRect,
+                                       Rectangle textRect, boolean isSelected) {
         // Do nothing
     }
 
     @Override
     protected int getTabLabelShiftY(int tabPlacement, int tabIndex,
-            boolean isSelected) {
+                                    boolean isSelected) {
         return 0;
     }
 

@@ -11,7 +11,6 @@ import javax.swing.JTextField;
 /**
  * A text property editor view. Updates the editor on key release and lost focus
  * events.
- *
  */
 public class PropertyText extends JTextField {
 

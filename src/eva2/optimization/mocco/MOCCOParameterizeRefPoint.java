@@ -12,6 +12,7 @@ import eva2.optimization.strategies.IslandModelEA;
 import eva2.optimization.tools.AbstractObjectEditor;
 import eva2.optimization.tools.GeneralGOEProperty;
 import eva2.tools.math.RNG;
+
 import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -31,20 +32,21 @@ import javax.swing.JTextField;
  */
 public class MOCCOParameterizeRefPoint extends MOCCOPhase implements InterfaceProcessElement {
 
-    private double[]                m_RefPoint;
-    private MOSOLpMetric            m_LpMetric;
-    private IslandModelEA           m_Island;
-    private GeneralGOEProperty      m_EMOSO, m_EIMEA;
-    private int                     m_Perturbations = 4;
-    private double                  m_Perturbation = 0.01;
-    private JTextField              m_NumPer, m_SizePer;
-    JPanel                          m_Parameters;
+    private double[] m_RefPoint;
+    private MOSOLpMetric m_LpMetric;
+    private IslandModelEA m_Island;
+    private GeneralGOEProperty m_EMOSO, m_EIMEA;
+    private int m_Perturbations = 4;
+    private double m_Perturbation = 0.01;
+    private JTextField m_NumPer, m_SizePer;
+    JPanel m_Parameters;
 
     public MOCCOParameterizeRefPoint(MOCCOStandalone mocco) {
         this.m_Mocco = mocco;
     }
 
-    /** This method will call the init method and will go to stall
+    /**
+     * This method will call the init method and will go to stall
      */
     @Override
     public void initProcessElementParametrization() {
@@ -82,34 +84,34 @@ public class MOCCOParameterizeRefPoint extends MOCCOPhase implements InterfacePr
     private void installChoice() {
         this.m_Parameters.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.anchor      = GridBagConstraints.WEST;
-        gbc.fill        = GridBagConstraints.BOTH;
-        gbc.gridx       = 0;
-        gbc.gridy       = 0;
-        gbc.weightx     = 2;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 2;
         this.m_Parameters.add(new JLabel("Choose number of Perturbations k:"), gbc);
-        gbc.gridx       = 1;
-        gbc.gridy       = 0;
-        gbc.weightx     = 1;
-        this.m_NumPer = new JTextField(""+this.m_Perturbations);
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.weightx = 1;
+        this.m_NumPer = new JTextField("" + this.m_Perturbations);
         this.m_Parameters.add(this.m_NumPer, gbc);
-        gbc.gridx       = 0;
-        gbc.gridy       = 1;
-        gbc.weightx     = 2;
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.weightx = 2;
         this.m_Parameters.add(new JLabel("Choose amount of Perturbation:"), gbc);
-        gbc.gridx       = 1;
-        gbc.gridy       = 1;
-        gbc.weightx     = 1;
-        this.m_SizePer = new JTextField(""+this.m_Perturbation);
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        gbc.weightx = 1;
+        this.m_SizePer = new JTextField("" + this.m_Perturbation);
         this.m_Parameters.add(this.m_SizePer, gbc);
         // lpmetric
-        this.m_EMOSO    = new GeneralGOEProperty();
+        this.m_EMOSO = new GeneralGOEProperty();
         this.m_LpMetric = new MOSOLpMetric();
         this.m_LpMetric.getReference().setDoubleArray(this.m_RefPoint);
-        this.m_EMOSO.m_Name               = "Lp-Metric";
+        this.m_EMOSO.m_Name = "Lp-Metric";
         try {
-            this.m_EMOSO.m_Value      = this.m_LpMetric;
-            this.m_EMOSO.m_Editor     = PropertyEditorProvider.findEditor(this.m_EMOSO.m_Value.getClass());
+            this.m_EMOSO.m_Value = this.m_LpMetric;
+            this.m_EMOSO.m_Editor = PropertyEditorProvider.findEditor(this.m_EMOSO.m_Value.getClass());
             if (this.m_EMOSO.m_Editor == null) {
                 this.m_EMOSO.m_Editor = PropertyEditorProvider.findEditor(MOSOLpMetric.class);
             }
@@ -124,17 +126,17 @@ public class MOCCOParameterizeRefPoint extends MOCCOPhase implements InterfacePr
         } catch (Exception e) {
             System.out.println("Darn can't read the value...");
         }
-        gbc.gridx       = 0;
-        gbc.gridy       = 2;
-        gbc.weightx     = 2;
-        this.m_Parameters.add(new JLabel(""+this.m_EMOSO.m_Name), gbc);
-        gbc.gridx       = 1;
-        gbc.gridy       = 2;
-        gbc.weightx     = 1;
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.weightx = 2;
+        this.m_Parameters.add(new JLabel("" + this.m_EMOSO.m_Name), gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 2;
+        gbc.weightx = 1;
         this.m_Parameters.add(this.m_EMOSO.m_View, gbc);
         // IslandModelEA
-        this.m_EIMEA    = new GeneralGOEProperty();
-        this.m_Island   = new IslandModelEA();
+        this.m_EIMEA = new GeneralGOEProperty();
+        this.m_Island = new IslandModelEA();
         this.m_Island.setHeterogenuousProblems(true);
         this.m_Island.setLocalOnly(true);
         this.m_Island.setMigrationRate(2);
@@ -142,10 +144,10 @@ public class MOCCOParameterizeRefPoint extends MOCCOPhase implements InterfacePr
         this.m_Island.setNumberLocalCPUs(this.m_Perturbations);
         this.m_Island.setProblem(this.m_Mocco.m_State.m_CurrentProblem);
         this.m_Mocco.m_State.m_Optimizer = this.m_Island;
-        this.m_EIMEA.m_Name               = "Island Model EA";
+        this.m_EIMEA.m_Name = "Island Model EA";
         try {
-            this.m_EIMEA.m_Value      = this.m_Island;
-            this.m_EIMEA.m_Editor     = PropertyEditorProvider.findEditor(this.m_EIMEA.m_Value.getClass());
+            this.m_EIMEA.m_Value = this.m_Island;
+            this.m_EIMEA.m_Editor = PropertyEditorProvider.findEditor(this.m_EIMEA.m_Value.getClass());
             if (this.m_EIMEA.m_Editor == null) {
                 this.m_EIMEA.m_Editor = PropertyEditorProvider.findEditor(IslandModelEA.class);
             }
@@ -160,20 +162,20 @@ public class MOCCOParameterizeRefPoint extends MOCCOPhase implements InterfacePr
         } catch (Exception e) {
             System.out.println("Darn can't read the value...");
         }
-        gbc.gridx       = 0;
-        gbc.gridy       = 3;
-        gbc.weightx     = 2;
-        this.m_Parameters.add(new JLabel(""+this.m_EIMEA.m_Name), gbc);
-        gbc.gridx       = 1;
-        gbc.gridy       = 3;
-        gbc.weightx     = 1;
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.weightx = 2;
+        this.m_Parameters.add(new JLabel("" + this.m_EIMEA.m_Name), gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 3;
+        gbc.weightx = 1;
         this.m_Parameters.add(this.m_EIMEA.m_View, gbc);
         // Terminator
-        GeneralGOEProperty editor   = new GeneralGOEProperty();
-        editor.m_Name               = "Terminator";
+        GeneralGOEProperty editor = new GeneralGOEProperty();
+        editor.m_Name = "Terminator";
         try {
-            editor.m_Value      = this.m_Mocco.m_State.m_Terminator;
-            editor.m_Editor     = PropertyEditorProvider.findEditor(editor.m_Value.getClass());
+            editor.m_Value = this.m_Mocco.m_State.m_Terminator;
+            editor.m_Editor = PropertyEditorProvider.findEditor(editor.m_Value.getClass());
             if (editor.m_Editor == null) {
                 editor.m_Editor = PropertyEditorProvider.findEditor(InterfaceTerminator.class);
             }
@@ -188,19 +190,21 @@ public class MOCCOParameterizeRefPoint extends MOCCOPhase implements InterfacePr
         } catch (Exception e) {
             System.out.println("Darn can't read the value...");
         }
-        gbc.gridx       = 0;
-        gbc.gridy       = 4;
-        gbc.weightx     = 2;
-        this.m_Parameters.add(new JLabel(""+editor.m_Name), gbc);
-        gbc.gridx       = 1;
-        gbc.gridy       = 4;
-        gbc.weightx     = 1;
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        gbc.weightx = 2;
+        this.m_Parameters.add(new JLabel("" + editor.m_Name), gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 4;
+        gbc.weightx = 1;
         this.m_Parameters.add(editor.m_View, gbc);
     }
 
-    /** Method method allows mocco to set the previously selected
+    /**
+     * Method method allows mocco to set the previously selected
      * reference point
-     * @param point  the reference point
+     *
+     * @param point the reference point
      */
     public void setReferencePoint(double[] point) {
         this.m_RefPoint = point;
@@ -228,12 +232,12 @@ public class MOCCOParameterizeRefPoint extends MOCCOPhase implements InterfacePr
                 System.out.println("Can't read amount of perturbation.");
             }
             if (m_EIMEA.m_Value instanceof IslandModelEA) {
-                m_Island = (IslandModelEA)m_EIMEA.m_Value;
+                m_Island = (IslandModelEA) m_EIMEA.m_Value;
             } else {
                 System.out.println("The selected optimizer does not allow heterogenuous multi-starts!");
             }
             if (m_EMOSO.m_Value instanceof MOSOLpMetric) {
-                m_LpMetric = (MOSOLpMetric)m_EMOSO.m_Value;
+                m_LpMetric = (MOSOLpMetric) m_EMOSO.m_Value;
             } else {
                 System.out.println("The selected MOSO conversion is not suited for the reference point approach!");
             }
@@ -259,16 +263,15 @@ public class MOCCOParameterizeRefPoint extends MOCCOPhase implements InterfacePr
                 for (int j = 0; j < tmpD.length; j++) {
                     if (i > 0) {
                         tmpD[j] = m_RefPoint[j] + RNG.gaussianDouble(m_Perturbation);
-                    }
-                    else {
+                    } else {
                         tmpD[j] = m_RefPoint[j];
                     }
                 }
-                tmpLPs[i] = (MOSOLpMetric)m_LpMetric.clone();
+                tmpLPs[i] = (MOSOLpMetric) m_LpMetric.clone();
                 // I've to set this before I change the parameters, because the problem sets the
                 // output dimension based on the AbstractMultiObjectiveOptimizationProblem and
                 // that one has not the faintest idea about the true output dimension                
-                ((AbstractMultiObjectiveOptimizationProblem)m_Island.getOptimizers()[i].getProblem()).setMOSOConverter(tmpLPs[i]);
+                ((AbstractMultiObjectiveOptimizationProblem) m_Island.getOptimizers()[i].getProblem()).setMOSOConverter(tmpLPs[i]);
                 tmpLPs[i].setOutputDimension(tmpD.length);
                 tmpLPs[i].getReference().setDoubleArray(tmpD);
             }

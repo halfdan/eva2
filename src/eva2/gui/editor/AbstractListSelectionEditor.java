@@ -28,20 +28,27 @@ import javax.swing.SwingConstants;
  */
 public abstract class AbstractListSelectionEditor extends JPanel implements PropertyEditor, PropertyChangeListener {
 
-    /** Handles property change notification */
-    private PropertyChangeSupport   m_Support = new PropertyChangeSupport(this);
-    /** The label for when we can't edit that type */
-    protected JLabel                  m_Label = new JLabel("Can't edit", SwingConstants.CENTER);
-    
-    /** The graphics stuff */
-    private JPanel                  m_CustomEditor, m_NodePanel;
-    protected JCheckBox[]             m_BlackCheck;
+    /**
+     * Handles property change notification
+     */
+    private PropertyChangeSupport m_Support = new PropertyChangeSupport(this);
+    /**
+     * The label for when we can't edit that type
+     */
+    protected JLabel m_Label = new JLabel("Can't edit", SwingConstants.CENTER);
 
-	
-	public AbstractListSelectionEditor() {	
-	}
+    /**
+     * The graphics stuff
+     */
+    private JPanel m_CustomEditor, m_NodePanel;
+    protected JCheckBox[] m_BlackCheck;
 
-    /** This method will init the CustomEditor Panel
+
+    public AbstractListSelectionEditor() {
+    }
+
+    /**
+     * This method will init the CustomEditor Panel
      */
     private void initCustomEditor() {
         this.m_CustomEditor = new JPanel();
@@ -54,37 +61,38 @@ public abstract class AbstractListSelectionEditor extends JPanel implements Prop
 
     /**
      * Return the number of elements in the list.
+     *
      * @return
      */
     protected abstract int getElementCount();
-        
+
     /**
      * Get the display name of an element.
-     * 
+     *
      * @param i
      * @return
      */
     protected abstract String getElementName(int i);
-    
+
     /**
      * Get the tool tip of an element or null if none is available.
-     * 
+     *
      * @param i
      * @return
      */
     protected String getElementToolTip(int i) {
-    	return null;
+        return null;
     }
-    
+
     /**
      * Get the selection state of an element.
-     * 
+     *
      * @param i
      * @return
      */
     protected abstract boolean isElementSelected(int i);
-    
-    /** 
+
+    /**
      * The object may have changed update the editor. This notifies change listeners automatically.
      */
     private void updateEditor() {
@@ -93,9 +101,9 @@ public abstract class AbstractListSelectionEditor extends JPanel implements Prop
             this.m_NodePanel.setLayout(new GridLayout(getElementCount(), 1));
             this.m_BlackCheck = new JCheckBox[getElementCount()];
             for (int i = 0; i < getElementCount(); i++) {
-                 this.m_BlackCheck[i] = new JCheckBox(getElementName(i), isElementSelected(i));
-                 this.m_BlackCheck[i].setToolTipText(getElementToolTip(i));
-                 this.m_BlackCheck[i].addActionListener(new ActionListener() {
+                this.m_BlackCheck[i] = new JCheckBox(getElementName(i), isElementSelected(i));
+                this.m_BlackCheck[i].setToolTipText(getElementToolTip(i));
+                this.m_BlackCheck[i].addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent ev) {
                         if (actionOnSelect()) {
@@ -108,32 +116,35 @@ public abstract class AbstractListSelectionEditor extends JPanel implements Prop
         }
     }
 
-    /** 
+    /**
      * Perform actions when the selection state changes. Return true if there was an actual change.
      */
     protected abstract boolean actionOnSelect();
 
     /**
-     * Set the base object, return true on success. Make sure that the editor instance is 
-     * added as a listener to the object (if supported). 
-     * 
+     * Set the base object, return true on success. Make sure that the editor instance is
+     * added as a listener to the object (if supported).
+     *
      * @param o
      * @return
      */
     protected abstract boolean setObject(Object o);
-    
-    /** This method will set the value of object that is to be edited.
+
+    /**
+     * This method will set the value of object that is to be edited.
+     *
      * @param o an object that must be an array.
      */
     @Override
     public void setValue(Object o) {
-    	if (setObject(o)) {
+        if (setObject(o)) {
             updateEditor();
         }
     }
 
-    /** 
+    /**
      * Returns the current object.
+     *
      * @return the current object
      */
     @Override
@@ -148,7 +159,7 @@ public abstract class AbstractListSelectionEditor extends JPanel implements Prop
     public String getAsText() {
         return null;
     }
-    
+
     @Override
     public void setAsText(String text) throws IllegalArgumentException {
         throw new IllegalArgumentException(text);
@@ -172,16 +183,19 @@ public abstract class AbstractListSelectionEditor extends JPanel implements Prop
         if (m_Support == null) {
             m_Support = new PropertyChangeSupport(this);
         }
-    	m_Support.removePropertyChangeListener(l);
+        m_Support.removePropertyChangeListener(l);
     }
-    
-    /** Returns true since the Object can be shown
+
+    /**
+     * Returns true since the Object can be shown
+     *
      * @return true
      */
     @Override
     public boolean isPaintable() {
         return true;
     }
+
     /**
      * Paints a representation of the current classifier.
      *
@@ -193,11 +207,12 @@ public abstract class AbstractListSelectionEditor extends JPanel implements Prop
         FontMetrics fm = gfx.getFontMetrics();
         int vpad = (box.height - fm.getAscent()) / 2;
         String rep = "Select from list";
-        gfx.drawString(rep, 2, fm.getHeight() + vpad - 3  );
+        gfx.drawString(rep, 2, fm.getHeight() + vpad - 3);
     }
-    
-    /** 
+
+    /**
      * Returns true because we do support a custom editor.
+     *
      * @return true
      */
     @Override
@@ -205,9 +220,11 @@ public abstract class AbstractListSelectionEditor extends JPanel implements Prop
         return true;
     }
 
-    /** Returns the array editing component.
-    * @return a value of type 'java.awt.Component'
-    */
+    /**
+     * Returns the array editing component.
+     *
+     * @return a value of type 'java.awt.Component'
+     */
     @Override
     public Component getCustomEditor() {
         if (this.m_CustomEditor == null) {
@@ -215,9 +232,9 @@ public abstract class AbstractListSelectionEditor extends JPanel implements Prop
         }
         return m_CustomEditor;
     }
-    
+
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-    	m_Support.firePropertyChange("AbstractListSelectionEditor", null, this);
+        m_Support.firePropertyChange("AbstractListSelectionEditor", null, this);
     }
 }

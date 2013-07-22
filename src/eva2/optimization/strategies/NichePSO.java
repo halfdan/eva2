@@ -43,6 +43,7 @@ import eva2.tools.chart2d.DElement;
 import eva2.tools.chart2d.DPoint;
 import eva2.tools.chart2d.DPointIcon;
 import eva2.tools.chart2d.DPointSet;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -61,17 +62,17 @@ import java.util.Vector;
  * search space. Subswarms are formed from that main swarm to refine and
  * represent single niches which are assumed to correspond to local or global
  * optima.
- *
+ * <p/>
  * Different strategies are employed in order to: create subswarms from the main
  * swarm merge subswarms if they converge to the same solution absorb main swarm
  * particles into a subswarm in case a particle enters the area covered by the
  * subswarm deactivate subswarms when all containing particles converged on a
  * solution
- *
+ * <p/>
  * Some implementations of these strategies and the deactivation strategy itself
  * extend the original algorithm. As proposed in [1], NichePSO uses the
  * "cognition only" model of the "inertness weight" PSO to train the main swarm.
- *
+ * <p/>
  * mainSwarmInertness sets the inertia weight omega and weights the particles
  * tendency to follow its former movement. This controls exploration (favored by
  * larger values) against exploitation (favored by smaller values).
@@ -85,13 +86,12 @@ import java.util.Vector;
  * NichePSO. Experiments showed a good performance for relatively small values
  * of maxAllowedSwarmRadius <= 0.0001 on lower dimensional problems. For higher
  * dimensional problems, larger values may be preferable.
- *
+ * <p/>
  * [1] R. Brits, A. P. Engelbrecht and B. Bergh. A Niching Particle Swarm
  * Optimizer In Proceedings of the 4th Asia-Pacific Conference on Simulated
  * Evolution and Learning (SEAL'02), 2002, 2, 692-696 [2] E. �zcan and M.
  * Yilmaz. Particle Swarms for Multimodal Optimization. In: ICANNGA (1), Seiten
  * 366�375, 2007
- *
  */
 public class NichePSO implements InterfaceAdditionalPopulationInformer, InterfaceOptimizer, java.io.Serializable {
 
@@ -112,7 +112,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
     protected PSOTopologyEnum mainSwarmTopology = PSOTopologyEnum.grid; // = 1; 
     protected int mainSwarmTopologyRange = 0;
     private int mainSwarmAlgoType = 0; // 0: inertness, 1: constriction
-//	private InterfaceParameterAging mainSwarmParamAging = new LinearParameterAging();
+    //	private InterfaceParameterAging mainSwarmParamAging = new LinearParameterAging();
     protected ParameterControlManager paramControl = new ParameterControlManager();
     boolean returnRepresentativeSolutionsOnly = true; // if true only the representatives of every subswarm are returned, else every particles pbest 
     boolean partlyInactive = false; // used to inactivate parts of the optimizer to see the effect on the performance
@@ -174,7 +174,6 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
      */
     /**
      * @tested
-     *
      */
     public NichePSO() {
         if (log) {
@@ -282,7 +281,6 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
      * @tested inits the template used for creating subswarms this is only
      * called in the ctor not via init() (would overwrite changes set from
      * outside for the next run)
-     *
      */
     protected void initSubswarmOptimizerTemplate() {
         // pass on the parameters set via NichePSO (done in the analogous nichePSO-Setters as well -> no init() necessary)
@@ -306,9 +304,9 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
     }
 
     /**
+     * @return an optimizer with parameters set according to the nichePSO
      * @tested returns the optimizer that should be used to create a new
      * subswarm
-     * @return an optimizer with parameters set according to the nichePSO
      */
     public ParticleSubSwarmOptimization getNewSubSwarmOptimizer() {
         //initSubswarmOptimizerTemplate();
@@ -464,9 +462,9 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
      * Schedule new particles to be added to this swarm, rndly inited over the
      * search space by the problem
      *
-     * @param size number of particles to be created
+     * @param size            number of particles to be created
      * @param particleIndices set of indices that should be used for the added
-     * particles, if null new indices are created
+     *                        particles, if null new indices are created
      */
     public void scheduleNewParticlesToPopulation(int[] particleIndices) {
         if (particleIndices != null) {
@@ -630,11 +628,11 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
      * Absorbtion
      */
     /**
-     * @tested adds indy to an active subswarm, then removes indy from the
-     * mainswarm.
      * @param indy
      * @param subswarm
      * @return
+     * @tested adds indy to an active subswarm, then removes indy from the
+     * mainswarm.
      */
     protected void absorbtionEventFor(AbstractEAIndividual indy, ParticleSubSwarmOptimization subswarm) {
         if (isVerbose()) {
@@ -730,9 +728,9 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
     }
 
     /**
+     * @param ea
      * @tested This method allows you to add the LectureGUI as listener to the
      * Optimizer
-     * @param ea
      */
     @Override
     public void addPopulationChangedEventListener(
@@ -761,8 +759,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
      */
     /**
      * @tested nn (non-Javadoc)
-     * @see
-     * eva2.optimization.strategies.InterfaceOptimizer#setPopulation(javaeva.server.oa.go.Populations.Population)
+     * @see eva2.optimization.strategies.InterfaceOptimizer#setPopulation(javaeva.server.oa.go.Populations.Population)
      */
     @Override
     public void setPopulation(Population pop) {
@@ -771,9 +768,9 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
     }
 
     /**
-     * @tested junit, junit&
      * @return a population consisting of copies from the mainswarm and all
-     * active subswarms
+     *         active subswarms
+     * @tested junit, junit&
      */
     public Population getActivePopulation() {
         // construct a metapop with clones from the mainswarm and all active subswarms
@@ -803,6 +800,8 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
     }
 
     /**
+     * @return a population consisting of copies from the mainswarm and all
+     *         subswarms.
      * @tested junit returns a population consisting of copies from the
      * mainswarm and all subswarms (active and inactive, so the size of this
      * Population is not necessarily constant). (Especially important for the
@@ -810,8 +809,6 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
      * getPopulation().getPopulationSize() returns the !initial! size of the
      * main swarm, the actual size of the complete population is accessed via
      * getPopulation().size()
-     * @return a population consisting of copies from the mainswarm and all
-     * subswarms.
      */
     @Override
     public Population getPopulation() {
@@ -864,10 +861,10 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
     }
 
     /**
+     * @return a population consisting of the personal best solutions of every
+     *         particle in the mainswarm and all subswarms
      * @tested junit (non-Javadoc)
      * @see eva2.optimization.strategies.InterfaceOptimizer#getAllSolutions()
-     * @return a population consisting of the personal best solutions of every
-     * particle in the mainswarm and all subswarms
      */
     @Override
     public SolutionSet getAllSolutions() {
@@ -896,8 +893,8 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
     }
 
     /**
-     * @tested junit
      * @return the best solution found by any particle in any swarm
+     * @tested junit
      */
     public AbstractEAIndividual getGlobalBestSolution() {
         Population metapop = getPopulation();
@@ -916,9 +913,9 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
     }
 
     /**
+     * @return array with copies of the gbest individuals
      * @tested junit returns the cloned global best individuals (ie best of all
      * time) from every subswarm and the main swarm
-     * @return array with copies of the gbest individuals
      */
     public Population getSubswarmRepresentatives(boolean onlyInactive) {
         Population representatives = new Population(getSubSwarms().size() + 1);
@@ -944,9 +941,9 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
     }
 
     /**
+     * @param size
      * @tested ps sets the !initial! size of the mainswarm population use this
      * instead of getPopulation.setPopulationSize()
-     * @param size
      */
     public void setMainSwarmSize(int size) {
         // set member
@@ -956,8 +953,8 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
     }
 
     /**
-     * @tested nn returns the !initial! size of the mainswarm population
      * @return the !initial! size of the mainswarm population
+     * @tested nn returns the !initial! size of the mainswarm population
      */
     public int getMainSwarmSize() {
         return this.mainSwarmSize;
@@ -968,9 +965,9 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
     }
 
     /**
+     * @param val
      * @tested ps defines the maximal allowed subswarm radius for absorption and
      * merging
-     * @param val
      */
     public void setMaxAllowedSwarmRadius(double val) {
         // set member
@@ -984,8 +981,8 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
     }
 
     /**
-     * @tested nn
      * @return
+     * @tested nn
      */
     public double getMaxAllowedSwarmRadius() {
         return this.maxAllowedSwarmRadius;
@@ -995,7 +992,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
         return "no subswarm radius is allowed to (formally) exceed this threshold (see help for details)";
     }
 
-//	public double getMainSwarmPhi1() {
+    //	public double getMainSwarmPhi1() {
 //		return mainSwarmPhi1;
 //	}
 //
@@ -1027,7 +1024,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
         return "weights the cognitive component for the PSO used to train the main swarm";
     }
 
-//	public void setMainSwarmPhi2(double p2) {
+    //	public void setMainSwarmPhi2(double p2) {
 //		this.SetMainSwarmPhi2(p2);
 //	}
 //	
@@ -1103,16 +1100,16 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
     }
 
     /**
-     * @tested nn
      * @param val
+     * @tested nn
      */
     public void SetPartlyInactive(boolean val) {
         this.partlyInactive = val;
     }
 
     /**
-     * @tested nn
      * @return
+     * @tested nn
      */
     public boolean isPartlyInactive() {
         return partlyInactive;
@@ -1215,7 +1212,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
         return mainSwarm;
     }
 
-//	public InterfaceParameterAging getMainSwarmInertness(){
+    //	public InterfaceParameterAging getMainSwarmInertness(){
 //		return mainSwarmParamAging;
 ////		return this.mainSwarm.getInertnessAging();
 //	}
@@ -1307,8 +1304,8 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
     }
 
     /**
-     * @tested ps This method will set the problem that is to be optimized
      * @param problem
+     * @tested ps This method will set the problem that is to be optimized
      */
     @Override
     public void setProblem(InterfaceOptimizationProblem problem) {
@@ -1323,8 +1320,8 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
     }
 
     /**
-     * @tested nn This method allows you to set an identifier for the algorithm
      * @param name The indenifier
+     * @tested nn This method allows you to set an identifier for the algorithm
      */
     @Override
     public void setIdentifier(String name) {
@@ -1358,9 +1355,9 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
     }
 
     /**
-     * @tested junit
      * @param vals
      * @return
+     * @tested junit
      */
     public double getMedian(double[] vals) {
         java.util.Arrays.sort(vals);
@@ -1443,8 +1440,8 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
      * setter, getter: infostrings
      */
     /**
-     * @tested nn This method will return a naming String
      * @return The name of the algorithm
+     * @tested nn This method will return a naming String
      */
     @Override
     public String getName() {
@@ -1452,9 +1449,9 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
     }
 
     /**
+     * @return A descriptive string
      * @tested nn This method will return a string describing all properties of
      * the optimizer and the applied methods.
-     * @return A descriptive string
      */
     @Override
     public String getStringRepresentation() {
@@ -1465,9 +1462,9 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
     }
 
     /**
+     * @return descriptive string of the elite
      * @tested emp returns a string that lists the global best individuals (ie
      * best of all time) from every subswarm
-     * @return descriptive string of the elite
      */
     public String getSubswarmRepresentativesAsString(boolean onlyInactive) {
         String result = "\nSubswarmRepresentatives: \n";
@@ -1480,8 +1477,8 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
     }
 
     /**
-     * @tested emp
      * @return
+     * @tested emp
      */
     public String getPerformanceAsString() {
         if (!(m_Problem instanceof InterfaceMultimodalProblem)) {
@@ -1567,8 +1564,8 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
     }
 
     /**
-     * @tested emp writes something to the LogFile
      * @param line string to be written
+     * @tested emp writes something to the LogFile
      */
     protected void writeToLogFile(String line) {
         String write = line + "\n";
@@ -1590,9 +1587,9 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
      * getter for debugging and analysing
      */
     /**
-     * @tested @param pop
      * @param index
      * @return particle with given index
+     * @tested @param pop
      */
     public AbstractEAIndividual getIndyByParticleIndexAndPopulation(Population pop, Integer index) {
         for (int i = 0; i < pop.size(); ++i) {
@@ -1607,8 +1604,8 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
     }
 
     /**
-     * @tested @param index
      * @return main swarm particle with given index
+     * @tested @param index
      */
     public AbstractEAIndividual getIndyByParticleIndex(Integer index) {
         AbstractEAIndividual indy = null;
@@ -1744,8 +1741,8 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
     }
 
     /**
-     * @tested plots all std devs < boundary for the respective particles
      * @param boundary
+     * @tested plots all std devs < boundary for the respective particles
      */
     protected void plotBoundStdDevInMainSwarm(double boundary) {
         InterfaceDataTypeDouble tmpIndy1;
@@ -1771,9 +1768,9 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
     }
 
     /**
-     * @tested plots a circle around the individual and adds some information
      * @param index index of the particle
-     * @param text information to be added
+     * @param text  information to be added
+     * @tested plots a circle around the individual and adds some information
      */
     protected void plotCircleForIndy(int index, String text) {
         AbstractEAIndividual indy = getIndyByParticleIndex(new Integer(index));
@@ -1786,9 +1783,9 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
     }
 
     /**
-     * @tested plots a circle around the individual and adds some information
      * @param indy invidual
      * @param text information to be added
+     * @tested plots a circle around the individual and adds some information
      */
     protected void plotCircleForIndy(AbstractEAIndividual indy, String text) {
         InterfaceDataTypeDouble tmpIndy1 = (InterfaceDataTypeDouble) indy;
@@ -2046,9 +2043,9 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
     }
 
     /**
+     * @param indy
      * @tested plots the old position, new position, personal best position and
      * neighborhood best position for a given individual
-     * @param indy
      */
     protected void plotStatusForIndy(AbstractEAIndividual indy) {
         //plot newPos
@@ -2086,7 +2083,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
         this.m_TopologySwarm.getFunctionArea().addDElement(point);
     }
 
-//    protected void saveCurrentPlotAsJPG(String filename){
+    //    protected void saveCurrentPlotAsJPG(String filename){
 //    	if (getDirForCurrentExperiment().equals("unset")) {
 //    		System.out.println("saveCurrentPlotAsJPG: no directory for output specified, please use setDirForCurrentExperiment first");
 //    		return;
@@ -2151,7 +2148,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
      * Create a Niche PSO with parameters as to Brits, Engelbrecht & Bergh: A
      * Niching Particle Swarm Optimizer. SEAL 2002. Exeption: the swarm size is
      * 200 by default, because 30 (of the orig. paper) seems way too low.
-     *
+     * <p/>
      * The evaluation count is required currently due to the
      * generation-dependent intertness decay used by the std. variant. To alter
      * the terminator, use OptimizationParameters.setTerminator(), and mind the intertness
@@ -2176,12 +2173,12 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
      * Optimizer. SEAL 2002. Exeption: the swarm size is 100 by default, because
      * 30 (of the orig. paper) seems way too low.
      *
-     * @see #stdNPSO(AbstractOptimizationProblem, long, int)
-     * @param an already existing NichePSO instance or null to create a new one
+     * @param an       already existing NichePSO instance or null to create a new one
      * @param problem
      * @param randSeed
      * @param evalCnt
      * @return
+     * @see #stdNPSO(AbstractOptimizationProblem, long, int)
      */
     public static final OptimizationParameters stdNPSO(NichePSO npso, AbstractOptimizationProblem problem, long randSeed, int evalCnt) {
         if (npso == null) {
@@ -2226,12 +2223,12 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
      * Optimizer. SEAL 2002. Exeption: the swarm size is 200 by default, because
      * 30 (of the orig. paper) seems way too low.
      *
-     * @see #stdNPSO(AbstractOptimizationProblem, long, int)
-     * @param an already existing NichePSO instance or null to create a new one
+     * @param an       already existing NichePSO instance or null to create a new one
      * @param problem
      * @param randSeed
      * @param evalCnt
      * @return
+     * @see #stdNPSO(AbstractOptimizationProblem, long, int)
      */
     public static final OptimizationParameters starNPSO(NichePSO npso, AbstractOptimizationProblem problem, long randSeed, int evalCnt) {
         starNPSO(npso, evalCnt);
@@ -2285,12 +2282,12 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
     @Override
     public String[] getAdditionalDataInfo() {
         return new String[]{"Size of the main swarm of explorers",
-                    "Number of sub-swarms currently active",
-                    "Average sub-swarm size",
-                    "The number of stored potential local optima",
-                    "The median correlation of stored solutions",
-                    "The mean distance of stored solutions",
-                    "Current inertness of the main swarm"};
+                "Number of sub-swarms currently active",
+                "Average sub-swarm size",
+                "The number of stored potential local optima",
+                "The median correlation of stored solutions",
+                "The mean distance of stored solutions",
+                "Current inertness of the main swarm"};
     }
 
     @Override
@@ -2301,12 +2298,12 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
         double medCor = inactives.getCorrelations()[3]; // median correlation of best indies of inactive subswarms
         double meanDist = inactives.getPopulationMeasures()[0];
         return new Object[]{getMainSwarm().getPopulation().size(),
-                    actSwarms,
-                    avgSpSize,
-                    getNumArchived(),
-                    medCor,
-                    meanDist,
-                    getMainSwarm().getInertnessOrChi()};
+                actSwarms,
+                avgSpSize,
+                getNumArchived(),
+                medCor,
+                meanDist,
+                getMainSwarm().getInertnessOrChi()};
     }
 
     /**

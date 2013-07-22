@@ -29,7 +29,6 @@ import java.util.Vector;
  * crossover operators selected. Added aging mechanism to provide for
  * dynamically changing problems. If an individual reaches the age limit, it is
  * doomed and replaced by the next challenge vector, even if its worse.
- *
  */
 public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serializable {
 
@@ -63,7 +62,6 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
 
     /**
      * A constructor.
-     *
      */
     public DifferentialEvolution() {
         // sets DE2 as default
@@ -121,7 +119,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
     /**
      * This method will init the optimizer with a given population
      *
-     * @param pop The initial population
+     * @param pop   The initial population
      * @param reset If true the population is reset.
      */
     @Override
@@ -210,7 +208,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
     private double[] fetchDeltaCurrentRandom(Population pop, InterfaceDataTypeDouble indy) {
         double[] x1, x2;
         double[] result;
-       boolean isEmpty;
+        boolean isEmpty;
         int iterations = 0;
 
 
@@ -258,7 +256,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
     /**
      * This method will return the delta vector to the best individual
      *
-     * @param pop The population to choose the best from
+     * @param pop  The population to choose the best from
      * @param indy The current individual
      * @return the delta vector
      */
@@ -312,6 +310,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
 //        result[1] = indy2.getDGenotype();
 //        return result;
 //    }
+
     /**
      * This method will generate one new individual from the given population
      *
@@ -523,7 +522,6 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
      * slightly worse for schemes that rely on current best individuals, because
      * improvements are not immediately incorporated as in the steady state DE.
      * However it may be easier to parallelize.
-     *
      */
     public void optimizeGenerational() {
 //        AbstractEAIndividual    indy = null, orig;
@@ -571,7 +569,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
             } else {
                 parentIndex = RNG.randomInt(0, this.m_Population.size() - 1);
             }
-            if (nextDoomed >= 0) {	// this one is lucky, may replace an 'old' one
+            if (nextDoomed >= 0) {    // this one is lucky, may replace an 'old' one
                 m_Population.replaceIndividualAt(nextDoomed, indy);
                 nextDoomed = getNextDoomed(m_Population, nextDoomed + 1);
             } else {
@@ -633,7 +631,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
 //        	else indy = this.generateNewIndividual(this.m_Population, -1);
             this.m_Problem.evaluate(indy);
             this.m_Population.incrFunctionCalls();
-            if (nextDoomed >= 0) {	// this one is lucky, may replace an 'old' one
+            if (nextDoomed >= 0) {    // this one is lucky, may replace an 'old' one
                 m_Population.replaceIndividualAt(nextDoomed, indy);
                 nextDoomed = getNextDoomed(m_Population, nextDoomed + 1);
             } else {
@@ -710,9 +708,9 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
      * younger, -1 is returned. The start index of the search may be provided to
      * make iterative search efficient.
      *
-     * @param pop	Population to search
-     * @param startIndex	index to start the search from
-     * @return	index of an overaged individual or -1
+     * @param pop        Population to search
+     * @param startIndex index to start the search from
+     * @return index of an overaged individual or -1
      */
     protected int getNextDoomed(Population pop, int startIndex) {
         if (maximumAge > 0) {
@@ -963,7 +961,6 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
 
     /**
      * @return the maximumAge
-	 *
      */
     public int getMaximumAge() {
         return maximumAge;
@@ -971,7 +968,6 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
 
     /**
      * @param maximumAge the maximumAge to set
-	 *
      */
     public void setMaximumAge(int maximumAge) {
         this.maximumAge = maximumAge;
@@ -1013,7 +1009,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
         return "If true, values for k, f, lambda are randomly sampled around +/- 20% of the given values.";
     }
 
-//	public boolean isCyclePop() {
+    //	public boolean isCyclePop() {
 //		return cyclePop;
 //	}
 //
@@ -1062,7 +1058,6 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
 
     /**
      * @return the maximumAge
-	 *
      */
     public boolean isReEvaluate() {
         return reEvaluate;
@@ -1070,7 +1065,6 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
 
     /**
      * @param maximumAge the maximumAge to set
-	 *
      */
     public void setReEvaluate(boolean reEvaluate) {
         this.reEvaluate = reEvaluate;

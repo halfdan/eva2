@@ -17,8 +17,8 @@ import java.util.ArrayList;
 public class ParetoFrontLocalTester {
 
     private Plot m_Plot;
-    private int                     index           = 0;
-    private BufferedWriter          m_OutputFile    = null;
+    private int index = 0;
+    private BufferedWriter m_OutputFile = null;
 
     private void show() {
         double[] loss = new double[5];
@@ -50,7 +50,7 @@ public class ParetoFrontLocalTester {
         risk[3][4] = 0.00;
 
         for (int i = 0; i < risk.length; i++) {
-            for (int j = i+1; j < risk.length; j++) {
+            for (int j = i + 1; j < risk.length; j++) {
                 risk[j][i] = risk[i][j];
             }
         }
@@ -60,20 +60,20 @@ public class ParetoFrontLocalTester {
         // now calc the stuff
         ArrayList complete = new ArrayList();
         ArrayList elements = new ArrayList();
-        double[]    tmpD;
-        double[][]  tmpElem;
-        int         res = 100;
+        double[] tmpD;
+        double[][] tmpElem;
+        int res = 100;
         for (int i = 0; i < loss.length; i++) {
-            tmpElem = new double[res+1][2];
-            for (int j = i+1; j < loss.length; j++) {
+            tmpElem = new double[res + 1][2];
+            for (int j = i + 1; j < loss.length; j++) {
                 double w = 0;
-                for (int k = 0; k < res+1; k++) {
-                    tmpElem[k][0] = w*loss[i] + (1-w)*loss[j];
-                    tmpElem[k][1] = (w*w)*risk[i][i] + ((1-w)*(1-w))*risk[j][j] + 2*(w*(1-w)*risk[i][j]);
+                for (int k = 0; k < res + 1; k++) {
+                    tmpElem[k][0] = w * loss[i] + (1 - w) * loss[j];
+                    tmpElem[k][1] = (w * w) * risk[i][i] + ((1 - w) * (1 - w)) * risk[j][j] + 2 * (w * (1 - w) * risk[i][j]);
                     tmpD = new double[2];
                     tmpD[0] = tmpElem[k][0];
                     tmpD[1] = tmpElem[k][1];
-                    w += 1/(double)res;
+                    w += 1 / (double) res;
                     complete.add(tmpD);
                 }
                 // now plot this line
@@ -86,7 +86,7 @@ public class ParetoFrontLocalTester {
 
     private void saveThisStuff(ArrayList c, ArrayList e) {
         try {
-            this.m_OutputFile = new BufferedWriter(new OutputStreamWriter (new FileOutputStream ("CompleteList")));
+            this.m_OutputFile = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("CompleteList")));
         } catch (FileNotFoundException ex) {
             System.out.println("Could not open output file!");
         }
@@ -96,7 +96,7 @@ public class ParetoFrontLocalTester {
         this.writeToFile(line);
         for (int i = 0; i < c.size(); i++) {
             tmpD = (double[]) c.get(i);
-            line = tmpD[1] +"\t" + tmpD[0];
+            line = tmpD[1] + "\t" + tmpD[0];
             this.writeToFile(line);
         }
         try {
@@ -105,18 +105,18 @@ public class ParetoFrontLocalTester {
         }
         // next file
         try {
-            this.m_OutputFile = new BufferedWriter(new OutputStreamWriter (new FileOutputStream ("ListElements")));
+            this.m_OutputFile = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("ListElements")));
         } catch (FileNotFoundException ex) {
             System.out.println("Could not open output file!");
         }
         int length = e.size();
         double[][][] cara = new double[length][][];
         for (int i = 0; i < e.size(); i++) {
-            cara[i] = (double[][])e.get(i);
+            cara[i] = (double[][]) e.get(i);
         }
         line = "";
         for (int i = 0; i < cara.length; i++) {
-            line = "Risk"+i+"\t"+"Loss"+i;
+            line = "Risk" + i + "\t" + "Loss" + i;
         }
         this.writeToFile(line);
         for (int i = 0; i < cara[0].length; i++) {
@@ -132,8 +132,10 @@ public class ParetoFrontLocalTester {
         }
     }
 
-    /** This method writes Data to file.
-     * @param line      The line that is to be added to the file
+    /**
+     * This method writes Data to file.
+     *
+     * @param line The line that is to be added to the file
      */
     private void writeToFile(String line) {
         String write = line + "\n";
@@ -157,7 +159,7 @@ public class ParetoFrontLocalTester {
     }
 
     private void showLine(double[][] elm) {
-        GraphPointSet   mySet = new GraphPointSet(this.index, this.m_Plot.getFunctionArea());
+        GraphPointSet mySet = new GraphPointSet(this.index, this.m_Plot.getFunctionArea());
         this.index++;
         for (int i = 0; i < elm.length; i++) {
             mySet.addDPoint(elm[i][1], elm[i][0]);

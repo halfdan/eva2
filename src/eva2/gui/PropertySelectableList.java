@@ -12,18 +12,18 @@ import java.beans.PropertyChangeSupport;
  */
 public class PropertySelectableList<T> implements java.io.Serializable {
 
-    protected T[]     m_Objects;
-    protected boolean[]    m_Selection;
-	private transient PropertyChangeSupport m_Support = new PropertyChangeSupport(this);
+    protected T[] m_Objects;
+    protected boolean[] m_Selection;
+    private transient PropertyChangeSupport m_Support = new PropertyChangeSupport(this);
 
-//    public PropertySelectableList() {
+    //    public PropertySelectableList() {
 //    }
 //    
     public PropertySelectableList(T[] initial) {
-    	m_Objects = initial;
-    	m_Selection = new boolean[initial.length];
+        m_Objects = initial;
+        m_Selection = new boolean[initial.length];
     }
-    
+
     public PropertySelectableList(PropertySelectableList<T> b) {
         if (b.m_Objects != null) {
             this.m_Objects = b.m_Objects.clone();
@@ -33,18 +33,18 @@ public class PropertySelectableList<T> implements java.io.Serializable {
             System.arraycopy(b.m_Selection, 0, this.m_Selection, 0, this.m_Selection.length);
         }
     }
-    
+
     @Override
     public Object clone() {
         return (Object) new PropertySelectableList<T>(this);
     }
-    
+
     public void setObjects(T[] o) {
         this.m_Objects = o;
         this.m_Selection = new boolean[o.length];
         m_Support.firePropertyChange("PropertySelectableList", null, this);
     }
-    
+
     public void setObjects(T[] o, boolean[] selection) {
         this.m_Objects = o;
         this.m_Selection = selection;
@@ -53,77 +53,77 @@ public class PropertySelectableList<T> implements java.io.Serializable {
         }
         m_Support.firePropertyChange("PropertySelectableList", null, this);
     }
-    
+
     public T[] getObjects() {
         return this.m_Objects;
     }
-    
+
     /**
      * Returns the elements represented by this list where only the selected elements are non-null.
+     *
      * @return
      */
     public T[] getSelectedObjects() {
-    	T[] selObjects = getObjects().clone();
-    	for (int i=0; i<selObjects.length; i++) {
-			if (!m_Selection[i]) {
-                selObjects[i]=null;
+        T[] selObjects = getObjects().clone();
+        for (int i = 0; i < selObjects.length; i++) {
+            if (!m_Selection[i]) {
+                selObjects[i] = null;
             }
-		}
-    	return selObjects;
+        }
+        return selObjects;
     }
-    
+
     /**
      * Set the selection by giving a list of selected indices.
-     * 
+     *
      * @param selection
      */
     public void setSelectionByIndices(int[] selection) {
-    	m_Selection = new boolean[getObjects().length];
-        for (int i=0; i<selection.length; i++) {
-        	m_Selection[selection[i]]=true;
+        m_Selection = new boolean[getObjects().length];
+        for (int i = 0; i < selection.length; i++) {
+            m_Selection[selection[i]] = true;
         }
-		m_Support.firePropertyChange("PropertySelectableList", null, this);
+        m_Support.firePropertyChange("PropertySelectableList", null, this);
     }
-    
+
     public void setSelection(boolean[] selection) {
         this.m_Selection = selection;
-		m_Support.firePropertyChange("PropertySelectableList", null, this);
+        m_Support.firePropertyChange("PropertySelectableList", null, this);
     }
-    
+
     public boolean[] getSelection() {
         return this.m_Selection;
     }
 
     public void setSelectionForElement(int index, boolean b) {
-    	if (m_Selection[index]!=b) {
-    		this.m_Selection[index] = b;
-    		m_Support.firePropertyChange("PropertySelectableList", null, this);
-    	}
-    }
-    
-    public int size() {
-    	if (m_Objects == null) {
-            return 0;
+        if (m_Selection[index] != b) {
+            this.m_Selection[index] = b;
+            m_Support.firePropertyChange("PropertySelectableList", null, this);
         }
-    	else {
+    }
+
+    public int size() {
+        if (m_Objects == null) {
+            return 0;
+        } else {
             return m_Objects.length;
         }
     }
-    
+
     public T get(int i) {
-    	return m_Objects[i];
-    }
-    
-    public boolean isSelected(int i) {
-    	return m_Selection[i];
+        return m_Objects[i];
     }
 
-	public void clear() {
-		m_Objects=null;
-		m_Selection=null;
-		m_Support.firePropertyChange("PropertySelectableList", null, this);
-	}
-	
+    public boolean isSelected(int i) {
+        return m_Selection[i];
+    }
+
+    public void clear() {
+        m_Objects = null;
+        m_Selection = null;
+        m_Support.firePropertyChange("PropertySelectableList", null, this);
+    }
+
 //	/**
 //	 * Append an object at the end of the list and immediately select it.
 //	 * @param o
@@ -144,18 +144,18 @@ public class PropertySelectableList<T> implements java.io.Serializable {
 //		}
 //		m_Support.firePropertyChange("PropertySelectableList", null, this);
 //	}
-	
-	  public void addPropertyChangeListener(PropertyChangeListener l) {
-		  if (m_Support == null) {
-                  m_Support = new PropertyChangeSupport(this);
-              }
-		  m_Support.addPropertyChangeListener(l);
-	  }
 
-	  public void removePropertyChangeListener(PropertyChangeListener l) {
-		  if (m_Support == null) {
-                  m_Support = new PropertyChangeSupport(this);
-              }
-		  m_Support.removePropertyChangeListener(l);
-	  }
+    public void addPropertyChangeListener(PropertyChangeListener l) {
+        if (m_Support == null) {
+            m_Support = new PropertyChangeSupport(this);
+        }
+        m_Support.addPropertyChangeListener(l);
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener l) {
+        if (m_Support == null) {
+            m_Support = new PropertyChangeSupport(this);
+        }
+        m_Support.removePropertyChangeListener(l);
+    }
 }

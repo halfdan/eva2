@@ -30,19 +30,18 @@ package eva2.tools;
 /**
  * TODO description.
  *
- * @.author     wegnerj
- * @.license    GPL
+ * @.author wegnerj
+ * @.license GPL
  * @.cvsversion $Revision: 1.8 $, $Date: 2005/02/17 16:48:44 $
  */
-public interface ResourceLoader
-{
+public interface ResourceLoader {
     //~ Methods ////////////////////////////////////////////////////////////////
 
     /**
-     *  Gets the byte data from a file at the given resource location.
+     * Gets the byte data from a file at the given resource location.
      *
-     * @param  rawResrcLoc  Description of the Parameter
-     * @return                   the byte array of file.
+     * @param rawResrcLoc Description of the Parameter
+     * @return the byte array of file.
      */
     byte[] getBytesFromResourceLocation(String rawResrcLoc);
 }

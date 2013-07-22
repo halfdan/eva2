@@ -11,6 +11,7 @@ package eva2.gui.plot;
  * IMPORTS
  *==========================================================================
  */
+
 import eva2.gui.*;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.mocco.paretofrontviewer.InterfaceRefPointListener;
@@ -27,6 +28,7 @@ import eva2.tools.chart2d.DPoint;
 import eva2.tools.chart2d.DPointIcon;
 import eva2.tools.chart2d.DPointSet;
 import eva2.tools.chart2d.ScaledBorder;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -205,11 +207,11 @@ public class FunctionArea extends DArea implements Serializable {
                             + " graph tool tips";
                     addMenuItem(graphPopupMenu, togGTTName,
                             new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent ee) {
-                            setShowGraphToolTips(!isShowGraphToolTips());
-                        }
-                    });
+                                @Override
+                                public void actionPerformed(ActionEvent ee) {
+                                    setShowGraphToolTips(!isShowGraphToolTips());
+                                }
+                            });
 
                     String togLName = (isShowLegend() ? "Hide" : "Show")
                             + " legend";
@@ -230,11 +232,11 @@ public class FunctionArea extends DArea implements Serializable {
                     if (FunctionArea.this.pointSetContainer.size() > 0) {
                         addMenuItem(graphPopupMenu, "Recolor all graphs",
                                 new ActionListener() {
-                            @Override
-                            public void actionPerformed(ActionEvent ee) {
-                                recolorAllGraphsByIndex();
-                            }
-                        });
+                                    @Override
+                                    public void actionPerformed(ActionEvent ee) {
+                                        recolorAllGraphsByIndex();
+                                    }
+                                });
                     }
 
                     if (refPointListener != null) {
@@ -242,16 +244,16 @@ public class FunctionArea extends DArea implements Serializable {
                         addMenuItem(graphPopupMenu, "Select Reference Point:("
                                 + temp.x + "/" + temp.y + ")",
                                 new ActionListener() {
-                            @Override
-                            public void actionPerformed(ActionEvent ee) {
-                                DPoint temp = getDMeasures().getDPoint(
-                                        xPos, yPos);
-                                double[] point = new double[2];
-                                point[0] = temp.x;
-                                point[1] = temp.y;
-                                refPointListener.refPointGiven(point);
-                            }
-                        });
+                                    @Override
+                                    public void actionPerformed(ActionEvent ee) {
+                                        DPoint temp = getDMeasures().getDPoint(
+                                                xPos, yPos);
+                                        double[] point = new double[2];
+                                        point[0] = temp.x;
+                                        point[1] = temp.y;
+                                        refPointListener.refPointGiven(point);
+                                    }
+                                });
                     }
 
                     // darn this point is an empty copy !!
@@ -261,19 +263,19 @@ public class FunctionArea extends DArea implements Serializable {
                         addMenuItem(graphPopupMenu, "Nearest point: ("
                                 + point.x + "/" + point.y + ")",
                                 new ActionListener() {
-                            @Override
-                            public void actionPerformed(ActionEvent ee) {
-                            }
-                        }, false);
+                                    @Override
+                                    public void actionPerformed(ActionEvent ee) {
+                                    }
+                                }, false);
 
                         addMenuItem(graphPopupMenu, "  Remove point",
                                 new ActionListener() {
-                            @Override
-                            public void actionPerformed(ActionEvent ee) {
-                                removePoint(FunctionArea.this.xPos,
-                                        FunctionArea.this.yPos);
-                            }
-                        });
+                                    @Override
+                                    public void actionPerformed(ActionEvent ee) {
+                                        removePoint(FunctionArea.this.xPos,
+                                                FunctionArea.this.yPos);
+                                    }
+                                });
 
                         if (point.getIcon() instanceof InterfaceSelectablePointIcon) {
                             currentPointIcon = point.getIcon();
@@ -283,13 +285,13 @@ public class FunctionArea extends DArea implements Serializable {
                                         : "  Select individual";
                                 addMenuItem(graphPopupMenu, selectTitle,
                                         new ActionListener() {
-                                    @Override
-                                    public void actionPerformed(
-                                            ActionEvent ee) {
-                                        ((InterfaceSelectablePointIcon) currentPointIcon).getSelectionListener().individualSelected(
-                                                ((InterfaceSelectablePointIcon) currentPointIcon).getEAIndividual());
-                                    }
-                                });
+                                            @Override
+                                            public void actionPerformed(
+                                                    ActionEvent ee) {
+                                                ((InterfaceSelectablePointIcon) currentPointIcon).getSelectionListener().individualSelected(
+                                                        ((InterfaceSelectablePointIcon) currentPointIcon).getEAIndividual());
+                                            }
+                                        });
                             }
                         }
 
@@ -297,16 +299,16 @@ public class FunctionArea extends DArea implements Serializable {
                             currentPointIcon = point.getIcon();
                             addMenuItem(graphPopupMenu, "  Show individual",
                                     new ActionListener() {
-                                @Override
-                                public void actionPerformed(
-                                        ActionEvent ee) {
-                                    ((InterfaceDPointWithContent) currentPointIcon).showIndividual();
-                                }
-                            });
+                                        @Override
+                                        public void actionPerformed(
+                                                ActionEvent ee) {
+                                            ((InterfaceDPointWithContent) currentPointIcon).showIndividual();
+                                        }
+                                    });
                         }
 
                     }
-                    if (FunctionArea.this.pointSetContainer.size() > 0) { 
+                    if (FunctionArea.this.pointSetContainer.size() > 0) {
                         // there is at least one graph
                         // The graph info element
                         // int gIndex = getNearestGraphIndex(e.getX(),
@@ -314,45 +316,45 @@ public class FunctionArea extends DArea implements Serializable {
                         addMenuItem(graphPopupMenu, "Graph Info: "
                                 + getGraphInfo(e.getX(), e.getY()),
                                 new ActionListener() {
-                            @Override
-                            public void actionPerformed(ActionEvent ee) {
-                                DPoint temp = FunctionArea.this.getDMeasures().getDPoint(
-                                        FunctionArea.this.xPos,
-                                        FunctionArea.this.yPos);
-                                DPointIcon icon1 = new DPointIcon() {
                                     @Override
-                                    public DBorder getDBorder() {
-                                        return new DBorder(4, 4, 4, 4);
-                                    }
+                                    public void actionPerformed(ActionEvent ee) {
+                                        DPoint temp = FunctionArea.this.getDMeasures().getDPoint(
+                                                FunctionArea.this.xPos,
+                                                FunctionArea.this.yPos);
+                                        DPointIcon icon1 = new DPointIcon() {
+                                            @Override
+                                            public DBorder getDBorder() {
+                                                return new DBorder(4, 4, 4, 4);
+                                            }
 
-                                    @Override
-                                    public void paint(Graphics g) {
-                                        g.drawLine(-2, 0, 2, 0);
-                                        g.drawLine(0, 0, 0, 4);
+                                            @Override
+                                            public void paint(Graphics g) {
+                                                g.drawLine(-2, 0, 2, 0);
+                                                g.drawLine(0, 0, 0, 4);
+                                            }
+                                        };
+                                        temp.setIcon(icon1);
+                                        FunctionArea.this.addDElement(temp);
                                     }
-                                };
-                                temp.setIcon(icon1);
-                                FunctionArea.this.addDElement(temp);
-                            }
-                        }, false);
+                                }, false);
 
                         addMenuItem(graphPopupMenu, "  Remove graph",
                                 new ActionListener() {
-                            @Override
-                            public void actionPerformed(ActionEvent ee) {
-                                clearGraph(FunctionArea.this.xPos,
-                                        FunctionArea.this.yPos);
-                            }
-                        });
+                                    @Override
+                                    public void actionPerformed(ActionEvent ee) {
+                                        clearGraph(FunctionArea.this.xPos,
+                                                FunctionArea.this.yPos);
+                                    }
+                                });
 
                         addMenuItem(graphPopupMenu, "  Change graph color",
                                 new ActionListener() {
-                            @Override
-                            public void actionPerformed(ActionEvent ee) {
-                                changeColorGraph(FunctionArea.this.xPos,
-                                        FunctionArea.this.yPos);
-                            }
-                        });
+                                    @Override
+                                    public void actionPerformed(ActionEvent ee) {
+                                        changeColorGraph(FunctionArea.this.xPos,
+                                                FunctionArea.this.yPos);
+                                    }
+                                });
                     }
                     graphPopupMenu.show(FunctionArea.this, e.getX(), e.getY());
                 }
@@ -370,7 +372,7 @@ public class FunctionArea extends DArea implements Serializable {
      * @return
      */
     private JMenuItem addMenuItem(JPopupMenu menu, String title,
-            ActionListener aListener) {
+                                  ActionListener aListener) {
         return addMenuItem(menu, title, aListener, true);
     }
 
@@ -385,7 +387,7 @@ public class FunctionArea extends DArea implements Serializable {
      * @return
      */
     private JMenuItem addMenuItem(JPopupMenu menu, String title,
-            ActionListener aListener, boolean enabled) {
+                                  ActionListener aListener, boolean enabled) {
         JMenuItem item = new JMenuItem(title);
         // if (bgColor!=null) item.setForeground(bgColor);
         item.addActionListener(aListener);
@@ -431,7 +433,6 @@ public class FunctionArea extends DArea implements Serializable {
 
     /**
      * Re-color all graphs which are nonempty by their index.
-     *
      */
     public void recolorAllGraphsByIndex() {
         int index = 0;
@@ -446,7 +447,6 @@ public class FunctionArea extends DArea implements Serializable {
     }
 
     /**
-     *
      * @return
      */
     public boolean checkLoggable() {
@@ -602,7 +602,7 @@ public class FunctionArea extends DArea implements Serializable {
      * @param graphID
      */
     public void drawIcon(DPointIcon theIcon, String label, double[] position,
-            int graphID) {
+                         int graphID) {
         DPointSet popRep;
         popRep = new DPointSet();
         popRep.addDPoint(new DPoint(position[0], position[1]));
@@ -623,7 +623,7 @@ public class FunctionArea extends DArea implements Serializable {
      * @param graphID
      */
     public void drawIcon(int iconType, String label, double[] position,
-            int graphID) {
+                         int graphID) {
         DPointIcon theIcon;
         switch (iconType) {
             case 0:
@@ -656,7 +656,6 @@ public class FunctionArea extends DArea implements Serializable {
 
     /**
      * Export contained data to standard output.
-     *
      */
     public void exportToAscii() {
         exportToAscii((File) null);
@@ -758,7 +757,6 @@ public class FunctionArea extends DArea implements Serializable {
     }
 
     /**
-     *
      * @param x
      * @param y
      * @return
@@ -798,7 +796,6 @@ public class FunctionArea extends DArea implements Serializable {
     }
 
     /**
-     *
      * @param GraphLabel
      * @return
      */
@@ -857,7 +854,6 @@ public class FunctionArea extends DArea implements Serializable {
     }
 
     /**
-     *
      * @param x
      * @param y
      * @return
@@ -941,7 +937,6 @@ public class FunctionArea extends DArea implements Serializable {
     }
 
     /**
-     *
      * @return
      */
     public DPointSet[] printPoints() {
@@ -957,7 +952,6 @@ public class FunctionArea extends DArea implements Serializable {
     }
 
     /**
-     *
      * @param i
      * @return
      */
@@ -971,7 +965,6 @@ public class FunctionArea extends DArea implements Serializable {
     }
 
     /**
-     *
      * @param x
      * @param y
      */
@@ -1004,7 +997,6 @@ public class FunctionArea extends DArea implements Serializable {
     }
 
     /**
-     *
      * @param p
      * @param graphLabel
      */
@@ -1013,7 +1005,6 @@ public class FunctionArea extends DArea implements Serializable {
     }
 
     /**
-     *
      * @param GraphLabel
      * @param color
      */
@@ -1022,7 +1013,6 @@ public class FunctionArea extends DArea implements Serializable {
     }
 
     /**
-     *
      * @param GraphLabel
      * @param colorindex
      */
@@ -1031,7 +1021,6 @@ public class FunctionArea extends DArea implements Serializable {
     }
 
     /**
-     *
      * @param GraphLabel
      * @param Info
      * @param stroke
@@ -1054,7 +1043,6 @@ public class FunctionArea extends DArea implements Serializable {
     }
 
     /**
-     *
      * @param x
      * @param y
      * @param GraphLabel
@@ -1073,7 +1061,6 @@ public class FunctionArea extends DArea implements Serializable {
     }
 
     /**
-     *
      * @param p
      * @param GraphLabel
      */
@@ -1191,7 +1178,7 @@ public class FunctionArea extends DArea implements Serializable {
      * Allows setting whether or not to paint the y-axis in logarithmic scale.
      *
      * @param log if true logarithmic scale is used, linear scale in case of
-     * false.
+     *            false.
      */
     public void toggleLog(boolean log) {
         if (log != log) {
@@ -1201,7 +1188,6 @@ public class FunctionArea extends DArea implements Serializable {
 
     /**
      * Recreate the legend object with the current point sets.
-     *
      */
     public void updateLegend() {
         GraphPointSetLegend lb = new GraphPointSetLegend(pointSetContainer,

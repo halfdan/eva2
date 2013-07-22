@@ -4,10 +4,12 @@ import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
 import eva2.tools.chart2d.Chart2DDPointIconCross;
 import eva2.tools.chart2d.DPointIcon;
+
 import java.util.ArrayList;
 
 
-/** The secon verison of the non dominace sorting GA.
+/**
+ * The secon verison of the non dominace sorting GA.
  * Created by IntelliJ IDEA.
  * User: streiche
  * Date: 04.08.2003
@@ -27,10 +29,12 @@ public class ArchivingNSGAII extends ArchivingNSGA implements java.io.Serializab
         return (Object) new ArchivingNSGAII(this);
     }
 
-    /** This method allows you to merge to populations into an archive.
-     *  This method will add elements from pop to the archive but will also
-     *  remove elements from the archive if the archive target size is exceeded.
-     * @param pop       The population that may add Individuals to the archive.
+    /**
+     * This method allows you to merge to populations into an archive.
+     * This method will add elements from pop to the archive but will also
+     * remove elements from the archive if the archive target size is exceeded.
+     *
+     * @param pop The population that may add Individuals to the archive.
      */
     @Override
     public void addElementsToArchive(Population pop) {
@@ -41,8 +45,8 @@ public class ArchivingNSGAII extends ArchivingNSGA implements java.io.Serializab
 
         // First merge the current population and the archive
         Population tmpPop = new Population();
-        tmpPop.addPopulation((Population)pop.getClone());
-        tmpPop.addPopulation((Population)pop.getArchive().getClone());
+        tmpPop.addPopulation((Population) pop.getClone());
+        tmpPop.addPopulation((Population) pop.getArchive().getClone());
         tmpPop.removeRedundantIndiesUsingFitness();
 
         // Now fetch the n pareto-fronts
@@ -78,49 +82,52 @@ public class ArchivingNSGAII extends ArchivingNSGA implements java.io.Serializab
         fronts = null;
         pop.SetArchive(archive);
     }
-    
+
     /**
      * Return the pareto front from a given population.
+     *
      * @param pop
      * @return
      */
     public static Population getNonDominatedSortedFront(Population pop) {
-    	ArchivingNSGAII arch = new ArchivingNSGAII();
-    	Population[] fronts = arch.getNonDominatedSortedFronts(pop);
-    	return fronts[0];
+        ArchivingNSGAII arch = new ArchivingNSGAII();
+        Population[] fronts = arch.getNonDominatedSortedFronts(pop);
+        return fronts[0];
     }
 
-    /** This method will dissect a given population into n pareto-fronts
-     * @param pop   The population to analyse
+    /**
+     * This method will dissect a given population into n pareto-fronts
+     *
+     * @param pop The population to analyse
      * @return Population[] the n pareto-fronts
      */
     public Population[] getNonDominatedSortedFronts(Population pop) {
-        Population      tmpPop, tmpDom, tmpNonDom;
-        Population[]    result  = null;
-        ArrayList       tmpResult = new ArrayList();
-        int             level   = 1;
+        Population tmpPop, tmpDom, tmpNonDom;
+        Population[] result = null;
+        ArrayList tmpResult = new ArrayList();
+        int level = 1;
 
         tmpPop = new Population();
         tmpPop.addPopulation(pop);
 
         while (tmpPop.size() > 0) {
-            tmpDom      = new Population();
-            tmpNonDom   = new Population();
+            tmpDom = new Population();
+            tmpNonDom = new Population();
             for (int i = 0; i < tmpPop.size(); i++) {
                 if (this.isDominant((AbstractEAIndividual) tmpPop.get(i), tmpPop)) {
-                    ((AbstractEAIndividual)tmpPop.get(i)).putData("ParetoLevel", new Integer(level));
+                    ((AbstractEAIndividual) tmpPop.get(i)).putData("ParetoLevel", new Integer(level));
                     tmpDom.add(tmpPop.get(i));
 
                 } else {
                     tmpNonDom.add(tmpPop.get(i));
                 }
             }
-            tmpPop      = tmpNonDom;
+            tmpPop = tmpNonDom;
             if (tmpDom.size() < 1) {
                 System.out.println("Problem NSGA II at level " + level + ".");
                 tmpDom.addPopulation(tmpNonDom);
                 for (int i = 0; i < tmpDom.size(); i++) {
-                    ((AbstractEAIndividual)tmpDom.get(i)).putData("ParetoLevel", new Integer(level));
+                    ((AbstractEAIndividual) tmpDom.get(i)).putData("ParetoLevel", new Integer(level));
                 }
                 tmpPop.clear();
 //                System.out.println(""+tmpPop.getStringRepresentation());
@@ -135,28 +142,33 @@ public class ArchivingNSGAII extends ArchivingNSGA implements java.io.Serializab
         }
         return result;
     }
-    /** This method will cacluated the NSGAII crowding distance
+
+    /**
+     * This method will cacluated the NSGAII crowding distance
      * for all individuals
-     * @param fronts    The pareto fronts
+     *
+     * @param fronts The pareto fronts
      */
     public void calculateCrowdingDistance(Population[] fronts) {
         RemoveSurplusIndividualsDynamicHyperCube heidi = new RemoveSurplusIndividualsDynamicHyperCube();
-        double[][]  fitness;
-        double[]    hyperCube;
+        double[][] fitness;
+        double[] hyperCube;
         for (int i = 0; i < fronts.length; i++) {
-            fitness     = new double[fronts[i].size()][];
-            hyperCube   = new double[fronts[i].size()];
+            fitness = new double[fronts[i].size()][];
+            hyperCube = new double[fronts[i].size()];
             for (int j = 0; j < fronts[i].size(); j++) {
-                fitness[j] = ((AbstractEAIndividual)fronts[i].get(j)).getFitness();
+                fitness[j] = ((AbstractEAIndividual) fronts[i].get(j)).getFitness();
             }
             hyperCube = heidi.calculateHyperCubeVolumes(fitness);
             for (int j = 0; j < fronts[i].size(); j++) {
-                ((AbstractEAIndividual)fronts[i].get(j)).putData("HyperCube", new Double(hyperCube[j]));
+                ((AbstractEAIndividual) fronts[i].get(j)).putData("HyperCube", new Double(hyperCube[j]));
             }
         }
     }
 
-    /** This method allows you to determine an icon for a given individual
+    /**
+     * This method allows you to determine an icon for a given individual
+     *
      * @param pop   The population
      * @param index The identifier for the individual
      */
@@ -167,13 +179,18 @@ public class ArchivingNSGAII extends ArchivingNSGA implements java.io.Serializab
 /**********************************************************************************************************************
  * These are for GUI
  */
-    /** This method returns a global info string
+    /**
+     * This method returns a global info string
+     *
      * @return description
      */
     public static String globalInfo() {
         return "Non-dominating sorting GA revision 2.0.";
     }
-    /** This method will return a naming String
+
+    /**
+     * This method will return a naming String
+     *
      * @return The name of the algorithm
      */
     @Override

@@ -6,12 +6,14 @@ package eva2.gui.plot;
  * Hannes Planatscher @version: $Revision: 322 $ $Date: 2007-12-11 17:24:07
  * +0100 (Tue, 11 Dec 2007) $ $Author: mkron $
  */
+
 import eva2.EvAInfo;
 import eva2.gui.JEFrame;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
 import eva2.tools.BasicResourceLoader;
 import eva2.tools.chart2d.DPointSet;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -260,7 +262,7 @@ public class Plot implements PlotInterface, Serializable {
      * Toggle whether the graphs should be annotated by tool tip info strings.
      *
      * @param doShowGraphToolTips true if the graphs should be annotated by tool
-     * tip info strings
+     *                            tip info strings
      */
     public void setShowGraphToolTips(boolean doShowGraphToolTips) {
         m_PlotArea.setShowGraphToolTips(doShowGraphToolTips);
@@ -455,7 +457,7 @@ public class Plot implements PlotInterface, Serializable {
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(m_Frame,
                         "Couldn't write to file: " + sFile.getName() + "\n"
-                        + ex.getMessage(), "Save object",
+                                + ex.getMessage(), "Save object",
                         JOptionPane.ERROR_MESSAGE);
             }
         }

@@ -9,17 +9,17 @@ package eva2.optimization.modules;
  *            $Date: 2007-12-04 14:22:52 +0100 (Tue, 04 Dec 2007) $
  *            $Author: mkron $
  */
+
 import eva2.optimization.go.InterfaceOptimizationParameters;
 import eva2.optimization.go.InterfaceProcessor;
 import eva2.optimization.OptimizationStateListener;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * The module server expects a constructor with two arguments: String adapterName and MainAdapterClient client.
- * 
- * 
  */
 abstract public class AbstractModuleAdapter implements ModuleAdapter, Serializable {
 
@@ -50,7 +50,7 @@ abstract public class AbstractModuleAdapter implements ModuleAdapter, Serializab
 
     /**
      * Get the name of the current adapter.
-     * 
+     *
      * @return The adapter name
      */
     @Override
@@ -85,7 +85,7 @@ abstract public class AbstractModuleAdapter implements ModuleAdapter, Serializab
 
     /**
      * Returns whether the current optimization provides post processing.
-     * 
+     *
      * @return true if post processing is available
      */
     @Override
@@ -95,7 +95,7 @@ abstract public class AbstractModuleAdapter implements ModuleAdapter, Serializab
 
     /**
      * Starts post processing if available.
-     * 
+     *
      * @return true if post processing was performed, false otherwise.
      */
     @Override
@@ -148,7 +148,7 @@ abstract public class AbstractModuleAdapter implements ModuleAdapter, Serializab
 
     /**
      * Returns whether the module has a connection.
-     * 
+     *
      * @return true if the adapter has a connection.
      */
     @Override
@@ -166,7 +166,7 @@ abstract public class AbstractModuleAdapter implements ModuleAdapter, Serializab
 
     /**
      * Returns the host name.
-     * 
+     *
      * @return The host name
      */
     @Override

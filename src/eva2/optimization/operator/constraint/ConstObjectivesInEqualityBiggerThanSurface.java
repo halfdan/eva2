@@ -2,7 +2,8 @@ package eva2.optimization.operator.constraint;
 
 import eva2.optimization.individuals.AbstractEAIndividual;
 
-/** This area constraint for parallelization is based on
+/**
+ * This area constraint for parallelization is based on
  * a surface constraint
  * Created by IntelliJ IDEA.
  * User: streiche
@@ -12,18 +13,19 @@ import eva2.optimization.individuals.AbstractEAIndividual;
  */
 public class ConstObjectivesInEqualityBiggerThanSurface implements InterfaceConstraint, java.io.Serializable {
 
-    private double[]      base, norm;
+    private double[] base, norm;
 
     public ConstObjectivesInEqualityBiggerThanSurface() {
     }
+
     public ConstObjectivesInEqualityBiggerThanSurface(double[] base, double[] norm) {
-        this.base  = base;
-        this.norm  = norm;
+        this.base = base;
+        this.norm = norm;
     }
 
     public ConstObjectivesInEqualityBiggerThanSurface(ConstObjectivesInEqualityBiggerThanSurface a) {
-        this.base      = a.base;
-        this.norm      = a.norm;
+        this.base = a.base;
+        this.norm = a.norm;
     }
 
     @Override
@@ -31,9 +33,11 @@ public class ConstObjectivesInEqualityBiggerThanSurface implements InterfaceCons
         return (Object) new ConstObjectivesInEqualityBiggerThanSurface(this);
     }
 
-    /** This method allows you wether or not a given individual
+    /**
+     * This method allows you wether or not a given individual
      * violates the constraints.
-     * @param indy  The individual to check.
+     *
+     * @param indy The individual to check.
      * @return true if valid false else.
      */
     @Override
@@ -41,8 +45,7 @@ public class ConstObjectivesInEqualityBiggerThanSurface implements InterfaceCons
         double[] d = indy.getFitness();
         if (this.getScalarProduct(norm, this.getSubstraction(d, base)) >= 0) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -55,17 +58,21 @@ public class ConstObjectivesInEqualityBiggerThanSurface implements InterfaceCons
         return result;
     }
 
-    /** This method returns the scalar product of two vectors
+    /**
+     * This method returns the scalar product of two vectors
+     *
      * @param a The first vector
      * @param b The second vector
      * @return The scalar product of a and b
      */
     private double getScalarProduct(double[] a, double[] b) {
-        return (a[0]*b[0] + a[1]*b[1] + a[2]*b[2]);
+        return (a[0] * b[0] + a[1] * b[1] + a[2] * b[2]);
     }
 
-    /** This method will return a normalized vector
-     * @param a     The vector to normalize
+    /**
+     * This method will return a normalized vector
+     *
+     * @param a The vector to normalize
      * @return A normalized version of the input vector
      */
     private double[] getNormalized(double[] a) {
@@ -76,7 +83,7 @@ public class ConstObjectivesInEqualityBiggerThanSurface implements InterfaceCons
         }
         sum = Math.sqrt(sum);
         for (int i = 0; i < a.length; i++) {
-            result[i] = a[i]/sum;
+            result[i] = a[i] / sum;
         }
         return result;
     }

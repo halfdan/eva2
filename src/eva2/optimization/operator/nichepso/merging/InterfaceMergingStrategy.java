@@ -1,6 +1,7 @@
 package eva2.optimization.operator.nichepso.merging;
 
 import eva2.optimization.strategies.ParticleSubSwarmOptimization;
+
 import java.util.Vector;
 
 
@@ -9,31 +10,33 @@ import java.util.Vector;
  */
 public interface InterfaceMergingStrategy {
 
-	/**
-	 * decides whether the two subswarms should be merged according to the merging strategie
-	 * @param subswarm1
-	 * @param subswarm2
-	 * @return
-	 */
-	public abstract boolean shouldMergeSubswarms(
-			ParticleSubSwarmOptimization subswarm1, 
-			ParticleSubSwarmOptimization subswarm2);
-	
-	/**
-	 * Merges the i. and j. subswarm from subSwarms.
-	 * The meaning of this depends on the concrete strategy but two aspects schould be taken care of:
-	 * 1. the overall population size (in all subSwarms and the mainSwarm) should remain constant
-	 * 2. call populationSizeHasChanged() for changed swarms
-	 * @param i
-	 * @param j
-	 * @param subSwarms
-	 * @param mainSwarm
-	 */
-	public abstract void mergeSubswarms(
-			int i, 
-			int j, 
-			Vector<ParticleSubSwarmOptimization> subSwarms, 
-			ParticleSubSwarmOptimization mainSwarm);
+    /**
+     * decides whether the two subswarms should be merged according to the merging strategie
+     *
+     * @param subswarm1
+     * @param subswarm2
+     * @return
+     */
+    public abstract boolean shouldMergeSubswarms(
+            ParticleSubSwarmOptimization subswarm1,
+            ParticleSubSwarmOptimization subswarm2);
 
-	public abstract Object clone();
+    /**
+     * Merges the i. and j. subswarm from subSwarms.
+     * The meaning of this depends on the concrete strategy but two aspects schould be taken care of:
+     * 1. the overall population size (in all subSwarms and the mainSwarm) should remain constant
+     * 2. call populationSizeHasChanged() for changed swarms
+     *
+     * @param i
+     * @param j
+     * @param subSwarms
+     * @param mainSwarm
+     */
+    public abstract void mergeSubswarms(
+            int i,
+            int j,
+            Vector<ParticleSubSwarmOptimization> subSwarms,
+            ParticleSubSwarmOptimization mainSwarm);
+
+    public abstract Object clone();
 }

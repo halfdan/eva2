@@ -3,7 +3,8 @@ package eva2.optimization.operator.archiving;
 import eva2.optimization.population.Population;
 import eva2.tools.math.RNG;
 
-/** This information retrieval method simply add the retrieved solutions
+/**
+ * This information retrieval method simply add the retrieved solutions
  * to the current population.
  * Created by IntelliJ IDEA.
  * User: streiche
@@ -24,9 +25,11 @@ public class InformationRetrievalReplacing implements InterfaceInformationRetrie
         return (Object) new InformationRetrievalReplacing(this);
     }
 
-    /** This method will allow Information Retrieval from a archive onto
+    /**
+     * This method will allow Information Retrieval from a archive onto
      * an already existing population.
-     * @param pop           The population.
+     *
+     * @param pop The population.
      */
     @Override
     public void retrieveInformationFrom(Population pop) {
@@ -38,7 +41,7 @@ public class InformationRetrievalReplacing implements InterfaceInformationRetrie
 
         tmp.addPopulation(archive);
         while (tmp.size() < archive.getTargetSize()) {
-            tmp.add(pop.get(RNG.randomInt(0,pop.size()-1)));
+            tmp.add(pop.get(RNG.randomInt(0, pop.size() - 1)));
         }
 
         pop.clear();
@@ -48,13 +51,18 @@ public class InformationRetrievalReplacing implements InterfaceInformationRetrie
 /**********************************************************************************************************************
  * These are for GUI
  */
-    /** This method returns a global info string
+    /**
+     * This method returns a global info string
+     *
      * @return description
      */
     public static String globalInfo() {
         return "This Information Retrieval will replace the current population by the archive.";
     }
-    /** This method will return a naming String
+
+    /**
+     * This method will return a naming String
+     *
      * @return The name of the algorithm
      */
     public String getName() {

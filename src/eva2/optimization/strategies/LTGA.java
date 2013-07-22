@@ -13,6 +13,7 @@ import eva2.optimization.problems.BKnapsackProblem;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.tools.Pair;
 import eva2.tools.math.SpecialFunction;
+
 import java.util.BitSet;
 import java.util.HashSet;
 import java.util.Set;
@@ -109,7 +110,7 @@ public class LTGA implements InterfaceOptimizer, java.io.Serializable, Interface
         } else {
             throw new RuntimeException(
                     "Unable to get binary representation for "
-                    + indy.getClass());
+                            + indy.getClass());
         }
     }
 
@@ -246,13 +247,13 @@ public class LTGA implements InterfaceOptimizer, java.io.Serializable, Interface
         this.problem.evaluatePopulationStart(this.population);
         Stack<Set<Integer>> linkageTree = this.buildLinkageTree();
         Population newPop = new Population(this.popSize);
-        if(elitism){
+        if (elitism) {
             Population firstIndies = this.population.getBestNIndividuals(2, fitCrit);
             Population firstNewIndies = buildNewIndies(firstIndies, linkageTree);
             newPop.addAll(firstNewIndies);
         }
         for (int i = 0; i < (this.popSize / 2); i++) {
-            if(this.elitism && i==0){
+            if (this.elitism && i == 0) {
                 continue;
             }
             Population indies = this.population.getRandNIndividuals(2);
@@ -265,15 +266,15 @@ public class LTGA implements InterfaceOptimizer, java.io.Serializable, Interface
     }
 
     private Population buildNewIndies(Population indies,
-            Stack<Set<Integer>> linkageTree) {
+                                      Stack<Set<Integer>> linkageTree) {
         if (indies.size() != 2) {
             return indies;
         }
         AbstractEAIndividual indy1 = indies.getEAIndividual(0);
         AbstractEAIndividual indy2 = indies.getEAIndividual(1);
         for (Set<Integer> mask : linkageTree) {
-        	BitSet gen1 = getBinaryData(indy1);
-        	BitSet gen2 = getBinaryData(indy2);
+            BitSet gen1 = getBinaryData(indy1);
+            BitSet gen2 = getBinaryData(indy2);
             BitSet newGene1 = (BitSet) gen1.clone();
             BitSet newGene2 = (BitSet) gen2.clone();
             boolean same = true;
@@ -341,16 +342,16 @@ public class LTGA implements InterfaceOptimizer, java.io.Serializable, Interface
     public void setProblem(InterfaceOptimizationProblem problem) {
         this.problem = (AbstractOptimizationProblem) problem;
     }
-    
-    public boolean getElitism(){
+
+    public boolean getElitism() {
         return this.elitism;
     }
-    
-    public void setElitism(boolean b){
+
+    public void setElitism(boolean b) {
         this.elitism = b;
     }
-    
-    public String elitismTipText(){
+
+    public String elitismTipText() {
         return "use elitism?";
     }
 

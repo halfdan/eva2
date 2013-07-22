@@ -12,15 +12,20 @@ import eva2.optimization.problems.InterfaceOptimizationProblem;
  */
 public interface InterfaceDPointWithContent {
     public void setEAIndividual(AbstractEAIndividual indy);
+
     public AbstractEAIndividual getEAIndividual();
 
-    /** This method allows you to set the according optimization problem
-     * @param problem  InterfaceOptimizationProblem
+    /**
+     * This method allows you to set the according optimization problem
+     *
+     * @param problem InterfaceOptimizationProblem
      */
     public void setProblem(InterfaceOptimizationProblem problem);
+
     public InterfaceOptimizationProblem getProblem();
 
-    /** This method allows you to draw additional data of the individual
+    /**
+     * This method allows you to draw additional data of the individual
      */
     public void showIndividual();
 }

@@ -16,19 +16,19 @@ import javax.swing.*;
  */
 public class GeneralGEOFaker extends JPanel {
 
-    private JButton                 open, save, ok, edit;
+    private JButton open, save, ok, edit;
     private JFileChooser m_FileChooser;
-//    private Vector                  m_ClassesLongName;
+    //    private Vector                  m_ClassesLongName;
 //    private SourceCodeEditor        m_SourceCodeEditor;
 //    private PropertyDialog          m_SourceCodeEditorFrame;
-    private PropertyEditor          m_Editor;
-    private JPanel                  m_Interior;
-    private Class                   m_ClassType;
+    private PropertyEditor m_Editor;
+    private JPanel m_Interior;
+    private Class m_ClassType;
 
     public GeneralGEOFaker(PropertyEditor e, JPanel i) {
-        this.m_Interior     = i;
-        this.m_Editor       = e;
-        this.m_ClassType    = this.m_Editor.getValue().getClass();
+        this.m_Interior = i;
+        this.m_Editor = e;
+        this.m_ClassType = this.m_Editor.getValue().getClass();
         init();
     }
 
@@ -92,12 +92,13 @@ public class GeneralGEOFaker extends JPanel {
         ok.setEnabled(true);
         ok.addActionListener(new ActionListener() {
             @Override
-	    public void actionPerformed(ActionEvent e) {
-	        if ((getTopLevelAncestor() != null) && (getTopLevelAncestor() instanceof Window)) {
-	            Window w = (Window) getTopLevelAncestor();
-	            w.dispose();
-	        }
-	    }});
+            public void actionPerformed(ActionEvent e) {
+                if ((getTopLevelAncestor() != null) && (getTopLevelAncestor() instanceof Window)) {
+                    Window w = (Window) getTopLevelAncestor();
+                    w.dispose();
+                }
+            }
+        });
         setLayout(new BorderLayout());
         add(this.m_Interior, BorderLayout.CENTER);
         JPanel okcButs = new JPanel();
@@ -110,7 +111,9 @@ public class GeneralGEOFaker extends JPanel {
         add(okcButs, BorderLayout.SOUTH);
     }
 
-    /** Opens an object from a file selected by the user.
+    /**
+     * Opens an object from a file selected by the user.
+     *
      * @return the loaded object, or null if the operation was cancelled
      */
     protected Object openObject() {
@@ -119,24 +122,26 @@ public class GeneralGEOFaker extends JPanel {
         }
         int returnVal = m_FileChooser.showOpenDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-	        File selected = m_FileChooser.getSelectedFile();
-	        try {
-	            ObjectInputStream   oi  = new ObjectInputStream(new BufferedInputStream(new FileInputStream(selected)));
-                Object              obj = oi.readObject();
+            File selected = m_FileChooser.getSelectedFile();
+            try {
+                ObjectInputStream oi = new ObjectInputStream(new BufferedInputStream(new FileInputStream(selected)));
+                Object obj = oi.readObject();
                 oi.close();
                 if (!m_ClassType.isAssignableFrom(obj.getClass())) {
                     throw new Exception("Object not of type: " + m_ClassType.getName());
                 }
                 return obj;
-	        } catch (Exception ex) {
-	            JOptionPane.showMessageDialog(this, "Couldn't read object: " + selected.getName() + "\n" + ex.getMessage(), "Open object file", JOptionPane.ERROR_MESSAGE);
-	        }
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Couldn't read object: " + selected.getName() + "\n" + ex.getMessage(), "Open object file", JOptionPane.ERROR_MESSAGE);
+            }
         }
         return null;
     }
 
-    /** Saves the current object to a file selected by the user.
-     * @param object    The object to save.
+    /**
+     * Saves the current object to a file selected by the user.
+     *
+     * @param object The object to save.
      */
     protected void saveObject(Object object) {
         if (m_FileChooser == null) {
@@ -144,16 +149,17 @@ public class GeneralGEOFaker extends JPanel {
         }
         int returnVal = m_FileChooser.showSaveDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-	        File sFile = m_FileChooser.getSelectedFile();
-	        try {
-	            ObjectOutputStream oo = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(sFile)));
+            File sFile = m_FileChooser.getSelectedFile();
+            try {
+                ObjectOutputStream oo = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(sFile)));
                 oo.writeObject(object);
                 oo.close();
-	        } catch (Exception ex) {
-	            JOptionPane.showMessageDialog(this, "Couldn't write to file: " + sFile.getName() + "\n" + ex.getMessage(), "Save object", JOptionPane.ERROR_MESSAGE);
-	        }
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Couldn't write to file: " + sFile.getName() + "\n" + ex.getMessage(), "Save object", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
+
     protected void createFileChooser() {
         m_FileChooser = new JFileChooser(new File("/resources"));
         m_FileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);

@@ -23,7 +23,7 @@ public class JParaPanel implements Serializable, PanelMaker {
     protected Object localParameter;
     protected Object proxyParameter;
     protected PropertyEditor propertyEditor;
-    
+
     /**
      * ToDo: Should be removed in future.
      */
@@ -49,12 +49,12 @@ public class JParaPanel implements Serializable, PanelMaker {
             /* ToDo: First parameter is useless and should be removed */
             propertyEditor = OptimizationJobList.makeEditor(tempPanel, (OptimizationJobList) localParameter);
         } else {
-        	propertyEditor = new GenericObjectEditor();
-	        ((GenericObjectEditor) (propertyEditor)).setClassType(localParameter.getClass());
-	        ((GenericObjectEditor) (propertyEditor)).setValue(localParameter);
-	        ((GenericObjectEditor) (propertyEditor)).disableOKCancel();
+            propertyEditor = new GenericObjectEditor();
+            ((GenericObjectEditor) (propertyEditor)).setClassType(localParameter.getClass());
+            ((GenericObjectEditor) (propertyEditor)).setValue(localParameter);
+            ((GenericObjectEditor) (propertyEditor)).disableOKCancel();
         }
-        
+
         return (JComponent) propertyEditor.getCustomEditor();
     }
 
@@ -65,10 +65,12 @@ public class JParaPanel implements Serializable, PanelMaker {
     }
 
     public PropertyEditor getEditor() {
-    	return propertyEditor;
+        return propertyEditor;
     }
-    
-    /** This method will allow you to add a new Editor to a given class
+
+    /**
+     * This method will allow you to add a new Editor to a given class
+     *
      * @param object
      * @param editor
      * @return False if failed true else.

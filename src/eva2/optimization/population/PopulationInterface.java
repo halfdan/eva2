@@ -19,14 +19,14 @@ public interface PopulationInterface {
 
     /**
      * Returns the best individual of the population.
-     * 
+     *
      * @return The best individual
      */
     IndividualInterface getBestIndividual();
 
     /**
      * Returns the worst individual of the population.
-     * 
+     *
      * @return The worst individual
      */
     IndividualInterface getWorstIndividual();
@@ -41,12 +41,14 @@ public interface PopulationInterface {
 
     /**
      * Returns the number of function calls.
+     *
      * @return The number of function calls
      */
     int getFunctionCalls();
 
     /**
      * The current generation count.
+     *
      * @return int The current generation
      */
     int getGeneration();
@@ -67,11 +69,12 @@ public interface PopulationInterface {
      */
     String[] getSpecificDataNames();
 
-    
+
     Object get(int i);
 
     /**
      * Return the size of the population.
+     *
      * @return int size of the population
      */
     int size();

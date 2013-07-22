@@ -11,41 +11,46 @@ import eva2.optimization.individuals.ESIndividualDoubleData;
  */
 public class F10Problem extends AbstractProblemDoubleOffset implements InterfaceMultimodalProblem, java.io.Serializable {
 
-    private double m_D          = 1.5;
-    private double m_b          = 2.3;
-    private int     m_Iterations = 20;
+    private double m_D = 1.5;
+    private double m_b = 2.3;
+    private int m_Iterations = 20;
 
     public F10Problem() {
         this.template = new ESIndividualDoubleData();
     }
+
     public F10Problem(F10Problem b) {
-    	super(b);
-        this.m_D                = b.m_D;
-        this.m_b                = b.m_b;
-        this.m_Iterations       = b.m_Iterations;
+        super(b);
+        this.m_D = b.m_D;
+        this.m_b = b.m_b;
+        this.m_Iterations = b.m_Iterations;
     }
 
-    /** This method returns a deep clone of the problem.
-     * @return  the clone
+    /**
+     * This method returns a deep clone of the problem.
+     *
+     * @return the clone
      */
     @Override
     public Object clone() {
         return (Object) new F10Problem(this);
     }
 
-    /** Ths method allows you to evaluate a double[] to determine the fitness
-     * @param x     The n-dimensional input vector
-     * @return  The m-dimensional output vector.
+    /**
+     * Ths method allows you to evaluate a double[] to determine the fitness
+     *
+     * @param x The n-dimensional input vector
+     * @return The m-dimensional output vector.
      */
     @Override
     public double[] eval(double[] x) {
-    	x = rotateMaybe(x);
+        x = rotateMaybe(x);
         double[] result = new double[1];
         double c1 = this.calculateC(1);
-        result[0]     = yOffset;
-        for (int i = 0; i < x.length-1; i++) {
-        	double xi = x[i]- xOffset;
-            result[0]  += ((this.calculateC(xi))/(c1 * Math.pow(Math.abs(xi),2-this.m_D))) + Math.pow(xi, 2) -1;
+        result[0] = yOffset;
+        for (int i = 0; i < x.length - 1; i++) {
+            double xi = x[i] - xOffset;
+            result[0] += ((this.calculateC(xi)) / (c1 * Math.pow(Math.abs(xi), 2 - this.m_D))) + Math.pow(xi, 2) - 1;
         }
         return result;
     }
@@ -53,14 +58,16 @@ public class F10Problem extends AbstractProblemDoubleOffset implements Interface
     private double calculateC(double x) {
         double result = 0;
 
-        for (int i = -this.m_Iterations; i < this.m_Iterations+1; i++) {
-            result += (1-Math.cos(Math.pow(this.m_b, i)*x))/(Math.pow(this.m_b, (2-this.m_D)*i));
+        for (int i = -this.m_Iterations; i < this.m_Iterations + 1; i++) {
+            result += (1 - Math.cos(Math.pow(this.m_b, i) * x)) / (Math.pow(this.m_b, (2 - this.m_D) * i));
         }
 
         return result;
     }
 
-    /** This method returns a string describing the optimization problem.
+    /**
+     * This method returns a string describing the optimization problem.
+     *
      * @return The description.
      */
     public String getStringRepresentationForProblem() {
@@ -68,7 +75,7 @@ public class F10Problem extends AbstractProblemDoubleOffset implements Interface
 
         result += "F10 Weierstrass-Mandelbrot Fractal Function:\n";
         result += "Parameters:\n";
-        result += "Dimension   : " + this.problemDimension +"\n";
+        result += "Dimension   : " + this.problemDimension + "\n";
         result += "Noise level : " + this.getNoise() + "\n";
         result += "Solution representation:\n";
         //result += this.template.getSolutionRepresentationFor();
@@ -78,8 +85,10 @@ public class F10Problem extends AbstractProblemDoubleOffset implements Interface
 /**********************************************************************************************************************
  * These are for GUI
  */
-    /** This method allows the CommonJavaObjectEditorPanel to read the
+    /**
+     * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
+     *
      * @return The name.
      */
     @Override
@@ -87,15 +96,19 @@ public class F10Problem extends AbstractProblemDoubleOffset implements Interface
         return "F10 Problem";
     }
 
-    /** This method returns a global info string
+    /**
+     * This method returns a global info string
+     *
      * @return description
      */
     public static String globalInfo() {
         return "Weierstrass-Mandelbrot Fractal Function";
     }
 
-    /** This method allows you to set/get d.
-     * @param d     The d.
+    /**
+     * This method allows you to set/get d.
+     *
+     * @param d The d.
      */
     public void setD(double d) {
         if (d < 1) {
@@ -106,15 +119,19 @@ public class F10Problem extends AbstractProblemDoubleOffset implements Interface
         }
         this.m_D = d;
     }
+
     public double getD() {
         return this.m_D;
     }
+
     public String dTipText() {
         return "Set 1 < D < 2.";
     }
 
-    /** This method allows you to set/get b
-     * @param b     The b.
+    /**
+     * This method allows you to set/get b
+     *
+     * @param b The b.
      */
     public void setb(double b) {
         if (b < 1.000001) {
@@ -122,15 +139,19 @@ public class F10Problem extends AbstractProblemDoubleOffset implements Interface
         }
         this.m_b = b;
     }
+
     public double getb() {
         return this.m_b;
     }
+
     public String bTipText() {
         return "Choose b > 1.";
     }
 
-    /** This method allows you to set/get Iterations
-     * @param iters     The Iterations.
+    /**
+     * This method allows you to set/get Iterations
+     *
+     * @param iters The Iterations.
      */
     public void setIterations(int iters) {
         if (iters < 2) {
@@ -138,9 +159,11 @@ public class F10Problem extends AbstractProblemDoubleOffset implements Interface
         }
         this.m_Iterations = iters;
     }
+
     public int getIterations() {
         return this.m_Iterations;
     }
+
     public String iterationsTipText() {
         return "Choose the number of iterations per evaluation.";
     }

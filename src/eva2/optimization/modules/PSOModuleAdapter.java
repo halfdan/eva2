@@ -12,7 +12,7 @@ public class PSOModuleAdapter extends GenericModuleAdapter implements ModuleAdap
      * Constructor of the ModulAdapter.
      *
      * @param AdapterName The AdapterName
-     * @param Client The client to serve
+     * @param Client      The client to serve
      */
     public PSOModuleAdapter(String adapterName) {
         super(adapterName, "PSO.html", PSOParameters.getInstance(), true);

@@ -10,11 +10,13 @@ package eva2.optimization;
  *            $Date: 2007-12-06 16:05:11 +0100 (Thu, 06 Dec 2007) $
  *            $Author: mkron $
  */
+
 import eva2.optimization.go.InterfaceOptimizationParameters;
 import eva2.optimization.modules.GOModuleAdapter;
 import eva2.optimization.modules.ModuleAdapter;
 import eva2.tools.EVAERROR;
 import eva2.tools.ReflectPackage;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -92,7 +94,7 @@ public class ModuleServer {
             }
 
         }
-        
+
         String[] x = new String[moduleNameList.size()];
         moduleNameList.toArray(x);
         return x;
@@ -153,7 +155,7 @@ public class ModuleServer {
                             constrIndex++;
                         }
                         moduleAdapter = (ModuleAdapter) constructorArr[constrIndex].newInstance(param);
-                    }                    
+                    }
                     //  m_RunnungModules.add(m_ModuleAdapter);
                 } catch (Exception ex) {
                     LOGGER.log(Level.SEVERE, "Error in RMI-Moduladapter initialization", ex);

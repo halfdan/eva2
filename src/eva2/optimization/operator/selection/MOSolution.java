@@ -9,9 +9,9 @@ package eva2.optimization.operator.selection;
  */
 public class MOSolution {
 
-    public double[]     fitness;
-    public double[]     weights;
-    public boolean      isDominant = true;
+    public double[] fitness;
+    public double[] weights;
+    public boolean isDominant = true;
 
     public MOSolution(double[] fit, double[] w) {
         this.fitness = fit;

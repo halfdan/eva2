@@ -5,10 +5,11 @@ import eva2.optimization.individuals.InterfaceGAIndividual;
 import eva2.optimization.population.Population;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
+
 import java.util.BitSet;
 
 /**
- * 
+ *
  */
 public class MutateGAInvertBits implements InterfaceMutation, java.io.Serializable {
 
@@ -59,7 +60,7 @@ public class MutateGAInvertBits implements InterfaceMutation, java.io.Serializab
      * This method allows you to init the mutation operator
      *
      * @param individual The individual that will be mutated.
-     * @param opt The optimization problem.
+     * @param opt        The optimization problem.
      */
     @Override
     public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
@@ -77,8 +78,10 @@ public class MutateGAInvertBits implements InterfaceMutation, java.io.Serializab
             BitSet tmpBitSet = ((InterfaceGAIndividual) individual).getBGenotype();
             int[][] mutationIndices = new int[this.m_NumberOfMutations][2];
             for (int i = 0; i < mutationIndices.length; i++) {
-                mutationIndices[i][0] = RNG.randomInt(0, ((InterfaceGAIndividual) individual).getGenotypeLength());;
-                mutationIndices[i][1] = RNG.randomInt(0, this.m_MaxInveredBits);;
+                mutationIndices[i][0] = RNG.randomInt(0, ((InterfaceGAIndividual) individual).getGenotypeLength());
+                ;
+                mutationIndices[i][1] = RNG.randomInt(0, this.m_MaxInveredBits);
+                ;
             }
             // ToDo: double instances of mutationIndices could be checked here... *sigh*
             for (int i = 0; i < mutationIndices.length; i++) {
@@ -95,7 +98,7 @@ public class MutateGAInvertBits implements InterfaceMutation, java.io.Serializab
      * This method allows you to perform either crossover on the strategy
      * parameters or to deal in some other way with the crossover event.
      *
-     * @param indy1 The original mother
+     * @param indy1    The original mother
      * @param partners The original partners
      */
     @Override
@@ -117,7 +120,7 @@ public class MutateGAInvertBits implements InterfaceMutation, java.io.Serializab
     /**
      * These are for GUI
      */
-    
+
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the name to
      * the current object.

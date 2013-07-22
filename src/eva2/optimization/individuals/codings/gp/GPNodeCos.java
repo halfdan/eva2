@@ -2,7 +2,8 @@ package eva2.optimization.individuals.codings.gp;
 
 import eva2.optimization.problems.InterfaceProgramProblem;
 
-/** A cos node with on argument.
+/**
+ * A cos node with on argument.
  * Created by IntelliJ IDEA.
  * User: streiche
  * Date: 27.06.2003
@@ -13,11 +14,14 @@ public class GPNodeCos extends AbstractGPNode implements java.io.Serializable {
 
     public GPNodeCos() {
     }
+
     public GPNodeCos(GPNodeCos node) {
-    	this.cloneMembers(node);
+        this.cloneMembers(node);
     }
 
-    /** This method will be used to identify the node in the GPAreaEditor
+    /**
+     * This method will be used to identify the node in the GPAreaEditor
+     *
      * @return The name.
      */
     @Override
@@ -25,7 +29,9 @@ public class GPNodeCos extends AbstractGPNode implements java.io.Serializable {
         return "Cos";
     }
 
-    /** This method allows you to clone the Nodes
+    /**
+     * This method allows you to clone the Nodes
+     *
      * @return the clone
      */
     @Override
@@ -33,7 +39,9 @@ public class GPNodeCos extends AbstractGPNode implements java.io.Serializable {
         return (Object) new GPNodeCos(this);
     }
 
-    /** This method will return the current arity
+    /**
+     * This method will return the current arity
+     *
      * @return Arity.
      */
     @Override
@@ -41,7 +49,9 @@ public class GPNodeCos extends AbstractGPNode implements java.io.Serializable {
         return 1;
     }
 
-    /** This method will evaluate a given node
+    /**
+     * This method will evaluate a given node
+     *
      * @param environment
      */
     @Override
@@ -51,13 +61,13 @@ public class GPNodeCos extends AbstractGPNode implements java.io.Serializable {
 
         tmpObj = this.m_Nodes[0].evaluate(environment);
         if (tmpObj instanceof Double) {
-            result = Math.sin(((Double)tmpObj).doubleValue());
+            result = Math.sin(((Double) tmpObj).doubleValue());
         }
         return new Double(result);
     }
-    
+
     @Override
     public String getOpIdentifier() {
-    	return "cos";
+        return "cos";
     }
 }
