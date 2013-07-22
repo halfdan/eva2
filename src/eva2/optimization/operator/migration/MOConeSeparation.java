@@ -1,7 +1,7 @@
 package eva2.optimization.operator.migration;
 
-import eva2.gui.GraphPointSet;
-import eva2.gui.Plot;
+import eva2.gui.plot.GraphPointSet;
+import eva2.gui.plot.Plot;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.operator.archiving.ArchivingAllDominating;
 import eva2.optimization.operator.archiving.InterfaceArchiving;
@@ -138,7 +138,7 @@ public class MOConeSeparation implements InterfaceMigration, java.io.Serializabl
 //            double[]    tmpD = new double[2];
 //            tmpD[0] = 0;
 //            tmpD[1] = 0;
-//            plot = new eva2.gui.Plot("Debugging Cone Separation", "Y1", "Y2", tmpD, tmpD);
+//            plot = new eva2.gui.plot.Plot("Debugging Cone Separation", "Y1", "Y2", tmpD, tmpD);
 //            GraphPointSet           mySet;
 //            DPoint                  myPoint;
 //            Chart2DDPointIconText   tmp;
@@ -211,7 +211,7 @@ public class MOConeSeparation implements InterfaceMigration, java.io.Serializabl
             double[]    tmpD = new double[2];
             tmpD[0] = 0;
             tmpD[1] = 0;
-            plot = new eva2.gui.Plot("Debugging Cone Separation", "Y1", "Y2", tmpD, tmpD);
+            plot = new Plot("Debugging Cone Separation", "Y1", "Y2", tmpD, tmpD);
             GraphPointSet           mySet;
             DPoint                  myPoint;
             Chart2DDPointIconText   tmp;

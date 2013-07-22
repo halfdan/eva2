@@ -1,8 +1,8 @@
 package eva2.optimization.strategies;
 
 import eva2.gui.BeanInspector;
-import eva2.gui.GenericObjectEditor;
-import eva2.gui.Plot;
+import eva2.gui.editor.GenericObjectEditor;
+import eva2.gui.plot.Plot;
 import eva2.optimization.go.InterfacePopulationChangedEventListener;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.InterfaceDataTypeDouble;
@@ -453,7 +453,7 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
                 range[0][1] = 0;
                 range[1] = range[0]; // this is evil
             }
-            myPlot = new eva2.gui.Plot("PF", "x1", "x2", range[0], range[1]);
+            myPlot = new Plot("PF", "x1", "x2", range[0], range[1]);
         }
     }
 

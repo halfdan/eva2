@@ -9,9 +9,9 @@ package eva2.optimization.stat;
  *            $Date: 2007-12-06 16:05:11 +0100 (Thu, 06 Dec 2007) $
  *            $Author: mkron $
  */
-import eva2.gui.DataViewer;
-import eva2.gui.DataViewerInterface;
-import eva2.gui.Graph;
+import eva2.gui.plot.DataViewer;
+import eva2.gui.plot.DataViewerInterface;
+import eva2.gui.plot.Graph;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.logging.Logger;

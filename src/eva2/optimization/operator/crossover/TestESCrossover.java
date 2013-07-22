@@ -2,7 +2,7 @@ package eva2.optimization.operator.crossover;
 
 
 import eva2.gui.JParaPanel;
-import eva2.gui.Plot;
+import eva2.gui.plot.Plot;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.ESIndividualDoubleData;
 import eva2.optimization.individuals.InterfaceDataTypeDouble;
@@ -85,7 +85,7 @@ public class TestESCrossover implements java.io.Serializable {
         double[] tmpD = new double[2];
         tmpD[0] = 0;
         tmpD[1] = 0;
-        this.m_Plot = new eva2.gui.Plot("ES Crossover Testert", "x", "y", tmpD, tmpD);
+        this.m_Plot = new Plot("ES Crossover Testert", "x", "y", tmpD, tmpD);
         // validate and show
         this.m_Frame.validate();
         this.m_Frame.setVisible(true);

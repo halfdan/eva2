@@ -1,7 +1,7 @@
 package eva2.optimization.operator.cluster;
 
-import eva2.gui.GraphPointSet;
-import eva2.gui.Plot;
+import eva2.gui.plot.GraphPointSet;
+import eva2.gui.plot.Plot;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.ESIndividualDoubleData;
 import eva2.optimization.individuals.InterfaceDataTypeDouble;
@@ -152,7 +152,7 @@ public class ClusteringKMeans implements InterfaceClustering, java.io.Serializab
                 double[]    tmpD = new double[2];
                 tmpD[0] = 0;
                 tmpD[1] = 0;
-                plot = new eva2.gui.Plot("Debugging K-Means Clustering", "Y1", "Y2", tmpD, tmpD);
+                plot = new Plot("Debugging K-Means Clustering", "Y1", "Y2", tmpD, tmpD);
 
                 for (int i = 0; i < pop.size(); i++) {
                     double[] x = ((InterfaceDataTypeDouble)pop.get(i)).getDoubleData();
@@ -183,7 +183,7 @@ public class ClusteringKMeans implements InterfaceClustering, java.io.Serializab
                 double[]    tmpD = new double[2];
                 tmpD[0] = 0;
                 tmpD[1] = 0;
-                plot = new eva2.gui.Plot("Debugging Cluster", "Y1", "Y2", tmpD, tmpD);
+                plot = new Plot("Debugging Cluster", "Y1", "Y2", tmpD, tmpD);
                 GraphPointSet           mySet;
                 DPoint                  myPoint;
                 Chart2DDPointIconText   tmp;
@@ -221,7 +221,7 @@ public class ClusteringKMeans implements InterfaceClustering, java.io.Serializab
             double[]    tmpD = new double[2];
             tmpD[0] = 0;
             tmpD[1] = 0;
-            plot = new eva2.gui.Plot("Debugging Clustering Separation", "Y1", "Y2", tmpD, tmpD);
+            plot = new Plot("Debugging Clustering Separation", "Y1", "Y2", tmpD, tmpD);
             GraphPointSet           mySet;
             DPoint                  myPoint;
             Chart2DDPointIconText   tmp;

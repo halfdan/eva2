@@ -1,5 +1,6 @@
 package eva2.optimization.operator.moso;
 
+import eva2.gui.plot.Plot;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
 import eva2.tools.math.RNG;
@@ -14,7 +15,7 @@ import eva2.tools.math.RNG;
 public class MOSOMaxiMin implements InterfaceMOSOConverter, java.io.Serializable {
 
     private int             m_OutputDimension   = 2;
-    transient protected     eva2.gui.Plot    m_Plot = null;
+    transient protected Plot m_Plot = null;
 
     public MOSOMaxiMin() {
     }
@@ -71,7 +72,7 @@ public class MOSOMaxiMin implements InterfaceMOSOConverter, java.io.Serializable
         }
         ////////////////////////////////////////////////////////////////////////////////////
 //        if (false) {
-//            this.m_Plot = new eva2.gui.Plot("Debug MaxiMin", "Y1", "Y2");
+//            this.m_Plot = new eva2.gui.plot.Plot("Debug MaxiMin", "Y1", "Y2");
 //            this.m_Plot.setUnconnectedPoint(0, 0, 11);
 //            this.m_Plot.setUnconnectedPoint(1.2, 2.0, 11);
 //            double[][] trueFitness, moFitness;

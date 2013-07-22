@@ -1,7 +1,7 @@
 package eva2.optimization.strategies;
 
-import eva2.gui.GenericObjectEditor;
-import eva2.gui.TopoPlot;
+import eva2.gui.editor.GenericObjectEditor;
+import eva2.gui.plot.TopoPlot;
 import eva2.optimization.go.InterfacePopulationChangedEventListener;
 import eva2.optimization.population.PopulationInterface;
 import eva2.optimization.individuals.AbstractEAIndividual;

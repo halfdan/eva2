@@ -1,7 +1,7 @@
 package eva2.optimization.operator.crossover;
 
 
-import eva2.gui.GenericObjectEditor;
+import eva2.gui.editor.GenericObjectEditor;
 import eva2.gui.PropertyEditorProvider;
 import eva2.optimization.tools.AbstractObjectEditor;
 import eva2.optimization.tools.GeneralGEOFaker;

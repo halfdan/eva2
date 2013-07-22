@@ -1,7 +1,7 @@
 package eva2.optimization.operator.mutation;
 
 import eva2.gui.BeanInspector;
-import eva2.gui.GenericObjectEditor;
+import eva2.gui.editor.GenericObjectEditor;
 import eva2.optimization.enums.ESMutationInitialSigma;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.AbstractEAIndividualComparator;

@@ -1,6 +1,6 @@
 package eva2.optimization.operator.constraint;
 
-import eva2.gui.GenericObjectEditor;
+import eva2.gui.editor.GenericObjectEditor;
 
 /**
  * This constraint is always satisfied.

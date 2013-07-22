@@ -9,6 +9,7 @@ package eva2.gui;
  *            $Date: 2007-12-05 11:29:32 +0100 (Wed, 05 Dec 2007) $
  *            $Author: mkron $
  */
+import eva2.gui.editor.GenericObjectEditor;
 import eva2.tools.EVAHELP;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -20,7 +21,6 @@ import java.util.EventObject;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
-import javax.swing.event.CellEditorListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;

@@ -1,5 +1,6 @@
 package eva2.gui;
 
+import eva2.gui.editor.*;
 import eva2.optimization.go.InterfaceTerminator;
 import eva2.optimization.individuals.codings.gp.GPArea;
 import eva2.tools.SelectedTag;
@@ -122,7 +123,7 @@ public class PropertyEditorProvider {
         PropertyEditorManager.registerEditor(PropertyFilePath.class, GenericFilePathEditor.class);
         PropertyEditorManager.registerEditor(PropertyOptimizationObjectives.class, GenericOptimizationObjectivesEditor.class);
         PropertyEditorManager.registerEditor(PropertyOptimizationObjectivesWithParam.class, GenericOptimizationObjectivesWithParamEditor.class);
-        PropertyEditorManager.registerEditor(eva2.gui.MultiLineString.class, eva2.gui.MultiLineStringEditor.class);
+        PropertyEditorManager.registerEditor(eva2.gui.MultiLineString.class, MultiLineStringEditor.class);
         PropertyEditorManager.registerEditor(PropertySelectableList.class, GenericArrayEditor.class);
     }
 }

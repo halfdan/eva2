@@ -1,6 +1,7 @@
 package eva2.optimization.strategies;
 
-import eva2.gui.GenericObjectEditor;
+import eva2.gui.editor.GenericObjectEditor;
+import eva2.gui.plot.Plot;
 import eva2.optimization.go.InterfacePopulationChangedEventListener;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.InterfaceDataTypeDouble;
@@ -163,7 +164,7 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
     // use full range (0) or subspace (1) for init options 0 and 1
     protected int rangeInitType = 1;
     private boolean m_Show = false;
-    transient protected eva2.gui.Plot m_Plot = null;
+    transient protected Plot m_Plot = null;
 //	private int useAnchors = 0;	// use anchors to detect environment changes? 
 
     @Override
@@ -365,7 +366,7 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
 //			double[] tmpD = new double[2];
 //			tmpD[0] = 0;
 //			tmpD[1] = 0;
-            this.m_Plot = new eva2.gui.Plot("TRIBES " + population.getGeneration(), "x1", "x2", range[0], range[1]);
+            this.m_Plot = new Plot("TRIBES " + population.getGeneration(), "x1", "x2", range[0], range[1]);
 //			this.m_Plot.setCornerPoints(range, 0);
         }
     }

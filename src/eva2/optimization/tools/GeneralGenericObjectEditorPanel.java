@@ -1,7 +1,7 @@
 package eva2.optimization.tools;
 
 
-import eva2.gui.GenericObjectEditor;
+import eva2.gui.editor.GenericObjectEditor;
 import eva2.tools.EVAHELP;
 import java.awt.*;
 import java.awt.event.ActionEvent;

@@ -1,6 +1,6 @@
 package eva2.optimization.operator.constraint;
 
-import eva2.gui.GenericObjectEditor;
+import eva2.gui.editor.GenericObjectEditor;
 import eva2.tools.EVAERROR;
 import eva2.tools.math.Mathematics;
 import java.io.Serializable;

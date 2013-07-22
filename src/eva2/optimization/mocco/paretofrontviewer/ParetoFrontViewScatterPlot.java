@@ -1,7 +1,9 @@
 package eva2.optimization.mocco.paretofrontviewer;
 
 
-import eva2.gui.*;
+import eva2.gui.plot.FunctionArea;
+import eva2.gui.plot.GraphPointSet;
+import eva2.gui.plot.InterfaceDPointWithContent;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
 import eva2.optimization.problems.InterfaceMultiObjectiveDeNovoProblem;
@@ -26,7 +28,7 @@ import javax.swing.*;
 class SimpleView extends JComponent implements InterfaceRefPointListener {
 
     private InterfaceRefPointListener   m_RefPointListener;
-    private FunctionArea                m_Area = null;
+    private FunctionArea m_Area = null;
     private ScaledBorder                m_AreaBorder;
     ParetoFrontViewScatterPlot          m_Dad;
     int                                 m_Obj1, m_Obj2;

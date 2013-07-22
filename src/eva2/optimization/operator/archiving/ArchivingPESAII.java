@@ -1,14 +1,9 @@
 package eva2.optimization.operator.archiving;
 
-import eva2.gui.GraphPointSet;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
-import eva2.tools.chart2d.Chart2DDPointIconCircle;
-import eva2.tools.chart2d.Chart2DDPointIconText;
-import eva2.tools.chart2d.DLine;
-import eva2.tools.chart2d.DPoint;
 import eva2.tools.math.RNG;
-import java.awt.Color;
+
 import java.util.ArrayList;
 
 /** The Pareto envelope sorting algorithm using a hybergrid and

@@ -1,8 +1,8 @@
 package eva2.optimization.problems;
 
 import eva2.gui.BeanInspector;
-import eva2.gui.GenericObjectEditor;
-import eva2.gui.Plot;
+import eva2.gui.editor.GenericObjectEditor;
+import eva2.gui.plot.Plot;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.ESIndividualDoubleData;
 import eva2.optimization.individuals.GAIndividualBinaryData;

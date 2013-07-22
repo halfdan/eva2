@@ -3,6 +3,7 @@ package eva2.tools;
 import java.io.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import com.google.gson.*;
 
 /**
  * This class defines utility routines that use Java serialization. Any
@@ -40,17 +41,22 @@ public class Serializer {
      */
     private static void store(Serializable o, OutputStream outStream, boolean serializeInMem) throws IOException {
         ObjectOutputStream out = new ObjectOutputStream(outStream);
+        OutputStreamWriter out2 = new OutputStreamWriter(outStream);
         try {
             Object objToStore = o;
             if (serializeInMem) {
                 objToStore = new SerializedObject((Object) o);
             }
-            out.writeObject(objToStore);
+            Gson gson = new Gson();
+            //out.writeObject(objToStore);
+            String json = gson.toJson(o);
+
+            out2.write(json);
         } catch (java.io.NotSerializableException ex) {
             LOGGER.log(Level.SEVERE, "Object is not serializable!", ex);
         }
-        out.flush();
-        out.close();
+        out2.flush();
+        out2.close();
     }
 
     /**

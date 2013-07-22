@@ -1,7 +1,7 @@
 package eva2.optimization.operator.cluster;
 
-import eva2.gui.GraphPointSet;
-import eva2.gui.Plot;
+import eva2.gui.plot.GraphPointSet;
+import eva2.gui.plot.Plot;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.ESIndividualDoubleData;
 import eva2.optimization.individuals.InterfaceDataTypeDouble;
@@ -85,7 +85,7 @@ public class ClusteringXMeans implements InterfaceClustering, java.io.Serializab
                 double[]    tmpD = new double[2], x;
                 tmpD[0] = 0;
                 tmpD[1] = 0;
-                plot = new eva2.gui.Plot("K="+(i+1)+" reaches BIC = "+tmpBIC, "Y1", "Y2", tmpD, tmpD);
+                plot = new Plot("K="+(i+1)+" reaches BIC = "+tmpBIC, "Y1", "Y2", tmpD, tmpD);
                 GraphPointSet           mySet;
                 DPoint                  myPoint;
                 Chart2DDPointIconText   tmp;
