@@ -12,7 +12,7 @@ public class SSGAModuleAdapter extends GenericModuleAdapter implements ModuleAda
      * Constructor of the ModuleAdapter.
      *
      * @param AdapterName The AdapterName
-     * @param Client The client to serve
+     * @param Client      The client to serve
      */
     public SSGAModuleAdapter(String adapterName) {
         super(adapterName, "SSGA.html", SSGAParameters.getInstance(), true);

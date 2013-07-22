@@ -8,6 +8,7 @@ package eva2.gui.editor;
 import eva2.EvAInfo;
 import eva2.gui.GOEPanel;
 import eva2.tools.ReflectPackage;
+
 import java.awt.Component;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
@@ -76,9 +77,9 @@ public class GenericObjectEditor implements PropertyEditor {
      * "hideFromGOE" this method will skip it. Abstract classes and interfaces will be skipped as
      * well.
      *
-     * @see ReflectPackage.getAssignableClassesInPackage
      * @param className
      * @return
+     * @see ReflectPackage.getAssignableClassesInPackage
      */
     public static ArrayList<String> getClassesFromClassPath(String className, ArrayList<Class<?>> instances) {
         ArrayList<String> classes = new ArrayList<String>();
@@ -110,7 +111,7 @@ public class GenericObjectEditor implements PropertyEditor {
                 }
 
 
-                if (!Modifier.isAbstract(m) && !clazz.isInterface()) {	// dont take abstract classes or interfaces
+                if (!Modifier.isAbstract(m) && !clazz.isInterface()) {    // dont take abstract classes or interfaces
                     try {
                         Class<?>[] params = new Class[0];
                         clazz.getConstructor(params);
@@ -134,9 +135,9 @@ public class GenericObjectEditor implements PropertyEditor {
      * this only sets the hidden property of the java bean which is checked in the wasModified
      * method of PropertySheetPanel.
      *
-     * @param cls	class the property belongs to
-     * @param property	string name of the property
-     * @param hide	desired value to set, true for hidden, false for visible
+     * @param cls      class the property belongs to
+     * @param property string name of the property
+     * @param hide     desired value to set, true for hidden, false for visible
      * @return false, if an error occurs, else true
      */
     public static boolean setExpertProperty(Class<?> cls, String property, boolean expertValue) {
@@ -164,9 +165,9 @@ public class GenericObjectEditor implements PropertyEditor {
      * this only sets the hidden property of the java bean which is checked in the wasModified
      * method of PropertySheetPanel.
      *
-     * @param cls	class the property belongs to
-     * @param property	string name of the property
-     * @param hide	desired value to set, true for hidden, false for visible
+     * @param cls      class the property belongs to
+     * @param property string name of the property
+     * @param hide     desired value to set, true for hidden, false for visible
      * @return false, if an error occurs, else true
      */
     public static boolean setHideProperty(Class<?> cls, String property, boolean hide) {
@@ -263,7 +264,7 @@ public class GenericObjectEditor implements PropertyEditor {
      *
      * @param type a value of type 'Class'
      */
-    public void setClassType(Class<?> type) {        
+    public void setClassType(Class<?> type) {
         classType = type;
         if (editorComponent != null) {
             editorComponent.updateClassType();
@@ -286,7 +287,7 @@ public class GenericObjectEditor implements PropertyEditor {
 
         Vector<String> v = null;
         v = new Vector<String>(getClassesFromProperties(classType.getName(), null));
-        
+
         try {
             if (v.size() > 0) {
                 setObject((Object) Class.forName((String) v.get(0)).newInstance());
@@ -439,7 +440,7 @@ public class GenericObjectEditor implements PropertyEditor {
      * Returns null as we don't support getting/setting values as text.
      *
      * @param text the text value
-     * @exception IllegalArgumentException as we don't support getting/setting values as text.
+     * @throws IllegalArgumentException as we don't support getting/setting values as text.
      */
     @Override
     public void setAsText(String text) throws IllegalArgumentException {

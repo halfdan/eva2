@@ -7,7 +7,8 @@ import eva2.optimization.problems.InterfaceHasInitRange;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
 
-/** This individual uses a integer genotype to code for integer values.
+/**
+ * This individual uses a integer genotype to code for integer values.
  * Created by IntelliJ IDEA.
  * User: streiche
  * Date: 18.05.2005
@@ -16,49 +17,49 @@ import eva2.tools.math.RNG;
  */
 public class GIIndividualIntegerData extends AbstractEAIndividual implements InterfaceGIIndividual, InterfaceDataTypeInteger, java.io.Serializable {
 
-    private int[]                       m_Phenotype;
-    private int[][]                     m_Range;
-    protected int[]                     m_Genotype;
+    private int[] m_Phenotype;
+    private int[][] m_Range;
+    protected int[] m_Genotype;
 
     public GIIndividualIntegerData() {
         this.mutationProbability = 0.2;
         this.mutationOperator = new MutateDefault();
         this.crossoverProbability = 0.7;
         this.crossoverOperator = new CrossoverGIDefault();
-        this.m_Range                = new int[10][2];
+        this.m_Range = new int[10][2];
         for (int i = 0; i < this.m_Range.length; i++) {
-            this.m_Range[i][0]          = 0;
-            this.m_Range[i][1]          = 7;
+            this.m_Range[i][0] = 0;
+            this.m_Range[i][1] = 7;
         }
-        this.m_Genotype             = new int[10];
+        this.m_Genotype = new int[10];
     }
 
     public GIIndividualIntegerData(int[][] theRange) {
-    	this();
-    	SetIntRange(theRange);
+        this();
+        SetIntRange(theRange);
     }
-    
+
     public GIIndividualIntegerData(GIIndividualIntegerData individual) {
         if (individual.m_Phenotype != null) {
-            this.m_Phenotype            = new int[individual.m_Phenotype.length];
+            this.m_Phenotype = new int[individual.m_Phenotype.length];
             System.arraycopy(individual.m_Phenotype, 0, this.m_Phenotype, 0, this.m_Phenotype.length);
         }
         if (individual.m_Genotype != null) {
-            this.m_Genotype            = new int[individual.m_Genotype.length];
+            this.m_Genotype = new int[individual.m_Genotype.length];
             System.arraycopy(individual.m_Genotype, 0, this.m_Genotype, 0, this.m_Genotype.length);
 
         }
-        this.m_Range            = new int[individual.m_Range.length][2];
+        this.m_Range = new int[individual.m_Range.length][2];
         for (int i = 0; i < this.m_Range.length; i++) {
-            this.m_Range[i][0]      = individual.m_Range[i][0];
-            this.m_Range[i][1]      = individual.m_Range[i][1];
+            this.m_Range[i][0] = individual.m_Range[i][0];
+            this.m_Range[i][1] = individual.m_Range[i][1];
         }
 
         // cloning the members of AbstractEAIndividual
         this.age = individual.age;
         this.crossoverOperator = individual.crossoverOperator;
         this.crossoverProbability = individual.crossoverProbability;
-        this.mutationOperator = (InterfaceMutation)individual.mutationOperator.clone();
+        this.mutationOperator = (InterfaceMutation) individual.mutationOperator.clone();
         this.mutationProbability = individual.mutationProbability;
         this.selectionProbability = new double[individual.selectionProbability.length];
         for (int i = 0; i < this.selectionProbability.length; i++) {
@@ -77,8 +78,10 @@ public class GIIndividualIntegerData extends AbstractEAIndividual implements Int
     }
 
 
-    /** This method checks on equality regarding genotypic equality
-     * @param individual      The individual to compare to.
+    /**
+     * This method checks on equality regarding genotypic equality
+     *
+     * @param individual The individual to compare to.
      * @return boolean if equal true else false.
      */
     @Override
@@ -111,32 +114,36 @@ public class GIIndividualIntegerData extends AbstractEAIndividual implements Int
 /************************************************************************************
  * InterfaceDataTypeInteger methods
  */
-    /** This method allows you to request a certain amount of double data
-     * @param length    The lenght of the double[] that is to be optimized
+    /**
+     * This method allows you to request a certain amount of double data
+     *
+     * @param length The lenght of the double[] that is to be optimized
      */
     @Override
-    public void setIntegerDataLength (int length) {
-        int[]        newDesPa = new int[length];
-        int[][]      newRange = new int[length][2];
+    public void setIntegerDataLength(int length) {
+        int[] newDesPa = new int[length];
+        int[][] newRange = new int[length][2];
 
         // copy the old values for the decision parameters and the range
         for (int i = 0; ((i < newDesPa.length) && (i < this.m_Genotype.length)); i++) {
-            newDesPa[i]     = this.m_Genotype[i];
-            newRange[i][0]  = this.m_Range[i][0];
-            newRange[i][1]  = this.m_Range[i][1];
+            newDesPa[i] = this.m_Genotype[i];
+            newRange[i][0] = this.m_Range[i][0];
+            newRange[i][1] = this.m_Range[i][1];
         }
 
         // if the new length is bigger than the last value fills the extra elements
         for (int i = this.m_Genotype.length; (i < newDesPa.length); i++) {
-            newDesPa[i]     = this.m_Genotype[this.m_Genotype.length-1];
-            newRange[i][0]  = this.m_Range[this.m_Genotype.length-1][0];
-            newRange[i][1]  = this.m_Range[this.m_Genotype.length-1][1];
+            newDesPa[i] = this.m_Genotype[this.m_Genotype.length - 1];
+            newRange[i][0] = this.m_Range[this.m_Genotype.length - 1][0];
+            newRange[i][1] = this.m_Range[this.m_Genotype.length - 1][1];
         }
-        this.m_Genotype   = newDesPa;
-        this.m_Range      = newRange;
+        this.m_Genotype = newDesPa;
+        this.m_Range = newRange;
     }
 
-    /** This method returns the length of the double data set
+    /**
+     * This method returns the length of the double data set
+     *
      * @return The number of bits stored
      */
     @Override
@@ -144,15 +151,17 @@ public class GIIndividualIntegerData extends AbstractEAIndividual implements Int
         return this.m_Range.length;
     }
 
-    /** This method will set the range of the double attributes. If range.length
+    /**
+     * This method will set the range of the double attributes. If range.length
      * does not equal doubledata.length only range[i] will be used to set all
      * ranges.
-     * @param range     The new range for the double data.
+     *
+     * @param range The new range for the double data.
      */
     @Override
     public void SetIntRange(int[][] range) {
         if (range.length != this.m_Range.length) {
-        	this.setIntegerDataLength(range.length);
+            this.setIntegerDataLength(range.length);
         }
         for (int i = 0; ((i < this.m_Range.length) && (i < range.length)); i++) {
             this.m_Range[i][0] = range[i][0];
@@ -160,7 +169,9 @@ public class GIIndividualIntegerData extends AbstractEAIndividual implements Int
         }
     }
 
-    /** This method will return the range for all double attributes.
+    /**
+     * This method will return the range for all double attributes.
+     *
      * @return The range array.
      */
     @Override
@@ -168,7 +179,9 @@ public class GIIndividualIntegerData extends AbstractEAIndividual implements Int
         return this.m_Range;
     }
 
-    /** This method allows you to read the double data
+    /**
+     * This method allows you to read the double data
+     *
      * @return BitSet representing the double data.
      */
     @Override
@@ -180,8 +193,10 @@ public class GIIndividualIntegerData extends AbstractEAIndividual implements Int
         return this.m_Phenotype;
     }
 
-    /** This method allows you to read the int data without
+    /**
+     * This method allows you to read the int data without
      * an update from the genotype
+     *
      * @return int[] representing the int data.
      */
     @Override
@@ -189,17 +204,21 @@ public class GIIndividualIntegerData extends AbstractEAIndividual implements Int
         return this.m_Phenotype;
     }
 
-    /** This method allows you to set the double data.
-     * @param doubleData    The new double data.
+    /**
+     * This method allows you to set the double data.
+     *
+     * @param doubleData The new double data.
      */
     @Override
     public void SetIntPhenotype(int[] doubleData) {
         this.m_Phenotype = doubleData;
     }
 
-    /** This method allows you to set the double data, this can be used for
+    /**
+     * This method allows you to set the double data, this can be used for
      * memetic algorithms.
-     * @param doubleData    The new double data.
+     *
+     * @param doubleData The new double data.
      */
     @Override
     public void SetIntGenotype(int[] doubleData) {
@@ -213,15 +232,17 @@ public class GIIndividualIntegerData extends AbstractEAIndividual implements Int
 /************************************************************************************
  * AbstractEAIndividual methods
  */
-    /** This method will init the individual with a given value for the
+    /**
+     * This method will init the individual with a given value for the
      * phenotype.
-     * @param obj   The initial value for the phenotype
-     * @param opt   The optimization problem that is to be solved.
+     *
+     * @param obj The initial value for the phenotype
+     * @param opt The optimization problem that is to be solved.
      */
     @Override
     public void initByValue(Object obj, InterfaceOptimizationProblem opt) {
         if (obj instanceof int[]) {
-            int[]  bs = (int[]) obj;
+            int[] bs = (int[]) obj;
             if (bs.length != this.m_Range.length) {
                 System.out.println("Init value and requested length doesn't match!");
             }
@@ -234,15 +255,17 @@ public class GIIndividualIntegerData extends AbstractEAIndividual implements Int
         this.crossoverOperator.init(this, opt);
     }
 
-    /** This method will return a string description of the GAIndividal
+    /**
+     * This method will return a string description of the GAIndividal
      * noteably the Genotype.
+     *
      * @return A descriptive string
      */
     @Override
     public String getStringRepresentation() {
         String result = "";
         result += "GIIndividual coding int: (";
-      result += "Fitness {";
+        result += "Fitness {";
         for (int i = 0; i < this.fitness.length; i++) {
             result += this.fitness[i] + ";";
         }
@@ -252,14 +275,14 @@ public class GIIndividualIntegerData extends AbstractEAIndividual implements Int
         }
         result += "})\n Value: ";
         result += "[";
-        int[]   d = this.getIntegerData();
+        int[] d = this.getIntegerData();
         for (int i = 0; i < d.length; i++) {
             result += d[i] + "; ";
         }
         result += "]\n";
         result += "CodingRange:  [";
         for (int i = 0; i < this.m_Range.length; i++) {
-            result += "("+this.m_Range[i][0]+"; "+this.m_Range[i][1]+"); ";
+            result += "(" + this.m_Range[i][0] + "; " + this.m_Range[i][1] + "); ";
         }
         result += "]\n";
         return result;
@@ -269,7 +292,9 @@ public class GIIndividualIntegerData extends AbstractEAIndividual implements Int
  * InterfaceGIIndividual methods
  */
 
-    /** This method will allow the user to read the GI genotype
+    /**
+     * This method will allow the user to read the GI genotype
+     *
      * @return BitSet
      */
     @Override
@@ -277,20 +302,24 @@ public class GIIndividualIntegerData extends AbstractEAIndividual implements Int
         return this.m_Genotype;
     }
 
-    /** This method will allow the user to set the current GI genotype.
+    /**
+     * This method will allow the user to set the current GI genotype.
      * Use this method with care, since the object is returned when using
      * getIGenotype() you can directly alter the genotype without using
      * this method.
-     * @param b    The new genotype of the Individual
+     *
+     * @param b The new genotype of the Individual
      */
     @Override
     public void SetIGenotype(int[] b) {
         this.m_Genotype = b;
     }
 
-    /** This method allows the user to read the length of the genotype.
+    /**
+     * This method allows the user to read the length of the genotype.
      * This may be necessary since BitSet.lenght only returns the index
      * of the last significat bit.
+     *
      * @return The length of the genotype.
      */
     @Override
@@ -298,34 +327,35 @@ public class GIIndividualIntegerData extends AbstractEAIndividual implements Int
         return this.m_Genotype.length;
     }
 
-    /** This method performs a simple one point mutation in the genotype
+    /**
+     * This method performs a simple one point mutation in the genotype
      */
     @Override
     public void defaultMutate() {
-        int mutationIndex = RNG.randomInt(0, this.m_Genotype.length-1);
+        int mutationIndex = RNG.randomInt(0, this.m_Genotype.length - 1);
         this.m_Genotype[mutationIndex] = RNG.randomInt(this.m_Range[mutationIndex][0], this.m_Range[mutationIndex][1]);
     }
 
     @Override
     public void defaultInit(InterfaceOptimizationProblem prob) {
-    	int[][] range = m_Range;
-        if ((prob != null) && (prob instanceof InterfaceHasInitRange) && (((InterfaceHasInitRange)prob).getInitRange()!=null)) {
-        	Object rng = ((InterfaceHasInitRange)prob).getInitRange();
-        	if (rng instanceof double[][]) {
-        		double[][] dblRng = (double[][])rng;
-        		range = new int[dblRng.length][dblRng[0].length];
-        		for (int i=0; i<range.length; i++) {
-        			for (int j=0; j<range[0].length ; j++) {
-        				range[i][j]=(int)dblRng[i][j];
-        			}
-        		}
-        	} else if (rng instanceof int[][]){
-        		range = (int[][])rng;
-        	} else {
+        int[][] range = m_Range;
+        if ((prob != null) && (prob instanceof InterfaceHasInitRange) && (((InterfaceHasInitRange) prob).getInitRange() != null)) {
+            Object rng = ((InterfaceHasInitRange) prob).getInitRange();
+            if (rng instanceof double[][]) {
+                double[][] dblRng = (double[][]) rng;
+                range = new int[dblRng.length][dblRng[0].length];
+                for (int i = 0; i < range.length; i++) {
+                    for (int j = 0; j < range[0].length; j++) {
+                        range[i][j] = (int) dblRng[i][j];
+                    }
+                }
+            } else if (rng instanceof int[][]) {
+                range = (int[][]) rng;
+            } else {
                 System.err.println("Error, invalid initial range provided by " + prob + ", expecting int[][] or double[][], disregarding initialization range");
             }
         }
-    	
+
         for (int i = 0; i < this.m_Genotype.length; i++) {
             this.m_Genotype[i] = RNG.randomInt(range[i][0], range[i][1]);
         }
@@ -335,8 +365,10 @@ public class GIIndividualIntegerData extends AbstractEAIndividual implements Int
 /**********************************************************************************************************************
  * These are for GUI
  */
-    /** This method allows the CommonJavaObjectEditorPanel to read the
+    /**
+     * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
+     *
      * @return The name.
      */
     @Override
@@ -344,7 +376,9 @@ public class GIIndividualIntegerData extends AbstractEAIndividual implements Int
         return "GI individual";
     }
 
-    /** This method returns a global info string
+    /**
+     * This method returns a global info string
+     *
      * @return description
      */
     public static String globalInfo() {

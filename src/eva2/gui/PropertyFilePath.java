@@ -10,48 +10,47 @@ import eva2.tools.ReflectPackage;
  * To change this template use Options | File Templates.
  */
 public class PropertyFilePath implements java.io.Serializable {
-    
+
     public String FileName = "";
     public String FilePath = "";
     public String FileExtension = "";
 
     /**
      * Constructor setting the absolute path. F
-     * 
+     *
      * @param s
      */
     private PropertyFilePath(String s) {
         this.setCompleteFilePath(s);
     }
-    
+
     public PropertyFilePath(PropertyFilePath d) {
-        this.FileName       = d.FileName;
-        this.FilePath       = d.FilePath;
-        this.FileExtension  = d.FileExtension;
+        this.FileName = d.FileName;
+        this.FilePath = d.FilePath;
+        this.FileExtension = d.FileExtension;
     }
 
     /**
      * Get an instance by an absolute path.
-     * 
+     *
      * @param path
      * @return
      */
     public static PropertyFilePath getFilePathAbsolute(String path) {
-    	return new PropertyFilePath(path);
+        return new PropertyFilePath(path);
     }
 
     /**
      * Get an instance by a relative path.
-     * 
+     *
      * @param relPath
      * @return
      */
     public static PropertyFilePath getFilePathFromResource(String relPath) {
-    	String fName = ReflectPackage.getResourcePathFromCP(relPath);
-    	if (fName == null) {
+        String fName = ReflectPackage.getResourcePathFromCP(relPath);
+        if (fName == null) {
             return null;
-        }
-    	else {
+        } else {
             return new PropertyFilePath(fName);
         }
     }
@@ -61,29 +60,31 @@ public class PropertyFilePath implements java.io.Serializable {
         return (Object) new PropertyFilePath(this);
     }
 
-    /** This method will allow you to set a complete string
+    /**
+     * This method will allow you to set a complete string
      * which will be separated into Path, Name and extension
-     * @param s     The complete filepath and filename
+     *
+     * @param s The complete filepath and filename
      */
     public void setCompleteFilePath(String s) {
-        boolean     trace = false;
-        String      filesep;
+        boolean trace = false;
+        String filesep;
 
         String old = this.getCompleteFilePath();
         try {
             if (trace) {
-                System.out.println("Complete Filename: " +s);
+                System.out.println("Complete Filename: " + s);
             }
-            filesep         = System.getProperty("file.separator");
+            filesep = System.getProperty("file.separator");
             if (trace) {
-                System.out.println("File.Separator: " +filesep);
+                System.out.println("File.Separator: " + filesep);
             }
-            this.FileName   = s.substring(s.lastIndexOf(filesep)+1);
+            this.FileName = s.substring(s.lastIndexOf(filesep) + 1);
             this.FileExtension = this.FileName.substring(this.FileName.lastIndexOf("."));
-            this.FilePath   = s.substring(0, s.lastIndexOf(filesep)+1);
+            this.FilePath = s.substring(0, s.lastIndexOf(filesep) + 1);
 
             if (trace) {
-                System.out.println("FilePath: " +this.FilePath);
+                System.out.println("FilePath: " + this.FilePath);
             }
             if (trace) {
                 System.out.println("Filename: " + this.FileName);
@@ -96,8 +97,10 @@ public class PropertyFilePath implements java.io.Serializable {
         }
     }
 
-    /** This method will return the complete name of the file
+    /**
+     * This method will return the complete name of the file
      * which filepath
+     *
      * @return The complete filename with path.
      */
     public String getCompleteFilePath() {

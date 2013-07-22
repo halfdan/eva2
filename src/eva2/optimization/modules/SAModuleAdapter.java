@@ -12,7 +12,7 @@ public class SAModuleAdapter extends GenericModuleAdapter implements ModuleAdapt
      * Constructor of the ModulAdapter.
      *
      * @param AdapterName The AdapterName
-     * @param Client The client to serve
+     * @param Client      The client to serve
      */
     public SAModuleAdapter(String adapterName) {
         super(adapterName, "SA.html", SAParameters.getInstance(), true);

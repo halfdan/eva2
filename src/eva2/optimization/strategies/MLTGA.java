@@ -13,6 +13,7 @@ import eva2.optimization.problems.BKnapsackProblem;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.tools.Pair;
 import eva2.tools.math.SpecialFunction;
+
 import java.util.BitSet;
 import java.util.HashSet;
 import java.util.Set;
@@ -109,7 +110,7 @@ public class MLTGA implements InterfaceOptimizer, java.io.Serializable, Interfac
         } else {
             throw new RuntimeException(
                     "Unable to get binary representation for "
-                    + indy.getClass());
+                            + indy.getClass());
         }
     }
 
@@ -265,7 +266,7 @@ public class MLTGA implements InterfaceOptimizer, java.io.Serializable, Interfac
     }
 
     private AbstractEAIndividual buildNewIndy(AbstractEAIndividual indy,
-            Stack<Set<Integer>> linkageTree) {
+                                              Stack<Set<Integer>> linkageTree) {
         for (Set<Integer> mask : linkageTree) {
             BitSet gen = getBinaryData(indy);
             BitSet newGene = (BitSet) gen.clone();

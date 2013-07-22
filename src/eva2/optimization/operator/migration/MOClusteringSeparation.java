@@ -15,10 +15,12 @@ import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.tools.chart2d.Chart2DDPointIconCircle;
 import eva2.tools.chart2d.Chart2DDPointIconText;
 import eva2.tools.chart2d.DPoint;
+
 import java.io.BufferedWriter;
 import java.io.IOException;
 
-/** This method implements the clustering based subdivision
+/**
+ * This method implements the clustering based subdivision
  * scheme, this method rearanges the populations and may
  * impose area constraints on the subpopulations. This method
  * is suited for K-means only.
@@ -30,39 +32,41 @@ import java.io.IOException;
  */
 public class MOClusteringSeparation implements InterfaceMigration, java.io.Serializable {
 
-    public boolean                      m_Debug                 = false;
-    private ClusteringKMeans            m_KMeans                = new ClusteringKMeans();
-    private ArchivingNSGAII             m_NSGAII                = new ArchivingNSGAII();
-    private boolean                     m_UseConstraints        = true;
-    private boolean                     m_ReuseC                = false;
-    private InterfaceSelection          m_Selection             = new SelectRandom();
+    public boolean m_Debug = false;
+    private ClusteringKMeans m_KMeans = new ClusteringKMeans();
+    private ArchivingNSGAII m_NSGAII = new ArchivingNSGAII();
+    private boolean m_UseConstraints = true;
+    private boolean m_ReuseC = false;
+    private InterfaceSelection m_Selection = new SelectRandom();
 
     public MOClusteringSeparation() {
 
     }
 
     public MOClusteringSeparation(MOClusteringSeparation b) {
-        this.m_Debug            = b.m_Debug;
-        this.m_UseConstraints   = b.m_UseConstraints;
+        this.m_Debug = b.m_Debug;
+        this.m_UseConstraints = b.m_UseConstraints;
         if (b.m_KMeans != null) {
-            this.m_KMeans   = (ClusteringKMeans)b.m_KMeans.clone();
+            this.m_KMeans = (ClusteringKMeans) b.m_KMeans.clone();
         }
         if (b.m_NSGAII != null) {
-            this.m_NSGAII   = (ArchivingNSGAII)b.m_NSGAII.clone();
+            this.m_NSGAII = (ArchivingNSGAII) b.m_NSGAII.clone();
         }
         if (b.m_Selection != null) {
-            this.m_Selection   = (InterfaceSelection)b.m_Selection.clone();
+            this.m_Selection = (InterfaceSelection) b.m_Selection.clone();
         }
     }
 
-    /** The ever present clone method
+    /**
+     * The ever present clone method
      */
     @Override
     public Object clone() {
         return new MOClusteringSeparation(this);
     }
 
-    /** Typically i'll need some initialization method for
+    /**
+     * Typically i'll need some initialization method for
      * every bit of code i write....
      */
     @Override
@@ -73,7 +77,8 @@ public class MOClusteringSeparation implements InterfaceMigration, java.io.Seria
         }
     }
 
-    /** The migrate method can be called asychnronously or
+    /**
+     * The migrate method can be called asychnronously or
      * sychronously. Basically it allows migration of individuals
      * between multiple EA islands and since there are so many
      * different possible strategies i've introduced this
@@ -85,21 +90,21 @@ public class MOClusteringSeparation implements InterfaceMigration, java.io.Seria
      */
     @Override
     public void migrate(InterfaceOptimizer[] islands) {
-        Population[]            oldIPOP = new Population[islands.length];
-        Population[]            newIPOP = new Population[islands.length];
-        Population              collector = new Population(), memory;
-        AbstractEAIndividual    indy;
+        Population[] oldIPOP = new Population[islands.length];
+        Population[] newIPOP = new Population[islands.length];
+        Population collector = new Population(), memory;
+        AbstractEAIndividual indy;
 
         // collect the populations
         for (int i = 0; i < islands.length; i++) {
             oldIPOP[i] = islands[i].getPopulation();
             if (this.m_Debug) {
-                System.out.println("Got population from "+i+" of size "+oldIPOP[i].size());
+                System.out.println("Got population from " + i + " of size " + oldIPOP[i].size());
             }
-            collector.addPopulation((Population)oldIPOP[i].clone());
+            collector.addPopulation((Population) oldIPOP[i].clone());
             newIPOP[i] = new Population();
         }
-        memory = (Population)collector.clone();
+        memory = (Population) collector.clone();
 
 //        if (this.m_Debug) {
 //            // let's see how they arrive here
@@ -126,8 +131,8 @@ public class MOClusteringSeparation implements InterfaceMigration, java.io.Seria
 //        }
 
         // Now lets cluster this stuff
-        Population[]    archives    = this.m_NSGAII.getNonDominatedSortedFronts(collector);
-        Population      toCluster   = new Population();
+        Population[] archives = this.m_NSGAII.getNonDominatedSortedFronts(collector);
+        Population toCluster = new Population();
         int currentFront = 0;
         toCluster.addPopulation(archives[currentFront]);
         while (toCluster.size() < islands.length) {
@@ -137,36 +142,36 @@ public class MOClusteringSeparation implements InterfaceMigration, java.io.Seria
 
         // first set the K to the K-Means
         this.m_KMeans.setK(islands.length);
-        this.m_KMeans.cluster(toCluster, (Population)null);
+        this.m_KMeans.cluster(toCluster, (Population) null);
         double[][] c = this.m_KMeans.getC();
         newIPOP = this.m_KMeans.cluster(collector, c);
 
         if (this.m_Debug) {
-            Plot        plot;
-            double[]    tmpD = new double[2];
+            Plot plot;
+            double[] tmpD = new double[2];
             tmpD[0] = 0;
             tmpD[1] = 0;
             plot = new Plot("Debugging Clustering Separation", "Y1", "Y2", tmpD, tmpD);
-            GraphPointSet           mySet;
-            DPoint                  myPoint;
-            Chart2DDPointIconText   tmp;
+            GraphPointSet mySet;
+            DPoint myPoint;
+            Chart2DDPointIconText tmp;
             for (int i = 0; i < newIPOP.length; i++) {
-                mySet = new GraphPointSet(10+1, plot.getFunctionArea());
+                mySet = new GraphPointSet(10 + 1, plot.getFunctionArea());
                 mySet.setConnectedMode(false);
                 for (int j = 0; j < newIPOP[i].size(); j++) {
-                    indy = (AbstractEAIndividual)newIPOP[i].get(j);
+                    indy = (AbstractEAIndividual) newIPOP[i].get(j);
                     myPoint = new DPoint(indy.getFitness()[0], indy.getFitness()[1]);
-                    tmp = new Chart2DDPointIconText(""+i);
+                    tmp = new Chart2DDPointIconText("" + i);
                     //if (i % 2 == 0) tmp.setIcon(new Chart2DDPointIconCircle());
                     myPoint.setIcon(tmp);
                     mySet.addDPoint(myPoint);
                 }
             }
-            mySet = new GraphPointSet(10+2, plot.getFunctionArea());
+            mySet = new GraphPointSet(10 + 2, plot.getFunctionArea());
             mySet.setConnectedMode(false);
             for (int i = 0; i < c.length; i++) {
                 myPoint = new DPoint(c[i][0], c[i][1]);
-                tmp = new Chart2DDPointIconText(""+i);
+                tmp = new Chart2DDPointIconText("" + i);
                 tmp.setIcon(new Chart2DDPointIconCircle());
                 myPoint.setIcon(tmp);
                 mySet.addDPoint(myPoint);
@@ -181,9 +186,9 @@ public class MOClusteringSeparation implements InterfaceMigration, java.io.Seria
                 if (prob instanceof AbstractMultiObjectiveOptimizationProblem) {
                     // set the boundaries to perform the constrained
                     // domain principle introduced by Deb et al.
-                    ((AbstractMultiObjectiveOptimizationProblem)prob).m_AreaConst4Parallelization.clear();
+                    ((AbstractMultiObjectiveOptimizationProblem) prob).m_AreaConst4Parallelization.clear();
                     double[] myClass = c[i];
-                    double[][] myOtherClass = new double[c.length -1][];
+                    double[][] myOtherClass = new double[c.length - 1][];
                     int index = 0;
                     for (int j = 0; j < myOtherClass.length; j++) {
                         if (index == i) {
@@ -193,7 +198,7 @@ public class MOClusteringSeparation implements InterfaceMigration, java.io.Seria
                         index++;
                     }
                     ConstBelongsToDifferentClass b = new ConstBelongsToDifferentClass(myClass, myOtherClass, this.m_KMeans.getUseSearchSpace());
-                    ((AbstractMultiObjectiveOptimizationProblem)prob).m_AreaConst4Parallelization.add(b);
+                    ((AbstractMultiObjectiveOptimizationProblem) prob).m_AreaConst4Parallelization.add(b);
 //                    if (this.m_Debug) {
 //                        String out = "";
 //                        out += i+ ". MyClass: {";
@@ -221,10 +226,10 @@ public class MOClusteringSeparation implements InterfaceMigration, java.io.Seria
             oldIPOP[i].addPopulation(newIPOP[i]);
             // todo remove this for nice pictures
             if (!oldIPOP[i].targetSizeReached()) {
-                oldIPOP[i].addPopulation(this.m_Selection.selectFrom(memory, oldIPOP[i].getTargetSize()-oldIPOP[i].size()));
+                oldIPOP[i].addPopulation(this.m_Selection.selectFrom(memory, oldIPOP[i].getTargetSize() - oldIPOP[i].size()));
             }
             if (this.m_Debug) {
-                System.out.println("Setting "+i+" to population size " + oldIPOP[i].size());
+                System.out.println("Setting " + i + " to population size " + oldIPOP[i].size());
             }
             islands[i].setPopulation(oldIPOP[i]);
         }
@@ -332,12 +337,14 @@ public class MOClusteringSeparation implements InterfaceMigration, java.io.Seria
 //        System.exit(0);
 //    }
 
-    /** This method writes Data to file.
-     * @param line      The line that is to be added to the file
+    /**
+     * This method writes Data to file.
+     *
+     * @param line The line that is to be added to the file
      */
     private void writeToFile(BufferedWriter out, String line) {
         String write = line + "\n";
-        write.replaceAll(",",".");
+        write.replaceAll(",", ".");
         if (out == null) {
             return;
         }
@@ -352,58 +359,75 @@ public class MOClusteringSeparation implements InterfaceMigration, java.io.Seria
 /**********************************************************************************************************************
  * These are for GUI
  */
-    /** This method returns a global info string
+    /**
+     * This method returns a global info string
+     *
      * @return description
      */
     public static String globalInfo() {
         return "This is migration scheme, which implements a clustering based partitioning.";
     }
-    /** This method will return a naming String
+
+    /**
+     * This method will return a naming String
+     *
      * @return The name of the algorithm
      */
     public String getName() {
         return "MOClusteringSeparation";
     }
 
-    /** This method allows you to set/get the clustering algorithm.
+    /**
+     * This method allows you to set/get the clustering algorithm.
+     *
      * @return The clustering algorithm method
      */
     public ClusteringKMeans getKMeans() {
         return this.m_KMeans;
     }
-    public void setKMeans(ClusteringKMeans b){
+
+    public void setKMeans(ClusteringKMeans b) {
         this.m_KMeans = b;
     }
+
     public String kMeansTipText() {
         return "Choose the clustering algorithm.";
     }
 
-    /** This method allows you to toogle the use of constraints,
+    /**
+     * This method allows you to toogle the use of constraints,
      * which enable the algorithm to limit each island to a
      * specific area of the search space.
+     *
      * @return The modus of constraints.
      */
     public boolean getUseConstraints() {
         return this.m_UseConstraints;
     }
-    public void setUseConstraints(boolean b){
+
+    public void setUseConstraints(boolean b) {
         this.m_UseConstraints = b;
     }
+
     public String useConstraintsTipText() {
         return "If activated constraints are used to limit each island to a local area.";
     }
 
-    /** This method allows you to toggle reuse of c.
+    /**
+     * This method allows you to toggle reuse of c.
+     *
      * @return The distance type to use.
      */
     public boolean getReuseC() {
         this.m_ReuseC = this.m_KMeans.getReuseC();
         return this.m_ReuseC;
     }
-    public void setReuseC(boolean m){
+
+    public void setReuseC(boolean m) {
         this.m_ReuseC = m;
         this.m_KMeans.setReuseC(this.m_ReuseC);
     }
+
     public String reuseCTipText() {
         return "Toggle reuse of previously found cluster centroids.";
     }

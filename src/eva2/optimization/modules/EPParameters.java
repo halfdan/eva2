@@ -9,13 +9,15 @@ import eva2.optimization.problems.F1Problem;
 import eva2.optimization.strategies.EvolutionaryProgramming;
 import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.tools.Serializer;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/** The class gives access to all EP parameters for the EvA
+/**
+ * The class gives access to all EP parameters for the EvA
  * top level GUI.
  * Created by IntelliJ IDEA.
  * User: streiche
@@ -27,10 +29,10 @@ public class EPParameters extends AbstractOptimizationParameters implements Inte
 
     private static final Logger LOGGER = Logger.getLogger(EPParameters.class.getName());
 
-    
+
     /**
      * Load or create a new instance of the class.
-     * 
+     *
      * @return A loaded (from file) or new instance of the class.
      */
     public static EPParameters getInstance() {
@@ -52,14 +54,14 @@ public class EPParameters extends AbstractOptimizationParameters implements Inte
      *
      */
     public EPParameters() {
-    	super(new EvolutionaryProgramming(), new F1Problem(), new EvaluationTerminator());
+        super(new EvolutionaryProgramming(), new F1Problem(), new EvaluationTerminator());
     }
 
     /**
      *
      */
     private EPParameters(EPParameters Source) {
-    	super(Source);
+        super(Source);
     }
 
     /**
@@ -70,7 +72,9 @@ public class EPParameters extends AbstractOptimizationParameters implements Inte
         return new EPParameters(this);
     }
 
-    /** This method returns a global info string
+    /**
+     * This method returns a global info string
+     *
      * @return description
      */
     public static String globalInfo() {
@@ -83,30 +87,38 @@ public class EPParameters extends AbstractOptimizationParameters implements Inte
         // *pff* i'll ignore that!
     }
 
-    /** Assuming that all optimizer will store thier data in a population
+    /**
+     * Assuming that all optimizer will store thier data in a population
      * we will allow acess to this population to query to current state
      * of the optimizer.
+     *
      * @return The population of current solutions to a given problem.
      */
     public Population getPopulation() {
-        return ((EvolutionaryProgramming)this.optimizer).getPopulation();
+        return ((EvolutionaryProgramming) this.optimizer).getPopulation();
     }
-    public void setPopulation(Population pop){
-        ((EvolutionaryProgramming)this.optimizer).setPopulation(pop);
+
+    public void setPopulation(Population pop) {
+        ((EvolutionaryProgramming) this.optimizer).setPopulation(pop);
     }
+
     public String populationTipText() {
         return "Edit the properties of the population used.";
     }
 
-    /** Choose the type of environment selection to use.
+    /**
+     * Choose the type of environment selection to use.
+     *
      * @param selection
      */
     public void setEnvironmentSelection(InterfaceSelection selection) {
-        ((EvolutionaryProgramming)this.optimizer).setEnvironmentSelection(selection);
+        ((EvolutionaryProgramming) this.optimizer).setEnvironmentSelection(selection);
     }
+
     public InterfaceSelection getEnvironmentSelection() {
-        return ((EvolutionaryProgramming)this.optimizer).getEnvironmentSelection();
+        return ((EvolutionaryProgramming) this.optimizer).getEnvironmentSelection();
     }
+
     public String environmentSelectionTipText() {
         return "Choose a method for selecting the reduced population.";
     }

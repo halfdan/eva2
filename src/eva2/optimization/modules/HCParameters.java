@@ -7,13 +7,15 @@ import eva2.optimization.problems.B1Problem;
 import eva2.optimization.strategies.HillClimbing;
 import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.tools.Serializer;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.util.logging.Level;
 
 
-/** The class gives access to all HC parameters for the EvA
+/**
+ * The class gives access to all HC parameters for the EvA
  * top level GUI.
  * Created by IntelliJ IDEA.
  * User: streiche
@@ -25,7 +27,7 @@ public class HCParameters extends AbstractOptimizationParameters implements Inte
 
     /**
      * Load or create a new instance of the class.
-     * 
+     *
      * @return A loaded (from file) or new instance of the class.
      */
     public static HCParameters getInstance() {
@@ -42,12 +44,12 @@ public class HCParameters extends AbstractOptimizationParameters implements Inte
         }
         return instance;
     }
-    
+
     /**
      *
      */
     public HCParameters() {
-    	super(new HillClimbing(), new B1Problem(), new EvaluationTerminator());
+        super(new HillClimbing(), new B1Problem(), new EvaluationTerminator());
     }
 
     /**
@@ -56,6 +58,7 @@ public class HCParameters extends AbstractOptimizationParameters implements Inte
     private HCParameters(HCParameters Source) {
         super(Source);
     }
+
     /**
      *
      */
@@ -63,7 +66,10 @@ public class HCParameters extends AbstractOptimizationParameters implements Inte
     public Object clone() {
         return new HCParameters(this);
     }
-    /** This method returns a global info string
+
+    /**
+     * This method returns a global info string
+     *
      * @return description
      */
     public static String globalInfo() {
@@ -76,17 +82,21 @@ public class HCParameters extends AbstractOptimizationParameters implements Inte
         // *pff* i'll ignore that!
     }
 
-    /** Assuming that all optimizer will store thier data in a population
+    /**
+     * Assuming that all optimizer will store thier data in a population
      * we will allow acess to this population to query to current state
      * of the optimizer.
+     *
      * @return The population of current solutions to a given problem.
      */
     public Population getPopulation() {
         return ((HillClimbing) this.optimizer).getPopulation();
     }
-    public void setPopulation(Population pop){
+
+    public void setPopulation(Population pop) {
         ((HillClimbing) this.optimizer).setPopulation(pop);
     }
+
     public String populationTipText() {
         return "Edit the properties of the population used.";
     }

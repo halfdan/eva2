@@ -2,24 +2,25 @@ package eva2.optimization.strategies.tribes;
 
 import eva2.optimization.strategies.Tribes;
 import eva2.tools.math.RNG;
+
 import java.util.Arrays;
 
 
 public class TribesPosition implements java.io.Serializable {
     /**
-	 *
-	 */
-	private static final long serialVersionUID = 1L;
-	private boolean TRACE = false;
-	double x[];
-	int[][] maxIsoLink = null;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private boolean TRACE = false;
+    double x[];
+    int[][] maxIsoLink = null;
     double[] fitness;
     private double totalError;
     double isolation;
 
     public TribesPosition(int maxDimension) {
-    	x = new double[maxDimension];
-    	fitness = new double[1];// new double[maxFunctionNb]; // TODO
+        x = new double[maxDimension];
+        fitness = new double[1];// new double[maxFunctionNb]; // TODO
     }
 
 //    public TribesPosition clone(TribesPosition position, int fitnessSize) {
@@ -52,47 +53,49 @@ public class TribesPosition implements java.io.Serializable {
     }
 
     public double[] getDoubleArray() {
-    	return x;
+        return x;
     }
 
     /**
      * This one makes a deep copy.
+     *
      * @param vals
      */
     public void setDoubleArray(double[] vals) {
-    	x = vals.clone();
+        x = vals.clone();
     }
 
     /**
      * This one makes a shallow copy.
+     *
      * @param fit
      */
     public void setFitness(double[] fit) {
-    	fitness = fit;
+        fitness = fit;
     }
-    
+
     public int getMaxDimension() {
-    	return x.length;
+        return x.length;
     }
-    
+
     public double[] getFitness() {
-    	return fitness;
+        return fitness;
     }
 
     public double[] getPos() {
-    	return x;
+        return x;
     }
-    
-    public double distanceTo(TribesPosition pos) {
-    	double di, dist=0;
-    	int d;
 
-    	for(d=0;d<x.length;d++) {
-    		di = x[d]-pos.x[d];
-    		dist += (di * di);
-    	}
-    	dist=Math.sqrt(dist);
-    	return dist;
+    public double distanceTo(TribesPosition pos) {
+        double di, dist = 0;
+        int d;
+
+        for (d = 0; d < x.length; d++) {
+            di = x[d] - pos.x[d];
+            dist += (di * di);
+        }
+        dist = Math.sqrt(dist);
+        return dist;
     }
 //    public boolean betterThan(double[] f1, double[] f2,int fitnessSize) {
 //        // Return "true" if f1 better than f2
@@ -565,10 +568,10 @@ public class TribesPosition implements java.io.Serializable {
                  On cherche Ã  maximiser la plus petite des distances
          */
         rmin = Math.min(Math.abs(pos.x[0] - range[0][0]),
-                        Math.abs(pos.x[0] - range[0][1]));
+                Math.abs(pos.x[0] - range[0][1]));
         for (d = 1; d < range.length; d++) {
             r = Math.min(Math.abs(pos.x[d] - range[d][0]),
-                         Math.abs(pos.x[d] - range[d][1]));
+                    Math.abs(pos.x[d] - range[d][1]));
             if (r < rmin) {
                 rmin = r;
             }
@@ -590,7 +593,7 @@ public class TribesPosition implements java.io.Serializable {
 
 
     public TribesPosition maxIsolated(double[][] range, TribesSwarm swarm0) {
-    	/* Utilise ma mÃ©thode SunnySpell pour trouver une position Ã©loignÃ©e de toutes
+        /* Utilise ma mÃ©thode SunnySpell pour trouver une position Ã©loignÃ©e de toutes
           celles connues
          */
         /*
@@ -646,7 +649,7 @@ public class TribesPosition implements java.io.Serializable {
         // One swarm of constant size
         // only one range is regarded here, the "right" one must be provided 
         TribesSwarm swarm = new TribesSwarm(null, range, range); // MK: slight abuse of master (set to null)
-        
+
         swarm.size = (int) Math.round(9.5 + 0.124 * (D - 9)); //Cf. my "Binary PSO" study
         swarm.size = Math.min(swarm.size, Tribes.maxExplorerNb);
 
@@ -663,16 +666,16 @@ public class TribesPosition implements java.io.Serializable {
         double cmax = c1 + 2 * Math.log(2) - 1;
 
 // one explorer <=> one memory
-        TribesExplorer explorer = new TribesExplorer(range, 0.);	// obj value will not be regarded here
+        TribesExplorer explorer = new TribesExplorer(range, 0.);    // obj value will not be regarded here
         TribesMemory memory = new TribesMemory(range.length);
 
         //int link[][] =
         if ((maxIsoLink == null) || (maxIsoLink.length != swarm.size)) {
-        	maxIsoLink = new int[swarm.size][swarm.size];
+            maxIsoLink = new int[swarm.size][swarm.size];
         }
-        for (int i=0; i<swarm.size; i++) {
-        	Arrays.fill(maxIsoLink[i], 0);
-        	maxIsoLink[i][i]=1;
+        for (int i = 0; i < swarm.size; i++) {
+            Arrays.fill(maxIsoLink[i], 0);
+            maxIsoLink[i][i] = 1;
         }
 
         int best;
@@ -709,7 +712,7 @@ public class TribesPosition implements java.io.Serializable {
 
                 r = RNG.randomDouble();
                 swarm.tribes[0].explorer[n].velocity.x[d] = (1 - 2 * r) *
-                (range[d][1] - range[d][0]) /
+                        (range[d][1] - range[d][0]) /
                         2;
             }
             // Fitness evaluation
@@ -731,7 +734,7 @@ public class TribesPosition implements java.io.Serializable {
         while (!stop) {
 // We are looking for a _maximum_ (isolation)
             improv = swarm.bestMem.getPos().fitness[0] >
-                     swarm.bestMem.getPrevPos().fitness[0];
+                    swarm.bestMem.getPrevPos().fitness[0];
             //swarm.bestMem.position=swarm.bestMem.position.clone(); // MK: whats this??
 
             if (!improv) {
@@ -741,16 +744,16 @@ public class TribesPosition implements java.io.Serializable {
 
                  */
                 for (n = 0; n < swarm.size; n++) {
-                	Arrays.fill(maxIsoLink[n], 0);
+                    Arrays.fill(maxIsoLink[n], 0);
                     maxIsoLink[n][n] = 1;
                 }
                 for (n = 0; n < swarm.size; n++) {
 //                    m = RNG.randomInt(0,neighbourhoodSize-1);
 //                    maxIsoLink[n][m] = 1;
-                	for (int k=0; k < neighbourhoodSize; k++) {
-	                    m = RNG.randomInt(swarm.size);
-	                    maxIsoLink[n][m] = 1;
-                	}
+                    for (int k = 0; k < neighbourhoodSize; k++) {
+                        m = RNG.randomInt(swarm.size);
+                        maxIsoLink[n][m] = 1;
+                    }
                 }
             }
 
@@ -760,11 +763,11 @@ public class TribesPosition implements java.io.Serializable {
                 fBest = swarm.tribes[0].memory[best].getPos().fitness[0];
                 for (n = 1; n < swarm.size; n++) { // check neighbors
                     if (maxIsoLink[n][m] == 1) {
-	                    f2 = swarm.tribes[0].memory[n].getPos().fitness[0];
-	                    if (f2 > fBest) {
-	                    	best = n;
-	                    	fBest = f2;
-	                    }
+                        f2 = swarm.tribes[0].memory[n].getPos().fitness[0];
+                        if (f2 > fBest) {
+                            best = n;
+                            fBest = f2;
+                        }
                     }
                 }
 
@@ -777,9 +780,9 @@ public class TribesPosition implements java.io.Serializable {
                     swarm.tribes[0].explorer[m].velocity.x[d] = c1 *
                             swarm.tribes[0].explorer[m].velocity.x[d] +
                             cmax * r1 *
-                            (swarm.tribes[0].memory[m].getPos().x[d] - xd) +
+                                    (swarm.tribes[0].memory[m].getPos().x[d] - xd) +
                             cmax * r2 *
-                            (swarm.tribes[0].memory[best].getPos().x[d] - xd);
+                                    (swarm.tribes[0].memory[best].getPos().x[d] - xd);
 
                     swarm.tribes[0].explorer[m].position.x[d] = xd +
                             swarm.tribes[0].explorer[m].velocity.x[d];
@@ -831,7 +834,7 @@ public class TribesPosition implements java.io.Serializable {
                for(d=0;d<D;d++)
              System.out.print(swarm.Best.position.x[d]+" ");
          */
-        swarm.bestMem.getPos().isolation=swarm.bestMem.getPos().fitness[0];
+        swarm.bestMem.getPos().isolation = swarm.bestMem.getPos().fitness[0];
         if (TRACE) {
             System.out.println("sunny end, ret " + swarm.bestMem.getPos().toString());
         }
@@ -840,7 +843,7 @@ public class TribesPosition implements java.io.Serializable {
 
     /**
      * Returns true, if fitness f1 is better than f2, else false.
-     * 
+     *
      * @param f1
      * @param f2
      * @return
@@ -855,9 +858,8 @@ public class TribesPosition implements java.io.Serializable {
                 }
             }
             return true;
-        }
-        else { // Total error approach
-            if(calcTotalError(f1)<calcTotalError(f2)) {
+        } else { // Total error approach
+            if (calcTotalError(f1) < calcTotalError(f2)) {
                 return true;
             }
             return false;
@@ -865,51 +867,51 @@ public class TribesPosition implements java.io.Serializable {
     }
 
     public double getTotalError() {
-    	return (totalError == 0) ? 0.00000000000000001 : totalError;
+        return (totalError == 0) ? 0.00000000000000001 : totalError;
     }
 
     public void setTotalError(double objectiveFirstDim) {
-    	totalError = calcTotalError(objectiveFirstDim, fitness);
+        totalError = calcTotalError(objectiveFirstDim, fitness);
     }
 
     public void setTotalError() {
-    	totalError = calcTotalError(fitness);
+        totalError = calcTotalError(fitness);
     }
 
     public double calcTotalError(double objectiveFirstDim, double[] fitness) {
-    	/*
+        /*
     	 Take into account the objective value in the first dimension.
     	    	 */
-    	double t = Math.abs(fitness[0]-objectiveFirstDim);
+        double t = Math.abs(fitness[0] - objectiveFirstDim);
 
-    	int n;
-    	for (n = 1; n < fitness.length; n++) {
-    		t += Math.abs(fitness[n]);
-    	}
-    	return t;
+        int n;
+        for (n = 1; n < fitness.length; n++) {
+            t += Math.abs(fitness[n]);
+        }
+        return t;
     }
 
     public double calcTotalError(double[] fitness) {
     	/*
   Warning. The objective value might not been taken into account!
     	 */
-    	double t = 0;
-    	int n;
-    	for (n = 0; n < fitness.length; n++) {
-    		t += Math.abs(fitness[n]);
-    	}
-    	return t;
+        double t = 0;
+        int n;
+        for (n = 0; n < fitness.length; n++) {
+            t += Math.abs(fitness[n]);
+        }
+        return t;
     }
 
     @Override
     public String toString() {
-    	StringBuffer sb = new StringBuffer("TribesMemory at [");
-    	for (int i=0; i<x.length; i++) {
-    		sb.append(x[i]);
-    		sb.append(",");
+        StringBuffer sb = new StringBuffer("TribesMemory at [");
+        for (int i = 0; i < x.length; i++) {
+            sb.append(x[i]);
+            sb.append(",");
 
-    	}
-    	sb.append("]");
-    	return sb.toString();
+        }
+        sb.append("]");
+        return sb.toString();
     }
 }

@@ -22,6 +22,7 @@ import eva2.optimization.problems.B1Problem;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.tools.Pair;
 import eva2.tools.math.RNG;
+
 import java.util.ArrayList;
 import java.util.BitSet;
 
@@ -29,10 +30,10 @@ import java.util.BitSet;
  * A BinaryScatterSearch implementation taken mainly from [i].
  *
  * @author Alex
- *
- * F. Gortazar, A. Duarte, M. Laguna and R. Marti: Black Box Scatter Search for
- * General Classes of Binary Optimization Problems Computers and Operations
- * research, vol. 37, no. 11, pp. 1977-1986 (2010)
+ *         <p/>
+ *         F. Gortazar, A. Duarte, M. Laguna and R. Marti: Black Box Scatter Search for
+ *         General Classes of Binary Optimization Problems Computers and Operations
+ *         research, vol. 37, no. 11, pp. 1977-1986 (2010)
  */
 public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializable, InterfacePopulationChangedEventListener {
 
@@ -92,15 +93,15 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
     /**
      * Create a new BinaryScatterSearch with the given Parameters
      *
-     * @param refSetS the refSetSize
-     * @param poolS the poolSize
-     * @param lowerThreshold	the lower Boundary for the local Search
-     * @param upperThreshold	the upper Boundary for the local Search
-     * @param perCentFirstIndGenerator	how many individuals (in prospect of the
-     * poolSize) are generated through the first Generator
-     * @param perCentSecondIndGenerator	how many individuals (in prospect of the
-     * poolSize) are generated through the second Generator
-     * @param prob	the Problem
+     * @param refSetS                   the refSetSize
+     * @param poolS                     the poolSize
+     * @param lowerThreshold            the lower Boundary for the local Search
+     * @param upperThreshold            the upper Boundary for the local Search
+     * @param perCentFirstIndGenerator  how many individuals (in prospect of the
+     *                                  poolSize) are generated through the first Generator
+     * @param perCentSecondIndGenerator how many individuals (in prospect of the
+     *                                  poolSize) are generated through the second Generator
+     * @param prob                      the Problem
      */
     public BinaryScatterSearch(
             int refSetS, int poolS, double lowerThreshold, double upperThreshold,
@@ -117,16 +118,16 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
     /**
      * Create a new BinaryScatterSearch with the given Parameters
      *
-     * @param refSetS the refSetSize
-     * @param poolS the poolSize
-     * @param lowerThreshold	the lower Boundary for the local Search
-     * @param upperThreshold	the upper Boundary for the local Search
-     * @param perCentFirstIndGenerator	how many individuals (in prospect of the
-     * poolSize) are generated through the first Generator
-     * @param perCentSecondIndGenerator	how many individuals (in prospect of the
-     * poolSize) are generated through the second Generator
-     * @param prob	the Problem
-     * @param cross	the Crossover-Operators
+     * @param refSetS                   the refSetSize
+     * @param poolS                     the poolSize
+     * @param lowerThreshold            the lower Boundary for the local Search
+     * @param upperThreshold            the upper Boundary for the local Search
+     * @param perCentFirstIndGenerator  how many individuals (in prospect of the
+     *                                  poolSize) are generated through the first Generator
+     * @param perCentSecondIndGenerator how many individuals (in prospect of the
+     *                                  poolSize) are generated through the second Generator
+     * @param prob                      the Problem
+     * @param cross                     the Crossover-Operators
      */
     public BinaryScatterSearch(
             int refSetS, int poolS, double lowerThreshold, double upperThreshold,
@@ -226,7 +227,6 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
     }
 
     /**
-     *
      * @return a new diversified Population
      */
     private Population diversify() {
@@ -234,10 +234,9 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
     }
 
     /**
-     *
-     * @param pop	the initial Population
+     * @param pop the initial Population
      * @return a diversified Population with all the Individuals in the initial
-     * Population
+     *         Population
      */
     private Population diversify(Population pop) {
         int numToInit = this.poolSize - pop.size();
@@ -263,8 +262,8 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
      * 000...000, then 010101...01, 101010...10, 001001001...001,
      * 110110110...110 and so on The returned population is evaluated.
      *
-     * @param pop	the initial Population
-     * @return	the new Population
+     * @param pop the initial Population
+     * @return the new Population
      */
     private Population generateG1(int numToInit) {
         Population pop = generateG1Pop(numToInit, this.template);
@@ -279,8 +278,8 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
      * 000...000, then 010101...01, 101010...10, 001001001...001,
      * 110110110...110 and so on
      *
-     * @param pop	the initial Population
-     * @return	the new Population
+     * @param pop the initial Population
+     * @return the new Population
      */
     public static Population generateG1Pop(int targetSize, AbstractEAIndividual template) {
         boolean method1 = true;
@@ -320,8 +319,8 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
      * Generate new Individuals that have the individuals of the given
      * Population as a base
      *
-     * @param pop	the population
-     * @return	the new Population
+     * @param pop the population
+     * @return the new Population
      */
     private Population generateG2(Population pop, int numToInit) {
         int origSize = pop.size();
@@ -348,8 +347,8 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
      * Generate new Individuals that have the individuals of the given
      * Population as a base
      *
-     * @param pop	the population
-     * @return	the new Population
+     * @param pop the population
+     * @return the new Population
      */
     private Population generateG3(Population pop, int numToInit) {
         int origSize = pop.size();
@@ -376,9 +375,9 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
      * calculate the number of individuals in the given Population that have a 1
      * at the i-th position
      *
-     * @param i	the position
-     * @param pop	the population
-     * @return	The number of individuals that have a '1' on the i-th position
+     * @param i   the position
+     * @param pop the population
+     * @return The number of individuals that have a '1' on the i-th position
      */
     private static double calculateNumberOFPI1(int i, Population pop) {
         int result = 0;
@@ -396,9 +395,9 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
      * calculate the number of individuals in the given Population that have a 0
      * at the i-th position
      *
-     * @param i	the position
-     * @param pop	the population
-     * @return	The number of individuals that have a '0' on the i-th position
+     * @param i   the position
+     * @param pop the population
+     * @return The number of individuals that have a '0' on the i-th position
      */
     private static double calculateNumberOFPI0(int i, Population pop) {
         int result = 0;
@@ -426,9 +425,9 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
      * calculate the sum of all the FitnessValues of the individuals that have a
      * '0' at the i-th position
      *
-     * @param i	the position
-     * @param pop	the population
-     * @return	the sum
+     * @param i   the position
+     * @param pop the population
+     * @return the sum
      */
     private static double calculateSumPI0(int i, Population pop) {
         double result = 0;
@@ -446,9 +445,9 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
      * calculate the sum of all the FitnessValues of the individuals that have a
      * '0' at the i-th position
      *
-     * @param i	the position
-     * @param pop	the population
-     * @return	the sum
+     * @param i   the position
+     * @param pop the population
+     * @return the sum
      */
     private static double calculateSumPI1(int i, Population pop) {
         double result = 0;
@@ -468,9 +467,9 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
      * the Bit is probably set correct. If the bit is set to '0' and you get a
      * low score then the Bit is probably set correct.
      *
-     * @param i	the position
-     * @param pop	the population
-     * @return	the score
+     * @param i   the position
+     * @param pop the population
+     * @return the score
      */
     public static double score(int i, Population pop) {
         double sumPI1 = calculateSumPI1(i, pop);
@@ -484,7 +483,7 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
     /**
      * calculate the first RefSet with the given Population as a reference Point
      *
-     * @param pop	the generated Pool
+     * @param pop the generated Pool
      */
     private void initRefSet(Population pop) {
         this.problem.evaluatePopulationStart(this.refSet);
@@ -506,8 +505,8 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
     /**
      * Update the reference Set
      *
-     * @param replaceWorstHalf	replaces the worst half of the RefSet if set
-     * @return	has the Population changed
+     * @param replaceWorstHalf replaces the worst half of the RefSet if set
+     * @return has the Population changed
      */
     private boolean refSetUpdate(boolean replaceWorstHalf) {
         boolean refSetChanged = false;
@@ -559,8 +558,8 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
     /**
      * Order the given List according to the score of the given values
      *
-     * @param list	the initial List
-     * @return	the ordered List
+     * @param list the initial List
+     * @return the ordered List
      */
     private ArrayList<Integer> order(ArrayList<Integer> list) {
         ArrayList<Integer> result = new ArrayList<Integer>();
@@ -586,8 +585,8 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
     /**
      * Do a local search
      *
-     * @param indy	the individual that will be improved
-     * @return	the new improved individual
+     * @param indy the individual that will be improved
+     * @return the new improved individual
      */
     private AbstractEAIndividual improve(AbstractEAIndividual indy) {
         AbstractEAIndividual tmpIndy = (AbstractEAIndividual) indy.clone();
@@ -651,7 +650,7 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
     /**
      * Combine all the individuals in the reference Set (always 2)
      *
-     * @return	the List with all the combinations
+     * @return the List with all the combinations
      */
     public ArrayList<Population> generateSubsets() {
         ArrayList<Population> result = new ArrayList<Population>();
@@ -669,8 +668,8 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
     /**
      * combine the first individual with the second one
      *
-     * @param pop	the Population
-     * @return	the new Individual
+     * @param pop the Population
+     * @return the new Individual
      */
     public AbstractEAIndividual combineSolution(Population pop) {
         AbstractEAIndividual result = (AbstractEAIndividual) template.clone();
@@ -696,9 +695,9 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
     /**
      * look if the individual is already in the population
      *
-     * @param indy	the Individual to be tested
-     * @param pop	the population in where to search
-     * @return	is the individual already in the Population
+     * @param indy the Individual to be tested
+     * @param pop  the population in where to search
+     * @return is the individual already in the Population
      */
     private boolean contains(InterfaceDataTypeBinary indy, Population pop) {
         if (pop.size() <= 0) {

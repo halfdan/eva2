@@ -5,7 +5,8 @@ import eva2.optimization.operator.archiving.ArchivingAllDominating;
 import eva2.optimization.population.Population;
 import eva2.optimization.problems.AbstractMultiObjectiveOptimizationProblem;
 
-/**  Overall Non-Dom. Vector Generation calculates simply the number of
+/**
+ * Overall Non-Dom. Vector Generation calculates simply the number of
  * non-dominated solutions in the current soltuion set.
  * Created by IntelliJ IDEA.
  * User: streiche
@@ -15,7 +16,7 @@ import eva2.optimization.problems.AbstractMultiObjectiveOptimizationProblem;
  */
 public class MetricOverallNonDominatedVectors implements InterfaceParetoFrontMetric, java.io.Serializable {
 
-    private ArchivingAllDominating  m_Dom = new ArchivingAllDominating();
+    private ArchivingAllDominating m_Dom = new ArchivingAllDominating();
 
     public MetricOverallNonDominatedVectors() {
 
@@ -24,22 +25,25 @@ public class MetricOverallNonDominatedVectors implements InterfaceParetoFrontMet
     public MetricOverallNonDominatedVectors(MetricOverallNonDominatedVectors b) {
     }
 
-    /** This method returns a deep clone of the problem.
-     * @return  the clone
+    /**
+     * This method returns a deep clone of the problem.
+     *
+     * @return the clone
      */
     @Override
     public Object clone() {
         return (Object) new MetricOverallNonDominatedVectors(this);
     }
 
-    /** This method allows you to init the metric loading data etc
-     *
+    /**
+     * This method allows you to init the metric loading data etc
      */
     public void init() {
 
     }
 
-    /** This method gives a metric how to evaluate
+    /**
+     * This method gives a metric how to evaluate
      * an achieved Pareto-Front
      */
     @Override
@@ -51,8 +55,8 @@ public class MetricOverallNonDominatedVectors implements InterfaceParetoFrontMet
             tmpPPO.addPopulation(pop.getArchive());
         }
         for (int i = 0; i < tmpPPO.size(); i++) {
-            if (this.m_Dom.isDominant((AbstractEAIndividual)tmpPPO.get(i), tmpPop)) {
-                this.m_Dom.addIndividualToArchive((AbstractEAIndividual)tmpPPO.get(i), tmpPop);
+            if (this.m_Dom.isDominant((AbstractEAIndividual) tmpPPO.get(i), tmpPop)) {
+                this.m_Dom.addIndividualToArchive((AbstractEAIndividual) tmpPPO.get(i), tmpPop);
             }
         }
         return tmpPop.size();
@@ -61,15 +65,19 @@ public class MetricOverallNonDominatedVectors implements InterfaceParetoFrontMet
 /**********************************************************************************************************************
  * These are for GUI
  */
-    /** This method allows the CommonJavaObjectEditorPanel to read the
+    /**
+     * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
+     *
      * @return The name.
      */
     public String getName() {
         return "Overall Non-Dominated Vectors";
     }
 
-    /** This method returns a global info string
+    /**
+     * This method returns a global info string
+     *
      * @return description
      */
     public static String globalInfo() {

@@ -14,36 +14,46 @@ import eva2.optimization.problems.InterfaceOptimizationProblem;
  */
 public interface InterfaceCrossover {
 
-    /** This method will enable you to clone a given mutation operator
+    /**
+     * This method will enable you to clone a given mutation operator
+     *
      * @return The clone
      */
     public Object clone();
 
-    /** This method performs crossover on two individuals. Note: the genotype of the individuals
+    /**
+     * This method performs crossover on two individuals. Note: the genotype of the individuals
      * will be changed, so it would be better to use clones as arguments
-     * @param indy1 The first individual
+     *
+     * @param indy1    The first individual
      * @param partners The second individual
      */
     public AbstractEAIndividual[] mate(AbstractEAIndividual indy1, Population partners);
 
-    /** This method will allow the crossover operator to be initialized depending on the
+    /**
+     * This method will allow the crossover operator to be initialized depending on the
      * individual and the optimization problem. The optimization problem is to be stored
      * since it is to be called during crossover to calculate the exogene parameters for
      * the offsprings.
-     * @param individual    The individual that will be mutated.
-     * @param opt           The optimization problem.
+     *
+     * @param individual The individual that will be mutated.
+     * @param opt        The optimization problem.
      */
     public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt);
 
-    /** This method allows you to get a string representation of the mutation
+    /**
+     * This method allows you to get a string representation of the mutation
      * operator
+     *
      * @return A descriptive string.
      */
-    public String getStringRepresentation();    
+    public String getStringRepresentation();
 
-    /** This method allows you to evaluate wether two crossover operators
+    /**
+     * This method allows you to evaluate wether two crossover operators
      * are actually the same.
-     * @param crossover   The other crossover operator
+     *
+     * @param crossover The other crossover operator
      */
     @Override
     public boolean equals(Object crossover);

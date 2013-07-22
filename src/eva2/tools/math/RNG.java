@@ -1,6 +1,7 @@
 package eva2.tools.math;
 
 import eva2.tools.EVAERROR;
+
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Random;
@@ -378,16 +379,12 @@ public class RNG {
      * deviation (instead of 1/D), the parameter is not further used in the
      * other two cases. Original code by Maurice Clerc, from the TRIBES package
      *
-
-     *
-     * @param center center point of the distribution
-     * @param radius radius of the distribution
+     * @param center  center point of the distribution
+     * @param radius  radius of the distribution
      * @param nonUnif kind of distribution
-     *
-     *
      */
     public static double[] randHypersphere(double[] center, double radius,
-            double nonUnif) {
+                                           double nonUnif) {
         double[] x = new double[center.length];
         int j;
         double xLen, r;
@@ -422,7 +419,7 @@ public class RNG {
     /**
      * Adds Gaussian noise to a double vector
      *
-     * @param v the double vector
+     * @param v   the double vector
      * @param dev the Gaussian deviation
      */
     public static void addNoise(double[] v, double dev) {
@@ -452,7 +449,7 @@ public class RNG {
      * @return
      */
     public static double[] gaussianVector(double dev, double[] result,
-            boolean normalize) {
+                                          boolean normalize) {
         for (int i = 0; i < result.length; i++) {
             result[i] = RNG.gaussianDouble(dev);
         }

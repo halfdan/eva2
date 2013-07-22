@@ -3,7 +3,8 @@ package eva2.optimization.operator.selection.replacement;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
 
-/** This method replaces the worst parent. Doesn't work,
+/**
+ * This method replaces the worst parent. Doesn't work,
  * most likely it has the effect of a negative elitism.
  * Good selected parents are replaced by the offspring
  * regardless how bad it is...
@@ -15,19 +16,22 @@ import eva2.optimization.population.Population;
  */
 public class ReplaceWorstParent implements InterfaceReplacement, java.io.Serializable {
 
-    /** The ever present clone method
+    /**
+     * The ever present clone method
      */
     @Override
     public Object clone() {
         return new ReplaceRandom();
     }
 
-    /** This method will insert the given individual into the population
+    /**
+     * This method will insert the given individual into the population
      * by replacing a individual either from the population or the given
      * subset
-     * @param indy      The individual to insert
-     * @param pop       The population
-     * @param sub       The subset
+     *
+     * @param indy The individual to insert
+     * @param pop  The population
+     * @param sub  The subset
      */
     @Override
     public void insertIndividual(AbstractEAIndividual indy, Population pop, Population sub) {
@@ -44,13 +48,18 @@ public class ReplaceWorstParent implements InterfaceReplacement, java.io.Seriali
     /**********************************************************************************************************************
      * These are for GUI
      */
-    /** This method returns a global info string
+    /**
+     * This method returns a global info string
+     *
      * @return description
      */
     public static String globalInfo() {
         return "This method replaces the worst parent, if better.";
     }
-    /** This method will return a naming String
+
+    /**
+     * This method will return a naming String
+     *
      * @return The name of the algorithm
      */
     public String getName() {

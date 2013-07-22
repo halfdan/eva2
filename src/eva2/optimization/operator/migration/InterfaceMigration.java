@@ -2,7 +2,8 @@ package eva2.optimization.operator.migration;
 
 import eva2.optimization.strategies.InterfaceOptimizer;
 
-/** The migration methods give the migration topology
+/**
+ * The migration methods give the migration topology
  * (currently all migration methods are typically fully
  * connected) and give the selection criteria. While
  * SOXMigration stands for uni-criterial migration
@@ -17,16 +18,19 @@ import eva2.optimization.strategies.InterfaceOptimizer;
  */
 public interface InterfaceMigration {
 
-    /** The ever present clone method
+    /**
+     * The ever present clone method
      */
     public Object clone();
 
-    /** Typically i'll need some initialization method for
+    /**
+     * Typically i'll need some initialization method for
      * every bit of code i write....
      */
     public void initMigration(InterfaceOptimizer[] islands);
 
-    /** The migrate method can be called asychnronously or
+    /**
+     * The migrate method can be called asychnronously or
      * sychronously. Basically it allows migration of individuals
      * between multiple EA islands and since there are so many
      * different possible strategies i've introduced this

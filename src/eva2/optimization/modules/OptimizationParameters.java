@@ -8,6 +8,7 @@ import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.optimization.strategies.GeneticAlgorithm;
 import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.tools.Serializer;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.Serializable;
@@ -18,10 +19,11 @@ import java.util.logging.Level;
  * Created by IntelliJ IDEA.
  * Copyright:    Copyright (c) 2003
  * Company:      University of Tuebingen, Computer Architecture
+ *
  * @author Holger Ulmer, Felix Streichert, Hannes Planatscher
- * @version:  $Revision: 306 $
- *            $Date: 2007-12-04 14:22:52 +0100 (Tue, 04 Dec 2007) $
- *            $Author: mkron $
+ * @version: $Revision: 306 $
+ * $Date: 2007-12-04 14:22:52 +0100 (Tue, 04 Dec 2007) $
+ * $Author: mkron $
  */
 public class OptimizationParameters extends AbstractOptimizationParameters implements InterfaceOptimizationParameters, Serializable {
 
@@ -31,9 +33,9 @@ public class OptimizationParameters extends AbstractOptimizationParameters imple
 
     /**
      * Create an instance from a given serialized parameter file.
-     *  
+     *
      * @param serParamFile
-     * @param casually if true, standard parameters are used quietly if the params cannot be loaded
+     * @param casually     if true, standard parameters are used quietly if the params cannot be loaded
      * @return a OptimizationParameters instance
      */
     public static OptimizationParameters getInstance(String serParamFile, final boolean casually) {
@@ -52,19 +54,20 @@ public class OptimizationParameters extends AbstractOptimizationParameters imple
     }
 
     public OptimizationParameters() {
-    	super(new GeneticAlgorithm(), new F1Problem(), new EvaluationTerminator(1000));
+        super(new GeneticAlgorithm(), new F1Problem(), new EvaluationTerminator(1000));
     }
-    
+
     public OptimizationParameters(InterfaceOptimizer opt, InterfaceOptimizationProblem prob, InterfaceTerminator term) {
-    	super(opt, prob, term);
+        super(opt, prob, term);
     }
-    
+
     /**
      *
      */
     private OptimizationParameters(OptimizationParameters parameters) {
-    	super(parameters);
+        super(parameters);
     }
+
     /**
      *
      */
@@ -72,6 +75,7 @@ public class OptimizationParameters extends AbstractOptimizationParameters imple
     public String getName() {
         return "Optimization parameters";
     }
+
     /**
      *
      */
@@ -79,8 +83,10 @@ public class OptimizationParameters extends AbstractOptimizationParameters imple
     public Object clone() {
         return new OptimizationParameters(this);
     }
-    
-    /** This method returns a global info string.
+
+    /**
+     * This method returns a global info string.
+     *
      * @return description
      */
     public static String globalInfo() {

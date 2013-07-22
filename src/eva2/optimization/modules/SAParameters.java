@@ -10,12 +10,14 @@ import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.optimization.strategies.SimulatedAnnealing;
 import eva2.tools.Serializer;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.util.logging.Level;
 
-/** The class gives access to all SA parameters for the EvA
+/**
+ * The class gives access to all SA parameters for the EvA
  * top level GUI.
  * Created by IntelliJ IDEA.
  * User: streiche
@@ -25,16 +27,16 @@ import java.util.logging.Level;
  */
 public class SAParameters extends AbstractOptimizationParameters implements InterfaceOptimizationParameters, Serializable {
     // Opt. Algorithms and Parameters
-    private InterfaceOptimizer              m_Optimizer         = new SimulatedAnnealing();
-    private InterfaceOptimizationProblem    m_Problem           = new B1Problem();
+    private InterfaceOptimizer m_Optimizer = new SimulatedAnnealing();
+    private InterfaceOptimizationProblem m_Problem = new B1Problem();
     //private int                             functionCalls     = 1000;
-    private InterfaceTerminator             m_Terminator        = new EvaluationTerminator();
-//    private String                          m_OutputFileName    = "none";
+    private InterfaceTerminator m_Terminator = new EvaluationTerminator();
+    //    private String                          m_OutputFileName    = "none";
     transient private InterfacePopulationChangedEventListener m_Listener;
 
     /**
      * Load or create a new instance of the class.
-     * 
+     *
      * @return A loaded (from file) or new instance of the class.
      */
     public static SAParameters getInstance() {
@@ -51,23 +53,26 @@ public class SAParameters extends AbstractOptimizationParameters implements Inte
         }
         return instance;
     }
-    
+
     /**
      *
      */
     public SAParameters() {
-    	super(new SimulatedAnnealing(),new B1Problem(),new EvaluationTerminator());
+        super(new SimulatedAnnealing(), new B1Problem(), new EvaluationTerminator());
     }
 
     private SAParameters(SAParameters Source) {
-    	super(Source);
+        super(Source);
     }
+
     @Override
     public Object clone() {
         return new SAParameters(this);
     }
 
-    /** This method returns a global info string
+    /**
+     * This method returns a global info string
+     *
      * @return description
      */
     public static String globalInfo() {
@@ -79,48 +84,60 @@ public class SAParameters extends AbstractOptimizationParameters implements Inte
         // *pff* i'll ignore that!
     }
 
-    /** Assuming that all optimizer will store thier data in a population
+    /**
+     * Assuming that all optimizer will store thier data in a population
      * we will allow acess to this population to query to current state
      * of the optimizer.
+     *
      * @return The population of current solutions to a given problem.
      */
     public Population getPopulation() {
-        return ((SimulatedAnnealing)this.m_Optimizer).getPopulation();
+        return ((SimulatedAnnealing) this.m_Optimizer).getPopulation();
     }
-    public void setPopulation(Population pop){
-        ((SimulatedAnnealing)this.m_Optimizer).setPopulation(pop);
+
+    public void setPopulation(Population pop) {
+        ((SimulatedAnnealing) this.m_Optimizer).setPopulation(pop);
     }
+
     public String populationTipText() {
         return "Change the number of best individuals stored (MS-SA).";
     }
 
-    /** This methods allow you to set/get the temperatur of the simulated
+    /**
+     * This methods allow you to set/get the temperatur of the simulated
      * annealing procedure
+     *
      * @return The initial temperature.
      */
     public double getInitialTemperature() {
-        return ((SimulatedAnnealing)this.m_Optimizer).getInitialTemperature();
+        return ((SimulatedAnnealing) this.m_Optimizer).getInitialTemperature();
     }
-    public void setInitialTemperature(double pop){
-        ((SimulatedAnnealing)this.m_Optimizer).setInitialTemperature(pop);
+
+    public void setInitialTemperature(double pop) {
+        ((SimulatedAnnealing) this.m_Optimizer).setInitialTemperature(pop);
     }
+
     public String initialTemperatureTipText() {
         return "Set the initial temperature.";
     }
 
-    /** This methods allow you to set/get the temperatur of the simulated
+    /**
+     * This methods allow you to set/get the temperatur of the simulated
      * annealing procedure
+     *
      * @return The initial temperature.
      */
     public double getAlpha() {
-        return ((SimulatedAnnealing)this.m_Optimizer).getAlpha();
+        return ((SimulatedAnnealing) this.m_Optimizer).getAlpha();
     }
-    public void setAlpha(double a){
+
+    public void setAlpha(double a) {
         if (a > 1) {
             a = 1.0;
         }
-        ((SimulatedAnnealing)this.m_Optimizer).setAlpha(a);
+        ((SimulatedAnnealing) this.m_Optimizer).setAlpha(a);
     }
+
     public String alphaTipText() {
         return "Set alpha, which is used to degrade the temperaure.";
     }

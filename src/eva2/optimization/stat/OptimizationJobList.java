@@ -10,6 +10,7 @@ import eva2.optimization.modules.AbstractModuleAdapter;
 import eva2.optimization.modules.GenericModuleAdapter;
 import eva2.optimization.modules.ModuleAdapter;
 import eva2.tools.Serializer;
+
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -28,7 +29,6 @@ import javax.swing.JOptionPane;
  * statistical data.
  *
  * @author mkron
- *
  */
 public class OptimizationJobList extends PropertySelectableList<OptimizationJob> implements Serializable, InterfaceTextListener {
 

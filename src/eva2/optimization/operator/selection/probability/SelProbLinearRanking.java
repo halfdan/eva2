@@ -3,7 +3,8 @@ package eva2.optimization.operator.selection.probability;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
 
-/** A linear ranking method with offsets.
+/**
+ * A linear ranking method with offsets.
  * Created by IntelliJ IDEA.
  * User: streiche
  * Date: 11.06.2004
@@ -12,14 +13,14 @@ import eva2.optimization.population.Population;
  */
 public class SelProbLinearRanking extends AbstractSelProb implements java.io.Serializable {
 
-    private double          nappaPlus   = 1.1;
-    private double          nappaMinus  = 0.9;
+    private double nappaPlus = 1.1;
+    private double nappaMinus = 0.9;
 
     public SelProbLinearRanking() {
     }
 
     public SelProbLinearRanking(SelProbLinearRanking a) {
-        this.nappaPlus  = a.nappaPlus;
+        this.nappaPlus = a.nappaPlus;
         this.nappaMinus = a.nappaMinus;
     }
 
@@ -28,23 +29,25 @@ public class SelProbLinearRanking extends AbstractSelProb implements java.io.Ser
         return (Object) new SelProbLinearRanking(this);
     }
 
-    /** This method computes the selection probability for each individual
+    /**
+     * This method computes the selection probability for each individual
      * in the population. Note: Summed over the complete population the selection
-     *  probability sums up to one.
-     * @param population    The population to compute.
-     * @param data          The input as double[][]
+     * probability sums up to one.
+     *
+     * @param population The population to compute.
+     * @param data       The input as double[][]
      */
     @Override
     public void computeSelectionProbability(Population population, double[][] data, boolean obeyConst) {
-        double                  temp;
-        double[]                result = new double[data.length];
-        int                     tempI, size = population.size();
+        double temp;
+        double[] result = new double[data.length];
+        int tempI, size = population.size();
 
         if (obeyConst) {
             // first check if anyone holds the constraints
             boolean isFeasible = false;
             for (int i = 0; i < population.size(); i++) {
-                if (!((AbstractEAIndividual)population.get(i)).violatesConstraint()) {
+                if (!((AbstractEAIndividual) population.get(i)).violatesConstraint()) {
                     isFeasible = true;
                 }
             }
@@ -58,112 +61,112 @@ public class SelProbLinearRanking extends AbstractSelProb implements java.io.Ser
                             worst = data[i][x];
                         }
                     }
-                    int[]       rank_index = new int[data.length];
-                    double[]    fitness    = new double[data.length];
+                    int[] rank_index = new int[data.length];
+                    double[] fitness = new double[data.length];
                     for (int i = 0; i < result.length; i++) {
                         result[i] = 0;
                     }
                     for (int i = 0; i < data.length; i++) {
-                        if (!(((AbstractEAIndividual)population.get(i)).violatesConstraint())) {
-                            fitness[i]      = data[i][x];
+                        if (!(((AbstractEAIndividual) population.get(i)).violatesConstraint())) {
+                            fitness[i] = data[i][x];
                         } else {
-                            fitness[i]      = worst;
+                            fitness[i] = worst;
                         }
-                        rank_index[i]   = i;
+                        rank_index[i] = i;
                     }
 
                     //rank sorting
                     for (int index = 0; index < fitness.length; index++) {
                         int min = index;
-                        for(int i = index; i < fitness.length; i++) {
-                            if(fitness[min] > fitness[i]) {
+                        for (int i = index; i < fitness.length; i++) {
+                            if (fitness[min] > fitness[i]) {
                                 min = i;
                             }
                         }
-                        if(fitness[index] != fitness[min]) {
-                            temp                = fitness[index];
-                            fitness[index]      = fitness[min];
-                            fitness[min]        = temp;
-                            tempI               = rank_index[index];
-                            rank_index[index]   = rank_index[min];
-                            rank_index[min]     = tempI;
+                        if (fitness[index] != fitness[min]) {
+                            temp = fitness[index];
+                            fitness[index] = fitness[min];
+                            fitness[min] = temp;
+                            tempI = rank_index[index];
+                            rank_index[index] = rank_index[min];
+                            rank_index[min] = tempI;
                         }
                     }
                     // set the selection propability
                     for (int i = 0; i < data.length; i++) {
-                        temp = (1/(double)size) * (this.nappaPlus - ((this.nappaPlus - this.nappaMinus)*((double)(i)/(double)(size-1))));
-                        ((AbstractEAIndividual)population.get(rank_index[i])).SetSelectionProbability(x, temp);
+                        temp = (1 / (double) size) * (this.nappaPlus - ((this.nappaPlus - this.nappaMinus) * ((double) (i) / (double) (size - 1))));
+                        ((AbstractEAIndividual) population.get(rank_index[i])).SetSelectionProbability(x, temp);
                     }
                 }
             } else {
                 // not one is feasible therefore select the best regarding feasibility
-                int[]       rank_index = new int[data.length];
-                double[]    fitness    = new double[data.length];
+                int[] rank_index = new int[data.length];
+                double[] fitness = new double[data.length];
                 for (int i = 0; i < result.length; i++) {
                     result[i] = 0;
                 }
                 for (int i = 0; i < data.length; i++) {
-                    fitness[i]      = -((AbstractEAIndividual)population.get(i)).getConstraintViolation();
-                    rank_index[i]   = i;
+                    fitness[i] = -((AbstractEAIndividual) population.get(i)).getConstraintViolation();
+                    rank_index[i] = i;
                 }
 
                 //rank sorting
                 for (int index = 0; index < fitness.length; index++) {
                     int min = index;
-                    for(int i = index; i < fitness.length; i++) {
-                        if(fitness[min] > fitness[i]) {
+                    for (int i = index; i < fitness.length; i++) {
+                        if (fitness[min] > fitness[i]) {
                             min = i;
                         }
                     }
-                    if(fitness[index] != fitness[min]) {
-                        temp                = fitness[index];
-                        fitness[index]      = fitness[min];
-                        fitness[min]        = temp;
-                        tempI               = rank_index[index];
-                        rank_index[index]   = rank_index[min];
-                        rank_index[min]     = tempI;
+                    if (fitness[index] != fitness[min]) {
+                        temp = fitness[index];
+                        fitness[index] = fitness[min];
+                        fitness[min] = temp;
+                        tempI = rank_index[index];
+                        rank_index[index] = rank_index[min];
+                        rank_index[min] = tempI;
                     }
                 }
                 // set the selection propability
                 for (int i = 0; i < data.length; i++) {
-                    double[] tmpD   = new double[1];
-                    tmpD[0] = (1/(double)size) * (this.nappaPlus - ((this.nappaPlus - this.nappaMinus)*((double)(i)/(double)(size-1))));
-                    ((AbstractEAIndividual)population.get(rank_index[i])).SetSelectionProbability(tmpD);
+                    double[] tmpD = new double[1];
+                    tmpD[0] = (1 / (double) size) * (this.nappaPlus - ((this.nappaPlus - this.nappaMinus) * ((double) (i) / (double) (size - 1))));
+                    ((AbstractEAIndividual) population.get(rank_index[i])).SetSelectionProbability(tmpD);
                 }
             }
         } else {
             for (int x = 0; x < data[0].length; x++) {
-                int[]       rank_index = new int[data.length];
-                double[]    fitness    = new double[data.length];
+                int[] rank_index = new int[data.length];
+                double[] fitness = new double[data.length];
                 for (int i = 0; i < result.length; i++) {
                     result[i] = 0;
                 }
                 for (int i = 0; i < data.length; i++) {
-                    fitness[i]      = data[i][x];
-                    rank_index[i]   = i;
+                    fitness[i] = data[i][x];
+                    rank_index[i] = i;
                 }
 
                 //rank sorting
                 for (int index = 0; index < fitness.length; index++) {
                     int min = index;
-                    for(int i = index; i < fitness.length; i++) {
-                        if(fitness[min] > fitness[i]) {
+                    for (int i = index; i < fitness.length; i++) {
+                        if (fitness[min] > fitness[i]) {
                             min = i;
                         }
                     }
-                    if(fitness[index] != fitness[min]) {
-                        temp                = fitness[index];
-                        fitness[index]      = fitness[min];
-                        fitness[min]        = temp;
-                        tempI               = rank_index[index];
-                        rank_index[index]   = rank_index[min];
-                        rank_index[min]     = tempI;
+                    if (fitness[index] != fitness[min]) {
+                        temp = fitness[index];
+                        fitness[index] = fitness[min];
+                        fitness[min] = temp;
+                        tempI = rank_index[index];
+                        rank_index[index] = rank_index[min];
+                        rank_index[min] = tempI;
                     }
                 }
                 // set the selection propability
                 for (int i = 0; i < data.length; i++) {
-                    temp = (1/(double)size) * (this.nappaPlus - ((this.nappaPlus - this.nappaMinus)*((double)(i)/(double)(size-1))));
-                    ((AbstractEAIndividual)population.get(rank_index[i])).SetSelectionProbability(x, temp);
+                    temp = (1 / (double) size) * (this.nappaPlus - ((this.nappaPlus - this.nappaMinus) * ((double) (i) / (double) (size - 1))));
+                    ((AbstractEAIndividual) population.get(rank_index[i])).SetSelectionProbability(x, temp);
                 }
             }
         }
@@ -171,21 +174,28 @@ public class SelProbLinearRanking extends AbstractSelProb implements java.io.Ser
 /**********************************************************************************************************************
  * These are for GUI
  */
-    /** This method returns a global info string
+    /**
+     * This method returns a global info string
+     *
      * @return description
      */
     public static String globalInfo() {
         return "This is linear ranking normation.";
     }
-    /** This method will return a naming String
+
+    /**
+     * This method will return a naming String
+     *
      * @return The name of the algorithm
      */
     public String getName() {
         return "Linear Ranking";
     }
 
-    /** This methods allow you to set and get the nappa.
-     * @param x     Long seed.
+    /**
+     * This methods allow you to set and get the nappa.
+     *
+     * @param x Long seed.
      */
     public void setNappa(double x) {
         if (x < 1) {
@@ -197,9 +207,11 @@ public class SelProbLinearRanking extends AbstractSelProb implements java.io.Ser
         nappaPlus = x;
         this.nappaMinus = 2 - this.nappaPlus;
     }
+
     public double getNappa() {
         return nappaPlus;
     }
+
     public String nappaTipText() {
         return "The etha variable in lin. ranking (1<= etha <= 2).";
     }

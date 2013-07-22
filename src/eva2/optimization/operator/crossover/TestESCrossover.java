@@ -9,6 +9,7 @@ import eva2.optimization.individuals.InterfaceDataTypeDouble;
 import eva2.optimization.population.Population;
 import eva2.optimization.problems.F1Problem;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,28 +25,28 @@ import javax.swing.*;
  * To change this template use Options | File Templates.
  */
 public class TestESCrossover implements java.io.Serializable {
-    private JFrame          m_Frame;
-    private JPanel          m_MainPanel, m_GraphPanel, m_ButtonPanel;
-    private JComponent      m_OptionsPanel;
-    private JButton         m_InitButton, m_Init2Button, m_Init3Button, m_CrossButton;
+    private JFrame m_Frame;
+    private JPanel m_MainPanel, m_GraphPanel, m_ButtonPanel;
+    private JComponent m_OptionsPanel;
+    private JButton m_InitButton, m_Init2Button, m_Init3Button, m_CrossButton;
 
     private InterfaceOptimizationProblem m_Problem = new F1Problem();
-    private InterfaceCrossover      m_Crossover = new CrossoverESUNDX();
-    private Population              m_Partners;
-    private AbstractEAIndividual    m_Daddy;
-    private AbstractEAIndividual[]  m_OffSprings;
+    private InterfaceCrossover m_Crossover = new CrossoverESUNDX();
+    private Population m_Partners;
+    private AbstractEAIndividual m_Daddy;
+    private AbstractEAIndividual[] m_OffSprings;
 
-    private int             m_NumberOfCrossovers    = 100;
-    private int             m_Dimension             = 2;
-    private int             m_NumberOfPartners      = 1;
-    double[]                pff;
+    private int m_NumberOfCrossovers = 100;
+    private int m_Dimension = 2;
+    private int m_NumberOfPartners = 1;
+    double[] pff;
 
-    private Plot            m_Plot;
+    private Plot m_Plot;
 
 
     private void initFrame() {
         // init the main frame
-        this.m_Frame        = new JFrame();
+        this.m_Frame = new JFrame();
         this.m_Frame.setTitle("ES Crossover Tester");
         this.m_Frame.setSize(300, 400);
         this.m_Frame.setLocation(530, 50);
@@ -56,7 +57,7 @@ public class TestESCrossover implements java.io.Serializable {
             }
         });
         // build the main panel
-        this.m_MainPanel    = new JPanel();
+        this.m_MainPanel = new JPanel();
         this.m_Frame.getContentPane().add(this.m_MainPanel);
         this.m_MainPanel.setLayout(new BorderLayout());
         // build the button panel
@@ -108,21 +109,21 @@ public class TestESCrossover implements java.io.Serializable {
             tmpIndyD.setDoubleDataLength(m_Dimension);
             tmpIndyD.SetDoubleRange(newRange);
             for (int i = 0; i < m_Partners.getTargetSize(); i++) {
-                tmpIndyEA = (AbstractEAIndividual)((AbstractEAIndividual)tmpIndyD).clone();
+                tmpIndyEA = (AbstractEAIndividual) ((AbstractEAIndividual) tmpIndyD).clone();
                 tmpIndyEA.init(m_Problem);
                 m_Partners.add(tmpIndyEA);
             }
             m_Partners.init();
-            m_Daddy = (AbstractEAIndividual)((AbstractEAIndividual)tmpIndyD).clone();
+            m_Daddy = (AbstractEAIndividual) ((AbstractEAIndividual) tmpIndyD).clone();
             m_Daddy.init(m_Problem);
             m_Plot.clearAll();
             m_Plot.setUnconnectedPoint(-2, -2, 0);
             m_Plot.setUnconnectedPoint(2, 2, 0);
-            double[]                x;
-            x = ((InterfaceDataTypeDouble)m_Daddy).getDoubleData();
+            double[] x;
+            x = ((InterfaceDataTypeDouble) m_Daddy).getDoubleData();
             m_Plot.setUnconnectedPoint(x[0], x[1], 0);
             for (int i = 0; i < m_Partners.size(); i++) {
-                x = ((InterfaceDataTypeDouble)m_Partners.get(i)).getDoubleData();
+                x = ((InterfaceDataTypeDouble) m_Partners.get(i)).getDoubleData();
                 m_Plot.setUnconnectedPoint(x[0], x[1], 0);
                 m_Plot.setUnconnectedPoint(x[0], x[1], 0);
                 pff = x;
@@ -150,23 +151,23 @@ public class TestESCrossover implements java.io.Serializable {
             double[] tmpD = new double[2];
             tmpD[0] = 1;
             tmpD[1] = 1;
-            ((AbstractEAIndividual)tmpIndyD).initByValue(tmpD, m_Problem);
-            tmpIndyEA = (AbstractEAIndividual)((AbstractEAIndividual)tmpIndyD).clone();
+            ((AbstractEAIndividual) tmpIndyD).initByValue(tmpD, m_Problem);
+            tmpIndyEA = (AbstractEAIndividual) ((AbstractEAIndividual) tmpIndyD).clone();
             tmpD = new double[2];
             tmpD[0] = -1;
             tmpD[1] = -1;
-            ((AbstractEAIndividual)tmpIndyEA).initByValue(tmpD, m_Problem);
+            ((AbstractEAIndividual) tmpIndyEA).initByValue(tmpD, m_Problem);
             m_Partners.addIndividual(tmpIndyEA);
 
-            m_Daddy = (AbstractEAIndividual)((AbstractEAIndividual)tmpIndyD).clone();
+            m_Daddy = (AbstractEAIndividual) ((AbstractEAIndividual) tmpIndyD).clone();
             m_Plot.clearAll();
             m_Plot.setUnconnectedPoint(-2, -2, 0);
             m_Plot.setUnconnectedPoint(2, 2, 0);
-            double[]                x;
-            x = ((InterfaceDataTypeDouble)m_Daddy).getDoubleData();
+            double[] x;
+            x = ((InterfaceDataTypeDouble) m_Daddy).getDoubleData();
             m_Plot.setUnconnectedPoint(x[0], x[1], 0);
             for (int i = 0; i < m_Partners.size(); i++) {
-                x = ((InterfaceDataTypeDouble)m_Partners.get(i)).getDoubleData();
+                x = ((InterfaceDataTypeDouble) m_Partners.get(i)).getDoubleData();
                 m_Plot.setUnconnectedPoint(x[0], x[1], 0);
                 m_Plot.setUnconnectedPoint(x[0], x[1], 0);
                 pff = x;
@@ -194,29 +195,29 @@ public class TestESCrossover implements java.io.Serializable {
             double[] tmpD = new double[2];
             tmpD[0] = 0.5;
             tmpD[1] = 1.1;
-            ((AbstractEAIndividual)tmpIndyD).initByValue(tmpD, m_Problem);
-            tmpIndyEA = (AbstractEAIndividual)((AbstractEAIndividual)tmpIndyD).clone();
+            ((AbstractEAIndividual) tmpIndyD).initByValue(tmpD, m_Problem);
+            tmpIndyEA = (AbstractEAIndividual) ((AbstractEAIndividual) tmpIndyD).clone();
             tmpD = new double[2];
             tmpD[0] = 0.1;
             tmpD[1] = -0.65;
-            ((AbstractEAIndividual)tmpIndyEA).initByValue(tmpD, m_Problem);
+            ((AbstractEAIndividual) tmpIndyEA).initByValue(tmpD, m_Problem);
             m_Partners.addIndividual(tmpIndyEA);
-            tmpIndyEA = (AbstractEAIndividual)((AbstractEAIndividual)tmpIndyD).clone();
+            tmpIndyEA = (AbstractEAIndividual) ((AbstractEAIndividual) tmpIndyD).clone();
             tmpD = new double[2];
             tmpD[0] = -0.85;
             tmpD[1] = 0.3;
-            ((AbstractEAIndividual)tmpIndyEA).initByValue(tmpD, m_Problem);
+            ((AbstractEAIndividual) tmpIndyEA).initByValue(tmpD, m_Problem);
             m_Partners.addIndividual(tmpIndyEA);
 
-            m_Daddy = (AbstractEAIndividual)((AbstractEAIndividual)tmpIndyD).clone();
+            m_Daddy = (AbstractEAIndividual) ((AbstractEAIndividual) tmpIndyD).clone();
             m_Plot.clearAll();
             m_Plot.setUnconnectedPoint(-2, -2, 2);
             m_Plot.setUnconnectedPoint(2, 2, 2);
-            double[]                x;
-            x = ((InterfaceDataTypeDouble)m_Daddy).getDoubleData();
+            double[] x;
+            x = ((InterfaceDataTypeDouble) m_Daddy).getDoubleData();
             m_Plot.setUnconnectedPoint(x[0], x[1], 0);
             for (int i = 0; i < m_Partners.size(); i++) {
-                x = ((InterfaceDataTypeDouble)m_Partners.get(i)).getDoubleData();
+                x = ((InterfaceDataTypeDouble) m_Partners.get(i)).getDoubleData();
                 m_Plot.setUnconnectedPoint(x[0], x[1], 1);
                 m_Plot.setUnconnectedPoint(x[0], x[1], 1);
                 pff = x;
@@ -227,12 +228,12 @@ public class TestESCrossover implements java.io.Serializable {
     ActionListener XListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent event) {
-            double[]                x;
-            AbstractEAIndividual[]  result;
+            double[] x;
+            AbstractEAIndividual[] result;
             for (int i = 0; i < m_NumberOfCrossovers; i++) {
                 result = m_Crossover.mate(m_Daddy, m_Partners);
                 for (int j = 0; j < result.length; j++) {
-                    x = ((InterfaceDataTypeDouble)result[j]).getDoubleData();
+                    x = ((InterfaceDataTypeDouble) result[j]).getDoubleData();
                     m_Plot.setUnconnectedPoint(x[0], x[1], 0);
                     m_Plot.setUnconnectedPoint(pff[0], pff[1], 1);
                     m_Plot.setUnconnectedPoint(2, 2, 2);
@@ -241,7 +242,9 @@ public class TestESCrossover implements java.io.Serializable {
         }
     };
 
-    /** This method will test the crossover operator
+    /**
+     * This method will test the crossover operator
+     *
      * @param args
      */
     public static void main(String[] args) {
@@ -253,27 +256,35 @@ public class TestESCrossover implements java.io.Serializable {
     public void setCrossover(InterfaceCrossover NumberOfCrossovers) {
         this.m_Crossover = NumberOfCrossovers;
     }
+
     public InterfaceCrossover getCrossover() {
         return this.m_Crossover;
     }
+
     public String crossoverTipText() {
         return "Choose the crossovers operator.";
     }
+
     public void setNumberOfCrossovers(int NumberOfCrossovers) {
         this.m_NumberOfCrossovers = NumberOfCrossovers;
     }
+
     public int getNumberOfCrossovers() {
         return this.m_NumberOfCrossovers;
     }
+
     public String numberOfCrossoversTipText() {
         return "The number of crossovers, that are to be performed.";
     }
+
     public void setNumberOfPartners(int NumberOfCrossovers) {
         this.m_NumberOfPartners = NumberOfCrossovers;
     }
+
     public int getNumberOfPartners() {
         return this.m_NumberOfPartners;
     }
+
     public String numberOfPartnersTipText() {
         return "The number of partners, that are used.";
     }

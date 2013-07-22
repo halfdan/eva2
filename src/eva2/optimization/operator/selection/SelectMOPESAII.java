@@ -5,12 +5,14 @@ import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.operator.archiving.ArchivingPESAII;
 import eva2.optimization.population.Population;
 import eva2.tools.math.RNG;
+
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
-/** The multi-objective PESA II selection criteria based on an n-dimensional
- * grid using a squeezing factor. 
+/**
+ * The multi-objective PESA II selection criteria based on an n-dimensional
+ * grid using a squeezing factor.
  * Created by IntelliJ IDEA.
  * User: streiche
  * Date: 11.08.2004
@@ -19,19 +21,19 @@ import java.util.Hashtable;
  */
 public class SelectMOPESAII implements InterfaceSelection, java.io.Serializable {
 
-    ArchivingPESAII     m_PESAII            = new ArchivingPESAII();
-    int[]               m_Squeeze;
-    int                 m_TournamentSize    = 2;
-    ArrayList           m_GridBoxes;
-    boolean             m_ObeyDebsConstViolationPrinciple = true;
+    ArchivingPESAII m_PESAII = new ArchivingPESAII();
+    int[] m_Squeeze;
+    int m_TournamentSize = 2;
+    ArrayList m_GridBoxes;
+    boolean m_ObeyDebsConstViolationPrinciple = true;
 
     public SelectMOPESAII() {
     }
 
     public SelectMOPESAII(SelectMOPESAII a) {
-        this.m_PESAII           = new ArchivingPESAII();
-        this.m_TournamentSize   = a.m_TournamentSize;
-        this.m_ObeyDebsConstViolationPrinciple  = a.m_ObeyDebsConstViolationPrinciple;
+        this.m_PESAII = new ArchivingPESAII();
+        this.m_TournamentSize = a.m_TournamentSize;
+        this.m_ObeyDebsConstViolationPrinciple = a.m_ObeyDebsConstViolationPrinciple;
     }
 
     @Override
@@ -39,28 +41,30 @@ public class SelectMOPESAII implements InterfaceSelection, java.io.Serializable 
         return (Object) new SelectMOPESAII(this);
     }
 
-    /** This method allows an selection method to do some preliminary
+    /**
+     * This method allows an selection method to do some preliminary
      * calculations on the population before selection is performed.
      * For example: Homologeuos mate could compute all the distances
      * before hand...
-     * @param population    The population that is to be processed.
+     *
+     * @param population The population that is to be processed.
      */
     @Override
     public void prepareSelection(Population population) {
-        this.m_Squeeze              = this.m_PESAII.calculateSqueezeFactor(population);
-        Hashtable tmpGridBoxes      = new Hashtable();
-        ArrayList           tmp;
+        this.m_Squeeze = this.m_PESAII.calculateSqueezeFactor(population);
+        Hashtable tmpGridBoxes = new Hashtable();
+        ArrayList tmp;
         AbstractEAIndividual tmpIndy;
-        int[]               gridBox;
-        String              tmpString;
+        int[] gridBox;
+        String tmpString;
 
         // first build the hashtable
         for (int i = 0; i < population.size(); i++) {
-            tmpIndy = (AbstractEAIndividual)population.get(i);
-            gridBox = (int[])tmpIndy.getData("GridBox");
-            tmpString ="";
+            tmpIndy = (AbstractEAIndividual) population.get(i);
+            gridBox = (int[]) tmpIndy.getData("GridBox");
+            tmpString = "";
             for (int j = 0; j < gridBox.length; j++) {
-                tmpString += gridBox[j]+"/";
+                tmpString += gridBox[j] + "/";
             }
             if (tmpGridBoxes.get(tmpString) == null) {
                 tmp = new ArrayList();
@@ -78,11 +82,13 @@ public class SelectMOPESAII implements InterfaceSelection, java.io.Serializable 
         }
     }
 
-    /** This method will select one Individual from the given
+    /**
+     * This method will select one Individual from the given
      * Population in respect to the selection propability of the
      * individual.
-     * @param population    The source population where to select from
-     * @param size          The number of Individuals to select
+     *
+     * @param population The source population where to select from
+     * @param size       The number of Individuals to select
      * @return The selected population.
      */
     @Override
@@ -95,22 +101,24 @@ public class SelectMOPESAII implements InterfaceSelection, java.io.Serializable 
         return result;
     }
 
-   /** This method selects a single individual from the current population
+    /**
+     * This method selects a single individual from the current population
+     *
      * @param population The population to select from
      */
     private AbstractEAIndividual select(Population population) {
-       AbstractEAIndividual     resultIndy;
-       ArrayList                box1, box2;
-       int                      winner, tmp;
+        AbstractEAIndividual resultIndy;
+        ArrayList box1, box2;
+        int winner, tmp;
 
         try {
-            box1 = (ArrayList)this.m_GridBoxes.get(RNG.randomInt(0, this.m_GridBoxes.size()-1));
-            box2 = (ArrayList)this.m_GridBoxes.get(RNG.randomInt(0, this.m_GridBoxes.size()-1));
-            if (((Integer)((AbstractEAIndividual)box1.get(0)).getData("SqueezeFactor")).intValue()
-                < ((Integer)((AbstractEAIndividual)box2.get(0)).getData("SqueezeFactor")).intValue()) {
-                resultIndy = (AbstractEAIndividual) (box1.get(RNG.randomInt(0, box1.size()-1)));
+            box1 = (ArrayList) this.m_GridBoxes.get(RNG.randomInt(0, this.m_GridBoxes.size() - 1));
+            box2 = (ArrayList) this.m_GridBoxes.get(RNG.randomInt(0, this.m_GridBoxes.size() - 1));
+            if (((Integer) ((AbstractEAIndividual) box1.get(0)).getData("SqueezeFactor")).intValue()
+                    < ((Integer) ((AbstractEAIndividual) box2.get(0)).getData("SqueezeFactor")).intValue()) {
+                resultIndy = (AbstractEAIndividual) (box1.get(RNG.randomInt(0, box1.size() - 1)));
             } else {
-                resultIndy = (AbstractEAIndividual) (box2.get(RNG.randomInt(0, box2.size()-1)));
+                resultIndy = (AbstractEAIndividual) (box2.get(RNG.randomInt(0, box2.size() - 1)));
             }
         } catch (java.lang.IndexOutOfBoundsException e) {
             System.out.println("Tournament Selection produced IndexOutOfBoundsException!");
@@ -119,10 +127,12 @@ public class SelectMOPESAII implements InterfaceSelection, java.io.Serializable 
         return resultIndy;
     }
 
-    /** This method allows you to select partners for a given Individual
-     * @param dad               The already seleceted parent
-     * @param avaiablePartners  The mating pool.
-     * @param size              The number of partners needed.
+    /**
+     * This method allows you to select partners for a given Individual
+     *
+     * @param dad              The already seleceted parent
+     * @param avaiablePartners The mating pool.
+     * @param size             The number of partners needed.
      * @return The selected partners.
      */
     @Override
@@ -133,30 +143,39 @@ public class SelectMOPESAII implements InterfaceSelection, java.io.Serializable 
 /**********************************************************************************************************************
  * These are for GUI
  */
-    /** This method returns a global info string
+    /**
+     * This method returns a global info string
+     *
      * @return description
      */
     public static String globalInfo() {
         return "Performs a binary tournament selection, preferring the gridbox of smaller squeezing factor and selecting a random individual from the winner box.";
     }
-    /** This method will return a naming String
+
+    /**
+     * This method will return a naming String
+     *
      * @return The name of the algorithm
      */
     public String getName() {
         return "PESAII Selection";
     }
 
-    /** Toggle the use of obeying the constraint violation principle
+    /**
+     * Toggle the use of obeying the constraint violation principle
      * of Deb
-     * @param b     The new state
+     *
+     * @param b The new state
      */
     @Override
     public void setObeyDebsConstViolationPrinciple(boolean b) {
         this.m_ObeyDebsConstViolationPrinciple = b;
     }
+
     public boolean getObeyDebsConstViolationPrinciple() {
         return this.m_ObeyDebsConstViolationPrinciple;
     }
+
     public String obeyDebsConstViolationPrincipleToolTip() {
         return "Toggle the use of Deb's coonstraint violation principle.";
     }

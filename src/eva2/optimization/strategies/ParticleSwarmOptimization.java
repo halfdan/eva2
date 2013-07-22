@@ -27,6 +27,7 @@ import eva2.tools.chart2d.DPointSet;
 import eva2.tools.math.Jama.Matrix;
 import eva2.tools.math.Mathematics;
 import eva2.tools.math.RNG;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Vector;
@@ -37,10 +38,9 @@ import java.util.Vector;
  * range constraints on the decision variables. I've implemented 'brakes' before
  * an individual is updated it is checked whether the new individual would
  * violate range constraints, if so the velocity vector is reduced.
- *
+ * <p/>
  * Possible topologies are: "Linear", "Grid", "Star", "Multi-Swarm", "Tree",
  * "HPSO", "Random" in that order starting by 0.
- *
  */
 public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Serializable, InterfaceAdditionalPopulationInformer {
 
@@ -146,10 +146,10 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
     /**
      * Constructor for most common parameters with constriction based approach.
      *
-     * @param popSize swarm size
-     * @param p1 the value for phi1
-     * @param p2 the value for phi1
-     * @param topo type of the neighbourhood topology
+     * @param popSize   swarm size
+     * @param p1        the value for phi1
+     * @param p2        the value for phi1
+     * @param topo      type of the neighbourhood topology
      * @param topoRange range of the neighbourhood topology
      */
     public ParticleSwarmOptimization(int popSize, double p1, double p2, PSOTopologyEnum topo, int topoRange) {
@@ -161,7 +161,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
         topology = topo;
     }
 
-//	/**
+    //	/**
 //	 * Constructor for most common parameters with constriction based approach and local search.
 //	 * 
 //	 * @param popSize swarm size
@@ -222,7 +222,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
     /**
      * Set the initial random velocity vector.
      *
-     * @param indy the individual to work on
+     * @param indy     the individual to work on
      * @param initialV initial velocity relative to the range
      */
     public static void initIndividualDefaults(AbstractEAIndividual indy, double initialV) {
@@ -314,16 +314,15 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
      * the last entry. The velocity vector key is to be passed over. Optionally,
      * an additional identifier is tested - they may be null.
      *
+     * @param pop            the swarm population
+     * @param calcModeSwitch mode switch
+     * @param velocityKey    String to access velocity vector within
+     *                       AbstractEAIndividual
+     * @param typeString     optional type string to access individual type
+     * @param requiredType   optional required type identifier of the individual.
+     * @return double array containing the vectorial sum of particle velocities
+     *         or an array containing the average absolute speed
      * @see AbstractEAIndividual.getData(String)
-     *
-     * @param pop	the swarm population
-     * @param calcModeSwitch	mode switch
-     * @param velocityKey	String to access velocity vector within
-     * AbstractEAIndividual
-     * @param typeString	optional type string to access individual type
-     * @param requiredType optional required type identifier of the individual.
-     * @return	double array containing the vectorial sum of particle velocities
-     * or an array containing the average absolute speed
      */
     public static double[] getPopulationVelSpeed(Population pop, int calcModeSwitch, final String velocityKey, final String typeString, final Object requiredType) {
         AbstractEAIndividual indy = (AbstractEAIndividual) pop.get(0);
@@ -345,11 +344,11 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
         double[] velocity = (double[]) indy.getData(velocityKey);
         if (velocity != null) {
             if (calcVectVelocity) {
-                retSize += velocity.length;	// entries for cumulative velocity 
+                retSize += velocity.length;    // entries for cumulative velocity
             }
             if (calcAbsSpeedAverage) {
-                retSize++;		// one entry for average absolute speed
-            }			// return length of the array depends on what should be calculated
+                retSize++;        // one entry for average absolute speed
+            }            // return length of the array depends on what should be calculated
             ret = new double[retSize];
 
             double[] cumulVeloc = new double[velocity.length];
@@ -404,8 +403,8 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
      * Check particle type and return true if the particle is 'standard', i.e.
      * it has a speed property.
      *
-     * @param indy	the individual to check
-     * @return	true if the particle has a speed property
+     * @param indy the individual to check
+     * @return true if the particle has a speed property
      */
     protected boolean particleHasSpeed(AbstractEAIndividual indy) {
         return isParticleType(indy, defaultType);
@@ -424,7 +423,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
      * given population.
      *
      * @param pop
-     * @return	vectorial sum of the particle velocities
+     * @return vectorial sum of the particle velocities
      */
     public double[] getPopulationVelocity(Population pop) {
         return getPopulationVelSpeed(pop, 1, partVelKey, partTypeKey, defaultType);
@@ -445,7 +444,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
      * This method will init the optimizer with a given population or, if pop is
      * null, initialize the current population as if it was new.
      *
-     * @param pop The initial population
+     * @param pop   The initial population
      * @param reset If true the population is reset.
      */
     @Override
@@ -625,8 +624,8 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
      * This method will update a given individual according to the PSO method
      *
      * @param index The individual to update.
-     * @param pop The current population.
-     * @param best The best individual found so far.
+     * @param pop   The current population.
+     * @param best  The best individual found so far.
      */
     protected void updateIndividual(int index, AbstractEAIndividual indy, Population pop) {
         if (indy instanceof InterfaceDataTypeDouble) {
@@ -719,7 +718,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
      * Loop the population and update each individual props if indicated by
      * isIndividualToUpdate.
      *
-     * @param pop	the population to work on
+     * @param pop the population to work on
      */
     protected void updateSwarmMemory(Population pop) {
         for (int i = 0; i < pop.size(); i++) {
@@ -751,7 +750,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
      * Write current fitness and position as best fitness and position into
      * individual properties.
      *
-     * @param srcIndy	the individual to update
+     * @param srcIndy the individual to update
      */
     protected void updateIndProps(AbstractEAIndividual trgIndy, AbstractEAIndividual srcIndy) {
         trgIndy.putData(partBestFitKey, srcIndy.getFitness().clone());
@@ -957,6 +956,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 //		//vecSum.normalize();
 //		//System.out.println(vec.toString() + " -> " + vecSum.toString());
 //	}
+
     /**
      * Return a random vector after a gaussian distribution oriented along dir,
      * meaning that variance is len(dir) along dir and len(dir)/scale in any
@@ -1021,11 +1021,11 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
      * In the topology range for the given index, find the best stored
      * individual and return its position.
      *
-     * @param index	index of the individual for which to check
-     * @param pop	the current swarm
-     * @param best	the currently best individual
-     * @return	a copy of the position of the best remembered individual in the
-     * neigbourhood
+     * @param index index of the individual for which to check
+     * @param pop   the current swarm
+     * @param best  the currently best individual
+     * @return a copy of the position of the best remembered individual in the
+     *         neigbourhood
      */
     protected double[] findNeighbourhoodOptimum(int index, Population pop) {
         double[] localBestPosition = null;
@@ -1081,7 +1081,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
             case multiSwarm:
                 // self-organised multi-swarms
                 AbstractEAIndividual leader = (AbstractEAIndividual) indy.getData(multiSwTypeKey);
-                if (leader != null) {	// refer to position of leader, this may be the individual itself
+                if (leader != null) {    // refer to position of leader, this may be the individual itself
                     if ((leader == indy) && ((Integer) indy.getData(multiSwSizeKey) < minSubSwarmSize)) {
                         // swarm too small
                         this.compareAndSetAttractor(localBestFitness, localBestPosition, bestIndy, useHistoric);
@@ -1100,7 +1100,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
             case tree: // Sorted Tree
                 sortedIndex = (Integer) ((AbstractEAIndividual) sortedPop[index]).getData(sortedIndexKey);
 
-                if (sortedIndex > 0) {	// its found and its not the root. root has no parent to check for
+                if (sortedIndex > 0) {    // its found and its not the root. root has no parent to check for
                     k = getParentIndex(m_TopologyRange, sortedIndex, pop.size());
                     compareAndSetAttractor(localBestFitness, localBestPosition, (AbstractEAIndividual) sortedPop[k], useHistoric);
                 }
@@ -1268,9 +1268,9 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
     /**
      * Test a position for range violation efficiently.
      *
-     * @param pos	the position vector to test
-     * @param range	the range array
-     * @return	true, if pos violoates range, else false
+     * @param pos   the position vector to test
+     * @param range the range array
+     * @return true, if pos violoates range, else false
      */
     protected boolean isOutOfRange(double[] pos, double[][] range) {
         boolean violatesRange = false;
@@ -1289,9 +1289,9 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
      * factor. Requires the range array because the speed is handled relative to
      * the range.
      *
-     * @param curVelocity	the velocity vector to be modified
-     * @param range	the range array
-     * @param speedLim	the speed limit relative to the range
+     * @param curVelocity the velocity vector to be modified
+     * @param range       the range array
+     * @param speedLim    the speed limit relative to the range
      */
     protected void enforceSpeedLimit(double[] curVelocity, double[][] range, double speedLim) {
         while (Mathematics.getRelativeLength(curVelocity, range) > speedLim) {
@@ -1306,9 +1306,9 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
      * remains inside the range array. Therefore, the velocity may be repeatedly
      * multiplied by reduceSpeedOnConstViolation.
      *
-     * @param pos	the current particle position
-     * @param velocity	the current particle velocity to be modified
-     * @param range	the range array
+     * @param pos      the current particle position
+     * @param velocity the current particle velocity to be modified
+     * @param range    the range array
      */
     protected void ensureConstraints(double[] pos, double[] velocity, double[][] range) {
         double[] newPos = new double[pos.length];
@@ -1327,7 +1327,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
             if (!Mathematics.isInRange(newPos[i], range[i][0], range[i][1])) {
                 if ((pos[i] == range[i][0]) || (pos[i] == range[i][1])) {
                     // bounce?
-                    velocity[i] *= reduceSpeedOnConstViolation; 	// bounce velocity and reduce
+                    velocity[i] *= reduceSpeedOnConstViolation;    // bounce velocity and reduce
                     if (((pos[i] == range[i][0]) && (newPos[i] < range[i][0])) || ((pos[i] == range[i][1]) && (newPos[i] > range[i][1]))) {
                         velocity[i] *= -1; // bounce only if leaving in this direction.
                     }
@@ -1415,7 +1415,6 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 
     /**
      * Do some preparations in the beginning of the loop.
-     *
      */
     protected void startOptimize() {
         if (TRACE) {
@@ -1435,7 +1434,6 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 
     /**
      * Log the best individual so far.
-     *
      */
     protected void logBestIndividual() {
         if (this.m_Population.getBestEAIndividual().isDominatingDebConstraints(this.m_BestIndividual)) {
@@ -1448,7 +1446,6 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 
     /**
      * Loop over the population and trigger the individual update.
-     *
      */
     protected void updatePopulation() {
 
@@ -1521,7 +1518,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
                 for (int i = 0; i < leaders.size(); i++) {
                     dist = metric.distance((AbstractEAIndividual) sortedPop[cur], leaders.get(i));
                     //System.out.println("dist is "+dist);
-                    if ((m_swarmRadius * 2.) > dist) {	// a formal leader is found
+                    if ((m_swarmRadius * 2.) > dist) {    // a formal leader is found
                         int sSize = (Integer) (leaders.get(i)).getData(multiSwSizeKey);
                         if ((maxSubSwarmSize > 0) && (sSize >= maxSubSwarmSize)) {
                             // swarm is too big already
@@ -1650,6 +1647,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 //		}
 //		return perm;
 //	}
+
     /**
      * This method is simply for debugging.
      */
@@ -2055,7 +2053,6 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 
     /**
      * @return true if swarm visualization is turned on
-     *
      */
     public boolean isShow() {
         return m_Show;
@@ -2063,7 +2060,6 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 
     /**
      * @param set swarm visualization (2D)
-     *
      */
     public void setShow(boolean show) {
         m_Show = show;
@@ -2078,7 +2074,6 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 
     /**
      * @return the checkSpeedLimit
-     *
      */
     public boolean isCheckSpeedLimit() {
         return checkSpeedLimit;
@@ -2086,7 +2081,6 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 
     /**
      * @param checkSpeedLimit the checkSpeedLimit to set
-     *
      */
     public void setCheckSpeedLimit(boolean checkSpeedLimit) {
         this.checkSpeedLimit = checkSpeedLimit;
@@ -2103,9 +2097,9 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 //	public void setEMAPeriods(int emaP) {
 //	this.emaPeriods = emaP;
 //	}
+
     /**
      * @return the sleepTime
-     *
      */
     public int getSleepTime() {
         return sleepTime;
@@ -2113,7 +2107,6 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 
     /**
      * @param sleepTime the sleepTime to set
-     *
      */
     public void setSleepTime(int sleepTime) {
         this.sleepTime = sleepTime;
@@ -2155,7 +2148,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
         this.treeStruct = treeStruct;
     }
 
-// This was for testing rotation operators 
+    // This was for testing rotation operators
 //	public boolean isUseAlternative() {
 //		return useAlternative;
 //	}
@@ -2254,7 +2247,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
         return "The number of generations after which new subswarms are randomly formed.";
     }
 
-//	public boolean isDoLocalSearch() {
+    //	public boolean isDoLocalSearch() {
 //		return doLocalSearch;
 //	}
 //

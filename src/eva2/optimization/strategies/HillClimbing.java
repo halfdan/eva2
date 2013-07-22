@@ -24,7 +24,7 @@ public class HillClimbing implements InterfaceOptimizer, java.io.Serializable {
 
     private InterfaceOptimizationProblem m_Problem = new B1Problem();
     private InterfaceMutation mutator = null;
-//    private int             m_MultiRuns             = 100;
+    //    private int             m_MultiRuns             = 100;
 //    private int             m_FitnessCalls          = 100;
 //    private int             m_FitnessCallsNeeded    = 0;
 //    GAIndividualBinaryData  m_Best, m_Test;
@@ -183,6 +183,7 @@ public class HillClimbing implements InterfaceOptimizer, java.io.Serializable {
 //        TmpMeanFitness = TmpMeanFitness/program.m_MultiRuns;
 //        System.out.println("("+program.m_MultiRuns+"/"+program.m_FitnessCalls+") Mean Fitness : " + TmpMeanFitness + " Mean Calls needed: " + TmpMeanCalls);
 //    }
+
     /**
      * This method allows you to add the LectureGUI as listener to the Optimizer
      *

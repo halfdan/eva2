@@ -9,5 +9,6 @@ package eva2.optimization.go;
  */
 public interface InterfaceGOStandalone {
     void startExperiment();
+
     void setShow(boolean t);
 }

@@ -61,7 +61,7 @@ public class ThresholdAlgorithm implements InterfaceOptimizer, java.io.Serializa
     /**
      * This method will init the optimizer with a given population
      *
-     * @param pop The initial population
+     * @param pop   The initial population
      * @param reset If true the population is reset.
      */
     @Override

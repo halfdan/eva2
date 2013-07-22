@@ -10,6 +10,7 @@ package eva2.optimization.stat;
  *            $Date: 2007-12-11 17:24:07 +0100 (Tue, 11 Dec 2007) $
  *            $Author: mkron $
  */
+
 import eva2.gui.BeanInspector;
 import eva2.gui.plot.Graph;
 import eva2.gui.plot.GraphWindow;
@@ -21,6 +22,7 @@ import eva2.optimization.population.PopulationInterface;
 import eva2.optimization.problems.InterfaceAdditionalPopulationInformer;
 import eva2.tools.EVAERROR;
 import eva2.tools.Pair;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -99,7 +101,7 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
                 for (int j = 0; j < fitnessGraph[i].length; j++) {
                     statGraph[i][j].setInfoString(
                             (fitnessGraph[i][j].getInfo().length() > 0 ? (fitnessGraph[i][j].getInfo() + "_") : "")
-                            + "Mean_of_" + fullRuns + " ",
+                                    + "Mean_of_" + fullRuns + " ",
                             (float) 2.0);
                     if (normal && fitnessFrame[i].isValid() && (fitnessGraph[i][j].getPointCount() > 0)) {
                         statGraph[i][j].addGraph(fitnessGraph[i][j]);
@@ -150,7 +152,7 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
                 // this is where the column string for ascii export is created! Uah!
                 fitnessGraph[i][j] =
                         fitnessFrame[i].getNewGraph(graphDesc.get(j).head + "_"
-                        + graphInfoString);
+                                + graphInfoString);
                 fitnessGraph[i][j].jump();
             }
         }

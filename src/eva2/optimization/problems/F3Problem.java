@@ -14,34 +14,41 @@ public class F3Problem extends AbstractProblemDoubleOffset implements java.io.Se
     public F3Problem() {
         this.template = new ESIndividualDoubleData();
     }
+
     public F3Problem(F3Problem b) {
-        super(b);       
+        super(b);
     }
 
-    /** This method returns a deep clone of the problem.
-     * @return  the clone
+    /**
+     * This method returns a deep clone of the problem.
+     *
+     * @return the clone
      */
     @Override
     public Object clone() {
         return (Object) new F3Problem(this);
     }
 
-    /** Ths method allows you to evaluate a double[] to determine the fitness
-     * @param x     The n-dimensional input vector
-     * @return  The m-dimensional output vector.
+    /**
+     * Ths method allows you to evaluate a double[] to determine the fitness
+     *
+     * @param x The n-dimensional input vector
+     * @return The m-dimensional output vector.
      */
     @Override
     public double[] eval(double[] x) {
-    	x = rotateMaybe(x);
+        x = rotateMaybe(x);
         double[] result = new double[1];
-        result[0]     = yOffset +6*x.length;
-        for (int i = 0; i < x.length-1; i++) {
-            result[0]  += Math.floor(x[i]- this.xOffset);
+        result[0] = yOffset + 6 * x.length;
+        for (int i = 0; i < x.length - 1; i++) {
+            result[0] += Math.floor(x[i] - this.xOffset);
         }
         return result;
     }
 
-    /** This method returns a string describing the optimization problem.
+    /**
+     * This method returns a string describing the optimization problem.
+     *
      * @return The description.
      */
     public String getStringRepresentationForProblem() {
@@ -50,7 +57,7 @@ public class F3Problem extends AbstractProblemDoubleOffset implements java.io.Se
         result += "F3 Step function:\n";
         result += "This problem is discontinuos.\n";
         result += "Parameters:\n";
-        result += "Dimension   : " + this.problemDimension +"\n";
+        result += "Dimension   : " + this.problemDimension + "\n";
         result += "Noise level : " + this.getNoise() + "\n";
         result += "Solution representation:\n";
         //result += this.template.getSolutionRepresentationFor();
@@ -60,8 +67,10 @@ public class F3Problem extends AbstractProblemDoubleOffset implements java.io.Se
 /**********************************************************************************************************************
  * These are for GUI
  */
-    /** This method allows the CommonJavaObjectEditorPanel to read the
+    /**
+     * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
+     *
      * @return The name.
      */
     @Override
@@ -69,7 +78,9 @@ public class F3Problem extends AbstractProblemDoubleOffset implements java.io.Se
         return "F3 Problem";
     }
 
-    /** This method returns a global info string
+    /**
+     * This method returns a global info string
+     *
      * @return description
      */
     public static String globalInfo() {

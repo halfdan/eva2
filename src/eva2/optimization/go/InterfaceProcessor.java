@@ -32,6 +32,7 @@ public interface InterfaceProcessor {
 
     /**
      * Get Info String about the Optimization.
+     *
      * @return The info String
      */
     String getInfoString();

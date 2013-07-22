@@ -12,6 +12,7 @@ import eva2.tools.chart2d.Chart2DDPointContentSelectable;
 import eva2.tools.chart2d.DPoint;
 import eva2.tools.chart2d.DPointIcon;
 import eva2.tools.chart2d.ScaledBorder;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -27,12 +28,12 @@ import javax.swing.*;
 
 class SimpleView extends JComponent implements InterfaceRefPointListener {
 
-    private InterfaceRefPointListener   m_RefPointListener;
+    private InterfaceRefPointListener m_RefPointListener;
     private FunctionArea m_Area = null;
-    private ScaledBorder                m_AreaBorder;
-    ParetoFrontViewScatterPlot          m_Dad;
-    int                                 m_Obj1, m_Obj2;
-    JLabel                              m_JLabel;
+    private ScaledBorder m_AreaBorder;
+    ParetoFrontViewScatterPlot m_Dad;
+    int m_Obj1, m_Obj2;
+    JLabel m_JLabel;
 
     public SimpleView(ParetoFrontViewScatterPlot dad, int obj1, int obj2) {
         this.m_Dad = dad;
@@ -44,28 +45,28 @@ class SimpleView extends JComponent implements InterfaceRefPointListener {
     private void init() {
         this.setLayout(new BorderLayout());
         if (this.m_Obj1 == this.m_Obj2) {
-            this.m_JLabel = new JLabel(""+((InterfaceMultiObjectiveDeNovoProblem)this.m_Dad.m_MOCCOViewer.m_MOCCO.m_State.m_CurrentProblem).getProblemObjectives()[this.m_Obj1].getIdentName());
+            this.m_JLabel = new JLabel("" + ((InterfaceMultiObjectiveDeNovoProblem) this.m_Dad.m_MOCCOViewer.m_MOCCO.m_State.m_CurrentProblem).getProblemObjectives()[this.m_Obj1].getIdentName());
             this.add(this.m_JLabel, BorderLayout.CENTER);
         } else {
-            this.m_Area     = new FunctionArea("?","?");
+            this.m_Area = new FunctionArea("?", "?");
             this.m_Area.setPreferredSize(new Dimension(200, 200));
             this.m_Area.setMinimumSize(new Dimension(200, 200));
             this.m_AreaBorder = new ScaledBorder();
-            this.m_AreaBorder.x_label = ((InterfaceMultiObjectiveDeNovoProblem)this.m_Dad.m_MOCCOViewer.m_MOCCO.m_State.m_CurrentProblem).getProblemObjectives()[this.m_Obj1].getIdentName();
-            this.m_AreaBorder.y_label = ((InterfaceMultiObjectiveDeNovoProblem)this.m_Dad.m_MOCCOViewer.m_MOCCO.m_State.m_CurrentProblem).getProblemObjectives()[this.m_Obj2].getIdentName();
+            this.m_AreaBorder.x_label = ((InterfaceMultiObjectiveDeNovoProblem) this.m_Dad.m_MOCCOViewer.m_MOCCO.m_State.m_CurrentProblem).getProblemObjectives()[this.m_Obj1].getIdentName();
+            this.m_AreaBorder.y_label = ((InterfaceMultiObjectiveDeNovoProblem) this.m_Dad.m_MOCCOViewer.m_MOCCO.m_State.m_CurrentProblem).getProblemObjectives()[this.m_Obj2].getIdentName();
             this.m_Area.setBorder(this.m_AreaBorder);
             this.m_Area.setBackground(Color.WHITE);
             this.add(this.m_Area, BorderLayout.CENTER);
         }
     }
 
-    private double[] fetchPlotValueFor (AbstractEAIndividual indy) {
+    private double[] fetchPlotValueFor(AbstractEAIndividual indy) {
         double[] result = new double[2];
         if (this.m_Dad.m_JCFitObj.getSelectedIndex() == 0) {
             // now this is tricky isn't
             // first findout whether a objective is constraint only
             // and second since some objectives are ommited find the one fitness value that is the correct one
-            InterfaceOptimizationObjective[] tmpObj = ((InterfaceMultiObjectiveDeNovoProblem)this.m_Dad.m_MOCCOViewer.m_MOCCO.m_State.m_CurrentProblem).getProblemObjectives();
+            InterfaceOptimizationObjective[] tmpObj = ((InterfaceMultiObjectiveDeNovoProblem) this.m_Dad.m_MOCCOViewer.m_MOCCO.m_State.m_CurrentProblem).getProblemObjectives();
             if (tmpObj[this.m_Obj1].getOptimizationMode().equalsIgnoreCase("Constraint")) {
                 result[0] = 0;
             } else {
@@ -94,9 +95,9 @@ class SimpleView extends JComponent implements InterfaceRefPointListener {
                 result[1] = indy.getFitness(index);
             }
         } else {
-            InterfaceOptimizationObjective[] tmpObj = ((InterfaceMultiObjectiveDeNovoProblem)this.m_Dad.m_MOCCOViewer.m_MOCCO.m_State.m_CurrentProblem).getProblemObjectives();
-            result[0] = ((Double)indy.getData(tmpObj[this.m_Obj1].getIdentName())).doubleValue();
-            result[1] = ((Double)indy.getData(tmpObj[this.m_Obj2].getIdentName())).doubleValue();
+            InterfaceOptimizationObjective[] tmpObj = ((InterfaceMultiObjectiveDeNovoProblem) this.m_Dad.m_MOCCOViewer.m_MOCCO.m_State.m_CurrentProblem).getProblemObjectives();
+            result[0] = ((Double) indy.getData(tmpObj[this.m_Obj1].getIdentName())).doubleValue();
+            result[1] = ((Double) indy.getData(tmpObj[this.m_Obj2].getIdentName())).doubleValue();
         }
         return result;
     }
@@ -106,34 +107,34 @@ class SimpleView extends JComponent implements InterfaceRefPointListener {
 //        System.out.println("Plotting ("+this.m_Obj1+"/"+this.m_Obj2+") of " + tmpObj.length +" objectives.");
 //        System.out.println(" ("+tmpObj[this.m_Obj1].getIdentName()+"/"+tmpObj[this.m_Obj2].getIdentName()+") which is of mode: ("+tmpObj[this.m_Obj1].getOptimizationMode()+"/"+tmpObj[this.m_Obj2].getOptimizationMode()+")");
         if (this.m_Obj1 == this.m_Obj2) {
-            this.m_JLabel.setText(""+((InterfaceMultiObjectiveDeNovoProblem)this.m_Dad.m_MOCCOViewer.m_MOCCO.m_State.m_CurrentProblem).getProblemObjectives()[this.m_Obj1].getIdentName());
+            this.m_JLabel.setText("" + ((InterfaceMultiObjectiveDeNovoProblem) this.m_Dad.m_MOCCOViewer.m_MOCCO.m_State.m_CurrentProblem).getProblemObjectives()[this.m_Obj1].getIdentName());
         } else {
             // plot the objectives
             Population pf = this.m_Dad.m_MOCCOViewer.m_MOCCO.m_State.m_ParetoFront;
             double xmin = Double.POSITIVE_INFINITY, ymin = Double.POSITIVE_INFINITY, xmax = Double.NEGATIVE_INFINITY, ymax = Double.NEGATIVE_INFINITY;
             this.m_Area.clearAll();
             this.m_Area.setBackground(Color.WHITE);
-            GraphPointSet           mySet;
-            DPoint                  myPoint;
+            GraphPointSet mySet;
+            DPoint myPoint;
             //double[]                fitness;
-            double[]                plotValue;
+            double[] plotValue;
 
             // now mark the ParetoFront
             if (pf.size() > 0) {
-                DPoint      point;
-                DPointIcon  icon;
+                DPoint point;
+                DPointIcon icon;
                 mySet = new GraphPointSet(1, this.m_Area);
                 mySet.setConnectedMode(false);
                 mySet.setColor(Color.BLACK);
                 for (int i = 0; i < pf.size(); i++) {
-                    plotValue = this.fetchPlotValueFor((AbstractEAIndividual)pf.get(i));
+                    plotValue = this.fetchPlotValueFor((AbstractEAIndividual) pf.get(i));
                     point = new DPoint(plotValue[0], plotValue[1]);
                     icon = new Chart2DDPointContentSelectable();
                     if (this.m_Dad.m_MOCCOViewer.m_RefSolutionSelectable) {
-                        ((Chart2DDPointContentSelectable)icon).addSelectionListener(this.m_Dad.m_MOCCOViewer);
+                        ((Chart2DDPointContentSelectable) icon).addSelectionListener(this.m_Dad.m_MOCCOViewer);
                     }
-                    ((InterfaceDPointWithContent)icon).setProblem(this.m_Dad.m_MOCCOViewer.m_MOCCO.m_State.m_CurrentProblem);
-                    ((InterfaceDPointWithContent)icon).setEAIndividual((AbstractEAIndividual)pf.get(i));
+                    ((InterfaceDPointWithContent) icon).setProblem(this.m_Dad.m_MOCCOViewer.m_MOCCO.m_State.m_CurrentProblem);
+                    ((InterfaceDPointWithContent) icon).setEAIndividual((AbstractEAIndividual) pf.get(i));
                     point.setIcon(icon);
                     mySet.addDPoint(point);
                     if (plotValue[0] < xmin) {
@@ -162,39 +163,39 @@ class SimpleView extends JComponent implements InterfaceRefPointListener {
                     mySet.addDPoint(0, 0);
                     mySet.addDPoint(1, 1);
                 } else {
-                    mySet.addDPoint(xmin - 0.1*xrange, ymin - 0.1*yrange);
-                    mySet.addDPoint(xmin - 0.1*xrange, ymin - 0.1*yrange);
-                    mySet.addDPoint(xmax + 0.1*xrange, ymax + 0.1*yrange);
-                    mySet.addDPoint(xmax + 0.1*xrange, ymax + 0.1*yrange);
+                    mySet.addDPoint(xmin - 0.1 * xrange, ymin - 0.1 * yrange);
+                    mySet.addDPoint(xmin - 0.1 * xrange, ymin - 0.1 * yrange);
+                    mySet.addDPoint(xmax + 0.1 * xrange, ymax + 0.1 * yrange);
+                    mySet.addDPoint(xmax + 0.1 * xrange, ymax + 0.1 * yrange);
                 }
 
                 // now lets prepare the contraints or goals if any...
                 if ((this.m_Dad.m_MOCCOViewer.m_MOCCO.m_State.m_CurrentProblem instanceof InterfaceMultiObjectiveDeNovoProblem) &&
-                    (this.m_Dad.m_JCFitObj.getSelectedIndex() == 1)) {
-                    InterfaceOptimizationObjective[] tmp = ((InterfaceMultiObjectiveDeNovoProblem)this.m_Dad.m_MOCCOViewer.m_MOCCO.m_State.m_CurrentProblem).getProblemObjectives();
+                        (this.m_Dad.m_JCFitObj.getSelectedIndex() == 1)) {
+                    InterfaceOptimizationObjective[] tmp = ((InterfaceMultiObjectiveDeNovoProblem) this.m_Dad.m_MOCCOViewer.m_MOCCO.m_State.m_CurrentProblem).getProblemObjectives();
                     if (tmp[this.m_Obj1].getOptimizationMode().equalsIgnoreCase("Objective")) {
                         double tmpD = tmp[this.m_Obj1].getConstraintGoal();
                         if (!(new Double(tmpD)).isNaN()) {
-                            mySet = new GraphPointSet(500+1, this.m_Area);
+                            mySet = new GraphPointSet(500 + 1, this.m_Area);
                             mySet.setConnectedMode(true);
-                            if ((tmpD > xmin - 0.1*xrange) && (tmpD < xmax + 0.1*xrange)) {
-                                mySet.addDPoint(tmpD, ymin - 0.1*yrange);
-                                mySet.addDPoint(tmpD, ymin - 0.1*yrange);
-                                mySet.addDPoint(tmpD, ymax + 0.1*yrange);
-                                mySet.addDPoint(tmpD, ymax + 0.1*yrange);
+                            if ((tmpD > xmin - 0.1 * xrange) && (tmpD < xmax + 0.1 * xrange)) {
+                                mySet.addDPoint(tmpD, ymin - 0.1 * yrange);
+                                mySet.addDPoint(tmpD, ymin - 0.1 * yrange);
+                                mySet.addDPoint(tmpD, ymax + 0.1 * yrange);
+                                mySet.addDPoint(tmpD, ymax + 0.1 * yrange);
                             }
                         }
                     }
                     if (tmp[this.m_Obj2].getOptimizationMode().equalsIgnoreCase("Objective")) {
                         double tmpD = tmp[this.m_Obj2].getConstraintGoal();
                         if (!(new Double(tmpD)).isNaN()) {
-                            mySet = new GraphPointSet(500+2, this.m_Area);
+                            mySet = new GraphPointSet(500 + 2, this.m_Area);
                             mySet.setConnectedMode(true);
-                            if ((tmpD > ymin - 0.1*yrange) && (tmpD < ymax + 0.1*yrange)) {
-                                mySet.addDPoint(xmin - 0.1*xrange, tmpD);
-                                mySet.addDPoint(xmin - 0.1*xrange, tmpD);
-                                mySet.addDPoint(xmax + 0.1*xrange, tmpD);
-                                mySet.addDPoint(xmax + 0.1*xrange, tmpD);
+                            if ((tmpD > ymin - 0.1 * yrange) && (tmpD < ymax + 0.1 * yrange)) {
+                                mySet.addDPoint(xmin - 0.1 * xrange, tmpD);
+                                mySet.addDPoint(xmin - 0.1 * xrange, tmpD);
+                                mySet.addDPoint(xmax + 0.1 * xrange, tmpD);
+                                mySet.addDPoint(xmax + 0.1 * xrange, tmpD);
                             }
                         }
                     }
@@ -205,21 +206,21 @@ class SimpleView extends JComponent implements InterfaceRefPointListener {
                     mySet.setConnectedMode(true);
                     mySet.setColor(Color.RED);
                     double tmpD = this.m_Dad.m_MOCCOViewer.m_ReferencePoint[this.m_Obj1];
-                    if ((tmpD > xmin - 0.1*xrange) && (tmpD < xmax + 0.1*xrange)) {
-                        mySet.addDPoint(tmpD, ymin - 0.1*yrange);
-                        mySet.addDPoint(tmpD, ymin - 0.1*yrange);
-                        mySet.addDPoint(tmpD, ymax + 0.1*yrange);
-                        mySet.addDPoint(tmpD, ymax + 0.1*yrange);
+                    if ((tmpD > xmin - 0.1 * xrange) && (tmpD < xmax + 0.1 * xrange)) {
+                        mySet.addDPoint(tmpD, ymin - 0.1 * yrange);
+                        mySet.addDPoint(tmpD, ymin - 0.1 * yrange);
+                        mySet.addDPoint(tmpD, ymax + 0.1 * yrange);
+                        mySet.addDPoint(tmpD, ymax + 0.1 * yrange);
                     }
                     mySet = new GraphPointSet(1002, this.m_Area);
                     mySet.setConnectedMode(true);
                     mySet.setColor(Color.RED);
                     tmpD = this.m_Dad.m_MOCCOViewer.m_ReferencePoint[this.m_Obj2];
-                    if ((tmpD > ymin - 0.1*yrange) && (tmpD < ymax + 0.1*yrange)) {
-                        mySet.addDPoint(xmin - 0.1*xrange, tmpD);
-                        mySet.addDPoint(xmin - 0.1*xrange, tmpD);
-                        mySet.addDPoint(xmax + 0.1*xrange, tmpD);
-                        mySet.addDPoint(xmax + 0.1*xrange, tmpD);
+                    if ((tmpD > ymin - 0.1 * yrange) && (tmpD < ymax + 0.1 * yrange)) {
+                        mySet.addDPoint(xmin - 0.1 * xrange, tmpD);
+                        mySet.addDPoint(xmin - 0.1 * xrange, tmpD);
+                        mySet.addDPoint(xmax + 0.1 * xrange, tmpD);
+                        mySet.addDPoint(xmax + 0.1 * xrange, tmpD);
                     }
                 }
             }
@@ -241,17 +242,19 @@ class SimpleView extends JComponent implements InterfaceRefPointListener {
      *  InterfaceReferenceListener
      */
 
-    /** This method will notify the listener that a point has been selected
+    /**
+     * This method will notify the listener that a point has been selected
      * It has to be noted though that at this point the reference point is not
      * a full vector since it is only 2d
-     * @param point  The selected point, most likely 2d
+     *
+     * @param point The selected point, most likely 2d
      */
     @Override
     public void refPointGiven(double[] point) {
         if (this.m_Dad.m_JCFitObj.getSelectedIndex() == 1) {
             JOptionPane.showMessageDialog(this.m_Dad.m_MOCCOViewer.m_MOCCO.m_JFrame,
-                "Reference point needs to be selected in fitness space!",
-                "Warning", JOptionPane.WARNING_MESSAGE);
+                    "Reference point needs to be selected in fitness space!",
+                    "Warning", JOptionPane.WARNING_MESSAGE);
         } else {
             double[] tmpD = this.m_Dad.m_MOCCOViewer.m_ReferencePoint;
             tmpD[this.m_Obj1] = point[0];
@@ -260,22 +263,27 @@ class SimpleView extends JComponent implements InterfaceRefPointListener {
         }
     }
 
-    /** This method allows to add a selection listner to the PointIcon
+    /**
+     * This method allows to add a selection listner to the PointIcon
      * it should need more than one listener to this abstruse event
+     *
      * @param a The selection listener
      */
     public void addRefPointSelectionListener(InterfaceRefPointListener a) {
         this.m_RefPointListener = a;
     }
 
-    /** This method returns the selection listner to the PointIcon
+    /**
+     * This method returns the selection listner to the PointIcon
+     *
      * @return InterfaceSelectionListener
      */
     public InterfaceRefPointListener getRefPointSelectionListener() {
         return this.m_RefPointListener;
     }
 
-    /** This method allows to remove the selection listner to the PointIcon
+    /**
+     * This method allows to remove the selection listner to the PointIcon
      */
     public void removeRefPointSelectionListeners() {
         this.m_RefPointListener = null;
@@ -284,15 +292,15 @@ class SimpleView extends JComponent implements InterfaceRefPointListener {
 
 public class ParetoFrontViewScatterPlot extends JPanel implements InterfaceParetoFrontView {
 
-    public MOCCOViewer      m_MOCCOViewer;
-    private JPanel          m_JPMain;
-    private JPanel          m_JPCenter;
-    private JPanel          m_JPTop;
-    public JComboBox        m_JCFitObj;
+    public MOCCOViewer m_MOCCOViewer;
+    private JPanel m_JPMain;
+    private JPanel m_JPCenter;
+    private JPanel m_JPTop;
+    public JComboBox m_JCFitObj;
 
 
-    private InterfaceRefPointListener           m_RefPointListener;
-    private SimpleView[][]  m_Scatter;
+    private InterfaceRefPointListener m_RefPointListener;
+    private SimpleView[][] m_Scatter;
 
     public ParetoFrontViewScatterPlot(MOCCOViewer t) {
         this.m_MOCCOViewer = t;
@@ -307,11 +315,11 @@ public class ParetoFrontViewScatterPlot extends JPanel implements InterfaceParet
         this.m_JPCenter = new JPanel();
         this.m_JPMain.add(new JScrollPane(this.m_JPCenter), BorderLayout.CENTER);
         this.m_JPTop = new JPanel();
-        this.m_JPTop.setLayout(new GridLayout(1,2));
+        this.m_JPTop.setLayout(new GridLayout(1, 2));
         String[] tmp = new String[2];
         tmp[0] = "Fitness";
         tmp[1] = "Objective";
-        this.m_JCFitObj     = new JComboBox(tmp);
+        this.m_JCFitObj = new JComboBox(tmp);
         this.m_JCFitObj.setSelectedIndex(0);
         this.m_JCFitObj.addActionListener(this.jcomboboxListener);
         this.m_JPTop.add(new JLabel("Showing:"));
@@ -319,6 +327,7 @@ public class ParetoFrontViewScatterPlot extends JPanel implements InterfaceParet
         this.m_JPMain.add(this.m_JPTop, BorderLayout.NORTH);
         this.updateView();
     }
+
     ActionListener jcomboboxListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent event) {
@@ -327,7 +336,7 @@ public class ParetoFrontViewScatterPlot extends JPanel implements InterfaceParet
     };
 
     private void makeScatter() {
-        InterfaceOptimizationObjective[] tmp = ((InterfaceMultiObjectiveDeNovoProblem)this.m_MOCCOViewer.m_MOCCO.m_State.m_CurrentProblem).getProblemObjectives();
+        InterfaceOptimizationObjective[] tmp = ((InterfaceMultiObjectiveDeNovoProblem) this.m_MOCCOViewer.m_MOCCO.m_State.m_CurrentProblem).getProblemObjectives();
         this.m_Scatter = new SimpleView[tmp.length][tmp.length];
         this.m_JPCenter.removeAll();
         this.m_JPCenter.setLayout(new GridLayout(tmp.length, tmp.length));
@@ -339,7 +348,8 @@ public class ParetoFrontViewScatterPlot extends JPanel implements InterfaceParet
         }
     }
 
-    /** This method notifies the Pareto front view that
+    /**
+     * This method notifies the Pareto front view that
      * the data has changed most likely due to changes in
      * the problem definition
      */
@@ -354,7 +364,7 @@ public class ParetoFrontViewScatterPlot extends JPanel implements InterfaceParet
         }
 
         // first set the names of the objectives
-        InterfaceOptimizationObjective[] tmp = ((InterfaceMultiObjectiveDeNovoProblem)this.m_MOCCOViewer.m_MOCCO.m_State.m_CurrentProblem).getProblemObjectives();
+        InterfaceOptimizationObjective[] tmp = ((InterfaceMultiObjectiveDeNovoProblem) this.m_MOCCOViewer.m_MOCCO.m_State.m_CurrentProblem).getProblemObjectives();
         if (this.m_Scatter == null) {
             this.makeScatter();
         }
@@ -372,42 +382,48 @@ public class ParetoFrontViewScatterPlot extends JPanel implements InterfaceParet
     }
 
 
-
     /***************************************************************************
      *  InterfaceReferenceListener
      */
 
-    /** This method will notify the listener that a point has been selected
+    /**
+     * This method will notify the listener that a point has been selected
      * It has to be noted though that at this point the reference point is not
      * a full vector since it is only 2d
-     * @param point  The selected point, most likely 2d
+     *
+     * @param point The selected point, most likely 2d
      */
     public void refPointGiven(double[] point) {
         if (this.m_JCFitObj.getSelectedIndex() == 1) {
             JOptionPane.showMessageDialog(this.m_MOCCOViewer.m_MOCCO.m_JFrame,
-                "Reference point needs to be selected in fitness space!",
-                "Warning", JOptionPane.WARNING_MESSAGE);
+                    "Reference point needs to be selected in fitness space!",
+                    "Warning", JOptionPane.WARNING_MESSAGE);
         } else {
             this.m_MOCCOViewer.refPointGiven(point);
         }
     }
 
-    /** This method allows to add a selection listner to the PointIcon
+    /**
+     * This method allows to add a selection listner to the PointIcon
      * it should need more than one listener to this abstruse event
+     *
      * @param a The selection listener
      */
     public void addRefPointSelectionListener(InterfaceRefPointListener a) {
         this.m_RefPointListener = a;
     }
 
-    /** This method returns the selection listner to the PointIcon
+    /**
+     * This method returns the selection listner to the PointIcon
+     *
      * @return InterfaceSelectionListener
      */
     public InterfaceRefPointListener getRefPointSelectionListener() {
         return this.m_RefPointListener;
     }
 
-    /** This method allows to remove the selection listner to the PointIcon
+    /**
+     * This method allows to remove the selection listner to the PointIcon
      */
     public void removeRefPointSelectionListeners() {
         this.m_RefPointListener = null;

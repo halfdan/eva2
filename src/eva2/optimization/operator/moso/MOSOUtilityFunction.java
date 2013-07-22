@@ -13,40 +13,46 @@ import eva2.optimization.population.Population;
  */
 public class MOSOUtilityFunction implements InterfaceMOSOConverter, java.io.Serializable {
 
-    private int                 m_OutputDimension = 2;
+    private int m_OutputDimension = 2;
 
-    public MOSOUtilityFunction () {
+    public MOSOUtilityFunction() {
     }
+
     public MOSOUtilityFunction(MOSOUtilityFunction b) {
         System.out.println("Warning no source!");
-        this.m_OutputDimension  = b.m_OutputDimension;
+        this.m_OutputDimension = b.m_OutputDimension;
     }
+
     @Override
     public Object clone() {
         return (Object) new MOSOUtilityFunction(this);
     }
 
-    /** This method takes a population of individuals with an array of
+    /**
+     * This method takes a population of individuals with an array of
      * fitness values and calculates a single fitness value to replace
      * the former fitness array. Please note: The orignal fitness values
      * are lost this way, so please use the individual.setData() method
      * if you still want to access the original fitness values.
-     * @param pop       The population to process.
+     *
+     * @param pop The population to process.
      */
     @Override
     public void convertMultiObjective2SingleObjective(Population pop) {
         for (int i = 0; i < pop.size(); i++) {
-             this.convertSingleIndividual((AbstractEAIndividual)pop.get(i));
+            this.convertSingleIndividual((AbstractEAIndividual) pop.get(i));
         }
     }
 
-    /** This method processes a single individual
-     * @param indy      The individual to process.
+    /**
+     * This method processes a single individual
+     *
+     * @param indy The individual to process.
      */
     @Override
     public void convertSingleIndividual(AbstractEAIndividual indy) {
-        double[]    resultFit = new double[1];
-        double[]    tmpFit;
+        double[] resultFit = new double[1];
+        double[] tmpFit;
 
         tmpFit = indy.getFitness();
         indy.putData("MOFitness", tmpFit);
@@ -65,28 +71,34 @@ public class MOSOUtilityFunction implements InterfaceMOSOConverter, java.io.Seri
         indy.setFitness(resultFit);
     }
 
-    /** This method allows the problem to set the current output size of
+    /**
+     * This method allows the problem to set the current output size of
      * the optimization problem.
-     * @param dim       Outputdimension of the problem
+     *
+     * @param dim Outputdimension of the problem
      */
     @Override
     public void setOutputDimension(int dim) {
         this.m_OutputDimension = dim;
     }
 
-    /** This method returns a description of the objective
+    /**
+     * This method returns a description of the objective
+     *
      * @return A String
      */
     @Override
     public String getStringRepresentation() {
-        return this.getName()+"\n";
+        return this.getName() + "\n";
     }
-    
+
 /**********************************************************************************************************************
  * These are for GUI
  */
-    /** This method allows the CommonJavaObjectEditorPanel to read the
+    /**
+     * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
+     *
      * @return The name.
      */
     @Override
@@ -94,7 +106,9 @@ public class MOSOUtilityFunction implements InterfaceMOSOConverter, java.io.Seri
         return "Utility Function";
     }
 
-    /** This method returns a global info string
+    /**
+     * This method returns a global info string
+     *
      * @return description
      */
     public static String globalInfo() {

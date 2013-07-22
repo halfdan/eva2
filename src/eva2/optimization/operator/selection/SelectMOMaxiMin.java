@@ -4,7 +4,8 @@ import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.operator.moso.MOSOMaxiMin;
 import eva2.optimization.population.Population;
 
-/** A multi-objective selection criterion based on the maximin
+/**
+ * A multi-objective selection criterion based on the maximin
  * method.
  * Created by IntelliJ IDEA.
  * User: streiche
@@ -14,17 +15,17 @@ import eva2.optimization.population.Population;
  */
 public class SelectMOMaxiMin implements InterfaceSelection, java.io.Serializable {
 
-    private MOSOMaxiMin             m_MaxiMin   = new MOSOMaxiMin();
-    private InterfaceSelection      m_Selection = new SelectBestIndividuals();
-    private boolean                 m_ObeyDebsConstViolationPrinciple = true;
+    private MOSOMaxiMin m_MaxiMin = new MOSOMaxiMin();
+    private InterfaceSelection m_Selection = new SelectBestIndividuals();
+    private boolean m_ObeyDebsConstViolationPrinciple = true;
 
     public SelectMOMaxiMin() {
     }
 
     public SelectMOMaxiMin(SelectMOMaxiMin a) {
-        this.m_MaxiMin              = new MOSOMaxiMin();
-        this.m_Selection            = (InterfaceSelection)a.m_Selection.clone();
-        this.m_ObeyDebsConstViolationPrinciple  = a.m_ObeyDebsConstViolationPrinciple;
+        this.m_MaxiMin = new MOSOMaxiMin();
+        this.m_Selection = (InterfaceSelection) a.m_Selection.clone();
+        this.m_ObeyDebsConstViolationPrinciple = a.m_ObeyDebsConstViolationPrinciple;
     }
 
     @Override
@@ -32,28 +33,32 @@ public class SelectMOMaxiMin implements InterfaceSelection, java.io.Serializable
         return (Object) new SelectMOMaxiMin(this);
     }
 
-    /** This method allows an selection method to do some preliminary
+    /**
+     * This method allows an selection method to do some preliminary
      * calculations on the population before selection is performed.
      * For example: Homologeuos mate could compute all the distances
      * before hand...
-     * @param population    The population that is to be processed.
+     *
+     * @param population The population that is to be processed.
      */
     @Override
     public void prepareSelection(Population population) {
         // nothing to prepare here
     }
 
-    /** This method will select one Individual from the given
+    /**
+     * This method will select one Individual from the given
      * Population in respect to the selection propability of the
      * individual.
-     * @param population    The source population where to select from
-     * @param size          The number of Individuals to select
+     *
+     * @param population The source population where to select from
+     * @param size       The number of Individuals to select
      * @return The selected population.
      */
     @Override
     public Population selectFrom(Population population, int size) {
-        Population              result = new Population(), tmpPop = (Population)population.clone();
-        double[]                tmpD;
+        Population result = new Population(), tmpPop = (Population) population.clone();
+        double[] tmpD;
         // Now calculate the MaxiMin Criterium
 
         this.m_MaxiMin.convertMultiObjective2SingleObjective(tmpPop);
@@ -63,16 +68,18 @@ public class SelectMOMaxiMin implements InterfaceSelection, java.io.Serializable
 
         // now unconvert from SO to MO
         for (int i = 0; i < result.size(); i++) {
-            tmpD = (double[])((AbstractEAIndividual)result.get(i)).getData("MOFitness");
-            ((AbstractEAIndividual)result.get(i)).setFitness(tmpD);
+            tmpD = (double[]) ((AbstractEAIndividual) result.get(i)).getData("MOFitness");
+            ((AbstractEAIndividual) result.get(i)).setFitness(tmpD);
         }
         return result;
     }
 
-    /** This method allows you to select partners for a given Individual
-     * @param dad               The already seleceted parent
-     * @param avaiablePartners  The mating pool.
-     * @param size              The number of partners needed.
+    /**
+     * This method allows you to select partners for a given Individual
+     *
+     * @param dad              The already seleceted parent
+     * @param avaiablePartners The mating pool.
+     * @param size             The number of partners needed.
      * @return The selected partners.
      */
     @Override
@@ -83,44 +90,57 @@ public class SelectMOMaxiMin implements InterfaceSelection, java.io.Serializable
 /**********************************************************************************************************************
  * These are for GUI
  */
-    /** This method returns a global info string
+    /**
+     * This method returns a global info string
+     *
      * @return description
      */
     public static String globalInfo() {
         return "This selection method will use the MaxiMin criteria to select individuals (use SelectBestIndividuals).";
     }
-    /** This method will return a naming String
+
+    /**
+     * This method will return a naming String
+     *
      * @return The name of the algorithm
      */
     public String getName() {
         return "MaxiMin Selection";
     }
 
-    /** Since SelectMOMaxiMin relies on a MOSO conversion
+    /**
+     * Since SelectMOMaxiMin relies on a MOSO conversion
      * a single criterion selection method can be used.
-     * @param pop     The selection method used.
+     *
+     * @param pop The selection method used.
      */
     public void setSelectionMethod(InterfaceSelection pop) {
         this.m_Selection = pop;
     }
+
     public InterfaceSelection getSelectionMethod() {
         return this.m_Selection;
     }
+
     public String selectionMethodTipText() {
         return "Choose the selection method (single-criteria ones please).";
     }
 
-    /** Toggle the use of obeying the constraint violation principle
+    /**
+     * Toggle the use of obeying the constraint violation principle
      * of Deb
-     * @param b     The new state
+     *
+     * @param b The new state
      */
     @Override
     public void setObeyDebsConstViolationPrinciple(boolean b) {
         this.m_ObeyDebsConstViolationPrinciple = b;
     }
+
     public boolean getObeyDebsConstViolationPrinciple() {
         return this.m_ObeyDebsConstViolationPrinciple;
     }
+
     public String obeyDebsConstViolationPrincipleToolTip() {
         return "Toggle the use of Deb's coonstraint violation principle.";
     }

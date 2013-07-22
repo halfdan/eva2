@@ -10,6 +10,7 @@ import eva2.optimization.population.SolutionSet;
 import eva2.optimization.problems.F1Problem;
 import eva2.optimization.problems.InterfaceLocalSearchable;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
+
 import java.util.Hashtable;
 
 /**
@@ -262,6 +263,7 @@ public class MemeticAlgorithm implements InterfaceOptimizer,
      * ========================================================================================
      * These are for GUI
      */
+
     /**
      * This method returns a global info string
      *

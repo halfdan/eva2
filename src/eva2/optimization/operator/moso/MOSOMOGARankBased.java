@@ -14,19 +14,23 @@ public class MOSOMOGARankBased implements InterfaceMOSOConverter, java.io.Serial
 
     public MOSOMOGARankBased() {
     }
+
     public MOSOMOGARankBased(MOSOMOGARankBased b) {
     }
+
     @Override
     public Object clone() {
         return (Object) new MOSOMOGARankBased(this);
     }
 
-    /** This method takes a population of individuals with an array of
+    /**
+     * This method takes a population of individuals with an array of
      * fitness values and calculates a single fitness value to replace
      * the former fitness array. Please note: The orignal fitness values
      * are lost this way, so please use the individual.setData() method
      * if you still want to access the original fitness values.
-     * @param pop       The population to process.
+     *
+     * @param pop The population to process.
      */
     @Override
     public void convertMultiObjective2SingleObjective(Population pop) {
@@ -34,61 +38,69 @@ public class MOSOMOGARankBased implements InterfaceMOSOConverter, java.io.Serial
         for (int i = 0; i < MOGARank.length; i++) {
             MOGARank[i] = 1;
         }
-        for (int i = 0; i < pop.size()-1; i++) {
+        for (int i = 0; i < pop.size() - 1; i++) {
             for (int j = 0; j < pop.size(); j++) {
                 if (i != j) {
-                    if (((AbstractEAIndividual)pop.get(j)).isDominatingDebConstraints((AbstractEAIndividual)pop.get(i))) {
+                    if (((AbstractEAIndividual) pop.get(j)).isDominatingDebConstraints((AbstractEAIndividual) pop.get(i))) {
                         MOGARank[i] += 1;
                     }
                 }
             }
         }
         for (int i = 0; i < pop.size(); i++) {
-            ((AbstractEAIndividual)pop.get(i)).putData("MOGARank", new Integer(MOGARank[i]));
+            ((AbstractEAIndividual) pop.get(i)).putData("MOGARank", new Integer(MOGARank[i]));
         }
         for (int i = 0; i < pop.size(); i++) {
-             this.convertSingleIndividual((AbstractEAIndividual)pop.get(i));
+            this.convertSingleIndividual((AbstractEAIndividual) pop.get(i));
         }
     }
 
-    /** This method processes a single individual
-     * @param indy      The individual to process.
+    /**
+     * This method processes a single individual
+     *
+     * @param indy The individual to process.
      */
     @Override
     public void convertSingleIndividual(AbstractEAIndividual indy) {
-        double[]    resultFit = new double[1];
-        double[]    tmpFit;
+        double[] resultFit = new double[1];
+        double[] tmpFit;
 
         tmpFit = indy.getFitness();
         indy.putData("MOFitness", tmpFit);
-        resultFit[0] = ((Integer)indy.getData("MOGARank")).doubleValue();
+        resultFit[0] = ((Integer) indy.getData("MOGARank")).doubleValue();
         indy.setFitness(resultFit);
     }
 
-    /** This method allows the problem to set the current output size of
+    /**
+     * This method allows the problem to set the current output size of
      * the optimization problem. Additional weights will be set to a default
      * value of one
-     * @param dim       Outputdimension of the problem
+     *
+     * @param dim Outputdimension of the problem
      */
     @Override
     public void setOutputDimension(int dim) {
 
     }
 
-    /** This method returns a description of the objective
+    /**
+     * This method returns a description of the objective
+     *
      * @return A String
      */
     @Override
     public String getStringRepresentation() {
-        return this.getName()+"\n";
+        return this.getName() + "\n";
     }
 
 
 /**********************************************************************************************************************
  * These are for GUI
  */
-    /** This method allows the CommonJavaObjectEditorPanel to read the
+    /**
+     * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
+     *
      * @return The name.
      */
     @Override
@@ -96,7 +108,9 @@ public class MOSOMOGARankBased implements InterfaceMOSOConverter, java.io.Serial
         return "MOGA Rank Based";
     }
 
-    /** This method returns a global info string
+    /**
+     * This method returns a global info string
+     *
      * @return description
      */
     public static String globalInfo() {

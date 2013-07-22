@@ -17,10 +17,10 @@ import java.util.ArrayList;
 public class PortfolioFrontTester {
 
     private Plot m_Plot;
-    private int                     index           = 0;
-    private BufferedWriter          m_OutputFile    = null;
-    private double[]                loss;
-    private double[][]              risk;
+    private int index = 0;
+    private BufferedWriter m_OutputFile = null;
+    private double[] loss;
+    private double[][] risk;
 
     private void show() {
         loss = new double[5];
@@ -52,7 +52,7 @@ public class PortfolioFrontTester {
         risk[3][4] = 0.00;
 
         for (int i = 0; i < risk.length; i++) {
-            for (int j = i+1; j < risk.length; j++) {
+            for (int j = i + 1; j < risk.length; j++) {
                 risk[j][i] = risk[i][j];
             }
         }
@@ -66,20 +66,20 @@ public class PortfolioFrontTester {
         // now calc the stuff
         ArrayList complete = new ArrayList();
         ArrayList elements = new ArrayList();
-        double[]    tmpD;
-        double[][]  tmpElem;
-        int         res = 25;
+        double[] tmpD;
+        double[][] tmpElem;
+        int res = 25;
         for (int i = 0; i < loss.length; i++) {
-            for (int j = i+1; j < loss.length; j++) {
-                tmpElem = new double[res+1][2];
+            for (int j = i + 1; j < loss.length; j++) {
+                tmpElem = new double[res + 1][2];
                 double w = 0;
-                for (int k = 0; k < res+1; k++) {
-                    tmpElem[k][0] = w*loss[i] + (1-w)*loss[j];
-                    tmpElem[k][1] = (w*w)*risk[i][i] + ((1-w)*(1-w))*risk[j][j] + 2*(w*(1-w)*risk[i][j]);
+                for (int k = 0; k < res + 1; k++) {
+                    tmpElem[k][0] = w * loss[i] + (1 - w) * loss[j];
+                    tmpElem[k][1] = (w * w) * risk[i][i] + ((1 - w) * (1 - w)) * risk[j][j] + 2 * (w * (1 - w) * risk[i][j]);
                     tmpD = new double[2];
                     tmpD[0] = tmpElem[k][0];
                     tmpD[1] = tmpElem[k][1];
-                    w += 1/(double)res;
+                    w += 1 / (double) res;
                     complete.add(tmpD);
                 }
                 // now plot this line
@@ -94,17 +94,17 @@ public class PortfolioFrontTester {
         // now calc the stuff
         ArrayList complete = new ArrayList();
         ArrayList elements = new ArrayList();
-        double[]    tmpD;
-        double[][]  tmpElem;
-        int         res = 100;
+        double[] tmpD;
+        double[][] tmpElem;
+        int res = 100;
         for (int i = 0; i < loss.length; i++) {
-            for (int j = i+1; j < loss.length; j++) {
-                tmpElem = new double[res+1][2];
+            for (int j = i + 1; j < loss.length; j++) {
+                tmpElem = new double[res + 1][2];
                 double w = 0;
-                for (int k = 0; k < res+1; k++) {
-                    if (! ((w > limit) &&((1-w)> limit))) {
-                        tmpElem[k][0] = w*loss[i] + (1-w)*loss[j];
-                        tmpElem[k][1] = (w*w)*risk[i][i] + ((1-w)*(1-w))*risk[j][j] + 2*(w*(1-w)*risk[i][j]);
+                for (int k = 0; k < res + 1; k++) {
+                    if (!((w > limit) && ((1 - w) > limit))) {
+                        tmpElem[k][0] = w * loss[i] + (1 - w) * loss[j];
+                        tmpElem[k][1] = (w * w) * risk[i][i] + ((1 - w) * (1 - w)) * risk[j][j] + 2 * (w * (1 - w) * risk[i][j]);
                         tmpD = new double[2];
                         tmpD[0] = tmpElem[k][0];
                         tmpD[1] = tmpElem[k][1];
@@ -113,7 +113,7 @@ public class PortfolioFrontTester {
                         tmpElem[k][0] = loss[i];
                         tmpElem[k][1] = risk[i][i];
                     }
-                    w += 1/(double)res;
+                    w += 1 / (double) res;
                 }
                 // now plot this line
                 this.showLine(tmpElem);
@@ -127,19 +127,19 @@ public class PortfolioFrontTester {
         // now calc the stuff
         ArrayList complete = new ArrayList();
         ArrayList elements = new ArrayList();
-        double[]  tmpD;
+        double[] tmpD;
         ArrayList tmpElem;
-        int         res = 20;
+        int res = 20;
         for (int i = 0; i < loss.length; i++) {
-            for (int j = i+1; j < loss.length; j++) {
-                for (int k = j+1; k < loss.length; k++) {
+            for (int j = i + 1; j < loss.length; j++) {
+                for (int k = j + 1; k < loss.length; k++) {
                     tmpElem = new ArrayList();
-                    for (double t1 = 0; t1 < 1.0; t1 += 1/(double)res) {
-                        for (double t2 = 0; t2 < (1.0 - t1); t2 += 1/(double)res) {
+                    for (double t1 = 0; t1 < 1.0; t1 += 1 / (double) res) {
+                        for (double t2 = 0; t2 < (1.0 - t1); t2 += 1 / (double) res) {
                             tmpD = new double[2];
-                            tmpD[0] = t1*loss[i] + t2*loss[j] + (1-t1-t2)*loss[k];
-                            tmpD[1] = (t1*t1)*risk[i][i] + t2*t2*risk[j][j] + (1-t1-t2)*(1-t1-t2)*risk[k][k]
-                                    + 2*(t1*t2*risk[i][j]) + 2*((1-t1-t2)*t2*risk[k][j])+ 2*(t1*(1-t1-t2)*risk[i][k]);
+                            tmpD[0] = t1 * loss[i] + t2 * loss[j] + (1 - t1 - t2) * loss[k];
+                            tmpD[1] = (t1 * t1) * risk[i][i] + t2 * t2 * risk[j][j] + (1 - t1 - t2) * (1 - t1 - t2) * risk[k][k]
+                                    + 2 * (t1 * t2 * risk[i][j]) + 2 * ((1 - t1 - t2) * t2 * risk[k][j]) + 2 * (t1 * (1 - t1 - t2) * risk[i][k]);
                             tmpElem.add(tmpD);
                             complete.add(tmpD);
                         }
@@ -157,20 +157,20 @@ public class PortfolioFrontTester {
         // now calc the stuff
         ArrayList complete = new ArrayList();
         ArrayList elements = new ArrayList();
-        double[]  tmpD;
+        double[] tmpD;
         ArrayList tmpElem;
-        int         res = 35;
+        int res = 35;
         for (int i = 0; i < loss.length; i++) {
-            for (int j = i+1; j < loss.length; j++) {
-                for (int k = j+1; k < loss.length; k++) {
+            for (int j = i + 1; j < loss.length; j++) {
+                for (int k = j + 1; k < loss.length; k++) {
                     tmpElem = new ArrayList();
-                    for (double t1 = 0; t1 < 1.0; t1 += 1/(double)res) {
-                        for (double t2 = 0; t2 < (1.0 - t1); t2 += 1/(double)res) {
-                            if (!(this.exceedingLimit(limit, t1, t2, (1-t1-t2)) > 1)) {
+                    for (double t1 = 0; t1 < 1.0; t1 += 1 / (double) res) {
+                        for (double t2 = 0; t2 < (1.0 - t1); t2 += 1 / (double) res) {
+                            if (!(this.exceedingLimit(limit, t1, t2, (1 - t1 - t2)) > 1)) {
                                 tmpD = new double[2];
-                                tmpD[0] = t1*loss[i] + t2*loss[j] + (1-t1-t2)*loss[k];
-                                tmpD[1] = (t1*t1)*risk[i][i] + t2*t2*risk[j][j] + (1-t1-t2)*(1-t1-t2)*risk[k][k]
-                                        + 2*(t1*t2*risk[i][j]) + 2*((1-t1-t2)*t2*risk[k][j])+ 2*(t1*(1-t1-t2)*risk[i][k]);
+                                tmpD[0] = t1 * loss[i] + t2 * loss[j] + (1 - t1 - t2) * loss[k];
+                                tmpD[1] = (t1 * t1) * risk[i][i] + t2 * t2 * risk[j][j] + (1 - t1 - t2) * (1 - t1 - t2) * risk[k][k]
+                                        + 2 * (t1 * t2 * risk[i][j]) + 2 * ((1 - t1 - t2) * t2 * risk[k][j]) + 2 * (t1 * (1 - t1 - t2) * risk[i][k]);
                                 tmpElem.add(tmpD);
                                 complete.add(tmpD);
                             }
@@ -201,7 +201,7 @@ public class PortfolioFrontTester {
 
     private void saveThisStuff(ArrayList c, ArrayList e) {
         try {
-            this.m_OutputFile = new BufferedWriter(new OutputStreamWriter (new FileOutputStream ("PortX_K2_Limits045_CompleteList.txt")));
+            this.m_OutputFile = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("PortX_K2_Limits045_CompleteList.txt")));
         } catch (FileNotFoundException ex) {
             System.out.println("Could not open output file!");
         }
@@ -211,7 +211,7 @@ public class PortfolioFrontTester {
         this.writeToFile(line);
         for (int i = 0; i < c.size(); i++) {
             tmpD = (double[]) c.get(i);
-            line = tmpD[1] +"\t" + tmpD[0];
+            line = tmpD[1] + "\t" + tmpD[0];
             this.writeToFile(line);
         }
         try {
@@ -220,18 +220,18 @@ public class PortfolioFrontTester {
         }
         // next file
         try {
-            this.m_OutputFile = new BufferedWriter(new OutputStreamWriter (new FileOutputStream ("PortX_K2_Limits045_ListElements.txt")));
+            this.m_OutputFile = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("PortX_K2_Limits045_ListElements.txt")));
         } catch (FileNotFoundException ex) {
             System.out.println("Could not open output file!");
         }
         int length = e.size();
         double[][][] cara = new double[length][][];
         for (int i = 0; i < e.size(); i++) {
-            cara[i] = (double[][])e.get(i);
+            cara[i] = (double[][]) e.get(i);
         }
         line = "";
         for (int i = 0; i < cara.length; i++) {
-            line = "Risk"+i+"\t"+"Loss"+i;
+            line = "Risk" + i + "\t" + "Loss" + i;
         }
         this.writeToFile(line);
         for (int i = 0; i < cara[0].length; i++) {
@@ -249,7 +249,7 @@ public class PortfolioFrontTester {
 
     private void saveThisStuffK3(ArrayList c, ArrayList e) {
         try {
-            this.m_OutputFile = new BufferedWriter(new OutputStreamWriter (new FileOutputStream ("PortX_K3_Limits0283_CompleteList.txt")));
+            this.m_OutputFile = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("PortX_K3_Limits0283_CompleteList.txt")));
         } catch (FileNotFoundException ex) {
             System.out.println("Could not open output file!");
         }
@@ -259,7 +259,7 @@ public class PortfolioFrontTester {
         this.writeToFile(line);
         for (int i = 0; i < c.size(); i++) {
             tmpD = (double[]) c.get(i);
-            line = tmpD[1] +"\t" + tmpD[0];
+            line = tmpD[1] + "\t" + tmpD[0];
             this.writeToFile(line);
         }
         try {
@@ -268,7 +268,7 @@ public class PortfolioFrontTester {
         }
         // next file
         try {
-            this.m_OutputFile = new BufferedWriter(new OutputStreamWriter (new FileOutputStream ("PortX_K3_Limits0283_ListElements.txt")));
+            this.m_OutputFile = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("PortX_K3_Limits0283_ListElements.txt")));
         } catch (FileNotFoundException ex) {
             System.out.println("Could not open output file!");
         }
@@ -276,7 +276,7 @@ public class PortfolioFrontTester {
         double[][][] cara = new double[length][][];
         ArrayList tmpA;
         for (int i = 0; i < e.size(); i++) {
-            tmpA = (ArrayList)e.get(i);
+            tmpA = (ArrayList) e.get(i);
             cara[i] = new double[tmpA.size()][];
             for (int j = 0; j < tmpA.size(); j++) {
                 cara[i][j] = (double[]) tmpA.get(j);
@@ -285,7 +285,7 @@ public class PortfolioFrontTester {
 
         line = "";
         for (int i = 0; i < cara.length; i++) {
-            line = "Risk"+i+"\t"+"Loss"+i;
+            line = "Risk" + i + "\t" + "Loss" + i;
         }
         this.writeToFile(line);
         for (int i = 0; i < cara[0].length; i++) {
@@ -306,8 +306,10 @@ public class PortfolioFrontTester {
         }
     }
 
-    /** This method writes Data to file.
-     * @param line      The line that is to be added to the file
+    /**
+     * This method writes Data to file.
+     *
+     * @param line The line that is to be added to the file
      */
     private void writeToFile(String line) {
         String write = line + "\n";
@@ -331,17 +333,18 @@ public class PortfolioFrontTester {
     }
 
     private void showLine(double[][] elm) {
-        GraphPointSet   mySet = new GraphPointSet(this.index, this.m_Plot.getFunctionArea());
+        GraphPointSet mySet = new GraphPointSet(this.index, this.m_Plot.getFunctionArea());
         mySet.setConnectedMode(false);
         this.index++;
         for (int i = 0; i < elm.length; i++) {
             mySet.addDPoint(elm[i][1], elm[i][0]);
         }
     }
+
     private void showLine(ArrayList elm) {
         double[][] res = new double[elm.size()][];
         for (int i = 0; i < elm.size(); i++) {
-            res[i] = (double[])elm.get(i);
+            res[i] = (double[]) elm.get(i);
         }
         this.showLine(res);
     }

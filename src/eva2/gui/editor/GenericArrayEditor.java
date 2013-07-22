@@ -3,6 +3,7 @@ package eva2.gui.editor;
 import eva2.gui.*;
 import eva2.tools.EVAHELP;
 import eva2.tools.SerializedObject;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
@@ -165,7 +166,7 @@ public class GenericArrayEditor extends JPanel implements PropertyEditor {
         }
         return os;
     }
-    
+
     /**
      * Listens to list items being selected and takes appropriate action
      */
@@ -173,7 +174,7 @@ public class GenericArrayEditor extends JPanel implements PropertyEditor {
             new ListSelectionListener() {
                 //
 
-        @Override
+                @Override
                 public void valueChanged(ListSelectionEvent e) {
 
                     if (e.getSource() == elementList) {
@@ -261,7 +262,7 @@ public class GenericArrayEditor extends JPanel implements PropertyEditor {
          * Creates the list cell renderer.
          *
          * @param editorClass The class of the property editor for array objects
-         * @param valueClass The class of the array values
+         * @param valueClass  The class of the array values
          */
         public EditorListCellRenderer(Class editorClass, Class valueClass) {
             this.editorClass = editorClass;
@@ -271,24 +272,24 @@ public class GenericArrayEditor extends JPanel implements PropertyEditor {
         /**
          * Creates a cell rendering component.
          *
-         * @param JList the list that will be rendered in
-         * @param Object the cell value
-         * @param int which element of the list to render
+         * @param JList   the list that will be rendered in
+         * @param Object  the cell value
+         * @param int     which element of the list to render
          * @param boolean true if the cell is selected
          * @param boolean true if the cell has the focus
          * @return the rendering component
          */
         @Override
         public Component getListCellRendererComponent(final JList list,
-                final Object value,
-                final int index,
-                final boolean isSelected,
-                final boolean cellHasFocus) {
+                                                      final Object value,
+                                                      final int index,
+                                                      final boolean isSelected,
+                                                      final boolean cellHasFocus) {
             try {
                 final PropertyEditor e = (PropertyEditor) editorClass.newInstance();
                 if (e instanceof GenericObjectEditor) {
                     ((GenericObjectEditor) e).setClassType(valueClass);
-                }                
+                }
                 e.setValue(value);
                 JPanel cellPanel = new JPanel() {
 
@@ -644,7 +645,7 @@ public class GenericArrayEditor extends JPanel implements PropertyEditor {
      * @return
      */
     private JMenuItem createMenuItem(String title, boolean enabled,
-            ActionListener aListener) {
+                                     ActionListener aListener) {
         JMenuItem item = new JMenuItem(title);
         // if (bgColor!=null) item.setForeground(bgColor);
         item.addActionListener(aListener);

@@ -3,7 +3,8 @@ package eva2.optimization.operator.constraint;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.InterfaceDataTypeDouble;
 
-/** This area constraint for parallelization is based on
+/**
+ * This area constraint for parallelization is based on
  * the class type an individual belongs to.
  * Created by IntelliJ IDEA.
  * User: streiche
@@ -13,20 +14,21 @@ import eva2.optimization.individuals.InterfaceDataTypeDouble;
  */
 public class ConstBelongsToDifferentClass implements InterfaceConstraint, java.io.Serializable {
 
-    private double[]        m_Class;
-    private double[][]      m_OtherClasses;
-    private boolean         m_UsePhenotype      = false;
+    private double[] m_Class;
+    private double[][] m_OtherClasses;
+    private boolean m_UsePhenotype = false;
 
     public ConstBelongsToDifferentClass() {
     }
+
     public ConstBelongsToDifferentClass(double[] m, double[][] b, boolean p) {
-        this.m_Class            = m;
-        this.m_OtherClasses     = b;
-        this.m_UsePhenotype     = p;
+        this.m_Class = m;
+        this.m_OtherClasses = b;
+        this.m_UsePhenotype = p;
     }
 
     public ConstBelongsToDifferentClass(ConstBelongsToDifferentClass a) {
-        this.m_UsePhenotype     = a.m_UsePhenotype;
+        this.m_UsePhenotype = a.m_UsePhenotype;
         if (a.m_Class != null) {
             this.m_Class = new double[a.m_Class.length];
             System.arraycopy(a.m_Class, 0, this.m_Class, 0, a.m_Class.length);
@@ -45,18 +47,20 @@ public class ConstBelongsToDifferentClass implements InterfaceConstraint, java.i
         return (Object) new ConstBelongsToDifferentClass(this);
     }
 
-    /** This method allows you wether or not a given individual
+    /**
+     * This method allows you wether or not a given individual
      * violates the constraints.
-     * @param indy  The individual to check.
+     *
+     * @param indy The individual to check.
      * @return true if valid false else.
      */
     @Override
     public boolean isValid(AbstractEAIndividual indy) {
         double[] data;
         if (this.m_UsePhenotype && (indy instanceof InterfaceDataTypeDouble)) {
-            data = ((InterfaceDataTypeDouble)indy).getDoubleData();
+            data = ((InterfaceDataTypeDouble) indy).getDoubleData();
         } else {
-            data = ((AbstractEAIndividual)indy).getFitness();
+            data = ((AbstractEAIndividual) indy).getFitness();
         }
         double distanceToMyClass = this.distance(data, this.m_Class);
         for (int i = 0; i < this.m_OtherClasses.length; i++) {
@@ -67,7 +71,9 @@ public class ConstBelongsToDifferentClass implements InterfaceConstraint, java.i
         return true;
     }
 
-    /** This method calculates the distance between two double values
+    /**
+     * This method calculates the distance between two double values
+     *
      * @param d1
      * @param d2
      * @return The scalar distances between d1 and d2

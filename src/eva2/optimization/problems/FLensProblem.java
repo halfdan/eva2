@@ -9,6 +9,7 @@ import eva2.optimization.modules.OptimizationParameters;
 import eva2.optimization.population.Population;
 import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.tools.math.RNG;
+
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -28,18 +29,18 @@ import javax.swing.JTextArea;
 class MyLensViewer extends JPanel implements InterfaceSolutionViewer {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 7945150208043416139L;
-	Population indiesToPaint=new Population();
-//	private double[]                    m_BestVariables;
+     *
+     */
+    private static final long serialVersionUID = 7945150208043416139L;
+    Population indiesToPaint = new Population();
+    //	private double[]                    m_BestVariables;
 //    private double                      m_BestFitness;
-    private int                         m_Height, m_Width;
-    FLensProblem                        m_LensProblem;
+    private int m_Height, m_Width;
+    FLensProblem m_LensProblem;
 
-    public MyLensViewer (FLensProblem f) {
+    public MyLensViewer(FLensProblem f) {
         initView(f);
-        Dimension d = new Dimension (280, 220);
+        Dimension d = new Dimension(280, 220);
         this.setPreferredSize(d);
         this.setMinimumSize(d);
         resetView();
@@ -47,30 +48,30 @@ class MyLensViewer extends JPanel implements InterfaceSolutionViewer {
 
     @Override
     public void initView(AbstractOptimizationProblem prob) {
-    	this.m_LensProblem = (FLensProblem)prob;
+        this.m_LensProblem = (FLensProblem) prob;
     }
-    
+
     @Override
     public void resetView() {
 //    	this.m_BestFitness = Double.POSITIVE_INFINITY;
 //    	this.m_BestVariables = new double[10];
-    	ESIndividualDoubleData dummy = new ESIndividualDoubleData();
-    	dummy.setFitness(new double[]{Double.POSITIVE_INFINITY});
-    	indiesToPaint = new Population();
+        ESIndividualDoubleData dummy = new ESIndividualDoubleData();
+        dummy.setFitness(new double[]{Double.POSITIVE_INFINITY});
+        indiesToPaint = new Population();
     }
-    
+
     @Override
     public void paint(Graphics g) {
-        Shape               tmpShape;
-        BufferedImage       bufferedImage;
-        BasicStroke         ds = new BasicStroke();
-        Stroke              dashStroke;
-        int                 mag = 10;
-        int                 centerLens, centerScreen, segment;
+        Shape tmpShape;
+        BufferedImage bufferedImage;
+        BasicStroke ds = new BasicStroke();
+        Stroke dashStroke;
+        int mag = 10;
+        int centerLens, centerScreen, segment;
 
 //        lineStroke  = ds;
 //        pointStroke = new BasicStroke(ds.getLineWidth(), ds.getEndCap(), ds.getLineJoin(), ds.getMiterLimit() , new float[] {1, 4}, 0);
-        dashStroke  = new BasicStroke(ds.getLineWidth(), ds.getEndCap(), ds.getLineJoin(), ds.getMiterLimit() , new float[] {8, 8}, 0);
+        dashStroke = new BasicStroke(ds.getLineWidth(), ds.getEndCap(), ds.getLineJoin(), ds.getMiterLimit(), new float[]{8, 8}, 0);
 
         super.paint(g);
         if (g == null) {
@@ -92,7 +93,7 @@ class MyLensViewer extends JPanel implements InterfaceSolutionViewer {
         m_Width = winDim.width;
 //        m_CenterX = m_Width/2;
 //        m_CenterY = m_Height/2;
-        
+
 //        if (this.m_Height == 0) this.m_Height = 250;
 //        if (this.m_Width == 0) this.m_Width = 350;
 //        System.out.println(" h w cx cy "  + m_Height + " " + m_Width + " " + m_CenterX + " " + m_CenterY );
@@ -106,13 +107,13 @@ class MyLensViewer extends JPanel implements InterfaceSolutionViewer {
         // now start to plot some interesting stuff
         //draw the mid line
         g2D.setPaint(Color.black);
-        g2D.drawLine(0, this.m_Height/2, this.m_Width, this.m_Height/2);
-        centerLens      = 5 + 50;
-        centerScreen    = centerLens + (int)this.m_LensProblem.m_FocalLength*10;
-        segment         = 10*(int)this.m_LensProblem.m_Radius*2/(this.m_LensProblem.m_ProblemDimension-1);
+        g2D.drawLine(0, this.m_Height / 2, this.m_Width, this.m_Height / 2);
+        centerLens = 5 + 50;
+        centerScreen = centerLens + (int) this.m_LensProblem.m_FocalLength * 10;
+        segment = 10 * (int) this.m_LensProblem.m_Radius * 2 / (this.m_LensProblem.m_ProblemDimension - 1);
         g2D.setStroke(dashStroke);
-        g2D.drawLine(centerLens, this.m_Height/2+(int)this.m_LensProblem.m_Radius*10, centerLens, this.m_Height/2 -(int)this.m_LensProblem.m_Radius*10);
-        g2D.drawLine(centerScreen, this.m_Height/2+(int)this.m_LensProblem.m_Radius*10+10, centerScreen, this.m_Height/2 -(int)this.m_LensProblem.m_Radius*10-10);
+        g2D.drawLine(centerLens, this.m_Height / 2 + (int) this.m_LensProblem.m_Radius * 10, centerLens, this.m_Height / 2 - (int) this.m_LensProblem.m_Radius * 10);
+        g2D.drawLine(centerScreen, this.m_Height / 2 + (int) this.m_LensProblem.m_Radius * 10 + 10, centerScreen, this.m_Height / 2 - (int) this.m_LensProblem.m_Radius * 10 - 10);
         g2D.setStroke(ds);
 //        System.out.println("indies to paint: " + indiesToPaint.size());
         paintLens(m_LensProblem.m_ProblemDimension, m_Height, m_LensProblem.m_Radius, mag, centerLens, centerScreen, segment, g2D);
@@ -121,39 +122,39 @@ class MyLensViewer extends JPanel implements InterfaceSolutionViewer {
     }
 
     private void paintLens(int dim, int height, double radius, int mag, int centerLens, int centerScreen, int segment, Graphics2D g2D) {
-    	for (int i=0; i<indiesToPaint.size(); i++) {
-    		AbstractEAIndividual indy = indiesToPaint.getEAIndividual(i);
-    		paintLens(indy.getDoublePosition(), m_LensProblem.testLens(indy.getDoublePosition()), indy.getFitness(0), dim, height, radius, mag, centerLens, centerScreen, segment, g2D);
-    	}
-    }
-    
-    private void paintLens(AbstractEAIndividual indy, int dim, int height, double radius, int mag, int centerLens, int centerScreen, int segment, Graphics2D g2D) {
-    	if (indy!=null) {
+        for (int i = 0; i < indiesToPaint.size(); i++) {
+            AbstractEAIndividual indy = indiesToPaint.getEAIndividual(i);
             paintLens(indy.getDoublePosition(), m_LensProblem.testLens(indy.getDoublePosition()), indy.getFitness(0), dim, height, radius, mag, centerLens, centerScreen, segment, g2D);
         }
     }
 
-	private static void paintLens(double[] variables, double[] dots, double fit, int dim, int height, double radius, int mag, int centerLens, int centerScreen,
-			int segment, Graphics2D g2D) {
+    private void paintLens(AbstractEAIndividual indy, int dim, int height, double radius, int mag, int centerLens, int centerScreen, int segment, Graphics2D g2D) {
+        if (indy != null) {
+            paintLens(indy.getDoublePosition(), m_LensProblem.testLens(indy.getDoublePosition()), indy.getFitness(0), dim, height, radius, mag, centerLens, centerScreen, segment, g2D);
+        }
+    }
+
+    private static void paintLens(double[] variables, double[] dots, double fit, int dim, int height, double radius, int mag, int centerLens, int centerScreen,
+                                  int segment, Graphics2D g2D) {
         // top and bottom line
-		g2D.drawLine(centerLens-(int)(variables[0]*mag), height/2-(int)radius*10, centerLens+(int)(variables[0]*mag), height/2 -(int)radius*10);
-        g2D.drawLine(centerLens-(int)(variables[dim-1]*mag), height/2+(int)radius*10, centerLens+(int)(variables[dim-1]*mag), height/2 +(int)radius*10);
+        g2D.drawLine(centerLens - (int) (variables[0] * mag), height / 2 - (int) radius * 10, centerLens + (int) (variables[0] * mag), height / 2 - (int) radius * 10);
+        g2D.drawLine(centerLens - (int) (variables[dim - 1] * mag), height / 2 + (int) radius * 10, centerLens + (int) (variables[dim - 1] * mag), height / 2 + (int) radius * 10);
 
         // plot the fitness result
-        g2D.drawString("Fitness : "+ fit, (int) (variables[0]*mag), 15);
+        g2D.drawString("Fitness : " + fit, (int) (variables[0] * mag), 15);
 
-        int currentXPos = height/2-(int)radius*10;
+        int currentXPos = height / 2 - (int) radius * 10;
         for (int i = 1; i < variables.length; i++) {
             ///System.out.println("X"+i+": " +  variables[i]);
             // draw the line from the least one to the current on and use 10 as magnifier
             g2D.setPaint(Color.black);
-            g2D.drawLine(centerLens-(int)(variables[i-1]*mag), currentXPos, centerLens-(int)(variables[i]*mag), currentXPos+segment);
-            g2D.drawLine(centerLens+(int)(variables[i-1]*mag), currentXPos, centerLens+(int)(variables[i]*mag), currentXPos+segment);
+            g2D.drawLine(centerLens - (int) (variables[i - 1] * mag), currentXPos, centerLens - (int) (variables[i] * mag), currentXPos + segment);
+            g2D.drawLine(centerLens + (int) (variables[i - 1] * mag), currentXPos, centerLens + (int) (variables[i] * mag), currentXPos + segment);
 
             // paint the light rays
             g2D.setPaint(Color.red);
-            g2D.drawLine(0, currentXPos + segment/2, centerLens, currentXPos + segment/2);
-            g2D.drawLine(centerLens, currentXPos + segment/2, centerScreen, height/2 +(int)(dots[i-1]*mag));
+            g2D.drawLine(0, currentXPos + segment / 2, centerLens, currentXPos + segment / 2);
+            g2D.drawLine(centerLens, currentXPos + segment / 2, centerScreen, height / 2 + (int) (dots[i - 1] * mag));
 
             currentXPos += segment;
 //            tmpShape = new Rectangle(currentPos-width/2, this.m_Height/2, width, (int)(variables[i]*10));
@@ -163,44 +164,46 @@ class MyLensViewer extends JPanel implements InterfaceSolutionViewer {
 //            g2D.draw(tmpShape);
 //            g2D.drawLine(currentPos, this.m_Height/2+5, currentPos, this.m_Height/2-5);
         }
-	}
+    }
 
-    /** This method updates the painted stuff
-     * @param pop   The population to use
+    /**
+     * This method updates the painted stuff
+     *
+     * @param pop The population to use
      */
     @Override
-	public void updateView(Population pop, boolean showAllIfPossible) {
-		if (showAllIfPossible) {
+    public void updateView(Population pop, boolean showAllIfPossible) {
+        if (showAllIfPossible) {
 //			indiesToPaint=population;
-			for (int i=0; i<pop.size(); i++) {
-				MyLensViewer newView=new MyLensViewer(m_LensProblem);
-				
-				Population newPop = new Population();
-				newPop.add(pop.getEAIndividual(i));
-				newView.updateView(newPop, false);
-				
-				JFrame newFrame = new JFrame("Lens Problem Viewer");
-				newFrame.getContentPane().add(newView);
-				newFrame.pack();
-				newFrame.setVisible(true);
-			}
+            for (int i = 0; i < pop.size(); i++) {
+                MyLensViewer newView = new MyLensViewer(m_LensProblem);
+
+                Population newPop = new Population();
+                newPop.add(pop.getEAIndividual(i));
+                newView.updateView(newPop, false);
+
+                JFrame newFrame = new JFrame("Lens Problem Viewer");
+                newFrame.getContentPane().add(newView);
+                newFrame.pack();
+                newFrame.setVisible(true);
+            }
 //			this.paint(this.getGraphics());
-		} else {
-			InterfaceDataTypeDouble best = (InterfaceDataTypeDouble)pop.getBestIndividual();
-			//this.m_BestFitness      = ((AbstractEAIndividual)best).getFitness(0);
-			if (indiesToPaint.size()==0 || ((AbstractEAIndividual)best).isDominant(indiesToPaint.getBestIndividual())) {
-				if (indiesToPaint.size()==1) {
-                                indiesToPaint.set(0, best);
-                            }
-				else {
-                                indiesToPaint.add(best);
-                            }
-				this.paint(this.getGraphics());
-			}
-		}
-	}
+        } else {
+            InterfaceDataTypeDouble best = (InterfaceDataTypeDouble) pop.getBestIndividual();
+            //this.m_BestFitness      = ((AbstractEAIndividual)best).getFitness(0);
+            if (indiesToPaint.size() == 0 || ((AbstractEAIndividual) best).isDominant(indiesToPaint.getBestIndividual())) {
+                if (indiesToPaint.size() == 1) {
+                    indiesToPaint.set(0, best);
+                } else {
+                    indiesToPaint.add(best);
+                }
+                this.paint(this.getGraphics());
+            }
+        }
+    }
 
 }
+
 /**
  * Created by IntelliJ IDEA.
  * User: streiche
@@ -208,64 +211,66 @@ class MyLensViewer extends JPanel implements InterfaceSolutionViewer {
  * Time: 09:49:37
  * To change this template use File | Settings | File Templates.
  */
-public class FLensProblem extends AbstractOptimizationProblem 
-implements InterfaceOptimizationProblem, InterfaceHasSolutionViewer, java.io.Serializable  {
+public class FLensProblem extends AbstractOptimizationProblem
+        implements InterfaceOptimizationProblem, InterfaceHasSolutionViewer, java.io.Serializable {
 
-	/**
-	 *  
-	 */
-	private static final long serialVersionUID = 4694920294291719310L;
-	protected AbstractEAIndividual      m_OverallBest       = null;
-	protected int                       m_ProblemDimension  = 10;
-	protected double                    m_Noise             = 0.0;
-	protected double                    m_XOffSet           = 0.0;
-	protected double                    m_YOffSet           = 0.0;
-    transient protected boolean         m_Show              = false;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 4694920294291719310L;
+    protected AbstractEAIndividual m_OverallBest = null;
+    protected int m_ProblemDimension = 10;
+    protected double m_Noise = 0.0;
+    protected double m_XOffSet = 0.0;
+    protected double m_YOffSet = 0.0;
+    transient protected boolean m_Show = false;
     //protected int						sleepTime			= 0;
-    
-    transient private JFrame            m_ProblemFrame;
-    transient private MyLensViewer      m_Panel;
-    public double                       m_Radius            = 5;
-    public double                       m_FocalLength       = 20;
-    public double                       m_Epsilon           = 1.5;
-    private boolean                     m_UseMaterialConst  = false;
 
-	public FLensProblem() {
+    transient private JFrame m_ProblemFrame;
+    transient private MyLensViewer m_Panel;
+    public double m_Radius = 5;
+    public double m_FocalLength = 20;
+    public double m_Epsilon = 1.5;
+    private boolean m_UseMaterialConst = false;
+
+    public FLensProblem() {
         this.template = new ESIndividualDoubleData();
         if (this.m_Show) {
-                this.initProblemFrame();
-            }
-	}
-	public FLensProblem(FLensProblem b) {
+            this.initProblemFrame();
+        }
+    }
+
+    public FLensProblem(FLensProblem b) {
         //AbstractOptimizationProblem
         if (b.template != null) {
-                this.template = (AbstractEAIndividual)((AbstractEAIndividual)b.template).clone();
-            }
+            this.template = (AbstractEAIndividual) ((AbstractEAIndividual) b.template).clone();
+        }
         //FLensProblem
         if (b.m_OverallBest != null) {
-                this.m_OverallBest      = (AbstractEAIndividual)((AbstractEAIndividual)b.m_OverallBest).clone();
-            }
+            this.m_OverallBest = (AbstractEAIndividual) ((AbstractEAIndividual) b.m_OverallBest).clone();
+        }
         this.m_ProblemDimension = b.m_ProblemDimension;
-        this.m_Noise            = b.m_Noise;
-        this.m_XOffSet          = b.m_XOffSet;
-        this.m_YOffSet          = b.m_YOffSet;
-        this.m_Radius           = b.m_Radius;
-        this.m_FocalLength      = b.m_FocalLength;
-        this.m_Epsilon          = b.m_Epsilon;
+        this.m_Noise = b.m_Noise;
+        this.m_XOffSet = b.m_XOffSet;
+        this.m_YOffSet = b.m_YOffSet;
+        this.m_Radius = b.m_Radius;
+        this.m_FocalLength = b.m_FocalLength;
+        this.m_Epsilon = b.m_Epsilon;
         this.m_UseMaterialConst = b.m_UseMaterialConst;
-	}
+    }
+
     @Override
     public Object clone() {
         return (Object) new FLensProblem(this);
     }
 
-    /** This method inits a problem view frame
-     *
+    /**
+     * This method inits a problem view frame
      */
     public void initProblemFrame() {
         if (this.m_ProblemFrame == null) {
             this.m_ProblemFrame = new JFrame("Lens Problem Viewer");
-            this.m_Panel        = new MyLensViewer(this);
+            this.m_Panel = new MyLensViewer(this);
             this.m_ProblemFrame.getContentPane().add(this.m_Panel);
             this.m_ProblemFrame.pack();
             this.m_ProblemFrame.setVisible(true);
@@ -275,8 +280,8 @@ implements InterfaceOptimizationProblem, InterfaceHasSolutionViewer, java.io.Ser
         }
     }
 
-    /** This method gets rid of the problem view frame
-     *
+    /**
+     * This method gets rid of the problem view frame
      */
     public void disposeProblemFrame() {
         if (this.m_ProblemFrame != null) {
@@ -286,9 +291,11 @@ implements InterfaceOptimizationProblem, InterfaceHasSolutionViewer, java.io.Ser
         this.m_Panel = null;
     }
 
-    /** This method update the content in the current problem
+    /**
+     * This method update the content in the current problem
      * view frame depending on the current population.
-     * @param population    The current population.
+     *
+     * @param population The current population.
      */
     public void updateProblemFrame(Population population) {
         if (this.m_Panel != null) {
@@ -296,77 +303,84 @@ implements InterfaceOptimizationProblem, InterfaceHasSolutionViewer, java.io.Ser
         }
     }
 
-	/** This method inits the Problem to log multiruns
-	 */
+    /**
+     * This method inits the Problem to log multiruns
+     */
     @Override
-	public void initializeProblem() {
-		this.m_OverallBest = null;
+    public void initializeProblem() {
+        this.m_OverallBest = null;
         if (this.m_Show) {
-                this.initProblemFrame();
-            }
-	}
+            this.initProblemFrame();
+        }
+    }
 
-	/** This method inits a given population
-	 * @param population    The populations that is to be inited
-	 */
+    /**
+     * This method inits a given population
+     *
+     * @param population The populations that is to be inited
+     */
     @Override
-	public void initializePopulation(Population population) {
-		this.m_OverallBest = null;
-		((InterfaceDataTypeDouble)this.template).setDoubleDataLength(this.m_ProblemDimension);
+    public void initializePopulation(Population population) {
+        this.m_OverallBest = null;
+        ((InterfaceDataTypeDouble) this.template).setDoubleDataLength(this.m_ProblemDimension);
         // set the range
         double[][] range = new double[this.m_ProblemDimension][2];
         for (int i = 0; i < range.length; i++) {
             range[i][0] = 0.1;
             range[i][1] = 5.0;
         }
-       ((InterfaceDataTypeDouble)this.template).SetDoubleRange(range);
+        ((InterfaceDataTypeDouble) this.template).SetDoubleRange(range);
 
-		AbstractOptimizationProblem.defaultInitPopulation(population, template, this);
+        AbstractOptimizationProblem.defaultInitPopulation(population, template, this);
         if (this.m_Show) {
-                this.initProblemFrame();
-            }
-	}
+            this.initProblemFrame();
+        }
+    }
 
     @Override
-	public void evaluatePopulationEnd(Population pop) {
-		if (this.m_Show) {
-                this.updateProblemFrame(pop);
-            }
-	}
+    public void evaluatePopulationEnd(Population pop) {
+        if (this.m_Show) {
+            this.updateProblemFrame(pop);
+        }
+    }
 
-	/** This method evaluate a single individual and sets the fitness values
-	 * @param individual    The individual that is to be evalutated
-	 */
+    /**
+     * This method evaluate a single individual and sets the fitness values
+     *
+     * @param individual The individual that is to be evalutated
+     */
     @Override
-	public void evaluate(AbstractEAIndividual individual) {
-		double[]            x;
-		double[]            fitness;
+    public void evaluate(AbstractEAIndividual individual) {
+        double[] x;
+        double[] fitness;
 
-		x = new double[((InterfaceDataTypeDouble) individual).getDoubleData().length];
-		System.arraycopy(((InterfaceDataTypeDouble) individual).getDoubleData(), 0, x, 0, x.length);
-		for (int i = 0; i < x.length; i++) {
+        x = new double[((InterfaceDataTypeDouble) individual).getDoubleData().length];
+        System.arraycopy(((InterfaceDataTypeDouble) individual).getDoubleData(), 0, x, 0, x.length);
+        for (int i = 0; i < x.length; i++) {
             x[i] -= this.m_XOffSet;
         }
-		fitness = this.doEvaluation(x);
-		for (int i = 0; i < fitness.length; i++) {
-			// add noise to the fitness
-			fitness[i] += RNG.gaussianDouble(this.m_Noise);
-			fitness[i] += this.m_YOffSet;
-			// set the fitness of the individual
-			individual.SetFitness(i, fitness[i]);
-		}
-		if ((this.m_OverallBest == null) || (this.m_OverallBest.getFitness(0) > individual.getFitness(0))) {
-			this.m_OverallBest = (AbstractEAIndividual)individual.clone();
-		}
-	}
+        fitness = this.doEvaluation(x);
+        for (int i = 0; i < fitness.length; i++) {
+            // add noise to the fitness
+            fitness[i] += RNG.gaussianDouble(this.m_Noise);
+            fitness[i] += this.m_YOffSet;
+            // set the fitness of the individual
+            individual.SetFitness(i, fitness[i]);
+        }
+        if ((this.m_OverallBest == null) || (this.m_OverallBest.getFitness(0) > individual.getFitness(0))) {
+            this.m_OverallBest = (AbstractEAIndividual) individual.clone();
+        }
+    }
 
-	/** Ths method allows you to evaluate a simple bit string to determine the fitness
-	 * @param x     The n-dimensional input vector
-	 * @return  The m-dimensional output vector.
-	 */
-	public double[] doEvaluation(double[] x) {
-        double fitness          = 0;
-        double[] ret            = new double[1];
+    /**
+     * Ths method allows you to evaluate a simple bit string to determine the fitness
+     *
+     * @param x The n-dimensional input vector
+     * @return The m-dimensional output vector.
+     */
+    public double[] doEvaluation(double[] x) {
+        double fitness = 0;
+        double[] ret = new double[1];
 
         // set a minimum value for the thickness of the lens
         for (int i = 0; i < x.length; i++) {
@@ -389,232 +403,275 @@ implements InterfaceOptimizationProblem, InterfaceHasSolutionViewer, java.io.Ser
         // Here the thickness of the middle segment of the lens	is added to the fitness
         // to permit the optimization to reduce the overall thickness of the lens
         if (this.m_UseMaterialConst) {
-                fitness += x[(int)(x.length/2)];
-            }
+            fitness += x[(int) (x.length / 2)];
+        }
 
         ret[0] = fitness;
         return ret;
-	}
+    }
 
-    /** this method will return the deviations
-     * @param x     The lens
+    /**
+     * this method will return the deviations
+     *
+     * @param x The lens
      * @return double[]
      */
     public double[] testLens(double[] x) {
-        double      m_SegmentHight      = 2 * m_Radius / (x.length - 1);
-        double[]    result              = new double[x.length-1];
+        double m_SegmentHight = 2 * m_Radius / (x.length - 1);
+        double[] result = new double[x.length - 1];
         // Computation of fitness. Uses an approximation for very thin lenses.
         // The fitness is the sum over all segments of the deviation from the center
         // of focus of a beam running through a segment.
         for (int i = 1; i < x.length; i++) {
-            result[i-1] = m_Radius - m_SegmentHight / 2 - m_SegmentHight * (i - 1) -  m_FocalLength / m_SegmentHight * (m_Epsilon - 1) * (x[i] - x[i-1]);
+            result[i - 1] = m_Radius - m_SegmentHight / 2 - m_SegmentHight * (i - 1) - m_FocalLength / m_SegmentHight * (m_Epsilon - 1) * (x[i] - x[i - 1]);
         }
         return result;
     }
 
-	/** This method allows you to output a string that describes a found solution
-	 * in a way that is most suiteable for a given problem.
-	 * @param individual    The individual that is to be shown.
-	 * @return The description.
-	 */
+    /**
+     * This method allows you to output a string that describes a found solution
+     * in a way that is most suiteable for a given problem.
+     *
+     * @param individual The individual that is to be shown.
+     * @return The description.
+     */
     @Override
-	public String getSolutionRepresentationFor(AbstractEAIndividual individual) {
-		this.evaluate(individual);
-		String result = "FX problem:\n";
-		result += individual.getStringRepresentation() + "\n";
-		result += "Y = " + individual.getFitness(0);
-		return result;
-	}
-	
-	/** This method allows you to output a string that describes a found solution
-	 * in a way that is most suiteable for a given problem.
-	 * @param optimizer        The individual that is to be shown.
-	 * @return The description.
-	 */
-	public String getFinalReportOn(InterfaceOptimizer optimizer){
-		String result = optimizer.getStringRepresentation() +"\n";
-		result += this.getSolutionRepresentationFor(this.m_OverallBest);
-		return result;
-	}
+    public String getSolutionRepresentationFor(AbstractEAIndividual individual) {
+        this.evaluate(individual);
+        String result = "FX problem:\n";
+        result += individual.getStringRepresentation() + "\n";
+        result += "Y = " + individual.getFitness(0);
+        return result;
+    }
 
-    /** This method returns a string describing the optimization problem.
-     * @param opt       The Optimizer that is used or had been used.
+    /**
+     * This method allows you to output a string that describes a found solution
+     * in a way that is most suiteable for a given problem.
+     *
+     * @param optimizer The individual that is to be shown.
+     * @return The description.
+     */
+    public String getFinalReportOn(InterfaceOptimizer optimizer) {
+        String result = optimizer.getStringRepresentation() + "\n";
+        result += this.getSolutionRepresentationFor(this.m_OverallBest);
+        return result;
+    }
+
+    /**
+     * This method returns a string describing the optimization problem.
+     *
+     * @param opt The Optimizer that is used or had been used.
      * @return The description.
      */
     @Override
     public String getStringRepresentationForProblem(InterfaceOptimizer opt) {
-		String result = "";
+        String result = "";
 
-		result += "FX Problem:\n";
-		result += "Here the individual codes a vector of real number x and FX(x)= x is to be minimized.\n";
-		result += "Parameters:\n";
-		result += "Dimension   : " + this.m_ProblemDimension +"\n";
-		result += "Noise level : " + this.m_Noise + "\n";
-		result += "Solution representation:\n";
-		//result += this.template.getSolutionRepresentationFor();
-		return result;
-	}
+        result += "FX Problem:\n";
+        result += "Here the individual codes a vector of real number x and FX(x)= x is to be minimized.\n";
+        result += "Parameters:\n";
+        result += "Dimension   : " + this.m_ProblemDimension + "\n";
+        result += "Noise level : " + this.m_Noise + "\n";
+        result += "Solution representation:\n";
+        //result += this.template.getSolutionRepresentationFor();
+        return result;
+    }
 
-	/** This method allows you to request a graphical representation for a given
-	 * individual.
-	 */
+    /**
+     * This method allows you to request a graphical representation for a given
+     * individual.
+     */
     @Override
-	public JComponent drawIndividual(AbstractEAIndividual indy) {
-		JTextArea tindy = new JTextArea(indy.getStringRepresentation());
-		JScrollPane pindy = new JScrollPane(tindy);
-		tindy.setEditable(false);
+    public JComponent drawIndividual(AbstractEAIndividual indy) {
+        JTextArea tindy = new JTextArea(indy.getStringRepresentation());
+        JScrollPane pindy = new JScrollPane(tindy);
+        tindy.setEditable(false);
         JPanel result = new JPanel();
         result.setLayout(new BorderLayout());
         result.add(tindy, BorderLayout.NORTH);
         result.add(pindy, BorderLayout.CENTER);
         return result;
-	}
+    }
 
     public static void main(String[] args) {
         System.out.println("TEST");
         FLensProblem f = new FLensProblem();
-        System.out.println("Working Dir " +System.getProperty("user.dir"));
-		GOStandaloneVersion  program = new GOStandaloneVersion();
+        System.out.println("Working Dir " + System.getProperty("user.dir"));
+        GOStandaloneVersion program = new GOStandaloneVersion();
         OptimizationParameters GO = program.getGOParameters();
         GO.setProblem(f);
-		RNG.setRandomSeed(1);
-		program.initFrame();
-		program.setShow(true);
+        RNG.setRandomSeed(1);
+        program.initFrame();
+        program.setShow(true);
     }
 
 /**********************************************************************************************************************
  * These are for GUI
  */
-	/** This method allows the CommonJavaObjectEditorPanel to read the
-	 * name to the current object.
-	 * @return The name.
-	 */
+    /**
+     * This method allows the CommonJavaObjectEditorPanel to read the
+     * name to the current object.
+     *
+     * @return The name.
+     */
     @Override
-	public String getName() {
-		return "Lens Problem";
-	}
+    public String getName() {
+        return "Lens Problem";
+    }
 
-	/** This method returns a global info string
-	 * @return description
-	 */
-	public static String globalInfo() {
-		return "Focussing of a lens is to be optimized.";
-	}
+    /**
+     * This method returns a global info string
+     *
+     * @return description
+     */
+    public static String globalInfo() {
+        return "Focussing of a lens is to be optimized.";
+    }
 
-	/** This method allows you to choose how much noise is to be added to the
-	 * fitness. This can be used to make the optimization problem more difficult.
-	 * @param noise     The sigma for a gaussian random number.
-	 */
-	public void setNoise(double noise) {
-		if (noise < 0) {
-                noise = 0;
-            }
-		this.m_Noise = noise;
-	}
-	public double getNoise() {
-		return this.m_Noise;
-	}
-	public String noiseTipText() {
-		return "Noise level on the fitness value.";
-	}
+    /**
+     * This method allows you to choose how much noise is to be added to the
+     * fitness. This can be used to make the optimization problem more difficult.
+     *
+     * @param noise The sigma for a gaussian random number.
+     */
+    public void setNoise(double noise) {
+        if (noise < 0) {
+            noise = 0;
+        }
+        this.m_Noise = noise;
+    }
 
-	/** This method allows you to set/get an offset for decision variables.
-	 * @param XOffSet     The offset for the decision variables.
-	 */
-	public void setXOffSet(double XOffSet) {
-		this.m_XOffSet = XOffSet;
-	}
-	public double getXOffSet() {
-		return this.m_XOffSet;
-	}
-	public String xOffSetTipText() {
-		return "Choose an offset for the decision variable.";
-	}
+    public double getNoise() {
+        return this.m_Noise;
+    }
 
-	/** This method allows you to set/get the offset for the
-	 * objective value.
-	 * @param YOffSet     The offset for the objective value.
-	 */
-	public void setYOffSet(double YOffSet) {
-		this.m_YOffSet = YOffSet;
-	}
-	public double getYOffSet() {
-		return this.m_YOffSet;
-	}
-	public String yOffSetTipText() {
-		return "Choose an offset for the objective value.";
-	}
-	/** This method allows you to set the number of mulitruns that are to be performed,
-	 * necessary for stochastic optimizers to ensure reliable results.
-	 * @param multiruns The number of multiruns that are to be performed
-	 */
-	public void setProblemDimension(int multiruns) {
-		this.m_ProblemDimension = multiruns;
-	}
-	public int getProblemDimension() {
-		return this.m_ProblemDimension;
-	}
-	public String problemDimensionTipText() {
-		return "Length of the x vector at is to be optimized.";
-	}
-	/** This method allows you to toggel the solution representation.
-	 * @param show  Whether to show the result or not
-	 */
-	public void setShow(boolean show) {
-		this.m_Show = show;
+    public String noiseTipText() {
+        return "Noise level on the fitness value.";
+    }
+
+    /**
+     * This method allows you to set/get an offset for decision variables.
+     *
+     * @param XOffSet The offset for the decision variables.
+     */
+    public void setXOffSet(double XOffSet) {
+        this.m_XOffSet = XOffSet;
+    }
+
+    public double getXOffSet() {
+        return this.m_XOffSet;
+    }
+
+    public String xOffSetTipText() {
+        return "Choose an offset for the decision variable.";
+    }
+
+    /**
+     * This method allows you to set/get the offset for the
+     * objective value.
+     *
+     * @param YOffSet The offset for the objective value.
+     */
+    public void setYOffSet(double YOffSet) {
+        this.m_YOffSet = YOffSet;
+    }
+
+    public double getYOffSet() {
+        return this.m_YOffSet;
+    }
+
+    public String yOffSetTipText() {
+        return "Choose an offset for the objective value.";
+    }
+
+    /**
+     * This method allows you to set the number of mulitruns that are to be performed,
+     * necessary for stochastic optimizers to ensure reliable results.
+     *
+     * @param multiruns The number of multiruns that are to be performed
+     */
+    public void setProblemDimension(int multiruns) {
+        this.m_ProblemDimension = multiruns;
+    }
+
+    public int getProblemDimension() {
+        return this.m_ProblemDimension;
+    }
+
+    public String problemDimensionTipText() {
+        return "Length of the x vector at is to be optimized.";
+    }
+
+    /**
+     * This method allows you to toggel the solution representation.
+     *
+     * @param show Whether to show the result or not
+     */
+    public void setShow(boolean show) {
+        this.m_Show = show;
         if (this.m_Show) {
-                this.initProblemFrame();
-            }
-        else {
-                this.disposeProblemFrame();
-            }
-	}
-	public boolean getShow() {
-		return this.m_Show;
-	}
-	public String showTipText() {
-		return "Toggle the visualization of the solution.";
-	}
+            this.initProblemFrame();
+        } else {
+            this.disposeProblemFrame();
+        }
+    }
 
-	/** This method allows you to toggle the use of the material constraint.
-	 * @param show  Whether to show the result or not
-	 */
-	public void setUseMaterialConst(boolean show) {
-		this.m_UseMaterialConst = show;
-	}
-	public boolean getUseMaterialConst() {
-		return this.m_UseMaterialConst;
-	}
-	public String useMaterialConstTipText() {
-		return "Toggle the use of the material constraint.";
-	}
+    public boolean getShow() {
+        return this.m_Show;
+    }
 
-    /** This method allows you to choose the EA individual
+    public String showTipText() {
+        return "Toggle the visualization of the solution.";
+    }
+
+    /**
+     * This method allows you to toggle the use of the material constraint.
+     *
+     * @param show Whether to show the result or not
+     */
+    public void setUseMaterialConst(boolean show) {
+        this.m_UseMaterialConst = show;
+    }
+
+    public boolean getUseMaterialConst() {
+        return this.m_UseMaterialConst;
+    }
+
+    public String useMaterialConstTipText() {
+        return "Toggle the use of the material constraint.";
+    }
+
+    /**
+     * This method allows you to choose the EA individual
+     *
      * @param indy The EAIndividual type
      */
     public void setEAIndividual(InterfaceDataTypeDouble indy) {
-        this.template = (AbstractEAIndividual)indy;
-    }
-    public InterfaceDataTypeDouble getEAIndividual() {
-        return (InterfaceDataTypeDouble)this.template;
+        this.template = (AbstractEAIndividual) indy;
     }
 
-	/** This method allows you to set the EA individual type
-	 * Beware: Trap!
-	 * @param indy  The new EA individual type.
-	 */
-	public void setEAIndividualTrap(AbstractEAIndividual indy) {
-		if (indy instanceof InterfaceDataTypeDouble) {
-                this.setEAIndividual((InterfaceDataTypeDouble)indy);
-            }
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see eva2.optimization.problems.InterfaceHasSolutionViewer#getSolutionViewer()
-	 */
+    public InterfaceDataTypeDouble getEAIndividual() {
+        return (InterfaceDataTypeDouble) this.template;
+    }
+
+    /**
+     * This method allows you to set the EA individual type
+     * Beware: Trap!
+     *
+     * @param indy The new EA individual type.
+     */
+    public void setEAIndividualTrap(AbstractEAIndividual indy) {
+        if (indy instanceof InterfaceDataTypeDouble) {
+            this.setEAIndividual((InterfaceDataTypeDouble) indy);
+        }
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see eva2.optimization.problems.InterfaceHasSolutionViewer#getSolutionViewer()
+     */
     @Override
-	public InterfaceSolutionViewer getSolutionViewer() {
-		return m_Panel;
-	}
+    public InterfaceSolutionViewer getSolutionViewer() {
+        return m_Panel;
+    }
 }

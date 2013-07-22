@@ -9,9 +9,9 @@ package eva2.gui;
  */
 public class PropertyWeightedLPTchebycheff implements java.io.Serializable {
 
-    public double[]     m_IdealValue;
-    public double[]     m_Weights;
-    public int          m_P = 0;
+    public double[] m_IdealValue;
+    public double[] m_Weights;
+    public int m_P = 0;
 
     public PropertyWeightedLPTchebycheff() {
     }
@@ -25,7 +25,7 @@ public class PropertyWeightedLPTchebycheff implements java.io.Serializable {
             this.m_Weights = new double[e.m_Weights.length];
             System.arraycopy(e.m_Weights, 0, this.m_Weights, 0, this.m_Weights.length);
         }
-        this.m_P            = e.m_P;
+        this.m_P = e.m_P;
     }
 
     @Override

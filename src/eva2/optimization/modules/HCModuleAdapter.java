@@ -11,7 +11,7 @@ public class HCModuleAdapter extends GenericModuleAdapter implements ModuleAdapt
      * Constructor of the ModuleAdapter
      *
      * @param AdapterName The AdapterName
-     * @param Client The client to serve
+     * @param Client      The client to serve
      */
     public HCModuleAdapter(String adapterName) {
         super(adapterName, "HC.html", HCParameters.getInstance(), true);

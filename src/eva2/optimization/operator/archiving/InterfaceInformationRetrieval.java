@@ -2,7 +2,8 @@ package eva2.optimization.operator.archiving;
 
 import eva2.optimization.population.Population;
 
-/** This interface gives the necessary methods for an information
+/**
+ * This interface gives the necessary methods for an information
  * retrieval algorithm.
  * Created by IntelliJ IDEA.
  * User: streiche
@@ -12,15 +13,19 @@ import eva2.optimization.population.Population;
  */
 public interface InterfaceInformationRetrieval {
 
-    /** This method allows you to make a deep clone of
+    /**
+     * This method allows you to make a deep clone of
      * the object
+     *
      * @return the deep clone
      */
     public Object clone();
 
-    /** This method will allow Information Retrieval from a archive onto
+    /**
+     * This method will allow Information Retrieval from a archive onto
      * an already existing population.
-     * @param pop           The population.
+     *
+     * @param pop The population.
      */
     public void retrieveInformationFrom(Population pop);
 }

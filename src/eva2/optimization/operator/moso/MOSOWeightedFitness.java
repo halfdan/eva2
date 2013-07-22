@@ -13,7 +13,7 @@ import eva2.optimization.population.Population;
  */
 public class MOSOWeightedFitness implements InterfaceMOSOConverter, java.io.Serializable {
 
-    private PropertyDoubleArray    m_Weights = null;
+    private PropertyDoubleArray m_Weights = null;
 
     public MOSOWeightedFitness() {
         double[][] tmpD = new double[2][1];
@@ -25,49 +25,53 @@ public class MOSOWeightedFitness implements InterfaceMOSOConverter, java.io.Seri
             this.m_Weights.normalizeColumns();
         }
     }
-    
+
     public MOSOWeightedFitness(double[][] weights) {
-    	this();
-    	setWeights(new PropertyDoubleArray(weights));
+        this();
+        setWeights(new PropertyDoubleArray(weights));
     }
-    
+
     public MOSOWeightedFitness(MOSOWeightedFitness b) {
         if (b.m_Weights != null) {
-            this.m_Weights = (PropertyDoubleArray)b.m_Weights;
+            this.m_Weights = (PropertyDoubleArray) b.m_Weights;
         }
     }
-    
+
     @Override
     public Object clone() {
         return (Object) new MOSOWeightedFitness(this);
     }
 
-    /** This method takes a population of individuals with an array of
+    /**
+     * This method takes a population of individuals with an array of
      * fitness values and calculates a single fitness value to replace
      * the former fitness array. Please note: The orignal fitness values
      * are lost this way, so please use the individual.setData() method
      * if you still want to access the original fitness values.
-     * @param pop       The population to process.
+     *
+     * @param pop The population to process.
      */
     @Override
     public void convertMultiObjective2SingleObjective(Population pop) {
         for (int i = 0; i < pop.size(); i++) {
-             this.convertSingleIndividual((AbstractEAIndividual)pop.get(i));
+            this.convertSingleIndividual((AbstractEAIndividual) pop.get(i));
         }
     }
 
-    /** This method processes a single individual
-     * @param indy      The individual to process.
+    /**
+     * This method processes a single individual
+     *
+     * @param indy The individual to process.
      */
     @Override
     public void convertSingleIndividual(AbstractEAIndividual indy) {
-        double[]    resultFit = new double[1];
-        double[]    tmpFit;
+        double[] resultFit = new double[1];
+        double[] tmpFit;
 
         tmpFit = indy.getFitness();
         indy.putData("MOFitness", tmpFit);
-        for (int i = 0; (i < this.m_Weights.getNumRows()) && (i < tmpFit.length) ; i++) {
-            resultFit[0] += tmpFit[i]*this.m_Weights.getValue(i,0);
+        for (int i = 0; (i < this.m_Weights.getNumRows()) && (i < tmpFit.length); i++) {
+            resultFit[0] += tmpFit[i] * this.m_Weights.getValue(i, 0);
         }
         indy.setFitness(resultFit);
     }
@@ -75,18 +79,20 @@ public class MOSOWeightedFitness implements InterfaceMOSOConverter, java.io.Seri
     private void checkingWeights() {
         String s = "Using Weights: {";
         for (int i = 0; i < this.m_Weights.getNumRows(); i++) {
-            s += this.m_Weights.getValue(i,0);
-            if (i < this.m_Weights.getNumRows()-1) {
-                s+= "; ";
+            s += this.m_Weights.getValue(i, 0);
+            if (i < this.m_Weights.getNumRows() - 1) {
+                s += "; ";
             }
         }
-        System.out.println(s+"}");
+        System.out.println(s + "}");
     }
 
-    /** This method allows the problem to set the current output size of
+    /**
+     * This method allows the problem to set the current output size of
      * the optimization problem. Additional weights will be set to a default
      * value of one
-     * @param dim       Outputdimension of the problem
+     *
+     * @param dim Outputdimension of the problem
      */
     @Override
     public void setOutputDimension(int dim) {
@@ -96,26 +102,30 @@ public class MOSOWeightedFitness implements InterfaceMOSOConverter, java.io.Seri
             newWeights[i] = 1;
         }
         for (int i = 0; (i < this.m_Weights.getNumRows()) && (i < newWeights.length); i++) {
-            newWeights[i] = this.m_Weights.getValue(i,0);
+            newWeights[i] = this.m_Weights.getValue(i, 0);
         }
 
         this.m_Weights.setDoubleArray(newWeights);
     }
 
-    /** This method returns a description of the objective
+    /**
+     * This method returns a description of the objective
+     *
      * @return A String
      */
     @Override
     public String getStringRepresentation() {
-        return this.getName()+"\n";
+        return this.getName() + "\n";
     }
-    
+
 
 /**********************************************************************************************************************
  * These are for GUI
  */
-    /** This method allows the CommonJavaObjectEditorPanel to read the
+    /**
+     * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
+     *
      * @return The name.
      */
     @Override
@@ -123,23 +133,29 @@ public class MOSOWeightedFitness implements InterfaceMOSOConverter, java.io.Seri
         return "Weighted Sum";
     }
 
-    /** This method returns a global info string
+    /**
+     * This method returns a global info string
+     *
      * @return description
      */
     public static String globalInfo() {
         return "This method calcuates the weighted sum over all fitness values.";
     }
 
-    /** This method allows you to choose the weights for the weighted
+    /**
+     * This method allows you to choose the weights for the weighted
      * fitness sum.
-     * @param weights     The weights for the fitness sum.
+     *
+     * @param weights The weights for the fitness sum.
      */
     public void setWeights(PropertyDoubleArray weights) {
         this.m_Weights = weights;
     }
+
     public PropertyDoubleArray getWeights() {
         return this.m_Weights;
     }
+
     public String weightsTipText() {
         return "Choose the weights for the fitness values.";
     }

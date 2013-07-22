@@ -2,7 +2,7 @@ package eva2.optimization.operator.cluster;
 
 import eva2.optimization.population.Population;
 
-/** 
+/**
  * This the interface to clustering algorithms, but since there
  * is no true concept on how to calculate a possibly problem
  * specific distance between two individuals, this is still to
@@ -15,13 +15,15 @@ import eva2.optimization.population.Population;
  */
 public interface InterfaceClustering {
 
-    /** This method allows you to make a deep clone of
+    /**
+     * This method allows you to make a deep clone of
      * the object
+     *
      * @return the deep clone
      */
     public Object clone();
 
-    /** 
+    /**
      * This method allows you to search for clusters in a given population. The method
      * returns Number of populations. The first population contains all individuals that
      * could not be associated with any cluster and may be empty.
@@ -35,8 +37,8 @@ public interface InterfaceClustering {
      * Note that the clustered individuals should only be shallow instances of the members
      * of the given population pop. The sum of sizes of all returned individuals must be
      * equal to pop.size().
-     * 
-     * @param pop       The population of individuals that is to be clustered.
+     *
+     * @param pop          The population of individuals that is to be clustered.
      * @param referenceSet a reference population for dynamic measures
      * @return Population[]
      */
@@ -47,10 +49,10 @@ public interface InterfaceClustering {
      * If the clustering depends on population measures, a reference set may be given
      * which is the reference population to consider the measures of. This is for cases
      * where, e.g., subsets of a Population are to be clustered using measures of the
-     * original population. 
-     * 
-     * @param species1  The first species.
-     * @param species2  The second species.
+     * original population.
+     *
+     * @param species1     The first species.
+     * @param species2     The second species.
      * @param referenceSet a reference population for dynamic measures
      * @return True if species converge, else False.
      */
@@ -59,7 +61,7 @@ public interface InterfaceClustering {
     /**
      * Do some pre-calculations on a population for clustering. If additional population data
      * is set, return the associated key, otherwise null.
-     * 
+     *
      * @param pop
      */
     public String initClustering(Population pop);
@@ -67,16 +69,16 @@ public interface InterfaceClustering {
     /**
      * This method decides if an unclustered individual belongs to an already established species.
      * For some clustering methods this can only be decided in reference to the complete population.
-     * 
+     *
      * @param indy          A unclustered individual.
      * @param species       A species.
-     * @param pop			The complete population as a reference.
+     * @param pop            The complete population as a reference.
      * @return True or False.
      */
     //Removed since for some clustering methods its not feasible to associate loners sequentially. Instead, a whole set of
     // lone individuals can now be associated to a given set of clusters
     //public boolean belongsToSpecies(AbstractEAIndividual indy, Population species);
-    
+
     /**
      * Try to associate a set of loners with a given set of species. Return a list
      * of indices assigning loner i with species j for all loners. If no species can
@@ -87,7 +89,7 @@ public interface InterfaceClustering {
      * which is the reference population to consider the measures of. This is for cases
      * where, e.g., subsets of a Population are to be clustered using measures of the
      * original population.
-     * 
+     *
      * @param loners
      * @param species
      * @param referenceSet a reference population for dynamic measures

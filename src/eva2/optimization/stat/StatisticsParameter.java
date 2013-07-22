@@ -8,6 +8,7 @@ import eva2.tools.EVAERROR;
 import eva2.tools.SelectedTag;
 import eva2.tools.Serializer;
 import eva2.tools.StringSelection;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -24,9 +25,9 @@ import java.util.logging.Logger;
  * Data entries can be selected using a StringSelection instance.
  * There is a switch called "output full data as text" which will be interpreted by AbstractStatistics showing
  * all or only the selected entities.
- * 
- * @see AbstractStatistics
+ *
  * @author mkron
+ * @see AbstractStatistics
  */
 public class StatisticsParameter implements InterfaceStatisticsParameter, InterfaceNotifyOnInformers, Serializable {
     private static final long serialVersionUID = -8681061379203108390L;
@@ -149,7 +150,7 @@ public class StatisticsParameter implements InterfaceStatisticsParameter, Interf
     public static String globalInfo() {
         return "Configure statistics and output of the optimization run. Changes to the data selection state will not take effect during a run.";
     }
-    
+
     /**
      *
      */
@@ -173,6 +174,7 @@ public class StatisticsParameter implements InterfaceStatisticsParameter, Interf
     public String multiRunsTipText() {
         return "Number of independent optimization runs to evaluate.";
     }
+
     /**
      *
      */
@@ -236,7 +238,7 @@ public class StatisticsParameter implements InterfaceStatisticsParameter, Interf
         return outputTo.getSelectedTagID() > 0;
     }
 
-//	/**
+    //	/**
 //	*
 //	*/
 //	public String resultFileNameTipText() {
@@ -247,7 +249,6 @@ public class StatisticsParameter implements InterfaceStatisticsParameter, Interf
     }
 
     /**
-     *
      * @param x
      */
     @Override

@@ -24,14 +24,18 @@ public class PropertyIntArray implements java.io.Serializable {
         return (Object) new PropertyIntArray(this);
     }
 
-    /** This method will allow you to set the value of the double array
-     * @param d     The int[]
+    /**
+     * This method will allow you to set the value of the double array
+     *
+     * @param d The int[]
      */
     public void setIntArray(int[] d) {
         this.m_IntArray = d;
     }
 
-    /** This method will return the int array
+    /**
+     * This method will return the int array
+     *
      * @return The int array
      */
     public int[] getIntArray() {

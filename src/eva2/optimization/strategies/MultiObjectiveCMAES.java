@@ -11,13 +11,12 @@ import eva2.optimization.population.Population;
 import eva2.optimization.population.SolutionSet;
 import eva2.optimization.problems.AbstractOptimizationProblem;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
+
 import java.io.Serializable;
 import java.util.HashMap;
 
 /**
- *
  * @author mkron
- *
  */
 public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
 
@@ -27,18 +26,18 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     *
      * @author mkron
-     *
      */
     class CounterClass {
 
         public CounterClass(int i) {
             value = i;
         }
+
         public int value;
         public boolean seen = false;
     }
+
     private String m_Identifier = "MOCMAES";
     private Population m_Population;
     private AbstractOptimizationProblem m_Problem;

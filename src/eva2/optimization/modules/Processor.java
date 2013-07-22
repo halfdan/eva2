@@ -23,6 +23,7 @@ import eva2.tools.EVAERROR;
 import eva2.tools.EVAHELP;
 import eva2.tools.StringTools;
 import eva2.tools.math.RNG;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -32,7 +33,7 @@ import javax.swing.JOptionPane;
 /**
  * The Processor may run as a thread permanently (GenericModuleAdapter) and is
  * then stopped and started by a switch in startOpt/stopOpt.
- *
+ * <p/>
  * Processor also handles adaptive parameter control by checking for the method
  * getParamControl in (so far) Optimizer and Problem instances. The return-value
  * may be InterfaceParameterControl or an array of Objects. If it is a control
@@ -41,7 +42,6 @@ import javax.swing.JOptionPane;
  * getParamControl, thus recursive controllable structures are possible.
  *
  * @author mkron
- *
  */
 public class Processor extends Thread implements InterfaceProcessor, InterfacePopulationChangedEventListener {
 
@@ -62,7 +62,7 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
         LOGGER.log(
                 Level.FINEST,
                 "Processor: setting module as listener: " + ((module == null)
-                ? "null" : module.toString()));
+                        ? "null" : module.toString()));
 
         optimizationStateListener = module;
     }
@@ -252,7 +252,7 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
                 EVAHELP.clearLog(popLog);
             }
 
-            do {	// main loop
+            do {    // main loop
                 maybeUpdateParamCtrl(goParams);
 
                 this.goParams.getOptimizer().optimize();
@@ -261,7 +261,8 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
                 if (popLog != null) {
                     EVAHELP.logString(this.goParams.getOptimizer().getPopulation().getIndyList(), popLog);
                 }
-            } while (isOptRunning() && !this.goParams.getTerminator().isTerminated(this.goParams.getOptimizer().getAllSolutions()));
+            }
+            while (isOptRunning() && !this.goParams.getTerminator().isTerminated(this.goParams.getOptimizer().getAllSolutions()));
             runCounter++;
             maybeFinishParamCtrl(goParams);
             userAborted = !isOptRunning(); // stop is "normal" if opt wasnt set false by the user (and thus still true)
@@ -334,11 +335,9 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
         InterfaceOptimizer optimizer = goParams.getOptimizer();
         if (terminator instanceof GenerationTerminator) {
             args = new Object[]{optimizer, optimizer.getPopulation(), optimizer.getPopulation().getGeneration(), ((GenerationTerminator) terminator).getGenerations()};
-        }
-        else if (terminator instanceof EvaluationTerminator) {
+        } else if (terminator instanceof EvaluationTerminator) {
             args = new Object[]{optimizer, optimizer.getPopulation(), optimizer.getPopulation().getFunctionCalls(), ((EvaluationTerminator) terminator).getFitnessCalls()};
-        }
-        else {
+        } else {
             args = new Object[]{optimizer};
         }
 
@@ -379,7 +378,7 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
      * Send some information to the statistics module and update the progress.
      *
      * @param source The source of the event.
-     * @param name Could be used to indicate the nature of the event.
+     * @param name   Could be used to indicate the nature of the event.
      */
     @Override
     public void registerPopulationStateChanged(Object source, String name) {
@@ -391,9 +390,9 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
             if (optimizationStateListener != null) {
                 optimizationStateListener.updateProgress(
                         getStatusPercent(
-                        goParams.getOptimizer().getPopulation(),
-                        runCounter,
-                        m_Statistics.getStatisticsParameter().getMultiRuns()),
+                                goParams.getOptimizer().getPopulation(),
+                                runCounter,
+                                m_Statistics.getStatisticsParameter().getMultiRuns()),
                         null);
             }
         }

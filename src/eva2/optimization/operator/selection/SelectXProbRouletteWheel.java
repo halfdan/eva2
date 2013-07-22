@@ -8,9 +8,9 @@ import eva2.tools.math.RNG;
 
 
 class treeElement implements java.io.Serializable {
-    public double           separator = 0;
-    public int              m_Index = -1;
-    public treeElement      m_Left = null, m_Right = null;
+    public double separator = 0;
+    public int m_Index = -1;
+    public treeElement m_Left = null, m_Right = null;
 
     public treeElement(double[][] d, int list, int low, int high) {
         //System.out.println("Calling Low/high: "+low+"/"+high);
@@ -19,12 +19,12 @@ class treeElement implements java.io.Serializable {
             //System.out.println("This: "+low);
             this.m_Index = low;
         } else {
-            if (low == high-1) {
+            if (low == high - 1) {
                 //System.out.println("This: "+high);
                 this.m_Index = high;
             } else {
-                int midPoint = (int)((high+low)/2);
-                this.separator = d[midPoint-1][list];
+                int midPoint = (int) ((high + low) / 2);
+                this.separator = d[midPoint - 1][list];
                 //System.out.println("Branching: "+midPoint + " : " + this.separator);
                 this.m_Left = new treeElement(d, list, low, midPoint);
                 this.m_Right = new treeElement(d, list, midPoint, high);
@@ -34,13 +34,11 @@ class treeElement implements java.io.Serializable {
 
     public int getIndexFor(double d) {
         if (this.m_Index >= 0) {
-            return this.m_Index-1;
-        }
-        else {
+            return this.m_Index - 1;
+        } else {
             if (d < this.separator) {
                 return this.m_Left.getIndexFor(d);
-            }
-            else {
+            } else {
                 return this.m_Right.getIndexFor(d);
             }
         }
@@ -49,15 +47,15 @@ class treeElement implements java.io.Serializable {
     @Override
     public String toString() {
         if (this.m_Index >= 0) {
-            return "Ind:"+this.m_Index;
-        }
-        else {
-            return "{"+this.m_Left.toString()+"} X<"+this.separator+" {"+this.m_Right.toString()+"}";
+            return "Ind:" + this.m_Index;
+        } else {
+            return "{" + this.m_Left.toString() + "} X<" + this.separator + " {" + this.m_Right.toString() + "}";
         }
     }
 }
 
-/** The RoulettWheel selection requires a selection probability calculator.
+/**
+ * The RoulettWheel selection requires a selection probability calculator.
  * In case of multiple fitness values the selection
  * critria is selected randomly for each selection event.
  * Created by IntelliJ IDEA.
@@ -68,16 +66,16 @@ class treeElement implements java.io.Serializable {
  */
 public class SelectXProbRouletteWheel implements InterfaceSelection, java.io.Serializable {
 
-    private transient treeElement[]         m_TreeRoot = null;
-    private InterfaceSelectionProbability   m_SelProbCalculator = new SelProbStandard();
-    private boolean                         m_ObeyDebsConstViolationPrinciple = true;
+    private transient treeElement[] m_TreeRoot = null;
+    private InterfaceSelectionProbability m_SelProbCalculator = new SelProbStandard();
+    private boolean m_ObeyDebsConstViolationPrinciple = true;
 
     public SelectXProbRouletteWheel() {
     }
 
     public SelectXProbRouletteWheel(SelectXProbRouletteWheel a) {
-        this.m_ObeyDebsConstViolationPrinciple  = a.m_ObeyDebsConstViolationPrinciple;
-        this.m_SelProbCalculator    = (InterfaceSelectionProbability)a.m_SelProbCalculator.clone();
+        this.m_ObeyDebsConstViolationPrinciple = a.m_ObeyDebsConstViolationPrinciple;
+        this.m_SelProbCalculator = (InterfaceSelectionProbability) a.m_SelProbCalculator.clone();
     }
 
     @Override
@@ -85,11 +83,13 @@ public class SelectXProbRouletteWheel implements InterfaceSelection, java.io.Ser
         return (Object) new SelectXProbRouletteWheel(this);
     }
 
-    /** This method allows an selection method to do some preliminary
+    /**
+     * This method allows an selection method to do some preliminary
      * calculations on the population before selection is performed.
      * For example: Homologeuos mate could compute all the distances
      * before hand...
-     * @param population    The population that is to be processed.
+     *
+     * @param population The population that is to be processed.
      */
     @Override
     public void prepareSelection(Population population) {
@@ -97,12 +97,13 @@ public class SelectXProbRouletteWheel implements InterfaceSelection, java.io.Ser
         this.m_TreeRoot = this.buildSelectionTree(population);
     }
 
-    /** 
+    /**
      * This method will select a pool of individuals from the given
      * Population in respect to the selection probability of the
      * individuals.
-     * @param population    The source population where to select from
-     * @param size          The number of Individuals to select
+     *
+     * @param population The source population where to select from
+     * @param size       The number of Individuals to select
      * @return The selected population.
      */
     @Override
@@ -111,26 +112,27 @@ public class SelectXProbRouletteWheel implements InterfaceSelection, java.io.Ser
         result.setTargetSize(size);
 
         for (int i = 0; i < size; i++) {
-        	result.add(this.selectTree(population));
+            result.add(this.selectTree(population));
         }
 
         return result;
     }
 
-    /** 
+    /**
      * This method will build a selection tree.
-     * @param p     The population
+     *
+     * @param p The population
      */
     private treeElement[] buildSelectionTree(Population p) {
         treeElement result[];
-        double[][]  tmpList = new double[p.size()][];
+        double[][] tmpList = new double[p.size()][];
 
         for (int i = 0; i < p.size(); i++) {
-            tmpList[i] = new double[((AbstractEAIndividual)(p.get(i))).getSelectionProbability().length];
-            System.arraycopy(((AbstractEAIndividual)(p.get(i))).getSelectionProbability(), 0, tmpList[i], 0, tmpList[i].length);
+            tmpList[i] = new double[((AbstractEAIndividual) (p.get(i))).getSelectionProbability().length];
+            System.arraycopy(((AbstractEAIndividual) (p.get(i))).getSelectionProbability(), 0, tmpList[i], 0, tmpList[i].length);
             if (i > 0) {
                 for (int j = 0; j < tmpList[i].length; j++) {
-                    tmpList[i][j] += tmpList[i-1][j];
+                    tmpList[i][j] += tmpList[i - 1][j];
                 }
             }
         }
@@ -147,38 +149,39 @@ public class SelectXProbRouletteWheel implements InterfaceSelection, java.io.Ser
         return result;
     }
 
-    /** This method selects a single individual from the current population
+    /**
+     * This method selects a single individual from the current population
+     *
      * @param population The population to select from
      */
     private AbstractEAIndividual selectTree(Population population) {
-        int                     currentCriteria = 0, critSize;
+        int currentCriteria = 0, critSize;
 
-        critSize = ((AbstractEAIndividual)population.get(0)).getSelectionProbability().length;
-        currentCriteria = RNG.randomInt(0, critSize-1);
+        critSize = ((AbstractEAIndividual) population.get(0)).getSelectionProbability().length;
+        currentCriteria = RNG.randomInt(0, critSize - 1);
         double d = RNG.randomDouble();
         int index = this.m_TreeRoot[currentCriteria].getIndexFor(d);
         //System.out.println("Looking for: " + d + " found " +index);
-        return ((AbstractEAIndividual)(population.get(index)));
+        return ((AbstractEAIndividual) (population.get(index)));
     }
 
     private AbstractEAIndividual selectStandard(Population population) {
-    	// old version
-        double                  sum = 1, random, tmpD;
-        int                     currentCriteria = 0, critSize;
+        // old version
+        double sum = 1, random, tmpD;
+        int currentCriteria = 0, critSize;
 
-        critSize = ((AbstractEAIndividual)population.get(0)).getSelectionProbability().length;
-        currentCriteria = RNG.randomInt(0, critSize-1);
+        critSize = ((AbstractEAIndividual) population.get(0)).getSelectionProbability().length;
+        currentCriteria = RNG.randomInt(0, critSize - 1);
         String logger = "";
         while (sum > 0) {
             sum = 0;
             random = RNG.randomDouble();
             for (int i = 0; i < population.size(); i++) {
-                tmpD = ((AbstractEAIndividual)(population.get(i))).getSelectionProbability(currentCriteria);
+                tmpD = ((AbstractEAIndividual) (population.get(i))).getSelectionProbability(currentCriteria);
                 logger += tmpD + "; ";
                 if (random < (sum + tmpD)) {
-                    return ((AbstractEAIndividual)(population.get(i)));
-                }
-                else {
+                    return ((AbstractEAIndividual) (population.get(i)));
+                } else {
                     sum += tmpD;
                 }
             }
@@ -189,10 +192,12 @@ public class SelectXProbRouletteWheel implements InterfaceSelection, java.io.Ser
         return null;
     }
 
-    /** This method allows you to select partners for a given Individual
-     * @param dad               The already seleceted parent
-     * @param avaiablePartners  The mating pool.
-     * @param size              The number of partners needed.
+    /**
+     * This method allows you to select partners for a given Individual
+     *
+     * @param dad              The already seleceted parent
+     * @param avaiablePartners The mating pool.
+     * @param size             The number of partners needed.
      * @return The selected partners.
      */
     @Override
@@ -203,15 +208,19 @@ public class SelectXProbRouletteWheel implements InterfaceSelection, java.io.Ser
 /**********************************************************************************************************************
  * These are for GUI
  */
-    /** This method allows the CommonJavaObjectEditorPanel to read the
+    /**
+     * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
+     *
      * @return The name.
      */
     public String getName() {
         return "Roulette Wheel Selection";
     }
 
-    /** This method returns a global info string
+    /**
+     * This method returns a global info string
+     *
      * @return description
      */
     public static String globalInfo() {
@@ -219,30 +228,38 @@ public class SelectXProbRouletteWheel implements InterfaceSelection, java.io.Ser
                 "This is a single objective selecting method, it select with respect to a random criterion.";
     }
 
-    /** This method will set the normation method that is to be used.
+    /**
+     * This method will set the normation method that is to be used.
+     *
      * @param normation
      */
-    public void setSelProbCalculator (InterfaceSelectionProbability normation) {
+    public void setSelProbCalculator(InterfaceSelectionProbability normation) {
         this.m_SelProbCalculator = normation;
     }
-    public InterfaceSelectionProbability getSelProbCalculator () {
+
+    public InterfaceSelectionProbability getSelProbCalculator() {
         return this.m_SelProbCalculator;
     }
+
     public String selProbCalculatorTipText() {
         return "Select the normation method.";
     }
 
-    /** Toggle the use of obeying the constraint violation principle
+    /**
+     * Toggle the use of obeying the constraint violation principle
      * of Deb
-     * @param b     The new state
+     *
+     * @param b The new state
      */
     @Override
     public void setObeyDebsConstViolationPrinciple(boolean b) {
         this.m_ObeyDebsConstViolationPrinciple = b;
     }
+
     public boolean getObeyDebsConstViolationPrinciple() {
         return this.m_ObeyDebsConstViolationPrinciple;
     }
+
     public String obeyDebsConstViolationPrincipleToolTip() {
         return "Toggle the use of Deb's coonstraint violation principle.";
     }

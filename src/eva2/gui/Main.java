@@ -77,7 +77,7 @@ public class Main extends JFrame implements OptimizationStateListener {
     private ExtAction actLicense;
 
     //	if not null, the module is loaded automatically and no other can be selected
-    private String useDefaultModule = null;	//"Genetic_Optimization";
+    private String useDefaultModule = null;    //"Genetic_Optimization";
     private boolean showLoadModules = false;
     private boolean localMode = false;
 
@@ -114,7 +114,6 @@ public class Main extends JFrame implements OptimizationStateListener {
      * Constructor of GUI of EvA2. Works as client for the EvA2 server. Note
      * that the Main initialized multi-threaded for efficiency. Use {@link #awaitGuiInitialized()}
      * to await full initialization if necessary.
-     *
      */
     public Main(final String hostName) {
         this(hostName, null, false, false);
@@ -126,11 +125,11 @@ public class Main extends JFrame implements OptimizationStateListener {
      * efficiency. Use {@link #awaitGuiInitialized()} to await full
      * initialization if necessary.
      *
-     * @see #EvAClient(String, java.awt.Window, String, boolean, boolean, boolean)
      * @param hostName
      * @param paramsFile
      * @param autorun
      * @param nosplash
+     * @see #EvAClient(String, java.awt.Window, String, boolean, boolean, boolean)
      */
     public Main(final String hostName, final String paramsFile, boolean autorun, boolean nosplash) {
         this(hostName, null, paramsFile, null, autorun, nosplash, false, false);
@@ -141,11 +140,10 @@ public class Main extends JFrame implements OptimizationStateListener {
      * initialized multi-threaded for efficiency. Use {@link #awaitGuiInitialized()}
      * to await full initialization if necessary.
      *
-     * @see #Main(String, String, boolean, boolean)
-     *
      * @param hostName
      * @param autorun
      * @param nosplash
+     * @see #Main(String, String, boolean, boolean)
      */
     public Main(final String hostName, boolean autorun, boolean nosplash) {
         this(hostName, null, autorun, nosplash);
@@ -156,12 +154,12 @@ public class Main extends JFrame implements OptimizationStateListener {
      * initialized multi-threaded for efficiency. Use {@link #awaitGuiInitialized()}
      * to await full initialization if necessary.
      *
-     * @see #Main(String, String, boolean, boolean)
      * @param hostName
      * @param paramsFile
      * @param autorun
      * @param noSplash
      * @param noGui
+     * @see #Main(String, String, boolean, boolean)
      */
     public Main(final String hostName, String paramsFile, boolean autorun, boolean noSplash, boolean noGui, boolean withTreeView) {
         this(hostName, null, paramsFile, null, autorun, noSplash, noGui, withTreeView);
@@ -172,13 +170,12 @@ public class Main extends JFrame implements OptimizationStateListener {
      * initialized multi-threaded for efficiency. Use {@link #awaitGuiInitialized()}
      * to await full initialization if necessary.
      *
-     * @see #Main(String, String, boolean, boolean)
-     *
      * @param hostName
      * @param paramsFile
      * @param autorun
      * @param noSplash
      * @param noGui
+     * @see #Main(String, String, boolean, boolean)
      */
     public Main(final String hostName, InterfaceOptimizationParameters goParams, boolean autorun, boolean noSplash, boolean noGui) {
         this(hostName, null, null, goParams, autorun, noSplash, noGui, false);
@@ -401,7 +398,7 @@ public class Main extends JFrame implements OptimizationStateListener {
             }
 
             logPanel = new LoggingPanel(LOGGER);
-            logPanel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+            logPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
 
             if (EvAInfo.propShowModules() != null) {
@@ -551,7 +548,6 @@ public class Main extends JFrame implements OptimizationStateListener {
     /**
      * Refresh the parameter panels (if settings have been changed outside of
      * the GUI which should be updated in the GUI.
-     *
      */
     public void refreshMainPanels() {
         frameMaker.refreshPanels();
@@ -567,8 +563,8 @@ public class Main extends JFrame implements OptimizationStateListener {
      * @param args command line parameters
      */
     public static void main(String[] args) {
-    	/*============================COPIED FROM SYSBIO==============================*/
-    	// Properties for Mac OS X support.
+        /*============================COPIED FROM SYSBIO==============================*/
+        // Properties for Mac OS X support.
         if ((System.getProperty("mrj.version") != null)
                 || (System.getProperty("os.name").toLowerCase().indexOf("mac") != -1)) {
             /*
@@ -585,13 +581,13 @@ public class Main extends JFrame implements OptimizationStateListener {
             System.setProperty("com.apple.mrj.application.growbox.intrudes", "false");
             System.setProperty("com.apple.mrj.application.live-resize", "true");
         }
-    	/*==========================================================================*/
+        /*==========================================================================*/
 
 
         /* Available command-line parameters */
         String[] keys = new String[]{
-            "--help", "--autorun", "--nosplash", "--nogui",
-            "--remotehost", "--params", "--treeView"
+                "--help", "--autorun", "--nosplash", "--nogui",
+                "--remotehost", "--params", "--treeView"
         };
         /* Number of arguments per parameter */
         int[] arities = new int[]{0, 0, 0, 0, 1, 1, 0};
@@ -627,14 +623,14 @@ public class Main extends JFrame implements OptimizationStateListener {
      * Initialize the client GUI with given parameters and set listeners. This
      * will return as soon as the GUI is visible and ready.
      *
-     * @param goParams	optimization parameters
-     * @param statisticsListener	statistics listener receiving data during
-     * optimization
-     * @param windowListener	additional window listener for client frame
+     * @param goParams           optimization parameters
+     * @param statisticsListener statistics listener receiving data during
+     *                           optimization
+     * @param windowListener     additional window listener for client frame
      */
     public static Main initClientGUI(OptimizationParameters goParams,
-            InterfaceStatisticsListener statisticsListener,
-            WindowListener windowListener, final Window parent) {
+                                     InterfaceStatisticsListener statisticsListener,
+                                     WindowListener windowListener, final Window parent) {
         Main evaClient;
 
         evaClient = new Main(null, parent, null, goParams,
@@ -931,10 +927,10 @@ public class Main extends JFrame implements OptimizationStateListener {
      * Create a tree view of an object based on EvATreeNode. It is encapsulated
      * in a JScrollPane.
      *
-     * @see eva2.gui.EvATreeNode
      * @param title
      * @param object
      * @return
+     * @see eva2.gui.EvATreeNode
      */
     public JComponent getEvATreeView(JParaPanel goPanel, String title, Object object) {
         EvATreeNode root = new EvATreeNode(title, object); // the root of the tree

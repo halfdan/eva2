@@ -94,7 +94,7 @@ public class WingedMultiObjectiveEA implements InterfaceOptimizer, java.io.Seria
     /**
      * This method will init the optimizer with a given population
      *
-     * @param pop The initial population
+     * @param pop   The initial population
      * @param reset If true the population is reset.
      */
     @Override
@@ -181,7 +181,6 @@ public class WingedMultiObjectiveEA implements InterfaceOptimizer, java.io.Seria
 
     /**
      * This method implements the migration between the optimzers
-     *
      */
     private void migrate() {
         AbstractEAIndividual[] bestIndys = new AbstractEAIndividual[this.m_OutputDimension];

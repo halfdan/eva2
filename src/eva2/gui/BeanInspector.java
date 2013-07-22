@@ -6,6 +6,7 @@ import eva2.tools.Pair;
 import eva2.tools.SelectedTag;
 import eva2.tools.StringTools;
 import eva2.tools.Tag;
+
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
@@ -23,7 +24,6 @@ import java.util.logging.Logger;
  * generic display.
  *
  * @author mkron, Holger Ulmer, Felix Streichert, Hannes Planatscher
- *
  */
 public class BeanInspector {
     private static final Logger LOGGER = Logger.getLogger(BeanInspector.class.getName());
@@ -108,9 +108,9 @@ public class BeanInspector {
     /**
      * Produce a String representation of an arbitrary object.
      *
-     * @see #toString(Object, char, boolean, String)
      * @param obj
      * @return
+     * @see #toString(Object, char, boolean, String)
      */
     public static String toString(Object obj) {
         return toString(obj, ';', false, "", 1, false);
@@ -475,7 +475,7 @@ public class BeanInspector {
      *
      * @param obj
      * @param mName the method name
-     * @param args the arguments, null allowed if the method takes no parameters
+     * @param args  the arguments, null allowed if the method takes no parameters
      * @return the method or null if it isn't found
      */
     public static Method hasMethod(Object obj, String mName, Object[] args) {
@@ -487,9 +487,9 @@ public class BeanInspector {
      * parameter signature. Return it if found, or null if not.
      *
      * @param obj
-     * @param mName the method name
+     * @param mName      the method name
      * @param paramTypes the parameter types, null allowed if no parameters are
-     * expected
+     *                   expected
      * @return the method or null if it isn't found
      */
     public static Method hasMethod(Object obj, String mName, Class[] paramTypes) {
@@ -574,7 +574,6 @@ public class BeanInspector {
     /**
      * For a Java primitive wrapper class return the corresponding primitive
      * class.
-	 *
      */
     public static Class getUnboxedType(Class cls) {
         if (cls == Double.class) {
@@ -604,8 +603,8 @@ public class BeanInspector {
      * Just concatenates getClassDescription(obj) and getMemberDescriptions(obj,
      * withValues).
      *
-     * @param obj	target object
-     * @param withValues	if true, member values are displayed as well
+     * @param obj        target object
+     * @param withValues if true, member values are displayed as well
      * @return an info string about class and members of the given object
      */
     public static String getDescription(Object obj, boolean withValues) {
@@ -651,8 +650,8 @@ public class BeanInspector {
      * member property is normal or hidden, meaning it may have effect depending
      * on settings of other members only, for instance.
      *
-     * @param obj	target object
-     * @param withValues	if true, member values are displayed as well
+     * @param obj        target object
+     * @param withValues if true, member values are displayed as well
      * @return an info string about class and members of the given object
      */
     public static String[] getMemberDescriptions(Object obj, boolean withValues) {
@@ -741,7 +740,7 @@ public class BeanInspector {
                 System.err.println("Skipping property " + name + " ; exception: " + ex.getMessage());
                 ex.printStackTrace();
             } // end try
-        }	// end for
+        }    // end for
         return memberInfoList.toArray(new String[1]);
     }
 
@@ -1018,9 +1017,9 @@ public class BeanInspector {
     /**
      * This method simply looks for an appropriate tiptext
      *
-     * @param name The name of the property
+     * @param name    The name of the property
      * @param methods A list of methods to search.
-     * @param target The target object
+     * @param target  The target object
      * @return String for the ToolTip.
      */
     public static String getToolTipText(String name, MethodDescriptor[] methods, Object target, boolean stripToolTipToFirstPoint, int toHTMLLen) {
@@ -1057,9 +1056,9 @@ public class BeanInspector {
     /**
      * This method simply looks for an appropriate tool tip text
      *
-     * @param name The name of the property
+     * @param name    The name of the property
      * @param methods A list of methods to search.
-     * @param target The target object
+     * @param target  The target object
      * @return String for the ToolTip.
      */
     public static String getToolTipText(String name, MethodDescriptor[] methods, Object target) {

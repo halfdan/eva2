@@ -2,7 +2,8 @@ package eva2.optimization.operator.fitnessmodifier;
 
 import eva2.optimization.population.Population;
 
-/** The fitness modifier are defunct and are to be moved to
+/**
+ * The fitness modifier are defunct and are to be moved to
  * the selection operators...
  * Created by IntelliJ IDEA.
  * User: streiche
@@ -12,7 +13,8 @@ import eva2.optimization.population.Population;
  */
 public class FitnessModifierNone implements java.io.Serializable, InterfaceFitnessModifier {
 
-    /** This method allows you to modify the fitness of the individuals
+    /**
+     * This method allows you to modify the fitness of the individuals
      * of a population. Note that by altering the fitness you may require
      * your problem to store the unaltered fitness somewhere else so that
      * you may still fetch it!
@@ -25,15 +27,19 @@ public class FitnessModifierNone implements java.io.Serializable, InterfaceFitne
 /**********************************************************************************************************************
  * These are for GUI
  */
-    /** This method allows the CommonJavaObjectEditorPanel to read the
+    /**
+     * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
+     *
      * @return The name.
      */
     public String getName() {
         return "No Fitness Modification";
     }
 
-    /** This method returns a global info string
+    /**
+     * This method returns a global info string
+     *
      * @return description
      */
     public static String globalInfo() {

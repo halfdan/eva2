@@ -11,13 +11,14 @@ import javax.swing.*;
  */
 public class ParetoFrontViewParallelAxsis extends JPanel implements InterfaceParetoFrontView {
 
-    public MOCCOViewer      m_MOCCOViewer;
+    public MOCCOViewer m_MOCCOViewer;
 
     public ParetoFrontViewParallelAxsis(MOCCOViewer t) {
         this.m_MOCCOViewer = t;
     }
 
-    /** This method notifies the Pareto front view that
+    /**
+     * This method notifies the Pareto front view that
      * the data has changed most likely due to changes in
      * the problem definition
      */

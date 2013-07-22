@@ -22,8 +22,10 @@ public class RFRaidl_F1 implements InterfaceRegressionFunction, java.io.Serializ
         return (Object) new RFRaidl_F1(this);
     }
 
-    /** This method will return the y value for a given x vector
-     * @param x     Input vector.
+    /**
+     * This method will return the y value for a given x vector
+     *
+     * @param x Input vector.
      * @return y the function result.
      */
     @Override
@@ -38,15 +40,19 @@ public class RFRaidl_F1 implements InterfaceRegressionFunction, java.io.Serializ
 /**********************************************************************************************************************
  * These are for GUI
  */
-    /** This method allows the CommonJavaObjectEditorPanel to read the
+    /**
+     * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
+     *
      * @return The name.
      */
     public String getName() {
         return "Raidl F1";
     }
 
-    /** This method returns a global info string
+    /**
+     * This method returns a global info string
+     *
      * @return description
      */
     public static String globalInfo() {

@@ -6,22 +6,26 @@ package eva2.optimization.individuals.codings.gp;
  */
 public class GPNodePi extends GPNodeConst implements java.io.Serializable {
     public GPNodePi() {
-    	super(Math.PI);
+        super(Math.PI);
     }
-    
-    public GPNodePi(GPNodePi node) {
-    	super(node);
-	}
 
-	/** This method allows you to clone the Nodes
+    public GPNodePi(GPNodePi node) {
+        super(node);
+    }
+
+    /**
+     * This method allows you to clone the Nodes
+     *
      * @return the clone
      */
     @Override
     public Object clone() {
         return (Object) new GPNodePi(this);
     }
-    
-    /** This method will be used to identify the node in the GPAreaEditor
+
+    /**
+     * This method will be used to identify the node in the GPAreaEditor
+     *
      * @return The name.
      */
     @Override

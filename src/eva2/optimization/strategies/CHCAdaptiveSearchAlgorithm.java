@@ -12,6 +12,7 @@ import eva2.optimization.population.SolutionSet;
 import eva2.optimization.problems.B1Problem;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
+
 import java.util.BitSet;
 
 /**
@@ -22,7 +23,7 @@ import java.util.BitSet;
  * implementation of the CHC Adaptive Search Algorithm (Cross generational
  * elitist selection, Heterogeneous recombination and Cataclysmic mutation).
  * Citation:
- *
+ * <p/>
  * Copyright: Copyright (c) 2003 Company: University of Tuebingen, Computer
  * Architecture
  *
@@ -81,7 +82,7 @@ public class CHCAdaptiveSearchAlgorithm implements InterfaceOptimizer, java.io.S
     /**
      * This method will init the optimizer with a given population
      *
-     * @param pop The initial population
+     * @param pop   The initial population
      * @param reset If true the population is reset.
      */
     @Override
@@ -370,6 +371,7 @@ public class CHCAdaptiveSearchAlgorithm implements InterfaceOptimizer, java.io.S
 //    public String normationMethodTipText() {
 //        return "Select the normation method.";
 //    }
+
     /**
      * Enable/disable elitism.
      *

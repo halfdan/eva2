@@ -3,32 +3,34 @@ package eva2.optimization.population;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.InterfaceGAIndividual;
 import eva2.tools.math.RNG;
+
 import java.util.BitSet;
 
-/** 
+/**
  * This implementation of Population Based Incremental Learning is only
  * suited for a BitString based genotype representation.
  * Copyright:       Copyright (c) 2003
  * Company:         University of Tuebingen, Computer Architecture
- * @author          Felix Streichert
- * @version:  $Revision: 306 $
- *            $Date: 2007-12-04 14:22:52 +0100 (Tue, 04 Dec 2007) $
- *            $Author: mkron $
+ *
+ * @author Felix Streichert
+ * @version: $Revision: 306 $
+ * $Date: 2007-12-04 14:22:52 +0100 (Tue, 04 Dec 2007) $
+ * $Author: mkron $
  */
 
 public class PBILPopulation extends Population implements Cloneable, java.io.Serializable {
 
-    private double[]    m_ProbabilityVector = new double[1];
+    private double[] m_ProbabilityVector = new double[1];
 
     public PBILPopulation() {
     }
 
     public PBILPopulation(int popSize) {
-    	super(popSize);
+        super(popSize);
     }
-    
+
     public PBILPopulation(PBILPopulation population) {
-    	super(population);
+        super(population);
 
         this.m_ProbabilityVector = new double[population.m_ProbabilityVector.length];
         for (int i = 0; i < this.m_ProbabilityVector.length; i++) {
@@ -41,35 +43,36 @@ public class PBILPopulation extends Population implements Cloneable, java.io.Ser
         return (Object) new PBILPopulation(this);
     }
 
-    /** 
+    /**
      * This method inits the state of the population AFTER the individuals
      * have been inited by a problem.
      */
     @Override
     public void init() {
-        this.generationCount       = 0;
-        this.functionCallCount    = 0;
+        this.generationCount = 0;
+        this.functionCallCount = 0;
         if (!(this.get(0) instanceof InterfaceGAIndividual)) {
             System.err.println("Members of the population are not instance of InterfaceGAIndividual!");
             return;
         }
-        this.m_ProbabilityVector = new double[((InterfaceGAIndividual)this.get(0)).getGenotypeLength()];
+        this.m_ProbabilityVector = new double[((InterfaceGAIndividual) this.get(0)).getGenotypeLength()];
         for (int i = 0; i < this.m_ProbabilityVector.length; i++) {
             this.m_ProbabilityVector[i] = 0.5;
         }
     }
 
-    /** 
+    /**
      * This method allows you to learn from several examples
+     *
      * @param examples  A population of examples.
      * @param learnRate The learning rate.
      */
-    public void learnFrom (Population examples, double learnRate) {
+    public void learnFrom(Population examples, double learnRate) {
         InterfaceGAIndividual tmpIndy;
-        BitSet      tmpBitSet;
-        
+        BitSet tmpBitSet;
+
         for (int i = 0; i < examples.size(); i++) {
-            tmpIndy = (InterfaceGAIndividual)(examples.getEAIndividual(i)).clone();
+            tmpIndy = (InterfaceGAIndividual) (examples.getEAIndividual(i)).clone();
             tmpBitSet = tmpIndy.getBGenotype();
             for (int j = 0; j < this.m_ProbabilityVector.length; j++) {
                 this.m_ProbabilityVector[j] *= (1.0 - learnRate);
@@ -80,22 +83,21 @@ public class PBILPopulation extends Population implements Cloneable, java.io.Ser
         }
     }
 
-    /** 
+    /**
      * This method creates a new population based on the bit probability vector.
      */
     public void initPBIL() {
-        InterfaceGAIndividual   tmpIndy, template = (InterfaceGAIndividual)((AbstractEAIndividual)this.get(0)).clone();
-        BitSet                  tmpBitSet;
+        InterfaceGAIndividual tmpIndy, template = (InterfaceGAIndividual) ((AbstractEAIndividual) this.get(0)).clone();
+        BitSet tmpBitSet;
 
         this.clear();
         for (int i = 0; i < this.getTargetSize(); i++) {
-            tmpIndy = (InterfaceGAIndividual)((AbstractEAIndividual)template).clone();
+            tmpIndy = (InterfaceGAIndividual) ((AbstractEAIndividual) template).clone();
             tmpBitSet = tmpIndy.getBGenotype();
             for (int j = 0; j < this.m_ProbabilityVector.length; j++) {
                 if (RNG.flipCoin(this.m_ProbabilityVector[j])) {
                     tmpBitSet.set(j);
-                }
-                else {
+                } else {
                     tmpBitSet.clear(j);
                 }
             }
@@ -104,9 +106,10 @@ public class PBILPopulation extends Population implements Cloneable, java.io.Ser
         }
     }
 
-    /** 
+    /**
      * This method allows you to mutate the bit probability vector
-     * @param mutationRate      The mutation rate.
+     *
+     * @param mutationRate The mutation rate.
      */
     public void mutateProbabilityVector(double mutationRate, double sigma) {
         for (int j = 0; j < this.m_ProbabilityVector.length; j++) {
@@ -122,12 +125,12 @@ public class PBILPopulation extends Population implements Cloneable, java.io.Ser
         }
     }
 
-    /** 
+    /**
      * This method will build a probability vector from the current population.
      */
     public void buildProbabilityVector() {
-        int     dim = ((InterfaceGAIndividual)this.get(0)).getGenotypeLength();
-        BitSet  tmpSet;
+        int dim = ((InterfaceGAIndividual) this.get(0)).getGenotypeLength();
+        BitSet tmpSet;
 
         this.m_ProbabilityVector = new double[dim];
         for (int i = 0; i < this.m_ProbabilityVector.length; i++) {
@@ -135,7 +138,7 @@ public class PBILPopulation extends Population implements Cloneable, java.io.Ser
         }
         // first count the true bits
         for (int i = 0; i < this.size(); i++) {
-            tmpSet = ((InterfaceGAIndividual)this.get(i)).getBGenotype();
+            tmpSet = ((InterfaceGAIndividual) this.get(i)).getBGenotype();
             for (int j = 0; j < dim; j++) {
                 if (tmpSet.get(j)) {
                     this.m_ProbabilityVector[j] += 1;
@@ -148,21 +151,23 @@ public class PBILPopulation extends Population implements Cloneable, java.io.Ser
         }
     }
 
-    /** 
+    /**
      * This method allows you to set the current probability vector.
-     * @param pv    The new probability vector.
+     *
+     * @param pv The new probability vector.
      */
     public void setProbabilityVector(double[] pv) {
         this.m_ProbabilityVector = pv;
     }
-    
+
     public double[] getProbabilityVector() {
         return this.m_ProbabilityVector;
     }
 
-    /** 
+    /**
      * This method will return a string description of the GAIndividal
      * notably the Genotype.
+     *
      * @return A descriptive string
      */
     @Override
@@ -171,21 +176,23 @@ public class PBILPopulation extends Population implements Cloneable, java.io.Ser
         result += "PBIL-Population:\n";
         result += "Probability vector: {";
         for (int i = 0; i < this.m_ProbabilityVector.length; i++) {
-            result += this.m_ProbabilityVector[i] +"; ";
+            result += this.m_ProbabilityVector[i] + "; ";
         }
         result += "}\n";
         result += "Population size: " + this.size() + "\n";
         result += "Function calls : " + this.functionCallCount + "\n";
         result += "Generations    : " + this.generationCount;
         //for (int i = 0; i < this.size(); i++) {
-            //result += ((AbstractEAIndividual)this.get(i)).getSolutionRepresentationFor()+"\n";
+        //result += ((AbstractEAIndividual)this.get(i)).getSolutionRepresentationFor()+"\n";
         //}
         return result;
     }
 /**********************************************************************************************************************
  * These are for GUI
  */
-    /** This method returns a global info string
+    /**
+     * This method returns a global info string
+     *
      * @return description
      */
     public static String globalInfo() {

@@ -23,7 +23,7 @@ public class GraphWindow {
      *
      */
     public static GraphWindow getInstance(String graphWindowName,
-            String strx, String stry) {
+                                          String strx, String stry) {
         if (plotContainer == null) {
             plotContainer = new PlotContainer();
         }

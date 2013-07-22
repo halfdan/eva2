@@ -3,10 +3,11 @@ package eva2.optimization.operator.selection.probability;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
 
-/** A simple sum to calculate the selection probability.
- * 
+/**
+ * A simple sum to calculate the selection probability.
+ * <p/>
  * p(i is selected) = exp(-fitness(i))/sum_j(exp(-fitness(j)))
- * 
+ * <p/>
  * Created by IntelliJ IDEA.
  * User: streiche
  * Date: 30.03.2004
@@ -26,25 +27,27 @@ public class SelProbStandard extends AbstractSelProb implements java.io.Serializ
         return (Object) new SelProbStandard(this);
     }
 
-    /** This method computes the selection probability for each individual
-     *  in the population. Note: Summed over the complete population the selection
-     *  probability sums up to one. Keep in mind that fitness is always to be
-     *  minimizied! Small values for data => big values for selectionprob.
-     * @param population    The population to compute.
-     * @param data          The input data as double[][].
+    /**
+     * This method computes the selection probability for each individual
+     * in the population. Note: Summed over the complete population the selection
+     * probability sums up to one. Keep in mind that fitness is always to be
+     * minimizied! Small values for data => big values for selectionprob.
+     *
+     * @param population The population to compute.
+     * @param data       The input data as double[][].
      */
     @Override
     public void computeSelectionProbability(Population population, double[][] data, boolean obeyConst) {
-        double      sum = 0;
-        double[]    result = new double[data.length];
+        double sum = 0;
+        double[] result = new double[data.length];
 
         if (obeyConst) {
             // first check if anyone holds the constraints
             boolean isFeasible = false;
             for (int i = 0; i < population.size(); i++) {
-                if (!((AbstractEAIndividual)population.get(i)).violatesConstraint()) {
-                	isFeasible = true;
-                	break;
+                if (!((AbstractEAIndividual) population.get(i)).violatesConstraint()) {
+                    isFeasible = true;
+                    break;
                 }
             }
             if (isFeasible) {
@@ -54,16 +57,15 @@ public class SelProbStandard extends AbstractSelProb implements java.io.Serializ
                     sum = 0;
                     // iterating over the individuals
                     for (int i = 0; i < data.length; i++) {
-                        if (!((AbstractEAIndividual)population.get(i)).violatesConstraint()) {
+                        if (!((AbstractEAIndividual) population.get(i)).violatesConstraint()) {
                             result[i] = Math.exp(-data[i][x]);
-                        }
-                        else {
+                        } else {
                             result[i] = 0;
                         }
                         sum += result[i];
                     }
                     for (int i = 0; i < population.size(); i++) {
-                        ((AbstractEAIndividual)population.get(i)).SetSelectionProbability(x, result[i]/sum);
+                        ((AbstractEAIndividual) population.get(i)).SetSelectionProbability(x, result[i] / sum);
                     }
                 }
             } else {
@@ -71,15 +73,15 @@ public class SelProbStandard extends AbstractSelProb implements java.io.Serializ
                 sum = 0;
                 // iterating over the individuals
                 for (int i = 0; i < data.length; i++) {
-                    result[i] = Math.exp(-((AbstractEAIndividual)population.get(i)).getConstraintViolation());
+                    result[i] = Math.exp(-((AbstractEAIndividual) population.get(i)).getConstraintViolation());
                 }
                 for (int i = 0; i < data.length; i++) {
                     sum += result[i];
                 }
                 for (int i = 0; i < population.size(); i++) {
                     double[] tmpD = new double[1];
-                    tmpD[0] = result[i]/sum;
-                    ((AbstractEAIndividual)population.get(i)).SetSelectionProbability(tmpD);
+                    tmpD[0] = result[i] / sum;
+                    ((AbstractEAIndividual) population.get(i)).SetSelectionProbability(tmpD);
                 }
             }
         } else {
@@ -94,7 +96,7 @@ public class SelProbStandard extends AbstractSelProb implements java.io.Serializ
                     sum += result[i];
                 }
                 for (int i = 0; i < population.size(); i++) {
-                    ((AbstractEAIndividual)population.get(i)).SetSelectionProbability(x, result[i]/sum);
+                    ((AbstractEAIndividual) population.get(i)).SetSelectionProbability(x, result[i] / sum);
                 }
             }
         }
@@ -103,13 +105,18 @@ public class SelProbStandard extends AbstractSelProb implements java.io.Serializ
 /**********************************************************************************************************************
  * These are for GUI
  */
-    /** This method returns a global info string
+    /**
+     * This method returns a global info string
+     *
      * @return description
      */
     public static String globalInfo() {
         return "This is a standard normation method using the exp function.";
     }
-    /** This method will return a naming String
+
+    /**
+     * This method will return a naming String
+     *
      * @return The name of the algorithm
      */
     public String getName() {

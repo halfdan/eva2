@@ -16,7 +16,7 @@ import eva2.tools.ReflectPackage;
 /**
  * A gradient descent algorithm by hannes planatscher don't expect any
  * descriptions here... *big sigh*
- *
+ * <p/>
  * mkron added some!
  *
  * @author not attributable
@@ -308,6 +308,7 @@ public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Ser
 
         this.firePropertyChangedEvent(Population.nextGenerationPerformed);
     }
+
     private double momentumweigth = 0.1;
 
     protected void firePropertyChangedEvent(String name) {
@@ -510,7 +511,7 @@ public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Ser
         return "Factor for decreasing the step size in adaption.";
     }
 
-//////////////// concerning recovery
+    //////////////// concerning recovery
     public boolean isRecovery() {
         return recovery;
     }

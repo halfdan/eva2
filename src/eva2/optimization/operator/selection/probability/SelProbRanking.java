@@ -3,7 +3,8 @@ package eva2.optimization.operator.selection.probability;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
 
-/** Ranking for calculating the selection probability.
+/**
+ * Ranking for calculating the selection probability.
  * This truly scaling invariant.
  * Created by IntelliJ IDEA.
  * User: streiche
@@ -24,16 +25,18 @@ public class SelProbRanking extends AbstractSelProb implements java.io.Serializa
         return (Object) new SelProbRanking(this);
     }
 
-    /** This method computes the selection probability for each individual
+    /**
+     * This method computes the selection probability for each individual
      * in the population. Note: Summed over the complete population the selection
-     *  probability sums up to one.
-     * @param population    The population to compute.
-     * @param data          The input as double[][]
+     * probability sums up to one.
+     *
+     * @param population The population to compute.
+     * @param data       The input as double[][]
      */
     @Override
     public void computeSelectionProbability(Population population, double[][] data, boolean obeyConst) {
-        double                  sum = 0;
-        double[]                result = new double[data.length];
+        double sum = 0;
+        double[] result = new double[data.length];
 
         if (obeyConst) {
             for (int x = 0; x < data[0].length; x++) {
@@ -46,17 +49,16 @@ public class SelProbRanking extends AbstractSelProb implements java.io.Serializa
                 }
                 for (int i = 0; i < data.length; i++) {
                     for (int j = i + 1; j < data.length; j++) {
-                        if (!(((AbstractEAIndividual)population.get(i)).violatesConstraint()) && (!((AbstractEAIndividual)population.get(j)).violatesConstraint())) {
+                        if (!(((AbstractEAIndividual) population.get(i)).violatesConstraint()) && (!((AbstractEAIndividual) population.get(j)).violatesConstraint())) {
                             // no one violates, therefore it is up to the data to decied
                             if (data[j][x] < data[i][x]) {
                                 result[i]++;
-                            }
-                            else {
+                            } else {
                                 result[j]++;
                             }
                         } else {
                             // at least one violates, so the constraint violation is to decide
-                            if (((AbstractEAIndividual)population.get(j)).getConstraintViolation() < ((AbstractEAIndividual)population.get(i)).getConstraintViolation()) {
+                            if (((AbstractEAIndividual) population.get(j)).getConstraintViolation() < ((AbstractEAIndividual) population.get(i)).getConstraintViolation()) {
                                 result[j]++;
                             } else {
                                 result[i]++;
@@ -70,7 +72,7 @@ public class SelProbRanking extends AbstractSelProb implements java.io.Serializa
                 }
 
                 for (int i = 0; i < population.size(); i++) {
-                    ((AbstractEAIndividual)population.get(i)).SetSelectionProbability(x, result[i] /sum);
+                    ((AbstractEAIndividual) population.get(i)).SetSelectionProbability(x, result[i] / sum);
                 }
             }
         } else {
@@ -86,8 +88,7 @@ public class SelProbRanking extends AbstractSelProb implements java.io.Serializa
                     for (int j = i + 1; j < data.length; j++) {
                         if (data[j][x] < data[i][x]) {
                             result[i]++;
-                        }
-                        else {
+                        } else {
                             result[j]++;
                         }
                     }
@@ -98,7 +99,7 @@ public class SelProbRanking extends AbstractSelProb implements java.io.Serializa
                 }
 
                 for (int i = 0; i < population.size(); i++) {
-                    ((AbstractEAIndividual)population.get(i)).SetSelectionProbability(x, result[i] /sum);
+                    ((AbstractEAIndividual) population.get(i)).SetSelectionProbability(x, result[i] / sum);
                 }
             }
         }
@@ -106,13 +107,18 @@ public class SelProbRanking extends AbstractSelProb implements java.io.Serializa
 /**********************************************************************************************************************
  * These are for GUI
  */
-    /** This method returns a global info string
+    /**
+     * This method returns a global info string
+     *
      * @return description
      */
     public static String globalInfo() {
         return "This is ranking normation.";
     }
-    /** This method will return a naming String
+
+    /**
+     * This method will return a naming String
+     *
      * @return The name of the algorithm
      */
     public String getName() {

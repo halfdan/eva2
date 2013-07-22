@@ -16,7 +16,7 @@ package eva2.tools.chart2d;
  * IMPORTS
  *==========================================================================*/
 
-import java.awt.Color ;
+import java.awt.Color;
 
 /*==========================================================================*
  * INTERFACE DECLARATION
@@ -25,25 +25,30 @@ import java.awt.Color ;
 /**
  * some useful methods for objects which should be paintable in a scaled area
  */
-public interface DElement
-{
-  Color DEFAULT_COLOR = Color.black;
-  DRectangle getRectangle();
+public interface DElement {
+    Color DEFAULT_COLOR = Color.black;
 
-  void setDParent( DParent parent );
-  DParent getDParent();
+    DRectangle getRectangle();
 
-  void paint( DMeasures m );
-  void repaint();
+    void setDParent(DParent parent);
 
-  void setVisible( boolean aFlag );
-  boolean isVisible();
+    DParent getDParent();
 
-  void setColor( Color color );
-  Color getColor();
+    void paint(DMeasures m);
 
-  void setDBorder( DBorder b );
-  DBorder getDBorder();
+    void repaint();
+
+    void setVisible(boolean aFlag);
+
+    boolean isVisible();
+
+    void setColor(Color color);
+
+    Color getColor();
+
+    void setDBorder(DBorder b);
+
+    DBorder getDBorder();
 }
 
 /****************************************************************************

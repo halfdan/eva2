@@ -5,6 +5,7 @@ import eva2.optimization.individuals.ESIndividualDoubleData;
 import eva2.optimization.population.Population;
 import eva2.tools.SelectedTag;
 import eva2.tools.Tag;
+
 import java.io.Serializable;
 
 /**
@@ -16,41 +17,46 @@ import java.io.Serializable;
  */
 public class F7Problem extends AbstractProblemDoubleOffset implements Serializable {
 
-    private double              m_t         = 250;
-    private double              m_Change    = 4;
-    protected SelectedTag       m_TimeIntervalType;
-    private int                 m_CurrentTimeStamp;
+    private double m_t = 250;
+    private double m_Change = 4;
+    protected SelectedTag m_TimeIntervalType;
+    private int m_CurrentTimeStamp;
 
     public F7Problem() {
         Tag[] tag = new Tag[2];
         tag[0] = new Tag(0, "Function Calls");
         tag[1] = new Tag(1, "Generation");
-        this.m_TimeIntervalType    = new SelectedTag(0, tag);
+        this.m_TimeIntervalType = new SelectedTag(0, tag);
         this.template = new ESIndividualDoubleData();
     }
+
     public F7Problem(F7Problem b) {
         super(b);
-        this.m_Change			= b.m_Change;
-        this.m_t                = b.m_t;
-        this.m_TimeIntervalType = (SelectedTag)b.m_TimeIntervalType.clone();
+        this.m_Change = b.m_Change;
+        this.m_t = b.m_t;
+        this.m_TimeIntervalType = (SelectedTag) b.m_TimeIntervalType.clone();
     }
 
-    /** This method returns a deep clone of the problem.
-     * @return  the clone
+    /**
+     * This method returns a deep clone of the problem.
+     *
+     * @return the clone
      */
     @Override
     public Object clone() {
         return (Object) new F7Problem(this);
     }
 
-    /** This method evaluates a given population and set the fitness values
+    /**
+     * This method evaluates a given population and set the fitness values
      * accordingly
-     * @param population    The population that is to be evaluated.
+     *
+     * @param population The population that is to be evaluated.
      */
     @Override
     public void evaluate(Population population) {
-        AbstractEAIndividual    tmpIndy;
-        
+        AbstractEAIndividual tmpIndy;
+
         evaluatePopulationStart(population);
         for (int i = 0; i < population.size(); i++) {
             tmpIndy = (AbstractEAIndividual) population.get(i);
@@ -66,28 +72,32 @@ public class F7Problem extends AbstractProblemDoubleOffset implements Serializab
         evaluatePopulationEnd(population);
     }
 
-    /** This method allows you to evaluate a double[] to determine the fitness
-     * @param x     The n-dimensional input vector
-     * @return  The m-dimensional output vector.
+    /**
+     * This method allows you to evaluate a double[] to determine the fitness
+     *
+     * @param x The n-dimensional input vector
+     * @return The m-dimensional output vector.
      */
     @Override
     public double[] eval(double[] x) {
-    	x = rotateMaybe(x);
+        x = rotateMaybe(x);
         double[] result = new double[1];
-        result[0]     = yOffset;
-        if ((Math.floor(this.m_CurrentTimeStamp / this.m_t)%2) == 0) {
-            for (int i = 0; i < x.length-1; i++) {
-                result[0]  += Math.pow(x[i]- xOffset, 2);
+        result[0] = yOffset;
+        if ((Math.floor(this.m_CurrentTimeStamp / this.m_t) % 2) == 0) {
+            for (int i = 0; i < x.length - 1; i++) {
+                result[0] += Math.pow(x[i] - xOffset, 2);
             }
         } else {
-            for (int i = 0; i < x.length-1; i++) {
-                result[0]  += Math.pow(x[i]- xOffset -this.m_Change, 2);
+            for (int i = 0; i < x.length - 1; i++) {
+                result[0] += Math.pow(x[i] - xOffset - this.m_Change, 2);
             }
         }
         return result;
     }
 
-    /** This method returns a string describing the optimization problem.
+    /**
+     * This method returns a string describing the optimization problem.
+     *
      * @return The description.
      */
     public String getStringRepresentationForProblem() {
@@ -95,7 +105,7 @@ public class F7Problem extends AbstractProblemDoubleOffset implements Serializab
 
         result += "F7 Sphere Model, changing Environemt:\n";
         result += "Parameters:\n";
-        result += "Dimension   : " + this.problemDimension +"\n";
+        result += "Dimension   : " + this.problemDimension + "\n";
         result += "Noise level : " + this.getNoise() + "\n";
         result += "Solution representation:\n";
         //result += this.template.getSolutionRepresentationFor();
@@ -105,8 +115,10 @@ public class F7Problem extends AbstractProblemDoubleOffset implements Serializab
 /**********************************************************************************************************************
  * These are for GUI
  */
-    /** This method allows the CommonJavaObjectEditorPanel to read the
+    /**
+     * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
+     *
      * @return The name.
      */
     @Override
@@ -114,15 +126,19 @@ public class F7Problem extends AbstractProblemDoubleOffset implements Serializab
         return "F7 Problem";
     }
 
-    /** This method returns a global info string
+    /**
+     * This method returns a global info string
+     *
      * @return description
      */
     public static String globalInfo() {
         return "Sphere Model, changing Environment.";
     }
 
-    /** Set the lower limit for the mutation step size with this method.
-     * @param d   The mutation operator.
+    /**
+     * Set the lower limit for the mutation step size with this method.
+     *
+     * @param d The mutation operator.
      */
     public void sett(double d) {
         if (d < 1) {
@@ -130,35 +146,45 @@ public class F7Problem extends AbstractProblemDoubleOffset implements Serializab
         }
         this.m_t = d;
     }
+
     public double gett() {
         return this.m_t;
     }
+
     public String tTipText() {
         return "Set the time interval for environmental change.";
     }
 
-    /** Set the value for tau1 with this method.
-     * @param d   The mutation operator.
+    /**
+     * Set the value for tau1 with this method.
+     *
+     * @param d The mutation operator.
      */
     public void setChange(double d) {
         this.m_Change = d;
     }
+
     public double getChange() {
         return this.m_Change;
     }
+
     public String changeTipText() {
         return "Set the amount of environmental change (x[i]-b).";
     }
 
-    /** Set the value for tau1 with this method.
-     * @param d   The mutation operator.
+    /**
+     * Set the value for tau1 with this method.
+     *
+     * @param d The mutation operator.
      */
     public void setTimeIntervalType(SelectedTag d) {
         this.m_TimeIntervalType = d;
     }
+
     public SelectedTag getTimeIntervalType() {
         return this.m_TimeIntervalType;
     }
+
     public String timeIntervalTypeTipText() {
         return "Choose the timeinterval type.";
     }

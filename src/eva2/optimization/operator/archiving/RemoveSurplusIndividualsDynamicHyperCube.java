@@ -4,7 +4,8 @@ import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
 import eva2.tools.math.RNG;
 
-/** This class removes surplus individuals based on bounding
+/**
+ * This class removes surplus individuals based on bounding
  * hybercube, which can be calculated in objective or decision
  * space. But i guess currently you can't toggel that. But here
  * the hybercubes are dynamic, e.g. theey are recalculated after
@@ -28,22 +29,24 @@ public class RemoveSurplusIndividualsDynamicHyperCube implements InterfaceRemove
         return (Object) new RemoveSurplusIndividualsDynamicHyperCube(this);
     }
 
-    /** This method will remove surplus individuals
+    /**
+     * This method will remove surplus individuals
      * from a given archive. Note archive will be altered!
+     *
      * @param archive
      */
     @Override
     public void removeSurplusIndividuals(Population archive) {
-        double[][]  fitness;
-        double[]    space;
-        int         indexSmallHyperCube;
-        while(archive.targetSizeExceeded()) {
+        double[][] fitness;
+        double[] space;
+        int indexSmallHyperCube;
+        while (archive.targetSizeExceeded()) {
             // select the individual with the least space around him
             // to do this i got to find the next smaller and the next bigger one
             fitness = new double[archive.size()][];
-            space   = new double[archive.size()];
+            space = new double[archive.size()];
             for (int i = 0; i < archive.size(); i++) {
-                fitness[i] = ((AbstractEAIndividual)archive.get(i)).getFitness();
+                fitness[i] = ((AbstractEAIndividual) archive.get(i)).getFitness();
             }
             space = this.calculateHyperCubeVolumes(fitness);
             // now find the individual with the smallest hypervolume
@@ -51,26 +54,27 @@ public class RemoveSurplusIndividualsDynamicHyperCube implements InterfaceRemove
             for (int i = 1; i < archive.size(); i++) {
                 if (space[i] < space[indexSmallHyperCube]) {
                     indexSmallHyperCube = i;
-                }
-                else {
+                } else {
                     // if they are equal give them a fair chance to exchange between them
                     if ((space[i] == space[indexSmallHyperCube]) && (RNG.flipCoin(0.5))) {
                         indexSmallHyperCube = i;
                     }
-               }
+                }
             }
             archive.remove(indexSmallHyperCube);
         }
     }
 
-    /** This method calculates the surrounding hypervolumes for a given array of fitness values
-     * @param fitness   The array of multi dimensional fitness values.
+    /**
+     * This method calculates the surrounding hypervolumes for a given array of fitness values
+     *
+     * @param fitness The array of multi dimensional fitness values.
      * @return An array of hypercube volumes,
      */
     public double[] calculateHyperCubeVolumes(double[][] fitness) {
-        double[]    result = new double[fitness.length];
-        int         upperI, lowerI;
-        double      upperX, lowerX;
+        double[] result = new double[fitness.length];
+        int upperI, lowerI;
+        double upperX, lowerX;
 
         for (int i = 0; i < fitness.length; i++) {
             result[i] = 1;
@@ -98,8 +102,7 @@ public class RemoveSurplusIndividualsDynamicHyperCube implements InterfaceRemove
                 // now i should have the lower and the upperbound
                 if ((upperI == -1) || (lowerI == -1)) {
                     result[i] *= Double.POSITIVE_INFINITY;
-                }
-                else {
+                } else {
                     result[i] *= Math.abs(Math.abs(fitness[upperI][y] - fitness[lowerI][y]));
                 }
             }

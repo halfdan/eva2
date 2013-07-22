@@ -12,17 +12,18 @@ import eva2.optimization.problems.InterfaceOptimizationProblem;
  * To change this template use Options | File Templates.
  */
 public class NoCrossover implements InterfaceCrossover, java.io.Serializable {
-    private InterfaceOptimizationProblem    m_OptimizationProblem;
+    private InterfaceOptimizationProblem m_OptimizationProblem;
 
     /**
      * A constructor.
-     *
      */
     public NoCrossover() {
 
     }
 
-    /** This method will enable you to clone a given mutation operator
+    /**
+     * This method will enable you to clone a given mutation operator
+     *
      * @return The clone
      */
     @Override
@@ -30,9 +31,10 @@ public class NoCrossover implements InterfaceCrossover, java.io.Serializable {
         return new NoCrossover();
     }
 
-    /** This method performs no crossover on the individuals.
-     * 
-     * @param indy1 The first individual
+    /**
+     * This method performs no crossover on the individuals.
+     *
+     * @param indy1    The first individual
      * @param partners The partner individuals
      */
     @Override
@@ -42,35 +44,38 @@ public class NoCrossover implements InterfaceCrossover, java.io.Serializable {
         result = new AbstractEAIndividual[1 + partners.size()]; /// by MK
         result[0] = (AbstractEAIndividual) (indy1).clone();
         for (int i = 0; i < partners.size(); i++) {
-            result[i+1] = (AbstractEAIndividual) ((AbstractEAIndividual)partners.get(i)).clone();
+            result[i + 1] = (AbstractEAIndividual) ((AbstractEAIndividual) partners.get(i)).clone();
         }
         //in case the crossover was successfull lets give the mutation operators a chance to mate the strategy parameters
         for (int i = 0; i < result.length; i++) {
             result[i].getMutationOperator().crossoverOnStrategyParameters(indy1, partners);
-        }        
+        }
         return result;
     }
 
-    /** This method allows you to evaluate wether two crossover operators
+    /**
+     * This method allows you to evaluate wether two crossover operators
      * are actually the same.
-     * @param crossover   The other crossover operator
+     *
+     * @param crossover The other crossover operator
      */
     @Override
     public boolean equals(Object crossover) {
         if (crossover instanceof NoCrossover) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
 
-    /** This method will allow the crossover operator to be initialized depending on the
+    /**
+     * This method will allow the crossover operator to be initialized depending on the
      * individual and the optimization problem. The optimization problem is to be stored
      * since it is to be called during crossover to calculate the exogene parameters for
      * the offsprings.
-     * @param individual    The individual that will be mutated.
-     * @param opt           The optimization problem.
+     *
+     * @param individual The individual that will be mutated.
+     * @param opt        The optimization problem.
      */
     @Override
     public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
@@ -85,14 +90,19 @@ public class NoCrossover implements InterfaceCrossover, java.io.Serializable {
 /**********************************************************************************************************************
  * These are for GUI
  */
-    /** This method allows the CommonJavaObjectEditorPanel to read the
+    /**
+     * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
+     *
      * @return The name.
      */
     public String getName() {
         return "Nocrossover";
     }
-    /** This method returns a global info string
+
+    /**
+     * This method returns a global info string
+     *
      * @return description
      */
     public static String globalInfo() {

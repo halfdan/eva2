@@ -9,6 +9,7 @@ package eva2.gui;
  *            $Date: 2006-01-18 11:02:22 +0100 (Wed, 18 Jan 2006) $
  *            $Author: streiche $
  */
+
 import java.awt.Component;
 import java.awt.Event;
 import java.util.logging.Level;
@@ -22,7 +23,7 @@ import javax.swing.KeyStroke;
  *
  */
 public class ExtDesktopManager extends DefaultDesktopManager {
-    
+
     private static final Logger LOGGER = Logger.getLogger(ExtDesktopManager.class.getName());
 
     int WINDOW_LIST_START;

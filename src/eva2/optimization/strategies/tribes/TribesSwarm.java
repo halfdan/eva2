@@ -4,16 +4,17 @@ import eva2.optimization.population.Population;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.optimization.strategies.Tribes;
 import eva2.tools.math.RNG;
+
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class TribesSwarm implements java.io.Serializable{
+public class TribesSwarm implements java.io.Serializable {
     /**
-	 *
-	 */
-	private static final long serialVersionUID = 1L;
-	int tribeNb, explorerLabel, memoryLabel;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    int tribeNb, explorerLabel, memoryLabel;
     Tribe[] tribes;
     Tribes masterTribe;
     private double[][] range, initRange;
@@ -25,68 +26,68 @@ public class TribesSwarm implements java.io.Serializable{
     //int[] worst = new int[2]; // Tribe and rank in the tribe of the worst memory
 
     /**
-     * If initRange is not null, new particles are generated in that range only. 
+     * If initRange is not null, new particles are generated in that range only.
      */
     public TribesSwarm(Tribes master, double[][] range, double[][] initRange) {
-    	masterTribe = master;
-    	tribes = new Tribe[Tribes.maxTribeNb];
+        masterTribe = master;
+        tribes = new Tribe[Tribes.maxTribeNb];
         queen = new TribesExplorer(range, (master == null) ? 0. : master.getObjectiveFirstDim());
         bestMem = new TribesMemory(range.length);
 
         this.range = range;
         if (initRange != null) {
-        	this.initRange = initRange;
+            this.initRange = initRange;
         } else {
-        	this.initRange = null;
+            this.initRange = null;
         }
     }
 
     public TribesSwarm(TribesSwarm other) {
-    	tribeNb = other.tribeNb;
-    	explorerLabel = other.explorerLabel;
-    	memoryLabel = other.memoryLabel;
-    	tribes = other.tribes.clone();
-    	masterTribe = other.masterTribe; // no deep clone as this is an uplink
-    	range = other.range.clone();
-    	initRange = other.initRange.clone();
-    	bestMem = other.bestMem.clone();
-    	size = other.size;
-    	queen = other.queen.clone();
+        tribeNb = other.tribeNb;
+        explorerLabel = other.explorerLabel;
+        memoryLabel = other.memoryLabel;
+        tribes = other.tribes.clone();
+        masterTribe = other.masterTribe; // no deep clone as this is an uplink
+        range = other.range.clone();
+        initRange = other.initRange.clone();
+        bestMem = other.bestMem.clone();
+        size = other.size;
+        queen = other.queen.clone();
     }
 
     @Override
     public TribesSwarm clone() {
-    	return new TribesSwarm(this);
+        return new TribesSwarm(this);
     }
 
     public Population toPopulation() {
-    	Population pop = new Population(numExplorers());
+        Population pop = new Population(numExplorers());
         for (int n = 0; n < tribeNb; n++) {
-        	for (int i=0; i<tribes[n].explorerNb; i++) {
+            for (int i = 0; i < tribes[n].explorerNb; i++) {
                 pop.add(tribes[n].explorer[i]);
             }
         }
         pop.add(getBestMemory().asDummyExplorer(range, masterTribe.getObjectiveFirstDim()));
         pop.synchSize();
-    	return pop;
+        return pop;
     }
 
     public TribesMemory getBestMemory() {
-    	return bestMem;
+        return bestMem;
     }
 
     public int getTribeCnt() {
-    	return tribeNb;
+        return tribeNb;
     }
+
     public int getProblemDim() {
-    	return masterTribe.getProblemDim();
+        return masterTribe.getProblemDim();
     }
 
     /**
-     * 
      * @param initNb
      * @param swarmInitOption Options: 0 - random, 1 - on the bounds, 2 - sunny spell, 3 - around a center
-     * @param rangeInitType initType: for options 0,1: 1 means use initRange, 0 use default range
+     * @param rangeInitType   initType: for options 0,1: 1 means use initRange, 0 use default range
      * @param prob
      */
     public void generateSwarm(int initNb, int swarmInitOption, int rangeInitType, InterfaceOptimizationProblem prob) {
@@ -117,7 +118,7 @@ public class TribesSwarm implements java.io.Serializable{
     }
 
     public void moveSwarm(double[][] range, TribesParam pb,
-                         int informOption, InterfaceOptimizationProblem prob) {
+                          int informOption, InterfaceOptimizationProblem prob) {
 
         // print("\nmoveSwarm",out);
         int n;
@@ -145,7 +146,7 @@ public class TribesSwarm implements java.io.Serializable{
 //            evals++;
 
             if (queen.position.firstIsBetter(queen.position.getFitness(),
-                                          bestMem.getPos().getFitness())) {
+                    bestMem.getPos().getFitness())) {
 
                 int[] worst = findWorst();
 
@@ -186,13 +187,13 @@ public class TribesSwarm implements java.io.Serializable{
             for (m = 0; m < tribes[n].memoryNb; m++) {
 //                System.arraycopy(tribes[n].memory[m].position.fitness, 0, f2,
 //                                 0, fitnessSize);
-            	f2 = tribes[n].memory[m].getPos().getFitness();
-            	// this is not XOR! (for multi-objective fitness, betterThan is not symmetrical)
-                if ((switchBest && tribes[n].memory[m].getPos().firstIsBetter(f2, f)) 
-                	|| (!switchBest && tribes[n].memory[m].getPos().firstIsBetter(f, f2))) {
+                f2 = tribes[n].memory[m].getPos().getFitness();
+                // this is not XOR! (for multi-objective fitness, betterThan is not symmetrical)
+                if ((switchBest && tribes[n].memory[m].getPos().firstIsBetter(f2, f))
+                        || (!switchBest && tribes[n].memory[m].getPos().firstIsBetter(f, f2))) {
                     found[0] = n; // tribe
                     found[1] = m; // rank in the tribe (memories)
-                    f = f2;	// MK: a pointer should actually be sufficient here (its only read from, never written to f or f2)
+                    f = f2;    // MK: a pointer should actually be sufficient here (its only read from, never written to f or f2)
 //                    for (i = 0; i < fitnessSize; i++) {
 //                        f[i] = f2[i];
 //                    }
@@ -204,19 +205,20 @@ public class TribesSwarm implements java.io.Serializable{
 
     /**
      * Returns al memory particles as double vectors.
+     *
      * @return
      */
     public List<TribesPosition> collectMem() {
-    	ArrayList<TribesPosition> bestList = new ArrayList<TribesPosition>();
-    	
-	    for (int n = 0; n < tribeNb; n++) {
-	        for (int m = 0; m < tribes[n].memoryNb; m++) {
-	        	bestList.add(tribes[n].memory[m].getPos());
-	        }
-	    }
-	    return bestList;
+        ArrayList<TribesPosition> bestList = new ArrayList<TribesPosition>();
+
+        for (int n = 0; n < tribeNb; n++) {
+            for (int m = 0; m < tribes[n].memoryNb; m++) {
+                bestList.add(tribes[n].memory[m].getPos());
+            }
+        }
+        return bestList;
     }
-    
+
     /**
      * This searches for the best memory, and also sets the bestMem member of the swarm.
      *
@@ -224,7 +226,7 @@ public class TribesSwarm implements java.io.Serializable{
      * @see find(boolean switchBest)
      */
     public int[] findBest() {
-    	int best[] = find(true);
+        int best[] = find(true);
 
         bestMem = tribes[best[0]].memory[best[1]].clone();
         return best;
@@ -266,7 +268,7 @@ public class TribesSwarm implements java.io.Serializable{
 //            }
 //        }
 
-    	return find(false);
+        return find(false);
     }
 
     public void addTribe(int explorerNb, TribesExplorer explorer[]) {
@@ -327,7 +329,7 @@ public class TribesSwarm implements java.io.Serializable{
         Compute the number of explorers
         WARNING: it does NOT compute the number of memories
         */
-    	size = numExplorers();
+        size = numExplorers();
     }
 
 //    public void displaySwarm(TribesSwarm swarm, out out) {
@@ -341,7 +343,7 @@ public class TribesSwarm implements java.io.Serializable{
 //    }
 
     /**
-     * 
+     *
      */
     public void adaptSwarm(int initType, InterfaceOptimizationProblem prob) {
         int centerRank = 0; // Arbitrary value to avoid compiler error
@@ -350,7 +352,7 @@ public class TribesSwarm implements java.io.Serializable{
         int gmax = 4;
 
 //        int[] gener = {0,1,2,0}; // For gmax kinds of particles to generate
-        int[] gener = {0,1,1,2}; // For gmax kinds of particles to generate
+        int[] gener = {0, 1, 1, 2}; // For gmax kinds of particles to generate
         /*
                  0 => at random anywhere in the search space
                  1 => on bounds
@@ -367,8 +369,8 @@ public class TribesSwarm implements java.io.Serializable{
              and the other around it
              Only 2 and a variant of strategy 3 (around the center) are then used
         */
-       
-       int n;
+
+        int n;
         int explorerNb = 0;
         double radius = -1;
         int shaman;
@@ -376,97 +378,97 @@ public class TribesSwarm implements java.io.Serializable{
         int worstRank;
 
         TribesExplorer explorer[] = new TribesExplorer[
-                              Tribes.maxExplorerNb];
+                Tribes.maxExplorerNb];
 
         for (n = 0; n < tribeNb; n++) {
             switch (tribes[n].status) {
-            default: // Do nothing
-                break;
-
-            case -1: // Bad tribe => generation
-
-                // Number of particles to generate
-                particlesToGenerate = Tribes.particleNb(range.length, tribeNb);
-                if (particlesToGenerate < 2) {
-                    particlesToGenerate = 2;
-                }
-
-                // If too many particles, do nothing in order to avoid memory overflow
-                if (explorerNb >= Tribes.maxExplorerNb - particlesToGenerate - 1) {
+                default: // Do nothing
                     break;
-                }
 
-                //Generate some particles
-                switch (gMode) {
-                default: // According to gener[]
-                    shaman = tribes[n].shaman;
+                case -1: // Bad tribe => generation
 
-                    for (int g = 0; g < particlesToGenerate; g++) {
-                        gOption = g % gmax;
-                        explorer[explorerNb] = generateExplorer(tribes[n].memory[shaman].getPos(), -1, gener[gOption], n, 0, prob, true);
+                    // Number of particles to generate
+                    particlesToGenerate = Tribes.particleNb(range.length, tribeNb);
+                    if (particlesToGenerate < 2) {
+                        particlesToGenerate = 2;
+                    }
+
+                    // If too many particles, do nothing in order to avoid memory overflow
+                    if (explorerNb >= Tribes.maxExplorerNb - particlesToGenerate - 1) {
+                        break;
+                    }
+
+                    //Generate some particles
+                    switch (gMode) {
+                        default: // According to gener[]
+                            shaman = tribes[n].shaman;
+
+                            for (int g = 0; g < particlesToGenerate; g++) {
+                                gOption = g % gmax;
+                                explorer[explorerNb] = generateExplorer(tribes[n].memory[shaman].getPos(), -1, gener[gOption], n, 0, prob, true);
 //                        	explorer[explorerNb].generateExplorer(pb, swarm,
 //                                tribes[n].memory[shaman].position, -1,
 //                                gener[gOption],
 //                                n, 0, evalF);
 
-                        explorerNb++;
-                    }
-                    break;
+                                explorerNb++;
+                            }
+                            break;
 
-                case 1: /* First particle in the biggest not yet searched area
+                        case 1: /* First particle in the biggest not yet searched area
                      and the other around it
                      */
-                    if (explorerNb == 0) { // Generate the center in an "empty" area
-                        centerRank = 0; //
-                        explorer[explorerNb] = generateExplorer(null, -1, 2, n, initType, prob, true);
+                            if (explorerNb == 0) { // Generate the center in an "empty" area
+                                centerRank = 0; //
+                                explorer[explorerNb] = generateExplorer(null, -1, 2, n, initType, prob, true);
 
-                        radius = explorer[explorerNb].position.isolation;
-                        explorerNb++;
-                        gMin = 1;
-                    } else {
-                        gMin = 0;
+                                radius = explorer[explorerNb].position.isolation;
+                                explorerNb++;
+                                gMin = 1;
+                            } else {
+                                gMin = 0;
+                            }
+
+                            //System.out.print("\nadaptSwarm " + explorer[centerRank].position.Dimension);
+                            // Generate the other around the center
+
+                            for (int g = gMin; g < particlesToGenerate; g++) {
+                                explorer[explorerNb] = generateExplorer(explorer[centerRank].position, radius, 3, n, initType, prob, true);
+                                explorerNb++;
+
+                            }
+                            break;
                     }
 
-                     //System.out.print("\nadaptSwarm " + explorer[centerRank].position.Dimension);
-                     // Generate the other around the center
+                    break;
 
-                     for (int g = gMin; g < particlesToGenerate; g++) {
-                         explorer[explorerNb] = generateExplorer(explorer[centerRank].position, radius, 3, n, initType, prob, true);
-                         explorerNb++;
+                case 1:
 
-                     }
-                     break;
-                }
-
-                break;
-
-            case 1:
-
-                // Possibly remove a particle
+                    // Possibly remove a particle
                 /*
                  Possible SIMPLIFICATION: this situation occurs quite rarely.
                  So all this part could be easily removed.
                  It would just mean that no explorer would be removed or exilated.
                  */
 
-                // If the tribe has already no explorer anymore, do nothing
-                if (tribes[n].explorerNb > 0) {
-                    // Look for the worst explorer of the tribe
-                    //  worstRank = tribeClass.worstExplorer(tribes[n]);
-                    tribes[n].worstExplorer();
-                    worstRank = tribes[n].worst;
+                    // If the tribe has already no explorer anymore, do nothing
+                    if (tribes[n].explorerNb > 0) {
+                        // Look for the worst explorer of the tribe
+                        //  worstRank = tribeClass.worstExplorer(tribes[n]);
+                        tribes[n].worstExplorer();
+                        worstRank = tribes[n].worst;
 
-                    // Check if exile is possible
-                    welcomeTribe = migrateCheck(worstRank, n);
+                        // Check if exile is possible
+                        welcomeTribe = migrateCheck(worstRank, n);
 
                     /*
                      If exile is possible, add the particle to the tribe that accept it
                      */
 
-                    if (welcomeTribe >= 0) {
-                        tribes[welcomeTribe].migrateAccept(tribes[n].explorer[worstRank]);
-                        //   System.out.print("\n EXIL "+n+ " => "+worstRank);
-                    }
+                        if (welcomeTribe >= 0) {
+                            tribes[welcomeTribe].migrateAccept(tribes[n].explorer[worstRank]);
+                            //   System.out.print("\n EXIL "+n+ " => "+worstRank);
+                        }
 
                     /*
                      In any case, remove the explorer from the tribe
@@ -477,9 +479,9 @@ public class TribesSwarm implements java.io.Serializable{
                      */
 
 //                    System.out.print("\ntribe " + n + " deletes");
-                    tribes[n].deleteExplorer(worstRank);
-                }
-                break;
+                        tribes[n].deleteExplorer(worstRank);
+                    }
+                    break;
             }
 
         }
@@ -558,7 +560,7 @@ public class TribesSwarm implements java.io.Serializable{
 
                 mTot += w;
                 queen.position.x[d] += w * tribes[t].memory[tribes[t].shaman].
-                                       getPos().x[d];
+                        getPos().x[d];
 
             }
         }
@@ -579,178 +581,177 @@ public class TribesSwarm implements java.io.Serializable{
 //    }
 
     /**
-     * 
      * @param center
      * @param radius
-     * @param option Options: 0 - random, 1 - on the bounds, 2 - sunny spell, 3 - around a center
+     * @param option    Options: 0 - random, 1 - on the bounds, 2 - sunny spell, 3 - around a center
      * @param fromTribe
      * @param initType: for options 0,1: 1 means use initRange, 0 use default range
      * @param prob
      * @return
      */
     public TribesExplorer generateExplorer(/*double[][] range, double[][] initRange,*/
-    		TribesPosition center, double radius,
-    		int option, int fromTribe,
-    		int initType, InterfaceOptimizationProblem prob, boolean notify) {
-    	/*
+                                           TribesPosition center, double radius,
+                                           int option, int fromTribe,
+                                           int initType, InterfaceOptimizationProblem prob, boolean notify) {
+        /*
          Generation of a new explorer ("scout")
          If fromTribe=-1, this is the very first generation
     	 */
 
-    	TribesExplorer expl = new TribesExplorer(range, masterTribe.getObjectiveFirstDim());
-    	expl.SetDoubleRange(range);
+        TribesExplorer expl = new TribesExplorer(range, masterTribe.getObjectiveFirstDim());
+        expl.SetDoubleRange(range);
 
 //    	System.out.println("generating expl, option " + option + ", init " + initType + ", from tribe " + fromTribe);
 
-    	int d, dmax, dmod;
-    	int m;
-    	//  int rank;
-    	// int shaman;
-    	double rho;
-    	int D = range.length;
-    	TribesPosition posTemp = new TribesPosition(range.length);
-    	double[] rand_i;
+        int d, dmax, dmod;
+        int m;
+        //  int rank;
+        // int shaman;
+        double rho;
+        int D = range.length;
+        TribesPosition posTemp = new TribesPosition(range.length);
+        double[] rand_i;
 
-		if (Tribes.TRACE) {
-                        System.out.println("+ generateExplorer option " + option);
-                    }
-    	switch (option) {
-    	case 3: // around a "center"
-    		if (Tribes.TRACE) {
-                        System.out.println("+ around center ");
-                    }
-    		if (radius < 0) {
-    			// Choose at random a memory
-    			m = RNG.randomInt(this.tribes[fromTribe].memoryNb);
+        if (Tribes.TRACE) {
+            System.out.println("+ generateExplorer option " + option);
+        }
+        switch (option) {
+            case 3: // around a "center"
+                if (Tribes.TRACE) {
+                    System.out.println("+ around center ");
+                }
+                if (radius < 0) {
+                    // Choose at random a memory
+                    m = RNG.randomInt(this.tribes[fromTribe].memoryNb);
 
-    			// Compute the distance to the "center" = radius
-    			rho = center.distanceTo(this.tribes[fromTribe].memory[m].getPos());
-    		} else {
-    			rho = radius;
-    		}
+                    // Compute the distance to the "center" = radius
+                    rho = center.distanceTo(this.tribes[fromTribe].memory[m].getPos());
+                } else {
+                    rho = radius;
+                }
 
-    		// Define a random point in the hypersphere (center, rho)
-    		expl.position.setDoubleArray(RNG.randHypersphere(center.getDoubleArray(), rho, 1.5));
+                // Define a random point in the hypersphere (center, rho)
+                expl.position.setDoubleArray(RNG.randHypersphere(center.getDoubleArray(), rho, 1.5));
 
-    		// Define another random point
-    		rand_i = RNG.randHypersphere(center.getDoubleArray(), rho, 1.5);
+                // Define another random point
+                rand_i = RNG.randHypersphere(center.getDoubleArray(), rho, 1.5);
 
-    		// Derive a random velocity
-    		for (d = 0; d < D; d++) {
-    			expl.velocity.x[d] = rand_i[d] - expl.position.x[d];
-    		}
+                // Derive a random velocity
+                for (d = 0; d < D; d++) {
+                    expl.velocity.x[d] = rand_i[d] - expl.position.x[d];
+                }
 
-    		break;
+                break;
 
-    	case 2: /* In the biggest "terra incognita" ("no man's land")
+            case 2: /* In the biggest "terra incognita" ("no man's land")
 
              In order to do that all memorizez positions are used, including de "dead" ones
                See SunnySpell
     	 */
-    		if (Tribes.TRACE) {
-                        System.out.println("+ sunny spell ");
-                    }
+                if (Tribes.TRACE) {
+                    System.out.println("+ sunny spell ");
+                }
 
-    		// if only initRange should be used for initialization, give that one to the sspell
-    		expl.position = expl.position.maxIsolated((initRange == null) ? range : initRange, this);
+                // if only initRange should be used for initialization, give that one to the sspell
+                expl.position = expl.position.maxIsolated((initRange == null) ? range : initRange, this);
 
-    		// At this point, fitness[0] contains the "isolation" value
-    		rand_i = RNG.randHypersphere(expl.position.getDoubleArray(), expl.position.fitness[0], 1.5);
-    		for (d = 0; d < D; d++) {
-    			expl.velocity.x[d] = rand_i[d] - expl.position.x[d];
-    		}
+                // At this point, fitness[0] contains the "isolation" value
+                rand_i = RNG.randHypersphere(expl.position.getDoubleArray(), expl.position.fitness[0], 1.5);
+                for (d = 0; d < D; d++) {
+                    expl.velocity.x[d] = rand_i[d] - expl.position.x[d];
+                }
 
-    		break;
+                break;
 
-    	default:
-	    	// For pure random (0) method, or option 1 (on the bounds)
-    		if (initType==1) {	// use initRange
-        		if (Tribes.TRACE) {
+            default:
+                // For pure random (0) method, or option 1 (on the bounds)
+                if (initType == 1) {    // use initRange
+                    if (Tribes.TRACE) {
                         System.out.println("+ in initRange ");
                     }
-        		if (initRange == null) {
+                    if (initRange == null) {
                         System.err.println("unexpected null initRange!");
                     }
-    			// this allows for a random position plus a random (but valid) last velocity
-    			expl.initExplorerSpace(initRange);
-    			posTemp = expl.position.clone();
-    			expl.initExplorerSpace(initRange);
-    		} else {	// use default range
-        		if (Tribes.TRACE) {
+                    // this allows for a random position plus a random (but valid) last velocity
+                    expl.initExplorerSpace(initRange);
+                    posTemp = expl.position.clone();
+                    expl.initExplorerSpace(initRange);
+                } else {    // use default range
+                    if (Tribes.TRACE) {
                         System.out.println("+ in whole range ");
                     }
-    			//default: // In the whole search space
-    			expl.initExplorerSpace(range);
-    			posTemp = expl.position.clone();
-    			expl.initExplorerSpace(range);
-    		}
-	    	for (d = 0; d < range.length; d++) {
-	    		expl.velocity.x[d] = posTemp.x[d] - expl.position.x[d];
-	    	} 
-	    	if (option == 1) {
-	    		/* On the boundary of the search space
+                    //default: // In the whole search space
+                    expl.initExplorerSpace(range);
+                    posTemp = expl.position.clone();
+                    expl.initExplorerSpace(range);
+                }
+                for (d = 0; d < range.length; d++) {
+                    expl.velocity.x[d] = posTemp.x[d] - expl.position.x[d];
+                }
+                if (option == 1) {
+                /* On the boundary of the search space
 	              For some dimensions, set the coordinate to the min or the max
 	    		 */
-	    		dmax = RNG.randomInt(D); // For a random number of dimensions
-	    		//    dmax=D-1; // For all dimensions
-	    		for (dmod = 0; dmod <= dmax; dmod++) {
-	    			//   m = Tribes.generator.nextInt(2);
-	    			//  if(m==0) continue; // With a probability of 1/2
+                    dmax = RNG.randomInt(D); // For a random number of dimensions
+                    //    dmax=D-1; // For all dimensions
+                    for (dmod = 0; dmod <= dmax; dmod++) {
+                        //   m = Tribes.generator.nextInt(2);
+                        //  if(m==0) continue; // With a probability of 1/2
 
-	    			d = RNG.randomInt(D); // 0,1, ... D-1
-	    			m = RNG.randomInt(2); // 0 or 1
-	    			if ((initRange == null) || (initType == 0)) {
-	    				expl.position.x[d] = range[d][m];
-	    			} else {
-	    				expl.position.x[d] = initRange[d][m];
-	    			}
-	    			// velocity.v[d] = 0;
-	    		}
-	    	}
-	    	break;
-
-    	}
-
-    	// Complete the explorer
-    	prob.evaluate(expl);
-    	if (notify) {
-                        masterTribe.incEvalCnt();
+                        d = RNG.randomInt(D); // 0,1, ... D-1
+                        m = RNG.randomInt(2); // 0 or 1
+                        if ((initRange == null) || (initType == 0)) {
+                            expl.position.x[d] = range[d][m];
+                        } else {
+                            expl.position.x[d] = initRange[d][m];
+                        }
+                        // velocity.v[d] = 0;
                     }
+                }
+                break;
+
+        }
+
+        // Complete the explorer
+        prob.evaluate(expl);
+        if (notify) {
+            masterTribe.incEvalCnt();
+        }
     	/* necessary for initialization when not all explorers have a valid fitness
     	 * to avoid zero fitness plot from population.getBest.
     	 */
 
-    	expl.positionT_1 = expl.position.clone();
-    	expl.positionT_2 = expl.position.clone();
-    	expl.label = explorerLabel++;
+        expl.positionT_1 = expl.position.clone();
+        expl.positionT_2 = expl.position.clone();
+        expl.label = explorerLabel++;
 
-    	expl.status = 5; // At the beginning, neutral status
+        expl.status = 5; // At the beginning, neutral status
 
     	/* By which tribe the explorer is generated. The value of "fromTribe"
          has been arbitrarily set to -1 for the very first generation (initialisation)
     	 */
-    	if (fromTribe >= 0) {
-    		expl.iGroup[0][0] = fromTribe;
-    		expl.iGroup[0][1] = this.tribes[fromTribe].shaman;
+        if (fromTribe >= 0) {
+            expl.iGroup[0][0] = fromTribe;
+            expl.iGroup[0][1] = this.tribes[fromTribe].shaman;
 
     		/* Note : at this point the "contact" (i.e. the memory to update)
                          is not yet defined
     		 */
-    	} else {
-    		expl.iGroupNb = 0;
-    	}
-    	return expl;
+        } else {
+            expl.iGroupNb = 0;
+        }
+        return expl;
     }
 
-	public void reinitTribe(int tribeIndex, int initType, InterfaceOptimizationProblem prob) {
-		tribes[tribeIndex].reinitTribe(this, prob, initType);
-	}
-	
-	public double[][] getRange() {
-		return range;
-	}
+    public void reinitTribe(int tribeIndex, int initType, InterfaceOptimizationProblem prob) {
+        tribes[tribeIndex].reinitTribe(this, prob, initType);
+    }
 
-	public double[][] getInitRange() {
-		return initRange;
-	}
+    public double[][] getRange() {
+        return range;
+    }
+
+    public double[][] getInitRange() {
+        return initRange;
+    }
 }

@@ -2,10 +2,9 @@ package eva2.optimization.problems;
 
 /**
  * An interface for problems which have a specific viewer.
- * 
- * @author mkron
  *
+ * @author mkron
  */
 public interface InterfaceHasSolutionViewer {
-	public InterfaceSolutionViewer getSolutionViewer();
+    public InterfaceSolutionViewer getSolutionViewer();
 }

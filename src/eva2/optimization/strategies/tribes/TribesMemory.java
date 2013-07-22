@@ -2,19 +2,20 @@ package eva2.optimization.strategies.tribes;
 
 public class TribesMemory implements java.io.Serializable {
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = -322241030553753023L;
-	private TribesPosition position; // Memorized position
+     *
+     */
+    private static final long serialVersionUID = -322241030553753023L;
+    private TribesPosition position; // Memorized position
     private TribesPosition positionPrev; // Previous position
     int status; /*
         0  =>pas d'amÃ©lioration
     1 => amÃ©lioration
     */
-   int label;
+    int label;
+
     public TribesMemory(int problemDim) {
-    	position = new TribesPosition(problemDim);
-    	positionPrev = new TribesPosition(problemDim);
+        position = new TribesPosition(problemDim);
+        positionPrev = new TribesPosition(problemDim);
     }
 
 //    private void print(String string, out output) {
@@ -22,20 +23,20 @@ public class TribesMemory implements java.io.Serializable {
 //    }
 
     public TribesPosition getPos() {
-    	return position;
+        return position;
     }
 
     public void setPos(TribesPosition pos) {
-    	position = pos;
+        position = pos;
     }
-    
+
     public void setPrevPos(TribesPosition ppos) {
-    	positionPrev = ppos;
+        positionPrev = ppos;
     }
-    
+
     public TribesExplorer asDummyExplorer(double[][] range, double objFirstDim) {
-    	TribesExplorer exp = new TribesExplorer(range, objFirstDim);
-    	exp.position = getPos().clone();
+        TribesExplorer exp = new TribesExplorer(range, objFirstDim);
+        exp.position = getPos().clone();
         exp.contact = -1;
         exp.positionT_2 = null;
         exp.positionT_1 = null;
@@ -44,16 +45,16 @@ public class TribesMemory implements java.io.Serializable {
         exp.status = -1;
         exp.iGroupNb = -1;
 
-    	return exp;
+        return exp;
     }
-    
+
     public TribesPosition getPrevPos() {
-    	return positionPrev;
+        return positionPrev;
     }
-    
+
     @Override
     public TribesMemory clone() {
-    	TribesMemory clone = new TribesMemory(position.x.length);
+        TribesMemory clone = new TribesMemory(position.x.length);
         clone.status = status;
         clone.position = position.clone();
         clone.positionPrev = positionPrev.clone();
@@ -61,13 +62,13 @@ public class TribesMemory implements java.io.Serializable {
     }
 
 
-    public int statusMemory(TribesMemory memory,int functionNb,int fitnessSize) {
+    public int statusMemory(TribesMemory memory, int functionNb, int fitnessSize) {
         /* On cherche un minimum, donc amÃ©lioration
          si la valeur de la position a diminuÃ©
          */
 
-        if (position.firstIsBetter(position.getFitness(),positionPrev.getFitness())) {
-           return 1;
+        if (position.firstIsBetter(position.getFitness(), positionPrev.getFitness())) {
+            return 1;
         }
         return 0;
     }

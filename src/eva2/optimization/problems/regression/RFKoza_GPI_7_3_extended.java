@@ -22,15 +22,17 @@ public class RFKoza_GPI_7_3_extended implements InterfaceRegressionFunction, jav
         return (Object) new RFKoza_GPI_7_3_extended(this);
     }
 
-    /** This method will return the y value for a given x vector
-     * @param x     Input vector.
+    /**
+     * This method will return the y value for a given x vector
+     *
+     * @param x Input vector.
      * @return y the function result.
      */
     @Override
     public double evaluateFunction(double[] x) {
         double result = 0;
         for (int i = 0; i < x.length; i++) {
-            result += 0.12345*Math.pow(x[i], 4) + (Math.PI/4)*Math.pow(x[i], 3) + (Math.E/2)*Math.pow(x[i], 2) + 1.23456*Math.pow(x[i], 1);
+            result += 0.12345 * Math.pow(x[i], 4) + (Math.PI / 4) * Math.pow(x[i], 3) + (Math.E / 2) * Math.pow(x[i], 2) + 1.23456 * Math.pow(x[i], 1);
         }
         return result;
     }
@@ -38,15 +40,19 @@ public class RFKoza_GPI_7_3_extended implements InterfaceRegressionFunction, jav
 /**********************************************************************************************************************
  * These are for GUI
  */
-    /** This method allows the CommonJavaObjectEditorPanel to read the
+    /**
+     * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
+     *
      * @return The name.
      */
     public String getName() {
         return "Koza GP I 7.3";
     }
 
-    /** This method returns a global info string
+    /**
+     * This method returns a global info string
+     *
      * @return description
      */
     public static String globalInfo() {

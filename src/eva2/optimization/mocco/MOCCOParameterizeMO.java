@@ -11,6 +11,7 @@ import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.optimization.strategies.MultiObjectiveEA;
 import eva2.optimization.tools.AbstractObjectEditor;
 import eva2.optimization.tools.GeneralGOEProperty;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -34,7 +35,8 @@ public class MOCCOParameterizeMO extends MOCCOPhase implements InterfaceProcessE
 //        this.optimizer = (InterfaceOptimizer)this.m_Mocco.m_State.optimizer.clone();
     }
 
-    /** This method will call the init method and will go to stall
+    /**
+     * This method will call the init method and will go to stall
      */
     @Override
     public void initProcessElementParametrization() {
@@ -61,10 +63,10 @@ public class MOCCOParameterizeMO extends MOCCOPhase implements InterfaceProcessE
         if (!(this.m_Mocco.m_State.m_Optimizer instanceof MultiObjectiveEA)) {
             if (this.m_Mocco.m_State.m_Optimizer instanceof GeneticAlgorithm) {
                 JOptionPane.showMessageDialog(this.m_Mocco.m_JFrame,
-                    "The current "+this.m_Mocco.m_State.m_Optimizer.getName() +
-                    " is not necessarily a good multi-objective optimizer, please " +
-                    "parameterize accordingly or change to MultiObjectiveEA",
-                    "Warning", JOptionPane.WARNING_MESSAGE);
+                        "The current " + this.m_Mocco.m_State.m_Optimizer.getName() +
+                                " is not necessarily a good multi-objective optimizer, please " +
+                                "parameterize accordingly or change to MultiObjectiveEA",
+                        "Warning", JOptionPane.WARNING_MESSAGE);
             }
 //            JOptionPane.showMessageDialog(this.m_Mocco.m_JFrame,
 //                "The current "+this.m_Mocco.m_State.optimizer.getName() +
@@ -78,15 +80,15 @@ public class MOCCOParameterizeMO extends MOCCOPhase implements InterfaceProcessE
         JPanel tmpP = new JPanel();
         tmpP.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.anchor      = GridBagConstraints.WEST;
-        gbc.fill        = GridBagConstraints.BOTH;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.fill = GridBagConstraints.BOTH;
 
-        GeneralGOEProperty editor   = new GeneralGOEProperty();
-        editor   = new GeneralGOEProperty();
-        editor.m_Name               = "Optimizer";
+        GeneralGOEProperty editor = new GeneralGOEProperty();
+        editor = new GeneralGOEProperty();
+        editor.m_Name = "Optimizer";
         try {
-            editor.m_Value      = this.m_Mocco.m_State.m_Optimizer;
-            editor.m_Editor     = PropertyEditorProvider.findEditor(editor.m_Value.getClass());
+            editor.m_Value = this.m_Mocco.m_State.m_Optimizer;
+            editor.m_Editor = PropertyEditorProvider.findEditor(editor.m_Value.getClass());
             if (editor.m_Editor == null) {
                 editor.m_Editor = PropertyEditorProvider.findEditor(InterfaceOptimizer.class);
             }
@@ -101,20 +103,20 @@ public class MOCCOParameterizeMO extends MOCCOPhase implements InterfaceProcessE
         } catch (Exception e) {
             System.out.println("Darn can't read the value...");
         }
-        gbc.gridx       = 0;
-        gbc.gridy       = 0;
-        gbc.weightx     = 1;
-        tmpP.add(new JLabel(""+editor.m_Name), gbc);
-        gbc.gridx       = 1;
-        gbc.gridy       = 0;
-        gbc.weightx     = 2;                
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 1;
+        tmpP.add(new JLabel("" + editor.m_Name), gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.weightx = 2;
         tmpP.add(editor.m_View, gbc);
 
-        editor   = new GeneralGOEProperty();
-        editor.m_Name               = "Terminator";
+        editor = new GeneralGOEProperty();
+        editor.m_Name = "Terminator";
         try {
-            editor.m_Value      = this.m_Mocco.m_State.m_Terminator;
-            editor.m_Editor     = PropertyEditorProvider.findEditor(editor.m_Value.getClass());
+            editor.m_Value = this.m_Mocco.m_State.m_Terminator;
+            editor.m_Editor = PropertyEditorProvider.findEditor(editor.m_Value.getClass());
             if (editor.m_Editor == null) {
                 editor.m_Editor = PropertyEditorProvider.findEditor(InterfaceTerminator.class);
             }
@@ -129,13 +131,13 @@ public class MOCCOParameterizeMO extends MOCCOPhase implements InterfaceProcessE
         } catch (Exception e) {
             System.out.println("Darn can't read the value...");
         }
-        gbc.gridx       = 0;
-        gbc.gridy       = 1;
-        gbc.weightx     = 1;
-        tmpP.add(new JLabel(""+editor.m_Name), gbc);
-        gbc.gridx       = 1;
-        gbc.gridy       = 1;
-        gbc.weightx     = 2;
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.weightx = 1;
+        tmpP.add(new JLabel("" + editor.m_Name), gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        gbc.weightx = 2;
         tmpP.add(editor.m_View, gbc);
         this.m_Mocco.m_JPanelParameters.add(tmpP, BorderLayout.CENTER);
         this.m_Mocco.m_JPanelParameters.add(this.makeInformationText("Multi-Objective Optimiaztion", "" +
@@ -157,7 +159,7 @@ public class MOCCOParameterizeMO extends MOCCOPhase implements InterfaceProcessE
             if (m_Mocco.m_State.m_PopulationHistory.length > 0) {
                 pop = m_Mocco.m_State.getSelectedPopulations();
                 m_Mocco.m_State.m_Optimizer.initByPopulation(pop, false);
-            if (pop.size() == 0) {
+                if (pop.size() == 0) {
                     m_Mocco.m_State.m_Optimizer.init();
                 }
             }

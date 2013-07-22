@@ -20,6 +20,7 @@ import eva2.optimization.strategies.EvolutionStrategies;
 import eva2.optimization.strategies.GeneticAlgorithm;
 import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.tools.math.RNG;
+
 import java.awt.BorderLayout;
 import java.awt.List;
 import java.awt.event.ActionEvent;
@@ -54,7 +55,7 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
     transient private JProgressBar m_ProgressBar;
     transient private SwingWorker worker;
     transient private boolean show = false;
-//    transient private InterfaceTest   test = new Test1();
+    //    transient private InterfaceTest   test = new Test1();
     // Opt. Algorithms and Parameters
     //transient private InterfaceOptimizer              optimizer         = new EvolutionaryMultiObjectiveOptimization();
     //transient private InterfaceOptimizationProblem    problem           = new TF1Problem();
@@ -68,7 +69,7 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
     transient private String m_ExperimentName;
     transient private String m_OutputPath = "";
     transient private String m_OutputFileName = "none";
-//    transient private GOStandaloneVersion             m_yself;
+    //    transient private GOStandaloneVersion             m_yself;
     // these parameters are for the continue option
     transient private Population m_Backup;
     transient private boolean m_ContinueFlag;
@@ -97,7 +98,6 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
 
     /**
      * This method allows you to get the current GO parameters
-     *
      */
     public OptimizationParameters getGOParameters() {
         return this.m_GO;
@@ -192,6 +192,7 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
         this.m_Frame.validate();
         this.m_Frame.setVisible(true);
     }
+
     /**
      * This action listener, called by the "Run/Restart" button, will init the
      * problem and start the computation.
@@ -572,7 +573,7 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
      * This method allows an optimizer to register a change in the optimizer.
      *
      * @param source The source of the event.
-     * @param name Could be used to indicate the nature of the event.
+     * @param name   Could be used to indicate the nature of the event.
      */
     @Override
     public void registerPopulationStateChanged(Object source, String name) {
@@ -695,6 +696,7 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
 //    public String seedTipText() {
 //        return "Choose the seed for the random number generator.";
 //    }
+
     /**
      * This method sets the name of the current experiment as it will occur in
      * the plot legend.

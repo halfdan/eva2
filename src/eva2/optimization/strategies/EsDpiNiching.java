@@ -28,6 +28,7 @@ import eva2.optimization.problems.InterfaceAdditionalPopulationInformer;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.Mathematics;
 import eva2.tools.math.RNG;
+
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Formatter;
@@ -40,7 +41,7 @@ import java.util.Formatter;
  * iteration. Thus, in relation to the standard ES, some new parameters are due.
  * On the other hand, the selection schemes are predefined. This is done
  * according to Shir&Bäck, Niching in Evolution Strategies, Tec.Report 2005.
- *
+ * <p/>
  * Unfortunately the algorithm was not described in every detail. It remained
  * unclear how exactly the peak population where filled and esp. what happens if
  * DPI returns less than q peaks. In this implementation, this is solved by
@@ -48,49 +49,47 @@ import java.util.Formatter;
  * population, only the best muPerPeak remain and the rest is assigned to the
  * unclustered set. From these, pseudo-peaks are then formed until the expected
  * number of peak populations is produced.
- *
+ * <p/>
  * Also, they gave a general rule for setting the niche radius depending on the
  * problem domain, however in their experiments, they were able to identify
  * optima which were much closer (i.e., on Ackley's), so it is unclear which
  * niche radius was actually used there
- *
+ * <p/>
  * Due to the "non-standard" environmental selection mechanism (a fixed
  * proportion is chosen from the children, the rest from the parents), a
  * preselection mechanism was implemented here, slightly breaking the ES
  * framework which is still used to optimize the single peak populations.
- *
+ * <p/>
  * This class should also cover "Dynamic niching in evolution strategies with
  * covariance matrix adaptation" by Shir & Bäck, CEC 2005, when employing
  * SelectBest as parent selection and muPerPeak=1.
- *
+ * <p/>
  * Some notes:
- *
+ * <p/>
  * If strictNiching is deactivated, niches are disappearing because they are
  * sometimes assigned the global opt. and in that niche are very bad so they get
  * thrown away due to the maximum niche count if strictNiching is activated,
  * niches are very small - or even empty. Why is that? This can hardly be
  * sensible esp. with a very small niche radius for F8. This would mean that in
  * the beginning, nearly all offspring are created from very few pairs of peaks.
- *
+ * <p/>
  * The mu/lambda information was lost on the way to the MutateESRankMuCMA
  * class... I added it now as additional pop.data which is only loaded if the
  * mu/lambda ratio deduced from the orig/selected population sizes does not make
  * sense.
- *
+ * <p/>
  * With the explorer peaks reinited every 100 generations or so, the course of
  * the MPR for a *single* run will not be a clear logistic function, because
  * "finding" additional peaks produces small steps in the MPR.
- *
+ * <p/>
  * The Niching ES is now using the Population to catch the generational events,
  * not producing it itself, similar to Tribes, ScatterSearch or IPOP-ES. Thus it
  * could be used with a dynamic population size without too much hassle.
- *
+ * <p/>
  * TODO Add adaptive niche radius. Add parameter to every indy which is adapted
  * after all new peaks have been found.
  *
- *
  * @author mkron
- *
  */
 public class EsDpiNiching implements InterfaceOptimizer, Serializable, InterfaceAdditionalPopulationInformer, InterfacePopulationChangedEventListener {
 
@@ -283,10 +282,6 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
      * Use the deactivation of converged species, storing them to an archive,
      * with the given parameters. If windowLen <= 0, the deactivation mechanism
      * is disabled. This provides for semi-sequential niching with DPI-ES
-     *
-     *
-     *
-
      *
      * @param threshold
      * @param windowLen
@@ -650,7 +645,7 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
         }
     }
 
-//	/**
+    //	/**
 //	 * For each new cluster copy the additional data from the closest parent population.
 //	 *  
 //	 * @param clusteredPeakPops
@@ -724,12 +719,12 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
      * appended to the given cluster list and returned (as a new array
      * instance).
      *
-     * @param origClusters the original clusters, where index 0 is the
-     * unclustered rest
-     * @param cntPerNewSpecies the number of indies to use per new peak
-     * population
+     * @param origClusters              the original clusters, where index 0 is the
+     *                                  unclustered rest
+     * @param cntPerNewSpecies          the number of indies to use per new peak
+     *                                  population
      * @param fromUnclusteredOrRandomly if true, use unclustered indies as new
-     * pops, otherwise create them randomly
+     *                                  pops, otherwise create them randomly
      * @return
      */
     private Population[] generateMissingSpecies(Population[] origClusters, int cntPerNewSpecies, int newPops, boolean fromUnclusteredOrRandomly) {
@@ -854,7 +849,7 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
      * @param indy
      */
     private static void replaceWorstAndAllBetterIndiesBy(Population pop,
-            AbstractEAIndividual indy) {
+                                                         AbstractEAIndividual indy) {
         int lastIndex = -1;
         if (!pop.contains(indy)) { // replace best
             int bestIndex = pop.getIndexOfBestIndividualPrefFeasible();
@@ -881,7 +876,7 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
      * @return the vector of Population instances
      */
     private static Population[] performDPSGenerationalAdaption(Population collectedPop,
-            Population dps, EvolutionStrategies[] opts) {
+                                                               Population dps, EvolutionStrategies[] opts) {
         // loop over all dps individuals and
         // 	 clone the new mutator instance from the original population
         //   call the generational adaption for the new instance
@@ -1262,8 +1257,8 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
     @Override
     public String[] getAdditionalDataInfo() {
         return new String[]{"The niche radius employed for Dynamic Peak Identificatio", "The number of expected peaks",
-                    "The number of stored potential local optima", "Mean distance of archived solutions",
-                    "The number of collisions detected so far"};
+                "The number of stored potential local optima", "Mean distance of archived solutions",
+                "The number of collisions detected so far"};
     }
 
     @Override

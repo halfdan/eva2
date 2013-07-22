@@ -9,8 +9,10 @@ package eva2.gui;
  *            $Date: 2007-12-05 11:29:32 +0100 (Wed, 05 Dec 2007) $
  *            $Author: mkron $
  */
+
 import eva2.gui.editor.GenericObjectEditor;
 import eva2.tools.EVAHELP;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -25,6 +27,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
+
 /**
  * There are some trick methods interpreted here. Check EvA2Notes.txt.
  */
@@ -92,7 +95,7 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
     boolean stripToolTipToFirstPoint = false;
     private JTable propertyTable;
     private DefaultTableModel propertyTableModel;
-    
+
     /**
      * Creates the property sheet panel.
      */
@@ -120,7 +123,7 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
     public void addPropertyChangeListener(PropertyChangeListener l) {
         if (propertyChangeSupport == null) {
             propertyChangeSupport = new PropertyChangeSupport(this);
-    }
+        }
         propertyChangeSupport.addPropertyChangeListener(l);
     }
 
@@ -128,41 +131,41 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
     public void removePropertyChangeListener(PropertyChangeListener l) {
         if (propertyChangeSupport == null) {
             propertyChangeSupport = new PropertyChangeSupport(this);
-    }
+        }
         propertyChangeSupport.removePropertyChangeListener(l);
     }
-    
+
     /**
      * Create a fitting viewer component for an editor instance. If none can be
      * identified, null is returned.
-     * 
+     *
      * @param editor
      * @return
      */
     public static JComponent getView(PropertyEditor editor) {
-    	JComponent view = null;
-    	// Now figure out how to display it...
-    	if (editor.isPaintable() && editor.supportsCustomEditor()) {
-    		view = new PropertyPanel(editor);
-    	} else {
-    		String[] tags = editor.getTags();
+        JComponent view = null;
+        // Now figure out how to display it...
+        if (editor.isPaintable() && editor.supportsCustomEditor()) {
+            view = new PropertyPanel(editor);
+        } else {
+            String[] tags = editor.getTags();
             if (tags != null) {
                 if ((tags.length == 2) && (tags[0].equals("True")) && (tags[1].equals("False"))) {
                     view = new PropertyBoolSelector(editor);
-    		} else {
+                } else {
                     view = new PropertyValueSelector(editor);
                 }
             } else {
-    			if (editor.getAsText() != null) {
-    				view = new PropertyText(editor);
-    			} else {
+                if (editor.getAsText() != null) {
+                    view = new PropertyText(editor);
+                } else {
                     view = null;
-    			}
-    		}
-    	}
-    	return view;
+                }
+            }
+        }
+        return view;
     }
-    
+
     /**
      * Sets a new target object for customisation.
      *
@@ -171,7 +174,7 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
     public synchronized void setTarget(Object targ) {
         propertyTableModel = new DefaultTableModel();
         propertyTableModel.addColumn("Key");
-        propertyTableModel.addColumn("Value");        
+        propertyTableModel.addColumn("Value");
         propertyTable = new JTable(propertyTableModel);
         propertyTable.setDefaultRenderer(Object.class, new PropertyCellRenderer());
         propertyTable.setDefaultEditor(Object.class, new PropertyCellEditor());
@@ -194,7 +197,7 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
         }
 
         int rowHeight = 12;
-        
+
         GridBagConstraints gbConstraints = new GridBagConstraints();
         gbConstraints.fill = GridBagConstraints.BOTH;
 
@@ -212,7 +215,7 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
                     gbConstraints.fill = GridBagConstraints.HORIZONTAL;
                     gbConstraints.anchor = GridBagConstraints.PAGE_START;
                     add(infoPanel, gbConstraints);
-            	}
+                }
                 methsFound++;
             } // end if (name.equals("globalInfo")) {
             else if (name.equals("hideHideable")) {
@@ -221,10 +224,10 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
                     meth.invoke(targetObject, args);
                 } catch (Exception ex) {
                 }
-            	methsFound++;
+                methsFound++;
             } else if (name.equals("customPropertyOrder")) {
-            	methsFound++;
-            	reorderProperties(meth);
+                methsFound++;
+                reorderProperties(meth);
             }
             if (methsFound == 3) {
                 break; // small speed-up
@@ -232,7 +235,7 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
         } // end for (int i = 0; i < m_Methods.length; i++) {
         // restore hide states of all properties
 //        GenericObjectEditor.setHideProperties(m_Target.getClass(), hideStateBackup);
-        
+
         // Now lets search for the individual properties, their
         // values, views and editors...
         propertyEditors = new PropertyEditor[propertyDescriptors.length];
@@ -243,7 +246,7 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
         propertyLabels = new JLabel[propertyDescriptors.length];
         toolTips = new String[propertyDescriptors.length];
 
-        
+
         for (int i = 0; i < propertyDescriptors.length; i++) {
             // For each property do this
             // Don't display hidden or expert properties.
@@ -278,7 +281,7 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
             name = eva2.tools.StringTools.humaniseCamelCase(name);
             propertyTableModel.addRow(new Object[]{name, newView});
         }
-        
+
         JScrollPane scrollableTable = new JScrollPane(propertyTable, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         gbConstraints.gridx = 0;
         gbConstraints.gridy = 1;
@@ -294,38 +297,38 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
 
     public static PropertyDescriptor[] getProperties(Object target) {
         BeanInfo bi;
-		try {
-			bi = Introspector.getBeanInfo(target.getClass());
-		} catch (IntrospectionException e) {
-			e.printStackTrace();
-			return null;
-		}
+        try {
+            bi = Introspector.getBeanInfo(target.getClass());
+        } catch (IntrospectionException e) {
+            e.printStackTrace();
+            return null;
+        }
         return bi.getPropertyDescriptors();
     }
-    
+
     public static String[] getPropertyNames(Object target) {
         return getNames(getProperties(target));
     }
-    
+
     public static Object[] getPropertyValues(Object target, boolean omitExpert, boolean omitHidden, boolean onlySetAndGettable) {
-    	return getValues(target, getProperties(target), omitExpert, omitHidden, onlySetAndGettable);
+        return getValues(target, getProperties(target), omitExpert, omitHidden, onlySetAndGettable);
     }
-    
+
     public static String[] getNames(PropertyDescriptor[] props) {
         String[] names = new String[props.length];
         for (int i = 0; i < props.length; i++) {
             names[i] = props[i].getDisplayName();
-    	}
-    	return names;
+        }
+        return names;
     }
-    
+
     /**
      * Cycle the properties and request the value of each in an array. Null
      * values may indicate missing getter/setter, expert flag or hidden flag set
      * depending on the parameters. Note that to show hidden properties
      * dynamically, views may need be constructed for them anyways, so do not
      * omit them here.
-     * 
+     *
      * @param props
      * @param omitExpert
      * @param omitHidden
@@ -338,7 +341,7 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
             // For each property do this
             // Don't display hidden or expert properties.
             // if (m_Properties[i].isHidden() || m_Properties[i].isExpert()) continue;
-        	// we now look at hidden properties, they can be shown or hidden dynamically (MK)
+            // we now look at hidden properties, they can be shown or hidden dynamically (MK)
             String name = props[i].getDisplayName();
             if (props[i].isExpert() && omitExpert) {
                 continue;
@@ -353,49 +356,49 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
                 continue;
             }
             Object args[] = {};
-	            Object value = null;
-				try {
-					value = getter.invoke(target, args);
-				} catch (Exception ex) {
-		            System.out.println("Exception on getting value for property " + name + " on target " + target.toString());
-		            ex.printStackTrace();
+            Object value = null;
+            try {
+                value = getter.invoke(target, args);
+            } catch (Exception ex) {
+                System.out.println("Exception on getting value for property " + name + " on target " + target.toString());
+                ex.printStackTrace();
                 values[i] = null;
-				}
+            }
 //	            PropertyEditor  editor  = null;
-	            //Class           pec     = m_Properties[i].getPropertyEditorClass();
+            //Class           pec     = m_Properties[i].getPropertyEditorClass();
             values[i] = value;
 
         } // end for each property
         return values;
     }
-    
+
     /**
      * Create a label to be shown if no other properties are shown.
-     * 
+     *
      * @param componentOffset
      * @param gbLayout
      * @return
      */
-	private JLabel createDummyLabel(int componentOffset, GridBagLayout gbLayout) {
+    private JLabel createDummyLabel(int componentOffset, GridBagLayout gbLayout) {
         JLabel empty = new JLabel("No editable properties", SwingConstants.CENTER);
-		Dimension d = empty.getPreferredSize();
-		empty.setPreferredSize(new Dimension(d.width * 2, d.height * 2));
-		empty.setBorder(BorderFactory.createEmptyBorder(10, 5, 0, 10));
-		GridBagConstraints gbConstraints = new GridBagConstraints();
+        Dimension d = empty.getPreferredSize();
+        empty.setPreferredSize(new Dimension(d.width * 2, d.height * 2));
+        empty.setBorder(BorderFactory.createEmptyBorder(10, 5, 0, 10));
+        GridBagConstraints gbConstraints = new GridBagConstraints();
         gbConstraints.anchor = GridBagConstraints.CENTER;
         gbConstraints.fill = GridBagConstraints.HORIZONTAL;
         gbConstraints.gridy = componentOffset;
         gbConstraints.gridx = 0;
-		gbLayout.setConstraints(empty, gbConstraints);
-		return empty;
-	}
+        gbLayout.setConstraints(empty, gbConstraints);
+        return empty;
+    }
 
     private PropertyEditor makeEditor(PropertyDescriptor property, String name, Object value) {
-    	PropertyEditor editor = PropertyEditorProvider.findEditor(property, value);
+        PropertyEditor editor = PropertyEditorProvider.findEditor(property, value);
         if (editor == null) {
             return null;
         }
-        
+
         // Don't try to set null values:
         if (value == null) {
             // If it's a user-defined property we give a warning.
@@ -408,14 +411,14 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
         editor.setValue(value);
 
 //        System.out.println("PSP editor class: " + editor.getClass());
-        
+
         editor.addPropertyChangeListener(this);
         return editor;
     }
-    
-	private void addLabelView(int componentOffset, GridBagLayout gbLayout,
-			int i, String name, JComponent newView) {
-                        
+
+    private void addLabelView(int componentOffset, GridBagLayout gbLayout,
+                              int i, String name, JComponent newView) {
+
         propertyLabels[i] = makeLabel(name);
         views[i] = newView;
         viewWrappers[i] = new JPanel();
@@ -425,50 +428,50 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
         add(propertyLabels[i]);
         JPanel newPanel = makeViewPanel(toolTips[i], propertyLabels[i], views[i], viewWrappers[i]);
         gbLayout.setConstraints(newPanel, makeViewConstraints(i + componentOffset));
-		add(newPanel);
-	}
+        add(newPanel);
+    }
 
-	private JLabel makeLabel(String name) {
-		JLabel label = new JLabel(name, SwingConstants.RIGHT);
+    private JLabel makeLabel(String name) {
+        JLabel label = new JLabel(name, SwingConstants.RIGHT);
         label.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 5));
-		return label;
-	}
-   
-	private static JPanel makeViewPanel(String tipText, JLabel label,
-			JComponent view, JComponent viewWrapper) {
-		JPanel newPanel = new JPanel();
-		if (tipText != null) {
-			label.setToolTipText(tipText);
-			view.setToolTipText(tipText);
-		}
+        return label;
+    }
+
+    private static JPanel makeViewPanel(String tipText, JLabel label,
+                                        JComponent view, JComponent viewWrapper) {
+        JPanel newPanel = new JPanel();
+        if (tipText != null) {
+            label.setToolTipText(tipText);
+            view.setToolTipText(tipText);
+        }
         newPanel.setBorder(BorderFactory.createEmptyBorder(10, 5, 0, 10));
-		newPanel.setLayout(new BorderLayout());
-		// @todo: Streiche here i could add the ViewWrapper
-		viewWrapper.add(view, BorderLayout.CENTER);
-		newPanel.add(viewWrapper, BorderLayout.CENTER);
-		return newPanel;
-	}
-	
-	private GridBagConstraints makeLabelConstraints(int componentIndex) {
-		GridBagConstraints gbConstraints = new GridBagConstraints();
+        newPanel.setLayout(new BorderLayout());
+        // @todo: Streiche here i could add the ViewWrapper
+        viewWrapper.add(view, BorderLayout.CENTER);
+        newPanel.add(viewWrapper, BorderLayout.CENTER);
+        return newPanel;
+    }
+
+    private GridBagConstraints makeLabelConstraints(int componentIndex) {
+        GridBagConstraints gbConstraints = new GridBagConstraints();
         gbConstraints.anchor = GridBagConstraints.EAST;
         gbConstraints.fill = GridBagConstraints.HORIZONTAL;
         gbConstraints.gridy = componentIndex;
         gbConstraints.gridx = 0;
-		return gbConstraints;
-	}
+        return gbConstraints;
+    }
 
-	private GridBagConstraints makeViewConstraints(int componentIndex) {
-		GridBagConstraints gbConstraints = new GridBagConstraints();
+    private GridBagConstraints makeViewConstraints(int componentIndex) {
+        GridBagConstraints gbConstraints = new GridBagConstraints();
         gbConstraints.anchor = GridBagConstraints.WEST;
         gbConstraints.fill = GridBagConstraints.BOTH;
         gbConstraints.gridy = componentIndex;
         gbConstraints.gridx = 1;
         gbConstraints.weightx = 100;
-		return gbConstraints;
-	}
-	
-	/**
+        return gbConstraints;
+    }
+
+    /**
      * Be sure to give a clone
      *
      * @param oldProps
@@ -479,79 +482,79 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
 //        Mathematics.revertArray(oldProps, newProps);
         Object[] args = {};
         Object retV = null;
-       	PropertyDescriptor[] newProps = null;
+        PropertyDescriptor[] newProps = null;
         try {
             retV = meth.invoke(targetObject, args); // should return String[] to be interpreted as a list of ordered properties
         } catch (Exception ex) {
         }
         if (retV != null) {
             try {
-            	if (retV.getClass().isArray()) { // reorder the properties
+                if (retV.getClass().isArray()) { // reorder the properties
                     String[] swProps = (String[]) retV;
                     PropertyDescriptor[] oldProps = propertyDescriptors.clone();
                     newProps = new PropertyDescriptor[oldProps.length];
-            		//int findFirst=findFirstProp(props[0], oldProps);
+                    //int findFirst=findFirstProp(props[0], oldProps);
                     int firstNonNull = 0;
                     for (int i = 0; i < oldProps.length; i++) {
                         if (i < swProps.length) {
                             int pInOld = findProp(oldProps, swProps[i]);
                             newProps[i] = oldProps[pInOld];
                             oldProps[pInOld] = null;
-            			} else {
-            				firstNonNull = findFirstNonNullAfter(oldProps, firstNonNull);
+                        } else {
+                            firstNonNull = findFirstNonNullAfter(oldProps, firstNonNull);
                             newProps[i] = oldProps[firstNonNull];
-            				firstNonNull++;
-            			}
-            		}
+                            firstNonNull++;
+                        }
+                    }
                     propertyDescriptors = newProps;
-            	}
+                }
             } catch (Exception e) {
-            	System.err.println("Error during reordering properties: " + e.getMessage());
+                System.err.println("Error during reordering properties: " + e.getMessage());
                 return propertyDescriptors;
             }
         }
-		return newProps;
-	}
+        return newProps;
+    }
 
     /**
      * Find the first non-null entry in an Array at or after the given index and
      * return its index. If only null entries are found, -1 is returned.
-     * 
+     *
      * @param arr
      * @param firstLook
      * @return
      */
     private int findFirstNonNullAfter(PropertyDescriptor[] arr,
-			int firstLook) {
+                                      int firstLook) {
         for (int i = firstLook; i < arr.length; i++) {
             if (arr[i] != null) {
                 return i;
             }
         }
-		return -1;
-	}
+        return -1;
+    }
 
-	/**
+    /**
      * Find a string property in an array and return its index or -1 if not
      * found.
-     * 
+     *
      * @param oldProps
      * @param string
      * @return
      */
-	private int findProp(PropertyDescriptor[] oldProps, String string) {
+    private int findProp(PropertyDescriptor[] oldProps, String string) {
         for (int i = 0; i < oldProps.length; i++) {
             if (oldProps[i] == null) {
                 continue;
-		}
+            }
             String name = oldProps[i].getDisplayName();
             if (name.compareTo(string) == 0) {
                 return i;
             }
         }
-		System.err.println("Error, property not found: " + string);
-		return -1;
-	}
+        System.err.println("Error, property not found: " + string);
+        return -1;
+    }
 
     private JPanel makeInfoPanel(Method meth, Object targ, int rowHeight) {
         if (meth.getReturnType().equals(String.class)) {
@@ -583,9 +586,9 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
                 infoPanel.setBorder(BorderFactory.createTitledBorder("Info"));
                 infoPanel.setLayout(new BorderLayout());
                 infoPanel.add(infoTextArea, BorderLayout.CENTER);
-                
+
                 if (HtmlDemo.resourceExists(getHelpFileName())) {
-                	// this means that the expected URL really exists
+                    // this means that the expected URL really exists
                     infoPanel.add(helpButton, BorderLayout.LINE_END);
                 } else {
                     LOGGER.log(Level.FINE, "Not adding help button because of missing {0}", getHelpFileName());
@@ -596,7 +599,7 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
         }
         return null;
     }
-    
+
     private String translateGreek(String name) {
         // Add some specific display for some greeks here
         if (name.equalsIgnoreCase("alpha")) {
@@ -703,19 +706,19 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
         if (name.equalsIgnoreCase("pib")) {
             return "\u03A0";
         }
-        
-        return name;
-	}
 
-	/**
+        return name;
+    }
+
+    /**
      * Get the html help file name.
-     * 
+     *
      * @return
      */
     protected String getHelpFileName() {
         return EVAHELP.cutClassName(className) + ".html";
     }
-    
+
     /**
      * This method opens a help frame.
      */
@@ -732,10 +735,10 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
     public int editableProperties() {
         return numEditableProperties;
     }
-    
+
     /**
      * Return true if the modification was successful.
-     * 
+     *
      * @param i
      * @param newValue
      * @return
@@ -761,12 +764,12 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
                 ((GenericObjectEditor) tmpEdit).setClassType(propertyDescriptors[i].getPropertyType());
             }
             propertyEditors[i].setValue(newValue);
-        	JComponent newView = null;
-        	newView = getView(tmpEdit);
+            JComponent newView = null;
+            newView = getView(tmpEdit);
             if (newView == null) {
                 System.err.println("Warning: Property \"" + propertyDescriptors[i].getDisplayName() + "\" has non-displayable editor.  Skipping.");
-        		return false;
-        	}
+                return false;
+            }
             propertyEditors[i].addPropertyChangeListener(this);
             views[i] = newView;
             if (toolTips[i] != null) {
@@ -777,7 +780,7 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
             viewWrappers[i].add(views[i], BorderLayout.CENTER);
             viewWrappers[i].repaint();
         }
-        
+
 //        System.out.println("Value: "+value +" / m_Values[i]: " + m_Values[i]);
         // Now try to update the target with the new value of the property
         // and allow the target to do some changes to the value, therefore
@@ -832,12 +835,12 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
             PropertyEditor editor = (PropertyEditor) evt.getSource();
             for (int i = 0; i < propertyEditors.length; i++) {
                 if (propertyEditors[i] == editor) {
-	            	propIndex = i;
+                    propIndex = i;
                     if (wasModified(i, editor.getValue(), true)) {
                         break;
-	            }
+                    }
+                }
             }
-    }
             if (propIndex == -1) {
                 System.err.println("error: could not identify event editor! (PropertySheetPanel)");
             }
@@ -845,7 +848,7 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
             System.err.println("unknown event source! (PropertySheetPanel)");
         }
     }
-    
+
     /**
      * Updates the propertysheet when a value has been changed (from outside the
      * propertysheet?).
@@ -855,24 +858,24 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
     synchronized boolean wasModified(int propIndex, Object value, boolean followDependencies) {
         if (!updateValue(propIndex, value)) {
             return false;
-        }	            	
-        
+        }
+
         boolean doRepaint = false;
 
         for (int i = 0; i < propertyEditors.length; i++) { // check the views for out-of-date information. this is different than checking the editors
-        	if (i != propIndex) {
+            if (i != propIndex) {
                 if (updateFieldView(i)) {
                     doRepaint = true;
                 }
-        	}// end if (m_Editors[i] == editor) {
+            }// end if (m_Editors[i] == editor) {
         } // end for (int i = 0 ; i < m_Editors.length; i++) {	
-        if (doRepaint) {	// some components have been hidden or reappeared
-        	// MK this finally seems to work right, with a scroll pane, too.
+        if (doRepaint) {    // some components have been hidden or reappeared
+            // MK this finally seems to work right, with a scroll pane, too.
             Container p = this;
-        	while (p != null && (!p.getSize().equals(p.getPreferredSize()))) {
-        		p.setSize(p.getPreferredSize());
-        		p = p.getParent();
-        	}
+            while (p != null && (!p.getSize().equals(p.getPreferredSize()))) {
+                p.setSize(p.getPreferredSize());
+                p = p.getParent();
+            }
         }
 
         // Now re-read all the properties and update the editors
@@ -888,44 +891,44 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
                 Object args[] = {};
                 o = getter.invoke(targetObject, args);
             } catch (Exception ex) {
-	            o = null;
-	            System.err.println(ex.getMessage());
-	            ex.printStackTrace();
+                o = null;
+                System.err.println(ex.getMessage());
+                ex.printStackTrace();
             }
             if ((o != null) && o == objectValues[i] && (BeanInspector.isJavaPrimitive(o.getClass()))) {
-	            // The property is equal to its old value.
-	            continue;
+                // The property is equal to its old value.
+                continue;
             }
             if (o != null && o.equals(objectValues[i])) {
-	            // The property is equal to its old value.
-	            continue;
+                // The property is equal to its old value.
+                continue;
             }
             objectValues[i] = o;
             // Make sure we have an editor for this property...
             if (propertyEditors[i] == null) {
-	            continue;
+                continue;
             }
             // The property has changed!  Update the editor.
             propertyEditors[i].removePropertyChangeListener(this);
             propertyEditors[i].setValue(o);
             propertyEditors[i].addPropertyChangeListener(this);
             if (views[i] != null) {
-	            //System.out.println("Trying to repaint " + (i + 1));
+                //System.out.println("Trying to repaint " + (i + 1));
                 views[i].repaint();
             }
         }
 
         if (followDependencies) {
-        	// Handle the special method getGOEPropertyUpdateLinks which returns a list of pairs
-        	// of strings indicating that on an update of the i-th property, the i+1-th property
-        	// should be updated. This is useful for changes within sub-classes of the target
-        	// which are not directly displayed in this panel but in sub-panels (and there have an own view etc.)
+            // Handle the special method getGOEPropertyUpdateLinks which returns a list of pairs
+            // of strings indicating that on an update of the i-th property, the i+1-th property
+            // should be updated. This is useful for changes within sub-classes of the target
+            // which are not directly displayed in this panel but in sub-panels (and there have an own view etc.)
             Object o = BeanInspector.callIfAvailable(targetObject, "getGOEPropertyUpdateLinks", null);
-        	if ((o != null) && (o instanceof String[])) {
+            if ((o != null) && (o instanceof String[])) {
                 maybeTriggerUpdates(propIndex, (String[]) o);
-        	}
+            }
         }
-        
+
         // Make sure the target bean gets repainted.
         if (Beans.isInstanceOf(targetObject, Component.class)) {
             //System.out.println("Beans.getInstanceOf repaint ");
@@ -942,100 +945,100 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
      * @return
      */
     private boolean updateFieldView(int i) {
-    	// looking at another field (not changed explicitly, maybe implicitly
-    	boolean valChanged = false;
-    	boolean doRepaint = false;
+        // looking at another field (not changed explicitly, maybe implicitly
+        boolean valChanged = false;
+        boolean doRepaint = false;
         Object args[] = {};
         Method getter = propertyDescriptors[i].getReadMethod();
         if (propertyDescriptors[i].isHidden() || propertyDescriptors[i].isExpert()) {
             if ((propertyLabels[i] != null) && (propertyLabels[i].isVisible())) {
-        		// something is set to hidden but was visible up to now
+                // something is set to hidden but was visible up to now
                 viewWrappers[i].setVisible(false);
                 views[i].setVisible(false);
                 propertyLabels[i].setVisible(false);
-    			doRepaint = true;
-    		}
-    		return doRepaint;
-    	} else {
+                doRepaint = true;
+            }
+            return doRepaint;
+        } else {
             if ((propertyLabels[i] != null) && !(propertyLabels[i].isVisible())) {
-    			 // something is invisible but set to not hidden in the mean time
+                // something is invisible but set to not hidden in the mean time
                 viewWrappers[i].setVisible(true);
                 views[i].setVisible(true);
                 propertyLabels[i].setVisible(true);
-    			doRepaint = true;
-    		}
-    	}
-    	try {	// check if view i is up to date and in sync with the value of the getter
+                doRepaint = true;
+            }
+        }
+        try {    // check if view i is up to date and in sync with the value of the getter
             if (views[i] != null) {
                 Object val = getter.invoke(targetObject, args);
                 if (views[i] instanceof PropertyBoolSelector) {
                     valChanged = (((PropertyBoolSelector) views[i]).isSelected() != ((Boolean) val));
                     if (valChanged) {
                         ((PropertyBoolSelector) views[i]).setSelected(((Boolean) val));
-    					}
+                    }
                 } else if (views[i] instanceof PropertyText) {
                     valChanged = !(((PropertyText) views[i]).getText()).equals(val.toString());
                     if (valChanged) {
                         ((PropertyText) views[i]).setText(val.toString());
-    				}    				
+                    }
                 } else if (views[i] instanceof PropertyPanel) {
                     valChanged = false;//!((PropertyPanel)m_Views[i]).equals(value);
                     // disregard whole panels and hope for the best
                 } else if (views[i] instanceof PropertyValueSelector) {
-    				//changed = !((SelectedTag)val).isSelectedString((String)((PropertyValueSelector)m_Views[i]).getSelectedItem());
-    				// interestingly there seems to be an implicit update of the ValueSelector, possible changes
-    				// are already applied, all we need to see it is a repaint
+                    //changed = !((SelectedTag)val).isSelectedString((String)((PropertyValueSelector)m_Views[i]).getSelectedItem());
+                    // interestingly there seems to be an implicit update of the ValueSelector, possible changes
+                    // are already applied, all we need to see it is a repaint
                     views[i].repaint();
-    			} else {
-    				System.out.println("Warning: Property \"" + i
-    						+ "\" not recognized.  Skipping.");
-    			}
-        	}
+                } else {
+                    System.out.println("Warning: Property \"" + i
+                            + "\" not recognized.  Skipping.");
+                }
+            }
         } catch (Exception exc) {
-        	System.err.println("Exception in PropertySheetPanel");
-    	}
-    	return doRepaint;
-	}
+            System.err.println("Exception in PropertySheetPanel");
+        }
+        return doRepaint;
+    }
 
     /**
      * Check the given link list and trigger updates of indicated properties.
-     * 
+     *
      * @param propIndex
      * @param links
      */
-	private void maybeTriggerUpdates(int propIndex, String[] links) {
-    	int max = links.length;
-    	if (max % 2 == 1) {
-    		System.err.println("Error in PropertySheetPanel:maybeTriggerUpdates: odd number of strings provided!");
-    		max -= 1;
-    	}
+    private void maybeTriggerUpdates(int propIndex, String[] links) {
+        int max = links.length;
+        if (max % 2 == 1) {
+            System.err.println("Error in PropertySheetPanel:maybeTriggerUpdates: odd number of strings provided!");
+            max -= 1;
+        }
         for (int i = 0; i < max; i += 2) {
             if (links[i].equals(propertyDescriptors[propIndex].getName())) {
                 updateLinkedProperty(links[i + 1]);
-			}
-		}
-	}
+            }
+        }
+    }
 
-	private void updateLinkedProperty(String propName) {
+    private void updateLinkedProperty(String propName) {
         for (int i = 0; i < propertyDescriptors.length; i++) {
             if (propertyDescriptors[i].getName().equals(propName)) {
                 Method getter = propertyDescriptors[i].getReadMethod();
-	            Object val = null;
-				try {
+                Object val = null;
+                try {
                     val = getter.invoke(targetObject, (Object[]) null);
-				} catch (Exception e) {
-					val = null;
-					e.printStackTrace();
-				}
-				if (val != null) {
+                } catch (Exception e) {
+                    val = null;
+                    e.printStackTrace();
+                }
+                if (val != null) {
                     propertyEditors[i].setValue(val);
                 } else {
                     System.err.println("Error in PropertySheetPanel:updateLinkedProperty");
                 }
-				return;
-			}
-		}
-	}
+                return;
+            }
+        }
+    }
 }
 
 class PropertyTableModel extends DefaultTableModel implements TableModel {
@@ -1062,11 +1065,11 @@ class PropertyCellRenderer implements TableCellRenderer {
         } else if (value instanceof PropertyValueSelector) {
             return (PropertyValueSelector) value;
         }
-        
+
         throw new UnsupportedOperationException("Not supported yet.");
-        
+
     }
-    
+
 }
 
 class PropertyCellEditor extends AbstractCellEditor implements TableCellEditor {
@@ -1145,5 +1148,4 @@ class PropertyCellEditor extends AbstractCellEditor implements TableCellEditor {
     }
 
 
-    
 }

@@ -14,7 +14,7 @@ public class MOEAModuleAdapter extends GenericModuleAdapter implements Serializa
      * Constructor of the ModuleAdapter.
      *
      * @param AdapterName The AdapterName
-     * @param Client The client to serve
+     * @param Client      The client to serve
      */
     public MOEAModuleAdapter(String adapterName) {
         super(adapterName, "MOEA.html", MOEAParameters.getInstance(), true);

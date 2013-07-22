@@ -29,6 +29,7 @@ import eva2.optimization.operator.terminators.EvaluationTerminator;
 import eva2.optimization.population.Population;
 import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.optimization.strategies.IslandModelEA;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -46,23 +47,24 @@ import javax.swing.*;
  */
 public class MOCCOStandalone implements InterfaceGOStandalone, InterfacePopulationChangedEventListener, Serializable {
 
-    public volatile MOCCOState  m_State;
-    private SwingWorker         worker;
-    private volatile boolean    m_StillWorking = false;
-    public int                  m_Iteration = -1;
-    public JFrame               m_JFrame;
+    public volatile MOCCOState m_State;
+    private SwingWorker worker;
+    private volatile boolean m_StillWorking = false;
+    public int m_Iteration = -1;
+    public JFrame m_JFrame;
     //public ParetoFrontView      n_ParetoFrontView;
-    public boolean              m_Debug = false;
-    public MOCCOViewer          m_View;
-    public JPanel               m_JPanelMain, m_JPanelParameters, m_JPanelControl, m_JPanelButtom;
-    private JLabel              m_CurrentState;
-    private JProgressBar        m_ProgressBar;
+    public boolean m_Debug = false;
+    public MOCCOViewer m_View;
+    public JPanel m_JPanelMain, m_JPanelParameters, m_JPanelControl, m_JPanelButtom;
+    private JLabel m_CurrentState;
+    private JProgressBar m_ProgressBar;
 
     public MOCCOStandalone() {
         this.m_State = new MOCCOState();
     }
 
-    /** This method will init the main MOCCO GUI
+    /**
+     * This method will init the main MOCCO GUI
      * frame
      */
     public void initMOCCOFrame() {
@@ -80,12 +82,12 @@ public class MOCCOStandalone implements InterfaceGOStandalone, InterfacePopulati
             }
         });
         // init basic panel structure
-        this.m_JPanelMain       = new JPanel();
+        this.m_JPanelMain = new JPanel();
         this.m_JPanelParameters = new JPanel();
         this.m_JPanelParameters.setPreferredSize(new Dimension(500, 300));
         this.m_JPanelParameters.setMinimumSize(new Dimension(500, 300));
-        this.m_JPanelControl    = new JPanel();
-        this.m_View             = new MOCCOViewer(this);
+        this.m_JPanelControl = new JPanel();
+        this.m_View = new MOCCOViewer(this);
         this.m_JFrame.getContentPane().add(this.m_JPanelMain);
         this.m_JPanelMain.setLayout(new BorderLayout());
         this.m_JPanelMain.add(this.m_JPanelParameters, BorderLayout.WEST);
@@ -93,14 +95,14 @@ public class MOCCOStandalone implements InterfaceGOStandalone, InterfacePopulati
         this.m_JPanelButtom = new JPanel();
         this.m_JPanelButtom.setLayout(new BorderLayout());
         JPanel tmpP = new JPanel();
-        tmpP.setLayout(new GridLayout(2,1));
+        tmpP.setLayout(new GridLayout(2, 1));
         this.m_CurrentState = new JLabel("Problem Initialization");
         tmpP.add(this.m_CurrentState);
         this.m_ProgressBar = new JProgressBar();
         tmpP.add(this.m_ProgressBar);
         this.m_JPanelButtom.add(tmpP, BorderLayout.CENTER);
-        this.m_JPanelControl.setMinimumSize(new Dimension(400,0));
-        this.m_JPanelControl.setPreferredSize(new Dimension(400,0));
+        this.m_JPanelControl.setMinimumSize(new Dimension(400, 0));
+        this.m_JPanelControl.setPreferredSize(new Dimension(400, 0));
         this.m_JPanelButtom.add(this.m_JPanelControl, BorderLayout.EAST);
         this.m_JPanelMain.add(this.m_JPanelButtom, BorderLayout.SOUTH);
         this.m_JFrame.validate();
@@ -109,22 +111,37 @@ public class MOCCOStandalone implements InterfaceGOStandalone, InterfacePopulati
     }
 
     public void MOCCOOptimization() {
-        boolean                 cont = true;
+        boolean cont = true;
         InterfaceProcessElement tmpP;
         while (cont) {
             this.m_Iteration++;
-            while (m_StillWorking) { try { Thread.sleep(1000); } catch (java.lang.InterruptedException e) { } }
+            while (m_StillWorking) {
+                try {
+                    Thread.sleep(1000);
+                } catch (java.lang.InterruptedException e) {
+                }
+            }
             if (this.m_State.m_OriginalProblem == null) {
                 this.m_State.m_OriginalProblem = new TF1Problem();
                 tmpP = new MOCCOProblemInitialization(this);
                 tmpP.initProcessElementParametrization();
-                while (!tmpP.isFinished()) { try { Thread.sleep(1000); } catch (java.lang.InterruptedException e) { }}
-                this.m_State.m_CurrentProblem = (InterfaceOptimizationProblem)this.m_State.m_OriginalProblem.clone();
+                while (!tmpP.isFinished()) {
+                    try {
+                        Thread.sleep(1000);
+                    } catch (java.lang.InterruptedException e) {
+                    }
+                }
+                this.m_State.m_CurrentProblem = (InterfaceOptimizationProblem) this.m_State.m_OriginalProblem.clone();
                 this.m_View.problemChanged(true);
                 this.m_JPanelParameters.removeAll();
                 tmpP = new MOCCOInitialPopulationSize(this);
                 tmpP.initProcessElementParametrization();
-                while (!tmpP.isFinished()) { try { Thread.sleep(1000); } catch (java.lang.InterruptedException e) { }}
+                while (!tmpP.isFinished()) {
+                    try {
+                        Thread.sleep(1000);
+                    } catch (java.lang.InterruptedException e) {
+                    }
+                }
                 this.m_State.m_InitialPopulationSize = Math.max(1, this.m_State.m_InitialPopulationSize);
                 Population pop = new Population();
                 pop.setTargetSize(this.m_State.m_InitialPopulationSize);
@@ -134,12 +151,17 @@ public class MOCCOStandalone implements InterfaceGOStandalone, InterfacePopulati
                 this.m_State.addPopulation2History(pop);
                 this.m_View.problemChanged(true);
             }
-            ((InterfaceMultiObjectiveDeNovoProblem)this.m_State.m_CurrentProblem).deactivateRepresentationEdit();
+            ((InterfaceMultiObjectiveDeNovoProblem) this.m_State.m_CurrentProblem).deactivateRepresentationEdit();
             this.updateStatus("Analysis/Redefinition", 33);
             tmpP = new MOCCOProblemRedefinition(this);
             tmpP.initProcessElementParametrization();
-            while (!tmpP.isFinished()) { try { Thread.sleep(1000); } catch (java.lang.InterruptedException e) { } }
-            this.m_State.makeFitnessCache(true);            
+            while (!tmpP.isFinished()) {
+                try {
+                    Thread.sleep(1000);
+                } catch (java.lang.InterruptedException e) {
+                }
+            }
+            this.m_State.makeFitnessCache(true);
             this.m_State.m_CurrentProblem.initializeProblem();
             this.m_State.makeBackup();
             this.m_View.problemChanged(true);
@@ -147,70 +169,125 @@ public class MOCCOStandalone implements InterfaceGOStandalone, InterfacePopulati
                 this.updateStatus("MO Strategy Selection", 50);
                 tmpP = new MOCCOChooseMOStrategy(this);
                 tmpP.initProcessElementParametrization();
-                while (!tmpP.isFinished()) { try { Thread.sleep(1000); } catch (java.lang.InterruptedException e) { } }
-                switch (((MOCCOChooseMOStrategy)tmpP).getMOStrategy()) {
-                    case MOCCOChooseMOStrategy.STRATEGY_MOEA : {
+                while (!tmpP.isFinished()) {
+                    try {
+                        Thread.sleep(1000);
+                    } catch (java.lang.InterruptedException e) {
+                    }
+                }
+                switch (((MOCCOChooseMOStrategy) tmpP).getMOStrategy()) {
+                    case MOCCOChooseMOStrategy.STRATEGY_MOEA: {
                         this.updateStatus("MOEA Parameterization", 75);
                         tmpP = new MOCCOParameterizeMO(this);
                         tmpP.initProcessElementParametrization();
-                        while (!tmpP.isFinished()) { try { Thread.sleep(1000); } catch (java.lang.InterruptedException e) { } }
+                        while (!tmpP.isFinished()) {
+                            try {
+                                Thread.sleep(1000);
+                            } catch (java.lang.InterruptedException e) {
+                            }
+                        }
                         break;
                     }
-                    case MOCCOChooseMOStrategy.STRATEGY_STEP : {
+                    case MOCCOChooseMOStrategy.STRATEGY_STEP: {
                         this.updateStatus("Reference Solution...", 75);
                         tmpP = new MOCCOChooseReferenceSolution(this);
                         tmpP.initProcessElementParametrization();
-                        while (!tmpP.isFinished()) { try { Thread.sleep(1000); } catch (java.lang.InterruptedException e) { } }
-                        AbstractEAIndividual reference = ((MOCCOChooseReferenceSolution)tmpP).getReferenceSolution();
+                        while (!tmpP.isFinished()) {
+                            try {
+                                Thread.sleep(1000);
+                            } catch (java.lang.InterruptedException e) {
+                            }
+                        }
+                        AbstractEAIndividual reference = ((MOCCOChooseReferenceSolution) tmpP).getReferenceSolution();
                         this.updateStatus("STEP Parameterization...", 90);
                         tmpP = new MOCCOParameterizeSTEP(this);
-                        ((MOCCOParameterizeSTEP)tmpP).setReferenceSolution(reference);
+                        ((MOCCOParameterizeSTEP) tmpP).setReferenceSolution(reference);
                         tmpP.initProcessElementParametrization();
-                        while (!tmpP.isFinished()) { try { Thread.sleep(1000); } catch (java.lang.InterruptedException e) { } }
+                        while (!tmpP.isFinished()) {
+                            try {
+                                Thread.sleep(1000);
+                            } catch (java.lang.InterruptedException e) {
+                            }
+                        }
                         break;
                     }
-                    case MOCCOChooseMOStrategy.STRATEGY_REFP : {
+                    case MOCCOChooseMOStrategy.STRATEGY_REFP: {
                         this.updateStatus("Reference Point...", 75);
                         tmpP = new MOCCOChooseReferencePoint(this);
                         tmpP.initProcessElementParametrization();
-                        while (!tmpP.isFinished()) { try { Thread.sleep(1000); } catch (java.lang.InterruptedException e) { } }
-                        double[] reference = ((MOCCOChooseReferencePoint)tmpP).getReferencePoint();
+                        while (!tmpP.isFinished()) {
+                            try {
+                                Thread.sleep(1000);
+                            } catch (java.lang.InterruptedException e) {
+                            }
+                        }
+                        double[] reference = ((MOCCOChooseReferencePoint) tmpP).getReferencePoint();
                         this.updateStatus("Reference Point Parameterization...", 90);
                         tmpP = new MOCCOParameterizeRefPoint(this);
-                        ((MOCCOParameterizeRefPoint)tmpP).setReferencePoint(reference);
+                        ((MOCCOParameterizeRefPoint) tmpP).setReferencePoint(reference);
                         tmpP.initProcessElementParametrization();
-                        while (!tmpP.isFinished()) { try { Thread.sleep(1000); } catch (java.lang.InterruptedException e) { } }
+                        while (!tmpP.isFinished()) {
+                            try {
+                                Thread.sleep(1000);
+                            } catch (java.lang.InterruptedException e) {
+                            }
+                        }
                         break;
                     }
-                    case MOCCOChooseMOStrategy.STRATEGY_TBCH : {
+                    case MOCCOChooseMOStrategy.STRATEGY_TBCH: {
                         this.updateStatus("Reference Point...", 75);
                         tmpP = new MOCCOChooseReferencePoint(this);
                         tmpP.initProcessElementParametrization();
-                        while (!tmpP.isFinished()) { try { Thread.sleep(1000); } catch (java.lang.InterruptedException e) { } }
-                        double[] reference = ((MOCCOChooseReferencePoint)tmpP).getReferencePoint();
+                        while (!tmpP.isFinished()) {
+                            try {
+                                Thread.sleep(1000);
+                            } catch (java.lang.InterruptedException e) {
+                            }
+                        }
+                        double[] reference = ((MOCCOChooseReferencePoint) tmpP).getReferencePoint();
                         this.updateStatus("Tchebycheff Method Parameterization...", 90);
                         tmpP = new MOCCOParameterizeTchebycheff(this);
-                        ((MOCCOParameterizeTchebycheff)tmpP).setReferencePoint(reference);
+                        ((MOCCOParameterizeTchebycheff) tmpP).setReferencePoint(reference);
                         tmpP.initProcessElementParametrization();
-                        while (!tmpP.isFinished()) { try { Thread.sleep(1000); } catch (java.lang.InterruptedException e) { } }
+                        while (!tmpP.isFinished()) {
+                            try {
+                                Thread.sleep(1000);
+                            } catch (java.lang.InterruptedException e) {
+                            }
+                        }
                         break;
                     }
-                    case MOCCOChooseMOStrategy.STRATEGY_GDF : {
+                    case MOCCOChooseMOStrategy.STRATEGY_GDF: {
                         this.updateStatus("Reference Solution...", 75);
                         tmpP = new MOCCOChooseReferenceSolution(this);
                         tmpP.initProcessElementParametrization();
-                        while (!tmpP.isFinished()) { try { Thread.sleep(1000); } catch (java.lang.InterruptedException e) { } }
-                        AbstractEAIndividual reference = ((MOCCOChooseReferenceSolution)tmpP).getReferenceSolution();
+                        while (!tmpP.isFinished()) {
+                            try {
+                                Thread.sleep(1000);
+                            } catch (java.lang.InterruptedException e) {
+                            }
+                        }
+                        AbstractEAIndividual reference = ((MOCCOChooseReferenceSolution) tmpP).getReferenceSolution();
                         this.updateStatus("Geoffrion-Dyer-Feinberg Method Parameterization...", 90);
                         tmpP = new MOCCOParameterizeGDF(this);
-                        ((MOCCOParameterizeGDF)tmpP).setReferenceSolution(reference);
+                        ((MOCCOParameterizeGDF) tmpP).setReferenceSolution(reference);
                         tmpP.initProcessElementParametrization();
-                        while (!tmpP.isFinished()) { try { Thread.sleep(1000); } catch (java.lang.InterruptedException e) { } }
+                        while (!tmpP.isFinished()) {
+                            try {
+                                Thread.sleep(1000);
+                            } catch (java.lang.InterruptedException e) {
+                            }
+                        }
                         break;
                     }
-                    default : {
+                    default: {
                         tmpP = new MOCCOParameterizeMO(this);
-                        while (!tmpP.isFinished()) { try { Thread.sleep(1000); } catch (java.lang.InterruptedException e) { } }
+                        while (!tmpP.isFinished()) {
+                            try {
+                                Thread.sleep(1000);
+                            } catch (java.lang.InterruptedException e) {
+                            }
+                        }
                         break;
                     }
                 }
@@ -218,7 +295,12 @@ public class MOCCOStandalone implements InterfaceGOStandalone, InterfacePopulati
                 this.updateStatus("SO-Optimizer Parameterization", 66);
                 tmpP = new MOCCOParameterizeSO(this);
                 tmpP.initProcessElementParametrization();
-                while (!tmpP.isFinished()) { try { Thread.sleep(1000); } catch (java.lang.InterruptedException e) { } }
+                while (!tmpP.isFinished()) {
+                    try {
+                        Thread.sleep(1000);
+                    } catch (java.lang.InterruptedException e) {
+                    }
+                }
             }
             // now optimize
             this.updateStatus("Optimizing...", 0);
@@ -227,27 +309,24 @@ public class MOCCOStandalone implements InterfaceGOStandalone, InterfacePopulati
     }
 
     private void checkForObjectives(String w) {
-        System.out.println("I'm currently "+w);
+        System.out.println("I'm currently " + w);
         System.out.print("Original Problem is ");
         if (this.m_State.m_OriginalProblem.isMultiObjective()) {
             System.out.println("multi-objective.");
-        }
-        else {
+        } else {
             System.out.println("single-objective.");
         }
         System.out.print("Current Problem is ");
         if (this.m_State.m_CurrentProblem.isMultiObjective()) {
             System.out.println("multi-objective.");
-        }
-        else {
+        } else {
             System.out.println("single-objective.");
         }
         if (this.m_State.m_BackupProblem != null) {
             System.out.print("Backup Problem is ");
             if (this.m_State.m_BackupProblem.isMultiObjective()) {
                 System.out.println("multi-objective.");
-            }
-            else {
+            } else {
                 System.out.println("single-objective.");
             }
         } else {
@@ -257,30 +336,30 @@ public class MOCCOStandalone implements InterfaceGOStandalone, InterfacePopulati
 
     private void checktForMOSO(String w) {
         String s;
-        System.out.println("I'm currently at "+w);
-        InterfaceMOSOConverter moso = ((AbstractMultiObjectiveOptimizationProblem)this.m_State.m_CurrentProblem).getMOSOConverter();
-        System.out.println("MOSO selected: "+moso.getName());
-        InterfaceOptimizationObjective[] obj = ((InterfaceMultiObjectiveDeNovoProblem)this.m_State.m_CurrentProblem).getProblemObjectives();
+        System.out.println("I'm currently at " + w);
+        InterfaceMOSOConverter moso = ((AbstractMultiObjectiveOptimizationProblem) this.m_State.m_CurrentProblem).getMOSOConverter();
+        System.out.println("MOSO selected: " + moso.getName());
+        InterfaceOptimizationObjective[] obj = ((InterfaceMultiObjectiveDeNovoProblem) this.m_State.m_CurrentProblem).getProblemObjectives();
         s = "Objectives: {";
         for (int i = 0; i < obj.length; i++) {
             s += obj[i].getIdentName();
-            if (i < (obj.length-1)) {
+            if (i < (obj.length - 1)) {
                 s += "; ";
             }
         }
         s += "}";
-        System.out.println(""+s);
+        System.out.println("" + s);
         if (moso instanceof MOSOWeightedFitness) {
-            PropertyDoubleArray prop = ((MOSOWeightedFitness)moso).getWeights();
+            PropertyDoubleArray prop = ((MOSOWeightedFitness) moso).getWeights();
             s = "Weights   : {";
             for (int i = 0; i < prop.getNumRows(); i++) {
-                s += prop.getValue(i,0);
-                if (i < (prop.getNumRows()-1)) {
+                s += prop.getValue(i, 0);
+                if (i < (prop.getNumRows() - 1)) {
                     s += "; ";
                 }
             }
             s += "}";
-            System.out.println(""+s);
+            System.out.println("" + s);
         }
 
     }
@@ -318,7 +397,8 @@ public class MOCCOStandalone implements InterfaceGOStandalone, InterfacePopulati
         }
     }*/
 
-    /** This is the main method
+    /**
+     * This is the main method
      *
      * @param args
      */
@@ -337,8 +417,8 @@ public class MOCCOStandalone implements InterfaceGOStandalone, InterfacePopulati
                 if (go.m_State.m_Optimizer.getPopulation().getFunctionCalls() == 0) {
                     // start to optimize
                     go.startExperiment();
-                    file = file.replaceAll(".ser","");
-                    go.saveObject(file+"_Finished.ser");
+                    file = file.replaceAll(".ser", "");
+                    go.saveObject(file + "_Finished.ser");
                 } else {
                     // start GUI
                     go.initMOCCOFrame();
@@ -347,54 +427,58 @@ public class MOCCOStandalone implements InterfaceGOStandalone, InterfacePopulati
         }
     }
 
-    /** This methods loads the current state of MOCO from a serialized file
-     * @param loadFrom  The name of the serialized file
+    /**
+     * This methods loads the current state of MOCO from a serialized file
+     *
+     * @param loadFrom The name of the serialized file
      * @return The new state of MOCO
      */
     public Object openObject(String loadFrom) {
         File selected = new File(loadFrom);
-	    try {
-	        ObjectInputStream oi = new ObjectInputStream(new BufferedInputStream(new FileInputStream(selected)));
+        try {
+            ObjectInputStream oi = new ObjectInputStream(new BufferedInputStream(new FileInputStream(selected)));
             Object obj = oi.readObject();
             oi.close();
             if (!(obj instanceof MOCCOState)) {
                 throw new Exception("Object not of type MOCCOState");
-            } return obj;
-	    } catch (Exception ex) {
+            }
+            return obj;
+        } catch (Exception ex) {
             if (this.m_JFrame != null) {
-                    JOptionPane.showMessageDialog(this.m_JFrame, "Couldn't read object: " + selected.getName() + "\n" + ex.getMessage(), "Open object file", JOptionPane.ERROR_MESSAGE);
-                }
-            else {
-                    System.out.println("Couldn't read object: " + selected.getName() + "\n" + ex.getMessage());
-                }
-	    }
+                JOptionPane.showMessageDialog(this.m_JFrame, "Couldn't read object: " + selected.getName() + "\n" + ex.getMessage(), "Open object file", JOptionPane.ERROR_MESSAGE);
+            } else {
+                System.out.println("Couldn't read object: " + selected.getName() + "\n" + ex.getMessage());
+            }
+        }
         return null;
     }
 
-    /** This method saves the current MOCOData into a serialized file
-     * @param saveAs    The name of the outputfile
+    /**
+     * This method saves the current MOCOData into a serialized file
+     *
+     * @param saveAs The name of the outputfile
      */
     public void saveObject(String saveAs) {
-	    File sFile = new File(saveAs);
-	    try {
-	        ObjectOutputStream oo = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(sFile)));
+        File sFile = new File(saveAs);
+        try {
+            ObjectOutputStream oo = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(sFile)));
             oo.writeObject(this.m_State);
             oo.close();
-	    } catch (Exception ex) {
+        } catch (Exception ex) {
             if (this.m_JFrame != null) {
-                    JOptionPane.showMessageDialog(this.m_JFrame, "Couldn't write to file: " + sFile.getName() + "\n" + ex.getMessage(), "Save object", JOptionPane.ERROR_MESSAGE);
-                }
-            else {
-                    System.out.println("Couldn't write to file: " + sFile.getName() + "\n" + ex.getMessage());
-                }
-	    }
+                JOptionPane.showMessageDialog(this.m_JFrame, "Couldn't write to file: " + sFile.getName() + "\n" + ex.getMessage(), "Save object", JOptionPane.ERROR_MESSAGE);
+            } else {
+                System.out.println("Couldn't write to file: " + sFile.getName() + "\n" + ex.getMessage());
+            }
+        }
     }
 
     /***********************************************************************************************
      * InterfaceGOStandalone
      */
 
-    /** This method starts the actual optimization procedure
+    /**
+     * This method starts the actual optimization procedure
      */
     @Override
     public void startExperiment() {
@@ -403,7 +487,7 @@ public class MOCCOStandalone implements InterfaceGOStandalone, InterfacePopulati
         this.m_StillWorking = true;
         this.m_State.m_Optimizer.setProblem(this.m_State.m_CurrentProblem);
         if (this.m_Debug) {
-            System.out.println(""+this.m_State.m_Optimizer.getStringRepresentation());
+            System.out.println("" + this.m_State.m_Optimizer.getStringRepresentation());
         }
         this.m_State.m_CurrentProblem.evaluate(this.m_State.m_Optimizer.getPopulation());
         this.m_State.m_Optimizer.getPopulation().SetFunctionCalls(0);
@@ -416,11 +500,12 @@ public class MOCCOStandalone implements InterfaceGOStandalone, InterfacePopulati
             public Object construct() {
                 return doWork();
             }
+
             @Override
             public void finished() {
                 Population[] pop = null;
                 if (m_State.m_Optimizer instanceof IslandModelEA) {
-                    InterfaceOptimizer[] opt = ((IslandModelEA)m_State.m_Optimizer).getOptimizers();
+                    InterfaceOptimizer[] opt = ((IslandModelEA) m_State.m_Optimizer).getOptimizers();
                     pop = new Population[opt.length];
                     for (int i = 0; i < opt.length; i++) {
                         pop[i] = opt[i].getPopulation();
@@ -444,7 +529,8 @@ public class MOCCOStandalone implements InterfaceGOStandalone, InterfacePopulati
         worker.start();
     }
 
-    /** When the worker needs to update the GUI we do so by queuing
+    /**
+     * When the worker needs to update the GUI we do so by queuing
      * a Runnable for the event dispatching thread with
      * SwingUtilities.invokeLater().  In this case we're just
      * changing the progress bars value.
@@ -462,7 +548,8 @@ public class MOCCOStandalone implements InterfaceGOStandalone, InterfacePopulati
         this.m_CurrentState.setText(t);
     }
 
-    /** This method represents the application code that we'd like to
+    /**
+     * This method represents the application code that we'd like to
      * run on a separate thread.  It simulates slowly computing
      * a value, in this case just a string 'All Done'.  It updates the
      * progress bar every half second to remind the user that
@@ -480,8 +567,7 @@ public class MOCCOStandalone implements InterfaceGOStandalone, InterfacePopulati
                 this.m_State.m_Optimizer.optimize();
             }
             System.gc();
-        }
-        catch (InterruptedException e) {
+        } catch (InterruptedException e) {
             updateStatus("Interrupted", 0);
             return "Interrupted";
         }
@@ -497,27 +583,29 @@ public class MOCCOStandalone implements InterfaceGOStandalone, InterfacePopulati
     /***********************************************************************************************
      * InterfacePopulationChangedEventListener
      */
-    /** This method allows an optimizer to register a change in the optimizer.
-     * @param source        The source of the event.
-     * @param name          Could be used to indicate the nature of the event.
+    /**
+     * This method allows an optimizer to register a change in the optimizer.
+     *
+     * @param source The source of the event.
+     * @param name   Could be used to indicate the nature of the event.
      */
     @Override
     public void registerPopulationStateChanged(Object source, String name) {
-    	int currentProgress;
-    	if (name.equals(Population.nextGenerationPerformed)) {
-    		if (this.m_State.isVisible) {
-    			Population population = ((InterfaceOptimizer)source).getPopulation();
-    			double x = 100;
-    			if (this.m_State.m_Terminator instanceof EvaluationTerminator) {
-    				double y = x/(double)((EvaluationTerminator)this.m_State.m_Terminator).getFitnessCalls();
-    				currentProgress = (int)(population.getFunctionCalls()*y);
-    			} else {
-    				currentProgress = (int)(0);
-    			}
-    			updateStatus("Optimizing...",currentProgress);
-    		} else {
-    			// perhaps i could write it to file!?
-    		}
-    	}
+        int currentProgress;
+        if (name.equals(Population.nextGenerationPerformed)) {
+            if (this.m_State.isVisible) {
+                Population population = ((InterfaceOptimizer) source).getPopulation();
+                double x = 100;
+                if (this.m_State.m_Terminator instanceof EvaluationTerminator) {
+                    double y = x / (double) ((EvaluationTerminator) this.m_State.m_Terminator).getFitnessCalls();
+                    currentProgress = (int) (population.getFunctionCalls() * y);
+                } else {
+                    currentProgress = (int) (0);
+                }
+                updateStatus("Optimizing...", currentProgress);
+            } else {
+                // perhaps i could write it to file!?
+            }
+        }
     }
 }

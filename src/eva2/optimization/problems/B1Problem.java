@@ -7,48 +7,53 @@ import eva2.optimization.operator.mutation.MutateEAMixer;
 import eva2.optimization.operator.mutation.MutateGAGISwapBits;
 import eva2.optimization.operator.mutation.MutateGAUniform;
 import eva2.optimization.strategies.InterfaceOptimizer;
+
 import java.util.BitSet;
 
 /**
  * The minimize bits problem for binary optimization.
- * 
+ * <p/>
  * User: streiche
  * Date: 21.03.2003
  * Time: 13:05:33
  * To change this template use Options | File Templates.
  */
 public class B1Problem extends AbstractProblemBinary implements java.io.Serializable {
-    public int          m_ProblemDimension  = 30;
+    public int m_ProblemDimension = 30;
 
     public B1Problem() {
-    	super();
-    	this.getIndividualTemplate().setMutationOperator(new MutateEAMixer(new MutateGAGISwapBits(), new MutateGAUniform()));
+        super();
+        this.getIndividualTemplate().setMutationOperator(new MutateEAMixer(new MutateGAGISwapBits(), new MutateGAUniform()));
     }
-    
+
     public B1Problem(B1Problem b) {
         super.cloneObjects(b);
-        
+
         this.m_ProblemDimension = b.m_ProblemDimension;
     }
 
-    /** This method returns a deep clone of the problem.
-     * @return  the clone
+    /**
+     * This method returns a deep clone of the problem.
+     *
+     * @return the clone
      */
     @Override
     public Object clone() {
         return (Object) new B1Problem(this);
     }
 
-    /** This is a simple method that evaluates a given Individual. The fitness
+    /**
+     * This is a simple method that evaluates a given Individual. The fitness
      * values of the individual will be set inside this method.
-     * @param b         The BitSet that is to be evaluated.
-     * @param l         The length of the BitSet.
-     * @return          Double[]
+     *
+     * @param b The BitSet that is to be evaluated.
+     * @param l The length of the BitSet.
+     * @return Double[]
      */
     @Override
     public double[] eval(BitSet b) {
-        double[]                result = new double[1];
-        int                     fitness = 0;
+        double[] result = new double[1];
+        int fitness = 0;
 
         for (int i = 0; i < getProblemDimension(); i++) {
             if (b.get(i)) {
@@ -59,9 +64,11 @@ public class B1Problem extends AbstractProblemBinary implements java.io.Serializ
         return result;
     }
 
-    /** This method allows you to output a string that describes a found solution
+    /**
+     * This method allows you to output a string that describes a found solution
      * in a way that is most suiteable for a given problem.
-     * @param individual    The individual that is to be shown.
+     *
+     * @param individual The individual that is to be shown.
      * @return The description.
      */
     @Override
@@ -73,8 +80,10 @@ public class B1Problem extends AbstractProblemBinary implements java.io.Serializ
         return result;
     }
 
-    /** This method returns a string describing the optimization problem.
-     * @param opt       The Optimizer that is used or had been used.
+    /**
+     * This method returns a string describing the optimization problem.
+     *
+     * @param opt The Optimizer that is used or had been used.
      * @return The description.
      */
     @Override
@@ -84,7 +93,7 @@ public class B1Problem extends AbstractProblemBinary implements java.io.Serializ
         result += "Minimize Bits Problem:\n";
         result += "The task is to reduce the number of TRUE Bits in the given bit string.\n";
         result += "Parameters:\n";
-        result += "Number of Bits: " + this.m_ProblemDimension +"\n";
+        result += "Number of Bits: " + this.m_ProblemDimension + "\n";
         result += "Solution representation:\n";
         //result += this.template.getSolutionRepresentationFor();
         return result;
@@ -93,8 +102,10 @@ public class B1Problem extends AbstractProblemBinary implements java.io.Serializ
 /**********************************************************************************************************************
  * These are for GUI
  */
-    /** This method allows the CommonJavaObjectEditorPanel to read the
+    /**
+     * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
+     *
      * @return The name.
      */
     @Override
@@ -102,38 +113,46 @@ public class B1Problem extends AbstractProblemBinary implements java.io.Serializ
         return "Maximize number of bits";
     }
 
-    /** This method returns a global info string
+    /**
+     * This method returns a global info string
+     *
      * @return description
      */
     public static String globalInfo() {
         return "The task in this problem is to maximize the number of false bits in a BitSet.";
     }
 
-    /** 
+    /**
      * Set the problem dimension.
-	 *
+     *
      * @param dim The problem dimension.
      */
     public void setProblemDimension(int dim) {
         this.m_ProblemDimension = dim;
     }
+
     @Override
     public int getProblemDimension() {
         return this.m_ProblemDimension;
     }
+
     public String multiRunsTipText() {
         return "Length of the BitSet that is to be optimized.";
     }
 
-    /** This method allows you to choose the EA individual
+    /**
+     * This method allows you to choose the EA individual
+     *
      * @param indy The EAIndividual type
      */
     public void setEAIndividual(InterfaceDataTypeBinary indy) {
         this.template = (AbstractEAIndividual) indy;
     }
+
     public InterfaceDataTypeBinary getEAIndividual() {
         return (InterfaceDataTypeBinary) this.template;
     }
+
     public String EAIndividualTipText() {
         return "Choose the EAIndividual to use.";
     }

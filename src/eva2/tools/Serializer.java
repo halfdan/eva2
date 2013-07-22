@@ -3,6 +3,7 @@ package eva2.tools;
 import java.io.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import com.google.gson.*;
 
 /**
@@ -11,7 +12,6 @@ import com.google.gson.*;
  * deep copy).
  *
  * @author Holger Ulmer, Felix Streichert, Hannes Planatscher, Marcel Kronfeld
- *
  */
 public class Serializer {
 
@@ -32,12 +32,11 @@ public class Serializer {
      * object is wrapped in a SerializedObject first, which seems to be more
      * efficient than writing a nested object directly to a file.
      *
-     * @param o the object to write
-     * @param outStream The stream to write to
+     * @param o              the object to write
+     * @param outStream      The stream to write to
      * @param serializeInMem flag whether to wrap the object in a
-     * SerializedObject
+     *                       SerializedObject
      * @throws IOException
-	 *
      */
     private static void store(Serializable o, OutputStream outStream, boolean serializeInMem) throws IOException {
         ObjectOutputStream out = new ObjectOutputStream(outStream);
@@ -64,10 +63,9 @@ public class Serializer {
      * SerializedObject is unwrapped once.
      *
      * @param inputStream The Input stream to read from
+     * @return The deserialized Object from the file
      * @throws ClassNotFoundException
      * @throws IOException
-     * @return The deserialized Object from the file
-	 *
      */
     private static Object load(final InputStream inputStream) throws IOException, ClassNotFoundException {
         ObjectInputStream objInputStream = new ObjectInputStream(inputStream);
@@ -86,7 +84,6 @@ public class Serializer {
      * differs from the clone() method of an object which is usually implemented
      * to produce a "shallow" clone that copies references to other objects,
      * instead of copying all referenced objects.
-	 *
      */
     public static Object deepClone(Object o) {
         Object obj = null;
@@ -115,8 +112,7 @@ public class Serializer {
      * Serialize the string data and write it to the OutputStream.
      *
      * @param outStream The output stream
-     * @param data The string data
-	 *
+     * @param data      The string data
      */
     public static void storeString(final OutputStream outStream, final String data) {
         try {
@@ -132,7 +128,6 @@ public class Serializer {
      *
      * @param inputStream The input stream to read from
      * @return The deserialized data from the stream
-	 *
      */
     public static String loadString(final InputStream inputStream) {
         StringBuilder sBuilder = new StringBuilder();
@@ -164,7 +159,6 @@ public class Serializer {
      * Deserialize the contents of File with given name containing a string and
      * return the resulting string. If the indicated file doesn't exist or an
      * error occurs, null is returned.
-	 *
      */
     public static Object loadObject(InputStream inputStream) {
         return loadObject(inputStream, true);
@@ -176,7 +170,6 @@ public class Serializer {
      * error occurs, null is returned. If casually is false, an error message is
      * printed and an exception is raised if the file was not found or an error
      * occured on loading.
-	 *
      */
     public static Object loadObject(InputStream inputStream, boolean casually) {
         Object serializedObject = null;

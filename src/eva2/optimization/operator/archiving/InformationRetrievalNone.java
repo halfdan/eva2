@@ -2,7 +2,8 @@ package eva2.optimization.operator.archiving;
 
 import eva2.optimization.population.Population;
 
-/** This class allows no information retrieval and thus no elitism
+/**
+ * This class allows no information retrieval and thus no elitism
  * for MOEAs.
  * Created by IntelliJ IDEA.
  * User: streiche
@@ -23,9 +24,11 @@ public class InformationRetrievalNone implements InterfaceInformationRetrieval, 
         return (Object) new InformationRetrievalNone(this);
     }
 
-    /** This method will allow Information Retrieval from a archive onto
+    /**
+     * This method will allow Information Retrieval from a archive onto
      * an already existing population.
-     * @param pop           The population.
+     *
+     * @param pop The population.
      */
     @Override
     public void retrieveInformationFrom(Population pop) {
@@ -35,13 +38,18 @@ public class InformationRetrievalNone implements InterfaceInformationRetrieval, 
 /**********************************************************************************************************************
  * These are for GUI
  */
-    /** This method returns a global info string
+    /**
+     * This method returns a global info string
+     *
      * @return description
      */
     public static String globalInfo() {
         return "This implements a deactivated Information Retrieval.";
     }
-    /** This method will return a naming String
+
+    /**
+     * This method will return a naming String
+     *
      * @return The name of the algorithm
      */
     public String getName() {

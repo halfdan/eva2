@@ -7,12 +7,14 @@ import eva2.optimization.problems.B1Problem;
 import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.optimization.strategies.MonteCarloSearch;
 import eva2.tools.Serializer;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.util.logging.Level;
 
-/** The class gives access to all HC parameters for the EvA
+/**
+ * The class gives access to all HC parameters for the EvA
  * top level GUI.
  * Created by IntelliJ IDEA.
  * User: streiche
@@ -21,10 +23,10 @@ import java.util.logging.Level;
  * To change this template use File | Settings | File Templates.
  */
 public class MCParameters extends AbstractOptimizationParameters implements InterfaceOptimizationParameters, Serializable {
-    
+
     /**
      * Load or create a new instance of the class.
-     * 
+     *
      * @return A loaded (from file) or new instance of the class.
      */
     public static MCParameters getInstance() {
@@ -41,16 +43,16 @@ public class MCParameters extends AbstractOptimizationParameters implements Inte
         }
         return instance;
     }
-    
+
     /**
      *
      */
-    public MCParameters() {    
-    	super(new MonteCarloSearch(), new B1Problem(), new EvaluationTerminator());
+    public MCParameters() {
+        super(new MonteCarloSearch(), new B1Problem(), new EvaluationTerminator());
     }
 
     private MCParameters(MCParameters Source) {
-    	super(Source);
+        super(Source);
     }
 
     /**
@@ -61,7 +63,9 @@ public class MCParameters extends AbstractOptimizationParameters implements Inte
         return new MCParameters(this);
     }
 
-    /** This method returns a global info string
+    /**
+     * This method returns a global info string
+     *
      * @return description
      */
     public static String globalInfo() {
@@ -74,17 +78,21 @@ public class MCParameters extends AbstractOptimizationParameters implements Inte
     }
 
 
-    /** Assuming that all optimizer will store thier data in a population
+    /**
+     * Assuming that all optimizer will store thier data in a population
      * we will allow acess to this population to query to current state
      * of the optimizer.
+     *
      * @return The population of current solutions to a given problem.
      */
     public Population getPopulation() {
-        return ((MonteCarloSearch)this.optimizer).getPopulation();
+        return ((MonteCarloSearch) this.optimizer).getPopulation();
     }
-    public void setPopulation(Population pop){
-        ((MonteCarloSearch)this.optimizer).setPopulation(pop);
+
+    public void setPopulation(Population pop) {
+        ((MonteCarloSearch) this.optimizer).setPopulation(pop);
     }
+
     public String populationTipText() {
         return "Edit the properties of the population used.";
     }

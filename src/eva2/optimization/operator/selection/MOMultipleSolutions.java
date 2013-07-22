@@ -10,11 +10,11 @@ import java.util.ArrayList;
  * To change this template use File | Settings | File Templates.
  */
 public class MOMultipleSolutions {
-    
-    public int          m_ParetoOptimalSolutions;
-    private ArrayList   m_Solutions = new ArrayList();
-    public int          m_Iterations;
-    public int          m_SizeDominantSolutions = 0;
+
+    public int m_ParetoOptimalSolutions;
+    private ArrayList m_Solutions = new ArrayList();
+    public int m_Iterations;
+    public int m_SizeDominantSolutions = 0;
 
     public void add(double[] fit, double[] w) {
         this.m_Solutions.add(new MOSolution(fit, w));
@@ -25,7 +25,7 @@ public class MOMultipleSolutions {
     }
 
     public MOSolution get(int i) {
-        return (MOSolution)this.m_Solutions.get(i);
+        return (MOSolution) this.m_Solutions.get(i);
     }
 
     public Object remove(int i) {

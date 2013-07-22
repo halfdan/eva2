@@ -11,6 +11,7 @@ import eva2.optimization.problems.AbstractOptimizationProblem;
 import eva2.optimization.problems.AbstractProblemDouble;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.Mathematics;
+
 import java.io.Serializable;
 import java.util.Vector;
 
@@ -20,7 +21,6 @@ import java.util.Vector;
  * available by projection at the bounds.
  *
  * @author mkron
- *
  */
 public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, InterfacePopulationChangedEventListener {
 
@@ -364,13 +364,13 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
     /**
      * This method creates a Nelder-Mead instance.
      *
-     * @param pop The size of the population
-     * @param problem The problem to be optimized
+     * @param pop      The size of the population
+     * @param problem  The problem to be optimized
      * @param listener
      * @return An optimization procedure that performs nelder mead optimization.
      */
     public static final NelderMeadSimplex createNelderMeadSimplex(AbstractOptimizationProblem problem,
-            InterfacePopulationChangedEventListener listener) {
+                                                                  InterfacePopulationChangedEventListener listener) {
 
         problem.initializeProblem();
         NelderMeadSimplex nms = new NelderMeadSimplex();
@@ -394,17 +394,16 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
      * with given perturbation ratio or randomly across the search range if the
      * perturbation ratio is zero or below zero.
      *
-     *
-     * @param problem The problem to be optimized
-     * @param candidate starting point of the search
+     * @param problem           The problem to be optimized
+     * @param candidate         starting point of the search
      * @param perturbationRatio perturbation ratio relative to the problem range
-     * for the initial simplex creation
+     *                          for the initial simplex creation
      * @param listener
      * @return An optimization procedure that performs nelder mead optimization.
      */
     public static final NelderMeadSimplex createNelderMeadSimplexLocal(AbstractOptimizationProblem problem,
-            AbstractEAIndividual candidate, double perturbationRatio,
-            InterfacePopulationChangedEventListener listener) {
+                                                                       AbstractEAIndividual candidate, double perturbationRatio,
+                                                                       InterfacePopulationChangedEventListener listener) {
 
         // TODO this method might be superfluous when using PostProcess
         problem.initializeProblem();
@@ -459,7 +458,7 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
     }
 
     private static void addPerturbedPopulation(double perturbationRatio,
-            Population initialPop, double[][] range, AbstractEAIndividual candidate) {
+                                               Population initialPop, double[][] range, AbstractEAIndividual candidate) {
         AbstractEAIndividual indy = (AbstractEAIndividual) candidate.clone();
         // span by perturbation, every new individual i is modified in dimension i by
         // a value of perturbRatio*range_i such that a simplex of relative side length perturbRatio is created. 

@@ -39,7 +39,7 @@ public class JExtDesktopPane extends JDesktopPane {
      */
     public JExtDesktopPane() {
         super();
-        
+
         windowMenu = new JExtMenu("&Windows");
         desktopManager = new ExtDesktopManager(this);
         setDesktopManager(desktopManager);
@@ -65,7 +65,7 @@ public class JExtDesktopPane extends JDesktopPane {
             }
         });
 
-        windowMenu.add(actWindowTileHorz = new ExtAction("Tile &Horizontally", "Tiles all windows horizontically", 
+        windowMenu.add(actWindowTileHorz = new ExtAction("Tile &Horizontally", "Tiles all windows horizontically",
                 KeyStroke.getKeyStroke(KeyEvent.VK_PERIOD, Event.CTRL_MASK)) {
 
             @Override
@@ -89,10 +89,10 @@ public class JExtDesktopPane extends JDesktopPane {
 
     /**
      * Method to access the window actions.
-     * 
-     * @deprecated 
+     *
      * @param action The desired action (use JExtDesktopPane constants). Default is null
      * @return The ExtAction
+     * @deprecated
      */
     public ExtAction getWindowAction(int action) {
         switch (action) {
