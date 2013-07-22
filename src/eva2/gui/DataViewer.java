@@ -17,11 +17,10 @@ import java.util.ArrayList;
  */
 public class DataViewer implements DataViewerInterface {
 
-    public static boolean TRACE = false;
-    static private int m_GraphCounter = -1;
+    static private int graphCounter = -1;
     static private ViewContainer viewContainer;
-    private String m_Name;
-    private Plot m_Plot;
+    private String name;
+    private Plot plot;
 
     /**
      *
@@ -49,10 +48,7 @@ public class DataViewer implements DataViewerInterface {
      *
      */
     private DataViewer(String PlotName, boolean initflag) {
-        if (TRACE) {
-            System.out.println("Constructor DataViewer");
-        }
-        m_Name = PlotName;
+        name = PlotName;
         if (initflag) {
             this.init();
         }
@@ -62,7 +58,7 @@ public class DataViewer implements DataViewerInterface {
      *
      */
     public String getName() {
-        return m_Name;
+        return name;
     }
 
     /**
@@ -70,11 +66,8 @@ public class DataViewer implements DataViewerInterface {
      */
     @Override
     public Graph getNewGraph(String InfoString) {
-        m_GraphCounter++;
-        if (TRACE) {
-            System.out.println("Graph.getNewGraph No:" + m_GraphCounter);
-        }
-        return new Graph(InfoString, m_Plot, m_GraphCounter);
+        graphCounter++;
+        return new Graph(InfoString, plot, graphCounter);
     }
 
     /**
@@ -82,7 +75,7 @@ public class DataViewer implements DataViewerInterface {
      */
     @Override
     public void init() {
-        m_Plot = new Plot(m_Name, "x", "y", true);
+        plot = new Plot(name, "x", "y", true);
     }
 }
 
@@ -96,8 +89,7 @@ class ViewContainer extends ArrayList {
     /**
      *
      */
-    public ViewContainer() {
-    }
+    public ViewContainer() { }
 
     /**
      *
