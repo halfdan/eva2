@@ -11,12 +11,11 @@ package eva2.gui;
  */
 import eva2.optimization.OptimizationStateListener;
 import eva2.optimization.modules.ModuleAdapter;
-import eva2.optimization.stat.EvAJob;
+import eva2.optimization.stat.OptimizationJob;
 import eva2.tools.ToolBoxGui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.Serializable;
-import java.net.InetAddress;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
@@ -120,7 +119,7 @@ public class EvAModuleButtonPanelMaker implements OptimizationStateListener, Ser
 
             @Override
             public void actionPerformed(ActionEvent event) {
-                EvAJob job = moduleAdapter.scheduleJob();
+                OptimizationJob job = moduleAdapter.scheduleJob();
                 if (job == null) {
                     LOGGER.log(Level.WARNING, "There was an error on scheduling your job");
                 }

@@ -30,12 +30,12 @@ import javax.swing.JOptionPane;
  * @author mkron
  *
  */
-public class EvAJobList extends PropertySelectableList<EvAJob> implements Serializable, InterfaceTextListener {
+public class OptimizationJobList extends PropertySelectableList<OptimizationJob> implements Serializable, InterfaceTextListener {
 
     List<InterfaceTextListener> listeners = null;
     private ModuleAdapter module = null;
 
-    public EvAJobList(EvAJob[] initial) {
+    public OptimizationJobList(OptimizationJob[] initial) {
         super(initial);
     }
 
@@ -53,24 +53,24 @@ public class EvAJobList extends PropertySelectableList<EvAJob> implements Serial
      * @param params
      * @param stats
      */
-    public EvAJob addJob(InterfaceOptimizationParameters params, AbstractStatistics stats) {
-        EvAJob job = new EvAJob((InterfaceOptimizationParameters) Serializer.deepClone(params), stats);
+    public OptimizationJob addJob(InterfaceOptimizationParameters params, AbstractStatistics stats) {
+        OptimizationJob job = new OptimizationJob((InterfaceOptimizationParameters) Serializer.deepClone(params), stats);
         stats.addDataListener(job);
         addJob(job, true);
         return job;
     }
 
-    private void addJob(EvAJob j, boolean selected) {
-        EvAJob[] curArr = getObjects();
-        EvAJob[] newArr = null;
+    private void addJob(OptimizationJob j, boolean selected) {
+        OptimizationJob[] curArr = getObjects();
+        OptimizationJob[] newArr = null;
         boolean[] newSelection = null;
         if (curArr != null && curArr.length > 0) {
-            newArr = new EvAJob[curArr.length + 1];
+            newArr = new OptimizationJob[curArr.length + 1];
             newSelection = new boolean[newArr.length];
             System.arraycopy(curArr, 0, newArr, 0, curArr.length);
             System.arraycopy(m_Selection, 0, newSelection, 0, curArr.length);
         } else {
-            newArr = new EvAJob[1];
+            newArr = new OptimizationJob[1];
             newSelection = new boolean[1];
         }
         newSelection[newArr.length - 1] = selected;
@@ -83,8 +83,8 @@ public class EvAJobList extends PropertySelectableList<EvAJob> implements Serial
      *
      * @return
      */
-    public EvAJob lastJob() {
-        EvAJob[] curArr = getObjects();
+    public OptimizationJob lastJob() {
+        OptimizationJob[] curArr = getObjects();
         if (curArr != null && curArr.length > 0) {
             return curArr[curArr.length - 1];
         } else {
@@ -97,10 +97,10 @@ public class EvAJobList extends PropertySelectableList<EvAJob> implements Serial
      *
      * @return
      */
-    public ArrayList<EvAJob> getSelectedJobs() {
-        EvAJob[] selected = getSelectedObjects();
-        ArrayList<EvAJob> l = new ArrayList<EvAJob>();
-        for (EvAJob j : selected) {
+    public ArrayList<OptimizationJob> getSelectedJobs() {
+        OptimizationJob[] selected = getSelectedObjects();
+        ArrayList<OptimizationJob> l = new ArrayList<OptimizationJob>();
+        for (OptimizationJob j : selected) {
             if (j != null) {
                 l.add(j);
             }
@@ -109,7 +109,7 @@ public class EvAJobList extends PropertySelectableList<EvAJob> implements Serial
     }
 
     public boolean saveSelectedJobs(Component parentComponent) {
-        EvAJob[] selected = getSelectedObjects();
+        OptimizationJob[] selected = getSelectedObjects();
         if (selected != null && (selected.length > 0)) {
             JFileChooser fc = new JFileChooser();
             fc.setName("Select a directory to save jobs to...");
@@ -118,7 +118,7 @@ public class EvAJobList extends PropertySelectableList<EvAJob> implements Serial
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 File sFile = fc.getSelectedFile();
                 if (sFile.exists()) {
-                    for (EvAJob job : selected) {
+                    for (OptimizationJob job : selected) {
                         if (job != null) {
                             if (!FileTools.saveObjectToFolder(job, sFile, false, parentComponent)) {
                                 System.err.println("Error on saving jobs...");
@@ -144,8 +144,8 @@ public class EvAJobList extends PropertySelectableList<EvAJob> implements Serial
      * @param params
      * @return
      */
-    public EvAJob getJobOf(InterfaceOptimizationParameters params) {
-        for (EvAJob job : getObjects()) {
+    public OptimizationJob getJobOf(InterfaceOptimizationParameters params) {
+        for (OptimizationJob job : getObjects()) {
             if (job.getGOParams() == params) {
                 return job;
             }
@@ -159,7 +159,7 @@ public class EvAJobList extends PropertySelectableList<EvAJob> implements Serial
      * @param jobList
      * @return
      */
-    public static PropertyEditor makeEditor(final Component parent, final EvAJobList jobList) {
+    public static PropertyEditor makeEditor(final Component parent, final OptimizationJobList jobList) {
         final GenericArrayEditor genericArrayEditor = new GenericArrayEditor();
         genericArrayEditor.setWithAddButton(false);
         genericArrayEditor.setWithSetButton(false);
@@ -198,20 +198,20 @@ public class EvAJobList extends PropertySelectableList<EvAJob> implements Serial
         return genericArrayEditor;
     }
 
-    private static JComponent createStatsPanel(final EvAJobList jobList, final GenericArrayEditor edi) {
+    private static JComponent createStatsPanel(final OptimizationJobList jobList, final GenericArrayEditor edi) {
         JParaPanel pan = new JParaPanel(EvAStatisticalEvaluation.statsParams, "Statistics");
         JComponent paraPan = pan.makePanel();
         return paraPan;
     }
 
-    private static ActionListener getReuseActionListener(final Component parent, final EvAJobList jobList) {
+    private static ActionListener getReuseActionListener(final Component parent, final OptimizationJobList jobList) {
         ActionListener al = new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                List<EvAJob> jobs = jobList.getSelectedJobs();
+                List<OptimizationJob> jobs = jobList.getSelectedJobs();
                 if (jobs.size() == 1) {
-                    EvAJob job = jobs.get(0);
+                    OptimizationJob job = jobs.get(0);
                     AbstractOptimizationParameters curParams = (AbstractOptimizationParameters) ((AbstractModuleAdapter) jobList.module).getGOParameters();
                     curParams.setSameParams((AbstractOptimizationParameters) job.getGOParams());
                     ((GenericModuleAdapter) jobList.module).setGOParameters(curParams);
@@ -225,13 +225,13 @@ public class EvAJobList extends PropertySelectableList<EvAJob> implements Serial
         return al;
     }
 
-    private static ActionListener getClearSelectedActionListener(final Component parent, final EvAJobList jobList) {
+    private static ActionListener getClearSelectedActionListener(final Component parent, final OptimizationJobList jobList) {
         ActionListener al = new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                List<EvAJob> jobs = jobList.getSelectedJobs();
-                for (EvAJob j : jobs) {
+                List<OptimizationJob> jobs = jobList.getSelectedJobs();
+                for (OptimizationJob j : jobs) {
                     j.resetJob();
                 }
             }

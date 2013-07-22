@@ -9,7 +9,8 @@ package eva2.gui;
  */
 
 import eva2.gui.editor.GenericObjectEditor;
-import eva2.optimization.stat.EvAJobList;
+import eva2.optimization.stat.OptimizationJobList;
+
 import java.beans.PropertyEditor;
 import java.beans.PropertyEditorManager;
 import java.io.Serializable;
@@ -44,9 +45,9 @@ public class JParaPanel implements Serializable, PanelMaker {
     public JComponent makePanel() {
         PropertyEditorProvider.installEditors();
 
-        if (localParameter instanceof EvAJobList) {
+        if (localParameter instanceof OptimizationJobList) {
             /* ToDo: First parameter is useless and should be removed */
-            propertyEditor = EvAJobList.makeEditor(tempPanel, (EvAJobList) localParameter);
+            propertyEditor = OptimizationJobList.makeEditor(tempPanel, (OptimizationJobList) localParameter);
         } else {
         	propertyEditor = new GenericObjectEditor();
 	        ((GenericObjectEditor) (propertyEditor)).setClassType(localParameter.getClass());
