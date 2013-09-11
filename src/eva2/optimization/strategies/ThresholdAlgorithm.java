@@ -55,7 +55,7 @@ public class ThresholdAlgorithm implements InterfaceOptimizer, java.io.Serializa
         this.m_Problem.initializePopulation(this.m_Population);
         this.m_Problem.evaluate(this.m_Population);
         this.m_CurrentT = this.m_InitialT;
-        this.firePropertyChangedEvent(Population.nextGenerationPerformed);
+        this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }
 
     /**
@@ -71,7 +71,7 @@ public class ThresholdAlgorithm implements InterfaceOptimizer, java.io.Serializa
         if (reset) {
             this.m_Population.init();
             this.m_Problem.evaluate(this.m_Population);
-            this.firePropertyChangedEvent(Population.nextGenerationPerformed);
+            this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
         }
     }
 
@@ -101,7 +101,7 @@ public class ThresholdAlgorithm implements InterfaceOptimizer, java.io.Serializa
         }
         this.m_CurrentT = this.m_Alpha * this.m_CurrentT;
         this.m_Population.incrGeneration();
-        this.firePropertyChangedEvent(Population.nextGenerationPerformed);
+        this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }
 
     /**

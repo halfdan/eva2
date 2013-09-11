@@ -678,7 +678,7 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
         population.incrFunctionCalls();
         if (notifyAfter(population.getFunctionCalls())) {
 //			System.out.println("Notifying after " + population.getFunctionCalls());
-            firePropertyChangedEvent(Population.nextGenerationPerformed);
+            firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
         }
     }
 

@@ -1,4 +1,4 @@
-package eva2.gui;
+package eva2.gui.editor;
 
 /**
  * @author not attributable

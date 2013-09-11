@@ -119,7 +119,7 @@ public class MLTGA implements InterfaceOptimizer, java.io.Serializable, Interfac
         defaultInit();
         this.problem.initializePopulation(this.population);
         this.evaluatePopulation(this.population);
-        this.firePropertyChangedEvent(Population.nextGenerationPerformed);
+        this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }
 
     private void evaluatePopulation(Population pop) {
@@ -347,10 +347,10 @@ public class MLTGA implements InterfaceOptimizer, java.io.Serializable, Interfac
     @Override
     public void registerPopulationStateChanged(Object source, String name) {
         // The events of the interim hill climbing population will be caught here 
-        if (name.compareTo(Population.funCallIntervalReached) == 0) {
+        if (name.compareTo(Population.FUN_CALL_INTERVAL_REACHED) == 0) {
             // set funcalls to real value
             this.population.setFunctionCalls(((Population) source).getFunctionCalls());
-            this.firePropertyChangedEvent(Population.nextGenerationPerformed);
+            this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
         }
     }
 

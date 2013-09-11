@@ -60,7 +60,7 @@ public class FloodAlgorithm implements InterfaceOptimizer, java.io.Serializable 
         this.m_Problem.initializePopulation(this.m_Population);
         this.m_Problem.evaluate(this.m_Population);
         this.m_CurrentFloodPeak = this.m_InitialFloodPeak;
-        this.firePropertyChangedEvent(Population.nextGenerationPerformed);
+        this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }
 
     /**
@@ -74,7 +74,7 @@ public class FloodAlgorithm implements InterfaceOptimizer, java.io.Serializable 
         if (reset) {
             this.m_Population.init();
             this.m_Problem.evaluate(this.m_Population);
-            this.firePropertyChangedEvent(Population.nextGenerationPerformed);
+            this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
         }
         this.m_CurrentFloodPeak = this.m_InitialFloodPeak;
     }
@@ -105,7 +105,7 @@ public class FloodAlgorithm implements InterfaceOptimizer, java.io.Serializable 
         }
         this.m_CurrentFloodPeak -= this.m_DrainRate;
         this.m_Population.incrGeneration();
-        this.firePropertyChangedEvent(Population.nextGenerationPerformed);
+        this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }
 
     /**

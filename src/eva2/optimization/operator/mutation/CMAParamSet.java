@@ -217,7 +217,7 @@ class CMAParamSet implements InterfacePopulationChangedEventListener, Serializab
      */
     @Override
     public void registerPopulationStateChanged(Object source, String name) {
-        if (name.equals(Population.populationInitialized)) {
+        if (name.equals(Population.POPULATION_INITIALIZED)) {
             Population pop = (Population) source;
             if (MutateESRankMuCMA.TRACE_1) {
                 System.out.println("Event " + name + " arrived in CMAParamSet!!!");

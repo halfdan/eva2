@@ -1,6 +1,6 @@
-package eva2.gui;
+package eva2.gui.editor;
 
-import eva2.gui.editor.GenericObjectEditor;
+import eva2.gui.PropertySheetPanel;
 import eva2.optimization.tools.FileTools;
 import eva2.tools.BasicResourceLoader;
 import eva2.tools.EVAHELP;
@@ -307,7 +307,7 @@ public class GOEPanel extends JPanel implements ItemListener {
     /**
      *
      */
-    public void updateClassType() {
+    protected void updateClassType() {
         List<String> classesLongNames;
         ArrayList<Class<?>> instances = new ArrayList<Class<?>>(5);
         classesLongNames = GenericObjectEditor.getClassesFromProperties(genericObjectEditor.getClassType().getName(), instances);
@@ -355,7 +355,7 @@ public class GOEPanel extends JPanel implements ItemListener {
         return tips;
     }
 
-    public void updateChooser() {
+    protected void updateChooser() {
         String objectName = /*
                  * EVAHELP.cutClassName
                  */ (genericObjectEditor.getValue().getClass().getName());

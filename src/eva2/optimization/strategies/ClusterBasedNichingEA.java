@@ -897,7 +897,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
 //        	}
 //        }
 
-        this.firePropertyChangedEvent(Population.nextGenerationPerformed);
+        this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }
 
     /**

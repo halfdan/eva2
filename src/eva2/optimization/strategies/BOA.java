@@ -67,7 +67,6 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
     private boolean printEdgeRate = false;
     private boolean printTimestamps = false;
     private boolean printMetrics = false;
-//	private boolean printExtraOutput = false;
 
     public BOA() {
     }
@@ -246,7 +245,7 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
         defaultInit();
         this.problem.initializePopulation(this.population);
         this.evaluatePopulation(this.population);
-        this.firePropertyChangedEvent(Population.nextGenerationPerformed);
+        this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }
 
     private void evaluatePopulation(Population pop) {
@@ -553,7 +552,7 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
         this.population.addAll(newlyGenerated);
         this.count++;
         // we are done with one generation
-        this.firePropertyChangedEvent(Population.nextGenerationPerformed);
+        this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
         this.problem.evaluatePopulationEnd(this.population);
         // print output if desired
 //		if (this.printExtraOutput) {

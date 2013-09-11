@@ -53,7 +53,7 @@ public class SteadyStateGA implements InterfaceOptimizer, java.io.Serializable {
     public void init() {
         this.m_Problem.initializePopulation(this.m_Population);
         this.evaluatePopulation(this.m_Population);
-        this.firePropertyChangedEvent(Population.nextGenerationPerformed);
+        this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }
 
     /**
@@ -67,7 +67,7 @@ public class SteadyStateGA implements InterfaceOptimizer, java.io.Serializable {
         if (reset) {
             this.m_Population.init();
             this.evaluatePopulation(this.m_Population);
-            this.firePropertyChangedEvent(Population.nextGenerationPerformed);
+            this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
         }
     }
 
@@ -120,7 +120,7 @@ public class SteadyStateGA implements InterfaceOptimizer, java.io.Serializable {
         }
         this.m_Population.incrFunctionCallsBy(this.m_Population.size());
         this.m_Population.incrGeneration();
-        this.firePropertyChangedEvent(Population.nextGenerationPerformed);
+        this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }
 
     @Override

@@ -216,14 +216,14 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
     public void init() {
         defaultInit();
         initRefSet(diversify());
-        this.firePropertyChangedEvent(Population.nextGenerationPerformed);
+        this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }
 
     @Override
     public void initByPopulation(Population pop, boolean reset) {
         defaultInit();
         initRefSet(diversify(pop));
-        this.firePropertyChangedEvent(Population.nextGenerationPerformed);
+        this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }
 
     /**
@@ -811,13 +811,13 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
     @Override
     public void registerPopulationStateChanged(Object source, String name) {
         // The events of the interim hill climbing population will be caught here 
-        if (name.compareTo(Population.funCallIntervalReached) == 0) {
+        if (name.compareTo(Population.FUN_CALL_INTERVAL_REACHED) == 0) {
             // set funcalls to real value
             refSet.SetFunctionCalls(((Population) source).getFunctionCalls());
 
             //			System.out.println("FunCallIntervalReached at " + (((Population)source).getFunctionCalls()));
 
-            this.firePropertyChangedEvent(Population.nextGenerationPerformed);
+            this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
         }
     }
 

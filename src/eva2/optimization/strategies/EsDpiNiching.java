@@ -607,7 +607,7 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
             generateEvalImmigrants(getNumRndImmigrants());
         }
         collectPopulationIncGen(population, peakOpts, randomNewIndies);
-        //this.firePropertyChangedEvent(Population.nextGenerationPerformed); // moved this to registerPopulationStateChanged which is called from the population
+        //this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED); // moved this to registerPopulationStateChanged which is called from the population
     }
 
     private Population deactivateSpecies(int clustIndex, boolean resetRandomly) {
@@ -1304,9 +1304,9 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
         if (getPopulation() != source) {
             System.err.println("Warning, mismatching population in " + this.getClass().getName());
         }
-        if (name.equals(Population.funCallIntervalReached)) {
+        if (name.equals(Population.FUN_CALL_INTERVAL_REACHED)) {
 //    		getPopulation().SetFunctionCalls(((Population)source).getFunctionCalls()); // this is ugly and I dont know what its for.. possibly if the population instance changes along the GUi?
-            this.firePropertyChangedEvent(Population.nextGenerationPerformed);
+            this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
         } else {
             // this may come from cloned instances with the same listener - should not happen since they are removed. 
             // it may still come from "incGeneration" calls - we can ignore those

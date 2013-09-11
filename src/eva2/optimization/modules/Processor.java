@@ -382,7 +382,7 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
      */
     @Override
     public void registerPopulationStateChanged(Object source, String name) {
-        if (name.equals(Population.nextGenerationPerformed)) {
+        if (name.equals(Population.NEXT_GENERATION_PERFORMED)) {
             m_Statistics.createNextGenerationPerformed(
                     (PopulationInterface) this.goParams.getOptimizer().getPopulation(),
                     this.goParams.getOptimizer(),

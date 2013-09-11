@@ -144,7 +144,7 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
                 System.err.println("Error, inconsistent generations!");
             }
         }
-        this.firePropertyChangedEvent(Population.nextGenerationPerformed, this.m_Optimizer.getPopulation());
+        this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED, this.m_Optimizer.getPopulation());
     }
 
     /**
@@ -217,7 +217,7 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
             this.m_Population.addPopulation(pop);
             this.m_Population.incrFunctionCallsBy(pop.getFunctionCalls());
         }
-        this.firePropertyChangedEvent(Population.nextGenerationPerformed, this.m_Optimizer.getPopulation());
+        this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED, this.m_Optimizer.getPopulation());
     }
 
     /**
@@ -285,7 +285,7 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
             this.m_Population.incrFunctionCallsBy(pop.getFunctionCalls());
         }
 //        System.out.println("Fitnesscalls :" + this.m_Population.getFunctionCalls());
-        this.firePropertyChangedEvent(Population.nextGenerationPerformed, this.m_Optimizer.getPopulation());
+        this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED, this.m_Optimizer.getPopulation());
         double plotValue = (this.m_Problem.getDoublePlotValue(this.m_Population)).doubleValue();
         if (this.m_Show) {
             this.m_Plot.setConnectedPoint(this.m_Population.getFunctionCalls(), plotValue, 0);

@@ -477,7 +477,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
         this.m_BestIndividual = (AbstractEAIndividual) this.m_Population.getBestEAIndividual().clone();
 
         if (reset) {
-            this.firePropertyChangedEvent(Population.nextGenerationPerformed);
+            this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
         }
 
         treeLevels = 0;
@@ -1392,7 +1392,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 //			} else m_Population.incrFunctionCallsBy(maxSteps);
 //		}
 
-        this.firePropertyChangedEvent(Population.nextGenerationPerformed);
+        this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
 
         if (sleepTime > 0) {
             try {

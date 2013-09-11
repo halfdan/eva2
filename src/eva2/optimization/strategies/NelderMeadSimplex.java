@@ -274,7 +274,7 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
     private void fireNextGenerationPerformed() {
         if (m_Listener != null) {
             for (int i = 0; i < m_Listener.size(); i++) {
-                m_Listener.elementAt(i).registerPopulationStateChanged(this, Population.nextGenerationPerformed);
+                m_Listener.elementAt(i).registerPopulationStateChanged(this, Population.NEXT_GENERATION_PERFORMED);
             }
         }
     }
@@ -356,7 +356,7 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
 
     @Override
     public void registerPopulationStateChanged(Object source, String name) {
-        if (name.compareTo(Population.funCallIntervalReached) == 0) {
+        if (name.compareTo(Population.FUN_CALL_INTERVAL_REACHED) == 0) {
             fireNextGenerationPerformed();
         }// else System.err.println("unknown event!");
     }
