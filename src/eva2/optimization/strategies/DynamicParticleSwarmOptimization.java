@@ -158,9 +158,9 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
         }
 
         if (indy instanceof InterfaceDataTypeDouble) {
-            ((InterfaceDataTypeDouble) indy).SetDoubleGenotype(newPos);
+            ((InterfaceDataTypeDouble) indy).setDoubleGenotype(newPos);
         } else {
-            endy.SetDoubleGenotype(newPos);
+            endy.setDoubleGenotype(newPos);
         }
 
         resetFitness(indy);

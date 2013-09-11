@@ -297,7 +297,7 @@ public class ESIndividualIntegerData extends AbstractEAIndividual implements Int
      * @param b The new genotype of the Individual
      */
     @Override
-    public void SetDGenotype(double[] b) {
+    public void setDGenotype(double[] b) {
         this.m_Genotype = b;
         for (int i = 0; i < this.m_Genotype.length; i++) {
             if (this.m_Genotype[i] < this.m_Range[i][0]) {

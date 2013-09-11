@@ -202,7 +202,7 @@ public class MutateESCovarianceMatrixAdaption implements InterfaceMutation, java
                     x[i] = ranges[i][1];
                 }
             }
-            ((InterfaceESIndividual) individual).SetDGenotype(x);
+            ((InterfaceESIndividual) individual).setDGenotype(x);
         }
         //System.out.println("After Mutate:  " +((GAIndividual)individual).getSolutionRepresentationFor());
     }

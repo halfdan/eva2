@@ -15,7 +15,7 @@ public interface InterfaceDoubleConstraint {
     /**
      * Returns the boolean information whether the constraint is satisfied.
      *
-     * @param indy
+     * @param indyX
      * @return
      */
     public boolean isSatisfied(double[] indyX);
@@ -24,7 +24,6 @@ public interface InterfaceDoubleConstraint {
      * Return the absolute (positive) degree of violation or zero if the constraint
      * is fulfilled.
      *
-     * @param indy  The individual to check.
      * @param indyX possibly the decoded individual position
      * @return true if valid false else.
      */

@@ -80,7 +80,7 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
             ((InterfaceDataTypeDouble) this.template)
                     .setDoubleDataLength(getProblemDimension());
             ((InterfaceDataTypeDouble) this.template)
-                    .SetDoubleRange(makeRange());
+                    .setDoubleRange(makeRange());
         }
     }
 
@@ -136,7 +136,7 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
         double[] fitness;
 
         x = getEvalArray(individual);
-        ((InterfaceDataTypeDouble) individual).SetDoublePhenotype(x);
+        ((InterfaceDataTypeDouble) individual).setDoublePhenotype(x);
         // evaluate the vector
         fitness = this.eval(x);
         // if indicated, add Gaussian noise
@@ -427,11 +427,11 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
         InterfaceDataTypeDouble tmpIndy;
         tmpIndy = (InterfaceDataTypeDouble) prob.getIndividualTemplate()
                 .clone();
-        tmpIndy.SetDoubleGenotype(pos);
+        tmpIndy.setDoubleGenotype(pos);
         if (prob.isDoRotation()) {
             pos = prob.inverseRotateMaybe(pos); // theres an inverse rotation
             // required
-            tmpIndy.SetDoubleGenotype(pos);
+            tmpIndy.setDoubleGenotype(pos);
         }
         ((AbstractEAIndividual) tmpIndy).setFitness(prob.eval(pos));
         if (!Mathematics.isInRange(pos, prob.makeRange())) {
@@ -453,7 +453,7 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
         InterfaceDataTypeDouble tmpIndy;
         tmpIndy = (InterfaceDataTypeDouble) prob.getIndividualTemplate()
                 .clone();
-        tmpIndy.SetDoubleGenotype(pos);
+        tmpIndy.setDoubleGenotype(pos);
         ((AbstractEAIndividual) tmpIndy).setFitness(prob.eval(pos));
         pop.add(tmpIndy);
         FitnessConvergenceTerminator convTerm = new FitnessConvergenceTerminator(

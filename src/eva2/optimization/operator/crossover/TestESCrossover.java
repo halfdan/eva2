@@ -107,7 +107,7 @@ public class TestESCrossover implements java.io.Serializable {
                 newRange[i][1] = 2;
             }
             tmpIndyD.setDoubleDataLength(m_Dimension);
-            tmpIndyD.SetDoubleRange(newRange);
+            tmpIndyD.setDoubleRange(newRange);
             for (int i = 0; i < m_Partners.getTargetSize(); i++) {
                 tmpIndyEA = (AbstractEAIndividual) ((AbstractEAIndividual) tmpIndyD).clone();
                 tmpIndyEA.init(m_Problem);
@@ -146,7 +146,7 @@ public class TestESCrossover implements java.io.Serializable {
                 newRange[i][1] = 2;
             }
             tmpIndyD.setDoubleDataLength(m_Dimension);
-            tmpIndyD.SetDoubleRange(newRange);
+            tmpIndyD.setDoubleRange(newRange);
 
             double[] tmpD = new double[2];
             tmpD[0] = 1;
@@ -190,7 +190,7 @@ public class TestESCrossover implements java.io.Serializable {
                 newRange[i][1] = 2;
             }
             tmpIndyD.setDoubleDataLength(m_Dimension);
-            tmpIndyD.SetDoubleRange(newRange);
+            tmpIndyD.setDoubleRange(newRange);
 
             double[] tmpD = new double[2];
             tmpD[0] = 0.5;

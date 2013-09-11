@@ -356,7 +356,7 @@ public class ClusteringXMeans implements InterfaceClustering, java.io.Serializab
                     x[0] = 10;
                     x[1] = 10;
                 }
-                ((InterfaceDataTypeDouble) pop.get(i)).SetDoubleGenotype(x);
+                ((InterfaceDataTypeDouble) pop.get(i)).setDoubleGenotype(x);
             }
         } else {
             f1.initializePopulation(pop);

@@ -612,7 +612,7 @@ public class MutateESRankMuCMA implements InterfaceAdaptOperatorGenerational, In
             // this is a critical point: where do the CMA parameters for this individual's mutation come from?
             // for GA and ES we can expect that selection occured directly before the mutation cycle,
             // so we take the parameter set from the last adpation step.
-            ((InterfaceDataTypeDouble) individual).SetDoubleGenotype(mutate(lastParams, x, range, 0));
+            ((InterfaceDataTypeDouble) individual).setDoubleGenotype(mutate(lastParams, x, range, 0));
 
 //			if (TRACE) System.out.println("WCMA mutate, aft: " + BeanInspector.toString(x));
         } else {

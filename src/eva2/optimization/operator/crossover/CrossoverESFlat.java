@@ -88,7 +88,7 @@ public class CrossoverESFlat implements InterfaceCrossover, java.io.Serializable
             }
             // write the result back
             for (int i = 0; i < result.length; i++) {
-                ((InterfaceESIndividual) result[i]).SetDGenotype(children[i]);
+                ((InterfaceESIndividual) result[i]).setDGenotype(children[i]);
             }
         }
         //in case the crossover was successfull lets give the mutation operators a chance to mate the strategy parameters

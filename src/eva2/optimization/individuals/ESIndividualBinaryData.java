@@ -279,7 +279,7 @@ public class ESIndividualBinaryData extends AbstractEAIndividual implements Inte
      * @param b The new genotype of the Individual
      */
     @Override
-    public void SetDGenotype(double[] b) {
+    public void setDGenotype(double[] b) {
         this.m_Genotype = b;
         for (int i = 0; i < this.m_Genotype.length; i++) {
             if (this.m_Genotype[i] < this.m_Range[i][0]) {
@@ -296,7 +296,7 @@ public class ESIndividualBinaryData extends AbstractEAIndividual implements Inte
 //     * ranges.
 //     * @param range     The new range for the double data.
 //     */
-//    public void SetDoubleRange(double[][] range) {
+//    public void setDoubleRange(double[][] range) {
 //        this.m_Range = range;
 //    }
 

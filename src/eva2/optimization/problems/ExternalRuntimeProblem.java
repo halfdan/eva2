@@ -77,7 +77,7 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem
     public ExternalRuntimeProblem() {
         this.template = new ESIndividualDoubleData();
         ((ESIndividualDoubleData) this.template).setDoubleDataLength(m_ProblemDimension);
-        ((ESIndividualDoubleData) this.template).SetDoubleRange(makeRange());
+        ((ESIndividualDoubleData) this.template).setDoubleRange(makeRange());
     }
 
     public ExternalRuntimeProblem(ExternalRuntimeProblem b) {
@@ -153,7 +153,7 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem
         this.m_OverallBest = null;
 
         ((InterfaceDataTypeDouble) this.template).setDoubleDataLength(this.m_ProblemDimension);
-        ((InterfaceDataTypeDouble) this.template).SetDoubleRange(makeRange());
+        ((InterfaceDataTypeDouble) this.template).setDoubleRange(makeRange());
 
         AbstractOptimizationProblem.defaultInitPopulation(population, template, this);
     }

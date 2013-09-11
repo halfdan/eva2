@@ -103,7 +103,7 @@ public abstract class AbstractDynTransProblem extends AbstractSynchronousOptimiz
             /* individuum moves towords untranslated problem */
             indyData[i] -= getTranslation(i, time);
         }
-        ((InterfaceDataTypeDouble) individual).SetDoubleGenotype(indyData);
+        ((InterfaceDataTypeDouble) individual).setDoubleGenotype(indyData);
     }
 
     /*

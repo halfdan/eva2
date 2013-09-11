@@ -55,7 +55,7 @@ public abstract class AbstractMultiModalProblemKnown extends AbstractProblemDoub
         population.clear();
 
         ((InterfaceDataTypeDouble) this.template).setDoubleDataLength(this.problemDimension);
-        ((InterfaceDataTypeDouble) this.template).SetDoubleRange(makeRange());
+        ((InterfaceDataTypeDouble) this.template).setDoubleRange(makeRange());
         for (int i = 0; i < population.getTargetSize(); i++) {
             tmpIndy = (AbstractEAIndividual) ((AbstractEAIndividual) this.template).clone();
             tmpIndy.init(this);
@@ -148,7 +148,7 @@ public abstract class AbstractMultiModalProblemKnown extends AbstractProblemDoub
     protected void addOptimum(double[] point) {
         InterfaceDataTypeDouble tmpIndy;
         tmpIndy = (InterfaceDataTypeDouble) ((AbstractEAIndividual) this.template).clone();
-        tmpIndy.SetDoubleGenotype(point);
+        tmpIndy.setDoubleGenotype(point);
         ((AbstractEAIndividual) tmpIndy).setFitness(evalUnnormalized(point));
         if (((AbstractEAIndividual) tmpIndy).getFitness(0) >= globalOptimum) {
             globalOptimum = ((AbstractEAIndividual) tmpIndy).getFitness(0);
@@ -166,7 +166,7 @@ public abstract class AbstractMultiModalProblemKnown extends AbstractProblemDoub
         }
         if (isDoRotation()) {
             point = inverseRotateMaybe(point); // theres an inverse rotation required
-            tmpIndy.SetDoubleGenotype(point);
+            tmpIndy.setDoubleGenotype(point);
         }
         this.listOfOptima.add(tmpIndy);
     }

@@ -167,7 +167,7 @@ public class GAIndividualDoubleData extends AbstractEAIndividual implements Inte
      * @param range The new range for the double data.
      */
     @Override
-    public void SetDoubleRange(double[][] range) {
+    public void setDoubleRange(double[][] range) {
         if (range.length != this.m_Range.length) {
             System.out.println("Warning: Trying to set a range of length " + range.length + " to a vector of length "
                     + this.m_Range.length + "!\n Use method setDoubleDataLength first!");
@@ -223,7 +223,7 @@ public class GAIndividualDoubleData extends AbstractEAIndividual implements Inte
      * @param doubleData The new double data.
      */
     @Override
-    public void SetDoublePhenotype(double[] doubleData) {
+    public void setDoublePhenotype(double[] doubleData) {
         this.m_Phenotype = doubleData;
     }
 
@@ -234,8 +234,8 @@ public class GAIndividualDoubleData extends AbstractEAIndividual implements Inte
      * @param doubleData The new double data.
      */
     @Override
-    public void SetDoubleGenotype(double[] doubleData) {
-        this.SetDoublePhenotype(doubleData);
+    public void setDoubleGenotype(double[] doubleData) {
+        this.setDoublePhenotype(doubleData);
         int[] locus = new int[2];
         for (int i = 0; i < doubleData.length; i++) {
             locus[0] = i * this.m_Precision;
@@ -262,7 +262,7 @@ public class GAIndividualDoubleData extends AbstractEAIndividual implements Inte
             if (bs.length != this.m_Range.length) {
                 System.out.println("Init value and requested length doesn't match!");
             }
-            this.SetDoubleGenotype(bs);
+            this.setDoubleGenotype(bs);
         } else {
             this.defaultInit(opt);
             System.out.println("Initial value for GAIndividualDoubleData is not double[]!");

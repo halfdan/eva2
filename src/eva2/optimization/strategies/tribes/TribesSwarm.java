@@ -599,7 +599,7 @@ public class TribesSwarm implements java.io.Serializable {
     	 */
 
         TribesExplorer expl = new TribesExplorer(range, masterTribe.getObjectiveFirstDim());
-        expl.SetDoubleRange(range);
+        expl.setDoubleRange(range);
 
 //    	System.out.println("generating expl, option " + option + ", init " + initType + ", from tribe " + fromTribe);
 

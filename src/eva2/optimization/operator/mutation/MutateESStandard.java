@@ -66,7 +66,7 @@ package eva2.optimization.operator.mutation;
 //                if (range[i][0] > x[i]) x[i] = range[i][0];
 //                if (range[i][1] < x[i]) x[i] = range[i][1];
 //            }
-//            ((InterfaceESIndividual)individual).SetDGenotype(x);
+//            ((InterfaceESIndividual)individual).setDGenotype(x);
 //
 //        }
 //        //System.out.println("After Mutate:  " +((GAIndividual)individual).getSolutionRepresentationFor());

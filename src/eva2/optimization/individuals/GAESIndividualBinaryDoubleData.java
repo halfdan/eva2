@@ -246,8 +246,8 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
      * @param range The new range for the double data.
      */
     @Override
-    public void SetDoubleRange(double[][] range) {
-        this.m_Numbers.SetDoubleRange(range);
+    public void setDoubleRange(double[][] range) {
+        this.m_Numbers.setDoubleRange(range);
     }
 
     /**
@@ -288,8 +288,8 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
      * @see InterfaceDataTypeDouble.SetDoubleData()
      */
     @Override
-    public void SetDoublePhenotype(double[] doubleData) {
-        this.m_Numbers.SetDoublePhenotype(doubleData);
+    public void setDoublePhenotype(double[] doubleData) {
+        this.m_Numbers.setDoublePhenotype(doubleData);
     }
 
     /**
@@ -300,8 +300,8 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
      * @see InterfaceDataTypeDouble.SetDoubleDataLamarckian()
      */
     @Override
-    public void SetDoubleGenotype(double[] doubleData) {
-        this.m_Numbers.SetDoubleGenotype(doubleData);
+    public void setDoubleGenotype(double[] doubleData) {
+        this.m_Numbers.setDoubleGenotype(doubleData);
     }
 
     /**

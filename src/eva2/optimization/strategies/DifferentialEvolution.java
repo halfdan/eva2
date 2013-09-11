@@ -448,7 +448,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
         if (forceRange) {
             Mathematics.projectToRange(nX, esIndy.getDoubleRange());
         } // why did this never happen before?
-        esIndy.SetDoubleGenotype(nX);
+        esIndy.setDoubleGenotype(nX);
         indy.SetAge(0);
         indy.resetConstraintViolation();
         double[] fit = new double[1];

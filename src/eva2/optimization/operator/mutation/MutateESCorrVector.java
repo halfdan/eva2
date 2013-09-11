@@ -178,7 +178,7 @@ public class MutateESCorrVector implements InterfaceMutation, java.io.Serializab
             }
 
             // write genotype back 
-            ((InterfaceESIndividual) individual).SetDGenotype(genes);
+            ((InterfaceESIndividual) individual).setDGenotype(genes);
 
         }
 //        if (TRACE) System.out.println("After Mutate:  " + AbstractEAIndividual.getDefaultDataString(individual));

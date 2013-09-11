@@ -515,7 +515,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
             Matrix rlhM = StatisticUtils.rlh(pop.size(), range, true);
             for (int i = 0; i < pop.size(); i++) {
                 AbstractEAIndividual tmpIndy = pop.getEAIndividual(i);
-                ((InterfaceDataTypeDouble) tmpIndy).SetDoubleGenotype(rlhM.getRowShallow(i));
+                ((InterfaceDataTypeDouble) tmpIndy).setDoubleGenotype(rlhM.getRowShallow(i));
             }
         } else {
             System.err.println("Error: data type double required for Population.createUniformSampling");
@@ -2383,11 +2383,11 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      */
     public void updateRange(double[][] range, boolean forceRange) {
         for (int i = 0; i < size(); i++) {
-            ((InterfaceDataTypeDouble) getEAIndividual(i)).SetDoubleRange(range);
+            ((InterfaceDataTypeDouble) getEAIndividual(i)).setDoubleRange(range);
             double[] pos = ((InterfaceDataTypeDouble) getEAIndividual(i)).getDoubleData();
             if (!Mathematics.isInRange(pos, range)) {
                 Mathematics.projectToRange(pos, range);
-                ((InterfaceDataTypeDouble) getEAIndividual(i)).SetDoubleGenotype(pos);
+                ((InterfaceDataTypeDouble) getEAIndividual(i)).setDoubleGenotype(pos);
             }
         }
     }

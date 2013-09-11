@@ -315,7 +315,7 @@ public class F8Problem extends AbstractProblemDoubleOffset
 //		Population population = new Population();
 //		InterfaceDataTypeDouble tmpIndy;
 //		tmpIndy = (InterfaceDataTypeDouble)((AbstractEAIndividual)this.template).clone();
-//		tmpIndy.SetDoubleGenotype(pos);
+//		tmpIndy.setDoubleGenotype(pos);
 //		((AbstractEAIndividual)tmpIndy).SetFitness(eval(pos));
 //		population.add(tmpIndy);
 //		FitnessConvergenceTerminator convTerm = new FitnessConvergenceTerminator(1e-15, 10, false, true);
