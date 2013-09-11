@@ -125,7 +125,7 @@ public class MutateESGlobal implements InterfaceMutation, java.io.Serializable, 
                     x[i] = range[i][1];
                 }
             }
-            ((InterfaceESIndividual) individual).SetDGenotype(x);
+            ((InterfaceESIndividual) individual).setDGenotype(x);
 
         }
         //System.out.println("After Mutate:  " +((GAIndividual)individual).getSolutionRepresentationFor());

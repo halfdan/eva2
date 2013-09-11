@@ -348,7 +348,7 @@ public class ESIndividualPermutationData extends AbstractEAIndividual implements
      * @param b The new genotype of the Individual
      */
     @Override
-    public void SetDGenotype(double[] b) {
+    public void setDGenotype(double[] b) {
         this.m_Genotype = mapVectorToMatrix(b, this.sizePermutation());
         for (int i = 0; i < this.m_Genotype.length; i++) {
             for (int j = 0; j < this.m_Genotype[i].length; j++) {

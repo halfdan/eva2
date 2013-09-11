@@ -126,7 +126,7 @@ public class MutateESMutativeStepSizeControl implements InterfaceMutation, java.
                     x[i] = range[i][1];
                 }
             }
-            ((InterfaceESIndividual) individual).SetDGenotype(x);
+            ((InterfaceESIndividual) individual).setDGenotype(x);
             // System.out.println("new step size: " + mutationStepSize);
         }
         //System.out.println("After Mutate:  " +((GAIndividual)individual).getSolutionRepresentationFor());

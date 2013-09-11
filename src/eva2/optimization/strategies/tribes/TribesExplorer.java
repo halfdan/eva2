@@ -41,7 +41,7 @@ public class TribesExplorer extends AbstractEAIndividual implements InterfaceDat
 
     public TribesExplorer(double[][] range, double objFirstDim) {
         init(range.length, Tribes.maxTribeNb);
-        SetDoubleRange(range);
+        setDoubleRange(range);
         objectiveValueFirstDim = objFirstDim;
     }
 
@@ -981,7 +981,7 @@ v[d] = cmin * v[d];
             if (x.length != position.x.length) {
                 System.err.println("Init value and requested length doesn't match!");
             }
-            this.SetDoubleGenotype(x);
+            this.setDoubleGenotype(x);
         } else {
             this.init(opt);
             System.err.println("Initial value for ESIndividualDoubleData is not double[]!");
@@ -1000,17 +1000,17 @@ v[d] = cmin * v[d];
     }
 
     @Override
-    public void SetDoublePhenotype(double[] doubleData) {
+    public void setDoublePhenotype(double[] doubleData) {
         position.setDoubleArray(doubleData);
     }
 
     @Override
-    public void SetDoubleGenotype(double[] doubleData) {
+    public void setDoubleGenotype(double[] doubleData) {
         position.setDoubleArray(doubleData);
     }
 
     @Override
-    public void SetDoubleRange(double[][] range) {
+    public void setDoubleRange(double[][] range) {
         if (position.x.length != range.length) {    // we will need to fully reinit the particle
             initPositions(range.length);
         }
@@ -1048,7 +1048,7 @@ v[d] = cmin * v[d];
         return position.x.length;
     }
 
-//	public void SetDGenotype(double[] b) {
+//	public void setDGenotype(double[] b) {
 //		position.setDoubleArray(b);
 //	}
 //

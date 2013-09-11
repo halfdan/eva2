@@ -118,7 +118,7 @@ public class CrossoverESPCX implements InterfaceCrossover, java.io.Serializable 
 
             // write the result back
             for (int i = 0; i < result.length; i++) {
-                ((InterfaceESIndividual) result[i]).SetDGenotype(children[i]);
+                ((InterfaceESIndividual) result[i]).setDGenotype(children[i]);
             }
         }
         //in case the crossover was successfull lets give the mutation operators a chance to mate the strategy parameters
@@ -238,7 +238,7 @@ public class CrossoverESPCX implements InterfaceCrossover, java.io.Serializable 
             range[i][1] = 2;
         }
         indy1.setDoubleDataLength(n);
-        indy1.SetDoubleRange(range);
+        indy1.setDoubleRange(range);
         // init values
         indy2 = (ESIndividualDoubleData) indy1.clone();
         indy3 = (ESIndividualDoubleData) indy1.clone();

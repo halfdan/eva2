@@ -373,8 +373,8 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
             minValInDim[i] = range[i][0]; // get lower boarder for dimension i
             maxValInDim[i] = range[i][1]; // get upper boarder for dimension i
         }
-//		min.SetDoubleGenotype(minValInDim); // set all dimensions to min
-//		max.SetDoubleGenotype(maxValInDim); // set all dimensions to max
+//		min.setDoubleGenotype(minValInDim); // set all dimensions to min
+//		max.setDoubleGenotype(maxValInDim); // set all dimensions to max
         this.maxPosDist = Mathematics.euclidianDist(minValInDim, maxValInDim);
     }
 

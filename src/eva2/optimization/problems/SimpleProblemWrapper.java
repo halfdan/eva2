@@ -129,7 +129,7 @@ public class SimpleProblemWrapper extends AbstractOptimizationProblem {
         }
         if (template instanceof InterfaceDataTypeDouble) {
             ((InterfaceDataTypeDouble) this.template).setDoubleDataLength(simProb.getProblemDimension());
-            ((InterfaceDataTypeDouble) this.template).SetDoubleRange(makeRange());
+            ((InterfaceDataTypeDouble) this.template).setDoubleRange(makeRange());
         } else if (template instanceof InterfaceDataTypeBinary) {
             ((InterfaceDataTypeBinary) this.template).setBinaryDataLength(simProb.getProblemDimension());
         } else {

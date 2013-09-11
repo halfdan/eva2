@@ -229,7 +229,7 @@ public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Ser
 
                 } // end loop iterations
 
-                ((InterfaceDataTypeDouble) indy).SetDoubleGenotype(params);
+                ((InterfaceDataTypeDouble) indy).setDoubleGenotype(params);
 
             } // end if ((this.problem instanceof InterfaceFirstOrderDerivableProblem) && (indy instanceof InterfaceDataTypeDouble)) {
             else {
@@ -256,7 +256,7 @@ public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Ser
                     if (TRACE) {
                         System.out.println("Gradient Descent: Fitness critical:" + indy.getFitness()[0]);
                     }
-                    ((InterfaceDataTypeDouble) indy).SetDoublePhenotype((double[]) indy.getData(oldParamsKey));
+                    ((InterfaceDataTypeDouble) indy).setDoublePhenotype((double[]) indy.getData(oldParamsKey));
                     double[] changes = (double[]) indy.getData(changesKey);
                     int[] lock = (int[]) indy.getData(lockKey);
 

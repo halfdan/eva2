@@ -150,7 +150,7 @@ public class MutateESPathLengthAdaption implements InterfaceMutation, java.io.Se
 
             this.mutateX(x, ranges, true); // this performs new mutation
 
-            ((InterfaceESIndividual) individual).SetDGenotype(x);
+            ((InterfaceESIndividual) individual).setDGenotype(x);
         }
         //System.out.println("After Mutate:  " +((GAIndividual)individual).getSolutionRepresentationFor());
     }

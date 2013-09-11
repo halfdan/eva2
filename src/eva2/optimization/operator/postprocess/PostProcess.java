@@ -797,9 +797,9 @@ public class PostProcess {
     public static void setDoubleData(AbstractEAIndividual indy, double[] data) {
         if (indy instanceof InterfaceDataTypeDouble || (indy instanceof InterfaceESIndividual)) {
             if (indy instanceof InterfaceESIndividual) {
-                ((InterfaceESIndividual) indy).SetDGenotype(data);
+                ((InterfaceESIndividual) indy).setDGenotype(data);
             } else {
-                ((InterfaceDataTypeDouble) indy).SetDoubleGenotype(data);
+                ((InterfaceDataTypeDouble) indy).setDoubleGenotype(data);
             }
         } else {
             throw new RuntimeException("Error, unable to set double data to individual instance " + indy.getClass() + " in PostProcess.setDoubleData");

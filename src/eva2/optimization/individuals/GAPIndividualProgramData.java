@@ -229,8 +229,8 @@ public class GAPIndividualProgramData extends AbstractEAIndividual implements In
      * @param range The new range for the double data.
      */
     @Override
-    public void SetDoubleRange(double[][] range) {
-        this.m_Numbers.SetDoubleRange(range);
+    public void setDoubleRange(double[][] range) {
+        this.m_Numbers.setDoubleRange(range);
     }
 
     /**
@@ -271,8 +271,8 @@ public class GAPIndividualProgramData extends AbstractEAIndividual implements In
      * @param doubleData The new double data.
      */
     @Override
-    public void SetDoublePhenotype(double[] doubleData) {
-        this.m_Numbers.SetDoublePhenotype(doubleData);
+    public void setDoublePhenotype(double[] doubleData) {
+        this.m_Numbers.setDoublePhenotype(doubleData);
     }
 
     /**
@@ -282,8 +282,8 @@ public class GAPIndividualProgramData extends AbstractEAIndividual implements In
      * @param doubleData The new double data.
      */
     @Override
-    public void SetDoubleGenotype(double[] doubleData) {
-        this.m_Numbers.SetDoubleGenotype(doubleData);
+    public void setDoubleGenotype(double[] doubleData) {
+        this.m_Numbers.setDoubleGenotype(doubleData);
     }
 
 /************************************************************************************

@@ -17,11 +17,11 @@ public class FM0Problem extends AbstractMultiModalProblemKnown implements Interf
         this.problemDimension = 2;
         this.template = new ESIndividualDoubleData();
 //        this.m_Extrema          = new double[2];
-//        this.m_Range            = new double [this.problemDimension][2];
-//        this.m_Range[0][0]      = -2.0;
-//        this.m_Range[0][1]      =  2.0;
-//        this.m_Range[1][0]      = -2.8;
-//        this.m_Range[1][1]      =  2.8;
+//        this.range            = new double [this.problemDimension][2];
+//        this.range[0][0]      = -2.0;
+//        this.range[0][1]      =  2.0;
+//        this.range[1][0]      = -2.8;
+//        this.range[1][1]      =  2.8;
 //        this.m_Extrema[0]       = -2;
 //        this.m_Extrema[1]       = 6;
     }

@@ -168,10 +168,10 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
      * @param range The new range for the double data.
      */
     @Override
-    public void SetDoubleRange(double[][] range) {
+    public void setDoubleRange(double[][] range) {
         if (range.length != this.m_Range.length) {
             System.out.println("Warning: Trying to set a range of length " + range.length + " to a vector of length "
-                    + this.m_Range.length + "!\n Use method setDoubleDataLength first! (ESIndividualDoubleData:SetDoubleRange)");
+                    + this.m_Range.length + "!\n Use method setDoubleDataLength first! (ESIndividualDoubleData:setDoubleRange)");
         }
         for (int i = 0; ((i < this.m_Range.length) && (i < range.length)); i++) {
             this.m_Range[i][0] = range[i][0];
@@ -230,7 +230,7 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
      * @param doubleData The new double data.
      */
     @Override
-    public void SetDoublePhenotype(double[] doubleData) {
+    public void setDoublePhenotype(double[] doubleData) {
         this.m_Phenotype = doubleData;
     }
 
@@ -241,9 +241,9 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
      * @param doubleData The new double data.
      */
     @Override
-    public void SetDoubleGenotype(double[] doubleData) {
-//        this.SetDoublePhenotype(doubleData);
-        this.SetDoublePhenotype(null); // tag it as invalid
+    public void setDoubleGenotype(double[] doubleData) {
+//        this.setDoublePhenotype(doubleData);
+        this.setDoublePhenotype(null); // tag it as invalid
         this.m_Genotype = new double[doubleData.length];
         System.arraycopy(doubleData, 0, this.m_Genotype, 0, doubleData.length);
     }
@@ -279,7 +279,7 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
             if (bs.length != this.m_Genotype.length) {
                 System.out.println("Init value and requested length doesn't match!");
             }
-            this.SetDoubleGenotype(bs);
+            this.setDoubleGenotype(bs);
         } else {
             this.defaultInit(opt);
             System.out.println("Initial value for ESIndividualDoubleData is not double[]!");
@@ -336,7 +336,7 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
      * @param b The new genotype of the Individual
      */
     @Override
-    public void SetDGenotype(double[] b) {
+    public void setDGenotype(double[] b) {
         this.m_Genotype = b;
         this.m_Phenotype = null; // mark it as invalid
         for (int i = 0; i < this.m_Genotype.length; i++) {
@@ -354,7 +354,7 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
      *
      * @param b The new genotype of the Individual
      */
-    public void SetDGenotypeNocheck(double[] b) {
+    public void setDGenotypeNocheck(double[] b) {
         this.m_Phenotype = null; // mark it as invalid
         this.m_Genotype = b;
     }
@@ -432,12 +432,4 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
     public static String globalInfo() {
         return "This is an ES individual suited to optimize double values.";
     }
-
-//    public String toString() {
-//    	String str = "Ind " + m_Genotype[0];
-//    	for (int i=1; i<this.m_Genotype.length; i++) str += "/" + m_Genotype[i];
-//    	str += "~" + fitness[0];
-//    	for (int i=1; i<this.fitness.length; i++) str += "/" + fitness[i];
-//    	return str;
-//    }
 }

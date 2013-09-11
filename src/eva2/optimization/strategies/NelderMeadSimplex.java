@@ -163,7 +163,7 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
             }
         }
 //		AbstractEAIndividual reflectedInd = (AbstractEAIndividual)((AbstractEAIndividual)bestpop.getIndividual(1)).clone(); 
-//		((InterfaceDataTypeDouble)reflectedInd).SetDoubleGenotype(r);
+//		((InterfaceDataTypeDouble)reflectedInd).setDoubleGenotype(r);
 //
 //		problem.evaluate(reflectedInd);
         AbstractEAIndividual reflectedInd = createEvalIndy(bestpop, r);
@@ -199,7 +199,7 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
             }
 
 //			AbstractEAIndividual c_ind = (AbstractEAIndividual)((AbstractEAIndividual)bestpop.getIndividual(1)).clone(); 
-//			((InterfaceDataTypeDouble)c_ind).SetDoubleGenotype(c);
+//			((InterfaceDataTypeDouble)c_ind).setDoubleGenotype(c);
 //			problem.evaluate(c_ind);
             AbstractEAIndividual c_ind = createEvalIndy(bestpop, c);
             this.m_Population.incrFunctionCalls();
@@ -212,7 +212,7 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
 
     private AbstractEAIndividual createEvalIndy(Population pop, double[] newGenotype) {
         AbstractEAIndividual e_ind = (AbstractEAIndividual) ((AbstractEAIndividual) pop.getIndividual(1)).clone();
-        ((InterfaceDataTypeDouble) e_ind).SetDoubleGenotype(newGenotype);
+        ((InterfaceDataTypeDouble) e_ind).setDoubleGenotype(newGenotype);
         e_ind.resetConstraintViolation();
         m_Problem.evaluate(e_ind);
         if (e_ind.getFitness(0) < 6000) {
@@ -294,7 +294,7 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
                 if (!Mathematics.isInRange(x, range)) {
                     System.err.println("WARNING: nelder mead step produced indy out of range!");
 //					Mathematics.projectToRange(x, range);
-//					((InterfaceDataTypeDouble)ind).SetDoubleGenotype(x);
+//					((InterfaceDataTypeDouble)ind).setDoubleGenotype(x);
 //					problem.evaluate(ind);
 //					this.m_Population.incrFunctionCalls();
                 }
@@ -308,7 +308,7 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
                     for (int i = 0; i < c.length; i++) {
                         c[i] = 0.5 * c[i] + 0.5 * u_1[i];
                     }
-                    ((InterfaceDataTypeDouble) m_Population.getEAIndividual(j)).SetDoubleGenotype(c);
+                    ((InterfaceDataTypeDouble) m_Population.getEAIndividual(j)).setDoubleGenotype(c);
 //					m_Population.getEAIndividual(j).resetConstraintViolation(); // not a good idea because during evaluation, a stats update may be performed which mustnt see indies which are evaluated, but possible constraints have been reset.
                 }
                 m_Problem.evaluate(m_Population);
@@ -470,7 +470,7 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
             } else {
                 dat[i] = Math.min(dat[i] + curPerturb, range[i][1]);
             }
-            ((InterfaceDataTypeDouble) indy).SetDoubleGenotype(dat);
+            ((InterfaceDataTypeDouble) indy).setDoubleGenotype(dat);
             indy.resetConstraintViolation();
             initialPop.add((AbstractEAIndividual) indy.clone());
         }

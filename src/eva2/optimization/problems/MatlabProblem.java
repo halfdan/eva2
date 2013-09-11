@@ -142,7 +142,7 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
                 }
                 if (getProblemDimension() > 0) { // avoid evil case setting dim to 0 during object init
                     ((InterfaceDataTypeDouble) this.template).setDoubleDataLength(getProblemDimension());
-                    ((InterfaceDataTypeDouble) this.template).SetDoubleRange(range);
+                    ((InterfaceDataTypeDouble) this.template).setDoubleRange(range);
                 }
                 break;
             case typeBinary:
@@ -330,7 +330,7 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
     private void setIndyGenotype(AbstractEAIndividual indy, double[] ds) {
         switch (dataType) {
             case typeDouble:
-                ((InterfaceDataTypeDouble) indy).SetDoubleGenotype(ds);
+                ((InterfaceDataTypeDouble) indy).setDoubleGenotype(ds);
                 break;
             case typeBinary:
                 ((InterfaceDataTypeBinary) indy).SetBinaryGenotype(toBinary(ds));

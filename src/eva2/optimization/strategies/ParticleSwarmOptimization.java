@@ -1253,16 +1253,16 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 
         // finally set the new position and the current velocity
         if (indy instanceof InterfaceDataTypeDouble) {
-            ((InterfaceDataTypeDouble) indy).SetDoubleGenotype(newPosition);
+            ((InterfaceDataTypeDouble) indy).setDoubleGenotype(newPosition);
         } else {
-            ((InterfaceDataTypeDouble) indy).SetDoubleGenotype(newPosition); // WARNING, this does a checkBounds in any case!
+            ((InterfaceDataTypeDouble) indy).setDoubleGenotype(newPosition); // WARNING, this does a checkBounds in any case!
             if (!m_CheckRange) {
                 System.err.println("warning, checkbounds will be forced by InterfaceESIndividual!");
             }
         }
 
         indy.putData(partVelKey, curVelocity);
-//		((InterfaceESIndividual) indy).SetDGenotype(newPosition);
+//		((InterfaceESIndividual) indy).setDGenotype(newPosition);
     }
 
     /**
@@ -2228,7 +2228,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
                 System.err.println("partInfo: " + i + " - " + getParticleInfo(population.getEAIndividual(i)));
                 throw new RuntimeException("Mismatching best fitness!! " + personalBestfit[0] + " vs. " + ((InterfaceProblemDouble) m_Problem).eval(personalBestPos)[0]);
             }
-            ((InterfaceDataTypeDouble) indy).SetDoubleGenotype(personalBestPos);
+            ((InterfaceDataTypeDouble) indy).setDoubleGenotype(personalBestPos);
             indy.setFitness(personalBestfit);
             bests.add((AbstractEAIndividual) indy.clone());
         }

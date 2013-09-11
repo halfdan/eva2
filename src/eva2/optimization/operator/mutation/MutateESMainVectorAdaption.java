@@ -157,7 +157,7 @@ public class MutateESMainVectorAdaption implements InterfaceMutation, java.io.Se
             Z1 = RNG.gaussianDouble(1.0);
             evaluateNewObjectX(x, ranges);
 
-            ((InterfaceESIndividual) individual).SetDGenotype(x);
+            ((InterfaceESIndividual) individual).setDGenotype(x);
         }
         //System.out.println("After Mutate:  " +((GAIndividual)individual).getSolutionRepresentationFor());
     }

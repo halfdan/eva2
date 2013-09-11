@@ -187,7 +187,7 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
 
     //	public double eval(double[] x) {
 //		AbstractEAIndividual indy = (AbstractEAIndividual)template.clone();
-//		((InterfaceDataTypeDouble)indy).SetDoubleGenotype(x);
+//		((InterfaceDataTypeDouble)indy).setDoubleGenotype(x);
 //		problem.evaluate(indy);
 //		return indy.getFitness(0);
 //	}
@@ -554,7 +554,7 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
         if (checkRange) {
             Mathematics.projectToRange(combi, range);
         }
-        ((InterfaceDataTypeDouble) resIndy).SetDoubleGenotype(combi);
+        ((InterfaceDataTypeDouble) resIndy).setDoubleGenotype(combi);
         problem.evaluate(resIndy);
         refSet.incrFunctionCalls();
         return resIndy;
@@ -673,7 +673,7 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
             freq[i][interv]++;
         }
 
-        dblIndy.SetDoubleGenotype(genes);
+        dblIndy.setDoubleGenotype(genes);
         return indy;
     }
 
@@ -717,7 +717,7 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
         for (int i = 0; i < probDim; i++) {
             genes[i] = randInRangeInterval(i, interval);
         }
-        dblIndy.SetDoubleGenotype(genes);
+        dblIndy.setDoubleGenotype(genes);
         return indy;
     }
 

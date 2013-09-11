@@ -181,7 +181,7 @@ public class MutateESCorrolated implements InterfaceMutation, java.io.Serializab
 //            	if (range[i][1] < x[i]) x[i] = range[i][1];
 //            }
 // 
-//            ((InterfaceESIndividual)individual).SetDGenotype(x);
+//            ((InterfaceESIndividual)individual).setDGenotype(x);
 //            
 //      //turn mutationvector with alphas
 ////      for (int i = 0; i < x.length-1; i++) {
@@ -250,7 +250,7 @@ public class MutateESCorrolated implements InterfaceMutation, java.io.Serializab
                 }
             }
 
-            ((InterfaceESIndividual) individual).SetDGenotype(x);
+            ((InterfaceESIndividual) individual).setDGenotype(x);
         }
     }
 

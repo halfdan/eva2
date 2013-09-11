@@ -1262,10 +1262,10 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      */
     public static boolean setDoublePosition(AbstractEAIndividual indy, double[] pos) {
         if (indy instanceof InterfaceESIndividual) {
-            ((InterfaceESIndividual) indy).SetDGenotype(pos);
+            ((InterfaceESIndividual) indy).setDGenotype(pos);
             return true;
         } else if (indy instanceof InterfaceDataTypeDouble) {
-            ((InterfaceDataTypeDouble) indy).SetDoubleGenotype(pos);
+            ((InterfaceDataTypeDouble) indy).setDoubleGenotype(pos);
             return true;
         } else if (indy instanceof InterfaceDataTypeInteger) {
             EVAERROR.errorMsgOnce("Warning, double position truncated to integer! (AbstractEAIndividual.setDoublePosition)");

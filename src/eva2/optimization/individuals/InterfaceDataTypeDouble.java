@@ -33,7 +33,7 @@ public interface InterfaceDataTypeDouble {
      *
      * @param range The new range for the double data.
      */
-    public void SetDoubleRange(double[][] range);
+    public void setDoubleRange(double[][] range);
 
     /**
      * This method will return the range for all double attributes.
@@ -63,7 +63,7 @@ public interface InterfaceDataTypeDouble {
      *
      * @param doubleData The new double data.
      */
-    public void SetDoublePhenotype(double[] doubleData);
+    public void setDoublePhenotype(double[] doubleData);
 
     /**
      * This method allows you to set the double data, this can be used for
@@ -71,5 +71,5 @@ public interface InterfaceDataTypeDouble {
      *
      * @param doubleData The new double data.
      */
-    public void SetDoubleGenotype(double[] doubleData);
+    public void setDoubleGenotype(double[] doubleData);
 }
