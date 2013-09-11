@@ -76,7 +76,7 @@ public class CHCAdaptiveSearchAlgorithm implements InterfaceOptimizer, java.io.S
         }
 
         this.evaluatePopulation(this.population);
-        this.firePropertyChangedEvent(Population.nextGenerationPerformed);
+        this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }
 
     /**
@@ -100,7 +100,7 @@ public class CHCAdaptiveSearchAlgorithm implements InterfaceOptimizer, java.io.S
 
         if (reset) {
             this.evaluatePopulation(this.population);
-            this.firePropertyChangedEvent(Population.nextGenerationPerformed);
+            this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
         }
     }
 
@@ -236,7 +236,7 @@ public class CHCAdaptiveSearchAlgorithm implements InterfaceOptimizer, java.io.S
             nextGeneration.addPopulation(tmp);
             this.population = nextGeneration;
         }
-        this.firePropertyChangedEvent(Population.nextGenerationPerformed);
+        this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }
 
     @Override

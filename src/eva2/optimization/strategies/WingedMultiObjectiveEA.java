@@ -88,7 +88,7 @@ public class WingedMultiObjectiveEA implements InterfaceOptimizer, java.io.Seria
             this.m_SOOptimizer.init();
         }
         this.communicate();
-        this.firePropertyChangedEvent(Population.nextGenerationPerformed);
+        this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }
 
     /**
@@ -130,7 +130,7 @@ public class WingedMultiObjectiveEA implements InterfaceOptimizer, java.io.Seria
             this.m_SOOptimizer.initByPopulation(pop, reset);
         }
         this.communicate();
-        this.firePropertyChangedEvent(Population.nextGenerationPerformed);
+        this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }
 
     /**
@@ -150,7 +150,7 @@ public class WingedMultiObjectiveEA implements InterfaceOptimizer, java.io.Seria
 
         System.gc();
 
-        this.firePropertyChangedEvent(Population.nextGenerationPerformed);
+        this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }
 
     /**
@@ -173,7 +173,7 @@ public class WingedMultiObjectiveEA implements InterfaceOptimizer, java.io.Seria
         oldFunctionCalls = this.m_Population.getFunctionCalls();
         this.m_Problem.evaluate(this.m_Population);
         this.m_Population.SetFunctionCalls(oldFunctionCalls);
-        this.firePropertyChangedEvent(Population.nextGenerationPerformed);
+        this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
 //        double plotValue = (this.problem.getDoublePlotValue(this.m_Population)).doubleValue();
         // now they are synchronized lets migrate
         this.migrate();

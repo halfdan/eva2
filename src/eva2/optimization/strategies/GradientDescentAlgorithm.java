@@ -62,7 +62,7 @@ public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Ser
         if (reset) {
             this.getPopulation().init();
             this.m_Problem.evaluate(this.getPopulation());
-            this.firePropertyChangedEvent(Population.nextGenerationPerformed);
+            this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
         }
         //System.out.println("initByPopulation() called");
 //    indyhash = new Hashtable();
@@ -306,7 +306,7 @@ public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Ser
         }
 
 
-        this.firePropertyChangedEvent(Population.nextGenerationPerformed);
+        this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }
 
     private double momentumweigth = 0.1;

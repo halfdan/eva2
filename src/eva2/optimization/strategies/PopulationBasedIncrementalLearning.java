@@ -75,7 +75,7 @@ public class PopulationBasedIncrementalLearning implements InterfaceOptimizer, j
             }
         }
         this.evaluatePopulation(this.m_Population);
-        this.firePropertyChangedEvent(Population.nextGenerationPerformed);
+        this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }
 
     /**
@@ -96,7 +96,7 @@ public class PopulationBasedIncrementalLearning implements InterfaceOptimizer, j
             this.evaluatePopulation(this.m_Population);
         }
         ((PBILPopulation) this.m_Population).buildProbabilityVector();
-        this.firePropertyChangedEvent(Population.nextGenerationPerformed);
+        this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }
 
     /**
@@ -142,7 +142,7 @@ public class PopulationBasedIncrementalLearning implements InterfaceOptimizer, j
         } else {
             this.m_Population = nextGeneration;
         }
-        this.firePropertyChangedEvent(Population.nextGenerationPerformed);
+        this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }
 
     /**

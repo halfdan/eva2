@@ -59,7 +59,7 @@ public class SimulatedAnnealing implements InterfaceOptimizer, java.io.Serializa
         this.m_Problem.initializePopulation(this.m_Population);
         this.m_Problem.evaluate(this.m_Population);
         this.m_CurrentTemperature = this.m_InitialTemperature;
-        this.firePropertyChangedEvent(Population.nextGenerationPerformed);
+        this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }
 
     /**
@@ -75,7 +75,7 @@ public class SimulatedAnnealing implements InterfaceOptimizer, java.io.Serializa
         if (reset) {
             this.m_Population.init();
             this.m_Problem.evaluate(this.m_Population);
-            this.firePropertyChangedEvent(Population.nextGenerationPerformed);
+            this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
         }
     }
 
@@ -111,7 +111,7 @@ public class SimulatedAnnealing implements InterfaceOptimizer, java.io.Serializa
         }
         this.m_CurrentTemperature = this.m_Alpha * this.m_CurrentTemperature;
         this.m_Population.incrGeneration();
-        this.firePropertyChangedEvent(Population.nextGenerationPerformed);
+        this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }
 
     /**

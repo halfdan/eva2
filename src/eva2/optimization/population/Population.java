@@ -106,9 +106,9 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
 
     private Comparator<Object> lastSortingComparator = null;
     private InterfaceDistanceMetric popDistMetric = null; // an associated metric
-    public static final String funCallIntervalReached = "FunCallIntervalReached";
-    public static final String populationInitialized = "PopulationReinitOccured";
-    public static final String nextGenerationPerformed = "NextGenerationPerformed";
+    public static final String FUN_CALL_INTERVAL_REACHED = "FunCallIntervalReached";
+    public static final String POPULATION_INITIALIZED = "PopulationReinitOccured";
+    public static final String NEXT_GENERATION_PERFORMED = "NextGenerationPerformed";
 
     public Population() {
         LOGGER.log(Level.FINER, "New population has been created.");
@@ -419,7 +419,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
                 break;
         }
         //System.out.println("After pop init: " + this.getStringRepresentation());
-        firePropertyChangedEvent(Population.populationInitialized);
+        firePropertyChangedEvent(Population.POPULATION_INITIALIZED);
     }
 
     /**
@@ -499,8 +499,6 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      * Create a population instance which distributes the individuals according
      * to a random latin hypercube sampling.
      *
-     * @param popSize
-     * @param template
      * @return
      */
     public static void createRLHSampling(Population pop, boolean fillPop) {
@@ -627,7 +625,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
         this.functionCallCount++;
         if (doEvalNotify()) {
             if ((functionCallCount % notifyEvalInterval) == 0) {
-                firePropertyChangedEvent(funCallIntervalReached);
+                firePropertyChangedEvent(FUN_CALL_INTERVAL_REACHED);
             }
         }
     }
@@ -647,7 +645,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
                 // 	the notify interval will be stepped over or hit
                 int toHit = (nextStep - functionCallCount);
                 this.functionCallCount += toHit; // little cheat, notify may be after some more evals
-                firePropertyChangedEvent(funCallIntervalReached);
+                firePropertyChangedEvent(FUN_CALL_INTERVAL_REACHED);
                 d -= toHit;
 //    			this.functionCalls += (d-toHit);
             }
@@ -744,7 +742,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
             ((AbstractEAIndividual) get(i)).incrAge();
         }
         this.generationCount++;
-        firePropertyChangedEvent(nextGenerationPerformed);
+        firePropertyChangedEvent(NEXT_GENERATION_PERFORMED);
     }
 
     /**
@@ -2317,7 +2315,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
 
     /**
      * Fire an event every n function calls, the event sends the public String
-     * funCallIntervalReached. Be aware that if this interval is smaller than
+     * FUN_CALL_INTERVAL_REACHED. Be aware that if this interval is smaller than
      * the population size, it may happen that a notification is fired before
      * all individuals have been evaluated once, meaning that a false zero
      * fitness appears at the beginning of the optimization.

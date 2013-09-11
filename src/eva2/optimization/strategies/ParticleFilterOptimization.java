@@ -110,7 +110,7 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
         setWithShow(withShow);
 
         this.evaluatePopulation(this.m_Population);
-        this.firePropertyChangedEvent(Population.nextGenerationPerformed);
+        this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }
 
     /**
@@ -125,7 +125,7 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
         if (reset) {
             this.m_Population.init();
             this.evaluatePopulation(this.m_Population);
-            this.firePropertyChangedEvent(Population.nextGenerationPerformed);
+            this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
         }
     }
 
@@ -266,7 +266,7 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
 
 //        collectStatistics(m_Population);
 
-        this.firePropertyChangedEvent(Population.nextGenerationPerformed);
+        this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
 
     }
 

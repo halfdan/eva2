@@ -150,7 +150,7 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
         this.m_Problem.initializePopulation(this.m_Population);
         m_Population.addPopulationChangedEventListener(null); // noone will be notified directly on pop changes
         this.m_Problem.evaluate(this.m_Population);
-        this.firePropertyChangedEvent(Population.nextGenerationPerformed);
+        this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }
 
     /**
@@ -167,7 +167,7 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
         if (reset) {
             this.m_Population.init();
             this.m_Problem.evaluate(this.m_Population);
-            this.firePropertyChangedEvent(Population.nextGenerationPerformed);
+            this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
         }
     }
 
@@ -256,21 +256,21 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
             }
         }
 //		System.out.println("funcalls: " + evalCnt);
-        this.firePropertyChangedEvent(Population.nextGenerationPerformed);
+        this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
 
     }
 
     @Override
     public void registerPopulationStateChanged(Object source, String name) {
         // The events of the interim hill climbing population will be caught here 
-        if (name.compareTo(Population.funCallIntervalReached) == 0) {
+        if (name.compareTo(Population.FUN_CALL_INTERVAL_REACHED) == 0) {
 //			if ((((Population)source).size() % 50) > 0) {
 //				System.out.println("bla");
 //			}
             // set funcalls to real value
             m_Population.SetFunctionCalls(((Population) source).getFunctionCalls());
 //			System.out.println("FunCallIntervalReached at " + (((Population)source).getFunctionCalls()));
-            this.firePropertyChangedEvent(Population.nextGenerationPerformed);
+            this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
         }
         // do not react to NextGenerationPerformed
         //else System.err.println("ERROR, event was " + name);

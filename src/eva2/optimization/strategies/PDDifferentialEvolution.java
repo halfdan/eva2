@@ -100,7 +100,7 @@ public class PDDifferentialEvolution implements InterfaceOptimizer, java.io.Seri
     public void init() {
         this.m_Problem.initializePopulation(this.m_Population);
         this.evaluatePopulation(this.m_Population);
-        this.firePropertyChangedEvent(Population.nextGenerationPerformed);
+        this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }
 
     public void hideHideable() {
@@ -119,7 +119,7 @@ public class PDDifferentialEvolution implements InterfaceOptimizer, java.io.Seri
         if (reset) {
             this.m_Population.init();
             this.evaluatePopulation(this.m_Population);
-            this.firePropertyChangedEvent(Population.nextGenerationPerformed);
+            this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
         }
     }
 
@@ -553,7 +553,7 @@ public class PDDifferentialEvolution implements InterfaceOptimizer, java.io.Seri
         }
         this.m_Population.incrFunctionCallsBy(children.size());
         this.m_Population.incrGeneration();
-        this.firePropertyChangedEvent(Population.nextGenerationPerformed);
+        this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }
 
     public void optimizeSteadyState() {
@@ -617,7 +617,7 @@ public class PDDifferentialEvolution implements InterfaceOptimizer, java.io.Seri
 
         m_Problem.evaluatePopulationEnd(m_Population);
         this.m_Population.incrGeneration();
-        this.firePropertyChangedEvent(Population.nextGenerationPerformed);
+        this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }
 
     /**

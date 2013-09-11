@@ -100,7 +100,7 @@ public class EvolutionStrategyIPOP extends EvolutionStrategies implements Interf
 //       
 //        setPop(getReplacePop(nextGeneration));
 //
-//        this.firePropertyChangedEvent(Population.nextGenerationPerformed);
+//        this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
         //////////////////////////
         super.optimize();
 
@@ -147,8 +147,8 @@ public class EvolutionStrategyIPOP extends EvolutionStrategies implements Interf
 
     @Override
     protected void firePropertyChangedEvent(String name) {
-        if (name.equals(Population.funCallIntervalReached)) {
-            super.firePropertyChangedEvent(Population.nextGenerationPerformed);
+        if (name.equals(Population.FUN_CALL_INTERVAL_REACHED)) {
+            super.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
         } else {
         } // nothing, evt is produced in #registerPopulationStateChanged, dont forward original due to changing pop size
     }
@@ -258,9 +258,9 @@ public class EvolutionStrategyIPOP extends EvolutionStrategies implements Interf
 
     @Override
     public void registerPopulationStateChanged(Object source, String name) {
-        if (name.equals(Population.funCallIntervalReached)) {
+        if (name.equals(Population.FUN_CALL_INTERVAL_REACHED)) {
             getPopulation().SetFunctionCalls(((Population) source).getFunctionCalls()); // TODO this is ugly
-            super.firePropertyChangedEvent(Population.nextGenerationPerformed);
+            super.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
         } else {
 //			System.err.println("Not forwarding event " + name);
         }

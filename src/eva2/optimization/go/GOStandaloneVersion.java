@@ -577,7 +577,7 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
      */
     @Override
     public void registerPopulationStateChanged(Object source, String name) {
-        if (name.equals(Population.nextGenerationPerformed)) {
+        if (name.equals(Population.NEXT_GENERATION_PERFORMED)) {
             Population population = ((InterfaceOptimizer) source).getPopulation();
             double x = 100 / this.m_MultiRuns;
             if (this.m_GO.getTerminator() instanceof EvaluationTerminator) {

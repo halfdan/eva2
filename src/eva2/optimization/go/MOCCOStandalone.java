@@ -592,7 +592,7 @@ public class MOCCOStandalone implements InterfaceGOStandalone, InterfacePopulati
     @Override
     public void registerPopulationStateChanged(Object source, String name) {
         int currentProgress;
-        if (name.equals(Population.nextGenerationPerformed)) {
+        if (name.equals(Population.NEXT_GENERATION_PERFORMED)) {
             if (this.m_State.isVisible) {
                 Population population = ((InterfaceOptimizer) source).getPopulation();
                 double x = 100;

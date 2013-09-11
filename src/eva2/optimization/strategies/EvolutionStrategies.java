@@ -212,7 +212,7 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
         setPop(getReplacePop(nextGeneration));
 
         // necessary here because evalPop was not called on population
-        this.firePropertyChangedEvent(Population.nextGenerationPerformed);
+        this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }
 
     /**

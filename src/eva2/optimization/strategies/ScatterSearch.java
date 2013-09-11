@@ -194,7 +194,7 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
     @Override
     public void registerPopulationStateChanged(Object source, String name) {
         // The events of the interim hill climbing population will be caught here 
-        if (name.compareTo(Population.funCallIntervalReached) == 0) {
+        if (name.compareTo(Population.FUN_CALL_INTERVAL_REACHED) == 0) {
 //			if ((((Population)source).size() % 50) > 0) {
 //			System.out.println("bla");
 //			}
@@ -203,7 +203,7 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
 
 //			System.out.println("FunCallIntervalReached at " + (((Population)source).getFunctionCalls()));
 
-            this.firePropertyChangedEvent(Population.nextGenerationPerformed);
+            this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
         }
         // do not react to NextGenerationPerformed
         //else System.err.println("ERROR, event was " + name);
