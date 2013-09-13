@@ -178,10 +178,10 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
      */
     @Override
     public void init() {
-        // initByPopulation(m_Population, true);
+        // initByPopulation(population, true);
         this.m_Population.setTargetSize(m_lambdamo);
         this.m_Problem.initializePopulation(this.m_Population);
-        // children = new Population(m_Population.size());
+        // children = new Population(population.size());
         this.evaluatePopulation(this.m_Population);
         this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
 

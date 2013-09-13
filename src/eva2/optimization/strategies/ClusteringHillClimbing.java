@@ -200,7 +200,7 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
                 System.out.println("evalCycle: " + hcEvalCycle + ", evals now: " + evalsNow);
             }
             popD = PostProcess.clusterLocalSearch(localSearchMethod, m_Population, (AbstractOptimizationProblem) m_Problem, sigmaClust, evalsNow, 0.5, mutator);
-            //		(m_Population, (AbstractOptimizationProblem)problem, sigmaClust, hcEvalCycle - (m_Population.getFunctionCalls() % hcEvalCycle), 0.5);
+            //		(population, (AbstractOptimizationProblem)problem, sigmaClust, hcEvalCycle - (population.getFunctionCalls() % hcEvalCycle), 0.5);
             if (popD.head().getFunctionCalls() == funCallsBefore) {
                 System.err.println("Bad case, increasing allowed evaluations!");
                 evalsNow = Math.max(evalsNow++, (int) (evalsNow * 1.2));

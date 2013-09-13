@@ -36,39 +36,21 @@ public class Main extends JFrame implements OptimizationStateListener {
      * Generated serial version identifier.
      */
     private static final long serialVersionUID = 8232856334379977970L;
-    private final int splashScreenTime = 2500;
+    private final int splashScreenTime;
     private boolean clientInited = false;
-    private JExtDesktopPaneToolBar desktopToolBar;
     private JDesktopPane desktopPane;
     private JPanel configurationPane;
-    private JSplitPane horizontalSplit;
-    private Runnable initRnbl = null;
+    private Runnable initRunnable = null;
 
-    //private EvAComAdapter comAdapter;
-    private transient JMenuBar menuBar;
-    private transient JExtMenu menuHelp;
-    private transient JExtMenu menuSelHosts;
-    private transient JExtMenu menuModule;
-    private transient JExtMenu menuOptions;
-    private JPanel statusBar;
     private transient JProgressBar progressBar;
 
     // Option
     private ExtAction actPreferences;
     private ExtAction actQuit;
 
-    // LogPanel
-    private LoggingPanel logPanel;
     private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
 
-    // Module:
-    private ExtAction actModuleLoad;
-
     // Hosts:
-    private ExtAction actHost;
-    private ExtAction actAvailableHost;
-    private ExtAction actKillHost;
-    private ExtAction actKillAllHosts;
     private ModuleAdapter currentModuleAdapter = null;
 
     // Help:
@@ -78,13 +60,10 @@ public class Main extends JFrame implements OptimizationStateListener {
 
     //	if not null, the module is loaded automatically and no other can be selected
     private String useDefaultModule = null;    //"Genetic_Optimization";
-    private boolean showLoadModules = false;
     private boolean localMode = false;
 
     // measuring optimization runtime
     private long startTime = 0;
-    // remember the module in use
-    private transient String currentModule = null;
     private boolean withGUI = true;
     private boolean withTreeView = false;
     private EvATabbedFrameMaker frameMaker = null;
@@ -103,11 +82,7 @@ public class Main extends JFrame implements OptimizationStateListener {
     }
 
     public boolean removeOptimizationStateListener(OptimizationStateListener l) {
-        if (superListenerList != null) {
-            return superListenerList.remove(l);
-        } else {
-            return false;
-        }
+        return superListenerList != null && superListenerList.remove(l);
     }
 
     /**
@@ -177,8 +152,8 @@ public class Main extends JFrame implements OptimizationStateListener {
      * @param noGui
      * @see #Main(String, String, boolean, boolean)
      */
-    public Main(final String hostName, InterfaceOptimizationParameters goParams, boolean autorun, boolean noSplash, boolean noGui) {
-        this(hostName, null, null, goParams, autorun, noSplash, noGui, false);
+    public Main(final String hostName, InterfaceOptimizationParameters optimizationParameters, boolean autorun, boolean noSplash, boolean noGui) {
+        this(hostName, null, null, optimizationParameters, autorun, noSplash, noGui, false);
     }
 
     /**
@@ -231,11 +206,11 @@ public class Main extends JFrame implements OptimizationStateListener {
             }
         }
 
-        currentModule = null;
 
         comAdapter = EvAComAdapter.getInstance();
 
-        SwingUtilities.invokeLater(initRnbl = new Runnable() {
+        splashScreenTime = 2500;
+        SwingUtilities.invokeLater(initRunnable = new Runnable() {
 
             @Override
             public void run() {
@@ -263,7 +238,7 @@ public class Main extends JFrame implements OptimizationStateListener {
                         if (withGUI) {
                             frameMaker.onUserStart();
                         } else {
-                            currentModuleAdapter.startOpt();
+                            currentModuleAdapter.startOptimization();
                         }
                     }
                     // close splash screen
@@ -283,12 +258,12 @@ public class Main extends JFrame implements OptimizationStateListener {
      * as it returns, the Main GUI is fully initialized.
      */
     public void awaitClientInitialized() {
-        if (initRnbl != null) {
-            synchronized (initRnbl) {
+        if (initRunnable != null) {
+            synchronized (initRunnable) {
                 if (!clientInited) {
                     try {
-                        initRnbl.wait();
-                        initRnbl = null;
+                        initRunnable.wait();
+                        initRunnable = null;
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -310,7 +285,7 @@ public class Main extends JFrame implements OptimizationStateListener {
      */
     public boolean startOptimization() {
         if (currentModuleAdapter != null) {
-            currentModuleAdapter.startOpt();
+            currentModuleAdapter.startOptimization();
             return true;
         } else {
             return false;
@@ -371,7 +346,7 @@ public class Main extends JFrame implements OptimizationStateListener {
             desktopPane = new JExtDesktopPane();
             JEFrameRegister.getInstance().setDesktopPane(desktopPane);
             /* Creates desktopPane ToolBar to show tiling buttons */
-            desktopToolBar = new JExtDesktopPaneToolBar((JExtDesktopPane) desktopPane);
+            JExtDesktopPaneToolBar desktopToolBar = new JExtDesktopPaneToolBar((JExtDesktopPane) desktopPane);
 
             /* Pane to hold ToolBar + DesktopPane */
             JPanel desktopPanel = new JPanel(new GridBagLayout());
@@ -397,15 +372,11 @@ public class Main extends JFrame implements OptimizationStateListener {
                 System.out.println("Error" + e.getMessage());
             }
 
-            logPanel = new LoggingPanel(LOGGER);
+            LoggingPanel logPanel = new LoggingPanel(LOGGER);
             logPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
 
-            if (EvAInfo.propShowModules() != null) {
-                showLoadModules = true;
-            } else {
-                showLoadModules = false; // may be set to true again if default module couldnt be loaded
-            }
+            boolean showLoadModules = EvAInfo.propShowModules() != null;
             createActions();
 
             setSize(800, 600);
@@ -424,7 +395,7 @@ public class Main extends JFrame implements OptimizationStateListener {
             add(configurationPane, gbConstraints);
 
             /* SplitPane for desktopPanel and loggingPanel */
-            horizontalSplit = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true);
+            JSplitPane horizontalSplit = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true);
             horizontalSplit.setTopComponent(desktopPanel);
             horizontalSplit.setBottomComponent(logPanel);
             horizontalSplit.setDividerLocation(0.25);
@@ -442,7 +413,7 @@ public class Main extends JFrame implements OptimizationStateListener {
             add(horizontalSplit, gbConstraints);
 
             /* StatusBar of the main frame */
-            statusBar = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+            JPanel statusBar = new JPanel(new FlowLayout(FlowLayout.RIGHT));
             JPanel statusBarControls = new JPanel();
             statusBarControls.setLayout(new BoxLayout(statusBarControls, BoxLayout.LINE_AXIS));
 
@@ -504,9 +475,7 @@ public class Main extends JFrame implements OptimizationStateListener {
                     }
                 }
             });
-        }
 
-        if (withGUI) {
             LOGGER.log(Level.INFO, "Working directory is: {0}", System.getProperty("user.dir"));
             LOGGER.log(Level.INFO, "Class path is: {0}", System.getProperty("java.class.path", "."));
 
@@ -754,12 +723,12 @@ public class Main extends JFrame implements OptimizationStateListener {
      * Create the main menu and add actions.
      */
     private void buildMenu() {
-        menuBar = new JMenuBar();
+        JMenuBar menuBar = new JMenuBar();
         setJMenuBar(menuBar);
-        menuModule = new JExtMenu("&Module");
+        JExtMenu menuModule = new JExtMenu("&Module");
         //menuModule.add(actModuleLoad);
 
-        menuSelHosts = new JExtMenu("&Select Hosts");
+        JExtMenu menuSelHosts = new JExtMenu("&Select Hosts");
         //menuSelHosts.setToolTipText("Select a host for the server application");
         //menuSelHosts.add(actHost);
         //menuSelHosts.add(actAvailableHost);
@@ -767,13 +736,13 @@ public class Main extends JFrame implements OptimizationStateListener {
         //menuSelHosts.add(actKillHost);
         //menuSelHosts.add(actKillAllHosts);
 
-        menuHelp = new JExtMenu("&Help");
+        JExtMenu menuHelp = new JExtMenu("&Help");
         menuHelp.add(actHelp);
         menuHelp.addSeparator();
         menuHelp.add(actAbout);
         menuHelp.add(actLicense);
 
-        menuOptions = new JExtMenu("&Options");
+        JExtMenu menuOptions = new JExtMenu("&Options");
         menuOptions.add(actPreferences);
         //menuOptions.add(menuSelHosts);
         menuOptions.addSeparator();
@@ -797,7 +766,7 @@ public class Main extends JFrame implements OptimizationStateListener {
     public InterfaceOptimizationParameters getGOParameters() {
         if (currentModuleAdapter != null) {
             if (currentModuleAdapter instanceof AbstractModuleAdapter) {
-                return ((AbstractModuleAdapter) currentModuleAdapter).getGOParameters();
+                return ((AbstractModuleAdapter) currentModuleAdapter).getOptimizationParameters();
             }
         }
         return null;
@@ -816,12 +785,8 @@ public class Main extends JFrame implements OptimizationStateListener {
      *
      * @return
      */
-    public boolean isOptRunning() {
-        if ((currentModuleAdapter != null) && (currentModuleAdapter instanceof AbstractModuleAdapter)) {
-            return ((AbstractModuleAdapter) currentModuleAdapter).isOptRunning();
-        } else {
-            return false;
-        }
+    public boolean isOptimizationRunning() {
+        return (currentModuleAdapter != null) && (currentModuleAdapter instanceof AbstractModuleAdapter) && ((AbstractModuleAdapter) currentModuleAdapter).isOptRunning();
     }
 
     private void loadSpecificModule(String selectedModule, InterfaceOptimizationParameters goParams) {
@@ -838,10 +803,7 @@ public class Main extends JFrame implements OptimizationStateListener {
             URL baseDir = getClass().getClassLoader().getResource("");
             String cp = System.getProperty("java.class.path", ".");
             String dir = (baseDir == null) ? System.getProperty("user.dir") : baseDir.getPath();
-            // System.err.println("Working dir: " + dir);
-            /*if (baseDir == null) {
-                throw new RuntimeException("Cannot launch EvA2 due to an access restriction. If you are using Java Web Start, please download the application and try again.");
-            }*/
+
             if (!cp.contains(dir)) {
                 // this was added due to matlab not adding base dir to base path...
                 System.err.println("classpath does not contain base directory!");
@@ -852,10 +814,9 @@ public class Main extends JFrame implements OptimizationStateListener {
                 loadSpecificModule(selectedModule, goParams); // end recursive call! handle with care!
                 return;
             }
-            showLoadModules = true;
         } else {
             newModuleAdapter.setConnection(!localMode);
-            newModuleAdapter.addOptimizationStateListener((OptimizationStateListener) this);
+            newModuleAdapter.addOptimizationStateListener(this);
             try {
                 if (withGUI) {
                     // this (or rather: EvAModuleButtonPanelMaker) is where the start button etc come from!
@@ -864,7 +825,6 @@ public class Main extends JFrame implements OptimizationStateListener {
                     /* This is the left TabPane on the main frame */
                     JPanel moduleContainer = frameMaker.makePanel();
 
-                    boolean wasVisible = configurationPane.isVisible();
                     configurationPane.setVisible(false);
                     configurationPane.removeAll();
 
@@ -873,7 +833,7 @@ public class Main extends JFrame implements OptimizationStateListener {
                     /* ToDo: Find a way to properly add the TreeView to the GOPanel */
                     if (withTreeView && (newModuleAdapter instanceof AbstractModuleAdapter)) {
                         JComponent tree = null;
-                        tree = getEvATreeView(frameMaker.getGOPanel(), "OptimizationParameters", ((AbstractModuleAdapter) newModuleAdapter).getGOParameters());
+                        tree = getEvATreeView(frameMaker.getGOPanel(), "OptimizationParameters", ((AbstractModuleAdapter) newModuleAdapter).getOptimizationParameters());
                         gbConstraints.gridx = 0;
                         gbConstraints.gridy = 0;
                         gbConstraints.fill = GridBagConstraints.BOTH;
@@ -896,29 +856,17 @@ public class Main extends JFrame implements OptimizationStateListener {
                     gbConstraints2.gridx = 0;
                     gbConstraints2.gridy = 0;
                     gbConstraints2.fill = GridBagConstraints.VERTICAL;
-                    //gbConstraints2.gridheight = GridBagConstraints.REMAINDER;
                     gbConstraints2.weighty = 1.0;
                     configurationPane.add(moduleContainer, gbConstraints2);
                     configurationPane.validate();
                 }
 
-                currentModule = selectedModule;
+
             } catch (Exception e) {
-                currentModule = null;
                 LOGGER.log(Level.SEVERE, "Error while newModulAdapter.getModulFrame(): " + e.getMessage(), e);
                 EVAERROR.EXIT("Error while newModulAdapter.getModulFrame(): " + e.getMessage());
             }
-//			try { TODO whats this?
-//				newModuleAdapter.setConnection(true);
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//				m_LogPanel.logMessage("Error while m_ComAdapter.AddRMIPlotListener Host: " + e.getMessage());
-//				EVAERROR.EXIT("Error while m_ComAdapter.AddRMIPlotListener: " + e.getMessage());
-//			}
-            // set mode (rmi or not)
 
-            // ModuladapterListe adden
-//			m_ModuleAdapterList.add(newModuleAdapter);
             currentModuleAdapter = newModuleAdapter;
         }
     }
@@ -927,6 +875,7 @@ public class Main extends JFrame implements OptimizationStateListener {
      * Create a tree view of an object based on EvATreeNode. It is encapsulated
      * in a JScrollPane.
      *
+     * @param goPanel
      * @param title
      * @param object
      * @return

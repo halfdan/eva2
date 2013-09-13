@@ -144,10 +144,10 @@ public class GenericObjectEditor implements PropertyEditor {
         try {
             BeanInfo bi = Introspector.getBeanInfo(cls);
             PropertyDescriptor[] props = bi.getPropertyDescriptors();
-            for (int i = 0; i < props.length; i++) {
-                if ((props[i].getName().equals(property))) {
-                    if (expertValue != props[i].isExpert()) {
-                        props[i].setExpert(expertValue);
+            for (PropertyDescriptor prop : props) {
+                if ((prop.getName().equals(property))) {
+                    if (expertValue != prop.isExpert()) {
+                        prop.setExpert(expertValue);
                     }
                 }
             }
@@ -174,10 +174,10 @@ public class GenericObjectEditor implements PropertyEditor {
         try {
             BeanInfo bi = Introspector.getBeanInfo(cls);
             PropertyDescriptor[] props = bi.getPropertyDescriptors();
-            for (int i = 0; i < props.length; i++) {
-                if ((props[i].getName().equals(property))) {
-                    if (hide != props[i].isHidden()) {
-                        props[i].setHidden(hide);
+            for (PropertyDescriptor prop : props) {
+                if ((prop.getName().equals(property))) {
+                    if (hide != prop.isHidden()) {
+                        prop.setHidden(hide);
                     }
                     return true;
                 }
@@ -305,7 +305,6 @@ public class GenericObjectEditor implements PropertyEditor {
      */
     @Override
     public void setValue(Object o) {
-        //System.err.println("setValue()" + m_ClassType.toString());
 
         if (o == null || classType == null) {
             logger.log(Level.WARNING, "No ClassType set up for GenericObjectEditor!");
@@ -315,15 +314,14 @@ public class GenericObjectEditor implements PropertyEditor {
             if (classType.isPrimitive()) {
                 System.err.println("setValue object not of correct type! Expected " + classType.getName() + ", got " + o.getClass().getName());
                 System.err.println("setting primitive type");
-                setObject((Object) o);
-                //throw new NullPointerException("ASDF");
+                setObject(o);
             } else {
                 System.err.println("setValue object not of correct type! Expected " + classType.getName() + ", got " + o.getClass().getName());
             }
             return;
         }
 
-        setObject((Object) o);
+        setObject(o);
         if (editorComponent != null) {
             editorComponent.updateChooser();
         }

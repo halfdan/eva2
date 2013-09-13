@@ -32,19 +32,19 @@ import java.util.Vector;
  */
 public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serializable {
 
-    protected Population m_Population = new Population();
+    protected Population population = new Population();
     protected transient Population children = null;
-    protected AbstractOptimizationProblem m_Problem = new F1Problem();
-    private DETypeEnum m_DEType;
+    protected AbstractOptimizationProblem optimizationProblem = new F1Problem();
+    private DETypeEnum DEType;
 
     @Parameter(name = "F", description = "Differential Weight")
-    private double m_F = 0.8;
+    private double differentialWeight = 0.8;
 
     @Parameter(name = "CR", description = "Crossover Rate")
-    private double m_k = 0.6; // AKA CR
+    private double crossoverRate = 0.6; // AKA CR
 
     @Parameter(name = "Lambda", description = "Lambda")
-    private double m_Lambda = 0.6;
+    private double lambda = 0.6;
 
     private double m_Mt = 0.05;
     private int maximumAge = -1;
@@ -65,15 +65,15 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
      */
     public DifferentialEvolution() {
         // sets DE2 as default
-        m_DEType = DETypeEnum.DE2_CurrentToBest;
+        DEType = DETypeEnum.DE2_CurrentToBest;
     }
 
     public DifferentialEvolution(int popSize, DETypeEnum type, double f, double k, double lambda, double mt) {
-        m_Population = new Population(popSize);
-        m_DEType = type;
-        m_F = f;
-        m_k = k;
-        m_Lambda = lambda;
+        population = new Population(popSize);
+        DEType = type;
+        differentialWeight = f;
+        crossoverRate = k;
+        this.lambda = lambda;
         m_Mt = mt;
     }
 
@@ -83,13 +83,13 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
      * @param a
      */
     public DifferentialEvolution(DifferentialEvolution a) {
-        this.m_DEType = a.m_DEType;
-        this.m_Population = (Population) a.m_Population.clone();
-        this.m_Problem = (AbstractOptimizationProblem) a.m_Problem.clone();
+        this.DEType = a.DEType;
+        this.population = (Population) a.population.clone();
+        this.optimizationProblem = (AbstractOptimizationProblem) a.optimizationProblem.clone();
         this.m_Identifier = a.m_Identifier;
-        this.m_F = a.m_F;
-        this.m_k = a.m_k;
-        this.m_Lambda = a.m_Lambda;
+        this.differentialWeight = a.differentialWeight;
+        this.crossoverRate = a.crossoverRate;
+        this.lambda = a.lambda;
         this.m_Mt = a.m_Mt;
 
         this.maximumAge = a.maximumAge;
@@ -106,9 +106,9 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
 
     @Override
     public void init() {
-        this.m_Problem.initializePopulation(this.m_Population);
-//        children = new Population(m_Population.size());
-        this.evaluatePopulation(this.m_Population);
+        this.optimizationProblem.initializePopulation(this.population);
+//        children = new Population(population.size());
+        this.evaluatePopulation(this.population);
         this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }
 
@@ -124,14 +124,14 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
      */
     @Override
     public void initByPopulation(Population pop, boolean reset) {
-        this.m_Population = (Population) pop.clone();
+        this.population = (Population) pop.clone();
         if (reset) {
-            this.m_Population.init();
-            this.evaluatePopulation(this.m_Population);
+            this.population.init();
+            this.evaluatePopulation(this.population);
             this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
         }
-//        if (reset) this.m_Population.init();
-//        else children = new Population(m_Population.size());
+//        if (reset) this.population.init();
+//        else children = new Population(population.size());
     }
 
     /**
@@ -140,7 +140,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
      * @param population The population that is to be evaluated
      */
     private void evaluatePopulation(Population population) {
-        this.m_Problem.evaluate(population);
+        this.optimizationProblem.evaluate(population);
         population.incrGeneration();
     }
 
@@ -266,7 +266,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
 
         x1 = indy.getDoubleData();
         result = new double[x1.length];
-        if (m_Problem instanceof AbstractMultiObjectiveOptimizationProblem) {
+        if (optimizationProblem instanceof AbstractMultiObjectiveOptimizationProblem) {
             // implements MODE for the multi-objective case: a dominating individual is selected for difference building
             Population domSet = pop.getDominatingSet((AbstractEAIndividual) indy);
             if (domSet.size() > 0) {
@@ -291,34 +291,12 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
     }
 
     /**
-     * This method returns two parents to the original individual
-     *
-     * @param pop The population to choose from
-     * @return the delta vector
-     */
-//    private double[][] chooseRandomParents(Population pop) {
-//        InterfaceESIndividual indy1, indy2;
-//        double[][] result = new double[2][];
-//        try {
-//            indy1 = (InterfaceESIndividual)pop.get(RNG.randomInt(0, pop.size()-1));
-//            indy2 = (InterfaceESIndividual)pop.get(RNG.randomInt(0, pop.size()-1));
-//        } catch (java.lang.ClassCastException e) {
-//            System.out.println("Differential Evolution currently requires InterfaceESIndividual as basic data type!");
-//            return result;
-//        }
-//        result[0] = indy1.getDGenotype();
-//        result[1] = indy2.getDGenotype();
-//        return result;
-//    }
-
-    /**
      * This method will generate one new individual from the given population
      *
      * @param pop The current population
      * @return AbstractEAIndividual
      */
     public AbstractEAIndividual generateNewIndividual(Population pop, int parentIndex) {
-//    	int firstParentIndex;
         AbstractEAIndividual indy;
         InterfaceDataTypeDouble esIndy;
 
@@ -342,7 +320,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
         oX = esIndy.getDoubleData();
         vX = oX.clone();
         nX = new double[oX.length];
-        switch (this.m_DEType) {
+        switch (this.DEType) {
             case DE1_Rand_1: {
                 // this is DE1 or DE/rand/1
                 double[] delta = this.fetchDeltaRandom(pop);
@@ -462,25 +440,25 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
 
     private double getCurrentK() {
         if (randomizeFKLambda) {
-            return RNG.randomDouble(m_k * 0.8, m_k * 1.2);
+            return RNG.randomDouble(crossoverRate * 0.8, crossoverRate * 1.2);
         } else {
-            return m_k;
+            return crossoverRate;
         }
     }
 
     private double getCurrentLambda() {
         if (randomizeFKLambda) {
-            return RNG.randomDouble(m_Lambda * 0.8, m_Lambda * 1.2);
+            return RNG.randomDouble(lambda * 0.8, lambda * 1.2);
         } else {
-            return m_Lambda;
+            return lambda;
         }
     }
 
     private double getCurrentF() {
         if (randomizeFKLambda) {
-            return RNG.randomDouble(m_F * 0.8, m_F * 1.2);
+            return RNG.randomDouble(differentialWeight * 0.8, differentialWeight * 1.2);
         } else {
-            return m_F;
+            return differentialWeight;
         }
     }
 
@@ -524,72 +502,69 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
      * However it may be easier to parallelize.
      */
     public void optimizeGenerational() {
-//        AbstractEAIndividual    indy = null, orig;
         int parentIndex;
-        // required for dynamic problems especially
-//        problem.evaluatePopulationStart(m_Population);
         if (children == null) {
-            children = new Population(m_Population.size());
+            children = new Population(population.size());
         } else {
             children.clear();
         }
-        for (int i = 0; i < this.m_Population.size(); i++) {
+        for (int i = 0; i < this.population.size(); i++) {
             if (cyclePop) {
                 parentIndex = i;
             } else {
-                parentIndex = RNG.randomInt(0, this.m_Population.size() - 1);
+                parentIndex = RNG.randomInt(0, this.population.size() - 1);
             }
-            AbstractEAIndividual indy = generateNewIndividual(m_Population, parentIndex);
+            AbstractEAIndividual indy = generateNewIndividual(population, parentIndex);
             children.add(indy);
         }
 
-        children.setGenerationTo(m_Population.getGeneration());
-        m_Problem.evaluate(children);
+        children.setGeneration(population.getGeneration());
+        optimizationProblem.evaluate(children);
 
         /**
          * MdP: added a reevalutation mechanism for dynamically changing
          * problems
          */
         if (isReEvaluate()) {
-            for (int i = 0; i < this.m_Population.size(); i++) {
+            for (int i = 0; i < this.population.size(); i++) {
 
-                if (((AbstractEAIndividual) m_Population.get(i)).getAge() >= maximumAge) {
-                    this.m_Problem.evaluate(((AbstractEAIndividual) m_Population.get(i)));
-                    ((AbstractEAIndividual) m_Population.get(i)).SetAge(0);
-                    m_Population.incrFunctionCalls();
+                if (((AbstractEAIndividual) population.get(i)).getAge() >= maximumAge) {
+                    this.optimizationProblem.evaluate(((AbstractEAIndividual) population.get(i)));
+                    ((AbstractEAIndividual) population.get(i)).SetAge(0);
+                    population.incrFunctionCalls();
                 }
             }
         }
 
-        int nextDoomed = getNextDoomed(m_Population, 0);
-        for (int i = 0; i < this.m_Population.size(); i++) {
+        int nextDoomed = getNextDoomed(population, 0);
+        for (int i = 0; i < this.population.size(); i++) {
             AbstractEAIndividual indy = children.getEAIndividual(i);
             if (cyclePop) {
                 parentIndex = i;
             } else {
-                parentIndex = RNG.randomInt(0, this.m_Population.size() - 1);
+                parentIndex = RNG.randomInt(0, this.population.size() - 1);
             }
             if (nextDoomed >= 0) {    // this one is lucky, may replace an 'old' one
-                m_Population.replaceIndividualAt(nextDoomed, indy);
-                nextDoomed = getNextDoomed(m_Population, nextDoomed + 1);
+                population.replaceIndividualAt(nextDoomed, indy);
+                nextDoomed = getNextDoomed(population, nextDoomed + 1);
             } else {
-                if (m_Problem instanceof AbstractMultiObjectiveOptimizationProblem & indy.getFitness().length > 1) {
+                if (optimizationProblem instanceof AbstractMultiObjectiveOptimizationProblem & indy.getFitness().length > 1) {
                     ReplacementCrowding repl = new ReplacementCrowding();
-                    repl.insertIndividual(indy, m_Population, null);
+                    repl.insertIndividual(indy, population, null);
                 } else {
-//					index   = RNG.randomInt(0, this.m_Population.size()-1);
+//					index   = RNG.randomInt(0, this.population.size()-1);
                     if (!compareToParent) {
-                        parentIndex = RNG.randomInt(0, this.m_Population.size() - 1);
+                        parentIndex = RNG.randomInt(0, this.population.size() - 1);
                     }
-                    AbstractEAIndividual orig = (AbstractEAIndividual) this.m_Population.get(parentIndex);
+                    AbstractEAIndividual orig = (AbstractEAIndividual) this.population.get(parentIndex);
                     if (indy.isDominatingDebConstraints(orig)) {
-                        this.m_Population.replaceIndividualAt(parentIndex, indy);
+                        this.population.replaceIndividualAt(parentIndex, indy);
                     }
                 }
             }
         }
-        this.m_Population.incrFunctionCallsBy(children.size());
-        this.m_Population.incrGeneration();
+        this.population.incrFunctionCallsBy(children.size());
+        this.population.incrGeneration();
         this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }
 
@@ -597,10 +572,10 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
         AbstractEAIndividual indy = null, orig;
         int index;
 
-        int nextDoomed = getNextDoomed(m_Population, 0);
+        int nextDoomed = getNextDoomed(population, 0);
 
         // required for dynamic problems especially
-        m_Problem.evaluatePopulationStart(m_Population);
+        optimizationProblem.evaluatePopulationStart(population);
 
 
         /**
@@ -609,96 +584,52 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
          */
         if (isReEvaluate()) {
             nextDoomed = -1;
-            for (int i = 0; i < this.m_Population.size(); i++) {
+            for (int i = 0; i < this.population.size(); i++) {
 
-                if (((AbstractEAIndividual) m_Population.get(i)).getAge() >= maximumAge) {
-                    this.m_Problem.evaluate(((AbstractEAIndividual) m_Population.get(i)));
-                    ((AbstractEAIndividual) m_Population.get(i)).SetAge(0);
-                    m_Population.incrFunctionCalls();
+                if (((AbstractEAIndividual) population.get(i)).getAge() >= maximumAge) {
+                    this.optimizationProblem.evaluate(((AbstractEAIndividual) population.get(i)));
+                    ((AbstractEAIndividual) population.get(i)).SetAge(0);
+                    population.incrFunctionCalls();
                 }
             }
         }
 
 
-        for (int i = 0; i < this.m_Population.size(); i++) {
+        for (int i = 0; i < this.population.size(); i++) {
             if (cyclePop) {
                 index = i;
             } else {
-                index = RNG.randomInt(0, this.m_Population.size() - 1);
+                index = RNG.randomInt(0, this.population.size() - 1);
             }
-            indy = generateNewIndividual(m_Population, index);
-//        	if (cyclePop) indy = this.generateNewIndividual(this.m_Population, i);
-//        	else indy = this.generateNewIndividual(this.m_Population, -1);
-            this.m_Problem.evaluate(indy);
-            this.m_Population.incrFunctionCalls();
+            indy = generateNewIndividual(population, index);
+            this.optimizationProblem.evaluate(indy);
+            this.population.incrFunctionCalls();
             if (nextDoomed >= 0) {    // this one is lucky, may replace an 'old' one
-                m_Population.replaceIndividualAt(nextDoomed, indy);
-                nextDoomed = getNextDoomed(m_Population, nextDoomed + 1);
+                population.replaceIndividualAt(nextDoomed, indy);
+                nextDoomed = getNextDoomed(population, nextDoomed + 1);
             } else {
-                if (m_Problem instanceof AbstractMultiObjectiveOptimizationProblem) {
+                if (optimizationProblem instanceof AbstractMultiObjectiveOptimizationProblem) {
 
-                    if (indy.isDominatingDebConstraints(m_Population.getEAIndividual(index))) { //child dominates the parent replace the parent
-                        m_Population.replaceIndividualAt(index, indy);
-                    } else if (!(m_Population.getEAIndividual(index).isDominatingDebConstraints(indy))) { //do nothing if parent dominates the child use crowding if neither one dominates the other one
+                    if (indy.isDominatingDebConstraints(population.getEAIndividual(index))) { //child dominates the parent replace the parent
+                        population.replaceIndividualAt(index, indy);
+                    } else if (!(population.getEAIndividual(index).isDominatingDebConstraints(indy))) { //do nothing if parent dominates the child use crowding if neither one dominates the other one
                         ReplacementNondominatedSortingDistanceCrowding repl = new ReplacementNondominatedSortingDistanceCrowding();
-                        repl.insertIndividual(indy, m_Population, null);
+                        repl.insertIndividual(indy, population, null);
                     }
-                    //	ReplacementCrowding repl = new ReplacementCrowding();
-                    //	repl.insertIndividual(indy, m_Population, null);
-
-
                 } else {
-//					index   = RNG.randomInt(0, this.m_Population.size()-1);
                     if (!compareToParent) {
-                        index = RNG.randomInt(0, this.m_Population.size() - 1);
+                        index = RNG.randomInt(0, this.population.size() - 1);
                     }
-                    orig = (AbstractEAIndividual) this.m_Population.get(index);
+                    orig = (AbstractEAIndividual) this.population.get(index);
                     if (indy.isDominatingDebConstraints(orig)) {
-                        this.m_Population.replaceIndividualAt(index, indy);
+                        this.population.replaceIndividualAt(index, indy);
                     }
                 }
             }
         }
 
-//////// this was a non-steady-state-version
-//        if (children==null) children = new Population(m_Population.size());
-//        for (int i = 0; i < this.m_Population.size(); i++) {
-//            indy = this.generateNewIndividual(this.m_Population);
-//            this.problem.evaluate(indy);
-//            this.m_Population.incrFunctionCalls();
-//            children.add(indy);
-//        }
-//        int nextDoomed = getNextDoomed(m_Population, 0);
-//        
-//        for (int i=0; i<this.m_Population.size(); i++) {
-//    		indy 	= (AbstractEAIndividual)children.get(i);
-//        	if (nextDoomed >= 0) {	// kid is lucky, it may replace an 'old' individual
-//        		m_Population.replaceIndividualAt(nextDoomed, indy);
-//        		nextDoomed = getNextDoomed(m_Population, nextDoomed+1);
-//        	} else {	// duel with random one
-//	            index   = RNG.randomInt(0, this.m_Population.size()-1);
-//	            org     = (AbstractEAIndividual)this.m_Population.get(index);
-//	            // if (envHasChanged) this.problem.evaluate(org);
-//	            if (indy.isDominatingDebConstraints(org)) {
-//	            	this.m_Population.replaceIndividualAt(index, indy);
-//	            }
-//        	}
-//        }
-//        children.clear();
-//////// this was the original version
-//        for (int i = 0; i < this.m_Population.size(); i++) {
-//            indy = this.generateNewIndividual(this.m_Population);
-//            this.problem.evaluate(indy);
-//            this.m_Population.incrFunctionCalls();
-//            index   = RNG.randomInt(0, this.m_Population.size()-1);
-//            org     = (AbstractEAIndividual)this.m_Population.get(index);
-//            if (indy.isDominatingDebConstraints(org)) {
-//                this.m_Population.remove(index);
-//                this.m_Population.add(index, indy);
-//            }
-//        }
-        m_Problem.evaluatePopulationEnd(m_Population);
-        this.m_Population.incrGeneration();
+        optimizationProblem.evaluatePopulationEnd(population);
+        this.population.incrGeneration();
         this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }
 
@@ -767,12 +698,12 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
      */
     @Override
     public void setProblem(InterfaceOptimizationProblem problem) {
-        this.m_Problem = (AbstractOptimizationProblem) problem;
+        this.optimizationProblem = (AbstractOptimizationProblem) problem;
     }
 
     @Override
     public InterfaceOptimizationProblem getProblem() {
-        return (InterfaceOptimizationProblem) this.m_Problem;
+        return (InterfaceOptimizationProblem) this.optimizationProblem;
     }
 
     /**
@@ -786,8 +717,8 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
         String result = "";
         result += "Differential Evolution:\n";
         result += "Optimization Problem: ";
-        result += this.m_Problem.getStringRepresentationForProblem(this) + "\n";
-        result += this.m_Population.getStringRepresentation();
+        result += this.optimizationProblem.getStringRepresentationForProblem(this) + "\n";
+        result += this.population.getStringRepresentation();
         return result;
     }
 
@@ -838,12 +769,12 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
      */
     @Override
     public Population getPopulation() {
-        return this.m_Population;
+        return this.population;
     }
 
     @Override
     public void setPopulation(Population pop) {
-        this.m_Population = pop;
+        this.population = pop;
     }
 
     public String populationTipText() {
@@ -862,15 +793,15 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
      *
      * @param f
      */
-    public void setF(double f) {
-        this.m_F = f;
+    public void setDifferentialWeight(double f) {
+        this.differentialWeight = f;
     }
 
-    public double getF() {
-        return this.m_F;
+    public double getDifferentialWeight() {
+        return this.differentialWeight;
     }
 
-    public String fTipText() {
+    public String differentialWeightTipText() {
         return "F is a real and constant factor which controls the amplification of the differential variation.";
     }
 
@@ -880,21 +811,21 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
      *
      * @param k
      */
-    public void setK(double k) {
+    public void setCrossoverRate(double k) {
         if (k < 0) {
             k = 0;
         }
         if (k > 1) {
             k = 1;
         }
-        this.m_k = k;
+        this.crossoverRate = k;
     }
 
-    public double getK() {
-        return this.m_k;
+    public double getCrossoverRate() {
+        return this.crossoverRate;
     }
 
-    public String kTipText() {
+    public String crossoverrateTipText() {
         return "Probability of alteration through DE (a.k.a. CR, similar to discrete uniform crossover).";
     }
 
@@ -905,11 +836,11 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
      * @param l
      */
     public void setLambda(double l) {
-        this.m_Lambda = l;
+        this.lambda = l;
     }
 
     public double getLambda() {
-        return this.m_Lambda;
+        return this.lambda;
     }
 
     public String lambdaTipText() {
@@ -945,14 +876,14 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
      * @param s The type.
      */
     public void setDEType(DETypeEnum s) {
-        this.m_DEType = s;
+        this.DEType = s;
         // show mt for trig. DE only
         GenericObjectEditor.setShowProperty(this.getClass(), "lambda", s == DETypeEnum.DE2_CurrentToBest);
         GenericObjectEditor.setShowProperty(this.getClass(), "mt", s == DETypeEnum.TrigonometricDE);
     }
 
     public DETypeEnum getDEType() {
-        return this.m_DEType;
+        return this.DEType;
     }
 
     public String dETypeTipText() {
@@ -1009,17 +940,6 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
         return "If true, values for k, f, lambda are randomly sampled around +/- 20% of the given values.";
     }
 
-    //	public boolean isCyclePop() {
-//		return cyclePop;
-//	}
-//
-//	public void setCyclePop(boolean cyclePop) {
-//		this.cyclePop = cyclePop;
-//	}
-//	
-//	public String cyclePopTipText() {
-//		return "Use all individuals as parents in cyclic sequence instead of randomly.";
-//	}
     public boolean isCompareToParent() {
         return compareToParent;
     }
@@ -1071,6 +991,6 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
     }
 
     public String reEvaluateTipText() {
-        return "Reeavulates individuals which are older than maximum age instead of discarding them";
+        return "Re-evaluates individuals which are older than maximum age instead of discarding them";
     }
 }

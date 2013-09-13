@@ -96,8 +96,8 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
 
     @Override
     public void init() {
-        //System.out.println("popsize is   " + m_Population.size());
-        //System.out.println("pops targ is " + m_Population.getPopulationSize());
+        //System.out.println("popsize is   " + population.size());
+        //System.out.println("pops targ is " + population.getPopulationSize());
 
         if (initialVelocity <= 0.) {
             (((AbstractOptimizationProblem) m_Problem).getIndividualTemplate()).setMutationOperator(new MutateESFixedStepSize(mutationSigma));
@@ -264,7 +264,7 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
 
         m_Population = evaluatePopulation(nextGeneration);
 
-//        collectStatistics(m_Population);
+//        collectStatistics(population);
 
         this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
 

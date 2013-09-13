@@ -442,14 +442,14 @@ public class PostProcess {
         gda.initByPopulation(pop, false);
 
         int funCallsBefore = pop.getFunctionCalls();
-        pop.SetFunctionCalls(baseEvals);
+        pop.setFunctionCalls(baseEvals);
 
         OptimizerRunnable ppRunnable = new OptimizerRunnable(OptimizerFactory.makeParams(gda, pop, problem, 0, term), true);
         runPP(ppRunnable);
 //		ppRunnable.getStats().createNextGenerationPerformed(gda.getPopulation(), gda, null);
 
         int funCallsDone = pop.getFunctionCalls() - baseEvals;
-        pop.SetFunctionCalls(funCallsBefore);
+        pop.setFunctionCalls(funCallsBefore);
 
         return funCallsDone;
     }
@@ -476,26 +476,16 @@ public class PostProcess {
         nms.setGenerationCycle(5);
         nms.initByPopulation(pop, false);
         int funCallsBefore = pop.getFunctionCalls();
-        pop.SetFunctionCalls(baseEvals);
+        pop.setFunctionCalls(baseEvals);
 
         OptimizerRunnable ppRunnable = new OptimizerRunnable(OptimizerFactory.makeParams(nms, pop, problem, 0, term), true);
         // as nms creates a new population and has already evaluated them, send a signal to stats
         ppRunnable.getStats().createNextGenerationPerformed(nms.getPopulation(), nms, null);
 
-//		if (problem instanceof InterfaceFirstOrderDerivableProblem) {
-//			double[] x = pop.getBestEAIndividual().getDoublePosition();
-//			System.out.println("grads: " + BeanInspector.toString(((InterfaceFirstOrderDerivableProblem)problem).getFirstOrderGradients(x)));
-//		}
-
         runPP(ppRunnable);
 
-//		if (problem instanceof InterfaceFirstOrderDerivableProblem) {
-//			double[] x = pop.getBestEAIndividual().getDoublePosition();
-//			System.out.println("grads: " + BeanInspector.toString(((InterfaceFirstOrderDerivableProblem)problem).getFirstOrderGradients(x)));
-//		}
-
         int funCallsDone = pop.getFunctionCalls() - baseEvals;
-        pop.SetFunctionCalls(funCallsBefore);
+        pop.setFunctionCalls(funCallsBefore);
 
         return new Pair<Integer, Boolean>(funCallsDone, ppRunnable.wasAborted());
     }
@@ -529,7 +519,7 @@ public class PostProcess {
         OptimizationParameters cmaParams = OptimizerFactory.makeParams(es, pop, problem, 0, term);
 
         int funCallsBefore = pop.getFunctionCalls();
-        pop.SetFunctionCalls(baseEvals);
+        pop.setFunctionCalls(baseEvals);
 
         OptimizerRunnable ppRunnable = new OptimizerRunnable(cmaParams, true);
         ppRunnable.getStats().createNextGenerationPerformed(cmaParams.getOptimizer().getPopulation(), cmaParams.getOptimizer(), null);
@@ -605,7 +595,6 @@ public class PostProcess {
                 }
                 subPop = NelderMeadSimplex.createNMSPopulation(candidates.getEAIndividual(index), absToRelPerturb(perturb, range), range, false);
         }
-//		subPop.setSameParams(candidates);
         return subPop;
     }
 
@@ -723,7 +712,6 @@ public class PostProcess {
         for (int i = 0; i < candidates.size(); i++) { // improve each single sub pop
             subPop = nmPops.get(i);
             term.init(prob);
-//			if (TRACE) System.out.println("*** before " + subPop.getBestEAIndividual().getStringRepresentation());
 
             switch (method) {
                 case nelderMead:
@@ -744,23 +732,15 @@ public class PostProcess {
                 break;
             }
 
-            //			if (TRACE) System.out.println("*** after: " + subPop.getBestEAIndividual().getStringRepresentation());
             if (checkRange(subPop.getBestEAIndividual())) {
-                // and replace corresponding individual (should usually be better)
-//				if (subPop.getBestEAIndividual().isDominant(candidates.getEAIndividual(i))) { // TODO Multiobjective???
                 if (subPop.getBestEAIndividual().getFitness(0) < candidates.getEAIndividual(i).getFitness(0)) {
-//					System.out.println("moved by "+ PhenotypeMetric.dist(candidates.getEAIndividual(i), subPop.getBestEAIndividual()));
-                    subPop.getBestEAIndividual().putData(movedDistanceKey, new Double(PhenotypeMetric.dist(candidates.getEAIndividual(i), subPop.getBestEAIndividual())));
-//					subPop.getBestEAIndividual().putData(movedToPositionKey, subPop.getBestEAIndividual().getDoublePosition());
-                    // ^ this makes no sense here since the new position is returned anyways by replacing the candidate individual
+                    subPop.getBestEAIndividual().putData(movedDistanceKey, PhenotypeMetric.dist(candidates.getEAIndividual(i), subPop.getBestEAIndividual()));
                     candidates.set(i, subPop.getBestEAIndividual());
                 }
             } else {
                 // TODO esp. in nelder mead
                 System.err.println("Warning, individual left the problem range during PP!");
             }
-
-//			if (TRACE) System.out.println("refined to " + subPop.getBestEAIndividual().getStringRepresentation());
         }
 
         return stepsPerf;
@@ -864,9 +844,7 @@ public class PostProcess {
         rnbl.getGOParams().setDoPostProcessing(false);
         rnbl.setVerbosityLevel(StatisticsParameter.VERBOSITY_NONE);
         ppRunnables.add(rnbl);
-//		System.err.println("Starting runbl " + rnbl);
         rnbl.run();
-//		System.err.println("Aborted: " + rnbl.wasAborted());
         rnbl.getGOParams().setDoPostProcessing(true);
         ppRunnables.remove(rnbl);
     }
@@ -875,16 +853,15 @@ public class PostProcess {
      * Stop the post processing thread with the given ID.
      */
     public static void stopPP(int rnblID) {
-//		System.err.println("Stopping pp " + rnblID);
         OptimizerRunnable rnbl = getRunnable(rnblID);
         stopPP(rnbl);
     }
 
     private static OptimizerRunnable getRunnable(int rnblID) {
         synchronized (ppRunnables) {
-            for (int i = 0; i < ppRunnables.size(); i++) {
-                if (rnblID == ppRunnables.get(i).getID()) {
-                    return ppRunnables.get(i);
+            for (OptimizerRunnable ppRunnable : ppRunnables) {
+                if (rnblID == ppRunnable.getID()) {
+                    return ppRunnable;
                 }
             }
         }
@@ -895,7 +872,6 @@ public class PostProcess {
      * Stop the post processing if its currently running.
      */
     public static void stopPP(OptimizerRunnable rnbl) {
-//		System.err.println("Stopping rnbl " + rnbl);
         if (rnbl != null) {
             synchronized (rnbl) {
                 rnbl.stopOpt();
@@ -954,7 +930,6 @@ public class PostProcess {
         OptimizerRunnable runnable = OptimizerFactory.getOptRunnable(OptimizerFactory.STD_GA, problem, 100, null);
         runnable.run();
         Population pop = runnable.getGOParams().getOptimizer().getPopulation();
-//		System.out.println("no optima found: " + mmp.getNumberOfFoundOptima(pop));
         Population found = getFoundOptima(pop, mmp.getRealOptima(), 0.05, true);
         System.out.println("all found (" + found.size() + "): " + BeanInspector.toString(found));
 
@@ -963,8 +938,6 @@ public class PostProcess {
         int evalCnt = 0;
         while (popD.tail() > 0.001) {
             i++;
-//			public static PopDoublePair clusterHC(pop, problem, sigmaCluster, funCalls, keepClusterRatio, mute) {
-
             popD = clusterLocalSearch(PostProcessMethod.hillClimber, popD.head(), problem, 0.01, 1500, 0.1, new MutateESFixedStepSize(0.02));
             evalCnt += popD.head().getFunctionCalls();
             System.out.println("popsize is " + popD.head().size());
@@ -972,11 +945,6 @@ public class PostProcess {
         found = getFoundOptima(popD.head(), mmp.getRealOptima(), 0.05, true);
         System.out.println("found at " + i + " (" + found.size() + "): " + BeanInspector.toString(found));
         System.out.println("funcalls: " + evalCnt);
-//		System.out.println(BeanInspector.toString(pop.getMeanFitness()));
-
-//		System.out.println("no optima found: " + mmp.getNumberOfFoundOptima(pop));
-//		System.out.println("best after: " + AbstractEAIndividual.getDefaultStringRepresentation(pop.getBestEAIndividual()));
-
     }
 
     /**
@@ -999,7 +967,6 @@ public class PostProcess {
 
         Population clust = (Population) clusterBest(pop, new ClusteringDensityBased(sigmaCluster, 2), keepClusterRatio, KEEP_LONERS, BEST_RAND).clone();
 
-        //clust.addPopulationChangedEventListener()
         double[] meanFit = clust.getMeanFitness();
 
         if (TRACE) {
@@ -1008,7 +975,7 @@ public class PostProcess {
 
         int evalsDone = processSingleCandidates(method, clust, funCalls, sigmaCluster / 2., problem, mute);
 
-        clust.SetFunctionCalls(evalsBefore + evalsDone);
+        clust.setFunctionCalls(evalsBefore + evalsDone);
 
         double improvement = EuclideanMetric.euclideanDistance(meanFit, clust.getMeanFitness());
         if (TRACE) {
@@ -1037,21 +1004,6 @@ public class PostProcess {
                     listener.println("found " + getFoundOptima(solutions, mmkProb.getRealOptima(), epsilon, true).size() + " for epsilon = " + epsilon + ", maxPeakRatio: " + mmkProb.getMaximumPeakRatio(solutions));
                 }
             }
-        } else {
-            // TODO in this form it may cost a lot of time and cant be stopped, which is bad
-//			double epsilonPhenoSpace = 0.01, epsilonFitConv = 1e-10, clusterSigma = 0.;
-//			Population extrOpts;
-//			for (int k=0; k<3; k++) {
-//				extrOpts = prob.extractPotentialOptima(solutions, epsilonPhenoSpace, epsilonFitConv, clusterSigma, -1);
-//				listener.println("estimated number of found optima: " + extrOpts.size() + " with crit. " + epsilonPhenoSpace);
-//				if (extrOpts.size() > 0) {
-//					listener.println("fit measures: ");
-//					int critCnt = extrOpts.getEAIndividual(0).getFitness().length;
-//					for (int i=0; i<critCnt; i++) listener.print(BeanInspector.toString(extrOpts.getFitnessMeasures(i)) + " ");
-//					listener.println("");
-//				}
-//				epsilonPhenoSpace /= 10.;
-//			}
         }
     }
 

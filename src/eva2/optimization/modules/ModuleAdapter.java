@@ -21,7 +21,7 @@ public interface ModuleAdapter extends OptimizationStateListener {
 
     EvATabbedFrameMaker getModuleFrame();
 
-    void startOpt(); // called from client
+    void startOptimization(); // called from client
 
     /**
      * Schedule a certain job to a job list.
@@ -30,9 +30,9 @@ public interface ModuleAdapter extends OptimizationStateListener {
      */
     OptimizationJob scheduleJob();
 
-    void restartOpt();
+    void restartOptimization();
 
-    void stopOpt();
+    void stopOptimization();
 
     //void runScript();
 
