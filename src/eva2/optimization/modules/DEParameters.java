@@ -107,15 +107,15 @@ public class DEParameters extends AbstractOptimizationParameters implements Inte
      * @param f
      */
     public void setF(double f) {
-        ((DifferentialEvolution) this.optimizer).setF(f);
+        ((DifferentialEvolution) this.optimizer).setDifferentialWeight(f);
     }
 
     public double getF() {
-        return ((DifferentialEvolution) this.optimizer).getF();
+        return ((DifferentialEvolution) this.optimizer).getDifferentialWeight();
     }
 
-    public String fTipText() {
-        return "F is a real and constant factor which controlls the ampllification of the differential variation.";
+    public String differentialWeightTipText() {
+        return "F is a real and constant factor which controlls the amplification of the differential variation.";
     }
 
     /**
@@ -124,14 +124,14 @@ public class DEParameters extends AbstractOptimizationParameters implements Inte
      * @param k
      */
     public void setK(double k) {
-        ((DifferentialEvolution) this.optimizer).setK(k);
+        ((DifferentialEvolution) this.optimizer).setCrossoverRate(k);
     }
 
     public double getK() {
-        return ((DifferentialEvolution) this.optimizer).getK();
+        return ((DifferentialEvolution) this.optimizer).getCrossoverRate();
     }
 
-    public String kTipText() {
+    public String crossoverRateTipText() {
         return "Probability of alteration through DE1.";
     }
 

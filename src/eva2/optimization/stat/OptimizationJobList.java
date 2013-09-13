@@ -212,9 +212,9 @@ public class OptimizationJobList extends PropertySelectableList<OptimizationJob>
                 List<OptimizationJob> jobs = jobList.getSelectedJobs();
                 if (jobs.size() == 1) {
                     OptimizationJob job = jobs.get(0);
-                    AbstractOptimizationParameters curParams = (AbstractOptimizationParameters) ((AbstractModuleAdapter) jobList.module).getGOParameters();
+                    AbstractOptimizationParameters curParams = (AbstractOptimizationParameters) ((AbstractModuleAdapter) jobList.module).getOptimizationParameters();
                     curParams.setSameParams((AbstractOptimizationParameters) job.getGOParams());
-                    ((GenericModuleAdapter) jobList.module).setGOParameters(curParams);
+                    ((GenericModuleAdapter) jobList.module).setOptimizationParameters(curParams);
                     ((GenericModuleAdapter) jobList.module).getStatistics().getStatisticsParameter().setMultiRuns(job.getNumRuns());
                     ((GenericModuleAdapter) jobList.module).getStatistics().getStatisticsParameter().setFieldSelection(job.getFieldSelection(((GenericModuleAdapter) jobList.module).getStatistics().getStatisticsParameter().getFieldSelection()));
                 } else {

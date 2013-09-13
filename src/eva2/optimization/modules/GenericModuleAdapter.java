@@ -140,8 +140,8 @@ public class GenericModuleAdapter extends AbstractModuleAdapter implements Seria
     }
 
     @Override
-    public void setGOParameters(InterfaceOptimizationParameters goParams) {
-        super.setGOParameters(goParams);
+    public void setOptimizationParameters(InterfaceOptimizationParameters goParams) {
+        super.setOptimizationParameters(goParams);
         paramPanel.getEditor().setValue(goParams);
     }
 }

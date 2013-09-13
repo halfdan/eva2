@@ -62,7 +62,7 @@ abstract public class AbstractModuleAdapter implements ModuleAdapter, Serializab
      * Start optimization on processor.
      */
     @Override
-    public void startOpt() {
+    public void startOptimization() {
         processor.startOpt();
     }
 
@@ -70,7 +70,7 @@ abstract public class AbstractModuleAdapter implements ModuleAdapter, Serializab
      * Restart optimization on processor.
      */
     @Override
-    public void restartOpt() {
+    public void restartOptimization() {
         processor.restartOpt();
     }
 
@@ -78,7 +78,7 @@ abstract public class AbstractModuleAdapter implements ModuleAdapter, Serializab
      * Stop optimization on processor.
      */
     @Override
-    public void stopOpt() {
+    public void stopOptimization() {
         // This means user break
         processor.stopOpt();
     }
@@ -108,7 +108,7 @@ abstract public class AbstractModuleAdapter implements ModuleAdapter, Serializab
         }
     }
 
-    public InterfaceOptimizationParameters getGOParameters() {
+    public InterfaceOptimizationParameters getOptimizationParameters() {
         if ((processor != null) && (processor instanceof Processor)) {
             return ((Processor) processor).getGOParams();
         } else {
@@ -116,7 +116,7 @@ abstract public class AbstractModuleAdapter implements ModuleAdapter, Serializab
         }
     }
 
-    public void setGOParameters(InterfaceOptimizationParameters goParams) {
+    public void setOptimizationParameters(InterfaceOptimizationParameters goParams) {
         if ((processor != null) && (processor instanceof Processor)) {
             ((Processor) processor).setGOParams(goParams);
         }

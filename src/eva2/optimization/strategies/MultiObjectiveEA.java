@@ -211,7 +211,7 @@ public class MultiObjectiveEA implements InterfaceOptimizer, java.io.Serializabl
         result += this.m_Optimizer.getStringRepresentation() + "\n";
         //result += "=> The Optimization Problem: ";
         //result += this.problem.getStringRepresentationForProblem(this) +"\n";
-        //result += this.m_Population.getStringRepresentation();
+        //result += this.population.getStringRepresentation();
         return result;
     }
 

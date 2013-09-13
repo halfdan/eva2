@@ -698,7 +698,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 
 //			if (index != 0) return;
 //			double[] bestPosition = (double[])m_BestIndividual.getData(partBestPosKey);
-//			double[] localBestPos = findNeighbourhoodOptimum(index, m_Population);
+//			double[] localBestPos = findNeighbourhoodOptimum(index, population);
 //			this.m_Plot.setConnectedPoint(curPosition[0], curPosition[1], index+1);
 //			this.m_Plot.setConnectedPoint(curPosition[0] + curVelocity[0], curPosition[1] + curVelocity[1], index+1);
 //			this.m_Plot.setConnectedPoint(curPosition[0], curPosition[1], index+2);
@@ -1355,7 +1355,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 
     @Override
     public void optimize() {
-//		System.out.println(">>> " + m_Population.getStringRepresentation());
+//		System.out.println(">>> " + population.getStringRepresentation());
         startOptimize();
 
         // Update the individuals
@@ -1370,12 +1370,12 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
         // log the best individual of the population
         logBestIndividual();
 
-//		System.out.println("<<< " + m_Population.getStringRepresentation());
+//		System.out.println("<<< " + population.getStringRepresentation());
 
-//		if (doLocalSearch && (m_Population.getGeneration()%localSearchGens==0)) {
-////			System.out.println("Local search at gen "+m_Population.getGeneration());
-//			Population bestN = m_Population.getBestNIndividuals(Math.max(1,(int)(lsCandidateRatio*m_Population.size())));
-////			Population bestN = m_Population.getSortedNIndividuals(Math.max(1,(int)(lsCandidateRatio*m_Population.size())), false);
+//		if (doLocalSearch && (population.getGeneration()%localSearchGens==0)) {
+////			System.out.println("Local search at gen "+population.getGeneration());
+//			Population bestN = population.getBestNIndividuals(Math.max(1,(int)(lsCandidateRatio*population.size())));
+////			Population bestN = population.getSortedNIndividuals(Math.max(1,(int)(lsCandidateRatio*population.size())), false);
 //			Population cands=(Population)bestN.clone();
 //			int maxSteps=cands.size()*lsStepsPerInd;
 //			int stepsDone = PostProcess.processSingleCandidates(PostProcessMethod.nelderMead, cands, maxSteps, 0.01, (AbstractOptimizationProblem)this.problem, null);
@@ -1388,8 +1388,8 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 //			}
 //			if (stepsDone>maxSteps) {
 ////				System.err.println("Warning: more steps performed than alloed in PSO LS: " + stepsDone + " vs. " + maxSteps);
-//				m_Population.incrFunctionCallsBy(stepsDone);
-//			} else m_Population.incrFunctionCallsBy(maxSteps);
+//				population.incrFunctionCallsBy(stepsDone);
+//			} else population.incrFunctionCallsBy(maxSteps);
 //		}
 
         this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
@@ -1554,10 +1554,10 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 //			}
 //			for (int i=0; i<leaders.size(); i++) {
 //				int sSize = (Integer)(leaders.get(i)).getData(multiSwSizeKey);
-//				m_Population.indexOf(leaders.get(i));
-//				System.out.print("s " + i + " w " +  sSize + " (" + m_Population.indexOf(leaders.get(i)) + "), ");
+//				population.indexOf(leaders.get(i));
+//				System.out.print("s " + i + " w " +  sSize + " (" + population.indexOf(leaders.get(i)) + "), ");
 //			}
-            //System.out.println(" -- best " + m_Population.indexOf(m_Population.getBestEAIndividual()));
+            //System.out.println(" -- best " + population.indexOf(population.getBestEAIndividual()));
         }
         if (topology == PSOTopologyEnum.hpso) { // HPSO sorting the population
             int parentIndex;

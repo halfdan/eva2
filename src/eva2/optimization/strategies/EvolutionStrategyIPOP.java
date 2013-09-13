@@ -88,7 +88,7 @@ public class EvolutionStrategyIPOP extends EvolutionStrategies implements Interf
 //        // first perform the environment selection to select myu parents
 //        parents = selectParents();
 //
-//        // m_Population / parents are of sizes lambda / mu 
+//        // population / parents are of sizes lambda / mu
 //        if (parents.getEAIndividual(0).getMutationOperator() instanceof InterfaceMutationGenerational) {
 //        	((InterfaceMutationGenerational)parents.getEAIndividual(0).getMutationOperator()).adaptAfterSelection(getPopulation(), parents);
 //        }

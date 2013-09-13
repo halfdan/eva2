@@ -296,7 +296,7 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
 //					Mathematics.projectToRange(x, range);
 //					((InterfaceDataTypeDouble)ind).setDoubleGenotype(x);
 //					problem.evaluate(ind);
-//					this.m_Population.incrFunctionCalls();
+//					this.population.incrFunctionCalls();
                 }
                 m_Population.set(m_Population.getIndexOfWorstIndividualNoConstr(fitIndex), ind, fitIndex);
             } else {//keine Verbesserung gefunden shrink!!
@@ -309,7 +309,7 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
                         c[i] = 0.5 * c[i] + 0.5 * u_1[i];
                     }
                     ((InterfaceDataTypeDouble) m_Population.getEAIndividual(j)).setDoubleGenotype(c);
-//					m_Population.getEAIndividual(j).resetConstraintViolation(); // not a good idea because during evaluation, a stats update may be performed which mustnt see indies which are evaluated, but possible constraints have been reset.
+//					population.getEAIndividual(j).resetConstraintViolation(); // not a good idea because during evaluation, a stats update may be performed which mustnt see indies which are evaluated, but possible constraints have been reset.
                 }
                 m_Problem.evaluate(m_Population);
             }

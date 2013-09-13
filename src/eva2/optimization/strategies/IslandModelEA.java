@@ -88,7 +88,7 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
             }
         }
 
-//        this.m_Population = new Population();
+//        this.population = new Population();
         this.m_Population.clear();
         this.m_Population.init();
         this.m_Optimizer.init();
@@ -284,7 +284,7 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
             this.m_Population.addPopulation(pop);
             this.m_Population.incrFunctionCallsBy(pop.getFunctionCalls());
         }
-//        System.out.println("Fitnesscalls :" + this.m_Population.getFunctionCalls());
+//        System.out.println("Fitnesscalls :" + this.population.getFunctionCalls());
         this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED, this.m_Optimizer.getPopulation());
         double plotValue = (this.m_Problem.getDoublePlotValue(this.m_Population)).doubleValue();
         if (this.m_Show) {
@@ -366,7 +366,7 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
         }
         //result += "=> The Optimization Problem: ";
         //result += this.problem.getStringRepresentationForProblem(this) +"\n";
-        //result += this.m_Population.getStringRepresentation();
+        //result += this.population.getStringRepresentation();
         return result;
     }
 

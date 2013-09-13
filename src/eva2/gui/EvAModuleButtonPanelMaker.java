@@ -85,7 +85,7 @@ public class EvAModuleButtonPanelMaker implements OptimizationStateListener, Ser
             public void actionPerformed(ActionEvent event) {
                 try {
                     // this means user break
-                    moduleAdapter.stopOpt();
+                    moduleAdapter.stopOptimization();
                 } catch (Exception ee) {
                     LOGGER.log(Level.WARNING, "Error while stopping job.", ee);
                 }
@@ -137,7 +137,7 @@ public class EvAModuleButtonPanelMaker implements OptimizationStateListener, Ser
 
     public void onUserStart() {
         try {
-            moduleAdapter.startOpt();
+            moduleAdapter.startOptimization();
             stopButton.setEnabled(true);
             runButton.setEnabled(false);
             postProcessButton.setEnabled(false);

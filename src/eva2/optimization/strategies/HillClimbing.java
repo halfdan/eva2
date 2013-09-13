@@ -92,7 +92,7 @@ public class HillClimbing implements InterfaceOptimizer, java.io.Serializable {
         this.m_Problem.evaluate(this.m_Population);
         for (int i = 0; i < this.m_Population.size(); i++) {
             if (((AbstractEAIndividual) original.get(i)).isDominatingDebConstraints(((AbstractEAIndividual) this.m_Population.get(i)))) {
-//                this.m_Population.remove(i); 
+//                this.population.remove(i);
                 // throw away mutated one and replace by old one 
                 this.m_Population.set(i, original.get(i));
             } else {
@@ -100,20 +100,20 @@ public class HillClimbing implements InterfaceOptimizer, java.io.Serializable {
             }
         }
         this.m_Population.incrGeneration();
-//        for (int i = 0; i < this.m_Population.size(); i++) {
-//            indy1 = (AbstractEAIndividual) this.m_Population.get(i);
+//        for (int i = 0; i < this.population.size(); i++) {
+//            indy1 = (AbstractEAIndividual) this.population.get(i);
 //            indy2 = (AbstractEAIndividual)(indy1).clone();
 //            indy2.mutate();
 //            this.problem.evaluate((AbstractEAIndividual) indy2);
 //            //indy2.SetFitness(0, indy2.evaulateAsMiniBits());
-//            this.m_Population.incrFunctionCalls();
+//            this.population.incrFunctionCalls();
 //            //if (indy2.getFitness(0) < indy1.getFitness(0)) {
 //            if (indy2.isDominating(indy1)) {
-//                this.m_Population.remove(i);
-//                this.m_Population.add(i, indy2);
+//                this.population.remove(i);
+//                this.population.add(i, indy2);
 //            }
 //        }
-//        this.m_Population.incrGeneration();
+//        this.population.incrGeneration();
         this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }
 

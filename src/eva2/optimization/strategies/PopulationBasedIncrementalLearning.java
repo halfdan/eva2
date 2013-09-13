@@ -117,8 +117,8 @@ public class PopulationBasedIncrementalLearning implements InterfaceOptimizer, j
         PBILPopulation result = (PBILPopulation) this.m_Population.clone();
         Population examples;
 
-//        this.m_NormationOperator.computeSelectionProbability(this.m_Population, "Fitness");
-        //System.out.println("Population:"+this.m_Population.getSolutionRepresentationFor());
+//        this.m_NormationOperator.computeSelectionProbability(this.population, "Fitness");
+        //System.out.println("Population:"+this.population.getSolutionRepresentationFor());
         this.m_SelectionOperator.prepareSelection(this.m_Population);
         examples = this.m_SelectionOperator.selectFrom(this.m_Population, this.m_NumberOfPositiveSamples);
         //System.out.println("Parents:"+parents.getSolutionRepresentationFor());

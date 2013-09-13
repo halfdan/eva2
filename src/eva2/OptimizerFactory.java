@@ -132,8 +132,8 @@ public class OptimizerFactory {
         de.setProblem(problem);
         de.getPopulation().setTargetSize(popsize);
         de.setDEType(DETypeEnum.DE2_CurrentToBest);
-        de.setF(f);
-        de.setK(CR);
+        de.setDifferentialWeight(f);
+        de.setCrossoverRate(CR);
         de.setLambda(lambda);
         de.addPopulationChangedEventListener(listener);
         de.init();
@@ -1476,8 +1476,8 @@ public class OptimizerFactory {
             AbstractOptimizationProblem problem) {
         DifferentialEvolution de = new DifferentialEvolution();
         de.setDEType(DETypeEnum.DE2_CurrentToBest); // this sets current-to-best
-        de.setF(0.8);
-        de.setK(0.6);
+        de.setDifferentialWeight(0.8);
+        de.setCrossoverRate(0.6);
         de.setLambda(0.6);
         de.setMt(0.05); // this is not really employed for currentToBest
         return makeParams(de, 50, problem, randSeed, getTerminator());

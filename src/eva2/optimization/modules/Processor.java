@@ -32,7 +32,7 @@ import javax.swing.JOptionPane;
 
 /**
  * The Processor may run as a thread permanently (GenericModuleAdapter) and is
- * then stopped and started by a switch in startOpt/stopOpt.
+ * then stopped and started by a switch in startOptimization/stopOptimization.
  * <p/>
  * Processor also handles adaptive parameter control by checking for the method
  * getParamControl in (so far) Optimizer and Problem instances. The return-value
@@ -214,7 +214,7 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
         Population resultPop = null;
 
         if (!isOptRunning()) {
-            System.err.println("warning, this shouldnt happen in processor! Was startOpt called?");
+            System.err.println("warning, this shouldnt happen in processor! Was startOptimization called?");
             setOptRunning(true);
         }
 
