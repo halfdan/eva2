@@ -4,8 +4,8 @@
   <groupId>eva2</groupId>
   <artifactId>EvA2</artifactId>
   <packaging>jar</packaging>
-  <version>3.0-rc1</version>
-  <name>EvA2-normi</name>
+  <version>2.2.0</version>
+  <name>EvA2</name>
   <url>http://www.ra.cs.uni-tuebingen.de/software/EvA2/</url>
   <description>EvA2 (an Evolutionary Algorithms framework, revised version 2) is a comprehensive heuristic optimization framework with emphasis on Evolutionary Algorithms implemented in Java. It is a revised version of the JavaEvA optimization toolbox, which has been developed as a resumption of the former EvA software package.</description>
 
