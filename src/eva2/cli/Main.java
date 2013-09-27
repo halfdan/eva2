@@ -61,10 +61,10 @@ public class Main implements OptimizationStateListener {
 
         Map<String, Class<? extends InterfaceOptimizer>> optimizerList = new HashMap<String, Class<? extends InterfaceOptimizer>>();
 
-        optimizerList.add("Differential Evolution", eva2.optimization.strategies.DifferentialEvolution.class);
-        optimizerList.add("Particle Swarm Optimization", eva2.optimization.strategies.ParticleSwarmOptimization.class);
-        optimizerList.add("Genetic Algorithm", eva2.optimization.strategies.GeneticAlgorithm.class);
-        optimizerList.add("Evolution Strategies", eva2.optimization.strategies.EvolutionStrategies.class);
+        optimizerList.put("Differential Evolution", eva2.optimization.strategies.DifferentialEvolution.class);
+        optimizerList.put("Particle Swarm Optimization", eva2.optimization.strategies.ParticleSwarmOptimization.class);
+        optimizerList.put("Genetic Algorithm", eva2.optimization.strategies.GeneticAlgorithm.class);
+        optimizerList.put("Evolution Strategies", eva2.optimization.strategies.EvolutionStrategies.class);
 
         eva2.optimization.strategies.DifferentialEvolution de = new DifferentialEvolution();
 
