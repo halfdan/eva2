@@ -90,7 +90,7 @@ public class MutateGAInvertBits implements InterfaceMutation, java.io.Serializab
                     tmpBitSet.flip(0, (mutationIndices[i][0] + mutationIndices[i][1]) - ((InterfaceGAIndividual) individual).getGenotypeLength());
                 }
             }
-            ((InterfaceGAIndividual) individual).SetBGenotype(tmpBitSet);
+            ((InterfaceGAIndividual) individual).setBGenotype(tmpBitSet);
         }
     }
 

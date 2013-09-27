@@ -72,7 +72,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
         return individualIndex;
     }
 
-    public void SetIndividualIndex(int index) {
+    public void setIndividualIndex(int index) {
         this.individualIndex = index;
     }
 
@@ -491,7 +491,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      *
      * @param age The new age.
      */
-    public void SetAge(int age) {
+    public void setAge(int age) {
         this.age = age;
     }
 
@@ -543,11 +543,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      * @return True if constraints are violated
      */
     public boolean violatesConstraint() {
-        if (this.constraintViolation > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return this.constraintViolation > 0;
     }
 
     /**
@@ -560,7 +556,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
         return this.isMarked;
     }
 
-    public void SetMarked(boolean t) {
+    public void setMarked(boolean t) {
         this.isMarked = t;
     }
 
@@ -590,7 +586,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      *
      * @return
      */
-    public void SetMarkPenalized(boolean p) {
+    public void setMarkPenalized(boolean p) {
         isPenalized = p;
     }
 
@@ -695,11 +691,6 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
             return true;
         }
         return isDominatingFitness(getFitness(), indy.getFitness());
-//        for (int i = 0; (i < this.fitness.length) && (i < tmpFitness.length); i++) {
-//            if (this.fitness[i] <= tmpFitness[i]) result &= true;
-//            else result &= false;
-//        }
-//        return result;
     }
 
     /**
@@ -724,19 +715,11 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
     }
 
     private static boolean firstIsFiniteAndLargerOrEqual(double a, double b) {
-        if (Double.isNaN(a) || Double.isInfinite(a)) {
-            return false;
-        } else {
-            return (a >= b);
-        }
+        return !(Double.isNaN(a) || Double.isInfinite(a)) && (a >= b);
     }
 
     private static boolean firstIsFiniteAndLargerNonEqual(double a, double b) {
-        if (Double.isNaN(a) || Double.isInfinite(a)) {
-            return false;
-        } else {
-            return (a > b);
-        }
+        return !(Double.isNaN(a) || Double.isInfinite(a)) && (a > b);
     }
 
     /**
@@ -805,11 +788,6 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
         } else {
             return (constrViolComp > 0);
         }
-//        for (int i = 0; (i < this.fitness.length) && (i < tmpFitness.length); i++) {
-//            if (this.fitness[i] <= tmpFitness[i]) result &= true;
-//            else result &= false;
-//        }
-//        return result;
     }
 
     /**
@@ -882,7 +860,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      *
      * @param sel The new selection probability array
      */
-    public void SetSelectionProbability(double[] sel) {
+    public void setSelectionProbability(double[] sel) {
         this.selectionProbability = sel;
     }
 
@@ -892,7 +870,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      * @param index The index of the selection probability value to set.
      * @param sel   The new selection probability value.
      */
-    public void SetSelectionProbability(int index, double sel) {
+    public void setSelectionProbability(int index, double sel) {
         if (this.selectionProbability.length > index) {
             this.selectionProbability[index] = sel;
         } else {
@@ -1020,22 +998,13 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      * @return Object    The associated object or null if none is found
      */
     public Object getData(String name) {
-//        if (name.equalsIgnoreCase("SelectionProbability")) return this.getSelectionProbability();
-//        if (name.equalsIgnoreCase("SelectionProbabilityArray")) return this.getSelectionProbability();
-//        if (name.equalsIgnoreCase("Fitness")) return this.getFitness();
-//        if (name.equalsIgnoreCase("FitnessArray")) return this.getFitness();
         Object data = dataHash.get(name);
         if (data == null) { // Fitness is actually in use... so lets have a minor special treatment
-//    		try {
             if (name.compareToIgnoreCase("Fitness") == 0) {
                 data = getFitness();
             } else {
                 EVAERROR.errorMsgOnce("Warning: data key " + name + " unknown (pot. multiple errors)!");
-//    				throw new RuntimeException(name + ": unknown key!");
             }
-//    		} catch(Exception e) {
-//    			e.printStackTrace(System.err);
-//    		}
         }
         return data;
     }
@@ -1273,7 +1242,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
             for (int i = 0; i < intData.length; i++) {
                 intData[i] = (int) pos[i];
             }
-            ((InterfaceDataTypeInteger) indy).SetIntGenotype(intData);
+            ((InterfaceDataTypeInteger) indy).setIntGenotype(intData);
             return true;
         } // TODO check some more types here?
         EVAERROR.errorMsgOnce("Unhandled case in AbstractEAIndividual.setDoublePosition()!");

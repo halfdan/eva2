@@ -69,7 +69,7 @@ public class MutateOBGAFlip implements InterfaceMutation, java.io.Serializable {
                 perm[p][p2] = temp;
             }
         }
-        ((InterfaceOBGAIndividual) individual).SetOBGenotype(perm);
+        ((InterfaceOBGAIndividual) individual).setOBGenotype(perm);
     }
 
     /**

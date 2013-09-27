@@ -140,7 +140,7 @@ public abstract class AbstractDynTransProblem extends AbstractSynchronousOptimiz
         }
         getProblem().initializePopulation(population);
         for (int i = 0; i < population.size(); i++) {
-            ((AbstractEAIndividual) population.get(i)).SetAge(0);
+            ((AbstractEAIndividual) population.get(i)).setAge(0);
         }
     }
 

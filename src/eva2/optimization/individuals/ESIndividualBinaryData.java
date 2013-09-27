@@ -179,7 +179,7 @@ public class ESIndividualBinaryData extends AbstractEAIndividual implements Inte
      * @param binaryData The new binary data.
      */
     @Override
-    public void SetBinaryPhenotype(BitSet binaryData) {
+    public void setBinaryPhenotype(BitSet binaryData) {
         this.m_Phenotype = binaryData;
     }
 
@@ -190,8 +190,8 @@ public class ESIndividualBinaryData extends AbstractEAIndividual implements Inte
      * @param binaryData The new binary data.
      */
     @Override
-    public void SetBinaryGenotype(BitSet binaryData) {
-        this.SetBinaryPhenotype(binaryData);
+    public void setBinaryGenotype(BitSet binaryData) {
+        this.setBinaryPhenotype(binaryData);
         for (int i = 0; i < this.m_Genotype.length; i++) {
             if (this.m_UseHardSwitch) {
                 if (binaryData.get(i)) {
@@ -223,7 +223,7 @@ public class ESIndividualBinaryData extends AbstractEAIndividual implements Inte
     public void initByValue(Object obj, InterfaceOptimizationProblem opt) {
         if (obj instanceof BitSet) {
             BitSet bs = (BitSet) obj;
-            this.SetBinaryGenotype(bs);
+            this.setBinaryGenotype(bs);
         } else {
             this.defaultInit(opt);
             System.out.println("Initial value for ESIndividualBinaryData is no BitSet!");

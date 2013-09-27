@@ -127,7 +127,7 @@ public class MutateGITranslocate implements InterfaceMutation, java.io.Serializa
             }
 //    		System.out.println(""+from+"/"+to+"/"+length);
 //    		this.printInt("After  ", tmp);
-            ((InterfaceGIIndividual) individual).SetIGenotype(tmp);
+            ((InterfaceGIIndividual) individual).setIGenotype(tmp);
         }
     }
 

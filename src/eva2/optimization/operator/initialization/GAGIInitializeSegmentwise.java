@@ -147,9 +147,9 @@ public class GAGIInitializeSegmentwise implements InterfaceInitialization, java.
 
             // write back the genotype (it may have been cloned, who knows...)
             if (indy instanceof InterfaceGAIndividual) {
-                ((InterfaceGAIndividual) indy).SetBGenotype((BitSet) genotype);
+                ((InterfaceGAIndividual) indy).setBGenotype((BitSet) genotype);
             } else {
-                ((InterfaceGIIndividual) indy).SetIGenotype((int[]) genotype);
+                ((InterfaceGIIndividual) indy).setIGenotype((int[]) genotype);
             }
 //			System.out.println(BeanInspector.toString(genotype));
         } else {

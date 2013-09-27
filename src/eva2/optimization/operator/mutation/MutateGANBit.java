@@ -81,7 +81,7 @@ public class MutateGANBit implements InterfaceMutation, java.io.Serializable {
             for (int i = 0; i < mutationIndices.length; i++) {
                 tmpBitSet.flip(mutationIndices[i]);
             }
-            ((InterfaceGAIndividual) individual).SetBGenotype(tmpBitSet);
+            ((InterfaceGAIndividual) individual).setBGenotype(tmpBitSet);
         }
     }
 

@@ -103,7 +103,7 @@ public class MutateGIOrdinal implements InterfaceMutation, java.io.Serializable 
                     x[mutInd] = range[mutInd][1];
                 }
             }
-            ((InterfaceGIIndividual) individual).SetIGenotype(x);
+            ((InterfaceGIIndividual) individual).setIGenotype(x);
         }
     }
 

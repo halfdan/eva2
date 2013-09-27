@@ -72,7 +72,7 @@ public class SelProbInvertByMax extends AbstractSelProb {
                 }
 
                 for (int i = 0; i < population.size(); i++) {
-                    ((AbstractEAIndividual) population.get(i)).SetSelectionProbability(x, result[i] / sum);
+                    ((AbstractEAIndividual) population.get(i)).setSelectionProbability(x, result[i] / sum);
                 }
             }
         } else {
@@ -89,7 +89,7 @@ public class SelProbInvertByMax extends AbstractSelProb {
             for (int i = 0; i < population.size(); i++) {
                 double[] tmpD = new double[1];
                 tmpD[0] = result[i] / sum;
-                ((AbstractEAIndividual) population.get(i)).SetSelectionProbability(tmpD);
+                ((AbstractEAIndividual) population.get(i)).setSelectionProbability(tmpD);
             }
         }
     }

@@ -355,8 +355,8 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
      * @see InterfaceDataTypeBinary.SetBinaryData()
      */
     @Override
-    public void SetBinaryPhenotype(BitSet binaryData) {
-        this.m_BitSet.SetBinaryPhenotype(binaryData);
+    public void setBinaryPhenotype(BitSet binaryData) {
+        this.m_BitSet.setBinaryPhenotype(binaryData);
     }
 
     /**
@@ -364,11 +364,11 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
      * memetic algorithms.
      *
      * @param binaryData The new binary data.
-     * @see InterfaceBinaryData.SetBinaryDataLamarckian()
+     * @see InterfaceBinaryData.setBinaryDataLamarckian()
      */
     @Override
-    public void SetBinaryGenotype(BitSet binaryData) {
-        this.m_BitSet.SetBinaryGenotype(binaryData);
+    public void setBinaryGenotype(BitSet binaryData) {
+        this.m_BitSet.setBinaryGenotype(binaryData);
     }
 
 /**********************************************************************************************************************

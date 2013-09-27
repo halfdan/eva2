@@ -66,7 +66,7 @@ public class MutateOBGAInversion implements java.io.Serializable, InterfaceMutat
                 permnew[p][p1 + i] = perm[p][p2 - i];
             }
         }
-        ((InterfaceOBGAIndividual) individual).SetOBGenotype(permnew);
+        ((InterfaceOBGAIndividual) individual).setOBGenotype(permnew);
     }
 
     /** This method allows you to perform either crossover on the strategy parameters

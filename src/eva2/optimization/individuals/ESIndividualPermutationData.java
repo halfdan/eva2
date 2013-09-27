@@ -49,7 +49,7 @@ public class ESIndividualPermutationData extends AbstractEAIndividual implements
         this.m_Genotype = new double[individual.m_Genotype.length][];
         this.m_Range = new double[individual.m_Genotype.length][][];
         for (int i = 0; i < this.m_Genotype.length; i++) {
-            //         if (individual.m_Phenotype != null) {
+            //         if (individual.phenotype != null) {
 
             this.m_Genotype[i] = new double[individual.m_Genotype[i].length];
             this.m_Range[i] = new double[individual.m_Genotype[i].length][2];
@@ -154,7 +154,7 @@ public class ESIndividualPermutationData extends AbstractEAIndividual implements
     }
 
     @Override
-    public void SetPermutationPhenotype(int[][] perm) {
+    public void setPermutationPhenotype(int[][] perm) {
         this.m_Phenotype = perm;
         this.m_Range = new double[perm.length][][];
         for (int i = 0; i < perm.length; i++) {
@@ -168,8 +168,8 @@ public class ESIndividualPermutationData extends AbstractEAIndividual implements
     }
 
     @Override
-    public void SetPermutationGenotype(int[][] perm) {
-        this.SetPermutationPhenotype(perm);
+    public void setPermutationGenotype(int[][] perm) {
+        this.setPermutationPhenotype(perm);
 
         this.m_Genotype = new double[perm.length][];
         this.m_Range = new double[perm.length][][];
@@ -262,7 +262,7 @@ public class ESIndividualPermutationData extends AbstractEAIndividual implements
             if (bs.length != this.m_Genotype.length) {
                 System.out.println("Init value and requested length doesn't match!");
             }
-            this.SetPermutationGenotype(bs);
+            this.setPermutationGenotype(bs);
         } else {
             this.defaultInit(opt);
             System.out.println("Initial value for ESIndividualPermutationData is not int[]!");

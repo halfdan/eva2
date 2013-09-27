@@ -105,13 +105,13 @@ public class CrossoverGPDefault implements InterfaceCrossover, java.io.Serializa
 
                 // actually switch individuals!
                 if (selNodeThisParent == null) {
-                    ((InterfaceGPIndividual) result[0]).SetPGenotype((AbstractGPNode) selNodeOther.clone(), t);
+                    ((InterfaceGPIndividual) result[0]).setPGenotype((AbstractGPNode) selNodeOther.clone(), t);
                 } else {
                     selNodeThisParent.setNode((AbstractGPNode) selNodeOther.clone(), selNodeThis);
                 }
 //                for (int i = 0; i < result.length; i++) System.out.println("-- Betw Crossover: " +result[i].getStringRepresentation());
                 if (selNodeOtherParent == null) {
-                    ((InterfaceGPIndividual) result[1]).SetPGenotype((AbstractGPNode) selNodeThis.clone(), t);
+                    ((InterfaceGPIndividual) result[1]).setPGenotype((AbstractGPNode) selNodeThis.clone(), t);
                 } else {
                     selNodeOtherParent.setNode((AbstractGPNode) selNodeThis.clone(), selNodeOther);
                 }

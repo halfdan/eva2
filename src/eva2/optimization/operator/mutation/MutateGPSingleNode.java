@@ -80,7 +80,7 @@ public class MutateGPSingleNode implements InterfaceMutation, java.io.Serializab
                 if (parent != null) {
                     newNode.setParent(parent);
                 } else {
-                    ((InterfaceGPIndividual) individual).SetPGenotype(newNode, i);
+                    ((InterfaceGPIndividual) individual).setPGenotype(newNode, i);
                 }
                 // now reconnect the children
                 newNode.initNodeArray();

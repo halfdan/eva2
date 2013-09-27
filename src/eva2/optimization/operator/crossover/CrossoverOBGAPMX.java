@@ -71,8 +71,8 @@ public class CrossoverOBGAPMX implements InterfaceCrossover, java.io.Serializabl
                 pperm2[i] = perm2;
             }
 
-            ((InterfaceOBGAIndividual) result[0]).SetOBGenotype(pperm1);
-            ((InterfaceOBGAIndividual) result[1]).SetOBGenotype(pperm2);
+            ((InterfaceOBGAIndividual) result[0]).setOBGenotype(pperm1);
+            ((InterfaceOBGAIndividual) result[1]).setOBGenotype(pperm2);
             //((InterfaceDataTypePermutation) result[0]).SetPermutationDataLamarckian(pperm1);
             //((InterfaceDataTypePermutation) result[1]).SetPermutationDataLamarckian(pperm2);
         }

@@ -72,7 +72,7 @@ public class SelProbRanking extends AbstractSelProb implements java.io.Serializa
                 }
 
                 for (int i = 0; i < population.size(); i++) {
-                    ((AbstractEAIndividual) population.get(i)).SetSelectionProbability(x, result[i] / sum);
+                    ((AbstractEAIndividual) population.get(i)).setSelectionProbability(x, result[i] / sum);
                 }
             }
         } else {
@@ -99,7 +99,7 @@ public class SelProbRanking extends AbstractSelProb implements java.io.Serializa
                 }
 
                 for (int i = 0; i < population.size(); i++) {
-                    ((AbstractEAIndividual) population.get(i)).SetSelectionProbability(x, result[i] / sum);
+                    ((AbstractEAIndividual) population.get(i)).setSelectionProbability(x, result[i] / sum);
                 }
             }
         }

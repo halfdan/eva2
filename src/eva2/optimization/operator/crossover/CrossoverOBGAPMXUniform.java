@@ -71,8 +71,8 @@ public class CrossoverOBGAPMXUniform implements InterfaceCrossover, java.io.Seri
                 pperm1[i] = perm1;
                 pperm2[i] = perm2;
             }
-            ((InterfaceOBGAIndividual) result[0]).SetOBGenotype(pperm1);
-            ((InterfaceOBGAIndividual) result[1]).SetOBGenotype(pperm2);
+            ((InterfaceOBGAIndividual) result[0]).setOBGenotype(pperm1);
+            ((InterfaceOBGAIndividual) result[1]).setOBGenotype(pperm2);
         }
         //in case the crossover was successfull lets give the mutation operators a chance to mate the strategy parameters
         for (int i = 0; i < result.length; i++) {

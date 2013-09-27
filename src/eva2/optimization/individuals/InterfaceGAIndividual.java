@@ -29,7 +29,7 @@ public interface InterfaceGAIndividual {
      *
      * @param b The new genotype of the Individual
      */
-    public void SetBGenotype(BitSet b);
+    public void setBGenotype(BitSet b);
 
     /**
      * This method allows the user to read the length of the genotype.

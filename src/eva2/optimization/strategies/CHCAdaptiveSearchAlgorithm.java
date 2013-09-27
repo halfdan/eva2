@@ -201,7 +201,7 @@ public class CHCAdaptiveSearchAlgorithm implements InterfaceOptimizer, java.io.S
                     }
                 }
             }
-            mutant.SetBGenotype(tmpBitSet);
+            mutant.setBGenotype(tmpBitSet);
             this.population.add(mutant);
         }
         if (best instanceof InterfaceGAIndividual) {

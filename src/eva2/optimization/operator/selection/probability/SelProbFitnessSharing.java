@@ -70,7 +70,7 @@ public class SelProbFitnessSharing extends AbstractSelProb implements java.io.Se
         }
         for (int i = 0; i < population.size(); i++) {
             tmpIndy1 = ((AbstractEAIndividual) population.get(i));
-            tmpIndy1.SetSelectionProbability(0, (selProb[i] / sum));
+            tmpIndy1.setSelectionProbability(0, (selProb[i] / sum));
         }
     }
 

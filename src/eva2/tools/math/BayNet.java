@@ -1110,11 +1110,11 @@ public class BayNet {
 //		data5.set(0, true);
 //		data5.set(1, true);
 //		data5.set(2, true);
-//		indy1.SetBinaryGenotype(data1);
-//		indy2.SetBinaryGenotype(data2);
-//		indy3.SetBinaryGenotype(data3);
-//		indy4.SetBinaryGenotype(data4);
-//		indy5.SetBinaryGenotype(data5);
+//		indy1.setBinaryGenotype(data1);
+//		indy2.setBinaryGenotype(data2);
+//		indy3.setBinaryGenotype(data3);
+//		indy4.setBinaryGenotype(data4);
+//		indy5.setBinaryGenotype(data5);
 //		pop.add(indy1);
 //		pop.add(indy2);
 //		pop.add(indy3);

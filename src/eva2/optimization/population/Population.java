@@ -554,7 +554,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
                     curCard += (int) Math.round(RNG.gaussianDouble((double) stdDev));
                 }
                 curCard = Math.max(0, Math.min(curCard, gaIndy.getGenotypeLength()));
-                gaIndy.SetBGenotype(RNG.randomBitSet(curCard, gaIndy.getGenotypeLength()));
+                gaIndy.setBGenotype(RNG.randomBitSet(curCard, gaIndy.getGenotypeLength()));
             }
         } else {
             System.err.println("Error: InterfaceGAIndividual required for binary cardinality initialization!");

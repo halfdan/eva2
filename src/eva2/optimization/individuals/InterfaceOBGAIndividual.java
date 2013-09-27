@@ -24,9 +24,9 @@ public interface InterfaceOBGAIndividual {
 
 
     /**
-     * SetOBGenotype sets the genotype of the individual.
+     * setOBGenotype sets the genotype of the individual.
      *
      * @param b int[] new genotype
      */
-    public void SetOBGenotype(int[][] b);
+    public void setOBGenotype(int[][] b);
 }

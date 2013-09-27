@@ -501,7 +501,7 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
         if (particleIndices != null) { // use given indices
             for (int i = 0; i < tmpopt.getPopulation().size(); ++i) {
                 AbstractEAIndividual indy = tmpopt.getPopulation().getEAIndividual(i);
-                indy.SetIndividualIndex(particleIndices[i]);//SetData("particleIndex", new Integer(particleIndices[i]));
+                indy.setIndividualIndex(particleIndices[i]);//SetData("particleIndex", new Integer(particleIndices[i]));
                 indy.putData("newParticleFlag", new Boolean(true)); // for plotting
             }
         }

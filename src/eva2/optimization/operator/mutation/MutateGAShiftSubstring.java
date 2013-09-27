@@ -100,7 +100,7 @@ public class MutateGAShiftSubstring implements InterfaceMutation, java.io.Serial
                 tmpBitSet.set((len + b - d + i + 1) % len, origBitSet.get((len + a - d + i) % len));
             }
 //			System.out.println(tmpBitSet.cardinality());
-            ((InterfaceGAIndividual) individual).SetBGenotype(tmpBitSet);
+            ((InterfaceGAIndividual) individual).setBGenotype(tmpBitSet);
         }
 //		System.out.println("After Mutate: " +(individual.getStringRepresentation()));
     }

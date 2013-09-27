@@ -36,7 +36,7 @@ public class GIIndividualIntegerData extends AbstractEAIndividual implements Int
 
     public GIIndividualIntegerData(int[][] theRange) {
         this();
-        SetIntRange(theRange);
+        setIntRange(theRange);
     }
 
     public GIIndividualIntegerData(GIIndividualIntegerData individual) {
@@ -159,7 +159,7 @@ public class GIIndividualIntegerData extends AbstractEAIndividual implements Int
      * @param range The new range for the double data.
      */
     @Override
-    public void SetIntRange(int[][] range) {
+    public void setIntRange(int[][] range) {
         if (range.length != this.m_Range.length) {
             this.setIntegerDataLength(range.length);
         }
@@ -210,7 +210,7 @@ public class GIIndividualIntegerData extends AbstractEAIndividual implements Int
      * @param doubleData The new double data.
      */
     @Override
-    public void SetIntPhenotype(int[] doubleData) {
+    public void setIntPhenotype(int[] doubleData) {
         this.m_Phenotype = doubleData;
     }
 
@@ -221,8 +221,8 @@ public class GIIndividualIntegerData extends AbstractEAIndividual implements Int
      * @param doubleData The new double data.
      */
     @Override
-    public void SetIntGenotype(int[] doubleData) {
-        this.SetIntPhenotype(doubleData);
+    public void setIntGenotype(int[] doubleData) {
+        this.setIntPhenotype(doubleData);
         this.m_Genotype = new int[this.m_Range.length];
         for (int i = 0; i < doubleData.length; i++) {
             this.m_Genotype[i] = doubleData[i];
@@ -246,7 +246,7 @@ public class GIIndividualIntegerData extends AbstractEAIndividual implements Int
             if (bs.length != this.m_Range.length) {
                 System.out.println("Init value and requested length doesn't match!");
             }
-            this.SetIntGenotype(bs);
+            this.setIntGenotype(bs);
         } else {
             this.defaultInit(opt);
             System.out.println("Initial value for GAIndividualDoubleData is not double[]!");
@@ -311,7 +311,7 @@ public class GIIndividualIntegerData extends AbstractEAIndividual implements Int
      * @param b The new genotype of the Individual
      */
     @Override
-    public void SetIGenotype(int[] b) {
+    public void setIGenotype(int[] b) {
         this.m_Genotype = b;
     }
 

@@ -427,7 +427,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
             Mathematics.projectToRange(nX, esIndy.getDoubleRange());
         } // why did this never happen before?
         esIndy.setDoubleGenotype(nX);
-        indy.SetAge(0);
+        indy.setAge(0);
         indy.resetConstraintViolation();
         double[] fit = new double[1];
         fit[0] = 0;
@@ -530,7 +530,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
 
                 if (((AbstractEAIndividual) population.get(i)).getAge() >= maximumAge) {
                     this.optimizationProblem.evaluate(((AbstractEAIndividual) population.get(i)));
-                    ((AbstractEAIndividual) population.get(i)).SetAge(0);
+                    ((AbstractEAIndividual) population.get(i)).setAge(0);
                     population.incrFunctionCalls();
                 }
             }
@@ -588,7 +588,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
 
                 if (((AbstractEAIndividual) population.get(i)).getAge() >= maximumAge) {
                     this.optimizationProblem.evaluate(((AbstractEAIndividual) population.get(i)));
-                    ((AbstractEAIndividual) population.get(i)).SetAge(0);
+                    ((AbstractEAIndividual) population.get(i)).setAge(0);
                     population.incrFunctionCalls();
                 }
             }

@@ -91,7 +91,7 @@ public class MutateGIInvert implements InterfaceMutation, java.io.Serializable {
             }
             //this.pintInt("After ", tmp);
             //this.pintInt("After ", x);
-            ((InterfaceGIIndividual) individual).SetIGenotype(x);
+            ((InterfaceGIIndividual) individual).setIGenotype(x);
         }
     }
 

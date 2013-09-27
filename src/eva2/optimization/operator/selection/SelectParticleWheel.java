@@ -111,7 +111,7 @@ public class SelectParticleWheel implements InterfaceSelection, java.io.Serializ
                 sum += ((AbstractEAIndividual) population.getIndividual(selIndex)).getSelectionProbability(0);
             }
             result.add(((AbstractEAIndividual) population.get(selIndex)).clone());
-            ((AbstractEAIndividual) result.getIndividual(i)).SetAge(0);
+            ((AbstractEAIndividual) result.getIndividual(i)).setAge(0);
         }
     }
 
@@ -129,7 +129,7 @@ public class SelectParticleWheel implements InterfaceSelection, java.io.Serializ
                 selFitSum += ((AbstractEAIndividual) population.getIndividual(selIndex)).getSelectionProbability(0);
             }
             result.add(((AbstractEAIndividual) population.get(selIndex)).clone());
-            ((AbstractEAIndividual) result.getIndividual(i)).SetAge(0);
+            ((AbstractEAIndividual) result.getIndividual(i)).setAge(0);
             selPoint += segment;
         }
     }
