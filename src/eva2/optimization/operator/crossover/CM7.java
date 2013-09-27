@@ -50,7 +50,7 @@ public class CM7 implements InterfaceCrossover, java.io.Serializable, InterfaceE
                 if (data.get(i) != data2.get(i)) {
                     different++;
                     data.flip(i);
-                    ((InterfaceDataTypeBinary) indy1).SetBinaryGenotype(data);
+                    ((InterfaceDataTypeBinary) indy1).setBinaryGenotype(data);
                     this.m_OptimizationProblem.evaluate(indy1);
                     this.evaluations++;
                     if (indy1.getFitness(0) < min) {
@@ -66,7 +66,7 @@ public class CM7 implements InterfaceCrossover, java.io.Serializable, InterfaceE
                     }
                 }
             }
-            ((InterfaceDataTypeBinary) indy1).SetBinaryGenotype(data);
+            ((InterfaceDataTypeBinary) indy1).setBinaryGenotype(data);
         }
         result[0] = indy1;
         return result;

@@ -51,7 +51,7 @@ public class CM6 implements InterfaceCrossover, java.io.Serializable {
                     data.set(i, false);
                 }
             }
-            ((InterfaceDataTypeBinary) indy1).SetBinaryGenotype(data);
+            ((InterfaceDataTypeBinary) indy1).setBinaryGenotype(data);
         }
         result[0] = indy1;
         return result;

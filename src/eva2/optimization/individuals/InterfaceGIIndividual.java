@@ -33,7 +33,7 @@ public interface InterfaceGIIndividual {
      *
      * @param range The new range for the int data.
      */
-    public void SetIntRange(int[][] range);
+    public void setIntRange(int[][] range);
 
     /**
      * This method will allow the user to read the GI genotype
@@ -50,7 +50,7 @@ public interface InterfaceGIIndividual {
      *
      * @param b The new genotype of the Individual
      */
-    public void SetIGenotype(int[] b);
+    public void setIGenotype(int[] b);
 
     /**
      * This method allows the user to read the length of the genotype.

@@ -96,7 +96,7 @@ public class MLTGA implements InterfaceOptimizer, java.io.Serializable, Interfac
                 LOGGER.log(Level.WARNING, "Couldn't get problem dimension!");
             }
             probDim = (Integer) dim;
-            ((InterfaceDataTypeBinary) this.template).SetBinaryGenotype(new BitSet(probDim));
+            ((InterfaceDataTypeBinary) this.template).setBinaryGenotype(new BitSet(probDim));
         }
         this.population.addPopulationChangedEventListener(this);
         this.population.setNotifyEvalInterval(this.generationCycle);
@@ -274,7 +274,7 @@ public class MLTGA implements InterfaceOptimizer, java.io.Serializable, Interfac
                 newGene.flip(flipID);
             }
             AbstractEAIndividual newIndy = (AbstractEAIndividual) this.template.clone();
-            ((InterfaceDataTypeBinary) newIndy).SetBinaryGenotype(newGene);
+            ((InterfaceDataTypeBinary) newIndy).setBinaryGenotype(newGene);
             evaluate(newIndy);
             if (newIndy.getFitness(0) < indy.getFitness(0)) {
                 indy = newIndy;

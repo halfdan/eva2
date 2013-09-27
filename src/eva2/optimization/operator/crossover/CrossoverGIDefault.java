@@ -88,7 +88,7 @@ public class CrossoverGIDefault implements InterfaceCrossover, java.io.Serializa
             }
             // write the result back
             for (int i = 0; i < result.length; i++) {
-                ((InterfaceGIIndividual) result[i]).SetIGenotype(children[i]);
+                ((InterfaceGIIndividual) result[i]).setIGenotype(children[i]);
             }
         }
         //in case the crossover was successfull lets give the mutation operators a chance to mate the strategy parameters

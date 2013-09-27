@@ -33,7 +33,7 @@ public interface InterfaceDataTypeInteger {
      *
      * @param range The new range for the int data.
      */
-    public void SetIntRange(int[][] range);
+    public void setIntRange(int[][] range);
 
     /**
      * This method will return the range for all int attributes.
@@ -62,7 +62,7 @@ public interface InterfaceDataTypeInteger {
      *
      * @param intData The new int data.
      */
-    public void SetIntPhenotype(int[] intData);
+    public void setIntPhenotype(int[] intData);
 
     /**
      * This method allows you to set the int data, this can be used for
@@ -70,5 +70,5 @@ public interface InterfaceDataTypeInteger {
      *
      * @param intData The new int data.
      */
-    public void SetIntGenotype(int[] intData);
+    public void setIntGenotype(int[] intData);
 }

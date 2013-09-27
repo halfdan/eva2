@@ -170,7 +170,7 @@ public class BKnapsackProblem extends AbstractProblemBinary implements java.io.S
             while (eval(tmpSet)[1] > 0) {
                 tmpSet.set(RNG.randomInt(0, items.length - 1));
             }
-            ((InterfaceDataTypeBinary) indy).SetBinaryGenotype(tmpSet);
+            ((InterfaceDataTypeBinary) indy).setBinaryGenotype(tmpSet);
         }
     }
 
@@ -252,7 +252,7 @@ public class BKnapsackProblem extends AbstractProblemBinary implements java.io.S
             }
 
             if (this.m_Lamarckism) {
-                ((InterfaceDataTypeBinary) individual).SetBinaryGenotype(tmpBitSet);
+                ((InterfaceDataTypeBinary) individual).setBinaryGenotype(tmpBitSet);
             }
         }
         result[0] += 5100;

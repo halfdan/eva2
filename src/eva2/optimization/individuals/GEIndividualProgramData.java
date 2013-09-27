@@ -419,7 +419,7 @@ public class GEIndividualProgramData extends AbstractEAIndividual implements Int
 
     /**
      * This method will fetch the next int value from the BitSet. If necessary the
-     * method will continue at the beginning of the BitSet if m_Genotype length is
+     * method will continue at the beginning of the BitSet if genotype length is
      * exceeded.
      * Note: You need to set the current ReadingIndx = 0 before starting to decode
      * the BitSet
@@ -653,7 +653,7 @@ public class GEIndividualProgramData extends AbstractEAIndividual implements Int
      * @param binaryData The new binary data.
      */
     @Override
-    public void SetBGenotype(BitSet binaryData) {
+    public void setBGenotype(BitSet binaryData) {
         this.m_Genotype = binaryData;
     }
 

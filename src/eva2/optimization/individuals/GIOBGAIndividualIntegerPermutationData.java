@@ -242,8 +242,8 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
      * @param range The new range for the int data.
      */
     @Override
-    public void SetIntRange(int[][] range) {
-        this.m_Integer.SetIntRange(range);
+    public void setIntRange(int[][] range) {
+        this.m_Integer.setIntRange(range);
     }
 
     /**
@@ -283,8 +283,8 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
      * @param intData The new int data.
      */
     @Override
-    public void SetIntPhenotype(int[] intData) {
-        this.m_Integer.SetIntPhenotype(intData);
+    public void setIntPhenotype(int[] intData) {
+        this.m_Integer.setIntPhenotype(intData);
     }
 
     /**
@@ -294,8 +294,8 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
      * @param intData The new int data.
      */
     @Override
-    public void SetIntGenotype(int[] intData) {
-        this.m_Integer.SetIntGenotype(intData);
+    public void setIntGenotype(int[] intData) {
+        this.m_Integer.setIntGenotype(intData);
     }
 
 /**********************************************************************************************************************
@@ -349,8 +349,8 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
      * @param perm The new permutation data.
      */
     @Override
-    public void SetPermutationPhenotype(int[][] perm) {
-        this.SetPermutationPhenotype(perm);
+    public void setPermutationPhenotype(int[][] perm) {
+        this.setPermutationPhenotype(perm);
     }
 
     /**
@@ -360,8 +360,8 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
      * @param perm The new permutation data.
      */
     @Override
-    public void SetPermutationGenotype(int[][] perm) {
-        this.SetPermutationGenotype(perm);
+    public void setPermutationGenotype(int[][] perm) {
+        this.setPermutationGenotype(perm);
     }
 
     @Override

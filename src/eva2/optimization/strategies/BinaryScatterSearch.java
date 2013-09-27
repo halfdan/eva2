@@ -204,7 +204,7 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
                 System.err.println("Couldnt get problem dimension!");
             }
             probDim = (Integer) dim;
-            ((InterfaceDataTypeBinary) this.template).SetBinaryGenotype(new BitSet(probDim));
+            ((InterfaceDataTypeBinary) this.template).setBinaryGenotype(new BitSet(probDim));
         }
         this.firstTime = true;
         this.cross.init(this.template, problem, refSet, Double.MAX_VALUE);
@@ -294,7 +294,7 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
                 for (int j = 0; j < data.size(); j += i) {
                     data.flip(j);
                 }
-                ((InterfaceDataTypeBinary) indy).SetBinaryGenotype(data);
+                ((InterfaceDataTypeBinary) indy).setBinaryGenotype(data);
                 if (i == 1) {
                     i++;
                     method1 = !method1;
@@ -306,7 +306,7 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
                     for (int j = 0; j < data.size(); j += i) {
                         data.flip(j);
                     }
-                    ((InterfaceDataTypeBinary) indy).SetBinaryGenotype(data);
+                    ((InterfaceDataTypeBinary) indy).setBinaryGenotype(data);
                 }
                 i++;
             }
@@ -334,7 +334,7 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
                     data.set(i, true);
                 }
             }
-            dblIndy.SetBinaryGenotype(data);
+            dblIndy.setBinaryGenotype(data);
             if (!contains(dblIndy, pop)) {
                 pop.add(dblIndy);
                 evaluate(indy);
@@ -362,7 +362,7 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
                     data.set(i, false);
                 }
             }
-            dblIndy.SetBinaryGenotype(data);
+            dblIndy.setBinaryGenotype(data);
             if (!contains(dblIndy, pop)) {
                 pop.add(dblIndy);
                 evaluate(indy);
@@ -610,7 +610,7 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
             improvement = false;
             for (int i : cl) {
                 data.flip(i);
-                ((InterfaceDataTypeBinary) tmpIndy).SetBinaryGenotype(data);
+                ((InterfaceDataTypeBinary) tmpIndy).setBinaryGenotype(data);
                 evaluate(tmpIndy);
                 if (tmpIndy.getFitness(0) < indy.getFitness(0)) {
                     improvement = true;
@@ -628,7 +628,7 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
                     if (valJ != valI) {
                         data.set(i, valJ);
                         data.set(j, valI);
-                        ((InterfaceDataTypeBinary) tmpIndy).SetBinaryGenotype(data);
+                        ((InterfaceDataTypeBinary) tmpIndy).setBinaryGenotype(data);
                         evaluate(tmpIndy);
                         if (tmpIndy.getFitness(0) < indy.getFitness(0)) {
                             improvement = true;

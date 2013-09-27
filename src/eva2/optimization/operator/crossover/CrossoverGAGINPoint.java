@@ -118,9 +118,9 @@ public class CrossoverGAGINPoint implements InterfaceCrossover, java.io.Serializ
     private void writeBack(AbstractEAIndividual indy,
                            Object newGenotype) {
         if (indy instanceof InterfaceGAIndividual) {
-            ((InterfaceGAIndividual) indy).SetBGenotype((BitSet) newGenotype);
+            ((InterfaceGAIndividual) indy).setBGenotype((BitSet) newGenotype);
         } else {
-            ((InterfaceGIIndividual) indy).SetIGenotype((int[]) newGenotype);
+            ((InterfaceGIIndividual) indy).setIGenotype((int[]) newGenotype);
         }
     }
 
@@ -197,7 +197,7 @@ public class CrossoverGAGINPoint implements InterfaceCrossover, java.io.Serializ
 //                }
 //            }
 //
-//            for (int i = 0; i < result.length; i++) ((InterfaceGAIndividual)result[i]).SetBGenotype(tmpBitSet[1][i]);
+//            for (int i = 0; i < result.length; i++) ((InterfaceGAIndividual)result[i]).setBGenotype(tmpBitSet[1][i]);
 //        }
 //        //in case the crossover was successful lets give the mutation operators a chance to mate the strategy parameters
 //        for (int i = 0; i < result.length; i++) result[i].getMutationOperator().crossoverOnStrategyParameters(indy1, partners);

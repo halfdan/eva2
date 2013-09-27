@@ -733,7 +733,7 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
         AbstractGPNode node = AbstractGPNode.parseFromString(nodeStr);
         PSymbolicRegression regrProb = new PSymbolicRegression();
         GPIndividualProgramData indy = new GPIndividualProgramData();
-        indy.SetPGenotype(node, 0);
+        indy.setPGenotype(node, 0);
         regrProb.evaluate(indy);
         System.out.println("Evaluated individual: " + indy);
         return indy.getFitness();

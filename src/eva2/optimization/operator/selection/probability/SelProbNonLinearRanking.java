@@ -102,7 +102,7 @@ public class SelProbNonLinearRanking extends AbstractSelProb implements java.io.
                         sum += result[i];
                     }
                     for (int i = 0; i < data.length; i++) {
-                        ((AbstractEAIndividual) population.get(rank_index[i])).SetSelectionProbability(x, result[i] / sum);
+                        ((AbstractEAIndividual) population.get(rank_index[i])).setSelectionProbability(x, result[i] / sum);
                     }
                 }
             } else {
@@ -143,7 +143,7 @@ public class SelProbNonLinearRanking extends AbstractSelProb implements java.io.
                 for (int i = 0; i < data.length; i++) {
                     double[] tmpD = new double[1];
                     tmpD[0] = result[i] / sum;
-                    ((AbstractEAIndividual) population.get(rank_index[i])).SetSelectionProbability(tmpD);
+                    ((AbstractEAIndividual) population.get(rank_index[i])).setSelectionProbability(tmpD);
                 }
             }
         } else {
@@ -182,7 +182,7 @@ public class SelProbNonLinearRanking extends AbstractSelProb implements java.io.
                     sum += result[i];
                 }
                 for (int i = 0; i < data.length; i++) {
-                    ((AbstractEAIndividual) population.get(rank_index[i])).SetSelectionProbability(x, result[i] / sum);
+                    ((AbstractEAIndividual) population.get(rank_index[i])).setSelectionProbability(x, result[i] / sum);
                 }
             }
         }

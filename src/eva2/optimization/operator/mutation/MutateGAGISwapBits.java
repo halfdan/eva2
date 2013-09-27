@@ -127,9 +127,9 @@ public class MutateGAGISwapBits implements InterfaceMutation, java.io.Serializab
 //				tmpBitSet.set(mutationIndices[i][0], tmpBit);
             }
             if (genotype instanceof BitSet) {
-                ((InterfaceGAIndividual) individual).SetBGenotype((BitSet) genotype);
+                ((InterfaceGAIndividual) individual).setBGenotype((BitSet) genotype);
             } else {
-                ((InterfaceGIIndividual) individual).SetIGenotype((int[]) genotype);
+                ((InterfaceGIIndividual) individual).setIGenotype((int[]) genotype);
             }
         }
 //		System.err.println("After Mutate:  " +(individual.getStringRepresentation()));

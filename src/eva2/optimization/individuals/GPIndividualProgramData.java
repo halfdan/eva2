@@ -149,8 +149,8 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
         this.m_Phenotype = new AbstractGPNode[this.m_Genotype.length];
         for (int i = 0; i < this.m_Genotype.length; i++) {
             this.m_Phenotype[i] = (AbstractGPNode) this.m_Genotype[i].clone();
-            // if (!m_Phenotype[0].checkDepth(0)) {
-            // 	System.err.println("error... " + m_Genotype[0].checkDepth(0));
+            // if (!phenotype[0].checkDepth(0)) {
+            // 	System.err.println("error... " + genotype[0].checkDepth(0));
             // }
 
             if ((this.m_CheckMaxDepth) && (this.m_Phenotype[i].isMaxDepthViolated(this.m_maxAllowedDepth))) {
@@ -300,7 +300,7 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
      * @param b The new programgenotype of the Individual
      */
     @Override
-    public void SetPGenotype(AbstractGPNode[] b) {
+    public void setPGenotype(AbstractGPNode[] b) {
         this.m_Genotype = b;
         this.m_Phenotype = null;
     }
@@ -312,7 +312,7 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
      * @param i The index where to insert the new program
      */
     @Override
-    public void SetPGenotype(AbstractGPNode b, int i) {
+    public void setPGenotype(AbstractGPNode b, int i) {
         this.m_Genotype[i] = b;
         m_Genotype[i].updateDepth(0);
 //        System.out.println("Setting pheno of depth " + b.getMaxDepth() + " " + b.getStringRepresentation());
@@ -340,7 +340,7 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
                     newNode.initGrow(this.m_Area[i], this.m_maxAllowedDepth);
                     parent.setNode(newNode, nodeToMutate);
                 }
-                //if (!m_Genotype[i].checkDepth(0) || (m_Genotype[i].isMaxDepthViolated(m_maxAllowedDepth))) {
+                //if (!genotype[i].checkDepth(0) || (genotype[i].isMaxDepthViolated(m_maxAllowedDepth))) {
                 //	System.err.println("Error in GPIndividualProgramData.defaultMutate!");
                 //}
             }

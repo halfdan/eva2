@@ -1,13 +1,18 @@
 package eva2.cli;
 
 import eva2.optimization.strategies.DifferentialEvolution;
+import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.util.annotation.Parameter;
 import org.apache.commons.cli.*;
 import eva2.optimization.OptimizationStateListener;
 
 import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Main implements OptimizationStateListener {
+
+
 
     private Options createCommandLineOptions() {
         Options opt = new Options();
@@ -53,6 +58,13 @@ public class Main implements OptimizationStateListener {
     }
 
     public static void main(String[] args) {
+
+        Map<String, Class<? extends InterfaceOptimizer>> optimizerList = new HashMap<String, Class<? extends InterfaceOptimizer>>();
+
+        optimizerList.add("Differential Evolution", eva2.optimization.strategies.DifferentialEvolution.class);
+        optimizerList.add("Particle Swarm Optimization", eva2.optimization.strategies.ParticleSwarmOptimization.class);
+        optimizerList.add("Genetic Algorithm", eva2.optimization.strategies.GeneticAlgorithm.class);
+        optimizerList.add("Evolution Strategies", eva2.optimization.strategies.EvolutionStrategies.class);
 
         eva2.optimization.strategies.DifferentialEvolution de = new DifferentialEvolution();
 

@@ -25,7 +25,7 @@ public interface InterfaceGPIndividual {
      *
      * @param b The new program genotype of the Individual
      */
-    public void SetPGenotype(AbstractGPNode[] b);
+    public void setPGenotype(AbstractGPNode[] b);
 
     /**
      * This method will allow the user to set the current program 'genotype'.
@@ -33,7 +33,7 @@ public interface InterfaceGPIndividual {
      * @param b The new program genotype of the Individual
      * @param i The index where to insert the new program
      */
-    public void SetPGenotype(AbstractGPNode b, int i);
+    public void setPGenotype(AbstractGPNode b, int i);
 
     /**
      * This method allows you to get the function area

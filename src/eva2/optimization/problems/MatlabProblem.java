@@ -333,10 +333,10 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
                 ((InterfaceDataTypeDouble) indy).setDoubleGenotype(ds);
                 break;
             case typeBinary:
-                ((InterfaceDataTypeBinary) indy).SetBinaryGenotype(toBinary(ds));
+                ((InterfaceDataTypeBinary) indy).setBinaryGenotype(toBinary(ds));
                 break;
             case typeInteger:
-                ((InterfaceDataTypeInteger) indy).SetIntGenotype(toInteger(ds));
+                ((InterfaceDataTypeInteger) indy).setIntGenotype(toInteger(ds));
                 break;
         }
     }

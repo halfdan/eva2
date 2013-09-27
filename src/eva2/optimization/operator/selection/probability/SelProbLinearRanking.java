@@ -95,7 +95,7 @@ public class SelProbLinearRanking extends AbstractSelProb implements java.io.Ser
                     // set the selection propability
                     for (int i = 0; i < data.length; i++) {
                         temp = (1 / (double) size) * (this.nappaPlus - ((this.nappaPlus - this.nappaMinus) * ((double) (i) / (double) (size - 1))));
-                        ((AbstractEAIndividual) population.get(rank_index[i])).SetSelectionProbability(x, temp);
+                        ((AbstractEAIndividual) population.get(rank_index[i])).setSelectionProbability(x, temp);
                     }
                 }
             } else {
@@ -131,7 +131,7 @@ public class SelProbLinearRanking extends AbstractSelProb implements java.io.Ser
                 for (int i = 0; i < data.length; i++) {
                     double[] tmpD = new double[1];
                     tmpD[0] = (1 / (double) size) * (this.nappaPlus - ((this.nappaPlus - this.nappaMinus) * ((double) (i) / (double) (size - 1))));
-                    ((AbstractEAIndividual) population.get(rank_index[i])).SetSelectionProbability(tmpD);
+                    ((AbstractEAIndividual) population.get(rank_index[i])).setSelectionProbability(tmpD);
                 }
             }
         } else {
@@ -166,7 +166,7 @@ public class SelProbLinearRanking extends AbstractSelProb implements java.io.Ser
                 // set the selection propability
                 for (int i = 0; i < data.length; i++) {
                     temp = (1 / (double) size) * (this.nappaPlus - ((this.nappaPlus - this.nappaMinus) * ((double) (i) / (double) (size - 1))));
-                    ((AbstractEAIndividual) population.get(rank_index[i])).SetSelectionProbability(x, temp);
+                    ((AbstractEAIndividual) population.get(rank_index[i])).setSelectionProbability(x, temp);
                 }
             }
         }

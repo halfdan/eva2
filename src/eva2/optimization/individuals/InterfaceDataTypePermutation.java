@@ -55,7 +55,7 @@ public interface InterfaceDataTypePermutation {
      *
      * @param perm The new permutation data.
      */
-    void SetPermutationPhenotype(int[][] perm);
+    void setPermutationPhenotype(int[][] perm);
 
     /**
      * This method allows you to set the permutation data, this can be used for
@@ -63,7 +63,7 @@ public interface InterfaceDataTypePermutation {
      *
      * @param perm The new permutation data.
      */
-    void SetPermutationGenotype(int[][] perm);
+    void setPermutationGenotype(int[][] perm);
 
     public void setFirstindex(int[] firstindex);
 }

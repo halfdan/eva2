@@ -25,8 +25,8 @@ public class GAIndividualDoubleData extends AbstractEAIndividual implements Inte
 
     private double[] m_Phenotype;
     private double[][] m_Range;
-    protected BitSet m_Genotype;
-    protected int m_GenotypeLength;
+    protected BitSet genotype;
+    protected int genotypeLength;
     private int m_Precision = 32;
     private InterfaceGADoubleCoding m_DoubleCoding = new GAStandardCodingDouble();
 
@@ -38,8 +38,8 @@ public class GAIndividualDoubleData extends AbstractEAIndividual implements Inte
         this.m_Range = new double[1][2];
         this.m_Range[0][0] = -10;
         this.m_Range[0][1] = 10;
-        this.m_GenotypeLength = this.m_Precision;
-        this.m_Genotype = new BitSet();
+        this.genotypeLength = this.m_Precision;
+        this.genotype = new BitSet();
     }
 
     public GAIndividualDoubleData(GAIndividualDoubleData individual) {
@@ -47,8 +47,8 @@ public class GAIndividualDoubleData extends AbstractEAIndividual implements Inte
             this.m_Phenotype = new double[individual.m_Phenotype.length];
             System.arraycopy(individual.m_Phenotype, 0, this.m_Phenotype, 0, this.m_Phenotype.length);
         }
-        this.m_GenotypeLength = individual.m_GenotypeLength;
-        this.m_Genotype = (BitSet) individual.m_Genotype.clone();
+        this.genotypeLength = individual.genotypeLength;
+        this.genotype = (BitSet) individual.genotype.clone();
         this.m_Range = new double[individual.m_Range.length][2];
         for (int i = 0; i < this.m_Range.length; i++) {
             this.m_Range[i][0] = individual.m_Range[i][0];
@@ -90,13 +90,13 @@ public class GAIndividualDoubleData extends AbstractEAIndividual implements Inte
         if (individual instanceof GAIndividualDoubleData) {
             GAIndividualDoubleData indy = (GAIndividualDoubleData) individual;
             //@todo Eigendlich k�nnte ich noch das Koding vergleichen
-            if (this.m_GenotypeLength != indy.m_GenotypeLength) {
+            if (this.genotypeLength != indy.genotypeLength) {
                 return false;
             }
-            if ((this.m_Genotype == null) || (indy.m_Genotype == null)) {
+            if ((this.genotype == null) || (indy.genotype == null)) {
                 return false;
             }
-            if (!this.m_Genotype.equals(indy.m_Genotype)) {
+            if (!this.genotype.equals(indy.genotype)) {
                 return false;
             }
             for (int i = 0; i < this.m_Range.length; i++) {
@@ -138,7 +138,7 @@ public class GAIndividualDoubleData extends AbstractEAIndividual implements Inte
             newRange[i][1] = this.m_Range[this.m_Range.length - 1][1];
         }
         this.m_Range = newRange;
-        this.m_GenotypeLength = length * this.m_Precision;
+        this.genotypeLength = length * this.m_Precision;
 
 //        changed 28.08.03 by request of Spieth
 //        this.m_DecisionParameters   = new double[length];
@@ -200,7 +200,7 @@ public class GAIndividualDoubleData extends AbstractEAIndividual implements Inte
         for (int i = 0; i < this.m_Range.length; i++) {
             locus[0] = i * this.m_Precision;
             locus[1] = this.m_Precision;
-            this.m_Phenotype[i] = this.m_DoubleCoding.decodeValue(this.m_Genotype, this.m_Range[i], locus, false);
+            this.m_Phenotype[i] = this.m_DoubleCoding.decodeValue(this.genotype, this.m_Range[i], locus, false);
         }
         return this.m_Phenotype;
     }
@@ -218,7 +218,7 @@ public class GAIndividualDoubleData extends AbstractEAIndividual implements Inte
 
     /**
      * This method allows you to set the phenotype data. To change the genotype data,
-     * use SetDoubleDataLamarckian.
+     * use setDoubleDataLamarckian.
      *
      * @param doubleData The new double data.
      */
@@ -240,7 +240,7 @@ public class GAIndividualDoubleData extends AbstractEAIndividual implements Inte
         for (int i = 0; i < doubleData.length; i++) {
             locus[0] = i * this.m_Precision;
             locus[1] = this.m_Precision;
-            this.m_DoubleCoding.codeValue(doubleData[i], this.m_Range[i], this.m_Genotype, locus);
+            this.m_DoubleCoding.codeValue(doubleData[i], this.m_Range[i], this.genotype, locus);
         }
     }
 
@@ -297,8 +297,8 @@ public class GAIndividualDoubleData extends AbstractEAIndividual implements Inte
         }
         result += "]\n";
         result += "{";
-        for (int i = 0; i < this.m_GenotypeLength; i++) {
-            if (this.m_Genotype.get(i)) {
+        for (int i = 0; i < this.genotypeLength; i++) {
+            if (this.genotype.get(i)) {
                 result += "1";
             } else {
                 result += "0";
@@ -319,7 +319,7 @@ public class GAIndividualDoubleData extends AbstractEAIndividual implements Inte
      */
     @Override
     public BitSet getBGenotype() {
-        return this.m_Genotype;
+        return this.genotype;
     }
 
     /**
@@ -329,8 +329,8 @@ public class GAIndividualDoubleData extends AbstractEAIndividual implements Inte
      * @param binaryData The new binary data.
      */
     @Override
-    public void SetBGenotype(BitSet binaryData) {
-        this.m_Genotype = binaryData;
+    public void setBGenotype(BitSet binaryData) {
+        this.genotype = binaryData;
     }
 
     /**
@@ -342,16 +342,16 @@ public class GAIndividualDoubleData extends AbstractEAIndividual implements Inte
      */
     @Override
     public int getGenotypeLength() {
-        return this.m_GenotypeLength;
+        return this.genotypeLength;
     }
 
     @Override
     public void defaultInit(InterfaceOptimizationProblem prob) {
-        for (int i = 0; i < this.m_GenotypeLength; i++) {
+        for (int i = 0; i < this.genotypeLength; i++) {
             if (RNG.flipCoin(0.5)) {
-                this.m_Genotype.set(i);
+                this.genotype.set(i);
             } else {
-                this.m_Genotype.clear(i);
+                this.genotype.clear(i);
             }
         }
     }
@@ -361,11 +361,11 @@ public class GAIndividualDoubleData extends AbstractEAIndividual implements Inte
      */
     @Override
     public void defaultMutate() {
-        int mutationIndex = RNG.randomInt(0, this.m_GenotypeLength);
-        if (this.m_Genotype.get(mutationIndex)) {
-            this.m_Genotype.clear(mutationIndex);
+        int mutationIndex = RNG.randomInt(0, this.genotypeLength);
+        if (this.genotype.get(mutationIndex)) {
+            this.genotype.clear(mutationIndex);
         } else {
-            this.m_Genotype.set(mutationIndex);
+            this.genotype.set(mutationIndex);
         }
     }
 /**********************************************************************************************************************

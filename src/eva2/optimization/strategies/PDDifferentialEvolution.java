@@ -415,7 +415,7 @@ public class PDDifferentialEvolution implements InterfaceOptimizer, java.io.Seri
             Mathematics.projectToRange(nX, esIndy.getDoubleRange());
         } // why did this never happen before?
         esIndy.setDoubleGenotype(nX);
-        indy.SetAge(0);
+        indy.setAge(0);
         indy.resetConstraintViolation();
         double[] fit = new double[1];
         fit[0] = 0;
@@ -519,7 +519,7 @@ public class PDDifferentialEvolution implements InterfaceOptimizer, java.io.Seri
 
                 if (((AbstractEAIndividual) m_Population.get(i)).getAge() >= maximumAge) {
                     this.m_Problem.evaluate(((AbstractEAIndividual) m_Population.get(i)));
-                    ((AbstractEAIndividual) m_Population.get(i)).SetAge(0);
+                    ((AbstractEAIndividual) m_Population.get(i)).setAge(0);
                     m_Population.incrFunctionCalls();
                 }
             }
@@ -576,7 +576,7 @@ public class PDDifferentialEvolution implements InterfaceOptimizer, java.io.Seri
 
                 if (((AbstractEAIndividual) m_Population.get(i)).getAge() >= maximumAge) {
                     this.m_Problem.evaluate(((AbstractEAIndividual) m_Population.get(i)));
-                    ((AbstractEAIndividual) m_Population.get(i)).SetAge(0);
+                    ((AbstractEAIndividual) m_Population.get(i)).setAge(0);
                     m_Population.incrFunctionCalls();
                 }
             }

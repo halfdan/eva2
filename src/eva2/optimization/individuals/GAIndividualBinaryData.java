@@ -124,7 +124,7 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
     public void initByValue(Object obj, InterfaceOptimizationProblem opt) {
         if (obj instanceof BitSet) {
             BitSet bs = (BitSet) obj;
-            this.SetBinaryGenotype(bs);
+            this.setBinaryGenotype(bs);
         } else {
             this.defaultInit(opt);
             System.out.println("Initial value for GAIndividualBinaryData is no BitSet!");
@@ -197,7 +197,7 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
      * @param binaryData The new binary data.
      */
     @Override
-    public void SetBGenotype(BitSet binaryData) {
+    public void setBGenotype(BitSet binaryData) {
         this.m_Genotype = binaryData;
     }
 
@@ -290,7 +290,7 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
      * @param binaryData The new binary data.
      */
     @Override
-    public void SetBinaryPhenotype(BitSet binaryData) {
+    public void setBinaryPhenotype(BitSet binaryData) {
         this.m_Phenotype = binaryData;
     }
 
@@ -301,8 +301,8 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
      * @param binaryData The new binary data.
      */
     @Override
-    public void SetBinaryGenotype(BitSet binaryData) {
-        this.SetBinaryPhenotype(binaryData);
+    public void setBinaryGenotype(BitSet binaryData) {
+        this.setBinaryPhenotype(binaryData);
         this.m_Genotype = (BitSet) binaryData.clone();
     }
 

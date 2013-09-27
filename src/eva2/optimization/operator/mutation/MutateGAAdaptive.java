@@ -101,7 +101,7 @@ public class MutateGAAdaptive implements InterfaceMutation, java.io.Serializable
                     tmpBitSet.flip(i);
                 }
             }
-            ((InterfaceGAIndividual) individual).SetBGenotype(tmpBitSet);
+            ((InterfaceGAIndividual) individual).setBGenotype(tmpBitSet);
         }
         //System.out.println("After Mutate:  " +((GAIndividual)individual).getSolutionRepresentationFor());
     }

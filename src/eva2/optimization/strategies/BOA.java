@@ -233,7 +233,7 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
             }
             probDim = (Integer) dim;
             ((InterfaceDataTypeBinary) this.template)
-                    .SetBinaryGenotype(new BitSet(probDim));
+                    .setBinaryGenotype(new BitSet(probDim));
         }
         this.network = new BayNet(this.probDim, upperProbLimit, lowerProbLimit);
         this.network.setScoringMethod(this.scoringMethod);
@@ -354,7 +354,7 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
             AbstractEAIndividual indy = (AbstractEAIndividual) this.template
                     .clone();
             BitSet data = this.network.sample(getBinaryData(indy));
-            ((InterfaceDataTypeBinary) indy).SetBinaryGenotype(data);
+            ((InterfaceDataTypeBinary) indy).setBinaryGenotype(data);
             evaluate(indy);
             pop.add(indy);
         }
@@ -941,11 +941,11 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
         // data5.set(0, true);
         // data5.set(1, true);
         // data5.set(2, true);
-        indy1.SetBinaryGenotype(data1);
-        indy2.SetBinaryGenotype(data2);
-        indy3.SetBinaryGenotype(data3);
-        indy4.SetBinaryGenotype(data4);
-        indy5.SetBinaryGenotype(data5);
+        indy1.setBinaryGenotype(data1);
+        indy2.setBinaryGenotype(data2);
+        indy3.setBinaryGenotype(data3);
+        indy4.setBinaryGenotype(data4);
+        indy5.setBinaryGenotype(data5);
         pop.add(indy1);
         pop.add(indy2);
         pop.add(indy3);

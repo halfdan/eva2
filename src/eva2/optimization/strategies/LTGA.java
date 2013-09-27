@@ -96,7 +96,7 @@ public class LTGA implements InterfaceOptimizer, java.io.Serializable, Interface
                 LOGGER.log(Level.WARNING, "Couldn't get problem dimension!");
             }
             probDim = (Integer) dim;
-            ((InterfaceDataTypeBinary) this.template).SetBinaryGenotype(new BitSet(probDim));
+            ((InterfaceDataTypeBinary) this.template).setBinaryGenotype(new BitSet(probDim));
         }
         this.population.addPopulationChangedEventListener(this);
         this.population.setNotifyEvalInterval(this.generationCycle);
@@ -288,8 +288,8 @@ public class LTGA implements InterfaceOptimizer, java.io.Serializable, Interface
             if (!same) {
                 AbstractEAIndividual newIndy1 = (AbstractEAIndividual) this.template.clone();
                 AbstractEAIndividual newIndy2 = (AbstractEAIndividual) this.template.clone();
-                ((InterfaceDataTypeBinary) newIndy1).SetBinaryGenotype(newGene1);
-                ((InterfaceDataTypeBinary) newIndy2).SetBinaryGenotype(newGene2);
+                ((InterfaceDataTypeBinary) newIndy1).setBinaryGenotype(newGene1);
+                ((InterfaceDataTypeBinary) newIndy2).setBinaryGenotype(newGene2);
                 evaluate(newIndy1);
                 evaluate(newIndy2);
                 if (Math.min(newIndy1.getFitness(0), newIndy2.getFitness(0)) < Math.min(indy1.getFitness(0), indy2.getFitness(0))) {

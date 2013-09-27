@@ -136,8 +136,8 @@ public class MutateGIInsertDelete implements InterfaceMutation, java.io.Serializ
                 System.out.println("newX " + newX.length);
             }
             ((InterfaceGIIndividual) individual).setIntegerDataLength(newX.length);
-            ((InterfaceGIIndividual) individual).SetIGenotype(newX);
-            ((InterfaceGIIndividual) individual).SetIntRange(newRange);
+            ((InterfaceGIIndividual) individual).setIGenotype(newX);
+            ((InterfaceGIIndividual) individual).setIntRange(newRange);
             newX = ((InterfaceGIIndividual) individual).getIGenotype();
             if (newX.length <= 1) {
                 System.out.println("newX " + newX.length);

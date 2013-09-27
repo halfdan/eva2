@@ -86,8 +86,8 @@ public class CrossoverGADefault implements InterfaceCrossover,
                     tmpBitSets[1].clear(i);
                 }
             }
-            ((InterfaceGAIndividual) result[0]).SetBGenotype(tmpBitSets[0]);
-            ((InterfaceGAIndividual) result[1]).SetBGenotype(tmpBitSets[1]);
+            ((InterfaceGAIndividual) result[0]).setBGenotype(tmpBitSets[0]);
+            ((InterfaceGAIndividual) result[1]).setBGenotype(tmpBitSets[1]);
         }
         // in case the crossover was successfull lets give the mutation operators a
         // chance to mate the strategy parameters

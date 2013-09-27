@@ -48,7 +48,7 @@ public interface InterfaceDataTypeBinary {
      *
      * @param binaryData The new binary data.
      */
-    public void SetBinaryPhenotype(BitSet binaryData);
+    public void setBinaryPhenotype(BitSet binaryData);
 
     /**
      * This method allows you to set the binary data, this can be used for
@@ -56,5 +56,5 @@ public interface InterfaceDataTypeBinary {
      *
      * @param binaryData The new binary data.
      */
-    public void SetBinaryGenotype(BitSet binaryData);
+    public void setBinaryGenotype(BitSet binaryData);
 }

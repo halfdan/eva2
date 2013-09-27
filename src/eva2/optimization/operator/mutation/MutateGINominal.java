@@ -85,7 +85,7 @@ public class MutateGINominal implements InterfaceMutation, java.io.Serializable 
                 }
                 x[mutInd] = RNG.randomInt(range[mutInd][0], range[mutInd][1]);
             }
-            ((InterfaceGIIndividual) individual).SetIGenotype(x);
+            ((InterfaceGIIndividual) individual).setIGenotype(x);
         }
     }
 

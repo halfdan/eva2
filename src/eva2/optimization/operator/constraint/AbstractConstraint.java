@@ -84,7 +84,7 @@ public abstract class AbstractConstraint implements InterfaceDoubleConstraint, S
         switch (handling) {
             case penaltyAdditive:
                 if (v > 0) {
-                    indy.SetMarkPenalized(true);
+                    indy.setMarkPenalized(true);
                     for (int i = 0; i < indy.getFitness().length; i++) {
                         indy.SetFitness(i, indy.getFitness(i) + v + penaltyFactor);
                     }
@@ -92,7 +92,7 @@ public abstract class AbstractConstraint implements InterfaceDoubleConstraint, S
                 break;
             case penaltyMultiplicative:
                 if (v > 0) {
-                    indy.SetMarkPenalized(true);
+                    indy.setMarkPenalized(true);
                     for (int i = 0; i < indy.getFitness().length; i++) {
                         indy.SetFitness(i, indy.getFitness(i) * (v + penaltyFactor));
                     }

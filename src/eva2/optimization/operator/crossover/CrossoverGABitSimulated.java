@@ -87,7 +87,7 @@ public class CrossoverGABitSimulated implements InterfaceCrossover, java.io.Seri
             }
 
             for (int i = 0; i < result.length; i++) {
-                ((InterfaceGAIndividual) result[i]).SetBGenotype(tmpBitSet[1][i]);
+                ((InterfaceGAIndividual) result[i]).setBGenotype(tmpBitSet[1][i]);
             }
         }
         //in case the crossover was successfull lets give the mutation operators a chance to mate the strategy parameters

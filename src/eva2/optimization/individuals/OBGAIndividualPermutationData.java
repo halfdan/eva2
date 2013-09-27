@@ -23,8 +23,8 @@ import java.util.ArrayList;
 
 public class OBGAIndividualPermutationData extends AbstractEAIndividual implements InterfaceDataTypePermutation, InterfaceOBGAIndividual, java.io.Serializable {
 
-    int[][] m_Phenotype;
-    int[][] m_Genotype;
+    int[][] phenotype;
+    int[][] genotype;
     int[] firstindex;
 
     public OBGAIndividualPermutationData() {
@@ -37,20 +37,20 @@ public class OBGAIndividualPermutationData extends AbstractEAIndividual implemen
     }
 
     public OBGAIndividualPermutationData(OBGAIndividualPermutationData individual) {
-        if (individual.m_Phenotype != null) {
-            this.m_Phenotype = new int[individual.m_Phenotype.length][];
-            for (int i = 0; i < m_Phenotype.length; i++) {
-                this.m_Phenotype[i] = new int[individual.m_Phenotype[i].length];
-                System.arraycopy(individual.m_Phenotype[i], 0, this.m_Phenotype[i], 0, this.m_Phenotype[i].length);
+        if (individual.phenotype != null) {
+            this.phenotype = new int[individual.phenotype.length][];
+            for (int i = 0; i < phenotype.length; i++) {
+                this.phenotype[i] = new int[individual.phenotype[i].length];
+                System.arraycopy(individual.phenotype[i], 0, this.phenotype[i], 0, this.phenotype[i].length);
             }
         }
-        this.m_Genotype = new int[individual.m_Genotype.length][];
-        for (int i = 0; i < m_Genotype.length; i++) {
-            this.m_Genotype[i] = new int[individual.m_Genotype[i].length];
-            System.arraycopy(individual.m_Genotype[i], 0, this.m_Genotype[i], 0, this.m_Genotype[i].length);
+        this.genotype = new int[individual.genotype.length][];
+        for (int i = 0; i < genotype.length; i++) {
+            this.genotype[i] = new int[individual.genotype[i].length];
+            System.arraycopy(individual.genotype[i], 0, this.genotype[i], 0, this.genotype[i].length);
         }
 
-        System.arraycopy(individual.m_Genotype, 0, this.m_Genotype, 0, this.m_Genotype.length);
+        System.arraycopy(individual.genotype, 0, this.genotype, 0, this.genotype.length);
         this.firstindex = individual.firstindex;
         this.age = individual.age;
         this.crossoverOperator = individual.crossoverOperator;
@@ -78,16 +78,16 @@ public class OBGAIndividualPermutationData extends AbstractEAIndividual implemen
     public boolean equalGenotypes(AbstractEAIndividual individual) {
         if (individual instanceof OBGAIndividualPermutationData) {
             OBGAIndividualPermutationData indy = (OBGAIndividualPermutationData) individual;
-            if ((this.m_Genotype == null) || (indy.m_Genotype == null)) {
+            if ((this.genotype == null) || (indy.genotype == null)) {
                 return false;
             }
-            if (m_Genotype.length != indy.m_Genotype.length) {
+            if (genotype.length != indy.genotype.length) {
                 return false;
             }
-            for (int i = 0; i < this.m_Genotype.length; i++) {
-                if (this.m_Genotype[i].length != indy.m_Genotype[i].length) {
-                    for (int j = 0; j < this.m_Genotype[i].length; j++) {
-                        if (this.m_Genotype[i][j] != indy.m_Genotype[i][j]) {
+            for (int i = 0; i < this.genotype.length; i++) {
+                if (this.genotype[i].length != indy.genotype[i].length) {
+                    for (int j = 0; j < this.genotype[i].length; j++) {
+                        if (this.genotype[i][j] != indy.genotype[i][j]) {
                             return false;
                         }
                     }
@@ -114,7 +114,7 @@ public class OBGAIndividualPermutationData extends AbstractEAIndividual implemen
     @Override
     public void initByValue(Object obj, InterfaceOptimizationProblem opt) {
         if (obj instanceof int[]) {
-            this.SetPermutationGenotype((int[][]) obj);
+            this.setPermutationGenotype((int[][]) obj);
         } else {
             this.defaultInit(opt);
             System.out.println("Initial value for OBGAIndividualBinaryData is no Permutation!");
@@ -182,12 +182,12 @@ public class OBGAIndividualPermutationData extends AbstractEAIndividual implemen
 
     @Override
     public int[][] getOBGenotype() {
-        return this.m_Genotype;
+        return this.genotype;
     }
 
     @Override
-    public void SetOBGenotype(int[][] g) {
-        this.m_Genotype = g;
+    public void setOBGenotype(int[][] g) {
+        this.genotype = g;
     }
 
     @Override
@@ -202,15 +202,15 @@ public class OBGAIndividualPermutationData extends AbstractEAIndividual implemen
             perm[p2] = temp;
         }
 
-        this.SetPermutationGenotype(permmatrix);
+        this.setPermutationGenotype(permmatrix);
     }
 
     @Override
     public void defaultInit(InterfaceOptimizationProblem prob) {
         //System.out.println("Default Init!");
-        int[][] perm = new int[this.m_Genotype.length][];
+        int[][] perm = new int[this.genotype.length][];
         for (int p = 0; p < perm.length; p++) {
-            perm[p] = new int[this.m_Genotype[p].length];
+            perm[p] = new int[this.genotype[p].length];
             ArrayList pot = new ArrayList();
             for (int i = 0; i < this.sizePermutation()[p]; i++) {
                 pot.add(new Integer(firstindex[p] + i));
@@ -221,7 +221,7 @@ public class OBGAIndividualPermutationData extends AbstractEAIndividual implemen
                 i++;
             }
         }
-        this.SetPermutationGenotype(perm);
+        this.setPermutationGenotype(perm);
         // System.out.println(getStringRepresentation());
     }
 
@@ -234,46 +234,46 @@ public class OBGAIndividualPermutationData extends AbstractEAIndividual implemen
 
     @Override
     public void setPermutationDataLength(int[] length) {
-        this.m_Genotype = new int[length.length][];
+        this.genotype = new int[length.length][];
         for (int i = 0; i < length.length; i++) {
-            this.m_Genotype[i] = new int[length[i]];
+            this.genotype[i] = new int[length[i]];
         }
 
     }
 
     @Override
     public int[] sizePermutation() {
-        int[] res = new int[m_Genotype.length];
-        for (int i = 0; i < m_Genotype.length; i++) {
-            res[i] = m_Genotype[i].length;
+        int[] res = new int[genotype.length];
+        for (int i = 0; i < genotype.length; i++) {
+            res[i] = genotype[i].length;
         }
         return res;
     }
 
     @Override
-    public void SetPermutationPhenotype(int[][] perm) {
-        this.m_Phenotype = perm;
+    public void setPermutationPhenotype(int[][] perm) {
+        this.phenotype = perm;
     }
 
     @Override
-    public void SetPermutationGenotype(int[][] perm) {
-        this.SetPermutationPhenotype(perm);
-        this.m_Genotype = new int[perm.length][];
+    public void setPermutationGenotype(int[][] perm) {
+        this.setPermutationPhenotype(perm);
+        this.genotype = new int[perm.length][];
         for (int i = 0; i < perm.length; i++) {
-            this.m_Genotype[i] = new int[perm[i].length];
-            System.arraycopy(perm[i], 0, this.m_Genotype[i], 0, perm[i].length);
+            this.genotype[i] = new int[perm[i].length];
+            System.arraycopy(perm[i], 0, this.genotype[i], 0, perm[i].length);
         }
 
     }
 
     @Override
     public int[][] getPermutationData() {
-        this.m_Phenotype = new int[this.m_Genotype.length][];
-        for (int i = 0; i < this.m_Genotype.length; i++) {
-            this.m_Phenotype[i] = new int[this.m_Genotype[i].length];
-            System.arraycopy(this.m_Genotype[i], 0, this.m_Phenotype[i], 0, this.m_Genotype[i].length);
+        this.phenotype = new int[this.genotype.length][];
+        for (int i = 0; i < this.genotype.length; i++) {
+            this.phenotype[i] = new int[this.genotype[i].length];
+            System.arraycopy(this.genotype[i], 0, this.phenotype[i], 0, this.genotype[i].length);
         }
-        return this.m_Phenotype;
+        return this.phenotype;
     }
 
     /**
@@ -284,7 +284,7 @@ public class OBGAIndividualPermutationData extends AbstractEAIndividual implemen
      */
     @Override
     public int[][] getPermutationDataWithoutUpdate() {
-        return this.m_Phenotype;
+        return this.phenotype;
     }
 
     public int[] getFirstindex() {

@@ -89,7 +89,7 @@ public class CrossoverGINPoint implements InterfaceCrossover, java.io.Serializab
             }
 
             for (int i = 0; i < result.length; i++) {
-                ((InterfaceGIIndividual) result[i]).SetIGenotype(tmpInts[1][i]);
+                ((InterfaceGIIndividual) result[i]).setIGenotype(tmpInts[1][i]);
             }
         }
         //in case the crossover was successfull lets give the mutation operators a chance to mate the strategy parameters

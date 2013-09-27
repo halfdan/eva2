@@ -146,7 +146,7 @@ public class MutateGASwapBitsSegmentwise implements InterfaceMutation, java.io.S
                     } while (multiplesPerSegment && cntMutes < segmentLength && RNG.flipCoin(mutationProbPerSegment));
                 }
             }
-            ((InterfaceGAIndividual) individual).SetBGenotype(tmpBitSet); // write back the genotype
+            ((InterfaceGAIndividual) individual).setBGenotype(tmpBitSet); // write back the genotype
         }
 //		System.out.println("After Mutate:  " +(individual).getStringRepresentation());
     }
