@@ -1,23 +1,41 @@
 package eva2.cli;
 
+import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.optimization.strategies.DifferentialEvolution;
 import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.util.annotation.Parameter;
 import org.apache.commons.cli.*;
 import eva2.optimization.OptimizationStateListener;
+import org.reflections.Reflections;
 
 import java.lang.reflect.Field;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class Main implements OptimizationStateListener {
 
 
 
-    private Options createCommandLineOptions() {
+    private static Options createDefaultCommandLineOptions() {
         Options opt = new Options();
-        OptionGroup optGroup = new OptionGroup();
-        return null;
+
+        opt.addOption(OptionBuilder
+                .withLongOpt("optimizer")
+                .withDescription("Optimizer")
+                .create("op")
+        );
+
+        opt.addOption("ps", "popsize", true, "Population size");
+        opt.addOption(OptionBuilder
+                .withLongOpt("help")
+                .withDescription("Shows this help message or specific help for [optimizer]")
+                .hasOptionalArgs(1)
+                .create('h')
+        );
+
+        return opt;
     }
 
     @Override
@@ -57,37 +75,62 @@ public class Main implements OptimizationStateListener {
         System.out.print("\r" + bar.toString());
     }
 
+    public static Map<String, Class<? extends InterfaceOptimizer>> createOptimizerList() {
+        Map<String, Class<? extends InterfaceOptimizer>>optimizerList = new HashMap<String, Class<? extends InterfaceOptimizer>>();
+
+        Reflections reflections = new Reflections("eva2.optimization.strategies");
+        Set<Class<? extends InterfaceOptimizer>> optimizers = reflections.getSubTypesOf(InterfaceOptimizer.class);
+        for(Class<? extends InterfaceOptimizer> optimizer : optimizers) {
+            optimizerList.put(optimizer.getName(), optimizer);
+        }
+        return optimizerList;
+    }
+
+    public static void showHelp(Options options) {
+        HelpFormatter helpFormatter = new HelpFormatter();
+        helpFormatter.printHelp("eva2", "", options, "", true);
+    }
+
     public static void main(String[] args) {
+        Options defaultOptions = createDefaultCommandLineOptions();
 
-        Map<String, Class<? extends InterfaceOptimizer>> optimizerList = new HashMap<String, Class<? extends InterfaceOptimizer>>();
+        CommandLineParser cliParser = new BasicParser();
+        CommandLine commandLine = null;
+        try {
+            commandLine = cliParser.parse(defaultOptions, args);
+        } catch (ParseException e) {
+            showHelp(defaultOptions);
+            System.exit(-1);
+        }
 
-        optimizerList.put("Differential Evolution", eva2.optimization.strategies.DifferentialEvolution.class);
-        optimizerList.put("Particle Swarm Optimization", eva2.optimization.strategies.ParticleSwarmOptimization.class);
-        optimizerList.put("Genetic Algorithm", eva2.optimization.strategies.GeneticAlgorithm.class);
-        optimizerList.put("Evolution Strategies", eva2.optimization.strategies.EvolutionStrategies.class);
-
-        eva2.optimization.strategies.DifferentialEvolution de = new DifferentialEvolution();
-
-        for(Field field : de.getClass().getDeclaredFields()) {
-            Parameter p;
-            if((p = field.getAnnotation(Parameter.class)) != null) {
-                System.out.println(p.name() + " -> " + p.description());
-
+        if(commandLine.hasOption("help")) {
+            String helpOption = commandLine.getOptionValue("help");
+            if("optimizer".equals(helpOption)) {
+                showOptimizerHelp();
+            } else if ("problem".equals(helpOption)) {
+                showProblemHelp();
+            } else {
+                showHelp(defaultOptions);
             }
         }
+    }
 
-        /*
-        List<String> classes = GenericObjectEditor.getClassesFromClassPath("eva2.optimization.strategies.InterfaceOptimizer", null);
-        for(String classA : classes) {
-            System.out.println(classA);
+    private static void showOptimizerHelp() {
+        Map<String, Class<? extends InterfaceOptimizer>> optimizerList = createOptimizerList();
+
+        System.out.println("Available Optimizers:");
+        for(String name : optimizerList.keySet()) {
+            System.out.printf("\t%s\n", name);
         }
+    }
 
-        List<String> problems = GenericObjectEditor.getClassesFromClassPath("eva2.optimization.problems.InterfaceOptimizationProblem", null);
-        for(String problem : problems) {
-            System.out.println(problem);
-        } */
-        for(int i = 0; i<= 100; i++) {
-            printProgressBar(i);
+    private static void showProblemHelp() {
+        System.out.println("Available Problems:");
+        Reflections reflections = new Reflections("eva2.optimization.problems");
+        Set<Class<? extends InterfaceOptimizationProblem>> problemsList = reflections.getSubTypesOf(InterfaceOptimizationProblem.class);
+        for(Class<? extends InterfaceOptimizationProblem> problem : problemsList) {
+
+            System.out.printf("\t%s\n", problem.getSimpleName());
         }
     }
 }
