@@ -10,10 +10,7 @@ import org.reflections.Reflections;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class Main implements OptimizationStateListener {
 
@@ -77,18 +74,32 @@ public class Main implements OptimizationStateListener {
     }
 
     public static Map<String, Class<? extends InterfaceOptimizer>> createOptimizerList() {
-        Map<String, Class<? extends InterfaceOptimizer>> optimizerList = new HashMap<String, Class<? extends InterfaceOptimizer>>();
+        Map<String, Class<? extends InterfaceOptimizer>> optimizerList = new TreeMap<String, Class<? extends InterfaceOptimizer>>();
 
         Reflections reflections = new Reflections("eva2.optimization.strategies");
         Set<Class<? extends InterfaceOptimizer>> optimizers = reflections.getSubTypesOf(InterfaceOptimizer.class);
         for(Class<? extends InterfaceOptimizer> optimizer : optimizers) {
-            // We only want instantiable classes.
-            if(optimizer.isInterface() || Modifier.isAbstract(optimizers.getClass().getModifiers())) {
+            // We only want instantiable classes.ya
+            if(optimizer.isInterface() || Modifier.isAbstract(optimizer.getModifiers())) {
                 continue;
             }
-            optimizerList.put(optimizer.getName(), optimizer);
+            optimizerList.put(optimizer.getSimpleName(), optimizer);
         }
         return optimizerList;
+    }
+
+    public static Map<String, Class<? extends InterfaceOptimizationProblem>> createProblemList() {
+        Map<String, Class<? extends InterfaceOptimizationProblem>> problemList = new TreeMap<String, Class<? extends InterfaceOptimizationProblem>>();
+        Reflections reflections = new Reflections("eva2.optimization.problems");
+        Set<Class<? extends InterfaceOptimizationProblem>> problems = reflections.getSubTypesOf(InterfaceOptimizationProblem.class);
+        for(Class<? extends InterfaceOptimizationProblem> problem : problems) {
+            // We only want instantiable classes.ya
+            if(problem.isInterface() || Modifier.isAbstract(problem.getModifiers())) {
+                continue;
+            }
+            problemList.put(problem.getSimpleName(), problem);
+        }
+        return problemList;
     }
 
     public static void showHelp(Options options) {
@@ -130,12 +141,11 @@ public class Main implements OptimizationStateListener {
     }
 
     private static void showProblemHelp() {
-        System.out.println("Available Problems:");
-        Reflections reflections = new Reflections("eva2.optimization.problems");
-        Set<Class<? extends InterfaceOptimizationProblem>> problemsList = reflections.getSubTypesOf(InterfaceOptimizationProblem.class);
-        for(Class<? extends InterfaceOptimizationProblem> problem : problemsList) {
+        Map<String, Class<? extends InterfaceOptimizationProblem>> problemList= createProblemList();
 
-            System.out.printf("\t%s\n", problem.getSimpleName());
+        System.out.println("Available Problems:");
+        for(String name : problemList.keySet()) {
+            System.out.printf("\t%s\n", name);
         }
     }
 }
