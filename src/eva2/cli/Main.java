@@ -9,6 +9,7 @@ import eva2.optimization.OptimizationStateListener;
 import org.reflections.Reflections;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -76,11 +77,15 @@ public class Main implements OptimizationStateListener {
     }
 
     public static Map<String, Class<? extends InterfaceOptimizer>> createOptimizerList() {
-        Map<String, Class<? extends InterfaceOptimizer>>optimizerList = new HashMap<String, Class<? extends InterfaceOptimizer>>();
+        Map<String, Class<? extends InterfaceOptimizer>> optimizerList = new HashMap<String, Class<? extends InterfaceOptimizer>>();
 
         Reflections reflections = new Reflections("eva2.optimization.strategies");
         Set<Class<? extends InterfaceOptimizer>> optimizers = reflections.getSubTypesOf(InterfaceOptimizer.class);
         for(Class<? extends InterfaceOptimizer> optimizer : optimizers) {
+            // We only want instantiable classes.
+            if(optimizer.isInterface() || Modifier.isAbstract(optimizers.getClass().getModifiers())) {
+                continue;
+            }
             optimizerList.put(optimizer.getName(), optimizer);
         }
         return optimizerList;
