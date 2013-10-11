@@ -24,6 +24,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.net.URL;
 import java.util.*;
+import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -371,7 +372,9 @@ public class Main extends JFrame implements OptimizationStateListener {
                 System.out.println("Error" + e.getMessage());
             }
 
-            LoggingPanel logPanel = new LoggingPanel(LOGGER);
+
+
+            LoggingPanel logPanel = new LoggingPanel();
             logPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
 
@@ -418,7 +421,7 @@ public class Main extends JFrame implements OptimizationStateListener {
 
             statusBarControls.add(Box.createHorizontalGlue());
             /* Logging settings drop down */
-            LoggingLevelLabel loggingOption = new LoggingLevelLabel(LOGGER);
+            LoggingLevelLabel loggingOption = new LoggingLevelLabel();
 
             statusBarControls.add(loggingOption);
 
@@ -565,13 +568,18 @@ public class Main extends JFrame implements OptimizationStateListener {
 
         if (unknownArgs.length > 0) {
             System.err.println("Unrecognized command line options: ");
-            for (int i = 0; i < unknownArgs.length; i++) {
-                System.err.println("   " + args[unknownArgs[i]]);
+            for (Integer unknownArg : unknownArgs) {
+                System.err.println("   " + args[unknownArg]);
             }
             if (values[0] == null) {
                 System.err.println("Try --help as argument.");
             }
         }
+
+        // Set up logging
+        Logger rootLogger = Logger.getLogger("eva2");
+        rootLogger.setLevel(Level.INFO);
+        rootLogger.setUseParentHandlers(false);
 
         if (values[0] != null) {
             System.out.println(usage());
@@ -580,10 +588,9 @@ public class Main extends JFrame implements OptimizationStateListener {
             boolean nosplash = (values[2] != null);
             boolean nogui = (values[3] != null);
             boolean treeView = (values[6] != null);
-            String hostName = StringTools.checkSingleStringArg(keys[4], values[4], arities[4] - 1);
             String paramsFile = StringTools.checkSingleStringArg(keys[5], values[5], arities[5] - 1);
 
-            new Main(hostName, paramsFile, autorun, nosplash, nogui, treeView);
+            new Main("", paramsFile, autorun, nosplash, nogui, treeView);
         }
     }
 

@@ -25,12 +25,11 @@ import javax.swing.JPopupMenu;
 public final class LoggingLevelLabel extends JLabel {
     private JPopupMenu menu;
     private String[] options;
-    private Logger logger;
+    private static final Logger LOGGER = Logger.getLogger(LoggingLevelLabel.class.getName());
 
-    public LoggingLevelLabel(final Logger logger) {
+    public LoggingLevelLabel() {
         options = new String[]{"Info", "Warning", "Severe", "Fine", "Finer", "Finest", "All"};
 
-        this.logger = logger;
 
         setToolTipText("Click to change current logging level");
         createPopupMenu();
@@ -77,10 +76,10 @@ public final class LoggingLevelLabel extends JLabel {
      */
     private void updateText() {
         /* Get the current logging Level */
-        Level lvl = logger.getLevel();
+        Level lvl = LOGGER.getLevel();
         /* Level could be null, fetch parent level */
         if (lvl == null) {
-            lvl = logger.getParent().getLevel();
+            lvl = LOGGER.getParent().getLevel();
         }
         /* Show the updated text */
         setText("<html><b>Level</b>: " + lvl.getName());
@@ -94,7 +93,7 @@ public final class LoggingLevelLabel extends JLabel {
     private void setLoggerLevel(Level level) {
         // Recursively set logging level for all classes under eva2
         Logger.getLogger("eva2").setLevel(level);
-        logger.log(Level.INFO, "Logging Level changed to {0}", level.getName());
+        LOGGER.log(Level.INFO, "Logging Level changed to {0}", level.getName());
     }
 
     /**
@@ -111,7 +110,7 @@ public final class LoggingLevelLabel extends JLabel {
                 Level level = Level.parse(levelName.toUpperCase());
                 LoggingLevelLabel.this.setLoggerLevel(level);
             } catch (IllegalArgumentException ex) {
-                logger.log(Level.INFO, "Could not determine new logging level!", ex);
+                LOGGER.log(Level.INFO, "Could not determine new logging level!", ex);
             }
 
             LoggingLevelLabel.this.updateText();

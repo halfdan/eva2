@@ -21,24 +21,24 @@ import simpleprobs.SimpleProblemDouble;
 
 public class SimpleProblemWrapper extends AbstractOptimizationProblem {
     InterfaceSimpleProblem<?> simProb = new SimpleF1();
-    protected double m_DefaultRange = 10;
-    protected double m_Noise = 0;
+    protected double defaultRange = 10;
+    protected double noise = 0;
     private int repaintMinWait = 20;
     private int repaintCnt = 0;
-    transient Plot m_plot = null;
+    transient Plot plot = null;
     transient AbstractEAIndividual bestIndy = null;
     String plotFunc = "plotBest";
     transient Class[] plotFuncSig = new Class[]{Plot.class, AbstractEAIndividual.class};
     transient private boolean resetTemplate = true;
 
     public SimpleProblemWrapper() {
-        m_plot = null;
+        plot = null;
         initTemplate();
     }
 
     public SimpleProblemWrapper(SimpleProblemWrapper other) {
-        other.m_DefaultRange = m_DefaultRange;
-        other.m_Noise = m_Noise;
+        other.defaultRange = defaultRange;
+        other.noise = noise;
         // warning! this does no deep copy!
         setSimpleProblem(other.simProb);
     }
@@ -59,8 +59,8 @@ public class SimpleProblemWrapper extends AbstractOptimizationProblem {
             // evaluate the vector
             fitness = ((SimpleProblemDouble) simProb).eval(x);
             // if indicated, add Gaussian noise
-            if (m_Noise != 0) {
-                RNG.addNoise(fitness, m_Noise);
+            if (noise != 0) {
+                RNG.addNoise(fitness, noise);
             }
             // set the fitness
             individual.setFitness(fitness);
@@ -80,7 +80,7 @@ public class SimpleProblemWrapper extends AbstractOptimizationProblem {
 
     @Override
     public void evaluatePopulationStart(Population population) {
-        if (m_plot != null && (!m_plot.isValid())) {
+        if (plot != null && (!plot.isValid())) {
             openPlot();
         }
     }
@@ -89,15 +89,14 @@ public class SimpleProblemWrapper extends AbstractOptimizationProblem {
     public void evaluatePopulationEnd(Population population) {
         super.evaluatePopulationEnd(population);
         repaintCnt += population.size();
-        if (m_plot != null) {
+        if (plot != null) {
             if (repaintCnt >= repaintMinWait) { // dont repaint always for small pops
                 if ((bestIndy == null) || (population.getBestEAIndividual().isDominant(bestIndy.getFitness()))) {
                     // only paint improvement
                     bestIndy = population.getBestEAIndividual();
                     Object[] args = new Object[2];
-                    args[0] = m_plot;
+                    args[0] = plot;
                     args[1] = bestIndy;
-//					System.out.println(population.getBestEAIndividual().getStringRepresentation());
                     BeanInspector.callIfAvailable(simProb, plotFunc, args);
                 }
                 repaintCnt = 0;
@@ -147,11 +146,11 @@ public class SimpleProblemWrapper extends AbstractOptimizationProblem {
     }
 
     protected double getRangeLowerBound(int dim) {
-        return -m_DefaultRange;
+        return -defaultRange;
     }
 
     protected double getRangeUpperBound(int dim) {
-        return m_DefaultRange;
+        return defaultRange;
     }
 
     /**
@@ -162,7 +161,7 @@ public class SimpleProblemWrapper extends AbstractOptimizationProblem {
     }
 
     private void openPlot() {
-        m_plot = new Plot("SimpleProblemWrapper", "x", "y", true);
+        plot = new Plot("SimpleProblemWrapper", "x", "y", true);
     }
 
     /**
@@ -174,19 +173,19 @@ public class SimpleProblemWrapper extends AbstractOptimizationProblem {
         GenericObjectEditor.setShowProperty(getClass(), "noise", (simProb instanceof SimpleProblemDouble));
         GenericObjectEditor.setShowProperty(getClass(), "defaultRange", (simProb instanceof SimpleProblemDouble));
         if (BeanInspector.hasMethod(simProb, plotFunc, plotFuncSig) != null) {
-            if (m_plot == null) {
+            if (plot == null) {
                 openPlot();
             } else {
-                if (!m_plot.isValid()) {
-                    m_plot.dispose();
+                if (!plot.isValid()) {
+                    plot.dispose();
                     openPlot();
                 } else {
-                    m_plot.clearAll();
+                    plot.clearAll();
                 }
             }
-        } else if (m_plot != null) {
-            m_plot.dispose();
-            m_plot = null;
+        } else if (plot != null) {
+            plot.dispose();
+            plot = null;
         }
     }
 
@@ -207,11 +206,11 @@ public class SimpleProblemWrapper extends AbstractOptimizationProblem {
         if (noise < 0) {
             noise = 0;
         }
-        this.m_Noise = noise;
+        this.noise = noise;
     }
 
     public double getNoise() {
-        return this.m_Noise;
+        return this.noise;
     }
 
     public String noiseTipText() {
@@ -225,7 +224,7 @@ public class SimpleProblemWrapper extends AbstractOptimizationProblem {
      * @return value of the absolute range limit
      */
     public double getDefaultRange() {
-        return m_DefaultRange;
+        return defaultRange;
     }
 
     /**
@@ -234,7 +233,7 @@ public class SimpleProblemWrapper extends AbstractOptimizationProblem {
      * @param defaultRange
      */
     public void setDefaultRange(double defaultRange) {
-        this.m_DefaultRange = defaultRange;
+        this.defaultRange = defaultRange;
         initTemplate();
     }
 
