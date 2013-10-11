@@ -43,6 +43,7 @@ import eva2.tools.chart2d.DElement;
 import eva2.tools.chart2d.DPoint;
 import eva2.tools.chart2d.DPointIcon;
 import eva2.tools.chart2d.DPointSet;
+import eva2.util.annotation.Description;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -93,6 +94,7 @@ import java.util.Vector;
  * Yilmaz. Particle Swarms for Multimodal Optimization. In: ICANNGA (1), Seiten
  * 366�375, 2007
  */
+@Description(text="A Niching Particle Swarm Optimizer")
 public class NichePSO implements InterfaceAdditionalPopulationInformer, InterfaceOptimizer, java.io.Serializable {
 
     /**
@@ -317,7 +319,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
 
     /**
      * @tested junit, junit&, emp, ... (non-Javadoc)
-     * @see javaeva.server.oa.go.Strategies.InterfaceOptimizer#init()
+     * @see eva2.optimization.strategies.InterfaceOptimizer#init()
      */
     @Override
     public void init() { // (called right before next optimize/mutltirun)
@@ -366,7 +368,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
      */
     /**
      * @tested (non-Javadoc)
-     * @see javaeva.server.oa.go.Strategies.InterfaceOptimizer#optimize()
+     * @see eva2.optimization.strategies.InterfaceOptimizer#optimize()
      */
     @Override
     public void optimize() {
@@ -930,14 +932,6 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
             representatives.add((AbstractEAIndividual) getMainSwarm().m_BestIndividual.clone()); // assures at least one solution, even if no subswarm has been created 
         }
         return representatives;
-    }
-
-    /**
-     * ********************************************************************************************************************
-     * setter, getter: members
-     */
-    public String globalInfo() {
-        return "A Niching Particle Swarm Optimizer";
     }
 
     /**

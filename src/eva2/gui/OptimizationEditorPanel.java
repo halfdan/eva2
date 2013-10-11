@@ -5,6 +5,8 @@ import eva2.optimization.tools.FileTools;
 import eva2.tools.BasicResourceLoader;
 import eva2.tools.EVAHELP;
 import eva2.tools.SerializedObject;
+import eva2.util.annotation.Description;
+import org.reflections.Reflections;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -334,23 +336,35 @@ public class OptimizationEditorPanel extends JPanel implements ItemListener {
 
     private String[] collectComboToolTips(List<Class<?>> instances, int maxLen) {
         String[] tips = new String[instances.size()];
+
         for (int i = 0; i < tips.length; i++) {
             tips[i] = null;
             Class[] classParams = new Class[]{};
+
+            String tip = null;
             try {
-                String tip = null;
                 Method giMeth = instances.get(i).getDeclaredMethod("globalInfo", classParams);
                 if (Modifier.isStatic(giMeth.getModifiers())) {
                     tip = (String) giMeth.invoke(null, (Object[]) null);
                 }
-                if (tip != null) {
-                    if (tip.length() <= maxLen) {
-                        tips[i] = tip;
-                    } else {
-                        tips[i] = tip.substring(0, maxLen - 2) + "..";
-                    }
-                }
             } catch (Exception e) {
+                LOGGER.finer(e.getMessage());
+            }
+
+            // If the globalInfo method doesn't exist try to use the Annotation
+            if(tip == null || tip.isEmpty()) {
+                Description description = instances.get(i).getAnnotation(Description.class);
+                if(description != null) {
+                    tip = description.text();
+                }
+            }
+
+            if (tip != null) {
+                if (tip.length() <= maxLen) {
+                    tips[i] = tip;
+                } else {
+                    tips[i] = tip.substring(0, maxLen - 2) + "..";
+                }
             }
         }
         return tips;
