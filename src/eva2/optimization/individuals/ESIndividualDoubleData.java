@@ -21,33 +21,33 @@ import eva2.tools.math.RNG;
  */
 public class ESIndividualDoubleData extends AbstractEAIndividual implements InterfaceESIndividual, InterfaceDataTypeDouble, java.io.Serializable {
 
-    private double[] m_Genotype;
-    private double[] m_Phenotype;
-    private double[][] m_Range;
+    private double[] genotype;
+    private double[] phenotype;
+    private double[][] range;
 
     public ESIndividualDoubleData() {
         this.mutationProbability = 1.0;
         this.mutationOperator = new MutateESGlobal(0.2, MutateESCrossoverTypeEnum.intermediate);
         this.crossoverProbability = 0.5;
         this.crossoverOperator = new CrossoverESDefault();
-        this.m_Genotype = new double[1];
-        this.m_Phenotype = null;
-        this.m_Range = new double[1][2];
-        this.m_Range[0][0] = -10;
-        this.m_Range[0][1] = 10;
+        this.genotype = new double[1];
+        this.phenotype = null;
+        this.range = new double[1][2];
+        this.range[0][0] = -10;
+        this.range[0][1] = 10;
     }
 
     public ESIndividualDoubleData(ESIndividualDoubleData individual) {
-        if (individual.m_Phenotype != null) {
-            this.m_Phenotype = new double[individual.m_Phenotype.length];
-            System.arraycopy(individual.m_Phenotype, 0, this.m_Phenotype, 0, this.m_Phenotype.length);
+        if (individual.phenotype != null) {
+            this.phenotype = new double[individual.phenotype.length];
+            System.arraycopy(individual.phenotype, 0, this.phenotype, 0, this.phenotype.length);
         }
-        this.m_Genotype = new double[individual.m_Genotype.length];
-        this.m_Range = new double[individual.m_Range.length][2];
-        for (int i = 0; i < this.m_Genotype.length; i++) {
-            this.m_Genotype[i] = individual.m_Genotype[i];
-            this.m_Range[i][0] = individual.m_Range[i][0];
-            this.m_Range[i][1] = individual.m_Range[i][1];
+        this.genotype = new double[individual.genotype.length];
+        this.range = new double[individual.range.length][2];
+        for (int i = 0; i < this.genotype.length; i++) {
+            this.genotype[i] = individual.genotype[i];
+            this.range[i][0] = individual.range[i][0];
+            this.range[i][1] = individual.range[i][1];
         }
 
         // cloning the members of AbstractEAIndividual
@@ -82,26 +82,26 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
     public boolean equalGenotypes(AbstractEAIndividual individual) {
         if (individual instanceof ESIndividualDoubleData) {
             ESIndividualDoubleData indy = (ESIndividualDoubleData) individual;
-            if ((this.m_Genotype == null) || (indy.m_Genotype == null)) {
+            if ((this.genotype == null) || (indy.genotype == null)) {
                 return false;
             }
-            if ((this.m_Range == null) || (indy.m_Range == null)) {
+            if ((this.range == null) || (indy.range == null)) {
                 return false;
             }
-            if (this.m_Genotype.length != indy.m_Genotype.length) {
+            if (this.genotype.length != indy.genotype.length) {
                 return false;
             }
-            if (this.m_Range.length != indy.m_Range.length) {
+            if (this.range.length != indy.range.length) {
                 return false;
             }
-            for (int i = 0; i < this.m_Genotype.length; i++) {
-                if (this.m_Genotype[i] != indy.m_Genotype[i]) {
+            for (int i = 0; i < this.genotype.length; i++) {
+                if (this.genotype[i] != indy.genotype[i]) {
                     return false;
                 }
-                if (this.m_Range[i][0] != indy.m_Range[i][0]) {
+                if (this.range[i][0] != indy.range[i][0]) {
                     return false;
                 }
-                if (this.m_Range[i][1] != indy.m_Range[i][1]) {
+                if (this.range[i][1] != indy.range[i][1]) {
                     return false;
                 }
             }
@@ -125,28 +125,28 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
         double[][] newRange = new double[length][2];
 
         // copy the old values for the decision parameters and the range
-        for (int i = 0; ((i < newDesPa.length) && (i < this.m_Genotype.length)); i++) {
-            newDesPa[i] = this.m_Genotype[i];
-            newRange[i][0] = this.m_Range[i][0];
-            newRange[i][1] = this.m_Range[i][1];
+        for (int i = 0; ((i < newDesPa.length) && (i < this.genotype.length)); i++) {
+            newDesPa[i] = this.genotype[i];
+            newRange[i][0] = this.range[i][0];
+            newRange[i][1] = this.range[i][1];
         }
 
         // if the new length is bigger than the last value fills the extra elements
-        for (int i = this.m_Genotype.length; (i < newDesPa.length); i++) {
-            newDesPa[i] = this.m_Genotype[this.m_Genotype.length - 1];
-            newRange[i][0] = this.m_Range[this.m_Genotype.length - 1][0];
-            newRange[i][1] = this.m_Range[this.m_Genotype.length - 1][1];
+        for (int i = this.genotype.length; (i < newDesPa.length); i++) {
+            newDesPa[i] = this.genotype[this.genotype.length - 1];
+            newRange[i][0] = this.range[this.genotype.length - 1][0];
+            newRange[i][1] = this.range[this.genotype.length - 1][1];
         }
-        this.m_Genotype = newDesPa;
-        this.m_Range = newRange;
-        this.m_Phenotype = null; // mark as invalid
+        this.genotype = newDesPa;
+        this.range = newRange;
+        this.phenotype = null; // mark as invalid
 
 //        changed 28.08.03 by request of Spieth
 //        this.m_DecisionParameters   = new double[length];
-//        this.m_Range                = new double[length][2];
-//        for (int i = 0; i < this.m_Range.length; i++) {
-//            this.m_Range[i][0] = -10;
-//            this.m_Range[i][1] = 10;
+//        this.range                = new double[length][2];
+//        for (int i = 0; i < this.range.length; i++) {
+//            this.range[i][0] = -10;
+//            this.range[i][1] = 10;
 //        }
     }
 
@@ -157,7 +157,7 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
      */
     @Override
     public int size() {
-        return this.m_Genotype.length;
+        return this.genotype.length;
     }
 
     /**
@@ -169,13 +169,13 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
      */
     @Override
     public void setDoubleRange(double[][] range) {
-        if (range.length != this.m_Range.length) {
+        if (range.length != this.range.length) {
             System.out.println("Warning: Trying to set a range of length " + range.length + " to a vector of length "
-                    + this.m_Range.length + "!\n Use method setDoubleDataLength first! (ESIndividualDoubleData:setDoubleRange)");
+                    + this.range.length + "!\n Use method setDoubleDataLength first! (ESIndividualDoubleData:setDoubleRange)");
         }
-        for (int i = 0; ((i < this.m_Range.length) && (i < range.length)); i++) {
-            this.m_Range[i][0] = range[i][0];
-            this.m_Range[i][1] = range[i][1];
+        for (int i = 0; ((i < this.range.length) && (i < range.length)); i++) {
+            this.range[i][0] = range[i][0];
+            this.range[i][1] = range[i][1];
         }
     }
 
@@ -186,7 +186,7 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
      */
     @Override
     public double[][] getDoubleRange() {
-        return this.m_Range;
+        return this.range;
     }
 
     /**
@@ -199,12 +199,12 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
     public double[] getDoubleData() {
         // since the phenotype is set to null if the genotype is changed,
         // it should now be save to only perform the copy if the phenotype is null
-        if (this.m_Phenotype != null) {
-            return m_Phenotype;
+        if (this.phenotype != null) {
+            return phenotype;
         } else {
-            this.m_Phenotype = new double[this.m_Genotype.length];
-            System.arraycopy(this.m_Genotype, 0, this.m_Phenotype, 0, this.m_Genotype.length);
-            return this.m_Phenotype;
+            this.phenotype = new double[this.genotype.length];
+            System.arraycopy(this.genotype, 0, this.phenotype, 0, this.genotype.length);
+            return this.phenotype;
         }
     }
 
@@ -216,10 +216,10 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
      */
     @Override
     public double[] getDoubleDataWithoutUpdate() {
-        if (m_Phenotype == null) {
+        if (phenotype == null) {
             return getDoubleData();
         } else {
-            return this.m_Phenotype;
+            return this.phenotype;
         }
     }
 
@@ -231,7 +231,7 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
      */
     @Override
     public void setDoublePhenotype(double[] doubleData) {
-        this.m_Phenotype = doubleData;
+        this.phenotype = doubleData;
     }
 
     /**
@@ -244,8 +244,8 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
     public void setDoubleGenotype(double[] doubleData) {
 //        this.setDoublePhenotype(doubleData);
         this.setDoublePhenotype(null); // tag it as invalid
-        this.m_Genotype = new double[doubleData.length];
-        System.arraycopy(doubleData, 0, this.m_Genotype, 0, doubleData.length);
+        this.genotype = new double[doubleData.length];
+        System.arraycopy(doubleData, 0, this.genotype, 0, doubleData.length);
     }
 
 /************************************************************************************
@@ -260,7 +260,7 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
     public void init(InterfaceOptimizationProblem opt) {
         super.init(opt);
         // evil operators may not respect the range, so at least give some hint
-        if (!Mathematics.isInRange(m_Genotype, m_Range)) {
+        if (!Mathematics.isInRange(genotype, range)) {
             EVAERROR.errorMsgOnce("Warning: Individual out of range after initialization (and potential initial crossover/mutation)!");
         }
     }
@@ -276,7 +276,7 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
     public void initByValue(Object obj, InterfaceOptimizationProblem opt) {
         if (obj instanceof double[]) {
             double[] bs = (double[]) obj;
-            if (bs.length != this.m_Genotype.length) {
+            if (bs.length != this.genotype.length) {
                 System.out.println("Init value and requested length doesn't match!");
             }
             this.setDoubleGenotype(bs);
@@ -309,8 +309,8 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
             strB.append(";");
         }
         strB.append("}) Value: [");
-        for (int i = 0; i < this.m_Genotype.length; i++) {
-            strB.append(this.m_Genotype[i]);
+        for (int i = 0; i < this.genotype.length; i++) {
+            strB.append(this.genotype[i]);
             strB.append("; ");
         }
         strB.append("]");
@@ -327,7 +327,7 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
      */
     @Override
     public double[] getDGenotype() {
-        return this.m_Genotype;
+        return this.genotype;
     }
 
     /**
@@ -337,14 +337,14 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
      */
     @Override
     public void setDGenotype(double[] b) {
-        this.m_Genotype = b;
-        this.m_Phenotype = null; // mark it as invalid
-        for (int i = 0; i < this.m_Genotype.length; i++) {
-            if (this.m_Genotype[i] < this.m_Range[i][0]) {
-                this.m_Genotype[i] = this.m_Range[i][0];
+        this.genotype = b;
+        this.phenotype = null; // mark it as invalid
+        for (int i = 0; i < this.genotype.length; i++) {
+            if (this.genotype[i] < this.range[i][0]) {
+                this.genotype[i] = this.range[i][0];
             }
-            if (this.m_Genotype[i] > this.m_Range[i][1]) {
-                this.m_Genotype[i] = this.m_Range[i][1];
+            if (this.genotype[i] > this.range[i][1]) {
+                this.genotype[i] = this.range[i][1];
             }
         }
     }
@@ -355,8 +355,8 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
      * @param b The new genotype of the Individual
      */
     public void setDGenotypeNocheck(double[] b) {
-        this.m_Phenotype = null; // mark it as invalid
-        this.m_Genotype = b;
+        this.phenotype = null; // mark it as invalid
+        this.genotype = b;
     }
 
     /**
@@ -364,8 +364,8 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
      */
     @Override
     public void defaultMutate() {
-        ESIndividualDoubleData.defaultMutate(this.m_Genotype, this.m_Range);
-        m_Phenotype = null; // mark it as invalid
+        ESIndividualDoubleData.defaultMutate(this.genotype, this.range);
+        phenotype = null; // mark it as invalid
     }
 
     /**
@@ -390,11 +390,11 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
     @Override
     public void defaultInit(InterfaceOptimizationProblem prob) {
         if ((prob != null) && (prob instanceof InterfaceHasInitRange) && (((InterfaceHasInitRange) prob).getInitRange() != null)) {
-            ESIndividualDoubleData.defaultInit(m_Genotype, (double[][]) ((InterfaceHasInitRange) prob).getInitRange());
+            ESIndividualDoubleData.defaultInit(genotype, (double[][]) ((InterfaceHasInitRange) prob).getInitRange());
         } else {
-            ESIndividualDoubleData.defaultInit(m_Genotype, m_Range);
+            ESIndividualDoubleData.defaultInit(genotype, range);
         }
-        m_Phenotype = null; // mark as invalid
+        phenotype = null; // mark as invalid
     }
 
     /**

@@ -6,11 +6,6 @@ import java.util.BitSet;
  * This interface gives access to a binary genotype and should
  * only be used by mutation and crossover operators. Exceptions are
  * data type specific optimization strategies like CHC or PBIL.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 24.03.2003
- * Time: 14:25:24
- * To change this template use Options | File Templates.
  */
 public interface InterfaceGAIndividual {
 

@@ -1,7 +1,7 @@
 package eva2.optimization.stat;
 
 import eva2.gui.BeanInspector;
-import eva2.optimization.go.IndividualInterface;
+import eva2.optimization.individuals.IndividualInterface;
 import eva2.optimization.population.PopulationInterface;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.operator.distancemetric.InterfaceDistanceMetric;

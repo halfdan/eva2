@@ -6,7 +6,7 @@ import eva2.optimization.individuals.InterfaceESIndividual;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.InterfaceGAIndividual;
 import eva2.gui.editor.GenericObjectEditor;
-import eva2.optimization.go.IndividualInterface;
+import eva2.optimization.individuals.IndividualInterface;
 import eva2.optimization.go.InterfacePopulationChangedEventListener;
 import eva2.optimization.operator.distancemetric.EuclideanMetric;
 import eva2.optimization.operator.distancemetric.InterfaceDistanceMetric;
