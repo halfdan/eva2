@@ -11,6 +11,7 @@ import eva2.optimization.population.Population;
 import eva2.optimization.population.SolutionSet;
 import eva2.optimization.problems.F1Problem;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
+import eva2.util.annotation.Description;
 
 /**
  * The traditional genetic algorithms as devised by Holland. To only special
@@ -20,10 +21,9 @@ import eva2.optimization.problems.InterfaceOptimizationProblem;
  * Copyright: Copyright (c) 2003 Company: University of Tuebingen, Computer
  * Architecture
  *
- * @author Felix Streichert
- * @version: $Revision: 307 $ $Date: 2007-12-04 14:31:47 +0100 (Tue, 04 Dec
- * 2007) $ $Author: mkron $
  */
+
+@Description(text="This is a basic generational Genetic Algorithm.")
 public class GeneticAlgorithm implements InterfaceOptimizer, java.io.Serializable {
 
     private Population population = new Population();
@@ -245,14 +245,6 @@ public class GeneticAlgorithm implements InterfaceOptimizer, java.io.Serializabl
      * ********************************************************************************************************************
      * These are for GUI
      */
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This is a basic generational Genetic Algorithm.";
-    }
 
     /**
      * This method will return a naming String
