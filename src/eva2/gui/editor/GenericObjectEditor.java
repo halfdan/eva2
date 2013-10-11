@@ -6,7 +6,7 @@ package eva2.gui.editor;
  */
 
 import eva2.EvAInfo;
-import eva2.gui.GOEPanel;
+import eva2.gui.OptimizationEditorPanel;
 import eva2.tools.ReflectPackage;
 
 import java.awt.Component;
@@ -36,7 +36,7 @@ public class GenericObjectEditor implements PropertyEditor {
     private Object m_Backup;
     private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
     private Class<?> classType;
-    private GOEPanel editorComponent;
+    private OptimizationEditorPanel editorComponent;
     private boolean isEnabled = true;
 
     /**
@@ -473,7 +473,7 @@ public class GenericObjectEditor implements PropertyEditor {
     @Override
     public Component getCustomEditor() {
         if (editorComponent == null) {
-            editorComponent = new GOEPanel(m_Object, m_Backup, propertyChangeSupport, this);
+            editorComponent = new OptimizationEditorPanel(m_Object, m_Backup, propertyChangeSupport, this);
         }
         return editorComponent;
     }
@@ -483,7 +483,7 @@ public class GenericObjectEditor implements PropertyEditor {
      */
     public void disableOKCancel() {
         if (editorComponent == null) {
-            editorComponent = new GOEPanel(m_Object, m_Backup,
+            editorComponent = new OptimizationEditorPanel(m_Object, m_Backup,
                     propertyChangeSupport, this);
         }
         editorComponent.setEnabledOkCancelButtons(false);

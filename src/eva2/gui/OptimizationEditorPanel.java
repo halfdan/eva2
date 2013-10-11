@@ -5,7 +5,6 @@ import eva2.optimization.tools.FileTools;
 import eva2.tools.BasicResourceLoader;
 import eva2.tools.EVAHELP;
 import eva2.tools.SerializedObject;
-import org.reflections.Reflections;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -27,8 +26,8 @@ import javax.swing.plaf.basic.BasicComboBoxRenderer;
 /**
  *
  */
-public class GOEPanel extends JPanel implements ItemListener {
-    private static final Logger LOGGER = Logger.getLogger(GOEPanel.class.getName());
+public class OptimizationEditorPanel extends JPanel implements ItemListener {
+    private static final Logger LOGGER = Logger.getLogger(OptimizationEditorPanel.class.getName());
 
     private Object backupObject;
     private PropertyChangeSupport propChangeSupport;
@@ -71,14 +70,14 @@ public class GOEPanel extends JPanel implements ItemListener {
     /**
      *
      */
-    public GOEPanel(Object target, Object backup, PropertyChangeSupport support, GenericObjectEditor goe) {
+    public OptimizationEditorPanel(Object target, Object backup, PropertyChangeSupport support, GenericObjectEditor goe) {
         this(target, backup, support, goe, false);
     }
 
     /**
      *
      */
-    public GOEPanel(Object target, Object backup, PropertyChangeSupport support, GenericObjectEditor goe, boolean withCancel) {
+    public OptimizationEditorPanel(Object target, Object backup, PropertyChangeSupport support, GenericObjectEditor goe, boolean withCancel) {
         Object m_Object = target;
         backupObject = backup;
         propChangeSupport = support;
@@ -91,7 +90,7 @@ public class GOEPanel extends JPanel implements ItemListener {
         } catch (OutOfMemoryError err) {
             backupObject = null;
             System.gc();
-            System.err.println("Could not create backup object: not enough memory (GOEPanel backup of " + m_Object + ")");
+            System.err.println("Could not create backup object: not enough memory (OptimizationEditorPanel backup of " + m_Object + ")");
         }
         comboBoxModel = new DefaultComboBoxModel(new String[0]);
         objectChooser = new JComboBox(comboBoxModel);
@@ -145,7 +144,7 @@ public class GOEPanel extends JPanel implements ItemListener {
                 /*
                  * ToDo: This is really ugly. Find a way to make this better.
                  */
-                Container container = GOEPanel.this.getParent();
+                Container container = OptimizationEditorPanel.this.getParent();
                 while (!(container instanceof JDialog)) {
                     container = container.getParent();
                 }
@@ -168,7 +167,7 @@ public class GOEPanel extends JPanel implements ItemListener {
                 /*
                  * ToDo: This is really ugly. Find a way to make this better.
                  */
-                Container container = GOEPanel.this.getParent();
+                Container container = OptimizationEditorPanel.this.getParent();
                 while (!(container instanceof JDialog)) {
                     container = container.getParent();
                 }
@@ -312,7 +311,7 @@ public class GOEPanel extends JPanel implements ItemListener {
         List<String> classesLongNames;
         ArrayList<Class<?>> instances = new ArrayList<Class<?>>(5);
         classesLongNames = GenericObjectEditor.getClassesFromProperties(genericObjectEditor.getClassType().getName(), instances);
-        LOGGER.finest("Selected type for GOEPanel: " + genericObjectEditor.getClassType().getName());
+        LOGGER.finest("Selected type for OptimizationEditorPanel: " + genericObjectEditor.getClassType().getName());
         if (classesLongNames.size() > 1) {
             classNameMap = new HashMap<String, String>();
             for (String className : classesLongNames) {

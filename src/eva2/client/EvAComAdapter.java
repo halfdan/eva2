@@ -1,30 +1,22 @@
 package eva2.client;
 
-/*
- * Title:        EvA2
- * Description:
- * Copyright:    Copyright (c) 2003
- * Company:      University of Tuebingen, Computer Architecture
- * @author Holger Ulmer, Felix Streichert, Hannes Planatscher
- * @version:  $Revision: 320 $
- *            $Date: 2007-12-06 16:05:11 +0100 (Thu, 06 Dec 2007) $
- *            $Author: mkron $
- */
+
 import eva2.gui.LoggingPanel;
 import eva2.optimization.EvAMainAdapter;
 import eva2.optimization.EvAMainAdapterImpl;
 import eva2.optimization.go.InterfaceOptimizationParameters;
 import eva2.optimization.modules.ModuleAdapter;
 
+import java.util.logging.Logger;
+
 /**
  *
  */
 public class EvAComAdapter {
-
+    private final static Logger LOGGER = Logger.getLogger(EvAComAdapter.class.getName());
     private LoggingPanel loggingPanel;
     private EvAMainAdapterImpl localMainAdapter;
-    private boolean runLocally = false;
-    private static EvAComAdapter m_instance;
+    private static EvAComAdapter instance;
 
     /**
      *
@@ -37,14 +29,14 @@ public class EvAComAdapter {
      *
      */
     public static EvAComAdapter getInstance() {
-        if (m_instance == null) {
-            m_instance = new EvAComAdapter();
+        if (instance == null) {
+            instance = new EvAComAdapter();
         }
-        return (EvAComAdapter) m_instance;
+        return instance;
     }
 
     /**
-     * Creates the ModulAdapters RMI Object on the server
+     * Creates the ModuleAdapters RMI Object on the server
      *
      * @return
      */
@@ -72,15 +64,13 @@ public class EvAComAdapter {
      * @return
      */
     public String[] getModuleNameList() {
-        String[] list;
-        list = getLocalMainAdapter().getModuleNameList();
-        if (loggingPanel != null) {
-            loggingPanel.logMessage("List of modules available:");
-        }
+        String[] list = getLocalMainAdapter().getModuleNameList();
+        LOGGER.info("List of modules available:");
+
         if (list != null) {
-            for (int i = 0; i < list.length; i++) {
-                if ((String) list[i] != null && loggingPanel != null) {
-                    loggingPanel.logMessage((String) list[i]);
+            for (String item : list) {
+                if (!item.isEmpty() && loggingPanel != null) {
+                    LOGGER.info(item);
                 }
             }
         }
