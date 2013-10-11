@@ -37,5 +37,4 @@ public class TerminatorExample {
         }
         System.out.println();
     }
-;
 }
