@@ -13,12 +13,8 @@ import java.util.BitSet;
 /**
  * This individual uses a real-valued genotype to code for binary values, either
  * by using a threshold value of by interpreting the double value as probability.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 02.07.2003
- * Time: 10:37:43
- * To change this template use Options | File Templates.
  */
+@eva2.util.annotation.Description(text="This is an ES individual adopted to optimize binary values.")
 public class ESIndividualBinaryData extends AbstractEAIndividual implements InterfaceESIndividual, InterfaceDataTypeBinary, java.io.Serializable {
 
     private BitSet m_Phenotype = new BitSet();
@@ -338,15 +334,6 @@ public class ESIndividualBinaryData extends AbstractEAIndividual implements Inte
     @Override
     public String getName() {
         return "ES individual";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This is an ES individual adopted to optimize binary values.";
     }
 
     /**

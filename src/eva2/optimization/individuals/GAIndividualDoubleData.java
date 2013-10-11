@@ -9,18 +9,15 @@ import eva2.optimization.operator.mutation.InterfaceMutation;
 import eva2.optimization.operator.mutation.MutateGAUniform;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 import java.util.BitSet;
 
 /**
  * This individual uses a binary genotype to code for double values
  * using two alternative encodings.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 24.03.2003
- * Time: 16:00:30
- * To change this template use Options | File Templates.
  */
+@Description(text="This is a GA individual suited to optimize double values.")
 public class GAIndividualDoubleData extends AbstractEAIndividual implements InterfaceGAIndividual, InterfaceDataTypeDouble, java.io.Serializable {
 
     private double[] m_Phenotype;
@@ -380,15 +377,6 @@ public class GAIndividualDoubleData extends AbstractEAIndividual implements Inte
     @Override
     public String getName() {
         return "GA individual";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This is a GA individual suited to optimize double values.";
     }
 
     /**

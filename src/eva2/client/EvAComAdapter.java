@@ -21,13 +21,6 @@ public class EvAComAdapter {
     /**
      *
      */
-    public void setLogPanel(LoggingPanel loggingPanel) {
-        this.loggingPanel = loggingPanel;
-    }
-
-    /**
-     *
-     */
     public static EvAComAdapter getInstance() {
         if (instance == null) {
             instance = new EvAComAdapter();

@@ -9,6 +9,7 @@ import eva2.optimization.operator.mutation.InterfaceMutation;
 import eva2.optimization.operator.mutation.MutateDefault;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 import java.util.ArrayList;
 import java.util.BitSet;
@@ -16,12 +17,8 @@ import java.util.BitSet;
 /**
  * This individual uses a binary genotype to code for a tree-based representation
  * using a BNF grammar, see also Grammatical Evolution.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 28.07.2004
- * Time: 10:43:39
- * To change this template use File | Settings | File Templates.
  */
+@Description(text="This is a GE individual suited to optimize programs.")
 public class GEIndividualProgramData extends AbstractEAIndividual implements InterfaceGAIndividual, InterfaceDataTypeProgram, java.io.Serializable {
 
     protected GPArea[] m_Area;
@@ -154,7 +151,7 @@ public class GEIndividualProgramData extends AbstractEAIndividual implements Int
             this.m_Rules = null;
             return;
         }
-        //this.m_Rules = new Object[this.m_Area.length][];
+        //this.m_Rules = new Object[this.gpArea.length][];
         for (int t = 0; t < this.m_Area.length; t++) {
             // first lets find out what kind of elements are available
             int arity, maxArity = 0;
@@ -695,9 +692,6 @@ public class GEIndividualProgramData extends AbstractEAIndividual implements Int
         //if (mutationIndex > 28) System.out.println(this.getSolutionRepresentationFor());
     }
 
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -707,15 +701,6 @@ public class GEIndividualProgramData extends AbstractEAIndividual implements Int
     @Override
     public String getName() {
         return "GE individual";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This is a GE individual suited to optimize programs.";
     }
 
     /**

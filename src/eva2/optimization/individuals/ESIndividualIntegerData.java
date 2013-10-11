@@ -6,15 +6,12 @@ import eva2.optimization.operator.mutation.MutateESGlobal;
 import eva2.optimization.problems.InterfaceHasInitRange;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 /**
  * This individual uses a real-valued genotype to code for integer values.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 15.04.2004
- * Time: 17:18:58
- * To change this template use File | Settings | File Templates.
  */
+@Description(text="This is an ES individual suited to optimize integer values.")
 public class ESIndividualIntegerData extends AbstractEAIndividual implements InterfaceESIndividual, InterfaceDataTypeInteger, java.io.Serializable {
 
     private double[] genotype;
@@ -349,9 +346,7 @@ public class ESIndividualIntegerData extends AbstractEAIndividual implements Int
             this.genotype[i] = RNG.randomInt(range[i][0], range[i][1]);
         }
     }
-/**********************************************************************************************************************
- * These are for GUI
- */
+
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -361,14 +356,5 @@ public class ESIndividualIntegerData extends AbstractEAIndividual implements Int
     @Override
     public String getName() {
         return "ES individual";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This is an ES individual suited to optimize integer values.";
     }
 }

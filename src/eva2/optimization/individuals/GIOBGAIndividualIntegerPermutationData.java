@@ -4,15 +4,12 @@ import eva2.optimization.operator.mutation.InterfaceMutation;
 import eva2.optimization.population.Population;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 /**
  * This individual combines a binary and a real-valued phenotype.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 13.05.2003
- * Time: 11:35:48
- * To change this template use Options | File Templates.
  */
+@Description(text="This is a mixed data type combining an integer vector with a permutation vector.")
 public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual implements InterfaceDataTypeInteger, InterfaceDataTypePermutation, java.io.Serializable {
 
     private InterfaceDataTypeInteger m_Integer = new GIIndividualIntegerData();
@@ -369,9 +366,6 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
         this.m_Permutation.setFirstindex(firstindex);
     }
 
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -381,15 +375,6 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
     @Override
     public String getName() {
         return "GA/ES individual";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This is a mixed data type combining an integer vector with a permutation vector.";
     }
 
     /**

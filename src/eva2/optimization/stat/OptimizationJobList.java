@@ -27,9 +27,8 @@ import javax.swing.JOptionPane;
 /**
  * A selectable list of EvAJobs. Each job contains a OptimizationParameters instance and potentially
  * statistical data.
- *
- * @author mkron
  */
+@eva2.util.annotation.Description(text="Display a set of jobs consisting of a multi-run experiment.")
 public class OptimizationJobList extends PropertySelectableList<OptimizationJob> implements Serializable, InterfaceTextListener {
 
     List<InterfaceTextListener> listeners = null;
@@ -42,11 +41,6 @@ public class OptimizationJobList extends PropertySelectableList<OptimizationJob>
     public String getName() {
         return "Job Set";
     }
-
-    public String globalInfo() {
-        return "Display a set of jobs consisting of a multi-run experiment.";
-    }
-
     /**
      * This adds a new job to the list.
      *

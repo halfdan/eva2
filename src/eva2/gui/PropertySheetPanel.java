@@ -595,6 +595,7 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
                 }
                 return infoPanel;
             } catch (Exception ex) {
+                LOGGER.severe(ex.getMessage());
             }
         }
         return null;

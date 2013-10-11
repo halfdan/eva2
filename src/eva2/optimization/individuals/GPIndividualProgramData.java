@@ -10,59 +10,56 @@ import eva2.optimization.operator.mutation.MutateDefault;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.tools.EVAERROR;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 /**
  * This individual uses a tree-based genotype to code for program trees.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 04.04.2003
- * Time: 16:27:55
- * To change this template use Options | File Templates.
  */
+@Description(text="This is a GP individual suited to optimize Koza style program trees.")
 public class GPIndividualProgramData extends AbstractEAIndividual implements InterfaceGPIndividual, InterfaceDataTypeProgram, java.io.Serializable {
 
-    protected AbstractGPNode[] m_Genotype;
-    protected AbstractGPNode[] m_Phenotype;
-    protected GPArea[] m_Area;
-    protected double m_InitFullGrowRatio = 0.5;
-    protected int m_InitDepth = 4;
-    protected int m_maxAllowedDepth = 8;
-    protected boolean m_CheckMaxDepth = true;
+    protected AbstractGPNode[] genotype;
+    protected AbstractGPNode[] phenotype;
+    protected GPArea[] gpArea;
+    protected double initFullGrowRatio = 0.5;
+    protected int initDepth = 4;
+    protected int maxAllowedDepth = 8;
+    protected boolean checkMaxDepth = true;
 
     public GPIndividualProgramData() {
-        this.m_Area = new GPArea[1];
-        m_Area[0] = new GPArea();
-        this.m_Genotype = new AbstractGPNode[1];
+        this.gpArea = new GPArea[1];
+        gpArea[0] = new GPArea();
+        this.genotype = new AbstractGPNode[1];
         this.mutationOperator = new MutateDefault();
         this.crossoverOperator = new CrossoverGPDefault();
     }
 
     public GPIndividualProgramData(GPIndividualProgramData individual) {
-        if (individual.m_Phenotype != null) {
-            this.m_Phenotype = new AbstractGPNode[individual.m_Phenotype.length];
-            for (int i = 0; i < individual.m_Phenotype.length; i++) {
-                if (individual.m_Phenotype[i] != null) {
-                    this.m_Phenotype[i] = (AbstractGPNode) individual.m_Phenotype[i].clone();
+        if (individual.phenotype != null) {
+            this.phenotype = new AbstractGPNode[individual.phenotype.length];
+            for (int i = 0; i < individual.phenotype.length; i++) {
+                if (individual.phenotype[i] != null) {
+                    this.phenotype[i] = (AbstractGPNode) individual.phenotype[i].clone();
                 }
             }
         }
-        if (individual.m_Genotype != null) {
-            this.m_Genotype = new AbstractGPNode[individual.m_Genotype.length];
-            this.m_Area = new GPArea[individual.m_Area.length];
-            for (int i = 0; i < individual.m_Genotype.length; i++) {
-                if (individual.m_Genotype[i] != null) {
-                    this.m_Genotype[i] = (AbstractGPNode) individual.m_Genotype[i].clone();
-                    this.m_Genotype[i].connect(null);
+        if (individual.genotype != null) {
+            this.genotype = new AbstractGPNode[individual.genotype.length];
+            this.gpArea = new GPArea[individual.gpArea.length];
+            for (int i = 0; i < individual.genotype.length; i++) {
+                if (individual.genotype[i] != null) {
+                    this.genotype[i] = (AbstractGPNode) individual.genotype[i].clone();
+                    this.genotype[i].connect(null);
                 }
-                if (individual.m_Area[i] != null) {
-                    this.m_Area[i] = (GPArea) individual.m_Area[i].clone();
+                if (individual.gpArea[i] != null) {
+                    this.gpArea[i] = (GPArea) individual.gpArea[i].clone();
                 }
             }
         }
-        this.m_InitFullGrowRatio = individual.m_InitFullGrowRatio;
-        this.m_InitDepth = individual.m_InitDepth;
-        this.m_maxAllowedDepth = individual.m_maxAllowedDepth;
-        this.m_CheckMaxDepth = individual.m_CheckMaxDepth;
+        this.initFullGrowRatio = individual.initFullGrowRatio;
+        this.initDepth = individual.initDepth;
+        this.maxAllowedDepth = individual.maxAllowedDepth;
+        this.checkMaxDepth = individual.checkMaxDepth;
 
         // cloning the members of AbstractEAIndividual
         this.age = individual.age;
@@ -97,14 +94,14 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
         if (individual instanceof GPIndividualProgramData) {
             GPIndividualProgramData indy = (GPIndividualProgramData) individual;
             //@todo Eigendlich k�nnte ich noch die Areas vergleichen
-            if (this.m_maxAllowedDepth != indy.m_maxAllowedDepth) {
+            if (this.maxAllowedDepth != indy.maxAllowedDepth) {
                 return false;
             }
-            if ((this.m_Genotype == null) || (indy.m_Genotype == null)) {
+            if ((this.genotype == null) || (indy.genotype == null)) {
                 return false;
             } else {
-                for (int i = 0; i < this.m_Genotype.length; i++) {
-                    if ((this.m_Genotype[i] == null) || (indy.m_Genotype[i] == null) || (!this.m_Genotype[i].equals(indy.m_Genotype[i]))) {
+                for (int i = 0; i < this.genotype.length; i++) {
+                    if ((this.genotype[i] == null) || (indy.genotype[i] == null) || (!this.genotype[i].equals(indy.genotype[i]))) {
                         return false;
                     }
                 }
@@ -125,17 +122,17 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
      */
     @Override
     public void setProgramDataLength(int length) {
-        GPArea[] oldArea = this.m_Area;
-        AbstractGPNode[] oldProg = this.m_Genotype;
-        this.m_Area = new GPArea[length];
-        this.m_Genotype = new AbstractGPNode[length];
-        for (int i = 0; ((i < this.m_Area.length) && (i < oldArea.length)); i++) {
-            this.m_Area[i] = oldArea[i];
-            this.m_Genotype[i] = oldProg[i];
+        GPArea[] oldArea = this.gpArea;
+        AbstractGPNode[] oldProg = this.genotype;
+        this.gpArea = new GPArea[length];
+        this.genotype = new AbstractGPNode[length];
+        for (int i = 0; ((i < this.gpArea.length) && (i < oldArea.length)); i++) {
+            this.gpArea[i] = oldArea[i];
+            this.genotype[i] = oldProg[i];
         }
-        for (int i = oldArea.length; i < this.m_Area.length; i++) {
-            this.m_Area[i] = oldArea[oldArea.length - 1];
-            this.m_Genotype[i] = oldProg[oldProg.length - 1];
+        for (int i = oldArea.length; i < this.gpArea.length; i++) {
+            this.gpArea[i] = oldArea[oldArea.length - 1];
+            this.genotype[i] = oldProg[oldProg.length - 1];
         }
     }
 
@@ -146,20 +143,20 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
      */
     @Override
     public InterfaceProgram[] getProgramData() {
-        this.m_Phenotype = new AbstractGPNode[this.m_Genotype.length];
-        for (int i = 0; i < this.m_Genotype.length; i++) {
-            this.m_Phenotype[i] = (AbstractGPNode) this.m_Genotype[i].clone();
+        this.phenotype = new AbstractGPNode[this.genotype.length];
+        for (int i = 0; i < this.genotype.length; i++) {
+            this.phenotype[i] = (AbstractGPNode) this.genotype[i].clone();
             // if (!phenotype[0].checkDepth(0)) {
             // 	System.err.println("error... " + genotype[0].checkDepth(0));
             // }
 
-            if ((this.m_CheckMaxDepth) && (this.m_Phenotype[i].isMaxDepthViolated(this.m_maxAllowedDepth))) {
-                System.err.println("Trying to meet the Target Depth! " + this.m_Phenotype[i].isMaxDepthViolated(this.m_maxAllowedDepth) + " " + m_Phenotype[i].getMaxDepth());
-                this.m_Phenotype[i].repairMaxDepth(this.m_Area[i], this.m_maxAllowedDepth);
+            if ((this.checkMaxDepth) && (this.phenotype[i].isMaxDepthViolated(this.maxAllowedDepth))) {
+                System.err.println("Trying to meet the Target Depth! " + this.phenotype[i].isMaxDepthViolated(this.maxAllowedDepth) + " " + phenotype[i].getMaxDepth());
+                this.phenotype[i].repairMaxDepth(this.gpArea[i], this.maxAllowedDepth);
                 //System.out.println("TragetDepth: " + this.m_TargetDepth + " : " + this.m_Program.getMaxDepth());
             }
         }
-        return this.m_Phenotype;
+        return this.phenotype;
     }
 
     /**
@@ -170,10 +167,10 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
      */
     @Override
     public InterfaceProgram[] getProgramDataWithoutUpdate() {
-        if (this.m_Phenotype == null) {
+        if (this.phenotype == null) {
             return getProgramData();
         } else {
-            return this.m_Phenotype;
+            return this.phenotype;
         }
     }
 
@@ -185,9 +182,9 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
     @Override
     public void SetProgramPhenotype(InterfaceProgram[] program) {
         if (program instanceof AbstractGPNode[]) {
-            this.m_Phenotype = new AbstractGPNode[program.length];
-            for (int i = 0; i < this.m_Phenotype.length; i++) {
-                this.m_Phenotype[i] = (AbstractGPNode) ((AbstractGPNode) program[i]).clone();
+            this.phenotype = new AbstractGPNode[program.length];
+            for (int i = 0; i < this.phenotype.length; i++) {
+                this.phenotype[i] = (AbstractGPNode) ((AbstractGPNode) program[i]).clone();
             }
         }
     }
@@ -201,9 +198,9 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
     public void SetProgramGenotype(InterfaceProgram[] program) {
         this.SetProgramPhenotype(program);
         if (program instanceof AbstractGPNode[]) {
-            this.m_Genotype = new AbstractGPNode[program.length];
-            for (int i = 0; i < this.m_Genotype.length; i++) {
-                this.m_Genotype[i] = (AbstractGPNode) ((AbstractGPNode) program[i]).clone();
+            this.genotype = new AbstractGPNode[program.length];
+            for (int i = 0; i < this.genotype.length; i++) {
+                this.genotype[i] = (AbstractGPNode) ((AbstractGPNode) program[i]).clone();
             }
         }
     }
@@ -216,7 +213,7 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
     @Override
     public void SetFunctionArea(Object[] area) {
         if (area instanceof GPArea[]) {
-            this.m_Area = (GPArea[]) area;
+            this.gpArea = (GPArea[]) area;
         }
     }
 
@@ -227,7 +224,7 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
      */
     @Override
     public Object[] getFunctionArea() {
-        return this.m_Area;
+        return this.gpArea;
     }
 
 /************************************************************************************
@@ -271,11 +268,11 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
             result += this.selectionProbability[i] + ";";
         }
         result += "})\n Value: ";
-        for (int i = 0; i < this.m_Genotype.length; i++) {
-            if (this.m_Genotype[i] != null) {
-                result += this.m_Genotype[i].getStringRepresentation();
+        for (int i = 0; i < this.genotype.length; i++) {
+            if (this.genotype[i] != null) {
+                result += this.genotype[i].getStringRepresentation();
             }
-            result += "\nUsing " + this.m_Genotype[i].getNumberOfNodes() + " nodes.";
+            result += "\nUsing " + this.genotype[i].getNumberOfNodes() + " nodes.";
         }
         return result;
     }
@@ -291,7 +288,7 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
      */
     @Override
     public AbstractGPNode[] getPGenotype() {
-        return this.m_Genotype;
+        return this.genotype;
     }
 
     /**
@@ -301,8 +298,8 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
      */
     @Override
     public void setPGenotype(AbstractGPNode[] b) {
-        this.m_Genotype = b;
-        this.m_Phenotype = null;
+        this.genotype = b;
+        this.phenotype = null;
     }
 
     /**
@@ -313,10 +310,10 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
      */
     @Override
     public void setPGenotype(AbstractGPNode b, int i) {
-        this.m_Genotype[i] = b;
-        m_Genotype[i].updateDepth(0);
+        this.genotype[i] = b;
+        genotype[i].updateDepth(0);
 //        System.out.println("Setting pheno of depth " + b.getMaxDepth() + " " + b.getStringRepresentation());
-        this.m_Phenotype = null;
+        this.phenotype = null;
     }
 
     /**
@@ -324,52 +321,49 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
      */
     @Override
     public void defaultMutate() {
-        for (int i = 0; i < this.m_Genotype.length; i++) {
-            AbstractGPNode nodeToMutate = this.m_Genotype[i].getRandomNode();
+        for (int i = 0; i < this.genotype.length; i++) {
+            AbstractGPNode nodeToMutate = this.genotype[i].getRandomNode();
             if (nodeToMutate.getParent() == null) { // mutate at root
                 this.defaultInit(null);
             } else {
                 AbstractGPNode parent = nodeToMutate.getParent();
-                if (m_CheckMaxDepth && (nodeToMutate.getDepth() == m_maxAllowedDepth)) { // mutate with a constant
-                    AbstractGPNode newNode = (AbstractGPNode) (((AbstractGPNode) this.m_Area[i].getRandomNodeWithArity(0).clone()));
+                if (checkMaxDepth && (nodeToMutate.getDepth() == maxAllowedDepth)) { // mutate with a constant
+                    AbstractGPNode newNode = (AbstractGPNode) (((AbstractGPNode) this.gpArea[i].getRandomNodeWithArity(0).clone()));
                     newNode.setDepth(nodeToMutate.getDepth());
                     parent.setNode(newNode, nodeToMutate);
                 } else {
-                    AbstractGPNode newNode = (AbstractGPNode) (((AbstractGPNode) this.m_Area[i].getRandomNode().clone()));
+                    AbstractGPNode newNode = (AbstractGPNode) (((AbstractGPNode) this.gpArea[i].getRandomNode().clone()));
                     newNode.setDepth(nodeToMutate.getDepth());
-                    newNode.initGrow(this.m_Area[i], this.m_maxAllowedDepth);
+                    newNode.initGrow(this.gpArea[i], this.maxAllowedDepth);
                     parent.setNode(newNode, nodeToMutate);
                 }
-                //if (!genotype[i].checkDepth(0) || (genotype[i].isMaxDepthViolated(m_maxAllowedDepth))) {
+                //if (!genotype[i].checkDepth(0) || (genotype[i].isMaxDepthViolated(maxAllowedDepth))) {
                 //	System.err.println("Error in GPIndividualProgramData.defaultMutate!");
                 //}
             }
         }
-        m_Phenotype = null; // reset pheno
+        phenotype = null; // reset pheno
     }
 
     @Override
     public void defaultInit(InterfaceOptimizationProblem prob) {
-        m_Phenotype = null; // reset pheno
-        for (int i = 0; i < this.m_Area.length; i++) {
-            if (this.m_Area[i] == null) {
+        phenotype = null; // reset pheno
+        for (int i = 0; i < this.gpArea.length; i++) {
+            if (this.gpArea[i] == null) {
                 EVAERROR.errorMsgOnce("Error in GPIndividualProgramData.defaultInit(): Area[" + i + "] == null !!");
             } else {
-                this.m_Genotype[i] = (AbstractGPNode) (this.m_Area[i].getRandomNonTerminal()).clone();
-                this.m_Genotype[i].setDepth(0);
-                int targetDepth = RNG.randomInt(1, this.m_InitDepth);
-                if (RNG.flipCoin(this.m_InitFullGrowRatio)) {
-                    this.m_Genotype[i].initFull(this.m_Area[i], targetDepth);
+                this.genotype[i] = (AbstractGPNode) (this.gpArea[i].getRandomNonTerminal()).clone();
+                this.genotype[i].setDepth(0);
+                int targetDepth = RNG.randomInt(1, this.initDepth);
+                if (RNG.flipCoin(this.initFullGrowRatio)) {
+                    this.genotype[i].initFull(this.gpArea[i], targetDepth);
                 } else {
-                    this.m_Genotype[i].initGrow(this.m_Area[i], targetDepth);
+                    this.genotype[i].initGrow(this.gpArea[i], targetDepth);
                 }
             }
         }
     }
 
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -382,25 +376,16 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
     }
 
     /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This is a GP individual suited to optimize Koza style program trees.";
-    }
-
-    /**
      * This method will toggle between checking for max depth or not.
      *
      * @param b the Switch.
      */
     public void setCheckMaxDepth(boolean b) {
-        this.m_CheckMaxDepth = b;
+        this.checkMaxDepth = b;
     }
 
     public boolean getCheckMaxDepth() {
-        return this.m_CheckMaxDepth;
+        return this.checkMaxDepth;
     }
 
     public String checkMaxDepthTipText() {
@@ -419,11 +404,11 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
         if (b > 1) {
             b = 1;
         }
-        this.m_InitFullGrowRatio = b;
+        this.initFullGrowRatio = b;
     }
 
     public double getInitFullGrowRatio() {
-        return this.m_InitFullGrowRatio;
+        return this.initFullGrowRatio;
     }
 
     public String initFullGrowRatioTipText() {
@@ -436,15 +421,15 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
      * @param b The new init Depth of the GP Tree.
      */
     public void setInitDepth(int b) {
-        if (b > this.m_maxAllowedDepth) {
+        if (b > this.maxAllowedDepth) {
             System.out.println("Waring Init Depth will be set to Target Depth!");
-            b = this.m_maxAllowedDepth;
+            b = this.maxAllowedDepth;
         }
-        this.m_InitDepth = b;
+        this.initDepth = b;
     }
 
     public int getInitDepth() {
-        return this.m_InitDepth;
+        return this.initDepth;
     }
 
     public String initDepthTipText() {
@@ -457,12 +442,12 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
      * @param b The new target Depth of the GP Tree.
      */
     public void setMaxAllowedDepth(int b) {
-        this.m_maxAllowedDepth = b;
+        this.maxAllowedDepth = b;
     }
 
     @Override
     public int getMaxAllowedDepth() {
-        return this.m_maxAllowedDepth;
+        return this.maxAllowedDepth;
     }
 
     public String maxAllowedDepthTipText() {
@@ -474,14 +459,14 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
     }
 
     public void updateDepth() {
-        for (int i = 0; i < m_Genotype.length; i++) {
-            m_Genotype[i].updateDepth(0);
+        for (int i = 0; i < genotype.length; i++) {
+            genotype[i].updateDepth(0);
         }
     }
 
     public void checkDepth() {
-        for (int i = 0; i < m_Genotype.length; i++) {
-            m_Genotype[i].checkDepth(0);
+        for (int i = 0; i < genotype.length; i++) {
+            genotype[i].checkDepth(0);
         }
     }
 }

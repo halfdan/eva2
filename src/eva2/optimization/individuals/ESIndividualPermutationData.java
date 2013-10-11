@@ -6,16 +6,13 @@ import eva2.optimization.operator.mutation.MutateESGlobal;
 import eva2.optimization.problems.InterfaceHasInitRange;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 /**
  * This individual uses a real-valued genotype to code for a permutations,
  * the sorting of the real-valued genotype gives the permutation.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 21.10.2004
- * Time: 17:02:53
- * To change this template use File | Settings | File Templates.
  */
+@Description(text="This is an ES individual suited to optimize permutations.")
 public class ESIndividualPermutationData extends AbstractEAIndividual implements InterfaceESIndividual, InterfaceDataTypePermutation, java.io.Serializable {
 
     private double[][] m_Genotype;
@@ -409,9 +406,6 @@ public class ESIndividualPermutationData extends AbstractEAIndividual implements
         return res;
     }
 
-    /**********************************************************************************************************************
-     * These are for GUI
-     */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -422,14 +416,4 @@ public class ESIndividualPermutationData extends AbstractEAIndividual implements
     public String getName() {
         return "ES individual";
     }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This is an ES individual suited to optimize permutations.";
-    }
-
 }

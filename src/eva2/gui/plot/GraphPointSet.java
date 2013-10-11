@@ -417,9 +417,9 @@ public class GraphPointSet {
         m_Area = Area;
         m_Area.addDElement(m_ConnectedPointSet);
         ((FunctionArea) m_Area).addGraphPointSet(this);
-        // m_Area.addDElement(m_PointSet_1);
-        // m_Area.addDElement(m_PointSet_2);
-        // m_Area.addDElement(m_PointSet_3);
+        // gpArea.addDElement(m_PointSet_1);
+        // gpArea.addDElement(m_PointSet_2);
+        // gpArea.addDElement(m_PointSet_3);
         // DPointIcon icon1 = new DPointIcon(){
         // public void paint( Graphics g ){
         // g.drawLine(-2, 0, 2, 0);

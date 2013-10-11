@@ -18,11 +18,7 @@ import eva2.util.annotation.Description;
  * here it the plague factor which reduces the population size to tune from a
  * global to a more local search. But you have to be careful with that else the
  * GA might not converge. This is a implementation of Genetic Algorithms.
- * Copyright: Copyright (c) 2003 Company: University of Tuebingen, Computer
- * Architecture
- *
  */
-
 @Description(text="This is a basic generational Genetic Algorithm.")
 public class GeneticAlgorithm implements InterfaceOptimizer, java.io.Serializable {
 
@@ -52,7 +48,7 @@ public class GeneticAlgorithm implements InterfaceOptimizer, java.io.Serializabl
 
     @Override
     public Object clone() {
-        return (Object) new GeneticAlgorithm(this);
+        return new GeneticAlgorithm(this);
     }
 
     @Override

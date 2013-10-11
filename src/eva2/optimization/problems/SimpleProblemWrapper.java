@@ -259,8 +259,6 @@ public class SimpleProblemWrapper extends AbstractOptimizationProblem {
         return "Set the individual properties for the optimization";
     }
 
-/////////// for GUI
-
     /**
      * This method returns a string describing the optimization problem.
      *

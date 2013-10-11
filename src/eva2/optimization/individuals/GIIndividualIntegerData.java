@@ -6,15 +6,12 @@ import eva2.optimization.operator.mutation.MutateDefault;
 import eva2.optimization.problems.InterfaceHasInitRange;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 /**
  * This individual uses a integer genotype to code for integer values.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 18.05.2005
- * Time: 16:55:23
- * To change this template use File | Settings | File Templates.
  */
+@Description(text="This is a GI individual suited to optimize int values.")
 public class GIIndividualIntegerData extends AbstractEAIndividual implements InterfaceGIIndividual, InterfaceDataTypeInteger, java.io.Serializable {
 
     private int[] m_Phenotype;
@@ -361,10 +358,6 @@ public class GIIndividualIntegerData extends AbstractEAIndividual implements Int
         }
     }
 
-
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -375,14 +368,4 @@ public class GIIndividualIntegerData extends AbstractEAIndividual implements Int
     public String getName() {
         return "GI individual";
     }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This is a GI individual suited to optimize int values.";
-    }
-
 }

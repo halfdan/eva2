@@ -8,18 +8,15 @@ import eva2.optimization.operator.mutation.InterfaceMutation;
 import eva2.optimization.operator.mutation.MutateGANBit;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 import java.util.BitSet;
 
 /**
  * This individual uses a binary genotype to code for binary values using
  * two alternative encodings.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 13.05.2004
- * Time: 11:16:33
- * To change this template use File | Settings | File Templates.
  */
+@Description(text="This is a GA individual suited to optimize int values.")
 public class GAIndividualIntegerData extends AbstractEAIndividual implements InterfaceGAIndividual, InterfaceDataTypeInteger, java.io.Serializable {
 
     private int[] phenotype;
@@ -456,9 +453,7 @@ public class GAIndividualIntegerData extends AbstractEAIndividual implements Int
         }
         System.out.println(tmp + "}");
     }
-/**********************************************************************************************************************
- * These are for GUI
- */
+
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -468,15 +463,6 @@ public class GAIndividualIntegerData extends AbstractEAIndividual implements Int
     @Override
     public String getName() {
         return "GA individual";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This is a GA individual suited to optimize int values.";
     }
 
     /**
