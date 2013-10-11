@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.util.List;
 import javax.swing.JButton;
 
+@eva2.util.annotation.Description(text="Select statistical values to be calculated and tests to be performed.")
 public class EvAStatisticalEvaluationParams implements Serializable {
 
     private StringSelection singleStats = new StringSelection(StatsOnSingleDataSetEnum.mean, StatsOnSingleDataSetEnum.getInfoStrings());
@@ -42,10 +43,6 @@ public class EvAStatisticalEvaluationParams implements Serializable {
 
     public String getName() {
         return "Statistical evaluation parameters";
-    }
-
-    public String globalInfo() {
-        return "Select statistical values to be calculated and tests to be performed.";
     }
 
     public List<JButton> getAdditionalButtons() {

@@ -13,12 +13,6 @@ import eva2.optimization.strategies.InterfaceOptimizer;
  * To change this template use Options | File Templates.
  */
 public interface InterfaceOptimizationParameters {
-
-    /** This method returns a global info string
-     * @return description
-     */
-//    public String globalInfo();
-
     /**
      * This method allows you to serialize the current parameters into a *.ser file
      */

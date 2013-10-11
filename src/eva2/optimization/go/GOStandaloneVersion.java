@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.*;
 
+@eva2.util.annotation.Description(text="This is a simple example framework for Evolutionary Algorithms.")
 public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopulationChangedEventListener, java.io.Serializable {
 
     // Interface GUI Stuff
@@ -645,14 +646,6 @@ public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopu
      * ********************************************************************************************************************
      * These are for GUI
      */
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This is a simple example framework for Evolutionary Algorithms.";
-    }
 
     /**
      * This method allows you to set the number of mulitruns that are to be

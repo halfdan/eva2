@@ -5,17 +5,14 @@ import eva2.optimization.operator.mutation.InterfaceMutation;
 import eva2.optimization.population.Population;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 import java.util.BitSet;
 
 /**
  * This individual combines a binary and a real-valued phenotype.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 13.05.2003
- * Time: 11:35:48
- * To change this template use Options | File Templates.
  */
+@Description(text="This is a mixed data type combining a BitSet and a real-valued vector.")
 public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual implements InterfaceDataTypeBinary, InterfaceDataTypeDouble, java.io.Serializable {
 
     private InterfaceDataTypeDouble m_Numbers = new ESIndividualDoubleData();
@@ -383,15 +380,6 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
     @Override
     public String getName() {
         return "GA/ES individual";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This is a mixed data type combining a BitSet and a real-valued vector.";
     }
 
     /**

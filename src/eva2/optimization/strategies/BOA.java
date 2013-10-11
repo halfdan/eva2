@@ -16,6 +16,7 @@ import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.tools.Pair;
 import eva2.tools.math.BayNet;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -41,9 +42,8 @@ import java.util.logging.Logger;
  *
  * @author seitz
  */
+@Description(text="Basic implementation of the Bayesian Optimization Algorithm based on the works by Martin Pelikan and David E. Goldberg.")
 public class BOA implements InterfaceOptimizer, java.io.Serializable {
-
-    //	private static boolean TRACE = false;
     private static final Logger LOGGER = Logger.getLogger(BOA.class.getName());
     transient private InterfacePopulationChangedEventListener m_Listener = null;
     private String m_Identifier = "BOA";
@@ -81,16 +81,12 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
         this.learningSetRatio = learningSetRatio;
         this.resampleRatio = resampleRatio;
         this.netFolder = outputFolder;
-//		this.printExtraOutput = printExtraOutput;
         this.upperProbLimit = upperProbLimit;
         this.lowerProbLimit = lowerProbLimit;
         this.printEdgeRate = printEdgeRate;
         this.printNetworks = printNetworks;
         this.printMetrics = printMetrics;
         this.printTimestamps = printTimestamps;
-//		if (printEdgeRate || printNetworks || printMetrics || printTimestamps) {
-//			this.printExtraOutput = true;
-//		}
     }
 
     public BOA(BOA b) {
@@ -133,23 +129,6 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
     @Override
     public String getName() {
         return "Bayesian Optimization Algorithm";
-    }
-
-    public static String globalInfo() {
-        return "Basic implementation of the Bayesian Optimization Algorithm based on the works by Martin Pelikan and David E. Goldberg.";
-    }
-
-    public void hideHideable() {
-//		GenericObjectEditor
-//				.setHideProperty(this.getClass(), "population", true);
-//		GenericObjectEditor.setHideProperty(getClass(), "printNetworks",
-//				!printExtraOutput);
-//		GenericObjectEditor.setHideProperty(getClass(), "printEdgeRate",
-//				!printExtraOutput);
-//		GenericObjectEditor.setHideProperty(getClass(), "printMetrics",
-//				!printExtraOutput);
-//		GenericObjectEditor.setHideProperty(getClass(), "printTimestamps",
-//				!printExtraOutput);
     }
 
     @Override
@@ -715,23 +694,6 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
         return new String[]{"learningRatio", "resamplingRatio"};
     }
 
-    //	public boolean isPrintExtraOutput() {
-//		return this.printExtraOutput;
-//	}
-//	public void setPrintExtraOutput(boolean b) {
-//		this.printExtraOutput = b;
-//		GenericObjectEditor.setHideProperty(getClass(), "printNetworks",
-//				!printExtraOutput);
-//		GenericObjectEditor.setHideProperty(getClass(), "printEdgeRate",
-//				!printExtraOutput);
-//		GenericObjectEditor.setHideProperty(getClass(), "printMetrics",
-//				!printExtraOutput);
-//		GenericObjectEditor.setHideProperty(getClass(), "printTimestamps",
-//				!printExtraOutput);
-//	}
-//	public String printExtraOutputTipText() {
-//		return "do you want to print extra output files";
-//	}
     public boolean isPrintNetworks() {
         return this.printNetworks;
     }

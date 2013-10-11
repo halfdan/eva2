@@ -10,15 +10,12 @@ import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.tools.EVAERROR;
 import eva2.tools.math.Mathematics;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 /**
  * This individual uses a real-valued genotype to code for double values.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 24.03.2003
- * Time: 16:00:03
- * To change this template use Options | File Templates.
  */
+@Description(text="This is an ES individual suited to optimize double values.")
 public class ESIndividualDoubleData extends AbstractEAIndividual implements InterfaceESIndividual, InterfaceDataTypeDouble, java.io.Serializable {
 
     private double[] genotype;
@@ -410,9 +407,6 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
         }
     }
 
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -422,14 +416,5 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
     @Override
     public String getName() {
         return "ES individual";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This is an ES individual suited to optimize double values.";
     }
 }

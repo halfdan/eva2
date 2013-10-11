@@ -8,6 +8,7 @@ import eva2.tools.EVAERROR;
 import eva2.tools.SelectedTag;
 import eva2.tools.Serializer;
 import eva2.tools.StringSelection;
+import eva2.util.annotation.Description;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -26,9 +27,9 @@ import java.util.logging.Logger;
  * There is a switch called "output full data as text" which will be interpreted by AbstractStatistics showing
  * all or only the selected entities.
  *
- * @author mkron
  * @see AbstractStatistics
  */
+@Description(text="Configure statistics and output of the optimization run. Changes to the data selection state will not take effect during a run.")
 public class StatisticsParameter implements InterfaceStatisticsParameter, InterfaceNotifyOnInformers, Serializable {
     private static final long serialVersionUID = -8681061379203108390L;
     private static final Logger LOGGER = Logger.getLogger(StatisticsParameter.class.getName());
@@ -145,10 +146,6 @@ public class StatisticsParameter implements InterfaceStatisticsParameter, Interf
     @Override
     public String getName() {
         return m_Name;
-    }
-
-    public static String globalInfo() {
-        return "Configure statistics and output of the optimization run. Changes to the data selection state will not take effect during a run.";
     }
 
     /**

@@ -18,6 +18,7 @@ import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.tools.EVAERROR;
 import eva2.tools.math.Mathematics;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 import eva2.util.annotation.Parameter;
 
 import java.util.Vector;
@@ -30,6 +31,7 @@ import java.util.Vector;
  * dynamically changing problems. If an individual reaches the age limit, it is
  * doomed and replaced by the next challenge vector, even if its worse.
  */
+@Description(text="Differential Evolution using a steady-state population scheme.")
 public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serializable {
 
     protected Population population = new Population();
@@ -45,7 +47,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
     @Parameter(name = "CR", description = "Crossover Rate")
     private double crossoverRate = 0.6; // AKA CR
 
-    @Parameter(name = "Lambda", description = "Lambda")
+    @Parameter(name = "Lambda", description = "Enhance greediness through amplification of the differential vector to the best individual for DE2.")
     private double lambda = 0.6;
 
     private double m_Mt = 0.05;
@@ -740,19 +742,6 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
     }
 
     /**
-     * ********************************************************************************************************************
-     * These are for GUI
-     */
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "Differential Evolution using a steady-state population scheme.";
-    }
-
-    /**
      * This method will return a naming String
      *
      * @return The name of the algorithm
@@ -843,10 +832,6 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
 
     public double getLambda() {
         return this.lambda;
-    }
-
-    public String lambdaTipText() {
-        return "Enhance greediness through amplification of the differential vector to the best individual for DE2.";
     }
 
     /**

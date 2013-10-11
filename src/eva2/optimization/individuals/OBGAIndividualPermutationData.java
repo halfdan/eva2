@@ -6,21 +6,15 @@ import eva2.optimization.operator.mutation.InterfaceMutation;
 import eva2.optimization.operator.mutation.MutateOBGAFlip;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 import java.util.ArrayList;
 
 /**
  * This individual uses a permutation based genotype to code for
  * permutations.
- * <p>Title: EvA2</p>
- * <p>Description: </p>
- * <p>Copyright: Copyright (c) 2003</p>
- * <p>Company: </p>
- *
- * @author planatsc
- * @version 1.0
  */
-
+@Description(text="This is a GA individual coding permutations.")
 public class OBGAIndividualPermutationData extends AbstractEAIndividual implements InterfaceDataTypePermutation, InterfaceOBGAIndividual, java.io.Serializable {
 
     int[][] phenotype;
@@ -305,14 +299,5 @@ public class OBGAIndividualPermutationData extends AbstractEAIndividual implemen
     @Override
     public String getName() {
         return "OBGA individual";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This is a GA individual coding permutations.";
     }
 }

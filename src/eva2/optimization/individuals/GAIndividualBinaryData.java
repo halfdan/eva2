@@ -7,17 +7,14 @@ import eva2.optimization.operator.mutation.InterfaceMutation;
 import eva2.optimization.operator.mutation.MutateGANBit;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 import java.util.BitSet;
 
 /**
  * This individual uses a binary genotype to code for binary values.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 24.03.2003
- * Time: 14:08:24
- * To change this template use Options | File Templates.
  */
+@Description(text="This is a GA individual suited to optimize binary values.")
 public class GAIndividualBinaryData extends AbstractEAIndividual implements InterfaceDataTypeBinary, InterfaceGAIndividual, java.io.Serializable {
 
     protected BitSet m_Genotype = new BitSet();
@@ -306,9 +303,6 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
         this.m_Genotype = (BitSet) binaryData.clone();
     }
 
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -318,14 +312,5 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
     @Override
     public String getName() {
         return "GA binary individual";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This is a GA individual suited to optimize binary values.";
     }
 }
