@@ -108,7 +108,7 @@ abstract public class AbstractModuleAdapter implements ModuleAdapter, Serializab
 
     public void setOptimizationParameters(InterfaceOptimizationParameters goParams) {
         if ((processor != null) && (processor instanceof Processor)) {
-            ((Processor) processor).setGOParams(goParams);
+            ((Processor) processor).setOptimizationParameters(goParams);
         }
     }
 

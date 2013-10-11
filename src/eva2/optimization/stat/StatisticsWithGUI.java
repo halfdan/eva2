@@ -267,9 +267,4 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
         }
 //		}
     }
-
-    @Override
-    public String getHostName() {
-        return hostName;
-    }
 }

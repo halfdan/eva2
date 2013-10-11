@@ -219,7 +219,6 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
                 System.out.println("Error: " + e);
             }
             resultOut.println("StartDate:" + startDate);
-            resultOut.println("On Host:" + getHostName());
         } else {
             resultOut = null;
         }
@@ -652,34 +651,8 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
                 sbuf.append("\n");
             }
         }
-
-//    	double[][] mean;
-//    	StringBuffer sbuf = new StringBuffer("Iteration\tFun.Calls\tBest\tMean\tWorst\n");
-//    	double step = result.size()/(iterationsToShow-1.);
-//    	int printedIteration=0;
-//    	
-//        for(int i = 1; i < result.size()+1; i++) {
-//        	// print the first, last and intermediate iterations requested by the integer parameter
-//        	// first one is printed always, as printedIteration=0
-//        	if ((i==result.size()) || ((i-1)==Math.round(printedIteration*step))) {
-//        		printedIteration++;
-//        		mean = result.get(i-1);
-//        		sbuf.append(i);
-//        		sbuf.append("\t");
-//        		sbuf.append(BeanInspector.toString(mean[0]));
-//        		sbuf.append("\t");
-//        		sbuf.append(BeanInspector.toString(mean[1]));
-//        		sbuf.append("\t");
-//        		sbuf.append(BeanInspector.toString(mean[2]));
-//        		sbuf.append("\t");
-//        		sbuf.append(BeanInspector.toString(mean[3]));
-//        		sbuf.append("\n");
-//        	}
-//        }
-//        return sbuf.toString();
     }
 
-    public abstract String getHostName();
 
     @Override
     public void printToTextListener(String s) {

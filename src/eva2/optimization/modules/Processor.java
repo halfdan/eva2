@@ -230,6 +230,7 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
         String popLog = null; //"populationLog.txt";
 
         while (isOptimizationRunning() && (runCounter < statistics.getStatisticsParameter().getMultiRuns())) {
+            LOGGER.info(String.format("Starting Optimization %d/%d", runCounter + 1, statistics.getStatisticsParameter().getMultiRuns()));
             statistics.startOptPerformed(getInfoString(), runCounter, optimizationParameters, getInformerList());
 
             this.optimizationParameters.getProblem().initializeProblem();
@@ -240,7 +241,6 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
                 this.optimizationParameters.getOptimizer().init();
             }
 
-            //statistics.createNextGenerationPerformed((PopulationInterface)this.m_ModulParameter.getOptimizer().getPopulation());
             if (optimizationStateListener != null) {
                 optimizationStateListener.updateProgress(getStatusPercent(optimizationParameters.getOptimizer().getPopulation(), runCounter, statistics.getStatisticsParameter().getMultiRuns()), null);
             }
@@ -257,8 +257,8 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
                 if (popLog != null) {
                     EVAHELP.logString(this.optimizationParameters.getOptimizer().getPopulation().getIndyList(), popLog);
                 }
-            }
-            while (isOptimizationRunning() && !this.optimizationParameters.getTerminator().isTerminated(this.optimizationParameters.getOptimizer().getAllSolutions()));
+            } while (isOptimizationRunning() && !this.optimizationParameters.getTerminator().isTerminated(this.optimizationParameters.getOptimizer().getAllSolutions()));
+
             runCounter++;
             maybeFinishParamCtrl(optimizationParameters);
             userAborted = !isOptimizationRunning(); // stop is "normal" if opt wasnt set false by the user (and thus still true)
@@ -403,33 +403,12 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
         return informerList;
     }
 
-    /**
-     * This method writes Data to file.
-     *
-     * @param line The line that is to be added to the file
-     */
-//    private void writeToFile(String line) {
-//        //String write = line + "\n";
-//        if (this.m_OutputFile == null) return;
-//        try {
-//            this.m_OutputFile.write(line, 0, line.length());
-//            this.m_OutputFile.write('\n');
-//            this.m_OutputFile.flush();
-//        } catch (IOException e) {
-//            System.err.println("Problems writing to output file!");
-//        }
-//    }
     @Override
     public String getInfoString() {
         //StringBuffer sb = new StringBuffer("processing ");
         StringBuilder sb = new StringBuilder(this.optimizationParameters.getProblem().getName());
         sb.append("+");
         sb.append(this.optimizationParameters.getOptimizer().getName());
-        // commented out because the number of multi-runs can be changed after start
-        // so it might create misinformation (would still be the user's fault, though) 
-//    	sb.append(" for ");
-//    	sb.append(statistics.getStatistisParameter().getMultiRuns());
-//    	sb.append(" runs");
         return sb.toString();
     }
 
@@ -447,11 +426,11 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
         return optimizationParameters;
     }
 
-    public void setGOParams(InterfaceOptimizationParameters params) {
+    public void setOptimizationParameters(InterfaceOptimizationParameters params) {
         if (params != null) {
             optimizationParameters = params;
         } else {
-            System.err.println("Setting parameters failed (parameters were null) (Processor.setGOParams)");
+            System.err.println("Setting parameters failed (parameters were null) (Processor.setOptimizationParameters)");
         }
     }
 
@@ -487,16 +466,8 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
             }
             Population resultPop = (Population) (optimizationParameters.getOptimizer().getAllSolutions().getSolutions().clone());
             if (resultPop.getFunctionCalls() != optimizationParameters.getOptimizer().getPopulation().getFunctionCalls()) {
-                //    		System.err.println("bad case in Processor::performNewPostProcessing ");
                 resultPop.setFunctionCalls(optimizationParameters.getOptimizer().getPopulation().getFunctionCalls());
             }
-//	    	if (!resultPop.contains(statistics.getBestSolution())) {
-//	    		resultPop.add(statistics.getBestSolution());
-            // this is a minor cheat but guarantees that the best solution ever found is contained in the final results
-            // This was evil in case multiple runs were performed with PP, because the best of an earlier run is added which is confusing.
-            // the minor cheat should not be necessary anymore anyways, since the getAllSolutions() variant replaced the earlier getPopulation() call
-//	    		resultPop.synchSize();
-//	    	}
 
             PostProcess.checkAccuracy((AbstractOptimizationProblem) optimizationParameters.getProblem(), resultPop, ppp.getAccuracies(), ppp.getAccAssumeConv(),
                     -1, ppp.getAccMaxEval(), (SolutionHistogram[]) null, true, listener);
