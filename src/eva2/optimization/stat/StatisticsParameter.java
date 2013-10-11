@@ -44,12 +44,12 @@ public class StatisticsParameter implements InterfaceStatisticsParameter, Interf
     SelectedTag outputTo = new SelectedTag("File (current dir.)", "Text-window", "Both file and text-window");
     private int verboK = 10;
     private int m_Textoutput = 0;
-    private int m_MultiRuns = 1;
-    private String m_ResultFilePrefix = "EvA2";
+    private int multiRuns = 1;
+    private String resultFilePrefix = "EvA2";
     protected String m_Name = "not defined";
-    private boolean m_useStatPlot = true;
+    private boolean useStatPlot = true;
     private boolean showAdditionalProblemInfo = false;
-    private double m_ConvergenceRateThreshold = 0.001;
+    private double convergenceRateThreshold = 0.001;
     private StringSelection graphSel = new StringSelection(GraphSelectionEnum.currentBest, GraphSelectionEnum.getInfoStrings());
 
     /**
@@ -97,7 +97,7 @@ public class StatisticsParameter implements InterfaceStatisticsParameter, Interf
      */
     @Override
     public String toString() {
-        String ret = "\r\nStatisticsParameter (" + super.toString() + "):\r\nm_MultiRuns=" + m_MultiRuns
+        String ret = "\r\nStatisticsParameter (" + super.toString() + "):\r\nmultiRuns=" + multiRuns
                 + ", m_Textoutput=" + m_Textoutput
                 + //		", m_Plotoutput=" + m_Plotoutput +
                 ", verbosity= " + outputVerbosity.getSelectedString()
@@ -123,13 +123,13 @@ public class StatisticsParameter implements InterfaceStatisticsParameter, Interf
      *
      */
     private StatisticsParameter(StatisticsParameter Source) {
-        m_ConvergenceRateThreshold = Source.m_ConvergenceRateThreshold;
-        m_useStatPlot = Source.m_useStatPlot;
+        convergenceRateThreshold = Source.convergenceRateThreshold;
+        useStatPlot = Source.useStatPlot;
         m_Textoutput = Source.m_Textoutput;
 //		m_Plotoutput = Source.m_Plotoutput;
 //		m_PlotFitness = Source.m_PlotFitness;
-        m_MultiRuns = Source.m_MultiRuns;
-        m_ResultFilePrefix = Source.m_ResultFilePrefix;
+        multiRuns = Source.multiRuns;
+        resultFilePrefix = Source.resultFilePrefix;
         verboK = Source.verboK;
     }
 
@@ -153,7 +153,7 @@ public class StatisticsParameter implements InterfaceStatisticsParameter, Interf
      */
     @Override
     public void setMultiRuns(int x) {
-        m_MultiRuns = x;
+        multiRuns = x;
     }
 
     /**
@@ -161,7 +161,7 @@ public class StatisticsParameter implements InterfaceStatisticsParameter, Interf
      */
     @Override
     public int getMultiRuns() {
-        return m_MultiRuns;
+        return multiRuns;
     }
 
     /**
@@ -184,7 +184,7 @@ public class StatisticsParameter implements InterfaceStatisticsParameter, Interf
      */
     @Override
     public boolean getUseStatPlot() {
-        return m_useStatPlot;
+        return useStatPlot;
     }
 
     /**
@@ -192,7 +192,7 @@ public class StatisticsParameter implements InterfaceStatisticsParameter, Interf
      */
     @Override
     public void setUseStatPlot(boolean x) {
-        m_useStatPlot = x;
+        useStatPlot = x;
     }
 
     public String useStatPlotTipText() {
@@ -205,9 +205,9 @@ public class StatisticsParameter implements InterfaceStatisticsParameter, Interf
     @Override
     public void setResultFilePrefix(String x) {
         if (x == null) {
-            m_ResultFilePrefix = "";
+            resultFilePrefix = "";
         } else {
-            m_ResultFilePrefix = x;
+            resultFilePrefix = x;
         }
     }
 
@@ -216,7 +216,7 @@ public class StatisticsParameter implements InterfaceStatisticsParameter, Interf
      */
     @Override
     public String getResultFilePrefix() {
-        return m_ResultFilePrefix;
+        return resultFilePrefix;
     }
 
     @Override
@@ -250,7 +250,7 @@ public class StatisticsParameter implements InterfaceStatisticsParameter, Interf
      */
     @Override
     public void setConvergenceRateThreshold(double x) {
-        m_ConvergenceRateThreshold = x;
+        convergenceRateThreshold = x;
     }
 
     /**
@@ -258,7 +258,7 @@ public class StatisticsParameter implements InterfaceStatisticsParameter, Interf
      */
     @Override
     public double getConvergenceRateThreshold() {
-        return m_ConvergenceRateThreshold;
+        return convergenceRateThreshold;
     }
 
     @Override

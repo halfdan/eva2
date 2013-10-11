@@ -6,7 +6,7 @@ import eva2.tools.StringSelection;
 /**
  * An interface to encapsulate statistics parameters.
  *
- * @see StatsParameter
+ * @see StatisticsParameter
  */
 public interface InterfaceStatisticsParameter {
     String getName();
