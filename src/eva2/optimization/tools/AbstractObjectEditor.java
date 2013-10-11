@@ -261,11 +261,11 @@ public abstract class AbstractObjectEditor implements PropertyEditor, java.beans
      * @param props All properties.
      * @return PropertyEditor
      */
-    public GeneralGOEProperty getEditorFor(String prop, PropertyDescriptor[] props, MethodDescriptor[] methods, Object target) {
-        GeneralGOEProperty result = null;
+    public GeneralOptimizationEditorProperty getEditorFor(String prop, PropertyDescriptor[] props, MethodDescriptor[] methods, Object target) {
+        GeneralOptimizationEditorProperty result = null;
         for (int i = 0; i < props.length; i++) {
             if (props[i].getName().equalsIgnoreCase(prop)) {
-                result = new GeneralGOEProperty();
+                result = new GeneralOptimizationEditorProperty();
                 Object args[] = {};
                 result.m_getMethod = props[i].getReadMethod();
                 result.m_setMethod = props[i].getWriteMethod();
@@ -275,12 +275,6 @@ public abstract class AbstractObjectEditor implements PropertyEditor, java.beans
                 result.m_TipText = BeanInspector.getToolTipText(result.m_Name, methods, target);
                 try {
                     result.m_Value = result.m_getMethod.invoke(target, args);
-//                    result.m_Editor     = PropertyEditorProvider.findEditor(result.m_Value.getClass());
-//                    if (result.m_Editor == null) result.m_Editor = PropertyEditorProvider.findEditor(result.m_PropertyType);
-//                    if (result.m_Editor instanceof GenericObjectEditor)
-//                        ((GenericObjectEditor) result.m_Editor).setClassType(result.m_PropertyType);
-//                    result.m_Editor.setValue(result.m_Value);
-//                    result.m_Editor.addPropertyChangeListener(this);
                     result.m_Editor = PropertyEditorProvider.findEditor(props[i], result.m_Value);
                     if (result.m_Editor == null) {
                         result.m_Editor = PropertyEditorProvider.findEditor(result.m_PropertyType);
@@ -313,7 +307,7 @@ public abstract class AbstractObjectEditor implements PropertyEditor, java.beans
      *
      * @param editor The property the select a view for.
      */
-    public static void findViewFor(GeneralGOEProperty editor) {
+    public static void findViewFor(GeneralOptimizationEditorProperty editor) {
         editor.m_View = PropertySheetPanel.getView(editor.m_Editor);
         if (editor.m_View == null) {
             System.out.println("Warning: Property \"" + editor.m_Name

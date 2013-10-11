@@ -5,13 +5,9 @@ import java.lang.reflect.Method;
 import javax.swing.*;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 24.08.2004
- * Time: 15:21:56
- * To change this template use File | Settings | File Templates.
+ * Representation of an OptimizationEditor Property
  */
-public class GeneralGOEProperty {
+public class GeneralOptimizationEditorProperty {
     public Method m_getMethod;
     public Method m_setMethod;
     public PropertyEditor m_Editor;
@@ -23,6 +19,6 @@ public class GeneralGOEProperty {
     public String m_Name;
     public String m_TipText;
 
-    public GeneralGOEProperty() {
+    public GeneralOptimizationEditorProperty() {
     }
 }

@@ -9,8 +9,7 @@ import eva2.EvAInfo;
 import eva2.optimization.tools.FileTools;
 import eva2.tools.BasicResourceLoader;
 
-import java.awt.BorderLayout;
-import java.awt.Point;
+import java.awt.*;
 import java.awt.event.*;
 import java.io.Serializable;
 import javax.swing.*;
@@ -36,6 +35,7 @@ public class JTextoutputFrame implements JTextoutputFrameInterface, ActionListen
     public JTextoutputFrame(String title) {
         frameTitle = title;
         frame = new JEFrame(frameTitle);
+        frame.setClosable(false);
         textArea = null;
     }
 
@@ -83,19 +83,8 @@ public class JTextoutputFrame implements JTextoutputFrameInterface, ActionListen
         textArea.setWrapStyleWord(true);
         textArea.setEditable(false);
         textArea.setCaretPosition(0);
+        textArea.setFont(new Font("Courier New", Font.PLAIN, 12));
 
-        BasicResourceLoader loader = BasicResourceLoader.instance();
-        byte[] bytes = loader.getBytesFromResourceLocation(EvAInfo.iconLocation, true);
-
-        frame.addInternalFrameListener(new InternalFrameAdapter() {
-
-            @Override
-            public void internalFrameClosing(final InternalFrameEvent event) {
-                super.internalFrameClosing(event);
-                frame.dispose();
-                frame.setEnabled(false);
-            }
-        });
         frame.getContentPane().setLayout(new BorderLayout());
         final JScrollPane scrollpane = new JScrollPane(textArea);
         frame.getContentPane().add(scrollpane, BorderLayout.CENTER);

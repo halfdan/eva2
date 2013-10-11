@@ -189,6 +189,7 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
         targetObject = targ;
         try {
             BeanInfo bi = Introspector.getBeanInfo(targetObject.getClass());
+
             propertyDescriptors = bi.getPropertyDescriptors();
             methodDescriptors = bi.getMethodDescriptors();
         } catch (IntrospectionException ex) {

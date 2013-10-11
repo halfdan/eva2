@@ -5,7 +5,7 @@ import eva2.gui.PropertyEditorProvider;
 import eva2.gui.PropertyOptimizationObjectivesWithParam;
 import eva2.optimization.problems.InterfaceOptimizationObjective;
 import eva2.optimization.tools.AbstractObjectEditor;
-import eva2.optimization.tools.GeneralGOEProperty;
+import eva2.optimization.tools.GeneralOptimizationEditorProperty;
 import eva2.tools.BasicResourceLoader;
 
 import java.awt.BorderLayout;
@@ -70,7 +70,7 @@ public class GenericOptimizationObjectivesWithParamEditor extends JPanel impleme
     private JComponent[] m_Targets;
     private JButton[] m_Delete;
     private JScrollPane m_ScrollTargets;
-    private GeneralGOEProperty[] m_Editors;
+    private GeneralOptimizationEditorProperty[] m_Editors;
     private PropertyChangeListener m_self;
 
     public GenericOptimizationObjectivesWithParamEditor() {
@@ -88,9 +88,9 @@ public class GenericOptimizationObjectivesWithParamEditor extends JPanel impleme
 
         // init the editors
         InterfaceOptimizationObjective[] list = this.m_OptimizationObjectivesWithWeights.getSelectedTargets();
-        this.m_Editors = new GeneralGOEProperty[list.length];
+        this.m_Editors = new GeneralOptimizationEditorProperty[list.length];
         for (int i = 0; i < list.length; i++) {
-            this.m_Editors[i] = new GeneralGOEProperty();
+            this.m_Editors[i] = new GeneralOptimizationEditorProperty();
             this.m_Editors[i].m_Name = list[i].getName();
             try {
                 this.m_Editors[i].m_Value = list[i];
@@ -250,13 +250,13 @@ public class GenericOptimizationObjectivesWithParamEditor extends JPanel impleme
         public void actionPerformed(ActionEvent event) {
             m_OptimizationObjectivesWithWeights.addTarget((InterfaceOptimizationObjective) m_OptimizationObjectivesWithWeights.getAvailableTargets()[0].clone());
             int l = m_OptimizationObjectivesWithWeights.getSelectedTargets().length;
-            GeneralGOEProperty[] newEdit = new GeneralGOEProperty[l];
+            GeneralOptimizationEditorProperty[] newEdit = new GeneralOptimizationEditorProperty[l];
             for (int i = 0; i < m_Editors.length; i++) {
                 newEdit[i] = m_Editors[i];
             }
             InterfaceOptimizationObjective[] list = m_OptimizationObjectivesWithWeights.getSelectedTargets();
             l--;
-            newEdit[l] = new GeneralGOEProperty();
+            newEdit[l] = new GeneralOptimizationEditorProperty();
             newEdit[l].m_Name = list[l].getName();
             try {
                 newEdit[l].m_Value = list[l];
@@ -288,7 +288,7 @@ public class GenericOptimizationObjectivesWithParamEditor extends JPanel impleme
         @Override
         public void actionPerformed(ActionEvent event) {
             int l = m_OptimizationObjectivesWithWeights.getSelectedTargets().length, j = 0;
-            GeneralGOEProperty[] newEdit = new GeneralGOEProperty[l - 1];
+            GeneralOptimizationEditorProperty[] newEdit = new GeneralOptimizationEditorProperty[l - 1];
             for (int i = 0; i < m_Delete.length; i++) {
                 if (event.getSource().equals(m_Delete[i])) {
                     m_OptimizationObjectivesWithWeights.removeTarget(i);

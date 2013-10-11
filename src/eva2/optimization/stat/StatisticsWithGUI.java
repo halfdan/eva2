@@ -58,7 +58,7 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
      */
     public StatisticsWithGUI() {
         m_StatsParams = StatisticsParameter.getInstance(true);
-        proxyPrinter = new JTextoutputFrame("TextOutput of " + hostName);
+        proxyPrinter = new JTextoutputFrame("Optimization Log");
         addTextListener(proxyPrinter);
     }
 
@@ -70,8 +70,6 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
         super.startOptPerformed(infoString, runNumber, goParams, informerList);
         graphInfoString = infoString;
 
-//		m_TextCounter = m_StatisticsParameter.GetTextoutput();
-//		m_PlotCounter = m_StatsParams.GetPlotoutput();
         if ((fitnessFrame != null) && (fitnessFrame[0] != null)) {
             PlotInterface p = fitnessFrame[0].getPlotter();
             if ((p != null) && p.isValid()) {

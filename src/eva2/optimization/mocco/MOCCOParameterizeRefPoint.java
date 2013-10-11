@@ -10,7 +10,7 @@ import eva2.optimization.operator.moso.MOSOLpMetric;
 import eva2.optimization.problems.AbstractMultiObjectiveOptimizationProblem;
 import eva2.optimization.strategies.IslandModelEA;
 import eva2.optimization.tools.AbstractObjectEditor;
-import eva2.optimization.tools.GeneralGOEProperty;
+import eva2.optimization.tools.GeneralOptimizationEditorProperty;
 import eva2.tools.math.RNG;
 
 import java.awt.BorderLayout;
@@ -35,7 +35,7 @@ public class MOCCOParameterizeRefPoint extends MOCCOPhase implements InterfacePr
     private double[] m_RefPoint;
     private MOSOLpMetric m_LpMetric;
     private IslandModelEA m_Island;
-    private GeneralGOEProperty m_EMOSO, m_EIMEA;
+    private GeneralOptimizationEditorProperty m_EMOSO, m_EIMEA;
     private int m_Perturbations = 4;
     private double m_Perturbation = 0.01;
     private JTextField m_NumPer, m_SizePer;
@@ -105,7 +105,7 @@ public class MOCCOParameterizeRefPoint extends MOCCOPhase implements InterfacePr
         this.m_SizePer = new JTextField("" + this.m_Perturbation);
         this.m_Parameters.add(this.m_SizePer, gbc);
         // lpmetric
-        this.m_EMOSO = new GeneralGOEProperty();
+        this.m_EMOSO = new GeneralOptimizationEditorProperty();
         this.m_LpMetric = new MOSOLpMetric();
         this.m_LpMetric.getReference().setDoubleArray(this.m_RefPoint);
         this.m_EMOSO.m_Name = "Lp-Metric";
@@ -135,7 +135,7 @@ public class MOCCOParameterizeRefPoint extends MOCCOPhase implements InterfacePr
         gbc.weightx = 1;
         this.m_Parameters.add(this.m_EMOSO.m_View, gbc);
         // IslandModelEA
-        this.m_EIMEA = new GeneralGOEProperty();
+        this.m_EIMEA = new GeneralOptimizationEditorProperty();
         this.m_Island = new IslandModelEA();
         this.m_Island.setHeterogenuousProblems(true);
         this.m_Island.setLocalOnly(true);
@@ -171,7 +171,7 @@ public class MOCCOParameterizeRefPoint extends MOCCOPhase implements InterfacePr
         gbc.weightx = 1;
         this.m_Parameters.add(this.m_EIMEA.m_View, gbc);
         // Terminator
-        GeneralGOEProperty editor = new GeneralGOEProperty();
+        GeneralOptimizationEditorProperty editor = new GeneralOptimizationEditorProperty();
         editor.m_Name = "Terminator";
         try {
             editor.m_Value = this.m_Mocco.m_State.m_Terminator;

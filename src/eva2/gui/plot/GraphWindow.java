@@ -1,9 +1,4 @@
 package eva2.gui.plot;
-/*
- * Title: EvA2 Description: Copyright: Copyright (c) 2003 Company: University of Tuebingen, Computer
- * Architecture @author Holger Ulmer, Felix Streichert, Hannes Planatscher @version: $Revision: 320
- * $ $Date: 2007-12-06 16:05:11 +0100 (Thu, 06 Dec 2007) $ $Author: mkron $
- */
 
 import java.util.ArrayList;
 import java.util.logging.Level;

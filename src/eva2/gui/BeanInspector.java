@@ -7,6 +7,7 @@ import eva2.tools.SelectedTag;
 import eva2.tools.StringTools;
 import eva2.tools.Tag;
 import eva2.util.annotation.Description;
+import eva2.util.annotation.Parameter;
 
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
@@ -1036,6 +1037,7 @@ public class BeanInspector {
         for (int j = 0; j < methods.length; j++) {
             String mname = methods[j].getDisplayName();
             Method meth = methods[j].getMethod();
+
             if (mname.equals(tipName)) {
                 if (meth.getReturnType().equals(String.class)) {
                     try {
