@@ -50,7 +50,7 @@ public class Main extends JFrame implements OptimizationStateListener {
 
     private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
 
-    // Hosts:
+    // Configurable module:
     private ModuleAdapter currentModuleAdapter = null;
 
     // Help:
@@ -104,7 +104,6 @@ public class Main extends JFrame implements OptimizationStateListener {
      * @param paramsFile
      * @param autorun
      * @param nosplash
-     * @see #EvAClient(String, java.awt.Window, String, boolean, boolean, boolean)
      */
     public Main(final String hostName, final String paramsFile, boolean autorun, boolean nosplash) {
         this(hostName, null, paramsFile, null, autorun, nosplash, false, false);
@@ -207,7 +206,7 @@ public class Main extends JFrame implements OptimizationStateListener {
         }
 
 
-        comAdapter = EvAComAdapter.getInstance();
+        this.comAdapter = EvAComAdapter.getInstance();
 
         splashScreenTime = 2500;
         SwingUtilities.invokeLater(initRunnable = new Runnable() {
@@ -789,11 +788,11 @@ public class Main extends JFrame implements OptimizationStateListener {
         return (currentModuleAdapter != null) && (currentModuleAdapter instanceof AbstractModuleAdapter) && ((AbstractModuleAdapter) currentModuleAdapter).isOptRunning();
     }
 
-    private void loadSpecificModule(String selectedModule, InterfaceOptimizationParameters goParams) {
+    private void loadSpecificModule(String selectedModule, InterfaceOptimizationParameters optimizationParameters) {
         ModuleAdapter newModuleAdapter = null;
         //
         try {
-            newModuleAdapter = comAdapter.getModuleAdapter(selectedModule, goParams, withGUI ? null : "EvA2");
+            newModuleAdapter = comAdapter.getModuleAdapter(selectedModule, optimizationParameters, withGUI ? null : "EvA2");
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error loading module.", e);
             EVAERROR.EXIT("Error while m_ComAdapter.GetModuleAdapter Host: " + e.getMessage());
@@ -811,7 +810,7 @@ public class Main extends JFrame implements OptimizationStateListener {
                 System.setProperty("java.class.path", cp + System.getProperty("path.separator") + dir);
                 ReflectPackage.resetDynCP();
                 comAdapter.updateLocalMainAdapter();
-                loadSpecificModule(selectedModule, goParams); // end recursive call! handle with care!
+                loadSpecificModule(selectedModule, optimizationParameters); // end recursive call! handle with care!
                 return;
             }
         } else {

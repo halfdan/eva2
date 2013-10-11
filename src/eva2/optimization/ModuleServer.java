@@ -1,16 +1,5 @@
 package eva2.optimization;
 
-/*
- * Title:        EvA2
- * Description:
- * Copyright:    Copyright (c) 2003
- * Company:      University of Tuebingen, Computer Architecture
- * @author Holger Ulmer, Felix Streichert, Hannes Planatscher
- * @version:  $Revision: 320 $
- *            $Date: 2007-12-06 16:05:11 +0100 (Thu, 06 Dec 2007) $
- *            $Author: mkron $
- */
-
 import eva2.optimization.go.InterfaceOptimizationParameters;
 import eva2.optimization.modules.GOModuleAdapter;
 import eva2.optimization.modules.ModuleAdapter;
@@ -107,7 +96,7 @@ public class ModuleServer {
      *
      * @return the loaded module adapter instance
      */
-    public ModuleAdapter createModuleAdapter(String selectedModuleName, InterfaceOptimizationParameters goParams, String noGuiLogFile) {
+    public ModuleAdapter createModuleAdapter(String selectedModuleName, InterfaceOptimizationParameters optimizationParameters, String noGuiLogFile) {
         moduleAdapterCounter++;
         String adapterName = "ERROR MODULADAPTER !!";
         String moduleName = null;
@@ -132,8 +121,8 @@ public class ModuleServer {
                     /* create a module instance */
                     int constrIndex = 0;
 
-                    if ((goParams == null && noGuiLogFile == null) || !module.equals(GOModuleAdapter.class)) {
-                        if (goParams != null) {
+                    if ((optimizationParameters == null && noGuiLogFile == null) || !module.equals(GOModuleAdapter.class)) {
+                        if (optimizationParameters != null) {
                             System.err.println("Cant set params - no matching constructor found for " + adapterName + " (ModuleServer)");
                         }
                         if (noGuiLogFile != null) {
@@ -148,21 +137,20 @@ public class ModuleServer {
                         moduleAdapter = (ModuleAdapter) constructorArr[constrIndex].newInstance(Para);
                     } else {
                         Object[] param = new Object[4];
-                        param[0] = (String) adapterName;
-                        param[1] = (InterfaceOptimizationParameters) goParams;
-                        param[2] = (String) noGuiLogFile;
+                        param[0] = adapterName;
+                        param[1] = optimizationParameters;
+                        param[2] = noGuiLogFile;
                         while ((constructorArr[constrIndex].getParameterTypes().length != 4) && (constrIndex < constructorArr.length)) {
                             constrIndex++;
                         }
                         moduleAdapter = (ModuleAdapter) constructorArr[constrIndex].newInstance(param);
                     }
-                    //  m_RunnungModules.add(m_ModuleAdapter);
                 } catch (Exception ex) {
                     LOGGER.log(Level.SEVERE, "Error in RMI-Moduladapter initialization", ex);
                     EVAERROR.EXIT("Error in RMI-Moduladapter initialization: " + ex.getMessage());
                     return null;
                 }
-                return (ModuleAdapter) moduleAdapter;
+                return moduleAdapter;
             }
         }
 

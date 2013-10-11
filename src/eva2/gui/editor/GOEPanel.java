@@ -90,7 +90,7 @@ public class GOEPanel extends JPanel implements ItemListener {
         } catch (OutOfMemoryError err) {
             backupObject = null;
             System.gc();
-            System.err.println("Could not create backup object: not enough memory (GOEPanel backup of " + m_Object + ")");
+            System.err.println("Could not create backup object: not enough memory (OptimizationEditorPanel backup of " + m_Object + ")");
         }
         comboBoxModel = new DefaultComboBoxModel(new String[0]);
         objectChooser = new JComboBox(comboBoxModel);

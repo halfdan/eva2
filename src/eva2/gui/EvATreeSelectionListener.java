@@ -59,11 +59,11 @@ public class EvATreeSelectionListener implements TreeSelectionListener, Property
         EvATreeNode leafNode = (EvATreeNode) tp.getLastPathComponent();
 //		goe.setValue(leafNode.getUserObject());
         Component editComp = goe.getCustomEditor();
-        if (editComp instanceof GOEPanel) {
-            // update the object in the main GOEPanel
-            ((GOEPanel) editComp).setTarget(leafNode.getUserObject());
+        if (editComp instanceof OptimizationEditorPanel) {
+            // update the object in the main OptimizationEditorPanel
+            ((OptimizationEditorPanel) editComp).setTarget(leafNode.getUserObject());
         } else {
-            System.err.println("Error, unable to notify custom editor of type " + editComp.getClass() + ", expected GOEPanel (EvATreeSelectionListener)");
+            System.err.println("Error, unable to notify custom editor of type " + editComp.getClass() + ", expected OptimizationEditorPanel (EvATreeSelectionListener)");
         }
     }
 
