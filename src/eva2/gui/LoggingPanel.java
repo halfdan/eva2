@@ -1,14 +1,4 @@
 package eva2.gui;
-/*
- * Title:        EvA2
- * Description:
- * Copyright:    Copyright (c) 2003
- * Company:      University of Tuebingen, Computer Architecture
- * @author Holger Ulmer, Felix Streichert, Hannes Planatscher
- * @version:  $Revision: 191 $
- *            $Date: 2007-10-23 12:56:51 +0200 (Tue, 23 Oct 2007) $
- *            $Author: mkron $
- */
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -24,20 +14,17 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 /**
- *
+ * Simple logging panel that shows logs produced by EvA2
  */
 public class LoggingPanel extends JPanel {
-    protected static Logger logger;
+    protected static Logger LOGGER = Logger.getLogger(LoggingPanel.class.getName());
     protected JTextArea loggingTextArea = new JTextArea(10, 20);
-    protected boolean firstMessage = true;
     protected Handler loggingHandler;
-    protected JPopupMenu loggingLevelMenu;
 
     /**
      *
      */
-    public LoggingPanel(Logger logger) {
-        this.logger = logger;
+    public LoggingPanel() {
         loggingTextArea.setEditable(false);
         loggingTextArea.setLineWrap(true);
         loggingTextArea.setBorder(BorderFactory.createEmptyBorder());
@@ -47,7 +34,10 @@ public class LoggingPanel extends JPanel {
         add(new JLabel("Info"), BorderLayout.PAGE_START);
 
         this.loggingHandler = new LoggingHandler(this);
-        logger.addHandler(loggingHandler);
+
+        // Create default logger at namespace root eva2
+        Logger rootLogger = Logger.getLogger("eva2");
+        rootLogger.addHandler(loggingHandler);
 
         final JScrollPane scrollpane = new JScrollPane(loggingTextArea);
         scrollpane.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
