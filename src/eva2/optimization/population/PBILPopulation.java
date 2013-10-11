@@ -20,7 +20,7 @@ import java.util.BitSet;
 
 public class PBILPopulation extends Population implements Cloneable, java.io.Serializable {
 
-    private double[] m_ProbabilityVector = new double[1];
+    private double[] probabilityVector = new double[1];
 
     public PBILPopulation() {
     }
@@ -32,15 +32,15 @@ public class PBILPopulation extends Population implements Cloneable, java.io.Ser
     public PBILPopulation(PBILPopulation population) {
         super(population);
 
-        this.m_ProbabilityVector = new double[population.m_ProbabilityVector.length];
-        for (int i = 0; i < this.m_ProbabilityVector.length; i++) {
-            this.m_ProbabilityVector[i] = population.m_ProbabilityVector[i];
+        this.probabilityVector = new double[population.probabilityVector.length];
+        for (int i = 0; i < this.probabilityVector.length; i++) {
+            this.probabilityVector[i] = population.probabilityVector[i];
         }
     }
 
     @Override
     public Object clone() {
-        return (Object) new PBILPopulation(this);
+        return new PBILPopulation(this);
     }
 
     /**
@@ -55,9 +55,9 @@ public class PBILPopulation extends Population implements Cloneable, java.io.Ser
             System.err.println("Members of the population are not instance of InterfaceGAIndividual!");
             return;
         }
-        this.m_ProbabilityVector = new double[((InterfaceGAIndividual) this.get(0)).getGenotypeLength()];
-        for (int i = 0; i < this.m_ProbabilityVector.length; i++) {
-            this.m_ProbabilityVector[i] = 0.5;
+        this.probabilityVector = new double[((InterfaceGAIndividual) this.get(0)).getGenotypeLength()];
+        for (int i = 0; i < this.probabilityVector.length; i++) {
+            this.probabilityVector[i] = 0.5;
         }
     }
 
@@ -74,10 +74,10 @@ public class PBILPopulation extends Population implements Cloneable, java.io.Ser
         for (int i = 0; i < examples.size(); i++) {
             tmpIndy = (InterfaceGAIndividual) (examples.getEAIndividual(i)).clone();
             tmpBitSet = tmpIndy.getBGenotype();
-            for (int j = 0; j < this.m_ProbabilityVector.length; j++) {
-                this.m_ProbabilityVector[j] *= (1.0 - learnRate);
+            for (int j = 0; j < this.probabilityVector.length; j++) {
+                this.probabilityVector[j] *= (1.0 - learnRate);
                 if (tmpBitSet.get(j)) {
-                    this.m_ProbabilityVector[j] += learnRate;
+                    this.probabilityVector[j] += learnRate;
                 }
             }
         }
@@ -94,8 +94,8 @@ public class PBILPopulation extends Population implements Cloneable, java.io.Ser
         for (int i = 0; i < this.getTargetSize(); i++) {
             tmpIndy = (InterfaceGAIndividual) ((AbstractEAIndividual) template).clone();
             tmpBitSet = tmpIndy.getBGenotype();
-            for (int j = 0; j < this.m_ProbabilityVector.length; j++) {
-                if (RNG.flipCoin(this.m_ProbabilityVector[j])) {
+            for (int j = 0; j < this.probabilityVector.length; j++) {
+                if (RNG.flipCoin(this.probabilityVector[j])) {
                     tmpBitSet.set(j);
                 } else {
                     tmpBitSet.clear(j);
@@ -112,15 +112,15 @@ public class PBILPopulation extends Population implements Cloneable, java.io.Ser
      * @param mutationRate The mutation rate.
      */
     public void mutateProbabilityVector(double mutationRate, double sigma) {
-        for (int j = 0; j < this.m_ProbabilityVector.length; j++) {
+        for (int j = 0; j < this.probabilityVector.length; j++) {
             if (RNG.flipCoin(mutationRate)) {
-                this.m_ProbabilityVector[j] += RNG.gaussianDouble(sigma);
+                this.probabilityVector[j] += RNG.gaussianDouble(sigma);
             }
-            if (this.m_ProbabilityVector[j] > 1) {
-                this.m_ProbabilityVector[j] = 1;
+            if (this.probabilityVector[j] > 1) {
+                this.probabilityVector[j] = 1;
             }
-            if (this.m_ProbabilityVector[j] < 0) {
-                this.m_ProbabilityVector[j] = 0;
+            if (this.probabilityVector[j] < 0) {
+                this.probabilityVector[j] = 0;
             }
         }
     }
@@ -132,22 +132,22 @@ public class PBILPopulation extends Population implements Cloneable, java.io.Ser
         int dim = ((InterfaceGAIndividual) this.get(0)).getGenotypeLength();
         BitSet tmpSet;
 
-        this.m_ProbabilityVector = new double[dim];
-        for (int i = 0; i < this.m_ProbabilityVector.length; i++) {
-            this.m_ProbabilityVector[i] = 0;
+        this.probabilityVector = new double[dim];
+        for (int i = 0; i < this.probabilityVector.length; i++) {
+            this.probabilityVector[i] = 0;
         }
         // first count the true bits
         for (int i = 0; i < this.size(); i++) {
             tmpSet = ((InterfaceGAIndividual) this.get(i)).getBGenotype();
             for (int j = 0; j < dim; j++) {
                 if (tmpSet.get(j)) {
-                    this.m_ProbabilityVector[j] += 1;
+                    this.probabilityVector[j] += 1;
                 }
             }
         }
         // now normalize
         for (int i = 0; i < dim; i++) {
-            this.m_ProbabilityVector[i] /= this.size();
+            this.probabilityVector[i] /= this.size();
         }
     }
 
@@ -157,11 +157,11 @@ public class PBILPopulation extends Population implements Cloneable, java.io.Ser
      * @param pv The new probability vector.
      */
     public void setProbabilityVector(double[] pv) {
-        this.m_ProbabilityVector = pv;
+        this.probabilityVector = pv;
     }
 
     public double[] getProbabilityVector() {
-        return this.m_ProbabilityVector;
+        return this.probabilityVector;
     }
 
     /**
@@ -175,8 +175,8 @@ public class PBILPopulation extends Population implements Cloneable, java.io.Ser
         String result = "";
         result += "PBIL-Population:\n";
         result += "Probability vector: {";
-        for (int i = 0; i < this.m_ProbabilityVector.length; i++) {
-            result += this.m_ProbabilityVector[i] + "; ";
+        for (int i = 0; i < this.probabilityVector.length; i++) {
+            result += this.probabilityVector[i] + "; ";
         }
         result += "}\n";
         result += "Population size: " + this.size() + "\n";
