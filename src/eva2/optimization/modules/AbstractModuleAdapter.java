@@ -49,21 +49,11 @@ abstract public class AbstractModuleAdapter implements ModuleAdapter, Serializab
     }
 
     /**
-     * Get the name of the current adapter.
-     *
-     * @return The adapter name
-     */
-    @Override
-    public String getAdapterName() {
-        return adapterName;
-    }
-
-    /**
      * Start optimization on processor.
      */
     @Override
     public void startOptimization() {
-        processor.startOpt();
+        processor.startOptimization();
     }
 
     /**
@@ -71,7 +61,7 @@ abstract public class AbstractModuleAdapter implements ModuleAdapter, Serializab
      */
     @Override
     public void restartOptimization() {
-        processor.restartOpt();
+        processor.restartOptimization();
     }
 
     /**
@@ -80,7 +70,7 @@ abstract public class AbstractModuleAdapter implements ModuleAdapter, Serializab
     @Override
     public void stopOptimization() {
         // This means user break
-        processor.stopOpt();
+        processor.stopOptimization();
     }
 
     /**
@@ -124,7 +114,7 @@ abstract public class AbstractModuleAdapter implements ModuleAdapter, Serializab
 
     public boolean isOptRunning() {
         if ((processor != null) && (processor instanceof Processor)) {
-            return ((Processor) processor).isOptRunning();
+            return ((Processor) processor).isOptimizationRunning();
         } else {
             return false;
         }
@@ -154,24 +144,6 @@ abstract public class AbstractModuleAdapter implements ModuleAdapter, Serializab
     @Override
     public boolean hasConnection() {
         return hasConnection;
-    }
-
-    /**
-     *
-     */
-    @Override
-    public void setRemoteThis(ModuleAdapter x) {
-        remoteModuleAdapter = x;
-    }
-
-    /**
-     * Returns the host name.
-     *
-     * @return The host name
-     */
-    @Override
-    public String getHostName() {
-        return hostName;
     }
 
     /**

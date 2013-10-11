@@ -35,6 +35,8 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
     protected Population population = new Population();
     protected transient Population children = null;
     protected AbstractOptimizationProblem optimizationProblem = new F1Problem();
+
+    @Parameter(name = "DEType", description = "Mutation type for DE")
     private DETypeEnum DEType;
 
     @Parameter(name = "F", description = "Differential Weight")

@@ -93,7 +93,7 @@ public class Main implements OptimizationStateListener {
         Reflections reflections = new Reflections("eva2.optimization.problems");
         Set<Class<? extends InterfaceOptimizationProblem>> problems = reflections.getSubTypesOf(InterfaceOptimizationProblem.class);
         for(Class<? extends InterfaceOptimizationProblem> problem : problems) {
-            // We only want instantiable classes.ya
+            // We only want instantiable classes
             if(problem.isInterface() || Modifier.isAbstract(problem.getModifiers())) {
                 continue;
             }
@@ -108,8 +108,16 @@ public class Main implements OptimizationStateListener {
     }
 
     public static void main(String[] args) {
+        /**
+         * Default command line options only require help or optimizer.
+         * Later we build extended command line options depending on
+         * the selected optimizer.
+         */
         Options defaultOptions = createDefaultCommandLineOptions();
 
+        /**
+         * Parse default options.
+         */
         CommandLineParser cliParser = new BasicParser();
         CommandLine commandLine = null;
         try {
@@ -119,6 +127,9 @@ public class Main implements OptimizationStateListener {
             System.exit(-1);
         }
 
+        /**
+         * Process help and help sub pages.
+         */
         if(commandLine.hasOption("help")) {
             String helpOption = commandLine.getOptionValue("help");
             if("optimizer".equals(helpOption)) {
@@ -129,6 +140,8 @@ public class Main implements OptimizationStateListener {
                 showHelp(defaultOptions);
             }
         }
+
+
     }
 
     private static void showOptimizerHelp() {

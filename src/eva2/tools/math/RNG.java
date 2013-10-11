@@ -22,9 +22,9 @@ public class RNG {
     /**
      *
      */
-    public static void setRandomSeed(long new_seed) {
+    public static void setRandomSeed(long newSeed) {
         // counter++;
-        randomSeed = new_seed;
+        randomSeed = newSeed;
         if (randomSeed == 0) {
             setRandomSeed();
         } else {
@@ -35,8 +35,8 @@ public class RNG {
     /**
      * Set the random seed without replacing zero with current system time.
      */
-    public static void setRandomSeedStrict(long new_seed) {
-        randomSeed = new_seed;
+    public static void setRandomSeedStrict(long newSeed) {
+        randomSeed = newSeed;
         random.setSeed(randomSeed);
     }
 
@@ -51,8 +51,8 @@ public class RNG {
     /**
      *
      */
-    public static void setRandom(Random base_random) {
-        random = base_random;
+    public static void setRandom(Random baseRandom) {
+        random = baseRandom;
     }
 
     /**

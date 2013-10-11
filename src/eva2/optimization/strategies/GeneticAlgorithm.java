@@ -261,7 +261,7 @@ public class GeneticAlgorithm implements InterfaceOptimizer, java.io.Serializabl
      */
     @Override
     public String getName() {
-        return "GA";
+        return "Genetic Algorithm";
     }
 
     /**
