@@ -11,17 +11,17 @@ public interface InterfaceProcessor {
     /**
      * Start optimization.
      */
-    void startOpt();
+    void startOptimization();
 
     /**
      * Restart optimization.
      */
-    void restartOpt();
+    void restartOptimization();
 
     /**
      * Stop optimization if running.
      */
-    void stopOpt();
+    void stopOptimization();
 
     /**
      * Adds a new OptimizationStateListener.

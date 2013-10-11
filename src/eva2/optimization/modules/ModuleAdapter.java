@@ -34,8 +34,6 @@ public interface ModuleAdapter extends OptimizationStateListener {
 
     void stopOptimization();
 
-    //void runScript();
-
     /**
      * Return true if post processing is available in principle, else false.
      *
@@ -52,13 +50,7 @@ public interface ModuleAdapter extends OptimizationStateListener {
 
     void addOptimizationStateListener(OptimizationStateListener x);
 
-    String getAdapterName();
-
     void setConnection(boolean flag);
 
     boolean hasConnection();
-
-    void setRemoteThis(ModuleAdapter x);
-
-    String getHostName();
 }

@@ -47,23 +47,19 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
 
     private static final Logger LOGGER = Logger.getLogger(Processor.class.getName());
     private volatile boolean isOptimizationRunning;
-    private InterfaceStatistics m_Statistics;
-    private InterfaceOptimizationParameters goParams;
-    private boolean m_createInitialPopulations = true;
+    private InterfaceStatistics statistics;
+    private InterfaceOptimizationParameters optimizationParameters;
+    private boolean createInitialPopulations = true;
     private boolean saveParams = true;
     private OptimizationStateListener optimizationStateListener;
     private boolean wasRestarted = false;
     private int runCounter = 0;
-    private Population resPop = null;
+    private Population resultPopulation = null;
     private boolean userAborted = false;
 
     @Override
     public void addListener(OptimizationStateListener module) {
-        LOGGER.log(
-                Level.FINEST,
-                "Processor: setting module as listener: " + ((module == null)
-                        ? "null" : module.toString()));
-
+        LOGGER.log(Level.FINEST, "Processor: setting module as listener: " + ((module == null) ? "null" : module.toString()));
         optimizationStateListener = module;
     }
 
@@ -73,25 +69,25 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
      *
      * @see InterfaceNotifyOnInformers
      */
-    public Processor(InterfaceStatistics Stat, ModuleAdapter moduleAdapter, InterfaceOptimizationParameters params) {
-        goParams = params;
-        m_Statistics = Stat;
+    public Processor(InterfaceStatistics statistics, ModuleAdapter moduleAdapter, InterfaceOptimizationParameters optimizationParameters) {
+        this.optimizationParameters = optimizationParameters;
+        this.statistics = statistics;
         optimizationStateListener = moduleAdapter;
 
         // the statistics want to be informed if the strategy or the optimizer (which provide statistical data as InterfaceAdditionalInformer) change.
-        if (Stat != null && (params != null)) {
-            if (Stat.getStatisticsParameter() instanceof InterfaceNotifyOnInformers) {
+        if (statistics != null && (optimizationParameters != null)) {
+            if (statistics.getStatisticsParameter() instanceof InterfaceNotifyOnInformers) {
                 // 	addition for the statistics revision with selectable strings - make sure the go parameters are represented within the statistics
-                params.addInformableInstance((InterfaceNotifyOnInformers) (Stat.getStatisticsParameter()));
+                optimizationParameters.addInformableInstance((InterfaceNotifyOnInformers) (statistics.getStatisticsParameter()));
             }
         }
     }
 
-    public boolean isOptRunning() {
+    public boolean isOptimizationRunning() {
         return isOptimizationRunning;
     }
 
-    protected void setOptRunning(boolean bRun) {
+    protected void setOptimizationRunning(boolean bRun) {
         isOptimizationRunning = bRun;
     }
 
@@ -108,16 +104,16 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
      *
      */
     @Override
-    public void startOpt() {
-        m_createInitialPopulations = true;
-        if (isOptRunning()) {
-            LOGGER.log(Level.SEVERE, "Processor is already running.");
+    public void startOptimization() {
+        createInitialPopulations = true;
+        if (isOptimizationRunning()) {
+            LOGGER.log(Level.WARNING, "Processor is already running.");
             return;
         }
-        resPop = null;
+        resultPopulation = null;
         userAborted = false;
         wasRestarted = false;
-        setOptRunning(true);
+        setOptimizationRunning(true);
     }
 
     /**
@@ -134,23 +130,23 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
      *
      */
     @Override
-    public void restartOpt() {
-        m_createInitialPopulations = false;
-        if (isOptRunning()) {
-            LOGGER.log(Level.SEVERE, "Processor is already running.");
+    public void restartOptimization() {
+        createInitialPopulations = false;
+        if (isOptimizationRunning()) {
+            LOGGER.log(Level.WARNING, "Processor is already running.");
             return;
         }
         userAborted = false;
         wasRestarted = true;
-        setOptRunning(true);
+        setOptimizationRunning(true);
     }
 
     /**
      *
      */
     @Override
-    public void stopOpt() { // this means user break
-        setOptRunning(false);
+    public void stopOptimization() { // this means user break
+        setOptimizationRunning(false);
     }
 
     /**
@@ -172,16 +168,16 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
     public Population runOptOnce() {
         try {
             EVAERROR.clearMsgCache();
-            while (isOptRunning()) {
+            while (isOptimizationRunning()) {
                 setPriority(3);
                 if (saveParams) {
                     try {
-                        goParams.saveInstance();
+                        optimizationParameters.saveInstance();
                     } catch (Exception e) {
                         System.err.println("Error on saveInstance!");
                     }
                 }
-                resPop = optimize("Run");
+                resultPopulation = this.optimize();
                 setPriority(1);
             }
         } catch (Exception e) {
@@ -196,29 +192,29 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
             } catch (Exception ex) {
             } catch (Error error) {
             }
-            //m_Statistics.stopOptPerformed(false);
-            setOptRunning(false); // normal finish
+            //statistics.stopOptPerformed(false);
+            setOptimizationRunning(false); // normal finish
             if (optimizationStateListener != null) {
                 optimizationStateListener.performedStop(); // is only needed in client server mode
                 optimizationStateListener.updateProgress(0, errMsg);
             }
         }
-        return resPop;
+        return resultPopulation;
     }
 
     /**
      * Main optimization loop. Return a population containing the solutions of
      * the last run if there were multiple.
      */
-    protected Population optimize(String infoString) {
+    protected Population optimize() {
         Population resultPop = null;
 
-        if (!isOptRunning()) {
+        if (!isOptimizationRunning()) {
             System.err.println("warning, this shouldnt happen in processor! Was startOptimization called?");
-            setOptRunning(true);
+            setOptimizationRunning(true);
         }
 
-        RNG.setRandomSeed(goParams.getSeed());
+        RNG.setRandomSeed(optimizationParameters.getSeed());
 
         if (optimizationStateListener != null) {
             if (wasRestarted) {
@@ -228,67 +224,67 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
             }
         }
 
-        goParams.getOptimizer().addPopulationChangedEventListener(this);
+        optimizationParameters.getOptimizer().addPopulationChangedEventListener(this);
 
         runCounter = 0;
         String popLog = null; //"populationLog.txt";
 
-        while (isOptRunning() && (runCounter < m_Statistics.getStatisticsParameter().getMultiRuns())) {
-            m_Statistics.startOptPerformed(getInfoString(), runCounter, goParams, getInformerList());
+        while (isOptimizationRunning() && (runCounter < statistics.getStatisticsParameter().getMultiRuns())) {
+            statistics.startOptPerformed(getInfoString(), runCounter, optimizationParameters, getInformerList());
 
-            this.goParams.getProblem().initializeProblem();
-            this.goParams.getOptimizer().setProblem(this.goParams.getProblem());
-            this.goParams.getTerminator().init(this.goParams.getProblem());
-            maybeInitParamCtrl(goParams);
-            if (this.m_createInitialPopulations) {
-                this.goParams.getOptimizer().init();
+            this.optimizationParameters.getProblem().initializeProblem();
+            this.optimizationParameters.getOptimizer().setProblem(this.optimizationParameters.getProblem());
+            this.optimizationParameters.getTerminator().init(this.optimizationParameters.getProblem());
+            maybeInitParamCtrl(optimizationParameters);
+            if (this.createInitialPopulations) {
+                this.optimizationParameters.getOptimizer().init();
             }
 
-            //m_Statistics.createNextGenerationPerformed((PopulationInterface)this.m_ModulParameter.getOptimizer().getPopulation());
+            //statistics.createNextGenerationPerformed((PopulationInterface)this.m_ModulParameter.getOptimizer().getPopulation());
             if (optimizationStateListener != null) {
-                optimizationStateListener.updateProgress(getStatusPercent(goParams.getOptimizer().getPopulation(), runCounter, m_Statistics.getStatisticsParameter().getMultiRuns()), null);
+                optimizationStateListener.updateProgress(getStatusPercent(optimizationParameters.getOptimizer().getPopulation(), runCounter, statistics.getStatisticsParameter().getMultiRuns()), null);
             }
             if (popLog != null) {
                 EVAHELP.clearLog(popLog);
             }
 
             do {    // main loop
-                maybeUpdateParamCtrl(goParams);
+                maybeUpdateParamCtrl(optimizationParameters);
 
-                this.goParams.getOptimizer().optimize();
+                this.optimizationParameters.getOptimizer().optimize();
                 // registerPopulationStateChanged *SHOULD* be fired by the optimizer or resp. the population
                 // as we are event listener
                 if (popLog != null) {
-                    EVAHELP.logString(this.goParams.getOptimizer().getPopulation().getIndyList(), popLog);
+                    EVAHELP.logString(this.optimizationParameters.getOptimizer().getPopulation().getIndyList(), popLog);
                 }
             }
-            while (isOptRunning() && !this.goParams.getTerminator().isTerminated(this.goParams.getOptimizer().getAllSolutions()));
+            while (isOptimizationRunning() && !this.optimizationParameters.getTerminator().isTerminated(this.optimizationParameters.getOptimizer().getAllSolutions()));
             runCounter++;
-            maybeFinishParamCtrl(goParams);
-            userAborted = !isOptRunning(); // stop is "normal" if opt wasnt set false by the user (and thus still true)
+            maybeFinishParamCtrl(optimizationParameters);
+            userAborted = !isOptimizationRunning(); // stop is "normal" if opt wasnt set false by the user (and thus still true)
             //////////////// Default stats
-            m_Statistics.stopOptPerformed(!userAborted, goParams.getTerminator().lastTerminationMessage()); // stop is "normal" if opt wasnt set false by the user (and thus still true)
+            statistics.stopOptPerformed(!userAborted, optimizationParameters.getTerminator().lastTerminationMessage()); // stop is "normal" if opt wasnt set false by the user (and thus still true)
 
             //////////////// PP or set results without further PP
             if (!userAborted) {
                 resultPop = performPostProcessing();
                 if (resultPop == null) { // post processing disabled, so use opt. solutions
-                    resultPop = goParams.getOptimizer().getAllSolutions().getSolutions();
+                    resultPop = optimizationParameters.getOptimizer().getAllSolutions().getSolutions();
                 }
             } else {
-                resultPop = goParams.getOptimizer().getAllSolutions().getSolutions();
+                resultPop = optimizationParameters.getOptimizer().getAllSolutions().getSolutions();
             }
-            m_Statistics.postProcessingPerformed(resultPop);
+            statistics.postProcessingPerformed(resultPop);
 
         }
-        setOptRunning(false); // normal finish
+        setOptimizationRunning(false); // normal finish
         if (optimizationStateListener != null) {
             optimizationStateListener.performedStop(); // is only needed in client server mode
         }
         if (optimizationStateListener != null) {
             optimizationStateListener.updateProgress(0, null);
         }
-        goParams.getOptimizer().removePopulationChangedEventListener(this);
+        optimizationParameters.getOptimizer().removePopulationChangedEventListener(this);
         return resultPop;
     }
 
@@ -361,11 +357,11 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
     private int getStatusPercent(Population pop, int currentRun, int multiRuns) {
         double percentPerRun = 100. / multiRuns;
         int curProgress;
-        if (this.goParams.getTerminator() instanceof EvaluationTerminator) {
-            double curRunPerf = pop.getFunctionCalls() * percentPerRun / (double) ((EvaluationTerminator) this.goParams.getTerminator()).getFitnessCalls();
+        if (this.optimizationParameters.getTerminator() instanceof EvaluationTerminator) {
+            double curRunPerf = pop.getFunctionCalls() * percentPerRun / (double) ((EvaluationTerminator) this.optimizationParameters.getTerminator()).getFitnessCalls();
             curProgress = (int) (currentRun * percentPerRun + curRunPerf);
-        } else if (this.goParams.getTerminator() instanceof GenerationTerminator) {
-            double curRunPerf = pop.getGeneration() * percentPerRun / (double) ((GenerationTerminator) this.goParams.getTerminator()).getGenerations();
+        } else if (this.optimizationParameters.getTerminator() instanceof GenerationTerminator) {
+            double curRunPerf = pop.getGeneration() * percentPerRun / (double) ((GenerationTerminator) this.optimizationParameters.getTerminator()).getGenerations();
             curProgress = (int) (currentRun * percentPerRun + curRunPerf);
         } else {
             curProgress = (int) (currentRun * percentPerRun);
@@ -383,16 +379,16 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
     @Override
     public void registerPopulationStateChanged(Object source, String name) {
         if (name.equals(Population.NEXT_GENERATION_PERFORMED)) {
-            m_Statistics.createNextGenerationPerformed(
-                    (PopulationInterface) this.goParams.getOptimizer().getPopulation(),
-                    this.goParams.getOptimizer(),
+            statistics.createNextGenerationPerformed(
+                    (PopulationInterface) this.optimizationParameters.getOptimizer().getPopulation(),
+                    this.optimizationParameters.getOptimizer(),
                     getInformerList());
             if (optimizationStateListener != null) {
                 optimizationStateListener.updateProgress(
                         getStatusPercent(
-                                goParams.getOptimizer().getPopulation(),
+                                optimizationParameters.getOptimizer().getPopulation(),
                                 runCounter,
-                                m_Statistics.getStatisticsParameter().getMultiRuns()),
+                                statistics.getStatisticsParameter().getMultiRuns()),
                         null);
             }
         }
@@ -400,9 +396,9 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
 
     protected List<InterfaceAdditionalPopulationInformer> getInformerList() {
         List<InterfaceAdditionalPopulationInformer> informerList = new ArrayList<InterfaceAdditionalPopulationInformer>(2);
-        informerList.add(this.goParams.getProblem());
-        if (this.goParams.getOptimizer() instanceof InterfaceAdditionalPopulationInformer) {
-            informerList.add((InterfaceAdditionalPopulationInformer) this.goParams.getOptimizer());
+        informerList.add(this.optimizationParameters.getProblem());
+        if (this.optimizationParameters.getOptimizer() instanceof InterfaceAdditionalPopulationInformer) {
+            informerList.add((InterfaceAdditionalPopulationInformer) this.optimizationParameters.getOptimizer());
         }
         return informerList;
     }
@@ -426,13 +422,13 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
     @Override
     public String getInfoString() {
         //StringBuffer sb = new StringBuffer("processing ");
-        StringBuilder sb = new StringBuilder(this.goParams.getProblem().getName());
+        StringBuilder sb = new StringBuilder(this.optimizationParameters.getProblem().getName());
         sb.append("+");
-        sb.append(this.goParams.getOptimizer().getName());
+        sb.append(this.optimizationParameters.getOptimizer().getName());
         // commented out because the number of multi-runs can be changed after start
         // so it might create misinformation (would still be the user's fault, though) 
 //    	sb.append(" for ");
-//    	sb.append(m_Statistics.getStatistisParameter().getMultiRuns());
+//    	sb.append(statistics.getStatistisParameter().getMultiRuns());
 //    	sb.append(" runs");
         return sb.toString();
     }
@@ -441,19 +437,19 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
      * This method return the Statistics object.
      */
     public InterfaceStatistics getStatistics() {
-        return m_Statistics;
+        return statistics;
     }
 
     /**
      * These methods allow you to get and set the Module Parameters.
      */
     public InterfaceOptimizationParameters getGOParams() {
-        return goParams;
+        return optimizationParameters;
     }
 
     public void setGOParams(InterfaceOptimizationParameters params) {
         if (params != null) {
-            goParams = params;
+            optimizationParameters = params;
         } else {
             System.err.println("Setting parameters failed (parameters were null) (Processor.setGOParams)");
         }
@@ -465,11 +461,11 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
      * @return the last solution population or null
      */
     public Population getResultPopulation() {
-        return resPop;
+        return resultPopulation;
     }
 
     public Population performPostProcessing() {
-        return performPostProcessing((PostProcessParams) goParams.getPostProcessParams(), (InterfaceTextListener) m_Statistics);
+        return performPostProcessing((PostProcessParams) optimizationParameters.getPostProcessParams(), (InterfaceTextListener) statistics);
     }
 
     /**
@@ -485,28 +481,28 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
             if (listener != null) {
                 listener.println("Post processing params: " + BeanInspector.toString(ppp));
                 // if textwindow was closed, check if it should be reopened for pp
-                if (m_Statistics instanceof StatisticsWithGUI) {
-                    ((StatisticsWithGUI) m_Statistics).maybeShowProxyPrinter();
+                if (statistics instanceof StatisticsWithGUI) {
+                    ((StatisticsWithGUI) statistics).maybeShowProxyPrinter();
                 }
             }
-            Population resultPop = (Population) (goParams.getOptimizer().getAllSolutions().getSolutions().clone());
-            if (resultPop.getFunctionCalls() != goParams.getOptimizer().getPopulation().getFunctionCalls()) {
+            Population resultPop = (Population) (optimizationParameters.getOptimizer().getAllSolutions().getSolutions().clone());
+            if (resultPop.getFunctionCalls() != optimizationParameters.getOptimizer().getPopulation().getFunctionCalls()) {
                 //    		System.err.println("bad case in Processor::performNewPostProcessing ");
-                resultPop.setFunctionCalls(goParams.getOptimizer().getPopulation().getFunctionCalls());
+                resultPop.setFunctionCalls(optimizationParameters.getOptimizer().getPopulation().getFunctionCalls());
             }
-//	    	if (!resultPop.contains(m_Statistics.getBestSolution())) {
-//	    		resultPop.add(m_Statistics.getBestSolution()); 
+//	    	if (!resultPop.contains(statistics.getBestSolution())) {
+//	    		resultPop.add(statistics.getBestSolution());
             // this is a minor cheat but guarantees that the best solution ever found is contained in the final results
             // This was evil in case multiple runs were performed with PP, because the best of an earlier run is added which is confusing.
             // the minor cheat should not be necessary anymore anyways, since the getAllSolutions() variant replaced the earlier getPopulation() call
 //	    		resultPop.synchSize();
 //	    	}
 
-            PostProcess.checkAccuracy((AbstractOptimizationProblem) goParams.getProblem(), resultPop, ppp.getAccuracies(), ppp.getAccAssumeConv(),
+            PostProcess.checkAccuracy((AbstractOptimizationProblem) optimizationParameters.getProblem(), resultPop, ppp.getAccuracies(), ppp.getAccAssumeConv(),
                     -1, ppp.getAccMaxEval(), (SolutionHistogram[]) null, true, listener);
 
-            resultPop = PostProcess.postProcess(ppp, resultPop, (AbstractOptimizationProblem) goParams.getProblem(), listener);
-            resPop = resultPop;
+            resultPop = PostProcess.postProcess(ppp, resultPop, (AbstractOptimizationProblem) optimizationParameters.getProblem(), listener);
+            resultPopulation = resultPop;
             return resultPop;
         } else {
             return null;

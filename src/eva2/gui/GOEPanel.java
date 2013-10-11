@@ -5,6 +5,7 @@ import eva2.optimization.tools.FileTools;
 import eva2.tools.BasicResourceLoader;
 import eva2.tools.EVAHELP;
 import eva2.tools.SerializedObject;
+import org.reflections.Reflections;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -17,10 +18,9 @@ import java.beans.PropertyChangeSupport;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Proxy;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Vector;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;
 
@@ -28,6 +28,7 @@ import javax.swing.plaf.basic.BasicComboBoxRenderer;
  *
  */
 public class GOEPanel extends JPanel implements ItemListener {
+    private static final Logger LOGGER = Logger.getLogger(GOEPanel.class.getName());
 
     private Object backupObject;
     private PropertyChangeSupport propChangeSupport;
@@ -311,6 +312,7 @@ public class GOEPanel extends JPanel implements ItemListener {
         List<String> classesLongNames;
         ArrayList<Class<?>> instances = new ArrayList<Class<?>>(5);
         classesLongNames = GenericObjectEditor.getClassesFromProperties(genericObjectEditor.getClassType().getName(), instances);
+        LOGGER.finest("Selected type for GOEPanel: " + genericObjectEditor.getClassType().getName());
         if (classesLongNames.size() > 1) {
             classNameMap = new HashMap<String, String>();
             for (String className : classesLongNames) {

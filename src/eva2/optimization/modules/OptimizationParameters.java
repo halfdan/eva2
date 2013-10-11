@@ -16,14 +16,11 @@ import java.util.logging.Level;
 
 
 /**
- * Created by IntelliJ IDEA.
- * Copyright:    Copyright (c) 2003
- * Company:      University of Tuebingen, Computer Architecture
+ * OptimizationParamers for configuration of an
+ * optimization run.
  *
- * @author Holger Ulmer, Felix Streichert, Hannes Planatscher
- * @version: $Revision: 306 $
- * $Date: 2007-12-04 14:22:52 +0100 (Tue, 04 Dec 2007) $
- * $Author: mkron $
+ * This class is used to generate the default GUI
+ * configuration panel for optimizations.
  */
 public class OptimizationParameters extends AbstractOptimizationParameters implements InterfaceOptimizationParameters, Serializable {
 
@@ -34,7 +31,7 @@ public class OptimizationParameters extends AbstractOptimizationParameters imple
     /**
      * Create an instance from a given serialized parameter file.
      *
-     * @param serParamFile
+     * @param serParamFile Serialized Parameter File
      * @param casually     if true, standard parameters are used quietly if the params cannot be loaded
      * @return a OptimizationParameters instance
      */

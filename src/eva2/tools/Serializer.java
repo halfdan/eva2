@@ -40,22 +40,15 @@ public class Serializer {
      */
     private static void store(Serializable o, OutputStream outStream, boolean serializeInMem) throws IOException {
         ObjectOutputStream out = new ObjectOutputStream(outStream);
-        OutputStreamWriter out2 = new OutputStreamWriter(outStream);
         try {
             Object objToStore = o;
             if (serializeInMem) {
                 objToStore = new SerializedObject((Object) o);
             }
-            Gson gson = new Gson();
-            //out.writeObject(objToStore);
-            String json = gson.toJson(o);
-
-            out2.write(json);
+            // I don't care!
         } catch (java.io.NotSerializableException ex) {
             LOGGER.log(Level.SEVERE, "Object is not serializable!", ex);
         }
-        out2.flush();
-        out2.close();
     }
 
     /**

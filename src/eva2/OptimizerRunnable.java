@@ -119,7 +119,7 @@ public class OptimizerRunnable implements Runnable {
 	}
 	
 	public void setStats(InterfaceStatistics stats) {
-		if (proc.isOptRunning()) {
+		if (proc.isOptimizationRunning()) {
                 throw new RuntimeException("Error - cannot change statistics instance during optimization.");
             }
 		InterfaceOptimizationParameters params = proc.getGOParams();
@@ -156,10 +156,10 @@ public class OptimizerRunnable implements Runnable {
 				proc.performPostProcessing((PostProcessParams)proc.getGOParams().getPostProcessParams(), listener);
 			} else {
 				if (doRestart) {
-                                proc.restartOpt();
+                                proc.restartOptimization();
                             }
 				else {
-                                proc.startOpt();
+                                proc.startOptimization();
                             }
 				proc.runOptOnce();
 			}
@@ -188,11 +188,11 @@ public class OptimizerRunnable implements Runnable {
 	}
 	
 	public void restartOpt() {
-		proc.restartOpt();
+		proc.restartOptimization();
 	}
 	
 	public void stopOpt() {
-		proc.stopOpt();
+		proc.stopOptimization();
 	}
 	
 	public IndividualInterface getResult() {
