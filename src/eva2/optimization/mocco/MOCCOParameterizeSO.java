@@ -9,7 +9,7 @@ import eva2.optimization.strategies.GeneticAlgorithm;
 import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.optimization.strategies.MultiObjectiveEA;
 import eva2.optimization.tools.AbstractObjectEditor;
-import eva2.optimization.tools.GeneralGOEProperty;
+import eva2.optimization.tools.GeneralOptimizationEditorProperty;
 
 import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
@@ -77,7 +77,7 @@ public class MOCCOParameterizeSO extends MOCCOPhase implements InterfaceProcessE
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.BOTH;
 
-        GeneralGOEProperty editor = new GeneralGOEProperty();
+        GeneralOptimizationEditorProperty editor = new GeneralOptimizationEditorProperty();
         editor.m_Name = "Optimizer";
         try {
             editor.m_Value = this.m_Mocco.m_State.m_Optimizer;
@@ -105,7 +105,7 @@ public class MOCCOParameterizeSO extends MOCCOPhase implements InterfaceProcessE
         gbc.weightx = 2;
         tmpP.add(editor.m_View, gbc);
 
-        editor = new GeneralGOEProperty();
+        editor = new GeneralOptimizationEditorProperty();
         editor.m_Name = "Terminator";
         try {
             editor.m_Value = this.m_Mocco.m_State.m_Terminator;

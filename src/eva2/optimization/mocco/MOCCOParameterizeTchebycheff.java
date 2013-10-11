@@ -10,7 +10,7 @@ import eva2.optimization.operator.moso.MOSOWeightedLPTchebycheff;
 import eva2.optimization.problems.AbstractMultiObjectiveOptimizationProblem;
 import eva2.optimization.strategies.IslandModelEA;
 import eva2.optimization.tools.AbstractObjectEditor;
-import eva2.optimization.tools.GeneralGOEProperty;
+import eva2.optimization.tools.GeneralOptimizationEditorProperty;
 import eva2.tools.math.RNG;
 
 import java.awt.BorderLayout;
@@ -36,7 +36,7 @@ public class MOCCOParameterizeTchebycheff extends MOCCOPhase implements Interfac
 
     private double[] m_RefPoint;
     private IslandModelEA m_Island;
-    private GeneralGOEProperty m_EIMEA;
+    private GeneralOptimizationEditorProperty m_EIMEA;
     private int m_Perturbations = 4;
     private JTextField m_NumPer;
     JPanel m_Parameters;
@@ -107,7 +107,7 @@ public class MOCCOParameterizeTchebycheff extends MOCCOPhase implements Interfac
         gbc.weightx = 2;
         this.m_Parameters.add(tmpP, gbc);
         // IslandModelEA
-        this.m_EIMEA = new GeneralGOEProperty();
+        this.m_EIMEA = new GeneralOptimizationEditorProperty();
         this.m_Island = new IslandModelEA();
         this.m_Island.setHeterogenuousProblems(true);
         this.m_Island.setLocalOnly(true);
@@ -143,7 +143,7 @@ public class MOCCOParameterizeTchebycheff extends MOCCOPhase implements Interfac
         gbc.weightx = 1;
         this.m_Parameters.add(this.m_EIMEA.m_View, gbc);
         // Terminator
-        GeneralGOEProperty editor = new GeneralGOEProperty();
+        GeneralOptimizationEditorProperty editor = new GeneralOptimizationEditorProperty();
         editor.m_Name = "Terminator";
         try {
             editor.m_Value = this.m_Mocco.m_State.m_Terminator;

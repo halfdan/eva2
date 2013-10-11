@@ -4,7 +4,7 @@ import eva2.gui.*;
 import eva2.gui.editor.GenericObjectEditor;
 import eva2.optimization.tools.AbstractObjectEditor;
 import eva2.optimization.tools.GeneralGEOFaker;
-import eva2.optimization.tools.GeneralGOEProperty;
+import eva2.optimization.tools.GeneralOptimizationEditorProperty;
 import eva2.tools.BasicResourceLoader;
 
 import java.awt.*;
@@ -46,7 +46,7 @@ public class PropertyMutationMixerEditor extends JPanel implements PropertyEdito
     private JComponent[] m_Targets;
     private JButton[] m_Delete;
     private JScrollPane m_ScrollTargets;
-    private GeneralGOEProperty[] m_Editors;
+    private GeneralOptimizationEditorProperty[] m_Editors;
     private GeneralGEOFaker m_Component;
     private PropertyChangeListener m_self;
 
@@ -65,9 +65,9 @@ public class PropertyMutationMixerEditor extends JPanel implements PropertyEdito
 
         // init the editors
         InterfaceMutation[] list = this.m_MutatorsWithWeights.getSelectedMutators();
-        this.m_Editors = new GeneralGOEProperty[list.length];
+        this.m_Editors = new GeneralOptimizationEditorProperty[list.length];
         for (int i = 0; i < list.length; i++) {
-            this.m_Editors[i] = new GeneralGOEProperty();
+            this.m_Editors[i] = new GeneralOptimizationEditorProperty();
             this.m_Editors[i].m_Name = list[i].getStringRepresentation();
             try {
                 this.m_Editors[i].m_Value = list[i];
@@ -227,13 +227,13 @@ public class PropertyMutationMixerEditor extends JPanel implements PropertyEdito
         public void actionPerformed(ActionEvent event) {
             m_MutatorsWithWeights.addMutator((InterfaceMutation) m_MutatorsWithWeights.getAvailableMutators()[0].clone());
             int l = m_MutatorsWithWeights.getSelectedMutators().length;
-            GeneralGOEProperty[] newEdit = new GeneralGOEProperty[l];
+            GeneralOptimizationEditorProperty[] newEdit = new GeneralOptimizationEditorProperty[l];
             for (int i = 0; i < m_Editors.length; i++) {
                 newEdit[i] = m_Editors[i];
             }
             InterfaceMutation[] list = m_MutatorsWithWeights.getSelectedMutators();
             l--;
-            newEdit[l] = new GeneralGOEProperty();
+            newEdit[l] = new GeneralOptimizationEditorProperty();
             newEdit[l].m_Name = list[l].getStringRepresentation();
             try {
                 newEdit[l].m_Value = list[l];
@@ -265,7 +265,7 @@ public class PropertyMutationMixerEditor extends JPanel implements PropertyEdito
         @Override
         public void actionPerformed(ActionEvent event) {
             int l = m_MutatorsWithWeights.getSelectedMutators().length, j = 0;
-            GeneralGOEProperty[] newEdit = new GeneralGOEProperty[l - 1];
+            GeneralOptimizationEditorProperty[] newEdit = new GeneralOptimizationEditorProperty[l - 1];
             for (int i = 0; i < m_Delete.length; i++) {
                 if (event.getSource().equals(m_Delete[i])) {
                     m_MutatorsWithWeights.removeMutator(i);

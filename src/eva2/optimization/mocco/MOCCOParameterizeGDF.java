@@ -14,7 +14,7 @@ import eva2.optimization.problems.InterfaceOptimizationObjective;
 import eva2.optimization.strategies.GeneticAlgorithm;
 import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.optimization.tools.AbstractObjectEditor;
-import eva2.optimization.tools.GeneralGOEProperty;
+import eva2.optimization.tools.GeneralOptimizationEditorProperty;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -35,7 +35,7 @@ public class MOCCOParameterizeGDF extends MOCCOPhase implements InterfaceProcess
     private JTextField[][] m_TradeOff;
     JPanel m_Choice;
     private InterfaceOptimizer m_Opt;
-    private GeneralGOEProperty m_EOpt;
+    private GeneralOptimizationEditorProperty m_EOpt;
 
     public MOCCOParameterizeGDF(MOCCOStandalone mocco) {
         this.m_Mocco = mocco;
@@ -127,7 +127,7 @@ public class MOCCOParameterizeGDF extends MOCCOPhase implements InterfaceProcess
 
         // the optimizer
         gbc.gridwidth = 1;
-        this.m_EOpt = new GeneralGOEProperty();
+        this.m_EOpt = new GeneralOptimizationEditorProperty();
         this.m_Opt = new GeneticAlgorithm();
         this.m_Opt.setProblem(this.m_Mocco.m_State.m_CurrentProblem);
         this.m_Mocco.m_State.m_Optimizer = this.m_Opt;
@@ -158,7 +158,7 @@ public class MOCCOParameterizeGDF extends MOCCOPhase implements InterfaceProcess
         gbc.weightx = 1;
         this.m_Choice.add(this.m_EOpt.m_View, gbc);
         // Terminator
-        GeneralGOEProperty editor = new GeneralGOEProperty();
+        GeneralOptimizationEditorProperty editor = new GeneralOptimizationEditorProperty();
         editor.m_Name = "Terminator";
         try {
             editor.m_Value = this.m_Mocco.m_State.m_Terminator;

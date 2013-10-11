@@ -313,7 +313,7 @@ public class Main extends JFrame implements OptimizationStateListener {
      * Sets given hostname and tries to load GOParamsters from given file if non
      * null.
      */
-    private void init(String hostName, String paramsFile, InterfaceOptimizationParameters goParams, final Window parent) {
+    private void init(String hostName, String paramsFile, InterfaceOptimizationParameters optimizationParameters, final Window parent) {
         useDefaultModule = EvAInfo.propDefaultModule();
         this.parentWindow = parent;
 
@@ -452,13 +452,13 @@ public class Main extends JFrame implements OptimizationStateListener {
         }
         if (useDefaultModule != null) {
             /*
-             * if goParams are not defined and a params file is defined
+             * if optimizationParameters are not defined and a params file is defined
              * try to load parameters from file
              */
-            if (goParams == null && (paramsFile != null && (paramsFile.length() > 0))) {
-                goParams = OptimizationParameters.getInstance(paramsFile, false);
+            if (optimizationParameters == null && (paramsFile != null && (paramsFile.length() > 0))) {
+                optimizationParameters = OptimizationParameters.getInstance(paramsFile, false);
             }
-            loadSpecificModule(useDefaultModule, goParams);//loadSpecificModule
+            loadSpecificModule(useDefaultModule, optimizationParameters);//loadSpecificModule
         }
 
         if (withGUI) {
@@ -534,7 +534,6 @@ public class Main extends JFrame implements OptimizationStateListener {
      * @param args command line parameters
      */
     public static void main(String[] args) {
-        /*============================COPIED FROM SYSBIO==============================*/
         // Properties for Mac OS X support.
         if ((System.getProperty("mrj.version") != null)
                 || (System.getProperty("os.name").toLowerCase().indexOf("mac") != -1)) {
@@ -552,8 +551,6 @@ public class Main extends JFrame implements OptimizationStateListener {
             System.setProperty("com.apple.mrj.application.growbox.intrudes", "false");
             System.setProperty("com.apple.mrj.application.live-resize", "true");
         }
-        /*==========================================================================*/
-
 
         /* Available command-line parameters */
         String[] keys = new String[]{
