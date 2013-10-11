@@ -4,11 +4,6 @@ package eva2.optimization.individuals;
  * This interface gives access to a real-valued genotype and should
  * only be used by mutation and crossover operators. Onyl exception are
  * data type specific optimization strategies like PSO or DE.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 24.03.2003
- * Time: 15:59:45
- * To change this template use Options | File Templates.
  */
 public interface InterfaceESIndividual {
 

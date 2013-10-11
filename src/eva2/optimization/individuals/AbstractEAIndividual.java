@@ -1,7 +1,6 @@
 package eva2.optimization.individuals;
 
 import eva2.gui.BeanInspector;
-import eva2.optimization.go.IndividualInterface;
 import eva2.optimization.individuals.codings.gp.InterfaceProgram;
 import eva2.optimization.operator.constraint.InterfaceConstraint;
 import eva2.optimization.operator.crossover.InterfaceCrossover;
@@ -26,15 +25,8 @@ import java.util.*;
  * (Genotype)Individual(Phenotype)
  * Thus a binary individual coding double values is named GAIndividualDoubleData and a
  * real-valued individual coding binary values is named ESIndividualBinaryData.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 11.05.2003
- * Time: 14:36:09
- * To change this template use Options | File Templates.
  */
 public abstract class AbstractEAIndividual implements IndividualInterface, java.io.Serializable {
-
-    public int functionCalls = 0;        // TODO ist irgendwie eine Kruecke
     protected int age = 0;
     private long id = 0;
     private static long idCounter = 0;
@@ -61,7 +53,6 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
     public AbstractEAIndividual() {
         idCounter++;
         id = idCounter;
-//  	System.out.println("my id is " + id);
     }
 
     public long getIndyID() {
@@ -155,10 +146,8 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      * @param individual The individual to clone.
      */
     public void cloneAEAObjects(AbstractEAIndividual individual) {
-//        m_Name              = new String(individual.m_Name);
         dataHash = (HashMap<String, Object>) (individual.dataHash.clone());
         constraintViolation = individual.constraintViolation;
-//        areaConst4ParallelViolated = individual.areaConst4ParallelViolated;
         isMarked = individual.isMarked;
         isPenalized = individual.isPenalized;
         individualIndex = individual.individualIndex;
@@ -373,22 +362,8 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
                 }
             }
         }
-//	    for (int i = 0; i < result.length; i++) {
-//	    	result[i].giveNewName();
-//	    }
         return result;
     }
-
-//	/**
-//	 * Toggle the parent logging mechanism. It keeps track of the ancestor IDs of an individual
-//	 * if mutation/crossover are used. Set the desired length of logging history (generations) or
-//	 * set it to 0 to deactivate heritage logging.
-//	 * 
-//	 * @param logPs
-//	 */
-//	public void setLogHeritagetLen(int logLen) {
-//		logParentLen = logLen;
-//	}
 
     /**
      * Add an ancestor generation with multiple parents.
@@ -407,8 +382,6 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
                 parentTree[i + 1] = (AbstractEAIndividual) parents.getEAIndividual(i).clone();
             }
         }
-
-//		addHeritage(parentIDs);
     }
 
     /**
@@ -447,11 +420,6 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
         return sb.toString();
     }
 
-//	private void addHeritage(Long[] parentIDs) {
-//		heritage.add(parentIDs);
-////		if (heritage.size() > logParentLen) heritage.remove(0);
-//	}
-
     /**
      * Add an ancestor generation with only one parent.
      *
@@ -464,16 +432,6 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
     public Long[] getParentIDs() {
         return parentIDs;
     }
-
-//	/**
-//	 * Returns the last set of parental IDs or null if none are available.
-//	 * 
-//	 * @return the last set of parental IDs or null if none are available
-//	 */
-//	public Long[] getHeritage() {
-//		if (heritage != null) return heritage.getLast();
-//		else return null;
-//	}
 
     /**
      * This method will allow you to get the current age of an individual Zero
@@ -1284,16 +1242,6 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
         return (IndividualInterface) this.clone();
     }
 
-    //    /** This method is used to get the basic data type of an individual double[].
-//     * @deprecated Since not all EAIndividuals provide double as basic data type
-//     * the fitness can be is returned as default value.
-//     * @see #getFitness()
-//     * @return double[]
-//     */
-//    public double[] getDoubleArray() {
-//        if (this instanceof InterfaceDataTypeDouble) return ((InterfaceDataTypeDouble)this).getDoubleData();
-//        else return this.getFitness();
-//    }
     public boolean isDominantNotEqual(double[] otherFitness) {
         return isDominatingFitnessNotEqual(fitness, otherFitness);
     }

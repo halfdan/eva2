@@ -1,9 +1,4 @@
 package eva2.gui.editor;
-/*
- * Title: EvA2 Description: Copyright: Copyright (c) 2012 Company: University of Tuebingen, Computer
- * Architecture @author Holger Ulmer, Felix Streichert, Hannes Planatscher, Fabian Becker @version:
- * $Revision: 266 $ $Date: 2007-11-20 14:33:48 +0100 (Tue, 20 Nov 2007) $ $Author: mkron $
- */
 
 import eva2.EvAInfo;
 import eva2.gui.OptimizationEditorPanel;

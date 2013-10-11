@@ -12,7 +12,7 @@ import eva2.OptimizerRunnable;
 import eva2.gui.BeanInspector;
 import eva2.gui.plot.Plot;
 import eva2.gui.plot.TopoPlot;
-import eva2.optimization.go.IndividualInterface;
+import eva2.optimization.individuals.IndividualInterface;
 import eva2.optimization.go.InterfaceTerminator;
 import eva2.optimization.enums.ESMutationInitialSigma;
 import eva2.optimization.enums.PostProcessMethod;

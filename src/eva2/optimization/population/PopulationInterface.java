@@ -10,7 +10,7 @@ package eva2.optimization.population;
  *            $Author: mkron $
  */
 
-import eva2.optimization.go.IndividualInterface;
+import eva2.optimization.individuals.IndividualInterface;
 
 /**
  *

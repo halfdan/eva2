@@ -8,7 +8,7 @@ import eva2.optimization.stat.AbstractStatistics;
 import eva2.optimization.stat.StatisticsStandalone;
 import eva2.optimization.stat.InterfaceTextListener;
 import eva2.optimization.OptimizationStateListener;
-import eva2.optimization.go.IndividualInterface;
+import eva2.optimization.individuals.IndividualInterface;
 import eva2.optimization.go.InterfaceTerminator;
 import eva2.optimization.individuals.InterfaceDataTypeBinary;
 import eva2.optimization.individuals.InterfaceDataTypeDouble;

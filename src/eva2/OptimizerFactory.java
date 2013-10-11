@@ -25,7 +25,7 @@ import eva2.optimization.strategies.SimulatedAnnealing;
 import eva2.optimization.strategies.ClusteringHillClimbing;
 import eva2.optimization.strategies.ClusterBasedNichingEA;
 import eva2.optimization.strategies.MonteCarloSearch;
-import eva2.optimization.go.IndividualInterface;
+import eva2.optimization.individuals.IndividualInterface;
 import eva2.optimization.go.InterfacePopulationChangedEventListener;
 import eva2.optimization.go.InterfaceTerminator;
 import eva2.optimization.enums.DETypeEnum;

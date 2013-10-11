@@ -4,11 +4,6 @@ package eva2.optimization.individuals;
 /**
  * This interface gives access to a integer genotype and should
  * only be used by mutation and crossover operators.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 18.05.2005
- * Time: 16:54:03
- * To change this template use File | Settings | File Templates.
  */
 public interface InterfaceGIIndividual {
 
