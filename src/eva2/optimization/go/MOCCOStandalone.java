@@ -26,7 +26,7 @@ import java.io.*;
  * Time: 14:31:56
  * To change this template use File | Settings | File Templates.
  */
-public class MOCCOStandalone implements InterfaceGOStandalone, InterfacePopulationChangedEventListener, Serializable {
+public class MOCCOStandalone implements InterfaceStandaloneOptimization, InterfacePopulationChangedEventListener, Serializable {
 
     public volatile MOCCOState m_State;
     private SwingWorker worker;
@@ -455,7 +455,7 @@ public class MOCCOStandalone implements InterfaceGOStandalone, InterfacePopulati
     }
 
     /***********************************************************************************************
-     * InterfaceGOStandalone
+     * InterfaceStandaloneOptimization
      */
 
     /**

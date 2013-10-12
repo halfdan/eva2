@@ -5,12 +5,8 @@ import eva2.optimization.population.Population;
 
 /**
  * The non dominated sorting GA archiving method, based on dominace sorting.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 27.02.2004
- * Time: 16:50:45
- * To change this template use File | Settings | File Templates.
  */
+@eva2.util.annotation.Description(text="Non-dominating sorting GA revision 1.0.")
 public class ArchivingNSGA extends AbstractArchiving implements java.io.Serializable {
 
     public InterfaceRemoveSurplusIndividuals m_Cleaner = new RemoveSurplusIndividualsDynamicHyperCube();
@@ -53,19 +49,6 @@ public class ArchivingNSGA extends AbstractArchiving implements java.io.Serializ
         Population archive = pop.getArchive();
 
         this.m_Cleaner.removeSurplusIndividuals(archive);
-    }
-
-
-/**********************************************************************************************************************
- * These are for GUI
- */
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "Non-dominating sorting GA revision 1.0.";
     }
 
     /**

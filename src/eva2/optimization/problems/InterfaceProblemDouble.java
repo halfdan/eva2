@@ -43,8 +43,8 @@ public interface InterfaceProblemDouble {
      *
      * @param dim
      * @return the upper bound of the double range in the given dimension
-     * @see makeRange()
-     * @see getRangeLowerBound(int dim)
+     * @see #makeRange()
+     * @see #getRangeLowerBound(int dim)
      */
     public double getRangeUpperBound(int dim);
 
@@ -54,8 +54,8 @@ public interface InterfaceProblemDouble {
      *
      * @param dim
      * @return the lower bound of the double range in the given dimension
-     * @see makeRange()
-     * @see getRangeUpperBound(int dim)
+     * @see #makeRange()
+     * @see #getRangeUpperBound(int dim)
      */
     public double getRangeLowerBound(int dim);
 }

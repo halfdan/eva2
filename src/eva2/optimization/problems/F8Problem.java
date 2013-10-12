@@ -147,7 +147,7 @@ public class F8Problem extends AbstractProblemDoubleOffset
 //        double dim = (double)this.problemDimension;
 //
 //        for (int i = 0; i < x.length; i++) {
-//        	double xi = x[i]-m_XOffSet;
+//        	double xi = x[i]-xOffset;
 //        	sum1 += (xi)*(xi);
 //        	sum2 += Math.cos(c * (xi));
 //        }
