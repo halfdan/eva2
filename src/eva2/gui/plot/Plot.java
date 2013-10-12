@@ -1,12 +1,5 @@
 package eva2.gui.plot;
 
-/*
- * Title: EvA2 Description: Copyright: Copyright (c) 2003 Company: University of
- * Tuebingen, Computer Architecture @author Holger Ulmer, Felix Streichert,
- * Hannes Planatscher @version: $Revision: 322 $ $Date: 2007-12-11 17:24:07
- * +0100 (Tue, 11 Dec 2007) $ $Author: mkron $
- */
-
 import eva2.EvAInfo;
 import eva2.gui.JEFrame;
 import eva2.optimization.individuals.AbstractEAIndividual;
@@ -43,13 +36,13 @@ public class Plot implements PlotInterface, Serializable {
      * Generated serial version identifier.
      */
     private static final long serialVersionUID = -9027101244918249825L;
-    private JFileChooser m_FileChooser;
+    private JFileChooser fileChooser;
     private JPanel m_ButtonPanel;
     private String plotName;
     private String xAxisText;
     private String yAxisText;
-    protected FunctionArea m_PlotArea;
-    protected JInternalFrame m_Frame;
+    protected FunctionArea plotArea;
+    protected JInternalFrame internalFrame;
 
     /**
      * You might want to try to assign the x-range as x and y-range as y array
@@ -61,7 +54,7 @@ public class Plot implements PlotInterface, Serializable {
         for (int i = 0; i < x.length; i++) {
             points.addDPoint(x[i], y[i]);
         }
-        m_PlotArea.addDElement(points);
+        plotArea.addDElement(points);
     }
 
     /**
@@ -94,39 +87,39 @@ public class Plot implements PlotInterface, Serializable {
     }
 
     protected void installButtons(JPanel buttonPan) {
-        JButton ClearButton = new JButton("Clear");
-        ClearButton.addActionListener(new ActionListener() {
+        JButton clearButton = new JButton("Clear");
+        clearButton.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
                 clearAll();
             }
         });
-        JButton LOGButton = new JButton("Log/Lin");
-        LOGButton.setToolTipText("Toggle between a linear and a log scale on the y-axis.");
-        LOGButton.addActionListener(new ActionListener() {
+        JButton loglinButton = new JButton("Log/Lin");
+        loglinButton.setToolTipText("Toggle between a linear and a log scale on the y-axis.");
+        loglinButton.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                m_PlotArea.toggleLog();
+                plotArea.toggleLog();
             }
         });
-        JButton ExportButton = new JButton("Export to TSV");
-        ExportButton.setToolTipText("Exports the graph data to a simple TSV file.");
-        ExportButton.addActionListener(new ActionListener() {
+        JButton exportButton = new JButton("Export to TSV");
+        exportButton.setToolTipText("Exports the graph data to a simple TSV file.");
+        exportButton.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
                 exportPlot();
             }
         });
-        JButton DumpButton = new JButton("Dump");
-        DumpButton.setToolTipText("Dump the graph data to standard output");
-        DumpButton.addActionListener(new ActionListener() {
+        JButton dumpButton = new JButton("Dump");
+        dumpButton.setToolTipText("Dump the graph data to standard output");
+        dumpButton.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                m_PlotArea.exportToAscii();
+                plotArea.exportToAscii();
             }
         });
 
@@ -138,10 +131,10 @@ public class Plot implements PlotInterface, Serializable {
                 try {
                     Robot robot = new Robot();
                     Rectangle area;
-                    area = m_Frame.getBounds();
+                    area = internalFrame.getBounds();
                     BufferedImage bufferedImage = robot.createScreenCapture(area);
                     JFileChooser fc = new JFileChooser();
-                    if (fc.showSaveDialog(m_Frame) != JFileChooser.APPROVE_OPTION) {
+                    if (fc.showSaveDialog(internalFrame) != JFileChooser.APPROVE_OPTION) {
                         return;
                     }
                     // System.out.println("Name " + outfile);
@@ -191,13 +184,10 @@ public class Plot implements PlotInterface, Serializable {
             }
         });
 
-        buttonPan.add(ClearButton);
-        buttonPan.add(LOGButton);
-        buttonPan.add(DumpButton);
-        buttonPan.add(ExportButton);
-        // m_ButtonPanel.add(PrintButton);
-        // m_ButtonPanel.add(OpenButton);
-        // m_ButtonPanel.add(SaveButton);
+        buttonPan.add(clearButton);
+        buttonPan.add(loglinButton);
+        buttonPan.add(dumpButton);
+        buttonPan.add(exportButton);
         buttonPan.add(saveImageButton);
     }
 
@@ -206,47 +196,47 @@ public class Plot implements PlotInterface, Serializable {
      */
     @Override
     public void init() {
-        m_Frame = new JEFrame("Plot: " + plotName);
+        internalFrame = new JEFrame("Plot: " + plotName);
         BasicResourceLoader loader = BasicResourceLoader.instance();
         byte[] bytes = loader.getBytesFromResourceLocation(EvAInfo.iconLocation, true);
-//			m_Frame.setIconImage(Toolkit.getDefaultToolkit().createImage(bytes));
+//			internalFrame.setIconImage(Toolkit.getDefaultToolkit().createImage(bytes));
 
         m_ButtonPanel = new JPanel();
-        m_PlotArea = new FunctionArea(xAxisText, yAxisText);
+        plotArea = new FunctionArea(xAxisText, yAxisText);
         m_ButtonPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
 
         installButtons(m_ButtonPanel);
 
         // getContentPane().smultetLayout( new GridLayout(1, 4) );
-        m_Frame.add(m_ButtonPanel, BorderLayout.PAGE_END);
-        m_Frame.add(m_PlotArea, BorderLayout.CENTER); // north was not so
+        internalFrame.add(m_ButtonPanel, BorderLayout.PAGE_END);
+        internalFrame.add(plotArea, BorderLayout.CENTER); // north was not so
         // nice
-        m_Frame.addInternalFrameListener(new InternalFrameAdapter() {
+        internalFrame.addInternalFrameListener(new InternalFrameAdapter() {
 
             @Override
             public void internalFrameClosing(InternalFrameEvent e) {
                 super.internalFrameClosing(e);
-                m_PlotArea.clearAll(); // this was a memory leak
-                m_PlotArea = null;
-                m_Frame.dispose();
+                plotArea.clearAll(); // this was a memory leak
+                plotArea = null;
+                internalFrame.dispose();
             }
         });
-        m_Frame.pack();
-        m_Frame.setVisible(true);
+        internalFrame.pack();
+        internalFrame.setVisible(true);
     }
 
     /**
      * Indicate whether graph legend entries should show their unique number.
      */
     public void setAppendIndexInLegend(boolean appendIndexInLegend) {
-        this.m_PlotArea.setAppendIndexInLegend(appendIndexInLegend);
+        this.plotArea.setAppendIndexInLegend(appendIndexInLegend);
     }
 
     /**
      * Indicates whether graph legend entries show their unique number.
      */
     public boolean isAppendIndexInLegend() {
-        return m_PlotArea.isAppendIndexInLegend();
+        return plotArea.isAppendIndexInLegend();
     }
 
     /**
@@ -255,7 +245,7 @@ public class Plot implements PlotInterface, Serializable {
      * @return true if the graphs are annotated by tool tip info strings
      */
     public boolean isShowGraphToolTips() {
-        return m_PlotArea.isShowGraphToolTips();
+        return plotArea.isShowGraphToolTips();
     }
 
     /**
@@ -265,7 +255,7 @@ public class Plot implements PlotInterface, Serializable {
      *                            tip info strings
      */
     public void setShowGraphToolTips(boolean doShowGraphToolTips) {
-        m_PlotArea.setShowGraphToolTips(doShowGraphToolTips);
+        plotArea.setShowGraphToolTips(doShowGraphToolTips);
     }
 
     /**
@@ -298,9 +288,9 @@ public class Plot implements PlotInterface, Serializable {
     }
 
     public void setPreferredSize(Dimension prefSize) {
-        if (m_Frame != null) {
-            m_Frame.setPreferredSize(prefSize);
-            m_Frame.pack();
+        if (internalFrame != null) {
+            internalFrame.setPreferredSize(prefSize);
+            internalFrame.pack();
         }
     }
 
@@ -311,7 +301,7 @@ public class Plot implements PlotInterface, Serializable {
      */
     @Override
     public boolean isValid() {
-        return (m_Frame != null) && (m_PlotArea != null);
+        return (internalFrame != null) && (plotArea != null);
     }
 
     /**
@@ -319,12 +309,12 @@ public class Plot implements PlotInterface, Serializable {
      */
     @Override
     public void setConnectedPoint(double x, double y, int func) {
-        m_PlotArea.setConnectedPoint(x, y, func);
+        plotArea.setConnectedPoint(x, y, func);
     }
 
     @Override
     public int getPointCount(int graphLabel) {
-        return m_PlotArea.getPointCount(graphLabel);
+        return plotArea.getPointCount(graphLabel);
     }
 
     /**
@@ -332,7 +322,7 @@ public class Plot implements PlotInterface, Serializable {
      */
     @Override
     public void addGraph(int g1, int g2, boolean forceAdd) {
-        m_PlotArea.addGraph(g1, g2, forceAdd);
+        plotArea.addGraph(g1, g2, forceAdd);
     }
 
     /**
@@ -340,7 +330,7 @@ public class Plot implements PlotInterface, Serializable {
      */
     @Override
     public void setUnconnectedPoint(double x, double y, int GraphLabel) {
-        m_PlotArea.setUnconnectedPoint(x, y, GraphLabel);
+        plotArea.setUnconnectedPoint(x, y, GraphLabel);
     }
 
     /**
@@ -348,10 +338,10 @@ public class Plot implements PlotInterface, Serializable {
      */
     @Override
     public void clearAll() {
-        m_PlotArea.clearAll();
-        m_PlotArea.removeAllDElements();
-        m_PlotArea.clearLegend();
-        m_Frame.repaint();
+        plotArea.clearAll();
+        plotArea.removeAllDElements();
+        plotArea.clearLegend();
+        internalFrame.repaint();
     }
 
     /**
@@ -359,7 +349,7 @@ public class Plot implements PlotInterface, Serializable {
      */
     @Override
     public void clearGraph(int GraphNumber) {
-        m_PlotArea.clearGraph(GraphNumber);
+        plotArea.clearGraph(GraphNumber);
     }
 
     /**
@@ -367,7 +357,7 @@ public class Plot implements PlotInterface, Serializable {
      */
     @Override
     public void setInfoString(int GraphLabel, String Info, float stroke) {
-        m_PlotArea.setInfoString(GraphLabel, Info, stroke);
+        plotArea.setInfoString(GraphLabel, Info, stroke);
     }
 
     /**
@@ -375,18 +365,18 @@ public class Plot implements PlotInterface, Serializable {
      */
     @Override
     public void jump() {
-        m_PlotArea.jump();
+        plotArea.jump();
     }
 
     /**
      */
     protected Object openObject() {
-        if (m_FileChooser == null) {
+        if (fileChooser == null) {
             createFileChooser();
         }
-        int returnVal = m_FileChooser.showOpenDialog(m_Frame);
+        int returnVal = fileChooser.showOpenDialog(internalFrame);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File selected = m_FileChooser.getSelectedFile();
+            File selected = fileChooser.getSelectedFile();
             try {
                 ObjectInputStream oi = new ObjectInputStream(
                         new BufferedInputStream(new FileInputStream(selected)));
@@ -399,7 +389,7 @@ public class Plot implements PlotInterface, Serializable {
                 }
                 return obj;
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(m_Frame, "Couldn't read object: "
+                JOptionPane.showMessageDialog(internalFrame, "Couldn't read object: "
                         + selected.getName() + "\n" + ex.getMessage(),
                         "Open object file", JOptionPane.ERROR_MESSAGE);
             }
@@ -411,28 +401,28 @@ public class Plot implements PlotInterface, Serializable {
      * Just dump the plot to stdout.
      */
     protected void dumpPlot() {
-        m_PlotArea.exportToAscii();
+        plotArea.exportToAscii();
     }
 
     /**
      *
      */
     protected void exportPlot() {
-        if (m_FileChooser == null) {
+        if (fileChooser == null) {
             createFileChooser();
         }
-        int returnVal = m_FileChooser.showSaveDialog(m_Frame);
+        int returnVal = fileChooser.showSaveDialog(internalFrame);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File sFile = m_FileChooser.getSelectedFile();
+            File sFile = fileChooser.getSelectedFile();
             if (sFile.exists()) {
-                returnVal = JOptionPane.showConfirmDialog(m_Frame, "The file "
+                returnVal = JOptionPane.showConfirmDialog(internalFrame, "The file "
                         + sFile.getName() + " already exists. Overwrite?");
                 if (returnVal != JOptionPane.YES_OPTION) {
                     return;
                 }
             }
-            if (!(m_PlotArea.exportToAscii(sFile))) {
-                JOptionPane.showMessageDialog(m_Frame,
+            if (!(plotArea.exportToAscii(sFile))) {
+                JOptionPane.showMessageDialog(internalFrame,
                         "Couldn't write to file: " + sFile.getName(),
                         "Export error", JOptionPane.ERROR_MESSAGE);
             }
@@ -443,19 +433,19 @@ public class Plot implements PlotInterface, Serializable {
      *
      */
     protected void saveObject(Object object) {
-        if (m_FileChooser == null) {
+        if (fileChooser == null) {
             createFileChooser();
         }
-        int returnVal = m_FileChooser.showSaveDialog(m_Frame);
+        int returnVal = fileChooser.showSaveDialog(internalFrame);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File sFile = m_FileChooser.getSelectedFile();
+            File sFile = fileChooser.getSelectedFile();
             try {
                 ObjectOutputStream oo = new ObjectOutputStream(
                         new BufferedOutputStream(new FileOutputStream(sFile)));
                 oo.writeObject(object);
                 oo.close();
             } catch (IOException ex) {
-                JOptionPane.showMessageDialog(m_Frame,
+                JOptionPane.showMessageDialog(internalFrame,
                         "Couldn't write to file: " + sFile.getName() + "\n"
                                 + ex.getMessage(), "Save object",
                         JOptionPane.ERROR_MESSAGE);
@@ -467,8 +457,8 @@ public class Plot implements PlotInterface, Serializable {
      *
      */
     protected void createFileChooser() {
-        m_FileChooser = new JFileChooser(new File("/resources"));
-        m_FileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        fileChooser = new JFileChooser(new File("/resources"));
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
     }
 
     /**
@@ -483,15 +473,15 @@ public class Plot implements PlotInterface, Serializable {
      *
      */
     public FunctionArea getFunctionArea() {
-        return m_PlotArea;
+        return plotArea;
     }
 
     /**
      *
      */
     public void dispose() {
-        m_Frame.dispose();
-        m_Frame = null;
+        internalFrame.dispose();
+        internalFrame = null;
     }
 
     /**
@@ -512,22 +502,4 @@ public class Plot implements PlotInterface, Serializable {
     public void recolorAllGraphsByIndex() {
         getFunctionArea().recolorAllGraphsByIndex();
     }
-    // /**
-    // * Just for testing the Plot class.
-    // */
-    // public static void main( String[] args ){
-    // Plot plot = new Plot("Plot-Test","x-value","y-value");
-    // plot.init();
-    // double x;
-    // for (x= 0; x <6000; x++) {
-    // //double y = SpecialFunction.getnormcdf(x);
-    // // double yy = 0.5*SpecialFunction.getnormpdf(x);
-    // double n = Math.sin(((double)x/1000*Math.PI));
-    // //plot.setConnectedPoint(x,Math.sin(x),0);
-    // //plot.setConnectedPoint(x,Math.cos(x),1);
-    // //plot.setConnectedPoint(x,y,0);
-    // plot.setConnectedPoint(x,n,1);
-    // }
-    // //plot.addGraph(1,2);
-    // }
 }

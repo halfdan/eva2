@@ -24,14 +24,6 @@ import java.awt.print.Printable;
 import javax.swing.JComponent;
 import javax.swing.border.Border;
 
-/*==========================================================================*
- * IMPORTS
- *==========================================================================*/
-
-/*==========================================================================*
- * CLASS DECLARATION
- *==========================================================================*/
-
 /**
  * DArea is the crossing of the <code>JComponent</code>s and the
  * <code>DComponent</code>s. It's the <code>DParent</code> which can be added to

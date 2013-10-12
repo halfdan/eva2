@@ -186,7 +186,8 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
                 errMsg = "check console output for error messages.";
             }
             errMsg = "Exception in Processor: " + errMsg;
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, errMsg, e);
             try {
                 JOptionPane.showMessageDialog(null, StringTools.wrapLine(errMsg, 60, 0.2), "Error in Optimization", JOptionPane.ERROR_MESSAGE);
             } catch (Exception ex) {

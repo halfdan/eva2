@@ -1,16 +1,5 @@
 package eva2.optimization.stat;
 
-/*
- * Title:        EvA2
- * Description:
- * Copyright:    Copyright (c) 2003
- * Company:      University of Tuebingen, Computer Architecture
- * @author Holger Ulmer, Felix Streichert, Hannes Planatscher
- * @version:  $Revision: 322 $
- *            $Date: 2007-12-11 17:24:07 +0100 (Tue, 11 Dec 2007) $
- *            $Author: mkron $
- */
-
 import eva2.gui.BeanInspector;
 import eva2.gui.plot.Graph;
 import eva2.gui.plot.GraphWindow;
@@ -57,7 +46,7 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
      *
      */
     public StatisticsWithGUI() {
-        m_StatsParams = StatisticsParameter.getInstance(true);
+        statisticsParameter = StatisticsParameter.getInstance(true);
         proxyPrinter = new JTextoutputFrame("Optimization Log");
         addTextListener(proxyPrinter);
     }
@@ -82,7 +71,7 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
     public void stopOptPerformed(boolean normal, String stopMessage) {
         super.stopOptPerformed(normal, stopMessage);
 
-        if (optRunsPerformed > m_StatsParams.getMultiRuns()) {
+        if (optRunsPerformed > statisticsParameter.getMultiRuns()) {
             // this may happen if the user reduces the multirun parameter during late multiruns
             System.err.println("error: more runs performed than defined.");
         }
@@ -93,7 +82,7 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
         }
 
         // unite the graphs only if the break was "normal"
-        if ((m_StatsParams.getMultiRuns() > 1) && (statGraph != null)) {
+        if ((statisticsParameter.getMultiRuns() > 1) && (statGraph != null)) {
             // unite the point sets for a multirun
             for (int i = 0; i < fitnessGraph.length; i++) {
                 for (int j = 0; j < fitnessGraph[i].length; j++) {
@@ -109,7 +98,7 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
             }
         }
         PlotInterface p = fitnessFrame[0].getPlotter();
-        if ((optRunsPerformed >= m_StatsParams.getMultiRuns()) || !normal) {
+        if ((optRunsPerformed >= statisticsParameter.getMultiRuns()) || !normal) {
             // update the legend after the last multirun or after a user break
             if ((p != null) && p.isValid()) {
                 ((Plot) p).getFunctionArea().updateLegend();
@@ -119,13 +108,13 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
 
     public void maybeShowProxyPrinter() {
         if (proxyPrinter != null) {
-            proxyPrinter.setShow(m_StatsParams.isShowTextOutput());
+            proxyPrinter.setShow(statisticsParameter.isShowTextOutput());
         }
     }
 
     @Override
     protected void initPlots(PopulationInterface pop, List<InterfaceAdditionalPopulationInformer> informerList) {
-        if (m_StatsParams instanceof StatisticsParameter) {
+        if (statisticsParameter instanceof StatisticsParameter) {
             graphDesc = lastFieldSelection.getSelectedWithIndex();
         } else {
             graphDesc = null;
@@ -133,7 +122,7 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
         }
 
         maybeShowProxyPrinter();
-        int windowCount = 1; // TODO this was earlier description.length for the 2-D String-Array returned by m_StatsParams.getPlotDescriptions, which however always returned an array of length 1 (in the first dim).
+        int windowCount = 1; // TODO this was earlier description.length for the 2-D String-Array returned by statisticsParameter.getPlotDescriptions, which however always returned an array of length 1 (in the first dim).
         int graphCount = graphDesc.size();
         fitnessFrame = new GraphWindow[windowCount];
         for (int i = 0; i < fitnessFrame.length; i++) {
@@ -154,14 +143,12 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
                 fitnessGraph[i][j].jump();
             }
         }
-        if (m_StatsParams.getMultiRuns() > 1
-                && m_StatsParams.getUseStatPlot() == true) {
-//			String Info = m_StatsParams.GetInfoString();
+        if (statisticsParameter.getMultiRuns() > 1
+                && statisticsParameter.getUseStatPlot() == true) {
             statGraph = new Graph[windowCount][];
             for (int i = 0; i < statGraph.length; i++) {
                 statGraph[i] = new Graph[graphCount];
                 for (int j = 0; j < statGraph[i].length; j++) {
-//					String[] d = (String[]) description.get(i);
                     statGraph[i][j] = fitnessFrame[i].getNewGraph(graphDesc.get(j).head + "_" + //Info +
                             graphInfoString);
                 }
@@ -195,12 +182,7 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
      */
     @Override
     protected void plotCurrentResults() {
-//		m_PlotCounter--;
-
-//		if (m_PlotCounter == 0) {
-//			m_PlotCounter = m_StatsParams.GetPlotoutput();
         int subGraph = 0;
-//			boolean doPlotAdditionalInfo = m_StatsParams.isOutputAdditionalInfo();
         for (int i = 0; i < graphDesc.size(); i++) {
             Integer colIndex = i + 1; // always add one because the function calls are located in column zero
             if (lastIsShowFull) {
@@ -210,11 +192,9 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
             if (currentStatDoubleData[colIndex] != null) {
                 plotFitnessPoint(0, subGraph++, functionCalls, currentStatDoubleData[colIndex]);
             } else {
-//					EVAERROR.errorMsgOnce("Error, data field " + graphDesc.get(i).head + " does not contain primitive data and cannot be plotted.");
                 subGraph++; // increase index anyways or the name assignment gets inconsistent
             }
         }
-//		}
     }
 
     /**
@@ -255,9 +235,6 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
             printToTextListener(s + "\n");
         }
 
-//		m_PlotCounter--;
-//		if (m_PlotCounter == 0) {
-//			m_PlotCounter = m_StatsParams.GetPlotoutput();
         int index = 0;
         for (int i = 0; i < fitnessGraph.length; i++) {
             for (int j = 0; j < fitnessGraph[i].length; j++) {

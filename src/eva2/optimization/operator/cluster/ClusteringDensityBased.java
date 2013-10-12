@@ -345,7 +345,7 @@ public class ClusteringDensityBased implements InterfaceClusteringDistanceParam,
 //            popRep = new DPointSet();
 //            tmpIndy1 = (InterfaceDataTypeDouble)pop.get(i);
 //            popRep.addDPoint(new DPoint(tmpIndy1.getDoubleData()[0], tmpIndy1.getDoubleData()[1]));
-//            plot.m_PlotArea.addDElement(popRep);
+//            plot.plotArea.addDElement(popRep);
 //            //System.out.println("Adding" + i + " : ("+tmpIndy1.getDoubleData()[0]+"/"+tmpIndy1.getDoubleData()[1]+")");
 //            for (int j = i; j < pop.size(); j++) {
 //                if (ConnectionMatrix[i][j]) {
@@ -355,7 +355,7 @@ public class ClusteringDensityBased implements InterfaceClusteringDistanceParam,
 //                    popRep.addDPoint(new DPoint(tmpIndy1.getDoubleData()[0], tmpIndy1.getDoubleData()[1]));
 //                    tmpIndy1 = (InterfaceDataTypeDouble)pop.get(j);
 //                    popRep.addDPoint(new DPoint(tmpIndy1.getDoubleData()[0], tmpIndy1.getDoubleData()[1]));
-//                    plot.m_PlotArea.addDElement(popRep);
+//                    plot.plotArea.addDElement(popRep);
 //                }
 //            }
 //        }
