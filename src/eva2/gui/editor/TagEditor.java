@@ -16,13 +16,12 @@ import eva2.tools.BasicResourceLoader;
 import eva2.tools.SelectedTag;
 import eva2.tools.Tag;
 
-import java.awt.BorderLayout;
-import java.awt.Toolkit;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyEditorManager;
 import java.beans.PropertyEditorSupport;
-import javax.swing.JFrame;
 
 /**
  *

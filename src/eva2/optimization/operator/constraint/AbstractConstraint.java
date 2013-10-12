@@ -1,12 +1,8 @@
 package eva2.optimization.operator.constraint;
 
-import eva2.optimization.operator.paramcontrol.InterfaceParameterControl;
-import eva2.optimization.operator.paramcontrol.ParamAdaption;
-import eva2.optimization.operator.paramcontrol.ParameterControlManager;
-import eva2.optimization.operator.paramcontrol.GenericParamAdaption;
-import eva2.optimization.operator.paramcontrol.NoParamAdaption;
 import eva2.gui.editor.GenericObjectEditor;
 import eva2.optimization.individuals.AbstractEAIndividual;
+import eva2.optimization.operator.paramcontrol.*;
 import eva2.optimization.problems.AbstractProblemDouble;
 import eva2.tools.EVAERROR;
 

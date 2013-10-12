@@ -2,12 +2,12 @@ package eva2.gui.editor;
 
 import eva2.gui.PropertyEpsilonConstraint;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.beans.PropertyEditor;
-import javax.swing.*;
 
 /**
  * Created by IntelliJ IDEA.

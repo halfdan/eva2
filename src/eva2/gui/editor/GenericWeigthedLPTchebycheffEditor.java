@@ -2,12 +2,15 @@ package eva2.gui.editor;
 
 import eva2.gui.PropertyWeightedLPTchebycheff;
 
+import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.beans.PropertyEditor;
-import javax.swing.*;
 
 /**
  * Created by IntelliJ IDEA.

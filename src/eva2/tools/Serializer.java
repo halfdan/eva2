@@ -4,8 +4,6 @@ import java.io.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.google.gson.*;
-
 /**
  * This class defines utility routines that use Java serialization. Any
  * serializable object can be stored to a file, loaded, and cloned (returning a

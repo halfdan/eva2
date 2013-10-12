@@ -1,10 +1,10 @@
 package eva2.optimization.stat;
 
 import eva2.gui.BeanInspector;
-import eva2.gui.plot.Graph;
-import eva2.gui.plot.GraphWindow;
 import eva2.gui.JTextoutputFrame;
 import eva2.gui.JTextoutputFrameInterface;
+import eva2.gui.plot.Graph;
+import eva2.gui.plot.GraphWindow;
 import eva2.gui.plot.Plot;
 import eva2.gui.plot.PlotInterface;
 import eva2.optimization.population.PopulationInterface;

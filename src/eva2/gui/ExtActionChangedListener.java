@@ -13,9 +13,9 @@ package eva2.gui;
  * IMPORTS
  *==========================================================================*/
 
+import javax.swing.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import javax.swing.JComponent;
 
 /**
  *

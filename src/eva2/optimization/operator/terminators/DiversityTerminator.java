@@ -1,10 +1,10 @@
 package eva2.optimization.operator.terminators;
 
 import eva2.optimization.go.InterfaceTerminator;
-import eva2.optimization.population.PopulationInterface;
 import eva2.optimization.operator.distancemetric.InterfaceDistanceMetric;
 import eva2.optimization.operator.distancemetric.PhenotypeMetric;
 import eva2.optimization.population.Population;
+import eva2.optimization.population.PopulationInterface;
 
 import java.io.Serializable;
 

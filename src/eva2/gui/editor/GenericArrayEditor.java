@@ -4,6 +4,9 @@ import eva2.gui.*;
 import eva2.tools.EVAHELP;
 import eva2.tools.SerializedObject;
 
+import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
@@ -15,9 +18,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 public class GenericArrayEditor extends JPanel implements PropertyEditor {
 

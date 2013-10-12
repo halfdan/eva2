@@ -10,14 +10,10 @@ package eva2.gui;
  *            $Author: streiche $
  */
 
-import java.awt.Component;
-import java.awt.Event;
+import javax.swing.*;
+import java.awt.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.DefaultDesktopManager;
-import javax.swing.JInternalFrame;
-import javax.swing.JMenuItem;
-import javax.swing.KeyStroke;
 
 /**
  *

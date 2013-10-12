@@ -1,8 +1,8 @@
 package eva2.optimization.mocco;
 
 
-import eva2.gui.editor.GenericObjectEditor;
 import eva2.gui.PropertyEditorProvider;
+import eva2.gui.editor.GenericObjectEditor;
 import eva2.optimization.go.InterfaceTerminator;
 import eva2.optimization.go.MOCCOStandalone;
 import eva2.optimization.strategies.GeneticAlgorithm;
@@ -11,15 +11,10 @@ import eva2.optimization.strategies.MultiObjectiveEA;
 import eva2.optimization.tools.AbstractObjectEditor;
 import eva2.optimization.tools.GeneralOptimizationEditorProperty;
 
-import java.awt.BorderLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 
 /**
  * Created by IntelliJ IDEA.

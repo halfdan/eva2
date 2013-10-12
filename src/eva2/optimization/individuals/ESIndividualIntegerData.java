@@ -11,7 +11,7 @@ import eva2.util.annotation.Description;
 /**
  * This individual uses a real-valued genotype to code for integer values.
  */
-@Description(text="This is an ES individual suited to optimize integer values.")
+@Description(text = "This is an ES individual suited to optimize integer values.")
 public class ESIndividualIntegerData extends AbstractEAIndividual implements InterfaceESIndividual, InterfaceDataTypeInteger, java.io.Serializable {
 
     private double[] genotype;

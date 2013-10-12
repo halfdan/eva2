@@ -1,9 +1,9 @@
 package eva2.gui;
 
+import javax.swing.*;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.beans.PropertyEditor;
-import javax.swing.JCheckBox;
 
 /**
  * A checkbox for boolean editors.

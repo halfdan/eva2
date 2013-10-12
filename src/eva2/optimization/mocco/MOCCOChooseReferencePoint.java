@@ -6,10 +6,10 @@ import eva2.optimization.mocco.paretofrontviewer.InterfaceRefPointListener;
 import eva2.optimization.problems.InterfaceMultiObjectiveDeNovoProblem;
 import eva2.optimization.problems.InterfaceOptimizationObjective;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.*;
 
 /**
  * Created by IntelliJ IDEA.

@@ -6,8 +6,9 @@ import eva2.tools.BasicResourceLoader;
 import eva2.tools.EVAHELP;
 import eva2.tools.SerializedObject;
 import eva2.util.annotation.Description;
-import org.reflections.Reflections;
 
+import javax.swing.*;
+import javax.swing.plaf.basic.BasicComboBoxRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,11 +20,11 @@ import java.beans.PropertyChangeSupport;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Proxy;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Vector;
 import java.util.logging.Logger;
-import javax.swing.*;
-import javax.swing.plaf.basic.BasicComboBoxRenderer;
 
 /**
  *
@@ -352,9 +353,9 @@ public class OptimizationEditorPanel extends JPanel implements ItemListener {
             }
 
             // If the globalInfo method doesn't exist try to use the Annotation
-            if(tip == null || tip.isEmpty()) {
+            if (tip == null || tip.isEmpty()) {
                 Description description = instances.get(i).getAnnotation(Description.class);
-                if(description != null) {
+                if (description != null) {
                     tip = description.text();
                 }
             }

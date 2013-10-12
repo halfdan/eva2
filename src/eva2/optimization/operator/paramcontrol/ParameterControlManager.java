@@ -1,8 +1,8 @@
 package eva2.optimization.operator.paramcontrol;
 
 import eva2.gui.BeanInspector;
-import eva2.optimization.population.Population;
 import eva2.optimization.modules.Processor;
+import eva2.optimization.population.Population;
 import eva2.tools.Pair;
 
 import java.io.Serializable;

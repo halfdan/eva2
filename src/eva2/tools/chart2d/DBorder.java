@@ -11,7 +11,7 @@
  */
 package eva2.tools.chart2d;
 
-import java.awt.Insets;
+import java.awt.*;
 
 public class DBorder extends Insets {
 

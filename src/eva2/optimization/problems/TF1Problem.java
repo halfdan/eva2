@@ -1,7 +1,7 @@
 package eva2.optimization.problems;
 
-import eva2.gui.plot.Plot;
 import eva2.gui.PropertyFilePath;
+import eva2.gui.plot.Plot;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.InterfaceDataTypeDouble;
 import eva2.optimization.operator.constraint.InterfaceConstraint;

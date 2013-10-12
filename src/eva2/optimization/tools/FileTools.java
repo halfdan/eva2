@@ -4,21 +4,10 @@ import eva2.gui.BeanInspector;
 import eva2.tools.BasicResourceLoader;
 import eva2.tools.StringTools;
 
-import java.awt.Component;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
+import javax.swing.*;
+import java.awt.*;
+import java.io.*;
 import java.util.ArrayList;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
 
 
 /**

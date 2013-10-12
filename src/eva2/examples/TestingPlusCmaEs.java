@@ -39,5 +39,6 @@ public class TestingPlusCmaEs {
         System.out.println(esParams.getTerminator().lastTerminationMessage() + "\nFound solution: "
                 + AbstractEAIndividual.getDefaultDataString(bestIndy));
     }
-;
+
+    ;
 }

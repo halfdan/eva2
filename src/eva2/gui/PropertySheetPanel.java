@@ -13,6 +13,11 @@ package eva2.gui;
 import eva2.gui.editor.GenericObjectEditor;
 import eva2.tools.EVAHELP;
 
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,11 +27,6 @@ import java.lang.reflect.Method;
 import java.util.EventObject;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellEditor;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableModel;
 
 /**
  * There are some trick methods interpreted here. Check EvA2Notes.txt.

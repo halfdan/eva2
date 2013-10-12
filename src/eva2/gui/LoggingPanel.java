@@ -1,17 +1,15 @@
 package eva2.gui;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Point;
+import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import java.awt.*;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
-import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 /**
  * Simple logging panel that shows logs produced by EvA2
@@ -104,7 +102,7 @@ class LoggingHandler extends Handler {
 
     @Override
     public void close() throws SecurityException {
-		/*
+        /*
 		 * Nothing to close
 		 */
     }

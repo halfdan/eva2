@@ -16,8 +16,7 @@ package eva2.tools.chart2d;
  * IMPORTS
  *==========================================================================*/
 
-import java.awt.Graphics;
-import java.awt.Point;
+import java.awt.*;
 
 /*==========================================================================*
  * ABSTRACT CLASS DECLARATION

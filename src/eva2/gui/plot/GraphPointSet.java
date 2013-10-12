@@ -14,15 +14,10 @@ package eva2.gui.plot;
  * IMPORTS
  *==========================================================================*/
 
-import eva2.tools.chart2d.DArea;
-import eva2.tools.chart2d.DMeasures;
-import eva2.tools.chart2d.DPoint;
-import eva2.tools.chart2d.DPointIcon;
-import eva2.tools.chart2d.DPointSet;
+import eva2.tools.chart2d.*;
 import eva2.tools.math.Mathematics;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
+import java.awt.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 

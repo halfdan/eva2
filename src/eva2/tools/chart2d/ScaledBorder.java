@@ -2,20 +2,13 @@ package eva2.tools.chart2d;
 
 import eva2.tools.math.Mathematics;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Insets;
-import java.awt.Point;
+import javax.swing.*;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.Border;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import javax.swing.BorderFactory;
-import javax.swing.border.BevelBorder;
-import javax.swing.border.Border;
 
 /**
  * ScaledBorder puts a border around Components

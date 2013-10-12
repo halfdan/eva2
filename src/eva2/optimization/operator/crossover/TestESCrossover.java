@@ -10,12 +10,12 @@ import eva2.optimization.population.Population;
 import eva2.optimization.problems.F1Problem;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import javax.swing.*;
 
 /**
  * Created by IntelliJ IDEA.

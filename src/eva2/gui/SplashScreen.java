@@ -14,8 +14,8 @@ package eva2.gui;
 
 import eva2.tools.BasicResourceLoader;
 
-import java.awt.*;
 import javax.swing.*;
+import java.awt.*;
 
 
 class SplashScreen extends Frame {

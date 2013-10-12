@@ -36,7 +36,7 @@ public class EvAComAdapter {
     public ModuleAdapter getModuleAdapter(String selectedModuleName, InterfaceOptimizationParameters goParams, String noGuiStatsFile) {
         ModuleAdapter newModuleAdapter;
         newModuleAdapter = getLocalMainAdapter().getModuleAdapter(selectedModuleName, goParams, noGuiStatsFile);
-        
+
         return newModuleAdapter;
     }
 

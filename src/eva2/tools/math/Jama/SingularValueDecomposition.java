@@ -1,6 +1,6 @@
 package eva2.tools.math.Jama;
 
-import eva2.tools.math.Jama.util.*;
+import eva2.tools.math.Jama.util.Maths;
 
 
 /**

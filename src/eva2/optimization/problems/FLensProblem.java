@@ -10,21 +10,9 @@ import eva2.optimization.population.Population;
 import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.tools.math.RNG;
 
-import java.awt.BasicStroke;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.Shape;
-import java.awt.Stroke;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 
 class MyLensViewer extends JPanel implements InterfaceSolutionViewer {
 

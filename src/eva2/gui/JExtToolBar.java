@@ -10,11 +10,11 @@ package eva2.gui;
  *            $Author: streiche $
  */
 
-import java.awt.Insets;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import javax.swing.*;
 
 /**
  *

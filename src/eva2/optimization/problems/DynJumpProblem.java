@@ -76,7 +76,7 @@ public class DynJumpProblem extends AbstractDynTransProblem {
             shift[i] = rand.nextGaussian();
             norm += Math.pow(shift[i], 2);
         }
-		/* normalize */
+        /* normalize */
         if (norm > 0.0) {
             norm = getSeverity() / Math.sqrt(norm);
         } else {

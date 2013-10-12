@@ -2,9 +2,8 @@ package eva2.optimization.strategies;
 
 import eva2.OptimizerFactory;
 import eva2.gui.editor.GenericObjectEditor;
-import eva2.optimization.go.InterfaceTerminator;
-import eva2.optimization.population.PopulationInterface;
 import eva2.optimization.enums.PSOTopologyEnum;
+import eva2.optimization.go.InterfaceTerminator;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.InterfaceDataTypeDouble;
 import eva2.optimization.modules.OptimizationParameters;
@@ -13,6 +12,7 @@ import eva2.optimization.operator.paramcontrol.LinearParamAdaption;
 import eva2.optimization.operator.paramcontrol.ParamAdaption;
 import eva2.optimization.operator.terminators.EvaluationTerminator;
 import eva2.optimization.population.Population;
+import eva2.optimization.population.PopulationInterface;
 import eva2.optimization.problems.AbstractOptimizationProblem;
 import eva2.optimization.problems.Interface2DBorderProblem;
 import eva2.optimization.problems.InterfaceAdditionalPopulationInformer;
@@ -1104,7 +1104,7 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
     }
 
 /*
-	public String[] getAdditionalDataHeader(PopulationInterface pop) {
+    public String[] getAdditionalDataHeader(PopulationInterface pop) {
 		return new String[]{"mainSwarmSize","numActSpec","numArchived", "archivedMedCorr"};
 	}
 

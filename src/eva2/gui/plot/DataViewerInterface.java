@@ -1,7 +1,5 @@
 package eva2.gui.plot;
 
-import eva2.gui.plot.Graph;
-
 /*
  * Title:        EvA2
  * Description:

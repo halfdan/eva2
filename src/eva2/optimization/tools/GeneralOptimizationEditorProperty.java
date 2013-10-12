@@ -1,8 +1,8 @@
 package eva2.optimization.tools;
 
+import javax.swing.*;
 import java.beans.PropertyEditor;
 import java.lang.reflect.Method;
-import javax.swing.*;
 
 /**
  * Representation of an OptimizationEditor Property

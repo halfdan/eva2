@@ -1,42 +1,23 @@
 package eva2.optimization.go;
 
-import eva2.optimization.mocco.MOCCOState;
-import eva2.optimization.mocco.MOCCOParameterizeGDF;
-import eva2.optimization.mocco.MOCCOParameterizeTchebycheff;
-import eva2.optimization.mocco.MOCCOParameterizeRefPoint;
-import eva2.optimization.mocco.MOCCOChooseReferenceSolution;
-import eva2.optimization.mocco.MOCCOChooseReferencePoint;
-import eva2.optimization.mocco.MOCCOParameterizeSTEP;
-import eva2.optimization.mocco.MOCCOProblemInitialization;
-import eva2.optimization.mocco.MOCCOProblemRedefinition;
-import eva2.optimization.mocco.MOCCOParameterizeMO;
-import eva2.optimization.mocco.MOCCOChooseMOStrategy;
-import eva2.optimization.mocco.MOCCOInitialPopulationSize;
-import eva2.optimization.mocco.MOCCOParameterizeSO;
-import eva2.optimization.mocco.InterfaceProcessElement;
-import eva2.optimization.problems.InterfaceMultiObjectiveDeNovoProblem;
-import eva2.optimization.problems.AbstractMultiObjectiveOptimizationProblem;
-import eva2.optimization.problems.InterfaceOptimizationProblem;
-import eva2.optimization.problems.TF1Problem;
-import eva2.optimization.problems.InterfaceOptimizationObjective;
 import eva2.gui.JParaPanel;
 import eva2.gui.PropertyDoubleArray;
 import eva2.optimization.individuals.AbstractEAIndividual;
+import eva2.optimization.mocco.*;
 import eva2.optimization.mocco.paretofrontviewer.MOCCOViewer;
 import eva2.optimization.operator.moso.InterfaceMOSOConverter;
 import eva2.optimization.operator.moso.MOSOWeightedFitness;
 import eva2.optimization.operator.terminators.EvaluationTerminator;
 import eva2.optimization.population.Population;
+import eva2.optimization.problems.*;
 import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.optimization.strategies.IslandModelEA;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.GridLayout;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.*;
-import javax.swing.*;
 
 /**
  * Created by IntelliJ IDEA.

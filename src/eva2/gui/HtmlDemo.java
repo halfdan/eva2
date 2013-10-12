@@ -13,20 +13,15 @@ package eva2.gui;
 import eva2.EvAInfo;
 import eva2.tools.BasicResourceLoader;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.Toolkit;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import javax.swing.JEditorPane;
-import javax.swing.JFrame;
-import javax.swing.JScrollPane;
-import javax.swing.JViewport;
+import javax.swing.*;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLFrameHyperlinkEvent;
+import java.awt.*;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  *

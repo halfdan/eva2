@@ -2,7 +2,6 @@ package eva2.optimization.problems;
 
 import eva2.gui.editor.GenericObjectEditor;
 import eva2.gui.plot.TopoPlot;
-import eva2.optimization.population.PopulationInterface;
 import eva2.optimization.enums.PostProcessMethod;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.ESIndividualDoubleData;
@@ -15,6 +14,7 @@ import eva2.optimization.operator.terminators.PopulationMeasureTerminator.Change
 import eva2.optimization.operator.terminators.PopulationMeasureTerminator.DirectionTypeEnum;
 import eva2.optimization.operator.terminators.PopulationMeasureTerminator.StagnationTypeEnum;
 import eva2.optimization.population.Population;
+import eva2.optimization.population.PopulationInterface;
 import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.tools.Pair;
 import eva2.tools.ToolBox;

@@ -5,18 +5,14 @@ package eva2.gui;
  * $ $Date: 2007-11-15 14:58:12 +0100 (Thu, 15 Nov 2007) $ $Author: mkron $
  */
 
-import eva2.EvAInfo;
 import eva2.optimization.tools.FileTools;
-import eva2.tools.BasicResourceLoader;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.io.Serializable;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.event.InternalFrameAdapter;
-import javax.swing.event.InternalFrameEvent;
+import java.awt.*;
+import java.awt.event.*;
+import java.io.Serializable;
 
 /**
  *

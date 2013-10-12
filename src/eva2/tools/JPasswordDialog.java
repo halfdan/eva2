@@ -1,11 +1,9 @@
 package eva2.tools;
 
-import java.awt.Frame;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.*;
 import java.util.ResourceBundle;
-import javax.swing.*;
 
 /**
  * A modal dialog that asks the user for a user name and password.

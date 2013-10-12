@@ -1,11 +1,9 @@
 package eva2.gui.utils;
 
+import javax.swing.*;
+import javax.swing.plaf.basic.BasicButtonUI;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
-import javax.swing.Icon;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.plaf.basic.BasicButtonUI;
 
 public class VerticalButtonUI extends BasicButtonUI {
 

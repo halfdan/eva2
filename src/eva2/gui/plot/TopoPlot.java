@@ -1,17 +1,4 @@
 package eva2.gui.plot;
-/*
- * Title:        EvA2
- * Description:
- * Copyright:    Copyright (c) 2003
- * Company:      University of Tuebingen, Computer Architecture
- * @author Holger Ulmer, Felix Streichert, Hannes Planatscher
- * @version:  $Revision: 306 $
- *            $Date: 2007-12-04 14:22:52 +0100 (Tue, 04 Dec 2007) $
- *            $Author: mkron $
- */
-/*==========================================================================*
- * IMPORTS
- *==========================================================================*/
 
 import eva2.optimization.problems.Interface2DBorderProblem;
 import eva2.optimization.problems.InterfaceFirstOrderDerivableProblem;
@@ -19,13 +6,8 @@ import eva2.tools.chart2d.DRectangle;
 import eva2.tools.diagram.ColorBarCalculator;
 import eva2.tools.math.Mathematics;
 
-import java.awt.Color;
-import javax.swing.JPanel;
-
-
-/*==========================================================================*
- * CLASS DECLARATION
- *==========================================================================*/
+import javax.swing.*;
+import java.awt.*;
 
 /**
  *

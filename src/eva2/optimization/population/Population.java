@@ -1,13 +1,8 @@
 package eva2.optimization.population;
 
-import eva2.optimization.individuals.InterfaceDataTypeDouble;
-import eva2.optimization.individuals.AbstractEAIndividualComparator;
-import eva2.optimization.individuals.InterfaceESIndividual;
-import eva2.optimization.individuals.AbstractEAIndividual;
-import eva2.optimization.individuals.InterfaceGAIndividual;
 import eva2.gui.editor.GenericObjectEditor;
-import eva2.optimization.individuals.IndividualInterface;
 import eva2.optimization.go.InterfacePopulationChangedEventListener;
+import eva2.optimization.individuals.*;
 import eva2.optimization.operator.distancemetric.EuclideanMetric;
 import eva2.optimization.operator.distancemetric.InterfaceDistanceMetric;
 import eva2.optimization.operator.distancemetric.PhenotypeMetric;

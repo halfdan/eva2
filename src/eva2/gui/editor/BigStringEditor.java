@@ -15,10 +15,15 @@ package eva2.gui.editor;
 
 import eva2.gui.PropertyDialog;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.beans.*;
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import java.beans.PropertyEditor;
 
 /*==========================================================================*
  * CLASS DECLARATION

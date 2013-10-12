@@ -880,7 +880,7 @@ public class TribesPosition implements java.io.Serializable {
 
     public double calcTotalError(double objectiveFirstDim, double[] fitness) {
         /*
-    	 Take into account the objective value in the first dimension.
+         Take into account the objective value in the first dimension.
     	    	 */
         double t = Math.abs(fitness[0] - objectiveFirstDim);
 

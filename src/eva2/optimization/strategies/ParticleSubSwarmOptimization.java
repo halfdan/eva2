@@ -1,8 +1,8 @@
 package eva2.optimization.strategies;
 
-import eva2.optimization.individuals.IndividualInterface;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.ESIndividualDoubleData;
+import eva2.optimization.individuals.IndividualInterface;
 import eva2.optimization.individuals.InterfaceDataTypeDouble;
 import eva2.optimization.operator.distancemetric.EuclideanMetric;
 import eva2.optimization.population.Population;

@@ -2,14 +2,10 @@ package eva2.optimization.mocco;
 
 import eva2.optimization.go.MOCCOStandalone;
 
-import java.awt.BorderLayout;
-import java.awt.Font;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.BorderFactory;
-import javax.swing.JComponent;
-import javax.swing.JPanel;
-import javax.swing.JTextArea;
 
 /**
  * Created by IntelliJ IDEA.

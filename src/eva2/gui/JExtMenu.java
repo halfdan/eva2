@@ -10,12 +10,9 @@ package eva2.gui;
  *            $Author: streiche $
  */
 
-import java.beans.*;
-import javax.swing.Action;
-import javax.swing.Icon;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.KeyStroke;
+import javax.swing.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 /**
  *

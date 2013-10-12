@@ -17,7 +17,7 @@ import java.util.BitSet;
  * This individual uses a binary genotype to code for double values
  * using two alternative encodings.
  */
-@Description(text="This is a GA individual suited to optimize double values.")
+@Description(text = "This is a GA individual suited to optimize double values.")
 public class GAIndividualDoubleData extends AbstractEAIndividual implements InterfaceGAIndividual, InterfaceDataTypeDouble, java.io.Serializable {
 
     private double[] m_Phenotype;

@@ -11,11 +11,10 @@ package eva2.gui;
 import eva2.gui.editor.GenericObjectEditor;
 import eva2.optimization.stat.OptimizationJobList;
 
+import javax.swing.*;
 import java.beans.PropertyEditor;
 import java.beans.PropertyEditorManager;
 import java.io.Serializable;
-import javax.swing.JComponent;
-import javax.swing.JPanel;
 
 public class JParaPanel implements Serializable, PanelMaker {
 

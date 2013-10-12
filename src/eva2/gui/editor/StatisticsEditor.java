@@ -13,9 +13,12 @@ package eva2.gui.editor;
 import eva2.gui.PropertySheetPanelStat;
 import eva2.optimization.stat.GenericStatistics;
 
-import java.awt.*;
-import java.beans.*;
 import javax.swing.*;
+import java.awt.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import java.beans.PropertyEditor;
 
 public class StatisticsEditor implements PropertyEditor {
 

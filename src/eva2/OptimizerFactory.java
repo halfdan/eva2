@@ -1,41 +1,13 @@
 package eva2;
 
-import eva2.optimization.modules.OptimizationParameters;
-import eva2.optimization.operator.mutation.InterfaceMutation;
-import eva2.optimization.operator.mutation.NoMutation;
-import eva2.optimization.operator.mutation.MutateESFixedStepSize;
-import eva2.optimization.operator.mutation.MutateESCovarianceMatrixAdaption;
-import eva2.optimization.operator.mutation.MutateESGlobal;
-import eva2.optimization.operator.mutation.MutateESRankMuCMA;
-import eva2.optimization.strategies.ParticleSwarmOptimization;
-import eva2.optimization.strategies.EvolutionStrategyIPOP;
-import eva2.optimization.strategies.GradientDescentAlgorithm;
-import eva2.optimization.strategies.NelderMeadSimplex;
-import eva2.optimization.strategies.DifferentialEvolution;
-import eva2.optimization.strategies.EsDpiNiching;
-import eva2.optimization.strategies.HillClimbing;
-import eva2.optimization.strategies.EvolutionStrategies;
-import eva2.optimization.strategies.PopulationBasedIncrementalLearning;
-import eva2.optimization.strategies.EsDpiNichingCma;
-import eva2.optimization.strategies.MultiObjectiveEA;
-import eva2.optimization.strategies.GeneticAlgorithm;
-import eva2.optimization.strategies.InterfaceOptimizer;
-import eva2.optimization.strategies.Tribes;
-import eva2.optimization.strategies.SimulatedAnnealing;
-import eva2.optimization.strategies.ClusteringHillClimbing;
-import eva2.optimization.strategies.ClusterBasedNichingEA;
-import eva2.optimization.strategies.MonteCarloSearch;
-import eva2.optimization.individuals.IndividualInterface;
-import eva2.optimization.go.InterfacePopulationChangedEventListener;
-import eva2.optimization.go.InterfaceTerminator;
 import eva2.optimization.enums.DETypeEnum;
 import eva2.optimization.enums.MutateESCrossoverTypeEnum;
 import eva2.optimization.enums.PSOTopologyEnum;
 import eva2.optimization.enums.PostProcessMethod;
-import eva2.optimization.individuals.AbstractEAIndividual;
-import eva2.optimization.individuals.InterfaceDataTypeBinary;
-import eva2.optimization.individuals.InterfaceDataTypeDouble;
-import eva2.optimization.individuals.InterfaceESIndividual;
+import eva2.optimization.go.InterfacePopulationChangedEventListener;
+import eva2.optimization.go.InterfaceTerminator;
+import eva2.optimization.individuals.*;
+import eva2.optimization.modules.OptimizationParameters;
 import eva2.optimization.operator.archiving.ArchivingNSGAII;
 import eva2.optimization.operator.archiving.InformationRetrievalInserting;
 import eva2.optimization.operator.archiving.InterfaceArchiving;
@@ -46,6 +18,7 @@ import eva2.optimization.operator.crossover.CrossoverESDefault;
 import eva2.optimization.operator.crossover.InterfaceCrossover;
 import eva2.optimization.operator.crossover.NoCrossover;
 import eva2.optimization.operator.distancemetric.IndividualDataMetric;
+import eva2.optimization.operator.mutation.*;
 import eva2.optimization.operator.postprocess.InterfacePostProcessParams;
 import eva2.optimization.operator.postprocess.PostProcessParams;
 import eva2.optimization.operator.selection.InterfaceSelection;
@@ -56,7 +29,9 @@ import eva2.optimization.population.PBILPopulation;
 import eva2.optimization.population.Population;
 import eva2.optimization.problems.AbstractOptimizationProblem;
 import eva2.optimization.stat.InterfaceStatistics;
+import eva2.optimization.strategies.*;
 import eva2.tools.math.RNG;
+
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
@@ -76,11 +51,11 @@ import java.util.List;
  * while (!terminator.isTerminated(optimizer.getPopulation())) optimizer.optimize();
  * </code> </p>
  *
- * @version 0.1
- * @since 2.0
  * @author mkron
  * @author Andreas Dr&auml;ger
+ * @version 0.1
  * @date 17.04.2007
+ * @since 2.0
  */
 public class OptimizerFactory {
 
@@ -150,22 +125,22 @@ public class OptimizerFactory {
      *
      * @param mu
      * @param lambda
-     * @param plus if true this operator uses elitism otherwise a comma
-     * strategy.
+     * @param plus              if true this operator uses elitism otherwise a comma
+     *                          strategy.
      * @param mutationoperator
      * @param pm
      * @param crossoveroperator
      * @param pc
-     * @param selection environmental selection operator
+     * @param selection         environmental selection operator
      * @param problem
      * @param listener
      * @return An optimization algorithm that employs an evolution strategy.
      */
     public static final EvolutionStrategies createEvolutionStrategy(int mu,
-            int lambda, boolean plus, InterfaceMutation mutationoperator,
-            double pm, InterfaceCrossover crossoveroperator, double pc,
-            InterfaceSelection selection, AbstractOptimizationProblem problem,
-            InterfacePopulationChangedEventListener listener) {
+                                                                    int lambda, boolean plus, InterfaceMutation mutationoperator,
+                                                                    double pm, InterfaceCrossover crossoveroperator, double pc,
+                                                                    InterfaceSelection selection, AbstractOptimizationProblem problem,
+                                                                    InterfacePopulationChangedEventListener listener) {
         return createES(new EvolutionStrategies(mu, lambda, plus), mutationoperator, pm, crossoveroperator, pc, selection, problem, listener);
     }
 
@@ -175,24 +150,24 @@ public class OptimizerFactory {
      *
      * @param mu
      * @param lambda
-     * @param plus if true this operator uses elitism otherwise a comma
-     * strategy.
+     * @param plus              if true this operator uses elitism otherwise a comma
+     *                          strategy.
      * @param mutationoperator
      * @param pm
      * @param crossoveroperator
      * @param pc
-     * @param incPopSizeFact factor by which to inrease lambda ro restart,
-     * default is 2
-     * @param stagThresh	if the fitness changes below this value during a
-     * stagnation phase, a restart is initiated
+     * @param incPopSizeFact    factor by which to inrease lambda ro restart,
+     *                          default is 2
+     * @param stagThresh        if the fitness changes below this value during a
+     *                          stagnation phase, a restart is initiated
      * @param problem
      * @param listener
      * @return An optimization algorithm that employs an IPOP-ES.
      */
     public static final EvolutionStrategyIPOP createEvolutionStrategyIPOP(int mu,
-            int lambda, boolean plus, InterfaceMutation mutationoperator,
-            double pm, InterfaceCrossover crossoveroperator, double pc, double incPopSizeFact, double stagThresh,
-            AbstractOptimizationProblem problem, InterfacePopulationChangedEventListener listener) {
+                                                                          int lambda, boolean plus, InterfaceMutation mutationoperator,
+                                                                          double pm, InterfaceCrossover crossoveroperator, double pc, double incPopSizeFact, double stagThresh,
+                                                                          AbstractOptimizationProblem problem, InterfacePopulationChangedEventListener listener) {
         EvolutionStrategyIPOP esIPOP = (EvolutionStrategyIPOP) createES(new EvolutionStrategyIPOP(mu, lambda, plus), mutationoperator, pm, crossoveroperator, pc, new SelectBestIndividuals(), problem, listener);
         esIPOP.setIncPopSizeFact(incPopSizeFact);
 //		esIPOP.setStagnationGenerations(stagTimeGens);
@@ -201,9 +176,9 @@ public class OptimizerFactory {
     }
 
     private static final EvolutionStrategies createES(EvolutionStrategies theES, InterfaceMutation mutationoperator,
-            double pm, InterfaceCrossover crossoveroperator, double pc,
-            InterfaceSelection selection, AbstractOptimizationProblem problem,
-            InterfacePopulationChangedEventListener listener) {
+                                                      double pm, InterfaceCrossover crossoveroperator, double pc,
+                                                      InterfaceSelection selection, AbstractOptimizationProblem problem,
+                                                      InterfacePopulationChangedEventListener listener) {
 
         problem.initializeProblem();
 
@@ -267,12 +242,12 @@ public class OptimizerFactory {
      * multi-objective selection method within the specific optimizer. This uses
      * a standard archiving strategy (NSGAII) and InformationRetrievalInserting.
      *
-     * @param subOpt the specific optimizer to use
+     * @param subOpt      the specific optimizer to use
      * @param archiveSize maximum size of the archive
      * @param problem
      * @param listener
      * @return An optimization algorithm that employs a multi-objective
-     * optimizer
+     *         optimizer
      */
     public static MultiObjectiveEA createMultiObjectiveEA(
             InterfaceOptimizer subOpt, int archiveSize,
@@ -302,14 +277,14 @@ public class OptimizerFactory {
      * This method creates a multi-objective EA optimizer. Remember to set a
      * multi-objective selection method within the specific optimizer.
      *
-     * @param subOpt the specific optimizer to use
-     * @param archiving the archiving strategy collecting the pareto front
-     * @param archiveSize maximum size of the archive
+     * @param subOpt        the specific optimizer to use
+     * @param archiving     the archiving strategy collecting the pareto front
+     * @param archiveSize   maximum size of the archive
      * @param infoRetrieval information retrieval strategy
      * @param problem
      * @param listener
      * @return An optimization algorithm that employs a multi-objective
-     * optimizer
+     *         optimizer
      */
     public static MultiObjectiveEA createMultiObjectiveEA(
             InterfaceOptimizer subOpt, InterfaceArchiving archiving,
@@ -352,28 +327,28 @@ public class OptimizerFactory {
      * This method creates a Hill Climber algorithm with a default fixed-size
      * mutation.
      *
-     * @param pop The size of the population
-     * @param problem The problem to be optimized
+     * @param pop      The size of the population
+     * @param problem  The problem to be optimized
      * @param listener
      * @return An optimization procedure that performs hill climbing.
      */
     public static HillClimbing createHillClimber(int popSize,
-            AbstractOptimizationProblem problem,
-            InterfacePopulationChangedEventListener listener) {
+                                                 AbstractOptimizationProblem problem,
+                                                 InterfacePopulationChangedEventListener listener) {
         return createHillClimber(popSize, new MutateESFixedStepSize(0.2), problem, listener);
     }
 
     /**
      * This method creates a Hill Climber algorithm.
      *
-     * @param pop The size of the population
-     * @param problem The problem to be optimized
+     * @param pop      The size of the population
+     * @param problem  The problem to be optimized
      * @param listener
      * @return An optimization procedure that performs hill climbing.
      */
     public static HillClimbing createHillClimber(int popSize, InterfaceMutation mutator,
-            AbstractOptimizationProblem problem,
-            InterfacePopulationChangedEventListener listener) {
+                                                 AbstractOptimizationProblem problem,
+                                                 InterfacePopulationChangedEventListener listener) {
 
         problem.initializeProblem();
 
@@ -434,9 +409,9 @@ public class OptimizerFactory {
      * @param speedLim
      * @param listener
      * @param topology
-     * @see ParticleSwarmOpimization
      * @return An optimization algorithm that performs particle swarm
-     * optimization.
+     *         optimization.
+     * @see ParticleSwarmOpimization
      */
     public static ParticleSwarmOptimization createParticleSwarmOptimization(
             AbstractOptimizationProblem problem, int popsize, double phi1,
@@ -473,7 +448,7 @@ public class OptimizerFactory {
      *
      * @param problem
      * @param popsize
-     * @param alpha The parameter for the linear cooling
+     * @param alpha       The parameter for the linear cooling
      * @param temperature The initial temperature
      * @param mut
      * @param listener
@@ -556,15 +531,16 @@ public class OptimizerFactory {
     }
 
     // /////////////////////////// constructing a default OptimizerRunnable
+
     /**
      * For an optimizer identifier, return the corresponding default parameter
      * set including initialization (thats why the problem is required).
      *
-     * @param optType	optimizer identifier
-     * @param problem	corresponding optimization problem
+     * @param optType optimizer identifier
+     * @param problem corresponding optimization problem
      */
     public static OptimizationParameters getParams(final int optType,
-            AbstractOptimizationProblem problem) {
+                                                   AbstractOptimizationProblem problem) {
         switch (optType) {
             case STD_ES:
                 return standardES(problem);
@@ -625,8 +601,8 @@ public class OptimizerFactory {
      * @return a runnable optimizer
      */
     public static OptimizerRunnable getOptRunnable(final int optType,
-            AbstractOptimizationProblem problem, int fitCalls,
-            String outputFilePrefix) {
+                                                   AbstractOptimizationProblem problem, int fitCalls,
+                                                   String outputFilePrefix) {
         return getOptRunnable(optType, problem, new EvaluationTerminator(fitCalls), outputFilePrefix);
     }
 
@@ -644,8 +620,8 @@ public class OptimizerFactory {
      * @return a runnable optimizer
      */
     public static OptimizerRunnable getOptRunnable(final int optType,
-            AbstractOptimizationProblem problem, InterfaceTerminator terminator,
-            String outputFilePrefix) {
+                                                   AbstractOptimizationProblem problem, InterfaceTerminator terminator,
+                                                   String outputFilePrefix) {
         OptimizerRunnable opt = null;
         OptimizationParameters params = getParams(optType, problem);
         if (params != null) {
@@ -672,19 +648,20 @@ public class OptimizerFactory {
     }
 
     // /////////////////////////// constructing a default OptimizerRunnable
+
     /**
      * Produce a runnable optimizer from a strategy identifier, a problem
      * instance and with the current static terminator in use. Output is written
      * to a file if the prefix String is given.
      *
-     * @see #getOptRunnable(int, AbstractOptimizationProblem, int, String)
      * @param optType
      * @param problem
      * @param outputFilePrefix
      * @return a runnable optimizer
+     * @see #getOptRunnable(int, AbstractOptimizationProblem, int, String)
      */
     public static OptimizerRunnable getOptRunnable(final int optType,
-            AbstractOptimizationProblem problem, String outputFilePrefix) {
+                                                   AbstractOptimizationProblem problem, String outputFilePrefix) {
         return getOptRunnable(optType, problem, getTerminator(), outputFilePrefix);
     }
 
@@ -713,6 +690,7 @@ public class OptimizerFactory {
     }
 
     // /////////////////////// Creating default strategies
+
     /**
      * Use lambda, default random seed and terminator to produce OptimizationParameters.
      *
@@ -721,19 +699,19 @@ public class OptimizerFactory {
      * @return
      */
     public static OptimizationParameters makeESParams(EvolutionStrategies es,
-            AbstractOptimizationProblem problem) {
+                                                      AbstractOptimizationProblem problem) {
         return makeParams(es, es.getLambda(), problem, randSeed, getTerminator());
     }
 
     /**
      * Use default random seed and terminator for a parameter set.
      *
-     * @see #makeParams(InterfaceOptimizer, int, AbstractOptimizationProblem,
-     * long, InterfaceTerminator)
      * @param opt
      * @param popSize
      * @param problem
      * @return
+     * @see #makeParams(InterfaceOptimizer, int, AbstractOptimizationProblem,
+     *      long, InterfaceTerminator)
      */
     public static OptimizationParameters makeParams(InterfaceOptimizer opt, int popSize, AbstractOptimizationProblem problem) {
         return makeParams(opt, popSize, problem, randSeed, getTerminator());
@@ -742,12 +720,12 @@ public class OptimizerFactory {
     /**
      * Use default random seed and the population size of the optimizer.
      *
-     * @see #makeParams(InterfaceOptimizer, int, AbstractOptimizationProblem,
-     * long, InterfaceTerminator)
      * @param opt
      * @param popSize
      * @param problem
      * @return
+     * @see #makeParams(InterfaceOptimizer, int, AbstractOptimizationProblem,
+     *      long, InterfaceTerminator)
      */
     public static OptimizationParameters makeParams(InterfaceOptimizer opt, AbstractOptimizationProblem problem, InterfaceTerminator term) {
         return makeParams(opt, opt.getPopulation().getTargetSize(), problem, randSeed, term);
@@ -757,18 +735,18 @@ public class OptimizerFactory {
      * Set the population size, initialize the population and return a parameter
      * structure containing all given parts.
      *
-     * @see #makeParams(InterfaceOptimizer, Population,
-     * AbstractOptimizationProblem, long, InterfaceTerminator)
      * @param opt
      * @param popSize
      * @param problem
      * @param seed
      * @param term
      * @return
+     * @see #makeParams(InterfaceOptimizer, Population,
+     *      AbstractOptimizationProblem, long, InterfaceTerminator)
      */
     public static OptimizationParameters makeParams(InterfaceOptimizer opt,
-            int popSize, AbstractOptimizationProblem problem, long seed,
-            InterfaceTerminator term) {
+                                                    int popSize, AbstractOptimizationProblem problem, long seed,
+                                                    InterfaceTerminator term) {
         Population pop = new Population(popSize);
         RNG.setRandomSeed(seed);
         problem.initializePopulation(pop);
@@ -780,17 +758,17 @@ public class OptimizerFactory {
      * The result can be modified and then used to create an OptimizerRunnable,
      * which of course can simply be run.
      *
-     * @see OptimizerRunnable
      * @param opt
      * @param pop
      * @param problem
      * @param seed
      * @param term
      * @return
+     * @see OptimizerRunnable
      */
     public static OptimizationParameters makeParams(InterfaceOptimizer opt,
-            Population pop, AbstractOptimizationProblem problem, long seed,
-            InterfaceTerminator term) {
+                                                    Population pop, AbstractOptimizationProblem problem, long seed,
+                                                    InterfaceTerminator term) {
         OptimizationParameters params = new OptimizationParameters();
         params.setProblem(problem);
         opt.setProblem(problem);
@@ -802,7 +780,7 @@ public class OptimizerFactory {
     }
 
     public static OptimizerRunnable optimize(final int optType,
-            AbstractOptimizationProblem problem, String outputFilePrefix) {
+                                             AbstractOptimizationProblem problem, String outputFilePrefix) {
         return optimize(getOptRunnable(optType, problem, outputFilePrefix));
     }
 
@@ -860,7 +838,7 @@ public class OptimizerFactory {
 
     // ///////////////////////////// Optimize a given parameter instance
     public static BitSet optimizeToBinary(OptimizationParameters params,
-            String outputFilePrefix) {
+                                          String outputFilePrefix) {
         OptimizerRunnable runnable = optimize(new OptimizerRunnable(params,
                 outputFilePrefix));
         return runnable.getBinarySolution();
@@ -868,13 +846,13 @@ public class OptimizerFactory {
 
     // ///////////////////////////// Optimize using a default strategy
     public static BitSet optimizeToBinary(final int optType,
-            AbstractOptimizationProblem problem) {
+                                          AbstractOptimizationProblem problem) {
         return optimizeToBinary(optType, problem, null);
     }
 
     // ///////////////////////////// Optimize using a default strategy
     public static BitSet optimizeToBinary(final int optType,
-            AbstractOptimizationProblem problem, String outputFilePrefix) {
+                                          AbstractOptimizationProblem problem, String outputFilePrefix) {
         OptimizerRunnable runnable = optimize(optType, problem,
                 outputFilePrefix);
         return (runnable != null) ? runnable.getBinarySolution() : null;
@@ -887,7 +865,7 @@ public class OptimizerFactory {
     }
 
     public static double[] optimizeToDouble(OptimizationParameters params,
-            String outputFilePrefix) {
+                                            String outputFilePrefix) {
         OptimizerRunnable runnable = optimize(new OptimizerRunnable(params,
                 outputFilePrefix));
         return runnable.getDoubleSolution();
@@ -906,12 +884,12 @@ public class OptimizerFactory {
     }
 
     public static double[] optimizeToDouble(final int optType,
-            AbstractOptimizationProblem problem) {
+                                            AbstractOptimizationProblem problem) {
         return optimizeToDouble(optType, problem, null);
     }
 
     public static double[] optimizeToDouble(final int optType,
-            AbstractOptimizationProblem problem, String outputFilePrefix) {
+                                            AbstractOptimizationProblem problem, String outputFilePrefix) {
         OptimizerRunnable runnable = optimize(optType, problem,
                 outputFilePrefix);
         return (runnable != null) ? runnable.getDoubleSolution() : null;
@@ -929,19 +907,19 @@ public class OptimizerFactory {
     }
 
     public static IndividualInterface optimizeToInd(OptimizationParameters params,
-            String outputFilePrefix) {
+                                                    String outputFilePrefix) {
         OptimizerRunnable runnable = optimize(new OptimizerRunnable(params,
                 outputFilePrefix));
         return runnable.getResult();
     }
 
     public static IndividualInterface optimizeToInd(final int optType,
-            AbstractOptimizationProblem problem) {
+                                                    AbstractOptimizationProblem problem) {
         return optimizeToInd(optType, problem, null);
     }
 
     public static IndividualInterface optimizeToInd(final int optType,
-            AbstractOptimizationProblem problem, String outputFilePrefix) {
+                                                    AbstractOptimizationProblem problem, String outputFilePrefix) {
         OptimizerRunnable runnable = optimize(optType, problem,
                 outputFilePrefix);
         return (runnable != null) ? runnable.getResult() : null;
@@ -953,14 +931,14 @@ public class OptimizerFactory {
     }
 
     public static Population optimizeToPop(OptimizationParameters params,
-            String outputFilePrefix) {
+                                           String outputFilePrefix) {
         OptimizerRunnable runnable = optimize(new OptimizerRunnable(params,
                 outputFilePrefix));
         return runnable.getResultPopulation();
     }
 
     public static Population optimizeToPop(final int optType,
-            AbstractOptimizationProblem problem, String outputFilePrefix) {
+                                           AbstractOptimizationProblem problem, String outputFilePrefix) {
         OptimizerRunnable runnable = optimize(optType, problem,
                 outputFilePrefix);
         return (runnable != null) ? runnable.getResultPopulation() : null;
@@ -992,7 +970,7 @@ public class OptimizerFactory {
      * @return
      */
     public static Population postProcess(OptimizerRunnable runnable, int steps,
-            double sigma, int nBest) {
+                                         double sigma, int nBest) {
         PostProcessParams ppp = new PostProcessParams(steps, sigma, nBest);
         return postProcess(runnable, ppp);
     }
@@ -1006,7 +984,7 @@ public class OptimizerFactory {
      * @return
      */
     public static Population postProcess(OptimizerRunnable runnable,
-            InterfacePostProcessParams ppp) {
+                                         InterfacePostProcessParams ppp) {
         runnable.setDoRestart(true);
         runnable.setDoPostProcessOnly(true);
         runnable.setPostProcessingParams(ppp);
@@ -1017,7 +995,7 @@ public class OptimizerFactory {
     }
 
     public static List<BitSet> postProcessBinVec(int steps, double sigma,
-            int nBest) {
+                                                 int nBest) {
         return (lastRunnable != null) ? postProcessBinVec(lastRunnable,
                 new PostProcessParams(steps, sigma, nBest)) : null;
     }
@@ -1029,7 +1007,7 @@ public class OptimizerFactory {
     }
 
     public static List<BitSet> postProcessBinVec(OptimizerRunnable runnable,
-            int steps, double sigma, int nBest) {
+                                                 int steps, double sigma, int nBest) {
         return postProcessBinVec(runnable, new PostProcessParams(steps, sigma,
                 nBest));
     }
@@ -1043,7 +1021,7 @@ public class OptimizerFactory {
      * @return
      */
     public static List<BitSet> postProcessBinVec(OptimizerRunnable runnable,
-            InterfacePostProcessParams ppp) {
+                                                 InterfacePostProcessParams ppp) {
         Population resPop = postProcess(runnable, ppp);
         List<BitSet> ret = new ArrayList<BitSet>(resPop.size());
         for (Object o : resPop) {
@@ -1056,7 +1034,7 @@ public class OptimizerFactory {
     }
 
     public static List<double[]> postProcessDblVec(int steps, double sigma,
-            int nBest) {
+                                                   int nBest) {
         return (lastRunnable == null) ? null : postProcessDblVec(lastRunnable,
                 new PostProcessParams(steps, sigma, nBest));
     }
@@ -1096,7 +1074,7 @@ public class OptimizerFactory {
     }
 
     public static List<AbstractEAIndividual> postProcessIndVec(int steps,
-            double sigma, int nBest) {
+                                                               double sigma, int nBest) {
         return (lastRunnable != null) ? postProcessIndVec(lastRunnable,
                 new PostProcessParams(steps, sigma, nBest)) : null;
     }
@@ -1137,6 +1115,7 @@ public class OptimizerFactory {
     }
 
     ///////////////////////////// termination management
+
     /**
      * Replace the current user-defined terminator by the given one.
      *
@@ -1154,7 +1133,7 @@ public class OptimizerFactory {
      * the new one is used without conjunction.
      *
      * @param newTerm a new InterfaceTerminator instance
-     * @param bAnd indicate the boolean combination
+     * @param bAnd    indicate the boolean combination
      */
     public static void addTerminator(InterfaceTerminator newTerm, boolean bAnd) {
         if (OptimizerFactory.userTerm == null) {
@@ -1185,11 +1164,12 @@ public class OptimizerFactory {
     }
 
     ///////////////////////////// default parameters
+
     /**
      * Create a standard multi-start hill-climber parameter set with 50 initial
      * individuals.
      *
-     * @return	a standard multi-start hill-climber
+     * @return a standard multi-start hill-climber
      */
     public static OptimizationParameters hillClimbing(
             AbstractOptimizationProblem problem) {
@@ -1200,7 +1180,7 @@ public class OptimizerFactory {
      * Create a standard multi-start hill-climber parameter set with the given
      * number of individuals.
      *
-     * @return	a standard multi-start hill-climber
+     * @return a standard multi-start hill-climber
      */
     public static OptimizationParameters hillClimbing(
             AbstractOptimizationProblem problem, int popSize) {
@@ -1226,7 +1206,7 @@ public class OptimizerFactory {
      * @return
      */
     public static OptimizationParameters createCbn(AbstractOptimizationProblem problem, InterfaceOptimizer opt,
-            double clusterSigma, int minClustSize, int maxSpecSize, int haltingWindowLength, double haltingWindowEpsilon, int popSize) {
+                                                   double clusterSigma, int minClustSize, int maxSpecSize, int haltingWindowLength, double haltingWindowEpsilon, int popSize) {
         return createCbn(problem, opt, new ClusteringDensityBased(clusterSigma, minClustSize), maxSpecSize,
                 new ClusteringDensityBased(clusterSigma, minClustSize), haltingWindowLength, haltingWindowEpsilon, popSize);
     }
@@ -1244,7 +1224,7 @@ public class OptimizerFactory {
     }
 
     public static OptimizationParameters createCbnPSO(AbstractOptimizationProblem problem, double clusterSigma, int minClustSize,
-            int maxSpecSize, int haltingWindowLength, double haltingWindowEpsilon, int popSize) {
+                                                      int maxSpecSize, int haltingWindowLength, double haltingWindowEpsilon, int popSize) {
         OptimizationParameters psoParams = standardPSO(problem);
         ParticleSwarmOptimization pso = (ParticleSwarmOptimization) psoParams.getOptimizer();
         ClusteringDensityBased clust = new ClusteringDensityBased(clusterSigma, minClustSize,
@@ -1266,8 +1246,8 @@ public class OptimizerFactory {
      * @return
      */
     public static OptimizationParameters createCbn(AbstractOptimizationProblem problem, InterfaceOptimizer opt,
-            InterfaceClustering clustDifferentiate, int maxSpecSize, InterfaceClustering clustMerge, int haltingWindowLength,
-            double haltingWindowEpsilon, int popSize) {
+                                                   InterfaceClustering clustDifferentiate, int maxSpecSize, InterfaceClustering clustMerge, int haltingWindowLength,
+                                                   double haltingWindowEpsilon, int popSize) {
         ClusterBasedNichingEA cbn = new ClusterBasedNichingEA();
         cbn.setOptimizer(opt);
         cbn.setMergingCA(clustMerge);
@@ -1323,7 +1303,6 @@ public class OptimizerFactory {
     }
 
     /**
-     *
      * @param problem
      * @return
      */
@@ -1364,7 +1343,7 @@ public class OptimizerFactory {
      * @return
      */
     public static OptimizationParameters clusteringHillClimbingNM(AbstractOptimizationProblem problem,
-            int evalCycle, int popSize, double minImprovement, double sigmaClust) {
+                                                                  int evalCycle, int popSize, double minImprovement, double sigmaClust) {
         return clusteringHillClimbing(problem, evalCycle, popSize, minImprovement,
                 PostProcessMethod.nelderMead, 0.01, 0.00000001, sigmaClust);
     }
@@ -1637,7 +1616,7 @@ public class OptimizerFactory {
      * @return
      */
     private static boolean assertIndyType(AbstractOptimizationProblem prob,
-            Class<InterfaceESIndividual> cls) {
+                                          Class<InterfaceESIndividual> cls) {
         return cls.isAssignableFrom(prob.getIndividualTemplate().getClass());
     }
 

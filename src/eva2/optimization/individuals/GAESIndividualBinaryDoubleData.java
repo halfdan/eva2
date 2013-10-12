@@ -12,7 +12,7 @@ import java.util.BitSet;
 /**
  * This individual combines a binary and a real-valued phenotype.
  */
-@Description(text="This is a mixed data type combining a BitSet and a real-valued vector.")
+@Description(text = "This is a mixed data type combining a BitSet and a real-valued vector.")
 public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual implements InterfaceDataTypeBinary, InterfaceDataTypeDouble, java.io.Serializable {
 
     private InterfaceDataTypeDouble m_Numbers = new ESIndividualDoubleData();

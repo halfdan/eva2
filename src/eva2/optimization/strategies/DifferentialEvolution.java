@@ -2,8 +2,8 @@ package eva2.optimization.strategies;
 
 import eva2.gui.BeanInspector;
 import eva2.gui.editor.GenericObjectEditor;
-import eva2.optimization.go.InterfacePopulationChangedEventListener;
 import eva2.optimization.enums.DETypeEnum;
+import eva2.optimization.go.InterfacePopulationChangedEventListener;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.InterfaceDataTypeDouble;
 import eva2.optimization.operator.selection.replacement.ReplacementCrowding;
@@ -31,7 +31,7 @@ import java.util.Vector;
  * dynamically changing problems. If an individual reaches the age limit, it is
  * doomed and replaced by the next challenge vector, even if its worse.
  */
-@Description(text="Differential Evolution using a steady-state population scheme.")
+@Description(text = "Differential Evolution using a steady-state population scheme.")
 public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serializable {
 
     protected Population population = new Population();

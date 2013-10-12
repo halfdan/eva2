@@ -2,12 +2,7 @@ package eva2.optimization.operator.distancemetric;
 
 
 import eva2.gui.BeanInspector;
-import eva2.optimization.individuals.AbstractEAIndividual;
-import eva2.optimization.individuals.InterfaceDataTypeBinary;
-import eva2.optimization.individuals.InterfaceDataTypeDouble;
-import eva2.optimization.individuals.InterfaceDataTypeInteger;
-import eva2.optimization.individuals.InterfaceDataTypePermutation;
-import eva2.optimization.individuals.InterfaceDataTypeProgram;
+import eva2.optimization.individuals.*;
 
 import java.util.BitSet;
 

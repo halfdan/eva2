@@ -2,6 +2,8 @@ package eva2.tools;
 
 import eva2.gui.BeanInspector;
 
+import javax.management.MBeanServer;
+import javax.management.ObjectName;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -10,15 +12,9 @@ import java.lang.management.ManagementFactory;
 import java.lang.reflect.Constructor;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
-import javax.management.MBeanServer;
-import javax.management.ObjectName;
 
 
 /**

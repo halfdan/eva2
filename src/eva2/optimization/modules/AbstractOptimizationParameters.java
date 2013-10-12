@@ -1,8 +1,8 @@
 package eva2.optimization.modules;
 
 import eva2.gui.BeanInspector;
-import eva2.optimization.go.InterfaceOptimizationParameters;
 import eva2.optimization.go.InterfaceNotifyOnInformers;
+import eva2.optimization.go.InterfaceOptimizationParameters;
 import eva2.optimization.go.InterfacePopulationChangedEventListener;
 import eva2.optimization.go.InterfaceTerminator;
 import eva2.optimization.operator.postprocess.InterfacePostProcessParams;

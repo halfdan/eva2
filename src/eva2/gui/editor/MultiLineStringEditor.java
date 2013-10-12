@@ -3,8 +3,11 @@ package eva2.gui.editor;
 import eva2.gui.MultiLineString;
 
 import java.awt.*;
-import java.awt.event.*;
-import java.beans.*;
+import java.awt.event.TextEvent;
+import java.awt.event.TextListener;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import java.beans.PropertyEditor;
 
 
 /**

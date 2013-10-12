@@ -4,20 +4,11 @@ import eva2.tools.Pair;
 import eva2.tools.StringTools;
 import eva2.tools.chart2d.SlimRect;
 
-import java.awt.Color;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.*;
 import java.util.List;
-import java.util.SortedSet;
-import java.util.TreeSet;
-import javax.swing.BoxLayout;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 /**
  * A class representing the legend of a plot. It is created from a list of

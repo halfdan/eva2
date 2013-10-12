@@ -1,19 +1,22 @@
 package eva2.optimization.operator.mutation;
 
-import eva2.gui.*;
+import eva2.gui.PropertyEditorProvider;
 import eva2.gui.editor.GenericObjectEditor;
 import eva2.optimization.tools.AbstractObjectEditor;
 import eva2.optimization.tools.GeneralGEOFaker;
 import eva2.optimization.tools.GeneralOptimizationEditorProperty;
 import eva2.tools.BasicResourceLoader;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.beans.*;
-import javax.swing.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import java.beans.PropertyEditor;
 
 /**
  * Created by IntelliJ IDEA.

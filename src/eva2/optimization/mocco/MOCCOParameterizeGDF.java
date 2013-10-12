@@ -1,9 +1,9 @@
 package eva2.optimization.mocco;
 
 
-import eva2.gui.editor.GenericObjectEditor;
 import eva2.gui.PropertyDoubleArray;
 import eva2.gui.PropertyEditorProvider;
+import eva2.gui.editor.GenericObjectEditor;
 import eva2.optimization.go.InterfaceTerminator;
 import eva2.optimization.go.MOCCOStandalone;
 import eva2.optimization.individuals.AbstractEAIndividual;
@@ -16,11 +16,11 @@ import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.optimization.tools.AbstractObjectEditor;
 import eva2.optimization.tools.GeneralOptimizationEditorProperty;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import javax.swing.*;
 
 /**
  * Created by IntelliJ IDEA.
