@@ -33,7 +33,7 @@ public class StatisticUtils {
         double av1 = 0.0, av2 = 0.0, y11 = 0.0, y22 = 0.0, y12 = 0.0, c;
         int n = y1.length;
         if (n != y2.length) {
-            throw new RuntimeException("Error, mismatching vectors for correlation calculation in StatisticUtils.correlation(double[], double[])");
+            throw new IllegalArgumentException("Error, mismatching vectors for correlation calculation in StatisticUtils.correlation(double[], double[])");
         }
 
         if (n <= 1) {
