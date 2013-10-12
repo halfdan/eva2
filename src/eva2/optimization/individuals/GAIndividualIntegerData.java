@@ -16,7 +16,7 @@ import java.util.BitSet;
  * This individual uses a binary genotype to code for binary values using
  * two alternative encodings.
  */
-@Description(text="This is a GA individual suited to optimize int values.")
+@Description(text = "This is a GA individual suited to optimize int values.")
 public class GAIndividualIntegerData extends AbstractEAIndividual implements InterfaceGAIndividual, InterfaceDataTypeInteger, java.io.Serializable {
 
     private int[] phenotype;

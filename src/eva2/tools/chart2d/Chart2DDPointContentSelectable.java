@@ -1,16 +1,16 @@
 package eva2.tools.chart2d;
 
 
-import eva2.gui.plot.InterfaceDPointWithContent;
 import eva2.gui.InterfaceSelectablePointIcon;
+import eva2.gui.plot.InterfaceDPointWithContent;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.mocco.paretofrontviewer.InterfaceRefSolutionListener;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import javax.swing.*;
 
 /**
  * Created by IntelliJ IDEA.

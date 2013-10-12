@@ -17,7 +17,8 @@ import eva2.tools.chart2d.Chart2DDPointIconCircle;
 import eva2.tools.chart2d.Chart2DDPointIconText;
 import eva2.tools.chart2d.DPoint;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.IOException;
 
 /**
  * This method implements the clustering based subdivision

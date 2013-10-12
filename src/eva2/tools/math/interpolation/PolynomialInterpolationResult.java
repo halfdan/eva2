@@ -34,7 +34,7 @@ public class PolynomialInterpolationResult {
     public double yError = Double.NaN;
 
 	/*------------------------------------------------------------------------*
-	 * constructor
+     * constructor
 	 *------------------------------------------------------------------------*/
 
     public PolynomialInterpolationResult() {

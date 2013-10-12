@@ -4,6 +4,7 @@ package eva2.optimization.tools;
 import eva2.gui.editor.GenericObjectEditor;
 import eva2.tools.EVAHELP;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,7 +14,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.*;
 import java.util.ArrayList;
-import javax.swing.*;
 
 /**
  * Created by IntelliJ IDEA.

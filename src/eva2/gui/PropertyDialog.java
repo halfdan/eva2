@@ -9,10 +9,9 @@ import eva2.EvAInfo;
 import eva2.tools.BasicResourceLoader;
 import eva2.tools.EVAHELP;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
+import javax.swing.*;
+import java.awt.*;
 import java.beans.PropertyEditor;
-import javax.swing.JDialog;
 
 /**
  *

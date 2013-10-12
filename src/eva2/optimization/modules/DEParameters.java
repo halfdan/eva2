@@ -1,8 +1,8 @@
 package eva2.optimization.modules;
 
 
-import eva2.optimization.go.InterfaceOptimizationParameters;
 import eva2.optimization.enums.DETypeEnum;
+import eva2.optimization.go.InterfaceOptimizationParameters;
 import eva2.optimization.operator.terminators.EvaluationTerminator;
 import eva2.optimization.population.Population;
 import eva2.optimization.problems.F1Problem;

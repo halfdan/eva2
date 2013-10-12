@@ -1,15 +1,9 @@
 package eva2.optimization.problems;
 
-import eva2.optimization.individuals.InterfaceDataTypeInteger;
-import eva2.optimization.individuals.InterfaceDataTypeBinary;
-import eva2.optimization.individuals.ESIndividualDoubleData;
-import eva2.optimization.individuals.InterfaceDataTypeDouble;
-import eva2.optimization.individuals.GIIndividualIntegerData;
-import eva2.optimization.individuals.GAIndividualBinaryData;
-import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.OptimizerFactory;
 import eva2.OptimizerRunnable;
 import eva2.gui.BeanInspector;
+import eva2.optimization.individuals.*;
 import eva2.optimization.operator.postprocess.InterfacePostProcessParams;
 import eva2.optimization.operator.postprocess.PostProcess;
 import eva2.optimization.operator.postprocess.PostProcessParams;
@@ -19,8 +13,8 @@ import eva2.optimization.operator.terminators.PopulationMeasureTerminator.Change
 import eva2.optimization.operator.terminators.PopulationMeasureTerminator.DirectionTypeEnum;
 import eva2.optimization.operator.terminators.PopulationMeasureTerminator.StagnationTypeEnum;
 import eva2.optimization.population.Population;
-import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.optimization.stat.InterfaceTextListener;
+import eva2.optimization.strategies.InterfaceOptimizer;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;

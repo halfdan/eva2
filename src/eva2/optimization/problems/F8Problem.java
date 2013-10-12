@@ -1,10 +1,10 @@
 package eva2.optimization.problems;
 
-import eva2.optimization.population.PopulationInterface;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.operator.distancemetric.EuclideanMetric;
 import eva2.optimization.operator.postprocess.SolutionHistogram;
 import eva2.optimization.population.Population;
+import eva2.optimization.population.PopulationInterface;
 import eva2.tools.ToolBox;
 import eva2.tools.math.Mathematics;
 

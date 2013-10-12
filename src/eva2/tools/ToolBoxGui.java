@@ -1,8 +1,7 @@
 package eva2.tools;
 
-import java.awt.Component;
-import java.awt.Toolkit;
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * Some helper methods connected to the GUI.

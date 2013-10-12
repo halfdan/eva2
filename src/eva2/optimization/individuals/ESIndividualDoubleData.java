@@ -15,7 +15,7 @@ import eva2.util.annotation.Description;
 /**
  * This individual uses a real-valued genotype to code for double values.
  */
-@Description(text="This is an ES individual suited to optimize double values.")
+@Description(text = "This is an ES individual suited to optimize double values.")
 public class ESIndividualDoubleData extends AbstractEAIndividual implements InterfaceESIndividual, InterfaceDataTypeDouble, java.io.Serializable {
 
     private double[] genotype;

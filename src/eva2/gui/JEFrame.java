@@ -10,16 +10,13 @@ package eva2.gui;
  *            $Author: streiche $
  */
 
-import java.awt.Event;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-import javax.swing.AbstractAction;
-import javax.swing.JComponent;
-import javax.swing.JInternalFrame;
-import javax.swing.KeyStroke;
+import javax.swing.*;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
 public class JEFrame extends JInternalFrame {
     private boolean closeAllOnClose = false;

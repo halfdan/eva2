@@ -8,12 +8,7 @@ import eva2.optimization.individuals.InterfaceGAIndividual;
 import eva2.optimization.population.Population;
 import eva2.tools.Pair;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.BitSet;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class BayNet {
 

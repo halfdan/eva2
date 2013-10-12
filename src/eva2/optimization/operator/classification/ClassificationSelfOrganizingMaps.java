@@ -3,10 +3,10 @@ package eva2.optimization.operator.classification;
 import eva2.tools.chart2d.*;
 import eva2.tools.math.RNG;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import javax.swing.*;
 
 /**
  * Self-organizing maps, a simple, but easy to visualize method

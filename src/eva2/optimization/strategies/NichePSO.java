@@ -3,10 +3,9 @@ package eva2.optimization.strategies;
 import eva2.OptimizerFactory;
 import eva2.gui.editor.GenericObjectEditor;
 import eva2.gui.plot.TopoPlot;
+import eva2.optimization.enums.PSOTopologyEnum;
 import eva2.optimization.go.InterfacePopulationChangedEventListener;
 import eva2.optimization.go.InterfaceTerminator;
-import eva2.optimization.population.PopulationInterface;
-import eva2.optimization.enums.PSOTopologyEnum;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.InterfaceDataTypeDouble;
 import eva2.optimization.modules.OptimizationParameters;
@@ -25,32 +24,14 @@ import eva2.optimization.operator.paramcontrol.ParamAdaption;
 import eva2.optimization.operator.paramcontrol.ParameterControlManager;
 import eva2.optimization.operator.terminators.EvaluationTerminator;
 import eva2.optimization.population.Population;
+import eva2.optimization.population.PopulationInterface;
 import eva2.optimization.population.SolutionSet;
-import eva2.optimization.problems.AbstractOptimizationProblem;
-import eva2.optimization.problems.FM0Problem;
-import eva2.optimization.problems.Interface2DBorderProblem;
-import eva2.optimization.problems.InterfaceAdditionalPopulationInformer;
-import eva2.optimization.problems.InterfaceMultimodalProblem;
-import eva2.optimization.problems.InterfaceMultimodalProblemKnown;
-import eva2.optimization.problems.InterfaceOptimizationProblem;
+import eva2.optimization.problems.*;
 import eva2.tools.SelectedTag;
-import eva2.tools.chart2d.Chart2DDPointIconCircle;
-import eva2.tools.chart2d.Chart2DDPointIconContent;
-import eva2.tools.chart2d.Chart2DDPointIconCross;
-import eva2.tools.chart2d.Chart2DDPointIconPoint;
-import eva2.tools.chart2d.Chart2DDPointIconText;
-import eva2.tools.chart2d.DElement;
-import eva2.tools.chart2d.DPoint;
-import eva2.tools.chart2d.DPointIcon;
-import eva2.tools.chart2d.DPointSet;
+import eva2.tools.chart2d.*;
 import eva2.util.annotation.Description;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -94,7 +75,7 @@ import java.util.Vector;
  * Yilmaz. Particle Swarms for Multimodal Optimization. In: ICANNGA (1), Seiten
  * 366�375, 2007
  */
-@Description(text="A Niching Particle Swarm Optimizer")
+@Description(text = "A Niching Particle Swarm Optimizer")
 public class NichePSO implements InterfaceAdditionalPopulationInformer, InterfaceOptimizer, java.io.Serializable {
 
     /**

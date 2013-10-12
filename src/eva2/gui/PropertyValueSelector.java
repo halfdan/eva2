@@ -5,11 +5,8 @@ package eva2.gui;
  * $Date: 2007-05-04 14:22:16 +0200 (Fri, 04 May 2007) $ $Author: mkron $
  */
 
+import javax.swing.*;
 import java.beans.PropertyEditor;
-import javax.swing.BorderFactory;
-import javax.swing.ComboBoxModel;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JComboBox;
 
 public class PropertyValueSelector extends JComboBox {
 

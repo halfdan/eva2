@@ -2,11 +2,7 @@ package eva2.optimization.problems;
 
 import eva2.gui.editor.GenericObjectEditor;
 import eva2.optimization.individuals.AbstractEAIndividual;
-import eva2.optimization.operator.constraint.AbstractConstraint;
-import eva2.optimization.operator.constraint.ConstraintCollection;
-import eva2.optimization.operator.constraint.ConstraintHandlingEnum;
-import eva2.optimization.operator.constraint.ConstraintRelationEnum;
-import eva2.optimization.operator.constraint.GenericConstraint;
+import eva2.optimization.operator.constraint.*;
 
 import java.util.Vector;
 

@@ -19,7 +19,7 @@ import java.util.Comparator;
  * @author mkron
  * @see #AbstractEAIndividual().isDominatingFitness(double[], double[])
  */
-@eva2.util.annotation.Description(text="A comparator class for general EA individuals. Compares individuals based on their fitness in context of minimization.")
+@eva2.util.annotation.Description(text = "A comparator class for general EA individuals. Compares individuals based on their fitness in context of minimization.")
 public class AbstractEAIndividualComparator implements Comparator<Object>, Serializable {
     // flag whether a data field should be used.
     private String indyDataKey = "";

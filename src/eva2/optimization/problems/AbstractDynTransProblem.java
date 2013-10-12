@@ -170,7 +170,7 @@ public abstract class AbstractDynTransProblem extends AbstractSynchronousOptimiz
 
     public void setProblem(InterfaceOptimizationProblem prob) {
         this.prob = prob;
-		/* to get the right values for problemDimension and Range */
+        /* to get the right values for problemDimension and Range */
         Population pop = new Population();
         pop.setTargetSize(1);
         prob.initializePopulation(pop);

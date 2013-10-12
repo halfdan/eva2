@@ -1,8 +1,8 @@
 package eva2.optimization.operator.mutation;
 
 
-import eva2.optimization.individuals.IndividualInterface;
 import eva2.optimization.individuals.AbstractEAIndividual;
+import eva2.optimization.individuals.IndividualInterface;
 import eva2.optimization.individuals.InterfaceGPIndividual;
 import eva2.optimization.population.Population;
 import eva2.optimization.problems.InterfaceOptimizationProblem;

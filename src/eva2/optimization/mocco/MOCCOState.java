@@ -12,7 +12,7 @@ import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.optimization.strategies.MultiObjectiveEA;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.ArrayList;
 
 /**

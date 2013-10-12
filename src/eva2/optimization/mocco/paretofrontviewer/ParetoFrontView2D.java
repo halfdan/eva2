@@ -8,18 +8,13 @@ import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
 import eva2.optimization.problems.InterfaceMultiObjectiveDeNovoProblem;
 import eva2.optimization.problems.InterfaceOptimizationObjective;
-import eva2.tools.chart2d.Chart2DDPointContentSelectable;
-import eva2.tools.chart2d.Chart2DDPointIconCross;
-import eva2.tools.chart2d.Chart2DDPointIconPoint;
-import eva2.tools.chart2d.DPoint;
-import eva2.tools.chart2d.DPointIcon;
-import eva2.tools.chart2d.ScaledBorder;
+import eva2.tools.chart2d.*;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import javax.swing.*;
 
 
 /**

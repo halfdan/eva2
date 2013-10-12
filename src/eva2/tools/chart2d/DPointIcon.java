@@ -10,7 +10,7 @@ package eva2.tools.chart2d;
  *  Copyright (c) Dept. Computer Architecture, University of Tuebingen, Germany
  */
 
-import java.awt.Graphics;
+import java.awt.*;
 
 /**
  * A simple interface which can be used to paint certain icons at DPoints

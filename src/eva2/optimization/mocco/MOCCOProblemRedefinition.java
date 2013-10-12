@@ -5,10 +5,10 @@ import eva2.gui.JParaPanel;
 import eva2.optimization.go.MOCCOStandalone;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.*;
 
 /**
  * Created by IntelliJ IDEA.

@@ -1,6 +1,6 @@
 package eva2.gui;
 
-import javax.swing.JComponent;
+import javax.swing.*;
 
 /**
  * Simple helper interface.

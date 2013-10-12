@@ -1,12 +1,11 @@
 package eva2.gui;
 
+import javax.swing.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.beans.PropertyEditor;
-import javax.swing.BorderFactory;
-import javax.swing.JTextField;
 
 /**
  * A text property editor view. Updates the editor on key release and lost focus

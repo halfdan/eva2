@@ -1,31 +1,15 @@
 package eva2.gui.plot;
 
-import eva2.gui.*;
+import eva2.gui.Exp;
+import eva2.gui.InterfaceSelectablePointIcon;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.mocco.paretofrontviewer.InterfaceRefPointListener;
 import eva2.tools.ToolBoxGui;
-import eva2.tools.chart2d.Chart2DDPointIconCircle;
-import eva2.tools.chart2d.Chart2DDPointIconContent;
-import eva2.tools.chart2d.Chart2DDPointIconCross;
-import eva2.tools.chart2d.Chart2DDPointIconPoint;
-import eva2.tools.chart2d.Chart2DDPointIconText;
-import eva2.tools.chart2d.DArea;
-import eva2.tools.chart2d.DBorder;
-import eva2.tools.chart2d.DFunction;
-import eva2.tools.chart2d.DPoint;
-import eva2.tools.chart2d.DPointIcon;
-import eva2.tools.chart2d.DPointSet;
-import eva2.tools.chart2d.ScaledBorder;
+import eva2.tools.chart2d.*;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Point;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.InputEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
@@ -35,9 +19,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JFileChooser;
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
 
 /**
  *

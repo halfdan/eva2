@@ -21,8 +21,8 @@ import eva2.optimization.strategies.GeneticAlgorithm;
 import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.tools.math.RNG;
 
-import java.awt.BorderLayout;
-import java.awt.List;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -32,9 +32,8 @@ import java.net.InetAddress;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import javax.swing.*;
 
-@eva2.util.annotation.Description(text="This is a simple example framework for Evolutionary Algorithms.")
+@eva2.util.annotation.Description(text = "This is a simple example framework for Evolutionary Algorithms.")
 public class GOStandaloneVersion implements InterfaceGOStandalone, InterfacePopulationChangedEventListener, java.io.Serializable {
 
     // Interface GUI Stuff

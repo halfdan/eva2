@@ -10,9 +10,9 @@ package eva2.optimization.modules;
  *            $Author: mkron $
  */
 
+import eva2.optimization.OptimizationStateListener;
 import eva2.optimization.go.InterfaceOptimizationParameters;
 import eva2.optimization.go.InterfaceProcessor;
-import eva2.optimization.OptimizationStateListener;
 
 import java.io.Serializable;
 import java.util.ArrayList;

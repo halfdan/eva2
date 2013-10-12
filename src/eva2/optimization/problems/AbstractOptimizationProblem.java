@@ -1,8 +1,7 @@
 package eva2.optimization.problems;
 
-import eva2.optimization.go.InterfaceTerminator;
-import eva2.optimization.population.PopulationInterface;
 import eva2.optimization.enums.PostProcessMethod;
+import eva2.optimization.go.InterfaceTerminator;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.InterfaceDataTypeDouble;
 import eva2.optimization.operator.cluster.ClusteringDensityBased;
@@ -22,19 +21,17 @@ import eva2.optimization.operator.terminators.PopulationMeasureTerminator.Change
 import eva2.optimization.operator.terminators.PopulationMeasureTerminator.DirectionTypeEnum;
 import eva2.optimization.operator.terminators.PopulationMeasureTerminator.StagnationTypeEnum;
 import eva2.optimization.population.Population;
+import eva2.optimization.population.PopulationInterface;
 import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.tools.ToolBox;
 
-import java.awt.BorderLayout;
+import javax.swing.*;
+import java.awt.*;
 import java.io.Serializable;
 import java.util.Vector;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Semaphore;
-import javax.swing.JComponent;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 
 /**
  * Created by IntelliJ IDEA.

@@ -8,14 +8,14 @@ package eva2.gui;
 import eva2.optimization.go.InterfaceNotifyOnInformers;
 import eva2.optimization.problems.InterfaceAdditionalPopulationInformer;
 
+import javax.swing.*;
+import javax.swing.plaf.basic.BasicButtonUI;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
-import javax.swing.*;
-import javax.swing.plaf.basic.BasicButtonUI;
 
 /**
  * Produces the main EvA2 frame and a tool bar instance. TODO This class should be removed

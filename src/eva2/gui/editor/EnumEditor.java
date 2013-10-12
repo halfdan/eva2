@@ -2,11 +2,11 @@ package eva2.gui.editor;
 
 import eva2.gui.PropertyValueSelector;
 
-import java.awt.BorderLayout;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyEditorSupport;
-import javax.swing.JFrame;
 
 /**
  * Created by IntelliJ IDEA.

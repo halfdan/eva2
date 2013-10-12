@@ -1,8 +1,8 @@
 package eva2.optimization.strategies;
 
 import eva2.gui.BeanInspector;
-import eva2.optimization.go.InterfacePopulationChangedEventListener;
 import eva2.optimization.enums.BOAScoringMethods;
+import eva2.optimization.go.InterfacePopulationChangedEventListener;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.GAIndividualBinaryData;
 import eva2.optimization.individuals.InterfaceDataTypeBinary;
@@ -18,12 +18,7 @@ import eva2.tools.math.BayNet;
 import eva2.tools.math.RNG;
 import eva2.util.annotation.Description;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.Writer;
+import java.io.*;
 import java.text.DateFormat;
 import java.util.BitSet;
 import java.util.Date;
@@ -42,7 +37,7 @@ import java.util.logging.Logger;
  *
  * @author seitz
  */
-@Description(text="Basic implementation of the Bayesian Optimization Algorithm based on the works by Martin Pelikan and David E. Goldberg.")
+@Description(text = "Basic implementation of the Bayesian Optimization Algorithm based on the works by Martin Pelikan and David E. Goldberg.")
 public class BOA implements InterfaceOptimizer, java.io.Serializable {
     private static final Logger LOGGER = Logger.getLogger(BOA.class.getName());
     transient private InterfacePopulationChangedEventListener m_Listener = null;

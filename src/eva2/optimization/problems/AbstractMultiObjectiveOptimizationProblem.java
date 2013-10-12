@@ -2,7 +2,6 @@ package eva2.optimization.problems;
 
 import eva2.gui.plot.GraphPointSet;
 import eva2.gui.plot.Plot;
-import eva2.optimization.population.PopulationInterface;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.ESIndividualDoubleData;
 import eva2.optimization.operator.archiving.ArchivingAllDominating;
@@ -12,17 +11,18 @@ import eva2.optimization.operator.moso.MOSONoConvert;
 import eva2.optimization.operator.paretofrontmetrics.InterfaceParetoFrontMetric;
 import eva2.optimization.operator.paretofrontmetrics.MetricS;
 import eva2.optimization.population.Population;
+import eva2.optimization.population.PopulationInterface;
 import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.tools.ToolBox;
 import eva2.tools.chart2d.Chart2DDPointIconCircle;
 import eva2.tools.chart2d.Chart2DDPointIconText;
 import eva2.tools.chart2d.DPoint;
 
-import java.awt.Color;
+import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Vector;
 import java.util.concurrent.Semaphore;
-import javax.swing.JFrame;
 
 /**
  * Created by IntelliJ IDEA.

@@ -8,7 +8,6 @@ import eva2.gui.editor.GenericObjectEditor;
  * done at startup time and accelerates later reloading.
  *
  * @author mkron
- *
  */
 public class ClassPreloader implements Runnable {
 

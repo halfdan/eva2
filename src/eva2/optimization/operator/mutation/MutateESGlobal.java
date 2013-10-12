@@ -1,10 +1,10 @@
 package eva2.optimization.operator.mutation;
 
-import eva2.optimization.population.PopulationInterface;
 import eva2.optimization.enums.MutateESCrossoverTypeEnum;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.InterfaceESIndividual;
 import eva2.optimization.population.Population;
+import eva2.optimization.population.PopulationInterface;
 import eva2.optimization.problems.InterfaceAdditionalPopulationInformer;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;

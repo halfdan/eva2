@@ -13,14 +13,21 @@ package eva2.gui;
  * IMPORTS
  *==========================================================================*/
 
-import java.awt.Event;
-import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.event.UndoableEditEvent;
+import javax.swing.event.UndoableEditListener;
+import javax.swing.text.DefaultEditorKit;
+import javax.swing.text.Keymap;
+import javax.swing.undo.CannotRedoException;
+import javax.swing.undo.CannotUndoException;
+import javax.swing.undo.UndoManager;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.io.*;
 import java.util.Hashtable;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.text.*;
-import javax.swing.undo.*;
 
 
 public class JTextEditorInternalFrame extends JDocFrame {

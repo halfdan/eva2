@@ -3,21 +3,16 @@ package eva2.optimization.problems;
 import eva2.gui.BeanInspector;
 import eva2.gui.editor.GenericObjectEditor;
 import eva2.gui.plot.Plot;
-import eva2.optimization.individuals.AbstractEAIndividual;
-import eva2.optimization.individuals.ESIndividualDoubleData;
-import eva2.optimization.individuals.GAIndividualBinaryData;
-import eva2.optimization.individuals.InterfaceDataTypeBinary;
-import eva2.optimization.individuals.InterfaceDataTypeDouble;
+import eva2.optimization.individuals.*;
 import eva2.optimization.population.Population;
 import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.tools.math.RNG;
-
-import java.util.BitSet;
-
 import simpleprobs.InterfaceSimpleProblem;
 import simpleprobs.SimpleF1;
 import simpleprobs.SimpleProblemBinary;
 import simpleprobs.SimpleProblemDouble;
+
+import java.util.BitSet;
 
 public class SimpleProblemWrapper extends AbstractOptimizationProblem {
     InterfaceSimpleProblem<?> simProb = new SimpleF1();

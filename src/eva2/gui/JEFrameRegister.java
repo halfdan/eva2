@@ -1,8 +1,8 @@
 package eva2.gui;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JDesktopPane;
 /*
  * Title:        EvA2
  * Description:

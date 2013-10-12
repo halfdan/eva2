@@ -18,7 +18,7 @@ import java.util.logging.Level;
 /**
  * OptimizationParamers for configuration of an
  * optimization run.
- *
+ * <p/>
  * This class is used to generate the default GUI
  * configuration panel for optimizations.
  */

@@ -1,16 +1,19 @@
 package eva2.optimization.tools;
 
 
-import eva2.gui.*;
+import eva2.gui.BeanInspector;
+import eva2.gui.HtmlDemo;
+import eva2.gui.PropertyEditorProvider;
+import eva2.gui.PropertySheetPanel;
 import eva2.gui.editor.GenericObjectEditor;
 import eva2.tools.EVAHELP;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.*;
 import java.util.Hashtable;
-import javax.swing.*;
 
 /**
  * TODO

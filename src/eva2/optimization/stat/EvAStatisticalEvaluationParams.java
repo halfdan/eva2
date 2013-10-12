@@ -2,11 +2,11 @@ package eva2.optimization.stat;
 
 import eva2.tools.StringSelection;
 
+import javax.swing.*;
 import java.io.Serializable;
 import java.util.List;
-import javax.swing.JButton;
 
-@eva2.util.annotation.Description(text="Select statistical values to be calculated and tests to be performed.")
+@eva2.util.annotation.Description(text = "Select statistical values to be calculated and tests to be performed.")
 public class EvAStatisticalEvaluationParams implements Serializable {
 
     private StringSelection singleStats = new StringSelection(StatsOnSingleDataSetEnum.mean, StatsOnSingleDataSetEnum.getInfoStrings());

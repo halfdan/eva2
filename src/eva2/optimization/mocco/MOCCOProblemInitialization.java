@@ -5,12 +5,10 @@ import eva2.optimization.go.MOCCOStandalone;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.tools.ReflectPackage;
 
-import java.awt.BorderLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.*;
 
 /**
  * Created by IntelliJ IDEA.

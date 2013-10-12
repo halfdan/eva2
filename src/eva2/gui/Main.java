@@ -1,7 +1,8 @@
 package eva2.gui;
 
 import eva2.EvAInfo;
-import eva2.client.*;
+import eva2.client.ClassPreloader;
+import eva2.client.EvAComAdapter;
 import eva2.optimization.OptimizationStateListener;
 import eva2.optimization.go.InterfaceOptimizationParameters;
 import eva2.optimization.modules.AbstractModuleAdapter;
@@ -23,8 +24,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.net.URL;
-import java.util.*;
-import java.util.logging.ConsoleHandler;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -371,7 +373,6 @@ public class Main extends JFrame implements OptimizationStateListener {
             } catch (Exception e) {
                 System.out.println("Error" + e.getMessage());
             }
-
 
 
             LoggingPanel logPanel = new LoggingPanel();

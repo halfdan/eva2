@@ -15,14 +15,12 @@ import eva2.optimization.modules.ModuleAdapter;
 import eva2.optimization.stat.OptimizationJob;
 import eva2.tools.ToolBoxGui;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JButton;
-import javax.swing.JOptionPane;
-import javax.swing.JToolBar;
 
 /**
  * Contains the GUI elements of start and stop buttons and optionally a help

@@ -1,17 +1,18 @@
 package eva2.optimization.stat;
 
-import eva2.gui.editor.GenericArrayEditor;
 import eva2.gui.JParaPanel;
 import eva2.gui.PropertySelectableList;
+import eva2.gui.editor.GenericArrayEditor;
 import eva2.optimization.go.InterfaceOptimizationParameters;
-import eva2.optimization.modules.AbstractOptimizationParameters;
-import eva2.optimization.tools.FileTools;
 import eva2.optimization.modules.AbstractModuleAdapter;
+import eva2.optimization.modules.AbstractOptimizationParameters;
 import eva2.optimization.modules.GenericModuleAdapter;
 import eva2.optimization.modules.ModuleAdapter;
+import eva2.optimization.tools.FileTools;
 import eva2.tools.Serializer;
 
-import java.awt.Component;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyEditor;
@@ -20,15 +21,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import javax.swing.JComponent;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
 
 /**
  * A selectable list of EvAJobs. Each job contains a OptimizationParameters instance and potentially
  * statistical data.
  */
-@eva2.util.annotation.Description(text="Display a set of jobs consisting of a multi-run experiment.")
+@eva2.util.annotation.Description(text = "Display a set of jobs consisting of a multi-run experiment.")
 public class OptimizationJobList extends PropertySelectableList<OptimizationJob> implements Serializable, InterfaceTextListener {
 
     List<InterfaceTextListener> listeners = null;
@@ -41,6 +39,7 @@ public class OptimizationJobList extends PropertySelectableList<OptimizationJob>
     public String getName() {
         return "Job Set";
     }
+
     /**
      * This adds a new job to the list.
      *

@@ -12,7 +12,7 @@ import eva2.util.annotation.Description;
  * This individual uses a real-valued genotype to code for a permutations,
  * the sorting of the real-valued genotype gives the permutation.
  */
-@Description(text="This is an ES individual suited to optimize permutations.")
+@Description(text = "This is an ES individual suited to optimize permutations.")
 public class ESIndividualPermutationData extends AbstractEAIndividual implements InterfaceESIndividual, InterfaceDataTypePermutation, java.io.Serializable {
 
     private double[][] m_Genotype;

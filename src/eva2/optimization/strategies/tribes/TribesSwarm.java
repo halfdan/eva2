@@ -690,7 +690,7 @@ public class TribesSwarm implements java.io.Serializable {
                 }
                 if (option == 1) {
                 /* On the boundary of the search space
-	              For some dimensions, set the coordinate to the min or the max
+                  For some dimensions, set the coordinate to the min or the max
 	    		 */
                     dmax = RNG.randomInt(D); // For a random number of dimensions
                     //    dmax=D-1; // For all dimensions

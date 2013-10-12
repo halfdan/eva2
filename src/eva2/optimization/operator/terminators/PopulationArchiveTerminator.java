@@ -1,8 +1,8 @@
 package eva2.optimization.operator.terminators;
 
-import eva2.optimization.population.PopulationInterface;
 import eva2.optimization.individuals.IndividualWeightedFitnessComparator;
 import eva2.optimization.population.Population;
+import eva2.optimization.population.PopulationInterface;
 
 /**
  * Terminate if a score based on the archive of the population converges.

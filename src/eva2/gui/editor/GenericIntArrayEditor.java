@@ -2,6 +2,7 @@ package eva2.gui.editor;
 
 import eva2.gui.PropertyIntArray;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,7 +11,6 @@ import java.awt.event.KeyListener;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.beans.PropertyEditor;
-import javax.swing.*;
 
 /**
  * Created by IntelliJ IDEA.

@@ -7,7 +7,6 @@ import eva2.gui.plot.Plot;
 import eva2.gui.plot.TopoPlot;
 import eva2.optimization.go.InterfacePopulationChangedEventListener;
 import eva2.optimization.go.InterfaceTerminator;
-import eva2.optimization.population.PopulationInterface;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.AbstractEAIndividualComparator;
 import eva2.optimization.individuals.InterfaceDataTypeDouble;
@@ -21,26 +20,14 @@ import eva2.optimization.operator.paramcontrol.ParamAdaption;
 import eva2.optimization.operator.paramcontrol.ParameterControlManager;
 import eva2.optimization.operator.terminators.HistoryConvergenceTerminator;
 import eva2.optimization.population.Population;
+import eva2.optimization.population.PopulationInterface;
 import eva2.optimization.population.SolutionSet;
-import eva2.optimization.problems.B1Problem;
-import eva2.optimization.problems.Interface2DBorderProblem;
-import eva2.optimization.problems.InterfaceAdditionalPopulationInformer;
-import eva2.optimization.problems.InterfaceOptimizationProblem;
-import eva2.optimization.problems.InterfaceProblemDouble;
-import eva2.optimization.problems.TF1Problem;
+import eva2.optimization.problems.*;
 import eva2.tools.EVAERROR;
-import eva2.tools.chart2d.Chart2DDPointIconCircle;
-import eva2.tools.chart2d.Chart2DDPointIconText;
-import eva2.tools.chart2d.DPoint;
-import eva2.tools.chart2d.DPointIcon;
-import eva2.tools.chart2d.DPointSet;
+import eva2.tools.chart2d.*;
 import eva2.tools.math.Mathematics;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.PriorityQueue;
+import java.util.*;
 
 /**
  * The infamous clustering based niching EA, still under construction. It should

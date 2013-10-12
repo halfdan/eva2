@@ -1,20 +1,9 @@
 package eva2.gui.plot;
 
 
-import eva2.tools.chart2d.DArray;
-import eva2.tools.chart2d.DBorder;
-import eva2.tools.chart2d.DComponent;
-import eva2.tools.chart2d.DIntDoubleMap;
-import eva2.tools.chart2d.DMeasures;
-import eva2.tools.chart2d.DPoint;
-import eva2.tools.chart2d.DPointIcon;
-import eva2.tools.chart2d.DPointSet;
-import eva2.tools.chart2d.DRectangle;
+import eva2.tools.chart2d.*;
 
-import java.awt.BasicStroke;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.Stroke;
+import java.awt.*;
 import java.util.ArrayList;
 
 

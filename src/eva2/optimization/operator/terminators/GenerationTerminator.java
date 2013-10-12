@@ -11,8 +11,8 @@ package eva2.optimization.operator.terminators;
  */
 
 import eva2.optimization.go.InterfaceTerminator;
-import eva2.optimization.population.PopulationInterface;
 import eva2.optimization.population.InterfaceSolutionSet;
+import eva2.optimization.population.PopulationInterface;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
 
 import java.io.Serializable;

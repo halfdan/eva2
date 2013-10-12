@@ -7,13 +7,8 @@ import eva2.tools.SelectedTag;
 import eva2.tools.StringTools;
 import eva2.tools.Tag;
 import eva2.util.annotation.Description;
-import eva2.util.annotation.Parameter;
 
-import java.beans.BeanInfo;
-import java.beans.IntrospectionException;
-import java.beans.Introspector;
-import java.beans.MethodDescriptor;
-import java.beans.PropertyDescriptor;
+import java.beans.*;
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -641,7 +636,8 @@ public class BeanInspector {
                 infoBf.append((String) ret);
             } else {
                 Description description = obj.getClass().getAnnotation(Description.class);
-                if(description != null) {;
+                if (description != null) {
+                    ;
                     infoBf.append("\t");
                     infoBf.append(description.text());
                 }

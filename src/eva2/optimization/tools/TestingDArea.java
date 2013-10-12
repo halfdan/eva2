@@ -1,9 +1,12 @@
 package eva2.optimization.tools;
 
-import eva2.tools.chart2d.*;
+import eva2.tools.chart2d.DArea;
+import eva2.tools.chart2d.DPointSet;
+import eva2.tools.chart2d.DRectangle;
+import eva2.tools.chart2d.ScaledBorder;
 
-import java.awt.*;
 import javax.swing.*;
+import java.awt.*;
 
 /**
  *

@@ -335,7 +335,7 @@ public class MutateESRankMuCMA implements InterfaceAdaptOperatorGenerational, In
         }
 
     	/* Align (renormalize) scale C (and consequently sigma) */
-    	/* e.g. for infinite stationary state simulations (noise
+        /* e.g. for infinite stationary state simulations (noise
     	 * handling needs to be introduced for that) */
         double fac = 1.;
         double minEig = 1e-12;

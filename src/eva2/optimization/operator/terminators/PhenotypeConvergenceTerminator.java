@@ -1,9 +1,9 @@
 package eva2.optimization.operator.terminators;
 
 import eva2.optimization.go.InterfaceTerminator;
-import eva2.optimization.population.PopulationInterface;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.operator.distancemetric.PhenotypeMetric;
+import eva2.optimization.population.PopulationInterface;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
 
 public class PhenotypeConvergenceTerminator extends PopulationMeasureTerminator implements InterfaceTerminator {

@@ -1,9 +1,8 @@
 package eva2.optimization.modules;
 
-import eva2.optimization.go.*;
-import eva2.optimization.go.InterfaceOptimizationParameters;
 import eva2.gui.BeanInspector;
 import eva2.optimization.OptimizationStateListener;
+import eva2.optimization.go.*;
 import eva2.optimization.operator.paramcontrol.ConstantParameters;
 import eva2.optimization.operator.paramcontrol.InterfaceParameterControl;
 import eva2.optimization.operator.postprocess.PostProcess;
@@ -15,20 +14,20 @@ import eva2.optimization.population.Population;
 import eva2.optimization.population.PopulationInterface;
 import eva2.optimization.problems.AbstractOptimizationProblem;
 import eva2.optimization.problems.InterfaceAdditionalPopulationInformer;
-import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.optimization.stat.InterfaceStatistics;
 import eva2.optimization.stat.InterfaceTextListener;
 import eva2.optimization.stat.StatisticsWithGUI;
+import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.tools.EVAERROR;
 import eva2.tools.EVAHELP;
 import eva2.tools.StringTools;
 import eva2.tools.math.RNG;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 
 /**
  * The Processor may run as a thread permanently (GenericModuleAdapter) and is
@@ -258,7 +257,8 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
                 if (popLog != null) {
                     EVAHELP.logString(this.optimizationParameters.getOptimizer().getPopulation().getIndyList(), popLog);
                 }
-            } while (isOptimizationRunning() && !this.optimizationParameters.getTerminator().isTerminated(this.optimizationParameters.getOptimizer().getAllSolutions()));
+            }
+            while (isOptimizationRunning() && !this.optimizationParameters.getTerminator().isTerminated(this.optimizationParameters.getOptimizer().getAllSolutions()));
 
             runCounter++;
             maybeFinishParamCtrl(optimizationParameters);
