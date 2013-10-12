@@ -10,11 +10,6 @@ import eva2.tools.math.interpolation.SplineInterpolation;
 import java.util.Arrays;
 import java.util.List;
 
-//created at June 27 2006
-
-/**
- * @author Andreas Dr&auml;ger
- */
 public class Mathematics {
     /**
      * Computes the full adjoint matrix.
@@ -93,7 +88,7 @@ public class Mathematics {
      *
      * @param x    a vector
      * @param y    another vector
-     * @param root what kind of distance funktion
+     * @param root what kind of distance function
      * @return the distance of x and y
      * @throws Exception if x and y have different dimensions an exception is thrown.
      */
@@ -602,16 +597,11 @@ public class Mathematics {
      * @param dblArrList  a list of double vectors
      * @param interpolate flag whether, for even size, the median is interpolated
      * @return the median
-     * @see #DoubleArrayComparator
+     * @see DoubleArrayComparator
      */
     public static double[] median(List<double[]> dblArrList, boolean interpolate) {
-        java.util.Collections.sort(dblArrList, new DoubleArrayComparator()); // by
-        // default,
-        // the
-        // comparator
-        // uses
-        // pareto
-        // dominance
+        // by default the comparator uses pareto dominance
+        java.util.Collections.sort(dblArrList, new DoubleArrayComparator());
 
         int len = dblArrList.size();
         if (len % 2 != 0) {
@@ -630,7 +620,7 @@ public class Mathematics {
     public static double median2(double[] vector, boolean clone) {
         double[] in;
         if (clone) {
-            in = (double[]) vector.clone();
+            in = vector.clone();
         } else {
             in = vector;
         }
@@ -770,26 +760,6 @@ public class Mathematics {
         }
         return prod;
     }
-
-    // /**
-    // * Normalizes the doubles in the array using the given value so that they
-    // sum up to 1.
-    // *
-    // * @param doubles the array of double
-    // * @param sum the value by which the doubles are to be normalized
-    // * @exception IllegalArgumentException if sum is zero or NaN
-    // */
-    // public static void normalize(double[] v, double sum, double[] res) {
-    // if (Double.isNaN(sum)) {
-    // throw new IllegalArgumentException("Can't normalize array. Sum is NaN.");
-    // }
-    // if (sum == 0) {
-    // // Maybe this should just be a return.
-    // throw new
-    // IllegalArgumentException("Can't normalize array. Sum is zero.");
-    // }
-    // svMult(1/sum, v, res);
-    // }
 
     /**
      * Project the values in x to the range given. The range must be an vector

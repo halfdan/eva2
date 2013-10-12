@@ -23,7 +23,7 @@ public class TestingDArea {
         area.setBackground(Color.white);
         area.setPreferredSize(new Dimension(600, 500));
         area.setVisibleRectangle(1, 1, 100000, 1000);
-        area.setVisibleRectangle(0, -3, 10, 10);//m_PlotArea.setAutoFocus(true);
+        area.setVisibleRectangle(0, -3, 10, 10);//plotArea.setAutoFocus(true);
         area.setMinRectangle(0, 0, 1, 1);
         ScaledBorder myBorder = new ScaledBorder();
         myBorder.x_label = "x";//"App. " + Name + " func. calls";

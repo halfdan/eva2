@@ -45,7 +45,7 @@ import java.util.*;
  */
 public abstract class AbstractStatistics implements InterfaceTextListener, InterfaceStatistics {
     private transient PrintWriter resultOut;
-    protected InterfaceStatisticsParameter m_StatsParams;
+    protected InterfaceStatisticsParameter statisticsParameter;
 
     /**
      * Keep track of all intermediate fitness values, best, avg. and worst, averaging over all runs
@@ -169,7 +169,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
         if (dataListeners != null) {
             for (InterfaceStatisticsListener l : dataListeners) {
                 if (start) {
-                    l.notifyRunStarted(runNumber, m_StatsParams.getMultiRuns(),
+                    l.notifyRunStarted(runNumber, statisticsParameter.getMultiRuns(),
                             currentStatHeader, currentStatMetaInfo);
                 } else {
                     l.notifyRunStopped(optRunsPerformed, normal);
@@ -203,9 +203,9 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
         String startDate = getDateString();
         // open the result file:
         if (doFileOutput()  // not "text-window only"
-                && (m_StatsParams.getOutputVerbosity().getSelectedTagID() > StatisticsParameter.VERBOSITY_NONE)) { // verbosity accordingly high
+                && (statisticsParameter.getOutputVerbosity().getSelectedTagID() > StatisticsParameter.VERBOSITY_NONE)) { // verbosity accordingly high
             //!resFName.equalsIgnoreCase("none") && !resFName.equals("")) {
-            String fnameBase = makeOutputFileName(m_StatsParams.getResultFilePrefix(), infoString, startDate);
+            String fnameBase = makeOutputFileName(statisticsParameter.getResultFilePrefix(), infoString, startDate);
             int cnt = 0;
             String fname = fnameBase;
             while (new File(fname).exists()) {
@@ -236,7 +236,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
     }
 
     protected boolean doFileOutput() {
-        return (m_StatsParams.getOutputTo().getSelectedTagID() != 1);  // not "text-window only"
+        return (statisticsParameter.getOutputTo().getSelectedTagID() != 1);  // not "text-window only"
     }
 
     private String makeOutputFileName(String prefix, String infoString, String startDate) {
@@ -258,8 +258,8 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 
         if (runNumber == 0) {
             // store the intial graph selection state, so that modifications during runtime cannot cause inconsistencies
-            lastFieldSelection = (StringSelection) m_StatsParams.getFieldSelection().clone();
-            lastIsShowFull = m_StatsParams.isOutputAllFieldsAsText();
+            lastFieldSelection = (StringSelection) statisticsParameter.getFieldSelection().clone();
+            lastIsShowFull = statisticsParameter.isOutputAllFieldsAsText();
 
             currentStatDoubleData = null;
             currentStatObjectData = null;
@@ -273,7 +273,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
             optRunsPerformed = 0;
             convergenceCnt = 0;
             if (saveParams) {
-                m_StatsParams.saveInstance();
+                statisticsParameter.saveInstance();
             }
             initOutput(infoString);
             bestIndyAllRuns = null;
@@ -349,7 +349,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
         }
         // check if target zero was reached
         if (bestCurrentIndy != null) {
-            if (Mathematics.norm(bestOfRunIndy.getFitness()) < this.m_StatsParams.getConvergenceRateThreshold()) {
+            if (Mathematics.norm(bestOfRunIndy.getFitness()) < this.statisticsParameter.getConvergenceRateThreshold()) {
                 convergenceCnt++;
             }
             if (printRunStoppedVerbosity()) {
@@ -414,7 +414,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 
     @Override
     public void postProcessingPerformed(Population resultPop) { // called from processor
-        if (!printRunStoppedVerbosity() && printFinalVerbosity() && optRunsPerformed >= m_StatsParams.getMultiRuns()) {
+        if (!printRunStoppedVerbosity() && printFinalVerbosity() && optRunsPerformed >= statisticsParameter.getMultiRuns()) {
             printToTextListener("\n");
         }
         if (printRunStoppedVerbosity()) {
@@ -426,7 +426,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
                 }
             }
         }
-        if (optRunsPerformed >= m_StatsParams.getMultiRuns()) {
+        if (optRunsPerformed >= statisticsParameter.getMultiRuns()) {
             finalizeOutput();
             fireDataListenersFinalize();
         }
@@ -480,7 +480,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 
     protected void finalizeOutput() {
         if (printFinalVerbosity()) {
-            printToTextListener("*******\n Runs performed: " + optRunsPerformed + ", reached target " + convergenceCnt + " times with threshold " + m_StatsParams.getConvergenceRateThreshold() + ", rate " + convergenceCnt / (double) m_StatsParams.getMultiRuns() + '\n');
+            printToTextListener("*******\n Runs performed: " + optRunsPerformed + ", reached target " + convergenceCnt + " times with threshold " + statisticsParameter.getConvergenceRateThreshold() + ", rate " + convergenceCnt / (double) statisticsParameter.getMultiRuns() + '\n');
         }
         if (printFinalVerbosity()) {
             printToTextListener(" Average function calls: " + (functionCallSum / optRunsPerformed) + "\n");
@@ -660,7 +660,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
             resultOut.print(s);
         }
         for (InterfaceTextListener l : textListeners) {
-            if (m_StatsParams.getOutputTo().getSelectedTagID() >= 1) {
+            if (statisticsParameter.getOutputTo().getSelectedTagID() >= 1) {
                 l.print(s);
             }
         }
@@ -681,7 +681,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 
     @Override
     public InterfaceStatisticsParameter getStatisticsParameter() {
-        return m_StatsParams;
+        return statisticsParameter;
     }
 
     protected boolean doTextOutput() {
@@ -693,7 +693,6 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
      * concatenate them to a string using the textFieldDelimiter of the instance.
      *
      * @param informerList
-     * @param pop
      * @return
      */
     protected String getOutputHeaderFieldNamesAsString(List<InterfaceAdditionalPopulationInformer> informerList) {
@@ -706,7 +705,6 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
      * The length of this list depends on the field selection state.
      *
      * @param informerList
-     * @param pop
      * @return
      */
     protected List<String> getOutputHeaderFieldNames(List<InterfaceAdditionalPopulationInformer> informerList) {
@@ -723,7 +721,6 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
      * The length of this list depends on the field selection state.
      *
      * @param informerList
-     * @param pop
      * @return
      */
     protected List<String> getOutputMetaInfo(List<InterfaceAdditionalPopulationInformer> informerList) {
@@ -756,12 +753,11 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
         GraphSelectionEnum[] vals = GraphSelectionEnum.values();
         ArrayList<String> headerEntries = new ArrayList<String>();
         headerEntries.add("FunctionCalls");
-        for (int i = 0; i < vals.length; i++) {
-            if (isRequestedField(vals[i])) {
-                headerEntries.add(vals[i].toString());
+        for (GraphSelectionEnum val : vals) {
+            if (isRequestedField(val)) {
+                headerEntries.add(val.toString());
             }
         }
-//		return new String[]{"Fun.calls","Best","Mean", "Worst"};
         return headerEntries.toArray(new String[headerEntries.size()]);
     }
 
@@ -782,7 +778,6 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
                 headerInfo.add(GraphSelectionEnum.getInfoStrings()[i]);
             }
         }
-//		return new String[]{"Fun.calls","Best","Mean", "Worst"};
         return headerInfo.toArray(new String[headerInfo.size()]);
     }
 
@@ -829,7 +824,6 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
     protected Object[] getSimpleOutputValues() {
         GraphSelectionEnum[] selEnumVals = null;
         selEnumVals = GraphSelectionEnum.values();
-//		else selEnumVals = (GraphSelectionEnum[]) (m_StatsParams.getGraphSelection().getSelectedEnum(GraphSelectionEnum.values()));
         Object[] ret = new Object[1 + selEnumVals.length];
         ret[0] = functionCalls;
         for (int i = 1; i <= selEnumVals.length; i++) {
@@ -869,15 +863,6 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
         }
         // all standard fields should be filled now
         return ret;
-
-//		Object[] ret = new Object[4];
-//		ret[0]=functionCalls;
-//		ret[1]=currentBestFit;
-//		if (meanFitness!=null) ret[2]=meanFitness;
-//		else ret[2]="#";
-//		if (currentWorstFit!=null) ret[3] = currentWorstFit;
-//		else ret[3]="#";
-//		return ret; 
     }
 
     /**
@@ -890,7 +875,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
      * @param informerList
      * @param pop
      * @return
-     * @see #getOutputHeader(List, PopulationInterface)
+     * @see #getOutputHeaderFieldNames(java.util.List) (List)
      */
     protected List<Object> getOutputValues(List<InterfaceAdditionalPopulationInformer> informerList, PopulationInterface pop) {
         LinkedList<Object> values = new LinkedList<Object>();
@@ -1168,7 +1153,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
     }
 
     public String[] getCurrentFieldHeaders() {
-        StringSelection fSel = m_StatsParams.getFieldSelection();
+        StringSelection fSel = statisticsParameter.getFieldSelection();
         return fSel.getSelected();
     }
 
@@ -1274,22 +1259,22 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
      * @return
      */
     private boolean printLineByVerbosity(int iteration) {
-        return (m_StatsParams.getOutputVerbosity().getSelectedTagID() > StatisticsParameter.VERBOSITY_KTH_IT)
-                || ((m_StatsParams.getOutputVerbosity().getSelectedTagID() == StatisticsParameter.VERBOSITY_KTH_IT)
-                && (isKthRun(iteration, m_StatsParams.getOutputVerbosityK())));
+        return (statisticsParameter.getOutputVerbosity().getSelectedTagID() > StatisticsParameter.VERBOSITY_KTH_IT)
+                || ((statisticsParameter.getOutputVerbosity().getSelectedTagID() == StatisticsParameter.VERBOSITY_KTH_IT)
+                && (isKthRun(iteration, statisticsParameter.getOutputVerbosityK())));
     }
 
     private boolean printRunIntroVerbosity() {
-        return (m_StatsParams.getOutputVerbosity().getSelectedTagID() >= StatisticsParameter.VERBOSITY_KTH_IT)
-                || (optRunsPerformed == 0 && (m_StatsParams.getOutputVerbosity().getSelectedTagID() >= StatisticsParameter.VERBOSITY_FINAL));
+        return (statisticsParameter.getOutputVerbosity().getSelectedTagID() >= StatisticsParameter.VERBOSITY_KTH_IT)
+                || (optRunsPerformed == 0 && (statisticsParameter.getOutputVerbosity().getSelectedTagID() >= StatisticsParameter.VERBOSITY_FINAL));
     }
 
     private boolean printRunStoppedVerbosity() {
-        return (m_StatsParams.getOutputVerbosity().getSelectedTagID() >= StatisticsParameter.VERBOSITY_KTH_IT);
+        return (statisticsParameter.getOutputVerbosity().getSelectedTagID() >= StatisticsParameter.VERBOSITY_KTH_IT);
     }
 
     private boolean printFinalVerbosity() {
-        return (m_StatsParams.getOutputVerbosity().getSelectedTagID() > StatisticsParameter.VERBOSITY_NONE);
+        return (statisticsParameter.getOutputVerbosity().getSelectedTagID() > StatisticsParameter.VERBOSITY_NONE);
     }
 
     private boolean isKthRun(int i, int k) {
@@ -1309,7 +1294,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
     }
 
     private boolean printHeaderByVerbosity() {
-        return (m_StatsParams.getOutputVerbosity().getSelectedTagID() >= StatisticsParameter.VERBOSITY_KTH_IT);
+        return (statisticsParameter.getOutputVerbosity().getSelectedTagID() >= StatisticsParameter.VERBOSITY_KTH_IT);
     }
 
     private static void divideMean(Double[] mean, double d) {
@@ -1318,9 +1303,6 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
                 mean[j] /= d;
             }
         }
-//		for (int i=0; i<mean.length; i++) {
-//			for (int j=0; j<mean[i].length; j++) mean[i][j] /= d;
-//		}
     }
 
     /**

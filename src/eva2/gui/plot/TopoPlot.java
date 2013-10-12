@@ -59,11 +59,11 @@ public class TopoPlot extends Plot {
      * @param color_scale the topologies color coding. Values (0-3) are valid. @See ColorBarCalculator.
      */
     public void setParams(int gridX, int gridY, int color_scale) {
-        if (gridX > m_Frame.getWidth()) {
-            gridX = m_Frame.getWidth();
+        if (gridX > internalFrame.getWidth()) {
+            gridX = internalFrame.getWidth();
         }
-        if (gridY > m_Frame.getHeight()) {
-            gridY = m_Frame.getHeight();
+        if (gridY > internalFrame.getHeight()) {
+            gridY = internalFrame.getHeight();
         }
         gridx = gridX;
         gridy = gridY;
@@ -145,7 +145,7 @@ public class TopoPlot extends Plot {
         fitRange = java.lang.Math.abs(max - min);
         ColorBarCalculator colorBar = new ColorBarCalculator(colorScale);
 
-        m_Frame.setVisible(false);
+        internalFrame.setVisible(false);
         for (int x = 0; x < gridx; x++) {
             for (int y = 0; y < gridy; y++) {
                 pos[0] = border[0][0] + x * deltaX;
@@ -156,7 +156,7 @@ public class TopoPlot extends Plot {
                 //  	  Color color = new Color(colorBar.getRGB((float)(problem.functionValue(pos)/fitRange))); // Color color = new Color(255,(int)(problem.doEvaluation(pos)[0]/fitRange*255),(int)(problem.doEvaluation(pos)[0]/fitRange*255));
                 rect.setColor(color);
                 rect.setFillColor(color);
-                m_PlotArea.addDElement(rect);
+                plotArea.addDElement(rect);
             } // for y
         } // for x
         if (withGradientsIfAvailable && (problem instanceof InterfaceFirstOrderDerivableProblem)) {
@@ -172,6 +172,6 @@ public class TopoPlot extends Plot {
                 } // for y
             } // for x
         }
-        m_Frame.setVisible(true);
+        internalFrame.setVisible(true);
     } // setTopology
 } // class

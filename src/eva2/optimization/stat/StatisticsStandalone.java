@@ -44,7 +44,7 @@ public class StatisticsStandalone extends AbstractStatistics implements Interfac
 
     public StatisticsStandalone(InterfaceStatisticsParameter statParams) {
         super();
-        m_StatsParams = statParams;
+        statisticsParameter = statParams;
         try {
             m_MyHostName = InetAddress.getLocalHost().getHostName();
         } catch (Exception e) {
@@ -58,14 +58,14 @@ public class StatisticsStandalone extends AbstractStatistics implements Interfac
 
     public StatisticsStandalone(String resultFileName, int multiRuns, int verbosity, boolean outputAllFieldsAsText) {
         this(StatisticsParameter.getInstance(false));
-        m_StatsParams.setMultiRuns(multiRuns);
-        m_StatsParams.setOutputVerbosity(m_StatsParams.getOutputVerbosity().setSelectedTag(verbosity));
-        m_StatsParams.setResultFilePrefix(resultFileName);
-        m_StatsParams.setOutputAllFieldsAsText(outputAllFieldsAsText);
+        statisticsParameter.setMultiRuns(multiRuns);
+        statisticsParameter.setOutputVerbosity(statisticsParameter.getOutputVerbosity().setSelectedTag(verbosity));
+        statisticsParameter.setResultFilePrefix(resultFileName);
+        statisticsParameter.setOutputAllFieldsAsText(outputAllFieldsAsText);
         if (resultFileName == null) {
-            m_StatsParams.getOutputTo().setSelectedTag(StatisticsParameter.OUTPUT_WINDOW);
+            statisticsParameter.getOutputTo().setSelectedTag(StatisticsParameter.OUTPUT_WINDOW);
         } else {
-            m_StatsParams.setOutputTo(m_StatsParams.getOutputTo().setSelectedTag(StatisticsParameter.OUTPUT_FILE));
+            statisticsParameter.setOutputTo(statisticsParameter.getOutputTo().setSelectedTag(StatisticsParameter.OUTPUT_FILE));
         }
     }
 
@@ -76,13 +76,13 @@ public class StatisticsStandalone extends AbstractStatistics implements Interfac
     @Override
     protected void initPlots(PopulationInterface pop, List<InterfaceAdditionalPopulationInformer> informerList) {
         if (collectData) {
-            m_ResultData = new ArrayList<ArrayList<Object[]>>(m_StatsParams.getMultiRuns());
+            m_ResultData = new ArrayList<ArrayList<Object[]>>(statisticsParameter.getMultiRuns());
             List<String> description = getOutputHeaderFieldNames(informerList);
             m_ResultHeaderStrings = new ArrayList<String>();
             for (String str : description) {
                 m_ResultHeaderStrings.add(str);
             }
-            for (int i = 0; i < m_StatsParams.getMultiRuns(); i++) {
+            for (int i = 0; i < statisticsParameter.getMultiRuns(); i++) {
                 m_ResultData.add(new ArrayList<Object[]>());
             }
         } else {
@@ -107,11 +107,6 @@ public class StatisticsStandalone extends AbstractStatistics implements Interfac
                 m_ResultData.get(optRunsPerformed).add(new Object[]{new Double(functionCalls), specificData});
             }
         }
-    }
-
-    @Override
-    public String getHostName() {
-        return m_MyHostName;
     }
 
     /**

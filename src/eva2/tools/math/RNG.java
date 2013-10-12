@@ -6,6 +6,10 @@ import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Random;
 
+/**
+ * Random number generator used across all optimizations
+ * for reproducability of runs.
+ */
 public class RNG {
 
     private static Random random;

@@ -1713,7 +1713,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
          point.setIcon(icon);
          popRep.addDPoint(point);	            
          }
-         this.m_TopologyMainSwarm.m_PlotArea.addDElement(popRep);       */
+         this.m_TopologyMainSwarm.plotArea.addDElement(popRep);       */
     }
 
     /**
@@ -2098,14 +2098,14 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
 //		
 //		synchronized(m_TopologySwarm){
 //			try {
-//				JFrame frame = m_TopologySwarm.m_Frame;
+//				JFrame frame = m_TopologySwarm.internalFrame;
 //				Robot       robot = new Robot();
 //				Rectangle   area;
 //				area        = frame.getBounds();
 //				BufferedImage   bufferedImage   = robot.createScreenCapture(area);
 //
 //				// JFileChooser    fc              = new JFileChooser();
-//				// if (fc.showSaveDialog(m_TopologySwarm.m_Frame) != JFileChooser.APPROVE_OPTION) return;
+//				// if (fc.showSaveDialog(m_TopologySwarm.internalFrame) != JFileChooser.APPROVE_OPTION) return;
 //				System.out.println("Name " + f.getName());
 //				try {
 //					FileOutputStream fos = new FileOutputStream(f);

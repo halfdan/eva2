@@ -1,17 +1,4 @@
 package eva2.tools.math;
-///////////////////////////////////////////////////////////////////////////////
-//  Filename: $RCSfile: StatisticUtils.java,v $
-//  Purpose:  Interface definition for calling external programs from JOELib.
-//  Language: Java
-//  Compiler: JDK 1.4
-//  Authors:  Joerg K. Wegner
-//  Version:  $Revision: 1.1 $
-//            $Date: 2004/02/28 17:19:28 $
-//            $Author: ulmerh $
-//
-//  Copyright (c) Dept. Computer Architecture, University of Tuebingen, Germany
-//
-///////////////////////////////////////////////////////////////////////////////
 
 import eva2.optimization.problems.AbstractProblemDouble;
 import eva2.tools.math.Jama.Matrix;
@@ -38,7 +25,6 @@ public class StatisticUtils {
      *
      * @param y1 double vector 1
      * @param y2 double vector 2
-     * @param n  the length of two double vectors
      * @return the correlation coefficient
      */
     public final static double correlation(double y1[], double y2[]) {
@@ -472,135 +458,6 @@ public class StatisticUtils {
         }
     }
 
-
-    // these came from ContingencyTables.java in the wsi package (mkron)
-//    /**
-//     * Computes conditional entropy of the rows given
-//     * the columns.
-//     *
-//     * @param matrix the contingency table
-//     * @return the conditional entropy of the rows given the columns
-//     */
-//    public static double entropyConditionedOnColumns(double[][] matrix) {
-//        double ret = 0;
-//        double colSum;
-//        double total = 0;
-//
-//        for (int j = 0; j < matrix[0].length; j++) {
-//            colSum = 0;
-//
-//            for (int i = 0; i < matrix.length; i++) {
-//                ret = ret + lnFunc(matrix[i][j]);
-//                colSum += matrix[i][j];
-//            }
-//
-//            ret = ret - lnFunc(colSum);
-//            total += colSum;
-//        }
-//
-//        if (StatisticUtils.eq(total, 0)) {
-//            return 0;
-//        }
-//
-//        return -ret / (total * log2);
-//    }
-
-//    /**
-//     * Computes conditional entropy of the columns given
-//     * the rows.
-//     *
-//     * @param matrix the contingency table
-//     * @return the conditional entropy of the columns given the rows
-//     */
-//    public static double entropyConditionedOnRows(double[][] matrix) {
-//        double returnValue = 0;
-//        double sumForRow;
-//        double total = 0;
-//
-//        for (int i = 0; i < matrix.length; i++) {
-//            sumForRow = 0;
-//
-//            for (int j = 0; j < matrix[0].length; j++) {
-//                returnValue = returnValue + lnFunc(matrix[i][j]);
-//                sumForRow += matrix[i][j];
-//            }
-//            returnValue = returnValue - lnFunc(sumForRow);
-//            total += sumForRow;
-//        }
-//
-//        if (StatisticUtils.eq(total, 0)) {
-//            return 0;
-//        }
-//
-//        return -returnValue / (total * log2);
-//    }
-
-//    /**
-//     * Computes the columns' entropy for the given contingency table.
-//     *
-//     * @param matrix the contingency table
-//     * @return the columns' entropy
-//     */
-//    public static double entropyOverColumns(double[][] matrix)
-//    {
-//        double returnValue = 0;
-//        double sumForColumn;
-//        double total = 0;
-//
-//        for (int j = 0; j < matrix[0].length; j++)
-//        {
-//            sumForColumn = 0;
-//
-//            for (int i = 0; i < matrix.length; i++)
-//            {
-//                sumForColumn += matrix[i][j];
-//            }
-//
-//            returnValue = returnValue - lnFunc(sumForColumn);
-//            total += sumForColumn;
-//        }
-//
-//        if (StatisticUtils.eq(total, 0))
-//        {
-//            return 0;
-//        }
-//
-//        return (returnValue + lnFunc(total)) / (total * log2);
-//    }
-
-//    /**
-//     * Computes the rows' entropy for the given contingency table.
-//     *
-//     * @param matrix the contingency table
-//     * @return the rows' entropy
-//     */
-//    public static double entropyOverRows(double[][] matrix)
-//    {
-//        double returnValue = 0;
-//        double sumForRow;
-//        double total = 0;
-//
-//        for (int i = 0; i < matrix.length; i++)
-//        {
-//            sumForRow = 0;
-//
-//            for (int j = 0; j < matrix[0].length; j++)
-//            {
-//                sumForRow += matrix[i][j];
-//            }
-//
-//            returnValue = returnValue - lnFunc(sumForRow);
-//            total += sumForRow;
-//        }
-//
-//        if (StatisticUtils.eq(total, 0))
-//        {
-//            return 0;
-//        }
-//
-//        return (returnValue + lnFunc(total)) / (total * log2);
-//    }
-
     private static double lnFunc(double num) {
         // hard coded for efficiency reasons
         if (num < 1e-7) {
@@ -609,44 +466,6 @@ public class StatisticUtils {
             return num * Math.log(num);
         }
     }
-
-//	// The following methods got mysteriously lost maybe during cvs-svn refactoring.
-//	// For the time being I add method thunks which give a warning when called. (mkron)
-//	public static double quadratic_entropy(double[] ds) {
-//		// TODO Auto-generated method stub
-//		System.err.println("warning, not implemented!");
-//		return 0;
-//	}
-//
-//	public static double mutual_information(double[] ds, double[] ds2, int nbins) {
-//		// TODO Auto-generated method stub
-//		System.err.println("warning, not implemented!");
-//		return 0;
-//	}
-//
-//	public static double quadratic_mutinf(double[] feature, double[] labels) {
-//		// TODO Auto-generated method stub
-//		System.err.println("warning, not implemented!");
-//		return 0;
-//	}
-//
-//	public static double quadratic_mutinf(double[] feature, double[] labels, int[] classes) {
-//		// TODO Auto-generated method stub
-//		System.err.println("warning, not implemented!");
-//		return 0;
-//	}
-//
-//	public static double SUquadratic(double[] feature, double[] labels) {
-//		// TODO Auto-generated method stub
-//		System.err.println("warning, not implemented!");
-//		return 0;
-//	}
-//
-//	public static double SUquadratic(double[] feature, double[] labels, int[] classes) {
-//		// TODO Auto-generated method stub
-//		System.err.println("warning, not implemented!");
-//		return 0;
-//	}
 
     /**
      * Random Latin Hypercube Sampling within a given double range.
