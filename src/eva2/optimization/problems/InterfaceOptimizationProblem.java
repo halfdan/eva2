@@ -7,11 +7,7 @@ import eva2.optimization.strategies.InterfaceOptimizer;
 import javax.swing.*;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 18.03.2003
- * Time: 09:52:52
- * To change this template use Options | File Templates.
+ *
  */
 public interface InterfaceOptimizationProblem extends InterfaceAdditionalPopulationInformer {
 
@@ -71,7 +67,7 @@ public interface InterfaceOptimizationProblem extends InterfaceAdditionalPopulat
 
     /**
      * This method allows you to output a string that describes a found solution
-     * in a way that is most suiteable for a given problem.
+     * in a way that is most suitable for a given problem.
      *
      * @param individual The individual that is to be shown.
      * @return The description.

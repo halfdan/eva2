@@ -1,7 +1,7 @@
 package eva2.optimization.problems;
 
 
-import eva2.optimization.go.GOStandaloneVersion;
+import eva2.optimization.go.StandaloneOptimization;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.ESIndividualDoubleData;
 import eva2.optimization.individuals.InterfaceDataTypeDouble;
@@ -97,14 +97,14 @@ class MyLensViewer extends JPanel implements InterfaceSolutionViewer {
         g2D.setPaint(Color.black);
         g2D.drawLine(0, this.m_Height / 2, this.m_Width, this.m_Height / 2);
         centerLens = 5 + 50;
-        centerScreen = centerLens + (int) this.m_LensProblem.m_FocalLength * 10;
-        segment = 10 * (int) this.m_LensProblem.m_Radius * 2 / (this.m_LensProblem.m_ProblemDimension - 1);
+        centerScreen = centerLens + (int) this.m_LensProblem.focalLength * 10;
+        segment = 10 * (int) this.m_LensProblem.radius * 2 / (this.m_LensProblem.problemDimension - 1);
         g2D.setStroke(dashStroke);
-        g2D.drawLine(centerLens, this.m_Height / 2 + (int) this.m_LensProblem.m_Radius * 10, centerLens, this.m_Height / 2 - (int) this.m_LensProblem.m_Radius * 10);
-        g2D.drawLine(centerScreen, this.m_Height / 2 + (int) this.m_LensProblem.m_Radius * 10 + 10, centerScreen, this.m_Height / 2 - (int) this.m_LensProblem.m_Radius * 10 - 10);
+        g2D.drawLine(centerLens, this.m_Height / 2 + (int) this.m_LensProblem.radius * 10, centerLens, this.m_Height / 2 - (int) this.m_LensProblem.radius * 10);
+        g2D.drawLine(centerScreen, this.m_Height / 2 + (int) this.m_LensProblem.radius * 10 + 10, centerScreen, this.m_Height / 2 - (int) this.m_LensProblem.radius * 10 - 10);
         g2D.setStroke(ds);
 //        System.out.println("indies to paint: " + indiesToPaint.size());
-        paintLens(m_LensProblem.m_ProblemDimension, m_Height, m_LensProblem.m_Radius, mag, centerLens, centerScreen, segment, g2D);
+        paintLens(m_LensProblem.problemDimension, m_Height, m_LensProblem.radius, mag, centerLens, centerScreen, segment, g2D);
         // Now put everything on the screen
         g.drawImage(bufferedImage, 0, 0, this);
     }
@@ -193,12 +193,9 @@ class MyLensViewer extends JPanel implements InterfaceSolutionViewer {
 }
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 13.07.2004
- * Time: 09:49:37
- * To change this template use File | Settings | File Templates.
+ *
  */
+@eva2.util.annotation.Description(text="Focussing of a lens is to be optimized.")
 public class FLensProblem extends AbstractOptimizationProblem
         implements InterfaceOptimizationProblem, InterfaceHasSolutionViewer, java.io.Serializable {
 
@@ -206,20 +203,20 @@ public class FLensProblem extends AbstractOptimizationProblem
      *
      */
     private static final long serialVersionUID = 4694920294291719310L;
-    protected AbstractEAIndividual m_OverallBest = null;
-    protected int m_ProblemDimension = 10;
-    protected double m_Noise = 0.0;
-    protected double m_XOffSet = 0.0;
-    protected double m_YOffSet = 0.0;
+    protected AbstractEAIndividual overallBest = null;
+    protected int problemDimension = 10;
+    protected double noise = 0.0;
+    protected double xOffset = 0.0;
+    protected double yOffset = 0.0;
     transient protected boolean m_Show = false;
     //protected int						sleepTime			= 0;
 
-    transient private JFrame m_ProblemFrame;
-    transient private MyLensViewer m_Panel;
-    public double m_Radius = 5;
-    public double m_FocalLength = 20;
-    public double m_Epsilon = 1.5;
-    private boolean m_UseMaterialConst = false;
+    transient private JFrame problemFrame;
+    transient private MyLensViewer lensViewerPanel;
+    public double radius = 5;
+    public double focalLength = 20;
+    public double epsilon = 1.5;
+    private boolean useMaterialConst = false;
 
     public FLensProblem() {
         this.template = new ESIndividualDoubleData();
@@ -234,17 +231,17 @@ public class FLensProblem extends AbstractOptimizationProblem
             this.template = (AbstractEAIndividual) ((AbstractEAIndividual) b.template).clone();
         }
         //FLensProblem
-        if (b.m_OverallBest != null) {
-            this.m_OverallBest = (AbstractEAIndividual) ((AbstractEAIndividual) b.m_OverallBest).clone();
+        if (b.overallBest != null) {
+            this.overallBest = (AbstractEAIndividual) ((AbstractEAIndividual) b.overallBest).clone();
         }
-        this.m_ProblemDimension = b.m_ProblemDimension;
-        this.m_Noise = b.m_Noise;
-        this.m_XOffSet = b.m_XOffSet;
-        this.m_YOffSet = b.m_YOffSet;
-        this.m_Radius = b.m_Radius;
-        this.m_FocalLength = b.m_FocalLength;
-        this.m_Epsilon = b.m_Epsilon;
-        this.m_UseMaterialConst = b.m_UseMaterialConst;
+        this.problemDimension = b.problemDimension;
+        this.noise = b.noise;
+        this.xOffset = b.xOffset;
+        this.yOffset = b.yOffset;
+        this.radius = b.radius;
+        this.focalLength = b.focalLength;
+        this.epsilon = b.epsilon;
+        this.useMaterialConst = b.useMaterialConst;
     }
 
     @Override
@@ -256,15 +253,15 @@ public class FLensProblem extends AbstractOptimizationProblem
      * This method inits a problem view frame
      */
     public void initProblemFrame() {
-        if (this.m_ProblemFrame == null) {
-            this.m_ProblemFrame = new JFrame("Lens Problem Viewer");
-            this.m_Panel = new MyLensViewer(this);
-            this.m_ProblemFrame.getContentPane().add(this.m_Panel);
-            this.m_ProblemFrame.pack();
-            this.m_ProblemFrame.setVisible(true);
-            //this.m_ProblemFrame.show();
+        if (this.problemFrame == null) {
+            this.problemFrame = new JFrame("Lens Problem Viewer");
+            this.lensViewerPanel = new MyLensViewer(this);
+            this.problemFrame.getContentPane().add(this.lensViewerPanel);
+            this.problemFrame.pack();
+            this.problemFrame.setVisible(true);
+            //this.problemFrame.show();
         } else {
-            this.m_Panel.resetView();
+            this.lensViewerPanel.resetView();
         }
     }
 
@@ -272,11 +269,11 @@ public class FLensProblem extends AbstractOptimizationProblem
      * This method gets rid of the problem view frame
      */
     public void disposeProblemFrame() {
-        if (this.m_ProblemFrame != null) {
-            this.m_ProblemFrame.dispose();
+        if (this.problemFrame != null) {
+            this.problemFrame.dispose();
         }
-        this.m_ProblemFrame = null;
-        this.m_Panel = null;
+        this.problemFrame = null;
+        this.lensViewerPanel = null;
     }
 
     /**
@@ -286,8 +283,8 @@ public class FLensProblem extends AbstractOptimizationProblem
      * @param population The current population.
      */
     public void updateProblemFrame(Population population) {
-        if (this.m_Panel != null) {
-            this.m_Panel.updateView(population, false);
+        if (this.lensViewerPanel != null) {
+            this.lensViewerPanel.updateView(population, false);
         }
     }
 
@@ -296,7 +293,7 @@ public class FLensProblem extends AbstractOptimizationProblem
      */
     @Override
     public void initializeProblem() {
-        this.m_OverallBest = null;
+        this.overallBest = null;
         if (this.m_Show) {
             this.initProblemFrame();
         }
@@ -309,10 +306,10 @@ public class FLensProblem extends AbstractOptimizationProblem
      */
     @Override
     public void initializePopulation(Population population) {
-        this.m_OverallBest = null;
-        ((InterfaceDataTypeDouble) this.template).setDoubleDataLength(this.m_ProblemDimension);
+        this.overallBest = null;
+        ((InterfaceDataTypeDouble) this.template).setDoubleDataLength(this.problemDimension);
         // set the range
-        double[][] range = new double[this.m_ProblemDimension][2];
+        double[][] range = new double[this.problemDimension][2];
         for (int i = 0; i < range.length; i++) {
             range[i][0] = 0.1;
             range[i][1] = 5.0;
@@ -345,18 +342,18 @@ public class FLensProblem extends AbstractOptimizationProblem
         x = new double[((InterfaceDataTypeDouble) individual).getDoubleData().length];
         System.arraycopy(((InterfaceDataTypeDouble) individual).getDoubleData(), 0, x, 0, x.length);
         for (int i = 0; i < x.length; i++) {
-            x[i] -= this.m_XOffSet;
+            x[i] -= this.xOffset;
         }
         fitness = this.doEvaluation(x);
         for (int i = 0; i < fitness.length; i++) {
             // add noise to the fitness
-            fitness[i] += RNG.gaussianDouble(this.m_Noise);
-            fitness[i] += this.m_YOffSet;
+            fitness[i] += RNG.gaussianDouble(this.noise);
+            fitness[i] += this.yOffset;
             // set the fitness of the individual
             individual.SetFitness(i, fitness[i]);
         }
-        if ((this.m_OverallBest == null) || (this.m_OverallBest.getFitness(0) > individual.getFitness(0))) {
-            this.m_OverallBest = (AbstractEAIndividual) individual.clone();
+        if ((this.overallBest == null) || (this.overallBest.getFitness(0) > individual.getFitness(0))) {
+            this.overallBest = (AbstractEAIndividual) individual.clone();
         }
     }
 
@@ -386,11 +383,11 @@ public class FLensProblem extends AbstractOptimizationProblem
 //        // The fitness is the sum over all segments of the deviation from the center
 //        // of focus of a beam running through a segment.
 //         for (int i = 1; i < x.length; i++)
-//            fitness = fitness + Math.pow(m_Radius - m_SegmentHight / 2 - m_SegmentHight * (i - 1) -  m_FocalLength / m_SegmentHight * (epsilon - 1) * (x[i] - x[i-1]),2);
+//            fitness = fitness + Math.pow(radius - m_SegmentHight / 2 - m_SegmentHight * (i - 1) -  focalLength / m_SegmentHight * (epsilon - 1) * (x[i] - x[i-1]),2);
 
         // Here the thickness of the middle segment of the lens	is added to the fitness
         // to permit the optimization to reduce the overall thickness of the lens
-        if (this.m_UseMaterialConst) {
+        if (this.useMaterialConst) {
             fitness += x[(int) (x.length / 2)];
         }
 
@@ -405,13 +402,13 @@ public class FLensProblem extends AbstractOptimizationProblem
      * @return double[]
      */
     public double[] testLens(double[] x) {
-        double m_SegmentHight = 2 * m_Radius / (x.length - 1);
+        double m_SegmentHight = 2 * radius / (x.length - 1);
         double[] result = new double[x.length - 1];
         // Computation of fitness. Uses an approximation for very thin lenses.
         // The fitness is the sum over all segments of the deviation from the center
         // of focus of a beam running through a segment.
         for (int i = 1; i < x.length; i++) {
-            result[i - 1] = m_Radius - m_SegmentHight / 2 - m_SegmentHight * (i - 1) - m_FocalLength / m_SegmentHight * (m_Epsilon - 1) * (x[i] - x[i - 1]);
+            result[i - 1] = radius - m_SegmentHight / 2 - m_SegmentHight * (i - 1) - focalLength / m_SegmentHight * (epsilon - 1) * (x[i] - x[i - 1]);
         }
         return result;
     }
@@ -441,7 +438,7 @@ public class FLensProblem extends AbstractOptimizationProblem
      */
     public String getFinalReportOn(InterfaceOptimizer optimizer) {
         String result = optimizer.getStringRepresentation() + "\n";
-        result += this.getSolutionRepresentationFor(this.m_OverallBest);
+        result += this.getSolutionRepresentationFor(this.overallBest);
         return result;
     }
 
@@ -458,8 +455,8 @@ public class FLensProblem extends AbstractOptimizationProblem
         result += "FX Problem:\n";
         result += "Here the individual codes a vector of real number x and FX(x)= x is to be minimized.\n";
         result += "Parameters:\n";
-        result += "Dimension   : " + this.m_ProblemDimension + "\n";
-        result += "Noise level : " + this.m_Noise + "\n";
+        result += "Dimension   : " + this.problemDimension + "\n";
+        result += "Noise level : " + this.noise + "\n";
         result += "Solution representation:\n";
         //result += this.template.getSolutionRepresentationFor();
         return result;
@@ -485,7 +482,7 @@ public class FLensProblem extends AbstractOptimizationProblem
         System.out.println("TEST");
         FLensProblem f = new FLensProblem();
         System.out.println("Working Dir " + System.getProperty("user.dir"));
-        GOStandaloneVersion program = new GOStandaloneVersion();
+        StandaloneOptimization program = new StandaloneOptimization();
         OptimizationParameters GO = program.getGOParameters();
         GO.setProblem(f);
         RNG.setRandomSeed(1);
@@ -493,9 +490,6 @@ public class FLensProblem extends AbstractOptimizationProblem
         program.setShow(true);
     }
 
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -508,15 +502,6 @@ public class FLensProblem extends AbstractOptimizationProblem
     }
 
     /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "Focussing of a lens is to be optimized.";
-    }
-
-    /**
      * This method allows you to choose how much noise is to be added to the
      * fitness. This can be used to make the optimization problem more difficult.
      *
@@ -526,11 +511,11 @@ public class FLensProblem extends AbstractOptimizationProblem
         if (noise < 0) {
             noise = 0;
         }
-        this.m_Noise = noise;
+        this.noise = noise;
     }
 
     public double getNoise() {
-        return this.m_Noise;
+        return this.noise;
     }
 
     public String noiseTipText() {
@@ -543,11 +528,11 @@ public class FLensProblem extends AbstractOptimizationProblem
      * @param XOffSet The offset for the decision variables.
      */
     public void setXOffSet(double XOffSet) {
-        this.m_XOffSet = XOffSet;
+        this.xOffset = XOffSet;
     }
 
     public double getXOffSet() {
-        return this.m_XOffSet;
+        return this.xOffset;
     }
 
     public String xOffSetTipText() {
@@ -561,11 +546,11 @@ public class FLensProblem extends AbstractOptimizationProblem
      * @param YOffSet The offset for the objective value.
      */
     public void setYOffSet(double YOffSet) {
-        this.m_YOffSet = YOffSet;
+        this.yOffset = YOffSet;
     }
 
     public double getYOffSet() {
-        return this.m_YOffSet;
+        return this.yOffset;
     }
 
     public String yOffSetTipText() {
@@ -579,11 +564,11 @@ public class FLensProblem extends AbstractOptimizationProblem
      * @param multiruns The number of multiruns that are to be performed
      */
     public void setProblemDimension(int multiruns) {
-        this.m_ProblemDimension = multiruns;
+        this.problemDimension = multiruns;
     }
 
     public int getProblemDimension() {
-        return this.m_ProblemDimension;
+        return this.problemDimension;
     }
 
     public String problemDimensionTipText() {
@@ -591,7 +576,7 @@ public class FLensProblem extends AbstractOptimizationProblem
     }
 
     /**
-     * This method allows you to toggel the solution representation.
+     * This method allows you to toggle the solution representation.
      *
      * @param show Whether to show the result or not
      */
@@ -618,11 +603,11 @@ public class FLensProblem extends AbstractOptimizationProblem
      * @param show Whether to show the result or not
      */
     public void setUseMaterialConst(boolean show) {
-        this.m_UseMaterialConst = show;
+        this.useMaterialConst = show;
     }
 
     public boolean getUseMaterialConst() {
-        return this.m_UseMaterialConst;
+        return this.useMaterialConst;
     }
 
     public String useMaterialConstTipText() {
@@ -660,6 +645,6 @@ public class FLensProblem extends AbstractOptimizationProblem
      */
     @Override
     public InterfaceSolutionViewer getSolutionViewer() {
-        return m_Panel;
+        return lensViewerPanel;
     }
 }

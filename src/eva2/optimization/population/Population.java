@@ -28,16 +28,7 @@ import java.util.logging.Logger;
  * The Population also provides for appropriate counting of function calls performed.
  * For initialization, the default individual initialization method may be used, as well as a
  * random latin hypercube implementation for InterfaceDataTypeDouble individuals.
- * <p/>
- * Copyright:       Copyright (c) 2003
- * Company:         University of Tuebingen, Computer Architecture
- *
- * @author Felix Streichert, Marcel Kronfeld
- * @version: $Revision: 307 $
- * $Date: 2007-12-04 14:31:47 +0100 (Tue, 04 Dec 2007) $
- * $Author: mkron $
  */
-
 public class Population extends ArrayList implements PopulationInterface, Cloneable, java.io.Serializable {
 
     private static final Logger LOGGER = Logger.getLogger(Population.class.getName());
