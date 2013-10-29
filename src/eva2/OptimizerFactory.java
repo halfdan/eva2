@@ -788,6 +788,7 @@ public class OptimizerFactory {
         if (runnable == null) {
             return null;
         }
+        runnable.run();
         new Thread(runnable).start();
         lastRunnable = runnable;
         return runnable;
