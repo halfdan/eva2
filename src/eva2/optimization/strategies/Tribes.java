@@ -596,8 +596,8 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
             TribesPosition tp = iterator.next();
             all.add(positionToExplorer(tp));
         }
-        all.SetFunctionCalls(population.getFunctionCalls());
-        all.setGenerationTo(population.getGeneration());
+        all.setFunctionCalls(population.getFunctionCalls());
+        all.setGeneration(population.getGeneration());
         //all.addPopulation(pop);
         return new SolutionSet(population, all);
     }

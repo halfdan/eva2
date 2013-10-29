@@ -25,7 +25,7 @@ public class HillClimbing implements InterfaceOptimizer, java.io.Serializable {
     private InterfaceOptimizationProblem m_Problem = new B1Problem();
     private InterfaceMutation mutator = null;
     //    private int             m_MultiRuns             = 100;
-//    private int             m_FitnessCalls          = 100;
+//    private int             maxFitnessCalls          = 100;
 //    private int             m_FitnessCallsNeeded    = 0;
 //    GAIndividualBinaryData  m_Best, m_Test;
     // These variables are necessary for the more complex LectureGUI enviroment
@@ -158,12 +158,12 @@ public class HillClimbing implements InterfaceOptimizer, java.io.Serializable {
 //    /** This method will optimize
 //     */
 //    public void defaultOptimize() {
-//        for (int i = 0; i < m_FitnessCalls; i++) {
+//        for (int i = 0; i < maxFitnessCalls; i++) {
 //            this.m_Test = (GAIndividualBinaryData)((this.m_Best).clone());
 //            this.m_Test.defaultMutate();
 //            if (this.m_Test.defaultEvaulateAsMiniBits() < this.m_Best.defaultEvaulateAsMiniBits()) this.m_Best = this.m_Test;
 //            this.m_FitnessCallsNeeded = i;
-//            if (this.m_Best.defaultEvaulateAsMiniBits() == 0) i = this.m_FitnessCalls +1;
+//            if (this.m_Best.defaultEvaulateAsMiniBits() == 0) i = this.maxFitnessCalls +1;
 //        }
 //    }
 //    /** This main method will start a simple hillclimber.
@@ -181,7 +181,7 @@ public class HillClimbing implements InterfaceOptimizer, java.io.Serializable {
 //        }
 //        TmpMeanCalls = TmpMeanCalls/program.m_MultiRuns;
 //        TmpMeanFitness = TmpMeanFitness/program.m_MultiRuns;
-//        System.out.println("("+program.m_MultiRuns+"/"+program.m_FitnessCalls+") Mean Fitness : " + TmpMeanFitness + " Mean Calls needed: " + TmpMeanCalls);
+//        System.out.println("("+program.m_MultiRuns+"/"+program.maxFitnessCalls+") Mean Fitness : " + TmpMeanFitness + " Mean Calls needed: " + TmpMeanCalls);
 //    }
 
     /**

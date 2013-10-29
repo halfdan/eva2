@@ -318,7 +318,6 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
             esIndy = (InterfaceDataTypeDouble) indy;
         } catch (java.lang.ClassCastException e) {
             throw new RuntimeException("Differential Evolution currently requires InterfaceESIndividual as basic data type!");
-//            return (AbstractEAIndividual)((AbstractEAIndividual)pop.get(RNG.randomInt(0, pop.size()-1))).getClone();
         }
         double[] nX, vX, oX;
         oX = esIndy.getDoubleData();
@@ -368,9 +367,8 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
                     parents.add(bestIndy);
                 }  // Add best instead of preselected
                 double[] delta1 = this.fetchDeltaRandom(pop);
-                double[] delta2 = this.fetchDeltaRandom(pop);
                 for (int i = 0; i < oX.length; i++) {
-                    vX[i] = oX[i] + this.getCurrentF() * (delta1[i] - delta2[i]);
+                    vX[i] = oX[i] + this.getCurrentF() * delta1[i];
                 }
                 break;
             }
@@ -383,10 +381,8 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
                 }  // Add best instead of preselected
                 double[] delta1 = this.fetchDeltaRandom(pop);
                 double[] delta2 = this.fetchDeltaRandom(pop);
-                double[] delta3 = this.fetchDeltaRandom(pop);
-                double[] delta4 = this.fetchDeltaRandom(pop);
                 for (int i = 0; i < oX.length; i++) {
-                    vX[i] = oX[i] + this.getCurrentF() * (delta1[i] - delta2[i]) + this.getCurrentF() * (delta3[i] - delta4[i]);
+                    vX[i] = oX[i] + this.getCurrentF() * delta1[i] + this.getCurrentF() * delta2[i];
                 }
                 break;
             }

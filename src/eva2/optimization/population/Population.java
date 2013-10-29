@@ -323,7 +323,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
 
     @Override
     public Object clone() {
-        return (Object) new Population(this);
+        return new Population(this);
     }
 
     /**
@@ -680,17 +680,6 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      * care
      *
      * @param d The new number of functioncalls.
-     * @deprecated
-     */
-    public void SetFunctionCalls(int d) {
-        this.functionCallCount = d;
-    }
-
-    /**
-     * This method set the current number of function calls performed. Use with
-     * care
-     *
-     * @param d The new number of functioncalls.
      */
     public void setFunctionCalls(int d) {
         this.functionCallCount = d;
@@ -739,17 +728,6 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     @Override
     public int getGeneration() {
         return this.generationCount;
-    }
-
-    /**
-     * This method sets the generation.
-     *
-     * @param gen the value to set as new generation index
-     * @see setGeneration
-     * @deprecated
-     */
-    public void setGenerationTo(int gen) {
-        this.generationCount = gen;
     }
 
     /**

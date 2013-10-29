@@ -212,7 +212,7 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
             System.out.println("num inds after clusterLS: " + m_Population.size());
         }
 
-        popD.head().setGenerationTo(m_Population.getGeneration() + 1);
+        popD.head().setGeneration(m_Population.getGeneration() + 1);
 
         if (doReinitialization && (improvement < minImprovement)) {
             if (TRACE) {
@@ -229,7 +229,7 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
                 }
 
                 // store results
-                archive.SetFunctionCalls(m_Population.getFunctionCalls());
+                archive.setFunctionCalls(m_Population.getFunctionCalls());
                 archive.addPopulation(m_Population);
 
                 Population tmpPop = new Population();
@@ -268,7 +268,7 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
 //				System.out.println("bla");
 //			}
             // set funcalls to real value
-            m_Population.SetFunctionCalls(((Population) source).getFunctionCalls());
+            m_Population.setFunctionCalls(((Population) source).getFunctionCalls());
 //			System.out.println("FunCallIntervalReached at " + (((Population)source).getFunctionCalls()));
             this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
         }
@@ -303,8 +303,8 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
         Population tmp = new Population();
         tmp.addPopulation(archive);
         tmp.addPopulation(m_Population);
-        tmp.SetFunctionCalls(m_Population.getFunctionCalls());
-        tmp.setGenerationTo(m_Population.getGeneration());
+        tmp.setFunctionCalls(m_Population.getFunctionCalls());
+        tmp.setGeneration(m_Population.getGeneration());
 //    	tmp = PostProcessInterim.clusterBest(tmp, sigma, 0, PostProcessInterim.KEEP_LONERS, PostProcessInterim.BEST_ONLY);
         return new SolutionSet(m_Population, tmp);
     }

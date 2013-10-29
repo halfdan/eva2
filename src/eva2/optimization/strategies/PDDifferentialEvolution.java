@@ -507,7 +507,7 @@ public class PDDifferentialEvolution implements InterfaceOptimizer, java.io.Seri
             children.add(indy);
         }
 
-        children.setGenerationTo(m_Population.getGeneration());
+        children.setGeneration(m_Population.getGeneration());
         m_Problem.evaluate(children);
 
         /**

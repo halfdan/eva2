@@ -199,7 +199,7 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
 //			System.out.println("bla");
 //			}
             // set funcalls to real value
-            refSet.SetFunctionCalls(((Population) source).getFunctionCalls());
+            refSet.setFunctionCalls(((Population) source).getFunctionCalls());
 
 //			System.out.println("FunCallIntervalReached at " + (((Population)source).getFunctionCalls()));
 

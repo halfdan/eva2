@@ -407,7 +407,7 @@ public class StandaloneOptimization implements InterfaceStandaloneOptimization, 
                     this.optimizationParameters.getOptimizer().getProblem().evaluate(this.optimizationParameters.getOptimizer().getPopulation());
                     this.optimizationParameters.getOptimizer().getProblem().evaluate(this.optimizationParameters.getOptimizer().getPopulation().getArchive());
                     this.optimizationParameters.getOptimizer().initByPopulation(this.backupPopulation, false);
-                    this.optimizationParameters.getOptimizer().getPopulation().SetFunctionCalls(0);
+                    this.optimizationParameters.getOptimizer().getPopulation().setFunctionCalls(0);
                     this.optimizationParameters.addPopulationChangedEventListener(this);
                 } else {
                     this.recentFunctionCalls = 0;

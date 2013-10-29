@@ -259,7 +259,7 @@ public class EvolutionStrategyIPOP extends EvolutionStrategies implements Interf
     @Override
     public void registerPopulationStateChanged(Object source, String name) {
         if (name.equals(Population.FUN_CALL_INTERVAL_REACHED)) {
-            getPopulation().SetFunctionCalls(((Population) source).getFunctionCalls()); // TODO this is ugly
+            getPopulation().setFunctionCalls(((Population) source).getFunctionCalls()); // TODO this is ugly
             super.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
         } else {
 //			System.err.println("Not forwarding event " + name);

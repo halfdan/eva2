@@ -93,7 +93,7 @@ public class MonteCarloSearch implements InterfaceOptimizer, java.io.Serializabl
             m_Population.getEAIndividual(i).defaultInit(null);
         }
 
-        this.m_Population.SetFunctionCalls(original.getFunctionCalls());
+        this.m_Population.setFunctionCalls(original.getFunctionCalls());
         this.m_Problem.evaluate(this.m_Population);
         for (int i = 0; i < this.m_Population.size(); i++) {
             if (((AbstractEAIndividual) original.get(i)).isDominatingDebConstraints(((AbstractEAIndividual) this.m_Population.get(i)))) {

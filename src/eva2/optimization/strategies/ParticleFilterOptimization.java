@@ -181,8 +181,8 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
             }
         }
 
-        parents.SetFunctionCalls(pop.getFunctionCalls());
-        parents.setGenerationTo(pop.getGeneration());
+        parents.setFunctionCalls(pop.getFunctionCalls());
+        parents.setGeneration(pop.getGeneration());
 
         if (withShow) {
             drawPop(parents, 3, true);

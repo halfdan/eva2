@@ -241,7 +241,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
         setMainSwarmSize(mainSwarmSize); // (particles are initialized later via init)
         getMainSwarm().setProblem(m_Problem);
         getMainSwarm().SetMaxAllowedSwarmRadius(maxAllowedSwarmRadius);
-        getMainSwarm().getPopulation().setGenerationTo(0);
+        getMainSwarm().getPopulation().setGeneration(0);
 
         // choose PSO-type for the mainswarmoptimizer 
         getMainSwarm().setGcpso(false);
@@ -767,7 +767,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
         }
 
         // set correct number of generations
-        metapop.setGenerationTo(getMainSwarm().getPopulation().getGeneration());
+        metapop.setGeneration(getMainSwarm().getPopulation().getGeneration());
 
         // set correct number of function calls
         int calls = getMainSwarm().getPopulation().getFunctionCalls();
@@ -776,7 +776,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
             // calls from inactive populations have to be counted as well...
             calls += currentsubswarm.getPopulation().getFunctionCalls();
         }
-        metapop.SetFunctionCalls(calls);
+        metapop.setFunctionCalls(calls);
         // care for consistent size:
         metapop.synchSize();
         return metapop;
@@ -816,7 +816,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
             System.out.println("Active populations: " + activeCnt);
         }
         // set correct number of generations
-        metapop.setGenerationTo(getMainSwarm().getPopulation().getGeneration());
+        metapop.setGeneration(getMainSwarm().getPopulation().getGeneration());
 
         // set correct number of function calls
         int calls = getMainSwarm().getPopulation().getFunctionCalls();
@@ -824,7 +824,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
             calls += getSubSwarms().get(i).getPopulation().getFunctionCalls();
         }
 //		System.out.println("metapop size " + metapop.size());
-        metapop.SetFunctionCalls(calls);
+        metapop.setFunctionCalls(calls);
 
         if (metapop.size() == 0) {
             System.err.println("NichePSO ERROR! " + metapop.getFunctionCalls());
@@ -858,8 +858,8 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
         if (returnRepresentativeSolutionsOnly) {
             Population sols = getSubswarmRepresentatives(false);
             Population metapop = getPopulation();
-            sols.SetFunctionCalls(metapop.getFunctionCalls());
-            sols.setGenerationTo(metapop.getGeneration());
+            sols.setFunctionCalls(metapop.getFunctionCalls());
+            sols.setGeneration(metapop.getGeneration());
             return new SolutionSet(metapop, sols);
         } else {
             Population metapop = getPopulation();
@@ -869,8 +869,8 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
                 AbstractEAIndividual pbest = (AbstractEAIndividual) indy.getData("PersonalBestKey");
                 sols.add(pbest);
             }
-            sols.SetFunctionCalls(metapop.getFunctionCalls());
-            sols.setGenerationTo(metapop.getFunctionCalls());
+            sols.setFunctionCalls(metapop.getFunctionCalls());
+            sols.setGeneration(metapop.getFunctionCalls());
             return new SolutionSet(sols);
         }
     }
