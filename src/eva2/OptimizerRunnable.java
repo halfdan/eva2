@@ -223,7 +223,7 @@ public class OptimizerRunnable implements Runnable {
         }
     }
 
-    public double[] getDoubleSolution() {
+    public double[]  getDoubleSolution() {
         IndividualInterface indy = getResult();
         if (indy instanceof InterfaceDataTypeDouble) {
             return ((InterfaceDataTypeDouble) indy).getDoubleData();

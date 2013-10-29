@@ -331,14 +331,6 @@ public class Main extends JFrame implements OptimizationStateListener {
         if (withGUI) {
             GridBagConstraints gbConstraints = new GridBagConstraints();
 
-            /* Set Look and Feel */
-            try {
-                //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-                UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
-            } catch (Exception ex) {
-                LOGGER.log(Level.INFO, "Could not set Look&Feel", ex);
-            }
-
             /* Create main frame with GridBagLayout */
             setTitle(EvAInfo.productName);
             setLayout(new GridBagLayout());
@@ -551,6 +543,25 @@ public class Main extends JFrame implements OptimizationStateListener {
 
             System.setProperty("com.apple.mrj.application.growbox.intrudes", "false");
             System.setProperty("com.apple.mrj.application.live-resize", "true");
+            try {
+                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            } catch (InstantiationException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            } catch (UnsupportedLookAndFeelException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
+        } else {
+            /* Set Look and Feel */
+            try {
+                //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
+            } catch (Exception ex) {
+                LOGGER.log(Level.INFO, "Could not set Look&Feel", ex);
+            }
         }
 
         /* Available command-line parameters */

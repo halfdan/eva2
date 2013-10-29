@@ -1,6 +1,14 @@
 package eva2.cli;
 
+import eva2.OptimizerFactory;
 import eva2.optimization.OptimizationStateListener;
+import eva2.optimization.go.InterfacePopulationChangedEventListener;
+import eva2.optimization.modules.OptimizationParameters;
+import eva2.optimization.operator.terminators.CombinedTerminator;
+import eva2.optimization.operator.terminators.EvaluationTerminator;
+import eva2.optimization.operator.terminators.FitnessValueTerminator;
+import eva2.optimization.problems.AbstractOptimizationProblem;
+import eva2.optimization.problems.F1Problem;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.optimization.strategies.InterfaceOptimizer;
 import org.apache.commons.cli.*;
@@ -11,7 +19,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-public class Main implements OptimizationStateListener {
+public class Main implements OptimizationStateListener, InterfacePopulationChangedEventListener {
 
 
     private static Options createDefaultCommandLineOptions() {
@@ -139,7 +147,34 @@ public class Main implements OptimizationStateListener {
             }
         }
 
+        Main optimizationMain = new Main();
+        optimizationMain.runOptimization();
+    }
 
+    private void runOptimization() {
+
+        // Terminate after 10000 function evaluations OR after reaching a fitness < 0.1
+        OptimizerFactory.setEvaluationTerminator(50000);
+        OptimizerFactory.addTerminator(new FitnessValueTerminator(new double[]{0.01}), CombinedTerminator.OR);
+
+
+        int popsize = 30;
+        double f = 0.8, lambda = 0.6, cr = 0.6;
+
+        AbstractOptimizationProblem problem = new F1Problem(popsize);
+
+        InterfaceOptimizer optimizer = OptimizerFactory.createDifferentialEvolution(problem, popsize, f, lambda, cr, this);
+
+        OptimizationParameters params = OptimizerFactory.makeParams(optimizer, popsize, problem);
+        double[] result = OptimizerFactory.optimizeToDouble(params);
+
+        // This is stupid - why isn't there a way to wait for the optimization to finish?
+        while(OptimizerFactory.terminatedBecause().equals("Not yet terminated")) {
+            // wait
+        }
+
+        System.out.println(OptimizerFactory.terminatedBecause());
+        System.out.println(optimizer.getPopulation().getFunctionCalls());
     }
 
     private static void showOptimizerHelp() {
@@ -158,5 +193,10 @@ public class Main implements OptimizationStateListener {
         for (String name : problemList.keySet()) {
             System.out.printf("\t%s\n", name);
         }
+    }
+
+    @Override
+    public void registerPopulationStateChanged(Object source, String name) {
+        //System.out.println(name);
     }
 }
