@@ -233,7 +233,7 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
 
         // Kinder erzeugen
         Population children = new Population(m_lambdamo * m_lambda);
-        children.setGenerationTo(m_Population.getGeneration());
+        children.setGeneration(m_Population.getGeneration());
 
         for (int j = 0; j < children.getTargetSize(); j++) {
             AbstractEAIndividual parent = m_Population.getEAIndividual(j

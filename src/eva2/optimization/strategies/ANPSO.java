@@ -507,8 +507,8 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
         int calls = getMainSwarm().getPopulation().getFunctionCalls();
         getMainSwarm().setPopulation(pop);
         getMainSwarm().populationSizeHasChanged();
-        getMainSwarm().getPopulation().setGenerationTo(generations);
-        getMainSwarm().getPopulation().SetFunctionCalls(calls);
+        getMainSwarm().getPopulation().setGeneration(generations);
+        getMainSwarm().getPopulation().setFunctionCalls(calls);
     }
 
     /**
@@ -768,7 +768,7 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
 //		}
 
         // set correct number of generations
-        metapop.setGenerationTo(getMainSwarm().getPopulation().getGeneration());
+        metapop.setGeneration(getMainSwarm().getPopulation().getGeneration());
 
         // set correct number of function calls
         int calls = getMainSwarm().getPopulation().getFunctionCalls();
@@ -780,7 +780,7 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
         }
         // calls from inactivated subswarms were transfered to the mainswarm, see useAsSubSwarms method
 
-        metapop.SetFunctionCalls(calls);
+        metapop.setFunctionCalls(calls);
 
         return metapop;
     }

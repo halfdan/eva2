@@ -1,39 +1,27 @@
 package eva2.optimization.operator.terminators;
-/*
- * Title:        EvA2
- * Description:
- * Copyright:    Copyright (c) 2003
- * Company:      University of Tuebingen, Computer Architecture
- * @author Holger Ulmer, Felix Streichert, Hannes Planatscher
- * @version:  $Revision: 319 $
- *            $Date: 2007-12-05 11:29:32 +0100 (Wed, 05 Dec 2007) $
- *            $Author: mkron $
- */
-/*==========================================================================*
- * IMPORTS
- *==========================================================================*/
 
 import eva2.optimization.go.InterfaceTerminator;
 import eva2.optimization.population.InterfaceSolutionSet;
 import eva2.optimization.population.PopulationInterface;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
+import eva2.util.annotation.Description;
 
 import java.io.Serializable;
 
-/*==========================================================================*
- * CLASS DECLARATION
- *==========================================================================*/
-
 /**
- *
+ * Evaluation Terminator. Terminates the optimization after a certain
+ * number of fitness evaluations. Note that this will not terminate after
+ * the exact number of fitness calls, since terminators are only once per
+ * generation.
  */
+@Description(text = "Terminates after the given number of fitness calls.")
 public class EvaluationTerminator implements InterfaceTerminator,
         Serializable {
     private String msg = "Not terminated.";
     /**
      * Number of fitness calls on the problem which is optimized.
      */
-    protected int m_FitnessCalls = 1000;
+    protected int maxFitnessCalls = 1000;
 
     public EvaluationTerminator() {
     }
@@ -43,17 +31,13 @@ public class EvaluationTerminator implements InterfaceTerminator,
         msg = "Not terminated.";
     }
 
-    public static String globalInfo() {
-        return "Terminates after the given number of fitness calls.";
-    }
-
     /**
      * Construct Terminator with a maximum number of fitness calls.
      *
      * @param maximum number of fitness calls
      */
     public EvaluationTerminator(int x) {
-        m_FitnessCalls = x;
+        maxFitnessCalls = x;
     }
 
     @Override
@@ -62,12 +46,11 @@ public class EvaluationTerminator implements InterfaceTerminator,
     }
 
     @Override
-    public boolean isTerminated(PopulationInterface pop) {
-        //System.out.println("m_FitnessCalls="+m_FitnessCalls);
-        if (m_FitnessCalls > pop.getFunctionCalls()) {
+    public boolean isTerminated(PopulationInterface population) {
+        if (maxFitnessCalls > population.getFunctionCalls()) {
             return false;
         } else {
-            msg = m_FitnessCalls + " fitness calls were reached.";
+            msg = maxFitnessCalls + " fitness calls were reached.";
             return true;
         }
     }
@@ -79,18 +62,18 @@ public class EvaluationTerminator implements InterfaceTerminator,
 
     @Override
     public String toString() {
-        String ret = "EvaluationTerminator,calls=" + m_FitnessCalls;
+        String ret = "EvaluationTerminator,calls=" + maxFitnessCalls;
         return ret;
     }
 
     public void setFitnessCalls(int x) {
         //System.out.println("setFitnessCalls"+x);
-        m_FitnessCalls = x;
+        maxFitnessCalls = x;
     }
 
     public int getFitnessCalls() {
-        //System.out.println("getFitnessCalls"+m_FitnessCalls);
-        return m_FitnessCalls;
+        //System.out.println("getFitnessCalls"+maxFitnessCalls);
+        return maxFitnessCalls;
     }
 
     /**

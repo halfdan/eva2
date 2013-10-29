@@ -375,8 +375,8 @@ public class PostProcess {
      * @return the number of evaluations actually performed
      */
     public static int processWithHC(Population pop, AbstractOptimizationProblem problem, int maxSteps, double stepSize, double minStepSize) {
-//		pop.SetFunctionCalls(0); // or else optimization wont restart on an "old" population
-//		pop.setGenerationTo(0);
+//		pop.setFunctionCalls(0); // or else optimization wont restart on an "old" population
+//		pop.setGeneration(0);
         int stepsBef = pop.getFunctionCalls();
         processWithHC(pop, problem, new EvaluationTerminator(pop.getFunctionCalls() + maxSteps), new MutateESMutativeStepSizeControl(stepSize, minStepSize, stepSize));
         return pop.getFunctionCalls() - stepsBef;
@@ -519,7 +519,7 @@ public class PostProcess {
         pop.addPopulation(es.getPopulation());
 
         int funCallsDone = es.getPopulation().getFunctionCalls() - baseEvals;
-        pop.SetFunctionCalls(funCallsBefore);
+        pop.setFunctionCalls(funCallsBefore);
 
         return new Pair<Integer, Boolean>(funCallsDone, ppRunnable.wasAborted());
     }
@@ -632,7 +632,7 @@ public class PostProcess {
             int evalsOld = candidates.getFunctionCalls();
             processWithHC(candidates, prob, new EvaluationTerminator(evalsOld + steps), mute);
             int evalsDone = candidates.getFunctionCalls() - evalsOld;
-            candidates.SetFunctionCalls(evalsOld);
+            candidates.setFunctionCalls(evalsOld);
             return evalsDone;
         } else {
             int stepsPerCand = (steps - (candCnt * (dim - 1))) / candCnt;

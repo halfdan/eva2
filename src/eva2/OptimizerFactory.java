@@ -428,7 +428,6 @@ public class OptimizerFactory {
         pso.setPhi1(phi1);
         pso.setPhi2(phi2);
         pso.setSpeedLimit(speedLim);
-//		pso.getTopology().setSelectedTag(selectedTopology);
         pso.setTopology(selectedTopology);
         pso.setTopologyRange(topologyRange);
         pso.addPopulationChangedEventListener(listener);

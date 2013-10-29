@@ -160,7 +160,7 @@ public class MemeticAlgorithm implements InterfaceOptimizer,
                 }
             }
             // eigentlich muss hier noch subsetsize drauf, aber lassen wir das
-            gop.SetFunctionCalls(gop.getFunctionCalls()
+            gop.setFunctionCalls(gop.getFunctionCalls()
                     + (int) Math.round(localSearchSteps * cost * subset.size()));
 
             if (TRACE) {

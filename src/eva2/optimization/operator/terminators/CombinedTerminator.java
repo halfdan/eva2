@@ -5,10 +5,11 @@ import eva2.optimization.population.InterfaceSolutionSet;
 import eva2.optimization.population.PopulationInterface;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.tools.SelectedTag;
+import eva2.util.annotation.Description;
 
 import java.io.Serializable;
 
-
+@Description(text = "Boolean combination of two terminators.")
 public class CombinedTerminator implements InterfaceTerminator, Serializable {
     /**
      *
@@ -35,10 +36,6 @@ public class CombinedTerminator implements InterfaceTerminator, Serializable {
         this.t1 = t1;
         this.t2 = t2;
         andOrTag.setSelectedTag(bAnd ? "AND" : "OR");
-    }
-
-    public static String globalInfo() {
-        return "Boolean combination of two terminators.";
     }
 
     @Override

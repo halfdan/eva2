@@ -471,7 +471,7 @@ public class MOCCOStandalone implements InterfaceStandaloneOptimization, Interfa
             System.out.println("" + this.m_State.m_Optimizer.getStringRepresentation());
         }
         this.m_State.m_CurrentProblem.evaluate(this.m_State.m_Optimizer.getPopulation());
-        this.m_State.m_Optimizer.getPopulation().SetFunctionCalls(0);
+        this.m_State.m_Optimizer.getPopulation().setFunctionCalls(0);
         if (this.m_State.m_Optimizer.getPopulation().size() == 0) {
             this.m_State.m_Optimizer.init();
         }

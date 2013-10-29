@@ -704,7 +704,7 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
 
     private void setGeneration(int gen, Population[] pops) {
         for (int i = 0; i < pops.length; i++) {
-            pops[i].setGenerationTo(gen);
+            pops[i].setGeneration(gen);
         }
     }
 
@@ -924,7 +924,7 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
             // (few) duplicates may happen because parents are copied to another peak population
             // if a cluster had a size of 1 AND parents may survive due to elitism.
             pop.addPopulation(pi, false);
-//			if (i==0) pop.setGenerationTo(pi.getGeneration());
+//			if (i==0) pop.setGeneration(pi.getGeneration());
 //			else if (pop.getGeneration()!=pi.getGeneration()) System.err.println("Error, mismatching generation in collectPopulation");
         }
         if (immigrants != null) {
@@ -1301,7 +1301,7 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
             System.err.println("Warning, mismatching population in " + this.getClass().getName());
         }
         if (name.equals(Population.FUN_CALL_INTERVAL_REACHED)) {
-//    		getPopulation().SetFunctionCalls(((Population)source).getFunctionCalls()); // this is ugly and I dont know what its for.. possibly if the population instance changes along the GUi?
+//    		getPopulation().setFunctionCalls(((Population)source).getFunctionCalls()); // this is ugly and I dont know what its for.. possibly if the population instance changes along the GUi?
             this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
         } else {
             // this may come from cloned instances with the same listener - should not happen since they are removed. 

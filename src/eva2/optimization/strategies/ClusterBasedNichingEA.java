@@ -572,7 +572,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
                 System.out.println("-Deme " + i + " size: " + ((Population) this.species.get(i)).size());
             }
             curSpecies = ((Population) this.species.get(i));
-            curSpecies.SetFunctionCalls(0);
+            curSpecies.setFunctionCalls(0);
             curSpecies.synchSize();
 //            if (isActive(curSpecies)) { // Lets have only active species...
             if ((haltingWindow > 0) && (this.testSpeciesForConvergence(curSpecies))) {
@@ -969,7 +969,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
             spec1.SetHistory(spec2.getHistory());
         }
         if (spec2.getGeneration() > spec1.getGeneration()) {
-            spec1.setGenerationTo(spec2.getGeneration());
+            spec1.setGeneration(spec2.getGeneration());
         }
         // possibly notify the optimizer of the merging event to merge population based information
         if (optimizer instanceof InterfaceSpeciesAware) {
@@ -989,10 +989,10 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
         newSp.setTargetSize(newSp.size());
         newSp.setUseHistory(true);
         if (startAtP1Gen) { // start explicitely as a child population of p1
-            newSp.setGenerationTo(parentSp.getGeneration());
+            newSp.setGeneration(parentSp.getGeneration());
             newSp.SetHistory((LinkedList<AbstractEAIndividual>) parentSp.getHistory().clone());
         } else { // start anew (from undiff)
-            newSp.setGenerationTo(0);
+            newSp.setGeneration(0);
             newSp.SetHistory(new LinkedList<AbstractEAIndividual>());
         }
 
