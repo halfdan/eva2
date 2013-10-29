@@ -360,6 +360,20 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
                 }
                 break;
             }
+            case DE_Best_1: {
+                // DE/best/1
+                AbstractEAIndividual bestIndy = getBestIndy(pop);
+                oX = getGenotype(bestIndy);
+                if (parents != null) {
+                    parents.add(bestIndy);
+                }  // Add best instead of preselected
+                double[] delta1 = this.fetchDeltaRandom(pop);
+                double[] delta2 = this.fetchDeltaRandom(pop);
+                for (int i = 0; i < oX.length; i++) {
+                    vX[i] = oX[i] + this.getCurrentF() * (delta1[i] - delta2[i]);
+                }
+                break;
+            }
             case DE_Best_2: {
                 // DE/best/2
                 AbstractEAIndividual bestIndy = getBestIndy(pop);
@@ -369,8 +383,10 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
                 }  // Add best instead of preselected
                 double[] delta1 = this.fetchDeltaRandom(pop);
                 double[] delta2 = this.fetchDeltaRandom(pop);
+                double[] delta3 = this.fetchDeltaRandom(pop);
+                double[] delta4 = this.fetchDeltaRandom(pop);
                 for (int i = 0; i < oX.length; i++) {
-                    vX[i] = oX[i] + this.getCurrentF() * (delta1[i] + delta2[i]);
+                    vX[i] = oX[i] + this.getCurrentF() * (delta1[i] - delta2[i]) + this.getCurrentF() * (delta3[i] - delta4[i]);
                 }
                 break;
             }
