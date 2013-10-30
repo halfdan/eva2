@@ -2,7 +2,7 @@ package eva2.optimization.strategies;
 
 import eva2.gui.editor.GenericObjectEditor;
 import eva2.optimization.go.InterfacePopulationChangedEventListener;
-import eva2.optimization.go.InterfaceTerminator;
+import eva2.optimization.operator.terminators.InterfaceTerminator;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.operator.mutation.MutateESRankMuCMA;
 import eva2.optimization.operator.terminators.FitnessConvergenceTerminator;

@@ -6,7 +6,7 @@ import eva2.gui.plot.GraphPointSet;
 import eva2.gui.plot.Plot;
 import eva2.gui.plot.TopoPlot;
 import eva2.optimization.go.InterfacePopulationChangedEventListener;
-import eva2.optimization.go.InterfaceTerminator;
+import eva2.optimization.operator.terminators.InterfaceTerminator;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.AbstractEAIndividualComparator;
 import eva2.optimization.individuals.InterfaceDataTypeDouble;

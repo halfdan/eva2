@@ -3,7 +3,7 @@ package eva2.optimization.mocco;
 
 import eva2.gui.PropertyEditorProvider;
 import eva2.gui.editor.GenericObjectEditor;
-import eva2.optimization.go.InterfaceTerminator;
+import eva2.optimization.operator.terminators.InterfaceTerminator;
 import eva2.optimization.go.MOCCOStandalone;
 import eva2.optimization.operator.migration.SOBestMigration;
 import eva2.optimization.operator.moso.MOSOLpMetric;

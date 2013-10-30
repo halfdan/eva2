@@ -7,7 +7,7 @@ import eva2.gui.plot.Plot;
 import eva2.gui.plot.TopoPlot;
 import eva2.optimization.enums.ESMutationInitialSigma;
 import eva2.optimization.enums.PostProcessMethod;
-import eva2.optimization.go.InterfaceTerminator;
+import eva2.optimization.operator.terminators.InterfaceTerminator;
 import eva2.optimization.individuals.*;
 import eva2.optimization.modules.OptimizationParameters;
 import eva2.optimization.operator.cluster.ClusteringDensityBased;

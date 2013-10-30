@@ -637,7 +637,6 @@ public class BeanInspector {
             } else {
                 Description description = obj.getClass().getAnnotation(Description.class);
                 if (description != null) {
-                    ;
                     infoBf.append("\t");
                     infoBf.append(description.text());
                 }
@@ -667,18 +666,18 @@ public class BeanInspector {
             e.printStackTrace();
             return null;
         }
-        PropertyDescriptor[] m_Properties = bi.getPropertyDescriptors();
+        PropertyDescriptor[] propertyDescriptors = bi.getPropertyDescriptors();
         ArrayList<String> memberInfoList = new ArrayList<String>();
 
-        for (int i = 0; i < m_Properties.length; i++) {
-            if (m_Properties[i].isExpert()) {
+        for (int i = 0; i < propertyDescriptors.length; i++) {
+            if (propertyDescriptors[i].isExpert()) {
                 continue;
             }
 
-            String name = m_Properties[i].getDisplayName();
+            String name = propertyDescriptors[i].getDisplayName();
 
-            Method getter = m_Properties[i].getReadMethod();
-            Method setter = m_Properties[i].getWriteMethod();
+            Method getter = propertyDescriptors[i].getReadMethod();
+            Method setter = propertyDescriptors[i].getWriteMethod();
             // Only display read/write properties.
             if (getter == null || setter == null) {
                 continue;
@@ -691,7 +690,7 @@ public class BeanInspector {
                 // Don't try to set null values:
                 if (value == null) {
                     // If it's a user-defined property we give a warning.
-                    String getterClass = m_Properties[i].getReadMethod().getDeclaringClass().getName();
+                    String getterClass = propertyDescriptors[i].getReadMethod().getDeclaringClass().getName();
                     if (getterClass.indexOf("java.") != 0) {
                         System.err.println("Warning: Property \"" + name + "\" has null initial value.  Skipping.");
                     }
@@ -704,7 +703,7 @@ public class BeanInspector {
 
                 memberInfoBf.append("\tType: ");
 
-                if (m_Properties[i].isHidden()) {
+                if (propertyDescriptors[i].isHidden()) {
                     memberInfoBf.append("restricted, ");
                 } else {
                     memberInfoBf.append("common, ");
@@ -729,6 +728,7 @@ public class BeanInspector {
                     memberInfoBf.append("Value: \t");
                     memberInfoBf.append(toString(value));
                 }
+
 
                 // now look for a TipText method for this property
                 Method tipTextMethod = hasMethod(obj, name + "TipText", null);
@@ -1030,6 +1030,7 @@ public class BeanInspector {
     public static String getToolTipText(String name, MethodDescriptor[] methods, Object target, boolean stripToolTipToFirstPoint, int toHTMLLen) {
         String result = "";
         String tipName = name + "TipText";
+
         for (int j = 0; j < methods.length; j++) {
             String mname = methods[j].getDisplayName();
             Method meth = methods[j].getMethod();
@@ -1047,11 +1048,17 @@ public class BeanInspector {
                             }
                         }
                     } catch (Exception ex) {
+
                     }
                     break;
                 }
             }
         } // end for looking for tiptext
+
+        if(result.isEmpty()) {
+            LOGGER.fine(String.format("No ToolTip for %s.%s available.", target.getClass().getName(), name));
+        }
+
         if (toHTMLLen > 0) {
             return StringTools.toHTML(result, toHTMLLen);
         } else {

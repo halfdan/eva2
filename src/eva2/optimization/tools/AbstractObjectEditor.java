@@ -36,7 +36,7 @@ public abstract class AbstractObjectEditor implements PropertyEditor, java.beans
      */
     public Object m_Object;
     public Object m_Backup;
-    public GeneralGenericObjectEditorPanel m_EditorComponent;
+    public GeneralGenericObjectEditorPanel objectEditorPanel;
     public Hashtable m_Editors = new Hashtable();
 
     /**
@@ -261,24 +261,24 @@ public abstract class AbstractObjectEditor implements PropertyEditor, java.beans
      * from a list of property elements
      *
      * @param prop  The property to search for
-     * @param props All properties.
+     * @param propertyDescriptors All properties.
      * @return PropertyEditor
      */
-    public GeneralOptimizationEditorProperty getEditorFor(String prop, PropertyDescriptor[] props, MethodDescriptor[] methods, Object target) {
+    public GeneralOptimizationEditorProperty getEditorFor(String prop, PropertyDescriptor[] propertyDescriptors, MethodDescriptor[] methods, Object target) {
         GeneralOptimizationEditorProperty result = null;
-        for (int i = 0; i < props.length; i++) {
-            if (props[i].getName().equalsIgnoreCase(prop)) {
+        for (PropertyDescriptor propertyDescriptor : propertyDescriptors) {
+            if (propertyDescriptor.getName().equalsIgnoreCase(prop)) {
                 result = new GeneralOptimizationEditorProperty();
                 Object args[] = {};
-                result.m_getMethod = props[i].getReadMethod();
-                result.m_setMethod = props[i].getWriteMethod();
-                result.m_PropertyType = props[i].getPropertyType();
-                result.m_Name = props[i].getDisplayName();
+                result.m_getMethod = propertyDescriptor.getReadMethod();
+                result.m_setMethod = propertyDescriptor.getWriteMethod();
+                result.m_PropertyType = propertyDescriptor.getPropertyType();
+                result.m_Name = propertyDescriptor.getDisplayName();
                 result.m_Label = new JLabel(result.m_Name, SwingConstants.RIGHT);
                 result.m_TipText = BeanInspector.getToolTipText(result.m_Name, methods, target);
                 try {
                     result.m_Value = result.m_getMethod.invoke(target, args);
-                    result.m_Editor = PropertyEditorProvider.findEditor(props[i], result.m_Value);
+                    result.m_Editor = PropertyEditorProvider.findEditor(propertyDescriptor, result.m_Value);
                     if (result.m_Editor == null) {
                         result.m_Editor = PropertyEditorProvider.findEditor(result.m_PropertyType);
                     }

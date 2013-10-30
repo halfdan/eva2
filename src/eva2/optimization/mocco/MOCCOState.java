@@ -1,6 +1,6 @@
 package eva2.optimization.mocco;
 
-import eva2.optimization.go.InterfaceTerminator;
+import eva2.optimization.operator.terminators.InterfaceTerminator;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.operator.archiving.ArchivingAllDominating;
 import eva2.optimization.operator.terminators.EvaluationTerminator;

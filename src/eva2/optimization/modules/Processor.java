@@ -10,6 +10,7 @@ import eva2.optimization.operator.postprocess.PostProcessParams;
 import eva2.optimization.operator.postprocess.SolutionHistogram;
 import eva2.optimization.operator.terminators.EvaluationTerminator;
 import eva2.optimization.operator.terminators.GenerationTerminator;
+import eva2.optimization.operator.terminators.InterfaceTerminator;
 import eva2.optimization.population.Population;
 import eva2.optimization.population.PopulationInterface;
 import eva2.optimization.problems.AbstractOptimizationProblem;

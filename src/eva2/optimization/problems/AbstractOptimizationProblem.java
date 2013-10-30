@@ -1,7 +1,7 @@
 package eva2.optimization.problems;
 
 import eva2.optimization.enums.PostProcessMethod;
-import eva2.optimization.go.InterfaceTerminator;
+import eva2.optimization.operator.terminators.InterfaceTerminator;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.InterfaceDataTypeDouble;
 import eva2.optimization.operator.cluster.ClusteringDensityBased;

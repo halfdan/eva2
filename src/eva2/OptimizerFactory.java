@@ -5,7 +5,7 @@ import eva2.optimization.enums.MutateESCrossoverTypeEnum;
 import eva2.optimization.enums.PSOTopologyEnum;
 import eva2.optimization.enums.PostProcessMethod;
 import eva2.optimization.go.InterfacePopulationChangedEventListener;
-import eva2.optimization.go.InterfaceTerminator;
+import eva2.optimization.operator.terminators.InterfaceTerminator;
 import eva2.optimization.individuals.*;
 import eva2.optimization.modules.OptimizationParameters;
 import eva2.optimization.operator.archiving.ArchivingNSGAII;
