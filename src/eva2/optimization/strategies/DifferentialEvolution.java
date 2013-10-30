@@ -34,7 +34,9 @@ import java.util.Vector;
 @Description(text = "Differential Evolution using a steady-state population scheme.")
 public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serializable {
 
+    @Parameter(name = "Population", description = "Edit the properties of the population used.")
     protected Population population = new Population();
+
     protected transient Population children = null;
     protected AbstractOptimizationProblem optimizationProblem = new F1Problem();
 

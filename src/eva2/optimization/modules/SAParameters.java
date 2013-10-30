@@ -2,7 +2,7 @@ package eva2.optimization.modules;
 
 import eva2.optimization.go.InterfaceOptimizationParameters;
 import eva2.optimization.go.InterfacePopulationChangedEventListener;
-import eva2.optimization.go.InterfaceTerminator;
+import eva2.optimization.operator.terminators.InterfaceTerminator;
 import eva2.optimization.operator.terminators.EvaluationTerminator;
 import eva2.optimization.population.Population;
 import eva2.optimization.problems.B1Problem;

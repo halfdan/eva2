@@ -275,7 +275,7 @@ public class Main extends JFrame implements OptimizationStateListener {
     }
 
     private void preloadClasses() {
-        ClassPreloader cp = new ClassPreloader("eva2.optimization.strategies.InterfaceOptimizer", "eva2.optimization.problems.InterfaceOptimizationProblem", "eva2.optimization.go.InterfaceTerminator");
+        ClassPreloader cp = new ClassPreloader("eva2.optimization.strategies.InterfaceOptimizer", "eva2.optimization.problems.InterfaceOptimizationProblem", "eva2.optimization.operator.terminators.InterfaceTerminator");
         new Thread(cp).start();
     }
 

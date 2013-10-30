@@ -2,7 +2,7 @@ package eva2;
 
 import eva2.optimization.OptimizationStateListener;
 import eva2.optimization.go.InterfaceOptimizationParameters;
-import eva2.optimization.go.InterfaceTerminator;
+import eva2.optimization.operator.terminators.InterfaceTerminator;
 import eva2.optimization.individuals.IndividualInterface;
 import eva2.optimization.individuals.InterfaceDataTypeBinary;
 import eva2.optimization.individuals.InterfaceDataTypeDouble;

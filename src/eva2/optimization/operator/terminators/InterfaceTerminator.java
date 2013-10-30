@@ -1,4 +1,4 @@
-package eva2.optimization.go;
+package eva2.optimization.operator.terminators;
 
 import eva2.optimization.population.InterfaceSolutionSet;
 import eva2.optimization.population.PopulationInterface;
