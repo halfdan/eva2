@@ -1,4 +1,5 @@
 /build/
+out/
 *.ser
 .settings/
 .project
