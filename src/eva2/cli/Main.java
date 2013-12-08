@@ -8,30 +8,64 @@ import eva2.optimization.operator.terminators.CombinedTerminator;
 import eva2.optimization.operator.terminators.EvaluationTerminator;
 import eva2.optimization.operator.terminators.FitnessValueTerminator;
 import eva2.optimization.problems.AbstractOptimizationProblem;
-import eva2.optimization.problems.F1Problem;
-import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.optimization.strategies.InterfaceOptimizer;
 import org.apache.commons.cli.*;
 import org.reflections.Reflections;
-
 import java.lang.reflect.Modifier;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+/**
+ * Main Class for the EvA2 Command Line Interface
+ *
+ * The command line interface features a limited subset of the EvA2
+ * optimization suite since it's difficult to parameterize all available
+ * classes in EvA2 from the command line.
+ * Supported Features:
+ * - Select all optimization problems that implement InterfaceOptimizationProblem
+ * - Select all optimizers that implement InterfaceOptimizer
+ *   * Not all optimizers are configurable on the command line and will run
+ *     with default parameters.
+ *   * Optimizers can use the @Description / @Parameter annotations to specify
+ *     parameters for CLI
+ * - Configure default parameters
+ *   * Population size
+ *   * Number of optimization runs (multi-runs)
+ * - Termination:
+ *   * Not configurable!
+ *   * Default: EvaluationTerminator(20000)
+ */
 public class Main implements OptimizationStateListener, InterfacePopulationChangedEventListener {
+    private static Logger LOGGER = Logger.getLogger(Main.class.getName());
+    private int populationSize = 20;
+    private int numberOfRuns = 1;
+    private long seed = System.currentTimeMillis();
+    private AbstractOptimizationProblem problem;
+    private InterfaceOptimizer optimizer;
 
-
-    private static Options createDefaultCommandLineOptions() {
+    /**
+     * Creates a set of default options used in all optimizations.
+     *
+     * @return Options Default options used for optimizations
+     */
+    private Options createDefaultCommandLineOptions() {
         Options opt = new Options();
 
         opt.addOption(OptionBuilder
                 .withLongOpt("optimizer")
                 .withDescription("Optimizer")
+                .hasArg()
                 .create("op")
         );
 
         opt.addOption("ps", "popsize", true, "Population size");
+        opt.addOption("n", "runs", true, "Number of runs to perform");
+        opt.addOption("s", "seed", true, "Random seed");
+
         opt.addOption(OptionBuilder
                 .withLongOpt("help")
                 .withDescription("Shows this help message or specific help for [optimizer]")
@@ -39,6 +73,12 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
                 .create('h')
         );
 
+        opt.addOption(OptionBuilder
+                .withLongOpt("problem")
+                .withDescription("Select Optimization Problem to optimize.")
+                .hasArg()
+                .create('p')
+        );
         return opt;
     }
 
@@ -85,7 +125,7 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
         Reflections reflections = new Reflections("eva2.optimization.strategies");
         Set<Class<? extends InterfaceOptimizer>> optimizers = reflections.getSubTypesOf(InterfaceOptimizer.class);
         for (Class<? extends InterfaceOptimizer> optimizer : optimizers) {
-            // We only want instantiable classes.ya
+            // We only want instantiable classes
             if (optimizer.isInterface() || Modifier.isAbstract(optimizer.getModifiers())) {
                 continue;
             }
@@ -94,11 +134,11 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
         return optimizerList;
     }
 
-    public static Map<String, Class<? extends InterfaceOptimizationProblem>> createProblemList() {
-        Map<String, Class<? extends InterfaceOptimizationProblem>> problemList = new TreeMap<String, Class<? extends InterfaceOptimizationProblem>>();
+    public static Map<String, Class<? extends AbstractOptimizationProblem>> createProblemList() {
+        Map<String, Class<? extends AbstractOptimizationProblem>> problemList = new TreeMap<String, Class<? extends AbstractOptimizationProblem>>();
         Reflections reflections = new Reflections("eva2.optimization.problems");
-        Set<Class<? extends InterfaceOptimizationProblem>> problems = reflections.getSubTypesOf(InterfaceOptimizationProblem.class);
-        for (Class<? extends InterfaceOptimizationProblem> problem : problems) {
+        Set<Class<? extends AbstractOptimizationProblem>> problems = reflections.getSubTypesOf(AbstractOptimizationProblem.class);
+        for (Class<? extends AbstractOptimizationProblem> problem : problems) {
             // We only want instantiable classes
             if (problem.isInterface() || Modifier.isAbstract(problem.getModifiers())) {
                 continue;
@@ -114,12 +154,28 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
     }
 
     public static void main(String[] args) {
+        Main optimizationMain = new Main(args);
+        optimizationMain.runOptimization();
+    }
+
+    public Main(String[] args)  {
+        int index = Arrays.asList(args).indexOf("--");
+        String[] programParams = args;
+        String[] optimizerParams;
+
+        if (index >= 0) {
+            programParams = Arrays.copyOfRange(args, 0, index);
+            optimizerParams = Arrays.copyOfRange(args, index + 1, args.length - 1);
+        } else {
+            optimizerParams = new String[]{};
+        }
+
         /**
          * Default command line options only require help or optimizer.
          * Later we build extended command line options depending on
          * the selected optimizer.
          */
-        Options defaultOptions = createDefaultCommandLineOptions();
+        Options defaultOptions = this.createDefaultCommandLineOptions();
 
         /**
          * Parse default options.
@@ -127,7 +183,7 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
         CommandLineParser cliParser = new BasicParser();
         CommandLine commandLine = null;
         try {
-            commandLine = cliParser.parse(defaultOptions, args);
+            commandLine = cliParser.parse(defaultOptions, programParams);
         } catch (ParseException e) {
             showHelp(defaultOptions);
             System.exit(-1);
@@ -141,14 +197,50 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
             if ("optimizer".equals(helpOption)) {
                 showOptimizerHelp();
             } else if ("problem".equals(helpOption)) {
-                showProblemHelp();
+                listProblems();
             } else {
                 showHelp(defaultOptions);
             }
+
+            System.exit(0);
         }
 
-        Main optimizationMain = new Main();
-        optimizationMain.runOptimization();
+        // OK, so we've got valid parameters - let's setup the optimizer and problem
+        if (commandLine.hasOption("popsize")) {
+            this.populationSize = Integer.parseInt(commandLine.getOptionValue("popsize"));
+        }
+
+        if (commandLine.hasOption("runs")) {
+            this.numberOfRuns = Integer.parseInt(commandLine.getOptionValue("runs"));
+        }
+
+        if (commandLine.hasOption("seed")) {
+            this.seed = Long.parseLong(commandLine.getOptionValue("seed"));
+        }
+
+        if (commandLine.hasOption("problem")) {
+            String problemName = commandLine.getOptionValue("problem");
+            setProblemFromName(problemName);
+        }
+
+        if (commandLine.hasOption("optimizer")) {
+            String optimizerName = commandLine.getOptionValue("optimizer");
+
+        }
+
+    }
+
+    private void setProblemFromName(String problemName) {
+        Map<String, Class<? extends AbstractOptimizationProblem>> problemList = createProblemList();
+
+        Class<? extends AbstractOptimizationProblem> problem = problemList.get(problemName);
+        try {
+            this.problem = problem.newInstance();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
     }
 
     private void runOptimization() {
@@ -157,15 +249,13 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
         OptimizerFactory.setEvaluationTerminator(50000);
         OptimizerFactory.addTerminator(new FitnessValueTerminator(new double[]{0.01}), CombinedTerminator.OR);
 
+        LOGGER.log(Level.INFO, "Running {0}", "Differential Evolution");
 
-        int popsize = 30;
         double f = 0.8, lambda = 0.6, cr = 0.6;
 
-        AbstractOptimizationProblem problem = new F1Problem(popsize);
+        InterfaceOptimizer optimizer = OptimizerFactory.createDifferentialEvolution(this.problem, this.populationSize, f, lambda, cr, this);
 
-        InterfaceOptimizer optimizer = OptimizerFactory.createDifferentialEvolution(problem, popsize, f, lambda, cr, this);
-
-        OptimizationParameters params = OptimizerFactory.makeParams(optimizer, popsize, problem);
+        OptimizationParameters params = OptimizerFactory.makeParams(optimizer, this.populationSize, this.problem);
         double[] result = OptimizerFactory.optimizeToDouble(params);
 
         // This is stupid - why isn't there a way to wait for the optimization to finish?
@@ -182,16 +272,16 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
 
         System.out.println("Available Optimizers:");
         for (String name : optimizerList.keySet()) {
-            System.out.printf("\t%s\n", name);
+            System.out.printf("%s\n", name);
         }
     }
 
-    private static void showProblemHelp() {
-        Map<String, Class<? extends InterfaceOptimizationProblem>> problemList = createProblemList();
+    private static void listProblems() {
+        Map<String, Class<? extends AbstractOptimizationProblem>> problemList = createProblemList();
 
         System.out.println("Available Problems:");
         for (String name : problemList.keySet()) {
-            System.out.printf("\t%s\n", name);
+            System.out.printf("%s\n", name);
         }
     }
 
