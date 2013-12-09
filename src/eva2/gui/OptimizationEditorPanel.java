@@ -139,7 +139,7 @@ public class OptimizationEditorPanel extends JPanel implements ItemListener {
         okayButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent event) {
-                backupObject = copyObject(genericObjectEditor.getValue());
+                //backupObject = copyObject(genericObjectEditor.getValue());
 
                 updateClassType();
                 updateChildPropertySheet();

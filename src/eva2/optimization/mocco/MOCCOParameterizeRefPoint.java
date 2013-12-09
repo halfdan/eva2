@@ -132,7 +132,7 @@ public class MOCCOParameterizeRefPoint extends MOCCOPhase implements InterfacePr
         // IslandModelEA
         this.m_EIMEA = new GeneralOptimizationEditorProperty();
         this.m_Island = new IslandModelEA();
-        this.m_Island.setHeterogenuousProblems(true);
+        this.m_Island.setHeterogeneousProblems(true);
         this.m_Island.setLocalOnly(true);
         this.m_Island.setMigrationRate(2);
         this.m_Island.setMigrationStrategy(new SOBestMigration());

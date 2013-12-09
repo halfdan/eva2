@@ -41,7 +41,7 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
     private InterfaceOptimizationProblem m_Problem = new F8Problem();
     //    private String[]                                m_NodesList;
     private int m_MigrationRate = 10;
-    private boolean m_HeterogenuousProblems = false;
+    private boolean heterogeneousProblems = false;
     // These are the processor to run on
     private int m_numLocalCPUs = 1;
     private boolean m_localOnly = false;
@@ -63,7 +63,7 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
         this.m_Optimizer = (InterfaceOptimizer) a.m_Optimizer.clone();
         this.m_Migration = (InterfaceMigration) a.m_Migration.clone();
         this.m_MigrationRate = a.m_MigrationRate;
-        this.m_HeterogenuousProblems = a.m_HeterogenuousProblems;
+        this.heterogeneousProblems = a.heterogeneousProblems;
         this.m_numLocalCPUs = a.m_numLocalCPUs;
         this.m_localOnly = a.m_localOnly;
     }
@@ -239,7 +239,7 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
             this.communicate();
         }
         // this is necessary for heterogeneous islands
-        if (this.m_HeterogenuousProblems) {
+        if (this.heterogeneousProblems) {
             for (int i = 0; i < this.m_Islands.length; i++) {
                 this.m_Islands[i].getProblem().evaluate(this.m_Islands[i].getPopulation());
             }
@@ -350,8 +350,8 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
         result += " Migration Strategy    = " + this.m_Migration.getClass().toString() + "\n";
         result += " Migration rate        = " + this.m_MigrationRate + "\n";
         result += " Local only       = " + this.m_localOnly + "\n";
-        result += " Het. Problems         = " + this.m_HeterogenuousProblems + "\n";
-        if (this.m_HeterogenuousProblems) {
+        result += " Het. Problems         = " + this.heterogeneousProblems + "\n";
+        if (this.heterogeneousProblems) {
             result += " Heterogenuous Optimizers: \n";
             for (int i = 0; i < this.m_Islands.length; i++) {
                 result += this.m_Islands[i].getStringRepresentation() + "\n";
@@ -440,14 +440,14 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
     }
 
     /**
-     * This method will allow you to toggel between homogenuous and
-     * heterogenuous problems. In case of heterogenuous problems the individuals
+     * This method will allow you to toggle between homogeneous and
+     * heterogeneous problems. In case of heterogeneous problems the individuals
      * need to be reevaluated after migration.
      *
      * @param t
      */
-    public void setHeterogenuousProblems(boolean t) {
-        this.m_HeterogenuousProblems = t;
+    public void setHeterogeneousProblems(boolean t) {
+        this.heterogeneousProblems = t;
     }
 
     /**

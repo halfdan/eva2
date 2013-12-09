@@ -225,9 +225,38 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
 
         if (commandLine.hasOption("optimizer")) {
             String optimizerName = commandLine.getOptionValue("optimizer");
-
+            try {
+                createOptimizerFromName(optimizerName, optimizerParams);
+            } catch(Exception ex) {
+                System.out.println(ex.getMessage());
+                System.exit(-1);
+            }
         }
+    }
 
+    /**
+     * This method will create the various optimizers that are supported on the CLI.
+     * It's a really messy process since neither Java nor args4j/apache-cli can handle
+     * complex object parameters. The trick here is that all parameters after the
+     * double-dash (--) are treated as parameters for the optimization algorithm.
+     *
+     * @param optimizerName The name of the optimizer.
+     * @param optimizerParams The remaining command line parameters.
+     * @throws Exception
+     */
+    private void createOptimizerFromName(String optimizerName, String[] optimizerParams) throws Exception {
+        Options opt = new Options();
+
+        switch(optimizerName) {
+            case "DifferentialEvolution":
+                System.out.println("DE");
+                opt.addOption("-F", true, "Differential Weight");
+                opt.addOption("-CR", true, "Crossover Rate");
+                opt.addOption("-DEType", true, "DE Type (");
+                break;
+            default:
+                throw new Exception("Unsupported Optimizer");
+        }
     }
 
     private void setProblemFromName(String problemName) {
