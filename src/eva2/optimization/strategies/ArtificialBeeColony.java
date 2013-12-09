@@ -3,6 +3,8 @@ package eva2.optimization.strategies;
 import eva2.optimization.go.InterfacePopulationChangedEventListener;
 import eva2.optimization.population.InterfaceSolutionSet;
 import eva2.optimization.population.Population;
+import eva2.optimization.problems.AbstractOptimizationProblem;
+import eva2.optimization.problems.F1Problem;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.util.annotation.Description;
 
@@ -12,7 +14,8 @@ import eva2.util.annotation.Description;
 @Description(text = "Artificial Bee Colony Optimizer")
 public class ArtificialBeeColony implements InterfaceOptimizer {
 
-
+    protected AbstractOptimizationProblem optimizationProblem = new F1Problem();
+    protected Population population;
 
     public ArtificialBeeColony() {
 
@@ -59,12 +62,12 @@ public class ArtificialBeeColony implements InterfaceOptimizer {
 
     @Override
     public Population getPopulation() {
-        return null;
+        return this.population;
     }
 
     @Override
     public void setPopulation(Population pop) {
-
+        this.population = pop;
     }
 
     @Override
@@ -82,14 +85,19 @@ public class ArtificialBeeColony implements InterfaceOptimizer {
         return null;
     }
 
+    /**
+     * This method will set the problem that is to be optimized
+     *
+     * @param problem
+     */
     @Override
     public void setProblem(InterfaceOptimizationProblem problem) {
-
+        this.optimizationProblem = (AbstractOptimizationProblem) problem;
     }
 
     @Override
     public InterfaceOptimizationProblem getProblem() {
-        return null;
+        return this.optimizationProblem;
     }
 
     @Override

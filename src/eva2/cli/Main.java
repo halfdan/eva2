@@ -2,12 +2,14 @@ package eva2.cli;
 
 import eva2.OptimizerFactory;
 import eva2.optimization.OptimizationStateListener;
+import eva2.optimization.enums.DETypeEnum;
 import eva2.optimization.go.InterfacePopulationChangedEventListener;
 import eva2.optimization.modules.OptimizationParameters;
 import eva2.optimization.operator.terminators.CombinedTerminator;
 import eva2.optimization.operator.terminators.EvaluationTerminator;
 import eva2.optimization.operator.terminators.FitnessValueTerminator;
 import eva2.optimization.problems.AbstractOptimizationProblem;
+import eva2.optimization.strategies.DifferentialEvolution;
 import eva2.optimization.strategies.InterfaceOptimizer;
 import org.apache.commons.cli.*;
 import org.reflections.Reflections;
@@ -165,7 +167,7 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
 
         if (index >= 0) {
             programParams = Arrays.copyOfRange(args, 0, index);
-            optimizerParams = Arrays.copyOfRange(args, index + 1, args.length - 1);
+            optimizerParams = Arrays.copyOfRange(args, index + 1, args.length);
         } else {
             optimizerParams = new String[]{};
         }
@@ -246,13 +248,48 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
      */
     private void createOptimizerFromName(String optimizerName, String[] optimizerParams) throws Exception {
         Options opt = new Options();
+        CommandLineParser cliParser = new BasicParser();
+        CommandLine commandLine = null;
 
         switch(optimizerName) {
             case "DifferentialEvolution":
                 System.out.println("DE");
-                opt.addOption("-F", true, "Differential Weight");
-                opt.addOption("-CR", true, "Crossover Rate");
-                opt.addOption("-DEType", true, "DE Type (");
+                opt.addOption("F", true, "Differential Weight");
+                opt.addOption("CR", true, "Crossover Rate");
+                opt.addOption("DEType", true, "DE Type (");
+                /**
+                 * Parse default options.
+                 */
+                try {
+                    commandLine = cliParser.parse(opt, optimizerParams);
+                } catch (ParseException e) {
+                    showHelp(opt);
+                    System.exit(-1);
+                }
+
+
+                double f = 0.8, lambda = 0.6, cr = 0.6;
+                if (commandLine.hasOption("F")) {
+                    f = Double.parseDouble(commandLine.getOptionValue("F"));
+                }
+
+                if (commandLine.hasOption("CR")) {
+                    cr = Double.parseDouble(commandLine.getOptionValue("CR"));
+                }
+
+                this.optimizer = OptimizerFactory.createDifferentialEvolution(this.problem, this.populationSize, f, lambda, cr, this);
+
+                if (commandLine.hasOption("DEType")) {
+                    ((DifferentialEvolution)this.optimizer).setDEType(
+                            DETypeEnum.getFromId(
+                                    Integer.parseInt(commandLine.getOptionValue("DEType"))
+                            )
+                    );
+                }
+
+                break;
+            case "GeneticAlgorithm":
+                System.out.println("Genetic Algorithm");
                 break;
             default:
                 throw new Exception("Unsupported Optimizer");
@@ -279,10 +316,6 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
         OptimizerFactory.addTerminator(new FitnessValueTerminator(new double[]{0.01}), CombinedTerminator.OR);
 
         LOGGER.log(Level.INFO, "Running {0}", "Differential Evolution");
-
-        double f = 0.8, lambda = 0.6, cr = 0.6;
-
-        InterfaceOptimizer optimizer = OptimizerFactory.createDifferentialEvolution(this.problem, this.populationSize, f, lambda, cr, this);
 
         OptimizationParameters params = OptimizerFactory.makeParams(optimizer, this.populationSize, this.problem);
         double[] result = OptimizerFactory.optimizeToDouble(params);
