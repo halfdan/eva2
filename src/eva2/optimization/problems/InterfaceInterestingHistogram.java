@@ -5,8 +5,6 @@ import eva2.optimization.operator.postprocess.SolutionHistogram;
 /**
  * Target functions may provide an idea which fitness values are
  * interesting.
- *
- * @author mkron
  */
 public interface InterfaceInterestingHistogram {
     /**

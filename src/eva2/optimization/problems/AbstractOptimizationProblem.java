@@ -604,31 +604,6 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
         return "A default threshold to identify optima - e.g. the assumed minimal distance between any two optima.";
     }
 
-//    /**********************************************************************************************************************
-//     * These are for InterfaceParamControllable
-//     */
-//	public Object[] getParamControl() {
-//		return null;
-//	}
-//	
-//	public void notifyParamChanged(String member, Object oldVal, Object newVal) {
-//		if (changeListeners != null) for (ParamChangeListener l : changeListeners) {
-//			l.notifyChange(this, oldVal, newVal, null);
-//		}
-//	}
-//	
-//	public void addChangeListener(ParamChangeListener l) {
-//		if (changeListeners==null) changeListeners = new ArrayList<ParamChangeListener>();
-//		if (!changeListeners.contains(l)) changeListeners.add(l);
-//	}
-//	
-//	public void removeChangeListener(ParamChangeListener l) {
-//		if (changeListeners!=null) changeListeners.remove(l);
-//	}
-
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.

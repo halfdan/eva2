@@ -59,7 +59,7 @@ public abstract class AbstractProblemInteger extends AbstractOptimizationProblem
         x = new int[((InterfaceDataTypeInteger) individual).getIntegerData().length];
         System.arraycopy(((InterfaceDataTypeInteger) individual).getIntegerData(), 0, x, 0, x.length);
 
-        fitness = this.eval(x);
+        fitness = this.evaluate(x);
         for (int i = 0; i < fitness.length; i++) {
             // set the fitness of the individual
             individual.SetFitness(i, fitness[i]);
@@ -75,7 +75,7 @@ public abstract class AbstractProblemInteger extends AbstractOptimizationProblem
      * @param x The n-dimensional input vector
      * @return The m-dimensional output vector.
      */
-    public abstract double[] eval(int[] x);
+    public abstract double[] evaluate(int[] x);
 
     /**
      * *******************************************************************************************************************

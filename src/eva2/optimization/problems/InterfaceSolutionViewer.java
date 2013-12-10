@@ -6,7 +6,6 @@ import eva2.optimization.population.Population;
  * A standard interface for solution viewers which display a single (best) solution
  * or a population of solutions.
  *
- * @author mkron
  */
 public interface InterfaceSolutionViewer {
     /**

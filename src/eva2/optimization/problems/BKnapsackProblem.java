@@ -5,16 +5,14 @@ import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.InterfaceDataTypeBinary;
 import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 import java.util.BitSet;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 21.03.2003
- * Time: 15:12:46
- * To change this template use Options | File Templates.
+ * Maximize the value of the knapsack without exceeding the weight limit.
  */
+@Description("Maximize the value of the knapsack without exceeding the weight limit")
 public class BKnapsackProblem extends AbstractProblemBinary implements java.io.Serializable {
 
     private int m_Limit = 5000;
@@ -353,9 +351,6 @@ public class BKnapsackProblem extends AbstractProblemBinary implements java.io.S
         return result.toString();
     }
 
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -365,15 +360,6 @@ public class BKnapsackProblem extends AbstractProblemBinary implements java.io.S
     @Override
     public String getName() {
         return "Single Knapsack Problem";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "Maximize the value of the knapsack without exceeding the weight limit.";
     }
 
     /**

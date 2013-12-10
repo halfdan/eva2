@@ -34,7 +34,7 @@ public class I1Problem extends AbstractProblemInteger implements java.io.Seriali
      * @return The m-dimensional output vector.
      */
     @Override
-    public double[] eval(int[] x) {
+    public double[] evaluate(int[] x) {
         double[] result = new double[1];
         result[0] = 0;
         for (int i = 0; i < x.length; i++) {

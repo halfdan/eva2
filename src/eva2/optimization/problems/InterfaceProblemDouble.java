@@ -5,7 +5,6 @@ import eva2.optimization.individuals.InterfaceDataTypeDouble;
 /**
  * A minimal interface for double valued problems.
  *
- * @author mkron
  */
 public interface InterfaceProblemDouble {
     /**

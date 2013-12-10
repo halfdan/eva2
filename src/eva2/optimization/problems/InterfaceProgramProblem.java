@@ -3,11 +3,7 @@ package eva2.optimization.problems;
 import eva2.optimization.individuals.codings.gp.GPArea;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 04.04.2003
- * Time: 14:43:03
- * To change this template use Options | File Templates.
+ * Interface for Program Problems. Solved by Genetic Programming.
  */
 public interface InterfaceProgramProblem extends InterfaceOptimizationProblem {
 
